@@ -11,18 +11,8 @@
 ## Setup
 
 ```sh
-# install dependencies
-$ yarn
-
-# serve in dev mode, with hot reload at localhost:4200
-$ yarn dev
-
-# build for production
-$ yarn build
+npm install @hi-ui/hiui
 ```
-
-open http://localhost:4200
-
 
 ### Style Guide
 
