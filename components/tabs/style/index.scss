@@ -1,0 +1,33 @@
+$main: 'hi-tabs';
+
+.#{$main}{
+  .#{$main}-header{
+    padding: 0;
+    margin: 0 0 15px;
+    position: relative;
+    border-bottom: 1px solid #ddd;
+    .#{$main}-item{
+      border: 1px solid transparent;
+      display: inline-block;
+      padding: 8px 15px;
+      &.is-active{
+        border: 1px solid #ddd;
+        border-bottom-color: #fff;
+        &>a{
+
+          cursor: default;
+        }
+      }
+      >a{
+
+        color: #555;
+        text-decoration: none;
+      }
+    }
+  }
+  .#{$main}-nav{
+    display: inline-block;
+    position: relative;
+    margin-bottom: -1px;
+  }
+}

@@ -1,0 +1,29 @@
+// @Todo: should be removed after classic-theme updated
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dashboard {
+  .header {
+    &-nav {
+      height: 64px;
+      display: flex;
+      justify-content: flex-end;
+      a {
+        position: relative;
+        height: 64px;
+        line-height: 64px;
+        padding: 0 20px;
+        color: #383E47;
+        display: inline-block;
+        cursor: pointer;
+        &:hover,
+        &.active {
+          color: #4284f5;
+        }
+      }
+    }
+  }
+}

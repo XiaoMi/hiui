@@ -1,0 +1,66 @@
+@mixin button-variant($color, $background, $backgroundhover) {
+  color: $color;
+  background-color: $background;
+  border-color: $background;
+  &:not(.hi-btn-disabled):hover {
+    color: $color;
+    background-color: $backgroundhover;
+    border-color: $backgroundhover;
+  }
+  // Disabled
+  &.hi-btn-disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    border-color: transparent;
+    background: rgba($background, 0.2);
+  }
+}
+
+@mixin line-btn($color, $borderColor: $color, $background: $color) {
+  background-color: rgba($background, 0.1);
+  color: $color;
+  border-color: rgba($borderColor, 0.4);
+  &:not(.hi-btn-disabled):hover {
+    border-color: rgba($borderColor, 0.6);
+  }
+  &:active {
+    background-color: rgba($background, 0.15);
+    border-color: rgba($borderColor, 0.6);
+    box-shadow: none;
+  }
+
+  // Disabled
+  &.hi-btn-disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    color: rgba($borderColor, 0.3);
+    border-color: rgba($borderColor, 0.2);
+  }
+}
+
+@mixin link-btn($color) {
+  background-color: transparent;
+  color: $color;
+  transition: all .3s;
+  &:not(.hi-btn-disabled):hover {
+    color: #fff;
+    background-color: $color;
+  }
+  &:active {
+    box-shadow: none;
+    //background-color: $background;
+  }
+  &.hi-btn-disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    color: rgba($color, 0.3);
+  }
+}
+
+// Button sizes
+@mixin button-size($padding-vertical, $padding-horizontal, $font-size, $line-height) {
+  height: $font-size * $line-height + $padding-vertical * 2 + 2;
+  padding: $padding-vertical $padding-horizontal;
+  font-size: $font-size;
+  line-height: $line-height;
+}

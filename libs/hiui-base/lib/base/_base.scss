@@ -1,0 +1,25 @@
+/**
+ * Author: Sivan[sunxingfan@xiaomi.com]
+ * Date: 2018-08-16 00:00
+ * Description: Base style index.
+ */
+@import '../core/index';
+@import 'normalize';
+
+// Main
+body {
+  min-width: $minPageWidth;
+  font: #{$font-size-normal}/#{$line-height-default} $font-family-base;
+  background-color: #fff;
+  color: #333;
+}
+
+a {
+  color: #4284f5;
+  &:hover {
+    color: #3b77db;
+  }
+  &:active {
+    color: #3b77db;
+  }
+}

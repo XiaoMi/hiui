@@ -1,0 +1,15 @@
+.pover{
+    left: 0;
+
+    top: 0;
+    transform: translate(-50%,-100%);
+    background: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+    padding: 20px;
+}
+
+.pover-action{
+    text-align: right;
+    min-width: 100px;
+}

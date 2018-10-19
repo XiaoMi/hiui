@@ -1,0 +1,375 @@
+@import './variable';
+
+/* common */
+
+.container {
+  width: 1177px;
+  margin: 0 auto;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.clearfix:before, .clearfix:after {   
+  content:"";   
+  display:table;   
+}   
+.clearfix:after{   
+  clear:both;   
+  overflow:hidden;   
+}   
+.clearfix{   
+  *zoom:1;   
+}   
+
+
+/* index */
+
+.section-header {
+  height: 64px;
+  line-height: 64px;
+  // border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: $primary-color;
+  box-shadow: inset 0 -1px 0 0 #E6E7E8;
+}
+
+.logo-con .logo{
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  margin-top: 12px;
+  margin-right: 10px;
+  background: url(#{$imgurl}../logo.png) center no-repeat;
+  background-size: 100%;
+}
+
+.intro {
+  display: flex;
+  align-items: center;
+
+ .item {
+    margin-left: 35px;
+    text-decoration: none;
+    color: $primary-color;
+    .hi-dropdown .hi-dropdown-title {
+      padding: 0px;
+    }
+  }
+}
+
+.intro a.active {
+  color: #4284f5;
+}
+
+
+.section-banner {
+  height: 552px;
+
+  .container {
+    position: relative;
+  }
+
+  .bg {
+    position: absolute;
+    right: 0;
+    padding-top: 70px;
+    width: 720px;
+    height: 440px;
+    background: url(#{$imgurl}1-1.png) center no-repeat;
+    background-size: 100%;
+  }
+
+  .con {
+    width: 470px;
+
+    .text {
+      padding-top: 126px;
+      font-size: 42px;
+    }
+
+    .desc {
+      width: 460px;
+      padding-top: 37px;
+      font-size: 18px;
+      line-height: 30px;
+    }
+
+    .use {
+      width: 130px;
+      height: 42px;
+      margin-top: 60px;
+      line-height: 42px;
+      text-align: center;
+      color: #fff;
+      background-color: #4d86ff;
+      border-radius: 21px;
+      cursor: pointer;
+      a {
+        display: block;
+        color: inherit;
+      }
+    }
+  }
+}
+
+.section-design {
+  height: 630px;
+  background-color: #fafbfc;
+  color: $primary-color;
+  text-align: center;
+
+  .text {
+    padding: 90px 0 60px;
+    font-size: 30px;
+
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s;
+  }
+
+  .item-list {
+
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s;
+
+    .item {
+      float: left;
+      margin-left: 41px;
+      width: 365px;
+      height: 340px;
+      background-color: #fff;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      .pic {
+        display: inline-block;
+        margin: 20px 0;
+        width: 170px;
+        height: 170px;
+        background-size: 100%;
+        background-repeat: no-repeat;
+      }
+
+      &:nth-child(1) .pic {
+        background-image: url(#{$imgurl}2-1.png);
+      }
+
+      &:nth-child(2) .pic {
+        background-image: url(#{$imgurl}2-2.png);
+      }
+
+      &:nth-child(3) .pic {
+        background-image: url(#{$imgurl}2-3.png);
+      }
+
+
+      .title {
+        font-size: 16px;
+      }
+
+      .desc {
+        display: inline-block;
+        font-size: 14px;
+        width: 240px;
+        margin-top: 20px;
+        line-height: 1.8;
+        color: rgba(32, 35, 50, 0.7);
+      }
+    }
+  }
+}
+
+.section-efficiency {
+  height: 440px;
+
+  .container {
+    position: relative;
+  }
+
+  .bg {
+    position: absolute;
+    left: 0;
+    padding-top: 70px;
+    width: 480px;
+    height: 360px;
+    background: url(#{$imgurl}3-2.png) center no-repeat;
+    background-size: 100%;
+  }
+
+  .con {
+    float: right;
+    width: 395px;
+    padding: 135px 180px 0 0;
+
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 1s;
+
+    .text {
+      font-size: 30px;
+    }
+
+    .desc {
+     margin-top: 36px;
+     font-size: 14px;
+     line-height: 1.8;
+     color: rgba(32, 35, 50, 0.7);
+    }
+  }
+}
+
+
+.section-excel {
+  height: 500px;
+  background-color: #fafbfc;
+  color: $primary-color;
+  text-align: center;
+
+  .text {
+    padding: 90px 0 60px;
+    font-size: 30px;
+
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s;
+  }
+
+  .item-list {
+
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s;
+
+    
+    .item {
+      float: left;
+      width: 294px;
+      height: 294px;
+      // background-color: #fff;
+
+      .pic {
+        display: inline-block;
+        margin: 20px 0;
+        width: 90px;
+        height: 90px;
+        background-size: 100%;
+        background-repeat: no-repeat;
+      }
+
+      &:nth-child(1) .pic {
+        background-image: url(#{$imgurl}4-1.png);
+      }
+
+      &:nth-child(2) .pic {
+        background-image: url(#{$imgurl}4-2.png);
+      }
+
+      &:nth-child(3) .pic {
+        background-image: url(#{$imgurl}4-3.png);
+      }
+
+      &:nth-child(4) .pic {
+        background-image: url(#{$imgurl}4-4.png);
+      }
+
+
+      .title {
+        font-size: 16px;
+      }
+
+      .desc {
+        display: inline-block;
+        font-size: 14px;
+        width: 240px;
+        margin-top: 20px;
+        line-height: 1.8;
+        color: rgba(32, 35, 50, 0.7);
+      }
+    }
+  }
+}
+
+.section-renren {
+  height: 395px;
+  color: $primary-color;
+  text-align: center;
+
+  .text {
+    padding: 90px 0 80px;
+    font-size: 30px;
+  }
+
+  .item-list {
+
+    .item {
+      float: left;
+      width: 50%;
+      padding-left: 88px;
+      box-sizing: border-box;
+      text-align: left;
+
+      .pic {
+        float: left;
+        width: 70px;
+        height: 70px;
+        background-size: 100%;
+        background-repeat: no-repeat;
+      }
+
+      &:nth-child(1) .pic {
+        background-image: url(#{$imgurl}5-1.png);
+      }
+
+      &:nth-child(2) .pic {
+        background-image: url(#{$imgurl}5-2.png);
+      }
+
+      .text-con {
+        display: inline-block;
+        margin-left: 15px;
+        height: 40px;
+        padding: 15px 0;
+
+        .title {
+          font-size: 16px;
+          margin-bottom: 10px;
+        }
+
+        .desc {
+          font-size: 14px;
+          color: rgba(32, 35, 50, 0.7);
+        }
+      }
+
+      
+    }
+  }
+
+}
+
+
+.section-footer {
+  height: 75px;
+  line-height: 75px;
+  border-top: 1px solid #000;
+  font-size: 12px;
+  background-color: #1c1e20;
+  color: rgba(255, 255,255,0.3);
+  text-align: center;
+}
+
+
+.trans {
+  opacity: 1 !important;
+  transform: translate(0,0) !important;
+}
+

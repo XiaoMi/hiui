@@ -1,0 +1,148 @@
+@import './variables.scss';
+@import '../../style/icon/index.scss';
+
+$input: 'hi-input';
+
+.#{$input},
+.#{$input}_m {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-height: 32px;
+  box-sizing: border-box;
+
+  ::-webkit-input-placeholder {
+    color: $placeholder-color;
+  }
+  :-moz-placeholder {
+    color: $placeholder-color;
+  }
+  ::-moz-placeholder {
+    color: $placeholder-color;
+  }
+  :-ms-input-placeholder {
+    color: $placeholder-color;
+  }
+  input,
+  textarea {
+    flex: 1 1 auto;
+    border: none;
+    outline: none;
+    min-height: 30px;
+    box-sizing: border-box;
+    color: $normal-color;
+    font-size: $font-size;
+    line-height: $line-height;
+    box-shadow: none;
+    &.disabled {
+      color: $disabled-color;
+      background-color: $disabled-bg-color;
+    }
+  }
+  textarea {
+    resize: vertical;
+    overflow: auto;
+    height: 100%;
+  }
+  input[type="search"] {
+    -webkit-appearance: none;
+  }
+  ::-webkit-search-cancel-button {
+    display: none;
+  }
+
+  .hi-input__out {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .hi-input__inner {
+    position: relative;
+    display: flex;
+    width: 100%;
+    border: 1px solid $border-color-normal;
+    box-sizing: border-box;
+    border-radius: $border-radius;
+    transition: border-color .3s;
+    &:not(.disabled):hover {
+      border-color: $border-color-active;
+    }
+    &.active {
+      border-color: $border-color-active;
+    }
+    &.disabled {
+      color: $disabled-color;
+      background-color: $disabled-bg-color;
+    }
+  }
+
+  &__fix-box {
+    display: inline-block;
+    width: 12px;
+    height: auto;
+    padding: 0 18px 0 2px;
+    flex: 1 0 auto;
+    cursor: pointer;
+    opacity: 1;
+    transition: all .3s;
+
+    &.invisible {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .hi-input__clear {
+      display: block;
+      border-radius: 50%;
+      color: #666;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .hi-input__suffix__icon {
+      position: absolute;
+      top: 50%;
+      width: 14px;
+      height: 14px;
+      line-height: 14px;
+      transform: translateY(-50%);
+      font-size: 14px;
+    }
+  }
+
+  &__text {
+    width: 100%;
+    padding: 4px 12px;
+  }
+
+  &__prefix,
+  &__suffix {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex: 1 0 auto;
+    color: $normal-color;
+    font-size: $font-size;
+  }
+  &__prefix {
+    padding-left: 12px;
+  }
+  &__suffix {
+    padding-right: 12px;
+  }
+
+  &.required {
+    ::after {
+      content: '*';
+      position: absolute;
+      right: -30px;
+      width: 30px;
+      height: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      color: red;
+    }
+  }
+
+}

@@ -1,0 +1,68 @@
+@import './variables.scss';
+
+$counter: 'hi-counter';
+
+@mixin justify-center() {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.#{$counter},
+.#{$counter}.m {
+  position: relative;
+  display: inline-block;
+  height: auto;
+  min-height: $m-width-ceil; 
+  box-sizing: border-box;
+  color: $normal-color;
+  font-size: $m-font-size;
+
+  &-outer {
+    display: flex;
+    height: auto;
+  }
+
+  &-sign {
+    @include justify-center();
+
+    flex: 0 0 auto;
+    width: $m-width-ceil;
+    height: $m-width-ceil;
+    border: 1px solid $border-color-normal;
+    border-radius: 2px;
+    font-weight: bold;
+    color: $active-color;
+    box-sizing: border-box;
+    cursor: pointer;
+    user-select: none;
+
+    &.disabled {
+      color: $disabled-color;
+      cursor: not-allowed;
+    }
+  }
+  &-minus {
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  &-plus {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  input {
+    @include justify-center();
+    
+    flex: 1 1 auto;
+    width: 2 * $m-width-ceil;
+    padding: 0 6px;
+    border: 1px solid $border-color-normal;
+    color: $normal-color;
+    outline: none;
+    box-sizing: border-box;
+  }
+}

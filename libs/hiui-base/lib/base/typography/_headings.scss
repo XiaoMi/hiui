@@ -1,0 +1,20 @@
+/**
+ * Author: Sivan[sunxingfan@xiaomi.com]
+ * Date: 2018-08-16 00:00
+ * Description: heading styles.
+ */
+
+@import '../../core/index';
+
+#{$entry-selector} {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: $spacer-6;
+    margin-bottom: $spacer-4;
+    line-height: $line-height-condensed;
+  }
+}

@@ -1,0 +1,14 @@
+@import './_fa/font-awesome.scss';
+
+[class^="fa-"]::before,
+[class*=" fa-"]::before {
+  font-family: "FontAwesome";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+/* Better Font Rendering =========== */
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}

@@ -1,0 +1,107 @@
+import React, { Component } from 'react'
+import prifix from './prefix'
+import Icon from '../icon'
+import Menu from './menu'
+
+class Sorter extends Component {
+  reversed = false
+  sortAsec = () => {
+    let {index, columns, kname, name} = this.props
+    let sorter = columns[index].sorter
+    let {cbs: {resetData}, dataSource} = this.props
+    dataSource = dataSource.sort(sorter)
+    resetData(dataSource)
+    this.reversed = false
+    window.localStorage.setItem(name + '-sorter', [kname, 0])
+  }
+
+  sortDsec = () => {
+    if (!this.reversed) {
+      let {index, columns, name, kname} = this.props
+      let sorter = columns[index].sorter
+      let {cbs: {resetData}, dataSource} = this.props
+
+      dataSource = dataSource.sort(sorter)
+      dataSource.reverse()
+      resetData(dataSource)
+      this.reversed = true
+      window.localStorage.setItem(name + '-sorter', [kname, 1])
+    }
+  }
+
+  render () {
+    return (
+      <div>
+        <span style={{display: 'block', height: '12px', lineHeight: '12px'}}><Icon name={'up'} onClick={this.sortAsec} style={{fontSize: '12px'}} /></span>
+        <span style={{display: 'block', height: '12px', lineHeight: '12px'}}><Icon name={'down'} onClick={this.sortDsec} style={{fontSize: '12px'}} /></span>
+      </div>
+    )
+  }
+}
+
+let HeaderCell = (props) => {
+  let {item, index, contextMenu} = props
+
+  return (
+    <th colSpan={item.colSpan || 1} key={'head-' + item.key || item.dataIndex || item.title} onContextMenu={(e) => contextMenu(e, item.key)}>
+      <div style={{display: 'flex', alignItems: 'center'}}>
+        <div>{typeof item.title === 'function' ? item.title() : item.title}</div>&nbsp;
+        {item.sorter ? <Sorter {...props} key={item.key} index={index} kname={item.key} /> : null}
+      </div>
+    </th>
+  )
+}
+
+let GroupCell = (props) => {
+  let {item, index, contextMenu} = props
+
+  return (
+    <th colSpan={item.headColSpan} rowSpan={item.headRowSpan} key={'head-' + item.key || item.dataIndex || item.title} onContextMenu={(e) => contextMenu(e, item.key)}>
+      <div style={{display: 'flex', alignItems: 'center'}}>&nbsp;
+        <div>{item.title}</div>
+        {item.sorter ? <Sorter {...props} col={item} index={index} kname={item.key} /> : null}
+      </div>
+    </th>
+  )
+}
+
+// 普通的表头
+export class Header extends Component {
+  render () {
+    let { columns, headerColumns } = this.props
+    // 表头可以传组件，如果是文本就渲染文本
+    let nodes = []
+    // 固定表头分组，这里好难。。
+
+    if (headerColumns && headerColumns.length > 1) {
+      nodes = headerColumns.map((columns, k) => {
+        let tr = []
+        for (let i = 0; i < columns.length; i++) {
+          tr.push(<GroupCell {...this.props} item={columns[i]} index={i} contextMenu={this.contextMenu} key={columns[i].key} />)
+        }
+        return <tr key={k}>{tr}</tr>
+      })
+    } else {
+      for (let i = 0; i < columns.length;) {
+        let colSpan = columns[i].colSpan || 1
+        nodes.push(<HeaderCell {...this.props} item={columns[i]} index={i} contextMenu={this.contextMenu} key={columns[i].key} />)
+        i = i + colSpan
+      }
+
+      nodes = <tr>{nodes}</tr>
+    }
+
+    return (
+      <thead className={prifix('table-thead')} ref={'header'}>
+        {nodes}
+      </thead>
+    )
+  }
+
+  contextMenu = (e, key) => {
+    e.preventDefault()
+    // this.refs.menu =
+    let {cbs, scrollWidth} = this.props
+    Menu.show(e, cbs, key, !!scrollWidth)
+  }
+}

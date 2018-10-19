@@ -1,0 +1,38 @@
+.hi-grid-row{
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  + .hi-grid-row {
+    margin-top: 24px;
+  }
+}
+
+.hi-grid-row-common {
+  box-sizing: border-box;
+}
+
+.hi-grid-row-gutter {
+  margin-left: -12px;
+  margin-right: -12px;
+}
+
+// Columns
+.hi-grid-col-common {
+  box-sizing: border-box;
+}
+
+.hi-grid-col-gutter {
+  padding: 0 12px;
+}
+
+@for $i from 1 through 24 {
+  .hi-grid-col-#{$i} {
+    width: ($i / 24) * 100%;
+    @extend .hi-grid-col-common;
+  }
+
+  .hi-grid-offset-#{$i}{
+    margin-left: ($i / 24) * 100%;
+    @extend .hi-grid-col-common;
+  }
+}

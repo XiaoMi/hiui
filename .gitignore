@@ -1,0 +1,26 @@
+# MIFE dotfiles
+
+# Output files
+dist/
+es/
+
+# Editor generate files
+.idea/
+.settings/
+.vscode/
+.tmp/
+
+# Dev dependencies and cache files
+node_modules/
+yarn.lock
+package-lock.json
+
+# Misc files
+*~
+~*
+._*
+.DS_Store
+Desktop.ini
+Thumbs.db
+.Spotlight-V100
+.Trashes

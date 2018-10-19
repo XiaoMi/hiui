@@ -1,0 +1,374 @@
+import React, {Component} from 'react'
+import Calender from './Calender'
+import {deconstructDate, nextMonth} from './util'
+import {DAY_MILLISECONDS} from './constants'
+import TimePanel from './TimePanel'
+import Icon from '../icon'
+export default class DatePanel extends Component {
+  constructor (props) {
+    super(props)
+    let {startDate, endDate} = props.date
+    let leftDate = new Date(startDate)
+    let rightDate = endDate ? new Date(endDate) : nextMonth(leftDate)
+    if (endDate) {
+      const {year: sYear, month: sMonth} = deconstructDate(startDate)
+      const {year: eYear, month: eMonth} = deconstructDate(endDate)
+      if (sYear === eYear && sMonth === eMonth) {
+        rightDate = nextMonth(leftDate)
+      }
+    }
+    const range = {
+      startDate,
+      endDate,
+      selecting: false
+    }
+    this.state = {
+      date: leftDate,
+      currentView: props.type || 'date',
+      yearData: null,
+      monthData: null,
+      minDate: props.minDate,
+      maxDate: props.maxDate,
+      range,
+      leftDate,
+      rightDate,
+      leftView: props.type,
+      rightView: props.type,
+      disableArrow: {
+        month: false,
+        year: false
+      }
+    }
+  }
+  /**
+   * 改变月份事件
+   * @param {Number} num  加减值
+   */
+  changeMonth (flag, pos) {
+    let {leftDate, rightDate} = this.state
+    let nLeftDate = new Date(leftDate.getTime())
+    let nRightDate = new Date(rightDate.getTime())
+    let left = deconstructDate(nLeftDate)
+    let right = deconstructDate(nRightDate)
+    if (pos === 'left') {
+      if (flag) {
+        left.month -= 1
+        if (left.month < 0) {
+          left.month = 12
+          left.year -= 1
+        }
+      } else {
+        left.month += 1
+        if (left.month > 12) {
+          left.month = 1
+          left.year += 1
+        }
+      }
+      nLeftDate.setFullYear(left.year)
+      nLeftDate.setMonth(left.month - 1)
+    } else {
+      if (flag) {
+        right.month -= 1
+        if (right.month < 0) {
+          right.month = 12
+          right.year -= 1
+        }
+      } else {
+        right.month += 1
+        if (right.month > 12) {
+          right.month = 1
+          right.year += 1
+        }
+      }
+      if (left.month === right.month - 1) {
+        this.setState({
+          disableArrow: {
+            month: false
+          }
+        })
+      }
+      nRightDate.setFullYear(right.year)
+      nRightDate.setMonth(right.month - 1)
+    }
+    if (nLeftDate <= nRightDate) {
+      this.setState({
+        leftDate: nLeftDate,
+        rightDate: nRightDate
+      })
+    }
+  }
+  /**
+   * 改变年份事件
+   * @param {Number} num  加减值
+   */
+  changeYear (flag, pos) {
+    let {leftDate, rightDate} = this.state
+    let nLeftDate = new Date(leftDate.getTime())
+    let nRightDate = new Date(rightDate.getTime())
+    let left = deconstructDate(nLeftDate)
+    let right = deconstructDate(nRightDate)
+    if (pos === 'left') {
+      if (flag) {
+        left.year -= 1
+      } else {
+        left.year += 1
+      }
+      nLeftDate.setFullYear(left.year)
+      // this.setState({
+      //   leftDate
+      // })
+    } else {
+      if (flag) {
+        right.year -= 1
+      } else {
+        right.year += 1
+      }
+      nRightDate.setFullYear(right.year)
+      // this.setState({
+      //   rightDate
+      // })
+    }
+    if (nLeftDate <= nRightDate) {
+      this.setState({
+        leftDate: nLeftDate,
+        rightDate: nRightDate
+      })
+    }
+  }
+  /**
+   * Header 中间部分内容
+   * @param {String} type 选择器类型
+   * @param {Number} year 当前年份
+   * @param {Number} month 当前月份
+   */
+  getHeaderCenterContent (year) {
+    const {currentView} = this.state
+    let d1 = year + '年'
+    if (currentView === 'year') {
+      return (year - 6) + '~' + (year + 4)
+    }
+    return d1
+  }
+  /**
+   * 渲染 Header 部分（包含箭头快捷操作）
+   * @param {Object} args {
+   *  year: 当前年份
+   *  month: 当前月份
+   *  type: 选择器类型
+   *  num: 点击箭头时要步进的值 默认1 主要应用于年份选择时
+   * }
+   */
+  renderHeader (type, value, lr) {
+    const {currentView} = this.state
+    const {year, month} = deconstructDate(value)
+
+    return (
+      <div className='date-header'>
+        {
+          <div className='left-btns'>
+            <span onClick={() => this.changeYear(true, lr)} ><Icon name='double-left' /></span>
+            {
+              type.indexOf('date') !== -1 && <span onClick={() => this.changeMonth(true, lr)} ><Icon name='left' /></span>
+            }
+          </div>
+        }
+        <span className='center-year'>
+          {this.getHeaderCenterContent(year)}
+        </span>
+        {
+          (currentView === 'date' || currentView === 'daterange') && (
+            <span className='center-month'>
+              {month}月
+            </span>
+          )
+        }
+        {
+          <div className='right-btns'>
+            {
+              type.indexOf('date') !== -1 && <span onClick={() => this.changeMonth(false, lr)} ><Icon name='right' /></span>
+            }
+            <span onClick={() => this.changeYear(false, lr)} ><Icon name='double-right' /></span>
+          </div>
+        }
+      </div>
+    )
+  }
+  pick (startDate, endDate) {
+    const {range} = this.state
+    const {onPick} = this.props
+    range.startDate = startDate
+    range.endDate = endDate
+    this.setState({
+      range
+    })
+    if (endDate) {
+      onPick(range)
+    }
+    // if (endDate && !showTime) {
+    //   onPick(range)
+    // }
+  }
+  onMouseMoveHandler (date) {
+    const {range} = this.state
+    range.endDate = date
+    this.setState({
+      range
+    })
+  }
+  shortcutsClickEvent (e) {
+    const {date, range} = this.state
+    const val = e.target.innerText
+    let days = 0
+    switch (val) {
+      case '近一周':
+        days = 7
+        break
+      case '近一月':
+        days = 30
+        break
+      case '近三月':
+        days = 90
+        break
+      case '近一年':
+        days = 365
+        break
+    }
+    const nDate = new Date(date.getTime() - days * DAY_MILLISECONDS)
+    range.startDate = nDate
+    range.endDate = date
+    this.props.onPick(range)
+  }
+  renderShortcut (shortcuts) {
+    return (
+      <div className='hi-datepicker-shortcuts'>
+        {
+          shortcuts.map((m, n) => {
+            return (
+              <p
+                key={n}
+                // onMouseOver={this.shortcutsMouseEvent.bind(this)}
+                onClick={this.shortcutsClickEvent.bind(this)}
+              >
+                {m}
+              </p>
+            )
+          })
+        }
+      </div>
+    )
+  }
+  onTimePick (pos, date) {
+    const {range} = this.state
+    pos === 'leftDate' && (range.startDate = date)
+    pos === 'rightDate' && (range.endDate = date)
+    this.setState({
+      [pos]: date
+    })
+  }
+  timeConfirm () {
+    this.props.onPick(this.state.date)
+  }
+  timeCancel () {
+
+  }
+  renderTimeHeader (flag) {
+    return (
+      <div className='time-header'>
+        <span onClick={() => this.setState({[flag === 'left' ? 'leftView' : 'rightView']: 'date'})}>日期选择</span>
+        <em />
+        <span onClick={() => this.setState({[flag === 'left' ? 'leftView' : 'rightView']: 'time'})}>时间选择</span>
+      </div>
+    )
+  }
+  renderTimeFooter () {
+    return (
+      <div
+        className='time-footer'
+        onClick={() => {
+          this.props.timeConfirm(this.state.range)
+          // this.props.onPick(this.state.date)
+        }}
+      >
+        ok
+      </div>
+    )
+  }
+  render () {
+    let {minDate, maxDate, currentView, range, leftDate, rightDate, leftView, rightView} = this.state
+    // const rightDate = nextMonth(leftDate)
+    const {shortcuts} = this.props
+    return (
+      <div
+        style={this.props.style}
+        className='hi-datepicker'
+      >
+        {
+          shortcuts && this.renderShortcut(shortcuts)
+        }
+        <div className='hi-datepicker-body hi-datepicker-range-body'>
+          <div className='range-left'>
+            {
+              this.props.showTime && this.renderTimeHeader('left')
+            }
+            {
+              leftView !== 'time' && <div className='hi-datepicker-header'>
+                {this.renderHeader(currentView, leftDate, 'left')}
+              </div>
+            }
+            <div className='hi-datepicker-calender'>
+              {
+                leftView === 'time' ? <TimePanel
+                  {...this.props}
+                  onPick={this.onTimePick.bind(this, 'leftDate')}
+                  date={leftDate}
+                  timeConfirm={this.timeConfirm.bind(this)}
+                  timeCancel={this.timeCancel.bind(this)}
+                /> : <Calender
+                  date={leftDate}
+                  range={range}
+                  type={currentView}
+                  minDate={minDate}
+                  maxDate={maxDate}
+                  onPick={this.pick.bind(this)}
+                  mouseMove={this.onMouseMoveHandler.bind(this)}
+                />
+              }
+            </div>
+          </div>
+          <div className='range-right'>
+            {
+              this.props.showTime && this.renderTimeHeader('right')
+            }
+            {
+              rightView !== 'time' && <div className='hi-datepicker-header'>
+                {this.renderHeader(currentView, rightDate, 'right')}
+              </div>
+            }
+            <div className='hi-datepicker-calender'>
+              {
+                rightView === 'time' ? <TimePanel
+                  {...this.props}
+                  onPick={this.onTimePick.bind(this, 'rightDate')}
+                  date={rightDate}
+                  timeConfirm={this.timeConfirm.bind(this)}
+                  timeCancel={this.timeCancel.bind(this)}
+                /> : <Calender
+                  date={rightDate}
+                  range={range}
+                  minDate={minDate}
+                  maxDate={maxDate}
+                  type={currentView}
+                  onPick={this.pick.bind(this)}
+                  mouseMove={this.onMouseMoveHandler.bind(this)}
+                />
+              }
+            </div>
+          </div>
+          {
+            this.props.showTime && this.renderTimeFooter()
+          }
+        </div>
+      </div>
+    )
+  }
+}

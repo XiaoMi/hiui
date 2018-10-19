@@ -1,0 +1,7 @@
+@import '../mixins/index.scss';
+@import '../color/colors.scss';
+
+// 黑暗主题配置demo
+@mixin darktheme() {
+    padding: 6px 10px;
+}

@@ -1,0 +1,96 @@
+$popper-gap: 10px;
+$popper-arrow-gap: -5px;
+
+.hi-popover {
+  position: relative;
+  line-height: 30px;
+  font-size: 16px;
+  display: inline-block;
+  .hi-popover-base {
+    display: none;
+    position: absolute;
+    z-index: 11;
+    background: #fff;
+    padding: 0 5px;
+    white-space: nowrap;
+    transition: all 0.5s;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    &:after{
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border: 1px solid #e8e8e8;
+      background: #fff;
+      box-sizing: border-box;
+    }
+    &.hi-popover-show {
+      display: block;
+    }
+    .hi-popover__title {
+      padding: 5px 15px;
+      color: #000;
+      border-bottom: 1px solid #e8e8e8;
+    }
+    .hi-popover__content {
+      padding: 12px 15px;
+    }
+  }
+
+  .hi-popover-top {
+    bottom: 100%;
+    margin-bottom: $popper-gap;
+    left: 50%;
+    transform: translateX(-50%);
+    &:after{
+      border-top-color: transparent;
+      border-right-color: transparent;
+      bottom: $popper-arrow-gap;
+      left: 50%;
+      transform: translateX(-50%) rotate(-45deg);
+    }
+  }
+
+  .hi-popover-right {
+    left: 100%;
+    margin-left: $popper-gap;
+    top: 50%;
+    transform: translateY(-50%);
+    &:after{
+      border-bottom-color: transparent;
+      border-right-color: transparent;
+      left: $popper-arrow-gap;
+      top: 50%;
+      transform: translateY(-50%) rotate(-45deg);
+    }
+  }
+
+  .hi-popover-bottom {
+    top: 100%;
+    margin-top: $popper-gap;
+    left: 50%;
+    transform: translateX(-50%);
+    &:after{
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+      top: $popper-arrow-gap;
+      left: 50%;
+      transform: translateX(-50%) rotate(-45deg);
+    }
+  }
+
+  .hi-popover-left {
+    right: 100%;
+    margin-right: $popper-gap;
+    top: 50%;
+    transform: translateY(-50%);
+    &:after{
+      border-top-color: transparent;
+      border-left-color: transparent;
+      right: $popper-arrow-gap;
+      top: 50%;
+      transform: translateY(-50%) rotate(-45deg);
+    }
+  }
+}

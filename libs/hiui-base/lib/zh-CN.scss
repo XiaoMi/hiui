@@ -1,0 +1,44 @@
+/**
+ * Author: Sivan[sunxingfan@xiaomi.com]
+ * Date: 2018-08-16 00:00
+ * Description: i18n config
+ */
+
+@import './core/index';
+
+// 增加中文字体族
+$_CHS-sans-font-stack: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, 'Microsoft Yahei', 'Hiragino Sans GB', 'Heiti SC', 'WenQuanYi Micro Hei', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+$_CHS-serif-font-stack: Georgia, 'Times New Roman', Times, 'Songti SC', STSong, SimSun, serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+$_mono-font-stack: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+
+$font-family-base: $_CHS-sans-font-stack;
+$font-family-alt: $_CHS-serif-font-stack;
+
+#{$entry-selector}:lang(zh) {
+  // Headline
+  // 中文不加粗
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: $font-weight-normal;
+  }
+
+  // Lists
+  // 设置一级列表为中文序号
+  ol {
+    list-style-type: cjk-ideographic;
+  }
+  li {
+    ol {
+      list-style-type: decimal;
+    }
+  }
+
+  // 中文不使用斜体
+  dt {
+    font-style: normal;
+  }
+}
