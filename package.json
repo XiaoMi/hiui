@@ -26,6 +26,7 @@
   "license": "MIT",
   "main": "index.js",
   "module": "es/index.js",
+  "bin": "./command-line/index.js",
   "file": [
     "dist",
     "es"
