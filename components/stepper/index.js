@@ -1,5 +1,6 @@
 import React from 'react'
-
+import Provider from '../context'
+import classnames from 'classnames'
 /**
  * Props
  * @prop  id         {string}            id
@@ -17,122 +18,50 @@ import React from 'react'
  * @prop  up         {string}            sign显示位置
  */
 class Stepper extends React.Component {
-  renderTransverseNode (info) {
+  renderNode (arg, info) {
     const { up, current } = this.props
-
+    const _c = classnames(
+      'hi-stepper__item',
+      arg === 'h' && up && 'hi-stepper__item--up',
+      info.key <= +current && 'hi-stepper__item--active',
+      info.key < +current && 'hi-stepper__item--done'
+    )
     return (
       <li
-        className={`hi-stepper-node-trans ${up ? 'hi-stepper-up' : ''} ${info.last ? 'hi-stepper-node-trans-last' : ''} ${info.key === 0 ? 'hi-stepper-node-trans-first' : ''} ${info.key <= +current ? 'active' : ''}`}
+        className={_c}
         key={info.key}
       >
-        <div
-          className='hi-stepper-node-trans-box'
-        >
-          <span
-            className='hi-stepper-sign'
-          >
+        <div className='hi-stepper__item-content'>
+          <span className='hi-stepper__icon'>
             {
-              info.icon
-                ? (
-                  info.icon
-                )
-                : (
-                  <span
-                    className='hi-stepper-num'
-                  >
-                    {info.key + 1}
-                  </span>
-                )
-            }
-          </span>
-
-          <span
-            className='hi-stepper-title'
-          >
-            {info.title}
-          </span>
-          {
-            up && (
-              <span
-                className='hi-stepper-text'
-              >
-                {info.text}
-              </span>
-            )
-          }
-        </div>
-
-      </li>
-    )
-  }
-
-  renderTransverse () {
-    const {
-      current,
-      list
-    } = this.props
-    const len = list.length
-
-    return (
-      <ul
-        className='hi-stepper-transverse'
-      >
-        {
-          list.map((v, i) => {
-            let info = Object.assign({key: i, current}, v)
-            if (i === len - 1) {
-              info.last = true
-            }
-
-            return (
-              this.renderTransverseNode(info)
-            )
-          })
-        }
-      </ul>
-    )
-  }
-
-  renderVerticalNode (info) {
-    const { current } = this.props
-
-    return (
-      <li
-        className={`hi-stepper-node-vertical ${info.last ? 'hi-stepper-node-vertical-last' : ''} ${info.key <= +current ? 'active' : ''} ${info.key < +current ? 'active-line' : ''}`}
-        key={info.key}
-      >
-        <div className='hi-stepper-sign'>
-          {
-            info.icon
-              ? (
-                info.icon
-              )
-              : (
+              info.icon ? info.icon : (
                 <span
-                  className='hi-stepper-num'
+                  className='hi-stepper__num'
                 >
                   {info.key + 1}
                 </span>
               )
+            }
+          </span>
+
+          <span className='hi-stepper__title'> {info.title}</span>
+          {
+            (arg === 'v' || up) && <span className='hi-stepper__text'>{info.text}</span>
           }
-          <span className='hi-stepper-title'>{info.title}</span>
-        </div>
-        <div className='hi-stepper-text'>
-          {info.text}
         </div>
       </li>
     )
   }
-
-  renderVertical () {
+  renderStepperBar () {
     const {
       current,
-      list
+      list,
+      vertical
     } = this.props
     const len = list.length
 
     return (
-      <ul className='hi-stepper-vertical'>
+      <ul className='hi-stepper__list'>
         {
           list.map((v, i) => {
             let info = Object.assign({key: i, current}, v)
@@ -141,32 +70,32 @@ class Stepper extends React.Component {
             }
 
             return (
-              this.renderVerticalNode(info)
+              this.renderNode(vertical ? 'v' : 'h', info)
             )
           })
         }
       </ul>
     )
   }
-
   render () {
     let {
       id,
       className,
-      vertical
+      vertical,
+      theme
     } = this.props
-
+    const _className = classnames('hi-stepper', vertical ? 'hi-stepper--vertical' : 'hi-stepper--horizontal', className, theme && 'theme__' + theme)
     return (
       <div
         id={id || ''}
-        className={`hi-stepper ${className || ''}`}
+        className={_className}
       >
         {
-          vertical ? this.renderVertical() : this.renderTransverse()
+          this.renderStepperBar()
         }
       </div>
     )
   }
 }
 
-export default Stepper
+export default Provider(Stepper)

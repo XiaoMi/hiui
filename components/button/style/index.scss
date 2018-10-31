@@ -42,7 +42,7 @@ $line-height-base: 1.571428571;
 $line-height-large: 1.555555556;
 $line-height-small: 1.1666667;
 
-.default.hi-btn {
+.theme__hiui-blue.hi-btn {
   display: inline-block;
   box-sizing: border-box;
   margin-bottom: 0; // For input.btn
@@ -296,11 +296,11 @@ a.hi-btn {
 // Button Sizes
 // --------------------------------------------------
 
-.default.hi-btn-large {
+.theme__hiui-blue.hi-btn-large {
   // line-height: ensure even-numbered height of button next to large input
   @include button-size($padding-large-vertical, $padding-large-horizontal, $font-size-large, $line-height-base);
 }
-.default.hi-btn-small {
+.theme__hiui-blue.hi-btn-small {
   // line-height: ensure proper height of button next to small input
   @include button-size($padding-small-vertical, $padding-small-horizontal, $font-size-small, $line-height-small);
 }

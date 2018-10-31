@@ -41,7 +41,7 @@ class Button extends Component {
       theme
     } = this.props
     const classes = classNames(
-      theme,
+      'theme__' + theme,
       `${prefixCls}`,
       className && `${className}`,
       type && appearance && `${prefixCls}-${appearance || 'default'}-${type}`,
