@@ -15,6 +15,7 @@ function transformSass (sassFile, config = {}) {
     if (resolve) {
       sass.render({
         file: resolvedSassFile,
+        includePaths: ['./node_modules'],
         data: data,
         outputStyle: 'compressed'
       }, function (error, result) {
