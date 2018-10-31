@@ -13,10 +13,6 @@ req.keys().forEach((mod) => {
   if (v && v.default) {
     v = v.default
   }
-  // console.log(mod, 'this is mod')
-  // console.log(v, 'this is v')
-  // const match = mod.match(/^\.\/([^_][\w-]+)\/index\.js?$/)
-  // console.log(match, 'this is match')
 })
 
 class App extends Component {
@@ -28,7 +24,7 @@ class App extends Component {
       footNavs: [],
       pre: '',
       next: '',
-      theme: 'default',
+      theme: 'hiui-blue',
       locale: 'zh-CN',
       themes: [
         {
@@ -82,7 +78,7 @@ class App extends Component {
     if (!this.state.locale) {
       this.setLocale(localStorage.getItem('HIUI_LANGUAGE') || 'zh-CN')
     }
-    this.setTheme(localStorage.getItem('HIUI_THEME') || 'default')
+    this.setTheme(localStorage.getItem('HIUI_THEME') || 'hiui-blue')
   }
   // 切换中英文文档
   // componentDidUpdate(props, state) {
@@ -173,11 +169,7 @@ class App extends Component {
     const footNavs = this.state.footNavs
     const index = footNavs.indexOf(this.state.page)
     const pre = footNavs[index - 1] ? footNavs[index - 1] : ''
-
-    console.log('---index', index, this.state.page)
     const next = footNavs[index + 1] ? footNavs[index + 1] : ''
-
-    console.log('---pre,next', pre, next)
 
     this.setState({pre, next})
   }

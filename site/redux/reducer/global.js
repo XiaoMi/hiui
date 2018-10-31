@@ -2,7 +2,7 @@ const initState = {
   sider: {
     items: []
   },
-  theme: window.localStorage.getItem('HIUI_THEME') || 'default',
+  theme: window.localStorage.getItem('HIUI_THEME') || 'hiui-blue',
   locale: window.localStorage.getItem('HIUI_LANGUAGE') || 'zh-CN'
 }
 
