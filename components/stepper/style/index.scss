@@ -1,36 +1,30 @@
+@import '@hi-ui/core-css/lib/core/index.scss';
+
 .hi-stepper {
   width: 100%;
   min-width: 130px;
   height: 100%;
   font-size: 14px;
   z-index: 0;
-  ul,
-  li {
-    list-style: none;
-  }
-
-  // 水平方向
-  &-transverse,
-  &-vertical {
+  &__list {
     display: flex;
     padding: 0 !important;
     margin: 0 !important;
-
+    min-width: 400px;
     li {
       margin: 0 !important;
+      list-style: none;
+    }
+    span {
+      display: inline-block;
     }
   }
-
-  &-transverse {
-    min-width: 400px;
-  }
-
-  &-node-trans {
+  &__item {
     position: relative;
     width: 104px;
     flex: 1 1 auto;
     z-index: 1;
-
+    display: flex;
     &::after {
       content: '';
       position: absolute;
@@ -39,244 +33,155 @@
       display: block;
       width: 100%;
       height: 1px;
-      background-color: #D8D8D8;
+      background-color: #ccc;
       z-index: -1;
     }
-
-    &-box {
-      display: inline-block;
-      min-width: 36px;
-      padding: 0 8px;
-      background-color: #fff;
-      box-sizing: border-box;
-      z-index: 1;
-    }
-
-    .hi-stepper-title {
-      word-break: keep-all;
-      overflow: hidden;
-    }
-
-    span {
-      display: inline-block;
-    }
-
-    .hi-stepper {
-      &-sign {
-        display: inline-block;
-        vertical-align: middle;
-        .hi-icon {
-          font-size: 1.5em;
-        }
-      }
-    
-      &-num {
-        width: 24px;
-        height: 24px;
-        line-height: 24px;
-        border-radius: 50%;
-        text-align: center;
-        color: #fff;
-        background-color: #ccc;
-      }
-    
-      &-img {
-        width: 24px;
-        height: 24px;
-        vertical-align: middle;
-      }
-    
-      &-title {
-        padding: 0 0 0 8px;
-        vertical-align: middle;
-        color: #999;
-      }
-    }
-
-    &-last {
-      flex: 0 1 160px;
-
+    &:last-child {
+      flex: 0 1 auto;
       &::after {
         display: none;
       }
     }
-  }
-
-  &-trans-line {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    flex: 1 1 auto;
-    width: auto;
-    
-    & > div {
-      position: absolute;
-      top: 12px;
-      width: 100%;
-      height: 1px;
-      padding: 0;
-      margin: 0;
-      border-top: 1px solid #D8D8D8;
-    }
-  }
-
-  // 基础用法的上下结构
-  &-up {
-
-    .hi-stepper-node-trans-box {
-      width: 142px;
-      padding: 0;
-      text-align: center;
-      background-color: transparent;
-
-      > span {
-        margin-bottom: 8px;
-      }
-      .hi-stepper-title {
-        margin-bottom: 4px;
-      }
-    }
-
-    & > span {
-      display: block;
-      text-align: center;
-    }
-
-    .hi-stepper {
-      &-sign {
-        padding: 0 22px;
-        text-align: center;
-        background-color: #fff;
-      }
-      &-title {
-        width: 100%;
-        padding: 0;
-        word-break: break-all;
-      }
-      &-text {
-        text-align: center;
-        font-size: 12px;
-        color: #999;
+    /*水平或垂直方向的 上下结构*/
+    &--up {
+      .hi-stepper {
+        &__item-content {
+          padding: 0;
+          text-align: center;
+          background-color: transparent;
+          flex-direction: column;
+          >span {
+            margin-bottom: 8px;
+          }
+        }
+        &__title {
+          padding: 0;
+          margin-bottom: 4px;
+          width: 100%;
+        }
+        &__icon {
+          padding: 0 22px;
+        }
+        &__text {
+          font-size: 12px;
+          color: #999;
+          width: 100%;
+        }
       }
     }
   }
-
-  &-up.hi-stepper-node-trans-last {
-    flex: 0 1 142px;
+  &__num {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    border-radius: 50%;
+    text-align: center;
+    color: #fff;
+    background-color: #ccc;
   }
-
-  &-node-trans.active {
+  &__title {
+    padding: 0 0 0 8px;
+    color: #999;
+    text-align: center;
+    word-break: keep-all;
+    overflow: hidden;
+  }
+  &__icon {
+    display: inline-block;
+    background-color: #fff;
+    z-index: 1;
+    text-align: center;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
     .hi-icon {
-      color: #4284F5;
+      font-size: 18px;
     }
-    .hi-stepper-num {
-      background-color: #4284F5;
-    }
-    .hi-stepper-title {
-      color: #4284F5;
+    /*用于自定义图片大小*/
+    img {
+      width: 24px;
+      height: 24px;
+      vertical-align: middle;
     }
   }
-
-
-  // 竖直方向
-  &-vertical {
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-  }
-
-  &-node-vertical {
-    position: relative;
+  &__item-content {
     display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-
-    &::after {
-      content: '';
-      position: absolute;
-      left: 12px;
-      width: 1px;
-      height: 100%;
-      background-color: #D8D8D8;
-    }
-
-    span {
-      display: inline-block;
-    }
-
+    flex: 0 1 auto;
+    align-items: center;
+    min-width: 36px;
+    padding: 0 8px;
+    background-color: #fff;
+    box-sizing: border-box;
+    z-index: 1;
+  }
+  /*垂直方向*/
+  &--vertical {
     .hi-stepper {
-      &-sign {
+      &__list {
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        min-width: auto;
+      }
+      &__item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width:100%;
+        &::after {
+          content: '';
+          position: absolute;
+          left: 12px;
+          width: 1px;
+          height: 100%;
+          background-color: #D8D8D8;
+        }
+      }
+      &__item-content {
+        padding: 0;
+        flex-wrap: wrap;
+      }
+      &__title {
+        flex: 1 1 auto;
+        text-align: left;
+      }
+      &__icon {
         display: inline-block;
-        vertical-align: middle;
         padding: 4px 0;
         background-color: #fff;
         z-index: 1;
-        .hi-icon {
-          font-size: 1.5em;
-        }
       }
-    
-      &-num {
-        width: 24px;
-        height: 24px;
-        line-height: 24px;
-        border-radius: 50%;
-        text-align: center;
-        color: #fff;
-        background-color: #ccc;
-        vertical-align: middle;
-      }
-
-      &-title {
-        padding: 0 0 0 8px;
-        vertical-align: middle;
-        color: #999;
-      }
-
-      &-text {
-        display: flex;
-        flex: 1;
+      &__text {
+        flex: 1 1 100%;
         margin-left: 32px;
         font-size: 12px;
         color: #666;
       }
-      
     }
+  }
+}
 
-    &-last {
-      flex: 0 1 auto;
-
-      &::after {
-        display: none;
-      }
-
-      .hi-stepper {
-        &-text {
-          margin-left: 0;
-          padding-left: 32px;
-          z-index: 1;
-          background-color: #fff;
+@each $key,$value in $palette-primary {
+  .theme__#{$key} {
+    .hi-stepper {
+      &__item {
+        &--active {
+          .hi-icon {
+            color: map-get(get-palette($value), '50');
+          }
+          .hi-stepper__num {
+            background-color: map-get(get-palette($value), '50');
+          }
+          .hi-stepper__title {
+            color: map-get(get-palette($value), '50');
+          }
+        }
+        &--done {
+          &::after {
+            background-color: map-get(get-palette($value), '50');
+          }
         }
       }
-    }
-
-  }
-
-  &-node-vertical.active {
-    .hi-icon {
-      color: #4284F5;
-    }
-    .hi-stepper-num {
-      background-color: #4284F5;
-    }
-    .hi-stepper-title {
-      color: #4284F5;
-    }
-  }
-  &-node-vertical.active-line {
-    &::after {
-      background-color: #4384F5;
     }
   }
 }

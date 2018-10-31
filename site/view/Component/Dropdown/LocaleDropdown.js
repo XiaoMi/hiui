@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setLocale } from '../../../redux/action/global'
-import Dropdown from '../../../../components/dropdown'
+import classnames from 'classnames'
 import './style/index.scss'
 
 const locales = ['zh-CN', 'en-US']
@@ -12,7 +12,8 @@ class LocaleDropdown extends React.Component {
     super(props)
     this.state = {
       list: [{title: '中文'}, {title: 'English'}],
-      title: localesLabel[locales.indexOf(this.props.locale || 0)]
+      title: localesLabel[locales.indexOf(this.props.locale || 0)],
+      isShowList: false
     }
   }
 
@@ -26,20 +27,51 @@ class LocaleDropdown extends React.Component {
 
   changeDropdown (val) {
     this.setState({
-      title: val
+      title: val,
+      isShowList: false
     })
     this.props.dispatch(setLocale(locales[localesLabel.indexOf(val)]))
     this.props.changeDropdown && this.props.changeDropdown(val)
   }
-
+  toggleDropdown (isShow) {
+    this.setState({
+      isShowList: isShow
+    })
+  }
   render () {
     const {
       list,
-      title
+      title,
+      isShowList
     } = this.state
-
+    const _cls = classnames('hi-demo__list', !isShowList && 'hi-demo__list--hide')
     return (
-      <Dropdown list={list} title={title} onClick={this.changeDropdown.bind(this)} />
+      <div
+        className='hi-demo__dropdown'
+        onMouseEnter={this.toggleDropdown.bind(this, true)}
+        onMouseLeave={this.toggleDropdown.bind(this, false)}
+      >
+        <a className='hi-demo__title' >
+          <span className='hi-demo__text'>{title}</span>
+          <i className='hi-icon icon-down' />
+        </a>
+        <ul className={_cls}>
+          {
+            list.map((item, index) => {
+              return (
+                <li
+                  key={index}
+                  className='hi-demo__item'
+                  onClick={this.changeDropdown.bind(this, item.title)}
+                >
+                  {item.title}
+                </li>
+              )
+            })
+          }
+        </ul>
+      </div>
+
     )
   }
 }

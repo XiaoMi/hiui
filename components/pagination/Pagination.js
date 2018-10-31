@@ -250,7 +250,7 @@ class Pagination extends Component {
     const prevDisabled = !this.hasPrev()
     const nextDisabled = !this.hasNext()
     return (
-      <div className={`${prefixCls} ${className} ${theme}`}>
+      <div className={`${prefixCls} ${className} theme__${theme}`}>
         {
           showTotal && <span className='hi-pagination-total'>{locale.pagination.total(total)}</span>
         }
