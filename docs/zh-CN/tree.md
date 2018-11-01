@@ -126,7 +126,7 @@ render() {
 :::
 
 
-#### Attribute
+### Tree Attributes
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | ------- | ------- | ------- | ------- | ------- |
@@ -140,7 +140,7 @@ render() {
 | closeIcon | 表示闭合的图标 | string | Icon 组件中的图标 | - |
 | style | 组件整体样式 | object | - | - |
 
-#### Attribute-data
+### Tree Attributes-data
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | ------- | ------- | ------- | ------- | ------- |
@@ -148,14 +148,14 @@ render() {
 | onClick | 点击每项时触发的事件 | Func() | - | - |
 | style | 单个节点样式 | object | - | - |
 
-#### Attribute-options
+### Tree Attributes-options
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | ----------| ------- | ------- | ------- | ------- |
 | title | 指定节点标签为节点对象的某个属性值 | string | - | title |
 | children | 指定子树为节点对象的某个属性值 | string | - | children |
 
-### Events
+### Tree Events
 
 | 参数 | 说明 | 回调参数 |
 | -------- | ----- | ---- |

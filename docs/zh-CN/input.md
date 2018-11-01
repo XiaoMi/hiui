@@ -241,7 +241,7 @@ render() {
 :::
 
 
-### Attributes
+### Input Attributes
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | -------- | ----- | ---- | ---- | ---- |
@@ -251,7 +251,7 @@ render() {
 | prefix | 输入框头部文字 | string | - | - |
 | suffix | 输入框尾部文字 | string | - | - |
 
-### Events
+### Input Events
 
 | 参数 | 说明 | 回调参数 |
 | -------- | ----- | ---- |

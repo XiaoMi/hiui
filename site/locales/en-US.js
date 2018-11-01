@@ -1,7 +1,8 @@
 module.exports = {
   page: {
-    'quick-start': 'quick-start',
-    'theme': 'theme',
+    'quick-start': 'Quick Start',
+    'typography': 'Typography',
+    'theme': 'Theme',
     'button': 'Button',
     'dropdown': 'Dropdown',
     'pagination': 'Pagination',
@@ -35,11 +36,11 @@ module.exports = {
     'icon': 'Icon'
   },
   misc: {
-    'components': 'Component',
+    'components': 'Components',
     'development': 'Development'
   },
   mini: {
-    '常用组件': 'General',
+    '基本组件': 'General',
     '布局': 'Layout',
     '导航': 'Navigation',
     '表单组件': 'Form',

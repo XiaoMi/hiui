@@ -321,7 +321,7 @@ render () {
 :::
 
 
-### Attributes
+### Datepicker Attributes
 
 | 参数       | 说明   |  类型  | 可选值 |默认值  |
 | --------   | -----  | ----  |    ----  |   ----  |
@@ -334,13 +334,13 @@ render () {
 | shortcuts | 快捷面板 | array | 近一周, 近一月, 近三月, 近一年 | null |
 | weekOffset | 周起始<br/>默认周日做为第一列 |  number | 0/1 | 0 |
 
-### Events
+### Datepicker Events
 
 | 参数      | 说明   | 回调参数 | 说明 |
 | -------- | ----- | ---- | ----  |
 | onChange | 选中回调函数 | (date: Date) | 普通时间选择返回 date 格式数据、范围选择返回对象{start:开始时间,end:结束时间} |
 
-### API
+### Datepicker API
 
 |  方法 | 说明 |  用法
 | -------- | ----- | ---- 

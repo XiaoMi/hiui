@@ -31,7 +31,7 @@ class ThemeDropdown extends React.Component {
     const {
       isShowList
     } = this.state
-    const _cls = classnames('hi-demo__list', !isShowList && 'hi-demo__list--hide', 'hi-demo__list-colors')
+    const _cls = classnames('hi-demo__list', !isShowList && 'hi-demo__list--hide', 'hi-demo__list--colors')
     return (
       <div
         className='hi-demo__dropdown'
@@ -43,11 +43,11 @@ class ThemeDropdown extends React.Component {
           <i className='hi-icon icon-down' />
         </a>
         <ul className={_cls}>
-          <li title='品牌蓝' onClick={this.changeDropdown.bind(this, 'hiui-blue')}><span className='hi-demo__color-item hiui-blue' /><span>品牌蓝</span></li>
-          <li title='橙' onClick={this.changeDropdown.bind(this, 'orange')}><span className='hi-demo__color-item orange' /><span>橙</span></li>
-          <li title='青' onClick={this.changeDropdown.bind(this, 'cyan')}><span className='hi-demo__color-item cyan' /><span>青</span></li>
-          <li title='蓝' onClick={this.changeDropdown.bind(this, 'blue')}><span className='hi-demo__color-item blue' /><span>蓝</span></li>
-          <li title='紫' onClick={this.changeDropdown.bind(this, 'purple')}><span className='hi-demo__color-item purple' /><span>紫</span></li>
+          <li className='hi-demo__item hi-demo__item--color' title='品牌蓝' onClick={this.changeDropdown.bind(this, 'hiui-blue')}><span className='hi-demo__item-dot theme__hiui-blue' /><span>品牌蓝</span></li>
+          <li className='hi-demo__item hi-demo__item--color' title='橙' onClick={this.changeDropdown.bind(this, 'orange')}><span className='hi-demo__item-dot theme__orange' /><span>橙</span></li>
+          <li className='hi-demo__item hi-demo__item--color' title='青' onClick={this.changeDropdown.bind(this, 'cyan')}><span className='hi-demo__item-dot theme__cyan' /><span>青</span></li>
+          <li className='hi-demo__item hi-demo__item--color' title='蓝' onClick={this.changeDropdown.bind(this, 'blue')}><span className='hi-demo__item-dot theme__blue' /><span>蓝</span></li>
+          <li className='hi-demo__item hi-demo__item--color' title='紫' onClick={this.changeDropdown.bind(this, 'purple')}><span className='hi-demo__item-dot theme__purple' /><span>紫</span></li>
         </ul>
       </div>
     )

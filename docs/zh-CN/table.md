@@ -1,22 +1,18 @@
 ## Table 表格
 
 表格
+### 基础用法
 
-### 内置功能
-
-2. 右键菜单
+:::demo 
+Table 表格代码说明
+1. 右键菜单
     1. 高亮
     2. 列冻结 （需要配置scrollWidth）
     3. 隐藏列
-3. 表格menu菜单（控制列的显示与隐藏）
-4. 操作记忆 需要给每个表格添加name属性来为索引。非常重要
+2. 表格menu菜单（控制列的显示与隐藏）
+3. 操作记忆 需要给每个表格添加name属性来为索引。非常重要
 
-data属性的所有字段要加key,columns的每条数据也要加key,非常重要
-
-### 基础用法
-
-:::demo Table 表格代码说明
-
+data属性的所有字段要加key,columns的每条数据需要添加加key属性
 ```js
 constructor(props){
   super(props)
@@ -62,7 +58,7 @@ render() {
 
 ### 排序
 
-:::demo Table 表格代码说明
+:::demo
 
 ```js
 constructor(props){
@@ -119,7 +115,7 @@ render() {
 
 ### 多选
 
-:::demo Table 表格代码说明
+:::demo
 
 ```js
 
@@ -193,10 +189,8 @@ render(){
 
 ### 表头吸顶
 
-**fixTop这个属性代表的是，表头窗口的高度**
-
-:::demo Table 表格代码说明
-
+:::demo
+**fixTop : 表头窗口的高度**
 ```js
 constructor(props){
   super(props)
@@ -241,9 +235,9 @@ render() {
 :::
 
 ### 列冻结
-**列冻结的那些列一定要传width属性，否则表格可能对不齐**
-:::demo Table 表格代码说明
 
+:::demo
+**被冻结的列建议传入 width 属性**
 ```js
 constructor(props){
   super(props)
@@ -284,9 +278,8 @@ render() {
 :::
 
 ### 右键列冻结
-需要使用右键冻结的时候，一定要传scrollWidth属性，表示冻结后表格的滚动宽度，同样也需要传每一个列的宽度，否则表格会不对齐
-:::demo Table 表格代码说明
 
+:::demo
 ```js
 constructor(props){
   super(props)
@@ -323,9 +316,7 @@ render() {
 :::
 
 ### 右键展开加冻结
-需要使用右键冻结的时候，一定要传scrollWidth属性，表示冻结后表格的滚动宽度，同样也需要传每一个列的宽度，否则表格会不对齐
-:::demo Table 表格代码说明
-
+:::demo
 ```js
 constructor(props){
   super(props)
@@ -367,7 +358,7 @@ render() {
 
 ### 合并单元格
 
-:::demo Table 表格代码说明
+:::demo
 
 ```js
 constructor(props){
@@ -487,7 +478,7 @@ render() {
 
 ### 表头分组
 
-:::demo Table 表格代码说明
+:::demo
 
 ```js
 constructor(props){
@@ -587,7 +578,7 @@ render() {
 
 ### 扩展一行
 
-:::demo Table 表格代码说明
+:::demo
 
 ```js
 constructor(props){
@@ -651,8 +642,7 @@ render() {
 
 
 ### 分页
-这里只演示了几个属性，详情请查看分页组件的详细配置
-:::demo Table 表格代码说明
+:::demo
 
 
 ```js
@@ -743,7 +733,7 @@ render() {
 :::
 
 
-### Table
+### Table Attributes
 
 | 参数       | 说明   |  类型  | 默认值  |
 | --------   | -----  | ----  |  ----  |

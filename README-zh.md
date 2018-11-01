@@ -1,12 +1,23 @@
-# HIUI
+<div align="center">
+
+[![HIUI Logo](https://raw.githubusercontent.com/XiaoMi/hiui/master/site/static/img/logo.png)](https://xiaomi.github.io/hiui/)
+
+<h1 align="center">HIUI</h1>
 
 [![JavaScript Style Guide](https://camo.githubusercontent.com/58fbab8bb63d069c1e4fb3fa37c2899c38ffcd18/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f636f64655f7374796c652d7374616e646172642d627269676874677265656e2e737667)](https://github.com/standard/standard)
+
+[English](https://github.com/XiaoMi/hiui/blob/master/README.md) | [中文](https://github.com/XiaoMi/hiui/blob/master/README-zh.md)
+</div>
+
+---
+
+HIUI 是一个面向中后台系统的前端组件库，可以帮助开发人员快速实现交互一致、界面美观的界面开发。
 
 ## 特性
 
 - 精于中后台产品的交互与视觉设计
-- 全面的流程、数据展示模板，覆盖大多数中后台系统需求
-- 数据结构分离的单组件设计，无需学习，开箱即用
+- 全面的流程、数据展示模板，从业务中来，模板、组件覆盖大多数中后台系统需求
+- 数据结构分离的单组件设计，无需学习，升级方便，开箱即用
 
 ## 安装
 
@@ -14,22 +25,50 @@
 npm install @hi-ui/hiui
 ```
 
-## 贡献指南
+组件使用详见[官方文档](https://xiaomi.github.io/hiui/#/zh-CN/components/quick-start)。
 
-### 开发
+
+## 贡献
+
+### 项目结构
+
+```
+.
+├── build                   # 构建命令
+├── components              # 组件
+├── docs                    # 使用文档
+│   ├── en-US
+│   └── zh-CN
+├── libs                    # 第三方依赖
+├── locales                 # 语言配置
+├── site                    # 文档页模板
+├── CHANGELOG.md
+├── commitlint.config.js    # Commit 检查
+├── gulpfile.js             # 构建配置项
+├── LICENSE
+├── README-zh.md
+├── README.md
+├── package.json
+└── postcss.config.js
+```
+
+### 配置环境
 
 ```sh
-# install dependencies
+# 安装依赖
 $ yarn
 
-# serve in dev mode, with hot reload at localhost:4200
+# 开启本地开发环境 localhost:4200
 $ yarn dev
 
-# build for production
+# 编译代码
+$ yarn compile
+
+# 构造文档
 $ yarn build
 ```
 
-open http://localhost:4200
+打开 http://localhost:4200
 
 #### 添加展示/文档模块
 
@@ -49,11 +88,12 @@ open http://localhost:4200
 
 ### 规范
 
-[![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
-
- - [JavaScript Standard Style](https://github.com/standard/standard)：**提交文件时候会自动进行代码检查，如有问题则需要修复后才可以提交**
+ - [BEM](https://en.bem.info/)
+ - [git-flow (AVH Edition)](https://github.com/petervanderdoes/gitflow-avh)
+ - [JavaScript Standard Style](https://github.com/standard/standard)
 
 ## License
+
 MIT
 
 -- EOF --

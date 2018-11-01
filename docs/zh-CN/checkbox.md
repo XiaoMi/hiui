@@ -19,14 +19,14 @@ render() {
 
 ### 自定义选中值
 :::demo
+通过 trueValue 与 falseValue 设置选中与未选中对应的值。属性不存在时会查找 value 属性，value 属性不存在会返回文字内容。<br/>(优先级： trueValue | falseValue  > value > content)
 ```js
 render() {
   return (
     <div>
-      <p>通过 trueValue 与 falseValue 设置选中与未选中对应的值。属性不存在时会查找 value 属性，value 属性不存在会返回文字内容。<br/>(优先级： trueValue | falseValue  > value > content)</p>
-      <p><Checkbox  trueValue='打篮球' falseValue='不打篮球' onChange={(val, isCheck) => console.log(val, isCheck)}>篮球</Checkbox>--同时含有 trueValue 与 falseValue</p>
-      <p><Checkbox  value='踢足球' falseValue='不踢足球' onChange={(val, isCheck) => console.log(val, isCheck)}>足球</Checkbox>--同时含有 value 与 falseValue</p>
-      <p><Checkbox  falseValue='不玩排球'  onChange={(val, isCheck) => console.log(val, isCheck)}>排球</Checkbox>--只含有 falseValue</p>
+      <p><Checkbox  trueValue='打篮球' falseValue='不打篮球' onChange={(val, isCheck) => console.log(val, isCheck)}>篮球</Checkbox></p>
+      <p><Checkbox  value='踢足球' falseValue='不踢足球' onChange={(val, isCheck) => console.log(val, isCheck)}>足球</Checkbox></p>
+      <p><Checkbox  falseValue='不玩排球'  onChange={(val, isCheck) => console.log(val, isCheck)}>排球</Checkbox></p>
     </div>
   )
 }
@@ -126,7 +126,7 @@ render() {
 ```
 :::
 
-### Attributes
+### Checkbox Attributes
 
 | 参数       | 说明   |  类型  | 可选值 |默认值  |
 | --------   | -----  | ----  |    ----  |   ----  |
@@ -139,7 +139,7 @@ render() {
 |  all |   全选框标识（用于全选框属性））  |   string   | - |  |
 |  name |   全选或多选模式下子选项标识（用于全选或多选模式，且 name 值与 all 值保持一致，当没有全选框时，同级选项 name 应保持一致））  |   string   | - |  |
 
-### Events
+### Checkbox Events
 | 参数       | 说明   |  类型  | 说明 |
 | --------   | -----  | ----  |    ----  |
 | onChange | 选择回调函数   |   function  | 当单个选择框时，返回点击的 value 及是否被选择<br/>当多选时，返回被选中的数组 | 

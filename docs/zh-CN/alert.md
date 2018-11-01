@@ -97,7 +97,7 @@ render () {
 :::
 
 
-### Attributes
+### Alert Attributes
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | -------- | ----- | ---- | ---- | ---- |
@@ -110,7 +110,7 @@ render () {
 | autoCloseTime | 自动关闭时间，单位为毫秒 | number | - | 3000 |
 
 
-### Events
+### Alert Events
 
 | 参数 | 说明 | 回调参数
 | ------- | ------- | ------- |

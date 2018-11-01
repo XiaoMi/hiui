@@ -74,7 +74,7 @@
   - 弹出子菜单
   - 子菜单对齐 -->
 
-### Menu Attributes
+### Attributes
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | -------- | ----- | ---- | ---- | ---- |
@@ -84,7 +84,7 @@
 | value | 文本对应的值，可为空 | - | - |
 | mode | 菜单排列模式 | string | horizontal / vertical | vertical |
 
-### Menu Events
+### Events
 
 | 参数 | 说明 | 回调参数 |
 | -------- | ----- | ---- |
