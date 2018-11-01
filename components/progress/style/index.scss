@@ -1,0 +1,115 @@
+$progress-bg: #F2F2F2;
+$progress-primary: #3B76DC;
+$progress-success: #1DA653;
+$progress-warn: #EB5252;
+$progress-error: #E19D0C;
+$progress-text: #666666;
+
+.hi-progress{
+  &__container{
+
+  }
+  &__inner{
+    background-color: $progress-bg;
+    border-radius: 9px;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  &__bar{
+    height: 100%;
+    display: block;
+    position: relative;
+    background-color: $progress-primary;
+    transition: width .4s cubic-bezier(0.3, 0, 0.7, 1)
+  }
+  &__bar_success{
+    background-color: $progress-success
+  }
+  &__bar_warn{
+    background-color: $progress-warn
+  }
+  &__bar_error{
+    background-color: $progress-error
+  }
+  &__text{
+    padding-left: 25px;
+    font-size: 14px;
+    color: $progress-text;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  &__text_inside{
+    font-size: 14px;
+    color: #fff;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    line-height: 14px;
+  }
+  &__text_success{
+    color: $progress-success
+  }
+  &__text_warn{
+    color: $progress-warn
+  }
+  &__text_error{
+    color: $progress-error
+  }
+  &__svg{
+    position: relative;
+    .hi-progress__text{
+      display: block;
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      line-height: 1;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  &__svgbackground{
+    fill: none;
+    stroke: #E9E9E7;
+    stroke-width: 6;
+  }
+  &__circle{
+    fill: none;
+    stroke: $progress-primary;
+    stroke-width: 6;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset .4s cubic-bezier(0.3, 0, 0.7, 1);
+  }
+  &__circle_success{
+    stroke: $progress-success
+  }
+  &__circle_warn{
+    stroke: $progress-warn
+  }
+  &__circle_error{
+    stroke: $progress-error
+  }
+  &__dashBoard{
+    fill: none;
+    stroke: $progress-primary;
+    stroke-width: 6;
+    transition: stroke-dashoffset 0.3s ease 0s, stroke-dasharray 0.3s ease 0s, stroke 0.3s ease 0s, stroke-width 0.06s ease 0.3s
+  }
+  &__dashBoard_success{
+    stroke: $progress-success
+  }
+  &__dashBoard_warn{
+    stroke: $progress-warn
+  }
+  &__dashBoard_error{
+    stroke: $progress-error
+  }
+}

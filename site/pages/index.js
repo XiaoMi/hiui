@@ -37,7 +37,8 @@ export default {
       'panel': require('./panel'),
       'collapse': require('./collapse'),
       'tooltip': require('./tooltip'),
-      'popover': require('./popover')
+      'popover': require('./popover'),
+      'progress': require('./progress')
     },
     '通知／提示': {
       'modal': require('./modal'),

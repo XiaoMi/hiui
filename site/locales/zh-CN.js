@@ -34,7 +34,8 @@ module.exports = {
     'grid': 'Grid 栅格',
     'stepper': 'Stepper 步骤',
     'ficon': 'Ficon',
-    'icon': 'Icon 图标'
+    'icon': 'Icon 图标',
+    'progress': 'Progress 进度条'
   },
   misc: {
     'components': '组件',
