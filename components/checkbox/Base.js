@@ -110,13 +110,14 @@ class Base extends Component {
     )
     let _value = trueValue || value || text || children
     return (
-      <label
+      <div
         className={labelClass}
       >
         <span
           className={checkedClass}
         >
           <input
+            ref={node => { this.checkboxRef = node }}
             type='checkbox'
             className='hi-checkbox-origin-input'
             value={_value}
@@ -127,8 +128,16 @@ class Base extends Component {
             onChange={this.handleChange}
           />
         </span>
-        <span className='hi-checkbox-label'>{text || children}</span>
-      </label>
+        <span className='hi-checkbox-label'
+          onClick={
+            () => {
+              this.checkboxRef.click()
+            }
+          }
+        >
+          {text || children}
+        </span>
+      </div>
     )
   }
 }

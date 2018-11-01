@@ -1,0 +1,187 @@
+.hi-select__input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width:100%;
+  background-color: #fff;
+  color: #333;
+  line-height: 1;
+  border-radius: 2px;
+  border: 1px solid #d9d9d9;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  box-sizing: border-box;
+  &.disabled {
+    cursor: not-allowed;
+    opacity: .4;
+    .hi-select__input--icon,
+    input {
+      cursor: not-allowed;
+    }
+  }
+  .hi-icon {
+    margin-left: 0px !important;
+  }
+
+  &.active,
+  &:not(.disabled):hover {
+    border-color: #4284F5;
+  }
+  &:not(.disabled):hover {
+    .hi-select__input--icon__expand {
+      display: none;
+    }
+    .hi-select__input--icon__close {
+      display: block;
+      color: #999
+    }
+  }
+
+  .hi-select__input--icon {
+    flex: none;
+  }
+
+  &--search{
+    input{
+      position: relative;
+      max-width: 100%;
+      width: 100%;
+      height: 100%;
+      padding: 0px;
+      line-height: 1;
+      border-radius: 2px;
+      font-size: 14px;
+      cursor: pointer;
+      background: transparent;
+      border-width: 0;
+      outline: 0;
+      z-index: 10;
+      &[data-visbility="false"]{
+        width:1px;
+      }
+    }
+    input::-webkit-input-placeholder{
+      font-weight: 300;
+      color: #ccc;
+    }
+    input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+      font-weight: 300;
+      color:#ccc;
+    }
+    input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+      font-weight: 300;
+      color:#ccc;
+    }
+    input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+      font-weight: 300;
+      color:#ccc;
+    }
+  }
+
+  &--icon {
+    position: relative;;
+    flex: none;
+    display: inline-block;
+    padding: 0 0 0 8px;
+    cursor: pointer;
+    font-size: 24px;
+    color: #434343;
+    background-color: #fff;
+    transform: scale(.66666667) rotate(0deg);
+    transition: all .2s cubic-bezier(.645,.045,.355,1);
+    zoom: 1;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=1, M12=0, M21=0, M22=1)";
+    .hi-select__input--icon__close {
+      display: none;
+    }
+  }
+
+  &.single-value {
+    height: 32px;
+    line-height: 32px;
+    .hi-select__input--item,
+    .hi-select__input--search {
+      flex: auto;
+      padding: 0 0px 0 13px;
+    }
+    .hi-select__input--item {
+      height: 32px;
+      line-height: 32px;
+      overflow: hidden;
+      transition: padding .2s cubic-bezier(.645,.045,.355,1);
+      &__name {
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        transition: margin .2s cubic-bezier(.645,.045,.355,1);
+      }
+    }
+  }
+
+  &.multiple-values {
+    padding: 4px;
+    .hi-select__input--search {
+      padding-left: 3px;
+    }
+
+    .hi-select__input--placeholder {
+      position: absolute;
+      top: 4px;
+      left: 15px;
+      right: 30px;
+      height: 24px;
+      line-height: 24px;
+      color: #ccc;
+      z-index: 1;
+      &~.hi-select__input--items .hi-select__input--search {
+        padding: 0 20px 0 11px;
+      }
+    }
+    
+    .hi-select__input--items {
+      display: flex;
+      flex-wrap: wrap;
+      flex: auto;
+      margin-bottom: -4px;
+      overflow: hidden;
+    }
+    .hi-select__input--item {
+      position: relative;
+      max-width: 80%;
+      height: 22px;
+      line-height: 22px;
+      padding: 0 20px 0 10px;
+      margin: -1px 4px 4px 0;
+      overflow: hidden;
+      vertical-align: middle;
+      background-color: #f2f2f2;
+      border-radius: 2px;
+      &__name{
+        font-size: 13px;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
+      &__remove{
+        cursor: pointer;
+        display: inline-block;
+        font-size: 12px;
+        position: absolute;
+        top: 0;
+        right: 4px;
+        padding: 0 0 0 8px;
+      }
+    }
+    .hi-select__input--search {
+      height: 22px;
+      line-height: 22px;
+      margin-bottom: 4px;
+    }
+  }
+
+}
