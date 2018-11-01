@@ -173,9 +173,17 @@ class Select extends Component {
         this.selectInput.focus()
       }
 
-      this.selectInput.clearKeyword()
+      this.clearKeyword()
       this.onChange()
       // this.selectInput.clear()
+    })
+  }
+
+  clearKeyword () {
+    this.setState({
+      keyword: ''
+    }, () => {
+      this.selectInput.clearKeyword()
     })
   }
 
@@ -208,10 +216,12 @@ class Select extends Component {
     this.selectInput.focus()
   }
 
-  deleteItem (id) {
+  deleteItem (item) {
+    if (item.disabled) return
+
     let selectedItems = this.state.selectedItems.concat()
     const sIndex = selectedItems.findIndex((obj, index, arr) => {
-      return obj.id === id
+      return obj.id === item.id
     })
 
     selectedItems.splice(sIndex, 1)
@@ -289,7 +299,7 @@ class Select extends Component {
       keyword
     } = this.state
 
-    return this.isRemote || (!searchable || !keyword) || (searchable && keyword && (String(item.id).match(keyword) || String(item.name).match(keyword)))
+    return this.isRemote() || (!searchable || !keyword) || (searchable && keyword && (String(item.id).match(keyword) || String(item.name).match(keyword)))
   }
 
   resetFocusedIndex (setState = true) {

@@ -88,7 +88,7 @@ export default class SelectInput extends Component {
                 <span
                   className='hi-select__input--item__remove'
                   onClick={e => {
-                    this.props.onDelete(item.id)
+                    this.props.onDelete(item)
                   }}
                 >
                   <i className='hi-icon icon-close' />
