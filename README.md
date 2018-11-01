@@ -64,13 +64,6 @@ Open http://localhost:4200
 
 ### Style Guide
 
-[![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
-
- - [JavaScript Standard Style](https://github.com/standard/standard)
- - [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)
-
-### Style Guide
-
  - [BEM](https://en.bem.info/)
  - [git-flow (AVH Edition)](https://github.com/petervanderdoes/gitflow-avh)
  - [JavaScript Standard Style](https://github.com/standard/standard)
