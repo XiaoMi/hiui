@@ -90,10 +90,12 @@ class Component extends React.Component {
     Object.keys(pages.components).map((title, i) => {
       components.push({
         key: 'ct' + i,
-        title: <span className='components-title'>{this.props.locale === 'en-US' ? locales[this.props.locale][title] : title}</span>,
+        title: <span className='components-title'>{this.props.locale === 'en-US' ? locales[this.props.locale]['mini'][title] : title}</span>,
         to: '',
         noaction: true
       })
+
+      console.log(locales, this.props.locale, title, locales[this.props.locale][title])
 
       Object.keys(pages.components[title]).map((page, j) => {
         components.push({
@@ -104,7 +106,7 @@ class Component extends React.Component {
       })
     })
 
-    return [].concat(siderDocuments, [{key: 'c', title: '组件', to: '', children: components, icon: icons[icons.length - 1]}])
+    return [].concat(siderDocuments, [{key: 'c', title: locales[this.props.locale]['misc']['components'], to: '', children: components, icon: icons[icons.length - 1]}])
   }
 
   getAnchors () {
