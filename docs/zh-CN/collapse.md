@@ -122,7 +122,7 @@
 ```
 :::
 
-###  Attributes
+###  Collapse Attributes
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | -------- | ----- | ---- | ---- | ---- |
@@ -133,7 +133,7 @@
 | arrow | 箭头所在位置 | string | left, right, none | left |
 
 
-###  面板 Attributes
+###  Collapse Attributes
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | -------- | ----- | ---- | ---- | ---- |

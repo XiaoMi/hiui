@@ -1,0 +1,11 @@
+@import '../../style/icon/index.scss';
+
+$hoverColor:#ecf6fd;
+$selectColor:#f7f7f7;
+.hi-select {
+	&.is-disabled {
+		opacity: .4;
+		cursor: not-allowed;
+	}
+
+}

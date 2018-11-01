@@ -44,7 +44,7 @@ render() {
 :::
 
 
-### Attribute
+### Counter Attributes
  
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |
@@ -56,7 +56,7 @@ render() {
 | className | string | - | - |
 
 
-### Events
+### Counter Events
 
 | 参数 | 说明 | 回调参数 |
 | -------- | ----- | ---- |

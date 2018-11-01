@@ -59,10 +59,13 @@ $$.ajax = function () {
 
   ajaxData.beforeSend()
   var xhr = createxmlHttpRequest()
+  var data = convertData(ajaxData.data)
+  var url = ajaxData.type.toLocaleUpperCase() === 'GET' ? ajaxData.url + '?' + data : ajaxData.url
+
   xhr.responseType = ajaxData.dataType
-  xhr.open(ajaxData.type, ajaxData.url, ajaxData.async)
+  xhr.open(ajaxData.type, url, ajaxData.async)
   ajaxData.contentType && xhr.setRequestHeader('Content-Type', ajaxData.contentType)
-  xhr.send(convertData(ajaxData.data))
+  xhr.send(data)
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {

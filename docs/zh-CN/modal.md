@@ -42,11 +42,11 @@
 :::
 
 ### 自定义按钮
-> 通过 footers自定义底部的按钮，并执行对应自定义事件<br/>
-> 通过 closeBtn 取消右上角关闭按钮<br/>
+
 
 :::demo
-
+> 通过 footers自定义底部的按钮，并执行对应自定义事件<br/>
+> 通过 closeBtn 取消右上角关闭按钮<br/>
 ```js
   constructor (props) {
     super(props)
@@ -92,10 +92,10 @@
 :::
 
 ### 嵌套用法
+
+:::demo
 > 未传入title 及 closeBtn 为 false，可取消 title 部分<br/>
 > footers 传入空数组，可取消底部按钮
-:::demo
-
 ```js
   constructor (props) {
     super(props)
@@ -191,7 +191,7 @@
 ```
 :::
 
-### Attribute
+### Modal Attributes
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | -------- | ----- | ---- | ---- | ---- |
