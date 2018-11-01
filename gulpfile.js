@@ -67,8 +67,8 @@ const compile = modules => {
 gulp.task('compile', () => compile(false))
 
 gulp.task('carry', () => {
-  gulp.src(['./site/static/img/*.*'])
-    .pipe(gulp.dest('./dist/static/img'))
+  gulp.src(['./site/static/**/*.*'])
+    .pipe(gulp.dest('./dist/static'))
 })
 
 gulp.task('default', () => {
