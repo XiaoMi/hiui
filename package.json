@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard",
