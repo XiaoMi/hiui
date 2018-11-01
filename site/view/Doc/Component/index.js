@@ -95,8 +95,6 @@ class Component extends React.Component {
         noaction: true
       })
 
-      console.log(locales, this.props.locale, title, locales[this.props.locale][title])
-
       Object.keys(pages.components[title]).map((page, j) => {
         components.push({
           key: 'cp' + i + '' + j,
