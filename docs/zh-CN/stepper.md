@@ -230,7 +230,7 @@ render() {
 :::
 
 
-### Attributes
+### Stepper Attributes
 
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |
@@ -241,7 +241,3 @@ render() {
 | vertical | 是否竖直显示 | boolean | true | false |
 | up | 在水平显示时符号是否在上 | boolean | true | false |
 
-
-### Events
-
-无事件类型

@@ -1,8 +1,6 @@
-## NavMenu 导航tab
+## NavMenu
 
-导航tab，包括一级二级导航
-
-### 一级菜单
+### Basic
 :::demo
 
 ```js
@@ -34,7 +32,7 @@ render() {
 ```
 :::
 
-### 一级菜单多行
+### Multi-line
 
 :::demo
 ```js
@@ -69,7 +67,7 @@ render() {
 ```
 :::
 
-### 二级菜单
+### Secondary menu
 
 :::demo
 ```js
@@ -130,7 +128,7 @@ render() {
 ```
 :::
 
-### 自定义渲染
+### Custom rendering
 :::demo
 
 ```js
@@ -139,7 +137,7 @@ constructor(props){
   super(props)
   this.data1 = [
     {title: 'Option 0'},
-    {title: '点我跳转', url: 'https://www.mi.com/'},
+    {title: 'Jump', url: 'https://www.mi.com/'},
     {title: 'Option 2', icon: 'https://www.mi.com/favicon.ico'},
     {title: 'Option 3'},
     {title: 'Option 4'}
@@ -168,7 +166,7 @@ render() {
 ```
 :::
 
-### tab切换
+### Tab
 
 :::demo
 
@@ -206,20 +204,22 @@ render() {
 ```
 :::
 
-#### NavMenu Attributes
+### API
 
-| 参数    | 说明     | 类型     | 可选值 | 默认值     |
+#### NavMenu props
+
+| Attribute | Description | Type | Options | Default  |
 |------|-----|-----|-------|-------|
-| onClick | 点击MenuItem菜单回调 | function | - |- |
-| selectedKey | 当前激活 tab 面板的 key | number | - |0 |
-| render | 自定义渲染方法, 传入参数为该节点数据 | function | - | - |
-| data | 传入的数据 | array | - | - |
+| onClick | callback | function | - |- |
+| selectedKey | Currently activated key  | number | - |0 |
+| render | Custom rendering method | function | - | - |
+| data | data | array | - | - |
 
 
-#### data Attributes
+#### data
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| Attribute | Description | Type | Options | Default  |
 | --- | --- | --- | --- | --- |
-| title | 必填, 显示内容 | string | - | - |
-| disabled | 是否禁用该节点 | boolen |  - | false |
-| children | 是否有二级菜单及对应数据 | arry | - | - |
+| title | title | string | - | - |
+| disabled | disabled | boolen |  - | false |
+| children | children | arry | - | - |
