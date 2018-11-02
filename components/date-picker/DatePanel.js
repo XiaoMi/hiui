@@ -15,9 +15,6 @@ export default class DatePanel extends Component {
       tempDate: new Date(props.date)
     }
   }
-  componentDidMount () {
-  // f
-  }
   componentWillReceiveProps (nextProps) {
     this.setState({
       date: nextProps.date

@@ -11,8 +11,6 @@ export default class BasePicker extends Component {
   rInput = null
   constructor (props) {
     super(props)
-    // let {value, type, format} = props
-    // format = format || FORMATS[type]
     this.state = {
       showPanel: false,
       style: {},
@@ -212,7 +210,6 @@ export default class BasePicker extends Component {
           })
           this.calcPanelPos(this.inputRoot.getBoundingClientRect())
         }}
-        // onBlur={() => this.setState({isFocus: false})}
         value={text}
       />
     )
@@ -222,13 +219,12 @@ export default class BasePicker extends Component {
     if (onChange) {
       onChange(null)
     }
-    // this._parseProps(this.props)
     this.setState({text: '', isFocus: false})
   }
   _icon () {
     const {isFocus} = this.state
     const iconCls = classNames(
-      'icon',
+      'hi-datepicker__input-icon',
       'hi-icon',
       isFocus ? 'icon-close-circle clear' : 'icon-date',
       this.props.disabled && 'disabled'
@@ -237,12 +233,17 @@ export default class BasePicker extends Component {
       this.setState({showPanel: true, isFocus: true})
     }} />
   }
-  getRangeInput () {
+  renderRangeInput () {
     const {
       disabled
     } = this.props
+    const _cls = classNames(
+      'hi-datepicker__input',
+      'hi-datepicker__input--range',
+      disabled && 'disabled'
+    )
     return (
-      <div className={`input-wrap range${disabled ? ' disabled' : ''}`}>
+      <div className={_cls}>
         {this._input(this.state.text, 'input')}
         <span>至</span>
         {this._input(this.state.rText, 'rInput')}
@@ -254,8 +255,13 @@ export default class BasePicker extends Component {
     const {
       disabled
     } = this.props
+    const _cls = classNames(
+      'hi-datepicker__input',
+      'hi-datepicker__input--normal',
+      disabled && 'disabled'
+    )
     return (
-      <div className={`input-wrap ${disabled ? ' disabled' : ''}`}>
+      <div className={_cls}>
         {this._input(this.state.text, 'input')}
         {this._icon()}
       </div>
@@ -264,9 +270,9 @@ export default class BasePicker extends Component {
   render () {
     const {type, showTime} = this.props
     return (
-      <span ref={el => { this.inputRoot = el }} className='input-root' style={{display: 'inline-block'}}>
+      <span ref={el => { this.inputRoot = el }} className='hi-datepicker__input-root'>
         {
-          type.indexOf('range') !== -1 ? this.getRangeInput() : this.renderNormalInput()
+          type.indexOf('range') !== -1 ? this.renderRangeInput() : this.renderNormalInput()
         }
         {
           this.state.showPanel ? (

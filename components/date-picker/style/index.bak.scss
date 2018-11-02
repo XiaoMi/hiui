@@ -1,28 +1,22 @@
-.hi-datepicker {
-  &__input-root {
-    display: inline-block;
-    font-size: 14px;
-    display: inline-block;
-    &:focus {
-      border-color: #4284F5;
-    }
-  }
-  &__input {
+.input-root {
+  display: inline-block;
+  font-size: 14px;
+
+  .input-wrap {
     background: #FFFFFF;
     border: 1px solid #D8D8D8;
     border-radius: 2px;
     height: 32px;
     width: 180px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -ms-flex-pack: distribute;
     justify-content: space-around;
-    &--range {
-      width: 320px;
-      input {
-        flex: 0 1 40%;
-        text-align: center;
-      }
-    }
+
     input {
       outline: none;
       border: none;
@@ -41,19 +35,39 @@
         background-color: #f4f4f4;
       }
     }
+
+    .icon {
+      -webkit-box-flex: 0;
+      -ms-flex: 0 1 24px;
+      flex: 0 1 24px;
+      color: #999;
+      cursor: pointer;
+
+      // height: 30px;
+      &.disabled {
+        cursor: not-allowed;
+        color: rgba(44, 48, 78, 0.2);
+      }
+    }
+
     &.disabled {
       background-color: #f4f4f4;
     }
   }
-  &__input-icon {
-    flex: 0 1 24px;
-    color: #999;
-    cursor: pointer;
-    &.disabled {
-      cursor: not-allowed;
-      color: rgba(44, 48, 78, 0.2);
-      background-color: #f4f4f4;
+
+  .range {
+    width: 320px;
+
+    input {
+      -webkit-box-flex: 0;
+      -ms-flex: 0 1 40%;
+      flex: 0 1 40%;
+      text-align: center;
     }
+  }
+
+  &:focus {
+    border-color: #4284F5;
   }
 }
 
@@ -204,7 +218,6 @@
         height: 47px;
         align-items: center;
         padding: 0 15px;
-
         span {
           font-size: 14px;
           text-align: center;
@@ -253,26 +266,20 @@
 
       .hi-timepicker {
         width: 252px;
-
         .hi-timepicker-timebody {
           height: 265px;
-
           ul {
             height: 265px;
             width: 104px;
-
             li {
               width: 84px;
-
               &:last-child {
                 height: 38px;
               }
             }
-
             &:nth-child(2) {
               left: 84px;
             }
-
             &:nth-child(3) {
               left: 168px;
               width: 84px;
@@ -280,22 +287,17 @@
           }
         }
       }
-
       &.month-calender,
       &.year-calender {
         padding: 10px 5px;
-
         table {
           tr {
             height: 57px;
-
             td {
               width: 92px;
-
               a {
                 width: 48px;
               }
-
               &.today {
                 a {
                   background: #4284F5;
@@ -397,7 +399,6 @@
           &.next {
             div {
               background: white;
-
               a {
                 color: rgba(44, 48, 78, 0.2);
               }
@@ -474,7 +475,6 @@
     position: absolute;
     z-index: 1;
     background: white;
-
     .range-container {
       display: -webkit-box;
       display: -ms-flexbox;
