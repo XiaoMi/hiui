@@ -163,27 +163,27 @@ export default class DatePanel extends Component {
     const {year, month} = deconstructDate(value)
 
     return (
-      <div className='date-header'>
+      <div className='hi-datepicker__header'>
         {
-          <div className='left-btns'>
+          <div className='hi-datepicker__header-btns'>
             <span onClick={() => this.changeYear(true, lr)} ><Icon name='double-left' /></span>
             {
               type.indexOf('date') !== -1 && <span onClick={() => this.changeMonth(true, lr)} ><Icon name='left' /></span>
             }
           </div>
         }
-        <span className='center-year'>
+        <span className='hi-datepicker__header-text'>
           {this.getHeaderCenterContent(year)}
         </span>
         {
           (currentView === 'date' || currentView === 'daterange') && (
-            <span className='center-month'>
+            <span className='hi-datepicker__header-text'>
               {month}月
             </span>
           )
         }
         {
-          <div className='right-btns'>
+          <div className='hi-datepicker__header-btns'>
             {
               type.indexOf('date') !== -1 && <span onClick={() => this.changeMonth(false, lr)} ><Icon name='right' /></span>
             }
@@ -273,7 +273,7 @@ export default class DatePanel extends Component {
   }
   renderTimeHeader (flag) {
     return (
-      <div className='time-header'>
+      <div className='hi-datepicker__time-header'>
         <span onClick={() => this.setState({[flag === 'left' ? 'leftView' : 'rightView']: 'date'})}>日期选择</span>
         <em />
         <span onClick={() => this.setState({[flag === 'left' ? 'leftView' : 'rightView']: 'time'})}>时间选择</span>
@@ -283,7 +283,7 @@ export default class DatePanel extends Component {
   renderTimeFooter () {
     return (
       <div
-        className='time-footer'
+        className='hi-datepicker__time-footer'
         onClick={() => {
           this.props.timeConfirm(this.state.range)
           // this.props.onPick(this.state.date)
@@ -305,17 +305,15 @@ export default class DatePanel extends Component {
         {
           shortcuts && this.renderShortcut(shortcuts)
         }
-        <div className='hi-datepicker-body hi-datepicker-range-body'>
-          <div className='range-left'>
+        <div className='hi-datepicker__body hi-datepicker__body--range'>
+          <div className='hi-datepicker__panel hi-datepicker__panel--left'>
             {
               this.props.showTime && this.renderTimeHeader('left')
             }
             {
-              leftView !== 'time' && <div className='hi-datepicker-header'>
-                {this.renderHeader(currentView, leftDate, 'left')}
-              </div>
+              leftView !== 'time' && this.renderHeader(currentView, leftDate, 'left')
             }
-            <div className='hi-datepicker-calender'>
+            <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${currentView}`}>
               {
                 leftView === 'time' ? <TimePanel
                   {...this.props}
@@ -335,16 +333,14 @@ export default class DatePanel extends Component {
               }
             </div>
           </div>
-          <div className='range-right'>
+          <div className='hi-datepicker__panel hi-datepicker__panel--right'>
             {
               this.props.showTime && this.renderTimeHeader('right')
             }
             {
-              rightView !== 'time' && <div className='hi-datepicker-header'>
-                {this.renderHeader(currentView, rightDate, 'right')}
-              </div>
+              rightView !== 'time' && this.renderHeader(currentView, rightDate, 'right')
             }
-            <div className='hi-datepicker-calender'>
+            <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${currentView}`}>
               {
                 rightView === 'time' ? <TimePanel
                   {...this.props}

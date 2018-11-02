@@ -187,7 +187,7 @@ class Calender extends Component {
     mouseMove(newDate)
   }
   getTDClass (td) {
-    let _class = []
+    let _class = ['hi-datepicker__cell']
     if (td.disabled) {
       _class.push('disabled')
       return _class.join(' ')
@@ -220,14 +220,14 @@ class Calender extends Component {
     const rows = data || this.getRows()
     return (
       <table
+        className='hi-datepicker__calender'
         onClick={this.handlerClick.bind(this)}
         onMouseMove={this.handlerMouseMove.bind(this)}
-        className={type === 'year' ? 'year-table' : ''}
       >
         {
           (type.indexOf('date') !== -1 || type.indexOf('week') !== -1) && (
             <thead>
-              <tr className='week-row'>
+              <tr>
                 {
                   this.getWeeks().map((item, index) => {
                     return <th key={index}>{item}</th>
@@ -243,7 +243,7 @@ class Calender extends Component {
               return (
                 <tr
                   key={index}
-                  className={row.currentWeek ? 'current-week' : ''}
+                  className={`hi-datepicker__row ${row.currentWeek ? 'hi-datepicker__row--current-week' : ''}`}
                 >
                   {
                     row.map((cell, _index) => {
@@ -253,8 +253,8 @@ class Calender extends Component {
                           value={cell.value}
                           className={this.getTDClass(cell)}
                         >
-                          <div value={cell.value}>
-                            <a value={cell.value}>
+                          <div className='hi-datepicker__content' value={cell.value}>
+                            <a value={cell.value} className='hi-datepicker__text'>
                               {cell.text}
                             </a>
                           </div>
