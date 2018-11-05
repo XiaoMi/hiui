@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import { getTextWidth } from './common.js'
-import './style/select-input.scss'
+// import './style/select-input.scss'
 
 export default class SelectInput extends Component {
   constructor (props) {
