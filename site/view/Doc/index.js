@@ -89,7 +89,7 @@ class Doc extends Component {
     return (
       <React.Fragment>
         <Logo
-          url='/'
+          url='https://xiaomi.github.io/hiui/'
           logoUrl={logoImg}
           height={40}
           text='HIUI Design'
