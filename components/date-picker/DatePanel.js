@@ -4,6 +4,7 @@ import {deconstructDate} from './util'
 import TimePanel from './TimePanel'
 import {MONTH_DATA} from './constants'
 import Icon from '../icon'
+import classNames from 'classnames'
 export default class DatePanel extends Component {
   constructor (props) {
     super(props)
@@ -267,9 +268,9 @@ export default class DatePanel extends Component {
   renderTimeHeader () {
     return (
       <div className='hi-datepicker__time-header'>
-        <span onClick={() => this.setState({currentView: 'date'})} className={this.state.currentView === 'date' ? 'active' : ''}>日期选择</span>
+        <span onClick={() => this.setState({currentView: 'date'})} className={this.state.currentView === 'date' ? 'hi-datepicker__time-header--active' : ''}>日期选择</span>
         <em />
-        <span onClick={() => this.setState({currentView: 'time'})} className={this.state.currentView === 'time' ? 'active' : ''}>时间选择</span>
+        <span onClick={() => this.setState({currentView: 'time'})} className={this.state.currentView === 'time' ? 'hi-datepicker__time-header--active' : ''}>时间选择</span>
       </div>
     )
   }
@@ -285,10 +286,15 @@ export default class DatePanel extends Component {
   }
   render () {
     const {date, currentView} = this.state
+    const {theme} = this.props
+    const _c = classNames(
+      'hi-datepicker',
+      theme && 'theme__' + theme
+    )
     return (
       <div
         style={this.props.style}
-        className='hi-datepicker'
+        className={_c}
       >
         <div className='hi-datepicker__body'>
           {

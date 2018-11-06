@@ -63,7 +63,7 @@ render () {
   return (
     <DatePicker
       minDate={new Date()}
-      maxDate={new Date(2018, 4, 28)}
+      maxDate={new Date(2019, 4, 28)}
       onChange={(d) => {
         console.log(d)
       }}
@@ -175,7 +175,7 @@ render () {
     <DatePicker 
       type='daterange'
       minDate={new Date()}
-      maxDate={new Date(2018, 4, 28)}
+      maxDate={new Date(2019, 4, 28)}
     />
   )
 }

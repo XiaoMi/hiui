@@ -4,6 +4,7 @@ import {deconstructDate, nextMonth} from './util'
 import {DAY_MILLISECONDS} from './constants'
 import TimePanel from './TimePanel'
 import Icon from '../icon'
+import classNames from 'classnames'
 export default class DatePanel extends Component {
   constructor (props) {
     super(props)
@@ -240,7 +241,7 @@ export default class DatePanel extends Component {
   }
   renderShortcut (shortcuts) {
     return (
-      <div className='hi-datepicker-shortcuts'>
+      <div className='hi-datepicker__shortcuts'>
         {
           shortcuts.map((m, n) => {
             return (
@@ -296,11 +297,15 @@ export default class DatePanel extends Component {
   render () {
     let {minDate, maxDate, currentView, range, leftDate, rightDate, leftView, rightView} = this.state
     // const rightDate = nextMonth(leftDate)
-    const {shortcuts} = this.props
+    const {shortcuts, theme} = this.props
+    const _c = classNames(
+      'hi-datepicker',
+      theme && 'theme__' + theme
+    )
     return (
       <div
         style={this.props.style}
-        className='hi-datepicker'
+        className={_c}
       >
         {
           shortcuts && this.renderShortcut(shortcuts)

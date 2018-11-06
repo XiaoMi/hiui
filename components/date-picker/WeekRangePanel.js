@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {deconstructDate, nextMonth, getWeekRange} from './util'
 import Calender from './Calender'
 import Icon from '../icon'
+import classNames from 'classnames'
 export default class WeekRangePanel extends Component {
   constructor (props) {
     super(props)
@@ -189,13 +190,18 @@ export default class WeekRangePanel extends Component {
   }
   render () {
     const {range, leftDate, rightDate} = this.state
-    const {type} = this.props
+    const {type, theme} = this.props
+    const _c = classNames(
+      'hi-datepicker',
+      theme && 'theme__' + theme
+    )
     // const {year, month, day} = deconstructDate(date)
     // const _date = new Date(year, month, day)
+
     return (
       <div
         style={this.props.style}
-        className='hi-datepicker'
+        className={_c}
       >
         <div className='hi-datepicker__body  hi-datepicker__body--range'>
           <div className='hi-datepicker__panel hi-datepicker__panel--left'>

@@ -117,7 +117,7 @@ class Calender extends Component {
     const td = e.target
     const cls = this._getClassName(td)
     const value = td.getAttribute('value')
-    if ((td.nodeName !== 'A' && td.nodeName !== 'TD' && td.nodeName !== 'DIV') || td.disabled) return false
+    if ((td.nodeName !== 'SPAN' && td.nodeName !== 'TD' && td.nodeName !== 'DIV') || td.disabled) return false
     if (cls.indexOf('disabled') !== -1) return false
     if (cls.indexOf('prev') !== -1) {
       month -= 1
@@ -165,7 +165,7 @@ class Calender extends Component {
     let td = e.target
     const {mouseMove, date, type, range} = this.props
     let {year, month} = deconstructDate(date)
-    if (td.nodeName !== 'A' || td.disabled || type.indexOf('range') === -1 || !range.selecting) return false
+    if (td.nodeName !== 'SPAN' || td.disabled || type.indexOf('range') === -1 || !range.selecting) return false
     td = td.parentNode.parentNode
     const day = parseInt(td.innerText)
     const cls = td.className
@@ -254,9 +254,9 @@ class Calender extends Component {
                           className={this.getTDClass(cell)}
                         >
                           <div className='hi-datepicker__content' value={cell.value}>
-                            <a value={cell.value} className='hi-datepicker__text'>
+                            <span value={cell.value} className='hi-datepicker__text'>
                               {cell.text}
-                            </a>
+                            </span>
                           </div>
                         </td>
                       )

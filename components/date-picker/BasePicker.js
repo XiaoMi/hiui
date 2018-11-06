@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import Modal from './Modal'
 import classNames from 'classnames'
 import {formatterDate, FORMATS, PLACEHOLDER, isVaildDate} from './constants'
-import {dateFormat} from './util'
+
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 export default class BasePicker extends Component {
@@ -226,12 +226,14 @@ export default class BasePicker extends Component {
     const iconCls = classNames(
       'hi-datepicker__input-icon',
       'hi-icon',
-      isFocus ? 'icon-close-circle clear' : 'icon-date',
-      this.props.disabled && 'disabled'
+      isFocus ? 'icon-close-circle clear' : 'icon-date'
     )
-    return isFocus ? <span className={iconCls} onClick={this._clear.bind(this)} /> : <span className={iconCls} onClick={(e) => {
-      this.setState({showPanel: true, isFocus: true})
-    }} />
+    return isFocus
+      ? <span className={iconCls} onClick={this._clear.bind(this)} />
+      : <span className={iconCls} onClick={(e) => {
+        if (this.props.disabled) return
+        this.setState({showPanel: true, isFocus: true})
+      }} />
   }
   renderRangeInput () {
     const {
@@ -240,7 +242,7 @@ export default class BasePicker extends Component {
     const _cls = classNames(
       'hi-datepicker__input',
       'hi-datepicker__input--range',
-      disabled && 'disabled'
+      disabled && 'hi-datepicker__input--disabled'
     )
     return (
       <div className={_cls}>
@@ -258,7 +260,7 @@ export default class BasePicker extends Component {
     const _cls = classNames(
       'hi-datepicker__input',
       'hi-datepicker__input--normal',
-      disabled && 'disabled'
+      disabled && 'hi-datepicker__input--disabled'
     )
     return (
       <div className={_cls}>
@@ -285,5 +287,3 @@ export default class BasePicker extends Component {
     )
   }
 }
-
-BasePicker.format = dateFormat
