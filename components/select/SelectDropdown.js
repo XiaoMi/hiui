@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import Checkbox from '../checkbox'
-import './style/select-dropdown.scss'
+// import './style/select-dropdown.scss'
 
 export default class SelectDropdown extends Component {
   onClickOption (e, item, index) {
