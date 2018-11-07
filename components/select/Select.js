@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
+import shallowEqual from 'shallowequal'
 import Popper from '../popper'
 import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
 import $$ from './tool.js'
-// import './style/index.scss'
+import './style/index.scss'
 
 class Select extends Component {
   timer = null
@@ -28,6 +29,7 @@ class Select extends Component {
   }
 
   static defaultProps = {
+    list: [],
     mode: 'single',
     disabled: false,
     value: '',
@@ -40,8 +42,8 @@ class Select extends Component {
     let {
       list
     } = this.props
-    const dropdownItems = list ? JSON.parse(JSON.stringify(list)) : []
-    const selectedItems = this.resetSelectedItems()
+    const dropdownItems = list
+    const selectedItems = this.resetSelectedItems(this.props)
     const searchable = this.getSearchable()
     // const focusedIndex = this.resetFocusedIndex(false)
 
@@ -80,6 +82,23 @@ class Select extends Component {
     window.removeEventListener('click', this.hideDropdown.bind(this))
   }
 
+  componentWillReceiveProps (props) {
+    if (props.value !== this.props.value) {
+      const selectedItems = this.resetSelectedItems(props)
+
+      this.setState({
+        selectedItems
+      }, () => {
+        this.onChange()
+      })
+    }
+    if (!shallowEqual(props.list, this.props.list)) {
+      this.setState({
+        dropdownItems: props.list
+      })
+    }
+  }
+
   getSearchable () {
     let {
       searchable
@@ -101,11 +120,11 @@ class Select extends Component {
     return origin && !!origin.url
   }
 
-  resetSelectedItems () {
+  resetSelectedItems (props) {
     const {
       list,
       value
-    } = this.props
+    } = props
     const values = value.split(',')
     let selectedItems = []
 
