@@ -11,21 +11,28 @@
   border-radius: 2px;
   box-sizing: border-box;
   z-index: 1050;
+
   &--items {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     max-height: 250px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
     // margin-right: -17px;
   }
 
   &--item{
+    flex: none;
     display: block;
     height: 36px;
     line-height: 36px;
     padding: 0 12px;
+    margin: 0;
     font-weight: 400;
     cursor: pointer;
+    list-style: none;
     transition: all .3s ease;
     &.hi-select__dropdown--item-default {
       display: flex;

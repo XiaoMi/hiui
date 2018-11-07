@@ -110,6 +110,7 @@
       line-height: 32px;
       overflow: hidden;
       transition: padding .2s cubic-bezier(.645,.045,.355,1);
+      text-align: left;
       &__name {
         display: inline-block;
         white-space: nowrap;
@@ -159,6 +160,7 @@
       vertical-align: middle;
       background-color: #f2f2f2;
       border-radius: 2px;
+      text-align: left;
       &__name{
         font-size: 13px;
         display: inline-block;
