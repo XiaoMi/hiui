@@ -20,7 +20,8 @@ render () {
   return (
     <div>
       <DatePicker
-        value={this.state.date}
+        value=""
+        format="yyyy-MM-dd HH:mm:SS"
         onChange={(d) => {
           console.log('含有默认值是，会触发一次', DatePicker.format(d, 'yyyy-MM-dd E'))
         }}
@@ -43,7 +44,6 @@ render () {
 render () {
   return (
     <DatePicker
-      value={new Date()}
       disabled={true}
     />
   )
@@ -150,9 +150,11 @@ render () {
     <div>
       <DatePicker 
         type='daterange'
-        value={this.state.rangeDate}
+        format='yyyy-MM-dd HH:mm:ss'
+        // value={this.state.rangeDate}
+        value={new Date()}
         onChange={(d) => {
-          console.log(d)
+          console.log(1, d)
         }}
       />
       <span style={{color: 'red', fontSize: '14px', cursor: 'pointer', marginLeft:'5px'}} onClick={() => {this.setState({rangeDate: ''})}}>重置</span>
@@ -193,7 +195,7 @@ render () {
 render () {
   return (
     <DatePicker 
-      value=''
+      value={new Date()}
       type='weekrange'
       onChange={(d) => {
         console.log(d)

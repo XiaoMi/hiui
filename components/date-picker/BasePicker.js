@@ -5,6 +5,8 @@ import {formatterDate, FORMATS, PLACEHOLDER, isVaildDate} from './constants'
 
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
+import dateFormat from 'date-fns/format'
+import {startOfDay, endOfDay} from 'date-fns'
 export default class BasePicker extends Component {
   inputRoot = null
   input = null
@@ -24,7 +26,24 @@ export default class BasePicker extends Component {
   }
   static propTypes = {
     type: PropTypes.oneOf(Object.values(DatePickerType)),
-    date: PropTypes.instanceOf(Date),
+    value: function (props, propName, componentName) {
+      // Invalid Date
+      const val = props[propName]
+      if (val === undefined || val === null) {
+        return null
+      }
+      if (val.start && val.end) {
+        const _start = dateFormat(val.start)
+        const _end = dateFormat(val.end)
+        if (_start === 'Invalid Date' || _end === 'Invalid Date') {
+          return new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed. start or end is an invalid date.`)
+        }
+      } else {
+        if (dateFormat(val) === 'Invalid Date') {
+          return new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed. value is an invalid data.`)
+        }
+      }
+    },
     onChange: PropTypes.func,
     format: PropTypes.string,
     showTime: PropTypes.bool,
@@ -41,41 +60,41 @@ export default class BasePicker extends Component {
   _parseProps (props, callback) {
     let {value, showTime, type, format} = props
     format = format || FORMATS[type]
-    let text = formatterDate(type, value, format, showTime)
-    let rText = text
-    let l = ''
-    let r = ''
-    let date = new Date()
+    // let text = formatterDate(type, value, format, showTime)
+    // let rText = text
+    let date = new Date() // 当前时间
+    let startDate = startOfDay(date) // 用于范围时的开始时间 - 当前日期 00：00：00
+    let endDate = endOfDay(date) // 用于范围时的结束时间- 当前日期 23：59：59
+    // let rightDate = endDate
+    /**
+     * value 可能的格式：
+     *  '' | undefined  | null | Date | String | Number | {start: xxx, end: xxx}
+     */
+    if (value === '' || !value) {
+      // value 未传入情况
+      date = new Date()
+    }
+    if (typeof value === 'number') {
+      // value 为数字（times）
+      date = format(value)
+    }
     if (value instanceof Date) {
-      // type 为范围选择且 value 传入 一个 Date 类型时，需要计算开始和结束时间
-      // value = value.getTime()
-      // const start = value - 1 * DAY_MILLISECONDS // 得到前一天时间
-      l = value
-      r = value
-      if (type.indexOf('range') !== -1) {
-        l = l.setHours(0, 0, 0, 0)
-        r = r.setHours(23, 59, 59, 0)
-        date = {startDate: l, endDate: r}
-      } else {
-        date = value
+      date = value
+    }
+
+    if (type.indexOf('range') !== -1) {
+      if (value instanceof Date) {
+        date = {startDate, endDate}
       }
-      // date = type.indexOf('range') !== -1 ? {startDate: l, endDate: r} : value
+      if (value && value.start && value.end) {
+        date = {startDate: value.start, endDate: value.end}
+        endDate = value.end
+      }
     }
-    if (typeof value === 'string' || !value) {
-      date = new Date().getTime()
-      l = ''
-      r = ''
-    }
-    if (value && value.start && value.end) {
-      l = value.start.getTime()
-      r = value.end.getTime()
-      date = {startDate: l, endDate: r}
-    }
-    text = formatterDate(type, l, format, showTime)
-    rText = formatterDate(type, r, format, showTime)
+    console.log(date)
     this.setState({
-      text,
-      rText,
+      text: formatterDate(type, date, format, showTime),
+      rText: endDate ? formatterDate(type, endDate, format, showTime) : '',
       date,
       placeholder: PLACEHOLDER[props.type] || '请选择日期',
       format
