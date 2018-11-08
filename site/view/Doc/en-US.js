@@ -96,9 +96,9 @@ class Doc extends Component {
           text='HIUI Design'
         />
         <ul className='header-nav'>
-          <li><Link to={`/${locale}`}>首页</Link></li>
+          <li><Link to={`/${locale}`}>Home</Link></li>
           {/* <li><Link to={`/${locale}/docs/design`} className={doc === 'design' ? 'active' : ''}>设计规范</Link></li> */}
-          <li><Link to={`/${locale}/components`} className={doc === 'components' ? 'active' : ''}>组件</Link></li>
+          <li><Link to={`/${locale}/components`} className={doc === 'components' ? 'active' : ''}>Component</Link></li>
           <li>
             <LocaleDropdown locale={locale} />
           </li>

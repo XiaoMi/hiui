@@ -3,7 +3,10 @@ import { connect } from 'react-redux'
 import { setTheme } from '../../../redux/action/global'
 import classnames from 'classnames'
 import './style/index.scss'
-
+const LANG = {
+  'zh-CN': '主题',
+  'en-US': 'Theme'
+}
 class ThemeDropdown extends React.Component {
   constructor (props) {
     super(props)
@@ -39,7 +42,7 @@ class ThemeDropdown extends React.Component {
         onMouseLeave={this.toggleDropdown.bind(this, false)}
       >
         <a className='hi-demo__title' >
-          <span className='hi-demo__text'>主题</span>
+          <span className='hi-demo__text'>{LANG[this.props.locale]}</span>
           <i className='hi-icon icon-down' />
         </a>
         <ul className={_cls}>
