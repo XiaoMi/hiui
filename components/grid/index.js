@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import classNames from 'classnames'
+import './style/index'
 const PropTypes = require('prop-types')
 
 class Col extends Component {
