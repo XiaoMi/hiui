@@ -1,21 +1,21 @@
 ## Menu
 
-### 水平排列
+### Horizontal
 
 :::demo
 
-水平排列
+Horizontal
 
 ```js
   constructor () {
     super()
     this.state = {
       list: [{
-        title: '菜单一'
+        title: 'Menu one'
       }, {
-        title: '菜单二',
+        title: 'Menu two',
       }, {
-        title: '菜单三'
+        title: 'Menu three'
       }]
     }
   }
@@ -30,22 +30,22 @@
 ```
 :::
 
-### 竖直排列
+### Vertical
 
 :::demo
 
-竖直排列
+Vertical
 
 ```js
   constructor () {
     super()
     this.state = {
       list: [{
-        title: '菜单一'
+        title: 'Menu one'
       }, {
-        title: '菜单二'
+        title: 'Menu two',
       }, {
-        title: '菜单三'
+        title: 'Menu three'
       }]
     }
   }
@@ -76,17 +76,20 @@
 
 ### Attributes
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| Attribute | Description | Type | Options | Default |
 | -------- | ----- | ---- | ---- | ---- |
-| active | 是否激活 | boolean | true / false  | false |
-| defaultActive | 默认激活（当  active 存在时，此项无效 | boolean | true / false | false |
-| text | 文本 | string | - | - |
-| value | 文本对应的值，可为空 | - | - |
-| mode | 菜单排列模式 | string | horizontal / vertical | vertical |
+| active | is active | boolean | true / false  | false |
+| defaultActive | default active（This item is invalid when active is present | boolean | true / false | false |
+| text | text | string | - | - |
+| value | value | - | - |
+| mode | 
+6/5000
+Càidān páiliè móshì
+Menu arrangement mode | string | horizontal / vertical | vertical |
 
 ### Events
 
-| 参数 | 说明 | 回调参数 |
+| Attribute | Description | Callback Params |
 | -------- | ----- | ---- |
 | onOpen | 打开某菜单事件 | - |
 | onClose | 关闭某菜单事件 | - |

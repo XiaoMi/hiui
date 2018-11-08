@@ -75,7 +75,7 @@ render () {
 
 ### Attributes
 
-| 参数 | 说明 | 类型 | 可选值 |默认值 |
+| Attribute | Description | Type | Options |Default |
 | -------- | ----- | ---- | ---- | ---- |
 | name | Name | string | Reference icon collection | - |
 | className | custome class |  string | - | - |
