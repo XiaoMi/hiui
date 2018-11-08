@@ -7,7 +7,6 @@ import Popper from '../popper'
 import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
 import $$ from './tool.js'
-import './style/index.scss'
 
 class Select extends Component {
   timer = null

@@ -17,8 +17,9 @@ const compile = modules => {
     .src(['components/**/*.scss'])
     .pipe(
       through2.obj(function (file, encoding, next) {
-        this.push(file.clone())
-        if (file.path.match(/\/style\/index\.scss$/)) {
+        // this.push(file.clone())
+
+        if (file.path.match(/\/style\/.*\.scss$/)) {
           transformSass(file.path)
             .then(css => {
               file.contents = Buffer.from(css)
@@ -60,6 +61,17 @@ const compile = modules => {
         plugins: [['transform-remove-console', { exclude: ['error', 'warn'] }]]
       })
     )
+    .pipe(through2.obj(function (file, encoding, next) {
+      if (file.path.match(/\/style\/.*\.js$/)) {
+        const cssContent = file.contents.toString().replace(/\.scss/g, '.css')
+        file.contents = Buffer.from(cssContent)
+        this.push(file)
+        next()
+      } else {
+        this.push(file)
+        next()
+      }
+    }))
     .pipe(gulp.dest(modules === false ? esDir : libDir))
   return merge2([sass, assets, js])
 }
