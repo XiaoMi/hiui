@@ -31,7 +31,7 @@ render () {
 				list={this.state.singleList}
 				placeholder='请选择品类'
 				style={{width: '200px'}}
-				value={'3'}
+				value='3'
 				onChange={(item) => {
 						console.log('单选结果', item)
 				}}
@@ -154,6 +154,7 @@ render () {
 						return JSON.parse(body).data
 					}
 				}}
+				list={[]}
 				placeholder='请选择种类'
 				style={{width: '200px'}}
 				onChange={(item) => {
@@ -198,7 +199,7 @@ render () {
 				mode='multiple'
 				style={{width: '300px'}}
 				list={this.state.multipleList}
-				value='4,5'
+				value={['4', '5']}
 				searchable={true}
 				placeholder='请选择...'
 				onChange={(item) => {
@@ -234,6 +235,7 @@ render () {
 						return JSON.parse(body).data
 					}
 				}}
+				list={[]}
 				placeholder='请选择...'
 				onChange={(item) => {
 						console.log('异步多选结果', item)
@@ -253,7 +255,7 @@ render () {
 | mode | 下拉框类型 | string | single, multiple | single |
 | list | 下拉框选项，一般为 {name: '', id: ''} 形式。可以加入 'disabled' 属性，表示是否禁止选择 | array | - | - |
 | origin | 异步选择配置，有 type / url / func 三种属性，分别代表请求类型／请求路径／请求返回后的数据处理函数 | object | - | - |
-| value | 默认值被选中项，值与被选中的id相同，多个以,分割| string | - | - |
+| value | 默认值被选中项，值与被选中的id相同，多个以,分割或者传递数组| string|number|array | - | - |
 | searchable | 是否可以筛选 | bool | true, false | false |
 | autoload | origin从远端获取数据，初始时是否自动加载 | bool | true, false | false |
 | disabled | 禁用该下拉框 | bool | true, false | false |
