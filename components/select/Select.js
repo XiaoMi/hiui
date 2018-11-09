@@ -225,12 +225,12 @@ class Select extends Component {
   }
 
   hideDropdown () {
-    !this.noHideDropdown && this.setState({dropdownShow: false})
+    !this.noHideDropdown && this.state.dropdownShow === true && this.setState({dropdownShow: false})
     this.noHideDropdown = false
   }
 
   showDropdown () {
-    this.setState({dropdownShow: true})
+    this.state.dropdownShow === false && this.setState({dropdownShow: true})
     this.selectInput.focus()
   }
 
