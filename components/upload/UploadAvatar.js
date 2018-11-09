@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import AJAX from './tool'
 import Modal from '../modal'
-import '../modal/style'
 
 class UploadAvatar extends Component {
   static propTypes = {
