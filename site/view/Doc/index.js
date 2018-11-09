@@ -12,13 +12,13 @@ import ThemeDropdown from '../Component/Dropdown/ThemeDropdown'
 import './index.scss'
 
 // 引入组件样式
-const req = require.context('../../../components', true, /^\.\/[^_][\w-]+\/style\/index\.js?$/)
-req.keys().forEach((mod) => {
-  let v = req(mod)
-  if (v && v.default) {
-    v = v.default
-  }
-})
+// const req = require.context('../../../components', true, /^\.\/[^_][\w-]+\/style\/index\.js?$/)
+// req.keys().forEach((mod) => {
+//   let v = req(mod)
+//   if (v && v.default) {
+//     v = v.default
+//   }
+// })
 
 class Doc extends Component {
   // constructor (props) {

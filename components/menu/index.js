@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
+import './style/index'
 class Menu extends Component {
   static defaultProps = {
     mode: 'vertical'

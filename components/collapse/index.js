@@ -1,6 +1,7 @@
 import React, { Component, Children } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import './style/index'
 
 const noop = () => {}
 class Collapse extends Component {
