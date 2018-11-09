@@ -17,7 +17,10 @@ class Select extends Component {
     list: PropTypes.array,
     origin: PropTypes.object,
     value: PropTypes.oneOfType([
-      PropTypes.string
+      PropTypes.string,
+      PropTypes.array,
+      PropTypes.bool,
+      PropTypes.number
     ]),
     autoload: PropTypes.bool,
     searchable: PropTypes.bool,
@@ -112,6 +115,19 @@ class Select extends Component {
     return !!searchable
   }
 
+  parseValue () {
+    let {
+      value
+    } = this.props
+    if (Array.isArray(value)) {
+      return value.slice()
+    } else if (typeof value === 'string') {
+      return value.split(',')
+    } else {
+      return [value]
+    }
+  }
+
   isRemote () {
     let {
       origin
@@ -121,10 +137,9 @@ class Select extends Component {
 
   resetSelectedItems (props) {
     const {
-      list,
-      value
+      list
     } = props
-    const values = value.split(',')
+    const values = this.parseValue()
     let selectedItems = []
 
     list && list.map(item => {
@@ -136,8 +151,7 @@ class Select extends Component {
   }
 
   addOption (option) {
-    const value = this.props.value
-    const values = value.split(',')
+    const values = this.parseValue()
 
     this.state.dropdownItems.push(option)
     values.indexOf(option.id) > -1 && this.state.selectedItems.push(option)

@@ -38,8 +38,8 @@ export default class Popper extends Component {
       top: 0
     }
     while (ele && ele !== document.body) {
-      offset.top += ele.offsetTop
-      offset.left += ele.offsetLeft
+      offset.top += ele.offsetTop - ele.scrollTop
+      offset.left += ele.offsetLeft - ele.scrollLeft
       ele = ele.offsetParent
     }
 
