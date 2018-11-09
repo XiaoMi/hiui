@@ -14,7 +14,7 @@ no matter data item or column item need to add key , most great
 
 ### basic
 
-
+:::demo
 ```js
 constructor(props){
   super(props)
@@ -56,11 +56,11 @@ render() {
   return <Table columns={this.columns} data={this.data} name='base' />
 }
 ```
-
+:::
 
 ### sort
 
-
+:::demo
 ```js
 constructor(props){
   super(props)
@@ -111,11 +111,11 @@ render() {
   return <Table columns={this.columns} data={this.data} name='sorter'/>
 }
 ```
-
+:::
 
 
 ### select
-
+:::demo
 ```js
 
 
@@ -184,14 +184,14 @@ render() {
   return <Table columns={this.columns} data={data} rowSelection={rowSelection} />
 }
 ```
-
+:::
 
 
 ### Table header Top suction
 
 fixTop,this attribute represents the height of the header to the window
 
-
+:::demo
 ```js
 constructor(props){
   super(props)
@@ -233,9 +233,10 @@ render() {
   return <Table columns={this.columns} data={this.data} fixTop={56} name='fixtop' />
 }
 ```
-
+:::
 
 ### Column freeze
+:::demo
 Columns that freeze will have to pass the width attribute, otherwise the form may be inconsistent.
 
 
@@ -273,13 +274,13 @@ render() {
 }
 ```
 
-
+:::
 
 
 
 
 ### Right-click to freeze
-
+:::demo
 When you need to use the right-click to freeze, be sure to pass the scrollWidth property to indicate the scroll width of the frozen table, as well as the width of each column, otherwise the table will not be aligned
 
 ```js
@@ -318,11 +319,11 @@ render() {
   return <Table columns={this.columns} data={this.data} fixTop={56} scrollWidth={1300} name='rightkey'/>
 }
 ```
-
+:::
 
 
 ### Merge Cell
-
+:::demo
 
 ```js
 constructor(props){
@@ -437,13 +438,13 @@ render() {
   return <Table columns={this.columns} data={this.data} fixTop={56} name='merge'/>
 }
 ```
-
+:::
 
 
 ### Header Group
 
 
-
+:::demo
 ```js
 constructor(props){
   super(props)
@@ -536,12 +537,12 @@ render() {
   return <Table columns={this.columns} data={this.data} fixTop={56} name='headergroup'/>
 }
 ```
-
+:::
 
 
 
 ### expand a row
-
+:::demo
 
 ```js
 constructor(props){
@@ -601,15 +602,14 @@ render() {
   return <Table columns={this.columns} data={this.data} fixTop={56}/>
 }
 ```
-
+:::
 
 
 ### pagination
 Here are just a few properties. For details, see the detailed configuration of pagination components.
 
 ### 分页
-这里只演示了几个属性，详情请查看分页组件的详细配置
-:::demo Table 表格代码说明
+:::demo 
 
 
 ```js

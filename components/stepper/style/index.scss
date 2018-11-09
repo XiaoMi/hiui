@@ -21,7 +21,6 @@
   }
   &__item {
     position: relative;
-    width: 104px;
     flex: 1 1 auto;
     z-index: 1;
     display: flex;
@@ -37,7 +36,7 @@
       z-index: -1;
     }
     &:last-child {
-      flex: 0 1 auto;
+      flex: 0 0 auto;
       &::after {
         display: none;
       }
@@ -142,7 +141,7 @@
         flex-wrap: wrap;
       }
       &__title {
-        flex: 1 1 auto;
+        flex: 1 1;
         text-align: left;
       }
       &__icon {

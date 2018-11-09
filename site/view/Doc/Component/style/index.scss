@@ -7,6 +7,12 @@
   .noaction {
     font-size: 12px;
   }
+  &-list {
+    padding: 0;
+    li {
+      list-style: none;
+    }
+  }
   .components-title {
     color: #999;
   }

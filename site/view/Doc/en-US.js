@@ -12,13 +12,13 @@ import ThemeDropdown from '../Component/Dropdown/ThemeDropdown'
 import './index.scss'
 
 // 引入组件样式
-// const req = require.context('../../../components', true, /^\.\/[^_][\w-]+\/style\/index\.js?$/)
-// req.keys().forEach((mod) => {
-//   let v = req(mod)
-//   if (v && v.default) {
-//     v = v.default
-//   }
-// })
+const req = require.context('../../../components', true, /^\.\/[^_][\w-]+\/style\/index\.js?$/)
+req.keys().forEach((mod) => {
+  let v = req(mod)
+  if (v && v.default) {
+    v = v.default
+  }
+})
 
 class Doc extends Component {
   // constructor (props) {
@@ -96,9 +96,9 @@ class Doc extends Component {
           text='HIUI Design'
         />
         <ul className='header-nav'>
-          <li><Link to={`/${locale}`}>首页</Link></li>
+          <li><Link to={`/${locale}`}>Home</Link></li>
           {/* <li><Link to={`/${locale}/docs/design`} className={doc === 'design' ? 'active' : ''}>设计规范</Link></li> */}
-          <li><Link to={`/${locale}/components`} className={doc === 'components' ? 'active' : ''}>组件</Link></li>
+          <li><Link to={`/${locale}/components`} className={doc === 'components' ? 'active' : ''}>Component</Link></li>
           <li>
             <LocaleDropdown locale={locale} />
           </li>

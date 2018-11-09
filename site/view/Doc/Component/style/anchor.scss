@@ -5,7 +5,11 @@
   width: 124px;
   height: auto;
   border-left: 1px solid #F2F2F2;
-
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
   li {
     padding-left: 16px;
     margin-left: -1px;

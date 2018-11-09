@@ -4,12 +4,6 @@
     align-items: center;
   }
 }
-// 'hiui-blue': #4285f4,
-//   'orange': #f63,
-//   'cyan': #46bc99,
-//   'blue': #3da8f5,
-//   'purple': #8a8acb,
-//   'green': #1da653
 .colors {
   position: relative;
 }
@@ -23,21 +17,6 @@
     margin: 2px 0;
   }
 }
-.hiui-blue {
-  background-color: map-get($palette-hiui, '50');
-}
-.orange {
-  background-color: map-get($palette-orange, '50');
-}
-.cyan {
-  background-color: map-get($palette-cyan, '50');
-}
-.blue {
-  background-color: map-get($palette-blue, '50');
-}
-.purple {
-  background-color: map-get($palette-purple, '50');
-}
 
 .hi-demo {
   &__dropdown {
@@ -49,13 +28,17 @@
     }
   }
   &__list {
-    font-size: 12px;
     position: absolute;
-    background: #fff;
+    right: 0;
+    z-index: 1;
     width: 100%;
+    margin: 0;
     padding: 10px 20px;
     border: 1px solid #e6e7e8;
     border-top: none;
+    list-style-type: none;
+    font-size: 12px;
+    background: #fff;
     &--hide {
       display: none;
     }

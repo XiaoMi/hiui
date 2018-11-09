@@ -241,23 +241,23 @@ render() {
 
 ### Attributes
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| Attribute | Description | Type | Options | Default  |
 | -------- | ----- | ---- | ---- | ---- |
-| type | 设置按钮类型 | string | text, textarea, id, tel, card, amount, email  | text |
-| disabled | 输入框尾部文字 | boolean | true/false | false |
-| required | 输入框尾部文字 | string | true/false | false |
-| prefix | 输入框头部文字 | string | - | - |
-| suffix | 输入框尾部文字 | string | - | - |
+| type | Input type | string | text, textarea, id, tel, card, amount, email  | text |
+| disabled | Whether to disable | boolean | true/false | false |
+| required | Required or not | string | true/false | false |
+| prefix | prefix | string | - | - |
+| suffix | suffix | string | - | - |
 
 ### Events
 
-| 参数 | 说明 | 回调参数 |
+| Attribute | Description | Callback params |
 | -------- | ----- | ---- |
-| onFocus | 获得焦点时触发 | (event: Event, value: 原始值) |
-| onBlur | 失去焦点时触发 | (event: Event, value: 原始值) |
-| onKeyDown | 触发 keydown 事件 | (event: Event, value: 原始值) |
-| onKeyPress | 触发 keypress 事件 | (event: Event, value: 原始值) |
-| onInput | 触发 input 事件 | (event: Event, value: 原始值) |
-| onChange | 值改变时触发 | (event: Event, value: 原始值) |
-| onKeyUp | 触发 keyup 事件 | (event: Event, value: 原始值) |
+| onFocus | Trigger when getting focus | (event: Event, value: Original value) |
+| onBlur | Triggered when focus is lost | (event: Event, value: Original value) |
+| onKeyDown | Trigger when the keyboard is pressed | (event: Event, value: Original value) |
+| onKeyPress | Triggered when the keyboard is pressed and raised | (event: Event, value: Original value) |
+| onInput | Trigger on input | (event: Event, value: Original value) |
+| onChange | Triggered when the value changes | (event: Event, value: Original value) |
+| onKeyUp | Triggered when the keyboard is raised | (event: Event, value: Original value) |
 

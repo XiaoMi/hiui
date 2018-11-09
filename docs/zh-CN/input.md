@@ -245,11 +245,11 @@ render() {
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| type | 设置按钮类型 | string | text, textarea, id, tel, card, amount, email  | text |
-| disabled | 输入框尾部文字 | boolean | true/false | false |
-| required | 输入框尾部文字 | string | true/false | false |
-| prefix | 输入框头部文字 | string | - | - |
-| suffix | 输入框尾部文字 | string | - | - |
+| type | 设置输入框类型 | string | text, textarea, id, tel, card, amount, email  | text |
+| disabled | 是否禁用 | boolean | true/false | false |
+| required | 是否必填 | string | true/false | false |
+| prefix | 前缀 | string | - | - |
+| suffix | 后缀 | string | - | - |
 
 ### Input Events
 
