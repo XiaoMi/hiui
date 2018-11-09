@@ -21,13 +21,13 @@ export const CircleProgress = (props) => {
           cx={totalRadiusWidth}
           cy={totalRadiusWidth}
           r={radius}
-          className={`${prefix}__circle ${prefix}__circle_${status}`}
+          className={`${prefix}__circle ${prefix}__circle--${status}`}
           strokeDasharray={`${strokeDash} ${strokeDash}`}
           strokeDashoffset={`${strokeDash * ((100 - percent) / 100)}`}
           strokeLinecap='round' />
       </svg>
       {!withOutText && <div
-        className={`${prefix}__text ${prefix}__text_${status}`}>
+        className={`${prefix}__text ${prefix}__text--${status}`}>
         {text || `${percent}%`}
       </div>}
     </div>

@@ -1,34 +1,40 @@
 .hi-timepicker {
   width: 180px;
-  background: #FFFFFF;
-  &__time-body {
+  background: #fff;
+
+  &__timebody {
     display: flex;
     justify-content: space-around;
     height: 195px;
-    border-bottom: 1px solid #F2F2F2;
+    border-bottom: 1px solid #f2f2f2;
   }
+
   &__time-list {
     overflow: auto;
-    flex:1;
+    flex: 1;
+
     &-el {
       text-align: center;
       font-size: 14px;
-      color: rgba(0,0,0,0.65);
+      color: rgba(0, 0, 0, 0.65);
       line-height: 22px;
       padding: 8px;
-      border-right: 1px solid #F2F2F2;
+      border-right: 1px solid #f2f2f2;
       cursor: pointer;
+
       &_current {
-        background: #F7F7F7;
+        background: #f7f7f7;
         font-weight: bold;
       }
     }
   }
+
   &__time-footer {
     padding: 2px 0;
     text-align: right;
+
     button {
-      margin-right:4px;
+      margin-right: 4px;
     }
   }
 }

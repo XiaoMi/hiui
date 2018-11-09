@@ -34,7 +34,7 @@ export const DashBoardProgress = (props) => {
           style={trailPathStyle}
         />
         <path
-          className={`${prefix}__dashBoard ${prefix}__circle_${status}`}
+          className={`${prefix}__dashBoard ${prefix}__circle--${status}`}
           d={pathString}
           strokeLinecap='round'
           ref={(path) => { this.path = path }}
@@ -42,7 +42,7 @@ export const DashBoardProgress = (props) => {
         />
       </svg>
       {!withOutText && <div
-        className={`${prefix}__text ${prefix}__text_${status}`}>
+        className={`${prefix}__text ${prefix}__text--${status}`}>
         {text || `${percent}%`}
       </div>}
     </div>
