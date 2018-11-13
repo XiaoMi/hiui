@@ -34,7 +34,7 @@ export default class TimePanel extends Component {
         <Time date={this.state.date} onPick={this.onTimePick.bind(this)} onlyTime={this.props.type === 'time'} />
         {
           this.props.type === 'time' && (
-            <div className='time-footer'>
+            <div className='hi-timepicker__footer'>
               <Button type='primary' size='small' onClick={() => this.props.timeConfirm(this.state.date, true)}>确认</Button>
             </div>
           )

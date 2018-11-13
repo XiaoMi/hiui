@@ -1,4 +1,5 @@
-import {dateFormat, getYearWeek} from './util'
+import {getYearWeek} from './util'
+import dateFormat from 'date-fns/format'
 export const MONTH_DATA = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
 export const WEEK_DATA = [ '日', '一', '二', '三', '四', '五', '六' ]
 export const TIME_BLOCK = {
@@ -8,13 +9,13 @@ export const TIME_BLOCK = {
 export const DAY_MILLISECONDS = 86400000
 export const RANGE_SPLIT = '~'
 export const FORMATS = {
-  date: 'yyyy-MM-dd',
-  month: 'yyyy-MM',
-  year: 'yyyy',
-  time: 'HH:mmm:ss',
-  daterange: 'yyyy-MM-dd',
-  week: 'yyyy',
-  weekrange: 'yyyy'
+  date: 'YYYY-MM-DD',
+  month: 'YYYY-MM',
+  year: 'YYYY',
+  time: 'HH:mm:ss',
+  daterange: 'YYYY-MM-DD',
+  week: 'YYYY',
+  weekrange: 'YYYY'
 }
 export const PLACEHOLDER = {
   date: '请选择日期',

@@ -4,6 +4,7 @@ import {deconstructDate} from './util'
 import TimePanel from './TimePanel'
 import {MONTH_DATA} from './constants'
 import Icon from '../icon'
+import classNames from 'classnames'
 export default class DatePanel extends Component {
   constructor (props) {
     super(props)
@@ -14,9 +15,6 @@ export default class DatePanel extends Component {
       monthData: [],
       tempDate: new Date(props.date)
     }
-  }
-  componentDidMount () {
-  // f
   }
   componentWillReceiveProps (nextProps) {
     this.setState({
@@ -130,25 +128,25 @@ export default class DatePanel extends Component {
   renderHeader (type, value) {
     const {month} = deconstructDate(value)
     return (
-      <div className='date-header'>
-        <div className='left-btns'>
+      <div className='hi-datepicker__header'>
+        <div className='hi-datepicker__header-btns'>
           {/* <span className='hi-icon icon-left-double' onClick={() => this.changeYear(true)} /> */}
           <span onClick={() => this.changeYear(true)} ><Icon name='double-left' /></span>
           {
             (type !== 'month' && type !== 'year') && <span onClick={() => this.changeMonth(true)} ><Icon name='left' /></span>
           }
         </div>
-        <span className='center' onClick={() => this.setState({currentView: 'year'})}>
+        <span className='hi-datepicker__header-text' onClick={() => this.setState({currentView: 'year'})}>
           {this.getHeaderCenterContent()}
         </span>
         {
           type !== 'month' && type !== 'year' && (
-            <span className='center'>
+            <span className='hi-datepicker__header-text'>
               {month}月
             </span>
           )
         }
-        <div className='right-btns'>
+        <div className='hi-datepicker__header-btns'>
           {
             (type !== 'month' && type !== 'year') && <span onClick={() => this.changeMonth(false)}><Icon name='right' /></span>
           }
@@ -269,17 +267,17 @@ export default class DatePanel extends Component {
   }
   renderTimeHeader () {
     return (
-      <div className='time-header'>
-        <span onClick={() => this.setState({currentView: 'date'})} className={this.state.currentView === 'date' ? 'active' : ''}>日期选择</span>
+      <div className='hi-datepicker__time-header'>
+        <span onClick={() => this.setState({currentView: 'date'})} className={this.state.currentView === 'date' ? 'hi-datepicker__time-header--active' : ''}>日期选择</span>
         <em />
-        <span onClick={() => this.setState({currentView: 'time'})} className={this.state.currentView === 'time' ? 'active' : ''}>时间选择</span>
+        <span onClick={() => this.setState({currentView: 'time'})} className={this.state.currentView === 'time' ? 'hi-datepicker__time-header--active' : ''}>时间选择</span>
       </div>
     )
   }
   renderTimeFooter () {
     return (
       <div
-        className='time-footer'
+        className='hi-datepicker__time-footer'
         onClick={() => this.props.timeConfirm(this.state.date)}
       >
         ok
@@ -288,20 +286,23 @@ export default class DatePanel extends Component {
   }
   render () {
     const {date, currentView} = this.state
+    const {theme} = this.props
+    const _c = classNames(
+      'hi-datepicker',
+      theme && 'theme__' + theme
+    )
     return (
       <div
         style={this.props.style}
-        className='hi-datepicker'
+        className={_c}
       >
-        <div className='hi-datepicker-body'>
+        <div className='hi-datepicker__body'>
           {
             this.props.showTime && this.renderTimeHeader()
           }
-          <div className='range-left'>
-            <div className='hi-datepicker-header'>
-              {currentView !== 'time' && this.renderHeader(currentView, date)}
-            </div>
-            <div className={`hi-datepicker-calender ${currentView}-calender`}>
+          <div className='hi-datepicker__panel hi-datepicker__panel--left'>
+            {currentView !== 'time' && this.renderHeader(currentView, date)}
+            <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${currentView}`}>
               {this._getNormalComponent()}
             </div>
           </div>
