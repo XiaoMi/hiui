@@ -14,7 +14,7 @@ const esDir = path.join(cwd, 'es')
 const compile = modules => {
   rimraf.sync(modules !== false ? libDir : esDir)
   const sass = gulp
-    .src(['components/**/*.scss'])
+    .src(['components/**/*.scss', '!components/**/_*.scss'])
     .pipe(
       through2.obj(function (file, encoding, next) {
         // this.push(file.clone())
