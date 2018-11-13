@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
-import {deconstructDate, nextMonth, getWeekRange} from './util'
+import {deconstructDate, nextMonth} from './util'
 import Calender from './Calender'
 import Icon from '../icon'
 import classNames from 'classnames'
+import {startOfWeek, endOfWeek, isSameMonth} from './dateUtil'
 export default class WeekRangePanel extends Component {
   constructor (props) {
     super(props)
@@ -10,17 +11,15 @@ export default class WeekRangePanel extends Component {
     let leftDate = new Date(startDate)
     let rightDate = endDate || nextMonth(leftDate)
     if (endDate) {
-      const {year: sYear, month: sMonth} = deconstructDate(startDate)
-      const {year: eYear, month: eMonth} = deconstructDate(endDate)
-      if (sYear === eYear && sMonth === eMonth) {
+      if (isSameMonth(startDate, endDate)) {
         rightDate = nextMonth(leftDate)
       }
     }
     this.state = {
       date: leftDate,
       range: {
-        startDate: getWeekRange(startDate).start,
-        endDate: endDate ? getWeekRange(endDate).end : getWeekRange(startDate).end,
+        startDate: startOfWeek(startDate),
+        endDate: endDate ? endOfWeek(endDate) : endOfWeek(startDate),
         selecting: false
       },
       leftDate,

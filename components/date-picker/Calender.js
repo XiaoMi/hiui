@@ -1,5 +1,15 @@
 import React, {Component} from 'react'
-import {deconstructDate, getYearWeek, calcDayCount, calcDayWeek, clearHours} from './util'
+import {deconstructDate, getYearWeek} from './util'
+
+import {
+  getDaysInMonth,
+  subMonths,
+  getDay,
+  startOfMonth,
+  isWithinRange,
+  isSameDay,
+  compareAsc
+} from './dateUtil'
 import {WEEK_DATA, DAY_MILLISECONDS} from './constants'
 class Calender extends Component {
   constructor (props) {
@@ -22,20 +32,19 @@ class Calender extends Component {
   getRows () {
     let {type, range, date, minDate, maxDate, weekOffset} = this.props
     let _date = new Date(new Date(date).getTime())
-    minDate && clearHours(minDate)
-    maxDate && clearHours(maxDate)
     let {year, month, week} = deconstructDate(_date)
     let {endDate, startDate} = range || {startDate: null, endDate: null}
     // *  dayCount: 当月天数
     // *  lastMonthDayCount: 上月总天数
     // *  firstDayWeek: 当月第一天是周几
-    let firstDayWeek = calcDayWeek(year, month, 1) - weekOffset
+    let firstDayWeek = getDay(startOfMonth(_date)) - weekOffset
     if (firstDayWeek <= 0) { // 如果为0 代表该月第一天是周日，在日历上需要第二行开始显示
       firstDayWeek = 7 - weekOffset
     }
     const _time = this._getTime(firstDayWeek, year, month)// 当前日期面板中第一个日期的具体毫秒数(指向上一个月)
-    const dayCount = calcDayCount(year, month)
-    let lastMonthDayCount = calcDayCount(year, month - 1) // 上月总天数
+    const dayCount = getDaysInMonth(_date)
+
+    let lastMonthDayCount = getDaysInMonth(subMonths(_date, 1)) // 上月总天数
     const {rows} = this.state
     let count = 0
     const now = _date.setHours(0, 0, 0, 0) // 今天
@@ -69,12 +78,11 @@ class Calender extends Component {
           col.type = 'today'
         }
         if (type === 'daterange' || type === 'weekrange') {
-          col.rangeStart = startDate && time === clearHours(startDate)
-          col.rangeEnd = endDate && time === clearHours(endDate)
-          col.range = time > startDate && endDate && time < clearHours(endDate)
-          // col.range = time >= startDate && endDate && time <= clearHours(endDate) && col.type !== 'prev' && col.type !== 'next'
+          col.rangeStart = startDate && isSameDay(time, startDate)
+          col.rangeEnd = endDate && isSameDay(time, endDate)
+          col.range = endDate && isWithinRange(time, startDate, endDate)
         }
-        col.disabled = (minDate && new Date(time) < minDate) || (maxDate && new Date(time) > maxDate)
+        col.disabled = (minDate && compareAsc(time, minDate) === -1) || (maxDate && compareAsc(time, maxDate) === 1)
       }
       if (type === 'week') {
         let _month = month

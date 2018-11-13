@@ -5,8 +5,8 @@ import {formatterDate, FORMATS, PLACEHOLDER, isVaildDate} from './constants'
 
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
-import dateFormat from 'date-fns/format'
-import {startOfDay, endOfDay} from 'date-fns'
+
+import {startOfDay, endOfDay, parse, startOfWeek, endOfWeek, dateFormat} from './dateUtil'
 export default class BasePicker extends Component {
   inputRoot = null
   input = null
@@ -63,9 +63,7 @@ export default class BasePicker extends Component {
     // let text = formatterDate(type, value, format, showTime)
     // let rText = text
     let date = new Date() // 当前时间
-    let startDate = startOfDay(date) // 用于范围时的开始时间 - 当前日期 00：00：00
-    let endDate = endOfDay(date) // 用于范围时的结束时间- 当前日期 23：59：59
-    // let rightDate = endDate
+    let noText = false
     /**
      * value 可能的格式：
      *  '' | undefined  | null | Date | String | Number | {start: xxx, end: xxx}
@@ -73,28 +71,27 @@ export default class BasePicker extends Component {
     if (value === '' || !value) {
       // value 未传入情况
       date = new Date()
+      noText = true
     }
-    if (typeof value === 'number') {
+    if (typeof value === 'number' || (typeof value === 'string' && value.trim().length > 4)) {
       // value 为数字（times）
-      date = format(value)
+      date = parse(value)
     }
     if (value instanceof Date) {
       date = value
     }
 
     if (type.indexOf('range') !== -1) {
-      if (value instanceof Date) {
-        date = {startDate, endDate}
+      if (value instanceof Date || !value) {
+        date = {startDate: startOfDay(date), endDate: endOfDay(date)}
       }
       if (value && value.start && value.end) {
         date = {startDate: value.start, endDate: value.end}
-        endDate = value.end
       }
     }
-    console.log(date)
     this.setState({
-      text: formatterDate(type, date, format, showTime),
-      rText: endDate ? formatterDate(type, endDate, format, showTime) : '',
+      text: noText ? '' : formatterDate(type, date.startDate || date, format, showTime),
+      rText: noText ? '' : formatterDate(type, date.endDate || date, format, showTime),
       date,
       placeholder: PLACEHOLDER[props.type] || '请选择日期',
       format
@@ -142,7 +139,7 @@ export default class BasePicker extends Component {
     this._parseProps(nextProps)
   }
   onPick (date, showPanel) {
-    const {type, showTime, onChange} = this.props
+    const {type, showTime, onChange, weekOffset} = this.props
     const {format} = this.state
     this.setState({
       date,
@@ -152,8 +149,18 @@ export default class BasePicker extends Component {
       isFocus: false
     })
     if (onChange) {
-      if (date.startDate && date.endDate) {
-        onChange({start: date.startDate, end: date.endDate})
+      const {startDate, endDate} = date
+      const _weekOffset = {weekStartsOn: weekOffset}
+      if (type === 'week') {
+        onChange({start: startOfWeek(date, _weekOffset), end: endOfWeek(date, _weekOffset)})
+        return
+      }
+      if (startDate && endDate) {
+        if (type === 'weekrange') {
+          onChange({start: startOfWeek(startDate, _weekOffset), end: endOfWeek(endDate, _weekOffset)})
+        } else {
+          onChange({start: startOfDay(startDate), end: endOfDay(endDate)})
+        }
       } else {
         onChange(date)
       }
