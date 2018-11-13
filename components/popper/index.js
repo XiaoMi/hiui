@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import classNames from 'classnames'
-import './index'
+import './style/index'
 
 export default class Popper extends Component {
   container = undefined

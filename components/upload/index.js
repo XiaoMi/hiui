@@ -8,6 +8,7 @@ import UploadDrag from './UploadDrag'
 import UploadPhoto from './UploadPhoto'
 import UploadAvatar from './UploadAvatar'
 import UploadPictureCard from './UploadPictureCard'
+import './style/index'
 
 class Upload extends Component {
   render () {
