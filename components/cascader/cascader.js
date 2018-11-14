@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import shallowEqual from 'shallowequal'
-import {debounce} from 'throttle-debounce'
+import debounce from 'lodash/debounce'
 import Popper from '../popper'
 import Menu from './menu'
 
@@ -49,7 +49,7 @@ class Cascader extends Component {
     const cacheValue = this.props.value
     const cascaderLabel = this.getCascaderLabel(cascaderValue)
 
-    this.debouncedKeywordChange = debounce(300, this.onKeywordChange.bind(this))
+    this.debouncedKeywordChange = debounce(this.onKeywordChange.bind(this), 300)
     this.state = {
       filterOptions: false,
       cacheValue,
