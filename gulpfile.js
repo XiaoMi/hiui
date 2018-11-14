@@ -48,7 +48,7 @@ const compile = modules => {
             'env',
             {
               targets: {
-                browsers: ['ie >= 6']
+                browsers: ['ie > 8']
               },
               loose: true,
               modules: modules,

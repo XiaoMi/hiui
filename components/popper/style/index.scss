@@ -2,6 +2,6 @@
 .hi-popper__container {
   position: absolute;
   &--hide {
-    display: none;
+    display: none !important;
   }
 }
