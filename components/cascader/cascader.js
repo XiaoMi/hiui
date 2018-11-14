@@ -94,9 +94,12 @@ class Cascader extends Component {
 
   showPopper () {
     this.setState({
+      keyword: '',
+      filterOptions: false,
       cascaderValue: this.state.cacheValue,
       popperShow: true
     })
+    this.inputRef.focus()
   }
 
   getCascaderLabel (values) {
@@ -313,6 +316,9 @@ class Cascader extends Component {
       <div className={classNames('hi-cascader', className, extraClass)} style={style}>
         <div className='hi-cascader__input-container' ref={node => { this.inputContainer = node }} onClick={this.handleClick.bind(this)}>
           <input
+            ref={node => {
+              this.inputRef = node
+            }}
             className='hi-cascader__input-keyword'
             value={(popperShow && keyword) || (!popperShow && cascaderLabel) || ''}
             readOnly={!searchable}
