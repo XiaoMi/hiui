@@ -53,6 +53,7 @@
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "shallowequal": "^1.0.2",
+    "throttle-debounce": "^2.0.1",
     "universal-observer": "^1.0.1",
     "warning": "^3.0.0",
     "whatwg-fetch": "^2.0.4"

@@ -1,18 +1,22 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
+import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './style/index'
 
 export default class Popper extends Component {
   container = undefined
 
-  // static propTypes = {
-  //   attachEle: PropTypes.oneOfType([
-  //     PropTypes.node
-  //   ]).isRequired,
-  //   className: PropTypes.string,
-  //   show: PropTypes.bool
-  // }
+  static propTypes = {
+    // attachEle: PropTypes.oneOfType([
+    //   PropTypes.node
+    // ]).isRequired,
+    className: PropTypes.string,
+    show: PropTypes.bool,
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    topGap: PropTypes.number,
+    leftGap: PropTypes.number
+  }
 
   static defaultProps = {
     show: false,
@@ -47,15 +51,16 @@ export default class Popper extends Component {
   }
 
   renderChildren () {
-    const {
+    let {
       children,
       className,
       show,
       attachEle,
       topGap,
-      leftGap
+      leftGap,
+      width
     } = this.props
-    const width = attachEle.offsetWidth
+    width = width !== undefined ? width : attachEle.offsetWidth
     const height = attachEle.offsetHeight
     const offset = this.getOffset(attachEle)
     const left = offset.left + leftGap + 'px'
@@ -63,7 +68,7 @@ export default class Popper extends Component {
     window.attachEle = attachEle
 
     return (
-      <div className={classNames(className, 'hi-popper__container', {hide: !show})} style={{left, top, width}}>
+      <div className={classNames(className, 'hi-popper__container', {'hi-popper__container--hide': !show})} style={{left, top, width}}>
         { children }
       </div>
     )
