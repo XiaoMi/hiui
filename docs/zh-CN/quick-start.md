@@ -14,7 +14,7 @@ HIUI 是一套适用于前中后台的交互界面设计标准与前端解决方
 ### 1. 将HIUI添加到项目中
 
 ```sh
-$ npm install hiui
+$ npm install @hi-ui/hiui --save
 ```
 
 ### 2. 使用组件

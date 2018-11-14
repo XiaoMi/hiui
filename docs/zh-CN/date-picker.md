@@ -19,12 +19,50 @@ constructor() {
 render () {
   return (
     <div>
+      
       <DatePicker
-        value={this.state.date}
+        value={new Date}
         onChange={(d) => {
-          console.log('含有默认值是，会触发一次', DatePicker.format(d, 'yyyy-MM-dd E'))
+          console.log('value 为 Date 实例', DatePicker.format(d, 'YYYY-MM-DD E'))
         }}
       />
+      <DatePicker
+        value={1541755800052}
+        onChange={(d) => {
+          console.log(' value 为 Number(毫秒数)', DatePicker.format(d, 'YYYY-MM-DD E'))
+        }}
+      />
+      <DatePicker
+        value='2018-10-11'
+        onChange={(d) => {
+          console.log('value 为 时间字符串', DatePicker.format(d, 'YYYY-MM-DD E'))
+        }}
+      />
+      <DatePicker
+        format="YYYY-MM-DD HH:mm:SS"
+        onChange={(d) => {
+          console.log('没有 value 属性', DatePicker.format(d, 'YYYY-MM-DD E'))
+        }}
+      />
+      <DatePicker
+        value={null}
+        onChange={(d) => {
+          console.log('value 为 Null', DatePicker.format(d, 'YYYY-MM-DD E'))
+        }}
+      />
+      <DatePicker
+        value={undefined}
+        onChange={(d) => {
+          console.log('value 为 undefined', DatePicker.format(d, 'YYYY-MM-DD E'))
+        }}
+      />
+      <DatePicker
+        value=''
+        onChange={(d) => {
+          console.log('value 为 空字符串', DatePicker.format(d, 'YYYY-MM-DD E'))
+        }}
+      />
+      
       <span style={{color: 'red', fontSize: '14px', cursor: 'pointer', marginLeft:'5px'}} onClick={() => {this.setState({date: new Date()})}}>重置</span>
     </div>
   )
@@ -43,7 +81,6 @@ render () {
 render () {
   return (
     <DatePicker
-      value={new Date()}
       disabled={true}
     />
   )
@@ -63,10 +100,7 @@ render () {
   return (
     <DatePicker
       minDate={new Date()}
-      maxDate={new Date(2018, 4, 28)}
-      onChange={(d) => {
-        console.log(d)
-      }}
+      maxDate={new Date(2019, 4, 28)}
     />
   )
 }
@@ -86,7 +120,7 @@ render () {
     <DatePicker
       type='week' 
       onChange={(d) => {
-        console.log(d)
+        console.log('周选择', d)
       }}
     />
   )
@@ -150,9 +184,11 @@ render () {
     <div>
       <DatePicker 
         type='daterange'
-        value={this.state.rangeDate}
+        format='YYYY-MM-DD HH:mm:ss'
+        // value={this.state.rangeDate}
+        value={new Date()}
         onChange={(d) => {
-          console.log(d)
+          console.log(1, d)
         }}
       />
       <span style={{color: 'red', fontSize: '14px', cursor: 'pointer', marginLeft:'5px'}} onClick={() => {this.setState({rangeDate: ''})}}>重置</span>
@@ -175,7 +211,7 @@ render () {
     <DatePicker 
       type='daterange'
       minDate={new Date()}
-      maxDate={new Date(2018, 4, 28)}
+      maxDate={new Date(2019, 4, 28)}
     />
   )
 }
@@ -193,7 +229,7 @@ render () {
 render () {
   return (
     <DatePicker 
-      value=''
+      value={new Date()}
       type='weekrange'
       onChange={(d) => {
         console.log(d)
@@ -302,7 +338,7 @@ render () {
         <DatePicker
           value={this.state.date}
           onChange={(d) => {
-            console.log(DatePicker.format(d, 'yyyy-MM E'))
+            console.log(DatePicker.format(d, 'YYYY-MM E'))
           }}
         />
         <DatePicker 
@@ -325,14 +361,14 @@ render () {
 
 | 参数       | 说明   |  类型  | 可选值 |默认值  |
 | --------   | -----  | ----  |    ----  |   ----  |
-| type | 选择器类型  | string   | date 普通日期 <br/> daterange 日期范围<br/> year 年份<br/>  month 月份<br/> week 周<br/> weekrange 周范围 |  date |
-| value |  默认显示的日期 | Date/String/Object/Undefined | 可选值参见示例<br/> 用于范围选择时，可传入单个 Date 对象或{start: Date, end: Date}<br/> 可传入空字符串，效果与不传入一致 | null |
-| minDate | 最小日期 | date | null | null |
-| maxDate | 最大日期 | date | null | null |
-| disabled | 是否禁用输入框 | boolean | true false | false |
-| showTime |  是否在日期选择器中显示时间选择器 | boolean | true false | false |
-| shortcuts | 快捷面板 | array | 近一周, 近一月, 近三月, 近一年 | null |
-| weekOffset | 周起始<br/>默认周日做为第一列 |  number | 0/1 | 0 |
+| type | 选择器类型  | String   | date 普通日期 <br/> daterange 日期范围<br/> year 年份<br/>  month 月份<br/> week 周<br/> weekrange 周范围 |  date |
+| value |  默认显示的日期 | Date/String/Number/Object/Undefined/Null | -- | null |
+| minDate | 最小日期 | Date | null | null |
+| maxDate | 最大日期 | Date | null | null |
+| disabled | 是否禁用输入框 | Boolean | true false | false |
+| showTime |  是否在日期选择器中显示时间选择器 | Boolean | true false | false |
+| shortcuts | 快捷面板 | Array | 近一周, 近一月, 近三月, 近一年 | null |
+| weekOffset | 周起始<br/>默认周日做为第一列 |  Number | 0/1 | 0 |
 
 ### Datepicker Events
 
@@ -348,16 +384,41 @@ render () {
 
 ### format
 
-| 格式 |          说明/（长度）           |         示例          |         结果       |
-| :--: | :------------------------------: | ------------------- | ------------------- |
-|  y   |             年/(1~4)             |        yyyy         |2018|
-|  M   |             月/(1~2)             |       yyyy-MM       |2018-06|
-|  d   |             日/(1~2)             |       yyyy-dd        |2018-29|
-|  h   |          12小时制/(1~2)          |       dd : hh       |29:03|
-|  H   |          24小时制/(1~2)          |       dd : HH       |29:15|
-|  m   |            分钟/(1~2)            |      dd hh-mm       |29 15-30|
-|  s   |             秒/(1~2)             | yyyy-MM-dd hh:mm:ss |2018-06-29 03:30:00|
-|  S   |             毫秒/(1)             |  MM-dd: HH:mm:ss:S  |06-29: 15:30:00|
-|  E   | 周/(1~3) 分别对应 一/周一/星期一 |     yy-MM-dd EE     |18-06-29 18|
-|  q   |            季度/(1~2)            |      yyyy-MM q      |2018-06 2|
+| 单位        | 字符 | 示例                             |
+| ----------- | ---- | -------------------------------- |
+| 月          | M    | 1, 2, ..., 12                    |
+|    &nbsp;   | Mo   | 1st, 2nd, ..., 12th              |
+|    &nbsp;   | MM   | 01, 02, ..., 12                  |
+|    &nbsp;   | MMM  | Jan, Feb, ..., Dec               |
+|    &nbsp;   | MMMM | January, February, ..., December |
+| 季度        | Q    | 1, 2, 3, 4                       |
+|    &nbsp;   | Qo   | 1st, 2nd, 3rd, 4th               |
+| 天/月       | D    | 1, 2, ..., 31                    |
+|    &nbsp;   | Do   | 1st, 2nd, ..., 31st              |
+|    &nbsp;   | DD   | 01, 02, ..., 31                  |
+| 天/年       | DDD  | 1, 2, ..., 366                   |
+|    &nbsp;   | DDDo | 1st, 2nd, ..., 366th             |
+|    &nbsp;   | DDDD | 001, 002, ..., 366               |
+| 天/周       | d    | 0, 1, ..., 6                     |
+|    &nbsp;   | do   | 0th, 1st, ..., 6th               |
+|    &nbsp;   | dd   | Su, Mo, ..., Sa                  |
+|    &nbsp;   | ddd  | Sun, Mon, ..., Sat               |
+|    &nbsp;   | dddd | Sunday, Monday, ..., Saturday    |
+| 年          | YY   | 00, 01, ..., 99                  |
+|    &nbsp;   | YYYY | 1900, 1901, ..., 2099            |
+| 上午/下午   | A    | AM, PM                           |
+|    &nbsp;   | a    | am, pm                           |
+|    &nbsp;   | aa   | a.m., p.m.                       |
+| 小时        | H    | 0, 1, ... 23                     |
+|    &nbsp;   | HH   | 00, 01, ... 23                   |
+|    &nbsp;   | h    | 1, 2, ..., 12                    |
+|    &nbsp;   | hh   | 01, 02, ..., 12                  |
+| 分钟        | m    | 0, 1, ..., 59                    |
+|    &nbsp;   | mm   | 00, 01, ..., 59                  |
+| 秒          | s    | 0, 1, ..., 59                    |
+|    &nbsp;   | ss   | 00, 01, ..., 59                  |
+| 秒（1/10）  | S    | 0, 1, ..., 9                     |
+| 秒（1/100） | SS   | 00, 01, ..., 99                  |
+| 毫秒        | SSS  | 000, 001, ..., 999               |
+| 毫秒时间戳  | x    | 512969520900                     |
 

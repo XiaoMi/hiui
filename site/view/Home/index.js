@@ -7,8 +7,7 @@ import locales from '../../locales'
 class Home extends React.Component {
   constructor (props) {
     super(props)
-
-    // const locale = this.storeLang()
+    this.storeLang()
 
     this.designText = React.createRef()
     this.designList = React.createRef()
@@ -32,46 +31,28 @@ class Home extends React.Component {
   componentDidMount () {
     this.scrollEvent()
     window.addEventListener('scroll', this.scrollEvent)
-    // window.addEventListener('hashchange', this.hashChangeEvent)
   }
 
   componentWillUnmount () {
     window.removeEventListener('scroll', this.scrollEvent)
-    // window.removeEventListener('hashchange', this.hashChangeEvent)
   }
-
-  // hashChangeEvent () {
-  //   let locale = window.location.hash.split('/')[1]
-
-  //   if (!locale) { return }
-
-  //   // 临时用于隐藏语言
-  //   if (locale !== 'zh-CN') {
-  //     window.location.hash = window.location.hash.replace(locale, 'zh-CN')
-  //   }
-
-  //   if (locale !== window.localStorage.getItem('HIUI_LANGUAGE')) {
-  //     window.localStorage.setItem('HIUI_LANGUAGE', locale)
-
-  //     this.setState({locale})
-  //   }
-  // }
 
   // 保存语言类型
   storeLang () {
     let locale = window.location.hash.split('/')[1]
-
     if (!locale || !(locale in locales)) {
       locale = window.localStorage.getItem('HIUI_LANGUAGE')
       if (locale && (locale in locales)) {
         window.location.hash = `#/${locale}`
+      } else {
+        window.localStorage.setItem('HIUI_LANGUAGE', this.props.locale)
+        window.location.hash = `#/${this.props.locale}`
       }
     } else {
       locale = 'zh-CN'
       window.localStorage.setItem('HIUI_LANGUAGE', locale)
       window.location.hash = `#/${locale}`
     }
-
     return locale
   }
 

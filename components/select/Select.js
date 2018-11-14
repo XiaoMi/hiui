@@ -7,7 +7,6 @@ import Popper from '../popper'
 import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
 import $$ from './tool.js'
-import './style/index.scss'
 
 class Select extends Component {
   timer = null
@@ -240,12 +239,12 @@ class Select extends Component {
   }
 
   hideDropdown () {
-    !this.noHideDropdown && this.setState({dropdownShow: false})
+    !this.noHideDropdown && this.state.dropdownShow === true && this.setState({dropdownShow: false})
     this.noHideDropdown = false
   }
 
   showDropdown () {
-    this.setState({dropdownShow: true})
+    this.state.dropdownShow === false && this.setState({dropdownShow: true})
     this.selectInput.focus()
   }
 

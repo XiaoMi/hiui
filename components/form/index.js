@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import classNames from 'classnames'
 import Item from './item'
-import './style'
+import './style/index'
 const PropTypes = require('prop-types')
 class Form extends Component {
   static defaultProps = {

@@ -3,10 +3,7 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 
 import Modal from '../modal'
-import '../modal/style'
-import '../button/style'
-import '../input/style'
-import './style'
+import './style/index'
 
 class Confirm extends Component {
   render () {

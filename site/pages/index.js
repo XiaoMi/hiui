@@ -24,6 +24,7 @@ export default {
       'input': require('./input'),
       'counter': require('./counter'),
       'select': require('./select'),
+      'cascader': require('./cascader'),
       'radio': require('./radio'),
       'checkbox': require('./checkbox'),
       'date-picker': require('./date-picker'),
@@ -37,7 +38,8 @@ export default {
       'panel': require('./panel'),
       'collapse': require('./collapse'),
       'tooltip': require('./tooltip'),
-      'popover': require('./popover')
+      'popover': require('./popover'),
+      'progress': require('./progress')
     },
     '通知／提示': {
       'modal': require('./modal'),

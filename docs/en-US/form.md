@@ -233,7 +233,7 @@ render(){
 
 ### FormItem Attributes
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值|
+| Attribute | Description | Type | Options | Default  |
 | --- | ---  | --- | ---- | ---   |
 | prop | model field  | string  | - | - |
 | label | label text | string  | - | - |

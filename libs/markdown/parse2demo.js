@@ -5,6 +5,10 @@ import marked from 'marked'
 import { transform } from 'babel-standalone'
 import Prism from 'prismjs'
 
+const LANG = {
+  'zh-CN': ['显示代码', '收起代码', '复制代码'],
+  'en-US': ['Show Code', 'Hide Code', 'Copy Code']
+}
 class Demo extends Component {
   constructor (props) {
     super(props)
@@ -95,7 +99,11 @@ class Demo extends Component {
 
   render () {
     const showCode = this.state.showCode
-
+    const locale = this.props.locale
+    let ls = LANG[locale]
+    if (!ls) {
+      ls = LANG['zh-CN']
+    }
     return (
       <div className={`demo-box demo-box-${this.props.name}`}>
         <div className={`run-demo${this.parseType === 'run' ? 'parseType-run' : ''}`} id={this.playerId} />
@@ -135,7 +143,7 @@ class Demo extends Component {
                         document.execCommand('Copy', 'false', null)
                       }}
                     >
-                      复制代码
+                      {ls[2]}
                     </span>
                   </div>
 
@@ -183,7 +191,7 @@ class Demo extends Component {
                   <div
                     className='code-ctrl-text'
                   >
-                    {showCode ? '收起代码' : '显示代码'}
+                    {showCode ? ls[1] : ls[0]}
                   </div>
 
                 </div>
