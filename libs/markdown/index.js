@@ -36,7 +36,6 @@ class Markdown extends Component {
 
   render () {
     let document = this.document(localStorage.getItem('HIUI_LANGUAGE') || 'zh-CN')
-
     if (typeof document === 'string') {
       this.components.clear()
 

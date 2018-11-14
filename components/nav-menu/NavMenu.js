@@ -33,6 +33,7 @@ class NavMenu extends Component {
       subMenuChildred: []
     }
   }
+
   componentWillReceiveProps (props) {
     if (this.props.selectedKey !== props.selectedKey) {
       this.setState({

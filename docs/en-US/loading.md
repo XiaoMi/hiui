@@ -1,8 +1,7 @@
-## Loading 动效加载
+## Loading
 
-常用的动态加载提示组件
 
-### 基础用法
+### Basic
 
 :::demo 
 
@@ -17,7 +16,7 @@ render () {
 ```
 :::
 
-### 局部控制
+### partial control
 :::demo 
 
 ```js
@@ -25,7 +24,7 @@ constructor () {
   super()
   this.state = {
     showLoading: false,
-    btnText: '开始加载，模拟3秒返回数据',
+    btnText: 'Start loading, simulate 3 seconds return data',
     list: []
   }
   this.columns = [{
@@ -54,7 +53,6 @@ constructor () {
   }];
 }
 mockTableData () {
-  // 模拟数据接口
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve([{
@@ -84,14 +82,14 @@ clickEvent () {
     this.setState({
       showLoading: false, 
       list: res,
-      btnText: '重新加载，模拟3秒返回数据'
+      btnText: 'Reload, simulate 3 seconds return data'
     })
   })
 }
 render () {
   return <div>
     <div style={{width: 500, height:260, border: '1px solid gray'}}>
-      <Loading tip='拼命加载中' show={this.state.showLoading}>
+      <Loading tip='Desperately loading' show={this.state.showLoading}>
         <Table
           columns={this.columns}
           data={this.state.list}
@@ -106,7 +104,7 @@ render () {
 ```
 :::
 
-### 整页
+### Page
 :::demo 
 
 ```js
@@ -124,7 +122,7 @@ clickEvent () {
 }
 render () {
   return <div>
-    <Button type="primary" onClick={this.clickEvent.bind(this)}>整页遮罩，3秒自动关闭</Button>
+    <Button type="primary" onClick={this.clickEvent.bind(this)}>Full page mask, automatically closed in 3 seconds</Button>
     {this.state.open && <Loading full={true} size='large'/>}
   </div>
 }
@@ -133,9 +131,9 @@ render () {
 
 ### Attributes
 
-| 参数       | 说明   |  类型  | 可选值 |默认值  |
+| Attribute | Description | Type | Options | Default |
 | --------   | -----  | ----  |    ----  |   ----  |
-| size |   组件大小  |  string   | large default small | default |
-| tip |   自定义的旋转动画下的文字  |  string   | - | |
-| full |   是否全屏  |   bool   | - | false |
-| show |    是否显示加载动画  |  boolean   | true false | false |
+| size |   Size  |  string   | large default small | default |
+| tip |   Text  |  string   | - | |
+| full |   Whether full screen  |   bool   | - | false |
+| show |    Whether to display the loading animation  |  boolean   | true false | false |
