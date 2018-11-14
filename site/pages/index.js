@@ -24,6 +24,7 @@ export default {
       'input': require('./input'),
       'counter': require('./counter'),
       'select': require('./select'),
+      'cascader': require('./cascader'),
       'radio': require('./radio'),
       'checkbox': require('./checkbox'),
       'date-picker': require('./date-picker'),
