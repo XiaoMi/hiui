@@ -10,7 +10,9 @@ module.exports = {
     components: 'Basic Components'
   },
   pagination: {
-    total: total => `Total ${total} items`,
+    total: function (total) {
+      return `Total ${total} items`
+    },
     item: 'items',
     goto: 'Goto'
   },

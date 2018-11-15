@@ -15,7 +15,9 @@ module.exports = {
     week: [ '日', '一', '二', '三', '四', '五', '六' ]
   },
   pagination: {
-    total: total => `共${total}条`,
+    total: function (total) {
+      return `共${total}条`
+    },
     item: '条',
     goto: '前往'
   },
