@@ -1,5 +1,5 @@
 import React from 'react'
-export const DashBoardProgress = (props) => {
+export const DashboardProgress = (props) => {
   let prefix = 'hi-progress'
   const {percent: percentNum, text, status, radius: radiusThis, withOutText = false} = props
   const percent = percentNum > 0 ? percentNum : 0
@@ -18,7 +18,8 @@ export const DashBoardProgress = (props) => {
   const strokePathStyle = {
     strokeDasharray: `${(percent / 100) * (strokeDash - openWidth)}px ${strokeDash}px`,
     strokeDashoffset: `-${openWidth / 2}px`,
-    transition: 'stroke-dashoffset 0.3s ease 0s, stroke 0.3s ease'
+    transition: 'stroke-dashoffset 0.3s ease 0s, stroke 0.3s ease',
+    fill: '#fff'
   }
   return (
     <div
@@ -34,7 +35,7 @@ export const DashBoardProgress = (props) => {
           style={trailPathStyle}
         />
         <path
-          className={`${prefix}__dashBoard ${prefix}__circle--${status}`}
+          className={`${prefix}__dashboard ${prefix}__dashboard--${status}`}
           d={pathString}
           strokeLinecap='round'
           ref={(path) => { this.path = path }}

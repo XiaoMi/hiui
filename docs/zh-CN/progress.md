@@ -119,7 +119,7 @@ render() {
   return (
     <div>
       <div style={{display:'inline-block'}}>
-        <Progress percent={this.state.percent} type='dashBoard' radius={50}/>
+        <Progress percent={this.state.percent} type='dashboard' radius={50}/>
       </div>
       <br/>
       <Counter

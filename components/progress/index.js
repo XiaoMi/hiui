@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import './style'
 import {BarProgress} from './BarProgress.js'
 import {CircleProgress} from './CircleProgress.js'
-import {DashBoardProgress} from './DashBoardProgress'
+import {DashboardProgress} from './DashboardProgress'
 
 class Progress extends Component {
   static propTypes = {
@@ -27,8 +27,8 @@ class Progress extends Component {
     switch (type) {
       case 'circle':
         return <CircleProgress {...this.props} />
-      case 'dashBoard':
-        return <DashBoardProgress {...this.props} />
+      case 'dashboard':
+        return <DashboardProgress {...this.props} />
       default:
         return <BarProgress {...this.props} />
     }

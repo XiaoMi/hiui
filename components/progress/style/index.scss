@@ -116,7 +116,7 @@ $progress-text: #666;
     fill: none;
     stroke: $progress-primary;
     stroke-width: 6;
-    transition: stroke-dashoffset 0.3s ease 0s, stroke-dasharray 0.3s ease 0s, stroke 0.3s ease 0s, stroke-width 0.06s ease 0.3s;
+    transition: stroke-dasharray 0.4s cubic-bezier(0.3, 0, 0.7, 1);
   }
 
   &__dashboard--success {
