@@ -11,7 +11,7 @@ module.exports = {
   },
   pagination: {
     total: function (total) {
-      return `Total ${total} items`
+      return 'Total ' + total + ' items'
     },
     item: 'items',
     goto: 'Goto'
