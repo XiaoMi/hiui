@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard",
@@ -38,6 +38,7 @@
     "axios": "^0.18.0",
     "classnames": "^2.2.5",
     "component-classes": "^1.2.6",
+    "date-fns": "^1.29.0",
     "hoist-non-react-statics": "^2.5.0",
     "lodash": "^4.17.10",
     "mini-store": "^1.1.0",
@@ -73,6 +74,7 @@
     "cross-env": "^5.1.6",
     "css-loader": "^0.28.11",
     "cssnano": "^4.0.5",
+    "date-fns": "^1.29.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.11",
     "gh-pages": "^2.0.1",

@@ -1,2 +1,2 @@
 import './index.scss'
-import './timepicker.scss'
+// import './timepicker.scss'

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import './style/index'
 /**
  *
  *

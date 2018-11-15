@@ -1,7 +1,9 @@
 # MIFE dotfiles
 
-# Output files
+# npmignore
 dist/
+docs/
+site/
 
 # Editor generate files
 .idea/

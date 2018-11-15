@@ -27,7 +27,8 @@ class Tree extends Component {
     defaultExpandAll: PropTypes.bool,
     checkable: PropTypes.bool,
     draggable: PropTypes.bool,
-    options: PropTypes.object
+    options: PropTypes.object,
+    onNodeClick: PropTypes.func
   }
   static defaultProps = {
     prefixCls: 'hi-tree',
@@ -39,7 +40,8 @@ class Tree extends Component {
       children: 'children'
     },
     openIcon: null,
-    closeIcon: null
+    closeIcon: null,
+    onNodeClick: () => {}
   }
   componentWillMount () {
     // init checkedTree
@@ -344,7 +346,7 @@ class Tree extends Component {
   }
   // 生成树节点内容 bar（icon + title）
   renderNodeContent = (root) => {
-    const { prefixCls, draggable, options, render, checkable } = this.props
+    const { prefixCls, draggable, options, render, checkable, onNodeClick } = this.props
 
     return (
       <div
@@ -358,6 +360,7 @@ class Tree extends Component {
           {render ? render(root) : (<div className={`${prefixCls}-title`}
             style={root.style}
             onClick={() => {
+              onNodeClick && onNodeClick(root)
               root.onClick && root.onClick(root)
             }}
           >{root[options.title] || DEFAULT_TITLE}</div>)}

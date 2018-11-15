@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { format, formatValue, getAttrs, formatAmount } from './util'
+import './style/index'
 /**
  * 自定义属性全小写；原声属性驼峰法
  * @prop type 输入框类型

@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 import clickOutside from 'react-click-outside'
 import classNames from 'classnames'
 import Button from '../button/index'
-import '../button/style'
-import './style'
 class Dropdown extends Component {
   constructor (props) {
     super(props)

@@ -29,12 +29,14 @@ module.exports = {
     'navMenu': 'NavMenu 导航菜单',
     'menu': 'Menu 菜单',
     'select': 'Select 选择器',
+    'cascader': 'Cascader 级联选择',
     'radio': 'Radio 单选按钮',
     'checkbox': 'Checkbox 复选按钮',
     'grid': 'Grid 栅格',
     'stepper': 'Stepper 步骤',
     'ficon': 'Ficon',
-    'icon': 'Icon 图标'
+    'icon': 'Icon 图标',
+    'progress': 'Progress 进度条'
   },
   misc: {
     'components': '组件',

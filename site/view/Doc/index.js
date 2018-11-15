@@ -12,13 +12,13 @@ import ThemeDropdown from '../Component/Dropdown/ThemeDropdown'
 import './index.scss'
 
 // 引入组件样式
-const req = require.context('../../../components', true, /^\.\/[^_][\w-]+\/style\/index\.js?$/)
-req.keys().forEach((mod) => {
-  let v = req(mod)
-  if (v && v.default) {
-    v = v.default
-  }
-})
+// const req = require.context('../../../components', true, /^\.\/[^_][\w-]+\/style\/index\.js?$/)
+// req.keys().forEach((mod) => {
+//   let v = req(mod)
+//   if (v && v.default) {
+//     v = v.default
+//   }
+// })
 
 class Doc extends Component {
   // constructor (props) {
@@ -28,6 +28,7 @@ class Doc extends Component {
   // }
 
   componentDidMount () {
+
     // window.addEventListener('hashchange', this.hashChangeEvent)
   }
 
@@ -89,7 +90,7 @@ class Doc extends Component {
     return (
       <React.Fragment>
         <Logo
-          url='/'
+          url='https://xiaomi.github.io/hiui/'
           logoUrl={logoImg}
           height={40}
           text='HIUI Design'
@@ -99,10 +100,10 @@ class Doc extends Component {
           {/* <li><Link to={`/${locale}/docs/design`} className={doc === 'design' ? 'active' : ''}>设计规范</Link></li> */}
           <li><Link to={`/${locale}/components`} className={doc === 'components' ? 'active' : ''}>组件</Link></li>
           <li>
-            <LocaleDropdown />
+            <LocaleDropdown locale={locale} />
           </li>
           <li>
-            <ThemeDropdown />
+            <ThemeDropdown locale={locale} />
           </li>
         </ul>
       </React.Fragment>
