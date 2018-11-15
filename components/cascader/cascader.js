@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import debounce from 'lodash/debounce'
+import shallowequal from 'shallowequal'
 import Popper from '../popper'
 import Menu from './menu'
 
@@ -66,10 +67,14 @@ class Cascader extends Component {
   }
 
   componentWillReceiveProps (props) {
-    const cascaderLabel = this.getCascaderLabel(props.value)
+    let value = this.state.cacheValue
+    if (!shallowequal(props.value, this.props.value)) {
+      value = props.value
+    }
+    const cascaderLabel = this.getCascaderLabel(value)
     this.setState({
-      cascaderValue: props.value,
-      cacheValue: props.value, // 缓存原始value，用户可能点击option但是没选中，用户恢复初始value
+      // cascaderValue: value,
+      cacheValue: value, // 缓存原始value，用户可能点击option但是没选中，用于恢复初始value
       cascaderLabel
     })
   }
