@@ -8,11 +8,9 @@ import prifix from './prefix'
 import Checkbox from '../checkbox'
 import Pagination from '../pagination'
 import Icon from '../icon'
-import './style'
-import '../checkbox/style'
-import '../pagination/style'
-import '../icon/style'
+
 import {setKey, scrollTop, getStyle} from './tool'
+import './style/index'
 
 export default class Table extends Component {
   static propTypes = {

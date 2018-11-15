@@ -10,13 +10,13 @@ The basic usage of stepper is left and right structure, just pass in the step in
 render() {
   const list = [
     {
-      title: '账号信息',
+      title: 'Account information',
     },
     {
-      title: '邮箱激活',
+      title: 'Mailbox activation',
     },
     {
-      title: '信息登记',
+      title: 'Information registration',
     },
   ]
 
@@ -43,15 +43,15 @@ Stepper icon usage
 render() {
   const list = [
     {
-      title: '账号信息',
+      title: 'Account information',
       icon: <Icon name='user' />,
     },
     {
-      title: '邮箱激活',
+      title: 'Mailbox activation',
       icon: <Icon name='time' />
     },
     {
-      title: '信息登记',
+      title: 'Information registration',
       icon: <Icon name='list' />
     },
   ]
@@ -79,16 +79,16 @@ The upper and lower structures only need to add `up=true`; only the upper and lo
 render() {
   const list = [
     {
-      title: '账号信息',
-      text: '请输入账号信息',
+      title: 'Account information',
+      text: 'Please Input Account information',
     },
     {
-      title: '邮箱激活',
-      text: '请输入邮箱',
+      title: 'Mailbox activation',
+      text: 'Please Input Emial',
     },
     {
-      title: '信息登记',
-      text: '请输入个人信息',
+      title: 'Information registration',
+      text: 'Please Input Personal information',
     },
   ]
 
@@ -116,18 +116,18 @@ The icon usage of the upper and lower structure needs to add `up=true` and add t
 render() {
   const list = [
     {
-      title: '账号信息',
-      text: '请输入账号信息',
+      title: 'Account information',
+      text: 'Please Input Account information',
       icon: <Icon name='user' />
     },
     {
-      title: '邮箱激活',
-      text: '请输入邮箱',
+      title: 'Mailbox activation',
+      text: 'Please Input Emial',
       icon: <Icon name='time' />
     },
     {
-      title: '信息登记',
-      text: '请输入个人信息',
+      title: 'Information registration',
+      text: 'Please Input Personal information',
       icon: <Icon name='list' />
     },
   ]
@@ -157,16 +157,16 @@ render() {
 render() {
   const list = [
     {
-      title: '账号信息',
-      text: '请输入账号信息',
+      title: 'Account information',
+      text: 'Please Input Account information',
     },
     {
-      title: '邮箱激活',
-      text: '请输入邮箱',
+      title: 'Mailbox activation',
+      text: 'Please Input Emial',
     },
     {
-      title: '信息登记',
-      text: '请输入个人信息',
+      title: 'Information registration',
+      text: 'Please Input Personal information',
     },
   ]
 
@@ -196,18 +196,18 @@ Need to pass in attribute `vertical = true`
 render() {
   const list = [
     {
-      title: '账号信息',
-      text: '请输入账号信息',
+      title: 'Account information',
+      text: 'Please Input Account information',
       icon: <Icon name='user' />,
     },
     {
-      title: '邮箱激活',
-      text: '请输入邮箱',
+      title: 'Mailbox activation',
+      text: 'Please Input Emial',
       icon: <Icon name='time' />,
     },
     {
-      title: '信息登记',
-      text: '请输入个人信息',
+      title: 'Information registration',
+      text: 'Please Input Personal information',
       icon: <Icon name='list' />,
     },
   ]

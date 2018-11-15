@@ -2,17 +2,17 @@ import React, {Component} from 'react'
 import Modal from './Modal'
 import classNames from 'classnames'
 import {formatterDate, FORMATS, PLACEHOLDER, isVaildDate} from './constants'
-import {dateFormat} from './util'
+
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
+
+import {startOfDay, endOfDay, parse, startOfWeek, endOfWeek, dateFormat} from './dateUtil'
 export default class BasePicker extends Component {
   inputRoot = null
   input = null
   rInput = null
   constructor (props) {
     super(props)
-    // let {value, type, format} = props
-    // format = format || FORMATS[type]
     this.state = {
       showPanel: false,
       style: {},
@@ -26,7 +26,24 @@ export default class BasePicker extends Component {
   }
   static propTypes = {
     type: PropTypes.oneOf(Object.values(DatePickerType)),
-    date: PropTypes.instanceOf(Date),
+    value: function (props, propName, componentName) {
+      // Invalid Date
+      const val = props[propName]
+      if (val === undefined || val === null) {
+        return null
+      }
+      if (val.start && val.end) {
+        const _start = dateFormat(val.start)
+        const _end = dateFormat(val.end)
+        if (_start === 'Invalid Date' || _end === 'Invalid Date') {
+          return new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed. start or end is an invalid date.`)
+        }
+      } else {
+        if (dateFormat(val) === 'Invalid Date') {
+          return new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed. value is an invalid data.`)
+        }
+      }
+    },
     onChange: PropTypes.func,
     format: PropTypes.string,
     showTime: PropTypes.bool,
@@ -43,41 +60,38 @@ export default class BasePicker extends Component {
   _parseProps (props, callback) {
     let {value, showTime, type, format} = props
     format = format || FORMATS[type]
-    let text = formatterDate(type, value, format, showTime)
-    let rText = text
-    let l = ''
-    let r = ''
-    let date = new Date()
+    // let text = formatterDate(type, value, format, showTime)
+    // let rText = text
+    let date = new Date() // 当前时间
+    let noText = false
+    /**
+     * value 可能的格式：
+     *  '' | undefined  | null | Date | String | Number | {start: xxx, end: xxx}
+     */
+    if (value === '' || !value) {
+      // value 未传入情况
+      date = new Date()
+      noText = true
+    }
+    if (typeof value === 'number' || (typeof value === 'string' && value.trim().length > 4)) {
+      // value 为数字（times）
+      date = parse(value)
+    }
     if (value instanceof Date) {
-      // type 为范围选择且 value 传入 一个 Date 类型时，需要计算开始和结束时间
-      // value = value.getTime()
-      // const start = value - 1 * DAY_MILLISECONDS // 得到前一天时间
-      l = value
-      r = value
-      if (type.indexOf('range') !== -1) {
-        l = l.setHours(0, 0, 0, 0)
-        r = r.setHours(23, 59, 59, 0)
-        date = {startDate: l, endDate: r}
-      } else {
-        date = value
+      date = value
+    }
+
+    if (type.indexOf('range') !== -1) {
+      if (value instanceof Date || !value) {
+        date = {startDate: startOfDay(date), endDate: endOfDay(date)}
       }
-      // date = type.indexOf('range') !== -1 ? {startDate: l, endDate: r} : value
+      if (value && value.start && value.end) {
+        date = {startDate: value.start, endDate: value.end}
+      }
     }
-    if (typeof value === 'string' || !value) {
-      date = new Date().getTime()
-      l = ''
-      r = ''
-    }
-    if (value && value.start && value.end) {
-      l = value.start.getTime()
-      r = value.end.getTime()
-      date = {startDate: l, endDate: r}
-    }
-    text = formatterDate(type, l, format, showTime)
-    rText = formatterDate(type, r, format, showTime)
     this.setState({
-      text,
-      rText,
+      text: noText ? '' : formatterDate(type, date.startDate || date, format, showTime),
+      rText: noText ? '' : formatterDate(type, date.endDate || date, format, showTime),
       date,
       placeholder: PLACEHOLDER[props.type] || '请选择日期',
       format
@@ -125,7 +139,7 @@ export default class BasePicker extends Component {
     this._parseProps(nextProps)
   }
   onPick (date, showPanel) {
-    const {type, showTime, onChange} = this.props
+    const {type, showTime, onChange, weekOffset} = this.props
     const {format} = this.state
     this.setState({
       date,
@@ -135,8 +149,18 @@ export default class BasePicker extends Component {
       isFocus: false
     })
     if (onChange) {
-      if (date.startDate && date.endDate) {
-        onChange({start: date.startDate, end: date.endDate})
+      const {startDate, endDate} = date
+      const _weekOffset = {weekStartsOn: weekOffset}
+      if (type === 'week') {
+        onChange({start: startOfWeek(date, _weekOffset), end: endOfWeek(date, _weekOffset)})
+        return
+      }
+      if (startDate && endDate) {
+        if (type === 'weekrange') {
+          onChange({start: startOfWeek(startDate, _weekOffset), end: endOfWeek(endDate, _weekOffset)})
+        } else {
+          onChange({start: startOfDay(startDate), end: endOfDay(endDate)})
+        }
       } else {
         onChange(date)
       }
@@ -212,7 +236,6 @@ export default class BasePicker extends Component {
           })
           this.calcPanelPos(this.inputRoot.getBoundingClientRect())
         }}
-        // onBlur={() => this.setState({isFocus: false})}
         value={text}
       />
     )
@@ -222,27 +245,33 @@ export default class BasePicker extends Component {
     if (onChange) {
       onChange(null)
     }
-    // this._parseProps(this.props)
     this.setState({text: '', isFocus: false})
   }
   _icon () {
     const {isFocus} = this.state
     const iconCls = classNames(
-      'icon',
+      'hi-datepicker__input-icon',
       'hi-icon',
-      isFocus ? 'icon-close-circle clear' : 'icon-date',
-      this.props.disabled && 'disabled'
+      isFocus ? 'icon-close-circle clear' : 'icon-date'
     )
-    return isFocus ? <span className={iconCls} onClick={this._clear.bind(this)} /> : <span className={iconCls} onClick={(e) => {
-      this.setState({showPanel: true, isFocus: true})
-    }} />
+    return isFocus
+      ? <span className={iconCls} onClick={this._clear.bind(this)} />
+      : <span className={iconCls} onClick={(e) => {
+        if (this.props.disabled) return
+        this.setState({showPanel: true, isFocus: true})
+      }} />
   }
-  getRangeInput () {
+  renderRangeInput () {
     const {
       disabled
     } = this.props
+    const _cls = classNames(
+      'hi-datepicker__input',
+      'hi-datepicker__input--range',
+      disabled && 'hi-datepicker__input--disabled'
+    )
     return (
-      <div className={`input-wrap range${disabled ? ' disabled' : ''}`}>
+      <div className={_cls}>
         {this._input(this.state.text, 'input')}
         <span>至</span>
         {this._input(this.state.rText, 'rInput')}
@@ -254,8 +283,13 @@ export default class BasePicker extends Component {
     const {
       disabled
     } = this.props
+    const _cls = classNames(
+      'hi-datepicker__input',
+      'hi-datepicker__input--normal',
+      disabled && 'hi-datepicker__input--disabled'
+    )
     return (
-      <div className={`input-wrap ${disabled ? ' disabled' : ''}`}>
+      <div className={_cls}>
         {this._input(this.state.text, 'input')}
         {this._icon()}
       </div>
@@ -264,9 +298,9 @@ export default class BasePicker extends Component {
   render () {
     const {type, showTime} = this.props
     return (
-      <span ref={el => { this.inputRoot = el }} className='input-root' style={{display: 'inline-block'}}>
+      <span ref={el => { this.inputRoot = el }} className='hi-datepicker__input-root'>
         {
-          type.indexOf('range') !== -1 ? this.getRangeInput() : this.renderNormalInput()
+          type.indexOf('range') !== -1 ? this.renderRangeInput() : this.renderNormalInput()
         }
         {
           this.state.showPanel ? (
@@ -279,5 +313,3 @@ export default class BasePicker extends Component {
     )
   }
 }
-
-BasePicker.format = dateFormat

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import Button from '../button/index'
+import './style/index'
 
 const parse = (checked, list, disabled) => {
   let _checked = -1

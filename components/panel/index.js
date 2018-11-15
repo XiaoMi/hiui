@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import './style/index'
 
 class Panel extends Component {
   static propTypes = {

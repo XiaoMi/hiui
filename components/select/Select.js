@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
+import shallowEqual from 'shallowequal'
 import Popper from '../popper'
 import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
 import $$ from './tool.js'
-import './style/index.scss'
 
 class Select extends Component {
   timer = null
@@ -17,7 +17,10 @@ class Select extends Component {
     list: PropTypes.array,
     origin: PropTypes.object,
     value: PropTypes.oneOfType([
-      PropTypes.string
+      PropTypes.string,
+      PropTypes.array,
+      PropTypes.bool,
+      PropTypes.number
     ]),
     autoload: PropTypes.bool,
     searchable: PropTypes.bool,
@@ -28,6 +31,7 @@ class Select extends Component {
   }
 
   static defaultProps = {
+    list: [],
     mode: 'single',
     disabled: false,
     value: '',
@@ -40,8 +44,8 @@ class Select extends Component {
     let {
       list
     } = this.props
-    const dropdownItems = list ? JSON.parse(JSON.stringify(list)) : []
-    const selectedItems = this.resetSelectedItems()
+    const dropdownItems = list
+    const selectedItems = this.resetSelectedItems(this.props)
     const searchable = this.getSearchable()
     // const focusedIndex = this.resetFocusedIndex(false)
 
@@ -80,6 +84,23 @@ class Select extends Component {
     window.removeEventListener('click', this.hideDropdown.bind(this))
   }
 
+  componentWillReceiveProps (props) {
+    if (props.value !== this.props.value) {
+      const selectedItems = this.resetSelectedItems(props)
+
+      this.setState({
+        selectedItems
+      }, () => {
+        this.onChange()
+      })
+    }
+    if (!shallowEqual(props.list, this.props.list)) {
+      this.setState({
+        dropdownItems: props.list
+      })
+    }
+  }
+
   getSearchable () {
     let {
       searchable
@@ -94,6 +115,19 @@ class Select extends Component {
     return !!searchable
   }
 
+  parseValue () {
+    let {
+      value
+    } = this.props
+    if (Array.isArray(value)) {
+      return value.slice()
+    } else if (typeof value === 'string') {
+      return value.split(',')
+    } else {
+      return [value]
+    }
+  }
+
   isRemote () {
     let {
       origin
@@ -101,12 +135,11 @@ class Select extends Component {
     return origin && !!origin.url
   }
 
-  resetSelectedItems () {
+  resetSelectedItems (props) {
     const {
-      list,
-      value
-    } = this.props
-    const values = value.split(',')
+      list
+    } = props
+    const values = this.parseValue()
     let selectedItems = []
 
     list && list.map(item => {
@@ -118,8 +151,7 @@ class Select extends Component {
   }
 
   addOption (option) {
-    const value = this.props.value
-    const values = value.split(',')
+    const values = this.parseValue()
 
     this.state.dropdownItems.push(option)
     values.indexOf(option.id) > -1 && this.state.selectedItems.push(option)
@@ -207,12 +239,12 @@ class Select extends Component {
   }
 
   hideDropdown () {
-    !this.noHideDropdown && this.setState({dropdownShow: false})
+    !this.noHideDropdown && this.state.dropdownShow === true && this.setState({dropdownShow: false})
     this.noHideDropdown = false
   }
 
   showDropdown () {
-    this.setState({dropdownShow: true})
+    this.state.dropdownShow === false && this.setState({dropdownShow: true})
     this.selectInput.focus()
   }
 
