@@ -200,35 +200,6 @@ class UploadPhoto extends Component {
               </li>
             ))
           }
-          {this.state.allPhotoFiles.map((file, index) => {
-            if (file.uploadState === 'loading') {
-              return (<li key={index}>
-                <div className='img-uploading'>
-                  <img src={file.src} />
-                  <div className='upload-precent'>
-                    <p className='precent-num'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : '上传成功') : (0 + '%')}</p>
-                    <div className='precent-loading' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
-                  </div>
-                </div>
-              </li>)
-            } else {
-              return (<li key={index}>
-                <div className='img-uploaded'>
-                  <img src={file.src} />
-                  <div className='upload-comperate'>
-                    <span
-                      className='icon Ficon-origin'
-                      onClick={() => console.log('show origin photo')}
-                    />
-                    <span
-                      className='icon Ficon-delete-photo'
-                      onClick={this.deletFile.bind(this, index)}
-                    />
-                  </div>
-                </div>
-              </li>)
-            }
-          })}
           <li>
             <label>
               <input
