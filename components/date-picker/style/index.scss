@@ -314,12 +314,15 @@ $basic-color: #4284f5;
   }
 
   &__list {
-    overflow-x: hidden;
-    overflow-y: scroll;
+    position: absolute;
+    z-index: 1;
     width: 80px;
     height: 196px;
-    z-index: 1;
-    position: absolute;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    overflow-x: hidden;
+    overflow-y: scroll;
     background: #fff;
 
     &:nth-child(2) {
