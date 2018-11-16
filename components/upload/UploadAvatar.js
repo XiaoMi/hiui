@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import AJAX from './tool'
 import Modal from '../modal'
+import Provider from '../context'
 
 class UploadAvatar extends Component {
   static propTypes = {
@@ -55,7 +56,6 @@ class UploadAvatar extends Component {
     uploadType: 'avater',
     accept: '',
     limit: null,
-    buttonText: '上传',
     buttonIcon: 'upload',
     uploadAction: '',
     deleteAction: '',
@@ -114,7 +114,8 @@ class UploadAvatar extends Component {
     const _self = this
     const canvas = document.getElementById('upload-canvas')
     const context = canvas.getContext('2d')
-    let img = new Image()
+    /* eslint-disable */
+    let img = new Image() 
     const fr = new FileReader()
 
     this.dom.CanvasReal = canvas
@@ -510,4 +511,4 @@ class UploadAvatar extends Component {
   }
 }
 
-export default UploadAvatar
+export default Provider(UploadAvatar)

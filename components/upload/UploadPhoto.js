@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import AJAX from './tool'
+import Provider from '../context'
 
 class UploadPhoto extends Component {
   static propTypes = {
@@ -29,7 +30,6 @@ class UploadPhoto extends Component {
     uploadType: 'photo',
     accept: '',
     limit: null,
-    buttonText: '上传',
     buttonIcon: 'upload',
     uploadAction: '',
     deleteAction: '',
@@ -248,4 +248,4 @@ class UploadPhoto extends Component {
   }
 }
 
-export default UploadPhoto
+export default Provider(UploadPhoto)
