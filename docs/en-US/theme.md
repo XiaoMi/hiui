@@ -1,22 +1,35 @@
 ## Theme
 
-There are currently two themes available, *Classic* and *Genuine*, please refer to the file `README.md` for specific usage.
+The supported themes are detailed in the table below. The default ishiui-blue.
 
-### Classic Theme
+### Instructions
+With ThemeContext, nested components can get the set theme via props.theme.
+```js
+import {ThemeContext} from '@hi-ui/hiui/es/context'
 
-Theme link: [GitHub](https://github.com/hiui-group/classic-theme) [NPM](https://www.npmjs.com/package/@hi-ui/classic-theme)
+<ThemeContext.Provider value='hiui-blue'>
+  <App/>
+</ThemeContext.Provider>
+```
 
-<p><img src="./static/img/themes/classic/classic-theme-01.png" width="90%" /></p>
-<p><img src="./static/img/themes/classic/classic-theme-02.png" width="90%" /></p>
-<p><img src="./static/img/themes/classic/classic-theme-03.png" width="90%" /></p>
-<p><img src="./static/img/themes/classic/classic-theme-04.png" width="90%" /></p>
+### Supported language
+:::demo
 
-### Genuine Theme
+```run
+render() {
+  return (
+    <Table columns={[
+      { title: 'Theme', dataIndex: 'language'},
+      { title: 'value', dataIndex: 'theme'}
+    ]} data={[
+      {language: 'blue', theme: 'hiui-blue'},
+      {language: 'orange', theme: 'orange'},
+      {language: 'cyan', theme: 'cyan'},
+      {language: 'blue', theme: 'blue'},
+      {language: 'purple', theme: 'purple'},
+    ]} />
+  )
+}
+```
+:::
 
-Theme link: [GitHub](https://github.com/hiui-group/genuine-theme) [NPM](https://www.npmjs.com/package/@hi-ui/genuine-theme)
-
-<p><img src="./static/img/themes/genuine/genuine-theme-01.png" width="90%" /></p>
-<p><img src="./static/img/themes/genuine/genuine-theme-02.png" width="90%" /></p>
-<p><img src="./static/img/themes/genuine/genuine-theme-03.png" width="90%" /></p>
-
--- EOF --

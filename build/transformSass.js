@@ -2,7 +2,7 @@ const sass = require('node-sass')
 const { readFileSync } = require('fs')
 const postcss = require('postcss')
 const path = require('path')
-const postcssConfig = require('./postcssConfig')
+const postcssConfig = require('../postcss.config')
 
 function transformSass (sassFile, config = {}) {
   const { cwd = process.cwd() } = config
