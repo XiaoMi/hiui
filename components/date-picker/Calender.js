@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {deconstructDate, getYearWeek} from './util'
+import Provider from '../context'
 
 import {
   getDaysInMonth,
@@ -10,7 +11,7 @@ import {
   isSameDay,
   compareAsc
 } from './dateUtil'
-import {WEEK_DATA, DAY_MILLISECONDS} from './constants'
+import {DAY_MILLISECONDS} from './constants'
 class Calender extends Component {
   constructor (props) {
     super(props)
@@ -220,8 +221,10 @@ class Calender extends Component {
     return _class.join(' ')
   }
   getWeeks () {
-    const {weekOffset} = this.props
-    return WEEK_DATA.slice(weekOffset).concat(WEEK_DATA.slice(0, weekOffset))
+    const {weekOffset, localeDatas} = this.props
+    const week = localeDatas.datePicker.week
+
+    return week.slice(weekOffset).concat(week.slice(0, weekOffset))
   }
   render () {
     const {type, data} = this.props
@@ -279,4 +282,4 @@ class Calender extends Component {
     )
   }
 }
-export default Calender
+export default Provider(Calender)

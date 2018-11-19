@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import Time from './Time'
 import Button from '../button'
-export default class TimePanel extends Component {
+import Provider from '../context'
+
+class TimePanel extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -35,7 +37,7 @@ export default class TimePanel extends Component {
         {
           this.props.type === 'time' && (
             <div className='hi-timepicker__footer'>
-              <Button type='primary' size='small' onClick={() => this.props.timeConfirm(this.state.date, true)}>确认</Button>
+              <Button type='primary' size='small' onClick={() => this.props.timeConfirm(this.state.date, true)}>{this.props.localeDatas.datePicker.ok}</Button>
             </div>
           )
         }
@@ -44,3 +46,5 @@ export default class TimePanel extends Component {
     )
   }
 }
+
+export default Provider(TimePanel)

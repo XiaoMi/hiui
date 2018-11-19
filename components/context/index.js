@@ -16,7 +16,7 @@ export default (WrappedComponent) =>
         <ThemeContext.Consumer>
           {contextTheme => (
             <LocaleContext.Consumer>
-              {contextLocale => <WrappedComponent theme={contextTheme} locale={locales[contextLocale]} {...restProps} />}
+              {contextLocale => <WrappedComponent theme={contextTheme} locale={contextLocale} localeDatas={locales[contextLocale]} {...restProps} />}
             </LocaleContext.Consumer>
           )}
         </ThemeContext.Consumer>

@@ -7,6 +7,7 @@ import Popper from '../popper'
 import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
 import $$ from './tool.js'
+import Provider from '../context'
 
 class Select extends Component {
   timer = null
@@ -384,15 +385,26 @@ class Select extends Component {
     })
   }
 
+  localeDatasProps (key) {
+    const {
+      localeDatas
+    } = this.props
+    if (this.props[key]) {
+      return this.props[key]
+    } else {
+      return localeDatas.select[key]
+    }
+  }
+
   render () {
     const {
       mode,
-      placeholder,
       className,
       disabled,
       style,
       children
     } = this.props
+    const placeholder = this.localeDatasProps('placeholder')
     const {
       selectedItems,
       dropdownItems,
@@ -447,4 +459,4 @@ Select.childContextTypes = {
   component: PropTypes.any
 }
 
-export default Select
+export default Provider(Select)

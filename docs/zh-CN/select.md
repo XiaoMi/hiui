@@ -29,7 +29,6 @@ render () {
 			<Select
 				mode='single'
 				list={this.state.singleList}
-				placeholder='请选择品类'
 				style={{width: '200px'}}
 				value='3'
 				onChange={(item) => {
@@ -259,7 +258,7 @@ render () {
 | searchable | 是否可以筛选 | bool | true, false | false |
 | autoload | origin从远端获取数据，初始时是否自动加载 | bool | true, false | false |
 | disabled | 禁用该下拉框 | bool | true, false | false |
-| placeholder | 提示信息 | string | - | - |
+| placeholder | 提示信息 | string | - | 请选择 |
 | style | 自定义样式 | object | — | — |
 
 

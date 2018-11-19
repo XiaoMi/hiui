@@ -137,7 +137,7 @@ class Pagination extends Component {
     this.props.sizeChangeEvent(val, this.state.current)
   }
   render () {
-    const { prefixCls, itemRender, className, pageLink, showTotal, total, pageSize, jumpEvent, sizeChangeEvent, theme, locale } = this.props
+    const { prefixCls, itemRender, className, pageLink, showTotal, total, pageSize, jumpEvent, sizeChangeEvent, theme, localeDatas } = this.props
     const { current } = this.state
     const allPages = this.calculatePage()
     const pagerList = []
@@ -252,7 +252,7 @@ class Pagination extends Component {
     return (
       <div className={`${prefixCls} ${className} theme__${theme}`}>
         {
-          showTotal && <span className='hi-pagination-total'>{locale.pagination.total(total)}</span>
+          showTotal && <span className='hi-pagination-total'>{localeDatas.pagination.total(total)}</span>
         }
         {
           sizeChangeEvent && <div className='hi-pagination-sizechange'>
@@ -277,7 +277,7 @@ class Pagination extends Component {
                 }}
               />
             </span>
-            {locale.pagination.item}
+            {localeDatas.pagination.item}
           </div>
         }
         <ul className='hi-pagination-list-container'>
@@ -305,7 +305,7 @@ class Pagination extends Component {
         </ul>
         {
           jumpEvent && <div className='hi-pagination-jump'>
-            {locale.pagination.goto}
+            {localeDatas.pagination.goto}
             <Input onBlur={(e) => {
               let val = e.target.value
               this.setState({
