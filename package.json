@@ -6,12 +6,9 @@
     "test": "node_modules/.bin/standard",
     "fix": "node_modules/.bin/standard --fix",
     "dev": "cd site && cross-env NODE_ENV=development PORT=4200 node server.js",
-    "build": "cross-env NODE_ENV=production node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.production.config.js && gulp carry",
     "compile": "cross-env NODE_ENV=production gulp",
+    "build": "cross-env NODE_ENV=production node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.production.config.js && gulp carry",
     "deploy": "gh-pages -d dist",
-    "webpack-compile": "cross-env NODE_ENV=production node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.compile.config",
-    "trans-dev": "cross-env NODE_ENV=development && webpack-dev-server --config ./transform/webpack.config.js",
-    "trans-dist": "cross-env NODE_ENV=production && webpack --config ./transform/webpack.production.config.js",
     "precommit": "lint-staged",
     "start": "npm run dev"
   },
@@ -109,8 +106,7 @@
       "/lib/",
       "/dist/",
       "/libs/markdown/code.js",
-      "yarn.lock",
-      "/transform/"
+      "yarn.lock"
     ]
   },
   "lint-staged": {
