@@ -1,22 +1,35 @@
-## 主题
+## 主题切换
 
-目前有两款主题可以使用，分别是 `Classic` 和 `Genuine`，具体使用方法请看仓库 `README.md`
+支持的主题详见下表，默认为hiui-blue
 
-### Classic Theme
+### 使用方法
+使用ThemeContext，嵌套的组件可以通过props.theme获取到设置的主题
+```js
+import {ThemeContext} from '@hi-ui/hiui/es/context'
 
-主题链接：[GitHub](https://github.com/hiui-group/classic-theme) [NPM](https://www.npmjs.com/package/@hi-ui/classic-theme)
+<ThemeContext.Provider value='hiui-blue'>
+  <App/>
+</ThemeContext.Provider>
+```
 
-<p><img src="./static/img/themes/classic/classic-theme-01.png" width="90%" /></p>
-<p><img src="./static/img/themes/classic/classic-theme-02.png" width="90%" /></p>
-<p><img src="./static/img/themes/classic/classic-theme-03.png" width="90%" /></p>
-<p><img src="./static/img/themes/classic/classic-theme-04.png" width="90%" /></p>
+### 支持的主题
+:::demo
 
-### Genuine Theme
+```run
+render() {
+  return (
+    <Table columns={[
+      { title: '主题', dataIndex: 'language'},
+      { title: 'value', dataIndex: 'theme'}
+    ]} data={[
+      {language: '品牌蓝', theme: 'hiui-blue'},
+      {language: '橙', theme: 'orange'},
+      {language: '青', theme: 'cyan'},
+      {language: '蓝', theme: 'blue'},
+      {language: '紫', theme: 'purple'},
+    ]} />
+  )
+}
+```
+:::
 
-主题链接：[GitHub](https://github.com/hiui-group/genuine-theme) [NPM](https://www.npmjs.com/package/@hi-ui/genuine-theme)
-
-<p><img src="./static/img/themes/genuine/genuine-theme-01.png" width="90%" /></p>
-<p><img src="./static/img/themes/genuine/genuine-theme-02.png" width="90%" /></p>
-<p><img src="./static/img/themes/genuine/genuine-theme-03.png" width="90%" /></p>
-
--- EOF --

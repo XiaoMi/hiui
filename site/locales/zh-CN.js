@@ -1,8 +1,10 @@
 module.exports = {
   page: {
     'quick-start': '开始',
+    'i18n': '国际化',
+    'theme': '主题切换',
+    'template': '模板',
     'typography': 'Typography 排版',
-    'theme': '布局',
     'button': 'Button 按钮',
     'dropdown': 'Dropdown 下拉',
     'pagination': 'Pagination 分页',
