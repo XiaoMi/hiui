@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import AJAX from './tool'
+import Provider from '../context'
 
 class UploadDrag extends Component {
   static propTypes = {
@@ -28,7 +29,6 @@ class UploadDrag extends Component {
     uploadType: 'drag',
     accept: '',
     limit: null,
-    buttonText: '上传',
     buttonIcon: 'upload',
     uploadAction: '',
     deleteAction: '',
@@ -287,4 +287,4 @@ class UploadDrag extends Component {
   }
 }
 
-export default UploadDrag
+export default Provider(UploadDrag)

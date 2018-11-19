@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import AJAX from './tool'
+// import { Provider } from '../../libs/store';
+import Provider from '../context'
 
 class UploadPictureCard extends Component {
   static propTypes = {
@@ -28,7 +30,6 @@ class UploadPictureCard extends Component {
     uploadType: 'pictureCard',
     accept: '',
     limit: null,
-    buttonText: '上传',
     buttonIcon: 'upload',
     uploadAction: '',
     deleteAction: '',
@@ -147,7 +148,7 @@ class UploadPictureCard extends Component {
   }
 
   render () {
-    const { uploadType } = this.props
+    const { uploadType, localeDatas } = this.props
     return (
       <div className={'upload-' + uploadType}>
         <div>
@@ -167,7 +168,7 @@ class UploadPictureCard extends Component {
               }`}
             >
               <i className={`icon Ficon-${this.state.buttonIcon}`} />&nbsp;{
-                this.state.buttonText
+                this.state.buttonText || localeDatas.upload.buttonText
               }
             </span>
           </label>
@@ -220,4 +221,4 @@ class UploadPictureCard extends Component {
   }
 }
 
-export default UploadPictureCard
+export default Provider(UploadPictureCard)

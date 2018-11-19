@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 import BasePicker from './BasePicker'
 import TimePanel from './TimePanel'
+import Provider from '../context'
 
 class TimePicker extends BasePicker {
   static propTypes = {
@@ -31,4 +32,4 @@ class TimePicker extends BasePicker {
     )
   }
 }
-export default TimePicker
+export default Provider(TimePicker)

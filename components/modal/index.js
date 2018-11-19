@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Button from '../button'
 import './style/index'
+import Provider from '../context'
 
 class Modal extends Component {
   static propTypes = {
@@ -22,8 +23,6 @@ class Modal extends Component {
     title: '',
     prefixCls: 'hi-modal',
     adaptive: false,
-    confirmText: '确定',
-    cancelText: '取消',
     backDrop: true,
     show: false,
     confirmType: 'primary',
@@ -65,8 +64,20 @@ class Modal extends Component {
     }
     this._unblock()
   }
+  localeDatasProps (key) {
+    const {
+      localeDatas
+    } = this.props
+    if (this.props[key]) {
+      return this.props[key]
+    } else {
+      return localeDatas.modal[key]
+    }
+  }
   renderFooter () {
-    const {cancelText, confirmText, cancelType, confirmType, footers} = this.props
+    const {cancelType, confirmType, footers} = this.props
+    const cancelText = this.localeDatasProps('cancelText')
+    const confirmText = this.localeDatasProps('confirmText')
     if (footers) {
       return footers
     } else {
@@ -118,4 +129,4 @@ class Modal extends Component {
   }
 }
 
-export default Modal
+export default Provider(Modal)

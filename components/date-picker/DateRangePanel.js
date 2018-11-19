@@ -5,7 +5,9 @@ import {DAY_MILLISECONDS} from './constants'
 import TimePanel from './TimePanel'
 import Icon from '../icon'
 import classNames from 'classnames'
-export default class DatePanel extends Component {
+import Provider from '../context'
+
+class DatePanel extends Component {
   constructor (props) {
     super(props)
     let {startDate, endDate} = props.date
@@ -217,20 +219,21 @@ export default class DatePanel extends Component {
     })
   }
   shortcutsClickEvent (e) {
+    const { localeDatas } = this.props
     const {date, range} = this.state
     const val = e.target.innerText
     let days = 0
     switch (val) {
-      case '近一周':
+      case localeDatas.datePicker.lastWeek:
         days = 7
         break
-      case '近一月':
+      case localeDatas.datePicker.lastMonth:
         days = 30
         break
-      case '近三月':
+      case localeDatas.datePicker.lastThreeMonth:
         days = 90
         break
-      case '近一年':
+      case localeDatas.datePicker.lastYear:
         days = 365
         break
     }
@@ -273,11 +276,15 @@ export default class DatePanel extends Component {
 
   }
   renderTimeHeader (flag) {
+    const {
+      localeDatas
+    } = this.props
+
     return (
       <div className='hi-datepicker__time-header'>
-        <span onClick={() => this.setState({[flag === 'left' ? 'leftView' : 'rightView']: 'date'})}>日期选择</span>
+        <span onClick={() => this.setState({[flag === 'left' ? 'leftView' : 'rightView']: 'date'})}>{localeDatas.datePicker.dateChoose}</span>
         <em />
-        <span onClick={() => this.setState({[flag === 'left' ? 'leftView' : 'rightView']: 'time'})}>时间选择</span>
+        <span onClick={() => this.setState({[flag === 'left' ? 'leftView' : 'rightView']: 'time'})}>{localeDatas.datePicker.timeChoose}</span>
       </div>
     )
   }
@@ -373,3 +380,5 @@ export default class DatePanel extends Component {
     )
   }
 }
+
+export default Provider(DatePanel)
