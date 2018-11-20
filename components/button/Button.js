@@ -11,14 +11,16 @@ class Button extends Component {
     style: PropTypes.object,
     appearance: PropTypes.oneOf(['default', 'link', 'line']),
     disabled: PropTypes.bool,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    href: PropTypes.string,
+    target: PropTypes.oneOf(['_self', '_blank', '_parent', '_top'])
   }
 
   static defaultProps = {
     prefixCls: 'hi-btn',
     type: 'default',
     disabled: false,
-    appearance: 'default',
+    appearance: 'normal',
     size: 'default'
   }
 
@@ -38,6 +40,8 @@ class Button extends Component {
       appearance,
       style,
       title,
+      href,
+      target,
       theme
     } = this.props
     const classes = classNames(
@@ -45,22 +49,36 @@ class Button extends Component {
       `${prefixCls}`,
       className && `${className}`,
       type && appearance && `${prefixCls}-${appearance || 'default'}-${type}`,
-      disabled && `${prefixCls}-disabled`,
-      size && `${prefixCls}-${size}`
+      type && appearance && `${prefixCls}--${type}--${appearance || 'normal'}`,
+      type && `${prefixCls}--${type || 'primary'}`,
+      appearance && `${prefixCls}--${appearance || 'default'}`,
+      disabled && `${prefixCls}--disabled`,
+      size && `${prefixCls}--${size}`
     )
 
     const disabledBool = !!disabled
     return (
-      <button
-        className={classes}
-        disabled={disabledBool}
-        onClick={() => this.clickCb()}
-        style={style}
-        title={title}
-        type='button'
-      >
-        {this.props.children}
-      </button>
+      href
+        ? <a
+          className={classes}
+          onClick={() => this.clickCb()}
+          style={style}
+          title={title}
+          href={href}
+          target={target}
+        >
+          {this.props.children}
+        </a>
+        : <button
+          className={classes}
+          disabled={disabledBool}
+          onClick={() => this.clickCb()}
+          style={style}
+          title={title}
+          type='button'
+        >
+          {this.props.children}
+        </button>
     )
   }
 }

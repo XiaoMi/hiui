@@ -15,7 +15,7 @@ render() {
   const Row = Layout.Row
   const Col = Layout.Col
   return (
-    <div>
+    <div className='theme__purple'>
       <Row gutter={true}>
         <Col span={24}>
 
