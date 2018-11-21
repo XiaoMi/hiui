@@ -228,11 +228,10 @@ render() {
   return (
     <div>
       <Input
-        style={{margin: '4px 4px'}}
         value=""
         type="textarea"
         placeholder="多行文本"
-        style={{width: '250px'}}
+        style={{width: '540px', height: '300px'}}
       />
     </div>
   )

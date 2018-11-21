@@ -53,6 +53,7 @@ $input: 'hi-input';
   .hi-input__out {
     display: flex;
     justify-content: space-between;
+    height: 100%;
   }
 
   .hi-input__inner {
