@@ -5,11 +5,11 @@ import Provider from '../context'
 
 class Button extends Component {
   static propTypes = {
-    type: PropTypes.oneOf(['default', 'primary', 'success', 'info', 'warning', 'danger']),
+    type: PropTypes.oneOf(['primary', 'line', 'success', 'danger', 'default', 'warning']),
     size: PropTypes.oneOf(['large', 'small', 'default']),
+    appearance: PropTypes.oneOf(['link', 'default', 'line']),
     className: PropTypes.string,
     style: PropTypes.object,
-    appearance: PropTypes.oneOf(['default', 'link', 'line']),
     disabled: PropTypes.bool,
     onClick: PropTypes.func,
     href: PropTypes.string,
@@ -20,7 +20,7 @@ class Button extends Component {
     prefixCls: 'hi-btn',
     type: 'default',
     disabled: false,
-    appearance: 'normal',
+    appearance: 'default',
     size: 'default'
   }
 
@@ -48,12 +48,13 @@ class Button extends Component {
       'theme__' + theme,
       `${prefixCls}`,
       className && `${className}`,
-      type && appearance && `${prefixCls}-${appearance || 'default'}-${type}`,
-      type && appearance && `${prefixCls}--${type}--${appearance || 'normal'}`,
-      type && `${prefixCls}--${type || 'primary'}`,
-      appearance && `${prefixCls}--${appearance || 'default'}`,
-      disabled && `${prefixCls}--disabled`,
-      size && `${prefixCls}--${size}`
+      // For version < 1.1.0
+      (type === 'primary' && appearance === 'line')
+        ? `${prefixCls}--type_line`
+        : `${prefixCls}--type_${type || 'default'}`,
+      appearance && `${prefixCls}--appearance_${appearance || 'default'}`,
+      size && `${prefixCls}--size_${size}`,
+      disabled && `${prefixCls}--disabled`
     )
 
     const disabledBool = !!disabled

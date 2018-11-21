@@ -1,111 +1,178 @@
-@import '../../style/index.scss';
-@import './mixins.scss';
-
 @import '@hi-ui/core-css';
 
-// normal
-// default
-$btn-default-background: $default;
-$btn-primary-background: $primary;
-$btn-success-background: $green;
-$btn-info-background: $blue;
-$btn-warning-background: $yellow;
-$btn-danger-background: $red;
+// Render line style button
+@mixin render-line-button($color) {
+  background-color: rgba($color, 0.1);
+  border-color: rgba($color, 0.4);
+  color: $color;
 
-// :hover
-$btn-default-hover-background: get-color($paletteSecondary, default, 2);
-$btn-primary-hover-background: get-color($paletteSecondary, primary, 2);
-$btn-success-hover-background: get-color($paletteSecondary, green, 2);
-$btn-info-hover-background: get-color($paletteSecondary, blue, 2);
-$btn-warning-hover-background: get-color($paletteSecondary, yellow, 2);
-$btn-danger-hover-background: get-color($paletteSecondary, red, 2);
+  &:not(.hi-btn--disabled):hover {
+    border-color: rgba($color, 0.8);
+  }
 
-// line
-$btn-default-border-ghost: #ccc;
-$btn-primary-border-ghost: #3B76DC;
-$btn-success-border-ghost: #1DA653;
-$btn-danger-border-ghost: #EB5252;
+  &:not(.hi-btn--disabled):active {
+    background-color: rgba($color, 0.15);
+    box-shadow: inset 0 4px 4px rgba($color, 0.25);
+  }
 
-//size
-$padding-base-vertical: 4px;
-$padding-base-horizontal: 16px;
-
-$padding-large-vertical: 12px;
-$padding-large-horizontal: 60px;
-
-$padding-small-vertical: 4px;
-$padding-small-horizontal: 12px;
-
-$font-size-base: 14px;
-$font-size-large: 18px;
-$font-size-small: 12px;
-
-$line-height-base: 1.571428571;
-$line-height-large: 1.555555556;
-$line-height-small: 1.1666667;
-
-
-
+  // Status: disabled
+  &.hi-btn--disabled,
+  &[disabled],
+  fieldset[disabled] {
+    border-color: rgba($color, 0.2);
+    color: rgba($color, 0.3);
+  }
+}
 
 // Define component colors
 @mixin hi-btn-style($color: get-color($palette-primary, 'hiui-blue')) {
   .hi-btn {
-    &:active {
-      box-shadow: inset 0 4px 4px rgba(map-get(get-palette($color), '50'), 0.25);
-    }
-
-    &--primary--normal {
+    // Types
+    &--type_primary {
       background-color: map-get(get-palette($color), '50');
-      border-color: map-get(get-palette($color), '50');
       color: $white;
 
-      &:not(.hi-btn--disabled):hover,
+      &:not(.hi-btn--disabled):hover {
+        background-color: map-get(get-palette($color), '40');
+      }
+
       &:not(.hi-btn--disabled):active {
-        color: $white;
         background-color: map-get(get-palette($color), '60');
-        border-color: map-get(get-palette($color), '60');
+        box-shadow: inset 0 4px 4px rgba(map-get(get-palette($color), '50'), 0.25);
       }
 
       // Status: disabled
       &.hi-btn--disabled,
       &[disabled],
       fieldset[disabled] {
-        border-color: transparent;
-        background: rgba(map-get(get-palette($color), '50'), 0.2);
+        background-color: rgba(map-get(get-palette($color), '50'), 0.2);
+      }
+
+      // Make a button look and behave like a link
+      &.hi-btn--appearance_link {
+        background-color: transparent;
+        color: map-get(get-palette($color), '50');
+
+        &:not(.hi-btn--disabled):hover {
+          background-color: map-get(get-palette($color), '50');
+          color: $white;
+        }
+
+        &:not(.hi-btn--disabled):active {
+          background-color: map-get(get-palette($color), '60');
+        }
+
+        // Status: disabled
+        &.hi-btn--disabled,
+        &[disabled],
+        fieldset[disabled] {
+          opacity: .54;
+        }
       }
     }
 
-    &--primary--line {
-      background-color: rgba(map-get(get-palette($color), '50'), 0.1);
-      border-color: rgba(map-get(get-palette($color), '50'), 0.4);
-      color: map-get(get-palette($color), '50');
+    &--type_default {
+      background-color: $white;
+      border-color: $gray-dark;
+      color: $black;
 
-      &:not(.hi-btn--disabled):hover,
+      &:not(.hi-btn--disabled):hover {
+        border-color: darken($gray-dark, 15%);
+      }
+
       &:not(.hi-btn--disabled):active {
-        border-color: map-get(get-palette($color), '50');
+        background-color: $gray-light;
+        box-shadow: inset 0 4px 4px rgba($black, 0.25);
       }
 
       // Status: disabled
       &.hi-btn--disabled,
       &[disabled],
       fieldset[disabled] {
-        border-color: rgba(map-get(get-palette($color), '50'), 0.2);
-        color: rgba(map-get(get-palette($color), '50'), 0.3);
+        background-color: $gray-light;
+        border-color: rgba($black, 0.1);
+        color: $gray-dark;
+      }
+
+      // Make a button look and behave like a link
+      &.hi-btn--appearance_link {
+        background-color: transparent;
+        border-color: transparent;
+
+        &:not(.hi-btn--disabled):hover {
+          color: $white;
+          background-color: darken($gray-dark, 15%);
+        }
+
+        &:not(.hi-btn--disabled):active {
+          background-color: darken($gray-dark, 20%);
+          border-color: darken($gray-dark, 20%);
+        }
+
+        // Status: disabled
+        &.hi-btn--disabled,
+        &[disabled],
+        fieldset[disabled] {
+          opacity: .54;
+        }
       }
     }
 
-    &--primary--default {
+    &--type_line {
+      @include render-line-button(map-get(get-palette($color), '50'));
+    }
 
+    @each $key in 'success', 'danger', 'warning' {
+      &--type_#{$key} {
+        $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
+        @include render-line-button($status-color);
+
+        // Make a button look and behave like a link
+        &.hi-btn--appearance_link {
+          background-color: transparent;
+          border-color: transparent;
+
+          &:not(.hi-btn--disabled):hover {
+            color: $white;
+            background-color: rgba($status-color, 0.8);
+          }
+
+          &:not(.hi-btn--disabled):active {
+            background-color: $status-color;
+          }
+
+          // Status: disabled
+          &.hi-btn--disabled,
+          &[disabled],
+          fieldset[disabled] {
+            opacity: .54;
+          }
+        }
+      }
+    }
+
+    // Sizes
+    &--size_large {
+      height: $font-size-x-large * 1 + 18px * 2;
+      padding: 17px 60px;
+      font-size: $font-size-x-large;
+    }
+
+    &--size_small {
+      height: $font-size-small * 1 + 6px * 2;
+      padding: 5px 11px;
+      font-size: $font-size-small;
     }
   }
 }
 
 .hi-btn {
+  position: relative;
   display: inline-block;
   box-sizing: border-box;
   margin: 0; // For input.btn
-  height: $font-size-normal * 1 + $spacer-2 * 2 + 2;
-  padding: $spacer-2 $spacer-4;
+  height: $font-size-normal * 1 + 8px * 2 + 1px * 2;
+  padding: 8px 15px;
   border: 1px solid transparent;
   border-radius: 2px;
   font-size: $font-size-normal;
@@ -117,7 +184,14 @@ $line-height-small: 1.1666667;
   white-space: nowrap;
   touch-action: manipulation;
   cursor: pointer;
-  transition: all $speed-normal $easing;
+  transition: background-color $speed-normal $easing,
+              border-color $speed-normal $easing,
+              box-shadow $speed-fast $easing,
+              color $speed-normal $easing;
+  & + & {
+    margin-left: $spacer-2;
+  }
+
   &:focus {
     outline: 0;
   }
@@ -125,6 +199,14 @@ $line-height-small: 1.1666667;
   &--disabled,
   &[disabled] {
     cursor: not-allowed;
+  }
+
+  &--block {
+    display: block;
+    width: 100%;
+    & + & {
+      margin-top: 4px;
+    }
   }
 }
 
@@ -135,255 +217,10 @@ fieldset[disabled] .hi-btn {
 
 // Component colors
 @include hi-btn-style();
+
 @each $name, $color in $theme-colors {
   .theme__#{$name} {
     @include hi-btn-style($color);
-  }
-}
-
-
-
-.hi-btn {
-  //default
-  &-default-default {
-    @include button-variant($white, $btn-default-background, $btn-default-hover-background);
-  }
-  &-default-primary {
-    @include button-variant($white, $btn-primary-background, $btn-primary-hover-background);
-  }
-  &-default-success {
-    @include button-variant($white, $btn-success-background, $btn-success-hover-background);
-  }
-  &-default-info {
-    @include button-variant($white, $btn-info-background, $btn-info-hover-background);
-  }
-  &-default-warning {
-    @include button-variant($white, $btn-warning-background, $btn-warning-hover-background);
-  }
-  &-default-danger {
-    @include button-variant($white, $btn-danger-background, $btn-danger-hover-background);
-  }
-
-  // line
-  &-line-default {
-    background-color: $white;
-    color: $black;
-    border-color: get-color($paletteSecondary, default, 1);
-    &:not(.hi-btn-disabled):hover {
-      border-color: get-color($paletteSecondary, default, 2);
-    }
-    &:active {
-      background-color: $grayLight;
-      border-color: rgba(get-color($paletteSecondary, default, 2), 0.6);
-      box-shadow: none;
-    }
-    // Disabled
-    &.hi-btn-disabled,
-    &[disabled],
-    fieldset[disabled] & {
-      background-color: $grayLighter;
-      color: rgba($black, 0.2);
-      border-color: get-color($paletteSecondary, default, 1);
-    }
-  }
-  &-line-primary {
-    @include line-btn($btn-primary-background);
-  }
-  &-line-success {
-    @include line-btn($btn-success-background);
-  }
-  &-line-info {
-    @include line-btn($btn-info-background);
-  }
-  &-line-warning {
-    @include line-btn($btn-warning-background);
-  }
-  &-line-danger {
-    @include line-btn($btn-danger-background);
-  }
-
-  // link
-  &-link-default {
-    @include link-btn($btn-default-hover-background);
-  }
-  &-link-primary {
-    @include link-btn($btn-primary-hover-background);
-  }
-  &-link-success {
-    @include link-btn($btn-success-hover-background);
-  }
-  &-link-info {
-    @include link-btn($btn-info-hover-background);
-  }
-  &-link-warning {
-    @include link-btn($btn-warning-hover-background);
-  }
-  &-link-danger {
-    @include link-btn($btn-danger-hover-background);
-  }
-}
-
-
-.dark.hi-btn {
-  display: inline-block;
-  margin-bottom: 0; // For input.btn
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  touch-action: manipulation;
-  cursor: pointer;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  @include darktheme;
-  transition: all 0.2s;
-
-  &,
-  &:active,
-  &.active {
-    &:focus,
-    &.focus {
-      outline: none;
-    }
-  }
-
-  &:hover,
-  &:focus,
-  &.focus {
-    text-decoration: none;
-  }
-
-  &:active,
-  &.active {
-    outline: 0;
-    background-image: none;
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  }
-
-  &.hi-btn-disabled,
-  &[disabled],
-  fieldset[disabled] & {
-     cursor: not-allowed;
-    //opacity: 0.65;
-  }
-  //default
-  &-default {
-    @include button-variant($black, $btn-default-background, $btn-default-hover-background);
-  }
-  &-primary {
-    @include button-variant($white, $btn-primary-background, $btn-primary-hover-background);
-  }
-  &-success {
-    @include button-variant($white, $btn-success-background, $btn-success-hover-background);
-  }
-  &-info {
-    @include button-variant($white, $btn-info-background, $btn-info-hover-background);
-  }
-  &-warning {
-    @include button-variant($white, $btn-warning-background, $btn-warning-hover-background);
-  }
-  &-danger {
-    @include button-variant($white, $btn-danger-background, $btn-danger-hover-background);
-  }
-  //link
-  &-link-default {
-    @include link-btn($btn-default-hover-background);
-  }
-  &-link-primary {
-    @include link-btn($btn-primary-hover-background);
-  }
-  &-link-success {
-    @include link-btn($btn-success-hover-background);
-  }
-  &-link-info {
-    @include link-btn($btn-info-hover-background);
-  }
-  &-link-warning {
-    @include link-btn($btn-warning-hover-background);
-  }
-  &-link-danger {
-    @include link-btn($btn-danger-hover-background);
-  }
-}
-a.hi-btn {
-  &.disabled,
-  fieldset[disabled] & {
-    pointer-events: none; // Future-proof disabling of clicks on `<a>` elements
-  }
-}
-
-// Link buttons
-// -------------------------
-
-// Make a button look and behave like a link
-.hi-btn-link {
-  // color: $link-color;
-  font-weight: normal;
-  border-radius: 0;
-
-  &,
-  &:active,
-  &.active,
-  &[disabled],
-  fieldset[disabled] & {
-    background-color: transparent;
-    box-shadow: none;
-  }
-  &,
-  &:hover,
-  &:focus,
-  &:active {
-    border-color: transparent;
-  }
-  &:hover,
-  &:focus {
-    // color: $link-hover-color;
-    // text-decoration: $link-hover-decoration;
-    background-color: transparent;
-  }
-  &[disabled],
-  fieldset[disabled] & {
-    &:hover,
-    &:focus {
-      // color: $btn-link-disabled-color;
-      text-decoration: none;
-    }
-  }
-}
-
-// Button Sizes
-// --------------------------------------------------
-
-.theme__hiui-blue.hi-btn-large {
-  // line-height: ensure even-numbered height of button next to large input
-  @include button-size($padding-large-vertical, $padding-large-horizontal, $font-size-large, $line-height-base);
-}
-.theme__hiui-blue.hi-btn-small {
-  // line-height: ensure proper height of button next to small input
-  @include button-size($padding-small-vertical, $padding-small-horizontal, $font-size-small, $line-height-small);
-}
-//.default.hi-btn-xs {
-//  @include button-size($padding-xs-vertical, $padding-xs-horizontal, $font-size-small);
-//}
-
-// Block button
-// --------------------------------------------------
-
-.hi-btn-block {
-  display: block;
-  width: 100%;
-}
-
-// Vertically space out multiple block buttons
-.hi-btn-block + .hi-btn-block {
-  margin-top: 5px;
-}
-
-// Specificity overrides
-input[type='submit'],
-input[type='reset'],
-input[type='button'] {
-  &.hi-btn-block {
-    width: 100%;
   }
 }
 
@@ -409,8 +246,4 @@ input[type='button'] {
       border-bottom-right-radius: 0;
     }
   }
-}
-
-.hi-btn + .hi-btn {
-  margin-left: 8px;
 }
