@@ -116,14 +116,14 @@ class Counter extends React.Component {
       case 'minus':
         valueTrue -= steps
 
-        if (min && valueTrue < min) {
+        if (min !== undefined && valueTrue < min) {
           valueTrue = min
         }
         break
       case 'plus':
         valueTrue += steps
 
-        if (max && valueTrue > max) {
+        if (max !== undefined && valueTrue > max) {
           valueTrue = max
         }
         break
@@ -161,9 +161,9 @@ class Counter extends React.Component {
           className={`hi-counter-outer`}
         >
           <span
-            className={`hi-counter-minus hi-counter-sign ${((min && this.state.valueTrue <= min) || disabled) ? 'disabled' : ''}`}
+            className={`hi-counter-minus hi-counter-sign ${((min !== undefined && this.state.valueTrue <= min) || disabled) ? 'disabled' : ''}`}
             onClick={e => {
-              this.signEvent('minus', ((min && this.state.valueTrue <= min) || disabled))
+              this.signEvent('minus', ((min !== undefined && this.state.valueTrue <= min) || disabled))
             }}
           >
             -
@@ -201,9 +201,9 @@ class Counter extends React.Component {
             }}
           />
           <span
-            className={`hi-counter-plus hi-counter-sign ${((max && this.state.valueTrue >= max) || disabled) ? 'disabled' : ''}`}
+            className={`hi-counter-plus hi-counter-sign ${((max !== undefined && this.state.valueTrue >= max) || disabled) ? 'disabled' : ''}`}
             onClick={e => {
-              this.signEvent('plus', ((max && this.state.valueTrue >= max) || disabled))
+              this.signEvent('plus', ((max !== undefined && this.state.valueTrue >= max) || disabled))
             }}
           >
             +
