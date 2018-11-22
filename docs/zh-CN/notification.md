@@ -15,7 +15,7 @@
   }
 
   open(){
-    handleNotificate({type: 'success',autoClose:true,title:'标题',message:'自动关闭通知框',onClose:()=>{console.log('关闭回调')}})
+    handleNotificate({type: 'success',  showClose:false,autoClose:true,title:'标题',message:'自动关闭通知框',onClose:()=>{console.log('关闭回调')}})
   }
   open1(){
     handleNotificate({autoClose:false,title:'标题',message:'手动关闭通知框',onClose:()=>{console.log('关闭回调')}})
@@ -32,4 +32,5 @@
 | message | 提示内容 | string | - | 无 |
 | title | 提示标题 | string | - | 无 |
 | autoClose | 是否自动关闭 | bool | - | false |
+| showClose | 是否显示关闭图标 | bool | - | true |
 | onClose | 关闭回调 | func | - | 无 |

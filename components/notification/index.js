@@ -37,6 +37,7 @@ class Notification extends Component {
   }
   static propTypes = {
     banner: PropTypes.bool,
+    showClose: PropTypes.bool,
     autoClose: PropTypes.bool,
     duration: PropTypes.number,
     positionFrom: PropTypes.string,
@@ -49,6 +50,7 @@ class Notification extends Component {
   }
 
   static defaultProps = {
+    showClose: true,
     banner: false,
     prefixCls: 'hi-notification',
     autoClose: false,
@@ -81,7 +83,7 @@ class Notification extends Component {
   }
   closeNotify () {
     this.setState({ show: false })
-    this.props.onClose()
+    this.props.onClose && this.props.onClose()
     setTimeout(
       function () {
         const eletsArr = [].slice.call(
@@ -150,9 +152,12 @@ class Notification extends Component {
         </div>
         <span className='title'>{this.props.title}</span>
         <span className='message'>{this.props.message}</span>
-        <a className='close icon-img-delete' onClick={this.closeNotify.bind(this)}>
-          <i className='hi-icon icon-close' />
-        </a>
+        {
+          this.props.showClose &&
+          <a className='close icon-img-delete' onClick={this.closeNotify.bind(this)}>
+            <i className='hi-icon icon-close' />
+          </a>
+        }
       </div>
     ) : null
   }
