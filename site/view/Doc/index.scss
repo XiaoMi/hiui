@@ -1,14 +1,10 @@
-// @Todo: should be removed after classic-theme updated
-ul,
-li {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
 .dashboard {
   .header {
     &-nav {
       height: 64px;
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
       display: flex;
       justify-content: flex-end;
       a {
@@ -16,9 +12,9 @@ li {
         height: 64px;
         line-height: 64px;
         padding: 0 20px;
-        color: #383E47;
         display: inline-block;
         cursor: pointer;
+        color: #383e47;
         &:hover,
         &.active {
           color: #4284f5;

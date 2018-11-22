@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import './style'
+import './style/index'
 export default class Loading extends Component {
   static defaultProps = {
     size: 'default'

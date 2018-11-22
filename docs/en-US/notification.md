@@ -1,6 +1,6 @@
 ## Notification
 
-### 基础
+### Basic
 
 :::demo
 
@@ -8,17 +8,17 @@
   render(){
     return(
       <div>
-        <Button type="success" onClick={this.open.bind(this)}>自动关闭</Button>
-        <Button type="info" onClick={this.open1.bind(this)}>不自动关闭</Button>
+        <Button type="success" onClick={this.open.bind(this)}>Auto close</Button>
+        <Button type="info" onClick={this.open1.bind(this)}>Does not automatically close</Button>
       </div>
     )
   }
 
   open(){
-    handleNotificate({type: 'success',autoClose:true,title:'标题',message:'自动关闭通知框',onClose:()=>{console.log('关闭回调')}})
+    handleNotificate({type: 'success',autoClose:true,title:'Title',message:'Message',onClose:()=>{console.log('Callback')}})
   }
   open1(){
-    handleNotificate({autoClose:false,title:'标题',message:'手动关闭通知框',onClose:()=>{console.log('关闭回调')}})
+    handleNotificate({autoClose:false,title:'标Title题',message:'Message',onClose:()=>{console.log('Callback')}})
   }
 
 ```
@@ -26,10 +26,10 @@
 
 ### Attributes
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| Attribute | Description | Type | Options | Default |
 | -------- | ----- | ---- | ---- | ---- |
-| type | 类型 | string | info/error/success/warning | info |
-| message | 提示内容 | string | - | 无 |
-| title | 提示标题 | string | - | 无 |
-| autoClose | 是否自动关闭 | bool | - | false |
-| onClose | 关闭回调 | func | - | 无 |
+| type | type | string | info/error/success/warning | info |
+| message | message | string | - | null |
+| title | title | string | - | null |
+| autoClose | autoClose | bool | - | false |
+| onClose | Callback | func | - | null |

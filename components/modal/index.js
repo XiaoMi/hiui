@@ -3,6 +3,7 @@ import {createPortal} from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Button from '../button'
+import './style/index'
 
 class Modal extends Component {
   static propTypes = {

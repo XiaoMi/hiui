@@ -1,6 +1,6 @@
 ## Dropdown
 
-### 基础用法
+### Basic
 :::demo
 
 ```js
@@ -8,25 +8,25 @@ constructor () {
   super()
   this.state = {
     list: [{
-      title: '电视'
+      title: 'TV'
     },{
-      title: '手机'
+      title: 'Phone'
     },{
-      title: '电脑'
+      title: 'Other'
     }]
   }
 }
 render() {
   return (
     <div>
-      <Dropdown list={this.state.list} title="电子产品" onClick={(val) => console.log(val)}></Dropdown>
+      <Dropdown list={this.state.list} title="Electronic product" onClick={(val) => console.log(val)}></Dropdown>
     </div>
   )
 }
 ```
 :::
 
-### 触发方式 <br/>
+### Trigger mode <br/>
 <br/>
 :::demo
 
@@ -35,22 +35,22 @@ constructor () {
   super()
   this.state = {
     list: [{
-      title: '小米手机',
+      title: 'Mi Phone',
       onClick: () => {
         console.log('one')
       }
     },{
-      title: '小米电视',
+      title: 'Mi TV',
       prefix: <Icon name='list'/>,
       disabled: true
     },{
-      title: '小米生态链相关产品',
+      title: 'Mi Ecological',
       prefix: <Icon name='list'/>,
       suffix: <Icon name='truck'/>
     },{
       title: '-'
     },{
-      title: '其它',
+      title: 'Other',
       value: 'other'
     }]
   }
@@ -62,7 +62,7 @@ render() {
         list={this.state.list}
         trigger={['click', 'contextmenu']}
         onClick={(val) => {console.log(val)}}
-        title="左键或右键点击"
+        title="Left click or right click"
         width={160}
       >
       </Dropdown>
@@ -72,10 +72,10 @@ render() {
 ```
 :::
 
-### 按钮菜单
+### Button Menu
 
 :::demo
-自定义前缀、后缀
+
 ```js
 constructor () {
   super()
@@ -84,7 +84,7 @@ constructor () {
       title: 'one'
     },{
       title: 'two',
-      prefix: <Icon name='add'/> // 此 prefix 将会被替换为外部的 prefix
+      prefix: <Icon name='add'/>
     },{
       title: 'three',
       suffix: <Icon name='truck'/>
@@ -96,7 +96,7 @@ render() {
     <div>
       <Dropdown 
         list={this.state.list}
-        title="按钮菜单"
+        title="Button Menu"
         type="button"
         // trigger={['click']}
         onClick={(val) => console.log(val)}
@@ -108,10 +108,10 @@ render() {
 ```
 :::
 
-### 拓展菜单
+### Extended menu
 
 :::demo
-传入 type 为 group，组件会将 title 执行对应的点击响应，点击箭头打开菜单项
+Pass the type to group, the component will perform the corresponding click response for the title, click the arrow to open the menu item.
 ```js
 constructor () {
   super()
@@ -132,7 +132,7 @@ render() {
     <div>
       <Dropdown 
         list={this.state.list}
-        title="按钮菜单"
+        title="Button Menu"
         type="group"
         // trigger={['click']}
         onClick={(val) => console.log(val)}
@@ -148,13 +148,13 @@ render() {
 
 #### Attributes
 
-| 参数       | 说明   |  类型  | 可选值 |默认值  |
+| Attribute | Description | Type | Options |Default |
 | --------   | -----  | ----  |    ----  |   ----  |
-| list |  数据项  |  array   | - | - |
-| title |   显示的文字内容<br/>传入"-"时代表分隔符  |   string/Component   | - | - |
-| type |   下拉按钮类型  |   string   | button/group | text |
-| onClick |   点击回调函数  |   func   | - | - |
-| prefix |   前缀图标  |   string/Component   | - | - |
-| suffix |   后缀图标  |  string/Component   | - | - |
-| trigger |    触发方式  |   string/array   | click/contextmenu | click |
+| list |  datas  |  array   | - | - |
+| title |   text content<br/>"-" represents the separator  |   string/Component   | - | - |
+| type |   dropdown type  |   string   | button/group | text |
+| onClick |   callback  |   func   | - | - |
+| prefix |   prefix icon  |   string/Component   | - | - |
+| suffix |   suffix icon  |  string/Component   | - | - |
+| trigger |    trigger mode  |   string/array   | click/contextmenu | click |
 

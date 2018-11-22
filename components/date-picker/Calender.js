@@ -1,5 +1,15 @@
 import React, {Component} from 'react'
-import {deconstructDate, getYearWeek, calcDayCount, calcDayWeek, clearHours} from './util'
+import {deconstructDate, getYearWeek} from './util'
+
+import {
+  getDaysInMonth,
+  subMonths,
+  getDay,
+  startOfMonth,
+  isWithinRange,
+  isSameDay,
+  compareAsc
+} from './dateUtil'
 import {WEEK_DATA, DAY_MILLISECONDS} from './constants'
 class Calender extends Component {
   constructor (props) {
@@ -22,20 +32,19 @@ class Calender extends Component {
   getRows () {
     let {type, range, date, minDate, maxDate, weekOffset} = this.props
     let _date = new Date(new Date(date).getTime())
-    minDate && clearHours(minDate)
-    maxDate && clearHours(maxDate)
     let {year, month, week} = deconstructDate(_date)
     let {endDate, startDate} = range || {startDate: null, endDate: null}
     // *  dayCount: 当月天数
     // *  lastMonthDayCount: 上月总天数
     // *  firstDayWeek: 当月第一天是周几
-    let firstDayWeek = calcDayWeek(year, month, 1) - weekOffset
+    let firstDayWeek = getDay(startOfMonth(_date)) - weekOffset
     if (firstDayWeek <= 0) { // 如果为0 代表该月第一天是周日，在日历上需要第二行开始显示
       firstDayWeek = 7 - weekOffset
     }
     const _time = this._getTime(firstDayWeek, year, month)// 当前日期面板中第一个日期的具体毫秒数(指向上一个月)
-    const dayCount = calcDayCount(year, month)
-    let lastMonthDayCount = calcDayCount(year, month - 1) // 上月总天数
+    const dayCount = getDaysInMonth(_date)
+
+    let lastMonthDayCount = getDaysInMonth(subMonths(_date, 1)) // 上月总天数
     const {rows} = this.state
     let count = 0
     const now = _date.setHours(0, 0, 0, 0) // 今天
@@ -69,12 +78,11 @@ class Calender extends Component {
           col.type = 'today'
         }
         if (type === 'daterange' || type === 'weekrange') {
-          col.rangeStart = startDate && time === clearHours(startDate)
-          col.rangeEnd = endDate && time === clearHours(endDate)
-          col.range = time > startDate && endDate && time < clearHours(endDate)
-          // col.range = time >= startDate && endDate && time <= clearHours(endDate) && col.type !== 'prev' && col.type !== 'next'
+          col.rangeStart = startDate && isSameDay(time, startDate)
+          col.rangeEnd = endDate && isSameDay(time, endDate)
+          col.range = endDate && isWithinRange(time, startDate, endDate)
         }
-        col.disabled = (minDate && new Date(time) < minDate) || (maxDate && new Date(time) > maxDate)
+        col.disabled = (minDate && compareAsc(time, minDate) === -1) || (maxDate && compareAsc(time, maxDate) === 1)
       }
       if (type === 'week') {
         let _month = month
@@ -117,7 +125,7 @@ class Calender extends Component {
     const td = e.target
     const cls = this._getClassName(td)
     const value = td.getAttribute('value')
-    if ((td.nodeName !== 'A' && td.nodeName !== 'TD' && td.nodeName !== 'DIV') || td.disabled) return false
+    if ((td.nodeName !== 'SPAN' && td.nodeName !== 'TD' && td.nodeName !== 'DIV') || td.disabled) return false
     if (cls.indexOf('disabled') !== -1) return false
     if (cls.indexOf('prev') !== -1) {
       month -= 1
@@ -165,7 +173,7 @@ class Calender extends Component {
     let td = e.target
     const {mouseMove, date, type, range} = this.props
     let {year, month} = deconstructDate(date)
-    if (td.nodeName !== 'A' || td.disabled || type.indexOf('range') === -1 || !range.selecting) return false
+    if (td.nodeName !== 'SPAN' || td.disabled || type.indexOf('range') === -1 || !range.selecting) return false
     td = td.parentNode.parentNode
     const day = parseInt(td.innerText)
     const cls = td.className
@@ -187,7 +195,7 @@ class Calender extends Component {
     mouseMove(newDate)
   }
   getTDClass (td) {
-    let _class = []
+    let _class = ['hi-datepicker__cell']
     if (td.disabled) {
       _class.push('disabled')
       return _class.join(' ')
@@ -220,14 +228,14 @@ class Calender extends Component {
     const rows = data || this.getRows()
     return (
       <table
+        className='hi-datepicker__calender'
         onClick={this.handlerClick.bind(this)}
         onMouseMove={this.handlerMouseMove.bind(this)}
-        className={type === 'year' ? 'year-table' : ''}
       >
         {
           (type.indexOf('date') !== -1 || type.indexOf('week') !== -1) && (
             <thead>
-              <tr className='week-row'>
+              <tr>
                 {
                   this.getWeeks().map((item, index) => {
                     return <th key={index}>{item}</th>
@@ -243,7 +251,7 @@ class Calender extends Component {
               return (
                 <tr
                   key={index}
-                  className={row.currentWeek ? 'current-week' : ''}
+                  className={`hi-datepicker__row ${row.currentWeek ? 'hi-datepicker__row--current-week' : ''}`}
                 >
                   {
                     row.map((cell, _index) => {
@@ -253,10 +261,10 @@ class Calender extends Component {
                           value={cell.value}
                           className={this.getTDClass(cell)}
                         >
-                          <div value={cell.value}>
-                            <a value={cell.value}>
+                          <div className='hi-datepicker__content' value={cell.value}>
+                            <span value={cell.value} className='hi-datepicker__text'>
                               {cell.text}
-                            </a>
+                            </span>
                           </div>
                         </td>
                       )

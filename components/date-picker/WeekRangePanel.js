@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
-import {deconstructDate, nextMonth, getWeekRange} from './util'
+import {deconstructDate, nextMonth} from './util'
 import Calender from './Calender'
 import Icon from '../icon'
+import classNames from 'classnames'
+import {startOfWeek, endOfWeek, isSameMonth} from './dateUtil'
 export default class WeekRangePanel extends Component {
   constructor (props) {
     super(props)
@@ -9,17 +11,15 @@ export default class WeekRangePanel extends Component {
     let leftDate = new Date(startDate)
     let rightDate = endDate || nextMonth(leftDate)
     if (endDate) {
-      const {year: sYear, month: sMonth} = deconstructDate(startDate)
-      const {year: eYear, month: eMonth} = deconstructDate(endDate)
-      if (sYear === eYear && sMonth === eMonth) {
+      if (isSameMonth(startDate, endDate)) {
         rightDate = nextMonth(leftDate)
       }
     }
     this.state = {
       date: leftDate,
       range: {
-        startDate: getWeekRange(startDate).start,
-        endDate: endDate ? getWeekRange(endDate).end : getWeekRange(startDate).end,
+        startDate: startOfWeek(startDate),
+        endDate: endDate ? endOfWeek(endDate) : endOfWeek(startDate),
         selecting: false
       },
       leftDate,
@@ -55,46 +55,22 @@ export default class WeekRangePanel extends Component {
   renderHeader (type, value, lr) {
     const {year, month} = deconstructDate(value)
     return (
-      <div className='date-header'>
-        <div className='left-btns'>
+      <div className='hi-datepicker__header'>
+        <div className='hi-datepicker__header-btns'>
           <span onClick={() => this.changeYear(true, lr)} ><Icon name='double-left' /></span>
           <span onClick={() => this.changeMonth(true, lr)} ><Icon name='left' /></span>
         </div>
-        <span className='center-year'>
+        <span className='hi-datepicker__header-text'>
           {this.getHeaderCenterContent(year)}
         </span>
-        <span className='center-month'>
+        <span className='hi-datepicker__header-text'>
           {month}月
         </span>
-        <div className='right-btns'>
+        <div className='hi-datepicker__header-btns'>
           <span onClick={() => this.changeMonth(false, lr)} ><Icon name='right' /></span>
           <span onClick={() => this.changeYear(false, lr)} ><Icon name='double-right' /></span>
         </div>
       </div>
-      // <div className='date-header'>
-      //   <div className='left-btns'>
-      //     <button onClick={() => this.changeYear(true, lr)}>
-      //       &lt;&lt;
-      //     </button>
-      //     <button onClick={() => this.changeMonth(true, lr)}>
-      //       &lt;
-      //     </button>
-      //   </div>
-      //   <span className='center-year'>
-      //     {this.getHeaderCenterContent(year)}
-      //   </span>
-      //   <span className='center-month'>
-      //     {month}月
-      //   </span>
-      //   <div className='right-btns'>
-      //     <button onClick={() => this.changeMonth(false, lr)}>
-      //       &gt;
-      //     </button>
-      //     <button onClick={() => this.changeYear(false, lr)}>
-      //       &gt;&gt;
-      //     </button>
-      //   </div>
-      // </div>
     )
   }
   /**
@@ -213,20 +189,23 @@ export default class WeekRangePanel extends Component {
   }
   render () {
     const {range, leftDate, rightDate} = this.state
-    const {type} = this.props
+    const {type, theme} = this.props
+    const _c = classNames(
+      'hi-datepicker',
+      theme && 'theme__' + theme
+    )
     // const {year, month, day} = deconstructDate(date)
     // const _date = new Date(year, month, day)
+
     return (
       <div
         style={this.props.style}
-        className='hi-datepicker'
+        className={_c}
       >
-        <div className='hi-datepicker-body  hi-datepicker-range-body'>
-          <div className='range-left'>
-            <div className='hi-datepicker-header'>
-              {this.renderHeader(type, leftDate, 'left')}
-            </div>
-            <div className='hi-datepicker-calender'>
+        <div className='hi-datepicker__body  hi-datepicker__body--range'>
+          <div className='hi-datepicker__panel hi-datepicker__panel--left'>
+            {this.renderHeader(type, leftDate, 'left')}
+            <div className='hi-datepicker__calender-container'>
               <Calender
                 date={leftDate}
                 range={range}
@@ -236,11 +215,9 @@ export default class WeekRangePanel extends Component {
               />
             </div>
           </div>
-          <div className='range-right'>
-            <div className='hi-datepicker-header'>
-              {this.renderHeader(type, rightDate, 'right')}
-            </div>
-            <div className='hi-datepicker-calender'>
+          <div className='hi-datepicker__panel hi-datepicker__panel--right'>
+            {this.renderHeader(type, rightDate, 'right')}
+            <div className='hi-datepicker__calender-container'>
               <Calender
                 date={rightDate}
                 range={range}

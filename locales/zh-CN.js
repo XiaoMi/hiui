@@ -16,7 +16,7 @@ module.exports = {
   },
   pagination: {
     total: function (total) {
-      return `共${total}条`
+      return '共 ' + total + ' 条'
     },
     item: '条',
     goto: '前往'

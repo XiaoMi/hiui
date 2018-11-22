@@ -63,6 +63,7 @@ render() {
         onChange={data => {console.log('Tree data:', data)}}
         openIcon='down'
         closeIcon='up'
+        onNodeClick={(item) => console.log('------click node', item)}
       />
       <Button onClick={this.clickEvent.bind(this)}>点击</Button>
     </div>
@@ -146,6 +147,7 @@ render() {
 | ------- | ------- | ------- | ------- | ------- |
 | expand | 默认是否展开子菜单（优先级高于defaultExpandAll） | blooean | true, false | false |
 | onClick | 点击每项时触发的事件 | Func() | - | - |
+| onNodeClick | 点击每项时触发，onClick作用具体绑定的项，onNodeClick作用于所以项 | Func() | - | - |
 | style | 单个节点样式 | object | - | - |
 
 ### Tree Attributes-options
@@ -161,10 +163,5 @@ render() {
 | -------- | ----- | ---- |
 | onChange | 改变复选框状态时触发 | (data: Object) |
 | onNodeToggle | 节点被点击(展开/收起)时触发 | (data: Obejct, isExpanded: boolean) |
-<!-- | onDragStart |
-| onDragEnter |
-| onDragOver |
-| onDragLeave |
-| onDragEnd |
-| onDrop | -->
+
 

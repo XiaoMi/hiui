@@ -12,7 +12,7 @@ HIUI is committed to providing programmers with a more concise development exper
 **We are still in procesing so HIUI have not put in npm, gitlab repository is required to be installed.**
 
 ```sh
-$ npm install hiui
+$ npm install @hi-ui/hiui --save
 ```
 
 ### 2.use component

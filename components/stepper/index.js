@@ -1,6 +1,7 @@
 import React from 'react'
 import Provider from '../context'
 import classnames from 'classnames'
+import './style/index'
 /**
  * Props
  * @prop  id         {string}            id

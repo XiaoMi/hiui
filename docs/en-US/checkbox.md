@@ -138,6 +138,6 @@ render() {
 |  name |   Sub-option identification in all-select or multi-select mode(all-select: The 'name' value is consistent with the 'all' value  multi-select: Peer name should be consistent)  |   string   | - |  |
 
 ### Events
-| 参数       | 说明   |  类型  | 说明 |
-| --------   | -----  | ----  |    ----  |
-| onChange | triggers when the Checkbox changed   |   function  | - | 
+| Attribute | Description | Type
+| --------   | -----  | ----  |    
+| onChange | triggers when the Checkbox changed   |   function 
