@@ -1,4 +1,4 @@
-@import '@hi-ui/core-css';
+@import '@hi-ui/core-css/index.scss';
 
 // Render line style button
 @mixin render-line-button($color) {
@@ -28,7 +28,7 @@
 
 // Define component colors
 @mixin hi-btn-style($color: get-color($palette-primary, 'hiui-blue')) {
-  .hi-btn {
+  & {
     // Types
     &--type_primary {
       background-color: map-get(get-palette($color), '50');
@@ -77,101 +77,8 @@
       }
     }
 
-    &--type_default {
-      background-color: $white;
-      border-color: $gray-dark;
-      color: $black;
-
-      &:not(.hi-btn--disabled):hover {
-        border-color: darken($gray-dark, 15%);
-        color: $black;
-      }
-
-      &:not(.hi-btn--disabled):active {
-        background-color: $gray-light;
-        box-shadow: inset 0 4px 4px rgba($black, 0.25);
-        color: $black;
-      }
-
-      // Status: disabled
-      &.hi-btn--disabled,
-      &[disabled],
-      fieldset[disabled] {
-        background-color: $gray-light;
-        border-color: rgba($black, 0.1);
-        color: $gray-dark;
-      }
-
-      // Make a button look and behave like a link
-      &.hi-btn--appearance_link {
-        background-color: transparent;
-        border-color: transparent;
-
-        &:not(.hi-btn--disabled):hover {
-          background-color: darken($gray-dark, 15%);
-          color: $white;
-        }
-
-        &:not(.hi-btn--disabled):active {
-          background-color: darken($gray-dark, 20%);
-          border-color: darken($gray-dark, 20%);
-          color: $white;
-        }
-
-        // Status: disabled
-        &.hi-btn--disabled,
-        &[disabled],
-        fieldset[disabled] {
-          opacity: .54;
-        }
-      }
-    }
-
     &--type_line {
       @include render-line-button(map-get(get-palette($color), '50'));
-    }
-
-    @each $key in 'success', 'danger', 'warning' {
-      &--type_#{$key} {
-        $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
-        @include render-line-button($status-color);
-
-        // Make a button look and behave like a link
-        &.hi-btn--appearance_link {
-          background-color: transparent;
-          border-color: transparent;
-
-          &:not(.hi-btn--disabled):hover {
-            background-color: rgba($status-color, 0.8);
-            color: $white;
-          }
-
-          &:not(.hi-btn--disabled):active {
-            background-color: $status-color;
-            color: $white;
-          }
-
-          // Status: disabled
-          &.hi-btn--disabled,
-          &[disabled],
-          fieldset[disabled] {
-            opacity: .54;
-          }
-        }
-      }
-    }
-
-    // Sizes
-    &--size_large {
-      height: $font-size-x-large * 1 + 18px * 2;
-      padding: 17px 60px;
-      font-size: $font-size-x-large;
-    }
-
-    &--size_small {
-      height: $font-size-small * 1 + 6px * 2;
-      padding: 5px 11px;
-      font-size: $font-size-small;
     }
   }
 }
@@ -206,11 +113,107 @@
     outline: 0;
   }
 
+  // Common Styles
+  &--type_default {
+    background-color: $white;
+    border-color: $gray-dark;
+    color: $black;
+
+    &:not(.hi-btn--disabled):hover {
+      border-color: darken($gray-dark, 15%);
+      color: $black;
+    }
+
+    &:not(.hi-btn--disabled):active {
+      background-color: $gray-light;
+      box-shadow: inset 0 4px 4px rgba($black, 0.25);
+      color: $black;
+    }
+
+    // Status: disabled
+    &.hi-btn--disabled,
+    &[disabled],
+    fieldset[disabled] {
+      background-color: $gray-light;
+      border-color: rgba($black, 0.1);
+      color: $gray-dark;
+    }
+
+    // Make a button look and behave like a link
+    &.hi-btn--appearance_link {
+      background-color: transparent;
+      border-color: transparent;
+
+      &:not(.hi-btn--disabled):hover {
+        background-color: darken($gray-dark, 15%);
+        color: $white;
+      }
+
+      &:not(.hi-btn--disabled):active {
+        background-color: darken($gray-dark, 20%);
+        border-color: darken($gray-dark, 20%);
+        color: $white;
+      }
+
+      // Status: disabled
+      &.hi-btn--disabled,
+      &[disabled],
+      fieldset[disabled] {
+        opacity: .54;
+      }
+    }
+  }
+
+  @each $key in 'success', 'danger', 'warning' {
+    &--type_#{$key} {
+      $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
+      @include render-line-button($status-color);
+
+      // Make a button look and behave like a link
+      &.hi-btn--appearance_link {
+        background-color: transparent;
+        border-color: transparent;
+
+        &:not(.hi-btn--disabled):hover {
+          background-color: rgba($status-color, 0.8);
+          color: $white;
+        }
+
+        &:not(.hi-btn--disabled):active {
+          background-color: $status-color;
+          color: $white;
+        }
+
+        // Status: disabled
+        &.hi-btn--disabled,
+        &[disabled],
+        fieldset[disabled] {
+          opacity: .54;
+        }
+      }
+    }
+  }
+
+  // Status
   &--disabled,
   &[disabled] {
     cursor: not-allowed;
   }
 
+  // Sizes
+  &--size_large {
+    height: $font-size-x-large * 1 + 18px * 2;
+    padding: 17px 60px;
+    font-size: $font-size-x-large;
+  }
+
+  &--size_small {
+    height: $font-size-small * 1 + 6px * 2;
+    padding: 5px 11px;
+    font-size: $font-size-small;
+  }
+
+  // Block
   &--block {
     display: block;
     width: 100%;
@@ -226,11 +229,13 @@ fieldset[disabled] .hi-btn {
 }
 
 // Component colors
-@include hi-btn-style();
+.hi-btn {
+  @include hi-btn-style();
+}
 
-@each $name, $color in $theme-colors {
-  .theme__#{$name} {
-    @include hi-btn-style($color);
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.hi-btn {
+    @include hi-btn-style($value);
   }
 }
 

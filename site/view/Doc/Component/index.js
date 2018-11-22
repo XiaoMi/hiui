@@ -74,9 +74,9 @@ class Component extends React.Component {
     const icons = [
       <span className='sider__icon-start' />,
       // <span className='sider__icon-principle' />,
-      <Icon name='internet' />,
       <span className='sider__icon-layout' />,
       <span className='sider__icon-vision' />,
+      <Icon name='internet' />,
       <span className='sider__icon-component' />
     ]
     const siderDocuments = Object.keys(pages.documents).map((page, index) => {

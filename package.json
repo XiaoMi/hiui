@@ -30,7 +30,7 @@
   ],
   "dependencies": {
     "@hi-ui/classic-theme": "^0.9.5",
-    "@hi-ui/core-css": "^1.0.0-beta.5",
+    "@hi-ui/core-css": "^1.0.0-beta.6",
     "async-validator": "^1.8.5",
     "axios": "^0.18.0",
     "classnames": "^2.2.5",
