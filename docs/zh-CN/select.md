@@ -13,6 +13,7 @@ Select 下拉框
 constructor () {
 	super()
 	this.state = {
+		value: '3',
 		singleList: [
 			{ name:'电视', id:'3', disabled: true },
 			{ name:'手机', id:'2' },
@@ -28,11 +29,12 @@ render () {
 		<div>
 			<Select
 				mode='single'
-				list={this.state.singleList}
 				style={{width: '200px'}}
-				value='3'
+				list={this.state.singleList}
+				value={this.state.value}
 				onChange={(item) => {
-						console.log('单选结果', item)
+					console.log('单选结果', item)
+					item[0] && this.setState({value: item[0].id})
 				}}
 			/>
 		</div>

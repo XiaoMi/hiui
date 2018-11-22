@@ -53,6 +53,7 @@ $input: 'hi-input';
   .hi-input__out {
     display: flex;
     justify-content: space-between;
+    height: 100%;
   }
 
   .hi-input__inner {
@@ -131,9 +132,10 @@ $input: 'hi-input';
   }
 
   &.required {
-    ::after {
-      content: '*';
+    &::after {
       position: absolute;
+      top: 0;
+      content: '*';
       right: -30px;
       width: 30px;
       height: 100%;
