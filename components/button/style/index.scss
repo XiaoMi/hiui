@@ -8,11 +8,13 @@
 
   &:not(.hi-btn--disabled):hover {
     border-color: rgba($color, 0.8);
+    color: $color;
   }
 
   &:not(.hi-btn--disabled):active {
     background-color: rgba($color, 0.15);
     box-shadow: inset 0 4px 4px rgba($color, 0.25);
+    color: $color;
   }
 
   // Status: disabled
@@ -34,10 +36,12 @@
 
       &:not(.hi-btn--disabled):hover {
         background-color: map-get(get-palette($color), '40');
+        color: $white;
       }
 
       &:not(.hi-btn--disabled):active {
         background-color: map-get(get-palette($color), '60');
+        color: $white;
         box-shadow: inset 0 4px 4px rgba(map-get(get-palette($color), '50'), 0.25);
       }
 
@@ -46,6 +50,7 @@
       &[disabled],
       fieldset[disabled] {
         background-color: rgba(map-get(get-palette($color), '50'), 0.2);
+        color: $white;
       }
 
       // Make a button look and behave like a link
@@ -60,6 +65,7 @@
 
         &:not(.hi-btn--disabled):active {
           background-color: map-get(get-palette($color), '60');
+          color: $white;
         }
 
         // Status: disabled
@@ -78,11 +84,13 @@
 
       &:not(.hi-btn--disabled):hover {
         border-color: darken($gray-dark, 15%);
+        color: $black;
       }
 
       &:not(.hi-btn--disabled):active {
         background-color: $gray-light;
         box-shadow: inset 0 4px 4px rgba($black, 0.25);
+        color: $black;
       }
 
       // Status: disabled
@@ -100,13 +108,14 @@
         border-color: transparent;
 
         &:not(.hi-btn--disabled):hover {
-          color: $white;
           background-color: darken($gray-dark, 15%);
+          color: $white;
         }
 
         &:not(.hi-btn--disabled):active {
           background-color: darken($gray-dark, 20%);
           border-color: darken($gray-dark, 20%);
+          color: $white;
         }
 
         // Status: disabled
@@ -133,12 +142,13 @@
           border-color: transparent;
 
           &:not(.hi-btn--disabled):hover {
-            color: $white;
             background-color: rgba($status-color, 0.8);
+            color: $white;
           }
 
           &:not(.hi-btn--disabled):active {
             background-color: $status-color;
+            color: $white;
           }
 
           // Status: disabled
