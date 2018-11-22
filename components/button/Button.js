@@ -50,10 +50,10 @@ class Button extends Component {
       className && `${className}`,
       // For version < 1.1.0
       (type === 'primary' && appearance === 'line')
-        ? `${prefixCls}--type_line`
-        : `${prefixCls}--type_${type || 'default'}`,
-      appearance && `${prefixCls}--appearance_${appearance || 'default'}`,
-      size && `${prefixCls}--size_${size}`,
+        ? `${prefixCls}--type--line`
+        : `${prefixCls}--type--${type || 'default'}`,
+      appearance && `${prefixCls}--appearance--${appearance || 'default'}`,
+      size && `${prefixCls}--size--${size}`,
       disabled && `${prefixCls}--disabled`
     )
 

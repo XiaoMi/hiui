@@ -4,6 +4,7 @@
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard",
+    "test-style": "node_modules/.bin/sass-lint -c .sass-lint.yml 'components/**/*.scss' -v -q",
     "fix": "node_modules/.bin/standard --fix",
     "dev": "cd site && cross-env NODE_ENV=development PORT=4200 node server.js",
     "compile": "cross-env NODE_ENV=production gulp",
@@ -91,6 +92,7 @@
     "rimraf": "^2.6.2",
     "rucksack-css": "^1.0.2",
     "run-sequence": "^2.2.1",
+    "sass-lint": "^1.12.1",
     "sass-loader": "^7.0.1",
     "standard": "^11.0.1",
     "style-loader": "^0.21.0",

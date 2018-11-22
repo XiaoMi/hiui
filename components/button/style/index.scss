@@ -19,8 +19,7 @@
 
   // Status: disabled
   &.hi-btn--disabled,
-  &[disabled],
-  fieldset[disabled] {
+  &[disabled] {
     border-color: rgba($color, 0.2);
     color: rgba($color, 0.3);
   }
@@ -30,7 +29,7 @@
 @mixin hi-btn-style($color: get-color($palette-primary, 'hiui-blue')) {
   & {
     // Types
-    &--type_primary {
+    &--type--primary {
       background-color: map-get(get-palette($color), '50');
       color: $white;
 
@@ -47,14 +46,13 @@
 
       // Status: disabled
       &.hi-btn--disabled,
-      &[disabled],
-      fieldset[disabled] {
+      &[disabled] {
         background-color: rgba(map-get(get-palette($color), '50'), 0.2);
         color: $white;
       }
 
       // Make a button look and behave like a link
-      &.hi-btn--appearance_link {
+      &.hi-btn--appearance--link {
         background-color: transparent;
         color: map-get(get-palette($color), '50');
 
@@ -70,14 +68,13 @@
 
         // Status: disabled
         &.hi-btn--disabled,
-        &[disabled],
-        fieldset[disabled] {
-          opacity: .54;
+        &[disabled] {
+          opacity: 0.54;
         }
       }
     }
 
-    &--type_line {
+    &--type--line {
       @include render-line-button(map-get(get-palette($color), '50'));
     }
   }
@@ -101,10 +98,8 @@
   white-space: nowrap;
   touch-action: manipulation;
   cursor: pointer;
-  transition: background-color $speed-normal $easing,
-              border-color $speed-normal $easing,
-              box-shadow $speed-fast $easing,
-              color $speed-normal $easing;
+  transition: background-color $speed-normal $easing, border-color $speed-normal $easing, box-shadow $speed-fast $easing, color $speed-normal $easing;
+
   & + & {
     margin-left: $spacer-2;
   }
@@ -114,7 +109,7 @@
   }
 
   // Common Styles
-  &--type_default {
+  &--type--default {
     background-color: $white;
     border-color: $gray-dark;
     color: $black;
@@ -132,15 +127,14 @@
 
     // Status: disabled
     &.hi-btn--disabled,
-    &[disabled],
-    fieldset[disabled] {
+    &[disabled] {
       background-color: $gray-light;
       border-color: rgba($black, 0.1);
       color: $gray-dark;
     }
 
     // Make a button look and behave like a link
-    &.hi-btn--appearance_link {
+    &.hi-btn--appearance--link {
       background-color: transparent;
       border-color: transparent;
 
@@ -157,20 +151,19 @@
 
       // Status: disabled
       &.hi-btn--disabled,
-      &[disabled],
-      fieldset[disabled] {
-        opacity: .54;
+      &[disabled] {
+        opacity: 0.54;
       }
     }
   }
 
   @each $key in 'success', 'danger', 'warning' {
-    &--type_#{$key} {
+    &--type--#{$key} {
       $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
       @include render-line-button($status-color);
 
       // Make a button look and behave like a link
-      &.hi-btn--appearance_link {
+      &.hi-btn--appearance--link {
         background-color: transparent;
         border-color: transparent;
 
@@ -186,9 +179,8 @@
 
         // Status: disabled
         &.hi-btn--disabled,
-        &[disabled],
-        fieldset[disabled] {
-          opacity: .54;
+        &[disabled] {
+          opacity: 0.54;
         }
       }
     }
@@ -201,13 +193,13 @@
   }
 
   // Sizes
-  &--size_large {
+  &--size--large {
     height: $font-size-x-large * 1 + 18px * 2;
     padding: 17px 60px;
     font-size: $font-size-x-large;
   }
 
-  &--size_small {
+  &--size--small {
     height: $font-size-small * 1 + 6px * 2;
     padding: 5px 11px;
     font-size: $font-size-small;
@@ -217,15 +209,11 @@
   &--block {
     display: block;
     width: 100%;
+
     & + & {
       margin-top: 4px;
     }
   }
-}
-
-a.hi-btn--disabled,
-fieldset[disabled] .hi-btn {
-  pointer-events: none; // Future-proof disabling of clicks on `<a>` elements
 }
 
 // Component colors
@@ -243,19 +231,23 @@ fieldset[disabled] .hi-btn {
 .hi-btn-group {
   position: relative;
   display: inline-block;
+
   > .hi-btn {
     position: relative;
     z-index: 0;
     margin-left: 0;
     margin-right: 0;
+
     &:hover {
       z-index: 1;
     }
+
     &:not(:first-child) {
       margin-left: -1px;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
+
     &:not(:last-child) {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
