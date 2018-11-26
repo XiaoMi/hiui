@@ -250,8 +250,8 @@ class Pagination extends Component {
     const prevDisabled = !this.hasPrev()
     const nextDisabled = !this.hasNext()
     const gotoPage = (e) => {
-      const val = e.target.value
-      const setVal = (val) => {
+      const pageNum = e.target.value
+      const setPageNum = (val) => {
         this.setState({
           jumpTo: +val,
           current: +val
@@ -259,13 +259,13 @@ class Pagination extends Component {
         jumpEvent(Number(val))
       }
 
-      if (isNaN(parseInt(val, 10)) || parseInt(val, 10) <= 0) return
+      if (isNaN(parseInt(pageNum, 10)) || parseInt(pageNum, 10) <= 0) return
 
       if (e.type === 'blur') {
-        setVal(val)
+        setPageNum(pageNum)
       } else if (e.type === 'keypress') {
         if (e.charCode === 13) {
-          setVal(val)
+          setPageNum(pageNum)
         }
       }
     }

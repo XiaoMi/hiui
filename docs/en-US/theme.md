@@ -1,9 +1,11 @@
 ## Theme
 
-The supported themes are detailed in the table below. The default ishiui-blue.
+The supported themes are detailed in the table below. The default is **hiui-blue**.
 
 ### Instructions
-With ThemeContext, nested components can get the set theme via props.theme.
+
+With `ThemeContext`, nested components can get the set theme via `props.theme`.
+
 ```js
 import {ThemeContext} from '@hi-ui/hiui/es/context'
 

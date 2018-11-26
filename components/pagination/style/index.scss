@@ -77,9 +77,6 @@
     }
   }
 
-  &__list {
-  }
-
   &__item {
     float: left;
 
@@ -99,6 +96,7 @@
       text-decoration: none;
       text-align: center;
       color: $gray-darker;
+      transition: border-color $speed-fast $easing, color $speed-fast $easing;
 
       &:hover {
         border: 1px solid transparent;
