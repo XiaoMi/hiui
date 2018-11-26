@@ -57,7 +57,7 @@ render() {
 
       <hr />
 
-      <Button type="primary" appearance="line" onClick={() => {this.setState({current: 5})}}>go 5</Button>
+      <Button type="line" onClick={() => {this.setState({current: 5})}}>go 5</Button>
 
     </div>
   )

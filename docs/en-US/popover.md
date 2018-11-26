@@ -18,16 +18,16 @@ render() {
   return (
     <div>
       <Popover title={title} content={content} style={{margin: '10px 10px'}}>
-        <Button type="primary" appearance="line">Top & click</Button>
+        <Button type="line">Top & click</Button>
       </Popover>
       <Popover title={title} content={content} style={{margin: '10px 10px'}} placement="right" trigger="hover">
-        <Button type="success" appearance="line">Right & hover</Button>
+        <Button type="success">Right & hover</Button>
       </Popover>
       <Popover title={title} content={content} style={{margin: '10px 10px'}} placement="bottom" trigger="focus">
-        <Button type="info" appearance="line">Bottom & focus</Button>
+        <Button type="warning">Bottom & focus</Button>
       </Popover>
       <Popover title={title} content={content} style={{margin: '10px 10px'}} placement="left" trigger="click">
-        <Button type="danger" appearance="line">Popover Left</Button>
+        <Button type="danger">Popover Left</Button>
       </Popover>
     </div>
   )

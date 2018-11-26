@@ -60,7 +60,7 @@ render() {
 
       <hr />
 
-      <Button type="primary" appearance="line" onClick={() => {this.setState({current: 5})}}>切到第5页</Button>
+      <Button type="line" onClick={() => {this.setState({current: 5})}}>切到第5页</Button>
 
     </div>
   )

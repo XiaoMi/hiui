@@ -1,12 +1,4 @@
 module.exports = {
-  button: {
-    text: 'Button 按钮',
-    dropdown: 'Dropdown 下拉',
-    pagination: 'Pagination 分页',
-    tabs: 'Tabs 切换',
-    table: 'Table 表格',
-    'date-picker': '日期选择器'
-  },
   misc: {
     components: '基础组件'
   },

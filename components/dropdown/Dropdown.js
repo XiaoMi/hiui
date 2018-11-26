@@ -97,11 +97,11 @@ class Dropdown extends Component {
   renderTitle () {
     const {type, title} = this.props
     if (type === 'button') {
-      return <Button type='default' appearance='line'>{title} &nbsp;<i className='hi-icon icon-down' /></Button>
+      return <Button type='default'>{title} &nbsp;<i className='hi-icon icon-down' /></Button>
     } else if (type === 'group') {
       return <div className='hi-dropdow-group-button'>
-        <Button type='default' appearance='line' onClick={this.handlerClick.bind(this, {title})}>{title}</Button>
-        <Button type='default' appearance='line' onClick={this.triggerEvent.bind(this)}><i className='hi-icon icon-down' /></Button>
+        <Button type='default' onClick={this.handlerClick.bind(this, {title})}>{title}</Button>
+        <Button type='default' onClick={this.triggerEvent.bind(this)}><i className='hi-icon icon-down' /></Button>
       </div>
     } else {
       return <div className='hi-dropdown-title'>

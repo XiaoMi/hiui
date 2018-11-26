@@ -6,8 +6,8 @@ import Provider from '../context'
 class Button extends Component {
   static propTypes = {
     type: PropTypes.oneOf(['primary', 'line', 'success', 'danger', 'default', 'warning']),
-    size: PropTypes.oneOf(['large', 'small', 'default']),
-    appearance: PropTypes.oneOf(['link', 'default', 'line']),
+    size: PropTypes.oneOf(['large', 'small', 'normal']),
+    appearance: PropTypes.oneOf(['link', 'button']),
     className: PropTypes.string,
     style: PropTypes.object,
     disabled: PropTypes.bool,
@@ -20,8 +20,8 @@ class Button extends Component {
     prefixCls: 'hi-btn',
     type: 'default',
     disabled: false,
-    appearance: 'default',
-    size: 'default'
+    appearance: 'button',
+    size: 'normal'
   }
 
   clickCb () {
@@ -48,13 +48,14 @@ class Button extends Component {
       'theme__' + theme,
       `${prefixCls}`,
       className && `${className}`,
+      appearance && `${prefixCls}--appearance--${appearance}`,
+      size && `${prefixCls}--size--${size}`,
+      disabled && `${prefixCls}--disabled`,
+
       // For version < 1.1.0
       (type === 'primary' && appearance === 'line')
         ? `${prefixCls}--type--line`
-        : `${prefixCls}--type--${type || 'default'}`,
-      appearance && `${prefixCls}--appearance--${appearance || 'default'}`,
-      size && `${prefixCls}--size--${size}`,
-      disabled && `${prefixCls}--disabled`
+        : `${prefixCls}--type--${type}`
     )
 
     const disabledBool = !!disabled
