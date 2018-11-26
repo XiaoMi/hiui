@@ -165,12 +165,12 @@ class Pagination extends Component {
       }
     } else {
       jumpPrev = (
-        <li key='prev' className={`${prefixCls}-break-prev`}>
+        <li key='prev' className={`${prefixCls}__item ${prefixCls}--break-prev`}>
           ...
         </li>
       )
       jumpNext = (
-        <li key='next' className={`${prefixCls}-break-next`}>
+        <li key='next' className={`${prefixCls}__item ${prefixCls}--break-next`}>
           ...
         </li>
       )
@@ -223,7 +223,7 @@ class Pagination extends Component {
       }
       if (current >= pageBufferSize * 2) {
         pagerList[0] = React.cloneElement(pagerList[0], {
-          className: `${prefixCls}-item-after-break-prev`
+          className: `${prefixCls}__item--after-break-prev`
         })
         pagerList.unshift(jumpPrev)
       }
@@ -234,7 +234,7 @@ class Pagination extends Component {
         pagerList[pagerList.length - 1] = React.cloneElement(
           pagerList[pagerList.length - 1],
           {
-            className: `${prefixCls}-item-before-break-next`
+            className: `${prefixCls}__item--before-break-next`
           }
         )
         pagerList.push(jumpNext)
@@ -249,15 +249,36 @@ class Pagination extends Component {
 
     const prevDisabled = !this.hasPrev()
     const nextDisabled = !this.hasNext()
+    const gotoPage = (e) => {
+      const val = e.target.value
+      const setVal = (val) => {
+        this.setState({
+          jumpTo: +val,
+          current: +val
+        })
+        jumpEvent(Number(val))
+      }
+
+      if (isNaN(parseInt(val, 10)) || parseInt(val, 10) <= 0) return
+
+      if (e.type === 'blur') {
+        setVal(val)
+      } else if (e.type === 'keypress') {
+        if (e.charCode === 13) {
+          setVal(val)
+        }
+      }
+    }
+
     return (
       <div className={`${prefixCls} ${className} theme__${theme}`}>
         {
-          showTotal && <span className='hi-pagination-total'>{localeDatas.pagination.total(total)}</span>
+          showTotal && <span className='hi-pagination__total'>{localeDatas.pagination.total(total)}</span>
         }
         {
-          sizeChangeEvent && <div className='hi-pagination-sizechange'>
-            每页
-            <span className='hi-pagination-sizechange-button'>
+          sizeChangeEvent && <div className='hi-pagination__sizechange'>
+            {localeDatas.pagination.itemPerPage}
+            <span className='hi-pagination__sizechange-button'>
               <Dropdown title={pageSize} type='button'
                 list={[{
                   value: 10,
@@ -280,40 +301,29 @@ class Pagination extends Component {
             {localeDatas.pagination.item}
           </div>
         }
-        <ul className='hi-pagination-list-container'>
+        <ul className='hi-pagination__list'>
           <li
             onClick={this.prev.bind(this)}
-            className={`${!prevDisabled
-              ? ''
-              : `${prefixCls}-disabled`} ${prefixCls}-prev`}
+            className={`${prefixCls}__item ${prefixCls}--prev ${!prevDisabled ? '' : `${prefixCls}__item--disabled`}`}
           >
-            <a href='javascript:;'>
+            <a href='javascript: void(0)'>
               <i className='hi-icon icon-left' />
             </a>
           </li>
           {pagerList}
           <li
             onClick={this.next.bind(this)}
-            className={`${!nextDisabled
-              ? ''
-              : `${prefixCls}-disabled`} ${prefixCls}-next`}
+            className={`${prefixCls}__item ${prefixCls}--next ${!nextDisabled ? '' : `${prefixCls}__item--disabled`}`}
           >
-            <a href='javascript:;'>
+            <a href='javascript: void(0)'>
               <i className='hi-icon icon-right' />
             </a>
           </li>
         </ul>
         {
-          jumpEvent && <div className='hi-pagination-jump'>
+          jumpEvent && <div className='hi-pagination__goto'>
             {localeDatas.pagination.goto}
-            <Input onBlur={(e) => {
-              let val = e.target.value
-              this.setState({
-                jumpTo: +val,
-                current: +val
-              })
-              jumpEvent(Number(val))
-            }} value={this.state.jumpTo} />
+            <Input onKeyPress={gotoPage} onBlur={gotoPage} value={this.state.jumpTo} />
           </div>
         }
       </div>

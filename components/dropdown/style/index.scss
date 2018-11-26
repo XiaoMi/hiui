@@ -1,105 +1,129 @@
-@import '../../style/index.scss';
+@import '@hi-ui/core-css/index.scss';
+
+// Define component colors
+@mixin hi-dropdown-style($color: get-color($palette-primary, 'hiui-blue')) {
+  .hi-dropdown {
+    &__item {
+      &:hover {
+        background-color: rgba($color, 0.08);
+      }
+
+      &--active {
+        color: $color;
+      }
+
+      &--disabled {
+        color: map-get(get-palette($color), 'g70');
+      }
+    }
+  }
+}
 
 .hi-dropdown{
   position: relative;
   user-select: none;
   max-width: 200px;
-  
-  ul,li{
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
+  @include component-reset();
 
-  .dropdown-toggle{
-    margin: 0;
-  }
-  .hi-dropdown-title {
+  &__title {
     display: flex;
     justify-content: space-between;
-    padding: 0 16px;
-    .hi-dropdown-title-text {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    padding: 0 $spacer-4;
+    cursor: pointer;
   }
-  &-menu {
+
+  &__text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__menu {
     position: absolute;
-    width: 100%;
     top: 100%;
     left: 0;
     z-index: 1000;
+    box-sizing: border-box;
+    width: 100%;
     min-width: 140px;
-    padding: 5px 0;
-    margin: 2px 0 0;
+    margin-top: 2px !important;
+    padding: $spacer-1 0 !important;
+    border: 1px solid $gray;
     list-style: none;
-    font-size: 14px;
+    font-size: $font-size-normal;
     text-align: left;
     background-color: $white;
-    border: 1px solid #ccc;
-    border-radius: 0;
-    box-shadow: 0 6px 12px rgba(0,0,0,.175);
     background-clip: padding-box;
-    &.hide {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, .175);
+    &--hide {
       display: none;
     }
-    .hi-dropdown-divider {
-      height: 1px;
-      overflow: hidden;
-      background-color: #e8e8e8;
-      line-height: 0;
-    }
-    .hi-dropdown-menu-item {
-      cursor: pointer;
-      padding: 0 16px;
-      line-height: 36px;
-      font-weight: 400;
-      color: #383E47;
-      height: 36px;
-      display: flex;
-      &.disable {
-        cursor: not-allowed;
-        color: #bfcbd9;
-      }
-      .hi-dropdown-menu-item-prefix {
-        flex: 0 0 18px;
-      }
-      .hi-dropdown-menu-item-suffix {
-        flex: 1;
-        text-align: right;
-      }
-      .hi-dropdown-menu-item-title {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      &:hover{
-        background-color: rgba(66,133,244,0.08);;
-      }
-    }
+  }
 
+  &__item {
+    display: flex;
+    height: 36px;
+    padding: 0 $spacer-4;
+    line-height: 36px;
+    color: $black;
+    cursor: pointer;
+
+    &--disabled {
+      cursor: not-allowed;
+    }
   }
-  
-  .hi-dropdow-group-button {
-    .hi-btn:first-child{
-      margin-left: 0;
-      border-top-right-radius: 0px;
-      border-bottom-right-radius: 0px;
+
+  &__item-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__item-prefix {
+    flex: 0 0 18px;
+  }
+
+  &__item-suffix {
+    flex: 1;
+    text-align: right;
+  }
+
+  &__divider {
+    height: 1px;
+    overflow: hidden;
+    background-color: $gray-light;
+    line-height: 0;
+  }
+
+  &__button-group {
+    .hi-btn {
       position: relative;
-      &:hover {
-        z-index:1;
+      &:first-child {
+        margin-left: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        &:hover {
+          z-index: 1;
+        }
+      }
+      & + & {
+        margin-left: -1px;
+        padding: 0 8px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+
+        &:hover {
+          z-index: 1;
+        }
       }
     }
   }
-  .hi-btn+.hi-btn{
-    margin-left: -1px;
-    padding: 0 8px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    position: relative;
-    &:hover {
-      z-index:1;
-    }
+}
+
+// Component colors
+@include hi-dropdown-style();
+@each $key, $value in $theme-colors {
+  .theme__#{$key} {
+    @include hi-dropdown-style($value);
   }
 }
