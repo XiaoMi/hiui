@@ -1,12 +1,4 @@
 module.exports = {
-  button: {
-    text: 'Button',
-    dropdown: 'Dropdown',
-    pagination: 'Pagination',
-    tabs: 'Tabs',
-    table: 'Table',
-    'date-picker': 'DatePicker'
-  },
   misc: {
     components: 'Basic Components'
   },

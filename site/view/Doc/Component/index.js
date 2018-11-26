@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import pages from '../../../pages'
 import locales from '../../../locales'
 import { globalSider } from '../../../redux/action/global'
+import { Icon } from '@hi-ui/hiui'
 
 import './style/index.scss'
 
@@ -72,10 +73,10 @@ class Component extends React.Component {
   getSiderItems () {
     const icons = [
       <span className='sider__icon-start' />,
-      // <span className='sider__icon-principle'></span>,
-      // <span className='sider__icon-layout'></span>,
+      // <span className='sider__icon-principle' />,
+      <span className='sider__icon-layout' />,
       <span className='sider__icon-vision' />,
-      <span className='sider__icon-component' />,
+      <Icon name='internet' />,
       <span className='sider__icon-component' />
     ]
     const siderDocuments = Object.keys(pages.documents).map((page, index) => {

@@ -49,6 +49,7 @@ $pagination: 'hi-pagination';
     list-style-type: none;
     & > li {
       float: left;
+      margin-top: 0;
       &:not(:last-of-type) {
         margin-right: 8px;
       }

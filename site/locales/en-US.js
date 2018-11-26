@@ -1,9 +1,9 @@
 module.exports = {
   page: {
     'quick-start': 'Quick Start',
-    'i18n': 'Internationalization',
+    'i18n': 'i18n',
     'theme': 'Customize Theme',
-    'template': 'template',
+    'template': 'Layout Theme',
     'typography': 'Typography',
     'button': 'Button',
     'dropdown': 'Dropdown',

@@ -26,7 +26,7 @@ class Modal extends Component {
     backDrop: true,
     show: false,
     confirmType: 'primary',
-    cancelType: 'primary',
+    cancelType: 'default',
     closeBtn: true,
     destory: false
   }
@@ -82,7 +82,7 @@ class Modal extends Component {
       return footers
     } else {
       return [
-        <Button type={cancelType} appearance='line' key={0} onClick={this.handleClose.bind(this)}>
+        <Button type={cancelType} key={0} onClick={this.handleClose.bind(this)}>
           {cancelText}
         </Button>,
         <Button type={confirmType} key={1} onClick={this.handleConfirm.bind(this)}>
