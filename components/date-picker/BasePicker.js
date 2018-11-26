@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import Modal from './Modal'
 import classNames from 'classnames'
 import {formatterDate, FORMATS, isVaildDate} from './constants'
-import Provider from '../context'
 
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
@@ -316,4 +315,4 @@ class BasePicker extends Component {
   }
 }
 
-export default Provider(BasePicker)
+export default BasePicker
