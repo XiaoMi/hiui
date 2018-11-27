@@ -9,7 +9,10 @@ import {
   startOfMonth,
   isWithinRange,
   isSameDay,
-  compareAsc
+  compareAsc,
+  addMonths,
+  startOfDay,
+  endOfDay
 } from './dateUtil'
 import {DAY_MILLISECONDS} from './constants'
 class Calender extends Component {
@@ -81,7 +84,9 @@ class Calender extends Component {
         if (type === 'daterange' || type === 'weekrange') {
           col.rangeStart = startDate && isSameDay(time, startDate)
           col.rangeEnd = endDate && isSameDay(time, endDate)
-          col.range = endDate && isWithinRange(time, startDate, endDate)
+          // console.log('----',[startDate, endDate].sort(compareAsc(startDate, endDate)))
+          const _ds = [startDate, endDate].sort(compareAsc)
+          col.range = endDate && isWithinRange(time, ..._ds)
         }
         col.disabled = (minDate && compareAsc(time, minDate) === -1) || (maxDate && compareAsc(time, maxDate) === 1)
       }
@@ -123,27 +128,20 @@ class Calender extends Component {
   handlerClick (e) {
     const {onPick, date, type, range} = this.props
     let {year, month, hours, minutes, seconds} = deconstructDate(date)
+
     const td = e.target
     const cls = this._getClassName(td)
     const value = td.getAttribute('value')
     if ((td.nodeName !== 'SPAN' && td.nodeName !== 'TD' && td.nodeName !== 'DIV') || td.disabled) return false
     if (cls.indexOf('disabled') !== -1) return false
-    if (cls.indexOf('prev') !== -1) {
-      month -= 1
-      if (month <= 0) {
-        year -= 1
-        month = 12
-      }
-    }
-    if (cls.indexOf('next') !== -1) {
-      month += 1
-      if (month >= 12) {
-        year += 1
-        month = 1
-      }
-    }
     const day = parseInt(value)
     let newDate = new Date(year, month - 1, day)
+    if (cls.indexOf('prev') !== -1) {
+      newDate = addMonths(newDate, -1)
+    }
+    if (cls.indexOf('next') !== -1) {
+      newDate = addMonths(newDate, 1)
+    }
     newDate.setHours(hours, minutes, seconds)
     if (type === 'year') {
       year = parseInt(value)
@@ -156,11 +154,11 @@ class Calender extends Component {
     if (type === 'daterange' || type === 'weekrange') {
       if (range.selecting) {
         if (range.startDate > newDate) {
-          range.selecting = true
-          onPick(newDate, null)
+          range.selecting = false
+          onPick(startOfDay(newDate), endOfDay(range.startDate))
         } else {
           range.selecting = false
-          onPick(range.startDate, newDate)
+          onPick(startOfDay(range.startDate), endOfDay(newDate))
         }
       } else {
         range.selecting = true
@@ -178,21 +176,13 @@ class Calender extends Component {
     td = td.parentNode.parentNode
     const day = parseInt(td.innerText)
     const cls = td.className
+    let newDate = new Date(year, month - 1, day)
     if (cls.indexOf('prev') !== -1) {
-      month -= 1
-      if (month <= 0) {
-        year -= 1
-        month = 12
-      }
+      newDate = addMonths(newDate, -1)
     }
     if (cls.indexOf('next') !== -1) {
-      month += 1
-      if (month >= 12) {
-        year += 1
-        month = 1
-      }
+      newDate = addMonths(newDate, 1)
     }
-    let newDate = new Date(year, month - 1, day)
     mouseMove(newDate)
   }
   getTDClass (td) {
