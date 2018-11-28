@@ -33,7 +33,7 @@
     "es"
   ],
   "dependencies": {
-    "@hi-ui/classic-theme": "^0.9.5",
+    "@hi-ui/classic-theme": "^1.0.0-beta.2",
     "@hi-ui/core-css": "^1.0.0-beta.8",
     "async-validator": "^1.8.5",
     "axios": "^0.18.0",
