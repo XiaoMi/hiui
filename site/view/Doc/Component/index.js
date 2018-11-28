@@ -72,12 +72,12 @@ class Component extends React.Component {
   // 获取当前页面侧栏菜单
   getSiderItems () {
     const icons = [
-      <span className='sider__icon-start' />,
-      // <span className='sider__icon-principle' />,
-      <span className='sider__icon-layout' />,
-      <span className='sider__icon-vision' />,
+      <span className='doc-sidebar__icon doc-sidebar__icon--start' />,
+      // <span className='doc-sidebar__icon doc-sidebar__icon--principle' />,
+      <span className='doc-sidebar__icon doc-sidebar__icon--layout' />,
+      <span className='doc-sidebar__icon doc-sidebar__icon--vision' />,
       <Icon name='internet' />,
-      <span className='sider__icon-component' />
+      <span className='doc-sidebar__icon doc-sidebar__icon--component' />
     ]
     const siderDocuments = Object.keys(pages.documents).map((page, index) => {
       return {

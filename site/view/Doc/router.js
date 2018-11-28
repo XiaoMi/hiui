@@ -3,6 +3,10 @@ import Design from './Design'
 
 export default [
   {
+    path: '/',
+    component: Component
+  },
+  {
     path: '/zh-CN/components',
     component: Component
   },

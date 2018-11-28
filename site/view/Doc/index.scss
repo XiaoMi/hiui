@@ -1,25 +1,59 @@
-.dashboard {
-  .header {
-    &-nav {
-      height: 64px;
-      margin: 0;
-      padding: 0;
-      list-style-type: none;
-      display: flex;
-      justify-content: flex-end;
-      a {
-        position: relative;
-        height: 64px;
-        line-height: 64px;
-        padding: 0 20px;
-        display: inline-block;
-        cursor: pointer;
-        color: #383e47;
-        &:hover,
-        &.active {
-          color: #4284f5;
-        }
-      }
+.layout__header {
+  .hi-demo__title {
+    display: block;
+    padding: 0 16px;
+    line-height: 64px;
+    transition: color 0.15s linear;
+  }
+
+  a.header__nav-item--active {
+    color: #4284f5;
+  }
+}
+
+.sidebar {
+  &__item--noaction {
+    font-size: 12px;
+  }
+}
+
+.doc-sidebar {
+  &__icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    background-image: url(../../static/img/docs/icon_sider.png);
+    background-image: -webkit-image-set(
+        url(../../static/img/docs/icon_sider_16.png) 1x,
+        url(../../static/img/docs/icon_sider.png) 2x
+    );
+    background-repeat: no-repeat;
+    background-size: 32px 80px;
+
+    .sidebar__item:hover &,
+    .sidebar__item--active & {
+      background-position-x: -16px;
+    }
+
+    &--start {
+      background-position: 0 0;
+    }
+
+    &--principle {
+      background-position: 0 -16px;
+    }
+
+    &--layout {
+      background-position: 0 -32px;
+    }
+
+    &--vision {
+      background-position: 0 -48px;
+    }
+
+    &--component {
+      background-position: 0 -64px;
     }
   }
 }
