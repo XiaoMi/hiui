@@ -100,6 +100,8 @@
   cursor: pointer;
   transition: background-color $speed-normal $easing, border-color $speed-normal $easing, box-shadow $speed-fast $easing, color $speed-normal $easing;
 
+  @include hi-btn-style();
+
   & + & {
     margin-left: $spacer-2;
   }
@@ -111,16 +113,16 @@
   // Common Styles
   &--type--default {
     background-color: $white;
-    border-color: $gray-dark;
+    border-color: $gray;
     color: $black;
 
     &:not(.hi-btn--disabled):hover {
-      border-color: darken($gray-dark, 15%);
+      border-color: $gray-dark;
       color: $black;
     }
 
     &:not(.hi-btn--disabled):active {
-      background-color: $gray-light;
+      background-color: $gray-lighter;
       box-shadow: inset 0 4px 4px rgba($black, 0.25);
       color: $black;
     }
@@ -128,9 +130,9 @@
     // Status: disabled
     &.hi-btn--disabled,
     &[disabled] {
-      background-color: $gray-light;
+      background-color: $gray-lighter;
       border-color: rgba($black, 0.1);
-      color: $gray-dark;
+      color: $gray;
     }
 
     // Make a button look and behave like a link
@@ -139,13 +141,13 @@
       border-color: transparent;
 
       &:not(.hi-btn--disabled):hover {
-        background-color: darken($gray-dark, 15%);
+        background-color: $gray-dark;
         color: $white;
       }
 
       &:not(.hi-btn--disabled):active {
-        background-color: darken($gray-dark, 20%);
-        border-color: darken($gray-dark, 20%);
+        background-color: darken($gray-dark, 5%);
+        border-color: darken($gray-dark, 5%);
         color: $white;
       }
 
@@ -160,6 +162,7 @@
   @each $key in 'success', 'danger', 'warning' {
     &--type--#{$key} {
       $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
+
       @include render-line-button($status-color);
 
       // Make a button look and behave like a link
@@ -214,11 +217,6 @@
       margin-top: 4px;
     }
   }
-}
-
-// Component colors
-.hi-btn {
-  @include hi-btn-style();
 }
 
 @each $key, $value in $theme-colors {

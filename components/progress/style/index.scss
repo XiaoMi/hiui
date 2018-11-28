@@ -1,12 +1,11 @@
-$progress-bg: #f2f2f2;
-$progress-primary: #3b76dc;
-$progress-success: #1da653;
-$progress-warn: #eb5252;
-$progress-error: #e19d0c;
-$progress-text: #666;
+$progress-bg: #f2f2f2 !default;
+$progress-primary: #3b76dc !default;
+$progress-success: #1da653 !default;
+$progress-warn: #eb5252 !default;
+$progress-error: #e19d0c !default;
+$progress-text: #666 !default;
 
 .hi-progress {
-
   &__inner {
     background-color: $progress-bg;
     border-radius: 9px;
@@ -50,7 +49,7 @@ $progress-text: #666;
     position: absolute;
     right: 5px;
     top: 50%;
-    transform: translatey(-50%);
+    transform: translateY(-50%);
     line-height: 14px;
   }
 
@@ -76,7 +75,7 @@ $progress-text: #666;
       text-align: center;
       line-height: 1;
       top: 50%;
-      transform: translatey(-50%);
+      transform: translateY(-50%);
       left: 0;
       margin: 0;
       padding: 0;

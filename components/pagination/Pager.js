@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import Provider from '../context'
 
 const Pager = props => {
-  const prefixCls = `${props.rootPrefixCls}-item`
+  const prefixCls = `${props.rootPrefixCls}__item`
   let cls = `${prefixCls} ${prefixCls}-${props.page}`
 
   if (props.active) {
-    cls = `${cls} ${prefixCls}-active`
+    cls = `${cls} ${prefixCls}--active`
   }
 
   if (props.className) {
@@ -17,7 +17,7 @@ const Pager = props => {
   const handClick = () => {
     props.onClick(props.page)
   }
-  const pageHref = props.pageLink ? `#page=${props.page}` : 'javascript:;'
+  const pageHref = props.pageLink ? `#page=${props.page}` : 'javascript: void(0)'
 
   return (
     <li className={cls} onClick={handClick}>

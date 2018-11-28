@@ -4,6 +4,7 @@ module.exports = {
   },
   datePicker: {
     ok: '确认',
+    to: '至',
     placeholder: '请选择日期',
     dateChoose: '日期选择',
     timeChoose: '时间选择',
@@ -32,6 +33,7 @@ module.exports = {
       return '共 ' + total + ' 条'
     },
     item: '条',
+    itemPerPage: '每页',
     goto: '前往'
   },
   cascader: {

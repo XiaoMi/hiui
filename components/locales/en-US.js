@@ -4,6 +4,7 @@ module.exports = {
   },
   datePicker: {
     ok: 'OK',
+    to: 'to',
     placeholder: 'Select Date',
     dateChoose: 'Select Date',
     timeChoose: 'Select Time',
@@ -31,7 +32,8 @@ module.exports = {
     total: function (total) {
       return 'Total ' + total + ' items'
     },
-    item: 'items',
+    item: '',
+    itemPerPage: 'Items per page',
     goto: 'Goto'
   },
   cascader: {

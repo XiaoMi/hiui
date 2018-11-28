@@ -1,30 +1,29 @@
-$table: 'hi-table';
-$bgColor: #f7fafe;
-
-
+$table: 'hi-table' !default;
+$bgColor: #f7fafe !default;
 
 .#{$table} {
   position: relative;
   width: 100%;
-  tbody .hi-checkbox{
-    pointer-events:none;
+
+  tbody .hi-checkbox {
+    pointer-events: none;
   }
 
   &-wrapper {
     width: 100%;
   }
 
-  &-header-menu{
+  &-header-menu {
     z-index: 999999;
-    background: #FFFFFF;
-    border: 1px solid #E6E7E8;
-    box-shadow: 0 2px 8px 0 rgba(56,62,71,0.10);
+    background: #fff;
+    border: 1px solid #e6e7e8;
+    box-shadow: 0 2px 8px 0 rgba(56, 62, 71, 0.1);
     border-radius: 2px;
     width: 140px;
 
-    p{
+    p {
       font-size: 14px;
-      color: #383E47;
+      color: #383e47;
       text-align: left;
       margin: 0;
       line-height: 50px;
@@ -33,25 +32,25 @@ $bgColor: #f7fafe;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
-      &:hover{
+
+      &:hover {
         background: $bgColor;
-        color: #4284F5;
+        color: #4284f5;
       }
     }
   }
 
-  &-setting-menu{
+  &-setting-menu {
     z-index: 999999;
-    background: #FFFFFF;
-    border: 1px solid #E6E7E8;
-    box-shadow: 0 2px 8px 0 rgba(56,62,71,0.10);
+    background: #fff;
+    border: 1px solid #e6e7e8;
+    box-shadow: 0 2px 8px 0 rgba(56, 62, 71, 0.1);
     border-radius: 2px;
     width: 140px;
 
-    >div{
-
+    > div {
       font-size: 14px;
-      color: #383E47;
+      color: #383e47;
       text-align: left;
       margin: 0;
       line-height: 50px;
@@ -60,12 +59,13 @@ $bgColor: #f7fafe;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
-      &:hover{
+
+      &:hover {
         background: $bgColor;
-        color: #4284F5;
+        color: #4284f5;
       }
 
-      >p:first-child{
+      > p:first-child {
         width: 140px;
         white-space: nowrap;
         overflow: hidden;
@@ -73,16 +73,15 @@ $bgColor: #f7fafe;
       }
     }
 
-    .active{
-      background: rgba(66,133,244,0.15);
+    .active {
+      background: rgba(66, 133, 244, 0.15);
     }
 
-    &.column-menu{
+    &.column-menu {
       position: absolute;
       right: 10px;
       top: 40px;
       width: 220px;
-
       max-height: 240px;
       overflow-y: auto;
     }
@@ -91,16 +90,16 @@ $bgColor: #f7fafe;
   table {
     width: 100%;
     border-collapse: separate;
-    background: #ffffff;
+    background: #fff;
     margin: 0;
     box-sizing: border-box;
     display: table;
+    border-spacing: 0;
 
-    border-spacing:0;
-
-    col{
+    col {
       display: table-column;
     }
+
     td,
     th {
       white-space: nowrap;
@@ -110,38 +109,47 @@ $bgColor: #f7fafe;
       border-bottom: 1px solid #e6e7e8;
       text-align: left;
     }
+
     th {
       background-color: $bgColor;
-      color: #83868C ;
+      color: #83868c;
       position: relative;
-      i:hover{
-         color: #4284F5;
-       }
+
+      i:hover {
+        color: #4284f5;
+      }
     }
+
     td {
-      color:#383E47;
+      color: #383e47;
       word-break: break-word;
-      &.picked{
+
+      &.picked {
         background: $bgColor;
       }
     }
-    tr{
-      transition: .2s;
+
+    tr {
+      transition: 0.2s;
       cursor: pointer;
       height: 50px;
       padding: 0;
       box-sizing: border-box;
-      &.picked td{
+
+      &.picked td {
         background: $bgColor;
       }
-      &.expanded{
+
+      &.expanded {
         background: $bgColor;
       }
-      &:hover{
+
+      &:hover {
         background: $bgColor;
       }
     }
   }
+
   &-body-inner {
     height: 100%;
   }
@@ -167,6 +175,7 @@ $bgColor: #f7fafe;
     overflow: hidden;
     transition: box-shadow 0.3s ease;
     border-radius: 0;
+
     table {
       width: auto;
     }
@@ -180,6 +189,7 @@ $bgColor: #f7fafe;
   &-fixed-left {
     left: 0;
     box-shadow: 6px 0 6px -4px rgba(0, 0, 0, 0.15);
+
     .#{$table}-header {
       overflow-y: hidden;
     }
@@ -188,32 +198,36 @@ $bgColor: #f7fafe;
       margin-right: -20px;
       padding-right: 20px;
     }
+
     .#{$table}-fixed-header & .#{$table}-body-inner {
       padding-right: 0;
     }
+
     &,
     table {
       border-radius: 4px 0 0 0;
     }
-     //.hi-table-thead > tr > th:last-child {
-     //  border-top-right-radius: 0;
-     //}
+    //.hi-table-thead > tr > th:last-child {
+    //  border-top-right-radius: 0;
+    //}
   }
 
   &-fixed-right {
     right: 0;
     box-shadow: -6px 0 6px -4px rgba(0, 0, 0, 0.15);
+
     &,
     table {
       border-radius: 0 4px 0 0;
     }
+
     .#{$table}-expanded-row {
       color: transparent;
       pointer-events: none;
     }
-     //.hi-table-thead > tr > th:first-child {
-     //  border-top-left-radius: 0;
-     //}
+    //.hi-table-thead > tr > th:first-child {
+    //  border-top-left-radius: 0;
+    //}
   }
 
   &.#{$table}-scroll-position-left &-fixed-left {
@@ -234,6 +248,7 @@ $bgColor: #f7fafe;
     text-align: center;
     width: 62px;
     min-width: 62px;
+
     .hi-radio-wrapper {
       margin-right: 0;
     }
@@ -249,12 +264,11 @@ $bgColor: #f7fafe;
     z-index: 1;
   }
 
-  &-setting{
+  &-setting {
     position: absolute;
     right: 10px;
     top: 0;
     cursor: pointer;
     background: $bgColor;
-
   }
 }

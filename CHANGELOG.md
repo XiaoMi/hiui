@@ -14,6 +14,7 @@
 - 修改：修复 `<Input />` 组件类型为 `textarea` 时高度不自适应的 bug；
 - 修改：修复 `<Cascader />` 引用大小写的 bug；
 - 修改：修复 `<Counter />` 能低于最小值的 bug；
+- 文档：切换 sass-lint 到 style-lint。
 - 文档：增加多语言、配色切换文档。
 
 ## 1.0.3
