@@ -1,17 +1,20 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "1.1.0-beta.3",
+  "version": "1.1.0-beta.4",
   "description": "HIUI for React",
   "scripts": {
-    "test": "node_modules/.bin/standard",
-    "test-style": "node_modules/.bin/sass-lint -c .sass-lint.yml 'components/**/*.scss' -v -q",
-    "fix": "node_modules/.bin/standard --fix",
-    "dev": "cd site && cross-env NODE_ENV=development PORT=4200 node server.js",
+    "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
+    "fix": "node_modules/.bin/standard --fix && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss' --fix",
+    "precommit": "lint-staged",
     "compile": "cross-env NODE_ENV=production gulp",
     "build": "cross-env NODE_ENV=production node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.production.config.js && gulp carry",
     "deploy": "gh-pages -d dist",
-    "precommit": "lint-staged",
+    "dev": "cd site && cross-env NODE_ENV=development PORT=4200 node server.js",
     "start": "npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:XiaoMi/hiui.git"
   },
   "keywords": [
     "component",
@@ -92,10 +95,13 @@
     "rimraf": "^2.6.2",
     "rucksack-css": "^1.0.2",
     "run-sequence": "^2.2.1",
-    "sass-lint": "^1.12.1",
     "sass-loader": "^7.0.1",
     "standard": "^11.0.1",
     "style-loader": "^0.21.0",
+    "stylelint": "^9.9.0",
+    "stylelint-config-recommended-scss": "^3.2.0",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-scss": "^3.4.0",
     "through2": "^2.0.3",
     "url-loader": "^1.0.1",
     "webpack": "^3.12.0",

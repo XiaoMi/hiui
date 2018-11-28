@@ -33,6 +33,7 @@
 .hi-pagination {
   display: flex;
   align-items: center;
+
   @include component-reset();
 
   &__total {
@@ -130,6 +131,7 @@
 
 // Component colors
 @include hi-pagination-style();
+
 @each $key, $value in $theme-colors {
   .theme__#{$key} {
     @include hi-pagination-style($value);

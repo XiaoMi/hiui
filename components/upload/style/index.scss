@@ -1,9 +1,4 @@
-
-span{
-  margin: 0;
-  padding: 0;
-}
-
+/* stylelint-disable */
 .file-name {
   margin-left: 10px;
 }
@@ -11,29 +6,31 @@ span{
 .loading-line-wrap {
   width: 325px;
   height: 2px;
-  background: #F2F2F2;
+  background: #f2f2f2;
   border-radius: 9px;
   margin-left: 25px;
   margin-top: 5px;
   position: relative;
+
   .loading-line {
     display: inline-block;
     height: 2px;
     width: 0;
-    background: #4284F5;
+    background: #4284f5;
     border-radius: 4px 0 0 4px;
     position: absolute;
     left: 0;
     top: 0;
-    transform: width linear .1s;
+    transition: width 0.1s linear;
   }
+
   .loading-num {
     position: absolute;
     right: 0;
     top: -25px;
     font-style: normal;
     font-size: 12px;
-    color: #999999;
+    color: #999;
   }
 }
 
@@ -42,56 +39,66 @@ span{
 .upload-avatar,
 .upload-canvas,
 .upload-pictureCard,
-.upload-normal{
+.upload-normal {
   ul {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     list-style: none;
   }
+
   li {
     list-style: none;
   }
 }
-.upload-normal{
+
+.upload-normal {
   p {
     margin: 0;
     padding: 0;
   }
-  .upload-title{
+
+  .upload-title {
     display: inline-block;
     border: 1px solid #d9d9d9;
     padding: 5px 20px;
     font-size: 14px;
     cursor: pointer;
+
     &.disabled {
       cursor: not-allowed;
       opacity: 0.5;
     }
-
   }
-  .upload-list{
+
+  .upload-list {
     width: 350px;
     max-height: 250px;
     margin-top: 15px;
     overflow: auto;
-    li{
+
+    li {
       height: 35px;
       // line-height: 25px;
       cursor: default;
-      color: #666666;
+      color: #666;
       font-size: 12px;
-      .state-wrap{
+
+      .state-wrap {
         float: right;
+
         > span {
           margin: 0 8px;
         }
-        .icon-wrong{
+
+        .icon-wrong {
           display: none;
         }
+
         &:hover {
           .icon-wrong {
             display: inline;
           }
+
           .icon-right,
           .icon-warning,
           .icon-loading {
@@ -103,12 +110,13 @@ span{
   }
 }
 
-.upload-drag{
+.upload-drag {
   p {
     margin: 0;
     padding: 0;
   }
-  .drop-wrap{
+
+  .drop-wrap {
     width: 400px;
     min-height: 120px;
     max-height: 200px;
@@ -117,13 +125,16 @@ span{
     // cursor: default;
     cursor: pointer;
     position: relative;
-    .drop-content{
+
+    .drop-content {
       display: none;
     }
-    .drop-click{
+
+    .drop-click {
       cursor: pointer;
     }
-    .show-drop-content{
+
+    .show-drop-content {
       position: absolute;
       left: 0;
       right: 0;
@@ -134,52 +145,62 @@ span{
       height: 60px;
       text-align: center;
       font-size: 12px;
-      color: #333333;
+      color: #333;
       letter-spacing: 0;
       text-align: center;
       line-height: 20px;
       cursor: pointer;
-      .icon{
+
+      .icon {
         display: block;
         cursor: pointer;
         margin-bottom: 10px;
-        &::before{
+
+        &::before {
           font-size: 30px;
-          color: #4284F5;
+          color: #4284f5;
         }
       }
     }
     // .drop-click{
     //   color: #6fccfc;
     // }
-    &:hover{
+    &:hover {
       border-color: #0099fb;
     }
   }
-  .drop-over{
+
+  .drop-over {
     border: 1px dashed #0099fb;
   }
-  .upload-list{
+
+  .upload-list {
     padding: 20px;
     box-sizing: border-box;
-    color: #666666;
+    color: #666;
     font-size: 12px;
-    li{
+
+    li {
       height: 35px;
       // line-height: 25px;
       cursor: default;
-      .state-wrap{
+
+      .state-wrap {
         float: right;
+
         > span {
           margin: 0 8px;
         }
-        .icon-wrong{
+
+        .icon-wrong {
           display: none;
         }
+
         &:hover {
           .icon-wrong {
             display: inline;
           }
+
           .icon-right,
           .icon-warning,
           .icon-loading {
@@ -187,27 +208,29 @@ span{
           }
         }
       }
-
     }
   }
-  .hide-upload-list{
+
+  .hide-upload-list {
     display: none;
   }
 }
 
-.upload-photo{
-  .photo-display{
+.upload-photo {
+  .photo-display {
     width: 480px;
     padding: 20px 0 0 20px;
     border: 1px dotted #bcbcbc;
-    &:after{
-      content: "\0020";
+
+    &::after {
+      content: '\0020';
       display: block;
       height: 0;
       clear: both;
     }
   }
-  li{
+
+  li {
     width: 140px;
     height: 140px;
     box-sizing: border-box;
@@ -218,116 +241,7 @@ span{
     margin-right: 20px;
     margin-bottom: 20px;
     overflow: hidden;
-    .photo-upload{
-      margin: 0;
-      display: block;
-      width: 140px;
-      height: 140px;
-      line-height: 130px;
-      text-align: center;
-      font-size: 50px;
-      color: #8b939b;
-      cursor: pointer;
-    }
-    .upload-comperate{
-      position: absolute;
-      width: 140px;
-      height: 140px;
-      line-height: 140px;
-      background: rgba(0,0,0,0.3);
-      left: 0;
-      top: 0;
-      text-align: center;
-      cursor: default;
-      display: none;
-      .icon::before{
-        color: #fff;
-        font-size: 16px;
-        cursor: pointer;
-      }
-      .icon-origin::before{
-        font-size: 18px;
-      }
-      .icon:first-child{
-        margin-right: 15px;
-      }
-    }
-    .upload-precent{
-      position: absolute;
-      width: 140px;
-      height: 140px;
-      left: 0;
-      top: 0;
-      background: rgba(0,0,0,0.3);
-      color: #fff;
-      font-size: 14px;
-      text-align: center;
-      line-height: 120px;
-      .precent-loading{
-        width: 0;
-        height: 4px;
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        background: #4284F5;
-      }
-    }
-    .img-uploaded{
-      width: 100%;
-      height: 100%;
-      img{
-        max-width: 140px;
-        max-height: 140px;
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
-      }
-    }
-    .img-uploading{
-      width: 100%;
-      height: 100%;
-      img{
-        max-width: 140px;
-        max-height: 140px;
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
-      }
-    }
-    &:hover{
-      .upload-comperate{
-        display: block;
-      }
-    }
-  }
-  li:last-child{
-    border: 1px dotted #bcbcbc;
-  }
-  li:last-child:hover{
-    border: 1px dotted #0099fb;
-  }
 
-}
-
-.upload-avatar {
-  .photo-display {
-    width: 140px;
-    margin-bottom: 20px;
-  }
-  li {
-    width: 140px;
-    height: 140px;
-    box-sizing: border-box;
-    list-style: none;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
     .photo-upload {
       margin: 0;
       display: block;
@@ -339,6 +253,7 @@ span{
       color: #8b939b;
       cursor: pointer;
     }
+
     .upload-comperate {
       position: absolute;
       width: 140px;
@@ -350,18 +265,22 @@ span{
       text-align: center;
       cursor: default;
       display: none;
+
       .icon::before {
         color: #fff;
         font-size: 16px;
         cursor: pointer;
       }
+
       .icon-origin::before {
         font-size: 18px;
       }
+
       .icon:first-child {
         margin-right: 15px;
       }
     }
+
     .upload-precent {
       position: absolute;
       width: 140px;
@@ -373,18 +292,21 @@ span{
       font-size: 14px;
       text-align: center;
       line-height: 120px;
+
       .precent-loading {
         width: 0;
         height: 4px;
         position: absolute;
         left: 0;
         bottom: 0;
-        background: #4284F5;
+        background: #4284f5;
       }
     }
+
     .img-uploaded {
       width: 100%;
       height: 100%;
+
       img {
         max-width: 140px;
         max-height: 140px;
@@ -396,9 +318,11 @@ span{
         margin: auto;
       }
     }
+
     .img-uploading {
       width: 100%;
       height: 100%;
+
       img {
         max-width: 140px;
         max-height: 140px;
@@ -410,18 +334,146 @@ span{
         margin: auto;
       }
     }
+
     &:hover {
       .upload-comperate {
         display: block;
       }
     }
   }
-  .upload-li{
+
+  li:last-child {
     border: 1px dotted #bcbcbc;
-    &:hover{
-       border: 1px dotted #0099fb;
+  }
+
+  li:last-child:hover {
+    border: 1px dotted #0099fb;
+  }
+}
+
+.upload-avatar {
+  .photo-display {
+    width: 140px;
+    margin-bottom: 20px;
+  }
+
+  li {
+    width: 140px;
+    height: 140px;
+    box-sizing: border-box;
+    list-style: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+
+    .photo-upload {
+      margin: 0;
+      display: block;
+      width: 140px;
+      height: 140px;
+      line-height: 130px;
+      text-align: center;
+      font-size: 50px;
+      color: #8b939b;
+      cursor: pointer;
+    }
+
+    .upload-comperate {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      line-height: 140px;
+      background: rgba(0, 0, 0, 0.3);
+      left: 0;
+      top: 0;
+      text-align: center;
+      cursor: default;
+      display: none;
+
+      .icon::before {
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .icon-origin::before {
+        font-size: 18px;
+      }
+
+      .icon:first-child {
+        margin-right: 15px;
+      }
+    }
+
+    .upload-precent {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      left: 0;
+      top: 0;
+      background: rgba(0, 0, 0, 0.3);
+      color: #fff;
+      font-size: 14px;
+      text-align: center;
+      line-height: 120px;
+
+      .precent-loading {
+        width: 0;
+        height: 4px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        background: #4284f5;
+      }
+    }
+
+    .img-uploaded {
+      width: 100%;
+      height: 100%;
+
+      img {
+        max-width: 140px;
+        max-height: 140px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+      }
+    }
+
+    .img-uploading {
+      width: 100%;
+      height: 100%;
+
+      img {
+        max-width: 140px;
+        max-height: 140px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+      }
+    }
+
+    &:hover {
+      .upload-comperate {
+        display: block;
+      }
     }
   }
+
+  .upload-li {
+    border: 1px dotted #bcbcbc;
+
+    &:hover {
+      border: 1px dotted #0099fb;
+    }
+  }
+
   .upload-canvas {
     width: 100%;
     height: 100%;
@@ -440,6 +492,7 @@ span{
   height: 100%;
   font-size: 0;
   cursor: crosshair;
+
   &__modal {
     position: absolute;
     top: 0;
@@ -449,12 +502,13 @@ span{
     border: 1px dashed #333;
     background-color: #fff;
     cursor: move;
-    opacity: .4;
+    opacity: 0.4;
     // clip: rect(20px, 20px, 20px, 20px);
     &.none {
       display: none;
     }
   }
+
   &__handle {
     position: absolute;
     width: 8px;
@@ -462,45 +516,53 @@ span{
     border: 1px solid #eee;
     background-color: #333;
   }
+
   &__t {
     top: -5px;
     left: 50%;
     transform: translateX(-50%);
     cursor: n-resize;
   }
+
   &__r {
     top: 50%;
     right: -5px;
     transform: translateY(-50%);
     cursor: e-resize;
   }
+
   &__b {
     bottom: -5px;
     left: 50%;
     transform: translateX(-50%);
     cursor: s-resize;
   }
+
   &__l {
     top: 50%;
     left: -5px;
     transform: translateY(-50%);
     cursor: w-resize;
   }
+
   &__tl {
     top: -5px;
     left: -5px;
     cursor: nw-resize;
   }
+
   &__tr {
     top: -5px;
     right: -5px;
     cursor: ne-resize;
   }
+
   &__bl {
     bottom: -5px;
     left: -5px;
     cursor: sw-resize;
   }
+
   &__br {
     bottom: -5px;
     right: -5px;
@@ -513,43 +575,50 @@ span{
     margin: 0;
     padding: 0;
   }
+
   .upload-title {
     display: inline-block;
     border: 1px solid #d9d9d9;
     padding: 5px 20px;
     font-size: 14px;
     cursor: pointer;
+
     &.disabled {
       cursor: not-allowed;
       opacity: 0.5;
     }
   }
+
   .upload-list {
     width: 415px;
     max-height: 250px;
     margin-top: 15px;
     overflow: auto;
+
     li {
       width: 400px;
       height: 65px;
       box-sizing: border-box;
-      border: 1px solid #D8D8D8;
+      border: 1px solid #d8d8d8;
       border-radius: 2px;
       padding: 8px 18px 8px 8px;
       margin-bottom: 8px;
       font-size: 12px;
       cursor: default;
-      color: #333333;
-      &.loading{
-        color: #999999;
+      color: #333;
+
+      &.loading {
+        color: #999;
       }
-      .img-wrap{
+
+      .img-wrap {
         float: left;
         width: 50px;
         height: 50px;
         margin-right: 12px;
         position: relative;
-        img{
+
+        img {
           position: absolute;
           left: 0;
           top: 0;
@@ -559,63 +628,73 @@ span{
           max-width: 50px;
           max-height: 50px;
         }
-        .img-mask{
+
+        .img-mask {
           width: 50px;
           height: 50px;
           position: absolute;
           left: 0;
           top: 0;
-          background: rgba(0,0,0,0.3);
+          background: rgba(0, 0, 0, 0.3);
         }
       }
-      .img-info-wrap{
+
+      .img-info-wrap {
         float: left;
         height: 50px;
         position: relative;
-        .file-wrap{
+
+        .file-wrap {
           height: 50px;
           width: 303px;
           line-height: 50px;
         }
-        .loading-line-wrap{
+
+        .loading-line-wrap {
           width: 303px;
           height: 2px;
-          background: #F2F2F2;
+          background: #f2f2f2;
           border-radius: 9px;
           margin: 0;
           position: absolute;
           left: 0;
           bottom: 6px;
+
           .loading-line {
             display: inline-block;
             height: 2px;
             width: 0;
-            background: #4284F5;
+            background: #4284f5;
             border-radius: 4px 0 0 4px;
             position: absolute;
             left: 0;
             top: 0;
-            transform: width linear .1s;
+            transition: width linear 0.1s;
           }
+
           .loading-num {
             position: absolute;
             right: 0;
             top: -25px;
             font-style: normal;
             font-size: 12px;
-            color: #999999;
+            color: #999;
           }
         }
+
         .state-wrap {
           float: right;
           width: 20px;
+
           .icon-wrong {
             display: none;
           }
+
           &:hover {
             .icon-wrong {
               display: inline;
             }
+
             .icon-right,
             .icon-warning,
             .icon-loading {

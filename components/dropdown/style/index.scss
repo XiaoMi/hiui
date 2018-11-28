@@ -19,10 +19,11 @@
   }
 }
 
-.hi-dropdown{
+.hi-dropdown {
   position: relative;
   user-select: none;
   max-width: 200px;
+
   @include component-reset();
 
   &__title {
@@ -54,7 +55,8 @@
     text-align: left;
     background-color: $white;
     background-clip: padding-box;
-    box-shadow: 0 8px 12px rgba(0, 0, 0, .175);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.175);
+
     &--hide {
       display: none;
     }
@@ -98,14 +100,17 @@
   &__button-group {
     .hi-btn {
       position: relative;
+
       &:first-child {
         margin-left: 0;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
+
         &:hover {
           z-index: 1;
         }
       }
+
       & + & {
         margin-left: -1px;
         padding: 0 8px;
@@ -122,6 +127,7 @@
 
 // Component colors
 @include hi-dropdown-style();
+
 @each $key, $value in $theme-colors {
   .theme__#{$key} {
     @include hi-dropdown-style($value);

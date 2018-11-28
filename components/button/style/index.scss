@@ -100,6 +100,8 @@
   cursor: pointer;
   transition: background-color $speed-normal $easing, border-color $speed-normal $easing, box-shadow $speed-fast $easing, color $speed-normal $easing;
 
+  @include hi-btn-style();
+
   & + & {
     margin-left: $spacer-2;
   }
@@ -160,6 +162,7 @@
   @each $key in 'success', 'danger', 'warning' {
     &--type--#{$key} {
       $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
+
       @include render-line-button($status-color);
 
       // Make a button look and behave like a link
@@ -214,11 +217,6 @@
       margin-top: 4px;
     }
   }
-}
-
-// Component colors
-.hi-btn {
-  @include hi-btn-style();
 }
 
 @each $key, $value in $theme-colors {
