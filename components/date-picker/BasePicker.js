@@ -263,6 +263,7 @@ class BasePicker extends Component {
   }
   renderRangeInput () {
     const {
+      localeDatas,
       disabled
     } = this.props
     const _cls = classNames(
@@ -273,7 +274,7 @@ class BasePicker extends Component {
     return (
       <div className={_cls}>
         {this._input(this.state.text, 'input')}
-        <span>至</span>
+        <span>{localeDatas.datePicker.to}</span>
         {this._input(this.state.rText, 'rInput')}
         {this._icon()}
       </div>

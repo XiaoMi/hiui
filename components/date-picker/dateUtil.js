@@ -13,6 +13,8 @@ import endOfWeek from 'date-fns/end_of_week'
 import dateFormat from 'date-fns/format'
 import addMonths from 'date-fns/add_months'
 import isSameMonth from 'date-fns/is_same_month'
+import getYear from 'date-fns/get_year'
+import getMonth from 'date-fns/get_month'
 export {
   getDaysInMonth, // 获取当月的天数
   subMonths, // 月份减法
@@ -28,5 +30,7 @@ export {
   startOfWeek, // 一周的开始
   endOfWeek, // 一周的结束
   dateFormat, // 格式化时间
-  isSameMonth
+  isSameMonth, // 是否是同一个月
+  getYear,
+  getMonth
 }

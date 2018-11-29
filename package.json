@@ -1,16 +1,20 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "1.1.0-beta.1",
+  "version": "1.1.0-beta.4",
   "description": "HIUI for React",
   "scripts": {
-    "test": "node_modules/.bin/standard",
-    "fix": "node_modules/.bin/standard --fix",
-    "dev": "cd site && cross-env NODE_ENV=development PORT=4200 node server.js",
+    "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
+    "fix": "node_modules/.bin/standard --fix && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss' --fix",
+    "precommit": "lint-staged",
     "compile": "cross-env NODE_ENV=production gulp",
     "build": "cross-env NODE_ENV=production node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.production.config.js && gulp carry",
     "deploy": "gh-pages -d dist",
-    "precommit": "lint-staged",
+    "dev": "cd site && cross-env NODE_ENV=development PORT=4200 node server.js",
     "start": "npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:XiaoMi/hiui.git"
   },
   "keywords": [
     "component",
@@ -30,7 +34,7 @@
   ],
   "dependencies": {
     "@hi-ui/classic-theme": "^0.9.5",
-    "@hi-ui/core-css": "^0.9.1",
+    "@hi-ui/core-css": "^1.0.0-beta.8",
     "async-validator": "^1.8.5",
     "axios": "^0.18.0",
     "classnames": "^2.2.5",
@@ -94,6 +98,10 @@
     "sass-loader": "^7.0.1",
     "standard": "^11.0.1",
     "style-loader": "^0.21.0",
+    "stylelint": "^9.9.0",
+    "stylelint-config-recommended-scss": "^3.2.0",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-scss": "^3.4.0",
     "through2": "^2.0.3",
     "url-loader": "^1.0.1",
     "webpack": "^3.12.0",

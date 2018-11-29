@@ -2,11 +2,11 @@
 
 Commonly used button
 
-### Normal Button
+### Standard Button
 
 :::demo 
 
-Button component provides 7 themes by default. Defined by the `type` attribute，default is `default`。
+Button component provides 7 themes by default. Defined by the `type` attribute, default is `default`。
 
 ```js
 render() {
@@ -17,26 +17,22 @@ render() {
       <Row gutter={true}>
         <Col span={24}>
 
-          <Button type="default">default</Button>
-          <Button type="primary">primary</Button>
-          <Button type="success">success</Button>
-          <Button type="info">info</Button>
-          <Button type="warning">warning</Button>
-          <Button type="danger">danger</Button>
-          <Button type="primary"><Icon name="edit" /></Button>
+          <Button type="primary">Primary</Button>
+          <Button type="line">Line</Button>
+          <Button type="default">Default</Button>
+          <Button type="primary">Confirm</Button>
+          <Button type="line">Cancel</Button>
 
         </Col>
       </Row>
       <Row gutter={true}>
         <Col span={24}>
 
-          <Button type="default" disabled>default</Button>
-          <Button type="primary" disabled>primary</Button>
-          <Button type="success" disabled>success</Button>
-          <Button type="info" disabled>info</Button>
-          <Button type="warning" disabled>warning</Button>
-          <Button type="danger" disabled>danger</Button>
-          <Button type="primary" disabled><Icon name="edit" /></Button>
+          <Button type="primary" disabled>Primary</Button>
+          <Button type="line" disabled>Line</Button>
+          <Button type="default" disabled>Default</Button>
+          <Button type="primary" disabled>Confirm</Button>
+          <Button type="line" disabled>Cancel</Button>
 
         </Col>
       </Row>
@@ -46,7 +42,7 @@ render() {
 ```
 :::
 
-### Line
+### Status Button
 
 :::demo
 
@@ -59,26 +55,14 @@ render() {
       <Row gutter={true}>
         <Col span={24}>
 
-          <Button type="default" appearance="line">default</Button>
-          <Button type="primary" appearance="line">primary</Button>
-          <Button type="success" appearance="line">success</Button>
-          <Button type="info" appearance="line">info</Button>
-          <Button type="warning" appearance="line">warning</Button>
-          <Button type="danger" appearance="line">danger</Button>
-          <Button type="primary" appearance="line"><Icon name="edit" /></Button>
+          <div>
 
-        </Col>
-      </Row>
-      <Row gutter={true}>
-        <Col span={24}>
+            <Button type="success">Approve</Button>
+            <Button type="success" disabled>Approve</Button>
+            <Button type="danger">Decline</Button>
+            <Button type="danger" disabled>Decline</Button>
 
-          <Button type="default" appearance="line" disabled>default</Button>
-          <Button type="primary" appearance="line" disabled>primary</Button>
-          <Button type="success" appearance="line" disabled>success</Button>
-          <Button type="info" appearance="line" disabled>info</Button>
-          <Button type="warning" appearance="line" disabled>warning</Button>
-          <Button type="danger" appearance="line" disabled>danger</Button>
-          <Button type="primary" appearance="line" disabled><Icon name="edit" /></Button>
+          </div>
 
         </Col>
       </Row>
@@ -88,8 +72,7 @@ render() {
 ```
 :::
 
-
-### 链接按钮
+### Button Size
 
 :::demo
 
@@ -103,26 +86,12 @@ render() {
       <Row gutter={true}>
         <Col span={24}>
 
-          <Button type="default" appearance="link">default</Button>
-          <Button type="primary" appearance="link">primary</Button>
-          <Button type="success" appearance="link">success</Button>
-          <Button type="info" appearance="link">info</Button>
-          <Button type="warning" appearance="link">warning</Button>
-          <Button type="danger" appearance="link">danger</Button>
-          <Button type="primary" appearance="link"><Icon name="edit" /></Button>
-
-        </Col>
-      </Row>
-      <Row gutter={true}>
-        <Col span={24}>
-
-          <Button type="default" appearance="link" disabled>default</Button>
-          <Button type="primary" appearance="link" disabled>primary</Button>
-          <Button type="success" appearance="link" disabled>success</Button>
-          <Button type="info" appearance="link" disabled>info</Button>
-          <Button type="warning" appearance="link" disabled>warning</Button>
-          <Button type="danger" appearance="link" disabled>danger</Button>
-          <Button type="primary" appearance="link" disabled><Icon name="edit" /></Button>
+          <Button type="primary" size="large">Large</Button>
+          <Button type="primary" size="large" disabled>Large</Button>
+          <Button type="primary" size="normal">Normal</Button>
+          <Button type="primary" size="normal" disabled>Normal</Button>
+          <Button type="primary" size="small">Small</Button>
+          <Button type="primary" size="small" disabled>Small</Button>
 
         </Col>
       </Row>
@@ -132,11 +101,9 @@ render() {
 ```
 :::
 
-### Button Status
+### Link Button
 
-:::demo 
-
-All forms of Button components are available in three sizes, disabled, icons, etc.
+:::demo
 
 ```js
 render() {
@@ -144,14 +111,26 @@ render() {
   const Col = Layout.Col
   return (
     <div>
+
       <Row gutter={true}>
         <Col span={24}>
 
-          <Button type="primary" size="large">Large Button</Button>
-          <Button type="primary" appearance="line" size="small">Small Button</Button>
-          <Button type="primary" appearance="line"><Icon name="edit" />Edit</Button>
-          <Button type="danger" appearance="line" disabled>Disabled</Button>
-          <Button type="default" className="someCustomClass" onClick={()=>alert("onClick!")} title="description">Click Event</Button>
+          <Button type="default" appearance="link">Link</Button>
+          <Button type="primary" appearance="link">Primary</Button>
+          <Button type="success" appearance="link">Success</Button>
+          <Button type="danger" appearance="link">Danger</Button>
+          <Button type="primary" appearance="link"><Icon name="edit" /></Button>
+
+        </Col>
+      </Row>
+      <Row gutter={true}>
+        <Col span={24}>
+
+          <Button type="default" appearance="link" disabled>Link</Button>
+          <Button type="primary" appearance="link" disabled>Primary</Button>
+          <Button type="success" appearance="link" disabled>Success</Button>
+          <Button type="danger" appearance="link" disabled>Danger</Button>
+          <Button type="primary" appearance="link" disabled><Icon name="edit" /></Button>
 
         </Col>
       </Row>
@@ -175,9 +154,9 @@ render() {
         <Col span={24}>
 
           <Button.Group>
-            <Button type="default" appearance="line">Action A</Button>
-            <Button type="default" appearance="line">Action B</Button>
-            <Button type="default" appearance="line" disabled>Action C</Button>
+            <Button type="default">Action A</Button>
+            <Button type="default">Action B</Button>
+            <Button type="default" disabled>Action C</Button>
           </Button.Group>
 
         </Col>
@@ -192,10 +171,10 @@ render() {
 
 | Attribute | Description | Type | Options | Default  |
 | -------- | ----- | ----  | ----  |   ----  |
-| type | button type | string | primary，success，info，warning，danger |  |
-| appearance | display type  | string  | line, link | default |
-| size | button size | string | large, small | - |
-| className | customer class | string | - | - |
+| type | button type | string | primary，line, success，danger, default | default |
+| appearance | display type | string  | button, link | button |
+| size | button size | string | large, normal, small | normal |
+| className | custom class | string | - | - |
 
 
 ### Events

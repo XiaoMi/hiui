@@ -1,17 +1,10 @@
 module.exports = {
-  button: {
-    text: 'Button',
-    dropdown: 'Dropdown',
-    pagination: 'Pagination',
-    tabs: 'Tabs',
-    table: 'Table',
-    'date-picker': 'DatePicker'
-  },
   misc: {
     components: 'Basic Components'
   },
   datePicker: {
     ok: 'OK',
+    to: 'to',
     placeholder: 'Select Date',
     dateChoose: 'Select Date',
     timeChoose: 'Select Time',
@@ -39,7 +32,8 @@ module.exports = {
     total: function (total) {
       return 'Total ' + total + ' items'
     },
-    item: 'items',
+    item: '',
+    itemPerPage: 'Items per page',
     goto: 'Goto'
   },
   cascader: {

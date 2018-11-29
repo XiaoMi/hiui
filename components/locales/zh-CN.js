@@ -1,17 +1,10 @@
 module.exports = {
-  button: {
-    text: 'Button 按钮',
-    dropdown: 'Dropdown 下拉',
-    pagination: 'Pagination 分页',
-    tabs: 'Tabs 切换',
-    table: 'Table 表格',
-    'date-picker': '日期选择器'
-  },
   misc: {
     components: '基础组件'
   },
   datePicker: {
     ok: '确认',
+    to: '至',
     placeholder: '请选择日期',
     dateChoose: '日期选择',
     timeChoose: '时间选择',
@@ -40,6 +33,7 @@ module.exports = {
       return '共 ' + total + ' 条'
     },
     item: '条',
+    itemPerPage: '每页',
     goto: '前往'
   },
   cascader: {

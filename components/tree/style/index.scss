@@ -1,33 +1,37 @@
 @import '../../style/index.scss';
-$tree: 'hi-tree';
+$tree: 'hi-tree' !default;
 
 .hi-tree {
   font-size: 14px;
-  ul, li {
+
+  ul {
     margin: 0;
     padding: 0;
+    padding-left: 20px;
     list-style: none;
   }
-  ul {
-    padding-left: 20px;
-  }
+
   li {
     padding: 2px 0;
+
     &.switcher-none {
       .#{$tree}-switcher {
         cursor: default;
+
         &::after {
-          content: none
+          content: none;
         }
       }
     }
   }
+
   .#{$tree} {
     &-bar {
       position: relative;
       height: 20px;
       line-height: 20px;
-      .#{$tree}{
+
+      .#{$tree} {
         &-switcher {
           position: absolute;
           left: 1px;
@@ -38,17 +42,20 @@ $tree: 'hi-tree';
           display: inline-block;
           cursor: pointer;
         }
+
         &-node {
           display: inline-block;
           padding: 2px 6px;
           border-radius: 2px;
           overflow: hidden;
           vertical-align: middle;
-          &[draggable="true"] {
+
+          &[draggable='true'] {
             -webkit-user-drag: element;
             user-select: none;
             cursor: pointer;
           }
+
           label {
             margin-left: 16px;
             cursor: pointer;
@@ -69,9 +76,11 @@ $tree: 'hi-tree';
           border-right: none;
           transform: rotate(-45deg) translate(6px, -4px);
         }
+
         &-input:checked + .#{$tree}-checkbox {
           background-color: #4284f5;
         }
+
         &-checkbox {
           width: 14px;
           height: 14px;
@@ -79,29 +88,36 @@ $tree: 'hi-tree';
           display: inline-block;
           vertical-align: middle;
         }
+
         &-title {
           display: inline-block;
           margin-left: 4px;
           vertical-align: middle;
           user-select: none;
+
           &:hover {
             background-color: rgba(230, 247, 255, 1);
           }
-           > * {
-             display: inline-block;
-           }
+
+          > * {
+            display: inline-block;
+          }
         }
       }
+
       &.gap-bottom {
-        border-bottom-color: red;
+        border-bottom-color: #f00;
       }
+
       &.gap-enter {
-        background-color: yellow;
+        background-color: #ff0;
       }
+
       &.gap-top {
-        border-top-color: red;
+        border-top-color: #f00;
       }
     }
+
     &-child {
       overflow: hidden;
     }

@@ -5,21 +5,23 @@ import Provider from '../context'
 
 class Button extends Component {
   static propTypes = {
-    type: PropTypes.oneOf(['default', 'primary', 'success', 'info', 'warning', 'danger']),
-    size: PropTypes.oneOf(['large', 'small', 'default']),
+    type: PropTypes.oneOf(['primary', 'line', 'success', 'danger', 'default', 'warning']),
+    size: PropTypes.oneOf(['large', 'small', 'normal']),
+    appearance: PropTypes.oneOf(['link', 'button']),
     className: PropTypes.string,
     style: PropTypes.object,
-    appearance: PropTypes.oneOf(['default', 'link', 'line']),
     disabled: PropTypes.bool,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    href: PropTypes.string,
+    target: PropTypes.oneOf(['_self', '_blank', '_parent', '_top'])
   }
 
   static defaultProps = {
     prefixCls: 'hi-btn',
     type: 'default',
     disabled: false,
-    appearance: 'default',
-    size: 'default'
+    appearance: 'button',
+    size: 'normal'
   }
 
   clickCb () {
@@ -38,29 +40,47 @@ class Button extends Component {
       appearance,
       style,
       title,
+      href,
+      target,
       theme
     } = this.props
     const classes = classNames(
       'theme__' + theme,
       `${prefixCls}`,
       className && `${className}`,
-      type && appearance && `${prefixCls}-${appearance || 'default'}-${type}`,
-      disabled && `${prefixCls}-disabled`,
-      size && `${prefixCls}-${size}`
+      appearance && `${prefixCls}--appearance--${appearance}`,
+      size && `${prefixCls}--size--${size}`,
+      disabled && `${prefixCls}--disabled`,
+
+      // For version < 1.1.0
+      (type === 'primary' && appearance === 'line')
+        ? `${prefixCls}--type--line`
+        : `${prefixCls}--type--${type}`
     )
 
     const disabledBool = !!disabled
     return (
-      <button
-        className={classes}
-        disabled={disabledBool}
-        onClick={() => this.clickCb()}
-        style={style}
-        title={title}
-        type='button'
-      >
-        {this.props.children}
-      </button>
+      href
+        ? <a
+          className={classes}
+          onClick={() => this.clickCb()}
+          style={style}
+          title={title}
+          href={href}
+          target={target}
+        >
+          {this.props.children}
+        </a>
+        : <button
+          className={classes}
+          disabled={disabledBool}
+          onClick={() => this.clickCb()}
+          style={style}
+          title={title}
+          type='button'
+        >
+          {this.props.children}
+        </button>
     )
   }
 }
