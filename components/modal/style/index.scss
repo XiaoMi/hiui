@@ -19,17 +19,21 @@
     transition: all .2s ease-out;
   }
   .modal-dialog {
+    display: flex;
+    flex-direction: column;
     position: relative;
     top: 120px;
     margin: auto;
     z-index: 1000;
     width: 520px;
+    max-height: 75%;
     padding: 10px;
     background-color: #fff;
     box-shadow: 0 5px 15px 0 rgba(0,0,0,0.10);
     border-radius: 2px;
     transition: all .2s ease-out;
     .title-container {
+      flex: none;
       display: flex;
       align-items: center;
       height: 40px;
@@ -48,6 +52,7 @@
       }
     }
     .content {
+      flex: auto;
       width: 100%;
       box-sizing: border-box;
       display: block;
@@ -57,6 +62,7 @@
       overflow-y: auto;
     }
     .control {
+      flex: none;
       display: flex;
       border-top: 1px solid #E6E7E8;
       padding: 10px;
