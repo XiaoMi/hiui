@@ -103,9 +103,9 @@ class Modal extends Component {
               />}
             </div>
           }
-          <span className='content'>
+          <div className='content'>
             {children}
-          </span>
+          </div>
           {
             (!footers || footers.length > 0) && <div className='control'>
               {this.renderFooter()}
