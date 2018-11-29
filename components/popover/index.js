@@ -112,7 +112,7 @@ export default class Popover extends Component {
             { content }
           </div>
         </div>
-        { React.cloneElement(React.Children.only(this.props.children), { ref: 'reference', tabindex: '0' }) }
+        { React.cloneElement(React.Children.only(this.props.children), { ref: 'reference', tabIndex: '0' }) }
       </div>
     )
   }
