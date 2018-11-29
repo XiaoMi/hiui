@@ -74,7 +74,7 @@
           // width={800}
           footers={[
             <Button type="primary" key={1} onClick={() => console.log(1)}>自定义按钮1</Button>,
-            <Button type="info" key={2} onClick={() => console.log(2)}>自定义按钮2</Button>,
+            <Button type="warning" key={2} onClick={() => console.log(2)}>自定义按钮2</Button>,
             <Button type="success" key={3} onClick={() => console.log(3)}>自定义按钮3</Button>,
             <Button type="danger" key={4} onClick={this.cancelEvent.bind(this)}>关闭</Button>
           ]}

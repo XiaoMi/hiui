@@ -1,8 +1,10 @@
 module.exports = {
   page: {
     'quick-start': 'Quick Start',
+    'i18n': 'i18n',
+    'theme': 'Customize Theme',
+    'template': 'Layout Theme',
     'typography': 'Typography',
-    'theme': 'Theme',
     'button': 'Button',
     'dropdown': 'Dropdown',
     'pagination': 'Pagination',

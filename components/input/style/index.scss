@@ -1,6 +1,6 @@
 @import './variables.scss';
 
-$input: 'hi-input';
+$input: 'hi-input' !default;
 
 .#{$input},
 .#{$input}_m {
@@ -13,15 +13,19 @@ $input: 'hi-input';
   ::-webkit-input-placeholder {
     color: $placeholder-color;
   }
+
   :-moz-placeholder {
     color: $placeholder-color;
   }
+
   ::-moz-placeholder {
     color: $placeholder-color;
   }
+
   :-ms-input-placeholder {
     color: $placeholder-color;
   }
+
   input,
   textarea {
     flex: 1 1 auto;
@@ -33,19 +37,25 @@ $input: 'hi-input';
     font-size: $font-size;
     line-height: $line-height;
     box-shadow: none;
+
     &.disabled {
       color: $disabled-color;
       background-color: $disabled-bg-color;
     }
   }
+
   textarea {
     resize: vertical;
     overflow: auto;
     height: 100%;
   }
-  input[type="search"] {
+
+  input[type='search'] {
+    /* stylelint-disable */
     -webkit-appearance: none;
+    /* stylelint-enable */
   }
+
   ::-webkit-search-cancel-button {
     display: none;
   }
@@ -53,6 +63,7 @@ $input: 'hi-input';
   .hi-input__out {
     display: flex;
     justify-content: space-between;
+    height: 100%;
   }
 
   .hi-input__inner {
@@ -62,13 +73,16 @@ $input: 'hi-input';
     border: 1px solid $border-color-normal;
     box-sizing: border-box;
     border-radius: $border-radius;
-    transition: border-color .3s;
+    transition: border-color 0.3s;
+
     &:not(.disabled):hover {
       border-color: $border-color-active;
     }
+
     &.active {
       border-color: $border-color-active;
     }
+
     &.disabled {
       color: $disabled-color;
       background-color: $disabled-bg-color;
@@ -83,7 +97,7 @@ $input: 'hi-input';
     flex: 1 0 auto;
     cursor: pointer;
     opacity: 1;
-    transition: all .3s;
+    transition: all 0.3s;
 
     &.invisible {
       visibility: hidden;
@@ -123,25 +137,27 @@ $input: 'hi-input';
     color: $normal-color;
     font-size: $font-size;
   }
+
   &__prefix {
     padding-left: 12px;
   }
+
   &__suffix {
     padding-right: 12px;
   }
 
   &.required {
-    ::after {
-      content: '*';
+    &::after {
       position: absolute;
+      top: 0;
+      content: '*';
       right: -30px;
       width: 30px;
       height: 100%;
       display: flex;
       justify-content: space-around;
       align-items: center;
-      color: red;
+      color: #f00;
     }
   }
-
 }

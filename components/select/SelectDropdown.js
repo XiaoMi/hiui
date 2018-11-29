@@ -55,8 +55,10 @@ export default class SelectDropdown extends Component {
       mode,
       dropdownItems,
       focusedIndex,
-      matchFilter
+      matchFilter,
+      noFoundTip
     } = this.props
+    let matched = 0
 
     return (
       <div className='hi-select__dropdown' onClick={this.props.onClick}>
@@ -65,6 +67,7 @@ export default class SelectDropdown extends Component {
           {
             dropdownItems.map((item, index) => {
               if (matchFilter(item)) {
+                matched++
                 // const isSelected = selectedItems[item.id]
                 const isSelected = this.itemSelected(item)
                 const isDisabled = item.disabled
@@ -84,6 +87,15 @@ export default class SelectDropdown extends Component {
                 )
               }
             })
+          }
+          {
+            matched === 0 &&
+            <li
+              className='hi-select__dropdown--item is-disabled'
+              onClick={e => e.stopPropagation()}
+            >
+              { noFoundTip }
+            </li>
           }
         </ul>
       </div>

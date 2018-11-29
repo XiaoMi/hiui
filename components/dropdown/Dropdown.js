@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import clickOutside from 'react-click-outside'
 import classNames from 'classnames'
 import Button from '../button/index'
+import Provider from '../context'
 class Dropdown extends Component {
   constructor (props) {
     super(props)
@@ -81,6 +82,7 @@ class Dropdown extends Component {
       this.setState({ visible: false })
     }
   }
+
   handlerClick (item) {
     if (item.disabled) {
       return false
@@ -94,29 +96,31 @@ class Dropdown extends Component {
     }
     this.props.onClick(item.value || item.title)
   }
+
   renderTitle () {
     const {type, title} = this.props
     if (type === 'button') {
-      return <Button type='default' appearance='line'>{title} &nbsp;<i className='hi-icon icon-down' /></Button>
+      return <Button type='default'>{title} &nbsp;<i className='hi-icon icon-down' /></Button>
     } else if (type === 'group') {
-      return <div className='hi-dropdow-group-button'>
-        <Button type='default' appearance='line' onClick={this.handlerClick.bind(this, {title})}>{title}</Button>
-        <Button type='default' appearance='line' onClick={this.triggerEvent.bind(this)}><i className='hi-icon icon-down' /></Button>
+      return <div className='hi-dropdown__button-group'>
+        <Button type='default' onClick={this.handlerClick.bind(this, {title})}>{title}</Button>
+        <Button type='default' onClick={this.triggerEvent.bind(this)}><i className='hi-icon icon-down' /></Button>
       </div>
     } else {
-      return <div className='hi-dropdown-title'>
-        <span className='hi-dropdown-title-text'>{title}</span>
+      return <div className='hi-dropdown__title'>
+        <span className='hi-dropdown__title-text'>{title}</span>
         <i className='hi-icon icon-down' />
       </div>
     }
   }
+
   render () {
     // splitButton，disabled
-    const {list, width, prefix, suffix} = this.props
+    const {list, width, prefix, suffix, theme, title} = this.props
     const {visible} = this.state
-    const ulCls = classNames('hi-dropdown-menu', !visible && 'hide')
+    const ulCls = classNames('hi-dropdown__menu', !visible && 'hi-dropdown__menu--hide')
     return (
-      <div className='hi-dropdown' ref={el => { this.MENUTITLE = el }} style={{width: width}}>
+      <div className={`hi-dropdown theme__${theme}`} ref={el => { this.MENUTITLE = el }} style={{width: width}}>
         {this.renderTitle()}
         <ul
           className={ulCls}
@@ -127,13 +131,19 @@ class Dropdown extends Component {
             list.map((item, index) => {
               if (item.title === '-') {
                 // 分隔线
-                return <li className='hi-dropdown-divider' key={index} />
+                return <li className='hi-dropdown__divider' key={index} />
               }
-              let liCls = classNames('hi-dropdown-menu-item', item.disabled && 'disable')
+
+              const liCls = classNames(
+                'hi-dropdown__item',
+                item.disabled && 'hi-dropdown__item--disabled',
+                String(item.title) === String(title) && 'hi-dropdown__item--active'
+              )
+
               return <li className={liCls} key={index} onClick={this.handlerClick.bind(this, item)}>
-                {(prefix || item.prefix) && <div className='hi-dropdown-menu-item-prefix'>{prefix || item.prefix}</div>}
-                <div className='hi-dropdown-menu-item-title' title={item.title}>{item.title}</div>
-                {(suffix || item.suffix) && <div className='hi-dropdown-menu-item-suffix'>{suffix || item.suffix}</div>}
+                {(prefix || item.prefix) && <div className='hi-dropdown__item-prefix'>{prefix || item.prefix}</div>}
+                <div className='hi-dropdown__item-title' title={item.title}>{item.title}</div>
+                {(suffix || item.suffix) && <div className='hi-dropdown__item-suffix'>{suffix || item.suffix}</div>}
               </li>
             })
           }
@@ -143,4 +153,4 @@ class Dropdown extends Component {
   }
 }
 
-export default clickOutside(Dropdown)
+export default Provider(clickOutside(Dropdown))

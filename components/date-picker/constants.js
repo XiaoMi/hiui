@@ -1,7 +1,5 @@
 import {getYearWeek} from './util'
 import dateFormat from 'date-fns/format'
-export const MONTH_DATA = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
-export const WEEK_DATA = [ '日', '一', '二', '三', '四', '五', '六' ]
 export const TIME_BLOCK = {
   lineHeight: 22,
   padding: 8
@@ -17,19 +15,11 @@ export const FORMATS = {
   week: 'YYYY',
   weekrange: 'YYYY'
 }
-export const PLACEHOLDER = {
-  date: '请选择日期',
-  month: '请选择月',
-  year: '请选择年',
-  time: '请选择时间',
-  daterange: '请选择日期',
-  week: '请选择周',
-  weekrange: '请选择周'
-}
+
 export const isVaildDate = (date) => {
   return date && (date instanceof Date || date.startDate || typeof date === 'number')
 }
-export const formatterDate = (type, date, formatter, showTime) => {
+export const formatterDate = (type, date, formatter, showTime, localeDatas) => {
   if (!isVaildDate(date)) {
     return ''
   }
@@ -42,7 +32,7 @@ export const formatterDate = (type, date, formatter, showTime) => {
     //   break
     case 'weekrange':
       // if (date instanceof Date) { date = {startDate: date, endDate: date} }
-      str = `${date.getFullYear()}年 第${getYearWeek(date)}周`
+      str = localeDatas.datePicker.weekrange(date.getFullYear(), getYearWeek(date))
       break
     case 'year':
     case 'month':
@@ -50,7 +40,7 @@ export const formatterDate = (type, date, formatter, showTime) => {
       str = dateFormat(date, formatter)
       break
     case 'week':
-      str = `${date.getFullYear()}年 第${getYearWeek(date)}周`
+      str = localeDatas.datePicker.weekrange(date.getFullYear(), getYearWeek(date))
       break
     default:
       str = dateFormat(date, `${formatter}${showTime ? ' HH:mm:ss' : ''}`)

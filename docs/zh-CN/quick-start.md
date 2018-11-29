@@ -25,5 +25,3 @@ $ npm install @hi-ui/hiui --save
 import Table from '@hi-ui/hiui/es/table'
 import '@hi-ui/hiui/es/table/style/index.css'
 ```
-
--- EOF --

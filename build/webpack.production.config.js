@@ -98,6 +98,9 @@ module.exports = {
     children: false
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    }),
     new CleanWebpackPlugin(['dist'], {
       root: basePath
     }),

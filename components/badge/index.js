@@ -5,7 +5,10 @@ import './style/index'
 
 class Badge extends Component {
   static propTypes = {
-    value: PropTypes.string | PropTypes.number,
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]),
     dot: PropTypes.bool,
     max: PropTypes.number,
     hidden: PropTypes.bool,
@@ -26,6 +29,7 @@ class Badge extends Component {
     const eleClass = classNames(`${prefixCls}-base`)
     return (
       <div className={eleClass} style={style}>
+        {this.props.children}
         {
           dot
             ? (
@@ -43,7 +47,6 @@ class Badge extends Component {
               </span>
             )
         }
-        {this.props.children}
       </div>
     )
   }

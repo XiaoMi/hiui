@@ -3,7 +3,7 @@
 .hi-panel {
   padding: 10px;
   font-size: 0;
-  box-shadow: 0 5px 15px 0 rgba(0,0,0,0.10);
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
 
   .panel-title {
     display: block;
@@ -11,20 +11,23 @@
     line-height: 40px;
     padding: 0 16px;
     font-size: 16px;
+
     .hi-icon {
       margin-right: 5px;
     }
   }
+
   .panel-content {
     display: block;
     font-size: 14px;
     padding: 16px;
-    border-top: 1px solid #E6E7E8;
+    border-top: 1px solid #e6e7e8;
   }
+
   .panel-footer {
     display: block;
     font-size: 14px;
     padding: 10px 16px;
-    border-top: 1px solid #E6E7E8;
+    border-top: 1px solid #e6e7e8;
   }
 }

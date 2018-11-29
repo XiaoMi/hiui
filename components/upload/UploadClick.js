@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import AJAX from './tool'
+import Provider from '../context'
 
 class UploadClick extends Component {
   static propTypes = {
@@ -28,7 +29,6 @@ class UploadClick extends Component {
     uploadType: 'normal',
     accept: '',
     limit: null,
-    buttonText: '上传',
     buttonIcon: 'upload',
     uploadAction: '',
     deleteAction: '',
@@ -186,7 +186,7 @@ class UploadClick extends Component {
   }
 
   render () {
-    const { uploadType } = this.props
+    const { uploadType, localeDatas } = this.props
     return (
       <div className={'upload-' + uploadType}>
         <div>
@@ -201,7 +201,7 @@ class UploadClick extends Component {
               hidden
             />
             <span className={`upload-title ${this.state.disabled ? 'disabled' : ''}`}>
-              <i className={`icon Ficon-${this.state.buttonIcon}`} />&nbsp;{this.state.buttonText}
+              <i className={`icon Ficon-${this.state.buttonIcon}`} />&nbsp;{this.state.buttonText || localeDatas.upload.buttonText}
             </span>
           </label>
         </div>
@@ -242,4 +242,4 @@ class UploadClick extends Component {
   }
 }
 
-export default UploadClick
+export default Provider(UploadClick)
