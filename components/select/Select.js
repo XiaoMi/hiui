@@ -120,10 +120,7 @@ class Select extends Component {
     return !!searchable
   }
 
-  parseValue (props = this.props) {
-    let {
-      value
-    } = props
+  parseValue (value = this.props.value) {
     if (Array.isArray(value)) {
       return value.slice()
     } else if (typeof value === 'string') {
@@ -144,7 +141,7 @@ class Select extends Component {
     const {
       list
     } = props
-    const values = this.parseValue(props)
+    const values = this.parseValue(props.value)
     let selectedItems = []
 
     list && list.map(item => {
