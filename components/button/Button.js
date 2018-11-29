@@ -5,9 +5,9 @@ import Provider from '../context'
 
 class Button extends Component {
   static propTypes = {
-    type: PropTypes.oneOf(['primary', 'line', 'success', 'danger', 'default', 'warning']),
+    type: PropTypes.oneOf(['primary', 'line', 'success', 'danger', 'default', 'warning', 'info']),
     size: PropTypes.oneOf(['large', 'small', 'normal']),
-    appearance: PropTypes.oneOf(['link', 'button']),
+    appearance: PropTypes.oneOf(['link', 'button', 'line']),
     className: PropTypes.string,
     style: PropTypes.object,
     disabled: PropTypes.bool,

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import pages from '../../../pages'
 import locales from '../../../locales'
 import { globalSider } from '../../../redux/action/global'
-import { Icon } from '@hi-ui/hiui'
+import Icon from '../../../../components/icon'
 
 import './style/index.scss'
 
