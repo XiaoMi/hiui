@@ -44,6 +44,8 @@
       opacity: 0;
       // display: none;
       cursor: pointer;
+      width: 18px;
+      height: 18px;
     }
 
     &.hi-checkbox-input-checked,
@@ -52,6 +54,7 @@
 
       &::after {
         transform: rotate(45deg) scaleY(1);
+        pointer-events: none;
         box-sizing: content-box;
         content: '';
         border: 2px solid #fff;
