@@ -111,7 +111,8 @@
   }
 
   // Common Styles
-  &--type--default {
+  &--type--default,
+  &--type--info {
     background-color: $white;
     border-color: $gray;
     color: $black;
