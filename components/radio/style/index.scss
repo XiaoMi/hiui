@@ -8,7 +8,7 @@
     font-size: 0;
     user-select: none;
 
-    >span {
+    > span {
       font-size: 14px;
     }
 
@@ -27,7 +27,7 @@
       width: 16px;
       height: 16px;
       border-radius: 50%;
-      border: 1px solid #D8D8D8;
+      border: 1px solid #d8d8d8;
       display: inline-block;
       box-sizing: border-box;
       vertical-align: sub;
@@ -37,12 +37,11 @@
     &.checked {
       .hi-raido-simulation-input {
         &::before {
-          content: "";
+          content: '';
           display: inline-block;
           width: 16px;
           height: 16px;
-          transform: scale(0.7);
-          background: #4284F5;
+          background: #4284f5;
           border-radius: 50%;
           position: absolute;
           top: 50%;
@@ -52,20 +51,19 @@
       }
 
       button {
-        color: #4284F5;
-        background: rgba(66, 132, 245, 0.10);
-        border: 1px solid #A8C6FB;
+        color: #4284f5;
+        background: rgba(66, 132, 245, 0.1);
+        border: 1px solid #a8c6fb;
       }
-
     }
 
     &.disabled {
       cursor: not-allowed;
-      color: #D8D8D8;
+      color: #d8d8d8;
 
       .hi-raido-simulation-input {
         &::before {
-          background: #D8D8D8;
+          background: #d8d8d8;
         }
       }
     }
@@ -131,11 +129,9 @@
         z-index: 1;
       }
     }
-
   }
 
   .label {
     padding: 0 16px 0 0;
   }
-
 }

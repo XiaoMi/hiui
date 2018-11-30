@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import locales from '../../locales'
+import locales from '../locales'
 
 export const ThemeContext = React.createContext('hiui-blue')
 export const LocaleContext = React.createContext('zh-CN')
@@ -16,7 +16,7 @@ export default (WrappedComponent) =>
         <ThemeContext.Consumer>
           {contextTheme => (
             <LocaleContext.Consumer>
-              {contextLocale => <WrappedComponent theme={contextTheme} locale={locales[contextLocale]} {...restProps} />}
+              {contextLocale => <WrappedComponent theme={contextTheme} locale={contextLocale} localeDatas={locales[contextLocale]} {...restProps} />}
             </LocaleContext.Consumer>
           )}
         </ThemeContext.Consumer>

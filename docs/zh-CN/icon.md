@@ -67,8 +67,8 @@ icon 嵌套图标
 render () {
   return (
     <div>
-      <Button type="default" appearance="line"><Icon name="close" /></Button>
-      <Button type="primary" appearance="line"><Icon name="edit" /> 编辑</Button>
+      <Button type="default"><Icon name="close" /></Button>
+      <Button type="line"><Icon name="edit" /> 编辑</Button>
     </div>
   )
 }

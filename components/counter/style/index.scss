@@ -1,6 +1,6 @@
 @import './variables.scss';
 
-$counter: 'hi-counter';
+$counter: 'hi-counter' !default;
 
 @mixin justify-center() {
   display: flex;
@@ -14,7 +14,7 @@ $counter: 'hi-counter';
   position: relative;
   display: inline-block;
   height: auto;
-  min-height: $m-width-ceil; 
+  min-height: $m-width-ceil;
   box-sizing: border-box;
   color: $normal-color;
   font-size: $m-font-size;
@@ -43,11 +43,13 @@ $counter: 'hi-counter';
       cursor: not-allowed;
     }
   }
+
   &-minus {
     border-right: none;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
+
   &-plus {
     border-left: none;
     border-top-left-radius: 0;
@@ -56,7 +58,7 @@ $counter: 'hi-counter';
 
   input {
     @include justify-center();
-    
+
     flex: 1 1 auto;
     width: 2 * $m-width-ceil;
     padding: 0 6px;

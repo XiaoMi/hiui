@@ -1,8 +1,11 @@
 # MIFE dotfiles
 
 # npmignore
+build/
+components/
 dist/
 docs/
+libs/
 site/
 
 # Editor generate files

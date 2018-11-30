@@ -13,6 +13,7 @@ Select 下拉框
 constructor () {
 	super()
 	this.state = {
+		value: '3',
 		singleList: [
 			{ name:'电视', id:'3', disabled: true },
 			{ name:'手机', id:'2' },
@@ -28,12 +29,12 @@ render () {
 		<div>
 			<Select
 				mode='single'
-				list={this.state.singleList}
-				placeholder='请选择品类'
 				style={{width: '200px'}}
-				value='3'
+				list={this.state.singleList}
+				value={this.state.value}
 				onChange={(item) => {
-						console.log('单选结果', item)
+					console.log('单选结果', item)
+					item[0] && this.setState({value: item[0].id})
 				}}
 			/>
 		</div>
@@ -202,6 +203,7 @@ render () {
 				value={['4', '5']}
 				searchable={true}
 				placeholder='请选择...'
+				noFoundTip='无匹配数据'
 				onChange={(item) => {
 						console.log('多选结果', item)
 				}}
@@ -228,17 +230,21 @@ render () {
 				autoload={true}
 				style={{width: '300px'}}
 				origin={{
-					type: 'GET',
+					type: 'post',
+					key: 'text',
+					data: {
+						time: new Date()
+					},
 					url: 'http://10.236.91.218:7001/test/key',
-					func: (body) => {
-						console.log('----', body)
-						return JSON.parse(body).data
-					}
+					func: (res) => {
+						console.log('----', res)
+						return res.data
+					},
+					error: err => console.log('error:', err)
 				}}
 				list={[]}
-				placeholder='请选择...'
 				onChange={(item) => {
-						console.log('异步多选结果', item)
+					console.log('异步多选结果', item)
 				}}
 			/>
 		</div>
@@ -254,13 +260,25 @@ render () {
 | -------- | ----- | ---- | ---- | ---- |
 | mode | 下拉框类型 | string | single, multiple | single |
 | list | 下拉框选项，一般为 {name: '', id: ''} 形式。可以加入 'disabled' 属性，表示是否禁止选择 | array | - | - |
-| origin | 异步选择配置，有 type / url / func 三种属性，分别代表请求类型／请求路径／请求返回后的数据处理函数 | object | - | - |
-| value | 默认值被选中项，值与被选中的id相同，多个以,分割或者传递数组| string|number|array | - | - |
+| origin | 异步选择配置，详见下表 | object | - | - |
+| value | 默认值被选中项，值与被选中的id相同，多个以,分割或者传递数组| string,number,array | - | - |
 | searchable | 是否可以筛选 | bool | true, false | false |
 | autoload | origin从远端获取数据，初始时是否自动加载 | bool | true, false | false |
 | disabled | 禁用该下拉框 | bool | true, false | false |
-| placeholder | 提示信息 | string | - | - |
-| style | 自定义样式 | object | — | — |
+| placeholder | 提示信息 | string | - | 请选择 |
+| noFoundTip | 没有选项时的提示 | string | - | 无内容 |
+| style | 自定义样式 | object | - | - |
+
+
+### origin Options
+| 参数 | 说明 | 类型 | 可选值 |默认值 |
+| -------- | ----- | ---- | ---- | ---- |
+| url | 请求的url | string | - | - |
+| type | 请求方法 | string | get,post | get |
+| data | post请求时的参数 | object | - | - |
+| key | 搜索关键字参数key | string | - | keyword |
+| func | 成功时的回调 | func | - | - |
+| error | 失败时的回调 | func | - | - |
 
 
 ### Select.Option Attributes

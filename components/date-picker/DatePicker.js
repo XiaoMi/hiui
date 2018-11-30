@@ -52,7 +52,7 @@ class DatePicker extends BasePicker {
         )
         break
       default:
-        throw new Error('类型未定义')
+        throw new Error(props.localeDatas.datePicker.undefinedType)
     }
     return component
   }

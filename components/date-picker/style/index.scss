@@ -1,5 +1,6 @@
-@import '@hi-ui/core-css/lib/core/index.scss';
-$basic-color: #4284f5;
+@import '@hi-ui/core-css/index.scss';
+
+$basic-color: #4284f5 !default;
 
 .hi-datepicker {
   position: relative;
@@ -44,7 +45,6 @@ $basic-color: #4284f5;
     }
 
     &--disabled {
-
       .hi-datepicker__input-icon,
       input {
         cursor: not-allowed;
@@ -103,12 +103,9 @@ $basic-color: #4284f5;
         float: left;
       }
     }
-
-
   }
 
   &__time-header {
-
     border-bottom: 1px solid rgba(128, 128, 128, 0.2);
     padding: 15px;
     display: flex;
@@ -142,11 +139,9 @@ $basic-color: #4284f5;
   }
 
   .hi-timepicker {
-
     width: 252px;
 
     .hi-timepicker__timebody {
-
       height: 265px;
     }
 

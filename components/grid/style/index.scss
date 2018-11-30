@@ -1,7 +1,8 @@
-.hi-grid-row{
+.hi-grid-row {
   position: relative;
   box-sizing: border-box;
   display: flex;
+
   + .hi-grid-row {
     margin-top: 24px;
   }
@@ -28,11 +29,13 @@
 @for $i from 1 through 24 {
   .hi-grid-col-#{$i} {
     width: ($i / 24) * 100%;
+
     @extend .hi-grid-col-common;
   }
 
-  .hi-grid-offset-#{$i}{
+  .hi-grid-offset-#{$i} {
     margin-left: ($i / 24) * 100%;
+
     @extend .hi-grid-col-common;
   }
 }

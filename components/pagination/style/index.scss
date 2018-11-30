@@ -1,110 +1,139 @@
-@import '../../style/index.scss';
+@import '@hi-ui/core-css/index.scss';
 
-$pagination: 'hi-pagination';
-.#{$pagination} {
-  display: flex;
-  .hi-pagination-total {
-    line-height: 32px;
-    font-size: 14px;
-    margin-right: 10px;
-    color: #666666;
-  }
-  .hi-dropdown-menu {
-    min-width: 0;
-  }
-  .hi-pagination-sizechange {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    color: #666666;
-    margin-right: 15px;
-    .hi-pagination-sizechange-button {
-      margin: 0 10px;
-      .hi-btn {
-        border: 1px solid #F2F2F2;
+// Define component colors
+@mixin hi-pagination-style($color: get-color($palette-primary, 'hiui-blue')) {
+  .hi-pagination {
+    &__item {
+      &:not(.hi-pagination__item--disabled) {
+        > a {
+          &:hover {
+            border-color: rgba($color, 0.8);
+            color: $color;
+          }
+        }
+      }
+
+      &--active:not(.hi-pagination__item--disabled) {
+        > a {
+          border-color: $color;
+          background-color: $color;
+          color: $white;
+          cursor: default;
+
+          &:hover {
+            border-color: $color;
+            color: $white;
+          }
+        }
       }
     }
   }
-  .hi-pagination-jump {
+}
+
+.hi-pagination {
+  display: flex;
+  align-items: center;
+
+  @include component-reset();
+
+  &__total {
+    margin-right: $spacer-3;
+    line-height: 32px;
+    color: $gray-darker;
+  }
+
+  &__sizechange {
     display: flex;
     align-items: center;
-    margin-left: 16px;
-    font-size: 14px;
-    color: #666666;
+    margin-right: $spacer-3;
+    line-height: 32px;
+    color: $gray-darker;
+
+    .hi-btn {
+      vertical-align: top;
+    }
+  }
+
+  &__sizechange-button {
+    margin: 0 $spacer-2;
+  }
+
+  &__goto {
+    display: flex;
+    align-items: center;
+    margin-left: $spacer-3;
+    color: $gray-darker;
+
     .hi-input {
-      margin-left: 10px;
       width: 60px;
-      .hi-input__text {
+      margin-left: $spacer-3;
+
+      &__text {
         text-align: center;
       }
-      .hi-input__fix-box {
+
+      &__fix-box {
         display: none;
       }
     }
   }
-  .hi-pagination-list-container {
-    display: block;
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    & > li {
-      float: left;
-      &:not(:last-of-type) {
-        margin-right: 8px;
+
+  &__item {
+    float: left;
+
+    & + & {
+      margin-left: $spacer-2;
+    }
+
+    > a {
+      box-sizing: border-box;
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      border: 1px solid $gray;
+      border-radius: 2px;
+      font-size: $font-size-normal;
+      line-height: 30px;
+      text-decoration: none;
+      text-align: center;
+      color: $gray-darker;
+
+      &:hover {
+        border: 1px solid transparent;
+        transition: border-color $speed-fast $easing, color $speed-fast $easing;
       }
-      & > a {
-        box-sizing: border-box;
-        display: inline-block;
-        width: 32px;
-        height: 32px;
-        line-height: 30px;
-        text-align: center;
-        text-decoration: none;
-        font-size: 14px;
-        color: #666;
-        border-radius: 2px;
-        border: 1px solid #F2F2F2;
-        &:hover{
-          text-decoration: none;
-          border: 1px solid #4284F5;
-          color: #4284F5;
-        }
+    }
+
+    &--active {
+      > a {
+        border: 1px solid transparent;
       }
-      &.#{$pagination}-item-active > a {
-        border: 1px solid #4284F5;
-        background: #4284F5;
-        color: #fff;
-      }
-      &.hi-pagination-disabled > a {
-        color: #ccc;
+    }
+
+    &--disabled {
+      > a {
+        border: 1px solid $gray-light;
+        color: $gray-light;
         cursor: default;
-        &:hover{
-          border: 1px solid #F2F2F2;
+
+        &:hover {
+          border: 1px solid $gray-light;
         }
       }
     }
   }
-  &.classics {
-    .hi-pagination-list-container {
-      & > li {
-        & > a {
-          &:hover{
-            border-color: #FF6633;
-            color: #FF6633;
-          }
-        }
-        &.#{$pagination}-item-active > a {
-          border-color: #FF6633;
-          background: #FF6633;
-          color: #fff;
-        }
-        &.hi-pagination-disabled > a {
-          color: #ccc;
-          &:hover{
-            border-color:  #F2F2F2;
-          }
-        }
-      }
-    }
+
+  // Overwrite dropdown
+  .hi-dropdown-menu {
+    min-width: 0;
+  }
+}
+
+// Component colors
+@include hi-pagination-style();
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key} {
+    @include hi-pagination-style($value);
   }
 }
