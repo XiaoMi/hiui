@@ -1,12 +1,10 @@
-.label-checkbox {
-  span {
-    font-size: 12px;
-    padding: 0 5px;
-  }
-}
+@import '@hi-ui/core-css';
 
 .hi-checkbox {
+  display: inline-block;
   cursor: pointer;
+
+  @include component-reset();
 
   &:hover {
     .hi-checkbox-input {
