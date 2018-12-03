@@ -5,9 +5,9 @@ $bgColor: #f7fafe !default;
   position: relative;
   width: 100%;
 
-  tbody .hi-checkbox{
+  tbody .hi-checkbox {
     //pointer-events:none;
-
+  }
 
   &-wrapper {
     width: 100%;
@@ -95,7 +95,6 @@ $bgColor: #f7fafe !default;
     box-sizing: border-box;
     display: table;
     border-spacing: 0;
-
 
     col {
       display: table-column;
@@ -208,7 +207,6 @@ $bgColor: #f7fafe !default;
     table {
       border-radius: 4px 0 0 0;
     }
-
   }
 
   &-fixed-right {
@@ -224,10 +222,6 @@ $bgColor: #f7fafe !default;
       color: transparent;
       //pointer-events: none;
     }
-    .ant-table-thead > tr > th:first-child {
-      border-top-left-radius: 0;
-    }
-
   }
 
   &.#{$table}-scroll-position-left &-fixed-left {

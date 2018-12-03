@@ -706,7 +706,7 @@ export default class Table extends Component {
         },
         render: (text, record, index) => {
           let {getCheckboxProps = (record) => ({ disabled: false, dataName: record.key }), onChange} = rowSelection
-          // todo dataName 是干嘛的不明白 参考ant-design api
+          // todo dataName 是干嘛的不明白
           let {disabled} = getCheckboxProps(record)
           let data = dataSource.filter(record => !getCheckboxProps(record).disabled)
           return (
