@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import Icon from '../icon'
-import '../icon/style'
+import Icon from '../../es/icon'
+import '../../es/icon/style'
 import prifix from './prefix'
 
 // 点击后会展开的那个图标
