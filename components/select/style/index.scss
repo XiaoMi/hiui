@@ -6,4 +6,7 @@ $selectColor:#f7f7f7 !default;
     opacity: 0.4;
     cursor: not-allowed;
   }
+  &__hide {
+    display: none;
+  }
 }
