@@ -136,12 +136,9 @@ export default class SelectInput extends Component {
 
     return (
       <div className={classNames('hi-select__input', 'single-value', {disabled})} onClick={this.props.onClick}>
-        {
-          !dropdownShow && selectedItems.length > 0 &&
-          <div className='hi-select__input--item'>
-            <div className='hi-select__input--item__name'>{selectedItems[0].name}</div>
-          </div>
-        }
+        <div className={classNames('hi-select__input--item', {'hi-select__hide': !(!dropdownShow && selectedItems.length > 0)})}>
+          <div className='hi-select__input--item__name'>{selectedItems[0] && selectedItems[0].name}</div>
+        </div>
         {
           (dropdownShow || selectedItems.length === 0) &&
           <div className='hi-select__input--search'>
