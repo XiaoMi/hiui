@@ -85,7 +85,7 @@ class Cascader extends Component {
   }
 
   clickOutside (e) {
-    if (ReactDOM.findDOMNode(this.inputContainer).contains(e.target)) {
+    if (ReactDOM.findDOMNode(this.inputContainer) && ReactDOM.findDOMNode(this.inputContainer).contains(e.target)) {
       return
     }
     this.hidePopper()
