@@ -1,22 +1,211 @@
-## 主题
+## 配色主题
 
-目前有两款主题可以使用，分别是 `Classic` 和 `Genuine`，具体使用方法请看仓库 `README.md`
+支持的配色主题详见下表，默认为 **hiui-blue**
 
-### Classic Theme
+### 使用方法
 
-主题链接：[GitHub](https://github.com/hiui-group/classic-theme) [NPM](https://www.npmjs.com/package/@hi-ui/classic-theme)
+通过 `ThemeContext` 使内部的组件可以通过 `props.theme` 获取到设置的主题，所以在页面根组件嵌套即可。
 
-<p><img src="./static/img/themes/classic/classic-theme-01.png" width="90%" /></p>
-<p><img src="./static/img/themes/classic/classic-theme-02.png" width="90%" /></p>
-<p><img src="./static/img/themes/classic/classic-theme-03.png" width="90%" /></p>
-<p><img src="./static/img/themes/classic/classic-theme-04.png" width="90%" /></p>
+```js
+import { ThemeContext } from '@hi-ui/hiui/es/context'
 
-### Genuine Theme
+<ThemeContext.Provider value='hiui-blue'>
+  <App />
+</ThemeContext.Provider>
+```
 
-主题链接：[GitHub](https://github.com/hiui-group/genuine-theme) [NPM](https://www.npmjs.com/package/@hi-ui/genuine-theme)
+### 示例
 
-<p><img src="./static/img/themes/genuine/genuine-theme-01.png" width="90%" /></p>
-<p><img src="./static/img/themes/genuine/genuine-theme-02.png" width="90%" /></p>
-<p><img src="./static/img/themes/genuine/genuine-theme-03.png" width="90%" /></p>
+:::demo
 
--- EOF --
+```js
+render() {
+  const Row = Layout.Row
+  const Col = Layout.Col
+
+  const stepperList = [
+    {
+      title: '账号信息',
+    },
+    {
+      title: '邮箱激活',
+    },
+    {
+      title: '信息登记',
+    },
+  ]
+
+  return (
+    <div>
+      <Row gutter={true}>
+        <Col span={12}>
+          <Button type="primary">突出按钮</Button>
+          <Button type="line">普通按钮</Button>
+          <Button type="default">默认按钮</Button>
+          <Button type="primary">确认</Button>
+          <Button type="line">取消</Button>
+        </Col>
+        <Col span={12}>
+          <DatePicker
+            type='daterange'
+            value={new Date()}
+            onChange={(d) => {console.log('last', d)}}
+          />
+        </Col>
+      </Row>
+
+      <ThemeContext.Provider value='orange'>
+        <Row gutter={true}>
+          <Col span={12}>
+            <Button type="primary">突出按钮</Button>
+            <Button type="line">普通按钮</Button>
+            <Button type="default">默认按钮</Button>
+            <Button type="primary">确认</Button>
+            <Button type="line">取消</Button>
+          </Col>
+          <Col span={12}>
+            <DatePicker
+              type='daterange'
+              value={new Date()}
+              onChange={(d) => {console.log('last', d)}}
+            />
+          </Col>
+        </Row>
+      </ThemeContext.Provider>
+
+      <ThemeContext.Provider value='cyan'>
+        <Row gutter={true}>
+          <Col span={12}>
+            <Button type="primary">突出按钮</Button>
+            <Button type="line">普通按钮</Button>
+            <Button type="default">默认按钮</Button>
+            <Button type="primary">确认</Button>
+            <Button type="line">取消</Button>
+          </Col>
+          <Col span={12}>
+            <DatePicker
+              type='daterange'
+              value={new Date()}
+              onChange={(d) => {console.log('last', d)}}
+            />
+          </Col>
+        </Row>
+      </ThemeContext.Provider>
+
+      <ThemeContext.Provider value='blue'>
+        <Row gutter={true}>
+          <Col span={12}>
+            <Button type="primary">突出按钮</Button>
+            <Button type="line">普通按钮</Button>
+            <Button type="default">默认按钮</Button>
+            <Button type="primary">确认</Button>
+            <Button type="line">取消</Button>
+          </Col>
+          <Col span={12}>
+            <DatePicker
+              type='daterange'
+              value={new Date()}
+              onChange={(d) => {console.log('last', d)}}
+            />
+          </Col>
+        </Row>
+      </ThemeContext.Provider>
+
+      <ThemeContext.Provider value='purple'>
+        <Row gutter={true}>
+          <Col span={12}>
+            <Button type="primary">突出按钮</Button>
+            <Button type="line">普通按钮</Button>
+            <Button type="default">默认按钮</Button>
+            <Button type="primary">确认</Button>
+            <Button type="line">取消</Button>
+          </Col>
+          <Col span={12}>
+            <DatePicker
+              type='daterange'
+              value={new Date()}
+              onChange={(d) => {console.log('last', d)}}
+            />
+          </Col>
+        </Row>
+      </ThemeContext.Provider>
+
+      <Row gutter={true}>
+        <Col span={24}>
+          <Stepper
+            list={stepperList}
+            current={1}
+          />
+        </Col>
+      </Row>
+
+      <ThemeContext.Provider value='orange'>
+        <Row gutter={true}>
+          <Col span={24}>
+            <Stepper
+              list={stepperList}
+              current={1}
+            />
+          </Col>
+        </Row>
+      </ThemeContext.Provider>
+
+      <ThemeContext.Provider value='cyan'>
+        <Row gutter={true}>
+          <Col span={24}>
+            <Stepper
+              list={stepperList}
+              current={1}
+            />
+          </Col>
+        </Row>
+      </ThemeContext.Provider>
+
+      <ThemeContext.Provider value='blue'>
+        <Row gutter={true}>
+          <Col span={24}>
+            <Stepper
+              list={stepperList}
+              current={1}
+            />
+          </Col>
+        </Row>
+      </ThemeContext.Provider>
+
+      <ThemeContext.Provider value='purple'>
+        <Row gutter={true}>
+          <Col span={24}>
+            <Stepper
+              list={stepperList}
+              current={1}
+            />
+          </Col>
+        </Row>
+      </ThemeContext.Provider>
+
+    </div>
+  )
+}
+```
+:::
+
+### 支持的主题
+:::demo
+
+```run
+render() {
+  return (
+    <Table columns={[
+      { title: '主题', dataIndex: 'language'},
+      { title: 'value', dataIndex: 'theme'}
+    ]} data={[
+      {language: '品牌蓝', theme: 'hiui-blue'},
+      {language: '橙', theme: 'orange'},
+      {language: '青', theme: 'cyan'},
+      {language: '蓝', theme: 'blue'},
+      {language: '紫', theme: 'purple'},
+    ]} />
+  )
+}
+```
+:::

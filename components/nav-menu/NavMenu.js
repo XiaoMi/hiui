@@ -15,9 +15,11 @@ class NavMenu extends Component {
     render: PropTypes.func
   }
   static defaultProps = {
-    prefixCls: 'hi-nav-menu',
+    prefixCls: 'hi-navmenu',
     selectedKey: 0,
-    selectedSubKey: -1
+    selectedSubKey: -1,
+    vertical: false,
+    width: 100
   }
   constructor (props) {
     super(props)
@@ -61,8 +63,9 @@ class NavMenu extends Component {
 
   setToggleEvent () {
     const ulH = this.getH.scrollHeight
+    const {vertical} = this.props
     let toggleShow = false
-    if (ulH > 50) {
+    if (ulH > 50 && !vertical) {
       toggleShow = true
     }
 
@@ -122,9 +125,9 @@ class NavMenu extends Component {
     const { selectedKey } = this.state
 
     return data.map((item, index) => {
-      const classes = classNames(`${prefixCls}-item`, {
+      const classes = classNames(`${prefixCls}__item`, {
         'on': selectedKey === index,
-        [`${prefixCls}-item-disabled`]: item.disabled
+        'hi-navmenu__item--disabled': item.disabled
       })
 
       return (
@@ -143,9 +146,9 @@ class NavMenu extends Component {
     const { selectedSubKey, subMenuChildred } = this.state
 
     return subMenuChildred.map((item, index) => {
-      const classes = classNames(`${prefixCls}-sub`, {
+      const classes = classNames(`${prefixCls}__sub`, {
         'on': selectedSubKey === index,
-        [`${prefixCls}-item-disabled`]: item.disabled
+        'hi-navmenu__item--disabled': item.disabled
       })
 
       return (
@@ -163,8 +166,8 @@ class NavMenu extends Component {
     const { prefixCls, children } = this.props
     const { selectedKey } = this.state
     return React.Children.map(children, (item, index) => {
-      const tabCtxCls = classNames(`${prefixCls}-tab-content-item`, item.props.className, {
-        'show': selectedKey === index
+      const tabCtxCls = classNames(`${prefixCls}__content-item`, item.props.className, {
+        'hi-navmenu__content-item--show': selectedKey === index
       })
       return cloneElement(item, {
         className: tabCtxCls
@@ -172,19 +175,20 @@ class NavMenu extends Component {
     })
   }
   render () {
-    const { prefixCls, children } = this.props
-    const { toggleOn, subMenuShow, toggleShow, subMenuChildred } = this.state
-    const togClasses = classNames(`${prefixCls}-toggle`, {
-      'show': toggleShow,
-      'on': toggleOn
+    const {prefixCls, children, vertical, width} = this.props
+    const {toggleOn, subMenuShow, toggleShow, subMenuChildred} = this.state
+    const togClasses = classNames(`${prefixCls}__toggle`, {
+      'hi-navmenu__toggle--show': toggleShow,
+      'hi-navmenu__toggle--on': toggleOn
     })
-    const ulClasses = classNames(`${prefixCls}-list`, {
-      'on': toggleOn
+    const ulClasses = classNames(`${prefixCls}__list`, {
+      'hi-navmenu__list--vertical': vertical,
+      'hi-navmenu__list--on': toggleOn
     })
-    const subMenCls = classNames('sub-list', {
-      'on': subMenuShow
+    const subMenCls = classNames(`${prefixCls}__sublist`, {
+      'hi-navmenu__sublist--on': subMenuShow
     })
-
+    const _verticalStyle = vertical ? {width: width + 'px'} : {}
     return (
       <div className={`${prefixCls}`}>
         <span
@@ -194,11 +198,12 @@ class NavMenu extends Component {
         <ul
           ref={arg => { this.getH = arg }}
           className={ulClasses}
+          style={_verticalStyle}
         >
           {this.renderMenuItem()}
         </ul>
         {subMenuChildred.length > 0 && <div className={subMenCls}><ul>{this.renderSubMenuItem()}</ul></div>}
-        {children && <div className={`${prefixCls}-tab-content`}>{this.rednerTabContent()}</div>}
+        {children && <div className={`${prefixCls}__content`}>{this.rednerTabContent()}</div>}
       </div>
     )
   }

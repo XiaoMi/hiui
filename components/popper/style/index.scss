@@ -1,6 +1,8 @@
 
 .hi-popper__container {
   position: absolute;
+  z-index: 1050;
+
   &--hide {
     display: none !important;
   }

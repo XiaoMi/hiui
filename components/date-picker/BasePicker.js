@@ -1,13 +1,13 @@
 import React, {Component} from 'react'
 import Modal from './Modal'
 import classNames from 'classnames'
-import {formatterDate, FORMATS, PLACEHOLDER, isVaildDate} from './constants'
+import {formatterDate, FORMATS, isVaildDate} from './constants'
 
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
 import {startOfDay, endOfDay, parse, startOfWeek, endOfWeek, dateFormat} from './dateUtil'
-export default class BasePicker extends Component {
+class BasePicker extends Component {
   inputRoot = null
   input = null
   rInput = null
@@ -58,7 +58,7 @@ export default class BasePicker extends Component {
     weekOffset: 0
   }
   _parseProps (props, callback) {
-    let {value, showTime, type, format} = props
+    let {value, showTime, type, format, localeDatas} = props
     format = format || FORMATS[type]
     // let text = formatterDate(type, value, format, showTime)
     // let rText = text
@@ -90,10 +90,10 @@ export default class BasePicker extends Component {
       }
     }
     this.setState({
-      text: noText ? '' : formatterDate(type, date.startDate || date, format, showTime),
-      rText: noText ? '' : formatterDate(type, date.endDate || date, format, showTime),
+      text: noText ? '' : formatterDate(type, date.startDate || date, format, showTime, localeDatas),
+      rText: noText ? '' : formatterDate(type, date.endDate || date, format, showTime, localeDatas),
       date,
-      placeholder: PLACEHOLDER[props.type] || '请选择日期',
+      placeholder: localeDatas.datePicker.placeholders[props.type] || localeDatas.datePicker.placeholder,
       format
     }, () => {
       callback && callback(this.state.date)
@@ -139,12 +139,12 @@ export default class BasePicker extends Component {
     this._parseProps(nextProps)
   }
   onPick (date, showPanel) {
-    const {type, showTime, onChange, weekOffset} = this.props
+    const {type, showTime, onChange, weekOffset, localeDatas} = this.props
     const {format} = this.state
     this.setState({
       date,
-      text: formatterDate(type, date.startDate || date, format, showTime),
-      rText: date.endDate && formatterDate(type, date.endDate, format, showTime),
+      text: formatterDate(type, date.startDate || date, format, showTime, localeDatas),
+      rText: date.endDate && formatterDate(type, date.endDate, format, showTime, localeDatas),
       showPanel,
       isFocus: false
     })
@@ -167,13 +167,13 @@ export default class BasePicker extends Component {
     }
   }
   timeConfirm (date, onlyTime) {
-    const {type, showTime, onChange} = this.props
+    const {type, showTime, onChange, localeDatas} = this.props
     let {format} = this.state
     onlyTime && (format = FORMATS['time'])
     this.setState({
       date: date,
-      text: formatterDate(type, date.startDate || date, format, showTime),
-      rText: date.endDate && formatterDate(type, date.endDate, format, showTime),
+      text: formatterDate(type, date.startDate || date, format, showTime, localeDatas),
+      rText: date.endDate && formatterDate(type, date.endDate, format, showTime, localeDatas),
       showPanel: false,
       isFocus: false
     })
@@ -187,11 +187,11 @@ export default class BasePicker extends Component {
   }
   timeCancel () {
     const {tempDate, format} = this.state
-    const {type, showTime} = this.props
+    const {type, showTime, localeDatas} = this.props
     if (tempDate) {
       this.setState({
         date: new Date(tempDate),
-        text: formatterDate(type, new Date(tempDate), format, showTime),
+        text: formatterDate(type, new Date(tempDate), format, showTime, localeDatas),
         showPanel: false
       })
     } else {
@@ -263,6 +263,7 @@ export default class BasePicker extends Component {
   }
   renderRangeInput () {
     const {
+      localeDatas,
       disabled
     } = this.props
     const _cls = classNames(
@@ -273,7 +274,7 @@ export default class BasePicker extends Component {
     return (
       <div className={_cls}>
         {this._input(this.state.text, 'input')}
-        <span>至</span>
+        <span>{localeDatas.datePicker.to}</span>
         {this._input(this.state.rText, 'rInput')}
         {this._icon()}
       </div>
@@ -313,3 +314,5 @@ export default class BasePicker extends Component {
     )
   }
 }
+
+export default BasePicker

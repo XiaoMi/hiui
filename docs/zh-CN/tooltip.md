@@ -12,10 +12,10 @@ Tooltip 组件
 render() {
   return (
     <div>
-      <Tooltip title="tooltip top" style={{margin: '0 10px'}}><Button type="primary" appearance="line">Tooltip Top</Button></Tooltip>
-      <Tooltip title="tooltip right" style={{margin: '0 10px'}} placement="right"><Button type="success" appearance="line">Tooltip Right</Button></Tooltip>
-      <Tooltip title="tooltip bottom" style={{margin: '0 10px'}} placement="bottom"><Button type="info" appearance="line">Tooltip Bottom</Button></Tooltip>
-      <Tooltip title="tooltip left" style={{margin: '0 10px'}} placement="left"><Button type="danger" appearance="line">Tooltip Left</Button></Tooltip>
+      <Tooltip title="tooltip top" style={{margin: '0 10px'}}><Button type="line">Tooltip Top</Button></Tooltip>
+      <Tooltip title="tooltip right" style={{margin: '0 10px'}} placement="right"><Button type="success">Tooltip Right</Button></Tooltip>
+      <Tooltip title="tooltip bottom" style={{margin: '0 10px'}} placement="bottom"><Button type="warning">Tooltip Bottom</Button></Tooltip>
+      <Tooltip title="tooltip left" style={{margin: '0 10px'}} placement="left"><Button type="danger">Tooltip Left</Button></Tooltip>
     </div>
   )
 }

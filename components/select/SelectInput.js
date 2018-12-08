@@ -9,6 +9,7 @@ export default class SelectInput extends Component {
     super(props)
 
     this.state = {
+      value: '',
       inputStyle: {
         width: '2px'
       }
@@ -22,6 +23,7 @@ export default class SelectInput extends Component {
   handleKeywordChange (evt) {
     var val = evt.target.value
     this.setState({
+      value: val,
       inputStyle: {
         width: getTextWidth(val) + 'px'
       }
@@ -29,8 +31,11 @@ export default class SelectInput extends Component {
     this.props.onSearch(evt.target.value)
   }
 
-  clearKeyword () {
+  clearInput () {
     this.searchInput && (this.searchInput.value = '')
+    this.setState({
+      value: ''
+    })
   }
 
   handleKeyDown (evt) {
@@ -50,7 +55,7 @@ export default class SelectInput extends Component {
 
   handleClear () {
     this.props.onClear()
-    this.searchInput && (this.searchInput.value = '')
+    this.clearInput()
   }
 
   renderMultiple () {
@@ -59,11 +64,11 @@ export default class SelectInput extends Component {
       selectedItems,
       dropdownShow,
       disabled,
-      searchable,
-      keyword
+      searchable
     } = this.props
     let icon = dropdownShow ? 'up' : 'down'
     let {
+      value,
       inputStyle
     } = this.state
 
@@ -74,7 +79,7 @@ export default class SelectInput extends Component {
     return (
       <div className={classNames('hi-select__input', 'multiple-values', {disabled})} onClick={this.props.onClick}>
         {
-          selectedItems.length === 0 && !keyword &&
+          selectedItems.length === 0 && !value &&
           <div className='hi-select__input--placeholder'>
             {placeholder}
           </div>
@@ -131,12 +136,9 @@ export default class SelectInput extends Component {
 
     return (
       <div className={classNames('hi-select__input', 'single-value', {disabled})} onClick={this.props.onClick}>
-        {
-          !dropdownShow && selectedItems.length > 0 &&
-          <div className='hi-select__input--item'>
-            <div className='hi-select__input--item__name'>{selectedItems[0].name}</div>
-          </div>
-        }
+        <div className={classNames('hi-select__input--item', {'hi-select__hide': !(!dropdownShow && selectedItems.length > 0)})}>
+          <div className='hi-select__input--item__name'>{selectedItems[0] && selectedItems[0].name}</div>
+        </div>
         {
           (dropdownShow || selectedItems.length === 0) &&
           <div className='hi-select__input--search'>

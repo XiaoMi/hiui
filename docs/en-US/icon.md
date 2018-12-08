@@ -65,8 +65,8 @@ render () {
 render () {
   return (
     <div>
-      <Button type="default" appearance="line"><Icon name="close" /></Button>
-      <Button type="primary" appearance="line"><Icon name="edit" /> Edit</Button>
+      <Button type="default"><Icon name="close" /></Button>
+      <Button type="line"><Icon name="edit" /> Edit</Button>
     </div>
   )
 }

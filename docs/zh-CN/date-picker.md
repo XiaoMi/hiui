@@ -159,7 +159,9 @@ render () {
 ```js
 render () {
   return (
-    <DatePicker type='month'/>
+    <DatePicker type='month'  onChange={(d) => {
+        console.log('选择月份', d)
+      }}/>
   )
 }
 ```

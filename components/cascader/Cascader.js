@@ -6,10 +6,9 @@ import debounce from 'lodash/debounce'
 import shallowequal from 'shallowequal'
 import Popper from '../popper'
 import Menu from './menu'
+import Provider from '../context'
 
 class Cascader extends Component {
-  noHidePopper = false
-
   static propTypes = {
     options: PropTypes.array,
     value: PropTypes.oneOfType([
@@ -37,8 +36,6 @@ class Cascader extends Component {
     clearable: true,
     disabled: false,
     changeOnSelect: false,
-    placeholder: '请选择',
-    noFoundTip: '无匹配数据',
     onActiveItemChange: () => {},
     onChange: () => {}
   }
@@ -80,18 +77,24 @@ class Cascader extends Component {
   }
 
   componentDidMount () {
-    window.addEventListener('click', this.hidePopper.bind(this))
+    window.addEventListener('click', this.clickOutside.bind(this))
   }
 
   componentWillUnmount () {
-    window.removeEventListener('click', this.hidePopper.bind(this))
+    window.removeEventListener('click', this.clickOutside.bind(this))
+  }
+
+  clickOutside (e) {
+    if (ReactDOM.findDOMNode(this.inputContainer).contains(e.target)) {
+      return
+    }
+    this.hidePopper()
   }
 
   hidePopper (e) {
-    !this.noHidePopper && this.setState({
+    this.setState({
       popperShow: false
     })
-    this.noHidePopper = false
   }
 
   showPopper () {
@@ -218,13 +221,22 @@ class Cascader extends Component {
     })
   }
 
+  localeDatasProps (key) {
+    const {
+      localeDatas
+    } = this.props
+    if (this.props[key]) {
+      return this.props[key]
+    } else {
+      return localeDatas.cascader[key]
+    }
+  }
+
   formatFilterOptions (filterOptions, keyword) {
     const jointOptions = []
     const labelKey = this.labelKey()
     const valueKey = this.valueKey()
-    const {
-      noFoundTip
-    } = this.props
+    const noFoundTip = this.localeDatasProps('noFoundTip')
 
     if (filterOptions.length === 0) {
       return [{
@@ -270,8 +282,6 @@ class Cascader extends Component {
   }
 
   handleClick (e) {
-    this.noHidePopper = ReactDOM.findDOMNode(this.inputContainer).contains(e.target)
-
     // e.stopPropagation()
     if (!this.props.disabled) {
       this.showPopper()
@@ -312,7 +322,7 @@ class Cascader extends Component {
       'hi-cascader--clearable': clearable
     }
     const expandIcon = popperShow ? 'icon-up' : 'icon-down'
-    const placeholder = cascaderLabel || this.props.placeholder
+    const placeholder = cascaderLabel || this.localeDatasProps('placeholder')
 
     return (
       <div className={classNames('hi-cascader', className, extraClass)} style={style}>
@@ -354,4 +364,4 @@ Cascader.childContextTypes = {
   component: PropTypes.any
 }
 
-export default Cascader
+export default Provider(Cascader)

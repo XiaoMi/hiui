@@ -1,20 +1,14 @@
+const rucksack = require('rucksack-css')
+const autoprefixer = require('autoprefixer')
+
 module.exports = {
-  plugins: {
-    'autoprefixer': {
+  plugins: [
+    rucksack(),
+    autoprefixer({
       browsers: [
         'last 2 versions',
         'ie > 9'
       ]
-    },
-    'cssnano': {
-      preset: [
-        'default',
-        {
-          discardComments: {
-            removeAll: true
-          }
-        }
-      ]
-    }
-  }
+    })
+  ]
 }

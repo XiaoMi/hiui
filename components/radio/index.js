@@ -165,7 +165,7 @@ class Radio extends Component {
                       />
                     </span>,
                     align === 'right' && <span className='label' key={'label' + index}> {_item.name} </span>
-                  ] : <Button appearance='line' disabled={_disabled} onClick={(e) => this.handleChange(_item, index)}>{_item.name}</Button>
+                  ] : <Button type='default' disabled={_disabled} onClick={(e) => this.handleChange(_item, index)}>{_item.name}</Button>
                 }
               </label>
             )

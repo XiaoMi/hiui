@@ -1,22 +1,24 @@
-$popper-gap: 10px;
-$popper-arrow-gap: -5px;
+$popper-gap: 10px !default;
+$popper-arrow-gap: -5px !default;
 
 .hi-popover {
   position: relative;
   line-height: 30px;
   font-size: 16px;
   display: inline-block;
+
   .hi-popover-base {
     display: none;
     position: absolute;
-    z-index: 11;
+    z-index: 1150;
     background: #fff;
     padding: 0 5px;
     white-space: nowrap;
     transition: all 0.5s;
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    &:after{
+
+    &::after {
       content: '';
       position: absolute;
       width: 10px;
@@ -25,14 +27,17 @@ $popper-arrow-gap: -5px;
       background: #fff;
       box-sizing: border-box;
     }
+
     &.hi-popover-show {
       display: block;
     }
+
     .hi-popover__title {
       padding: 5px 15px;
       color: #000;
       border-bottom: 1px solid #e8e8e8;
     }
+
     .hi-popover__content {
       padding: 12px 15px;
     }
@@ -43,7 +48,8 @@ $popper-arrow-gap: -5px;
     margin-bottom: $popper-gap;
     left: 50%;
     transform: translateX(-50%);
-    &:after{
+
+    &::after {
       border-top-color: transparent;
       border-right-color: transparent;
       bottom: $popper-arrow-gap;
@@ -57,7 +63,8 @@ $popper-arrow-gap: -5px;
     margin-left: $popper-gap;
     top: 50%;
     transform: translateY(-50%);
-    &:after{
+
+    &::after {
       border-bottom-color: transparent;
       border-right-color: transparent;
       left: $popper-arrow-gap;
@@ -71,7 +78,8 @@ $popper-arrow-gap: -5px;
     margin-top: $popper-gap;
     left: 50%;
     transform: translateX(-50%);
-    &:after{
+
+    &::after {
       border-left-color: transparent;
       border-bottom-color: transparent;
       top: $popper-arrow-gap;
@@ -85,7 +93,8 @@ $popper-arrow-gap: -5px;
     margin-right: $popper-gap;
     top: 50%;
     transform: translateY(-50%);
-    &:after{
+
+    &::after {
       border-top-color: transparent;
       border-left-color: transparent;
       right: $popper-arrow-gap;

@@ -2,10 +2,11 @@ import React, {Component} from 'react'
 import Calender from './Calender'
 import {deconstructDate} from './util'
 import TimePanel from './TimePanel'
-import {MONTH_DATA} from './constants'
 import Icon from '../icon'
 import classNames from 'classnames'
-export default class DatePanel extends Component {
+import Provider from '../context'
+
+class DatePanel extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -92,7 +93,7 @@ export default class DatePanel extends Component {
         if (y === val) {
           col.type = 'today'
         }
-        type === 'year' ? col.text = y : col.text = MONTH_DATA[y - 1]
+        type === 'year' ? col.text = y : col.text = this.props.localeDatas.datePicker.month[y - 1]
         col.value = y
         num++
       }
@@ -266,11 +267,15 @@ export default class DatePanel extends Component {
     return component
   }
   renderTimeHeader () {
+    const {
+      localeDatas
+    } = this.props
+
     return (
       <div className='hi-datepicker__time-header'>
-        <span onClick={() => this.setState({currentView: 'date'})} className={this.state.currentView === 'date' ? 'hi-datepicker__time-header--active' : ''}>日期选择</span>
+        <span onClick={() => this.setState({currentView: 'date'})} className={this.state.currentView === 'date' ? 'hi-datepicker__time-header--active' : ''}>{localeDatas.datePicker.dateChoose}</span>
         <em />
-        <span onClick={() => this.setState({currentView: 'time'})} className={this.state.currentView === 'time' ? 'hi-datepicker__time-header--active' : ''}>时间选择</span>
+        <span onClick={() => this.setState({currentView: 'time'})} className={this.state.currentView === 'time' ? 'hi-datepicker__time-header--active' : ''}>{localeDatas.datePicker.timeChoose}</span>
       </div>
     )
   }
@@ -314,3 +319,5 @@ export default class DatePanel extends Component {
     )
   }
 }
+
+export default Provider(DatePanel)

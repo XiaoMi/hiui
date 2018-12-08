@@ -2,7 +2,7 @@ const sass = require('node-sass')
 const { readFileSync } = require('fs')
 const postcss = require('postcss')
 const path = require('path')
-const postcssConfig = require('./postcssConfig')
+const postcssConfig = require('../postcss.config')
 
 function transformSass (sassFile, config = {}) {
   const { cwd = process.cwd() } = config
@@ -15,7 +15,7 @@ function transformSass (sassFile, config = {}) {
     if (resolve) {
       sass.render({
         file: resolvedSassFile,
-        includePaths: ['./node_modules'],
+        includePaths: ['node_modules'],
         data: data,
         outputStyle: 'compressed'
       }, function (error, result) {

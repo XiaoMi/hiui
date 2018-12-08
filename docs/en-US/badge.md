@@ -13,7 +13,7 @@ Normal
 render () {
   return (
     <Badge value={8}>
-      <Button appearance='line'>Message</Button>
+      <Button type='default'>Message</Button>
     </Badge>
   )
 }
@@ -31,7 +31,7 @@ Limit maximum display value
 render () {
   return (
     <Badge value={88} max={44}>
-      <Button appearance='line'>Message</Button>
+      <Button type='default'>Message</Button>
     </Badge>
   )
 }
@@ -49,7 +49,7 @@ Set the hidden property to hide badges
 render () {
   return (
     <Badge value={90} hidden>
-      <Button appearance='line'>Message</Button>
+      <Button type='default'>Message</Button>
     </Badge>
   )
 }
@@ -69,7 +69,7 @@ render () {
     <div>
       <Badge dot value='88' style={{marginRight: '32px'}}>Message</Badge>
       <Badge dot>
-        <Button appearance='line'>Message</Button>
+        <Button type='default'>Message</Button>
       </Badge>
     </div>
   )
@@ -87,7 +87,7 @@ render () {
 render () {
   return (
     <Badge value="hot">
-      <Button appearance='line'>Message</Button>
+      <Button type='default'>Message</Button>
     </Badge>
   )
 }

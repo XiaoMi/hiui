@@ -1,9 +1,12 @@
+$hoverColor:#ecf6fd !default;
+$selectColor:#f7f7f7 !default;
 
-$hoverColor:#ecf6fd;
-$selectColor:#f7f7f7;
 .hi-select {
-	&.is-disabled {
-		opacity: .4;
-		cursor: not-allowed;
-	}
+  &.is-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  &__hide {
+    display: none;
+  }
 }

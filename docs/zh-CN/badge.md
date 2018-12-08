@@ -13,7 +13,7 @@
 render () {
   return (
     <Badge value={8}>
-      <Button appearance='line'>最新报表</Button>
+      <Button type='default'>最新报表</Button>
     </Badge>
   )
 }
@@ -31,7 +31,7 @@ render () {
 render () {
   return (
     <Badge value={88} max={44}>
-      <Button appearance='line'>最新报表</Button>
+      <Button type='default'>最新报表</Button>
     </Badge>
   )
 }
@@ -49,7 +49,7 @@ render () {
 render () {
   return (
     <Badge value={90} hidden>
-      <Button appearance='line'>最新报表</Button>
+      <Button type='default'>最新报表</Button>
     </Badge>
   )
 }
@@ -69,7 +69,7 @@ render () {
     <div>
       <Badge dot value='88' style={{marginRight: '32px'}}>最新报表</Badge>
       <Badge dot>
-        <Button appearance='line'>最新报表</Button>
+        <Button type='default'>最新报表</Button>
       </Badge>
     </div>
   )
@@ -88,7 +88,7 @@ render () {
 render () {
   return (
     <Badge value="hot">
-      <Button appearance='line'>最新报表</Button>
+      <Button type='default'>最新报表</Button>
     </Badge>
   )
 }

@@ -1,7 +1,9 @@
 export default {
   documents: {
     'quick-start': require('./quick-start'),
-    'theme': require('./theme')
+    'template': require('./template'),
+    'theme': require('./theme'),
+    'i18n': require('./i18n')
   },
   components: {
     '基本组件': {
