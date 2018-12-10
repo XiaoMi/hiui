@@ -22,6 +22,7 @@ class Select extends Component {
     ]),
     autoload: PropTypes.bool,
     searchable: PropTypes.bool,
+    clearable: PropTypes.bool,
     disabled: PropTypes.bool,
     placeholder: PropTypes.string,
     noFoundTip: PropTypes.string,
@@ -33,6 +34,7 @@ class Select extends Component {
     list: [],
     mode: 'single',
     disabled: false,
+    clearable: true,
     value: '',
     autoload: false,
     placeholder: '请选择',
@@ -421,6 +423,7 @@ class Select extends Component {
       mode,
       className,
       disabled,
+      clearable,
       style,
       children,
       noFoundTip
@@ -446,6 +449,7 @@ class Select extends Component {
             mode={mode}
             disabled={disabled}
             searchable={searchable}
+            clearable={clearable}
             dropdownShow={dropdownShow}
             placeholder={placeholder}
             selectedItems={selectedItems}

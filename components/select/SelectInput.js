@@ -64,7 +64,8 @@ export default class SelectInput extends Component {
       selectedItems,
       dropdownShow,
       disabled,
-      searchable
+      searchable,
+      clearable
     } = this.props
     let icon = dropdownShow ? 'up' : 'down'
     let {
@@ -116,8 +117,8 @@ export default class SelectInput extends Component {
           }
         </div>
         <span className='hi-select__input--icon'>
-          <i className={`hi-icon icon-${icon} hi-select__input--icon__expand`} />
-          <i className={`hi-icon icon-close-circle hi-select__input--icon__close`} onClick={this.handleClear.bind(this)} />
+          <i className={classNames(`hi-icon icon-${icon} hi-select__input--icon__expand`, {clearable})} />
+          { clearable && <i className={`hi-icon icon-close-circle hi-select__input--icon__close`} onClick={this.handleClear.bind(this)} /> }
         </span>
       </div>
     )
@@ -129,7 +130,8 @@ export default class SelectInput extends Component {
       selectedItems,
       dropdownShow,
       disabled,
-      searchable
+      searchable,
+      clearable
     } = this.props
     placeholder = selectedItems.length > 0 ? selectedItems[0].name : placeholder
     let icon = dropdownShow ? 'up' : 'down'
@@ -155,8 +157,8 @@ export default class SelectInput extends Component {
           </div>
         }
         <span className='hi-select__input--icon'>
-          <i className={`hi-icon icon-${icon} hi-select__input--icon__expand`} />
-          <i className={`hi-icon icon-close-circle hi-select__input--icon__close`} onClick={this.handleClear.bind(this)} />
+          <i className={classNames(`hi-icon icon-${icon} hi-select__input--icon__expand`, {clearable})} />
+          { clearable && <i className={`hi-icon icon-close-circle hi-select__input--icon__close`} onClick={this.handleClear.bind(this)} /> }
         </span>
       </div>
     )
