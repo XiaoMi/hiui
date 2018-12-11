@@ -258,6 +258,7 @@ class BasePicker extends Component {
       ? <span className={iconCls} onClick={this._clear.bind(this)} />
       : <span className={iconCls} onClick={(e) => {
         if (this.props.disabled) return
+        this.calcPanelPos(this.inputRoot.getBoundingClientRect())
         this.setState({showPanel: true, isFocus: true})
       }} />
   }

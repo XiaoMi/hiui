@@ -18,52 +18,71 @@ constructor() {
 }
 render () {
   return (
-    <div>
+    <div style={{display:'flex', flexWrap: 'wrap'}}>
+      <div>
+        <p>Date 实例:</p>
+        <DatePicker
+          value={new Date}
+          onChange={(d) => {
+            console.log('value 为 Date 实例', DatePicker.format(d, 'YYYY-MM-DD E'))
+          }}
+        />
+      </div>
       
-      <DatePicker
-        value={new Date}
-        onChange={(d) => {
-          console.log('value 为 Date 实例', DatePicker.format(d, 'YYYY-MM-DD E'))
-        }}
-      />
-      <DatePicker
-        value={1541755800052}
-        onChange={(d) => {
-          console.log(' value 为 Number(毫秒数)', DatePicker.format(d, 'YYYY-MM-DD E'))
-        }}
-      />
-      <DatePicker
-        value='2018-10-11'
-        onChange={(d) => {
-          console.log('value 为 时间字符串', DatePicker.format(d, 'YYYY-MM-DD E'))
-        }}
-      />
-      <DatePicker
-        format="YYYY-MM-DD HH:mm:SS"
-        onChange={(d) => {
-          console.log('没有 value 属性', DatePicker.format(d, 'YYYY-MM-DD E'))
-        }}
-      />
-      <DatePicker
-        value={null}
-        onChange={(d) => {
-          console.log('value 为 Null', DatePicker.format(d, 'YYYY-MM-DD E'))
-        }}
-      />
-      <DatePicker
-        value={undefined}
-        onChange={(d) => {
-          console.log('value 为 undefined', DatePicker.format(d, 'YYYY-MM-DD E'))
-        }}
-      />
-      <DatePicker
-        value=''
-        onChange={(d) => {
-          console.log('value 为 空字符串', DatePicker.format(d, 'YYYY-MM-DD E'))
-        }}
-      />
-      
-      <span style={{color: 'red', fontSize: '14px', cursor: 'pointer', marginLeft:'5px'}} onClick={() => {this.setState({date: new Date()})}}>重置</span>
+      <div>
+        <p>毫秒值(number):</p>
+        <DatePicker
+          value={1541755800052}
+          onChange={(d) => {
+            console.log(' value 为 Number(毫秒数)', DatePicker.format(d, 'YYYY-MM-DD E'))
+          }}
+        />
+      </div>
+      <div>
+        <p>时间字符串:</p>
+         <DatePicker
+          value='2018-10-11'
+          onChange={(d) => {
+            console.log('value 为 时间字符串', DatePicker.format(d, 'YYYY-MM-DD E'))
+          }}
+        />
+      </div>
+      <div>
+        <p>未传入 value:</p>
+        <DatePicker
+          format="YYYY-MM-DD HH:mm:SS"
+          onChange={(d) => {
+            console.log('没有 value 属性', DatePicker.format(d, 'YYYY-MM-DD E'))
+          }}
+        />
+      </div>
+      <div>
+        <p>null:</p>
+        <DatePicker
+          value={null}
+          onChange={(d) => {
+            console.log('value 为 Null', DatePicker.format(d, 'YYYY-MM-DD E'))
+          }}
+        />
+      </div>
+      <div>
+        <p>undefined:</p>
+        <DatePicker
+          value={undefined}
+          onChange={(d) => {
+            console.log('value 为 undefined', DatePicker.format(d, 'YYYY-MM-DD E'))
+          }}
+        />
+      </div>
+      <div>
+        <p>空字符串:</p>
+        <DatePicker
+          value=''
+          onChange={(d) => {
+            console.log('value 为 空字符串', DatePicker.format(d, 'YYYY-MM-DD E'))
+          }}
+        />
+      </div>
     </div>
   )
 }
@@ -96,11 +115,21 @@ render () {
 禁用日期
 
 ```js
+constructor () {
+  super()
+  this.state = {
+    date: new Date()
+  }
+}
 render () {
   return (
     <DatePicker
+      value={this.state.date}
       minDate={new Date()}
       maxDate={new Date(2019, 4, 28)}
+      onChange={(date) => {
+        this.setState({date})
+      }}
     />
   )
 }
