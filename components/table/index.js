@@ -8,9 +8,11 @@ import prifix from './prefix'
 import Checkbox from '../checkbox'
 import Pagination from '../pagination'
 import Icon from '../icon'
-
+import '../style'
+import '../checkbox/style'
+import '../pagination/style'
+import '../icon/style'
 import {setKey, scrollTop, getStyle} from './tool'
-import './style/index'
 
 export default class Table extends Component {
   static propTypes = {
@@ -54,6 +56,9 @@ export default class Table extends Component {
 
   runMemory () {
     let {name} = this.props
+    if (!name) {
+      return
+    }
     let {dataSource} = this.state
     let {columns, headerColumns, highlightCols} = this.state
     let col = window.localStorage.getItem(name + '-col')
@@ -141,6 +146,7 @@ export default class Table extends Component {
       })
     },
     hideCol: (key) => {
+      console.log(key, 'hide')
       let {columns, headerColumns} = this.state
       columns.map(item => {
         if (item.key === key) {
@@ -199,24 +205,27 @@ export default class Table extends Component {
     },
 
     rowClick: (text, record, index) => {
-      let { rowSelection } = this.props
-      let { dataSource } = this.state
+      // let { rowSelection } = this.props
+      // let { dataSource } = this.state
 
       // 点击行的时候如果配置了分页
-      if (rowSelection) {
-        let {selectedRowKeys} = this.state
-        let {onChange} = rowSelection
-        let selected = selectedRowKeys.includes(record.key)
-        if (selected) {
-          selectedRowKeys.splice(selectedRowKeys.indexOf(record.key), 1)
-        } else {
-          selectedRowKeys.push(record.key)
-        }
-
-        this.setState({selectedRowKeys}, () => {
-          onChange(selectedRowKeys, dataSource.filter(item => selectedRowKeys.includes(item.key)))
-        })
-      }
+      // if (rowSelection) {
+      //   let {selectedRowKeys} = this.state
+      //   let {onChange, getCheckboxProps = (record) => ({ disabled: false, dataName: record.key })} = rowSelection
+      //   let selected = selectedRowKeys.includes(record.key)
+      //   if (getCheckboxProps(record).disabled) {
+      //     return
+      //   }
+      //   if (selected) {
+      //     selectedRowKeys.splice(selectedRowKeys.indexOf(record.key), 1)
+      //   } else {
+      //     selectedRowKeys.push(record.key)
+      //   }
+      //
+      //   this.setState({selectedRowKeys}, () => {
+      //     onChange(selectedRowKeys, dataSource.filter(item => selectedRowKeys.includes(item.key)))
+      //   })
+      // }
     }
   }
 
@@ -365,9 +374,30 @@ export default class Table extends Component {
     return <div className='hi-table-placeholder'>{text}</div>
   }
 
+  componentDidUpdate () {
+    let leftFixTable = this.refs.dom.querySelectorAll('.hi-table-fixed-left table tr')
+    let rightFixTable = this.refs.dom.querySelectorAll('.hi-table-fixed-right table tr')
+    let scrollTable = this.refs.dom.querySelectorAll('.hi-table-scroll table tr')
+
+    // if(fixTable && scrollTable){
+    //   console.log(fixTable,scrollTable,'fix-scroll')
+
+    // }
+    if (scrollTable) {
+      scrollTable.forEach((tr, index) => {
+        if (leftFixTable.length > index) {
+          leftFixTable[index].style.height = getStyle(tr, 'height')
+        }
+        if (rightFixTable.length > index) {
+          rightFixTable[index].style.height = getStyle(tr, 'height')
+        }
+      })
+    }
+  }
+
   render () {
     // 多选配置
-    let {pagination} = this.props
+    let {pagination, name} = this.props
     let {scroll, columnMenu} = this.state
 
     let content
@@ -409,48 +439,49 @@ export default class Table extends Component {
             </div> : null
           }
         </div>
-
-        <div className={prifix('table-setting')} ref={'setting'}>
-          <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}} onClick={this.showColumsPanel} />
-          {
-            columnMenu
-              ? <ClickOutside onClickOutside={(e) => this.setState({columnMenu: false})} >
-                <div className={prifix('table-setting-menu column-menu')} >
-                  {
-                    columns.map(item => (
-                      <div key={item.key}>
-                        <div>
-                          {
-                            (function () {
-                              if (item.type === 'select') {
-                                return '多选'
-                              }
-                              if (item.type === 'expand') {
-                                return '展开'
-                              }
-                              if (typeof item.title === 'function') {
-                                return item.title()
-                              }
-                              return item.title
-                            }())
-                          }
+        { name
+          ? <div className={prifix('table-setting')} ref={'setting'}>
+            <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}} onClick={this.showColumsPanel} />
+            {
+              columnMenu
+                ? <ClickOutside onClickOutside={(e) => this.setState({columnMenu: false})} >
+                  <div className={prifix('table-setting-menu column-menu')} >
+                    {
+                      columns.map(item => (
+                        <div key={item.key}>
+                          <div>
+                            {
+                              (function () {
+                                if (item.type === 'select') {
+                                  return '多选'
+                                }
+                                if (item.type === 'expand') {
+                                  return '展开'
+                                }
+                                if (typeof item.title === 'function') {
+                                  return item.title()
+                                }
+                                return item.title
+                              }())
+                            }
+                          </div>
+                          <div>
+                            <Checkbox checked={!item.hide} onChange={(e) => this.cbs.hideCol(item.key)} />
+                          </div>
                         </div>
-                        <div>
-                          <Checkbox checked={!item.hide} onChange={(e) => this.cbs.hideCol(item.key)} />
-                        </div>
-                      </div>
-                    ))
-                  }
-                </div>
-              </ClickOutside> : null
-          }
-        </div>
+                      ))
+                    }
+                  </div>
+                </ClickOutside> : null
+            }
+          </div> : null
+        }
       </div>
     )
   }
 
   xscroll () {
-    let { fixTop } = this.props
+    let {fixTop, name} = this.props
     if (typeof fixTop === 'boolean') {
       fixTop = 0
     } else {
@@ -463,23 +494,26 @@ export default class Table extends Component {
         th.style.display = 'table-header-group'
         let h = (dom.offsetTop - scrollTop() - fixTop) * -1
         th.style.transform = `translate(0,${h}px)`
-        this.refs.setting.style.transform = `translate(0,${h}px)`
+        if (name) {
+          this.refs.setting.style.transform = `translate(0,${h}px)`
+        }
       })
     } else {
       thead.forEach(th => {
         th.style.transform = `translate(0,0)`
-        this.refs.setting.style.transform = `translate(0,0)`
+        if (name) {
+          this.refs.setting.style.transform = `translate(0,0)`
+        }
       })
     }
   }
 
   componentDidMount () {
-    let {fixTop, scroll} = this.props
+    let {fixTop, scroll, name} = this.props
 
     let dom = ReactDOM.findDOMNode(this.refs['dom'])
     let thead = dom.querySelectorAll('thead')
-    this.refs.setting.style.lineHeight = parseInt(getStyle(thead[0], 'height')) - 10 + 'px'
-    this.refs.setting.style.marginTop = '5px'
+
     if (fixTop) {
       // 吸顶逻辑
       document.addEventListener('scroll', () => {
@@ -502,6 +536,12 @@ export default class Table extends Component {
     this.setState({
       ...columnsDetail
     })
+
+    // 操作记忆设置
+    if (name) {
+      this.refs.setting.style.lineHeight = parseInt(getStyle(thead[0], 'height')) - 10 + 'px'
+      this.refs.setting.style.marginTop = '5px'
+    }
     setTimeout(() => {
       this.runMemory()
     }, 0)
@@ -608,18 +648,36 @@ export default class Table extends Component {
     let rightFixColumns = []
     let [headerColumns, columns] = this.getHeaderGroup(props.columns)
     let {rowSelection, scroll, name} = props
-    let {data} = props
-    let dataSource = data
     let that = this
     if (rowSelection) {
       let {selectedRowKeys} = this.state
-      let {onChange} = rowSelection
+      let { dataSource } = this.state
+
+      // 点击行的时候如果配置了分页
+      // if (rowSelection) {
+      //   let {selectedRowKeys} = this.state
+      //   let {onChange, getCheckboxProps = (record) => ({ disabled: false, dataName: record.key })} = rowSelection
+      //   let selected = selectedRowKeys.includes(record.key)
+      //   if (getCheckboxProps(record).disabled) {
+      //     return
+      //   }
+      //   if (selected) {
+      //     selectedRowKeys.splice(selectedRowKeys.indexOf(record.key), 1)
+      //   } else {
+      //     selectedRowKeys.push(record.key)
+      //   }
+      //
+      //   this.setState({selectedRowKeys}, () => {
+      //     onChange(selectedRowKeys, dataSource.filter(item => selectedRowKeys.includes(item.key)))
+      //   })
+      // }
+
       columns.unshift({
         width: '50',
         type: 'select',
         key: 'hi-table-select-' + name,
         title: () => {
-          let {getCheckboxProps = (record) => ({ disabled: false, dataName: record.key })} = rowSelection
+          let {getCheckboxProps = (record) => ({ disabled: false, dataName: record.key }), onChange} = rowSelection
           let data = dataSource.filter(record => !getCheckboxProps(record).disabled)
           return (
             <Checkbox type='checkbox'
@@ -647,13 +705,27 @@ export default class Table extends Component {
           )
         },
         render: (text, record, index) => {
-          let {getCheckboxProps = (record) => ({ disabled: false, dataName: record.key })} = rowSelection
-          // todo dataName 是干嘛的不明白 参考ant-design api
+          let {getCheckboxProps = (record) => ({ disabled: false, dataName: record.key }), onChange} = rowSelection
+          // todo dataName 是干嘛的不明白
           let {disabled} = getCheckboxProps(record)
+          let data = dataSource.filter(record => !getCheckboxProps(record).disabled)
           return (
             <Checkbox
               onClick={(e) => e.preventDefault()}
               checked={selectedRowKeys.includes(record.key)}
+              onChange={(e) => {
+                if (e.checked) {
+                  selectedRowKeys.push(record.key)
+                } else {
+                  selectedRowKeys = selectedRowKeys.filter(key => record.key !== key)
+                }
+
+                that.setState({
+                  selectedRowKeys
+                }, () => {
+                  onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record.key)))
+                })
+              }}
               disabled={disabled}
               key={record.key}
             />

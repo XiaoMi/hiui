@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Provider from '../context'
+import deprecatedPropsCheck from '../_util/deprecatedPropsCheck'
 
 class Button extends Component {
   static propTypes = {
@@ -14,6 +15,11 @@ class Button extends Component {
     onClick: PropTypes.func,
     href: PropTypes.string,
     target: PropTypes.oneOf(['_self', '_blank', '_parent', '_top'])
+  }
+
+  deprecatedProps = {
+    type: ['info'],
+    appearance: ['line']
   }
 
   static defaultProps = {
@@ -59,6 +65,9 @@ class Button extends Component {
     )
 
     const disabledBool = !!disabled
+
+    deprecatedPropsCheck(this.deprecatedProps, this.props, 'Button')
+
     return (
       href
         ? <a
