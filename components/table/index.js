@@ -8,7 +8,7 @@ import prifix from './prefix'
 import Checkbox from '../checkbox'
 import Pagination from '../pagination'
 import Icon from '../icon'
-import '../style'
+import './style'
 import '../checkbox/style'
 import '../pagination/style'
 import '../icon/style'
@@ -190,42 +190,6 @@ export default class Table extends Component {
       let obj = dataSource.find(o => o.key === item.key)
       obj.ishiuitableopen = !obj.ishiuitableopen
       this.setState({dataSource: dataSource, ...columnsDetail})
-      // let {index, open} = e.target.dataset
-      // index = parseInt(index)
-      // open = open === 'true'
-      //
-      // let {data} = this.props
-      // if (!open) {
-      //   data.splice(index + 1, 0, {expand: true, parent: index, ...{width: '50px'}, ...item})
-      // } else {
-      //   data.splice(index + 1, 1)
-      // }
-      // e.target.dataset.open = !open
-      // this.setState({dataSource: data})
-    },
-
-    rowClick: (text, record, index) => {
-      // let { rowSelection } = this.props
-      // let { dataSource } = this.state
-
-      // 点击行的时候如果配置了分页
-      // if (rowSelection) {
-      //   let {selectedRowKeys} = this.state
-      //   let {onChange, getCheckboxProps = (record) => ({ disabled: false, dataName: record.key })} = rowSelection
-      //   let selected = selectedRowKeys.includes(record.key)
-      //   if (getCheckboxProps(record).disabled) {
-      //     return
-      //   }
-      //   if (selected) {
-      //     selectedRowKeys.splice(selectedRowKeys.indexOf(record.key), 1)
-      //   } else {
-      //     selectedRowKeys.push(record.key)
-      //   }
-      //
-      //   this.setState({selectedRowKeys}, () => {
-      //     onChange(selectedRowKeys, dataSource.filter(item => selectedRowKeys.includes(item.key)))
-      //   })
-      // }
     }
   }
 
@@ -240,7 +204,6 @@ export default class Table extends Component {
       scroll,
       columnMenu: false,
       // 由外部属性重构为内部状态
-      selectedRowKeys: [],
       leftFiexColumns: [],
       rightFixColumns: [],
       columns: [],
@@ -648,29 +611,9 @@ export default class Table extends Component {
     let rightFixColumns = []
     let [headerColumns, columns] = this.getHeaderGroup(props.columns)
     let {rowSelection, scroll, name} = props
-    let that = this
     if (rowSelection) {
-      let {selectedRowKeys} = this.state
+      let {selectedRowKeys = []} = rowSelection
       let { dataSource } = this.state
-
-      // 点击行的时候如果配置了分页
-      // if (rowSelection) {
-      //   let {selectedRowKeys} = this.state
-      //   let {onChange, getCheckboxProps = (record) => ({ disabled: false, dataName: record.key })} = rowSelection
-      //   let selected = selectedRowKeys.includes(record.key)
-      //   if (getCheckboxProps(record).disabled) {
-      //     return
-      //   }
-      //   if (selected) {
-      //     selectedRowKeys.splice(selectedRowKeys.indexOf(record.key), 1)
-      //   } else {
-      //     selectedRowKeys.push(record.key)
-      //   }
-      //
-      //   this.setState({selectedRowKeys}, () => {
-      //     onChange(selectedRowKeys, dataSource.filter(item => selectedRowKeys.includes(item.key)))
-      //   })
-      // }
 
       columns.unshift({
         width: '50',
@@ -693,12 +636,7 @@ export default class Table extends Component {
                   selectedRowKeys.splice(0, selectedRowKeys.length)
                   data.splice(0, data.length)
                 }
-
-                that.setState({
-                  selectedRowKeys
-                }, () => {
-                  onChange(selectedRowKeys, data)
-                })
+                onChange(selectedRowKeys, data)
               }}
             />
 
@@ -720,11 +658,7 @@ export default class Table extends Component {
                   selectedRowKeys = selectedRowKeys.filter(key => record.key !== key)
                 }
 
-                that.setState({
-                  selectedRowKeys
-                }, () => {
-                  onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record.key)))
-                })
+                onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record.key)))
               }}
               disabled={disabled}
               key={record.key}
