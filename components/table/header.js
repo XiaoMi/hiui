@@ -39,14 +39,41 @@ class Sorter extends Component {
   }
 }
 
+class ServerSorter extends Component {
+  render () {
+    return (
+      <div>
+        <span style={{display: 'block', height: '12px', lineHeight: '12px'}}>
+          <Icon
+            name={'up'}
+            onClick={(e) => {
+              let {item: {serverSort}, cbs: {fetch}} = this.props
+              fetch(serverSort[0])
+            }}
+            style={{fontSize: '12px'}} /></span>
+        <span style={{display: 'block', height: '12px', lineHeight: '12px'}}>
+          <Icon
+            name={'down'}
+            onClick={(e) => {
+              let {item: {serverSort}, cbs: {fetch}} = this.props
+              fetch(serverSort[0])
+            }}
+            style={{fontSize: '12px'}}
+          />
+        </span>
+      </div>
+    )
+  }
+}
+
 let HeaderCell = (props) => {
   let {item, index, contextMenu} = props
-
   return (
     <th colSpan={item.colSpan || 1} key={'head-' + item.key || item.dataIndex || item.title} onContextMenu={(e) => contextMenu(e, item.key)}>
       <div style={{display: 'flex', alignItems: 'center'}}>
         <div>{typeof item.title === 'function' ? item.title() : item.title}</div>&nbsp;
-        {item.sorter ? <Sorter {...props} key={item.key} index={index} kname={item.key} /> : null}
+        {item.sorter && <Sorter {...props} key={item.key} index={index} kname={item.key} />}
+        {item.serverSort && <ServerSorter {...props} key={item.key} index={index} kname={item.key} />}
       </div>
     </th>
   )
@@ -59,14 +86,15 @@ let GroupCell = (props) => {
     <th colSpan={item.headColSpan} rowSpan={item.headRowSpan} key={'head-' + item.key || item.dataIndex || item.title} onContextMenu={(e) => contextMenu(e, item.key)}>
       <div style={{display: 'flex', alignItems: 'center'}}>&nbsp;
         <div>{item.title}</div>
-        {item.sorter ? <Sorter {...props} col={item} index={index} kname={item.key} /> : null}
+        {item.sorter && <Sorter {...props} col={item} index={index} kname={item.key} />}
+        {item.serverSort && 'sirt'}
       </div>
     </th>
   )
 }
 
 // 普通的表头
-export class Header extends Component {
+export default class Header extends Component {
   render () {
     let { columns, headerColumns } = this.props
     // 表头可以传组件，如果是文本就渲染文本
