@@ -6,7 +6,6 @@ class Base extends Component {
     super(props)
     this.state = {
       checked: props.checked,
-      selectStatus: 'none',
       disabled: props.disabled,
       value: props.value,
       content: props.content,
@@ -16,9 +15,13 @@ class Base extends Component {
     this.handleChange = this.handleChange.bind(this)
   }
   componentDidMount () {
+    const root = MultipleCheckboxsOpera.getRoot(this.props.name)
+
+    if (this.state.checked) {
+      root && root.setState({part: true})
+    }
   }
   componentWillReceiveProps (nextProps) {
-    console.log(nextProps.checked, this.state.checked)
     if ('checked' in nextProps) {
       if (nextProps.checked !== this.props.checked) {
         this.setState({
@@ -71,7 +74,7 @@ class Base extends Component {
     }
     if (name || all) {
       const root = MultipleCheckboxsOpera.getRoot(name || all)
-      root ? root.state.onChange(checkedList) : this.state.onChange(checkedList)
+      root ? root.state.onChange(checkedList, value, checked) : this.state.onChange(checkedList, value, checked)
       return
     }
     this.state.onChange(value, checked)

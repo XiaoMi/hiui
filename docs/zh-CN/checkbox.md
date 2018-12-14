@@ -47,17 +47,17 @@ render() {
       <p>多选模式下，需子选项 name 相同</p>
       <br/>
       <p>list 项为普通字符串</p>
-      <div><Checkbox list={this.state.list} onChange={(list) => console.log(list)} name="c1"/></div>
+      <div><Checkbox list={this.state.list} onChange={(list, value, isChecked) => console.log(list, value, isChecked)} name="c1"/></div>
       <br/>
       <p>list 项为对象</p>
-      <div><Checkbox list={this.state.list2} onChange={(list) => console.log(list)} name="c2"/></div>
+      <div><Checkbox list={this.state.list2} onChange={(list, value, isChecked) => console.log(list, value, isChecked)} name="c2"/></div>
       <br/>
       <p>也可使用多个 checkbox，实现多选效果，可放置于任意位置</p>
       <div>
-        <Checkbox value='one' onChange={(val) => console.log(val)} name='c3'>苹果</Checkbox>
-        <Checkbox value='two' onChange={(val) => console.log(val)} name='c3'>香蕉</Checkbox>
-        <Checkbox value='three' onChange={(val) => console.log(val)} name='c3'>梨</Checkbox>
-        <Checkbox value='four' onChange={(val) => console.log(val)} name='c3'>榴莲</Checkbox>
+        <Checkbox value='one' onChange={(list, value, isChecked) => console.log(list, value, isChecked)} name='c3'>苹果</Checkbox>
+        <Checkbox value='two' onChange={(list, value, isChecked) => console.log(list, value, isChecked)} name='c3'>香蕉</Checkbox>
+        <Checkbox value='three' onChange={(list, value, isChecked) => console.log(list, value, isChecked)} name='c3'>梨</Checkbox>
+        <Checkbox value='four' onChange={(list, value, isChecked) => console.log(list, value, isChecked)} name='c3'>榴莲</Checkbox>
       </div>
     </div>
   )
@@ -80,7 +80,8 @@ constructor () {
       text: '上海',
       value: ' ShangHai'
     },{
-      text: '深圳'
+      text: '深圳',
+      checked: true
     },{
       text: '天津',
       disabled: true,
@@ -99,13 +100,13 @@ render() {
           title={this.state.title}
           footer="我是注脚"
         >
-          <Checkbox all='one' onChange={(list) => console.log(list)}>全选</Checkbox>
+          <Checkbox all='one' onChange={(list, value, isChecked) => console.log(list, value, isChecked)}>全选</Checkbox>
           <div><Checkbox list={this.state.list} name='one'/></div>
 
     <br/>
 
           <div>
-            <Checkbox all='two' onChange={(list, target) => console.log(list, target)}> 全选</Checkbox> <span>(子选项可放置于任何位置，只需 name 相同)</span>
+            <Checkbox all='two' onChange={(list, value, isChecked) => console.log(list, value, isChecked)}> 全选</Checkbox> <span>(子选项可放置于任何位置，只需 name 相同)</span>
             <div><Checkbox text='北京' name='two'/></div>
             <div><Checkbox name='two' value='ShangeHai'>上海</Checkbox></div>
             <div><Checkbox name='two' text='深圳'/></div>
