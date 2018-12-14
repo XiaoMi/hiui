@@ -246,10 +246,10 @@ class Table extends Component {
 
       axios.request(url, {params: {...params, pageNum: current, pageSize: Table.pageSize, ...extra}}).then(res => {
         let {data, columns, page} = success(res)
-        console.log(data, columns, page)
+        let columnsDetail = this.setColumnsDetail(null, null, columns)
         this.setState({
           dataSource: data,
-          columns,
+          ...columnsDetail,
           loading: false,
           serverPagination: page
         })
@@ -630,11 +630,12 @@ class Table extends Component {
     return [headerColumns, bodyColumns]
   }
 
-  setColumnsDetail (bool, prop) {
+  setColumnsDetail (bool, prop, c) {
     let props = prop || this.props
     let leftFiexColumns = []
     let rightFixColumns = []
-    let [headerColumns, columns] = this.getHeaderGroup(props.columns)
+    let [headerColumns, columns] = this.getHeaderGroup(c || props.columns)
+
     let {rowSelection, scroll, name} = props
     if (rowSelection) {
       let {selectedRowKeys = []} = rowSelection
@@ -726,10 +727,10 @@ class Table extends Component {
     axios.request(url, {params}).then(res => {
       console.log(success(res))
       let {data, columns, page} = success(res)
-      console.log(data, columns, page)
+      let columnsDetail = this.setColumnsDetail(null, null, columns)
       this.setState({
         dataSource: data,
-        columns,
+        ...columnsDetail,
         loading: false,
         serverPagination: page
       })
@@ -741,7 +742,6 @@ class Table extends Component {
 
     let dom = ReactDOM.findDOMNode(this.refs['dom'])
     let thead = dom.querySelectorAll('thead')
-
     if (fixTop) {
       // 吸顶逻辑
       document.addEventListener('scroll', () => {
