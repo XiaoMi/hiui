@@ -1,141 +1,107 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
+import MultipleCheckboxsOpera from './common'
 class Base extends Component {
-  static propTypes = {
-  }
-  static defaultProps = {
-    checked: false
-  }
   constructor (props) {
     super(props)
     this.state = {
       checked: props.checked,
-      selectStatus: 'none'
+      selectStatus: 'none',
+      disabled: props.disabled,
+      value: props.value,
+      content: props.content,
+      part: false,
+      onChange: props.onChange || (() => {})
     }
     this.handleChange = this.handleChange.bind(this)
   }
   componentDidMount () {
   }
   componentWillReceiveProps (nextProps) {
+    console.log(nextProps.checked, this.state.checked)
     if ('checked' in nextProps) {
-      this.setState({
-        checked: nextProps.checked
-      })
+      if (nextProps.checked !== this.props.checked) {
+        this.setState({
+          checked: nextProps.checked
+        })
+      }
     }
   }
-  handleChange (e) {
-    // e.persist()
-    let {disabled, onChange, falseValue, all, name} = this.props
-    onChange = onChange || (() => {})
-    let tar = e.target
-    const isChecked = tar.checked
-    let val = tar.value
-    if (disabled) {
-      return
-    }
-    if (falseValue && !isChecked) {
-      val = falseValue
-    }
+  handleChange (data) {
+    const {value, checked, name, all} = data
+    let checkedList = []
+    const root = MultipleCheckboxsOpera.getRoot(name)
     if (all) {
-      let nList = document.querySelectorAll(`[name=${all}]`)
-      let checkedList = []
-      Array.from(nList).forEach(item => {
-        if (item.disabled) {
-          checkedList.push(item.value)
+      const list = MultipleCheckboxsOpera.getAll(all)
+      list.map(item => {
+        if (item.state.disabled && item.state.checked) {
+          checkedList.push(item.state.value)
           return
+        } else if (checked) {
+          checkedList.push(item.state.value)
         }
-        item.setAttribute('all', 1)
-        item.checked = !isChecked
-        !item.disabled && item.click()
-        isChecked && checkedList.push(item.value)
-      })
-      this.setState({
-        checked: isChecked
-      }, () => {
-        // onChange(null, checkedList, name, true)
-        onChange({
-          value: checkedList,
-          name,
-          all: true,
-          target: tar
+        item.setState({
+          checked: checked,
+          part: false
         })
       })
+    }
+    if (name) {
+      const allRef = MultipleCheckboxsOpera.getAll(name)
+      if (root) {
+        const t = allRef.filter(item => item.state.checked === true)
+        let part = false
+        let _checked = false
+        t.length < allRef.length && t.length !== 0 && (part = true)
+        t.length === allRef.length && (_checked = true)
+
+        root.setState({
+          part,
+          checked: _checked
+        })
+        checkedList = t.map(item => {
+          return item.state.value
+        })
+      } else {
+        const t = allRef.filter(item => item.state.checked === true)
+        checkedList = t.map(item => {
+          return item.state.value
+        })
+      }
+    }
+    if (name || all) {
+      const root = MultipleCheckboxsOpera.getRoot(name || all)
+      root ? root.state.onChange(checkedList) : this.state.onChange(checkedList)
       return
     }
-    this.setState({
-      checked: isChecked
-    }, () => {
-      let {selectStatus} = this.state
-      let l1 = document.querySelectorAll(`[name=${name}]`)
-      let l2 = document.querySelectorAll(`[name=${name}]:checked`)
-      if (l1.length === l2.length) {
-        selectStatus = 'all'
-      }
-      if (l2.length < l1.length) {
-        selectStatus = 'part'
-      }
-      if (l2.length === 0) {
-        selectStatus = 'none'
-      }
-      this.setState({
-        selectStatus
-      })
-      const isParentChecked = tar.getAttribute('all')
-      isParentChecked !== '1' && onChange({
-        checked: isChecked,
-        value: val,
-        name,
-        target: tar
-      })
-      tar.setAttribute('all', 0)
-    })
+    this.state.onChange(value, checked)
   }
   render () {
-    const {value, text, trueValue, disabled, children, name, all} = this.props
-    const {selectStatus} = this.state
-    const {checked} = this.state
-    const checkedClass = classnames(
-      'hi-checkbox-input',
-      checked && 'hi-checkbox-input-checked'
-    )
-    const p = document.querySelector(`[all=${name}]`)
-    const _checkedClass = classnames(
-      'hi-checkbox-input',
-      selectStatus && `hi-checkbox-input-${selectStatus}`
-    )
-    p && selectStatus && (p.parentNode.className = _checkedClass)
+    const {value, content, disabled, checked, part} = this.state
+    const {name, all} = this.props
+
     const labelClass = classnames(
       'hi-checkbox',
-      disabled && 'hi-checkbox-disabled'
+      disabled && 'hi-checkbox--disabled',
+      checked && 'hi-checkbox--checked',
+      part && `hi-checkbox--part`
     )
-    let _value = trueValue || value || text || children
     return (
       <div
         className={labelClass}
+        onClick={() => {
+          if (disabled) return
+          this.setState({
+            checked: !this.state.checked,
+            part: false
+          }, () => {
+            this.handleChange({value, checked: this.state.checked, name, all})
+          })
+        }}
       >
-        <span
-          className={checkedClass}
-        >
-          <input
-            ref={node => { this.checkboxRef = node }}
-            type='checkbox'
-            className='hi-checkbox-origin-input'
-            value={_value}
-            all={all || ''}
-            name={this.props.name}
-            disabled={disabled}
-            checked={this.state.checked}
-            onChange={this.handleChange}
-          />
-        </span>
-        <span className='hi-checkbox-label'
-          onClick={
-            () => {
-              this.checkboxRef.click()
-            }
-          }
-        >
-          {text || children}
+        <span className='hi-checkbox__input' />
+        <span className='hi-checkbox__label'>
+          {content}
         </span>
       </div>
     )

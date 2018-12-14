@@ -17,21 +17,6 @@ render() {
 ```
 :::
 
-### 自定义选中值
-:::demo
-通过 trueValue 与 falseValue 设置选中与未选中对应的值。属性不存在时会查找 value 属性，value 属性不存在会返回文字内容。<br/>(优先级： trueValue | falseValue  > value > content)
-```js
-render() {
-  return (
-    <div>
-      <p><Checkbox  trueValue='打篮球' falseValue='不打篮球' onChange={(val, isCheck) => console.log(val, isCheck)}>篮球</Checkbox></p>
-      <p><Checkbox  value='踢足球' falseValue='不踢足球' onChange={(val, isCheck) => console.log(val, isCheck)}>足球</Checkbox></p>
-      <p><Checkbox  falseValue='不玩排球'  onChange={(val, isCheck) => console.log(val, isCheck)}>排球</Checkbox></p>
-    </div>
-  )
-}
-```
-:::
 
 ### 多选
 :::demo
@@ -43,8 +28,6 @@ constructor () {
     list2: [{
       text: '北京',
       value: 'BeiJint',
-      trueValue: 'BJ',
-      falseValue: ' 北',
       checked: true
     },{
       text: '上海',
@@ -88,6 +71,8 @@ render() {
 constructor () {
   super()
   this.state = {
+    title: 'aaa',
+    checked: false,
     list: [{
       text: '北京',
       value: 'BeiJing'
@@ -107,19 +92,30 @@ render() {
   return (
     <div>
       <div>
-        <Checkbox all='one' onChange={(list) => console.log(list)}>全选</Checkbox>
-        <div><Checkbox list={this.state.list} name='one'/></div>
+        <Button type="default" onClick={() => {this.setState({title: Math.random()})}}>修改 Panel 标题</Button>
+        <Button type="default" onClick={() => {this.setState({checked: !this.state.checked})}}>点击2</Button>
         <br/>
+        <Panel 
+          title={this.state.title}
+          footer="我是注脚"
+        >
+          <Checkbox all='one' onChange={(list) => console.log(list)}>全选</Checkbox>
+          <div><Checkbox list={this.state.list} name='one'/></div>
+
+    <br/>
+
+          <div>
+            <Checkbox all='two' onChange={(list, target) => console.log(list, target)}> 全选</Checkbox> <span>(子选项可放置于任何位置，只需 name 相同)</span>
+            <div><Checkbox text='北京' name='two'/></div>
+            <div><Checkbox name='two' value='ShangeHai'>上海</Checkbox></div>
+            <div><Checkbox name='two' text='深圳'/></div>
+            <div><Checkbox name='two' checked={this.state.checked} text='天津'/></div>
+            <br/>
+          </div>
+        </Panel>
       </div>
       <br/>
-      <div>
-        <Checkbox all='two' onChange={(list, target) => console.log(list, target)}> 全选</Checkbox> <span>(子选项可放置于任何位置，只需 name 相同)</span>
-        <div><Checkbox text='北京' name='two'/></div>
-        <div><Checkbox name='two' value='ShangeHai'>上海</Checkbox></div>
-        <div><Checkbox name='two' text='深圳'/></div>
-        <div><Checkbox name='two' text='天津'/></div>
-        <br/>
-      </div>
+      
     </div>
   )
 }
@@ -131,8 +127,6 @@ render() {
 | 参数       | 说明   |  类型  | 可选值 |默认值  |
 | --------   | -----  | ----  |    ----  |   ----  |
 | value |  选中的值  |  string,number,boolean   | - | |
-| trueValue |  选中时的值  |  string,number   | - | |
-| falseValue |  取消选中时的值  |  string,number   | - | |
 | checked |   是否默认选中  |  boolean   | true 或 false | false |
 | disabled |   是否禁用  |  boolean   | true 或 false | false |
 |  list |   多选  |  array   | - |  |
