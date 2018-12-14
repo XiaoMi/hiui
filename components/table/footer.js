@@ -13,7 +13,7 @@ class Footer extends Component {
       columns
     } = this.props
     const tds = columns.map((item, index) => {
-      if (item.type === 'sum') {
+      if (item.type === 'number') {
         return (
           <td>
             {this.getSum(item)}
@@ -35,7 +35,7 @@ class Footer extends Component {
       dataSource
     } = this.props
     const tds = columns.map((item, index) => {
-      if (item.type === 'ave') {
+      if (item.type === 'number') {
         return (
           <td>
             {this.getSum(item) / dataSource.length}

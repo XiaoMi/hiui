@@ -68,7 +68,6 @@ class Table extends Component {
       scroll,
       columnMenu: false,
       // 由外部属性重构为内部状态
-      selectedRowKeys: [],
       leftFiexColumns: [],
       rightFixColumns: [],
       columns: [],
@@ -637,30 +636,9 @@ class Table extends Component {
     let rightFixColumns = []
     let [headerColumns, columns] = this.getHeaderGroup(props.columns)
     let {rowSelection, scroll, name} = props
-    let that = this
     if (rowSelection) {
-      let {selectedRowKeys} = this.state
+      let {selectedRowKeys = []} = rowSelection
       let { dataSource } = this.state
-
-      // 点击行的时候如果配置了分页
-      // if (rowSelection) {
-      //   let {selectedRowKeys} = this.state
-      //   let {onChange, getCheckboxProps = (record) => ({ disabled: false, dataName: record.key })} = rowSelection
-      //   let selected = selectedRowKeys.includes(record.key)
-      //   if (getCheckboxProps(record).disabled) {
-      //     return
-      //   }
-      //   if (selected) {
-      //     selectedRowKeys.splice(selectedRowKeys.indexOf(record.key), 1)
-      //   } else {
-      //     selectedRowKeys.push(record.key)
-      //   }
-      //
-      //   this.setState({selectedRowKeys}, () => {
-      //     onChange(selectedRowKeys, dataSource.filter(item => selectedRowKeys.includes(item.key)))
-      //   })
-      // }
-
       columns.unshift({
         width: '50',
         type: 'select',
@@ -682,12 +660,7 @@ class Table extends Component {
                   selectedRowKeys.splice(0, selectedRowKeys.length)
                   data.splice(0, data.length)
                 }
-
-                that.setState({
-                  selectedRowKeys
-                }, () => {
-                  onChange(selectedRowKeys, data)
-                })
+                onChange(selectedRowKeys, data)
               }}
             />
 
@@ -708,12 +681,7 @@ class Table extends Component {
                 } else {
                   selectedRowKeys = selectedRowKeys.filter(key => record.key !== key)
                 }
-
-                that.setState({
-                  selectedRowKeys
-                }, () => {
-                  onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record.key)))
-                })
+                onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record.key)))
               }}
               disabled={disabled}
               key={record.key}
@@ -739,7 +707,7 @@ class Table extends Component {
     }
   }
 
-  runServerTable () {
+  fetch () {
     const {
       url,
       params
@@ -804,21 +772,23 @@ class Table extends Component {
     }
     setTimeout(() => {
       this.runMemory()
-      this.runServerTable()
+      this.fetch()
     }, 0)
   }
 
   componentWillReceiveProps ({data, columns, width, scroll, ...props}) {
-    data = setKey(data, 'id')
-    // 只有dataSource,columns重造
-
-    let columnsDetail = this.setColumnsDetail(columns, {data, columns, width, scroll, ...props})
-    console.log(...props)
-    this.setState({dataSource: data, scroll, ...columnsDetail, ...props})
-    setTimeout(() => {
-      this.runMemory()
-      this.runServerTable()
-    }, 0)
+    // 服务端表格
+    if (props.url) {
+      props.auto && this.fetch()
+    } else {
+      data = setKey(data, 'id')
+      // 只有dataSource,columns重造
+      let columnsDetail = this.setColumnsDetail(columns, {data, columns, width, scroll, ...props})
+      this.setState({dataSource: data, scroll, ...columnsDetail, ...props})
+      setTimeout(() => {
+        this.runMemory()
+      }, 0)
+    }
   }
 }
 
