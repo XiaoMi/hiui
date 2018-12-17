@@ -34,7 +34,7 @@ let defaultRender = (text, record, index) => {
 
 export default class Body extends Component {
   render () {
-    let {columns, dataSource, cbs: {addExpand, rowClick}, rowSelection = { }, highlightCols} = this.props
+    let {columns, dataSource, cbs: {addExpand}, rowSelection = { }, highlightCols} = this.props
     let selectedRowKeys = rowSelection.selectedRowKeys || []
     // 表头分组
     let i = 0
@@ -93,7 +93,7 @@ export default class Body extends Component {
         i++
         // 动态插入的组件不累加
       }
-      return <tr onClick={() => rowClick(undefined, item, k)} className={prifix('table-row', selectedRowKeys.includes(item.key) ? 'picked' : null, item.expand ? 'expanded' : null)} key={item.key || 'tr-' + k} >{tr}</tr>
+      return <tr className={prifix('table-row', selectedRowKeys.includes(item.key) ? 'picked' : null, item.expand ? 'expanded' : null)} key={item.key || 'tr-' + k} >{tr}</tr>
     })
 
     return (

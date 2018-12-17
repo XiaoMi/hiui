@@ -4,12 +4,11 @@ import PropTypes from 'prop-types'
 import ClickOutside from './clickOuterside'
 import TableContent from './tableContent'
 import prifix from './prefix'
-
-import Checkbox from '../checkbox'
+import Checkbox from './checkbox'
 import Pagination from '../pagination'
 import Icon from '../icon'
 import './style'
-import '../checkbox/style'
+
 import '../pagination/style'
 import '../icon/style'
 import {setKey, scrollTop, getStyle} from './tool'
@@ -26,7 +25,6 @@ class Table extends Component {
     rowClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     onRow: PropTypes.func,
     onHeaderRow: PropTypes.func,
-    onRowClick: PropTypes.func,
     onRowDoubleClick: PropTypes.func,
     onRowContextMenu: PropTypes.func,
     onRowMouseEnter: PropTypes.func,
@@ -173,7 +171,6 @@ class Table extends Component {
       })
     },
     hideCol: (key) => {
-      console.log(key, 'hide')
       let {columns, headerColumns} = this.state
       columns.map(item => {
         if (item.key === key) {
@@ -232,7 +229,6 @@ class Table extends Component {
     },
 
     fetch: (extra) => {
-      console.log(this.props)
       extra = extra || {}
       const {
         url,
@@ -253,6 +249,7 @@ class Table extends Component {
           loading: false,
           serverPagination: page
         })
+        this.runMemory()
       })
     }
   }
@@ -332,9 +329,7 @@ class Table extends Component {
   }
 
   showColumsPanel= (e) => {
-    let {columnMenu} = this.state
-    e.stopPropagation()
-    this.setState({columnMenu: !columnMenu})
+
   }
 
   getScrollYContent () {
@@ -366,7 +361,7 @@ class Table extends Component {
       <div className={prifix('table-content')}>
 
         <div className={prifix('table-body')} style={{overflowX: 'auto'}}>
-          <TableContent {...Object.assign({}, {style: {...style}}, {...props}, {columns}, {dataSource, highlightCols}, {rowClick: this.rowClick, cbs: this.cbs}, {headerColumns})} />
+          <TableContent {...Object.assign({}, {style: {...style}}, {...props}, {columns}, {dataSource, highlightCols}, {cbs: this.cbs}, {headerColumns})} />
         </div>
         {
           dataSource.length === 0 ? this.getEmptyContent() : null
@@ -404,7 +399,7 @@ class Table extends Component {
 
   render () {
     // 多选配置
-    let {pagination, name} = this.props
+    let {pagination, name, size = 'normal'} = this.props
     let {scroll, columnMenu, loading, serverPagination} = this.state
 
     let content
@@ -432,7 +427,7 @@ class Table extends Component {
     let {columns} = this.state
 
     return (
-      <div className={prifix('table')} ref={'dom'}>
+      <div className={prifix('table', size)} ref={'dom'}>
         {
           loading && '正在加载中...'
         }
@@ -458,7 +453,6 @@ class Table extends Component {
                 total={serverPagination.total}
                 current={serverPagination.current}
                 onChange={(current) => {
-                  console.log(current, 'current')
                   this.setState({
                     serverPagination: {
                       ...serverPagination,
@@ -470,42 +464,46 @@ class Table extends Component {
             </div> : null
           }
         </div>
-        { name
-          ? <div className={prifix('table-setting')} ref={'setting'}>
-            <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}} onClick={this.showColumsPanel} />
+        { name &&
+          <div className={prifix('table-setting')} ref={'setting'}>
+            <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}}
+              onClick={(e) => {
+                let {columnMenu} = this.state
+                console.log(columnMenu)
+                this.setState({columnMenu: !columnMenu})
+              }} />
             {
-              columnMenu
-                ? <ClickOutside onClickOutside={(e) => this.setState({columnMenu: false})} >
-                  <div className={prifix('table-setting-menu column-menu')} >
-                    {
-                      columns.map(item => (
-                        <div key={item.key}>
-                          <div>
-                            {
-                              (function () {
-                                if (item.type === 'select') {
-                                  return '多选'
-                                }
-                                if (item.type === 'expand') {
-                                  return '展开'
-                                }
-                                if (typeof item.title === 'function') {
-                                  return item.title()
-                                }
-                                return item.title
-                              }())
-                            }
-                          </div>
-                          <div>
-                            <Checkbox checked={!item.hide} onChange={(e) => this.cbs.hideCol(item.key)} />
-                          </div>
+              columnMenu && <ClickOutside onClickOutside={(e) => this.setState({columnMenu: false})} >
+                <div className={prifix('table-setting-menu column-menu')} >
+                  {
+                    columns.map(item => (
+                      <div key={item.key}>
+                        <div>
+                          {
+                            (function () {
+                              if (item.type === 'select') {
+                                return '多选'
+                              }
+                              if (item.type === 'expand') {
+                                return '展开'
+                              }
+                              if (typeof item.title === 'function') {
+                                return item.title()
+                              }
+                              return item.title
+                            }())
+                          }
                         </div>
-                      ))
-                    }
-                  </div>
-                </ClickOutside> : null
+                        <div>
+                          <Checkbox checked={!item.hide} onChange={(e) => this.cbs.hideCol(item.key)} />
+                        </div>
+                      </div>
+                    ))
+                  }
+                </div>
+              </ClickOutside>
             }
-          </div> : null
+          </div>
         }
       </div>
     )
@@ -637,55 +635,54 @@ class Table extends Component {
     let [headerColumns, columns] = this.getHeaderGroup(c || props.columns)
 
     let {rowSelection, scroll, name} = props
+
     if (rowSelection) {
-      let {selectedRowKeys = []} = rowSelection
+      let {selectedRowKeys = [], dataName = 'key'} = rowSelection
       let { dataSource } = this.state
       columns.unshift({
         width: '50',
         type: 'select',
         key: 'hi-table-select-' + name,
         title: () => {
-          let {getCheckboxProps = (record) => ({ disabled: false, dataName: record.key }), onChange} = rowSelection
-          let data = dataSource.filter(record => !getCheckboxProps(record).disabled)
+          let {getCheckboxProps = (record) => ({ disabled: false }), onChange} = rowSelection
+          let dataTop = dataSource.filter(record => !getCheckboxProps(record).disabled)
           return (
-            <Checkbox type='checkbox'
-              onClick={(e) => e.preventDefault()}
-              checked={selectedRowKeys.length === data.length}
+            <Checkbox
+              checked={selectedRowKeys.length === dataTop.length && dataTop.length > 0}
               onChange={(e) => {
-                if (e.checked) {
+                let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
+
+                if (e.target.checked) {
                   selectedRowKeys.splice(0, selectedRowKeys.length)
                   for (let i = 0; i < data.length; i++) {
-                    selectedRowKeys.push(data[i].key)
+                    selectedRowKeys.push(data[i][dataName])
                   }
                 } else {
                   selectedRowKeys.splice(0, selectedRowKeys.length)
-                  data.splice(0, data.length)
                 }
-                onChange(selectedRowKeys, data)
+                onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record[dataName])))
               }}
             />
-
           )
         },
         render: (text, record, index) => {
-          let {getCheckboxProps = (record) => ({ disabled: false, dataName: record.key }), onChange} = rowSelection
+          let {getCheckboxProps = (record) => ({ disabled: false }), onChange} = rowSelection
           // todo dataName 是干嘛的不明白
           let {disabled} = getCheckboxProps(record)
-          let data = dataSource.filter(record => !getCheckboxProps(record).disabled)
           return (
             <Checkbox
-              onClick={(e) => e.preventDefault()}
-              checked={selectedRowKeys.includes(record.key)}
+              checked={selectedRowKeys.includes(record[dataName])}
               onChange={(e) => {
-                if (e.checked) {
-                  selectedRowKeys.push(record.key)
+                let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
+                if (e.target.checked) {
+                  selectedRowKeys.push(record[dataName])
                 } else {
-                  selectedRowKeys = selectedRowKeys.filter(key => record.key !== key)
+                  selectedRowKeys = selectedRowKeys.filter(key => record[dataName] !== key)
                 }
-                onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record.key)))
+                onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record[dataName])))
               }}
               disabled={disabled}
-              key={record.key}
+              key={record[dataName]}
             />
           )
         }
@@ -725,14 +722,19 @@ class Table extends Component {
       loading: true
     })
     axios.request(url, {params}).then(res => {
-      console.log(success(res))
       let {data, columns, page} = success(res)
-      let columnsDetail = this.setColumnsDetail(null, null, columns)
+
       this.setState({
         dataSource: data,
-        ...columnsDetail,
         loading: false,
         serverPagination: page
+      })
+      setTimeout((e) => {
+        let columnsDetail = this.setColumnsDetail(null, null, columns)
+        this.setState({
+          ...columnsDetail
+        })
+        this.runMemory()
       })
     })
   }

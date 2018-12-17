@@ -178,7 +178,7 @@ render(){
   const rowSelection = {
     onChange: (selectedRowKeys,rows)=>{
       console.log('onchange',selectedRowKeys,rows)
-      // this.setState({selectedRowKeys})
+      this.setState({selectedRowKeys})
     }
   }
   return <Table columns={this.columns} data={data} rowSelection={rowSelection} />

@@ -1,6 +1,16 @@
 $table: 'hi-table' !default;
 $bgColor: #f7fafe !default;
 
+$miniHeight: 30px;
+$miniFontSize: 12px;
+
+$smallHeight: 40px;
+$smallFontSize: 13px;
+
+$normalHeight: 100px;
+$nornamFontSize: 14px;
+
+
 .#{$table} {
   position: relative;
   width: 100%;
@@ -22,11 +32,9 @@ $bgColor: #f7fafe !default;
     width: 140px;
 
     p {
-      font-size: 14px;
       color: #383e47;
       text-align: left;
       margin: 0;
-      line-height: 50px;
       text-indent: 16px;
       display: flex;
       align-items: center;
@@ -49,11 +57,9 @@ $bgColor: #f7fafe !default;
     width: 140px;
 
     > div {
-      font-size: 14px;
       color: #383e47;
       text-align: left;
       margin: 0;
-      line-height: 50px;
       padding-left: 16px;
       display: flex;
       align-items: center;
@@ -79,11 +85,29 @@ $bgColor: #f7fafe !default;
 
     &.column-menu {
       position: absolute;
-      right: 10px;
+      right: 30px;
       top: 40px;
       width: 220px;
       max-height: 240px;
       overflow-y: auto;
+    }
+  }
+
+  &.mini{
+    table{
+      tr{
+        height: $miniHeight;
+        font-size: $miniFontSize;
+      }
+    }
+  }
+
+  &.small{
+    table{
+      tr{
+        height: $miniHeight;
+        font-size: $miniFontSize;
+      }
     }
   }
 
@@ -103,9 +127,7 @@ $bgColor: #f7fafe !default;
     td,
     th {
       white-space: nowrap;
-      //padding: 16px 8px;
       padding-left: 8px;
-      font-size: 14px;
       border-bottom: 1px solid #e6e7e8;
       text-align: left;
     }
@@ -132,7 +154,8 @@ $bgColor: #f7fafe !default;
     tr {
       transition: 0.2s;
       cursor: pointer;
-      height: 50px;
+      height: $normalHeight;
+      font-size: $nornamFontSize;
       padding: 0;
       box-sizing: border-box;
 
@@ -254,13 +277,12 @@ $bgColor: #f7fafe !default;
     background: #fff;
     border-bottom: 1px solid #e6e7e8;
     text-align: center;
-    font-size: 14px;
     z-index: 1;
   }
 
   &-setting {
     position: absolute;
-    right: 10px;
+    right: 15px;
     top: 0;
     cursor: pointer;
     background: $bgColor;
