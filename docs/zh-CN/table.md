@@ -51,7 +51,7 @@ constructor(props){
   }
 }1
 render() {
-  return <Table columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
+  return <Table size={'small'} columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
 }
 ```
 :::
@@ -107,7 +107,7 @@ constructor(props){
   }
 }1
 render() {
-  return <Table columns={this.columns} data={this.data} name='sorter'/>
+  return <Table name={'sorter'} size={'mini'} columns={this.columns} data={this.data} name='sorter'/>
 }
 ```
 :::
@@ -176,12 +176,13 @@ constructor(props){
 render(){
   const { selectedRowKeys ,data} = this.state
   const rowSelection = {
+    selectedRowKeys,
     onChange: (selectedRowKeys,rows)=>{
       console.log('onchange',selectedRowKeys,rows)
       this.setState({selectedRowKeys})
     }
   }
-  return <Table columns={this.columns} data={data} rowSelection={rowSelection} />
+  return <Table size={'small'} columns={this.columns} data={data} rowSelection={rowSelection} />
 }
 ```
 :::
@@ -229,7 +230,7 @@ constructor(props){
   }
 }
 render() {
-  return <Table columns={this.columns} data={this.data} fixTop={56} name='fixtop' />
+  return <Table size={'small'} columns={this.columns} data={this.data} fixTop={56} name='fixtop' />
 }
 ```
 :::

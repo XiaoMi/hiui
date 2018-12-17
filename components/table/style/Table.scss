@@ -10,7 +10,63 @@ $smallFontSize: 13px;
 $normalHeight: 50px;
 $nornamFontSize: 14px;
 
+.#{$table}{
+  &.small{
+    table{
+      tr{
+        height: $smallHeight;
+        font-size: $smallFontSize;
+      }
+    }
+    .hi-table-header-menu{
+      >p{
+        height: $smallHeight !important;
+        font-size: $smallFontSize;
+      }
+    }
+    .hi-table-setting-menu{
+      >div{
+        height: $smallHeight;
+      }
+    }
+  }
+}
+.hi-table-header-menu-small{
+  .hi-table-header-menu{
+    p{
+      height: $smallHeight;
+    }
+  }
+}
+.hi-table-header-menu-mini{
+  .hi-table-header-menu{
+    p{
+      height: $miniHeight;
+    }
+  }
+}
 
+.#{$table}{
+  &.mini{
+    table{
+      tr{
+        height: $miniHeight;
+        font-size: $miniFontSize;
+      }
+    }
+    .hi-table-header-menu{
+      >p{
+        height: $miniHeight !important;
+        font-size: $miniHeight;
+      }
+    }
+    .hi-table-setting-menu{
+      >div{
+        height: $miniHeight;
+      }
+    }
+  }
+}
 .#{$table} {
   position: relative;
   width: 100%;
@@ -35,6 +91,7 @@ $nornamFontSize: 14px;
       color: #383e47;
       text-align: left;
       margin: 0;
+      height: $normalHeight;
       text-indent: 16px;
       display: flex;
       align-items: center;
@@ -61,11 +118,12 @@ $nornamFontSize: 14px;
       text-align: left;
       margin: 0;
       padding-left: 16px;
+      padding-right: 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
-
+      height: $normalHeight;
       &:hover {
         background: $bgColor;
         color: #4284f5;
@@ -90,24 +148,6 @@ $nornamFontSize: 14px;
       width: 220px;
       max-height: 240px;
       overflow-y: auto;
-    }
-  }
-
-  &.mini{
-    table{
-      tr{
-        height: $miniHeight;
-        font-size: $miniFontSize;
-      }
-    }
-  }
-
-  &.small{
-    table{
-      tr{
-        height: $miniHeight;
-        font-size: $miniFontSize;
-      }
     }
   }
 

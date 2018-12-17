@@ -129,7 +129,7 @@ export default class Header extends Component {
   contextMenu = (e, key) => {
     e.preventDefault()
     // this.refs.menu =
-    let {cbs, scrollWidth} = this.props
-    Menu.show(e, cbs, key, !!scrollWidth)
+    let {cbs, scrollWidth, size} = this.props
+    Menu.show(e, cbs, key, !!scrollWidth, size)
   }
 }
