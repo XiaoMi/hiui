@@ -52,8 +52,8 @@ constructor() {
 
 render(){
   const {position, alignCheckedIndex, columnCheckedIndex} = this.state
-  const Row = Layout.Row
-  const Col = Layout.Col
+  const Row = Grid.Row
+  const Col = Grid.Col
   return (
     <div>
       <Row gutter={true}>
