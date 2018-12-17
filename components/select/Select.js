@@ -10,8 +10,6 @@ import SelectDropdown from './SelectDropdown'
 import Provider from '../context'
 
 class Select extends Component {
-  noHideDropdown = false
-
   static propTypes = {
     mode: PropTypes.oneOf(['single', 'multiple']),
     list: PropTypes.array,
@@ -24,6 +22,7 @@ class Select extends Component {
     ]),
     autoload: PropTypes.bool,
     searchable: PropTypes.bool,
+    clearable: PropTypes.bool,
     disabled: PropTypes.bool,
     placeholder: PropTypes.string,
     noFoundTip: PropTypes.string,
@@ -35,6 +34,7 @@ class Select extends Component {
     list: [],
     mode: 'single',
     disabled: false,
+    clearable: true,
     value: '',
     autoload: false,
     placeholder: '请选择',
@@ -81,12 +81,19 @@ class Select extends Component {
   }
 
   componentDidMount () {
-    window.addEventListener('click', this.hideDropdown.bind(this))
+    window.addEventListener('click', this.clickOutside.bind(this))
     this.resetFocusedIndex()
   }
 
   componentWillUnmount () {
-    window.removeEventListener('click', this.hideDropdown.bind(this))
+    window.removeEventListener('click', this.clickOutside.bind(this))
+  }
+
+  clickOutside (e) {
+    if (ReactDOM.findDOMNode(this.selectInput) && ReactDOM.findDOMNode(this.selectInput).contains(e.target)) {
+      return
+    }
+    this.hideDropdown()
   }
 
   componentWillReceiveProps (props) {
@@ -221,7 +228,6 @@ class Select extends Component {
   }
 
   handleInputClick (e) {
-    this.noHideDropdown = ReactDOM.findDOMNode(this.selectInput).contains(e.target)
     this.selectInput.focus()
     // if (e) {
     //   e.stopPropagation()
@@ -241,10 +247,9 @@ class Select extends Component {
   }
 
   hideDropdown () {
-    !this.noHideDropdown && this.state.dropdownShow === true && this.setState({dropdownShow: false}, () => {
+    this.state.dropdownShow === true && this.setState({dropdownShow: false}, () => {
       this.clearKeyword()
     })
-    this.noHideDropdown = false
   }
 
   showDropdown () {
@@ -418,6 +423,7 @@ class Select extends Component {
       mode,
       className,
       disabled,
+      clearable,
       style,
       children,
       noFoundTip
@@ -443,6 +449,7 @@ class Select extends Component {
             mode={mode}
             disabled={disabled}
             searchable={searchable}
+            clearable={clearable}
             dropdownShow={dropdownShow}
             placeholder={placeholder}
             selectedItems={selectedItems}
