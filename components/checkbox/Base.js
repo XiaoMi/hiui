@@ -33,24 +33,30 @@ class Base extends Component {
   handleChange (data) {
     const {value, checked, name, all} = data
     let checkedList = []
-    const root = MultipleCheckboxsOpera.getRoot(name)
     if (all) {
       const list = MultipleCheckboxsOpera.getAll(all)
+      const root = MultipleCheckboxsOpera.getRoot(all)
+      let num = 0
       list.map(item => {
         if (item.state.disabled && item.state.checked) {
+          num++
           checkedList.push(item.state.value)
           return
         } else if (checked) {
+          num++
           checkedList.push(item.state.value)
         }
         item.setState({
-          checked: checked,
-          part: false
+          checked: checked
         })
+      })
+      root && root.setState({
+        part: !!((num > 0 && num < list.length))
       })
     }
     if (name) {
       const allRef = MultipleCheckboxsOpera.getAll(name)
+      const root = MultipleCheckboxsOpera.getRoot(name)
       if (root) {
         const t = allRef.filter(item => item.state.checked === true)
         let part = false
@@ -58,7 +64,7 @@ class Base extends Component {
         t.length < allRef.length && t.length !== 0 && (part = true)
         t.length === allRef.length && (_checked = true)
 
-        root.setState({
+        root && root.setState({
           part,
           checked: _checked
         })
