@@ -30,23 +30,23 @@ export default class Loading extends Component {
   }
   renderCircle (tip) {
     return (
-      <div className='hi-loading-mask'>
-        <div className='hi-loading-outter'>
-          <div className={`sk-circle sk-circle-${this.props.size}`}>
-            <div className='sk-circle1 sk-child' />
-            <div className='sk-circle2 sk-child' />
-            <div className='sk-circle3 sk-child' />
-            <div className='sk-circle4 sk-child' />
-            <div className='sk-circle5 sk-child' />
-            <div className='sk-circle6 sk-child' />
-            <div className='sk-circle7 sk-child' />
-            <div className='sk-circle8 sk-child' />
-            <div className='sk-circle9 sk-child' />
-            <div className='sk-circle10 sk-child' />
-            <div className='sk-circle11 sk-child' />
-            <div className='sk-circle12 sk-child' />
+      <div className='hi-loading__mask'>
+        <div className='hi-loading__outter'>
+          <div className={`hi-loading__circle hi-loading__circle--${this.props.size}`}>
+            <div className='sk-circle1 hi-loading__circle-item' />
+            <div className='sk-circle2 hi-loading__circle-item' />
+            <div className='sk-circle3 hi-loading__circle-item' />
+            <div className='sk-circle4 hi-loading__circle-item' />
+            <div className='sk-circle5 hi-loading__circle-item' />
+            <div className='sk-circle6 hi-loading__circle-item' />
+            <div className='sk-circle7 hi-loading__circle-item' />
+            <div className='sk-circle8 hi-loading__circle-item' />
+            <div className='sk-circle9 hi-loading__circle-item' />
+            <div className='sk-circle10 hi-loading__circle-item' />
+            <div className='sk-circle11 hi-loading__circle-item' />
+            <div className='sk-circle12 hi-loading__circle-item' />
           </div>
-          <div className='hi-loading-text'>{tip}</div>
+          <div className='hi-loading__text'>{tip}</div>
         </div>
       </div>
     )
