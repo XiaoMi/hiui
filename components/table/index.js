@@ -12,7 +12,10 @@ import './style'
 import '../pagination/style'
 import '../icon/style'
 import {setKey, scrollTop, getStyle} from './tool'
-import axios from 'axios'
+import request from 'axios'
+let axios = request.create({
+  baseURL: ''
+})
 class Table extends Component {
   static propTypes = {
     data: PropTypes.array,
@@ -34,7 +37,8 @@ class Table extends Component {
     id: PropTypes.string,
     footer: PropTypes.func,
     emptyText: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-    scroll: PropTypes.object
+    scroll: PropTypes.object,
+    axios: PropTypes.func
   }
 
   static defaultProps = {
@@ -50,11 +54,9 @@ class Table extends Component {
     showHeader: true,
     scroll: {x: undefined, y: undefined},
     rowRef: () => null,
-    emptyText: () => 'No Data'
+    emptyText: () => 'No Data',
+    axios
   }
-
-  static pageSize=2
-
   constructor (props) {
     super(props)
     // 只有dataSource,columns重造
@@ -233,14 +235,20 @@ class Table extends Component {
       const {
         url,
         params,
-        success
+        success,
+        axios
       } = this.props
 
       const {
         serverPagination: {current}
       } = this.state
-
-      axios.request(url, {params: {...params, pageNum: current, pageSize: Table.pageSize, ...extra}}).then(res => {
+      let requestParams = {
+        ...params,
+        ...extra
+      }
+      requestParams[Table.config.currentPageName] = current
+      requestParams[Table.config.pageSizeName] = Table.config.pageSize
+      axios.request(url, {params: requestParams}).then(res => {
         let {data, columns, page} = success(res)
         let columnsDetail = this.setColumnsDetail(null, null, columns)
         this.setState({
@@ -638,21 +646,18 @@ class Table extends Component {
 
     if (rowSelection) {
       let {selectedRowKeys = [], dataName = 'key'} = rowSelection
-      let { dataSource } = this.state
       columns.unshift({
         width: '50',
         type: 'select',
         key: 'hi-table-select-' + name,
         title: () => {
           let {getCheckboxProps = (record) => ({ disabled: false }), onChange} = rowSelection
-          let dataTop = dataSource.filter(record => !getCheckboxProps(record).disabled)
           return (
-            <Checkbox
-              checked={selectedRowKeys.length === dataTop.length && dataTop.length > 0}
-              onChange={(e) => {
+            <Checkbox type='checkbox'
+              checked={selectedRowKeys.length === this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length}
+              onChange={(e, checked) => {
                 let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
-
-                if (e.target.checked) {
+                if (checked) {
                   selectedRowKeys.splice(0, selectedRowKeys.length)
                   for (let i = 0; i < data.length; i++) {
                     selectedRowKeys.push(data[i][dataName])
@@ -670,18 +675,18 @@ class Table extends Component {
           // todo dataName 是干嘛的不明白
           let {disabled} = getCheckboxProps(record)
           return (
-            <Checkbox
+            <Checkbox type='checkbox'
               checked={selectedRowKeys.includes(record[dataName])}
-              onChange={(e) => {
+              disabled={disabled}
+              onChange={(e, checked) => {
                 let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
-                if (e.target.checked) {
+                if (checked) {
                   selectedRowKeys.push(record[dataName])
                 } else {
                   selectedRowKeys = selectedRowKeys.filter(key => record[dataName] !== key)
                 }
                 onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record[dataName])))
               }}
-              disabled={disabled}
               key={record[dataName]}
             />
           )
@@ -708,7 +713,8 @@ class Table extends Component {
   fetch () {
     const {
       url,
-      params
+      params,
+      axios
     } = this.props
 
     if (!url) {
@@ -721,7 +727,11 @@ class Table extends Component {
     this.setState({
       loading: true
     })
-    axios.request(url, {params}).then(res => {
+    let requestParams = {
+      ...params
+    }
+    requestParams[Table.config.pageSizeName] = Table.config.pageSize
+    axios.request(url, {params: requestParams}).then(res => {
       let {data, columns, page} = success(res)
 
       this.setState({
@@ -779,6 +789,7 @@ class Table extends Component {
   }
 
   componentWillReceiveProps ({data, columns, width, scroll, ...props}) {
+    console.log('receive props')
     // 服务端表格
     if (props.url) {
       props.auto && this.fetch()
@@ -792,6 +803,13 @@ class Table extends Component {
       }, 0)
     }
   }
+}
+
+Table.config = {
+  currentPageName: 'current',
+  pageSizeName: 'pageSize',
+  pageSize: 2,
+  host: ''
 }
 
 export default Table
