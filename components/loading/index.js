@@ -33,18 +33,9 @@ export default class Loading extends Component {
       <div className='hi-loading__mask'>
         <div className='hi-loading__outter'>
           <div className={`hi-loading__circle hi-loading__circle--${this.props.size}`}>
-            <div className='sk-circle1 hi-loading__circle-item' />
-            <div className='sk-circle2 hi-loading__circle-item' />
-            <div className='sk-circle3 hi-loading__circle-item' />
-            <div className='sk-circle4 hi-loading__circle-item' />
-            <div className='sk-circle5 hi-loading__circle-item' />
-            <div className='sk-circle6 hi-loading__circle-item' />
-            <div className='sk-circle7 hi-loading__circle-item' />
-            <div className='sk-circle8 hi-loading__circle-item' />
-            <div className='sk-circle9 hi-loading__circle-item' />
-            <div className='sk-circle10 hi-loading__circle-item' />
-            <div className='sk-circle11 hi-loading__circle-item' />
-            <div className='sk-circle12 hi-loading__circle-item' />
+            {
+              new Array(12).fill(0).map((item, index) => <div className='hi-loading__circle-item' key={index} />)
+            }
           </div>
           <div className='hi-loading__text'>{tip}</div>
         </div>
