@@ -1,25 +1,23 @@
 import React, {Component} from 'react'
 import classNames from 'classnames'
-import '../../checkbox/style'
-
+import './style'
 export default class Checkbox extends Component {
   render () {
     const {
       checked,
       onChange,
-      disabled = false
+      disabled
     } = this.props
     return (
-      <label className={classNames({'hi-checkbox': true, 'hi-checkbox-disabled': disabled})}>
-        <span className={classNames({'hi-checkbox-input': true, 'hi-checkbox-input-checked': checked})} >
-          <input disabled={disabled} onChange={(e) => {
-            if (disabled) {
-              return
-            }
-            onChange(e)
-          }} type='checkbox' className='hi-checkbox-origin-input' checked={checked} />
-        </span>
-      </label>
+      <div style={{'position': 'relative'}} onClick={(e) => {
+        if (disabled) {
+          return
+        }
+        onChange(e, !checked)
+      }} className={classNames({'hi-checkbox': true, 'hi-checkbox--checked': checked, 'hi-checkbox--disabled': disabled})}>
+        <span className='hi-checkbox__input' />
+        <span style={{position: 'absolute', left: 0, top: 0}} className='hi-checkbox__label' />
+      </div>
     )
   }
 }

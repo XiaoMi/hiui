@@ -437,7 +437,7 @@ class Table extends Component {
     return (
       <div className={prifix('table', size)} ref={'dom'}>
         {
-          loading && '正在加载中...'
+          loading && ' '
         }
         <div >
           <div >{content}</div>
@@ -654,6 +654,7 @@ class Table extends Component {
           let {getCheckboxProps = (record) => ({ disabled: false }), onChange} = rowSelection
           return (
             <Checkbox type='checkbox'
+
               checked={selectedRowKeys.length === this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length}
               onChange={(e, checked) => {
                 let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
@@ -665,6 +666,7 @@ class Table extends Component {
                 } else {
                   selectedRowKeys.splice(0, selectedRowKeys.length)
                 }
+                console.log(checked, 'top-check', selectedRowKeys, data, this.state.dataSource.filter(record => !getCheckboxProps(record).disabled))
                 onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record[dataName])))
               }}
             />
@@ -673,12 +675,14 @@ class Table extends Component {
         render: (text, record, index) => {
           let {getCheckboxProps = (record) => ({ disabled: false }), onChange} = rowSelection
           // todo dataName 是干嘛的不明白
-          let {disabled} = getCheckboxProps(record)
+
           return (
             <Checkbox type='checkbox'
+              che={selectedRowKeys.includes(record[dataName])}
               checked={selectedRowKeys.includes(record[dataName])}
-              disabled={disabled}
+              disabled={getCheckboxProps(record).disabled}
               onChange={(e, checked) => {
+                console.log(getCheckboxProps, getCheckboxProps(record), 'get-disabled')
                 let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
                 if (checked) {
                   selectedRowKeys.push(record[dataName])
@@ -808,7 +812,7 @@ class Table extends Component {
 Table.config = {
   currentPageName: 'current',
   pageSizeName: 'pageSize',
-  pageSize: 2,
+  pageSize: 10,
   host: ''
 }
 
