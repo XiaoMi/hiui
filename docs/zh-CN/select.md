@@ -29,6 +29,7 @@ render () {
 		<div>
 			<Select
 				mode='single'
+				clearable={false}
 				style={{width: '200px'}}
 				list={this.state.singleList}
 				value={this.state.value}
@@ -263,6 +264,7 @@ render () {
 | origin | 异步选择配置，详见下表 | object | - | - |
 | value | 默认值被选中项，值与被选中的id相同，多个以,分割或者传递数组| string,number,array | - | - |
 | searchable | 是否可以筛选 | bool | true, false | false |
+| clearable | 是否可以清空 | bool | true, false | true |
 | autoload | origin从远端获取数据，初始时是否自动加载 | bool | true, false | false |
 | disabled | 禁用该下拉框 | bool | true, false | false |
 | placeholder | 提示信息 | string | - | 请选择 |

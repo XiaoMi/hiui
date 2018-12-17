@@ -73,6 +73,7 @@ $input: 'hi-input' !default;
     border: 1px solid $border-color-normal;
     box-sizing: border-box;
     border-radius: $border-radius;
+    background-color: #fff;
     transition: border-color 0.3s;
 
     &:not(.disabled):hover {

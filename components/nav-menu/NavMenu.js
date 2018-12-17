@@ -19,7 +19,7 @@ class NavMenu extends Component {
     selectedKey: 0,
     selectedSubKey: -1,
     vertical: false,
-    width: 100
+    width: '100%'
   }
   constructor (props) {
     super(props)
@@ -188,7 +188,7 @@ class NavMenu extends Component {
     const subMenCls = classNames(`${prefixCls}__sublist`, {
       'hi-navmenu__sublist--on': subMenuShow
     })
-    const _verticalStyle = vertical ? {width: width + 'px'} : {}
+    const _verticalStyle = vertical ? {width: typeof width === 'number' ? `${width}px` : width} : {}
     return (
       <div className={`${prefixCls}`}>
         <span

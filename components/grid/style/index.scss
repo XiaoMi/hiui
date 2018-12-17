@@ -1,41 +1,33 @@
-.hi-grid-row {
+@import '@hi-ui/core-css/index.scss';
+
+// Rows
+.hi-grid__row {
   position: relative;
   box-sizing: border-box;
   display: flex;
 
-  + .hi-grid-row {
+  &--gutter {
+    margin-left: $spacer-3 * -1;
+    margin-right: $spacer-3 * -1;
+  }
+
+  + .hi-grid__row {
     margin-top: 24px;
   }
 }
 
-.hi-grid-row-common {
-  box-sizing: border-box;
-}
-
-.hi-grid-row-gutter {
-  margin-left: -12px;
-  margin-right: -12px;
-}
-
 // Columns
-.hi-grid-col-common {
-  box-sizing: border-box;
-}
-
-.hi-grid-col-gutter {
-  padding: 0 12px;
+.hi-grid__col--gutter {
+  padding: 0 $spacer-3;
 }
 
 @for $i from 1 through 24 {
-  .hi-grid-col-#{$i} {
+  .hi-grid__col-#{$i} {
+    box-sizing: border-box;
     width: ($i / 24) * 100%;
-
-    @extend .hi-grid-col-common;
   }
 
-  .hi-grid-offset-#{$i} {
+  .hi-grid__offset-#{$i} {
     margin-left: ($i / 24) * 100%;
-
-    @extend .hi-grid-col-common;
   }
 }

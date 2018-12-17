@@ -9,8 +9,6 @@ import Menu from './menu'
 import Provider from '../context'
 
 class Cascader extends Component {
-  noHidePopper = false
-
   static propTypes = {
     options: PropTypes.array,
     value: PropTypes.oneOfType([
@@ -79,18 +77,24 @@ class Cascader extends Component {
   }
 
   componentDidMount () {
-    window.addEventListener('click', this.hidePopper.bind(this))
+    window.addEventListener('click', this.clickOutside.bind(this))
   }
 
   componentWillUnmount () {
-    window.removeEventListener('click', this.hidePopper.bind(this))
+    window.removeEventListener('click', this.clickOutside.bind(this))
+  }
+
+  clickOutside (e) {
+    if (ReactDOM.findDOMNode(this.inputContainer) && ReactDOM.findDOMNode(this.inputContainer).contains(e.target)) {
+      return
+    }
+    this.hidePopper()
   }
 
   hidePopper (e) {
-    !this.noHidePopper && this.setState({
+    this.setState({
       popperShow: false
     })
-    this.noHidePopper = false
   }
 
   showPopper () {
@@ -278,8 +282,6 @@ class Cascader extends Component {
   }
 
   handleClick (e) {
-    this.noHidePopper = ReactDOM.findDOMNode(this.inputContainer).contains(e.target)
-
     // e.stopPropagation()
     if (!this.props.disabled) {
       this.showPopper()
