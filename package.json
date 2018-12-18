@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "1.2.0-beta.3",
+  "version": "1.2.0-beta.4",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
