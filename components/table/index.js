@@ -498,7 +498,6 @@ class Table extends Component {
             <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}}
               onClick={(e) => {
                 let {columnMenu} = this.state
-                console.log(columnMenu)
                 this.setState({columnMenu: !columnMenu})
               }} />
             {
@@ -687,7 +686,6 @@ class Table extends Component {
                 } else {
                   selectedRowKeys.splice(0, selectedRowKeys.length)
                 }
-                console.log(checked, 'top-check', selectedRowKeys, data, this.state.dataSource.filter(record => !getCheckboxProps(record).disabled))
                 onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record[dataName])))
               }}
             />
@@ -703,7 +701,6 @@ class Table extends Component {
               checked={selectedRowKeys.includes(record[dataName])}
               disabled={getCheckboxProps(record).disabled}
               onChange={(e, checked) => {
-                console.log(getCheckboxProps, getCheckboxProps(record), 'get-disabled')
                 let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
                 if (checked) {
                   selectedRowKeys.push(record[dataName])
@@ -846,7 +843,6 @@ class Table extends Component {
   }
 
   componentWillReceiveProps ({data, columns, width, scroll, ...props}) {
-    console.log('receive props')
     // 服务端表格
     if (props.origin) {
       props.origin.auto && this.fetch()

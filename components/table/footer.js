@@ -36,9 +36,11 @@ class Footer extends Component {
     } = this.props
     const tds = columns.map((item, index) => {
       if (item.type === 'number') {
+        let num = this.getSum(item) / dataSource.length
+
         return (
           <td>
-            {this.getSum(item) / dataSource.length}
+            {Math.round(num * 100) / 100}
           </td>
         )
       }
@@ -52,12 +54,6 @@ class Footer extends Component {
     return <tr>{tds}</tr>
   }
 
-  getAve (item) {
-    const {
-      dataSource
-    } = this.props
-    return this.getSum(item) / (dataSource.length)
-  }
   render () {
     const {
       advance,
@@ -66,8 +62,8 @@ class Footer extends Component {
 
     return (
       <React.Fragment >
-        {dataSource.length > 0 && advance.sum && this.getSumNodes()}
-        {dataSource.length > 0 && advance.avg && this.getAveNodes()}
+        {dataSource.length > 0 && advance && advance.sum && this.getSumNodes()}
+        {dataSource.length > 0 && advance && advance.avg && this.getAveNodes()}
       </React.Fragment>
     )
   }
