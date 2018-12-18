@@ -81,6 +81,7 @@ clickEvent () {
     showLoading: true
   })
   this.mockTableData().then(res => {
+    
     this.setState({
       showLoading: false, 
       list: res,
@@ -131,6 +132,55 @@ render () {
 ```
 :::
 
+
+### 接口调用
+:::demo 
+
+```js
+constructor () {
+  super()
+  this.state = {
+    open: false
+  }
+  this.el = null
+}
+
+demoEvent1 () {
+  const l = Loading.open()
+  setTimeout(() => {
+    l.close()
+  }, 3000)
+}
+demoEvent2 () {
+  const l = Loading.open({
+    target: this.el,
+    tip: '加载中...'
+  })
+  setTimeout(() => {
+    l.close()
+  }, 3000)
+}
+render () {
+  return <div>
+    <Button type="primary" onClick={this.demoEvent1.bind(this)}>整页，3秒后关闭</Button>
+    <Button type="primary" onClick={this.demoEvent2.bind(this)}>指定目标，3秒后关闭</Button>
+    <div ref={(el) => {this.el = el}} style={{margin: 20}}>
+      <Panel 
+        title={
+          <div>
+            <i className="hi-icon icon-user" style={{marginRight: '5px'}}></i>
+            我是标题
+          </div>
+        }
+      >
+        <p>Panel content</p>
+      </Panel>
+    </div>
+  </div>
+}
+```
+:::
+
 ### Loading Attributes
 
 | 参数       | 说明   |  类型  | 可选值 |默认值  |
@@ -139,3 +189,4 @@ render () {
 | tip |   自定义的旋转动画下的文字  |  string   | - | |
 | full |   是否全屏  |   bool   | - | false |
 | show |    是否显示加载动画  |  boolean   | true false | false |
+| target |     用于指令调用时,Loading 遮罩的元素，为空时将整页遮罩  |  Element、ReactElement   |  |  |
