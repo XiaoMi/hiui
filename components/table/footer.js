@@ -60,15 +60,14 @@ class Footer extends Component {
   }
   render () {
     const {
-      sum,
-      ave,
+      advance,
       dataSource
     } = this.props
 
     return (
       <React.Fragment >
-        {dataSource.length > 0 && sum && this.getSumNodes()}
-        {dataSource.length > 0 && ave && this.getAveNodes()}
+        {dataSource.length > 0 && advance.sum && this.getSumNodes()}
+        {dataSource.length > 0 && advance.avg && this.getAveNodes()}
       </React.Fragment>
     )
   }
