@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import classNames from 'classnames'
 import { format, formatValue, getAttrs, formatAmount } from './util'
 import './style/index'
 /**
@@ -61,6 +62,8 @@ class Input extends Component {
       type,
       prefix,
       suffix,
+      prepend,
+      append,
       id
     } = this.props
 
@@ -70,8 +73,14 @@ class Input extends Component {
 
     return (
       <div
-        className='hi-input__out'
+        className={classNames('hi-input__out', {'hi-input--prepend': prepend, 'hi-input--append': append})}
       >
+        {
+          prepend &&
+          <span className='hi-input__prepend'>
+            {prepend}
+          </span>
+        }
         <div
           className={`hi-input__inner${active ? ' active' : ''}${disabled ? ' disabled' : ''}`}
         >
@@ -190,6 +199,12 @@ class Input extends Component {
             )
           }
         </div>
+        {
+          append &&
+          <span className='hi-input__append'>
+            {append}
+          </span>
+        }
       </div>
     )
   }
