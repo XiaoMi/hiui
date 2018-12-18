@@ -8,7 +8,7 @@ import Checkbox from './checkbox'
 import Pagination from '../pagination'
 import Icon from '../icon'
 import './style'
-
+import loading from '../loading'
 import '../pagination/style'
 import '../icon/style'
 import {setKey, scrollTop, getStyle} from './tool'
@@ -243,6 +243,9 @@ class Table extends Component {
         pageSize = Table.config.pageSize
       } = origin
 
+      let l = loading.open({
+        target: ReactDOM.findDOMNode(this.refs.dom)
+      })
       const {
         serverPagination: {current}
       } = this.state
@@ -275,6 +278,7 @@ class Table extends Component {
           serverPagination: page
         })
         this.runMemory()
+        l.close()
       }).catch(error)
 
       // axios.request(url, {params: requestParams}).then(res => {
@@ -747,6 +751,7 @@ class Table extends Component {
       }
     } = this.props
 
+    let l = loading.open({target: ReactDOM.findDOMNode(this.refs.dom)})
     this.setState({
       loading: true
     })
@@ -780,6 +785,7 @@ class Table extends Component {
           ...columnsDetail
         })
         this.runMemory()
+        l.close()
       })
     }).catch(error)
     // axios.request(url, {params: requestParams}).then(res => {
