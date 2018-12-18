@@ -738,7 +738,13 @@ constructor (props) {
 
     this.columns = [
       {
-        width:'150px',fixed:"left",'title': '业务来源', dataIndex: 'source', serverSort: [{sort: 'desc'}, {sort: 'adesc'}]},
+        'title': '业务来源',
+        dataIndex: 'source',
+        serverSort: [{sort: 'desc'}, {sort: 'adesc'}],
+        fixed: 'left',
+        width: '150px'
+
+      },
       {'title': '运单号', dataIndex: 'id', type: 'number'},
       {'title': '包裹单号', dataIndex: 'wrapper_number', type: 'number'},
       {'title': '运输方式', dataIndex: 'trans_type'},
@@ -764,41 +770,69 @@ constructor (props) {
       from: ''
     }
 
-    this.search = this.search.bind(this)
     window.selectTable = this
-  }
-
-  search() {
-    this.refs.serverTable.fetch()
   }
 
   render () {
     const {
       from
     } = this.state
+
+    const rowSelection = {
+      selectedRowKeys: [],
+      onChange: (selectedRowKeys, rows) => {
+        console.log('onchange', selectedRowKeys, rows)
+        this.setState({selectedRowKeys})
+      },
+      dataName: 'id'
+    }
+
     return (
       <div>
         发货工厂
-        <input onChange={(e) => this.setState({from: e.target.value})} /><button onClick={this.search}>查询</button>
+       
+        <Form inline>
+          <FormItem>
+           <Input onChange={(e) => this.setState({from: e.target.value})} />
+          </FormItem>
+          <FormItem>
+          <Button onClick={(e) => {this.refs.serverTable.fetch()}}>查询</Button>
+          </FormItem>
+        </Form>
         <Table
-          sum
-          ave
+          name='server'
           auto={false}
+          scroll={{x: 1500}}
           ref={'serverTable'}
-          url={'http://10.234.9.15:7777/mock/34'}
-          params={{
-            from
+          rowSelection={rowSelection}
+          advance={{
+            sum: true,
+            avg: true
           }}
-          success={(res) => {
-            let {data: {data, page: {pageSize, totalNum, pageNum}}} = res
-            return {
-              data,
-              columns: this.columns,
-              page: {
-                pageSize,
-                total: totalNum,
-                current: pageNum
+          origin={{
+            url: 'http://10.234.9.15:7777/mock/34',
+            pageSize: '3',
+            currentPageName: 'pageNum',
+            header: '',
+            data: {
+              from,
+              startTime: '',
+              endTime: ''
+            },
+            success: (res) => {
+              let {data: {data, page: {pageSize, totalNum, pageNum}}} = res
+              return {
+                data,
+                columns: this.columns,
+                page: {
+                  pageSize,
+                  total: totalNum,
+                  current: pageNum
+                }
               }
+            },
+            error: () => {
+
             }
           }}
         />

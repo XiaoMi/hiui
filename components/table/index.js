@@ -8,7 +8,7 @@ import Checkbox from './checkbox'
 import Pagination from '../pagination'
 import Icon from '../icon'
 import './style'
-
+import loading from '../loading'
 import '../pagination/style'
 import '../icon/style'
 import {setKey, scrollTop, getStyle} from './tool'
@@ -37,8 +37,7 @@ class Table extends Component {
     id: PropTypes.string,
     footer: PropTypes.func,
     emptyText: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-    scroll: PropTypes.object,
-    axios: PropTypes.func
+    scroll: PropTypes.object
   }
 
   static defaultProps = {
@@ -54,8 +53,7 @@ class Table extends Component {
     showHeader: true,
     scroll: {x: undefined, y: undefined},
     rowRef: () => null,
-    emptyText: () => 'No Data',
-    axios
+    emptyText: () => 'No Data'
   }
   constructor (props) {
     super(props)
@@ -232,23 +230,45 @@ class Table extends Component {
 
     fetch: (extra) => {
       extra = extra || {}
+      const {origin} = this.props
       const {
+        data,
         url,
-        params,
-        success,
-        axios
-      } = this.props
+        header,
+        type = 'GET',
+        success = (res) => {},
+        error = () => {},
+        currentPageName = Table.config.currentPageName,
+        pageSizeName = Table.config.pageSizeName,
+        pageSize = Table.config.pageSize
+      } = origin
 
+      let l = loading.open({
+        target: ReactDOM.findDOMNode(this.refs.dom)
+      })
       const {
         serverPagination: {current}
       } = this.state
       let requestParams = {
-        ...params,
+        ...data,
         ...extra
       }
-      requestParams[Table.config.currentPageName] = current
-      requestParams[Table.config.pageSizeName] = Table.config.pageSize
-      axios.request(url, {params: requestParams}).then(res => {
+      requestParams[currentPageName] = current
+      requestParams[pageSizeName] = pageSize
+
+      let options = {
+        url,
+        method: ['GET', 'get'].includes(type) ? 'GET' : 'POST'
+      }
+      if (options.method === 'GET') {
+        options.params = requestParams
+      } else {
+        options.data = requestParams
+      }
+      if (header) {
+        options.header = header
+      }
+      axios.request(options).then(res => {
         let {data, columns, page} = success(res)
         let columnsDetail = this.setColumnsDetail(null, null, columns)
         this.setState({
@@ -258,7 +278,12 @@ class Table extends Component {
           serverPagination: page
         })
         this.runMemory()
-      })
+        l.close()
+      }).catch(error)
+
+      // axios.request(url, {params: requestParams}).then(res => {
+      //
+      // })
     }
   }
 
@@ -477,7 +502,6 @@ class Table extends Component {
             <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}}
               onClick={(e) => {
                 let {columnMenu} = this.state
-                console.log(columnMenu)
                 this.setState({columnMenu: !columnMenu})
               }} />
             {
@@ -666,7 +690,6 @@ class Table extends Component {
                 } else {
                   selectedRowKeys.splice(0, selectedRowKeys.length)
                 }
-                console.log(checked, 'top-check', selectedRowKeys, data, this.state.dataSource.filter(record => !getCheckboxProps(record).disabled))
                 onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record[dataName])))
               }}
             />
@@ -682,7 +705,6 @@ class Table extends Component {
               checked={selectedRowKeys.includes(record[dataName])}
               disabled={getCheckboxProps(record).disabled}
               onChange={(e, checked) => {
-                console.log(getCheckboxProps, getCheckboxProps(record), 'get-disabled')
                 let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
                 if (checked) {
                   selectedRowKeys.push(record[dataName])
@@ -715,29 +737,43 @@ class Table extends Component {
   }
 
   fetch () {
+    // noinspection JSAnnotator
     const {
-      url,
-      params,
-      axios
+      origin: {
+        data,
+        url,
+        header,
+        type = 'GET',
+        success = (res) => {},
+        error = () => {},
+        pageSize = Table.config.pageSize,
+        pageSizeName = Table.config.pageSizeName
+      }
     } = this.props
 
-    if (!url) {
-      return
-    }
-
-    const {
-      success
-    } = this.props
+    let l = loading.open({target: ReactDOM.findDOMNode(this.refs.dom)})
     this.setState({
       loading: true
     })
     let requestParams = {
-      ...params
+      ...data
     }
-    requestParams[Table.config.pageSizeName] = Table.config.pageSize
-    axios.request(url, {params: requestParams}).then(res => {
-      let {data, columns, page} = success(res)
+    requestParams[pageSizeName] = pageSize
+    let options = {
+      method: ['GET', 'get'].includes(type) ? 'GET' : 'POST',
+      url
+    }
+    if (options.method === 'GET') {
+      options.params = requestParams
+    } else {
+      options.data = requestParams
+    }
+    if (header) {
+      options.header = header
+    }
 
+    axios(options).then(res => {
+      let {data, columns, page} = success(res)
       this.setState({
         dataSource: data,
         loading: false,
@@ -749,12 +785,29 @@ class Table extends Component {
           ...columnsDetail
         })
         this.runMemory()
+        l.close()
       })
-    })
+    }).catch(error)
+    // axios.request(url, {params: requestParams}).then(res => {
+    //   let {data, columns, page} = success(res)
+    //
+    //   this.setState({
+    //     dataSource: data,
+    //     loading: false,
+    //     serverPagination: page
+    //   })
+    //   setTimeout((e) => {
+    //     let columnsDetail = this.setColumnsDetail(null, null, columns)
+    //     this.setState({
+    //       ...columnsDetail
+    //     })
+    //     this.runMemory()
+    //   })
+    // })
   }
 
   componentDidMount () {
-    let {fixTop, scroll, name} = this.props
+    let {fixTop, scroll, name, origin} = this.props
 
     let dom = ReactDOM.findDOMNode(this.refs['dom'])
     let thead = dom.querySelectorAll('thead')
@@ -788,15 +841,17 @@ class Table extends Component {
     }
     setTimeout(() => {
       this.runMemory()
-      this.fetch()
+
+      if (origin) {
+        this.fetch()
+      }
     }, 0)
   }
 
   componentWillReceiveProps ({data, columns, width, scroll, ...props}) {
-    console.log('receive props')
     // 服务端表格
-    if (props.url) {
-      props.auto && this.fetch()
+    if (props.origin) {
+      props.origin.auto && this.fetch()
     } else {
       data = setKey(data, 'id')
       // 只有dataSource,columns重造
