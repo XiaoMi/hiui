@@ -75,7 +75,7 @@ class Input extends Component {
       <div
         className={classNames('hi-input__out', {'hi-input--prepend': prepend, 'hi-input--append': append})}
       >
-        {
+        { // 前置元素
           prepend &&
           <span className='hi-input__prepend'>
             {prepend}
@@ -199,7 +199,7 @@ class Input extends Component {
             )
           }
         </div>
-        {
+        { // 后置元素
           append &&
           <span className='hi-input__append'>
             {append}
