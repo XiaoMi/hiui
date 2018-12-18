@@ -41,11 +41,14 @@ export default class Popper extends Component {
       left: 0,
       top: 0
     }
-    while (ele && ele !== document.body) {
-      offset.top += ele.offsetTop - ele.scrollTop
-      offset.left += ele.offsetLeft - ele.scrollLeft
-      ele = ele.offsetParent
-    }
+    const rect = ele.getBoundingClientRect()
+    offset.top += rect.y + (document.documentElement.scrollTop || document.body.scrollTop)
+    offset.left += rect.x + (document.documentElement.scrollLeft || document.body.scrollLeft)
+    // while (ele && ele !== document.body) {
+    //   offset.top += ele.offsetTop - ele.scrollTop
+    //   offset.left += ele.offsetLeft - ele.scrollLeft
+    //   ele = ele.offsetParent
+    // }
 
     return offset
   }
