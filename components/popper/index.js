@@ -11,17 +11,21 @@ export default class Popper extends Component {
     // attachEle: PropTypes.oneOfType([
     //   PropTypes.node
     // ]).isRequired,
+    width: PropTypes.string,
     className: PropTypes.string,
     show: PropTypes.bool,
-    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     topGap: PropTypes.number,
-    leftGap: PropTypes.number
+    leftGap: PropTypes.number,
+    zIndex: PropTypes.number,
+    placement: PropTypes.oneOf(['bottom', 'bottom-left', 'top', 'left', 'right'])
   }
 
   static defaultProps = {
     show: false,
     topGap: 2,
-    leftGap: 0
+    leftGap: 0,
+    zIndex: 1060,
+    placement: 'bottom-left'
   }
 
   componentDidUpdate () {
@@ -36,21 +40,49 @@ export default class Popper extends Component {
     document.body.removeChild(this.container)
   }
 
-  getOffset (ele) {
-    let offset = {
-      left: 0,
-      top: 0
-    }
-    const rect = ele.getBoundingClientRect()
-    offset.top += rect.y + (document.documentElement.scrollTop || document.body.scrollTop)
-    offset.left += rect.x + (document.documentElement.scrollLeft || document.body.scrollLeft)
-    // while (ele && ele !== document.body) {
-    //   offset.top += ele.offsetTop - ele.scrollTop
-    //   offset.left += ele.offsetLeft - ele.scrollLeft
-    //   ele = ele.offsetParent
-    // }
+  getOffset () {
+    let {
+      attachEle,
+      topGap,
+      leftGap,
+      width,
+      placement
+    } = this.props
+    const rect = attachEle.getBoundingClientRect()
+    let top = rect.y + (document.documentElement.scrollTop || document.body.scrollTop)
+    let left = rect.x + (document.documentElement.scrollLeft || document.body.scrollLeft)
+    width = width === undefined ? rect.width : width
 
-    return offset
+    switch (placement) {
+      case 'bottom':
+        top = top + topGap + rect.height
+        left = left + rect.width / 2
+        break
+      case 'bottom-left':
+        top = top + topGap + rect.height
+        break
+
+      case 'top':
+        top = top - topGap
+        left = left + rect.width / 2
+        break
+
+      case 'left':
+        top = top + rect.height / 2
+        left = left + leftGap
+        break
+
+      case 'right':
+        top = top + rect.height / 2
+        left = left + rect.width + leftGap
+        break
+    }
+
+    return {
+      width,
+      top,
+      left
+    }
   }
 
   renderChildren () {
@@ -58,21 +90,22 @@ export default class Popper extends Component {
       children,
       className,
       show,
-      attachEle,
-      topGap,
-      leftGap,
-      width
+      zIndex,
+      placement
     } = this.props
-    width = width !== undefined ? width : attachEle.offsetWidth
-    const height = attachEle.offsetHeight
-    const offset = this.getOffset(attachEle)
-    const left = offset.left + leftGap + 'px'
-    const top = offset.top + topGap + height + 'px'
-    window.attachEle = attachEle
+    const offset = this.getOffset()
+    let width = offset.width
+    let left = offset.left + 'px'
+    let top = offset.top + 'px'
 
     return (
-      <div className={classNames(className, 'hi-popper__container', {'hi-popper__container--hide': !show})} style={{left, top, width}}>
-        { children }
+      <div
+        className={classNames('hi-popper__container', {'hi-popper__container--hide': !show})}
+        style={{left, top, zIndex}}
+      >
+        <div className={classNames(className, 'hi-popper__content', `hi-popper__content--${placement}`)} style={{width}}>
+          { children }
+        </div>
       </div>
     )
   }
