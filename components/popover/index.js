@@ -125,7 +125,7 @@ export default class Popover extends Component {
           show={showPopper}
           attachEle={this.popoverContainer}
           placement={placement}
-          zIndex={1030}
+          zIndex={1040}
           width={width}
         >
           <div ref='popper' className={classNames('hi-popover-base', `hi-popover-${placement}`)}>
