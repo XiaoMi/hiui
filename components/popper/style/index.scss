@@ -5,4 +5,30 @@
   &--hide {
     display: none !important;
   }
+  .hi-popper__content {
+    position: absolute;
+    &--top {
+      bottom: 0px;
+      // left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &--right {
+      // left: 100%;
+      // top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &--bottom {
+      // top: 100%;
+      // left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &--left {
+      right: 0px;
+      // top: 50%;
+      transform: translateY(-50%);
+    }
+  }
 }

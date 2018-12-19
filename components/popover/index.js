@@ -2,19 +2,24 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
+import Popper from '../popper'
 import './style/index'
 
 export default class Popover extends Component {
+  unbindHover = true
+
   static defaultProps = {
     trigger: 'click',
-    placement: 'top'
+    placement: 'top',
+    width: 'auto'
   }
 
   static propTypes = {
     placement: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
     trigger: PropTypes.oneOf(['click', 'focus', 'hover']),
     title: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-    content: PropTypes.oneOfType([PropTypes.node, PropTypes.string])
+    content: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+    width: PropTypes.string
   }
 
   constructor (props) {
@@ -54,7 +59,6 @@ export default class Popover extends Component {
 
   componentDidMount () {
     const { trigger } = this.props
-    const popper = this.refs.popper
 
     this.element = ReactDOM.findDOMNode(this)
     this.reference = ReactDOM.findDOMNode(this.refs.reference)
@@ -84,7 +88,18 @@ export default class Popover extends Component {
       this.reference.addEventListener('mouseleave', e => {
         this.delayHidePopper(e)
       })
+    } else {
+      this.reference.addEventListener('focus', this.showPopper.bind(this))
+      this.reference.addEventListener('blur', this.hidePopper.bind(this))
+    }
+  }
 
+  componentDidUpdate () {
+    const { trigger } = this.props
+    const popper = this.refs.popper
+
+    if (popper && trigger === 'hover' && this.unbindHover) {
+      this.unbindHover = false
       popper.addEventListener('mouseenter', e => {
         this.eventTarget = e.target
         // this.showPopper()
@@ -92,27 +107,34 @@ export default class Popover extends Component {
       popper.addEventListener('mouseleave', e => {
         this.delayHidePopper(e)
       })
-    } else {
-      this.reference.addEventListener('focus', this.showPopper.bind(this))
-      this.reference.addEventListener('blur', this.hidePopper.bind(this))
     }
   }
 
   render () {
-    const { style, className, title, content, placement } = this.props
+    const { style, className, title, content, placement, width } = this.props
     const {
       showPopper
     } = this.state
 
     return (
-      <div className={classNames(className, 'hi-popover')} style={style}>
-        <div ref='popper' className={classNames('hi-popover-base', `hi-popover-${placement}`, {'hi-popover-show': showPopper})}>
-          { title && <div className='hi-popover__title'>{title}</div> }
-          <div className='hi-popover__content'>
-            { content }
-          </div>
-        </div>
+      <div className={classNames(className, 'hi-popover')} style={style} ref={node => { this.popoverContainer = node }}>
         { React.cloneElement(React.Children.only(this.props.children), { ref: 'reference', tabIndex: '0' }) }
+
+        <Popper
+          className='hi-popover__popper'
+          show={showPopper}
+          attachEle={this.popoverContainer}
+          placement={placement}
+          zIndex={1030}
+          width={width}
+        >
+          <div ref='popper' className={classNames('hi-popover-base', `hi-popover-${placement}`)}>
+            { title && <div className='hi-popover__title'>{title}</div> }
+            <div className='hi-popover__content'>
+              { content }
+            </div>
+          </div>
+        </Popper>
       </div>
     )
   }
