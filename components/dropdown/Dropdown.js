@@ -3,19 +3,16 @@ import PropTypes from 'prop-types'
 import clickOutside from 'react-click-outside'
 import classNames from 'classnames'
 import Button from '../button/index'
+import Popper from '../popper'
 import Provider from '../context'
 class Dropdown extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      visible: false,
-      listStyle: {
-        top: '100%'
-      }
+      visible: false
     }
   }
   MENUTITLE = null
-  LISTEL = null
   static propTypes = {
     trigger: PropTypes.oneOfType([
       PropTypes.oneOf(['contextmenu', 'click']),
@@ -62,18 +59,6 @@ class Dropdown extends Component {
     e && e.preventDefault()
     this.setState({
       visible: !this.state.visible
-    }, () => {
-      const ch = document.documentElement.clientHeight
-      const mt = this.MENUTITLE.getBoundingClientRect().top
-      const eh = this.LISTEL.offsetHeight
-      // console.log(1, ch, mt, eh)
-      const o = {top: '100%'}
-      if (ch - mt - eh - 32 < 0) {
-        o.top = -this.LISTEL.offsetHeight - 4
-      }
-      this.setState({
-        listStyle: o
-      })
     })
   }
 
@@ -118,36 +103,39 @@ class Dropdown extends Component {
     // splitButton，disabled
     const {list, width, prefix, suffix, theme, title} = this.props
     const {visible} = this.state
-    const ulCls = classNames('hi-dropdown__menu', !visible && 'hi-dropdown__menu--hide')
+    const ulCls = classNames('hi-dropdown__menu')
     return (
       <div className={`hi-dropdown theme__${theme}`} ref={el => { this.MENUTITLE = el }} style={{width: width}}>
         {this.renderTitle()}
-        <ul
-          className={ulCls}
-          ref={el => { this.LISTEL = el }}
-          style={this.state.listStyle}
+        <Popper
+          className='hi-dropdown__popper'
+          show={visible}
+          attachEle={this.MENUTITLE}
+          zIndex={1060}
         >
-          {
-            list.map((item, index) => {
-              if (item.title === '-') {
-                // 分隔线
-                return <li className='hi-dropdown__divider' key={index} />
-              }
+          <ul className={ulCls}>
+            {
+              list.map((item, index) => {
+                if (item.title === '-') {
+                  // 分隔线
+                  return <li className='hi-dropdown__divider' key={index} />
+                }
 
-              const liCls = classNames(
-                'hi-dropdown__item',
-                item.disabled && 'hi-dropdown__item--disabled',
-                String(item.title) === String(title) && 'hi-dropdown__item--active'
-              )
+                const liCls = classNames(
+                  'hi-dropdown__item',
+                  item.disabled && 'hi-dropdown__item--disabled',
+                  String(item.title) === String(title) && 'hi-dropdown__item--active'
+                )
 
-              return <li className={liCls} key={index} onClick={this.handlerClick.bind(this, item)}>
-                {(prefix || item.prefix) && <div className='hi-dropdown__item-prefix'>{prefix || item.prefix}</div>}
-                <div className='hi-dropdown__item-title' title={item.title}>{item.title}</div>
-                {(suffix || item.suffix) && <div className='hi-dropdown__item-suffix'>{suffix || item.suffix}</div>}
-              </li>
-            })
-          }
-        </ul>
+                return <li className={liCls} key={index} onClick={this.handlerClick.bind(this, item)}>
+                  {(prefix || item.prefix) && <div className='hi-dropdown__item-prefix'>{prefix || item.prefix}</div>}
+                  <div className='hi-dropdown__item-title' title={item.title}>{item.title}</div>
+                  {(suffix || item.suffix) && <div className='hi-dropdown__item-suffix'>{suffix || item.suffix}</div>}
+                </li>
+              })
+            }
+          </ul>
+        </Popper>
       </div>
     )
   }
