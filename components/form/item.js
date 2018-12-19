@@ -5,9 +5,7 @@ import PropTypes from 'prop-types'
 
 class FormItem extends Component {
   static defaultProps = {
-    prefixCls: 'hi',
-    size: 'small',
-    name: 'form-item'
+    size: 'small'
   }
 
   constructor (props, context) {
@@ -45,35 +43,12 @@ class FormItem extends Component {
     }
   }
 
-  labelStyle () {
-    const obj = {}
-
-    if (this.parent.props.labelPosition === 'top') return obj
-
-    const labelWidth = this.props.labelWidth || this.parent.props.labelWidth
-    if (labelWidth) {
-      obj.width = parseInt(labelWidth)
-    }
-    return obj
-  }
-
-  contentStyle () {
-    const obj = {}
-
-    if (this.parent.props.labelPosition === 'top') return obj
-
-    const labelWidth = this.props.labelWidth || this.parent.props.labelWidth
-    if (labelWidth) {
-      obj.marginLeft = parseInt(labelWidth)
-    }
-    return obj
-  }
-
   getRules () {
     let formRules = this.parent.props.rules
     let selfRules = this.props.rules
 
     formRules = formRules ? formRules[this.props.prop] : []
+
     return [].concat(selfRules || formRules || [])
   }
 
@@ -156,26 +131,31 @@ class FormItem extends Component {
     })
   }
 
+  get labelWidth () {
+    const labelWidth = this.props.labelWidth || this.parent.props.labelWidth
+
+    return this.parent.props.labelPosition === 'top' ? false : labelWidth && parseInt(labelWidth)
+  }
+
   render () {
-    const {prefixCls, name, children, label, required} = this.props
+    const {children, label, required, className} = this.props
     const {error, validating} = this.state
 
     const obj = {}
-    obj[prefixCls + '-' + name] = true
-    obj['is-error'] = error !== ''
-    obj['is-validating'] = validating
-    obj['is-required'] = this.isRequired() || required
+    obj['hi-form-item--error'] = error !== ''
+    obj['hi-form-item--validating'] = validating
+    obj['hi-form-item--required'] = this.isRequired() || required
 
     return (
-      <div className={classNames(obj)} onBlur={this.handleFieldBlur.bind(this)} onChange={this.handleFieldChange.bind(this)}>
+      <div className={classNames('hi-form-item', className, obj)} onBlur={this.handleFieldBlur.bind(this)} onChange={this.handleFieldChange.bind(this)}>
         {
           label && (
-            <label className={prefixCls + '-' + name + '_label'} style={this.labelStyle()}>
+            <label className={'hi-form-item' + '__label'} style={{ 'width': this.labelWidth }}>
               {label}
             </label>
           )
         }
-        <div className={prefixCls + '-' + name + '__content'} style={this.contentStyle()}>
+        <div className={'hi-form-item' + '__content'} style={{ 'marginLeft': this.labelWidth }}>
           {children}
           { error && <div className='hi-form-item__error'>{error}</div> }
         </div>

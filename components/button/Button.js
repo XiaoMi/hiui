@@ -23,7 +23,6 @@ class Button extends Component {
   }
 
   static defaultProps = {
-    prefixCls: 'hi-btn',
     type: 'default',
     disabled: false,
     appearance: 'button',
@@ -42,7 +41,6 @@ class Button extends Component {
       disabled,
       className,
       size,
-      prefixCls,
       appearance,
       style,
       title,
@@ -52,16 +50,16 @@ class Button extends Component {
     } = this.props
     const classes = classNames(
       'theme__' + theme,
-      `${prefixCls}`,
+      `hi-btn`,
       className && `${className}`,
-      appearance && `${prefixCls}--appearance--${appearance}`,
-      size && `${prefixCls}--size--${size}`,
-      disabled && `${prefixCls}--disabled`,
+      appearance && `hi-btn--appearance--${appearance}`,
+      size && `hi-btn--size--${size}`,
+      disabled && `hi-btn--disabled`,
 
       // For version < 1.1.0
       (type === 'primary' && appearance === 'line')
-        ? `${prefixCls}--type--line`
-        : `${prefixCls}--type--${type}`
+        ? `hi-btn--type--line`
+        : `hi-btn--type--${type}`
     )
 
     const disabledBool = !!disabled
