@@ -15,13 +15,15 @@ export default class Popper extends Component {
     show: PropTypes.bool,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     topGap: PropTypes.number,
-    leftGap: PropTypes.number
+    leftGap: PropTypes.number,
+    zIndex: PropTypes.number
   }
 
   static defaultProps = {
     show: false,
     topGap: 2,
-    leftGap: 0
+    leftGap: 0,
+    zIndex: 1060
   }
 
   componentDidUpdate () {
@@ -61,7 +63,8 @@ export default class Popper extends Component {
       attachEle,
       topGap,
       leftGap,
-      width
+      width,
+      zIndex
     } = this.props
     width = width !== undefined ? width : attachEle.offsetWidth
     const height = attachEle.offsetHeight
@@ -71,7 +74,7 @@ export default class Popper extends Component {
     window.attachEle = attachEle
 
     return (
-      <div className={classNames(className, 'hi-popper__container', {'hi-popper__container--hide': !show})} style={{left, top, width}}>
+      <div className={classNames(className, 'hi-popper__container', {'hi-popper__container--hide': !show})} style={{left, top, width, zIndex}}>
         { children }
       </div>
     )
