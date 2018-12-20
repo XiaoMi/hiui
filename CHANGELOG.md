@@ -12,8 +12,10 @@
 - 新增：`<Button />` 组件增加图标设置；
 - 新增：`<Table />` 组件支持外部设置、求和等操作；
 - 新增：`<Input />` 组件增加支持前、后缀元素。
+- 修改：修改 `<Layout />` 为 `<Grid />`；
 - 修改：优化 `<Form />` 组件结构；
 - 修改：优化 `<Modal />` 组件结构；
+- 修改：优化 `<Grid />` 组件结构；
 - 修改：修改 `<Popover />`、`<Dropdown />`、`<Tooltip />` 组件挂载到 `<body>` 下；
 - 修改：修改 `<Popover />`、`<Dropdown />`、`<Tooltip />`、`<Cascader />`、`<Select />` 组件定位问题；
 - 修改：重新设定所有浮层组件 z-index。
