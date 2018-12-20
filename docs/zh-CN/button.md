@@ -24,6 +24,10 @@ render() {
           <Button type="default">默认按钮</Button>
           <Button type="primary">确认</Button>
           <Button type="line">取消</Button>
+          <Button type="primary" icon="plus"></Button>
+          <Button type="line" icon="download"></Button>
+          <Button type="primary" size="large" icon="plus"></Button>
+          <Button type="line" size="large" icon="download"></Button>
 
         </Col>
       </Row>
@@ -72,9 +76,10 @@ render() {
 
 :::demo
 
-按钮可设置大小。
+按钮可设置大小及内部图标。
 
-- 尺寸：可设置为 `large`、`small`，默认为 `default`。
+- 尺寸：可设置为 `large`、`small`，默认为 `default`；
+- 图标：可设置为内部 Icon。
 
 ```js
 render() {
@@ -87,6 +92,8 @@ render() {
       <Button type="primary" size="normal" disabled>默认</Button>
       <Button type="primary" size="small">小号</Button>
       <Button type="primary" size="small" disabled>小号</Button>
+      <Button type="primary" icon="plus" />
+      <Button type="line" icon="download" />
 
     </div>
   )
@@ -167,6 +174,7 @@ render() {
 | type | 设置按钮类型 | string | primary，line, success，danger, default | default |
 | appearance | 按钮显示类型（按钮或链接）  | string  | button, link | button |
 | size | 设置按钮大小 | string | large, normal, small | normal |
+| icon | 设置按钮图标，设置后忽略子元素只渲染对应图标 | string | 详见 `<Icon />` 组件 | - |
 | className | 自定义class | string | - | - |
 
 ### Button Events
