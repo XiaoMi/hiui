@@ -1,5 +1,4 @@
-@import '../../style/index.scss';
-$nav-menu: 'hi-navmenu' !default;
+@import '@hi-ui/core-css/index.scss';
 
 .hi-navmenu {
   position: relative;
@@ -26,6 +25,8 @@ $nav-menu: 'hi-navmenu' !default;
       .hi-navmenu__item {
         margin-right: 0 !important;
         display: block !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
 
         &.on {
           color: #4284f5;
