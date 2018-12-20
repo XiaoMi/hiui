@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import ClickOutside from './clickOuterside'
 import TableContent from './tableContent'
@@ -60,6 +59,11 @@ class Table extends Component {
     // 只有dataSource,columns重造
     let {data = [], scroll} = props
     data = setKey(data, 'id')
+    this.dom = React.createRef()
+    this.fixLeft = React.createRef()
+    this.fixRight = React.createRef()
+    this.fixRight = React.createRef()
+    this.setting = React.createRef()
     this.state = {
       dataSource: data,
       highlightCols: [],
@@ -244,7 +248,7 @@ class Table extends Component {
       } = origin
 
       let l = loading.open({
-        target: ReactDOM.findDOMNode(this.refs.dom)
+        target: this.dom.current
       })
       const {
         serverPagination: {current}
@@ -290,14 +294,13 @@ class Table extends Component {
   getScrollXContent () {
     let scrollTable
     let {dataSource, highlightCols, columns, headerColumns, leftFiexColumns, rightFixColumns} = this.state
-    let that = this
     let {scroll} = this.state
     let {style = {}, ...props} = this.props
-    let handleScroll = function (e) {
+    let handleScroll = (e) => {
       let onLeft = e.target.scrollLeft === 0
       let onRight = Math.abs(e.target.scrollWidth - e.target.scrollLeft - parseInt(getStyle(e.target, 'width'))) < 2
-      let left = that.refs['fix-left']
-      let right = that.refs['fix-right']
+      let left = this.fixLeft.current
+      let right = this.fixRight.current
       if (left) {
         if (onLeft) {
           left.style.display = 'none'
@@ -331,7 +334,7 @@ class Table extends Component {
 
       if (leftFiexColumns.length > 0) {
         scrollTable.push(
-          <div className={prifix('table-fixed-left')} ref={'fix-left'} style={{display: 'none'}} key='left'>
+          <div className={prifix('table-fixed-left')} ref={this.fixLeft} style={{display: 'none'}} key='left'>
             <div className={prifix('table-outer')}>
               <div className={prifix('table-inner')}>
                 <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: leftFiexColumns}, {dataSource, highlightCols}, {cbs: this.cbs})} />
@@ -343,7 +346,7 @@ class Table extends Component {
 
       if (rightFixColumns.length > 0) {
         scrollTable.push(
-          <div className={prifix('table-fixed-right')} ref={'fix-right'} key='right'>
+          <div className={prifix('table-fixed-right')} ref={this.fixRight} key='right'>
             <div className={prifix('table-outer')}>
               <div className={prifix('table-inner')}>
                 <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: rightFixColumns}, {dataSource, highlightCols}, {cbs: this.cbs})} />
@@ -410,9 +413,9 @@ class Table extends Component {
   }
 
   componentDidUpdate () {
-    let leftFixTable = this.refs.dom.querySelectorAll('.hi-table-fixed-left table tr')
-    let rightFixTable = this.refs.dom.querySelectorAll('.hi-table-fixed-right table tr')
-    let scrollTable = this.refs.dom.querySelectorAll('.hi-table-scroll table tr')
+    let leftFixTable = this.dom.current.querySelectorAll('.hi-table-fixed-left table tr')
+    let rightFixTable = this.dom.current.querySelectorAll('.hi-table-fixed-right table tr')
+    let scrollTable = this.dom.current.querySelectorAll('.hi-table-scroll table tr')
 
     // if(fixTable && scrollTable){
     //   console.log(fixTable,scrollTable,'fix-scroll')
@@ -460,7 +463,7 @@ class Table extends Component {
     let {columns} = this.state
 
     return (
-      <div className={prifix('table', size)} ref={'dom'}>
+      <div className={prifix('table', size)} ref={this.dom}>
         {
           loading && ' '
         }
@@ -498,7 +501,7 @@ class Table extends Component {
           }
         </div>
         { name &&
-          <div className={prifix('table-setting')} ref={'setting'}>
+          <div className={prifix('table-setting')} ref={this.setting}>
             <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}}
               onClick={(e) => {
                 let {columnMenu} = this.state
@@ -548,7 +551,8 @@ class Table extends Component {
     } else {
       fixTop = parseFloat(fixTop)
     }
-    let dom = ReactDOM.findDOMNode(this.refs['dom'])
+    let dom = this.dom
+    console.log(this.dom.current, 'this.dom')
     let thead = dom.querySelectorAll('thead')
     if (scrollTop() + fixTop > dom.offsetTop && scrollTop() + fixTop < dom.offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(getStyle(thead[0], 'height'))) {
       thead.forEach(th => {
@@ -556,14 +560,14 @@ class Table extends Component {
         let h = (dom.offsetTop - scrollTop() - fixTop) * -1
         th.style.transform = `translate(0,${h}px)`
         if (name) {
-          this.refs.setting.style.transform = `translate(0,${h}px)`
+          this.setting.current.style.transform = `translate(0,${h}px)`
         }
       })
     } else {
       thead.forEach(th => {
         th.style.transform = `translate(0,0)`
         if (name) {
-          this.refs.setting.style.transform = `translate(0,0)`
+          this.setting.current.style.transform = `translate(0,0)`
         }
       })
     }
@@ -751,7 +755,7 @@ class Table extends Component {
       }
     } = this.props
 
-    let l = loading.open({target: ReactDOM.findDOMNode(this.refs.dom)})
+    let l = loading.open({target: this.dom.current})
     this.setState({
       loading: true
     })
@@ -808,8 +812,8 @@ class Table extends Component {
 
   componentDidMount () {
     let {fixTop, scroll, name, origin} = this.props
-
-    let dom = ReactDOM.findDOMNode(this.refs['dom'])
+    console.log(this.dom)
+    let dom = this.dom.current
     let thead = dom.querySelectorAll('thead')
     if (fixTop) {
       // 吸顶逻辑
@@ -820,11 +824,11 @@ class Table extends Component {
 
     // 如果有列冻结的配置
     if (scroll.x) {
-      let dom = ReactDOM.findDOMNode(this.refs['dom'])
+      let dom = this.dom.current
       // 如果表格本身太宽超过列冻结配置的话，右边的列冻结就取消
       if (parseInt(getStyle(dom, 'width')) > scroll.x) {
-        if (this.refs['fix-right']) {
-          this.refs['fix-right'].style.display = 'none'
+        if (this.fixRight.current) {
+          this.fixRight.current.style.display = 'none'
         }
       }
     }
@@ -836,8 +840,8 @@ class Table extends Component {
 
     // 操作记忆设置
     if (name) {
-      this.refs.setting.style.lineHeight = parseInt(getStyle(thead[0], 'height')) - 10 + 'px'
-      this.refs.setting.style.marginTop = '5px'
+      this.setting.current.style.lineHeight = parseInt(getStyle(thead[0], 'height')) - 10 + 'px'
+      this.setting.current.style.marginTop = '5px'
     }
     setTimeout(() => {
       this.runMemory()
