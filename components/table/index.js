@@ -551,7 +551,7 @@ class Table extends Component {
     } else {
       fixTop = parseFloat(fixTop)
     }
-    let dom = this.dom
+    let dom = this.dom.current
     console.log(this.dom.current, 'this.dom')
     let thead = dom.querySelectorAll('thead')
     if (scrollTop() + fixTop > dom.offsetTop && scrollTop() + fixTop < dom.offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(getStyle(thead[0], 'height'))) {
