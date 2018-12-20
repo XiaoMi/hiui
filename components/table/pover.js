@@ -54,15 +54,6 @@ class Pover extends Component {
       </div>
     )
   }
-
-  componentDidMount () {
-    // this.refs.slot.style.position = 'absolute'
-    // this.refs.slot.style.left = '0'
-    // this.refs.slot.style.top = '0'
-    // this.refs.slot.style.width = 'auto'
-    // this.refs.slot.style.position = 'absolute'
-    // this.refs.slot.style.position = 'absolute'
-  }
 }
 
 export default ({ target, title, onOk, action = false }) => {

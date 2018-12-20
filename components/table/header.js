@@ -120,7 +120,7 @@ export default class Header extends Component {
     }
 
     return (
-      <thead className={prifix('table-thead')} ref={'header'}>
+      <thead className={prifix('table-thead')}>
         {nodes}
       </thead>
     )
@@ -128,7 +128,6 @@ export default class Header extends Component {
 
   contextMenu = (e, key) => {
     e.preventDefault()
-    // this.refs.menu =
     let {cbs, scrollWidth, size} = this.props
     Menu.show(e, cbs, key, !!scrollWidth, size)
   }
