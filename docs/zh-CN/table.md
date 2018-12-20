@@ -51,7 +51,7 @@ constructor(props){
   }
 }1
 render() {
-  return <Table columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
+  return <Table size={'small'} columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
 }
 ```
 :::
@@ -107,7 +107,7 @@ constructor(props){
   }
 }1
 render() {
-  return <Table columns={this.columns} data={this.data} name='sorter'/>
+  return <Table name={'sorter'} size={'mini'} columns={this.columns} data={this.data} name='sorter'/>
 }
 ```
 :::
@@ -176,12 +176,13 @@ constructor(props){
 render(){
   const { selectedRowKeys ,data} = this.state
   const rowSelection = {
+    selectedRowKeys,
     onChange: (selectedRowKeys,rows)=>{
       console.log('onchange',selectedRowKeys,rows)
-      // this.setState({selectedRowKeys})
+      this.setState({selectedRowKeys})
     }
   }
-  return <Table columns={this.columns} data={data} rowSelection={rowSelection} />
+  return <Table size={'small'} columns={this.columns} data={data} rowSelection={rowSelection} />
 }
 ```
 :::
@@ -229,7 +230,7 @@ constructor(props){
   }
 }
 render() {
-  return <Table columns={this.columns} data={this.data} fixTop={56} name='fixtop' />
+  return <Table size={'small'} columns={this.columns} data={this.data} fixTop={56} name='fixtop' />
 }
 ```
 :::
@@ -313,7 +314,6 @@ render() {
 ```
 :::
 
-:::
 
 ### 右键展开加冻结
 :::demo
@@ -643,8 +643,6 @@ render() {
 
 ### 分页
 :::demo
-
-
 ```js
 constructor(props){
   super(props)
@@ -732,7 +730,117 @@ render() {
 ```
 :::
 
+### 服务端表格
+:::demo
+```js
+constructor (props) {
+    super(props)
 
+    this.columns = [
+      {
+        'title': '业务来源',
+        dataIndex: 'source',
+        serverSort: [{sort: 'desc'}, {sort: 'adesc'}],
+        fixed: 'left',
+        width: '150px'
+
+      },
+      {'title': '运单号', dataIndex: 'id', type: 'number'},
+      {'title': '包裹单号', dataIndex: 'wrapper_number', type: 'number'},
+      {'title': '运输方式', dataIndex: 'trans_type'},
+      {'title': '发货工厂', dataIndex: 'from'},
+      {'title': '重量(kg)', dataIndex: 'weight'},
+      {'title': '收货地区', dataIndex: 'to'},
+      {'title': '收货地址', dataIndex: 'address'},
+      {
+        'title': '操作',
+        dataIndex: 'address',
+        key: 'edit',
+        render: (text, record, index) => {
+          return (
+            <div>
+              <Button type='primary'>编辑</Button>
+              <Button type='danger'>删除</Button>
+            </div>
+          )
+        }}
+    ]
+
+    this.state = {
+      from: ''
+    }
+
+    window.selectTable = this
+  }
+
+  render () {
+    const {
+      from
+    } = this.state
+
+    const rowSelection = {
+      selectedRowKeys: [],
+      onChange: (selectedRowKeys, rows) => {
+        console.log('onchange', selectedRowKeys, rows)
+        this.setState({selectedRowKeys})
+      },
+      dataName: 'id'
+    }
+
+    return (
+      <div>
+        发货工厂
+       
+        <Form inline>
+          <FormItem>
+           <Input onChange={(e) => this.setState({from: e.target.value})} />
+          </FormItem>
+          <FormItem>
+          <Button onClick={(e) => {this.refs.serverTable.fetch()}}>查询</Button>
+          </FormItem>
+        </Form>
+        <Table
+          name='server'
+          auto={false}
+          scroll={{x: 1500}}
+          ref={'serverTable'}
+          rowSelection={rowSelection}
+          advance={{
+            sum: true,
+            avg: true
+          }}
+          origin={{
+            url: 'http://10.234.9.15:7777/mock/34',
+            pageSize: '3',
+            currentPageName: 'pageNum',
+            header: '',
+            data: {
+              from,
+              startTime: '',
+              endTime: ''
+            },
+            success: (res) => {
+              let {data: {data, page: {pageSize, totalNum, pageNum}}} = res
+              return {
+                data,
+                columns: this.columns,
+                page: {
+                  pageSize,
+                  total: totalNum,
+                  current: pageNum
+                }
+              }
+            },
+            error: () => {
+
+            }
+          }}
+        />
+      </div>
+    )
+  }
+```
+:::
 ### Table Attributes
 
 | 参数       | 说明   |  类型  | 默认值  |

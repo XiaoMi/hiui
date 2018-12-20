@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import Popper from '../popper'
 import './style/index'
 
 class Tooltip extends Component {
@@ -35,8 +36,21 @@ class Tooltip extends Component {
         style={style}
         onMouseEnter={() => { this.setState({tooltipShow: true}) }}
         onMouseLeave={() => { this.setState({tooltipShow: false}) }}
+        ref={node => { this.tooltipContainer = node }}
       >
-        <span className={eleClass + (tooltipShow ? ` ${prefixCls}-show` : '')}>{this.props.title}</span>
+        <Popper
+          className='hi-tooltip__popper'
+          show={tooltipShow}
+          attachEle={this.tooltipContainer}
+          placement={placement}
+          zIndex={1070}
+          width='auto'
+        >
+          <div ref='popper' className={classNames(eleClass)}>
+            {this.props.title}
+          </div>
+        </Popper>
+
         {this.props.children}
       </div>
     )

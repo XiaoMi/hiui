@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Icon from '../icon'
 import '../icon/style'
 import prifix from './prefix'
-
+import Footer from './footer'
 // 点击后会展开的那个图标
 class Expand extends Component {
   constructor (props) {
@@ -26,6 +26,10 @@ class Expand extends Component {
     let {addExpand, colItem, index, rowItem} = this.props
     addExpand(e, rowItem, index, colItem)
   }
+}
+
+let defaultRender = (text, record, index) => {
+  return text
 }
 
 export default class Body extends Component {
@@ -59,6 +63,7 @@ export default class Body extends Component {
             // {/*<div key={'td-' + k + '-' + j} onClick={(e) => addExpand(e, obj)} data-index={k} data-open={false}> > </div>*/}
             td = <Expand addExpand={addExpand} data-index={k} data-open={false} colItem={obj} index={k} rowItem={item} />
           } else {
+            obj.render = obj.render || defaultRender
             td = obj.render(item[obj.dataIndex], item, i)
 
             // 做判断的原因是？
@@ -94,6 +99,7 @@ export default class Body extends Component {
     return (
       <tbody className={prifix('table-tbody')}>
         {nodes}
+        <Footer className={'table-footer'} {...this.props} />
       </tbody>
     )
   }

@@ -40,10 +40,6 @@
   }
 
   &__menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
     box-sizing: border-box;
     width: 100%;
     min-width: 140px;
@@ -56,10 +52,6 @@
     background-color: $white;
     background-clip: padding-box;
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.175);
-
-    &--hide {
-      display: none;
-    }
   }
 
   &__item {
@@ -111,7 +103,7 @@
         }
       }
 
-      & + & {
+      & + .hi-btn {
         margin-left: -1px;
         padding: 0 8px;
         border-top-left-radius: 0;

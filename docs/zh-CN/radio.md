@@ -62,6 +62,9 @@ render() {
           list={this.state.play} 
           onChange={(data)=>{
             console.log(data)
+            this.setState({
+              people: []
+            })
           }}
           checked={1}
           disabled={1}

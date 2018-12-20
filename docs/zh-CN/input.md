@@ -217,6 +217,91 @@ render() {
 :::
 
 
+
+### 前置元素
+
+:::demo
+
+国际号码
+
+```js
+constructor () {
+  super()
+  this.state = {
+    tel: '',
+    value: '',
+		selectValue: '86',
+		singleList: [
+			{ name:'+86', id:'86' },
+			{ name:'+1', id:'1' },
+			{ name:'+33', id:'33' },
+			{ name:'+91', id:'91' },
+		]
+	}
+}
+render() {
+  const {
+    value,
+    selectValue,
+    singleList
+  } = this.state
+
+  return (
+    <div>
+      <Input
+        id="customId"
+        value={value}
+        type="text"
+        placeholder="请输入手机号"
+        onChange={e => this.setState({value: e.target.value})}
+        prepend={
+          <Select
+            mode='single'
+            clearable={false}
+            style={{width: '80px'}}
+            list={singleList}
+            value={selectValue}
+            onChange={(item) => {
+              console.log('单选结果', item)
+              const selectValue = item[0].id
+
+              this.setState({selectValue, tel: `${selectValue} ${value}`})
+            }}
+          />
+        }
+        style={{width: '250px'}}
+      />
+    </div>
+  )
+}
+```
+:::
+
+
+### 后置元素
+
+:::demo
+
+邮箱
+
+```js
+render() {
+  return (
+    <div>
+      <Input
+        value="MIFE"
+        type="email"
+        append={<Button type="primary">搜索</Button>}
+        placeholder="请输入邮箱(数字、字母、下划线)"
+        style={{width: '250px'}}
+      />
+    </div>
+  )
+}
+```
+:::
+
+
 ### 多行文本
 
 :::demo
@@ -249,6 +334,8 @@ render() {
 | required | 是否必填 | string | true/false | false |
 | prefix | 前缀 | string | - | - |
 | suffix | 后缀 | string | - | - |
+| prepend | 前置元素 | Element | - | - |
+| append | 后置元素 | Element | - | - |
 
 ### Input Events
 

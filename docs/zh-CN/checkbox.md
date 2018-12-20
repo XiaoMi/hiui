@@ -7,10 +7,10 @@
 render() {
   return (
     <div>
-      <p><Checkbox value='one' onChange={(val, isCheck) => console.log(val, isCheck)}>未选中项</Checkbox></p>
-      <p><Checkbox disabled>未选中失效</Checkbox></p>
-      <p><Checkbox checked onChange={(val, isCheck) => console.log(val, isCheck)}>选中项</Checkbox></p>
-      <p><Checkbox disabled checked>选中失效</Checkbox></p>
+      <Checkbox value='one' onChange={(val, isCheck) => console.log(val, isCheck)}>未选中项</Checkbox>
+      <Checkbox disabled>未选中失效</Checkbox>
+      <Checkbox checked onChange={(val, isCheck) => console.log(val, isCheck)}>选中项</Checkbox>
+      <Checkbox disabled checked>选中失效</Checkbox>
     </div>
   )
 }
@@ -24,9 +24,9 @@ render() {
 render() {
   return (
     <div>
-      <p><Checkbox  trueValue='打篮球' falseValue='不打篮球' onChange={(val, isCheck) => console.log(val, isCheck)}>篮球</Checkbox></p>
-      <p><Checkbox  value='踢足球' falseValue='不踢足球' onChange={(val, isCheck) => console.log(val, isCheck)}>足球</Checkbox></p>
-      <p><Checkbox  falseValue='不玩排球'  onChange={(val, isCheck) => console.log(val, isCheck)}>排球</Checkbox></p>
+      <Checkbox  trueValue='打篮球' falseValue='不打篮球' onChange={(val, isCheck) => console.log(val, isCheck)}>篮球</Checkbox>
+      <Checkbox  value='踢足球' falseValue='不踢足球' onChange={(val, isCheck) => console.log(val, isCheck)}>足球</Checkbox>
+      <Checkbox  falseValue='不玩排球'  onChange={(val, isCheck) => console.log(val, isCheck)}>排球</Checkbox>
     </div>
   )
 }

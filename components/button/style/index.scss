@@ -110,6 +110,11 @@
     outline: 0;
   }
 
+  &--icon {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
   // Common Styles
   &--type--default,
   &--type--info {
@@ -201,12 +206,22 @@
     height: $font-size-x-large * 1 + 18px * 2;
     padding: 17px 60px;
     font-size: $font-size-x-large;
+
+    &.hi-btn--icon {
+      padding-left: 17px;
+      padding-right: 17px;
+    }
   }
 
   &--size--small {
     height: $font-size-small * 1 + 6px * 2;
     padding: 5px 11px;
     font-size: $font-size-small;
+
+    &.hi-btn--icon {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
   }
 
   // Block

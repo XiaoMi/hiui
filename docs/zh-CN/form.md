@@ -1,15 +1,10 @@
 ## Form表单组件
 
-
-
 ### 对齐方式
 
 :::demo 
 
-
-
 ```js
-
 constructor() {
   super()
 
@@ -49,11 +44,10 @@ constructor() {
   }
 }
 
-
 render(){
   const {position, alignCheckedIndex, columnCheckedIndex} = this.state
-  const Row = Layout.Row
-  const Col = Layout.Col
+  const Row = Grid.Row
+  const Col = Grid.Col
   return (
     <div>
       <Row gutter={true}>
@@ -117,10 +111,7 @@ render(){
 
 :::demo 
 
-
-
 ```js
-
 render(){
   return (
     <div>
@@ -145,12 +136,9 @@ render(){
 
 ### 表单验证
 
-:::demo 
-
-
+:::demo
 
 ```js
-
 constructor(props) {
   super(props)
 
@@ -226,27 +214,35 @@ handleChange(key, e, value, index) {
 }
 
 render(){
+  const Row = Grid.Row
+  const Col = Grid.Col
   const {form, checkedIndex} = this.state
 
   return (
     <div>
       <Form ref={this.form} model={form} rules={this.state.rules} labelWidth='80'>
-        <FormItem label='名称' prop='name'>
-          <Input value={form.name} placeholder={'name'} onChange={this.handleChange.bind(this, 'name')}/>
-        </FormItem>
-        <FormItem label='数量' prop='count'>
-          <Input value={form.count} placeholder={'count'} onChange={this.handleChange.bind(this, 'count')}/>
-        </FormItem>
-        <FormItem label='地区' prop='region'>
-          <Radio
-            list={['北京', '上海', '重庆']}
-            checked={checkedIndex}
-            onChange={this.handleChange.bind(this, 'region','')}
-          />
-        </FormItem>
-        <FormItem>
-          <Button type={'primary'} onClick={this.handleSubmit.bind(this)}>提交</Button>
-        </FormItem>
+        <Row>
+          <Col span={12}>
+
+            <FormItem label='名称' prop='name'>
+              <Input value={form.name} placeholder={'name'} onChange={this.handleChange.bind(this, 'name')}/>
+            </FormItem>
+            <FormItem label='数量' prop='count'>
+              <Input value={form.count} placeholder={'count'} onChange={this.handleChange.bind(this, 'count')}/>
+            </FormItem>
+            <FormItem label='地区' prop='region'>
+              <Radio
+                list={['北京', '上海', '重庆']}
+                checked={checkedIndex}
+                onChange={this.handleChange.bind(this, 'region','')}
+              />
+            </FormItem>
+            <FormItem>
+              <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
+            </FormItem>
+
+          </Col>
+        </Row>
       </Form>
     </div>
   )

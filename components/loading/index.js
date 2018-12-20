@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import ReactDOM from 'react-dom'
 import './style/index'
-export default class Loading extends Component {
+class Loading extends Component {
   static defaultProps = {
     size: 'default'
   }
+  static instanceKey = new Date().getTime().toString()
   static propTypes = {
     size: PropTypes.oneOf(['large', 'default', 'small']),
     full: PropTypes.bool,
@@ -14,11 +16,13 @@ export default class Loading extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      noramLoading: false
+      noramLoading: false,
+      width: document.body.clientWidth || document.documentElement.clientWidth,
+      height: document.body.clientHeight || document.documentElement.clientHeight
     }
   }
   componentDidMount () {
-    this.props.full && document.body.style.setProperty('overflow', 'hidden')
+    (this.props.full || (this.props.service && !this.props.target)) && document.body.style.setProperty('overflow', 'hidden')
     if (!this.props.children) {
       this.setState({
         noramLoading: true
@@ -30,36 +34,42 @@ export default class Loading extends Component {
   }
   renderCircle (tip) {
     return (
-      <div className='hi-loading-mask'>
-        <div className='hi-loading-outter'>
-          <div className={`sk-circle sk-circle-${this.props.size}`}>
-            <div className='sk-circle1 sk-child' />
-            <div className='sk-circle2 sk-child' />
-            <div className='sk-circle3 sk-child' />
-            <div className='sk-circle4 sk-child' />
-            <div className='sk-circle5 sk-child' />
-            <div className='sk-circle6 sk-child' />
-            <div className='sk-circle7 sk-child' />
-            <div className='sk-circle8 sk-child' />
-            <div className='sk-circle9 sk-child' />
-            <div className='sk-circle10 sk-child' />
-            <div className='sk-circle11 sk-child' />
-            <div className='sk-circle12 sk-child' />
+      <div className='hi-loading__mask'>
+        <div className='hi-loading__outter'>
+          <div className={`hi-loading__circle hi-loading__circle--${this.props.size}`}>
+            {
+              new Array(12).fill(0).map((item, index) => <div className='hi-loading__circle-item' key={index} />)
+            }
           </div>
-          <div className='hi-loading-text'>{tip}</div>
+          <div className='hi-loading__text'>{tip}</div>
         </div>
       </div>
     )
   }
   render () {
-    let {full, show, tip} = this.props
-    const {noramLoading} = this.state
+    let {full, show, tip, target, service} = this.props
+    const {noramLoading, width, height} = this.state
     let style = {}
-    if (full) {
+    if (full || (!target && service)) {
       style = {
         position: 'fixed',
         bottom: 0,
-        right: 0
+        right: 0,
+        width,
+        height
+      }
+    }
+
+    if (target) {
+      const rect = target.getBoundingClientRect()
+      const st = document.documentElement.scrollTop || document.body.scrollTop
+      const sl = document.documentElement.scrollLeft || document.body.scrollLeft
+      style = {
+        position: 'absolute',
+        width: rect.width,
+        left: rect.left + sl,
+        top: rect.top + st,
+        height: rect.height
       }
     }
     return (
@@ -70,3 +80,24 @@ export default class Loading extends Component {
     )
   }
 }
+
+Loading.newInstance = function newNotificationInstance (properties) {
+  let props = properties || {}
+  let div = document.createElement('div')
+  document.body.appendChild(div)
+  ReactDOM.render(React.createElement(Loading, props), div)
+  return {
+    close () {
+      ReactDOM.unmountComponentAtNode(div)
+      document.body.removeChild(div)
+    }
+  }
+}
+
+Loading.open = (arg) => {
+  return Loading.newInstance({
+    ...arg,
+    service: true
+  })
+}
+export default Loading

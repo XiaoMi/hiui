@@ -16,10 +16,9 @@ class Col extends Component {
     } = this.props
     const {gutter = false} = this.context
     let obj = {}
-    obj['hi-grid-col-' + span] = span && true
-    obj['hi-grid-offset-' + offset] = offset && true
-    obj['hi-grid-col-common'] = true
-    obj['hi-grid-col-gutter'] = gutter
+    obj['hi-grid__col-' + span] = span && true
+    obj['hi-grid__offset-' + offset] = offset && true
+    obj['hi-grid__col--gutter'] = gutter
     let colClass = classNames(obj)
 
     if (justify) {
@@ -60,9 +59,8 @@ class Row extends Component {
     } = this.props
 
     let obj = {}
-    obj['hi-grid-row'] = true
-    obj['hi-grid-row-common'] = true
-    obj['hi-grid-row-gutter'] = gutter
+    obj['hi-grid__row'] = true
+    obj['hi-grid__row--gutter'] = gutter
     let rowClass = classNames(obj)
 
     if (justify) {
@@ -88,7 +86,7 @@ Row.childContextTypes = {
 
 class Br extends Component {
   render () {
-    let {height = '5px', style = {}} = this.props
+    let {height = '4px', style = {}} = this.props
     style.height = parseInt(height) + 'px'
     return (
       <div style={style} />

@@ -10,8 +10,8 @@
 
 ```js
 render(){
-    const Row = Layout.Row
-    const Col = Layout.Col
+    const Row = Grid.Row
+    const Col = Grid.Col
     return (
       <div>
         <Row>
@@ -43,8 +43,8 @@ render(){
 
 ```js
 render() {
-  const Row = Layout.Row
-  const Col = Layout.Col
+  const Row = Grid.Row
+  const Col = Grid.Col
 
   return (
     <Row gutter={true}>
@@ -75,8 +75,8 @@ render() {
 
 ```js
 render() {
-  const Row = Layout.Row
-  const Col = Layout.Col
+  const Row = Grid.Row
+  const Col = Grid.Col
 
   return (
     <div>
@@ -120,8 +120,8 @@ render() {
 
 ```js
 render() {
-  const Row = Layout.Row
-  const Col = Layout.Col
+  const Row = Grid.Row
+  const Col = Grid.Col
 
   return (
     <Row gutter={true}>
@@ -158,8 +158,8 @@ render() {
 
 ```js
 render() {
-  const Row = Layout.Row
-  const Col = Layout.Col
+  const Row = Grid.Row
+  const Col = Grid.Col
 
   return (
     <div>
