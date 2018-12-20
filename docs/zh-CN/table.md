@@ -51,7 +51,7 @@ constructor(props){
   }
 }1
 render() {
-  return <Table size={'small'} columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
+  return <Table columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
 }
 ```
 :::
@@ -107,7 +107,7 @@ constructor(props){
   }
 }1
 render() {
-  return <Table name={'sorter'} size={'mini'} columns={this.columns} data={this.data} name='sorter'/>
+  return <Table name={'sorter'} columns={this.columns} data={this.data} name='sorter'/>
 }
 ```
 :::
@@ -182,7 +182,7 @@ render(){
       this.setState({selectedRowKeys})
     }
   }
-  return <Table size={'small'} columns={this.columns} data={data} rowSelection={rowSelection} />
+  return <Table columns={this.columns} data={data} rowSelection={rowSelection} />
 }
 ```
 :::
@@ -230,7 +230,7 @@ constructor(props){
   }
 }
 render() {
-  return <Table size={'small'} columns={this.columns} data={this.data} fixTop={56} name='fixtop' />
+  return <Table columns={this.columns} data={this.data} fixTop={56} name='fixtop' />
 }
 ```
 :::
@@ -841,6 +841,7 @@ constructor (props) {
   }
 ```
 :::
+
 ### Table Attributes
 
 | 参数       | 说明   |  类型  | 默认值  |
