@@ -24,10 +24,6 @@ render() {
           <Button type="default">默认按钮</Button>
           <Button type="primary">确认</Button>
           <Button type="line">取消</Button>
-          <Button type="primary" icon="plus"></Button>
-          <Button type="line" icon="download"></Button>
-          <Button type="primary" size="large" icon="plus"></Button>
-          <Button type="line" size="large" icon="download"></Button>
 
         </Col>
       </Row>
