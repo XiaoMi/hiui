@@ -47,6 +47,7 @@ class Cascader extends Component {
     const cascaderLabel = this.getCascaderLabel(cascaderValue)
 
     this.debouncedKeywordChange = debounce(this.onKeywordChange.bind(this), 300)
+    this.clickOutsideHandel = this.clickOutside.bind(this)
     this.state = {
       filterOptions: false,
       cacheValue,
@@ -77,11 +78,11 @@ class Cascader extends Component {
   }
 
   componentDidMount () {
-    window.addEventListener('click', this.clickOutside.bind(this))
+    window.addEventListener('click', this.clickOutsideHandel)
   }
 
   componentWillUnmount () {
-    window.removeEventListener('click', this.clickOutside.bind(this))
+    window.removeEventListener('click', this.clickOutsideHandel)
   }
 
   clickOutside (e) {
