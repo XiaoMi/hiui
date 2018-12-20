@@ -51,6 +51,7 @@ class Select extends Component {
     const selectedItems = this.resetSelectedItems(this.props)
     const searchable = this.getSearchable()
     this.debouncedFilterItems = debounce(this.onFilterItems.bind(this), 300)
+    this.clickOutsideHandel = this.clickOutside.bind(this)
     // const focusedIndex = this.resetFocusedIndex(false)
 
     this.state = {
@@ -81,12 +82,12 @@ class Select extends Component {
   }
 
   componentDidMount () {
-    window.addEventListener('click', this.clickOutside.bind(this))
+    window.addEventListener('click', this.clickOutsideHandel)
     this.resetFocusedIndex()
   }
 
   componentWillUnmount () {
-    window.removeEventListener('click', this.clickOutside.bind(this))
+    window.removeEventListener('click', this.clickOutsideHandel)
   }
 
   clickOutside (e) {

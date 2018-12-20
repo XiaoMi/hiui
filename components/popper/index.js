@@ -17,7 +17,7 @@ export default class Popper extends Component {
     topGap: PropTypes.number,
     leftGap: PropTypes.number,
     zIndex: PropTypes.number,
-    placement: PropTypes.oneOf(['bottom', 'bottom-left', 'top', 'left', 'right'])
+    placement: PropTypes.oneOf(['bottom', 'bottom-start', 'top', 'left', 'right'])
   }
 
   static defaultProps = {
@@ -25,7 +25,7 @@ export default class Popper extends Component {
     topGap: 2,
     leftGap: 0,
     zIndex: 1060,
-    placement: 'bottom-left'
+    placement: 'bottom-start'
   }
 
   componentDidUpdate () {
@@ -58,7 +58,7 @@ export default class Popper extends Component {
         top = top + topGap + rect.height
         left = left + rect.width / 2
         break
-      case 'bottom-left':
+      case 'bottom-start':
         top = top + topGap + rect.height
         break
 
