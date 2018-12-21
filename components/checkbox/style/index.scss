@@ -6,49 +6,27 @@
 
   @include component-reset();
 
-  &:hover {
-    .hi-checkbox-input {
+  &:not(.hi-checkbox--disabled):hover {
+    .hi-checkbox__input {
       border: 1px solid #4284f5;
     }
   }
 
-  &.hi-checkbox-disabled {
+  &--disabled {
     cursor: not-allowed;
 
-    .hi-checkbox-input {
-      background: #f2f2f2;
+    .hi-checkbox__input {
+      background: #f2f2f2 !important;
       border: 1px solid #d8d8d8;
-
-      &.hi-checkbox-input-checked {
-        background: #f2f2f2;
-
-        &::after {
-          border-color: #d8d8d8;
-        }
+      &::after {
+        border-color: #d8d8d8;
       }
+      
     }
   }
 
-  .hi-checkbox-input {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 1px solid #d8d8d8;
-    border-radius: 2px;
-    vertical-align: middle;
-    position: relative;
-    background-color: #fff;
-
-    .hi-checkbox-origin-input {
-      opacity: 0;
-      // display: none;
-      cursor: pointer;
-      width: 18px;
-      height: 18px;
-    }
-
-    &.hi-checkbox-input-checked,
-    &.hi-checkbox-input-all {
+  &--checked {
+    .hi-checkbox__input {
       background: #4284f5;
 
       &::after {
@@ -65,12 +43,13 @@
         top: 1px;
         // transform: rotate(45deg) scaleY(0);
         width: 4px;
-        transition: transform 0.15s cubic-bezier(0.71, -0.46, 0.88, 0.6) 0.05s;
+        // transition: transform 0.15s cubic-bezier(0.71, -0.46, 0.88, 0.6) 0.05s;
         transform-origin: center;
       }
     }
-
-    &.hi-checkbox-input-part {
+  }
+  &--part {
+    .hi-checkbox__input {
       background: #4284f5;
 
       &::after {
@@ -86,8 +65,18 @@
       }
     }
   }
+  &__input {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #d8d8d8;
+    border-radius: 2px;
+    vertical-align: middle;
+    position: relative;
 
-  .hi-checkbox-label {
+  }
+
+  &__label {
     padding: 0 16px 0 8px;
     vertical-align: middle;
     user-select: none;
