@@ -1,10 +1,29 @@
-const CheckboxEvents = {}
-const EventManager = {
-  setEvent: (name, event) => {
-    name && event && (CheckboxEvents[name] = event)
+const MultipleCheckboxs = {
+  multipleRoot: {}
+}
+const MultipleCheckboxsOpera = {
+
+  add: (name, ref) => {
+    if (name) {
+      if (!MultipleCheckboxs[name] && ref) {
+        const arr = []
+        arr.push(ref)
+        MultipleCheckboxs[name] = arr
+      } else {
+        MultipleCheckboxs[name] && MultipleCheckboxs[name].indexOf(ref) < 0 && ref && MultipleCheckboxs[name].push(ref)
+      }
+    } else {
+      throw new Error('name is empty')
+    }
   },
-  getEvent: (name) => {
-    return CheckboxEvents[name] ? CheckboxEvents[name] : null
+  addRoot: (name, ref) => {
+    ref && !MultipleCheckboxs.multipleRoot[name] && (MultipleCheckboxs.multipleRoot[name] = ref)
+  },
+  getRoot: (name) => {
+    return MultipleCheckboxs.multipleRoot[name]
+  },
+  getAll: (name) => {
+    return MultipleCheckboxs[name] || []
   }
 }
-export default EventManager
+export default MultipleCheckboxsOpera

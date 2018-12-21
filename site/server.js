@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 8000
 
 config.entry.main.unshift(
   'react-hot-loader/patch',
-  `webpack-dev-server/client?http://localhost:${PORT}/`,
+  `webpack-dev-server/client?http://127.0.0.1:${PORT}/`,
   'webpack/hot/only-dev-server',
   './main'
 )
@@ -23,6 +23,6 @@ const server = new WebpackDevServer(compiler, {
   }
 })
 
-server.listen(PORT, '127.0.0.1', () => {
+server.listen(PORT, () => {
   console.log(`server started at localhost:${PORT} , please open localhost:${PORT}`)
 })
