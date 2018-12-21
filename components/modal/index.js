@@ -3,12 +3,14 @@ import {createPortal} from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Button from '../button'
+import Icon from '../icon'
 import './style/index'
 import Provider from '../context'
 
 class Modal extends Component {
   static propTypes = {
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    size: PropTypes.oneOf(['large', 'normal', 'small']),
     show: PropTypes.bool,
     onConfirm: PropTypes.func,
     onCancel: PropTypes.func,
@@ -19,16 +21,15 @@ class Modal extends Component {
     cancelType: PropTypes.string,
     closeBtn: PropTypes.bool
   }
+
   static defaultProps = {
     title: '',
-    prefixCls: 'hi-modal',
     adaptive: false,
     backDrop: true,
     show: false,
-    confirmType: 'primary',
-    cancelType: 'default',
     closeBtn: true,
-    destory: false
+    destory: false,
+    size: 'normal'
   }
   constructor (props) {
     super(props)
@@ -75,50 +76,48 @@ class Modal extends Component {
     }
   }
   renderFooter () {
-    const {cancelType, confirmType, footers} = this.props
+    const {footers} = this.props
     const cancelText = this.localeDatasProps('cancelText')
     const confirmText = this.localeDatasProps('confirmText')
     if (footers) {
       return footers
     } else {
       return [
-        <Button type={cancelType} key={0} onClick={this.handleClose.bind(this)}>
+        <Button type='default' key={0} onClick={this.handleClose.bind(this)}>
           {cancelText}
         </Button>,
-        <Button type={confirmType} key={1} onClick={this.handleConfirm.bind(this)}>
+        <Button type='primary' key={1} onClick={this.handleConfirm.bind(this)}>
           {confirmText}
         </Button>
       ]
     }
   }
   render () {
-    const {width, title, children, backDrop, closeBtn, footers} = this.props
-    const {show} = this.props
+    const {width, title, children, backDrop, closeBtn, footers, show, size} = this.props
     let style = width ? {width} : {}
-    let classnames = classNames('hi-modal', show ? '' : 'hide')
+    let classnames = classNames('hi-modal', show ? '' : 'hi-modal--hide')
     return createPortal(
-      <div
-        className={classnames}
-      >
-        <div className='modal-shade' onClick={() => {
+      <div className={classnames} >
+        <div className='hi-modal__mask' onClick={() => {
           backDrop && this.handleClose.apply(this)
         }} />
-        <div className='modal-dialog' style={style}>
+        <div className={classNames('hi-modal__dialog', size ? `hi-modal__dialog--${size}` : '')} style={style}>
           {
-            (title || closeBtn) && <div className='title-container'>
-              <span className='title'>{title}</span>
-              {closeBtn && <i
-                style={{margin: '0 10px'}}
-                className='hi-icon icon-close'
-                onClick={this.handleClose.bind(this)}
-              />}
+            (title || closeBtn) && <div className='hi-modal__header'>
+              <h3 className='hi-modal__title'>{title}</h3>
+              {
+                closeBtn &&
+                <div className='hi-modal__close' onClick={this.handleClose.bind(this)}>
+                  <Icon name='close' />
+                </div>
+              }
             </div>
           }
-          <div className='content'>
+          <div className='hi-modal__content'>
             {children}
           </div>
           {
-            (!footers || footers.length > 0) && <div className='control'>
+            (!footers || footers.length > 0) && <div className='hi-modal__footer'>
               {this.renderFooter()}
             </div>
           }

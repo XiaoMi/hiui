@@ -7,10 +7,10 @@
 render() {
   return (
     <div>
-      <p><Checkbox value='one' onChange={(val, isCheck) => console.log(val, isCheck)}>未选中项</Checkbox></p>
-      <p><Checkbox disabled>未选中失效</Checkbox></p>
-      <p><Checkbox checked onChange={(val, isCheck) => console.log(val, isCheck)}>选中项</Checkbox></p>
-      <p><Checkbox disabled checked>选中失效</Checkbox></p>
+      <Checkbox value='one' onChange={(val, isCheck) => console.log(val, isCheck)}>未选中项</Checkbox>
+      <Checkbox disabled>未选中失效</Checkbox>
+      <Checkbox checked onChange={(val, isCheck) => console.log(val, isCheck)}>选中项</Checkbox>
+      <Checkbox disabled checked>选中失效</Checkbox>
     </div>
   )
 }

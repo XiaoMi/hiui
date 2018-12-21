@@ -32,6 +32,7 @@
       box-sizing: border-box;
       vertical-align: sub;
       position: relative;
+      background-color: #fff;
     }
 
     &.checked {
@@ -54,6 +55,7 @@
         color: #4284f5;
         background: rgba(66, 132, 245, 0.1);
         border: 1px solid #a8c6fb;
+        z-index: 2;
       }
     }
 

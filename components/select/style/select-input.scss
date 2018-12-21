@@ -34,7 +34,7 @@
   }
 
   &:not(.disabled):hover {
-    .hi-select__input--icon__expand {
+    .hi-select__input--icon__expand.clearable {
       display: none;
     }
 

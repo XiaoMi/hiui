@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Body from './body'
-import {Header} from './header'
+import Header from './header'
 
 export default class TableContent extends Component {
   render () {
@@ -32,7 +32,6 @@ export default class TableContent extends Component {
         {body
           ? <Body {...rest} /> : null
         }
-
       </table>
     )
   }
