@@ -1,6 +1,7 @@
 @mixin circle-transform($num) {
   &:nth-child(#{$num}) {
-    transform: rotate(#{$num*30deg-30deg});
+    transform: rotate(#{$num * 30deg - 30deg});
+
     &::before {
       animation-delay: -#{1300-$num*100}ms;
     }
@@ -110,8 +111,9 @@
         border-radius: 100%;
         animation: circleBounceDelay 1.2s infinite ease-in-out both;
       }
+
       @for $i from 1 through 12 {
-        @include circle-transform($i)
+        @include circle-transform($i);
       }
     }
   }

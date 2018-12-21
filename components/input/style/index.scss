@@ -153,6 +153,7 @@ $input: 'hi-input' !default;
       border-bottom-left-radius: 0;
     }
   }
+
   &__prepend {
     .hi-btn,
     .hi-select__input {
@@ -163,12 +164,14 @@ $input: 'hi-input' !default;
       border-bottom-left-radius: 2px;
     }
   }
+
   &--append {
     .hi-input__inner {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
   }
+
   &__append {
     .hi-btn,
     .hi-select__input {

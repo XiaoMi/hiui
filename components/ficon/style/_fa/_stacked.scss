@@ -10,7 +10,9 @@
   line-height: 2em;
   vertical-align: middle;
 }
-.#{$fa-css-prefix}-stack-1x, .#{$fa-css-prefix}-stack-2x {
+
+.#{$fa-css-prefix}-stack-1x,
+.#{$fa-css-prefix}-stack-2x {
   position: absolute;
   left: 0;
   width: 100%;
