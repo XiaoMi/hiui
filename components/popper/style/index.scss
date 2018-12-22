@@ -5,10 +5,12 @@
   &--hide {
     display: none !important;
   }
+
   .hi-popper__content {
     position: absolute;
+
     &--top {
-      bottom: 0px;
+      bottom: 0;
       // left: 50%;
       transform: translateX(-50%);
     }
@@ -26,7 +28,7 @@
     }
 
     &--left {
-      right: 0px;
+      right: 0;
       // top: 50%;
       transform: translateY(-50%);
     }
