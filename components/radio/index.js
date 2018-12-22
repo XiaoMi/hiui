@@ -48,36 +48,7 @@ class Radio extends Component {
     }
   }
   componentDidMount () {
-    // let _checked = -1
-    // const _disabled = []
     let {checked, list, disabled} = this.props
-    // if (typeof checked === 'number') {
-    //   _checked = checked
-    // }
-    // if (typeof disabled === 'number') {
-    //   _disabled.push(disabled)
-    // }
-    // for (let i = 0; i < list.length; i++) {
-    //   const item = list[i]
-    //   if (typeof item === 'object') {
-    //     if (item.checked) {
-    //       _checked = i
-    //     }
-    //     if (item.disabled) {
-    //       _disabled.push(i)
-    //     }
-    //     if (typeof checked === 'function') {
-    //       if (checked(item)) {
-    //         _checked = i
-    //       }
-    //     }
-    //     if (typeof disabled === 'function') {
-    //       if (disabled(item)) {
-    //         _disabled.push(i)
-    //       }
-    //     }
-    //   }
-    // }
     this.setState(parse(checked, list, disabled))
   }
   static propTypes = {
@@ -94,7 +65,8 @@ class Radio extends Component {
     checked: -1,
     align: 'right',
     layout: 'horizontal',
-    mode: 'normal'
+    mode: 'normal',
+    buttonStyle: 'default'
   }
   componentWillReceiveProps (props, state) {
     this.setState({
@@ -110,9 +82,10 @@ class Radio extends Component {
     })
     return uuid
   }
-  handleChange (item, index) {
+  handleChange (item, index, disabled) {
     // console.log(labelText, index, event)
     // event.stopPropagation()
+    if (disabled) return
     this.setState({
       checked: index
     }, () => {
@@ -122,11 +95,15 @@ class Radio extends Component {
     })
   }
   render () {
-    let {list, name, align, layout, mode} = this.props
+    let {list, align, layout, mode, buttonStyle} = this.props
     const {checked, disabled} = this.state
-    name = name || this.generateUUID()
+    const cls = classnames(
+      'hi-radio',
+      layout === 'vertical' && 'hi-radio--vertical',
+      mode === 'button' && 'hi-radio--button'
+    )
     return (
-      <div className='hi-radio'>
+      <div className={cls}>
         {
           list.map((item, index) => {
             let _item = item
@@ -137,37 +114,25 @@ class Radio extends Component {
               }
             }
             const _disabled = disabled.indexOf(index) > -1
-            const groupBtnCls = classnames(index !== 0 && 'after-radio', (index !== 0 && index !== list.length - 1) && 'middle-radio')
-            const disabledCls = classnames(
-              'input-group',
-              _disabled && 'disabled',
-              checked === index && 'checked',
-              layout === 'vertical' && (mode === 'button' ? 'input-group-button-vertical' : 'input-group-vertical'),
-              mode === 'button' && groupBtnCls,
-              index === 0 && list.length > 1 && 'first-radio'
+            const itemCls = classnames(
+              'hi-radio__item',
+              _disabled && 'hi-radio__item--disabled',
+              checked === index && 'hi-radio__item--checked'
             )
+            const eles = [
+              <span className='hi-radio__label' key={'label' + index}> {_item.name} </span>,
+              <span className='hi-radio__simulation-input' key={'input' + index} />
+            ]
             return (
-              <label className={disabledCls} key={index}>
+              <div className={itemCls} key={index} onClick={this.handleChange.bind(this, _item, index, _disabled)}>
                 {
-                  mode === 'normal' ? [
-                    align === 'left' && <span className='label' key={'label' + index}> {_item.name} </span>,
-                    <span className='radio-input' key={'radio' + index}>
-                      <span className='hi-raido-simulation-input' />
-                      <input
-                        className='hi-radio-origin-input'
-                        type='radio'
-                        name={name}
-                        index={index}
-                        disabled={_disabled}
-                        value={_item.id}
-                        defaultChecked={checked === index}
-                        onClick={this.handleChange.bind(this, _item, index)}
-                      />
-                    </span>,
-                    align === 'right' && <span className='label' key={'label' + index}> {_item.name} </span>
-                  ] : <Button type='default' disabled={_disabled} onClick={(e) => this.handleChange(_item, index)}>{_item.name}</Button>
+                  mode === 'normal'
+                    ? <React.Fragment>
+                      {align === 'left' ? eles : eles.reverse()}
+                    </React.Fragment>
+                    : <Button type={buttonStyle} disabled={_disabled} onClick={(e) => this.handleChange.bind(this, _item, index, _disabled)}>{_item.name}</Button>
                 }
-              </label>
+              </div>
             )
           })
         }
