@@ -119,6 +119,7 @@ class Calender extends Component {
     return rows
   }
   _getClassName (ele) {
+    if (!ele) return
     if (ele.nodeName !== 'TD') {
       return this._getClassName(ele.parentNode)
     } else {
