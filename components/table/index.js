@@ -504,11 +504,12 @@ class Table extends Component {
           <div className={prifix('table-setting')} ref={this.setting}>
             <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}}
               onClick={(e) => {
+                console.log('aaa')
                 let {columnMenu} = this.state
                 this.setState({columnMenu: !columnMenu})
               }} />
             {
-              columnMenu && <ClickOutside onClickOutside={(e) => this.setState({columnMenu: false})} >
+              columnMenu && <ClickOutside table={this} onClickOutside={(e) => this.setState({columnMenu: false})} >
                 <div className={prifix('table-setting-menu column-menu')} >
                   {
                     columns.map(item => (
@@ -683,7 +684,7 @@ class Table extends Component {
           return (
             <Checkbox type='checkbox'
 
-              checked={selectedRowKeys.length === this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length}
+              checked={selectedRowKeys.length === this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length && this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length > 0}
               onChange={(e, checked) => {
                 let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
                 if (checked) {

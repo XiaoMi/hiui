@@ -180,7 +180,8 @@ render(){
     onChange: (selectedRowKeys,rows)=>{
       console.log('onchange',selectedRowKeys,rows)
       this.setState({selectedRowKeys})
-    }
+    },
+    dataName:'age'
   }
   return <Table columns={this.columns} data={data} rowSelection={rowSelection} />
 }
@@ -735,37 +736,6 @@ render() {
 ```js
 constructor (props) {
     super(props)
-
-    this.columns = [
-      {
-        'title': '业务来源',
-        dataIndex: 'source',
-        serverSort: [{sort: 'desc'}, {sort: 'adesc'}],
-        fixed: 'left',
-        width: '150px'
-
-      },
-      {'title': '运单号', dataIndex: 'id', type: 'number'},
-      {'title': '包裹单号', dataIndex: 'wrapper_number', type: 'number'},
-      {'title': '运输方式', dataIndex: 'trans_type'},
-      {'title': '发货工厂', dataIndex: 'from'},
-      {'title': '重量(kg)', dataIndex: 'weight'},
-      {'title': '收货地区', dataIndex: 'to'},
-      {'title': '收货地址', dataIndex: 'address'},
-      {
-        'title': '操作',
-        dataIndex: 'address',
-        key: 'edit',
-        render: (text, record, index) => {
-          return (
-            <div>
-              <Button type='primary'>编辑</Button>
-              <Button type='danger'>删除</Button>
-            </div>
-          )
-        }}
-    ]
-
     this.state = {
       from: ''
     }
@@ -810,7 +780,7 @@ constructor (props) {
             avg: true
           }}
           origin={{
-            url: 'http://10.234.9.15:7777/mock/34',
+            url: 'https://www.easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/table',
             pageSize: '3',
             currentPageName: 'pageNum',
             header: '',
@@ -820,10 +790,10 @@ constructor (props) {
               endTime: ''
             },
             success: (res) => {
-              let {data: {data, page: {pageSize, totalNum, pageNum}}} = res
+              let {data: {data, columns,page: {pageSize, totalNum, pageNum}}} = res
               return {
                 data,
-                columns: this.columns,
+                columns,
                 page: {
                   pageSize,
                   total: totalNum,
