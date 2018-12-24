@@ -312,25 +312,25 @@ class Select extends Component {
       method: type,
       ...options
     })
-      .then(response => response.json())
-      .then(res => {
-        if (func) {
-          dropdownItems = func(res)
-        } else {
-          dropdownItems = res.data
-        }
-        Array.isArray(dropdownItems) && this.setState({
-          dropdownItems
-        })
-        this.setState({
-          fetching: false
-        })
-      }, err => {
-        error && error(err)
-        this.setState({
-          fetching: false
-        })
+    .then(response => response.json())
+    .then(res => {
+      if (func) {
+        dropdownItems = func(res)
+      } else {
+        dropdownItems = res.data
+      }
+      Array.isArray(dropdownItems) && this.setState({
+        dropdownItems
       })
+      this.setState({
+        fetching: false
+      })
+    }, err => {
+      error && error(err)
+      this.setState({
+        fetching: false
+      })
+    })
   }
 
   onFilterItems (keyword) {
@@ -434,7 +434,8 @@ class Select extends Component {
       dropdownItems,
       searchable,
       dropdownShow,
-      focusedIndex
+      focusedIndex,
+      fetching
     } = this.state
     const extraClass = {
       'is-multiple': mode === 'multiple',
@@ -467,6 +468,7 @@ class Select extends Component {
           <SelectDropdown
             noFoundTip={noFoundTip}
             mode={mode}
+            loading={fetching}
             focusedIndex={focusedIndex}
             matchFilter={this.matchFilter.bind(this)}
             setFocusedIndex={this.setFocusedIndex.bind(this)}

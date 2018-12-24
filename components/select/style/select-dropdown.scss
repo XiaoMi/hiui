@@ -13,6 +13,9 @@
   box-sizing: border-box;
   z-index: 1050;
   text-align: left;
+  &--loading {
+    height: 50px;
+  }
 
   &--items {
     display: flex;
