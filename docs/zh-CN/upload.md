@@ -24,7 +24,7 @@ render () {
 				deleteAction: 'http://10.236.94.247:3005/del',
 				type: 'POST',
 				hearders:{"Content-type":"application/x-www-form-urlencoded",name: 'mi'},
-				data: {type:'del',id:3},
+				param: {type:'del',id:3},
 				onDeleteSuccess: function(res) {console.log(res,'delete callback')}
 			}}
 			disabled={false}
@@ -136,7 +136,7 @@ render () {
 				deleteAction: 'http://10.236.94.247:3005/del',
 				type: 'POST',
 				hearders:{"Content-type":"application/x-www-form-urlencoded",name: 'mi'},
-				data: {type:'del',id:3},
+				param: {type:'del',id:3},
 				onDeleteSuccess: function(res) {console.log(res,'delete callback')}
 			}}
 			name='uploadAvatar'
@@ -166,7 +166,7 @@ render () {
 				deleteAction: 'http://10.236.94.247:3005/del',
 				type: 'GET',
 				hearders:{"Content-type":"application/x-www-form-urlencoded",name: 'mi'},
-				data: {type:'del',id:3},
+				param: {type:'del',id:3},
 				onDeleteSuccess: function(res) {console.log(res,'delete callback')}
 			}}
 			param={{id:'uid',channel:'youpin'}}
@@ -187,7 +187,7 @@ render () {
 |buttonText|按钮文案|string|否|'上传'|
 |buttonIcon|按钮文案前面的图标|string|否|'upload'|
 |uploadAction|必选，上传的地址|string|是|无|
-|data|除了上传文件外的其他需参数|object|否|无|
+|param|除了上传文件外的其他需参数|object|否|无|
 |name|发到后台文件参数名|string|否|'file'|
 |disabled|是否禁用|boolean|否|false|
 |headers|设置上传的请求头部|object|否|无|
