@@ -335,10 +335,9 @@ class Select extends Component {
 
   onFilterItems (keyword) {
     this.setState({
-      keyword,
-      focusedIndex: 0
-    })
-
+      keyword
+    }, ()=>this.resetFocusedIndex())
+    
     if (this.props.origin) {
       // this.setState({
       //   dropdownItems: []
