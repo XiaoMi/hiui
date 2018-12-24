@@ -504,12 +504,11 @@ class Table extends Component {
           <div className={prifix('table-setting')} ref={this.setting}>
             <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}}
               onClick={(e) => {
-                console.log('aaa')
                 let {columnMenu} = this.state
                 this.setState({columnMenu: !columnMenu})
               }} />
             {
-              columnMenu && <ClickOutside table={this} onClickOutside={(e) => this.setState({columnMenu: false})} >
+              columnMenu && <ClickOutside onClickOutside={(e) => this.setState({columnMenu: false})} >
                 <div className={prifix('table-setting-menu column-menu')} >
                   {
                     columns.map(item => (
