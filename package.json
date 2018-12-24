@@ -35,7 +35,6 @@
   "dependencies": {
     "@hi-ui/classic-theme": "^0.9.6",
     "@hi-ui/core-css": "^1.0.0",
-    "@hi-ui/hiui": "^1.2.1",
     "async-validator": "^1.8.5",
     "axios": "^0.18.0",
     "classnames": "^2.2.5",
