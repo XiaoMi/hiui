@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import classNames from 'classnames'
-import './style'
+import '../../checkbox/style'
 export default class Checkbox extends Component {
   render () {
     const {

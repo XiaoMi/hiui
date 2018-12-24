@@ -683,7 +683,7 @@ class Table extends Component {
           return (
             <Checkbox type='checkbox'
 
-              checked={selectedRowKeys.length === this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length}
+              checked={selectedRowKeys.length === this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length && this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length > 0}
               onChange={(e, checked) => {
                 let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
                 if (checked) {
