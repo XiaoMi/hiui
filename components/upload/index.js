@@ -1,8 +1,4 @@
 import React, { Component } from 'react'
-// import ReactDOM from 'react-dom'
-// import PropTypes from 'prop-types'
-// import classNames from 'classnames'
-
 import UploadClick from './UploadClick'
 import UploadDrag from './UploadDrag'
 import UploadPhoto from './UploadPhoto'
@@ -10,7 +6,7 @@ import UploadAvatar from './UploadAvatar'
 import UploadPictureCard from './UploadPictureCard'
 import './style/index'
 
-class Upload extends Component {
+export default class Upload extends Component {
   render () {
     const { uploadType } = this.props
     if (uploadType === 'normal') {
@@ -26,4 +22,3 @@ class Upload extends Component {
     }
   }
 }
-export default Upload

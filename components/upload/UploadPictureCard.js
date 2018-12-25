@@ -148,7 +148,7 @@ class UploadPictureCard extends Component {
   }
 
   render () {
-    const { uploadType, localeDatas } = this.props
+    const { uploadType, buttonText } = this.props
     return (
       <div className={'upload-' + uploadType}>
         <div>
@@ -167,9 +167,7 @@ class UploadPictureCard extends Component {
                 this.state.disabled ? 'disabled' : ''
               }`}
             >
-              <i className={`icon Ficon-${this.state.buttonIcon}`} />&nbsp;{
-                this.state.buttonText || localeDatas.upload.buttonText
-              }
+              <i className={`icon Ficon-${this.state.buttonIcon}`} />&nbsp;{ buttonText }
             </span>
           </label>
         </div>
