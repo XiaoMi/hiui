@@ -91,8 +91,7 @@ export default class Upload extends Component {
     return fileType
   }
 
-  uploadFiles (e) {
-    let files = e.target.files
+  uploadFiles (files) {
     const {
       fileList
     } = this.state

@@ -10,7 +10,6 @@ class UploadClick extends Upload {
 
   render () {
     const {
-      uploadType,
       buttonText,
       disabled,
       multiple,
@@ -22,14 +21,14 @@ class UploadClick extends Upload {
     } = this.state
 
     return (
-      <div className={'upload-' + uploadType}>
+      <div className='upload-normal'>
         <div>
           <label>
             <input
               ref='upload'
               type='file'
               className='upload-input'
-              onChange={e => this.uploadFiles(e)}
+              onChange={e => this.uploadFiles(e.target.files)}
               multiple={multiple && 'multiple'}
               disabled={disabled && 'disabled'}
               hidden
