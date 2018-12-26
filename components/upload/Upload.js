@@ -7,16 +7,16 @@ import AJAX from './tool'
 export default class Upload extends Component {
   constructor (props) {
     super(props)
-    const fileList = this.props.fileList
+    const fileList = this.props.defaultFileList
     this.state = {
       fileList
     }
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!shallowequal(nextProps.fileList, this.props.fileList)) {
+    if (!shallowequal(nextProps.defaultFileList, this.props.defaultFileList)) {
       this.setState({
-        fileList: nextProps.fileList
+        fileList: nextProps.defaultFileList
       })
     }
   }
@@ -36,11 +36,12 @@ export default class Upload extends Component {
     multiple: PropTypes.bool,
     onUploadSuccess: PropTypes.func,
     onDeleteSuccess: PropTypes.func,
-    deleteParam: PropTypes.object
+    deleteParam: PropTypes.object,
+    defaultFileList: PropTypes.array
   }
 
   static defaultProps = {
-    fileList: [],
+    defaultFileList: [],
     accept: '',
     limit: null,
     buttonIcon: 'upload',
@@ -160,8 +161,8 @@ export default class Upload extends Component {
     } = this.props
 
     fr.onload = e => {
-      const src = e.target.result
-      file.src = src
+      const url = e.target.result
+      file.url = url
       this.setState({ fileList })
     }
     fr.readAsDataURL(file)
@@ -176,7 +177,7 @@ export default class Upload extends Component {
       }
     }
     xhr.upload.onload = () => {
-      file.uploadState = 'right'
+      file.uploadState = 'success'
       this.setState({ fileList })
     }
     xhr.onreadystatechange = () => {
@@ -187,7 +188,7 @@ export default class Upload extends Component {
       }
     }
     xhr.upload.onerror = () => {
-      file.uploadState = 'warning'
+      file.uploadState = 'error'
       this.setState({ fileList })
     }
     xhr.upload.onprogress = event => {

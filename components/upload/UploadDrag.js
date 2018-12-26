@@ -5,7 +5,7 @@ import Upload from './Upload'
 class UploadDrag extends Upload {
   constructor (props) {
     super(props)
-    this.state = Object.assign({},
+    this.state = Object.assign(
       {
         overEvent: false
       },

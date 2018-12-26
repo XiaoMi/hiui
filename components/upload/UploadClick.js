@@ -3,11 +3,6 @@ import Provider from '../context'
 import Upload from './Upload'
 
 class UploadClick extends Upload {
-  constructor (props) {
-    super(props)
-    this.state = Object.assign({}, this.props)
-  }
-
   render () {
     const {
       buttonText,
