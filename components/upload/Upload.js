@@ -107,7 +107,7 @@ export default class Upload extends Component {
       this.setState({ fileList })
       this.uploadFile(file)
     }
-    ReactDOM.findDOMNode(this.refs.upload).value = ''
+    ReactDOM.findDOMNode(this.uploadRef).value = ''
   }
 
   deleteFile (index) {

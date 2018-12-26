@@ -20,7 +20,7 @@ class UploadClick extends Upload {
         <div>
           <label>
             <input
-              ref='upload'
+              ref={node => { this.uploadRef = node }}
               type='file'
               className='upload-input'
               onChange={e => this.uploadFiles(e.target.files)}

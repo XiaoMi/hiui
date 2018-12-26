@@ -77,7 +77,7 @@ class UploadPhoto extends Upload {
           <li>
             <label>
               <input
-                ref='upload'
+                ref={node => { this.uploadRef = node }}
                 type='file'
                 className='upload-input'
                 accept='image/jpg,image/jpeg,image/png'
