@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './style/preview.js'
@@ -7,59 +8,75 @@ export default class Preview extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      imgWidth: 0,
-      imgHeight: 0
+      extraClass: '',
+      style: {}
     }
   }
 
   static propTypes = {
     src: PropTypes.string,
-    show: PropTypes.bool
+    show: PropTypes.bool,
+    onClose: PropTypes.func
   }
 
   onClose () {
     this.setState({
-      imgWidth: 0,
-      imgHeight: 0
+      // style: {},
+      extraClass: ''
     })
     this.props.onClose && this.props.onClose()
   }
 
   imgOnLoad () {
+    const radio = 0.6
+    const imgWidth = this.img.clientWidth
+    const imgHeight = this.img.clientHeight
+    const windowRadio = window.innerWidth / window.innerHeight
+    const imgRadio = imgWidth / imgHeight
+    let extraClass
+    let style = {}
+    if (imgRadio > windowRadio) {
+      extraClass = 'hi-preview--width'
+      const width = window.innerWidth * radio > imgWidth ? imgWidth : window.innerWidth * radio
+      const height = width * 1 / imgRadio
+      style = { width, height }
+    } else {
+      extraClass = 'hi-preview--height'
+      const height = window.innerHeight * radio > imgHeight ? imgHeight : window.innerHeight * radio
+      const width = height * imgRadio
+      style = { width, height }
+    }
+
     this.setState({
-      imgWidth: this.img.clientWidth,
-      imgHeight: this.img.clientHeight
+      extraClass,
+      style
     })
   }
 
   render () {
     const { show, src } = this.props
     const {
-      imgWidth,
-      imgHeight
+      extraClass,
+      style
     } = this.state
-    const windowRadio = window.innerWidth / window.innerHeight
-    const imgRadio = imgHeight > 0 ? imgWidth / imgHeight : 0
-    let extraClass
-    let style = {}
-    if (imgRadio > windowRadio) {
-      extraClass = 'hi-preview--width'
-      style = imgWidth > 0 ? {'width': window.innerWidth * 0.6 > imgWidth ? imgWidth : window.innerWidth * 0.6} : style
-    } else {
-      extraClass = 'hi-preview--height'
-      style = imgHeight > 0 ? {'height': window.innerHeight * 0.6 > imgHeight ? imgHeight : window.innerHeight * 0.6} : style
-    }
 
     return (
-      <div className={classNames('hi-preview', extraClass, {'hi-preview--hide': !show})} onClick={this.onClose.bind(this)}>
-        <div className='hi-preview-image' style={style}>
-          <img
-            ref={node => { this.img = node }}
-            src={src}
-            onLoad={this.imgOnLoad.bind(this)}
-          />
+      <ReactCSSTransitionGroup
+        transitionName='hi-preview'
+        transitionEnterTimeout={300}
+        transitionLeaveTimeout={300}
+        component='div'
+      >
+        <div key={src} className={classNames('hi-preview', extraClass, {'hi-preview--hide': !show})} onClick={this.onClose.bind(this)}>
+          <div className='hi-preview-image' style={style}>
+            <img
+              ref={node => { this.img = node }}
+              src={src}
+              onLoad={this.imgOnLoad.bind(this)}
+            />
+          </div>
         </div>
-      </div>
+      </ReactCSSTransitionGroup>
     )
   }
 }
