@@ -822,7 +822,9 @@ constructor (props) {
 | scroll | 设置横向滚动，也可用于指定滚动区域的宽，建议为`x`设置一个数字，如果不设置，默认table宽度为100%  | number, true  | - |
 | fixTop | 吸顶  | Number , true | false |
 | pagination | 查看分页组件配置  | Object | false |
-
+| striped | 斑马纹 | Bollean | false | 
+| advance | 高级功能 | Object | null | 
+| origin | 服务端功能 | Object | null |
 ### rowSelection
 
 | 参数       | 说明   |  类型  | 默认值  |

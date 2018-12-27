@@ -30,6 +30,13 @@ $nornamFontSize: 14px !default;
   position: relative;
   width: 100%;
 
+  &.striped{
+    table {
+      tr:nth-child(2n) {
+        background: $bgColor;
+      }
+    }
+  }
   &.small {
     table {
       tr {
@@ -197,7 +204,7 @@ $nornamFontSize: 14px !default;
 
     tr {
       transition: 0.2s;
-      cursor: pointer;
+      //cursor: pointer;
       height: $normalHeight;
       font-size: $nornamFontSize;
       padding: 0;

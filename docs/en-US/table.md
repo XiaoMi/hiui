@@ -791,6 +791,8 @@ constructor (props) {
 | data | table datasource  | array | - |
 | emptyText | the text display when data is empty  | string | No Data |
 | scroll | configuration of column scroll  | number, true  | - |
+| striped | striped style | Bollean | false | 
+| advance | advance function | Object | null | null |
 
 ### rowSelection
 
