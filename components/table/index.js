@@ -74,7 +74,6 @@ class Table extends Component {
       rightFixColumns: [],
       columns: [],
       headerColumns: [],
-      loading: false,
       serverPagination: {
         total: 0,
         current: 0
@@ -278,7 +277,6 @@ class Table extends Component {
         this.setState({
           dataSource: data,
           ...columnsDetail,
-          loading: false,
           serverPagination: page
         })
         this.runMemory()
@@ -435,8 +433,8 @@ class Table extends Component {
 
   render () {
     // 多选配置
-    let {pagination, name, size = 'normal'} = this.props
-    let {scroll, columnMenu, loading, serverPagination} = this.state
+    let {pagination, name, size = 'normal', striped = false} = this.props
+    let {scroll, columnMenu, serverPagination} = this.state
 
     let content
     // 不滚动
@@ -463,10 +461,7 @@ class Table extends Component {
     let {columns} = this.state
 
     return (
-      <div className={prifix('table', size)} ref={this.dom}>
-        {
-          loading && ' '
-        }
+      <div className={prifix({table: true, size, striped})} ref={this.dom}>
         <div >
           <div >{content}</div>
         </div>
@@ -780,7 +775,6 @@ class Table extends Component {
       let {data, columns, page} = success(res)
       this.setState({
         dataSource: data,
-        loading: false,
         serverPagination: page
       })
       setTimeout((e) => {
