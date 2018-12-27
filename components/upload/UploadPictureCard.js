@@ -9,7 +9,9 @@ class UploadPictureCard extends Upload {
       showUploadList,
       buttonIcon,
       multiple,
-      disabled
+      disabled,
+      accept,
+      onRemove
     } = this.props
     const {
       fileList
@@ -26,6 +28,7 @@ class UploadPictureCard extends Upload {
               onChange={e => this.uploadFiles(e.target.files)}
               multiple={multiple && 'multiple'}
               disabled={disabled && 'disabled'}
+              accept={accept}
               hidden
             />
             <span
@@ -48,7 +51,7 @@ class UploadPictureCard extends Upload {
               return (
                 <li key={index} title={file.name} className={file.uploadState === 'loading' ? 'loading' : ''}>
                   <div className='img-wrap'>
-                    <img src={file.src} />
+                    <img src={file.url} />
                     {file.uploadState === 'loading' && (<div className='img-mask' />)}
                   </div>
                   <div className='img-info-wrap'>
@@ -57,10 +60,12 @@ class UploadPictureCard extends Upload {
                       {file.uploadState !== 'loading' && (
                         <span className='state-wrap'>
                           <span className={'Ficon-' + file.uploadState} />
-                          <span
-                            className='Ficon-wrong'
-                            onClick={this.deleteFile.bind(this, index)}
-                          />
+                          { onRemove &&
+                            <span
+                              className='Ficon-wrong'
+                              onClick={() => this.deleteFile(file, index)}
+                            />
+                          }
                         </span>
                       )}
                     </p>
@@ -84,5 +89,10 @@ class UploadPictureCard extends Upload {
     )
   }
 }
+UploadPictureCard.defaultProps = Object.assign({}, {
+  ...Upload.defaultProps
+}, {
+  accept: 'image/jpg,image/jpeg,image/png'
+})
 
 export default Provider(UploadPictureCard)

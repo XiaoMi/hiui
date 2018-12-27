@@ -9,7 +9,9 @@ class UploadClick extends Upload {
       disabled,
       multiple,
       buttonIcon,
-      showUploadList
+      showUploadList,
+      onRemove,
+      accept
     } = this.props
     const {
       fileList
@@ -26,6 +28,7 @@ class UploadClick extends Upload {
               onChange={e => this.uploadFiles(e.target.files)}
               multiple={multiple && 'multiple'}
               disabled={disabled && 'disabled'}
+              accept={accept}
               hidden
             />
             <span className={`upload-title ${disabled ? 'disabled' : ''}`}>
@@ -51,10 +54,12 @@ class UploadClick extends Upload {
                     <span className='file-name'>{listName}</span>
                     <span className='state-wrap'>
                       {file.uploadState !== 'loading' && (<span className={'Ficon-' + file.uploadState} />)}
-                      <span
-                        className='Ficon-wrong'
-                        onClick={this.deleteFile.bind(this, index)}
-                      />
+                      { onRemove &&
+                        <span
+                          className='Ficon-wrong'
+                          onClick={() => this.deleteFile(file, index)}
+                        />
+                      }
                     </span>
                   </p>
                   {file.uploadState === 'loading' && (<div className='loading-line-wrap'>

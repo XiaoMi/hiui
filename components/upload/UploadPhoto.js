@@ -37,6 +37,10 @@ class UploadPhoto extends Upload {
       showModal,
       previewFile
     } = this.state
+    const {
+      onRemove,
+      accept
+    } = this.props
 
     return (
       <div className='upload-photo'>
@@ -64,10 +68,12 @@ class UploadPhoto extends Upload {
                         className='icon Ficon-origin'
                         onClick={() => this.previewImage(file)}
                       />
-                      <span
-                        className='icon Ficon-delete-photo'
-                        onClick={this.deleteFile.bind(this, index)}
-                      />
+                      { onRemove &&
+                        <span
+                          className='icon Ficon-delete-photo'
+                          onClick={() => this.deleteFile(file, index)}
+                        />
+                      }
                     </div>
                   </div>
                 </li>
@@ -80,7 +86,7 @@ class UploadPhoto extends Upload {
                 ref={node => { this.uploadRef = node }}
                 type='file'
                 className='upload-input'
-                accept='image/jpg,image/jpeg,image/png'
+                accept={accept}
                 onChange={e => this.uploadFiles(e.target.files)}
                 hidden
               />
@@ -97,5 +103,10 @@ class UploadPhoto extends Upload {
     )
   }
 }
+UploadPhoto.defaultProps = Object.assign({}, {
+  ...Upload.defaultProps
+}, {
+  accept: 'image/jpg,image/jpeg,image/png'
+})
 
 export default Provider(UploadPhoto)

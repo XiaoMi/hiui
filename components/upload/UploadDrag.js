@@ -33,7 +33,9 @@ class UploadDrag extends Upload {
 
   render () {
     const {
-      multiple
+      multiple,
+      accept,
+      onRemove
     } = this.props
     const {
       overEvent,
@@ -66,6 +68,7 @@ class UploadDrag extends Upload {
                 onChange={e => this.uploadFiles(e.target.files)}
                 multiple={multiple && 'multiple'}
                 hidden
+                accept={accept}
               />
             </label>
           </p>
@@ -91,10 +94,12 @@ class UploadDrag extends Upload {
                       {file.uploadState !== 'loading' && (
                         <span className={'Ficon-' + file.uploadState} />
                       )}
-                      <span
-                        className='Ficon-wrong'
-                        onClick={this.deleteFile.bind(this, index)}
-                      />
+                      { onRemove &&
+                        <span
+                          className='Ficon-wrong'
+                          onClick={() => this.deleteFile(file, index)}
+                        />
+                      }
                     </span>
                   </p>
                   {file.uploadState === 'loading' && (

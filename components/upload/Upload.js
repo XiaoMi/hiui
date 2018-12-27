@@ -2,12 +2,12 @@ import { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import shallowequal from 'shallowequal'
-import AJAX from './tool'
+import cloneDeep from 'lodash/cloneDeep'
 
 export default class Upload extends Component {
   constructor (props) {
     super(props)
-    const fileList = this.props.defaultFileList
+    const fileList = cloneDeep(this.props.defaultFileList)
     this.state = {
       fileList
     }
@@ -16,7 +16,7 @@ export default class Upload extends Component {
   componentWillReceiveProps (nextProps) {
     if (!shallowequal(nextProps.defaultFileList, this.props.defaultFileList)) {
       this.setState({
-        fileList: nextProps.defaultFileList
+        fileList: cloneDeep(nextProps.defaultFileList)
       })
     }
   }
@@ -34,14 +34,14 @@ export default class Upload extends Component {
     headers: PropTypes.object,
     showUploadList: PropTypes.bool,
     multiple: PropTypes.bool,
-    onUploadSuccess: PropTypes.func,
-    onDeleteSuccess: PropTypes.func,
-    deleteParam: PropTypes.object,
-    defaultFileList: PropTypes.array
+    onChange: PropTypes.func,
+    defaultFileList: PropTypes.array,
+    onRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool])
   }
 
   static defaultProps = {
     defaultFileList: [],
+    headers: {'Content-type': 'application/x-www-form-urlencoded'},
     accept: '',
     limit: null,
     buttonIcon: 'upload',
@@ -49,9 +49,10 @@ export default class Upload extends Component {
     param: null,
     name: 'file',
     disabled: false,
-    headers: null,
     showUploadList: true,
-    multiple: false
+    multiple: false,
+    onRemove: () => true,
+    onChange: () => {}
     // overEvent: false
   }
 
@@ -110,36 +111,25 @@ export default class Upload extends Component {
     ReactDOM.findDOMNode(this.uploadRef).value = ''
   }
 
-  deleteFile (index) {
+  deleteFile (file, index) {
     const {
       fileList
     } = this.state
     const {
-      deleteParam,
-      onDeleteSuccess
+      onRemove
     } = this.props
-
-    fileList.splice(index, 1)
-
-    if (deleteParam) {
-      deleteParam.success = (res) => {
-        this.setState({
-          fileList
-        }, () => {
-          deleteParam.onDeleteSuccess && deleteParam.onDeleteSuccess({
-            res: res,
-            deletePos: index
-          })
-        })
-      }
-      AJAX(deleteParam)
-    } else {
-      this.setState({
-        fileList
-      }, () => {
-        onDeleteSuccess && onDeleteSuccess({
-          deletePos: index
-        })
+    const doRemove = () => {
+      fileList.splice(index, 1)
+      this.setState({fileList})
+    }
+    const ret = onRemove(file, fileList)
+    if (ret === true) {
+      doRemove()
+    } else if (ret && typeof ret.then === 'function') {
+      ret.then(res => {
+        if (res === true) {
+          doRemove()
+        }
       })
     }
   }
@@ -148,24 +138,27 @@ export default class Upload extends Component {
     const FileReader = window.FileReader
     const XMLHttpRequest = window.XMLHttpRequest
     const FormData = window.FormData
-    const fr = new FileReader()
     const {
       fileList
     } = this.state
     const {
       name,
       param,
-      onUploadSuccess,
+      onChange,
       headers,
       uploadAction
     } = this.props
 
-    fr.onload = e => {
-      const url = e.target.result
-      file.url = url
-      this.setState({ fileList })
+    if (file.fileType === 'img') { // 用来图片预览
+      const fr = new FileReader()
+
+      fr.onload = e => {
+        const url = e.target.result
+        file.url = url
+        this.setState({ fileList })
+      }
+      fr.readAsDataURL(file)
     }
-    fr.readAsDataURL(file)
 
     let xhr = new XMLHttpRequest()
     let formFile = new FormData()
@@ -183,13 +176,14 @@ export default class Upload extends Component {
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
-          onUploadSuccess && onUploadSuccess(JSON.parse(xhr.response))
+          onChange(file, fileList, JSON.parse(xhr.response))
         }
       }
     }
     xhr.upload.onerror = () => {
       file.uploadState = 'error'
       this.setState({ fileList })
+      onChange(file, fileList, {})
     }
     xhr.upload.onprogress = event => {
       var e = event || window.event
