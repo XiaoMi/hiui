@@ -1,4 +1,5 @@
 import React from 'react'
+import classNames from 'classnames'
 import Provider from '../context'
 import Upload from './Upload'
 
@@ -87,16 +88,16 @@ class UploadDrag extends Upload {
                   : listName.join('.')
               return (
                 <li key={index} title={file.name}>
-                  <p>
-                    <span className={'Ficon-' + file.curType} />
-                    <span className='file-name'>{listName}</span>
-                    <span className='state-wrap'>
+                  <p className='upload-list__item'>
+                    <span className={classNames(`Ficon-${file.fileType}`, 'upload-list__item-icon')} />
+                    <span className='file-name upload-list__item-name'>{listName}</span>
+                    <span className='state-wrap upload-list__item-status'>
                       {file.uploadState !== 'loading' && (
-                        <span className={'Ficon-' + file.uploadState} />
+                        <span className={'Ficon-' + this.uploadStatusIcon(file.uploadState)} />
                       )}
                       { onRemove &&
                         <span
-                          className='Ficon-wrong'
+                          className='Ficon-wrong upload-list__item-remove'
                           onClick={() => this.deleteFile(file, index)}
                         />
                       }

@@ -1,4 +1,5 @@
 import React from 'react'
+import classNames from 'classnames'
 import Provider from '../context'
 import Upload from './Upload'
 
@@ -49,14 +50,14 @@ class UploadClick extends Upload {
                   key={index}
                   title={file.name}
                 >
-                  <p>
-                    <span className={'Ficon-' + file.fileType} />
-                    <span className='file-name'>{listName}</span>
-                    <span className='state-wrap'>
-                      {file.uploadState !== 'loading' && (<span className={'Ficon-' + file.uploadState} />)}
+                  <p className='upload-list__item'>
+                    <span className={classNames(`Ficon-${file.fileType}`, 'upload-list__item-icon')} />
+                    <span className='file-name upload-list__item-name'>{listName}</span>
+                    <span className='state-wrap upload-list__item-status'>
+                      {file.uploadState !== 'loading' && (<span className={'Ficon-' + this.uploadStatusIcon(file.uploadState)} />)}
                       { onRemove &&
                         <span
-                          className='Ficon-wrong'
+                          className='Ficon-wrong upload-list__item-remove'
                           onClick={() => this.deleteFile(file, index)}
                         />
                       }

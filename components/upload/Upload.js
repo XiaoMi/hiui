@@ -201,4 +201,17 @@ export default class Upload extends Component {
     }
     xhr.send(formFile)
   }
+
+  uploadStatusIcon (status) {
+    switch (status) {
+      case 'success':
+        return 'right'
+
+      case 'error':
+        return 'warning'
+
+      default:
+        return ''
+    }
+  }
 }

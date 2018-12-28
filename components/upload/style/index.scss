@@ -2,6 +2,25 @@
 .file-name {
   margin-left: 10px;
 }
+.upload-list__item {
+  display: flex;
+  &-icon {
+    flex: none;
+  }
+  &-name {
+    flex: auto;
+    margin-right: 8px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  &-status {
+    flex: none;
+  }
+  &-remove {
+    margin-left: 8px;
+  }
+}
 
 .loading-line-wrap {
   width: 325px;
@@ -86,9 +105,9 @@
       .state-wrap {
         float: right;
 
-        > span {
-          margin: 0 8px;
-        }
+        // > span {
+        //   margin: 0 8px;
+        // }
 
         .icon-wrong {
           display: none;
@@ -188,9 +207,9 @@
       .state-wrap {
         float: right;
 
-        > span {
-          margin: 0 8px;
-        }
+        // > span {
+        //   margin: 0 8px;
+        // }
 
         .icon-wrong {
           display: none;

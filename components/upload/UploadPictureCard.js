@@ -55,14 +55,14 @@ class UploadPictureCard extends Upload {
                     {file.uploadState === 'loading' && (<div className='img-mask' />)}
                   </div>
                   <div className='img-info-wrap'>
-                    <p className='file-wrap'>
-                      <span className='file-name'>{listName}</span>
+                    <p className='upload-list__item file-wrap'>
+                      <span className='file-name upload-list__item-name'>{listName}</span>
                       {file.uploadState !== 'loading' && (
-                        <span className='state-wrap'>
-                          <span className={'Ficon-' + file.uploadState} />
+                        <span className='state-wrap upload-list__item-status'>
+                          <span className={'Ficon-' + this.uploadStatusIcon(file.uploadState)} />
                           { onRemove &&
                             <span
-                              className='Ficon-wrong'
+                              className='Ficon-wrong upload-list__item-remove'
                               onClick={() => this.deleteFile(file, index)}
                             />
                           }
