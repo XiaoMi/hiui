@@ -1,31 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
-import PropTypes from 'prop-types'
-import AJAX from './tool'
 import Modal from '../modal'
 import Provider from '../context'
+import Upload from './Upload'
 
-class UploadAvatar extends Component {
-  static propTypes = {
-    uploadType: PropTypes.string,
-    accept: PropTypes.string,
-    limit: PropTypes.number,
-    buttonText: PropTypes.string,
-    buttonIcon: PropTypes.string,
-    uploadAction: PropTypes.string,
-    deleteAction: PropTypes.string,
-    param: PropTypes.object,
-    name: PropTypes.string,
-    disabled: PropTypes.bool,
-    headers: PropTypes.object,
-    showUploadList: PropTypes.bool,
-    multiple: PropTypes.bool,
-    onUploadSuccess: PropTypes.func,
-    onDeleteSuccess: PropTypes.func,
-    deleteParam: PropTypes.object,
-    defaultFileList: PropTypes.array
-  }
-
+class UploadAvatar extends Upload {
   dom = {
     CanvasModal: null,
     CanvasMock: null,
@@ -49,34 +28,16 @@ class UploadAvatar extends Component {
     left: 0
   }
 
-  static defaultProps = {
-    uploadState: '',
-    progressNumber: 0,
-    file: '',
-    uploadType: 'avater',
-    accept: '',
-    limit: null,
-    buttonIcon: 'upload',
-    uploadAction: '',
-    deleteAction: '',
-    param: null,
-    name: 'file',
-    disabled: false,
-    headers: null,
-    showUploadList: true,
-    multiple: false,
-    defaultFileList: []
-  }
   constructor (props) {
     super(props)
-    this.state = Object.assign({
-      uploading: false,
-      progressNumber: 0,
-      show: false,
-      file: props.defaultFileList && props.defaultFileList[0]
-    }, this.props)
-
-    console.log(this.state.file)
+    this.state = Object.assign(
+      {
+        uploading: false,
+        progressNumber: 0,
+        show: false
+      },
+      this.state
+    )
 
     this.onMouseMove = this.onMouseMove.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
@@ -95,19 +56,12 @@ class UploadAvatar extends Component {
     this.canvasPosition = JSON.parse(json)
   }
 
-  getChangeFiles (e) {
-    let _files = e.target.files
-
+  uploadFiles (files) {
     this.setState({show: true}, () => {
-      this.handleChange(_files)
+      if (files.length === 0) return
+      this.setState({uploadState: 'loading'})
+      this.handleFile(files[0])
     })
-  }
-
-  handleChange (_files) {
-    if (_files.length === 0) return
-    this.setState({uploadState: 'loading'})
-    this.handleFile(_files[0])
-    // ReactDOM.findDOMNode(this.refs.upload).value = ''
   }
 
   handleFile (file) {
@@ -186,26 +140,6 @@ class UploadAvatar extends Component {
     xhr.send(formFile)
   }
 
-  deletFile (n) {
-    let _self = this
-    if (_self.props.deleteParam) {
-      const deleteParam = _self.props.deleteParam
-      deleteParam.success = (res) => {
-        _self.setState({file: ''}, () => {
-          deleteParam.onDeleteSuccess({
-            res: res
-          })
-        })
-      }
-      if (deleteParam) {
-        AJAX(deleteParam)
-      }
-    } else {
-      _self.setState({file: ''}, () => {
-        _self.props.onDeleteSuccess && _self.props.onDeleteSuccess()
-      })
-    }
-  }
 
   resetParams () {
     this.dom = {
@@ -238,19 +172,19 @@ class UploadAvatar extends Component {
     })
   }
 
-  // base2blob (dataurl) {
-  //   let arr = dataurl.split(',')
-  //   const mime = arr[0].match(/:(.*?);/)[1]
-  //   const  bstr = atob(arr[1])
-  //   let n = bstr.length
-  //   let u8arr = new Uint8Array(n)
-  //   while (n--) {
-  //     u8arr[n] = bstr.charCodeAt(n)
-  //   }
-  //   return new Blob([u8arr], {
-  //     type: mime
-  //   })
-  // }
+  base2blob (dataurl) {
+    let arr = dataurl.split(',')
+    const mime = arr[0].match(/:(.*?);/)[1]
+    const  bstr = atob(arr[1])
+    let n = bstr.length
+    let u8arr = new Uint8Array(n)
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n)
+    }
+    return new File([u8arr], {
+      type: mime
+    })
+  }
 
   cancel () {
     this.resetParams()
@@ -270,9 +204,11 @@ class UploadAvatar extends Component {
 
     context.drawImage(this.dom.CanvasReal, size.x, size.y, size.w, size.h, 0, 0, size.w, size.h)
     const dataUrl = this.dom.CanvasMock.toDataURL()
+    const file = this.base2blob(dataUrl)
+    console.log('---------base2blob', file)
 
-    this.setState({file: dataUrl})
-    this.upload(dataUrl)
+    // this.setState({file: dataUrl})
+    this.uploadFile(file)
     this.resetParams()
   }
 
@@ -379,15 +315,19 @@ class UploadAvatar extends Component {
   }
 
   render () {
-    const { uploadType } = this.props
+    const { 
+      onRemove
+    } = this.props
     const {
       uploadState,
       progressNumber,
-      file
+      fileList
     } = this.state
+    const file = fileList[0]
+    console.log('----------file', file)
 
     return (
-      <div className={'upload-' + uploadType}>
+      <div className="upload-avatar">
         <ul className='photo-display' ref='photodisplay'>
           {/* {this.props.allPhotoFiles.map((file, index) => {
             if (file.uploadState === 'loading') {
@@ -425,7 +365,7 @@ class UploadAvatar extends Component {
                   ? (
                     <li>
                       <div className='img-uploading'>
-                        <img src={file} />
+                        <img src={file.url} />
                         <div className='upload-precent'>
                           <p className='precent-num'>{progressNumber ? (progressNumber < 100 ? (progressNumber + '%') : '上传成功') : (0 + '%')}</p>
                           <div className='precent-loading' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
@@ -436,16 +376,18 @@ class UploadAvatar extends Component {
                   : (
                     <li>
                       <div className='img-uploaded'>
-                        <img src={file} />
+                        <img src={file.url} />
                         <div className='upload-comperate'>
                           <span
                             className='icon Ficon-origin'
                             onClick={() => console.log('show origin photo')}
                           />
-                          <span
-                            className='icon Ficon-delete-photo'
-                            onClick={this.deletFile.bind(this)}
-                          />
+                          { onRemove &&
+                            <span
+                              className='icon Ficon-delete-photo'
+                              onClick={() => this.deletFile(file, index)}
+                            />
+                          }
                         </div>
                       </div>
                     </li>
@@ -461,7 +403,7 @@ class UploadAvatar extends Component {
                     type='file'
                     className='upload-input'
                     accept='image/jpg,image/jpeg,image/png'
-                    onChange={e => this.getChangeFiles(e)}
+                    onChange={e => this.uploadFiles(e.target.files)}
                     hidden
                   />
                   <span className='photo-upload'>+</span>
