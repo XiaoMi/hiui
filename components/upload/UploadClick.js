@@ -19,7 +19,7 @@ class UploadClick extends Upload {
     } = this.state
 
     return (
-      <div className='upload-normal'>
+      <div className='hi-upload upload-normal'>
         <div>
           <label>
             <input

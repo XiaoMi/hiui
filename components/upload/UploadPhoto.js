@@ -1,4 +1,5 @@
 import React from 'react'
+import classNames from 'classnames'
 import Provider from '../context'
 import Upload from './Upload'
 import Preview from './Preview'
@@ -39,11 +40,12 @@ class UploadPhoto extends Upload {
     } = this.state
     const {
       onRemove,
+      disabled,
       accept
     } = this.props
 
     return (
-      <div className='upload-photo'>
+      <div className={classNames('hi-upload upload-photo', {'hi-upload--disabled': disabled})}>
         <ul className='photo-display' ref='photodisplay'>
           {fileList.map((file, index) => {
             if (file.uploadState === 'loading') {
@@ -87,6 +89,7 @@ class UploadPhoto extends Upload {
                 type='file'
                 className='upload-input'
                 accept={accept}
+                disabled={disabled && 'disabled'}
                 onChange={e => this.uploadFiles(e.target.files)}
                 hidden
               />

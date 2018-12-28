@@ -327,7 +327,7 @@ class UploadAvatar extends Upload {
     console.log('----------file', file)
 
     return (
-      <div className="upload-avatar">
+      <div className="hi-upload upload-avatar">
         <ul className='photo-display' ref='photodisplay'>
           {/* {this.props.allPhotoFiles.map((file, index) => {
             if (file.uploadState === 'loading') {

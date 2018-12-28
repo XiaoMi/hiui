@@ -2,6 +2,24 @@
 .file-name {
   margin-left: 10px;
 }
+.hi-upload {
+  p {
+    margin: 0;
+    padding: 0;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    list-style: none;
+  }
+  &-label {
+    cursor: inherit;
+  }
+}
 .upload-list__item {
   display: flex;
   &-icon {
@@ -53,27 +71,10 @@
   }
 }
 
-.upload-drag,
-.upload-photo,
-.upload-avatar,
-.upload-canvas,
-.upload-pictureCard,
 .upload-normal {
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  li {
-    list-style: none;
-  }
-}
-
-.upload-normal {
-  p {
-    margin: 0;
-    padding: 0;
+  
+  .upload--disabled {
+    cursor: not-allowed;
   }
 
   .upload-title {
@@ -130,68 +131,71 @@
 }
 
 .upload-drag {
-  p {
-    margin: 0;
-    padding: 0;
+  position: relative;
+  width: 400px;
+  min-height: 120px;
+  max-height: 200px;
+  overflow: auto;
+  border: 1px dotted #bcbcbc;
+  cursor: pointer;
+  &:hover {
+    border-color: #0099fb;
   }
 
-  .drop-wrap {
-    width: 400px;
-    min-height: 120px;
-    max-height: 200px;
-    overflow: auto;
-    border: 1px dotted #bcbcbc;
-    // cursor: default;
-    cursor: pointer;
-    position: relative;
-
-    .drop-content {
-      display: none;
+  &.hi-upload--disabled {
+    cursor: not-allowed;
+    opacity: .6;
+    &,
+    &:hover {
+      border-color: #d9d9d9;
     }
-
     .drop-click {
-      cursor: pointer;
+      cursor: not-allowed;
     }
+  }
+  .drop-content {
+    display: none;
+  }
 
-    .show-drop-content {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      margin: auto;
-      display: inline-block;
-      height: 60px;
-      text-align: center;
-      font-size: 12px;
-      color: #333;
-      letter-spacing: 0;
-      text-align: center;
-      line-height: 20px;
-      cursor: pointer;
+  .drop-click {
+    // cursor: pointer;
+  }
 
-      .icon {
-        display: block;
-        cursor: pointer;
-        margin-bottom: 10px;
+  .show-drop-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    display: inline-block;
+    height: 60px;
+    text-align: center;
+    font-size: 12px;
+    color: #333;
+    letter-spacing: 0;
+    text-align: center;
+    line-height: 20px;
+    cursor: inherit;
 
-        &::before {
-          font-size: 30px;
-          color: #4284f5;
-        }
+    .icon {
+      display: block;
+      cursor: inherit;
+      margin-bottom: 10px;
+
+      &::before {
+        font-size: 30px;
+        color: #4284f5;
       }
     }
-    // .drop-click{
-    //   color: #6fccfc;
-    // }
-    &:hover {
-      border-color: #0099fb;
-    }
   }
-
+  // .drop-click{
+  //   color: #6fccfc;
+  // }
   .drop-over {
     border: 1px dashed #0099fb;
   }
+
 
   .upload-list {
     padding: 20px;
@@ -206,10 +210,6 @@
 
       .state-wrap {
         float: right;
-
-        // > span {
-        //   margin: 0 8px;
-        // }
 
         .icon-wrong {
           display: none;
@@ -236,6 +236,15 @@
 }
 
 .upload-photo {
+  &.hi-upload--disabled {
+    .photo-upload {
+      cursor: not-allowed;
+      &,
+      &:hover {
+        border-color: #d9d9d9;
+      }
+    }
+  }
   .photo-display {
     width: 480px;
     padding: 20px 0 0 20px;
@@ -260,6 +269,11 @@
     margin-right: 20px;
     margin-bottom: 20px;
     overflow: hidden;
+    &:hover {
+      .upload-comperate {
+        display: block;
+      }
+    }
 
     .photo-upload {
       margin: 0;
@@ -271,6 +285,11 @@
       font-size: 50px;
       color: #8b939b;
       cursor: pointer;
+      border: 1px dotted #bcbcbc;
+      box-sizing: border-box;
+      &:hover {
+        border-color: #0099fb;
+      }
     }
 
     .upload-comperate {
@@ -353,20 +372,6 @@
         margin: auto;
       }
     }
-
-    &:hover {
-      .upload-comperate {
-        display: block;
-      }
-    }
-  }
-
-  li:last-child {
-    border: 1px dotted #bcbcbc;
-  }
-
-  li:last-child:hover {
-    border: 1px dotted #0099fb;
   }
 }
 
@@ -590,9 +595,9 @@
 }
 
 .upload-pictureCard {
-  p {
-    margin: 0;
-    padding: 0;
+  
+  .upload--disabled {
+    cursor: not-allowed;
   }
 
   .upload-title {

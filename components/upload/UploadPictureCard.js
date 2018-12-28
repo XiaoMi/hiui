@@ -18,7 +18,7 @@ class UploadPictureCard extends Upload {
     } = this.state
 
     return (
-      <div className='upload-pictureCard'>
+      <div className='hi-upload upload-pictureCard'>
         <div>
           <label>
             <input
