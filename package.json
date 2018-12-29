@@ -1,6 +1,6 @@
 {
-  "name": "@hi-ui/hiui2",
-  "version": "1.2.1",
+  "name": "@hi-ui/hiui",
+  "version": "1.3.0-beta.1",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
@@ -35,7 +35,6 @@
   "dependencies": {
     "@hi-ui/classic-theme": "^0.9.6",
     "@hi-ui/core-css": "^1.0.0",
-    "@hi-ui/hiui": "^1.2.1",
     "async-validator": "^1.8.5",
     "axios": "^0.18.0",
     "classnames": "^2.2.5",

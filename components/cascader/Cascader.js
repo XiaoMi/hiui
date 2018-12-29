@@ -158,11 +158,10 @@ class Cascader extends Component {
       cascaderValue: value
     }, () => {
       if (changeOnSelect || !hasChildren) {
-        onChange(value)
         this.setState({
           cacheValue: value,
           cascaderLabel: this.getCascaderLabel(value)
-        })
+        }, () => onChange(value))
       }
       if (hasChildren) {
         onActiveItemChange(value)
