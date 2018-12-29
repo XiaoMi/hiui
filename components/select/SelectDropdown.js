@@ -58,12 +58,15 @@ export default class SelectDropdown extends Component {
       focusedIndex,
       matchFilter,
       noFoundTip,
-      loading
+      loading,
+      optionWidth
     } = this.props
     let matched = 0
-
+    const style = optionWidth && {
+      width: optionWidth
+    }
     return (
-      <div className='hi-select__dropdown' onClick={this.props.onClick}>
+      <div className='hi-select__dropdown' onClick={this.props.onClick} style={style}>
         {
           loading &&
           <div className='hi-select__dropdown--loading'>
@@ -80,7 +83,6 @@ export default class SelectDropdown extends Component {
                   // const isSelected = selectedItems[item.id]
                   const isSelected = this.itemSelected(item)
                   const isDisabled = item.disabled
-
                   return (
                     <li
                       className={classNames('hi-select__dropdown--item', {'is-active': isSelected, 'is-disabled': isDisabled, 'hi-select__dropdown--item-default': !item.children})}

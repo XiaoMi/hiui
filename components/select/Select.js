@@ -426,7 +426,9 @@ class Select extends Component {
       clearable,
       style,
       children,
-      noFoundTip
+      noFoundTip,
+      optionWidth,
+      selectedShowMode
     } = this.props
     const placeholder = this.localeDatasProps('placeholder')
     const {
@@ -455,6 +457,8 @@ class Select extends Component {
             placeholder={placeholder}
             selectedItems={selectedItems}
             dropdownItems={dropdownItems}
+            selectedShowMode={selectedShowMode}
+            container={this.selectInputContainer}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
             onClick={this.handleInputClick.bind(this)}
             onDelete={this.deleteItem.bind(this)}
@@ -472,6 +476,7 @@ class Select extends Component {
             focusedIndex={focusedIndex}
             matchFilter={this.matchFilter.bind(this)}
             setFocusedIndex={this.setFocusedIndex.bind(this)}
+            optionWidth={optionWidth}
             dropdownItems={dropdownItems}
             selectedItems={selectedItems}
             onClickOption={this.onClickOption.bind(this)}
