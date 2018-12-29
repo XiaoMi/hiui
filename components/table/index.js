@@ -237,7 +237,7 @@ class Table extends Component {
       const {
         data,
         url,
-        header,
+        headers,
         type = 'GET',
         success = (res) => {},
         error = () => {},
@@ -268,8 +268,8 @@ class Table extends Component {
       } else {
         options.data = requestParams
       }
-      if (header) {
-        options.header = header
+      if (headers) {
+        options.headers = headers
       }
       axios.request(options).then(res => {
         let {data, columns, page} = success(res)
@@ -741,7 +741,7 @@ class Table extends Component {
       origin: {
         data,
         url,
-        header,
+        headers,
         type = 'GET',
         success = (res) => {},
         error = () => {},
@@ -767,8 +767,8 @@ class Table extends Component {
     } else {
       options.data = requestParams
     }
-    if (header) {
-      options.header = header
+    if (headers) {
+      options.headers = headers
     }
 
     axios(options).then(res => {
