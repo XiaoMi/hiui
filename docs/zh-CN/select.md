@@ -121,7 +121,7 @@ render () {
 				{
 	        this.state.singleList.map(item => {
 	          return (
-	            <Select.Option key={item.id} name={item.name} id={item.id}>
+	            <Select.Option key={item.id} name={item.name} id={item.id} disabled={item.disabled}>
 	              <span style={{float: 'left'}}>{item.name}</span>
 	              <span style={{float: 'right', color: '#999', fontSize: 14}}>{item.id}</span>
 	            </Select.Option>
