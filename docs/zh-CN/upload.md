@@ -187,15 +187,9 @@ render () {
 			uploadType="avatar"
 			uploadAction= "http://10.236.91.199:3005/upload"
 			headers={{"Content-type":"application/x-www-form-urlencoded",name: 'mi'}}
-			onUploadSuccess = {(res) => {console.log(res,'success callback')}}
-			onDeleteSuccess = {(res) => {console.log(res,'normal delete callback')}}
 			param={{id:'uid',channel:'youpin'}}
-			deleteParam={{
-				deleteAction: 'http://10.236.91.199:3005/del',
-				type: 'POST',
-				hearders:{"Content-type":"application/x-www-form-urlencoded",name: 'mi'},
-				param: {type:'del',id:3},
-				onDeleteSuccess: function(res) {console.log(res,'delete callback')}
+			onChange = {(file, fileList, response) => {
+				console.log('upload callback', file, fileList, response)
 			}}
 			name='uploadAvatar'
 		/>
@@ -247,4 +241,4 @@ render () {
 |multiple|是否支持多选文件|boolean|否|false|
 |defaultFileList|带默认列表的上传|array[object](object参见上面demo)|否|无|
 |onChange|上传回调|function(file, fileList, response)|否|无|
-|onRemove|删除上传的文件,为false时不可删除。当function返回true或者返回promise（如果promise resolve(true)）则会在前端删除文件（可参考demo：照片墙上传）|function(file, fileList)，boolean|否|一个返回true的库空函数，即前端删除|
+|onRemove|删除上传的文件,为false时不可删除。当function返回true或者返回promise（如果promise resolve(true)）则会在前端删除文件（可参考demo：照片墙上传）|function(file, fileList)，boolean|否|一个返回true的空函数，即前端删除|

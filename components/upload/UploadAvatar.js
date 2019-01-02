@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import Modal from '../modal'
 import Provider from '../context'
 import Upload from './Upload'
+import Preview from './Preview'
 
 class UploadAvatar extends Upload {
   dom = {
@@ -32,8 +33,8 @@ class UploadAvatar extends Upload {
     super(props)
     this.state = Object.assign(
       {
-        uploading: false,
-        progressNumber: 0,
+        showPreviewModal: false,
+        previewFile: {},
         show: false
       },
       this.state
@@ -96,51 +97,6 @@ class UploadAvatar extends Upload {
     }
   }
 
-  upload (dataUrl) {
-    const _self = this
-    const XMLHttpRequest = window.XMLHttpRequest
-    let xhr = new XMLHttpRequest()
-    const FormData = window.FormData
-    let formFile = new FormData()
-
-    formFile.append(_self.props.name, dataUrl)
-    for (let i in this.state.param) {
-      if (i) {
-        formFile.append(i, this.state.param[i])
-      }
-    }
-    xhr.upload.onload = () => {
-      this.setState({ uploadState: 'right' })
-    }
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          _self.props.onUploadSuccess && _self.props.onUploadSuccess(JSON.parse(xhr.response))
-        }
-      }
-    }
-    xhr.upload.onerror = () => {
-      this.setState({ uploadState: 'uploadState' })
-    }
-    xhr.upload.onprogress = event => {
-      var e = event || window.event
-      var percentComplete = Math.ceil(e.loaded / e.total * 100)
-
-      this.setState({ progressNumber: percentComplete })
-    }
-    xhr.open('post', this.state.uploadAction, true)
-    // 设置用户传入的请求头
-    if (this.state.headers) {
-      for (let j in this.state.headers) {
-        if (j) {
-          xhr.setRequestHeader(j, this.state.headers[j])
-        }
-      }
-    }
-    xhr.send(formFile)
-  }
-
-
   resetParams () {
     this.dom = {
       CanvasModal: null,
@@ -166,8 +122,6 @@ class UploadAvatar extends Upload {
     }
     ReactDOM.findDOMNode(this.refs.upload).value = ''
     this.setState({
-      uploadState: '',
-      progressNumber: 0,
       show: false
     })
   }
@@ -190,6 +144,14 @@ class UploadAvatar extends Upload {
     this.resetParams()
   }
 
+  prepareFile() {
+    const file = {
+      fileType: 'img'
+    }
+
+    return file
+  }
+
   confirm () {
     const style = window.getComputedStyle(this.dom.CanvasModal, null)
     const size = {
@@ -204,11 +166,17 @@ class UploadAvatar extends Upload {
 
     context.drawImage(this.dom.CanvasReal, size.x, size.y, size.w, size.h, 0, 0, size.w, size.h)
     const dataUrl = this.dom.CanvasMock.toDataURL()
-    const file = this.base2blob(dataUrl)
-    console.log('---------base2blob', file)
+    // const file = this.base2blob(dataUrl)
+    // console.log('---------base2blob', file)
 
     // this.setState({file: dataUrl})
-    this.uploadFile(file)
+    const file = this.prepareFile()
+    // console.log('---------file', file)
+    this.setState({
+      fileList: [file]
+    }, ()=>{
+      this.uploadFile(file, dataUrl)
+    })
     this.resetParams()
   }
 
@@ -314,60 +282,44 @@ class UploadAvatar extends Upload {
     }
   }
 
+  closeModal () {
+    this.setState({
+      previewFile: {},
+      showPreviewModal: false
+    })
+  }
+
+  previewImage (file) {
+    this.setState({
+      previewFile: file,
+      showPreviewModal: true
+    })
+  }
+
   render () {
     const { 
       onRemove
     } = this.props
     const {
-      uploadState,
-      progressNumber,
-      fileList
+      fileList,
+      previewFile,
+      showPreviewModal
     } = this.state
     const file = fileList[0]
-    console.log('----------file', file)
 
     return (
       <div className="hi-upload upload-avatar">
         <ul className='photo-display' ref='photodisplay'>
-          {/* {this.props.allPhotoFiles.map((file, index) => {
-            if (file.uploadState === 'loading') {
-              return (<li key={index}>
-                <div className='img-uploading'>
-                  <img src={file.src} />
-                  <div className='upload-precent'>
-                    <p className='precent-num'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : '上传成功') : (0 + '%')}</p>
-                    <div className='precent-loading' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
-                  </div>
-                </div>
-              </li>)
-            } else {
-              return (<li key={index}>
-                <div className='img-uploaded'>
-                  <img src={file.src} />
-                  <div className='upload-comperate'>
-                    <span
-                      className='icon Ficon-origin'
-                      onClick={() => console.log('show origin photo')}
-                    />
-                    <span
-                      className='icon Ficon-delete-photo'
-                      onClick={this.deletFile.bind(this, index)}
-                    />
-                  </div>
-                </div>
-              </li>)
-            }
-          })} */}
           {
             file
               ? (
-                uploadState === 'loading'
+                file.uploadState === 'loading'
                   ? (
                     <li>
                       <div className='img-uploading'>
                         <img src={file.url} />
                         <div className='upload-precent'>
-                          <p className='precent-num'>{progressNumber ? (progressNumber < 100 ? (progressNumber + '%') : '上传成功') : (0 + '%')}</p>
+                          <p className='precent-num'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : '上传成功') : (0 + '%')}</p>
                           <div className='precent-loading' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
                         </div>
                       </div>
@@ -380,12 +332,12 @@ class UploadAvatar extends Upload {
                         <div className='upload-comperate'>
                           <span
                             className='icon Ficon-origin'
-                            onClick={() => console.log('show origin photo')}
+                            onClick={() => this.previewImage(file)}
                           />
                           { onRemove &&
                             <span
                               className='icon Ficon-delete-photo'
-                              onClick={() => this.deletFile(file, index)}
+                              onClick={() => this.deleteFile(file, 0)}
                             />
                           }
                         </div>
@@ -448,6 +400,11 @@ class UploadAvatar extends Upload {
             </div>
           </div>
         </Modal>
+        <Preview
+          src={previewFile.url}
+          show={showPreviewModal}
+          onClose={this.closeModal.bind(this)}
+        />
       </div>
     )
   }

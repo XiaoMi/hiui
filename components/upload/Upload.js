@@ -134,7 +134,7 @@ export default class Upload extends Component {
     }
   }
 
-  uploadFile (file) {
+  uploadFile (file, dataUrl = '') {
     const FileReader = window.FileReader
     const XMLHttpRequest = window.XMLHttpRequest
     const FormData = window.FormData
@@ -150,19 +150,28 @@ export default class Upload extends Component {
     } = this.props
 
     if (file.fileType === 'img') { // 用来图片预览
-      const fr = new FileReader()
+      if (dataUrl) {
+        file.url = dataUrl
+      } else {
+        const fr = new FileReader()
 
-      fr.onload = e => {
-        const url = e.target.result
-        file.url = url
-        this.setState({ fileList })
+        fr.onload = e => {
+          const url = e.target.result
+          file.url = url
+          this.setState({ fileList })
+        }
+        fr.readAsDataURL(file)
       }
-      fr.readAsDataURL(file)
     }
 
     let xhr = new XMLHttpRequest()
     let formFile = new FormData()
-    formFile.append(name, file)
+
+    if (dataUrl) {
+      formFile.append(name, dataUrl)
+    } else {
+      formFile.append(name, file)
+    }
     // 设置除file外需要带入的参数
     if (param) {
       for (let i in param) {
