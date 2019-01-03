@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import shallowEqual from 'shallowequal'
 import debounce from 'lodash/debounce'
+import cloneDeep from 'lodash/cloneDeep'
 import Popper from '../popper'
 import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
@@ -47,7 +48,7 @@ class Select extends Component {
     let {
       list
     } = this.props
-    const dropdownItems = list
+    const dropdownItems = cloneDeep(list)
     const selectedItems = this.resetSelectedItems(this.props)
     const searchable = this.getSearchable()
     this.debouncedFilterItems = debounce(this.onFilterItems.bind(this), 300)
@@ -109,7 +110,7 @@ class Select extends Component {
     }
     if (!shallowEqual(props.list, this.props.list)) {
       this.setState({
-        dropdownItems: props.list
+        dropdownItems: cloneDeep(props.list)
       })
     }
   }
@@ -426,7 +427,9 @@ class Select extends Component {
       clearable,
       style,
       children,
-      noFoundTip
+      noFoundTip,
+      optionWidth,
+      selectedShowMode
     } = this.props
     const placeholder = this.localeDatasProps('placeholder')
     const {
@@ -455,6 +458,8 @@ class Select extends Component {
             placeholder={placeholder}
             selectedItems={selectedItems}
             dropdownItems={dropdownItems}
+            selectedShowMode={selectedShowMode}
+            container={this.selectInputContainer}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
             onClick={this.handleInputClick.bind(this)}
             onDelete={this.deleteItem.bind(this)}
@@ -472,6 +477,7 @@ class Select extends Component {
             focusedIndex={focusedIndex}
             matchFilter={this.matchFilter.bind(this)}
             setFocusedIndex={this.setFocusedIndex.bind(this)}
+            optionWidth={optionWidth}
             dropdownItems={dropdownItems}
             selectedItems={selectedItems}
             onClickOption={this.onClickOption.bind(this)}

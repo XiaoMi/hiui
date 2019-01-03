@@ -121,7 +121,7 @@ render () {
 				{
 	        this.state.singleList.map(item => {
 	          return (
-	            <Select.Option key={item.id} name={item.name} id={item.id}>
+	            <Select.Option key={item.id} name={item.name} id={item.id} disabled={item.disabled}>
 	              <span style={{float: 'left'}}>{item.name}</span>
 	              <span style={{float: 'right', color: '#999', fontSize: 14}}>{item.id}</span>
 	            </Select.Option>
@@ -196,20 +196,38 @@ constructor () {
 
 render () {
 	return (
-		<div>
-			<Select
-				mode='multiple'
-				style={{width: '300px'}}
-				list={this.state.multipleList}
-				value={['4', '5']}
-				searchable={true}
-				placeholder='请选择...'
-				noFoundTip='无匹配数据'
-				onChange={(item) => {
-						console.log('多选结果', item)
-				}}
-			/>
-		</div>
+		<React.Fragment>
+			<div>
+				<Select
+					mode='multiple'
+					style={{width: '300px'}}
+					list={this.state.multipleList}
+					value={['4', '5']}
+					searchable={true}
+					placeholder='请选择...'
+					noFoundTip='无匹配数据'
+					onChange={(item) => {
+							console.log('多选结果', item)
+					}}
+				/>
+			</div>
+			<div>
+				<Select
+					mode='multiple'
+					style={{width: '150px'}}
+					optionWidth={400}
+					selectedShowMode="number"
+					list={this.state.multipleList}
+					value={['4', '5']}
+					searchable={true}
+					placeholder='请选择...'
+					noFoundTip='无匹配数据'
+					onChange={(item) => {
+							console.log('多选结果', item)
+					}}
+				/>
+			</div>
+		</React.Fragment>
 	)
 }
 ```
