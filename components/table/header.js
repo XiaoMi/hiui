@@ -47,7 +47,7 @@ class ServerSorter extends Component {
           <Icon
             name={'up'}
             onClick={(e) => {
-              let {item: {serverSort}, cbs: {fetch}} = this.props
+              let {item: {serverSort}, fetch} = this.props
               fetch(serverSort[0])
             }}
             style={{fontSize: '12px'}} /></span>
@@ -55,8 +55,8 @@ class ServerSorter extends Component {
           <Icon
             name={'down'}
             onClick={(e) => {
-              let {item: {serverSort}, cbs: {fetch}} = this.props
-              fetch(serverSort[0])
+              let {item: {serverSort}, fetch} = this.props
+              fetch(serverSort[1])
             }}
             style={{fontSize: '12px'}}
           />
