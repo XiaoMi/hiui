@@ -18,9 +18,9 @@ render () {
 	return (
 		<div>
 			<Upload
-				uploadType="normal"
+				type="normal"
 				uploadAction= "http://10.236.91.199:3005/upload"
-				headers={{"Content-type":"application/x-www-form-urlencoded",name: 'mi'}}
+				headers={{name: 'mi'}}
 				buttonText="上传文件"
 				param={param}
 				name={'files[]'}
@@ -52,7 +52,7 @@ render () {
 	return (
 		<div>
 			<Upload
-				uploadType="normal"
+				type="normal"
 				uploadAction= "http://10.236.91.199:3005/upload"
 				buttonText="上传文件"
 				param={param}
@@ -92,7 +92,7 @@ render () {
 render () {
 	return (
 		<Upload
-			uploadType="normal"
+			type="normal"
 			uploadAction= "http://10.236.91.199:3005/upload"
 			buttonText="上传文件"
 			param={{id:'uid',channel:'youpin'}}
@@ -114,9 +114,9 @@ render () {
 render () {
 	return (
 		<Upload
-			uploadType="drag"
+			type="drag"
 			uploadAction= "http://10.236.91.199:3005/upload"
-			headers={{"Content-type":"application/x-www-form-urlencoded",name: 'mi'}}
+			headers={{name: 'mi'}}
 			onChange = {(file, fileList, response) => {
 				console.log('upload callback', file, fileList, response)
 			}}
@@ -141,7 +141,7 @@ render () {
 render () {
 	return (
 		<Upload
-			uploadType="photo"
+			type="photo"
 			uploadAction= "http://10.236.91.199:3005/upload"
 			onChange = {(file, fileList, response) => {
 				file.id = 'file唯一标识'
@@ -184,9 +184,9 @@ render () {
 render () {
 	return (
 		<Upload
-			uploadType="avatar"
+			type="avatar"
 			uploadAction= "http://10.236.91.199:3005/upload"
-			headers={{"Content-type":"application/x-www-form-urlencoded",name: 'mi'}}
+			headers={{name: 'mi'}}
 			param={{id:'uid',channel:'youpin'}}
 			onChange = {(file, fileList, response) => {
 				console.log('upload callback', file, fileList, response)
@@ -209,9 +209,9 @@ render () {
 render () {
 	return (
 		<Upload
-			uploadType="pictureCard"
+			type="pictureCard"
 			uploadAction= "http://10.236.91.199:3005/upload"
-			headers={{"Content-type":"application/x-www-form-urlencoded",name: 'mi'}}
+			headers={{name: 'mi'}}
 			onChange = {(file, fileList, response) => {
 				console.log('upload callback', file, fileList, response)
 			}}
@@ -228,7 +228,7 @@ render () {
 
 |参数|说明|类型|是否必填|默认值|
 |-----|---|----|----|----|
-|uploadType|上传类型，可取值：normal，drag，pictureCard，avatar，和photo|string|是|normal|
+|type|上传类型，可取值：normal，drag，pictureCard，avatar，和photo|string|是|normal|
 |accept|接收上传的文件类型|string|否|''|
 |buttonText|按钮文案|string|否|上传|
 |buttonIcon|按钮文案前面的图标|string|否|upload|
@@ -236,7 +236,7 @@ render () {
 |param|除了上传文件外的其他需参数|object|否|无|
 |name|发到后台文件参数名|string|否|file|
 |disabled|是否禁用|boolean|否|false|
-|headers|设置上传的请求头部|object|否|{'Content-type': 'application/x-www-form-urlencoded'}|
+|headers|设置上传的请求头部|object|否|{'Content-type': 'multipart/form-data'}|
 |showUploadList|是否展示uploadList|boolean|否|true|
 |multiple|是否支持多选文件|boolean|否|false|
 |defaultFileList|带默认列表的上传|array[object](object参见上面demo)|否|无|

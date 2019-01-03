@@ -8,16 +8,16 @@ import './style/index'
 
 export default class Upload extends Component {
   render () {
-    const { uploadType } = this.props
-    if (uploadType === 'normal') {
+    const { type } = this.props
+    if (type === 'normal') {
       return <UploadClick {...this.props} />
-    } else if (uploadType === 'drag') {
+    } else if (type === 'drag') {
       return <UploadDrag {...this.props} />
-    } else if (uploadType === 'photo') {
+    } else if (type === 'photo') {
       return <UploadPhoto {...this.props} />
-    } else if (uploadType === 'avatar') {
+    } else if (type === 'avatar') {
       return <UploadAvatar {...this.props} />
-    } else if (uploadType === 'pictureCard') {
+    } else if (type === 'pictureCard') {
       return <UploadPictureCard {...this.props} />
     }
   }

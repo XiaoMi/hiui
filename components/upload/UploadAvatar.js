@@ -28,6 +28,7 @@ class UploadAvatar extends Upload {
     bottom: 0,
     left: 0
   }
+  filename = ''
 
   constructor (props) {
     super(props)
@@ -61,6 +62,7 @@ class UploadAvatar extends Upload {
     this.setState({show: true}, () => {
       if (files.length === 0) return
       this.setState({uploadState: 'loading'})
+      this.filename = files[0].name
       this.handleFile(files[0])
     })
   }
@@ -126,7 +128,7 @@ class UploadAvatar extends Upload {
     })
   }
 
-  base2blob (dataurl) {
+  base2blob (dataurl, filename) {
     let arr = dataurl.split(',')
     const mime = arr[0].match(/:(.*?);/)[1]
     const  bstr = atob(arr[1])
@@ -135,7 +137,7 @@ class UploadAvatar extends Upload {
     while (n--) {
       u8arr[n] = bstr.charCodeAt(n)
     }
-    return new File([u8arr], {
+    return new File([u8arr], filename, {
       type: mime
     })
   }
@@ -144,10 +146,8 @@ class UploadAvatar extends Upload {
     this.resetParams()
   }
 
-  prepareFile() {
-    const file = {
-      fileType: 'img'
-    }
+  prepareFile(file) {
+    file.fileType = 'img'
 
     return file
   }
@@ -166,16 +166,13 @@ class UploadAvatar extends Upload {
 
     context.drawImage(this.dom.CanvasReal, size.x, size.y, size.w, size.h, 0, 0, size.w, size.h)
     const dataUrl = this.dom.CanvasMock.toDataURL()
-    // const file = this.base2blob(dataUrl)
-    // console.log('---------base2blob', file)
-
-    // this.setState({file: dataUrl})
-    const file = this.prepareFile()
-    // console.log('---------file', file)
+    const file = this.base2blob(dataUrl, this.filename)
+    
+    this.prepareFile(file)
     this.setState({
       fileList: [file]
     }, ()=>{
-      this.uploadFile(file, dataUrl)
+      this.uploadFile(file)
     })
     this.resetParams()
   }

@@ -79,7 +79,7 @@ class UploadClick extends Upload {
 UploadClick.defaultProps = Object.assign({}, {
   ...Upload.defaultProps
 }, {
-  uploadType: 'normal'
+  type: 'normal'
 })
 
 export default Provider(UploadClick)

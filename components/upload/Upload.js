@@ -22,7 +22,7 @@ export default class Upload extends Component {
   }
 
   static propTypes = {
-    uploadType: PropTypes.string,
+    type: PropTypes.string,
     accept: PropTypes.string,
     limit: PropTypes.number,
     buttonText: PropTypes.string,
@@ -41,7 +41,8 @@ export default class Upload extends Component {
 
   static defaultProps = {
     defaultFileList: [],
-    headers: {'Content-type': 'application/x-www-form-urlencoded'},
+    // headers: {'Content-type': 'multipart/form-data'}, // headers 不可以设置Content-type https://stackoverflow.com/questions/17415084/multipart-data-post-using-python-requests-no-multipart-boundary-was-found/17438575
+    headers: {},
     accept: '',
     limit: null,
     buttonIcon: 'upload',
