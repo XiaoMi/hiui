@@ -185,7 +185,10 @@ render(){
   }
   return <Table columns={this.columns} data={data} rowSelection={rowSelection} />
 }
+
+
 ```
+
 :::
 
 
@@ -766,31 +769,39 @@ constructor (props) {
            <Input onChange={(e) => this.setState({from: e.target.value})} />
           </FormItem>
           <FormItem>
-          <Button onClick={(e) => {this.refs.serverTable.fetch()}}>查询</Button>
+          <Button onClick={(e) => {this.refs.serverTable.fetch()}}>查询当前页</Button> 
+          <Button onClick={(e) => {this.refs.serverTable.reset()}}>查询第一页</Button>           
           </FormItem>
         </Form>
         <Table
           name='server'
-          auto={false}
           scroll={{x: 1500}}
           ref={'serverTable'}
           rowSelection={rowSelection}
-          advance={{
+          advance={{   // 表格高级功能（统计)
             sum: true,
             avg: true
-          }}
+          }} 
           origin={{
             url: 'https://www.easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/table',
-            pageSize: '3',
-            currentPageName: 'pageNum',
-            header: '',
-            data: {
+            currentPageName: 'pageNum', //分页的页码字端名(默认 current)
+            autoDelayTime: 50,   // 自动发请求的时候，延迟时间(默认 200)
+            headers: {'OS': 'WEB'}, //设置请求头 
+            data: {        
               from,
               startTime: '',
-              endTime: ''
+              endTime: '',
+              pageSize:2
             },
+            method: "POST",
+            auto:true, // 自动发请求配置(默认false)
             success: (res) => {
               let {data: {data, columns,page: {pageSize, totalNum, pageNum}}} = res
+              columns.unshift({
+                title:'排序demo',
+                dataIndex:'id',
+                serverSort:[{sort:'desc', sort:'adesc'}] //点击排序的箭头图标会将数组中某一项放到请求参数里
+              })
               return {
                 data,
                 columns,
