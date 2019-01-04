@@ -49,8 +49,8 @@ export default class Popper extends Component {
       placement
     } = this.props
     const rect = attachEle.getBoundingClientRect()
-    let top = rect.y + (document.documentElement.scrollTop || document.body.scrollTop)
-    let left = rect.x + (document.documentElement.scrollLeft || document.body.scrollLeft)
+    let top = rect.top + (document.documentElement.scrollTop || document.body.scrollTop)
+    let left = rect.left + (document.documentElement.scrollLeft || document.body.scrollLeft)
     width = width === undefined ? rect.width : width
 
     switch (placement) {
