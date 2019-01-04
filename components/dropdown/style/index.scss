@@ -26,6 +26,19 @@
 
   @include component-reset();
 
+  &__popper {
+    &.hi-popper__content--top {
+      .hi-dropdown__menu {
+        box-shadow: 8px 0 12px rgba(0, 0, 0, 0.175);
+      }
+    }
+    &.hi-popper__content--bottom {
+      .hi-dropdown__menu {
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.175);
+      }
+    }
+  }
+
   &__title {
     display: flex;
     justify-content: space-between;
@@ -51,7 +64,6 @@
     text-align: left;
     background-color: $white;
     background-clip: padding-box;
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.175);
   }
 
   &__item {
