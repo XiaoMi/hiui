@@ -93,9 +93,9 @@ class Modal extends Component {
     }
   }
   render () {
-    const {width, title, children, backDrop, closeBtn, footers, show, size} = this.props
+    const {width, title, children, backDrop, closeBtn, footers, show, size, className} = this.props
     let style = width ? {width} : {}
-    let classnames = classNames('hi-modal', show ? '' : 'hi-modal--hide')
+    let classnames = classNames('hi-modal', show ? '' : 'hi-modal--hide', className)
     return createPortal(
       <div className={classnames} >
         <div className='hi-modal__mask' onClick={() => {
