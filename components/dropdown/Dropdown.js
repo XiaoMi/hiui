@@ -14,6 +14,7 @@ class Dropdown extends Component {
   }
   MENUTITLE = null
   static propTypes = {
+    placement: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
     trigger: PropTypes.oneOfType([
       PropTypes.oneOf(['contextmenu', 'click']),
       PropTypes.arrayOf(PropTypes.string)
@@ -32,6 +33,7 @@ class Dropdown extends Component {
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   }
   static defaultProps = {
+    placement: 'bottom',
     trigger: 'click',
     onClick: () => {},
     list: []
@@ -101,7 +103,7 @@ class Dropdown extends Component {
 
   render () {
     // splitButton，disabled
-    const {list, width, prefix, suffix, theme, title} = this.props
+    const {list, width, prefix, suffix, theme, title, placement} = this.props
     const {visible} = this.state
     const ulCls = classNames('hi-dropdown__menu')
     return (
@@ -112,6 +114,7 @@ class Dropdown extends Component {
           show={visible}
           attachEle={this.MENUTITLE}
           zIndex={1060}
+          placement={placement}
         >
           <ul className={ulCls}>
             {
