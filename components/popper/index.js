@@ -17,7 +17,7 @@ export default class Popper extends Component {
     topGap: PropTypes.number,
     leftGap: PropTypes.number,
     zIndex: PropTypes.number,
-    placement: PropTypes.oneOf(['bottom', 'bottom-start', 'top', 'left', 'right'])
+    placement: PropTypes.oneOf(['bottom', 'bottom-start', 'top', 'top-start', 'left', 'right', 'top-bottom-start', 'top-bottom'])
   }
 
   static defaultProps = {
@@ -34,6 +34,7 @@ export default class Popper extends Component {
 
   componentDidMount () {
     this.getContainer()
+    setTimeout(() => render(this.renderChildren(true), this.container), 0)
   }
 
   componentWillUnmount () {
@@ -53,6 +54,10 @@ export default class Popper extends Component {
     let left = rect.x + (document.documentElement.scrollLeft || document.body.scrollLeft)
     width = width === undefined ? rect.width : width
 
+    if (placement === 'top-bottom-start') {
+      console.log('------------getOffset', rect, attachEle.offsetBottom, this.popperRef.clientHeight)
+    }
+
     switch (placement) {
       case 'bottom':
         top = top + topGap + rect.height
@@ -65,6 +70,9 @@ export default class Popper extends Component {
       case 'top':
         top = top - topGap
         left = left + rect.width / 2
+        break
+      case 'top-start':
+        top = top - topGap
         break
 
       case 'left':
@@ -85,7 +93,7 @@ export default class Popper extends Component {
     }
   }
 
-  renderChildren () {
+  renderChildren (init = false) {
     let {
       children,
       className,
@@ -93,17 +101,29 @@ export default class Popper extends Component {
       zIndex,
       placement
     } = this.props
-    const offset = this.getOffset()
-    let width = offset.width
-    let left = offset.left + 'px'
-    let top = offset.top + 'px'
+    let width = 'auto'
+    let left = '0px'
+    let top = '0px'
+    console.log('-----------init', init)
+    if (!init) {
+      const offset = this.getOffset()
+      width = 0
+      left = offset.left + 'px'
+      top = offset.top + 'px'
+    }
 
     return (
       <div
         className={classNames('hi-popper__container', {'hi-popper__container--hide': !show})}
         style={{left, top, zIndex}}
       >
-        <div className={classNames(className, 'hi-popper__content', `hi-popper__content--${placement}`)} style={{width}}>
+        <div
+          ref={node => {
+            this.popperRef = node
+          }}
+          className={classNames(className, 'hi-popper__content', `hi-popper__content--${placement}`)}
+          style={{width}}
+        >
           { children }
         </div>
       </div>

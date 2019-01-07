@@ -14,6 +14,9 @@
       // left: 50%;
       transform: translateX(-50%);
     }
+    &--top-start {
+      bottom: 0;
+    }
 
     &--right {
       // left: 100%;
