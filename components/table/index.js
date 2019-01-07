@@ -75,10 +75,7 @@ class Table extends Component {
       rightFixColumns: [],
       columns: [],
       headerColumns: [],
-      serverPagination: {
-        total: Table.config.total,
-        current: Table.config.current
-      }
+      serverPagination: null
     }
   }
 
@@ -420,9 +417,9 @@ class Table extends Component {
           }
         </div>
 
-        <div style={{display: 'flex', alignItems: 'center'}}>
+        <div style={{display: 'flex', alignItems: 'center'}} a='1'>
           {
-            serverPagination.current && serverPagination.current ? <div className={prifix('table-page')} >
+            serverPagination && serverPagination.current && serverPagination.current ? <div className={prifix('table-page')} >
               <Pagination
                 pageSize={serverPagination.pageSize}
                 total={serverPagination.total}
@@ -824,7 +821,12 @@ class Table extends Component {
       this.runMemory()
 
       if (origin) {
-        this.fetch()
+        this.setState({
+          serverPagination: {
+            current: 1,
+            total: 1
+          }
+        }, this.fetch)
       }
     }, 0)
   }
