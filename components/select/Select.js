@@ -11,6 +11,8 @@ import SelectDropdown from './SelectDropdown'
 import Provider from '../context'
 
 class Select extends Component {
+  autoloadFlag = true // 第一次自动加载数据标识
+
   static propTypes = {
     mode: PropTypes.oneOf(['single', 'multiple']),
     list: PropTypes.array,
@@ -49,7 +51,7 @@ class Select extends Component {
       list
     } = this.props
     const dropdownItems = cloneDeep(list)
-    const selectedItems = this.resetSelectedItems(this.props)
+    const selectedItems = this.resetSelectedItems(this.props.value, dropdownItems)
     const searchable = this.getSearchable()
     this.debouncedFilterItems = debounce(this.onFilterItems.bind(this), 300)
     this.clickOutsideHandel = this.clickOutside.bind(this)
@@ -99,8 +101,10 @@ class Select extends Component {
   }
 
   componentWillReceiveProps (props) {
+    let selectedItems = false
+
     if (!shallowEqual(props.value, this.props.value)) {
-      const selectedItems = this.resetSelectedItems(props)
+      selectedItems = this.resetSelectedItems(props.value, props.list)
 
       this.setState({
         selectedItems
@@ -109,7 +113,12 @@ class Select extends Component {
       })
     }
     if (!shallowEqual(props.list, this.props.list)) {
+      if (!selectedItems) {
+        selectedItems = this.resetSelectedItems(props.value, props.list)
+      }
+
       this.setState({
+        selectedItems,
         dropdownItems: cloneDeep(props.list)
       })
     }
@@ -146,14 +155,11 @@ class Select extends Component {
     return origin && !!origin.url
   }
 
-  resetSelectedItems (props) {
-    const {
-      list
-    } = props
-    const values = this.parseValue(props.value)
+  resetSelectedItems (value, dropdownItems) {
+    const values = this.parseValue(value)
     let selectedItems = []
 
-    list && list.map(item => {
+    dropdownItems && dropdownItems.map(item => {
       if (values.indexOf(item.id) !== -1) {
         selectedItems.push(item)
       }
@@ -298,6 +304,8 @@ class Select extends Component {
       type = 'GET',
       key = 'keyword'
     } = this.props.origin
+    keyword = !keyword && this.autoloadFlag && this.props.autoload ? this.props.origin.keyword : keyword
+    this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
     url = url.indexOf('?') === -1 ? `${url}?${[key]}=${keyword}` : `${url}&${[key]}=${keyword}`
     const options = {}
 
@@ -320,9 +328,14 @@ class Select extends Component {
       } else {
         dropdownItems = res.data
       }
-      Array.isArray(dropdownItems) && this.setState({
-        dropdownItems
-      })
+      if (Array.isArray(dropdownItems)) {
+        const selectedItems = this.resetSelectedItems(this.props.value, dropdownItems)
+
+        this.setState({
+          dropdownItems,
+          selectedItems
+        })
+      }
       this.setState({
         fetching: false
       })

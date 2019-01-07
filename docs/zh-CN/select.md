@@ -150,13 +150,12 @@ render () {
 				mode='single'
 				origin={{
 					type: 'GET',
-					url: 'http://10.236.91.218:7001/test/key',
-					func: (body) => {
-						console.log('----', body)
-						return JSON.parse(body).data
+					url: 'https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/select/options',
+					func: (res) => {
+						console.log('----', res)
+						return res.data
 					}
 				}}
-				list={[]}
 				placeholder='请选择种类'
 				style={{width: '200px'}}
 				onChange={(item) => {
@@ -248,20 +247,21 @@ render () {
 				mode='multiple'
 				autoload={true}
 				style={{width: '300px'}}
+				value="1"
 				origin={{
-					type: 'post',
+					type: 'get',
 					key: 'text',
+					keyword: 'xiaomi',
 					data: {
 						time: new Date()
 					},
-					url: 'http://10.236.91.218:7001/test/key',
+					url: 'https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/select/options',
 					func: (res) => {
 						console.log('----', res)
 						return res.data
 					},
 					error: err => console.log('error:', err)
 				}}
-				list={[]}
 				onChange={(item) => {
 					console.log('异步多选结果', item)
 				}}
@@ -297,6 +297,7 @@ render () {
 | type | 请求方法 | string | get,post | get |
 | data | post请求时的参数 | object | - | - |
 | key | 搜索关键字参数key | string | - | keyword |
+| keyword | autoload为true时的默认搜索关键词 | string | - | - |
 | func | 成功时的回调 | func | - | - |
 | error | 失败时的回调 | func | - | - |
 
