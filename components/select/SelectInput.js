@@ -124,8 +124,8 @@ export default class SelectInput extends Component {
           }
         </div>
         <span className='hi-select__input--icon'>
-          <i className={classNames(`hi-icon icon-${icon} hi-select__input--icon__expand`, {clearable})} />
-          { clearable && <i className={`hi-icon icon-close-circle hi-select__input--icon__close`} onClick={this.handleClear.bind(this)} /> }
+          <i className={classNames(`hi-icon icon-${icon} hi-select__input--icon__expand`, {clearable: clearable && selectedItems.length > 0})} />
+          { clearable && selectedItems.length > 0 && <i className={`hi-icon icon-close-circle hi-select__input--icon__close`} onClick={this.handleClear.bind(this)} /> }
         </span>
       </div>
     )
@@ -164,8 +164,8 @@ export default class SelectInput extends Component {
           </div>
         }
         <span className='hi-select__input--icon'>
-          <i className={classNames(`hi-icon icon-${icon} hi-select__input--icon__expand`, {clearable})} />
-          { clearable && <i className={`hi-icon icon-close-circle hi-select__input--icon__close`} onClick={this.handleClear.bind(this)} /> }
+          <i className={classNames(`hi-icon icon-${icon} hi-select__input--icon__expand`, {clearable: clearable && selectedItems.length > 0})} />
+          { clearable && selectedItems.length > 0 && <i className={`hi-icon icon-close-circle hi-select__input--icon__close`} onClick={this.handleClear.bind(this)} /> }
         </span>
       </div>
     )

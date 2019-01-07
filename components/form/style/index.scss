@@ -81,6 +81,12 @@
     line-height: 32px;
     white-space: nowrap;
     color: #ff4949;
+
+    .hi-form--inline & {
+      top: 36px;
+      left: 0;
+      line-height: 18px;
+    }
   }
 
   &--required {

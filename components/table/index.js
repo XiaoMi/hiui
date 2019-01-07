@@ -360,7 +360,7 @@ class Table extends Component {
     let scrollTable = this.dom.current.querySelectorAll('.hi-table-scroll table tr')
 
     // if(fixTable && scrollTable){
-    //   console.log(fixTable,scrollTable,'fix-scroll')
+    //
 
     // }
     if (scrollTable) {
@@ -491,7 +491,6 @@ class Table extends Component {
       fixTop = parseFloat(fixTop)
     }
     let dom = this.dom.current
-    console.log(this.dom.current, 'this.dom')
     let thead = dom.querySelectorAll('thead')
     if (scrollTop() + fixTop > dom.offsetTop && scrollTop() + fixTop < dom.offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(getStyle(thead[0], 'height'))) {
       thead.forEach(th => {
@@ -791,7 +790,6 @@ class Table extends Component {
 
   componentDidMount () {
     let {fixTop, scroll, name, origin} = this.props
-    console.log(this.dom)
     let dom = this.dom.current
     let thead = dom.querySelectorAll('thead')
     if (fixTop) {
