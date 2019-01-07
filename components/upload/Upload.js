@@ -4,10 +4,12 @@ import PropTypes from 'prop-types'
 import shallowequal from 'shallowequal'
 import cloneDeep from 'lodash/cloneDeep'
 
+let fileId = 0
+
 export default class Upload extends Component {
   constructor (props) {
     super(props)
-    const fileList = cloneDeep(this.props.defaultFileList)
+    const fileList = this.prepareDefaultFileList(this.props.defaultFileList)
     this.state = {
       fileList
     }
@@ -16,7 +18,7 @@ export default class Upload extends Component {
   componentWillReceiveProps (nextProps) {
     if (!shallowequal(nextProps.defaultFileList, this.props.defaultFileList)) {
       this.setState({
-        fileList: cloneDeep(nextProps.defaultFileList)
+        fileList: this.prepareDefaultFileList(nextProps.defaultFileList)
       })
     }
   }
@@ -53,8 +55,17 @@ export default class Upload extends Component {
     showUploadList: true,
     multiple: false,
     onRemove: () => true,
-    onChange: () => {}
+    onChange: () => true
     // overEvent: false
+  }
+
+  prepareDefaultFileList (fileList) {
+    const _fileList = cloneDeep(fileList)
+
+    _fileList.map(file => {
+      file.fileId = this.getFileId()
+    })
+    return _fileList
   }
 
   getFileType (file) {
@@ -94,6 +105,10 @@ export default class Upload extends Component {
     return fileType
   }
 
+  getFileId () {
+    return `$$HIUI_FILE_ID_${fileId++}`
+  }
+
   uploadFiles (files) {
     const {
       fileList
@@ -103,6 +118,7 @@ export default class Upload extends Component {
     for (let key in files) {
       if (!files.hasOwnProperty(key)) continue
       let file = files[key]
+      file.fileId = this.getFileId()
       file.uploadState = 'loading'
       file.fileType = this.getFileType(file)
       fileList.unshift(file)
@@ -135,6 +151,32 @@ export default class Upload extends Component {
     }
   }
 
+  onUpload (file, fileList, response) {
+    const {
+      onChange
+    } = this.props
+    const ret = onChange(file, fileList, response)
+    const onUploadError = () => {
+      for (const index in fileList) {
+        if (fileList[index].fileId === file.fileId) {
+          fileList.splice(index, 1)
+          this.setState({fileList})
+          break
+        }
+      }
+    }
+
+    if (ret === false) {
+      onUploadError()
+    } else if (ret && typeof ret.then === 'function') {
+      ret.then(res => {
+        if (res === false) {
+          onUploadError()
+        }
+      })
+    }
+  }
+
   uploadFile (file, dataUrl = '') {
     const FileReader = window.FileReader
     const XMLHttpRequest = window.XMLHttpRequest
@@ -145,7 +187,6 @@ export default class Upload extends Component {
     const {
       name,
       param,
-      onChange,
       headers,
       uploadAction
     } = this.props
@@ -186,14 +227,14 @@ export default class Upload extends Component {
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
-          onChange(file, fileList, JSON.parse(xhr.response))
+          this.onUpload(file, fileList, JSON.parse(xhr.response))
         }
       }
     }
     xhr.upload.onerror = () => {
       file.uploadState = 'error'
       this.setState({ fileList })
-      onChange(file, fileList, {})
+      this.onUpload(file, fileList, {})
     }
     xhr.upload.onprogress = event => {
       var e = event || window.event

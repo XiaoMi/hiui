@@ -26,6 +26,7 @@ render () {
 				name={'files[]'}
 				onChange = {(file, fileList, response) => {
 					console.log('upload callback', file, fileList, response)
+					if(resonse&&response.status !== 200) return false
 				}}
 				disabled={false}
 			/>
@@ -122,7 +123,6 @@ render () {
 			}}
 			param={{id:'uid',channel:'youpin'}}
 			name={'files[]'}
-			onUploadSuccess = {(res) => {console.log(res,'success callback')}}
 			multiple={true}
 		/>
 	)
@@ -240,5 +240,5 @@ render () {
 |showUploadList|是否展示uploadList|boolean|否|true|
 |multiple|是否支持多选文件|boolean|否|false|
 |defaultFileList|带默认列表的上传|array[object](object参见上面demo)|否|无|
-|onChange|上传回调|function(file, fileList, response)|否|无|
+|onChange|上传回调。当function返回false或者返回promise（如果promise resolve(false)）则已上传的文件列表不会展示该文件|function(file, fileList, response)|否|无|
 |onRemove|删除上传的文件,为false时不可删除。当function返回true或者返回promise（如果promise resolve(true)）则会在前端删除文件（可参考demo：照片墙上传）|function(file, fileList)，boolean|否|一个返回true的空函数，即前端删除|
