@@ -300,6 +300,7 @@ class Select extends Component {
       url,
       func,
       error,
+      headers,
       data = {},
       type = 'GET',
       key = 'keyword'
@@ -319,6 +320,7 @@ class Select extends Component {
     /* eslint-disable */ 
     fetch(url, {
       method: type,
+      headers,
       ...options
     })
     .then(response => response.json())
