@@ -38,7 +38,7 @@ class UploadClick extends Upload {
           </label>
         </div>
         {showUploadList && (
-          <ul ref='prvbox' className='upload-list'>
+          <ul className='upload-list'>
             {fileList.map((file, index) => {
               let listName = file.name.split('.')
               listName =
