@@ -177,7 +177,6 @@ render() {
   const rowSelection = {
     selectedRowKeys,
     onChange: (selectedRowKeys)=>{
-      console.log('onchange',selectedRowKeys)
       this.setState({selectedRowKeys})
     },
     dataName:'age' 
@@ -346,7 +345,6 @@ const renderContent = (value, row, index) => {
     title: 'Name',
     dataIndex: 'name',
     render: (text, row, index) => {
-      console.log(index, '---index---')
       if (index < 4) {
         return <a href='javascript:;'>{text}</a>
       }
@@ -720,7 +718,6 @@ constructor (props) {
     const rowSelection = {
       selectedRowKeys: [],
       onChange: (selectedRowKeys, rows) => {
-        console.log('onchange', selectedRowKeys, rows)
         this.setState({selectedRowKeys})
       },
       dataName: 'id'
