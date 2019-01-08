@@ -484,7 +484,14 @@ class Select extends Component {
           />
         </div>
         { children }
-        <Popper show={dropdownShow} attachEle={this.selectInputContainer} className='hi-select__popper'>
+        <Popper 
+          show={dropdownShow} 
+          attachEle={this.selectInputContainer} 
+          zIndex={1050}
+          topGap={5}
+          className='hi-select__popper'
+          placement="top-bottom-start"
+        >
           <SelectDropdown
             noFoundTip={noFoundTip}
             mode={mode}
