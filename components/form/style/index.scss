@@ -29,13 +29,15 @@
 
 .hi-form-item {
   font-size: $font-size-normal;
-
+  margin-right: $spacer-2;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  
   & + & {
-    margin-top: $spacer-4;
+    // margin-top: $spacer-2;
 
     .hi-form--inline & {
-      margin-top: 0;
-      margin-left: $spacer-2;
+      // margin-top: 0;
     }
   }
 
