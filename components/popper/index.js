@@ -13,6 +13,7 @@ export default class Popper extends Component {
     //   PropTypes.node
     // ]).isRequired,
     width: PropTypes.string,
+    height: PropTypes.number,
     className: PropTypes.string,
     show: PropTypes.bool,
     topGap: PropTypes.number,
@@ -94,13 +95,18 @@ export default class Popper extends Component {
   }
 
   getPlacement (attachEleRect) {
-    let placement = this.props.placement
+    let {
+      placement,
+      height
+    } = this.props
     const bodyHeight = document.documentElement.clientHeight || document.body.clientHeight
     let poperTop = attachEleRect.top + attachEleRect.height
     const caclPlacement = (bottomPlacement, topPlacement) => { // 计算popper在元素上面或下面
       placement = bottomPlacement
-      if (this.popperRef) { // 元素已挂载到dom且当前popper处于显示状态
-        if (this.popperRef.clientHeight && this.popperHeight !== this.popperRef.clientHeight) {
+      if (this.popperRef || height) { // 元素已挂载到dom且当前popper处于显示状态
+        if (height) {
+          this.popperHeight = height
+        } else if (this.popperRef.clientHeight && this.popperHeight !== this.popperRef.clientHeight) {
           this.popperHeight = this.popperRef.clientHeight
         }
         poperTop += this.popperHeight
@@ -126,6 +132,7 @@ export default class Popper extends Component {
       children,
       className,
       show,
+      height,
       zIndex
     } = this.props
     const offset = this.getOffset()
@@ -143,7 +150,7 @@ export default class Popper extends Component {
             this.popperRef = node
           }}
           className={classNames(className, 'hi-popper__content', `hi-popper__content--${offset.placement}`, {'hi-popper__content--hide': this.popperHeight === 0})}
-          style={{width}}
+          style={{width, height}}
         >
           { children }
         </div>
