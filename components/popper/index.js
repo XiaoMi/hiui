@@ -140,7 +140,7 @@ export default class Popper extends Component {
           ref={node => {
             this.popperRef = node
           }}
-          className={classNames(className, 'hi-popper__content', `hi-popper__content--${offset.placement}`)}
+          className={classNames(className, 'hi-popper__content', `hi-popper__content--${offset.placement}`, {'hi-popper__content--hide': this.popperHeight === 0})}
           style={{width}}
         >
           { children }

@@ -8,6 +8,10 @@
 
   .hi-popper__content {
     position: absolute;
+    &--hide {
+      visibility: none;
+      opacity: 0;
+    }
 
     &--top {
       bottom: 0;
