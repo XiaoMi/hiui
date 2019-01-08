@@ -1,6 +1,5 @@
 /* stylelint-disable */
 .hi-select__dropdown {
-  position: absolute;
   width: 100%;
   max-height: 300px;
   font-size: 12px;
@@ -11,7 +10,6 @@
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
   border-radius: 2px;
   box-sizing: border-box;
-  z-index: 1050;
   text-align: left;
   &--loading {
     height: 50px;

@@ -347,7 +347,15 @@ class Cascader extends Component {
             }
           </span>
         </div>
-        <Popper show={popperShow} attachEle={this.inputContainer} width={'auto'} className='hi-cascader__popper'>
+        <Popper
+          show={popperShow}
+          attachEle={this.inputContainer}
+          zIndex={1050}
+          topGap={5}
+          width={'auto'}
+          className='hi-cascader__popper'
+          placement='top-bottom-start'
+        >
           <Menu
             value={cascaderValue}
             options={filterOptions || options}

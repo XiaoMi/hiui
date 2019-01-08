@@ -14,7 +14,7 @@ class Dropdown extends Component {
   }
   MENUTITLE = null
   static propTypes = {
-    placement: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
+    placement: PropTypes.oneOf(['top-start', 'bottom-start', 'top-bottom-start']),
     trigger: PropTypes.oneOfType([
       PropTypes.oneOf(['contextmenu', 'click']),
       PropTypes.arrayOf(PropTypes.string)
@@ -33,7 +33,7 @@ class Dropdown extends Component {
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   }
   static defaultProps = {
-    placement: 'bottom',
+    placement: 'top-bottom-start',
     trigger: 'click',
     onClick: () => {},
     list: []
