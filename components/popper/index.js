@@ -29,8 +29,10 @@ export default class Popper extends Component {
     placement: 'bottom-start'
   }
 
-  componentDidUpdate () {
-    render(this.renderChildren(), this.container)
+  componentDidUpdate (prevProps) {
+    if (prevProps.show !== this.props.show) {
+      render(this.renderChildren(), this.container)
+    }
   }
 
   componentDidMount () {
@@ -97,7 +99,7 @@ export default class Popper extends Component {
     let poperTop = attachEleRect.top + attachEleRect.height
     const caclPlacement = (bottomPlacement, topPlacement) => { // 计算popper在元素上面或下面
       placement = bottomPlacement
-      if (this.popperRef && this.props.show) { // 元素已挂载到dom且当前popper处于显示状态
+      if (this.popperRef) { // 元素已挂载到dom且当前popper处于显示状态
         if (this.popperRef.clientHeight && this.popperHeight !== this.popperRef.clientHeight) {
           this.popperHeight = this.popperRef.clientHeight
         }
