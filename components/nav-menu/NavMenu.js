@@ -34,6 +34,7 @@ class NavMenu extends Component {
       subMenuShow: false,
       subMenuChildred: []
     }
+    this.setToggle = this.setToggle().bind(this)
   }
 
   componentWillReceiveProps (props) {
@@ -51,18 +52,16 @@ class NavMenu extends Component {
     } = this.props
 
     this.handleClick(data[selectedKey], selectedKey, 1)
-    this.setToggleEvent()
-    const toggle = this.setToggle().bind(this)
-    window.addEventListener('resize', toggle)
+    this.getH && this.setToggleEvent(this.getH)
+    window.addEventListener('resize', this.setToggle)
   }
 
-  componentUnmount () {
-    const toggle = this.setToggle().bind(this)
-    window.removeEventListener('resize', toggle)
+  componentWillUnmount () {
+    window.removeEventListener('resize', this.setToggle)
   }
 
-  setToggleEvent () {
-    const ulH = this.getH.scrollHeight
+  setToggleEvent (el) {
+    const ulH = el.scrollHeight
     const {vertical} = this.props
     let toggleShow = false
     if (ulH > 50 && !vertical) {
@@ -76,10 +75,10 @@ class NavMenu extends Component {
     let start = Date.now()
     const setToggleEvent = this.setToggleEvent.bind(this)
 
-    return function () {
+    return () => {
       const now = Date.now()
-      if (now - start > 200) {
-        setToggleEvent()
+      if (now - start > 200 && this.getH) {
+        setToggleEvent(this.getH)
         start = now
       }
     }
