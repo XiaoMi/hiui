@@ -89,7 +89,7 @@ render() {
   return (
     <div>
       <Pagination
-        total={600}
+        total={60000}
         pageSize={this.state.pageSize}
         current={this.state.current}
         showTotal={true}
