@@ -27,12 +27,37 @@ export function position (obj) {
   let pos = {left: 0, top: 0}
 
   while (obj.parentNode) {
-    pos.left += obj.offsetLeft
-    pos.top += obj.offsetTop
+    pos.left += obj.clientLeft
+    pos.top += obj.clientTop
     obj = obj.parentNode
   }
   return pos
 }
+
+export function getPosition (el) {
+  let xPos = 0
+  let yPos = 0
+  while (el) {
+    if (el.tagName === 'BODY') {
+      // deal with browser quirks with body/window/document and page scroll
+      let xScroll = el.scrollLeft || document.documentElement.scrollLeft
+      let yScroll = el.scrollTop || document.documentElement.scrollTop
+      xPos += (el.offsetLeft - xScroll + el.clientLeft)
+      yPos += (el.offsetTop - yScroll + el.clientTop)
+    } else {
+      // for all other non-BODY elements
+      xPos += (el.offsetLeft - el.scrollLeft + el.clientLeft)
+      yPos += (el.offsetTop - el.scrollTop + el.clientTop)
+    }
+    el = el.offsetParent
+  }
+  return {
+    x: xPos,
+    y: yPos
+  }
+}
+window.getPosition = getPosition
+
 export function offset (obj) {
   let pos = {left: 0, top: 0}
   while (obj.parentNode) {
