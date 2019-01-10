@@ -10,7 +10,7 @@ import './style'
 import loading from '../loading'
 import '../pagination/style'
 import '../icon/style'
-import {setKey, scrollTop, getStyle} from './tool'
+import {setKey, scrollTop, getStyle, getPosition} from './tool'
 import request from 'axios'
 import qs from 'qs'
 let axios = request.create({
@@ -233,7 +233,7 @@ class Table extends Component {
   getScrollXContent () {
     let scrollTable
     let {dataSource, highlightCols, columns, headerColumns, leftFiexColumns, rightFixColumns} = this.state
-    let {scroll} = this.state
+    // let {scroll} = this.state
     let {style = {}, ...props} = this.props
     let handleScroll = (e) => {
       let onLeft = e.target.scrollLeft === 0
@@ -263,7 +263,7 @@ class Table extends Component {
         <div className={prifix('table-scroll')} onScroll={handleScroll} key='content'>
 
           <div className={prifix('table-body')} style={{overflowX: 'auto'}}>
-            <TableContent style={{width: scroll.x + 'px', ...style}} {...Object.assign({}, {...props}, {columns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
+            <TableContent style={{...style}} {...Object.assign({}, {...props}, {columns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
           </div>
           {
             dataSource.length === 0 ? this.getEmptyContent() : null
@@ -374,7 +374,9 @@ class Table extends Component {
 
   render () {
     // 多选配置
-    let {pagination, name, size = 'normal', striped = false} = this.props
+    // noinspection JSAnnotator
+    let {pagination, name, size = 'normal', striped = false, scrollX} = this.props
+    // noinspection JSAnnotator
     let {scroll, columnMenu, serverPagination} = this.state
 
     let content
@@ -399,27 +401,56 @@ class Table extends Component {
       // content = this.getScrollXYContent()
     }
 
+    if (scrollX) {
+      content = this.getScrollXContent()
+    }
+
     let {columns} = this.state
 
+    let pagePosition = 'flex-end'
+    let serverPagePosition = 'flex-end'
+    if (pagination) {
+      if (pagination.position === 'left') {
+        pagePosition = 'start'
+      }
+      if (pagination.position === 'middle') {
+        pagePosition = 'center'
+      }
+      if (pagination.position === 'right') {
+        pagePosition = 'flex-end'
+      }
+    }
+    if (serverPagination) {
+      if (serverPagination.position === 'left') {
+        serverPagePosition = 'start'
+      }
+      if (serverPagination.position === 'middle') {
+        serverPagePosition = 'center'
+      }
+      if (serverPagination.position === 'right') {
+        serverPagePosition = 'flex-end'
+      }
+    }
     return (
       <div className={prifix({table: true, size, striped})} ref={this.dom}>
         <div >
           <div >{content}</div>
         </div>
         {(pagination || columns) && <br /> }
-        <div style={{display: 'flex', alignItems: 'center'}}>
+        {
+          pagination && <div style={{display: 'flex', justifyContent: pagePosition}}>
+            {
+              <div className={prifix('table-page')} >
+                <Pagination
+                  {...pagination}
+                />
+              </div>
+            }
+          </div>
+        }
+        {serverPagination && serverPagination.current && serverPagination.current && <div style={{display: 'flex', justifyContent: serverPagePosition}} a='1'>
           {
-            pagination ? <div className={prifix('table-page')} >
-              <Pagination
-                {...pagination}
-              />
-            </div> : null
-          }
-        </div>
-
-        <div style={{display: 'flex', alignItems: 'center'}} a='1'>
-          {
-            serverPagination && serverPagination.current && serverPagination.current ? <div className={prifix('table-page')} >
+            <div className={prifix('table-page')} >
               <Pagination
                 pageSize={serverPagination.pageSize}
                 total={serverPagination.total}
@@ -433,9 +464,10 @@ class Table extends Component {
                   }, this.fetch)
                 }}
               />
-            </div> : null
+            </div>
           }
         </div>
+        }
         { name &&
           <div className={prifix('table-setting')} ref={this.setting}>
             <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}}
@@ -481,18 +513,19 @@ class Table extends Component {
   }
 
   xscroll () {
-    let {fixTop, name} = this.props
+    let {fixTop = false, name} = this.props
     if (typeof fixTop === 'boolean') {
       fixTop = 0
     } else {
       fixTop = parseFloat(fixTop)
     }
     let dom = this.dom.current
-    let thead = dom.querySelectorAll('thead')
+    let thead = dom ? dom.querySelectorAll('thead') : null
     if (scrollTop() + fixTop > dom.offsetTop && scrollTop() + fixTop < dom.offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(getStyle(thead[0], 'height'))) {
       thead.forEach(th => {
         th.style.display = 'table-header-group'
         let h = (dom.offsetTop - scrollTop() - fixTop) * -1
+        h = getPosition(dom).y * -1 + fixTop
         th.style.transform = `translate(0,${h}px)`
         if (name) {
           this.setting.current.style.transform = `translate(0,${h}px)`
@@ -605,7 +638,7 @@ class Table extends Component {
     let rightFixColumns = []
     let [headerColumns, columns] = this.getHeaderGroup(c || props.columns)
 
-    let {rowSelection, scroll, name} = props
+    let {rowSelection, scroll, name, scrollX} = props
 
     if (rowSelection) {
       let {selectedRowKeys = [], dataName = 'key'} = rowSelection
@@ -660,7 +693,7 @@ class Table extends Component {
     }
 
     // TODO 这里的逻辑要优化
-    if (scroll.x || bool) {
+    if (scroll.x || scrollX || bool) {
       let obj = this.getColumns(columns)
       leftFiexColumns = obj.leftFiexColumns
       rightFixColumns = obj.rightFixColumns

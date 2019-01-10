@@ -83,7 +83,7 @@ export default class Body extends Component {
             // }
           }
           if (parseInt(rowSpan) !== 0) {
-            tr.push(<td className={prifix('table-col', highlightCols.includes(obj.key) ? 'picked' : null)} rowSpan={rowSpan} colSpan={colSpan} data-span={colSpan} key={'td-' + k + '-' + j} style={{width: item.width + 'px'}}>{td}</td>)
+            tr.push(<td className={prifix('table-col', highlightCols.includes(obj.key) ? 'picked' : null)} rowSpan={rowSpan} colSpan={colSpan} data-span={colSpan} key={'td-' + k + '-' + j} >{td}</td>)
           } else {
             tr.push(null)
           }

@@ -28,7 +28,7 @@ $nornamFontSize: 14px !default;
 
 .#{$table} {
   position: relative;
-  width: 100%;
+  //width: 100%;
 
   &.striped{
     table {
@@ -86,7 +86,7 @@ $nornamFontSize: 14px !default;
   }
 
   &-wrapper {
-    width: 100%;
+    //width: 100%;
   }
 
   &-header-menu {
@@ -181,6 +181,7 @@ $nornamFontSize: 14px !default;
       padding-left: 8px;
       border-bottom: 1px solid #e6e7e8;
       text-align: left;
+      box-sizing: border-box;
     }
 
     th {

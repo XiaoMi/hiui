@@ -262,6 +262,8 @@ constructor(props){
     },
   ]
   
+  this.columns = this.columns.concat(this.columns)
+  
   this.data = []
   for (let i = 0; i < 10; i++) {
     this.data.push({
@@ -275,7 +277,7 @@ constructor(props){
 render() {
   return (
     <div style={{display:'flex'}}>
-     <Table columns={this.columns} data={this.data} scroll={{ x: 1500 }} fixTop={56} name='fixcol'/>
+     <Table columns={this.columns} data={this.data} scrollX fixTop={56} name='fixcol'/>
     </div>
   )
 }
@@ -590,40 +592,17 @@ constructor(props){
 
   this.columns = [
   
-    {
-      type: 'expand',
-      fixed:'left',
-      key:'expand',
-      render (text, record, index) {
-        return (
-          <div>
-            <form>
-              <div style={{padding: '20px'}}>
-                <div>
-                  姓名<Input value={record.name} />
-                </div>
-                <div>
-  
-                  年龄<Input value={record.age} />
-                </div>
-                <Button>修改</Button>
-              </div>
-  
-            </form>
-          </div>
-        )
-      }
-    },
-    { title: 'Full Name', width: 100, dataIndex: 'name', key: 'name', fixed: 'left' },
-    { title: 'Age', width: 100, dataIndex: 'age', key: 'age', fixed: 'left' },
-    { title: 'Column 1', dataIndex: 'address', key: '1' },
+
+    { title: 'Full Name', width: 150, dataIndex: 'name', key: 'name', fixed: 'left' },
+    { title: 'Age', width: 150, dataIndex: 'age', key: 'age', fixed: 'left' },
+    { title: 'Column 1', dataIndex: 'address', key: '1'},
     { title: 'Column 2', dataIndex: 'address', key: '2' },
-    { title: 'Column 3', dataIndex: 'address', key: '3' },
-    { title: 'Column 4', dataIndex: 'address', key: '4' },
-    { title: 'Column 5', dataIndex: 'address', key: '5' },
-    { title: 'Column 6', dataIndex: 'address', key: '6' },
-    { title: 'Column 7', dataIndex: 'address', key: '7' },
-    { title: 'Column 8', dataIndex: 'address', key: '8' }
+    { title: 'Column 3', dataIndex: 'address', key: '3'},
+    { title: 'Column 4', dataIndex: 'address', key: '4'},
+    { title: 'Column 5', dataIndex: 'address', key: '5'},
+    { title: 'Column 6', dataIndex: 'address', key: '6'},
+    { title: 'Column 7', dataIndex: 'address', key: '7'},
+    // { title: 'Column 8', dataIndex: 'address', key: '8' }
   ]
   
   this.data = [{
@@ -639,7 +618,7 @@ constructor(props){
   }]
 }
 render() {
-  return <Table columns={this.columns} data={this.data} fixTop={56}/>
+  return <Table columns={this.columns} scrollX data={this.data} fixTop={56}/>
 }
 ```
 :::
@@ -666,7 +645,7 @@ constructor(props){
               <FormItem label="age">
                   <Input value={record.age} />
               </FormItem>
-              <FormItem label="name">
+              <FormItem label="">
                   <Input value={record.name} />
               </FormItem>
               <FormItem>
@@ -680,13 +659,13 @@ constructor(props){
     },
     { title: 'Full Name', width: 100, dataIndex: 'name', key: 'name', fixed: 'left' },
     { title: 'Age', width: 100, dataIndex: 'age', key: 'age', fixed: 'left' },
-    { title: 'Column 1', dataIndex: 'address', key: '1' },
-    { title: 'Column 2', dataIndex: 'address', key: '2' },
-    { title: 'Column 3', dataIndex: 'address', key: '3' },
-    { title: 'Column 4', dataIndex: 'address', key: '4' },
-    { title: 'Column 5', dataIndex: 'address', key: '5' },
-    { title: 'Column 6', dataIndex: 'address', key: '6' },
-    { title: 'Column 7', dataIndex: 'address', key: '7' },
+    { title: 'Column 1', dataIndex: 'address', key: '1' ,width:120,},
+    { title: 'Column 2', dataIndex: 'address', key: '2' ,width:120,},
+    { title: 'Column 3', dataIndex: 'address', key: '3' ,width:120,},
+    { title: 'Column 4', dataIndex: 'address', key: '4' ,width:120,},
+    { title: 'Column 5', dataIndex: 'address', key: '5' ,width:120,},
+    { title: 'Column 6', dataIndex: 'address', key: '6' ,width:120,},
+    { title: 'Column 7', dataIndex: 'address', key: '7' ,width:120,},
     { title: 'Column 8', dataIndex: 'address', key: '8' }
   ]
   this.state = {
@@ -695,7 +674,6 @@ constructor(props){
     current :2,
     data: []
   }
-  
 }
 
 set(current){
@@ -721,13 +699,16 @@ render() {
         columns={this.columns} 
         data={this.state.data} 
         fixTop={56}
+        scrollX 
         pagination={{
           pageSize: this.state.pageSize,
           total:this.state.total,
           current: this.state.current,
           onChange:(page,pre,size)=>{
             this.set(page)
-          }
+          },
+          position : 'center' // 分页位置 - 默认右侧
+          
         }}
         />
 }
@@ -775,7 +756,7 @@ constructor (props) {
         </Form>
         <Table
           name='server'
-          scroll={{x: 1500}}
+          scrollX
           ref={'serverTable'}
           rowSelection={rowSelection}
           advance={{   // 表格高级功能（统计)
@@ -785,7 +766,7 @@ constructor (props) {
           origin={{
             url: 'https://www.easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/table',
             currentPageName: 'pageNum', //分页的页码字端名(默认 current)
-            autoDelayTime: 50,   // 自动发请求的时候，延迟时间(默认 200)
+            autoDelayTime: 500,   // 自动发请求的时候，延迟时间(默认 200)
             headers: {'OS': 'WEB'}, //设置请求头 
             data: {        
               from,
@@ -808,7 +789,8 @@ constructor (props) {
                 page: {
                   pageSize,
                   total: totalNum,
-                  current: pageNum
+                  current: pageNum,
+                  position: 'middle'
                 }
               }
             },
