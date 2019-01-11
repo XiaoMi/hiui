@@ -110,11 +110,10 @@ export function insAfter (cur, tar) {
  */
 export function insChild (cur, tar) {
   const current = cur.parentNode.parentNode// li
-  const target = tar.parentNode// li
-
+  const target = tar.parentNode.parentNode// li
   if (current === target) return
   if (target.childNodes.length > 1) {
-    tar.nextSibling.appendChild(current)
+    tar.parentNode.nextSibling.appendChild(current)
   } else {
     let ul = document.createElement('ul')
     ul.setAttribute('class', 'hi-tree-child')
