@@ -38,15 +38,16 @@ export default class Body extends Component {
     let selectedRowKeys = rowSelection.selectedRowKeys || []
     // 表头分组
     let i = 0
+    let pureData = dataSource.filter(item => !item.expand)
     let nodes = dataSource.map((item, k) => {
       let colSpan = 1
       let tr = []
       // 点击后展开的那一行
       if (item.expand) {
-        let obj = dataSource.find(o => o.key === item.parent)
+        let obj = pureData.find(o => o.key === item.parent)
         let expand = columns.find(o => o.type === 'expand')
         tr = expand ? <td colSpan={columns.length} key={'key-' + item.parent} className={prifix('table-col', highlightCols.includes(item.key) ? 'picked' : null)} >
-          {expand.render(obj[item.dataIndex], obj, dataSource.indexOf(obj))}
+          {expand.render(obj[item.dataIndex], obj, pureData.indexOf(obj))}
         </td> : null
       } else {
         // 扩展项的占位dom

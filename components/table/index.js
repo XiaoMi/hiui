@@ -147,7 +147,7 @@ class Table extends Component {
 
     freezeCol: (key) => {
       // let col =
-      let {scrollWidth} = this.props
+      let {scrollWidth, scroll, scrollX} = this.props
       let {columns} = this.state
       let pin = false
       columns = columns.map(item => {
@@ -167,7 +167,11 @@ class Table extends Component {
       })
 
       let columnsDetail = this.setColumnsDetail(columns)
-      this.setState({scroll: {x: scrollWidth}, ...columnsDetail}, () => {
+
+      if (scrollWidth || scrollX || (scroll && scroll.x)) {
+        columnsDetail.scrollX = true
+      }
+      this.setState({...columnsDetail}, () => {
         this.xscroll()
       })
     },
@@ -208,7 +212,7 @@ class Table extends Component {
       let columnsDetail = this.setColumnsDetail(columns)
 
       if (!item.ishiuitableopen) {
-        dataSource.splice(index + 1, 0, {expand: true, parent: item.key, width: col.width || '50px', render: col.render})
+        dataSource.splice(index + 1, 0, {expand: true, dataIndex: col.dataIndex, parent: item.key, width: col.width || '50px', render: col.render})
       } else {
         dataSource.splice(index + 1, 1)
       }
