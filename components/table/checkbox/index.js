@@ -6,7 +6,8 @@ export default class Checkbox extends Component {
     const {
       checked,
       onChange,
-      disabled
+      disabled,
+      text = null
     } = this.props
     return (
       <div style={{'position': 'relative'}} onClick={(e) => {
@@ -16,7 +17,7 @@ export default class Checkbox extends Component {
         onChange(e, !checked)
       }} className={classNames({'hi-checkbox': true, 'hi-checkbox--checked': checked, 'hi-checkbox--disabled': disabled})}>
         <span className='hi-checkbox__input' />
-        <span style={{position: 'absolute', left: 0, top: 0}} className='hi-checkbox__label' />
+        {text && <span className='hi-checkbox__label' >{text}</span>}
       </div>
     )
   }

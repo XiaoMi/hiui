@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
 import { calcDropPosition, deepClone } from './util'
-
+import './style/index'
 const dealData = (data, tempData = {}, parent) => {
   data.map((item) => {
     tempData[item.id] = {...item}

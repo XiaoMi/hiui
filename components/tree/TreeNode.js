@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Checkbox from '../checkbox/index'
+import Checkbox from '../table/checkbox/index'
 import classNames from 'classnames'
 
 export default class TreeNode extends Component {
@@ -90,9 +90,9 @@ export default class TreeNode extends Component {
             {this.props.checkable ? <Checkbox
               checked={checked}
               onChange={() => this.onCheckChange(checked, item)}
-              disabled={item.disabled} /> : null}
-
-            <span style={item.style} className={`${prefixCls}_item-text ${itemStyle}`}>{this.renderText(item.title)}</span>
+              text={item.title}
+              disabled={item.disabled} /> : <span style={item.style} className={`${prefixCls}_item-text ${itemStyle}`}>{this.renderText(item.title)}</span>
+            }
             {item.children && item.children.length > 0 && expanded ? this.renderTree(item.children) : null}
           </li>)
         })}
