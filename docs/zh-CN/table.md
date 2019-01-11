@@ -7,7 +7,7 @@
 Table 表格代码说明
 1. 右键菜单
     1. 高亮
-    2. 列冻结 （需要配置scrollWidth）
+    2. 列冻结 （需要配置scrollX）
     3. 隐藏列
 2. 表格menu菜单（控制列的显示与隐藏）
 3. 操作记忆 需要给每个表格添加name属性来为索引。非常重要
@@ -249,11 +249,14 @@ constructor(props){
 
   this.columns = [
    
-    { title: 'Column 1', dataIndex: 'address', key: '1', width: 150 ,fixed:'left'},
-    { title: 'Column 2', dataIndex: 'address', key: '2', width: 150 },
-    { title: 'Column 3', dataIndex: 'address', key: '3', width: 150 },
-    { title: 'Column 4', dataIndex: 'address', key: '4', width: 150 },
-  
+    { title: 'Column 1', dataIndex: 'address', key: '1',fixed:'left' },
+    { title: 'Column 2', dataIndex: 'address', key: '2',  },
+    { title: 'Column 3', dataIndex: 'address', key: '3', },
+    { title: 'Column 4', dataIndex: 'address', key: '4', },
+      { title: 'Column 1', dataIndex: 'address', key: '5', },
+      { title: 'Column 2', dataIndex: 'address', key: '6',  },
+      { title: 'Column 3', dataIndex: 'address', key: '7', },
+      { title: 'Column 4', dataIndex: 'address', key: '8', },
     {
       title: 'Action',
       key: 'operation',
@@ -262,7 +265,7 @@ constructor(props){
     },
   ]
   
-  this.columns = this.columns.concat(this.columns)
+  
   
   this.data = []
   for (let i = 0; i < 10; i++) {
@@ -276,8 +279,14 @@ constructor(props){
 }
 render() {
   return (
-    <div style={{display:'flex'}}>
-     <Table columns={this.columns} data={this.data} scrollX fixTop={56} name='fixcol'/>
+    <div >
+     <Table 
+       columns={this.columns} 
+       data={this.data} 
+       scrollX 
+       fixTop={56} 
+       name='fixcol'
+     />
     </div>
   )
 }
@@ -315,7 +324,7 @@ constructor(props){
   }]
 }1
 render() {
-  return <Table columns={this.columns} data={this.data} fixTop={56} scrollWidth={1300}/>
+  return <Table columns={this.columns} data={this.data} fixTop={56} scrollX/>
 }
 ```
 :::
@@ -328,9 +337,9 @@ constructor(props){
   super(props)
 
   this.columns = [
-       { title: 'Column 1', dataIndex: 'address', key: '0' ,type:'expand',render(text,record,index){
+       { title: 'Column 1', dataIndex: 'age', key: '0' ,type:'expand',render(text,record,index){
          return (
-           <div>{JSON.stringify(record)}---{index}</div>
+           <div style={{wordWrap:'break-word'}}>{text}-{index}</div>
          )
        }},
     { title: 'Column 1', dataIndex: 'address', key: '1' },
@@ -356,7 +365,7 @@ constructor(props){
   }]
 }
 render() {
-  return <Table columns={this.columns} data={this.data} fixTop={56} scrollWidth={1300} name='rightkey'/>
+  return <Table columns={this.columns} data={this.data} fixTop={56} scrollX name='rightkey'/>
 }
 ```
 :::
@@ -593,6 +602,32 @@ constructor(props){
   this.columns = [
   
 
+    {
+      type: 'expand',
+      key:'expand',
+      width:'50',
+      fixed: 'left',
+      render (text, record, index) {
+        return (
+          <div>
+            <br/>
+            <Form labWidth="100" width={500} labelWidth={100}>
+              
+              <FormItem label="age">
+                  <Input value={record.age} />
+              </FormItem>
+              <FormItem label="">
+                  <Input value={record.name} />
+              </FormItem>
+              <FormItem>
+                  <Button>修改</Button>
+              </FormItem>
+  
+            </Form>
+          </div>
+        )
+      }
+    },
     { title: 'Full Name', width: 150, dataIndex: 'name', key: 'name', fixed: 'left' },
     { title: 'Age', width: 150, dataIndex: 'age', key: 'age', fixed: 'left' },
     { title: 'Column 1', dataIndex: 'address', key: '1'},
@@ -781,8 +816,10 @@ constructor (props) {
               columns.unshift({
                 title:'排序demo',
                 dataIndex:'id',
+                key:'sort',
                 serverSort:[{sort:'desc', sort:'adesc'}] //点击排序的箭头图标会将数组中某一项放到请求参数里
               })
+              
               return {
                 data,
                 columns,
