@@ -2,11 +2,13 @@
 .file-name {
   margin-left: 10px;
 }
+
 .hi-upload {
   p {
     margin: 0;
     padding: 0;
   }
+
   ul {
     margin: 0;
     padding: 0;
@@ -16,15 +18,19 @@
   li {
     list-style: none;
   }
+
   &-label {
     cursor: inherit;
   }
 }
+
 .upload-list__item {
   display: flex;
+
   &-icon {
     flex: none;
   }
+
   &-name {
     flex: auto;
     margin-right: 8px;
@@ -32,9 +38,11 @@
     white-space: nowrap;
     overflow: hidden;
   }
+
   &-status {
     flex: none;
   }
+
   &-remove {
     margin-left: 8px;
   }
@@ -72,7 +80,6 @@
 }
 
 .upload-normal {
-  
   .upload--disabled {
     cursor: not-allowed;
   }
@@ -138,21 +145,25 @@
   overflow: auto;
   border: 1px dotted #bcbcbc;
   cursor: pointer;
+
   &:hover {
     border-color: #0099fb;
   }
 
   &.hi-upload--disabled {
     cursor: not-allowed;
-    opacity: .6;
+    opacity: 0.6;
+
     &,
     &:hover {
       border-color: #d9d9d9;
     }
+
     .drop-click {
       cursor: not-allowed;
     }
   }
+
   .drop-content {
     display: none;
   }
@@ -239,12 +250,14 @@
   &.hi-upload--disabled {
     .photo-upload {
       cursor: not-allowed;
+
       &,
       &:hover {
         border-color: #d9d9d9;
       }
     }
   }
+
   .photo-display {
     width: 480px;
     padding: 20px 0 0 20px;
@@ -269,6 +282,7 @@
     margin-right: 20px;
     margin-bottom: 20px;
     overflow: hidden;
+
     &:hover {
       .upload-comperate {
         display: block;
@@ -287,6 +301,7 @@
       cursor: pointer;
       border: 1px dotted #bcbcbc;
       box-sizing: border-box;
+
       &:hover {
         border-color: #0099fb;
       }
@@ -595,7 +610,6 @@
 }
 
 .upload-pictureCard {
-  
   .upload--disabled {
     cursor: not-allowed;
   }

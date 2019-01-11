@@ -30,13 +30,14 @@ $nornamFontSize: 14px !default;
   position: relative;
   //width: 100%;
 
-  &.striped{
+  &.striped {
     table {
       tr:nth-child(2n) {
         background: $bgColor;
       }
     }
   }
+
   &.small {
     table {
       tr {
