@@ -176,12 +176,25 @@ class UploadAvatar extends Upload {
     context.drawImage(canvasOrigin, cropperRect.left-originRect.left, cropperRect.top-originRect.top, cropperWidth, cropperHeight, 0, 0, cropperWidth, cropperHeight)
     const dataUrl = canvasPreview.toDataURL()
     const file = this.base2blob(dataUrl, this.filename)
+    file.url =dataUrl
     
     this.formatFile(file)
     this.setState({
       fileList: [file]
     }, ()=>{
-      this.uploadFile(file)
+      const {
+        beforeUpload,
+        customUpload
+      } = this.props
+
+      if (!beforeUpload(file, this.state.fileList)) {
+        return
+      }
+      if (customUpload) {
+        customUpload(file)
+      } else {
+        this.uploadFile(file, false)
+      }
     })
     this.resetParams()
   }
