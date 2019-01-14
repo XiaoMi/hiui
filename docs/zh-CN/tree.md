@@ -119,7 +119,7 @@ render() {
         defaultCheckedKeys={[2]}
         onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
         onChange={data => {console.log('Tree data:', data)}}
-        onCheckChange={(arr) => {console.log('checked',arr)}}
+        onCheckChange={(arr, title, checked) => {console.log('checked',arr,title,checked)}}
       />
     </div>
   )
@@ -164,5 +164,6 @@ render() {
 | -------- | ----- | ---- |
 | onChange | 改变复选框状态时触发 | (data: Object) |
 | onNodeToggle | 节点被点击(展开/收起)时触发 | (data: Obejct, isExpanded: boolean) |
+| onCheckChange | 节点选中项 | checkedArr, title, isChecked |
 
 
