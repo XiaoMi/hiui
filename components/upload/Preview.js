@@ -19,6 +19,10 @@ export default class Preview extends Component {
     onClose: PropTypes.func
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    return !!nextProps.src || this.props.show
+  }
+
   onClose () {
     this.setState({
       // style: {},
