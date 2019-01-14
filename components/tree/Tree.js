@@ -22,6 +22,21 @@ const dealData = (data, tempData = {}, parent) => {
     }
   })
 }
+const deepMap = (data, parent) => {
+  let arr = []
+  for (let key in data) {
+    let item = {...data[key]}
+    if (item.children && item.children.length > 0) {
+      arr = arr.concat(deepMap(item.children, item.id))
+      delete item.children
+      arr.push(item)
+    } else {
+      item.parent = parent
+      arr.push(item)
+    }
+  }
+  return arr
+}
 
 export default class Tree extends Component {
   constructor (props) {
@@ -91,6 +106,9 @@ export default class Tree extends Component {
     this.setState({
       hasChecked: checkedArr
     })
+
+    // let data = deepMap(this.props.data).filter(item => checkedArr.includes(item.id)).map(item => item.id)
+    this.props.onCheckChange(checkedArr)
   }
 
   setCheckTreeCheckedChild (id, checked, tempCheckedArr) {

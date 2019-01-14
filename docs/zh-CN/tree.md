@@ -119,6 +119,7 @@ render() {
         defaultCheckedKeys={[2]}
         onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
         onChange={data => {console.log('Tree data:', data)}}
+        onCheckChange={(arr) => {console.log('checked',arr)}}
       />
     </div>
   )
