@@ -33,6 +33,9 @@ export default class Preview extends Component {
     const imgHeight = this.img.clientHeight
     const windowRadio = window.innerWidth / window.innerHeight
     const imgRadio = imgWidth / imgHeight
+    if (isNaN(imgRadio)) {
+      return {}
+    }
     let extraClass
     let style = {}
     if (imgRadio > windowRadio) {
