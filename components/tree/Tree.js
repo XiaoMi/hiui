@@ -108,7 +108,7 @@ export default class Tree extends Component {
     })
 
     // let data = deepMap(this.props.data).filter(item => checkedArr.includes(item.id)).map(item => item.id)
-    this.props.onCheckChange(checkedArr)
+    this.props.onCheckChange(checkedArr, item.title, !checked)
   }
 
   setCheckTreeCheckedChild (id, checked, tempCheckedArr) {
