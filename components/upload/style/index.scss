@@ -512,10 +512,17 @@
 
 .upload-canvas {
   position: relative;
-  width: 100%;
-  height: 100%;
+  margin: auto;
   font-size: 0;
-  cursor: crosshair;
+  overflow: hidden;
+  cursor: move;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC');
+
+  &__canvas {
+    position: absolute;
+    // top: 50%;
+    // left: 50%;
+  }
 
   &__modal {
     position: absolute;
@@ -533,64 +540,47 @@
     }
   }
 
-  &__handle {
+  &__cropper {
     position: absolute;
-    width: 8px;
-    height: 8px;
-    border: 1px solid #eee;
-    background-color: #333;
-  }
-
-  &__t {
-    top: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    cursor: n-resize;
-  }
-
-  &__r {
     top: 50%;
-    right: -5px;
-    transform: translateY(-50%);
-    cursor: e-resize;
-  }
-
-  &__b {
-    bottom: -5px;
     left: 50%;
-    transform: translateX(-50%);
-    cursor: s-resize;
+    transform: translate(-50%, -50%);
+    border: 1px dashed blue;
+    z-index: 2;
+    box-sizing: border-box;
   }
 
-  &__l {
-    top: 50%;
-    left: -5px;
-    transform: translateY(-50%);
-    cursor: w-resize;
+  &__preview {
+    position: fixed;
+    bottom: 0;
+    z-index: -99;
+    visibility: hidden;
   }
 
-  &__tl {
-    top: -5px;
-    left: -5px;
-    cursor: nw-resize;
+  &__mask--top,
+  &__mask--left,
+  &__mask--right,
+  &__mask--bottom {
+    position: absolute;
+    background: #000;
+    opacity: .2;
+    z-index: 1;
   }
-
-  &__tr {
-    top: -5px;
-    right: -5px;
-    cursor: ne-resize;
+  &__mask--top {
+    top: 0;
+    left: 0;
+    right: 0;
   }
-
-  &__bl {
-    bottom: -5px;
-    left: -5px;
-    cursor: sw-resize;
+  &__mask--left {
+    left: 0;
   }
-
-  &__br {
-    bottom: -5px;
-    right: -5px;
-    cursor: se-resize;
+  &__mask--right {
+    right: 0;
+  }
+  &__mask--bottom {
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 }
 
@@ -731,9 +721,3 @@
   }
 }
 
-.canvas-mock {
-  position: absolute;
-  bottom: 0;
-  z-index: -99;
-  visibility: hidden;
-}
