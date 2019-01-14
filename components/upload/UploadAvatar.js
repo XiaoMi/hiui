@@ -27,6 +27,7 @@ class UploadAvatar extends Upload {
         cropperWidth: cropperSize.width,
         cropperHeight: cropperSize.height,
         showPreviewModal: false,
+        previewFile: {},
         showCropperModal: false,
         position: {
           top: 0,
@@ -293,13 +294,14 @@ class UploadAvatar extends Upload {
 
   closePreviewModal () {
     this.setState({
-      fileList: [],
+      previewFile: {},
       showPreviewModal: false
     })
   }
 
-  previewImage () {
+  previewImage (file) {
     this.setState({
+      previewFile: file,
       showPreviewModal: true
     })
   }
@@ -311,6 +313,7 @@ class UploadAvatar extends Upload {
     } = this.props
     const {
       fileList,
+      previewFile,
       showPreviewModal,
       showCropperModal,
       cropperHeight,
@@ -347,7 +350,7 @@ class UploadAvatar extends Upload {
                         <div className='upload-comperate'>
                           <span
                             className='icon Ficon-origin'
-                            onClick={() => this.previewImage()}
+                            onClick={() => this.previewImage(file)}
                           />
                           { onRemove &&
                             <span
@@ -408,7 +411,7 @@ class UploadAvatar extends Upload {
           </div>
         </Modal>
         <Preview
-          src={file&&file.url}
+          src={previewFile.url}
           show={showPreviewModal}
           onClose={this.closePreviewModal.bind(this)}
         />
