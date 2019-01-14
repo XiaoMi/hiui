@@ -1,7 +1,6 @@
 import { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
-import shallowequal from 'shallowequal'
 import cloneDeep from 'lodash/cloneDeep'
 
 let fileId = 0
@@ -16,11 +15,9 @@ export default class Upload extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!shallowequal(nextProps.defaultFileList, this.props.defaultFileList)) {
-      this.setState({
-        fileList: this.prepareDefaultFileList(nextProps.defaultFileList)
-      })
-    }
+    this.setState({
+      fileList: this.prepareDefaultFileList(nextProps.defaultFileList)
+    })
   }
 
   static propTypes = {
@@ -37,6 +34,8 @@ export default class Upload extends Component {
     showUploadList: PropTypes.bool,
     multiple: PropTypes.bool,
     onChange: PropTypes.func,
+    customUpload: PropTypes.func,
+    beforeUpload: PropTypes.func,
     defaultFileList: PropTypes.array,
     onRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool])
   }
@@ -54,6 +53,7 @@ export default class Upload extends Component {
     disabled: false,
     showUploadList: true,
     multiple: false,
+    beforeUpload: () => true,
     onRemove: () => true,
     onChange: () => true
     // overEvent: false
@@ -111,8 +111,20 @@ export default class Upload extends Component {
 
   uploadFiles (files) {
     const {
+      beforeUpload,
+      customUpload
+    } = this.props
+    const {
       fileList
     } = this.state
+
+    if (!beforeUpload(files, fileList)) {
+      return
+    }
+    if (customUpload) {
+      customUpload(files)
+      return
+    }
 
     if (files.length === 0) return
     for (let key in files) {
@@ -194,7 +206,7 @@ export default class Upload extends Component {
     if (file.fileType === 'img') { // 用来图片预览
       if (dataUrl) {
         file.url = dataUrl
-      } else {
+      } else if (dataUrl !== false) {
         const fr = new FileReader()
 
         fr.onload = e => {
