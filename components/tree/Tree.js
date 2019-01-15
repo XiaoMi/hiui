@@ -134,13 +134,13 @@ export default class Tree extends Component {
       if (disabled.includes(c)) {
         return
       }
+      if (semi) {
+        return
+      }
       if (!tempCheckedArr.includes(c) && !disabled.includes(c)) {
         tempCheckedArr.push(c)
       } else {
         tempCheckedArr.splice(tempCheckedArr.indexOf(c), 1)
-      }
-      if (semi) {
-        tempCheckedArr.splice(0, tempCheckedArr.length)
       }
     })
 
