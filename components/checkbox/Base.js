@@ -21,10 +21,6 @@ class Base extends Component {
       root && root.setState({part: true})
     }
   }
-  componentWillUnmount () {
-    console.log(this.state)
-    console.log('checkbox unmount')
-  }
   componentWillReceiveProps (nextProps) {
     if ('checked' in nextProps) {
       if (nextProps.checked !== this.props.checked) {
