@@ -24,6 +24,14 @@ const MultipleCheckboxsOpera = {
   },
   getAll: (name) => {
     return MultipleCheckboxs[name] || []
+  },
+  remove: (name) => {
+    if (MultipleCheckboxs.multipleRoot[name]) {
+      delete MultipleCheckboxs.multipleRoot[name]
+    }
+    if (MultipleCheckboxs[name]) {
+      delete MultipleCheckboxs[name]
+    }
   }
 }
 export default MultipleCheckboxsOpera
