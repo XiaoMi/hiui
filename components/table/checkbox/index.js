@@ -23,7 +23,7 @@ export default class Checkbox extends Component {
       }} className={classNames({'hi-checkbox': true, 'hi-checkbox--part': semi, 'hi-checkbox--checked': checked, 'hi-checkbox--disabled': disabled})}>
         <span className='hi-checkbox__input' />
         {text && <span className='hi-checkbox__label' onClick={(e) => {
-          onTitleClick && onTitleClick()
+          onTitleClick && onTitleClick(e)
         }}>{text}</span>}
       </div>
     )
