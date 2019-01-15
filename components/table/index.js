@@ -10,8 +10,9 @@ import './style'
 import loading from '../loading'
 import '../pagination/style'
 import '../icon/style'
-import {setKey, scrollTop, getStyle} from './tool'
+import {setKey, scrollTop, getStyle, getPosition} from './tool'
 import request from 'axios'
+import qs from 'qs'
 let axios = request.create({
   baseURL: ''
 })
@@ -74,11 +75,7 @@ class Table extends Component {
       rightFixColumns: [],
       columns: [],
       headerColumns: [],
-      loading: false,
-      serverPagination: {
-        total: 0,
-        current: 0
-      }
+      serverPagination: null
     }
   }
 
@@ -150,7 +147,7 @@ class Table extends Component {
 
     freezeCol: (key) => {
       // let col =
-      let {scrollWidth} = this.props
+      let {scrollWidth, scroll, scrollX} = this.props
       let {columns} = this.state
       let pin = false
       columns = columns.map(item => {
@@ -170,7 +167,11 @@ class Table extends Component {
       })
 
       let columnsDetail = this.setColumnsDetail(columns)
-      this.setState({scroll: {x: scrollWidth}, ...columnsDetail}, () => {
+
+      if (scrollWidth || scrollX || (scroll && scroll.x)) {
+        columnsDetail.scrollX = true
+      }
+      this.setState({...columnsDetail}, () => {
         this.xscroll()
       })
     },
@@ -211,7 +212,7 @@ class Table extends Component {
       let columnsDetail = this.setColumnsDetail(columns)
 
       if (!item.ishiuitableopen) {
-        dataSource.splice(index + 1, 0, {expand: true, parent: item.key, width: col.width || '50px', render: col.render})
+        dataSource.splice(index + 1, 0, {expand: true, dataIndex: col.dataIndex, parent: item.key, width: col.width || '50px', render: col.render})
       } else {
         dataSource.splice(index + 1, 1)
       }
@@ -230,71 +231,13 @@ class Table extends Component {
       // }
       // e.target.dataset.open = !open
       // this.setState({dataSource: data})
-    },
-
-    fetch: (extra) => {
-      extra = extra || {}
-      const {origin} = this.props
-      const {
-        data,
-        url,
-        header,
-        type = 'GET',
-        success = (res) => {},
-        error = () => {},
-        currentPageName = Table.config.currentPageName,
-        pageSizeName = Table.config.pageSizeName,
-        pageSize = Table.config.pageSize
-      } = origin
-
-      let l = loading.open({
-        target: this.dom.current
-      })
-      const {
-        serverPagination: {current}
-      } = this.state
-      let requestParams = {
-        ...data,
-        ...extra
-      }
-      requestParams[currentPageName] = current
-      requestParams[pageSizeName] = pageSize
-
-      let options = {
-        url,
-        method: ['GET', 'get'].includes(type) ? 'GET' : 'POST'
-      }
-      if (options.method === 'GET') {
-        options.params = requestParams
-      } else {
-        options.data = requestParams
-      }
-      if (header) {
-        options.header = header
-      }
-      axios.request(options).then(res => {
-        let {data, columns, page} = success(res)
-        let columnsDetail = this.setColumnsDetail(null, null, columns)
-        this.setState({
-          dataSource: data,
-          ...columnsDetail,
-          loading: false,
-          serverPagination: page
-        })
-        this.runMemory()
-        l.close()
-      }).catch(error)
-
-      // axios.request(url, {params: requestParams}).then(res => {
-      //
-      // })
     }
   }
 
   getScrollXContent () {
     let scrollTable
     let {dataSource, highlightCols, columns, headerColumns, leftFiexColumns, rightFixColumns} = this.state
-    let {scroll} = this.state
+    // let {scroll} = this.state
     let {style = {}, ...props} = this.props
     let handleScroll = (e) => {
       let onLeft = e.target.scrollLeft === 0
@@ -324,7 +267,7 @@ class Table extends Component {
         <div className={prifix('table-scroll')} onScroll={handleScroll} key='content'>
 
           <div className={prifix('table-body')} style={{overflowX: 'auto'}}>
-            <TableContent style={{width: scroll.x + 'px', ...style}} {...Object.assign({}, {...props}, {columns}, {dataSource, highlightCols}, {cbs: this.cbs}, {headerColumns})} />
+            <TableContent style={{...style}} {...Object.assign({}, {...props}, {columns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
           </div>
           {
             dataSource.length === 0 ? this.getEmptyContent() : null
@@ -337,7 +280,7 @@ class Table extends Component {
           <div className={prifix('table-fixed-left')} ref={this.fixLeft} style={{display: 'none'}} key='left'>
             <div className={prifix('table-outer')}>
               <div className={prifix('table-inner')}>
-                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: leftFiexColumns}, {dataSource, highlightCols}, {cbs: this.cbs})} />
+                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: leftFiexColumns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
               </div>
             </div>
           </div>
@@ -349,7 +292,7 @@ class Table extends Component {
           <div className={prifix('table-fixed-right')} ref={this.fixRight} key='right'>
             <div className={prifix('table-outer')}>
               <div className={prifix('table-inner')}>
-                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: rightFixColumns}, {dataSource, highlightCols}, {cbs: this.cbs})} />
+                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: rightFixColumns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
               </div>
             </div>
           </div>
@@ -376,10 +319,10 @@ class Table extends Component {
       <div className={prifix('table-content')}>
         <div className={prifix('table-scroll')}>
           <div className={prifix('table-head')}>
-            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols}, {body: false, cbs: this.cbs})} />
+            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols}, {body: false, cbs: this.cbs, fetch: this.fetch, t: this})} />
           </div>
           <div className={prifix('table-body')} style={{maxHeight: scroll.y + 'px', overflow: 'auto'}} >
-            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols}, {head: false, cbs: this.cbs}, {headerColumns})} />
+            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols}, {head: false, cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
           </div>
         </div>
         {
@@ -397,7 +340,7 @@ class Table extends Component {
       <div className={prifix('table-content')}>
 
         <div className={prifix('table-body')} style={{overflowX: 'auto'}}>
-          <TableContent {...Object.assign({}, {style: {...style}}, {...props}, {columns}, {dataSource, highlightCols}, {cbs: this.cbs}, {headerColumns})} />
+          <TableContent {...Object.assign({}, {style: {...style}}, {...props}, {columns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
         </div>
         {
           dataSource.length === 0 ? this.getEmptyContent() : null
@@ -418,7 +361,7 @@ class Table extends Component {
     let scrollTable = this.dom.current.querySelectorAll('.hi-table-scroll table tr')
 
     // if(fixTable && scrollTable){
-    //   console.log(fixTable,scrollTable,'fix-scroll')
+    //
 
     // }
     if (scrollTable) {
@@ -435,8 +378,10 @@ class Table extends Component {
 
   render () {
     // 多选配置
-    let {pagination, name, size = 'normal'} = this.props
-    let {scroll, columnMenu, loading, serverPagination} = this.state
+    // noinspection JSAnnotator
+    let {pagination, name, size = 'normal', striped = false, scrollX} = this.props
+    // noinspection JSAnnotator
+    let {scroll, columnMenu, serverPagination} = this.state
 
     let content
     // 不滚动
@@ -460,30 +405,56 @@ class Table extends Component {
       // content = this.getScrollXYContent()
     }
 
+    if (scrollX) {
+      content = this.getScrollXContent()
+    }
+
     let {columns} = this.state
 
+    let pagePosition = 'flex-end'
+    let serverPagePosition = 'flex-end'
+    if (pagination) {
+      if (pagination.position === 'left') {
+        pagePosition = 'start'
+      }
+      if (pagination.position === 'middle') {
+        pagePosition = 'center'
+      }
+      if (pagination.position === 'right') {
+        pagePosition = 'flex-end'
+      }
+    }
+    if (serverPagination) {
+      if (serverPagination.position === 'left') {
+        serverPagePosition = 'start'
+      }
+      if (serverPagination.position === 'middle') {
+        serverPagePosition = 'center'
+      }
+      if (serverPagination.position === 'right') {
+        serverPagePosition = 'flex-end'
+      }
+    }
     return (
-      <div className={prifix('table', size)} ref={this.dom}>
-        {
-          loading && ' '
-        }
+      <div className={prifix({table: true, size, striped})} ref={this.dom}>
         <div >
           <div >{content}</div>
         </div>
         {(pagination || columns) && <br /> }
-        <div style={{display: 'flex', alignItems: 'center'}}>
+        {
+          pagination && <div style={{display: 'flex', justifyContent: pagePosition}}>
+            {
+              <div className={prifix('table-page')} >
+                <Pagination
+                  {...pagination}
+                />
+              </div>
+            }
+          </div>
+        }
+        {serverPagination && serverPagination.current && serverPagination.current && <div style={{display: 'flex', justifyContent: serverPagePosition}} a='1'>
           {
-            pagination ? <div className={prifix('table-page')} >
-              <Pagination
-                {...pagination}
-              />
-            </div> : null
-          }
-        </div>
-
-        <div style={{display: 'flex', alignItems: 'center'}}>
-          {
-            serverPagination.current && serverPagination.current ? <div className={prifix('table-page')} >
+            <div className={prifix('table-page')} >
               <Pagination
                 pageSize={serverPagination.pageSize}
                 total={serverPagination.total}
@@ -494,12 +465,13 @@ class Table extends Component {
                       ...serverPagination,
                       current
                     }
-                  }, this.cbs.fetch)
+                  }, this.fetch)
                 }}
               />
-            </div> : null
+            </div>
           }
         </div>
+        }
         { name &&
           <div className={prifix('table-setting')} ref={this.setting}>
             <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}}
@@ -545,19 +517,19 @@ class Table extends Component {
   }
 
   xscroll () {
-    let {fixTop, name} = this.props
+    let {fixTop = false, name} = this.props
     if (typeof fixTop === 'boolean') {
       fixTop = 0
     } else {
       fixTop = parseFloat(fixTop)
     }
     let dom = this.dom.current
-    console.log(this.dom.current, 'this.dom')
-    let thead = dom.querySelectorAll('thead')
+    let thead = dom ? dom.querySelectorAll('thead') : null
     if (scrollTop() + fixTop > dom.offsetTop && scrollTop() + fixTop < dom.offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(getStyle(thead[0], 'height'))) {
       thead.forEach(th => {
         th.style.display = 'table-header-group'
         let h = (dom.offsetTop - scrollTop() - fixTop) * -1
+        h = getPosition(dom).y * -1 + fixTop
         th.style.transform = `translate(0,${h}px)`
         if (name) {
           this.setting.current.style.transform = `translate(0,${h}px)`
@@ -670,7 +642,7 @@ class Table extends Component {
     let rightFixColumns = []
     let [headerColumns, columns] = this.getHeaderGroup(c || props.columns)
 
-    let {rowSelection, scroll, name} = props
+    let {rowSelection, scroll, name, scrollX} = props
 
     if (rowSelection) {
       let {selectedRowKeys = [], dataName = 'key'} = rowSelection
@@ -683,7 +655,7 @@ class Table extends Component {
           return (
             <Checkbox type='checkbox'
 
-              checked={selectedRowKeys.length === this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length}
+              checked={selectedRowKeys.length === this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length && this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length > 0}
               onChange={(e, checked) => {
                 let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
                 if (checked) {
@@ -725,7 +697,7 @@ class Table extends Component {
     }
 
     // TODO 这里的逻辑要优化
-    if (scroll.x || bool) {
+    if (scroll.x || scrollX || bool) {
       let obj = this.getColumns(columns)
       leftFiexColumns = obj.leftFiexColumns
       rightFixColumns = obj.rightFixColumns
@@ -740,20 +712,77 @@ class Table extends Component {
     }
   }
 
-  fetch () {
+  fetch = (extra) => {
+    extra = extra || {}
+    const {origin} = this.props
+    const {
+      data,
+      url,
+      headers,
+      type = 'GET',
+      success = (res) => {},
+      error = () => {},
+      currentPageName = Table.config.currentPageName
+      // pageSizeName = Table.config.pageSizeName
+    } = origin
+
+    let l = loading.open({
+      target: this.dom.current
+    })
+    const {
+      serverPagination: {current}
+    } = this.state
+    let requestParams = {
+      ...data,
+      ...extra
+    }
+    requestParams[currentPageName] = current
+    // requestParams[pageSizeName] = pageSize
+
+    let options = {
+      url,
+      method: ['GET', 'get'].includes(type) ? 'GET' : 'POST'
+    }
+    if (options.method === 'GET') {
+      options.params = requestParams
+    } else {
+      options.data = qs.stringify(requestParams)
+    }
+    if (headers) {
+      options.headers = headers
+    }
+    axios.request(options).then(res => {
+      let {data, columns, page} = success(res)
+      let columnsDetail = this.setColumnsDetail(null, null, columns)
+      this.setState({
+        dataSource: data,
+        ...columnsDetail,
+        serverPagination: page
+      })
+      this.runMemory()
+      l.close()
+    }).catch(error)
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    return true
+  }
+
+  reset (props) {
     // noinspection JSAnnotator
+
     const {
       origin: {
         data,
         url,
-        header,
+        headers,
         type = 'GET',
         success = (res) => {},
-        error = () => {},
-        pageSize = Table.config.pageSize,
-        pageSizeName = Table.config.pageSizeName
+        error = () => {}
+        // pageSize = Table.config.pageSize,
+        // pageSizeName = Table.config.pageSizeName
       }
-    } = this.props
+    } = props || this.props
 
     let l = loading.open({target: this.dom.current})
     this.setState({
@@ -762,7 +791,7 @@ class Table extends Component {
     let requestParams = {
       ...data
     }
-    requestParams[pageSizeName] = pageSize
+    // requestParams[pageSizeName] = pageSize
     let options = {
       method: ['GET', 'get'].includes(type) ? 'GET' : 'POST',
       url
@@ -770,17 +799,16 @@ class Table extends Component {
     if (options.method === 'GET') {
       options.params = requestParams
     } else {
-      options.data = requestParams
+      options.data = qs.stringify(requestParams)
     }
-    if (header) {
-      options.header = header
+    if (headers) {
+      options.headers = headers
     }
 
     axios(options).then(res => {
       let {data, columns, page} = success(res)
       this.setState({
         dataSource: data,
-        loading: false,
         serverPagination: page
       })
       setTimeout((e) => {
@@ -792,27 +820,10 @@ class Table extends Component {
         l.close()
       })
     }).catch(error)
-    // axios.request(url, {params: requestParams}).then(res => {
-    //   let {data, columns, page} = success(res)
-    //
-    //   this.setState({
-    //     dataSource: data,
-    //     loading: false,
-    //     serverPagination: page
-    //   })
-    //   setTimeout((e) => {
-    //     let columnsDetail = this.setColumnsDetail(null, null, columns)
-    //     this.setState({
-    //       ...columnsDetail
-    //     })
-    //     this.runMemory()
-    //   })
-    // })
   }
 
   componentDidMount () {
     let {fixTop, scroll, name, origin} = this.props
-    console.log(this.dom)
     let dom = this.dom.current
     let thead = dom.querySelectorAll('thead')
     if (fixTop) {
@@ -847,7 +858,12 @@ class Table extends Component {
       this.runMemory()
 
       if (origin) {
-        this.fetch()
+        this.setState({
+          serverPagination: {
+            current: 1,
+            total: 1
+          }
+        }, this.fetch)
       }
     }, 0)
   }
@@ -855,7 +871,34 @@ class Table extends Component {
   componentWillReceiveProps ({data, columns, width, scroll, ...props}) {
     // 服务端表格
     if (props.origin) {
-      props.origin.auto && this.fetch()
+      let oldOrigin = this.props.origin
+      let newOrigin = props.origin
+      let bool = oldOrigin.url !== newOrigin.url
+      oldOrigin.data = oldOrigin.data || {}
+      newOrigin.data = newOrigin.data || {}
+      oldOrigin.headers = oldOrigin.headers || {}
+      newOrigin.headers = oldOrigin.headers || {}
+      for (let key in oldOrigin.data) {
+        if (oldOrigin.data[key] !== newOrigin.data[key]) {
+          bool = true
+        }
+      }
+      for (let key in oldOrigin.headers) {
+        if (oldOrigin.headers[key] !== newOrigin.headers[key]) {
+          bool = true
+        }
+      }
+
+      let {
+        auto = true,
+        autoDelayTime = Table.config.autoDelayTime
+      } = props.origin
+      if (auto) {
+        clearTimeout(this.autoTimer)
+        this.autoTimer = setTimeout(() => {
+          bool && this.reset(props)
+        }, autoDelayTime)
+      }
     } else {
       data = setKey(data, 'id')
       // 只有dataSource,columns重造
@@ -872,6 +915,9 @@ Table.config = {
   currentPageName: 'current',
   pageSizeName: 'pageSize',
   pageSize: 10,
+  current: 1,
+  total: 1,
+  autoDelayTime: 300,
   host: ''
 }
 

@@ -87,7 +87,7 @@ constructor(props) {
       children: [
         { id: 2, title: '技术',
           children: [
-            { id: 3, title: '后端' }, 
+            { id: 3, title: '后端',disabled:true }, 
             { id: 4, title: '运维' },
             { id: 5, title: '前端' }
           ]
@@ -95,16 +95,16 @@ constructor(props) {
         { id: 6, title: '产品' }
       ]
     },
-    { id: 11, title: '小米',
+    { id: 11, title: '小米2',
       children: [
-        { id: 22, title: '技术',
+        { id: 22, title: '技术2',
           children: [
-            { id: 33, title: '后端' }, 
-            { id: 44, title: '运维' },
-            { id: 55, title: '前端' }
+            { id: 33, title: '后端2' }, 
+            { id: 44, title: '运维2' },
+            { id: 55, title: '前端2' }
           ]
         },
-        { id: 66, title: '产品' }
+        { id: 66, title: '产品2' }
       ]
     },
   ]
@@ -116,9 +116,10 @@ render() {
       <Tree
         checkable
         data={this.treeData}
-        defaultCheckedKeys={[2]}
+        defaultCheckedKeys={[4]}
         onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
-        onChange={data => {console.log('Tree data:', data)}}
+        onChange={(data, title, bool, semi) => {console.log('Tree data:', data, title, bool ,semi)}}
+        onClick={data=>{console.log('tree node click',data)}}
       />
     </div>
   )
@@ -163,5 +164,6 @@ render() {
 | -------- | ----- | ---- |
 | onChange | 改变复选框状态时触发 | (data: Object) |
 | onNodeToggle | 节点被点击(展开/收起)时触发 | (data: Obejct, isExpanded: boolean) |
+| onCheckChange | 节点选中项 | checkedArr, title, isChecked |
 
 

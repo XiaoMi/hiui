@@ -1,433 +1,339 @@
-import React, { Component } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
-import AJAX from './tool'
 import Modal from '../modal'
 import Provider from '../context'
+import Upload from './Upload'
+import Preview from './Preview'
 
-class UploadAvatar extends Component {
-  static propTypes = {
-    uploadType: PropTypes.string,
-    accept: PropTypes.string,
-    limit: PropTypes.number,
-    buttonText: PropTypes.string,
-    buttonIcon: PropTypes.string,
-    uploadAction: PropTypes.string,
-    deleteAction: PropTypes.string,
-    param: PropTypes.object,
-    name: PropTypes.string,
-    disabled: PropTypes.bool,
-    headers: PropTypes.object,
-    showUploadList: PropTypes.bool,
-    multiple: PropTypes.bool,
-    onUploadSuccess: PropTypes.func,
-    onDeleteSuccess: PropTypes.func,
-    deleteParam: PropTypes.object,
-    defaultFileList: PropTypes.array
+class UploadAvatar extends Upload {
+  containerWidth = 550
+  containerHeight = 500
+  filename = ''
+  img = null
+  scale = 1
+  draging = false
+  dragBeginXy = {
+    x: 0,
+    y: 0
   }
 
-  dom = {
-    CanvasModal: null,
-    CanvasMock: null,
-    CanvasReal: null
-  }
-  params = {
-    LOCK: false,
-    type: '',
-    gap: 4
-  }
-  canvasPosition = {
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0
-  }
-  canvasModalPosition = {
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0
-  }
-
-  static defaultProps = {
-    uploadState: '',
-    progressNumber: 0,
-    file: '',
-    uploadType: 'avater',
-    accept: '',
-    limit: null,
-    buttonIcon: 'upload',
-    uploadAction: '',
-    deleteAction: '',
-    param: null,
-    name: 'file',
-    disabled: false,
-    headers: null,
-    showUploadList: true,
-    multiple: false,
-    defaultFileList: []
-  }
   constructor (props) {
     super(props)
-    this.state = Object.assign({
-      uploading: false,
-      progressNumber: 0,
-      show: false,
-      file: props.defaultFileList && props.defaultFileList[0]
-    }, this.props)
+    const cropperSize = this.getCropperSize(this.props)
 
-    console.log(this.state.file)
-
-    this.onMouseMove = this.onMouseMove.bind(this)
-    this.onMouseUp = this.onMouseUp.bind(this)
-  }
-
-  componentWillUnmount () {
-    window.removeEventListener('mousemove', this.onMouseMove)
-  }
-
-  initPosition () {
-    window.addEventListener('mousemove', this.onMouseMove)
-    window.addEventListener('mouseup', this.onMouseUp)
-    this.dom.CanvasModal = document.getElementById('J_Canvas-modal')
-    const json = JSON.stringify(this.dom.CanvasModal.getBoundingClientRect())
-    this.canvasModalPosition = JSON.parse(json)
-    this.canvasPosition = JSON.parse(json)
-  }
-
-  getChangeFiles (e) {
-    let _files = e.target.files
-
-    this.setState({show: true}, () => {
-      this.handleChange(_files)
-    })
-  }
-
-  handleChange (_files) {
-    if (_files.length === 0) return
-    this.setState({uploadState: 'loading'})
-    this.handleFile(_files[0])
-    // ReactDOM.findDOMNode(this.refs.upload).value = ''
-  }
-
-  handleFile (file) {
-    const _self = this
-    const canvas = document.getElementById('upload-canvas')
-    const context = canvas.getContext('2d')
-    /* eslint-disable */
-    let img = new Image() 
-    const fr = new FileReader()
-
-    this.dom.CanvasReal = canvas
-    this.dom.CanvasMock = document.createElement('canvas')
-    this.dom.CanvasMock.classList.add('canvas-mock')
-    document.body.appendChild(this.dom.CanvasMock)
-
-    fr.onload = e => {
-      const src = e.target.result
-      img.src = src
-    }
-    fr.readAsDataURL(file)
-
-    img.onload = function () {
-      const imgWidth = img.width
-      const imgHeight = img.height
-      const width = 488
-      const height = parseInt(500 * imgHeight / imgWidth)
-
-      canvas.width = width
-      canvas.height = height
-      context.drawImage(img, 0, 0, imgWidth, imgHeight, 0, 0, 488, height)
-      _self.initPosition()
-    }
-  }
-
-  upload (dataUrl) {
-    const _self = this
-    const XMLHttpRequest = window.XMLHttpRequest
-    let xhr = new XMLHttpRequest()
-    const FormData = window.FormData
-    let formFile = new FormData()
-
-    formFile.append(_self.props.name, dataUrl)
-    for (let i in this.state.param) {
-      if (i) {
-        formFile.append(i, this.state.param[i])
-      }
-    }
-    xhr.upload.onload = () => {
-      this.setState({ uploadState: 'right' })
-    }
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          _self.props.onUploadSuccess && _self.props.onUploadSuccess(JSON.parse(xhr.response))
+    this.state = Object.assign(
+      {
+        cropperWidth: cropperSize.width,
+        cropperHeight: cropperSize.height,
+        showPreviewModal: false,
+        showCropperModal: false,
+        position: {
+          top: 0,
+          left: 0
         }
-      }
-    }
-    xhr.upload.onerror = () => {
-      this.setState({ uploadState: 'uploadState' })
-    }
-    xhr.upload.onprogress = event => {
-      var e = event || window.event
-      var percentComplete = Math.ceil(e.loaded / e.total * 100)
-
-      this.setState({ progressNumber: percentComplete })
-    }
-    xhr.open('post', this.state.uploadAction, true)
-    // 设置用户传入的请求头
-    if (this.state.headers) {
-      for (let j in this.state.headers) {
-        if (j) {
-          xhr.setRequestHeader(j, this.state.headers[j])
-        }
-      }
-    }
-    xhr.send(formFile)
+      },
+      this.state
+    )
+    this.onDraging = this.onDraging.bind(this)
+    this.onDragEnd = this.onDragEnd.bind(this)
   }
 
-  deletFile (n) {
-    let _self = this
-    if (_self.props.deleteParam) {
-      const deleteParam = _self.props.deleteParam
-      deleteParam.success = (res) => {
-        _self.setState({file: ''}, () => {
-          deleteParam.onDeleteSuccess({
-            res: res
-          })
-        })
-      }
-      if (deleteParam) {
-        AJAX(deleteParam)
-      }
-    } else {
-      _self.setState({file: ''}, () => {
-        _self.props.onDeleteSuccess && _self.props.onDeleteSuccess()
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.width !== this.props.width || nextProps.height !== this.props.height) {
+      const cropperSize = this.getCropperSize(nextProps)
+
+      this.setState({
+        cropperWidth: cropperSize.width,
+        cropperHeight: cropperSize.height
       })
     }
   }
 
-  resetParams () {
-    this.dom = {
-      CanvasModal: null,
-      CanvasMock: null,
-      CanvasReal: null
+  getCropperSize (props) {
+    return {
+      width: props.width > 450 ? 200 : props.width,
+      height: props.height > 450 ? 200 : props.height
     }
-    this.params = {
-      LOCK: false,
-      type: '',
-      gap: 4
-    }
-    this.canvasPosition = {
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0
-    }
-    this.canvasModalPosition = {
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0
-    }
-    ReactDOM.findDOMNode(this.refs.upload).value = ''
-    this.setState({
-      uploadState: '',
-      progressNumber: 0,
-      show: false
+  }
+
+  uploadFiles (files) {
+    if (files.length === 0) return
+
+    window.addEventListener('mousemove', this.onDraging)
+    window.addEventListener('mouseup', this.onDragEnd)
+    this.setState({showCropperModal: true, uploadState: 'loading'}, () => {
+      this.filename = files[0].name
+      this.showCropperModal(files[0])
     })
   }
 
-  // base2blob (dataurl) {
-  //   let arr = dataurl.split(',')
-  //   const mime = arr[0].match(/:(.*?);/)[1]
-  //   const  bstr = atob(arr[1])
-  //   let n = bstr.length
-  //   let u8arr = new Uint8Array(n)
-  //   while (n--) {
-  //     u8arr[n] = bstr.charCodeAt(n)
-  //   }
-  //   return new Blob([u8arr], {
-  //     type: mime
-  //   })
-  // }
+  showCropperModal (file) {
+    /* eslint-disable */
+    this.img = new Image() 
+    const fr = new FileReader()
+
+    fr.onload = e => {
+      const src = e.target.result
+      this.img.src = src
+    }
+    fr.readAsDataURL(file)
+
+    this.img.onload = () => {
+      this.drawCanvas(true)
+    }
+  }
+
+  drawCanvas(init=false) {
+    const canvas = document.getElementById('canvas-origin')
+    const originContext = canvas.getContext('2d')
+    const imgWidth = this.img.width
+    const imgHeight = this.img.height
+    const imgRadio = imgWidth/imgHeight
+    const containerRadio = this.containerWidth/this.containerHeight
+    let canvasWidth
+    let canvasHeight
+
+    if (imgRadio >= containerRadio) {
+      canvasWidth = this.containerWidth
+      canvasHeight = canvasWidth/imgRadio
+    } else {
+      canvasHeight = this.containerHeight
+      canvasWidth = canvasHeight*imgRadio
+    }
+    canvasWidth *= this.scale
+    canvasHeight *= this.scale
+    canvas.width = canvasWidth
+    canvas.height = canvasHeight
+    originContext.drawImage(this.img, 0, 0, imgWidth, imgHeight, 0, 0, canvasWidth, canvasHeight)
+    init && this.setState({ // 初始时canvas位置居中
+      position: {
+        top: (this.containerHeight - canvasHeight) / 2,
+        left: (this.containerWidth - canvasWidth) / 2
+      }
+    })
+  }
+
+  clearCanvas() {
+    const canvas = document.getElementById('canvas-origin')
+    const context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  resetParams () {
+    window.removeEventListener('mousemove', this.onDraging)
+    window.removeEventListener('mouseup', this.onDragEnd)
+    ReactDOM.findDOMNode(this.refs.upload).value = ''
+
+    this.scale = 1
+    this.img = null
+    this.setState({
+      showCropperModal: false
+    })
+    this.clearCanvas()
+  }
+
+  base2blob (dataurl, filename) {
+    let arr = dataurl.split(',')
+    const mime = arr[0].match(/:(.*?);/)[1]
+    const  bstr = atob(arr[1])
+    let n = bstr.length
+    let u8arr = new Uint8Array(n)
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n)
+    }
+    return new File([u8arr], filename, {
+      type: mime
+    })
+  }
 
   cancel () {
     this.resetParams()
   }
 
-  confirm () {
-    const style = window.getComputedStyle(this.dom.CanvasModal, null)
-    const size = {
-      x: parseInt(style.left),
-      y: parseInt(style.top),
-      w: this.canvasModalPosition.right - this.canvasModalPosition.left,
-      h: this.canvasModalPosition.bottom - this.canvasModalPosition.top
-    }
-    this.dom.CanvasMock.width = size.w
-    this.dom.CanvasMock.height = size.h
-    const context = this.dom.CanvasMock.getContext('2d')
+  formatFile(file) {
+    file.fileType = 'img'
 
-    context.drawImage(this.dom.CanvasReal, size.x, size.y, size.w, size.h, 0, 0, size.w, size.h)
-    const dataUrl = this.dom.CanvasMock.toDataURL()
+    return file
+  }
 
-    this.setState({file: dataUrl})
-    this.upload(dataUrl)
+  confirm () { // 裁切图片
+    const {
+      cropperHeight,
+      cropperWidth
+    } = this.state
+    const canvasOrigin = document.getElementById('canvas-origin')
+    const originRect = canvasOrigin.getBoundingClientRect()
+    const cropperRect = this.cropperRef.getBoundingClientRect()
+    const canvasPreview = document.getElementById('canvas-preview')
+    canvasPreview.width = cropperWidth
+    canvasPreview.height = cropperHeight
+    const context = canvasPreview.getContext('2d')
+
+    context.fillStyle = "#fff";
+    context.fillRect(0, 0, cropperWidth, cropperHeight);
+    context.drawImage(canvasOrigin, cropperRect.left-originRect.left, cropperRect.top-originRect.top, cropperWidth, cropperHeight, 0, 0, cropperWidth, cropperHeight)
+    const dataUrl = canvasPreview.toDataURL()
+    const file = this.base2blob(dataUrl, this.filename)
+    file.url =dataUrl
+    
+    this.formatFile(file)
+    this.setState({
+      fileList: [file]
+    }, ()=>{
+      const {
+        beforeUpload,
+        customUpload
+      } = this.props
+
+      if (!beforeUpload(file, this.state.fileList)) {
+        return
+      }
+      if (customUpload) {
+        customUpload(file)
+      } else {
+        this.uploadFile(file, false)
+      }
+    })
     this.resetParams()
   }
 
-  onMouseUp () {
-    this.params.LOCK = false
-  }
+  zoom(e) { // 缩放canvas
+    e.preventDefault()
+    const wheelDelta = e.wheelDelta || e.deltaY/120
+    let scale = this.scale + wheelDelta
 
-  onMouseDown (e) {
-    this.params.LOCK = true
-
-    if ([].slice.call(e.target.classList).indexOf('upload-canvas__handle') > -1) {
-      this.params.type = e.target.id.split('_')[1]
+    if (scale > 10 || scale < 0.1) {
+      return
     }
+    this.scale = scale
+    this.drawCanvas()
+    this.setState({
+      position: this.getPosition(this.state.position.top, this.state.position.left)
+    })
   }
-
-  mouseT (e) {
-    const self = this
-
-    if (e.clientY < self.canvasPosition.top) {
-      self.canvasModalPosition.top = self.canvasPosition.top
-    } else if (e.clientY >= self.canvasPosition.top && e.clientY <= self.canvasModalPosition.bottom - self.params.gap) {
-      self.canvasModalPosition.top = e.clientY
+  
+  getPosition(top, left) { // 计算canvas的位置
+    const {
+      cropperWidth,
+      cropperHeight
+    } = this.state
+    const canvasRect = this.canvasRef.getBoundingClientRect()
+    const deltaHeight = (this.containerHeight-cropperHeight)/2
+    const deltaWidth = (this.containerWidth-cropperWidth)/2
+    let maxTop
+    let minTop
+    let maxLeft
+    let minLeft
+    if (deltaHeight > canvasRect.height) {
+      maxTop = deltaHeight + cropperHeight
+      minTop = deltaHeight - canvasRect.height
     } else {
-      self.canvasModalPosition.top = self.canvasModalPosition.bottom - self.params.gap
+      maxTop = this.containerHeight - deltaHeight
+      minTop = deltaHeight - canvasRect.height
     }
-    self.dom.CanvasModal.style.top = self.canvasModalPosition.top - self.canvasPosition.top + 'px'
-  }
-
-  mouseR (e) {
-    const self = this
-
-    if (e.clientX > self.canvasPosition.right) {
-      self.canvasModalPosition.right = self.canvasPosition.right
-    } else if (e.clientX <= self.canvasPosition.right && e.clientX >= self.canvasModalPosition.left + self.params.gap) {
-      self.canvasModalPosition.right = e.clientX
+    if (deltaWidth > canvasRect.width) {
+      maxLeft = deltaWidth + cropperWidth
+      minLeft = deltaWidth - canvasRect.width
     } else {
-      self.canvasModalPosition.right = self.canvasModalPosition.left + self.params.gap
+      maxLeft = this.containerWidth - deltaWidth
+      minLeft = deltaWidth - canvasRect.width
     }
-    self.dom.CanvasModal.style.right = self.canvasPosition.right - self.canvasModalPosition.right + 'px'
+    if (top > maxTop) {
+      top = maxTop
+    } else if (top < minTop) {
+      top = minTop
+    }
+    if (left > maxLeft) {
+      left = maxLeft
+    } else if (left < minLeft) {
+      left = minLeft
+    }
+
+    return {
+      top,
+      left
+    }
   }
 
-  mouseB (e) {
-    const self = this
-
-    if (e.clientY > self.canvasPosition.bottom) {
-      self.canvasModalPosition.bottom = self.canvasPosition.bottom
-    } else if (e.clientY <= self.canvasPosition.bottom && e.clientY >= self.canvasModalPosition.top + self.params.gap) {
-      self.canvasModalPosition.bottom = e.clientY
-    } else {
-      self.canvasModalPosition.bottom = self.canvasModalPosition.top + self.params.gap
+  onDragStart (e) {
+    // e.persist()
+    this.draging = true
+    this.dragBeginXy = {
+      x: e.clientX,
+      y: e.clientY,
     }
-    self.dom.CanvasModal.style.bottom = self.canvasPosition.bottom - self.canvasModalPosition.bottom + 'px'
   }
 
-  mouseL (e) {
-    const self = this
-
-    if (e.clientX < self.canvasPosition.left) {
-      self.canvasModalPosition.left = self.canvasPosition.left
-    } else if (e.clientX >= self.canvasPosition.left && e.clientX <= self.canvasModalPosition.right - self.params.gap) {
-      self.canvasModalPosition.left = e.clientX
-    } else {
-      self.canvasModalPosition.left = self.canvasModalPosition.right - self.params.gap
+  onDraging (e) {
+    if (!this.draging) {
+      return
     }
-    self.dom.CanvasModal.style.left = self.canvasModalPosition.left - self.canvasPosition.left + 'px'
+    e.stopPropagation()
+    e.preventDefault()
+    // e.persist()
+    const x = e.clientX-this.dragBeginXy.x
+    const y = e.clientY-this.dragBeginXy.y
+    const position = this.state.position
+    let top = position.top + y
+    let left = position.left + x
+
+    this.setState({
+      position: this.getPosition(top, left)
+    })
+    this.dragBeginXy = {
+      x: e.clientX,
+      y: e.clientY
+    }
+  }
+  onDragEnd (e) {
+    // e.persist()
+    this.draging = false
   }
 
-  onMouseMove (e) {
-    if (!this.params.LOCK) { return }
-    let self = this
-    const type = this.params.type.toLowerCase()
+  closePreviewModal () {
+    this.setState({
+      showPreviewModal: false
+    })
+  }
 
-    switch (type) {
-      case 't':
-        self.mouseT(e)
-        break
-      case 'r':
-        self.mouseR(e)
-        break
-      case 'b':
-        self.mouseB(e)
-        break
-      case 'l':
-        self.mouseL(e)
-        break
-      case 'tl':
-        self.mouseT(e)
-        self.mouseL(e)
-        break
-      case 'tr':
-        self.mouseT(e)
-        self.mouseR(e)
-        break
-      case 'bl':
-        self.mouseB(e)
-        self.mouseL(e)
-        break
-      case 'br':
-        self.mouseB(e)
-        self.mouseR(e)
-        break
-      default:
-    }
+  previewImage () {
+    this.setState({
+      showPreviewModal: true
+    })
   }
 
   render () {
-    const { uploadType } = this.props
+    const { 
+      onRemove,
+      accept
+    } = this.props
     const {
-      uploadState,
-      progressNumber,
-      file
+      fileList,
+      showPreviewModal,
+      showCropperModal,
+      cropperHeight,
+      cropperWidth,
+      position
     } = this.state
+    const file = fileList[0]
+    const topMaskBottom = (this.containerHeight - cropperHeight) / 2 + cropperHeight
+    const leftMaskRight = (this.containerWidth - cropperWidth) / 2 + cropperWidth
+    const leftMaskTop = (this.containerHeight - cropperHeight) / 2
 
     return (
-      <div className={'upload-' + uploadType}>
+      <div className="hi-upload upload-avatar">
         <ul className='photo-display' ref='photodisplay'>
-          {/* {this.props.allPhotoFiles.map((file, index) => {
-            if (file.uploadState === 'loading') {
-              return (<li key={index}>
-                <div className='img-uploading'>
-                  <img src={file.src} />
-                  <div className='upload-precent'>
-                    <p className='precent-num'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : '上传成功') : (0 + '%')}</p>
-                    <div className='precent-loading' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
-                  </div>
-                </div>
-              </li>)
-            } else {
-              return (<li key={index}>
-                <div className='img-uploaded'>
-                  <img src={file.src} />
-                  <div className='upload-comperate'>
-                    <span
-                      className='icon Ficon-origin'
-                      onClick={() => console.log('show origin photo')}
-                    />
-                    <span
-                      className='icon Ficon-delete-photo'
-                      onClick={this.deletFile.bind(this, index)}
-                    />
-                  </div>
-                </div>
-              </li>)
-            }
-          })} */}
           {
             file
               ? (
-                uploadState === 'loading'
+                file.uploadState === 'loading'
                   ? (
                     <li>
                       <div className='img-uploading'>
-                        <img src={file} />
+                        <img src={file.url} />
                         <div className='upload-precent'>
-                          <p className='precent-num'>{progressNumber ? (progressNumber < 100 ? (progressNumber + '%') : '上传成功') : (0 + '%')}</p>
+                          <p className='precent-num'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : '上传成功') : (0 + '%')}</p>
                           <div className='precent-loading' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
                         </div>
                       </div>
@@ -436,16 +342,18 @@ class UploadAvatar extends Component {
                   : (
                     <li>
                       <div className='img-uploaded'>
-                        <img src={file} />
+                        <img src={file.url} />
                         <div className='upload-comperate'>
                           <span
                             className='icon Ficon-origin'
-                            onClick={() => console.log('show origin photo')}
+                            onClick={() => this.previewImage()}
                           />
-                          <span
-                            className='icon Ficon-delete-photo'
-                            onClick={this.deletFile.bind(this)}
-                          />
+                          { onRemove &&
+                            <span
+                              className='icon Ficon-delete-photo'
+                              onClick={() => this.deleteFile(file, 0)}
+                            />
+                          }
                         </div>
                       </div>
                     </li>
@@ -460,8 +368,8 @@ class UploadAvatar extends Component {
                     ref='upload'
                     type='file'
                     className='upload-input'
-                    accept='image/jpg,image/jpeg,image/png'
-                    onChange={e => this.getChangeFiles(e)}
+                    accept={accept}
+                    onChange={e => this.uploadFiles(e.target.files)}
                     hidden
                   />
                   <span className='photo-upload'>+</span>
@@ -471,44 +379,55 @@ class UploadAvatar extends Component {
           }
         </ul>
         <Modal
-          show={this.state.show}
+          show={showCropperModal}
           onConfirm={() => { this.confirm() }}
           onCancel={() => { this.cancel() }}
           backDrop={false}
         >
-          <div className='upload-canvas'>
-            <canvas id='upload-canvas' className='upload-canvas__canvas' />
-            <div id='J_Canvas-modal' className='upload-canvas__modal'>
-              <div id='J_T' className='upload-canvas__handle upload-canvas__t'
-                onMouseDown={this.onMouseDown.bind(this)}
-              />
-              <div id='J_R' className='upload-canvas__handle upload-canvas__r'
-                onMouseDown={this.onMouseDown.bind(this)}
-              />
-              <div id='J_B' className='upload-canvas__handle upload-canvas__b'
-                onMouseDown={this.onMouseDown.bind(this)}
-              />
-              <div id='J_L' className='upload-canvas__handle upload-canvas__l'
-                onMouseDown={this.onMouseDown.bind(this)}
-              />
-              <div id='J_TL' className='upload-canvas__handle upload-canvas__tl'
-                onMouseDown={this.onMouseDown.bind(this)}
-              />
-              <div id='J_TR' className='upload-canvas__handle upload-canvas__tr'
-                onMouseDown={this.onMouseDown.bind(this)}
-              />
-              <div id='J_BL' className='upload-canvas__handle upload-canvas__bl'
-                onMouseDown={this.onMouseDown.bind(this)}
-              />
-              <div id='J_BR' className='upload-canvas__handle upload-canvas__br'
-                onMouseDown={this.onMouseDown.bind(this)}
-              />
-            </div>
+          <div 
+            className='upload-canvas' 
+            style={{width: this.containerWidth, height: this.containerHeight}}
+            onWheel={this.zoom.bind(this)}
+            onMouseDown={this.onDragStart.bind(this)}
+          >
+            <canvas 
+              id='canvas-origin' 
+              className='upload-canvas__canvas' 
+              style={{top: position.top, left: position.left}} 
+              ref={node => this.canvasRef=node}
+            />
+            <div className="upload-canvas__mask--top" style={{bottom: topMaskBottom}}></div>
+            <div className="upload-canvas__mask--left" style={{top: leftMaskTop, bottom: leftMaskTop, right: leftMaskRight}}></div>
+            <div ref={node=>this.cropperRef=node} className='upload-canvas__cropper' id='upload-canvas__cropper' style={{height: cropperHeight, width: cropperWidth}}></div>
+            <div className="upload-canvas__mask--right" style={{top: leftMaskTop, bottom: leftMaskTop, left: leftMaskRight}}></div>
+            <div className="upload-canvas__mask--bottom" style={{top: topMaskBottom}}></div>
+          </div>
+          <div className="upload-canvas__preview">
+            <canvas id="canvas-preview"/>
           </div>
         </Modal>
+        <Preview
+          src={file&&file.url}
+          show={showPreviewModal}
+          onClose={this.closePreviewModal.bind(this)}
+        />
       </div>
     )
   }
 }
+
+UploadAvatar.propTypes = Object.assign({}, {
+  ...Upload.propTypes
+}, {
+  width: PropTypes.number,
+  height: PropTypes.number
+})
+UploadAvatar.defaultProps = Object.assign({}, {
+  ...Upload.defaultProps
+}, {
+  width: 200,
+  height: 200,
+  accept: 'image/jpg,image/jpeg,image/png'
+})
 
 export default Provider(UploadAvatar)

@@ -7,7 +7,7 @@
 Table 表格代码说明
 1. 右键菜单
     1. 高亮
-    2. 列冻结 （需要配置scrollWidth）
+    2. 列冻结 （需要配置scrollX）
     3. 隐藏列
 2. 表格menu菜单（控制列的显示与隐藏）
 3. 操作记忆 需要给每个表格添加name属性来为索引。非常重要
@@ -180,11 +180,15 @@ render(){
     onChange: (selectedRowKeys,rows)=>{
       console.log('onchange',selectedRowKeys,rows)
       this.setState({selectedRowKeys})
-    }
+    },
+    dataName:'age'
   }
   return <Table columns={this.columns} data={data} rowSelection={rowSelection} />
 }
+
+
 ```
+
 :::
 
 
@@ -245,11 +249,14 @@ constructor(props){
 
   this.columns = [
    
-    { title: 'Column 1', dataIndex: 'address', key: '1', width: 150 ,fixed:'left'},
-    { title: 'Column 2', dataIndex: 'address', key: '2', width: 150 },
-    { title: 'Column 3', dataIndex: 'address', key: '3', width: 150 },
-    { title: 'Column 4', dataIndex: 'address', key: '4', width: 150 },
-  
+    { title: 'Column 1', dataIndex: 'address', key: '1',fixed:'left' },
+    { title: 'Column 2', dataIndex: 'address', key: '2',  },
+    { title: 'Column 3', dataIndex: 'address', key: '3', },
+    { title: 'Column 4', dataIndex: 'address', key: '4', },
+      { title: 'Column 1', dataIndex: 'address', key: '5', },
+      { title: 'Column 2', dataIndex: 'address', key: '6',  },
+      { title: 'Column 3', dataIndex: 'address', key: '7', },
+      { title: 'Column 4', dataIndex: 'address', key: '8', },
     {
       title: 'Action',
       key: 'operation',
@@ -257,6 +264,8 @@ constructor(props){
       render: () => <a href="javascript:;">action</a>,
     },
   ]
+  
+  
   
   this.data = []
   for (let i = 0; i < 10; i++) {
@@ -270,8 +279,14 @@ constructor(props){
 }
 render() {
   return (
-    <div style={{display:'flex'}}>
-     <Table columns={this.columns} data={this.data} scroll={{ x: 1500 }} fixTop={56} name='fixcol'/>
+    <div >
+     <Table 
+       columns={this.columns} 
+       data={this.data} 
+       scrollX 
+       fixTop={56} 
+       name='fixcol'
+     />
     </div>
   )
 }
@@ -286,14 +301,14 @@ constructor(props){
   super(props)
 
   this.columns = [
-    { title: 'Column 1', dataIndex: 'address', key: '1' },
-    { title: 'Column 2', dataIndex: 'address', key: '2' },
-    { title: 'Column 3', dataIndex: 'address', key: '3' },
-    { title: 'Column 4', dataIndex: 'address', key: '4' },
-    { title: 'Column 5', dataIndex: 'address', key: '5' },
-    { title: 'Column 6', dataIndex: 'address', key: '6' },
-    { title: 'Column 7', dataIndex: 'address', key: '7' },
-    { title: 'Column 8', dataIndex: 'address', key: '8' }
+    { title: 'Column 1', dataIndex: 'address', key: '1' ,width:200},
+    { title: 'Column 2', dataIndex: 'address', key: '2',width:200 },
+    { title: 'Column 3', dataIndex: 'address', key: '3',width:320 },
+    { title: 'Column 4', dataIndex: 'address', key: '4' ,width:210},
+    { title: 'Column 5', dataIndex: 'address', key: '5' ,width:220},
+    { title: 'Column 6', dataIndex: 'address', key: '6' ,width:230},
+    { title: 'Column 7', dataIndex: 'address', key: '7' ,width:240},
+    { title: 'Column 8', dataIndex: 'address', key: '8' ,width:250}
   ]
   
   this.data = [{
@@ -309,7 +324,7 @@ constructor(props){
   }]
 }1
 render() {
-  return <Table columns={this.columns} data={this.data} fixTop={56} scrollWidth={1300}/>
+  return <Table columns={this.columns} data={this.data} fixTop={56} scrollX/>
 }
 ```
 :::
@@ -322,9 +337,9 @@ constructor(props){
   super(props)
 
   this.columns = [
-       { title: 'Column 1', dataIndex: 'address', key: '0' ,type:'expand',render(text,record,index){
+       { title: 'Column 1', dataIndex: 'age', key: '0' ,type:'expand',render(text,record,index){
          return (
-           <div>{JSON.stringify(record)}---{index}</div>
+           <div style={{wordWrap:'break-word'}}>{text}-{index}</div>
          )
        }},
     { title: 'Column 1', dataIndex: 'address', key: '1' },
@@ -350,7 +365,7 @@ constructor(props){
   }]
 }
 render() {
-  return <Table columns={this.columns} data={this.data} fixTop={56} scrollWidth={1300} name='rightkey'/>
+  return <Table columns={this.columns} data={this.data} fixTop={56} scrollX name='rightkey'/>
 }
 ```
 :::
@@ -586,40 +601,43 @@ constructor(props){
 
   this.columns = [
   
+
     {
       type: 'expand',
-      fixed:'left',
       key:'expand',
+      width:'50',
+      fixed: 'left',
       render (text, record, index) {
         return (
           <div>
-            <form>
-              <div style={{padding: '20px'}}>
-                <div>
-                  姓名<Input value={record.name} />
-                </div>
-                <div>
+            <br/>
+            <Form labWidth="100" width={500} labelWidth={100}>
+              
+              <FormItem label="age">
+                  <Input value={record.age} />
+              </FormItem>
+              <FormItem label="">
+                  <Input value={record.name} />
+              </FormItem>
+              <FormItem>
+                  <Button>修改</Button>
+              </FormItem>
   
-                  年龄<Input value={record.age} />
-                </div>
-                <Button>修改</Button>
-              </div>
-  
-            </form>
+            </Form>
           </div>
         )
       }
     },
-    { title: 'Full Name', width: 100, dataIndex: 'name', key: 'name', fixed: 'left' },
-    { title: 'Age', width: 100, dataIndex: 'age', key: 'age', fixed: 'left' },
-    { title: 'Column 1', dataIndex: 'address', key: '1' },
+    { title: 'Full Name', width: 150, dataIndex: 'name', key: 'name', fixed: 'left' },
+    { title: 'Age', width: 150, dataIndex: 'age', key: 'age', fixed: 'left' },
+    { title: 'Column 1', dataIndex: 'address', key: '1'},
     { title: 'Column 2', dataIndex: 'address', key: '2' },
-    { title: 'Column 3', dataIndex: 'address', key: '3' },
-    { title: 'Column 4', dataIndex: 'address', key: '4' },
-    { title: 'Column 5', dataIndex: 'address', key: '5' },
-    { title: 'Column 6', dataIndex: 'address', key: '6' },
-    { title: 'Column 7', dataIndex: 'address', key: '7' },
-    { title: 'Column 8', dataIndex: 'address', key: '8' }
+    { title: 'Column 3', dataIndex: 'address', key: '3'},
+    { title: 'Column 4', dataIndex: 'address', key: '4'},
+    { title: 'Column 5', dataIndex: 'address', key: '5'},
+    { title: 'Column 6', dataIndex: 'address', key: '6'},
+    { title: 'Column 7', dataIndex: 'address', key: '7'},
+    // { title: 'Column 8', dataIndex: 'address', key: '8' }
   ]
   
   this.data = [{
@@ -635,7 +653,7 @@ constructor(props){
   }]
 }
 render() {
-  return <Table columns={this.columns} data={this.data} fixTop={56}/>
+  return <Table columns={this.columns} scrollX data={this.data} fixTop={56}/>
 }
 ```
 :::
@@ -662,7 +680,7 @@ constructor(props){
               <FormItem label="age">
                   <Input value={record.age} />
               </FormItem>
-              <FormItem label="name">
+              <FormItem label="">
                   <Input value={record.name} />
               </FormItem>
               <FormItem>
@@ -676,13 +694,13 @@ constructor(props){
     },
     { title: 'Full Name', width: 100, dataIndex: 'name', key: 'name', fixed: 'left' },
     { title: 'Age', width: 100, dataIndex: 'age', key: 'age', fixed: 'left' },
-    { title: 'Column 1', dataIndex: 'address', key: '1' },
-    { title: 'Column 2', dataIndex: 'address', key: '2' },
-    { title: 'Column 3', dataIndex: 'address', key: '3' },
-    { title: 'Column 4', dataIndex: 'address', key: '4' },
-    { title: 'Column 5', dataIndex: 'address', key: '5' },
-    { title: 'Column 6', dataIndex: 'address', key: '6' },
-    { title: 'Column 7', dataIndex: 'address', key: '7' },
+    { title: 'Column 1', dataIndex: 'address', key: '1' ,width:120,},
+    { title: 'Column 2', dataIndex: 'address', key: '2' ,width:120,},
+    { title: 'Column 3', dataIndex: 'address', key: '3' ,width:120,},
+    { title: 'Column 4', dataIndex: 'address', key: '4' ,width:120,},
+    { title: 'Column 5', dataIndex: 'address', key: '5' ,width:120,},
+    { title: 'Column 6', dataIndex: 'address', key: '6' ,width:120,},
+    { title: 'Column 7', dataIndex: 'address', key: '7' ,width:120,},
     { title: 'Column 8', dataIndex: 'address', key: '8' }
   ]
   this.state = {
@@ -691,7 +709,6 @@ constructor(props){
     current :2,
     data: []
   }
-  
 }
 
 set(current){
@@ -717,13 +734,16 @@ render() {
         columns={this.columns} 
         data={this.state.data} 
         fixTop={56}
+        scrollX 
         pagination={{
           pageSize: this.state.pageSize,
           total:this.state.total,
           current: this.state.current,
           onChange:(page,pre,size)=>{
             this.set(page)
-          }
+          },
+          position : 'center' // 分页位置 - 默认右侧
+          
         }}
         />
 }
@@ -735,37 +755,6 @@ render() {
 ```js
 constructor (props) {
     super(props)
-
-    this.columns = [
-      {
-        'title': '业务来源',
-        dataIndex: 'source',
-        serverSort: [{sort: 'desc'}, {sort: 'adesc'}],
-        fixed: 'left',
-        width: '150px'
-
-      },
-      {'title': '运单号', dataIndex: 'id', type: 'number'},
-      {'title': '包裹单号', dataIndex: 'wrapper_number', type: 'number'},
-      {'title': '运输方式', dataIndex: 'trans_type'},
-      {'title': '发货工厂', dataIndex: 'from'},
-      {'title': '重量(kg)', dataIndex: 'weight'},
-      {'title': '收货地区', dataIndex: 'to'},
-      {'title': '收货地址', dataIndex: 'address'},
-      {
-        'title': '操作',
-        dataIndex: 'address',
-        key: 'edit',
-        render: (text, record, index) => {
-          return (
-            <div>
-              <Button type='primary'>编辑</Button>
-              <Button type='danger'>删除</Button>
-            </div>
-          )
-        }}
-    ]
-
     this.state = {
       from: ''
     }
@@ -796,38 +785,49 @@ constructor (props) {
            <Input onChange={(e) => this.setState({from: e.target.value})} />
           </FormItem>
           <FormItem>
-          <Button onClick={(e) => {this.refs.serverTable.fetch()}}>查询</Button>
+          <Button onClick={(e) => {this.refs.serverTable.fetch()}}>查询当前页</Button> 
+          <Button onClick={(e) => {this.refs.serverTable.reset()}}>查询第一页</Button>           
           </FormItem>
         </Form>
         <Table
           name='server'
-          auto={false}
-          scroll={{x: 1500}}
+          scrollX
           ref={'serverTable'}
           rowSelection={rowSelection}
-          advance={{
+          advance={{   // 表格高级功能（统计)
             sum: true,
             avg: true
-          }}
+          }} 
           origin={{
-            url: 'http://10.234.9.15:7777/mock/34',
-            pageSize: '3',
-            currentPageName: 'pageNum',
-            header: '',
-            data: {
+            url: 'https://www.easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/table',
+            currentPageName: 'pageNum', //分页的页码字端名(默认 current)
+            autoDelayTime: 500,   // 自动发请求的时候，延迟时间(默认 200)
+            headers: {'OS': 'WEB'}, //设置请求头 
+            data: {        
               from,
               startTime: '',
-              endTime: ''
+              endTime: '',
+              pageSize:2
             },
+            method: "POST",
+            auto:true, // 自动发请求配置(默认false)
             success: (res) => {
-              let {data: {data, page: {pageSize, totalNum, pageNum}}} = res
+              let {data: {data, columns,page: {pageSize, totalNum, pageNum}}} = res
+              columns.unshift({
+                title:'排序demo',
+                dataIndex:'id',
+                key:'sort',
+                serverSort:[{sort:'desc', sort:'adesc'}] //点击排序的箭头图标会将数组中某一项放到请求参数里
+              })
+              
               return {
                 data,
-                columns: this.columns,
+                columns,
                 page: {
                   pageSize,
                   total: totalNum,
-                  current: pageNum
+                  current: pageNum,
+                  position: 'middle'
                 }
               }
             },
@@ -852,7 +852,9 @@ constructor (props) {
 | scroll | 设置横向滚动，也可用于指定滚动区域的宽，建议为`x`设置一个数字，如果不设置，默认table宽度为100%  | number, true  | - |
 | fixTop | 吸顶  | Number , true | false |
 | pagination | 查看分页组件配置  | Object | false |
-
+| striped | 斑马纹 | Bollean | false | 
+| advance | 高级功能 | Object | null | 
+| origin | 服务端功能 | Object | null |
 ### rowSelection
 
 | 参数       | 说明   |  类型  | 默认值  |

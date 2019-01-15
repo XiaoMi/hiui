@@ -6,18 +6,20 @@ import './style/index'
 
 export default class Popper extends Component {
   container = undefined
+  popperHeight = 0
 
   static propTypes = {
     // attachEle: PropTypes.oneOfType([
     //   PropTypes.node
     // ]).isRequired,
     width: PropTypes.string,
+    height: PropTypes.number,
     className: PropTypes.string,
     show: PropTypes.bool,
     topGap: PropTypes.number,
     leftGap: PropTypes.number,
     zIndex: PropTypes.number,
-    placement: PropTypes.oneOf(['bottom', 'bottom-start', 'top', 'left', 'right'])
+    placement: PropTypes.oneOf(['bottom', 'bottom-start', 'top', 'top-start', 'left', 'right', 'top-bottom-start', 'top-bottom'])
   }
 
   static defaultProps = {
@@ -28,8 +30,10 @@ export default class Popper extends Component {
     placement: 'bottom-start'
   }
 
-  componentDidUpdate () {
-    render(this.renderChildren(), this.container)
+  componentDidUpdate (prevProps) {
+    if (prevProps.show !== this.props.show || this.props.show) {
+      render(this.renderChildren(), this.container)
+    }
   }
 
   componentDidMount () {
@@ -49,9 +53,10 @@ export default class Popper extends Component {
       placement
     } = this.props
     const rect = attachEle.getBoundingClientRect()
-    let top = rect.y + (document.documentElement.scrollTop || document.body.scrollTop)
-    let left = rect.x + (document.documentElement.scrollLeft || document.body.scrollLeft)
+    let top = rect.top + (document.documentElement.scrollTop || document.body.scrollTop)
+    let left = rect.left + (document.documentElement.scrollLeft || document.body.scrollLeft)
     width = width === undefined ? rect.width : width
+    placement = this.getPlacement(rect)
 
     switch (placement) {
       case 'bottom':
@@ -65,6 +70,9 @@ export default class Popper extends Component {
       case 'top':
         top = top - topGap
         left = left + rect.width / 2
+        break
+      case 'top-start':
+        top = top - topGap
         break
 
       case 'left':
@@ -81,8 +89,42 @@ export default class Popper extends Component {
     return {
       width,
       top,
-      left
+      left,
+      placement
     }
+  }
+
+  getPlacement (attachEleRect) {
+    let {
+      placement,
+      height
+    } = this.props
+    const bodyHeight = document.documentElement.clientHeight || document.body.clientHeight
+    let poperTop = attachEleRect.top + attachEleRect.height
+    const caclPlacement = (bottomPlacement, topPlacement) => { // 计算popper在元素上面或下面
+      placement = bottomPlacement
+      if (this.popperRef || height) { // 元素已挂载到dom且当前popper处于显示状态
+        if (height) {
+          this.popperHeight = height
+        } else if (this.popperRef.clientHeight && this.popperHeight !== this.popperRef.clientHeight) {
+          this.popperHeight = this.popperRef.clientHeight
+        }
+        poperTop += this.popperHeight
+        if (poperTop >= bodyHeight) {
+          placement = topPlacement
+        }
+      } else { // popper尚未挂载到dom，拿不到高度
+        setTimeout(() => render(this.renderChildren(), this.container), 0)
+      }
+    }
+
+    if (placement === 'top-bottom-start') {
+      caclPlacement('bottom-start', 'top-start')
+    } else if (placement === 'top-bottom') {
+      caclPlacement('bottom', 'top')
+    }
+
+    return placement
   }
 
   renderChildren () {
@@ -90,8 +132,8 @@ export default class Popper extends Component {
       children,
       className,
       show,
-      zIndex,
-      placement
+      height,
+      zIndex
     } = this.props
     const offset = this.getOffset()
     let width = offset.width
@@ -103,7 +145,13 @@ export default class Popper extends Component {
         className={classNames('hi-popper__container', {'hi-popper__container--hide': !show})}
         style={{left, top, zIndex}}
       >
-        <div className={classNames(className, 'hi-popper__content', `hi-popper__content--${placement}`)} style={{width}}>
+        <div
+          ref={node => {
+            this.popperRef = node
+          }}
+          className={classNames(className, 'hi-popper__content', `hi-popper__content--${offset.placement}`, {'hi-popper__content--hide': this.popperHeight === 0})}
+          style={{width, height}}
+        >
           { children }
         </div>
       </div>

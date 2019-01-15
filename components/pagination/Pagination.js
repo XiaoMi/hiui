@@ -323,7 +323,11 @@ class Pagination extends Component {
         {
           jumpEvent && <div className='hi-pagination__goto'>
             {localeDatas.pagination.goto}
-            <Input onKeyPress={gotoPage} onBlur={gotoPage} value={this.state.jumpTo} />
+            <Input onKeyPress={gotoPage} onBlur={gotoPage} value={this.state.jumpTo} onInput={(el, tVal) => {
+              this.setState({
+                jumpTo: el.target.value.replace(/[^\d]/g, '')
+              })
+            }} />
           </div>
         }
       </div>
