@@ -95,16 +95,16 @@ constructor(props) {
         { id: 6, title: '产品' }
       ]
     },
-    { id: 11, title: '小米',
+    { id: 11, title: '小米2',
       children: [
-        { id: 22, title: '技术',
+        { id: 22, title: '技术2',
           children: [
-            { id: 33, title: '后端' }, 
-            { id: 44, title: '运维' },
-            { id: 55, title: '前端' }
+            { id: 33, title: '后端2' }, 
+            { id: 44, title: '运维2' },
+            { id: 55, title: '前端2' }
           ]
         },
-        { id: 66, title: '产品' }
+        { id: 66, title: '产品2' }
       ]
     },
   ]
@@ -118,7 +118,7 @@ render() {
         data={this.treeData}
         defaultCheckedKeys={[4]}
         onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
-        onChange={data => {console.log('Tree data:', data)}}
+        onChange={(data, title, bool, semi) => {console.log('Tree data:', data, title, bool ,semi)}}
         onClick={data=>{console.log('tree node click',data)}}
       />
     </div>
