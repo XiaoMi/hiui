@@ -31,7 +31,7 @@ export default class Popper extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    if (prevProps.show !== this.props.show) {
+    if (prevProps.show !== this.props.show || this.props.show) {
       render(this.renderChildren(), this.container)
     }
   }
