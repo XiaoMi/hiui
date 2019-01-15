@@ -87,7 +87,7 @@ constructor(props) {
       children: [
         { id: 2, title: '技术',
           children: [
-            { id: 3, title: '后端' }, 
+            { id: 3, title: '后端',disabled:true }, 
             { id: 4, title: '运维' },
             { id: 5, title: '前端' }
           ]
@@ -116,10 +116,10 @@ render() {
       <Tree
         checkable
         data={this.treeData}
-        defaultCheckedKeys={[2]}
+        defaultCheckedKeys={[4]}
         onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
         onChange={data => {console.log('Tree data:', data)}}
-        onCheckChange={(arr, title, checked) => {console.log('checked',arr,title,checked)}}
+        onClick={data=>{console.log('tree node click',data)}}
       />
     </div>
   )

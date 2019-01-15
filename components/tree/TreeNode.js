@@ -36,6 +36,9 @@ export default class TreeNode extends Component {
   onExpanded (expanded, item) {
     this.props.onExpanded(expanded, item)
   }
+  nodeClick = (item) => {
+    this.props.onNodeClick(item)
+  }
 
   renderSwitcher = (expanded) => {
     const { prefixCls, openIcon, closeIcon } = this.props
@@ -56,8 +59,7 @@ export default class TreeNode extends Component {
   }
 
   renderTree (data) {
-    const { draggable, prefixCls, dragNodePosition, dragNode, withLine } = this.props
-
+    const {draggable, prefixCls, dragNodePosition, dragNode, withLine, semiChecked, onNodeClick, onClick} = this.props
     return (
       <ul>
         {data.map(item => {
@@ -88,10 +90,25 @@ export default class TreeNode extends Component {
             <span onClick={() => this.onExpanded(expanded, item)} className={`${prefixCls}_item-icon`}>{item.children && item.children.length > 0 ? this.renderSwitcher(expanded) : (withLine && this.renderItemIcon())}</span>
 
             {this.props.checkable ? <Checkbox
+              semi={semiChecked.includes(item.id)}
               checked={checked}
               onChange={() => this.onCheckChange(checked, item)}
+              onTitleClick={(e) => {
+                onNodeClick && onNodeClick(item)
+                onClick && onClick(item)
+                e.stopPropagation()
+              }}
               text={item.title}
-              disabled={item.disabled} /> : <span style={item.style} className={`${prefixCls}_item-text ${itemStyle}`}>{this.renderText(item.title)}</span>
+              disabled={item.disabled} />
+              : <span
+                style={item.style}
+                className={`${prefixCls}_item-text ${itemStyle}`}
+                onClick={(e) => {
+                  onNodeClick && onNodeClick(item)
+                  onClick && onClick(item)
+                  e.stopPropagation()
+                }}
+              >{this.renderText(item.title)}</span>
             }
             {item.children && item.children.length > 0 && expanded ? this.renderTree(item.children) : null}
           </li>)

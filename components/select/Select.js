@@ -101,10 +101,8 @@ class Select extends Component {
   }
 
   componentWillReceiveProps (props) {
-    let selectedItems = false
-
     if (!shallowEqual(props.value, this.props.value)) {
-      selectedItems = this.resetSelectedItems(props.value, props.list)
+      const selectedItems = this.resetSelectedItems(props.value, props.list)
 
       this.setState({
         selectedItems
@@ -113,9 +111,7 @@ class Select extends Component {
       })
     }
     if (!shallowEqual(props.list, this.props.list)) {
-      if (!selectedItems) {
-        selectedItems = this.resetSelectedItems(props.value, props.list)
-      }
+      const selectedItems = this.resetSelectedItems(props.value, props.list, true)
 
       this.setState({
         selectedItems,
@@ -155,13 +151,17 @@ class Select extends Component {
     return origin && !!origin.url
   }
 
-  resetSelectedItems (value, dropdownItems) {
+  resetSelectedItems (value, dropdownItems, listChanged = false) {
     const values = this.parseValue(value)
-    let selectedItems = []
+    const selectedItems = listChanged && this.props.mode === 'multiple' ? this.state.selectedItems : [] // 如果是多选，dropdownItems有改动，需要保留之前的选中值
 
     dropdownItems && dropdownItems.map(item => {
       if (values.indexOf(item.id) !== -1) {
-        selectedItems.push(item)
+        let itemIndex = selectedItems.findIndex((sItem) => { // 多选时检查是否已选中
+          return sItem.id === item.id
+        })
+
+        itemIndex === -1 && selectedItems.push(item)
       }
     })
     return selectedItems
@@ -331,7 +331,7 @@ class Select extends Component {
         dropdownItems = res.data
       }
       if (Array.isArray(dropdownItems)) {
-        const selectedItems = this.resetSelectedItems(this.props.value, dropdownItems)
+        const selectedItems = this.resetSelectedItems(this.props.value, dropdownItems, true)
 
         this.setState({
           dropdownItems,
