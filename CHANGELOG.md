@@ -11,7 +11,21 @@
 ## 1.3.0
 - 新增：`<Select />` 异步请求时增加 loading；
 - 修改：优化 `<Form />` 组件横排时的错误文案显示；
-- 修改：修改 `<Upload />` 文档，删除错误接口名。
+- 修改：`<Upload />` 组件
+  - 废弃uploadType 属性，改为 type，接收normal、drag、pictureCard、avatar、photo
+  - 新增 width、height，应用于头像上传的裁切框尺寸定义
+  - 废弃onUploadSuccess、onDeleteSuccess 事件回调
+  - 废弃deleteParam属性
+  - 新增 beforeUpload、customUpload、onChange、onRemove 钩子函数
+- 修改：`<Table />`组件
+  - 分页条位置逻辑；
+  - 弃用 scroll 属性，新增 scrollX 属性
+  - fixTop 吸顶属性同时兼容 boolean 及 number
+- 修改：`<Tree />`
+  - 重写内部实现逻辑
+  - 增加半选状态
+- 修改：修复`<Navmenu />`组件在某些情况下无法得到父元素的宽度而引起的页面崩溃问题
+- 修改：修复`<Pagination />`组件页岁数过多时的样式问题
 
 ## 1.2.0
 - 新增：`<Button />` 组件增加图标设置；
