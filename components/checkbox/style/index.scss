@@ -81,5 +81,8 @@
     padding: 0 16px 0 8px;
     vertical-align: middle;
     user-select: none;
+    &.highlight{
+      color: #4284f5;
+    }
   }
 }

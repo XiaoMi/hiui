@@ -20,7 +20,7 @@ constructor(props) {
             children: [
               { id: 3, title: '后端', onClick: data => {console.log('后端：', data)} }, 
               { id: 4, title: '运维' },
-              { id: 5, title: '前端', style: {color: '#4284f5'} }
+              { id: 5, title: '前端' }
             ]
           },
           { id: 6, title: '产品' }
@@ -63,6 +63,7 @@ render() {
         onChange={data => {console.log('Tree data:', data)}}
         openIcon='down'
         closeIcon='up'
+        highlightable
         onNodeClick={(item) => console.log('------click node', item)}
       />
       <Button onClick={this.clickEvent.bind(this)}>点击</Button>
@@ -79,7 +80,7 @@ render() {
 
 checkbox
 
-```jsx
+```js
 constructor(props) {
   super(props)
   this.treeData = [
@@ -97,7 +98,7 @@ constructor(props) {
     },
     { id: 11, title: '小米2',
       children: [
-        { id: 22, title: '技术2',
+        { id: 22, title: '技术2', expand: true,
           children: [
             { id: 33, title: '后端2' }, 
             { id: 44, title: '运维2' },
@@ -108,6 +109,9 @@ constructor(props) {
       ]
     },
   ]
+  this.state = {
+    checkedKeys: [5]
+  }
 }
 
 render() {
@@ -115,10 +119,17 @@ render() {
     <div style={{width:300}}>
       <Tree
         checkable
+ 
         data={this.treeData}
-        defaultCheckedKeys={[4]}
+        checkedKeys={this.state.checkedKeys}
         onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
-        onChange={(data, title, bool, semi) => {console.log('Tree data:', data, title, bool ,semi)}}
+        onChange={(checkedKeys, title, bool, semi) => {
+          console.log('Tree data:', checkedKeys, title, bool ,semi)
+          this.setState({
+            checkedKeys
+          })
+        }}
+        highlightable
         onClick={data=>{console.log('tree node click',data)}}
       />
     </div>
@@ -136,11 +147,11 @@ render() {
 | checkable | 节点前添加 Checkbox 复选框 | boolean | false | - |
 | options | 配置选项 | object | - | - |
 | defaultExpandAll | 是否默认展开所有树节点 | boolean |  | false |
-| defaultCheckedKeys | 默认选中的checkbox | arry | - | - |
-| disabledCheckedKeys | 默认禁选节点id数组 | arry | - | - |
+| checkedKeys | 默认选中的checkbox | arry | - | - |
 | openIcon | 表示展开的图标 | string | Icon 组件中的图标 | - |
 | closeIcon | 表示闭合的图标 | string | Icon 组件中的图标 | - |
 | style | 组件整体样式 | object | - | - |
+| highlightable | 高亮 | boolean
 
 ### Tree Attributes-data
 
@@ -162,7 +173,7 @@ render() {
 
 | 参数 | 说明 | 回调参数 |
 | -------- | ----- | ---- |
-| onChange | 改变复选框状态时触发 | (data: Object) |
+| onChange | 改变复选框状态时触发 | checkedArr, title, isChecked  |
 | onNodeToggle | 节点被点击(展开/收起)时触发 | (data: Obejct, isExpanded: boolean) |
 | onCheckChange | 节点选中项 | checkedArr, title, isChecked |
 

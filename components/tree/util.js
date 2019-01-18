@@ -153,7 +153,8 @@ export function deepMap (data, parent) {
       item.parent = []
     }
     if (item.children && item.children.length > 0) {
-      let childParent = item.parent.concat(item.id)
+      let childParent = [...item.parent]
+      childParent.unshift(item.id)
       arr = arr.concat(deepMap(item.children, childParent))
       delete item.children
     } else {
@@ -164,7 +165,7 @@ export function deepMap (data, parent) {
   return arr
 }
 
-function getChild (data, id) {
+export function getChild (data, id) {
   let arr = []
   data.forEach(item => {
     if (!item.parent.includes(id)) {
@@ -213,4 +214,22 @@ export function getDisabled (data) {
 export function getItem (data, id) {
   let all = deepMap(data)
   return all.find(item => item.id === id)
+}
+export function getAll (data, checkedKeys) {
+  let all = deepMap(data)
+  all = all.map(item => {
+    item.child = getChild(all, item.id)
+    item.family = item.parent.concat(item.child)
+    item.semi = false
+    let num = 0
+    checkedKeys.forEach(c => {
+      if (item.child.includes(c)) {
+        num = num + 1
+      }
+    })
+    item.num = num
+    item.semi = num !== 0 && num !== item.child.length
+    return item
+  })
+  return all
 }
