@@ -4,10 +4,19 @@ import PropTypes from 'prop-types'
 // import Checkbox from '../checkbox/index'
 import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
-import {calcDropPosition, deepClone, getSemi, getChildren, getDisabled, getItem} from './util'
+import {
+  calcDropPosition,
+  deepClone,
+  getChildren,
+  getDisabled,
+  getAll
+} from './util'
 
 import './style/index'
 const dealData = (data, tempData = {}, parent) => {
+  if (data.length === 0) {
+    return data
+  }
   data.map((item) => {
     tempData[item.id] = {...item}
     if (parent) {
@@ -35,29 +44,18 @@ export default class Tree extends Component {
       data: {},
       dragNode: '',
       dragNodePosition: null,
-      semiChecked: []
+      semiChecked: [],
+      disabledKeys: []
     }
   }
 
-  componentDidMount () {
-    const {
-      checkable,
-      defaultCheckedKeys,
-      data
-    } = this.props
-    if (checkable) {
-      defaultCheckedKeys.forEach(id => {
-        this.onCheckChange(false, getItem(data, id))
-        let semiChecked = getSemi(data, defaultCheckedKeys)
-        this.setCheckTreeCheckedParent(id, true, defaultCheckedKeys)
-        this.setCheckTreeCheckedChild(id, true, defaultCheckedKeys, semiChecked.includes(id))
-        semiChecked = getSemi(data, defaultCheckedKeys) // 重新设置一次
-        this.setState({
-          semiChecked
-        })
-      })
-    }
-  }
+  // updateCheckStatus (props) {
+  //
+  // }
+  //
+  // componentDidMount () {
+  //   this.updateCheckStatus(this.props)
+  // }
 
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
@@ -75,16 +73,15 @@ export default class Tree extends Component {
 
   static defaultProps = {
     prefixCls: 'hi-tree',
-    defaultCheckedKeys: []
+    defaultCheckedKeys: [],
+    data: []
   }
 
   static getDerivedStateFromProps (props, prevState) {
-    let data = null
-
+    let data = {}
     if (!isEqual(props.data, prevState.data)) {
       const dataMap = {}
       dealData(deepClone(props.data), dataMap)
-      data = {}
       data.dataMap = dataMap
       data.data = props.data
 
@@ -100,31 +97,92 @@ export default class Tree extends Component {
         }
       }
     }
+
+    if (props.data && props.checkedKeys) {
+      data.all = getAll(props.data, props.checkedKeys)
+      console.log(data.all, 'data.all')
+      data.semiChecked = data.all.filter(item => item.semi).map(item => item.id)
+      data.disabledKeys = data.all.filter(item => item.disabled).map(item => {
+        return {
+          id: item.id,
+          checked: props.checkedKeys.includes(item.id)
+        }
+      })
+    }
+
     return data
   }
 
   onCheckChange (checked, item) {
     const {
-      onCheckChange,
-      onChange
+      onChange,
+      checkedKeys
     } = this.props
-    let checkedArr = this.state.hasChecked
+    let checkedArr = checkedKeys
 
-    if (checked) {
-      checkedArr.splice(checkedArr.indexOf(item.id), 1)
+    let {
+      semiChecked,
+      disabledKeys,
+      all
+    } = this.state
+    let myself = all.find(a => a.id === item.id)
+    let children = myself.child
+    let parent = myself.parent
+
+    if (semiChecked.includes(item.id)) {
+      children.forEach(child => {
+        checkedArr = checkedArr.filter(c => c !== child)
+      })
+      checkedArr = checkedArr.filter(c => c !== item.id)
     } else {
-      checkedArr.push(item.id)
+      if (checked) {
+        checkedArr = checkedArr.filter(c => c !== item.id)
+        children.forEach(child => {
+          checkedArr = checkedArr.filter(c => c !== child)
+        })
+        parent.forEach(p => {
+          checkedArr = checkedArr.filter(c => c !== p)
+        })
+      } else {
+        checkedArr = checkedArr.concat(children)
+        checkedArr.push(item.id)
+        window.checkedArr = checkedArr
+        window.parent = parent
+        window.all = all
+        parent.forEach(p => {
+          let par = all.find(a => a.id === p).child
+          let bool = true
+          par.forEach(p => {
+            if (!checkedArr.includes(p)) {
+              bool = false
+            }
+          })
+          bool && checkedArr.push(p)
+        })
+      }
     }
-    let semiChecked = getSemi(this.props.data, checkedArr)
-    this.setCheckTreeCheckedParent(item.id, checked, checkedArr)
-    this.setCheckTreeCheckedChild(item.id, checked, checkedArr, semiChecked.includes(item.id))
-    semiChecked = getSemi(this.props.data, checkedArr) // 重新设置一次
-    this.setState({
-      hasChecked: checkedArr,
-      semiChecked
+
+    disabledKeys.forEach(d => {
+      if (d.checked) {
+        if (!checkedArr.includes(d.id)) {
+          checkedArr.push(d.id)
+        }
+      } else {
+        checkedArr = checkedArr.filter(c => c !== d.id)
+      }
     })
-    onCheckChange && onCheckChange(checkedArr, item.title, !checked, semiChecked)
+
+    // let semiChecked = getSemi(this.props.data, checkedArr)
+    // this.setCheckTreeCheckedParent(item.id, checked, checkedArr)
+    // this.setCheckTreeCheckedChild(item.id, checked, checkedArr, semiChecked.includes(item.id))
+    // semiChecked = getSemi(this.props.data, checkedArr) // 重新设置一次
+    // this.setState({
+    //   hasChecked: checkedArr,
+    //   semiChecked
+    // })
+    // onCheckChange && onCheckChange(checkedArr, item.title, !checked, semiChecked)
     onChange && onChange(checkedArr, item.title, !checked, semiChecked)
+    this.props.onCheckChange && this.props.onCheckChange(checkedArr, item.title, !checked, semiChecked)
   }
 
   setCheckTreeCheckedChild (id, checked, tempCheckedArr, semi) {
@@ -312,7 +370,7 @@ export default class Tree extends Component {
   }
 
   renderTreeNodes (data) {
-    const { prefixCls, draggable, checkable, closeIcon, openIcon, withLine } = this.props
+    const { prefixCls, draggable, checkable, closeIcon, openIcon, withLine, highlightable } = this.props
     const { dragNode, dragNodePosition } = this.state
 
     return (
@@ -323,18 +381,21 @@ export default class Tree extends Component {
         onDragOver={this.onDragOver}
         onDragLeave={this.onDragLeave}
         onDrop={this.onDrop}
-        checked={this.state.hasChecked}
+        checked={this.props.checkedKeys || []}
         onNodeClick={this.props.onNodeClick}
         onClick={this.props.onClick}
         semiChecked={this.state.semiChecked}
         expanded={this.state.hasExpanded}
         onCheckChange={this.onCheckChange.bind(this)}
+        hightLightNodes={this.props.hightLightNodes}
+        onHightLightChange={this.props.onHightLightChange}
         onExpanded={this.onExpanded.bind(this)}
         data={data}
         dragNodePosition={dragNodePosition}
         dragNode={dragNode}
         prefixCls={prefixCls}
         checkable={checkable}
+        highlightable={highlightable}
         openIcon={openIcon}
         closeIcon={closeIcon}
         withLine={withLine}

@@ -3,6 +3,13 @@ import Checkbox from '../table/checkbox/index'
 import classNames from 'classnames'
 
 export default class TreeNode extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      highlight: null
+    }
+  }
+
   onDragEnter (item, data, e) {
     this.props.onDragEnter(e, item, data)
   }
@@ -59,7 +66,8 @@ export default class TreeNode extends Component {
   }
 
   renderTree (data) {
-    const {draggable, prefixCls, dragNodePosition, dragNode, withLine, semiChecked, onNodeClick, onClick} = this.props
+    const {draggable, prefixCls, dragNodePosition, dragNode, withLine, semiChecked, onNodeClick, onClick, highlightable} = this.props
+    const {highlight} = this.state
     return (
       <ul>
         {data.map(item => {
@@ -96,16 +104,23 @@ export default class TreeNode extends Component {
               onTitleClick={(e) => {
                 onNodeClick && onNodeClick(item)
                 onClick && onClick(item)
+                highlightable && this.setState({
+                  highlight: item.id
+                })
                 e.stopPropagation()
               }}
+              highlight={highlight === item.id}
               text={item.title}
               disabled={item.disabled} />
               : <span
                 style={item.style}
-                className={`${prefixCls}_item-text ${itemStyle}`}
+                className={`${prefixCls}_item-text ${itemStyle} ${highlight === item.id ? 'highlight' : ''}`}
                 onClick={(e) => {
                   onNodeClick && onNodeClick(item)
                   onClick && onClick(item)
+                  highlightable && this.setState({
+                    highlight: item.id
+                  })
                   e.stopPropagation()
                 }}
               >{this.renderText(item.title)}</span>
