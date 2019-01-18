@@ -100,14 +100,13 @@ export default class Tree extends Component {
 
     if (props.data && props.checkedKeys) {
       data.all = getAll(props.data, props.checkedKeys)
-      console.log(data.all, 'data.all')
-      data.semiChecked = data.all.filter(item => item.semi).map(item => item.id)
-      data.disabledKeys = data.all.filter(item => item.disabled).map(item => {
-        return {
-          id: item.id,
-          checked: props.checkedKeys.includes(item.id)
-        }
-      })
+      // data.semiChecked = data.all.filter(item => item.semi).map(item => item.id)
+      // data.disabledKeys = data.all.filter(item => item.disabled).map(item => {
+      //   return {
+      //     id: item.id,
+      //     checked: props.checkedKeys.includes(item.id)
+      //   }
+      // })
     }
 
     return data
@@ -121,10 +120,10 @@ export default class Tree extends Component {
     let checkedArr = checkedKeys
 
     let {
-      semiChecked,
-      disabledKeys,
       all
     } = this.state
+    let semiChecked = all.filter(item => item.semi).map(item => item.id)
+    let disabledKeys = all.filter(item => item.disabled).map(item => item.id)
     let myself = all.find(a => a.id === item.id)
     let children = myself.child
     let parent = myself.parent
@@ -146,9 +145,6 @@ export default class Tree extends Component {
       } else {
         checkedArr = checkedArr.concat(children)
         checkedArr.push(item.id)
-        window.checkedArr = checkedArr
-        window.parent = parent
-        window.all = all
         parent.forEach(p => {
           let par = all.find(a => a.id === p).child
           let bool = true
@@ -170,6 +166,28 @@ export default class Tree extends Component {
       } else {
         checkedArr = checkedArr.filter(c => c !== d.id)
       }
+    })
+
+    parent.forEach(p => {
+      let child = all.find(item => item.id === p).child
+      let semi = false
+      let num = 0
+      checkedArr.forEach(c => {
+        if (child.includes(c)) {
+          num = num + 1
+        }
+      })
+
+      semi = num !== 0 && num !== child.length
+
+      if (semi) {
+        if (!semiChecked.includes(p)) {
+          semiChecked.push(p)
+        }
+      } else {
+        semiChecked = semiChecked.filter(s => s !== p)
+      }
+      console.log('chedked', checked, 'child', child, 'checkedkeys', checkedArr, 'child.length', child.length, 'title', all.find(item => item.id === p).title, 'checknum', num, 'semi', semi)
     })
 
     // let semiChecked = getSemi(this.props.data, checkedArr)
@@ -384,7 +402,7 @@ export default class Tree extends Component {
         checked={this.props.checkedKeys || []}
         onNodeClick={this.props.onNodeClick}
         onClick={this.props.onClick}
-        semiChecked={this.state.semiChecked}
+        semiChecked={this.state.all.filter(item => item.semi).map(item => item.id)}
         expanded={this.state.hasExpanded}
         onCheckChange={this.onCheckChange.bind(this)}
         hightLightNodes={this.props.hightLightNodes}
