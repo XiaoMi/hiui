@@ -26,7 +26,7 @@ render () {
 				name={'files[]'}
 				onChange = {(file, fileList, response) => {
 					console.log('upload callback', file, fileList, response)
-					if(resonse&&response.status !== 200) return false
+					if(response&&response.status !== 200) return false
 				}}
 				disabled={false}
 			/>

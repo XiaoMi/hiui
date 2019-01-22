@@ -840,7 +840,24 @@ constructor (props) {
     )
   }
 ```
+
+
 :::
+
+### origin Attributes
+
+| 参数       | 说明   |  类型  | 默认值  |
+| --------   | -----  | ----  |  ----  |
+| url | 请求地址 | String| - |
+| currentPageName | 请求参数，分页字端名  | Sting | current |
+| auto | 当data变化时是不是自动发送请求  | Boolean | false |
+| autoDelayTime | 当自动发送请求时，延迟时间  | Number | 300 |
+| headers | 请求头  | Object | - |
+| data | 请求参数  | Object | - |
+| success | 响应解析函数  | Function(record) | - |
+| error | 请求错误回调函数  | Function(record) | - |
+| method | 请求方法  | String | GET |
+
 
 ### Table Attributes
 
@@ -854,11 +871,13 @@ constructor (props) {
 | pagination | 查看分页组件配置  | Object | false |
 | striped | 斑马纹 | Bollean | false | 
 | advance | 高级功能 | Object | null | 
-| origin | 服务端功能 | Object | null |
+| origin | 服务端功能 | Object | null |  
+
+
+
 ### rowSelection
 
 | 参数       | 说明   |  类型  | 默认值  |
 | --------   | -----  | ----  |  ----  |
 | onChange | 列表项被选中时触发的回调 | Function(selectedRowKeys, selectedRows) | - |
 | getCheckboxProps | 选择框的默认属性配置  | Function(record) | - |
-

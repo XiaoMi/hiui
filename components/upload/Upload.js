@@ -14,12 +14,6 @@ export default class Upload extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
-    this.setState({
-      fileList: this.prepareDefaultFileList(nextProps.defaultFileList)
-    })
-  }
-
   static propTypes = {
     type: PropTypes.string,
     accept: PropTypes.string,
