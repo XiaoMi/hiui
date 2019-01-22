@@ -166,14 +166,12 @@ class FormItem extends Component {
               ? children
               : React.cloneElement(children, {
                 onChange: (...args) => {
-                  console.log('--------------onChange', ...args, this)
                   children.props.onChange && children.props.onChange(...args)
                   setTimeout(() => {
                     this.handleFieldChange()
                   })
                 },
                 onBlur: (...args) => {
-                  console.log('--------------onBlur', ...args, this)
                   children.props.onBlur && children.props.onBlur(...args)
                   setTimeout(() => {
                     this.handleFieldBlur()

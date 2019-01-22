@@ -214,7 +214,6 @@ cancelSubmit() {
 }
 
 handleChange(key, e, value, index) {
-  console.log('-----------handleChange', key, e, value, index)
   this.setState({
     form: Object.assign({}, this.state.form, {[key]: value})
   })
@@ -286,3 +285,10 @@ render(){
 | required | 是否必填 | bool  | - | false |
 
 
+### Form Methods
+
+| 方法名| 说明|
+| --- | --- |
+| validate(callback) | 对整个表单进行校验 |
+| validateField(prop, callback) | 对表单字段进行校验 |
+| resetValidates | 重置整个表单的验证 |
