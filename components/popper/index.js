@@ -6,7 +6,7 @@ import './style/index'
 
 export default class Popper extends Component {
   container = undefined
-  popperHeight = 0
+  popperHeight = undefined
 
   static propTypes = {
     // attachEle: PropTypes.oneOfType([
@@ -103,6 +103,7 @@ export default class Popper extends Component {
     let poperTop = attachEleRect.top + attachEleRect.height
     const caclPlacement = (bottomPlacement, topPlacement) => { // 计算popper在元素上面或下面
       placement = bottomPlacement
+      this.popperHeight === undefined && (this.popperHeight = 0) // 自动探测边界，第一次时需设置为不可见，否则会闪跳,用来设置class hi-popper__content--hide
       if (this.popperRef || height) { // 元素已挂载到dom且当前popper处于显示状态
         if (height) {
           this.popperHeight = height

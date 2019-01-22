@@ -335,9 +335,14 @@ $nornamFontSize: 14px !default;
 
   &-setting {
     position: absolute;
-    right: 15px;
+    right: 0;
     top: 0;
     cursor: pointer;
     background: $bgColor;
+    width: 50px;
+    text-align: center;
+    border-left: 1px solid #e6e7e8;
+    border-bottom: 1px solid #e6e7e8;
+    box-sizing: border-box;
   }
 }

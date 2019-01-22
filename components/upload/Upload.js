@@ -145,7 +145,7 @@ export default class Upload extends Component {
       fileList.splice(index, 1)
       this.setState({fileList})
     }
-    const ret = onRemove(file, fileList)
+    const ret = onRemove(file, fileList, index)
     if (ret === true) {
       doRemove()
     } else if (ret && typeof ret.then === 'function') {

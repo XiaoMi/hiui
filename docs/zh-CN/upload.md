@@ -147,8 +147,8 @@ render () {
 				file.id = 'file唯一标识'
 				console.log('upload callback', file, fileList, response)
 			}}
-			onRemove = {(file, fileList) => {
-				console.log('remove callback', file, fileList)
+			onRemove = {(file, fileList, index) => {
+				console.log('remove callback', file, fileList, index)
 				return new Promise((resolve, reject)=>resolve(true))
 			}}
 			param={{id:'uid',channel:'youpin'}}
@@ -302,4 +302,4 @@ render () {
 |beforeUpload|上传文件前的钩子,返回true继续上传，其他终止上传|function(files, fileList)|否|一个返回true的空函数|
 |customUpload|自定义上传，此时不会再触发onChange，所有上传逻辑由用户完全控制|function(files)|否|-|
 |onChange|上传回调。当function返回false或者返回promise（如果promise resolve(false)）则已上传的文件列表不会展示该文件|function(file, fileList, response)|否|无|
-|onRemove|删除上传的文件,为false时不可删除。当function返回true或者返回promise（如果promise resolve(true)）则会在前端删除文件（可参考demo：照片墙上传）|function(file, fileList)，boolean|否|一个返回true的空函数，即前端删除|
+|onRemove|删除上传的文件,为false时不可删除。当function返回true或者返回promise（如果promise resolve(true)）则会在前端删除文件（可参考demo：照片墙上传）|function(file, fileList, index)，boolean|否|一个返回true的空函数，即前端删除|
