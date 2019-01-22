@@ -105,6 +105,13 @@ class FormItem extends Component {
     })
   }
 
+  resetValidate () {
+    this.setState({
+      error: '',
+      valid: true
+    })
+  }
+
   isRequired () {
     let rules = this.getRules()
     let isRequired = false
@@ -122,13 +129,11 @@ class FormItem extends Component {
   }
 
   handleFieldBlur () {
-    this.validate('blur')
+    this.validate('onBlur')
   }
 
   handleFieldChange () {
-    setTimeout(() => {
-      this.validate('change')
-    })
+    this.validate('onChange')
   }
 
   get labelWidth () {
@@ -147,7 +152,7 @@ class FormItem extends Component {
     obj['hi-form-item--required'] = this.isRequired() || required
 
     return (
-      <div className={classNames('hi-form-item', className, obj)} onBlur={this.handleFieldBlur.bind(this)} onChange={this.handleFieldChange.bind(this)}>
+      <div className={classNames('hi-form-item', className, obj)}>
         {
           label && (
             <label className={'hi-form-item' + '__label'} style={{ 'width': this.labelWidth }}>
@@ -156,7 +161,26 @@ class FormItem extends Component {
           )
         }
         <div className={'hi-form-item' + '__content'} style={{ 'marginLeft': this.labelWidth }}>
-          {children}
+          {
+            Array.isArray(children)
+              ? children
+              : React.cloneElement(children, {
+                onChange: (...args) => {
+                  console.log('--------------onChange', ...args, this)
+                  children.props.onChange && children.props.onChange(...args)
+                  setTimeout(() => {
+                    this.handleFieldChange()
+                  })
+                },
+                onBlur: (...args) => {
+                  console.log('--------------onBlur', ...args, this)
+                  children.props.onBlur && children.props.onBlur(...args)
+                  setTimeout(() => {
+                    this.handleFieldBlur()
+                  })
+                }
+              })
+          }
           { error && <div className='hi-form-item__error'>{error}</div> }
         </div>
       </div>
