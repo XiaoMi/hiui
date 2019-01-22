@@ -8,7 +8,6 @@ class Base extends Component {
       checked: props.checked,
       disabled: props.disabled,
       value: props.value,
-      content: props.content,
       part: false,
       onChange: props.onChange || (() => {})
     }
@@ -16,7 +15,6 @@ class Base extends Component {
   }
   componentDidMount () {
     const root = MultipleCheckboxsOpera.getRoot(this.props.name)
-
     if (this.state.checked) {
       root && root.setState({part: true})
     }
@@ -25,7 +23,8 @@ class Base extends Component {
     if ('checked' in nextProps) {
       if (nextProps.checked !== this.props.checked) {
         this.setState({
-          checked: nextProps.checked
+          checked: nextProps.checked,
+          disabled: nextProps.disabled
         })
       }
     }
@@ -86,8 +85,9 @@ class Base extends Component {
     this.state.onChange(value, checked)
   }
   render () {
-    const {value, content, disabled, checked, part} = this.state
-    const {name, all} = this.props
+    const {disabled, checked, part} = this.state
+
+    const {value, name, all, content} = this.props
 
     const labelClass = classnames(
       'hi-checkbox',

@@ -15,6 +15,20 @@ class CheckBox extends Component {
     checked: false,
     value: ''
   }
+  componentWillReceiveProps (nextProps) {
+    const groups = MultipleCheckboxsOpera.getAll(nextProps.name)
+    const list = this.props.list
+    const arr = []
+    list && list.length > 0 && list.forEach((item) => {
+      const value = item.value || item.text
+      groups && groups.length > 0 && groups.forEach((g) => {
+        if (g.state.value === value) {
+          arr.push(g)
+        }
+      })
+    })
+    MultipleCheckboxsOpera.replace(nextProps.name, arr)
+  }
   renderCheckBoxGroup (list) {
     return <div>
       {
@@ -29,7 +43,7 @@ class CheckBox extends Component {
               value={value || text}
               checked={checked}
               disabled={disabled}
-              key={index}
+              key={(value || text)}
               onChange={this.props.onChange}
               name={this.props.name}
             />
@@ -42,7 +56,7 @@ class CheckBox extends Component {
               value={item || ''}
               checked={false}
               disabled={false}
-              key={index}
+              key={item}
               onChange={this.props.onChange}
               name={this.props.name}
             />
