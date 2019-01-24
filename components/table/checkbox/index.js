@@ -9,7 +9,8 @@ export default class Checkbox extends Component {
       disabled,
       text = null,
       semi = false,
-      onTitleClick
+      onTitleClick,
+      highlight
     } = this.props
     if (semi) {
       checked = false
@@ -22,7 +23,7 @@ export default class Checkbox extends Component {
         onChange(e, !checked)
       }} className={classNames({'hi-checkbox': true, 'hi-checkbox--part': semi, 'hi-checkbox--checked': checked, 'hi-checkbox--disabled': disabled})}>
         <span className='hi-checkbox__input' />
-        {text && <span className='hi-checkbox__label' onClick={(e) => {
+        {text && <span className={classNames({'hi-checkbox__label': true, highlight})} onClick={(e) => {
           onTitleClick && onTitleClick(e)
         }}>{text}</span>}
       </div>
