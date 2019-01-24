@@ -54,7 +54,8 @@ class Demo extends Component {
   }
   renderSource (value) {
     const { locale, theme } = this.props
-    import('../../components')
+    /* eslint-disable */ 
+    System.import('../../components')
       .then(Element => {
         const args = ['context', 'React', 'ReactDOM']
         const argv = [this, React, ReactDOM]
