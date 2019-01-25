@@ -74,7 +74,7 @@ class Button extends Component {
       href
         ? <a
           className={classes}
-          onClick={() => this.clickCb()}
+          onClick={(e) => this.clickCb(e)}
           style={style}
           title={title}
           href={href}
@@ -85,7 +85,7 @@ class Button extends Component {
         : <button
           className={classes}
           disabled={disabledBool}
-          onClick={() => this.clickCb()}
+          onClick={(e) => this.clickCb(e)}
           style={style}
           title={title}
           type='button'
