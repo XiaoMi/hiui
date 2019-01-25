@@ -104,7 +104,7 @@ class Select extends Component {
 
   componentWillReceiveProps (props) {
     if (!shallowEqual(props.value, this.props.value)) {
-      const selectedItems = this.resetSelectedItems(props.value, props.list)
+      const selectedItems = this.resetSelectedItems(props.value, this.state.dropdownItems) // 异步获取时会从内部改变dropdownItems，所以不能从list取
 
       this.setState({
         selectedItems
