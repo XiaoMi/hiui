@@ -19,7 +19,7 @@ render () {
 		<div>
 			<Upload
 				type="normal"
-				uploadAction= "http://10.236.91.199:3005/upload"
+				uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 				headers={{name: 'mi'}}
 				buttonText="上传文件"
 				param={param}
@@ -54,7 +54,7 @@ render () {
 		<div>
 			<Upload
 				type="normal"
-				uploadAction= "http://10.236.91.199:3005/upload"
+				uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 				buttonText="上传文件"
 				param={param}
 				name={'files[]'}
@@ -94,7 +94,7 @@ render () {
 	return (
 		<Upload
 			type="normal"
-			uploadAction= "http://10.236.91.199:3005/upload"
+			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 			buttonText="上传文件"
 			param={{id:'uid',channel:'youpin'}}
 			disabled={true}
@@ -116,7 +116,7 @@ render () {
 	return (
 		<Upload
 			type="drag"
-			uploadAction= "http://10.236.91.199:3005/upload"
+			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 			headers={{name: 'mi'}}
 			onChange = {(file, fileList, response) => {
 				console.log('upload callback', file, fileList, response)
@@ -142,7 +142,7 @@ render () {
 	return (
 		<Upload
 			type="photo"
-			uploadAction= "http://10.236.91.199:3005/upload"
+			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 			onChange = {(file, fileList, response) => {
 				file.id = 'file唯一标识'
 				console.log('upload callback', file, fileList, response)
@@ -187,7 +187,7 @@ render () {
 			type="avatar"
 			width={180}
 			height={180}
-			uploadAction= "http://10.236.91.199:3005/upload"
+			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 			headers={{name: 'mi'}}
 			param={{id:'uid',channel:'youpin'}}
 			onChange = {(file, fileList, response) => {
@@ -212,7 +212,7 @@ render () {
 	return (
 		<Upload
 			type="pictureCard"
-			uploadAction= "http://10.236.91.199:3005/upload"
+			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 			headers={{name: 'mi'}}
 			onChange = {(file, fileList, response) => {
 				console.log('upload callback', file, fileList, response)
