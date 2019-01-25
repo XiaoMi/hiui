@@ -7,9 +7,7 @@ import Loading from '../loading'
 
 export default class SelectDropdown extends Component {
   onClickOption (e, item, index) {
-    if (e) {
-      e.stopPropagation()
-    }
+    e && e.stopPropagation()
     if (item.disabled) {
       return
     }
@@ -29,6 +27,9 @@ export default class SelectDropdown extends Component {
   renderOption (mode, isSelected, item) {
     if (item.children) {
       return item.children
+    }
+    if (this.props.dropdownRender) {
+      return this.props.dropdownRender(item, isSelected)
     }
     return (
       <React.Fragment>
@@ -59,12 +60,16 @@ export default class SelectDropdown extends Component {
       matchFilter,
       noFoundTip,
       loading,
-      optionWidth
+      optionWidth,
+      showCheckAll,
+      checkAll,
+      dropdownRender
     } = this.props
     let matched = 0
     const style = optionWidth && {
       width: optionWidth
     }
+
     return (
       <div className='hi-select__dropdown' onClick={this.props.onClick} style={style}>
         {
@@ -85,7 +90,7 @@ export default class SelectDropdown extends Component {
                   const isDisabled = item.disabled
                   return (
                     <li
-                      className={classNames('hi-select__dropdown--item', {'is-active': isSelected, 'is-disabled': isDisabled, 'hi-select__dropdown--item-default': !item.children})}
+                      className={classNames('hi-select__dropdown--item', {'is-active': isSelected, 'is-disabled': isDisabled, 'hi-select__dropdown--item-default': !item.children && !dropdownRender})}
                       onClick={e => this.onClickOption(e, item, index)}
                       key={index}
                       data-focused={focusedIndex === index}
@@ -109,6 +114,12 @@ export default class SelectDropdown extends Component {
               </li>
             }
           </ul>
+        }
+        {
+          mode === 'multiple' && showCheckAll &&
+          <div className='hi-select__dropdown-check-all' onClick={checkAll}>
+            全选
+          </div>
         }
       </div>
     )
