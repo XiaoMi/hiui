@@ -1,5 +1,5 @@
 @import '../../style/index.scss';
-$tree: 'hi-tree';
+$tree: 'hi-tree' !default;
 
 .hi-tree {
   font-size: 14px;
@@ -86,6 +86,9 @@ $tree: 'hi-tree';
 
     &:hover {
       background-color: rgba(66, 133, 244, 0.08);
+    }
+    &.highlight{
+      color: #4284f5;
     }
   }
 
@@ -177,15 +180,15 @@ $tree: 'hi-tree';
       }
 
       &.gap-bottom {
-        border-bottom-color: red;
+        border-bottom-color: #f00;
       }
 
       &.gap-enter {
-        background-color: yellow;
+        background-color: #ff0;
       }
 
       &.gap-top {
-        border-top-color: red;
+        border-top-color: #f00;
       }
     }
 

@@ -5,49 +5,68 @@
 :::demo
 
 ```js
-constructor(props) {
-  super(props)
-  this.treeData = [
-    { id: 1, title: 'Mi',
-      children: [
-        { id: 2, title: 'Redmi Phones',
-          children: [
-            { id: 3, title: 'Redmi 6 Pro', onClick: data => {console.log('result', data)} }, 
-            { id: 4, title: 'Redmi 6A' },
-            { id: 5, title: 'Redmi Y2' }
-          ]
-        },
-        { id: 6, title: 'Mi Action Camera 4k' }
-      ]
-    },
-    { id: 11, title: 'Mi TV',
-      children: [
-        { id: 22, title: <a>TV</a>,
-          children: [
-            { id: 33, title: 'Mi LED TV 4 PRO 55' }, 
-            { id: 44, title: 'Mi LED TV 4A PRO 49' },
-            { id: 55, title: 'Mi LED Smart TV 4A 43' }
-          ]
-        },
-        { id: 66, title: 'Other' }
-      ]
-    },
-  ]
-}
+  constructor (props) {
+    super(props)
+    this.treeData = [
+      { id: 1,
+        title: '小米',
+        children: [
+          { id: 2,
+            title: '技术',
+            children: [
+              { id: 3, title: '后端', disabled: true},
+              { id: 4, title: '运维' },
+              { id: 5, title: '前端' }
+            ]
+          },
+          { id: 6, title: '产品' }
+        ]
+      },
+      { id: 11,
+        title: '小米2',
+        children: [
+          { id: 22,
+            title: '技术2',
+            children: [
+              { id: 33, title: '后端2' },
+              { id: 44, title: '运维2' },
+              { id: 55, title: '前端2' }
+            ]
+          },
+          { id: 66, title: '产品2' }
+        ]
+      }
+    ]
+    this.state = {
+      data: [],
+      checkedKeys: [3]
+    }
+  }
 
-render() {
-  return (
-    <div style={{width:300}}>
-      <Tree
-        defaultExpandAll
-        data={this.treeData}
-        defaultCheckedKeys={[2]}
-        onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
-        onChange={data => {console.log('Tree data:', data)}}
-      />
-    </div>
-  )
-}
+  render () {
+    return (
+      <div style={{width: 300}}>
+        <Tree
+          checkable
+          data={this.treeData}
+          checkedKeys={this.state.checkedKeys}
+          onNodeToggle={(data, isExpanded) => { console.log('toggle: data isExpanded', data, isExpanded) }}
+          // onChange={(data, title, bool, semi) => { console.log('Tree data:', data, title, bool, semi) }}
+          onChange={(checkedKeys,title, bool, semi) => {
+            this.setState({
+              checkedKeys
+            })
+            console.log(checkedKeys, title, bool, semi)
+          }}
+          highlightable
+          onClick={data => { console.log('tree node click', data) }}
+        />
+      </div>
+    )
+  }
+
+  componentDidMount () {
+  }
 ```
 :::
 
@@ -58,50 +77,69 @@ render() {
 
 checkbox
 
-```jsx
-constructor(props) {
-  super(props)
-  this.treeData = [
-    { id: 1, title: 'Mi',
-      children: [
-        { id: 2, title: 'Redmi Phones',
-          children: [
-            { id: 3, title: 'Redmi 6 Pro', onClick: data => {console.log('result', data)} }, 
-            { id: 4, title: 'Redmi 6A' },
-            { id: 5, title: 'Redmi Y2' }
-          ]
-        },
-        { id: 6, title: 'Mi Action Camera 4k' }
-      ]
-    },
-    { id: 11, title: 'Mi TV',
-      children: [
-        { id: 22, title: <a>TV</a>,
-          children: [
-            { id: 33, title: 'Mi LED TV 4 PRO 55' }, 
-            { id: 44, title: 'Mi LED TV 4A PRO 49' },
-            { id: 55, title: 'Mi LED Smart TV 4A 43' }
-          ]
-        },
-        { id: 66, title: 'Other' }
-      ]
-    },
-  ]
-}
+```js
+  constructor (props) {
+    super(props)
+    this.treeData = [
+      { id: 1,
+        title: '小米',
+        children: [
+          { id: 2,
+            title: '技术',
+            children: [
+              { id: 3, title: '后端', disabled: true},
+              { id: 4, title: '运维' },
+              { id: 5, title: '前端' }
+            ]
+          },
+          { id: 6, title: '产品' }
+        ]
+      },
+      { id: 11,
+        title: '小米2',
+        children: [
+          { id: 22,
+            title: '技术2',
+            children: [
+              { id: 33, title: '后端2' },
+              { id: 44, title: '运维2' },
+              { id: 55, title: '前端2' }
+            ]
+          },
+          { id: 66, title: '产品2' }
+        ]
+      }
+    ]
+    this.state = {
+      data: [],
+      checkedKeys: [3]
+    }
+  }
 
-render() {
-  return (
-    <div style={{width:300}}>
-      <Tree
-        checkable
-        data={this.treeData}
-        defaultCheckedKeys={[2]}
-        onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
-        onChange={data => {console.log('Tree data:', data)}}
-      />
-    </div>
-  )
-}
+  render () {
+    return (
+      <div style={{width: 300}}>
+        <Tree
+          checkable
+          data={this.treeData}
+          checkedKeys={this.state.checkedKeys}
+          onNodeToggle={(data, isExpanded) => { console.log('toggle: data isExpanded', data, isExpanded) }}
+          // onChange={(data, title, bool, semi) => { console.log('Tree data:', data, title, bool, semi) }}
+          onChange={(checkedKeys,title, bool, semi) => {
+            this.setState({
+              checkedKeys
+            })
+            console.log(checkedKeys, title, bool, semi)
+          }}
+          highlightable
+          onClick={data => { console.log('tree node click', data) }}
+        />
+      </div>
+    )
+  }
+
+  componentDidMount () {
+  }
 ```
 :::
 
@@ -114,8 +152,8 @@ render() {
 | checkable | whether to add the checkbox | boolean | false | - |
 | options | options | object | - | - |
 | defaultExpandAll | whether to expand all tree nodes | boolean | - | false |
-| defaultCheckedKeys | selected checkboxes | array | - | - |
-| disabledCheckedKeys | checkboxes not selected | array | - | - |
+| checkedKeys | selected checkboxes | array | - | - |
+
 
 ### Attribute-data
 

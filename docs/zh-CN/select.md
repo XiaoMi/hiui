@@ -151,6 +151,8 @@ render () {
 				origin={{
 					type: 'GET',
 					headers: {token: 'tokenXXXXXXX'},
+					mode: 'cors',
+					credentials: 'same-origin',
 					url: 'https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/select/options',
 					func: (res) => {
 						console.log('----', res)
@@ -254,9 +256,6 @@ render () {
 					type: 'get',
 					key: 'text',
 					keyword: 'xiaomi',
-					data: {
-						time: new Date()
-					},
 					url: 'https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/select/options',
 					func: (res) => {
 						console.log('----', res)
@@ -298,12 +297,12 @@ render () {
 | -------- | ----- | ---- | ---- | ---- |
 | url | 请求的url | string | - | - |
 | type | 请求方法 | string | get,post | get |
-| headers | request headers | object | - | - |
 | data | post请求时的参数 | object | - | - |
 | key | 搜索关键字参数key | string | - | keyword |
 | keyword | autoload为true时的默认搜索关键词 | string | - | - |
 | func | 成功时的回调 | func | - | - |
 | error | 失败时的回调 | func | - | - |
+| - | 其他的一些fetch设置，如headers,credentials等 | object | - | - |
 
 
 ### Select.Option Attributes

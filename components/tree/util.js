@@ -142,3 +142,94 @@ export function deepClone (arr) {
   }
   return arr
 };
+
+export function deepMap (data, parent) {
+  let arr = []
+  for (let key in data) {
+    let item = {...data[key]}
+    if (parent) {
+      item.parent = parent
+    } else {
+      item.parent = []
+    }
+    if (item.children && item.children.length > 0) {
+      let childParent = [...item.parent]
+      childParent.unshift(item.id)
+      arr = arr.concat(deepMap(item.children, childParent))
+      delete item.children
+    } else {
+      // item.parent = parent
+    }
+    arr.push(item)
+  }
+  return arr
+}
+
+export function getChild (data, id) {
+  let arr = []
+  data.forEach(item => {
+    if (!item.parent.includes(id)) {
+      return
+    }
+    if (arr.includes(id)) {
+      return
+    }
+    arr.push(item.id)
+  })
+  return arr
+}
+
+export function getSemi (data, checks) {
+  let all = deepMap(data)
+  let arr = all.map(item => {
+    item.child = getChild(all, item.id)
+    item.family = item.parent.concat(item.child)
+    item.semi = false
+    let num = 0
+    checks.forEach(c => {
+      if (item.child.includes(c)) {
+        num = num + 1
+      }
+    })
+    item.num = num
+    item.semi = num !== 0 && num !== item.child.length
+    return item
+  }).filter(item => item.semi).map(item => item.id)
+  return arr
+}
+
+export function getChildren (data, id) {
+  let all = deepMap(data)
+  return all.map(item => {
+    item.child = getChild(all, item.id)
+    return item
+  }).find(item => item.id === id).child
+}
+
+export function getDisabled (data) {
+  let all = deepMap(data)
+  return all.filter(item => item.disabled).map(item => item.id)
+}
+
+export function getItem (data, id) {
+  let all = deepMap(data)
+  return all.find(item => item.id === id)
+}
+export function getAll (data, checkedKeys) {
+  let all = deepMap(data)
+  all = all.map(item => {
+    item.child = getChild(all, item.id)
+    item.family = item.parent.concat(item.child)
+    item.semi = false
+    let num = 0
+    checkedKeys.forEach(c => {
+      if (item.child.includes(c)) {
+        num = num + 1
+      }
+    })
+    item.num = num
+    item.semi = num !== 0 && num !== item.child.length
+    return item
+  })
+  return all
+}

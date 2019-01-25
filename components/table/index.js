@@ -540,6 +540,9 @@ class Table extends Component {
         th.style.transform = `translate(0,0)`
         if (name) {
           this.setting.current.style.transform = `translate(0,0)`
+          let h = parseInt(getStyle(dom.querySelector('thead'), 'height')) + 'px'
+          this.setting.current.style.height = h
+          this.setting.current.style.lineHeight = h
         }
       })
     }
@@ -825,7 +828,6 @@ class Table extends Component {
   componentDidMount () {
     let {fixTop, scroll, name, origin} = this.props
     let dom = this.dom.current
-    let thead = dom.querySelectorAll('thead')
     if (fixTop) {
       // 吸顶逻辑
       document.addEventListener('scroll', () => {
@@ -851,8 +853,9 @@ class Table extends Component {
 
     // 操作记忆设置
     if (name) {
-      this.setting.current.style.lineHeight = parseInt(getStyle(thead[0], 'height')) - 10 + 'px'
-      this.setting.current.style.marginTop = '5px'
+      let h = parseInt(getStyle(dom.querySelector('thead'), 'height')) + 'px'
+      this.setting.current.style.height = h
+      this.setting.current.style.lineHeight = h
     }
     setTimeout(() => {
       this.runMemory()

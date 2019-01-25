@@ -86,6 +86,12 @@ class Form extends Component {
     field.validate('', cb)
   }
 
+  resetValidates () {
+    this.state.fields.forEach(field => {
+      field.resetValidate()
+    })
+  }
+
   render () {
     const {children} = this.props
 

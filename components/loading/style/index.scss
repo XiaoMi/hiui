@@ -3,7 +3,7 @@
     transform: rotate(#{$num * 30deg - 30deg});
 
     &::before {
-      animation-delay: -#{1300-$num*100}ms;
+      animation-delay: -#{1300 - $num * 100}ms;
     }
   }
 }

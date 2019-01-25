@@ -326,17 +326,16 @@ class Select extends Component {
       url,
       func,
       error,
-      headers,
       data = {},
       type = 'GET',
-      key = 'keyword'
+      key = 'keyword',
+      ...options
     } = this.props.origin
     keyword = !keyword && this.autoloadFlag && this.props.autoload ? this.props.origin.keyword : keyword
     this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
     url = url.indexOf('?') === -1 ? `${url}?${[key]}=${keyword}` : `${url}&${[key]}=${keyword}`
-    const options = {}
 
-    if (type.toUpperCase === 'POST') {
+    if (type.toUpperCase() === 'POST') {
       options.body = JSON.stringify(data)
     }
     this.setState({
@@ -346,7 +345,6 @@ class Select extends Component {
     /* eslint-disable */ 
     fetch(url, {
       method: type,
-      headers,
       ...options
     })
     .then(response => response.json())

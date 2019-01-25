@@ -3,6 +3,13 @@ import Checkbox from '../table/checkbox/index'
 import classNames from 'classnames'
 
 export default class TreeNode extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      highlight: null
+    }
+  }
+
   onDragEnter (item, data, e) {
     this.props.onDragEnter(e, item, data)
   }
@@ -36,6 +43,9 @@ export default class TreeNode extends Component {
   onExpanded (expanded, item) {
     this.props.onExpanded(expanded, item)
   }
+  nodeClick = (item) => {
+    this.props.onNodeClick(item)
+  }
 
   renderSwitcher = (expanded) => {
     const { prefixCls, openIcon, closeIcon } = this.props
@@ -56,8 +66,8 @@ export default class TreeNode extends Component {
   }
 
   renderTree (data) {
-    const { draggable, prefixCls, dragNodePosition, dragNode, withLine } = this.props
-
+    const {draggable, prefixCls, dragNodePosition, dragNode, withLine, semiChecked, onNodeClick, onClick, highlightable} = this.props
+    const {highlight} = this.state
     return (
       <ul>
         {data.map(item => {
@@ -88,10 +98,32 @@ export default class TreeNode extends Component {
             <span onClick={() => this.onExpanded(expanded, item)} className={`${prefixCls}_item-icon`}>{item.children && item.children.length > 0 ? this.renderSwitcher(expanded) : (withLine && this.renderItemIcon())}</span>
 
             {this.props.checkable ? <Checkbox
+              semi={semiChecked.includes(item.id)}
               checked={checked}
               onChange={() => this.onCheckChange(checked, item)}
+              onTitleClick={(e) => {
+                onNodeClick && onNodeClick(item)
+                onClick && onClick(item)
+                highlightable && this.setState({
+                  highlight: item.id
+                })
+                e.stopPropagation()
+              }}
+              highlight={highlight === item.id}
               text={item.title}
-              disabled={item.disabled} /> : <span style={item.style} className={`${prefixCls}_item-text ${itemStyle}`}>{this.renderText(item.title)}</span>
+              disabled={item.disabled} />
+              : <span
+                style={item.style}
+                className={`${prefixCls}_item-text ${itemStyle} ${highlight === item.id ? 'highlight' : ''}`}
+                onClick={(e) => {
+                  onNodeClick && onNodeClick(item)
+                  onClick && onClick(item)
+                  highlightable && this.setState({
+                    highlight: item.id
+                  })
+                  e.stopPropagation()
+                }}
+              >{this.renderText(item.title)}</span>
             }
             {item.children && item.children.length > 0 && expanded ? this.renderTree(item.children) : null}
           </li>)
