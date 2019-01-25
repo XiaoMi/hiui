@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const basePath = path.resolve(__dirname, '../')
 
 module.exports = {
+  mode: 'development',
   entry: {
     main: ['babel-polyfill', `${path.resolve(basePath, 'site/main.js')}`],
     // 列出第三方库
