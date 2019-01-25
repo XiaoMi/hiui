@@ -28,6 +28,9 @@ export default class SelectDropdown extends Component {
     if (item.children) {
       return item.children
     }
+    if (this.props.dropdownRender) {
+      return this.props.dropdownRender(item, isSelected)
+    }
     return (
       <React.Fragment>
         {
@@ -59,7 +62,8 @@ export default class SelectDropdown extends Component {
       loading,
       optionWidth,
       showCheckAll,
-      checkAll
+      checkAll,
+      dropdownRender
     } = this.props
     let matched = 0
     const style = optionWidth && {
@@ -86,7 +90,7 @@ export default class SelectDropdown extends Component {
                   const isDisabled = item.disabled
                   return (
                     <li
-                      className={classNames('hi-select__dropdown--item', {'is-active': isSelected, 'is-disabled': isDisabled, 'hi-select__dropdown--item-default': !item.children})}
+                      className={classNames('hi-select__dropdown--item', {'is-active': isSelected, 'is-disabled': isDisabled, 'hi-select__dropdown--item-default': !item.children && !dropdownRender})}
                       onClick={e => this.onClickOption(e, item, index)}
                       key={index}
                       data-focused={focusedIndex === index}

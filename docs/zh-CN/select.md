@@ -113,22 +113,20 @@ render () {
 				placeholder='请选择种类'
 				style={{width: '200px'}}
 				value={'3'}
+				list={this.state.singleList}
 				searchable={true}
 				onChange={(item) => {
 						console.log('单选结果', item)
 				}}
-			>
-				{
-	        this.state.singleList.map(item => {
-	          return (
-	            <Select.Option key={item.id} name={item.name} id={item.id} disabled={item.disabled}>
-	              <span style={{float: 'left'}}>{item.name}</span>
-	              <span style={{float: 'right', color: '#999', fontSize: 14}}>{item.id}</span>
-	            </Select.Option>
-	          )
-	        })
-	      }
-			</Select>
+				dropdownRender={(item, isSelected) => {
+					return (
+						<React.Fragment>
+							<span style={{float: 'left'}}>{item.name}</span>
+							<span style={{float: 'right', color: '#999', fontSize: 14}}>{item.id}</span>
+						</React.Fragment>
+					)
+				}}
+			/>
 		</div>
 	)
 }
@@ -306,6 +304,7 @@ render () {
 
 
 ### Select.Option Attributes
+**已废弃，自定义模板使用dropdownRender**
 
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |

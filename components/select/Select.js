@@ -31,7 +31,8 @@ class Select extends Component {
     placeholder: PropTypes.string,
     noFoundTip: PropTypes.string,
     style: PropTypes.object,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    dropdownRender: PropTypes.func
   }
 
   static defaultProps = {
@@ -469,7 +470,8 @@ class Select extends Component {
       children,
       noFoundTip,
       optionWidth,
-      selectedShowMode
+      selectedShowMode,
+      dropdownRender
     } = this.props
     const placeholder = this.localeDatasProps('placeholder')
     const {
@@ -529,6 +531,7 @@ class Select extends Component {
             optionWidth={optionWidth}
             dropdownItems={dropdownItems}
             selectedItems={selectedItems}
+            dropdownRender={dropdownRender}
             onClickOption={this.onClickOption.bind(this)}
           />
         </Popper>
