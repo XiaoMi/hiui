@@ -3,10 +3,10 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+
 const basePath = path.resolve(__dirname, '../')
 
 module.exports = {
-  mode: process.env.NODE_ENV,
   entry: {
     main: ['babel-polyfill', `${path.resolve(basePath, 'site/main.js')}`],
     // 列出第三方库
