@@ -202,10 +202,11 @@ render () {
 					mode='multiple'
 					style={{width: '300px'}}
 					list={this.state.multipleList}
-					value={['4', '5']}
+					value={['5']}
 					searchable={true}
 					placeholder='请选择...'
 					noFoundTip='无匹配数据'
+					showCheckAll={true}
 					onChange={(item) => {
 							console.log('多选结果', item)
 					}}
@@ -282,6 +283,7 @@ render () {
 | list | 下拉框选项，一般为 {name: '', id: ''} 形式。可以加入 'disabled' 属性，表示是否禁止选择 | array | - | - |
 | origin | 异步选择配置，详见下表 | object | - | - |
 | value | 默认值被选中项，值与被选中的id相同，多个以,分割或者传递数组| string,number,array | - | - |
+| showCheckAll | 是否显示全选，只对多选生效 | bool | true, false | false |
 | searchable | 是否可以筛选 | bool | true, false | false |
 | clearable | 是否可以清空 | bool | true, false | true |
 | autoload | origin从远端获取数据，初始时是否自动加载 | bool | true, false | false |

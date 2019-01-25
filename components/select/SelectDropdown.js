@@ -7,9 +7,7 @@ import Loading from '../loading'
 
 export default class SelectDropdown extends Component {
   onClickOption (e, item, index) {
-    if (e) {
-      e.stopPropagation()
-    }
+    e && e.stopPropagation()
     if (item.disabled) {
       return
     }
@@ -59,12 +57,15 @@ export default class SelectDropdown extends Component {
       matchFilter,
       noFoundTip,
       loading,
-      optionWidth
+      optionWidth,
+      showCheckAll,
+      checkAll
     } = this.props
     let matched = 0
     const style = optionWidth && {
       width: optionWidth
     }
+
     return (
       <div className='hi-select__dropdown' onClick={this.props.onClick} style={style}>
         {
@@ -109,6 +110,12 @@ export default class SelectDropdown extends Component {
               </li>
             }
           </ul>
+        }
+        {
+          mode === 'multiple' && showCheckAll &&
+          <div className='hi-select__dropdown-check-all' onClick={checkAll}>
+            全选
+          </div>
         }
       </div>
     )
