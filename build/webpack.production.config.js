@@ -97,19 +97,6 @@ module.exports = {
     chunks: false,
     children: false
   },
-  optimization: {
-    minimize: true,
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          name: 'vendor'
-        },
-        runtime: {
-          name: 'runtime'
-        }
-      }
-    }
-  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
@@ -118,21 +105,21 @@ module.exports = {
       root: basePath
     }),
     new ExtractTextPlugin({
-      filename: 'styles.[hash].css',
+      filename: 'styles.[contenthash].css',
       allChunks: true
     }),
     new HtmlWebpackPlugin({
       title: 'HIUI Design',
       template: path.resolve(__dirname, '../site/index.template.html')
     }),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false
-    //   }
-    // }),
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: ['vendor', 'runtime']
-    // }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: ['vendor', 'runtime']
+    }),
     new webpack.HashedModuleIdsPlugin()
   ]
 }

@@ -75,17 +75,8 @@ module.exports = {
     children: false
   },
   devtool: 'source-map',
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          name: 'vendor'
-        }
-      }
-    }
-  },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
-    // new webpack.optimize.CommonsChunkPlugin({ name: 'vendor' })
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor' })
   ]
 }
