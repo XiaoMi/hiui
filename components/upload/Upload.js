@@ -68,6 +68,7 @@ export default class Upload extends Component {
 
     switch (ext) {
       case 'jpg':
+      case 'jpeg':
       case 'gif':
       case 'png':
       case 'bmp':
@@ -196,6 +197,11 @@ export default class Upload extends Component {
       headers,
       uploadAction
     } = this.props
+    const onerror = () => {
+      file.uploadState = 'error'
+      this.setState({ fileList })
+      this.onUpload(file, fileList, {})
+    }
 
     if (file.fileType === 'img') { // 用来图片预览
       if (dataUrl) {
@@ -234,13 +240,13 @@ export default class Upload extends Component {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           this.onUpload(file, fileList, JSON.parse(xhr.response))
+        } else {
+          onerror()
         }
       }
     }
     xhr.upload.onerror = () => {
-      file.uploadState = 'error'
-      this.setState({ fileList })
-      this.onUpload(file, fileList, {})
+      onerror()
     }
     xhr.upload.onprogress = event => {
       var e = event || window.event
