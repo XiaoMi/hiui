@@ -113,22 +113,20 @@ render () {
 				placeholder='请选择种类'
 				style={{width: '200px'}}
 				value={'3'}
+				list={this.state.singleList}
 				searchable={true}
 				onChange={(item) => {
 						console.log('单选结果', item)
 				}}
-			>
-				{
-	        this.state.singleList.map(item => {
-	          return (
-	            <Select.Option key={item.id} name={item.name} id={item.id} disabled={item.disabled}>
-	              <span style={{float: 'left'}}>{item.name}</span>
-	              <span style={{float: 'right', color: '#999', fontSize: 14}}>{item.id}</span>
-	            </Select.Option>
-	          )
-	        })
-	      }
-			</Select>
+				dropdownRender={(item, isSelected) => {
+					return (
+						<React.Fragment>
+							<span style={{float: 'left'}}>{item.name}</span>
+							<span style={{float: 'right', color: '#999', fontSize: 14}}>{item.id}</span>
+						</React.Fragment>
+					)
+				}}
+			/>
 		</div>
 	)
 }
@@ -199,36 +197,67 @@ constructor () {
 render () {
 	return (
 		<React.Fragment>
-			<div>
-				<Select
-					mode='multiple'
-					style={{width: '300px'}}
-					list={this.state.multipleList}
-					value={['4', '5']}
-					searchable={true}
-					placeholder='请选择...'
-					noFoundTip='无匹配数据'
-					onChange={(item) => {
-							console.log('多选结果', item)
-					}}
-				/>
-			</div>
-			<div>
-				<Select
-					mode='multiple'
-					style={{width: '150px'}}
-					optionWidth={400}
-					selectedShowMode="number"
-					list={this.state.multipleList}
-					value={['4', '5']}
-					searchable={true}
-					placeholder='请选择...'
-					noFoundTip='无匹配数据'
-					onChange={(item) => {
-							console.log('多选结果', item)
-					}}
-				/>
-			</div>
+			<Select
+				mode='multiple'
+				style={{width: '300px'}}
+				list={this.state.multipleList}
+				value={['5']}
+				searchable={true}
+				placeholder='请选择...'
+				noFoundTip='无匹配数据'
+				onChange={(item) => {
+						console.log('多选结果', item)
+				}}
+			/>
+		</React.Fragment>
+	)
+}
+```
+:::
+
+
+### 单行多选
+
+:::demo
+
+单行多选
+
+```js
+constructor () {
+	super()
+	this.state = {
+		multipleList: [
+			{ name:'手机', id:'2' },
+			{ name:'小米2', id:'2-1' },
+			{ name:'小米3', id:'2-2' },
+			{ name:'小米4', id:'2-3' },
+			{ name:'小米5', id:'2-4' },
+			{ name:'电脑', id:'3' },
+			{ name:'笔记本', id:'4' },
+			{ name:'生活周边', id:'5' },
+			{ name:'其它', id:'6' }
+		]
+	}
+}
+
+render () {
+	return (
+		<React.Fragment>
+			<Select
+				mode='multiple'
+				style={{width: '300px'}}
+				optionWidth={400}
+				multipleMode="nowrap"
+				list={this.state.multipleList}
+				value={['4', '5','2','3']}
+				searchable={true}
+				showCheckAll={true}
+				placeholder='请选择...'
+				noFoundTip='无匹配数据'
+				onChange={(item) => {
+						console.log('多选结果', item)
+				}}
+			/>
 		</React.Fragment>
 	)
 }
@@ -250,6 +279,7 @@ render () {
 				mode='multiple'
 				autoload={true}
 				style={{width: '300px'}}
+				multipleMode="nowrap"
 				value="1"
 				origin={{
 					type: 'get',
@@ -278,9 +308,11 @@ render () {
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |
 | mode | 下拉框类型 | string | single, multiple | single |
+| multipleMode | 多选模式，wrap会显示所有已选中项，超出换行；nowrap只显示一行，超出的以数字显示 | string | wrap, nowrap | wrap |
 | list | 下拉框选项，一般为 {name: '', id: ''} 形式。可以加入 'disabled' 属性，表示是否禁止选择 | array | - | - |
 | origin | 异步选择配置，详见下表 | object | - | - |
 | value | 默认值被选中项，值与被选中的id相同，多个以,分割或者传递数组| string,number,array | - | - |
+| showCheckAll | 是否显示全选，只对多选生效 | bool | true, false | false |
 | searchable | 是否可以筛选 | bool | true, false | false |
 | clearable | 是否可以清空 | bool | true, false | true |
 | autoload | origin从远端获取数据，初始时是否自动加载 | bool | true, false | false |
@@ -288,6 +320,7 @@ render () {
 | placeholder | 提示信息 | string | - | 请选择 |
 | noFoundTip | 没有选项时的提示 | string | - | 无内容 |
 | style | 自定义样式 | object | - | - |
+| optionWidth | 选项的宽度 | number | - | 默认和select宽度一致 |
 
 
 ### origin Options
@@ -304,6 +337,7 @@ render () {
 
 
 ### Select.Option Attributes
+**已废弃，自定义模板使用dropdownRender**
 
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |

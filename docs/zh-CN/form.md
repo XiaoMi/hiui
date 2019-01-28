@@ -156,20 +156,21 @@ constructor(props) {
         {
           required: true,
           message: <span style={{color: '#ccc'}}>请输入名称</span>,
-          trigger: 'blur,change'
+          trigger: 'onBlur,onChange'
         }
       ],
       region: [
         {
+          required: true,
           message: '请选择区域',
-          trigger: 'change'
+          trigger: 'onChange'
         }
       ],
       count: [
         {
           required: true,
           message: '请输入数量',
-          trigger: 'change'
+          trigger: 'onChange'
         },
         {
           validator: (rule, value, cb) => {
@@ -182,7 +183,7 @@ constructor(props) {
               cb()
             }
           },
-          trigger: 'change'
+          trigger: 'onChange'
         }
       ]
     }
@@ -190,7 +191,7 @@ constructor(props) {
 }
 
 handleSubmit() {
-  this.form.current.validate(valid => {
+  this.form.validate(valid => {
     if(valid) {
       console.log(this.state.form)
       alert('submit')
@@ -199,6 +200,17 @@ handleSubmit() {
       return false
     }
   })
+}
+
+cancelSubmit() {
+  this.setState({
+    form: {
+      name: '',
+      region: '',
+      count: ''
+    }
+  })
+  this.form.resetValidates()
 }
 
 handleChange(key, e, value, index) {
@@ -220,7 +232,7 @@ render(){
 
   return (
     <div>
-      <Form ref={this.form} model={form} rules={this.state.rules} labelWidth='80'>
+      <Form ref={node => this.form = node} model={form} rules={this.state.rules} labelWidth='80'>
         <Row>
           <Col span={12}>
 
@@ -239,6 +251,7 @@ render(){
             </FormItem>
             <FormItem>
               <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
+              <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
             </FormItem>
 
           </Col>
@@ -272,3 +285,10 @@ render(){
 | required | 是否必填 | bool  | - | false |
 
 
+### Form Methods
+
+| 方法名| 说明|
+| --- | --- |
+| validate(callback) | 对整个表单进行校验 |
+| validateField(prop, callback) | 对表单字段进行校验 |
+| resetValidates | 重置整个表单的验证 |

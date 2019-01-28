@@ -8,12 +8,36 @@ export default class SelectInput extends Component {
     super(props)
 
     this.state = {
+      showCount: 0,
       value: '',
       inputStyle: {
         width: '2px'
       }
     }
-    this.inputItems = React.createRef()
+  }
+
+  calShowCountFlag = true
+  componentDidUpdate () {
+    if (this.props.multipleMode === 'nowrap' && this.calShowCountFlag && this.itemsRef) { // 多选超过一行时以数字显示
+      const itemsRect = this.itemsRef.getBoundingClientRect()
+      let width = 0
+      let showCount = 0
+      const items = this.itemsRef.querySelectorAll('.hi-select__input--item')
+
+      for (const item of items) {
+        const itemRect = item.getBoundingClientRect()
+        width += itemRect.width
+        if ((width + 50) < itemsRect.width || (width > itemsRect.width && (width + 50) <= itemsRect.width && (showCount + 1) === items.length)) { // 50是留给显示剩余选项的空间
+          ++showCount
+        } else {
+          break
+        }
+      }
+      this.setState({showCount})
+      this.calShowCountFlag = false
+    } else {
+      this.calShowCountFlag = true
+    }
   }
 
   focus () {
@@ -66,19 +90,20 @@ export default class SelectInput extends Component {
       disabled,
       searchable,
       clearable,
-      selectedShowMode
+      multipleMode
     } = this.props
     let icon = dropdownShow ? 'up' : 'down'
     let {
+      showCount,
       value,
       inputStyle
     } = this.state
+    showCount = showCount === 0 || this.calShowCountFlag ? selectedItems.length : showCount
 
     if (!selectedItems.length) {
       inputStyle = {width: '100%'}
     }
-    // const containerWidth = container && container.offsetWidth || 1000
-    // let totalWidth = 0
+
     return (
       <div className={classNames('hi-select__input', 'multiple-values', {disabled})} onClick={this.props.onClick}>
         {
@@ -87,26 +112,35 @@ export default class SelectInput extends Component {
             {placeholder}
           </div>
         }
-        <div className='hi-select__input--items' ref={this.inputItems}>
+        <div
+          className={classNames('hi-select__input-items', {'hi-select__input-items--all': multipleMode === 'wrap'})}
+          ref={node => { this.itemsRef = node }}
+        >
           {
-            selectedShowMode === 'number'
-              ? selectedItems.length > 0 && <div className='hi-select__input--item'>
-                <div className='hi-select__input--item__name'>已选择 {selectedItems.length} 项</div>
+            selectedItems.slice(0, showCount).map((item, index) => {
+              const _item = <div key={index} className='hi-select__input--item'>
+                <div className='hi-select__input--item__name'>{item.name}</div>
+                <span
+                  className='hi-select__input--item__remove'
+                  onClick={e => {
+                    e.stopPropagation()
+                    this.props.onDelete(item)
+                  }}
+                >
+                  <i className='hi-icon icon-close' />
+                </span>
               </div>
-              : selectedItems.map((item, index) => {
-                const _item = <div key={index} className='hi-select__input--item'>
-                  <div className='hi-select__input--item__name'>{item.name}</div>
-                  <span
-                    className='hi-select__input--item__remove'
-                    onClick={e => {
-                      this.props.onDelete(item)
-                    }}
-                  >
-                    <i className='hi-icon icon-close' />
-                  </span>
-                </div>
-                return _item
-              })
+              return _item
+            })
+          }
+          {
+            showCount < selectedItems.length &&
+            <div className='hi-select__input-items--left'>
+              +
+              <span className='hi-select__input-items--left-count'>
+                {selectedItems.length - showCount}
+              </span>
+            </div>
           }
           {
             searchable && !disabled &&

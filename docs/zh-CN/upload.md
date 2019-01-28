@@ -19,7 +19,7 @@ render () {
 		<div>
 			<Upload
 				type="normal"
-				uploadAction= "http://10.236.91.199:3005/upload"
+				uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 				headers={{name: 'mi'}}
 				buttonText="上传文件"
 				param={param}
@@ -54,7 +54,7 @@ render () {
 		<div>
 			<Upload
 				type="normal"
-				uploadAction= "http://10.236.91.199:3005/upload"
+				uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 				buttonText="上传文件"
 				param={param}
 				name={'files[]'}
@@ -94,7 +94,7 @@ render () {
 	return (
 		<Upload
 			type="normal"
-			uploadAction= "http://10.236.91.199:3005/upload"
+			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 			buttonText="上传文件"
 			param={{id:'uid',channel:'youpin'}}
 			disabled={true}
@@ -116,7 +116,7 @@ render () {
 	return (
 		<Upload
 			type="drag"
-			uploadAction= "http://10.236.91.199:3005/upload"
+			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 			headers={{name: 'mi'}}
 			onChange = {(file, fileList, response) => {
 				console.log('upload callback', file, fileList, response)
@@ -142,13 +142,13 @@ render () {
 	return (
 		<Upload
 			type="photo"
-			uploadAction= "http://10.236.91.199:3005/upload"
+			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 			onChange = {(file, fileList, response) => {
 				file.id = 'file唯一标识'
 				console.log('upload callback', file, fileList, response)
 			}}
-			onRemove = {(file, fileList) => {
-				console.log('remove callback', file, fileList)
+			onRemove = {(file, fileList, index) => {
+				console.log('remove callback', file, fileList, index)
 				return new Promise((resolve, reject)=>resolve(true))
 			}}
 			param={{id:'uid',channel:'youpin'}}
@@ -187,7 +187,7 @@ render () {
 			type="avatar"
 			width={180}
 			height={180}
-			uploadAction= "http://10.236.91.199:3005/upload"
+			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 			headers={{name: 'mi'}}
 			param={{id:'uid',channel:'youpin'}}
 			onChange = {(file, fileList, response) => {
@@ -212,7 +212,7 @@ render () {
 	return (
 		<Upload
 			type="pictureCard"
-			uploadAction= "http://10.236.91.199:3005/upload"
+			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 			headers={{name: 'mi'}}
 			onChange = {(file, fileList, response) => {
 				console.log('upload callback', file, fileList, response)
@@ -302,4 +302,4 @@ render () {
 |beforeUpload|上传文件前的钩子,返回true继续上传，其他终止上传|function(files, fileList)|否|一个返回true的空函数|
 |customUpload|自定义上传，此时不会再触发onChange，所有上传逻辑由用户完全控制|function(files)|否|-|
 |onChange|上传回调。当function返回false或者返回promise（如果promise resolve(false)）则已上传的文件列表不会展示该文件|function(file, fileList, response)|否|无|
-|onRemove|删除上传的文件,为false时不可删除。当function返回true或者返回promise（如果promise resolve(true)）则会在前端删除文件（可参考demo：照片墙上传）|function(file, fileList)，boolean|否|一个返回true的空函数，即前端删除|
+|onRemove|删除上传的文件,为false时不可删除。当function返回true或者返回promise（如果promise resolve(true)）则会在前端删除文件（可参考demo：照片墙上传）|function(file, fileList, index)，boolean|否|一个返回true的空函数，即前端删除|
