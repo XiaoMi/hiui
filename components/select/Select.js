@@ -15,6 +15,7 @@ class Select extends Component {
 
   static propTypes = {
     mode: PropTypes.oneOf(['single', 'multiple']),
+    multipleMode: PropTypes.oneOf(['wrap', 'nowrap']),
     list: PropTypes.array,
     origin: PropTypes.object,
     value: PropTypes.oneOfType([
@@ -30,6 +31,7 @@ class Select extends Component {
     disabled: PropTypes.bool,
     placeholder: PropTypes.string,
     noFoundTip: PropTypes.string,
+    optionWidth: PropTypes.number,
     style: PropTypes.object,
     onChange: PropTypes.func,
     dropdownRender: PropTypes.func
@@ -38,6 +40,7 @@ class Select extends Component {
   static defaultProps = {
     list: [],
     mode: 'single',
+    multipleMode: 'wrap',
     disabled: false,
     clearable: true,
     value: '',
@@ -470,8 +473,8 @@ class Select extends Component {
       children,
       noFoundTip,
       optionWidth,
-      selectedShowMode,
-      dropdownRender
+      dropdownRender,
+      multipleMode
     } = this.props
     const placeholder = this.localeDatasProps('placeholder')
     const {
@@ -500,7 +503,7 @@ class Select extends Component {
             placeholder={placeholder}
             selectedItems={selectedItems}
             dropdownItems={dropdownItems}
-            selectedShowMode={selectedShowMode}
+            multipleMode={multipleMode}
             container={this.selectInputContainer}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
             onClick={this.handleInputClick.bind(this)}
