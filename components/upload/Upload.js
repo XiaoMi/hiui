@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import shallowEqual from 'shallowequal'
 import cloneDeep from 'lodash/cloneDeep'
 
 let fileId = 0
@@ -51,6 +52,14 @@ export default class Upload extends Component {
     onRemove: () => true,
     onChange: () => true
     // overEvent: false
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (!shallowEqual(nextProps.defaultFileList, this.props.defaultFileList)) {
+      this.setState({
+        fileList: this.prepareDefaultFileList(nextProps.defaultFileList)
+      })
+    }
   }
 
   prepareDefaultFileList (fileList) {
