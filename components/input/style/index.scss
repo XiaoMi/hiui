@@ -73,6 +73,7 @@ $input: 'hi-input' !default;
     border: 1px solid $border-color-normal;
     box-sizing: border-box;
     border-radius: $border-radius;
+    background-color: #fff;
     transition: border-color 0.3s;
 
     &:not(.disabled):hover {
@@ -144,6 +145,42 @@ $input: 'hi-input' !default;
 
   &__suffix {
     padding-right: 12px;
+  }
+
+  &--prepend {
+    .hi-input__inner {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  &__prepend {
+    .hi-btn,
+    .hi-select__input {
+      border-right-color: transparent;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-top-left-radius: 2px;
+      border-bottom-left-radius: 2px;
+    }
+  }
+
+  &--append {
+    .hi-input__inner {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  &__append {
+    .hi-btn,
+    .hi-select__input {
+      border-left-color: transparent;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-top-right-radius: 2px;
+      border-bottom-right-radius: 2px;
+    }
   }
 
   &.required {

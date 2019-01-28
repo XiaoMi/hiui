@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Icon from '../icon'
 import '../icon/style'
 import prifix from './prefix'
-
+import Footer from './footer'
 // 点击后会展开的那个图标
 class Expand extends Component {
   constructor (props) {
@@ -28,21 +28,26 @@ class Expand extends Component {
   }
 }
 
+let defaultRender = (text, record, index) => {
+  return text
+}
+
 export default class Body extends Component {
   render () {
-    let {columns, dataSource, cbs: {addExpand, rowClick}, rowSelection = { }, highlightCols} = this.props
+    let {columns, dataSource, cbs: {addExpand}, rowSelection = { }, highlightCols} = this.props
     let selectedRowKeys = rowSelection.selectedRowKeys || []
     // 表头分组
     let i = 0
+    let pureData = dataSource.filter(item => !item.expand)
     let nodes = dataSource.map((item, k) => {
       let colSpan = 1
       let tr = []
       // 点击后展开的那一行
       if (item.expand) {
-        let obj = dataSource.find(o => o.key === item.parent)
+        let obj = pureData.find(o => o.key === item.parent)
         let expand = columns.find(o => o.type === 'expand')
         tr = expand ? <td colSpan={columns.length} key={'key-' + item.parent} className={prifix('table-col', highlightCols.includes(item.key) ? 'picked' : null)} >
-          {expand.render(obj[item.dataIndex], obj, dataSource.indexOf(obj))}
+          {expand.render(obj[item.dataIndex], obj, pureData.indexOf(obj))}
         </td> : null
       } else {
         // 扩展项的占位dom
@@ -59,6 +64,7 @@ export default class Body extends Component {
             // {/*<div key={'td-' + k + '-' + j} onClick={(e) => addExpand(e, obj)} data-index={k} data-open={false}> > </div>*/}
             td = <Expand addExpand={addExpand} data-index={k} data-open={false} colItem={obj} index={k} rowItem={item} />
           } else {
+            obj.render = obj.render || defaultRender
             td = obj.render(item[obj.dataIndex], item, i)
 
             // 做判断的原因是？
@@ -78,7 +84,7 @@ export default class Body extends Component {
             // }
           }
           if (parseInt(rowSpan) !== 0) {
-            tr.push(<td className={prifix('table-col', highlightCols.includes(obj.key) ? 'picked' : null)} rowSpan={rowSpan} colSpan={colSpan} data-span={colSpan} key={'td-' + k + '-' + j} style={{width: item.width + 'px'}}>{td}</td>)
+            tr.push(<td className={prifix('table-col', highlightCols.includes(obj.key) ? 'picked' : null)} rowSpan={rowSpan} colSpan={colSpan} data-span={colSpan} key={'td-' + k + '-' + j} >{td}</td>)
           } else {
             tr.push(null)
           }
@@ -88,12 +94,13 @@ export default class Body extends Component {
         i++
         // 动态插入的组件不累加
       }
-      return <tr onClick={() => rowClick(undefined, item, k)} className={prifix('table-row', selectedRowKeys.includes(item.key) ? 'picked' : null, item.expand ? 'expanded' : null)} key={item.key || 'tr-' + k} >{tr}</tr>
+      return <tr className={prifix('table-row', selectedRowKeys.includes(item.key) ? 'picked' : null, item.expand ? 'expanded' : null)} key={item.key || 'tr-' + k} >{tr}</tr>
     })
 
     return (
       <tbody className={prifix('table-tbody')}>
         {nodes}
+        <Footer className={'table-footer'} {...this.props} />
       </tbody>
     )
   }

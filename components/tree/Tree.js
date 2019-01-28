@@ -1,245 +1,316 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import find from 'lodash/find'
-import { toggleSlide, calcDropPosition, insBefore, insAfter, insChild, deepClone } from './util'
+import PropTypes from 'prop-types'
+// import Checkbox from '../checkbox/index'
+import TreeNode from './TreeNode'
+import isEqual from 'lodash/isEqual'
+import {
+  calcDropPosition,
+  deepClone,
+  getChildren,
+  getDisabled,
+  getAll
+} from './util'
 
-const DEFAULT_TITLE = '---'
+import './style/index'
+const dealData = (data, tempData = {}, parent) => {
+  if (data.length === 0) {
+    return data
+  }
+  data.map((item) => {
+    tempData[item.id] = {...item}
+    if (parent) {
+      tempData[item.id].parent = parent
+    }
+    if (item.children && item.children.length > 0) {
+      const tempArr = []
+      item.children.map((i) => {
+        tempArr.push(i.id)
+      })
+      tempData[item.id].children = tempArr
+      dealData(item.children, tempData, item.id)
+    }
+  })
+}
 
-// 记录是否已经触发收起展开操作 防止闪烁
-let isTriggerSlide = false
-
-class Tree extends Component {
+export default class Tree extends Component {
   constructor (props) {
     super(props)
-    this.isInitial = true
-    this.isDataUpdate = false
+
     this.state = {
-      checkedTree: {}
+      hasChecked: props.defaultCheckedKeys,
+      hasExpanded: [],
+      dataMap: {},
+      data: {},
+      dragNode: '',
+      dragNodePosition: null,
+      semiChecked: [],
+      disabledKeys: []
     }
   }
+
+  // updateCheckStatus (props) {
+  //
+  // }
+  //
+  // componentDidMount () {
+  //   this.updateCheckStatus(this.props)
+  // }
+
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     defaultCheckedKeys: PropTypes.arrayOf(PropTypes.any),
-    onNodeToggle: PropTypes.func,
     onDragStart: PropTypes.func,
-    render: PropTypes.func,
+    // render: PropTypes.func,
     defaultExpandAll: PropTypes.bool,
     checkable: PropTypes.bool,
     draggable: PropTypes.bool,
-    options: PropTypes.object,
-    onNodeClick: PropTypes.func
+    withLine: PropTypes.bool,
+    onNodeClick: PropTypes.func,
+    onClick: PropTypes.func,
+    onChange: PropTypes.func
   }
+
   static defaultProps = {
     prefixCls: 'hi-tree',
-    defaultExpandAll: false,
-    checkable: false,
-    draggable: false,
-    options: {
-      title: 'title',
-      children: 'children'
-    },
-    openIcon: null,
-    closeIcon: null,
-    onNodeClick: () => {}
+    defaultCheckedKeys: [],
+    data: []
   }
-  componentWillMount () {
-    // init checkedTree
-    const { data } = this.props
 
-    this.setState({
-      checkedTree: this.formatDataIntoCheckedTree(data)
+  static getDerivedStateFromProps (props, prevState) {
+    let data = {}
+    if (!isEqual(props.data, prevState.data)) {
+      const dataMap = {}
+      dealData(deepClone(props.data), dataMap)
+      data.dataMap = dataMap
+      data.data = props.data
+
+      if (Object.keys(prevState.data).length === 0) {
+        if (props.defaultExpandAll) {
+          let tempExpandedArr = []
+          for (let key in dataMap) {
+            if (dataMap[key].children && dataMap[key].children.length > 0) {
+              tempExpandedArr.push(dataMap[key].id)
+            }
+          }
+          data.hasExpanded = tempExpandedArr
+        }
+      }
+    }
+
+    if (props.data && props.checkedKeys) {
+      data.all = getAll(props.data, props.checkedKeys)
+      // data.semiChecked = data.all.filter(item => item.semi).map(item => item.id)
+      // data.disabledKeys = data.all.filter(item => item.disabled).map(item => {
+      //   return {
+      //     id: item.id,
+      //     checked: props.checkedKeys.includes(item.id)
+      //   }
+      // })
+    }
+
+    return data
+  }
+
+  onCheckChange (checked, item) {
+    const {
+      onChange,
+      checkedKeys
+    } = this.props
+    let checkedArr = checkedKeys
+
+    let {
+      all
+    } = this.state
+    let semiChecked = all.filter(item => item.semi).map(item => item.id)
+    let disabledKeys = all.filter(item => item.disabled).map(item => item.id)
+    let myself = all.find(a => a.id === item.id)
+    let children = myself.child
+    let parent = myself.parent
+
+    if (semiChecked.includes(item.id)) {
+      children.forEach(child => {
+        checkedArr = checkedArr.filter(c => c !== child)
+      })
+      checkedArr = checkedArr.filter(c => c !== item.id)
+    } else {
+      if (checked) {
+        checkedArr = checkedArr.filter(c => c !== item.id)
+        children.forEach(child => {
+          checkedArr = checkedArr.filter(c => c !== child)
+        })
+        parent.forEach(p => {
+          checkedArr = checkedArr.filter(c => c !== p)
+        })
+      } else {
+        checkedArr = checkedArr.concat(children)
+        checkedArr.push(item.id)
+        parent.forEach(p => {
+          let par = all.find(a => a.id === p).child
+          let bool = true
+          par.forEach(p => {
+            if (!checkedArr.includes(p)) {
+              bool = false
+            }
+          })
+          bool && checkedArr.push(p)
+        })
+      }
+    }
+
+    disabledKeys.forEach(d => {
+      if (d.checked) {
+        if (!checkedArr.includes(d.id)) {
+          checkedArr.push(d.id)
+        }
+      } else {
+        checkedArr = checkedArr.filter(c => c !== d.id)
+      }
     })
+
+    parent.forEach(p => {
+      let child = all.find(item => item.id === p).child
+      let semi = false
+      let num = 0
+      checkedArr.forEach(c => {
+        if (child.includes(c)) {
+          num = num + 1
+        }
+      })
+
+      semi = num !== 0 && num !== child.length
+
+      if (semi) {
+        if (!semiChecked.includes(p)) {
+          semiChecked.push(p)
+        }
+      } else {
+        semiChecked = semiChecked.filter(s => s !== p)
+      }
+      console.log('chedked', checked, 'child', child, 'checkedkeys', checkedArr, 'child.length', child.length, 'title', all.find(item => item.id === p).title, 'checknum', num, 'semi', semi)
+    })
+
+    // let semiChecked = getSemi(this.props.data, checkedArr)
+    // this.setCheckTreeCheckedParent(item.id, checked, checkedArr)
+    // this.setCheckTreeCheckedChild(item.id, checked, checkedArr, semiChecked.includes(item.id))
+    // semiChecked = getSemi(this.props.data, checkedArr) // 重新设置一次
+    // this.setState({
+    //   hasChecked: checkedArr,
+    //   semiChecked
+    // })
+    // onCheckChange && onCheckChange(checkedArr, item.title, !checked, semiChecked)
+    onChange && onChange(checkedArr, item.title, !checked, semiChecked)
+    this.props.onCheckChange && this.props.onCheckChange(checkedArr, item.title, !checked, semiChecked)
   }
 
-  componentWillReceiveProps (nextProps) {
-    // if (nextProps.data !== this.props.data) {
-    //   // update checkTree
-    //   this.isDataUpdate = true
+  setCheckTreeCheckedChild (id, checked, tempCheckedArr, semi) {
+    let child = getChildren(this.props.data, id)
+    let disabled = getDisabled(this.props.data)
+    child.forEach(c => {
+      if (disabled.includes(c)) {
+        return
+      }
+      if (semi) {
+        tempCheckedArr.splice(tempCheckedArr.indexOf(c), 1)
+        return
+      }
+      if (!tempCheckedArr.includes(c) && !disabled.includes(c)) {
+        tempCheckedArr.push(c)
+      } else {
+        tempCheckedArr.splice(tempCheckedArr.indexOf(c), 1)
+      }
+    })
 
-    //   const data = this.formatDataIntoTree(nextProps.data, nextProps.dataType)
-    //   this.setState({
-    //     checkedTree: this.formatDataIntoCheckedTree(data)
+    // console.log(arguments)
+    // const {dataMap} = this.state
+    //
+    // let childNotExist = !(dataMap[id].children && dataMap[id].children.length > 0)
+    //
+    // if(!(dataMap[id].children && dataMap[id].children.length > 0)){
+    //   dataMap[id].children = []
+    // }else {
+    //   dataMap[id].children = dataMap[id].children.filter(item => !item.disabled)
+    // }
+    //
+    // if (dataMap[id].children && dataMap[id].children.length > 0) {
+    //   dataMap[id].children.map((i) => {
+    //     if (checked) {
+    //       if (tempCheckedArr.indexOf(i) >= 0) {
+    //         tempCheckedArr.splice(tempCheckedArr.indexOf(i), 1)
+    //       }
+    //     } else {
+    //       if (tempCheckedArr.indexOf(i) < 0) {
+    //         tempCheckedArr.push(i)
+    //       }
+    //     }
+    //   })
+    // }
+    // if (dataMap[id].children) {
+    //   dataMap[id].children.map((i) => {
+    //     this.setCheckTreeCheckedChild(i, checked, tempCheckedArr)
     //   })
     // }
   }
 
-  // 检查节点展开状态
-  isExpanded = (node) => {
-    return !node.parentNode.classList.contains('off')
-  }
-  // 三角按钮点击事件
-  handleExpandClick = (root, e) => {
-    const {
-      openIcon,
-      closeIcon
-    } = this.props
-    if (!isTriggerSlide) {
-      const { onNodeToggle } = this.props
-      const switcher = e.target
-      const switcherParent = switcher.parentNode
-      const switcherClassList = switcher.classList
-      let remove = `icon-${openIcon || 'plus'}`
-      let add = `icon-${closeIcon || 'minus'}`
-
-      switcherParent.classList.toggle('off')
-      if (switcherParent.classList.contains('off')) {
-        remove = `icon-${closeIcon || 'minus'}`
-        add = `icon-${openIcon || 'plus'}`
+  setCheckTreeCheckedParent (id, checked, tempCheckedArr) {
+    const {dataMap} = this.state
+    if (checked) {
+      if (tempCheckedArr.indexOf(id) >= 0) {
+        tempCheckedArr.splice(tempCheckedArr.indexOf(id), 1)
       }
-      switcherClassList.add(add)
-      switcherClassList.remove(remove)
+    } else {
+      let allChecked = true
 
-      const isClose = !this.isExpanded(switcher)
-      const el = switcherParent.nextSibling// 获取到子树节点
-      // 如果没有子树节点 移除当前节点的三角按钮
-      if (!(el && switcherParent.nextSibling.childNodes.length)) {
-        // switcher.remove()
-        return
-      }
-
-      if (onNodeToggle) {
-        onNodeToggle({ data: root, isExpanded: !isClose })
-      }
-      isTriggerSlide = true
-      toggleSlide(el, isClose, () => { isTriggerSlide = false })
-    }
-  }
-  // checkbox点击事件
-  handleCheckboxClick = (root) => {
-    const { onChange } = this.props
-    const { checkedTree } = this.state
-
-    this.updateCheckedTree(root.id, checkedTree[root.id].t !== 2 ? 2 : 0)
-    onChange && onChange(root)
-  }
-
-  updateCheckedTree = (id, type) => {
-    const checkedTree = deepClone(this.state.checkedTree)
-    const parentId = checkedTree[id].p
-    const childrenId = Object.keys(checkedTree).filter(
-      x => checkedTree[x].p === id.toString()
-    )
-    checkedTree[id].t = type
-
-    this.updateUpstream(parentId, type, checkedTree)
-    childrenId.forEach(childId => {
-      this.updateDownstream(childId, type, checkedTree)
-    })
-
-    this.setState({ checkedTree })
-  }
-
-  updateUpstream = (id, type, checkedTree) => {
-    if (!id) return
-    if (type === 2) {
-      checkedTree[id].t = Object.keys(checkedTree)
-        .filter(x => checkedTree[x].p === id)
-        .every(x => checkedTree[x].t === 2)
-        ? 2
-        : 1
-    } else if (type === 1) {
-      checkedTree[id].t = 1
-    } else if (type === 0) {
-      checkedTree[id].t = Object.keys(checkedTree)
-        .filter(x => checkedTree[x].p === id)
-        .every(x => checkedTree[x].t === 0)
-        ? 0
-        : 1
-    }
-    if (checkedTree[id].p) {
-      this.updateUpstream(checkedTree[id].p, checkedTree[id].t, checkedTree)
-    }
-  }
-
-  updateDownstream = (id, type, checkedTree) => {
-    if (!id) return
-    checkedTree[id].t = type
-    const childrenId = Object.keys(checkedTree).filter(
-      x => checkedTree[x].p === id
-    )
-    if (childrenId.length > 0) {
-      childrenId.forEach(childId => {
-        this.updateDownstream(childId, type, checkedTree)
-      })
-    }
-  }
-
-  updateCheckedTreeRecursive = (root, parentId, func) => {
-    func(root, parentId)
-    if (root.children && root.children.length > 0) {
-      root.children.forEach(child => {
-        this.updateCheckedTreeRecursive(child, root.id, func)
-      })
-    }
-  }
-
-  initialCheckedTree = (data) => {
-    let newCheckedTree = {}
-    const { defaultCheckedKeys } = this.props
-
-    data.forEach(tree => {
-      this.updateCheckedTreeRecursive(tree, '', (root, parentId) => {
-        const isSetDefault =
-          defaultCheckedKeys &&
-          find(defaultCheckedKeys, x => x === root.id) >= 0
-        newCheckedTree[root.id] = {
-          p: parentId.toString(),
-          t: isSetDefault ? 2 : 0
+      dataMap[id].children && dataMap[id].children.map((i) => {
+        if (tempCheckedArr.indexOf(i) < 0) {
+          allChecked = false
         }
       })
-    })
-    return newCheckedTree
-  }
-
-  formatDataIntoCheckedTree = (data) => {
-    let checkedTree = {}
-    if (this.isInitial) {
-      checkedTree = this.initialCheckedTree(data)
-      this.isInitial = false
-    } else if (this.isDataUpdate) {
-      checkedTree = this.reloadCheckedTree(data)
-      this.isDataUpdate = false
+      if (allChecked && tempCheckedArr.indexOf(id) < 0) { tempCheckedArr.push(id) }
     }
-    this.updateWholeCheckedTree(checkedTree)
-    return checkedTree
+    if (dataMap[id].parent) {
+      this.setCheckTreeCheckedParent(dataMap[id].parent, checked, tempCheckedArr)
+    }
   }
 
-  updateWholeCheckedTree (checkedTree) {
-    Object.keys(checkedTree).forEach(id => {
-      if (checkedTree[id].t === 2) {
-        this.updateUpstream(id, 2, checkedTree)
-        this.updateDownstream(id, 2, checkedTree)
-      }
+  onExpanded (expanded, item) {
+    let expandedArr = this.state.hasExpanded
+
+    if (expandedArr.indexOf(item.id) >= 0) {
+      expandedArr.splice(expandedArr.indexOf(item.id), 1)
+    } else {
+      expandedArr.push(item.id)
+    }
+    this.setState({
+      hasExpanded: expandedArr
     })
   }
 
-  // 当拖拽元素开始被拖拽的时候触发的事件
-  onDragStart = (e) => {
-    const { onDragStart } = this.props
-    const current = e.target.parentNode.parentNode// li
-    e.stopPropagation()
-    const nodeName = e.target.nodeName
-    if (nodeName === 'A' || nodeName === 'IMG') {
-      e.preventDefault()
-    }
+   // 当拖拽元素开始被拖拽的时候触发的事件
+   onDragStart = (e, data) => {
+     const { onDragStart } = this.props
+     e.stopPropagation()
 
-    if (current.parentNode.childNodes.length === 1) {
-      current.parentNode.parentNode.classList.add('switcher-none')
-    }
-    this.dargNode = e.target
-    if (onDragStart) {
-      onDragStart(e)
-    }
+     let expandedArr = this.state.hasExpanded
 
-    try {
-      // ie throw error
-      // firefox-need-it
-      e.dataTransfer.setData('text/plain', '')
-    } catch (error) {
-      // empty
-    }
-  }
+     if (expandedArr.indexOf(data.id) >= 0) {
+       expandedArr.splice(expandedArr.indexOf(data.id), 1)
+     }
+
+     this.dargNode = e.target
+     this.curData = data
+     this.setState({
+       expandedKeys: expandedArr
+     })
+     if (onDragStart) {
+       onDragStart(e)
+     }
+
+     try {
+       e.dataTransfer.setData('text/plain', '')
+     } catch (error) {
+     }
+   }
   // 当拖拽完成后触发的事件
   onDragEnd = (e) => {
     const { onDragEnd } = this.props
@@ -251,24 +322,26 @@ class Tree extends Component {
   }
 
   // 当拖曳元素进入目标元素的时候触发的事件
-  onDragEnter = (e) => {
+  onDragEnter = (e, data) => {
     const { onDragEnter } = this.props
-    const curLi = e.currentTarget
     let dropPosition = calcDropPosition(e, e.currentTarget)
 
     e.preventDefault()
     e.stopPropagation()
 
+    if (data.id === this.curData.id && dropPosition === 0) {
+      this.setState({
+        dragNode: '',
+        dragNodePosition: null
+      })
+      return
+    }
+
     setTimeout(() => {
-      if (dropPosition === -1) {
-        curLi.classList.add('gap-top')
-      } else if (dropPosition === 0) {
-        curLi.classList.add('gap-enter')
-      } else if (dropPosition === 1) { // bottom
-        curLi.classList.add('gap-bottom')
-      }
-      this.dropPosition = dropPosition
-      // this.setState({ dropPosition })
+      this.setState({
+        dragNode: data.id,
+        dragNodePosition: dropPosition
+      })
     }, 0)
 
     if (onDragEnter) {
@@ -289,147 +362,67 @@ class Tree extends Component {
   onDragLeave = (e) => {
     const { onDragLeave } = this.props
     e.stopPropagation()
-    const curLi = e.currentTarget
-    curLi.classList.remove('gap-top', 'gap-enter', 'gap-bottom')
+
+    this.setState({
+      dragNode: '',
+      dragNodePosition: null
+    })
 
     if (onDragLeave) {
       onDragLeave(e)
     }
   }
   // 被拖拽的元素在目标元素上同时鼠标放开触发的事件
-  onDrop = (e) => {
+  onDrop = (e, data, parentData) => {
     const { onDrop } = this.props
-    const dropPosition = this.dropPosition
     e.preventDefault()
     e.stopPropagation()
-    e.currentTarget.classList.remove('gap-top', 'gap-enter', 'gap-bottom')
-
-    if (dropPosition === -1) { // top
-      insBefore(this.dargNode, e.currentTarget)
-    } else if (dropPosition === 0) {
-      insChild(this.dargNode, e.currentTarget)
-    } else if (dropPosition === 1) { // bottom
-      insAfter(this.dargNode, e.currentTarget)
-    }
+    this.setState({
+      dragNode: '',
+      dragNodePosition: null
+    })
+    this.props.dragEnd(this.curData, data, parentData)
     if (onDrop) {
       onDrop(e)
     }
   }
 
-  // 生成三角按钮
-  renderSwitcher = (root, isShowChildren) => {
-    const { prefixCls, openIcon, closeIcon } = this.props
-    const switcherClsName = classNames(`${prefixCls}-switcher`, 'hi-icon', `icon-${isShowChildren ? (closeIcon || 'minus') : (openIcon || 'plus')}`)
+  renderTreeNodes (data) {
+    const { prefixCls, draggable, checkable, closeIcon, openIcon, withLine, highlightable } = this.props
+    const { dragNode, dragNodePosition } = this.state
+
     return (
-      <i
-        className={switcherClsName}
-        onClick={this.handleExpandClick.bind(this, root)}
+      <TreeNode
+        draggable={draggable || undefined}
+        onDragStart={this.onDragStart}
+        onDragEnter={this.onDragEnter}
+        onDragOver={this.onDragOver}
+        onDragLeave={this.onDragLeave}
+        onDrop={this.onDrop}
+        checked={this.props.checkedKeys || []}
+        onNodeClick={this.props.onNodeClick}
+        onClick={this.props.onClick}
+        semiChecked={this.state.all.filter(item => item.semi).map(item => item.id)}
+        expanded={this.state.hasExpanded}
+        onCheckChange={this.onCheckChange.bind(this)}
+        hightLightNodes={this.props.hightLightNodes}
+        onHightLightChange={this.props.onHightLightChange}
+        onExpanded={this.onExpanded.bind(this)}
+        data={data}
+        dragNodePosition={dragNodePosition}
+        dragNode={dragNode}
+        prefixCls={prefixCls}
+        checkable={checkable}
+        highlightable={highlightable}
+        openIcon={openIcon}
+        closeIcon={closeIcon}
+        withLine={withLine}
       />
     )
   }
-  // 生成checkbox
-  renderCheckbox = (root) => {
-    // const { disabledCheckedKeys } = this.props
-    const { prefixCls } = this.props
-
-    return (
-      <React.Fragment>
-        <input
-          className={`${prefixCls}-input`}
-          type='checkbox'
-          onChange={this.handleCheckboxClick.bind(this, root)}
-          checked={this.state.checkedTree[root.id].t === 2}
-        />
-        <span className={`${prefixCls}-checkbox`} />
-      </React.Fragment>
-    )
-  }
-  // 生成树节点内容 bar（icon + title）
-  renderNodeContent = (root) => {
-    const { prefixCls, draggable, options, render, checkable, onNodeClick } = this.props
-
-    return (
-      <div
-        draggable={draggable || undefined}
-        onDragStart={this.onDragStart}
-        onDragEnd={this.onDragEnd}
-        className={`${prefixCls}-node`}
-      >
-        <label>
-          {checkable && this.renderCheckbox(root)}
-          {render ? render(root) : (<div className={`${prefixCls}-title`}
-            style={root.style}
-            onClick={() => {
-              onNodeClick && onNodeClick(root)
-              root.onClick && root.onClick(root)
-            }}
-          >{root[options.title] || DEFAULT_TITLE}</div>)}
-        </label>
-      </div>
-    )
-  }
-  // 生成子树
-  renderChildren = (root, isShowChildren) => {
-    const { prefixCls, options } = this.props
-
-    return (
-      root[options.children] && root[options.children].length > 0 && (
-        <ul
-          key={`ul-${root.id}`}
-          className={`${prefixCls}-child`}
-          style={isShowChildren ? {} : { display: 'none' }}
-        >
-          {this.renderTreeNodes(root[options.children])}
-        </ul>
-      )
-    )
-  }
-
-  // 渲染树节点
-  renderTreeNodes = (data) => {
-    const { prefixCls, defaultExpandAll, options } = this.props
-
-    if (data && data.length > 0) {
-      return data.map((root, index) => {
-        // 单独节点expand属性具有最高优先级，如果expand没有设置会根据expandAll为准
-        let isShowChildren = defaultExpandAll
-        if (root.expand) {
-          isShowChildren = root.expand
-        }
-
-        const barClassName = classNames(`${prefixCls}-bar`, {
-          'off': !isShowChildren// off：关闭状态
-        })
-
-        return (
-          <li
-            className={(root[options.children] && root[options.children].length > 0) ? '' : 'switcher-none'}
-            key={root.id + '' + index}
-          >
-            <div
-              onDragEnter={this.onDragEnter}
-              onDragOver={this.onDragOver}
-              onDragLeave={this.onDragLeave}
-              onDrop={this.onDrop}
-              className={barClassName}
-            >
-              {
-                root.children
-                  ? this.renderSwitcher(root, isShowChildren)
-                  : ''
-              }
-              {this.renderNodeContent(root)}
-            </div>
-            {this.renderChildren(root, isShowChildren)}
-          </li>
-        )
-      })
-    }
-  }
 
   render () {
-    const { prefixCls, data, draggable, style } = this.props
-    const treeNodes = this.renderTreeNodes(data)
+    const { prefixCls, draggable, style } = this.props
     const classes = classNames(`${prefixCls}`, {
       'draggable-tree': draggable
     })
@@ -438,12 +431,8 @@ class Tree extends Component {
       <div className={classes}
         style={style}
       >
-        <ul className={`${prefixCls}-child`} ref='rootNode'>
-          {treeNodes}
-        </ul>
+        {this.renderTreeNodes(this.state.data)}
       </div>
     )
   }
 }
-
-export default Tree

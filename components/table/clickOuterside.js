@@ -32,10 +32,13 @@ export default class ClickOutside extends Component {
   }
 
   handle = e => {
+    const { onClickOutside } = this.props
     if (e.type === 'touchend') this.isTouch = true
     if (e.type === 'click' && this.isTouch) return
-    const { onClickOutside } = this.props
     const el = this.container
-    if (el && !el.contains(e.target)) onClickOutside(e)
+    if (el && !el.contains(e.target)) {
+      onClickOutside(e)
+      e.stopPropagation()
+    }
   }
 }

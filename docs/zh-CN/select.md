@@ -29,6 +29,7 @@ render () {
 		<div>
 			<Select
 				mode='single'
+				clearable={false}
 				style={{width: '200px'}}
 				list={this.state.singleList}
 				value={this.state.value}
@@ -120,7 +121,7 @@ render () {
 				{
 	        this.state.singleList.map(item => {
 	          return (
-	            <Select.Option key={item.id} name={item.name} id={item.id}>
+	            <Select.Option key={item.id} name={item.name} id={item.id} disabled={item.disabled}>
 	              <span style={{float: 'left'}}>{item.name}</span>
 	              <span style={{float: 'right', color: '#999', fontSize: 14}}>{item.id}</span>
 	            </Select.Option>
@@ -149,13 +150,15 @@ render () {
 				mode='single'
 				origin={{
 					type: 'GET',
-					url: 'http://10.236.91.218:7001/test/key',
-					func: (body) => {
-						console.log('----', body)
-						return JSON.parse(body).data
+					headers: {token: 'tokenXXXXXXX'},
+					mode: 'cors',
+					credentials: 'same-origin',
+					url: 'https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/select/options',
+					func: (res) => {
+						console.log('----', res)
+						return res.data
 					}
 				}}
-				list={[]}
 				placeholder='请选择种类'
 				style={{width: '200px'}}
 				onChange={(item) => {
@@ -195,20 +198,38 @@ constructor () {
 
 render () {
 	return (
-		<div>
-			<Select
-				mode='multiple'
-				style={{width: '300px'}}
-				list={this.state.multipleList}
-				value={['4', '5']}
-				searchable={true}
-				placeholder='请选择...'
-				noFoundTip='无匹配数据'
-				onChange={(item) => {
-						console.log('多选结果', item)
-				}}
-			/>
-		</div>
+		<React.Fragment>
+			<div>
+				<Select
+					mode='multiple'
+					style={{width: '300px'}}
+					list={this.state.multipleList}
+					value={['4', '5']}
+					searchable={true}
+					placeholder='请选择...'
+					noFoundTip='无匹配数据'
+					onChange={(item) => {
+							console.log('多选结果', item)
+					}}
+				/>
+			</div>
+			<div>
+				<Select
+					mode='multiple'
+					style={{width: '150px'}}
+					optionWidth={400}
+					selectedShowMode="number"
+					list={this.state.multipleList}
+					value={['4', '5']}
+					searchable={true}
+					placeholder='请选择...'
+					noFoundTip='无匹配数据'
+					onChange={(item) => {
+							console.log('多选结果', item)
+					}}
+				/>
+			</div>
+		</React.Fragment>
 	)
 }
 ```
@@ -229,20 +250,18 @@ render () {
 				mode='multiple'
 				autoload={true}
 				style={{width: '300px'}}
+				value="1"
 				origin={{
-					type: 'post',
+					type: 'get',
 					key: 'text',
-					data: {
-						time: new Date()
-					},
-					url: 'http://10.236.91.218:7001/test/key',
+					keyword: 'xiaomi',
+					url: 'https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/select/options',
 					func: (res) => {
 						console.log('----', res)
 						return res.data
 					},
 					error: err => console.log('error:', err)
 				}}
-				list={[]}
 				onChange={(item) => {
 					console.log('异步多选结果', item)
 				}}
@@ -263,6 +282,7 @@ render () {
 | origin | 异步选择配置，详见下表 | object | - | - |
 | value | 默认值被选中项，值与被选中的id相同，多个以,分割或者传递数组| string,number,array | - | - |
 | searchable | 是否可以筛选 | bool | true, false | false |
+| clearable | 是否可以清空 | bool | true, false | true |
 | autoload | origin从远端获取数据，初始时是否自动加载 | bool | true, false | false |
 | disabled | 禁用该下拉框 | bool | true, false | false |
 | placeholder | 提示信息 | string | - | 请选择 |
@@ -277,8 +297,10 @@ render () {
 | type | 请求方法 | string | get,post | get |
 | data | post请求时的参数 | object | - | - |
 | key | 搜索关键字参数key | string | - | keyword |
+| keyword | autoload为true时的默认搜索关键词 | string | - | - |
 | func | 成功时的回调 | func | - | - |
 | error | 失败时的回调 | func | - | - |
+| - | 其他的一些fetch设置，如headers,credentials等 | object | - | - |
 
 
 ### Select.Option Attributes

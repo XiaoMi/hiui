@@ -12,6 +12,7 @@
 constructor () {
   super()
   this.state = {
+    checked: 2,
     play : [{
       name: '手机',
       id: 101
@@ -19,30 +20,30 @@ constructor () {
       name: '电视',
       id: 102
     }],
-    people: [{
-      name: '张某某',
+    product: [{
+      name: '红米手机',
       id: 1,
       checked: true
     }, {
-      name: '李某某',
+      name: '小米 MIX3',
       id: 2
     }, {
-      name: '王某某',
+      name: '扫地机器人',
       id: 3,
       checked: true
     }, {
-      name: '赵某某',
+      name: '新风机',
       id: 4
     }],
-    address: [{
+    type: [{
       id: 1001,
-      name: '中国'
+      name: '电子产品'
     }, {
       id: 1002,
-      name: '俄罗斯'
+      name: '办公用品'
     }, {
       id: 1003,
-      name: '美国'
+      name: '家居用品'
     }]
   }
 }
@@ -52,11 +53,12 @@ render() {
         <p>简单数据 (通过数据索引设置默认选中)</p>
         <Radio 
           list={['北京', '上海', '重庆']} 
-          checked={2} 
+          checked={this.state.checked} 
           onChange={(data)=>{
             console.log(data)
           }}
         />
+        <Button type='default' onClick={() => {this.setState({checked: 0})}}>点击</Button>
         <p>复杂数据结构 (通过数据索引设置默认选中)</p>
         <Radio 
           list={this.state.play} 
@@ -68,7 +70,7 @@ render() {
         />
         <p>复杂数据结构 (通过列表项设置选中)</p>
         <Radio 
-          list={this.state.people} 
+          list={this.state.product} 
           onChange={(data)=>{
             console.log(data)
           }}
@@ -76,12 +78,18 @@ render() {
         />
         <p>复杂数据结构 (通过函数确定选中项)</p>
         <Radio 
-          list={this.state.address} 
+          list={this.state.type} 
           onChange={(data)=>{
             console.log(data)
           }}
           checked={(item) => item.id === 1002}
         />
+        <p>垂直布局</p>
+          <Radio 
+            list={['春', '夏', '秋']} 
+            layout='vertical'
+          />
+          <br/>
     </div>
   )
 }
@@ -104,30 +112,15 @@ constructor () {
 render() {
   return (
     <div>
-        <p>垂直布局</p>
         <Radio 
-          list={['春', '夏', '秋']} 
-          layout='vertical'
-        />
-        <br/>
-        <p>按钮式</p>
-        <Radio 
-          list={['北京', '上海', '重庆']} 
+          list={['手机类', '电脑类', '生活类', '其它']} 
           mode='button'
           checked={0}
           disabled={this.state.disableNum}
           onChange={(data) => console.log(data)}
         />
         <br/>
-        <p>按钮式垂直布局</p>
-        <Radio 
-          list={['北京', '上海', '重庆']} 
-          mode='button'
-          checked={0}
-          disabled={0}
-          onChange={(data) => console.log(data)}
-          layout='vertical'
-        />
+        
     </div>
   )
 }

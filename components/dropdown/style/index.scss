@@ -26,6 +26,20 @@
 
   @include component-reset();
 
+  &__popper {
+    &.hi-popper__content--top-start {
+      .hi-dropdown__menu {
+        box-shadow: 8px 0 12px rgba(0, 0, 0, 0.175);
+      }
+    }
+
+    &.hi-popper__content--bottom-start {
+      .hi-dropdown__menu {
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.175);
+      }
+    }
+  }
+
   &__title {
     display: flex;
     justify-content: space-between;
@@ -40,14 +54,11 @@
   }
 
   &__menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
     box-sizing: border-box;
     width: 100%;
     min-width: 140px;
     margin-top: 2px !important;
+    margin-bottom: 2px;
     padding: $spacer-1 0 !important;
     border: 1px solid $gray;
     list-style: none;
@@ -55,11 +66,6 @@
     text-align: left;
     background-color: $white;
     background-clip: padding-box;
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.175);
-
-    &--hide {
-      display: none;
-    }
   }
 
   &__item {
@@ -111,7 +117,7 @@
         }
       }
 
-      & + & {
+      & + .hi-btn {
         margin-left: -1px;
         padding: 0 8px;
         border-top-left-radius: 0;

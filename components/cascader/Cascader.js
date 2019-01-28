@@ -47,6 +47,7 @@ class Cascader extends Component {
     const cascaderLabel = this.getCascaderLabel(cascaderValue)
 
     this.debouncedKeywordChange = debounce(this.onKeywordChange.bind(this), 300)
+    this.clickOutsideHandel = this.clickOutside.bind(this)
     this.state = {
       filterOptions: false,
       cacheValue,
@@ -77,15 +78,15 @@ class Cascader extends Component {
   }
 
   componentDidMount () {
-    window.addEventListener('click', this.clickOutside.bind(this))
+    window.addEventListener('click', this.clickOutsideHandel)
   }
 
   componentWillUnmount () {
-    window.removeEventListener('click', this.clickOutside.bind(this))
+    window.removeEventListener('click', this.clickOutsideHandel)
   }
 
   clickOutside (e) {
-    if (ReactDOM.findDOMNode(this.inputContainer).contains(e.target)) {
+    if (ReactDOM.findDOMNode(this.inputContainer) && ReactDOM.findDOMNode(this.inputContainer).contains(e.target)) {
       return
     }
     this.hidePopper()
@@ -157,11 +158,10 @@ class Cascader extends Component {
       cascaderValue: value
     }, () => {
       if (changeOnSelect || !hasChildren) {
-        onChange(value)
         this.setState({
           cacheValue: value,
           cascaderLabel: this.getCascaderLabel(value)
-        })
+        }, () => onChange(value))
       }
       if (hasChildren) {
         onActiveItemChange(value)
@@ -347,7 +347,15 @@ class Cascader extends Component {
             }
           </span>
         </div>
-        <Popper show={popperShow} attachEle={this.inputContainer} width={'auto'} className='hi-cascader__popper'>
+        <Popper
+          show={popperShow}
+          attachEle={this.inputContainer}
+          zIndex={1050}
+          topGap={5}
+          width={'auto'}
+          className='hi-cascader__popper'
+          placement='top-bottom-start'
+        >
           <Menu
             value={cascaderValue}
             options={filterOptions || options}

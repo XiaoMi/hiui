@@ -9,26 +9,74 @@ Upload 上传
 点击上传
 
 ```js
+constructor(props) {
+	super(props)
+	this.state={param:{id:'uid',channel:'youpin'}}
+}
 render () {
+	const param = this.state.param
 	return (
-		<Upload
-			uploadType="normal"
-			uploadAction= "http://10.236.94.247:3005/jvid"
-			headers={{"Content-type":"application/x-www-form-urlencoded",name: 'mi'}}
-			buttonText="上传文件"
-			param={{id:'uid',channel:'youpin'}}
-			name={'files[]'}
-			onUploadSuccess = {(res) => {console.log(res,'success callback')}}
-			onDeleteSuccess = {(res) => {console.log(res,'normal delete callback')}}
-			deleteParam={{
-				deleteAction: 'http://10.236.94.247:3005/del',
-				type: 'POST',
-				hearders:{"Content-type":"application/x-www-form-urlencoded",name: 'mi'},
-				data: {type:'del',id:3},
-				onDeleteSuccess: function(res) {console.log(res,'delete callback')}
-			}}
-			disabled={false}
-		/>
+		<div>
+			<Upload
+				type="normal"
+				uploadAction= "http://10.236.91.199:3005/upload"
+				headers={{name: 'mi'}}
+				buttonText="上传文件"
+				param={param}
+				name={'files[]'}
+				onChange = {(file, fileList, response) => {
+					console.log('upload callback', file, fileList, response)
+					if(response&&response.status !== 200) return false
+				}}
+				disabled={false}
+			/>
+		</div>
+	)
+}
+```
+:::
+
+
+### 带默认列表的上传
+
+:::demo
+
+点击上传
+
+```js
+constructor(props) {
+	super(props)
+	this.state={param:{id:'uid',channel:'youpin'}}
+}
+render () {
+	const param = this.state.param
+	return (
+		<div>
+			<Upload
+				type="normal"
+				uploadAction= "http://10.236.91.199:3005/upload"
+				buttonText="上传文件"
+				param={param}
+				name={'files[]'}
+				onChange = {(file, fileList, response) => {
+					console.log('upload callback', file, fileList, response)
+				}}
+				defaultFileList={[
+					{
+						name: 'a.png',
+						fileType: 'img', // 文件类型，可取值img, zip, word, pdf, ppt, excel, other
+						uploadState: 'success', // 上传状态，可取值success, error
+						url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
+					},
+					{
+						name: 'b.png',
+						fileType: 'img',
+						uploadState: 'error',
+						url: 'https://i1.mifile.cn/f/i/2018/mix3/specs_black.png'
+					}
+				]}
+			/>
+		</div>
 	)
 }
 ```
@@ -45,8 +93,8 @@ render () {
 render () {
 	return (
 		<Upload
-			uploadType="normal"
-			uploadAction= "http://10.236.94.247:3005/jvid"
+			type="normal"
+			uploadAction= "http://10.236.91.199:3005/upload"
 			buttonText="上传文件"
 			param={{id:'uid',channel:'youpin'}}
 			disabled={true}
@@ -67,13 +115,14 @@ render () {
 render () {
 	return (
 		<Upload
-			uploadType="drag"
-			uploadAction= "http://10.236.94.247:3005/jvid"
-			headers={{"Content-type":"application/x-www-form-urlencoded",name: 'mi'}}
-			onDeleteSuccess = {(res) => {console.log(res,'normal delete callback')}}
+			type="drag"
+			uploadAction= "http://10.236.91.199:3005/upload"
+			headers={{name: 'mi'}}
+			onChange = {(file, fileList, response) => {
+				console.log('upload callback', file, fileList, response)
+			}}
 			param={{id:'uid',channel:'youpin'}}
 			name={'files[]'}
-			onUploadSuccess = {(res) => {console.log(res,'success callback')}}
 			multiple={true}
 		/>
 	)
@@ -92,21 +141,30 @@ render () {
 render () {
 	return (
 		<Upload
-			uploadType="photo"
-			uploadAction= "http://10.236.94.247:3005/jvid"
-			headers={{"Content-type":"application/x-www-form-urlencoded",name: 'mi'}}
-			onUploadSuccess = {(res) => {console.log(res,'success callback')}}
-			onDeleteSuccess = {(res) => {console.log(res,'normal delete callback')}}
+			type="photo"
+			uploadAction= "http://10.236.91.199:3005/upload"
+			onChange = {(file, fileList, response) => {
+				file.id = 'file唯一标识'
+				console.log('upload callback', file, fileList, response)
+			}}
+			onRemove = {(file, fileList, index) => {
+				console.log('remove callback', file, fileList, index)
+				return new Promise((resolve, reject)=>resolve(true))
+			}}
 			param={{id:'uid',channel:'youpin'}}
 			name={'files[]'}
 			defaultFileList={[
 				{
 					name: 'a.png',
-					url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528693612926&di=d93c60813466295d3a5189dafc960093&imgtype=0&src=http%3A%2F%2Fpic1.5442.com%2F2015%2F0604%2F10%2F09.jpg'
+					fileType: 'img',
+					uploadState: 'success',
+					url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
 				},
 				{
 					name: 'b.png',
-					url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528693593598&di=d26eeb830f40abb2664c04d0392f8ee1&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1108%2F19%2Fc1%2F8697694_8697694_1313719805021.jpg'
+					fileType: 'img',
+					uploadState: 'success',
+					url: 'https://i1.mifile.cn/f/i/2018/mix3/specs_black.png'
 				}
 			]}
 		/>
@@ -126,18 +184,14 @@ render () {
 render () {
 	return (
 		<Upload
-			uploadType="avatar"
-			uploadAction= "http://10.236.94.247:3005/jvid"
-			headers={{"Content-type":"application/x-www-form-urlencoded",name: 'mi'}}
-			onUploadSuccess = {(res) => {console.log(res,'success callback')}}
-			onDeleteSuccess = {(res) => {console.log(res,'normal delete callback')}}
+			type="avatar"
+			width={180}
+			height={180}
+			uploadAction= "http://10.236.91.199:3005/upload"
+			headers={{name: 'mi'}}
 			param={{id:'uid',channel:'youpin'}}
-			deleteParam={{
-				deleteAction: 'http://10.236.94.247:3005/del',
-				type: 'POST',
-				hearders:{"Content-type":"application/x-www-form-urlencoded",name: 'mi'},
-				data: {type:'del',id:3},
-				onDeleteSuccess: function(res) {console.log(res,'delete callback')}
+			onChange = {(file, fileList, response) => {
+				console.log('upload callback', file, fileList, response)
 			}}
 			name='uploadAvatar'
 		/>
@@ -157,17 +211,11 @@ render () {
 render () {
 	return (
 		<Upload
-			uploadType="pictureCard"
-			uploadAction= "http://10.236.94.247:3005/jvid"
-			headers={{"Content-type":"application/x-www-form-urlencoded",name: 'mi'}}
-			onUploadSuccess = {(res) => {console.log(res,'success callback')}}
-			onDeleteSuccess = {(res) => {console.log(res,'normal delete callback')}}
-			deleteParam={{
-				deleteAction: 'http://10.236.94.247:3005/del',
-				type: 'GET',
-				hearders:{"Content-type":"application/x-www-form-urlencoded",name: 'mi'},
-				data: {type:'del',id:3},
-				onDeleteSuccess: function(res) {console.log(res,'delete callback')}
+			type="pictureCard"
+			uploadAction= "http://10.236.91.199:3005/upload"
+			headers={{name: 'mi'}}
+			onChange = {(file, fileList, response) => {
+				console.log('upload callback', file, fileList, response)
 			}}
 			param={{id:'uid',channel:'youpin'}}
 			name="pictureCard"
@@ -178,23 +226,80 @@ render () {
 :::
 
 
+### 自定义上传
+
+:::demo
+
+自定义上传
+
+```js
+constructor(props) {
+	super(props)
+	this.state={
+		fileList: [
+			{
+				name: 'a.png',
+				fileType: 'img', // 文件类型，可取值img, zip, word, pdf, ppt, excel, other
+				uploadState: 'success' // 上传状态，可取值success, error
+			},
+			{
+				name: 'b.png',
+				fileType: 'img',
+				uploadState: 'error'
+			}
+		]
+	}
+}
+render () {
+	const {
+		fileList
+	} = this.state
+
+	return (
+		<div>
+			<Upload
+				type="normal"
+				beforeUpload={(files, fileList) => {
+					console.log('---------beforeUpload', files, fileList)
+					return true
+				}}
+				customUpload={files => {
+					fileList.push({
+						name: files[0].name,
+						fileType: 'img',
+						uploadState: 'success'
+					})
+					this.setState({
+						fileList
+					})
+				}}
+				buttonText="上传文件"
+				defaultFileList={fileList}
+			/>
+		</div>
+	)
+}
+```
+:::
+
 ### Upload Attributes
 
 |参数|说明|类型|是否必填|默认值|
 |-----|---|----|----|----|
-|accept|接收上传的文件类型|string|否|无|
-|limit|上传大小限制|double|否|无|
-|buttonText|按钮文案|string|否|'上传'|
-|buttonIcon|按钮文案前面的图标|string|否|'upload'|
+|type|上传类型，可取值：normal，drag，pictureCard，avatar，和photo|string|是|normal|
+|width, height|仅对avatar生效，头像上传的裁切框尺寸，最大450x450|number|否|200x200|
+|accept|接收上传的文件类型|string|否|''|
+|buttonText|按钮文案|string|否|上传|
+|buttonIcon|按钮文案前面的图标|string|否|upload|
 |uploadAction|必选，上传的地址|string|是|无|
-|data|除了上传文件外的其他需参数|object|否|无|
-|name|发到后台文件参数名|string|否|'file'|
+|param|除了上传文件外的其他需参数|object|否|无|
+|name|发到后台文件参数名|string|否|file|
 |disabled|是否禁用|boolean|否|false|
-|headers|设置上传的请求头部|object|否|无|
+|headers|设置上传的请求头部|object|否|{'Content-type': 'multipart/form-data'}|
 |showUploadList|是否展示uploadList|boolean|否|true|
-|uploadType|上传类型，支持三种样式 normal，drag，pictureCard，avatar，和photo|string|是|'normal'|
 |multiple|是否支持多选文件|boolean|否|false|
-|onUploadSuccess|上传成功后的回调|function|否|无|
-|onDeleteSuccess|删除上传的文件，不删除服务器值删除前端展示，如果同时还写了deleteParam则使用deleteParam删除|function|否|无|
-|deleteParam|删除照片的一些参数|object(deleteAction删除ajax地址，type删除ajax的类型，data删除的参数，headers删除ajax请求头设置，onDeleteSuccess删除成功回调)|否|无|
-|defaultFileList|默认的图片列表（现在只支持照片墙上传）|array[object],name,url|否|无|
+|defaultFileList|带默认列表的上传|array[object] (object参见上面demo)|否|无|
+|beforeUpload|上传文件前的钩子,返回true继续上传，其他终止上传|function(files, fileList)|否|一个返回true的空函数|
+|customUpload|自定义上传，此时不会再触发onChange，所有上传逻辑由用户完全控制|function(files)|否|-|
+|onChange|上传回调。当function返回false或者返回promise（如果promise resolve(false)）则已上传的文件列表不会展示该文件|function(file, fileList, response)|否|无|
+|onRemove|删除上传的文件,为false时不可删除。当function返回true或者返回promise（如果promise resolve(true)）则会在前端删除文件（可参考demo：照片墙上传）|function(file, fileList, index)，boolean|否|一个返回true的空函数，即前端删除|

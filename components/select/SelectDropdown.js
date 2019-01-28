@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import Checkbox from '../checkbox'
+import Loading from '../loading'
 
 export default class SelectDropdown extends Component {
   onClickOption (e, item, index) {
@@ -56,48 +57,59 @@ export default class SelectDropdown extends Component {
       dropdownItems,
       focusedIndex,
       matchFilter,
-      noFoundTip
+      noFoundTip,
+      loading,
+      optionWidth
     } = this.props
     let matched = 0
-
+    const style = optionWidth && {
+      width: optionWidth
+    }
     return (
-      <div className='hi-select__dropdown' onClick={this.props.onClick}>
-
-        <ul className='hi-select__dropdown--items'>
-          {
-            dropdownItems.map((item, index) => {
-              if (matchFilter(item)) {
-                matched++
-                // const isSelected = selectedItems[item.id]
-                const isSelected = this.itemSelected(item)
-                const isDisabled = item.disabled
-
-                return (
-                  <li
-                    className={classNames('hi-select__dropdown--item', {'is-active': isSelected, 'is-disabled': isDisabled, 'hi-select__dropdown--item-default': !item.children})}
-                    onClick={e => this.onClickOption(e, item, index)}
-                    key={index}
-                    data-focused={focusedIndex === index}
-                    onMouseEnter={() => this.onMouseEnter(item, index)}
-                  >
-                    {
-                      this.renderOption(mode, isSelected, item)
-                    }
-                  </li>
-                )
-              }
-            })
-          }
-          {
-            matched === 0 &&
-            <li
-              className='hi-select__dropdown--item is-disabled'
-              onClick={e => e.stopPropagation()}
-            >
-              { noFoundTip }
-            </li>
-          }
-        </ul>
+      <div className='hi-select__dropdown' onClick={this.props.onClick} style={style}>
+        {
+          loading &&
+          <div className='hi-select__dropdown--loading'>
+            <Loading size='small' />
+          </div>
+        }
+        {
+          !loading &&
+          <ul className='hi-select__dropdown--items'>
+            {
+              dropdownItems.map((item, index) => {
+                if (matchFilter(item)) {
+                  matched++
+                  // const isSelected = selectedItems[item.id]
+                  const isSelected = this.itemSelected(item)
+                  const isDisabled = item.disabled
+                  return (
+                    <li
+                      className={classNames('hi-select__dropdown--item', {'is-active': isSelected, 'is-disabled': isDisabled, 'hi-select__dropdown--item-default': !item.children})}
+                      onClick={e => this.onClickOption(e, item, index)}
+                      key={index}
+                      data-focused={focusedIndex === index}
+                      onMouseEnter={() => this.onMouseEnter(item, index)}
+                    >
+                      {
+                        this.renderOption(mode, isSelected, item)
+                      }
+                    </li>
+                  )
+                }
+              })
+            }
+            {
+              matched === 0 &&
+              <li
+                className='hi-select__dropdown--item is-disabled'
+                onClick={e => e.stopPropagation()}
+              >
+                { noFoundTip }
+              </li>
+            }
+          </ul>
+        }
       </div>
     )
   }

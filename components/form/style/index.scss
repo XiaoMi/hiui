@@ -1,81 +1,107 @@
-.hi-form-item {
-  margin-bottom: 20px;
+@import '@hi-ui/core-css/index.scss';
 
-  &::before {
-    display: table;
-    content: '';
-  }
+.hi-form {
+  position: relative;
 
-  &::after {
-    display: table;
-    content: '';
-    clear: both;
-  }
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
 
-  &.is-required {
-    .hi-form-item_label::before {
-      content: '*';
-      color: #ff4949;
-      margin-right: 4px;
+    & + fieldset {
+      margin-top: 16px;
     }
   }
 
-  .hi-form-item_label {
-    text-align: right;
-    vertical-align: middle;
-    float: left;
-    font-size: 14px;
-    line-height: 1;
-    color: #606266;
-    padding: 9px 12px 9px 0;
+  legend {
+    margin: 0 0 16px;
+    color: $gray-darker;
+  }
+
+  &__title {
     box-sizing: border-box;
+    margin-top: 0;
+    margin-bottom: 24px;
+    font-size: 16px;
+    font-weight: 400;
   }
+}
 
-  .hi-form-item__content {
-    position: relative;
-    font-size: 14px;
+.hi-form-item {
+  font-size: $font-size-normal;
+  margin-right: $spacer-2;
+  margin-top: 4px;
+  margin-bottom: 4px;
 
-    &::before {
-      display: table;
-      content: '';
+  & + & {
+    // margin-top: $spacer-2;
+
+    .hi-form--inline & {
+      // margin-top: 0;
     }
-
-    &::after {
-      display: table;
-      content: '';
-    }
   }
-}
 
-.hi-form-label-top .hi-form-item {
-  .hi-form-item_label {
-    float: none;
+  .hi-form--inline & {
     display: inline-block;
-    text-align: left;
-    padding: 0 0 8px;
-  }
-}
-
-.hi-form-label-left .hi-form-item {
-  .hi-form-item_label {
-    text-align: left;
-  }
-}
-
-.hi-form-inline {
-  .hi-form-item {
-    display: inline-block;
-    margin-right: 10px;
     vertical-align: top;
   }
-}
 
-.hi-form-item__error {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  color: #ff4949;
-  font-size: 12px;
-  line-height: 1;
-  padding-top: 4px;
+  &__label {
+    float: left;
+    box-sizing: border-box;
+    padding-right: $spacer-3;
+    line-height: 32px;
+    vertical-align: top;
+    color: $gray-darker;
+
+    .hi-form--label--left & {
+      text-align: left;
+    }
+
+    .hi-form--label--right & {
+      text-align: right;
+    }
+
+    .hi-form--label--top & {
+      float: none;
+      padding-right: 0;
+      text-align: left;
+    }
+  }
+
+  &__content {
+    position: relative;
+    vertical-align: top;
+  }
+
+  &__error {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin-left: $spacer-2;
+    font-size: $font-size-small;
+    line-height: 32px;
+    white-space: nowrap;
+    color: #ff4949;
+
+    .hi-form--inline & {
+      top: 36px;
+      left: 0;
+      line-height: 18px;
+    }
+  }
+
+  &--required {
+    .hi-form-item__label::before {
+      margin-right: $spacer-1;
+      content: '*';
+      color: #ff4949;
+    }
+  }
+
+  &--fixed {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }

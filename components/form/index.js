@@ -5,9 +5,7 @@ import './style/index'
 const PropTypes = require('prop-types')
 class Form extends Component {
   static defaultProps = {
-    prefixCls: 'hi',
     size: 'small',
-    name: 'form',
     labelPosition: 'right'
   }
 
@@ -25,19 +23,17 @@ class Form extends Component {
     }
   }
 
-  getClass () {
-    const {prefixCls, name, labelPosition, inline} = this.props
+  getClassNames () {
+    const {labelPosition, inline} = this.props
 
     const obj = {}
 
-    obj[prefixCls + '-' + name] = true
-
     if (labelPosition) {
-      obj[`${prefixCls}-${name}-label-${labelPosition}`] = true
+      obj[`hi-form--label--${labelPosition}`] = true
     }
 
     if (inline) {
-      obj[`${prefixCls}-${name}-inline`] = true
+      obj[`hi-form--inline`] = true
     }
 
     return obj
@@ -90,11 +86,17 @@ class Form extends Component {
     field.validate('', cb)
   }
 
+  resetValidates () {
+    this.state.fields.forEach(field => {
+      field.resetValidate()
+    })
+  }
+
   render () {
     const {children} = this.props
 
     return (
-      <form className={classNames(this.getClass())}>
+      <form className={classNames('hi-form', this.getClassNames())}>
         {children}
       </form>
     )

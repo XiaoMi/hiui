@@ -177,9 +177,9 @@ render() {
   const rowSelection = {
     selectedRowKeys,
     onChange: (selectedRowKeys)=>{
-      console.log('onchange',selectedRowKeys)
       this.setState({selectedRowKeys})
-    }
+    },
+    dataName:'age' 
   }
   return <Table columns={this.columns} data={data} rowSelection={rowSelection} />
 }
@@ -345,7 +345,6 @@ const renderContent = (value, row, index) => {
     title: 'Name',
     dataIndex: 'name',
     render: (text, row, index) => {
-      console.log(index, '---index---')
       if (index < 4) {
         return <a href='javascript:;'>{text}</a>
       }
@@ -608,7 +607,7 @@ render() {
 ### pagination
 Here are just a few properties. For details, see the detailed configuration of pagination components.
 
-### 分页
+### Pagination
 :::demo 
 
 
@@ -699,7 +698,89 @@ render() {
 ```
 :::
 
-### Table
+### server
+:::demo
+```js
+constructor (props) {
+    super(props)
+    this.state = {
+      from: ''
+    }
+
+    window.selectTable = this
+  }
+
+  render () {
+    const {
+      from
+    } = this.state
+
+    const rowSelection = {
+      selectedRowKeys: [],
+      onChange: (selectedRowKeys, rows) => {
+        this.setState({selectedRowKeys})
+      },
+      dataName: 'id'
+    }
+
+    return (
+      <div>
+        发货工厂
+       
+        <Form inline>
+          <FormItem>
+           <Input onChange={(e) => this.setState({from: e.target.value})} />
+          </FormItem>
+          <FormItem>
+          <Button onClick={(e) => {this.refs.serverTable.fetch()}}>查询</Button>
+          </FormItem>
+        </Form>
+        <Table
+          name='server'
+          auto={false}
+          scroll={{x: 1500}}
+          ref={'serverTable'}
+          rowSelection={rowSelection}
+          advance={{
+            sum: true,
+            avg: true
+          }}
+          origin={{
+            url: 'https://www.easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/table',
+            pageSize: '3',
+            currentPageName: 'pageNum',
+            header: '',
+            data: {
+              from,
+              startTime: '',
+              endTime: ''
+            },
+            success: (res) => {
+              let {data: {data, columns,page: {pageSize, totalNum, pageNum}}} = res
+              return {
+                data,
+                columns,
+                page: {
+                  pageSize,
+                  total: totalNum,
+                  current: pageNum
+                }
+              }
+            },
+            error: () => {
+
+            }
+          }}
+        />
+      </div>
+    )
+  }
+```
+
+:::
+
+
+### props
 
 | parameter       | description   |  type  | default  |
 | --------   | -----  | ----  |  ----  |
@@ -707,6 +788,8 @@ render() {
 | data | table datasource  | array | - |
 | emptyText | the text display when data is empty  | string | No Data |
 | scroll | configuration of column scroll  | number, true  | - |
+| striped | striped style | Bollean | false | 
+| advance | advance function | Object | null | null |
 
 ### rowSelection
 

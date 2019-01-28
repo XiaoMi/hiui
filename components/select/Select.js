@@ -4,12 +4,15 @@ import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import shallowEqual from 'shallowequal'
 import debounce from 'lodash/debounce'
+import cloneDeep from 'lodash/cloneDeep'
 import Popper from '../popper'
 import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
 import Provider from '../context'
 
 class Select extends Component {
+  autoloadFlag = true // 第一次自动加载数据标识
+
   static propTypes = {
     mode: PropTypes.oneOf(['single', 'multiple']),
     list: PropTypes.array,
@@ -22,6 +25,7 @@ class Select extends Component {
     ]),
     autoload: PropTypes.bool,
     searchable: PropTypes.bool,
+    clearable: PropTypes.bool,
     disabled: PropTypes.bool,
     placeholder: PropTypes.string,
     noFoundTip: PropTypes.string,
@@ -33,6 +37,7 @@ class Select extends Component {
     list: [],
     mode: 'single',
     disabled: false,
+    clearable: true,
     value: '',
     autoload: false,
     placeholder: '请选择',
@@ -45,10 +50,11 @@ class Select extends Component {
     let {
       list
     } = this.props
-    const dropdownItems = list
-    const selectedItems = this.resetSelectedItems(this.props)
+    const dropdownItems = cloneDeep(list)
+    const selectedItems = this.resetSelectedItems(this.props.value, dropdownItems)
     const searchable = this.getSearchable()
     this.debouncedFilterItems = debounce(this.onFilterItems.bind(this), 300)
+    this.clickOutsideHandel = this.clickOutside.bind(this)
     // const focusedIndex = this.resetFocusedIndex(false)
 
     this.state = {
@@ -79,16 +85,16 @@ class Select extends Component {
   }
 
   componentDidMount () {
-    window.addEventListener('click', this.clickOutside.bind(this))
+    window.addEventListener('click', this.clickOutsideHandel)
     this.resetFocusedIndex()
   }
 
   componentWillUnmount () {
-    window.removeEventListener('click', this.clickOutside.bind(this))
+    window.removeEventListener('click', this.clickOutsideHandel)
   }
 
   clickOutside (e) {
-    if (ReactDOM.findDOMNode(this.selectInput).contains(e.target)) {
+    if (ReactDOM.findDOMNode(this.selectInput) && ReactDOM.findDOMNode(this.selectInput).contains(e.target)) {
       return
     }
     this.hideDropdown()
@@ -96,7 +102,7 @@ class Select extends Component {
 
   componentWillReceiveProps (props) {
     if (!shallowEqual(props.value, this.props.value)) {
-      const selectedItems = this.resetSelectedItems(props)
+      const selectedItems = this.resetSelectedItems(props.value, props.list)
 
       this.setState({
         selectedItems
@@ -105,8 +111,11 @@ class Select extends Component {
       })
     }
     if (!shallowEqual(props.list, this.props.list)) {
+      const selectedItems = this.resetSelectedItems(props.value, props.list, true)
+
       this.setState({
-        dropdownItems: props.list
+        selectedItems,
+        dropdownItems: cloneDeep(props.list)
       })
     }
   }
@@ -142,16 +151,17 @@ class Select extends Component {
     return origin && !!origin.url
   }
 
-  resetSelectedItems (props) {
-    const {
-      list
-    } = props
-    const values = this.parseValue(props.value)
-    let selectedItems = []
+  resetSelectedItems (value, dropdownItems, listChanged = false) {
+    const values = this.parseValue(value)
+    const selectedItems = listChanged && this.props.mode === 'multiple' ? this.state.selectedItems : [] // 如果是多选，dropdownItems有改动，需要保留之前的选中值
 
-    list && list.map(item => {
+    dropdownItems && dropdownItems.map(item => {
       if (values.indexOf(item.id) !== -1) {
-        selectedItems.push(item)
+        let itemIndex = selectedItems.findIndex((sItem) => { // 多选时检查是否已选中
+          return sItem.id === item.id
+        })
+
+        itemIndex === -1 && selectedItems.push(item)
       }
     })
     return selectedItems
@@ -292,12 +302,14 @@ class Select extends Component {
       error,
       data = {},
       type = 'GET',
-      key = 'keyword'
+      key = 'keyword',
+      ...options
     } = this.props.origin
+    keyword = !keyword && this.autoloadFlag && this.props.autoload ? this.props.origin.keyword : keyword
+    this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
     url = url.indexOf('?') === -1 ? `${url}?${[key]}=${keyword}` : `${url}&${[key]}=${keyword}`
-    const options = {}
 
-    if (type.toUpperCase === 'POST') {
+    if (type.toUpperCase() === 'POST') {
       options.body = JSON.stringify(data)
     }
     this.setState({
@@ -309,33 +321,37 @@ class Select extends Component {
       method: type,
       ...options
     })
-      .then(response => response.json())
-      .then(res => {
-        if (func) {
-          dropdownItems = func(res)
-        } else {
-          dropdownItems = res.data
-        }
-        Array.isArray(dropdownItems) && this.setState({
-          dropdownItems
-        })
+    .then(response => response.json())
+    .then(res => {
+      if (func) {
+        dropdownItems = func(res)
+      } else {
+        dropdownItems = res.data
+      }
+      if (Array.isArray(dropdownItems)) {
+        const selectedItems = this.resetSelectedItems(this.props.value, dropdownItems, true)
+
         this.setState({
-          fetching: false
+          dropdownItems,
+          selectedItems
         })
-      }, err => {
-        error && error(err)
-        this.setState({
-          fetching: false
-        })
+      }
+      this.setState({
+        fetching: false
       })
+    }, err => {
+      error && error(err)
+      this.setState({
+        fetching: false
+      })
+    })
   }
 
   onFilterItems (keyword) {
     this.setState({
-      keyword,
-      focusedIndex: 0
-    })
-
+      keyword
+    }, ()=>this.resetFocusedIndex())
+    
     if (this.props.origin) {
       // this.setState({
       //   dropdownItems: []
@@ -421,9 +437,12 @@ class Select extends Component {
       mode,
       className,
       disabled,
+      clearable,
       style,
       children,
-      noFoundTip
+      noFoundTip,
+      optionWidth,
+      selectedShowMode
     } = this.props
     const placeholder = this.localeDatasProps('placeholder')
     const {
@@ -431,7 +450,8 @@ class Select extends Component {
       dropdownItems,
       searchable,
       dropdownShow,
-      focusedIndex
+      focusedIndex,
+      fetching
     } = this.state
     const extraClass = {
       'is-multiple': mode === 'multiple',
@@ -446,10 +466,13 @@ class Select extends Component {
             mode={mode}
             disabled={disabled}
             searchable={searchable}
+            clearable={clearable}
             dropdownShow={dropdownShow}
             placeholder={placeholder}
             selectedItems={selectedItems}
             dropdownItems={dropdownItems}
+            selectedShowMode={selectedShowMode}
+            container={this.selectInputContainer}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
             onClick={this.handleInputClick.bind(this)}
             onDelete={this.deleteItem.bind(this)}
@@ -459,13 +482,22 @@ class Select extends Component {
           />
         </div>
         { children }
-        <Popper show={dropdownShow} attachEle={this.selectInputContainer} className='hi-select__popper'>
+        <Popper 
+          show={dropdownShow} 
+          attachEle={this.selectInputContainer} 
+          zIndex={1050}
+          topGap={5}
+          className='hi-select__popper'
+          placement="top-bottom-start"
+        >
           <SelectDropdown
             noFoundTip={noFoundTip}
             mode={mode}
+            loading={fetching}
             focusedIndex={focusedIndex}
             matchFilter={this.matchFilter.bind(this)}
             setFocusedIndex={this.setFocusedIndex.bind(this)}
+            optionWidth={optionWidth}
             dropdownItems={dropdownItems}
             selectedItems={selectedItems}
             onClickOption={this.onClickOption.bind(this)}

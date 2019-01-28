@@ -1,9 +1,45 @@
 
 .hi-popper__container {
   position: absolute;
-  z-index: 1050;
 
   &--hide {
     display: none !important;
+  }
+
+  .hi-popper__content {
+    position: absolute;
+
+    &--hide {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    &--top {
+      bottom: 0;
+      // left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &--top-start {
+      bottom: 0;
+    }
+
+    &--right {
+      // left: 100%;
+      // top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &--bottom {
+      // top: 100%;
+      // left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &--left {
+      right: 0;
+      // top: 50%;
+      transform: translateY(-50%);
+    }
   }
 }

@@ -25,7 +25,6 @@
         <Modal 
           title="提示消息"
           show={this.state.show}
-          backDrop={true}
           onConfirm={()=>{console.log('自定义确定事件')}}
           onCancel={this.cancelEvent.bind(this)}
         >
@@ -33,6 +32,75 @@
           <span>一些消息</span>
         </Modal>
         
+      </div>
+    )
+  }
+```
+:::
+
+### 自定义尺寸
+
+
+:::demo
+
+- 通过 size 自定义尺寸，可使用 `large`、`nomal`、`small`，默认为 `normal`
+
+```js
+  constructor (props) {
+    super(props)
+    this.state = {
+      show: false,
+      size: 'normal',
+      sizeList: [
+        {
+          name: '标准',
+          id: 'normal'
+        },
+        {
+          name: '大',
+          id: 'large'
+        },
+        {
+          name: '小',
+          id: 'small'
+        }
+      ],
+      sizeListActive: 0
+    }
+  }
+  cancelEvent () {
+    this.setState({
+      show: false
+    })
+    console.log("关闭事件")
+  }
+  render(){
+    return(
+      <div>
+        <Radio
+          list={this.state.sizeList}
+          checked={this.state.sizeListActive}
+          onChange={(data, index) => {
+            this.setState({
+              size: data,
+              sizeListActive: index
+            })
+          }}
+        />
+        <Button type="primary" onClick={() => this.setState({show: true})}>打开</Button>
+        <Modal
+          title="窗口大小演示"
+          size={this.state.size}
+          show={this.state.show}
+          onCancel={this.cancelEvent.bind(this)}
+          footers={[
+            <Button type="default" key={3} onClick={this.cancelEvent.bind(this)}>关闭</Button>
+          ]}
+        >
+          <span>一些消息</span>
+          <span>一些消息</span>
+        </Modal>
+
       </div>
     )
   }
@@ -45,8 +113,10 @@
 
 
 :::demo
-> 通过 footers自定义底部的按钮，并执行对应自定义事件<br/>
-> 通过 closeBtn 取消右上角关闭按钮<br/>
+
+- 通过 footers自定义底部的按钮，并执行对应自定义事件
+- 通过 closeBtn 取消右上角关闭按钮
+
 ```js
   constructor (props) {
     super(props)
@@ -68,15 +138,13 @@
           title="提示消息"
           closeBtn={false}
           show={this.state.show}
-          backDrop={true}
           onConfirm={()=>{console.log('自定义确定事件')}}
           onCancel={this.cancelEvent.bind(this)}
-          // width={800}
           footers={[
-            <Button type="primary" key={1} onClick={() => console.log(1)}>自定义按钮1</Button>,
-            <Button type="warning" key={2} onClick={() => console.log(2)}>自定义按钮2</Button>,
-            <Button type="success" key={3} onClick={() => console.log(3)}>自定义按钮3</Button>,
-            <Button type="danger" key={4} onClick={this.cancelEvent.bind(this)}>关闭</Button>
+            <Button type="primary" key={0} onClick={() => console.log(1)}>自定义按钮1</Button>,
+            <Button type="success" key={1} onClick={() => console.log(2)}>自定义按钮2</Button>,
+            <Button type="danger" key={2} onClick={() => console.log(3)}>自定义按钮3</Button>,
+            <Button type="default" key={3} onClick={this.cancelEvent.bind(this)}>关闭</Button>
           ]}
         >
           <span>一些消息</span>
@@ -94,8 +162,10 @@
 ### 嵌套用法
 
 :::demo
-> 未传入title 及 closeBtn 为 false，可取消 title 部分<br/>
-> footers 传入空数组，可取消底部按钮
+
+- 未传入title 及 closeBtn 为 false，可取消 title 部分
+- footers 传入空数组，可取消底部按钮
+
 ```js
   constructor (props) {
     super(props)
@@ -186,8 +256,6 @@
       </div>
     )
   }
-
-
 ```
 :::
 
@@ -195,15 +263,14 @@
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| confirmType | 确定按钮类型 | string（同 button 组件的 type 属性） | - | primary |
-| cancelType | 取消按钮类型 | string（同 button 组件的 type 属性）| - | default |
 | title | 标题 | string <br/> Node <br/> React.Component | - | 无 |
 | onConfirm | 点击确定的回调 | function | - | 无 |
 | onCancel | 点击遮罩或者右上角取消或者取消按钮的回调 | function | - | 无 |
 | confirmText | 确定按钮文字 | string | - | 确定 |
 | cancelText | 取消按钮文字 | string | - | 取消 |
 | backDrop | 点击黑色背景部分是否隐藏弹框 | boolean | true / false | true |
-| width |  自定义弹窗宽度 |  number <br/> string | - | 540px |
+| size |  定义弹窗尺寸 | string | normal, large, small | normal |
+| width |  自定义弹窗宽度 |  number <br/> string | - | 600px |
 | closeBtn |   是否显示右上角关闭按钮 |   bool | - | true |
 | footers |    自定义底部按钮数组（传入空数组将取消底部按钮） |    array | - | - |
 | show | 弹窗是否显示 |     bool | true / false | false |

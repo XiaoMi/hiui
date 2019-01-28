@@ -1,16 +1,93 @@
 $table: 'hi-table' !default;
 $bgColor: #f7fafe !default;
 
+$miniHeight: 30px !default;
+$miniFontSize: 12px !default;
+
+$smallHeight: 40px !default;
+$smallFontSize: 13px !default;
+
+$normalHeight: 50px !default;
+$nornamFontSize: 14px !default;
+
+.hi-table-header-menu-small {
+  .hi-table-header-menu {
+    p {
+      height: $smallHeight;
+    }
+  }
+}
+
+.hi-table-header-menu-mini {
+  .hi-table-header-menu {
+    p {
+      height: $miniHeight;
+    }
+  }
+}
+
 .#{$table} {
   position: relative;
-  width: 100%;
+  //width: 100%;
+
+  &.striped {
+    table {
+      tr:nth-child(2n) {
+        background: $bgColor;
+      }
+    }
+  }
+
+  &.small {
+    table {
+      tr {
+        height: $smallHeight;
+        font-size: $smallFontSize;
+      }
+    }
+
+    .hi-table-header-menu {
+      > p {
+        height: $smallHeight !important;
+        font-size: $smallFontSize;
+      }
+    }
+
+    .hi-table-setting-menu {
+      > div {
+        height: $smallHeight;
+      }
+    }
+  }
+
+  &.mini {
+    table {
+      tr {
+        height: $miniHeight;
+        font-size: $miniFontSize;
+      }
+    }
+
+    .hi-table-header-menu {
+      > p {
+        height: $miniHeight !important;
+        font-size: $miniHeight;
+      }
+    }
+
+    .hi-table-setting-menu {
+      > div {
+        height: $miniHeight;
+      }
+    }
+  }
 
   tbody .hi-checkbox {
-    pointer-events: none;
+    //pointer-events:none;
   }
 
   &-wrapper {
-    width: 100%;
+    //width: 100%;
   }
 
   &-header-menu {
@@ -22,11 +99,10 @@ $bgColor: #f7fafe !default;
     width: 140px;
 
     p {
-      font-size: 14px;
       color: #383e47;
       text-align: left;
       margin: 0;
-      line-height: 50px;
+      height: $normalHeight;
       text-indent: 16px;
       display: flex;
       align-items: center;
@@ -49,16 +125,16 @@ $bgColor: #f7fafe !default;
     width: 140px;
 
     > div {
-      font-size: 14px;
       color: #383e47;
       text-align: left;
       margin: 0;
-      line-height: 50px;
-      text-indent: 16px;
+      padding-left: 16px;
+      padding-right: 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
+      height: $normalHeight;
 
       &:hover {
         background: $bgColor;
@@ -79,7 +155,7 @@ $bgColor: #f7fafe !default;
 
     &.column-menu {
       position: absolute;
-      right: 10px;
+      right: 30px;
       top: 40px;
       width: 220px;
       max-height: 240px;
@@ -103,11 +179,10 @@ $bgColor: #f7fafe !default;
     td,
     th {
       white-space: nowrap;
-      //padding: 16px 8px;
       padding-left: 8px;
-      font-size: 14px;
       border-bottom: 1px solid #e6e7e8;
       text-align: left;
+      box-sizing: border-box;
     }
 
     th {
@@ -131,8 +206,9 @@ $bgColor: #f7fafe !default;
 
     tr {
       transition: 0.2s;
-      cursor: pointer;
-      height: 50px;
+      //cursor: pointer;
+      height: $normalHeight;
+      font-size: $nornamFontSize;
       padding: 0;
       box-sizing: border-box;
 
@@ -207,9 +283,6 @@ $bgColor: #f7fafe !default;
     table {
       border-radius: 4px 0 0 0;
     }
-    //.hi-table-thead > tr > th:last-child {
-    //  border-top-right-radius: 0;
-    //}
   }
 
   &-fixed-right {
@@ -223,11 +296,8 @@ $bgColor: #f7fafe !default;
 
     .#{$table}-expanded-row {
       color: transparent;
-      pointer-events: none;
+      //pointer-events: none;
     }
-    //.hi-table-thead > tr > th:first-child {
-    //  border-top-left-radius: 0;
-    //}
   }
 
   &.#{$table}-scroll-position-left &-fixed-left {
@@ -260,15 +330,19 @@ $bgColor: #f7fafe !default;
     background: #fff;
     border-bottom: 1px solid #e6e7e8;
     text-align: center;
-    font-size: 14px;
     z-index: 1;
   }
 
   &-setting {
     position: absolute;
-    right: 10px;
+    right: 0;
     top: 0;
     cursor: pointer;
     background: $bgColor;
+    width: 50px;
+    text-align: center;
+    border-left: 1px solid #e6e7e8;
+    border-bottom: 1px solid #e6e7e8;
+    box-sizing: border-box;
   }
 }

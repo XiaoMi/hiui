@@ -88,7 +88,8 @@
     > a {
       box-sizing: border-box;
       display: inline-block;
-      width: 32px;
+      min-width: 32px;
+      padding: 0 2px;
       height: 32px;
       border: 1px solid $gray;
       border-radius: 2px;

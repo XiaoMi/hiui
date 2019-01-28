@@ -8,6 +8,37 @@
 > 1. 修订号：当你做了向下兼容的问题修正。
 > 先行版本号及版本编译信息可以加到“主版本号.次版本号.修订号”的后面，作为延伸。
 
+## 1.3.0
+- 新增：`<Select />` 异步请求时增加 loading；
+- 修改：优化 `<Form />` 组件横排时的错误文案显示；
+- 修改：`<Upload />` 组件；
+  - 废弃 `uploadType` 属性，改为 `type`，`接收normal`、`drag`、`pictureCard`、`avatar`、`photo`；
+  - 新增 `width`、`height`，应用于头像上传的裁切框尺寸定义；
+  - 废弃 `onUploadSuccess`、`onDeleteSuccess` 事件回调；
+  - 废弃 `deleteParam` 属性；
+  - 新增 `beforeUpload`、`customUpload`、`onChange`、`onRemove` 钩子函数。
+- 修改：`<Table />` 组件；
+  - 分页条位置逻辑；
+  - 弃用 `scroll` 属性，新增 `scrollX` 属性；
+  - `fixTop` 吸顶属性同时兼容 `boolean` 及 `number`。
+- 修改：`<Tree />`；
+  - 重写内部实现逻辑；
+  - 增加半选状态。
+- 修改：修复 `<NavMenu />` 组件在某些情况下无法得到父元素的宽度而引起的页面崩溃问题；
+- 修改：修复 `<Pagination />` 组件页岁数过多时的样式问题。
+
+## 1.2.0
+- 新增：`<Button />` 组件增加图标设置；
+- 新增：`<Table />` 组件支持外部设置、求和等操作；
+- 新增：`<Input />` 组件增加支持前、后缀元素。
+- 修改：修改 `<Layout />` 为 `<Grid />`；
+- 修改：优化 `<Form />` 组件结构；
+- 修改：优化 `<Modal />` 组件结构；
+- 修改：优化 `<Grid />` 组件结构；
+- 修改：修改 `<Popover />`、`<Dropdown />`、`<Tooltip />` 组件挂载到 `<body>` 下；
+- 修改：修改 `<Popover />`、`<Dropdown />`、`<Tooltip />`、`<Cascader />`、`<Select />` 组件定位问题；
+- 修改：重新设定所有浮层组件 z-index。
+
 ## 1.1.1
 - 修改：修复 <Button /> 在使用旧版 api 时的样式兼容；
 - 修改：修复 <Checkbox /> 占据整行及点击区域的 bug。

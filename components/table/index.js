@@ -1,18 +1,22 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import ClickOutside from './clickOuterside'
 import TableContent from './tableContent'
 import prifix from './prefix'
-
-import Checkbox from '../checkbox'
+import Checkbox from './checkbox'
 import Pagination from '../pagination'
 import Icon from '../icon'
-
-import {setKey, scrollTop, getStyle} from './tool'
-import './style/index'
-
-export default class Table extends Component {
+import './style'
+import loading from '../loading'
+import '../pagination/style'
+import '../icon/style'
+import {setKey, scrollTop, getStyle, getPosition} from './tool'
+import request from 'axios'
+import qs from 'qs'
+let axios = request.create({
+  baseURL: ''
+})
+class Table extends Component {
   static propTypes = {
     data: PropTypes.array,
     useFixedHeader: PropTypes.bool,
@@ -24,7 +28,6 @@ export default class Table extends Component {
     rowClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     onRow: PropTypes.func,
     onHeaderRow: PropTypes.func,
-    onRowClick: PropTypes.func,
     onRowDoubleClick: PropTypes.func,
     onRowContextMenu: PropTypes.func,
     onRowMouseEnter: PropTypes.func,
@@ -39,6 +42,7 @@ export default class Table extends Component {
 
   static defaultProps = {
     data: [],
+    columns: [],
     useFixedHeader: false,
     rowKey: 'key',
     rowClassName: () => '',
@@ -51,9 +55,35 @@ export default class Table extends Component {
     rowRef: () => null,
     emptyText: () => 'No Data'
   }
+  constructor (props) {
+    super(props)
+    // 只有dataSource,columns重造
+    let {data = [], scroll} = props
+    data = setKey(data, 'id')
+    this.dom = React.createRef()
+    this.fixLeft = React.createRef()
+    this.fixRight = React.createRef()
+    this.fixRight = React.createRef()
+    this.setting = React.createRef()
+    this.state = {
+      dataSource: data,
+      highlightCols: [],
+      scroll,
+      columnMenu: false,
+      // 由外部属性重构为内部状态
+      leftFiexColumns: [],
+      rightFixColumns: [],
+      columns: [],
+      headerColumns: [],
+      serverPagination: null
+    }
+  }
 
   runMemory () {
     let {name} = this.props
+    if (!name) {
+      return
+    }
     let {dataSource} = this.state
     let {columns, headerColumns, highlightCols} = this.state
     let col = window.localStorage.getItem(name + '-col')
@@ -99,6 +129,7 @@ export default class Table extends Component {
     this.setState({columns, headerColumns, dataSource, highlightCols})
   }
 
+  // noinspection JSAnnotator
   cbs = {
     highlighCol: (key) => {
       let {highlightCols} = this.state
@@ -116,7 +147,7 @@ export default class Table extends Component {
 
     freezeCol: (key) => {
       // let col =
-      let {scrollWidth} = this.props
+      let {scrollWidth, scroll, scrollX} = this.props
       let {columns} = this.state
       let pin = false
       columns = columns.map(item => {
@@ -136,7 +167,11 @@ export default class Table extends Component {
       })
 
       let columnsDetail = this.setColumnsDetail(columns)
-      this.setState({scroll: {x: scrollWidth}, ...columnsDetail}, () => {
+
+      if (scrollWidth || scrollX || (scroll && scroll.x)) {
+        columnsDetail.scrollX = true
+      }
+      this.setState({...columnsDetail}, () => {
         this.xscroll()
       })
     },
@@ -177,7 +212,7 @@ export default class Table extends Component {
       let columnsDetail = this.setColumnsDetail(columns)
 
       if (!item.ishiuitableopen) {
-        dataSource.splice(index + 1, 0, {expand: true, parent: item.key, width: col.width || '50px', render: col.render})
+        dataSource.splice(index + 1, 0, {expand: true, dataIndex: col.dataIndex, parent: item.key, width: col.width || '50px', render: col.render})
       } else {
         dataSource.splice(index + 1, 1)
       }
@@ -196,61 +231,19 @@ export default class Table extends Component {
       // }
       // e.target.dataset.open = !open
       // this.setState({dataSource: data})
-    },
-
-    rowClick: (text, record, index) => {
-      let { rowSelection } = this.props
-      let { dataSource } = this.state
-
-      // 点击行的时候如果配置了分页
-      if (rowSelection) {
-        let {selectedRowKeys} = this.state
-        let {onChange} = rowSelection
-        let selected = selectedRowKeys.includes(record.key)
-        if (selected) {
-          selectedRowKeys.splice(selectedRowKeys.indexOf(record.key), 1)
-        } else {
-          selectedRowKeys.push(record.key)
-        }
-
-        this.setState({selectedRowKeys}, () => {
-          onChange(selectedRowKeys, dataSource.filter(item => selectedRowKeys.includes(item.key)))
-        })
-      }
-    }
-  }
-
-  constructor (props) {
-    super(props)
-    // 只有dataSource,columns重造
-    let {data = [], scroll} = props
-    data = setKey(data, 'id')
-    this.state = {
-      dataSource: data,
-      highlightCols: [],
-      scroll,
-      columnMenu: false,
-      // 由外部属性重构为内部状态
-      selectedRowKeys: [],
-      leftFiexColumns: [],
-      rightFixColumns: [],
-      columns: [],
-      headerColumns: []
     }
   }
 
   getScrollXContent () {
     let scrollTable
     let {dataSource, highlightCols, columns, headerColumns, leftFiexColumns, rightFixColumns} = this.state
-    let that = this
-    let {scroll} = this.state
-
+    // let {scroll} = this.state
     let {style = {}, ...props} = this.props
-    let handleScroll = function (e) {
+    let handleScroll = (e) => {
       let onLeft = e.target.scrollLeft === 0
       let onRight = Math.abs(e.target.scrollWidth - e.target.scrollLeft - parseInt(getStyle(e.target, 'width'))) < 2
-      let left = that.refs['fix-left']
-      let right = that.refs['fix-right']
+      let left = this.fixLeft.current
+      let right = this.fixRight.current
       if (left) {
         if (onLeft) {
           left.style.display = 'none'
@@ -274,7 +267,7 @@ export default class Table extends Component {
         <div className={prifix('table-scroll')} onScroll={handleScroll} key='content'>
 
           <div className={prifix('table-body')} style={{overflowX: 'auto'}}>
-            <TableContent style={{width: scroll.x + 'px', ...style}} {...Object.assign({}, {...props}, {columns}, {dataSource, highlightCols}, {cbs: this.cbs}, {headerColumns})} />
+            <TableContent style={{...style}} {...Object.assign({}, {...props}, {columns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
           </div>
           {
             dataSource.length === 0 ? this.getEmptyContent() : null
@@ -284,10 +277,10 @@ export default class Table extends Component {
 
       if (leftFiexColumns.length > 0) {
         scrollTable.push(
-          <div className={prifix('table-fixed-left')} ref={'fix-left'} style={{display: 'none'}} key='left'>
+          <div className={prifix('table-fixed-left')} ref={this.fixLeft} style={{display: 'none'}} key='left'>
             <div className={prifix('table-outer')}>
               <div className={prifix('table-inner')}>
-                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: leftFiexColumns}, {dataSource, highlightCols}, {cbs: this.cbs})} />
+                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: leftFiexColumns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
               </div>
             </div>
           </div>
@@ -296,10 +289,10 @@ export default class Table extends Component {
 
       if (rightFixColumns.length > 0) {
         scrollTable.push(
-          <div className={prifix('table-fixed-right')} ref={'fix-right'} key='right'>
+          <div className={prifix('table-fixed-right')} ref={this.fixRight} key='right'>
             <div className={prifix('table-outer')}>
               <div className={prifix('table-inner')}>
-                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: rightFixColumns}, {dataSource, highlightCols}, {cbs: this.cbs})} />
+                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: rightFixColumns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
               </div>
             </div>
           </div>
@@ -315,9 +308,7 @@ export default class Table extends Component {
   }
 
   showColumsPanel= (e) => {
-    let {columnMenu} = this.state
-    e.stopPropagation()
-    this.setState({columnMenu: !columnMenu})
+
   }
 
   getScrollYContent () {
@@ -328,10 +319,10 @@ export default class Table extends Component {
       <div className={prifix('table-content')}>
         <div className={prifix('table-scroll')}>
           <div className={prifix('table-head')}>
-            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols}, {body: false, cbs: this.cbs})} />
+            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols}, {body: false, cbs: this.cbs, fetch: this.fetch, t: this})} />
           </div>
           <div className={prifix('table-body')} style={{maxHeight: scroll.y + 'px', overflow: 'auto'}} >
-            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols}, {head: false, cbs: this.cbs}, {headerColumns})} />
+            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols}, {head: false, cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
           </div>
         </div>
         {
@@ -345,12 +336,11 @@ export default class Table extends Component {
     let {dataSource, highlightCols, columns, headerColumns} = this.state
 
     let {style = {}, ...props} = this.props
-
     return (
       <div className={prifix('table-content')}>
 
         <div className={prifix('table-body')} style={{overflowX: 'auto'}}>
-          <TableContent {...Object.assign({}, {style: {...style}}, {...props}, {columns}, {dataSource, highlightCols}, {rowClick: this.rowClick, cbs: this.cbs}, {headerColumns})} />
+          <TableContent {...Object.assign({}, {style: {...style}}, {...props}, {columns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
         </div>
         {
           dataSource.length === 0 ? this.getEmptyContent() : null
@@ -365,10 +355,33 @@ export default class Table extends Component {
     return <div className='hi-table-placeholder'>{text}</div>
   }
 
+  componentDidUpdate () {
+    let leftFixTable = this.dom.current.querySelectorAll('.hi-table-fixed-left table tr')
+    let rightFixTable = this.dom.current.querySelectorAll('.hi-table-fixed-right table tr')
+    let scrollTable = this.dom.current.querySelectorAll('.hi-table-scroll table tr')
+
+    // if(fixTable && scrollTable){
+    //
+
+    // }
+    if (scrollTable) {
+      scrollTable.forEach((tr, index) => {
+        if (leftFixTable.length > index) {
+          leftFixTable[index].style.height = getStyle(tr, 'height')
+        }
+        if (rightFixTable.length > index) {
+          rightFixTable[index].style.height = getStyle(tr, 'height')
+        }
+      })
+    }
+  }
+
   render () {
     // 多选配置
-    let {pagination} = this.props
-    let {scroll, columnMenu} = this.state
+    // noinspection JSAnnotator
+    let {pagination, name, size = 'normal', striped = false, scrollX} = this.props
+    // noinspection JSAnnotator
+    let {scroll, columnMenu, serverPagination} = this.state
 
     let content
     // 不滚动
@@ -392,29 +405,82 @@ export default class Table extends Component {
       // content = this.getScrollXYContent()
     }
 
+    if (scrollX) {
+      content = this.getScrollXContent()
+    }
+
     let {columns} = this.state
 
+    let pagePosition = 'flex-end'
+    let serverPagePosition = 'flex-end'
+    if (pagination) {
+      if (pagination.position === 'left') {
+        pagePosition = 'start'
+      }
+      if (pagination.position === 'middle') {
+        pagePosition = 'center'
+      }
+      if (pagination.position === 'right') {
+        pagePosition = 'flex-end'
+      }
+    }
+    if (serverPagination) {
+      if (serverPagination.position === 'left') {
+        serverPagePosition = 'start'
+      }
+      if (serverPagination.position === 'middle') {
+        serverPagePosition = 'center'
+      }
+      if (serverPagination.position === 'right') {
+        serverPagePosition = 'flex-end'
+      }
+    }
     return (
-      <div className={prifix('table')} ref={'dom'}>
+      <div className={prifix({table: true, size, striped})} ref={this.dom}>
         <div >
           <div >{content}</div>
         </div>
         {(pagination || columns) && <br /> }
-        <div style={{display: 'flex', alignItems: 'center'}}>
+        {
+          pagination && <div style={{display: 'flex', justifyContent: pagePosition}}>
+            {
+              <div className={prifix('table-page')} >
+                <Pagination
+                  {...pagination}
+                />
+              </div>
+            }
+          </div>
+        }
+        {serverPagination && serverPagination.current && serverPagination.current && <div style={{display: 'flex', justifyContent: serverPagePosition}} a='1'>
           {
-            pagination ? <div className={prifix('table-page')} >
+            <div className={prifix('table-page')} >
               <Pagination
-                {...pagination}
+                pageSize={serverPagination.pageSize}
+                total={serverPagination.total}
+                current={serverPagination.current}
+                onChange={(current) => {
+                  this.setState({
+                    serverPagination: {
+                      ...serverPagination,
+                      current
+                    }
+                  }, this.fetch)
+                }}
               />
-            </div> : null
+            </div>
           }
         </div>
-
-        <div className={prifix('table-setting')} ref={'setting'}>
-          <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}} onClick={this.showColumsPanel} />
-          {
-            columnMenu
-              ? <ClickOutside onClickOutside={(e) => this.setState({columnMenu: false})} >
+        }
+        { name &&
+          <div className={prifix('table-setting')} ref={this.setting}>
+            <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}}
+              onClick={(e) => {
+                let {columnMenu} = this.state
+                this.setState({columnMenu: !columnMenu})
+              }} />
+            {
+              columnMenu && <ClickOutside onClickOutside={(e) => this.setState({columnMenu: false})} >
                 <div className={prifix('table-setting-menu column-menu')} >
                   {
                     columns.map(item => (
@@ -442,71 +508,45 @@ export default class Table extends Component {
                     ))
                   }
                 </div>
-              </ClickOutside> : null
-          }
-        </div>
+              </ClickOutside>
+            }
+          </div>
+        }
       </div>
     )
   }
 
   xscroll () {
-    let { fixTop } = this.props
+    let {fixTop = false, name} = this.props
     if (typeof fixTop === 'boolean') {
       fixTop = 0
     } else {
       fixTop = parseFloat(fixTop)
     }
-    let dom = ReactDOM.findDOMNode(this.refs['dom'])
-    let thead = dom.querySelectorAll('thead')
+    let dom = this.dom.current
+    let thead = dom ? dom.querySelectorAll('thead') : null
     if (scrollTop() + fixTop > dom.offsetTop && scrollTop() + fixTop < dom.offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(getStyle(thead[0], 'height'))) {
       thead.forEach(th => {
         th.style.display = 'table-header-group'
         let h = (dom.offsetTop - scrollTop() - fixTop) * -1
+        h = getPosition(dom).y * -1 + fixTop
         th.style.transform = `translate(0,${h}px)`
-        this.refs.setting.style.transform = `translate(0,${h}px)`
+        if (name) {
+          this.setting.current.style.transform = `translate(0,${h}px)`
+        }
       })
     } else {
       thead.forEach(th => {
         th.style.transform = `translate(0,0)`
-        this.refs.setting.style.transform = `translate(0,0)`
-      })
-    }
-  }
-
-  componentDidMount () {
-    let {fixTop, scroll} = this.props
-
-    let dom = ReactDOM.findDOMNode(this.refs['dom'])
-    let thead = dom.querySelectorAll('thead')
-    this.refs.setting.style.lineHeight = parseInt(getStyle(thead[0], 'height')) - 10 + 'px'
-    this.refs.setting.style.marginTop = '5px'
-    if (fixTop) {
-      // 吸顶逻辑
-      document.addEventListener('scroll', () => {
-        this.xscroll()
-      })
-    }
-
-    // 如果有列冻结的配置
-    if (scroll.x) {
-      let dom = ReactDOM.findDOMNode(this.refs['dom'])
-      // 如果表格本身太宽超过列冻结配置的话，右边的列冻结就取消
-      if (parseInt(getStyle(dom, 'width')) > scroll.x) {
-        if (this.refs['fix-right']) {
-          this.refs['fix-right'].style.display = 'none'
+        if (name) {
+          this.setting.current.style.transform = `translate(0,0)`
+          let h = parseInt(getStyle(dom.querySelector('thead'), 'height')) + 'px'
+          this.setting.current.style.height = h
+          this.setting.current.style.lineHeight = h
         }
-      }
+      })
     }
-
-    let columnsDetail = this.setColumnsDetail()
-    this.setState({
-      ...columnsDetail
-    })
-    setTimeout(() => {
-      this.runMemory()
-    }, 0)
   }
-
   getColumns (columns) {
     let select = columns.find(({type}) => type === 'select')
     let leftFiexColumns = columns.filter(({fixed}) => !!fixed && fixed === 'left')
@@ -535,13 +575,11 @@ export default class Table extends Component {
     columns = columns.map((item) => {
       item.title = item.title || item.dataIndex
       item.key = item.key || item.dataIndex || item.title || item.id
-      // item.render = item.render || function(text,record,index){return text};
       if (item.type === 'expand') {
         item.open = !!item.open
       }
       return item
     })
-
     let bodyColumns = []
     let headerColumns = []
     let deepMap = (columns, parent) => {
@@ -554,7 +592,6 @@ export default class Table extends Component {
           deepMap(children, columns[key])
           // delete columns[key].children
         } else {
-          columns[key].render = columns[key].render || function (text) { return text }
           columns[key].isLast = true
         }
         bodyColumns.push(columns[key])
@@ -602,60 +639,60 @@ export default class Table extends Component {
     return [headerColumns, bodyColumns]
   }
 
-  setColumnsDetail (bool, prop) {
+  setColumnsDetail (bool, prop, c) {
     let props = prop || this.props
     let leftFiexColumns = []
     let rightFixColumns = []
-    let [headerColumns, columns] = this.getHeaderGroup(props.columns)
-    let {rowSelection, scroll, name} = props
-    let {data} = props
-    let dataSource = data
-    let that = this
+    let [headerColumns, columns] = this.getHeaderGroup(c || props.columns)
+
+    let {rowSelection, scroll, name, scrollX} = props
+
     if (rowSelection) {
-      let {selectedRowKeys} = this.state
-      let {onChange} = rowSelection
+      let {selectedRowKeys = [], dataName = 'key'} = rowSelection
       columns.unshift({
         width: '50',
         type: 'select',
         key: 'hi-table-select-' + name,
         title: () => {
-          let {getCheckboxProps = (record) => ({ disabled: false, dataName: record.key })} = rowSelection
-          let data = dataSource.filter(record => !getCheckboxProps(record).disabled)
+          let {getCheckboxProps = (record) => ({ disabled: false }), onChange} = rowSelection
           return (
             <Checkbox type='checkbox'
-              onClick={(e) => e.preventDefault()}
-              checked={selectedRowKeys.length === data.length}
-              onChange={(e) => {
-                if (e.checked) {
+
+              checked={selectedRowKeys.length === this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length && this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length > 0}
+              onChange={(e, checked) => {
+                let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
+                if (checked) {
                   selectedRowKeys.splice(0, selectedRowKeys.length)
                   for (let i = 0; i < data.length; i++) {
-                    selectedRowKeys.push(data[i].key)
+                    selectedRowKeys.push(data[i][dataName])
                   }
                 } else {
                   selectedRowKeys.splice(0, selectedRowKeys.length)
-                  data.splice(0, data.length)
                 }
-
-                that.setState({
-                  selectedRowKeys
-                }, () => {
-                  onChange(selectedRowKeys, data)
-                })
+                onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record[dataName])))
               }}
             />
-
           )
         },
         render: (text, record, index) => {
-          let {getCheckboxProps = (record) => ({ disabled: false, dataName: record.key })} = rowSelection
-          // todo dataName 是干嘛的不明白 参考ant-design api
-          let {disabled} = getCheckboxProps(record)
+          let {getCheckboxProps = (record) => ({ disabled: false }), onChange} = rowSelection
+          // todo dataName 是干嘛的不明白
+
           return (
-            <Checkbox
-              onClick={(e) => e.preventDefault()}
-              checked={selectedRowKeys.includes(record.key)}
-              disabled={disabled}
-              key={record.key}
+            <Checkbox type='checkbox'
+              che={selectedRowKeys.includes(record[dataName])}
+              checked={selectedRowKeys.includes(record[dataName])}
+              disabled={getCheckboxProps(record).disabled}
+              onChange={(e, checked) => {
+                let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
+                if (checked) {
+                  selectedRowKeys.push(record[dataName])
+                } else {
+                  selectedRowKeys = selectedRowKeys.filter(key => record[dataName] !== key)
+                }
+                onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record[dataName])))
+              }}
+              key={record[dataName]}
             />
           )
         }
@@ -663,7 +700,7 @@ export default class Table extends Component {
     }
 
     // TODO 这里的逻辑要优化
-    if (scroll.x || bool) {
+    if (scroll.x || scrollX || bool) {
       let obj = this.getColumns(columns)
       leftFiexColumns = obj.leftFiexColumns
       rightFixColumns = obj.rightFixColumns
@@ -678,14 +715,213 @@ export default class Table extends Component {
     }
   }
 
-  componentWillReceiveProps ({data, columns, width, scroll, ...props}) {
-    data = setKey(data, 'id')
-    // 只有dataSource,columns重造
+  fetch = (extra) => {
+    extra = extra || {}
+    const {origin} = this.props
+    const {
+      data,
+      url,
+      headers,
+      type = 'GET',
+      success = (res) => {},
+      error = () => {},
+      currentPageName = Table.config.currentPageName
+      // pageSizeName = Table.config.pageSizeName
+    } = origin
 
-    let columnsDetail = this.setColumnsDetail(columns, {data, columns, width, scroll, ...props})
-    this.setState({dataSource: data, scroll, ...columnsDetail})
+    let l = loading.open({
+      target: this.dom.current
+    })
+    const {
+      serverPagination: {current}
+    } = this.state
+    let requestParams = {
+      ...data,
+      ...extra
+    }
+    requestParams[currentPageName] = current
+    // requestParams[pageSizeName] = pageSize
+
+    let options = {
+      url,
+      method: ['GET', 'get'].includes(type) ? 'GET' : 'POST'
+    }
+    if (options.method === 'GET') {
+      options.params = requestParams
+    } else {
+      options.data = qs.stringify(requestParams)
+    }
+    if (headers) {
+      options.headers = headers
+    }
+    axios.request(options).then(res => {
+      let {data, columns, page} = success(res)
+      let columnsDetail = this.setColumnsDetail(null, null, columns)
+      this.setState({
+        dataSource: data,
+        ...columnsDetail,
+        serverPagination: page
+      })
+      this.runMemory()
+      l.close()
+    }).catch(error)
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    return true
+  }
+
+  reset (props) {
+    // noinspection JSAnnotator
+
+    const {
+      origin: {
+        data,
+        url,
+        headers,
+        type = 'GET',
+        success = (res) => {},
+        error = () => {}
+        // pageSize = Table.config.pageSize,
+        // pageSizeName = Table.config.pageSizeName
+      }
+    } = props || this.props
+
+    let l = loading.open({target: this.dom.current})
+    this.setState({
+      loading: true
+    })
+    let requestParams = {
+      ...data
+    }
+    // requestParams[pageSizeName] = pageSize
+    let options = {
+      method: ['GET', 'get'].includes(type) ? 'GET' : 'POST',
+      url
+    }
+    if (options.method === 'GET') {
+      options.params = requestParams
+    } else {
+      options.data = qs.stringify(requestParams)
+    }
+    if (headers) {
+      options.headers = headers
+    }
+
+    axios(options).then(res => {
+      let {data, columns, page} = success(res)
+      this.setState({
+        dataSource: data,
+        serverPagination: page
+      })
+      setTimeout((e) => {
+        let columnsDetail = this.setColumnsDetail(null, null, columns)
+        this.setState({
+          ...columnsDetail
+        })
+        this.runMemory()
+        l.close()
+      })
+    }).catch(error)
+  }
+
+  componentDidMount () {
+    let {fixTop, scroll, name, origin} = this.props
+    let dom = this.dom.current
+    if (fixTop) {
+      // 吸顶逻辑
+      document.addEventListener('scroll', () => {
+        this.xscroll()
+      })
+    }
+
+    // 如果有列冻结的配置
+    if (scroll.x) {
+      let dom = this.dom.current
+      // 如果表格本身太宽超过列冻结配置的话，右边的列冻结就取消
+      if (parseInt(getStyle(dom, 'width')) > scroll.x) {
+        if (this.fixRight.current) {
+          this.fixRight.current.style.display = 'none'
+        }
+      }
+    }
+
+    let columnsDetail = this.setColumnsDetail()
+    this.setState({
+      ...columnsDetail
+    })
+
+    // 操作记忆设置
+    if (name) {
+      let h = parseInt(getStyle(dom.querySelector('thead'), 'height')) + 'px'
+      this.setting.current.style.height = h
+      this.setting.current.style.lineHeight = h
+    }
     setTimeout(() => {
       this.runMemory()
+
+      if (origin) {
+        this.setState({
+          serverPagination: {
+            current: 1,
+            total: 1
+          }
+        }, this.fetch)
+      }
     }, 0)
   }
+
+  componentWillReceiveProps ({data, columns, width, scroll, ...props}) {
+    // 服务端表格
+    if (props.origin) {
+      let oldOrigin = this.props.origin
+      let newOrigin = props.origin
+      let bool = oldOrigin.url !== newOrigin.url
+      oldOrigin.data = oldOrigin.data || {}
+      newOrigin.data = newOrigin.data || {}
+      oldOrigin.headers = oldOrigin.headers || {}
+      newOrigin.headers = oldOrigin.headers || {}
+      for (let key in oldOrigin.data) {
+        if (oldOrigin.data[key] !== newOrigin.data[key]) {
+          bool = true
+        }
+      }
+      for (let key in oldOrigin.headers) {
+        if (oldOrigin.headers[key] !== newOrigin.headers[key]) {
+          bool = true
+        }
+      }
+
+      let {
+        auto = true,
+        autoDelayTime = Table.config.autoDelayTime
+      } = props.origin
+      if (auto) {
+        clearTimeout(this.autoTimer)
+        this.autoTimer = setTimeout(() => {
+          bool && this.reset(props)
+        }, autoDelayTime)
+      }
+    } else {
+      data = setKey(data, 'id')
+      // 只有dataSource,columns重造
+      let columnsDetail = this.setColumnsDetail(columns, {data, columns, width, scroll, ...props})
+      this.setState({dataSource: data, scroll, ...columnsDetail, ...props})
+      setTimeout(() => {
+        this.runMemory()
+      }, 0)
+    }
+  }
 }
+
+Table.config = {
+  currentPageName: 'current',
+  pageSizeName: 'pageSize',
+  pageSize: 10,
+  current: 1,
+  total: 1,
+  autoDelayTime: 300,
+  host: ''
+}
+
+export default Table
