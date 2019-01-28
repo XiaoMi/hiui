@@ -3,7 +3,6 @@ const webpack = require('webpack')
 const basePath = path.resolve(__dirname, '../')
 
 module.exports = {
-  mode: 'development',
   entry: {
     main: ['babel-polyfill', `${path.resolve(basePath, 'site/main.js')}`],
     // 列出第三方库
@@ -76,17 +75,8 @@ module.exports = {
     children: false
   },
   devtool: 'source-map',
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          name: 'vendor'
-        }
-      }
-    }
-  },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
-    // new webpack.optimize.CommonsChunkPlugin({ name: 'vendor' })
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor' })
   ]
 }

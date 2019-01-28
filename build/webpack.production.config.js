@@ -3,11 +3,10 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+
 const basePath = path.resolve(__dirname, '../')
 
 module.exports = {
-  mode: process.env.NODE_ENV,
   entry: {
     main: ['babel-polyfill', `${path.resolve(basePath, 'site/main.js')}`],
     // 列出第三方库
@@ -98,24 +97,6 @@ module.exports = {
     chunks: false,
     children: false
   },
-  optimization: {
-    minimize: true,
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          name: 'vendor'
-        },
-        runtime: {
-          name: 'runtime'
-        }
-      }
-    },
-    minimizer: [
-      new UglifyJsPlugin()
-    ],
-    usedExports: true,
-    sideEffects: true
-  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
@@ -124,21 +105,21 @@ module.exports = {
       root: basePath
     }),
     new ExtractTextPlugin({
-      filename: 'styles.[hash].css',
+      filename: 'styles.[contenthash].css',
       allChunks: true
     }),
     new HtmlWebpackPlugin({
       title: 'HIUI Design',
       template: path.resolve(__dirname, '../site/index.template.html')
     }),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false
-    //   }
-    // }),
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: ['vendor', 'runtime']
-    // }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: ['vendor', 'runtime']
+    }),
     new webpack.HashedModuleIdsPlugin()
   ]
 }
