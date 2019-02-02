@@ -3,6 +3,7 @@ module.exports = {
     'quick-start': 'Quick Start',
     'i18n': 'i18n',
     'design': 'design',
+    'design-template': 'Template',
     'theme': 'Customize Theme',
     'template': 'Layout Theme',
     'typography': 'Typography',
@@ -40,7 +41,8 @@ module.exports = {
   },
   misc: {
     'components': 'Components',
-    'development': 'Development'
+    'development': 'Development',
+    'design': 'Design'
   },
   mini: {
     '基本组件': 'General',

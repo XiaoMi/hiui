@@ -3,8 +3,13 @@ export default {
     'quick-start': require('./quick-start'),
     'template': require('./template'),
     'theme': require('./theme'),
-    'i18n': require('./i18n'),
-    'design': require('./design')
+    'i18n': require('./i18n')
+  },
+  others: {
+    '设计原则': {
+      'design': require('./design'),
+      'design-template': require('./design-template')
+    }
   },
   components: {
     '基本组件': {

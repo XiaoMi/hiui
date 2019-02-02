@@ -5,6 +5,7 @@ module.exports = {
     'theme': '配色主题',
     'i18n': '国际化',
     'design': '设计原则',
+    'design-template': '模板设计',
     'typography': 'Typography 排版',
     'button': 'Button 按钮',
     'dropdown': 'Dropdown 下拉',
@@ -43,6 +44,7 @@ module.exports = {
   },
   misc: {
     'components': '组件',
-    'development': '开发指南'
+    'development': '开发指南',
+    'design': '设计原则'
   }
 }

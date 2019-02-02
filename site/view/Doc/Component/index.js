@@ -87,8 +87,23 @@ class Component extends React.Component {
         icon: icons[index]
       }
     })
-
     let components = []
+    let otherDocumentsArr = []
+    Object.keys(pages.others).map((title, i) => {
+      let otherDocuments = {}
+      otherDocuments.key = 'ott' + i
+      otherDocuments.title = locales[this.props.locale]['misc']['design']
+      otherDocuments.to = ''
+      otherDocuments.children = []
+      Object.keys(pages.others[title]).map((page, j) => {
+        otherDocuments.children.push({
+          key: 'ot' + i + '' + j,
+          title: <span className='components-page'>{this.getSiderName(`page.${page}`)}</span>,
+          to: `/${this.props.locale}/components/${page}`
+        })
+      })
+      otherDocumentsArr.push(otherDocuments)
+    })
     Object.keys(pages.components).map((title, i) => {
       components.push({
         key: 'ct' + i,
@@ -106,7 +121,7 @@ class Component extends React.Component {
       })
     })
 
-    return [].concat(siderDocuments, [{key: 'c', title: locales[this.props.locale]['misc']['components'], to: '', children: components, icon: icons[icons.length - 1]}])
+    return [].concat(siderDocuments, otherDocumentsArr, [{key: 'c', title: locales[this.props.locale]['misc']['components'], to: '', children: components, icon: icons[icons.length - 1]}])
   }
 
   getAnchors () {
@@ -150,7 +165,6 @@ class Component extends React.Component {
     //   window.location.hash = `#/${this.props.locale}/components/quick-start`
     // }
     let page = routes[3] ? routes[3] : 'quick-start'
-
     this.setState({ page }, fn)
   }
 
@@ -159,15 +173,19 @@ class Component extends React.Component {
       theme,
       locale
     } = this.props
-
+    console.log(page)
     this.components =
       this.components ||
       Object.assign(
         Object.values(pages.components).reduce((a, b) => {
           return Object.assign(a, b)
         }, {}),
-        pages.documents
+        pages.documents,
+        Object.values(pages.others).reduce((a, b) => {
+          return Object.assign(a, b)
+        }, {})
       )
+    console.log(this.components)
     // 控制markdown显示隐藏
     const currentPage = this.components[page]
     if (currentPage) {
