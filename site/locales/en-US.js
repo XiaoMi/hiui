@@ -2,6 +2,7 @@ module.exports = {
   page: {
     'quick-start': 'Quick Start',
     'i18n': 'i18n',
+    'design': 'design',
     'theme': 'Customize Theme',
     'template': 'Layout Theme',
     'typography': 'Typography',

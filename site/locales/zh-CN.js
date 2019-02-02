@@ -4,6 +4,7 @@ module.exports = {
     'template': '布局主题',
     'theme': '配色主题',
     'i18n': '国际化',
+    'design': '设计原则',
     'typography': 'Typography 排版',
     'button': 'Button 按钮',
     'dropdown': 'Dropdown 下拉',
