@@ -34,7 +34,8 @@ module.exports = {
     },
     item: '条',
     itemPerPage: '每页',
-    goto: '前往'
+    goto: '跳至',
+    page: '页'
   },
   cascader: {
     placeholder: '请选择',

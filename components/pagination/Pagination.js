@@ -5,13 +5,13 @@ import Dropdown from '../dropdown/index'
 import Input from '../input'
 import Provider from '../context'
 
-function isIntege (value) {
+function isInteger (value) {
   return (
     typeof value === 'number' && isFinite(value) && Math.floor(value) === value
   )
 }
 
-function defaultItemRender (page, type, element) {
+function breakItemRender (page, element) {
   return element
 }
 
@@ -22,72 +22,60 @@ class Pagination extends Component {
     defaultCurrent: PropTypes.number,
     pageSize: PropTypes.number,
     total: PropTypes.number,
-    pageLink: PropTypes.any,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    itemRender: PropTypes.func,
+    pageSizeOptions: PropTypes.array,
+    mode: PropTypes.oneOf(['simple', 'normal', 'pn'])
   }
 
   static defaultProps = {
+    pageSizeOptions: [],
+    showQuickJumper: true,
+    mode: 'normal',
     defaultCurrent: 1,
-    current: 1,
     pageSize: 10,
     pageBufferSize: 2,
     total: 0,
     onChange: noop,
     className: '',
-    prefixCls: 'hi-pagination',
-    itemRender: defaultItemRender,
-    jumpTo: 1
+    prefixCls: 'hi-pagination'
   }
 
   constructor (props) {
     super(props)
 
-    const hasOnChange = props.onChange !== noop
-    const hasCurrent = 'current' in props
-    if (hasCurrent && !hasOnChange) {
-      console.warn(
-        'Warning: You provided a `current` prop to a Pagination component without an `onChange` handler. This will render a read-only component.'
-      )
-    }
-
     let current = props.defaultCurrent
-    if ('current' in props) {
-      current = props.current
-    }
-
     let pageSize = props.pageSize
 
     this.state = {
       current,
+      jumpTo: current,
       pageSize,
       total: props.total,
       prevProps: JSON.parse(JSON.stringify(props))
     }
   }
 
-  static getDerivedStateFromProps (nextProps, prevState) {
-    let prevProps = prevState.prevProps
+  componentWillReceiveProps (props) {
+    let states = {}
 
-    if (nextProps.current !== prevProps.current) {
-      prevProps.current = nextProps.current
-      prevState.current = nextProps.current
+    if (props.defaultCurrent !== this.props.defaultCurrent) {
+      states = {
+        current: props.defaultCurrent,
+        jumpTo: props.defaultCurrent
+      }
+    }
+    if (props.pageSize !== this.props.pageSize) {
+      states.pageSize = props.pageSize
+    }
+    if (props.total !== this.props.total) {
+      states.total = props.total
     }
 
-    if (nextProps.pageSize !== prevProps.pageSize) {
-      prevProps.pageSize = nextProps.pageSize
-      prevState.pageSize = nextProps.pageSize
-    }
-
-    if (nextProps.total !== prevProps.total) {
-      prevProps.total = nextProps.total
-      prevState.total = nextProps.total
-    }
-
-    return prevState
+    this.setState({...states})
   }
 
-  calculatePage (p) {
-    let pageSize = p
+  calculatePage (pageSize) {
     if (typeof pageSize === 'undefined') {
       pageSize = this.state.pageSize
     }
@@ -95,241 +83,311 @@ class Pagination extends Component {
   }
 
   isValid (page) {
-    return isIntege(page) && page >= 1 && page !== this.state.current
+    return isInteger(page) && page >= 1 && page !== this.state.current
   }
 
-  handleChange (p) {
-    let page = p
-
+  handleChange (page) {
     if (this.isValid(page)) {
       if (page > this.calculatePage()) {
         page = this.calculatePage()
       }
 
       const prevPage = this.state.current
-      this.setState({ current: page })
+      this.setState({
+        current: page,
+        jumpTo: page
+      })
 
       const pageSize = this.state.pageSize
       this.props.onChange(page, prevPage, pageSize)
     }
   }
 
-  hasPrev () {
-    return this.state.current > 1
-  }
-
-  hasNext () {
-    return this.state.current < this.calculatePage()
-  }
-
   prev () {
-    if (this.hasPrev()) {
-      this.handleChange(this.state.current - 1)
+    if (this.state.current > 1) {
+      return this.state.current - 1
     }
+    return -1
   }
 
   next () {
-    if (this.hasNext()) {
-      this.handleChange(this.state.current + 1)
+    if (this.state.current < this.calculatePage()) {
+      return this.state.current + 1
     }
+    return -1
   }
-  sizeChangeEvent (val) {
-    this.props.sizeChangeEvent(val, this.state.current)
+
+  sizeChangeEvent (pageSize) {
+    this.setState({
+      pageSize
+    }, () => {
+      this.props.sizeChangeEvent && this.props.sizeChangeEvent(pageSize, this.state.current)
+    })
   }
-  render () {
-    const { prefixCls, itemRender, className, pageLink, showTotal, total, pageSize, jumpEvent, sizeChangeEvent, theme, localeDatas } = this.props
-    const { current } = this.state
-    const allPages = this.calculatePage()
-    const pagerList = []
-    let jumpPrev = null
-    let jumpNext = null
-    let firstPager = null
-    let lastPager = null
-    const pageBufferSize = this.props.pageBufferSize
-    // const prevPage = current - 1 > 0 ? current - 1 : 0
-    // const nextPage = current + 1 < allPages ? current + 1 : allPages
-    if (allPages <= 2 + pageBufferSize * 2) {
-      for (let i = 1; i <= allPages; i++) {
-        const active = (this.state.current === i)
-        pagerList.push(
-          <Pager
-            rootPrefixCls={prefixCls}
-            onClick={this.handleChange.bind(this)}
-            key={i}
-            page={i}
-            active={active}
-            pageLink={!!pageLink}
-            itemRender={itemRender}
-          />
-        )
-      }
-    } else {
-      jumpPrev = (
-        <li key='prev' className={`${prefixCls}__item ${prefixCls}--break-prev`}>
-          ...
-        </li>
-      )
-      jumpNext = (
-        <li key='next' className={`${prefixCls}__item ${prefixCls}--break-next`}>
-          ...
-        </li>
-      )
-      firstPager = (
-        <Pager
-          first
-          rootPrefixCls={prefixCls}
-          onClick={this.handleChange.bind(this)}
-          key={1}
-          page={1}
-          active={false}
-          pageLink={!!pageLink}
-          itemRender={itemRender}
-        />
-      )
-      lastPager = (
-        <Pager
-          last
-          rootPrefixCls={prefixCls}
-          onClick={this.handleChange.bind(this)}
-          key={allPages}
-          page={allPages}
-          active={false}
-          pageLink={!!pageLink}
-          itemRender={itemRender}
-        />
-      )
-      let left = Math.max(1, current - pageBufferSize + 1)
-      let right = Math.min(current + pageBufferSize, allPages)
 
-      if (current - 1 <= pageBufferSize) {
-        right = 1 + pageBufferSize * 2
-      }
-      if (allPages - current <= pageBufferSize) {
-        left = allPages - pageBufferSize * 2
-      }
-      for (let i = left; i <= right; i++) {
-        const active = (current === i)
-        pagerList.push(
-          <Pager
-            rootPrefixCls={prefixCls}
-            onClick={this.handleChange.bind(this)}
-            key={i}
-            page={i}
-            active={active}
-            pageLink={!!pageLink}
-            itemRender={itemRender}
-          />
-        )
-      }
-      if (current >= pageBufferSize * 2) {
-        pagerList[0] = React.cloneElement(pagerList[0], {
-          className: `${prefixCls}__item--after-break-prev`
-        })
-        pagerList.unshift(jumpPrev)
-      }
-      if (
-        allPages - current >= pageBufferSize * 2 &&
-        current !== allPages - 2
-      ) {
-        pagerList[pagerList.length - 1] = React.cloneElement(
-          pagerList[pagerList.length - 1],
-          {
-            className: `${prefixCls}__item--before-break-next`
-          }
-        )
-        pagerList.push(jumpNext)
-      }
-      if (left !== 1) {
-        pagerList.unshift(firstPager)
-      }
-      if (right !== allPages) {
-        pagerList.push(lastPager)
-      }
-    }
+  renderPageSizes () {
+    const { pageSize, pageSizeOptions, prefixCls, localeDatas } = this.props
 
-    const prevDisabled = !this.hasPrev()
-    const nextDisabled = !this.hasNext()
-    const gotoPage = (e) => {
-      const pageNum = e.target.value
-      const setPageNum = (val) => {
-        this.setState({
-          jumpTo: +val,
-          current: +val
-        })
-        jumpEvent(Number(val))
-      }
-
-      if (isNaN(parseInt(pageNum, 10)) || parseInt(pageNum, 10) <= 0) return
-
-      if (e.type === 'blur') {
-        setPageNum(pageNum)
-      } else if (e.type === 'keypress') {
-        if (e.charCode === 13) {
-          setPageNum(pageNum)
-        }
-      }
+    if (pageSizeOptions.length === 0) {
+      return null
     }
 
     return (
-      <div className={`${prefixCls} ${className} theme__${theme}`}>
+      <div className={`${prefixCls}__sizes ${prefixCls}__text`}>
+        {localeDatas.pagination.itemPerPage}
+        <div className={`${prefixCls}__span`}>
+          <Dropdown title={pageSize} type='button'
+            list={pageSizeOptions}
+            onClick={(val) => {
+              this.sizeChangeEvent(val)
+            }}
+          />
+        </div>
+        {localeDatas.pagination.item}
+      </div>
+    )
+  }
+
+  renderJumper () {
+    const { showQuickJumper, prefixCls, localeDatas } = this.props
+
+    if (!showQuickJumper) {
+      return null
+    }
+
+    return (
+      <div className={`${prefixCls}__jumper ${prefixCls}__text`}>
+        {localeDatas.pagination.goto}
+        {this.renderJumperInput()}
+        {localeDatas.pagination.page}
+      </div>
+    )
+  }
+
+  renderJumperInput () {
+    const { prefixCls } = this.props
+
+    return (
+      <div className={`${prefixCls}__jumper-input`}>
+        <Input onKeyPress={this.gotoPage.bind(this)} onBlur={this.gotoPage.bind(this)} value={this.state.jumpTo} onChange={(e, tVal) => {
+          const val = e.target.value
+          if (/^\d+$/.test(val)) {
+            const maxPage = this.calculatePage()
+            const jumpTo = val < 1 ? 1 : (val > maxPage ? maxPage : val)
+
+            this.setState({
+              jumpTo
+            })
+          } else {
+            this.setState({
+              jumpTo: this.state.jumpTo
+            })
+          }
+        }} />
+      </div>
+    )
+  }
+
+  gotoPage = e => {
+    const pageNum = parseInt(e.target.value)
+    const setPageNum = (val) => {
+      this.setState({
+        current: val
+      })
+      this.props.jumpEvent && this.props.jumpEvent(Number(val))
+    }
+
+    if (e.type === 'blur') {
+      setPageNum(pageNum)
+    } else if (e.type === 'keypress') {
+      if (e.charCode === 13) {
+        setPageNum(pageNum)
+      }
+    }
+  }
+
+  renderPagers () {
+    const { pageBufferSize } = this.props
+    const {
+      current
+    } = this.state
+    const maxPage = this.calculatePage()
+    if (maxPage === 0) {
+      return null
+    }
+    const prevPager = this.renderPrevPager()
+    const nextPager = this.renderNextPager()
+    let pagers = [prevPager]
+    let leftBuffer, rightBuffer
+    if (pageBufferSize * 2 + 1 + 2 >= maxPage) {
+      leftBuffer = 1
+      rightBuffer = maxPage
+    } else if ((maxPage - current) <= pageBufferSize) {
+      rightBuffer = maxPage
+      leftBuffer = maxPage - 2 * pageBufferSize - 1
+      leftBuffer = leftBuffer <= 1 ? 1 : leftBuffer
+    } else if ((current - pageBufferSize) <= 1) {
+      leftBuffer = 1
+      rightBuffer = 2 * pageBufferSize + leftBuffer + 1
+      rightBuffer = rightBuffer >= maxPage ? maxPage : rightBuffer
+    } else {
+      leftBuffer = current - pageBufferSize
+      rightBuffer = current + pageBufferSize
+    }
+    console.log('----------renderPagers', leftBuffer, rightBuffer)
+    if (leftBuffer !== 1) {
+      pagers.push(this.renderPager(1, {active: current === 1}))
+    }
+    if (leftBuffer > 2) {
+      pagers.push(this.renderPager('...', {itemRender: breakItemRender}))
+    }
+    for (let index = leftBuffer; index <= rightBuffer; index++) {
+      pagers.push(this.renderPager(index, {active: current === index}))
+    }
+    if (rightBuffer < maxPage - 1) {
+      pagers.push(this.renderPager('...', {itemRender: breakItemRender}))
+    }
+    if (rightBuffer !== maxPage) {
+      pagers.push(this.renderPager(maxPage, {active: current === maxPage}))
+    }
+    pagers.push(nextPager)
+
+    return pagers
+  }
+
+  renderPrevPager () {
+    const { prefixCls } = this.props
+    const prevPage = this.prev()
+    return this.renderPager(prevPage, {className: `${prefixCls}__item--after-break-prev`, disabled: prevPage < 1}, <i className='hi-icon icon-left' />)
+  }
+
+  renderNextPager () {
+    const { prefixCls } = this.props
+    const nextPage = this.next()
+    return this.renderPager(nextPage, {className: `${prefixCls}__item--after-break-next`, disabled: nextPage < 1}, <i className='hi-icon icon-right' />)
+  }
+
+  pagerIndex = 0
+  renderPager (page, props, children) {
+    const { prefixCls, itemRender, pageLink } = this.props
+    this.pagerIndex++
+
+    return (
+      <Pager
+        key={this.pagerIndex}
+        rootPrefixCls={prefixCls}
+        onClick={this.handleChange.bind(this)}
+        page={page}
+        pageLink={!!pageLink}
+        itemRender={itemRender || props.itemRender}
+        {...props}
+      >
+        {children}
+      </Pager>
+    )
+  }
+
+  renderNormal () {
+    const { prefixCls, showTotal, total } = this.props
+
+    return (
+      <React.Fragment>
         {
-          showTotal && <span className='hi-pagination__total'>{localeDatas.pagination.total(total)}</span>
-        }
-        {
-          sizeChangeEvent && <div className='hi-pagination__sizechange'>
-            {localeDatas.pagination.itemPerPage}
-            <span className='hi-pagination__sizechange-button'>
-              <Dropdown title={pageSize} type='button'
-                list={[{
-                  value: 10,
-                  title: '10'
-                }, {
-                  value: 20,
-                  title: '20'
-                }, {
-                  value: 50,
-                  title: '50'
-                }, {
-                  value: 100,
-                  title: '100'
-                }]}
-                onClick={(val) => {
-                  this.sizeChangeEvent(val)
-                }}
-              />
-            </span>
-            {localeDatas.pagination.item}
+          showTotal &&
+          <div className={`${prefixCls}__total ${prefixCls}__text`}>
+            共<span className={`${prefixCls}__span`}>{total}</span>条
           </div>
         }
-        <ul className='hi-pagination__list'>
-          <li
-            onClick={this.prev.bind(this)}
-            className={`${prefixCls}__item ${prefixCls}--prev ${!prevDisabled ? '' : `${prefixCls}__item--disabled`}`}
-          >
-            <a href='javascript: void(0)'>
-              <i className='hi-icon icon-left' />
-            </a>
-          </li>
-          {pagerList}
-          <li
-            onClick={this.next.bind(this)}
-            className={`${prefixCls}__item ${prefixCls}--next ${!nextDisabled ? '' : `${prefixCls}__item--disabled`}`}
-          >
-            <a href='javascript: void(0)'>
-              <i className='hi-icon icon-right' />
-            </a>
-          </li>
-        </ul>
+        {this.renderPageSizes()}
+        {this.renderPagers()}
+        {this.renderJumper()}
+      </React.Fragment>
+    )
+  }
+
+  renderSimple () {
+    const {
+      total,
+      prefixCls
+    } = this.props
+    const maxPage = this.calculatePage()
+
+    if (maxPage === 0) {
+      return null
+    }
+
+    return (
+      <div className={`${prefixCls}__text`}>
+        <span>第</span>
+        {this.renderJumperInput()}
+        <span>页</span>
+        <span className={`${prefixCls}__span`}>/</span>
+        共<span className={`${prefixCls}__span`}>{this.calculatePage()}</span>页,
+        <span className={`${prefixCls}__span`}>{total}条记录</span>
+      </div>
+    )
+  }
+
+  renderPn () { // 上一页下一页
+    const {
+      prefixCls,
+      showQuickJumper
+    } = this.props
+    const maxPage = this.calculatePage()
+
+    if (maxPage === 0) {
+      return null
+    }
+
+    const prevPager = this.renderPrevPager()
+    const nextPager = this.renderNextPager()
+
+    return (
+      <React.Fragment>
+        {prevPager}
         {
-          jumpEvent && <div className='hi-pagination__goto'>
-            {localeDatas.pagination.goto}
-            <Input onKeyPress={gotoPage} onBlur={gotoPage} value={this.state.jumpTo} onInput={(el, tVal) => {
-              this.setState({
-                jumpTo: el.target.value.replace(/[^\d]/g, '')
-              })
-            }} />
+          showQuickJumper &&
+          <div className={`${prefixCls}__text`}>
+            {this.renderJumperInput()}
+            /
+            <span style={{marginRight: '8px'}}>{maxPage}</span>
           </div>
         }
+        {nextPager}
+      </React.Fragment>
+    )
+  }
+
+  render () {
+    const {
+      mode,
+      prefixCls,
+      className,
+      theme
+    } = this.props
+    let children
+
+    switch (mode) {
+      case 'normal':
+        children = this.renderNormal()
+        break
+
+      case 'simple':
+        children = this.renderSimple()
+        break
+
+      case 'pn':
+        children = this.renderPn()
+        break
+
+      default:
+        children = this.renderNormal()
+        break
+    }
+
+    return (
+      <div className={`${prefixCls} ${prefixCls}--${mode} ${className} theme__${theme}`}>
+        {children}
       </div>
     )
   }

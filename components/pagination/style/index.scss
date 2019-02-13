@@ -36,37 +36,31 @@
 
   @include component-reset();
 
+  &__text {
+    line-height: 32px;
+    color: $gray-darker;
+  }
   &__total {
-    margin-right: $spacer-3;
-    line-height: 32px;
-    color: $gray-darker;
+    margin-right: $spacer-4;
+  }
+  &__sizes {
+    margin-right: $spacer-4;
+  }
+  &__jumper {
+    margin-left: $spacer-4;
+  }
+  &__span {
+    display: inline-block;
+    margin: 0 $spacer-1;
   }
 
-  &__sizechange {
-    display: flex;
-    align-items: center;
-    margin-right: $spacer-3;
-    line-height: 32px;
-    color: $gray-darker;
-
-    .hi-btn {
-      vertical-align: top;
-    }
-  }
-
-  &__sizechange-button {
+  &__jumper-input {
+    display: inline-block;
     margin: 0 $spacer-2;
-  }
-
-  &__goto {
-    display: flex;
-    align-items: center;
-    margin-left: $spacer-3;
     color: $gray-darker;
 
     .hi-input {
       width: 60px;
-      margin-left: $spacer-3;
 
       &__text {
         text-align: center;
@@ -89,7 +83,7 @@
       box-sizing: border-box;
       display: inline-block;
       min-width: 32px;
-      padding: 0 2px;
+      padding: 0 4px;
       height: 32px;
       border: 1px solid $gray;
       border-radius: 2px;
@@ -98,6 +92,7 @@
       text-decoration: none;
       text-align: center;
       color: $gray-darker;
+      cursor: pointer;
 
       &:hover {
         border: 1px solid transparent;
