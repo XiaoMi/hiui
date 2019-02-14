@@ -169,7 +169,7 @@ render() {
 | pageSize | 每页条数  | number | - |  10 |
 | pageSizeOptions | 指定每页可以显示多少条 | array | - |  [] |
 | total | 数据总数  | number   | - | - |
+| hideOnSinglePage | 只有一页时是否隐藏分页器	  | boolean   | true, false | false |
 | showQuickJumper | 是否显示跳转  | boolean   | true, false | false |
 | onChange | 页码改变的回调，参数为当前页（page），前一页（prevPage），每页条数（pageSize）  | function | -  |  - | - |
 | sizeChangeEvent |  每页条数改变的回调函数，返回 改变后的每页条数 及 当前页数  | function | - | - | - |
-| itemRender |  自定义分页样式  | function(page, text) | - | - | - |
