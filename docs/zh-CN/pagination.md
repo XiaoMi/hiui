@@ -76,6 +76,7 @@ render() {
         pageSizeOptions={pageSizeOptions}
         defaultCurrent={this.state.current}
         showTotal={true}
+        showQuickJumper={true}
         jumpEvent={(val) => {this.setState({current: val})}}
         sizeChangeEvent={(val, current) => {
             console.log('每页', val, '条', '当前第', current, '页') 
@@ -116,6 +117,7 @@ render() {
       <Pagination
         mode='pn'
         defaultCurrent={this.state.current}
+        showQuickJumper={true}
         total={250}
         pageSize={30}
         onChange={(page, prevPage, pageSize)=>{console.log(page, prevPage, pageSize)}}
