@@ -1,146 +1,19 @@
 import React from 'react'
 import './style/index.scss'
-import { connect } from 'react-redux'
-import LocaleDropdown from '../Component/Dropdown/LocaleDropdown'
-import locales from '../../locales'
+import HomeBase from './HomeBase'
 
 class Home extends React.Component {
-  constructor (props) {
-    super(props)
-
-    // const locale = this.storeLang()
-
-    this.designText = React.createRef()
-    this.designList = React.createRef()
-    this.efficiencyText = React.createRef()
-
-    this.excelText = React.createRef()
-    this.excelList = React.createRef()
-
-    this.state = {
-      designText: false,
-      designList: false,
-      efficiencyText: false,
-      excelText: false,
-      excelList: false
-    }
-
-    // this.hashChangeEvent = this.hashChangeEvent.bind(this)
-    this.scrollEvent = this.scrollEvent.bind(this)
-  }
-
-  componentDidMount () {
-    this.scrollEvent()
-    window.addEventListener('scroll', this.scrollEvent)
-    // window.addEventListener('hashchange', this.hashChangeEvent)
-  }
-
-  componentWillUnmount () {
-    window.removeEventListener('scroll', this.scrollEvent)
-    // window.removeEventListener('hashchange', this.hashChangeEvent)
-  }
-
-  // hashChangeEvent () {
-  //   let locale = window.location.hash.split('/')[1]
-
-  //   if (!locale) { return }
-
-  //   // 临时用于隐藏语言
-  //   if (locale !== 'zh-CN') {
-  //     window.location.hash = window.location.hash.replace(locale, 'zh-CN')
-  //   }
-
-  //   if (locale !== window.localStorage.getItem('HIUI_LANGUAGE')) {
-  //     window.localStorage.setItem('HIUI_LANGUAGE', locale)
-
-  //     this.setState({locale})
-  //   }
-  // }
-
-  // 保存语言类型
-  storeLang () {
-    let locale = window.location.hash.split('/')[1]
-
-    if (!locale || !(locale in locales)) {
-      locale = window.localStorage.getItem('HIUI_LANGUAGE')
-      if (locale && (locale in locales)) {
-        window.location.hash = `#/${locale}`
-      }
-    } else {
-      locale = 'zh-CN'
-      window.localStorage.setItem('HIUI_LANGUAGE', locale)
-      window.location.hash = `#/${locale}`
-    }
-
-    return locale
-  }
-
-  scrollEvent () {
-    const mapList = [
-      'designText',
-      'designList',
-      'efficiencyText',
-      'excelText',
-      'excelList'
-    ]
-
-    mapList.forEach(item => {
-      if (this.isElementInViewport(this[item].current)) {
-        this.setState({
-          [item]: true
-        })
-      }
-    })
-  }
-
-  isElementInViewport (el, offset = 0) {
-    const box = el.getBoundingClientRect()
-
-    const top = (box.top >= 0)
-    const bottom = (box.bottom <= (window.innerHeight || document.documentElement.clientHeight) + offset)
-    return (top && bottom)
-  }
-
-  changeLocale () {
-    const locale = this.props.locale
-    const LANG = {
-      'zh-CN': 'English',
-      'en-US': '中文'
-    }
-
-    return LANG[locale]
-  }
-
   render () {
     const {designText, efficiencyText, excelText, excelList} = this.state
-    const {
-      locale
-    } = this.props
     return (
       <div className='page'>
-        <div className='section-header'>
-          <div className='container'>
-            <div className='logo-con fl'>
-              <span className='logo' />
-              <span>HIUI Design</span>
-            </div>
-            <div className='intro fr'>
-              <a className='active item' href=''>Home</a>
-              {/* <a href=''>规范设计</a> */}
-              <a className='item' href={`#/${locale}/components`}>Components</a>
-              <div className='item'>
-                <LocaleDropdown />
-              </div>
-            </div>
-          </div>
-        </div>
         <div className='section-banner'>
           <div className='container'>
             <div className='bg' />
             <div className='con'>
               <div className='text'>HIUI, the evangelist for the principles of design</div>
               <div className='desc'>HIUi is a solution that is adequate for the fomulation and implementation of interaction and UI design standard for front,middle and backend .</div>
-              <div className='use'><a href={`#/${locale}/components`}>Start</a></div>
+              <div className='use'><a href={`#/en-US/docs`}>Start</a></div>
             </div>
           </div>
         </div>
@@ -234,6 +107,4 @@ class Home extends React.Component {
   }
 }
 
-export default connect(state => ({
-  locale: state.global.locale
-}))(Home)
+export default HomeBase(Home)

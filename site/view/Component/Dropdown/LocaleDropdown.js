@@ -31,7 +31,7 @@ class LocaleDropdown extends React.Component {
       isShowList: false
     })
     this.props.dispatch(setLocale(locales[localesLabel.indexOf(val)]))
-    this.props.changeDropdown && this.props.changeDropdown(val)
+    // this.props.changeDropdown && this.props.changeDropdown(locales[localesLabel.indexOf(val)])
   }
   toggleDropdown (isShow) {
     this.setState({
@@ -62,7 +62,9 @@ class LocaleDropdown extends React.Component {
                 <li
                   key={index}
                   className='hi-demo__item'
-                  onClick={this.changeDropdown.bind(this, item.title)}
+                  onClick={() => {
+                    this.changeDropdown(item.title)
+                  }}
                 >
                   {item.title}
                 </li>
