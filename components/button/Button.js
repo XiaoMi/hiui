@@ -30,9 +30,9 @@ class Button extends Component {
     size: 'normal'
   }
 
-  clickCb () {
+  clickCb (e) {
     if (this.props.onClick) {
-      this.props.onClick()
+      this.props.onClick(e)
     }
   }
 
