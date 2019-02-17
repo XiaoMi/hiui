@@ -105,16 +105,14 @@ class Pagination extends Component {
     if (typeof pageSize === 'undefined') {
       pageSize = this.state.pageSize
     }
-    return Math.floor((total - 1) / pageSize) + 1
-  }
-
-  isValid (page) {
-    return isInteger(page) && page >= 1 && page !== this.state.current
+    return Math.ceil(total / pageSize)
   }
 
   handleChange (page) {
-    if (this.isValid(page)) {
-      const prevPage = this.state.current
+    const prevPage = this.state.current
+    const maxPage = this.calculatePage(this.props.total)
+
+    if (isInteger(page) && page !== prevPage && page >= 1 && page <= maxPage) {
       this.setState({
         current: page,
         jumpTo: page
