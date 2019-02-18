@@ -87,7 +87,7 @@ class Component extends React.Component {
       locale
     } = this.props
     // 控制markdown显示隐藏
-    const currentPage = this.props.allComponents[page]
+    const currentPage = this.props.allComponents[this.state.topNav][page]
     if (currentPage) {
       const el = React.createElement(currentPage.default || currentPage, { theme, locale })
       return el

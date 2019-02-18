@@ -4,11 +4,11 @@ module.exports = {
     i18n: 'i18n',
     theme: 'Customize Theme',
     template: 'Layout Theme',
-    'group-basic': '基本组件',
-    'group-navgation': '导航',
-    'group-form': '表单',
-    'group-data': '数据展示',
-    'group-tips': '通知/提示',
+    'group-basic': 'General',
+    'group-navgation': 'Navigation',
+    'group-form': 'Form',
+    'group-data': 'Data',
+    'group-tips': 'Feedback',
     typography: 'Typography',
     button: 'Button',
     dropdown: 'Dropdown',
@@ -82,7 +82,7 @@ module.exports = {
   },
   headers: {
     home: 'Home',
-    components: 'Components',
+    components: 'Docs',
     design: 'Design',
     template: 'Template'
   }

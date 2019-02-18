@@ -1,5 +1,6 @@
 import React from 'react'
 import Header from './Component/Header'
+import { connect } from 'react-redux'
 import routes from './routes'
 import {Classic as Page, Logo, History} from '@hi-ui/classic-theme'
 import Icon from '../../components/icon'
@@ -18,6 +19,8 @@ const logo = <Logo
   alt='Project Logo'
 />
 class Index extends React.Component {
+  componentNavs = []
+  designNavs = []
   constructor (props) {
     super(props)
     const _h = History.getHistory()
@@ -36,22 +39,34 @@ class Index extends React.Component {
     this.state = {
       locale: locale
     }
+
     const components = Object.assign(
-      Object.values(pages.components).reduce((a, b) => {
-        return Object.assign(a, b)
-      }, {}),
-      pages.documents,
-      Object.values(designs.components).reduce((a, b) => {
-        return Object.assign(a, b)
-      }, {}),
-      designs.documents,
-      Object.values(templates.components).reduce((a, b) => {
-        return Object.assign(a, b)
-      }, {}),
-      templates.documents
+      {
+        docs: {
+          ...Object.values(pages.components).reduce((a, b) => {
+            return Object.assign(a, b)
+          }, {}),
+          ...pages.documents
+        }
+      }, {
+        designs: {
+          ...Object.values(designs.components).reduce((a, b) => {
+            return Object.assign(a, b)
+          }, {}),
+          ...designs.documents
+        }
+      }, {
+        templates: {
+          ...Object.values(templates.components).reduce((a, b) => {
+            return Object.assign(a, b)
+          }, {}),
+          ...templates.documents
+        }
+      }
     )
     setComponents(components)
   }
+
   getSiderName (key) {
     const map = locales[this.state.locale] || {}
     return key.split('.').reduce((a, b) => {
@@ -72,68 +87,73 @@ class Index extends React.Component {
       <Icon name='internet' />,
       <span className='sider__icon-component' />
     ]
-
+    const {locale} = this.props
     let components = []
     let navs = {}
     let siderDocuments = []
     Object.keys(items.documents).forEach((title, i) => {
-      const _title = locales[this.state.locale]['components'][title]
+      const _title = locales[locale]['components'][title]
       siderDocuments.push({
         title: <span className='components-title'>{_title}</span>,
-        to: `/${this.state.locale}/docs/${title}`,
+        to: `/${locale}/docs/${title}`,
         icon: icons[i]
       })
       navs[title] = _title
     })
     Object.keys(items.components).forEach((title, i) => {
       components.push({
-        title: <span className='components-title'>{locales[this.state.locale]['components'][title]}</span>
+        title: <span className='components-title'>{locales[locale]['components'][title]}</span>
       })
 
       Object.keys(items.components[title]).forEach((page, j) => {
-        const _title = locales[this.state.locale]['components'][page]
+        const _title = locales[locale]['components'][page]
         navs[page] = _title
         components.push({
           title: <span className='components-page'>{_title}</span>,
-          to: `/${this.state.locale}/docs/${page}`
+          to: `/${locale}/docs/${page}`
         })
       })
     })
-    setComponentsNavs(navs)
+    this.componentNavs = navs
     return [].concat(siderDocuments, [{
-      title: <span className='components-page'>{locales[this.state.locale]['misc']['components']}</span>,
+      title: <span className='components-page'>{locales[locale]['misc']['components']}</span>,
       icon: icons[icons.length - 1],
       children: components
     }])
+  }
+  componentDidUpdate () {
+    setComponentsNavs(this.componentNavs)
+    setDesignNavs(this.designNavs)
   }
   getDesignTemplatesItems (items, path, callback) {
     let components = []
     let siderDocuments = []
     let navs = {}
+    const {locale} = this.props
     Object.keys(items.documents).forEach((title, i) => {
-      const _title = locales[this.state.locale][path][title]
+      const _title = locales[locale][path][title]
       navs[title] = _title
       siderDocuments.push({
         title: _title,
-        to: `/${this.state.locale}/${path}/${title}`
+        to: `/${locale}/${path}/${title}`
       })
     })
     Object.keys(items.components).forEach((title, i) => {
       const temp = []
       Object.keys(items.components[title]).forEach((page, j) => {
-        const _title = locales[this.state.locale][path][page]
+        const _title = locales[locale][path][page]
         temp.push({
           title: <span className='components-page'>{_title}</span>,
-          to: `/${this.state.locale}/${path}/${page}`
+          to: `/${locale}/${path}/${page}`
         })
         navs[page] = _title
       })
       components.push({
-        title: <span className='components-title'>{locales[this.state.locale][path][title]}</span>,
+        title: <span className='components-title'>{locales[locale][path][title]}</span>,
         children: temp
       })
     })
-    callback && callback(navs)
+    this.designNavs = navs
     return [].concat(siderDocuments, components)
   }
   render () {
@@ -142,12 +162,15 @@ class Index extends React.Component {
     const _templates = this.getDesignTemplatesItems(templates, 'templates')
     return (
       <Page
-        header={<Header onLocaleChange={(val) => this.setState({locale: val})} locale={this.state.locale} />}
+        header={<Header locale={this.props.locale} />}
         logo={logo}
-        routes={routes(this.state.locale, siders, _designs, _templates)}
+        routes={routes(this.props.locale, siders, _designs, _templates)}
       />
     )
   }
 }
 
-export default Index
+// export default Index
+export default connect(state => ({
+  locale: state.global.locale
+}))(Index)
