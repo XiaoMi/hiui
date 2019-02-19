@@ -59,9 +59,11 @@ $prefix: 'hi-tabs' !default;
   &--desc {
     .#{$prefix}__nav {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      overflow: hidden;
     }
     .#{$prefix}__item {
+      flex: none;
       display: flex;
       flex-direction: column;
       padding: 16px 20px;
@@ -91,7 +93,23 @@ $prefix: 'hi-tabs' !default;
   }
 
   &--button {
-
+    .#{$prefix}__nav {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .#{$prefix}__item {
+      flex: none;
+      height: 36px;
+      line-height: 36px;
+      padding: 0 20px;
+      margin-right: 32px;
+      box-sizing: border-box;
+      &--active {
+        color: #4284F5;
+        border: 1px solid #4284F5;
+        border-radius: 18px;
+      }
+    }
   }
 
   .#{$prefix}__content {
