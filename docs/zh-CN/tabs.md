@@ -1,7 +1,6 @@
 ## Tabs 切换
 
 
-
 ### 卡片式标签
 :::demo
 
@@ -115,6 +114,61 @@ render() {
   return (
     <div>
       <Tabs activeTabKey="1" onTabClick={(tab,e)=>console.log(tab,e)} editable onEdit={this.onEdit.bind(this)}>
+        {
+          this.state.panes.map((pane, index) => {
+            return (
+              <Tabs.Pane 
+                tabName={pane.tabName} 
+                tabKey={pane.tabKey} 
+                closable={pane.closable}
+                key={index}
+              >
+                {pane.tabName} 
+              </Tabs.Pane>
+            )
+          })
+        }
+      </Tabs>
+    </div>
+  )
+}
+```
+:::
+
+
+### 竖直标签
+:::demo
+
+```js
+constructor(props) {
+  super(props)
+  this.state = {
+    panes: [
+      {
+        tabName: '我的订单',
+        tabKey: 'tabKey-1'
+      },
+      {
+        tabName: '团购订单',
+        tabKey: 'tabKey-2',
+        closable: false
+      },
+      {
+        tabName: '以旧换新订单',
+        tabKey: 'tabKey-3'
+      },
+      {
+        tabName: '消息通知',
+        tabKey: 'tabKey-4'
+      }
+    ]
+  }
+}
+
+render() {
+  return (
+    <div>
+      <Tabs placement="left" activeTabKey="1" onTabClick={(tab,e)=>console.log(tab,e)}>
         {
           this.state.panes.map((pane, index) => {
             return (

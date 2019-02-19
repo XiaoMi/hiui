@@ -8,7 +8,7 @@ const noop = () => {}
 class Tabs extends Component {
   static propTypes = {
     type: PropTypes.oneOf(['desc', 'card', 'button']),
-    placement: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
+    placement: PropTypes.oneOf(['top', 'left']),
     defaultActiveKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     maxTabs: PropTypes.number,
     renderTabBar: PropTypes.func,
@@ -111,7 +111,8 @@ class Tabs extends Component {
     const { activeKey } = this.state
     const { prefixCls, type, placement, editable, children } = this.props
     const tabsClasses = classNames(prefixCls, `${prefixCls}--${type}`, {
-      [`${prefixCls}-${placement}`]: type === 'card'
+      [`${prefixCls}--${placement}`]: type === 'card',
+      [`${prefixCls}--editable`]: editable
     })
 
     return (

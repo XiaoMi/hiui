@@ -30,29 +30,59 @@ $prefix: 'hi-tabs' !default;
   }
 
   &--card {
-    .#{$prefix}__header {
-      border-bottom: 1px solid #E6E7E8;
-    }
     .#{$prefix}__nav {
       display: flex;
-      flex-wrap: wrap;
-      margin-bottom: -1px;
+      flex-wrap: nowrap;
     }
     .#{$prefix}__item {
       height: 48px;
       line-height: 48px;
       padding: 0 16px;
-      margin-right: 16px;
       box-sizing: border-box;
+      &:hover {
+        color: #4284F5;
+      }
       &--active {
         border: 1px solid #E6E7E8;
-        border-bottom-color: #fff;
         color: #4284F5;
       }
     }
     .#{$prefix}__add {
       right: 4px;
       bottom: 12px;
+    }
+  }
+  &--top {
+    .#{$prefix}__nav {
+      margin-bottom: -1px;
+    }
+    .#{$prefix}__header {
+      border-bottom: 1px solid #E6E7E8;
+    }
+    .#{$prefix}__item {
+      flex: 0 1 auto;
+      margin-right: 16px;
+      &--active {
+        border-bottom-color: #fff;
+      }
+    }
+  }
+  &--left {
+    display: flex;
+    flex-wrap: nowrap;
+    .#{$prefix}__header {
+      flex: none;
+      display: inline-block;
+      border-right: 1px solid #E6E7E8;
+    }
+    .#{$prefix}__nav {
+      flex-direction: column;
+      margin-right: -1px;
+    }
+    .#{$prefix}__item {
+      &--active {
+        border-right-color: #fff;
+      }
     }
   }
 
@@ -71,6 +101,12 @@ $prefix: 'hi-tabs' !default;
       border: 1px solid #E6E7E8;
       border-left-width: 0px;
       box-sizing: border-box;
+      &:hover {
+        color: #4284F5;
+        .#{$prefix}__item-desc {
+          color: #4284F5;
+        }
+      }
       &:first-child {
         border-left-width: 1px;
       }
@@ -104,6 +140,9 @@ $prefix: 'hi-tabs' !default;
       padding: 0 20px;
       margin-right: 32px;
       box-sizing: border-box;
+      &:hover {
+        color: #4284F5;
+      }
       &--active {
         color: #4284F5;
         border: 1px solid #4284F5;
@@ -113,8 +152,5 @@ $prefix: 'hi-tabs' !default;
   }
 
   .#{$prefix}__content {
-    display: inline-block;
-    position: relative;
-    margin-bottom: -1px;
   }
 }
