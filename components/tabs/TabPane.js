@@ -4,12 +4,15 @@ import PropTypes from 'prop-types'
 class TabPane extends Component {
   static defaultProps = {
     prefixCls: 'hi-tabs-pane',
-    disabled: false
+    disabled: false,
+    closable: true
   }
 
   static propTypes = {
-    tabName: PropTypes.string,
-    tabKey: PropTypes.string,
+    tabName: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    tabDesc: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    tabKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    closable: PropTypes.bool,
     disabled: PropTypes.bool
   }
 

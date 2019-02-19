@@ -1,45 +1,56 @@
 import React, { Component, cloneElement } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import Icon from '../icon'
+
+const noop = () => {}
 
 class Tabs extends Component {
   static propTypes = {
-    type: PropTypes.string,
-    activeName: PropTypes.string,
-    onTabClick: PropTypes.func
+    type: PropTypes.oneOf(['card', 'line', 'button']),
+    placement: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
+    defaultActiveKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    maxTabs: PropTypes.number,
+    renderTabBar: PropTypes.func,
+    onTabClick: PropTypes.func,
+    editable: PropTypes.bool,
+    onEdit: PropTypes.func
   }
 
   static defaultProps = {
     prefixCls: 'hi-tabs',
-    type: 'card'
+    type: 'line',
+    placement: 'top',
+    maxTabs: 5,
+    editable: false,
+    onTabClick: noop,
+    onEdit: noop
   }
+
+  deleteTabKey = null
 
   constructor (props) {
     super(props)
-    let { children, activeTabKey, value } = props
+    let { children, activeKey } = props
 
     children = React.Children.toArray(children)
 
     this.state = {
-      children,
-      currentKey: value || activeTabKey || children[0].props.tabKey
+      activeKey: activeKey || children[0].props.tabKey
     }
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.activeTabKey !== this.state.activeTabKey) {
+    if (this.props.defaultActiveKey !== nextProps.defaultActiveKey) {
       this.setState({
-        currentKey: nextProps.activeTabKey
+        activeKey: nextProps.defaultActiveKey
       })
     }
-    if (nextProps.value !== this.state.value) {
+    if (this.props.children.length > nextProps.children.length && this.deleteTabKey && this.deleteTabKey === this.state.activeKey) { // 删除的是当前激活的tab，需重置激活tab
       this.setState({
-        currentKey: nextProps.value
-      })
-    }
-    if (nextProps.children !== this.state.children) {
-      this.setState({
-        children: React.Children.toArray(nextProps.children)
+        activeKey: nextProps.children[0].props.tabKey
+      }, () => {
+        this.deleteTabKey = null
       })
     }
   }
@@ -51,55 +62,97 @@ class Tabs extends Component {
 
     this.setState(
       {
-        currentKey: tab.props.tabKey
+        activeKey: tab.props.tabKey
       },
       () => {
         const { onTabClick } = this.props
 
-        onTabClick && onTabClick(tab, e)
+        onTabClick(tab, e)
       }
     )
   }
 
+  addTab () {
+    const {
+      onEdit,
+      editable,
+      children
+    } = this.props
+
+    if (editable) {
+      onEdit('add', (children.length + 1))
+    }
+  }
+
+  deleteTab (e, tabKey, index) {
+    e.stopPropagation()
+    this.deleteTabKey = tabKey
+
+    const {
+      onEdit,
+      editable
+    } = this.props
+
+    if (editable) {
+      onEdit('delete', index, tabKey)
+    }
+  }
+
   renderTabContent (child) {
     const { tabKey } = child.props
-    const { currentKey } = this.state
+    const { activeKey } = this.state
 
     return cloneElement(child, {
-      show: tabKey === currentKey
+      show: tabKey === activeKey
     })
   }
 
   render () {
-    const { children, currentKey } = this.state
-    const { prefixCls, type } = this.props
-    const classes = classNames(`${prefixCls}`, {
-      [`${prefixCls}-card`]: type === 'card'
+    const { activeKey } = this.state
+    const { prefixCls, type, placement, editable, children } = this.props
+    const tabsClasses = classNames(prefixCls, `${prefixCls}-${type}`, {
+      [`${prefixCls}-${placement}`]: type === 'line'
     })
 
     return (
-      <div className={classes}>
+      <div className={tabsClasses}>
         <div className={`${prefixCls}-header`}>
           <div className={`${prefixCls}-nav`}>
             {React.Children.map(children, (item, index) => {
-              const { tabName, tabKey, disabled } = item.props
+              const { tabName, tabKey, tabDesc, disabled, closable } = item.props
 
-              const classes = classNames(`${prefixCls}-item`, {
-                'is-active': tabKey === currentKey,
-                'is-disabled': disabled
+              const itemClasses = classNames(`${prefixCls}-item`, {
+                [`${prefixCls}-item--active`]: tabKey === activeKey,
+                [`${prefixCls}-item--disabled`]: disabled
               })
 
               return (
                 <div
-                  className={classes}
+                  className={itemClasses}
                   key={`${prefixCls}-item-${index}`}
                   onClick={e => this.handleClick(item, e)}
                 >
-                  <a href='javascript:;'>{tabName}</a>
+                  <span className={`${prefixCls}-item-name`}>{tabName}</span>
+                  {
+                    type === 'card' &&
+                    <span className={`${prefixCls}-item-desc`}>{tabDesc}</span>
+                  }
+                  {
+                    editable && closable &&
+                    <span className={`${prefixCls}-item-close`}>
+                      <Icon onClick={e => this.deleteTab(e, tabKey, index)} name='close' />
+                    </span>
+                  }
                 </div>
               )
             })}
           </div>
+          {
+            editable &&
+            <div className={`${prefixCls}-add`}>
+              <Icon onClick={this.addTab.bind(this)} name='plus' />
+            </div>
+          }
         </div>
         <div className={`${prefixCls}-content`}>
           {React.Children.map(children, item => {

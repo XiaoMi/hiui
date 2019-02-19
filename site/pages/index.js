@@ -14,7 +14,7 @@ export default {
       // 'ficon': require('./ficon')
     },
     '导航': {
-      // 'tabs': require('./tabs'),
+      'tabs': require('./tabs'),
       'navMenu': require('./nav-menu'),
       'dropdown': require('./dropdown'),
       'pagination': require('./pagination'),

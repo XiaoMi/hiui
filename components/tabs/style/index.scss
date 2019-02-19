@@ -1,34 +1,62 @@
-$main: 'hi-tabs' !default;
+$prefix: 'hi-tabs' !default;
 
-.#{$main} {
-  .#{$main}-header {
-    padding: 0;
-    margin: 0 0 15px;
+.#{$prefix} {
+  .#{$prefix}-header {
     position: relative;
-    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    color: #333;
+  }
 
-    .#{$main}-item {
-      border: 1px solid transparent;
-      display: inline-block;
-      padding: 8px 15px;
+  .#{$prefix}-item {
+    cursor: pointer;
+  }
+  .#{$prefix}-add {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: #979797;
+    border-radius:2px;
+    border:1px solid rgba(216,216,216,1);
+    cursor: pointer;
+    box-sizing: border-box;
+  }
 
-      &.is-active {
-        border: 1px solid #ddd;
+  .#{$prefix}-item-close {
+    margin-left: 8px;
+    font-size: 12px;
+  }
+
+  &-line {
+    .#{$prefix}-header {
+      border-bottom: 1px solid #E6E7E8;
+    }
+    .#{$prefix}-nav {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: -1px;
+    }
+    .#{$prefix}-item {
+      height: 48px;
+      line-height: 48px;
+      padding: 0 16px;
+      margin-right: 16px;
+      box-sizing: border-box;
+      &--active {
+        border: 1px solid #E6E7E8;
         border-bottom-color: #fff;
-
-        & > a {
-          cursor: default;
-        }
+        color: #4284F5;
       }
-
-      > a {
-        color: #555;
-        text-decoration: none;
-      }
+    }
+    .#{$prefix}-add {
+      right: 4px;
+      bottom: 12px;
     }
   }
 
-  .#{$main}-nav {
+  .#{$prefix}-content {
     display: inline-block;
     position: relative;
     margin-bottom: -1px;
