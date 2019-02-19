@@ -1,16 +1,16 @@
 $prefix: 'hi-tabs' !default;
 
 .#{$prefix} {
-  .#{$prefix}-header {
+  .#{$prefix}__header {
     position: relative;
     font-size: 14px;
     color: #333;
   }
 
-  .#{$prefix}-item {
+  .#{$prefix}__item {
     cursor: pointer;
   }
-  .#{$prefix}-add {
+  .#{$prefix}__add {
     position: absolute;
     display: flex;
     align-items: center;
@@ -24,21 +24,21 @@ $prefix: 'hi-tabs' !default;
     box-sizing: border-box;
   }
 
-  .#{$prefix}-item-close {
+  .#{$prefix}__item-close {
     margin-left: 8px;
     font-size: 12px;
   }
 
-  &-line {
-    .#{$prefix}-header {
+  &--card {
+    .#{$prefix}__header {
       border-bottom: 1px solid #E6E7E8;
     }
-    .#{$prefix}-nav {
+    .#{$prefix}__nav {
       display: flex;
       flex-wrap: wrap;
       margin-bottom: -1px;
     }
-    .#{$prefix}-item {
+    .#{$prefix}__item {
       height: 48px;
       line-height: 48px;
       padding: 0 16px;
@@ -50,13 +50,51 @@ $prefix: 'hi-tabs' !default;
         color: #4284F5;
       }
     }
-    .#{$prefix}-add {
+    .#{$prefix}__add {
       right: 4px;
       bottom: 12px;
     }
   }
 
-  .#{$prefix}-content {
+  &--desc {
+    .#{$prefix}__nav {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .#{$prefix}__item {
+      display: flex;
+      flex-direction: column;
+      padding: 16px 20px;
+      text-align: center;
+      border: 1px solid #E6E7E8;
+      border-left-width: 0px;
+      box-sizing: border-box;
+      &:first-child {
+        border-left-width: 1px;
+      }
+      &--active {
+        color: #4284F5;
+        border-color: #4284F5;
+        border-left-width: 1px;
+        .#{$prefix}__item-desc {
+          color: #4284F5;
+        }
+      }
+      &-name {
+        margin-top: 4px;
+      }
+      &-desc {
+        font-size: 12px;
+        color: #999;
+      }
+    }
+  }
+
+  &--button {
+
+  }
+
+  .#{$prefix}__content {
     display: inline-block;
     position: relative;
     margin-bottom: -1px;

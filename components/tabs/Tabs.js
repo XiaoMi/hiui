@@ -7,7 +7,7 @@ const noop = () => {}
 
 class Tabs extends Component {
   static propTypes = {
-    type: PropTypes.oneOf(['card', 'line', 'button']),
+    type: PropTypes.oneOf(['desc', 'card', 'button']),
     placement: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
     defaultActiveKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     maxTabs: PropTypes.number,
@@ -19,7 +19,7 @@ class Tabs extends Component {
 
   static defaultProps = {
     prefixCls: 'hi-tabs',
-    type: 'line',
+    type: 'card',
     placement: 'top',
     maxTabs: 5,
     editable: false,
@@ -110,36 +110,36 @@ class Tabs extends Component {
   render () {
     const { activeKey } = this.state
     const { prefixCls, type, placement, editable, children } = this.props
-    const tabsClasses = classNames(prefixCls, `${prefixCls}-${type}`, {
-      [`${prefixCls}-${placement}`]: type === 'line'
+    const tabsClasses = classNames(prefixCls, `${prefixCls}--${type}`, {
+      [`${prefixCls}-${placement}`]: type === 'card'
     })
 
     return (
       <div className={tabsClasses}>
-        <div className={`${prefixCls}-header`}>
-          <div className={`${prefixCls}-nav`}>
+        <div className={`${prefixCls}__header`}>
+          <div className={`${prefixCls}__nav`}>
             {React.Children.map(children, (item, index) => {
               const { tabName, tabKey, tabDesc, disabled, closable } = item.props
 
-              const itemClasses = classNames(`${prefixCls}-item`, {
-                [`${prefixCls}-item--active`]: tabKey === activeKey,
-                [`${prefixCls}-item--disabled`]: disabled
+              const itemClasses = classNames(`${prefixCls}__item`, {
+                [`${prefixCls}__item--active`]: tabKey === activeKey,
+                [`${prefixCls}__item--disabled`]: disabled
               })
 
               return (
                 <div
                   className={itemClasses}
-                  key={`${prefixCls}-item-${index}`}
+                  key={`${prefixCls}__item-${index}`}
                   onClick={e => this.handleClick(item, e)}
                 >
-                  <span className={`${prefixCls}-item-name`}>{tabName}</span>
+                  <span className={`${prefixCls}__item-name`}>{tabName}</span>
                   {
-                    type === 'card' &&
-                    <span className={`${prefixCls}-item-desc`}>{tabDesc}</span>
+                    type === 'desc' &&
+                    <span className={`${prefixCls}__item-desc`}>{tabDesc}</span>
                   }
                   {
                     editable && closable &&
-                    <span className={`${prefixCls}-item-close`}>
+                    <span className={`${prefixCls}__item-close`}>
                       <Icon onClick={e => this.deleteTab(e, tabKey, index)} name='close' />
                     </span>
                   }
@@ -149,12 +149,12 @@ class Tabs extends Component {
           </div>
           {
             editable &&
-            <div className={`${prefixCls}-add`}>
+            <div className={`${prefixCls}__add`}>
               <Icon onClick={this.addTab.bind(this)} name='plus' />
             </div>
           }
         </div>
-        <div className={`${prefixCls}-content`}>
+        <div className={`${prefixCls}__content`}>
           {React.Children.map(children, item => {
             return this.renderTabContent(item)
           })}
