@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Alert basic use 1`] = `
+<div>
+  <div
+    className="hi-alert info middle noTitle"
+  >
+    <div
+      className="icon-contain"
+    >
+      <i
+        className="hi-icon icon-info-circle-o"
+      />
+    </div>
+    <div
+      className="text-contain"
+    >
+      <div
+        className="text-message"
+      >
+        新提示
+      </div>
+    </div>
+    <div
+      className="close-btn icon-img-delete"
+      onClick={[Function]}
+    >
+      <i
+        className="hi-icon icon-close"
+      />
+    </div>
+  </div>
+  <div
+    className="hi-alert success middle noTitle"
+  >
+    <div
+      className="icon-contain"
+    >
+      <i
+        className="hi-icon icon-check-circle-o"
+      />
+    </div>
+    <div
+      className="text-contain"
+    >
+      <div
+        className="text-message"
+      >
+        成功
+      </div>
+    </div>
+    <div
+      className="close-btn icon-img-delete"
+      onClick={[Function]}
+    >
+      <i
+        className="hi-icon icon-close"
+      />
+    </div>
+  </div>
+  <div
+    className="hi-alert error middle noTitle"
+  >
+    <div
+      className="icon-contain"
+    >
+      <i
+        className="hi-icon icon-close-circle-o"
+      />
+    </div>
+    <div
+      className="text-contain"
+    >
+      <div
+        className="text-message"
+      >
+        错误
+      </div>
+    </div>
+    <div
+      className="close-btn icon-img-delete"
+      onClick={[Function]}
+    >
+      <i
+        className="hi-icon icon-close"
+      />
+    </div>
+  </div>
+  <div
+    className="hi-alert warning middle noTitle"
+  >
+    <div
+      className="icon-contain"
+    >
+      <i
+        className="hi-icon icon-info-circle-o"
+      />
+    </div>
+    <div
+      className="text-contain"
+    >
+      <div
+        className="text-message"
+      >
+        警告
+      </div>
+    </div>
+    <div
+      className="close-btn icon-img-delete"
+      onClick={[Function]}
+    >
+      <i
+        className="hi-icon icon-close"
+      />
+    </div>
+  </div>
+</div>
+`;
