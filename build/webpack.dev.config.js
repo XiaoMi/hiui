@@ -3,8 +3,9 @@ const webpack = require('webpack')
 const basePath = path.resolve(__dirname, '../')
 
 module.exports = {
+  mode: 'development',
   entry: {
-    main: ['babel-polyfill', `${path.resolve(basePath, 'site/main.js')}`],
+    main: ['@babel/polyfill', `${path.resolve(basePath, 'site/main.js')}`],
     // 列出第三方库
     vendor: ['react', 'react-dom']
   },
@@ -22,7 +23,13 @@ module.exports = {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        loader: 'babel-loader',
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+            plugins: ['@babel/plugin-proposal-class-properties']
+          }
+        },
         // exclude: ['node_modules', 'bower_components'],
         include: [
           path.resolve(__dirname, '../component'),
@@ -75,8 +82,17 @@ module.exports = {
     children: false
   },
   devtool: 'source-map',
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          name: 'vendor'
+        }
+      }
+    }
+  },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor' })
+    new webpack.HotModuleReplacementPlugin()
+    // new webpack.optimize.CommonsChunkPlugin({ name: 'vendor' })
   ]
 }
