@@ -25,6 +25,30 @@ constructor(props) {
       {
         tabName: '消息通知',
         tabKey: 'tabKey-4'
+      },
+      {
+        tabName: '购买资格',
+        tabKey: 'tabKey-5'
+      },
+      {
+        tabName: '团购通知',
+        tabKey: 'tabKey-6'
+      },
+      {
+        tabName: '订单详情',
+        tabKey: 'tabKey-7'
+      },
+      {
+        tabName: '订单详情',
+        tabKey: 'tabKey-8'
+      },
+      {
+        tabName: '订单详情',
+        tabKey: 'tabKey-9'
+      },
+      {
+        tabName: '订单详情',
+        tabKey: 'tabKey-10'
       }
     ]
   }

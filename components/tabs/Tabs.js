@@ -10,7 +10,7 @@ class Tabs extends Component {
     type: PropTypes.oneOf(['desc', 'card', 'button']),
     placement: PropTypes.oneOf(['top', 'left']),
     defaultActiveKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    maxTabs: PropTypes.number,
+    showTabsNum: PropTypes.number,
     renderTabBar: PropTypes.func,
     onTabClick: PropTypes.func,
     editable: PropTypes.bool,
@@ -21,7 +21,7 @@ class Tabs extends Component {
     prefixCls: 'hi-tabs',
     type: 'card',
     placement: 'top',
-    maxTabs: 5,
+    showTabsNum: 6,
     editable: false,
     onTabClick: noop,
     onEdit: noop
@@ -31,16 +31,30 @@ class Tabs extends Component {
 
   constructor (props) {
     super(props)
-    let { children, activeKey } = props
 
-    children = React.Children.toArray(children)
+    const { defaultActiveKey } = props
+    const {
+      showTabItems,
+      hiddenTabItems
+    } = this.getTabItems(this.props)
 
     this.state = {
-      activeKey: activeKey || children[0].props.tabKey
+      activeKey: defaultActiveKey || showTabItems[0].tabKey,
+      showTabItems,
+      hiddenTabItems
     }
   }
 
   componentWillReceiveProps (nextProps) {
+    const {
+      showTabItems,
+      hiddenTabItems
+    } = this.getTabItems(nextProps)
+    this.setState({
+      showTabItems,
+      hiddenTabItems
+    })
+
     if (this.props.defaultActiveKey !== nextProps.defaultActiveKey) {
       this.setState({
         activeKey: nextProps.defaultActiveKey
@@ -55,19 +69,43 @@ class Tabs extends Component {
     }
   }
 
+  getTabItems (props) {
+    const {
+      children,
+      type,
+      placement,
+      showTabsNum,
+      editable
+    } = props
+    const showTabItems = []
+    const hiddenTabItems = []
+
+    React.Children.map(children, (child, index) => {
+      const { tabName, tabKey, tabDesc, disabled, closable } = child.props
+      const item = { tabName, tabKey, tabDesc, disabled, closable }
+
+      if (!editable && type === 'card' && placement === 'top' && showTabItems.length >= showTabsNum) { // 卡片式标签超过showTabsNum时，其余标签的隐藏
+        hiddenTabItems.push(item)
+      } else {
+        showTabItems.push(item)
+      }
+    })
+    return {showTabItems, hiddenTabItems}
+  }
+
   handleClick (tab, e) {
-    if (tab.props.disabled) {
+    if (tab.disabled) {
       return false
     }
 
     this.setState(
       {
-        activeKey: tab.props.tabKey
+        activeKey: tab.tabKey
       },
       () => {
         const { onTabClick } = this.props
 
-        onTabClick(tab, e)
+        onTabClick(tab.tabKey, e)
       }
     )
   }
@@ -98,6 +136,16 @@ class Tabs extends Component {
     }
   }
 
+  checkEditable () {
+    const {
+      editable,
+      type,
+      placement
+    } = this.props
+
+    return editable && type === 'card' && placement === 'top'
+  }
+
   renderTabContent (child) {
     const { tabKey } = child.props
     const { activeKey } = this.state
@@ -108,8 +156,9 @@ class Tabs extends Component {
   }
 
   render () {
-    const { activeKey } = this.state
-    const { prefixCls, type, placement, editable, children } = this.props
+    const { activeKey, showTabItems, hiddenTabItems } = this.state
+    const { prefixCls, type, placement, children } = this.props
+    const editable = this.checkEditable()
     const tabsClasses = classNames(prefixCls, `${prefixCls}--${type}`, {
       [`${prefixCls}--${placement}`]: type === 'card',
       [`${prefixCls}--editable`]: editable
@@ -119,8 +168,8 @@ class Tabs extends Component {
       <div className={tabsClasses}>
         <div className={`${prefixCls}__header`}>
           <div className={`${prefixCls}__nav`}>
-            {React.Children.map(children, (item, index) => {
-              const { tabName, tabKey, tabDesc, disabled, closable } = item.props
+            {showTabItems.map((item, index) => {
+              const { tabName, tabKey, tabDesc, disabled, closable } = item
 
               const itemClasses = classNames(`${prefixCls}__item`, {
                 [`${prefixCls}__item--active`]: tabKey === activeKey,
@@ -148,6 +197,10 @@ class Tabs extends Component {
               )
             })}
           </div>
+          {
+            hiddenTabItems.length > 0 &&
+            <div className={`${prefixCls}__nav--hidden`} />
+          }
           {
             editable &&
             <div className={`${prefixCls}__add`}>
