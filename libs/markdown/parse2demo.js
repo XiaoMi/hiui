@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import marked from 'marked'
-import { transform } from 'babel-standalone'
+import { transform } from '@babel/standalone'
 import Prism from 'prismjs'
+import * as Components from '../../components'
 
 const LANG = {
   'zh-CN': ['显示代码', '收起代码', '复制代码'],
@@ -54,47 +55,34 @@ class Demo extends Component {
   }
   renderSource (value) {
     const { locale, theme } = this.props
-    import('../../components')
-      .then(Element => {
-        const args = ['context', 'React', 'ReactDOM']
-        const argv = [this, React, ReactDOM]
+    const args = ['context', 'React', 'ReactDOM']
+    const argv = [this, React, ReactDOM]
+    const code = transform(
+      `class Demo extends React.Component {
+        ${value}
+      }
 
-        for (const key in Element) {
-          args.push(key)
-          argv.push(Element[key])
-        }
+      ReactDOM.render(
+        <ThemeContext.Provider value='${theme}'>
+          <LocaleContext.Provider value='${locale}'>
+            <Demo {...context.props}/>
+          </LocaleContext.Provider>
+        </ThemeContext.Provider>
+      , document.getElementById('${this.playerId}'))
+    `,
+      {
+        presets: ['es2015', 'react']
+      }
+    ).code
 
-        return { args, argv }
-      })
-      .then(({ args, argv }) => {
-        const code = transform(
-          `class Demo extends React.Component {
-          ${value}
-        }
+    for (const key in Components) {
+      args.push(key)
+      argv.push(Components[key])
+    }
+    args.push(code)
 
-        ReactDOM.render(
-          <ThemeContext.Provider value='${theme}'>
-            <LocaleContext.Provider value='${locale}'>
-              <Demo {...context.props}/>
-            </LocaleContext.Provider>
-          </ThemeContext.Provider>
-          , document.getElementById('${this.playerId}'))
-        `,
-          {
-            presets: ['es2015', 'react']
-          }
-        ).code
-
-        args.push(code)
-
-        var Fn = Function
-        new Fn(...args).apply(null, argv)
-      })
-      .catch(err => {
-        if (process.env.NODE_ENV !== 'production') {
-          throw err
-        }
-      })
+    var Fn = Function
+    new Fn(...args).apply(null, argv)
   }
 
   render () {

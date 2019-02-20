@@ -43,21 +43,7 @@ const compile = modules => {
     .src('components/**/*.js')
     .pipe(
       babel({
-        presets: [
-          [
-            'env',
-            {
-              targets: {
-                browsers: ['ie > 8']
-              },
-              loose: true,
-              modules: modules,
-              useBuiltIns: 'usage'
-            }
-          ],
-          'stage-0',
-          'react'
-        ],
+        presets: ['@babel/preset-env', '@babel/preset-react'],
         plugins: [['transform-remove-console', { exclude: ['error', 'warn'] }]]
       })
     )
