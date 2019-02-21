@@ -684,6 +684,23 @@ export default class Table extends Component {
     }
   }
 
+  shouldComponentUpdate (nextProps, nextState, nextContext) {
+    let preData = nextProps.data
+    let nextData = nextState.dataSource
+    if (nextData.length === preData.length) {
+      let bool = false
+      preData.forEach((p, i) => {
+        for (let key in p) {
+          if (p[key] !== nextData[i][key]) {
+            bool = true
+          }
+        }
+      })
+      return bool
+    }
+    return true
+  }
+
   componentWillReceiveProps ({data, columns, width, scroll, ...props}) {
     data = setKey(data, 'id')
     // 只有dataSource,columns重造
