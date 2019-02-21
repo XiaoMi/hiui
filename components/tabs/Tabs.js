@@ -8,13 +8,14 @@ const noop = () => {}
 
 class Tabs extends Component {
   static propTypes = {
-    type: PropTypes.oneOf(['desc', 'card', 'button']),
+    type: PropTypes.oneOf(['desc', 'card', 'button', 'editable']),
     placement: PropTypes.oneOf(['top', 'left']),
     defaultActiveKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     showTabsNum: PropTypes.number,
+    editable: PropTypes.bool,
+    className: PropTypes.string,
     renderTabBar: PropTypes.func,
     onTabClick: PropTypes.func,
-    editable: PropTypes.bool,
     onEdit: PropTypes.func
   }
 
@@ -22,8 +23,9 @@ class Tabs extends Component {
     prefixCls: 'hi-tabs',
     type: 'card',
     placement: 'top',
+    className: '',
     showTabsNum: 6,
-    editable: false,
+    editable: true,
     onTabClick: noop,
     onEdit: noop
   }
@@ -75,8 +77,7 @@ class Tabs extends Component {
       children,
       type,
       placement,
-      showTabsNum,
-      editable
+      showTabsNum
     } = props
     const showTabItems = []
     const hiddenTabItems = []
@@ -85,7 +86,7 @@ class Tabs extends Component {
       const { tabName, tabKey, tabDesc, disabled, closable } = child.props
       const item = { tabName, tabKey, tabDesc, disabled, closable }
 
-      if (!editable && type === 'card' && placement === 'top' && showTabItems.length >= showTabsNum) { // 卡片式标签超过showTabsNum时，其余标签的隐藏
+      if (type === 'card' && placement === 'top' && showTabItems.length >= showTabsNum) { // 卡片式标签超过showTabsNum时，其余标签的隐藏
         hiddenTabItems.push(item)
       } else {
         showTabItems.push(item)
@@ -140,11 +141,10 @@ class Tabs extends Component {
   checkEditable () {
     const {
       editable,
-      type,
-      placement
+      type
     } = this.props
 
-    return editable && type === 'card' && placement === 'top'
+    return editable && type === 'editable'
   }
 
   renderTabContent (child) {
@@ -158,11 +158,10 @@ class Tabs extends Component {
 
   render () {
     const { activeKey, showTabItems, hiddenTabItems } = this.state
-    const { prefixCls, type, placement, children } = this.props
+    const { prefixCls, type, placement, children, className } = this.props
     const editable = this.checkEditable()
-    const tabsClasses = classNames(prefixCls, `${prefixCls}--${type}`, {
-      [`${prefixCls}--${placement}`]: type === 'card',
-      [`${prefixCls}--editable`]: editable
+    const tabsClasses = classNames(prefixCls, className, `${prefixCls}--${type}`, {
+      [`${prefixCls}--${placement}`]: type === 'card'
     })
     let activeTabInHiddenItems = true
 

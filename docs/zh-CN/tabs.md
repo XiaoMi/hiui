@@ -1,4 +1,4 @@
-## Tabs 切换
+## Tabs 标签
 
 
 ### 卡片式标签
@@ -23,7 +23,7 @@ constructor(props) {
         tabKey: 'tabKey-3'
       },
       {
-        tabName: '消息通知',
+        tabName: <span><Icon name="chat-group" />消息通知</span>,
         tabKey: 'tabKey-4'
       },
       {
@@ -67,7 +67,7 @@ render() {
                 closable={pane.closable}
                 key={index}
               >
-                {pane.tabName} 
+                <div style={{padding: '16px'}}>{pane.tabName}</div>
               </Tabs.Pane>
             )
           })
@@ -137,7 +137,7 @@ deleteTab(index, tabKey) {
 render() {
   return (
     <div>
-      <Tabs activeTabKey="1" onTabClick={(tab,e)=>console.log(tab,e)} editable onEdit={this.onEdit.bind(this)}>
+      <Tabs type="editable" activeTabKey="1" onTabClick={(tab,e)=>console.log(tab,e)} editable onEdit={this.onEdit.bind(this)}>
         {
           this.state.panes.map((pane, index) => {
             return (
@@ -147,7 +147,7 @@ render() {
                 closable={pane.closable}
                 key={index}
               >
-                {pane.tabName} 
+                <div style={{padding: '16px'}}>{pane.tabName}</div> 
               </Tabs.Pane>
             )
           })
@@ -202,7 +202,7 @@ render() {
                 closable={pane.closable}
                 key={index}
               >
-                {pane.tabName} 
+                <div style={{padding: '16px'}}>{pane.tabName}</div>
               </Tabs.Pane>
             )
           })
@@ -262,7 +262,7 @@ render() {
                 closable={pane.closable}
                 key={index}
               >
-                {pane.tabName} 
+                <div style={{padding: '16px'}}>{pane.tabName}</div> 
               </Tabs.Pane>
             )
           })
@@ -319,7 +319,7 @@ render() {
                 closable={pane.closable}
                 key={index}
               >
-                {pane.tabName} 
+                <div style={{padding: '16px'}}>{pane.tabName}</div>
               </Tabs.Pane>
             )
           })
@@ -330,3 +330,28 @@ render() {
 }
 ```
 :::
+
+
+
+### Tabs Attributes
+
+| 参数 | 说明 | 类型 | 可选值 |默认值 |
+| -------- | ----- | ---- | ---- | ---- |
+| type | 标签类型 | string | desc, card, button, editable | card |
+| placement | 卡片式标签位置 | string | top, left | top |
+| defaultActiveKey | 默认激活的标签 | string, number | - | 第一个选项卡 |
+| showTabsNum | 显示的选项卡数，仅对type='card'并且placement='top'时生效| number | - | 6 |
+| editable | 是否可以对标签增加删除，仅对type='editable'时生效 | bool | true, false | true |
+| onTabClick | 点击标签页时触发 | func(tabKey, event) | - | - |
+| onEdit | 标签新增删减时触发，仅对type='editable'时触发。参数：action为事件类型，值为add或者delete；index为操作选项卡对应的索引 | func(action, index, tabKey) | - | - |
+
+
+
+### Tabs.Pane Attributes
+
+| 参数 | 说明 | 类型 | 可选值 |默认值 |
+| -------- | ----- | ---- | ---- | ---- |
+| tabName | 选项卡头显示文字 | string, node | - | - |
+| tabDesc | 选项卡头描述文字，仅对type='desc'时生效 | string, node | - | - |
+| tabKey | 每个标签的唯一标识 | string, number | - | - |
+| closable | 标签是否可以关闭，仅对type='editable'时生效 | bool | true, false | true |

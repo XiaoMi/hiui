@@ -18,6 +18,9 @@ $prefix: 'hi-tabs' !default;
     &--active {
       flex: none;
     }
+    .hi-icon:not(.icon-close) {
+      margin-right: 4px;
+    }
   }
   .#{$prefix}__add {
     position: absolute;
@@ -56,18 +59,8 @@ $prefix: 'hi-tabs' !default;
         color: #4284F5;
       }
     }
-    .#{$prefix}__add {
-      right: 4px;
-      bottom: 12px;
-    }
   }
   &--card.#{$prefix}--top {
-    &.#{$prefix}--editable {
-      .#{$prefix}__header {
-        overflow: hidden;
-        padding-right: 48px;
-      }
-    }
     .#{$prefix}__nav {
       margin-bottom: -1px;
     }
@@ -97,6 +90,44 @@ $prefix: 'hi-tabs' !default;
       &--active {
         border-right-color: #fff;
       }
+    }
+  }
+
+  &--editable {
+    .#{$prefix}__nav {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow: hidden;
+      margin-bottom: -1px;
+      margin-right: 40px;
+    }
+
+    .#{$prefix}__header {
+      border-bottom: 1px solid #E6E7E8;
+    }
+    .#{$prefix}__item {
+      height:48px;
+      min-width: 48px;
+      line-height: 48px;
+      margin-right: 4px;
+      padding: 0 8px;
+      background:rgba(250,250,250,1);
+      border-radius:4px 4px 0px 0px;
+      border:1px solid rgba(230,231,232,1);
+      text-align: center;
+      box-sizing: border-box;
+      &:last-child {
+        margin-right: 0px;
+      }
+      &--active {
+        background-color: #fff;
+        border-bottom-color: #fff;
+        color: #4284F5;
+      }
+    }
+    .#{$prefix}__add {
+      right: 4px;
+      bottom: 12px;
     }
   }
 
