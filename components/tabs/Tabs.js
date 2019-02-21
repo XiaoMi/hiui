@@ -2,6 +2,7 @@ import React, { Component, cloneElement } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Icon from '../icon'
+import ItemDropdown from './ItemDropdown'
 
 const noop = () => {}
 
@@ -163,6 +164,7 @@ class Tabs extends Component {
       [`${prefixCls}--${placement}`]: type === 'card',
       [`${prefixCls}--editable`]: editable
     })
+    let activeTabInHiddenItems = true
 
     return (
       <div className={tabsClasses}>
@@ -170,11 +172,12 @@ class Tabs extends Component {
           <div className={`${prefixCls}__nav`}>
             {showTabItems.map((item, index) => {
               const { tabName, tabKey, tabDesc, disabled, closable } = item
-
               const itemClasses = classNames(`${prefixCls}__item`, {
                 [`${prefixCls}__item--active`]: tabKey === activeKey,
                 [`${prefixCls}__item--disabled`]: disabled
               })
+
+              activeTabInHiddenItems = activeTabInHiddenItems && tabKey !== activeKey
 
               return (
                 <div
@@ -196,11 +199,23 @@ class Tabs extends Component {
                 </div>
               )
             })}
+            {
+              hiddenTabItems.length > 0 &&
+              <div className={classNames(`${prefixCls}__item`, {
+                [`${prefixCls}__item--active`]: activeTabInHiddenItems
+              })}
+              >
+                <ItemDropdown
+                  active={activeTabInHiddenItems}
+                  items={hiddenTabItems}
+                  onChoose={(item, e) => {
+                    console.log(item)
+                    this.handleClick(item, e)
+                  }}
+                />
+              </div>
+            }
           </div>
-          {
-            hiddenTabItems.length > 0 &&
-            <div className={`${prefixCls}__nav--hidden`} />
-          }
           {
             editable &&
             <div className={`${prefixCls}__add`}>
