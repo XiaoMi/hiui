@@ -53,7 +53,8 @@ class ItemDropdown extends Component {
   render () {
     const {
       items,
-      onChoose
+      onChoose,
+      localeDatas
     } = this.props
     const {
       activeIndex,
@@ -67,7 +68,7 @@ class ItemDropdown extends Component {
           this.toggle()
         }}>
           <span className='hi-tabs-dropdown__toggle-title'>
-            { (items[activeIndex] && items[activeIndex].tabName) || '更多' }
+            { (items[activeIndex] && items[activeIndex].tabName) || localeDatas.tabs.more }
           </span>
           <i className='hi-icon icon-down' />
         </div>
