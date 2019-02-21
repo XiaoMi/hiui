@@ -3,23 +3,69 @@
 通过鼠标或键盘输入字符
 
 
-### 普通类型
+### 类型
 
 :::demo
 
-普通类型
+类型
 
 ```js
+constructor () {
+  super()
+  this.state = {
+    types: [{
+      id: 'text',
+      name: '普通',
+      placeholder: '请输入...'
+    }, {
+      id: 'id',
+      name: '身份证',
+      placeholder: '请输入身份证号'
+    }, {
+      id: 'tel',
+      name: '手机号',
+      placeholder: '请输入手机号码'
+    }, {
+      id: 'amount',
+      name: '浮点数',
+      placeholder: '请输入浮点数'
+    }],
+    type: 'text',
+    checkedIndex: 0,
+    placeholder: '请输入...'
+  }
+}
 render() {
+  const Row = Grid.Row
+  const Col = Grid.Col
+  const {types, type, checkedIndex, placeholder} = this.state
   return (
     <div>
-      <Input
-        value=""
-        placeholder="2～5个字符"
-        maxLength="5"
-        minLength="2"
-        style={{width: '250px'}}
-      />
+      <Row gutter={true}>
+        <Col span={12}>
+          <Radio
+            list={types}
+            mode='button'
+            checked={checkedIndex}
+            onChange={(data, index) => {
+              this.setState({
+                type: data,
+                checkedIndex: index,
+                placeholder: types[index].placeholder
+              })
+            }}
+          />
+        </Col>
+      </Row>
+      <Row gutter={true}>
+        <Col span={12}>
+          <Input
+            type={type}
+            placeholder={placeholder}
+            style={{width: '250px'}}
+          />
+        </Col>
+      </Row>
     </div>
   )
 }
@@ -27,22 +73,64 @@ render() {
 :::
 
 
-### 禁用状态
+### 状态
 
 :::demo
 
-禁用状态
+状态
 
 ```js
+constructor () {
+  super()
+  this.state = {
+    disabled: false,
+    required: false,
+    checkedIndex: 0,
+    placeholder: '禁用状态',
+    list: [{
+      id: 'disabled',
+      name: '禁用状态'
+    }, {
+      id: 'required',
+      name: '必填项'
+    }]
+  }
+}
 render() {
+  const Row = Grid.Row
+  const Col = Grid.Col
+  const {list, required, disabled, placeholder, checkedIndex} = this.state
   return (
     <div>
-      <Input
-        value=""
-        placeholder="禁用状态"
-        style={{width: '250px'}}
-        disabled
-      />
+      <Row gutter={true}>
+        <Col span={12}>
+          <Radio
+            list={list}
+            mode='button'
+            checked={checkedIndex}
+            onChange={(data, index) => {
+              this.setState({
+                placeholder: list[index].name,
+                checkedIndex: index,
+                required: data === 'required',
+                disabled: data === 'disabled'
+              })
+            }}
+          />
+        </Col>
+      </Row>
+      <Row gutter={true}>
+        <Col span={12}>
+           <Input
+            value=""
+            placeholder={placeholder}
+            style={{width: '250px'}}
+            required={required}
+            disabled={disabled}
+          />
+        </Col>
+      </Row>
+     
     </div>
   )
 }
@@ -50,172 +138,76 @@ render() {
 :::
 
 
-### 必填
+
+### 附加
 
 :::demo
 
-必填项
+附加
 
 ```js
+constructor () {
+  super()
+  this.state = {
+    prefix: '+86',
+    suffix: '',
+    checkedIndex: 0,
+    placeholder: '010-12345678',
+    list: [{
+      name: '前缀',
+      prefix: '+86',
+      placeholder: '010-12345678'
+    }, {
+      name: '后缀',
+      suffix: '@xiaomi.com',
+      placeholder: 'mife'
+    }, {
+      name: '两者',
+      prefix: 'www.',
+      suffix: '.com',
+      placeholder: 'mi'
+    }]
+  }
+}
 render() {
+  const Row = Grid.Row
+  const Col = Grid.Col
+  const {list, prefix, suffix, placeholder, checkedIndex} = this.state
   return (
     <div>
-      <Input
-        value=""
-        type="text"
-        placeholder="必填"
-        required
-        style={{width: '250px'}}
-      />
+      <Row gutter={true}>
+        <Col span={12}>
+          <Radio
+            list={list}
+            mode='button'
+            checked={checkedIndex}
+            onChange={(data, index, item) => {
+              this.setState({
+                placeholder: item.placeholder,
+                checkedIndex: index,
+                prefix: item.prefix || '',
+                suffix: item.suffix || '',
+              })
+            }}
+          />
+        </Col>
+      </Row>
+      <Row gutter={true}>
+        <Col span={12}>
+           <Input
+            value=""
+            placeholder={placeholder}
+            style={{width: '250px'}}
+            suffix={suffix}
+            prefix={prefix}
+          />
+        </Col>
+      </Row>
     </div>
   )
 }
 ```
 :::
-
-
-### 身份证类型
-
-:::demo
-
-身份证类型
-
-```js
-render() {
-  return (
-    <div>
-      <Input
-        type="id"
-        value='110108201808161810'
-        placeholder="请输入身份证"
-        style={{width: '250px'}}
-      />
-    </div>
-  )
-}
-```
-:::
-
-
-### 手机号类型
-
-:::demo
-
-手机号类型
-
-```js
-render() {
-  return (
-    <div>
-      <Input
-        type="tel"
-        value=''
-        placeholder="请输入手机号"
-        style={{width: '250px'}}
-      />
-    </div>
-  )
-}
-```
-:::
-
-
-### 小数
-
-:::demo
-
-带小数点的金额
-
-```js
-render() {
-  return (
-    <div>
-      <Input
-        value="223.00"
-        type="amount"
-        placeholder="请输入金额"
-        style={{width: '250px'}}
-      />
-    </div>
-  )
-}
-```
-:::
-
-
-### 前缀
-
-:::demo
-
-国际号码
-
-```js
-render() {
-  return (
-    <div>
-      <Input
-        id="customId"
-        value=""
-        type="text"
-        placeholder="010-60606666"
-        prefix="+86"
-        style={{width: '250px'}}
-      />
-    </div>
-  )
-}
-```
-:::
-
-
-### 后缀
-
-:::demo
-
-邮箱
-
-```js
-render() {
-  return (
-    <div>
-      <Input
-        value="MIFE"
-        type="email"
-        suffix="@xiaomi.com"
-        placeholder="请输入邮箱(数字、字母、下划线)"
-        style={{width: '250px'}}
-      />
-    </div>
-  )
-}
-```
-:::
-
-
-### 前缀 + 后缀
-
-:::demo
-
-网址
-
-```js
-render() {
-  return (
-    <div>
-      <Input
-        value=""
-        type="text"
-        placeholder="mi"
-        prefix="www."
-        suffix=".com"
-        style={{width: '250px'}}
-      />
-    </div>
-  )
-}
-```
-:::
-
 
 
 ### 前置元素
@@ -227,79 +219,86 @@ render() {
 ```js
 constructor () {
   super()
+  const ele = <Select
+    mode='single'
+    clearable={false}
+    style={{width: '80px'}}
+    list={[
+      { name:'+86', id:'86' },
+      { name:'+1', id:'1' },
+      { name:'+33', id:'33' },
+      { name:'+91', id:'91' },
+    ]}
+    value='86'
+    onChange={(item) => {
+      console.log('单选结果', item)
+      const selectValue = item[0].id
+      this.setState({selectValue, tel: `${selectValue} ${value}`})
+    }}
+  />
   this.state = {
-    tel: '',
-    value: '',
-		selectValue: '86',
-		singleList: [
-			{ name:'+86', id:'86' },
-			{ name:'+1', id:'1' },
-			{ name:'+33', id:'33' },
-			{ name:'+91', id:'91' },
-		]
+    prepend: ele,
+    append: null,
+    checkedIndex: 0,
+    radioList: [{
+      name: '前置元素',
+      prepend: ele
+    }, {
+      name: '后置元素',
+      append: <Button type="primary">搜索</Button>
+    }],
+    value: ''
 	}
 }
 render() {
   const {
     value,
-    selectValue,
-    singleList
+    radioList,
+    checkedIndex,
+    prepend,
+    append    
   } = this.state
-
+  const Row = Grid.Row
+  const Col = Grid.Col
   return (
     <div>
-      <Input
-        id="customId"
-        value={value}
-        type="text"
-        placeholder="请输入手机号"
-        onChange={e => this.setState({value: e.target.value})}
-        prepend={
-          <Select
-            mode='single'
-            clearable={false}
-            style={{width: '80px'}}
-            list={singleList}
-            value={selectValue}
-            onChange={(item) => {
-              console.log('单选结果', item)
-              const selectValue = item[0].id
-
-              this.setState({selectValue, tel: `${selectValue} ${value}`})
+    <Row gutter={true}>
+        <Col span={12}>
+          <Radio
+            list={radioList}
+            mode='button'
+            checked={checkedIndex}
+            onChange={(data, index, item) => {
+              this.setState({
+                checkedIndex: index,
+                prepend: item.prepend,
+                append: item.append,
+              })
             }}
           />
-        }
-        style={{width: '250px'}}
-      />
+        </Col>
+      </Row>
+      <Row gutter={true}>
+        <Col span={12}>
+           <Input
+              id="customId"
+              value={value}
+              type="text"
+              placeholder="请输入手机号"
+              onChange={e => this.setState({value: e.target.value})}
+              prepend={prepend}
+              append={append}
+              style={{width: '250px'}}
+            />
+        </Col>
+      </Row>
+      
     </div>
   )
 }
 ```
 :::
 
-
-### 后置元素
-
-:::demo
-
-邮箱
-
-```js
-render() {
-  return (
-    <div>
-      <Input
-        value="MIFE"
-        type="email"
-        append={<Button type="primary">搜索</Button>}
-        placeholder="请输入邮箱(数字、字母、下划线)"
-        style={{width: '250px'}}
-      />
-    </div>
-  )
-}
-```
-:::
 
 
 ### 多行文本
