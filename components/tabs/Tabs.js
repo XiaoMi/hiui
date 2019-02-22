@@ -2,6 +2,7 @@ import React, { Component, cloneElement } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Icon from '../icon'
+import Tooltip from '../tooltip'
 import ItemDropdown from './ItemDropdown'
 
 const noop = () => {}
@@ -177,12 +178,14 @@ class Tabs extends Component {
               })
 
               activeTabInHiddenItems = activeTabInHiddenItems && tabKey !== activeKey
+              let ToolNav = type === 'editable' && tabKey !== activeKey ? Tooltip : 'div'
 
               return (
-                <div
+                <ToolNav
                   className={itemClasses}
                   key={`${prefixCls}__item-${index}`}
                   onClick={e => this.handleClick(item, e)}
+                  title={tabName}
                 >
                   <span className={`${prefixCls}__item-name`}>{tabName}</span>
                   {
@@ -195,7 +198,7 @@ class Tabs extends Component {
                       <Icon onClick={e => this.deleteTab(e, tabKey, index)} name='close' />
                     </span>
                   }
-                </div>
+                </ToolNav>
               )
             })}
             {
