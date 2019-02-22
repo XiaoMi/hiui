@@ -61,27 +61,29 @@ export default class Popper extends Component {
     switch (placement) {
       case 'bottom':
         top = top + topGap + rect.height
-        left = left + rect.width / 2
+        left = left + leftGap + rect.width / 2
         break
       case 'bottom-start':
         top = top + topGap + rect.height
+        left = left + leftGap
         break
 
       case 'top':
         top = top - topGap
-        left = left + rect.width / 2
+        left = left + leftGap + rect.width / 2
         break
       case 'top-start':
         top = top - topGap
+        left = left + leftGap
         break
 
       case 'left':
-        top = top + rect.height / 2
+        top = top + topGap + rect.height / 2
         left = left + leftGap
         break
 
       case 'right':
-        top = top + rect.height / 2
+        top = top + topGap + rect.height / 2
         left = left + rect.width + leftGap
         break
     }

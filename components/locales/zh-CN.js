@@ -51,5 +51,8 @@ module.exports = {
   modal: {
     confirmText: '确定',
     cancelText: '取消'
+  },
+  tabs: {
+    more: '更多'
   }
 }

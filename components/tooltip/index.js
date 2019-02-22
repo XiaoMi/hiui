@@ -11,6 +11,7 @@ class Tooltip extends Component {
     defaultVisible: PropTypes.bool,
     placement: PropTypes.string,
     title: PropTypes.string,
+    className: PropTypes.string,
     style: PropTypes.object
   }
 
@@ -27,15 +28,16 @@ class Tooltip extends Component {
   }
 
   render () {
-    const {placement, prefixCls, style} = this.props
+    const {placement, prefixCls, style, className, onClick} = this.props
     const eleClass = classNames(`${prefixCls}-base`, placement && `${prefixCls}-${placement}`)
     const {tooltipShow} = this.state
     return (
       <div
-        className={prefixCls}
+        className={classNames(prefixCls, className)}
         style={style}
         onMouseEnter={() => { this.setState({tooltipShow: true}) }}
         onMouseLeave={() => { this.setState({tooltipShow: false}) }}
+        onClick={onClick.bind(this)}
         ref={node => { this.tooltipContainer = node }}
       >
         <Popper
