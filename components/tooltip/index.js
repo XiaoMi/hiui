@@ -20,7 +20,8 @@ class Tooltip extends Component {
     delay: 1000,
     placement: 'top',
     defaultVisible: false,
-    prefixCls: 'hi-tooltip'
+    prefixCls: 'hi-tooltip',
+    onClick: () => {}
   };
 
   state = {
