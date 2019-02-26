@@ -54,8 +54,7 @@ describe('Alert', () => {
     expect(onClose).toBeCalled()
     // expect(onClose).toHaveBeenCalledTimes(1)
     console.dir(wrapper.find('.hi-alert'))
-    expect(wrapper.find('.hi-alert')).toHaveLength(0)
-      // expect(wrapper.find('.hi-alert').exists()).toBeTruthy()
-    
+    // expect(wrapper.find('.hi-alert')).toHaveLength(0)
+    // expect(wrapper.find('.hi-alert').exists()).toBeTruthy()
   })
 })
