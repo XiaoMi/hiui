@@ -67,7 +67,6 @@ export default class Popover extends Component {
 
     if (trigger === 'click') {
       this.reference.addEventListener('click', () => {
-        console.log('-------------click')
         if (this.state.showPopper) {
           this.hidePopper()
         } else {
@@ -119,7 +118,7 @@ export default class Popover extends Component {
 
     return (
       <div className={classNames(className, 'hi-popover')} style={style} ref={node => { this.popoverContainer = node }}>
-        { React.cloneElement(React.Children.only(this.props.children), { ref: 'reference', tabIndex: '0', onClick: () => console.log('>>>>>>>>>haha') }) }
+        { React.cloneElement(React.Children.only(this.props.children), { ref: 'reference', tabIndex: '0' }) }
 
         <Popper
           className='hi-popover__popper'
