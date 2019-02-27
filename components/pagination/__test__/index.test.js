@@ -5,6 +5,7 @@ import renderer from 'react-test-renderer'
 import Pagination from '../'
 import Dropdown from '../../dropdown'
 import Input from '../../input'
+import { wrap } from 'module'
 
 const jumpCallback = jest.fn(key => key)
 const sizeChangeCallback = jest.fn((val, current) => [val, current])
@@ -56,6 +57,63 @@ describe('Pagination', () => {
     expect(wrapper.find('.hi-pagination__item--active a').text()).toEqual('10')
     expect(jumpCallback.mock.results[0].value).toBe(10)
 
+    jumpCallback.mockClear()
+    pageChangeCallback.mockClear()
     wrapper.unmount()
+  })
+
+  it('pn', () => {
+    const wrapper = mount(
+      <Pagination
+        mode='pn'
+        defaultCurrent={2}
+        showQuickJumper={true}
+        total={250}
+        jumpEvent={jumpCallback}
+        pageSize={30}
+        onChange={(page, prevPage, pageSize) => { console.log(page, prevPage, pageSize) }}
+      />
+    )
+
+    wrapper.find('.hi-pagination__item').at(0).simulate('click') // 测试上一页
+    expect(wrapper.find('input').props().value).toEqual(1)
+
+    wrapper.find('input').simulate('change', { target: { value: '3' } }) // 测试跳转
+    wrapper.find('input').simulate('blur')
+    expect(wrapper.find('input').props().value).toEqual(3)
+    expect(jumpCallback.mock.results[0].value).toBe(3)
+
+    wrapper.find('input').simulate('change', { target: { value: '100' } }) // 测试超过最大页
+    wrapper.find('input').simulate('blur')
+    expect(wrapper.find('input').props().value).toEqual(9)
+    expect(jumpCallback.mock.results[1].value).toBe(9)
+
+    jumpCallback.mockClear()
+    pageChangeCallback.mockClear()
+    wrapper.unmount()
+  })
+
+  it('simple', () => {
+    const wrapper = mount(
+      <Pagination
+        mode='simple'
+        defaultCurrent={2}
+        showQuickJumper={true}
+        total={250}
+        jumpEvent={jumpCallback}
+        pageSize={30}
+        onChange={(page, prevPage, pageSize) => { console.log(page, prevPage, pageSize) }}
+      />
+    )
+
+    wrapper.find('input').simulate('change', { target: { value: '3' } }) // 测试跳转
+    wrapper.find('input').simulate('blur')
+    expect(wrapper.find('input').props().value).toEqual(3)
+    expect(jumpCallback.mock.results[0].value).toBe(3)
+
+    wrapper.find('input').simulate('change', { target: { value: '100' } }) // 测试超过最大页
+    wrapper.find('input').simulate('blur')
+    expect(wrapper.find('input').props().value).toEqual(9)
+    expect(jumpCallback.mock.results[1].value).toBe(9)
   })
 })
