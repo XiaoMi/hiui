@@ -11,18 +11,12 @@ function defaultItemRender (page, element) {
 
 const Pager = props => {
   const prefixCls = `${props.rootPrefixCls}__item`
-  let cls = classNames(`${prefixCls} ${prefixCls}-${props.page}`, { [`${prefixCls}--active`]: props.active })
-
-  if (props.active) {
-    cls = `${cls} ${prefixCls}--active`
-  }
-  if (props.disabled) {
-    cls = `${cls} ${prefixCls}--disabled`
-  }
-  if (props.className) {
-    cls = `${cls} ${props.className}`
-  }
-
+  let cls = classNames(prefixCls, {
+    [`${prefixCls}-${props.page}`]: typeof props.page === 'number',
+    [`${prefixCls}--active`]: props.active,
+    [`${prefixCls}--disabled`]: props.disabled,
+    [props.className]: !!props.className
+  })
   const handClick = () => {
     !props.disabled && props.onClick(props.page)
   }

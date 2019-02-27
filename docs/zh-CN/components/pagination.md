@@ -175,3 +175,4 @@ render() {
 | showQuickJumper | 是否显示跳转  | boolean   | true, false | false |
 | onChange | 页码改变的回调，参数为当前页（page），前一页（prevPage），每页条数（pageSize）  | function | -  |  - | - |
 | sizeChangeEvent |  每页条数改变的回调函数，返回 改变后的每页条数 及 当前页数  | function | - | - | - |
+| jumpEvent |  跳转后的回调函数，返回 当前页数  | function | - | - | - |

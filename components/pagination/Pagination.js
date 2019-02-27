@@ -27,6 +27,8 @@ class Pagination extends Component {
     total: PropTypes.number,
     onChange: PropTypes.func,
     itemRender: PropTypes.func,
+    sizeChangeEvent: PropTypes.func,
+    jumpEvent: PropTypes.func,
     pageSizeOptions: PropTypes.array,
     mode: PropTypes.oneOf(['simple', 'normal', 'pn'])
   }
@@ -138,13 +140,17 @@ class Pagination extends Component {
   }
 
   sizeChangeEvent (pageSize) {
-    const current = this.getCurrent(this.state.current, this.calculatePage(this.props.total, pageSize)) // pageSize改动需要重新计算当前页，避免超过最大页情况
+    const {
+      total,
+      sizeChangeEvent
+    } = this.props
+    const current = this.getCurrent(this.state.current, this.calculatePage(total, pageSize)) // pageSize改动需要重新计算当前页，避免超过最大页情况
 
     this.setState({
-      pageSize,
-      current
+      pageSize
     }, () => {
-      this.props.sizeChangeEvent && this.props.sizeChangeEvent(pageSize, this.state.current)
+      sizeChangeEvent && sizeChangeEvent(pageSize, current)
+      this.handleChange(current)
     })
   }
 
@@ -213,11 +219,9 @@ class Pagination extends Component {
 
   gotoPage = e => {
     const pageNum = parseInt(e.target.value)
-    const setPageNum = (val) => {
-      this.setState({
-        current: val
-      })
-      this.props.jumpEvent && this.props.jumpEvent(Number(val))
+    const setPageNum = (page) => {
+      this.handleChange(page)
+      this.props.jumpEvent && this.props.jumpEvent(Number(page))
     }
 
     if (e.type === 'blur') {
@@ -230,7 +234,7 @@ class Pagination extends Component {
   }
 
   renderPagers () {
-    const { pageBufferSize, total } = this.props
+    const { pageBufferSize, total, prefixCls } = this.props
     const {
       current
     } = this.state
@@ -259,13 +263,13 @@ class Pagination extends Component {
       pagers.push(this.renderPager(1, {active: current === 1}))
     }
     if (leftBuffer > 2) {
-      pagers.push(this.renderPager('...', {itemRender: breakItemRender}))
+      pagers.push(this.renderPager('...', {className: `${prefixCls}__item-break`, itemRender: breakItemRender}))
     }
     for (let index = leftBuffer; index <= rightBuffer; index++) {
       pagers.push(this.renderPager(index, {active: current === index}))
     }
     if (rightBuffer < maxPage - 1) {
-      pagers.push(this.renderPager('...', {itemRender: breakItemRender}))
+      pagers.push(this.renderPager('...', {className: `${prefixCls}__item-break`, itemRender: breakItemRender}))
     }
     if (rightBuffer !== maxPage) {
       pagers.push(this.renderPager(maxPage, {active: current === maxPage}))
@@ -278,13 +282,13 @@ class Pagination extends Component {
   renderPrevPager () {
     const { prefixCls } = this.props
     const prevPage = this.prev()
-    return this.renderPager(prevPage, {className: `${prefixCls}__item--after-break-prev`, disabled: prevPage < 1}, <i className='hi-icon icon-left' />)
+    return this.renderPager(prevPage, {className: `${prefixCls}__item-prev`, disabled: prevPage < 1}, <i className='hi-icon icon-left' />)
   }
 
   renderNextPager () {
     const { prefixCls } = this.props
     const nextPage = this.next()
-    return this.renderPager(nextPage, {className: `${prefixCls}__item--after-break-next`, disabled: nextPage < 1}, <i className='hi-icon icon-right' />)
+    return this.renderPager(nextPage, {className: `${prefixCls}__item-next`, disabled: nextPage < 1}, <i className='hi-icon icon-right' />)
   }
 
   pagerIndex = 0
