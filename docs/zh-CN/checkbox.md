@@ -71,7 +71,7 @@ render() {
 constructor () {
   super()
   this.state = {
-    title: 'aaa',
+    title: 'Panel 标题',
     checked: false,
     list: [{
       text: '北京',
@@ -93,12 +93,10 @@ render() {
   return (
     <div>
       <div>
-        <Button type="default" onClick={() => {this.setState({title: Math.random()})}}>修改 Panel 标题</Button>
-        <Button type="default" onClick={() => {this.setState({checked: !this.state.checked})}}>点击2</Button>
+        <Button type="default" onClick={() => {this.setState({title: `新标题 - ${parseInt(Math.random()*100)}`})}}>修改 Panel 标题</Button>
         <br/>
         <Panel 
           title={this.state.title}
-          footer="我是注脚"
         >
           <Checkbox all='one' onChange={(list, value, isChecked) => console.log(list, value, isChecked)}>全选</Checkbox>
           <div><Checkbox list={this.state.list} name='one'/></div>
@@ -106,12 +104,12 @@ render() {
     <br/>
 
           <div>
-            <Checkbox all='two' onChange={(list, value, isChecked) => console.log(list, value, isChecked)}> 全选</Checkbox> <span>(子选项可放置于任何位置，只需 name 相同)</span>
-            <div><Checkbox text='北京' name='two'/></div>
-            <div><Checkbox name='two' value='ShangeHai'>上海</Checkbox></div>
+            <Checkbox all='two' onChange={(list, value, isChecked) => console.log(list, value, isChecked)}> 全选</Checkbox> <span>(子选项放置于任意位置，需 name 相同)</span>
+            <div><Checkbox text='北京' name='two'/><Checkbox name='two' value='ShangeHai'>上海</Checkbox></div>
             <div><Checkbox name='two' text='深圳'/></div>
             <div><Checkbox name='two' checked={this.state.checked} text='天津'/></div>
             <br/>
+            <Button type="default" onClick={() => {this.setState({checked: !this.state.checked})}}>更新选中状态</Button>
           </div>
         </Panel>
       </div>
@@ -132,7 +130,7 @@ render() {
 | disabled |   是否禁用  |  boolean   | true 或 false | false |
 |  list |   多选  |  array   | - |  |
 |  all |   全选框标识（用于全选框属性））  |   string   | - |  |
-|  name |   全选或多选模式下子选项标识（用于全选或多选模式，且 name 值与 all 值保持一致，当没有全选框时，同级选项 name 应保持一致））  |   string   | - |  |
+|  name |   全选或多选模式下子选项标识（用于全选或多选模式，且 name 值与 all 值保持一致，当没有全选框时，同级选项 name 应保持一致）；在一个应用中不同功能的 Checkbox 勿出现相同的 name 名称  |   string   | - |  |
 
 ### Checkbox Events
 | 参数       | 说明   |  类型  | 
