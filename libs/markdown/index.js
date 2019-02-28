@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import marked from 'marked'
-
+import Prism from 'prismjs'
 import Demo from './parse2demo'
 import './github-markdown.scss'
 
@@ -22,6 +22,7 @@ class Markdown extends Component {
 
   componentDidUpdate () {
     this.renderDOM()
+    // Prism.highlightAll()
   }
 
   renderDOM () {
@@ -46,8 +47,26 @@ class Markdown extends Component {
 
         return `<div id=${id}></div>`
       })
+      marked.setOptions({
+        renderer: this.renderer,
+        highlight: function (code, lang, callback) {
+          console.log(callback, lang)
+          // Pb({ lang: lang, format: 'html' }, code, function (err, result) {
+          //   callback(err, result.toString());
+          // })
 
-      const html = marked(document, { renderer: this.renderer })
+          const ht = Prism.highlight(
+            code,
+            Prism.languages.javascript
+          )
+          // callback(ht)
+
+          return ht
+        }
+      })
+      const html = marked(document)
+      console.log(html)
+      // console.log(document)
       return (
         <div className='markdown-body entry' dangerouslySetInnerHTML={{__html: html}} />
       )
