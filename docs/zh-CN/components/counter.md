@@ -25,7 +25,7 @@ render() {
         value='4'
         step='1'
         min='-10'
-        max='8'
+        max='10'
         onChange={(val) => console.log('变化后的值：', val)}
       />
 

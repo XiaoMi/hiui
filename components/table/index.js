@@ -767,10 +767,6 @@ class Table extends Component {
     }).catch(error)
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    return true
-  }
-
   reset (props) {
     // noinspection JSAnnotator
 
@@ -869,6 +865,23 @@ class Table extends Component {
         }, this.fetch)
       }
     }, 0)
+  }
+
+  shouldComponentUpdate (nextProps, nextState, nextContext) {
+    let preData = nextProps.data
+    let nextData = nextState.dataSource
+    if (nextData.length === preData.length) {
+      let bool = false
+      preData.forEach((p, i) => {
+        for (let key in p) {
+          if (p[key] !== nextData[i][key]) {
+            bool = true
+          }
+        }
+      })
+      return bool
+    }
+    return true
   }
 
   componentWillReceiveProps ({data, columns, width, scroll, ...props}) {
