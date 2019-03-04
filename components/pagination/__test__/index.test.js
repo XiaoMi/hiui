@@ -4,8 +4,6 @@ import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import Pagination from '../'
 import Dropdown from '../../dropdown'
-import Input from '../../input'
-import { wrap } from 'module'
 
 const jumpCallback = jest.fn(key => key)
 const sizeChangeCallback = jest.fn((val, current) => [val, current])
