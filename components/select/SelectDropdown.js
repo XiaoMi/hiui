@@ -107,7 +107,7 @@ export default class SelectDropdown extends Component {
             {
               matched === 0 &&
               <li
-                className='hi-select__dropdown--item is-disabled'
+                className='hi-select__dropdown--item hi-select__dropdown-item--empty is-disabled'
                 onClick={e => e.stopPropagation()}
               >
                 { noFoundTip }
