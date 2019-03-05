@@ -29,6 +29,9 @@ class CheckBox extends Component {
     })
     MultipleCheckboxsOpera.replace(nextProps.name, arr)
   }
+  componentWillUnmount () {
+    MultipleCheckboxsOpera.remove(this.props.name || this.props.all)
+  }
   renderCheckBoxGroup (list) {
     return <div>
       {
