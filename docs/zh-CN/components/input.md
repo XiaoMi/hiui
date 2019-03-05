@@ -328,11 +328,11 @@ render() {
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| type | 设置输入框类型 | string | text, textarea, id, tel, card, amount, email  | text |
-| disabled | 是否禁用 | boolean | true/false | false |
-| required | 是否必填 | string | true/false | false |
-| prefix | 前缀 | string | - | - |
-| suffix | 后缀 | string | - | - |
+| type | 设置输入框类型 | String | text \| textarea \| id \| tel \| card \| amount \| email  | text |
+| disabled | 是否禁用 | Boolean | true \| false | false |
+| required | 是否必填 | String | true \| false | false |
+| prefix | 前缀 | String | - | - |
+| suffix | 后缀 | String | - | - |
 | prepend | 前置元素 | Element | - | - |
 | append | 后置元素 | Element | - | - |
 

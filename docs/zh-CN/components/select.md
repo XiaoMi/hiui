@@ -313,33 +313,33 @@ render () {
 
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| mode | 下拉框类型 | string | single, multiple | single |
-| multipleMode | 多选模式，wrap会显示所有已选中项，超出换行；nowrap只显示一行，超出的以数字显示 | string | wrap, nowrap | wrap |
-| list | 下拉框选项，一般为 {name: '', id: ''} 形式。可以加入 'disabled' 属性，表示是否禁止选择 | array | - | - |
-| origin | 异步选择配置，详见下表 | object | - | - |
-| value | 默认值被选中项，值与被选中的id相同，多个以,分割或者传递数组| string,number,array | - | - |
-| showCheckAll | 是否显示全选，只对多选生效 | bool | true, false | false |
-| searchable | 是否可以筛选 | bool | true, false | false |
-| clearable | 是否可以清空 | bool | true, false | true |
-| autoload | origin从远端获取数据，初始时是否自动加载 | bool | true, false | false |
-| disabled | 禁用该下拉框 | bool | true, false | false |
-| placeholder | 提示信息 | string | - | 请选择 |
-| noFoundTip | 没有选项时的提示 | string | - | 无内容 |
+| mode | 下拉框类型 | String | single, multiple | single |
+| multipleMode | 多选模式，wrap会显示所有已选中项，超出换行；nowrap只显示一行，超出的以数字显示 | String | wrap, nowrap | wrap |
+| list | 下拉框选项，一般为 {name: '', id: ''} 形式。可以加入 'disabled' 属性，表示是否禁止选择 | Array | - | - |
+| origin | 异步选择配置，详见下表 | Object | - | - |
+| value | 默认值被选中项，值与被选中的id相同，多个以,分割或者传递数组| String,Number,Array | - | - |
+| showCheckAll | 是否显示全选，只对多选生效 | Boolean | true, false | false |
+| searchable | 是否可以筛选 | Boolean | true, false | false |
+| clearable | 是否可以清空 | Boolean | true, false | true |
+| autoload | origin从远端获取数据，初始时是否自动加载 | Boolean | true, false | false |
+| disabled | 禁用该下拉框 | Boolean | true, false | false |
+| placeholder | 提示信息 | String | - | 请选择 |
+| noFoundTip | 没有选项时的提示 | String | - | 无内容 |
 | style | 自定义样式 | object | - | - |
-| optionWidth | 选项的宽度 | number | - | 默认和select宽度一致 |
+| optionWidth | 选项的宽度 | Number | - | 默认和select宽度一致 |
 
 
 ### origin Options
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| url | 请求的url | string | - | - |
-| type | 请求方法 | string | get,post | get |
-| data | post请求时的参数 | object | - | - |
-| key | 搜索关键字参数key | string | - | keyword |
-| keyword | autoload为true时的默认搜索关键词 | string | - | - |
-| func | 成功时的回调 | func | - | - |
-| error | 失败时的回调 | func | - | - |
-| - | 其他的一些fetch设置，如headers,credentials等 | object | - | - |
+| url | 请求的url | String | - | - |
+| type | 请求方法 | String | get,post | get |
+| data | post请求时的参数 | Object | - | - |
+| key | 搜索关键字参数key | String | - | keyword |
+| keyword | autoload为true时的默认搜索关键词 | String | - | - |
+| func | 成功时的回调 | Function | - | - |
+| error | 失败时的回调 | Function | - | - |
+| - | 其他的一些fetch设置，如headers,credentials等 | Object | - | - |
 
 
 ### Select.Option Attributes
@@ -347,8 +347,8 @@ render () {
 
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| name | option标签 | string | - | - |
-| id | option value | string | - | - |
+| name | option标签 | String | - | - |
+| id | option value | String | - | - |
 
 
 ### Select Events

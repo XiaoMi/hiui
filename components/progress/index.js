@@ -14,10 +14,11 @@ class Progress extends Component {
     height: PropTypes.number,
     tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    size: PropTypes.oneOf(['big', 'middle', 'small'])
+    size: PropTypes.oneOf(['big', 'large', 'middle', 'small'])
   }
   static defaultProps = {
-    size: 'big',
+    type: 'bar',
+    size: 'large',
     percent: 0,
     radius: 40,
     status: 'primary'

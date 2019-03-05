@@ -50,7 +50,6 @@ class Markdown extends Component {
       marked.setOptions({
         renderer: this.renderer,
         highlight: function (code, lang, callback) {
-          console.log(callback, lang)
           // Pb({ lang: lang, format: 'html' }, code, function (err, result) {
           //   callback(err, result.toString());
           // })
@@ -65,7 +64,6 @@ class Markdown extends Component {
         }
       })
       const html = marked(document)
-      console.log(html)
       // console.log(document)
       return (
         <div className='markdown-body entry' dangerouslySetInnerHTML={{__html: html}} />

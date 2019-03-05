@@ -41,7 +41,7 @@ render() {
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | ------- | ------- | ------- | ------- | ------- |
-| title | 提示文字内容 | string | 字符串 | -- |
-| content | popover内容 | string, Node, React.Component | -- | -- |
-| placement | popover显示的位置 | string | top,right,bottom,left | top |
-| trigger | popover触发方式 | string | click, focus, hover | click |
+| title | 提示文字内容 | String | 字符串 | -- |
+| content | popover内容 | String \| Element | -- | -- |
+| placement | popover显示的位置 | String | top \| right \| bottom \| left | top |
+| trigger | popover触发方式 | String | click \|  focus \|  hover | click |

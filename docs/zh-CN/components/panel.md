@@ -59,7 +59,7 @@
 
 | 参数 | 说明 | 类型 | 可选值 |默认值  |
 | -------- | ----- | ----  | ----  |   ----  |
-| icon | panel 标题 icon | string | - | 无 |
-| title | panel 标题 | string <br/> Node <br/> React.Component | - | 无 |
-| footer | panel 注脚  | string <br/> Node <br/> React.Component  | - | 无 |
+| icon | panel 标题 icon | String | - | - |
+| title | panel 标题 | String \| Element | - | - |
+| footer | panel 注脚  | String \| Element  | - | - |
 

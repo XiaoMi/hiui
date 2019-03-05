@@ -26,5 +26,5 @@ render() {
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | ------- | ------- | ------- | ------- | ------- |
-| title | 提示文字内容 | string | 字符串 | -- |
-| placement | tooltip显示的位置 | string | top,right,bottom,left | top |
+| title | 提示文字内容 | String | 字符串 | -- |
+| placement | tooltip显示的位置 | String | top \| right \| bottom \| left | top |

@@ -2,7 +2,7 @@ import React from 'react'
 export const BarProgress = (props) => {
   function getWidth () {
     if (!props.width || props.width <= 0) {
-      return props.size === 'big' ? 480 : 160
+      return (props.size === 'big' || props.size === 'large') ? 480 : 160
     }
     return props.width
   }
@@ -10,7 +10,7 @@ export const BarProgress = (props) => {
   function getHeight () {
     const {size, height} = props
     if (!height || height <= 0) {
-      return size === 'big' ? 8 : (size === 'middle' ? 6 : 2)
+      return (size === 'big' || size === 'large') ? 8 : (size === 'middle' ? 6 : 2)
     }
     return height
   }

@@ -100,7 +100,7 @@ render () {
 
 | 参数 | 说明 | 类型 | 默认值 |
 | -------- | ----- | ---- | ---- |
-| value | 气泡内容 | string\/number | '' |
-| dot | 气泡是否显示为红点 | boolean | false | 
-| max | 气泡中显示数字的最大值 |  number  | 99 |
-| hidden | 是否隐藏气泡 | boolean | false |
+| value | 气泡内容 | String \| Number | '' |
+| dot | 气泡是否显示为红点 | Boolean | false | 
+| max | 气泡中显示数字的最大值 |  Number  | 99 |
+| hidden | 是否隐藏气泡 | Boolean | false |
