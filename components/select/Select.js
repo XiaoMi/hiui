@@ -23,6 +23,7 @@ class Select extends Component {
       PropTypes.bool,
       PropTypes.number
     ]),
+    showCheckAll: PropTypes.bool,
     autoload: PropTypes.bool,
     searchable: PropTypes.bool,
     clearable: PropTypes.bool,
@@ -30,7 +31,8 @@ class Select extends Component {
     placeholder: PropTypes.string,
     noFoundTip: PropTypes.string,
     style: PropTypes.object,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    dropdownRender: PropTypes.func
   }
 
   static defaultProps = {
@@ -41,7 +43,8 @@ class Select extends Component {
     value: '',
     autoload: false,
     placeholder: '请选择',
-    noFoundTip: '无内容'
+    noFoundTip: '无内容',
+    showCheckAll: false
   }
 
   constructor (props) {
@@ -102,7 +105,7 @@ class Select extends Component {
 
   componentWillReceiveProps (props) {
     if (!shallowEqual(props.value, this.props.value)) {
-      const selectedItems = this.resetSelectedItems(props.value, props.list)
+      const selectedItems = this.resetSelectedItems(props.value, this.state.dropdownItems) // 异步获取时会从内部改变dropdownItems，所以不能从list取
 
       this.setState({
         selectedItems
@@ -191,6 +194,30 @@ class Select extends Component {
     } = this.state
 
     this.props.onChange && this.props.onChange(selectedItems)
+  }
+
+  checkAll (e) { // 全选
+    e && e.stopPropagation()
+
+    const {
+      dropdownItems
+    } = this.state
+    let selectedItems = this.state.selectedItems.concat()
+
+    dropdownItems.forEach(item => {
+      if (!item.disabled && this.matchFilter(item)) {
+        let itemIndex = selectedItems.findIndex((sItem) => {
+          return sItem.id === item.id
+        })
+        itemIndex === -1 && selectedItems.push(item)
+      }
+    })
+    this.setState({
+      selectedItems
+    }, () => {
+      this.selectInput.focus()
+      this.onChange()
+    })
   }
 
   onClickOption (item, index) {
@@ -435,6 +462,7 @@ class Select extends Component {
   render () {
     const {
       mode,
+      showCheckAll,
       className,
       disabled,
       clearable,
@@ -442,7 +470,8 @@ class Select extends Component {
       children,
       noFoundTip,
       optionWidth,
-      selectedShowMode
+      selectedShowMode,
+      dropdownRender
     } = this.props
     const placeholder = this.localeDatasProps('placeholder')
     const {
@@ -493,6 +522,8 @@ class Select extends Component {
           <SelectDropdown
             noFoundTip={noFoundTip}
             mode={mode}
+            showCheckAll={showCheckAll}
+            checkAll={this.checkAll.bind(this)}
             loading={fetching}
             focusedIndex={focusedIndex}
             matchFilter={this.matchFilter.bind(this)}
@@ -500,6 +531,7 @@ class Select extends Component {
             optionWidth={optionWidth}
             dropdownItems={dropdownItems}
             selectedItems={selectedItems}
+            dropdownRender={dropdownRender}
             onClickOption={this.onClickOption.bind(this)}
           />
         </Popper>

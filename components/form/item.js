@@ -162,7 +162,7 @@ class FormItem extends Component {
         }
         <div className={'hi-form-item' + '__content'} style={{ 'marginLeft': this.labelWidth }}>
           {
-            Array.isArray(children)
+            (Array.isArray(children) || !children)
               ? children
               : React.cloneElement(children, {
                 onChange: (...args) => {
