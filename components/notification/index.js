@@ -54,7 +54,7 @@ class Notification extends Component {
     banner: false,
     prefixCls: 'hi-notification',
     autoClose: false,
-    duration: 0,
+    duration: 3000,
     positionFrom: 'top',
     positionAlign: 'right',
     type: 'info',
@@ -72,13 +72,17 @@ class Notification extends Component {
     this.setState({ offsetTop: lastdis })
   }
   componentDidMount () {
+    const {
+      autoClose,
+      duration
+    } = this.props
     // 为了做渐变效果所以没直接在初始化 state 的时候设置为 true。。可惜好像并不好用
     this.setState({ show: true })
     // 开始计时
-    if (this.props.autoClose) {
+    if (autoClose) {
       setTimeout(() => {
         this.closeNotify()
-      }, 3000)
+      }, duration)
     }
   }
   closeNotify () {
