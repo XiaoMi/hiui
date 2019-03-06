@@ -26,7 +26,7 @@ const multiOptions = [
   { name: '其它', id: '6' }
 ]
 
-describe('Tooltip', () => {
+describe('Select', () => {
   beforeEach(() => {
     jest.useFakeTimers()
     jest.setTimeout(10000)
