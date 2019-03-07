@@ -115,9 +115,9 @@ class Table extends Component {
       let cb = columns.find(item => item.key === sorter[0])
       if (cb) {
         cb = cb.sorter
-        dataSource = dataSource.sort(cb)
+        dataSource.sort(cb)
         if (sorter[1] === '1') {
-          dataSource = dataSource.reverse()
+          dataSource.reverse()
         }
       }
     }
@@ -525,7 +525,7 @@ class Table extends Component {
     }
     let dom = this.dom.current
     let thead = dom ? dom.querySelectorAll('thead') : null
-    if (scrollTop() + fixTop > dom.offsetTop && scrollTop() + fixTop < dom.offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(getStyle(thead[0], 'height'))) {
+    if (scrollTop() + fixTop > dom.offsetTop && scrollTop() + fixTop < dom.offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(thead ? getStyle(thead[0], 'height') : 0)) {
       thead.forEach(th => {
         th.style.display = 'table-header-group'
         let h = (dom.offsetTop - scrollTop() - fixTop) * -1
