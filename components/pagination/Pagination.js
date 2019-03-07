@@ -30,7 +30,7 @@ class Pagination extends Component {
     sizeChangeEvent: PropTypes.func,
     jumpEvent: PropTypes.func,
     pageSizeOptions: PropTypes.array,
-    mode: PropTypes.oneOf(['simple', 'normal', 'pn'])
+    mode: PropTypes.oneOf(['simple', 'normal', 'shrink'])
   }
 
   static defaultProps = {
@@ -407,7 +407,7 @@ class Pagination extends Component {
         children = this.renderSimple()
         break
 
-      case 'pn':
+      case 'shrink':
         children = this.renderPn()
         break
 

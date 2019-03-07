@@ -38,7 +38,7 @@ class Tooltip extends Component {
         style={style}
         onMouseEnter={() => { this.setState({tooltipShow: true}) }}
         onMouseLeave={() => { this.setState({tooltipShow: false}) }}
-        onClick={onClick.bind(this)}
+        onClick={() => { onClick && onClick() }}
         ref={node => { this.tooltipContainer = node }}
       >
         <Popper

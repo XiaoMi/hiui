@@ -7,11 +7,11 @@
 通过 `ThemeContext` 使内部的组件可以通过 `props.theme` 获取到设置的主题，所以在页面根组件嵌套即可。
 
 ```js
-import { ThemeContext } from '@hi-ui/hiui/es/context'
+  import { ThemeContext } from '@hi-ui/hiui/es/context'
 
-<ThemeContext.Provider value='hiui-blue'>
-  <App />
-</ThemeContext.Provider>
+  <ThemeContext.Provider value='hiui-blue'>
+    <App />
+  </ThemeContext.Provider>
 ```
 
 ### 示例

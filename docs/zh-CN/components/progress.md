@@ -10,6 +10,8 @@ Progress组件
 render() {
   return (
     <div>
+      <Progress percent={10}/>
+      <br/>
       <Progress percent={10} withOutText/>
       <br/>
       <Progress size='middle' status='success' text='成功' percent={40}/>
@@ -156,3 +158,17 @@ render() {
 }
 ```
 :::
+
+
+
+#### Progress Attributes
+
+| 参数       | 说明   |  类型  | 可选值 |默认值  |
+| --------   | -----  | ----  |    ----  |   ----  |
+| type |   进度条类型  |  String  | bar \| circle \| dashboard | bar |
+| size |   进度条大小  |  String   | large \| middle \| small | - |
+| texxt |   显示文本  |   String \| Component   | - | 当前进度百分比 |
+| withOutText |   是否显示文本  |    Boolean   | - | false |
+| status |   进度条类型  |   String   |  primary \| success \| warn \| error | primary |
+| radius |    环形进度条半径  |    Number   | - | 40 |
+| inside |   文字在进度条内显示，需配合 height 使用  |   Boolean   | - | false |

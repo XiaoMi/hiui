@@ -7,10 +7,10 @@
 render() {
   return (
     <div>
-      <Checkbox value='one' onChange={(val, isCheck) => console.log(val, isCheck)}>未选中项</Checkbox>
-      <Checkbox disabled>未选中失效</Checkbox>
-      <Checkbox checked onChange={(val, isCheck) => console.log(val, isCheck)}>选中项</Checkbox>
-      <Checkbox disabled checked>选中失效</Checkbox>
+      <Checkbox value='default' onChange={(val, isCheck) => console.log(val, isCheck)}>Checkbox</Checkbox>
+      <Checkbox disabled>Checkbox(disabled)</Checkbox>
+      <Checkbox checked onChange={(val, isCheck) => console.log(val, isCheck)}>Checkbox</Checkbox>
+      <Checkbox disabled checked>Checkbox(checked)</Checkbox>
     </div>
   )
 }
@@ -24,41 +24,45 @@ render() {
 constructor () {
   super()
   this.state = {
-    list: ['足球', '篮球', '排球'],
+    list: ['手机', '电脑', '智能'],
     list2: [{
-      text: '北京',
-      value: 'BeiJint',
+      text: '手机',
+      value: 'Phone',
       checked: true
     },{
-      text: '上海',
-      value: ' ShangHai'
+      text: '电脑',
+      value: 'Computer'
     },{
-      text: '深圳'
+      text: '智能'
     },{
-      text: '天津',
+      text: '出行',
       disabled: true,
       checked: true
     }]
   }
+  this.onChange = this.onChange.bind(this)
+}
+onChange(list, value, isChecked) {
+  console.log(list, value, isChecked)
 }
 render() {
   return (
     <div>
-      <p>多选模式下，需子选项 name 相同</p>
+      <p>基础 list 数据</p>
+      <div><Checkbox list={this.state.list} onChange={this.onChange} name="c1"/></div>
       <br/>
-      <p>list 项为普通字符串</p>
-      <div><Checkbox list={this.state.list} onChange={(list, value, isChecked) => console.log(list, value, isChecked)} name="c1"/></div>
+      <p>复杂 list 数据</p>
+      <div><Checkbox list={this.state.list2} onChange={this.onChange} name="c2"/></div>
       <br/>
-      <p>list 项为对象</p>
-      <div><Checkbox list={this.state.list2} onChange={(list, value, isChecked) => console.log(list, value, isChecked)} name="c2"/></div>
-      <br/>
-      <p>也可使用多个 checkbox，实现多选效果，可放置于任意位置</p>
+      <p>多个 checkbox，实现多选</p>
       <div>
-        <Checkbox value='one' onChange={(list, value, isChecked) => console.log(list, value, isChecked)} name='c3'>苹果</Checkbox>
-        <Checkbox value='two' onChange={(list, value, isChecked) => console.log(list, value, isChecked)} name='c3'>香蕉</Checkbox>
-        <Checkbox value='three' onChange={(list, value, isChecked) => console.log(list, value, isChecked)} name='c3'>梨</Checkbox>
-        <Checkbox value='four' onChange={(list, value, isChecked) => console.log(list, value, isChecked)} name='c3'>榴莲</Checkbox>
+        <Checkbox value='phone' onChange={this.onChange} name='c3'>手机</Checkbox>
+        <Checkbox value='computer' onChange={this.onChange} name='c3'>电脑</Checkbox>
+        <Checkbox value='smart' onChange={this.onChange} name='c3'>智能</Checkbox>
+        <Checkbox value='travel' onChange={this.onChange} name='c3'>出行</Checkbox>
       </div>
+       <br/>
+      <i>多选模式下，子选项 name 需相同</i>
     </div>
   )
 }
@@ -74,44 +78,42 @@ constructor () {
     title: 'Panel 标题',
     checked: false,
     list: [{
-      text: '北京',
-      value: 'BeiJing'
+      text: '手机',
+      value: 'phone'
     },{
-      text: '上海',
-      value: ' ShangHai'
+      text: '电脑',
+      value: 'computer'
     },{
-      text: '深圳',
+      text: '智能',
       checked: true
     },{
-      text: '天津',
+      text: '出行',
       disabled: true,
       checked: true
     }]
   }
+  this.onChange = this.onChange.bind(this)
+}
+onChange() {
+
 }
 render() {
   return (
     <div>
       <div>
-        <Button type="default" onClick={() => {this.setState({title: `新标题 - ${parseInt(Math.random()*100)}`})}}>修改 Panel 标题</Button>
+        <p>通过 all 与 name 的对应关系决定全选框与选择框的关系</p>
+        <Checkbox all='one' onChange={this.onChange}>全选</Checkbox>
+        <div><Checkbox list={this.state.list} name='one'/></div>
         <br/>
-        <Panel 
-          title={this.state.title}
-        >
-          <Checkbox all='one' onChange={(list, value, isChecked) => console.log(list, value, isChecked)}>全选</Checkbox>
-          <div><Checkbox list={this.state.list} name='one'/></div>
-
-    <br/>
-
-          <div>
-            <Checkbox all='two' onChange={(list, value, isChecked) => console.log(list, value, isChecked)}> 全选</Checkbox> <span>(子选项放置于任意位置，需 name 相同)</span>
-            <div><Checkbox text='北京' name='two'/><Checkbox name='two' value='ShangeHai'>上海</Checkbox></div>
-            <div><Checkbox name='two' text='深圳'/></div>
-            <div><Checkbox name='two' checked={this.state.checked} text='天津'/></div>
-            <br/>
-            <Button type="default" onClick={() => {this.setState({checked: !this.state.checked})}}>更新选中状态</Button>
-          </div>
-        </Panel>
+        <p>多个选择框组成全选功能</p>
+        <div>
+          <Checkbox all='two' onChange={this.onChange}> 全选</Checkbox>
+          <div><Checkbox name='two' text='手机'/></div>
+          <div><Checkbox name='two' value='computer'>电脑</Checkbox></div>
+          <div><Checkbox name='two' text='智能'/></div>
+          <div><Checkbox name='two' checked={true} text='出行'/></div>
+          <br/>
+        </div>
       </div>
       <br/>
       
@@ -125,12 +127,22 @@ render() {
 
 | 参数       | 说明   |  类型  | 可选值 |默认值  |
 | --------   | -----  | ----  |    ----  |   ----  |
-| value |  选中的值  |  string,number,boolean   | - | |
+| value |  Checkbox 的值;含有 value 属性时，选中回调将返回该值，否则返回对应文本内容  |  string,number,boolean   | - | |
+| text |   Checkbox 显示的文本;当含有 text 属性时将忽略 Checkbox 子元素  |  string,number,boolean   | - | |
 | checked |   是否默认选中  |  boolean   | true 或 false | false |
-| disabled |   是否禁用  |  boolean   | true 或 false | false |
-|  list |   多选  |  array   | - |  |
-|  all |   全选框标识（用于全选框属性））  |   string   | - |  |
-|  name |   全选或多选模式下子选项标识（用于全选或多选模式，且 name 值与 all 值保持一致，当没有全选框时，同级选项 name 应保持一致）；在一个应用中不同功能的 Checkbox 勿出现相同的 name 名称  |   string   | - |  |
+| disabled |   是否默认禁用  |  boolean   | true 或 false | false |
+|  list |   多选数据  |  array   |  参见 List Options |  |
+|  all |   全选框标识，标明该项为全选checkobx，文本将标示为「全选」  |   string   | - |  |
+|  name |   子选项标识<br/> 仅用于全选模式下的子选项 或 多选模式<br/> 全选模式：name 值需与 all 的值相同<br/>多选模式：同级子选项 name 相同  |   string   | - |  |
+
+
+#### List Options
+| 参数     | 说明   |  类型  | 可选值 | 默认值  |
+| --------   | -----  | ----  |    ----  |   ----  |
+| text |   显示文本  |  String   | 必需 | - |
+|  value |   选项的值  |   String \| Number \| Boolean   | - | - |
+| checked |   是否选中 |    Boolean   | - | false |
+| disabled |    是否禁用  |   Boolean   | - | false |
 
 ### Checkbox Events
 | 参数       | 说明   |  类型  | 

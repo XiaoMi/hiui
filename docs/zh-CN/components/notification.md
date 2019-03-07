@@ -28,9 +28,9 @@
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| type | 类型 | string | info/error/success/warning | info |
-| message | 提示内容 | string | - | 无 |
-| title | 提示标题 | string | - | 无 |
-| autoClose | 是否自动关闭 | bool | - | false |
-| showClose | 是否显示关闭图标 | bool | - | true |
-| onClose | 关闭回调 | func | - | 无 |
+| type | 类型 | String | info \| error \| success \| warning | info |
+| message | 提示内容 | String | - | 无 |
+| title | 提示标题 | String | - | 无 |
+| autoClose | 是否自动关闭 | Boolean | - | false |
+| showClose | 是否显示关闭图标 | Boolean | - | true |
+| onClose | 关闭回调 | Function | - | 无 |
