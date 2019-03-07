@@ -60,10 +60,10 @@ describe('Pagination', () => {
     wrapper.unmount()
   })
 
-  it('pn', () => {
+  it('shrink', () => {
     const wrapper = mount(
       <Pagination
-        mode='pn'
+        mode='shrink'
         defaultCurrent={2}
         showQuickJumper={true}
         total={250}
