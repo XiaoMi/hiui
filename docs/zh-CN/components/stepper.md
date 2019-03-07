@@ -234,10 +234,16 @@ render() {
 
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| id | 组件id | string | - | - |
-| className | class 类 | string | - | - |
-| list | 步骤元素列表 | [{src: string, title: string, text: string}] | - | - |
-| current | 当前步骤位置索引，从0开始计数 | number | - | - |
-| vertical | 是否竖直显示 | boolean | true | false |
-| up | 在水平显示时符号是否在上 | boolean | true | false |
+| id | 组件id | String | - | - |
+| className | 样式名 | String | - | - |
+| list | 步骤元素列表 | 参见 List Options | - | - |
+| current | 当前步骤位置索引，从0开始计数 | Number | - | - |
+| vertical | 是否竖直显示 | Boolean | true \| false | false |
+| up | 在水平显示时符号是否在上 | Boolean | true \| false | false |
 
+#### List Options
+| 参数     | 说明   |  类型  | 可选值 | 默认值  |
+| --------   | -----  | ----  |    ----  |   ----  |
+| title |   显示文案  |   Element \| String   | 必需 | - |
+| text |   副文本  |   Element \| String   | - | - |
+|  icon |    自定义icon |   Element   | - | - |

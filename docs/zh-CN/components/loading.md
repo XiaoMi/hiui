@@ -185,8 +185,8 @@ render () {
 
 | 参数       | 说明   |  类型  | 可选值 |默认值  |
 | --------   | -----  | ----  |    ----  |   ----  |
-| size |   组件大小  |  string   | large default small | default |
-| tip |   自定义的旋转动画下的文字  |  string   | - | |
-| full |   是否全屏  |   bool   | - | false |
-| show |    是否显示加载动画  |  boolean   | true false | false |
-| target |     用于指令调用时,Loading 遮罩的元素，为空时将整页遮罩  |  Element、ReactElement   |  |  |
+| size |   组件大小  |  String   | large \| default \| small | default |
+| tip |   自定义的旋转动画下的文字  |  String   | - |-  |
+| full |   是否全屏  |   Boolean   | - | false |
+| show |    是否显示加载动画  |  Boolean   | - | false |
+| target |     用于指令调用时,Loading 遮罩的元素，为空时将整页遮罩  |  Element | -  | -  |

@@ -90,7 +90,7 @@ class Radio extends Component {
       checked: index
     }, () => {
       if (this.props.onChange) {
-        this.props.onChange(item.id || item.name, index)
+        this.props.onChange(item.id || item.name, index, item)
       }
     })
   }

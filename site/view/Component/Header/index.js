@@ -14,7 +14,7 @@ export default class NavHeader extends Component {
           <NavLink to={`/${locale}`} exact activeClassName='header__nav-link--active'>{home}</NavLink>
         </NavGroup.Item>
         <NavGroup.Item>
-          <NavLink to={`/${locale}/designs/start`} activeClassName='header__nav-link--active'>{design}</NavLink>
+          <NavLink to={`/${locale}/designs/values`} activeClassName='header__nav-link--active'>{design}</NavLink>
         </NavGroup.Item>
         <NavGroup.Item>
           <NavLink to={`/${locale}/docs/quick-start`} activeClassName='header__nav-link--active'>{components}</NavLink>

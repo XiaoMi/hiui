@@ -2,6 +2,11 @@ import Markdown from '../../../libs/markdown'
 import forms from './forms'
 import tables from './tables'
 //  门户
+class Home extends Markdown {
+  document (locale) {
+    return require(`../../../docs/${locale}/templates/home-desc.md`)
+  }
+}
 class Portal extends Markdown {
   document (locale) {
     return require(`../../../docs/${locale}/templates/portal.md`)
@@ -27,6 +32,7 @@ export default {
   },
   components: {
     'home': {
+      'home-desc': Home,
       portal: Portal,
       dashboard: Dashboard,
       workbench: Workbench

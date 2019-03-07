@@ -66,6 +66,8 @@ module.exports = {
     portal: '门户',
     dashboard: 'Dashboard',
     workbench: '工作台',
+    'home-desc': '概述',
+    'form-desc': '概述',
     'form-basic': '基础表单',
     'form-group': '分组型表单',
     'form-inner': '内嵌表格型表单',

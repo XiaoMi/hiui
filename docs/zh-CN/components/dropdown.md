@@ -148,11 +148,19 @@ render() {
 
 | 参数       | 说明   |  类型  | 可选值 |默认值  |
 | --------   | -----  | ----  |    ----  |   ----  |
-| list |  数据项  |  array   | - | - |
-| title |   显示的文字内容<br/>传入"-"时代表分隔符  |   string/Component   | - | - |
-| type |   下拉按钮类型  |   string   | button/group | text |
+| list |  数据  |  Array   | 参见 List Options | - |
+| title |   显示的文字内容<br/>传入"-"时代表分隔符  |   String \| Component   | - | - |
+| type |   下拉按钮类型  |   String   | text \| button \| group | text |
 | onClick |   点击回调函数  |   func   | - | - |
-| prefix |   前缀图标  |   string/Component   | - | - |
-| suffix |   后缀图标  |  string/Component   | - | - |
-| trigger |    触发方式  |   string/array   | click/contextmenu | click |
+| prefix |   前缀图标  |   String \| Component   | - | - |
+| suffix |   后缀图标  |  String \| Component   | - | - |
+| trigger |    触发方式  |   String \| array   | click \| contextmenu | click |
 
+#### List Options
+| 参数     | 说明   |  类型  | 可选值 | 默认值  |
+| --------   | -----  | ----  |    ----  |   ----  |
+| title |   显示文案  |   Element \| String   | 必需 | - |
+| prefix |   文案前缀，选项中包含此值时将替换外部的 prefix  |   Element \| String   | - | - |
+| suffix |   文案后缀，选项中包含此值时将替换外部的 suffix |   Element \| String   | - | - |
+| disabled |    是否禁用  |   Boolean   | - | false |
+| value |   点击后回调的值   |   String | Number   | - | - |

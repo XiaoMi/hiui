@@ -13,12 +13,12 @@ class DesignPrinciples extends Markdown {
   }
 }
 
-// 快速上手
-class QuickStart extends Markdown {
-  document (locale) {
-    return require(`../../../docs/${locale}/designs/quick-start.md`)
-  }
-}
+// // 快速上手
+// class QuickStart extends Markdown {
+//   document (locale) {
+//     return require(`../../../docs/${locale}/designs/quick-start.md`)
+//   }
+// }
 // 概览
 class Overview extends Markdown {
   document (locale) {
@@ -69,7 +69,7 @@ class Icon extends Markdown {
 }
 export default {
   documents: {
-    start: QuickStart
+    // start: QuickStart
   },
   components: {
     'about-hiui': {
