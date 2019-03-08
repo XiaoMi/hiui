@@ -53,7 +53,7 @@ constructor(props){
       address: `EDC Las Vegas no. ${i}`,
     });
   }
-}1
+}
 render() {
   return <Table2 columns={this.columns} data={this.data} name='base' />
 }
@@ -109,7 +109,7 @@ constructor(props){
       address: `EDC Las Vegas no. ${i}`,
     });
   }
-}1
+}
 render() {
   return <Table2 columns={this.columns} data={this.data} name='sorter'/>
 }
@@ -310,7 +310,7 @@ constructor(props){
     age: 40,
     address: 'London Park'
   }]
-}1
+}
 render() {
   return <Table2 columns={this.columns} data={this.data} fixTop={56} scrollWidth={1300}/>
 }
@@ -354,7 +354,7 @@ constructor(props){
     age: 40,
     address: 'London Park'
   }]
-}1
+}
 render() {
   return <Table2 columns={this.columns} data={this.data} fixTop={56} scrollWidth={1300} name='rightkey'/>
 }
@@ -639,7 +639,7 @@ constructor(props){
     age: 40,
     address: 'London Park'
   }]
-}1
+}
 render() {
   return <Table2 columns={this.columns} data={this.data} fixTop={56}/>
 }

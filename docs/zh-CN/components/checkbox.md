@@ -132,7 +132,7 @@ render() {
 | checked |   是否默认选中  |  boolean   | true 或 false | false |
 | disabled |   是否默认禁用  |  boolean   | true 或 false | false |
 |  list |   多选数据  |  array   |  参见 List Options |  |
-|  all |   全选框标识，标明该项为全选checkobx，文本将标示为「全选」  |   string   | - |  |
+|  all |   全选框标识，标明该项为全选checkobx，文本将标示为「全选」。必须唯一  |   string   | - |  |
 |  name |   子选项标识<br/> 仅用于全选模式下的子选项 或 多选模式<br/> 全选模式：name 值需与 all 的值相同<br/>多选模式：同级子选项 name 相同  |   string   | - |  |
 
 
