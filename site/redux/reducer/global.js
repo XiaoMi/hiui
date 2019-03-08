@@ -6,7 +6,7 @@ const initState = {
   locale: window.localStorage.getItem('HIUI_LANGUAGE') || 'zh-CN'
 }
 
-export default (state = initState, action) => {
+export default (state = initState, action = '') => {
   const {
     type,
     sider,

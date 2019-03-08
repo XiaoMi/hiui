@@ -49,7 +49,7 @@ constructor(props){
       address: `EDC Las Vegas no. ${i}`,
     });
   }
-}1
+}
 render() {
   return <Table columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
 }
@@ -105,7 +105,7 @@ constructor(props){
       address: `EDC Las Vegas no. ${i}`,
     });
   }
-}1
+}
 render() {
   return <Table name={'sorter'} columns={this.columns} data={this.data} name='sorter'/>
 }
@@ -322,7 +322,7 @@ constructor(props){
     age: 40,
     address: 'London Park'
   }]
-}1
+}
 render() {
   return <Table columns={this.columns} data={this.data} fixTop={56} scrollX/>
 }

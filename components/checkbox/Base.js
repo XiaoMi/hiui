@@ -50,7 +50,7 @@ class Base extends Component {
         })
       })
       root && root.setState({
-        part: !!((num > 0 && num < list.length))
+        part: !!(num > 0 && num < list.length)
       })
     }
     if (name) {
@@ -63,7 +63,7 @@ class Base extends Component {
         t.length < allRef.length && t.length !== 0 && (part = true)
         t.length === allRef.length && (_checked = true)
 
-        root && root.setState({
+        root.setState({
           part,
           checked: _checked
         })

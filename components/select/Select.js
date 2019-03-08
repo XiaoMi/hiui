@@ -397,7 +397,8 @@ class Select extends Component {
       searchable,
       keyword
     } = this.state
-
+    console.log(this.isRemote() || (!searchable || !keyword) || (searchable && keyword && (String(item.id).match(keyword) || String(item.name).match(keyword))))
+    console.log(searchable,keyword ,(String(item.id).match(keyword) || String(item.name).match(keyword)))
     return this.isRemote() || (!searchable || !keyword) || (searchable && keyword && (String(item.id).match(keyword) || String(item.name).match(keyword)))
   }
 

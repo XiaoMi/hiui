@@ -525,26 +525,28 @@ class Table extends Component {
     }
     let dom = this.dom.current
     let thead = dom ? dom.querySelectorAll('thead') : null
-    if (scrollTop() + fixTop > dom.offsetTop && scrollTop() + fixTop < dom.offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(thead ? getStyle(thead[0], 'height') : 0)) {
-      thead.forEach(th => {
-        th.style.display = 'table-header-group'
-        let h = (dom.offsetTop - scrollTop() - fixTop) * -1
-        h = getPosition(dom).y * -1 + fixTop
-        th.style.transform = `translate(0,${h}px)`
-        if (name) {
-          this.setting.current.style.transform = `translate(0,${h}px)`
-        }
-      })
-    } else {
-      thead.forEach(th => {
-        th.style.transform = `translate(0,0)`
-        if (name) {
-          this.setting.current.style.transform = `translate(0,0)`
-          let h = parseInt(getStyle(dom.querySelector('thead'), 'height')) + 'px'
-          this.setting.current.style.height = h
-          this.setting.current.style.lineHeight = h
-        }
-      })
+    if (thead) {
+      if (scrollTop() + fixTop > dom.offsetTop && scrollTop() + fixTop < dom.offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(thead ? getStyle(thead[0], 'height') : 0)) {
+        thead.forEach(th => {
+          th.style.display = 'table-header-group'
+          // let h = (dom.offsetTop - scrollTop() - fixTop) * -1
+          let h = getPosition(dom).y * -1 + fixTop
+          th.style.transform = `translate(0,${h}px)`
+          if (name) {
+            this.setting.current.style.transform = `translate(0,${h}px)`
+          }
+        })
+      } else {
+        thead.forEach(th => {
+          th.style.transform = `translate(0,0)`
+          if (name) {
+            this.setting.current.style.transform = `translate(0,0)`
+            let h = parseInt(getStyle(dom.querySelector('thead'), 'height')) + 'px'
+            this.setting.current.style.height = h
+            this.setting.current.style.lineHeight = h
+          }
+        })
+      }
     }
   }
   getColumns (columns) {
@@ -617,7 +619,7 @@ class Table extends Component {
     }
 
     for (let key in bodyColumns) {
-      bodyColumns[key].headColSpan = getNum(bodyColumns[key], 1)
+      bodyColumns[key].headColSpan = getNum(bodyColumns[key])
     }
 
     let maxArray = [...bodyColumns].sort((pre, next) => (next.depth - pre.depth))
@@ -868,19 +870,6 @@ class Table extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState, nextContext) {
-    let preData = nextProps.data
-    let nextData = nextState.dataSource
-    if (nextData.length === preData.length) {
-      let bool = false
-      preData.forEach((p, i) => {
-        for (let key in p) {
-          if (p[key] !== nextData[i][key]) {
-            bool = true
-          }
-        }
-      })
-      return bool
-    }
     return true
   }
 
