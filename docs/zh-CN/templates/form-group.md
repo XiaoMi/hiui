@@ -8,7 +8,13 @@
 
 当页面的主体信息是表单时，表单的并列内容可按照标签形式组织，常见于表单项数量较多且在业务上需要分组展示时使用。
 
-![image-20190304145956599](./static/img/templates/form5.png)
+<a href="https://hiui-group.github.io/hiui-template/#/form-vertical-group" target="_blank" style="margin-top:8px;">
+  <img src="./static/img/templates/form5.png" width="60%"/>
+</a>
+
+<a href="https://hiui-group.github.io/hiui-template/#/form-vertical-group" target="_blank">查看 Demo</a>
+&nbsp;&nbsp;
+<a href="https://github.com/hiui-group/hiui-template" target="_blank">Github</a> 
 
 > 规则
 >
@@ -22,7 +28,13 @@
 
 用分组标题将表单项进行分组，可快速定位表单项，提高操作效率
 
-![image-20190304150041076](./static/img/templates/form6.png)
+<a href="https://hiui-group.github.io/hiui-template/#/form-group" target="_blank" style="margin-top:8px;">
+  <img src="./static/img/templates/form6.png" width="60%"/>
+</a>
+
+<a href="https://hiui-group.github.io/hiui-template/#/form-group" target="_blank">查看 Demo</a>
+&nbsp;&nbsp;
+<a href="https://github.com/hiui-group/hiui-template" target="_blank">Github</a> 
 
 > 规则
 >
@@ -30,12 +42,14 @@
 
 
 
-#### 可伸缩类
+#### 组合类
 
-通过展开收起的交互方式，减少页面的信息干扰，当分组数很多时可使用
+当分组数很多时可使用
 
-![image-20190304150114823](./static/img/templates/form7.png)
+<a href="https://hiui-group.github.io/hiui-template/#/form-unfold-group" target="_blank" style="margin-top:8px;">
+  <img src="./static/img/templates/form7.png" width="60%"/>
+</a>
 
-> 规则
->
-> 分组可通过点击展开或隐藏部分表单项，默认状态，展开第一个分组，收起其余分组
+<a href="https://hiui-group.github.io/hiui-template/#/form-unfold-group" target="_blank">查看 Demo</a>
+&nbsp;&nbsp;
+<a href="https://github.com/hiui-group/hiui-template" target="_blank">Github</a> 

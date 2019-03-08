@@ -8,8 +8,13 @@
 
 适用于查询条件少，关系均为且可灵活管理条件的情况。
 
-![image-20190304151407452](./static/img/templates/table5.png)
+<a href="https://hiui-group.github.io/hiui-template/#/query-basic" target="_blank" style="margin-top:8px;">
+  <img src="./static/img/templates/table5.png" width="60%"/>
+</a>
 
+<a href="https://hiui-group.github.io/hiui-template/#/query-basic" target="_blank">查看 Demo</a>
+&nbsp;&nbsp;
+<a href="https://github.com/hiui-group/hiui-template" target="_blank">Github</a> 
 
 
 > 规则
@@ -30,7 +35,13 @@
 
 适用于查询条件数为3-5个，操作高频且筛选项少于20个的情况（多选）。
 
-![image-20190304151506924](./static/img/templates/table6.png)
+<a href="https://hiui-group.github.io/hiui-template/#/tile-multiple" target="_blank" style="margin-top:8px;">
+  <img src="./static/img/templates/table6.png" width="60%"/>
+</a>
+
+<a href="https://hiui-group.github.io/hiui-template/#/tile-multiple" target="_blank">查看 Demo</a>
+&nbsp;&nbsp;
+<a href="https://github.com/hiui-group/hiui-template" target="_blank">Github</a> 
 
 > 规则
 >
@@ -42,7 +53,14 @@
 
 适用于查询条件数为3-5个，操作高频且筛选项少于20个的情况（单选）。
 
-![image-20190304151555941](./static/img/templates/table7.png)
+
+<a href="https://hiui-group.github.io/hiui-template/#/tile-single" target="_blank" style="margin-top:8px;">
+  <img src="./static/img/templates/table7.png" width="60%"/>
+</a>
+
+<a href="https://hiui-group.github.io/hiui-template/#/tile-single" target="_blank">查看 Demo</a>
+&nbsp;&nbsp;
+<a href="https://github.com/hiui-group/hiui-template" target="_blank">Github</a> 
 
 > 规则
 >
@@ -56,7 +74,13 @@
 
 适用于查询条件为多叉树结构的情况（单选）：
 
-![image-20190304151650332](./static/img/templates/table8.png)
+<a href="https://hiui-group.github.io/hiui-template/#/tree-single-query" target="_blank" style="margin-top:8px;">
+  <img src="./static/img/templates/table8.png" width="60%"/>
+</a>
+
+<a href="https://hiui-group.github.io/hiui-template/#/tree-single-query" target="_blank">查看 Demo</a>
+&nbsp;&nbsp;
+<a href="https://github.com/hiui-group/hiui-template" target="_blank">Github</a> 
 
 > 规则
 >
@@ -68,7 +92,13 @@
 
 适用于查询条件为多叉树结构的情况（多选）。
 
-![image-20190304151725741](./static/img/templates/table9.png)
+<a href="https://hiui-group.github.io/hiui-template/#/tree-multiple-query" target="_blank" style="margin-top:8px;">
+  <img src="./static/img/templates/table9.png" width="60%"/>
+</a>
+
+<a href="https://hiui-group.github.io/hiui-template/#/tree-multiple-query" target="_blank">查看 Demo</a>
+&nbsp;&nbsp;
+<a href="https://github.com/hiui-group/hiui-template" target="_blank">Github</a> 
 
 > 规则
 >

@@ -2,8 +2,15 @@
 
 核心数据的监控平台
 
-![image-20190304144212349](./static/img/templates/temp3.png)
 
+<a href="https://hiui-group.github.io/hiui-template/#/home-dashboard" target="_blank" style="margin-top:8px;">
+  <img src="./static/img/templates/temp3.png" width="60%"/>
+</a>
+
+
+<a href="https://hiui-group.github.io/hiui-template/#/home-dashboard" target="_blank">查看 Demo</a>
+&nbsp;&nbsp;
+<a href="https://github.com/hiui-group/hiui-template" target="_blank">Github</a> 
 >规则
 >
 >1. 如果有多个仪表盘，可使用筛选组织。

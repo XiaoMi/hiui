@@ -4,7 +4,9 @@
 
 表格是一种特殊的表单项，用于收集二维信息
 
-![image-20190304150214391](./static/img/templates/form8.png)
+
+<img src="./static/img/templates/form8.png" width="60%"/>
+
 
 > 规则
 >
