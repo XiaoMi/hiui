@@ -22,9 +22,10 @@ render () {
       <div>
         <p>Date 实例:</p>
         <DatePicker
+          placeholder="自定义占位符"
           value={new Date}
           onChange={(d) => {
-            console.log('value 为 Date 实例', DatePicker.format(d, 'YYYY-MM-DD E'))
+            console.log('value 为 Date 实例,返回值：', DatePicker.format(d, 'YYYY-MM-DD E'))
           }}
         />
       </div>
@@ -34,7 +35,7 @@ render () {
         <DatePicker
           value={1541755800052}
           onChange={(d) => {
-            console.log(' value 为 Number(毫秒数)', DatePicker.format(d, 'YYYY-MM-DD E'))
+            console.log(' value 为 Number(毫秒数),返回值：', DatePicker.format(d, 'YYYY-MM-DD E'))
           }}
         />
       </div>
@@ -43,7 +44,7 @@ render () {
          <DatePicker
           value='2018-10-11'
           onChange={(d) => {
-            console.log('value 为 时间字符串', DatePicker.format(d, 'YYYY-MM-DD E'))
+            console.log('value 为 时间字符串,返回值：', DatePicker.format(d, 'YYYY-MM-DD E'))
           }}
         />
       </div>
@@ -52,7 +53,7 @@ render () {
         <DatePicker
           format="YYYY-MM-DD HH:mm:SS"
           onChange={(d) => {
-            console.log('没有 value 属性', DatePicker.format(d, 'YYYY-MM-DD E'))
+            console.log('没有 value 属性,返回值：', DatePicker.format(d, 'YYYY-MM-DD E'))
           }}
         />
       </div>
@@ -61,7 +62,7 @@ render () {
         <DatePicker
           value={null}
           onChange={(d) => {
-            console.log('value 为 Null', DatePicker.format(d, 'YYYY-MM-DD E'))
+            console.log('value 为 Null,返回值：', DatePicker.format(d, 'YYYY-MM-DD E'))
           }}
         />
       </div>
@@ -70,7 +71,7 @@ render () {
         <DatePicker
           value={undefined}
           onChange={(d) => {
-            console.log('value 为 undefined', DatePicker.format(d, 'YYYY-MM-DD E'))
+            console.log('value 为 undefined,返回值：', DatePicker.format(d, 'YYYY-MM-DD E'))
           }}
         />
       </div>
@@ -79,7 +80,7 @@ render () {
         <DatePicker
           value=''
           onChange={(d) => {
-            console.log('value 为 空字符串', DatePicker.format(d, 'YYYY-MM-DD E'))
+            console.log('value 为 空字符串,返回值：', DatePicker.format(d, 'YYYY-MM-DD E'))
           }}
         />
       </div>
@@ -240,6 +241,7 @@ render () {
 render () {
   return (
     <DatePicker 
+      placeholder={['开始日期', '结束日期']}
       type='daterange'
       minDate={new Date()}
       maxDate={new Date(2019, 4, 28)}
