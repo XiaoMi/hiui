@@ -89,8 +89,7 @@ render() {
       <Button type="primary" size="small">小号</Button>
       <Button type="primary" size="small" disabled>小号</Button>
       <Button type="primary" icon="plus" />
-      <Button type="line" icon="download" />
-
+      <Button type="line" icon="download" >下载</Button>
     </div>
   )
 }
