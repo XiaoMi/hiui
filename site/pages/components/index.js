@@ -14,7 +14,7 @@ export default {
       // 'ficon': require('./ficon')
     },
     'group-navgation': {
-      // 'tabs': require('./tabs'),
+      'tabs': require('./tabs'),
       'navMenu': require('./nav-menu'),
       'dropdown': require('./dropdown'),
       'pagination': require('./pagination'),

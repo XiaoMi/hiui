@@ -12,6 +12,22 @@ HIUI 是一套适用于前中后台的交互界面设计标准与前端解决方
 ### 1.新项目
 
 > 我们推荐使用 [create-react-app](https://www.npmjs.com/package/create-react-app) React 官方脚手架进行快速项目搭建
+
+环境依赖
+
+- Node >= 8.10
+- Npm >= 5.2  或 Yarn >= 0.25
+
+下载并安装 Node
+
+[Node 下载地址](https://nodejs.org/zh-cn/download/)
+
+或参照如下地址选择对应的安装方式
+
+[各平台通过包管理器进行安装](https://nodejs.org/zh-cn/download/package-manager/)
+
+Node 安装完成后，npm 即可以使用
+
 #### 1.1 安装create-react-app
 
 ```shell
@@ -23,8 +39,18 @@ npm install -g create-react-app
 > 在终端顺序执行以下命令：
 
 ```bash
+  # 全局安装 create-react-app
+  npm install -g create-react-app
+
+  # 使用 create-react-app 创建工程目录
   create-react-app projectName
-  ce projectName
+
+  # 切换至工程目录
+  cd projectName
+
+  # 启动项目
+  npm start 
+  # 或
   yarn start
 ```
 
