@@ -40,15 +40,19 @@
     line-height: 32px;
     color: $gray-darker;
   }
+
   &__total {
     margin-right: $spacer-4;
   }
+
   &__sizes {
     margin-right: $spacer-4;
   }
+
   &__jumper {
     margin-left: $spacer-4;
   }
+
   &__span {
     display: inline-block;
     margin: 0 $spacer-1;

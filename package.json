@@ -1,10 +1,10 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "1.3.3-beta.1",
+  "version": "1.3.4",
   "description": "HIUI for React",
   "scripts": {
-    "test1": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
-    "test": "jest",
+    "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
+    "jest": "jest",
     "fix": "node_modules/.bin/standard --fix && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss' --fix",
     "precommit": "lint-staged",
     "compile": "cross-env NODE_ENV=production gulp",
