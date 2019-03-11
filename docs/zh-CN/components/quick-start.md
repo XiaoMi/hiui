@@ -85,7 +85,7 @@ cd yourProjectName
 npm install @hi-ui/hiui --save
 ```
 
-```json
+```diff
 // package.json  
 "dependencies": {
 +   "@hi-ui/hiui": "^1.3.2",
