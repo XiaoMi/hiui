@@ -3,7 +3,8 @@ export default {
     'quick-start': require('./quick-start'),
     'template': require('./template'),
     'theme': require('./theme'),
-    'i18n': require('./i18n')
+    'i18n': require('./i18n'),
+    'changelog': require('./changelog')
   },
   components: {
     'group-basic': {
