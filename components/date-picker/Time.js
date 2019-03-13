@@ -16,8 +16,8 @@ export default class TimePanel extends Component {
         seconds: 0
       }
     }
-    this.liPrefix = props.onlyTime ? [1, 2] : [1, 2, 3]
-    this.liSuffix = props.onlyTime ? [1, 2] : [1, 2, 3]
+    this.liPrefix = props.onlyTime ? [1, 2, 3] : [1, 2, 3, 4]
+    this.liSuffix = props.onlyTime ? [1, 2, 3] : [1, 2, 3, 4]
   }
   range (num) {
     let arr = []
@@ -36,7 +36,7 @@ export default class TimePanel extends Component {
   }
   scrollEvent (type, e) {
     const st = e.target.scrollTop
-    const val = Math.round(st / 38)
+    const val = Math.round(st / 32)
     const {date} = this.state
     if (type === 'hours') {
       date.setHours(val)
@@ -58,7 +58,7 @@ export default class TimePanel extends Component {
   completeScrollTop () {
     const {date} = this.state
     let {hours, minutes, seconds} = deconstructDate(date)
-    const dVal = 38
+    const dVal = 32
     setTimeout(() => {
       this.hoursList.scrollTop = (hours) * dVal
       this.minutesList.scrollTop = (minutes) * dVal
@@ -102,9 +102,9 @@ export default class TimePanel extends Component {
     }
   }
   mouseOverEvent (e) {
-    this.activeEl && (this.activeEl.style.background = 'white')
+    // this.activeEl && (this.activeEl.style.backgroundColor = 'transparent')
     this.activeEl = e.target
-    e.target.style.background = '#F2F2F2'
+    // e.target.style.background = 'rgba(66,132,245,0.08)'
   }
   render () {
     const {date} = this.state
@@ -116,55 +116,66 @@ export default class TimePanel extends Component {
       return <li className='hi-timepicker__item' key={'suf' + index} />
     })
     return (
-      <div className='hi-timepicker__timebody'>
-        <ul
-          ref={el => { this.hoursList = el }}
-          className='hi-timepicker__list'
-          onClick={this.clickEvent.bind(this, 'hours')}
-          onMouseEnter={this.mouseOverEvent.bind(this)}
-        >
-          {this.liPrefix}
-          {
-            this.range(24).map((m, n) => {
-              return (
-                <li
-                  key={n}
-                  className={n === hours ? 'hi-timepicker__item hi-timepicker__item--current' : 'hi-timepicker__item'}
-                >{m}</li>
-              )
-            })
-          }
-          {this.liSuffix}
-        </ul>
-        <ul
-          className='hi-timepicker__list'
-          ref={el => { this.minutesList = el }}
-          onClick={this.clickEvent.bind(this, 'minutes')}
-          onMouseEnter={this.mouseOverEvent.bind(this)}
-        >
-          {this.liPrefix}
-          {
-            this.range(60).map((m, n) => {
-              return <li key={n} className={n === minutes ? 'hi-timepicker__item hi-timepicker__item--current' : 'hi-timepicker__item'}>{m}</li>
-            })
-          }
-          {this.liSuffix}
-        </ul>
-        <ul
-          ref={el => { this.secondsList = el }}
-          className='hi-timepicker__list'
-          onClick={this.clickEvent.bind(this, 'seconds')}
-          onMouseEnter={this.mouseOverEvent.bind(this)}
-        >
-          {this.liPrefix}
-          {
-            this.range(60).map((m, n) => {
-              return <li key={n} className={n === seconds ? 'hi-timepicker__item hi-timepicker__item--current' : 'hi-timepicker__item'}>{m}</li>
-            })
-          }
-          {this.liSuffix}
-        </ul>
-        <div className='hi-timepicker__current-line' style={{top: this.props.onlyTime ? 76 : 114}} />
+      <div className='hi-timepicker__body'>
+        <div className='hi-timepicker__timeheader'>
+          <span className='hi-timepicker__mark'>时</span>
+          <span className='hi-timepicker__mark'>分</span>
+          <span className='hi-timepicker__mark'>秒</span>
+        </div>
+        <div className='hi-timepicker__timebody'>
+          <ul
+            ref={el => { this.hoursList = el }}
+            className='hi-timepicker__list'
+            onClick={this.clickEvent.bind(this, 'hours')}
+            onMouseEnter={this.mouseOverEvent.bind(this)}
+          >
+            {this.liPrefix}
+            {
+              this.range(24).map((m, n) => {
+                return (
+                  <li
+                    key={n}
+                    className={n === hours ? 'hi-timepicker__item hi-timepicker__item--current' : 'hi-timepicker__item'}
+                  >{m}</li>
+                )
+              })
+            }
+            {this.liSuffix}
+          </ul>
+          <ul
+            className='hi-timepicker__list'
+            ref={el => { this.minutesList = el }}
+            onClick={this.clickEvent.bind(this, 'minutes')}
+            onMouseEnter={this.mouseOverEvent.bind(this)}
+          >
+            {this.liPrefix}
+            {
+              this.range(60).map((m, n) => {
+                return <li key={n} className={n === minutes ? 'hi-timepicker__item hi-timepicker__item--current' : 'hi-timepicker__item'}>{m}</li>
+              })
+            }
+            {this.liSuffix}
+          </ul>
+          <ul
+            ref={el => { this.secondsList = el }}
+            className='hi-timepicker__list'
+            onClick={this.clickEvent.bind(this, 'seconds')}
+            onMouseEnter={this.mouseOverEvent.bind(this)}
+          >
+            {this.liPrefix}
+            {
+              this.range(60).map((m, n) => {
+                return <li key={n} className={n === seconds ? 'hi-timepicker__item hi-timepicker__item--current' : 'hi-timepicker__item'}>{m}</li>
+              })
+            }
+            {this.liSuffix}
+          </ul>
+          <div className='hi-timepicker__current-line' style={{top: this.props.onlyTime ? 108 : 140}} >
+            {/* <span>{hours}</span>
+            <span>{minutes}</span>
+            <span>{seconds}</span> */}
+          </div>
+        </div>
       </div>
     )
   }

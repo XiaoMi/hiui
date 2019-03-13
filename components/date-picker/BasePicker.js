@@ -139,7 +139,7 @@ class BasePicker extends Component {
     this._parseProps(nextProps)
   }
   onPick (date, showPanel) {
-    const {type, showTime, onChange, weekOffset, localeDatas} = this.props
+    const {type, showTime, localeDatas} = this.props
     const {format} = this.state
     this.setState({
       date,
@@ -147,7 +147,15 @@ class BasePicker extends Component {
       rText: date.endDate && formatterDate(type, date.endDate, format, showTime, localeDatas),
       showPanel,
       isFocus: false
+    }, () => {
+      if (!showPanel) {
+        this.callback()
+      }
     })
+  }
+  callback () {
+    const {type, onChange, weekOffset} = this.props
+    const {date} = this.state
     if (onChange) {
       const {startDate, endDate} = date
       const _weekOffset = {weekStartsOn: weekOffset}
@@ -214,6 +222,7 @@ class BasePicker extends Component {
     if (tar !== this.input && tar !== this.rInput) {
       this.timeCancel()
     }
+    this.callback()
   }
   _input (text, ref = 'input') {
     return (
