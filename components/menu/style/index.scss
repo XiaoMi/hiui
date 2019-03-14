@@ -1,61 +1,71 @@
-.hi-menu {
+.hi-menu,
+.hi-submenu__popper {
   ul {
     margin-top: 0;
     margin-bottom: 0;
     padding-left: 0;
+    font-size: 0px;
   }
-
-  li + li {
-    margin-top: 0;
-  }
-
   li {
     list-style: none;
   }
+}
 
-  &.hi-menu-vertical {
-    background: #fff;
-    border: 1px solid #e6e7e8;
-    box-shadow: 0 2px 8px 0 rgba(56, 62, 71, 0.1);
-    border-radius: 2px;
-    padding: 4px 0;
-
-    li {
-      font-size: 14px;
-      color: #333;
-      line-height: 36px;
-      position: relative;
-      height: 36px;
-      cursor: pointer;
-      padding-left: 15px;
-
-      &:hover {
-        // border-bottom: 2px solid #4284f5;
-        color: #4284f5;
-      }
+.hi-menu {
+  &-items {
+    display: flex;
+  }
+  &-item {
+    display: flex;
+    position: relative;
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    &--active {
+      color: #4284F5;
+    }
+    &__expand-icon {
+      margin-left: 8px;
     }
   }
 
-  &.hi-menu-horizontal {
-    border: 0;
-    border-bottom: 1px solid #e8e8e8;
-    height: 48px;
-
-    li {
-      font-size: 14px;
-      color: #333;
-      display: inline-block;
-      line-height: 20px;
-      padding: 14px 4px;
-      margin-right: 40px;
-      position: relative;
-      cursor: pointer;
-      margin-top: -1px;
-
-      &:hover {
-        border-bottom: 2px solid #4284f5;
-        color: #4284f5;
+  &-horizontal {
+    border-bottom: 1px solid #E6E7E8;
+    .hi-menu-item {
+      max-width: 100px;
+      padding: 12px;
+      margin-right: 48px;
+      &:last-child {
+        margin-right: 0px;
+      }
+      &--active:after {
+        content: '';
+        position: absolute;
+        bottom: 0px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 32px;
+        height: 2px;
+        background-color: #4284F5;
       }
     }
+  }
+}
+
+.hi-submenu__popper {
+  width: 200px;
+  padding: 4px 16px;
+  background-color: #fff;
+  box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.15);
+  border: 1px solid rgba(230,231,232,1);
+  box-sizing: border-box;
+  .hi-menu-items {
+    flex-direction: column;
+  }
+  .hi-menu-item {
+    padding: 8px 0;
   }
 }

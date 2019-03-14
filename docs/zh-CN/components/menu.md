@@ -7,22 +7,18 @@
 水平排列
 
 ```js
-  constructor () {
-    super()
-    this.state = {
-      list: [{
-        title: '菜单一'
-      }, {
-        title: '菜单二',
-      }, {
-        title: '菜单三'
-      }]
-    }
-  }
   render(){
     return(
       <div>
-        <Menu list={this.state.list} mode="horizontal"/>
+        <Menu mode="horizontal" activeId="1" onClick={(id, prevId)=>console.log('-----click', id, prevId)}>
+          <Menu.Item id="1">电视</Menu.Item>
+          <Menu.Item id="2">小米MIX</Menu.Item>
+          <Menu.SubMenu title="手机">
+            <Menu.Item id="xiaomi">小米</Menu.Item>
+            <Menu.Item id="hongmi">红米</Menu.Item>
+          </Menu.SubMenu>
+          <Menu.Item id="4">超长超长超长字符</Menu.Item>
+        </Menu>
       </div>
     )
   }
@@ -30,35 +26,7 @@
 ```
 :::
 
-### 竖直排列
 
-:::demo
-
-竖直排列
-
-```js
-  constructor () {
-    super()
-    this.state = {
-      list: [{
-        title: '菜单一'
-      }, {
-        title: '菜单二'
-      }, {
-        title: '菜单三'
-      }]
-    }
-  }
-  render(){
-    return(
-      <div style={{width: 250}}>
-        <Menu list={this.state.list} mode="vertical"/>
-      </div>
-    )
-  }
-
-```
-:::
 
 
 <!-- - 水平菜单
