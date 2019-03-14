@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 class MixinMenu extends Component {
   root () {
-    return this.context.component
+    return this.context.component || this.props.rootComponent
   }
 
   onClick (id) {
@@ -12,22 +12,38 @@ class MixinMenu extends Component {
     root.onClick(id)
   }
 
-  renderChildren (children) {
+  renderChildren (children, parentComponent) {
     const {
       activeId
     } = this.root().state
     let childIsActive = false
     const enhancedChildren = React.Children.map(children, child => {
-      if (child.props.id === activeId) {
-        childIsActive = true
+      let props = {
+        parentComponent
       }
+      // console.log('----------child', child)
       if (child.type.componentName === 'MenuItem') {
-        return React.cloneElement(child, {
+        if (child.props.id === activeId) {
+          childIsActive = true
+        }
+        props = Object.assign(props, {
           onClick: this.onClick.bind(this),
           activeId
         })
+      } else if (child.type.componentName === 'SubMenu') {
+        childIsActive = this.submenu && this.submenu.childIsActive
+
+        props = Object.assign(props, {
+          rootComponent: this.context.component,
+          ref: node => { this.submenu = node }
+        })
+      } else {
+        props = Object.assign(props, {
+          rootComponent: this.context.component
+        })
       }
-      return child
+
+      return React.cloneElement(child, props)
     })
 
     return {

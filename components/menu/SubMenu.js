@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import MixinMenu from './MixinMenu'
@@ -6,8 +7,16 @@ import Popper from '../popper'
 import Icon from '../icon'
 
 export default class SubMenu extends MixinMenu {
+  static componentName = 'SubMenu'
+  childIsActive = false
+
   static propTypes = {
-    title: PropTypes.string
+    title: PropTypes.string,
+    level: PropTypes.number
+  }
+
+  static defaultProps = {
+    level: 1
   }
 
   constructor (props) {
@@ -16,6 +25,31 @@ export default class SubMenu extends MixinMenu {
     this.state = {
       showSubmenu: false
     }
+    this.clickOutsideHandel = this.clickOutside.bind(this)
+  }
+
+  componentDidMount () {
+    window.addEventListener('click', this.clickOutsideHandel)
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('click', this.clickOutsideHandel)
+  }
+
+  clickOutside (e) {
+    if (
+      (ReactDOM.findDOMNode(this.submenuTrigger) && ReactDOM.findDOMNode(this.submenuTrigger).contains(e.target)) ||
+      (ReactDOM.findDOMNode(this.submenuNode) && ReactDOM.findDOMNode(this.submenuNode).contains(e.target))
+    ) {
+      return
+    }
+    this.hidePopper()
+  }
+
+  hidePopper () {
+    this.setState({
+      showSubmenu: false
+    })
   }
 
   onClick (id) {
@@ -30,21 +64,40 @@ export default class SubMenu extends MixinMenu {
       showSubmenu
     } = this.state
     const {
-      title
+      title,
+      parentComponent
     } = this.props
     const {
       children,
       childIsActive
-    } = this.renderChildren(this.props.children)
+    } = this.renderChildren(this.props.children, SubMenu.componentName)
+    const deepSubmenu = parentComponent === 'SubMenu' || parentComponent === 'ItemGroup'
     const cls = classNames('hi-menu-item', 'hi-submenu', {
-      'hi-menu-item--active': childIsActive
+      'hi-menu-item--active': childIsActive,
+      'hi-submenu--sub': deepSubmenu
     })
-    const icon = showSubmenu ? 'up' : 'down'
+    let leftGap
+    let topGap
+    let placement
+    let icon
+    if (deepSubmenu) {
+      leftGap = 16
+      topGap = -4
+      placement = 'right-start'
+      icon = showSubmenu ? 'left' : 'right'
+    } else {
+      leftGap = 0
+      topGap = 5
+      placement = 'bottom-start'
+      icon = showSubmenu ? 'up' : 'down'
+    }
+    this.childIsActive = childIsActive
+    // console.log('----------childIsActive', this.props.parentComponent)
 
     return (
       <li
         className={cls}
-        ref={node => { this.submenu = node }}
+        ref={node => { this.submenuTrigger = node }}
         onClick={() => {
           this.setState({
             showSubmenu: true
@@ -59,13 +112,15 @@ export default class SubMenu extends MixinMenu {
         </div>
         <Popper
           show={showSubmenu}
-          attachEle={this.submenu}
+          attachEle={this.submenuTrigger}
           zIndex={1050}
-          topGap={5}
+          topGap={topGap}
+          leftGap={leftGap}
           className='hi-submenu__popper'
           width={false}
+          placement={placement}
         >
-          <ul className='hi-menu-items'>
+          <ul className='hi-menu-items' ref={node => { this.submenuNode = node }}>
             {children}
           </ul>
         </Popper>

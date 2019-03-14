@@ -20,23 +20,27 @@
     position: relative;
     font-size: 14px;
     color: #333;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     cursor: pointer;
     &--active {
       color: #4284F5;
     }
     &__expand-icon {
+      flex: none;
       margin-left: 8px;
+    }
+    &__title {
+      flex: auto;
+      max-width: 100px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
   &-horizontal {
     border-bottom: 1px solid #E6E7E8;
     .hi-menu-item {
-      max-width: 100px;
-      padding: 12px;
+      padding: 12px 0px;
       margin-right: 48px;
       &:last-child {
         margin-right: 0px;
@@ -67,5 +71,8 @@
   }
   .hi-menu-item {
     padding: 8px 0;
+    &__title {
+      max-width: initial;
+    }
   }
 }

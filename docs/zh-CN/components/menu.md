@@ -14,8 +14,25 @@
           <Menu.Item id="1">电视</Menu.Item>
           <Menu.Item id="2">小米MIX</Menu.Item>
           <Menu.SubMenu title="手机">
-            <Menu.Item id="xiaomi">小米</Menu.Item>
+            <Menu.SubMenu title="小米">
+              <Menu.Item id="xiaomi9">小米9</Menu.Item>
+              <Menu.Item id="xiaomi8">小米8</Menu.Item>
+              <Menu.Item id="xiaomi7">小米7</Menu.Item>
+              <Menu.Item id="xiaomi6">小米6</Menu.Item>
+              <Menu.Item id="xiaomi5">小米5</Menu.Item>
+              <Menu.Item id="xiaomi4">小米4</Menu.Item>
+              <Menu.Item id="xiaomi3">小米3</Menu.Item>
+              <Menu.Item id="xiaomi2">小米2</Menu.Item>
+            </Menu.SubMenu>
             <Menu.Item id="hongmi">红米</Menu.Item>
+            <Menu.SubMenu title="小米note">
+              <Menu.Item id="xiaomi note7">小米 note7</Menu.Item>
+              <Menu.Item id="xiaomi note6">小米 note6</Menu.Item>
+              <Menu.Item id="xiaomi note5">小米 note5</Menu.Item>
+              <Menu.Item id="xiaomi note4">小米 note4</Menu.Item>
+              <Menu.Item id="xiaomi note3">小米 note3</Menu.Item>
+              <Menu.Item id="xiaomi note2">小米 note2</Menu.Item>
+            </Menu.SubMenu>
           </Menu.SubMenu>
           <Menu.Item id="4">超长超长超长字符</Menu.Item>
         </Menu>
