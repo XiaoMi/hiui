@@ -12,6 +12,24 @@ class MixinMenu extends Component {
     root.onClick(id)
   }
 
+  isActive (children, activeId) {
+    let active = false
+
+    React.Children.forEach(children, child => {
+      if (active) {
+        return
+      }
+      if (child.type.componentName === 'MenuItem') {
+        if (child.props.id === activeId) {
+          active = true
+        }
+      } else {
+        active = this.isActive(child.props.children, activeId)
+      }
+    })
+    return active
+  }
+
   renderChildren (children, parentComponent) {
     const {
       activeId
@@ -31,11 +49,15 @@ class MixinMenu extends Component {
           activeId
         })
       } else if (child.type.componentName === 'SubMenu') {
-        childIsActive = this.submenu && this.submenu.childIsActive
+        const active = this.isActive(child.props.children, activeId)
+        if (active) {
+          childIsActive = active
+        }
+        console.log('----------child', childIsActive)
 
         props = Object.assign(props, {
-          rootComponent: this.context.component,
-          ref: node => { this.submenu = node }
+          // showParentSubmenu: ((this.state && this.state.showSubmenu) || this.props.showParentSubmenu) && active,
+          rootComponent: this.context.component
         })
       } else {
         props = Object.assign(props, {

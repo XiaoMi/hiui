@@ -8,15 +8,14 @@ import Icon from '../icon'
 
 export default class SubMenu extends MixinMenu {
   static componentName = 'SubMenu'
-  childIsActive = false
 
   static propTypes = {
     title: PropTypes.string,
-    level: PropTypes.number
+    showParentSubmenu: PropTypes.bool
   }
 
   static defaultProps = {
-    level: 1
+    showParentSubmenu: false
   }
 
   constructor (props) {
@@ -60,12 +59,13 @@ export default class SubMenu extends MixinMenu {
   }
 
   render () {
-    const {
+    let {
       showSubmenu
     } = this.state
     const {
       title,
-      parentComponent
+      parentComponent,
+      showParentSubmenu
     } = this.props
     const {
       children,
@@ -76,6 +76,7 @@ export default class SubMenu extends MixinMenu {
       'hi-menu-item--active': childIsActive,
       'hi-submenu--sub': deepSubmenu
     })
+    showSubmenu = showSubmenu || showParentSubmenu
     let leftGap
     let topGap
     let placement
@@ -91,7 +92,6 @@ export default class SubMenu extends MixinMenu {
       placement = 'bottom-start'
       icon = showSubmenu ? 'up' : 'down'
     }
-    this.childIsActive = childIsActive
     // console.log('----------childIsActive', this.props.parentComponent)
 
     return (
