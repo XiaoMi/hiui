@@ -12,7 +12,7 @@ export default class Popper extends Component {
     // attachEle: PropTypes.oneOfType([
     //   PropTypes.node
     // ]).isRequired,
-    width: PropTypes.string,
+    width: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number]), // 为false时不设置
     height: PropTypes.number,
     className: PropTypes.string,
     show: PropTypes.bool,
@@ -54,7 +54,7 @@ export default class Popper extends Component {
     const rect = attachEle.getBoundingClientRect()
     let top = rect.top + (document.documentElement.scrollTop || document.body.scrollTop)
     let left = rect.left + (document.documentElement.scrollLeft || document.body.scrollLeft)
-    width = width === undefined ? rect.width : width
+    width = width === false ? undefined : (width === undefined ? rect.width : width)
     let placement = this.getPlacement(rect)
 
     switch (placement) {
