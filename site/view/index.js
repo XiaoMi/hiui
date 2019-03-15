@@ -3,7 +3,6 @@ import Header from './Component/Header'
 import { connect } from 'react-redux'
 import routes from './routes'
 import {Classic as Page, Logo, History} from '@hi-ui/classic-theme'
-import Icon from '../../components/icon'
 import locales from '../locales'
 import designs from '../pages/designs'
 import pages from '../pages/components'
@@ -84,7 +83,8 @@ class Index extends React.Component {
       // <span className='sider__icon-principle' />,
       <span className='sider__icon-layout' />,
       <span className='sider__icon-vision' />,
-      <Icon name='internet' />,
+      <span className='sider__icon-i18n' />,
+      <span className='sider__icon-changelog' />,
       <span className='sider__icon-component' />
     ]
     const {locale} = this.props
