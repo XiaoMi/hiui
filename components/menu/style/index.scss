@@ -1,3 +1,11 @@
+@mixin ellipsis($max-width: initial, $width: auto) {
+  width: $width;
+  max-width: $max-width;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .hi-menu,
 .hi-submenu__popper {
   ul {
@@ -30,10 +38,7 @@
     }
     &__title {
       flex: auto;
-      max-width: 100px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      @include ellipsis(100px);
     }
   }
 
@@ -59,20 +64,41 @@
   }
 }
 
-.hi-submenu__popper {
-  width: 200px;
-  padding: 4px 16px;
-  background-color: #fff;
-  box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.15);
-  border: 1px solid rgba(230,231,232,1);
-  box-sizing: border-box;
-  .hi-menu-items {
-    flex-direction: column;
-  }
-  .hi-menu-item {
-    padding: 8px 0;
-    &__title {
-      max-width: initial;
+.hi-submenu {
+  &__popper {
+    width: 200px;
+    padding: 4px 16px;
+    background-color: #fff;
+    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.15);
+    border: 1px solid rgba(230,231,232,1);
+    box-sizing: border-box;
+    .hi-submenu__content {
+      display: flex;
+      flex-direction: column;
     }
+    .hi-menu-item {
+      padding: 8px 0;
+      &__title {
+        max-width: initial;
+      }
+    }
+    &--group {
+      width: auto;
+      .hi-submenu__content {
+        flex-direction: row;
+      }
+    }
+  }
+}
+
+.hi-menu-group {
+  margin-right: 12px;
+  width: 108px;
+  &__title {
+    padding: 8px 0;
+    font-size: 14px;
+    color: #999;
+    box-sizing: border-box;
+    @include ellipsis()
   }
 }

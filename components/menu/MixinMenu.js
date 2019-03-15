@@ -35,6 +35,7 @@ class MixinMenu extends Component {
       activeId
     } = this.root().state
     let childIsActive = false
+    let childrenType = 'MenuItem'
     const enhancedChildren = React.Children.map(children, child => {
       let props = {
         parentComponent
@@ -53,7 +54,7 @@ class MixinMenu extends Component {
         if (active) {
           childIsActive = active
         }
-        console.log('----------child', childIsActive)
+        // console.log('----------child', childIsActive)
 
         props = Object.assign(props, {
           // showParentSubmenu: ((this.state && this.state.showSubmenu) || this.props.showParentSubmenu) && active,
@@ -64,13 +65,17 @@ class MixinMenu extends Component {
           rootComponent: this.context.component
         })
       }
+      if (child.type.componentName !== 'MenuItem') {
+        childrenType = child.type.componentName
+      }
 
       return React.cloneElement(child, props)
     })
 
     return {
       children: enhancedChildren,
-      childIsActive
+      childIsActive,
+      childrenType
     }
   }
 }

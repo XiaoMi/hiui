@@ -69,7 +69,8 @@ export default class SubMenu extends MixinMenu {
     } = this.props
     const {
       children,
-      childIsActive
+      childIsActive,
+      childrenType
     } = this.renderChildren(this.props.children, SubMenu.componentName)
     const deepSubmenu = parentComponent === 'SubMenu' || parentComponent === 'ItemGroup'
     const cls = classNames('hi-menu-item', 'hi-submenu', {
@@ -116,11 +117,13 @@ export default class SubMenu extends MixinMenu {
           zIndex={1050}
           topGap={topGap}
           leftGap={leftGap}
-          className='hi-submenu__popper'
+          className={
+            classNames('hi-submenu__popper', {'hi-submenu__popper--group': childrenType === 'ItemGroup'})
+          }
           width={false}
           placement={placement}
         >
-          <ul className='hi-menu-items' ref={node => { this.submenuNode = node }}>
+          <ul className='hi-submenu__content' ref={node => { this.submenuNode = node }}>
             {children}
           </ul>
         </Popper>
