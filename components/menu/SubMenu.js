@@ -10,7 +10,7 @@ export default class SubMenu extends MixinMenu {
   static componentName = 'SubMenu'
 
   static propTypes = {
-    title: PropTypes.string,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     showParentSubmenu: PropTypes.bool
   }
 

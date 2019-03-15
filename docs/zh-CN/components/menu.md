@@ -55,10 +55,10 @@
     return(
       <div>
         <Menu mode="horizontal" activeId="1" onClick={(id, prevId)=>console.log('-----click', id, prevId)}>
-          <Menu.Item id="1">电视</Menu.Item>
+          <Menu.Item id="1"><Icon name="pc"/>电视</Menu.Item>
           <Menu.Item id="2">小米MIX</Menu.Item>
-          <Menu.SubMenu title="手机">
-            <Menu.ItemGroup title="小米">
+          <Menu.SubMenu title={<span><Icon name="phone"/>手机</span>}>
+            <Menu.ItemGroup title={<span><Icon name="phone"/>小米</span>}>
               <Menu.Item id="xiaomi9">小米9</Menu.Item>
               <Menu.Item id="xiaomi8">小米8</Menu.Item>
               <Menu.Item id="xiaomi7">小米7</Menu.Item>
@@ -75,7 +75,7 @@
               <Menu.Item id="hongmi4">红米4</Menu.Item>
               <Menu.Item id="hongmi5">红米5</Menu.Item>
               <Menu.Item id="hongmi6">
-                <Tooltip title="红米6红米6红米6红米6红米6" style={{margin: '0 10px'}}>红米6红米6红米6红米6红米6</Tooltip>
+                <Tooltip title="红米6红米6红米6红米6红米6">红米6红米6红米6红米6红米6</Tooltip>
               </Menu.Item>
             </Menu.ItemGroup>
             <Menu.ItemGroup title="小米note">

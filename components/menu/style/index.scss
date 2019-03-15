@@ -102,3 +102,9 @@
     @include ellipsis()
   }
 }
+.hi-menu-item__title,
+.hi-menu-group__title {
+  .hi-icon {
+    margin-right: 4px;
+  }
+}

@@ -7,7 +7,7 @@ export default class ItemGroup extends MixinMenu {
   static componentName = 'ItemGroup'
 
   static propTypes = {
-    title: PropTypes.string
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
   }
 
   render () {
