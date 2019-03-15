@@ -402,6 +402,7 @@ render () {
 | showTime |  是否在日期选择器中显示时间选择器 | Boolean | true false | false |
 | shortcuts | 快捷面板 | Array | 近一周, 近一月, 近三月, 近一年 | null |
 | weekOffset | 周起始<br/>默认周日做为第一列 |  Number | 0/1 | 0 |
+| placeholder |  自定义占位符<br/>数组用于范围日期 |  String \| Array | - | - |
 
 ### Datepicker Events
 
