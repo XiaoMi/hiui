@@ -12,7 +12,8 @@ import {
   compareAsc,
   addMonths,
   startOfDay,
-  endOfDay
+  endOfDay,
+  isToday
 } from './dateUtil'
 import {DAY_MILLISECONDS} from './constants'
 class Calender extends Component {
@@ -51,7 +52,6 @@ class Calender extends Component {
     let lastMonthDayCount = getDaysInMonth(subMonths(_date, 1)) // 上月总天数
     const {rows} = this.state
     let count = 0
-    const now = _date.setHours(0, 0, 0, 0) // 今天
     for (let i = 0; i < 6; i++) {
       let row = rows[i]
       for (let j = 0; j < 7; j++) {
@@ -78,7 +78,7 @@ class Calender extends Component {
             col.type = 'next'
           }
         }
-        if (new Date(time).setHours(0, 0, 0, 0) === now && type.indexOf('range') === -1) {
+        if (isToday(new Date(time))) {
           col.type = 'today'
         }
         if (type === 'daterange' || type === 'weekrange') {
@@ -87,6 +87,7 @@ class Calender extends Component {
           // console.log('----',[startDate, endDate].sort(compareAsc(startDate, endDate)))
           const _ds = [startDate, endDate].sort(compareAsc)
           col.range = endDate && isWithinRange(time, ..._ds)
+          row.weekNum = getYearWeek(new Date(time))
         }
         col.disabled = (minDate && compareAsc(time, minDate) === -1) || (maxDate && compareAsc(time, maxDate) === 1)
       }
@@ -114,6 +115,7 @@ class Calender extends Component {
         row[6].range = bol
         row[6].rangeEnd = bol
         row.currentWeek = bol
+        row.weekNum = cw
       }
     }
     return rows
@@ -217,6 +219,14 @@ class Calender extends Component {
 
     return week.slice(weekOffset).concat(week.slice(0, weekOffset))
   }
+  weekNum = 0
+  TRMouseOver (num) {
+    const {type} = this.props
+    if ((type === 'week' || type === 'weekrange') && this.weekNum !== num) {
+      this.weekNum = num
+      console.log(num, this.props.type, this.weekNum)
+    }
+  }
   render () {
     const {type, data} = this.props
     const rows = data || this.getRows()
@@ -239,13 +249,14 @@ class Calender extends Component {
             </thead>
           )
         }
-        <tbody>
+        <tbody style={{cursor: 'pointer'}}>
           {
             rows.map((row, index) => {
               return (
                 <tr
                   key={index}
                   className={`hi-datepicker__row ${row.currentWeek ? 'hi-datepicker__row--current-week' : ''}`}
+                  onMouseEnter={this.TRMouseOver.bind(this, row.weekNum)}
                 >
                   {
                     row.map((cell, _index) => {

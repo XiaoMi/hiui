@@ -25,12 +25,12 @@ class TimeRangePanel extends Component {
     }
   }
   render () {
-    console.log(11, this.props.style)
+    const {startDate, endDate} = this.state.date
     return (
       <div className='hi-timepicker hi-timepicker--timerange' style={this.props.style}>
-        <Time date={this.state.date} onPick={this.onTimePick.bind(this)} onlyTime={this.props.type === 'time'} />
+        <Time date={startDate} onPick={this.onTimePick.bind(this)} onlyTime />
         <div className='hi-timepicker__split' />
-        <Time date={this.state.date} onPick={this.onTimePick.bind(this)} onlyTime={this.props.type === 'time'} />
+        <Time date={endDate} onPick={this.onTimePick.bind(this)} onlyTime />
       </div>
     )
   }

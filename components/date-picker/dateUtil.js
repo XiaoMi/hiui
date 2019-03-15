@@ -15,6 +15,7 @@ import addMonths from 'date-fns/add_months'
 import isSameMonth from 'date-fns/is_same_month'
 import getYear from 'date-fns/get_year'
 import getMonth from 'date-fns/get_month'
+import isToday from 'date-fns/is_today'
 export {
   getDaysInMonth, // 获取当月的天数
   subMonths, // 月份减法
@@ -32,5 +33,6 @@ export {
   dateFormat, // 格式化时间
   isSameMonth, // 是否是同一个月
   getYear,
-  getMonth
+  getMonth,
+  isToday
 }

@@ -20,7 +20,6 @@ class TimePicker extends BasePicker {
     disabled: false
   }
   initPanel (state, props) {
-    console.log(props.type)
     return (
       props.type === 'time'
         ? <TimePanel
@@ -31,7 +30,14 @@ class TimePicker extends BasePicker {
           timeConfirm={this.timeConfirm.bind(this)}
           timeCancel={this.timeCancel.bind(this)}
         />
-        : <TimeRangePanel {...props} date={state.date} style={state.style} />
+        : <TimeRangePanel
+          {...props}
+          onPick={this.onPick.bind(this)}
+          style={state.style}
+          date={state.date}
+          timeConfirm={this.timeConfirm.bind(this)}
+          timeCancel={this.timeCancel.bind(this)}
+        />
     )
   }
 }

@@ -21,6 +21,10 @@ $basic-color: #4284f5 !default;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    
+    &:hover {
+      border: 1px solid #4284f5;
+    }
 
     &--range {
       width: 320px;
@@ -211,6 +215,11 @@ $basic-color: #4284f5 !default;
   }
 
   &__row {
+
+    &::after {
+      content: '';
+    }
+
     &--current-week {
       .hi-datepicker__content {
         background: map-get(get-palette($basic-color), '10');
@@ -263,7 +272,7 @@ $basic-color: #4284f5 !default;
       }
     }
 
-    &.today {
+    &.today:not(.in-range) {
       .hi-datepicker__text {
         border: 1px solid $basic-color;
         border-radius: 2px;
@@ -450,7 +459,9 @@ $basic-color: #4284f5 !default;
         .hi-datepicker__cell {
           &.today {
             .hi-datepicker__text {
-              background: map-get(get-palette($value), '50');
+              border: 1px solid map-get(get-palette($value), '50') !important;
+              color: map-get(get-palette($value), '50') !important;
+              background: #fff !important;
             }
           }
         }
@@ -472,15 +483,18 @@ $basic-color: #4284f5 !default;
       }
 
       &__cell {
-        &.today {
+        &.today:not(.in-range) {
           .hi-datepicker__text {
             border: 1px solid map-get(get-palette($value), '50');
+            color: map-get(get-palette($value), '50');
           }
         }
 
         &.in-range {
           .hi-datepicker__content {
-            background: map-get(get-palette($value), '10');
+            // TODO: 色板值
+            // background: map-get(get-palette($value), '10');
+            background: rgba(66, 142, 245, 0.12);
           }
         }
 
@@ -488,6 +502,14 @@ $basic-color: #4284f5 !default;
         &.range-end {
           .hi-datepicker__content {
             background: map-get(get-palette($value), '50');
+          }
+        }
+
+        &:hover:not(.today):not(.in-range):not(.range-start) {
+          .hi-datepicker__text {
+            // TODO: 色板值
+            background: rgba(66, 142, 245, 0.12);
+            // background: map-get(get-palette($value), '10');
           }
         }
       }
