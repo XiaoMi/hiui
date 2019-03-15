@@ -4,6 +4,7 @@ module.exports = {
     i18n: 'i18n',
     theme: 'Customize Theme',
     template: 'Layout Theme',
+    changelog: 'Changelog',
     'group-basic': 'General',
     'group-navgation': 'Navigation',
     'group-form': 'Form',

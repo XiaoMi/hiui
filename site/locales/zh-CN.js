@@ -4,6 +4,7 @@ module.exports = {
     i18n: 'i18n',
     template: '布局主题',
     theme: '配色主题',
+    changelog: '更新日志',
     'group-basic': '基本组件',
     'group-navgation': '导航',
     'group-form': '表单',
