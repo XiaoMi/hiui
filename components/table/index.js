@@ -868,19 +868,6 @@ class Table extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState, nextContext) {
-    let preData = nextProps.data
-    let nextData = nextState.dataSource
-    if (nextData.length === preData.length) {
-      let bool = false
-      preData.forEach((p, i) => {
-        for (let key in p) {
-          if (p[key] !== nextData[i][key]) {
-            bool = true
-          }
-        }
-      })
-      return bool
-    }
     return true
   }
 
