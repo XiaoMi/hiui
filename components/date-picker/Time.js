@@ -110,10 +110,10 @@ export default class TimePanel extends Component {
     const {date} = this.state
     const {hours, minutes, seconds} = deconstructDate(date)
     this.liPrefix = this.liPrefix.map((item, index) => {
-      return <li className='hi-timepicker__item' key={'pre' + index} />
+      return <li className='hi-timepicker__item hi-timepikcer__item--empty' key={'pre' + index} />
     })
     this.liSuffix = this.liSuffix.map((item, index) => {
-      return <li className='hi-timepicker__item' key={'suf' + index} />
+      return <li className='hi-timepicker__item hi-timepikcer__item--empty' key={'suf' + index} />
     })
     return (
       <div className='hi-timepicker__body'>

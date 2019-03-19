@@ -5,32 +5,24 @@ import Provider from '../context'
 class TimeRangePanel extends Component {
   constructor (props) {
     super(props)
+    console.log(props.date)
     this.state = {
       date: props.date,
       style: props.style
     }
   }
-  onTimePick (date, bol) {
-    const {showTime} = this.props
-    if (showTime) {
-      this.setState({
-        date
-      })
-      this.props.onPick(date, true)
-    } else {
-      this.setState({
-        date
-      })
-      this.props.onPick(date, bol)
-    }
+  onTimePick (flag, date, bol) {
+    const {startDate, endDate} = this.props
+
+    this.props.onPick({startDate: flag === 'left' ? date : startDate, endDate: flag === 'right' ? date : endDate}, bol)
   }
   render () {
-    const {startDate, endDate} = this.state.date
+    const {startDate, endDate} = this.props.date
     return (
       <div className='hi-timepicker hi-timepicker--timerange' style={this.props.style}>
-        <Time date={startDate} onPick={this.onTimePick.bind(this)} onlyTime />
+        <Time date={startDate} onPick={this.onTimePick.bind(this, 'left')} onlyTime />
         <div className='hi-timepicker__split' />
-        <Time date={endDate} onPick={this.onTimePick.bind(this)} onlyTime />
+        <Time date={endDate} onPick={this.onTimePick.bind(this, 'right')} onlyTime />
       </div>
     )
   }

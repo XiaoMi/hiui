@@ -395,16 +395,16 @@ $basic-color: #4284f5 !default;
     box-sizing: border-box;
     // border-right: 1px solid rgba(242, 242, 242, 1);
     background-color: #fff;
-    
+
+    &--empty {
+      cursor: default;
+    }
+
     &--current {
       font-weight: bold;
     }
-
-    &:last-child {
-      height: 44px;
-    }
-
-    &:hover:not(.hi-timepicker__item--current) {
+    
+    &:hover:not(.hi-timepicker__item--current):not(.hi-timepikcer__item--empty) {
       background-color: #eff5fe;
     }
   }
