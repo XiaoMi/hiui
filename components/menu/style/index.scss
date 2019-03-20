@@ -36,7 +36,7 @@
       flex: none;
       margin-left: 8px;
     }
-    &__title {
+    &__content {
       flex: auto;
       @include ellipsis(100px);
     }
@@ -78,7 +78,7 @@
     }
     .hi-menu-item {
       padding: 8px 0;
-      &__title {
+      &__content {
         max-width: initial;
       }
     }
@@ -94,7 +94,7 @@
 .hi-menu-group {
   margin-right: 12px;
   width: 108px;
-  &__title {
+  &__content {
     padding: 8px 0;
     font-size: 14px;
     color: #999;
@@ -102,8 +102,8 @@
     @include ellipsis()
   }
 }
-.hi-menu-item__title,
-.hi-menu-group__title {
+.hi-menu-item__content,
+.hi-menu-group__content {
   .hi-icon {
     margin-right: 4px;
   }

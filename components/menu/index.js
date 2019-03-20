@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import HorizontalMenu from './HorizontalMenu'
 import Item from './Item'
 import SubMenu from './SubMenu'
 import ItemGroup from './ItemGroup'
@@ -13,17 +12,14 @@ class Menu extends Component {
     activeId: ''
   }
   static propTypes = {
-    list: PropTypes.arrayOf(PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        value: PropTypes.oneOfType([
-          PropTypes.string,
-          PropTypes.number
-        ]),
-        children: PropTypes.array
-      })
-    ])),
+    datas: PropTypes.shape({
+      content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+      id: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+      ]),
+      children: PropTypes.array
+    }),
     activeId: PropTypes.string,
     mode: PropTypes.oneOf(['horizontal', 'vertical']),
     onClick: PropTypes.func
@@ -32,15 +28,22 @@ class Menu extends Component {
   constructor (props) {
     super(props)
 
+    const activeIndexs = this.getActiveIndexs(this.props.activeId)
+
     this.state = {
-      activeId: this.props.activeId
+      activeId: this.props.activeId,
+      activeIndexs,
+      expandIndexs: ''
     }
   }
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.activeId !== this.props.activeId) {
+      const activeIndexs = this.getActiveIndexs(nextProps.activeId)
+
       this.setState({
-        activeId: nextProps.activeId
+        activeId: nextProps.activeId,
+        activeIndexs
       })
     }
   }
@@ -51,25 +54,108 @@ class Menu extends Component {
     }
   }
 
-  onClick (id) {
+  getActiveIndexs (activeId) {
+    const {
+      datas
+    } = this.props
+    let activeIndexs = []
+    let level = 0
+
+    if (activeId === undefined) {
+      return activeIndexs
+    }
+
+    const _getActiveIndexs = function (datas) {
+      for (const index in datas) {
+        const data = datas[index]
+        activeIndexs[level] = parseInt(index)
+        if (data.children) {
+          level++
+          _getActiveIndexs(data.children)
+        } else if (data.id === activeId) {
+          break
+        }
+      }
+    }
+    _getActiveIndexs(datas)
+    return activeIndexs.join('-')
+  }
+
+  onClick (indexs, id) {
     const oldId = this.state.activeId
 
     this.setState({
-      activeId: id
+      activeIndexs: indexs,
+      expandIndexs: ''
     }, () => {
       this.props.onClick(id, oldId)
     })
   }
 
+  onClickSubMenu (indexs) {
+    this.setState({
+      expandIndexs: indexs
+    })
+  }
+
+  renderItem (data, indexs, props = {}) {
+    const {
+      activeIndexs
+    } = this.state
+    const mergeProps = Object.assign({
+      onClick: this.onClick.bind(this),
+      id: data.id,
+      isActive: activeIndexs.indexOf(indexs) === 0,
+      indexs: indexs,
+      key: data.id
+    }, props)
+
+    return (
+      <Item {...mergeProps}>
+        {data.content}
+      </Item>
+    )
+  }
+
+  renderMenu (datas, indexs = '') {
+    // const {datas, mode} = this.props
+    const {
+      activeIndexs,
+      expandIndexs
+    } = this.state
+    const items = []
+
+    datas.forEach((data, index) => {
+      const indexStr = indexs !== '' ? indexs + '-' + index : '' + index
+      if (data.children) {
+        items.push(
+          <SubMenu
+            onClick={this.onClickSubMenu.bind(this)}
+            indexs={indexStr}
+            isActive={activeIndexs.indexOf(indexStr) === 0}
+            isExpand={expandIndexs.indexOf(indexStr) === 0}
+            content={data.content}
+            renderMenu={this.renderMenu.bind(this)}
+            datas={data.children}
+          />
+        )
+      } else {
+        items.push(this.renderItem(data, indexStr))
+      }
+    })
+
+    return items
+  }
+
   render () {
-    const {children, mode} = this.props
+    const {datas, mode} = this.props
     const cls = classNames('hi-menu', `hi-menu-${mode}`)
 
     return (
       <div className={cls}>
-        <HorizontalMenu >
-          {children}
-        </HorizontalMenu>
+        <ul className='hi-menu-items'>
+          { this.renderMenu(datas) }
+        </ul>
       </div>
     )
   }

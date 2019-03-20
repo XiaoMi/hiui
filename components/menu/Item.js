@@ -7,11 +7,13 @@ class Item extends Component {
 
   static propTypes = {
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    isActive: PropTypes.bool
   }
 
   static defaultProps = {
-    disabled: false
+    disabled: false,
+    isActive: false
   }
 
   render () {
@@ -19,21 +21,22 @@ class Item extends Component {
       children,
       disabled,
       onClick,
-      activeId,
-      id
+      isActive,
+      id,
+      indexs
     } = this.props
     const cls = classNames('hi-menu-item', {
       'hi-menu-item--disabled': disabled,
-      'hi-menu-item--active': activeId === id
+      'hi-menu-item--active': isActive
     })
 
     return (
       <li className={cls} onClick={() => {
         if (!disabled) {
-          onClick(id)
+          onClick(indexs, id)
         }
       }}>
-        <div className='hi-menu-item__title'>
+        <div className='hi-menu-item__content'>
           {children}
         </div>
       </li>

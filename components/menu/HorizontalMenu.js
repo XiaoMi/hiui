@@ -1,17 +1,12 @@
-import React from 'react'
-import MixinMenu from './MixinMenu'
+import React, { Component } from 'react'
 
-export default class HorizontalMenu extends MixinMenu {
+export default class HorizontalMenu extends Component {
   static componentName = 'HorizontalMenu'
 
   render () {
-    const {
-      children
-    } = this.renderChildren(this.props.children, HorizontalMenu.componentName)
-
     return (
       <ul className='hi-menu-items'>
-        {children}
+        {this.props.children}
       </ul>
     )
   }
