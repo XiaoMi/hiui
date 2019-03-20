@@ -11,7 +11,8 @@ export default class SubMenu extends Component {
   static propTypes = {
     content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     showParentSubmenu: PropTypes.bool,
-    level: PropTypes.number
+    level: PropTypes.number,
+    groupSubMenu: PropTypes.bool
   }
 
   static defaultProps = {
@@ -58,13 +59,15 @@ export default class SubMenu extends Component {
       indexs,
       isExpand,
       isActive,
-      renderMenu
+      renderMenu,
+      groupSubMenu
     } = this.props
 
     const deepSubmenu = indexs.split('-').length > 1
     const cls = classNames('hi-menu-item', 'hi-submenu', {
       'hi-menu-item--active': isActive,
-      'hi-submenu--sub': deepSubmenu
+      'hi-submenu--sub': deepSubmenu,
+      'hi-submenu--group': groupSubMenu
     })
     let leftGap
     let topGap
@@ -104,12 +107,12 @@ export default class SubMenu extends Component {
           topGap={topGap}
           leftGap={leftGap}
           className={
-            classNames('hi-submenu__popper')
+            classNames('hi-submenu__popper', {'hi-submenu__popper--group': groupSubMenu})
           }
           width={false}
           placement={placement}
         >
-          <ul className='hi-submenu__content' ref={node => { this.submenuNode = node }}>
+          <ul className={classNames('hi-submenu__content')} ref={node => { this.submenuNode = node }}>
             { renderMenu(datas, indexs) }
           </ul>
         </Popper>

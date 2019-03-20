@@ -9,7 +9,8 @@ class Menu extends Component {
   static defaultProps = {
     mode: 'vertical',
     onClick: () => {},
-    activeId: ''
+    activeId: '',
+    groupSubMenu: false
   }
   static propTypes = {
     datas: PropTypes.shape({
@@ -22,6 +23,7 @@ class Menu extends Component {
     }),
     activeId: PropTypes.string,
     mode: PropTypes.oneOf(['horizontal', 'vertical']),
+    groupSubMenu: PropTypes.bool,
     onClick: PropTypes.func
   }
 
@@ -117,13 +119,36 @@ class Menu extends Component {
     )
   }
 
+  renderGroupSubMenu (datas, indexs) {
+    let groups = []
+
+    datas.forEach((data, groupIndex) => {
+      groups.push(
+        <li className='hi-menu-group' key={groupIndex}>
+          <div className='hi-menu-group__title'>
+            {data.content}
+          </div>
+          <ul className='hi-menu-group__content'>
+            {
+              data.children.map((child, index) => {
+                return this.renderItem(child, indexs + '-' + groupIndex + '-' + index)
+              })
+            }
+          </ul>
+        </li>
+      )
+    })
+    return groups
+  }
+
   renderMenu (datas, indexs = '') {
-    // const {datas, mode} = this.props
+    const {groupSubMenu} = this.props
     const {
       activeIndexs,
       expandIndexs
     } = this.state
-    const items = []
+    let items = []
+    const renderMenu = groupSubMenu ? this.renderGroupSubMenu.bind(this) : this.renderMenu.bind(this)
 
     datas.forEach((data, index) => {
       const indexStr = indexs !== '' ? indexs + '-' + index : '' + index
@@ -132,10 +157,11 @@ class Menu extends Component {
           <SubMenu
             onClick={this.onClickSubMenu.bind(this)}
             indexs={indexStr}
+            groupSubMenu={groupSubMenu}
             isActive={activeIndexs.indexOf(indexStr) === 0}
             isExpand={expandIndexs.indexOf(indexStr) === 0}
             content={data.content}
-            renderMenu={this.renderMenu.bind(this)}
+            renderMenu={renderMenu}
             datas={data.children}
           />
         )

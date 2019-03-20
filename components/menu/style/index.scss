@@ -102,6 +102,10 @@
     @include ellipsis()
   }
 }
+.hi-menu-group__title {
+  font-size: 14px;
+  color: #999;
+}
 .hi-menu-item__content,
 .hi-menu-group__content {
   .hi-icon {
