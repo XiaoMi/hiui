@@ -4,19 +4,14 @@ import './style/index.scss'
 const HomeBase = WrapperComponent => class extends WrapperComponent {
   constructor (props) {
     super(props)
-    this.designText = React.createRef()
-    this.designList = React.createRef()
-    this.efficiencyText = React.createRef()
-
-    this.excelText = React.createRef()
-    this.excelList = React.createRef()
+    this.designContent = React.createRef()
+    this.efficiencyContent = React.createRef()
+    this.featureContent = React.createRef()
 
     this.state = {
-      designText: false,
-      designList: false,
-      efficiencyText: false,
-      excelText: false,
-      excelList: false
+      designContent: false,
+      efficiencyContent: false,
+      featureContent: false
     }
 
     // this.hashChangeEvent = this.hashChangeEvent.bind(this)
@@ -34,11 +29,9 @@ const HomeBase = WrapperComponent => class extends WrapperComponent {
 
   scrollEvent () {
     const mapList = [
-      'designText',
-      'designList',
-      'efficiencyText',
-      'excelText',
-      'excelList'
+      'designContent',
+      'efficiencyContent',
+      'featureContent'
     ]
 
     mapList.forEach(item => {
@@ -50,12 +43,11 @@ const HomeBase = WrapperComponent => class extends WrapperComponent {
     })
   }
 
-  isElementInViewport (el, offset = 0) {
+  isElementInViewport (el) {
     const box = el.getBoundingClientRect()
+    const clientHeight = (window.innerHeight || document.documentElement.clientHeight)
 
-    const top = (box.top >= 0)
-    const bottom = (box.bottom <= (window.innerHeight || document.documentElement.clientHeight) + offset)
-    return (top && bottom)
+    return box.top < clientHeight - clientHeight / 5
   }
 
   render () {

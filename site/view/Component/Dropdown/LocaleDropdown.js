@@ -20,6 +20,7 @@ class LocaleDropdown extends React.Component {
   componentWillMount () {
     // 直接从路由进来，判断路由的locale是否和localStorage一致
     const locale = window.location.hash.split('/')
+
     if (locale.length > 2 && locale[1] !== this.props.locale && locales.indexOf(locale[1]) > -1) {
       this.changeDropdown(localesLabel[locales.indexOf(locale[1])])
     }
@@ -33,11 +34,13 @@ class LocaleDropdown extends React.Component {
     this.props.dispatch(setLocale(locales[localesLabel.indexOf(val)]))
     // this.props.changeDropdown && this.props.changeDropdown(locales[localesLabel.indexOf(val)])
   }
+
   toggleDropdown (isShow) {
     this.setState({
       isShowList: isShow
     })
   }
+
   render () {
     const {
       list,
