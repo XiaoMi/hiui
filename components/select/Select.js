@@ -9,7 +9,7 @@ import Popper from '../popper'
 import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
 import Provider from '../context'
-
+import fetchJsonp from 'fetch-jsonp'
 class Select extends Component {
   autoloadFlag = true // 第一次自动加载数据标识
 
@@ -325,7 +325,6 @@ class Select extends Component {
   }
 
   remoteSearch (keyword) {
-    let dropdownItems = []
     let {
       url,
       func,
@@ -333,6 +332,7 @@ class Select extends Component {
       data = {},
       type = 'GET',
       key = 'keyword',
+      jsonpCallback = 'callback',
       ...options
     } = this.props.origin
     keyword = !keyword && this.autoloadFlag && this.props.autoload ? this.props.origin.keyword : keyword
@@ -346,42 +346,49 @@ class Select extends Component {
       fetching: true
     })
 
-    /* eslint-disable */ 
-    fetch(url, {
-      method: type,
-      ...options
-    })
-    .then(response => response.json())
-    .then(res => {
-      if (func) {
-        dropdownItems = func(res)
-      } else {
-        dropdownItems = res.data
-      }
-      if (Array.isArray(dropdownItems)) {
-        const selectedItems = this.resetSelectedItems(this.props.value, dropdownItems, true)
-
+    if (type.toUpperCase() === 'JSONP') {
+      const _o = {jsonpCallback: jsonpCallback, jsonpCallbackFunction: jsonpCallback}
+      fetchJsonp(url, _o).then((res) => res.json()).then((json) => { this._setDropdownItems(json, func) })
+    } else {
+      /* eslint-disable */
+      fetch(url, {
+        method: type,
+        ...options
+      })
+      .then(response => response.json())
+      .then(res => {
+        this._setDropdownItems(res, func)
+      }, err => {
+        error && error(err)
         this.setState({
-          dropdownItems,
-          selectedItems
+          fetching: false
         })
-      }
-      this.setState({
-        fetching: false
       })
-    }, err => {
-      error && error(err)
+    }
+  }
+  _setDropdownItems(res, func) {
+    let dropdownItems = []
+    if (func) {
+      dropdownItems = func(res)
+    } else {
+      dropdownItems = res.data
+    }
+    if (Array.isArray(dropdownItems)) {
+      const selectedItems = this.resetSelectedItems(this.props.value, dropdownItems, true)
       this.setState({
-        fetching: false
+        dropdownItems,
+        selectedItems
       })
+    }
+    this.setState({
+      fetching: false
     })
   }
-
   onFilterItems (keyword) {
     this.setState({
       keyword
     }, ()=>this.resetFocusedIndex())
-    
+
     if (this.props.origin) {
       // this.setState({
       //   dropdownItems: []
@@ -513,9 +520,9 @@ class Select extends Component {
           />
         </div>
         { children }
-        <Popper 
-          show={dropdownShow} 
-          attachEle={this.selectInputContainer} 
+        <Popper
+          show={dropdownShow}
+          attachEle={this.selectInputContainer}
           zIndex={1050}
           topGap={5}
           className='hi-select__popper'

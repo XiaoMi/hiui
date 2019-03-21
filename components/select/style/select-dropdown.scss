@@ -45,6 +45,9 @@
     cursor: pointer;
     list-style: none;
     transition: all 0.3s ease;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &.hi-select__dropdown--item-default {
       display: flex;
