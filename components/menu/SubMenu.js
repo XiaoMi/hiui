@@ -52,14 +52,71 @@ export default class SubMenu extends Component {
     this.props.onClick(indexs)
   }
 
-  render () {
+  renderPopperMenu (deepSubmenu) {
     const {
-      content,
       datas,
       indexs,
       isExpand,
-      isActive,
       renderMenu,
+      groupSubMenu
+    } = this.props
+    let leftGap
+    let topGap
+    let placement
+    if (deepSubmenu) {
+      leftGap = 16
+      topGap = -4
+      placement = 'right-start'
+    } else {
+      leftGap = 0
+      topGap = 5
+      placement = 'bottom-start'
+    }
+
+    return (
+      <Popper
+        show={isExpand}
+        attachEle={this.submenuTrigger}
+        zIndex={1050}
+        topGap={topGap}
+        leftGap={leftGap}
+        className={
+          classNames('hi-submenu__popper', {'hi-submenu__popper--group': groupSubMenu})
+        }
+        width={false}
+        placement={placement}
+      >
+        <ul className={classNames('hi-submenu__items')} ref={node => { this.submenuNode = node }}>
+          { renderMenu(datas, indexs) }
+        </ul>
+      </Popper>
+    )
+  }
+
+  renderVerticalMenu () {
+    const {
+      isActive,
+      isExpand,
+      datas,
+      indexs,
+      renderMenu
+    } = this.props
+
+    return (
+      <ul className={classNames('hi-submenu__items', {'hi-submenu__items--hide': !isExpand && !isActive})}>
+        { renderMenu(datas, indexs) }
+      </ul>
+    )
+  }
+
+  render () {
+    const {
+      content,
+      mode,
+      mini,
+      indexs,
+      isExpand,
+      isActive,
       groupSubMenu
     } = this.props
 
@@ -69,19 +126,10 @@ export default class SubMenu extends Component {
       'hi-submenu--sub': deepSubmenu,
       'hi-submenu--group': groupSubMenu
     })
-    let leftGap
-    let topGap
-    let placement
     let icon
     if (deepSubmenu) {
-      leftGap = 16
-      topGap = -4
-      placement = 'right-start'
       icon = isExpand ? 'left' : 'right'
     } else {
-      leftGap = 0
-      topGap = 5
-      placement = 'bottom-start'
       icon = isExpand ? 'up' : 'down'
     }
 
@@ -94,28 +142,19 @@ export default class SubMenu extends Component {
           this.onClick(indexs)
         }}
       >
-        <div className='hi-menu-item__content'>
-          {content}
+        <div className='hi-menu-item__main'>
+          <div className='hi-menu-item__content'>
+            {content}
+          </div>
+          <div className='hi-menu-item__expand-icon'>
+            <Icon name={icon} />
+          </div>
         </div>
-        <div className='hi-menu-item__expand-icon'>
-          <Icon name={icon} />
-        </div>
-        <Popper
-          show={isExpand}
-          attachEle={this.submenuTrigger}
-          zIndex={1050}
-          topGap={topGap}
-          leftGap={leftGap}
-          className={
-            classNames('hi-submenu__popper', {'hi-submenu__popper--group': groupSubMenu})
-          }
-          width={false}
-          placement={placement}
-        >
-          <ul className={classNames('hi-submenu__content')} ref={node => { this.submenuNode = node }}>
-            { renderMenu(datas, indexs) }
-          </ul>
-        </Popper>
+        {
+          !mini && mode === 'vertical'
+            ? this.renderVerticalMenu()
+            : this.renderPopperMenu(deepSubmenu)
+        }
       </li>
     )
   }

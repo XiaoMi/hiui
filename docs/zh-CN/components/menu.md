@@ -233,18 +233,219 @@
 :::
 
 
-<!-- - 水平菜单
-  - 折叠
-    - 子级菜单
-    - 分组菜单
-  - 不折叠
-    - 展开溢出
 
-- 垂直菜单
-  - 分组
-  - 嵌套子菜单
-  - 弹出子菜单
-  - 子菜单对齐 -->
+### 竖向展开菜单
+
+:::demo
+
+竖向展开菜单
+
+```js
+  render(){
+    const datas = [
+      {
+        content: '电视',
+        id: 1
+      },
+      {
+        content: '小米MIX',
+        id: 2
+      },
+      {
+        content: '手机',
+        children: [
+          {
+            content: '小米',
+            children: [
+              {
+                content: '小米9',
+                id: 'xiaomi9'
+              },
+              {
+                content: '小米8',
+                id: 'xiaomi8'
+              },
+              {
+                content: '小米7',
+                id: 'xiaomi7'
+              },
+              {
+                content: '小米6',
+                id: 'xiaomi6'
+              },
+              {
+                content: '小米5',
+                id: 'xiaomi5'
+              },
+              {
+                content: '小米4',
+                id: 'xiaomi4'
+              },
+              {
+                content: '小米3',
+                id: 'xiaomi3'
+              }
+            ]
+          },
+          {
+            content: '红米',
+            id: 'hongmi'
+          },
+          {
+            content: '小米note',
+            children: [
+              {
+                content: '小米 note7',
+                id: 'xiaomi note7'
+              },
+              {
+                content: '小米 note6',
+                id: 'xiaomi note6'
+              },
+              {
+                content: '小米 note5',
+                id: 'xiaomi note5'
+              },
+              {
+                content: '小米 note4',
+                id: 'xiaomi note4'
+              },
+              {
+                content: '小米 note3',
+                id: 'xiaomi note3'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        content: '超长超长超长字符',
+        id: 4
+      }
+    ]
+    return(
+      <div>
+        <Menu 
+          mode="vertical" 
+          activeId={'xiaomi9'} 
+          onClick={(id, prevId)=>console.log('-----click', id, prevId)}
+          datas={datas}
+        />
+      </div>
+    )
+  }
+
+```
+:::
+
+
+
+### 竖向收起菜单
+
+:::demo
+
+竖向收起菜单
+
+```js
+  render(){
+    const datas = [
+      {
+        content: '电视',
+        id: 1
+      },
+      {
+        content: '小米MIX',
+        id: 2
+      },
+      {
+        content: '手机',
+        children: [
+          {
+            content: '小米',
+            children: [
+              {
+                content: '小米9',
+                id: 'xiaomi9'
+              },
+              {
+                content: '小米8',
+                id: 'xiaomi8'
+              },
+              {
+                content: '小米7',
+                id: 'xiaomi7'
+              },
+              {
+                content: '小米6',
+                id: 'xiaomi6'
+              },
+              {
+                content: '小米5',
+                id: 'xiaomi5'
+              },
+              {
+                content: '小米4',
+                id: 'xiaomi4'
+              },
+              {
+                content: '小米3',
+                id: 'xiaomi3'
+              }
+            ]
+          },
+          {
+            content: '红米',
+            id: 'hongmi'
+          },
+          {
+            content: '小米note',
+            children: [
+              {
+                content: '小米 note7',
+                id: 'xiaomi note7'
+              },
+              {
+                content: '小米 note6',
+                id: 'xiaomi note6'
+              },
+              {
+                content: '小米 note5',
+                id: 'xiaomi note5'
+              },
+              {
+                content: '小米 note4',
+                id: 'xiaomi note4'
+              },
+              {
+                content: '小米 note3',
+                id: 'xiaomi note3'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        content: '超长超长超长字符',
+        id: 4
+      }
+    ]
+    return(
+      <div>
+        <Menu 
+          mini
+          mode="vertical" 
+          activeId={'xiaomi9'} 
+          onClick={(id, prevId)=>console.log('-----click', id, prevId)}
+          datas={datas}
+        />
+      </div>
+    )
+  }
+
+```
+:::
+
+
 
 ### Menu Attributes
 

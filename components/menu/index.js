@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import Icon from '../icon'
 import Item from './Item'
 import SubMenu from './SubMenu'
-import ItemGroup from './ItemGroup'
 import './style/index'
 class Menu extends Component {
   static defaultProps = {
     mode: 'vertical',
     onClick: () => {},
     activeId: '',
-    groupSubMenu: false
+    mini: false,
+    miniToggle: false,
+    groupSubMenu: false,
+    accordion: false
   }
   static propTypes = {
     datas: PropTypes.shape({
@@ -19,11 +22,15 @@ class Menu extends Component {
         PropTypes.string,
         PropTypes.number
       ]),
+      icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
       children: PropTypes.array
     }),
     activeId: PropTypes.string,
     mode: PropTypes.oneOf(['horizontal', 'vertical']),
+    mini: PropTypes.bool,
+    miniToggle: PropTypes.bool,
     groupSubMenu: PropTypes.bool,
+    accordion: PropTypes.bool,
     onClick: PropTypes.func
   }
 
@@ -81,6 +88,10 @@ class Menu extends Component {
     }
     _getActiveIndexs(datas)
     return activeIndexs.join('-')
+  }
+
+  toggleMini () {
+
   }
 
   onClick (indexs, id) {
@@ -142,7 +153,7 @@ class Menu extends Component {
   }
 
   renderMenu (datas, indexs = '') {
-    const {groupSubMenu} = this.props
+    const {groupSubMenu, mode, mini} = this.props
     const {
       activeIndexs,
       expandIndexs
@@ -163,6 +174,8 @@ class Menu extends Component {
             content={data.content}
             renderMenu={renderMenu}
             datas={data.children}
+            mode={mode}
+            mini={mini}
           />
         )
       } else {
@@ -174,14 +187,26 @@ class Menu extends Component {
   }
 
   render () {
-    const {datas, mode} = this.props
-    const cls = classNames('hi-menu', `hi-menu-${mode}`)
+    const {datas, mode, mini, miniToggle} = this.props
+    const cls = classNames('hi-menu', `hi-menu--${mode}`, {
+      'hi-menu--mini': mini
+    })
+    const miniIcon = mini ? 'toggle-right' : 'mini-left'
 
     return (
       <div className={cls}>
         <ul className='hi-menu-items'>
           { this.renderMenu(datas) }
         </ul>
+        {
+          mode === 'vertical' && miniToggle &&
+          <div
+            className='hi-menu--mini__toggle'
+            onClick={this.toggleMini.bind(this)}
+          >
+            <Icon name={miniIcon} />
+          </div>
+        }
       </div>
     )
   }
@@ -190,7 +215,4 @@ Menu.childContextTypes = {
   component: PropTypes.any
 }
 
-Menu.Item = Item
-Menu.SubMenu = SubMenu
-Menu.ItemGroup = ItemGroup
 export default Menu
