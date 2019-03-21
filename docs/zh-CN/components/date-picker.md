@@ -23,7 +23,7 @@ render () {
         <p>Date 实例:</p>
         <DatePicker
           placeholder="自定义占位符"
-          value={new Date}
+          value={new Date()}
           onChange={(d) => {
             console.log('value 为 Date 实例,返回值：', DatePicker.format(d, 'YYYY-MM-DD E'))
           }}
