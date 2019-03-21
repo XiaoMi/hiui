@@ -1,10 +1,104 @@
-@import './variable';
+@import '@hi-ui/core-css/index.scss';
 
-/* common */
+$primary-color: get-color($palette-primary, 'hiui-blue') !default;
+$imgurl: '../../../static/img/home/' !default;
 
+/* container */
 .container {
-  width: 1177px;
+  position: relative;
+  width: 1200px;
   margin: 0 auto;
+}
+
+/* page */
+.page {
+  -webkit-font-smoothing: antialiased;
+}
+
+.branding {
+  height: 550px;
+  border-bottom: 1px dotted;
+
+  &__content {
+    padding-top: 120px;
+  }
+
+  &__title {
+    margin: 0 0 20px;
+    font-size: 42px;
+    font-weight: 400;
+  }
+
+  &__desc {
+    width: 442px;
+    margin-bottom: 64px;
+    font-size: 18px;
+    line-height: 2;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__figure {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 720px;
+    height: 440px;
+    background: url('#{$imgurl}1-1.png') 50% 50% no-repeat;
+    background-size: 100% 100%;
+  }
+
+  &__btn {
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 0;
+    vertical-align: middle;
+    font-size: 16px;
+    line-height: 40px;
+
+    &--primary {
+      width: 130px;
+      height: 40px;
+      border-radius: 20px;
+      text-align: center;
+      background-color: map-get(get-palette($primary-color), '50');
+      color: $white;
+      transition: background-color $speed-normal $easing, border-color $speed-normal $easing, box-shadow $speed-fast $easing, color $speed-normal $easing;
+
+      &:hover {
+        background-color: map-get(get-palette($primary-color), '40');
+        color: $white;
+      }
+
+      &:active {
+        background-color: map-get(get-palette($primary-color), '60');
+        color: $white;
+        box-shadow: inset 0 4px 4px rgba(map-get(get-palette($primary-color), '60'), 0.25);
+      }
+    }
+
+    &--icon {
+      margin-left: $spacer-4;
+      font-size: 16px;
+      color: $black;
+
+      &:hover {
+        color: $gray-darker;
+      }
+
+      &:active {
+        color: $gray-dark;
+      }
+
+      .hi-fa {
+        margin-right: 4px;
+        font-size: 20px;
+        vertical-align: -1px;
+      }
+    }
+  }
 }
 
 .fl {
@@ -15,19 +109,6 @@
   float: right;
 }
 
-.clearfix:before, .clearfix:after {   
-  content:"";   
-  display:table;   
-}   
-.clearfix:after{   
-  clear:both;   
-  overflow:hidden;   
-}   
-.clearfix{   
-  *zoom:1;   
-}   
-
-
 /* index */
 
 .section-header {
@@ -36,8 +117,10 @@
   color: $primary-color;
   box-shadow: inset 0 -1px 0 0 #E6E7E8;
 }
+
 .logo-con {
   line-height: 64px;
+
   .logo {
     display: inline-block;
     width: 40px;
@@ -52,20 +135,23 @@
 .intro {
   display: flex;
   align-items: center;
+
   a {
     line-height: 64px;
     color: #383e47;
     cursor: pointer;
+
     &:hover,
     &.active {
       color: #4284f5;
     }
   }
 
- .item {
+  .item {
     margin-left: 35px;
     text-decoration: none;
     color: $primary-color;
+
     .hi-dropdown .hi-dropdown-title {
       padding: 0;
     }
@@ -75,7 +161,6 @@
 .intro a.active {
   color: #4284f5;
 }
-
 
 .section-banner {
   height: 552px;
@@ -119,6 +204,7 @@
       background-color: #4d86ff;
       border-radius: 21px;
       cursor: pointer;
+
       a {
         display: block;
         color: inherit;
@@ -228,10 +314,10 @@
     }
 
     .desc {
-     margin-top: 36px;
-     font-size: 14px;
-     line-height: 1.8;
-     color: rgba(32, 35, 50, 0.7);
+      margin-top: 36px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: rgba(32, 35, 50, 0.7);
     }
   }
 }
@@ -258,7 +344,7 @@
     transform: translateY(30px);
     transition: all 1s;
 
-    
+
     .item {
       float: left;
       width: 294px;
@@ -359,7 +445,7 @@
         }
       }
 
-      
+
     }
   }
 
@@ -372,13 +458,13 @@
   border-top: 1px solid #000;
   font-size: 12px;
   background-color: #1c1e20;
-  color: rgba(255, 255,255,0.3);
+  color: rgba(255, 255, 255, 0.3);
   text-align: center;
 }
 
 
 .trans {
   opacity: 1 !important;
-  transform: translate(0,0) !important;
+  transform: translate(0, 0) !important;
 }
 

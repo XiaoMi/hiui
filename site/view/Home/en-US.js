@@ -1,5 +1,4 @@
 import React from 'react'
-import './style/index.scss'
 import HomeBase from './HomeBase'
 
 class Home extends React.Component {

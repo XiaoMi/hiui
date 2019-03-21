@@ -1,13 +1,27 @@
 import React from 'react'
-import './style/index.scss'
 import HomeBase from './HomeBase'
+import '../../../components/ficon/style/index'
 
 class Home extends React.Component {
   render () {
-    console.log(this.state)
     const {designText, efficiencyText, excelText, excelList} = this.state
     return (
       <div className='page'>
+        <div className='section section--branding branding'>
+          <div className='container'>
+            <div className='branding__content'>
+              <h1 className='branding__title'>HIUI，设计原则的布道者</h1>
+              <div className='branding__desc'>
+                <p>HIUI是一套适用于前中后台交互与界面设计标准的制定与实施的前端解决方案</p>
+              </div>
+              <div className='branding__figure' />
+              <div className='branding__actions'>
+                <a className='branding__btn branding__btn--primary' href={'#/zh-CN/docs'}>开始使用</a>
+                <a className='branding__btn branding__btn--icon' href='https://github.com/XiaoMi/hiui'><i className='hi-fa fa-github' />GitHub (v1.4)</a>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div className='section-banner'>
           <div className='container'>
@@ -16,6 +30,7 @@ class Home extends React.Component {
               <div className='text'>HIUI，设计原则的布道者</div>
               <div className='desc'>HIUI是一套适用于前中后台交互与界面设计标准的制定与实施的前端解决方案</div>
               <div className='use'><a href={`#/zh-CN/docs`}>开始使用</a></div>
+              <div className='use'><a href={`#/zh-CN/docs`}>GitHub</a></div>
             </div>
           </div>
         </div>
