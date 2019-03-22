@@ -100,7 +100,8 @@ class Select extends Component {
   }
 
   clickOutside (e) {
-    if (ReactDOM.findDOMNode(this.selectInput) && ReactDOM.findDOMNode(this.selectInput).contains(e.target)) {
+    const selectInput = ReactDOM.findDOMNode(this.selectInput)
+    if (selectInput && selectInput.contains(e.target)) {
       return
     }
     this.hideDropdown()

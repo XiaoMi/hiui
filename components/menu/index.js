@@ -46,6 +46,7 @@ class Menu extends Component {
       mini
     } = this.props
     const activeIndex = this.getActiveIndex(activeId)
+    this.clickOutsideHandel = this.clickOutside.bind(this)
 
     this.state = {
       activeId: this.props.activeId,
@@ -70,6 +71,33 @@ class Menu extends Component {
         mini: nextProps.mini
       })
     }
+  }
+
+  componentDidMount () {
+    window.addEventListener('click', this.clickOutsideHandel)
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('click', this.clickOutsideHandel)
+  }
+
+  clickInsideFlag = false // click在menu标识
+  prevExpandIndex = null // 上一次展开的submenu
+  clickOutside () {
+    let expandIndex = this.state.expandIndex
+    if (this.clickInsideFlag) {
+      if (this.prevExpandIndex === expandIndex) { // submenu已打开则关闭
+        expandIndex = expandIndex.split('-').slice(0, -1).join('-')
+      }
+    } else {
+      expandIndex = ''
+    }
+
+    this.setState({
+      expandIndex
+    })
+    this.prevExpandIndex = null
+    this.clickInsideFlag = false
   }
 
   getActiveIndex (activeId) { // 获取激活item对应的索引，以'-'拼接成字符串
@@ -110,9 +138,11 @@ class Menu extends Component {
   }
 
   onClick (indexs, id) {
+    this.clickInsideFlag = true
     const oldId = this.state.activeId
 
     this.setState({
+      activeId: id,
       activeIndex: indexs,
       expandIndex: ''
     }, () => {
@@ -121,6 +151,8 @@ class Menu extends Component {
   }
 
   onClickSubMenu (index) {
+    this.prevExpandIndex = this.state.expandIndex
+    this.clickInsideFlag = true
     this.setState({
       expandIndex: index
     }, () => {

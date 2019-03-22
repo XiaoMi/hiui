@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Popper from '../popper'
@@ -27,34 +26,6 @@ export default class SubMenu extends Component {
 
   static defaultProps = {
     level: 1
-  }
-
-  constructor (props) {
-    super(props)
-
-    this.clickOutsideHandel = this.clickOutside.bind(this)
-  }
-
-  componentDidMount () {
-    window.addEventListener('click', this.clickOutsideHandel)
-  }
-
-  componentWillUnmount () {
-    window.removeEventListener('click', this.clickOutsideHandel)
-  }
-
-  clickOutside (e) {
-    if (
-      (ReactDOM.findDOMNode(this.submenuTrigger) && ReactDOM.findDOMNode(this.submenuTrigger).contains(e.target)) ||
-      (ReactDOM.findDOMNode(this.submenuNode) && ReactDOM.findDOMNode(this.submenuNode).contains(e.target))
-    ) {
-      return
-    }
-    this.hidePopper()
-  }
-
-  hidePopper () {
-    this.onClick('')
   }
 
   onClick (index) {
@@ -152,14 +123,16 @@ export default class SubMenu extends Component {
       <li
         className={cls}
         ref={node => { this.submenuTrigger = node }}
-        onClick={(e) => {
-          e.stopPropagation()
-          if (!disabled) {
-            this.onClick(index)
-          }
-        }}
       >
-        <div className='hi-submenu__title hi-menu__title'>
+        <div
+          className='hi-submenu__title hi-menu__title'
+          onClick={() => {
+            if (!disabled) {
+              this.index = index
+              this.onClick(index)
+            }
+          }}
+        >
           <Title icon={icon} content={content} />
           <div className='hi-menu__title-toggle-icon'>
             <Icon name={toggleIcon} />
