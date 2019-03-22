@@ -1069,16 +1069,16 @@ constructor (props) {
 
 ### Table Attributes
 
-| 参数       | 说明   |  类型  | 默认值  |
-| --------   | -----  | ----  |  ----  |
-| size | 表格尺寸  | String,  large,small,normal  |  normal |
-| bordered | 表格尺寸  | Bollean,  true,false  |  false |
-| striped | 斑马纹 | Bollean | false | 
-| columns | 表格数据列对应信息  | array | - |
-| data | 表格数据  | array | - |
-| emptyText | 数据为空时展示的文案  | string | No Data |
-| scroll | 设置横向滚动，也可用于指定滚动区域的宽，建议为`x`设置一个数字，如果不设置，默认table宽度为100%  | number, true  | - |
-| fixTop | 吸顶  | Number , true | false |
-| pagination | 查看分页组件配置  | Object | false |
-| advance | 高级功能 | Object | null | 
-| origin | 服务端功能 | Object | null |  
+| 参数       | 说明   |  类型  | 可选值 | 默认值  |
+| --------   | -----  | ----  |  ----  | ----  |
+| size | 表格尺寸  | String |  large,small,normal  |  normal |
+| bordered | 表格尺寸  | Bollean | -  |  false |
+| striped | 斑马纹 | Bollean | - | false | 
+| columns | 表格数据列对应信息  | array | - | - |
+| data | 表格数据  | array | - | - |
+| emptyText | 数据为空时展示的文案  | string | - | No Data |
+| scroll | 设置横向滚动，也可用于指定滚动区域的宽，建议为`x`设置一个数字，如果不设置，默认table宽度为100%  | number | true  | - |
+| fixTop | 吸顶  | Number | true | false |
+| pagination | 查看分页组件配置  | Object | - | false |
+| advance | 高级功能 | Object | - | - |
+| origin | 服务端功能 | Object | - |   - |
