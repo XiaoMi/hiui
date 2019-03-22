@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "1.4.0-rc.1",
+  "version": "1.4.0-rc.2",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
@@ -52,7 +52,8 @@
     "shallowequal": "^1.0.2",
     "uglifyjs-webpack-plugin": "^2.1.1",
     "warning": "^3.0.0",
-    "whatwg-fetch": "^2.0.4"
+    "whatwg-fetch": "^2.0.4",
+    "fetch-jsonp": "^1.1.3"
   },
   "devDependencies": {
     "@babel/core": "^7.3.3",
