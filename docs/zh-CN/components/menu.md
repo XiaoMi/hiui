@@ -11,7 +11,8 @@
     const datas = [
       {
         content: '电视',
-        id: 1
+        id: 1,
+        icon: 'internet'
       },
       {
         content: '小米MIX',
@@ -22,6 +23,7 @@
         children: [
           {
             content: '小米',
+            icon: 'phone',
             children: [
               {
                 content: '小米9',
@@ -85,7 +87,7 @@
         ]
       },
       {
-        content: '超长超长超长字符',
+        content: '超长超长超长字符超长超长超长字符',
         id: 4
       }
     ]
@@ -117,7 +119,8 @@
     const datas = [
       {
         content: '电视',
-        id: 1
+        id: 1,
+        icon: 'internet'
       },
       {
         content: '小米MIX',
@@ -125,9 +128,11 @@
       },
       {
         content: '手机',
+        icon: 'phone',
         children: [
           {
             content: '小米',
+            icon: 'phone',
             children: [
               {
                 content: '小米9',
@@ -212,7 +217,7 @@
         ]
       },
       {
-        content: '超长超长超长字符',
+        content: '超长超长超长字符超长超长超长字符',
         id: 4
       }
     ]
@@ -245,6 +250,7 @@
     const datas = [
       {
         content: '电视',
+        icon: 'internet',
         id: 1
       },
       {
@@ -253,6 +259,7 @@
       },
       {
         content: '手机',
+        icon: 'phone',
         children: [
           {
             content: '小米',
@@ -289,6 +296,7 @@
           },
           {
             content: '红米',
+            icon: 'phone',
             id: 'hongmi'
           },
           {
@@ -319,7 +327,7 @@
         ]
       },
       {
-        content: '超长超长超长字符',
+        content: '超长超长超长字符超长超长超长字符',
         id: 4
       }
     ]
@@ -351,14 +359,17 @@
     const datas = [
       {
         content: '电视',
+        icon: 'internet',
         id: 1
       },
       {
         content: '小米MIX',
+        icon: 'internet',
         id: 2
       },
       {
         content: '手机',
+        icon: 'internet',
         children: [
           {
             content: '小米',
@@ -425,7 +436,8 @@
         ]
       },
       {
-        content: '超长超长超长字符',
+        content: '超长超长超长字符超长超长超长字符',
+        icon: 'internet',
         id: 4
       }
     ]

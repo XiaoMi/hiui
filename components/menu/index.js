@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Icon from '../icon'
+import Title from './Title'
 import Item from './Item'
 import SubMenu from './SubMenu'
 import './style/index'
@@ -118,6 +119,7 @@ class Menu extends Component {
     const mergeProps = Object.assign({
       onClick: this.onClick.bind(this),
       id: data.id,
+      icon: data.icon,
       isActive: activeIndexs.indexOf(indexs) === 0,
       indexs: indexs,
       key: data.id
@@ -130,16 +132,16 @@ class Menu extends Component {
     )
   }
 
-  renderGroupSubMenu (datas, indexs) {
+  renderFatSubMenu (datas, indexs) {
     let groups = []
 
     datas.forEach((data, groupIndex) => {
       groups.push(
-        <li className='hi-menu-group' key={groupIndex}>
-          <div className='hi-menu-group__title'>
-            {data.content}
+        <li className='hi-menu-fat' key={groupIndex}>
+          <div className='hi-menu-fat__title hi-menu__title'>
+            <Title icon={data.icon} content={data.content} />
           </div>
-          <ul className='hi-menu-group__content'>
+          <ul className='hi-menu-fat__content'>
             {
               data.children.map((child, index) => {
                 return this.renderItem(child, indexs + '-' + groupIndex + '-' + index)
@@ -159,7 +161,7 @@ class Menu extends Component {
       expandIndexs
     } = this.state
     let items = []
-    const renderMenu = groupSubMenu ? this.renderGroupSubMenu.bind(this) : this.renderMenu.bind(this)
+    const renderMenu = groupSubMenu ? this.renderFatSubMenu.bind(this) : this.renderMenu.bind(this)
 
     datas.forEach((data, index) => {
       const indexStr = indexs !== '' ? indexs + '-' + index : '' + index
@@ -172,6 +174,7 @@ class Menu extends Component {
             isActive={activeIndexs.indexOf(indexStr) === 0}
             isExpand={expandIndexs.indexOf(indexStr) === 0}
             content={data.content}
+            icon={data.icon}
             renderMenu={renderMenu}
             datas={data.children}
             mode={mode}

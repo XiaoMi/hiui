@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Popper from '../popper'
 import Icon from '../icon'
+import Title from './Title'
 
 export default class SubMenu extends Component {
   static componentName = 'SubMenu'
@@ -54,6 +55,7 @@ export default class SubMenu extends Component {
 
   renderPopperMenu (deepSubmenu) {
     const {
+      mini,
       datas,
       indexs,
       isExpand,
@@ -63,7 +65,7 @@ export default class SubMenu extends Component {
     let leftGap
     let topGap
     let placement
-    if (deepSubmenu) {
+    if (deepSubmenu || mini) {
       leftGap = 16
       topGap = -4
       placement = 'right-start'
@@ -81,7 +83,7 @@ export default class SubMenu extends Component {
         topGap={topGap}
         leftGap={leftGap}
         className={
-          classNames('hi-submenu__popper', {'hi-submenu__popper--group': groupSubMenu})
+          classNames('hi-submenu__popper', {'hi-submenu__popper--fat': groupSubMenu})
         }
         width={false}
         placement={placement}
@@ -112,6 +114,7 @@ export default class SubMenu extends Component {
   render () {
     const {
       content,
+      icon,
       mode,
       mini,
       indexs,
@@ -119,18 +122,19 @@ export default class SubMenu extends Component {
       isActive,
       groupSubMenu
     } = this.props
+    const level = indexs.split('-').length
 
     const deepSubmenu = indexs.split('-').length > 1
-    const cls = classNames('hi-menu-item', 'hi-submenu', {
+    const cls = classNames('hi-menu-item', 'hi-submenu', `hi-menu--${level}`, {
       'hi-menu-item--active': isActive,
       'hi-submenu--sub': deepSubmenu,
-      'hi-submenu--group': groupSubMenu
+      'hi-submenu--fat': groupSubMenu
     })
-    let icon
-    if (deepSubmenu) {
-      icon = isExpand ? 'left' : 'right'
+    let toggleIcon
+    if (deepSubmenu && (mode === 'horizontal' || mini)) {
+      toggleIcon = isExpand ? 'left' : 'right'
     } else {
-      icon = isExpand ? 'up' : 'down'
+      toggleIcon = isExpand ? 'up' : 'down'
     }
 
     return (
@@ -142,12 +146,10 @@ export default class SubMenu extends Component {
           this.onClick(indexs)
         }}
       >
-        <div className='hi-menu-item__main'>
-          <div className='hi-menu-item__content'>
-            {content}
-          </div>
-          <div className='hi-menu-item__expand-icon'>
-            <Icon name={icon} />
+        <div className='hi-submenu__title hi-menu__title'>
+          <Title icon={icon} content={content} />
+          <div className='hi-menu__title-toggle-icon'>
+            <Icon name={toggleIcon} />
           </div>
         </div>
         {
