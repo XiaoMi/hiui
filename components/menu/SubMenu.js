@@ -19,9 +19,9 @@ export default class SubMenu extends Component {
     mode: PropTypes.oneOf(['horizontal', 'vertical']),
     mini: PropTypes.bool,
     fatMenu: PropTypes.bool,
-    isExpand: PropTypes.bool,
     disabled: PropTypes.bool,
-    isActive: PropTypes.bool
+    activeIndex: PropTypes.string,
+    expandIndex: PropTypes.string
   }
 
   static defaultProps = {
@@ -32,12 +32,24 @@ export default class SubMenu extends Component {
     this.props.onClick(index)
   }
 
-  renderPopperMenu (deepSubmenu) {
+  checkActive (activeIndex, index) {
+    return activeIndex.indexOf(index) === 0
+  }
+
+  checkExpand (activeIndex, expandIndex, index) {
+    return expandIndex.indexOf(index) === 0
+    // if (expandIndex && activeIndex.indexOf(expandIndex) === 0) {
+    //   return activeIndex.indexOf(index) === 0
+    // } else {
+    //   return expandIndex.indexOf(index) === 0
+    // }
+  }
+
+  renderPopperMenu (deepSubmenu, isExpand) {
     const {
       mini,
       datas,
       index,
-      isExpand,
       renderMenu,
       fatMenu
     } = this.props
@@ -75,10 +87,8 @@ export default class SubMenu extends Component {
     )
   }
 
-  renderVerticalMenu () {
+  renderVerticalMenu (isActive, isExpand) {
     const {
-      isActive,
-      isExpand,
       datas,
       index,
       renderMenu
@@ -98,18 +108,20 @@ export default class SubMenu extends Component {
       mode,
       mini,
       index,
-      isExpand,
+      activeIndex,
+      expandIndex,
       disabled,
-      isActive,
       fatMenu
     } = this.props
+    const isExpand = this.checkExpand(activeIndex, expandIndex, index)
+    const isActive = this.checkActive(activeIndex, index)
     const level = index.split('-').length
 
     const deepSubmenu = index.split('-').length > 1
     const cls = classNames('hi-menu-item', 'hi-submenu', `hi-menu--${level}`, {
       'hi-menu-item--disabled': disabled,
       'hi-menu-item--active': isActive,
-      'hi-submenu--sub': deepSubmenu,
+      // 'hi-submenu--sub': deepSubmenu,
       'hi-submenu--fat': fatMenu
     })
     let toggleIcon
@@ -140,8 +152,8 @@ export default class SubMenu extends Component {
         </div>
         {
           !mini && mode === 'vertical'
-            ? this.renderVerticalMenu()
-            : this.renderPopperMenu(deepSubmenu)
+            ? this.renderVerticalMenu(isActive, isExpand)
+            : this.renderPopperMenu(deepSubmenu, isExpand)
         }
       </li>
     )

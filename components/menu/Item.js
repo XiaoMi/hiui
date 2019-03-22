@@ -12,12 +12,12 @@ class Item extends Component {
     index: PropTypes.string,
     onClick: PropTypes.func,
     disabled: PropTypes.bool,
-    isActive: PropTypes.bool
+    activeIndex: PropTypes.string
   }
 
   static defaultProps = {
     disabled: false,
-    isActive: false
+    activeIndex: ''
   }
 
   render () {
@@ -25,11 +25,12 @@ class Item extends Component {
       children,
       disabled,
       onClick,
-      isActive,
+      activeIndex,
       id,
       icon,
       index
     } = this.props
+    const isActive = activeIndex.indexOf(index) === 0
     const cls = classNames('hi-menu-item', 'hi-menu-item__title', 'hi-menu__title', {
       'hi-menu-item--disabled': disabled,
       'hi-menu-item--active': isActive

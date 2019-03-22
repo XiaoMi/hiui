@@ -17,7 +17,7 @@ class Menu extends Component {
     accordion: false
   }
   static propTypes = {
-    datas: PropTypes.shape({
+    datas: PropTypes.arrayOf(PropTypes.shape({
       content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
       id: PropTypes.oneOfType([
         PropTypes.string,
@@ -26,7 +26,7 @@ class Menu extends Component {
       disabled: PropTypes.bool,
       icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
       children: PropTypes.array
-    }),
+    })),
     activeId: PropTypes.string,
     mode: PropTypes.oneOf(['horizontal', 'vertical']),
     mini: PropTypes.bool, // 是否是mini模式，需要同时mode=vertical时才生效
@@ -45,13 +45,14 @@ class Menu extends Component {
       activeId,
       mini
     } = this.props
+    let expandIndex = ''
     const activeIndex = this.getActiveIndex(activeId)
     this.clickOutsideHandel = this.clickOutside.bind(this)
 
     this.state = {
       activeId: this.props.activeId,
       activeIndex,
-      expandIndex: '',
+      expandIndex,
       mini
     }
   }
@@ -168,7 +169,7 @@ class Menu extends Component {
       onClick: this.onClick.bind(this),
       id: data.id,
       icon: data.icon,
-      isActive: activeIndex.indexOf(index) === 0,
+      activeIndex,
       index: index,
       disabled: data.disabled,
       key: data.id
@@ -204,10 +205,11 @@ class Menu extends Component {
   }
 
   renderMenu (datas, parentIndex = '') {
-    const {fatMenu, mode, mini} = this.props
+    const {fatMenu, mode} = this.props
     const {
       activeIndex,
-      expandIndex
+      expandIndex,
+      mini
     } = this.state
     let items = []
     const renderMenu = fatMenu ? this.renderFatSubMenu.bind(this) : this.renderMenu.bind(this)
@@ -220,8 +222,8 @@ class Menu extends Component {
             onClick={this.onClickSubMenu.bind(this)}
             index={indexStr}
             fatMenu={fatMenu}
-            isActive={activeIndex.indexOf(indexStr) === 0}
-            isExpand={expandIndex.indexOf(indexStr) === 0}
+            activeIndex={activeIndex}
+            expandIndex={expandIndex}
             disabled={data.disabled}
             content={data.content}
             icon={data.icon}
