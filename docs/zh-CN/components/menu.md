@@ -445,6 +445,7 @@
       <div>
         <Menu 
           mini
+          miniToggle={true}
           mode="vertical" 
           activeId={'xiaomi9'} 
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}

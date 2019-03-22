@@ -32,18 +32,25 @@ class Menu extends Component {
     miniToggle: PropTypes.bool,
     groupSubMenu: PropTypes.bool,
     accordion: PropTypes.bool,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    onOpenChange: PropTypes.func,
+    onMiniChange: PropTypes.func
   }
 
   constructor (props) {
     super(props)
 
-    const activeIndexs = this.getActiveIndexs(this.props.activeId)
+    const {
+      activeId,
+      mini
+    } = this.props
+    const activeIndexs = this.getActiveIndexs(activeId)
 
     this.state = {
       activeId: this.props.activeId,
       activeIndexs,
-      expandIndexs: ''
+      expandIndexs: '',
+      mini
     }
   }
 
@@ -54,6 +61,12 @@ class Menu extends Component {
       this.setState({
         activeId: nextProps.activeId,
         activeIndexs
+      })
+    }
+
+    if (nextProps.mini !== this.props.mini) {
+      this.setState({
+        mini: nextProps.mini
       })
     }
   }
@@ -92,7 +105,13 @@ class Menu extends Component {
   }
 
   toggleMini () {
+    let mini = !this.state.mini
 
+    this.setState({
+      mini
+    }, () => {
+      this.props.onMiniChange && this.props.onMiniChange(mini)
+    })
   }
 
   onClick (indexs, id) {
@@ -122,6 +141,7 @@ class Menu extends Component {
       icon: data.icon,
       isActive: activeIndexs.indexOf(indexs) === 0,
       indexs: indexs,
+      disabled: data.disabled,
       key: data.id
     }, props)
 
@@ -173,6 +193,7 @@ class Menu extends Component {
             groupSubMenu={groupSubMenu}
             isActive={activeIndexs.indexOf(indexStr) === 0}
             isExpand={expandIndexs.indexOf(indexStr) === 0}
+            disabled={data.disabled}
             content={data.content}
             icon={data.icon}
             renderMenu={renderMenu}
@@ -190,11 +211,12 @@ class Menu extends Component {
   }
 
   render () {
-    const {datas, mode, mini, miniToggle} = this.props
+    const {datas, mode, miniToggle} = this.props
+    const {mini} = this.state
     const cls = classNames('hi-menu', `hi-menu--${mode}`, {
       'hi-menu--mini': mini
     })
-    const miniIcon = mini ? 'toggle-right' : 'mini-left'
+    const miniIcon = mini ? 'double-right' : 'double-left'
 
     return (
       <div className={cls}>

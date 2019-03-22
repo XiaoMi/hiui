@@ -66,7 +66,8 @@ export default class SubMenu extends Component {
     let topGap
     let placement
     if (deepSubmenu || mini) {
-      leftGap = 16
+      // leftGap = mini && !deepSubmenu ? 0 : 16 // 非mini状态有个16px的right-padding，所以要补偿一下
+      leftGap = 0
       topGap = -4
       placement = 'right-start'
     } else {
@@ -119,6 +120,7 @@ export default class SubMenu extends Component {
       mini,
       indexs,
       isExpand,
+      disabled,
       isActive,
       groupSubMenu
     } = this.props
@@ -126,6 +128,7 @@ export default class SubMenu extends Component {
 
     const deepSubmenu = indexs.split('-').length > 1
     const cls = classNames('hi-menu-item', 'hi-submenu', `hi-menu--${level}`, {
+      'hi-menu-item--disabled': disabled,
       'hi-menu-item--active': isActive,
       'hi-submenu--sub': deepSubmenu,
       'hi-submenu--fat': groupSubMenu
@@ -143,7 +146,9 @@ export default class SubMenu extends Component {
         ref={node => { this.submenuTrigger = node }}
         onClick={(e) => {
           e.stopPropagation()
-          this.onClick(indexs)
+          if (!disabled) {
+            this.onClick(indexs)
+          }
         }}
       >
         <div className='hi-submenu__title hi-menu__title'>

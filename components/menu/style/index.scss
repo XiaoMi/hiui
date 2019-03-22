@@ -10,8 +10,10 @@
 
 @mixin subMenuPadding($level) {
   .hi-menu--#{$level} {
-    >.hi-menu__title {
-      padding-left: $level * 32px;
+    @if $level > 1 {
+      >.hi-menu__title {
+        padding-left: $level * 32px;
+      }
     }
     .hi-submenu__items {
       >.hi-menu__title {
@@ -133,11 +135,18 @@
       padding: 0px;
     }
     .hi-menu__title-icon {
-      width: 48px;
-      height: 48px;
-      line-height: 48px;
+      width: 46px;
+      height: 46px;
+      line-height: 46px;
       margin-right: 0px;
       text-align: center;
+    }
+    &__toggle {
+      height: 48px;
+      line-height: 48px;
+      padding-left: 14px;
+      cursor: pointer;
+      font-size: 20px;
     }
   }
 }
@@ -148,7 +157,7 @@
   }
   &__popper {
     width: 200px;
-    padding: 4px 16px;
+    padding: 4px 0px;
     background-color: #fff;
     box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.15);
     border: 1px solid rgba(230,231,232,1);
@@ -158,7 +167,7 @@
       flex-direction: column;
     }
     .hi-menu__title {
-      padding: 8px 0;
+      padding: 8px 16px;
     }
     &--fat {
       width: auto;
