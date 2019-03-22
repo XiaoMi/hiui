@@ -9,7 +9,7 @@ class Sorter extends Component {
     let {index, columns, kname, name} = this.props
     let sorter = columns[index].sorter
     let {cbs: {resetData}, dataSource} = this.props
-    dataSource = dataSource.sort(sorter)
+    dataSource.sort(sorter)
     resetData(dataSource)
     this.reversed = false
     window.localStorage.setItem(name + '-sorter', [kname, 0])
@@ -21,7 +21,7 @@ class Sorter extends Component {
       let sorter = columns[index].sorter
       let {cbs: {resetData}, dataSource} = this.props
 
-      dataSource = dataSource.sort(sorter)
+      dataSource.sort(sorter)
       dataSource.reverse()
       resetData(dataSource)
       this.reversed = true
