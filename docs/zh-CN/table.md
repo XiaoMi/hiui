@@ -329,12 +329,12 @@ constructor(props){
     {
       dataIndex: 'age', 
       key: '2',
-       width: '300px',
+       width: '150px',
       sorter(pre,next){
         return pre.age - next.age
       }
     },
-    { title: 'Column 1', dataIndex: 'address', key: '3', width: '400px'},
+    { title: 'Column 1', dataIndex: 'address', key: '3', width: '200px'},
     { 
       title: ()=><div>自定义标题</div>, 
       dataIndex: 'address', key: '4',
