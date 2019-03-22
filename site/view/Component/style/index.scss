@@ -4,6 +4,15 @@
 @import './foot-nav.scss';
 
 .sidebar__item {
+  &:hover,
+  &--active {
+    .sidebar__item-icon {
+      span {
+        background-position-x: -16px;
+      }
+    }
+  }
+
   &-icon {
     span {
       width: 16px;
@@ -11,12 +20,11 @@
       display: inline-block;
       vertical-align: middle;
       background-image: url('../../../static/img/docs/icon_sider.png');
-      background-image: -webkit-image-set(url('../../../static/img/docs/icon_sider_16.png') 1x, url('../../../static/img/docs/icon_sider.png') 2x);
       background-position-x: 0;
       background-repeat: no-repeat;
       background-size: 32px 96px;
     }
-  } 
+  }
 }
 
 .sider__icon-start {
