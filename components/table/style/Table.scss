@@ -1,14 +1,18 @@
 $table: 'hi-table' !default;
 $bgColor: #f7fafe !default;
 
-$miniHeight: 30px !default;
-$miniFontSize: 12px !default;
+$miniHeight: 32px !default;
+$miniFontSize: 14px !default;
 
-$smallHeight: 40px !default;
-$smallFontSize: 13px !default;
+$smallHeight: 44px !default;
+$smallFontSize: 14px !default;
 
-$normalHeight: 50px !default;
+$normalHeight: 52px !default;
 $nornamFontSize: 14px !default;
+
+$largeHeight: 64px !default;
+$largeFontSize: 14px !default;
+$borderColor: #e6e7e8;
 
 .hi-table-header-menu-small {
   .hi-table-header-menu {
@@ -28,12 +32,50 @@ $nornamFontSize: 14px !default;
 
 .#{$table} {
   position: relative;
+  font-family: PingFangSC-Regular;
+  td,th{
+    box-sizing: border-box;
+  }
   //width: 100%;
+
 
   &.striped {
     table {
       tr:nth-child(2n) {
         background: $bgColor;
+      }
+    }
+  }
+
+  &.bordered {
+    table {
+      tr {
+        td, th{
+          border-left: 1px solid $borderColor;
+        }
+      }
+    }
+  }
+
+
+  &.large {
+    table {
+      tr {
+        height: $largeHeight;
+        font-size: $largeFontSize;
+      }
+    }
+
+    .hi-table-header-menu {
+      > p {
+        height: $smallHeight !important;
+        font-size: $smallFontSize;
+      }
+    }
+
+    .hi-table-setting-menu {
+      > div {
+        height: $smallHeight;
       }
     }
   }
@@ -93,7 +135,7 @@ $nornamFontSize: 14px !default;
   &-header-menu {
     z-index: 999999;
     background: #fff;
-    border: 1px solid #e6e7e8;
+    border: 1px solid $borderColor;
     box-shadow: 0 2px 8px 0 rgba(56, 62, 71, 0.1);
     border-radius: 2px;
     width: 140px;
@@ -119,7 +161,7 @@ $nornamFontSize: 14px !default;
   &-setting-menu {
     z-index: 999999;
     background: #fff;
-    border: 1px solid #e6e7e8;
+    border: 1px solid $borderColor;
     box-shadow: 0 2px 8px 0 rgba(56, 62, 71, 0.1);
     border-radius: 2px;
     width: 140px;
@@ -180,7 +222,8 @@ $nornamFontSize: 14px !default;
     th {
       white-space: nowrap;
       padding-left: 8px;
-      border-bottom: 1px solid #e6e7e8;
+      padding-right: 16px;
+      border-bottom: 1px solid $borderColor;
       text-align: left;
       box-sizing: border-box;
     }
@@ -196,7 +239,7 @@ $nornamFontSize: 14px !default;
     }
 
     td {
-      color: #383e47;
+      color: #3B4148;
       word-break: break-word;
 
       &.picked {

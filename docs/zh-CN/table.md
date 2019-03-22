@@ -1,6 +1,6 @@
 ## Table 表格
 
-表格
+
 ### 基础用法
 
 :::demo 
@@ -13,6 +13,55 @@ Table 表格代码说明
 3. 操作记忆 需要给每个表格添加name属性来为索引。非常重要
 
 data属性的所有字段要加key,columns的每条数据需要添加加key属性
+```js
+constructor(props){
+  super(props)
+
+  this.columns = [
+   
+    { title: 'Column 1', dataIndex: 'name', key: '1'},
+    { title: 'Column 1', dataIndex: 'age', key: '2'},
+    { title: 'Column 1', dataIndex: 'address', key: '3'},
+    { 
+      title: ()=><div>自定义标题</div>, 
+      dataIndex: 'address', key: '4',
+      width: '500px',
+      render(text,record,index){
+      return (
+        <div>
+            {text} --- {index} --- 自定义渲染
+        </div>
+      )
+    }},
+    {
+      title: 'Action',
+      key: 'operation',
+      width: 100,
+      render: () => <a href="javascript:;">action</a>,
+    },
+  ]
+  
+  this.data = []
+  for (let i = 0; i < 10; i++) {
+    this.data.push({
+      // key: i,
+      name: `Don Diablo ${i}`,
+      age: `${i}${i}`,
+      address: `EDC Las Vegas no. ${i}`,
+    });
+  }
+}
+render() {
+  return <Table columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
+}
+```
+:::
+
+
+### 紧凑表格
+
+:::demo 
+
 ```js
 constructor(props){
   super(props)
@@ -49,9 +98,150 @@ constructor(props){
       address: `EDC Las Vegas no. ${i}`,
     });
   }
-}1
+}
 render() {
-  return <Table columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
+  return <Table size='small' columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
+}
+```
+:::
+
+### 宽松表格
+
+:::demo 
+
+```js
+constructor(props){
+  super(props)
+
+  this.columns = [
+   
+    { title: 'Column 1', dataIndex: 'name', key: '1'},
+    { title: 'Column 1', dataIndex: 'age', key: '2'},
+    { title: 'Column 1', dataIndex: 'address', key: '3'},
+    { 
+      title: ()=><div>自定义标题</div>, 
+      dataIndex: 'address', key: '4',
+      render(text,record,index){
+      return (
+        <div>
+            {text} --- {index} --- 自定义渲染
+        </div>
+      )
+    }},
+    {
+      title: 'Action',
+      key: 'operation',
+      width: 100,
+      render: () => <a href="javascript:;">action</a>,
+    },
+  ]
+  
+  this.data = []
+  for (let i = 0; i < 10; i++) {
+    this.data.push({
+      // key: i,
+      name: `Don Diablo ${i}`,
+      age: `${i}${i}`,
+      address: `EDC Las Vegas no. ${i}`,
+    });
+  }
+}
+render() {
+  return <Table size='large' columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
+}
+```
+:::
+
+### 带边框的表格
+
+:::demo 
+
+```js
+constructor(props){
+  super(props)
+
+  this.columns = [
+   
+    { title: 'Column 1', dataIndex: 'name', key: '1'},
+    { title: 'Column 1', dataIndex: 'age', key: '2'},
+    { title: 'Column 1', dataIndex: 'address', key: '3'},
+    { 
+      title: ()=><div>自定义标题</div>, 
+      dataIndex: 'address', key: '4',
+      render(text,record,index){
+      return (
+        <div>
+            {text} --- {index} --- 自定义渲染
+        </div>
+      )
+    }},
+    {
+      title: 'Action',
+      key: 'operation',
+      width: 100,
+      render: () => <a href="javascript:;">action</a>,
+    },
+  ]
+  
+  this.data = []
+  for (let i = 0; i < 10; i++) {
+    this.data.push({
+      // key: i,
+      name: `Don Diablo ${i}`,
+      age: `${i}${i}`,
+      address: `EDC Las Vegas no. ${i}`,
+    });
+  }
+}
+render() {
+  return <Table bordered columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
+}
+```
+:::
+
+### 斑马纹
+
+:::demo 
+
+```js
+constructor(props){
+  super(props)
+
+  this.columns = [
+   
+    { title: 'Column 1', dataIndex: 'name', key: '1'},
+    { title: 'Column 1', dataIndex: 'age', key: '2'},
+    { title: 'Column 1', dataIndex: 'address', key: '3'},
+    { 
+      title: ()=><div>自定义标题</div>, 
+      dataIndex: 'address', key: '4',
+      render(text,record,index){
+      return (
+        <div>
+            {text} --- {index} --- 自定义渲染
+        </div>
+      )
+    }},
+    {
+      title: 'Action',
+      key: 'operation',
+      width: 100,
+      render: () => <a href="javascript:;">action</a>,
+    },
+  ]
+  
+  this.data = []
+  for (let i = 0; i < 10; i++) {
+    this.data.push({
+      // key: i,
+      name: `Don Diablo ${i}`,
+      age: `${i}${i}`,
+      address: `EDC Las Vegas no. ${i}`,
+    });
+  }
+}
+render() {
+  return <Table striped columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
 }
 ```
 :::
@@ -67,7 +257,11 @@ constructor(props){
   this.columns = [
    
     {
-      title: 'Column 1',
+      title: <Tooltip
+         title="long long long long long long long long long long tex" 
+         style={{margin: '0 10px'}}>
+         短文本
+       </Tooltip>,
        dataIndex: 'name', key: '1',
     },
     {
@@ -105,9 +299,9 @@ constructor(props){
       address: `EDC Las Vegas no. ${i}`,
     });
   }
-}1
+}
 render() {
-  return <Table name={'sorter'} columns={this.columns} data={this.data} name='sorter'/>
+  return <Table size='small' name={'sorter'} columns={this.columns} data={this.data} name='sorter'/>
 }
 ```
 :::
@@ -127,18 +321,20 @@ constructor(props){
   this.columns = [
    
     {
-      title: 'Column 1',
+      title: 'name',
        dataIndex: 'name', 
        key: '1',
+       width: '200px'
     },
     {
       dataIndex: 'age', 
       key: '2',
+       width: '300px',
       sorter(pre,next){
         return pre.age - next.age
       }
     },
-    { title: 'Column 1', dataIndex: 'address', key: '3'},
+    { title: 'Column 1', dataIndex: 'address', key: '3', width: '400px'},
     { 
       title: ()=><div>自定义标题</div>, 
       dataIndex: 'address', key: '4',
@@ -183,7 +379,7 @@ render(){
     },
     dataName:'age'
   }
-  return <Table columns={this.columns} data={data} rowSelection={rowSelection} />
+  return <Table bordered columns={this.columns} data={data} rowSelection={rowSelection} />
 }
 
 
@@ -322,7 +518,7 @@ constructor(props){
     age: 40,
     address: 'London Park'
   }]
-}1
+}
 render() {
   return <Table columns={this.columns} data={this.data} fixTop={56} scrollX/>
 }

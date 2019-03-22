@@ -379,7 +379,7 @@ class Table extends Component {
   render () {
     // 多选配置
     // noinspection JSAnnotator
-    let {pagination, name, size = 'normal', striped = false, scrollX} = this.props
+    let {pagination, name, size = 'normal', bordered = false, striped = false, scrollX} = this.props
     // noinspection JSAnnotator
     let {scroll, columnMenu, serverPagination} = this.state
 
@@ -436,7 +436,7 @@ class Table extends Component {
       }
     }
     return (
-      <div className={prifix({table: true, size, striped})} ref={this.dom}>
+      <div className={prifix({table: true, [size]: size, bordered, striped})} ref={this.dom}>
         <div >
           <div >{content}</div>
         </div>
