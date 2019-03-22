@@ -379,7 +379,7 @@ class Table extends Component {
   render () {
     // 多选配置
     // noinspection JSAnnotator
-    let {pagination, name, size = 'normal', striped = false, scrollX} = this.props
+    let {pagination, name, size = 'normal', bordered = false, striped = false, scrollX} = this.props
     // noinspection JSAnnotator
     let {scroll, columnMenu, serverPagination} = this.state
 
@@ -436,7 +436,7 @@ class Table extends Component {
       }
     }
     return (
-      <div className={prifix({table: true, size, striped})} ref={this.dom}>
+      <div className={prifix({table: true, [size]: size, bordered, striped})} ref={this.dom}>
         <div >
           <div >{content}</div>
         </div>
@@ -652,14 +652,13 @@ class Table extends Component {
     if (rowSelection) {
       let {selectedRowKeys = [], dataName = 'key'} = rowSelection
       columns.unshift({
-        width: '50',
+        width: '50px',
         type: 'select',
         key: 'hi-table-select-' + name,
         title: () => {
           let {getCheckboxProps = (record) => ({ disabled: false }), onChange} = rowSelection
           return (
             <Checkbox type='checkbox'
-
               checked={selectedRowKeys.length === this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length && this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length > 0}
               onChange={(e, checked) => {
                 let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
