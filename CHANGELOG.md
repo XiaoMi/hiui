@@ -1,20 +1,12 @@
 # 更新日志
 
-`HIUI` 遵循 [Semantic Versioning 2.0.0](http://semver.org/lang/zh-CN/) 语义化版本规范。
-
-> 版本格式：主版本号.次版本号.修订号，版本号递增规则如下：
-> 1. 主版本号：当你做了不兼容的 API 修改，
-> 1. 次版本号：当你做了向下兼容的功能性新增，
-> 1. 修订号：当你做了向下兼容的问题修正。
-> 先行版本号及版本编译信息可以加到“主版本号.次版本号.修订号”的后面，作为延伸。
-
 ## 1.4.0
 - 新增：部分组件测试用例
 - 新增：`<Tabs />`组件
 - 修改：`<Datepicker />` 可以通过placeholder属性传入默认占位符
 - 修复： `<Checkbox />` 组件在被销毁时，没有清空已选择项的问题
 - 修改： `<Pagination />` 组件
-  - 新增两种简单分页样式，分别通过`simple` | `shrimk`属性控制
+  - 新增两种简单分页样式，分别通过 `simple` | `shrink` 属性控制
   - 修改完整分页的使用说明
 - 修改: 部分组件的 BEM 规范
 - 新增：HIUI 设计说明 及 模板文档
@@ -25,7 +17,7 @@
 - 新增：`<Select />` 异步请求时增加 loading；
 - 修改：优化 `<Form />` 组件横排时的错误文案显示；
 - 修改：`<Upload />` 组件；
-  - 废弃 `uploadType` 属性，改为 `type`，`接收normal`、`drag`、`pictureCard`、`avatar`、`photo`；
+  - 废弃 `uploadType` 属性，改为 `type`，接收 `normal`、`drag`、`pictureCard`、`avatar`、`photo`；
   - 新增 `width`、`height`，应用于头像上传的裁切框尺寸定义；
   - 废弃 `onUploadSuccess`、`onDeleteSuccess` 事件回调；
   - 废弃 `deleteParam` 属性；
@@ -53,8 +45,8 @@
 - 修改：重新设定所有浮层组件 z-index。
 
 ## 1.1.1
-- 修改：修复 <Button /> 在使用旧版 api 时的样式兼容；
-- 修改：修复 <Checkbox /> 占据整行及点击区域的 bug。
+- 修改：修复 `<Button />` 在使用旧版 api 时的样式兼容；
+- 修改：修复 `<Checkbox />` 占据整行及点击区域的 bug。
 
 ## 1.1.0
 - 修改：按钮组件 `<Button />` API 调整，向前兼容；
@@ -85,3 +77,14 @@
 
 - 第一个公开版本，发布基本组件；
 - 发布 HIUI 首页和文档。
+
+---
+
+## Roadmap
+
+- 增加 `<Switch />` 组件
+- 增加 `<Card />` 组件
+- 增加 `<Menu />` 组件
+- 增加 `<Transfer />` 组件
+- 优化 `<DatePicker />` 组件，优化范围选择逻辑
+- [More](https://github.com/XiaoMi/hiui/issues)……
