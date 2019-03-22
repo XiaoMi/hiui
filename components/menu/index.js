@@ -13,7 +13,7 @@ class Menu extends Component {
     activeId: '',
     mini: false,
     miniToggle: false,
-    groupSubMenu: false,
+    fatMenu: false,
     accordion: false
   }
   static propTypes = {
@@ -23,17 +23,18 @@ class Menu extends Component {
         PropTypes.string,
         PropTypes.number
       ]),
+      disabled: PropTypes.bool,
       icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
       children: PropTypes.array
     }),
     activeId: PropTypes.string,
     mode: PropTypes.oneOf(['horizontal', 'vertical']),
-    mini: PropTypes.bool,
-    miniToggle: PropTypes.bool,
-    groupSubMenu: PropTypes.bool,
+    mini: PropTypes.bool, // 是否是mini模式，需要同时mode=vertical时才生效
+    miniToggle: PropTypes.bool, // mini状态开关，需要同时mode=vertical时才生效
+    fatMenu: PropTypes.bool, // 胖菜单，需要同时mode=horizontal时才生效
     accordion: PropTypes.bool,
     onClick: PropTypes.func,
-    onOpenChange: PropTypes.func,
+    onClickSubMenu: PropTypes.func,
     onMiniChange: PropTypes.func
   }
 
@@ -44,23 +45,23 @@ class Menu extends Component {
       activeId,
       mini
     } = this.props
-    const activeIndexs = this.getActiveIndexs(activeId)
+    const activeIndex = this.getActiveIndex(activeId)
 
     this.state = {
       activeId: this.props.activeId,
-      activeIndexs,
-      expandIndexs: '',
+      activeIndex,
+      expandIndex: '',
       mini
     }
   }
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.activeId !== this.props.activeId) {
-      const activeIndexs = this.getActiveIndexs(nextProps.activeId)
+      const activeIndex = this.getActiveIndex(nextProps.activeId)
 
       this.setState({
         activeId: nextProps.activeId,
-        activeIndexs
+        activeIndex
       })
     }
 
@@ -71,37 +72,31 @@ class Menu extends Component {
     }
   }
 
-  getChildContext () {
-    return {
-      component: this
-    }
-  }
-
-  getActiveIndexs (activeId) {
+  getActiveIndex (activeId) { // 获取激活item对应的索引，以'-'拼接成字符串
     const {
       datas
     } = this.props
-    let activeIndexs = []
+    let activeIndex = []
     let level = 0
 
     if (activeId === undefined) {
-      return activeIndexs
+      return activeIndex
     }
 
-    const _getActiveIndexs = function (datas) {
+    const _getActiveIndex = function (datas) {
       for (const index in datas) {
         const data = datas[index]
-        activeIndexs[level] = parseInt(index)
+        activeIndex[level] = parseInt(index)
         if (data.children) {
           level++
-          _getActiveIndexs(data.children)
+          _getActiveIndex(data.children)
         } else if (data.id === activeId) {
           break
         }
       }
     }
-    _getActiveIndexs(datas)
-    return activeIndexs.join('-')
+    _getActiveIndex(datas)
+    return activeIndex.join('-')
   }
 
   toggleMini () {
@@ -118,29 +113,31 @@ class Menu extends Component {
     const oldId = this.state.activeId
 
     this.setState({
-      activeIndexs: indexs,
-      expandIndexs: ''
+      activeIndex: indexs,
+      expandIndex: ''
     }, () => {
       this.props.onClick(id, oldId)
     })
   }
 
-  onClickSubMenu (indexs) {
+  onClickSubMenu (index) {
     this.setState({
-      expandIndexs: indexs
+      expandIndex: index
+    }, () => {
+      index && this.props.onClickSubMenu && this.props.onClickSubMenu(index)
     })
   }
 
-  renderItem (data, indexs, props = {}) {
+  renderItem (data, index, props = {}) { // render menu item
     const {
-      activeIndexs
+      activeIndex
     } = this.state
     const mergeProps = Object.assign({
       onClick: this.onClick.bind(this),
       id: data.id,
       icon: data.icon,
-      isActive: activeIndexs.indexOf(indexs) === 0,
-      indexs: indexs,
+      isActive: activeIndex.indexOf(index) === 0,
+      index: index,
       disabled: data.disabled,
       key: data.id
     }, props)
@@ -152,7 +149,7 @@ class Menu extends Component {
     )
   }
 
-  renderFatSubMenu (datas, indexs) {
+  renderFatSubMenu (datas, parentIndex) { // render胖菜单
     let groups = []
 
     datas.forEach((data, groupIndex) => {
@@ -164,7 +161,7 @@ class Menu extends Component {
           <ul className='hi-menu-fat__content'>
             {
               data.children.map((child, index) => {
-                return this.renderItem(child, indexs + '-' + groupIndex + '-' + index)
+                return this.renderItem(child, parentIndex + '-' + groupIndex + '-' + index)
               })
             }
           </ul>
@@ -174,25 +171,25 @@ class Menu extends Component {
     return groups
   }
 
-  renderMenu (datas, indexs = '') {
-    const {groupSubMenu, mode, mini} = this.props
+  renderMenu (datas, parentIndex = '') {
+    const {fatMenu, mode, mini} = this.props
     const {
-      activeIndexs,
-      expandIndexs
+      activeIndex,
+      expandIndex
     } = this.state
     let items = []
-    const renderMenu = groupSubMenu ? this.renderFatSubMenu.bind(this) : this.renderMenu.bind(this)
+    const renderMenu = fatMenu ? this.renderFatSubMenu.bind(this) : this.renderMenu.bind(this)
 
     datas.forEach((data, index) => {
-      const indexStr = indexs !== '' ? indexs + '-' + index : '' + index
+      const indexStr = parentIndex !== '' ? parentIndex + '-' + index : '' + index
       if (data.children) {
         items.push(
           <SubMenu
             onClick={this.onClickSubMenu.bind(this)}
-            indexs={indexStr}
-            groupSubMenu={groupSubMenu}
-            isActive={activeIndexs.indexOf(indexStr) === 0}
-            isExpand={expandIndexs.indexOf(indexStr) === 0}
+            index={indexStr}
+            fatMenu={fatMenu}
+            isActive={activeIndex.indexOf(indexStr) === 0}
+            isExpand={expandIndex.indexOf(indexStr) === 0}
             disabled={data.disabled}
             content={data.content}
             icon={data.icon}
@@ -235,9 +232,6 @@ class Menu extends Component {
       </div>
     )
   }
-}
-Menu.childContextTypes = {
-  component: PropTypes.any
 }
 
 export default Menu

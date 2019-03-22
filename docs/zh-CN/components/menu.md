@@ -97,6 +97,7 @@
           mode="horizontal" 
           activeId={'xiaomi9'} 
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
+          onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
           datas={datas}
         />
       </div>
@@ -226,7 +227,7 @@
         <Menu 
           mode="horizontal" 
           activeId={'xiaomi9'} 
-          groupSubMenu
+          fatMenu
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
           datas={datas}
         />
@@ -337,6 +338,7 @@
           mode="vertical" 
           activeId={'xiaomi9'} 
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
+          onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
           datas={datas}
         />
       </div>
@@ -449,6 +451,8 @@
           mode="vertical" 
           activeId={'xiaomi9'} 
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
+          onMiniChange={toggle => console.log('-----onMiniChange', toggle)}
+          onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
           datas={datas}
         />
       </div>

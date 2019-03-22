@@ -9,6 +9,8 @@ class Item extends Component {
   static propTypes = {
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    index: PropTypes.string,
+    onClick: PropTypes.func,
     disabled: PropTypes.bool,
     isActive: PropTypes.bool
   }
@@ -26,7 +28,7 @@ class Item extends Component {
       isActive,
       id,
       icon,
-      indexs
+      index
     } = this.props
     const cls = classNames('hi-menu-item', 'hi-menu-item__title', 'hi-menu__title', {
       'hi-menu-item--disabled': disabled,
@@ -36,7 +38,7 @@ class Item extends Component {
     return (
       <li className={cls} onClick={() => {
         if (!disabled) {
-          onClick(indexs, id)
+          onClick(index, id)
         }
       }}>
         <Title icon={icon} content={children} />

@@ -10,14 +10,22 @@ export default class SubMenu extends Component {
   static componentName = 'SubMenu'
 
   static propTypes = {
+    icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    showParentSubmenu: PropTypes.bool,
+    datas: PropTypes.array,
+    renderMenu: PropTypes.func,
+    onClick: PropTypes.func,
+    index: PropTypes.string,
     level: PropTypes.number,
-    groupSubMenu: PropTypes.bool
+    mode: PropTypes.oneOf(['horizontal', 'vertical']),
+    mini: PropTypes.bool,
+    fatMenu: PropTypes.bool,
+    isExpand: PropTypes.bool,
+    disabled: PropTypes.bool,
+    isActive: PropTypes.bool
   }
 
   static defaultProps = {
-    showParentSubmenu: false,
     level: 1
   }
 
@@ -49,18 +57,18 @@ export default class SubMenu extends Component {
     this.onClick('')
   }
 
-  onClick (indexs) {
-    this.props.onClick(indexs)
+  onClick (index) {
+    this.props.onClick(index)
   }
 
   renderPopperMenu (deepSubmenu) {
     const {
       mini,
       datas,
-      indexs,
+      index,
       isExpand,
       renderMenu,
-      groupSubMenu
+      fatMenu
     } = this.props
     let leftGap
     let topGap
@@ -84,13 +92,13 @@ export default class SubMenu extends Component {
         topGap={topGap}
         leftGap={leftGap}
         className={
-          classNames('hi-submenu__popper', {'hi-submenu__popper--fat': groupSubMenu})
+          classNames('hi-submenu__popper', {'hi-submenu__popper--fat': fatMenu})
         }
         width={false}
         placement={placement}
       >
         <ul className={classNames('hi-submenu__items')} ref={node => { this.submenuNode = node }}>
-          { renderMenu(datas, indexs) }
+          { renderMenu(datas, index) }
         </ul>
       </Popper>
     )
@@ -101,13 +109,13 @@ export default class SubMenu extends Component {
       isActive,
       isExpand,
       datas,
-      indexs,
+      index,
       renderMenu
     } = this.props
 
     return (
       <ul className={classNames('hi-submenu__items', {'hi-submenu__items--hide': !isExpand && !isActive})}>
-        { renderMenu(datas, indexs) }
+        { renderMenu(datas, index) }
       </ul>
     )
   }
@@ -118,20 +126,20 @@ export default class SubMenu extends Component {
       icon,
       mode,
       mini,
-      indexs,
+      index,
       isExpand,
       disabled,
       isActive,
-      groupSubMenu
+      fatMenu
     } = this.props
-    const level = indexs.split('-').length
+    const level = index.split('-').length
 
-    const deepSubmenu = indexs.split('-').length > 1
+    const deepSubmenu = index.split('-').length > 1
     const cls = classNames('hi-menu-item', 'hi-submenu', `hi-menu--${level}`, {
       'hi-menu-item--disabled': disabled,
       'hi-menu-item--active': isActive,
       'hi-submenu--sub': deepSubmenu,
-      'hi-submenu--fat': groupSubMenu
+      'hi-submenu--fat': fatMenu
     })
     let toggleIcon
     if (deepSubmenu && (mode === 'horizontal' || mini)) {
@@ -147,7 +155,7 @@ export default class SubMenu extends Component {
         onClick={(e) => {
           e.stopPropagation()
           if (!disabled) {
-            this.onClick(indexs)
+            this.onClick(index)
           }
         }}
       >
@@ -165,8 +173,4 @@ export default class SubMenu extends Component {
       </li>
     )
   }
-}
-
-SubMenu.contextTypes = {
-  component: PropTypes.any
 }
