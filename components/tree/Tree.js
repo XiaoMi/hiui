@@ -13,7 +13,7 @@ import {
 } from './util'
 
 import './style/index'
-const dealData = (data, tempData = {}, parent) => {
+const dealData = (data, tempData = {}, parent = null) => {
   if (data.length === 0) {
     return data
   }
@@ -45,7 +45,8 @@ export default class Tree extends Component {
       dragNode: '',
       dragNodePosition: null,
       semiChecked: [],
-      disabledKeys: []
+      disabledKeys: [],
+      all: []
     }
   }
 

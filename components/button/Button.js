@@ -80,7 +80,8 @@ class Button extends Component {
           href={href}
           target={target}
         >
-          {icon ? <Icon name={icon} /> : children}
+          {icon && <Icon name={icon} /> }
+          {children}
         </a>
         : <button
           className={classes}
@@ -90,7 +91,8 @@ class Button extends Component {
           title={title}
           type='button'
         >
-          {icon ? <Icon name={icon} /> : children}
+          {icon && <Icon name={icon} />}
+          {children}
         </button>
     )
   }

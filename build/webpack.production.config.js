@@ -9,7 +9,7 @@ const basePath = path.resolve(__dirname, '../')
 module.exports = {
   mode: process.env.NODE_ENV,
   entry: {
-    main: ['babel-polyfill', `${path.resolve(basePath, 'site/main.js')}`],
+    main: ['@babel/polyfill', `${path.resolve(basePath, 'site/main.js')}`],
     // 列出第三方库
     vendor: ['react', 'react-dom']
   },

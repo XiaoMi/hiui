@@ -64,7 +64,8 @@ class Input extends Component {
       suffix,
       prepend,
       append,
-      id
+      id,
+      placeholder
     } = this.props
 
     const noClear = ['textarea']
@@ -102,6 +103,7 @@ class Input extends Component {
             autoComplete='off'
             disabled={disabled}
             {...this.attrs}
+            placeholder={placeholder}
             onChange={e => {
               console.log('change')
               e.persist()
