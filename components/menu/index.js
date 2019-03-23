@@ -43,14 +43,13 @@ class Menu extends Component {
 
     const {
       activeId,
-      mini,
-      mode
+      mini
     } = this.props
     const activeIndex = this.getActiveIndex(activeId)
     let expandIndex = []
     this.clickOutsideHandel = this.clickOutside.bind(this)
 
-    if (mode === 'vertical' && !mini) { // 垂直非mini菜单默认打开激活项
+    if (this.isNoMiniVertaicalMenu(mini)) { // 垂直非mini菜单默认打开激活项
       expandIndex = [activeIndex.split('-').slice(0, -1).join('-')]
     }
 
@@ -89,7 +88,7 @@ class Menu extends Component {
 
   clickInsideFlag = false // click在menu标识
   clickOutside () {
-    if (!this.clickInsideFlag) {
+    if (!this.clickInsideFlag && !this.isNoMiniVertaicalMenu()) {
       this.setState({
         expandIndex: []
       })
@@ -107,11 +106,9 @@ class Menu extends Component {
       return []
     }
     const {
-      accordion,
-      mode
+      accordion
     } = this.props
     const {
-      mini,
       expandIndex
     } = this.state
     let _clickedIndex = clickedIndex
@@ -132,13 +129,17 @@ class Menu extends Component {
       _clickedIndex = clickedIndex.split('-').slice(0, -1).join('-')
     }
 
-    if (!accordion && mode === 'vertical' && !mini) { // 非手风琴模式只有在垂直非mini状态下才生效
+    if (!accordion && this.isNoMiniVertaicalMenu()) { // 非手风琴模式只有在垂直非mini状态下才生效
       index > -1 ? _expandIndex.splice(index, 1, _clickedIndex) : _expandIndex.push(_clickedIndex)
 
       return _expandIndex
     } else {
       return _clickedIndex ? [_clickedIndex] : []
     }
+  }
+
+  isNoMiniVertaicalMenu (mini = this.state.mini) { // 垂直非mini菜单
+    return this.props.mode === 'vertical' && !mini
   }
 
   getActiveIndex (activeId) { // 获取激活item对应的索引，以'-'拼接成字符串
@@ -185,7 +186,7 @@ class Menu extends Component {
   }
 
   onClick (indexs, id) {
-    const expandIndex = this.getExpandIndex('')
+    const expandIndex = this.isNoMiniVertaicalMenu() ? this.state.expandIndex : this.getExpandIndex('') // 非mini垂直菜单选中时不需要收起子菜单
     const oldId = this.state.activeId
 
     this.setState({
@@ -204,7 +205,7 @@ class Menu extends Component {
     this.setState({
       expandIndex
     }, () => {
-      index && this.props.onClickSubMenu && this.props.onClickSubMenu(index)
+      index && this.props.onClickSubMenu && this.props.onClickSubMenu(index.split('-'))
     })
   }
 
@@ -263,6 +264,7 @@ class Menu extends Component {
 
     datas.forEach((data, index) => {
       const indexStr = parentIndex !== '' ? parentIndex + '-' + index : '' + index
+
       if (data.children) {
         items.push(
           <SubMenu
@@ -279,6 +281,7 @@ class Menu extends Component {
             datas={data.children}
             mode={mode}
             mini={mini}
+            key={data.content}
           />
         )
       } else {

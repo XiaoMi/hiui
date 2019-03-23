@@ -31,7 +31,8 @@
               },
               {
                 content: '小米8',
-                id: 'xiaomi8'
+                id: 'xiaomi8',
+                disabled: true
               },
               {
                 content: '小米7',
@@ -61,6 +62,7 @@
           },
           {
             content: '小米note',
+            disabled: true,
             children: [
               {
                 content: '小米 note7',
@@ -350,11 +352,12 @@
 
 
 
-### 竖向收起菜单
+
+### 非手风琴菜单
 
 :::demo
 
-竖向收起菜单
+非手风琴菜单
 
 ```js
   render(){
@@ -366,12 +369,122 @@
       },
       {
         content: '小米MIX',
+        id: 2
+      },
+      {
+        content: '手机',
+        icon: 'phone',
+        children: [
+          {
+            content: '小米',
+            children: [
+              {
+                content: '小米9',
+                id: 'xiaomi9'
+              },
+              {
+                content: '小米8',
+                id: 'xiaomi8'
+              },
+              {
+                content: '小米7',
+                id: 'xiaomi7'
+              },
+              {
+                content: '小米6',
+                id: 'xiaomi6'
+              },
+              {
+                content: '小米5',
+                id: 'xiaomi5'
+              },
+              {
+                content: '小米4',
+                id: 'xiaomi4'
+              },
+              {
+                content: '小米3',
+                id: 'xiaomi3'
+              }
+            ]
+          },
+          {
+            content: '红米',
+            icon: 'phone',
+            id: 'hongmi'
+          },
+          {
+            content: '小米note',
+            children: [
+              {
+                content: '小米 note7',
+                id: 'xiaomi note7'
+              },
+              {
+                content: '小米 note6',
+                id: 'xiaomi note6'
+              },
+              {
+                content: '小米 note5',
+                id: 'xiaomi note5'
+              },
+              {
+                content: '小米 note4',
+                id: 'xiaomi note4'
+              },
+              {
+                content: '小米 note3',
+                id: 'xiaomi note3'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        content: '超长超长超长字符超长超长超长字符',
+        id: 4
+      }
+    ]
+    return(
+      <div>
+        <Menu 
+          accordion={false}
+          mode="vertical" 
+          activeId={'xiaomi9'} 
+          onClick={(id, prevId)=>console.log('-----click', id, prevId)}
+          onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
+          datas={datas}
+        />
+      </div>
+    )
+  }
+
+```
+:::
+
+
+### 竖向收起菜单
+
+:::demo
+
+竖向收起菜单
+
+```js
+  render(){
+    const datas = [
+      {
+        content: '电视',
+        icon: 'alarm',
+        id: 1
+      },
+      {
+        content: '小米MIX',
         icon: 'internet',
         id: 2
       },
       {
         content: '手机',
-        icon: 'internet',
+        icon: 'phone',
         children: [
           {
             content: '小米',
@@ -439,7 +552,7 @@
       },
       {
         content: '超长超长超长字符超长超长超长字符',
-        icon: 'internet',
+        icon: 'document',
         id: 4
       }
     ]
@@ -468,15 +581,23 @@
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| active | 是否激活 | boolean | true / false  | false |
-| defaultActive | 默认激活（当  active 存在时，此项无效 | boolean | true / false | false |
-| text | 文本 | string | - | - |
-| value | 文本对应的值，可为空 | - | - |
+| data | 菜单选项配置，具体格式见下 | array | - | - |
+| activeId | 激活的菜单id | string | -  | - |
 | mode | 菜单排列模式 | string | horizontal / vertical | vertical |
+| mini | 垂直菜单时，是否收缩 | boolean | true / false | false |
+| miniToggle | 垂直菜单时，是否显示收缩开关 | boolean | true / false | true |
+| fatMenu | 胖菜单，需要同时mode=horizontal时才生效 | boolean | true / false | false |
+| accordion | 手风琴模式，只有在mode=vertical时生效 | boolean | true / false | true |
+| onClick | 点击菜单选项触发的回调 | function(activeId, prevActiveId) | - | - |
+| onClickSubMenu | 点击父菜单选项触发的回调 | function(subMenuIndexs) | - | - |
+| onMiniChange | 点击收缩开关触发的回调 | function(miniToggle) | - | - |
 
-### Menu Events
+### Data Attributes
 
-| 参数 | 说明 | 回调参数 |
-| -------- | ----- | ---- |
-| onOpen | 打开某菜单事件 | - |
-| onClose | 关闭某菜单事件 | - |
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| -------- | ----- | ---- | ---- | ---- |
+| content | 菜单选项标题 | string, node | - | - |
+| icon | 菜单选项icon，为string时会作文Icon组件的name| string, node | - | - |
+| id | 菜单选项唯一标识 | string, number | - | - |
+| disabled | 菜单选项是否禁止 | bool | true / false | false |
+| children | 字菜单选项配置 | array | - | - |

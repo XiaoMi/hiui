@@ -47,6 +47,11 @@
         color: #4284F5;
       }
     }
+    &--disabled {
+      .hi-menu__title {
+        cursor: not-allowed;
+      }
+    }
   }
 
   .hi-menu__title {
