@@ -43,14 +43,20 @@ class Menu extends Component {
 
     const {
       activeId,
-      mini
+      mini,
+      mode
     } = this.props
     const activeIndex = this.getActiveIndex(activeId)
+    let expandIndex = []
     this.clickOutsideHandel = this.clickOutside.bind(this)
+
+    if (mode === 'vertical' && !mini) { // 垂直非mini菜单默认打开激活项
+      expandIndex = [activeIndex.split('-').slice(0, -1).join('-')]
+    }
 
     this.state = {
       activeId: this.props.activeId,
-      expandIndex: [],
+      expandIndex,
       activeIndex,
       mini
     }
@@ -97,7 +103,7 @@ class Menu extends Component {
   }
 
   getExpandIndex (clickedIndex) {
-    if (clickedIndex === '') {
+    if (!clickedIndex) {
       return []
     }
     const {
@@ -109,19 +115,29 @@ class Menu extends Component {
       expandIndex
     } = this.state
     let _clickedIndex = clickedIndex
-    const index = expandIndex.indexOf(clickedIndex)
+    let subInExpandIndex = false
+
+    let _expandIndex = expandIndex.filter(item => { // 点击父菜单时，需要把已展开的子菜单过滤掉，因为父菜单关闭时所有子菜单也要关闭
+      const flag = item.startsWith(_clickedIndex)
+      if (flag) {
+        subInExpandIndex = true
+      }
+      return !flag
+    })
+    subInExpandIndex && _expandIndex.push(_clickedIndex) // subInExpandIndex为true说明其有子菜单被展开，在点击需要关闭
+
+    const index = _expandIndex.indexOf(clickedIndex)
 
     if (index > -1) { // 点击同一个submenu，如果已展开则关闭
       _clickedIndex = clickedIndex.split('-').slice(0, -1).join('-')
     }
 
     if (!accordion && mode === 'vertical' && !mini) { // 非手风琴模式只有在垂直非mini状态下才生效
-      const _expandIndex = expandIndex.slice()
       index > -1 ? _expandIndex.splice(index, 1, _clickedIndex) : _expandIndex.push(_clickedIndex)
 
       return _expandIndex
     } else {
-      return [_clickedIndex]
+      return _clickedIndex ? [_clickedIndex] : []
     }
   }
 
@@ -131,6 +147,7 @@ class Menu extends Component {
     } = this.props
     let activeIndex = []
     let level = 0
+    let matchFlag = false
 
     if (activeId === undefined) {
       return activeIndex
@@ -143,7 +160,12 @@ class Menu extends Component {
         if (data.children) {
           level++
           _getActiveIndex(data.children)
+          level--
         } else if (data.id === activeId) {
+          matchFlag = true
+          break
+        }
+        if (matchFlag) {
           break
         }
       }

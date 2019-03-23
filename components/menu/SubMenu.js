@@ -41,10 +41,19 @@ export default class SubMenu extends Component {
     return expandIndex.some(item => {
       return item.indexOf(index) === 0
     })
-    // if (expandIndex && activeIndex.indexOf(expandIndex) === 0) {
+
+    // const {
+    //   mini,
+    //   mode
+    // } = this.props
+
+    // if (!mini && mode==='vertical' && expandIndex.length===0) {
     //   return activeIndex.indexOf(index) === 0
     // } else {
-    //   return expandIndex.indexOf(index) === 0
+    //   return expandIndex.some(item => {
+    //     // return item.indexOf(index) === 0 || (activeIndex.indexOf(item) === 0 && activeIndex.indexOf(index) === 0)
+    //     return item.indexOf(index) === 0
+    //   })
     // }
   }
 
@@ -105,7 +114,7 @@ export default class SubMenu extends Component {
 
     return (
       <ul
-        className={classNames('hi-submenu__items', {'hi-submenu__items--hide': !isExpand && !isActive})}
+        className={classNames('hi-submenu__items', {'hi-submenu__items--hide': !isExpand})}
         onClick={() => clickInside()} // 利用事件冒泡设置clickInsideFlag
       >
         { renderMenu(datas, index) }
@@ -151,7 +160,6 @@ export default class SubMenu extends Component {
           className='hi-submenu__title hi-menu__title'
           onClick={() => {
             if (!disabled) {
-              this.index = index
               this.onClick(index)
             }
           }}
