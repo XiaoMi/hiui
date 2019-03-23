@@ -37,7 +37,8 @@ class Item extends Component {
     })
 
     return (
-      <li className={cls} onClick={() => {
+      <li className={cls} onClick={e => {
+        e.stopPropagation()
         if (!disabled) {
           onClick(index, id)
         }

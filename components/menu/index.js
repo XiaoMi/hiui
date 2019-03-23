@@ -14,7 +14,7 @@ class Menu extends Component {
     mini: false,
     miniToggle: false,
     fatMenu: false,
-    accordion: false
+    accordion: true
   }
   static propTypes = {
     datas: PropTypes.arrayOf(PropTypes.shape({
@@ -45,14 +45,13 @@ class Menu extends Component {
       activeId,
       mini
     } = this.props
-    let expandIndex = ''
     const activeIndex = this.getActiveIndex(activeId)
     this.clickOutsideHandel = this.clickOutside.bind(this)
 
     this.state = {
       activeId: this.props.activeId,
+      expandIndex: [],
       activeIndex,
-      expandIndex,
       mini
     }
   }
@@ -83,22 +82,47 @@ class Menu extends Component {
   }
 
   clickInsideFlag = false // click在menu标识
-  prevExpandIndex = null // 上一次展开的submenu
   clickOutside () {
-    let expandIndex = this.state.expandIndex
-    if (this.clickInsideFlag) {
-      if (this.prevExpandIndex === expandIndex) { // submenu已打开则关闭
-        expandIndex = expandIndex.split('-').slice(0, -1).join('-')
-      }
-    } else {
-      expandIndex = ''
+    if (!this.clickInsideFlag) {
+      this.setState({
+        expandIndex: []
+      })
     }
 
-    this.setState({
-      expandIndex
-    })
-    this.prevExpandIndex = null
     this.clickInsideFlag = false
+  }
+
+  clickInside () {
+    this.clickInsideFlag = true
+  }
+
+  getExpandIndex (clickedIndex) {
+    if (clickedIndex === '') {
+      return []
+    }
+    const {
+      accordion,
+      mode
+    } = this.props
+    const {
+      mini,
+      expandIndex
+    } = this.state
+    let _clickedIndex = clickedIndex
+    const index = expandIndex.indexOf(clickedIndex)
+
+    if (index > -1) { // 点击同一个submenu，如果已展开则关闭
+      _clickedIndex = clickedIndex.split('-').slice(0, -1).join('-')
+    }
+
+    if (!accordion && mode === 'vertical' && !mini) { // 非手风琴模式只有在垂直非mini状态下才生效
+      const _expandIndex = expandIndex.slice()
+      index > -1 ? _expandIndex.splice(index, 1, _clickedIndex) : _expandIndex.push(_clickedIndex)
+
+      return _expandIndex
+    } else {
+      return [_clickedIndex]
+    }
   }
 
   getActiveIndex (activeId) { // 获取激活item对应的索引，以'-'拼接成字符串
@@ -139,23 +163,24 @@ class Menu extends Component {
   }
 
   onClick (indexs, id) {
-    this.clickInsideFlag = true
+    const expandIndex = this.getExpandIndex('')
     const oldId = this.state.activeId
 
     this.setState({
       activeId: id,
       activeIndex: indexs,
-      expandIndex: ''
+      expandIndex
     }, () => {
       this.props.onClick(id, oldId)
     })
   }
 
   onClickSubMenu (index) {
-    this.prevExpandIndex = this.state.expandIndex
-    this.clickInsideFlag = true
+    const expandIndex = this.getExpandIndex(index)
+
+    this.clickInside()
     this.setState({
-      expandIndex: index
+      expandIndex
     }, () => {
       index && this.props.onClickSubMenu && this.props.onClickSubMenu(index)
     })
@@ -220,6 +245,7 @@ class Menu extends Component {
         items.push(
           <SubMenu
             onClick={this.onClickSubMenu.bind(this)}
+            clickInside={this.clickInside.bind(this)}
             index={indexStr}
             fatMenu={fatMenu}
             activeIndex={activeIndex}

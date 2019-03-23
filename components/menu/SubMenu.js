@@ -21,11 +21,12 @@ export default class SubMenu extends Component {
     fatMenu: PropTypes.bool,
     disabled: PropTypes.bool,
     activeIndex: PropTypes.string,
-    expandIndex: PropTypes.string
+    expandIndex: PropTypes.array
   }
 
   static defaultProps = {
-    level: 1
+    level: 1,
+    expandIndex: []
   }
 
   onClick (index) {
@@ -37,7 +38,9 @@ export default class SubMenu extends Component {
   }
 
   checkExpand (activeIndex, expandIndex, index) {
-    return expandIndex.indexOf(index) === 0
+    return expandIndex.some(item => {
+      return item.indexOf(index) === 0
+    })
     // if (expandIndex && activeIndex.indexOf(expandIndex) === 0) {
     //   return activeIndex.indexOf(index) === 0
     // } else {
@@ -51,7 +54,8 @@ export default class SubMenu extends Component {
       datas,
       index,
       renderMenu,
-      fatMenu
+      fatMenu,
+      clickInside
     } = this.props
     let leftGap
     let topGap
@@ -80,7 +84,11 @@ export default class SubMenu extends Component {
         width={false}
         placement={placement}
       >
-        <ul className={classNames('hi-submenu__items')} ref={node => { this.submenuNode = node }}>
+        <ul
+          className={classNames('hi-submenu__items')}
+          ref={node => { this.submenuNode = node }}
+          onClick={() => clickInside()} // 利用事件冒泡设置clickInsideFlag
+        >
           { renderMenu(datas, index) }
         </ul>
       </Popper>
@@ -91,11 +99,15 @@ export default class SubMenu extends Component {
     const {
       datas,
       index,
-      renderMenu
+      renderMenu,
+      clickInside
     } = this.props
 
     return (
-      <ul className={classNames('hi-submenu__items', {'hi-submenu__items--hide': !isExpand && !isActive})}>
+      <ul
+        className={classNames('hi-submenu__items', {'hi-submenu__items--hide': !isExpand && !isActive})}
+        onClick={() => clickInside()} // 利用事件冒泡设置clickInsideFlag
+      >
         { renderMenu(datas, index) }
       </ul>
     )
@@ -121,7 +133,6 @@ export default class SubMenu extends Component {
     const cls = classNames('hi-menu-item', 'hi-submenu', `hi-menu--${level}`, {
       'hi-menu-item--disabled': disabled,
       'hi-menu-item--active': isActive,
-      // 'hi-submenu--sub': deepSubmenu,
       'hi-submenu--fat': fatMenu
     })
     let toggleIcon
