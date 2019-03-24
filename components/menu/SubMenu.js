@@ -128,6 +128,7 @@ export default class SubMenu extends Component {
       icon,
       mode,
       mini,
+      level,
       index,
       activeIndex,
       expandIndex,
@@ -136,8 +137,6 @@ export default class SubMenu extends Component {
     } = this.props
     const isExpand = this.checkExpand(activeIndex, expandIndex, index)
     const isActive = this.checkActive(activeIndex, index)
-    const level = index.split('-').length
-
     const deepSubmenu = index.split('-').length > 1
     const cls = classNames('hi-menu-item', 'hi-submenu', `hi-menu--${level}`, {
       'hi-menu-item--disabled': disabled,

@@ -242,7 +242,7 @@ class Menu extends Component {
           <ul className='hi-menu-fat__content'>
             {
               data.children.map((child, index) => {
-                return this.renderItem(child, parentIndex + '-' + groupIndex + '-' + index)
+                return this.renderItem(child, parentIndex + '-' + groupIndex + '-' + index, {level: 2})
               })
             }
           </ul>
@@ -264,6 +264,7 @@ class Menu extends Component {
 
     datas.forEach((data, index) => {
       const indexStr = parentIndex !== '' ? parentIndex + '-' + index : '' + index
+      const level = indexStr.split('-').length
 
       if (data.children) {
         items.push(
@@ -271,6 +272,7 @@ class Menu extends Component {
             onClick={this.onClickSubMenu.bind(this)}
             clickInside={this.clickInside.bind(this)}
             index={indexStr}
+            level={level}
             fatMenu={fatMenu}
             activeIndex={activeIndex}
             expandIndex={expandIndex}
@@ -285,7 +287,7 @@ class Menu extends Component {
           />
         )
       } else {
-        items.push(this.renderItem(data, indexStr))
+        items.push(this.renderItem(data, indexStr, {level}))
       }
     })
 
