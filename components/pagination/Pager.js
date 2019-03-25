@@ -1,40 +1,45 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 import Provider from '../context'
+
+function defaultItemRender (page, element) {
+  return (
+    <a href='javascript:void 0'>{element}</a>
+  )
+}
 
 const Pager = props => {
   const prefixCls = `${props.rootPrefixCls}__item`
-  let cls = `${prefixCls} ${prefixCls}-${props.page}`
-
-  if (props.active) {
-    cls = `${cls} ${prefixCls}--active`
-  }
-
-  if (props.className) {
-    cls = `${cls} ${props.className}`
-  }
-
+  let cls = classNames(prefixCls, {
+    [`${prefixCls}-${props.page}`]: typeof props.page === 'number',
+    [`${prefixCls}--active`]: props.active,
+    [`${prefixCls}--disabled`]: props.disabled,
+    [props.className]: !!props.className
+  })
   const handClick = () => {
-    props.onClick(props.page)
+    !props.disabled && props.onClick(props.page)
   }
-  const pageHref = props.pageLink ? `#page=${props.page}` : 'javascript: void(0)'
 
   return (
-    <li className={cls} onClick={handClick}>
+    <div className={cls} onClick={handClick}>
       {props.itemRender(
         props.page,
-        'page',
-        <a href={pageHref}>{props.page}</a>
+        props.children || props.page
       )}
-    </li>
+    </div>
   )
 }
 Pager.propTypes = {
-  page: PropTypes.number,
+  page: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   active: PropTypes.bool,
+  disabled: PropTypes.bool,
   className: PropTypes.string,
   rootPrefixCls: PropTypes.string,
   onClick: PropTypes.func
+}
+Pager.defaultProps = {
+  itemRender: defaultItemRender
 }
 
 export default Provider(Pager)

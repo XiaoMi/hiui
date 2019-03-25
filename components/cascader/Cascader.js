@@ -86,7 +86,10 @@ class Cascader extends Component {
   }
 
   clickOutside (e) {
-    if (ReactDOM.findDOMNode(this.inputContainer) && ReactDOM.findDOMNode(this.inputContainer).contains(e.target)) {
+    if (
+      (ReactDOM.findDOMNode(this.inputContainer) && ReactDOM.findDOMNode(this.inputContainer).contains(e.target)) ||
+      (ReactDOM.findDOMNode(this.menuNode) && ReactDOM.findDOMNode(this.menuNode).contains(e.target))
+    ) {
       return
     }
     this.hidePopper()
@@ -361,6 +364,7 @@ class Cascader extends Component {
           placement='top-bottom-start'
         >
           <Menu
+            ref={node => { this.menuNode = node }}
             value={cascaderValue}
             options={filterOptions || options}
             root={() => this}

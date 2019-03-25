@@ -1,0 +1,50 @@
+@import './component.scss';
+@import './prism.scss';
+@import './anchor.scss';
+@import './foot-nav.scss';
+
+.sidebar__item {
+  &:hover,
+  &--active {
+    .sidebar__item-icon {
+      span {
+        background-position-x: -16px;
+      }
+    }
+  }
+
+  &-icon {
+    span {
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+      vertical-align: middle;
+      background-image: url('../../../static/img/docs/icon_sider.png');
+      background-position-x: 0;
+      background-repeat: no-repeat;
+      background-size: 32px 96px;
+    }
+  }
+}
+
+.sider__icon-start {
+  background-position-y: 0;
+}
+.sider__icon-principle {
+  background-position-y: -16px;
+}
+.sider__icon-layout {
+  background-position-y: -32px;
+}
+.sider__icon-vision {
+  background-position-y: -48px;
+}
+.sider__icon-i18n {
+  background-position-y: -80px;
+}
+.sider__icon-changelog {
+  background-position-y: -18px;
+}
+.sider__icon-component {
+  background-position-y: -64px;
+}

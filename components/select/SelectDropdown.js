@@ -92,7 +92,7 @@ export default class SelectDropdown extends Component {
                     <li
                       className={classNames('hi-select__dropdown--item', {'is-active': isSelected, 'is-disabled': isDisabled, 'hi-select__dropdown--item-default': !item.children && !dropdownRender})}
                       onClick={e => this.onClickOption(e, item, index)}
-                      key={index}
+                      key={item.id}
                       data-focused={focusedIndex === index}
                       onMouseEnter={() => this.onMouseEnter(item, index)}
                     >
@@ -107,7 +107,7 @@ export default class SelectDropdown extends Component {
             {
               matched === 0 &&
               <li
-                className='hi-select__dropdown--item is-disabled'
+                className='hi-select__dropdown--item hi-select__dropdown-item--empty is-disabled'
                 onClick={e => e.stopPropagation()}
               >
                 { noFoundTip }

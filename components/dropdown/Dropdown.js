@@ -45,7 +45,7 @@ class Dropdown extends Component {
     const {trigger, type} = this.props
     if (type !== 'group') {
       if (trigger instanceof Array) {
-        trigger.map((en, index) => {
+        trigger.forEach((en, index) => {
           this.MENUTITLE.addEventListener(en, (e) => {
             this.triggerEvent(e)
           }, false)

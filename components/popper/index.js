@@ -49,39 +49,40 @@ export default class Popper extends Component {
       attachEle,
       topGap,
       leftGap,
-      width,
-      placement
+      width
     } = this.props
     const rect = attachEle.getBoundingClientRect()
     let top = rect.top + (document.documentElement.scrollTop || document.body.scrollTop)
     let left = rect.left + (document.documentElement.scrollLeft || document.body.scrollLeft)
     width = width === undefined ? rect.width : width
-    placement = this.getPlacement(rect)
+    let placement = this.getPlacement(rect)
 
     switch (placement) {
       case 'bottom':
         top = top + topGap + rect.height
-        left = left + rect.width / 2
+        left = left + leftGap + rect.width / 2
         break
       case 'bottom-start':
         top = top + topGap + rect.height
+        left = left + leftGap
         break
 
       case 'top':
         top = top - topGap
-        left = left + rect.width / 2
+        left = left + leftGap + rect.width / 2
         break
       case 'top-start':
         top = top - topGap
+        left = left + leftGap
         break
 
       case 'left':
-        top = top + rect.height / 2
+        top = top + topGap + rect.height / 2
         left = left + leftGap
         break
 
       case 'right':
-        top = top + rect.height / 2
+        top = top + topGap + rect.height / 2
         left = left + rect.width + leftGap
         break
     }

@@ -38,7 +38,7 @@ export const DashboardProgress = (props) => {
           className={`${prefix}__dashboard ${prefix}__dashboard--${status}`}
           d={pathString}
           strokeLinecap='round'
-          ref={(path) => { this.path = path }}
+          // ref={(path) => { this.path = path }}
           style={strokePathStyle}
         />
       </svg>
