@@ -1,7 +1,9 @@
 @import './variable';
 
 /* common */
-
+.header {
+  z-index: 1999;
+}
 .container {
   width: 1177px;
   margin: 0 auto;
