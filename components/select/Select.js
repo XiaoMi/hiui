@@ -266,18 +266,19 @@ class Select extends Component {
   }
 
   handleInputClick (e) {
-    this.selectInput.focus()
-    // if (e) {
-    //   e.stopPropagation()
-    // }
-
-    if (this.props.disabled) {
-      return
-    }
-
     let {
       dropdownShow
     } = this.state
+
+    if (dropdownShow) {
+      this.hideDropdown()
+      return
+    }
+
+    this.selectInput.focus()
+    if (this.props.disabled) {
+      return
+    }
 
     if (!dropdownShow) {
       this.showDropdown()

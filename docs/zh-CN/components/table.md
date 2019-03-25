@@ -1072,7 +1072,7 @@ constructor (props) {
 | 参数       | 说明   |  类型  | 可选值 | 默认值  |
 | --------   | -----  | ----  |  ----  | ----  |
 | size | 表格尺寸  | String |  large,small,normal  |  normal |
-| bordered | 表格尺寸  | Bollean | -  |  false |
+| bordered | 是否显示边框  | Bollean | -  |  false |
 | striped | 斑马纹 | Bollean | - | false | 
 | columns | 表格数据列对应信息  | array | - | - |
 | data | 表格数据  | array | - | - |

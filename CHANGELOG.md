@@ -13,6 +13,13 @@
 - 修改：为 HIUI 文档引入了新的 classic-theme
 - 其它一些问题修正
 
+## 1.3.5
+- 新增： `<Datepicker />` 组件可通过 placeholder 自定义占位符
+- 新增：`<Select />` 组件支持 JSONP 的 origin 配置
+- 新增：`<Table />` 组件功能
+  - 可通过 `size`属性指定表格的大小，值：large normal small
+  - 可通过 `bordered` 属性指定表格是否显示线框
+
 ## 1.3.0
 - 新增：`<Select />` 异步请求时增加 loading；
 - 修改：优化 `<Form />` 组件横排时的错误文案显示；
