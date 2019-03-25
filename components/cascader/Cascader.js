@@ -282,6 +282,10 @@ class Cascader extends Component {
   }
 
   handleClick (e) {
+    if (this.state.popperShow) {
+      this.hidePopper()
+      return
+    }
     // e.stopPropagation()
     if (!this.props.disabled) {
       this.showPopper()
