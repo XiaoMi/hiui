@@ -107,7 +107,6 @@ class Home extends React.Component {
             </div>
             <div className='intro fr'>
               <a className='active item' href=''>首页</a>
-              {/* <a href=''>规范设计</a> */}
               <a className='item' href={`#/${locale}/components`}>组件</a>
               <div className='item'>
                 <LocaleDropdown />

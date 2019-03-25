@@ -294,7 +294,7 @@ render () {
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |
 | url | 请求的url | string | - | - |
-| type | 请求方法 | string | get,post | get |
+| type | 请求方法 | string | get \| post \| jsonp | get |
 | data | post请求时的参数 | object | - | - |
 | key | 搜索关键字参数key | string | - | keyword |
 | keyword | autoload为true时的默认搜索关键词 | string | - | - |
