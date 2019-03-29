@@ -123,7 +123,6 @@ class Index extends React.Component {
     }])
   }
   componentDidUpdate () {
-    console.log('update')
     setComponentsNavs(this.componentNavs)
     setDesignNavs(this.designNavs)
   }
