@@ -79,7 +79,7 @@ class ItemDropdown extends Component {
           zIndex={1010}
           width='auto'
           leftGap={-18}
-          topGap={-1}
+          topGap={3}
         >
           <div className={classNames('hi-tabs-dropdown__items')}>
             {

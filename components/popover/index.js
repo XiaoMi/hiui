@@ -29,6 +29,8 @@ export default class Popover extends Component {
       showPopper: false
     }
     this.eventTarget = null
+    this.popperRef = React.createRef()
+    this.referenceRef = React.createRef()
   }
 
   showPopper () {
@@ -49,9 +51,9 @@ export default class Popover extends Component {
   }
 
   isInPopover () {
-    const popper = this.refs.popper
+    const popper = this.popperRef.current
     const bool = !this.element || this.element.contains(this.eventTarget) ||
-            !this.reference || this.reference.contains(this.eventTarget) ||
+            !this.referenceRef.current || this.referenceRef.current.contains(this.eventTarget) ||
             !popper || popper.contains(this.eventTarget)
     this.eventTarget = null
     return bool
@@ -61,12 +63,11 @@ export default class Popover extends Component {
     const { trigger } = this.props
 
     this.element = ReactDOM.findDOMNode(this)
-    this.reference = ReactDOM.findDOMNode(this.refs.reference)
-
-    if (this.reference === null) return
+    // this.reference = ReactDOM.findDOMNode(this.refs.reference)
+    if (this.referenceRef.current === null) return
 
     if (trigger === 'click') {
-      this.reference.addEventListener('click', () => {
+      this.referenceRef.current.addEventListener('click', () => {
         if (this.state.showPopper) {
           this.hidePopper()
         } else {
@@ -81,30 +82,30 @@ export default class Popover extends Component {
         this.hidePopper()
       })
     } else if (trigger === 'hover') {
-      this.reference.addEventListener('mouseenter', e => {
+      this.referenceRef.current.addEventListener('mouseenter', e => {
         this.eventTarget = e.target
         this.showPopper()
       })
-      this.reference.addEventListener('mouseleave', e => {
+      this.referenceRef.current.addEventListener('mouseleave', e => {
         this.delayHidePopper(e)
       })
     } else {
-      this.reference.addEventListener('focus', this.showPopper.bind(this))
-      this.reference.addEventListener('blur', this.hidePopper.bind(this))
+      this.referenceRef.current.addEventListener('focus', this.showPopper.bind(this))
+      this.referenceRef.current.addEventListener('blur', this.hidePopper.bind(this))
     }
   }
 
   componentDidUpdate () {
     const { trigger } = this.props
-    const popper = this.refs.popper
+    const popper = this.popperRef
 
-    if (popper && trigger === 'hover' && this.unbindHover) {
+    if (popper.current && trigger === 'hover' && this.unbindHover) {
       this.unbindHover = false
-      popper.addEventListener('mouseenter', e => {
+      popper.current.addEventListener('mouseenter', e => {
         this.eventTarget = e.target
         // this.showPopper()
       })
-      popper.addEventListener('mouseleave', e => {
+      popper.current.addEventListener('mouseleave', e => {
         this.delayHidePopper(e)
       })
     }
@@ -118,7 +119,7 @@ export default class Popover extends Component {
 
     return (
       <div className={classNames(className, 'hi-popover')} style={style} ref={node => { this.popoverContainer = node }}>
-        { React.cloneElement(React.Children.only(this.props.children), { ref: 'reference', tabIndex: '0' }) }
+        { React.cloneElement(React.Children.only(this.props.children), { ref: this.referenceRef, tabIndex: '0' }) }
 
         <Popper
           className='hi-popover__popper'
@@ -128,7 +129,7 @@ export default class Popover extends Component {
           zIndex={1040}
           width={width}
         >
-          <div ref='popper' className={classNames('hi-popover-base', `hi-popover-${placement}`)}>
+          <div ref={this.popperRef} className={classNames('hi-popover-base', `hi-popover-${placement}`)}>
             { title && <div className='hi-popover__title'>{title}</div> }
             <div className='hi-popover__content'>
               { content }

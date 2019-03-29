@@ -938,7 +938,7 @@ render() {
           onChange:(page,pre,size)=>{
             this.set(page)
           },
-          position : 'center' // 分页位置 - 默认右侧
+          position : 'right' // 分页位置 - 默认右侧
           
         }}
         />

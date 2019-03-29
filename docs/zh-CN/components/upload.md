@@ -120,7 +120,8 @@ render () {
 			headers={{name: 'mi'}}
 			onChange = {(file, fileList, response) => {
 				console.log('upload callback', file, fileList, response)
-			}}
+      }}
+      hasBorder={true}
 			param={{id:'uid',channel:'youpin'}}
 			name={'files[]'}
 			multiple={true}
@@ -289,6 +290,7 @@ render () {
 |type|上传类型，可取值：normal，drag，pictureCard，avatar，和photo|string|是|normal|
 |width, height|仅对avatar生效，头像上传的裁切框尺寸，最大450x450|number|否|200x200|
 |accept|接收上传的文件类型|string|否|''|
+|hasBorder| 是否显示虚线边框，仅支持type 为 photo 及 drag 设置 | Boolean | - | false |
 |buttonText|按钮文案|string|否|上传|
 |buttonIcon|按钮文案前面的图标|string|否|upload|
 |uploadAction|必选，上传的地址|string|是|无|

@@ -70,7 +70,7 @@
             console.log('on change', value)
           }} 
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -152,7 +152,7 @@
           }} 
           disabled={true}
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -234,7 +234,7 @@
             console.log('on change', value)
           }} 
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -315,7 +315,7 @@
           }} 
           changeOnSelect={true}
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -397,7 +397,7 @@
           }} 
           clearable={false}
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -484,7 +484,7 @@
             children: 'subGoods',
           }}
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -566,7 +566,7 @@
             console.log('on change', value)
           }} 
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -647,7 +647,7 @@
             console.log('on change', value)
           }} 
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
           displayRender={values => {
             return values.join(' > ')
           }}
@@ -775,7 +775,7 @@
           noFoundTip="未搜索到相关内容"
           searchable={true}
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -903,7 +903,7 @@
             console.log('on change', value)
           }} 
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
           onActiveItemChange={values=>{
             if(values[0] == 'mix') {
               setTimeout(()=>{

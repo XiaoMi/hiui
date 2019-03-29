@@ -40,7 +40,8 @@ class UploadDrag extends Upload {
       multiple,
       accept,
       disabled,
-      onRemove
+      onRemove,
+      hasBorder
     } = this.props
     const {
       overEvent,
@@ -49,7 +50,7 @@ class UploadDrag extends Upload {
 
     return (
       <div
-        className={classNames('hi-upload upload-drag', {'drop-over': overEvent && !disabled, 'hi-upload--disabled': disabled})}
+        className={classNames('hi-upload upload-drag', hasBorder && 'hasborder', {'drop-over': overEvent && !disabled, 'hi-upload--disabled': disabled})}
         onDragOver={e => this.dragoverFn(e)}
         onDragLeave={e => this.dragleaveFn(e)}
         onDrop={e => this.dropFn(e)}

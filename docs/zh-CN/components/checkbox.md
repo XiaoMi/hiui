@@ -107,7 +107,7 @@ render() {
         <br/>
         <p>多个选择框组成全选功能</p>
         <div>
-          <Checkbox all='two' onChange={this.onChange}> 全选</Checkbox>
+          <Checkbox all='two' onChange={this.onChange}>全选</Checkbox>
           <div><Checkbox name='two' text='手机'/></div>
           <div><Checkbox name='two' value='computer'>电脑</Checkbox></div>
           <div><Checkbox name='two' text='智能'/></div>
