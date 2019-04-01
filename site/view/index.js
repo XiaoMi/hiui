@@ -115,6 +115,7 @@ class Index extends React.Component {
       })
     })
     this.componentNavs = navs
+    setComponentsNavs(navs)
     return [].concat(siderDocuments, [{
       title: <span className='components-page'>{locales[locale]['misc']['components']}</span>,
       icon: icons[icons.length - 1],
@@ -154,6 +155,7 @@ class Index extends React.Component {
       })
     })
     this.designNavs = navs
+    setDesignNavs(this.designNavs)
     return [].concat(siderDocuments, components)
   }
   render () {

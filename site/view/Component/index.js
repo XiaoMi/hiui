@@ -15,14 +15,16 @@ class Component extends React.Component {
       topNav: 'docs'
     }
     this.hashChangeEvent = this.hashChangeEvent.bind(this)
+    this.contentRef = React.createRef()
   }
 
   componentDidMount () {
     window.scrollTo(0, 0)
     this.getCurrentPage(() => {
-      this.getAnchors()
       this.setState({
         cComponent: this.getComponent(this.state.page)
+      }, () => {
+        this.getAnchors()
       })
     })
 
@@ -40,9 +42,8 @@ class Component extends React.Component {
   }
 
   getAnchors () {
-    const anchorsDOM = document.getElementById('markdown-content').getElementsByTagName('h3')
+    const anchorsDOM = document.querySelectorAll('#markdown-content h3')
     const anchorsDOMList = [].slice.call(anchorsDOM)
-
     const anchors = anchorsDOMList.map((v, i) => {
       const id = 'component-anchors-' + i
       anchorsDOM[i].id = id
@@ -72,6 +73,7 @@ class Component extends React.Component {
     let footNavs = []
     let page = this.props.match.path.split('/')[2]
     footNavs = this.props[page] || {}
+
     this.setState({footNavs, topNav: page}, fn)
   }
 
