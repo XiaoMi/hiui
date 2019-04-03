@@ -311,8 +311,26 @@ render () {
 ```
 :::
 
+### 日期/时间段选择
 
-### 日期 + 时间（范围选择）
+:::demo
+
+日期 + 时间
+
+```js
+render () {
+  return (
+    <DatePicker
+      type="timeperiod"
+      value={new Date()}
+      onChange={(d) => {console.log('sec', d)}}
+    />
+  )
+}
+```
+:::
+
+### 日期/时间（范围选择）
 
 :::demo
 

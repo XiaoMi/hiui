@@ -20,7 +20,6 @@ class TimePicker extends BasePicker {
     disabled: false
   }
   initPanel (state, props) {
-    console.log(11, state.date)
     return (
       props.type === 'time'
         ? <TimePanel

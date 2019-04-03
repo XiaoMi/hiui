@@ -22,7 +22,7 @@ render() {
           value={new Date()}
           type="timerange"
           format="HH:mm"
-          onChange={date => console.log('时间', date)}
+          onChange={date => console.log('时间范围', date)}
         />
       </div>
     </div>

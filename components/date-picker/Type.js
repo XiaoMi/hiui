@@ -17,6 +17,9 @@ export default {
   WeekRange: 'weekrange',
   // 时间范围选择
   TimeRange: 'timerange',
+  // 时间段选择
+  TimePeriod: 'timeperiod',
   // 日期时间范围选择
   DateTimeRange: 'datetimerange'
+
 }

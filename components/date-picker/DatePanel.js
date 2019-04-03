@@ -5,16 +5,17 @@ import TimePanel from './TimePanel'
 import Icon from '../icon'
 import classNames from 'classnames'
 import Provider from '../context'
+import TimePeriodPanel from './TimePeriodPanel'
+import {dateFormat, parse, addHours} from './dateUtil'
 
 class DatePanel extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      date: new Date(props.date),
+      date: props.date,
       currentView: props.type,
       yearData: [],
-      monthData: [],
-      tempDate: new Date(props.date)
+      monthData: []
     }
   }
   componentWillReceiveProps (nextProps) {
@@ -182,15 +183,19 @@ class DatePanel extends Component {
     }
   }
   onDatePick (date) {
-    const {showTime} = this.props
+    const {type} = this.props
     const {hours, minutes, seconds} = deconstructDate(this.state.date)
-    date.setHours(hours, minutes, seconds)
-    if (showTime) {
-      // 又改成了实时生效
-      this.setState({date, currentView: 'time'}, () => { this.props.onPick(date, true) })
+    if (type === 'timeperiod') {
+      this.props.onPick({startDate: date, endDate: addHours(this.state.date, 4)}, true)
     } else {
-      this.props.onPick(date)
+      date.setHours(hours, minutes, seconds)
+      this.props.onPick(date, true)
     }
+  }
+  onTimePeriodPick (periodS, periodE) {
+    const currentDate = dateFormat(this.state.date, 'YYYY-MM-DD')
+    parse(`${currentDate} ${periodS}`)
+    this.props.onPick({startDate: parse(`${currentDate} ${periodS}`), endDate: parse(`${currentDate} ${periodE}`)}, true)
   }
   onTimePick (date, bol) {
     this.setState({
@@ -216,6 +221,7 @@ class DatePanel extends Component {
     let component = null
     switch (currentView) {
       case 'date':
+      case 'timeperiod':
         component = (<Calender
           date={date}
           weekOffset={weekOffset}
@@ -243,17 +249,6 @@ class DatePanel extends Component {
           onPick={this.monthPick.bind(this)}
         />)
         break
-      case 'time':
-        component = (
-          <TimePanel
-            {...this.props}
-            onPick={this.onTimePick.bind(this)}
-            date={date}
-            timeConfirm={this.timeConfirm.bind(this)}
-            timeCancel={this.timeCancel.bind(this)}
-          />
-        )
-        break
       default:
         component = (<Calender
           {...this.props}
@@ -266,45 +261,25 @@ class DatePanel extends Component {
     }
     return component
   }
-  renderTimeHeader () {
-    const {
-      localeDatas
-    } = this.props
 
-    return (
-      <div className='hi-datepicker__time-header'>
-        <span onClick={() => this.setState({currentView: 'date'})} className={this.state.currentView === 'date' ? 'hi-datepicker__time-header--active' : ''}>{localeDatas.datePicker.dateChoose}</span>
-        <em />
-        <span onClick={() => this.setState({currentView: 'time'})} className={this.state.currentView === 'time' ? 'hi-datepicker__time-header--active' : ''}>{localeDatas.datePicker.timeChoose}</span>
-      </div>
-    )
-  }
-  renderTimeFooter () {
-    return (
-      <div
-        className='hi-datepicker__time-footer'
-        onClick={() => this.props.timeConfirm(this.state.date)}
-      >
-        ok
-      </div>
-    )
-  }
   render () {
     const {date, currentView} = this.state
-    const {theme} = this.props
+    const {theme, showTime, type} = this.props
     const _c = classNames(
       'hi-datepicker',
       theme && 'theme__' + theme
+    )
+    const bodyCls = classNames(
+      'hi-datepicker__body',
+      showTime && 'hi-datepicker__body--hastime',
+      type === 'timeperiod' && 'hi-datepicker__body--period'
     )
     return (
       <div
         style={this.props.style}
         className={_c}
       >
-        <div className='hi-datepicker__body'>
-          {
-            this.props.showTime && this.renderTimeHeader()
-          }
+        <div className={bodyCls}>
           <div className='hi-datepicker__panel hi-datepicker__panel--left'>
             {currentView !== 'time' && this.renderHeader(currentView, date)}
             <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${currentView}`}>
@@ -312,7 +287,21 @@ class DatePanel extends Component {
             </div>
           </div>
           {
-            this.props.showTime && this.renderTimeFooter()
+            showTime && <TimePanel
+              {...this.props}
+              onPick={this.onTimePick.bind(this)}
+              date={date}
+              timeConfirm={this.timeConfirm.bind(this)}
+              timeCancel={this.timeCancel.bind(this)}
+            />
+          }
+          {
+            type === 'timeperiod' && (
+              <TimePeriodPanel
+                onTimePeriodPick={this.onTimePeriodPick.bind(this)}
+                date={date}
+              />
+            )
           }
         </div>
       </div>

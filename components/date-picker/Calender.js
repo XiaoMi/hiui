@@ -11,8 +11,6 @@ import {
   isSameDay,
   compareAsc,
   addMonths,
-  startOfDay,
-  endOfDay,
   isToday
 } from './dateUtil'
 import {DAY_MILLISECONDS} from './constants'
@@ -78,7 +76,10 @@ class Calender extends Component {
             col.type = 'next'
           }
         }
-        if (isToday(new Date(time))) {
+        if (isSameDay(_date, time)) {
+          col.type = 'current'
+        }
+        if (isToday(time)) {
           col.type = 'today'
         }
         if (type === 'daterange' || type === 'weekrange') {
@@ -158,10 +159,10 @@ class Calender extends Component {
       if (range.selecting) {
         if (range.startDate > newDate) {
           range.selecting = false
-          onPick(startOfDay(newDate), endOfDay(range.startDate))
+          onPick(newDate, range.startDate)
         } else {
           range.selecting = false
-          onPick(startOfDay(range.startDate), endOfDay(newDate))
+          onPick(range.startDate, newDate)
         }
       } else {
         range.selecting = true
@@ -201,6 +202,9 @@ class Calender extends Component {
       case 'today':
         this.props.type !== 'week' && _class.push('today')
         break
+      case 'current':
+        _class.push('current')
+        break
       default:
         _class.push(td.type)
         break
@@ -224,7 +228,6 @@ class Calender extends Component {
     const {type} = this.props
     if ((type === 'week' || type === 'weekrange') && this.weekNum !== num) {
       this.weekNum = num
-      console.log(num, this.props.type, this.weekNum)
     }
   }
   render () {

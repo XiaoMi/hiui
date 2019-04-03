@@ -2,10 +2,11 @@ import React, {Component} from 'react'
 import Calender from './Calender'
 import {deconstructDate, nextMonth} from './util'
 import {DAY_MILLISECONDS} from './constants'
-import TimePanel from './TimePanel'
 import Icon from '../icon'
 import classNames from 'classnames'
 import Provider from '../context'
+import {dateFormat} from './dateUtil'
+import TimeRangePanel from './TimeRangePanel'
 
 class DatePanel extends Component {
   constructor (props) {
@@ -25,6 +26,7 @@ class DatePanel extends Component {
       endDate,
       selecting: false
     }
+    this.maskRef = React.createRef()
     this.state = {
       date: leftDate,
       currentView: props.type || 'date',
@@ -35,8 +37,7 @@ class DatePanel extends Component {
       range,
       leftDate,
       rightDate,
-      leftView: props.type,
-      rightView: props.type,
+      showMask: false,
       disableArrow: {
         month: false,
         year: false
@@ -205,7 +206,7 @@ class DatePanel extends Component {
       range
     })
     if (endDate) {
-      onPick(range)
+      onPick(range, true)
     }
     // if (endDate && !showTime) {
     //   onPick(range)
@@ -275,107 +276,114 @@ class DatePanel extends Component {
   timeCancel () {
 
   }
-  renderTimeHeader (flag) {
-    const {
-      localeDatas
-    } = this.props
 
+  getRangeDateStr () {
+    let {leftDate, rightDate, showMask} = this.state
+    const format = 'HH:mm:ss'
+    const cls = classNames(
+      showMask && 'hi-datepicker__time-text'
+    )
     return (
-      <div className='hi-datepicker__time-header'>
-        <span onClick={() => this.setState({[flag === 'left' ? 'leftView' : 'rightView']: 'date'})}>{localeDatas.datePicker.dateChoose}</span>
-        <em />
-        <span onClick={() => this.setState({[flag === 'left' ? 'leftView' : 'rightView']: 'time'})}>{localeDatas.datePicker.timeChoose}</span>
-      </div>
+      <span className={cls}>
+        {`${dateFormat(leftDate, format)} - ${dateFormat(rightDate, format)}`}
+      </span>
     )
   }
-  renderTimeFooter () {
-    return (
-      <div
-        className='hi-datepicker__time-footer'
-        onClick={() => {
-          this.props.timeConfirm(this.state.range)
-          // this.props.onPick(this.state.date)
-        }}
-      >
-        ok
-      </div>
-    )
+  selectTimeEvent () {
+    this.setState({
+      showMask: !this.state.showMask
+    })
   }
   render () {
-    let {minDate, maxDate, currentView, range, leftDate, rightDate, leftView, rightView} = this.state
+    let {minDate, maxDate, currentView, range, leftDate, rightDate, showMask} = this.state
     // const rightDate = nextMonth(leftDate)
-    const {shortcuts, theme} = this.props
+    const {shortcuts, theme, showTime, date} = this.props
     const _c = classNames(
       'hi-datepicker',
       theme && 'theme__' + theme
+    )
+    const bodyCls = classNames(
+      'hi-datepicker__body',
+      'hi-datepicker__body--range',
+      shortcuts && 'hi-datepicker__body--shortcuts'
     )
     return (
       <div
         style={this.props.style}
         className={_c}
       >
-        {
-          shortcuts && this.renderShortcut(shortcuts)
-        }
-        <div className='hi-datepicker__body hi-datepicker__body--range'>
+        <div className={bodyCls}>
+          {
+            shortcuts && this.renderShortcut(shortcuts)
+          }
           <div className='hi-datepicker__panel hi-datepicker__panel--left'>
             {
-              this.props.showTime && this.renderTimeHeader('left')
-            }
-            {
-              leftView !== 'time' && this.renderHeader(currentView, leftDate, 'left')
+              this.renderHeader(currentView, leftDate, 'left')
             }
             <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${currentView}`}>
-              {
-                leftView === 'time' ? <TimePanel
-                  {...this.props}
-                  onPick={this.onTimePick.bind(this, 'leftDate')}
-                  date={leftDate}
-                  timeConfirm={this.timeConfirm.bind(this)}
-                  timeCancel={this.timeCancel.bind(this)}
-                /> : <Calender
-                  date={leftDate}
-                  range={range}
-                  type={currentView}
-                  minDate={minDate}
-                  maxDate={maxDate}
-                  onPick={this.pick.bind(this)}
-                  mouseMove={this.onMouseMoveHandler.bind(this)}
-                />
-              }
+              <Calender
+                date={leftDate}
+                range={range}
+                type={currentView}
+                minDate={minDate}
+                maxDate={maxDate}
+                onPick={this.pick.bind(this)}
+                mouseMove={this.onMouseMoveHandler.bind(this)}
+              />
             </div>
           </div>
           <div className='hi-datepicker__panel hi-datepicker__panel--right'>
             {
-              this.props.showTime && this.renderTimeHeader('right')
-            }
-            {
-              rightView !== 'time' && this.renderHeader(currentView, rightDate, 'right')
+              this.renderHeader(currentView, rightDate, 'right')
             }
             <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${currentView}`}>
-              {
-                rightView === 'time' ? <TimePanel
-                  {...this.props}
-                  onPick={this.onTimePick.bind(this, 'rightDate')}
-                  date={rightDate}
-                  timeConfirm={this.timeConfirm.bind(this)}
-                  timeCancel={this.timeCancel.bind(this)}
-                /> : <Calender
-                  date={rightDate}
-                  range={range}
-                  minDate={minDate}
-                  maxDate={maxDate}
-                  type={currentView}
-                  onPick={this.pick.bind(this)}
-                  mouseMove={this.onMouseMoveHandler.bind(this)}
-                />
-              }
+              <Calender
+                date={rightDate}
+                range={range}
+                minDate={minDate}
+                maxDate={maxDate}
+                type={currentView}
+                onPick={this.pick.bind(this)}
+                mouseMove={this.onMouseMoveHandler.bind(this)}
+              />
             </div>
           </div>
-          {
-            this.props.showTime && this.renderTimeFooter()
-          }
         </div>
+        {
+          showTime && (
+            <div
+              className='hi-datepicker__footer'
+              onClick={this.selectTimeEvent.bind(this)}
+            >
+              {this.getRangeDateStr()}
+            </div>
+          )
+        }
+        {
+          showMask && (
+            <div className='hi-datepicker__mask' ref={this.maskRef} onClick={() => { this.setState({showMask: false}) }} />
+          )
+        }
+        {
+          showMask && (
+            <TimeRangePanel
+              {...this.props}
+              style={{
+                position: 'absolute',
+                top: 5,
+                left: 89
+              }}
+              date={date}
+              onPick={(d, r) => {
+                this.setState({
+                  leftDate: d.startDate,
+                  rightDate: d.endDate
+                })
+                this.props.onPick(d, r)
+              }}
+            />
+          )
+        }
       </div>
     )
   }

@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
 import {startOfDay, endOfDay, parse, startOfWeek, endOfWeek, dateFormat} from './dateUtil'
+import { addHours } from 'date-fns'
 class BasePicker extends Component {
   inputRoot = null
   input = null
@@ -18,8 +19,8 @@ class BasePicker extends Component {
       style: {},
       date: null,
       isFocus: false,
-      text: '',
-      rText: '',
+      // input 框内的显示的时间内容
+      texts: ['', ''],
       placeholder: '',
       format: ''
     }
@@ -60,8 +61,6 @@ class BasePicker extends Component {
   _parseProps (props, callback) {
     let {value, showTime, type, format, localeDatas} = props
     format = format || FORMATS[type]
-    // let text = formatterDate(type, value, format, showTime)
-    // let rText = text
     let date = new Date() // 当前时间
     let noText = false
     /**
@@ -81,17 +80,19 @@ class BasePicker extends Component {
       date = value
     }
 
-    if (type.indexOf('range') !== -1) {
+    if (type.indexOf('range') !== -1 || type === 'timeperiod') {
       if (value instanceof Date || !value) {
-        date = {startDate: startOfDay(date), endDate: endOfDay(date)}
+        // 如果为时间段选择，则取默认的第一个范围
+        date = {startDate: startOfDay(date), endDate: type === 'timeperiod' ? addHours(startOfDay(date), 4) : endOfDay(date)}
       }
       if (value && value.start && value.end) {
         date = {startDate: value.start, endDate: value.end}
       }
     }
+    const leftText = noText ? '' : formatterDate(type, date.startDate || date, format, showTime, localeDatas)
+    const rightText = noText ? '' : formatterDate(type, date.endDate || date, format, showTime, localeDatas)
     this.setState({
-      text: noText ? '' : formatterDate(type, date.startDate || date, format, showTime, localeDatas),
-      rText: noText ? '' : formatterDate(type, date.endDate || date, format, showTime, localeDatas),
+      texts: [leftText, rightText],
       date,
       placeholder: localeDatas.datePicker.placeholders[props.type] || localeDatas.datePicker.placeholder,
       format
@@ -127,7 +128,6 @@ class BasePicker extends Component {
       _top = top - _h + _st
     }
     this.setState({
-      // value: this.props.placeholder ? '' : formatterDate(type, date, this.state.format, showTime),
       style: {
         position: 'absolute',
         left: left,
@@ -143,8 +143,7 @@ class BasePicker extends Component {
     const {format} = this.state
     this.setState({
       date,
-      text: formatterDate(type, date.startDate || date, format, showTime, localeDatas),
-      rText: date.endDate && formatterDate(type, date.endDate, format, showTime, localeDatas),
+      texts: [formatterDate(type, date.startDate || date, format, showTime, localeDatas), formatterDate(type, date.endDate, format, showTime, localeDatas)],
       showPanel,
       isFocus: false
     }, () => {
@@ -166,6 +165,8 @@ class BasePicker extends Component {
       if (startDate && endDate) {
         if (type === 'weekrange') {
           onChange({start: startOfWeek(startDate, _weekOffset), end: endOfWeek(endDate, _weekOffset)})
+        } else if (type === 'timerange' || type === 'timeperiod') {
+          onChange({start: startDate, end: endDate})
         } else {
           onChange({start: startOfDay(startDate), end: endOfDay(endDate)})
         }
@@ -180,8 +181,7 @@ class BasePicker extends Component {
     onlyTime && (format = FORMATS['time'])
     this.setState({
       date: date,
-      text: formatterDate(type, date.startDate || date, format, showTime, localeDatas),
-      rText: date.endDate && formatterDate(type, date.endDate, format, showTime, localeDatas),
+      texts: [formatterDate(type, date.startDate || date, format, showTime, localeDatas), formatterDate(type, date.endDate, format, showTime, localeDatas)],
       showPanel: false,
       isFocus: false
     })
@@ -213,8 +213,7 @@ class BasePicker extends Component {
     const tar = e.target
     if (tar.className.indexOf('clear') !== -1) {
       this.setState({
-        text: '',
-        rText: '',
+        texts: ['', ''],
         showPanel: false
       })
       return false
@@ -254,7 +253,7 @@ class BasePicker extends Component {
     if (onChange) {
       onChange(null)
     }
-    this.setState({text: '', isFocus: false})
+    this.setState({texts: ['', ''], isFocus: false})
   }
   _icon () {
     const {isFocus} = this.state
@@ -283,25 +282,27 @@ class BasePicker extends Component {
     )
     return (
       <div className={_cls}>
-        {this._input(this.state.text, 'input')}
+        {this._input(this.state.texts[0], 'input')}
         <span>{localeDatas.datePicker.to}</span>
-        {this._input(this.state.rText, 'rInput')}
+        {this._input(this.state.texts[1], 'rInput')}
         {this._icon()}
       </div>
     )
   }
   renderNormalInput () {
     const {
-      disabled
+      disabled,
+      showTime
     } = this.props
     const _cls = classNames(
       'hi-datepicker__input',
       'hi-datepicker__input--normal',
-      disabled && 'hi-datepicker__input--disabled'
+      disabled && 'hi-datepicker__input--disabled',
+      showTime && 'hi-datepicker__input--middle'
     )
     return (
       <div className={_cls}>
-        {this._input(this.state.text, 'input')}
+        {this._input(this.state.texts[0], 'input')}
         {this._icon()}
       </div>
     )
@@ -311,7 +312,7 @@ class BasePicker extends Component {
     return (
       <span ref={el => { this.inputRoot = el }} className='hi-datepicker__input-root'>
         {
-          type.indexOf('range') !== -1 ? this.renderRangeInput() : this.renderNormalInput()
+          (type.indexOf('range') !== -1 || type === 'timeperiod') ? this.renderRangeInput() : this.renderNormalInput()
         }
         {
           this.state.showPanel ? (
