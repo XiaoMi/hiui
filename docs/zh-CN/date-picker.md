@@ -19,70 +19,12 @@ constructor() {
 render () {
   return (
     <div style={{display:'flex', flexWrap: 'wrap'}}>
-      <div>
-        <p>Date 实例:</p>
-        <DatePicker
-          value={new Date}
-          onChange={(d) => {
-            console.log('value 为 Date 实例', DatePicker.format(d, 'YYYY-MM-DD E'))
-          }}
-        />
-      </div>
-      
-      <div>
-        <p>毫秒值(number):</p>
-        <DatePicker
-          value={1541755800052}
-          onChange={(d) => {
-            console.log(' value 为 Number(毫秒数)', DatePicker.format(d, 'YYYY-MM-DD E'))
-          }}
-        />
-      </div>
-      <div>
-        <p>时间字符串:</p>
-         <DatePicker
-          value='2018-10-11'
-          onChange={(d) => {
-            console.log('value 为 时间字符串', DatePicker.format(d, 'YYYY-MM-DD E'))
-          }}
-        />
-      </div>
-      <div>
-        <p>未传入 value:</p>
-        <DatePicker
-          format="YYYY-MM-DD HH:mm:SS"
-          onChange={(d) => {
-            console.log('没有 value 属性', DatePicker.format(d, 'YYYY-MM-DD E'))
-          }}
-        />
-      </div>
-      <div>
-        <p>null:</p>
-        <DatePicker
-          value={null}
-          onChange={(d) => {
-            console.log('value 为 Null', DatePicker.format(d, 'YYYY-MM-DD E'))
-          }}
-        />
-      </div>
-      <div>
-        <p>undefined:</p>
-        <DatePicker
-          value={undefined}
-          onChange={(d) => {
-            console.log('value 为 undefined', DatePicker.format(d, 'YYYY-MM-DD E'))
-          }}
-        />
-      </div>
-      <div>
-        <p>空字符串:</p>
-        <DatePicker
-          value=''
-          onChange={(d) => {
-            console.log('value 为 空字符串', DatePicker.format(d, 'YYYY-MM-DD E'))
-          }}
-        />
-      </div>
+      <DatePicker
+        value={new Date}
+        onChange={(d) => {
+          console.log('value 为 Date 实例', DatePicker.format(d, 'YYYY-MM-DD E'))
+        }}
+      />
     </div>
   )
 }
@@ -90,7 +32,7 @@ render () {
 :::
 
 
-### 禁用模式（全部禁用）
+### 禁用模式
 
 :::demo
 
@@ -410,8 +352,8 @@ render () {
 
 | 参数       | 说明   |  类型  | 可选值 |默认值  |
 | --------   | -----  | ----  |    ----  |   ----  |
-| type | 选择器类型  | String   | date 普通日期 <br/> daterange 日期范围<br/> year 年份<br/>  month 月份<br/> week 周<br/> weekrange 周范围 |  date |
-| value |  默认显示的日期 | Date/String/Number/Object/Undefined/Null | -- | null |
+| type | 选择器类型  | String   | date 普通日期 <br/> daterange 日期范围<br/> year 年份<br/>  month 月份<br/> week 周<br/> weekrange 周范围 <br/> timeperiod 时间段（1.5新增） |  date |
+| value |  默认显示的日期 | Date\|String\|Number\|<br/>Object\|Undefined\|Null | -- | null |
 | minDate | 最小日期 | Date | null | null |
 | maxDate | 最大日期 | Date | null | null |
 | disabled | 是否禁用输入框 | Boolean | true false | false |

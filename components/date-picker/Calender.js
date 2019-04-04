@@ -56,6 +56,10 @@ class Calender extends Component {
         let col = row[j] || (row[j] = {type: 'normal', range: false, rangeStart: false, rangeEnd: false})
         col.type = 'normal'
         const time = _time + DAY_MILLISECONDS * (i * 7 + j) // 当前日期的毫秒数
+        if (range && (isSameDay(range.startDate, time) || isSameDay(range.endDate, time))) {
+          console.log(_date, time, range)
+          col.type = 'current'
+        }
         if (i === 0) { // 处理第一行的日期数据
           if (j >= firstDayWeek) { // 本月
             col.text = ++count
@@ -76,9 +80,11 @@ class Calender extends Component {
             col.type = 'next'
           }
         }
-        if (isSameDay(_date, time)) {
-          col.type = 'current'
-        }
+
+        // if (isSameDay(_date, time)) {
+        //   console.log(_date, time, range)
+        //   col.type = 'current'
+        // }
         if (isToday(time)) {
           col.type = 'today'
         }

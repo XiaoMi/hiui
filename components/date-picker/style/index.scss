@@ -300,6 +300,16 @@ $basic-color: #4284f5 !default;
         width: 48px;
       }
     }
+
+    &--week {
+      .hi-datepicker__row {
+        &:hover {
+          .hi-datepicker__content {
+            background: rgba(66, 132, 245, 0.1);
+          }
+        }
+      }
+    }
   }
 
   &__calender {

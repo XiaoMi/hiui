@@ -83,7 +83,7 @@ class DatePanel extends Component {
     )
   }
   getYearOrMonthData (val, type) {
-    const start = type === 'year' ? val - 6 : 1
+    const start = type === 'year' ? val - 4 : 1
     let trs = [[], [], [], []]
     let num = 0
     for (let i = 0; i < 4; i++) {
