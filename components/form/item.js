@@ -31,7 +31,7 @@ class FormItem extends Component {
   }
 
   componentWillUnmount () {
-    this.parent.removeField(this)
+    this.parent.removeField(this.props.prop)
   }
 
   valueInit () {
