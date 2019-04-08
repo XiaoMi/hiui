@@ -1,7 +1,6 @@
-## Tree控件
+## Tree 控件
 
 树形菜单
-
 
 ### 普通用法
 
@@ -18,7 +17,7 @@ constructor(props) {
         children: [
           { id: 2, title: '技术',
             children: [
-              { id: 3, title: '后端', onClick: data => {console.log('后端：', data)} }, 
+              { id: 3, title: '后端', onClick: data => {console.log('后端：', data)} },
               { id: 4, title: '运维' },
               { id: 5, title: '前端' }
             ]
@@ -30,7 +29,7 @@ constructor(props) {
         children: [
           { id: 22, title: <a>技术</a>,
             children: [
-              { id: 33, title: '后端' }, 
+              { id: 33, title: '后端' },
               { id: 44, title: '运维' },
               { id: 55, title: '前端' }
             ]
@@ -71,8 +70,8 @@ render() {
   )
 }
 ```
-:::
 
+:::
 
 ### checkbox
 
@@ -88,7 +87,7 @@ constructor(props) {
       children: [
         { id: 2, title: '技术',
           children: [
-            { id: 3, title: '后端',disabled:true }, 
+            { id: 3, title: '后端',disabled:true },
             { id: 4, title: '运维' },
             { id: 5, title: '前端' }
           ]
@@ -100,7 +99,7 @@ constructor(props) {
       children: [
         { id: 22, title: '技术2', expand: true,
           children: [
-            { id: 33, title: '后端2' }, 
+            { id: 33, title: '后端2' },
             { id: 44, title: '运维2' },
             { id: 55, title: '前端2' }
           ]
@@ -136,46 +135,44 @@ render() {
   )
 }
 ```
-:::
 
+:::
 
 ### Tree Attributes
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| ------- | ------- | ------- | ------- | ------- |
-| data | 展示数据 | Array | 参见 Tree Attributes-data | - |
-| checkable | 节点前添加 Checkbox 复选框 | Boolean | false | - |
-| options | 配置选项 | Object | 参见 Tree Attributes-options | - |
-| defaultExpandAll | 是否默认展开所有树节点 | Boolean | - | false |
-| checkedKeys | 默认选中的checkbox | Array | - | - |
-| openIcon | 表示展开的图标 | String | Icon 图标名称 | - |
-| closeIcon | 表示闭合的图标 | String | Icon 图标名称 | - |
-| style | 组件整体样式 | Object | - | - |
-| highlightable | 高亮 | Boolean
-| withLine | 是否显示连接线 | Boolean | - | false |
+| 参数             | 说明                       | 类型    | 可选值                       | 默认值 |
+| ---------------- | -------------------------- | ------- | ---------------------------- | ------ |
+| data             | 展示数据                   | Array   | 参见 Tree Attributes-data    | -      |
+| checkable        | 节点前添加 Checkbox 复选框 | Boolean | false                        | -      |
+| options          | 配置选项                   | Object  | 参见 Tree Attributes-options | -      |
+| defaultExpandAll | 是否默认展开所有树节点     | Boolean | -                            | false  |
+| checkedKeys      | 默认选中的 checkbox        | Array   | -                            | -      |
+| openIcon         | 表示展开的图标             | String  | Icon 图标名称                | -      |
+| closeIcon        | 表示闭合的图标             | String  | Icon 图标名称                | -      |
+| style            | 组件整体样式               | Object  | -                            | -      |
+| highlightable    | 高亮                       | Boolean |
+| withLine         | 是否显示连接线             | Boolean | -                            | false  |
 
 ### Tree Attributes-data
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| ------- | ------- | ------- | ------- | ------- |
-| expand | 默认是否展开子菜单（优先级高于defaultExpandAll） | Blooean | - | false |
-| onClick | 点击每项时触发的事件 | Function | - | - |
-| onNodeClick | 点击每项时触发，onClick作用具体绑定的项，onNodeClick作用于所以项 | Function | - | - |
-| style | 单个节点样式 | Object | - | - |
+| 参数        | 说明                                                               | 类型     | 可选值 | 默认值 |
+| ----------- | ------------------------------------------------------------------ | -------- | ------ | ------ |
+| expand      | 默认是否展开子菜单（优先级高于 defaultExpandAll）                  | Blooean  | -      | false  |
+| onClick     | 点击每项时触发的事件                                               | Function | -      | -      |
+| onNodeClick | 点击每项时触发，onClick 作用具体绑定的项，onNodeClick 作用于所以项 | Function | -      | -      |
+| style       | 单个节点样式                                                       | Object   | -      | -      |
 
 ### Tree Attributes-options
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| ----------| ------- | ------- | ------- | ------- |
-| title | 指定节点标签为节点对象的某个属性值 | String | - | title |
-| children | 指定子树为节点对象的某个属性值 | String | - | children |
+| 参数     | 说明                               | 类型   | 可选值 | 默认值   |
+| -------- | ---------------------------------- | ------ | ------ | -------- |
+| title    | 指定节点标签为节点对象的某个属性值 | String | -      | title    |
+| children | 指定子树为节点对象的某个属性值     | String | -      | children |
 
 ### Tree Events
 
-| 参数 | 说明 | 回调参数 |
-| -------- | ----- | ---- |
-| onChange | 改变复选框状态时触发 | checkedArr, title, isChecked  |
-| onNodeToggle | 节点被点击(展开/收起)时触发 | (data: Obejct, isExpanded: Boolean) |
-| onCheckChange | 节点选中项 | checkedArr, title, isChecked |
-
-
+| 参数          | 说明                        | 回调参数                            |
+| ------------- | --------------------------- | ----------------------------------- |
+| onChange      | 改变复选框状态时触发        | checkedArr, title, isChecked        |
+| onNodeToggle  | 节点被点击(展开/收起)时触发 | (data: Obejct, isExpanded: Boolean) |
+| onCheckChange | 节点选中项                  | checkedArr, title, isChecked        |

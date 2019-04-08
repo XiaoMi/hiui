@@ -4,27 +4,21 @@ import PropTypes from 'prop-types'
 // import Checkbox from '../checkbox/index'
 import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
-import {
-  calcDropPosition,
-  deepClone,
-  getChildren,
-  getDisabled,
-  getAll
-} from './util'
+import { calcDropPosition, deepClone, getChildren, getDisabled, getAll } from './util'
 
 import './style/index'
 const dealData = (data, tempData = {}, parent = null) => {
   if (data.length === 0) {
     return data
   }
-  data.map((item) => {
-    tempData[item.id] = {...item}
+  data.map(item => {
+    tempData[item.id] = { ...item }
     if (parent) {
       tempData[item.id].parent = parent
     }
     if (item.children && item.children.length > 0) {
       const tempArr = []
-      item.children.map((i) => {
+      item.children.map(i => {
         tempArr.push(i.id)
       })
       tempData[item.id].children = tempArr
@@ -114,15 +108,10 @@ export default class Tree extends Component {
   }
 
   onCheckChange (checked, item) {
-    const {
-      onChange,
-      checkedKeys
-    } = this.props
+    const { onChange, checkedKeys } = this.props
     let checkedArr = checkedKeys
 
-    let {
-      all
-    } = this.state
+    let { all } = this.state
     let semiChecked = all.filter(item => item.semi).map(item => item.id)
     let disabledKeys = all.filter(item => item.disabled).map(item => item.id)
     let myself = all.find(a => a.id === item.id)
@@ -188,7 +177,22 @@ export default class Tree extends Component {
       } else {
         semiChecked = semiChecked.filter(s => s !== p)
       }
-      console.log('chedked', checked, 'child', child, 'checkedkeys', checkedArr, 'child.length', child.length, 'title', all.find(item => item.id === p).title, 'checknum', num, 'semi', semi)
+      console.log(
+        'chedked',
+        checked,
+        'child',
+        child,
+        'checkedkeys',
+        checkedArr,
+        'child.length',
+        child.length,
+        'title',
+        all.find(item => item.id === p).title,
+        'checknum',
+        num,
+        'semi',
+        semi
+      )
     })
 
     // let semiChecked = getSemi(this.props.data, checkedArr)
@@ -201,7 +205,8 @@ export default class Tree extends Component {
     // })
     // onCheckChange && onCheckChange(checkedArr, item.title, !checked, semiChecked)
     onChange && onChange(checkedArr, item.title, !checked, semiChecked)
-    this.props.onCheckChange && this.props.onCheckChange(checkedArr, item.title, !checked, semiChecked)
+    this.props.onCheckChange &&
+      this.props.onCheckChange(checkedArr, item.title, !checked, semiChecked)
   }
 
   setCheckTreeCheckedChild (id, checked, tempCheckedArr, semi) {
@@ -254,7 +259,7 @@ export default class Tree extends Component {
   }
 
   setCheckTreeCheckedParent (id, checked, tempCheckedArr) {
-    const {dataMap} = this.state
+    const { dataMap } = this.state
     if (checked) {
       if (tempCheckedArr.indexOf(id) >= 0) {
         tempCheckedArr.splice(tempCheckedArr.indexOf(id), 1)
@@ -262,12 +267,15 @@ export default class Tree extends Component {
     } else {
       let allChecked = true
 
-      dataMap[id].children && dataMap[id].children.map((i) => {
-        if (tempCheckedArr.indexOf(i) < 0) {
-          allChecked = false
-        }
-      })
-      if (allChecked && tempCheckedArr.indexOf(id) < 0) { tempCheckedArr.push(id) }
+      dataMap[id].children &&
+        dataMap[id].children.map(i => {
+          if (tempCheckedArr.indexOf(i) < 0) {
+            allChecked = false
+          }
+        })
+      if (allChecked && tempCheckedArr.indexOf(id) < 0) {
+        tempCheckedArr.push(id)
+      }
     }
     if (dataMap[id].parent) {
       this.setCheckTreeCheckedParent(dataMap[id].parent, checked, tempCheckedArr)
@@ -287,33 +295,32 @@ export default class Tree extends Component {
     })
   }
 
-   // 当拖拽元素开始被拖拽的时候触发的事件
-   onDragStart = (e, data) => {
-     const { onDragStart } = this.props
-     e.stopPropagation()
+  // 当拖拽元素开始被拖拽的时候触发的事件
+  onDragStart = (e, data) => {
+    const { onDragStart } = this.props
+    e.stopPropagation()
 
-     let expandedArr = this.state.hasExpanded
+    let expandedArr = this.state.hasExpanded
 
-     if (expandedArr.indexOf(data.id) >= 0) {
-       expandedArr.splice(expandedArr.indexOf(data.id), 1)
-     }
+    if (expandedArr.indexOf(data.id) >= 0) {
+      expandedArr.splice(expandedArr.indexOf(data.id), 1)
+    }
 
-     this.dargNode = e.target
-     this.curData = data
-     this.setState({
-       expandedKeys: expandedArr
-     })
-     if (onDragStart) {
-       onDragStart(e)
-     }
+    this.dargNode = e.target
+    this.curData = data
+    this.setState({
+      expandedKeys: expandedArr
+    })
+    if (onDragStart) {
+      onDragStart(e)
+    }
 
-     try {
-       e.dataTransfer.setData('text/plain', '')
-     } catch (error) {
-     }
-   }
+    try {
+      e.dataTransfer.setData('text/plain', '')
+    } catch (error) {}
+  }
   // 当拖拽完成后触发的事件
-  onDragEnd = (e) => {
+  onDragEnd = e => {
     const { onDragEnd } = this.props
     e.stopPropagation()
 
@@ -350,7 +357,7 @@ export default class Tree extends Component {
     }
   }
   // 拖拽元素在目标元素上移动的时候触发的事件
-  onDragOver = (e) => {
+  onDragOver = e => {
     const { onDragOver } = this.props
     e.preventDefault()
     e.stopPropagation()
@@ -360,7 +367,7 @@ export default class Tree extends Component {
     }
   }
   // 当拖拽元素离开目标元素时触发
-  onDragLeave = (e) => {
+  onDragLeave = e => {
     const { onDragLeave } = this.props
     e.stopPropagation()
 
@@ -389,7 +396,15 @@ export default class Tree extends Component {
   }
 
   renderTreeNodes (data) {
-    const { prefixCls, draggable, checkable, closeIcon, openIcon, withLine, highlightable } = this.props
+    const {
+      prefixCls,
+      draggable,
+      checkable,
+      closeIcon,
+      openIcon,
+      withLine,
+      highlightable
+    } = this.props
     const { dragNode, dragNodePosition } = this.state
 
     return (
@@ -429,9 +444,7 @@ export default class Tree extends Component {
     })
 
     return (
-      <div className={classes}
-        style={style}
-      >
+      <div className={classes} style={style}>
         {this.renderTreeNodes(this.state.data)}
       </div>
     )

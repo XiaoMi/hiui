@@ -63,9 +63,11 @@ $tree: 'hi-tree' !default;
   }
 
   &_item-text {
-    width: calc(100% - 18px);
+    // width: calc(100% - 18px);
+    cursor: pointer;
     display: inline-block;
     vertical-align: middle;
+    padding: 0 4px;
 
     &.dragTo {
       background-color: #4284f5;
@@ -83,13 +85,15 @@ $tree: 'hi-tree' !default;
       width: calc(100% - 40px);
       padding-left: 4px;
     }
-
+    transition: background .3s;
     &:hover {
       background-color: rgba(66, 133, 244, 0.08);
+      color: rgba(56, 62, 71, 1);
     }
 
     &.highlight {
-      color: #4284f5;
+      color: #fff;
+      background-color: #4285f4;
     }
   }
 
@@ -97,6 +101,7 @@ $tree: 'hi-tree' !default;
     display: inline-block;
     vertical-align: middle;
     width: 18px;
+    cursor: pointer;
   }
 
   .#{$tree} {
