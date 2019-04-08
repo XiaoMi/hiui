@@ -33,6 +33,12 @@
     height: 32px;
     line-height: 32px;
 
+    &:hover:not(.hi-radio__item--disabled) {
+      .hi-btn {
+        color: #4284f5;
+      }
+    }
+
     &--checked {
       .hi-radio__simulation-input {
         &::before {

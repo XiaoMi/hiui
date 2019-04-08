@@ -86,7 +86,10 @@ class Cascader extends Component {
   }
 
   clickOutside (e) {
-    if (ReactDOM.findDOMNode(this.inputContainer) && ReactDOM.findDOMNode(this.inputContainer).contains(e.target)) {
+    if (
+      (ReactDOM.findDOMNode(this.inputContainer) && ReactDOM.findDOMNode(this.inputContainer).contains(e.target)) ||
+      (ReactDOM.findDOMNode(this.menuNode) && ReactDOM.findDOMNode(this.menuNode).contains(e.target))
+    ) {
       return
     }
     this.hidePopper()
@@ -191,7 +194,7 @@ class Cascader extends Component {
         let label = option[labelKey]
         const value = option[valueKey]
         const children = option[childrenKey]
-        if (label.indexOf(keyword) > -1 || value.indexOf(keyword) > -1) {
+        if (label.toString().indexOf(keyword) > -1 || value.toString().indexOf(keyword) > -1) {
           match.matchCount++
         }
         match.options.push({
@@ -207,7 +210,7 @@ class Cascader extends Component {
             filterOptions.push(match.options.slice())
           }
         }
-        if (label.indexOf(keyword) > -1 || value.indexOf(keyword) > -1) {
+        if (label.toString().indexOf(keyword) > -1 || value.toString().indexOf(keyword) > -1) {
           match.matchCount--
         }
         match.options.pop()
@@ -361,6 +364,7 @@ class Cascader extends Component {
           placement='top-bottom-start'
         >
           <Menu
+            ref={node => { this.menuNode = node }}
             value={cascaderValue}
             options={filterOptions || options}
             root={() => this}

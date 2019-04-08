@@ -30,8 +30,8 @@ class Counter extends React.Component {
 
     this.attrs = this.getAttrs(oldProps)
 
-    const val = this.props.value
-    const value = val > this.props.max ? this.props.max : (val < this.props.min ? this.props.min : val)
+    const val = +this.props.value
+    const value = val > +this.props.max ? +this.props.max : (val < +this.props.min ? +this.props.min : val)
 
     this.state = {
       value: this.format(value),
@@ -77,7 +77,7 @@ class Counter extends React.Component {
       value = ''
     }
 
-    return value.toString().replace(/[^\d]/g, '')
+    return value.toString().replace(/[^-\d]/g, '')
   }
 
   /**
@@ -99,11 +99,9 @@ class Counter extends React.Component {
    * @param {string} plus 类型
    */
   signEvent (type, disabled) {
-    const {
-      min,
-      max,
-      step
-    } = this.props
+    const min = +this.props.min
+    const max = +this.props.max
+    const step = +this.props.step
 
     if (disabled) {
       return false
@@ -143,10 +141,10 @@ class Counter extends React.Component {
     const {
       className,
       id,
-      min,
-      max,
       disabled
     } = this.props
+    const min = +this.props.min
+    const max = +this.props.max
     let {
       value,
       valueTrue
@@ -186,11 +184,10 @@ class Counter extends React.Component {
             }}
             onBlur={e => {
               e.persist()
-
-              if (typeof min !== 'undefined' && +valueTrue < +min) {
+              if (typeof min !== 'undefined' && +valueTrue < min) {
                 value = this.format(min)
                 valueTrue = min
-              } else if (typeof max !== 'undefined' && +valueTrue > +max) {
+              } else if (typeof max !== 'undefined' && +valueTrue > max) {
                 value = this.format(max)
                 valueTrue = max
               }

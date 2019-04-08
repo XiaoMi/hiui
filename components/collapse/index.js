@@ -108,18 +108,18 @@ class CollapsePanel extends Component {
       children,
       onClickPanel
     } = this.props
-    let classnames = classNames('collapse-item', { show: isActive, disabled })
-    const collapseIcon = classNames('collapse-icon', 'hi-icon', 'icon-right')
+    let classnames = classNames('collapse-item', { 'collapse-item--show': isActive, 'collapse-item--disabled': disabled })
+    const collapseIcon = classNames('collapse-item__icon', 'hi-icon', 'icon-right')
     return (
       <div className={classnames}>
-        <div className='head' onClick={() => onClickPanel(key)}>
+        <div className='collapse-item__head' onClick={() => onClickPanel(key)}>
           { arrow === 'left' && <i className={collapseIcon} /> }
-          <div className='title'>
+          <div className='collapse-item__title'>
             {header}
           </div>
           { arrow === 'right' && <i className={collapseIcon} /> }
         </div>
-        <div className='content'>{children}</div>
+        <div className='collapse-item__content'>{children}</div>
       </div>
     )
   }

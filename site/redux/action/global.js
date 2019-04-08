@@ -19,3 +19,21 @@ export const setLocale = (locale) => (dispatch) => {
   window.localStorage.setItem('HIUI_LANGUAGE', locale)
   return Promise.resolve()
 }
+
+export const setDesignNavs = (designNavs) => {
+  const dispatch = store.dispatch
+  dispatch({type: 'SET_DESIGNNAVS', designNavs})
+}
+
+export const setComponentsNavs = (componentsNavs) => {
+  const dispatch = store.dispatch
+  dispatch({type: 'SET_COMPONENTSNAVS', componentsNavs})
+}
+export const setComponents = (components) => {
+  const dispatch = store.dispatch
+  dispatch({type: 'SET_COMPONENTS', components})
+}
+export const setTemplates = (templates) => {
+  const dispatch = store.dispatch
+  dispatch({type: 'SET_TEMPLATES', templates})
+}

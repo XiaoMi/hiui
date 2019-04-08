@@ -6,14 +6,16 @@ const initState = {
   locale: window.localStorage.getItem('HIUI_LANGUAGE') || 'zh-CN'
 }
 
-export default (state = initState, action) => {
+export default (state = initState, action = '') => {
   const {
     type,
     sider,
     theme,
-    locale
+    locale,
+    designNavs,
+    componentsNavs,
+    components
   } = action
-
   switch (type) {
     case 'GLOBAL_SIDER':
       return Object.assign({}, state, {sider})
@@ -21,6 +23,12 @@ export default (state = initState, action) => {
       return Object.assign({}, state, {theme})
     case 'SET_LOCALE':
       return Object.assign({}, state, {locale})
+    case 'SET_DESIGNNAVS':
+      return Object.assign({}, state, {designNavs})
+    case 'SET_COMPONENTSNAVS':
+      return Object.assign({}, state, {componentsNavs})
+    case 'SET_COMPONENTS':
+      return Object.assign({}, state, {components})
     default:
       return Object.assign({}, state)
   }
