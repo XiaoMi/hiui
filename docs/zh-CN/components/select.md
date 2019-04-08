@@ -313,27 +313,27 @@ render () {
 
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| mode | 下拉框类型 | String | single, multiple | single |
-| multipleMode | 多选模式，wrap会显示所有已选中项，超出换行；nowrap只显示一行，超出的以数字显示 | String | wrap, nowrap | wrap |
+| mode | 下拉框类型 | String | single \| multiple | single |
+| multipleMode (1.4新增) | 多选模式，wrap会显示所有已选中项，超出换行；nowrap只显示一行，超出的以数字显示 | String | wrap \|  nowrap | wrap |
 | list | 下拉框选项，一般为 {name: '', id: ''} 形式。可以加入 'disabled' 属性，表示是否禁止选择 | Array | - | - |
 | origin | 异步选择配置，详见下表 | Object | - | - |
-| value | 默认值被选中项，值与被选中的id相同，多个以,分割或者传递数组| String,Number,Array | - | - |
-| showCheckAll | 是否显示全选，只对多选生效 | Boolean | true, false | false |
-| searchable | 是否可以筛选 | Boolean | true, false | false |
-| clearable | 是否可以清空 | Boolean | true, false | true |
-| autoload | origin从远端获取数据，初始时是否自动加载 | Boolean | true, false | false |
-| disabled | 禁用该下拉框 | Boolean | true, false | false |
+| value | 默认值被选中项，值与被选中的id相同，多个以,分割或者传递数组| String \| Number \| Array | - | - |
+| showCheckAll | 是否显示全选，只对多选生效 | Boolean | true \| false | false |
+| searchable | 是否可以筛选 | Boolean | true \| false | false |
+| clearable | 是否可以清空 | Boolean | true \| false | true |
+| autoload | origin从远端获取数据，初始时是否自动加载 | Boolean | true \| false | false |
+| disabled | 禁用该下拉框 | Boolean | true \| false | false |
 | placeholder | 提示信息 | String | - | 请选择 |
 | noFoundTip | 没有选项时的提示 | String | - | 无内容 |
-| style | 自定义样式 | object | - | - |
-| optionWidth | 选项的宽度 | Number | - | 默认和select宽度一致 |
+| style | 自定义样式 | Object | - | - |
+| optionWidth (1.4新增) | 选项的宽度 | Number | - | 默认和select宽度一致 |
 
 
 ### origin Options
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |
 | url | 请求的url | String | - | - |
-| type | 请求方法 | String | get,post | get |
+| type | 请求方法 | String | get \| post | get |
 | data | post请求时的参数 | Object | - | - |
 | key | 搜索关键字参数key | String | - | keyword |
 | keyword | autoload为true时的默认搜索关键词 | String | - | - |

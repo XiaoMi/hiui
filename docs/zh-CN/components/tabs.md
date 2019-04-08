@@ -337,12 +337,12 @@ render() {
 
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| type | 标签类型 | string | desc, card, button, editable | card |
-| placement | 卡片式标签位置 | string | top, left | top |
-| defaultActiveKey | 默认激活的标签 | string, number | - | 第一个选项卡 |
+| type | 标签类型 | String | desc \| card \| button \| editable | card |
+| placement | 卡片式标签位置 | String | top \| left | top |
+| defaultActiveKey | 默认激活的标签 | String \| number | - | 第一个选项卡 |
 | showTabsNum | 显示的选项卡数，仅对type='card'并且placement='top'时生效| number | - | 6 |
-| editable | 是否可以对标签增加删除，仅对type='editable'时生效 | bool | true, false | true |
-| onTabClick | 点击标签页时触发 | func(tabKey, event) | - | - |
+| editable | 是否可以对标签增加删除，仅对type='editable'时生效 | Boolean | true \| false | true |
+| onTabClick | 点击标签页时触发 | func(tabKey , event) | - | - |
 | onEdit | 标签新增删减时触发，仅对type='editable'时触发。参数：action为事件类型，值为add或者delete；index为操作选项卡对应的索引 | func(action, index, tabKey) | - | - |
 
 
@@ -351,7 +351,7 @@ render() {
 
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| tabName | 选项卡头显示文字 | string, node | - | - |
-| tabDesc | 选项卡头描述文字，仅对type='desc'时生效 | string, node | - | - |
-| tabKey | 每个标签的唯一标识 | string, number | - | - |
-| closable | 标签是否可以关闭，仅对type='editable'时生效 | bool | true, false | true |
+| tabName | 选项卡头显示文字 | String \| Element | - | - |
+| tabDesc | 选项卡头描述文字，仅对type='desc'时生效 | String \| Element | - | - |
+| tabKey | 每个标签的唯一标识 | String \| Number | - | - |
+| closable | 标签是否可以关闭，仅对type='editable'时生效 | Boolean | true \| false | true |
