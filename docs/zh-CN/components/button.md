@@ -166,13 +166,13 @@ render() {
 
 | 参数 | 说明 | 类型 | 可选值 |默认值  |
 | -------- | ----- | ----  | ----  |   ----  |
-| type | 设置按钮类型 | string | primary，line, success，danger, default | default |
-| appearance | 按钮显示类型（按钮或链接）  | string  | button, link | button |
-| size | 设置按钮大小 | string | large, normal, small | normal |
-| icon | 设置按钮图标，设置后忽略子元素只渲染对应图标 | string | 详见 `<Icon />` 组件 | - |
-| className | 自定义class | string | - | - |
+| type | 设置按钮类型 | String | primary \| line \| success \| danger \| default | default |
+| appearance | 按钮显示类型（按钮或链接）  | String  | button \| link | button |
+| size | 设置按钮大小 | String | large \| normal \| small | normal |
+| icon | 设置按钮图标，设置后忽略子元素只渲染对应图标 | String | 详见 `<Icon />` 组件 | - |
+| className | 自定义class | String | - | - |
 
 ### Button Events
 | 参数       | 说明   |  类型  | 可选值 |默认值  |
 | --------   | -----  | ----  |    ----  |   ----  |
-| onClick | 点击回调函数   |   function  | -   | - |
+| onClick | 点击回调函数   |   Function  | -   | - |

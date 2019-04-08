@@ -268,21 +268,21 @@ render(){
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值|
 | --- | ---  | --- | ---- | ---   |
-| model | 表单数据 | object  | - | - |
-| rules | 表单验证规则 | object  | - | - |
-| labelWidth | label宽度 | string  | |
-| labelPosition | label位置 | bool |right/left/top|right|
-| inline | 是否横向排列 | bool | - | false|
+| model | 表单数据 | Object  | - | - |
+| rules | 表单验证规则 | Object  | - | - |
+| labelWidth | label宽度 | String  | |
+| labelPosition | label位置 | String |right \| left \| top|right|
+| inline | 是否横向排列 | Boolean | true \| false | false|
 
 
 ### FormItem Attributes
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值|
 | --- | ---  | --- | ---- | ---   |
-| prop | 表单域model字段 | string  | - | - |
-| label | 标签文本 | string  | - | - |
-| labelWidth | label宽度 | string  | |
-| required | 是否必填 | bool  | - | false |
+| prop | 表单域model字段 | String  | - | - |
+| label | 标签文本 | String  | - | - |
+| labelWidth | label宽度 | String  | |
+| required | 是否必填 | Boolean  | true \| false | false |
 
 
 ### Form Methods
