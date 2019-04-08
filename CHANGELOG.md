@@ -11,7 +11,13 @@
 - 修改: 部分组件的 BEM 规范
 - 新增：HIUI 设计说明 及 模板文档
 - 修改：为 HIUI 文档引入了新的 classic-theme
-- 其它一些问题修正
+- 新增：Notification 增加 duration 自动关闭时间
+- 新增：Tree 增加 withLine 属性
+- 其它一些问题修正:
+  - Button 传入 icon 时，文字不显示的问题
+  - Cascader 点击外部区域的关闭异常问题
+  - Cascader value 为数字类型时引起的问题
+  - Counter 组件传入的 value/step/min/max 为字符串引起的问题
 
 ## 1.3.5
 - 新增： `<Datepicker />` 组件可通过 placeholder 自定义占位符

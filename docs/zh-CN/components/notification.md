@@ -31,7 +31,7 @@
 | type | 类型 | String | info \| error \| success \| warning | info |
 | message | 提示内容 | String | - | 无 |
 | title | 提示标题 | String | - | 无 |
-| duration | 自动关闭时，设置的等待时间，单位毫秒 | number | - | 3000 |
+| duration (1.4新增) | 自动关闭时，设置的等待时间，单位毫秒 | number | - | 3000 |
 | autoClose | 是否自动关闭 | Boolean | true \| false | false |
 | showClose | 是否显示关闭图标 | Boolean | true \| false | true |
 | onClose | 关闭回调 | Function | - | 无 |
