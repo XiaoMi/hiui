@@ -284,22 +284,25 @@ render () {
 
 ### Upload Attributes
 
-|参数|说明|类型|是否必填|默认值|
-|-----|---|----|----|----|
-|type|上传类型，可取值：normal，drag，pictureCard，avatar，和photo|string|是|normal|
-|width, height|仅对avatar生效，头像上传的裁切框尺寸，最大450x450|number|否|200x200|
-|accept|接收上传的文件类型|string|否|''|
-|buttonText|按钮文案|string|否|上传|
-|buttonIcon|按钮文案前面的图标|string|否|upload|
-|uploadAction|必选，上传的地址|string|是|无|
-|param|除了上传文件外的其他需参数|object|否|无|
-|name|发到后台文件参数名|string|否|file|
-|disabled|是否禁用|boolean|否|false|
-|headers|设置上传的请求头部|object|否|{'Content-type': 'multipart/form-data'}|
-|showUploadList|是否展示uploadList|boolean|否|true|
-|multiple|是否支持多选文件|boolean|否|false|
-|defaultFileList|带默认列表的上传|array[object] (object参见上面demo)|否|无|
-|beforeUpload|上传文件前的钩子,返回true继续上传，其他终止上传|function(files, fileList)|否|一个返回true的空函数|
-|customUpload|自定义上传，此时不会再触发onChange，所有上传逻辑由用户完全控制|function(files)|否|-|
-|onChange|上传回调。当function返回false或者返回promise（如果promise resolve(false)）则已上传的文件列表不会展示该文件|function(file, fileList, response)|否|无|
-|onRemove|删除上传的文件,为false时不可删除。当function返回true或者返回promise（如果promise resolve(true)）则会在前端删除文件（可参考demo：照片墙上传）|function(file, fileList, index)，boolean|否|一个返回true的空函数，即前端删除|
+
+
+| 参数 | 说明 | 类型 | 可选值 |默认值 |
+| -------- | ----- | ---- | ---- | ---- |
+| type | 上传组件类型 | String | normal: 普通上传按钮<br/> drag: 拖拽上传<br/>  pictureCard:照片卡片上传<br/>  avatar: 头像上传（裁剪）<br/> photo:照片上传（预览）<br/> | normal |
+| width | 仅对avatar生效，头像上传的裁切框尺寸,最大450 | Number | - | 200 |
+| height | 仅对avatar生效，头像上传的裁切框尺寸,最大450 | Number | - | 200 |
+| accept | 接收上传的文件类型 | String | - | - |
+| buttonText | 按钮文案 | String | - | 上传 |
+| buttonIcon | 按钮文案前面的图标 | String | - | upload |
+| uploadAction | 必选，上传的地址 | String | - | - |
+| param | 除了上传文件外的其它form参数 | Object | - | - |
+| name  | 发到后台文件参数名 | String | - | file |
+| disabled | 是否禁用 | Boolean | true \| false | false |
+| headers | 设置上传的请求头部 | Object | - | {'Content-type': 'multipart/form-data'} |
+| showUploadList | 是否展示uploadList | Boolean |  true \| false | true |
+| multiple | 是否支持多选文件 | Boolean |  true \| false | false |
+| defaultFileList | 带默认列表的上传 | Array[object] (object参见上面demo) | - | 无 |
+| beforeUpload | 上传文件前的钩子,返回true继续上传，其他终止上传 | Function(files, fileList) | - | 一个返回true的空函数 |
+| customUpload | 自定义上传，此时不会再触发onChange，所有上传逻辑转移到该函数  | Function(files) | - | - |
+| onChange | 上传回调。当function返回false或者返回promise（如果promise resolve(false)）则已上传的文件列表不会展示该文件 | Function(file, fileList, response) | - | - |
+| onRemove | 删除上传的文件,为false时不可删除。当function返回true或者返回promise（如果promise resolve(true)）则会在前端删除文件（可参考demo：照片墙上传）| Function(file, fileList, index)，boolean | - | 一个返回true的空函数，即前端删除 |

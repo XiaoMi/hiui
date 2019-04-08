@@ -78,11 +78,11 @@
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| active | 是否激活 | boolean | true / false  | false |
-| defaultActive | 默认激活（当  active 存在时，此项无效 | boolean | true / false | false |
-| text | 文本 | string | - | - |
-| value | 文本对应的值，可为空 | - | - |
-| mode | 菜单排列模式 | string | horizontal / vertical | vertical |
+| active | 是否激活 | Boolean | true \| false  | false |
+| defaultActive | 默认激活（当  active 存在时，此项无效 | Boolean | true \| false | false |
+| text | 文本 | String | - | - |
+| value | 文本对应的值，可为空 | String | - |
+| mode | 菜单排列模式 | String | horizontal \| vertical | vertical |
 
 ### Menu Events
 

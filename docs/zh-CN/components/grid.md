@@ -194,7 +194,7 @@ render() {
 
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| gutter | 属于 &#60;Row> 的属性，Row 里面元素之间是否有外边距 | boolean | false | - |
-| span | 属于 &#60;Col> 的属性， Col 元素占多少个栅格 | number | - | - |
-| offset | 属于 &#60;Col> 的属性， Col 元素偏移多少个栅格 | number | - | - |
-| justify | 属于 &#60;Row> 和 &#60;Col> 的属性，里面的元素排布方式 | string | flex-start, flex-end, center, space-around, space-between | - |
+| gutter | 属于 &#60;Row> 的属性，Row 里面元素之间是否有外边距 | Boolean | true \| false | false|
+| span | 属于 &#60;Col> 的属性， Col 元素占多少个栅格 | Number | - | - |
+| offset | 属于 &#60;Col> 的属性， Col 元素偏移多少个栅格 | Number | - | - |
+| justify | 属于 &#60;Row> 和 &#60;Col> 的属性，里面的元素排布方式 | string | flex-start \| flex-end \| center \| space-around \| space-between | - |
