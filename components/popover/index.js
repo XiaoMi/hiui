@@ -52,8 +52,9 @@ export default class Popover extends Component {
 
   isInPopover () {
     const popper = this.popperRef.current
+    const referenceRef = ReactDOM.findDOMNode(this.refs.referenceRef)
     const bool = !this.element || this.element.contains(this.eventTarget) ||
-            !ReactDOM.findDOMNode(this.refs.referenceRef) || ReactDOM.findDOMNode(this.refs.referenceRef).contains(this.eventTarget) ||
+            !referenceRef || referenceRef.contains(this.eventTarget) ||
             !popper || popper.contains(this.eventTarget)
     this.eventTarget = null
     return bool
@@ -63,11 +64,12 @@ export default class Popover extends Component {
     const { trigger } = this.props
 
     this.element = ReactDOM.findDOMNode(this)
+    const referenceRef = ReactDOM.findDOMNode(this.refs.referenceRef)
     // this.reference = ReactDOM.findDOMNode(this.refs.reference)
-    if (ReactDOM.findDOMNode(this.refs.referenceRef) === null) return
+    if (referenceRef === null) return
 
     if (trigger === 'click') {
-      ReactDOM.findDOMNode(this.refs.referenceRef).addEventListener('click', () => {
+      referenceRef.addEventListener('click', () => {
         if (this.state.showPopper) {
           this.hidePopper()
         } else {
@@ -82,16 +84,16 @@ export default class Popover extends Component {
         this.hidePopper()
       })
     } else if (trigger === 'hover') {
-      ReactDOM.findDOMNode(this.refs.referenceRef).addEventListener('mouseenter', e => {
+      referenceRef.addEventListener('mouseenter', e => {
         this.eventTarget = e.target
         this.showPopper()
       })
-      ReactDOM.findDOMNode(this.refs.referenceRef).addEventListener('mouseleave', e => {
+      referenceRef.addEventListener('mouseleave', e => {
         this.delayHidePopper(e)
       })
     } else {
-      ReactDOM.findDOMNode(this.refs.referenceRef).addEventListener('focus', this.showPopper.bind(this))
-      ReactDOM.findDOMNode(this.refs.referenceRef).addEventListener('blur', this.hidePopper.bind(this))
+      referenceRef.addEventListener('focus', this.showPopper.bind(this))
+      referenceRef.addEventListener('blur', this.hidePopper.bind(this))
     }
   }
 
