@@ -52,7 +52,6 @@ export default class Popover extends Component {
 
   isInPopover () {
     const popper = this.popperRef.current
-    console.log(this.refs)
     const bool = !this.element || this.element.contains(this.eventTarget) ||
             !ReactDOM.findDOMNode(this.refs.referenceRef) || ReactDOM.findDOMNode(this.refs.referenceRef).contains(this.eventTarget) ||
             !popper || popper.contains(this.eventTarget)
@@ -68,7 +67,6 @@ export default class Popover extends Component {
     if (ReactDOM.findDOMNode(this.refs.referenceRef) === null) return
 
     if (trigger === 'click') {
-      console.log(this.refs)
       ReactDOM.findDOMNode(this.refs.referenceRef).addEventListener('click', () => {
         if (this.state.showPopper) {
           this.hidePopper()
