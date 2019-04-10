@@ -11,12 +11,13 @@
 @mixin subMenuPadding($level) {
   .hi-menu--#{$level} {
     @if $level > 1 {
-      >.hi-menu__title {
+      > .hi-menu__title {
         padding-left: $level * 32px;
       }
     }
+
     .hi-submenu__items {
-      >.hi-menu__title {
+      > .hi-menu__title {
         padding-left: ($level + 1) * 32px;
       }
     }
@@ -26,30 +27,35 @@
 .hi-menu,
 .hi-submenu__popper {
   @include component-reset();
+
   ul {
     margin-top: 0;
     margin-bottom: 0;
     padding-left: 0;
-    font-size: 0px;
+    font-size: 0;
   }
+
   li {
-    margin: 0px;
+    margin: 0;
     list-style: none;
   }
 
   .hi-menu-items {
     display: flex;
   }
+
   .hi-menu-item {
     &--active {
-      >.hi-menu__title .hi-menu__title-content,
-      >.hi-menu__title-content {
-        color: #4284F5;
+      > .hi-menu__title .hi-menu__title-content,
+      > .hi-menu__title-content {
+        color: #4284f5;
       }
     }
+
     &--disabled {
       .hi-menu__title {
         cursor: not-allowed;
+        color: #d8d8d8;
       }
     }
   }
@@ -60,14 +66,18 @@
     font-size: 14px;
     color: #333;
     cursor: pointer;
+
     &-icon {
       flex: none;
       margin-right: 4px;
     }
+
     &-content {
       flex: auto;
+
       @include ellipsis();
     }
+
     &-toggle-icon {
       flex: none;
       margin-left: 8px;
@@ -77,26 +87,31 @@
 
 .hi-menu {
   &--horizontal {
-    border-bottom: 1px solid #E6E7E8;
+    border-bottom: 1px solid #e6e7e8;
+
     .hi-menu-item {
       position: relative;
       margin-right: 48px;
-      &:last-child {
-        margin-right: 0px;
-      }
+
       &--active:after {
         content: '';
         position: absolute;
-        bottom: 0px;
+        bottom: 0;
         left: 50%;
         transform: translateX(-50%);
         width: 32px;
         height: 2px;
-        background-color: #4284F5;
+        background-color: #4284f5;
+      }
+
+      &:last-child {
+        margin-right: 0;
       }
     }
+
     .hi-menu__title {
-      padding: 12px 0px;
+      padding: 12px 0;
+
       &-content {
         max-width: 100px;
       }
@@ -106,49 +121,59 @@
   &--vertical {
     display: inline-block;
     width: 216px;
-    padding: 12px 0px;
-    background:#fff;
-    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.15);
-    border: 1px solid rgba(230,231,232,1);
+    padding: 12px 0;
+    background: #fff;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(230, 231, 232, 1);
     box-sizing: border-box;
+
     .hi-menu-items {
       display: flex;
       flex-direction: column;
     }
+
     .hi-menu__title {
       padding: 12px 16px;
+
       &:hover {
-        background-color: rgba(66,133,244,0.08);
+        background-color: rgba(66, 133, 244, 0.08);
       }
     }
+
     .hi-submenu {
       display: flex;
       flex-direction: column;
     }
+
     .hi-menu__title-icon {
       font-size: 20px;
     }
-    @include subMenuPadding(1)
-    @include subMenuPadding(2)
+
+    @include subMenuPadding(1);
+    @include subMenuPadding(2);
   }
 
   &--mini {
     width: 48px;
     padding: 12px 0;
     overflow: hidden;
+
     .hi-menu--1.hi-menu-item--active {
-      background-color: rgba(66,133,244,0.08);
+      background-color: rgba(66, 133, 244, 0.08);
     }
+
     .hi-menu__title {
-      padding: 0px;
+      padding: 0;
     }
+
     .hi-menu__title-icon {
       width: 46px;
       height: 46px;
       line-height: 46px;
-      margin-right: 0px;
+      margin-right: 0;
       text-align: center;
     }
+
     &__toggle {
       height: 48px;
       line-height: 48px;
@@ -163,22 +188,32 @@
   &__items--hide {
     display: none;
   }
+
   &__popper {
     width: 200px;
-    padding: 4px 0px;
+    padding: 4px 0;
     background-color: #fff;
-    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.15);
-    border: 1px solid rgba(230,231,232,1);
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(230, 231, 232, 1);
     box-sizing: border-box;
+
     .hi-submenu__items {
       display: flex;
       flex-direction: column;
+
+      .hi-menu-item--disabled {
+        cursor: not-allowed;
+        color: #d8d8d8;
+      }
     }
+
     .hi-menu__title {
       padding: 8px 16px;
     }
+
     &--fat {
       width: auto;
+
       .hi-submenu__items {
         flex-direction: row;
       }
@@ -187,14 +222,17 @@
     .hi-menu-fat {
       margin-right: 12px;
       width: 108px;
-      &__title{
+
+      &__title {
         color: #999;
       }
+
       &__content {
         font-size: 14px;
         color: #999;
         box-sizing: border-box;
-        @include ellipsis()
+
+        @include ellipsis();
       }
     }
   }
