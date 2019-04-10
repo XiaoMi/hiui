@@ -1,6 +1,7 @@
 # MIFE dotfiles
 
 # npmignore
+.git/
 build/
 components/
 dist/
