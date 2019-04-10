@@ -268,9 +268,9 @@
 | onCancel | 点击遮罩或者右上角取消或者取消按钮的回调 | Function | - | 无 |
 | confirmText | 确定按钮文字 | String | - | 确定 |
 | cancelText | 取消按钮文字 | String | - | 取消 |
-| backDrop | 点击黑色背景部分是否隐藏弹框 | Boolean | - | true |
+| backDrop | 点击黑色背景部分是否隐藏弹框 | Boolean | true \| false | true |
 | size |  定义弹窗尺寸 | String | normal \| large \| small | normal |
 | width |  自定义弹窗宽度 |  number <br/> String | - | 600px |
-| closeBtn |   是否显示右上角关闭按钮 |   Boolean | - | true |
+| closeBtn |   是否显示右上角关闭按钮 |   Boolean | true \| false | true |
 | footers |    自定义底部按钮数组（传入空数组将取消底部按钮） |    Array | - | - |
-| show | 弹窗是否显示 |     Boolean | - | false |
+| show | 弹窗是否显示 |     Boolean | true \| false | false |

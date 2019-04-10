@@ -131,11 +131,11 @@ render() {
 
 | 参数       | 说明   |  类型  | 可选值 |默认值  |
 | --------   | -----  | ----  |    ----  |   ----  |
-| name |  单选组名称  | string   | - | 一般情况下无需传递，组件默认生成 |
-| list |   选择项  |  array   | - | - |
-| align |   label 对齐方式  | string   | left/right | right |
+| name |  单选组名称  | String   | - | 一般情况下无需传递，组件默认生成 |
+| list |   选择项  |  Array   | - | - |
+| align |   label 对齐方式  | String   | left \| right | right |
 | checked |   应用于 list 内的数据项时为布尔值，表示该项是否被选中<br/>多个列表项均含有此属性时，会以最后一项为主<br/>---<br/>应用于组件属性时为数字或函数<br/>为数字时，代表被选中项的索引值，从0开始<br/>为函数时，函数返回当前项，通过比对后返回布尔值来决定该项是否被选中  | bool/number/func   | - | -1 |
-| onChange |     选中事件  |   function  | - | - |
-| disabled |     是否禁用（应用于数据源无效）  |    number/function  | - | - |
-| mode |    单选按钮样式  |     string  | normal/button | normal |
-| layout |     排列方式  |     string  | horizontal/vertical | horizontal |
+| onChange |     选中事件  |   Function  | - | - |
+| disabled |     是否禁用（应用于数据源无效）  |    Number \| Function  | - | - |
+| mode |    单选按钮样式  |     String  | normal \| button | normal |
+| layout |     排列方式  |     String  | horizontal \| vertical | horizontal |

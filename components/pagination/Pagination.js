@@ -375,7 +375,7 @@ class Pagination extends Component {
           <div className={`${prefixCls}__text`}>
             {this.renderJumperInput()}
             /
-            <span style={{marginRight: '8px'}}>{maxPage}</span>
+            <span style={{margin: '0 8px'}}>{maxPage}</span>
           </div>
         }
         {nextPager}

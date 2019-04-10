@@ -107,7 +107,7 @@ render() {
         <br/>
         <p>多个选择框组成全选功能</p>
         <div>
-          <Checkbox all='two' onChange={this.onChange}> 全选</Checkbox>
+          <Checkbox all='two' onChange={this.onChange}>全选</Checkbox>
           <div><Checkbox name='two' text='手机'/></div>
           <div><Checkbox name='two' value='computer'>电脑</Checkbox></div>
           <div><Checkbox name='two' text='智能'/></div>
@@ -127,24 +127,24 @@ render() {
 
 | 参数       | 说明   |  类型  | 可选值 |默认值  |
 | --------   | -----  | ----  |    ----  |   ----  |
-| value |  Checkbox 的值;含有 value 属性时，选中回调将返回该值，否则返回对应文本内容  |  string,number,boolean   | - | |
-| text |   Checkbox 显示的文本;当含有 text 属性时将忽略 Checkbox 子元素  |  string,number,boolean   | - | |
-| checked |   是否默认选中  |  boolean   | true 或 false | false |
-| disabled |   是否默认禁用  |  boolean   | true 或 false | false |
-|  list |   多选数据  |  array   |  参见 List Options |  |
-|  all |   全选框标识，标明该项为全选checkobx，文本将标示为「全选」。必须唯一  |   string   | - |  |
-|  name |   子选项标识<br/> 仅用于全选模式下的子选项 或 多选模式<br/> 全选模式：name 值需与 all 的值相同<br/>多选模式：同级子选项 name 相同  |   string   | - |  |
+| value |  Checkbox 的值;含有 value 属性时，选中回调将返回该值，否则返回对应文本内容  |  String \| Number \| Boolean   | - | |
+| text |   Checkbox 显示的文本;当含有 text 属性时将忽略 Checkbox 子元素  |  String \| Number \| Boolean   | - | |
+| checked |   是否默认选中  |  Boolean   | true  \|  false | false |
+| disabled |   是否默认禁用  |  Boolean   | true  \|  false | false |
+|  list |   多选数据  |  Array   |  参见 List Options |  |
+|  all |   全选框标识，标明该项为全选checkobx，文本将标示为「全选」。必须唯一  |   String   | - |  |
+|  name |   子选项标识<br/> 仅用于全选模式下的子选项 或 多选模式<br/> 全选模式：name 值需与 all 的值相同<br/>多选模式：同级子选项 name 相同  |   String   | - |  |
 
 
 #### List Options
 | 参数     | 说明   |  类型  | 可选值 | 默认值  |
 | --------   | -----  | ----  |    ----  |   ----  |
-| text |   显示文本  |  String   | 必需 | - |
-|  value |   选项的值  |   String \| Number \| Boolean   | - | - |
-| checked |   是否选中 |    Boolean   | - | false |
-| disabled |    是否禁用  |   Boolean   | - | false |
+| text |   显示文本  |  String   | - | - |
+|  value |   选项的值  |   String \| Number \| Boolean   | true  \|  false | - |
+| checked |   是否选中 |    Boolean   | true  \|  false | false |
+| disabled |    是否禁用  |   Boolean   | true  \|  false | false |
 
 ### Checkbox Events
 | 参数       | 说明   |  类型  | 
 | --------   | -----  | ----  |   
-| onChange | 选择回调函数   |   function  | 当单个选择框时，返回点击的 value 及是否被选择<br/>当多选时，返回被选中的数组 
+| onChange | 选择回调函数   |   Function  | 当单个选择框时，返回点击的 value 及是否被选择<br/>当多选时，返回被选中的数组 

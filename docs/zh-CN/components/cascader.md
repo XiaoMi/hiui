@@ -70,7 +70,7 @@
             console.log('on change', value)
           }} 
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -152,7 +152,7 @@
           }} 
           disabled={true}
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -234,7 +234,7 @@
             console.log('on change', value)
           }} 
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -315,7 +315,7 @@
           }} 
           changeOnSelect={true}
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -397,7 +397,7 @@
           }} 
           clearable={false}
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -484,7 +484,7 @@
             children: 'subGoods',
           }}
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -566,7 +566,7 @@
             console.log('on change', value)
           }} 
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -647,7 +647,7 @@
             console.log('on change', value)
           }} 
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
           displayRender={values => {
             return values.join(' > ')
           }}
@@ -775,7 +775,7 @@
           noFoundTip="未搜索到相关内容"
           searchable={true}
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
         />
       </div>
     )
@@ -903,7 +903,7 @@
             console.log('on change', value)
           }} 
           options={this.state.options} 
-          style={{width: '220px'}}
+          style={{width: '240px'}}
           onActiveItemChange={values=>{
             if(values[0] == 'mix') {
               setTimeout(()=>{
@@ -937,18 +937,18 @@
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| options | 可选项数据源 | array | -  | - |
-| value | 默认值 | array | - | [] |
-| fieldNames | 自定义options中label,value,children的字段 | object | - | {label:'label', value:'value', children:'children'} |
-| searchable | 是否可搜索 | bool | true, false | false |
-| clearable | 是否可清空 | bool | true, false | true |
-| disabled | 是否禁止使用 | bool | true, false | false |
-| changeOnSelect | 是否启用选择即改变功能 | bool | true, false | false |
-| placeholder | placeholder | string | - | 请选择 |
-| noFoundTip | 未搜索到的提示 | string | - | 无匹配数据 |
-| className | 自定义class | string | - | - |
-| style | 自定义样式 | object | - | - |
-| displayRender | 自定义选中的标签展示 | function | - | - |
+| options | 可选项数据源 | Array | -  | - |
+| value | 默认值 | Array | - | [] |
+| fieldNames | 自定义options中label,value,children的字段 | Object | - | {label:'label', value:'value', children:'children'} |
+| searchable | 是否可搜索 | Boolean | true \| false | false |
+| clearable | 是否可清空 | Boolean | true \| false | true |
+| disabled | 是否禁止使用 | Boolean | true \| false | false |
+| changeOnSelect | 是否启用选择即改变功能 | Boolean | true \| false | false |
+| placeholder | placeholder | String | - | 请选择 |
+| noFoundTip | 未搜索到的提示 | String | - | 无匹配数据 |
+| className | 自定义class | String | - | - |
+| style | 自定义样式 | Object | - | - |
+| displayRender | 自定义选中的标签展示 | Function | - | - |
 
 ### Cascader Events
 

@@ -335,6 +335,7 @@ render() {
 | suffix | 后缀 | String | - | - |
 | prepend | 前置元素 | Element | - | - |
 | append | 后置元素 | Element | - | - |
+| placeholder |  占位符 |  String | - | - |
 
 ### Input Events
 
