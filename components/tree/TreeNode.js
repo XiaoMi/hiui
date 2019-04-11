@@ -3,6 +3,8 @@ import Checkbox from '../table/checkbox/index'
 import classNames from 'classnames'
 import isEqual from 'lodash/isEqual'
 import cloneDeep from 'lodash/cloneDeep'
+import Input from '../input'
+import uuidv4 from 'uuid/v4'
 export default class TreeNode extends Component {
   constructor (props) {
     super(props)
@@ -10,11 +12,14 @@ export default class TreeNode extends Component {
       highlight: null,
       showRightClickMenu: null,
       dataCache: [],
-      prevData: []
+      prevData: [],
+      // 存储编辑节点编辑前的状态
+      editNodes: [],
+      // 存储编辑节点的状态
+      editingNodes: []
     }
   }
   static getDerivedStateFromProps (props, state) {
-    console.log('************', state.dataCache)
     if (!isEqual(props.data, state.prevData)) {
       return {
         ...state,
@@ -81,45 +86,168 @@ export default class TreeNode extends Component {
     )
     return <i className={switcherClsName} />
   }
-
+  // TODO:调整添加节点的策略，由深度遍历改为按层修改！
   // 添加兄弟节点
-  _addSibNode = (itemId, data) => {
+  _addSibNode = (itemId, data, editingNodes) => {
     data.forEach((d, index) => {
       if (d.id === itemId) {
-        data.splice(index + 1, 0, { id: '', title: '测试' })
+        const addNode = { id: uuidv4(), title: '', status: 'editable' }
+        data.splice(index + 1, 0, addNode)
+        editingNodes.push(addNode)
       } else {
         if (d.children) {
-          this._addSibNode(itemId, d.children)
+          this._addSibNode(itemId, d.children, editingNodes)
         }
       }
     })
   }
 
   addSiblingNode = itemId => {
-    console.log('^^^', itemId)
-    const { dataCache } = this.state
-    console.log(dataCache)
+    const { dataCache, editingNodes } = this.state
     const _dataCache = cloneDeep(dataCache)
-    this._addSibNode(itemId, _dataCache)
-    console.log(_dataCache)
+    const _editingNodes = [...editingNodes]
+    this._addSibNode(itemId, _dataCache, _editingNodes)
+    this.setState({ dataCache: _dataCache, editingNodes: _editingNodes })
+  }
+
+  // 取消添加节点
+  _cancelAddSiblingNode = (itemId, data) => {
+    data.forEach((d, index) => {
+      if (d.id === itemId) {
+        data.splice(index, 1)
+      } else {
+        if (d.children) {
+          this._cancelAddSiblingNode(itemId, d.children)
+        }
+      }
+    })
+  }
+  cancelAddSiblingNode = itemId => {
+    const { dataCache } = this.state
+    const _dataCache = cloneDeep(dataCache)
+    this._cancelAddSiblingNode(itemId, _dataCache)
     this.setState({ dataCache: _dataCache })
   }
   // 添加子节点
-  addChildNode = itemId => {}
+  _addChildNode = (itemId, data, editingNodes) => {
+    data.forEach((d, index) => {
+      if (d.id === itemId) {
+        if (!d.children) {
+          d.children = []
+        }
+        const addNode = { id: uuidv4(), title: '', status: 'editable' }
+        d.children.push(addNode)
+        editingNodes.push(addNode)
+      } else {
+        if (d.children) {
+          this._addChildNode(itemId, d.children, editingNodes)
+        }
+      }
+    })
+  }
+  addChildNode = item => {
+    const { dataCache, editingNodes } = this.state
+    const _dataCache = cloneDeep(dataCache)
+    const _editingNodes = [...editingNodes]
+    this._addChildNode(item.id, _dataCache, _editingNodes)
+    this.setState({ dataCache: _dataCache, editingNodes: _editingNodes })
+  }
   // 编辑节点
-  editNode = itemId => {}
+  editNode = item => {
+    const _editNodes = [...this.state.editNodes]
+    const _editingNodes = [...this.state.editingNodes]
+    _editNodes.push(item)
+    _editingNodes.push(item)
+    this.setState({ editNodes: _editNodes, editingNodes: _editingNodes })
+  }
+  // 同步编辑值
+  onValueChange = (value, itemId) => {
+    this.setState({
+      editingNodes: this.state.editingNodes
+        .filter(item => item.id !== itemId)
+        .concat(
+          Object.assign({}, this.state.editingNodes.find(item => item.id === itemId), {
+            title: value
+          })
+        )
+    })
+  }
+  // 取消编辑节点
+  _cancelEditNode = (itemId, data, nodeBeforeEdit) => {
+    data.forEach((d, index) => {
+      if (d.id === itemId) {
+        d.title = nodeBeforeEdit.title
+      } else {
+        if (d.children) {
+          this._cancelEditNode(itemId, d.children, nodeBeforeEdit)
+        }
+      }
+    })
+  }
+  cancelEditNode = itemId => {
+    const { editNodes, dataCache, editingNodes } = this.state
+    const nodeBeforeEdit = editNodes.find(node => node.id === itemId)
+    const _dataCache = cloneDeep(dataCache)
+    this._cancelEditNode(itemId, _dataCache, nodeBeforeEdit)
+    this.setState({
+      dataCache: _dataCache,
+      editNodes: editNodes.filter(node => node.id !== itemId),
+      editingNodes: editingNodes.filter(node => node.id !== itemId)
+    })
+  }
+  // 保存编辑
+  _saveEditNode = (itemId, data, nodeEdited) => {
+    data.forEach((d, index) => {
+      if (d.id === itemId) {
+        d.title = nodeEdited.title
+        delete d.status
+      } else {
+        if (d.children) {
+          this._saveEditNode(itemId, d.children, nodeEdited)
+        }
+      }
+    })
+  }
+  saveEditNode = itemId => {
+    const { editNodes, dataCache, editingNodes } = this.state
+    const nodeEdited = editingNodes.find(node => node.id === itemId)
+    const _dataCache = cloneDeep(dataCache)
+    this._saveEditNode(itemId, _dataCache, nodeEdited)
+    this.setState({
+      dataCache: _dataCache,
+      editNodes: editNodes.filter(node => node.id !== itemId),
+      editingNodes: editingNodes.filter(node => node.id !== itemId)
+    })
+  }
   // 删除节点
-  deleteNode = itemId => {}
+  _deleteNode = (itemId, data) => {
+    data.forEach((d, index) => {
+      if (d.id === itemId) {
+        data.splice(index, 1)
+      } else {
+        if (d.children) {
+          this._deleteNode(itemId, d.children)
+        }
+      }
+    })
+  }
+  deleteNode = itemId => {
+    const { dataCache } = this.state
+    const _dataCache = cloneDeep(dataCache)
+    this._deleteNode(itemId, _dataCache)
+    this.setState({ dataCache: _dataCache })
+  }
   // 渲染右键菜单
-  renderRightClickMenu = itemId => {
+  renderRightClickMenu = item => {
     return (
-      itemId === this.state.showRightClickMenu &&
-      <ul className='right-click-menu'>
-        <li onClick={() => this.addSiblingNode(itemId)}>添加节点</li>
-        <li onClick={() => this.addChildNode()}>添加子节点</li>
-        <li onClick={() => this.editNode()}>编辑</li>
-        <li onClick={() => this.deleteNode()}>删除</li>
-      </ul>
+      item.id === this.state.showRightClickMenu && (
+        <ul className='right-click-menu'>
+          <li onClick={() => this.addSiblingNode(item.id)}>添加节点</li>
+          <li onClick={() => this.addChildNode(item)}>添加子节点</li>
+          <li onClick={() => this.editNode(item)}>编辑</li>
+          <li onClick={() => this.deleteNode(item.id)}>删除</li>
+        </ul>
+      )
     )
   }
   renderTree (data) {
@@ -134,20 +262,20 @@ export default class TreeNode extends Component {
       onClick,
       highlightable
     } = this.props
-    const { highlight } = this.state
+    const { highlight, editNodes, editingNodes } = this.state
+
     return (
       <ul>
         {data.map(item => {
           const checked = this.getItem('checked', item)
           const expanded = this.getItem('expanded', item)
-
           const itemStyle = classNames(
             dragNode === item.id && dragNodePosition === 0 && 'dragTo',
             dragNode === item.id && dragNodePosition === -1 && 'dragToGapTop',
             dragNode === item.id && dragNodePosition === 1 && 'dragToGapBottom',
             this.props.checkable && 'has_checkbox'
           )
-
+          console.log(editNodes.map(node => node.id), item.id)
           const itemContainerStyle = classNames(withLine && 'with-line')
 
           return (
@@ -170,8 +298,8 @@ export default class TreeNode extends Component {
                   : withLine && this.renderItemIcon()}
               </span>
 
-              {this.props.checkable
-                ? <Checkbox
+              {this.props.checkable ? (
+                <Checkbox
                   semi={semiChecked.includes(item.id)}
                   checked={checked}
                   onChange={() => this.onCheckChange(checked, item)}
@@ -179,20 +307,51 @@ export default class TreeNode extends Component {
                     onNodeClick && onNodeClick(item)
                     onClick && onClick(item)
                     highlightable &&
-                        this.setState({
-                          highlight: item.id
-                        })
+                      this.setState({
+                        highlight: item.id
+                      })
                     e.stopPropagation()
                   }}
                   highlight={highlight === item.id}
                   text={item.title}
                   disabled={item.disabled}
                 />
-                : <span
+              ) : item.status === 'editable' || editNodes.map(node => node.id).includes(item.id) ? (
+                <div style={{ display: 'flex' }}>
+                  <Input
+                    placeholder='请输入菜单名称'
+                    value={(editingNodes.find(node => node.id === item.id) || {}).title}
+                    onChange={e => {
+                      this.onValueChange(e.target.value, item.id)
+                    }}
+                  />
+                  <span
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      this.saveEditNode(item.id)
+                    }}
+                  >
+                    确定
+                  </span>
+                  <span
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      if (editNodes.map(node => node.id).includes(item.id)) {
+                        this.cancelEditNode(item.id)
+                      } else {
+                        this.cancelAddSiblingNode(item.id)
+                      }
+                    }}
+                  >
+                    取消
+                  </span>
+                </div>
+              ) : (
+                <span
                   style={item.style}
-                  className={`${prefixCls}_item-text ${itemStyle} ${highlight === item.id
-                    ? 'highlight'
-                    : ''}`}
+                  className={`${prefixCls}_item-text ${itemStyle} ${
+                    highlight === item.id ? 'highlight' : ''
+                  }`}
                   onContextMenu={e => {
                     //
                     // if (this.props.editable) {
@@ -211,15 +370,16 @@ export default class TreeNode extends Component {
                     onNodeClick && onNodeClick(item)
                     onClick && onClick(item)
                     highlightable &&
-                        this.setState({
-                          highlight: item.id
-                        })
+                      this.setState({
+                        highlight: item.id
+                      })
                     e.stopPropagation()
                   }}
                 >
                   {this.renderText(item.title)}
-                  {this.renderRightClickMenu(item.id)}
-                </span>}
+                  {this.renderRightClickMenu(item)}
+                </span>
+              )}
               {item.children && item.children.length > 0 && expanded
                 ? this.renderTree(item.children)
                 : null}
@@ -234,10 +394,6 @@ export default class TreeNode extends Component {
   }
   render () {
     const { dataCache } = this.state
-    return (
-      <div>
-        {this.renderTree(dataCache)}
-      </div>
-    )
+    return <div>{this.renderTree(dataCache)}</div>
   }
 }
