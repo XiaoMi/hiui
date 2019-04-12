@@ -4,7 +4,66 @@ import classNames from 'classnames'
 import isEqual from 'lodash/isEqual'
 import cloneDeep from 'lodash/cloneDeep'
 import Input from '../input'
+import Icon from '../icon'
 import uuidv4 from 'uuid/v4'
+
+const highlightData = (data, highlightValue) => {
+  return data.map(item => {
+    if (item.title.includes(highlightValue)) {
+      const index = item.title.indexOf(highlightValue)
+      const beforeStr = item.title.substr(0, index)
+      const afterStr = item.title.substr(index + highlightValue.length)
+      item.title = (
+        <span>
+          {beforeStr}
+          <span style={{ color: '#4284f5' }}>{highlightValue}</span>
+          {afterStr}
+        </span>
+      )
+    }
+    if (item.children) {
+      highlightData(item.children, highlightValue)
+    }
+    return item
+  })
+}
+// 寻找某一节点的父节点
+const getParentId = (id, data) => {
+  let parentId
+  data.forEach(item => {
+    if (item.children) {
+      if (item.children.some(item => item.id === id)) {
+        parentId = item.id
+      } else if (getParentId(id, item.children)) {
+        parentId = getParentId(id, item.children)
+      }
+    }
+  })
+  return parentId
+}
+// 寻找某一节点的所有祖先节点
+const getAncestorIds = (id, data, arr = []) => {
+  if (getParentId(id, data)) {
+    arr.push(getParentId(id, data))
+    getAncestorIds(getParentId(id, data), data, arr)
+  }
+  return arr
+}
+// 收集所有需要展开的节点 id
+const collectExpandId = (data, searchValue, collection = [], allData) => {
+  data.forEach(item => {
+    if (item.title.includes(searchValue)) {
+      const parentIds = getAncestorIds(item.id, allData, [])
+      console.log('parentIds', parentIds)
+      collection.splice(collection.length - 1, 0, ...parentIds)
+      console.log('collection', collection)
+    }
+    if (item.children) {
+      collectExpandId(item.children, searchValue, collection, allData)
+    }
+  })
+  return collection
+}
 export default class TreeNode extends Component {
   constructor (props) {
     super(props)
@@ -16,7 +75,8 @@ export default class TreeNode extends Component {
       // 存储编辑节点编辑前的状态
       editNodes: [],
       // 存储编辑节点的状态
-      editingNodes: []
+      editingNodes: [],
+      searchValue: ''
     }
   }
   static getDerivedStateFromProps (props, state) {
@@ -147,6 +207,8 @@ export default class TreeNode extends Component {
   }
   addChildNode = item => {
     const { dataCache, editingNodes } = this.state
+    const { expandTreeNode } = this.props
+    expandTreeNode(item.id)
     const _dataCache = cloneDeep(dataCache)
     const _editingNodes = [...editingNodes]
     this._addChildNode(item.id, _dataCache, _editingNodes)
@@ -275,7 +337,6 @@ export default class TreeNode extends Component {
             dragNode === item.id && dragNodePosition === 1 && 'dragToGapBottom',
             this.props.checkable && 'has_checkbox'
           )
-          console.log(editNodes.map(node => node.id), item.id)
           const itemContainerStyle = classNames(withLine && 'with-line')
 
           return (
@@ -393,7 +454,27 @@ export default class TreeNode extends Component {
     return text
   }
   render () {
-    const { dataCache } = this.state
-    return <div>{this.renderTree(dataCache)}</div>
+    const { dataCache, searchValue } = this.state
+    return (
+      <div>
+        <div className='hi-tree_searcher'>
+          <Input
+            value={this.state.searchValue}
+            type='text'
+            placeholder='关键词搜索'
+            onChange={e => {
+              this.setState({ searchValue: e.target.value })
+              this.props.setExpandTreeNodes(
+                collectExpandId(dataCache, e.target.value, [], dataCache)
+              )
+            }}
+            append={<Icon name='search' style={{ color: '#4284F5', fontSize: '24px' }} />}
+            style={{ width: '250px' }}
+          />
+        </div>
+
+        {this.renderTree(highlightData(cloneDeep(dataCache), searchValue))}
+      </div>
+    )
   }
 }

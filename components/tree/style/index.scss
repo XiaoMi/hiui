@@ -3,6 +3,13 @@ $tree: 'hi-tree' !default;
 
 .hi-tree {
   font-size: 14px;
+  .hi-tree_searcher {
+    padding-left: 15px;
+    margin-bottom: 27px;
+    .hi-input--append {
+      line-height: 32px;
+    }
+  }
 
   ul,
   li {
