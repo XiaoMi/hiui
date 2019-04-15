@@ -1,12 +1,28 @@
 import React, { Component } from 'react'
-import Checkbox from '../table/checkbox/index'
+// import Checkbox from '../table/checkbox/index'
 import classNames from 'classnames'
 import isEqual from 'lodash/isEqual'
 import cloneDeep from 'lodash/cloneDeep'
 import Input from '../input'
 import Icon from '../icon'
 import uuidv4 from 'uuid/v4'
+import TreeItem from './TreeItem'
 
+// const treeNodeSource = {
+//   beginDrag(props) {
+//     return { id: props.item.id }
+//   }
+// }
+// function collect(connect, monitor) {
+//   return {
+//     connectDragSource: connect.dragSource(),
+//     isDragging: monitor.isDragging()
+//   }
+// }
+// const DragSourceWrapper = source => {
+//   return DragSource(Types.TreeNode, treeNodeSource, collect)(source)
+// }
+// const DragTargetWrapper = source => {}
 const highlightData = (data, highlightValue) => {
   return data.map(item => {
     if (item.title.includes(highlightValue)) {
@@ -64,6 +80,7 @@ const collectExpandId = (data, searchValue, collection = [], allData) => {
   })
   return collection
 }
+// const TreeNoder = DragSourceWrapper(TreeItem)
 export default class TreeNode extends Component {
   constructor (props) {
     super(props)
@@ -119,7 +136,7 @@ export default class TreeNode extends Component {
     this.props.onCheckChange(checked, item)
   }
 
-  onExpanded (expanded, item) {
+  onExpanded = (expanded, item) => {
     this.props.onExpanded(expanded, item)
   }
   nodeClick = item => {
@@ -312,7 +329,24 @@ export default class TreeNode extends Component {
       )
     )
   }
-  renderTree (data) {
+  //* *** */
+  onSetHighlight = item => {
+    this.setState({
+      highlight: item.id
+    })
+  }
+  showRightClickMenu = item => {
+    this.setState({
+      showRightClickMenu: item.id,
+      highlight: item.id
+    })
+  }
+  closeRightClickMenu = () => {
+    this.setState({
+      showRightClickMenu: null
+    })
+  }
+  renderTree = data => {
     const {
       draggable,
       prefixCls,
@@ -322,7 +356,8 @@ export default class TreeNode extends Component {
       semiChecked,
       onNodeClick,
       onClick,
-      highlightable
+      highlightable,
+      checkable
     } = this.props
     const { highlight, editNodes, editingNodes } = this.state
 
@@ -340,112 +375,144 @@ export default class TreeNode extends Component {
           const itemContainerStyle = classNames(withLine && 'with-line')
 
           return (
-            <li
-              onDragStart={this.onDragStart.bind(this, item, data)}
-              onDragEnter={this.onDragEnter.bind(this, item, data)}
-              onDragOver={this.onDragOver.bind(this, item, data)}
-              onDragLeave={this.onDragLeave.bind(this, item, data)}
-              onDrop={this.onDrop.bind(this, item, data)}
-              draggable={draggable}
+            <TreeItem
               key={item.id}
-              className={itemContainerStyle}
-            >
-              <span
-                onClick={() => this.onExpanded(expanded, item)}
-                className={`${prefixCls}_item-icon`}
-              >
-                {item.children && item.children.length > 0
-                  ? this.renderSwitcher(expanded)
-                  : withLine && this.renderItemIcon()}
-              </span>
-
-              {this.props.checkable ? (
-                <Checkbox
-                  semi={semiChecked.includes(item.id)}
-                  checked={checked}
-                  onChange={() => this.onCheckChange(checked, item)}
-                  onTitleClick={e => {
-                    onNodeClick && onNodeClick(item)
-                    onClick && onClick(item)
-                    highlightable &&
-                      this.setState({
-                        highlight: item.id
-                      })
-                    e.stopPropagation()
-                  }}
-                  highlight={highlight === item.id}
-                  text={item.title}
-                  disabled={item.disabled}
-                />
-              ) : item.status === 'editable' || editNodes.map(node => node.id).includes(item.id) ? (
-                <div style={{ display: 'flex' }}>
-                  <Input
-                    placeholder='请输入菜单名称'
-                    value={(editingNodes.find(node => node.id === item.id) || {}).title}
-                    onChange={e => {
-                      this.onValueChange(e.target.value, item.id)
-                    }}
-                  />
-                  <span
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => {
-                      this.saveEditNode(item.id)
-                    }}
-                  >
-                    确定
-                  </span>
-                  <span
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => {
-                      if (editNodes.map(node => node.id).includes(item.id)) {
-                        this.cancelEditNode(item.id)
-                      } else {
-                        this.cancelAddSiblingNode(item.id)
-                      }
-                    }}
-                  >
-                    取消
-                  </span>
-                </div>
-              ) : (
-                <span
-                  style={item.style}
-                  className={`${prefixCls}_item-text ${itemStyle} ${
-                    highlight === item.id ? 'highlight' : ''
-                  }`}
-                  onContextMenu={e => {
-                    //
-                    // if (this.props.editable) {
-                    //   e.preventDefault()
-                    // }
-                    e.preventDefault()
-                    this.setState({
-                      showRightClickMenu: item.id,
-                      highlight: item.id
-                    })
-                  }}
-                  onClick={e => {
-                    this.setState({
-                      showRightClickMenu: null
-                    })
-                    onNodeClick && onNodeClick(item)
-                    onClick && onClick(item)
-                    highlightable &&
-                      this.setState({
-                        highlight: item.id
-                      })
-                    e.stopPropagation()
-                  }}
-                >
-                  {this.renderText(item.title)}
-                  {this.renderRightClickMenu(item)}
-                </span>
-              )}
-              {item.children && item.children.length > 0 && expanded
-                ? this.renderTree(item.children)
-                : null}
-            </li>
+              prefixCls={prefixCls}
+              draggable={draggable}
+              checked={checked}
+              highlight={highlight}
+              highlightable={highlightable}
+              editNodes={editNodes}
+              editingNodes={editingNodes}
+              expanded={expanded}
+              itemStyle={itemStyle}
+              itemContainerStyle={itemContainerStyle}
+              semiChecked={semiChecked}
+              checkable={checkable}
+              onExpanded={this.onExpanded}
+              onValueChange={this.onValueChange}
+              renderTree={this.renderTree}
+              renderSwitcher={this.renderSwitcher}
+              cancelAddSiblingNode={this.cancelAddSiblingNode}
+              renderRightClickMenu={this.renderRightClickMenu}
+              renderText={this.renderText}
+              onCheckChange={this.onCheckChange}
+              saveEditNode={this.saveEditNode}
+              renderItemIcon={this.renderItemIcon}
+              onNodeClick={onNodeClick}
+              onClick={onClick}
+              onSetHighlight={this.onSetHighlight}
+              showRightClickMenu={this.showRightClickMenu}
+              closeRightClickMenu={this.closeRightClickMenu}
+              item={item}
+            />
           )
+          //   <li
+          //     onDragStart={this.onDragStart.bind(this, item, data)}
+          //     onDragEnter={this.onDragEnter.bind(this, item, data)}
+          //     onDragOver={this.onDragOver.bind(this, item, data)}
+          //     onDragLeave={this.onDragLeave.bind(this, item, data)}
+          //     onDrop={this.onDrop.bind(this, item, data)}
+          //     draggable={draggable}
+          //     key={item.id}
+          //     className={itemContainerStyle}
+          //   >
+          //     <span
+          //       onClick={() => this.onExpanded(expanded, item)}
+          //       className={`${prefixCls}_item-icon`}
+          //     >
+          //       {item.children && item.children.length > 0
+          //         ? this.renderSwitcher(expanded)
+          //         : withLine && this.renderItemIcon()}
+          //     </span>
+
+          //     {this.props.checkable ? (
+          //       <Checkbox
+          //         semi={semiChecked.includes(item.id)}
+          //         checked={checked}
+          //         onChange={() => this.onCheckChange(checked, item)}
+          //         onTitleClick={e => {
+          //           onNodeClick && onNodeClick(item)
+          //           onClick && onClick(item)
+          //           highlightable &&
+          //             this.setState({
+          //               highlight: item.id
+          //             })
+          //           e.stopPropagation()
+          //         }}
+          //         highlight={highlight === item.id}
+          //         text={item.title}
+          //         disabled={item.disabled}
+          //       />
+          //     ) : item.status === 'editable' || editNodes.map(node => node.id).includes(item.id) ? (
+          //       <div style={{ display: 'flex' }}>
+          //         <Input
+          //           placeholder='请输入菜单名称'
+          //           value={(editingNodes.find(node => node.id === item.id) || {}).title}
+          //           onChange={e => {
+          //             this.onValueChange(e.target.value, item.id)
+          //           }}
+          //         />
+          //         <span
+          //           style={{ cursor: 'pointer' }}
+          //           onClick={() => {
+          //             this.saveEditNode(item.id)
+          //           }}
+          //         >
+          //           确定
+          //         </span>
+          //         <span
+          //           style={{ cursor: 'pointer' }}
+          //           onClick={() => {
+          //             if (editNodes.map(node => node.id).includes(item.id)) {
+          //               this.cancelEditNode(item.id)
+          //             } else {
+          //               this.cancelAddSiblingNode(item.id)
+          //             }
+          //           }}
+          //         >
+          //           取消
+          //         </span>
+          //       </div>
+          //     ) : (
+          //       <span
+          //         style={item.style}
+          //         className={`${prefixCls}_item-text ${itemStyle} ${
+          //           highlight === item.id ? 'highlight' : ''
+          //         }`}
+          //         onContextMenu={e => {
+          //           //
+          //           // if (this.props.editable) {
+          //           //   e.preventDefault()
+          //           // }
+          //           e.preventDefault()
+          //           this.setState({
+          //             showRightClickMenu: item.id,
+          //             highlight: item.id
+          //           })
+          //         }}
+          //         onClick={e => {
+          //           this.setState({
+          //             showRightClickMenu: null
+          //           })
+          //           onNodeClick && onNodeClick(item)
+          //           onClick && onClick(item)
+          //           highlightable &&
+          //             this.setState({
+          //               highlight: item.id
+          //             })
+          //           e.stopPropagation()
+          //         }}
+          //       >
+          //         {this.renderText(item.title)}
+          //         {this.renderRightClickMenu(item)}
+          //       </span>
+          //     )}
+          //     {item.children && item.children.length > 0 && expanded
+          //       ? this.renderTree(item.children)
+          //       : null}
+          //   </li>
+          // )
         })}
       </ul>
     )

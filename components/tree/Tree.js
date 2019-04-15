@@ -5,6 +5,8 @@ import PropTypes from 'prop-types'
 import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
 import { calcDropPosition, deepClone, getChildren, getDisabled, getAll } from './util'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 
 import './style/index'
 const dealData = (data, tempData = {}, parent = null) => {
@@ -27,7 +29,7 @@ const dealData = (data, tempData = {}, parent = null) => {
   })
 }
 
-export default class Tree extends Component {
+class Tree extends Component {
   constructor (props) {
     super(props)
 
@@ -357,23 +359,23 @@ export default class Tree extends Component {
   renderTreeNodes (data) {
     const {
       prefixCls,
-      draggable,
+      // draggable,
       checkable,
       closeIcon,
       openIcon,
       withLine,
       highlightable
     } = this.props
-    const { dragNode, dragNodePosition } = this.state
+    // const { dragNode, dragNodePosition } = this.state
 
     return (
       <TreeNode
-        draggable={draggable || undefined}
-        onDragStart={this.onDragStart}
-        onDragEnter={this.onDragEnter}
-        onDragOver={this.onDragOver}
-        onDragLeave={this.onDragLeave}
-        onDrop={this.onDrop}
+        // draggable={draggable || undefined}
+        // onDragStart={this.onDragStart}
+        // onDragEnter={this.onDragEnter}
+        // onDragOver={this.onDragOver}
+        // onDragLeave={this.onDragLeave}
+        // onDrop={this.onDrop}
         checked={this.props.checkedKeys || []}
         onNodeClick={this.props.onNodeClick}
         onClick={this.props.onClick}
@@ -386,8 +388,8 @@ export default class Tree extends Component {
         onHightLightChange={this.props.onHightLightChange}
         onExpanded={this.onExpanded.bind(this)}
         data={data}
-        dragNodePosition={dragNodePosition}
-        dragNode={dragNode}
+        // dragNodePosition={dragNodePosition}
+        // dragNode={dragNode}
         prefixCls={prefixCls}
         checkable={checkable}
         highlightable={highlightable}
@@ -411,3 +413,5 @@ export default class Tree extends Component {
     )
   }
 }
+
+export default DragDropContext(HTML5Backend)(Tree)
