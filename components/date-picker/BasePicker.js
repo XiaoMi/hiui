@@ -59,7 +59,7 @@ class BasePicker extends Component {
     weekOffset: 0
   }
   _parseProps (props, callback) {
-    let {value, showTime, type, format, localeDatas} = props
+    let {value, showTime, type, format, localeDatas, weekOffset} = props
     format = format || FORMATS[type]
     let date = new Date() // 当前时间
     let noText = false
@@ -89,8 +89,8 @@ class BasePicker extends Component {
         date = {startDate: value.start, endDate: value.end}
       }
     }
-    const leftText = noText ? '' : formatterDate(type, date.startDate || date, format, showTime, localeDatas)
-    const rightText = noText ? '' : formatterDate(type, date.endDate || date, format, showTime, localeDatas)
+    const leftText = noText ? '' : formatterDate(type, date.startDate || date, format, showTime, localeDatas, weekOffset)
+    const rightText = noText ? '' : formatterDate(type, date.endDate || date, format, showTime, localeDatas, weekOffset)
     this.setState({
       texts: [leftText, rightText],
       date,
@@ -113,9 +113,12 @@ class BasePicker extends Component {
     this.calcPanelPos(rect)
   }
   calcPanelPos (rect) {
-    let _w = this.props.type.indexOf('range') !== -1 ? 578 : 288
-    let _h = this.props.showTime ? 391 : 298
-    this.props.type === 'time' && (_h = 232)
+    const {showTime, type} = this.props
+    let _w = type.indexOf('range') !== -1 ? 578 : 288
+    let _h = 298
+    if (type === 'daterange' && showTime) {
+      _h = 344
+    }
     const _cw = document.body.clientWidth || document.documentElement.clientWidth
     const _ch = document.body.clientHeight || document.documentElement.clientHeight
     const _st = document.body.scrollTop || document.documentElement.scrollTop
@@ -139,11 +142,11 @@ class BasePicker extends Component {
     this._parseProps(nextProps)
   }
   onPick (date, showPanel) {
-    const {type, showTime, localeDatas} = this.props
+    const {type, showTime, localeDatas, weekOffset} = this.props
     const {format} = this.state
     this.setState({
       date,
-      texts: [formatterDate(type, date.startDate || date, format, showTime, localeDatas), formatterDate(type, date.endDate, format, showTime, localeDatas)],
+      texts: [formatterDate(type, date.startDate || date, format, showTime, localeDatas, weekOffset), formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset)],
       showPanel,
       isFocus: false
     }, () => {
@@ -176,12 +179,12 @@ class BasePicker extends Component {
     }
   }
   timeConfirm (date, onlyTime) {
-    const {type, showTime, onChange, localeDatas} = this.props
+    const {type, showTime, onChange, localeDatas, weekOffset} = this.props
     let {format} = this.state
     onlyTime && (format = FORMATS['time'])
     this.setState({
       date: date,
-      texts: [formatterDate(type, date.startDate || date, format, showTime, localeDatas), formatterDate(type, date.endDate, format, showTime, localeDatas)],
+      texts: [formatterDate(type, date.startDate || date, format, showTime, localeDatas, weekOffset), formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset)],
       showPanel: false,
       isFocus: false
     })
@@ -195,11 +198,11 @@ class BasePicker extends Component {
   }
   timeCancel () {
     const {tempDate, format} = this.state
-    const {type, showTime, localeDatas} = this.props
+    const {type, showTime, localeDatas, weekOffset} = this.props
     if (tempDate) {
       this.setState({
         date: new Date(tempDate),
-        text: formatterDate(type, new Date(tempDate), format, showTime, localeDatas),
+        text: formatterDate(type, new Date(tempDate), format, showTime, localeDatas, weekOffset),
         showPanel: false
       })
     } else {
@@ -273,11 +276,13 @@ class BasePicker extends Component {
   renderRangeInput () {
     const {
       localeDatas,
-      disabled
+      disabled,
+      showTime
     } = this.props
     const _cls = classNames(
       'hi-datepicker__input',
       'hi-datepicker__input--range',
+      showTime && 'hi-datepicker__input--range-time',
       disabled && 'hi-datepicker__input--disabled'
     )
     return (

@@ -86,13 +86,18 @@ class DatePanel extends Component {
     const start = type === 'year' ? val - 4 : 1
     let trs = [[], [], [], []]
     let num = 0
+    const currentYear = new Date().getFullYear()
+    const currentMonth = new Date().getMonth()
     for (let i = 0; i < 4; i++) {
       let row = trs[i]
       for (let j = 0; j < 3; j++) {
         let col = row[j] || (row[j] = {type: 'normal'})
         const y = start + num
-        if (y === val) {
+        if (y === currentYear || y === (currentMonth + 1)) {
           col.type = 'today'
+        }
+        if (y === val) {
+          col.type = 'current'
         }
         type === 'year' ? col.text = y : col.text = this.props.localeDatas.datePicker.month[y - 1]
         col.value = y
@@ -183,13 +188,13 @@ class DatePanel extends Component {
     }
   }
   onDatePick (date) {
-    const {type} = this.props
+    const {type, showTime} = this.props
     const {hours, minutes, seconds} = deconstructDate(this.state.date)
     if (type === 'timeperiod') {
       this.props.onPick({startDate: date, endDate: addHours(this.state.date, 4)}, true)
     } else {
       date.setHours(hours, minutes, seconds)
-      this.props.onPick(date, true)
+      this.props.onPick(date, showTime)
     }
   }
   onTimePeriodPick (periodS, periodE) {
@@ -222,6 +227,7 @@ class DatePanel extends Component {
     switch (currentView) {
       case 'date':
       case 'timeperiod':
+      case 'week':
         component = (<Calender
           date={date}
           weekOffset={weekOffset}
@@ -290,7 +296,7 @@ class DatePanel extends Component {
             showTime && <TimePanel
               {...this.props}
               onPick={this.onTimePick.bind(this)}
-              date={date}
+              // date={date}
               timeConfirm={this.timeConfirm.bind(this)}
               timeCancel={this.timeCancel.bind(this)}
             />

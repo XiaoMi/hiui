@@ -30,7 +30,7 @@ $basic-color: #4284f5 !default;
     }
 
     &--range {
-      width: 400px;
+      width: 320px;
 
       input {
         flex: 0 1 40%;
@@ -162,7 +162,7 @@ $basic-color: #4284f5 !default;
   }
 
   &__period-item {
-    padding: 6px;
+    padding: 8px;
     cursor: pointer;
 
     &:hover {
@@ -209,69 +209,6 @@ $basic-color: #4284f5 !default;
     z-index: 2;
     line-height: 32px;
   }
-  // &__time-header {
-  //   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
-  //   padding: 15px;
-  //   display: flex;
-  //   justify-content: space-around;
-  //   font-size: 14px;
-
-  //   span {
-  //     flex: 0 0 50%;
-  //     text-align: center;
-  //     color: rgba(153, 153, 153, 1);
-  //   }
-
-  //   em {
-  //     flex: 0 0 1px;
-  //     background: rgba(128, 128, 128, 0.2);
-  //   }
-
-  //   &--active {
-  //     color: $basic-color;
-  //   }
-  // }
-
-  // &__time-footer {
-  //   clear: both;
-  //   text-align: center;
-  //   height: 40px;
-  //   line-height: 40px;
-  //   cursor: pointer;
-  //   color: $basic-color;
-  //   border-top: 1px solid #f2f2f2;
-  // }
-
-  // .hi-timepicker {
-  //   width: 252px;
-
-
-  //   .hi-timepicker__timebody {
-  //     height: 265px;
-  //   }
-
-  //   &__list {
-  //     height: 265px;
-  //     width: 104px;
-
-  //     &:nth-child(2) {
-  //       left: 84px;
-  //     }
-
-  //     &:nth-child(3) {
-  //       left: 168px;
-  //       width: 84px;
-  //     }
-  //   }
-
-  //   &__item {
-  //     width: 84px;
-
-  //     &:last-child {
-  //       height: 38px;
-  //     }
-  //   }
-  // }
 
   &__calender-container {
     padding: 17px 18px 15px;
@@ -331,17 +268,24 @@ $basic-color: #4284f5 !default;
     }
 
     &--current-week {
-      .hi-datepicker__content {
-        background: map-get(get-palette($basic-color), '10');
-      }
+      // .hi-datepicker__content {
+      //   background: map-get(get-palette($basic-color), '10');
+      // }
 
-      .week-highlight {
+      .range-se {
         .hi-datepicker__content {
           background: $basic-color;
         }
       }
     }
   }
+
+  // &__content {
+  //   margin: 0 3px;
+  //   background: #fff;
+  //   color: #fff;
+  //   border-radius: 2px;
+  // }
 
   &__cell {
     cursor: pointer;
@@ -355,7 +299,16 @@ $basic-color: #4284f5 !default;
       .hi-datepicker__content {
         cursor: not-allowed;
         color: map-get(get-palette($basic-color), 'g80');
-        background: map-get(get-palette($basic-color), 'g70');
+        background: rgba(246, 246, 246, 1);
+      }
+    }
+
+    &.range-se:not(.prev):not(.next) {
+      .hi-datepicker__content {
+        margin: 0 3px;
+        background: $basic-color;
+        color: #fff;
+        border-radius: 2px;
       }
     }
 
@@ -366,26 +319,15 @@ $basic-color: #4284f5 !default;
       }
     }
 
-    &.range-start,
-    &.range-end {
-      .hi-datepicker__content {
-        margin: 0 3px;
-        background: $basic-color;
-        color: #fff;
-        border-radius: 2px;
-      }
-    }
-
-    &.in-range {
-      .hi-datepicker__content {
-        background: rgba(66, 132, 245, 0.2);
-      }
-    }
+    // &.in-range:not(.next):not(.prev) {
+    //   .hi-datepicker__content {
+    //     background: rgba(66, 132, 245, 0.1);
+    //   }
+    // }
 
     &.today:not(.in-range) {
       .hi-datepicker__text {
         border: 1px solid $basic-color;
-        border-radius: 2px;
         opacity: 0.8;
       }
     }
@@ -403,6 +345,7 @@ $basic-color: #4284f5 !default;
     width: 24px;
     height: 24px;
     box-sizing: border-box;
+    border-radius: 2px;
   }
 
   &__shortcuts {
@@ -617,12 +560,20 @@ $basic-color: #4284f5 !default;
       &__row {
         &--current-week {
           .hi-datepicker__content {
-            background: map-get(get-palette($value), '10');
+            // TODO: 色板值
+            // background: map-get(get-palette($value), '10');
+            background: rgba(66, 132, 245, 0.1);
           }
 
-          &.week-highlight {
+          .range-se {
             .hi-datepicker__content {
               background: map-get(get-palette($value), '50');
+              color: #fff;
+              margin: 0 3px;
+              border-radius: 2px;
+            }
+
+            .hi-datepicker__text {
               color: #fff;
             }
           }
@@ -637,25 +588,24 @@ $basic-color: #4284f5 !default;
           }
         }
 
-        &.in-range {
+        &.in-range:not(.next):not(.prev) {
           .hi-datepicker__content {
             // TODO: 色板值
             // background: map-get(get-palette($value), '10');
-            background: rgba(66, 142, 245, 0.12);
+            background: rgba(66, 142, 245, 0.1);
           }
         }
 
-        &.range-start,
-        &.range-end {
+        &.range-se:not(.next):not(.prev) {
           .hi-datepicker__content {
             background: map-get(get-palette($value), '50');
           }
         }
 
-        &:hover:not(.today):not(.current):not(.in-range):not(.range-start) {
+        &:hover:not(.today):not(.current):not(.in-range):not(.range-se):not(.disabled) {
           .hi-datepicker__text {
             // TODO: 色板值
-            background: rgba(66, 142, 245, 0.12);
+            background: rgba(66, 142, 245, 0.1);
             // background: map-get(get-palette($value), '10');
           }
         }

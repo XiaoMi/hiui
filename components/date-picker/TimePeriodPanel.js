@@ -11,7 +11,6 @@ export default class TimePeriodPanel extends Component {
       '16:00 ~ 20:00',
       '20:00 ~ 24:00'
     ]
-    console.log(this.props.date)
     return <div
       className='hi-datepicker__time-period'
     >

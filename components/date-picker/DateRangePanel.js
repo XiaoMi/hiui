@@ -199,18 +199,17 @@ class DatePanel extends Component {
   }
   pick (startDate, endDate) {
     const {range} = this.state
-    const {onPick} = this.props
+    const {onPick, showTime} = this.props
     range.startDate = startDate
     range.endDate = endDate
     this.setState({
-      range
+      range,
+      leftDate: startDate || this.state.leftDate,
+      rightDate: endDate || this.state.rightDate
     })
     if (endDate) {
-      onPick(range, true)
+      onPick(range, showTime)
     }
-    // if (endDate && !showTime) {
-    //   onPick(range)
-    // }
   }
   onMouseMoveHandler (date) {
     const {range} = this.state

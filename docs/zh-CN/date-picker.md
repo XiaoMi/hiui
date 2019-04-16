@@ -87,13 +87,32 @@ render () {
 
 ```js
 render () {
+  const Row = Grid.Row
+  const Col = Grid.Col
   return (
-    <DatePicker
-      type='week' 
-      onChange={(d) => {
-        console.log('周选择', d)
-      }}
-    />
+    <div>
+     <Row gutter={true}>
+        <Col span={6}>
+          <p>周一起始</p>
+          <DatePicker
+            type='week' 
+            weekOffset={1}
+            onChange={(d) => {
+              console.log('周选择', d)
+            }}
+          />
+        </Col>
+        <Col span={6}>
+          <p>周日起始</p>
+          <DatePicker
+            type='week' 
+            onChange={(d) => {
+              console.log('周选择', d)
+            }}
+          />
+        </Col>
+      </Row>
+    </div>
   )
 }
 ```

@@ -6,7 +6,6 @@ class TimePanel extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      date: new Date(props.date),
       style: props.style
     }
     if (this.props.type !== 'time') {
@@ -18,21 +17,15 @@ class TimePanel extends Component {
   onTimePick (date, bol) {
     const {showTime} = this.props
     if (showTime) {
-      this.setState({
-        date
-      })
       this.props.onPick(date, true)
     } else {
-      this.setState({
-        date
-      })
       this.props.onPick(date, bol)
     }
   }
   render () {
     return (
       <div className='hi-timepicker' style={this.state.style}>
-        <Time date={this.state.date} onPick={this.onTimePick.bind(this)} onlyTime={this.props.type === 'time'} />
+        <Time date={this.props.date} onPick={this.onTimePick.bind(this)} onlyTime={this.props.type === 'time'} />
         {
           // this.props.type === 'time' && (
           //   <div className='hi-timepicker__footer'>

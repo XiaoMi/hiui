@@ -18,13 +18,9 @@ class Calender extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      range: this.props.range,
-      activeRange: false,
       rows: [[], [], [], [], [], []]
     }
-  }
-  static defaultProps = {
-    weekOffset: 0
+    this.weekNum = 0
   }
   _getTime (week, y, m) {
     const r = new Date(y, m - 1, 1)
@@ -33,18 +29,17 @@ class Calender extends Component {
   }
 
   getRows () {
-    let {type, range, date, minDate, maxDate, weekOffset} = this.props
-    let _date = new Date(new Date(date).getTime())
-    let {year, month, week} = deconstructDate(_date)
+    let {type, range, date: _date, minDate, maxDate, weekOffset} = this.props
+    let {year, month, week} = deconstructDate(_date, weekOffset)
     let {endDate, startDate} = range || {startDate: null, endDate: null}
     // *  dayCount: 当月天数
     // *  lastMonthDayCount: 上月总天数
     // *  firstDayWeek: 当月第一天是周几
     let firstDayWeek = getDay(startOfMonth(_date)) - weekOffset
     if (firstDayWeek <= 0) { // 如果为0 代表该月第一天是周日，在日历上需要第二行开始显示
-      firstDayWeek = 7 - weekOffset
+      firstDayWeek = 7
     }
-    const _time = this._getTime(firstDayWeek, year, month)// 当前日期面板中第一个日期的具体毫秒数(指向上一个月)
+    const startTimeByCurrentPanel = this._getTime(firstDayWeek, year, month)// 当前日期面板中第一个日期的具体毫秒数(指向上一个月)
     const dayCount = getDaysInMonth(_date)
 
     let lastMonthDayCount = getDaysInMonth(subMonths(_date, 1)) // 上月总天数
@@ -55,48 +50,40 @@ class Calender extends Component {
       for (let j = 0; j < 7; j++) {
         let col = row[j] || (row[j] = {type: 'normal', range: false, rangeStart: false, rangeEnd: false})
         col.type = 'normal'
-        const time = _time + DAY_MILLISECONDS * (i * 7 + j) // 当前日期的毫秒数
-        if (range && (isSameDay(range.startDate, time) || isSameDay(range.endDate, time))) {
-          console.log(_date, time, range)
-          col.type = 'current'
-        }
+        const currentTime = startTimeByCurrentPanel + DAY_MILLISECONDS * (i * 7 + j) // 当前日期的毫秒数
         if (i === 0) { // 处理第一行的日期数据
           if (j >= firstDayWeek) { // 本月
-            col.text = ++count
-            col.value = count
+            col.value = ++count
           } else { // 上月
-            col.text = lastMonthDayCount - firstDayWeek + j + 1
             col.value = lastMonthDayCount - firstDayWeek + j + 1
             col.type = 'prev'
           }
         } else {
-          count++
+          ++count
           if (count <= dayCount) { // 本月
-            col.text = count
             col.value = count
           } else { // 下月
-            col.text = count - dayCount
             col.value = count - dayCount
             col.type = 'next'
           }
         }
-
-        // if (isSameDay(_date, time)) {
-        //   console.log(_date, time, range)
+        // if (range && (isSameDay(range.startDate, currentTime) || isSameDay(range.endDate, currentTime))) {
         //   col.type = 'current'
         // }
-        if (isToday(time)) {
+        if (isToday(currentTime)) {
           col.type = 'today'
         }
-        if (type === 'daterange' || type === 'weekrange') {
-          col.rangeStart = startDate && isSameDay(time, startDate)
-          col.rangeEnd = endDate && isSameDay(time, endDate)
-          // console.log('----',[startDate, endDate].sort(compareAsc(startDate, endDate)))
-          const _ds = [startDate, endDate].sort(compareAsc)
-          col.range = endDate && isWithinRange(time, ..._ds)
-          row.weekNum = getYearWeek(new Date(time))
+        if (isSameDay(_date, currentTime) && !range && type !== 'week') {
+          col.type = 'current'
         }
-        col.disabled = (minDate && compareAsc(time, minDate) === -1) || (maxDate && compareAsc(time, maxDate) === 1)
+        if (type === 'daterange' || type === 'weekrange') {
+          col.rangeStart = startDate && isSameDay(currentTime, startDate)
+          col.rangeEnd = endDate && isSameDay(currentTime, endDate)
+          const _ds = [startDate, endDate].sort(compareAsc)
+          col.range = endDate && isWithinRange(currentTime, ..._ds)
+          row.weekNum = getYearWeek(new Date(currentTime), weekOffset).weekNum
+        }
+        col.disabled = (minDate && compareAsc(currentTime, minDate) === -1) || (maxDate && compareAsc(currentTime, maxDate) === 1)
       }
       if (type === 'week') {
         let _month = month
@@ -115,11 +102,15 @@ class Calender extends Component {
             _month = 1
           }
         }
-        const cw = getYearWeek(new Date(_year, _month - 1, row[1].text))
+        // let num = getDay(new Date(year, 0, 1))
+        // console.log(num)
+        // const weekStart = subDays(date, num-1)
+        const cw = getYearWeek(new Date(_year, _month - 1, row[1].value), weekOffset).weekNum
         let bol = cw === week
-        row[0].range = bol
+        row.forEach(col => {
+          col.range = bol
+        })
         row[0].rangeStart = bol
-        row[6].range = bol
         row[6].rangeEnd = bol
         row.currentWeek = bol
         row.weekNum = cw
@@ -145,13 +136,14 @@ class Calender extends Component {
     if ((td.nodeName !== 'SPAN' && td.nodeName !== 'TD' && td.nodeName !== 'DIV') || td.disabled) return false
     if (cls.indexOf('disabled') !== -1) return false
     const day = parseInt(value)
-    let newDate = new Date(year, month - 1, day)
+    let newDate = new Date(year, month - 1)
     if (cls.indexOf('prev') !== -1) {
       newDate = addMonths(newDate, -1)
     }
     if (cls.indexOf('next') !== -1) {
       newDate = addMonths(newDate, 1)
     }
+    newDate.setDate(day)
     newDate.setHours(hours, minutes, seconds)
     if (type === 'year') {
       year = parseInt(value)
@@ -215,11 +207,9 @@ class Calender extends Component {
         _class.push(td.type)
         break
     }
-    if (td.range) {
-      _class.push('in-range')
-    }
+    (td.range && _class.push('in-range'))
     if (td.rangeStart || td.rangeEnd) {
-      _class.push('week-highlight range-start')
+      _class.push('range-se')
     }
     return _class.join(' ')
   }
@@ -229,7 +219,7 @@ class Calender extends Component {
 
     return week.slice(weekOffset).concat(week.slice(0, weekOffset))
   }
-  weekNum = 0
+
   TRMouseOver (num) {
     const {type} = this.props
     if ((type === 'week' || type === 'weekrange') && this.weekNum !== num) {
@@ -246,7 +236,7 @@ class Calender extends Component {
         onMouseMove={this.handlerMouseMove.bind(this)}
       >
         {
-          (type.indexOf('date') !== -1 || type.indexOf('week') !== -1) && (
+          (type.indexOf('date') !== -1 || type.indexOf('week') !== -1 || type.indexOf('timeperiod') !== -1) && (
             <thead>
               <tr>
                 {
@@ -258,7 +248,7 @@ class Calender extends Component {
             </thead>
           )
         }
-        <tbody style={{cursor: 'pointer'}}>
+        <tbody>
           {
             rows.map((row, index) => {
               return (
@@ -277,7 +267,7 @@ class Calender extends Component {
                         >
                           <div className='hi-datepicker__content' value={cell.value}>
                             <span value={cell.value} className='hi-datepicker__text'>
-                              {cell.text}
+                              {cell.text || cell.value}
                             </span>
                           </div>
                         </td>
@@ -292,5 +282,9 @@ class Calender extends Component {
       </table>
     )
   }
+}
+
+Calender.defaultProps = {
+  weekOffset: 0
 }
 export default Provider(Calender)

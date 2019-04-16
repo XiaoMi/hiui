@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {deconstructDate} from './util'
 import Icon from '../icon'
 import classNames from 'classnames'
+import { isSameDay } from './dateUtil'
 export default class TimePanel extends Component {
   constructor (props) {
     super(props)
@@ -62,6 +63,13 @@ export default class TimePanel extends Component {
     this.hoursList.removeEventListener('scroll', this.hoursScrollEvent)
     this.minutesList.removeEventListener('scroll', this.minutesScrollEvent)
     this.secondsList.removeEventListener('scroll', this.secondsScrollEvent)
+  }
+  componentWillReceiveProps (props) {
+    if (!isSameDay(props.date, this.state.date)) {
+      this.setState({
+        date: props.date
+      })
+    }
   }
   completeScrollTop () {
     const {date} = this.state
