@@ -8,24 +8,9 @@ import Icon from '../icon'
 import uuidv4 from 'uuid/v4'
 import TreeItem from './TreeItem'
 
-// const treeNodeSource = {
-//   beginDrag(props) {
-//     return { id: props.item.id }
-//   }
-// }
-// function collect(connect, monitor) {
-//   return {
-//     connectDragSource: connect.dragSource(),
-//     isDragging: monitor.isDragging()
-//   }
-// }
-// const DragSourceWrapper = source => {
-//   return DragSource(Types.TreeNode, treeNodeSource, collect)(source)
-// }
-// const DragTargetWrapper = source => {}
 const highlightData = (data, highlightValue) => {
   return data.map(item => {
-    if (item.title.includes(highlightValue)) {
+    if (typeof item.title === 'string' && item.title.includes(highlightValue)) {
       const index = item.title.indexOf(highlightValue)
       const beforeStr = item.title.substr(0, index)
       const afterStr = item.title.substr(index + highlightValue.length)
@@ -70,9 +55,9 @@ const collectExpandId = (data, searchValue, collection = [], allData) => {
   data.forEach(item => {
     if (item.title.includes(searchValue)) {
       const parentIds = getAncestorIds(item.id, allData, [])
-      console.log('parentIds', parentIds)
+      // console.log('parentIds', parentIds)
       collection.splice(collection.length - 1, 0, ...parentIds)
-      console.log('collection', collection)
+      // console.log('collection', collection)
     }
     if (item.children) {
       collectExpandId(item.children, searchValue, collection, allData)
@@ -93,6 +78,10 @@ export default class TreeNode extends Component {
       editNodes: [],
       // 存储编辑节点的状态
       editingNodes: [],
+      // 处于拖拽状态的节点
+      draggingNode: null,
+      // 处于目标状态的节点
+      targetNode: null,
       searchValue: ''
     }
   }
@@ -178,7 +167,18 @@ export default class TreeNode extends Component {
       }
     })
   }
-
+  // 设置拖拽中的节点
+  setDraggingNode = itemId => {
+    this.setState({
+      draggingNode: itemId
+    })
+  }
+  // 移除拖拽中的节点
+  removeDraggingNode = () => {
+    this.setState({
+      draggingNode: null
+    })
+  }
   addSiblingNode = itemId => {
     const { dataCache, editingNodes } = this.state
     const _dataCache = cloneDeep(dataCache)
@@ -298,6 +298,57 @@ export default class TreeNode extends Component {
       editingNodes: editingNodes.filter(node => node.id !== itemId)
     })
   }
+  // 删除拖动的节点
+  _delDragNode = (itemId, data) => {
+    data.forEach((d, index) => {
+      if (d.id === itemId) {
+        data.splice(index, 1)
+      } else {
+        if (d.children) {
+          this._delDragNode(itemId, d.children)
+        }
+      }
+    })
+  }
+  // 新增放置的节点
+  _addDropNode = (targetItemId, sourceItemId, data, allData) => {
+    data.forEach((d, index) => {
+      if (d.id === targetItemId) {
+        const sourceNode = this.findNode(sourceItemId, allData)
+        if (!d.children) {
+          d.children = []
+        }
+        d.children.push(sourceNode)
+      } else {
+        if (d.children) {
+          this._addDropNode(targetItemId, sourceItemId, d.children, allData)
+        }
+      }
+    })
+  }
+  findNode = (itemId, data) => {
+    // console.log('allData', data)
+    let node
+    data.forEach((d, index) => {
+      if (d.id === itemId) {
+        node = d
+      } else {
+        if (d.children && this.findNode(itemId, d.children)) {
+          node = this.findNode(itemId, d.children)
+        }
+      }
+    })
+    return node
+  }
+  dropNode = (sourceItem, targetItem) => {
+    const { dataCache } = this.state
+    const _dataCache = cloneDeep(dataCache)
+    this._delDragNode(sourceItem.id, _dataCache)
+    this._addDropNode(targetItem.id, sourceItem.id, _dataCache, dataCache)
+    this.setState({
+      dataCache: _dataCache
+    })
+  }
   // 删除节点
   _deleteNode = (itemId, data) => {
     data.forEach((d, index) => {
@@ -346,6 +397,12 @@ export default class TreeNode extends Component {
       showRightClickMenu: null
     })
   }
+  setTargetNode = id => {
+    this.setState({ targetNode: id })
+  }
+  removeTargetNode = () => {
+    this.setState({ targetNode: null })
+  }
   renderTree = data => {
     const {
       draggable,
@@ -357,9 +414,11 @@ export default class TreeNode extends Component {
       onNodeClick,
       onClick,
       highlightable,
-      checkable
+      checkable,
+      closeExpandedTreeNode,
+      expandTreeNode
     } = this.props
-    const { highlight, editNodes, editingNodes } = this.state
+    const { highlight, editNodes, editingNodes, draggingNode, targetNode } = this.state
 
     return (
       <ul>
@@ -385,6 +444,7 @@ export default class TreeNode extends Component {
               editNodes={editNodes}
               editingNodes={editingNodes}
               expanded={expanded}
+              expandTreeNode={expandTreeNode}
               itemStyle={itemStyle}
               itemContainerStyle={itemContainerStyle}
               semiChecked={semiChecked}
@@ -404,115 +464,17 @@ export default class TreeNode extends Component {
               onSetHighlight={this.onSetHighlight}
               showRightClickMenu={this.showRightClickMenu}
               closeRightClickMenu={this.closeRightClickMenu}
+              dropNode={this.dropNode}
+              setDraggingNode={this.setDraggingNode}
+              removeDraggingNode={this.removeDraggingNode}
+              draggingNode={draggingNode}
+              closeExpandedTreeNode={closeExpandedTreeNode}
+              setTargetNode={this.setTargetNode}
+              targetNode={targetNode}
+              removeTargetNode={this.removeTargetNode}
               item={item}
             />
           )
-          //   <li
-          //     onDragStart={this.onDragStart.bind(this, item, data)}
-          //     onDragEnter={this.onDragEnter.bind(this, item, data)}
-          //     onDragOver={this.onDragOver.bind(this, item, data)}
-          //     onDragLeave={this.onDragLeave.bind(this, item, data)}
-          //     onDrop={this.onDrop.bind(this, item, data)}
-          //     draggable={draggable}
-          //     key={item.id}
-          //     className={itemContainerStyle}
-          //   >
-          //     <span
-          //       onClick={() => this.onExpanded(expanded, item)}
-          //       className={`${prefixCls}_item-icon`}
-          //     >
-          //       {item.children && item.children.length > 0
-          //         ? this.renderSwitcher(expanded)
-          //         : withLine && this.renderItemIcon()}
-          //     </span>
-
-          //     {this.props.checkable ? (
-          //       <Checkbox
-          //         semi={semiChecked.includes(item.id)}
-          //         checked={checked}
-          //         onChange={() => this.onCheckChange(checked, item)}
-          //         onTitleClick={e => {
-          //           onNodeClick && onNodeClick(item)
-          //           onClick && onClick(item)
-          //           highlightable &&
-          //             this.setState({
-          //               highlight: item.id
-          //             })
-          //           e.stopPropagation()
-          //         }}
-          //         highlight={highlight === item.id}
-          //         text={item.title}
-          //         disabled={item.disabled}
-          //       />
-          //     ) : item.status === 'editable' || editNodes.map(node => node.id).includes(item.id) ? (
-          //       <div style={{ display: 'flex' }}>
-          //         <Input
-          //           placeholder='请输入菜单名称'
-          //           value={(editingNodes.find(node => node.id === item.id) || {}).title}
-          //           onChange={e => {
-          //             this.onValueChange(e.target.value, item.id)
-          //           }}
-          //         />
-          //         <span
-          //           style={{ cursor: 'pointer' }}
-          //           onClick={() => {
-          //             this.saveEditNode(item.id)
-          //           }}
-          //         >
-          //           确定
-          //         </span>
-          //         <span
-          //           style={{ cursor: 'pointer' }}
-          //           onClick={() => {
-          //             if (editNodes.map(node => node.id).includes(item.id)) {
-          //               this.cancelEditNode(item.id)
-          //             } else {
-          //               this.cancelAddSiblingNode(item.id)
-          //             }
-          //           }}
-          //         >
-          //           取消
-          //         </span>
-          //       </div>
-          //     ) : (
-          //       <span
-          //         style={item.style}
-          //         className={`${prefixCls}_item-text ${itemStyle} ${
-          //           highlight === item.id ? 'highlight' : ''
-          //         }`}
-          //         onContextMenu={e => {
-          //           //
-          //           // if (this.props.editable) {
-          //           //   e.preventDefault()
-          //           // }
-          //           e.preventDefault()
-          //           this.setState({
-          //             showRightClickMenu: item.id,
-          //             highlight: item.id
-          //           })
-          //         }}
-          //         onClick={e => {
-          //           this.setState({
-          //             showRightClickMenu: null
-          //           })
-          //           onNodeClick && onNodeClick(item)
-          //           onClick && onClick(item)
-          //           highlightable &&
-          //             this.setState({
-          //               highlight: item.id
-          //             })
-          //           e.stopPropagation()
-          //         }}
-          //       >
-          //         {this.renderText(item.title)}
-          //         {this.renderRightClickMenu(item)}
-          //       </span>
-          //     )}
-          //     {item.children && item.children.length > 0 && expanded
-          //       ? this.renderTree(item.children)
-          //       : null}
-          //   </li>
-          // )
         })}
       </ul>
     )
@@ -541,6 +503,7 @@ export default class TreeNode extends Component {
         </div>
 
         {this.renderTree(highlightData(cloneDeep(dataCache), searchValue))}
+        {/* this.renderTree(cloneDeep(dataCache)) */}
       </div>
     )
   }

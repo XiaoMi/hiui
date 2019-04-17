@@ -256,6 +256,12 @@ class Tree extends Component {
       hasExpanded: ids
     })
   }
+  closeExpandedTreeNode = id => {
+    this.setState({
+      hasExpanded: this.state.hasExpanded.filter(expandId => expandId !== id)
+    })
+  }
+
   // 当拖拽元素开始被拖拽的时候触发的事件
   onDragStart = (e, data) => {
     const { onDragStart } = this.props
@@ -381,6 +387,7 @@ class Tree extends Component {
         onClick={this.props.onClick}
         semiChecked={this.state.all.filter(item => item.semi).map(item => item.id)}
         expanded={this.state.hasExpanded}
+        closeExpandedTreeNode={this.closeExpandedTreeNode}
         expandTreeNode={this.expandTreeNode}
         setExpandTreeNodes={this.setExpandTreeNodes}
         onCheckChange={this.onCheckChange.bind(this)}
