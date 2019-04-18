@@ -10,11 +10,7 @@
 constructor(props){
   super(props)
   this.data1 = [
-    {title: 'Option 0'},
-    {title: 'Option 1', disabled: true},
-    {title: 'Option 2'},
-    {title: 'Option 3'},
-    {title: 'Option 4'}
+    {title: 'Option 0'}
   ]
 }
 handleClick(event, key) {

@@ -220,7 +220,8 @@ class DatePanel extends Component {
   }
   shortcutsClickEvent (e) {
     const { localeDatas } = this.props
-    const {date, range} = this.state
+    const {range} = this.state
+    const _date = new Date()
     const val = e.target.innerText
     let days = 0
     switch (val) {
@@ -237,9 +238,9 @@ class DatePanel extends Component {
         days = 365
         break
     }
-    const nDate = new Date(date.getTime() - days * DAY_MILLISECONDS)
+    const nDate = new Date(_date.getTime() - days * DAY_MILLISECONDS)
     range.startDate = nDate
-    range.endDate = date
+    range.endDate = _date
     this.props.onPick(range)
   }
   renderShortcut (shortcuts) {
