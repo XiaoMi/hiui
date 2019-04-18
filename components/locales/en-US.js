@@ -34,7 +34,8 @@ module.exports = {
     },
     item: '',
     itemPerPage: 'Items per page',
-    goto: 'Goto'
+    goto: 'Goto',
+    page: 'page'
   },
   cascader: {
     placeholder: 'Please select',
@@ -50,5 +51,8 @@ module.exports = {
   modal: {
     confirmText: 'OK',
     cancelText: 'Cancel'
+  },
+  tabs: {
+    more: 'more'
   }
 }

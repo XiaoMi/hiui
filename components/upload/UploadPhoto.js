@@ -16,6 +16,7 @@ class UploadPhoto extends Upload {
       },
       this.state
     )
+    this.uploadRef = React.createRef()
   }
 
   closeModal () {
@@ -41,12 +42,13 @@ class UploadPhoto extends Upload {
     const {
       onRemove,
       disabled,
-      accept
+      accept,
+      hasBorder
     } = this.props
 
     return (
-      <div className={classNames('hi-upload upload-photo', {'hi-upload--disabled': disabled})}>
-        <ul className='photo-display' ref='photodisplay'>
+      <div className={classNames('hi-upload upload-photo', hasBorder && 'hasborder', {'hi-upload--disabled': disabled})}>
+        <ul className='photo-display'>
           {fileList.map((file, index) => {
             if (file.uploadState === 'loading') {
               return (
@@ -85,7 +87,7 @@ class UploadPhoto extends Upload {
           <li>
             <label>
               <input
-                ref={node => { this.uploadRef = node }}
+                ref={this.uploadRef}
                 type='file'
                 className='upload-input'
                 accept={accept}

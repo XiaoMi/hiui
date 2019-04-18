@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import marked from 'marked'
-import { transform } from 'babel-standalone'
+import { transform } from '@babel/standalone'
 import Prism from 'prismjs'
 import * as Components from '../../components'
 

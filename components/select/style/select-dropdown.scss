@@ -27,6 +27,13 @@
     // margin-right: -17px;
   }
 
+  &-check-all {
+    padding: 8px 12px;
+    font-size: 12px;
+    color: #4284f5;
+    cursor: pointer;
+  }
+
   &--item {
     flex: none;
     display: block;
@@ -38,6 +45,9 @@
     cursor: pointer;
     list-style: none;
     transition: all 0.3s ease;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &.hi-select__dropdown--item-default {
       display: flex;

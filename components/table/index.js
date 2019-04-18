@@ -115,9 +115,9 @@ class Table extends Component {
       let cb = columns.find(item => item.key === sorter[0])
       if (cb) {
         cb = cb.sorter
-        dataSource = dataSource.sort(cb)
+        dataSource.sort(cb)
         if (sorter[1] === '1') {
-          dataSource = dataSource.reverse()
+          dataSource.reverse()
         }
       }
     }
@@ -379,7 +379,7 @@ class Table extends Component {
   render () {
     // 多选配置
     // noinspection JSAnnotator
-    let {pagination, name, size = 'normal', striped = false, scrollX} = this.props
+    let {pagination, name, size = 'normal', bordered = false, striped = false, scrollX} = this.props
     // noinspection JSAnnotator
     let {scroll, columnMenu, serverPagination} = this.state
 
@@ -436,7 +436,7 @@ class Table extends Component {
       }
     }
     return (
-      <div className={prifix({table: true, size, striped})} ref={this.dom}>
+      <div className={prifix({table: true, [size]: size, bordered, striped})} ref={this.dom}>
         <div >
           <div >{content}</div>
         </div>
@@ -525,26 +525,28 @@ class Table extends Component {
     }
     let dom = this.dom.current
     let thead = dom ? dom.querySelectorAll('thead') : null
-    if (scrollTop() + fixTop > dom.offsetTop && scrollTop() + fixTop < dom.offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(getStyle(thead[0], 'height'))) {
-      thead.forEach(th => {
-        th.style.display = 'table-header-group'
-        let h = (dom.offsetTop - scrollTop() - fixTop) * -1
-        h = getPosition(dom).y * -1 + fixTop
-        th.style.transform = `translate(0,${h}px)`
-        if (name) {
-          this.setting.current.style.transform = `translate(0,${h}px)`
-        }
-      })
-    } else {
-      thead.forEach(th => {
-        th.style.transform = `translate(0,0)`
-        if (name) {
-          this.setting.current.style.transform = `translate(0,0)`
-          let h = parseInt(getStyle(dom.querySelector('thead'), 'height')) + 'px'
-          this.setting.current.style.height = h
-          this.setting.current.style.lineHeight = h
-        }
-      })
+    if (thead) {
+      if (scrollTop() + fixTop > dom.offsetTop && scrollTop() + fixTop < dom.offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(thead ? getStyle(thead[0], 'height') : 0)) {
+        thead.forEach(th => {
+          th.style.display = 'table-header-group'
+          // let h = (dom.offsetTop - scrollTop() - fixTop) * -1
+          let h = getPosition(dom).y * -1 + fixTop
+          th.style.transform = `translate(0,${h}px)`
+          if (name) {
+            this.setting.current.style.transform = `translate(0,${h}px)`
+          }
+        })
+      } else {
+        thead.forEach(th => {
+          th.style.transform = `translate(0,0)`
+          if (name) {
+            this.setting.current.style.transform = `translate(0,0)`
+            let h = parseInt(getStyle(dom.querySelector('thead'), 'height')) + 'px'
+            this.setting.current.style.height = h
+            this.setting.current.style.lineHeight = h
+          }
+        })
+      }
     }
   }
   getColumns (columns) {
@@ -617,7 +619,7 @@ class Table extends Component {
     }
 
     for (let key in bodyColumns) {
-      bodyColumns[key].headColSpan = getNum(bodyColumns[key], 1)
+      bodyColumns[key].headColSpan = getNum(bodyColumns[key])
     }
 
     let maxArray = [...bodyColumns].sort((pre, next) => (next.depth - pre.depth))
@@ -650,14 +652,13 @@ class Table extends Component {
     if (rowSelection) {
       let {selectedRowKeys = [], dataName = 'key'} = rowSelection
       columns.unshift({
-        width: '50',
+        width: '50px',
         type: 'select',
         key: 'hi-table-select-' + name,
         title: () => {
           let {getCheckboxProps = (record) => ({ disabled: false }), onChange} = rowSelection
           return (
             <Checkbox type='checkbox'
-
               checked={selectedRowKeys.length === this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length && this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length > 0}
               onChange={(e, checked) => {
                 let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
@@ -868,19 +869,6 @@ class Table extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState, nextContext) {
-    let preData = nextProps.data
-    let nextData = nextState.dataSource
-    if (nextData.length === preData.length) {
-      let bool = false
-      preData.forEach((p, i) => {
-        for (let key in p) {
-          if (p[key] !== nextData[i][key]) {
-            bool = true
-          }
-        }
-      })
-      return bool
-    }
     return true
   }
 

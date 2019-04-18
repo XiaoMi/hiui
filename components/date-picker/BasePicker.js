@@ -22,8 +22,29 @@ class BasePicker extends Component {
       // input 框内的显示的时间内容
       texts: ['', ''],
       placeholder: '',
+      rText: '',
+      leftPlaceholder: '',
+      rightPlaceholder: '',
       format: ''
     }
+  }
+  setPlaceholder () {
+    const {placeholder, localeDatas, type} = this.props
+    const tempPlaceholder = localeDatas.datePicker.placeholders[type] || localeDatas.datePicker.placeholder
+    let leftPlaceholder = tempPlaceholder
+    let rightPlaceholder = tempPlaceholder
+
+    if (placeholder instanceof Array) {
+      leftPlaceholder = placeholder[0]
+      rightPlaceholder = placeholder[1] || placeholder[0]
+    } else if (typeof placeholder === 'string') {
+      leftPlaceholder = placeholder
+      rightPlaceholder = placeholder
+    }
+    this.setState({
+      leftPlaceholder,
+      rightPlaceholder
+    })
   }
   static propTypes = {
     type: PropTypes.oneOf(Object.values(DatePickerType)),
@@ -94,7 +115,6 @@ class BasePicker extends Component {
     this.setState({
       texts: [leftText, rightText],
       date,
-      placeholder: localeDatas.datePicker.placeholders[props.type] || localeDatas.datePicker.placeholder,
       format
     }, () => {
       callback && callback(this.state.date)
@@ -109,6 +129,7 @@ class BasePicker extends Component {
       }
       this.props.value && this.props.onChange && this.props.onChange(date)
     })
+    this.setPlaceholder()
     let rect = this.inputRoot.getBoundingClientRect()
     this.calcPanelPos(rect)
   }
@@ -226,16 +247,18 @@ class BasePicker extends Component {
     }
     this.callback()
   }
-  _input (text, ref = 'input') {
+  _input (text, ref = 'input', placeholder = 'Please Select...') {
+    const {disabled, type, onChange} = this.props
+
     return (
       <input
         type='text'
         ref={el => { this[ref] = el }}
-        placeholder={this.state.placeholder}
-        className={this.props.disabled ? 'disabled' : ''}
-        disabled={this.props.disabled}
+        placeholder={placeholder}
+        className={disabled ? 'disabled' : ''}
+        disabled={disabled}
         onChange={e => {
-          isVaildDate(new Date(e.target.value)) && this.props.type === 'date' && this.props.onChange(new Date(e.target.value))
+          isVaildDate(new Date(e.target.value)) && type === 'date' && onChange(new Date(e.target.value))
           this.setState({
             text: e.target.value
           })
@@ -287,9 +310,9 @@ class BasePicker extends Component {
     )
     return (
       <div className={_cls}>
-        {this._input(this.state.texts[0], 'input')}
+        {this._input(this.state.texts[0], 'input', this.state.leftPlaceholder)}
         <span>{localeDatas.datePicker.to}</span>
-        {this._input(this.state.texts[1], 'rInput')}
+        {this._input(this.state.texts[1], 'rInput', this.state.rightPlaceholder)}
         {this._icon()}
       </div>
     )
@@ -307,7 +330,7 @@ class BasePicker extends Component {
     )
     return (
       <div className={_cls}>
-        {this._input(this.state.texts[0], 'input')}
+        {this._input(this.state.texts[0], 'input', this.state.leftPlaceholder)}
         {this._icon()}
       </div>
     )

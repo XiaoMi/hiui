@@ -45,9 +45,8 @@ class Form extends Component {
     }))
   }
 
-  removeField (field) {
-    const {fields} = this.state
-    fields.splice(fields.indexOf(field), 1)
+  removeField (prop) {
+    const fields = this.state.fields.filter(field => field.props.prop !== prop)
 
     this.setState({
       fields

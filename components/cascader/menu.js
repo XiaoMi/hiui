@@ -52,7 +52,8 @@ class Menu extends Component {
               const optionValue = option[valueKey]
               const hasChildren = Array.isArray(option[childrenKey])
               const isExpanded = hasChildren && optionValue === currentValue
-              const expandIcon = isExpanded ? 'icon-right' : 'icon-right'
+              // const expandIcon = isExpanded ? 'icon-right' : 'icon-right'
+              const expandIcon = 'icon-right'
               const optionValues = option.jointOption ? optionValue : this.getOptionValues(value, optionValue, deep) // jointOption为true代表搜索拼接出来的option，直接取value即可
               if (isExpanded) {
                 currentOptions = option[childrenKey]

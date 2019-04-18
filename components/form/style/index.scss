@@ -30,8 +30,9 @@
 .hi-form-item {
   font-size: $font-size-normal;
   margin-right: $spacer-2;
-  margin-top: 4px;
-  margin-bottom: 4px;
+  // margin-top: 4px;
+  // margin-bottom: 4px;
+  padding: $spacer-2 0;
 
   & + & {
     // margin-top: $spacer-2;

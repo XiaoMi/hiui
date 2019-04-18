@@ -9,12 +9,13 @@ import Popper from '../popper'
 import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
 import Provider from '../context'
-
+import fetchJsonp from 'fetch-jsonp'
 class Select extends Component {
   autoloadFlag = true // 第一次自动加载数据标识
 
   static propTypes = {
     mode: PropTypes.oneOf(['single', 'multiple']),
+    multipleMode: PropTypes.oneOf(['wrap', 'nowrap']),
     list: PropTypes.array,
     origin: PropTypes.object,
     value: PropTypes.oneOfType([
@@ -23,25 +24,30 @@ class Select extends Component {
       PropTypes.bool,
       PropTypes.number
     ]),
+    showCheckAll: PropTypes.bool,
     autoload: PropTypes.bool,
     searchable: PropTypes.bool,
     clearable: PropTypes.bool,
     disabled: PropTypes.bool,
     placeholder: PropTypes.string,
     noFoundTip: PropTypes.string,
+    optionWidth: PropTypes.number,
     style: PropTypes.object,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    dropdownRender: PropTypes.func
   }
 
   static defaultProps = {
     list: [],
     mode: 'single',
+    multipleMode: 'wrap',
     disabled: false,
     clearable: true,
     value: '',
     autoload: false,
     placeholder: '请选择',
-    noFoundTip: '无内容'
+    noFoundTip: '无内容',
+    showCheckAll: false
   }
 
   constructor (props) {
@@ -94,7 +100,8 @@ class Select extends Component {
   }
 
   clickOutside (e) {
-    if (ReactDOM.findDOMNode(this.selectInput) && ReactDOM.findDOMNode(this.selectInput).contains(e.target)) {
+    const selectInput = ReactDOM.findDOMNode(this.selectInput)
+    if (selectInput && selectInput.contains(e.target)) {
       return
     }
     this.hideDropdown()
@@ -102,7 +109,7 @@ class Select extends Component {
 
   componentWillReceiveProps (props) {
     if (!shallowEqual(props.value, this.props.value)) {
-      const selectedItems = this.resetSelectedItems(props.value, props.list)
+      const selectedItems = this.resetSelectedItems(props.value, this.state.dropdownItems) // 异步获取时会从内部改变dropdownItems，所以不能从list取
 
       this.setState({
         selectedItems
@@ -193,6 +200,30 @@ class Select extends Component {
     this.props.onChange && this.props.onChange(selectedItems)
   }
 
+  checkAll (e) { // 全选
+    e && e.stopPropagation()
+
+    const {
+      dropdownItems
+    } = this.state
+    let selectedItems = this.state.selectedItems.concat()
+
+    dropdownItems.forEach(item => {
+      if (!item.disabled && this.matchFilter(item)) {
+        let itemIndex = selectedItems.findIndex((sItem) => {
+          return sItem.id === item.id
+        })
+        itemIndex === -1 && selectedItems.push(item)
+      }
+    })
+    this.setState({
+      selectedItems
+    }, () => {
+      this.selectInput.focus()
+      this.onChange()
+    })
+  }
+
   onClickOption (item, index) {
     if (!item || item.disabled) return
 
@@ -236,18 +267,19 @@ class Select extends Component {
   }
 
   handleInputClick (e) {
-    this.selectInput.focus()
-    // if (e) {
-    //   e.stopPropagation()
-    // }
-
-    if (this.props.disabled) {
-      return
-    }
-
     let {
       dropdownShow
     } = this.state
+
+    if (dropdownShow) {
+      this.hideDropdown()
+      return
+    }
+
+    this.selectInput.focus()
+    if (this.props.disabled) {
+      return
+    }
 
     if (!dropdownShow) {
       this.showDropdown()
@@ -295,7 +327,6 @@ class Select extends Component {
   }
 
   remoteSearch (keyword) {
-    let dropdownItems = []
     let {
       url,
       func,
@@ -303,6 +334,7 @@ class Select extends Component {
       data = {},
       type = 'GET',
       key = 'keyword',
+      jsonpCallback = 'callback',
       ...options
     } = this.props.origin
     keyword = !keyword && this.autoloadFlag && this.props.autoload ? this.props.origin.keyword : keyword
@@ -316,42 +348,49 @@ class Select extends Component {
       fetching: true
     })
 
-    /* eslint-disable */ 
-    fetch(url, {
-      method: type,
-      ...options
-    })
-    .then(response => response.json())
-    .then(res => {
-      if (func) {
-        dropdownItems = func(res)
-      } else {
-        dropdownItems = res.data
-      }
-      if (Array.isArray(dropdownItems)) {
-        const selectedItems = this.resetSelectedItems(this.props.value, dropdownItems, true)
-
+    if (type.toUpperCase() === 'JSONP') {
+      const _o = {jsonpCallback: jsonpCallback, jsonpCallbackFunction: jsonpCallback}
+      fetchJsonp(url, _o).then((res) => res.json()).then((json) => { this._setDropdownItems(json, func) })
+    } else {
+      /* eslint-disable */
+      fetch(url, {
+        method: type,
+        ...options
+      })
+      .then(response => response.json())
+      .then(res => {
+        this._setDropdownItems(res, func)
+      }, err => {
+        error && error(err)
         this.setState({
-          dropdownItems,
-          selectedItems
+          fetching: false
         })
-      }
-      this.setState({
-        fetching: false
       })
-    }, err => {
-      error && error(err)
+    }
+  }
+  _setDropdownItems(res, func) {
+    let dropdownItems = []
+    if (func) {
+      dropdownItems = func(res)
+    } else {
+      dropdownItems = res.data
+    }
+    if (Array.isArray(dropdownItems)) {
+      const selectedItems = this.resetSelectedItems(this.props.value, dropdownItems, true)
       this.setState({
-        fetching: false
+        dropdownItems,
+        selectedItems
       })
+    }
+    this.setState({
+      fetching: false
     })
   }
-
   onFilterItems (keyword) {
     this.setState({
       keyword
     }, ()=>this.resetFocusedIndex())
-    
+
     if (this.props.origin) {
       // this.setState({
       //   dropdownItems: []
@@ -367,7 +406,6 @@ class Select extends Component {
       searchable,
       keyword
     } = this.state
-
     return this.isRemote() || (!searchable || !keyword) || (searchable && keyword && (String(item.id).match(keyword) || String(item.name).match(keyword)))
   }
 
@@ -435,6 +473,7 @@ class Select extends Component {
   render () {
     const {
       mode,
+      showCheckAll,
       className,
       disabled,
       clearable,
@@ -442,7 +481,8 @@ class Select extends Component {
       children,
       noFoundTip,
       optionWidth,
-      selectedShowMode
+      dropdownRender,
+      multipleMode
     } = this.props
     const placeholder = this.localeDatasProps('placeholder')
     const {
@@ -471,7 +511,7 @@ class Select extends Component {
             placeholder={placeholder}
             selectedItems={selectedItems}
             dropdownItems={dropdownItems}
-            selectedShowMode={selectedShowMode}
+            multipleMode={multipleMode}
             container={this.selectInputContainer}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
             onClick={this.handleInputClick.bind(this)}
@@ -482,9 +522,9 @@ class Select extends Component {
           />
         </div>
         { children }
-        <Popper 
-          show={dropdownShow} 
-          attachEle={this.selectInputContainer} 
+        <Popper
+          show={dropdownShow}
+          attachEle={this.selectInputContainer}
           zIndex={1050}
           topGap={5}
           className='hi-select__popper'
@@ -493,6 +533,8 @@ class Select extends Component {
           <SelectDropdown
             noFoundTip={noFoundTip}
             mode={mode}
+            showCheckAll={showCheckAll}
+            checkAll={this.checkAll.bind(this)}
             loading={fetching}
             focusedIndex={focusedIndex}
             matchFilter={this.matchFilter.bind(this)}
@@ -500,6 +542,7 @@ class Select extends Component {
             optionWidth={optionWidth}
             dropdownItems={dropdownItems}
             selectedItems={selectedItems}
+            dropdownRender={dropdownRender}
             onClickOption={this.onClickOption.bind(this)}
           />
         </Popper>

@@ -11,6 +11,7 @@ export default class Preview extends Component {
       extraClass: '',
       style: {}
     }
+    this.imgRef = React.createRef()
   }
 
   static propTypes = {
@@ -33,8 +34,8 @@ export default class Preview extends Component {
 
   imgOnLoad () {
     const radio = 0.6
-    const imgWidth = this.img.clientWidth
-    const imgHeight = this.img.clientHeight
+    const imgWidth = this.imgRef.current.clientWidth
+    const imgHeight = this.imgRef.current.clientHeight
     const windowRadio = window.innerWidth / window.innerHeight
     const imgRadio = imgWidth / imgHeight
     if (isNaN(imgRadio)) {
@@ -77,7 +78,7 @@ export default class Preview extends Component {
         <div key={src} className={classNames('hi-preview', extraClass, {'hi-preview--hide': !show})} onClick={this.onClose.bind(this)}>
           <div className='hi-preview-image' style={style}>
             <img
-              ref={node => { this.img = node }}
+              ref={this.imgRef}
               src={src}
               onLoad={this.imgOnLoad.bind(this)}
             />

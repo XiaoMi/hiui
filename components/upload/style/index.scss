@@ -22,6 +22,10 @@
   &-label {
     cursor: inherit;
   }
+
+  .hasborder {
+    border: 1px dotted #bcbcbc;
+  }
 }
 
 .upload-list__item {
@@ -136,6 +140,9 @@
     }
   }
 }
+.hasborder {
+  border: 1px dotted #bcbcbc;
+}
 
 .upload-drag {
   position: relative;
@@ -143,7 +150,6 @@
   min-height: 120px;
   max-height: 200px;
   overflow: auto;
-  border: 1px dotted #bcbcbc;
   cursor: pointer;
 
   &:hover {
@@ -261,7 +267,7 @@
   .photo-display {
     width: 480px;
     padding: 20px 0 0 20px;
-    border: 1px dotted #bcbcbc;
+
 
     &::after {
       content: '\0020';
@@ -270,6 +276,7 @@
       clear: both;
     }
   }
+
 
   li {
     width: 140px;

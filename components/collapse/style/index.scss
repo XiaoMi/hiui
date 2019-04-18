@@ -9,7 +9,7 @@
   .collapse-item {
     border-bottom: 1px solid #d9d9d9;
 
-    > .head {
+    &__head {
       display: flex;
       align-items: center;
       background-color: #f7f7f7;
@@ -17,19 +17,19 @@
       color: rgba(0, 0, 0, 0.85);
       cursor: pointer;
 
-      .title {
+      .collapse-item__title {
         flex: auto;
         line-height: 1;
       }
 
-      > .collapse-icon {
+      > .collapse-item__icon {
         flex: none;
         margin-right: 10px;
         transition: all 0.2s ease-out;
       }
     }
 
-    > .content {
+    &__content {
       display: block;
       width: 100%;
       transition: all 0.2s ease-out;
@@ -41,12 +41,12 @@
       box-sizing: border-box;
     }
 
-    &.show {
-      > .head > .collapse-icon {
+    &--show {
+      > .collapse-item__head > .collapse-item__icon {
         transform: rotate(90deg);
       }
 
-      > .content {
+      > .collapse-item__content {
         padding: 16px;
         height: auto;
         width: 100%;
@@ -54,8 +54,8 @@
       }
     }
 
-    &.disabled {
-      .head {
+    &--disabled {
+      .collapse-item__head {
         cursor: not-allowed;
       }
     }
