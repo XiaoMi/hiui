@@ -42,7 +42,8 @@ module.exports = {
     grid: 'Grid 栅格',
     stepper: 'Stepper 步骤',
     icon: 'Icon 图标',
-    progress: 'Progress 进度条'
+    progress: 'Progress 进度条',
+    card: 'Card  卡片'
   },
   designs: {
     'design-patterns': '设计模式',
