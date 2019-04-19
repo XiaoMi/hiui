@@ -73,19 +73,7 @@ export default class TreeNode extends Component {
     return has
   }
 
-  onCheckChange (checked, item) {
-    this.props.onCheckChange(checked, item)
-  }
-
-  onExpanded = (expanded, item) => {
-    this.props.onExpanded(expanded, item)
-  }
-  nodeClick = item => {
-    this.props.onNodeClick(item)
-  }
-
   renderSwitcher = expanded => {
-    // const { prefixCls, openIcon, closeIcon } = this.props
     const { prefixCls } = this.props
     const switcherClsName = classNames(
       `${prefixCls}-switcher`,
@@ -375,7 +363,9 @@ export default class TreeNode extends Component {
       highlightable,
       checkable,
       closeExpandedTreeNode,
-      expandTreeNode
+      expandTreeNode,
+      onCheckChange,
+      onExpanded
     } = this.props
     const {
       highlight,
@@ -416,13 +406,13 @@ export default class TreeNode extends Component {
               itemContainerStyle={itemContainerStyle}
               semiChecked={semiChecked}
               checkable={checkable}
-              onExpanded={this.onExpanded}
+              onExpanded={onExpanded}
               onValueChange={this.onValueChange}
               renderTree={this.renderTree}
               renderSwitcher={this.renderSwitcher}
               cancelAddSiblingNode={this.cancelAddSiblingNode}
               renderRightClickMenu={this.renderRightClickMenu}
-              onCheckChange={this.onCheckChange}
+              onCheckChange={onCheckChange}
               saveEditNode={this.saveEditNode}
               renderItemIcon={this.renderItemIcon}
               onNodeClick={onNodeClick}

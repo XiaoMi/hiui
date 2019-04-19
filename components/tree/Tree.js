@@ -17,7 +17,7 @@ class Tree extends Component {
       hasChecked: props.defaultCheckedKeys,
       hasExpanded: [],
       dataMap: {},
-      data: {},
+      data: [],
       dragNode: '',
       dragNodePosition: null,
       semiChecked: [],
@@ -54,7 +54,7 @@ class Tree extends Component {
       data.dataMap = dataMap
       data.data = props.data
 
-      if (Object.keys(prevState.data).length === 0) {
+      if (prevState.data.length === 0) {
         if (props.defaultExpandAll) {
           let tempExpandedArr = []
           for (let key in dataMap) {
@@ -74,7 +74,7 @@ class Tree extends Component {
     return data
   }
 
-  onCheckChange (checked, item) {
+  onCheckChange = (checked, item) => {
     const { onChange, checkedKeys } = this.props
     let checkedArr = checkedKeys
 
@@ -245,7 +245,6 @@ class Tree extends Component {
 
   renderTreeNodes (data) {
     const { prefixCls, checkable, closeIcon, openIcon, withLine, highlightable } = this.props
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>2', data)
     return (
       <TreeNode
         checked={this.props.checkedKeys || []}
@@ -256,7 +255,7 @@ class Tree extends Component {
         closeExpandedTreeNode={this.closeExpandedTreeNode}
         expandTreeNode={this.expandTreeNode}
         setExpandTreeNodes={this.setExpandTreeNodes}
-        onCheckChange={this.onCheckChange.bind(this)}
+        onCheckChange={this.onCheckChange}
         hightLightNodes={this.props.hightLightNodes}
         onHightLightChange={this.props.onHightLightChange}
         onExpanded={this.onExpanded.bind(this)}
