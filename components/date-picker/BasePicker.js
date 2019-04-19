@@ -101,7 +101,7 @@ class BasePicker extends Component {
       date = value
     }
 
-    if (type.includes('range') !== -1 || type === 'timeperiod') {
+    if (type.includes('range') || type === 'timeperiod') {
       if (value instanceof Date || !value) {
         // 如果为时间段选择，则取默认的第一个范围
         date = {startDate: startOfDay(date), endDate: type === 'timeperiod' ? addHours(startOfDay(date), 4) : endOfDay(date)}
