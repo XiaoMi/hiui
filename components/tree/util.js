@@ -85,8 +85,8 @@ export function getOffset (ele) {
  * @param {ele} tar 目标节点
  */
 export function insBefore (cur, tar) {
-  const current = cur.parentNode.parentNode// li
-  const target = tar.parentNode// li
+  const current = cur.parentNode.parentNode // li
+  const target = tar.parentNode // li
   target.parentNode.insertBefore(current, target)
 }
 /**
@@ -95,8 +95,8 @@ export function insBefore (cur, tar) {
  * @param {ele} tar 目标节点
  */
 export function insAfter (cur, tar) {
-  const current = cur.parentNode.parentNode// li
-  const target = tar.parentNode// li
+  const current = cur.parentNode.parentNode // li
+  const target = tar.parentNode // li
   if (target.parentNode.lastChild === target) {
     target.parentNode.appendChild(current)
   } else {
@@ -109,8 +109,8 @@ export function insAfter (cur, tar) {
  * @param {ele} tar 目标节点
  */
 export function insChild (cur, tar) {
-  const current = cur.parentNode.parentNode// li
-  const target = tar.parentNode.parentNode// li
+  const current = cur.parentNode.parentNode // li
+  const target = tar.parentNode.parentNode // li
   if (current === target) return
   if (target.childNodes.length > 1) {
     tar.parentNode.nextSibling.appendChild(current)
@@ -141,12 +141,12 @@ export function deepClone (arr) {
     return Object.assign({}, arr)
   }
   return arr
-};
+}
 
 export function deepMap (data, parent) {
   let arr = []
   for (let key in data) {
-    let item = {...data[key]}
+    let item = { ...data[key] }
     if (parent) {
       item.parent = parent
     } else {
@@ -181,29 +181,34 @@ export function getChild (data, id) {
 
 export function getSemi (data, checks) {
   let all = deepMap(data)
-  let arr = all.map(item => {
-    item.child = getChild(all, item.id)
-    item.family = item.parent.concat(item.child)
-    item.semi = false
-    let num = 0
-    checks.forEach(c => {
-      if (item.child.includes(c)) {
-        num = num + 1
-      }
+  let arr = all
+    .map(item => {
+      item.child = getChild(all, item.id)
+      item.family = item.parent.concat(item.child)
+      item.semi = false
+      let num = 0
+      checks.forEach(c => {
+        if (item.child.includes(c)) {
+          num = num + 1
+        }
+      })
+      item.num = num
+      item.semi = num !== 0 && num !== item.child.length
+      return item
     })
-    item.num = num
-    item.semi = num !== 0 && num !== item.child.length
-    return item
-  }).filter(item => item.semi).map(item => item.id)
+    .filter(item => item.semi)
+    .map(item => item.id)
   return arr
 }
 
 export function getChildren (data, id) {
   let all = deepMap(data)
-  return all.map(item => {
-    item.child = getChild(all, item.id)
-    return item
-  }).find(item => item.id === id).child
+  return all
+    .map(item => {
+      item.child = getChild(all, item.id)
+      return item
+    })
+    .find(item => item.id === id).child
 }
 
 export function getDisabled (data) {
@@ -232,4 +237,75 @@ export function getAll (data, checkedKeys) {
     return item
   })
   return all
+}
+
+export const dealData = (data, tempData = {}, parent = null) => {
+  if (data.length === 0) {
+    return data
+  }
+  data.map(item => {
+    tempData[item.id] = { ...item }
+    if (parent) {
+      tempData[item.id].parent = parent
+    }
+    if (item.children && item.children.length > 0) {
+      const tempArr = []
+      item.children.map(i => {
+        tempArr.push(i.id)
+      })
+      tempData[item.id].children = tempArr
+      dealData(item.children, tempData, item.id)
+    }
+  })
+}
+// 寻找某一节点的父节点
+export const getParentId = (id, data) => {
+  let parentId
+  data.forEach(item => {
+    if (item.children) {
+      if (item.children.some(item => item.id === id)) {
+        parentId = item.id
+      } else if (getParentId(id, item.children)) {
+        parentId = getParentId(id, item.children)
+      }
+    }
+  })
+  return parentId
+}
+// 寻找某一节点的所有祖先节点
+export const getAncestorIds = (id, data, arr = []) => {
+  if (getParentId(id, data)) {
+    arr.push(getParentId(id, data))
+    getAncestorIds(getParentId(id, data), data, arr)
+  }
+  return arr
+}
+// 收集所有需要展开的节点 id
+export const collectExpandId = (data, searchValue, collection = [], allData) => {
+  data.forEach(item => {
+    if (item.title.includes(searchValue)) {
+      const parentIds = getAncestorIds(item.id, allData, [])
+      // console.log('parentIds', parentIds)
+      collection.splice(collection.length - 1, 0, ...parentIds)
+      // console.log('collection', collection)
+    }
+    if (item.children) {
+      collectExpandId(item.children, searchValue, collection, allData)
+    }
+  })
+  return collection
+}
+// 给定一个结合，根据 id 寻找节点
+export const findNode = (itemId, data) => {
+  let node
+  data.forEach((d, index) => {
+    if (d.id === itemId) {
+      node = d
+    } else {
+      if (d.children && findNode(itemId, d.children)) {
+        node = findNode(itemId, d.children)
+      }
+    }
+  })
+  return node
 }

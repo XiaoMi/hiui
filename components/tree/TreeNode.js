@@ -7,7 +7,9 @@ import Input from '../input'
 import Icon from '../icon'
 import uuidv4 from 'uuid/v4'
 import TreeItem from './TreeItem'
+import { collectExpandId, findNode } from './util'
 
+// 高亮检索值
 const highlightData = (data, highlightValue) => {
   return data.map(item => {
     if (typeof item.title === 'string' && item.title.includes(highlightValue)) {
@@ -27,43 +29,6 @@ const highlightData = (data, highlightValue) => {
     }
     return item
   })
-}
-// 寻找某一节点的父节点
-const getParentId = (id, data) => {
-  let parentId
-  data.forEach(item => {
-    if (item.children) {
-      if (item.children.some(item => item.id === id)) {
-        parentId = item.id
-      } else if (getParentId(id, item.children)) {
-        parentId = getParentId(id, item.children)
-      }
-    }
-  })
-  return parentId
-}
-// 寻找某一节点的所有祖先节点
-const getAncestorIds = (id, data, arr = []) => {
-  if (getParentId(id, data)) {
-    arr.push(getParentId(id, data))
-    getAncestorIds(getParentId(id, data), data, arr)
-  }
-  return arr
-}
-// 收集所有需要展开的节点 id
-const collectExpandId = (data, searchValue, collection = [], allData) => {
-  data.forEach(item => {
-    if (item.title.includes(searchValue)) {
-      const parentIds = getAncestorIds(item.id, allData, [])
-      // console.log('parentIds', parentIds)
-      collection.splice(collection.length - 1, 0, ...parentIds)
-      // console.log('collection', collection)
-    }
-    if (item.children) {
-      collectExpandId(item.children, searchValue, collection, allData)
-    }
-  })
-  return collection
 }
 // const TreeNoder = DragSourceWrapper(TreeItem)
 export default class TreeNode extends Component {
@@ -96,21 +61,6 @@ export default class TreeNode extends Component {
       }
     }
     return state
-  }
-  onDragEnter (item, data, e) {
-    this.props.onDragEnter(e, item, data)
-  }
-  onDragOver (item, data, e) {
-    this.props.onDragOver(e, item, data)
-  }
-  onDragLeave (item, data, e) {
-    this.props.onDragLeave(e, item, data)
-  }
-  onDrop (item, data, e) {
-    this.props.onDrop(e, item, data)
-  }
-  onDragStart (item, data, e) {
-    this.props.onDragStart(e, item, data)
   }
 
   getItem (name, treeItem) {
@@ -154,6 +104,19 @@ export default class TreeNode extends Component {
     )
     return <i className={switcherClsName} />
   }
+
+  // 设置拖拽中的节点
+  setDraggingNode = itemId => {
+    this.setState({
+      draggingNode: itemId
+    })
+  }
+  // 移除拖拽中的节点
+  removeDraggingNode = () => {
+    this.setState({
+      draggingNode: null
+    })
+  }
   // TODO:调整添加节点的策略，由深度遍历改为按层修改！
   // 添加兄弟节点
   _addSibNode = (itemId, data, editingNodes) => {
@@ -167,18 +130,6 @@ export default class TreeNode extends Component {
           this._addSibNode(itemId, d.children, editingNodes)
         }
       }
-    })
-  }
-  // 设置拖拽中的节点
-  setDraggingNode = itemId => {
-    this.setState({
-      draggingNode: itemId
-    })
-  }
-  // 移除拖拽中的节点
-  removeDraggingNode = () => {
-    this.setState({
-      draggingNode: null
     })
   }
   addSiblingNode = itemId => {
@@ -316,7 +267,7 @@ export default class TreeNode extends Component {
   _addDropNode = (targetItemId, sourceItemId, data, allData) => {
     data.forEach((d, index) => {
       if (d.id === targetItemId) {
-        const sourceNode = this.findNode(sourceItemId, allData)
+        const sourceNode = findNode(sourceItemId, allData)
         if (!d.children) {
           d.children = []
         }
@@ -328,26 +279,13 @@ export default class TreeNode extends Component {
       }
     })
   }
-  findNode = (itemId, data) => {
-    // console.log('allData', data)
-    let node
-    data.forEach((d, index) => {
-      if (d.id === itemId) {
-        node = d
-      } else {
-        if (d.children && this.findNode(itemId, d.children)) {
-          node = this.findNode(itemId, d.children)
-        }
-      }
-    })
-    return node
-  }
+
   switchDropNode = (targetItemId, sourceItemId, data, allData) => {
     data.forEach(item => {
       if (item.children) {
         if (item.children.some(e => e.id === targetItemId)) {
           const index = item.children.findIndex(i => i.id === targetItemId)
-          const sourceNode = this.findNode(sourceItemId, allData)
+          const sourceNode = findNode(sourceItemId, allData)
           item.children.splice(index + 1, 0, sourceNode)
         } else {
           this.switchDropNode(targetItemId, sourceItemId, item.children, allData)
@@ -484,7 +422,6 @@ export default class TreeNode extends Component {
               renderSwitcher={this.renderSwitcher}
               cancelAddSiblingNode={this.cancelAddSiblingNode}
               renderRightClickMenu={this.renderRightClickMenu}
-              renderText={this.renderText}
               onCheckChange={this.onCheckChange}
               saveEditNode={this.saveEditNode}
               renderItemIcon={this.renderItemIcon}
@@ -507,9 +444,6 @@ export default class TreeNode extends Component {
         })}
       </ul>
     )
-  }
-  renderText (text) {
-    return text
   }
   render () {
     const { dataCache, searchValue } = this.state

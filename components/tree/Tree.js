@@ -1,33 +1,13 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-// import Checkbox from '../checkbox/index'
 import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
-import { calcDropPosition, deepClone, getChildren, getDisabled, getAll } from './util'
+import { deepClone, getChildren, getDisabled, getAll, dealData } from './util'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
 import './style/index'
-const dealData = (data, tempData = {}, parent = null) => {
-  if (data.length === 0) {
-    return data
-  }
-  data.map(item => {
-    tempData[item.id] = { ...item }
-    if (parent) {
-      tempData[item.id].parent = parent
-    }
-    if (item.children && item.children.length > 0) {
-      const tempArr = []
-      item.children.map(i => {
-        tempArr.push(i.id)
-      })
-      tempData[item.id].children = tempArr
-      dealData(item.children, tempData, item.id)
-    }
-  })
-}
 
 class Tree extends Component {
   constructor (props) {
@@ -70,6 +50,7 @@ class Tree extends Component {
     if (!isEqual(props.data, prevState.data)) {
       const dataMap = {}
       dealData(deepClone(props.data), dataMap)
+      console.log(props.data, prevState.data, dataMap)
       data.dataMap = dataMap
       data.data = props.data
 
@@ -262,126 +243,11 @@ class Tree extends Component {
     })
   }
 
-  // 当拖拽元素开始被拖拽的时候触发的事件
-  onDragStart = (e, data) => {
-    const { onDragStart } = this.props
-    e.stopPropagation()
-
-    let expandedArr = this.state.hasExpanded
-
-    if (expandedArr.indexOf(data.id) >= 0) {
-      expandedArr.splice(expandedArr.indexOf(data.id), 1)
-    }
-
-    this.dargNode = e.target
-    this.curData = data
-    this.setState({
-      expandedKeys: expandedArr
-    })
-    if (onDragStart) {
-      onDragStart(e)
-    }
-
-    try {
-      e.dataTransfer.setData('text/plain', '')
-    } catch (error) {}
-  }
-  // 当拖拽完成后触发的事件
-  onDragEnd = e => {
-    const { onDragEnd } = this.props
-    e.stopPropagation()
-
-    if (onDragEnd) {
-      onDragEnd(e)
-    }
-  }
-
-  // 当拖曳元素进入目标元素的时候触发的事件
-  onDragEnter = (e, data) => {
-    const { onDragEnter } = this.props
-    let dropPosition = calcDropPosition(e, e.currentTarget)
-
-    e.preventDefault()
-    e.stopPropagation()
-
-    if (data.id === this.curData.id && dropPosition === 0) {
-      this.setState({
-        dragNode: '',
-        dragNodePosition: null
-      })
-      return
-    }
-
-    setTimeout(() => {
-      this.setState({
-        dragNode: data.id,
-        dragNodePosition: dropPosition
-      })
-    }, 0)
-
-    if (onDragEnter) {
-      onDragEnter({ event: e, dropPosition })
-    }
-  }
-  // 拖拽元素在目标元素上移动的时候触发的事件
-  onDragOver = e => {
-    const { onDragOver } = this.props
-    e.preventDefault()
-    e.stopPropagation()
-
-    if (onDragOver) {
-      onDragOver(e)
-    }
-  }
-  // 当拖拽元素离开目标元素时触发
-  onDragLeave = e => {
-    const { onDragLeave } = this.props
-    e.stopPropagation()
-
-    this.setState({
-      dragNode: '',
-      dragNodePosition: null
-    })
-
-    if (onDragLeave) {
-      onDragLeave(e)
-    }
-  }
-  // 被拖拽的元素在目标元素上同时鼠标放开触发的事件
-  onDrop = (e, data, parentData) => {
-    const { onDrop } = this.props
-    e.preventDefault()
-    e.stopPropagation()
-    this.setState({
-      dragNode: '',
-      dragNodePosition: null
-    })
-    this.props.dragEnd(this.curData, data, parentData)
-    if (onDrop) {
-      onDrop(e)
-    }
-  }
-
   renderTreeNodes (data) {
-    const {
-      prefixCls,
-      // draggable,
-      checkable,
-      closeIcon,
-      openIcon,
-      withLine,
-      highlightable
-    } = this.props
-    // const { dragNode, dragNodePosition } = this.state
-
+    const { prefixCls, checkable, closeIcon, openIcon, withLine, highlightable } = this.props
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>2', data)
     return (
       <TreeNode
-        // draggable={draggable || undefined}
-        // onDragStart={this.onDragStart}
-        // onDragEnter={this.onDragEnter}
-        // onDragOver={this.onDragOver}
-        // onDragLeave={this.onDragLeave}
-        // onDrop={this.onDrop}
         checked={this.props.checkedKeys || []}
         onNodeClick={this.props.onNodeClick}
         onClick={this.props.onClick}
@@ -395,8 +261,6 @@ class Tree extends Component {
         onHightLightChange={this.props.onHightLightChange}
         onExpanded={this.onExpanded.bind(this)}
         data={data}
-        // dragNodePosition={dragNodePosition}
-        // dragNode={dragNode}
         prefixCls={prefixCls}
         checkable={checkable}
         highlightable={highlightable}

@@ -10,6 +10,11 @@ const Types = {
 class TreeItem extends Component {
   render () {
     const {
+      // 节点可编辑
+      // editable,
+      // 节点可拖拽
+      // draggable,
+      // ******************** //
       dropDividerPosition,
       checked,
       expanded,
@@ -35,7 +40,6 @@ class TreeItem extends Component {
       cancelAddSiblingNode,
       renderTree,
       renderRightClickMenu,
-      renderText,
       onCheckChange,
       onSetHighlight,
       showRightClickMenu,
@@ -120,7 +124,7 @@ class TreeItem extends Component {
                 e.stopPropagation()
               }}
             >
-              {renderText(item.title)}
+              {item.title}
               {renderRightClickMenu(item)}
               {targetNode === item.id && dropDividerPosition === 'sub' && <TreeDivider />}
             </span>
