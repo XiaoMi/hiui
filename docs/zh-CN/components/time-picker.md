@@ -11,7 +11,18 @@ render() {
       <div style={{margin: '10px'}}>
         <p>时间选择</p>
         <TimePicker
+          value={new Date()}
+          format="HH:mm"
           onChange={date => console.log('时间', date)}
+        />
+      </div>
+      <div style={{margin: '10px'}}>
+        <p>时间范围选择</p>
+        <TimePicker
+          value={new Date()}
+          type="timerange"
+          format="HH:mm"
+          onChange={date => console.log('时间范围', date)}
         />
       </div>
     </div>
