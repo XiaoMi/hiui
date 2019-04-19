@@ -1,14 +1,16 @@
 import React from 'react'
-const TreeDivider = () => {
+const TreeDivider = props => {
+  const style = props.top
+    ? {
+      position: 'absolute',
+      display: 'flex',
+      width: '100%',
+      alignItems: 'center',
+      top: 21
+    }
+    : { position: 'absolute', display: 'flex', width: '100%', alignItems: 'center', bottom: 0 }
   return (
-    <div
-      style={{
-        position: 'absolute',
-        display: 'flex',
-        width: '100%',
-        alignItems: 'center'
-      }}
-    >
+    <div style={style}>
       <div
         style={{
           flex: '0 0 5px',

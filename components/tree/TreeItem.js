@@ -10,6 +10,7 @@ const Types = {
 class TreeItem extends Component {
   render () {
     const {
+      dropDividerPosition,
       // setDraggingNode,
       // removeDraggingNode,
       checked,
@@ -62,6 +63,7 @@ class TreeItem extends Component {
           key={item.id}
           className={itemContainerStyle}
         >
+          {targetNode === item.id && dropDividerPosition === 'down' && <TreeDivider top />}
           <span onClick={() => onExpanded(expanded, item)} className={`${prefixCls}_item-icon`}>
             {item.children && item.children.length > 0
               ? renderSwitcher(expanded)
@@ -151,7 +153,7 @@ class TreeItem extends Component {
             >
               {renderText(item.title)}
               {renderRightClickMenu(item)}
-              {targetNode === item.id && <TreeDivider />}
+              {targetNode === item.id && dropDividerPosition === 'sub' && <TreeDivider />}
             </span>
           )}
           {item.children && item.children.length > 0 && expanded ? renderTree(item.children) : null}
@@ -180,7 +182,8 @@ const target = {
       dropNode,
       removeDraggingNode,
       expandTreeNode,
-      removeTargetNode
+      removeTargetNode,
+      dropDividerPosition
     } = props
 
     // 先看下是不是在最近得组件
@@ -201,7 +204,7 @@ const target = {
       } else {
         // // 3.移动节点到相应位置
         // console.log('>>>>>>>>>>>>>>>>', targetItem, sourceItem)
-        dropNode(sourceItem, targetItem)
+        dropNode(sourceItem, targetItem, dropDividerPosition)
         removeDraggingNode()
         removeTargetNode()
       }
@@ -222,12 +225,24 @@ const target = {
         // 2.如果源节点就是目的节点或者源节点是目的节点的子节点（直系）再或者源节点是目的节点的父节点，那么什么都不做
         return false
       } else {
-        const clientOffset = monitor.getClientOffset()
-        const componentRect = findDOMNode(component).getBoundingClientRect()
-        console.log('>>>>>>>>>>>>>>>>', targetItem.id, sourceItem.id, clientOffset, componentRect)
+        const sourcePosition = monitor.getClientOffset()
+        const targetComponent = findDOMNode(component).getBoundingClientRect()
+        // 如果在节点的上半部分，则为移动其内部，如果为下半部分，则为节点下方
+        console.log(
+          '>>>>>>>>>>>>>>>>',
+          targetItem.id,
+          sourceItem.id,
+          sourcePosition,
+          targetComponent
+        )
         // // 3.移动节点到相应位置
         // console.log()
-        setTargetNode(targetItem.id)
+        if (sourcePosition.y <= targetComponent.y + targetComponent.height / 2) {
+          setTargetNode(targetItem.id, 'sub')
+        } else {
+          setTargetNode(targetItem.id, 'down')
+        }
+
         setDraggingNode(sourceItem.id)
       }
     }

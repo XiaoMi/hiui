@@ -82,6 +82,8 @@ export default class TreeNode extends Component {
       draggingNode: null,
       // 处于目标状态的节点
       targetNode: null,
+      // 放置线的位置,分为下线和子线，下线则放置在该节点下侧，子线为放置在该节点内部
+      dropDividerPosition: null,
       searchValue: ''
     }
   }
@@ -340,11 +342,30 @@ export default class TreeNode extends Component {
     })
     return node
   }
-  dropNode = (sourceItem, targetItem) => {
+  switchDropNode = (targetItemId, sourceItemId, data, allData) => {
+    data.forEach(item => {
+      if (item.children) {
+        if (item.children.some(e => e.id === targetItemId)) {
+          const index = item.children.findIndex(i => i.id === targetItemId)
+          const sourceNode = this.findNode(sourceItemId, allData)
+          item.children.splice(index + 1, 0, sourceNode)
+        } else {
+          this.switchDropNode(targetItemId, sourceItemId, item.children, allData)
+        }
+      }
+    })
+  }
+  dropNode = (sourceItem, targetItem, dropDividerPosition) => {
     const { dataCache } = this.state
     const _dataCache = cloneDeep(dataCache)
     this._delDragNode(sourceItem.id, _dataCache)
-    this._addDropNode(targetItem.id, sourceItem.id, _dataCache, dataCache)
+    if (dropDividerPosition === 'sub') {
+      // 这里为什么用 sourceItem.id不用 sourceItem 是因为 sourceItem 有可能是 highlight 过得
+      this._addDropNode(targetItem.id, sourceItem.id, _dataCache, dataCache)
+    } else {
+      this.switchDropNode(targetItem.id, sourceItem.id, _dataCache, dataCache)
+    }
+
     this.setState({
       dataCache: _dataCache
     })
@@ -397,8 +418,8 @@ export default class TreeNode extends Component {
       showRightClickMenu: null
     })
   }
-  setTargetNode = id => {
-    this.setState({ targetNode: id })
+  setTargetNode = (id, position) => {
+    this.setState({ targetNode: id, dropDividerPosition: position })
   }
   removeTargetNode = () => {
     this.setState({ targetNode: null })
@@ -418,7 +439,14 @@ export default class TreeNode extends Component {
       closeExpandedTreeNode,
       expandTreeNode
     } = this.props
-    const { highlight, editNodes, editingNodes, draggingNode, targetNode } = this.state
+    const {
+      highlight,
+      editNodes,
+      editingNodes,
+      draggingNode,
+      targetNode,
+      dropDividerPosition
+    } = this.state
 
     return (
       <ul>
@@ -436,6 +464,7 @@ export default class TreeNode extends Component {
           return (
             <TreeItem
               key={item.id}
+              dropDividerPosition={dropDividerPosition}
               prefixCls={prefixCls}
               draggable={draggable}
               checked={checked}
