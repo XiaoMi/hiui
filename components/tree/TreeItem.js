@@ -11,18 +11,12 @@ class TreeItem extends Component {
   render () {
     const {
       dropDividerPosition,
-      // setDraggingNode,
-      // removeDraggingNode,
       checked,
       expanded,
-      // dropNode,
-      // draggable,
       highlight,
       editNodes,
       editingNodes,
       prefixCls,
-      // dragNodePosition,
-      // dragNode,
       withLine,
       semiChecked,
       onNodeClick,
@@ -53,16 +47,7 @@ class TreeItem extends Component {
     } = this.props
     return connectDropTarget(
       connectDragSource(
-        <li
-          // onDragStart={this.onDragStart.bind(this, item, data)}
-          // onDragEnter={this.onDragEnter.bind(this, item, data)}
-          // onDragOver={this.onDragOver.bind(this, item, data)}
-          // onDragLeave={this.onDragLeave.bind(this, item, data)}
-          // onDrop={this.onDrop.bind(this, item, data)}
-          // draggable={draggable}
-          key={item.id}
-          className={itemContainerStyle}
-        >
+        <li key={item.id} className={itemContainerStyle}>
           {targetNode === item.id && dropDividerPosition === 'down' && <TreeDivider top />}
           <span onClick={() => onExpanded(expanded, item)} className={`${prefixCls}_item-icon`}>
             {item.children && item.children.length > 0
@@ -79,9 +64,6 @@ class TreeItem extends Component {
                 onNodeClick && onNodeClick(item)
                 onClick && onClick(item)
                 highlightable && onSetHighlight(item)
-                // this.setState({
-                //   highlight: item.id
-                // })
                 e.stopPropagation()
               }}
               highlight={highlight === item.id}
@@ -125,29 +107,16 @@ class TreeItem extends Component {
                 highlight === item.id ? 'highlight' : ''
               } ${draggingNode === item.id ? 'dragging' : ''}`}
               onContextMenu={e => {
-                //
-                // if (this.props.editable) {
-                //   e.preventDefault()
-                // }
-                e.preventDefault()
-                // this.setState({
-                //   showRightClickMenu: item.id,
-                //   highlight: item.id
-                // })
-                showRightClickMenu(item)
+                if (this.props.editable) {
+                  e.preventDefault()
+                  showRightClickMenu(item)
+                }
               }}
               onClick={e => {
-                // this.setState({
-                //   showRightClickMenu: null
-                // })
                 closeRightClickMenu()
                 onNodeClick && onNodeClick(item)
                 onClick && onClick(item)
-                highlightable &&
-                  // this.setState({
-                  //   highlight: item.id
-                  // })
-                  onSetHighlight(item)
+                highlightable && onSetHighlight(item)
                 e.stopPropagation()
               }}
             >
@@ -172,9 +141,6 @@ const source = {
   }
 }
 const target = {
-  // canDrop () {
-  //   return true
-  // },
   drop (props, monitor) {
     const { sourceItem, originalExpandStatus } = monitor.getItem()
     const {
@@ -203,7 +169,6 @@ const target = {
         removeTargetNode()
       } else {
         // // 3.移动节点到相应位置
-        // console.log('>>>>>>>>>>>>>>>>', targetItem, sourceItem)
         dropNode(sourceItem, targetItem, dropDividerPosition)
         removeDraggingNode()
         removeTargetNode()
@@ -227,16 +192,9 @@ const target = {
       } else {
         const sourcePosition = monitor.getClientOffset()
         const targetComponent = findDOMNode(component).getBoundingClientRect()
+        // 3.移动节点到相应位置
         // 如果在节点的上半部分，则为移动其内部，如果为下半部分，则为节点下方
-        console.log(
-          '>>>>>>>>>>>>>>>>',
-          targetItem.id,
-          sourceItem.id,
-          sourcePosition,
-          targetComponent
-        )
-        // // 3.移动节点到相应位置
-        // console.log()
+
         if (sourcePosition.y <= targetComponent.y + targetComponent.height / 2) {
           setTargetNode(targetItem.id, 'sub')
         } else {
