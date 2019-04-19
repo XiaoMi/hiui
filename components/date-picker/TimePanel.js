@@ -26,14 +26,6 @@ class TimePanel extends Component {
     return (
       <div className='hi-timepicker' style={this.state.style}>
         <Time date={this.props.date} onPick={this.onTimePick.bind(this)} onlyTime={this.props.type === 'time'} />
-        {
-          // this.props.type === 'time' && (
-          //   <div className='hi-timepicker__footer'>
-          //     <Button type='primary' size='small' onClick={() => this.props.timeConfirm(this.state.date, true)}>{this.props.localeDatas.datePicker.ok}</Button>
-          //   </div>
-          // )
-        }
-
       </div>
     )
   }
