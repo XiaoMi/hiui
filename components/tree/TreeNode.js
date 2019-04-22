@@ -7,6 +7,7 @@ import Input from '../input'
 import Icon from '../icon'
 import uuidv4 from 'uuid/v4'
 import TreeItem from './TreeItem'
+import Modal from '../modal'
 import { collectExpandId, findNode } from './util'
 
 // 高亮检索值
@@ -49,7 +50,9 @@ export default class TreeNode extends Component {
       targetNode: null,
       // 放置线的位置,分为下线和子线，下线则放置在该节点下侧，子线为放置在该节点内部
       dropDividerPosition: null,
-      searchValue: ''
+      searchValue: '',
+      showModal: false,
+      currentDeleteNode: null
     }
   }
   static getDerivedStateFromProps (props, state) {
@@ -322,7 +325,14 @@ export default class TreeNode extends Component {
           <li onClick={() => this.addSiblingNode(item.id)}>添加节点</li>
           <li onClick={() => this.addChildNode(item)}>添加子节点</li>
           <li onClick={() => this.editNode(item)}>编辑</li>
-          <li onClick={() => this.deleteNode(item.id)}>删除</li>
+          <li
+            onClick={() => {
+              this.setCurrentDeleteNode(item.id)
+              this.openModal()
+            }}
+          >
+            删除
+          </li>
         </ul>
       )
     )
@@ -350,6 +360,16 @@ export default class TreeNode extends Component {
   removeTargetNode = () => {
     this.setState({ targetNode: null })
   }
+  openModal = () => {
+    this.setState({
+      showModal: true
+    })
+  }
+  setCurrentDeleteNode = nodeId => {
+    this.setState({
+      currentDeleteNode: nodeId
+    })
+  }
   renderTree = data => {
     const {
       draggable,
@@ -365,7 +385,8 @@ export default class TreeNode extends Component {
       closeExpandedTreeNode,
       expandTreeNode,
       onCheckChange,
-      onExpanded
+      onExpanded,
+      editable
     } = this.props
     const {
       highlight,
@@ -392,6 +413,7 @@ export default class TreeNode extends Component {
           return (
             <TreeItem
               key={item.id}
+              editable={editable}
               dropDividerPosition={dropDividerPosition}
               prefixCls={prefixCls}
               draggable={draggable}
@@ -428,6 +450,7 @@ export default class TreeNode extends Component {
               setTargetNode={this.setTargetNode}
               targetNode={targetNode}
               removeTargetNode={this.removeTargetNode}
+              cancelEditNode={this.cancelEditNode}
               item={item}
             />
           )
@@ -437,26 +460,48 @@ export default class TreeNode extends Component {
   }
   render () {
     const { dataCache, searchValue } = this.state
+    const { searchable } = this.props
     return (
       <div>
-        <div className='hi-tree_searcher'>
-          <Input
-            value={this.state.searchValue}
-            type='text'
-            placeholder='关键词搜索'
-            onChange={e => {
-              this.setState({ searchValue: e.target.value })
-              this.props.setExpandTreeNodes(
-                collectExpandId(dataCache, e.target.value, [], dataCache)
-              )
-            }}
-            append={<Icon name='search' style={{ color: '#4284F5', fontSize: '24px' }} />}
-            style={{ width: '250px' }}
-          />
-        </div>
+        {searchable && (
+          <div className='hi-tree_searcher'>
+            <Input
+              value={this.state.searchValue}
+              type='text'
+              placeholder='关键词搜索'
+              onChange={e => {
+                this.setState({ searchValue: e.target.value })
+                this.props.setExpandTreeNodes(
+                  collectExpandId(dataCache, e.target.value, [], dataCache)
+                )
+              }}
+              append={<Icon name='search' style={{ color: '#4284F5', fontSize: '24px' }} />}
+              style={{ width: '250px' }}
+            />
+          </div>
+        )}
 
-        {this.renderTree(highlightData(cloneDeep(dataCache), searchValue))}
-        {/* this.renderTree(cloneDeep(dataCache)) */}
+        {searchable
+          ? this.renderTree(highlightData(cloneDeep(dataCache), searchValue))
+          : this.renderTree(cloneDeep(dataCache))}
+
+        <Modal
+          title='提示'
+          show={this.state.showModal}
+          onConfirm={() => {
+            this.deleteNode(this.state.currentDeleteNode)
+            this.setState({
+              showModal: false
+            })
+          }}
+          onCancel={() => {
+            this.setState({
+              showModal: false
+            })
+          }}
+        >
+          <span>删除节点将删除所有子节点，确定删除吗？</span>
+        </Modal>
       </div>
     )
   }

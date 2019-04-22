@@ -13,7 +13,7 @@ class TreeItem extends Component {
       // 节点可编辑
       // editable,
       // 节点可拖拽
-      // draggable,
+      draggable,
       // ******************** //
       dropDividerPosition,
       checked,
@@ -35,7 +35,6 @@ class TreeItem extends Component {
       onExpanded,
       onValueChange,
       renderItemIcon,
-      saveEditNode,
       cancelEditNode,
       cancelAddSiblingNode,
       renderTree,
@@ -47,64 +46,65 @@ class TreeItem extends Component {
       renderSwitcher,
       connectDragSource,
       connectDropTarget,
-      targetNode
+      targetNode,
+      saveEditNode
     } = this.props
     return connectDropTarget(
-      connectDragSource(
-        <li key={item.id} className={itemContainerStyle}>
-          {targetNode === item.id && dropDividerPosition === 'down' && <TreeDivider top />}
-          <span onClick={() => onExpanded(expanded, item)} className={`${prefixCls}_item-icon`}>
-            {item.children && item.children.length > 0
-              ? renderSwitcher(expanded)
-              : withLine && renderItemIcon()}
-          </span>
+      <li key={item.id} className={itemContainerStyle}>
+        {targetNode === item.id && dropDividerPosition === 'down' && <TreeDivider top />}
+        <span onClick={() => onExpanded(expanded, item)} className={`${prefixCls}_item-icon`}>
+          {item.children && item.children.length > 0
+            ? renderSwitcher(expanded)
+            : withLine && renderItemIcon()}
+        </span>
 
-          {checkable ? (
-            <Checkbox
-              semi={semiChecked.includes(item.id)}
-              checked={checked}
-              onChange={() => onCheckChange(checked, item)}
-              onTitleClick={e => {
-                onNodeClick && onNodeClick(item)
-                onClick && onClick(item)
-                highlightable && onSetHighlight(item)
-                e.stopPropagation()
+        {checkable ? (
+          <Checkbox
+            semi={semiChecked.includes(item.id)}
+            checked={checked}
+            onChange={() => onCheckChange(checked, item)}
+            onTitleClick={e => {
+              onNodeClick && onNodeClick(item)
+              onClick && onClick(item)
+              highlightable && onSetHighlight(item)
+              e.stopPropagation()
+            }}
+            highlight={highlight === item.id}
+            text={item.title}
+            disabled={item.disabled}
+          />
+        ) : item.status === 'editable' || editNodes.map(node => node.id).includes(item.id) ? (
+          <div className='editing'>
+            <Input
+              placeholder='请输入菜单名称'
+              value={(editingNodes.find(node => node.id === item.id) || {}).title}
+              onChange={e => {
+                onValueChange(e.target.value, item.id)
               }}
-              highlight={highlight === item.id}
-              text={item.title}
-              disabled={item.disabled}
             />
-          ) : item.status === 'editable' || editNodes.map(node => node.id).includes(item.id) ? (
-            <div style={{ display: 'flex' }}>
-              <Input
-                placeholder='请输入菜单名称'
-                value={(editingNodes.find(node => node.id === item.id) || {}).title}
-                onChange={e => {
-                  onValueChange(e.target.value, item.id)
-                }}
-              />
-              <span
-                style={{ cursor: 'pointer' }}
-                onClick={() => {
-                  saveEditNode(item.id)
-                }}
-              >
-                确定
-              </span>
-              <span
-                style={{ cursor: 'pointer' }}
-                onClick={() => {
-                  if (editNodes.map(node => node.id).includes(item.id)) {
-                    cancelEditNode(item.id)
-                  } else {
-                    cancelAddSiblingNode(item.id)
-                  }
-                }}
-              >
-                取消
-              </span>
-            </div>
-          ) : (
+            <span
+              style={{ cursor: 'pointer', marginRight: 12, color: '#4284F5' }}
+              onClick={() => {
+                saveEditNode(item.id)
+              }}
+            >
+              确定
+            </span>
+            <span
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                if (editNodes.map(node => node.id).includes(item.id)) {
+                  cancelEditNode(item.id)
+                } else {
+                  cancelAddSiblingNode(item.id)
+                }
+              }}
+            >
+              取消
+            </span>
+          </div>
+        ) : draggable ? (
+          connectDragSource(
             <span
               style={item.style}
               className={`${prefixCls}_item-text ${itemStyle} ${
@@ -128,10 +128,34 @@ class TreeItem extends Component {
               {renderRightClickMenu(item)}
               {targetNode === item.id && dropDividerPosition === 'sub' && <TreeDivider />}
             </span>
-          )}
-          {item.children && item.children.length > 0 && expanded ? renderTree(item.children) : null}
-        </li>
-      )
+          )
+        ) : (
+          <span
+            style={item.style}
+            className={`${prefixCls}_item-text ${itemStyle} ${
+              highlight === item.id ? 'highlight' : ''
+            } ${draggingNode === item.id ? 'dragging' : ''}`}
+            onContextMenu={e => {
+              if (this.props.editable) {
+                e.preventDefault()
+                showRightClickMenu(item)
+              }
+            }}
+            onClick={e => {
+              closeRightClickMenu()
+              onNodeClick && onNodeClick(item)
+              onClick && onClick(item)
+              highlightable && onSetHighlight(item)
+              e.stopPropagation()
+            }}
+          >
+            {item.title}
+            {renderRightClickMenu(item)}
+            {targetNode === item.id && dropDividerPosition === 'sub' && <TreeDivider />}
+          </span>
+        )}
+        {item.children && item.children.length > 0 && expanded ? renderTree(item.children) : null}
+      </li>
     )
   }
 }

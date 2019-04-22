@@ -45,7 +45,14 @@ $tree: 'hi-tree' !default;
         margin: 22px 0;
       }
     }
-
+    .editing {
+      display: flex;
+      align-items: center;
+      .hi-input {
+        width: 240px;
+        margin-right: 20px;
+      }
+    }
     .hi-checkbox-label {
       display: none;
     }

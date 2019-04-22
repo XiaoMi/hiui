@@ -244,7 +244,18 @@ class Tree extends Component {
   }
 
   renderTreeNodes (data) {
-    const { prefixCls, checkable, closeIcon, openIcon, withLine, highlightable } = this.props
+    const {
+      prefixCls,
+      checkable,
+      closeIcon,
+      openIcon,
+      withLine,
+      highlightable,
+      editable,
+      searchable,
+      draggable
+    } = this.props
+    console.log('123', draggable)
     return (
       <TreeNode
         checked={this.props.checkedKeys || []}
@@ -263,9 +274,12 @@ class Tree extends Component {
         prefixCls={prefixCls}
         checkable={checkable}
         highlightable={highlightable}
+        editable={editable}
+        searchable={searchable}
         openIcon={openIcon}
         closeIcon={closeIcon}
         withLine={withLine}
+        draggable={draggable}
       />
     )
   }
