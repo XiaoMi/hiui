@@ -32,7 +32,9 @@ export default class TreeNode extends Component {
       showModal: false,
       currentDeleteNode: null,
       // 总共高亮的项
-      highlightNum: 0
+      highlightNum: 0,
+      positionX: null,
+      positionY: null
     }
   }
   static getDerivedStateFromProps (props, state) {
@@ -45,7 +47,15 @@ export default class TreeNode extends Component {
     }
     return state
   }
-
+  setPosition = (x, y) => {
+    const { positionX, positionY } = this.state
+    if (!(x === positionX && y === positionY)) {
+      this.setState({
+        positionX: x,
+        positionY: y
+      })
+    }
+  }
   getItem (name, treeItem) {
     let has = false
     this.props[name].map(item => {
@@ -391,9 +401,6 @@ export default class TreeNode extends Component {
     const {
       draggable,
       prefixCls,
-      // dragNodePosition,
-      // dragNode,
-      // withLine,
       semiChecked,
       onNodeClick,
       onClick,
@@ -411,7 +418,9 @@ export default class TreeNode extends Component {
       editingNodes,
       draggingNode,
       targetNode,
-      dropDividerPosition
+      dropDividerPosition,
+      positionX,
+      positionY
     } = this.state
 
     return (
@@ -419,13 +428,7 @@ export default class TreeNode extends Component {
         {data.map(item => {
           const checked = this.getItem('checked', item)
           const expanded = this.getItem('expanded', item)
-          const itemStyle = classNames(
-            // dragNode === item.id && dragNodePosition === 0 && 'dragTo',
-            // dragNode === item.id && dragNodePosition === -1 && 'dragToGapTop',
-            // dragNode === item.id && dragNodePosition === 1 && 'dragToGapBottom',
-            this.props.checkable && 'has_checkbox'
-          )
-          // const itemContainerStyle = classNames(withLine && 'with-line')
+          const itemStyle = classNames(this.props.checkable && 'has_checkbox')
 
           return (
             <TreeItem
@@ -442,12 +445,14 @@ export default class TreeNode extends Component {
               expanded={expanded}
               expandTreeNode={expandTreeNode}
               itemStyle={itemStyle}
-              // itemContainerStyle={itemContainerStyle}
               semiChecked={semiChecked}
               checkable={checkable}
               onExpanded={onExpanded}
               onValueChange={this.onValueChange}
               renderTree={this.renderTree}
+              setPosition={this.setPosition}
+              positionX={positionX}
+              positionY={positionY}
               renderSwitcher={this.renderSwitcher}
               cancelAddSiblingNode={this.cancelAddSiblingNode}
               renderRightClickMenu={this.renderRightClickMenu}

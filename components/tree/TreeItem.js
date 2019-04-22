@@ -11,7 +11,7 @@ class TreeItem extends Component {
   render () {
     const {
       // 节点可编辑
-      // editable,
+      editable,
       // 节点可拖拽
       draggable,
       // ******************** //
@@ -120,7 +120,7 @@ class TreeItem extends Component {
                   highlight === item.id ? 'highlight' : ''
                 } ${draggingNode === item.id ? 'dragging' : ''}`}
                 onContextMenu={e => {
-                  if (this.props.editable) {
+                  if (editable) {
                     e.preventDefault()
                     showRightClickMenu(item)
                   }
@@ -215,8 +215,15 @@ const target = {
   },
   hover (props, monitor, component) {
     const { sourceItem } = monitor.getItem()
-    const { item: targetItem, setDraggingNode, setTargetNode } = props
-
+    const {
+      item: targetItem,
+      setDraggingNode,
+      setTargetNode,
+      positionX,
+      positionY,
+      setPosition
+    } = props
+    console.log('hover')
     // 先看下是不是在最近得组件
     if (monitor.isOver({ shallow: true })) {
       // 1.移入该组件时则其及其所有祖先组件全部展开，移出时，恢复原状
@@ -230,16 +237,17 @@ const target = {
       } else {
         const sourcePosition = monitor.getClientOffset()
         const targetComponent = findDOMNode(component).getBoundingClientRect()
-        // 3.移动节点到相应位置
-        // 如果在节点的上半部分，则为移动其内部，如果为下半部分，则为节点下方
-
-        if (sourcePosition.y <= targetComponent.y + targetComponent.height / 2) {
-          setTargetNode(targetItem.id, 'sub')
-        } else {
-          setTargetNode(targetItem.id, 'down')
+        if (!(sourcePosition.x === positionX && sourcePosition.y === positionY)) {
+          setPosition(sourcePosition.x, sourcePosition.y)
+          // 3.移动节点到相应位置
+          // 如果在节点的上半部分，则为移动其内部，如果为下半部分，则为节点下方
+          if (sourcePosition.y <= targetComponent.y + targetComponent.height / 2) {
+            setTargetNode(targetItem.id, 'sub')
+          } else {
+            setTargetNode(targetItem.id, 'down')
+          }
+          setDraggingNode(sourceItem.id)
         }
-
-        setDraggingNode(sourceItem.id)
       }
     }
   }
