@@ -56,15 +56,7 @@ export default class TreeNode extends Component {
       })
     }
   }
-  getItem (name, treeItem) {
-    let has = false
-    this.props[name].map(item => {
-      if (treeItem.id === item) {
-        has = true
-      }
-    })
-    return has
-  }
+
   setHighlightNum = () => {
     this.setState({
       highlightNum: this.state.highlightNum + 1
@@ -91,7 +83,7 @@ export default class TreeNode extends Component {
       return item
     })
   }
-  // 高亮检索值
+  // 统计高亮项
   recordHighlight = (data, highlightValue, count) => {
     data.forEach(item => {
       if (typeof item.title === 'string' && item.title.includes(highlightValue)) {
@@ -364,7 +356,6 @@ export default class TreeNode extends Component {
       )
     )
   }
-  //* *** */
   onSetHighlight = item => {
     this.setState({
       highlight: item.id
@@ -410,7 +401,9 @@ export default class TreeNode extends Component {
       expandTreeNode,
       onCheckChange,
       onExpanded,
-      editable
+      editable,
+      checked,
+      expanded
     } = this.props
     const {
       highlight,
@@ -426,10 +419,6 @@ export default class TreeNode extends Component {
     return (
       <ul>
         {data.map(item => {
-          const checked = this.getItem('checked', item)
-          const expanded = this.getItem('expanded', item)
-          const itemStyle = classNames(this.props.checkable && 'has_checkbox')
-
           return (
             <TreeItem
               key={item.id}
@@ -437,14 +426,14 @@ export default class TreeNode extends Component {
               dropDividerPosition={dropDividerPosition}
               prefixCls={prefixCls}
               draggable={draggable}
-              checked={checked}
+              checked={!!checked.includes(item.id)}
               highlight={highlight}
               highlightable={highlightable}
               editNodes={editNodes}
               editingNodes={editingNodes}
-              expanded={expanded}
+              expanded={!!expanded.includes(item.id)}
               expandTreeNode={expandTreeNode}
-              itemStyle={itemStyle}
+              itemStyle={classNames(checkable && 'has_checkbox')}
               semiChecked={semiChecked}
               checkable={checkable}
               onExpanded={onExpanded}
@@ -486,7 +475,7 @@ export default class TreeNode extends Component {
     return (
       <div>
         {searchable && (
-          <div className='hi-tree_searcher'>
+          <div className='hi-tree__searcher'>
             <Input
               value={this.state.searchValue}
               type='text'
@@ -505,17 +494,7 @@ export default class TreeNode extends Component {
               style={{ width: '272px' }}
             />
             {highlightNum === 0 && searchValue !== '' && (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 34,
-                  color: '#999999',
-                  left: 39,
-                  fontSize: 12
-                }}
-              >
-                未找到搜索结果
-              </div>
+              <div className='hi-tree__searcher--empty'>未找到搜索结果</div>
             )}
           </div>
         )}

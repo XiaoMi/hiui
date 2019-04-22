@@ -14,7 +14,6 @@ class TreeItem extends Component {
       editable,
       // 节点可拖拽
       draggable,
-      // ******************** //
       dropDividerPosition,
       checked,
       expanded,
@@ -63,7 +62,12 @@ class TreeItem extends Component {
             : withLine && renderItemIcon()}
           </span> */}
           {
-            <span onClick={() => onExpanded(expanded, item)} className={`${prefixCls}_item-icon`}>
+            <span
+              onClick={() => {
+                onExpanded(expanded, item)
+              }}
+              className={`${prefixCls}_item-icon`}
+            >
               {item.children && item.children.length > 0 && renderSwitcher(expanded)}
             </span>
           }
@@ -160,7 +164,6 @@ class TreeItem extends Component {
             >
               {item.title}
               {renderRightClickMenu(item)}
-              {targetNode === item.id && dropDividerPosition === 'sub' && <TreeDivider />}
             </span>
           )}
         </div>
@@ -195,8 +198,7 @@ const target = {
       // 1.移入该组件时则其及其所有祖先组件全部展开，移出时，恢复原状
       if (
         sourceItem.id === targetItem.id ||
-        (targetItem.children && targetItem.children.map(t => t.id).includes(sourceItem.id)) ||
-        (sourceItem.children && sourceItem.children.map(s => s.id).includes(targetItem.id))
+        (targetItem.children && targetItem.children.map(t => t.id).includes(sourceItem.id))
       ) {
         // 2.如果源节点就是目的节点或者源节点是目的节点的子节点（直系）再或者源节点是目的节点的父节点，那么什么都不做
         // 如果什么都不做，原来展开则现在还展开
@@ -223,31 +225,21 @@ const target = {
       positionY,
       setPosition
     } = props
-    console.log('hover')
     // 先看下是不是在最近得组件
     if (monitor.isOver({ shallow: true })) {
       // 1.移入该组件时则其及其所有祖先组件全部展开，移出时，恢复原状
-      if (
-        sourceItem.id === targetItem.id ||
-        (targetItem.children && targetItem.children.map(t => t.id).includes(sourceItem.id)) ||
-        (sourceItem.children && sourceItem.children.map(s => s.id).includes(targetItem.id))
-      ) {
-        // 2.如果源节点就是目的节点或者源节点是目的节点的子节点（直系）再或者源节点是目的节点的父节点，那么什么都不做
-        return false
-      } else {
-        const sourcePosition = monitor.getClientOffset()
-        const targetComponent = findDOMNode(component).getBoundingClientRect()
-        if (!(sourcePosition.x === positionX && sourcePosition.y === positionY)) {
-          setPosition(sourcePosition.x, sourcePosition.y)
-          // 3.移动节点到相应位置
-          // 如果在节点的上半部分，则为移动其内部，如果为下半部分，则为节点下方
-          if (sourcePosition.y <= targetComponent.y + targetComponent.height / 2) {
-            setTargetNode(targetItem.id, 'sub')
-          } else {
-            setTargetNode(targetItem.id, 'down')
-          }
-          setDraggingNode(sourceItem.id)
+      const sourcePosition = monitor.getClientOffset()
+      const targetComponent = findDOMNode(component).getBoundingClientRect()
+      if (!(sourcePosition.x === positionX && sourcePosition.y === positionY)) {
+        setPosition(sourcePosition.x, sourcePosition.y)
+        // 3.移动节点到相应位置
+        // 如果在节点的上半部分，则为移动其内部，如果为下半部分，则为节点下方
+        if (sourcePosition.y <= targetComponent.y + targetComponent.height / 2) {
+          setTargetNode(targetItem.id, 'sub')
+        } else {
+          setTargetNode(targetItem.id, 'down')
         }
+        setDraggingNode(sourceItem.id)
       }
     }
   }

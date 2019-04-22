@@ -14,7 +14,6 @@ class Tree extends Component {
     super(props)
 
     this.state = {
-      hasChecked: props.defaultCheckedKeys,
       hasExpanded: [],
       dataMap: {},
       data: [],
@@ -144,22 +143,6 @@ class Tree extends Component {
       } else {
         semiChecked = semiChecked.filter(s => s !== p)
       }
-      console.log(
-        'chedked',
-        checked,
-        'child',
-        child,
-        'checkedkeys',
-        checkedArr,
-        'child.length',
-        child.length,
-        'title',
-        all.find(item => item.id === p).title,
-        'checknum',
-        num,
-        'semi',
-        semi
-      )
     })
 
     onChange && onChange(checkedArr, item.title, !checked, semiChecked)
@@ -209,11 +192,11 @@ class Tree extends Component {
       this.setCheckTreeCheckedParent(dataMap[id].parent, checked, tempCheckedArr)
     }
   }
+  // 展开、收起节点
+  onExpanded = (expanded, item) => {
+    let expandedArr = [...this.state.hasExpanded]
 
-  onExpanded (expanded, item) {
-    let expandedArr = this.state.hasExpanded
-
-    if (expandedArr.indexOf(item.id) >= 0) {
+    if (expandedArr.includes(item.id)) {
       expandedArr.splice(expandedArr.indexOf(item.id), 1)
     } else {
       expandedArr.push(item.id)
@@ -224,7 +207,7 @@ class Tree extends Component {
   }
   // 展开节点
   expandTreeNode = id => {
-    const _hasExpanded = this.state.hasExpanded
+    const _hasExpanded = [...this.state.hasExpanded]
     if (!_hasExpanded.includes(id)) {
       _hasExpanded.push(id)
       this.setState({
@@ -242,8 +225,7 @@ class Tree extends Component {
       hasExpanded: this.state.hasExpanded.filter(expandId => expandId !== id)
     })
   }
-
-  renderTreeNodes (data) {
+  render () {
     const {
       prefixCls,
       checkable,
@@ -253,45 +235,36 @@ class Tree extends Component {
       highlightable,
       editable,
       searchable,
-      draggable
+      draggable,
+      style
     } = this.props
+    const { data } = this.state
     return (
-      <TreeNode
-        checked={this.props.checkedKeys || []}
-        onNodeClick={this.props.onNodeClick}
-        onClick={this.props.onClick}
-        semiChecked={this.state.all.filter(item => item.semi).map(item => item.id)}
-        expanded={this.state.hasExpanded}
-        closeExpandedTreeNode={this.closeExpandedTreeNode}
-        expandTreeNode={this.expandTreeNode}
-        setExpandTreeNodes={this.setExpandTreeNodes}
-        onCheckChange={this.onCheckChange}
-        hightLightNodes={this.props.hightLightNodes}
-        onHightLightChange={this.props.onHightLightChange}
-        onExpanded={this.onExpanded.bind(this)}
-        data={data}
-        prefixCls={prefixCls}
-        checkable={checkable}
-        highlightable={highlightable}
-        editable={editable}
-        searchable={searchable}
-        openIcon={openIcon}
-        closeIcon={closeIcon}
-        // withLine={withLine}
-        draggable={draggable}
-      />
-    )
-  }
-
-  render () {
-    const { prefixCls, draggable, style } = this.props
-    const classes = classNames(`${prefixCls}`, {
-      'draggable-tree': draggable
-    })
-
-    return (
-      <div className={classes} style={style}>
-        {this.renderTreeNodes(this.state.data)}
+      <div className={classNames(`${prefixCls}`)} style={style}>
+        <TreeNode
+          checked={this.props.checkedKeys || []}
+          onNodeClick={this.props.onNodeClick}
+          onClick={this.props.onClick}
+          semiChecked={this.state.all.filter(item => item.semi).map(item => item.id)}
+          expanded={this.state.hasExpanded}
+          closeExpandedTreeNode={this.closeExpandedTreeNode}
+          expandTreeNode={this.expandTreeNode}
+          setExpandTreeNodes={this.setExpandTreeNodes}
+          onCheckChange={this.onCheckChange}
+          hightLightNodes={this.props.hightLightNodes}
+          onHightLightChange={this.props.onHightLightChange}
+          onExpanded={this.onExpanded}
+          data={data}
+          prefixCls={prefixCls}
+          checkable={checkable}
+          highlightable={highlightable}
+          editable={editable}
+          searchable={searchable}
+          openIcon={openIcon}
+          closeIcon={closeIcon}
+          // withLine={withLine}
+          draggable={draggable}
+        />
       </div>
     )
   }
