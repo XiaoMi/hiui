@@ -10,28 +10,6 @@ import TreeItem from './TreeItem'
 import Modal from '../modal'
 import { collectExpandId, findNode } from './util'
 
-// 高亮检索值
-const highlightData = (data, highlightValue) => {
-  return data.map(item => {
-    if (typeof item.title === 'string' && item.title.includes(highlightValue)) {
-      const index = item.title.indexOf(highlightValue)
-      const beforeStr = item.title.substr(0, index)
-      const afterStr = item.title.substr(index + highlightValue.length)
-      item.title = (
-        <span>
-          {beforeStr}
-          <span style={{ color: '#4284f5' }}>{highlightValue}</span>
-          {afterStr}
-        </span>
-      )
-    }
-    if (item.children) {
-      highlightData(item.children, highlightValue)
-    }
-    return item
-  })
-}
-// const TreeNoder = DragSourceWrapper(TreeItem)
 export default class TreeNode extends Component {
   constructor (props) {
     super(props)
@@ -52,7 +30,9 @@ export default class TreeNode extends Component {
       dropDividerPosition: null,
       searchValue: '',
       showModal: false,
-      currentDeleteNode: null
+      currentDeleteNode: null,
+      // 总共高亮的项
+      highlightNum: 0
     }
   }
   static getDerivedStateFromProps (props, state) {
@@ -75,7 +55,44 @@ export default class TreeNode extends Component {
     })
     return has
   }
-
+  setHighlightNum = () => {
+    this.setState({
+      highlightNum: this.state.highlightNum + 1
+    })
+  }
+  // 高亮检索值
+  highlightData = (data, highlightValue) => {
+    return data.map(item => {
+      if (typeof item.title === 'string' && item.title.includes(highlightValue)) {
+        const index = item.title.indexOf(highlightValue)
+        const beforeStr = item.title.substr(0, index)
+        const afterStr = item.title.substr(index + highlightValue.length)
+        item.title = (
+          <span>
+            {beforeStr}
+            <span style={{ color: '#4284f5' }}>{highlightValue}</span>
+            {afterStr}
+          </span>
+        )
+      }
+      if (item.children) {
+        this.highlightData(item.children, highlightValue)
+      }
+      return item
+    })
+  }
+  // 高亮检索值
+  recordHighlight = (data, highlightValue, count) => {
+    data.forEach(item => {
+      if (typeof item.title === 'string' && item.title.includes(highlightValue)) {
+        count = count + 1
+      }
+      if (item.children) {
+        this.recordHighlight(item.children, highlightValue, count)
+      }
+    })
+    return count
+  }
   renderSwitcher = expanded => {
     const { prefixCls } = this.props
     const switcherClsName = classNames(
@@ -374,9 +391,9 @@ export default class TreeNode extends Component {
     const {
       draggable,
       prefixCls,
-      dragNodePosition,
-      dragNode,
-      withLine,
+      // dragNodePosition,
+      // dragNode,
+      // withLine,
       semiChecked,
       onNodeClick,
       onClick,
@@ -403,12 +420,12 @@ export default class TreeNode extends Component {
           const checked = this.getItem('checked', item)
           const expanded = this.getItem('expanded', item)
           const itemStyle = classNames(
-            dragNode === item.id && dragNodePosition === 0 && 'dragTo',
-            dragNode === item.id && dragNodePosition === -1 && 'dragToGapTop',
-            dragNode === item.id && dragNodePosition === 1 && 'dragToGapBottom',
+            // dragNode === item.id && dragNodePosition === 0 && 'dragTo',
+            // dragNode === item.id && dragNodePosition === -1 && 'dragToGapTop',
+            // dragNode === item.id && dragNodePosition === 1 && 'dragToGapBottom',
             this.props.checkable && 'has_checkbox'
           )
-          const itemContainerStyle = classNames(withLine && 'with-line')
+          // const itemContainerStyle = classNames(withLine && 'with-line')
 
           return (
             <TreeItem
@@ -425,7 +442,7 @@ export default class TreeNode extends Component {
               expanded={expanded}
               expandTreeNode={expandTreeNode}
               itemStyle={itemStyle}
-              itemContainerStyle={itemContainerStyle}
+              // itemContainerStyle={itemContainerStyle}
               semiChecked={semiChecked}
               checkable={checkable}
               onExpanded={onExpanded}
@@ -459,7 +476,7 @@ export default class TreeNode extends Component {
     )
   }
   render () {
-    const { dataCache, searchValue } = this.state
+    const { dataCache, searchValue, highlightNum } = this.state
     const { searchable } = this.props
     return (
       <div>
@@ -470,19 +487,36 @@ export default class TreeNode extends Component {
               type='text'
               placeholder='关键词搜索'
               onChange={e => {
-                this.setState({ searchValue: e.target.value })
+                this.setState({
+                  searchValue: e.target.value,
+                  highlightNum: this.recordHighlight(dataCache, e.target.value, 0)
+                })
+
                 this.props.setExpandTreeNodes(
                   collectExpandId(dataCache, e.target.value, [], dataCache)
                 )
               }}
               append={<Icon name='search' style={{ color: '#4284F5', fontSize: '24px' }} />}
-              style={{ width: '250px' }}
+              style={{ width: '272px' }}
             />
+            {highlightNum === 0 && searchValue !== '' && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 34,
+                  color: '#999999',
+                  left: 39,
+                  fontSize: 12
+                }}
+              >
+                未找到搜索结果
+              </div>
+            )}
           </div>
         )}
 
         {searchable
-          ? this.renderTree(highlightData(cloneDeep(dataCache), searchValue))
+          ? this.renderTree(this.highlightData(cloneDeep(dataCache), searchValue))
           : this.renderTree(cloneDeep(dataCache))}
 
         <Modal

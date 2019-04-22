@@ -33,7 +33,7 @@ class Tree extends Component {
     defaultExpandAll: PropTypes.bool,
     checkable: PropTypes.bool,
     draggable: PropTypes.bool,
-    withLine: PropTypes.bool,
+    // withLine: PropTypes.bool,
     onNodeClick: PropTypes.func,
     onClick: PropTypes.func,
     onChange: PropTypes.func
@@ -249,13 +249,12 @@ class Tree extends Component {
       checkable,
       closeIcon,
       openIcon,
-      withLine,
+      // withLine,
       highlightable,
       editable,
       searchable,
       draggable
     } = this.props
-    console.log('123', draggable)
     return (
       <TreeNode
         checked={this.props.checkedKeys || []}
@@ -278,7 +277,7 @@ class Tree extends Component {
         searchable={searchable}
         openIcon={openIcon}
         closeIcon={closeIcon}
-        withLine={withLine}
+        // withLine={withLine}
         draggable={draggable}
       />
     )

@@ -6,7 +6,7 @@ const TreeDivider = props => {
       display: 'flex',
       width: '100%',
       alignItems: 'center',
-      top: 22
+      top: 21
     }
     : { position: 'absolute', display: 'flex', width: '100%', alignItems: 'center', bottom: -2 }
   return (

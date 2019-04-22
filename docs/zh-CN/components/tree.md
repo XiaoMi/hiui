@@ -41,16 +41,7 @@ constructor(props) {
   }
 
 }
-clickEvent () {
-  const data = this.state.treeData
-  data.push({
-    id: 2,
-    title: '其它'
-  })
-  this.setState({
-    treeData: data
-  })
-}
+
 render() {
   return (
     <div style={{width:500}}>
@@ -66,7 +57,6 @@ render() {
         highlightable
         onNodeClick={(item) => console.log('------click node', item)}
       />
-      <Button onClick={this.clickEvent.bind(this)}>点击</Button>
     </div>
   )
 }
@@ -179,16 +169,7 @@ constructor(props) {
   }
 
 }
-clickEvent () {
-  const data = this.state.treeData
-  data.push({
-    id: 2,
-    title: '其它'
-  })
-  this.setState({
-    treeData: data
-  })
-}
+
 render() {
   return (
     <div style={{width:500}}>
@@ -204,7 +185,6 @@ render() {
         highlightable
         onNodeClick={(item) => console.log('------click node', item)}
       />
-      <Button onClick={this.clickEvent.bind(this)}>点击</Button>
     </div>
   )
 }
@@ -251,16 +231,6 @@ constructor(props) {
   }
 
 }
-clickEvent () {
-  const data = this.state.treeData
-  data.push({
-    id: 2,
-    title: '其它'
-  })
-  this.setState({
-    treeData: data
-  })
-}
 render() {
   return (
     <div style={{width:500}}>
@@ -276,7 +246,6 @@ render() {
         highlightable
         onNodeClick={(item) => console.log('------click node', item)}
       />
-      <Button onClick={this.clickEvent.bind(this)}>点击</Button>
     </div>
   )
 }
@@ -323,16 +292,7 @@ constructor(props) {
   }
 
 }
-clickEvent () {
-  const data = this.state.treeData
-  data.push({
-    id: 2,
-    title: '其它'
-  })
-  this.setState({
-    treeData: data
-  })
-}
+
 render() {
   return (
     <div style={{width:500}}>
@@ -348,7 +308,6 @@ render() {
         highlightable
         onNodeClick={(item) => console.log('------click node', item)}
       />
-      <Button onClick={this.clickEvent.bind(this)}>点击</Button>
     </div>
   )
 }

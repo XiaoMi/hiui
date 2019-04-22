@@ -22,7 +22,7 @@ class TreeItem extends Component {
       editNodes,
       editingNodes,
       prefixCls,
-      withLine,
+      // withLine,
       semiChecked,
       onNodeClick,
       onClick,
@@ -30,11 +30,11 @@ class TreeItem extends Component {
       item,
       draggingNode,
       checkable,
-      itemContainerStyle,
+      // itemContainerStyle,
       itemStyle,
       onExpanded,
       onValueChange,
-      renderItemIcon,
+      // renderItemIcon,
       cancelEditNode,
       cancelAddSiblingNode,
       renderTree,
@@ -50,61 +50,95 @@ class TreeItem extends Component {
       saveEditNode
     } = this.props
     return connectDropTarget(
-      <li key={item.id} className={itemContainerStyle}>
-        {targetNode === item.id && dropDividerPosition === 'down' && <TreeDivider top />}
-        <span onClick={() => onExpanded(expanded, item)} className={`${prefixCls}_item-icon`}>
+      <li key={item.id}>
+        <div
+          style={{
+            display: 'flex'
+          }}
+        >
+          {targetNode === item.id && dropDividerPosition === 'down' && <TreeDivider top />}
+          {/* <span onClick={() => onExpanded(expanded, item)} className={`${prefixCls}_item-icon`}>
           {item.children && item.children.length > 0
             ? renderSwitcher(expanded)
             : withLine && renderItemIcon()}
-        </span>
-
-        {checkable ? (
-          <Checkbox
-            semi={semiChecked.includes(item.id)}
-            checked={checked}
-            onChange={() => onCheckChange(checked, item)}
-            onTitleClick={e => {
-              onNodeClick && onNodeClick(item)
-              onClick && onClick(item)
-              highlightable && onSetHighlight(item)
-              e.stopPropagation()
-            }}
-            highlight={highlight === item.id}
-            text={item.title}
-            disabled={item.disabled}
-          />
-        ) : item.status === 'editable' || editNodes.map(node => node.id).includes(item.id) ? (
-          <div className='editing'>
-            <Input
-              placeholder='请输入菜单名称'
-              value={(editingNodes.find(node => node.id === item.id) || {}).title}
-              onChange={e => {
-                onValueChange(e.target.value, item.id)
+          </span> */}
+          {
+            <span onClick={() => onExpanded(expanded, item)} className={`${prefixCls}_item-icon`}>
+              {item.children && item.children.length > 0 && renderSwitcher(expanded)}
+            </span>
+          }
+          {checkable ? (
+            <Checkbox
+              semi={semiChecked.includes(item.id)}
+              checked={checked}
+              onChange={() => onCheckChange(checked, item)}
+              onTitleClick={e => {
+                onNodeClick && onNodeClick(item)
+                onClick && onClick(item)
+                highlightable && onSetHighlight(item)
+                e.stopPropagation()
               }}
+              highlight={highlight === item.id}
+              text={item.title}
+              disabled={item.disabled}
             />
-            <span
-              style={{ cursor: 'pointer', marginRight: 12, color: '#4284F5' }}
-              onClick={() => {
-                saveEditNode(item.id)
-              }}
-            >
-              确定
-            </span>
-            <span
-              style={{ cursor: 'pointer' }}
-              onClick={() => {
-                if (editNodes.map(node => node.id).includes(item.id)) {
-                  cancelEditNode(item.id)
-                } else {
-                  cancelAddSiblingNode(item.id)
-                }
-              }}
-            >
-              取消
-            </span>
-          </div>
-        ) : draggable ? (
-          connectDragSource(
+          ) : item.status === 'editable' || editNodes.map(node => node.id).includes(item.id) ? (
+            <div className='editing'>
+              <Input
+                placeholder='请输入菜单名称'
+                value={(editingNodes.find(node => node.id === item.id) || {}).title}
+                onChange={e => {
+                  onValueChange(e.target.value, item.id)
+                }}
+              />
+              <span
+                style={{ cursor: 'pointer', marginRight: 12, color: '#4284F5' }}
+                onClick={() => {
+                  saveEditNode(item.id)
+                }}
+              >
+                确定
+              </span>
+              <span
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  if (editNodes.map(node => node.id).includes(item.id)) {
+                    cancelEditNode(item.id)
+                  } else {
+                    cancelAddSiblingNode(item.id)
+                  }
+                }}
+              >
+                取消
+              </span>
+            </div>
+          ) : draggable ? (
+            connectDragSource(
+              <span
+                style={item.style}
+                className={`${prefixCls}_item-text ${itemStyle} ${
+                  highlight === item.id ? 'highlight' : ''
+                } ${draggingNode === item.id ? 'dragging' : ''}`}
+                onContextMenu={e => {
+                  if (this.props.editable) {
+                    e.preventDefault()
+                    showRightClickMenu(item)
+                  }
+                }}
+                onClick={e => {
+                  closeRightClickMenu()
+                  onNodeClick && onNodeClick(item)
+                  onClick && onClick(item)
+                  highlightable && onSetHighlight(item)
+                  e.stopPropagation()
+                }}
+              >
+                {item.title}
+                {renderRightClickMenu(item)}
+                {targetNode === item.id && dropDividerPosition === 'sub' && <TreeDivider />}
+              </span>
+            )
+          ) : (
             <span
               style={item.style}
               className={`${prefixCls}_item-text ${itemStyle} ${
@@ -128,32 +162,8 @@ class TreeItem extends Component {
               {renderRightClickMenu(item)}
               {targetNode === item.id && dropDividerPosition === 'sub' && <TreeDivider />}
             </span>
-          )
-        ) : (
-          <span
-            style={item.style}
-            className={`${prefixCls}_item-text ${itemStyle} ${
-              highlight === item.id ? 'highlight' : ''
-            } ${draggingNode === item.id ? 'dragging' : ''}`}
-            onContextMenu={e => {
-              if (this.props.editable) {
-                e.preventDefault()
-                showRightClickMenu(item)
-              }
-            }}
-            onClick={e => {
-              closeRightClickMenu()
-              onNodeClick && onNodeClick(item)
-              onClick && onClick(item)
-              highlightable && onSetHighlight(item)
-              e.stopPropagation()
-            }}
-          >
-            {item.title}
-            {renderRightClickMenu(item)}
-            {targetNode === item.id && dropDividerPosition === 'sub' && <TreeDivider />}
-          </span>
-        )}
+          )}
+        </div>
         {item.children && item.children.length > 0 && expanded ? renderTree(item.children) : null}
       </li>
     )
