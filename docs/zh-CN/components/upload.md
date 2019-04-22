@@ -26,7 +26,7 @@ render () {
 				name={'files[]'}
 				onChange = {(file, fileList, response) => {
 					console.log('upload callback', file, fileList, response)
-					if(response&&response.status !== 200) return false
+					// if(response&&response.status !== 200) return false // 返回 false 则该文件会从列表里删除
 				}}
 				disabled={false}
 			/>
