@@ -258,6 +258,7 @@ export const dealData = (data, tempData = {}, parent = null) => {
     }
   })
 }
+
 // 寻找某一节点的父节点
 export const getParentId = (id, data) => {
   let parentId
@@ -272,6 +273,14 @@ export const getParentId = (id, data) => {
   })
   return parentId
 }
+// 寻找某一节点的所有子节点
+export const getChildrenIds = (node, arr = []) => {
+  if (node.children) {
+    arr = node.children.map(i => i.id).concat(arr)
+  }
+  node.children.forEach(c => getChildrenIds(c, arr))
+  return arr
+}
 // 寻找某一节点的所有祖先节点
 export const getAncestorIds = (id, data, arr = []) => {
   if (getParentId(id, data)) {
@@ -280,6 +289,7 @@ export const getAncestorIds = (id, data, arr = []) => {
   }
   return arr
 }
+
 // 收集所有需要展开的节点 id
 export const collectExpandId = (data, searchValue, collection = [], allData) => {
   data.forEach(item => {

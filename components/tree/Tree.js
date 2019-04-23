@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
-import { deepClone, getChildren, getDisabled, getAll, dealData } from './util'
+import { getAll, dealData, getChildrenIds, getAncestorIds, findNode } from './util'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
@@ -17,14 +17,104 @@ class Tree extends Component {
       hasExpanded: [],
       dataMap: {},
       data: [],
-      dragNode: '',
-      dragNodePosition: null,
       semiChecked: [],
       disabledKeys: [],
-      all: []
+      all: [],
+      checkedIds: [],
+      semiCheckedIds: []
     }
   }
-
+  initCheck = itemId => {
+    const { checkedIds, semiCheckedIds, data } = this.state
+    let currentCheckedIds = [...checkedIds]
+    let currentSemiCheckedIds = [...semiCheckedIds]
+    const node = findNode(itemId, data)
+    const childrenIds = getChildrenIds(node, [])
+    const ancestorIds = getAncestorIds(itemId, data, [])
+    // 当前是未选
+    currentCheckedIds = currentCheckedIds.concat(childrenIds)
+    ancestorIds.forEach(i => {
+      const ancestor = findNode(i, data)
+      if (ancestor.children.every(child => currentCheckedIds)) {
+        currentCheckedIds.push(i)
+      } else if (
+        ancestor.children.some(child => currentCheckedIds) &&
+        !currentSemiCheckedIds.includes(i)
+      ) {
+        currentSemiCheckedIds.push(i)
+      }
+    })
+    this.setState({
+      checkedIds: currentCheckedIds,
+      semiCheckedIds: currentSemiCheckedIds
+    })
+  }
+  onCheck = itemId => {
+    const { checkedIds, semiCheckedIds, data } = this.state
+    let currentCheckedIds = [...checkedIds]
+    let currentSemiCheckedIds = [...semiCheckedIds]
+    const node = findNode(itemId, data)
+    const childrenIds = getChildrenIds(node, [])
+    const ancestorIds = getAncestorIds(itemId, data, [])
+    if (currentCheckedIds.includes(itemId)) {
+      // 当前是全选
+      currentCheckedIds = currentCheckedIds.filter(id => id === itemId)
+      childrenIds.forEach(i => {
+        if (currentCheckedIds.includes(i)) {
+          currentCheckedIds = currentCheckedIds.filter(id => id === itemId)
+        }
+      })
+      ancestorIds.forEach(i => {
+        const ancestor = findNode(i, data)
+        if (ancestor.children.every(child => currentCheckedIds)) {
+          currentCheckedIds.push(i)
+        } else if (
+          ancestor.children.some(child => currentCheckedIds) &&
+          !currentSemiCheckedIds.includes(i)
+        ) {
+          currentSemiCheckedIds.push(i)
+        }
+      })
+    } else if (currentSemiCheckedIds.includes(itemId)) {
+      // 当前是半选
+      currentSemiCheckedIds = currentSemiCheckedIds.filter(id => id === itemId)
+      currentCheckedIds.push(itemId)
+      childrenIds.forEach(i => {
+        if (!currentCheckedIds.includes(i)) {
+          currentCheckedIds.push(i)
+        }
+      })
+      ancestorIds.forEach(i => {
+        const ancestor = findNode(i, data)
+        if (ancestor.children.every(child => currentCheckedIds)) {
+          currentCheckedIds.push(i)
+        } else if (
+          ancestor.children.some(child => currentCheckedIds) &&
+          !currentSemiCheckedIds.includes(i)
+        ) {
+          currentSemiCheckedIds.push(i)
+        }
+      })
+    } else {
+      // 当前是未选
+      currentCheckedIds = currentCheckedIds.concat(childrenIds)
+      ancestorIds.forEach(i => {
+        const ancestor = findNode(i, data)
+        if (ancestor.children.every(child => currentCheckedIds)) {
+          currentCheckedIds.push(i)
+        } else if (
+          ancestor.children.some(child => currentCheckedIds) &&
+          !currentSemiCheckedIds.includes(i)
+        ) {
+          currentSemiCheckedIds.push(i)
+        }
+      })
+    }
+    this.setState({
+      checkedIds: currentCheckedIds,
+      semiCheckedIds: currentSemiCheckedIds
+    })
+  }
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     defaultCheckedKeys: PropTypes.arrayOf(PropTypes.any),
@@ -44,16 +134,16 @@ class Tree extends Component {
     data: []
   }
 
-  static getDerivedStateFromProps (props, prevState) {
+  static getDerivedStateFromProps (props, state) {
     let data = {}
-    if (!isEqual(props.data, prevState.data)) {
+    if (!isEqual(props.data, state.data)) {
+      console.log('>>>>>>>>>>>>>')
       const dataMap = {}
-      dealData(deepClone(props.data), dataMap)
-      console.log(props.data, prevState.data, dataMap)
+      dealData(props.data, dataMap)
       data.dataMap = dataMap
       data.data = props.data
 
-      if (prevState.data.length === 0) {
+      if (state.data.length === 0) {
         if (props.defaultExpandAll) {
           let tempExpandedArr = []
           for (let key in dataMap) {
@@ -150,48 +240,6 @@ class Tree extends Component {
       this.props.onCheckChange(checkedArr, item.title, !checked, semiChecked)
   }
 
-  setCheckTreeCheckedChild (id, checked, tempCheckedArr, semi) {
-    let child = getChildren(this.props.data, id)
-    let disabled = getDisabled(this.props.data)
-    child.forEach(c => {
-      if (disabled.includes(c)) {
-        return
-      }
-      if (semi) {
-        tempCheckedArr.splice(tempCheckedArr.indexOf(c), 1)
-        return
-      }
-      if (!tempCheckedArr.includes(c) && !disabled.includes(c)) {
-        tempCheckedArr.push(c)
-      } else {
-        tempCheckedArr.splice(tempCheckedArr.indexOf(c), 1)
-      }
-    })
-  }
-
-  setCheckTreeCheckedParent (id, checked, tempCheckedArr) {
-    const { dataMap } = this.state
-    if (checked) {
-      if (tempCheckedArr.indexOf(id) >= 0) {
-        tempCheckedArr.splice(tempCheckedArr.indexOf(id), 1)
-      }
-    } else {
-      let allChecked = true
-
-      dataMap[id].children &&
-        dataMap[id].children.map(i => {
-          if (tempCheckedArr.indexOf(i) < 0) {
-            allChecked = false
-          }
-        })
-      if (allChecked && tempCheckedArr.indexOf(id) < 0) {
-        tempCheckedArr.push(id)
-      }
-    }
-    if (dataMap[id].parent) {
-      this.setCheckTreeCheckedParent(dataMap[id].parent, checked, tempCheckedArr)
-    }
-  }
   // 展开、收起节点
   onExpanded = (expanded, item) => {
     let expandedArr = [...this.state.hasExpanded]
