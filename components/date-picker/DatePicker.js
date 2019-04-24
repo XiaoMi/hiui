@@ -29,6 +29,16 @@ class DatePicker extends BasePicker {
           />
         )
         break
+      case 'timeperiod':
+        component = (
+          <DatePanel
+            {...props}
+            date={state.date.startDate}
+            onPick={this.onPick.bind(this)}
+            style={state.style}
+          />
+        )
+        break
       case 'daterange':
         component = (
           <DateRangePanel

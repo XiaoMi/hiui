@@ -42,7 +42,8 @@ module.exports = {
     grid: 'Grid 栅格',
     stepper: 'Stepper 步骤',
     icon: 'Icon 图标',
-    progress: 'Progress 进度条'
+    progress: 'Progress 进度条',
+    card: 'Card  卡片'
   },
   designs: {
     'design-patterns': '设计模式',
@@ -69,11 +70,11 @@ module.exports = {
     workbench: '工作台',
     'home-desc': '概述',
     'form-desc': '概述',
-    'form-basic': '基础表单',
-    'form-group': '分组型表单',
-    'form-inner': '内嵌表格型表单',
-    'form-query': '查询型表单',
-    'form-step': '步骤型表单',
+    'form-basic': '基础',
+    'form-group': '分组型',
+    'form-inner': '内嵌表格型',
+    'form-query': '查询型',
+    'form-step': '步骤型',
     'table-desc': '概述',
     'table-basic': '基础型',
     'table-query': '查询型',

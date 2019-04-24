@@ -206,10 +206,11 @@ export default class Upload extends Component {
       headers,
       uploadAction
     } = this.props
-    const onerror = () => {
+    const onerror = (err) => {
+      const errRes = err !== undefined ? err : { status: xhr.status, statusText: xhr.statusText }
       file.uploadState = 'error'
       this.setState({ fileList })
-      this.onUpload(file, fileList, {})
+      this.onUpload(file, fileList, errRes)
     }
 
     if (file.fileType === 'img') { // 用来图片预览

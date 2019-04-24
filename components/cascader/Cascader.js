@@ -194,7 +194,7 @@ class Cascader extends Component {
         let label = option[labelKey]
         const value = option[valueKey]
         const children = option[childrenKey]
-        if (label.indexOf(keyword) > -1 || value.indexOf(keyword) > -1) {
+        if (label.toString().indexOf(keyword) > -1 || value.toString().indexOf(keyword) > -1) {
           match.matchCount++
         }
         match.options.push({
@@ -210,7 +210,7 @@ class Cascader extends Component {
             filterOptions.push(match.options.slice())
           }
         }
-        if (label.indexOf(keyword) > -1 || value.indexOf(keyword) > -1) {
+        if (label.toString().indexOf(keyword) > -1 || value.toString().indexOf(keyword) > -1) {
           match.matchCount--
         }
         match.options.pop()

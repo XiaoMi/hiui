@@ -151,7 +151,7 @@ render() {
 | list |  数据  |  Array   | 参见 List Options | - |
 | title |   显示的文字内容<br/>传入"-"时代表分隔符  |   String \| Component   | - | - |
 | type |   下拉按钮类型  |   String   | text \| button \| group | text |
-| onClick |   点击回调函数  |   func   | - | - |
+| onClick |   点击回调函数  |   Function   | - | - |
 | prefix |   前缀图标  |   String \| Component   | - | - |
 | suffix |   后缀图标  |  String \| Component   | - | - |
 | trigger |    触发方式  |   String \| array   | click \| contextmenu | click |
