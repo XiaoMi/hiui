@@ -74,23 +74,16 @@ class Pagination extends Component {
     if (props.total !== this.props.total) {
       states.total = props.total
     }
+    let current
+    if (this.state.current !== props.defaultCurrent) {
+      current = this.getCurrent(props.defaultCurrent, this.calculatePage(props.total, props.pageSize))
+    }
+    if (current) {
+      states.current = current
+      states.jumpTo = current
+    }
 
-    this.setState({...states}, () => {
-      let current
-
-      if (props.defaultCurrent !== this.props.defaultCurrent) { // defaultCurrent改变需重设current
-        current = props.defaultCurrent
-      } else {
-        let newCurrent = this.getCurrent(this.state.current, this.calculatePage(props.total, props.pageSize))
-        if (newCurrent !== this.state.current) { // pageSize或者total有改动，导致已有的current超过最大页
-          current = newCurrent
-        }
-      }
-      current && this.setState({
-        current,
-        jumpTo: current
-      })
-    })
+    this.setState({...states})
   }
 
   getCurrent (current, maxPage) {
