@@ -85,8 +85,6 @@ class Radio extends Component {
     return uuid
   }
   handleChange (item, index, disabled) {
-    // console.log(labelText, index, event)
-    // event.stopPropagation()
     if (disabled) return
     this.setState(
       {
@@ -125,8 +123,7 @@ class Radio extends Component {
           )
           const eles = [
             <span className='hi-radio__label' key={'label' + index}>
-              {' '}
-              {_item.name}{' '}
+              {_item.name}
             </span>,
             <span className='hi-radio__simulation-input' key={'input' + index} />
           ]
