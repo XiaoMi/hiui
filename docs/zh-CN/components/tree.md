@@ -317,18 +317,21 @@ render() {
 
 ### Tree Attributes
 
-| 参数             | 说明                       | 类型    | 可选值                       | 默认值 |
-| ---------------- | -------------------------- | ------- | ---------------------------- | ------ |
-| data             | 展示数据                   | Array   | 参见 Tree Attributes-data    | -      |
-| checkable        | 节点前添加 Checkbox 复选框 | Boolean | false                        | -      |
-| options          | 配置选项                   | Object  | 参见 Tree Attributes-options | -      |
-| defaultExpandAll | 是否默认展开所有树节点     | Boolean | -                            | false  |
-| checkedKeys      | 默认选中的 checkbox        | Array   | -                            | -      |
-| openIcon         | 表示展开的图标             | String  | Icon 图标名称                | -      |
-| closeIcon        | 表示闭合的图标             | String  | Icon 图标名称                | -      |
-| style            | 组件整体样式               | Object  | -                            | -      |
-| highlightable    | 高亮                       | Boolean |
-| withLine         | 是否显示连接线             | Boolean | -                            | false  |
+| 参数             | 说明                                                                    | 类型    | 可选值                       | 默认值 |
+| ---------------- | ----------------------------------------------------------------------- | ------- | ---------------------------- | ------ |
+| data             | 展示数据                                                                | Array   | 参见 Tree Attributes-data    | -      |
+| checkable        | 节点前添加 Checkbox 复选框（暂不支持与 draggable 和 editable 同时使用） | Boolean | -                            | false  |
+| editable         | 节点右键可编辑（添加同级节点、添加子节点、编辑节点、删除节点）          | Boolean | -                            | false  |
+| draggable        | 节点可拖拽                                                              | Boolean | -                            | false  |
+| searchable       | 节点可拖拽                                                              | Boolean | -                            | false  |
+| options          | 配置选项                                                                | Object  | 参见 Tree Attributes-options | -      |
+| defaultExpandAll | 是否默认展开所有树节点                                                  | Boolean | -                            | false  |
+| checkedKeys      | 默认选中的 checkbox                                                     | Array   | -                            | -      |
+| openIcon         | 表示展开的图标                                                          | String  | Icon 图标名称                | -      |
+| closeIcon        | 表示闭合的图标                                                          | String  | Icon 图标名称                | -      |
+| style            | 组件整体样式                                                            | Object  | -                            | -      |
+| highlightable    | 高亮                                                                    | Boolean |
+| withLine         | 是否显示连接线                                                          | Boolean | -                            | false  |
 
 ### Tree Attributes-data
 

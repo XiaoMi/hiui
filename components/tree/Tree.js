@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
-import { getAll, dealData, getChildrenIds, getAncestorIds, findNode } from './util'
+import { getAll, dealData } from './util'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
@@ -24,97 +24,7 @@ class Tree extends Component {
       semiCheckedIds: []
     }
   }
-  initCheck = itemId => {
-    const { checkedIds, semiCheckedIds, data } = this.state
-    let currentCheckedIds = [...checkedIds]
-    let currentSemiCheckedIds = [...semiCheckedIds]
-    const node = findNode(itemId, data)
-    const childrenIds = getChildrenIds(node, [])
-    const ancestorIds = getAncestorIds(itemId, data, [])
-    // 当前是未选
-    currentCheckedIds = currentCheckedIds.concat(childrenIds)
-    ancestorIds.forEach(i => {
-      const ancestor = findNode(i, data)
-      if (ancestor.children.every(child => currentCheckedIds)) {
-        currentCheckedIds.push(i)
-      } else if (
-        ancestor.children.some(child => currentCheckedIds) &&
-        !currentSemiCheckedIds.includes(i)
-      ) {
-        currentSemiCheckedIds.push(i)
-      }
-    })
-    this.setState({
-      checkedIds: currentCheckedIds,
-      semiCheckedIds: currentSemiCheckedIds
-    })
-  }
-  onCheck = itemId => {
-    const { checkedIds, semiCheckedIds, data } = this.state
-    let currentCheckedIds = [...checkedIds]
-    let currentSemiCheckedIds = [...semiCheckedIds]
-    const node = findNode(itemId, data)
-    const childrenIds = getChildrenIds(node, [])
-    const ancestorIds = getAncestorIds(itemId, data, [])
-    if (currentCheckedIds.includes(itemId)) {
-      // 当前是全选
-      currentCheckedIds = currentCheckedIds.filter(id => id === itemId)
-      childrenIds.forEach(i => {
-        if (currentCheckedIds.includes(i)) {
-          currentCheckedIds = currentCheckedIds.filter(id => id === itemId)
-        }
-      })
-      ancestorIds.forEach(i => {
-        const ancestor = findNode(i, data)
-        if (ancestor.children.every(child => currentCheckedIds)) {
-          currentCheckedIds.push(i)
-        } else if (
-          ancestor.children.some(child => currentCheckedIds) &&
-          !currentSemiCheckedIds.includes(i)
-        ) {
-          currentSemiCheckedIds.push(i)
-        }
-      })
-    } else if (currentSemiCheckedIds.includes(itemId)) {
-      // 当前是半选
-      currentSemiCheckedIds = currentSemiCheckedIds.filter(id => id === itemId)
-      currentCheckedIds.push(itemId)
-      childrenIds.forEach(i => {
-        if (!currentCheckedIds.includes(i)) {
-          currentCheckedIds.push(i)
-        }
-      })
-      ancestorIds.forEach(i => {
-        const ancestor = findNode(i, data)
-        if (ancestor.children.every(child => currentCheckedIds)) {
-          currentCheckedIds.push(i)
-        } else if (
-          ancestor.children.some(child => currentCheckedIds) &&
-          !currentSemiCheckedIds.includes(i)
-        ) {
-          currentSemiCheckedIds.push(i)
-        }
-      })
-    } else {
-      // 当前是未选
-      currentCheckedIds = currentCheckedIds.concat(childrenIds)
-      ancestorIds.forEach(i => {
-        const ancestor = findNode(i, data)
-        if (ancestor.children.every(child => currentCheckedIds)) {
-          currentCheckedIds.push(i)
-        } else if (
-          ancestor.children.some(child => currentCheckedIds) &&
-          !currentSemiCheckedIds.includes(i)
-        ) {
-          currentSemiCheckedIds.push(i)
-        }
-      })
-    }
-    this.setState({
-      checkedIds: currentCheckedIds,
-      semiCheckedIds: currentSemiCheckedIds
-    })
-  }
+
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     defaultCheckedKeys: PropTypes.arrayOf(PropTypes.any),
@@ -137,7 +47,6 @@ class Tree extends Component {
   static getDerivedStateFromProps (props, state) {
     let data = {}
     if (!isEqual(props.data, state.data)) {
-      console.log('>>>>>>>>>>>>>')
       const dataMap = {}
       dealData(props.data, dataMap)
       data.dataMap = dataMap
