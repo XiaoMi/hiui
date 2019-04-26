@@ -463,7 +463,6 @@ class Table extends Component {
         {serverPaginationConfig && serverPaginationConfig.defaultCurrent && <div style={{display: 'flex', justifyContent: serverPagePosition}} a='1'>
           {
             <div className={prifix('table-page')} >
-              {serverPagination.current}
               <Pagination
                 {...serverPaginationConfig}
                 onChange={(current) => {
@@ -918,7 +917,7 @@ class Table extends Component {
       }
 
       let pageSizeName = oldOrigin.pageSizeName || Table.config.pageSizeName
-      if (this.state.serverPagination.current !== 1) {
+      if (this.state.serverPagination && this.state.serverPagination.current !== 1) {
         if (oldOrigin.data[pageSizeName] !== newOrigin.data[pageSizeName]) {
           bool = false
         }
