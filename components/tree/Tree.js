@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import PropTypes from 'prop-types'
 import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
 import { getAll, dealData } from './util'
@@ -23,18 +22,6 @@ class Tree extends Component {
       checkedIds: [],
       semiCheckedIds: []
     }
-  }
-
-  static propTypes = {
-    data: PropTypes.arrayOf(PropTypes.object),
-    defaultCheckedKeys: PropTypes.arrayOf(PropTypes.any),
-    onDragStart: PropTypes.func,
-    defaultExpandAll: PropTypes.bool,
-    checkable: PropTypes.bool,
-    draggable: PropTypes.bool,
-    onNodeClick: PropTypes.func,
-    onClick: PropTypes.func,
-    onChange: PropTypes.func
   }
 
   static defaultProps = {
@@ -194,7 +181,9 @@ class Tree extends Component {
       style,
       origin,
       onDragStart,
-      onDrop
+      onDrop,
+      onDelete,
+      onSave
     } = this.props
     const { data } = this.state
     return (
@@ -224,6 +213,8 @@ class Tree extends Component {
           draggable={draggable}
           onDragStart={onDragStart}
           onDrop={onDrop}
+          onDelete={onDelete}
+          onSave={onSave}
         />
       </div>
     )

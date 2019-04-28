@@ -305,6 +305,12 @@ render() {
         data={this.state.treeData}
         defaultCheckedKeys={[2]}
         onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
+        onSave={(saveNode, data) => {
+          console.log(saveNode, data)
+        }}
+        onDelete={(deleteNode, data) => {
+          console.log(deleteNode, data)
+        }}
         onChange={data => {console.log('Tree data:', data)}}
         openIcon='down'
         closeIcon='up'
@@ -407,6 +413,9 @@ render() {
 | onCheckChange    | 节点选中项                                                              | Funciton(checkedArr: Array, title: String, isChecked: Boolean) | -                            | -      |
 | onDragStart      | 节点开始拖拽时触发                                                      | Funciton(dragNode: Object)                                     | -                            | -      |
 | onDrop           | 节点拖拽成功时触发                                                      | Funciton(dragNode: Object, dropNode: Object)                   | -                            | -      |
+| onDelete         | 节点删除时触发                                                          | Funciton(deleteNode: Object, data: Object)                     | -                            | -      |
+
+| onSave | 节点保存新增、编辑状态时触发 | Funciton(editNode: Object, data: Object) | - | - |
 
 ### Tree Attributes-data
 

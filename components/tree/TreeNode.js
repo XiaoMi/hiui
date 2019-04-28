@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import Checkbox from '../table/checkbox/index'
 import classNames from 'classnames'
 import isEqual from 'lodash/isEqual'
 import cloneDeep from 'lodash/cloneDeep'
@@ -262,6 +261,8 @@ export default class TreeNode extends Component {
       editNodes: editNodes.filter(node => node.id !== itemId),
       editingNodes: editingNodes.filter(node => node.id !== itemId)
     })
+    const node = findNode(itemId, dataCache)
+    this.props.onSave(node, _dataCache)
   }
   // 删除拖动的节点
   _delDragNode = (itemId, data) => {
@@ -379,6 +380,8 @@ export default class TreeNode extends Component {
     const _dataCache = cloneDeep(dataCache)
     this._deleteNode(itemId, _dataCache)
     this.setState({ dataCache: _dataCache })
+    const node = findNode(itemId, dataCache)
+    this.props.onDelete(node, _dataCache)
   }
   // 渲染右键菜单
   renderRightClickMenu = item => {
