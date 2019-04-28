@@ -9,6 +9,9 @@ import uuidv4 from 'uuid/v4'
 import TreeItem from './TreeItem'
 import Modal from '../modal'
 import { collectExpandId, findNode } from './util'
+import { handleNotificate } from '../notification'
+import axios from 'axios'
+import qs from 'qs'
 
 export default class TreeNode extends Component {
   constructor (props) {
@@ -127,7 +130,6 @@ export default class TreeNode extends Component {
       draggingNode: null
     })
   }
-  // TODO:调整添加节点的策略，由深度遍历改为按层修改！
   // 添加兄弟节点
   _addSibNode = (itemId, data, editingNodes) => {
     data.forEach((d, index) => {
@@ -289,7 +291,47 @@ export default class TreeNode extends Component {
       }
     })
   }
-
+  // 异步加载子节点
+  loadChildren = itemId => {
+    const { origin } = this.props
+    const { method, url, headers, data, params, func, errorHandler } = origin
+    const { dataCache } = this.state
+    const that = this
+    axios({
+      method: method,
+      url: url,
+      headers,
+      data,
+      params,
+      paramsSerializer: function (params) {
+        return qs.stringify(params, { arrayFormat: 'brackets' })
+      }
+    })
+      .then(function (res) {
+        const _dataCache = cloneDeep(dataCache)
+        const node = findNode(itemId, _dataCache)
+        if (!node.children) {
+          node.children = func(res)
+          that.setState({
+            dataCache: _dataCache
+          })
+        }
+      })
+      .catch(error => {
+        if (errorHandler) {
+          errorHandler(error)
+        } else {
+          handleNotificate({
+            type: 'error',
+            showClose: true,
+            autoClose: true,
+            title: 'Error',
+            duration: 5000,
+            message: error
+          })
+        }
+      })
+  }
   switchDropNode = (targetItemId, sourceItemId, data, allData) => {
     data.forEach(item => {
       if (item.children) {
@@ -403,7 +445,8 @@ export default class TreeNode extends Component {
       onExpanded,
       editable,
       checked,
-      expanded
+      expanded,
+      origin
     } = this.props
     const {
       highlight,
@@ -421,6 +464,7 @@ export default class TreeNode extends Component {
         {data.map(item => {
           return (
             <TreeItem
+              origin={origin}
               key={item.id}
               editable={editable}
               dropDividerPosition={dropDividerPosition}
@@ -463,6 +507,7 @@ export default class TreeNode extends Component {
               removeTargetNode={this.removeTargetNode}
               cancelEditNode={this.cancelEditNode}
               item={item}
+              loadChildren={this.loadChildren}
             />
           )
         })}

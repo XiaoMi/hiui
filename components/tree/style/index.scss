@@ -25,7 +25,30 @@ $tree: 'hi-tree' !default;
       }
     }
   }
-
+  .hi-tree__divider {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    &--top {
+      top: 21px;
+    }
+    &--bottom {
+      bottom: -2px;
+    }
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background-color: rgba(66, 132, 245, 1);
+    }
+    .divider-circle {
+      flex: 0 0 5px;
+      height: 5px;
+      border: 1px solid rgba(66, 132, 245, 1);
+      border-radius: 2.5px;
+      box-sizing: border-box;
+    }
+  }
   ul,
   li {
     margin: 0;

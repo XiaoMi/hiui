@@ -1,26 +1,15 @@
 import React from 'react'
+import ClassNames from 'classnames'
 const TreeDivider = props => {
-  const style = props.top
-    ? {
-      position: 'absolute',
-      display: 'flex',
-      width: '100%',
-      alignItems: 'center',
-      top: 21
-    }
-    : { position: 'absolute', display: 'flex', width: '100%', alignItems: 'center', bottom: -2 }
   return (
-    <div style={style}>
-      <div
-        style={{
-          flex: '0 0 5px',
-          height: 5,
-          border: '1px solid rgba(66,132,245,1)',
-          borderRadius: '2.5px',
-          boxSizing: 'border-box'
-        }}
-      />
-      <div style={{ flex: '1', height: '1px', background: 'rgba(66,132,245,1)' }} />
+    <div
+      className={ClassNames(
+        'hi-tree__divider',
+        `hi-tree__divider--${props.top ? 'top' : 'bottom'}`
+      )}
+    >
+      <div className='divider-circle' />
+      <div className='divider-line' />
     </div>
   )
 }

@@ -32,7 +32,6 @@ class Tree extends Component {
     defaultExpandAll: PropTypes.bool,
     checkable: PropTypes.bool,
     draggable: PropTypes.bool,
-    // withLine: PropTypes.bool,
     onNodeClick: PropTypes.func,
     onClick: PropTypes.func,
     onChange: PropTypes.func
@@ -188,17 +187,18 @@ class Tree extends Component {
       checkable,
       closeIcon,
       openIcon,
-      // withLine,
       highlightable,
       editable,
       searchable,
       draggable,
-      style
+      style,
+      origin
     } = this.props
     const { data } = this.state
     return (
       <div className={classNames(`${prefixCls}`)} style={style}>
         <TreeNode
+          origin={origin}
           checked={this.props.checkedKeys || []}
           onNodeClick={this.props.onNodeClick}
           onClick={this.props.onClick}
@@ -219,7 +219,6 @@ class Tree extends Component {
           searchable={searchable}
           openIcon={openIcon}
           closeIcon={closeIcon}
-          // withLine={withLine}
           draggable={draggable}
         />
       </div>

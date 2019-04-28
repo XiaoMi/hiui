@@ -64,6 +64,71 @@ render() {
 
 :::
 
+### 异步加载
+
+点击展开异步加载树的子节点
+
+:::demo
+
+```js
+constructor(props) {
+  super(props)
+  this.state = {
+    treeData: [
+      { id: 1, title: '小米',
+        children: [
+          { id: 2, title: '技术',
+            children: [
+              { id: 3, title: '后端', onClick: data => {console.log('后端：', data)} },
+              { id: 4, title: '运维' },
+              { id: 5, title: '前端' }
+            ]
+          },
+          { id: 6, title: '产品' }
+        ]
+      },
+      { id: 11, title: '小米',
+        children: [
+          { id: 22, title: '技术'
+          },
+          { id: 66, title: '产品' }
+        ]
+      },
+    ]
+  }
+
+}
+
+render() {
+  return (
+    <div style={{width:500}}>
+      <Tree
+        origin={{
+          method:'get',
+          headers:{},
+          data:{},
+          params:{},
+          url:'https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/select/options',
+          func:(res)=>{return res.data.data}
+        }}
+        defaultExpandAll
+        editable={true}
+        data={this.state.treeData}
+        defaultCheckedKeys={[2]}
+        onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
+        onChange={data => {console.log('Tree data:', data)}}
+        openIcon='down'
+        closeIcon='up'
+        highlightable
+        onNodeClick={(item) => console.log('------click node', item)}
+      />
+    </div>
+  )
+}
+```
+
+:::
+
 ### 多选
 
 :::demo
@@ -337,10 +402,22 @@ render() {
 
 | 参数        | 说明                                                               | 类型     | 可选值 | 默认值 |
 | ----------- | ------------------------------------------------------------------ | -------- | ------ | ------ |
-| expand      | 默认是否展开子菜单（优先级高于 defaultExpandAll）                  | Blooean  | -      | false  |
+| expand      | 默认是否展开子菜单（优先级高于 defaultExpandAll）                  | Boolean  | -      | false  |
 | onClick     | 点击每项时触发的事件                                               | Function | -      | -      |
 | onNodeClick | 点击每项时触发，onClick 作用具体绑定的项，onNodeClick 作用于所以项 | Function | -      | -      |
 | style       | 单个节点样式                                                       | Object   | -      | -      |
+
+### Tree Attributes-origin
+
+| 参数         | 说明                                                       | 类型            | 可选值      | 默认值 |
+| ------------ | ---------------------------------------------------------- | --------------- | ----------- | ------ |
+| method       | 异步请求的方法                                             | String          | get \| post | get    |
+| url          | 异步请求的 url                                             | String          | -           | -      |
+| headers      | 异步请求的请求头                                           | Object          | -           | -      |
+| data         | post 请求时的请求体                                        | Object          | -           | -      |
+| params       | 异步请求时的 url 参数                                      | Object          | -           | -      |
+| func         | 对异步请求结果进行加工处理的函数，返回结果用于生成子节点项 | Function(data)  | -           | -      |
+| errorHandler | 对异步请求错误进行自定义处理的函数                         | Function(error) | -           | -      |
 
 ### Tree Attributes-options
 

@@ -46,7 +46,9 @@ class TreeItem extends Component {
       connectDragSource,
       connectDropTarget,
       targetNode,
-      saveEditNode
+      saveEditNode,
+      origin,
+      loadChildren
     } = this.props
     return connectDropTarget(
       <li key={item.id}>
@@ -56,19 +58,16 @@ class TreeItem extends Component {
           }}
         >
           {targetNode === item.id && dropDividerPosition === 'down' && <TreeDivider top />}
-          {/* <span onClick={() => onExpanded(expanded, item)} className={`${prefixCls}_item-icon`}>
-          {item.children && item.children.length > 0
-            ? renderSwitcher(expanded)
-            : withLine && renderItemIcon()}
-          </span> */}
           {
             <span
               onClick={() => {
                 onExpanded(expanded, item)
+                loadChildren(item.id)
               }}
               className={`${prefixCls}_item-icon`}
             >
-              {item.children && item.children.length > 0 && renderSwitcher(expanded)}
+              {((item.children && item.children.length > 0) || (origin && !expanded)) &&
+                renderSwitcher(expanded)}
             </span>
           }
           {checkable ? (
