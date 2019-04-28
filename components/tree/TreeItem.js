@@ -50,7 +50,7 @@ class TreeItem extends Component {
       origin,
       loadChildren
     } = this.props
-    return connectDropTarget(
+    const treeItem = (
       <li key={item.id}>
         <div
           style={{
@@ -169,6 +169,7 @@ class TreeItem extends Component {
         {item.children && item.children.length > 0 && expanded ? renderTree(item.children) : null}
       </li>
     )
+    return draggable ? connectDropTarget(treeItem) : treeItem
   }
 }
 const source = {
@@ -177,6 +178,7 @@ const source = {
     if (props.expanded) {
       props.closeExpandedTreeNode(props.item.id)
     }
+    props.onDragStart(props.item)
     return { sourceItem: props.item, originalExpandStatus: props.expanded }
   }
 }
@@ -254,6 +256,21 @@ function targetCollect (connect) {
     connectDropTarget: connect.dropTarget()
   }
 }
-export default DropTarget(Types['TreeNode'], target, targetCollect)(
+
+const DraggableTreeItem = DropTarget(Types['TreeNode'], target, targetCollect)(
   DragSource(Types['TreeNode'], source, sourceCollect)(TreeItem)
 )
+const HOCTreeItem = TreeItemComponent => {
+  return class WrapperTreeItem extends Component {
+    render () {
+      const { draggable } = this.props
+
+      return draggable ? (
+        <DraggableTreeItem {...this.props} />
+      ) : (
+        <TreeItemComponent {...this.props} />
+      )
+    }
+  }
+}
+export default HOCTreeItem(TreeItem)

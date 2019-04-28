@@ -355,7 +355,9 @@ export default class TreeNode extends Component {
     } else {
       this.switchDropNode(targetItem.id, sourceItem.id, _dataCache, dataCache)
     }
-
+    const _sourceItem = findNode(sourceItem.id, dataCache)
+    const _targetItem = findNode(targetItem.id, dataCache)
+    this.props.onDrop(_sourceItem, _targetItem)
     this.setState({
       dataCache: _dataCache
     })
@@ -446,7 +448,9 @@ export default class TreeNode extends Component {
       editable,
       checked,
       expanded,
-      origin
+      origin,
+      onDragStart
+      // onDrop
     } = this.props
     const {
       highlight,
@@ -470,6 +474,8 @@ export default class TreeNode extends Component {
               dropDividerPosition={dropDividerPosition}
               prefixCls={prefixCls}
               draggable={draggable}
+              onDragStart={onDragStart}
+              // onDrop={onDrop}
               checked={!!checked.includes(item.id)}
               highlight={highlight}
               highlightable={highlightable}

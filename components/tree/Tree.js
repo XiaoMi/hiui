@@ -192,7 +192,9 @@ class Tree extends Component {
       searchable,
       draggable,
       style,
-      origin
+      origin,
+      onDragStart,
+      onDrop
     } = this.props
     const { data } = this.state
     return (
@@ -220,10 +222,21 @@ class Tree extends Component {
           openIcon={openIcon}
           closeIcon={closeIcon}
           draggable={draggable}
+          onDragStart={onDragStart}
+          onDrop={onDrop}
         />
       </div>
     )
   }
 }
 
-export default DragDropContext(HTML5Backend)(Tree)
+const HOCTree = TreeComponent => {
+  return class WrapperTree extends Component {
+    render () {
+      const { draggable } = this.props
+      const DraggableTree = DragDropContext(HTML5Backend)(Tree)
+      return draggable ? <DraggableTree {...this.props} /> : <TreeComponent {...this.props} />
+    }
+  }
+}
+export default HOCTree(Tree)
