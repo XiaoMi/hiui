@@ -57,7 +57,9 @@ class TreeItem extends Component {
             <span
               onClick={() => {
                 onExpanded(expanded, item)
-                loadChildren(item.id)
+                if (origin) {
+                  loadChildren(item.id)
+                }
               }}
               className={`${prefixCls}_item-icon`}
             >
