@@ -466,6 +466,7 @@ class Table extends Component {
               <Pagination
                 {...serverPaginationConfig}
                 onChange={(current) => {
+                  serverPaginationConfig.onChange(current)
                   this.setState({
                     serverPagination: {
                       ...serverPagination,
