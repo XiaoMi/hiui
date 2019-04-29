@@ -295,9 +295,7 @@ export const collectExpandId = (data, searchValue, collection = [], allData) => 
   data.forEach(item => {
     if (item.title.includes(searchValue)) {
       const parentIds = getAncestorIds(item.id, allData, [])
-      // console.log('parentIds', parentIds)
       collection.splice(collection.length - 1, 0, ...parentIds)
-      // console.log('collection', collection)
     }
     if (item.children) {
       collectExpandId(item.children, searchValue, collection, allData)
