@@ -402,6 +402,7 @@ render() {
 | draggable        | 节点可拖拽                                                              | Boolean                                                        | -                            | false  |
 | searchable       | 节点可搜索                                                              | Boolean                                                        | -                            | false  |
 | options          | 配置选项                                                                | Object                                                         | 参见 Tree Attributes-options | -      |
+| origin           | 异步加载配置项                                                          | Object                                                         | 参见 Tree Attributes-origin  | -      |
 | defaultExpandAll | 是否默认展开所有树节点                                                  | Boolean                                                        | -                            | false  |
 | checkedKeys      | 默认选中的 checkbox                                                     | Array                                                          | -                            | -      |
 | openIcon         | 表示展开的图标                                                          | String                                                         | Icon 图标名称                | -      |
