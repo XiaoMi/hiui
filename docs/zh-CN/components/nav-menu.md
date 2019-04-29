@@ -10,11 +10,7 @@
 constructor(props){
   super(props)
   this.data1 = [
-    {title: 'Option 0'},
-    {title: 'Option 1', disabled: true},
-    {title: 'Option 2'},
-    {title: 'Option 3'},
-    {title: 'Option 4'}
+    {title: 'Option 0'}
   ]
 }
 handleClick(event, key) {
@@ -210,16 +206,16 @@ render() {
 
 | 参数    | 说明     | 类型     | 可选值 | 默认值     |
 |------|-----|-----|-------|-------|
-| onClick | 点击MenuItem菜单回调 | function | - |- |
-| selectedKey | 当前激活 tab 面板的 key | number | - |0 |
-| render | 自定义渲染方法, 传入参数为该节点数据 | function | - | - |
-| data | 传入的数据 | array | - | - |
+| onClick | 点击MenuItem菜单回调 | Function | - |- |
+| selectedKey | 当前激活 tab 面板的 key | Number | - |0 |
+| render | 自定义渲染方法, 传入参数为该节点数据 | Function | - | - |
+| data | 传入的数据 | Array | - | - |
 
 
 #### data Attributes
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | --- | --- | --- | --- | --- |
-| title | 必填, 显示内容 | string | - | - |
-| disabled | 是否禁用该节点 | boolen |  - | false |
-| children | 是否有二级菜单及对应数据 | arry | - | - |
+| title | 必填, 显示内容 | String | - | - |
+| disabled | 是否禁用该节点 | Boolen |  true \| false | false |
+| children | 是否有二级菜单及对应数据 | Array | - | - |

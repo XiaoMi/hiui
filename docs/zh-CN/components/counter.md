@@ -48,12 +48,12 @@ render() {
  
 | 参数 | 说明 | 类型 | 可选值 |默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| value | 默认值 | string / number | - |
-| step | 每次改变步数 | number | - |
-| min | 最小值 | number | - |
-| max | 最大值 | number | - |
-| disabled | 是否禁用 | boolean | - |
-| className | string | - | - |
+| value | 默认值 | String \| Number | - |
+| step | 每次改变步数 | Number | - |
+| min | 最小值 | Number | - |
+| max | 最大值 | Number | - |
+| disabled | 是否禁用 | Boolean | - |
+| className | String | - | - |
 
 
 ### Counter Events

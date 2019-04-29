@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const basePath = path.resolve(__dirname, '../')
 
 module.exports = {
@@ -111,7 +111,7 @@ module.exports = {
       }
     },
     minimizer: [
-      new UglifyJsPlugin()
+      new TerserPlugin()
     ],
     usedExports: true,
     sideEffects: true

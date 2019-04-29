@@ -50,8 +50,9 @@ class NavMenu extends Component {
       selectedKey,
       data
     } = this.props
-
-    this.handleClick(data[selectedKey], selectedKey, 1)
+    if ((selectedKey < data.length)) {
+      this.handleClick(data[selectedKey], selectedKey, 1)
+    }
     this.getH && this.setToggleEvent(this.getH)
     window.addEventListener('resize', this.setToggle)
   }
