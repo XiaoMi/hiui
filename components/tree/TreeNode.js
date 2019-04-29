@@ -312,7 +312,7 @@ export default class TreeNode extends Component {
         const _dataCache = cloneDeep(dataCache)
         const node = findNode(itemId, _dataCache)
         if (!node.children) {
-          node.children = func(res)
+          node.children = func(res.data)
           that.setState({
             dataCache: _dataCache
           })

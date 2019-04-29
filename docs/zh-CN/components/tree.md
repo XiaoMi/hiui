@@ -109,7 +109,7 @@ render() {
           data:{},
           params:{},
           url:'https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/select/options',
-          func:(res)=>{return res.data.data}
+          func:(res)=>{return res.data}
         }}
         defaultExpandAll
         editable={true}
