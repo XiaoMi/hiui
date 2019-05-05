@@ -180,7 +180,6 @@ class Counter extends React.Component {
               let value = e.target.value
               value = this.format(value)
               let valueTrue = this.formatValue(value)
-              console.log(value, valueTrue)
               this.setState({ value, valueTrue })
             }}
             onBlur={e => {
@@ -194,7 +193,6 @@ class Counter extends React.Component {
               } else {
                 value = this.format(valueTrue)
               }
-              console.log('onblur', value, valueTrue)
               this.setState({ value, valueTrue }, () => {
                 this.props.onChange && this.props.onChange(e, valueTrue)
               })
