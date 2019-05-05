@@ -137,6 +137,7 @@ $input: 'hi-input' !default;
     flex: 1 0 auto;
     color: $normal-color;
     font-size: $font-size;
+    line-height: 30px;
   }
 
   &__prefix {
