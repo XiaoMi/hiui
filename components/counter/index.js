@@ -30,13 +30,16 @@ class Counter extends React.Component {
 
     this.attrs = this.getAttrs(oldProps)
 
-    const val = +this.props.value
-    const value =
-      val > +this.props.max ? +this.props.max : val < +this.props.min ? +this.props.min : val
+    const { value, min, max } = this.props
+    const _min = Number(min)
+    const _max = Number(max)
+    const _value = Number(value)
+    const valueInMinRange = _value < _min ? _min : _value
+    const finalValue = valueInMinRange > _max ? _max : valueInMinRange
 
     this.state = {
-      value: this.format(value),
-      valueTrue: this.formatValue(value)
+      value: this.format(finalValue),
+      valueTrue: this.formatValue(finalValue)
     }
   }
 
