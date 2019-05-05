@@ -151,9 +151,6 @@ $basic-color: #4284f5 !default;
     box-sizing: border-box;
   }
 
-  &__period-body {
-  }
-
   &__period-list {
     list-style: none;
     margin: 0;
@@ -262,16 +259,11 @@ $basic-color: #4284f5 !default;
   }
 
   &__row {
-
     &::after {
       content: '';
     }
 
     &--current-week {
-      // .hi-datepicker__content {
-      //   background: map-get(get-palette($basic-color), '10');
-      // }
-
       .range-se {
         .hi-datepicker__content {
           background: $basic-color;

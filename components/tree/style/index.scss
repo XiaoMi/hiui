@@ -3,44 +3,54 @@ $tree: 'hi-tree' !default;
 
 .hi-tree {
   font-size: 14px;
+
   .hi-tree__searcher {
     position: relative;
     padding-left: 15px;
     margin-bottom: 24px;
+
     .hi-tree__searcher--empty {
       position: absolute;
       top: 34px;
-      color: #999999;
+      color: #999;
       left: 39;
       font-size: 12;
     }
+
     .hi-input__inner {
       flex: 1;
     }
+
     .hi-input--append {
       line-height: 32px;
+
       .hi-input__append {
         width: 32px;
         text-align: center;
       }
     }
   }
+
   .hi-tree__divider {
     position: absolute;
     display: flex;
     width: 100%;
     align-items: center;
+
     &--top {
       top: 21px;
     }
+
     &--bottom {
       bottom: -2px;
     }
+
     .divider-line {
       flex: 1;
       height: 1px;
       background-color: rgba(66, 132, 245, 1);
     }
+
     .divider-circle {
       flex: 0 0 5px;
       height: 5px;
@@ -49,6 +59,7 @@ $tree: 'hi-tree' !default;
       box-sizing: border-box;
     }
   }
+
   ul,
   li {
     margin: 0;
@@ -83,14 +94,17 @@ $tree: 'hi-tree' !default;
         margin: 22px 0;
       }
     }
+
     .editing {
       display: flex;
       align-items: center;
+
       .hi-input {
         width: 240px;
         margin-right: 20px;
       }
     }
+
     .hi-checkbox-label {
       display: none;
     }
@@ -138,19 +152,24 @@ $tree: 'hi-tree' !default;
       width: calc(100% - 40px);
       padding-left: 4px;
     }
+
     transition: background 0.3s;
+
     &:hover {
       background-color: rgba(66, 133, 244, 0.08);
       color: rgba(56, 62, 71, 1);
     }
+
     &.dragging {
       background-color: rgba(246, 246, 246, 1);
       color: rgba(204, 204, 204, 1);
     }
+
     &.highlight {
       color: #fff;
       background-color: #4285f4;
     }
+
     .right-click-menu {
       color: #333;
       position: absolute;
@@ -161,14 +180,16 @@ $tree: 'hi-tree' !default;
       background: #fff;
       border: 1px solid #e6e7e8;
       border-radius: 2px;
-      box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
       box-sizing: border-box;
       padding: 4px 1px;
+
       li {
         padding-left: 15px;
         height: 36px;
         line-height: 36px;
         transition: background 0.3s;
+
         &:hover {
           background: rgba(66, 133, 244, 0.08);
         }

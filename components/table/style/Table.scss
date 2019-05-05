@@ -12,7 +12,7 @@ $nornamFontSize: 14px !default;
 
 $largeHeight: 64px !default;
 $largeFontSize: 14px !default;
-$borderColor: #e6e7e8;
+$borderColor: #e6e7e8 !default;
 
 .hi-table-header-menu-small {
   .hi-table-header-menu {
@@ -32,12 +32,12 @@ $borderColor: #e6e7e8;
 
 .#{$table} {
   position: relative;
-  font-family: PingFangSC-Regular;
-  td,th{
+
+  td,
+  th {
     box-sizing: border-box;
   }
   //width: 100%;
-
 
   &.striped {
     table {
@@ -50,13 +50,13 @@ $borderColor: #e6e7e8;
   &.bordered {
     table {
       tr {
-        td, th{
+        td,
+        th {
           border-left: 1px solid $borderColor;
         }
       }
     }
   }
-
 
   &.large {
     table {
@@ -239,7 +239,7 @@ $borderColor: #e6e7e8;
     }
 
     td {
-      color: #3B4148;
+      color: #3b4148;
       word-break: break-word;
 
       &.picked {
