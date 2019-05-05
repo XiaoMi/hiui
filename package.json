@@ -129,7 +129,7 @@
       "git add"
     ],
     "*.scss": [
-      "node_modules/.bin/stylelint --config .stylelintrc  --fix",
+      "stylelint --config .stylelintrc  --fix",
       "git add"
     ]
   }
