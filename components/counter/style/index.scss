@@ -30,6 +30,7 @@ $counter: 'hi-counter' !default;
     flex: 0 0 auto;
     width: $m-width-ceil;
     height: $m-width-ceil;
+    line-height: $m-width-ceil;
     border: 1px solid $border-color-normal;
     border-radius: 2px;
     font-weight: bold;
