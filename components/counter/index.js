@@ -31,7 +31,8 @@ class Counter extends React.Component {
     this.attrs = this.getAttrs(oldProps)
 
     const val = +this.props.value
-    const value = val > +this.props.max ? +this.props.max : (val < +this.props.min ? +this.props.min : val)
+    const value =
+      val > +this.props.max ? +this.props.max : val < +this.props.min ? +this.props.min : val
 
     this.state = {
       value: this.format(value),
@@ -40,7 +41,7 @@ class Counter extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.value && (+nextProps.value !== +this.props.value)) {
+    if (nextProps.value && +nextProps.value !== +this.props.value) {
       this.setState({
         value: this.format(nextProps.value),
         valueTrue: this.formatValue(nextProps.value)
@@ -77,7 +78,7 @@ class Counter extends React.Component {
       value = ''
     }
 
-    return value.toString().replace(/[^-\d]/g, '')
+    return isNaN(Number(value)) ? value.toString().replace(/[^-\d]/g, '') : value
   }
 
   /**
@@ -86,11 +87,16 @@ class Counter extends React.Component {
    * @param {string} val 值
    */
   format (val) {
-    return val && (val.toString().indexOf('.') !== -1 ? val.toString().replace(/(\d)(?=(\d{3})+\.)/g, ($0, $1) => {
-      return $1 + ','
-    }) : val.toString().replace(/(\d)(?=(\d{3}))/g, ($0, $1) => {
-      return $1 + ','
-    }))
+    return (
+      val &&
+      (val.toString().indexOf('.') !== -1
+        ? val.toString().replace(/(\d)(?=(\d{3})+\.)/g, ($0, $1) => {
+          return $1 + ','
+        })
+        : val.toString().replace(/(\d)(?=(\d{3}))/g, ($0, $1) => {
+          return $1 + ','
+        }))
+    )
   }
 
   /**
@@ -114,14 +120,14 @@ class Counter extends React.Component {
       case 'minus':
         valueTrue -= steps
 
-        if (min !== undefined && valueTrue < min) {
+        if (valueTrue < min) {
           valueTrue = min
         }
         break
       case 'plus':
         valueTrue += steps
 
-        if (max !== undefined && valueTrue > max) {
+        if (valueTrue > max) {
           valueTrue = max
         }
         break
@@ -129,7 +135,7 @@ class Counter extends React.Component {
     }
 
     const value = this.format(valueTrue + '')
-    this.setState({value, valueTrue}, () => {
+    this.setState({ value, valueTrue }, () => {
       const e = {
         target: this._Input
       }
@@ -138,37 +144,32 @@ class Counter extends React.Component {
   }
 
   render () {
-    const {
-      className,
-      id,
-      disabled
-    } = this.props
+    const { className, id, disabled } = this.props
     const min = +this.props.min
     const max = +this.props.max
-    let {
-      value,
-      valueTrue
-    } = this.state
+    let { value, valueTrue } = this.state
 
     return (
-      <div
-        className={`hi-counter ${className || ''}`}
-        id={id}
-      >
-        <div
-          className={`hi-counter-outer`}
-        >
+      <div className={`hi-counter ${className || ''}`} id={id}>
+        <div className={`hi-counter-outer`}>
           <span
-            className={`hi-counter-minus hi-counter-sign ${((min !== undefined && this.state.valueTrue <= min) || disabled) ? 'disabled' : ''}`}
+            className={`hi-counter-minus hi-counter-sign ${
+              (min !== undefined && this.state.valueTrue <= min) || disabled ? 'disabled' : ''
+            }`}
             onClick={e => {
-              this.signEvent('minus', ((min !== undefined && this.state.valueTrue <= min) || disabled))
+              this.signEvent(
+                'minus',
+                (min !== undefined && this.state.valueTrue <= min) || disabled
+              )
             }}
           >
             -
           </span>
           <input
             id={id ? `${id}_value` : ''}
-            ref={arg => { this._Input = arg }}
+            ref={arg => {
+              this._Input = arg
+            }}
             value={this.state.value}
             disabled={disabled}
             data-value={this.state.valueTrue}
@@ -179,8 +180,8 @@ class Counter extends React.Component {
               let value = e.target.value
               value = this.format(value)
               let valueTrue = this.formatValue(value)
-
-              this.setState({value, valueTrue})
+              console.log(value, valueTrue)
+              this.setState({ value, valueTrue })
             }}
             onBlur={e => {
               e.persist()
@@ -190,17 +191,21 @@ class Counter extends React.Component {
               } else if (typeof max !== 'undefined' && +valueTrue > max) {
                 value = this.format(max)
                 valueTrue = max
+              } else {
+                value = this.format(valueTrue)
               }
-
-              this.setState({value, valueTrue}, () => {
+              console.log('onblur', value, valueTrue)
+              this.setState({ value, valueTrue }, () => {
                 this.props.onChange && this.props.onChange(e, valueTrue)
               })
             }}
           />
           <span
-            className={`hi-counter-plus hi-counter-sign ${((max !== undefined && this.state.valueTrue >= max) || disabled) ? 'disabled' : ''}`}
+            className={`hi-counter-plus hi-counter-sign ${
+              (max !== undefined && this.state.valueTrue >= max) || disabled ? 'disabled' : ''
+            }`}
             onClick={e => {
-              this.signEvent('plus', ((max !== undefined && this.state.valueTrue >= max) || disabled))
+              this.signEvent('plus', (max !== undefined && this.state.valueTrue >= max) || disabled)
             }}
           >
             +

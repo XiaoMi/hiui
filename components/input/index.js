@@ -32,7 +32,8 @@ class Input extends Component {
     const suffix = typeof this.props.suffix === 'undefined' ? '' : this.props.suffix
 
     this.state = {
-      value: (type === 'string' || type === 'number') ? format(this.props.value, this.props.type) : '',
+      value:
+        type === 'string' || type === 'number' ? format(this.props.value, this.props.type) : '',
       valueTrue: prefix + this.props.value + suffix,
       hover: false,
       active: false
@@ -53,51 +54,33 @@ class Input extends Component {
    * 渲染 text 输入框
    */
   renderText () {
-    let {
-      hover,
-      active
-    } = this.state
-    let {
-      disabled,
-      type,
-      prefix,
-      suffix,
-      prepend,
-      append,
-      id,
-      placeholder
-    } = this.props
+    let { hover, active, value } = this.state
+    let { disabled, type, prefix, suffix, prepend, append, id, placeholder } = this.props
 
     const noClear = ['textarea']
-    let prefixId = id ? (id + '_prefix') : ''
-    let suffixId = id ? (id + '_suffix') : ''
+    let prefixId = id ? id + '_prefix' : ''
+    let suffixId = id ? id + '_suffix' : ''
 
     return (
       <div
-        className={classNames('hi-input__out', {'hi-input--prepend': prepend, 'hi-input--append': append})}
+        className={classNames('hi-input__out', {
+          'hi-input--prepend': prepend,
+          'hi-input--append': append
+        })}
       >
-        { // 前置元素
-          prepend &&
-          <span className='hi-input__prepend'>
-            {prepend}
-          </span>
-        }
-        <div
-          className={`hi-input__inner${active ? ' active' : ''}${disabled ? ' disabled' : ''}`}
-        >
-          { // 前缀
+        {// 前置元素
+          prepend && <span className='hi-input__prepend'>{prepend}</span>}
+        <div className={`hi-input__inner${active ? ' active' : ''}${disabled ? ' disabled' : ''}`}>
+          {// 前缀
             prefix && (
-              <span
-                id={prefixId}
-                className='hi-input__prefix'
-                data-value={prefix}
-              >
+              <span id={prefixId} className='hi-input__prefix' data-value={prefix}>
                 {prefix}
               </span>
-            )
-          }
+            )}
           <input
-            ref={arg => { this._Input = arg }}
+            ref={arg => {
+              this._Input = arg
+            }}
             className={`hi-input__text ${disabled ? 'disabled' : ''}`}
             value={this.state.value}
             autoComplete='off'
@@ -119,11 +102,11 @@ class Input extends Component {
 
               value = format(value, type)
 
-              this.setState({value, valueTrue}, () => {
+              this.setState({ value, valueTrue }, () => {
                 this.props.onChange && this.props.onChange(e, valueTrue)
               })
             }}
-            onBlur={(e) => {
+            onBlur={e => {
               e.persist()
               let value = e.target.value
               const valueTrue = this.state.valueTrue
@@ -133,7 +116,7 @@ class Input extends Component {
                 value = formatAmount(value)
               }
 
-              this.setState({active: false, value}, () => {
+              this.setState({ active: false, value }, () => {
                 this.props.onBlur && this.props.onBlur(e, valueTrue)
               })
             }}
@@ -141,7 +124,7 @@ class Input extends Component {
               e.persist()
               const valueTrue = this.state.valueTrue
 
-              this.setState({active: true}, () => {
+              this.setState({ active: true }, () => {
                 this.props.onFocus && this.props.onFocus(e, valueTrue)
               })
             }}
@@ -166,10 +149,13 @@ class Input extends Component {
               this.props.onInput && this.props.onInput(e, valueTrue)
             }}
           />
-          { // 清除
-            noClear.indexOf(type) === -1 && typeof prefix === 'undefined' && typeof suffix === 'undefined' && (
+          {// 清除
+            noClear.indexOf(type) === -1 &&
+            typeof prefix === 'undefined' &&
+            typeof suffix === 'undefined' &&
+            value !== '' && (
               <span
-                className={`hi-input__fix-box ${(hover) && !disabled ? '' : 'invisible'}`}
+                className={`hi-input__fix-box ${hover && !disabled ? '' : 'invisible'}`}
                 onClick={() => {
                   this._Input.focus()
 
@@ -177,7 +163,7 @@ class Input extends Component {
                   const suffix = typeof this.props.suffix === 'undefined' ? '' : this.props.suffix
                   const valueTrue = prefix + '' + suffix
 
-                  this.setState({value: '', valueTrue: valueTrue}, () => {
+                  this.setState({ value: '', valueTrue: valueTrue }, () => {
                     const e = {
                       target: this._Input
                     }
@@ -187,26 +173,16 @@ class Input extends Component {
               >
                 <i className={`hi-input__clear hi-input__suffix__icon hi-icon icon-close-circle`} />
               </span>
-            )
-          }
-          { // 后缀
+            )}
+          {// 后缀
             suffix && (
-              <span
-                id={suffixId}
-                className='hi-input__suffix'
-                data-value={suffix}
-              >
+              <span id={suffixId} className='hi-input__suffix' data-value={suffix}>
                 {suffix}
               </span>
-            )
-          }
+            )}
         </div>
-        { // 后置元素
-          append &&
-          <span className='hi-input__append'>
-            {append}
-          </span>
-        }
+        {// 后置元素
+          append && <span className='hi-input__append'>{append}</span>}
       </div>
     )
   }
@@ -215,23 +191,17 @@ class Input extends Component {
    * 渲染 textarea
    */
   renderTextarea () {
-    let {
-      active
-    } = this.state
-    let {
-      disabled
-    } = this.props
+    let { active } = this.state
+    let { disabled } = this.props
 
     return (
-      <div
-        className='hi-input__out'
-      >
-        <div
-          className={`hi-input__inner ${active ? 'active' : ''} ${disabled ? 'disabled' : ''}`}
-        >
+      <div className='hi-input__out'>
+        <div className={`hi-input__inner ${active ? 'active' : ''} ${disabled ? 'disabled' : ''}`}>
           <textarea
             autoComplete='off'
-            ref={arg => { this._Input = arg }}
+            ref={arg => {
+              this._Input = arg
+            }}
             className={`hi-input__text ${disabled ? 'disabled' : ''}`}
             value={this.state.value}
             disabled={disabled}
@@ -240,15 +210,15 @@ class Input extends Component {
               e.persist()
               let valueTrue = e.target.value
 
-              this.setState({value: valueTrue, valueTrue}, () => {
+              this.setState({ value: valueTrue, valueTrue }, () => {
                 this.props.onChange && this.props.onChange(e, valueTrue)
               })
             }}
-            onBlur={(e) => {
+            onBlur={e => {
               e.persist()
               let valueTrue = e.target.value
 
-              this.setState({active: false}, () => {
+              this.setState({ active: false }, () => {
                 this.props.onBlur && this.props.onBlur(e, valueTrue)
               })
             }}
@@ -256,7 +226,7 @@ class Input extends Component {
               e.persist()
               const valueTrue = e.target.value
 
-              this.setState({active: true}, () => {
+              this.setState({ active: true }, () => {
                 this.props.onFocus && this.props.onFocus(e, valueTrue)
               })
             }}
@@ -287,21 +257,16 @@ class Input extends Component {
   }
 
   render () {
-    const {
-      type
-    } = this.attrs
+    const { type } = this.attrs
 
-    const {
-      size,
-      id,
-      className,
-      required
-    } = this.props
+    const { size, id, className, required } = this.props
 
     return (
       <div
         id={id}
-        className={`hi-input ${className || ''} ${type || ''}${size ? ' hi-input_' + size : ''}${required ? ' required' : ''}`}
+        className={`hi-input ${className || ''} ${type || ''}${size ? ' hi-input_' + size : ''}${
+          required ? ' required' : ''
+        }`}
         style={this.props.style}
         data-value={this.state.valueTrue}
         onClick={e => {
@@ -318,9 +283,7 @@ class Input extends Component {
           })
         }}
       >
-        {
-          type === 'textarea' ? this.renderTextarea() : this.renderText()
-        }
+        {type === 'textarea' ? this.renderTextarea() : this.renderText()}
       </div>
     )
   }
