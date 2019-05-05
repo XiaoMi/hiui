@@ -93,7 +93,7 @@
       position: relative;
       margin-right: 48px;
 
-      &--active:after {
+      &--active::after {
         content: '';
         position: absolute;
         bottom: 0;
