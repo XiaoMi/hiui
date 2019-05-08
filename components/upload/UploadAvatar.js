@@ -198,7 +198,7 @@ class UploadAvatar extends Upload {
   }
 
   zoom(e) { // 缩放canvas
-    e.preventDefault()
+    // e.preventDefault()
     const wheelDelta = e.wheelDelta || e.deltaY/120
     let scale = this.scale + wheelDelta
 

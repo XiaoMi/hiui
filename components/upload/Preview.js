@@ -70,8 +70,8 @@ export default class Preview extends Component {
     return (
       <ReactCSSTransitionGroup
         transitionName='hi-preview'
-        transitionEnterTimeout={300}
-        transitionLeaveTimeout={300}
+        transitionEnterTimeout={50}
+        transitionLeaveTimeout={50}
         component='div'
       >
         <div key={src} className={classNames('hi-preview', extraClass, {'hi-preview--hide': !show})} onClick={this.onClose.bind(this)}>
