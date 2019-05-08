@@ -36,9 +36,6 @@ class UploadAvatar extends Upload {
     )
     this.onDraging = this.onDraging.bind(this)
     this.onDragEnd = this.onDragEnd.bind(this)
-    this.cropperRef = React.createRef()
-    this.canvasRef = React.createRef()
-    this.uploadRef = React.createRef()
   }
 
   componentWillReceiveProps (nextProps) {
@@ -125,7 +122,7 @@ class UploadAvatar extends Upload {
   resetParams () {
     window.removeEventListener('mousemove', this.onDraging)
     window.removeEventListener('mouseup', this.onDragEnd)
-    this.uploadRef.current.value = ''
+    this.uploadRef.value = ''
 
     this.scale = 1
     this.img = null
@@ -166,7 +163,7 @@ class UploadAvatar extends Upload {
     } = this.state
     const canvasOrigin = document.getElementById('canvas-origin')
     const originRect = canvasOrigin.getBoundingClientRect()
-    const cropperRect = this.cropperRef.current.getBoundingClientRect()
+    const cropperRect = this.cropperRef.getBoundingClientRect()
     const canvasPreview = document.getElementById('canvas-preview')
     canvasPreview.width = cropperWidth
     canvasPreview.height = cropperHeight
@@ -220,7 +217,7 @@ class UploadAvatar extends Upload {
       cropperWidth,
       cropperHeight
     } = this.state
-    const canvasRect = this.canvasRef.current.getBoundingClientRect()
+    const canvasRect = this.canvasRef.getBoundingClientRect()
     const deltaHeight = (this.containerHeight-cropperHeight)/2
     const deltaWidth = (this.containerWidth-cropperWidth)/2
     let maxTop
@@ -367,7 +364,9 @@ class UploadAvatar extends Upload {
               <li className='upload-li'>
                 <label>
                   <input
-                    ref={this.uploadRef}
+                    ref={ node => {
+                      this.uploadRef = node
+                    }}
                     type='file'
                     className='upload-input'
                     accept={accept}
@@ -396,11 +395,13 @@ class UploadAvatar extends Upload {
               id='canvas-origin'
               className='upload-canvas__canvas'
               style={{top: position.top, left: position.left}}
-              ref={this.canvasRef}
+              ref={node => {
+                this.canvasRef = node
+              }}
             />
             <div className="upload-canvas__mask--top" style={{bottom: topMaskBottom}}></div>
             <div className="upload-canvas__mask--left" style={{top: leftMaskTop, bottom: leftMaskTop, right: leftMaskRight}}></div>
-            <div ref={this.cropperRef} className='upload-canvas__cropper' id='upload-canvas__cropper' style={{height: cropperHeight, width: cropperWidth}}></div>
+            <div ref={node=>{this.cropperRef=node}} className='upload-canvas__cropper' id='upload-canvas__cropper' style={{height: cropperHeight, width: cropperWidth}}></div>
             <div className="upload-canvas__mask--right" style={{top: leftMaskTop, bottom: leftMaskTop, left: leftMaskRight}}></div>
             <div className="upload-canvas__mask--bottom" style={{top: topMaskBottom}}></div>
           </div>
