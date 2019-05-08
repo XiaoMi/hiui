@@ -111,11 +111,11 @@ export default class SubMenu extends Component {
       renderMenu,
       clickInside
     } = this.props
-
     return (
       <ul
         className={classNames('hi-submenu__items', {'hi-submenu__items--hide': !isExpand})}
         onClick={() => clickInside()} // 利用事件冒泡设置clickInsideFlag
+        key={index}
       >
         { renderMenu(datas, index) }
       </ul>
@@ -154,6 +154,7 @@ export default class SubMenu extends Component {
       <li
         className={cls}
         ref={node => { this.submenuTrigger = node }}
+        key={new Date().getTime()}
       >
         <div
           className='hi-submenu__title hi-menu__title'
