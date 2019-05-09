@@ -43,7 +43,8 @@ module.exports = {
     stepper: 'Stepper 步骤',
     icon: 'Icon 图标',
     progress: 'Progress 进度条',
-    card: 'Card  卡片'
+    card: 'Card  卡片',
+    transfer: 'Transfer 穿梭框'
   },
   designs: {
     'design-patterns': '设计模式',

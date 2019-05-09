@@ -37,8 +37,8 @@
         border: 2px solid #fff;
         border-left: 0;
         border-top: 0;
-        height: 8px;
-        left: 5px;
+        height: 7px;
+        left: 4px;
         position: absolute;
         top: 1px;
         // transform: rotate(45deg) scaleY(0);
@@ -75,6 +75,7 @@
     border-radius: 2px;
     vertical-align: middle;
     position: relative;
+    box-sizing: border-box;
   }
 
   &__label {
