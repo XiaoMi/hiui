@@ -265,13 +265,13 @@ render () {
 					return true
 				}}
 				customUpload={files => {
-					fileList.push({
+					const _fileList = fileList.concat({
 						name: files[0].name,
 						fileType: 'img',
 						uploadState: 'success'
 					})
 					this.setState({
-						fileList
+						fileList: _fileList
 					})
 				}}
 				buttonText="上传文件"
