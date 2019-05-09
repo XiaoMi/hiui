@@ -11,7 +11,6 @@ export default class Preview extends Component {
       extraClass: '',
       style: {}
     }
-    this.imgRef = React.createRef()
   }
 
   static propTypes = {
@@ -34,8 +33,8 @@ export default class Preview extends Component {
 
   imgOnLoad () {
     const radio = 0.6
-    const imgWidth = this.imgRef.current.clientWidth
-    const imgHeight = this.imgRef.current.clientHeight
+    const imgWidth = this.imgRef.clientWidth
+    const imgHeight = this.imgRef.clientHeight
     const windowRadio = window.innerWidth / window.innerHeight
     const imgRadio = imgWidth / imgHeight
     if (isNaN(imgRadio)) {
@@ -71,14 +70,16 @@ export default class Preview extends Component {
     return (
       <ReactCSSTransitionGroup
         transitionName='hi-preview'
-        transitionEnterTimeout={300}
-        transitionLeaveTimeout={300}
+        transitionEnterTimeout={50}
+        transitionLeaveTimeout={50}
         component='div'
       >
         <div key={src} className={classNames('hi-preview', extraClass, {'hi-preview--hide': !show})} onClick={this.onClose.bind(this)}>
           <div className='hi-preview-image' style={style}>
             <img
-              ref={this.imgRef}
+              ref={node => {
+                this.imgRef = node
+              }}
               src={src}
               onLoad={this.imgOnLoad.bind(this)}
             />
