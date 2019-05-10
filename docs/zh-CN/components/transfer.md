@@ -16,11 +16,13 @@ constructor () {
     datas3: this.randomDatas(),
     datas4: this.randomDatas(),
     datas5: this.randomDatas(),
+    datas6: this.randomDatas(),
     targetKeys1: [2, 3],
     targetKeys2: [],
     targetKeys3: [],
     targetKeys4: [],
-    targetKeys5: []
+    targetKeys5: [],
+    targetKeys6: []
   }
 }
 randomDatas () {
@@ -96,6 +98,17 @@ render () {
         targetKeys={this.state.targetKeys5}
         data={this.state.datas5}
         onChange={this.onChange.bind(this, 'targetKeys5')}
+      />
+      <br/>
+      目标数量上限：
+      <Transfer 
+        mode='multiple'
+        showAllSelect
+        searchable
+        draggable
+        targetKeys={this.state.targetKeys6}
+        data={this.state.datas6}
+        onChange={this.onChange.bind(this, 'targetKeys6')}
       />
       
     </div>

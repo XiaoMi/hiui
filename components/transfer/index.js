@@ -5,6 +5,9 @@ import Checkbox from '../checkbox'
 import Icon from '../icon'
 import Input from '../input'
 import classNames from 'classnames'
+import {DragDropContext} from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+import Item from './Item'
 import './style/index'
 
 class Transfer extends Component {
@@ -18,7 +21,9 @@ class Transfer extends Component {
       emptyContent: ['暂无数据', '暂无数据'],
       leftFilter: '',
       rightFilter: '',
-      limited: false
+      limited: false,
+      targetNode: null,
+      sourceNode: null
     }
   }
   componentDidMount () {
@@ -121,9 +126,40 @@ class Transfer extends Component {
       [dir + 'Filter']: e.target.value
     })
   }
+  move (targetItem, sourceItem) {
+    console.log(targetItem, sourceItem)
+    const { targetList } = this.state
+    let tempItem
+    let fIndex
+    let tIndex
+    targetList.forEach((item, index) => {
+      if (item.id === targetItem.id) {
+        tempItem = item
+        fIndex = index
+      }
+      if (item.id === sourceItem.id) {
+        tIndex = index
+      }
+    })
+    targetList.splice(fIndex, 1)
+    targetList.splice(tIndex, 0, tempItem)
+    this.setState({targetList})
+  }
+  setTargetNode (id) {
+    this.setState({targetNode: id})
+  }
+  removeTargetNode () {
+    this.setState({ targetNode: null })
+  }
+  setSourceNode (id) {
+    this.setState({sourceNode: id})
+  }
+  removeSourceNode () {
+    this.setState({ sourceNode: null })
+  }
   renderContainer (dir, datas) {
-    const { mode, showAllSelect, searchable } = this.props
-    const { emptyContent, sourceSelectedKeys, targetSelectedKeys, leftFilter, rightFilter, limited } = this.state
+    const { mode, showAllSelect, searchable, draggable } = this.props
+    const { emptyContent, sourceSelectedKeys, targetSelectedKeys, leftFilter, rightFilter, limited, targetNode, sourceNode } = this.state
     const selectedKeys = dir === 'left' ? sourceSelectedKeys : targetSelectedKeys
     const filterText = dir === 'left' ? leftFilter : rightFilter
     const filterResult = datas.filter(item => item.content.includes(filterText))
@@ -157,18 +193,35 @@ class Transfer extends Component {
             }
             {
               filterResult.map((item, index) => {
-                return <li
+                // return <li
+                //   key={index}
+                //   className='hi-transfer__item'
+                //   onClick={this.clickItemEvent.bind(this, item, index, dir)}
+                // >
+                //   {mode !== 'basic' ? <Checkbox
+                //     text={item.content}
+                //     value={item.id}
+                //     checked={selectedKeys.includes(item.id)}
+                //     onChange={this.checkboxEvent.bind(this, dir)}
+                //   /> : item.content}
+                // </li>
+                return <Item
+                  dir={dir}
+                  draggable={draggable}
                   key={index}
-                  className='hi-transfer__item'
                   onClick={this.clickItemEvent.bind(this, item, index, dir)}
-                >
-                  {mode !== 'basic' ? <Checkbox
-                    text={item.content}
-                    value={item.id}
-                    checked={selectedKeys.includes(item.id)}
-                    onChange={this.checkboxEvent.bind(this, dir)}
-                  /> : item.content}
-                </li>
+                  mode={mode}
+                  item={item}
+                  checked={selectedKeys.includes(item.id)}
+                  checkboxOnChange={this.checkboxEvent.bind(this, dir)}
+                  move={this.move.bind(this)}
+                  setTargetNode={this.setTargetNode.bind(this)}
+                  removeTargetNode={this.removeTargetNode.bind(this)}
+                  targetNode={targetNode}
+                  setSourceNode={this.setSourceNode.bind(this)}
+                  removeSourceNode={this.removeSourceNode.bind(this)}
+                  sourceNode={sourceNode}
+                />
               })
             }
           </ul> : (dir === 'left' ? emptyContent[0] : emptyContent[1])
@@ -186,6 +239,7 @@ class Transfer extends Component {
       }
     </div>
   }
+
   render () {
     const { mode } = this.props
     const { sourceList, targetList, sourceSelectedKeys, targetSelectedKeys, limited } = this.state
@@ -233,4 +287,4 @@ Transfer.propTypes = {
   searchable: PropTypes.bool,
   targetLimit: PropTypes.number
 }
-export default Transfer
+export default DragDropContext(HTML5Backend)(Transfer)

@@ -76,6 +76,7 @@
     padding-left: 15px;
     cursor: pointer;
     user-select: none;
+    position: relative;
 
     &:hover {
       background: rgba(66, 132, 245, 0.1);
@@ -154,6 +155,15 @@
     z-index: 2;
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
+  }
+
+  &__underline {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background-color: rgba(66, 132, 245, 1);
+    left: 0;
+    top: 36px;
   }
 
   .hi-checkbox__input {
