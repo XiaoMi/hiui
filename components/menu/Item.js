@@ -30,19 +30,19 @@ class Item extends Component {
       activeIndex,
       id,
       icon,
-      index
+      index,
+      data
     } = this.props
     const isActive = activeIndex.indexOf(index) === 0
     const cls = classNames('hi-menu-item', 'hi-menu-item__title', 'hi-menu__title', `hi-menu--${level}`, {
       'hi-menu-item--disabled': disabled,
       'hi-menu-item--active': isActive
     })
-
     return (
-      <li className={cls} onClick={e => {
+      <li className={cls} key={index} onClick={e => {
         e.stopPropagation()
         if (!disabled) {
-          onClick(index, id)
+          onClick(index, id, data)
         }
       }}>
         <Title icon={icon} content={children} />
