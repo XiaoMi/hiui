@@ -152,7 +152,6 @@ class Transfer extends Component {
     })
   }
   move (targetItem, sourceItem) {
-    console.log(targetItem, sourceItem)
     const { targetList } = this.state
     let tempItem
     let fIndex

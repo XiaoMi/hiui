@@ -15,7 +15,8 @@ class Item extends Component {
       connectDropTarget,
       targetNode,
       sourceNode,
-      dir
+      dir,
+      draggable
     } = this.props
     const sourceStyle =
       sourceNode === item.id && isDragging
@@ -39,7 +40,7 @@ class Item extends Component {
         )}
       </li>
     )
-    return dir === 'right' ? connectDropTarget(connectDragSource(el)) : el
+    return (dir === 'right' && draggable) ? connectDropTarget(connectDragSource(el)) : el
   }
 }
 
