@@ -154,7 +154,7 @@ export default class SubMenu extends Component {
       <li
         className={cls}
         ref={node => { this.submenuTrigger = node }}
-        key={new Date().getTime()}
+        key={index}
       >
         <div
           className='hi-submenu__title hi-menu__title'
