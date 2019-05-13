@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import Checkbox from '../checkbox'
 import { DragSource, DropTarget } from 'react-dnd'
 
@@ -17,28 +17,29 @@ class Item extends Component {
       sourceNode,
       dir
     } = this.props
-    const sourceStyle = (sourceNode === item.id && isDragging) ? {
-      background: 'rgba(246,246,246,1)',
-      color: 'rgba(204,204,204,1)'
-    } : {}
-    const el = <li
-      style={sourceStyle}
-      className='hi-transfer__item'
-      onClick={onClick.bind(this)}
-    >
-      {
-        targetNode === item.id && <div className='hi-transfer__underline' />
-      }
-      {mode !== 'basic' ? <Checkbox
-        text={item.content}
-        value={item.id}
-        checked={checked}
-        onChange={checkboxOnChange.bind(this)}
-      /> : item.content}
-    </li>
-    return dir === 'right' ? connectDropTarget(
-      connectDragSource(el)
-    ) : el
+    const sourceStyle =
+      sourceNode === item.id && isDragging
+        ? {
+          background: 'rgba(246,246,246,1)',
+          color: 'rgba(204,204,204,1)'
+        }
+        : {}
+    const el = (
+      <li style={sourceStyle} className='hi-transfer__item' onClick={onClick.bind(this)}>
+        {targetNode === item.id && <div className='hi-transfer__underline' />}
+        {mode !== 'basic' ? (
+          <Checkbox
+            text={item.content}
+            value={item.id}
+            checked={checked}
+            onChange={checkboxOnChange.bind(this)}
+          />
+        ) : (
+          item.content
+        )}
+      </li>
+    )
+    return dir === 'right' ? connectDropTarget(connectDragSource(el)) : el
   }
 }
 
@@ -74,25 +75,33 @@ const target = {
     // props.move(item, dropId)
   },
   hover (props, monitor, component) {
-    const { item: targetItem, setTargetNode } = props
-
-    setTargetNode(targetItem.id)
+    if (monitor.isOver({ shallow: true })) {
+      const { item: targetItem, setTargetNode, positionX, positionY, setPosition } = props
+      const sourcePosition = monitor.getClientOffset()
+      console.log(positionX, positionY, sourcePosition.x, sourcePosition.y)
+      if (!(sourcePosition.x === positionX && sourcePosition.y === positionY)) {
+        setPosition(sourcePosition.x, sourcePosition.y)
+        setTargetNode(targetItem.id)
+      }
+    }
   }
 }
 const DragItem = DropTarget(TYPE, target, (connect, monitor) => ({
   connectDropTarget: connect.dropTarget()
-}))(DragSource(TYPE, source, (connect, monitor) => ({
-  connectDragSource: connect.dragSource(),
-  connectDragPreview: connect.dragPreview(),
-  isDragging: monitor.isDragging()
-}))(Item))
+}))(
+  DragSource(TYPE, source, (connect, monitor) => ({
+    connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
+    isDragging: monitor.isDragging()
+  }))(Item)
+)
 
 const HOCItem = ItemComponent => {
   return class WrapperItem extends Component {
     render () {
       const { dir, draggable } = this.props
 
-      return (draggable && dir === 'right') ? (
+      return draggable && dir === 'right' ? (
         <DragItem {...this.props} />
       ) : (
         <ItemComponent {...this.props} />

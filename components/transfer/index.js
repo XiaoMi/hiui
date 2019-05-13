@@ -5,7 +5,7 @@ import Checkbox from '../checkbox'
 import Icon from '../icon'
 import Input from '../input'
 import classNames from 'classnames'
-import {DragDropContext} from 'react-dnd'
+import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import Item from './Item'
 import './style/index'
@@ -23,11 +23,22 @@ class Transfer extends Component {
       rightFilter: '',
       limited: false,
       targetNode: null,
-      sourceNode: null
+      sourceNode: null,
+      positionX: null,
+      positionY: null
     }
   }
   componentDidMount () {
     this.parseDatas(this.props)
+  }
+  setPosition = (x, y) => {
+    const { positionX, positionY } = this.state
+    if (!(x === positionX && y === positionY)) {
+      this.setState({
+        positionX: x,
+        positionY: y
+      })
+    }
   }
   parseDatas (props) {
     const { data, targetKeys } = props
@@ -72,12 +83,15 @@ class Transfer extends Component {
       selectedItem.push(key)
     }
     console.log(selectedItem)
-    this.setState({
-      [this.getSelectedKeysByDir(dir)]: selectedItem
-    }, () => {
-      callback && callback()
-      this.isLimited(dir)
-    })
+    this.setState(
+      {
+        [this.getSelectedKeysByDir(dir)]: selectedItem
+      },
+      () => {
+        callback && callback()
+        this.isLimited(dir)
+      }
+    )
   }
   checkboxEvent (dir, value, isChecked) {
     this.parseSelectedKeys(dir, value, null)
@@ -86,17 +100,23 @@ class Transfer extends Component {
     const { targetKeys } = this.props
     const { sourceSelectedKeys, targetSelectedKeys } = this.state
     const selectedItem = dir === 'left' ? [...sourceSelectedKeys] : [...targetSelectedKeys]
-    const newTargetKeys = dir === 'left' ? selectedItem.concat(targetKeys) : targetKeys.filter(tk => selectedItem.indexOf(tk) === -1)
-    this.setState({
-      [this.getSelectedKeysByDir(dir)]: newTargetKeys
-    }, () => {
-      this.props.onChange(newTargetKeys)
-      this.setState({
-        [this.getSelectedKeysByDir(dir)]: [],
-        [dir + 'Filter']: '',
-        limited: false
-      })
-    })
+    const newTargetKeys =
+      dir === 'left'
+        ? selectedItem.concat(targetKeys)
+        : targetKeys.filter(tk => selectedItem.indexOf(tk) === -1)
+    this.setState(
+      {
+        [this.getSelectedKeysByDir(dir)]: newTargetKeys
+      },
+      () => {
+        this.props.onChange(newTargetKeys)
+        this.setState({
+          [this.getSelectedKeysByDir(dir)]: [],
+          [dir + 'Filter']: '',
+          limited: false
+        })
+      }
+    )
   }
   allCheckboxEvent (dir, value, isChecked) {
     const { sourceList, targetList, leftFilter, rightFilter } = this.state
@@ -108,17 +128,22 @@ class Transfer extends Component {
         data.content.includes(filterText) && arr.push(data.id)
       })
     }
-    this.setState({
-      [this.getSelectedKeysByDir(dir)]: arr
-    }, () => {
-      this.isLimited(dir)
-    })
+    this.setState(
+      {
+        [this.getSelectedKeysByDir(dir)]: arr
+      },
+      () => {
+        this.isLimited(dir)
+      }
+    )
   }
   isLimited (dir) {
     const { targetList, sourceSelectedKeys } = this.state
     const { targetLimit } = this.props
     this.setState({
-      limited: sourceSelectedKeys.length > targetLimit || (sourceSelectedKeys.length + targetList.length > targetLimit)
+      limited:
+        sourceSelectedKeys.length > targetLimit ||
+        sourceSelectedKeys.length + targetList.length > targetLimit
     })
   }
   searchEvent (dir, e) {
@@ -143,56 +168,68 @@ class Transfer extends Component {
     })
     targetList.splice(fIndex, 1)
     targetList.splice(tIndex, 0, tempItem)
-    this.setState({targetList})
+    this.setState({ targetList })
   }
   setTargetNode (id) {
-    this.setState({targetNode: id})
+    this.setState({ targetNode: id })
   }
   removeTargetNode () {
     this.setState({ targetNode: null })
   }
   setSourceNode (id) {
-    this.setState({sourceNode: id})
+    this.setState({ sourceNode: id })
   }
   removeSourceNode () {
     this.setState({ sourceNode: null })
   }
   renderContainer (dir, datas) {
     const { mode, showAllSelect, searchable, draggable } = this.props
-    const { emptyContent, sourceSelectedKeys, targetSelectedKeys, leftFilter, rightFilter, limited, targetNode, sourceNode } = this.state
+    const {
+      emptyContent,
+      sourceSelectedKeys,
+      targetSelectedKeys,
+      leftFilter,
+      rightFilter,
+      limited,
+      targetNode,
+      sourceNode,
+      positionX,
+      positionY
+    } = this.state
     const selectedKeys = dir === 'left' ? sourceSelectedKeys : targetSelectedKeys
     const filterText = dir === 'left' ? leftFilter : rightFilter
     const filterResult = datas.filter(item => item.content.includes(filterText))
     const footerCls = classNames(
       'hi-transfer__footer',
-      selectedKeys.length !== filterResult.length && selectedKeys.length !== 0 && 'hi-transfer__footer--checkbox-part'
+      selectedKeys.length !== filterResult.length &&
+        selectedKeys.length !== 0 &&
+        'hi-transfer__footer--checkbox-part'
     )
-    return <div className='hi-transfer__container'>
-      <div className='hi-transfer__title'>
-        标题
-      </div>
-      {
-        searchable && <div className='hi-transfer__searchbar'>
-          <Icon name='search' />
-          <Input placeholder='搜索' onChange={this.searchEvent.bind(this, dir)} value={filterText} />
-        </div>
-      }
-      <div className={`hi-transfer__body ${datas.length === 0 ? 'hi-transfer__body--empty' : ''}`}>
-        {
-          filterResult.length > 0 ? <ul className='hi-transfer__list'>
-            {
-              dir === 'left' && limited && (
-                <li
-                  key='limit-tips'
-                  className='hi-transfer__item hi-transfer__item--limit'
-                >
+    return (
+      <div className='hi-transfer__container'>
+        <div className='hi-transfer__title'>标题</div>
+        {searchable && (
+          <div className='hi-transfer__searchbar'>
+            <Icon name='search' />
+            <Input
+              placeholder='搜索'
+              onChange={this.searchEvent.bind(this, dir)}
+              value={filterText}
+            />
+          </div>
+        )}
+        <div
+          className={`hi-transfer__body ${datas.length === 0 ? 'hi-transfer__body--empty' : ''}`}
+        >
+          {filterResult.length > 0 ? (
+            <ul className='hi-transfer__list'>
+              {dir === 'left' && limited && (
+                <li key='limit-tips' className='hi-transfer__item hi-transfer__item--limit'>
                   <div className='hi-transfer__warning' />
                   <span>数量达上限，无法添加</span>
                 </li>
-              )
-            }
-            {
-              filterResult.map((item, index) => {
+              )}
+              {filterResult.map((item, index) => {
                 // return <li
                 //   key={index}
                 //   className='hi-transfer__item'
@@ -205,39 +242,52 @@ class Transfer extends Component {
                 //     onChange={this.checkboxEvent.bind(this, dir)}
                 //   /> : item.content}
                 // </li>
-                return <Item
-                  dir={dir}
-                  draggable={draggable}
-                  key={index}
-                  onClick={this.clickItemEvent.bind(this, item, index, dir)}
-                  mode={mode}
-                  item={item}
-                  checked={selectedKeys.includes(item.id)}
-                  checkboxOnChange={this.checkboxEvent.bind(this, dir)}
-                  move={this.move.bind(this)}
-                  setTargetNode={this.setTargetNode.bind(this)}
-                  removeTargetNode={this.removeTargetNode.bind(this)}
-                  targetNode={targetNode}
-                  setSourceNode={this.setSourceNode.bind(this)}
-                  removeSourceNode={this.removeSourceNode.bind(this)}
-                  sourceNode={sourceNode}
-                />
-              })
-            }
-          </ul> : (dir === 'left' ? emptyContent[0] : emptyContent[1])
-        }
-      </div>
-      {
-        mode !== 'basic' && showAllSelect && <div className={footerCls}>
-          <Checkbox
-            text='全选'
-            checked={(selectedKeys.length !== 0 && selectedKeys.length === filterResult.length && filterResult.length !== 0)}
-            onChange={this.allCheckboxEvent.bind(this, dir)}
-          />
-          <span>已选：{selectedKeys.length}</span>
+                return (
+                  <Item
+                    dir={dir}
+                    draggable={draggable}
+                    key={index}
+                    onClick={this.clickItemEvent.bind(this, item, index, dir)}
+                    mode={mode}
+                    item={item}
+                    checked={selectedKeys.includes(item.id)}
+                    checkboxOnChange={this.checkboxEvent.bind(this, dir)}
+                    move={this.move.bind(this)}
+                    setTargetNode={this.setTargetNode.bind(this)}
+                    removeTargetNode={this.removeTargetNode.bind(this)}
+                    targetNode={targetNode}
+                    setSourceNode={this.setSourceNode.bind(this)}
+                    removeSourceNode={this.removeSourceNode.bind(this)}
+                    sourceNode={sourceNode}
+                    setPosition={this.setPosition}
+                    positionX={positionX}
+                    positionY={positionY}
+                  />
+                )
+              })}
+            </ul>
+          ) : dir === 'left' ? (
+            emptyContent[0]
+          ) : (
+            emptyContent[1]
+          )}
         </div>
-      }
-    </div>
+        {mode !== 'basic' && showAllSelect && (
+          <div className={footerCls}>
+            <Checkbox
+              text='全选'
+              checked={
+                selectedKeys.length !== 0 &&
+                selectedKeys.length === filterResult.length &&
+                filterResult.length !== 0
+              }
+              onChange={this.allCheckboxEvent.bind(this, dir)}
+            />
+            <span>已选：{selectedKeys.length}</span>
+          </div>
+        )}
+      </div>
+    )
   }
 
   render () {
@@ -251,24 +301,23 @@ class Transfer extends Component {
       <div className='hi-transfer'>
         {this.renderContainer('left', sourceList)}
         <div className={operCls}>
-          {
-            mode !== 'basic' &&
-              <React.Fragment>
-                <Button
-                  type={(sourceSelectedKeys.length === 0 || limited) ? 'default' : 'primary'}
-                  icon='right'
-                  onClick={this.moveTo.bind(this, 'left')}
-                  disabled={(sourceSelectedKeys.length === 0 || limited)}
-                />
-                <span className='hi-transfer__split' />
-                <Button
-                  type={targetSelectedKeys.length === 0 ? 'default' : 'primary'}
-                  icon='left'
-                  onClick={this.moveTo.bind(this, 'right')}
-                  disabled={targetSelectedKeys.length === 0}
-                />
-              </React.Fragment>
-          }
+          {mode !== 'basic' && (
+            <React.Fragment>
+              <Button
+                type={sourceSelectedKeys.length === 0 || limited ? 'default' : 'primary'}
+                icon='right'
+                onClick={this.moveTo.bind(this, 'left')}
+                disabled={sourceSelectedKeys.length === 0 || limited}
+              />
+              <span className='hi-transfer__split' />
+              <Button
+                type={targetSelectedKeys.length === 0 ? 'default' : 'primary'}
+                icon='left'
+                onClick={this.moveTo.bind(this, 'right')}
+                disabled={targetSelectedKeys.length === 0}
+              />
+            </React.Fragment>
+          )}
         </div>
         {this.renderContainer('right', targetList)}
       </div>
