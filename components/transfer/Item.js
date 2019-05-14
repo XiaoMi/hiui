@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Checkbox from '../checkbox'
 import { DragSource, DropTarget } from 'react-dnd'
-
+import classNames from 'classnames'
 class Item extends Component {
   render () {
     const {
@@ -25,14 +25,19 @@ class Item extends Component {
           color: 'rgba(204,204,204,1)'
         }
         : {}
+    const itemCls = classNames(
+      'hi-transfer__item',
+      item.disabled && 'hi-transfer__item--disabled'
+    )
     const el = (
-      <li style={sourceStyle} className='hi-transfer__item' onClick={onClick.bind(this)}>
-        {targetNode === item.id && <div className='hi-transfer__underline' />}
+      <li style={sourceStyle} className={itemCls} onClick={onClick.bind(this)}>
+        {targetNode === item.id && isDragging && <div className='hi-transfer__underline' />}
         {mode !== 'basic' ? (
           <Checkbox
             text={item.content}
             value={item.id}
             checked={checked}
+            disabled={item.disabled}
             onChange={checkboxOnChange.bind(this)}
           />
         ) : (
@@ -79,7 +84,7 @@ const target = {
     if (monitor.isOver({ shallow: true })) {
       const { item: targetItem, setTargetNode, positionX, positionY, setPosition } = props
       const sourcePosition = monitor.getClientOffset()
-      console.log(positionX, positionY, sourcePosition.x, sourcePosition.y)
+      // console.log(positionX, positionY, sourcePosition.x, sourcePosition.y)
       if (!(sourcePosition.x === positionX && sourcePosition.y === positionY)) {
         setPosition(sourcePosition.x, sourcePosition.y)
         setTargetNode(targetItem.id)

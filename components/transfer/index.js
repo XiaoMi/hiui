@@ -5,8 +5,7 @@ import Checkbox from '../checkbox'
 import Icon from '../icon'
 import Input from '../input'
 import classNames from 'classnames'
-import { DragDropContext } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
+import withDragDropContext from '../lib/withDragDropContext'
 import Item from './Item'
 import './style/index'
 
@@ -18,7 +17,6 @@ class Transfer extends Component {
       targetList: [],
       sourceSelectedKeys: [],
       targetSelectedKeys: [],
-      emptyContent: ['暂无数据', '暂无数据'],
       leftFilter: '',
       rightFilter: '',
       limited: false,
@@ -67,6 +65,9 @@ class Transfer extends Component {
   }
   clickItemEvent (item, index, dir) {
     const { mode } = this.props
+    if (item.disabled) {
+      return
+    }
     if (mode === 'basic') {
       this.parseSelectedKeys(dir, item.id, () => {
         this.moveTo(dir)
@@ -82,7 +83,6 @@ class Transfer extends Component {
     } else {
       selectedItem.push(key)
     }
-    console.log(selectedItem)
     this.setState(
       {
         [this.getSelectedKeysByDir(dir)]: selectedItem
@@ -125,7 +125,7 @@ class Transfer extends Component {
     const filterText = dir === 'left' ? leftFilter : rightFilter
     if (isChecked) {
       originDatas.forEach(data => {
-        data.content.includes(filterText) && arr.push(data.id)
+        data.content.includes(filterText) && !data.disabled && arr.push(data.id)
       })
     }
     this.setState(
@@ -182,9 +182,8 @@ class Transfer extends Component {
     this.setState({ sourceNode: null })
   }
   renderContainer (dir, datas) {
-    const { mode, showAllSelect, searchable, draggable } = this.props
+    const { mode, showAllSelect, searchable, draggable, emptyContent, title, disabled } = this.props
     const {
-      emptyContent,
       sourceSelectedKeys,
       targetSelectedKeys,
       leftFilter,
@@ -204,9 +203,13 @@ class Transfer extends Component {
         selectedKeys.length !== 0 &&
         'hi-transfer__footer--checkbox-part'
     )
+    const _title = dir === 'left' ? title[0] : title[1] || title[0]
     return (
       <div className='hi-transfer__container'>
-        <div className='hi-transfer__title'>标题</div>
+        {disabled && <div className='hi-transfer__mask' />}
+        {
+          _title && <div className='hi-transfer__title'>{_title}</div>
+        }
         {searchable && (
           <div className='hi-transfer__searchbar'>
             <Icon name='search' />
@@ -218,7 +221,7 @@ class Transfer extends Component {
           </div>
         )}
         <div
-          className={`hi-transfer__body ${datas.length === 0 ? 'hi-transfer__body--empty' : ''}`}
+          className={`hi-transfer__body ${filterResult.length === 0 ? 'hi-transfer__body--empty' : ''}`}
         >
           {filterResult.length > 0 ? (
             <ul className='hi-transfer__list'>
@@ -229,18 +232,6 @@ class Transfer extends Component {
                 </li>
               )}
               {filterResult.map((item, index) => {
-                // return <li
-                //   key={index}
-                //   className='hi-transfer__item'
-                //   onClick={this.clickItemEvent.bind(this, item, index, dir)}
-                // >
-                //   {mode !== 'basic' ? <Checkbox
-                //     text={item.content}
-                //     value={item.id}
-                //     checked={selectedKeys.includes(item.id)}
-                //     onChange={this.checkboxEvent.bind(this, dir)}
-                //   /> : item.content}
-                // </li>
                 return (
                   <Item
                     dir={dir}
@@ -268,7 +259,7 @@ class Transfer extends Component {
           ) : dir === 'left' ? (
             emptyContent[0]
           ) : (
-            emptyContent[1]
+            emptyContent[1] || emptyContent[0]
           )}
         </div>
         {mode !== 'basic' && showAllSelect && (
@@ -327,12 +318,18 @@ Transfer.defaultProps = {
   mode: 'basic',
   targetKeys: [],
   showAllSelect: false,
-  searchable: false
+  searchable: false,
+  draggable: false,
+  emptyContent: ['暂无数据', '暂无数据'],
+  title: ['', ''],
+  disabled: false
 }
 Transfer.propTypes = {
   mode: PropTypes.oneOf(['basic', 'multiple']),
   showAllSelect: PropTypes.bool,
   searchable: PropTypes.bool,
+  draggable: PropTypes.bool,
+  disabled: PropTypes.bool,
   targetLimit: PropTypes.number
 }
-export default DragDropContext(HTML5Backend)(Transfer)
+export default withDragDropContext(Transfer)

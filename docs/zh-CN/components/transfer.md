@@ -1,6 +1,5 @@
 ## Transfer
 
-
 ### 基础用法
 
 :::demo
@@ -11,18 +10,103 @@
 constructor () {
   super()
   this.state = {
-    datas1: this.randomDatas(),
-    datas2: this.randomDatas(),
-    datas3: this.randomDatas(),
-    datas4: this.randomDatas(),
-    datas5: this.randomDatas(),
-    datas6: this.randomDatas(),
-    targetKeys1: [2, 3],
-    targetKeys2: [],
-    targetKeys3: [],
-    targetKeys4: [],
-    targetKeys5: [],
-    targetKeys6: []
+    datas: this.randomDatas(),
+    targetKeys: [2, 3]
+  }
+}
+randomDatas () {
+  const arr = []
+  for (let i=1;i<16; i++) {
+    arr.push({
+      id: i,
+      content: '选项'+i,
+      disabled: i%3 === 0
+    })
+  }
+  return arr
+}
+onChange ( movedKeys) {
+  this.setState({
+    targetKeys: movedKeys
+  })
+}
+render () {
+  return (
+    <Transfer 
+      mode='basic'
+      emptyContent={['空', '无数据']}
+      title={['左标题', '右标题']}
+      targetKeys={this.state.targetKeys}
+      data={this.state.datas}
+      onChange={this.onChange.bind(this)}
+    />
+  )
+}
+```
+:::
+
+
+### 批量
+
+:::demo
+
+批量
+
+```js
+constructor () {
+  super()
+  this.state = {
+    datas: this.randomDatas(),
+    targetKeys: [],
+    disabled: false
+  }
+}
+randomDatas () {
+  const arr = []
+  for (let i=1;i<16; i++) {
+    arr.push({
+      id: i,
+      content: '选项'+i,
+      disabled: i%3 === 0
+    })
+  }
+  return arr
+}
+onChange (movedKeys) {
+  this.setState({
+    targetKeys: movedKeys,
+    disabled: movedKeys.length > 5
+  })
+}
+render () {
+  return (
+    <div>
+      <Transfer 
+        mode='multiple'
+        title={['批量']}
+        disabled={this.state.disabled}
+        targetKeys={this.state.targetKeys}
+        data={this.state.datas}
+        onChange={this.onChange.bind(this)}
+      />
+    </div>
+  )
+}
+```
+:::
+
+### 全选
+
+:::demo
+
+全选
+
+```js
+constructor () {
+  super()
+  this.state = {
+    datas: this.randomDatas(),
+    targetKeys: [2, 3]
   }
 }
 randomDatas () {
@@ -35,105 +119,185 @@ randomDatas () {
   }
   return arr
 }
-onChange (d, movedKeys) {
+onChange ( movedKeys) {
   this.setState({
-    [d]: movedKeys
+    targetKeys: movedKeys
   })
 }
 render () {
   return (
-    <div>
-      普通：
-      <Transfer 
-        mode='basic'
-        targetKeys={this.state.targetKeys1}
-        data={this.state.datas1}
-        onChange={this.onChange.bind(this, 'targetKeys1')}
-      />
-      <br/>
-      无全选：
-      <Transfer 
-        mode='multiple'
-        targetKeys={this.state.targetKeys2}
-        data={this.state.datas2}
-        onChange={this.onChange.bind(this, 'targetKeys2')}
-      />
-      <br/>
-      显示全选：
-      <Transfer 
-        mode='multiple'
-        showAllSelect
-        targetKeys={this.state.targetKeys3}
-        data={this.state.datas3}
-        onChange={this.onChange.bind(this, 'targetKeys3')}
-      />
-      <br/>
-      带搜索：
-      <Transfer 
-        mode='multiple'
-        showAllSelect
-        searchable
-        targetKeys={this.state.targetKeys4}
-        data={this.state.datas4}
-        onChange={this.onChange.bind(this, 'targetKeys4')}
-      />
-      <br/>
-      带搜索：
-      <Transfer 
-        mode='multiple'
-        showAllSelect
-        searchable
-        targetKeys={this.state.targetKeys4}
-        data={this.state.datas4}
-        onChange={this.onChange.bind(this, 'targetKeys4')}
-      />
-      
-      <br/>
-      目标数量上限：
-      <Transfer 
-        mode='multiple'
-        showAllSelect
-        searchable
-        targetLimit={5}
-        targetKeys={this.state.targetKeys5}
-        data={this.state.datas5}
-        onChange={this.onChange.bind(this, 'targetKeys5')}
-      />
-      <br/>
-      目标数量上限：
-      <Transfer 
-        mode='multiple'
-        showAllSelect
-        searchable
-        draggable
-        targetKeys={this.state.targetKeys6}
-        data={this.state.datas6}
-        onChange={this.onChange.bind(this, 'targetKeys6')}
-      />
-      
-    </div>
+    <Transfer 
+      mode='multiple'
+      showAllSelect
+      targetKeys={this.state.targetKeys}
+      data={this.state.datas}
+      onChange={this.onChange.bind(this)}
+    />
   )
 }
 ```
 :::
 
 
+### 搜索
+
+:::demo
+
+搜索
+
+```js
+constructor () {
+  super()
+  this.state = {
+    datas: this.randomDatas(),
+    targetKeys: [2, 3]
+  }
+}
+randomDatas () {
+  const arr = []
+  for (let i=1;i<16; i++) {
+    arr.push({
+      id: i,
+      content: '选项'+i
+    })
+  }
+  return arr
+}
+onChange ( movedKeys) {
+  this.setState({
+    targetKeys: movedKeys
+  })
+}
+render () {
+  return (
+    <Transfer 
+      mode='multiple'
+      showAllSelect
+      searchable
+      targetKeys={this.state.targetKeys}
+      data={this.state.datas}
+      onChange={this.onChange.bind(this)}
+    />
+  )
+}
+```
+:::
+
+
+### 目标数量上限
+
+:::demo
+
+目标数量上限
+
+```js
+constructor () {
+  super()
+  this.state = {
+    datas: this.randomDatas(),
+    targetKeys: []
+  }
+}
+randomDatas () {
+  const arr = []
+  for (let i=1;i<16; i++) {
+    arr.push({
+      id: i,
+      content: '选项'+i
+    })
+  }
+  return arr
+}
+onChange ( movedKeys) {
+  this.setState({
+    targetKeys: movedKeys
+  })
+}
+render () {
+  return (
+    <Transfer 
+      mode='multiple'
+      showAllSelect
+      targetLimit={4}
+      targetKeys={this.state.targetKeys}
+      data={this.state.datas}
+      onChange={this.onChange.bind(this)}
+    />
+  )
+}
+```
+:::
+
+### 目标区域拖拽
+
+:::demo
+
+目标区域拖拽
+
+```js
+constructor () {
+  super()
+  this.state = {
+    datas: this.randomDatas(),
+    targetKeys: [2, 3, 4, 6, 9]
+  }
+}
+randomDatas () {
+  const arr = []
+  for (let i=1;i<16; i++) {
+    arr.push({
+      id: i,
+      content: '选项'+i
+    })
+  }
+  return arr
+}
+onChange ( movedKeys) {
+  this.setState({
+    targetKeys: movedKeys
+  })
+}
+render () {
+  return (
+    <Transfer 
+      mode='multiple'
+      showAllSelect
+      draggable
+      targetKeys={this.state.targetKeys}
+      data={this.state.datas}
+      onChange={this.onChange.bind(this)}
+    />
+  )
+}
+```
+:::
+
 
 ### Alert Attributes
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | -------- | ----- | ---- | ---- | ---- |
-| type | 类型 | String | info \| success \| error \| warning | info |
-| message | 提示内容 | String | - | - |
-| title | 提示标题 | String | - | - |
-| size | 弹框大小类型 | String | small \| middle \| large | middle |
-| closeable | 是否显示关闭按钮 | Boolean | true  \| false | true |
-| autoClose |  是否自动关闭（closeable 为 false 时生效） | Boolean | true  \| false |  false |
-| autoCloseTime | 自动关闭时间，单位为毫秒 | Number | - | 3000 |
+| mode | 类型 | String | basic \| multiple | basic |
+| showAllSelect |  是否显示全选按钮 |  Boolean | true  \| false | false |
+| title | 标题  <br/> 数组长度1或2位，1位时左右标题将相同，2位时将使用对应索引标题  | Array[String \| Element] | - | '' |
+| searchable |  是否可筛选 |  Boolean | true  \| false | false |
+| emptyContent |  数据为空时的显示内容 <br/> 数组长度1或2位，1位时左右内容将相同，2位时将使用对应索引内容| Array[String \| Element] | - | 暂无数据 |
+| draggable |  是否允许目标框内拖拽排序 | Boolean | true  \| false |  false |
+| targetKeys | 目标框内的元素id集合 | Array | - | - |
+| data |  数据集合 | Array | - |  参见 Data Options |
+| targetLimit |  目标框数据上限 |  Number | - |  null |
 
+
+
+### Data Options
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| -------- | ----- | ---- | ---- | ---- |
+| id |  唯一 id | Number | - | - |
+| content |  元素内容 | String \| Element | - | - |
+| disabled |   该元素是否被禁用 | Boolean | true  \| false |  false |
 
 ### Alert Events
 
 | 参数 | 说明 | 回调参数
 | ------- | ------- | ------- |
-| onClose | 关闭时触发的事件 | - |
+| onChange | 选中元素被移动到目标框内后触发的事件函数 | 目标框内元素的 id 集合，如[2,3,4] |
