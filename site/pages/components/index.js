@@ -42,7 +42,8 @@ export default {
       'collapse': require('./collapse'),
       'tooltip': require('./tooltip'),
       'popover': require('./popover'),
-      'progress': require('./progress')
+      'progress': require('./progress'),
+      'card': require('./card')
     },
     'group-tips': {
       'modal': require('./modal'),
