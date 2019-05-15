@@ -43,7 +43,8 @@ module.exports = {
     stepper: 'Stepper',
     icon: 'Icon',
     progress: 'Progress',
-    card: 'Card'
+    card: 'Card',
+    switch: 'Switch'
   },
   designs: {
     'design-patterns': '设计模式',
