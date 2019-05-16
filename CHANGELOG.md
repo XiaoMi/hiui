@@ -2,10 +2,10 @@
 
 ## 1.5.0-rc.4
 
-- 新增：`<Transfer />` 穿梭框组件
-- 新增：`<Rate />` 评分组件
-- 新增：`<Switch />` 开关组件
-- 修复：`<Menu />` 组件在某些情况下抛出的 key 的警告问题
+- 新增：`<Transfer />` 穿梭框组件 [#108](https://github.com/XiaoMi/hiui/issues/108)
+- 新增：`<Rate />` 评分组件 [#106](https://github.com/XiaoMi/hiui/issues/106)
+- 新增：`<Switch />` 开关组件 [#107](https://github.com/XiaoMi/hiui/issues/107)
+- 修复：`<Menu />` 组件在某些情况下抛出的 key 的警告问题 [#215](https://github.com/XiaoMi/hiui/issues/215)
 
 ## 1.5.0-rc.1
 
