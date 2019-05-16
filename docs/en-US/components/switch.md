@@ -1,17 +1,37 @@
 ## Switch
 
 
-### 基础用法
+### Basic
 
 :::demo
 
-基础用法
+Basic
 
 ```js
+constructor (props) {
+  super(props)
+  this.state = {
+    checked: true,
+    disabled: true
+  }
+}
+onChange (status) {
+  console.log(status)
+}
 render () {
   return (
     <div>
-      <Switch type="info" message="信息提示的文案" onClose={()=>{console.log('alert关闭回调')}} />
+      <p>Default</p>
+      <Switch />
+      <p>Custom content</p>
+      <Switch content={['ON', 'OFF']}/>
+      <Switch content={[<Icon name='check' />, <Icon name='close' />]}/>
+      <p>Disabled state</p>
+      <p>
+        <Button onClick={() => {this.setState({disabled: !this.state.disabled})}}>Toggle disabled</Button>
+        <Button onClick={() => {this.setState({checked: !this.state.checked})}}>Toggle open</Button>
+      </p>
+      <Switch checked={this.state.checked} disabled={this.state.disabled} content={['ON', 'OFF']} onChange={this.onChange.bind(this)}/>
     </div>
   )
 }
@@ -20,21 +40,17 @@ render () {
 
 
 
-### Alert Attributes
+###  Switch Attributes
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| Attribute | Description | Type | Options | Default  |
 | -------- | ----- | ---- | ---- | ---- |
-| type | 类型 | String | info \| success \| error \| warning | info |
-| message | 提示内容 | String | - | - |
-| title | 提示标题 | String | - | - |
-| size | 弹框大小类型 | String | small \| middle \| large | middle |
-| closeable | 是否显示关闭按钮 | Boolean | true  \| false | true |
-| autoClose |  是否自动关闭（closeable 为 false 时生效） | Boolean | true  \| false |  false |
-| autoCloseTime | 自动关闭时间，单位为毫秒 | Number | - | 3000 |
+| content |  Custom display content |  Array[String \| Element] | - | '' |
+| checked |  Specifies whether the switch is checked | Boolean | true  \| false |  false |
+| disabled |  Specifies whether the switch is disabled | Boolean | true  \| false |  false |
 
 
-### Alert Events
+###  Switch Events
 
-| 参数 | 说明 | 回调参数
+| Event Name       | Description   |  Parameters
 | ------- | ------- | ------- |
-| onClose | 关闭时触发的事件 | - |
+|  onChange |  callback | current status |
