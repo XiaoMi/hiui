@@ -185,7 +185,7 @@ class Menu extends Component {
     })
   }
 
-  onClick (indexs, id) {
+  onClick (indexs, id, data) {
     const expandIndex = this.isNoMiniVertaicalMenu() ? this.state.expandIndex : this.getExpandIndex('') // 非mini垂直菜单选中时不需要收起子菜单
     const oldId = this.state.activeId
 
@@ -194,7 +194,7 @@ class Menu extends Component {
       activeIndex: indexs,
       expandIndex
     }, () => {
-      this.props.onClick(id, oldId)
+      this.props.onClick(id, oldId, data)
     })
   }
 
@@ -220,7 +220,8 @@ class Menu extends Component {
       activeIndex,
       index: index,
       disabled: data.disabled,
-      key: data.id
+      key: index,
+      data
     }, props)
 
     return (
@@ -269,6 +270,7 @@ class Menu extends Component {
       if (data.children) {
         items.push(
           <SubMenu
+            key={index}
             onClick={this.onClickSubMenu.bind(this)}
             clickInside={this.clickInside.bind(this)}
             index={indexStr}
@@ -283,7 +285,6 @@ class Menu extends Component {
             datas={data.children}
             mode={mode}
             mini={mini}
-            key={data.content}
           />
         )
       } else {

@@ -44,7 +44,9 @@ module.exports = {
     icon: 'Icon 图标',
     progress: 'Progress 进度条',
     card: 'Card  卡片',
-    transfer: 'Transfer 穿梭框'
+    transfer: 'Transfer 穿梭框',
+    switch: 'Switch 开关',
+    rate: 'Rate 评分'
   },
   designs: {
     'design-patterns': '设计模式',

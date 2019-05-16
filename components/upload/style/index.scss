@@ -140,6 +140,7 @@
     }
   }
 }
+
 .hasborder {
   border: 1px dotted #bcbcbc;
 }
@@ -585,20 +586,24 @@
   &__mask--bottom {
     position: absolute;
     background: #000;
-    opacity: .2;
+    opacity: 0.2;
     z-index: 1;
   }
+
   &__mask--top {
     top: 0;
     left: 0;
     right: 0;
   }
+
   &__mask--left {
     left: 0;
   }
+
   &__mask--right {
     right: 0;
   }
+
   &__mask--bottom {
     bottom: 0;
     left: 0;

@@ -9,7 +9,8 @@ export default class Preview extends Component {
     super(props)
     this.state = {
       extraClass: '',
-      style: {}
+      style: {},
+      imgLoaded: false
     }
     this.imgRef = React.createRef()
   }
@@ -26,8 +27,9 @@ export default class Preview extends Component {
 
   onClose () {
     this.setState({
-      // style: {},
-      extraClass: ''
+      style: {},
+      extraClass: '',
+      imgLoaded: false
     })
     this.props.onClose && this.props.onClose()
   }
@@ -57,7 +59,8 @@ export default class Preview extends Component {
 
     this.setState({
       extraClass,
-      style
+      style,
+      imgLoaded: true
     })
   }
 
@@ -65,18 +68,19 @@ export default class Preview extends Component {
     const { show, src } = this.props
     const {
       extraClass,
-      style
+      style,
+      imgLoaded
     } = this.state
 
     return (
       <ReactCSSTransitionGroup
         transitionName='hi-preview'
-        transitionEnterTimeout={300}
-        transitionLeaveTimeout={300}
+        transitionEnterTimeout={50}
+        transitionLeaveTimeout={50}
         component='div'
       >
-        <div key={src} className={classNames('hi-preview', extraClass, {'hi-preview--hide': !show})} onClick={this.onClose.bind(this)}>
-          <div className='hi-preview-image' style={style}>
+        <div key={1} className={classNames('hi-preview', extraClass, {'hi-preview--hide': !show})} onClick={this.onClose.bind(this)}>
+          <div className={classNames('hi-preview-image', {'hi-preview-image--hide': !imgLoaded})} style={style}>
             <img
               ref={this.imgRef}
               src={src}

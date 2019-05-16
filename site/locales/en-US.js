@@ -44,7 +44,9 @@ module.exports = {
     icon: 'Icon',
     progress: 'Progress',
     card: 'Card',
-    transfer: 'Transfer'
+    transfer: 'Transfer',
+    switch: 'Switch',
+    rate: 'Rate'
   },
   designs: {
     'design-patterns': '设计模式',

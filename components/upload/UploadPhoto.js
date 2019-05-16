@@ -16,7 +16,6 @@ class UploadPhoto extends Upload {
       },
       this.state
     )
-    this.uploadRef = React.createRef()
   }
 
   closeModal () {
@@ -87,7 +86,9 @@ class UploadPhoto extends Upload {
           <li>
             <label>
               <input
-                ref={this.uploadRef}
+                ref={node => {
+                  this.uploadRef = node
+                }}
                 type='file'
                 className='upload-input'
                 accept={accept}
