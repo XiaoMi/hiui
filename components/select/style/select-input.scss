@@ -164,9 +164,11 @@
       flex: auto;
       margin-bottom: -4px;
       overflow: hidden;
+
       &.hi-select__input-items--all {
         flex-wrap: wrap;
       }
+
       &--left {
         display: flex;
         align-items: center;
@@ -178,6 +180,7 @@
         background-color: #f2f2f2;
         border-radius: 10px;
         box-sizing: border-box;
+
         &-count {
 
         }

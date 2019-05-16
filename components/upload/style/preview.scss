@@ -51,7 +51,11 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: width 0.3s ease-out, height 0.3s ease-out;
+    // transition: width 0.3s ease-out, height 0.3s ease-out;
     overflow: hidden;
+
+    &--hide {
+      visibility: hidden;
+    }
   }
 }

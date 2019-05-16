@@ -32,8 +32,8 @@ export default {
       'checkbox': require('./checkbox'),
       'date-picker': require('./date-picker'),
       'time-picker': require('./time-picker'),
-      'upload': require('./upload')
-
+      'upload': require('./upload'),
+      'rate': require('./rate')
     },
     'group-data': {
       'table': require('./table'),
