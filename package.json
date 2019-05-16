@@ -130,6 +130,10 @@
     "*.{js,jsx}": [
       "node_modules/.bin/standard --fix",
       "git add"
+    ],
+    "*.scss": [
+      "stylelint --config .stylelintrc  --fix",
+      "git add"
     ]
   }
 }
