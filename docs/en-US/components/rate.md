@@ -74,7 +74,7 @@ constructor() {
 render() {
   return (
     <Form labelWidth="120" labelPosition="left">
-      <Alert type="warning" message="Can not use half start and star count when use emoji" closeable={false} />
+      <Alert type="warning" message="Can not use half star and star count when use emoji" closeable={false} />
       <br />
       <FormItem label="Basic">
         <Rate defaultValue={3} useEmoji />
