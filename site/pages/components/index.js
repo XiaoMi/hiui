@@ -44,6 +44,7 @@ export default {
       'popover': require('./popover'),
       'progress': require('./progress'),
       'card': require('./card'),
+      'transfer': require('./transfer'),
       'switch': require('./switch')
     },
     'group-tips': {

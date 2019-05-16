@@ -21,12 +21,10 @@ class Base extends Component {
   }
   componentWillReceiveProps (nextProps) {
     if ('checked' in nextProps) {
-      if (nextProps.checked !== this.props.checked) {
-        this.setState({
-          checked: nextProps.checked,
-          disabled: nextProps.disabled
-        })
-      }
+      this.setState({
+        checked: nextProps.checked,
+        disabled: nextProps.disabled
+      })
     }
   }
   handleChange (data) {
@@ -88,7 +86,6 @@ class Base extends Component {
     const {disabled, checked, part} = this.state
 
     const {value, name, all, content} = this.props
-
     const labelClass = classnames(
       'hi-checkbox',
       disabled && 'hi-checkbox--disabled',
