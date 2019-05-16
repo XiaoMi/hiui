@@ -89,6 +89,18 @@ module.exports = {
         }
       },
       {
+        test: /\.mdx$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react']
+            }
+          },
+          '@mdx-js/loader'
+        ]
+      },
+      {
         test: /\.md$/,
         loader: 'raw-loader'
       }
@@ -110,9 +122,7 @@ module.exports = {
         }
       }
     },
-    minimizer: [
-      new TerserPlugin()
-    ],
+    minimizer: [new TerserPlugin()],
     usedExports: true,
     sideEffects: true
   },
