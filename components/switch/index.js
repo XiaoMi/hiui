@@ -5,9 +5,6 @@ import Provider from '../context'
 import './style/index'
 
 class Switch extends Component {
-  componentDidMount () {
-
-  }
   constructor (props) {
     super(props)
     this.state = {
