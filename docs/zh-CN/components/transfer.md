@@ -25,7 +25,7 @@ randomDatas () {
   }
   return arr
 }
-onChange ( movedKeys) {
+onChange (movedKeys) {
   this.setState({
     targetKeys: movedKeys
   })
@@ -119,7 +119,7 @@ randomDatas () {
   }
   return arr
 }
-onChange ( movedKeys) {
+onChange (movedKeys) {
   this.setState({
     targetKeys: movedKeys
   })
@@ -163,7 +163,7 @@ randomDatas () {
   }
   return arr
 }
-onChange ( movedKeys) {
+onChange (movedKeys) {
   this.setState({
     targetKeys: movedKeys
   })
@@ -208,7 +208,7 @@ randomDatas () {
   }
   return arr
 }
-onChange ( movedKeys) {
+onChange (movedKeys) {
   this.setState({
     targetKeys: movedKeys
   })
@@ -252,7 +252,7 @@ randomDatas () {
   }
   return arr
 }
-onChange ( movedKeys) {
+onChange (movedKeys) {
   this.setState({
     targetKeys: movedKeys
   })

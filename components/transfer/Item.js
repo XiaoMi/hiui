@@ -65,8 +65,6 @@ const source = {
 
 const target = {
   canDrop (props, monitor) {
-    // const { sourceItem } = monitor.getItem()
-    // const { item: targetItem } = props
     return true
   },
 
@@ -75,16 +73,11 @@ const target = {
     const { item: targetItem, removeTargetNode, move } = props
     move(sourceItem, targetItem)
     removeTargetNode()
-    // const { item } = monitor.getItem()
-    // const { id: dropId, contains } = props
-
-    // props.move(item, dropId)
   },
   hover (props, monitor, component) {
     if (monitor.isOver({ shallow: true })) {
       const { item: targetItem, setTargetNode, positionX, positionY, setPosition } = props
       const sourcePosition = monitor.getClientOffset()
-      // console.log(positionX, positionY, sourcePosition.x, sourcePosition.y)
       if (!(sourcePosition.x === positionX && sourcePosition.y === positionY)) {
         setPosition(sourcePosition.x, sourcePosition.y)
         setTargetNode(targetItem.id)
@@ -97,7 +90,6 @@ const DragItem = DropTarget(TYPE, target, (connect, monitor) => ({
 }))(
   DragSource(TYPE, source, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
-    connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging()
   }))(Item)
 )
@@ -116,4 +108,3 @@ const HOCItem = ItemComponent => {
   }
 }
 export default HOCItem(Item)
-// export default Item
