@@ -1,0 +1,24 @@
+## Alert
+
+### 基础用法
+
+```js
+const a = (this.methodName = this.methodName.bind(this))
+```
+
+import Alert from '../../../../components/alert'
+import DocViewer from './tool'
+const code = `
+() => <div>
+      <Alert type="info" message="信息提示的文案" onClose={()=>{console.log('alert关闭回调')}} />
+      <br />
+      <Alert type="success" message="成功提示的文案" onClose={()=>{console.log('alert关闭回调')}} />
+      <br />
+      <Alert type="error" message="错误提示的文案" onClose={()=>{console.log('alert关闭回调')}} />
+      <br />
+      <Alert type="warning" message="警示提示的文案" onClose={()=>{console.log('alert关闭回调')}} />
+    </div>
+`
+const desc = '基础使用'
+
+<DocViewer code={code} scope={{ Alert }} desc={desc} />

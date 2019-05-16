@@ -96,8 +96,8 @@ module.exports = {
             options: {
               presets: ['@babel/preset-env', '@babel/preset-react']
             }
-          },
-          '@mdx-js/loader'
+          }
+          // { loader: '@mdx-js/loader',options:{hastPlugins[rehypePrism]} }
         ]
       },
       {

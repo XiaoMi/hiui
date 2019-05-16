@@ -25,6 +25,7 @@ module.exports = {
     confirm: 'confirm 方法组件',
     form: 'Form 表单',
     alert: 'Alert 警告框',
+    'test-alert': 'MDX 测试',
     panel: 'Panel 面板',
     collapse: 'Collapse 折叠面板',
     upload: 'Upload 上传',

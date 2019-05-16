@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const basePath = path.resolve(__dirname, '../')
+const rehypePrism = require('@mapbox/rehype-prism')
 
 module.exports = {
   mode: 'development',
@@ -80,7 +81,7 @@ module.exports = {
               presets: ['@babel/preset-env', '@babel/preset-react']
             }
           },
-          '@mdx-js/loader'
+          { loader: '@mdx-js/loader', options: { hastPlugins: [rehypePrism] } }
         ]
       },
       {
