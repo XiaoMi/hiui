@@ -12,6 +12,8 @@ render () {
   return (
     <div>
       <Timeline />
+      <Timeline layout='right'/>
+      <Timeline layout='cross'/>
     </div>
   )
 }

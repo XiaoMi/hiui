@@ -43,7 +43,8 @@ export default {
       'tooltip': require('./tooltip'),
       'popover': require('./popover'),
       'progress': require('./progress'),
-      'card': require('./card')
+      'card': require('./card'),
+      'timeline': require('./timeline')
     },
     'group-tips': {
       'modal': require('./modal'),
