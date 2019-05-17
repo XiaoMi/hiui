@@ -12,7 +12,7 @@ class Rate extends Component {
     className: PropTypes.string,
     defaultValue: PropTypes.number,
     disabled: PropTypes.bool,
-    style: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    style: PropTypes.object,
     tooltips: PropTypes.arrayOf(PropTypes.string),
     value: PropTypes.number,
     count: PropTypes.number,
@@ -52,7 +52,7 @@ class Rate extends Component {
     }
     if (value === this.state.value && allowClear) {
       this.setState({
-        value: this.props.defaultValue
+        value: 0
       })
       return
     }
