@@ -1,5 +1,5 @@
 .doc-viewer {
-  height: 51px;
+  height: 41px;
   overflow: hidden;
   transition: height 0.3s;
 
@@ -18,5 +18,18 @@
 
   .hi-icon {
     transition: all 0.3s;
+  }
+
+  .editor-inner {
+    background: rgba(246, 246, 246, 0.5967);
+
+    pre {
+      padding: 20px !important;
+    }
+
+    textarea {
+      padding: 20px !important;
+      outline: none !important;
+    }
   }
 }
