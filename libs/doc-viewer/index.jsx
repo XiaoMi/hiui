@@ -9,12 +9,12 @@ import theme from './theme'
 class EditorWrapper extends React.Component {
   state = {
     collapse: false,
-    copyed: false
+    copyed: false,
+    innerHeight: 0
   }
   componentDidMount () {
-    console.log(this.props)
     const codeViewer = document.getElementsByClassName('editor-inner')[0]
-    this.innerHeight = codeViewer.clientHeight
+    this.setState({ innerHeight: codeViewer.clientHeight })
     const clipboard = new Clipboard('.copy-btn')
     const _this = this
     clipboard.on('success', function (e) {
@@ -28,7 +28,7 @@ class EditorWrapper extends React.Component {
   onCodeChange = code => {
     this.props.live.onChange(code)
     const codeViewer = document.getElementsByClassName('editor-inner')[0]
-    this.innerHeight = codeViewer.clientHeight
+    this.setState({ innerHeight: codeViewer.clientHeight })
   }
   resetCopy = () => {
     setTimeout(() => {
@@ -38,14 +38,14 @@ class EditorWrapper extends React.Component {
     }, 2000)
   }
   render () {
-    const { copyed } = this.state
+    const { copyed, innerHeight } = this.state
     const {
       live: { theme, code, language, disabled }
     } = this.props
     return (
       <div
         className='doc-viewer'
-        style={{ height: this.state.collapse ? this.innerHeight + 41 : 41, overflow: 'hidden' }}
+        style={{ height: this.state.collapse ? innerHeight + 41 : 41, overflow: 'hidden' }}
       >
         <div
           style={{
@@ -110,7 +110,6 @@ class EditorWrapper extends React.Component {
             disabled={disabled}
             onChange={this.onCodeChange}
           />
-          <LiveError />
         </div>
       </div>
     )
@@ -130,6 +129,7 @@ export default class DocViewer extends React.Component {
             }}
           >
             <LivePreview />
+            <LiveError />
           </div>
           <EditorWithLive desc={desc} />
         </div>
