@@ -25,7 +25,11 @@ class EditorWrapper extends React.Component {
       e.clearSelection()
     })
   }
-
+  onCodeChange = code => {
+    this.props.live.onChange(code)
+    const codeViewer = document.getElementsByClassName('editor-inner')[0]
+    this.innerHeight = codeViewer.clientHeight
+  }
   resetCopy = () => {
     setTimeout(() => {
       this.setState({
@@ -36,7 +40,7 @@ class EditorWrapper extends React.Component {
   render () {
     const { copyed } = this.state
     const {
-      live: { theme, code, language, disabled, onChange }
+      live: { theme, code, language, disabled }
     } = this.props
     return (
       <div
@@ -104,7 +108,7 @@ class EditorWrapper extends React.Component {
             code={code}
             language={language}
             disabled={disabled}
-            onChange={onChange}
+            onChange={this.onCodeChange}
           />
           <LiveError />
         </div>
