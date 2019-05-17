@@ -110,7 +110,6 @@ pre[class*='language-'] {
 .language-css .token.string,
 .style .token.string {
   color: #a67f59;
-  background: hsla(0, 0%, 100%, 0.5);
 }
 
 .token.atrule,
@@ -133,6 +132,7 @@ pre[class*='language-'] {
 .token.bold {
   font-weight: bold;
 }
+
 .token.italic {
   font-style: italic;
 }

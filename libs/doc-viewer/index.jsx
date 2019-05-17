@@ -1,17 +1,18 @@
 import React from 'react'
-import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live'
+import { LiveProvider, LiveError, LivePreview, withLive, Editor } from 'react-live'
 import Icon from '../../components/icon'
 import Tooltip from '../../components/tooltip'
 import './index.scss'
 import Clipboard from 'clipboard'
 import theme from './theme'
 
-class Editor extends React.Component {
+class EditorWrapper extends React.Component {
   state = {
     collapse: false,
     copyed: false
   }
   componentDidMount () {
+    console.log(this.props)
     const codeViewer = document.getElementsByClassName('editor-inner')[0]
     this.innerHeight = codeViewer.clientHeight
     const clipboard = new Clipboard('.copy-btn')
@@ -21,13 +22,10 @@ class Editor extends React.Component {
         copyed: true
       })
       _this.resetCopy()
-      console.info('Action:', e.action)
-      console.info('Text:', e.text)
-      console.info('Trigger:', e.trigger)
-
       e.clearSelection()
     })
   }
+
   resetCopy = () => {
     setTimeout(() => {
       this.setState({
@@ -37,6 +35,9 @@ class Editor extends React.Component {
   }
   render () {
     const { copyed } = this.state
+    const {
+      live: { theme, code, language, disabled, onChange }
+    } = this.props
     return (
       <div
         className='doc-viewer'
@@ -86,17 +87,32 @@ class Editor extends React.Component {
               </Tooltip>
             )}
             <Tooltip title='重置代码' style={{ margin: '0 8px', cursor: 'pointer' }}>
-              <span onClick={() => {}}>
+              <span
+                onClick={() => {
+                  this.editor.updateContent(code)
+                }}
+              >
                 <Icon name='synchronize' />
               </span>
             </Tooltip>
           </div>
         </div>
-        <div className='editor-inner'>{this.props.children}</div>
+        <div className='editor-inner'>
+          <Editor
+            ref={node => (this.editor = node)}
+            theme={theme}
+            code={code}
+            language={language}
+            disabled={disabled}
+            onChange={onChange}
+          />
+          <LiveError />
+        </div>
       </div>
     )
   }
 }
+const EditorWithLive = withLive(EditorWrapper)
 export default class DocViewer extends React.Component {
   render () {
     const { code, scope, desc } = this.props
@@ -111,10 +127,7 @@ export default class DocViewer extends React.Component {
           >
             <LivePreview />
           </div>
-          <Editor desc={desc}>
-            <LiveEditor />
-            <LiveError />
-          </Editor>
+          <EditorWithLive desc={desc} />
         </div>
       </LiveProvider>
     )
