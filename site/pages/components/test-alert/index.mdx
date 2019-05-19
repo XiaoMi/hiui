@@ -4,7 +4,9 @@
 
 import Alert from '../../../../components/alert'
 import DocViewer from '../../../../libs/doc-viewer'
-const code = `() => <div>
+const code = `import Alert from '@hiui/hiui/es/alert' 
+    
+() => <div>
       <Alert type="info" message="信息提示的文案" onClose={()=>{console.log('alert关闭回调')}} />
       <br />
       <Alert type="success" message="成功提示的文案" onClose={()=>{console.log('alert关闭回调')}} />

@@ -6,6 +6,8 @@ import './index.scss'
 import Clipboard from 'clipboard'
 import theme from './theme'
 
+const importRegx = /import\s+([\w*{}\n, ])+.*;?/gm
+
 class EditorWrapper extends React.Component {
   state = {
     collapse: false,
@@ -42,6 +44,7 @@ class EditorWrapper extends React.Component {
     const {
       live: { theme, code, language, disabled }
     } = this.props
+
     return (
       <div
         className='doc-viewer'
@@ -120,7 +123,11 @@ export default class DocViewer extends React.Component {
   render () {
     const { code, scope, desc } = this.props
     return (
-      <LiveProvider code={code} scope={scope} theme={theme}>
+      <LiveProvider code={code} scope={scope} theme={theme}
+        transformCode={code => {
+          return code.replace(importRegx, '')
+        }}
+      >
         <div style={{ border: '1px solid #e6e7e8', borderRadius: '2px' }}>
           <div
             style={{
