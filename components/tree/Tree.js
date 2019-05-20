@@ -3,8 +3,7 @@ import classNames from 'classnames'
 import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
 import { getAll, dealData } from './util'
-import { DragDropContext } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
+import withDragDropContext from '../lib/withDragDropContext'
 
 import './style/index'
 
@@ -225,7 +224,7 @@ const HOCTree = TreeComponent => {
   return class WrapperTree extends Component {
     render () {
       const { draggable } = this.props
-      const DraggableTree = DragDropContext(HTML5Backend)(Tree)
+      const DraggableTree = withDragDropContext(Tree)
       return draggable ? <DraggableTree {...this.props} /> : <TreeComponent {...this.props} />
     }
   }

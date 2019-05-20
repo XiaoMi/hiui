@@ -1,17 +1,88 @@
-## Alert
+## Switch
 
 
-### 基础用法
+### Basic
 
 :::demo
 
-基础用法
+Basic
 
 ```js
 render () {
+  const datas = [{
+      groupTitle: 'Feb.',
+      children: [{
+        title: 'Title - 1',
+        description: 'Here are some descriptions',
+        timestamp: '10:00',
+        extraTime: '02-23'
+      }, {
+        dot: 'circle',
+        title: 'Title 2',
+        description: 'Here are some descriptions',
+        timestamp: '10:00',
+        extraTime: '02-27'
+      }]
+    }, {
+      groupTitle: 'Mar.',
+      children: [{
+        dot: 'circle',
+        title: 'Title 3',
+        description: 'Here are some descriptions',
+        timestamp: '12:00',
+        extraTime: '03-02'
+      }, {
+        dot: 'circle',
+        title: 'Title 4',
+        description: 'Here are some descriptions',
+        timestamp: '11:00',
+        extraTime: '03-10'
+      }]
+    }]
   return (
     <div>
-      <Timeline />
+      <div style={{display: 'flex'}}>
+        <Timeline list={datas}/>
+      </div>
+    </div>
+  )
+}
+```
+:::
+
+### Information Flow
+
+:::demo
+
+Information Flow
+
+```js
+render () {
+  const datas = [{
+        title: 'Title - 1',
+        description: 'Here are some descriptions',
+        timestamp: '2019.02.24 12:00:00'
+      }, {
+        dot: 'circle', 
+        title: 'Title 2',
+        description: 'Here are some descriptions',
+        timestamp: '2019.02.24 14:24:00'
+      },{
+        dot: 'circle',
+        title: 'Title 3',
+        description: 'Here are some descriptions',
+        timestamp: '2019.02.24 15:00:00'
+      }, {
+        dot: 'circle',
+        title: 'Title 4',
+        description: 'Here are some descriptions',
+        timestamp: '2019.02.24 19:55:00'
+      }]
+  return (
+    <div>
+      <div style={{display: 'flex'}}>
+        <Timeline list={datas} layout='right'/>
+      </div>
     </div>
   )
 }
@@ -20,22 +91,152 @@ render () {
 
 
 
+### Foldable
 
-### Alert Attributes
+:::demo
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+Foldable
+
+```js
+render () {
+  const datas = [{
+        title: 'Title - 1',
+        description: 'Here are some descriptions',
+        timestamp: '2019.02.24 12:00:00'
+      }, {
+        dot: 'circle', 
+        title: 'Title 2',
+        description: 'Here are some descriptions',
+        timestamp: '2019.02.24 14:24:00'
+      },{
+        dot: 'circle',
+        title: 'Title 3',
+        description: 'Here are some descriptions',
+        timestamp: '2019.02.24 15:00:00',
+        folding: true,
+        children: [{
+          title: 'Sub 1',
+          description: 'Here are some descriptions'
+        }, {
+          title: 'Sub 2',
+          description: 'Here are some descriptions'
+        }]
+      }, {
+        dot: <Icon name='collection' style={{fontSize: 16, color: 'red'}} />,
+        title: 'Title 2-2',
+        description: 'Here are some descriptions',
+        timestamp: '12:00'
+      }, {
+        dot: 'circle',
+        title: 'Title 4',
+        description: 'Here are some descriptions',
+        timestamp: '2019.02.24 19:55:00'
+      }]
+  return (
+    <div>
+      <div style={{display: 'flex'}}>
+        <Timeline list={datas} layout='right'/>
+      </div>
+    </div>
+  )
+}
+```
+:::
+
+
+### Cross
+
+:::demo
+
+Cross
+
+```js
+render () {
+  const datas = [{
+      groupTitle: 'a.m.',
+      children: [{
+        // dot: <Icon name='circle' style={{fontSize: 16}} />,
+        title: 'Title - 1',
+        description: 'Here are some descriptions',
+        timestamp: '9:00',
+        extraTime: '02-25'
+      }, {
+        dot: 'circle',
+        title: 'Title 1-2',
+        description: 'Here are some descriptions',
+        timestamp: '10:00'
+      }]
+    }, {
+      groupTitle: 'p.m.',
+      children: [{
+        dot: 'circle',
+        title: 'Title 2-1',
+        description: 'Here are some descriptions',
+        timestamp: '12:00',
+        folding: true,
+        children: [{
+          title: 'Sub 1',
+          description: 'Here are some descriptions'
+        }, {
+          title: 'Sub 2',
+          description: 'Here are some descriptions'
+        }]
+      }, {
+        dot: <Icon name='collection' style={{fontSize: 16, color: 'red'}} />,
+        title: 'Title 2-2',
+        description: 'Here are some descriptions',
+        timestamp: '12:00'
+      }]
+    }, {
+      groupTitle: 'Group 3',
+      children: [{
+        dot: 'circle',
+        title: 'Title 3-1',
+        description: 'Here are some descriptions',
+        timestamp: '11:00',
+        extraTime: '11-25'
+      }, {
+        dot: 'circle',
+        title: 'Title 3-2',
+        description: 'Here are some descriptions',
+        timestamp: '12:00'
+      }]
+    }]
+  return (
+    <div>
+      <Timeline list={datas} layout='cross'/>
+    </div>
+  )
+}
+```
+:::
+
+
+### Switch Attributes
+
+| Attribute | Description | Type | Options | Default |
 | -------- | ----- | ---- | ---- | ---- |
-| type | 类型 | String | info \| success \| error \| warning | info |
-| message | 提示内容 | String | - | - |
-| title | 提示标题 | String | - | - |
-| size | 弹框大小类型 | String | small \| middle \| large | middle |
-| closeable | 是否显示关闭按钮 | Boolean | true  \| false | true |
-| autoClose |  是否自动关闭（closeable 为 false 时生效） | Boolean | true  \| false |  false |
-| autoCloseTime | 自动关闭时间，单位为毫秒 | Number | - | 3000 |
+| layout |  layout | String |  normal <br/> right <br/> cross | normal |
+| list |  datas |  Array | - | - |
 
 
-### Alert Events
+### List Options
 
-| 参数 | 说明 | 回调参数
-| ------- | ------- | ------- |
-| onClose | 关闭时触发的事件 | - |
+| Attribute | Description | Type | Options | Default |
+| -------- | ----- | ---- | ---- | ---- |
+| title |  Display title |  String \| Element | - | - |
+| description |  Display description |  String \| Element | - | - |
+| timestamp |   Display timestamp |  String | - | - |
+| extraTime |  Extra show time |  String | - | - |
+|  dot |  Custom icon |  Element | - | - |
+
+> Use group timeline, you need to combine groutTitle
+
+```json
+{
+  groupTitle: 'Group Title',
+  children: [{List Options}]
+}
+```
+
+

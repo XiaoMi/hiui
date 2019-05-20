@@ -32,8 +32,8 @@ export default {
       'checkbox': require('./checkbox'),
       'date-picker': require('./date-picker'),
       'time-picker': require('./time-picker'),
-      'upload': require('./upload')
-
+      'upload': require('./upload'),
+      'rate': require('./rate')
     },
     'group-data': {
       'table': require('./table'),
@@ -44,7 +44,9 @@ export default {
       'popover': require('./popover'),
       'progress': require('./progress'),
       'card': require('./card'),
-      'timeline': require('./timeline')
+      'timeline': require('./timeline'),
+      'transfer': require('./transfer'),
+      'switch': require('./switch')
     },
     'group-tips': {
       'modal': require('./modal'),

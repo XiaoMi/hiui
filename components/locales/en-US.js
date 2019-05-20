@@ -54,5 +54,9 @@ module.exports = {
   },
   tabs: {
     more: 'more'
+  },
+  timeline: {
+    expand: 'Expand',
+    collapse: 'Collapse'
   }
 }

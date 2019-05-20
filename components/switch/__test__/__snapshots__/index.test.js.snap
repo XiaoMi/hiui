@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Switch basic use 1`] = `
+<div>
+  <span
+    className="theme__hiui-blue hi-switch hi-switch--closed"
+    onClick={[Function]}
+  >
+    <span
+      className="hi-switch__text"
+    />
+  </span>
+  <span
+    className="theme__hiui-blue hi-switch hi-switch--closed"
+    onClick={[Function]}
+  >
+    <span
+      className="hi-switch__text"
+    >
+      OFF
+    </span>
+  </span>
+  <span
+    className="theme__hiui-blue hi-switch hi-switch--disabled"
+    onClick={[Function]}
+  >
+    <span
+      className="hi-switch__text"
+    >
+      开
+    </span>
+  </span>
+</div>
+`;
