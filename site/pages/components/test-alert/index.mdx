@@ -1,20 +1,38 @@
-## Alert
+## 卡片 Card
 
-### 基础用法
+卡片式用来展示不同类型信息或信息组的轻量
 
-import Alert from '../../../../components/alert'
-import DocViewer from '../../../../libs/doc-viewer'
-const code = `import Alert from '@hiui/hiui/es/alert' 
-    
-() => <div>
-      <Alert type="info" message="信息提示的文案" onClose={()=>{console.log('alert关闭回调')}} />
-      <br />
-      <Alert type="success" message="成功提示的文案" onClose={()=>{console.log('alert关闭回调')}} />
-      <br />
-      <Alert type="error" message="错误提示的文案" onClose={()=>{console.log('alert关闭回调')}} />
-      <br />
-      <Alert type="warning" message="警示提示的文案" onClose={()=>{console.log('alert关闭回调')}} />
-    </div>`
-const desc = '基础使用'
+### 何时使用
 
-<DocViewer code={code} scope={{ Alert }} desc={desc} />
+- 当一组同类信息不能自然形成区块感时，需借助卡片来组织。
+- 当一个应用或功能由大量信息组成，需要通过重点信息快速识别时。
+- 后台展示概览信息时。
+
+### 信息构成
+
+卡片可以展示多种类型的信息：
+
+- 文本、数字
+- 段落
+- 信息图表、如环形图、柱状图、表格、折线图等
+- 图片、图片组
+- 图标
+- 列表
+
+### 基础卡片
+
+import Demo from './index2.jsx'
+
+<Demo />
+
+### 图片卡片
+
+import Demo2 from './index3.jsx'
+
+<Demo2 />
+
+### 简洁小卡片
+
+import Demo3 from './index3.jsx'
+
+<Demo3 />
