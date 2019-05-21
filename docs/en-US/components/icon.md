@@ -3,29 +3,29 @@
 .hiicon-list {
   width: 100%;
 }
+
 .hiicon-list li {
-  float: left;
-  width: 16.6%;
   list-style: none;
-}
-.hiicon-list li {
   float: left;
   width: 16.6%;
   height: 120px;
   border-radius: 4px;
   color: #333;
   text-align: center;
-  transition: color,background .2s;
+  transition: color background 0.2s;
 }
+
 .hiicon-list li:hover {
   background: #4284f5;
   color: #fff;
 }
+
 .hiicon-list .hi-icon {
   margin: 20px 0;
   font-size: 32px;
   display: inline-block;
 }
+
 .hiicon-class {
   font-size: 12px;
   display: block;
@@ -219,8 +219,8 @@ render () {
     <span class='hiicon-class'>comment-circle-o</span>
   </li>
   <li>
-    <i class='hi-icon icon-copy'></i>
-    <span class='hiicon-class'>copy</span>
+    <i class='hi-icon icon-columns'></i>
+    <span class='hiicon-class'>columns</span>
   </li>
   <li>
     <i class='hi-icon icon-cut'></i>
@@ -580,5 +580,63 @@ render () {
   <li>
     <i class='hi-icon icon-web'></i>
     <span class='hiicon-class'>web</span>
+  </li>
+
+  <!-- 2019-05-21 new icon -->
+  <li>
+    <i class='hi-icon icon-reset'></i>
+    <span class='hiicon-class'>reset</span>
+  </li>
+  <li>
+    <i class='hi-icon icon-api'></i>
+    <span class='hiicon-class'>api</span>
+  </li>
+  <li>
+    <i class='hi-icon icon-noapi'></i>
+    <span class='hiicon-class'>noapi</span>
+  </li>
+  <li>
+    <i class='hi-icon icon-columns'></i>
+    <span class='hiicon-class'>columns</span>
+  </li>
+  <li>
+    <i class='hi-icon icon-average'></i>
+    <span class='hiicon-class'>average</span>
+  </li>
+  <li>
+    <i class='hi-icon icon-row-height'></i>
+    <span class='hiicon-class'>row-height</span>
+  </li>
+  <li>
+    <i class='hi-icon icon-caveat'></i>
+    <span class='hiicon-class'>caveat</span>
+  </li>
+  <li>
+    <i class='hi-icon icon-asc'></i>
+    <span class='hiicon-class'>asc</span>
+  </li>
+  <li>
+    <i class='hi-icon icon-desc'></i>
+    <span class='hiicon-class'>desc</span>
+  </li>
+  <li>
+    <i class='hi-icon icon-import'></i>
+    <span class='hiicon-class'>import</span>
+  </li>
+  <li>
+    <i class='hi-icon icon-freezing'></i>
+    <span class='hiicon-class'>freezing</span>
+  </li>
+  <li>
+    <i class='hi-icon icon-summation'></i>
+    <span class='hiicon-class'>summation</span>
+  </li>
+  <li>
+    <i class='hi-icon icon-screen'></i>
+    <span class='hiicon-class'>screen</span>
+  </li>
+  <li>
+    <i class='hi-icon icon-stattistics'></i>
+    <span class='hiicon-class'>stattistics</span>
   </li>
 </ul>
