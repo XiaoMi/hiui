@@ -38,6 +38,9 @@ export default class Popper extends Component {
 
   componentDidMount () {
     this.getContainer()
+    if (this.props.show) {
+      render(this.renderChildren(), this.container)
+    }
   }
 
   componentWillUnmount () {
@@ -51,6 +54,7 @@ export default class Popper extends Component {
       leftGap,
       width
     } = this.props
+    if (!attachEle) return
     const rect = attachEle.getBoundingClientRect()
     let top = rect.top + (document.documentElement.scrollTop || document.body.scrollTop)
     let left = rect.left + (document.documentElement.scrollLeft || document.body.scrollLeft)
@@ -101,9 +105,11 @@ export default class Popper extends Component {
 
   getPlacement (attachEleRect) {
     let {
+      attachEle,
       placement,
       height
     } = this.props
+    if (!attachEle) return
     const bodyHeight = document.documentElement.clientHeight || document.body.clientHeight
     let poperTop = attachEleRect.top + attachEleRect.height
     const caclPlacement = (bottomPlacement, topPlacement) => { // 计算popper在元素上面或下面
@@ -135,12 +141,14 @@ export default class Popper extends Component {
 
   renderChildren () {
     let {
+      attachEle,
       children,
       className,
       show,
       height,
       zIndex
     } = this.props
+    if (!attachEle) return
     const offset = this.getOffset()
     let width = offset.width
     let left = offset.left + 'px'
