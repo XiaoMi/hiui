@@ -1,5 +1,6 @@
 import React from 'react'
-import { LiveProvider, LiveError, LivePreview, withLive, Editor } from 'react-live'
+import { LiveProvider, LiveError, LivePreview, Editor } from 'react-live'
+import _withLive from './components/withLive'
 import Icon from '../../components/icon'
 import Tooltip from '../../components/tooltip'
 import Button from '../../components/button'
@@ -9,20 +10,17 @@ import theme from './theme'
 import isEqual from 'lodash/isEqual'
 
 const importRegx = /import\s+([\w*{}\n, ])+.*;?/gm
-
 class EditorWrapper extends React.Component {
   state = {
     collapse: false,
-    copyed: false
-    // innerHeight: 0,
-    // descBarHeight: 40
+    copyed: false,
+    innerHeight: 0,
+    descBarHeight: 40
   }
   componentDidMount () {
-    // const codeViewer = document.getElementsByClassName(`${this.props.prefix}-editor-inner`)[0]
-    // const descBar = document.getElementsByClassName(`${this.props.prefix}-desc-bar`)[0]
-    // console.log('barHeight', this.props.prefix, descBar.clientHeight)
-    // this.setState({ innerHeight: codeViewer.clientHeight, descBarHeight: descBar.clientHeight })
-    // this.props.setInnerHeight()
+    const descBar = document.getElementsByClassName(`${this.props.prefix}-desc-bar`)[0]
+    this.setState({ descBarHeight: descBar.clientHeight })
+    this.setInnerHeight()
     const clipboard = new Clipboard(`.${this.props.prefix}-copy-btn`)
     const _this = this
     clipboard.on('success', function (e) {
@@ -35,11 +33,17 @@ class EditorWrapper extends React.Component {
   }
   onCodeChange = code => {
     this.props.live.onChange(code)
-    this.props.setInnerHeight()
+    this.setInnerHeight()
+  }
+  setInnerHeight = () => {
+    const codeViewer = document.getElementsByClassName(`${this.props.prefix}-editor-inner`)[0]
+    this.setState({
+      innerHeight: codeViewer.clientHeight
+    })
   }
   componentDidUpdate (prevProps) {
     if (prevProps.live.code !== this.props.live.code) {
-      this.props.setInnerHeight()
+      this.setInnerHeight()
     }
   }
   resetCopy = () => {
@@ -50,13 +54,11 @@ class EditorWrapper extends React.Component {
     }, 2000)
   }
   render () {
-    const { copyed } = this.state
+    const { copyed, innerHeight, descBarHeight } = this.state
     const {
       live: { theme, code, language, disabled },
       desc,
-      prefix,
-      innerHeight,
-      descBarHeight
+      prefix
     } = this.props
 
     return (
@@ -139,27 +141,20 @@ class EditorWrapper extends React.Component {
     )
   }
 }
-const EditorWithLive = withLive(EditorWrapper)
+const EditorWithLive = _withLive(EditorWrapper)
 export default class DocViewer extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       leftOption: (this.props.leftOptions && this.props.leftOptions[0]) || '',
-      rightOption: (this.props.rightOptions && this.props.rightOptions[0]) || '',
-      innerHeight: 0,
-      descBarHeight: 40
+      rightOption: (this.props.rightOptions && this.props.rightOptions[0]) || ''
     }
+    this.myRef = React.createRef()
   }
   componentDidMount () {
-    this.setInnerHeight()
     const descBar = document.getElementsByClassName(`${this.props.prefix}-desc-bar`)[0]
     this.setState({ descBarHeight: descBar.clientHeight })
-  }
-  setInnerHeight = () => {
-    const codeViewer = document.getElementsByClassName(`${this.props.prefix}-editor-inner`)[0]
-    this.setState({
-      innerHeight: codeViewer.clientHeight
-    })
+    console.log(this.myRef.current)
   }
   render () {
     const { code, scope, desc, leftOptions, rightOptions, prefix } = this.props
@@ -181,7 +176,8 @@ export default class DocViewer extends React.Component {
                       this.setState({
                         leftOption: opt
                       })
-                      this.setInnerHeight()
+                      // this.setInnerHeight()
+                      this.myRef.current.setInnerHeight()
                     }}
                   >
                     {opt}
@@ -201,7 +197,7 @@ export default class DocViewer extends React.Component {
                           this.setState({
                             rightOption: opt
                           })
-                          this.setInnerHeight()
+                          this.myRef.current.setInnerHeight()
                         }}
                       >
                         {opt}
@@ -233,11 +229,13 @@ export default class DocViewer extends React.Component {
               <LiveError />
             </div>
             <EditorWithLive
+              ref={node => (this.editorLive = node)}
               desc={desc}
               prefix={prefix}
               innerHeight={innerHeight}
               descBarHeight={descBarHeight}
               setInnerHeight={this.setInnerHeight}
+              refer={this.myRef}
             />
           </div>
         </LiveProvider>

@@ -10,6 +10,9 @@ module.exports = {
     // 列出第三方库
     vendor: ['react', 'react-dom']
   },
+  node: {
+    fs: 'empty'
+  },
   output: {
     path: path.resolve(basePath, 'dist'),
     publicPath: '/dist/',
