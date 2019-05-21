@@ -4,7 +4,7 @@
 
 ### 基础用法
 
-:::demo 
+:::demo
 
 ```js
 render () {
@@ -15,10 +15,12 @@ render () {
   </div>
 }
 ```
+
 :::
 
 ### 局部控制
-:::demo 
+
+:::demo
 
 ```js
 constructor () {
@@ -81,34 +83,35 @@ clickEvent () {
     showLoading: true
   })
   this.mockTableData().then(res => {
-    
     this.setState({
-      showLoading: false, 
+      showLoading: false,
       list: res,
       btnText: '重新加载，模拟3秒返回数据'
     })
   })
 }
 render () {
-  return <div>
-    <div style={{width: 500, height:260, border: '1px solid gray'}}>
-      <Loading tip='拼命加载中' show={this.state.showLoading}>
+  return (
+    <div style={{width: 500, height:260, border: '1px solid gray', position: 'reletive'}}>
+      <Loading show={this.state.showLoading}>
         <Table
           columns={this.columns}
           data={this.state.list}
         />
-        <br/>
-        <Button type="primary" onClick={this.clickEvent.bind(this)}>{this.state.btnText}</Button>
+        <div style={{textAlign: 'center'}}>
+          <Button type="primary" onClick={this.clickEvent.bind(this)}>{this.state.btnText}</Button>
+        </div>
       </Loading>
     </div>
-    
-  </div>
+  )
 }
 ```
+
 :::
 
 ### 整页
-:::demo 
+
+:::demo
 
 ```js
 constructor () {
@@ -126,15 +129,16 @@ clickEvent () {
 render () {
   return <div>
     <Button type="primary" onClick={this.clickEvent.bind(this)}>整页遮罩，3秒自动关闭</Button>
-    {this.state.open && <Loading full={true} size='large'/>}
+    {this.state.open && <Loading full={true} show size='large' tip='加载中' />}
   </div>
 }
 ```
+
 :::
 
-
 ### 接口调用
-:::demo 
+
+:::demo
 
 ```js
 constructor () {
@@ -154,7 +158,7 @@ demoEvent1 () {
 demoEvent2 () {
   const l = Loading.open({
     target: this.el,
-    tip: '加载中...'
+    tip: '加载中'
   })
   setTimeout(() => {
     l.close()
@@ -165,7 +169,7 @@ render () {
     <Button type="primary" onClick={this.demoEvent1.bind(this)}>整页，3秒后关闭</Button>
     <Button type="primary" onClick={this.demoEvent2.bind(this)}>指定目标，3秒后关闭</Button>
     <div ref={(el) => {this.el = el}} style={{margin: 20}}>
-      <Panel 
+      <Panel
         title={
           <div>
             <i className="hi-icon icon-user" style={{marginRight: '5px'}}></i>
@@ -179,16 +183,15 @@ render () {
   </div>
 }
 ```
+
 :::
-
-
 
 ### Loading Attributes
 
-| 参数       | 说明   |  类型  | 可选值 |默认值  |
-| --------   | -----  | ----  |    ----  |   ----  |
-| size |   组件大小  |  String   | large \| default \| small | default |
-| tip |   自定义的旋转动画下的文字  |  String   | - |-  |
-| full |   是否全屏  |   Boolean   | true \| false | false |
-| show |    是否显示加载动画  |  Boolean   | true \| false | false |
-| target |     用于指令调用时,Loading 遮罩的元素，为空时将整页遮罩  |  Element | -  | -  |
+| 参数   | 说明                                                | 类型    | 可选值                    | 默认值  |
+| ------ | --------------------------------------------------- | ------- | ------------------------- | ------- |
+| size   | 组件大小                                            | String  | large \| default \| small | default |
+| tip    | 自定义的旋转动画下的文字                            | String  | -                         | -       |
+| full   | 是否全屏                                            | Boolean | true \| false             | false   |
+| show   | 是否显示加载动画                                    | Boolean | true \| false             | false   |
+| target | 用于指令调用时,Loading 遮罩的元素，为空时将整页遮罩 | Element | -                         | -       |
