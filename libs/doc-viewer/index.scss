@@ -20,16 +20,12 @@
     transition: all 0.3s;
   }
 
-  .editor-inner {
-    background: rgba(246, 246, 246, 0.5967);
+  pre {
+    padding: 20px !important;
+  }
 
-    pre {
-      padding: 20px !important;
-    }
-
-    textarea {
-      padding: 20px !important;
-      outline: none !important;
-    }
+  textarea {
+    padding: 20px !important;
+    outline: none !important;
   }
 }

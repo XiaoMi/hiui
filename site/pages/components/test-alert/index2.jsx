@@ -1,6 +1,7 @@
 import Card from '../../../../components/card'
 import React from 'react'
 import DocViewer from '../../../../libs/doc-viewer'
+const prefix = 'card-basic'
 const desc = '基础卡片用法'
 const leftOptions = ['基础', '无标题', '无内容', '禁用']
 const code = [
@@ -64,5 +65,7 @@ class Demo extends React.Component {
   }
 ]
 
-const Demo = () => <DocViewer code={code} scope={{ Card }} desc={desc} leftOptions={leftOptions} />
+const Demo = () => (
+  <DocViewer code={code} scope={{ Card }} desc={desc} leftOptions={leftOptions} prefix={prefix} />
+)
 export default Demo

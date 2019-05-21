@@ -1,6 +1,7 @@
 import Card from '../../../../components/card'
 import React from 'react'
 import DocViewer from '../../../../libs/doc-viewer'
+const prefix = 'card-mini'
 const desc =
   '当数量众多的实体成为整个界面的主要元素，并且需要通过名称管理或组织时适用。如筛选项、指标、应用名称等。'
 const leftOptions = ['居左', '居中', '仅标题', '禁用']
@@ -75,5 +76,7 @@ class Demo extends React.Component {
   }
 ]
 
-const Demo = () => <DocViewer code={code} scope={{ Card }} desc={desc} leftOptions={leftOptions} />
+const Demo = () => (
+  <DocViewer code={code} scope={{ Card }} desc={desc} leftOptions={leftOptions} prefix={prefix} />
+)
 export default Demo

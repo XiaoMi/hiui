@@ -1,6 +1,7 @@
 import Card from '../../../../components/card'
 import React from 'react'
 import DocViewer from '../../../../libs/doc-viewer'
+const prefix = 'card-pic'
 const desc =
   '当模块是界面的主体信息且可通过图片来表达含义时适用，可增加描述的生动性，提高模块辨识度。常用于应用、功能入口、任务、项目、计划等。'
 const leftOptions = ['居左', '居中', '仅标题', '禁用']
@@ -75,5 +76,7 @@ class Demo extends React.Component {
   }
 ]
 
-const Demo = () => <DocViewer code={code} scope={{ Card }} desc={desc} leftOptions={leftOptions} />
+const Demo = () => (
+  <DocViewer code={code} scope={{ Card }} desc={desc} leftOptions={leftOptions} prefix={prefix} />
+)
 export default Demo
