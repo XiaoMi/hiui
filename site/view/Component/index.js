@@ -21,11 +21,14 @@ class Component extends React.Component {
   componentDidMount () {
     window.scrollTo(0, 0)
     this.getCurrentPage(() => {
-      this.setState({
-        cComponent: this.getComponent(this.state.page)
-      }, () => {
-        this.getAnchors()
-      })
+      this.setState(
+        {
+          cComponent: this.getComponent(this.state.page)
+        },
+        () => {
+          this.getAnchors()
+        }
+      )
     })
 
     this.collectNavs(() => {
@@ -34,7 +37,9 @@ class Component extends React.Component {
   }
   hashChangeEvent () {
     let routes = window.location.hash.split('/')
-    if (routes[2] !== 'docs') { return }
+    if (routes[2] !== 'docs') {
+      return
+    }
     window.scrollTo(0, 0)
     this.getCurrentPage()
     this.getAnchors()
@@ -47,10 +52,10 @@ class Component extends React.Component {
     const anchors = anchorsDOMList.map((v, i) => {
       const id = 'component-anchors-' + i
       anchorsDOM[i].id = id
-      return {id, text: anchorsDOM[i].innerHTML}
+      return { id, text: anchorsDOM[i].innerHTML }
     })
 
-    this.setState({anchors})
+    this.setState({ anchors })
   }
 
   getSiblingNav () {
@@ -65,7 +70,7 @@ class Component extends React.Component {
       to: tempArr[index + 1],
       text: footNavs[tempArr[index + 1]] ? footNavs[tempArr[index + 1]] : ''
     }
-    this.setState({pre, next})
+    this.setState({ pre, next })
   }
 
   // 收集所有导航
@@ -74,7 +79,7 @@ class Component extends React.Component {
     let page = this.props.match.path.split('/')[2]
     footNavs = this.props[page] || {}
 
-    this.setState({footNavs, topNav: page}, fn)
+    this.setState({ footNavs, topNav: page }, fn)
   }
 
   getCurrentPage (fn) {
@@ -84,10 +89,7 @@ class Component extends React.Component {
   }
 
   getComponent (page) {
-    const {
-      theme,
-      locale
-    } = this.props
+    const { theme, locale } = this.props
     // 控制markdown显示隐藏
     const currentPage = this.props.allComponents[this.state.topNav][page]
     if (currentPage) {
@@ -97,13 +99,7 @@ class Component extends React.Component {
   }
 
   render () {
-    const {
-      pre,
-      next,
-      anchors,
-      cComponent,
-      topNav
-    } = this.state
+    const { pre, next, anchors, cComponent, topNav } = this.state
     return (
       <div className='component'>
         <div className='home-container'>
@@ -114,13 +110,13 @@ class Component extends React.Component {
           <div className='foot-nav clearfix'>
             <a
               className={`pre ${pre.to ? '' : 'none'}`}
-              href={pre.to ? `#/${this.props.locale}/${topNav}/${pre.to}` : ''}
+              href={pre.to ? `/${this.props.locale}/${topNav}/${pre.to}` : ''}
             >
               {pre.text ? pre.text : ''}
             </a>
             <a
               className={`next ${next.to ? '' : 'none'}`}
-              href={next.to ? `#/${this.props.locale}/${topNav}/${next.to}` : ''}
+              href={next.to ? `/${this.props.locale}/${topNav}/${next.to}` : ''}
             >
               {next.text ? next.text : ''}
             </a>
@@ -129,23 +125,21 @@ class Component extends React.Component {
 
         <div className='anchor'>
           <ul>
-            {
-              anchors.map((v, i) => (
-                <li key={i}>
-                  <a
-                    onClick={() => {
-                      const target = document.querySelector(`#${v.id}`)
+            {anchors.map((v, i) => (
+              <li key={i}>
+                <a
+                  onClick={() => {
+                    const target = document.querySelector(`#${v.id}`)
 
-                      if (target) {
-                        target.scrollIntoView({ block: 'start', behavior: 'smooth' })
-                      }
-                    }}
-                  >
-                    {v.text}
-                  </a>
-                </li>
-              ))
-            }
+                    if (target) {
+                      target.scrollIntoView({ block: 'start', behavior: 'smooth' })
+                    }
+                  }}
+                >
+                  {v.text}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

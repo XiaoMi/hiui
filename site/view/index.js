@@ -2,31 +2,33 @@ import React from 'react'
 import Header from './Component/Header'
 import { connect } from 'react-redux'
 import routes from './routes'
-import {Classic as Page, Logo, History} from '@hi-ui/classic-theme'
+import { Classic as Page, Logo, History } from '@hi-ui/classic-theme'
 import locales from '../locales'
 import designs from '../pages/designs'
 import pages from '../pages/components'
 import templates from '../pages/templates'
-import {setDesignNavs, setComponentsNavs, setComponents} from '../redux/action/global'
-History.createHashHistory()
+import { setDesignNavs, setComponentsNavs, setComponents } from '../redux/action/global'
+History.createBrowserHistory()
 
-const logo = <Logo
-  url='https://xiaomi.github.io/hiui/#/'
-  logoUrl='https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05'
-  text='HIUI'
-  title='HIUI'
-  alt='HIUI'
-/>
+const logo = (
+  <Logo
+    url='https://xiaomi.github.io/hiui/'
+    logoUrl='https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05'
+    text='HIUI'
+    title='HIUI'
+    alt='HIUI'
+  />
+)
 class Index extends React.Component {
   componentNavs = []
   designNavs = []
   constructor (props) {
     super(props)
     const _h = History.getHistory()
-    let locale = window.location.hash.split('/')[1]
+    let locale = window.location.pathname.split('/')[1]
     if (!locale || !(locale in locales)) {
       locale = window.localStorage.getItem('HIUI_LANGUAGE')
-      if (locale && (locale in locales)) {
+      if (locale && locale in locales) {
         _h.push(`/${locale}`)
       } else {
         window.localStorage.setItem('HIUI_LANGUAGE', this.props.locale)
@@ -47,14 +49,16 @@ class Index extends React.Component {
           }, {}),
           ...pages.documents
         }
-      }, {
+      },
+      {
         designs: {
           ...Object.values(designs.components).reduce((a, b) => {
             return Object.assign(a, b)
           }, {}),
           ...designs.documents
         }
-      }, {
+      },
+      {
         templates: {
           ...Object.values(templates.components).reduce((a, b) => {
             return Object.assign(a, b)
@@ -87,7 +91,7 @@ class Index extends React.Component {
       <span className='sider__icon-changelog' />,
       <span className='sider__icon-component' />
     ]
-    const {locale} = this.props
+    const { locale } = this.props
     let components = []
     let navs = {}
     let siderDocuments = []
@@ -116,11 +120,13 @@ class Index extends React.Component {
     })
     this.componentNavs = navs
     setComponentsNavs(navs)
-    return [].concat(siderDocuments, [{
-      title: <span className='components-page'>{locales[locale]['misc']['components']}</span>,
-      icon: icons[icons.length - 1],
-      children: components
-    }])
+    return [].concat(siderDocuments, [
+      {
+        title: <span className='components-page'>{locales[locale]['misc']['components']}</span>,
+        icon: icons[icons.length - 1],
+        children: components
+      }
+    ])
   }
   componentDidUpdate () {
     setComponentsNavs(this.componentNavs)
@@ -130,7 +136,7 @@ class Index extends React.Component {
     let components = []
     let siderDocuments = []
     let navs = {}
-    const {locale} = this.props
+    const { locale } = this.props
     Object.keys(items.documents).forEach((title, i) => {
       const _title = locales[locale][path][title]
       navs[title] = _title

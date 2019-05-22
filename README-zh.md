@@ -7,6 +7,7 @@
 [![JavaScript Style Guide](https://camo.githubusercontent.com/58fbab8bb63d069c1e4fb3fa37c2899c38ffcd18/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f636f64655f7374796c652d7374616e646172642d627269676874677265656e2e737667)](https://github.com/standard/standard)
 
 [English](https://github.com/XiaoMi/hiui/blob/master/README.md) | [中文](https://github.com/XiaoMi/hiui/blob/master/README-zh.md)
+
 </div>
 
 ---
@@ -25,8 +26,7 @@ HIUI 是一个面向中后台系统的前端组件库，可以帮助开发人员
 npm install @hi-ui/hiui
 ```
 
-组件使用详见[官方文档](https://xiaomi.github.io/hiui/#/zh-CN/components/quick-start)。
-
+组件使用详见[官方文档](https://xiaomi.github.io/hiui/zh-CN/components/quick-start)。
 
 ## 贡献
 
@@ -81,16 +81,16 @@ $ yarn build
 
 ### 开发流程
 
- - 文件夹命名：所有**文件夹**均为**小写命名**，多个单词则中间加 `-`，例如date-picker、page
- - 文件命名：文件命名组件名每个首字母大写，例如 DatePicker、Page，非组件的功能性文件均使用小写，多个单词用 `-` 连接
- - class 命名：组件所有的样式放在 `components/**/style` 下，class 命名使用 BEM 命名---`Block__Element--Modifier`
- - 对外 API 命名：组件**对外暴露API**使用驼峰命名
+- 文件夹命名：所有**文件夹**均为**小写命名**，多个单词则中间加 `-`，例如 date-picker、page
+- 文件命名：文件命名组件名每个首字母大写，例如 DatePicker、Page，非组件的功能性文件均使用小写，多个单词用 `-` 连接
+- class 命名：组件所有的样式放在 `components/**/style` 下，class 命名使用 BEM 命名---`Block__Element--Modifier`
+- 对外 API 命名：组件**对外暴露 API**使用驼峰命名
 
 ### 规范
 
- - [BEM](https://en.bem.info/)
- - [git-flow (AVH Edition)](https://github.com/petervanderdoes/gitflow-avh)
- - [JavaScript Standard Style](https://github.com/standard/standard)
+- [BEM](https://en.bem.info/)
+- [git-flow (AVH Edition)](https://github.com/petervanderdoes/gitflow-avh)
+- [JavaScript Standard Style](https://github.com/standard/standard)
 
 ## License
 

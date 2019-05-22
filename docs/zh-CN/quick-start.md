@@ -16,7 +16,7 @@ HIUI 是一套适用于前中后台的交互界面设计标准与前端解决方
 环境依赖
 
 - Node >= 8.10
-- Npm >= 5.2  或 Yarn >= 0.25
+- Npm >= 5.2 或 Yarn >= 0.25
 
 下载并安装 Node
 
@@ -28,7 +28,7 @@ HIUI 是一套适用于前中后台的交互界面设计标准与前端解决方
 
 Node 安装完成后，npm 即可以使用
 
-#### 1.1 安装create-react-app
+#### 1.1 安装 create-react-app
 
 ```shell
 npm install -g create-react-app
@@ -49,33 +49,21 @@ npm install -g create-react-app
   cd projectName
 
   # 启动项目
-  npm start 
+  npm start
   # 或
   yarn start
 ```
 
-![](./static/img/docs/create-react-app.gif)
+![](/static/img/docs/create-react-app.gif)
 
-完毕后，将会自动打开新的标签页 [localhost:3000](localhost:3000)，至此React项目初始化完成
+完毕后，将会自动打开新的标签页 [localhost:3000](localhost:3000)，至此 React 项目初始化完成
 
-***目录结构***
+**_目录结构_**
 
 ```html
-├── README.md
-├── package.json
-├── public
-│   ├── favicon.ico
-│   ├── index.html
-│   └── manifest.json
-├── src
-│   ├── App.css
-│   ├── App.js        //主模块
-│   ├── App.test.js
-│   ├── index.css     //主样式文件
-│   ├── index.js      //程序主入口
-│   ├── logo.svg
-│   └── serviceWorker.js
-└── yarn.lock
+├── README.md ├── package.json ├── public │ ├── favicon.ico │ ├── index.html │ └── manifest.json ├──
+src │ ├── App.css │ ├── App.js //主模块 │ ├── App.test.js │ ├── index.css //主样式文件 │ ├──
+index.js //程序主入口 │ ├── logo.svg │ └── serviceWorker.js └── yarn.lock
 ```
 
 #### 1.3 安装 HIUI
@@ -86,7 +74,7 @@ npm install @hi-ui/hiui --save
 ```
 
 ```diff
-// package.json  
+// package.json
 "dependencies": {
 +   "@hi-ui/hiui": "^1.3.2",
     "react": "^16.8.3",
@@ -98,47 +86,47 @@ npm install @hi-ui/hiui --save
 修改 src/App.js
 
 ```javascript
-import React, { Component } from 'react';
-import {Button} from '@hi-ui/hiui' //引入所需组件
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import { Button } from '@hi-ui/hiui' //引入所需组件
+import logo from './logo.svg'
+import './App.css'
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-      
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-        
+      <div className='App'>
+        <header className='App-header'>
+          <img src={logo} className='App-logo' alt='logo' />
+
           {/* 使用组件 */}
-          <Button type="primary"  size="large">HIUI 按钮</Button>
+          <Button type='primary' size='large'>
+            HIUI 按钮
+          </Button>
 
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
           <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
+            className='App-link'
+            href='https://reactjs.org'
+            target='_blank'
+            rel='noopener noreferrer'
           >
             Learn React
           </a>
-          
         </header>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
 ```
 
 浏览器将自动刷新，效果如下：
 
-<img src="./static/img/docs/effect.jpg" width="40%"/>
+<img src="/static/img/docs/effect.jpg" width="40%"/>
 
 ### 2. 在现有项目中使用
 
-**同1.3**
+**同 1.3**

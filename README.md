@@ -7,6 +7,7 @@
 [![JavaScript Style Guide](https://camo.githubusercontent.com/58fbab8bb63d069c1e4fb3fa37c2899c38ffcd18/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f636f64655f7374796c652d7374616e646172642d627269676874677265656e2e737667)](https://github.com/standard/standard)
 
 [English](https://github.com/XiaoMi/hiui/blob/master/README.md) | [中文](https://github.com/XiaoMi/hiui/blob/master/README-zh.md)
+
 </div>
 
 ---
@@ -25,7 +26,7 @@ HIUI is a solution that is adequate for the fomulation and implementation of int
 npm install @hi-ui/hiui
 ```
 
-For components usage, see more at [HIUI Documents](https://xiaomi.github.io/hiui/#/en-US/components).
+For components usage, see more at [HIUI Documents](https://xiaomi.github.io/hiui//en-US/components).
 
 ## Contribute
 
@@ -71,9 +72,9 @@ Open http://localhost:4200
 
 ### Style Guide
 
- - [BEM](https://en.bem.info/)
- - [git-flow (AVH Edition)](https://github.com/petervanderdoes/gitflow-avh)
- - [JavaScript Standard Style](https://github.com/standard/standard)
+- [BEM](https://en.bem.info/)
+- [git-flow (AVH Edition)](https://github.com/petervanderdoes/gitflow-avh)
+- [JavaScript Standard Style](https://github.com/standard/standard)
 
 ## License
 
