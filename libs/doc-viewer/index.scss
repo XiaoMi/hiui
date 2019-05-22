@@ -1,7 +1,11 @@
 .doc-viewer {
-  height: 41px;
-  overflow: hidden;
-  transition: height 0.3s;
+  margin-bottom: 40px;
+
+  .editor-wrapper {
+    height: 41px;
+    overflow: hidden;
+    transition: height 0.3s;
+  }
 
   .hi-tooltip {
     transform: scale(1);

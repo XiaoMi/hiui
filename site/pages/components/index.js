@@ -49,9 +49,10 @@ export default {
       // 'confirm': require('./confirm'),
       notification: require('./notification'),
       alert: require('./alert'),
-      'test-alert': require('./test-alert/index.mdx'),
+      'test-alert': require('./test-alert'),
       badge: require('./badge'),
       loading: require('./loading')
     }
   }
 }
+// const files = require.context
