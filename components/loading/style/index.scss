@@ -1,120 +1,125 @@
-@mixin circle-transform($num) {
-  &:nth-child(#{$num}) {
-    transform: rotate(#{$num * 30deg - 30deg});
-
-    &::before {
-      animation-delay: -#{1300 - $num * 100}ms;
-    }
-  }
-}
-
-@-webkit-keyframes circleBounceDelay {
-  0%,
-  80%,
-  100% {
-    transform: scale(0);
-  }
-
-  40% {
-    transform: scale(1);
-  }
-}
-
-@keyframes circleBounceDelay {
-  0%,
-  80%,
-  100% {
-    transform: scale(0);
-  }
-
-  40% {
-    transform: scale(1);
-  }
-}
-
 .hi-loading {
-  transition: opacity 0.3s linear;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: block;
-  text-align: center;
-  top: 0;
-  background-color: transparent; //背景透明
-  z-index: 9999;
-
-  &::after {
-    content: '';
-    display: inline-block;
-  }
-
   &__mask {
-    position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    bottom: 0;
+    right: 0;
     background-color: rgba(255, 255, 255, 0.8);
     z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    &--part {
+      position: absolute;
+    }
+
+    &--global {
+      position: fixed;
+    }
+
+    &--hide {
+      display: none;
+    }
+  }
+
+  &__wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
   }
 
   &__outter {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: inline-block;
-    vertical-align: middle;
-    //background-color: #222;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  &__icon {
+    transform: translate(-50%);
+    &--small div {
+      height: 8px;
+      width: 8px;
+    }
+    &--default div {
+      height: 12px;
+      width: 12px;
+    }
+    &--large div {
+      height: 16px;
+      width: 16px;
+    }
+    div {
+      border-radius: 50%;
+      display: inline-block;
+      position: absolute;
+      @keyframes animDotF {
+        0% {
+          transform: translateX(-100%);
+          z-index: 1;
+        }
+        25% {
+          transform: translateX(0) scale(1.5);
+          z-index: 1;
+        }
+        50% {
+          transform: translateX(100%);
+          z-index: 0;
+        }
+        75% {
+          transform: scale(0.5);
+          z-index: 0;
+        }
+        100% {
+          transform: translateX(-100%);
+          z-index: 1;
+        }
+      }
+      @keyframes animDotL {
+        0% {
+          transform: translateX(100%);
+          z-index: 0;
+        }
+        25% {
+          transform: translateX(0) scale(0.5);
+          z-index: 0;
+        }
+        50% {
+          transform: translateX(-100%);
+          z-index: 1;
+        }
+        75% {
+          transform: scale(1.5);
+          z-index: 1;
+        }
+        100% {
+          transform: translateX(100%);
+          z-index: 0;
+        }
+      }
+      &:first-child {
+        background: #FF6633;
+        transform: translateX(-100%);
+        animation: animDotF 1.5s linear infinite;
+      }
+      &:last-child {
+        background: #4284F5;
+        transform: translateX(100%);
+        animation: animDotL 1.5s linear infinite;
+        // display: none;
+      }
+    }
   }
 
   &__text {
     text-align: center;
     color: #ff6700;
     font-size: 12px;
-    line-height: 2rem;
-    padding-left: 0.85rem;
-    padding-right: 0.26rem;
-    vertical-align: middle;
-  }
-
-  &__circle {
-    margin: 15px auto;
-    width: 30px;
-    height: 30px;
-    position: relative;
-
-    &--large {
-      width: 80px;
-      height: 80px;
-    }
-
-    &--small {
-      width: 20px;
-      height: 20px;
-    }
-
-    &-item {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      left: 0;
-      top: 0;
-
-      &::before {
-        content: '';
-        display: block;
-        margin: 0 auto;
-        width: 15%;
-        height: 15%;
-        background-color: #ff6700;
-        border-radius: 100%;
-        animation: circleBounceDelay 1.2s infinite ease-in-out both;
-      }
-
-      @for $i from 1 through 12 {
-        @include circle-transform($i);
-      }
-    }
+    line-height: 2em;
+    transform: translateY(100%);
+    padding-left: 1em;
   }
 }
