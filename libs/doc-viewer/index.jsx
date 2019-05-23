@@ -22,7 +22,6 @@ export default class DocViewer extends React.Component {
   componentDidMount () {
     const descBar = document.getElementsByClassName(`${this.props.prefix}-desc-bar`)[0]
     this.setState({ descBarHeight: descBar.clientHeight })
-    console.log(this.editorRef.current)
   }
   render () {
     const { code, scope, desc, leftOptions, rightOptions, prefix } = this.props

@@ -52,7 +52,6 @@ function getRoutes (locale, siders, designs, templates) {
     {
       path: `/${locale}/docs`,
       render: props => {
-        console.log('siders', siders, sideArr)
         return <SiderLayout deepClone={false} sider={siders} routes={sideArr} {...props} />
       }
     }

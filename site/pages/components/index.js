@@ -49,7 +49,7 @@ export default {
       // 'confirm': require('./confirm'),
       notification: require('./notification'),
       alert: require('./alert'),
-      'test-alert': require('./test-alert'),
+      'test-alert': require('./test-alert/doc.mdx'),
       badge: require('./badge'),
       loading: require('./loading')
     }

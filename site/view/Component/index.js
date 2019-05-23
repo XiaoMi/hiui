@@ -14,12 +14,12 @@ class Component extends React.Component {
       cComponent: null,
       topNav: 'docs'
     }
-    this.hashChangeEvent = this.hashChangeEvent.bind(this)
+    // this.hashChangeEvent = this.hashChangeEvent.bind(this)
     this.contentRef = React.createRef()
   }
 
   componentDidMount () {
-    window.scrollTo(0, 0)
+    console.log('done')
     this.getCurrentPage(() => {
       this.setState(
         {
@@ -27,6 +27,19 @@ class Component extends React.Component {
         },
         () => {
           this.getAnchors()
+          console.log('Components')
+          if (window.location.hash) {
+            const id = window.location.hash.split('#')[1]
+            const target = document.getElementById(id)
+            const top = target.offsetTop
+            console.log(target.offsetTop)
+            window.scrollTo({
+              top: top - 63,
+              behavior: 'smooth'
+            })
+            // target.scrollIntoView({ block: 'start', behavior: 'smooth' })
+            // const elementToScroll = console.log('>>>>>>>>>>>>', elementToScroll)
+          }
         }
       )
     })
@@ -35,17 +48,9 @@ class Component extends React.Component {
       this.getSiblingNav()
     })
   }
-  hashChangeEvent () {
-    let routes = window.location.hash.split('/')
-    if (routes[2] !== 'docs') {
-      return
-    }
-    window.scrollTo(0, 0)
-    this.getCurrentPage()
-    this.getAnchors()
-    this.getSiblingNav()
+  componentWillReceiveProps () {
+    console.log('>>>>>>>>>>')
   }
-
   getAnchors () {
     const anchorsDOM = document.querySelectorAll('#markdown-content h3')
     const anchorsDOMList = [].slice.call(anchorsDOM)

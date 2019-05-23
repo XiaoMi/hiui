@@ -181,7 +181,7 @@ class Demo extends React.Component {
     opt: ['禁用', 'L']
   }
 ]
-console.log('module', Card)
+
 const Demo = () => (
   <DocViewer
     code={code}
