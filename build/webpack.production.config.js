@@ -5,6 +5,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const basePath = path.resolve(__dirname, '../')
+const rehypePrism = require('@mapbox/rehype-prism')
 
 module.exports = {
   mode: process.env.NODE_ENV,
@@ -12,6 +13,9 @@ module.exports = {
     main: ['@babel/polyfill', `${path.resolve(basePath, 'site/main.js')}`],
     // 列出第三方库
     vendor: ['react', 'react-dom']
+  },
+  node: {
+    fs: 'empty'
   },
   output: {
     path: path.resolve(basePath, 'dist'),
@@ -96,8 +100,8 @@ module.exports = {
             options: {
               presets: ['@babel/preset-env', '@babel/preset-react']
             }
-          }
-          // { loader: '@mdx-js/loader',options:{hastPlugins[rehypePrism]} }
+          },
+          { loader: '@mdx-js/loader', options: { hastPlugins: [rehypePrism] } }
         ]
       },
       {
