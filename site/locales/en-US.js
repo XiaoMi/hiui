@@ -44,6 +44,7 @@ module.exports = {
     icon: 'Icon',
     progress: 'Progress',
     card: 'Card',
+    timeline: 'Timeline',
     transfer: 'Transfer',
     switch: 'Switch',
     rate: 'Rate'

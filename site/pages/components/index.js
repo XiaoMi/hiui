@@ -44,6 +44,7 @@ export default {
       'popover': require('./popover'),
       'progress': require('./progress'),
       'card': require('./card'),
+      'timeline': require('./timeline'),
       'transfer': require('./transfer'),
       'switch': require('./switch')
     },
