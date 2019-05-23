@@ -12,7 +12,7 @@
   border-radius: 4px;
   color: #333;
   text-align: center;
-  transition: color background 0.2s;
+  transition: color, background-color 0.2s;
 }
 
 .hiicon-list li:hover {
@@ -32,6 +32,7 @@
 }
 
 </style>
+
 ## Icon 图标
 
 Icon 图标
@@ -54,8 +55,8 @@ render () {
   )
 }
 ```
-:::
 
+:::
 
 ### 嵌套用法
 
@@ -73,14 +74,15 @@ render () {
   )
 }
 ```
+
 :::
 
 ### Icon Attributes
 
-| 参数 | 说明 | 类型 | 可选值 |默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| name | 图标名称 | string | 参考图标集合 | - |
-| className | 自定义class |  string | - | - |
+| 参数      | 说明         | 类型   | 可选值       | 默认值 |
+| --------- | ------------ | ------ | ------------ | ------ |
+| name      | 图标名称     | string | 参考图标集合 | -      |
+| className | 自定义 class | string | -            | -      |
 
 ### 图标集合
 
@@ -186,7 +188,7 @@ render () {
     <i class='hi-icon icon-application-lock'></i>
     <span class='hiicon-class'>application-lock</span>
   </li>
-  
+
   <li>
     <i class='hi-icon icon-man'></i>
     <span class='hiicon-class'>man</span>
@@ -211,7 +213,7 @@ render () {
     <i class='hi-icon icon-menu'></i>
     <span class='hiicon-class'>menu</span>
   </li>
-  
+
   <li>
     <i class='hi-icon icon-collection'></i>
     <span class='hiicon-class'>collection</span>
@@ -261,7 +263,7 @@ render () {
     <i class='hi-icon icon-document'></i>
     <span class='hiicon-class'>document</span>
   </li>
-  
+
   <li>
     <i class='hi-icon icon-download'></i>
     <span class='hiicon-class'>download</span>
@@ -333,7 +335,7 @@ render () {
     <i class='hi-icon icon-info'></i>
     <span class='hiicon-class'>info</span>
   </li>
-  
+
   <li>
     <i class='hi-icon icon-internet'></i>
     <span class='hiicon-class'>internet</span>
@@ -459,7 +461,6 @@ render () {
     <i class='hi-icon icon-repeat'></i>
     <span class='hiicon-class'>repeat</span>
   </li>
-  
 
   <li>
     <i class='hi-icon icon-save'></i>
@@ -485,7 +486,7 @@ render () {
     <i class='hi-icon icon-sound'></i>
     <span class='hiicon-class'>sound</span>
   </li>
-  
+
   <li>
     <i class='hi-icon icon-stop'></i>
     <span class='hiicon-class'>stop</span>
@@ -523,7 +524,7 @@ render () {
     <i class='hi-icon icon-telephone'></i>
     <span class='hiicon-class'>telephone</span>
   </li>
-  
+
   <li>
     <i class='hi-icon icon-time'></i>
     <span class='hiicon-class'>time</span>
@@ -532,7 +533,7 @@ render () {
     <i class='hi-icon icon-tool'></i>
     <span class='hiicon-class'>tool</span>
   </li>
-  
+
   <li>
     <i class='hi-icon icon-time1'></i>
     <span class='hiicon-class'>time1</span>
@@ -583,7 +584,6 @@ render () {
     <i class='hi-icon icon-web'></i>
     <span class='hiicon-class'>web</span>
   </li>
-
 
   <!-- 2019-05-21 new icon -->
   <li>
