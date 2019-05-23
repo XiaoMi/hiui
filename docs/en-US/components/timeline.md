@@ -1,5 +1,4 @@
-## Switch
-
+## Timeline
 
 ### Basic
 
@@ -48,6 +47,7 @@ render () {
   )
 }
 ```
+
 :::
 
 ### Information Flow
@@ -63,7 +63,7 @@ render () {
         description: 'Here are some descriptions',
         timestamp: '2019.02.24 12:00:00'
       }, {
-        dot: 'circle', 
+        dot: 'circle',
         title: 'Title 2',
         description: 'Here are some descriptions',
         timestamp: '2019.02.24 14:24:00'
@@ -87,9 +87,8 @@ render () {
   )
 }
 ```
+
 :::
-
-
 
 ### Foldable
 
@@ -104,7 +103,7 @@ render () {
         description: 'Here are some descriptions',
         timestamp: '2019.02.24 12:00:00'
       }, {
-        dot: 'circle', 
+        dot: 'circle',
         title: 'Title 2',
         description: 'Here are some descriptions',
         timestamp: '2019.02.24 14:24:00'
@@ -141,8 +140,8 @@ render () {
   )
 }
 ```
-:::
 
+:::
 
 ### Cross
 
@@ -209,26 +208,25 @@ render () {
   )
 }
 ```
+
 :::
 
+### Timeline Attributes
 
-### Switch Attributes
-
-| Attribute | Description | Type | Options | Default |
-| -------- | ----- | ---- | ---- | ---- |
-| layout |  layout | String |  normal <br/> right <br/> cross | normal |
-| list |  datas |  Array | - | - |
-
+| Attribute | Description | Type   | Options                        | Default |
+| --------- | ----------- | ------ | ------------------------------ | ------- |
+| layout    | layout      | String | normal <br/> right <br/> cross | normal  |
+| list      | datas       | Array  | -                              | -       |
 
 ### List Options
 
-| Attribute | Description | Type | Options | Default |
-| -------- | ----- | ---- | ---- | ---- |
-| title |  Display title |  String \| Element | - | - |
-| description |  Display description |  String \| Element | - | - |
-| timestamp |   Display timestamp |  String | - | - |
-| extraTime |  Extra show time |  String | - | - |
-|  dot |  Custom icon |  Element | - | - |
+| Attribute   | Description         | Type              | Options | Default |
+| ----------- | ------------------- | ----------------- | ------- | ------- |
+| title       | Display title       | String \| Element | -       | -       |
+| description | Display description | String \| Element | -       | -       |
+| timestamp   | Display timestamp   | String            | -       | -       |
+| extraTime   | Extra show time     | String            | -       | -       |
+| dot         | Custom icon         | Element           | -       | -       |
 
 > Use group timeline, you need to combine groutTitle
 
@@ -238,5 +236,3 @@ render () {
   children: [{List Options}]
 }
 ```
-
-

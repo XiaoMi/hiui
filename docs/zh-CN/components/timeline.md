@@ -1,5 +1,4 @@
-## Switch
-
+## 时间轴 Timeline
 
 ### 基础用法
 
@@ -48,6 +47,7 @@ render () {
   )
 }
 ```
+
 :::
 
 ### 信息流
@@ -63,7 +63,7 @@ render () {
         description: 'Here are some descriptions',
         timestamp: '2019.02.24 12:00:00'
       }, {
-        dot: 'circle', 
+        dot: 'circle',
         title: 'Title 2',
         description: 'Here are some descriptions',
         timestamp: '2019.02.24 14:24:00'
@@ -87,9 +87,8 @@ render () {
   )
 }
 ```
+
 :::
-
-
 
 ### 可折叠
 
@@ -104,7 +103,7 @@ render () {
         description: 'Here are some descriptions',
         timestamp: '2019.02.24 12:00:00'
       }, {
-        dot: 'circle', 
+        dot: 'circle',
         title: 'Title 2',
         description: 'Here are some descriptions',
         timestamp: '2019.02.24 14:24:00'
@@ -141,8 +140,8 @@ render () {
   )
 }
 ```
-:::
 
+:::
 
 ### 左右结构
 
@@ -209,28 +208,27 @@ render () {
   )
 }
 ```
+
 :::
 
+### Timeline Attributes
 
-### Switch Attributes
-
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| layout |  布局形式 | String |  normal:基础布局 <br/> right:靠右布局 <br/> cross:交替布局 | normal |
-| list |  数据 |  Array | - | - |
-
+| 参数   | 说明     | 类型   | 可选值                                                    | 默认值 |
+| ------ | -------- | ------ | --------------------------------------------------------- | ------ |
+| layout | 布局形式 | String | normal:基础布局 <br/> right:靠右布局 <br/> cross:交替布局 | normal |
+| list   | 数据     | Array  | -                                                         | -      |
 
 ### List Options
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| title |  标题 |  String \| Element | - | - |
-| description |   描述信息 |  String \| Element | - | - |
-| timestamp |   时间点 |  String | - | - |
-| extraTime |  额外展示时间点 |  String | - | - |
-|  dot |  自定义图标 |  Element | - | - |
+| 参数        | 说明           | 类型              | 可选值 | 默认值 |
+| ----------- | -------------- | ----------------- | ------ | ------ |
+| title       | 标题           | String \| Element | -      | -      |
+| description | 描述信息       | String \| Element | -      | -      |
+| timestamp   | 时间点         | String            | -      | -      |
+| extraTime   | 额外展示时间点 | String            | -      | -      |
+| dot         | 自定义图标     | Element           | -      | -      |
 
-> 使用分组时间轴，需要结合groutTitle*
+> 使用分组时间轴，需要结合 groutTitle\*
 
 ```json
 {
@@ -238,5 +236,3 @@ render () {
   children: [{List Options}]
 }
 ```
-
-
