@@ -9,8 +9,10 @@ export default class Preview extends Component {
     super(props)
     this.state = {
       extraClass: '',
-      style: {}
+      style: {},
+      imgLoaded: false
     }
+    this.imgRef = React.createRef()
   }
 
   static propTypes = {
@@ -25,16 +27,17 @@ export default class Preview extends Component {
 
   onClose () {
     this.setState({
-      // style: {},
-      extraClass: ''
+      style: {},
+      extraClass: '',
+      imgLoaded: false
     })
     this.props.onClose && this.props.onClose()
   }
 
   imgOnLoad () {
     const radio = 0.6
-    const imgWidth = this.imgRef.clientWidth
-    const imgHeight = this.imgRef.clientHeight
+    const imgWidth = this.imgRef.current.clientWidth
+    const imgHeight = this.imgRef.current.clientHeight
     const windowRadio = window.innerWidth / window.innerHeight
     const imgRadio = imgWidth / imgHeight
     if (isNaN(imgRadio)) {
@@ -56,7 +59,8 @@ export default class Preview extends Component {
 
     this.setState({
       extraClass,
-      style
+      style,
+      imgLoaded: true
     })
   }
 
@@ -64,7 +68,8 @@ export default class Preview extends Component {
     const { show, src } = this.props
     const {
       extraClass,
-      style
+      style,
+      imgLoaded
     } = this.state
 
     return (
@@ -74,12 +79,10 @@ export default class Preview extends Component {
         transitionLeaveTimeout={50}
         component='div'
       >
-        <div key={src} className={classNames('hi-preview', extraClass, {'hi-preview--hide': !show})} onClick={this.onClose.bind(this)}>
-          <div className='hi-preview-image' style={style}>
+        <div key={1} className={classNames('hi-preview', extraClass, {'hi-preview--hide': !show})} onClick={this.onClose.bind(this)}>
+          <div className={classNames('hi-preview-image', {'hi-preview-image--hide': !imgLoaded})} style={style}>
             <img
-              ref={node => {
-                this.imgRef = node
-              }}
+              ref={this.imgRef}
               src={src}
               onLoad={this.imgOnLoad.bind(this)}
             />
