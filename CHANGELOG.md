@@ -4,7 +4,7 @@
 
 - 修复：`<Upload />` 上传组件预览问题 [#200](https://github.com/XiaoMi/hiui/issues/200)
 - 新增：`<Tabs />` 切换组件 en-US 文档 [#221](https://github.com/XiaoMi/hiui/issues/221)
-- 新增：`<Icon />` 图片组件 15 个 [#123](https://github.com/XiaoMi/hiui/issues/123)
+- 新增：`<Icon />` 图标 15 个 [#123](https://github.com/XiaoMi/hiui/issues/123)
 
 ## 1.4.3
 
