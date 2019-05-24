@@ -94,8 +94,9 @@ render () {
           columns={this.columns}
           data={this.state.list}
         />
-        <br/>
-        <Button type="primary" onClick={this.clickEvent.bind(this)}>{this.state.btnText}</Button>
+        <div style={{textAlign: 'center'}}>
+          <Button type="primary" onClick={this.clickEvent.bind(this)}>{this.state.btnText}</Button>
+        </div>
       </Loading>
     </div>
     

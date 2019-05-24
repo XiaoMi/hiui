@@ -43,7 +43,11 @@ module.exports = {
     stepper: 'Stepper',
     icon: 'Icon',
     progress: 'Progress',
-    card: 'Card'
+    card: 'Card',
+    timeline: 'Timeline',
+    transfer: 'Transfer',
+    switch: 'Switch',
+    rate: 'Rate'
   },
   designs: {
     'design-patterns': '设计模式',
