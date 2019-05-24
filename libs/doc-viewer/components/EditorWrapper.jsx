@@ -87,7 +87,7 @@ export default class EditorWrapper extends React.Component {
                   })
                 }}
               >
-                {this.state.collapse ? <Icon name='shrink' /> : <Icon name='expand-alt' />}
+                {this.state.collapse ? <Icon name='api' /> : <Icon name='noapi' />}
               </span>
             </Tooltip>
             {copyed ? (
@@ -112,7 +112,7 @@ export default class EditorWrapper extends React.Component {
                   this.editor.updateContent(code)
                 }}
               >
-                <Icon name='synchronize' />
+                <Icon name='reset' />
               </span>
             </Tooltip>
           </div>
