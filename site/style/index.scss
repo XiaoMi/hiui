@@ -2,8 +2,68 @@
 @import './markdown.scss';
 
 #app {
+  .layout__main--lr {
+    margin-left: 240px;
+  }
+
   .sidebar {
     box-shadow: inset -1px 0 0 0 #e7e7e7;
+    width: 240px;
+
+    .sidebar__toggle {
+      display: none;
+    }
+  }
+
+  .sidebar__wrapper {
+    .sidebar__list {
+      width: 100%;
+
+      & > li:first-child {
+        margin-top: 24px;
+      }
+
+      & > li:last-child {
+        margin-bottom: 32px;
+      }
+
+      .sidebar__item {
+        width: 100%;
+        line-height: 48px;
+        padding: 0 24px;
+      }
+
+      .sidebar__item-toggle {
+        top: 0;
+        left: 192px;
+      }
+    }
+
+    .sidebar__item--noaction {
+      font-size: 14px;
+    }
+
+    .sidebar__list--submenu {
+      width: 100%;
+
+      & > li:first-child {
+        margin-top: 0;
+      }
+
+      & > li:last-child {
+        margin-bottom: 0;
+      }
+
+      .sidebar__item {
+        width: 100%;
+        line-height: 48px;
+        padding: 0 24px 0 48px;
+      }
+    }
+
+    &::before {
+      height: 0;
+    }
   }
 
   .layout--classic.layout--white .header {

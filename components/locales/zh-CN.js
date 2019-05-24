@@ -54,5 +54,9 @@ module.exports = {
   },
   tabs: {
     more: '更多'
+  },
+  timeline: {
+    expand: '展开',
+    collapse: '收起'
   }
 }

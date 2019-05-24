@@ -1,0 +1,60 @@
+.hi-rate {
+  $h: 24px;
+  $w: 24px;
+
+  list-style: none;
+  display: inline-block;
+  width: fit-content;
+  padding-left: 0 !important;
+  margin: 0 !important;
+
+  &__star {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    transition: 0.3s ease;
+    margin: 0 6px !important;
+    width: $w;
+    height: $h;
+
+    &:active,
+    &:hover {
+      transform: scale(1.2);
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+    }
+
+    &__half {
+      height: 100%;
+      width: 50%;
+      display: inline-block;
+      position: absolute;
+      z-index: 1;
+
+      &--wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: $h;
+        width: $w;
+      }
+
+      &--right {
+        right: 0;
+      }
+    }
+  }
+
+  &__icon {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

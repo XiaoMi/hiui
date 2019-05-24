@@ -4,13 +4,14 @@ $primary-color: get-color($palette-primary, 'hiui-blue') !default;
 $imgurl: '../../../static/img/home/' !default;
 
 .layout--classic {
-  .layout__header {
-    z-index: 1999;
-  }
-  .layout__main { // 默认情况下，元素不会缩短至小于内容框尺寸，若想改变这一状况，请设置元素的min-width
+  // .layout__header {
+  //   z-index: 1999;
+  // }
+  .layout__main {
+    // 默认情况下，元素不会缩短至小于内容框尺寸，若想改变这一状况，请设置元素的min-width
     flex: 0 1 auto;
     // overflow: hidden;
-    min-width: -webkit-fill-available;
+    // min-width: -webkit-fill-available;
   }
 }
 
@@ -97,7 +98,7 @@ $imgurl: '../../../static/img/home/' !default;
     &--fade {
       opacity: 0;
       transform: translateY(30px);
-      transition: all $speed-slow $easing .15s;
+      transition: all $speed-slow $easing 0.15s;
     }
 
     &--show {
@@ -115,7 +116,7 @@ $imgurl: '../../../static/img/home/' !default;
 
     &--fade {
       opacity: 0;
-      transition: all $speed-slow $easing .15s;
+      transition: all $speed-slow $easing 0.15s;
     }
 
     &--show {
@@ -188,7 +189,7 @@ $imgurl: '../../../static/img/home/' !default;
   }
 }
 
-.section--design  {
+.section--design {
   height: 630px;
   background-color: #f9fcfc;
 

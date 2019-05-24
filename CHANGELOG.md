@@ -1,5 +1,18 @@
 # 更新日志
 
+## 1.5.0-rc.5
+
+- 新增：`<Timeline />` 时间轴组件 [#239](https://github.com/XiaoMi/hiui/issues/239)
+- 新增：`<Loading />` 组件 UI 样式 [#238](https://github.com/XiaoMi/hiui/issues/238)
+- 新增：`<Tooltip />` 组件 api 调用功能 [#240](https://github.com/XiaoMi/hiui/issues/240)
+
+## 1.5.0-rc.4
+
+- 新增：`<Transfer />` 穿梭框组件 [#108](https://github.com/XiaoMi/hiui/issues/108)
+- 新增：`<Rate />` 评分组件 [#106](https://github.com/XiaoMi/hiui/issues/106)
+- 新增：`<Switch />` 开关组件 [#107](https://github.com/XiaoMi/hiui/issues/107)
+- 修复：`<Menu />` 组件在某些情况下抛出的 key 的警告问题 [#215](https://github.com/XiaoMi/hiui/issues/215)
+
 ## 1.5.0-rc.1
 
 - 新增：`<Card />` 组件
@@ -26,6 +39,11 @@
 - 修复： `<Navmenu />` 当只有一个标签时导致的渲染问题
 
 ## 1.4.1
+
+- 修复： `<Counter />` 、 `<Input />` value 值为字符串的异常问题
+- 修复： `<Navmenu />` 当只有一个标签时导致的渲染问题
+
+## 1.4.0
 
 - 新增：部分组件测试用例
 - 新增：`<Tabs />`组件
