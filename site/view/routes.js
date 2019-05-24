@@ -8,8 +8,9 @@ import Component from './Component'
 const loop = (locale, items, targets, component) => {
   items.forEach(item => {
     if (item.to) {
+      console.log('to', item.to)
       targets.push({
-        path: `/${locale}/${item.to.split('/')[2]}/${item.to.split('/')[3]}`,
+        path: `/hiui/${locale}/${item.to.split('/')[3]}/${item.to.split('/')[4]}`,
         component: component
       })
     }
@@ -28,29 +29,29 @@ function getRoutes (locale, siders, designs, templates) {
   templateArr = loop(locale, templates, templateArr, Component)
   return [
     {
-      path: `/zh-CN`,
+      path: `/hiui/zh-CN`,
       component: Home,
       exact: true
     },
     {
-      path: `/en-US`,
+      path: `/hiui/en-US`,
       component: HomeEn,
       exact: true
     },
     {
-      path: `/${locale}/designs`,
+      path: `/hiui/${locale}/designs`,
       render: props => {
         return <SiderLayout deepClone={false} sider={designs} routes={desArr} {...props} />
       }
     },
     {
-      path: `/${locale}/templates`,
+      path: `/hiui/${locale}/templates`,
       render: props => {
         return <SiderLayout deepClone={false} sider={templates} routes={templateArr} {...props} />
       }
     },
     {
-      path: `/${locale}/docs`,
+      path: `/hiui/${locale}/docs`,
       render: props => {
         return <SiderLayout deepClone={false} sider={siders} routes={sideArr} {...props} />
       }

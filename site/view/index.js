@@ -25,14 +25,14 @@ class Index extends React.Component {
   constructor (props) {
     super(props)
     const _h = History.getHistory()
-    let locale = window.location.pathname.split('/')[1]
+    let locale = window.location.pathname.split('/')[2]
     if (!locale || !(locale in locales)) {
       locale = window.localStorage.getItem('HIUI_LANGUAGE')
       if (locale && locale in locales) {
-        _h.push(`/${locale}`)
+        _h.push(`/hiui/${locale}`)
       } else {
         window.localStorage.setItem('HIUI_LANGUAGE', this.props.locale)
-        _h.push(`/${this.props.locale}`)
+        _h.push(`/hiui/${this.props.locale}`)
       }
     } else {
       window.localStorage.setItem('HIUI_LANGUAGE', locale)
@@ -120,7 +120,7 @@ class Index extends React.Component {
       const _title = locales[locale]['components'][title]
       siderDocuments.push({
         title: <span className='components-title'>{_title}</span>,
-        to: `/${locale}/docs/${title}`,
+        to: `/hiui/${locale}/docs/${title}`,
         icon: icons[i]
       })
       navs[title] = _title
@@ -135,7 +135,7 @@ class Index extends React.Component {
         navs[page] = _title
         components.push({
           title: <span className='components-page'>{_title}</span>,
-          to: `/${locale}/docs/${page}`
+          to: `/hiui/${locale}/docs/${page}`
         })
       })
     })
@@ -163,7 +163,7 @@ class Index extends React.Component {
       navs[title] = _title
       siderDocuments.push({
         title: _title,
-        to: `/${locale}/${path}/${title}`
+        to: `/hiui/${locale}/${path}/${title}`
       })
     })
     Object.keys(items.components).forEach((title, i) => {
@@ -172,7 +172,7 @@ class Index extends React.Component {
         const _title = locales[locale][path][page]
         temp.push({
           title: <span className='components-page'>{_title}</span>,
-          to: `/${locale}/${path}/${page}`
+          to: `/hiui/${locale}/${path}/${page}`
         })
         navs[page] = _title
       })

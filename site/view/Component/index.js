@@ -1,4 +1,5 @@
 import React from 'react'
+import { render } from 'react-dom'
 import { connect } from 'react-redux'
 import './style/index.scss'
 
@@ -28,18 +29,22 @@ class Component extends React.Component {
         () => {
           this.getAnchors()
           console.log('Components')
-          if (window.location.hash) {
-            const id = window.location.hash.split('#')[1]
-            const target = document.getElementById(id)
-            const top = target.offsetTop
-            console.log(target.offsetTop)
-            window.scrollTo({
-              top: top - 63,
-              behavior: 'smooth'
-            })
-            // target.scrollIntoView({ block: 'start', behavior: 'smooth' })
-            // const elementToScroll = console.log('>>>>>>>>>>>>', elementToScroll)
-          }
+          const anchorsDOM = document.querySelectorAll('#markdown-content h3')
+          const anchorsDOMList = [].slice.call(anchorsDOM)
+          anchorsDOMList.map((v, i) => {
+            v.id = v.innerHTML
+            render(<a href={'#' + v.innerHTML}>{v.innerHTML}</a>, v)
+          })
+          // if (window.location.hash) {
+          //   const id = decodeURI(window.location.hash.split('#')[1])
+          //   const target = document.getElementById(id)
+          //   const top = target.offsetTop
+          //   console.log(target.offsetTop)
+          //   window.scrollTo({
+          //     top: top,
+          //     behavior: 'smooth'
+          //   })
+          // }
         }
       )
     })
@@ -55,9 +60,9 @@ class Component extends React.Component {
     const anchorsDOM = document.querySelectorAll('#markdown-content h3')
     const anchorsDOMList = [].slice.call(anchorsDOM)
     const anchors = anchorsDOMList.map((v, i) => {
-      const id = 'component-anchors-' + i
-      anchorsDOM[i].id = id
-      return { id, text: anchorsDOM[i].innerHTML }
+      // const id = 'component-anchors-' + i
+      // anchorsDOM[i].id = id
+      return { id: v.id, text: anchorsDOM[i].innerHTML }
     })
 
     this.setState({ anchors })
@@ -81,14 +86,15 @@ class Component extends React.Component {
   // 收集所有导航
   collectNavs (fn) {
     let footNavs = []
-    let page = this.props.match.path.split('/')[2]
+    let page = this.props.match.path.split('/')[3]
     footNavs = this.props[page] || {}
 
     this.setState({ footNavs, topNav: page }, fn)
   }
 
   getCurrentPage (fn) {
-    let page = this.props.match.path.split('/')[3]
+    // TODO:这里可能要修改
+    let page = this.props.match.path.split('/')[4]
     page = page || 'quick-start'
     this.setState({ page }, fn)
   }
@@ -105,6 +111,7 @@ class Component extends React.Component {
 
   render () {
     const { pre, next, anchors, cComponent, topNav } = this.state
+    console.log('anchors', anchors)
     return (
       <div className='component'>
         <div className='home-container'>
@@ -133,13 +140,14 @@ class Component extends React.Component {
             {anchors.map((v, i) => (
               <li key={i}>
                 <a
-                  onClick={() => {
-                    const target = document.querySelector(`#${v.id}`)
+                  href={'#' + v.text}
+                  // onClick={() => {
+                  //   const target = document.querySelector(`#${v.id}`)
 
-                    if (target) {
-                      target.scrollIntoView({ block: 'start', behavior: 'smooth' })
-                    }
-                  }}
+                  //   if (target) {
+                  //     target.scrollIntoView({ block: 'start', behavior: 'smooth' })
+                  //   }
+                  // }}
                 >
                   {v.text}
                 </a>
