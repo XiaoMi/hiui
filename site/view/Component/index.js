@@ -13,7 +13,8 @@ class Component extends React.Component {
       next: '',
       page: '',
       cComponent: null,
-      topNav: 'docs'
+      topNav: 'docs',
+      activeAnchor: ''
     }
     this.contentRef = React.createRef()
   }
@@ -32,16 +33,11 @@ class Component extends React.Component {
             v.id = v.innerHTML
             render(<a href={'#' + v.innerHTML}>{v.innerHTML}</a>, v)
           })
-          // if (window.location.hash) {
-          //   const id = decodeURI(window.location.hash.split('#')[1])
-          //   const target = document.getElementById(id)
-          //   const top = target.offsetTop
-          //   console.log(target.offsetTop)
-          //   window.scrollTo({
-          //     top: top,
-          //     behavior: 'smooth'
-          //   })
-          // }
+          if (window.location.hash) {
+            const activeAnchor = decodeURI(window.location.hash.split('#')[1])
+            console.log(activeAnchor)
+            this.setActiveAnchor(activeAnchor)
+          }
         }
       )
     })
@@ -50,7 +46,9 @@ class Component extends React.Component {
       this.getSiblingNav()
     })
   }
-
+  setActiveAnchor = id => {
+    this.setState({ activeAnchor: id })
+  }
   getAnchors () {
     const anchorsDOM = document.querySelectorAll('#markdown-content h3')
     const anchorsDOMList = [].slice.call(anchorsDOM)
@@ -105,7 +103,8 @@ class Component extends React.Component {
   }
 
   render () {
-    const { pre, next, anchors, cComponent, topNav } = this.state
+    const { pre, next, anchors, cComponent, topNav, activeAnchor } = this.state
+    console.log('activeAnchor', activeAnchor)
     return (
       <div className='component'>
         <div className='home-container'>
@@ -132,9 +131,12 @@ class Component extends React.Component {
         <div className='anchor'>
           <ul>
             {anchors.map((v, i) => (
-              <li key={i}>
+              <li key={i} className={activeAnchor === v.text ? 'active' : ''}>
                 <a
                   href={'#' + v.text}
+                  onClick={() => {
+                    this.setActiveAnchor(v.text)
+                  }}
                   // onClick={() => {
                   //   const target = document.querySelector(`#${v.id}`)
 
