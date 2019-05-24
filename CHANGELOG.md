@@ -1,21 +1,35 @@
 # 更新日志
 
 ## 1.5.0-rc.1
+
 - 新增：`<Card />` 组件
 - 修改：`<Tree />`、`<Datepicker />` 组件，调整新的 UI，增加新的 API
 
-## 1.4.1
+## 1.4.4
+
+- 修复：`<Upload />` 上传组件预览问题 [#200](https://github.com/XiaoMi/hiui/issues/200)
+- 新增：`<Tabs />` 切换组件 en-US 文档 [#221](https://github.com/XiaoMi/hiui/issues/221)
+- 新增：`<Icon />` 图标 15 个 [#123](https://github.com/XiaoMi/hiui/issues/123)
+
+## 1.4.3
+
+- 修复： `<Upload />` 组件 Ref 引起的图片闪烁问题
+
+## 1.4.2
+
 - 修复： `<Datepicker />` 快捷选择问题
 - 修复： `<Cascader />` ref 引起的不能正确渲染的问题
 - 修复： `<Cascader />` 面板不能正确关闭的问题
-- 修复： `<Upload />`  上传后的错误信息展示问题
-- 修复： `<Counter />` 、 `<Input />`  value 值为字符串的异常问题
-- 修复： `<Navmenu />`  当只有一个标签时导致的渲染问题
+- 修复： `<Upload />` 上传后的错误信息展示问题
+- 修复： `<Input />` 组件没有输入时清空按钮的展示问题及 suffix/prefix 下的文本对齐问题
+- 修复： `<Counter />` 组件的失焦后的展示 bug 和组件按钮的对齐问题
+- 修复： `<Navmenu />` 当只有一个标签时导致的渲染问题
 
-## 1.4.0
+## 1.4.1
+
 - 新增：部分组件测试用例
 - 新增：`<Tabs />`组件
-- 修改：`<Datepicker />` 可以通过placeholder属性传入默认占位符
+- 修改：`<Datepicker />` 可以通过 placeholder 属性传入默认占位符
 - 修复： `<Checkbox />` 组件在被销毁时，没有清空已选择项的问题
 - 修改： `<Pagination />` 组件
   - 新增两种简单分页样式，分别通过 `simple` | `shrink` 属性控制
@@ -32,6 +46,7 @@
   - Counter 组件传入的 value/step/min/max 为字符串引起的问题
 
 ## 1.3.5
+
 - 新增： `<Datepicker />` 组件可通过 placeholder 自定义占位符
 - 新增：`<Select />` 组件支持 JSONP 的 origin 配置
 - 新增：`<Table />` 组件功能
@@ -39,6 +54,7 @@
   - 可通过 `bordered` 属性指定表格是否显示线框
 
 ## 1.3.0
+
 - 新增：`<Select />` 异步请求时增加 loading；
 - 修改：优化 `<Form />` 组件横排时的错误文案显示；
 - 修改：`<Upload />` 组件；
@@ -58,6 +74,7 @@
 - 修改：修复 `<Pagination />` 组件页岁数过多时的样式问题。
 
 ## 1.2.0
+
 - 新增：`<Button />` 组件增加图标设置；
 - 新增：`<Table />` 组件支持外部设置、求和等操作；
 - 新增：`<Input />` 组件增加支持前、后缀元素。
@@ -70,10 +87,12 @@
 - 修改：重新设定所有浮层组件 z-index。
 
 ## 1.1.1
+
 - 修改：修复 `<Button />` 在使用旧版 api 时的样式兼容；
 - 修改：修复 `<Checkbox />` 占据整行及点击区域的 bug。
 
 ## 1.1.0
+
 - 修改：按钮组件 `<Button />` API 调整，向前兼容；
 - 修改：修改 `<Notification />` 回调改为非必填项，关闭按钮可配置；
 - 修改：修复 `<Input />` 组件类型为 `textarea` 时高度不自适应的 bug；
@@ -83,6 +102,7 @@
 - 文档：增加多语言、配色切换文档。
 
 ## 1.0.3
+
 - 新增：级联选择器 `<Cascader />` 组件；
 - 新增：进度条 `<Progress />` 组件；
 - 新增：`<Tree />` 组件增加点击事件；
