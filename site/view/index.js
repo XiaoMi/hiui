@@ -81,15 +81,15 @@ class Index extends React.Component {
     })
   }
   getSiderItems (items) {
-    const icons = [
-      <span className='sider__icon-start' />,
-      // <span className='sider__icon-principle' />,
-      <span className='sider__icon-layout' />,
-      <span className='sider__icon-vision' />,
-      <span className='sider__icon-i18n' />,
-      <span className='sider__icon-changelog' />,
-      <span className='sider__icon-component' />
-    ]
+    // const icons = [
+    //   <span className="sider__icon-start" />,
+    //   // <span className='sider__icon-principle' />,
+    //   <span className="sider__icon-layout" />,
+    //   <span className="sider__icon-vision" />,
+    //   <span className="sider__icon-i18n" />,
+    //   <span className="sider__icon-changelog" />,
+    //   <span className="sider__icon-component" />
+    // ]
     const { locale } = this.props
     let components = []
     let navs = {}
@@ -98,8 +98,8 @@ class Index extends React.Component {
       const _title = locales[locale]['components'][title]
       siderDocuments.push({
         title: <span className='components-title'>{_title}</span>,
-        to: `/hiui/${locale}/docs/${title}`,
-        icon: icons[i]
+        to: `/hiui/${locale}/docs/${title}`
+        // icon: icons[i]
       })
       navs[title] = _title
     })
@@ -119,10 +119,11 @@ class Index extends React.Component {
     })
     this.componentNavs = navs
     setComponentsNavs(navs)
+    console.log('siderDocuments', siderDocuments)
     return [].concat(siderDocuments, [
       {
         title: <span className='components-page'>{locales[locale]['misc']['components']}</span>,
-        icon: icons[icons.length - 1],
+        // icon: icons[icons.length - 1],
         children: components
       }
     ])
@@ -178,7 +179,6 @@ class Index extends React.Component {
   }
 }
 
-// export default Index
 export default connect(state => ({
   locale: state.global.locale
 }))(Index)
