@@ -11,7 +11,8 @@
     "build": "cross-env NODE_ENV=production node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.production.config.js && gulp carry",
     "deploy": "gh-pages -d dist",
     "dev": "cd site && cross-env NODE_ENV=development PORT=4200 node server.js",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "prerender": "npm run build && node build/prerenderSite.js"
   },
   "repository": {
     "type": "git",
@@ -68,6 +69,7 @@
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
     "@babel/standalone": "^7.3.3",
+    "@bougiel/puppeteer-prerenderer": "0.0.0",
     "@mdx-js/loader": "^0.15.5",
     "autoprefixer": "^8.5.0",
     "babel-eslint": "^10.0.1",

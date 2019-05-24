@@ -54,7 +54,7 @@ npm install -g create-react-app
   yarn start
 ```
 
-![](/static/img/docs/create-react-app.gif)
+![](/hiui/static/img/docs/create-react-app.gif)
 
 完毕后，将会自动打开新的标签页 [localhost:3000](localhost:3000)，至此 React 项目初始化完成
 

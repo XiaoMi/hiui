@@ -19,7 +19,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(basePath, 'dist'),
-    publicPath: './',
+    publicPath: '/hiui/',
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].chunk.[chunkhash].js'
   },
@@ -78,18 +78,20 @@ module.exports = {
         })
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(png|jpg|gif)$/,
         loader: 'url-loader',
         options: {
           limit: 1000,
-          name: './static/img/[name].[ext]?[hash]'
+          name: '[name].[ext]?[hash]',
+          outputPath: 'static/img'
         }
       },
       {
-        test: /\.(eot|ttf|woff|woff2|otf)$/,
+        test: /\.(eot|ttf|woff|woff2|otf|svg)$/,
         loader: 'file-loader',
         options: {
-          name: './static/fonts/[name].[ext]?[hash]'
+          name: '[name].[ext]?[hash]',
+          outputPath: 'static/fonts'
         }
       },
       {
