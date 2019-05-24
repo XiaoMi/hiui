@@ -15,12 +15,10 @@ class Component extends React.Component {
       cComponent: null,
       topNav: 'docs'
     }
-    // this.hashChangeEvent = this.hashChangeEvent.bind(this)
     this.contentRef = React.createRef()
   }
 
   componentDidMount () {
-    console.log('done')
     this.getCurrentPage(() => {
       this.setState(
         {
@@ -28,7 +26,6 @@ class Component extends React.Component {
         },
         () => {
           this.getAnchors()
-          console.log('Components')
           const anchorsDOM = document.querySelectorAll('#markdown-content h3')
           const anchorsDOMList = [].slice.call(anchorsDOM)
           anchorsDOMList.map((v, i) => {
@@ -53,9 +50,7 @@ class Component extends React.Component {
       this.getSiblingNav()
     })
   }
-  componentWillReceiveProps () {
-    console.log('>>>>>>>>>>')
-  }
+
   getAnchors () {
     const anchorsDOM = document.querySelectorAll('#markdown-content h3')
     const anchorsDOMList = [].slice.call(anchorsDOM)
@@ -111,7 +106,6 @@ class Component extends React.Component {
 
   render () {
     const { pre, next, anchors, cComponent, topNav } = this.state
-    console.log('anchors', anchors)
     return (
       <div className='component'>
         <div className='home-container'>

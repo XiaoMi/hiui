@@ -69,28 +69,6 @@ class Index extends React.Component {
     )
     setComponents(components)
   }
-  componentDidMount () {
-    // window.onhashchange = () => {
-    //   const id = window.location.hash.split('#')[1]
-    //   const target = document.getElementById(id)
-    //   const top = target.offsetTop
-    //   console.log(target.offsetTop)
-    //   window.scrollTo({
-    //     top: top - 63,
-    //     behavior: 'smooth'
-    //   })
-    // }
-    // console.log('finish')
-    // window.scrollTo({
-    //   top: 1000,
-    //   behavior: 'smooth'
-    // })
-    // if (window.location.hash) {
-    //   const id = window.location.hash.split('#')[1]
-    //   console.log(id, document.getElementById(id))
-    //   // const elementToScroll = console.log('>>>>>>>>>>>>', elementToScroll)
-    // }
-  }
   getSiderName (key) {
     const map = locales[this.state.locale] || {}
     return key.split('.').reduce((a, b) => {
@@ -189,6 +167,7 @@ class Index extends React.Component {
     const siders = this.getSiderItems(pages)
     const _designs = this.getDesignTemplatesItems(designs, 'designs', setDesignNavs)
     const _templates = this.getDesignTemplatesItems(templates, 'templates')
+    console.log('siders', siders)
     return (
       <Page
         header={<Header locale={this.props.locale} />}

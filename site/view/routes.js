@@ -8,7 +8,6 @@ import Component from './Component'
 const loop = (locale, items, targets, component) => {
   items.forEach(item => {
     if (item.to) {
-      console.log('to', item.to)
       targets.push({
         path: `/hiui/${locale}/${item.to.split('/')[3]}/${item.to.split('/')[4]}`,
         component: component

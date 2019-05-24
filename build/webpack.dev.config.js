@@ -15,7 +15,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(basePath, 'dist'),
-    publicPath: '/dist/',
+    publicPath: '/hiui/dist/',
     filename: '[name].js',
     chunkFilename: '[name].chunk.js'
   },
