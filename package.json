@@ -69,7 +69,7 @@
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
     "@babel/standalone": "^7.3.3",
-    "@bougiel/puppeteer-prerenderer": "0.0.0",
+    "@bougiel/puppeteer-prerenderer": "^0.0.3",
     "@mdx-js/loader": "^0.15.5",
     "autoprefixer": "^8.5.0",
     "babel-eslint": "^10.0.1",
