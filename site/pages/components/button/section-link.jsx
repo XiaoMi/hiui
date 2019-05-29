@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../../libs/doc-viewer'
 import Button from '../../../../components/button'
-const prefix = 'button-size'
+const prefix = 'button-link'
 const leftOptions = ['链接']
 const rightOptions = ['正常', '禁用']
 const code = [

@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../../libs/doc-viewer'
 import Button from '../../../../components/button'
-const prefix = 'button-size'
+const prefix = 'button-group'
 const desc = '注意：按钮组中每个按钮应触发一个独立动作。如果是一组关联的选项，则应该使用按钮模式的单选按钮。'
 const leftOptions = ['按钮组']
 const rightOptions = ['正常', '禁用']
