@@ -1,44 +1,55 @@
-## Button按钮
+## Button 按钮
 
 常用的操作按钮。
 
-### 何时使用
+### 标准按钮
 
-- 当一组同类信息不能自然形成区块感时，需借助卡片来组织。
-- 当一个应用或功能由大量信息组成，需要通过重点信息快速识别时。
-- 后台展示概览信息时。
+- 突出按钮：用于较重要的功能，需要强烈引导用户点击的功能操作。
+- 普通按钮：用于不重要的功能，不需要太引导用户点击的功能操作。
+- 默认按钮：用于不重要的功能，不需要太引导用户点击的功能操作。
+- 确定/取消按钮：适用于表单、弹窗场景。
 
-### 突出按钮
+import DemoStandard from './section-standard.jsx'
 
-用于较重要的功能，需要强烈引导用户点击的功能操作。
+<DemoStandard />
 
-import Demo from './button-primary.jsx'
+### 辅助按钮
 
-<Demo />
+辅助按钮用于对产品的开启、停止等操作，不同颜色对用户的警示作用不同。红色：停止等警示性操作；绿色：开启等操作
 
-### 图片卡片
+import DemoAux from './section-aux.jsx'
 
-import Demo2 from './index3.jsx'
+<DemoAux />
 
-<Demo2 />
+### 链接按钮
 
-### 简洁小卡片
+import DemoLink from './section-link.jsx'
 
-import Demo3 from './index4.jsx'
+<DemoLink />
 
-<Demo3 />
+### 按钮尺寸
 
-### Card Attributes
+import DemoSize from './section-size.jsx'
 
-| 参数        | 说明                                                                                                    | 类型                     | 可选值                   | 默认值 |
-| ----------- | ------------------------------------------------------------------------------------------------------- | ------------------------ | ------------------------ | ------ |
-| title       | 卡片标题                                                                                                | String \| Element        | -                        | -      |
-| size        | 卡片大小<br/> small -> 276px <br/> middle -> 376px <br/> large -> 576px <br/> 不传入 size 将占 100%宽度 | String                   | small \| middle \| large | 100%   |
-| type        | 卡片类型                                                                                                | String                   | simple                   | -      |
-| style       | 自定义样式                                                                                              | Object                   | -                        | -      |
-| hoverable   | 鼠标移入卡片是否显示浮起效果                                                                            | Boolean                  | true \| false            | false  |
-| extra       | 卡片右上的扩展按钮                                                                                      | Array[Elemnt] \| Element | -                        | -      |
-| extraShow   | 扩展按钮的显示模式                                                                                      | String                   | stay \| hover            | stay   |
-| cover       | 图片卡片                                                                                                | ImgElement               | -                        | -      |
-| description | 图片卡片的信息描述                                                                                      | String \| Element        | -                        | -      |
-| disabled    | 是否禁用卡片                                                                                            | Boolean                  | true \| false            | -      |
+<DemoSize />
+
+### 按钮组
+
+import DemoGroup from './section-group.jsx'
+
+<DemoGroup />
+
+### 属性
+
+| 参数 | 说明 | 类型 | 可选值 |默认值 |
+| -------- | ----- | ---- | ---- | ---- |
+| type | 设置按钮类型 | String | primary \| line \| success \| danger \| default | default |
+| appearance | 按钮显示类型（按钮或链接） | String | button \| link | button |
+| size | 设置按钮大小 | String | large \| normal \| small | normal |
+| icon | 设置按钮图标，设置后忽略子元素只渲染对应图标 | String | 详见 `<Icon />` 组件 | - |
+| className | 自定义实例根元素 class，用于样式定制等 | String | - | - |
+
+### 事件
+| 参数  | 说明 | 类型 | 可选值 |默认值 |
+| -------- | ----- | ---- | ---- | ---- |
+| onClick | 点击回调函数 | Function | - | - |
