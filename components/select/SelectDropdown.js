@@ -33,21 +33,17 @@ export default class SelectDropdown extends Component {
     }
     return (
       <React.Fragment>
-        {
-          mode === 'multiple' &&
+        {mode === 'multiple' && (
           <div className='hi-select__dropdown--item__checkbox'>
-            <Checkbox checked={isSelected} />
+            <Checkbox checked={isSelected} disabled={item.disabled} />
           </div>
-        }
-        <div className='hi-select__dropdown--item__name'>
-          {item.name}
-        </div>
-        {
-          mode === 'single' && isSelected &&
+        )}
+        <div className='hi-select__dropdown--item__name'>{item.name}</div>
+        {mode === 'single' && isSelected && (
           <div className='hi-select__dropdown--item__check-icon'>
             <i className='hi-icon icon-check' />
           </div>
-        }
+        )}
       </React.Fragment>
     )
   }
@@ -72,55 +68,51 @@ export default class SelectDropdown extends Component {
 
     return (
       <div className='hi-select__dropdown' onClick={this.props.onClick} style={style}>
-        {
-          loading &&
+        {loading && (
           <div className='hi-select__dropdown--loading'>
             <Loading size='small' />
           </div>
-        }
-        {
-          !loading &&
+        )}
+        {!loading && (
           <ul className='hi-select__dropdown--items'>
-            {
-              dropdownItems.map((item, index) => {
-                if (matchFilter(item)) {
-                  matched++
-                  // const isSelected = selectedItems[item.id]
-                  const isSelected = this.itemSelected(item)
-                  const isDisabled = item.disabled
-                  return (
-                    <li
-                      className={classNames('hi-select__dropdown--item', {'is-active': isSelected, 'is-disabled': isDisabled, 'hi-select__dropdown--item-default': !item.children && !dropdownRender})}
-                      onClick={e => this.onClickOption(e, item, index)}
-                      key={item.id}
-                      data-focused={focusedIndex === index}
-                      onMouseEnter={() => this.onMouseEnter(item, index)}
-                    >
-                      {
-                        this.renderOption(mode, isSelected, item)
-                      }
-                    </li>
-                  )
-                }
-              })
-            }
-            {
-              matched === 0 &&
+            {dropdownItems.map((item, index) => {
+              if (matchFilter(item)) {
+                matched++
+                // const isSelected = selectedItems[item.id]
+                const isSelected = this.itemSelected(item)
+                const isDisabled = item.disabled
+                return (
+                  <li
+                    className={classNames('hi-select__dropdown--item', {
+                      'is-active': isSelected,
+                      'is-disabled': isDisabled,
+                      'hi-select__dropdown--item-default': !item.children && !dropdownRender
+                    })}
+                    onClick={e => this.onClickOption(e, item, index)}
+                    key={item.id}
+                    data-focused={focusedIndex === index}
+                    onMouseEnter={() => this.onMouseEnter(item, index)}
+                  >
+                    {this.renderOption(mode, isSelected, item)}
+                  </li>
+                )
+              }
+            })}
+            {matched === 0 && (
               <li
                 className='hi-select__dropdown--item hi-select__dropdown-item--empty is-disabled'
                 onClick={e => e.stopPropagation()}
               >
-                { noFoundTip }
+                {noFoundTip}
               </li>
-            }
+            )}
           </ul>
-        }
-        {
-          mode === 'multiple' && showCheckAll &&
+        )}
+        {mode === 'multiple' && showCheckAll && (
           <div className='hi-select__dropdown-check-all' onClick={checkAll}>
             全选
           </div>
-        }
+        )}
       </div>
     )
   }

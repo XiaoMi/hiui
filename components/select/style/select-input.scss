@@ -143,13 +143,17 @@
   &.multiple-values {
     padding: 4px 4px 0 4px;
 
+    .hi-select__input--icon {
+      margin-top: -4px;
+    }
+
     .hi-select__input--search {
       padding-left: 3px;
     }
 
     .hi-select__input--placeholder {
       position: absolute;
-      top: 4px;
+      top: 3px;
       left: 15px;
       right: 30px;
       height: 24px;
