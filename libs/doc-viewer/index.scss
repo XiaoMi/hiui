@@ -1,35 +1,47 @@
-.doc-viewer {
-  margin-bottom: 40px;
-
-  .editor-wrapper {
-    height: 41px;
-    overflow: hidden;
-    transition: height 0.3s;
+.doc-md {
+  code {
+    margin: 0 1px;
+    padding: 0.2em 0.4em;
+    font-size: 0.9em;
+    background: #f0f5ff;
+    border: 1px solid #d8e3fb;
+    border-radius: 3px;
+    color: #668cdc;
   }
 
-  .hi-tooltip {
-    transform: scale(1);
-    transition: all 0.3s;
-  }
+  .doc-viewer {
+    margin-bottom: 40px;
 
-  .hi-tooltip:hover {
-    .hi-icon {
-      color: #4284f8;
+    .editor-wrapper {
+      height: 41px;
+      overflow: hidden;
+      transition: height 0.3s;
     }
 
-    transform: scale(1.4);
-  }
+    .hi-tooltip {
+      transform: scale(1);
+      transition: all 0.3s;
+    }
 
-  .hi-icon {
-    transition: all 0.3s;
-  }
+    .hi-tooltip:hover {
+      .hi-icon {
+        color: #4284f8;
+      }
 
-  pre {
-    padding: 20px !important;
-  }
+      transform: scale(1.4);
+    }
 
-  textarea {
-    padding: 20px !important;
-    outline: none !important;
+    .hi-icon {
+      transition: all 0.3s;
+    }
+
+    pre {
+      padding: 20px !important;
+    }
+
+    textarea {
+      padding: 20px !important;
+      outline: none !important;
+    }
   }
 }
