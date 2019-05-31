@@ -1,8 +1,8 @@
-## Form表单组件
+## Form 表单组件
 
 ### 对齐方式
 
-:::demo 
+:::demo
 
 ```js
 constructor() {
@@ -105,11 +105,12 @@ render(){
   )
 }
 ```
+
 :::
 
 ### 横向表单
 
-:::demo 
+:::demo
 
 ```js
 render(){
@@ -132,6 +133,7 @@ render(){
   )
 }
 ```
+
 :::
 
 ### 表单验证
@@ -141,27 +143,25 @@ render(){
 ```js
 constructor(props) {
   super(props)
-
   this.form = React.createRef()
-
   this.state = {
     form: {
       name: '',
       region: '',
       count: ''
     },
-    checkedIndex: -1,
     rules: {
       name: [
         {
           required: true,
-          message: <span style={{color: '#ccc'}}>请输入名称</span>,
+          message: <span><Icon name="close-circle"/> 请输入名称</span>,
           trigger: 'onBlur,onChange'
         }
       ],
       region: [
         {
           required: true,
+          type: 'number',
           message: '请选择区域',
           trigger: 'onChange'
         }
@@ -207,35 +207,29 @@ cancelSubmit() {
     form: {
       name: '',
       region: '',
-      count: ''
+      count: '',
+      type: ''
     }
   })
   this.form.resetValidates()
 }
 
-handleChange(key, e, value, index) {
+handleChange(key, e, value) {
   this.setState({
     form: Object.assign({}, this.state.form, {[key]: value})
   })
-
-  if(index !== undefined) {
-    this.setState({
-      checkedIndex: index
-    })
-  }
 }
 
 render(){
   const Row = Grid.Row
   const Col = Grid.Col
-  const {form, checkedIndex} = this.state
+  const {form} = this.state
 
   return (
     <div>
       <Form ref={node => this.form = node} model={form} rules={this.state.rules} labelWidth='80'>
         <Row>
           <Col span={12}>
-
             <FormItem label='名称' prop='name'>
               <Input value={form.name} placeholder={'name'} onChange={this.handleChange.bind(this, 'name')}/>
             </FormItem>
@@ -244,16 +238,23 @@ render(){
             </FormItem>
             <FormItem label='地区' prop='region'>
               <Radio
-                list={['北京', '上海', '重庆']}
-                checked={checkedIndex}
-                onChange={this.handleChange.bind(this, 'region','')}
+                list={[{
+                  name: '北京',
+                  id: 1
+                }, {
+                  name: '上海',
+                  id: 2
+                }, {
+                  name: '武汉',
+                  id: 3
+                }]}
+                onChange={this.handleChange.bind(this, 'region', null)}
               />
             </FormItem>
             <FormItem>
               <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
               <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
             </FormItem>
-
           </Col>
         </Row>
       </Form>
@@ -261,34 +262,32 @@ render(){
   )
 }
 ```
-:::
 
+:::
 
 ### Form Attributes
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值|
-| --- | ---  | --- | ---- | ---   |
-| model | 表单数据 | Object  | - | - |
-| rules | 表单验证规则 | Object  | - | - |
-| labelWidth | label宽度 | String  | |
-| labelPosition | label位置 | String |right \| left \| top|right|
-| inline | 是否横向排列 | Boolean | true \| false | false|
-
+| 参数          | 说明         | 类型    | 可选值               | 默认值 |
+| ------------- | ------------ | ------- | -------------------- | ------ |
+| model         | 表单数据     | object  | -                    | -      |
+| rules         | 表单验证规则 | object  | -                    | -      |
+| labelWidth    | label 宽度   | string  | -                    | -      |
+| labelPosition | label 位置   | string  | right \| left \| top | right  |
+| inline        | 是否横向排列 | boolean | true \| false        | false  |
 
 ### FormItem Attributes
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值|
-| --- | ---  | --- | ---- | ---   |
-| prop | 表单域model字段 | String  | - | - |
-| label | 标签文本 | String  | - | - |
-| labelWidth | label宽度 | String  | |
-| required | 是否必填 | Boolean  | true \| false | false |
-
+| 参数       | 说明              | 类型    | 可选值        | 默认值 |
+| ---------- | ----------------- | ------- | ------------- | ------ |
+| prop       | 表单域 model 字段 | string  | -             | -      |
+| label      | 标签文本          | string  | -             | -      |
+| labelWidth | label 宽度        | string  | -             | -      |
+| required   | 是否必填          | boolean | true \| false | false  |
 
 ### Form Methods
 
-| 方法名| 说明|
-| --- | --- |
-| validate(callback) | 对整个表单进行校验 |
-| validateField(prop, callback) | 对表单字段进行校验 |
-| resetValidates | 重置整个表单的验证 |
+| 方法名                        | 说明               | 回调参数                                 |
+| ----------------------------- | ------------------ | ---------------------------------------- |
+| validate(callback)            | 对整个表单进行校验 | (valid: boolean) => void                 |
+| validateField(prop, callback) | 对表单字段进行校验 | (prop: string, (valid: boolean) => void) |
+| resetValidates                | 重置整个表单的验证 | -                                        |

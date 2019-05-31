@@ -30,17 +30,8 @@
 .hi-form-item {
   font-size: $font-size-normal;
   margin-right: $spacer-2;
-  // margin-top: 4px;
-  // margin-bottom: 4px;
-  padding: $spacer-2 0;
-
-  & + & {
-    // margin-top: $spacer-2;
-
-    .hi-form--inline & {
-      // margin-top: 0;
-    }
-  }
+  // padding: $spacer-2 0;
+  padding: $spacer-3 0;
 
   .hi-form--inline & {
     display: inline-block;
@@ -50,7 +41,7 @@
   &__label {
     float: left;
     box-sizing: border-box;
-    padding-right: $spacer-3;
+    padding-right: $spacer-2;
     line-height: 32px;
     vertical-align: top;
     color: $gray-darker;
@@ -76,14 +67,19 @@
   }
 
   &__error {
+    .hi-input__inner {
+      border-color: get-color($palette-secondary, 'danger');
+    }
+  }
+
+  &--msg__error {
     position: absolute;
-    top: 0;
-    left: 100%;
-    margin-left: $spacer-2;
+    top: 100%;
+    bottom: 0;
     font-size: $font-size-small;
-    line-height: 32px;
+    line-height: 24px;
     white-space: nowrap;
-    color: #ff4949;
+    color: get-color($palette-secondary, 'danger');
 
     .hi-form--inline & {
       top: 36px;
@@ -96,7 +92,7 @@
     .hi-form-item__label::before {
       margin-right: $spacer-1;
       content: '*';
-      color: #ff4949;
+      color: get-color($palette-secondary, 'danger');
     }
   }
 

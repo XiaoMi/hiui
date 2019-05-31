@@ -1,12 +1,8 @@
 ## Form
 
-
-
 ### Align
 
-:::demo 
-
-
+:::demo
 
 ```js
 
@@ -39,12 +35,11 @@ render(){
   return (
     <div>
       <div>
-        <Radio 
-          list={this.state.alignList} 
+        <Radio
+          list={this.state.alignList}
           mode='button'
           checked={checkedIndex}
           onChange={(data, index) => {
-            
             this.setState({
               position: data,
               checkedIndex: index
@@ -57,11 +52,9 @@ render(){
           <FormItem label={'name'}>
             <Input placeholder={'username'} />
           </FormItem>
-
           <FormItem label={'phone'}  >
             <Input placeholder={'phone'} />
           </FormItem>
-
           <FormItem>
             <Button type={'primary'}>submit</Button>
           </FormItem>
@@ -71,13 +64,12 @@ render(){
   )
 }
 ```
+
 :::
 
 ### Inline
 
-:::demo 
-
-
+:::demo
 
 ```js
 
@@ -101,13 +93,12 @@ render(){
   )
 }
 ```
+
 :::
 
 ### Form Validation
 
-:::demo 
-
-
+:::demo
 
 ```js
 
@@ -120,28 +111,30 @@ constructor(props) {
     form: {
       name: '',
       region: '',
-      count: ''
+      count: '',
+      type: []
     },
-    checkedIndex: -1,
     rules: {
       name: [
         {
           required: true,
           message: <span style={{color: '#ccc'}}>input name</span>,
-          trigger: 'blur,change'
+          trigger: 'onBlur,onChange'
         }
       ],
       region: [
         {
+          required: true,
           message: 'select area',
-          trigger: 'change'
+          type: 'number',
+          trigger: 'onChange'
         }
       ],
       count: [
         {
           required: true,
           message: 'input count',
-          trigger: 'change'
+          trigger: 'onChange'
         },
         {
           validator: (rule, value, cb) => {
@@ -162,7 +155,6 @@ constructor(props) {
 }
 
 handleSubmit() {
-
   this.form.current.validate(valid => {
     if(valid) {
       console.log(this.state.form)
@@ -179,9 +171,7 @@ handleChange(key, e, value, index) {
   this.setState({
     form: Object.assign({}, this.state.form, {[key]: value})
   })
-
   if(index !== undefined) {
-
     this.setState({
       checkedIndex: index
     })
@@ -190,7 +180,6 @@ handleChange(key, e, value, index) {
 
 render(){
   const {form, checkedIndex} = this.state
-
   return (
     <div>
       <div>
@@ -202,10 +191,18 @@ render(){
               <Input value={form.count} placeholder={'count'} onChange={this.handleChange.bind(this, 'count')}/>
             </FormItem>
             <FormItem label="Area" prop="region">
-              <Radio 
-                list={['Beijing', 'ShangHai', 'ChongQing']} 
-                checked={checkedIndex}
-                onChange={this.handleChange.bind(this, 'region','')}
+              <Radio
+                list={[{
+                  name: 'BeiJing',
+                  id: 1
+                }, {
+                  name: 'ShangHai',
+                  id: 2
+                }, {
+                  name: 'WuHan',
+                  id: 3
+                }]}
+                onChange={this.handleChange.bind(this, 'region', null)}
               />
             </FormItem>
             <FormItem>
@@ -217,27 +214,32 @@ render(){
   )
 }
 ```
-:::
 
+:::
 
 ### Form Attributes
 
-| Attribute | Description | Type | Options | Default  |
-| --- | ---  | --- | ---- | ---   |
-| model | Form data | object  | - | - |
-| rules | Form validation rule | object  | - | - |
-| labelWidth | label width | string  | |
-| labelPosition | label position | bool |right/left/top|right|
-| inline | Whether it is arranged horizontally | bool | - | false|
-
+| Attribute     | Description                         | Type    | Options        | Default |
+| ------------- | ----------------------------------- | ------- | -------------- | ------- |
+| model         | Form data                           | object  | -              | -       |
+| rules         | Form validation rule                | object  | -              | -       |
+| labelWidth    | label width                         | string  | -              | -       |
+| labelPosition | label position                      | boolean | right/left/top | right   |
+| inline        | Whether it is arranged horizontally | boolean | -              | false   |
 
 ### FormItem Attributes
 
-| Attribute | Description | Type | Options | Default  |
-| --- | ---  | --- | ---- | ---   |
-| prop | model field  | string  | - | - |
-| label | label text | string  | - | - |
-| labelWidth | label width | string  | |
-| required | required | bool  | - | false |
+| Attribute  | Description | Type   | Options | Default |
+| ---------- | ----------- | ------ | ------- | ------- |
+| prop       | model field | string | -       | -       |
+| label      | label text  | string | -       | -       |
+| labelWidth | label width | string | -       | -       |
+| required   | required    | bool   | -       | false   |
 
+### Form Methods
 
+| Event Name                    | Description             | Paramerters                              |
+| ----------------------------- | ----------------------- | ---------------------------------------- |
+| validate(callback)            | validate the whole form | (valid: boolean) => void                 |
+| validateField(prop, callback) | valiate single field    | (prop: string, (valid: boolean) => void) |
+| resetValidates                | reset validate          | -                                        |
