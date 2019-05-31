@@ -7,7 +7,6 @@
 ```js
 constructor() {
   super()
-
   this.state = {
     alignCheckedIndex: 0,
     alignList: [
@@ -45,14 +44,13 @@ constructor() {
 }
 
 render(){
-  const {position, alignCheckedIndex, columnCheckedIndex} = this.state
+  const { position, alignCheckedIndex, columnCheckedIndex } = this.state
   const Row = Grid.Row
   const Col = Grid.Col
   return (
     <div>
       <Row gutter={true}>
         <Col span={12}>
-
           <Radio
             list={this.state.alignList}
             mode='button'
@@ -64,10 +62,8 @@ render(){
               })
             }}
           />
-
         </Col>
         <Col span={12}>
-
           <Radio
             list={this.state.columnList}
             mode='button'
@@ -79,26 +75,21 @@ render(){
               })
             }}
           />
-
         </Col>
       </Row>
       <Row gutter={true}>
         <Col span={this.state.column}>
-
           <Form labelWidth='80' labelPosition={this.state.position}>
-            <FormItem label={'姓名'}>
-              <Input placeholder={'username'} />
+            <FormItem label='姓名'>
+              <Input placeholder='username' />
             </FormItem>
-
-            <FormItem label={'手机号码'}  >
-              <Input placeholder={'phone'} />
+            <FormItem label='手机号码' >
+              <Input placeholder='phone' />
             </FormItem>
-
             <FormItem>
-              <Button type={'primary'}>提交</Button>
+              <Button type='primary'>提交</Button>
             </FormItem>
           </Form>
-
         </Col>
       </Row>
     </div>
@@ -115,21 +106,17 @@ render(){
 ```js
 render(){
   return (
-    <div>
-      <div>
-         <Form inline={true}>
-            <FormItem label='账号' labelWidth='50'>
-              <Input placeholder={'账号'} />
-            </FormItem>
-            <FormItem label='密码' labelWidth='50'>
-              <Input type='password' placeholder={'密码'} />
-            </FormItem>
-            <FormItem>
-              <Button type={'primary'}>提交</Button>
-            </FormItem>
-          </Form>
-       </div>
-    </div>
+    <Form inline={true}>
+      <FormItem label='账号' labelWidth='50'>
+        <Input placeholder='账号' />
+      </FormItem>
+      <FormItem label='密码' labelWidth='50'>
+        <Input type='password' placeholder='密码' />
+      </FormItem>
+      <FormItem>
+        <Button type='primary'>提交</Button>
+      </FormItem>
+    </Form>
   )
 }
 ```
@@ -207,8 +194,7 @@ cancelSubmit() {
     form: {
       name: '',
       region: '',
-      count: '',
-      type: ''
+      count: ''
     }
   })
   this.form.resetValidates()
@@ -224,41 +210,38 @@ render(){
   const Row = Grid.Row
   const Col = Grid.Col
   const {form} = this.state
-
   return (
-    <div>
-      <Form ref={node => this.form = node} model={form} rules={this.state.rules} labelWidth='80'>
-        <Row>
-          <Col span={12}>
-            <FormItem label='名称' prop='name'>
-              <Input value={form.name} placeholder={'name'} onChange={this.handleChange.bind(this, 'name')}/>
-            </FormItem>
-            <FormItem label='数量' prop='count'>
-              <Input value={form.count} placeholder={'count'} onChange={this.handleChange.bind(this, 'count')}/>
-            </FormItem>
-            <FormItem label='地区' prop='region'>
-              <Radio
-                list={[{
-                  name: '北京',
-                  id: 1
-                }, {
-                  name: '上海',
-                  id: 2
-                }, {
-                  name: '武汉',
-                  id: 3
-                }]}
-                onChange={this.handleChange.bind(this, 'region', null)}
-              />
-            </FormItem>
-            <FormItem>
-              <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
-              <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
-            </FormItem>
-          </Col>
-        </Row>
-      </Form>
-    </div>
+    <Form ref={node => this.form = node} model={form} rules={this.state.rules} labelWidth='80'>
+      <Row>
+        <Col span={12}>
+          <FormItem label='名称' prop='name'>
+            <Input value={form.name} placeholder='name' onChange={this.handleChange.bind(this, 'name')}/>
+          </FormItem>
+          <FormItem label='数量' prop='count'>
+            <Input value={form.count} placeholder='count' onChange={this.handleChange.bind(this, 'count')}/>
+          </FormItem>
+          <FormItem label='地区' prop='region'>
+            <Radio
+              list={[{
+                name: '北京',
+                id: 1
+              }, {
+                name: '上海',
+                id: 2
+              }, {
+                name: '武汉',
+                id: 3
+              }]}
+              onChange={this.handleChange.bind(this, 'region', null)}
+            />
+          </FormItem>
+          <FormItem>
+            <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
+            <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
+          </FormItem>
+        </Col>
+      </Row>
+    </Form>
   )
 }
 ```

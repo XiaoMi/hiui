@@ -8,7 +8,6 @@
 
 constructor() {
   super()
-
   this.state = {
     checkedIndex: 0,
     alignList: [
@@ -29,37 +28,34 @@ constructor() {
   }
 }
 
-
 render(){
   const {position, checkedIndex} = this.state
   return (
     <div>
-      <div>
-        <Radio
-          list={this.state.alignList}
-          mode='button'
-          checked={checkedIndex}
-          onChange={(data, index) => {
-            this.setState({
-              position: data,
-              checkedIndex: index
-            })
-          }}
-        />
-        <br />
-        <br />
-        <Form labelWidth="80" labelPosition={this.state.position}>
-          <FormItem label={'name'}>
-            <Input placeholder={'username'} />
-          </FormItem>
-          <FormItem label={'phone'}  >
-            <Input placeholder={'phone'} />
-          </FormItem>
-          <FormItem>
-            <Button type={'primary'}>submit</Button>
-          </FormItem>
-        </Form>
-       </div>
+      <Radio
+        list={this.state.alignList}
+        mode='button'
+        checked={checkedIndex}
+        onChange={(data, index) => {
+          this.setState({
+            position: data,
+            checkedIndex: index
+          })
+        }}
+      />
+      <br />
+      <br />
+      <Form labelWidth="80" labelPosition={this.state.position}>
+        <FormItem label='name'>
+          <Input placeholder='username' />
+        </FormItem>
+        <FormItem label='phone'  >
+          <Input placeholder='phone' />
+        </FormItem>
+        <FormItem>
+          <Button type='primary'>submit</Button>
+        </FormItem>
+      </Form>
     </div>
   )
 }
@@ -75,21 +71,17 @@ render(){
 
 render(){
   return (
-    <div>
-      <div>
-         <Form inline={true}>
-            <FormItem label="username" labelWidth="80">
-              <Input placeholder={'username'} />
-            </FormItem>
-            <FormItem label="password" labelWidth="80">
-              <Input placeholder={'password'} />
-            </FormItem>
-            <FormItem>
-              <Button type={'primary'}>submit</Button>
-            </FormItem>
-          </Form>
-       </div>
-    </div>
+    <Form inline={true}>
+      <FormItem label="username" labelWidth="80">
+        <Input placeholder='username' />
+      </FormItem>
+      <FormItem label="password" labelWidth="80">
+        <Input placeholder='password' />
+      </FormItem>
+      <FormItem>
+        <Button type='primary'>submit</Button>
+      </FormItem>
+    </Form>
   )
 }
 ```
@@ -104,9 +96,7 @@ render(){
 
 constructor(props) {
   super(props)
-
   this.form = React.createRef()
-
   this.state = {
     form: {
       name: '',
@@ -118,7 +108,7 @@ constructor(props) {
       name: [
         {
           required: true,
-          message: <span style={{color: '#ccc'}}>input name</span>,
+          message: <span><Icon name="close-circle"/> input name</span>,
           trigger: 'onBlur,onChange'
         }
       ],
@@ -147,7 +137,7 @@ constructor(props) {
               cb()
             }
           },
-          trigger: 'change'
+          trigger: 'onChange'
         }
       ]
     }
@@ -181,36 +171,32 @@ handleChange(key, e, value, index) {
 render(){
   const {form, checkedIndex} = this.state
   return (
-    <div>
-      <div>
-         <Form ref={this.form} model={form} rules={this.state.rules} labelWidth="80">
-            <FormItem label="Name" prop="name">
-              <Input value={form.name} placeholder={'name'} onChange={this.handleChange.bind(this, 'name')}/>
-            </FormItem>
-            <FormItem label="Count" prop="count">
-              <Input value={form.count} placeholder={'count'} onChange={this.handleChange.bind(this, 'count')}/>
-            </FormItem>
-            <FormItem label="Area" prop="region">
-              <Radio
-                list={[{
-                  name: 'BeiJing',
-                  id: 1
-                }, {
-                  name: 'ShangHai',
-                  id: 2
-                }, {
-                  name: 'WuHan',
-                  id: 3
-                }]}
-                onChange={this.handleChange.bind(this, 'region', null)}
-              />
-            </FormItem>
-            <FormItem>
-              <Button type={'primary'} onClick={this.handleSubmit.bind(this)}>Submit</Button>
-            </FormItem>
-          </Form>
-       </div>
-    </div>
+    <Form ref={this.form} model={form} rules={this.state.rules} labelWidth="80">
+      <FormItem label="Name" prop="name">
+        <Input value={form.name} placeholder='name' onChange={this.handleChange.bind(this, 'name')}/>
+      </FormItem>
+      <FormItem label="Count" prop="count">
+        <Input value={form.count} placeholder='count' onChange={this.handleChange.bind(this, 'count')}/>
+      </FormItem>
+      <FormItem label="Area" prop="region">
+        <Radio
+          list={[{
+            name: 'BeiJing',
+            id: 1
+          }, {
+            name: 'ShangHai',
+            id: 2
+          }, {
+            name: 'WuHan',
+            id: 3
+          }]}
+          onChange={this.handleChange.bind(this, 'region', null)}
+        />
+      </FormItem>
+      <FormItem>
+        <Button type={'primary'} onClick={this.handleSubmit.bind(this)}>Submit</Button>
+      </FormItem>
+    </Form>
   )
 }
 ```
