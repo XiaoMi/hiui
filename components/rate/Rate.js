@@ -67,6 +67,7 @@ class Rate extends Component {
       value = Math.ceil(value)
     }
     if (value === this.state.value && allowClear) {
+      onChange && onChange({value: 0})
       this.setState({
         value: 0
       })
