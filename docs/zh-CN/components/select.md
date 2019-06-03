@@ -281,7 +281,7 @@ render () {
 render () {
 	return (
 		<div>
-			<Select 
+			<Select
 				mode='multiple'
 				autoload={true}
 				style={{width: '300px'}}
@@ -319,6 +319,7 @@ render () {
 | origin | 异步选择配置，详见下表 | Object | - | - |
 | value | 默认值被选中项，值与被选中的id相同，多个以,分割或者传递数组| String \| Number \| Array | - | - |
 | showCheckAll | 是否显示全选，只对多选生效 | Boolean | true \| false | false |
+| open (1.5新增) | 是否显示下拉菜单 | Boolean | true \| false | true |
 | searchable | 是否可以筛选 | Boolean | true \| false | false |
 | clearable | 是否可以清空 | Boolean | true \| false | true |
 | autoload | origin从远端获取数据，初始时是否自动加载 | Boolean | true \| false | false |

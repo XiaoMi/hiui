@@ -34,7 +34,8 @@ class Select extends Component {
     optionWidth: PropTypes.number,
     style: PropTypes.object,
     onChange: PropTypes.func,
-    dropdownRender: PropTypes.func
+    dropdownRender: PropTypes.func,
+    open: PropTypes.bool
   }
 
   static defaultProps = {
@@ -47,7 +48,8 @@ class Select extends Component {
     autoload: false,
     placeholder: '请选择',
     noFoundTip: '无内容',
-    showCheckAll: false
+    showCheckAll: false,
+    open: true
   }
 
   constructor (props) {
@@ -266,7 +268,7 @@ class Select extends Component {
     })
   }
 
-  handleInputClick (e) {
+  handleInputClick = (e) => {
     let {
       dropdownShow
     } = this.state
@@ -514,7 +516,11 @@ class Select extends Component {
             multipleMode={multipleMode}
             container={this.selectInputContainer}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
-            onClick={this.handleInputClick.bind(this)}
+            onClick={()=>{
+              if(this.props.open) {
+                this.handleInputClick()
+              }
+            }}
             onDelete={this.deleteItem.bind(this)}
             onClear={this.deleteAllItems.bind(this)}
             onSearch={this.debouncedFilterItems.bind(this)}
@@ -523,7 +529,7 @@ class Select extends Component {
         </div>
         { children }
         <Popper
-          show={dropdownShow}
+          show={dropdownShow && this.props.open}
           attachEle={this.selectInputContainer}
           zIndex={1050}
           topGap={5}
