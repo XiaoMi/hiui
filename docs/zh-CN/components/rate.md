@@ -7,6 +7,13 @@
 :::demo
 
 ```js
+constructor() {
+  super()
+  this.state = {
+    value: 1
+  }
+}
+
 render() {
   return (
     <Form labelWidth="80px" labelPosition="left">
@@ -15,6 +22,11 @@ render() {
       </FormItem>
       <FormItem label="半星">
         <Rate allowHalf defaultValue={2.5} />
+      </FormItem>
+      <FormItem label="受控">
+        <Rate value={this.state.value} defaultValue={3} onChange={value => {
+          this.setState({ value })
+        }} />
       </FormItem>
     </Form>
   )

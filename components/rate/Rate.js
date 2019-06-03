@@ -20,18 +20,34 @@ class Rate extends Component {
   }
   static defaultProps = {
     allowClear: true,
-    value: 0,
+    value: undefined,
     defaultValue: 0,
     count: 5,
     prefixCls: 'hi-rate',
     tooltips: [],
     onChange: () => {}
   }
+  static getDerivedStateFromProps ({ value }) {
+    if (value || value === 0) {
+      return {
+        value
+      }
+    }
+  }
   state = {
-    value: this.props.value || this.props.defaultValue,
+    value: 0,
     hoverValue: 0
   }
-  renderIcon = idx => {
+  componentDidMount () {
+    this.initValue()
+  }
+  initValue = () => {
+    const { value, defaultValue } = this.props
+    this.setState({
+      value: (value || value === 0) ? value : defaultValue
+    })
+  }
+  renderIcon = (idx) => {
     const { useEmoji, allowHalf, disabled } = this.props
     const { value, hoverValue } = this.state
     let currentValue = hoverValue || value
@@ -42,7 +58,7 @@ class Rate extends Component {
       <Icon {...{ value: idx, currentValue, disabled, useEmoji, allowHalf }} />
     )
   }
-  handleIconClick = value => {
+  handleIconClick = (value) => {
     const { allowHalf, allowClear, onChange, disabled } = this.props
     if (disabled) {
       return
@@ -59,7 +75,7 @@ class Rate extends Component {
     onChange && onChange(value)
     this.setState({ value })
   }
-  handleIconEnter = hoverValue => {
+  handleIconEnter = (hoverValue) => {
     if (this.props.disabled) {
       return
     }
