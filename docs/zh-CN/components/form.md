@@ -135,7 +135,8 @@ constructor(props) {
     form: {
       name: '',
       region: '',
-      count: ''
+      count: '',
+      type: []
     },
     rules: {
       name: [
@@ -172,6 +173,23 @@ constructor(props) {
           },
           trigger: 'onChange'
         }
+      ],
+      type: [
+        {
+          required: true,
+          type: 'array',
+          message: '请至少选择一个类型',
+          trigger: 'onChange'
+        },
+        {
+          validator: (rule, value, cb) => {
+            if (rule.length === 0) {
+              cb('请至少选择一个类型')
+            } else {
+              cb()
+            }
+          }
+        }
       ]
     }
   }
@@ -194,7 +212,8 @@ cancelSubmit() {
     form: {
       name: '',
       region: '',
-      count: ''
+      count: '',
+      type: []
     }
   })
   this.form.resetValidates()
@@ -234,6 +253,9 @@ render(){
               }]}
               onChange={this.handleChange.bind(this, 'region', null)}
             />
+          </FormItem>
+          <FormItem label='种类' prop='type'>
+            <Checkbox list={['手机', '电脑', '智能']} onChange={console.log} name='c1' />
           </FormItem>
           <FormItem>
             <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
