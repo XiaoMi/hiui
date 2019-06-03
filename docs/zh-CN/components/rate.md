@@ -7,6 +7,13 @@
 :::demo
 
 ```js
+constructor() {
+  super()
+  this.state = {
+    value: 1
+  }
+}
+
 render() {
   return (
     <Form labelWidth="80px" labelPosition="left">
@@ -15,6 +22,11 @@ render() {
       </FormItem>
       <FormItem label="半星">
         <Rate allowHalf defaultValue={2.5} />
+      </FormItem>
+      <FormItem label="受控">
+        <Rate value={this.state.value} defaultValue={3} onChange={value => {
+          this.setState({ value })
+        }} />
       </FormItem>
     </Form>
   )
@@ -97,16 +109,21 @@ render() {
 
 ### Rate Attributes
 
-| 参数         | 说明                      | 类型                    | 可选值 | 默认值 |
-| ------------ | ------------------------- | ----------------------- | ------ | ------ |
-| allowClear   | 是否允许再次点击后清除    | boolean                 | -      | true   |
-| allowHalf    | 是否允许半选              | boolean                 | -      | true   |
-| useEmoji     | 是否使用表情              | boolean                 | -      | false  |
-| className    | 自定义类名                | string                  | -      | -      |
-| count        | star 数量，Emoji 时不可用 | number                  | -      | 5      |
-| defaultValue | 默认值                    | number                  | -      | 0      |
-| disabled     | 只读，无法进行交互        | boolean                 | -      | false  |
-| style        | 自定义样式对象            | object                  | -      | -      |
-| tooltips     | 自定义每项的提示信息      | string[]                | -      | -      |
-| value        | 当前数，受控值            | number                  | -      | -      |
-| onChange     | 选择时的回调              | (value: number) => void | -      | -      |
+| 参数         | 说明                      | 类型     | 可选值        | 默认值 |
+| ------------ | ------------------------- | -------- | ------------- | ------ |
+| allowClear   | 是否允许再次点击后清除    | boolean  | true \| false | true   |
+| allowHalf    | 是否允许半选              | boolean  | true \| false | true   |
+| useEmoji     | 是否使用表情              | boolean  | true \| false | false  |
+| className    | 自定义类名                | string   | -             | -      |
+| count        | star 数量，Emoji 时不可用 | number   | -             | 5      |
+| defaultValue | 默认值                    | number   | -             | 0      |
+| disabled     | 只读，无法进行交互        | boolean  | true \| false | false  |
+| style        | 自定义样式对象            | object   | -             | -      |
+| tooltips     | 自定义每项的提示信息      | string[] | -             | -      |
+| value        | 当前数，受控值            | number   | -             | -      |
+
+### Rate Events
+
+| 参数     | 说明           | 回调参数        |
+| -------- | -------------- | --------------- |
+| onChange | 改变值时的回调 | (value: number) |
