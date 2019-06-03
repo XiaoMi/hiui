@@ -184,6 +184,9 @@ render() {
             checkedKeys
           })
         }}
+        onCheck={(checkedKeys, item, bool, semi) => {
+          console.log('on check:', checkedKeys, item, bool ,semi)
+        }}
         highlightable
         onClick={data=>{console.log('tree node click',data)}}
         withLine
@@ -412,6 +415,7 @@ render() {
 | onChange         | 改变复选框状态时触发                                                    | Function(checkedArr:Array, title: String, isChecked: Boolean)  | -                            | -      |
 | onNodeToggle     | 节点被点击(展开/收起)时触发                                             | Function(data: Obejct, isExpanded: Boolean)                    | -                            | -      |
 | onCheckChange    | 节点选中项                                                              | Funciton(checkedArr: Array, title: String, isChecked: Boolean) | -                            | -      |
+| onCheckChange    | 点击节点多选框触发                                                      | Funciton(checkedArr: Array, item: Object, isChecked: Boolean)  | -                            | -      |
 | onDragStart      | 节点开始拖拽时触发                                                      | Funciton(dragNode: Object)                                     | -                            | -      |
 | onDrop           | 节点拖拽成功时触发                                                      | Funciton(dragNode: Object, dropNode: Object)                   | -                            | -      |
 | onDelete         | 节点删除时触发                                                          | Funciton(deleteNode: Object, data: Object)                     | -                            | -      |

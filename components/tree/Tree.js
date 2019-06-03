@@ -58,7 +58,7 @@ class Tree extends Component {
   }
 
   onCheckChange = (checked, item) => {
-    const { onChange, checkedKeys } = this.props
+    const { onChange, checkedKeys, onCheckChange, onCheck } = this.props
     let checkedArr = checkedKeys
 
     let { all } = this.state
@@ -130,8 +130,8 @@ class Tree extends Component {
     })
 
     onChange && onChange(checkedArr, item.title, !checked, semiChecked)
-    this.props.onCheckChange &&
-      this.props.onCheckChange(checkedArr, item.title, !checked, semiChecked)
+    onCheckChange && onCheckChange(checkedArr, item.title, !checked, semiChecked)
+    onCheck && onCheck(checkedArr, item, !checked, semiChecked)
   }
 
   // 展开、收起节点
