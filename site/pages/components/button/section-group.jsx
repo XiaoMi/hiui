@@ -3,7 +3,6 @@ import DocViewer from '../../../../libs/doc-viewer'
 import Button from '../../../../components/button'
 const prefix = 'button-group'
 const desc = '注意：按钮组中每个按钮应触发一个独立动作。如果是一组关联的选项，则应该使用按钮模式的单选按钮。'
-const leftOptions = ['按钮组']
 const rightOptions = ['正常', '禁用']
 const code = [
   {
@@ -22,7 +21,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['按钮组', '正常']
+    opt: ['正常']
   },
   {
     code: `import React from 'react'
@@ -40,7 +39,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['按钮组', '禁用']
+    opt: ['禁用']
   }
 ]
 
@@ -50,7 +49,6 @@ const DemoGroup = () => (
     scope={{ Button }}
     prefix={prefix}
     desc={desc}
-    leftOptions={leftOptions}
     rightOptions={rightOptions}
   />
 )

@@ -2,7 +2,6 @@ import React from 'react'
 import DocViewer from '../../../../libs/doc-viewer'
 import Button from '../../../../components/button'
 const prefix = 'button-standard'
-const leftOptions = ['突出按钮', '普通按钮', '默认按钮', '确定/取消按钮']
 const rightOptions = ['正常', '禁用']
 const code = [
   {
@@ -14,57 +13,18 @@ class Demo extends React.Component {
       <React.Fragment>
         <Button type="primary">突出按钮</Button>
         <Button type="primary" icon="plus">创建客户</Button>
-      </React.Fragment>
-    )
-  }
-}`,
-    opt: ['突出按钮', '正常']
-  },
-  {
-    code: `import React from 'react'
-import Button from '@hiui/hiui/es/button'\n
-class Demo extends React.Component {
-  render () {
-    return (
-      <React.Fragment>
         <Button type="line">普通按钮</Button>
         <Button type="line" icon="plus">新建</Button>
         <Button type="line" icon="synchronize" />
-      </React.Fragment>
-    )
-  }
-}`,
-    opt: ['普通按钮', '正常']
-  },
-  {
-    code: `import React from 'react'
-import Button from '@hiui/hiui/es/button'\n
-class Demo extends React.Component {
-  render () {
-    return (
-      <React.Fragment>
-        <Button type="default">加载更多…</Button>
+        <Button type="default">默认按钮</Button>
         <Button type="default">重置</Button>
-      </React.Fragment>
-    )
-  }
-}`,
-    opt: ['默认按钮', '正常']
-  },
-  {
-    code: `import React from 'react'
-import Button from '@hiui/hiui/es/button'\n
-class Demo extends React.Component {
-  render () {
-    return (
-      <React.Fragment>
         <Button type="primary">确定</Button>
         <Button type="line">取消</Button>
       </React.Fragment>
     )
   }
 }`,
-    opt: ['确定/取消按钮', '正常']
+    opt: ['正常']
   },
   {
     code: `import React from 'react'
@@ -75,57 +35,18 @@ class Demo extends React.Component {
       <React.Fragment>
         <Button type="primary" disabled>突出按钮</Button>
         <Button type="primary" icon="plus" disabled>创建客户</Button>
-      </React.Fragment>
-    )
-  }
-}`,
-    opt: ['突出按钮', '禁用']
-  },
-  {
-    code: `import React from 'react'
-import Button from '@hiui/hiui/es/button'\n
-class Demo extends React.Component {
-  render () {
-    return (
-      <React.Fragment>
         <Button type="line" disabled>普通按钮</Button>
         <Button type="line" icon="plus" disabled>新建</Button>
         <Button type="line" icon="synchronize" disabled />
-      </React.Fragment>
-    )
-  }
-}`,
-    opt: ['普通按钮', '禁用']
-  },
-  {
-    code: `import React from 'react'
-import Button from '@hiui/hiui/es/button'\n
-class Demo extends React.Component {
-  render () {
-    return (
-      <React.Fragment>
         <Button type="default" disabled>加载更多…</Button>
         <Button type="default" disabled>重置</Button>
-      </React.Fragment>
-    )
-  }
-}`,
-    opt: ['默认按钮', '禁用']
-  },
-  {
-    code: `import React from 'react'
-import Button from '@hiui/hiui/es/button'\n
-class Demo extends React.Component {
-  render () {
-    return (
-      <React.Fragment>
         <Button type="primary" disabled>确定</Button>
         <Button type="line" disabled>取消</Button>
       </React.Fragment>
     )
   }
 }`,
-    opt: ['确定/取消按钮', '禁用']
+    opt: ['禁用']
   }
 ]
 
@@ -133,7 +54,6 @@ const DemoStandard = () => (
   <DocViewer
     code={code}
     scope={{ Button }}
-    leftOptions={leftOptions}
     prefix={prefix}
     rightOptions={rightOptions}
   />

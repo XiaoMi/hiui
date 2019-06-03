@@ -38,6 +38,11 @@ export default class NavHeader extends Component {
           <NavGroup.Item>
             <LocaleDropdown changeDropdown={val => onLocaleChange(val)} />
           </NavGroup.Item>
+          <NavGroup.Item>
+            <a href='https://github.com/XiaoMi/hiui'>
+              <i className='hi-fa fa-github' />
+            </a>
+          </NavGroup.Item>
         </NavGroup>
       </React.Fragment>
     )

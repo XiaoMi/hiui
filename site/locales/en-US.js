@@ -92,6 +92,7 @@ module.exports = {
     home: 'Home',
     components: 'Docs',
     design: 'Design',
-    template: 'Template'
+    template: 'Template',
+    github: 'GitHub'
   }
 }

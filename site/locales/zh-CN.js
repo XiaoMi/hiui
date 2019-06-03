@@ -93,6 +93,7 @@ module.exports = {
     home: '首页',
     components: '文档',
     design: '设计语言',
-    template: '模板'
+    template: '模板',
+    github: 'GitHub'
   }
 }

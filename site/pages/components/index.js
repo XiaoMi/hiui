@@ -10,7 +10,7 @@ export default {
     'group-basic': {
       grid: require('./grid'),
       typography: require('./typography'),
-      button: require('./button'),
+      button: require('./button/index.mdx'),
       icon: require('./icon')
       // 'ficon': require('./ficon')
     },

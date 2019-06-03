@@ -2,7 +2,6 @@ import React from 'react'
 import DocViewer from '../../../../libs/doc-viewer'
 import Button from '../../../../components/button'
 const prefix = 'button-link'
-const leftOptions = ['链接']
 const rightOptions = ['正常', '禁用']
 const code = [
   {
@@ -21,7 +20,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['链接', '正常']
+    opt: ['正常']
   },
   {
     code: `import React from 'react'
@@ -39,7 +38,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['链接', '禁用']
+    opt: ['禁用']
   }
 ]
 
@@ -48,7 +47,6 @@ const DemoLink = () => (
     code={code}
     scope={{ Button }}
     prefix={prefix}
-    leftOptions={leftOptions}
     rightOptions={rightOptions}
   />
 )

@@ -27,7 +27,7 @@ class Component extends React.Component {
         },
         () => {
           this.getAnchors()
-          const anchorsDOM = document.querySelectorAll('#markdown-content h3')
+          const anchorsDOM = document.querySelectorAll('#markdown-content h2')
           const anchorsDOMList = [].slice.call(anchorsDOM)
           anchorsDOMList.map((v, i) => {
             v.id = v.innerHTML
@@ -50,7 +50,7 @@ class Component extends React.Component {
     this.setState({ activeAnchor: id })
   }
   getAnchors () {
-    const anchorsDOM = document.querySelectorAll('#markdown-content h3')
+    const anchorsDOM = document.querySelectorAll('#markdown-content h2')
     const anchorsDOMList = [].slice.call(anchorsDOM)
     const anchors = anchorsDOMList.map((v, i) => {
       // const id = 'component-anchors-' + i
@@ -108,7 +108,7 @@ class Component extends React.Component {
     return (
       <div className='component'>
         <div className='home-container'>
-          <div className='markdown-content' id='markdown-content'>
+          <div className='markdown-content article' id='markdown-content'>
             {cComponent}
           </div>
 

@@ -1,7 +1,8 @@
 const theme /*: PrismTheme */ = {
   plain: {
+    backgroundColor: '#f6f8fa',
     color: '#393A34',
-    backgroundColor: '#f6f8fa'
+    fontFamily: ['SFMono-Regular', 'Consolas', 'Liberation Mono', 'Menlo', 'Courier', 'monospace']
   },
   styles: [
     {
