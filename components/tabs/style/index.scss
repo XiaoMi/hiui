@@ -10,6 +10,7 @@ $prefix: 'hi-tabs' !default;
   .#{$prefix}__item {
     flex: 0 1 auto;
     cursor: pointer;
+    border: 1px solid transparent;
 
     &:not(&--active) {
       overflow: hidden;
@@ -168,8 +169,10 @@ $prefix: 'hi-tabs' !default;
       padding: 16px 20px;
       text-align: center;
       border: 1px solid #e6e7e8;
-      border-left-width: 0;
       box-sizing: border-box;
+      &:not(:first-child) {
+        margin-left: -1px;
+      }
 
       &:hover {
         color: #4284f5;
@@ -179,14 +182,10 @@ $prefix: 'hi-tabs' !default;
         }
       }
 
-      &:first-child {
-        border-left-width: 1px;
-      }
-
       &--active {
         color: #4284f5;
         border-color: #4284f5;
-        border-left-width: 1px;
+        z-index: 1;
 
         .#{$prefix}__item-desc {
           color: #4284f5;
