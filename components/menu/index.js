@@ -176,13 +176,17 @@ class Menu extends Component {
   }
 
   toggleMini () {
-    let mini = !this.state.mini
+    const mini = !this.state.mini
+    const expandIndex = mini ? [] : this.state.expandIndex // 切换为mini清空展开态，否则记录展开态
 
-    this.setState({
-      mini
-    }, () => {
-      this.props.onMiniChange && this.props.onMiniChange(mini)
-    })
+    setTimeout(() => { // fix mini 切换为 非mini 时子菜单不隐藏
+      this.setState({
+        mini,
+        expandIndex
+      }, () => {
+        this.props.onMiniChange && this.props.onMiniChange(mini)
+      })
+    }, 0)
   }
 
   onClick (indexs, id, data) {
