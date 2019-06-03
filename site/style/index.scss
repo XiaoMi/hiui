@@ -2,6 +2,11 @@
 @import './markdown.scss';
 
 #app {
+  .layout__body {
+    position: relative;
+    z-index: 1;
+  }
+
   .layout__main--lr {
     margin-left: 240px;
   }
