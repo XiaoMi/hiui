@@ -195,82 +195,56 @@ class Input extends Component {
     let { disabled } = this.props
 
     return (
-      <div className='hi-input__out'>
-        <div className={`hi-input__inner ${active ? 'active' : ''} ${disabled ? 'disabled' : ''}`}>
-          <textarea
-            autoComplete='off'
-            ref={arg => {
-              this._Input = arg
-            }}
-            className={`hi-input__text ${disabled ? 'disabled' : ''}`}
-            value={this.state.value}
-            disabled={disabled}
-            {...this.attrs}
-            onChange={e => {
-              e.persist()
-              let valueTrue = e.target.value
-
-              this.setState({ value: valueTrue, valueTrue }, () => {
-                this.props.onChange && this.props.onChange(e, valueTrue)
-              })
-            }}
-            onBlur={e => {
-              e.persist()
-              let valueTrue = e.target.value
-
-              this.setState({ active: false }, () => {
-                this.props.onBlur && this.props.onBlur(e, valueTrue)
-              })
-            }}
-            onFocus={e => {
-              e.persist()
-              const valueTrue = e.target.value
-
-              this.setState({ active: true }, () => {
-                this.props.onFocus && this.props.onFocus(e, valueTrue)
-              })
-            }}
-            onKeyDown={e => {
-              const valueTrue = e.target.value
-
-              this.props.onKeyDown && this.props.onKeyDown(e, valueTrue)
-            }}
-            onKeyUp={e => {
-              const valueTrue = e.target.value
-
-              this.props.onKeyUp && this.props.onKeyUp(e, valueTrue)
-            }}
-            onKeyPress={e => {
-              const valueTrue = e.target.value
-
-              this.props.onKeyPress && this.props.onKeyPress(e, valueTrue)
-            }}
-            onInput={e => {
-              const valueTrue = e.target.value
-
-              this.props.onInput && this.props.onInput(e, valueTrue)
-            }}
-          />
-        </div>
-      </div>
-    )
-  }
-
-  render () {
-    const { type } = this.attrs
-
-    const { size, id, className, required } = this.props
-
-    return (
-      <div
-        id={id}
-        className={`hi-input ${className || ''} ${type || ''}${size ? ' hi-input_' + size : ''}${
-          required ? ' required' : ''
-        }`}
+      <textarea
+        className={`hi-input ${active ? 'active' : ''} ${disabled ? 'disabled' : ''}`}
         style={this.props.style}
-        data-value={this.state.valueTrue}
-        onClick={e => {
-          this._Input.focus()
+        autoComplete='off'
+        value={this.state.value}
+        disabled={disabled}
+        {...this.attrs}
+        onChange={e => {
+          e.persist()
+          let valueTrue = e.target.value
+
+          this.setState({ value: valueTrue, valueTrue }, () => {
+            this.props.onChange && this.props.onChange(e, valueTrue)
+          })
+        }}
+        onBlur={e => {
+          e.persist()
+          let valueTrue = e.target.value
+
+          this.setState({ active: false }, () => {
+            this.props.onBlur && this.props.onBlur(e, valueTrue)
+          })
+        }}
+        onFocus={e => {
+          e.persist()
+          const valueTrue = e.target.value
+
+          this.setState({ active: true }, () => {
+            this.props.onFocus && this.props.onFocus(e, valueTrue)
+          })
+        }}
+        onKeyDown={e => {
+          const valueTrue = e.target.value
+
+          this.props.onKeyDown && this.props.onKeyDown(e, valueTrue)
+        }}
+        onKeyUp={e => {
+          const valueTrue = e.target.value
+
+          this.props.onKeyUp && this.props.onKeyUp(e, valueTrue)
+        }}
+        onKeyPress={e => {
+          const valueTrue = e.target.value
+
+          this.props.onKeyPress && this.props.onKeyPress(e, valueTrue)
+        }}
+        onInput={e => {
+          const valueTrue = e.target.value
+
+          this.props.onInput && this.props.onInput(e, valueTrue)
         }}
         onMouseOver={e => {
           this.setState({
@@ -282,10 +256,38 @@ class Input extends Component {
             hover: false
           })
         }}
-      >
-        {type === 'textarea' ? this.renderTextarea() : this.renderText()}
-      </div>
+      />
     )
+  }
+
+  render () {
+    const { type } = this.attrs
+
+    const { size, id, className, required } = this.props
+
+    return type === 'textarea' ? this.renderTextarea() : (<div
+      id={id}
+      className={`hi-input ${className || ''} ${type || ''}${size ? ' hi-input_' + size : ''}${
+        required ? ' required' : ''
+      }`}
+      style={this.props.style}
+      data-value={this.state.valueTrue}
+      onClick={e => {
+        this._Input.focus()
+      }}
+      onMouseOver={e => {
+        this.setState({
+          hover: true
+        })
+      }}
+      onMouseLeave={e => {
+        this.setState({
+          hover: false
+        })
+      }}
+    >
+      {this.renderText()}
+    </div>)
   }
 }
 
