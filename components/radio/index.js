@@ -92,7 +92,8 @@ class Radio extends Component {
       },
       () => {
         if (this.props.onChange) {
-          this.props.onChange(item.id || item.name, index, item)
+          const value = item.id || item.id === 0 ? item.id : item.name
+          this.props.onChange(value, index, item)
         }
       }
     )
