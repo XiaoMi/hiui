@@ -1,5 +1,17 @@
 # 更新日志
 
+## 1.5.0-rc.6
+
+- 新增：`<Tree />` 组件 `onCheck` 事件 [#267](https://github.com/XiaoMi/hiui/issues/267)
+- 新增：`<Select />` 组件支持控制下拉菜单展示的属性 [#262](https://github.com/XiaoMi/hiui/issues/262)
+- 新增：`<Button />` 组件 loading 状态 [#166](https://github.com/XiaoMi/hiui/issues/166)
+- 修复：`<Menu />` 组件 mini toggle 子菜单不关闭问题 [#276](https://github.com/XiaoMi/hiui/issues/276)
+- 修复：`<Rate />` 组件不受控问题 [#275](https://github.com/XiaoMi/hiui/issues/275)
+- 修复：`<Tree />` 组件拖出指定区域的样式问题 [#270](https://github.com/XiaoMi/hiui/issues/270)
+- 修复：`<Tabs />` 组件标签切换样式抖动问题 [#260](https://github.com/XiaoMi/hiui/issues/260)
+- 修复：`<Form />` 组件表单 label 和 field 的间隔问题 [#245](https://github.com/XiaoMi/hiui/issues/245)
+- 修复：`<Form />` 表单项间隔问题 [#244](https://github.com/XiaoMi/hiui/issues/244)
+
 ## 1.5.0-rc.5
 
 - 新增：`<Timeline />` 时间轴组件 [#239](https://github.com/XiaoMi/hiui/issues/239)
@@ -18,16 +30,27 @@
 - 新增：`<Card />` 组件
 - 修改：`<Tree />`、`<Datepicker />` 组件，调整新的 UI，增加新的 API
 
-## 1.4.1
+## 1.4.4
+
+- 修复：`<Upload />` 上传组件预览问题 [#200](https://github.com/XiaoMi/hiui/issues/200)
+- 新增：`<Tabs />` 切换组件 en-US 文档 [#221](https://github.com/XiaoMi/hiui/issues/221)
+- 新增：`<Icon />` 图标 15 个 [#123](https://github.com/XiaoMi/hiui/issues/123)
+
+## 1.4.3
+
+- 修复： `<Upload />` 组件 Ref 引起的图片闪烁问题
+
+## 1.4.2
 
 - 修复： `<Datepicker />` 快捷选择问题
 - 修复： `<Cascader />` ref 引起的不能正确渲染的问题
 - 修复： `<Cascader />` 面板不能正确关闭的问题
 - 修复： `<Upload />` 上传后的错误信息展示问题
-- 修复： `<Counter />` 、 `<Input />` value 值为字符串的异常问题
+- 修复： `<Input />` 组件没有输入时清空按钮的展示问题及 suffix/prefix 下的文本对齐问题
+- 修复： `<Counter />` 组件的失焦后的展示 bug 和组件按钮的对齐问题
 - 修复： `<Navmenu />` 当只有一个标签时导致的渲染问题
 
-## 1.4.0
+## 1.4.1
 
 - 新增：部分组件测试用例
 - 新增：`<Tabs />`组件

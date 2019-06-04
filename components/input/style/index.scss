@@ -2,6 +2,53 @@
 
 $input: 'hi-input' !default;
 
+textarea.#{$input} {
+  box-shadow: none;
+  outline: none;
+  color: $normal-color;
+  font-size: $font-size;
+  min-height: 30px;
+  line-height: $line-height;
+  resize: vertical;
+  overflow: auto;
+  height: 100%;
+  padding: 4px 12px;
+  border: 1px solid $border-color-normal;
+  box-sizing: border-box;
+  border-radius: $border-radius;
+  background-color: #fff;
+  transition: border-color 0.3s;
+
+  &:not(.disabled):hover {
+    border-color: $border-color-active;
+  }
+
+  &.active {
+    border-color: $border-color-active;
+  }
+
+  &.disabled {
+    color: $disabled-color;
+    background-color: $disabled-bg-color;
+  }
+
+  &::-webkit-input-placeholder {
+    color: $placeholder-color;
+  }
+
+  &:-moz-placeholder {
+    color: $placeholder-color;
+  }
+
+  &::-moz-placeholder {
+    color: $placeholder-color;
+  }
+
+  &:-ms-input-placeholder {
+    color: $placeholder-color;
+  }
+}
+
 .#{$input},
 .#{$input}_m {
   position: relative;
@@ -26,8 +73,7 @@ $input: 'hi-input' !default;
     color: $placeholder-color;
   }
 
-  input,
-  textarea {
+  input {
     flex: 1 1 auto;
     border: none;
     outline: none;
@@ -42,12 +88,6 @@ $input: 'hi-input' !default;
       color: $disabled-color;
       background-color: $disabled-bg-color;
     }
-  }
-
-  textarea {
-    resize: vertical;
-    overflow: auto;
-    height: 100%;
   }
 
   input[type='search'] {
