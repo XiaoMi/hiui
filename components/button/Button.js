@@ -84,7 +84,7 @@ class Button extends Component {
   }
 }
 
-function ButtonWrapper ({ children, ...props }) {
+function ButtonWrapper ({ children, theme, locale, localeDatas, ...props }) {
   return props.href ? (
     <a {...props}>{children}</a>
   ) : (
