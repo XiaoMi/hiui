@@ -378,7 +378,7 @@ class Table extends Component {
     // 多选配置
     // noinspection JSAnnotator
 
-    let {pagination, name, size = 'normal', bordered = false, striped = false, scrollX} = this.props
+    let {pagination, name, size = 'normal', bordered = false, striped = false, scrollX, header = null, footer = null} = this.props
     // noinspection JSAnnotator
     let {scroll, columnMenu, serverPagination} = this.state
     let content
@@ -445,41 +445,10 @@ class Table extends Component {
     }
     return (
       <div className={prifix({table: true, [size]: size, bordered, striped})} ref={this.dom}>
-        <div >
+        {header && <div className={prifix({'table-pre-header': true})}>{header()}</div>}
+        <div className={prifix({'table-container': true})}>
           <div >{content}</div>
-        </div>
-        {(pagination || columns) && <br /> }
-        {
-          pagination && <div style={{display: 'flex', justifyContent: pagePosition}}>
-            {
-              <div className={prifix('table-page')} >
-                <Pagination
-                  {...pagination}
-                />
-              </div>
-            }
-          </div>
-        }
-        {serverPaginationConfig && serverPaginationConfig.defaultCurrent && <div style={{display: 'flex', justifyContent: serverPagePosition}} a='1'>
-          {
-            <div className={prifix('table-page')} >
-              <Pagination
-                {...serverPaginationConfig}
-                onChange={(current) => {
-                  serverPaginationConfig.onChange(current)
-                  this.setState({
-                    serverPagination: {
-                      ...serverPagination,
-                      current
-                    }
-                  }, this.fetch)
-                }}
-              />
-            </div>
-          }
-        </div>
-        }
-        { name &&
+          { name &&
           <div className={prifix('table-setting')} ref={this.setting}>
             <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}}
               onClick={(e) => {
@@ -518,6 +487,39 @@ class Table extends Component {
               </ClickOutside>
             }
           </div>
+          }
+        </div>
+        {footer && <div className={prifix({'table-pre-footer': true})}>{footer()}</div>}
+        {(pagination || columns) && <br /> }
+        {
+          pagination && <div style={{display: 'flex', justifyContent: pagePosition}}>
+            {
+              <div className={prifix('table-page')} >
+                <Pagination
+                  {...pagination}
+                />
+              </div>
+            }
+          </div>
+        }
+        {serverPaginationConfig && serverPaginationConfig.defaultCurrent && <div style={{display: 'flex', justifyContent: serverPagePosition}} a='1'>
+          {
+            <div className={prifix('table-page')} >
+              <Pagination
+                {...serverPaginationConfig}
+                onChange={(current) => {
+                  serverPaginationConfig.onChange(current)
+                  this.setState({
+                    serverPagination: {
+                      ...serverPagination,
+                      current
+                    }
+                  }, this.fetch)
+                }}
+              />
+            </div>
+          }
+        </div>
         }
       </div>
     )

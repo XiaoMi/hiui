@@ -267,10 +267,18 @@ constructor(props){
     {
       dataIndex: 'age', 
       key: '2',
-      sorter(pre,next){
-        return pre.age - next.age
+      sorter(next,pre){
+        return next.age - pre.age
       }
     },
+     {
+          dataIndex: 'age', 
+          key: '2',
+          title:'age2',
+          sorter(next,pre){
+            return pre.age - next.age
+          }
+        },
     { title: 'Column 1', dataIndex: 'address', key: '3'},
     { 
       title: ()=><div>自定义标题</div>, 
@@ -301,7 +309,18 @@ constructor(props){
   }
 }
 render() {
-  return <Table size='small' name={'sorter'} columns={this.columns} data={this.data} name='sorter'/>
+  return <Table 
+          size='small' 
+          name={'sorter'} 
+          columns={this.columns}
+          data={this.data} name='sorter'
+          header={() =>(
+             <div>头部</div>
+          )}
+          footer={() => (
+            <div>底部</div>
+          )}
+          />
 }
 ```
 :::
@@ -379,7 +398,18 @@ render(){
     },
     dataName:'age'
   }
-  return <Table bordered columns={this.columns} data={data} rowSelection={rowSelection} />
+  return <Table bordered columns={this.columns} data={data} rowSelection={rowSelection}
+     advance={{
+       prefix:{name:'prefix-name',age:'pre-age',address: 'pre-address'},
+       suffix:{name:'append-name',age:'append-age',address: 'append-address'}
+     }}
+     header={() =>(
+                <div>表头</div>
+             )}
+             footer={() => (
+               <div>abc</div>
+             )}
+   />
 }
 
 
@@ -1067,6 +1097,74 @@ constructor (props) {
 
 :::
 
+### 高级用法
+
+:::demo 
+Table 表格代码说明
+1. 右键菜单
+    1. 高亮
+    2. 列冻结 （需要配置scrollX）
+    3. 隐藏列
+2. 表格menu菜单（控制列的显示与隐藏）
+3. 操作记忆 需要给每个表格添加name属性来为索引。非常重要
+
+data属性的所有字段要加key,columns的每条数据需要添加加key属性
+```js
+constructor(props){
+  super(props)
+
+  this.columns = [
+   
+    { title: 'Column 1', dataIndex: 'name', key: '1'},
+    { title: 'Column 1', dataIndex: 'age', key: '2',type: 'number'},
+    { title: 'Column 1', dataIndex: 'address', key: '3'},
+    { 
+      title: ()=><div>自定义标题</div>, 
+      dataIndex: 'address', key: '4',
+      width: '500px',
+      render(text,record,index){
+      return (
+        <div>
+            {text} --- {index} --- 自定义渲染
+        </div>
+      )
+    }},
+    {
+      title: 'Action',
+      key: 'operation',
+      width: 100,
+      render: () => <a href="javascript:;">action</a>,
+    },
+  ]
+  
+  this.data = []
+  for (let i = 0; i < 10; i++) {
+    this.data.push({
+      // key: i,
+      name: `Don Diablo ${i}`,
+      age: `${i}${i}`,
+      address: `EDC Las Vegas no. ${i}`,
+    });
+  }
+}
+render() {
+  return <Table 
+      columns={this.columns} 
+      data={this.data} name='base'  
+      checked={(item) => item.id === 1 || item.id === 3}
+      header={() => <div>表格头部</div>}
+      footer={() => <div>表格底部</div>}
+      advance={{
+        prefix: [{name:'hiui',age: '1years',address: 'xiaomi'},{name:'hiui2.0',age: '1.5years',address: 'xiaomi'}],
+        suffix: [{name: 'table',age: '1yeads',address: 'wuhan'},{name: 'table2.0',age: '1.5yeads',address: 'wuhan'}],
+        avg:true,
+        sum: true
+      }}
+   />
+}
+```
+:::
+
 ### origin Attributes
 
 | 参数       | 说明   |  类型  | 默认值  |
@@ -1104,8 +1202,33 @@ constructor (props) {
 | columns | 表格数据列对应信息  | array | - | - |
 | data | 表格数据  | array | - | - |
 | emptyText | 数据为空时展示的文案  | string | - | No Data |
+| header | 表格头部  | Component | - | Null |
+| footer | 表格底部  | Component | - | Null |
 | scroll | 设置横向滚动，也可用于指定滚动区域的宽，建议为`x`设置一个数字，如果不设置，默认table宽度为100%  | number | true  | - |
 | fixTop | 吸顶  | Number | true | false |
 | pagination | 查看分页组件配置  | Object | - | false |
 | advance | 高级功能 | Object | - | - |
 | origin | 服务端功能 | Object | - |   - |
+
+
+### Origin
+
+| 参数       | 说明   |  类型  | 可选值 | 默认值  |
+| --------   | -----  | ----  |  ----  | ----  |
+| url | 请求地址  | String |  -  |  normal |
+| method | 请求方法 | String | GET,POST  |  GET |
+| data | 在表格第一行插入一条说明性数据 | Object | - | null | 
+| headers | 请头 | Object | - | null | 
+| auto | 是否在data发生变化时自动发请求  | Bollean | - | false |
+| autoDelayTime | 请求延迟持久  | Number | - | 500 |
+| success | 请求解析函数  | Function | - | - |
+
+### Advance
+
+| 参数       | 说明   |  类型  | 可选值 | 默认值  |
+| --------   | -----  | ----  |  ----  | ----  |
+| sum | 前端求和(在columns中设置type=number)  | Bollean |  -  |  normal |
+| avg | 前端求平均(在columns中设置type=number) | Bollean | -  |  false |
+| prefix | 在表格第一行插入一条说明性数据 | Object | - | null | 
+| suffix | 在表格最后一行插入一条说明性数据  | Object | - | null |
+

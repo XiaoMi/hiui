@@ -9,8 +9,7 @@ export default class TableContent extends Component {
   }
   render () {
     let {columns, className, style, head = true, body = true, ...rest} = this.props
-    rest.columns = columns
-
+    rest.columns = columns.filter(item => !item.hide)
     return (
       <table className={className} style={style} ref={this.dom}>
         <colgroup>
