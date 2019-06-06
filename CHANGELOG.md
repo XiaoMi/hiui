@@ -1,5 +1,14 @@
 # 更新日志
 
+## 1.4.5
+
+- 修复：`<Input />` 组件 `textarea` 调整大小时的 UI 展示问题 [#152](https://github.com/XiaoMi/hiui/issues/152)
+- 修复：`<Select />` 组件单选、多选高度不一致的问题 [#201](https://github.com/XiaoMi/hiui/issues/201)
+- 修复：`<Select />` 组件多选禁用还可以勾选的问题 [#218](https://github.com/XiaoMi/hiui/issues/218)
+- 修复：`<Cascader />` 组件 `displayRender` 会触发两次的问题 [#246](https://github.com/XiaoMi/hiui/issues/246)
+- 修复： `<Radio />` 组件在 `id === 0` 时回调参数错误的问题 [#259](https://github.com/XiaoMi/hiui/issues/259)
+- 修复： `<Input />` 组件前、后缀的内容被带回到实际值的问题 [#282](https://github.com/XiaoMi/hiui/issues/282)
+
 ## 1.4.4
 
 - 修复：`<Upload />` 上传组件预览问题 [#200](https://github.com/XiaoMi/hiui/issues/200)
