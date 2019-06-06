@@ -169,6 +169,9 @@ constructor () {
     }]
   }
 }
+changeEvent (e, val) {
+  console.log(e.target.value, val)
+}
 render() {
   const Row = Grid.Row
   const Col = Grid.Col
@@ -200,6 +203,7 @@ render() {
             style={{width: '250px'}}
             suffix={suffix}
             prefix={prefix}
+            onChange={this.changeEvent.bind(this)}
           />
         </Col>
       </Row>
@@ -346,6 +350,6 @@ render() {
 | onKeyDown | 触发 keydown 事件 | (event: Event, value: 原始值) |
 | onKeyPress | 触发 keypress 事件 | (event: Event, value: 原始值) |
 | onInput | 触发 input 事件 | (event: Event, value: 原始值) |
-| onChange | 值改变时触发 | (event: Event, value: 原始值) |
+| onChange | 值改变时触发 | (event: Event, value: 原始值)<br/> 当 Input 包含 prefix 或 suffix 属性时，value 会得到拼接后的值，如果需要得到原始的值，可以使用 event.target.value 获取 |
 | onKeyUp | 触发 keyup 事件 | (event: Event, value: 原始值) |
 
