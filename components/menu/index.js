@@ -145,22 +145,18 @@ class Menu extends Component {
   getActiveMenus = (menus, activeId, activeMenus = []) => {
     let result
     for (let index in menus) {
-      console.log('menus', menus)
       let _activeMenus = [...activeMenus]
       if (menus[index].children) {
         _activeMenus.push(index)
         result = this.getActiveMenus(menus[index].children, activeId, _activeMenus)
-      } else {
-        if (menus[index].id === activeId) {
-          _activeMenus.push(index)
-          result = _activeMenus
-        }
+      } else if (menus[index].id === activeId) {
+        _activeMenus.push(index)
+        result = _activeMenus
       }
       if (result) {
         break
       }
     }
-    console.log('result', result)
     if (result) {
       return result
     }
@@ -169,33 +165,10 @@ class Menu extends Component {
   getActiveIndex (activeId) {
     // 获取激活item对应的索引，以'-'拼接成字符串
     const { datas } = this.props
-    // let activeIndex = []
-    // let level = 0
-    // let matchFlag = false
 
     if (activeId === undefined || activeId === '') {
       return ''
     }
-
-    // const _getActiveIndex = function (datas) {
-    //   for (const index in datas) {
-    //     const data = datas[index]
-    //     activeIndex[level] = parseInt(index)
-    //     if (data.children) {
-    //       level++
-    //       _getActiveIndex(data.children)
-    //       level--
-    //     } else if (data.id === activeId) {
-    //       matchFlag = true
-    //       break
-    //     }
-    //     if (matchFlag) {
-    //       break
-    //     }
-    //   }
-    // }
-    // _getActiveIndex(datas)
-    // return activeIndex.join('-')
     const activeMenus = this.getActiveMenus(datas, activeId, [])
     return (activeMenus && activeMenus.join('-')) || ''
   }
