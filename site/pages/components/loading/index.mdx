@@ -1,0 +1,38 @@
+# Loading 动效加载
+
+常用的动态加载提示组件
+
+## 基础用法
+
+import DemoBase from './section-base.jsx'
+
+<DemoBase/>
+
+
+## 局部控制
+
+import DemoLocalControl from './section-localControl.jsx'
+
+<DemoLocalControl/>
+
+## 整页
+
+import DemoPage from './section-page.jsx'
+
+<DemoPage/>
+
+## 接口调用
+
+import DemoApi from './section-api.jsx'
+
+<DemoApi/>
+
+## Loading Attributes
+
+| 参数   | 说明                                                | 类型    | 可选值                    | 默认值  |
+| ------ | --------------------------------------------------- | ------- | ------------------------- | ------- |
+| size   | 组件大小                                            | string  | large \| default \| small | default |
+| tip    | 自定义的旋转动画下的文字                            | string  | -                         | -       |
+| full   | 是否全屏                                            | boolean | true \| false             | false   |
+| show   | 是否显示加载动画                                    | boolean | true \| false             | false   |
+| target | 用于指令调用时,Loading 遮罩的元素，为空时将整页遮罩 | element | -                         | -       |
