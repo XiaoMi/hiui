@@ -39,8 +39,8 @@ render () {
 				style={{width: '200px'}}
 				list={this.state.singleList}
 				value={this.state.value}
-				onChange={(item) => {
-					console.log('单选结果', item)
+				onChange={(item, changedItem) => {
+					console.log('单选结果', item, changedItem)
 					item[0] && this.setState({value: item[0].id})
 				}}
 			/>
@@ -79,8 +79,8 @@ render () {
 				list={this.state.singleList}
 				placeholder='请选择品类'
 				style={{width: '200px'}}
-				onChange={(item) => {
-						console.log('单选结果', item)
+				onChange={(item, changedItem) => {
+						console.log('单选结果', item, changedItem)
 				}}
 				disabled
 			/>
@@ -121,8 +121,8 @@ render () {
 				value={'3'}
 				list={this.state.singleList}
 				searchable={true}
-				onChange={(item) => {
-						console.log('单选结果', item)
+				onChange={(item, changedItem) => {
+						console.log('单选结果', item, changedItem)
 				}}
 				dropdownRender={(item, isSelected) => {
 					return (
@@ -165,8 +165,8 @@ render () {
 				}}
 				placeholder='请选择种类'
 				style={{width: '200px'}}
-				onChange={(item) => {
-						console.log('异步单选结果', item)
+				onChange={(item, changedItem) => {
+						console.log('异步单选结果', item, changedItem)
 				}}
 			/>
 		</div>
@@ -211,8 +211,8 @@ render () {
 				searchable={true}
 				placeholder='请选择...'
 				noFoundTip='无匹配数据'
-				onChange={(item) => {
-						console.log('多选结果', item)
+				onChange={(item, changedItem) => {
+						console.log('多选结果', item, changedItem)
 				}}
 			/>
 		</React.Fragment>
@@ -260,8 +260,8 @@ render () {
 				showCheckAll={true}
 				placeholder='请选择...'
 				noFoundTip='无匹配数据'
-				onChange={(item) => {
-						console.log('多选结果', item)
+				onChange={(item, changedItem) => {
+						console.log('多选结果', item, changedItem)
 				}}
 			/>
 		</React.Fragment>
@@ -298,8 +298,8 @@ render () {
 					},
 					error: err => console.log('error:', err)
 				}}
-				onChange={(item) => {
-					console.log('异步多选结果', item)
+				onChange={(item,changedItem) => {
+					console.log('异步多选结果', item, changedItem)
 				}}
 			/>
 		</div>
@@ -356,4 +356,4 @@ render () {
 
 | 参数 | 说明 | 回调参数 |
 | -------- | ----- | ---- |
-| onChange | 改变选项时触发函数 | (item: Object\|Array) |
+| onChange | 改变选项时触发函数 | (item: Object\|Array, changedItem:Object\|Array) |
