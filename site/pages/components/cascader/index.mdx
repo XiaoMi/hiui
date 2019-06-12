@@ -1,0 +1,44 @@
+# Cascader 级联选择
+
+## 基础用法
+
+import DemoBasic from './section-basic.jsx'
+
+<DemoBasic />
+
+## 不受控
+
+import DemoChange from './section-change.jsx'
+
+<DemoChange />
+
+## 禁止清空
+
+import DemoForbidclear from './section-forbidclear.jsx'
+
+<DemoForbidclear />
+
+## 高级用法
+
+import DemoAdvanced from './section-advanced.jsx'
+
+<DemoAdvanced />
+
+## Cascader Attributes
+
+| 参数               | 说明                                          | 类型                      | 可选值        | 默认值                                              |
+| ------------------ | --------------------------------------------- | ------------------------- | ------------- | --------------------------------------------------- |
+| options            | 可选项数据源                                  | array                     | -             | -                                                   |
+| value              | 默认值                                        | array                     | -             | []                                                  |
+| fieldNames         | 自定义 options 中 label,value,children 的字段 | object                    | -             | {label:'label', value:'value', children:'children'} |
+| searchable         | 是否可搜索                                    | boolean                   | true \| false | false                                               |
+| clearable          | 是否可清空                                    | boolean                   | true \| false | true                                                |
+| disabled           | 是否禁止使用                                  | boolean                   | true \| false | false                                               |
+| changeOnSelect     | 是否启用选择即改变功能                        | boolean                   | true \| false | false                                               |
+| placeholder        | placeholder                                   | string                    | -             | 请选择                                              |
+| noFoundTip         | 未搜索到的提示                                | string                    | -             | 无匹配数据                                          |
+| className          | 自定义 class                                  | string                    | -             | -                                                   |
+| style              | 自定义样式                                    | object                    | -             | -                                                   |
+| displayRender      | 自定义选中的标签展示，回调参数为选中的值      | (value: string[]) => void | -             | -                                                   |
+| onChange           | 选择完成后回调，回调参数为选中的值            | (value: string[]) => void | -             | -                                                   |
+| onActiveItemChange | 父级选项变化时的回调，回调参数为选中的值      | (value: string[]) => void | -             | -                                                   |
