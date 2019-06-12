@@ -34,8 +34,8 @@ render () {
 				placeholder='Please Select'
 				style={{width: '200px'}}
 				value={'3'}
-				onChange={(item) => {
-						console.log('Result', item)
+				onChange={(item, changedItem) => {
+						console.log('Result', item, changedItem)
 				}}
 			/>
 		</div>
@@ -78,8 +78,8 @@ render () {
 				placeholder='Please Select'
 				style={{width: '200px'}}
 				value={'3'}
-				onChange={(item) => {
-						console.log('Result', item)
+				onChange={(item, changedItem) => {
+						console.log('Result', item, changedItem)
 				}}
 				disabled
 			/>
@@ -119,8 +119,8 @@ render () {
 				placeholder='Please Select...'
 				style={{width: '200px'}}
 				value={'3'}
-				onChange={(item) => {
-						console.log('Result', item)
+				onChange={(item, changedItem) => {
+						console.log('Result', item, changedItem)
 				}}
 			/>
 		</div>
@@ -152,8 +152,8 @@ render () {
 				}}
 				placeholder='Please Select...'
 				style={{width: '200px'}}
-				onChange={(item) => {
-						console.log('Result', item)
+				onChange={(item, changedItem) => {
+						console.log('Result', item, changedItem)
 				}}
 			/>
 		</div>
@@ -192,8 +192,8 @@ render () {
 				list={this.state.multipleList}
 				value='4,5'
 				placeholder='Please Select...'
-				onChange={(item) => {
-						console.log('Result', item)
+				onChange={(item, changedItem) => {
+						console.log('Result', item, changedItem)
 				}}
 			/>
 		</div>
@@ -225,8 +225,8 @@ render () {
 					}
 				}}
 				placeholder='Please...'
-				onChange={(item) => {
-						console.log('Result', item)
+				onChange={(item, changedItem) => {
+						console.log('Result', item, changedItem)
 				}}
 			/>
 		</div>
@@ -254,4 +254,4 @@ render () {
 
 | Attribute | Description | Parameters |
 | -------- | ----- | ---- |
-| onChange | callback when changing options | (item: Object\|Array) |
+| onChange | callback when changing options | (item: Object\|Array, changedItem:Object\|Array) |

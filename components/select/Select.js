@@ -194,35 +194,32 @@ class Select extends Component {
     this.onClickOption(item, focusedIndex)
   }
 
-  onChange () {
-    const {
-      selectedItems
-    } = this.state
+  onChange (changedItems) {
+    const { selectedItems } = this.state
 
-    this.props.onChange && this.props.onChange(selectedItems)
+    this.props.onChange && this.props.onChange(selectedItems, changedItems)
   }
 
-  checkAll (e) { // 全选
+  checkAll (e) {
+    // 全选
     e && e.stopPropagation()
 
-    const {
-      dropdownItems
-    } = this.state
-    let selectedItems = this.state.selectedItems.concat()
-
+    const { dropdownItems, selectedItems } = this.state
+    let _selectedItems = [...selectedItems]
+    let changedItems = []
     dropdownItems.forEach(item => {
       if (!item.disabled && this.matchFilter(item)) {
-        let itemIndex = selectedItems.findIndex((sItem) => {
-          return sItem.id === item.id
-        })
-        itemIndex === -1 && selectedItems.push(item)
+        if (!_selectedItems.map(selectItem => selectItem.id).includes(item.id)) {
+          _selectedItems.push(item)
+          changedItems.push(item)
+        }
       }
     })
     this.setState({
-      selectedItems
+      selectedItems: _selectedItems
     }, () => {
       this.selectInput.focus()
-      this.onChange()
+      this.onChange(changedItems)
     })
   }
 
@@ -256,7 +253,7 @@ class Select extends Component {
         this.clearKeyword() // 多选状态清空筛选
       }
 
-      this.onChange()
+      this.onChange(item)
     })
   }
 
@@ -312,20 +309,21 @@ class Select extends Component {
       selectedItems
     }, () => {
       this.selectInput.focus()
-      this.onChange()
+      this.onChange(item)
     })
   }
   // 全部删除
   deleteAllItems () {
     const focusedIndex = this.resetFocusedIndex()
-
+    const changedItems = [...this.state.selectedItems]
     this.setState({
       focusedIndex,
       selectedItems: []
     }, () => {
-      this.onChange()
+      this.onChange(this.props.mode === 'multiple' ? changedItems : changedItems[0])
       this.onFilterItems('')
-    })
+    }
+    )
   }
 
   remoteSearch (keyword) {
