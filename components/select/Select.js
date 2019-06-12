@@ -322,8 +322,7 @@ class Select extends Component {
     }, () => {
       this.onChange(this.props.mode === 'multiple' ? changedItems : changedItems[0])
       this.onFilterItems('')
-    }
-    )
+    })
   }
 
   remoteSearch (keyword) {
