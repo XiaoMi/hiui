@@ -34,7 +34,6 @@ class Tree extends Component {
     if (!isEqual(props.data, state.data)) {
       const dataMap = {}
       dealData(props.data, dataMap)
-      console.log('dataMap', dataMap)
       data.dataMap = dataMap
       data.data = props.data
 
