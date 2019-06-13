@@ -136,8 +136,8 @@ class FormItem extends Component {
   }
 
   handleFieldBlur () {
-    const hasOnBlur = this.getRules().some(
-      (rule) => (rule.trigger || '').includes('onBlur')
+    const hasOnBlur = this.getRules().some((rule) =>
+      (rule.trigger || '').includes('onBlur')
     )
     if (hasOnBlur) {
       this.validate('onBlur')
@@ -145,8 +145,8 @@ class FormItem extends Component {
   }
 
   handleFieldChange () {
-    const hasOnChange = this.getRules().some(
-      (rule) => (rule.trigger || '').includes('onChange')
+    const hasOnChange = this.getRules().some((rule) =>
+      (rule.trigger || '').includes('onChange')
     )
     if (hasOnChange) {
       this.validate('onChange')
@@ -172,18 +172,17 @@ class FormItem extends Component {
 
     return (
       <div className={classNames('hi-form-item', className, obj)}>
-        {label && (
+        {label ? (
           <label
             className={'hi-form-item' + '__label'}
             style={{ width: this.labelWidth }}
           >
-            {label}
+            {label}：
           </label>
+        ) : (
+          <span style={{ width: this.labelWidth }} />
         )}
-        <div
-          className={'hi-form-item' + '__content'}
-          style={{ marginLeft: this.labelWidth }}
-        >
+        <div className={'hi-form-item' + '__content'}>
           {Array.isArray(children) || !children
             ? children
             : React.cloneElement(children, {
@@ -200,7 +199,7 @@ class FormItem extends Component {
                 })
               }
             })}
-          {error && <div className='hi-form-item--msg__error'>{error}</div>}
+          <div className='hi-form-item--msg__error'>{error}</div>
         </div>
       </div>
     )
