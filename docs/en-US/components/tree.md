@@ -10,6 +10,7 @@
     this.treeData = [
       { id: 1,
         title: '小米',
+        expanded: false,
         children: [
           { id: 2,
             title: '技术',
@@ -83,6 +84,7 @@ checkbox
     this.treeData = [
       { id: 1,
         title: '小米',
+        expanded: true,
         children: [
           { id: 2,
             title: '技术',
@@ -159,7 +161,7 @@ checkbox
 
 | Attribute | Description | Type | Options | Default |
 | ------- | ------- | ------- | ------- | ------- |
-| expand | whether to expand the submenu (priority is higher than defaultExpandAll) | blooean | true, false | false |
+| expanded | whether to expand the submenu (priority is higher than defaultExpandAll) | blooean | true, false | - |
 | onClick | event triggered when clicked | function
 
 ### Attribute-options
