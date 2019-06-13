@@ -34,19 +34,21 @@ class Tree extends Component {
     if (!isEqual(props.data, state.data)) {
       const dataMap = {}
       dealData(props.data, dataMap)
+      console.log('dataMap', dataMap)
       data.dataMap = dataMap
       data.data = props.data
 
       if (state.data.length === 0) {
-        if (props.defaultExpandAll) {
-          let tempExpandedArr = []
-          for (let key in dataMap) {
-            if (dataMap[key].children && dataMap[key].children.length > 0) {
-              tempExpandedArr.push(dataMap[key].id)
+        let defaultExpandedArr = []
+
+        for (let key in dataMap) {
+          if (dataMap[key].children && dataMap[key].children.length > 0) {
+            if ((props.defaultExpandAll && dataMap[key].expanded !== false) || dataMap[key].expanded === true) {
+              defaultExpandedArr.push(dataMap[key].id)
             }
           }
-          data.hasExpanded = tempExpandedArr
         }
+        data.hasExpanded = defaultExpandedArr
       }
     }
 
