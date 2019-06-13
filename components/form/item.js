@@ -54,7 +54,6 @@ class FormItem extends Component {
 
   getFilteredRule (trigger) {
     const rules = this.getRules()
-
     return rules.filter((rule) => {
       return !rule.trigger || rule.trigger.indexOf(trigger) !== -1
     })
@@ -137,11 +136,21 @@ class FormItem extends Component {
   }
 
   handleFieldBlur () {
-    this.validate('onBlur')
+    const hasOnBlur = this.getRules().some(
+      (rule) => (rule.trigger || '').includes('onBlur')
+    )
+    if (hasOnBlur) {
+      this.validate('onBlur')
+    }
   }
 
   handleFieldChange () {
-    this.validate('onChange')
+    const hasOnChange = this.getRules().some(
+      (rule) => (rule.trigger || '').includes('onChange')
+    )
+    if (hasOnChange) {
+      this.validate('onChange')
+    }
   }
 
   get labelWidth () {
