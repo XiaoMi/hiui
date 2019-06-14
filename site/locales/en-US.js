@@ -42,7 +42,12 @@ module.exports = {
     grid: 'Grid',
     stepper: 'Stepper',
     icon: 'Icon',
-    progress: 'Progress'
+    progress: 'Progress',
+    card: 'Card',
+    timeline: 'Timeline',
+    transfer: 'Transfer',
+    switch: 'Switch',
+    rate: 'Rate'
   },
   designs: {
     'design-patterns': '设计模式',

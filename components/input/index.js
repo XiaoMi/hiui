@@ -88,7 +88,6 @@ class Input extends Component {
             {...this.attrs}
             placeholder={placeholder}
             onChange={e => {
-              console.log('change')
               e.persist()
               let value = e.target.value
               let valueTrue = formatValue(value, type)

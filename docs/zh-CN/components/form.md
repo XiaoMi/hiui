@@ -1,8 +1,8 @@
-## Form表单组件
+## Form 表单组件
 
 ### 对齐方式
 
-:::demo 
+:::demo
 
 ```js
 constructor() {
@@ -96,11 +96,12 @@ render(){
   )
 }
 ```
+
 :::
 
 ### 横向表单
 
-:::demo 
+:::demo
 
 ```js
 render(){
@@ -119,6 +120,7 @@ render(){
   )
 }
 ```
+
 :::
 
 ### 表单验证
@@ -128,16 +130,13 @@ render(){
 ```js
 constructor(props) {
   super(props)
-
   this.form = React.createRef()
-
   this.state = {
     form: {
       name: '',
       region: '',
       count: ''
     },
-    checkedIndex: -1,
     rules: {
       name: [
         {
@@ -149,6 +148,7 @@ constructor(props) {
       region: [
         {
           required: true,
+          type: 'number',
           message: '请选择区域',
           trigger: 'onChange'
         }
@@ -201,16 +201,10 @@ cancelSubmit() {
   this.form.resetValidates()
 }
 
-handleChange(key, e, value, index) {
+handleChange(key, e, value) {
   this.setState({
     form: Object.assign({}, this.state.form, {[key]: value})
   })
-
-  if(index !== undefined) {
-    this.setState({
-      checkedIndex: index
-    })
-  }
 }
 
 render(){
@@ -250,29 +244,27 @@ render(){
   )
 }
 ```
-:::
 
+:::
 
 ### Form Attributes
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值|
-| --- | ---  | --- | ---- | ---   |
-| model | 表单数据 | Object  | - | - |
-| rules | 表单验证规则 | Object  | - | - |
-| labelWidth | label宽度 | String  | |
-| labelPosition | label位置 | String |right \| left \| top|right|
-| inline | 是否横向排列 | Boolean | true \| false | false|
-
+| 参数          | 说明         | 类型    | 可选值               | 默认值 |
+| ------------- | ------------ | ------- | -------------------- | ------ |
+| model         | 表单数据     | object  | -                    | -      |
+| rules         | 表单验证规则 | object  | -                    | -      |
+| labelWidth    | label 宽度   | string  | -                    | -      |
+| labelPosition | label 位置   | string  | right \| left \| top | right  |
+| inline        | 是否横向排列 | boolean | true \| false        | false  |
 
 ### FormItem Attributes
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值|
-| --- | ---  | --- | ---- | ---   |
-| prop | 表单域model字段 | String  | - | - |
-| label | 标签文本 | String  | - | - |
-| labelWidth | label宽度 | String  | |
-| required | 是否必填 | Boolean  | true \| false | false |
-
+| 参数       | 说明              | 类型    | 可选值        | 默认值 |
+| ---------- | ----------------- | ------- | ------------- | ------ |
+| prop       | 表单域 model 字段 | string  | -             | -      |
+| label      | 标签文本          | string  | -             | -      |
+| labelWidth | label 宽度        | string  | -             | -      |
+| required   | 是否必填          | boolean | true \| false | false  |
 
 ### Form Methods
 

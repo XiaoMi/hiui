@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
@@ -23,7 +23,7 @@ class FormItem extends Component {
   }
 
   componentDidMount () {
-    const {prop} = this.props
+    const { prop } = this.props
     if (prop) {
       this.parent.addField(this)
       this.valueInit()
@@ -54,7 +54,7 @@ class FormItem extends Component {
 
   getFilteredRule (trigger) {
     const rules = this.getRules()
-    return rules.filter((rule) => {
+    return rules.filter(rule => {
       return !rule.trigger || rule.trigger.indexOf(trigger) !== -1
     })
   }
@@ -87,21 +87,27 @@ class FormItem extends Component {
     const validator = new AsyncValidator({
       [this.props.prop]: rules
     })
-    const model = {[this.props.prop]: this.getfieldValue()}
-
-    validator.validate(model, {
-      firstFields: true
-    }, errors => {
-      this.setState({
-        error: errors ? errors[0].message : '',
-        validating: false,
-        valid: !errors
-      }, () => {
-        if (cb instanceof Function) {
-          cb(errors)
-        }
-      })
-    })
+    const model = { [this.props.prop]: this.getfieldValue() }
+    validator.validate(
+      model,
+      {
+        firstFields: true
+      },
+      errors => {
+        this.setState(
+          {
+            error: errors ? errors[0].message : '',
+            validating: false,
+            valid: !errors
+          },
+          () => {
+            if (cb instanceof Function) {
+              cb(errors)
+            }
+          }
+        )
+      }
+    )
   }
 
   resetValidate () {
@@ -128,18 +134,14 @@ class FormItem extends Component {
   }
 
   handleFieldBlur () {
-    const hasOnBlur = this.getRules().some((rule) =>
-      (rule.trigger || '').includes('onBlur')
-    )
+    const hasOnBlur = this.getRules().some(rule => (rule.trigger || '').includes('onBlur'))
     if (hasOnBlur) {
       this.validate('onBlur')
     }
   }
 
   handleFieldChange () {
-    const hasOnChange = this.getRules().some((rule) =>
-      (rule.trigger || '').includes('onChange')
-    )
+    const hasOnChange = this.getRules().some(rule => (rule.trigger || '').includes('onChange'))
     if (hasOnChange) {
       this.validate('onChange')
     }
@@ -152,21 +154,18 @@ class FormItem extends Component {
   }
 
   render () {
-    const {children, label, required, className} = this.props
-    const {error, validating} = this.state
+    const { children, label, required, className } = this.props
+    const { error, validating } = this.state
 
     const obj = {}
-    obj['hi-form-item--error'] = error !== ''
+    obj['hi-form-item__error'] = error !== ''
     obj['hi-form-item--validating'] = validating
     obj['hi-form-item--required'] = this.isRequired() || required
 
     return (
       <div className={classNames('hi-form-item', className, obj)}>
         {label ? (
-          <label
-            className={'hi-form-item' + '__label'}
-            style={{ width: this.labelWidth }}
-          >
+          <label className={'hi-form-item' + '__label'} style={{ width: this.labelWidth }}>
             {label}：
           </label>
         ) : (

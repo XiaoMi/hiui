@@ -1,5 +1,21 @@
 # 更新日志
 
+## 1.5.0
+
+- 新增：`<Select />` 组件 `onChange` 支持获取改变值 [#291](https://github.com/XiaoMi/hiui/issues/291)
+- 新增：`<Tree />` 组件 `onCheck` 事件 [#267](https://github.com/XiaoMi/hiui/issues/267)
+- 新增：`<Select />` 组件支持控制下拉菜单展示的属性 [#262](https://github.com/XiaoMi/hiui/issues/262)
+- 新增：`<Button />` 组件 loading 状态 [#166](https://github.com/XiaoMi/hiui/issues/166)
+- 新增：`<Timeline />` 时间轴组件 [#239](https://github.com/XiaoMi/hiui/issues/239)
+- 新增：`<Loading />` 组件 UI 样式 [#238](https://github.com/XiaoMi/hiui/issues/238)
+- 新增：`<Tooltip />` 组件 api 调用功能 [#240](https://github.com/XiaoMi/hiui/issues/240)
+- 新增：`<Transfer />` 穿梭框组件 [#108](https://github.com/XiaoMi/hiui/issues/108)
+- 新增：`<Rate />` 评分组件 [#106](https://github.com/XiaoMi/hiui/issues/106)
+- 新增：`<Switch />` 开关组件 [#107](https://github.com/XiaoMi/hiui/issues/107)
+- 新增：`<Card />` 组件[#113](https://github.com/XiaoMi/hiui/issues/113)
+- 优化：`<Datepicker />` 组件，调整新的 UI，增加新的 API [#105](https://github.com/XiaoMi/hiui/issues/105)
+- 优化：`<Tree />` 组件，增加搜索、拖拽、编辑功能 [#112](https://github.com/XiaoMi/hiui/issues/112)
+
 ## 1.4.6
 
 - 修复：`<Select />` 组件搜索特殊字符造成的崩溃问题 [#294](https://github.com/XiaoMi/hiui/issues/294)

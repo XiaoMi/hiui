@@ -39,8 +39,8 @@ render () {
 				style={{width: '200px'}}
 				list={this.state.singleList}
 				value={this.state.value}
-				onChange={(item) => {
-					console.log('单选结果', item)
+				onChange={(item, changedItem) => {
+					console.log('单选结果', item, changedItem)
 					item[0] && this.setState({value: item[0].id})
 				}}
 			/>
@@ -79,8 +79,8 @@ render () {
 				list={this.state.singleList}
 				placeholder='请选择品类'
 				style={{width: '200px'}}
-				onChange={(item) => {
-						console.log('单选结果', item)
+				onChange={(item, changedItem) => {
+						console.log('单选结果', item, changedItem)
 				}}
 				disabled
 			/>
@@ -121,8 +121,8 @@ render () {
 				value={'3'}
 				list={this.state.singleList}
 				searchable={true}
-				onChange={(item) => {
-						console.log('单选结果', item)
+				onChange={(item, changedItem) => {
+						console.log('单选结果', item, changedItem)
 				}}
 				dropdownRender={(item, isSelected) => {
 					return (
@@ -165,8 +165,8 @@ render () {
 				}}
 				placeholder='请选择种类'
 				style={{width: '200px'}}
-				onChange={(item) => {
-						console.log('异步单选结果', item)
+				onChange={(item, changedItem) => {
+						console.log('异步单选结果', item, changedItem)
 				}}
 			/>
 		</div>
@@ -211,8 +211,8 @@ render () {
 				searchable={true}
 				placeholder='请选择...'
 				noFoundTip='无匹配数据'
-				onChange={(item) => {
-						console.log('多选结果', item)
+				onChange={(item, changedItem) => {
+						console.log('多选结果', item, changedItem)
 				}}
 			/>
 		</React.Fragment>
@@ -260,8 +260,8 @@ render () {
 				showCheckAll={true}
 				placeholder='请选择...'
 				noFoundTip='无匹配数据'
-				onChange={(item) => {
-						console.log('多选结果', item)
+				onChange={(item, changedItem) => {
+						console.log('多选结果', item, changedItem)
 				}}
 			/>
 		</React.Fragment>
@@ -281,7 +281,7 @@ render () {
 render () {
 	return (
 		<div>
-			<Select 
+			<Select
 				mode='multiple'
 				autoload={true}
 				style={{width: '300px'}}
@@ -298,8 +298,8 @@ render () {
 					},
 					error: err => console.log('error:', err)
 				}}
-				onChange={(item) => {
-					console.log('异步多选结果', item)
+				onChange={(item,changedItem) => {
+					console.log('异步多选结果', item, changedItem)
 				}}
 			/>
 		</div>
@@ -319,6 +319,7 @@ render () {
 | origin | 异步选择配置，详见下表 | Object | - | - |
 | value | 默认值被选中项，值与被选中的id相同，多个以,分割或者传递数组| String \| Number \| Array | - | - |
 | showCheckAll | 是否显示全选，只对多选生效 | Boolean | true \| false | false |
+| open (1.5新增) | 是否显示下拉菜单 | Boolean | true \| false | true |
 | searchable | 是否可以筛选 | Boolean | true \| false | false |
 | clearable | 是否可以清空 | Boolean | true \| false | true |
 | autoload | origin从远端获取数据，初始时是否自动加载 | Boolean | true \| false | false |
@@ -355,4 +356,4 @@ render () {
 
 | 参数 | 说明 | 回调参数 |
 | -------- | ----- | ---- |
-| onChange | 改变选项时触发函数 | (item: Object\|Array) |
+| onChange | 改变选项时触发函数 | (item: Object\|Array, changedItem:Object\|Array) |

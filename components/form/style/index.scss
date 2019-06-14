@@ -103,7 +103,7 @@
     .hi-form-item__label::before {
       margin-right: $spacer-1;
       content: '*';
-      color: #ff4949;
+      color: get-color($palette-secondary, 'danger');
     }
   }
 

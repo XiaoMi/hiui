@@ -12,14 +12,14 @@ export default class Popper extends Component {
     // attachEle: PropTypes.oneOfType([
     //   PropTypes.node
     // ]).isRequired,
-    width: PropTypes.string,
+    width: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number]), // 为false时不设置
     height: PropTypes.number,
     className: PropTypes.string,
     show: PropTypes.bool,
     topGap: PropTypes.number,
     leftGap: PropTypes.number,
     zIndex: PropTypes.number,
-    placement: PropTypes.oneOf(['bottom', 'bottom-start', 'top', 'top-start', 'left', 'right', 'top-bottom-start', 'top-bottom'])
+    placement: PropTypes.oneOf(['bottom', 'bottom-start', 'top', 'top-start', 'left', 'right', 'right-start', 'top-bottom-start', 'top-bottom'])
   }
 
   static defaultProps = {
@@ -38,6 +38,9 @@ export default class Popper extends Component {
 
   componentDidMount () {
     this.getContainer()
+    if (this.props.show) {
+      render(this.renderChildren(), this.container)
+    }
   }
 
   componentWillUnmount () {
@@ -51,10 +54,11 @@ export default class Popper extends Component {
       leftGap,
       width
     } = this.props
+    if (!attachEle) return
     const rect = attachEle.getBoundingClientRect()
     let top = rect.top + (document.documentElement.scrollTop || document.body.scrollTop)
     let left = rect.left + (document.documentElement.scrollLeft || document.body.scrollLeft)
-    width = width === undefined ? rect.width : width
+    width = width === false ? undefined : (width === undefined ? rect.width : width)
     let placement = this.getPlacement(rect)
 
     switch (placement) {
@@ -85,6 +89,10 @@ export default class Popper extends Component {
         top = top + topGap + rect.height / 2
         left = left + rect.width + leftGap
         break
+      case 'right-start':
+        top = top + topGap
+        left = left + rect.width + leftGap
+        break
     }
 
     return {
@@ -97,9 +105,11 @@ export default class Popper extends Component {
 
   getPlacement (attachEleRect) {
     let {
+      attachEle,
       placement,
       height
     } = this.props
+    if (!attachEle) return
     const bodyHeight = document.documentElement.clientHeight || document.body.clientHeight
     let poperTop = attachEleRect.top + attachEleRect.height
     const caclPlacement = (bottomPlacement, topPlacement) => { // 计算popper在元素上面或下面
@@ -131,12 +141,14 @@ export default class Popper extends Component {
 
   renderChildren () {
     let {
+      attachEle,
       children,
       className,
       show,
       height,
       zIndex
     } = this.props
+    if (!attachEle) return
     const offset = this.getOffset()
     let width = offset.width
     let left = offset.left + 'px'

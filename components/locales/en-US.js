@@ -25,7 +25,7 @@ module.exports = {
       weekrange: 'Select Week'
     },
     weekrange: function (year, week) {
-      return year + 'year ' + week + 'week'
+      return year + '-W' + week
     }
   },
   pagination: {
@@ -54,5 +54,9 @@ module.exports = {
   },
   tabs: {
     more: 'more'
+  },
+  timeline: {
+    expand: 'Expand',
+    collapse: 'Collapse'
   }
 }

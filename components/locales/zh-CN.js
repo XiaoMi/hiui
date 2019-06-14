@@ -25,7 +25,7 @@ module.exports = {
       weekrange: '请选择周'
     },
     weekrange: function (year, week) {
-      return year + '年 第' + week + '周'
+      return year + '-W' + week
     }
   },
   pagination: {
@@ -54,5 +54,9 @@ module.exports = {
   },
   tabs: {
     more: '更多'
+  },
+  timeline: {
+    expand: '展开',
+    collapse: '收起'
   }
 }

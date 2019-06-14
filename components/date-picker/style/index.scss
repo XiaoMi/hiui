@@ -4,9 +4,11 @@ $basic-color: #4284f5 !default;
 
 .hi-datepicker {
   position: relative;
-  display: flex;
+  // display: flex;
+  background: #fff;
   z-index: 1060;
   font-size: 14px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
 
   &__input-root {
     display: inline-block;
@@ -21,6 +23,11 @@ $basic-color: #4284f5 !default;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    box-sizing: border-box;
+
+    &:hover {
+      border: 1px solid #4284f5;
+    }
 
     &--range {
       width: 320px;
@@ -36,8 +43,9 @@ $basic-color: #4284f5 !default;
       border: 0;
       min-width: 0;
       min-height: 0;
-      height: 30px;
+      height: 28px;
       padding-left: 10px;
+      flex: 1;
 
       &::-webkit-input-placeholder {
         color: #ccc;
@@ -52,11 +60,15 @@ $basic-color: #4284f5 !default;
         color: rgba(44, 48, 78, 0.2);
       }
     }
+
+    &--middle {
+      width: 240px;
+    }
   }
 
   &__input-icon {
     height: 100%;
-    flex: 1 0 32px;
+    flex: 0 0 32px;
     line-height: 32px;
     text-align: center;
     box-sizing: border-box;
@@ -84,88 +96,115 @@ $basic-color: #4284f5 !default;
 
     &-text {
       font-weight: bold;
+      cursor: pointer;
     }
   }
 
   &__body {
     background: #fff;
     border: 1px solid #d1dbe5;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
     border-radius: 2px;
     box-sizing: border-box;
     width: 288px;
 
+    &--hastime {
+      width: 468px;
+      display: flex;
+
+      .hi-timepicker {
+        box-shadow: none;
+        border-left: 1px solid #f2f2f2;
+      }
+    }
+
+    &--period {
+      display: flex;
+      width: 432px;
+    }
+
     &--range {
       width: 578px;
+      display: flex;
+      border: none;
 
       .hi-datepicker__panel {
-        width: 50%;
-        float: left;
+        flex: 1;
       }
+    }
+
+    &--shortcuts {
+      width: 683px;
     }
   }
 
-  &__time-header {
-    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
-    padding: 15px;
-    display: flex;
-    justify-content: space-around;
-    font-size: 14px;
+  &__time-period {
+    width: 144px;
+    border-left: 1px solid #f2f2f2;
+    text-align: center;
+  }
 
-    span {
-      flex: 0 0 50%;
-      text-align: center;
-      color: rgba(153, 153, 153, 1);
-    }
+  &__period-header {
+    line-height: 48px;
+    height: 48px;
+    font-weight: 600;
+    border-bottom: 1px solid #f2f2f2;
+    box-sizing: border-box;
+  }
 
-    em {
-      flex: 0 0 1px;
-      background: rgba(128, 128, 128, 0.2);
+  &__period-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-top: 8px;
+  }
+
+  &__period-item {
+    padding: 8px;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(240, 246, 255, 1);
     }
 
     &--active {
-      color: $basic-color;
+      color: #4284f5;
     }
   }
 
-  &__time-footer {
-    clear: both;
-    text-align: center;
-    height: 40px;
-    line-height: 40px;
-    cursor: pointer;
-    color: $basic-color;
+  &__footer {
+    height: 48px;
     border-top: 1px solid #f2f2f2;
+    box-sizing: border-box;
+    line-height: 48px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      color: #4284f5;
+    }
   }
 
-  .hi-timepicker {
-    width: 252px;
+  &__mask {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 
-    .hi-timepicker__timebody {
-      height: 265px;
-    }
-
-    &__list {
-      height: 265px;
-      width: 104px;
-
-      &:nth-child(2) {
-        left: 84px;
-      }
-
-      &:nth-child(3) {
-        left: 168px;
-        width: 84px;
-      }
-    }
-
-    &__item {
-      width: 84px;
-
-      &:last-child {
-        height: 38px;
-      }
-    }
+  &__time-text {
+    position: absolute;
+    width: 148px;
+    height: 32px;
+    border-radius: 2px;
+    left: 50%;
+    top: 8px;
+    transform: translateX(-50%);
+    background: #fff;
+    z-index: 2;
+    line-height: 32px;
   }
 
   &__calender-container {
@@ -195,6 +234,16 @@ $basic-color: #4284f5 !default;
         width: 48px;
       }
     }
+
+    &--week {
+      .hi-datepicker__row {
+        &:hover {
+          .hi-datepicker__content {
+            background: rgba(66, 132, 245, 0.1);
+          }
+        }
+      }
+    }
   }
 
   &__calender {
@@ -210,18 +259,25 @@ $basic-color: #4284f5 !default;
   }
 
   &__row {
-    &--current-week {
-      .hi-datepicker__content {
-        background: map-get(get-palette($basic-color), '10');
-      }
+    &::after {
+      content: '';
+    }
 
-      .week-highlight {
+    &--current-week {
+      .range-se {
         .hi-datepicker__content {
           background: $basic-color;
         }
       }
     }
   }
+
+  // &__content {
+  //   margin: 0 3px;
+  //   background: #fff;
+  //   color: #fff;
+  //   border-radius: 2px;
+  // }
 
   &__cell {
     cursor: pointer;
@@ -235,7 +291,16 @@ $basic-color: #4284f5 !default;
       .hi-datepicker__content {
         cursor: not-allowed;
         color: map-get(get-palette($basic-color), 'g80');
-        background: map-get(get-palette($basic-color), 'g70');
+        background: rgba(246, 246, 246, 1);
+      }
+    }
+
+    &.range-se:not(.prev):not(.next) {
+      .hi-datepicker__content {
+        margin: 0 3px;
+        background: $basic-color;
+        color: #fff;
+        border-radius: 2px;
       }
     }
 
@@ -246,27 +311,23 @@ $basic-color: #4284f5 !default;
       }
     }
 
-    &.range-start,
-    &.range-end {
-      .hi-datepicker__content {
-        margin: 0 3px;
-        background: $basic-color;
-        color: #fff;
-        border-radius: 2px;
-      }
-    }
+    // &.in-range:not(.next):not(.prev) {
+    //   .hi-datepicker__content {
+    //     background: rgba(66, 132, 245, 0.1);
+    //   }
+    // }
 
-    &.in-range {
-      .hi-datepicker__content {
-        background: rgba(66, 132, 245, 0.2);
-      }
-    }
-
-    &.today {
+    &.today:not(.in-range) {
       .hi-datepicker__text {
         border: 1px solid $basic-color;
-        border-radius: 2px;
         opacity: 0.8;
+      }
+    }
+
+    &.current:not(.in-range) {
+      .hi-datepicker__text {
+        background: $basic-color;
+        color: #fff;
       }
     }
   }
@@ -276,12 +337,13 @@ $basic-color: #4284f5 !default;
     width: 24px;
     height: 24px;
     box-sizing: border-box;
+    border-radius: 2px;
   }
 
   &__shortcuts {
     background: #fff;
-    border: 1px solid #d1dbe5;
-    width: 100px;
+    border-right: 1px solid #f2f2f2;
+    width: 105px;
     text-align: center;
 
     p {
@@ -297,38 +359,105 @@ $basic-color: #4284f5 !default;
 .hi-timepicker {
   width: 180px;
   background: #fff;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+
+  .hi-timepicker__body {
+    width: 180px;
+  }
+
+  &--timerange {
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+
+    .hi-timepicker__body {
+      // flex: 1;
+    }
+  }
+
+  &__split {
+    flex: 1;
+    height: 248px;
+    margin-top: 47px;
+    align-self: flex-end;
+    border: 1px solid #f2f2f2;
+    border-bottom: none;
+  }
+
+  &__timeheader {
+    display: flex;
+    height: 48px;
+    text-align: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(51, 51, 51, 1);
+    border-bottom: 1px solid rgba(242, 242, 242, 1);
+    box-sizing: border-box;
+  }
+
+  &__mark {
+    flex: 1;
+  }
 
   &__timebody {
     display: flex;
-    height: 195px;
-    border-bottom: 1px solid #f2f2f2;
+    height: 248px;
+    // border-bottom: 1px solid #f2f2f2;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0;
 
     &::-webkit-scrollbar {
       display: none;
     }
   }
 
-  &__list {
+  &__page-turn {
     position: absolute;
-    z-index: 1;
+    z-index: 2;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    font-size: 16px;
+    left: 22px;
+    top: 0;
+    cursor: pointer;
+
+    &:last-child {
+      top: auto;
+      bottom: 0;
+    }
+  }
+
+  &__list-container {
+    width: 60px;
+    overflow: hidden;
+    position: relative;
+    padding: 12px 0;
+  }
+
+  &__list {
+    // position: absolute;
+    // z-index: 2;
     width: 80px;
-    height: 196px;
+    height: 224px;
     margin: 0;
-    padding: 0;
     list-style-type: none;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    background: #fff;
+    // overflow-x: hidden;
+    overflow-y: auto;
+    padding: 0;
 
     &:nth-child(2) {
-      z-index: 2;
       left: 60px;
+      z-index: 3;
     }
 
     &:nth-child(3) {
-      width: 60px;
-      z-index: 3;
       left: 120px;
+      z-index: 4;
     }
   }
 
@@ -336,18 +465,29 @@ $basic-color: #4284f5 !default;
     text-align: center;
     font-size: 14px;
     color: rgba(0, 0, 0, 0.65);
-    line-height: 38px;
-    height: 38px;
+    line-height: 32px;
+    height: 32px;
     width: 60px;
     cursor: pointer;
     box-sizing: border-box;
+    // border-right: 1px solid rgba(242, 242, 242, 1);
+    background-color: #fff;
+
+    &--empty {
+      cursor: default;
+    }
 
     &--current {
       font-weight: bold;
     }
 
-    &:last-child {
-      height: 44px;
+    &--disabled {
+      color: rgba(44, 48, 78, 0.2);
+      cursor: not-allowed;
+    }
+
+    &:hover:not(.hi-timepicker__item--current):not(.hi-timepikcer__item--empty):not(.hi-timepicker__item--disabled) {
+      background-color: #eff5fe;
     }
   }
 
@@ -361,15 +501,25 @@ $basic-color: #4284f5 !default;
   }
 
   &__current-line {
-    height: 38px;
+    height: 32px;
     box-sizing: border-box;
-    border-top: 1px solid #f2f2f2;
-    border-bottom: 1px solid #f2f2f2;
+    border-top: 1px solid rgba(242, 242, 242, 1);
+    border-bottom: 1px solid rgba(242, 242, 242, 1);
+
+    // background: rgba(247, 247, 247, 1);
     position: absolute;
-    top: 76px;
-    width: 100%;
+    top: 108px;
+    width: 156px;
     z-index: 4;
     pointer-events: none;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    margin: 0 12px;
+
+    span {
+      flex: 1;
+    }
   }
 }
 
@@ -391,7 +541,9 @@ $basic-color: #4284f5 !default;
         .hi-datepicker__cell {
           &.today {
             .hi-datepicker__text {
-              background: map-get(get-palette($value), '50');
+              border: 1px solid map-get(get-palette($value), '50') !important;
+              color: map-get(get-palette($value), '50') !important;
+              background: #fff !important;
             }
           }
         }
@@ -400,12 +552,20 @@ $basic-color: #4284f5 !default;
       &__row {
         &--current-week {
           .hi-datepicker__content {
-            background: map-get(get-palette($value), '10');
+            // TODO: 色板值
+            // background: map-get(get-palette($value), '10');
+            background: rgba(66, 132, 245, 0.1);
           }
 
-          &.week-highlight {
+          .range-se {
             .hi-datepicker__content {
               background: map-get(get-palette($value), '50');
+              color: #fff;
+              margin: 0 3px;
+              border-radius: 2px;
+            }
+
+            .hi-datepicker__text {
               color: #fff;
             }
           }
@@ -413,22 +573,32 @@ $basic-color: #4284f5 !default;
       }
 
       &__cell {
-        &.today {
+        &.today:not(.in-range) {
           .hi-datepicker__text {
             border: 1px solid map-get(get-palette($value), '50');
+            color: map-get(get-palette($value), '50');
           }
         }
 
-        &.in-range {
+        &.in-range:not(.next):not(.prev) {
           .hi-datepicker__content {
-            background: map-get(get-palette($value), '10');
+            // TODO: 色板值
+            // background: map-get(get-palette($value), '10');
+            background: rgba(66, 142, 245, 0.1);
           }
         }
 
-        &.range-start,
-        &.range-end {
+        &.range-se:not(.next):not(.prev) {
           .hi-datepicker__content {
             background: map-get(get-palette($value), '50');
+          }
+        }
+
+        &:hover:not(.today):not(.current):not(.in-range):not(.range-se):not(.disabled) {
+          .hi-datepicker__text {
+            // TODO: 色板值
+            background: rgba(66, 142, 245, 0.1);
+            // background: map-get(get-palette($value), '10');
           }
         }
       }
