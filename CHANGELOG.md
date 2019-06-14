@@ -1,5 +1,9 @@
 # 更新日志
 
+## 1.4.6
+
+- 修复：`<Select />` 组件搜索特殊字符造成的崩溃问题 [#294](https://github.com/XiaoMi/hiui/issues/294)
+
 ## 1.4.5
 
 - 修复：`<Input />` 组件 `textarea` 调整大小时的 UI 展示问题 [#152](https://github.com/XiaoMi/hiui/issues/152)
