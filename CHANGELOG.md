@@ -1,5 +1,13 @@
 # 更新日志
 
+## 1.5.0
+
+- 新增：`<Select />` 组件 `onChange` 支持获取改变值 [#291](https://github.com/XiaoMi/hiui/issues/291)
+- 修复：`<Tree />` 组件 `expand` 无效的问题 [#283](https://github.com/XiaoMi/hiui/issues/283)
+- 修复：`<Menu />` 组件高亮计算错误的问题 [#289](https://github.com/XiaoMi/hiui/issues/289)
+- 修复：`<Datepicker />` 组件 `onchange` 获取时间错误的问题 [#298](https://github.com/XiaoMi/hiui/issues/298)
+- 修复：`<Transfer />`组件数量达到上限仍可穿梭的问题 [#292](https://github.com/XiaoMi/hiui/issues/292)
+
 ## 1.5.0-rc.6
 
 - 新增：`<Tree />` 组件 `onCheck` 事件 [#267](https://github.com/XiaoMi/hiui/issues/267)
@@ -29,6 +37,19 @@
 
 - 新增：`<Card />` 组件
 - 修改：`<Tree />`、`<Datepicker />` 组件，调整新的 UI，增加新的 API
+
+## 1.4.6
+
+- 修复：`<Select />` 组件搜索特殊字符造成的崩溃问题 [#294](https://github.com/XiaoMi/hiui/issues/294)
+
+## 1.4.5
+
+- 修复：`<Input />` 组件 `textarea` 调整大小时的 UI 展示问题 [#152](https://github.com/XiaoMi/hiui/issues/152)
+- 修复：`<Select />` 组件单选、多选高度不一致的问题 [#201](https://github.com/XiaoMi/hiui/issues/201)
+- 修复：`<Select />` 组件多选禁用还可以勾选的问题 [#218](https://github.com/XiaoMi/hiui/issues/218)
+- 修复：`<Cascader />` 组件 `displayRender` 会触发两次的问题 [#246](https://github.com/XiaoMi/hiui/issues/246)
+- 修复： `<Radio />` 组件在 `id === 0` 时回调参数错误的问题 [#259](https://github.com/XiaoMi/hiui/issues/259)
+- 修复： `<Input />` 组件前、后缀的内容被带回到实际值的问题 [#282](https://github.com/XiaoMi/hiui/issues/282)
 
 ## 1.4.4
 
