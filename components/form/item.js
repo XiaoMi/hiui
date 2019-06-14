@@ -54,8 +54,7 @@ class FormItem extends Component {
 
   getFilteredRule (trigger) {
     const rules = this.getRules()
-
-    return rules.filter((rule) => {
+    return rules.filter(rule => {
       return !rule.trigger || rule.trigger.indexOf(trigger) !== -1
     })
   }
@@ -67,9 +66,7 @@ class FormItem extends Component {
     }
 
     const keyList = this.props.prop.split(':')
-    return keyList.length > 1
-      ? model[keyList[0]][keyList[1]]
-      : model[this.props.prop]
+    return keyList.length > 1 ? model[keyList[0]][keyList[1]] : model[this.props.prop]
   }
 
   validate (trigger, cb) {
@@ -96,7 +93,7 @@ class FormItem extends Component {
       {
         firstFields: true
       },
-      (errors) => {
+      errors => {
         this.setState(
           {
             error: errors ? errors[0].message : '',
@@ -125,7 +122,7 @@ class FormItem extends Component {
     let isRequired = false
 
     if (rules && rules.length) {
-      rules.every((rule) => {
+      rules.every(rule => {
         if (rule.required) {
           isRequired = true
           return false
@@ -137,19 +134,23 @@ class FormItem extends Component {
   }
 
   handleFieldBlur () {
-    this.validate('onBlur')
+    const hasOnBlur = this.getRules().some(rule => (rule.trigger || '').includes('onBlur'))
+    if (hasOnBlur) {
+      this.validate('onBlur')
+    }
   }
 
   handleFieldChange () {
-    this.validate('onChange')
+    const hasOnChange = this.getRules().some(rule => (rule.trigger || '').includes('onChange'))
+    if (hasOnChange) {
+      this.validate('onChange')
+    }
   }
 
   get labelWidth () {
     const labelWidth = this.props.labelWidth || this.parent.props.labelWidth
 
-    return this.parent.props.labelPosition === 'top'
-      ? false
-      : labelWidth && parseInt(labelWidth)
+    return this.parent.props.labelPosition === 'top' ? false : labelWidth && parseInt(labelWidth)
   }
 
   render () {
@@ -163,18 +164,14 @@ class FormItem extends Component {
 
     return (
       <div className={classNames('hi-form-item', className, obj)}>
-        {label && (
-          <label
-            className={'hi-form-item' + '__label'}
-            style={{ width: this.labelWidth }}
-          >
-            {label}
+        {label ? (
+          <label className={'hi-form-item' + '__label'} style={{ width: this.labelWidth }}>
+            {label}：
           </label>
+        ) : (
+          <span style={{ width: this.labelWidth }} />
         )}
-        <div
-          className={'hi-form-item' + '__content'}
-          style={{ marginLeft: this.labelWidth }}
-        >
+        <div className={'hi-form-item' + '__content'}>
           {Array.isArray(children) || !children
             ? children
             : React.cloneElement(children, {
@@ -191,7 +188,7 @@ class FormItem extends Component {
                 })
               }
             })}
-          {error && <div className='hi-form-item--msg__error'>{error}</div>}
+          <div className='hi-form-item--msg__error'>{error}</div>
         </div>
       </div>
     )

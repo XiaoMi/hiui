@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import classNames from 'classnames'
 import Item from './item'
 import './style/index'
@@ -24,7 +24,7 @@ class Form extends Component {
   }
 
   getClassNames () {
-    const {labelPosition, inline} = this.props
+    const { labelPosition, inline } = this.props
 
     const obj = {}
 
@@ -40,13 +40,15 @@ class Form extends Component {
   }
 
   addField (field) {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       fields: prevState.fields.concat(field)
     }))
   }
 
   removeField (prop) {
-    const fields = this.state.fields.filter(field => field.props.prop !== prop)
+    const fields = this.state.fields.filter(
+      (field) => field.props.prop !== prop
+    )
 
     this.setState({
       fields
@@ -62,8 +64,8 @@ class Form extends Component {
       cb(valid)
     }
 
-    fields.forEach(field => {
-      field.validate('', errors => {
+    fields.forEach((field) => {
+      field.validate('', (errors) => {
         if (errors) {
           valid = false
         } else {
@@ -76,23 +78,25 @@ class Form extends Component {
   }
 
   validateField (key, cb) {
-    const field = this.state.fields.filter(field => field.props.prop === key)[0]
+    const field = this.state.fields.filter(
+      (field) => field.props.prop === key
+    )[0]
 
     if (!field) {
-      throw new Error('must call validateField with valid key string!')
+      throw new Error('must call validate Field with valid key string!')
     }
 
     field.validate('', cb)
   }
 
   resetValidates () {
-    this.state.fields.forEach(field => {
+    this.state.fields.forEach((field) => {
       field.resetValidate()
     })
   }
 
   render () {
-    const {children} = this.props
+    const { children } = this.props
 
     return (
       <form className={classNames('hi-form', this.getClassNames())}>
