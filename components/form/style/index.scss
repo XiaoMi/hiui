@@ -45,7 +45,6 @@
   }
 
   &--label--top {
-    // float: none;
     padding-right: 0;
     text-align: left;
 
@@ -86,15 +85,11 @@
   }
 
   &--msg__error {
-    // position: absolute;
-    // top: 100%;
-    // bottom: 0;
     font-size: $font-size-small;
     min-height: 24px;
     padding: 2px 0;
     box-sizing: border-box;
     line-height: 20px;
-    // white-space: nowrap;
     color: get-color($palette-secondary, 'danger');
 
     .hi-form--inline & {
