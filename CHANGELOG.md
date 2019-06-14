@@ -3,40 +3,18 @@
 ## 1.5.0
 
 - 新增：`<Select />` 组件 `onChange` 支持获取改变值 [#291](https://github.com/XiaoMi/hiui/issues/291)
-- 修复：`<Tree />` 组件 `expand` 无效的问题 [#283](https://github.com/XiaoMi/hiui/issues/283)
-- 修复：`<Menu />` 组件高亮计算错误的问题 [#289](https://github.com/XiaoMi/hiui/issues/289)
-- 修复：`<Datepicker />` 组件 `onchange` 获取时间错误的问题 [#298](https://github.com/XiaoMi/hiui/issues/298)
-- 修复：`<Transfer />`组件数量达到上限仍可穿梭的问题 [#292](https://github.com/XiaoMi/hiui/issues/292)
-
-## 1.5.0-rc.6
-
 - 新增：`<Tree />` 组件 `onCheck` 事件 [#267](https://github.com/XiaoMi/hiui/issues/267)
 - 新增：`<Select />` 组件支持控制下拉菜单展示的属性 [#262](https://github.com/XiaoMi/hiui/issues/262)
 - 新增：`<Button />` 组件 loading 状态 [#166](https://github.com/XiaoMi/hiui/issues/166)
-- 修复：`<Menu />` 组件 mini toggle 子菜单不关闭问题 [#276](https://github.com/XiaoMi/hiui/issues/276)
-- 修复：`<Rate />` 组件不受控问题 [#275](https://github.com/XiaoMi/hiui/issues/275)
-- 修复：`<Tree />` 组件拖出指定区域的样式问题 [#270](https://github.com/XiaoMi/hiui/issues/270)
-- 修复：`<Tabs />` 组件标签切换样式抖动问题 [#260](https://github.com/XiaoMi/hiui/issues/260)
-- 修复：`<Form />` 组件表单 label 和 field 的间隔问题 [#245](https://github.com/XiaoMi/hiui/issues/245)
-- 修复：`<Form />` 表单项间隔问题 [#244](https://github.com/XiaoMi/hiui/issues/244)
-
-## 1.5.0-rc.5
-
 - 新增：`<Timeline />` 时间轴组件 [#239](https://github.com/XiaoMi/hiui/issues/239)
 - 新增：`<Loading />` 组件 UI 样式 [#238](https://github.com/XiaoMi/hiui/issues/238)
 - 新增：`<Tooltip />` 组件 api 调用功能 [#240](https://github.com/XiaoMi/hiui/issues/240)
-
-## 1.5.0-rc.4
-
 - 新增：`<Transfer />` 穿梭框组件 [#108](https://github.com/XiaoMi/hiui/issues/108)
 - 新增：`<Rate />` 评分组件 [#106](https://github.com/XiaoMi/hiui/issues/106)
 - 新增：`<Switch />` 开关组件 [#107](https://github.com/XiaoMi/hiui/issues/107)
-- 修复：`<Menu />` 组件在某些情况下抛出的 key 的警告问题 [#215](https://github.com/XiaoMi/hiui/issues/215)
-
-## 1.5.0-rc.1
-
-- 新增：`<Card />` 组件
-- 修改：`<Tree />`、`<Datepicker />` 组件，调整新的 UI，增加新的 API
+- 新增：`<Card />` 组件[#113](https://github.com/XiaoMi/hiui/issues/113)
+- 优化：`<Datepicker />` 组件，调整新的 UI，增加新的 API [#105](https://github.com/XiaoMi/hiui/issues/105)
+- 优化：`<Tree />` 组件，增加搜索、拖拽、编辑功能 [#112](https://github.com/XiaoMi/hiui/issues/112)
 
 ## 1.4.6
 
