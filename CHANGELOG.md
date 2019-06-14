@@ -3,6 +3,8 @@
 ## 1.4.6
 
 - 修复：`<Select />` 组件搜索特殊字符造成的崩溃问题 [#294](https://github.com/XiaoMi/hiui/issues/294)
+- 修复：`<Form />` 组件 `label` 文字超长时造成的浮动问题 [#295](https://github.com/XiaoMi/hiui/issues/295)
+- 修复：`<Form />` 组件验证规则未写 `trigger` 时也会触发验证的问题 [#296](https://github.com/XiaoMi/hiui/issues/296)
 
 ## 1.4.5
 
