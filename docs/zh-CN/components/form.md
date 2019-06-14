@@ -106,7 +106,7 @@ render(){
 ```js
 render(){
   return (
-    <Form inline={true}>
+    <Form inline>
       <FormItem label='账号' labelWidth='50'>
         <Input placeholder='账号' />
       </FormItem>
@@ -141,7 +141,7 @@ constructor(props) {
       name: [
         {
           required: true,
-          message: <span><Icon name="close-circle"/> 请输入名称</span>,
+          message: <span><Icon name="close-circle"/>  请输入名称</span>,
           trigger: 'onBlur,onChange'
         }
       ],
@@ -194,7 +194,8 @@ cancelSubmit() {
     form: {
       name: '',
       region: '',
-      count: ''
+      count: '',
+      type: []
     }
   })
   this.form.resetValidates()
@@ -211,9 +212,8 @@ render(){
   const Col = Grid.Col
   const {form} = this.state
   return (
-    <Form ref={node => this.form = node} model={form} rules={this.state.rules} labelWidth='80'>
-      <Row>
-        <Col span={12}>
+    <Col span={12}>
+      <Form ref={node => this.form = node} model={form} rules={this.state.rules} labelWidth='80'>
           <FormItem label='名称' prop='name'>
             <Input value={form.name} placeholder='name' onChange={this.handleChange.bind(this, 'name')}/>
           </FormItem>
@@ -239,9 +239,8 @@ render(){
             <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
             <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
           </FormItem>
-        </Col>
-      </Row>
-    </Form>
+      </Form>
+    </Col>
   )
 }
 ```
@@ -273,4 +272,4 @@ render(){
 | ----------------------------- | ------------------ | ---------------------------------------- |
 | validate(callback)            | 对整个表单进行校验 | (valid: boolean) => void                 |
 | validateField(prop, callback) | 对表单字段进行校验 | (prop: string, (valid: boolean) => void) |
-| resetValidates                | 重置整个表单的验证 | -                                        |
+| resetValidates()              | 重置整个表单的验证 | -                                        |
