@@ -7,7 +7,6 @@
 ```js
 constructor() {
   super()
-
   this.state = {
     alignCheckedIndex: 0,
     alignList: [
@@ -45,14 +44,13 @@ constructor() {
 }
 
 render(){
-  const {position, alignCheckedIndex, columnCheckedIndex} = this.state
+  const { position, alignCheckedIndex, columnCheckedIndex } = this.state
   const Row = Grid.Row
   const Col = Grid.Col
   return (
     <div>
       <Row gutter={true}>
         <Col span={12}>
-
           <Radio
             list={this.state.alignList}
             mode='button'
@@ -64,10 +62,8 @@ render(){
               })
             }}
           />
-
         </Col>
         <Col span={12}>
-
           <Radio
             list={this.state.columnList}
             mode='button'
@@ -79,26 +75,21 @@ render(){
               })
             }}
           />
-
         </Col>
       </Row>
       <Row gutter={true}>
         <Col span={this.state.column}>
-
           <Form labelWidth='80' labelPosition={this.state.position}>
-            <FormItem label={'姓名'}>
-              <Input placeholder={'username'} />
+            <FormItem label='姓名'>
+              <Input placeholder='username' />
             </FormItem>
-
-            <FormItem label={'手机号码'}  >
-              <Input placeholder={'phone'} />
+            <FormItem label='手机号码' >
+              <Input placeholder='phone' />
             </FormItem>
-
             <FormItem>
-              <Button type={'primary'}>提交</Button>
+              <Button type='primary'>提交</Button>
             </FormItem>
           </Form>
-
         </Col>
       </Row>
     </div>
@@ -114,21 +105,17 @@ render(){
 ```js
 render(){
   return (
-    <div>
-      <div>
-         <Form inline={true}>
-            <FormItem label='账号' labelWidth='50'>
-              <Input placeholder={'账号'} />
-            </FormItem>
-            <FormItem label='密码' labelWidth='50'>
-              <Input type='password' placeholder={'密码'} />
-            </FormItem>
-            <FormItem>
-              <Button type={'primary'}>提交</Button>
-            </FormItem>
-          </Form>
-       </div>
-    </div>
+    <Form inline>
+      <FormItem label='账号' labelWidth='50'>
+        <Input placeholder='账号' />
+      </FormItem>
+      <FormItem label='密码' labelWidth='50'>
+        <Input type='password' placeholder='密码' />
+      </FormItem>
+      <FormItem>
+        <Button type='primary'>提交</Button>
+      </FormItem>
+    </Form>
   )
 }
 ```
@@ -155,7 +142,7 @@ constructor(props) {
       name: [
         {
           required: true,
-          message: <span style={{color: '#ccc'}}>请输入名称</span>,
+          message: <span><Icon name="close-circle"/>  请输入名称</span>,
           trigger: 'onBlur,onChange'
         }
       ],
@@ -207,7 +194,8 @@ cancelSubmit() {
     form: {
       name: '',
       region: '',
-      count: ''
+      count: '',
+      type: []
     }
   })
   this.form.resetValidates()
@@ -228,36 +216,37 @@ handleChange(key, e, value, index) {
 render(){
   const Row = Grid.Row
   const Col = Grid.Col
-  const {form, checkedIndex} = this.state
-
+  const {form} = this.state
   return (
-    <div>
+    <Col span={12}>
       <Form ref={node => this.form = node} model={form} rules={this.state.rules} labelWidth='80'>
-        <Row>
-          <Col span={12}>
-
-            <FormItem label='名称' prop='name'>
-              <Input value={form.name} placeholder={'name'} onChange={this.handleChange.bind(this, 'name')}/>
-            </FormItem>
-            <FormItem label='数量' prop='count'>
-              <Input value={form.count} placeholder={'count'} onChange={this.handleChange.bind(this, 'count')}/>
-            </FormItem>
-            <FormItem label='地区' prop='region'>
-              <Radio
-                list={['北京', '上海', '重庆']}
-                checked={checkedIndex}
-                onChange={this.handleChange.bind(this, 'region','')}
-              />
-            </FormItem>
-            <FormItem>
-              <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
-              <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
-            </FormItem>
-
-          </Col>
-        </Row>
+          <FormItem label='名称' prop='name'>
+            <Input value={form.name} placeholder='name' onChange={this.handleChange.bind(this, 'name')}/>
+          </FormItem>
+          <FormItem label='数量' prop='count'>
+            <Input value={form.count} placeholder='count' onChange={this.handleChange.bind(this, 'count')}/>
+          </FormItem>
+          <FormItem label='地区' prop='region'>
+            <Radio
+              list={[{
+                name: '北京',
+                id: 1
+              }, {
+                name: '上海',
+                id: 2
+              }, {
+                name: '武汉',
+                id: 3
+              }]}
+              onChange={this.handleChange.bind(this, 'region', null)}
+            />
+          </FormItem>
+          <FormItem>
+            <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
+            <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
+          </FormItem>
       </Form>
-    </div>
+    </Col>
   )
 }
 ```
@@ -287,8 +276,8 @@ render(){
 
 ### Form Methods
 
-| 方法名| 说明|
-| --- | --- |
-| validate(callback) | 对整个表单进行校验 |
-| validateField(prop, callback) | 对表单字段进行校验 |
-| resetValidates | 重置整个表单的验证 |
+| 方法名                        | 说明               | 回调参数                                 |
+| ----------------------------- | ------------------ | ---------------------------------------- |
+| validate(callback)            | 对整个表单进行校验 | (valid: boolean) => void                 |
+| validateField(prop, callback) | 对表单字段进行校验 | (prop: string, (valid: boolean) => void) |
+| resetValidates()              | 重置整个表单的验证 | -                                        |

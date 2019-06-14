@@ -54,8 +54,7 @@ class FormItem extends Component {
 
   getFilteredRule (trigger) {
     const rules = this.getRules()
-
-    return rules.filter(rule => {
+    return rules.filter((rule) => {
       return !rule.trigger || rule.trigger.indexOf(trigger) !== -1
     })
   }
@@ -129,11 +128,21 @@ class FormItem extends Component {
   }
 
   handleFieldBlur () {
-    this.validate('onBlur')
+    const hasOnBlur = this.getRules().some((rule) =>
+      (rule.trigger || '').includes('onBlur')
+    )
+    if (hasOnBlur) {
+      this.validate('onBlur')
+    }
   }
 
   handleFieldChange () {
-    this.validate('onChange')
+    const hasOnChange = this.getRules().some((rule) =>
+      (rule.trigger || '').includes('onChange')
+    )
+    if (hasOnChange) {
+      this.validate('onChange')
+    }
   }
 
   get labelWidth () {
@@ -153,33 +162,34 @@ class FormItem extends Component {
 
     return (
       <div className={classNames('hi-form-item', className, obj)}>
-        {
-          label && (
-            <label className={'hi-form-item' + '__label'} style={{ 'width': this.labelWidth }}>
-              {label}
-            </label>
-          )
-        }
-        <div className={'hi-form-item' + '__content'} style={{ 'marginLeft': this.labelWidth }}>
-          {
-            (Array.isArray(children) || !children)
-              ? children
-              : React.cloneElement(children, {
-                onChange: (...args) => {
-                  children.props.onChange && children.props.onChange(...args)
-                  setTimeout(() => {
-                    this.handleFieldChange()
-                  })
-                },
-                onBlur: (...args) => {
-                  children.props.onBlur && children.props.onBlur(...args)
-                  setTimeout(() => {
-                    this.handleFieldBlur()
-                  })
-                }
-              })
-          }
-          { error && <div className='hi-form-item__error'>{error}</div> }
+        {label ? (
+          <label
+            className={'hi-form-item' + '__label'}
+            style={{ width: this.labelWidth }}
+          >
+            {label}：
+          </label>
+        ) : (
+          <span style={{ width: this.labelWidth }} />
+        )}
+        <div className={'hi-form-item' + '__content'}>
+          {Array.isArray(children) || !children
+            ? children
+            : React.cloneElement(children, {
+              onChange: (...args) => {
+                children.props.onChange && children.props.onChange(...args)
+                setTimeout(() => {
+                  this.handleFieldChange()
+                })
+              },
+              onBlur: (...args) => {
+                children.props.onBlur && children.props.onBlur(...args)
+                setTimeout(() => {
+                  this.handleFieldBlur()
+                })
+              }
+            })}
+          <div className='hi-form-item--msg__error'>{error}</div>
         </div>
       </div>
     )
