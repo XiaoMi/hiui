@@ -1150,16 +1150,16 @@ constructor(props){
 render() {
   return <Table 
       columns={this.columns} 
-      data={this.data} name='base'  
+      data={[]} name='base'  
       checked={(item) => item.id === 1 || item.id === 3}
       header={() => <div>表格头部</div>}
       footer={() => <div>表格底部</div>}
       advance={{
-        prefix: [{name:'hiui',age: '1years',address: 'xiaomi'},{name:'hiui2.0',age: '1.5years',address: 'xiaomi'}],
-        suffix: [{name: 'table',age: '1yeads',address: 'wuhan'},{name: 'table2.0',age: '1.5yeads',address: 'wuhan'}],
-        avg:true,
-        sum: true
-      }}
+             prefix: [{name:'hiui',age: '1years',address: 'xiaomi'},{name:'hiui2.0',age: '1.5years',address: 'xiaomi'}],
+             suffix: [{name: 'table',age: '1yeads',address: 'wuhan'},{name: 'table2.0',age: '1.5yeads',address: 'wuhan'}],
+             avg:true,
+             sum: true
+           }}
    />
 }
 ```

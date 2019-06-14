@@ -136,7 +136,7 @@ export default class Body extends Component {
 
     return (
       <tbody className={prifix('table-tbody')}>
-        {dataSource.length > 0 && advance && advance.prefix && this.getPrefixNodes()}
+        {advance && advance.prefix && this.getPrefixNodes()}
         {nodes}
         <Footer className={'table-footer'} {...this.props} />
       </tbody>

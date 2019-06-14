@@ -77,7 +77,7 @@ class Footer extends Component {
 
     return (
       <React.Fragment >
-        {dataSource.length > 0 && advance && advance.suffix && this.getSuffixNodes()}
+        {advance && advance.suffix && this.getSuffixNodes()}
         {dataSource.length > 0 && advance && advance.sum && this.getSumNodes()}
         {dataSource.length > 0 && advance && advance.avg && this.getAveNodes()}
       </React.Fragment>

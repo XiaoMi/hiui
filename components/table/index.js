@@ -341,10 +341,36 @@ class Table extends Component {
           <TableContent {...Object.assign({}, {style: {...style}}, {...props}, {columns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
         </div>
         {
-          dataSource.length === 0 ? this.getEmptyContent() : null
+          this.isEmpty ? this.getEmptyContent() : null
         }
       </div>
     )
+  }
+  get isEmpty () {
+    let dataLen = this.state.dataSource.length
+    if (dataLen > 0) {
+      return false
+    }
+
+    if (!this.props.advance) {
+      return true
+    }
+    let {
+      advance
+    } = this.props
+    let prefixLen = 0
+    let suffixLen = 0
+    if (advance.prefix) {
+      prefixLen = advance.prefix.length
+    }
+    if (advance.suffix) {
+      suffixLen = advance.suffix.length
+    }
+    if (prefixLen + suffixLen > 0) {
+      return false
+    }
+
+    return true
   }
 
   getEmptyContent () {
