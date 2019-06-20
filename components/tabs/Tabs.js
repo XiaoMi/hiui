@@ -84,13 +84,15 @@ class Tabs extends Component {
     const hiddenTabItems = []
 
     React.Children.map(children, (child, index) => {
-      const { tabName, tabKey, tabDesc, disabled, closable } = child.props
-      const item = { tabName, tabKey, tabDesc, disabled, closable }
+      if (child) {
+        const { tabName, tabKey, tabDesc, disabled, closable } = child.props
+        const item = { tabName, tabKey, tabDesc, disabled, closable }
 
-      if (type === 'card' && placement === 'top' && showTabItems.length >= showTabsNum) { // 卡片式标签超过showTabsNum时，其余标签的隐藏
-        hiddenTabItems.push(item)
-      } else {
-        showTabItems.push(item)
+        if (type === 'card' && placement === 'top' && showTabItems.length >= showTabsNum) { // 卡片式标签超过showTabsNum时，其余标签的隐藏
+          hiddenTabItems.push(item)
+        } else {
+          showTabItems.push(item)
+        }
       }
     })
     return {showTabItems, hiddenTabItems}
@@ -227,7 +229,7 @@ class Tabs extends Component {
         </div>
         <div className={`${prefixCls}__content`}>
           {React.Children.map(children, item => {
-            return this.renderTabContent(item)
+            return item && this.renderTabContent(item)
           })}
         </div>
       </div>
