@@ -50,8 +50,10 @@ class Button extends Component {
       theme,
       icon,
       loading,
-      children,
-      ...rest
+      onClick,
+      href,
+      style,
+      children
     } = this.props
     const classes = classNames(
       'theme__' + theme,
@@ -68,11 +70,12 @@ class Button extends Component {
         ? `hi-btn--type--line`
         : `hi-btn--type--${type}`
     )
+    const restProps = { href, style, onClick, disabled }
 
     deprecatedPropsCheck(this.deprecatedProps, this.props, 'Button')
 
     return (
-      <ButtonWrapper className={classes} {...rest}>
+      <ButtonWrapper className={classes} {...restProps}>
         {loading && <IconLoading />}
         {icon && !loading && <Icon name={icon} />}
         {(icon || loading) && children && (
@@ -84,11 +87,11 @@ class Button extends Component {
   }
 }
 
-function ButtonWrapper ({ children, theme, locale, localeDatas, ...props }) {
-  return props.href ? (
-    <a {...props}>{children}</a>
+function ButtonWrapper ({ children, ...restProps }) {
+  return restProps.href ? (
+    <a {...restProps}>{children}</a>
   ) : (
-    <button {...props} type='button'>
+    <button {...restProps} type='button'>
       {children}
     </button>
   )
