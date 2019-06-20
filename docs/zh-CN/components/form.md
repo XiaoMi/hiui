@@ -104,17 +104,38 @@ render(){
 :::demo
 
 ```js
+constructor() {
+  super()
+  this.state = {
+    singleList: [
+			{ name:'电视', id:'3' },
+			{ name:'手机', id:'2' },
+			{ name:'笔记本', id:'4' },
+			{ name:'生活周边', id:'5' },
+			{ name:'办公', id:'6' },
+		]
+  }
+}
+
 render(){
   return (
     <Form inline>
-      <FormItem label='账号' labelWidth='50'>
-        <Input placeholder='账号' />
-      </FormItem>
-      <FormItem label='密码' labelWidth='50'>
-        <Input type='password' placeholder='密码' />
+      <FormItem>
+        <Input placeholder='请输入关键字' />
       </FormItem>
       <FormItem>
-        <Button type='primary'>提交</Button>
+        <Select placeholder='请选择类型' list={this.state.singleList} />
+      </FormItem>
+      <FormItem>
+        <DatePicker 
+          placeholder={['开始日期', '结束日期']}
+          type='daterange'
+          minDate={new Date()}
+          maxDate={new Date().getTime() + 3600000 * 24 * 30}
+        />
+      </FormItem>
+      <FormItem>
+        <Button type='primary'>筛选</Button>
       </FormItem>
     </Form>
   )
@@ -135,7 +156,8 @@ constructor(props) {
     form: {
       name: '',
       region: '',
-      count: ''
+      count: '',
+      date: undefined
     },
     rules: {
       name: [
@@ -143,14 +165,6 @@ constructor(props) {
           required: true,
           message: <span><Icon name="close-circle"/>  请输入名称</span>,
           trigger: 'onBlur,onChange'
-        }
-      ],
-      region: [
-        {
-          required: true,
-          type: 'number',
-          message: '请选择区域',
-          trigger: 'onChange'
         }
       ],
       count: [
@@ -170,6 +184,22 @@ constructor(props) {
               cb()
             }
           },
+          trigger: 'onChange'
+        }
+      ],
+      region: [
+        {
+          required: true,
+          type: 'number',
+          message: '请选择区域',
+          trigger: 'onChange'
+        }
+      ],
+      date: [
+        {
+          required: true,
+          type: 'date',
+          message: '请选择日期',
           trigger: 'onChange'
         }
       ]
@@ -195,7 +225,7 @@ cancelSubmit() {
       name: '',
       region: '',
       count: '',
-      type: []
+      date: undefined
     }
   })
   this.form.resetValidates()
@@ -210,7 +240,7 @@ handleChange(key, e, value) {
 render(){
   const Row = Grid.Row
   const Col = Grid.Col
-  const {form} = this.state
+  const { form } = this.state
   return (
     <Col span={12}>
       <Form ref={node => this.form = node} model={form} rules={this.state.rules} labelWidth='80'>
@@ -219,6 +249,12 @@ render(){
           </FormItem>
           <FormItem label='数量' prop='count'>
             <Input value={form.count} placeholder='count' onChange={this.handleChange.bind(this, 'count')}/>
+          </FormItem>
+          <FormItem label='时间' prop='date'>
+            <DatePicker
+              value={form.date}
+              onChange={this.handleChange.bind(this, 'date', null)}
+            />
           </FormItem>
           <FormItem label='地区' prop='region'>
             <Radio
