@@ -22,13 +22,13 @@
     padding: 32px;
 
     .doc-md {
-      h2 {
+      & > h2 {
         font-size: 30px;
         line-height: 38px;
         font-weight: 500;
       }
 
-      h3 {
+      & > h3 {
         font-weight: 500;
         color: rgba(51, 51, 51, 1);
         line-height: 32px;
@@ -37,7 +37,7 @@
         margin-top: -63px;
       }
 
-      p {
+      & > p {
         font-size: 16px;
         margin: 24px 0;
         font-weight: 400;
@@ -45,7 +45,7 @@
         line-height: 24px;
       }
 
-      ul {
+      & > ul {
         padding-left: 18px;
         list-style: circle;
 

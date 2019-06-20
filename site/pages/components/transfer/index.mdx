@@ -1,0 +1,67 @@
+# Transfer
+
+## 基础用法
+
+import DemoBase from './section-base.jsx'
+
+<DemoBase/>
+
+
+## 批量
+
+import DemoBatch from './section-batch.jsx'
+
+<DemoBatch/>
+
+## 全选
+
+import DemoCheck from './section-check.jsx'
+
+<DemoCheck/>
+
+## 搜索
+
+import DemoSearch from './section-search.jsx'
+
+<DemoSearch/>
+
+## 目标数量上限
+
+import DemoCount from './section-count.jsx'
+
+<DemoCount/>
+
+## 目标区域拖拽
+
+import DemoArea from './section-area.jsx'
+
+<DemoArea/>
+
+## Alert Attributes
+
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| -------- | ----- | ---- | ---- | ---- |
+| mode | 类型 | string | basic \| multiple | basic |
+| showAllSelect |  是否显示全选按钮 |  boolean | true  \| false | false |
+| title | 标题  <br/> 数组长度1或2位，1位时左右标题将相同，2位时将使用对应索引标题  | array[string \| element] | - | '' |
+| searchable |  是否可筛选 |  boolean | true  \| false | false |
+| emptyContent |  数据为空时的显示内容 <br/> 数组长度1或2位，1位时左右内容将相同，2位时将使用对应索引内容| array[string \| element] | - | 暂无数据 |
+| draggable |  是否允许目标框内拖拽排序 | boolean | true  \| false |  false |
+| targetKeys | 目标框内的元素id集合 | array | - | - |
+| data |  数据集合 | array | - |  参见 Data Options |
+| targetLimit |  目标框数据上限 |  number | - |  null |
+
+
+
+### Data Options
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| -------- | ----- | ---- | ---- | ---- |
+| id |  唯一 id | number | - | - |
+| content |  元素内容 | string \| element | - | - |
+| disabled |   该元素是否被禁用 | boolean | true  \| false |  false |
+
+### Alert Events
+
+| 参数 | 说明 | 回调参数
+| ------- | ------- | ------- |
+| onChange | 选中元素被移动到目标框内后触发的事件函数 | 目标框内元素的 id 集合，如[2,3,4] |
