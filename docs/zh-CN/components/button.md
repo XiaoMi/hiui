@@ -78,7 +78,9 @@ render() {
   return (
     <div>
       <Button type="primary" size="large">大按钮</Button>
-      <Button type="primary" size="large" disabled>大按钮</Button>
+      <Button type="primary" size="large" onClick={() => {
+        console.log('This button has been disabled.')
+      }} disabled>大按钮</Button>
       <Button type="primary" size="normal">默认</Button>
       <Button type="primary" size="normal" disabled>默认</Button>
       <Button type="primary" size="small">小号</Button>
