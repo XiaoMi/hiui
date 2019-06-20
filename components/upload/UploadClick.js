@@ -2,6 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import Provider from '../context'
 import Upload from './Upload'
+import Icon from '../icon'
 
 class UploadClick extends Upload {
   render () {
@@ -9,7 +10,7 @@ class UploadClick extends Upload {
       buttonText,
       disabled,
       multiple,
-      buttonIcon,
+      tips,
       showUploadList,
       onRemove,
       accept
@@ -20,23 +21,24 @@ class UploadClick extends Upload {
 
     return (
       <div className='hi-upload upload-normal'>
-        <div>
-          <label>
-            <input
-              ref={node => { this.uploadRef = node }}
-              type='file'
-              className='upload-input'
-              onChange={e => this.uploadFiles(e.target.files)}
-              multiple={multiple && 'multiple'}
-              disabled={disabled && 'disabled'}
-              accept={accept}
-              hidden
-            />
-            <span className={`upload-title ${disabled ? 'disabled' : ''}`}>
-              <i className={`icon Ficon-${buttonIcon}`} />&nbsp;{ buttonText }
-            </span>
-          </label>
-        </div>
+        <label>
+          <input
+            ref={node => { this.uploadRef = node }}
+            type='file'
+            className='upload-input'
+            onChange={e => this.uploadFiles(e.target.files)}
+            multiple={multiple && 'multiple'}
+            disabled={disabled && 'disabled'}
+            accept={accept}
+            hidden
+          />
+          <span className={`upload-title ${disabled ? 'disabled' : ''}`}>
+            { buttonText }
+          </span>
+        </label>
+        {
+          tips && <p className='hi-upload__tips'>{tips}</p>
+        }
         {showUploadList && (
           <ul className='upload-list'>
             {fileList.map((file, index) => {
@@ -45,6 +47,12 @@ class UploadClick extends Upload {
               listName[0].length > 20
                 ? file.name.substring(0, 19) + '....' + listName[1]
                 : listName.join('.')
+              console.log(file.fileType, file.uploadState)
+              const fileNameCls = classNames(
+                'file-name',
+                'upload-list__item-name',
+                file.uploadState === 'error' && 'file-name--error'
+              )
               return (
                 <li
                   key={index}
@@ -52,12 +60,12 @@ class UploadClick extends Upload {
                 >
                   <p className='upload-list__item'>
                     <span className={classNames(`Ficon-${file.fileType}`, 'upload-list__item-icon')} />
-                    <span className='file-name upload-list__item-name'>{listName}</span>
+                    <span className={fileNameCls}>{listName}</span>
                     <span className='state-wrap upload-list__item-status'>
-                      {file.uploadState !== 'loading' && (<span className={'Ficon-' + this.uploadStatusIcon(file.uploadState)} />)}
+                      {/* {file.uploadState !== 'loading' && (<span className={'Ficon-' + this.uploadStatusIcon(file.uploadState)} />)} */}
                       { onRemove &&
-                        <span
-                          className='Ficon-wrong upload-list__item-remove'
+                        <Icon
+                          name='delete'
                           onClick={() => this.deleteFile(file, index)}
                         />
                       }

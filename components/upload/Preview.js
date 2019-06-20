@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import Icon from '../icon'
 import './style/preview.js'
 
 export default class Preview extends Component {
@@ -10,7 +11,9 @@ export default class Preview extends Component {
     this.state = {
       extraClass: '',
       style: {},
-      imgLoaded: false
+      imgLoaded: false,
+      zoomValue: 100,
+      rotateValue: 0
     }
     this.imgRef = React.createRef()
   }
@@ -25,7 +28,7 @@ export default class Preview extends Component {
     return !!nextProps.src || this.props.show
   }
 
-  onClose () {
+  onClose (e) {
     this.setState({
       style: {},
       extraClass: '',
@@ -63,13 +66,43 @@ export default class Preview extends Component {
       imgLoaded: true
     })
   }
-
+  clickEvent (type, event) {
+    event.stopPropagation()
+    let { zoomValue, rotateValue } = this.state
+    switch (type) {
+      case 'zoomIn':
+        zoomValue += 20
+        break
+      case 'zoomOut':
+        zoomValue = zoomValue === 100 ? 100 : zoomValue - 20
+        break
+      case 'reset':
+        zoomValue = 100
+        break
+      case 'leftRotate':
+        rotateValue -= 90
+        break
+      case 'rightRotate':
+        rotateValue += 90
+        break
+      default:
+        zoomValue = {}
+        rotateValue = 0
+        break
+    }
+    this.setState({
+      zoomValue,
+      rotateValue
+    })
+  }
   render () {
     const { show, src } = this.props
     const {
       extraClass,
       style,
-      imgLoaded
+      imgLoaded,
+      zoomValue,
+      rotateValue
     } = this.state
 
     return (
@@ -80,12 +113,23 @@ export default class Preview extends Component {
         component='div'
       >
         <div key={1} className={classNames('hi-preview', extraClass, {'hi-preview--hide': !show})} onClick={this.onClose.bind(this)}>
-          <div className={classNames('hi-preview-image', {'hi-preview-image--hide': !imgLoaded})} style={style}>
-            <img
-              ref={this.imgRef}
-              src={src}
-              onLoad={this.imgOnLoad.bind(this)}
-            />
+          <div className={classNames('hi-preview-image', {'hi-preview-image--hide': !imgLoaded})} style={{...style}}>
+            <div style={{transform: `rotate(${rotateValue}deg)`}}>
+              <img
+                ref={this.imgRef}
+                src={src}
+                onLoad={this.imgOnLoad.bind(this)}
+                style={{maxWidth: 'none', height: 'auto', width: zoomValue + '%'}}
+              />
+            </div>
+          </div>
+          <div className='hi-preview-toolbar' onClick={(e) => { e.stopPropagation() }}>
+
+            <Icon name='zoom-out' onClick={this.clickEvent.bind(this, 'zoomIn')} />
+            <Icon name='zoom-in' onClick={this.clickEvent.bind(this, 'zoomOut')} className={classNames(zoomValue === 100 && 'hi-icon--disabled')} />
+            <Icon name='ratio' onClick={this.clickEvent.bind(this, 'reset')} className={classNames(zoomValue === 100 && 'hi-icon--disabled')} />
+            <Icon name='rotate-left' onClick={this.clickEvent.bind(this, 'leftRotate')} />
+            <Icon name='rotate-right' onClick={this.clickEvent.bind(this, 'rightRotate')} />
           </div>
         </div>
       </ReactCSSTransitionGroup>

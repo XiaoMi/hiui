@@ -21,7 +21,8 @@ render () {
 				type="normal"
 				uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 				headers={{name: 'mi'}}
-				buttonText="上传文件"
+        buttonText="上传文件"
+        tips="只能上传 jpg/png 文件，且不超过500kb"
 				param={param}
 				name={'files[]'}
 				onChange = {(file, fileList, response) => {

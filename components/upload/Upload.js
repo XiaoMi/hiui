@@ -73,6 +73,7 @@ export default class Upload extends Component {
 
   getFileType (file) {
     let ext = file.name.slice(file.name.lastIndexOf('.') + 1).toLowerCase()
+    console.log('扩展', ext)
     let fileType = ''
 
     switch (ext) {
@@ -101,6 +102,19 @@ export default class Upload extends Component {
       case 'xls':
       case 'xlsx':
         fileType = 'excel'
+        break
+      case 'key':
+        fileType = 'key'
+        break
+      case 'exe':
+      case 'dmg':
+        fileType = 'exe'
+        break
+      case 'mp4':
+        fileType = 'video'
+        break
+      case 'mp3':
+        fileType = 'audio'
         break
       default:
         fileType = 'other'
