@@ -1,4 +1,7 @@
-import CheckBox from './CheckBox'
+import Checkbox from './Checkbox'
+import Group from './Group'
 import './style/index'
 
-export default CheckBox
+Checkbox.Group = Group
+
+export default Checkbox

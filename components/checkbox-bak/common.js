@@ -9,14 +9,19 @@ const MultipleCheckboxsOpera = {
         arr.push(ref)
         MultipleCheckboxs[name] = arr
       } else {
-        MultipleCheckboxs[name] && MultipleCheckboxs[name].indexOf(ref) < 0 && ref && MultipleCheckboxs[name].push(ref)
+        MultipleCheckboxs[name] &&
+          MultipleCheckboxs[name].indexOf(ref) < 0 &&
+          ref &&
+          MultipleCheckboxs[name].push(ref)
       }
     } else {
       throw new Error('name is empty')
     }
   },
   addRoot: (name, ref) => {
-    ref && !MultipleCheckboxs.multipleRoot[name] && (MultipleCheckboxs.multipleRoot[name] = ref)
+    ref &&
+      !MultipleCheckboxs.multipleRoot[name] &&
+      (MultipleCheckboxs.multipleRoot[name] = ref)
   },
   replace: function replace (name, arr) {
     MultipleCheckboxs[name] = arr
@@ -36,4 +41,5 @@ const MultipleCheckboxsOpera = {
     }
   }
 }
+
 export default MultipleCheckboxsOpera
