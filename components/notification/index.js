@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import open from '../notice'
 import './style/index'
 /**
  *
@@ -13,17 +14,22 @@ import './style/index'
 function handleNotificate (props) {
   props = props || {}
   const div = document.createElement('div')
+  const ref = React.createRef()
   const noti = React.createElement(
     Notification,
     Object.assign({}, props, {
+      ref,
       removeContainDiv: () => {
         unmountComponentAtNode(div)
         document.body.removeChild(div)
       }
     })
   )
+
   render(noti, div)
+  console.log('>>>>>>>>>>>>>>>>>>', ref.current)
   document.body.appendChild(div)
+  open({title: 'test', content: '内容', prefix: 'notice', key: Math.random()})
 }
 
 class Notification extends Component {
