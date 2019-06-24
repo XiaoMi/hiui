@@ -321,25 +321,20 @@ render() {
 
 :::
 
-### Input Attributes
+### Props
 
-| 参数        | 说明           | 类型                | 可选值                                                   | 默认值 |
-| ----------- | -------------- | ------------------- | -------------------------------------------------------- | ------ |
-| type        | 设置输入框类型 | string              | text \| textarea \| id \| tel \| card \| amount \| email | text   |
-| disabled    | 是否禁用       | Boolean             | true \| false                                            | false  |
-| required    | 是否必填       | string \| ReactNode | true \| false                                            | false  |
-| prefix      | 前缀           | string \| ReactNode | -                                                        | -      |
-| suffix      | 后缀           | string \| ReactNode | -                                                        | -      |
-| placeholder | 占位符         | string \| ReactNode | -                                                        | -      |
-
-### Input Events
-
-| 参数       | 说明               | 回调参数   |
-| ---------- | ------------------ | ---------- |
-| onFocus    | 获得焦点时触发     | (e: Event) |
-| onBlur     | 失去焦点时触发     | (e: Event) |
-| onKeyDown  | 触发 keydown 事件  | (e: Event) |
-| onKeyPress | 触发 keypress 事件 | (e: Event) |
-| onInput    | 触发 input 事件    | (e: Event) |
-| onChange   | 值改变时触发       | (e: Event) |
-| onKeyUp    | 触发 keyup 事件    | (e: Event) |
+| 参数        | 说明               | 类型                | 可选值                                                   | 默认值 |
+| ----------- | ------------------ | ------------------- | -------------------------------------------------------- | ------ |
+| type        | 设置输入框类型     | string              | text \| textarea \| id \| tel \| card \| amount \| email | text   |
+| disabled    | 是否禁用           | Boolean             | true \| false                                            | false  |
+| required    | 是否必填           | string \| ReactNode | true \| false                                            | false  |
+| prefix      | 前缀               | string \| ReactNode | -                                                        | -      |
+| suffix      | 后缀               | string \| ReactNode | -                                                        | -      |
+| placeholder | 占位符             | string \| ReactNode | -                                                        | -      |
+| onFocus     | 获得焦点时触发     | (e: Event)          | -                                                        | -      |
+| onBlur      | 失去焦点时触发     | (e: Event)          | -                                                        | -      |
+| onKeyDown   | 触发 keydown 事件  | (e: Event)          | -                                                        | -      |
+| onKeyPress  | 触发 keypress 事件 | (e: Event)          | -                                                        | -      |
+| onInput     | 触发 input 事件    | (e: Event)          | -                                                        | -      |
+| onChange    | 值改变时触发       | (e: Event)          | -                                                        | -      |
+| onKeyUp     | 触发 keyup 事件    | (e: Event)          | -                                                        | -      |
