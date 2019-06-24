@@ -3,9 +3,10 @@
 模态对话框
 
 ## 基础用法
+
 import DemoBase from './section-base.jsx'
 
-<DemoBase/>
+<DemoBase />
 
 ## 自定义尺寸
 
@@ -13,38 +14,55 @@ import DemoBase from './section-base.jsx'
 
 import DemoSize from './section-size.jsx'
 
-<DemoSize/>
+<DemoSize />
 
 ## 自定义按钮
 
-- 通过 footers自定义底部的按钮，并执行对应自定义事件
+- 通过 footers 自定义底部的按钮，并执行对应自定义事件
 - 通过 closeBtn 取消右上角关闭按钮
 
 import DemoBtn from './section-btn.jsx'
 
-<DemoBtn/>
+<DemoBtn />
 
 ## 嵌套用法
 
-- 未传入title 及 closeBtn 为 false，可取消 title 部分
+- 未传入 title 及 closeBtn 为 false，可取消 title 部分
 - footers 传入空数组，可取消底部按钮
 
 import DemoNest from './section-nest.jsx'
 
-<DemoNest/>
+<DemoNest />
 
-## Modal Attributes
+## Props
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| title | 标题 | string \| element | - | 无 |
-| onConfirm | 点击确定的回调 | function | - | 无 |
-| onCancel | 点击遮罩或者右上角取消或者取消按钮的回调 | function | - | 无 |
-| confirmText | 确定按钮文字 | string | - | 确定 |
-| cancelText | 取消按钮文字 | string | - | 取消 |
-| backDrop | 点击黑色背景部分是否隐藏弹框 | boolean | true \| false | true |
-| size |  定义弹窗尺寸 | string | normal \| large \| small | normal |
-| width |  自定义弹窗宽度 |  number <br/> string | - | 600px |
-| closeBtn |   是否显示右上角关闭按钮 |   boolean | true \| false | true |
-| footers |    自定义底部按钮数组（传入空数组将取消底部按钮） |    array | - | - |
-| show | 弹窗是否显示 |     boolean | true \| false | false |
+| 参数          | 说明                       | 类型                       | 可选值        | 默认值  |
+| ------------- | -------------------------- | -------------------------- | ------------- | ------- |
+| title         | 标题                       | string \| ReactNode        | -             | -       |
+| visible       | 是否显示对话框             | boolean                    | true \| false | false   |
+| closeable     | 是否展示右上角关闭按钮     | boolean                    | true\|false   | false   |
+| maskCloseable | 是否允许点击蒙层关闭对话框 | boolean                    | true\|false   | false   |
+| cancelText    | 取消按钮文案               | string                     | -             | '取消'  |
+| onCancel      | 取消事件触发时的回调       | (e: MouseEvent) => void    | -             | -       |
+| confirmText   | 确认按钮文案               | string                     | -             | '确定'  |
+| onConfirm     | 确认事件触发时的回调       | (e: MouseEvent) => void    | -             | -       |
+| size          | 对话框尺寸                 | string                     | large         | default |
+| style         | 自定义对话框样式           | object                     | -             | -       |
+| footer        | 自定义气对话框底部         | string \|ReactNode \| null | -             | -       |
+
+## Methods
+
+`Modal.open({title, closeable, size, footer，style，onConfirm，confirmText，onCancel，maskCloseable，cancelText})`
+
+| 参数          | 说明                       | 类型                       | 可选值      | 默认值  |
+| ------------- | -------------------------- | -------------------------- | ----------- | ------- |
+| title         | 标题                       | string \| ReactNode        | -           | -       |
+| closeable     | 是否展示右上角关闭按钮     | boolean                    | true\|false | false   |
+| maskCloseable | 是否允许点击蒙层关闭对话框 | boolean                    | true\|false | false   |
+| cancelText    | 取消按钮文案               | string                     | -           | '取消'  |
+| onCancel      | 取消事件触发时的回调       | (e: MouseEvent) => void    | -           | -       |
+| confirmText   | 确认按钮文案               | string                     | -           | '确定'  |
+| onConfirm     | 确认事件触发时的回调       | (e: MouseEvent) => void    | -           | -       |
+| size          | 对话框尺寸                 | string                     | large       | default |
+| style         | 自定义对话框样式           | object                     | -           | -       |
+| footer        | 自定义气对话框底部         | string \|ReactNode \| null | -           | -       |

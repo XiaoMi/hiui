@@ -6,33 +6,44 @@
 
 import DemoBase from './section-base.jsx'
 
-<DemoBase/>
-
+<DemoBase />
 
 ## 局部控制
 
 import DemoLocalControl from './section-localControl.jsx'
 
-<DemoLocalControl/>
+<DemoLocalControl />
 
 ## 整页
 
 import DemoPage from './section-page.jsx'
 
-<DemoPage/>
+<DemoPage />
 
 ## 接口调用
 
 import DemoApi from './section-api.jsx'
 
-<DemoApi/>
+<DemoApi />
 
-## Loading Attributes
+## Props
 
-| 参数   | 说明                                                | 类型    | 可选值                    | 默认值  |
-| ------ | --------------------------------------------------- | ------- | ------------------------- | ------- |
-| size   | 组件大小                                            | string  | large \| default \| small | default |
-| tip    | 自定义的旋转动画下的文字                            | string  | -                         | -       |
-| full   | 是否全屏                                            | boolean | true \| false             | false   |
-| show   | 是否显示加载动画                                    | boolean | true \| false             | false   |
-| target | 用于指令调用时,Loading 遮罩的元素，为空时将整页遮罩 | element | -                         | -       |
+| 参数     | 说明                             | 类型                | 可选值                    | 默认值  |
+| -------- | -------------------------------- | ------------------- | ------------------------- | ------- |
+| size     | 组件大小                         | string              | large \| default \| small | default |
+| tip      | 自定义加载中状态文案             | string \| ReactNode | -                         | -       |
+| visible  | 是否显示加载动画                 | boolean             | true \| false             | true    |
+| duration | 持续时间，防止闪烁（单位：毫秒） | number              | -                         | -       |
+
+## Methods
+
+`Loading.open({target, content, size, duration})`
+
+| 参数     | 说明                             | 类型                | 可选值                    | 默认值  |
+| -------- | -------------------------------- | ------------------- | ------------------------- | ------- |
+| target   | 需要`Loading` 遮罩的元素         | ReactNode           | -                         | -       |
+| content  | 自定义描述加载中文案             | string \| ReactNode | -                         | -       |
+| duration | 持续时间，防止闪烁（单位：毫秒） | number              | -                         | -       |
+| size     | 组件大小                         | string              | large \| default \| small | default |
+
+`Loading.close()` comming soon

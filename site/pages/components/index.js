@@ -16,7 +16,7 @@ export default {
     },
     'group-navgation': {
       tabs: require('./tabs'),
-      navMenu: require('./nav-menu'),
+      // navMenu: require('./nav-menu'),
       dropdown: require('./dropdown'),
       pagination: require('./pagination'),
       stepper: require('./stepper'),
@@ -38,7 +38,7 @@ export default {
     'group-data': {
       table: require('./table'),
       tree: require('./tree'),
-      panel: require('./panel'),
+      // panel: require('./panel'),
       collapse: require('./collapse'),
       tooltip: require('./tooltip'),
       popover: require('./popover'),

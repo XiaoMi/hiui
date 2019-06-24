@@ -1,24 +1,17 @@
 # Switch
 
-
 ## 基础用法
 
 import DemoBase from './section-base.jsx'
 
-<DemoBase/>
+<DemoBase />
 
-##  Switch Attributes
+## Props
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| content |  自定义显示内容 |  array[string \| element] | - | '' |
-| checked |  是否默认开启状态 | boolean | true  \| false |  false |
-| disabled |  是否默认禁用状态 | boolean | true  \| false |  false |
-| size | 弹框大小类型 | string | small \| middle \| large | middle |
-
-
-##  Switch Events
-
-| 参数 | 说明 | 回调参数 |
-| ------- | ------- | ------- |
-|  onChange |  切换的回调函数 | 当前状态 |
+| 参数     | 说明                     | 类型                     | 可选值        | 默认值  |
+| -------- | ------------------------ | ------------------------ | ------------- | ------- |
+| content  | 开关状态文案展示         | string[] \| ReactNode [] | -             | -       |
+| checked  | 指定开关选中状态         | boolean                  | true \| false | -       |
+| disabled | 是否禁用                 | boolean                  | true \| false | -       |
+| size     | 开关尺寸                 | string                   | large         | default |
+| onChange | 开关选中状态改变时的回调 | （checked）=>void        | large         | default |

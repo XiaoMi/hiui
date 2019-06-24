@@ -4,64 +4,59 @@
 
 import DemoBase from './section-base.jsx'
 
-<DemoBase/>
-
+<DemoBase />
 
 ## 批量
 
 import DemoBatch from './section-batch.jsx'
 
-<DemoBatch/>
+<DemoBatch />
 
 ## 全选
 
 import DemoCheck from './section-check.jsx'
 
-<DemoCheck/>
+<DemoCheck />
 
 ## 搜索
 
 import DemoSearch from './section-search.jsx'
 
-<DemoSearch/>
+<DemoSearch />
 
 ## 目标数量上限
 
 import DemoCount from './section-count.jsx'
 
-<DemoCount/>
+<DemoCount />
 
 ## 目标区域拖拽
 
 import DemoArea from './section-area.jsx'
 
-<DemoArea/>
+<DemoArea />
 
-## Alert Attributes
+## Props
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| mode | 类型 | string | basic \| multiple | basic |
-| showAllSelect |  是否显示全选按钮 |  boolean | true  \| false | false |
-| title | 标题  <br/> 数组长度1或2位，1位时左右标题将相同，2位时将使用对应索引标题  | array[string \| element] | - | '' |
-| searchable |  是否可筛选 |  boolean | true  \| false | false |
-| emptyContent |  数据为空时的显示内容 <br/> 数组长度1或2位，1位时左右内容将相同，2位时将使用对应索引内容| array[string \| element] | - | 暂无数据 |
-| draggable |  是否允许目标框内拖拽排序 | boolean | true  \| false |  false |
-| targetKeys | 目标框内的元素id集合 | array | - | - |
-| data |  数据集合 | array | - |  参见 Data Options |
-| targetLimit |  目标框数据上限 |  number | - |  null |
+| 参数         | 说明                                                                       | 类型                      | 可选值              | 默认值  |
+| ------------ | -------------------------------------------------------------------------- | ------------------------- | ------------------- | ------- |
+| type         | 类型                                                                       | string                    | default \| multiple | default |
+| showCheckAll | 是否展示全选按钮                                                           | boolean                   | true \| false       | false   |
+| title        | 标题(数组长度为 1 或 2 位，1 位时左右标题将相同，2 位时将使用对应索引标题) | string [] \| ReactNode [] | -                   | -       |
+| searchable   | 是否可筛选                                                                 | boolean                   | true \| false       | default |
+| emptyContent | 数据为空时的显示内容                                                       | string[] \| ReactNode []  | true \| false       | default |
+| disabled     | 是否禁用                                                                   | boolean                   | true \| false       | -       |
+| data         | 数据集合                                                                   | string                    | DateItem[]          | -       |
+| targetLimit  | 最大可穿梭上线                                                             | number                    | -                   | -       |
+| targetKeys   | 目标框内的元素 id 集合                                                     | number[] \| string[]      |                     | -       |
+| onChange     | 选中元素被移动到目标框内后的回调                                           | （targetKeys）=>void      | large               | default |
 
+## Type
 
+**_DataItem_**
 
-### Data Options
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| id |  唯一 id | number | - | - |
-| content |  元素内容 | string \| element | - | - |
-| disabled |   该元素是否被禁用 | boolean | true  \| false |  false |
-
-### Alert Events
-
-| 参数 | 说明 | 回调参数
-| ------- | ------- | ------- |
-| onChange | 选中元素被移动到目标框内后触发的事件函数 | 目标框内元素的 id 集合，如[2,3,4] |
+| 参数     | 说明     | 类型                | 可选值        | 默认值 |
+| -------- | -------- | ------------------- | ------------- | ------ |
+| id       | 唯一 id  | string              | number        | -      |
+| content  | 内容     | string \| ReactNode | -             | -      |
+| disabled | 是否禁用 | boolean             | true \| false | -      |

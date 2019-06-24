@@ -39,17 +39,11 @@ import DemoGroup from './section-group.jsx'
 
 <DemoGroup />
 
-## 属性
+## Props
 
-| 参数 | 说明 | 类型 | 可选值 |默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| type | 设置按钮类型 | string | primary \| line \| success \| danger \| default | default |
-| appearance | 按钮显示类型（按钮或链接） | string | button \| link | button |
-| size | 设置按钮大小 | string | large \| normal \| small | normal |
-| icon | 设置按钮图标，设置后忽略子元素只渲染对应图标 | string | 详见 `<Icon />` 组件 | - |
-| className | 自定义实例根元素 class，用于样式定制等 | string | - | - |
-
-## 事件
-| 参数  | 说明 | 类型 | 可选值 |默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| onClick | 点击回调函数 | function | - | - |
+| 参数    | 说明             | 类型                    | 可选值                                                           | 默认值  |
+| ------- | ---------------- | ----------------------- | ---------------------------------------------------------------- | ------- |
+| type    | 按钮类型         | string                  | primary \| line \| success \| danger \| default 类型感觉有点问题 | -       |
+| size    | 按钮尺寸         | string                  | large \| default \| small                                        | default |
+| icon    | 设置按钮图标     | string                  | 详见 `<Icon/>`组件                                               | -       |
+| onClick | 点击事件回调函数 | (e: MouseEvent) => void | -                                                                | -       |
