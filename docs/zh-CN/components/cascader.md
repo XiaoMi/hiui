@@ -65,11 +65,11 @@
   render(){
     return(
       <div>
-        <Cascader 
+        <Cascader
           onChange={(value)=>{
             console.log('on change', value)
-          }} 
-          options={this.state.options} 
+          }}
+          options={this.state.options}
           style={{width: '240px'}}
         />
       </div>
@@ -77,9 +77,8 @@
   }
 
 ```
+
 :::
-
-
 
 ### 禁用
 
@@ -146,12 +145,12 @@
   render(){
     return(
       <div>
-        <Cascader 
+        <Cascader
           onChange={(value)=>{
             console.log('on change', value)
-          }} 
+          }}
           disabled={true}
-          options={this.state.options} 
+          options={this.state.options}
           style={{width: '240px'}}
         />
       </div>
@@ -159,8 +158,8 @@
   }
 
 ```
-:::
 
+:::
 
 ### 禁用选项
 
@@ -229,11 +228,11 @@
   render(){
     return(
       <div>
-        <Cascader 
+        <Cascader
           onChange={(value)=>{
             console.log('on change', value)
-          }} 
-          options={this.state.options} 
+          }}
+          options={this.state.options}
           style={{width: '240px'}}
         />
       </div>
@@ -241,8 +240,8 @@
   }
 
 ```
-:::
 
+:::
 
 ### 选择即改变
 
@@ -309,12 +308,12 @@
   render(){
     return(
       <div>
-        <Cascader 
+        <Cascader
           onChange={(value)=>{
             console.log('on change', value)
-          }} 
+          }}
           changeOnSelect={true}
-          options={this.state.options} 
+          options={this.state.options}
           style={{width: '240px'}}
         />
       </div>
@@ -322,9 +321,8 @@
   }
 
 ```
+
 :::
-
-
 
 ### 不可清空
 
@@ -391,12 +389,12 @@
   render(){
     return(
       <div>
-        <Cascader 
+        <Cascader
           onChange={(value)=>{
             console.log('on change', value)
-          }} 
+          }}
           clearable={false}
-          options={this.state.options} 
+          options={this.state.options}
           style={{width: '240px'}}
         />
       </div>
@@ -404,10 +402,8 @@
   }
 
 ```
+
 :::
-
-
-
 
 ### 自定义字段名
 
@@ -474,16 +470,16 @@
   render(){
     return(
       <div>
-        <Cascader 
+        <Cascader
           onChange={(value)=>{
             console.log('on change', value)
-          }} 
+          }}
           fieldNames={{
             label: 'goodsName',
             value: 'goodsId',
             children: 'subGoods',
           }}
-          options={this.state.options} 
+          options={this.state.options}
           style={{width: '240px'}}
         />
       </div>
@@ -491,9 +487,8 @@
   }
 
 ```
+
 :::
-
-
 
 ### 默认值
 
@@ -560,12 +555,12 @@
   render(){
     return(
       <div>
-        <Cascader 
+        <Cascader
           value={['手机', '红米', '红米4']}
           onChange={(value)=>{
             console.log('on change', value)
-          }} 
-          options={this.state.options} 
+          }}
+          options={this.state.options}
           style={{width: '240px'}}
         />
       </div>
@@ -573,9 +568,8 @@
   }
 
 ```
+
 :::
-
-
 
 ### 自定义显示
 
@@ -642,11 +636,11 @@
   render(){
     return(
       <div>
-        <Cascader 
+        <Cascader
           onChange={(value)=>{
             console.log('on change', value)
-          }} 
-          options={this.state.options} 
+          }}
+          options={this.state.options}
           style={{width: '240px'}}
           displayRender={values => {
             return values.join(' > ')
@@ -657,9 +651,8 @@
   }
 
 ```
+
 :::
-
-
 
 ### 搜索
 
@@ -768,13 +761,13 @@
   render(){
     return(
       <div>
-        <Cascader 
+        <Cascader
           onChange={(value)=>{
             console.log('on change', value)
-          }} 
+          }}
           noFoundTip="未搜索到相关内容"
           searchable={true}
-          options={this.state.options} 
+          options={this.state.options}
           style={{width: '240px'}}
         />
       </div>
@@ -782,10 +775,8 @@
   }
 
 ```
+
 :::
-
-
-
 
 ### 动态加载选项
 
@@ -898,11 +889,11 @@
   render(){
     return(
       <div>
-        <Cascader 
+        <Cascader
           onChange={(value)=>{
             console.log('on change', value)
-          }} 
-          options={this.state.options} 
+          }}
+          options={this.state.options}
           style={{width: '240px'}}
           onActiveItemChange={values=>{
             if(values[0] == 'mix') {
@@ -929,30 +920,21 @@
   }
 
 ```
+
 :::
 
+### Props
 
-
-### Cascader Attributes
-
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| options | 可选项数据源 | Array | -  | - |
-| value | 默认值 | Array | - | [] |
-| fieldNames | 自定义options中label,value,children的字段 | Object | - | {label:'label', value:'value', children:'children'} |
-| searchable | 是否可搜索 | Boolean | true \| false | false |
-| clearable | 是否可清空 | Boolean | true \| false | true |
-| disabled | 是否禁止使用 | Boolean | true \| false | false |
-| changeOnSelect | 是否启用选择即改变功能 | Boolean | true \| false | false |
-| placeholder | placeholder | String | - | 请选择 |
-| noFoundTip | 未搜索到的提示 | String | - | 无匹配数据 |
-| className | 自定义class | String | - | - |
-| style | 自定义样式 | Object | - | - |
-| displayRender | 自定义选中的标签展示 | Function | - | - |
-
-### Cascader Events
-
-| 参数 | 说明 | 回调参数 |
-| -------- | ----- | ---- |
-| onChange | 选择完成后回调 | 选中的值 |
-| onActiveItemChange | 父级选项变化时的回调 | 选中的值 |
+| 参数           | 说明                   | 类型                          | 可选值        | 默认值     |
+| -------------- | ---------------------- | ----------------------------- | ------------- | ---------- |
+| data           | 可选项数据源           | DataItem []                   | -             | -          |
+| value          | 当前选中值             | string []                     | -             | []         |
+| searchable     | 是否可搜索             | boolean                       | true \| false | false      |
+| clearable      | 是否可清空             | boolean                       | true \| false | true       |
+| disabled       | 是否禁止使用           | boolean                       | true \| false | false      |
+| changeOnSelect | 是否启用选择即改变功能 | boolean                       | true \| false | false      |
+| placeholder    | placeholder            | string                        | -             | 请选择     |
+| emptyContent   | 选项为空时展示的数据   | string \| ReactNode           | -             | 无匹配数据 |
+| className      | 自定义 class           | string                        | -             | -          |
+| render         | 自定义选中后的展示     | (value : string []) => string | -             | -          |
+| onChange       | 选择完成后回调         | (value : string []) => void   | -             | -          |
