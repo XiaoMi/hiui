@@ -1,6 +1,7 @@
 ## Dropdown
 
 ### 基础用法
+
 :::demo
 
 ```js
@@ -24,6 +25,7 @@ render() {
   )
 }
 ```
+
 :::
 
 ### 触发方式
@@ -70,12 +72,14 @@ render() {
   )
 }
 ```
+
 :::
 
 ### 按钮菜单
 
 :::demo
 自定义前缀、后缀
+
 ```js
 constructor () {
   super()
@@ -94,7 +98,7 @@ constructor () {
 render() {
   return (
     <div>
-      <Dropdown 
+      <Dropdown
         list={this.state.list}
         title="按钮菜单"
         type="button"
@@ -106,12 +110,14 @@ render() {
   )
 }
 ```
+
 :::
 
 ### 拓展菜单
 
 :::demo
 传入 type 为 group，组件会将 title 执行对应的点击响应，点击箭头打开菜单项
+
 ```js
 constructor () {
   super()
@@ -130,7 +136,7 @@ constructor () {
 render() {
   return (
     <div>
-      <Dropdown 
+      <Dropdown
         list={this.state.list}
         title="按钮菜单"
         type="group"
@@ -142,25 +148,29 @@ render() {
   )
 }
 ```
+
 :::
 
-#### Dropdown Attributes
+#### Props
 
-| 参数       | 说明   |  类型  | 可选值 |默认值  |
-| --------   | -----  | ----  |    ----  |   ----  |
-| list |  数据  |  Array   | 参见 List Options | - |
-| title |   显示的文字内容<br/>传入"-"时代表分隔符  |   String \| Component   | - | - |
-| type |   下拉按钮类型  |   String   | text \| button \| group | text |
-| onClick |   点击回调函数  |   Function   | - | - |
-| prefix |   前缀图标  |   String \| Component   | - | - |
-| suffix |   后缀图标  |  String \| Component   | - | - |
-| trigger |    触发方式  |   String \| array   | click \| contextmenu | click |
+| 参数    | 说明                   | 类型                     | 可选值                        | 默认值 |
+| ------- | ---------------------- | ------------------------ | ----------------------------- | ------ |
+| data    | 下拉菜单数据项         | DataItem []              | -                             | -      |
+| title   | 下拉菜单显示标题的内容 | string \| ReactNode      | -                             | -      |
+| type    | 下拉菜单类型           | string                   | text \| button \| group       | text   |
+| onClick | 点击回调函数           | （item:DataItem）=> void | -                             | -      |
+| prefix  | 前缀图标               | string \| ReactNode      | -                             | -      |
+| suffix  | 后缀图标               | string \| ReactNode      | -                             | -      |
+| trigger | 触发方式               | string \| string []      | click \| contextmenu \| hover | click  |
 
-#### List Options
-| 参数     | 说明   |  类型  | 可选值 | 默认值  |
-| --------   | -----  | ----  |    ----  |   ----  |
-| title |   显示文案  |   Element \| String   | 必需 | - |
-| prefix |   文案前缀，选项中包含此值时将替换外部的 prefix  |   Element \| String   | - | - |
-| suffix |   文案后缀，选项中包含此值时将替换外部的 suffix |   Element \| String   | - | - |
-| disabled |    是否禁用  |   Boolean   | - | false |
-| value |   点击后回调的值   |   String | Number   | - | - |
+#### Type
+
+**_DateItem_**
+
+| 参数     | 说明           | 类型                | 可选值 | 默认值 |
+| -------- | -------------- | ------------------- | ------ | ------ |
+| title    | 显示文案       | string \| ReactNode | -      | -      |
+| prefix   | 文案前缀       | string \| ReactNode | -      | -      |
+| suffix   | 文案后缀       | string \| ReactNode | -      | -      |
+| disabled | 是否禁用       | boolean             | -      | false  |
+| url      | 点击跳转的路径 | string              | -      | -      |
