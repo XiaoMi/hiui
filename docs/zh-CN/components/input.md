@@ -2,7 +2,6 @@
 
 通过鼠标或键盘输入字符
 
-
 ### 类型
 
 :::demo
@@ -70,8 +69,8 @@ render() {
   )
 }
 ```
-:::
 
+:::
 
 ### 状态
 
@@ -130,14 +129,13 @@ render() {
           />
         </Col>
       </Row>
-     
+
     </div>
   )
 }
 ```
+
 :::
-
-
 
 ### 附加
 
@@ -207,8 +205,8 @@ render() {
   )
 }
 ```
-:::
 
+:::
 
 ### 前置元素
 
@@ -256,7 +254,7 @@ render() {
     radioList,
     checkedIndex,
     prepend,
-    append    
+    append
   } = this.state
   const Row = Grid.Row
   const Col = Grid.Col
@@ -292,14 +290,13 @@ render() {
             />
         </Col>
       </Row>
-      
+
     </div>
   )
 }
 ```
+
 :::
-
-
 
 ### 多行文本
 
@@ -321,31 +318,28 @@ render() {
   )
 }
 ```
-:::
 
+:::
 
 ### Input Attributes
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| type | 设置输入框类型 | String | text \| textarea \| id \| tel \| card \| amount \| email  | text |
-| disabled | 是否禁用 | Boolean | true \| false | false |
-| required | 是否必填 | String | true \| false | false |
-| prefix | 前缀 | String | - | - |
-| suffix | 后缀 | String | - | - |
-| prepend | 前置元素 | Element | - | - |
-| append | 后置元素 | Element | - | - |
-| placeholder |  占位符 |  String | - | - |
+| 参数        | 说明           | 类型                | 可选值                                                   | 默认值 |
+| ----------- | -------------- | ------------------- | -------------------------------------------------------- | ------ |
+| type        | 设置输入框类型 | string              | text \| textarea \| id \| tel \| card \| amount \| email | text   |
+| disabled    | 是否禁用       | Boolean             | true \| false                                            | false  |
+| required    | 是否必填       | string \| ReactNode | true \| false                                            | false  |
+| prefix      | 前缀           | string \| ReactNode | -                                                        | -      |
+| suffix      | 后缀           | string \| ReactNode | -                                                        | -      |
+| placeholder | 占位符         | string \| ReactNode | -                                                        | -      |
 
 ### Input Events
 
-| 参数 | 说明 | 回调参数 |
-| -------- | ----- | ---- |
-| onFocus | 获得焦点时触发 | (event: Event, value: 原始值) |
-| onBlur | 失去焦点时触发 | (event: Event, value: 原始值) |
-| onKeyDown | 触发 keydown 事件 | (event: Event, value: 原始值) |
-| onKeyPress | 触发 keypress 事件 | (event: Event, value: 原始值) |
-| onInput | 触发 input 事件 | (event: Event, value: 原始值) |
-| onChange | 值改变时触发 | (event: Event, value: 原始值) |
-| onKeyUp | 触发 keyup 事件 | (event: Event, value: 原始值) |
-
+| 参数       | 说明               | 回调参数   |
+| ---------- | ------------------ | ---------- |
+| onFocus    | 获得焦点时触发     | (e: Event) |
+| onBlur     | 失去焦点时触发     | (e: Event) |
+| onKeyDown  | 触发 keydown 事件  | (e: Event) |
+| onKeyPress | 触发 keypress 事件 | (e: Event) |
+| onInput    | 触发 input 事件    | (e: Event) |
+| onChange   | 值改变时触发       | (e: Event) |
+| onKeyUp    | 触发 keyup 事件    | (e: Event) |
