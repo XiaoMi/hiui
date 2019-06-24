@@ -5,10 +5,11 @@
 ### 何时使用
 
 - 需要从大量的离散型数据中选择一部分时使用
-- 备选项数量5个以上时
+- 备选项数量 5 个以上时
 - 不需要将全部备选项都展示给用户时
 
 ### 类型
+
 #### 单选
 
 :::demo
@@ -48,8 +49,8 @@ render () {
 	)
 }
 ```
-:::
 
+:::
 
 ### 禁止状态
 
@@ -88,8 +89,8 @@ render () {
 	)
 }
 ```
-:::
 
+:::
 
 ### 自定义模板
 
@@ -137,8 +138,8 @@ render () {
 	)
 }
 ```
-:::
 
+:::
 
 ### 异步单选
 
@@ -173,8 +174,8 @@ render () {
 	)
 }
 ```
-:::
 
+:::
 
 ### 多选
 
@@ -219,8 +220,8 @@ render () {
 	)
 }
 ```
-:::
 
+:::
 
 ### 单行多选
 
@@ -268,8 +269,8 @@ render () {
 	)
 }
 ```
-:::
 
+:::
 
 ### 异步多选
 
@@ -281,7 +282,7 @@ render () {
 render () {
 	return (
 		<div>
-			<Select 
+			<Select
 				mode='multiple'
 				autoload={true}
 				style={{width: '300px'}}
@@ -306,53 +307,46 @@ render () {
 	)
 }
 ```
+
 :::
 
+### Props
 
-### Select Attributes
+| 参数         | 说明                                      | 类型                                           | 可选值             | 默认值 |
+| ------------ | ----------------------------------------- | ---------------------------------------------- | ------------------ | ------ |
+| type         | 下拉框类型                                | String                                         | single \| multiple | single |
+| multipleWrap | 多选模式是否换行                          | string                                         | wrap \| nowrap     | wrap   |
+| data         | 下拉框选项                                | DataItem []                                    | -                  | -      |
+| dataSource   | 异步下拉框选项                            | DataSource                                     | -                  | -      |
+| value        | 默认值被选中项                            | string \| string []                            | -                  | -      |
+| showCheckAll | 是否显示全选，只对多选生效                | boolean                                        | true \| false      | false  |
+| searchable   | 是否可以筛选                              | boolean                                        | true \| false      | false  |
+| clearable    | 是否可以清空                              | boolean                                        | true \| false      | true   |
+| autoload     | origin 从远端获取数据，初始时是否自动加载 | boolean                                        | true \| false      | false  |
+| disabled     | 禁用该下拉框                              | boolean                                        | true \| false      | false  |
+| placeholder  | 提示信息                                  | string                                         | -                  | 请选择 |
+| emptyContent | 没有选项时的提示                          | string \| ReactNode                            | -                  | 无内容 |
+| onChange     | 改变选项时触发函数                        | (item: DataItem \|DataItem []) => void         | -                  | 无内容 |
+| render       | 自定义下拉菜单渲染函数                    | (item: DataItem, selectd:boolean) => ReactNode | -                  | 无内容 |
 
-| 参数 | 说明 | 类型 | 可选值 |默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| mode | 下拉框类型 | String | single \| multiple | single |
-| multipleMode (1.4新增) | 多选模式，wrap会显示所有已选中项，超出换行；nowrap只显示一行，超出的以数字显示 | String | wrap \|  nowrap | wrap |
-| list | 下拉框选项，一般为 {name: '', id: ''} 形式。可以加入 'disabled' 属性，表示是否禁止选择 | Array | - | - |
-| origin | 异步选择配置，详见下表 | Object | - | - |
-| value | 默认值被选中项，值与被选中的id相同，多个以,分割或者传递数组| String \| Number \| Array | - | - |
-| showCheckAll | 是否显示全选，只对多选生效 | Boolean | true \| false | false |
-| searchable | 是否可以筛选 | Boolean | true \| false | false |
-| clearable | 是否可以清空 | Boolean | true \| false | true |
-| autoload | origin从远端获取数据，初始时是否自动加载 | Boolean | true \| false | false |
-| disabled | 禁用该下拉框 | Boolean | true \| false | false |
-| placeholder | 提示信息 | String | - | 请选择 |
-| noFoundTip | 没有选项时的提示 | String | - | 无内容 |
-| style | 自定义样式 | Object | - | - |
-| optionWidth (1.4新增) | 选项的宽度 | Number | - | 默认和select宽度一致 |
+### Type
 
+**_DataItem_**
 
-### origin Options
-| 参数 | 说明 | 类型 | 可选值 |默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| url | 请求的url | String | - | - |
-| type | 请求方法 | String | get \| post | get |
-| data | post请求时的参数 | Object | - | - |
-| key | 搜索关键字参数key | String | - | keyword |
-| keyword | autoload为true时的默认搜索关键词 | String | - | - |
-| func | 成功时的回调 | Function | - | - |
-| error | 失败时的回调 | Function | - | - |
-| - | 其他的一些fetch设置，如headers,credentials等 | Object | - | - |
+| 参数     | 说明            | 类型   | 可选值      | 默认值 |
+| -------- | --------------- | ------ | ----------- | ------ |
+| title    | 下拉选项标题    | string | -           | -      |
+| id       | 下拉选项唯一 id | string | get \| post | get    |
+| disabled | 是否禁用        | Object | -           | -      |
 
+**_DataSource_**
 
-### Select.Option Attributes
-**已废弃，自定义模板使用dropdownRender**
-
-| 参数 | 说明 | 类型 | 可选值 |默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| name | option标签 | String | - | - |
-| id | option value | String | - | - |
-
-
-### Select Events
-
-| 参数 | 说明 | 回调参数 |
-| -------- | ----- | ---- |
-| onChange | 改变选项时触发函数 | (item: Object\|Array) |
+| 参数              | 说明                  | 类型                            | 可选值                                             | 默认值        |
+| ----------------- | --------------------- | ------------------------------- | -------------------------------------------------- | ------------- |
+| url               | 请求的 url            | string                          | -                                                  | -             |
+| type              | 请求方法              | string                          | get \| post                                        | get           |
+| data              | post 请求时请求体参数 | object                          | -                                                  | -             |
+| params            | url 查询参数          | object                          | -                                                  | -             |
+| headers           | 请求头                | object                          | -                                                  | -             |
+| mode              | 请求模式              | string                          | 'same-origin' \| 'cors' \| 'no-cors' \| 'navigate' | 'same-origin' |
+| transformResponse | 成功时的回调          | (response:object) => DataItem[] | -                                                  | -             |
