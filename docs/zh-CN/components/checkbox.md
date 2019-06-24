@@ -236,7 +236,7 @@ render() {
 | 参数         | 说明                                                         | 类型                                                                  | 可选值        | 默认值 |
 | ------------ | ------------------------------------------------------------ | --------------------------------------------------------------------- | ------------- | ------ |
 | className    | 自定义类名                                                   | string                                                                | -             | -      |
-| data         | 指定可选项                                                   | Array<string \| number \| { label: string, value: string \| number, disabled: boolean }> | -             | []     |
+| data         | 指定可选项                                                   | Array<string \| number \| { label: string, value: string \| number, disabled?: boolean }> | -             | []     |
 | defaultValue | 默认选中的项                                                 | Array<string \| number>                                               | -             | []     |
 | disabled     | 是否禁用                                                     | boolean                                                               | true \| false | false  |
 | name         | `CheckboxGroup` 下所有 `input[type="checkbox"]` 的 name 属性 | string                                                                | -             | -      |
