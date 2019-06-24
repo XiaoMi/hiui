@@ -12,7 +12,7 @@ module.exports = {
     'group-tips': '通知/提示',
     typography: 'Typography 排版',
     button: 'Button 按钮',
-    dropdown: 'Dropdown 下拉',
+    dropdown: 'Dropdown 下拉菜单',
     pagination: 'Pagination 分页',
     tabs: 'Tabs 切换',
     table: 'Table 表格',
