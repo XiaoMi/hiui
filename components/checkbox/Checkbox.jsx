@@ -6,17 +6,61 @@ import Provider from '../context'
 const prefixCls = 'hi-checkbox'
 
 class Checkbox extends Component {
+  state = {
+    checked: false
+  }
+  static getDerivedStateFromProps (nextProps) {
+    if (hasChecked(nextProps)) {
+      return getChecked(nextProps)
+    }
+    return null
+  }
+  componentDidMount () {
+    this.setState(getChecked(this.props))
+  }
+  handleChange = (event) => {
+    const { onChange } = this.props
+    onChange && onChange(event.target.checked, event)
+    hasChecked(this.props) ||
+      this.setState({
+        checked: event.target.checked
+      })
+  }
   render () {
-    const { children, disabled } = this.props
+    const {
+      autoFocus,
+      className,
+      children,
+      disabled,
+      indeterminate,
+      style,
+      name,
+      value
+    } = this.props
+    const { checked } = this.state
     const checkboxCls = classNames(
       prefixCls,
       disabled && `${prefixCls}--disabled`
     )
-    const inputCls = classNames(`${prefixCls}__input`)
+    const inputCls = classNames(
+      className,
+      `${prefixCls}__input`,
+      checked && !indeterminate && `${prefixCls}__input--checked`,
+      indeterminate && `${prefixCls}__input--indeterminate`
+    )
     return (
-      <label className={checkboxCls}>
+      <label className={checkboxCls} style={style}>
+        <input
+          type='checkbox'
+          autoFocus={autoFocus}
+          onChange={this.handleChange}
+          checked={checked}
+          disabled={disabled}
+          name={name}
+          value={value}
+        />
         <span className={inputCls} />
-        <span>{children}</span>
+        <span className={`${prefixCls}__text`}>{children}</span>
       </label>
     )
   }
@@ -24,13 +68,30 @@ class Checkbox extends Component {
 
 Checkbox.propTypes = {
   checked: PropTypes.bool,
+  className: PropTypes.string,
+  style: PropTypes.object,
   defaultChecked: PropTypes.bool,
   disabled: PropTypes.bool,
+  indeterminate: PropTypes.bool,
+  name: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChange: PropTypes.func
 }
 
 Checkbox.defaultProps = {
-  onChange: () => {}
+  defaultChecked: false
+}
+
+function hasChecked (props) {
+  const has = (key) => Object.prototype.hasOwnProperty.call(props, key)
+  return has('checked')
+}
+
+function getChecked (props) {
+  const { checked, defaultChecked } = props
+  return {
+    checked: hasChecked(props) ? (checked || false) : defaultChecked
+  }
 }
 
 export default Provider(Checkbox)

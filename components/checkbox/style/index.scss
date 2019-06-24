@@ -1,16 +1,103 @@
 @import '@hi-ui/core-css/index.scss';
 
-.hi-checkbox {
-  display: inline-block;
+$prefixCls: '.hi-checkbox' !default;
+
+#{$prefixCls} {
+  $active-color: get-color($palette-primary, 'hiui-blue');
+
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
 
   @include component-reset();
 
-  &:not(.hi-checkbox--disabled):hover {
-    .hi-checkbox__input {
-      border: 1px solid #4284f5;
+  &:not(#{$prefixCls}--disabled):hover {
+    #{$prefixCls}__input {
+      border-color: $active-color;
     }
   }
 
+  input {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    opacity: 0;
 
+    &:focus + #{$prefixCls}__input {
+      border-color: $active-color;
+    }
+  }
+
+  &__input {
+    position: relative;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #d8d8d8;
+    border-radius: 2px;
+    transition: 0.3s ease-out;
+    line-height: 1;
+
+    &--indeterminate {
+      &::after {
+        content: '';
+        top: 3px;
+        left: 3px;
+        right: 3px;
+        bottom: 3px;
+        position: absolute;
+        display: block;
+        background: $active-color;
+      }
+    }
+
+    &--checked {
+      background: $active-color;
+      border-color: $active-color;
+
+      &::after {
+        transform: rotate(45deg) scaleY(1);
+        pointer-events: none;
+        box-sizing: content-box;
+        content: '';
+        border: 2px solid #fff;
+        border-left: 0;
+        border-top: 0;
+        height: 7px;
+        left: 4px;
+        position: absolute;
+        top: 1px;
+        width: 4px;
+        transform-origin: center;
+      }
+    }
+  }
+
+  &__text {
+    padding: 0 32px 0 8px;
+    line-height: unset;
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+
+    #{$prefixCls}__input {
+      border-color: #d8d8d8;
+      background: #f2f2f2;
+
+      &::after {
+        border-color: #d8d8d8;
+      }
+    }
+
+    #{$prefixCls}__text {
+      color: rgba(#000, 0.65);
+    }
+  }
+
+  &-group {
+    display: inline-block;
+  }
 }
