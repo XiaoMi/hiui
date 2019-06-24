@@ -1,8 +1,8 @@
-## Form表单组件
+## Form 表单组件
 
 ### 对齐方式
 
-:::demo 
+:::demo
 
 ```js
 constructor() {
@@ -105,11 +105,12 @@ render(){
   )
 }
 ```
+
 :::
 
 ### 横向表单
 
-:::demo 
+:::demo
 
 ```js
 render(){
@@ -132,6 +133,7 @@ render(){
   )
 }
 ```
+
 :::
 
 ### 表单验证
@@ -261,34 +263,33 @@ render(){
   )
 }
 ```
+
 :::
 
+### Props
 
-### Form Attributes
+**_Form_**
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值|
-| --- | ---  | --- | ---- | ---   |
-| model | 表单数据 | Object  | - | - |
-| rules | 表单验证规则 | Object  | - | - |
-| labelWidth | label宽度 | String  | |
-| labelPosition | label位置 | String |right \| left \| top|right|
-| inline | 是否横向排列 | Boolean | true \| false | false|
+| 参数           | 说明             | 类型    | 可选值               | 默认值 |
+| -------------- | ---------------- | ------- | -------------------- | ------ |
+| model          | 表单数据         | Object  | -                    | -      |
+| rules          | 表单验证规则     | Object  | -                    | -      |
+| labelWidth     | label 宽度       | String  |                      |
+| labelPlacement | label 放置的位置 | String  | right \| left \| top | right  |
+| inline         | 是否横向排列     | Boolean | true \| false        | false  |
 
+**_Form.Item_**
 
-### FormItem Attributes
+| 参数     | 说明              | 类型    | 可选值        | 默认值 |
+| -------- | ----------------- | ------- | ------------- | ------ |
+| field    | 表单域 model 字段 | String  | -             | -      |
+| label    | 标签文本          | String  | -             | -      |
+| required | 是否必填          | Boolean | true \| false | false  |
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值|
-| --- | ---  | --- | ---- | ---   |
-| prop | 表单域model字段 | String  | - | - |
-| label | 标签文本 | String  | - | - |
-| labelWidth | label宽度 | String  | |
-| required | 是否必填 | Boolean  | true \| false | false |
+### Methods
 
-
-### Form Methods
-
-| 方法名| 说明|
-| --- | --- |
-| validate(callback) | 对整个表单进行校验 |
+| 方法名                        | 说明               |
+| ----------------------------- | ------------------ |
+| validate(callback)            | 对整个表单进行校验 |
 | validateField(prop, callback) | 对表单字段进行校验 |
-| resetValidates | 重置整个表单的验证 |
+| resetValidates                | 重置整个表单的验证 |
