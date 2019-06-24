@@ -24,7 +24,7 @@ render() {
 
   return (
     <div>
-      <Stepper 
+      <Stepper
         list={list}
         current={1}
       />
@@ -32,14 +32,14 @@ render() {
   )
 }
 ```
-:::
 
+:::
 
 ### 图标用法
 
 :::demo
 
-stepper 图标用法传入src值
+stepper 图标用法传入 src 值
 
 ```js
 render() {
@@ -60,7 +60,7 @@ render() {
 
   return (
     <div>
-      <Stepper 
+      <Stepper
         list={list}
         current={1}
       />
@@ -68,14 +68,14 @@ render() {
   )
 }
 ```
-:::
 
+:::
 
 ### 上下结构
 
 :::demo
 
-stepper 上下结构只需加入up=true；只有上下结构有text描述
+stepper 上下结构只需加入 up=true；只有上下结构有 text 描述
 
 ```js
 render() {
@@ -96,7 +96,7 @@ render() {
 
   return (
     <div>
-      <Stepper 
+      <Stepper
         list={list}
         current={2}
         up={true}
@@ -105,14 +105,14 @@ render() {
   )
 }
 ```
-:::
 
+:::
 
 ### 上下结构的图标用法
 
 :::demo
 
-stepper 上下结构的图标用法需要加入up=true，并在数值列表中添加src值
+stepper 上下结构的图标用法需要加入 up=true，并在数值列表中添加 src 值
 
 ```js
 render() {
@@ -136,7 +136,7 @@ render() {
 
   return (
     <div>
-      <Stepper 
+      <Stepper
         list={list}
         current={1}
         up={true}
@@ -145,15 +145,14 @@ render() {
   )
 }
 ```
+
 :::
-
-
 
 ### 竖直方向
 
 :::demo
 
-stepper 竖直方向只需传入属性vertical=true
+stepper 竖直方向只需传入属性 vertical=true
 
 ```js
 render() {
@@ -176,7 +175,7 @@ render() {
     <div
       style={{height: '500px', width: '130px'}}
     >
-      <Stepper 
+      <Stepper
         list={list}
         current={1}
         vertical={true}
@@ -185,14 +184,14 @@ render() {
   )
 }
 ```
-:::
 
+:::
 
 ### 竖直方向图标用法
 
 :::demo
 
-stepper 竖直方向只需传入属性vertical=true
+stepper 竖直方向只需传入属性 vertical=true
 
 ```js
 render() {
@@ -218,7 +217,7 @@ render() {
     <div
       style={{height: '500px', width: '130px'}}
     >
-      <Stepper 
+      <Stepper
         list={list}
         current={1}
         vertical={true}
@@ -227,23 +226,25 @@ render() {
   )
 }
 ```
+
 :::
 
+### Props
 
-### Stepper Attributes
+| 参数      | 说明                            | 类型        | 可选值                | 默认值    |
+| --------- | ------------------------------- | ----------- | --------------------- | --------- |
+| className | 样式名                          | string      | -                     | -         |
+| data      | 步骤数据项                      | DataItem [] | -                     | -         |
+| current   | 当前步骤位置索引，从 0 开始计数 | number      | -                     | -         |
+| placement | 位置                            | string      | vertical \| horizonal | horizonal |
+| up        | 在水平显示时符号是否在上        | boolean     | true \| false         | false     |
 
-| 参数 | 说明 | 类型 | 可选值 |默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| id | 组件id | String | - | - |
-| className | 样式名 | String | - | - |
-| list | 步骤元素列表 | 参见 List Options | - | - |
-| current | 当前步骤位置索引，从0开始计数 | Number | - | - |
-| vertical | 是否竖直显示 | Boolean | true \| false | false |
-| up | 在水平显示时符号是否在上 | Boolean | true \| false | false |
+#### Type
 
-#### List Options
-| 参数     | 说明   |  类型  | 可选值 | 默认值  |
-| --------   | -----  | ----  |    ----  |   ----  |
-| title |   显示文案  |   Element \| String   | 必需 | - |
-| text |   副文本  |   Element \| String   | - | - |
-|  icon |    自定义icon |   Element   | - | - |
+**_DateItem_**
+
+| 参数    | 说明        | 类型                | 可选值 | 默认值 |
+| ------- | ----------- | ------------------- | ------ | ------ |
+| title   | 显示文案    | string \| ReactNode | -      | -      |
+| content | 内容文案    | string \| ReactNode | -      | -      |
+| icon    | 自定义 icon | string \| ReactNode | -      | -      |
