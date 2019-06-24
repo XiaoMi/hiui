@@ -95,9 +95,9 @@
     ]
     return(
       <div>
-        <Menu 
-          mode="horizontal" 
-          activeId={'xiaomi9'} 
+        <Menu
+          mode="horizontal"
+          activeId={'xiaomi9'}
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
           onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
           datas={datas}
@@ -107,9 +107,8 @@
   }
 
 ```
+
 :::
-
-
 
 ### 胖菜单
 
@@ -226,9 +225,9 @@
     ]
     return(
       <div>
-        <Menu 
-          mode="horizontal" 
-          activeId={'xiaomi9'} 
+        <Menu
+          mode="horizontal"
+          activeId={'xiaomi9'}
           fatMenu
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
           datas={datas}
@@ -238,9 +237,8 @@
   }
 
 ```
+
 :::
-
-
 
 ### 竖向展开菜单
 
@@ -336,9 +334,9 @@
     ]
     return(
       <div>
-        <Menu 
-          mode="vertical" 
-          activeId={'xiaomi9'} 
+        <Menu
+          mode="vertical"
+          activeId={'xiaomi9'}
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
           onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
           datas={datas}
@@ -348,10 +346,8 @@
   }
 
 ```
+
 :::
-
-
-
 
 ### 非手风琴菜单
 
@@ -447,10 +443,10 @@
     ]
     return(
       <div>
-        <Menu 
+        <Menu
           accordion={false}
-          mode="vertical" 
-          activeId={'xiaomi9'} 
+          mode="vertical"
+          activeId={'xiaomi9'}
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
           onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
           datas={datas}
@@ -460,8 +456,8 @@
   }
 
 ```
-:::
 
+:::
 
 ### 竖向收起菜单
 
@@ -558,11 +554,11 @@
     ]
     return(
       <div>
-        <Menu 
+        <Menu
           mini
           miniToggle={true}
-          mode="vertical" 
-          activeId={'xiaomi9'} 
+          mode="vertical"
+          activeId={'xiaomi9'}
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
           onMiniChange={toggle => console.log('-----onMiniChange', toggle)}
           onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
@@ -573,31 +569,32 @@
   }
 
 ```
+
 :::
 
+### Props
 
+| 参数            | 说明                         | 类型                             | 可选值                 | 默认值   |
+| --------------- | ---------------------------- | -------------------------------- | ---------------------- | -------- |
+| data            | 菜单选项                     | DataItem []                      | -                      | -        |
+| activeId        | 激活的菜单 id                | string                           | -                      | -        |
+| placement       | 菜单位置                     | string                           | horizontal \| vertical | vertical |
+| collapsed       | 垂直菜单时，是否收起         | boolean                          | true \| false          | false    |
+| showCollpse     | 垂直菜单时，是否显示收缩开关 | boolean                          | true \| false          | true     |
+| showAllSubMenus | 所有子菜单一起展示           | boolean                          | true \| false          | false    |
+| accordion       | 手风琴模式，水平时生效       | boolean                          | true \| false          | true     |
+| onClick         | 点击菜单选项触发的回调       | function(activeId, prevActiveId) | -                      | -        |
+| onClickSubMenu  | 点击父菜单选项触发的回调     | function(subMenuIndexs)          | -                      | -        |
+| onCollapse      | 点击收缩开关触发的回调       | (collapsed:boolean) => void      | -                      | -        |
 
-### Menu Attributes
+### Type
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| data | 菜单选项配置，具体格式见下 | array | - | - |
-| activeId | 激活的菜单id | string | -  | - |
-| mode | 菜单排列模式 | string | horizontal / vertical | vertical |
-| mini | 垂直菜单时，是否收缩 | boolean | true / false | false |
-| miniToggle | 垂直菜单时，是否显示收缩开关 | boolean | true / false | true |
-| fatMenu | 胖菜单，需要同时mode=horizontal时才生效 | boolean | true / false | false |
-| accordion | 手风琴模式，只有在mode=vertical时生效 | boolean | true / false | true |
-| onClick | 点击菜单选项触发的回调 | function(activeId, prevActiveId) | - | - |
-| onClickSubMenu | 点击父菜单选项触发的回调 | function(subMenuIndexs) | - | - |
-| onMiniChange | 点击收缩开关触发的回调 | function(miniToggle) | - | - |
+**_DataItem_**
 
-### Data Attributes
-
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| content | 菜单选项标题 | string, node | - | - |
-| icon | 菜单选项icon，为string时会作文Icon组件的name| string, node | - | - |
-| id | 菜单选项唯一标识 | string, number | - | - |
-| disabled | 菜单选项是否禁止 | bool | true / false | false |
-| children | 字菜单选项配置 | array | - | - |
+| 参数     | 说明                                               | 类型                | 可选值        | 默认值 |
+| -------- | -------------------------------------------------- | ------------------- | ------------- | ------ |
+| content  | 菜单选项标题                                       | string \| ReactNode | -             | -      |
+| icon     | 菜单选项 icon，为 string 时会作文 Icon 组件的 name | string \| ReactNode | -             | -      |
+| id       | 菜单选项唯一标识                                   | string \| number    | -             | -      |
+| disabled | 菜单选项是否禁止                                   | boolean             | true \| false | false  |
+| children | 字菜单选项配置                                     | DataItem []         | -             | -      |
