@@ -6,10 +6,9 @@
 
 ## Card 卡片
 
-
 ### 基础
 
-:::demo 
+:::demo
 
 Card 组件
 
@@ -40,12 +39,12 @@ render() {
   )
 }
 ```
-:::
 
+:::
 
 ### 不同大小
 
-:::demo 
+:::demo
 
 Card 组件
 
@@ -79,11 +78,12 @@ render() {
   )
 }
 ```
+
 :::
 
 ### 额外按钮
 
-:::demo 
+:::demo
 
 Card 组件
 
@@ -91,18 +91,18 @@ Card 组件
 render() {
   return (
     <React.Fragment>
-      <Card 
-        hoverable 
+      <Card
+        hoverable
         extra={[<Icon name='edit' key={1}/>, <Icon name='delete' key={2}/>]}
         extraShow='stay'
-        title='这里是标题这里是标题这里是标题' 
+        title='这里是标题这里是标题这里是标题'
       >
         <p>包含额外扩展按钮</p>
         <p>扩展按钮常驻</p>
       </Card>
       <br />
-      <Card 
-        hoverable 
+      <Card
+        hoverable
         extra={[<Icon name='edit' key={1} />, <Icon name='delete' key={2}/>]}
         extraShow='hover'
       >
@@ -114,12 +114,12 @@ render() {
   )
 }
 ```
-:::
 
+:::
 
 ### 图片卡片
 
-:::demo 
+:::demo
 
 Card 组件
 
@@ -129,7 +129,7 @@ render() {
     <React.Fragment>
       <Card
         hoverable
-        cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>} 
+        cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>}
         title='图片展示'
         description='图片信息描述：size=small;width:276px'
         size='small'
@@ -137,16 +137,16 @@ render() {
       <br />
       <Card
         hoverable
-        cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>} 
+        cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>}
         title='图片展示'
         description='图片信息描述：size=middle;width:376px'
         size='middle'
       ></Card>
-      
+
       <br />
       <Card
         hoverable
-        cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>} 
+        cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>}
         title='图片展示'
         description='图片信息描述：size=large;width:576px'
         size='large'
@@ -155,12 +155,12 @@ render() {
   )
 }
 ```
-:::
 
+:::
 
 ### 简易卡片
 
-:::demo 
+:::demo
 
 Card 组件
 
@@ -203,11 +203,12 @@ render() {
   )
 }
 ```
+
 :::
 
 ### 配合 Gird 布局 - 图片排版
 
-:::demo 
+:::demo
 
 配合 Grid 布局实现更加简单
 
@@ -220,7 +221,7 @@ render() {
         <Col span={6}>
           <Card
             hoverable
-            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>} 
+            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>}
             title='图片展示'
             description='这是图片描述'
           ></Card>
@@ -228,7 +229,7 @@ render() {
         <Col span={6}>
           <Card
             hoverable
-            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>} 
+            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>}
             title='图片展示'
             description='这是图片描述'
           ></Card>
@@ -236,7 +237,7 @@ render() {
         <Col span={6}>
           <Card
             hoverable
-            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>} 
+            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>}
             title='图片展示'
             description='这是图片描述'
           ></Card>
@@ -244,7 +245,7 @@ render() {
         <Col span={6}>
           <Card
             hoverable
-            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>} 
+            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>}
             title='图片展示'
             description='这是图片描述'
           ></Card>
@@ -254,7 +255,7 @@ render() {
         <Col span={6}>
           <Card
             hoverable
-            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>} 
+            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>}
             title='图片展示'
             description='这是图片描述'
           ></Card>
@@ -262,7 +263,7 @@ render() {
         <Col span={6}>
           <Card
             hoverable
-            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>} 
+            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>}
             title='图片展示'
             description='这是图片描述'
           ></Card>
@@ -270,7 +271,7 @@ render() {
         <Col span={6}>
           <Card
             hoverable
-            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>} 
+            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>}
             title='图片展示'
             description='这是图片描述'
           ></Card>
@@ -278,7 +279,7 @@ render() {
         <Col span={6}>
           <Card
             hoverable
-            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>} 
+            cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>}
             title='图片展示'
             description='这是图片描述'
           ></Card>
@@ -288,11 +289,12 @@ render() {
   )
 }
 ```
+
 :::
 
 ### 配合 Gird 布局 - 展示
 
-:::demo 
+:::demo
 
 配合 Grid 布局实现更加简单
 
@@ -355,12 +357,12 @@ render() {
   )
 }
 ```
-:::
 
+:::
 
 ### 配合 Gird 布局 - 自定义展示
 
-:::demo 
+:::demo
 
 配合 Grid 布局实现更加简单
 
@@ -388,20 +390,17 @@ render() {
   )
 }
 ```
+
 :::
 
+### Props
 
-### Card Attributes
-
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| ------- | ------- | ------- | ------- | ------- |
-| title | 卡片标题 | String \| Element | - | - |
-| size |  卡片大小<br/> small -> 276px <br/> middle -> 376px <br/> large -> 576px <br/> 不传入 size 将占100%宽度| String |  small \| middle \| large | 100% |
-| type |  卡片类型 | String  | simple | - |
-| style |  自定义样式 | Object  | - | - |
-| hoverable |   鼠标移入卡片是否显示浮起效果 |  Boolean  | true \| false | false |
-| extra |  卡片右上的扩展按钮 |  Array[Elemnt] \| Element  | - | - |
-| extraShow |  扩展按钮的显示模式 |   String  | stay \| hover | stay |
-| cover |   图片卡片 |  ImgElement  | - | - |
-| description |   图片卡片的信息描述 |   String \| Element  | - | - |
-| disabled |   是否禁用卡片 |   Boolean  | true \| false | - |
+| 参数      | 说明                         | 类型                | 可选值                   | 默认值  |
+| --------- | ---------------------------- | ------------------- | ------------------------ | ------- |
+| title     | 卡片标题                     | string \| ReactNode | -                        | -       |
+| size      | 卡片大小                     | string              | small \| middle \| large | 100%    |
+| type      | 卡片类型                     | string              | simple \| default        | default |
+| hoverable | 鼠标移入卡片是否显示浮起效果 | Boolean             | true \| false            | false   |
+| extra     | 卡片右上角的扩展             | ReactNode           | -                        | -       |
+| url       | 图片卡片的封面               | string              | -                        | -       |
+| content   | 图片卡片的信息描述           | string \| ReactNode | -                        | -       |
