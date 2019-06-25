@@ -127,6 +127,8 @@ render(){
 
 :::demo
 
+更多验证例子请参考 [async-validator](https://github.com/yiminghe/async-validator)
+
 ```js
 constructor(props) {
   super(props)
@@ -135,44 +137,43 @@ constructor(props) {
     form: {
       name: '',
       region: '',
-      count: ''
+      count: '',
+      type: []
     },
     rules: {
-      name: [
-        {
-          required: true,
-          message: <span><Icon name="close-circle"/>  请输入名称</span>,
-          trigger: 'onBlur,onChange'
-        }
-      ],
-      region: [
-        {
-          required: true,
-          type: 'number',
-          message: '请选择区域',
-          trigger: 'onChange'
-        }
-      ],
-      count: [
-        {
-          required: true,
-          message: '请输入数量',
-          trigger: 'onChange'
+      name: {
+        required: true,
+        message: <span><Icon name="close-circle"/>  请输入名称</span>,
+        trigger: 'onBlur,onChange'
+      },
+      region: {
+        required: true,
+        type: 'number',
+        message: '请选择区域',
+        trigger: 'onChange'
+      },
+      count: {
+        required: true,
+        message: '请输入数量',
+        trigger: 'onChange',
+        validator: (rule, value, cb) => {
+          const count = parseInt(value)
+          if(isNaN(count)) {
+            cb('请输入数字')
+          } else if(count <= 0) {
+            cb('必须是正数')
+          } else {
+            cb()
+          }
         },
-        {
-          validator: (rule, value, cb) => {
-            const count = parseInt(value)
-            if(isNaN(count)) {
-              cb('请输入数字')
-            } else if(count <= 0) {
-              cb('必须是正数')
-            } else {
-              cb()
-            }
-          },
-          trigger: 'onChange'
-        }
-      ]
+      },
+      type: {
+        required: true,
+        type: 'array',
+        min: 1,
+        message: '请至少选择一个种类',
+        trigger: 'onChange',
+      }
     }
   }
 }
@@ -210,35 +211,41 @@ handleChange(key, e, value) {
 render(){
   const Row = Grid.Row
   const Col = Grid.Col
-  const {form} = this.state
+  const { form } = this.state
   return (
     <Col span={12}>
       <Form ref={node => this.form = node} model={form} rules={this.state.rules} labelWidth='80'>
-          <FormItem label='名称' prop='name'>
-            <Input value={form.name} placeholder='name' onChange={this.handleChange.bind(this, 'name')}/>
-          </FormItem>
-          <FormItem label='数量' prop='count'>
-            <Input value={form.count} placeholder='count' onChange={this.handleChange.bind(this, 'count')}/>
-          </FormItem>
-          <FormItem label='地区' prop='region'>
-            <Radio
-              list={[{
-                name: '北京',
-                id: 1
-              }, {
-                name: '上海',
-                id: 2
-              }, {
-                name: '武汉',
-                id: 3
-              }]}
-              onChange={this.handleChange.bind(this, 'region', null)}
-            />
-          </FormItem>
-          <FormItem>
-            <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
-            <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
-          </FormItem>
+        <FormItem label='名称' prop='name'>
+          <Input value={form.name} placeholder='name' onChange={this.handleChange.bind(this, 'name')}/>
+        </FormItem>
+        <FormItem label='数量' prop='count'>
+          <Input value={form.count} placeholder='count' onChange={this.handleChange.bind(this, 'count')}/>
+        </FormItem>
+        <FormItem label='地区' prop='region'>
+          <Radio
+            list={[{
+              name: '北京',
+              id: 1
+            }, {
+              name: '上海',
+              id: 2
+            }, {
+              name: '武汉',
+              id: 3
+            }]}
+            onChange={this.handleChange.bind(this, 'region', null)}
+          />
+        </FormItem>
+        <FormItem label='种类' prop='type'>
+          <Checkbox.Group
+            data={['手机', 'AI', 'IOT']}
+            value={form.type}
+            onChange={this.handleChange.bind(this, 'type', null)} />
+        </FormItem>
+        <FormItem>
+          <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
+          <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
+        </FormItem>
       </Form>
     </Col>
   )

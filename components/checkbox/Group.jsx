@@ -39,11 +39,11 @@ class Group extends Component {
     hasValue(this.props) || this.setState({ data: newData })
   }
   render () {
-    const { className, name, disabled } = this.props
+    const { className, name, disabled, style } = this.props
     const { data } = this.state
     const groupCls = classNames(prefixCls, className)
     return (
-      <div className={groupCls}>
+      <div className={groupCls} style={style}>
         {data.map(({ label, value, checked, disabled: itemDisabled }, idx) => (
           <Checkbox
             key={idx}
@@ -87,7 +87,7 @@ function getData (props) {
   }
 }
 
-const TArrayOrNumber = PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+const PropTypesArrayOfStringOrNumber = PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 
 Group.propTypes = {
   className: PropTypes.string,
@@ -96,18 +96,18 @@ Group.propTypes = {
       PropTypes.string,
       PropTypes.number,
       PropTypes.shape({
-        label: TArrayOrNumber,
-        value: TArrayOrNumber,
+        label: PropTypesArrayOfStringOrNumber,
+        value: PropTypesArrayOfStringOrNumber,
         disabled: PropTypes.bool
       })
     ])
   ),
-  defaultValue: PropTypes.arrayOf(TArrayOrNumber),
+  defaultValue: PropTypes.arrayOf(PropTypesArrayOfStringOrNumber),
   disabled: PropTypes.bool,
   name: PropTypes.string,
   onChange: PropTypes.func,
   style: PropTypes.object,
-  value: PropTypes.arrayOf(TArrayOrNumber)
+  value: PropTypes.arrayOf(PropTypesArrayOfStringOrNumber)
 }
 
 Group.defaultProps = {

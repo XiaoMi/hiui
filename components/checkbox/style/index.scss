@@ -8,6 +8,8 @@ $prefixCls: '.hi-checkbox' !default;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  height: 32px;
+  vertical-align: middle;
 
   @include component-reset();
 

@@ -55,7 +55,7 @@ render() {
   return (
     <React.Fragment>
       <Checkbox checked={this.state.checked}>受控</Checkbox>
-      <Button size='small' type='primary' onClick={() => {
+      <Button type='primary' size='small' onClick={() => {
         this.setState(({ checked }) => ({
           checked: !checked
         }))
