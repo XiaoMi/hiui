@@ -58,7 +58,7 @@ class Checkbox extends Component {
           value={value}
         />
         <span className={inputCls} />
-        <span className={`${prefixCls}__text`}>{children}</span>
+        {children && <span className={`${prefixCls}__text`}>{children}</span>}
       </label>
     )
   }
