@@ -396,55 +396,48 @@ render() {
 
 :::
 
-### Tree Attributes
+### Props
 
-| 参数             | 说明                                                                    | 类型                                                           | 可选值                       | 默认值 |
-| ---------------- | ----------------------------------------------------------------------- | -------------------------------------------------------------- | ---------------------------- | ------ |
-| data             | 展示数据                                                                | Array                                                          | 参见 Tree Attributes-data    | -      |
-| checkable        | 节点前添加 Checkbox 复选框（暂不支持与 draggable 和 editable 同时使用） | Boolean                                                        | -                            | false  |
-| editable         | 节点右键可编辑（添加同级节点、添加子节点、编辑节点、删除节点）          | Boolean                                                        | -                            | false  |
-| draggable        | 节点可拖拽                                                              | Boolean                                                        | -                            | false  |
-| searchable       | 节点可搜索                                                              | Boolean                                                        | -                            | false  |
-| options          | 配置选项                                                                | Object                                                         | 参见 Tree Attributes-options | -      |
-| origin           | 异步加载配置项                                                          | Object                                                         | 参见 Tree Attributes-origin  | -      |
-| defaultExpandAll | 是否默认展开所有树节点                                                  | Boolean                                                        | -                            | false  |
-| checkedKeys      | 默认选中的 checkbox                                                     | Array                                                          | -                            | -      |
-| openIcon         | 表示展开的图标                                                          | String                                                         | Icon 图标名称                | -      |
-| closeIcon        | 表示闭合的图标                                                          | String                                                         | Icon 图标名称                | -      |
-| style            | 组件整体样式                                                            | Object                                                         | -                            | -      |
-| highlightable    | 高亮                                                                    | Boolean                                                        | -                            | -      |
-| onChange         | 改变复选框状态时触发                                                    | Function(checkedArr:Array, title: String, isChecked: Boolean)  | -                            | -      |
-| onNodeToggle     | 节点被点击(展开/收起)时触发                                             | Function(data: Obejct, isExpanded: Boolean)                    | -                            | -      |
-| onCheckChange    | 节点选中项                                                              | Funciton(checkedArr: Array, title: String, isChecked: Boolean) | -                            | -      |
-| onDragStart      | 节点开始拖拽时触发                                                      | Funciton(dragNode: Object)                                     | -                            | -      |
-| onDrop           | 节点拖拽成功时触发                                                      | Funciton(dragNode: Object, dropNode: Object)                   | -                            | -      |
-| onDelete         | 节点删除时触发                                                          | Funciton(deleteNode: Object, data: Object)                     | -                            | -      |
-| onSave           | 节点保存新增、编辑状态时触发                                            | Funciton(editNode: Object, data: Object)                       | -                            | -      |
+| 参数             | 说明                                                                    | 类型                                                          | 可选值                       | 默认值 |
+| ---------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------- | ---------------------------- | ------ |
+| data             | 展示数据                                                                | DataItem []                                                   | -                            | -      |
+| checkable        | 节点前添加 Checkbox 复选框（暂不支持与 draggable 和 editable 同时使用） | boolean                                                       | -                            | false  |
+| editable         | 节点右键可编辑（添加同级节点、添加子节点、编辑节点、删除节点）          | boolean                                                       | -                            | false  |
+| draggable        | 节点可拖拽                                                              | boolean                                                       | -                            | false  |
+| searchable       | 节点可搜索                                                              | boolean                                                       | -                            | false  |
+| options          | 配置选项                                                                | Object                                                        | 参见 Tree Attributes-options | -      |
+| loadTreeNode     | 点击异步加载子项                                                        | Object                                                        | 参见 Tree Attributes-origin  | -      |
+| defaultExpandAll | 是否默认展开所有树节点                                                  | boolean                                                       | -                            | false  |
+| checkedIds       | 选中的 checkbox                                                         | Array                                                         | -                            | -      |
+| openIcon         | 表示展开的图标                                                          | string                                                        | Icon 图标名称                | -      |
+| closeIcon        | 表示闭合的图标                                                          | string                                                        | Icon 图标名称                | -      |
+| highlightable    | 高亮                                                                    | boolean                                                       | -                            | -      |
+| onChange         | 树组件改变时触发                                                        | （data:DataItem[]）=>void                                     | -                            | -      |
+| onExpand         | 节点被点击(展开/收起)时触发                                             | (expanded:boolean, expandIds: string[], expandedNode) => void | -                            | -      |
+| onCheck          | 点击节点多选框触发                                                      | (checked:boolean, checkedIds: string[], checkedNode) => void  | -                            | -      |
+| onDragStart      | 节点开始拖拽时触发                                                      | (dragNode: object) => void                                    | -                            | -      |
+| onDrop           | 节点拖拽时触发                                                          | (dragNode: object, dropNode: object) => boolean               | -                            | -      |
+| onDropEnd        | 节点拖拽成功时触发                                                      | (dragNode: object, dropNode: object) => void                  | -                            | -      |
+| onDelete         | 节点删除时触发                                                          | (deletedNode: Object, data: DataItem[]) => void               | -                            | -      |
+| onSave           | 节点保存新增、编辑状态时触发                                            | (savedNode: Object, data: DataItem[]) => void                 | -                            | -      |
 
-### Tree Attributes-data
+### Type
 
-| 参数        | 说明                                                               | 类型     | 可选值 | 默认值 |
-| ----------- | ------------------------------------------------------------------ | -------- | ------ | ------ |
-| expand      | 默认是否展开子菜单（优先级高于 defaultExpandAll）                  | Boolean  | -      | false  |
-| onClick     | 点击每项时触发的事件                                               | Function | -      | -      |
-| onNodeClick | 点击每项时触发，onClick 作用具体绑定的项，onNodeClick 作用于所以项 | Function | -      | -      |
-| style       | 单个节点样式                                                       | Object   | -      | -      |
+**_LoadTreeNode_**
 
-### Tree Attributes-origin
+| 参数              | 说明                                                       | 类型                            | 可选值      | 默认值 |
+| ----------------- | ---------------------------------------------------------- | ------------------------------- | ----------- | ------ |
+| method            | 异步请求的方法                                             | String                          | get \| post | get    |
+| url               | 异步请求的 url                                             | String                          | -           | -      |
+| headers           | 异步请求的请求头                                           | Object                          | -           | -      |
+| data              | post 请求时的请求体                                        | Object                          | -           | -      |
+| params            | 异步请求时的 url 参数                                      | Object                          | -           | -      |
+| transformResponse | 对异步请求结果进行加工处理的函数，返回结果用于生成子节点项 | (response:object) => TreeNode[] | -           | -      |
 
-| 参数         | 说明                                                       | 类型            | 可选值      | 默认值 |
-| ------------ | ---------------------------------------------------------- | --------------- | ----------- | ------ |
-| method       | 异步请求的方法                                             | String          | get \| post | get    |
-| url          | 异步请求的 url                                             | String          | -           | -      |
-| headers      | 异步请求的请求头                                           | Object          | -           | -      |
-| data         | post 请求时的请求体                                        | Object          | -           | -      |
-| params       | 异步请求时的 url 参数                                      | Object          | -           | -      |
-| func         | 对异步请求结果进行加工处理的函数，返回结果用于生成子节点项 | Function(data)  | -           | -      |
-| errorHandler | 对异步请求错误进行自定义处理的函数                         | Function(error) | -           | -      |
+**_TreeNode_**
 
-### Tree Attributes-options
-
-| 参数     | 说明                               | 类型   | 可选值 | 默认值   |
-| -------- | ---------------------------------- | ------ | ------ | -------- |
-| title    | 指定节点标签为节点对象的某个属性值 | String | -      | title    |
-| children | 指定子树为节点对象的某个属性值     | String | -      | children |
+| 参数     | 说明             | 类型                | 可选值 | 默认值 |
+| -------- | ---------------- | ------------------- | ------ | ------ |
+| id       | 树节点唯一 id    | string              | -      | -      |
+| title    | 树节点标题       | string \| ReactNode | -      | -      |
+| children | 异步请求的请求头 | TreeNode []         | -      | -      |

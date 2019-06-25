@@ -99,7 +99,7 @@ render() {
 
 | 参数         | 说明                      | 类型                    | 可选值 | 默认值 |
 | ------------ | ------------------------- | ----------------------- | ------ | ------ |
-| allowClear   | 是否允许再次点击后清除    | boolean                 | -      | true   |
+| clearable    | 是否允许再次点击后清除    | boolean                 | -      | true   |
 | allowHalf    | 是否允许半选              | boolean                 | -      | true   |
 | useEmoji     | 是否使用表情              | boolean                 | -      | false  |
 | className    | 自定义类名                | string                  | -      | -      |
