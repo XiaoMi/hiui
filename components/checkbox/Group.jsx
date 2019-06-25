@@ -7,11 +7,9 @@ import Provider from '../context'
 const prefixCls = 'hi-checkbox-group'
 
 class Group extends Component {
-  state = {
-    data: []
-  }
-  componentDidMount () {
-    this.setState(getData(this.props))
+  constructor (props) {
+    super(props)
+    this.state = getData(props)
   }
   static getDerivedStateFromProps (nextProps) {
     if (hasValue(nextProps)) {

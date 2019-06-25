@@ -6,17 +6,15 @@ import Provider from '../context'
 const prefixCls = 'hi-checkbox'
 
 class Checkbox extends Component {
-  state = {
-    checked: false
+  constructor (props) {
+    super(props)
+    this.state = getChecked(props)
   }
   static getDerivedStateFromProps (nextProps) {
     if (hasChecked(nextProps)) {
       return getChecked(nextProps)
     }
     return null
-  }
-  componentDidMount () {
-    this.setState(getChecked(this.props))
   }
   handleChange = (event) => {
     const { onChange } = this.props
@@ -90,7 +88,7 @@ function hasChecked (props) {
 function getChecked (props) {
   const { checked, defaultChecked } = props
   return {
-    checked: hasChecked(props) ? (checked || false) : defaultChecked
+    checked: hasChecked(props) ? checked || false : defaultChecked
   }
 }
 
