@@ -51,20 +51,24 @@ module.exports = {
     rate: 'Rate 评分'
   },
   designs: {
+    summarize: '概述',
+    'design-values': '设计价值观',
     'design-patterns': '设计模式',
+    'design-principles': '设计原则',
     'about-hiui': '关于 HIUI',
     'visual-framework': '视觉框架',
     start: '快速上手',
-    principles: '设计原则',
-    values: '设计价值观',
     overview: '概览',
-    'layout-grid': '布局/栅格',
-    navigation: '导航/面包屑',
-    copywriting: '文案',
-    colors: '色彩',
+    grid: '栅格',
     layout: '布局',
+    layout2: '布局',
+    navigation: '导航',
+    copy: '文案',
+    color: '色彩',
     theme: '主题',
-    icon: '图标'
+    icon: '图标',
+    font: '字体',
+    image: '图片'
   },
   templates: {
     home: '首页',

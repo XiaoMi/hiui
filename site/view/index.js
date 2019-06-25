@@ -54,8 +54,7 @@ class Index extends React.Component {
         designs: {
           ...Object.values(designs.components).reduce((a, b) => {
             return Object.assign(a, b)
-          }, {}),
-          ...designs.documents
+          }, {})
         }
       },
       {
