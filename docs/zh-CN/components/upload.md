@@ -34,8 +34,8 @@ render () {
 	)
 }
 ```
-:::
 
+:::
 
 ### 带默认列表的上传
 
@@ -80,8 +80,8 @@ render () {
 	)
 }
 ```
-:::
 
+:::
 
 ### 禁用状态
 
@@ -102,8 +102,8 @@ render () {
 	)
 }
 ```
-:::
 
+:::
 
 ### 拖拽上传
 
@@ -129,8 +129,8 @@ render () {
 	)
 }
 ```
-:::
 
+:::
 
 ### 照片墙上传
 
@@ -172,8 +172,8 @@ render () {
 	)
 }
 ```
-:::
 
+:::
 
 ### 头像上传
 
@@ -199,8 +199,8 @@ render () {
 	)
 }
 ```
-:::
 
+:::
 
 ### 照片卡片
 
@@ -224,8 +224,8 @@ render () {
 	)
 }
 ```
-:::
 
+:::
 
 ### 自定义上传
 
@@ -281,29 +281,39 @@ render () {
 	)
 }
 ```
+
 :::
 
-### Upload Attributes
+### Props
 
+| 参数            | 说明                                                                                                                                                  | 类型                                                     | 可选值                                            | 默认值                                  |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------- | --------------------------------------- |
+| type            | 上传组件类型                                                                                                                                          | string                                                   | default \| drag \| pictureCard \| avatar \| photo | default                                 |
+| width           | 仅对 avatar 生效，头像上传的裁切框尺寸,最大 450                                                                                                       | number                                                   | -                                                 | 200                                     |
+| height          | 仅对 avatar 生效，头像上传的裁切框尺寸,最大 450                                                                                                       | number                                                   | -                                                 | 200                                     |
+| accept          | 接收上传的文件类型                                                                                                                                    | string                                                   | -                                                 | -                                       |
+| content         | 上传按钮文案                                                                                                                                          | string \| ReactNode                                      | -                                                 | 上传                                    |
+| icon            | 上传按钮图标                                                                                                                                          | string \| ReactNode                                      | -                                                 | upload                                  |
+| uploadAction    | 必选，上传的地址                                                                                                                                      | string                                                   | -                                                 | -                                       |
+| params          | 除了上传文件外的其它 form 参数                                                                                                                        | object                                                   | -                                                 | -                                       |
+| name            | 发到后台文件参数名                                                                                                                                    | string                                                   | -                                                 | file                                    |
+| disabled        | 是否禁用                                                                                                                                              | boolean                                                  | true \| false                                     | false                                   |
+| headers         | 设置上传的请求头部                                                                                                                                    | object                                                   | -                                                 | {'Content-type': 'multipart/form-data'} |
+| showUploadList  | 是否展示 uploadList                                                                                                                                   | boolean                                                  | true \| false                                     | true                                    |
+| multiple        | 是否支持多选文件                                                                                                                                      | boolean                                                  | true \| false                                     | false                                   |
+| defaultFileList | 带默认列表的上传                                                                                                                                      | File []                                                  | -                                                 | 无                                      |
+| beforeUpload    | 上传文件前的钩子,返回 true 继续上传，其他终止上传                                                                                                     | (files: File [], fileList: File []) => bool              | -                                                 | 一个返回 true 的空函数                  |
+| customUpload    | 自定义上传，此时不会再触发 onChange，所有上传逻辑转移到该函数                                                                                         | (files: Files []) => void                                | -                                                 | -                                       |
+| onChange        | 上传回调。当 function 返回 false 或者返回 promise（如果 promise resolve(false)）则已上传的文件列表不会展示该文件                                      | (file:File, fileList:File[], response:object) => boolean | -                                                 | -                                       |
+| onRemove        | 删除上传的文件,为 false 时不可删除。当 function 返回 true 或者返回 promise（如果 promise resolve(true)）则会在前端删除文件（可参考 demo：照片墙上传） | (file: File, fileList: File[], index:number) => boolean  | -                                                 | 一个返回 true 的空函数，即前端删除      |
 
+### Type
 
-| 参数 | 说明 | 类型 | 可选值 |默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| type | 上传组件类型 | String | normal: 普通上传按钮<br/> drag: 拖拽上传<br/>  pictureCard:照片卡片上传<br/>  avatar: 头像上传（裁剪）<br/> photo:照片上传（预览）<br/> | normal |
-| width | 仅对avatar生效，头像上传的裁切框尺寸,最大450 | Number | - | 200 |
-| height | 仅对avatar生效，头像上传的裁切框尺寸,最大450 | Number | - | 200 |
-| accept | 接收上传的文件类型 | String | - | - |
-| buttonText | 按钮文案 | String | - | 上传 |
-| buttonIcon | 按钮文案前面的图标 | String | - | upload |
-| uploadAction | 必选，上传的地址 | String | - | - |
-| param | 除了上传文件外的其它form参数 | Object | - | - |
-| name  | 发到后台文件参数名 | String | - | file |
-| disabled | 是否禁用 | Boolean | true \| false | false |
-| headers | 设置上传的请求头部 | Object | - | {'Content-type': 'multipart/form-data'} |
-| showUploadList | 是否展示uploadList | Boolean |  true \| false | true |
-| multiple | 是否支持多选文件 | Boolean |  true \| false | false |
-| defaultFileList | 带默认列表的上传 | Array[object] (object参见上面demo) | - | 无 |
-| beforeUpload | 上传文件前的钩子,返回true继续上传，其他终止上传 | Function(files, fileList) | - | 一个返回true的空函数 |
-| customUpload | 自定义上传，此时不会再触发onChange，所有上传逻辑转移到该函数  | Function(files) | - | - |
-| onChange | 上传回调。当function返回false或者返回promise（如果promise resolve(false)）则已上传的文件列表不会展示该文件 | Function(file, fileList, response) | - | - |
-| onRemove | 删除上传的文件,为false时不可删除。当function返回true或者返回promise（如果promise resolve(true)）则会在前端删除文件（可参考demo：照片墙上传）| Function(file, fileList, index)，boolean | - | 一个返回true的空函数，即前端删除 |
+**_File_**
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------- | --------------------------------------- |
+| fileId | 上传文件 id | string | - | - |
+| fileType | 文件类型 | string | - | - |
+| name | 文件名 | string | - | -|
+| uploadState | 上传文件状态 | string | 'success' \| 'uploading' \| 'error' | - |
+| url | 上传文件地址 | string | - | - |
