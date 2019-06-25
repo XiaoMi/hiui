@@ -5,42 +5,52 @@ import { NavGroup } from '@hi-ui/classic-theme'
 import LocaleDropdown from '../Dropdown/LocaleDropdown'
 import locales from '../../../locales'
 export default class NavHeader extends Component {
-  render () {
+  render() {
     const { locale, onLocaleChange } = this.props
-    const { home, components, template } = locales[locale].headers
+    const { home, components, template, design } = locales[locale].headers
     return (
       <React.Fragment>
-        <NavGroup position='right'>
+        <NavGroup position="right">
           <NavGroup.Item>
-            <NavLink to={`/hiui/${locale}`} exact activeClassName='header__nav-link--active'>
+            <NavLink to={`/hiui/${locale}`} exact activeClassName="header__nav-link--active">
               {home}
             </NavLink>
           </NavGroup.Item>
-          {/* <NavGroup.Item>
-          <NavLink to={`/hiui/${locale}/designs/values`} activeClassName='header__nav-link--active'>{design}</NavLink>
-        </NavGroup.Item> */}
+
+          <NavGroup.Item>
+            <NavLink
+              to={`/hiui/${locale}/designs/values`}
+              activeClassName="header__nav-link--active"
+            >
+              {design}
+            </NavLink>
+          </NavGroup.Item>
+
           <NavGroup.Item>
             <NavLink
               to={`/hiui/${locale}/docs/quick-start`}
-              activeClassName='header__nav-link--active'
+              activeClassName="header__nav-link--active"
             >
               {components}
             </NavLink>
           </NavGroup.Item>
+
           <NavGroup.Item>
             <NavLink
               to={`/hiui/${locale}/templates/portal`}
-              activeClassName='header__nav-link--active'
+              activeClassName="header__nav-link--active"
             >
               {template}
             </NavLink>
           </NavGroup.Item>
+
           <NavGroup.Item>
             <LocaleDropdown changeDropdown={val => onLocaleChange(val)} />
           </NavGroup.Item>
+
           <NavGroup.Item>
-            <a href='https://github.com/XiaoMi/hiui'>
-              <i className='hi-fa fa-github' />
+            <a href="https://github.com/XiaoMi/hiui">
+              <i className="hi-fa fa-github" />
             </a>
           </NavGroup.Item>
         </NavGroup>
