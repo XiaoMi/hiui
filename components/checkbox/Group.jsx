@@ -23,9 +23,8 @@ class Group extends Component {
     const { onChange } = this.props
     const { data } = this.state
     const newData = data.map(({ value, checked, ...rest }) => {
-      const isValueEquel = isNaN(Number(updatedValue))
-        ? updatedValue === value
-        : Number(updatedValue) === value
+      const isValueEquel =
+        updatedValue === value || Number(updatedValue) === value
       return {
         value,
         checked: isValueEquel ? updatedChecked : checked,
@@ -87,7 +86,10 @@ function getData (props) {
   }
 }
 
-const PropTypesArrayOfStringOrNumber = PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+const PropTypesArrayOfStringOrNumber = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number
+])
 
 Group.propTypes = {
   className: PropTypes.string,
