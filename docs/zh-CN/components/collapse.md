@@ -9,9 +9,9 @@
 ```js
   render(){
     return(
-      <Collapse 
-        onChange={()=>{console.log('切换了！');}} 
-        activeKey='2' 
+      <Collapse
+        onChange={()=>{console.log('切换了！');}}
+        activeKey='2'
         arrow="left"
       >
         <Collapse.Panel
@@ -40,17 +40,19 @@
   }
 
 ```
+
 :::
 
 ### 手风琴模式
+
 :::demo
 
 ```js
   render(){
     return(
-      <Collapse 
-        onChange={()=>{console.log('切换了！');}} 
-        accordion={true} 
+      <Collapse
+        onChange={()=>{console.log('切换了！');}}
+        accordion={true}
         arrow="right"
       >
         <Collapse.Panel
@@ -80,17 +82,19 @@
   }
 
 ```
+
 :::
 
 ### 无底部灰底
+
 :::demo
 
 ```js
   render(){
     return(
-      <Collapse 
-        onChange={()=>{console.log('切换了！');}} 
-        accordion={true} 
+      <Collapse
+        onChange={()=>{console.log('切换了！');}}
+        accordion={true}
         type="simple"
         arrow="right"
       >
@@ -120,23 +124,25 @@
   }
 
 ```
+
 :::
 
-###  Collapse Attributes
+### Props
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| accordion | 手风琴模式 |  Boolean | true \| false | false（不激活） |
-| onChange | 切换回调 | Function | - | 无 |
-| activeKey | 默认激活的面板 | String \| String[] | - | - |
-| type | collapse 类型 | String | default \| simple | default |
-| arrow | 箭头所在位置 | String | left \| right \| none | left |
+**_Collapse_**
 
+| 参数      | 说明           | 类型                | 可选值                | 默认值  |
+| --------- | -------------- | ------------------- | --------------------- | ------- |
+| accordion | 手风琴模式     | boolean             | true \| false         | false   |
+| onChange  | 切换回调       | (id:string) => void | -                     | 无      |
+| activeId  | 默认激活的面板 | string \| string[]  | -                     | -       |
+| type      | collapse 类型  | string              | default \| simple     | default |
+| arrow     | 箭头所在位置   | string              | left \| right \| none | left    |
 
-###  Collapse Attributes
+**_Collapse.Panel_**
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| key | 面板唯一标识 |  String | - | index |
-| header | 面板头部 | String \| Element | - | - |
-| disabled | 面板是否可点击 | Boolean | - | false |
+| 参数     | 说明           | 类型                | 可选值 | 默认值 |
+| -------- | -------------- | ------------------- | ------ | ------ |
+| id       | 面板唯一标识   | string              | -      | -      |
+| title    | 面板标题       | string \| ReactNode | -      | -      |
+| disabled | 面板是否可点击 | Boolean             | -      | false  |
