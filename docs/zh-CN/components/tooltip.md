@@ -71,16 +71,16 @@ render() {
 
 :::
 
-### Tooltip Attributes
+### Props
 
 | 参数      | 说明               | 类型   | 可选值                         | 默认值 |
 | --------- | ------------------ | ------ | ------------------------------ | ------ |
 | title     | 提示文字内容       | String | 字符串                         | --     |
 | placement | tooltip 显示的位置 | String | top \| right \| bottom \| left | top    |
 
-### Tooltip API
+### Methods
 
-#### `Tooltip.open({ target, title, placement })`
+`Tooltip.open({ target, title, placement })`
 
 | 参数      | 说明                  | 类型        | 可选值                         | 默认值 |
 | --------- | --------------------- | ----------- | ------------------------------ | ------ |
