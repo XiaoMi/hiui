@@ -38,10 +38,10 @@ class Checkbox extends Component {
     const { checked } = this.state
     const checkboxCls = classNames(
       prefixCls,
+      className,
       disabled && `${prefixCls}--disabled`
     )
     const inputCls = classNames(
-      className,
       `${prefixCls}__input`,
       checked && !indeterminate && `${prefixCls}__input--checked`,
       indeterminate && `${prefixCls}__input--indeterminate`
