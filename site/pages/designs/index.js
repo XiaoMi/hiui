@@ -72,7 +72,6 @@ const files = require.context(`../../../docs/zh-CN/designs`, false, /.mdx$/)
 files.keys().forEach(key => {
   let _key = key.split('/')[1].split('.')[0]
   designs[_key] = files(key).default
-  console.log('设计价值观！！！！！！！！！！！！！！！！！！！！', designs)
 })
 export default {
   documents: {},
