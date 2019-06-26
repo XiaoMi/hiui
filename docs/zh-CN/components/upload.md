@@ -125,7 +125,8 @@ render () {
       hasBorder={true}
 			param={{id:'uid',channel:'youpin'}}
 			name={'files[]'}
-			multiple={true}
+      multiple={true}
+      tips='只能上传 jpg/png 文件'
 		/>
 	)
 }

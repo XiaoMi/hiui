@@ -319,22 +319,19 @@ class UploadAvatar extends Upload {
     const topMaskBottom = (this.containerHeight - cropperHeight) / 2 + cropperHeight
     const leftMaskRight = (this.containerWidth - cropperWidth) / 2 + cropperWidth
     const leftMaskTop = (this.containerHeight - cropperHeight) / 2
-
+    console.log(file && file.uploadState)
     return (
-      <div className="hi-upload upload-avatar">
-        <ul className='photo-display'>
+      <div className="hi-upload hi-upload--avatar">
+        <ul className='hi-upload__list'>
           {
-            file
-              ? (
+            !!file && (
                 file.uploadState === 'loading'
                   ? (
-                    <li>
-                      <div className='img-uploading'>
-                        <img src={file.url} />
-                        <div className='upload-precent'>
-                          <p className='precent-num'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : '上传成功') : (0 + '%')}</p>
-                          <div className='precent-loading' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
-                        </div>
+                    <li key={index} className='hi-upload__item'>
+                      <img src={file.url} className='hi-upload__thumb' />
+                      <div className='hi-upload__precent'>
+                        <p className='hi-upload__loading-text'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : '上传成功') : (0 + '%')}</p>
+                        <div className='hi-upload__loading-bar' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
                       </div>
                     </li>
                   )
@@ -357,7 +354,7 @@ class UploadAvatar extends Upload {
                       </div>
                     </li>
                   )
-              ) : ''
+              )
           }
           {
             !file && (

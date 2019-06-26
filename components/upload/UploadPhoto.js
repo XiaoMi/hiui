@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import Provider from '../context'
 import Upload from './Upload'
 import Preview from './Preview'
+import Icon from '../icon'
 
 class UploadPhoto extends Upload {
   constructor (props) {
@@ -41,62 +42,57 @@ class UploadPhoto extends Upload {
     const {
       onRemove,
       disabled,
-      accept,
-      hasBorder
+      accept
     } = this.props
 
     return (
-      <div className={classNames('hi-upload upload-photo', hasBorder && 'hasborder', {'hi-upload--disabled': disabled})}>
-        <ul className='photo-display'>
+      <div className={classNames('hi-upload hi-upload--photo', {'hi-upload--disabled': disabled})}>
+        <ul className='hi-upload__list'>
           {fileList.map((file, index) => {
             if (file.uploadState === 'loading') {
               return (
-                <li key={index}>
-                  <div className='img-uploading'>
-                    <img src={file.url} />
-                    <div className='upload-precent'>
-                      <p className='precent-num'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : '上传成功') : (0 + '%')}</p>
-                      <div className='precent-loading' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
-                    </div>
+                <li key={index} className='hi-upload__item'>
+                  <img src={file.url} className='hi-upload__thumb' />
+                  <div className='hi-upload__precent'>
+                    <p className='hi-upload__loading-text'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : '上传成功') : (0 + '%')}</p>
+                    <div className='hi-upload__loading-bar' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
                   </div>
                 </li>
               )
             } else {
+              console.log(file.uploadState)
               return (
-                <li key={index}>
-                  <div className='img-uploaded'>
-                    <img src={file.url} />
-                    <div className='upload-comperate'>
-                      <span
-                        className='icon Ficon-origin'
-                        onClick={() => this.previewImage(file)}
-                      />
-                      { onRemove &&
-                        <span
-                          className='icon Ficon-delete-photo'
-                          onClick={() => this.deleteFile(file, index)}
-                        />
-                      }
+                <li key={index} className='hi-upload__item'>
+                  <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} onClick={() => this.previewImage(file)} />
+                  {
+                    onRemove && <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, index)} />
+                  }
+                  {
+                    file.uploadState === 'error' && <div className='hi-upload__precent'>
+                      <div>
+                        <Icon name='comment-circle-o' />
+                        <br />
+                        上传失败
+                      </div>
                     </div>
-                  </div>
+                  }
                 </li>
               )
             }
           })}
-          <li>
+          <li className='hi-upload__item hi-upload__item--upload'>
             <label>
               <input
                 ref={node => {
                   this.uploadRef = node
                 }}
                 type='file'
-                className='upload-input'
                 accept={accept}
                 disabled={disabled && 'disabled'}
                 onChange={e => this.uploadFiles(e.target.files)}
                 hidden
               />
-              <span className='photo-upload'>+</span>
+              <Icon name='plus' />
             </label>
           </li>
         </ul>
@@ -112,7 +108,7 @@ class UploadPhoto extends Upload {
 UploadPhoto.defaultProps = Object.assign({}, {
   ...Upload.defaultProps
 }, {
-  accept: 'image/jpg,image/jpeg,image/png'
+  // accept: 'image/jpg,image/jpeg,image/png'
 })
 
 export default Provider(UploadPhoto)

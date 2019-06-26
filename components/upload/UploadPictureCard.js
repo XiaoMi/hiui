@@ -7,7 +7,6 @@ class UploadPictureCard extends Upload {
     const {
       buttonText,
       showUploadList,
-      buttonIcon,
       multiple,
       disabled,
       accept,
@@ -31,12 +30,8 @@ class UploadPictureCard extends Upload {
               accept={accept}
               hidden
             />
-            <span
-              className={`upload-title ${
-                disabled ? 'disabled' : ''
-              }`}
-            >
-              <i className={`icon Ficon-${buttonIcon}`} />&nbsp;{ buttonText }
+            <span className={`hi-upload__button ${disabled ? 'hi-upload__button--disabled' : ''}`}>
+              { buttonText || '本地上传'}
             </span>
           </label>
         </div>

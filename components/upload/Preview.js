@@ -112,8 +112,8 @@ export default class Preview extends Component {
         transitionLeaveTimeout={50}
         component='div'
       >
-        <div key={1} className={classNames('hi-preview', extraClass, {'hi-preview--hide': !show})} onClick={this.onClose.bind(this)}>
-          <div className={classNames('hi-preview-image', {'hi-preview-image--hide': !imgLoaded})} style={{...style}}>
+        <div key={1} className={classNames('hi-preview', extraClass, {'hi-preview--hide': !show})}>
+          <div className={classNames('hi-preview__image', {'hi-preview__image--hide': !imgLoaded})} style={{...style}}>
             <div style={{transform: `rotate(${rotateValue}deg)`}}>
               <img
                 ref={this.imgRef}
@@ -131,6 +131,10 @@ export default class Preview extends Component {
             <Icon name='rotate-left' onClick={this.clickEvent.bind(this, 'leftRotate')} />
             <Icon name='rotate-right' onClick={this.clickEvent.bind(this, 'rightRotate')} />
           </div>
+          <div className='hi-preview__close' onClick={this.onClose.bind(this)}>
+            <Icon name='close-circle' />
+          </div>
+
         </div>
       </ReactCSSTransitionGroup>
     )

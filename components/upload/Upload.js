@@ -275,6 +275,7 @@ export default class Upload extends Component {
     xhr.upload.onprogress = event => {
       var e = event || window.event
       var percentComplete = Math.ceil(e.loaded / e.total * 100)
+      console.log(' 比率', percentComplete)
       file.progressNumber = percentComplete
       this.setState({ fileList })
     }

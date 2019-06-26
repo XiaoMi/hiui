@@ -45,7 +45,7 @@
     }
   }
 
-  &-image {
+  &__image {
     position: absolute;
     display: inline-block;
     top: 50%;
@@ -80,6 +80,24 @@
         color: #ccc;
         cursor: not-allowed;
       }
+    }
+  }
+
+  &__close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: #fff;
+    width: 46px;
+    height: 46px;
+    line-height: 1;
+    border-radius: 50%;
+    text-align: center;
+
+    .hi-icon {
+      font-size: 46px;
+      cursor: pointer;
+      color: #000;
     }
   }
 }
