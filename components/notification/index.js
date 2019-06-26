@@ -11,7 +11,7 @@ import './style/index'
  * @extends {Component}
  */
 // info/error/success/warning
-function handleNotificate (props) {
+function handleNotificate(props) {
   props = props || {}
   const div = document.createElement('div')
   const ref = React.createRef()
@@ -27,13 +27,13 @@ function handleNotificate (props) {
   )
 
   render(noti, div)
-  console.log('>>>>>>>>>>>>>>>>>>', ref.current)
+
   document.body.appendChild(div)
-  open({title: 'test', content: '内容', prefix: 'notice', key: Math.random()})
+  open({ title: 'test', content: '内容', prefix: 'notice', key: Math.random() })
 }
 
 class Notification extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       show: false,
@@ -67,7 +67,7 @@ class Notification extends Component {
     title: 'title',
     message: 'message content'
   }
-  componentWillMount () {
+  componentWillMount() {
     const lastele = [].slice
       .call(document.querySelectorAll('.' + this.props.prefixCls + '.show'))
       .pop()
@@ -77,11 +77,8 @@ class Notification extends Component {
     const lastdis = lastele.offsetHeight - 0 + lastele.offsetTop + 10
     this.setState({ offsetTop: lastdis })
   }
-  componentDidMount () {
-    const {
-      autoClose,
-      duration
-    } = this.props
+  componentDidMount() {
+    const { autoClose, duration } = this.props
     // 为了做渐变效果所以没直接在初始化 state 的时候设置为 true。。可惜好像并不好用
     this.setState({ show: true })
     // 开始计时
@@ -91,16 +88,16 @@ class Notification extends Component {
       }, duration)
     }
   }
-  closeNotify () {
+  closeNotify() {
     this.setState({ show: false })
     this.props.onClose && this.props.onClose()
     setTimeout(
-      function () {
+      function() {
         const eletsArr = [].slice.call(
           document.querySelectorAll('.' + this.props.prefixCls + '.show')
         )
         // console.log(eletsArr)
-        eletsArr.reduce(function (top, item, idx, arr) {
+        eletsArr.reduce(function(top, item, idx, arr) {
           item.style.top = `${top}px`
           return top + item.offsetHeight - 0 + 10
         }, 20)
@@ -108,7 +105,7 @@ class Notification extends Component {
       0
     )
   }
-  removeNotify () {
+  removeNotify() {
     if (!this.state.show) {
       this.setState({ remove: true })
       if (this.props.removeContainDiv) {
@@ -117,7 +114,7 @@ class Notification extends Component {
     }
   }
 
-  render () {
+  render() {
     // const {
     //   autoClose,
     //   duration,
@@ -157,17 +154,16 @@ class Notification extends Component {
           this.rootEle = ele
         }}
       >
-        <div className='icon-contain'>
+        <div className="icon-contain">
           <i className={`hi-icon icon-${type}`} />
         </div>
-        <span className='title'>{this.props.title}</span>
-        <span className='message'>{this.props.message}</span>
-        {
-          this.props.showClose &&
-          <a className='close icon-img-delete' onClick={this.closeNotify.bind(this)}>
-            <i className='hi-icon icon-close' />
+        <span className="title">{this.props.title}</span>
+        <span className="message">{this.props.message}</span>
+        {this.props.showClose && (
+          <a className="close icon-img-delete" onClick={this.closeNotify.bind(this)}>
+            <i className="hi-icon icon-close" />
           </a>
-        }
+        )}
       </div>
     ) : null
   }

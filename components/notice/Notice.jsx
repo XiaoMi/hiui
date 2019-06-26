@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Icon from '../icon'
 export default class Notice extends Component {
-  componentDidMount () {
+  componentDidMount() {
     setTimeout(() => {
       this.props.onClose(this.props.id)
     }, this.props.duration || 3000)
@@ -14,12 +14,12 @@ export default class Notice extends Component {
     this.props.onClose(this.props.id)
   }
 
-  render () {
-    const { closable, children } = this.props
+  render() {
+    const { closable, children, prefix } = this.props
     return (
-      <div style={{width: 200, height: 80, background: 'red'}}>
+      <div className={`hi-${prefix}`}>
         <div>{children}</div>
-        {closable && <Icon name='close' onClick={this.closeNotice} />}
+        {closable && <Icon name="close" onClick={this.closeNotice} />}
       </div>
     )
   }

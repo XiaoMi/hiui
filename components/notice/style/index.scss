@@ -1,0 +1,16 @@
+@import '../../style/index.scss';
+@import '../../style/icon/index.scss';
+
+.hi-notice__container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1020;
+
+  .hi-notice {
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    border: 1px solid #e7e7e7;
+    background: #fff;
+  }
+}
