@@ -35,8 +35,8 @@
     "es"
   ],
   "dependencies": {
-    "@hi-ui/classic-theme": "1.2.1",
-    "@hi-ui/core-css": "^1.0.0",
+    "@hi-ui/classic-theme": "1.2.5",
+    "@hi-ui/core-css": "^2.0.0-beta.3",
     "@mapbox/rehype-prism": "^0.3.1",
     "async-validator": "^1.11.2",
     "axios": "^0.18.0",
