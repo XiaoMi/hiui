@@ -8,11 +8,12 @@ import DemoBase from './section-base.jsx'
 
 ## Props
 
-`Notification.open({target, tip, size, duration})`
+`Notification.open({key, type, title, content, closesable, confirmText, onConfirm, size, duration})`
 
 | 参数        | 说明                              | 类型                    | 可选值                          | 默认值 |
 | ----------- | --------------------------------- | ----------------------- | ------------------------------- | ------ |
 | type        | 通知框类型                        | string                  | info \| success\|error\|warning | info   |
+| key         | 唯一标识通知框                    | string                  | -                               | -      |
 | title       | 通知框标题                        | string                  | -                               | -      |
 | content     | 通知框内容                        | string                  | -                               | -      |
 | closeable   | 是否可关闭                        | boolean                 | true\|false                     | false  |
