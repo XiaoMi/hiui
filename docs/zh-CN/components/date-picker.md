@@ -382,6 +382,7 @@ render () {
 | shortcuts   | 快捷面板                         | string []                                       | 近一周, 近一月, 近三月, 近一年                                                | null   |
 | weekOffset  | 周起始<br/>默认周日做为第一列    | number                                          | 0/1                                                                           | 0      |
 | placeholder | 自定义占位符                     | string \| string []                             | -                                                                             | -      |
+| format      | 格式化显示日期                   | string                                          | -                                                                             | -      |
 | onChange    | 选中回调函数                     | (date: Date \| {start:Date, end: Date}) => void | 普通时间选择返回 date 格式数据、范围选择返回对象{start:开始时间,end:结束时间} |
 
 ### Methods

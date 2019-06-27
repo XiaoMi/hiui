@@ -37,13 +37,18 @@ import DemoApi from './section-api.jsx'
 
 ## Methods
 
-`Loading.open({target, content, size, duration})`
+`Loading.open(target, {content, size, duration, key})`
 
 | 参数     | 说明                             | 类型                | 可选值                    | 默认值  |
 | -------- | -------------------------------- | ------------------- | ------------------------- | ------- |
+| key      | 标识 `Loading` 的唯一 key        | string              | -                         | -       |
 | target   | 需要`Loading` 遮罩的元素         | ReactNode           | -                         | -       |
 | content  | 自定义描述加载中文案             | string \| ReactNode | -                         | -       |
 | duration | 持续时间，防止闪烁（单位：毫秒） | number              | -                         | -       |
 | size     | 组件大小                         | string              | large \| default \| small | default |
 
-`Loading.close()` comming soon
+`Loading.close(key)` comming soon
+
+| 参数 | 说明                      | 类型   | 可选值 | 默认值 |
+| ---- | ------------------------- | ------ | ------ | ------ |
+| key  | 标识 `Loading` 的唯一 key | string | -      | -      |
