@@ -231,13 +231,13 @@ render() {
 
 ### Props
 
-| 参数      | 说明                            | 类型        | 可选值                | 默认值    |
-| --------- | ------------------------------- | ----------- | --------------------- | --------- |
-| className | 样式名                          | string      | -                     | -         |
-| data      | 步骤数据项                      | DataItem [] | -                     | -         |
-| current   | 当前步骤位置索引，从 0 开始计数 | number      | -                     | -         |
-| placement | 位置                            | string      | vertical \| horizonal | horizonal |
-| up        | 在水平显示时符号是否在上        | boolean     | true \| false         | false     |
+| 参数       | 说明                            | 类型        | 可选值                 | 默认值     |
+| ---------- | ------------------------------- | ----------- | ---------------------- | ---------- |
+| className  | 样式名                          | string      | -                      | -          |
+| data       | 步骤数据项                      | DataItem [] | -                      | -          |
+| current    | 当前步骤位置索引，从 0 开始计数 | number      | -                      | -          |
+| placement  | 位置                            | string      | vertical \| horizontal | horizontal |
+| itemLayout | 步骤点的布局方式                | string      | vertical \| horizontal | false      |
 
 #### Type
 

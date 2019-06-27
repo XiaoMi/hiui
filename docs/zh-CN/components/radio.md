@@ -131,14 +131,15 @@ render() {
 
 ### Props
 
-| 参数      | 说明     | 类型                   | 可选值                 | 默认值     |
-| --------- | -------- | ---------------------- | ---------------------- | ---------- |
-| data      | 选择项   | DataItem []            | -                      | -          |
-| placement | 放置方式 | string                 | vertical \| horizontal | horizontal |
-| checked   | 选中项   | string                 | vertical \| horizontal | horizontal |
-| onChange  | 选中事件 | (value:string) => void | -                      | -          |
-| disabled  | 是否禁用 | boolean                | -                      | -          |
-| type      | 类型     | string                 | default \| button      | default    |
+| 参数      | 说明             | 类型                   | 可选值                 | 默认值     |
+| --------- | ---------------- | ---------------------- | ---------------------- | ---------- |
+| data      | 选择项           | DataItem []            | -                      | -          |
+| autoFocus | 是否自动获取焦点 | boolean                | true \| false          | false      |
+| placement | 放置方式         | string                 | vertical \| horizontal | horizontal |
+| checked   | 选中项           | string                 | vertical \| horizontal | horizontal |
+| onChange  | 选中事件         | (value:string) => void | -                      | -          |
+| disabled  | 是否禁用         | boolean                | -                      | -          |
+| type      | 类型             | string                 | default \| button      | default    |
 
 ### Type
 
@@ -146,6 +147,6 @@ render() {
 
 | 参数     | 说明     | 类型    | 可选值 | 默认值 |
 | -------- | -------- | ------- | ------ | ------ |
-| label    | 选择项   | string  | -      | -      |
-| value    | 选择项值 | string  | -      | -      |
+| content  | 选择项   | string  | -      | -      |
+| id       | 选择项值 | string  | -      | -      |
 | disabled | 是否禁用 | boolean | -      | -      |

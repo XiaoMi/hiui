@@ -276,7 +276,7 @@ render(){
 | rules          | 表单验证规则     | Object  | -                    | -      |
 | labelWidth     | label 宽度       | String  |                      |
 | labelPlacement | label 放置的位置 | String  | right \| left \| top | right  |
-| inline         | 是否横向排列     | Boolean | true \| false        | false  |
+| placement      | 是否横向排列     | Boolean | true \| false        | false  |
 
 **_Form.Item_**
 

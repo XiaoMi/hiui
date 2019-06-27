@@ -191,7 +191,7 @@ render() {
 | pageSize         | 每页条数                                                   | number                                                 | -                           | 10      |
 | pageSizeOptions  | 指定每页可以显示多少条                                     | number []                                              | -                           | []      |
 | total            | 数据总数                                                   | number                                                 | -                           | -       |
-| hideOnSinglePage | 只有一页时是否隐藏分页器                                   | boolean                                                | true \| false               | false   |
-| showQuickJumper  | 是否显示跳转                                               | boolean                                                | true \| false               | false   |
+| autoHide         | 只有一页时是否隐藏分页器                                   | boolean                                                | true \| false               | false   |
+| showJumper       | 是否显示跳转                                               | boolean                                                | true \| false               | false   |
 | onChange         | 页码改变的回调）                                           | (current:number, prev:number, pageSize:number) => void | -                           | -       | - |
 | onPageSizeChange | 每页显示条数改变的回调函数，返回改变后的每页条数及当前页数 | (current:number ,pageSize:number) => void              | -                           | -       | - |
