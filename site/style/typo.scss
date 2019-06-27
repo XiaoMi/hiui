@@ -1,0 +1,18 @@
+@import '@hi-ui/core-css/index.scss';
+
+.article > div {
+  @include typoBase;
+  @include typoCode;
+  @include typoHeadings;
+  @include typoImages;
+  @include typoLists;
+
+  > h2,
+  > h3,
+  > h4,
+  > h5 {
+    a {
+      color: inherit;
+    }
+  }
+}
