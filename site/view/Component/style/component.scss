@@ -12,29 +12,6 @@
 
   .markdown-content {
     padding: 32px;
-
-    .doc-md {
-      table {
-        width: 100%;
-        border-radius: 2px;
-        border-collapse: collapse;
-        color: #666;
-        border: 1px solid rgba(231, 231, 231, 1);
-        line-height: 22px;
-      }
-
-      th {
-        text-align: left;
-        border: 1px solid #e7e7e7;
-        padding: 11px 10px;
-        background: #f6f6f6;
-      }
-
-      td {
-        padding: 10px 9px;
-        border: 1px solid #e7e7e7;
-      }
-    }
   }
 
   .code-demo {
