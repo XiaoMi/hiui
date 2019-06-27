@@ -402,5 +402,5 @@ render() {
 | type      | 卡片类型                     | string              | simple \| default        | default |
 | hoverable | 鼠标移入卡片是否显示浮起效果 | Boolean             | true \| false            | false   |
 | extra     | 卡片右上角的扩展             | ReactNode           | -                        | -       |
-| url       | 图片卡片的封面               | string              | -                        | -       |
+| coverUrl  | 图片卡片的封面               | string              | -                        | -       |
 | content   | 图片卡片的信息描述           | string \| ReactNode | -                        | -       |

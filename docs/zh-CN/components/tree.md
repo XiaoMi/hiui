@@ -404,7 +404,6 @@ render() {
 | checkedIds       | 选中的 checkbox                                                         | string[]                                                               | -                           | -      |
 | openIcon         | 表示展开的图标                                                          | string                                                                 | Icon 图标名称               | -      |
 | closeIcon        | 表示闭合的图标                                                          | string                                                                 | Icon 图标名称               | -      |
-| highlightable    | 高亮                                                                    | boolean                                                                | -                           | -      |
 | onChange         | 树组件改变时触发                                                        | （data:TreeNode[]）=>void                                              | -                           | -      |
 | onExpand         | 节点被点击(展开/收起)时触发                                             | (expanded:boolean, expandIds: string[], expandedNode:TreeNode) => void | -                           | -      |
 | onCheck          | 点击节点多选框触发                                                      | (checked:boolean, checkedIds: string[], checkedNode:TreeNode) => void  | -                           | -      |
