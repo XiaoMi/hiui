@@ -18,7 +18,7 @@ class Checkbox extends Component {
   }
   handleChange = (event) => {
     const { onChange } = this.props
-    onChange && onChange(event.target.checked, event)
+    onChange && onChange(event)
     hasChecked(this.props) ||
       this.setState({
         checked: event.target.checked
@@ -58,7 +58,7 @@ class Checkbox extends Component {
           value={value}
         />
         <span className={inputCls} />
-        {children && <span className={`${prefixCls}__text`}>{children}</span>}
+        {children !== undefined && <span className={`${prefixCls}__text`}>{children}</span>}
       </label>
     )
   }

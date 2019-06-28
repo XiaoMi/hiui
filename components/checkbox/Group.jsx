@@ -49,7 +49,7 @@ class Group extends Component {
             value={value}
             name={name}
             disabled={disabled || itemDisabled}
-            onChange={(_, event) => this.handleCheckboxChange(event)}
+            onChange={this.handleCheckboxChange}
             {...{
               [hasValue(this.props) ? 'checked' : 'defaultChecked']: checked
             }}
@@ -73,8 +73,8 @@ function getData (props) {
   return {
     data: data.map((item) => {
       const isPlain = typeof item === 'string'
-      const label = isPlain ? item : item.label
-      const value = isPlain ? item : item.value
+      const label = isPlain ? item : item.content
+      const value = isPlain ? item : item.id
       const disabled = !isPlain && item.disabled
       return {
         label,

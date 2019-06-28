@@ -1,8 +1,9 @@
 ## Checkbox 多选框
 
-### 基础
+### 基础用法
 
 :::demo
+复选框基础用法。
 
 ```js
 constructor() {
@@ -26,6 +27,7 @@ render() {
 ### 禁用
 
 :::demo
+禁用状态。
 
 ```js
 render() {
@@ -43,6 +45,7 @@ render() {
 ### 受控
 
 :::demo
+添加 `checked` 变为受控模式。
 
 ```js
 constructor() {
@@ -54,7 +57,11 @@ constructor() {
 render() {
   return (
     <React.Fragment>
-      <Checkbox checked={this.state.checked}>受控</Checkbox>
+      <Checkbox checked={this.state.checked} onChange={(event) => {
+        this.setState({
+          checked: event.target.checked
+        })
+      }}>受控</Checkbox>
       <Button type='primary' size='small' onClick={() => {
         this.setState(({ checked }) => ({
           checked: !checked
@@ -70,6 +77,7 @@ render() {
 ### 分组
 
 :::demo
+分组选择。
 
 ```js
 render() {
@@ -98,6 +106,7 @@ render() {
 ### 受控分组
 
 :::demo
+分组添加 `value` 属性变为受控模式。
 
 ```js
 constructor() {
@@ -128,20 +137,21 @@ render() {
 ### 复杂数据
 
 :::demo
+复杂数据类型，变化时回调值为选择项的 id 集合。
 
 ```js
 constructor() {
   super()
   this.data = [{
-    label: '手机',
-    value: 0,
+    content: '手机',
+    id: 0,
     disabled: true
   }, {
-    label: 'AI',
-    value: 1
+    content: 'AI',
+    id: 1
   }, {
-    label: 'IOT',
-    value: 2
+    content: 'IOT',
+    id: 2
   }]
 }
 
@@ -163,6 +173,7 @@ render() {
 ### 全选
 
 :::demo
+用 `indeterminate` 属性控制不全选的状态。
 
 ```js
 constructor() {
@@ -220,26 +231,35 @@ render() {
 
 ### Checkbox Attributes
 
-| 参数           | 说明             | 类型                       | 可选值        | 默认值 |
-| -------------- | ---------------- | -------------------------- | ------------- | ------ |
-| autoFocus      | 是否自动获取焦点 | boolean                    | true \| false | false  |
-| checked        | 是否选中         | boolean                    | true \| false | false  |
-| className      | 自定义类名       | string                     | -             | -      |
-| defaultChecked | 是否默认选中     | boolean                    | true \| false | false  |
-| disabled       | 是否禁用         | boolean                    | true \| false | false  |
-| indeterminate  | 不全选的样式控制 | boolean                    | true \| false | false  |
-| onChange       | 变化时的回调     | function(checked: boolean) | -             | -      |
-| style          | 自定义样式       | CSSProperties              | -             | -      |
+| 参数           | 说明             | 类型                                                 | 可选值        | 默认值 |
+| -------------- | ---------------- | ---------------------------------------------------- | ------------- | ------ |
+| autoFocus      | 是否自动获取焦点 | boolean                                              | true \| false | false  |
+| checked        | 是否选中         | boolean                                              | true \| false | false  |
+| className      | 自定义类名       | string                                               | -             | -      |
+| defaultChecked | 是否默认选中     | boolean                                              | true \| false | false  |
+| disabled       | 是否禁用         | boolean                                              | true \| false | false  |
+| indeterminate  | 不全选的样式控制 | boolean                                              | true \| false | false  |
+| onChange       | 变化时的回调     | (event: React.ChangeEvent<HTMLInputElement>) => void | -             | -      |
 
 ### Checkbox Group Attributes
 
-| 参数         | 说明                                                         | 类型                                                                  | 可选值        | 默认值 |
-| ------------ | ------------------------------------------------------------ | --------------------------------------------------------------------- | ------------- | ------ |
-| className    | 自定义类名                                                   | string                                                                | -             | -      |
-| data         | 指定可选项                                                   | Array<string \| number \| { label: string, value: string \| number, disabled?: boolean }> | -             | []     |
-| defaultValue | 默认选中的项                                                 | Array<string \| number>                                               | -             | []     |
-| disabled     | 是否禁用                                                     | boolean                                                               | true \| false | false  |
-| name         | `CheckboxGroup` 下所有 `input[type="checkbox"]` 的 name 属性 | string                                                                | -             | -      |
-| onChange     | 变化时的回调                                                 | function(checkedList: Array<string \| number>)                        | -             | -      |
-| style        | 自定义样式                                                   | CSSProperties                                                         | -             | -      |
-| value        | 指定选中的项                                                 | Array<string \| number>                                               | -             | -      |
+| 参数         | 说明                                                         | 类型                                        | 可选值        | 默认值 |
+| ------------ | ------------------------------------------------------------ | ------------------------------------------- | ------------- | ------ |
+| className    | 自定义类名                                                   | string                                      | -             | -      |
+| data         | 指定可选项                                                   | string[] \| number[] \| DataItem[]          | -             | []     |
+| defaultValue | 默认选中的项                                                 | string[] \| number[]                        | -             | []     |
+| disabled     | 是否禁用                                                     | boolean                                     | true \| false | false  |
+| name         | `CheckboxGroup` 下所有 `input[type="checkbox"]` 的 name 属性 | string                                      | -             | -      |
+| onChange     | 变化时的回调                                                 | (checkedList: string[] \| number[]) => void | -             | -      |
+| style        | 自定义样式                                                   | CSSProperties                               | -             | -      |
+| value        | 指定选中的项                                                 | string[] \| number[]                        | -             | -      |
+
+### Type
+
+#### _DataItem_
+
+| 参数     | 说明         | 类型             |
+| -------- | ------------ | ---------------- |
+| id       | 数据唯一标识 | string \| number |
+| content  | 数据显示内容 | string \| number |
+| disabled | 是否禁用该项 | boolean          |
