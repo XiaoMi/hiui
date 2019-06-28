@@ -34,21 +34,25 @@ $prefixCls: '.hi-radio' !default;
     padding: 0;
     width: fit-content;
     box-sizing: border-box;
+
     #{$prefixCls} {
       box-sizing: border-box;
       padding: 8px 15px;
       margin-top: -1px;
       margin-left: -1px;
     }
+
     &#{$prefixCls}__button--checked {
       border-color: $active-color;
       z-index: 2;
     }
+
     &.hi-btn--disabled {
       input {
         cursor: not-allowed;
       }
     }
+
     &:not(.hi-btn--disabled):hover {
       border-color: $active-color;
     }
@@ -116,15 +120,18 @@ $prefixCls: '.hi-radio' !default;
 
   &-group {
     display: inline-block;
+
     &.hi-btn-group {
-      #{$prefixCls}{
+      #{$prefixCls} {
         &__input {
           display: none;
         }
+
         &__text {
           padding: 0;
         }
       }
+
       input {
         position: absolute;
         width: 100%;
