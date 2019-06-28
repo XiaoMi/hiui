@@ -9,9 +9,10 @@ class ButtonGroup extends Component {
   render () {
     const {
       prefixCls,
-      style
+      style,
+      className
     } = this.props
-    const classes = classNames(`${prefixCls}`)
+    const classes = classNames(`${prefixCls}`, className)
     return <div className={classes} style={style}>{this.props.children}</div>
   }
 }
