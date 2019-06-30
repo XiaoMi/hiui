@@ -4,15 +4,14 @@ import Notice from './Notice'
 export default class NoticeContainer extends Component {
   state = {
     queue: []
-  }
+  };
   addNotice = notice => {
-    console.log('noticeKey', notice.key)
     const _queue = [...this.state.queue]
     _queue.push(notice)
     this.setState({
       queue: _queue
     })
-  }
+  };
   removeNotice = noticeKey => {
     const _queue = [...this.state.queue]
     let idx = _queue.findIndex(item => item.key === noticeKey)
@@ -20,15 +19,14 @@ export default class NoticeContainer extends Component {
     this.setState({
       queue: _queue
     })
-  }
-  render() {
+  };
+  render () {
     const { queue } = this.state
 
     const { prefix } = this.props
     return (
       <div className={`hi-${prefix}__container`}>
         {queue.map((notice, index) => {
-          console.log('key', notice.key)
           return (
             <Notice
               key={notice.key}
@@ -36,9 +34,15 @@ export default class NoticeContainer extends Component {
               onClose={this.removeNotice}
               duration={notice.duration}
               prefix={prefix}
+              type={notice.type}
+              closable={notice.closable}
             >
-              <div>{notice.title}</div>
-              <div>{notice.content}</div>
+              {notice.title && (
+                <div className={`hi-${prefix}__title`}>{notice.title}</div>
+              )}
+              {notice.content && (
+                <div className={`hi-${prefix}__content`}>{notice.content}</div>
+              )}
             </Notice>
           )
         })}

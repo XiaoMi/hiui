@@ -5,12 +5,14 @@ import './style/index'
 const noticeInstance = {}
 
 function open ({ prefix, ...noticeProps }) {
-  console.log()
   if (!noticeInstance[prefix]) {
     const noticeContainer = document.createElement('div')
     document.body.appendChild(noticeContainer)
     const containterRef = React.createRef()
-    const noti = React.createElement(NoticeContainer, { ref: containterRef, prefix })
+    const noti = React.createElement(NoticeContainer, {
+      ref: containterRef,
+      prefix
+    })
     render(noti, noticeContainer)
     containterRef.current.addNotice(noticeProps)
     noticeInstance[prefix] = {

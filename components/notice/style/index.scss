@@ -7,81 +7,38 @@
   right: 20px;
   z-index: 1020;
 
-  .hi-notice-enter {
-    padding: 10px 12px;
-    margin-bottom: 10px;
-    border: 1px solid #e7e7e7;
-    background: #fff;
-    transition: 0.3s ease;
-    transform: translateX(100%);
-  }
-
-  .hi-notice-enter-done {
-    padding: 10px 12px;
-    margin-bottom: 10px;
-    border: 1px solid #e7e7e7;
-    background: #fff;
-    transition: 0.3s ease;
-    transform: none;
-  }
-
-  .hi-notice-exit {
-    padding: 10px 12px;
-    margin-bottom: 10px;
-    border: 1px solid #e7e7e7;
-    background: #fff;
-    transition: 0.3s ease;
-    transform: none;
-  }
-
-  .hi-notice-exit-done {
-    padding: 10px 12px;
-    margin-bottom: 10px;
-    border: 1px solid #e7e7e7;
-    background: #fff;
-    transition: 0.3s ease;
-    transform: translateX(100%);
-  }
-
   .hi-notice {
     padding: 10px 12px;
     margin-bottom: 10px;
     border: 1px solid #e7e7e7;
     background: #fff;
-    transition: all 0.2s;
+    transition: 0.3s ease;
+    display: flex;
+    align-items: flex-start;
+  }
 
-    &-enter {
-      padding: 10px 12px;
-      margin-bottom: 10px;
-      border: 1px solid #e7e7e7;
-      background: #fff;
-      transition: 0.3s ease;
-      transform: translateX(100%);
+  .hi-notice__title {
+    font-size: 14px;
+  }
 
-      &-active {
-        padding: 10px 12px;
-        margin-bottom: 10px;
-        border: 1px solid #e7e7e7;
-        background: #fff;
-        transform: translateX(0);
-      }
-    }
+  .hi-notice__content {
+    font-size: 12px;
+    color: #666;
+  }
 
-    &-exit {
-      padding: 10px 12px;
-      margin-bottom: 10px;
-      border: 1px solid #e7e7e7;
-      background: #fff;
-      transform: translateX(0);
-      transition: 0.3s ease;
+  .hi-notice-enter {
+    transform: translateX(100%);
+  }
 
-      &-active {
-        padding: 10px 12px;
-        margin-bottom: 10px;
-        border: 1px solid #e7e7e7;
-        background: #fff;
-        transform: translateX(calc(100%));
-      }
-    }
+  .hi-notice-enter-done {
+    transform: none;
+  }
+
+  .hi-notice-exit {
+    transform: none;
+  }
+
+  .hi-notice-exit-done {
+    transform: translateX(100%);
   }
 }

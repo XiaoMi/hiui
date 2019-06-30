@@ -1,0 +1,92 @@
+@import '../../style/index.scss';
+@import '../../style/icon/index.scss';
+
+.hi-notification {
+  position: fixed;
+  top: -10px;
+  right: 20px;
+  padding: 15px 40px 15px 50px;
+  width: 20%;
+  background-color: rgb(233, 241, 255);
+  border-color: rgb(180, 208, 255);
+  color: #4284f5;
+  transition: all 0.2s ease-out;
+  opacity: 0;
+  z-index: 1020;
+
+  .title {
+    font-size: 16px;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .message {
+    font-size: 12px;
+    display: block;
+  }
+
+  .close {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    margin-top: -0.5em;
+    cursor: pointer;
+    color: #999;
+    font-size: 12px;
+    font-family: sans-serif;
+    font-weight: 700;
+
+    &::before {
+      color: #999;
+    }
+  }
+
+  &.show {
+    opacity: 1;
+    top: 20px;
+  }
+
+  .icon-contain {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    margin-top: -10px;
+    font-size: 0;
+    color: #4284f5;
+    font-weight: 600;
+
+    .hi-icon {
+      font-size: 20px;
+    }
+  }
+
+  &.error {
+    background: rgb(255, 234, 235);
+    border: 1px solid rgb(251, 191, 191);
+    color: #eb5252;
+
+    .icon-contain {
+      color: #eb5252;
+    }
+  }
+
+  &.success {
+    background: rgb(233, 245, 237);
+    border: 1px solid rgb(197, 220, 206);
+    color: #1da653;
+
+    .icon-contain {
+      color: #1da653;
+    }
+  }
+
+  &.warning {
+    background: rgb(255, 249, 236);
+    border: 1px solid rgb(253, 202, 94);
+    color: #e19d0c;
+
+    .icon-contain {
+      color: #e19d0c;
+    }
+  }
+}
