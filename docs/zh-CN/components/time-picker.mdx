@@ -1,0 +1,20 @@
+# 时间选择器
+
+## 基础
+
+import DemoBase from '../../demo/time-picker/section-base.jsx'
+
+<DemoBase />
+
+## Props
+
+| 参数        | 说明           | 类型                                            | 可选值                                                                        | 默认值  |
+| ----------- | -------------- | ----------------------------------------------- | ----------------------------------------------------------------------------- | ------- |
+| type        | 选择器类型     | string                                          | default \| timerange                                                          | default |
+| value       | 显示的日期     | Date\|string\|number\| object\|undefined\|null  | --                                                                            | null    |
+| format      | 格式化时间     | string                                          | --                                                                            | null    |
+| min         | 最小时间       | Date                                            | null                                                                          | null    |
+| max         | 最大时间       | Date                                            | null                                                                          | null    |
+| disabled    | 是否禁用输入框 | boolean                                         | true \| false                                                                 | false   |
+| placeholder | 自定义占位符   | string \| string []                             | -                                                                             | -       |
+| onChange    | 选中回调函数   | (date: Date \| {start:Date, end: Date}) => void | 普通时间选择返回 date 格式数据、范围选择返回对象{start:开始时间,end:结束时间} |

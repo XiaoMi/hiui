@@ -1,0 +1,43 @@
+# Progress 进度条
+
+## 进度条类型
+
+import DemoType from '../../demo/progress/section-type.jsx'
+
+<DemoType />
+
+## 进度条动态
+
+import DemoActive from '../../demo/progress/section-active.jsx'
+
+<DemoActive />
+
+## 环形进度条
+
+import DemoCircle from '../../demo/progress/section-circle.jsx'
+
+<DemoCircle />
+
+## 仪表盘进度条
+
+import DemoDash from '../../demo/progress/section-dash.jsx'
+
+<DemoDash />
+
+## 进度条文字内显
+
+import DemoWord from '../../demo/progress/section-word.jsx'
+
+<DemoWord />
+
+## Progress Attributes
+
+| 参数      | 说明                                   | 类型                          | 可选值                              | 默认值         |
+| --------- | -------------------------------------- | ----------------------------- | ----------------------------------- | -------------- |
+| apperance | 进度条类型                             | string                        | bar \| circle \| dashboard          | bar            |
+| size      | 进度条大小                             | string                        | large \| middle \| small            | -              |
+| content   | 显示文本                               | string \| string \| ReactNode | -                                   | 当前进度百分比 |
+| showInfo  | 是否显示文本                           | boolean                       | true \| false                       | false          |
+| type      | 进度条类型                             | string                        | primary \| success \| warn \| error | primary        |
+| radius    | 环形进度条半径                         | number                        | -                                   | 40             |
+| placement | 文字在进度条内显示，需配合 height 使用 | string                        | inside \| outside                   | outside        |

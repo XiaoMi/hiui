@@ -1,0 +1,34 @@
+# Tooltip 文字提示
+
+常用的文字提示组件
+
+## 基础
+
+import DemoBase from '../../demo/tooltip/section-base.jsx'
+
+<DemoBase />
+
+## API
+
+### `Tooltip.open({ target, title, placement })`
+
+import DemoApi from '../../demo/tooltip/section-api.jsx'
+
+<DemoApi />
+
+## Props
+
+| 参数      | 说明               | 类型   | 可选值                         | 默认值 |
+| --------- | ------------------ | ------ | ------------------------------ | ------ |
+| title     | 提示文字内容       | String | 字符串                         | --     |
+| placement | tooltip 显示的位置 | String | top \| right \| bottom \| left | top    |
+
+## Methods
+
+`Tooltip.open(target,{ title, placement, key })`
+
+| 参数      | 说明                  | 类型        | 可选值                         | 默认值 |
+| --------- | --------------------- | ----------- | ------------------------------ | ------ |
+| target    | 要显示 tooptip 的元素 | HTMLElement | -                              | -      |
+| title     | 提示文字内容          | String      | -                              | -      |
+| placement | tooltip 显示的位置    | String      | top \| right \| bottom \| left | top    |

@@ -1,0 +1,59 @@
+# Timeline 时间轴
+
+以时间点为维度展示垂直信息流的一种组件
+
+## 何时使用
+
+- 信息呈现的方式以时间流形式展示时
+- 信息发生的时间粒度较小，且间隔较为均匀
+- 常用在行为记录、日志、日程提醒、物流等场景
+
+## 基础用法
+
+import DemoBasic from '../../demo/timeline/section-basic.jsx'
+
+<DemoBasic />
+
+## 信息流
+
+import DemoInfo from '../../demo/timeline/section-info.jsx'
+
+<DemoInfo />
+
+## 可折叠
+
+import DemoCollapse from '../../demo/timeline/section-collapse.jsx'
+
+<DemoCollapse />
+
+## 左右结构
+
+import DemoCross from '../../demo/timeline/section-cross.jsx'
+
+<DemoCross />
+
+## Props
+
+| 参数 | 说明       | 类型                        | 可选值                    | 默认值  |
+| ---- | ---------- | --------------------------- | ------------------------- | ------- |
+| type | 时间轴类型 | string                      | default \| right \| cross | default |
+| data | 时间轴数据 | DataItem [] \| GroupItem [] | -                         | -       |
+
+## Type
+
+**_ GroupItem _**
+
+| 参数       | 说明       | 类型                | 可选值 | 默认值 |
+| ---------- | ---------- | ------------------- | ------ | ------ |
+| groupTitle | 分组标题   | string \| ReactNode | -      | -      |
+| children   | 标题下集合 | DataItem []         | -      | -      |
+
+**_ DataItem _**
+
+| 参数      | 说明           | 类型                | 可选值 | 默认值 |
+| --------- | -------------- | ------------------- | ------ | ------ |
+| title     | 标题           | string \| ReactNode | -      | -      |
+| content   | 内容信息       | string \| ReactNode | -      | -      |
+| timestamp | 时间点         | string              | -      | -      |
+| extraTime | 额外展示时间点 | string              | -      | -      |
+| icon      | 自定义图标     | ReactNode \| string | -      | -      |

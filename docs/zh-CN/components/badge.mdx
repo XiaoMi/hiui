@@ -1,0 +1,49 @@
+# Badge 消息气泡
+
+常用的消息气泡提示组件
+
+## 普通类型
+
+import DemoNormal from '../../demo/badge/section-normal.jsx'
+
+<DemoNormal />
+
+## 限制最大显示值
+
+import DemoMax from '../../demo/badge/section-max.jsx'
+
+<DemoMax />
+
+## 隐藏气泡
+
+设置 hidden 属性隐藏气泡
+
+import DemoHidden from '../../demo/badge/section-hidden.jsx'
+
+<DemoHidden />
+
+## 小红点
+
+小红点将优先于其他显示
+
+import DemoDot from '../../demo/badge/section-dot.jsx'
+
+<DemoDot />
+
+## 自定义内容
+
+可以显示 String 类型的内容
+
+import DemoCustom from '../../demo/badge/section-custom.jsx'
+
+<DemoCustom />
+
+## Props
+
+| 参数    | 说明                                | 类型           | 可选值        | 默认值 |
+| ------- | ----------------------------------- | -------------- | ------------- | ------ |
+| content | 气泡显示内容                        | string\|number | -             | -      |
+| type    | 气泡显示的形态                      | string         | bubble \| dot | bubble |
+| max     | 气泡显示的最大值，超过值用'+'号替代 | number         | -             | 99     |
+| visible | 是否展示气泡                        | boolean        | true\|false   | true   |
+| color   | 气泡颜色                            | string         | -             | -      |

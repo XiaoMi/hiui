@@ -1,0 +1,51 @@
+# Input 输入框
+
+通过鼠标或键盘输入字符
+
+## 类型
+
+import DemoType from '../../demo/input/section-type.jsx'
+
+<DemoType />
+
+## 状态
+
+import DemoState from '../../demo/input/section-state.jsx'
+
+<DemoState />
+
+## 附加
+
+import DemoOther from '../../demo/input/section-other.jsx'
+
+<DemoOther />
+
+## 前置元素
+
+import DemoPosition from '../../demo/input/section-position.jsx'
+
+<DemoPosition />
+
+## 多行文本
+
+import DemoTextarea from '../../demo/input/section-textarea.jsx'
+
+<DemoTextarea />
+
+## Props
+
+| 参数        | 说明               | 类型                | 可选值                                                   | 默认值 |
+| ----------- | ------------------ | ------------------- | -------------------------------------------------------- | ------ |
+| type        | 设置输入框类型     | string              | text \| textarea \| id \| tel \| card \| amount \| email | text   |
+| disabled    | 是否禁用           | Boolean             | true \| false                                            | false  |
+| required    | 是否必填           | string \| ReactNode | true \| false                                            | false  |
+| prefix      | 前缀               | string \| ReactNode | -                                                        | -      |
+| suffix      | 后缀               | string \| ReactNode | -                                                        | -      |
+| placeholder | 占位符             | string \| ReactNode | -                                                        | -      |
+| onFocus     | 获得焦点时触发     | (e: Event)          | -                                                        | -      |
+| onBlur      | 失去焦点时触发     | (e: Event)          | -                                                        | -      |
+| onKeyDown   | 触发 keydown 事件  | (e: Event)          | -                                                        | -      |
+| onKeyPress  | 触发 keypress 事件 | (e: Event)          | -                                                        | -      |
+| onInput     | 触发 input 事件    | (e: Event)          | -                                                        | -      |
+| onChange    | 值改变时触发       | (e: Event)          | -                                                        | -      |
+| onKeyUp     | 触发 keyup 事件    | (e: Event)          | -                                                        | -      |

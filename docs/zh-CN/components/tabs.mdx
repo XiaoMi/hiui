@@ -1,0 +1,61 @@
+# Tabs 标签页
+
+又叫“选项卡”，一般用于同一页面区域展示多组并列信息，且标签之间为并列关系。
+
+## 何时使用
+
+- 当页面空间有限，要组织大量的信息且信息之间有明确的分界线
+- 节省屏幕空间，减少用户视觉和信息干扰
+- 无信息间的对比要求，即不同时查看
+
+## 基础用法
+
+import DemoBasic from '../../demo/tabs/section-basic.jsx'
+
+<DemoBasic />
+
+## 可收起标签
+
+import DemoCollapse from '../../demo/tabs/section-collapse.jsx'
+
+<DemoCollapse />
+
+## 垂直用法
+
+import DemoVertical from '../../demo/tabs/section-vertical.jsx'
+
+<DemoVertical />
+
+## 可编辑标签
+
+import DemoEditable from '../../demo/tabs/section-editable.jsx'
+
+<DemoEditable />
+
+## 胶囊样式
+
+import DemoCapsule from '../../demo/tabs/section-capsule.jsx'
+
+<DemoCapsule />
+
+## Props
+
+**_Tabs_**
+
+| 参数             | 说明                                                                                                                        | 类型                        | 可选值                             | 默认值       |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------- | ---------------------------------- | ------------ |
+| type             | 标签类型                                                                                                                    | string                      | desc \| card \| button \| editable | card         |
+| placement        | 标签收起后展开的位置                                                                                                        | string                      | vertical \| horizonal              | horizonal    |
+| defaultActiveKey | 默认激活的标签                                                                                                              | string \| number            | -                                  | 第一个选项卡 |
+| max              | 最多显示的选项卡数，仅对 type='card'并且 placement='horizonal'时生效                                                        | number                      | -                                  | 6            |
+| onTabClick       | 点击标签页时触发                                                                                                            | func(tabKey , event)        | -                                  | -            |
+| onEdit           | 标签新增删减时触发，仅对 type='editable'时触发。参数：action 为事件类型，值为 add 或者 delete；index 为操作选项卡对应的索引 | func(action, index, tabKey) | -                                  | -            |
+
+**_Tabs.Pane_**
+
+| 参数     | 说明                                         | 类型                | 可选值        | 默认值 |
+| -------- | -------------------------------------------- | ------------------- | ------------- | ------ |
+| tabTitle | 选项卡头显示文字                             | string \| ReactNode | -             | -      |
+| tabDesc  | 选项卡头描述文字，仅对 type='desc'时生效     | string \| ReactNode | -             | -      |
+| tabId    | 每个标签的唯一标识                           | string \| number    | -             | -      |
+| closable | 标签是否可以关闭，仅对 type='editable'时生效 | boolean             | true \| false | true   |

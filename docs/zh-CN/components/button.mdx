@@ -1,0 +1,49 @@
+# Button 按钮
+
+常用的操作按钮。
+
+## 标准按钮
+
+- 突出按钮：用于较重要的功能，需要强烈引导用户点击的功能操作。
+- 普通按钮：用于不重要的功能，不需要太引导用户点击的功能操作。
+- 默认按钮：用于不重要的功能，不需要太引导用户点击的功能操作。
+- 确定/取消按钮：适用于表单、弹窗场景。
+
+import DemoStandard from '../../demo/button/section-standard.jsx'
+
+<DemoStandard />
+
+## 辅助按钮
+
+辅助按钮用于对产品的开启、停止等操作，不同颜色对用户的警示作用不同。红色：停止等警示性操作；绿色：开启等操作
+
+import DemoAux from '../../demo/button/section-aux.jsx'
+
+<DemoAux />
+
+## 链接按钮
+
+import DemoLink from '../../demo/button/section-link.jsx'
+
+<DemoLink />
+
+## 按钮尺寸
+
+import DemoSize from '../../demo/button/section-size.jsx'
+
+<DemoSize />
+
+## 按钮组
+
+import DemoGroup from '../../demo/button/section-group.jsx'
+
+<DemoGroup />
+
+## Props
+
+| 参数    | 说明             | 类型                    | 可选值                                                                              | 默认值  |
+| ------- | ---------------- | ----------------------- | ----------------------------------------------------------------------------------- | ------- |
+| type    | 按钮类型         | string                  | primary \| line \| success \| danger \| default                                     | default |
+| size    | 按钮尺寸         | string                  | large \| default \| small                                                           | default |
+| icon    | 设置按钮图标     | string                  | 详见 `<Icon/>` 组件 <sup><a class="sym" href="../../demo/button/icon">↩</a></sup> ︎ | -       |
+| onClick | 点击事件回调函数 | (e: MouseEvent) => void | -                                                                                   | -       |
