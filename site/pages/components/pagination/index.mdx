@@ -1,0 +1,45 @@
+# Pagination 分页
+
+Pagination 分页
+
+## 基础分页
+
+分页组件会根据项目数量自己处理翻页数量。
+
+import DemoBase from './section-base.jsx'
+
+<DemoBase />
+
+## 简单分页
+
+import DemoEasy from './section-easy.jsx'
+
+<DemoEasy />
+
+## 收缩型分页
+
+import DemoShrink from './section-shrink.jsx'
+
+<DemoShrink />
+
+## 完整分页
+
+import DemoIntack from './section-intact.jsx'
+
+<DemoIntack />
+
+## Props
+
+| 参数             | 说明                                                       | 类型                                                   | 可选值                      | 默认值  |
+| ---------------- | ---------------------------------------------------------- | ------------------------------------------------------ | --------------------------- | ------- |
+| type             | 分页的类型                                                 | string                                                 | default \| simple \| shrink | default |
+| defaultCurrent   | 默认的当前页数                                             | number                                                 | -                           | 1       |
+| current          | 当前页数                                                   | number                                                 | -                           | -       |
+| max              | 最大显示的页数，超过后新仓                                 | number                                                 | -                           | 2       |
+| pageSize         | 每页条数                                                   | number                                                 | -                           | 10      |
+| pageSizeOptions  | 指定每页可以显示多少条                                     | number []                                              | -                           | []      |
+| total            | 数据总数                                                   | number                                                 | -                           | -       |
+| autoHide         | 只有一页时是否隐藏分页器                                   | boolean                                                | true \| false               | false   |
+| showJumper       | 是否显示跳转                                               | boolean                                                | true \| false               | false   |
+| onChange         | 页码改变的回调）                                           | (current:number, prev:number, pageSize:number) => void | -                           | -       | - |
+| onPageSizeChange | 每页显示条数改变的回调函数，返回改变后的每页条数及当前页数 | (current:number ,pageSize:number) => void              | -                           | -       | - |

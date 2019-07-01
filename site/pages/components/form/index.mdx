@@ -1,0 +1,47 @@
+# Form 表单组件
+
+## 对齐方式
+
+import DemoAlign from './section-align.jsx'
+
+<DemoAlign />
+
+## 横向表单
+
+import DemoRow from './section-row.jsx'
+
+<DemoRow />
+
+## 表单验证
+
+import DemoCheck from './section-check.jsx'
+
+<DemoCheck />
+
+## Props
+
+**_Form_**
+
+| 参数           | 说明             | 类型    | 可选值               | 默认值 |
+| -------------- | ---------------- | ------- | -------------------- | ------ |
+| model          | 表单数据         | Object  | -                    | -      |
+| rules          | 表单验证规则     | Object  | -                    | -      |
+| labelWidth     | label 宽度       | String  |                      |
+| labelPlacement | label 放置的位置 | String  | right \| left \| top | right  |
+| placement      | 是否横向排列     | Boolean | true \| false        | false  |
+
+**_Form.Item_**
+
+| 参数     | 说明              | 类型    | 可选值        | 默认值 |
+| -------- | ----------------- | ------- | ------------- | ------ |
+| field    | 表单域 model 字段 | String  | -             | -      |
+| label    | 标签文本          | String  | -             | -      |
+| required | 是否必填          | Boolean | true \| false | false  |
+
+## Methods
+
+| 方法名                        | 说明               |
+| ----------------------------- | ------------------ |
+| validate(callback)            | 对整个表单进行校验 |
+| validateField(prop, callback) | 对表单字段进行校验 |
+| resetValidates                | 重置整个表单的验证 |
