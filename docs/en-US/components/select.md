@@ -34,8 +34,8 @@ render () {
 				placeholder='Please Select'
 				style={{width: '200px'}}
 				value={'3'}
-				onChange={(item) => {
-						console.log('Result', item)
+				onChange={(item, changedItem) => {
+						console.log('Result', item, changedItem)
 				}}
 			/>
 		</div>
@@ -78,8 +78,8 @@ render () {
 				placeholder='Please Select'
 				style={{width: '200px'}}
 				value={'3'}
-				onChange={(item) => {
-						console.log('Result', item)
+				onChange={(item, changedItem) => {
+						console.log('Result', item, changedItem)
 				}}
 				disabled
 			/>
@@ -119,8 +119,8 @@ render () {
 				placeholder='Please Select...'
 				style={{width: '200px'}}
 				value={'3'}
-				onChange={(item) => {
-						console.log('Result', item)
+				onChange={(item, changedItem) => {
+						console.log('Result', item, changedItem)
 				}}
 			/>
 		</div>
@@ -152,8 +152,8 @@ render () {
 				}}
 				placeholder='Please Select...'
 				style={{width: '200px'}}
-				onChange={(item) => {
-						console.log('Result', item)
+				onChange={(item, changedItem) => {
+						console.log('Result', item, changedItem)
 				}}
 			/>
 		</div>
@@ -192,8 +192,8 @@ render () {
 				list={this.state.multipleList}
 				value='4,5'
 				placeholder='Please Select...'
-				onChange={(item) => {
-						console.log('Result', item)
+				onChange={(item, changedItem) => {
+						console.log('Result', item, changedItem)
 				}}
 			/>
 		</div>
@@ -213,7 +213,7 @@ Asynchronous multiple selection
 render () {
 	return (
 		<div>
-			<Select 
+			<Select
 				mode='multiple'
 				style={{width: '300px'}}
 				origin={{
@@ -225,8 +225,8 @@ render () {
 					}
 				}}
 				placeholder='Please...'
-				onChange={(item) => {
-						console.log('Result', item)
+				onChange={(item, changedItem) => {
+						console.log('Result', item, changedItem)
 				}}
 			/>
 		</div>
@@ -245,6 +245,7 @@ render () {
 | list | drop-down box options, typically in the form {name: '', id: ''}. The 'label' attribute is required when mode='label'. | array | - | - |
 | origin | Asynchronous selection configuration, there are three types of type / url / func, respectively representing the request type / request path / data processing function after the request returns | object | - | - |
 | value | the value of the selected item/default value of the union drop-down box | string | - | - |
+| open (1.5 added) | whether to display the dropdown menu | Boolean | true \| false | true |
 | disabled | disable the drop-down box | string | - | - |
 | placeholder | prompt message | string | - | - |
 | style | custom style | object | - | - |
@@ -253,4 +254,4 @@ render () {
 
 | Attribute | Description | Parameters |
 | -------- | ----- | ---- |
-| onChange | callback when changing options | (item: Object\|Array) |
+| onChange | callback when changing options | (item: Object\|Array, changedItem:Object\|Array) |

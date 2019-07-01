@@ -189,7 +189,7 @@ class BasePicker extends Component {
       if (startDate && endDate) {
         if (type === 'weekrange') {
           onChange({start: startOfWeek(startDate, _weekOffset), end: endOfWeek(endDate, _weekOffset)})
-        } else if (type === 'timerange' || type === 'timeperiod') {
+        } else if (['timerange', 'timeperiod', 'daterange'].includes(type)) {
           onChange({start: startDate, end: endDate})
         } else {
           onChange({start: startOfDay(startDate), end: endOfDay(endDate)})

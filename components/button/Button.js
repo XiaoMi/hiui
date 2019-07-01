@@ -3,11 +3,20 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Provider from '../context'
 import Icon from '../icon'
+import IconLoading from './IconLoading'
 import deprecatedPropsCheck from '../_util/deprecatedPropsCheck'
 
 class Button extends Component {
   static propTypes = {
-    type: PropTypes.oneOf(['primary', 'line', 'success', 'danger', 'default', 'warning', 'info']),
+    type: PropTypes.oneOf([
+      'primary',
+      'line',
+      'success',
+      'danger',
+      'default',
+      'warning',
+      'info'
+    ]),
     size: PropTypes.oneOf(['large', 'small', 'normal']),
     appearance: PropTypes.oneOf(['link', 'button', 'line']),
     className: PropTypes.string,
@@ -15,6 +24,7 @@ class Button extends Component {
     disabled: PropTypes.bool,
     onClick: PropTypes.func,
     href: PropTypes.string,
+    loading: PropTypes.bool,
     target: PropTypes.oneOf(['_self', '_blank', '_parent', '_top'])
   }
 
@@ -30,72 +40,61 @@ class Button extends Component {
     size: 'normal'
   }
 
-  clickCb (e) {
-    if (this.props.onClick) {
-      this.props.onClick(e)
-    }
-  }
-
   render () {
     const {
-      type,
-      disabled,
       className,
       size,
+      disabled,
+      type,
       appearance,
-      style,
-      title,
-      href,
-      target,
       theme,
       icon,
+      loading,
+      onClick,
+      href,
+      style,
       children
     } = this.props
     const classes = classNames(
       'theme__' + theme,
       `hi-btn`,
-      className && `${className}`,
+      className,
       appearance && `hi-btn--appearance--${appearance}`,
       size && `hi-btn--size--${size}`,
       disabled && `hi-btn--disabled`,
       icon && `hi-btn--icon`,
+      loading && `hi-btn--loading`,
 
       // For version < 1.1.0
-      (type === 'primary' && appearance === 'line')
+      type === 'primary' && appearance === 'line'
         ? `hi-btn--type--line`
         : `hi-btn--type--${type}`
     )
-
-    const disabledBool = !!disabled
+    const restProps = { href, style, onClick, disabled }
 
     deprecatedPropsCheck(this.deprecatedProps, this.props, 'Button')
 
     return (
-      href
-        ? <a
-          className={classes}
-          onClick={(e) => this.clickCb(e)}
-          style={style}
-          title={title}
-          href={href}
-          target={target}
-        >
-          {icon && <Icon name={icon} /> }
-          {children}
-        </a>
-        : <button
-          className={classes}
-          disabled={disabledBool}
-          onClick={(e) => this.clickCb(e)}
-          style={style}
-          title={title}
-          type='button'
-        >
-          {icon && <Icon name={icon} />}
-          {children}
-        </button>
+      <ButtonWrapper className={classes} {...restProps}>
+        {loading && <IconLoading />}
+        {icon && !loading && <Icon name={icon} />}
+        {(icon || loading) && children && (
+          <span className='hi-btn--icon__spacer' />
+        )}
+        {children}
+      </ButtonWrapper>
     )
   }
+}
+
+function ButtonWrapper ({ children, ...restProps }) {
+  return restProps.href ? (
+    <a {...restProps}>{children}</a>
+  ) : (
+    <button {...restProps} type='button'>
+      {children}
+    </button>
+  )
 }
 
 export default Provider(Button)

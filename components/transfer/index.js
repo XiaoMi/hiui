@@ -287,6 +287,8 @@ class Transfer extends Component {
       'hi-transfer__operation',
       mode === 'basic' && 'hi-transfer__operation--basic'
     )
+    const isLeftDisabled = targetSelectedKeys.length === 0
+    const isRightDisabled = sourceSelectedKeys.length === 0 || limited
     return (
       <div className='hi-transfer'>
         {this.renderContainer('left', sourceList)}
@@ -294,17 +296,25 @@ class Transfer extends Component {
           {mode !== 'basic' && (
             <React.Fragment>
               <Button
-                type={sourceSelectedKeys.length === 0 || limited ? 'default' : 'primary'}
+                type={isRightDisabled ? 'default' : 'primary'}
                 icon='right'
-                onClick={this.moveTo.bind(this, 'left')}
-                disabled={sourceSelectedKeys.length === 0 || limited}
+                onClick={() => {
+                  if (!isRightDisabled) {
+                    this.moveTo('left')
+                  }
+                }}
+                disabled={isRightDisabled}
               />
               <span className='hi-transfer__split' />
               <Button
-                type={targetSelectedKeys.length === 0 ? 'default' : 'primary'}
+                type={isLeftDisabled ? 'default' : 'primary'}
                 icon='left'
-                onClick={this.moveTo.bind(this, 'right')}
-                disabled={targetSelectedKeys.length === 0}
+                onClick={() => {
+                  if (!isLeftDisabled) {
+                    this.moveTo('right')
+                  }
+                }}
+                disabled={isLeftDisabled}
               />
             </React.Fragment>
           )}

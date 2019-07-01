@@ -30,7 +30,7 @@ export default class Popover extends Component {
     }
     this.eventTarget = null
     this.popperRef = React.createRef()
-    // this.referenceRef = React.createRef()
+    this.referenceRef = null
   }
 
   showPopper () {
@@ -52,7 +52,7 @@ export default class Popover extends Component {
 
   isInPopover () {
     const popper = this.popperRef.current
-    const referenceRef = ReactDOM.findDOMNode(this.refs.referenceRef)
+    const referenceRef = ReactDOM.findDOMNode(this.referenceRef)
     const bool = !this.element || this.element.contains(this.eventTarget) ||
             !referenceRef || referenceRef.contains(this.eventTarget) ||
             !popper || popper.contains(this.eventTarget)
@@ -64,7 +64,7 @@ export default class Popover extends Component {
     const { trigger } = this.props
 
     this.element = ReactDOM.findDOMNode(this)
-    const referenceRef = ReactDOM.findDOMNode(this.refs.referenceRef)
+    const referenceRef = ReactDOM.findDOMNode(this.referenceRef)
     // this.reference = ReactDOM.findDOMNode(this.refs.reference)
     if (referenceRef === null) return
 
@@ -121,7 +121,7 @@ export default class Popover extends Component {
 
     return (
       <div className={classNames(className, 'hi-popover')} style={style} ref={node => { this.popoverContainer = node }}>
-        { React.cloneElement(React.Children.only(this.props.children), { ref: 'referenceRef', tabIndex: '0' }) }
+        { React.cloneElement(React.Children.only(this.props.children), { ref: (el) => { this.referenceRef = el }, tabIndex: '0' }) }
 
         <Popper
           className='hi-popover__popper'

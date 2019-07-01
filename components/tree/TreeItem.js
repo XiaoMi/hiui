@@ -40,6 +40,7 @@ class TreeItem extends Component {
       renderSwitcher,
       connectDragSource,
       connectDropTarget,
+      isOver,
       targetNode,
       saveEditNode,
       origin,
@@ -52,7 +53,9 @@ class TreeItem extends Component {
             display: 'flex'
           }}
         >
-          {targetNode === item.id && dropDividerPosition === 'down' && <TreeDivider top />}
+          {targetNode === item.id && dropDividerPosition === 'down' && isOver && (
+            <TreeDivider top />
+          )}
           {
             <span
               onClick={() => {
@@ -135,7 +138,9 @@ class TreeItem extends Component {
               >
                 {item.title}
                 {renderRightClickMenu(item)}
-                {targetNode === item.id && dropDividerPosition === 'sub' && <TreeDivider />}
+                {targetNode === item.id && dropDividerPosition === 'sub' && isOver && (
+                  <TreeDivider />
+                )}
               </span>
             )
           ) : (
@@ -177,6 +182,14 @@ const source = {
     }
     props.onDragStart(props.item)
     return { sourceItem: props.item, originalExpandStatus: props.expanded }
+  },
+  endDrag (props, monitor) {
+    const dropResult = monitor.getDropResult()
+    if (!dropResult) {
+      const { removeTargetNode, removeDraggingNode } = props
+      removeDraggingNode()
+      removeTargetNode()
+    }
   }
 }
 const target = {
@@ -245,9 +258,10 @@ function sourceCollect (connect, monitor) {
     isDragging: monitor.isDragging()
   }
 }
-function targetCollect (connect) {
+function targetCollect (connect, monitor) {
   return {
-    connectDropTarget: connect.dropTarget()
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver()
   }
 }
 

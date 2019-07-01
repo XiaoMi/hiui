@@ -64,17 +64,14 @@ class Cascader extends Component {
     }
   }
 
-  componentWillReceiveProps (props) {
-    let value = this.state.cacheValue
-    if (!shallowequal(props.value, this.props.value)) {
-      value = props.value
+  componentWillReceiveProps (nextProps) {
+    if (!shallowequal(nextProps.value, this.props.value)) {
+      const cascaderLabel = this.getCascaderLabel(nextProps.value)
+      this.setState({
+        cacheValue: nextProps.value, // 缓存原始value，用户可能点击option但是没选中，用于恢复初始value
+        cascaderLabel
+      })
     }
-    const cascaderLabel = this.getCascaderLabel(value)
-    this.setState({
-      // cascaderValue: value,
-      cacheValue: value, // 缓存原始value，用户可能点击option但是没选中，用于恢复初始value
-      cascaderLabel
-    })
   }
 
   componentDidMount () {

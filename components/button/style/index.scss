@@ -110,9 +110,49 @@
     outline: 0;
   }
 
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -1px;
+    bottom: -1px;
+    left: -1px;
+    right: -1px;
+    background-color: #fff;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &--loading {
+    &::before {
+      opacity: 0.4;
+    }
+
+    &--icon {
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+
+      svg {
+        @keyframes rotate {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        animation: rotate 1s linear infinite;
+      }
+    }
+  }
+
   &--icon {
     padding-left: 8px;
     padding-right: 8px;
+
+    &__spacer {
+      width: $spacer-2;
+      display: inline-block;
+    }
   }
 
   // Common Styles

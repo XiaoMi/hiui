@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
@@ -23,7 +23,7 @@ class FormItem extends Component {
   }
 
   componentDidMount () {
-    const {prop} = this.props
+    const { prop } = this.props
     if (prop) {
       this.parent.addField(this)
       this.valueInit()
@@ -54,7 +54,6 @@ class FormItem extends Component {
 
   getFilteredRule (trigger) {
     const rules = this.getRules()
-
     return rules.filter(rule => {
       return !rule.trigger || rule.trigger.indexOf(trigger) !== -1
     })
@@ -88,21 +87,27 @@ class FormItem extends Component {
     const validator = new AsyncValidator({
       [this.props.prop]: rules
     })
-    const model = {[this.props.prop]: this.getfieldValue()}
-
-    validator.validate(model, {
-      firstFields: true
-    }, errors => {
-      this.setState({
-        error: errors ? errors[0].message : '',
-        validating: false,
-        valid: !errors
-      }, () => {
-        if (cb instanceof Function) {
-          cb(errors)
-        }
-      })
-    })
+    const model = { [this.props.prop]: this.getfieldValue() }
+    validator.validate(
+      model,
+      {
+        firstFields: true
+      },
+      errors => {
+        this.setState(
+          {
+            error: errors ? errors[0].message : '',
+            validating: false,
+            valid: !errors
+          },
+          () => {
+            if (cb instanceof Function) {
+              cb(errors)
+            }
+          }
+        )
+      }
+    )
   }
 
   resetValidate () {
@@ -129,11 +134,17 @@ class FormItem extends Component {
   }
 
   handleFieldBlur () {
-    this.validate('onBlur')
+    const hasOnBlur = this.getRules().some(rule => (rule.trigger || '').includes('onBlur'))
+    if (hasOnBlur) {
+      this.validate('onBlur')
+    }
   }
 
   handleFieldChange () {
-    this.validate('onChange')
+    const hasOnChange = this.getRules().some(rule => (rule.trigger || '').includes('onChange'))
+    if (hasOnChange) {
+      this.validate('onChange')
+    }
   }
 
   get labelWidth () {
@@ -143,43 +154,41 @@ class FormItem extends Component {
   }
 
   render () {
-    const {children, label, required, className} = this.props
-    const {error, validating} = this.state
+    const { children, label, required, className } = this.props
+    const { error, validating } = this.state
 
     const obj = {}
-    obj['hi-form-item--error'] = error !== ''
+    obj['hi-form-item__error'] = error !== ''
     obj['hi-form-item--validating'] = validating
     obj['hi-form-item--required'] = this.isRequired() || required
 
     return (
       <div className={classNames('hi-form-item', className, obj)}>
-        {
-          label && (
-            <label className={'hi-form-item' + '__label'} style={{ 'width': this.labelWidth }}>
-              {label}
-            </label>
-          )
-        }
-        <div className={'hi-form-item' + '__content'} style={{ 'marginLeft': this.labelWidth }}>
-          {
-            (Array.isArray(children) || !children)
-              ? children
-              : React.cloneElement(children, {
-                onChange: (...args) => {
-                  children.props.onChange && children.props.onChange(...args)
-                  setTimeout(() => {
-                    this.handleFieldChange()
-                  })
-                },
-                onBlur: (...args) => {
-                  children.props.onBlur && children.props.onBlur(...args)
-                  setTimeout(() => {
-                    this.handleFieldBlur()
-                  })
-                }
-              })
-          }
-          { error && <div className='hi-form-item__error'>{error}</div> }
+        {label ? (
+          <label className={'hi-form-item' + '__label'} style={{ width: this.labelWidth }}>
+            {label}：
+          </label>
+        ) : (
+          <span style={{ width: this.labelWidth }} />
+        )}
+        <div className={'hi-form-item' + '__content'}>
+          {Array.isArray(children) || !children
+            ? children
+            : React.cloneElement(children, {
+              onChange: (...args) => {
+                children.props.onChange && children.props.onChange(...args)
+                setTimeout(() => {
+                  this.handleFieldChange()
+                })
+              },
+              onBlur: (...args) => {
+                children.props.onBlur && children.props.onBlur(...args)
+                setTimeout(() => {
+                  this.handleFieldBlur()
+                })
+              }
+            })}
+          <div className='hi-form-item--msg__error'>{error}</div>
         </div>
       </div>
     )

@@ -1,6 +1,7 @@
 @import '@hi-ui/core-css/index.scss';
 
 .hi-form {
+  max-width: 100%;
   position: relative;
 
   fieldset {
@@ -18,6 +19,11 @@
     color: $gray-darker;
   }
 
+  &--inline {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   &__title {
     box-sizing: border-box;
     margin-top: 0;
@@ -25,65 +31,65 @@
     font-size: 16px;
     font-weight: 400;
   }
+
+  &--label--left {
+    .hi-form-item__label {
+      text-align: left;
+    }
+  }
+
+  &--label--right {
+    .hi-form-item__label {
+      text-align: right;
+    }
+  }
+
+  &--label--top {
+    padding-right: 0;
+    text-align: left;
+
+    .hi-form-item {
+      flex-direction: column;
+    }
+  }
 }
 
 .hi-form-item {
+  display: flex;
   font-size: $font-size-normal;
   margin-right: $spacer-2;
-  // margin-top: 4px;
-  // margin-bottom: 4px;
-  padding: $spacer-2 0;
-
-  & + & {
-    // margin-top: $spacer-2;
-
-    .hi-form--inline & {
-      // margin-top: 0;
-    }
-  }
-
-  .hi-form--inline & {
-    display: inline-block;
-    vertical-align: top;
-  }
 
   &__label {
-    float: left;
-    box-sizing: border-box;
-    padding-right: $spacer-3;
+    flex-shrink: 0;
+    min-height: 32px;
     line-height: 32px;
+    box-sizing: border-box;
+    padding-right: $spacer-2;
     vertical-align: top;
     color: $gray-darker;
-
-    .hi-form--label--left & {
-      text-align: left;
-    }
-
-    .hi-form--label--right & {
-      text-align: right;
-    }
-
-    .hi-form--label--top & {
-      float: none;
-      padding-right: 0;
-      text-align: left;
-    }
+    overflow-wrap: break-word;
   }
 
   &__content {
+    flex: 1;
     position: relative;
     vertical-align: top;
+    min-height: 32px;
   }
 
   &__error {
-    position: absolute;
-    top: 0;
-    left: 100%;
-    margin-left: $spacer-2;
+    .hi-input__inner {
+      border-color: get-color($palette-secondary, 'danger');
+    }
+  }
+
+  &--msg__error {
     font-size: $font-size-small;
-    line-height: 32px;
-    white-space: nowrap;
-    color: #ff4949;
+    min-height: 24px;
+    padding: 2px 0;
+    box-sizing: border-box;
+    line-height: 20px;
+    color: get-color($palette-secondary, 'danger');
 
     .hi-form--inline & {
       top: 36px;
@@ -96,7 +102,7 @@
     .hi-form-item__label::before {
       margin-right: $spacer-1;
       content: '*';
-      color: #ff4949;
+      color: get-color($palette-secondary, 'danger');
     }
   }
 

@@ -34,7 +34,8 @@ class Select extends Component {
     optionWidth: PropTypes.number,
     style: PropTypes.object,
     onChange: PropTypes.func,
-    dropdownRender: PropTypes.func
+    dropdownRender: PropTypes.func,
+    open: PropTypes.bool
   }
 
   static defaultProps = {
@@ -47,7 +48,11 @@ class Select extends Component {
     autoload: false,
     placeholder: '请选择',
     noFoundTip: '无内容',
-    showCheckAll: false
+    showCheckAll: false,
+    open: true,
+    onClick: () => {},
+    onBlur: () => {},
+    onFocus: () => {}
   }
 
   constructor (props) {
@@ -192,35 +197,32 @@ class Select extends Component {
     this.onClickOption(item, focusedIndex)
   }
 
-  onChange () {
-    const {
-      selectedItems
-    } = this.state
+  onChange (changedItems) {
+    const { selectedItems } = this.state
 
-    this.props.onChange && this.props.onChange(selectedItems)
+    this.props.onChange && this.props.onChange(selectedItems, changedItems)
   }
 
-  checkAll (e) { // 全选
+  checkAll (e) {
+    // 全选
     e && e.stopPropagation()
 
-    const {
-      dropdownItems
-    } = this.state
-    let selectedItems = this.state.selectedItems.concat()
-
+    const { dropdownItems, selectedItems } = this.state
+    let _selectedItems = [...selectedItems]
+    let changedItems = []
     dropdownItems.forEach(item => {
       if (!item.disabled && this.matchFilter(item)) {
-        let itemIndex = selectedItems.findIndex((sItem) => {
-          return sItem.id === item.id
-        })
-        itemIndex === -1 && selectedItems.push(item)
+        if (!_selectedItems.map(selectItem => selectItem.id).includes(item.id)) {
+          _selectedItems.push(item)
+          changedItems.push(item)
+        }
       }
     })
     this.setState({
-      selectedItems
+      selectedItems: _selectedItems
     }, () => {
       this.selectInput.focus()
-      this.onChange()
+      this.onChange(changedItems)
     })
   }
 
@@ -254,7 +256,7 @@ class Select extends Component {
         this.clearKeyword() // 多选状态清空筛选
       }
 
-      this.onChange()
+      this.onChange(item)
     })
   }
 
@@ -266,7 +268,7 @@ class Select extends Component {
     })
   }
 
-  handleInputClick (e) {
+  handleInputClick = (e) => {
     let {
       dropdownShow
     } = this.state
@@ -310,18 +312,18 @@ class Select extends Component {
       selectedItems
     }, () => {
       this.selectInput.focus()
-      this.onChange()
+      this.onChange(item)
     })
   }
   // 全部删除
   deleteAllItems () {
     const focusedIndex = this.resetFocusedIndex()
-
+    const changedItems = [...this.state.selectedItems]
     this.setState({
       focusedIndex,
       selectedItems: []
     }, () => {
-      this.onChange()
+      this.onChange(this.props.mode === 'multiple' ? changedItems : changedItems[0])
       this.onFilterItems('')
     })
   }
@@ -406,7 +408,7 @@ class Select extends Component {
       searchable,
       keyword
     } = this.state
-    return this.isRemote() || (!searchable || !keyword) || (searchable && keyword && (String(item.id).match(keyword) || String(item.name).match(keyword)))
+    return this.isRemote() || (!searchable || !keyword) || (searchable && keyword && (String(item.id).includes(keyword) || String(item.name).includes(keyword)))
   }
 
   resetFocusedIndex (setState = true) {
@@ -482,7 +484,10 @@ class Select extends Component {
       noFoundTip,
       optionWidth,
       dropdownRender,
-      multipleMode
+      multipleMode,
+      onClick,
+      onBlur,
+      onFocus
     } = this.props
     const placeholder = this.localeDatasProps('placeholder')
     const {
@@ -514,7 +519,14 @@ class Select extends Component {
             multipleMode={multipleMode}
             container={this.selectInputContainer}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
-            onClick={this.handleInputClick.bind(this)}
+            onClick={()=>{
+              if(this.props.open) {
+                this.handleInputClick()
+              }
+              onClick()
+            }}
+            onBlur={onBlur}
+            onFocus={onFocus}
             onDelete={this.deleteItem.bind(this)}
             onClear={this.deleteAllItems.bind(this)}
             onSearch={this.debouncedFilterItems.bind(this)}
@@ -523,7 +535,7 @@ class Select extends Component {
         </div>
         { children }
         <Popper
-          show={dropdownShow}
+          show={dropdownShow && this.props.open}
           attachEle={this.selectInputContainer}
           zIndex={1050}
           topGap={5}

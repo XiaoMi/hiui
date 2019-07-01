@@ -97,16 +97,21 @@ render() {
 
 ### Rate Attributes
 
-| Property     | Description                             | Type                    | Options | Default |
-| ------------ | --------------------------------------- | ----------------------- | ------- | ------- |
-| allowClear   | whether to allow clear when click again | boolean                 | -       | true    |
-| allowHalf    | whether to allow semi selection         | boolean                 | -       | true    |
-| useEmoji     | whether to use emoji                    | boolean                 | -       | false   |
-| className    | custom class name of rate               | string                  | -       | -       |
-| count        | star count, not work whem use emoji     | number                  | -       | 5       |
-| defaultValue | default value                           | number                  | -       | 0       |
-| disabled     | read only, unable to interact           | boolean                 | -       | false   |
-| style        | custom style object of rate             | object                  | -       | -       |
-| tooltips     | custom tooltip by each character        | string[]                | -       | -       |
-| value        | current value                           | number                  | -       | -       |
-| onChange     | callback when select value              | (value: number) => void | -       | -       |
+| Property     | Description                             | Type     | Options | Default |
+| ------------ | --------------------------------------- | -------- | ------- | ------- |
+| allowClear   | whether to allow clear when click again | boolean  | -       | true    |
+| allowHalf    | whether to allow semi selection         | boolean  | -       | true    |
+| useEmoji     | whether to use emoji                    | boolean  | -       | false   |
+| className    | custom class name of rate               | string   | -       | -       |
+| count        | star count, not work whem use emoji     | number   | -       | 5       |
+| defaultValue | default value                           | number   | -       | 0       |
+| disabled     | read only, unable to interact           | boolean  | -       | false   |
+| style        | custom style object of rate             | object   | -       | -       |
+| tooltips     | custom tooltip by each character        | string[] | -       | -       |
+| value        | current value                           | number   | -       | -       |
+
+### Rate Events
+
+| Attribute | Description    | Parameters      |
+| --------- | -------------- | --------------- |
+| onChange  | click callback | (value: number) |

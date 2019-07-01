@@ -1,22 +1,42 @@
 # 更新日志
 
-## 1.5.0-rc.5
+## 1.5.1
 
+- 新增：`<Select />` 组件 `onClick` `onBlur` `onFocus` 事件回调函数 [#321](https://github.com/XiaoMi/hiui/issues/321)
+- 修复：`<Select />` 组件的对齐问题 [#322](https://github.com/XiaoMi/hiui/issues/322)
+- 修复：`<Button />` 组件 `disabled` 仍可触发点击事件的问题 [#324](https://github.com/XiaoMi/hiui/issues/324)
+- 修复：`<Form />` 组件 `inline` 模式下顶部不对齐的问题 [#325](https://github.com/XiaoMi/hiui/issues/325)
+
+## 1.5.0
+
+- 新增：`<Select />` 组件 `onChange` 支持获取改变值 [#291](https://github.com/XiaoMi/hiui/issues/291)
+- 新增：`<Tree />` 组件 `onCheck` 事件 [#267](https://github.com/XiaoMi/hiui/issues/267)
+- 新增：`<Select />` 组件支持控制下拉菜单展示的属性 [#262](https://github.com/XiaoMi/hiui/issues/262)
+- 新增：`<Button />` 组件 loading 状态 [#166](https://github.com/XiaoMi/hiui/issues/166)
 - 新增：`<Timeline />` 时间轴组件 [#239](https://github.com/XiaoMi/hiui/issues/239)
 - 新增：`<Loading />` 组件 UI 样式 [#238](https://github.com/XiaoMi/hiui/issues/238)
 - 新增：`<Tooltip />` 组件 api 调用功能 [#240](https://github.com/XiaoMi/hiui/issues/240)
-
-## 1.5.0-rc.4
-
 - 新增：`<Transfer />` 穿梭框组件 [#108](https://github.com/XiaoMi/hiui/issues/108)
 - 新增：`<Rate />` 评分组件 [#106](https://github.com/XiaoMi/hiui/issues/106)
 - 新增：`<Switch />` 开关组件 [#107](https://github.com/XiaoMi/hiui/issues/107)
-- 修复：`<Menu />` 组件在某些情况下抛出的 key 的警告问题 [#215](https://github.com/XiaoMi/hiui/issues/215)
+- 新增：`<Card />` 组件[#113](https://github.com/XiaoMi/hiui/issues/113)
+- 优化：`<Datepicker />` 组件，调整新的 UI，增加新的 API [#105](https://github.com/XiaoMi/hiui/issues/105)
+- 优化：`<Tree />` 组件，增加搜索、拖拽、编辑功能 [#112](https://github.com/XiaoMi/hiui/issues/112)
 
-## 1.5.0-rc.1
+## 1.4.6
 
-- 新增：`<Card />` 组件
-- 修改：`<Tree />`、`<Datepicker />` 组件，调整新的 UI，增加新的 API
+- 修复：`<Select />` 组件搜索特殊字符造成的崩溃问题 [#294](https://github.com/XiaoMi/hiui/issues/294)
+- 修复：`<Form />` 组件 `label` 文字超长时造成的浮动问题 [#295](https://github.com/XiaoMi/hiui/issues/295)
+- 修复：`<Form />` 组件验证规则未写 `trigger` 时也会触发验证的问题 [#296](https://github.com/XiaoMi/hiui/issues/296)
+
+## 1.4.5
+
+- 修复：`<Input />` 组件 `textarea` 调整大小时的 UI 展示问题 [#152](https://github.com/XiaoMi/hiui/issues/152)
+- 修复：`<Select />` 组件单选、多选高度不一致的问题 [#201](https://github.com/XiaoMi/hiui/issues/201)
+- 修复：`<Select />` 组件多选禁用还可以勾选的问题 [#218](https://github.com/XiaoMi/hiui/issues/218)
+- 修复：`<Cascader />` 组件 `displayRender` 会触发两次的问题 [#246](https://github.com/XiaoMi/hiui/issues/246)
+- 修复： `<Radio />` 组件在 `id === 0` 时回调参数错误的问题 [#259](https://github.com/XiaoMi/hiui/issues/259)
+- 修复： `<Input />` 组件前、后缀的内容被带回到实际值的问题 [#282](https://github.com/XiaoMi/hiui/issues/282)
 
 ## 1.4.4
 
@@ -39,11 +59,6 @@
 - 修复： `<Navmenu />` 当只有一个标签时导致的渲染问题
 
 ## 1.4.1
-
-- 修复： `<Counter />` 、 `<Input />` value 值为字符串的异常问题
-- 修复： `<Navmenu />` 当只有一个标签时导致的渲染问题
-
-## 1.4.0
 
 - 新增：部分组件测试用例
 - 新增：`<Tabs />`组件
