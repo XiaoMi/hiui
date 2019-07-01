@@ -26,17 +26,17 @@ import DemoAdvanced from '../../demo/cascader/section-advanced.jsx'
 
 ### Props
 
-| 参数           | 说明                                          | 类型                          | 可选值        | 默认值                                              |
-| -------------- | --------------------------------------------- | ----------------------------- | ------------- | --------------------------------------------------- |
-| fieldNames     | 自定义 options 中 label,value,children 的字段 | object                        | -             | {label:'label', value:'value', children:'children'} |
-| data           | 可选项数据源                                  | DataItem []                   | -             | -                                                   |
-| value          | 当前选中值                                    | string []                     | -             | []                                                  |
-| searchable     | 是否可搜索                                    | boolean                       | true \| false | false                                               |
-| clearable      | 是否可清空                                    | boolean                       | true \| false | true                                                |
-| disabled       | 是否禁止使用                                  | boolean                       | true \| false | false                                               |
-| changeOnSelect | 是否启用选择即改变功能                        | boolean                       | true \| false | false                                               |
-| placeholder    | placeholder                                   | string                        | -             | 请选择                                              |
-| emptyContent   | 选项为空时展示的数据                          | string \| ReactNode           | -             | 无匹配数据                                          |
-| className      | 自定义 class                                  | string                        | -             | -                                                   |
-| displayRender  | 自定义选中后的展示                            | (value : string []) => string | -             | -                                                   |
-| onChange       | 选择完成后回调                                | (value : string []) => void   | -             | -                                                   |
+| 参数           | 说明                                          | 类型                         | 可选值        | 默认值                                                  |
+| -------------- | --------------------------------------------- | ---------------------------- | ------------- | ------------------------------------------------------- |
+| fieldNames     | 自定义 options 中 label,value,children 的字段 | object                       | -             | { label: 'label', value: 'value', children: 'children'} |
+| data           | 可选项数据源                                  | DataItem[]                   | -             | -                                                       |
+| value          | 当前选中值                                    | string[]                     | -             | []                                                      |
+| searchable     | 是否可搜索                                    | boolean                      | true \| false | false                                                   |
+| clearable      | 是否可清空                                    | boolean                      | true \| false | true                                                    |
+| disabled       | 是否禁止使用                                  | boolean                      | true \| false | false                                                   |
+| changeOnSelect | 是否启用选择即改变功能                        | boolean                      | true \| false | false                                                   |
+| placeholder    | placeholder                                   | string                       | -             | '请选择'                                                |
+| emptyContent   | 选项为空时展示的数据                          | string \| ReactNode          | -             | '无匹配数据'                                            |
+| className      | 自定义 class                                  | string                       | -             | -                                                       |
+| displayRender  | 自定义选中后的展示                            | (value: string []) => string | -             | -                                                       |
+| onChange       | 选择完成后回调                                | (value: string []) => void   | -             | -                                                       |
