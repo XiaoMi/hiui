@@ -21,10 +21,10 @@ export default {
     },
     'visual-framework': {
       color: designs['color'],
-      layout2: designs['layout2'],
-      theme: designs['theme'],
-      icon: designs['icon'],
+      'content-layout': designs['content-layout'],
+      palette: designs['palette'],
       font: designs['font'],
+      icon: designs['icon'],
       image: designs['image']
     }
   }

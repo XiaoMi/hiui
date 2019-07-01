@@ -61,11 +61,11 @@ module.exports = {
     overview: '概览',
     grid: '栅格',
     layout: '布局',
-    layout2: '布局',
+    'content-layout': '布局',
     navigation: '导航',
     copy: '文案',
     color: '色彩',
-    theme: '主题',
+    palette: '配色主题',
     icon: '图标',
     font: '字体',
     image: '图片'
