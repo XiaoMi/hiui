@@ -1,0 +1,58 @@
+import React from 'react'
+import DocViewer from '../../../libs/doc-viewer'
+import Upload from '../../../components/upload'
+const prefix = 'Upload-custom'
+
+const code = `
+import React from 'react'
+import Upload from '@hiui/hiui/es/upload'\n
+class Demo extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state={
+      fileList: [
+        {
+          name: 'a.png',
+          fileType: 'img', // 文件类型，可取值img, zip, word, pdf, ppt, excel, other
+          uploadState: 'success' // 上传状态，可取值success, error
+        },
+        {
+          name: 'b.png',
+          fileType: 'img',
+          uploadState: 'error'
+        }
+      ]
+    }
+  }
+  render () {
+    const {
+      fileList
+    } = this.state
+
+    return (
+      <div>
+        <Upload
+          type="normal"
+          beforeUpload={(files, fileList) => {
+            console.log('---------beforeUpload', files, fileList)
+            return true
+          }}
+          customUpload={files => {
+            const _fileList = fileList.concat({
+              name: files[0].name,
+              fileType: 'img',
+              uploadState: 'success'
+            })
+            this.setState({
+              fileList: _fileList
+            })
+          }}
+          buttonText="上传文件"
+          defaultFileList={fileList}
+        />
+      </div>
+    )
+  }
+}`
+const DemoCustom = () => <DocViewer code={code} scope={{ Upload }} prefix={prefix} />
+export default DemoCustom

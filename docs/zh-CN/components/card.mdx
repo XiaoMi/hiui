@@ -1,0 +1,67 @@
+# Card 卡片
+
+## 基础
+
+import DemoBase from '../../demo/card/section-base.jsx'
+
+<DemoBase />
+
+## 不同大小
+
+import DemoSize from '../../demo/card/section-size.jsx'
+
+<DemoSize />
+
+## 额外按钮
+
+import DemoButton from '../../demo/card/section-button.jsx'
+
+<DemoButton />
+
+## 图片卡片
+
+import DemoImage from '../../demo/card/section-image.jsx'
+
+<DemoImage />
+
+## 简易卡片
+
+import DemoSimple from '../../demo/card/section-simple.jsx'
+
+<DemoSimple />
+
+## 配合 Gird 布局 - 图片排版
+
+配合 Grid 布局实现更加简单
+
+import DemoGridImage from '../../demo/card/section-grid-image.jsx'
+
+<DemoGridImage />
+
+## 配合 Gird 布局 - 展示
+
+配合 Grid 布局实现更加简单
+
+import DemoGridDisplay from '../../demo/card/section-grid-display.jsx'
+
+<DemoGridDisplay />
+
+## 配合 Gird 布局 - 自定义展示
+
+配合 Grid 布局实现更加简单
+
+import DemoGridCustom from '../../demo/card/section-grid-custom.jsx'
+
+<DemoGridCustom />
+
+## Props
+
+| 参数      | 说明                         | 类型                | 可选值                   | 默认值  |
+| --------- | ---------------------------- | ------------------- | ------------------------ | ------- |
+| title     | 卡片标题                     | string \| ReactNode | -                        | -       |
+| size      | 卡片大小                     | string              | small \| middle \| large | 100%    |
+| type      | 卡片类型                     | string              | simple \| default        | default |
+| hoverable | 鼠标移入卡片是否显示浮起效果 | Boolean             | true \| false            | false   |
+| extra     | 卡片右上角的扩展             | ReactNode           | -                        | -       |
+| coverUrl  | 图片卡片的封面               | string              | -                        | -       |
+| content   | 图片卡片的信息描述           | string \| ReactNode | -                        | -       |

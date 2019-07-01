@@ -36,7 +36,7 @@ export default {
       checkbox: components['checkbox'],
       'date-picker': components['date-picker'],
       'time-picker': components['time-picker'],
-      upload: require('../../../docs/zh-CN/components/upload'),
+      upload: components['upload'],
       rate: components['rate']
     },
     'group-data': {
@@ -46,7 +46,7 @@ export default {
       tooltip: components['tooltip'],
       popover: components['popover'],
       progress: components['progress'],
-      card: require('../../../docs/zh-CN/components/card'),
+      card: components['card'],
       timeline: components['timeline'],
       transfer: components['transfer'],
       switch: components['switch']
