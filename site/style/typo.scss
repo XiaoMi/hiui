@@ -19,6 +19,28 @@
       }
     }
 
+    h2 {
+      padding-top: 63px;
+      margin-top: -23px;
+
+      a {
+        display: none;
+      }
+
+      span {
+        display: flex;
+      }
+
+      span:hover {
+        a {
+          margin-left: 5px;
+          color: #4284f5;
+          display: inline-block;
+          font-size: 16px;
+        }
+      }
+    }
+
     // @To-do: 表格样式
     table {
       font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
