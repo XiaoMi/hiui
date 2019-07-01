@@ -5,7 +5,7 @@ import Icon from '../../../components/icon'
 import './style/index.scss'
 
 class Component extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       anchors: [],
@@ -20,7 +20,7 @@ class Component extends React.Component {
     this.contentRef = React.createRef()
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getCurrentPage(() => {
       this.setState(
         {
@@ -32,11 +32,17 @@ class Component extends React.Component {
           const anchorsDOMList = [].slice.call(anchorsDOM)
           anchorsDOMList.map((v, i) => {
             v.id = v.innerHTML
+
             render(
               <span>
                 {v.innerHTML}
-                <a href={'#' + v.innerHTML} style={{ color: '#4284F5' }}>
-                  <Icon name="link" />
+                <a
+                  href={'#' + v.innerHTML}
+                  onClick={() => {
+                    this.setActiveAnchor(v.id)
+                  }}
+                >
+                  <Icon name='link' />
                 </a>
               </span>,
               v
@@ -57,20 +63,18 @@ class Component extends React.Component {
   }
   setActiveAnchor = id => {
     this.setState({ activeAnchor: id })
-  }
-  getAnchors() {
+  };
+  getAnchors () {
     const anchorsDOM = document.querySelectorAll('#markdown-content h2')
     const anchorsDOMList = [].slice.call(anchorsDOM)
     const anchors = anchorsDOMList.map((v, i) => {
-      // const id = 'component-anchors-' + i
-      // anchorsDOM[i].id = id
       return { id: v.id, text: anchorsDOM[i].innerHTML }
     })
 
     this.setState({ anchors })
   }
 
-  getSiblingNav() {
+  getSiblingNav () {
     const footNavs = this.state.footNavs
     const tempArr = Object.keys(footNavs)
     const index = tempArr.indexOf(this.state.page)
@@ -86,7 +90,7 @@ class Component extends React.Component {
   }
 
   // 收集所有导航
-  collectNavs(fn) {
+  collectNavs (fn) {
     let footNavs = []
     let page = this.props.match.path.split('/')[3]
     footNavs = this.props[page] || {}
@@ -94,34 +98,37 @@ class Component extends React.Component {
     this.setState({ footNavs, topNav: page }, fn)
   }
 
-  getCurrentPage(fn) {
+  getCurrentPage (fn) {
     // TODO:这里可能要修改
     let page = this.props.match.path.split('/')[4]
     page = page || 'quick-start'
     this.setState({ page }, fn)
   }
 
-  getComponent(page) {
+  getComponent (page) {
     const { theme, locale } = this.props
     // 控制markdown显示隐藏
     const currentPage = this.props.allComponents[this.state.topNav][page]
     if (currentPage) {
-      const el = React.createElement(currentPage.default || currentPage, { theme, locale })
+      const el = React.createElement(currentPage.default || currentPage, {
+        theme,
+        locale
+      })
       return el
     }
   }
 
-  render() {
+  render () {
     const { pre, next, anchors, cComponent, topNav, activeAnchor } = this.state
     console.log('activeAnchor', activeAnchor)
     return (
-      <div className="component">
-        <div className="home-container">
-          <div className="markdown-content article" id="markdown-content">
+      <div className='component'>
+        <div className='home-container'>
+          <div className='markdown-content article' id='markdown-content'>
             {cComponent}
           </div>
 
-          <div className="foot-nav clearfix">
+          <div className='foot-nav clearfix'>
             <a
               className={`pre ${pre.to ? '' : 'none'}`}
               href={pre.to ? `/${this.props.locale}/${topNav}/${pre.to}` : ''}
@@ -137,7 +144,7 @@ class Component extends React.Component {
           </div>
         </div>
 
-        <div className="anchor">
+        <div className='anchor'>
           <ul>
             {anchors.map((v, i) => (
               <li key={i} className={activeAnchor === v.text ? 'active' : ''}>
@@ -146,13 +153,6 @@ class Component extends React.Component {
                   onClick={() => {
                     this.setActiveAnchor(v.text)
                   }}
-                  // onClick={() => {
-                  //   const target = document.querySelector(`#${v.id}`)
-
-                  //   if (target) {
-                  //     target.scrollIntoView({ block: 'start', behavior: 'smooth' })
-                  //   }
-                  // }}
                 >
                   {v.text}
                 </a>
