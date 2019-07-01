@@ -42,7 +42,7 @@ export default {
     'group-data': {
       table: components['table'],
       tree: components['tree'],
-      collapse: components['collpase'],
+      collapse: components['collapse'],
       tooltip: components['tooltip'],
       popover: components['popover'],
       progress: components['progress'],

@@ -47,11 +47,6 @@ class Demo extends React.Component {
 ]
 
 const DemoBasic = () => (
-  <DocViewer
-    code={code}
-    scope={{ Collapse }}
-    prefix={prefix}
-    rightOptions={rightOptions}
-  />
+  <DocViewer code={code} scope={{ Collapse }} prefix={prefix} rightOptions={rightOptions} />
 )
 export default DemoBasic

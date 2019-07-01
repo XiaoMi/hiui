@@ -21,12 +21,30 @@
 
     // @To-do: 表格样式
     table {
+      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
       width: 100%;
       border-radius: 2px;
       border-collapse: collapse;
       border: 1px solid rgba(231, 231, 231, 1);
       line-height: 22px;
       color: #666;
+
+      code {
+        margin: 0 1px;
+        padding: 0.2em 0.4em;
+        font-size: 1.1em;
+        background: #f2f4f5;
+        border: 1px solid #eee;
+        border-radius: 3px;
+      }
+
+      tr > td:first-of-type {
+        color: #4284f5;
+      }
+
+      tr > td:nth-of-type(3) {
+        color: #f63;
+      }
 
       th {
         text-align: left;
@@ -38,6 +56,17 @@
       td {
         padding: 10px 9px;
         border: 1px solid #e7e7e7;
+      }
+    }
+
+    p {
+      code {
+        margin: 0 1px;
+        padding: 0.2em 0.4em;
+        font-size: 1.1em;
+        background: #f2f4f5;
+        border: 1px solid #eee;
+        border-radius: 3px;
       }
     }
   }

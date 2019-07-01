@@ -22,21 +22,21 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 
 **_Form_**
 
-| 参数           | 说明             | 类型    | 可选值               | 默认值 |
-| -------------- | ---------------- | ------- | -------------------- | ------ |
-| model          | 表单数据         | Object  | -                    | -      |
-| rules          | 表单验证规则     | Object  | -                    | -      |
-| labelWidth     | label 宽度       | String  |                      |
-| labelPlacement | label 放置的位置 | String  | right \| left \| top | right  |
-| placement      | 是否横向排列     | Boolean | true \| false        | false  |
+| 参数           | 说明             | 类型    | 可选值                     | 默认值  |
+| -------------- | ---------------- | ------- | -------------------------- | ------- |
+| model          | 表单数据         | object  | -                          | -       |
+| rules          | 表单验证规则     | object  | -                          | -       |
+| labelWidth     | label 宽度       | string  |                            |
+| labelPlacement | label 放置的位置 | string  | 'right' \| 'left' \| 'top' | 'right' |
+| placement      | 是否横向排列     | boolean | true \| false              | false   |
 
 **_Form.Item_**
 
 | 参数     | 说明              | 类型    | 可选值        | 默认值 |
 | -------- | ----------------- | ------- | ------------- | ------ |
-| field    | 表单域 model 字段 | String  | -             | -      |
-| label    | 标签文本          | String  | -             | -      |
-| required | 是否必填          | Boolean | true \| false | false  |
+| field    | 表单域 model 字段 | string  | -             | -      |
+| label    | 标签文本          | string  | -             | -      |
+| required | 是否必填          | boolean | true \| false | false  |
 
 ## Methods
 
@@ -44,4 +44,4 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 | ----------------------------- | ------------------ |
 | validate(callback)            | 对整个表单进行校验 |
 | validateField(prop, callback) | 对表单字段进行校验 |
-| resetValidates                | 重置整个表单的验证 |
+| resetValidates()              | 重置整个表单的验证 |

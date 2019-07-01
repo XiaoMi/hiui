@@ -88,19 +88,19 @@ import DemoModal from '../../demo/date-picker/section-modal.jsx'
 
 ## Props
 
-| 参数        | 说明                             | 类型                                            | 可选值                                                                        | 默认值 |
-| ----------- | -------------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------- | ------ |
-| type        | 选择器类型                       | string                                          | date \| daterange \| year \| month \| week \| weekrang \| timeperiod          | date   |
-| value       | 默认显示的日期                   | Date\|string\|number\| object\|undefined\|null  | --                                                                            | null   |
-| min         | 最小日期                         | Date                                            | null                                                                          | null   |
-| max         | 最大日期                         | Date                                            | null                                                                          | null   |
-| disabled    | 是否禁用输入框                   | Boolean                                         | true \| false                                                                 | false  |
-| showTime    | 是否在日期选择器中显示时间选择器 | Boolean                                         | true \| false                                                                 | false  |
-| shortcuts   | 快捷面板                         | string []                                       | 近一周, 近一月, 近三月, 近一年                                                | null   |
-| weekOffset  | 周起始<br/>默认周日做为第一列    | number                                          | 0/1                                                                           | 0      |
-| placeholder | 自定义占位符                     | string \| string []                             | -                                                                             | -      |
-| format      | 格式化显示日期                   | string                                          | -                                                                             | -      |
-| onChange    | 选中回调函数                     | (date: Date \| {start:Date, end: Date}) => void | 普通时间选择返回 date 格式数据、范围选择返回对象{start:开始时间,end:结束时间} |
+| 参数        | 说明                             | 类型                                                    | 可选值                                                                             | 默认值 |
+| ----------- | -------------------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------ |
+| type        | 选择器类型                       | string                                                  | 'date' \| 'daterange' \| 'year' \| 'month' \| 'week' \| 'weekrang' \| 'timeperiod' | 'date' |
+| value       | 默认显示的日期                   | Date \| string \| number \| object \| undefined \| null | --                                                                                 | null   |
+| min         | 最小日期                         | Date                                                    | null                                                                               | null   |
+| max         | 最大日期                         | Date                                                    | null                                                                               | null   |
+| disabled    | 是否禁用输入框                   | Boolean                                                 | true \| false                                                                      | false  |
+| showTime    | 是否在日期选择器中显示时间选择器 | Boolean                                                 | true \| false                                                                      | false  |
+| shortcuts   | 快捷面板                         | string []                                               | 近一周, 近一月, 近三月, 近一年                                                     | null   |
+| weekOffset  | 周起始<br/>默认周日做为第一列    | number                                                  | 0/1                                                                                | 0      |
+| placeholder | 自定义占位符                     | string \| string []                                     | -                                                                                  | -      |
+| format      | 格式化显示日期                   | string                                                  | -                                                                                  | -      |
+| onChange    | 选中回调函数                     | (date: Date \| { start: Date, end: Date }) => void      | 普通时间选择返回 date 格式数据、范围选择返回对象{start:开始时间,end:结束时间}      |
 
 ## Methods
 
