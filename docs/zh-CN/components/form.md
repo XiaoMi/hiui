@@ -12,30 +12,30 @@ constructor() {
     alignList: [
       {
         id: 'left',
-        name: '左对齐'
+        content: '左对齐'
       },
       {
         id: 'right',
-        name: '右对齐'
+        content: '右对齐'
       },
       {
         id: 'top',
-        name: '顶对齐'
+        content: '顶对齐'
       },
     ],
     columnCheckedIndex: 0,
     columnList: [
       {
         id: '12',
-        name: 'S'
+        content: 'S'
       },
       {
         id: '16',
-        name: 'M'
+        content: 'M'
       },
       {
         id: '20',
-        name: 'L'
+        content: 'L'
       },
     ],
     position: 'left',
@@ -51,28 +51,22 @@ render(){
     <div>
       <Row gutter={true}>
         <Col span={12}>
-          <Radio
-            list={this.state.alignList}
-            mode='button'
-            checked={alignCheckedIndex}
-            onChange={(data, index) => {
-              this.setState({
-                position: data,
-                alignCheckedIndex: index
-              })
+          <Radio.Group
+            data={this.state.alignList}
+            value={this.state.position}
+            type='button'
+            onChange={position => {
+              this.setState({ position })
             }}
           />
         </Col>
         <Col span={12}>
-          <Radio
-            list={this.state.columnList}
-            mode='button'
-            checked={columnCheckedIndex}
-            onChange={(data, index) => {
-              this.setState({
-                column: data,
-                columnCheckedIndex: index
-              })
+          <Radio.Group
+            data={this.state.columnList}
+            value={this.state.column}
+            type='button'
+            onChange={column => {
+              this.setState({ column })
             }}
           />
         </Col>
@@ -221,17 +215,18 @@ render(){
             <Input value={form.count} placeholder='count' onChange={this.handleChange.bind(this, 'count')}/>
           </FormItem>
           <FormItem label='地区' prop='region'>
-            <Radio
-              list={[{
-                name: '北京',
+            <Radio.Group
+              data={[{
+                content: '北京',
                 id: 1
               }, {
-                name: '上海',
+                content: '上海',
                 id: 2
               }, {
-                name: '武汉',
+                content: '武汉',
                 id: 3
               }]}
+              value={form.region}
               onChange={this.handleChange.bind(this, 'region', null)}
             />
           </FormItem>

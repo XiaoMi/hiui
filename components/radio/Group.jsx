@@ -20,18 +20,22 @@ class Group extends React.Component {
   }
   handleCheckboxChange = (event) => {
     const updatedValue = event.target.value
+    let callbackValue
     const { onChange } = this.props
     const { data } = this.state
     const newData = data.map(({ value, checked, ...rest }) => {
       const isValueEquel =
         updatedValue === value || Number(updatedValue) === value
+      if (isValueEquel) {
+        callbackValue = value
+      }
       return {
         value,
         checked: isValueEquel,
         ...rest
       }
     })
-    onChange && onChange(updatedValue)
+    onChange && onChange(callbackValue)
     hasValue(this.props) || this.setState({ data: newData })
   }
   render () {

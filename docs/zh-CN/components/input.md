@@ -2,7 +2,6 @@
 
 通过鼠标或键盘输入字符
 
-
 ### 类型
 
 :::demo
@@ -15,63 +14,53 @@ constructor () {
   this.state = {
     types: [{
       id: 'text',
-      name: '普通',
-      placeholder: '请输入...'
+      content: '普通'
     }, {
       id: 'id',
-      name: '身份证',
-      placeholder: '请输入身份证号'
+      content: '身份证'
     }, {
       id: 'tel',
-      name: '手机号',
-      placeholder: '请输入手机号码'
+      content: '手机号'
     }, {
       id: 'amount',
-      name: '浮点数',
-      placeholder: '请输入浮点数'
+      content: '浮点数'
     }],
-    type: 'text',
-    checkedIndex: 0,
-    placeholder: '请输入...'
+    type: 'text'
+  }
+  this.getPlaceholder = () => {
+    const type = this.state.type
+    return {
+      text: '请输入...',
+      id: '请输入身份证号',
+      tel: '请输入手机号码',
+      amount: '请输入浮点数'
+    }[type]
   }
 }
 render() {
-  const Row = Grid.Row
-  const Col = Grid.Col
-  const {types, type, checkedIndex, placeholder} = this.state
+  const { types, type, placeholder } = this.state
   return (
     <div>
-      <Row gutter={true}>
-        <Col span={12}>
-          <Radio
-            list={types}
-            mode='button'
-            checked={checkedIndex}
-            onChange={(data, index) => {
-              this.setState({
-                type: data,
-                checkedIndex: index,
-                placeholder: types[index].placeholder
-              })
-            }}
-          />
-        </Col>
-      </Row>
-      <Row gutter={true}>
-        <Col span={12}>
-          <Input
-            type={type}
-            placeholder={placeholder}
-            style={{width: '250px'}}
-          />
-        </Col>
-      </Row>
+      <Radio.Group
+        data={types}
+        type='button'
+        value={type}
+        onChange={(type) => {
+          this.setState({ type })
+        }}
+      />
+      <p />
+      <Input
+        type={type}
+        placeholder={this.getPlaceholder()}
+        style={{ width: 250 }}
+      />
     </div>
   )
 }
 ```
-:::
 
+:::
 
 ### 状态
 
@@ -85,59 +74,41 @@ constructor () {
   this.state = {
     disabled: false,
     required: false,
-    checkedIndex: 0,
-    placeholder: '禁用状态',
+    value: 'disabled',
     list: [{
       id: 'disabled',
-      name: '禁用状态'
+      content: '禁用状态'
     }, {
       id: 'required',
-      name: '必填项'
+      content: '必填项'
     }]
   }
 }
 render() {
-  const Row = Grid.Row
-  const Col = Grid.Col
-  const {list, required, disabled, placeholder, checkedIndex} = this.state
+  const { list, required, disabled, value } = this.state
   return (
     <div>
-      <Row gutter={true}>
-        <Col span={12}>
-          <Radio
-            list={list}
-            mode='button'
-            checked={checkedIndex}
-            onChange={(data, index) => {
-              this.setState({
-                placeholder: list[index].name,
-                checkedIndex: index,
-                required: data === 'required',
-                disabled: data === 'disabled'
-              })
-            }}
-          />
-        </Col>
-      </Row>
-      <Row gutter={true}>
-        <Col span={12}>
-           <Input
-            value=""
-            placeholder={placeholder}
-            style={{width: '250px'}}
-            required={required}
-            disabled={disabled}
-          />
-        </Col>
-      </Row>
-     
+      <Radio.Group
+        data={list}
+        type='button'
+        value={value}
+        onChange={(value) => {
+          this.setState({ value })
+        }}
+      />
+      <p />
+      <Input
+        placeholder='请输入'
+        style={{ width: 250 }}
+        required={value === 'required'}
+        disabled={value === 'disabled'}
+      />
     </div>
   )
 }
 ```
+
 :::
-
-
 
 ### 附加
 
@@ -146,73 +117,39 @@ render() {
 附加
 
 ```js
-constructor () {
-  super()
-  this.state = {
-    prefix: '+86',
-    suffix: '',
-    checkedIndex: 0,
-    placeholder: '010-12345678',
-    list: [{
-      name: '前缀',
-      prefix: '+86',
-      placeholder: '010-12345678'
-    }, {
-      name: '后缀',
-      suffix: '@xiaomi.com',
-      placeholder: 'mife'
-    }, {
-      name: '两者',
-      prefix: 'www.',
-      suffix: '.com',
-      placeholder: 'mi'
-    }]
-  }
-}
 changeEvent (e, val) {
   console.log(e.target.value, val)
 }
 render() {
-  const Row = Grid.Row
-  const Col = Grid.Col
-  const {list, prefix, suffix, placeholder, checkedIndex} = this.state
   return (
     <div>
-      <Row gutter={true}>
-        <Col span={12}>
-          <Radio
-            list={list}
-            mode='button'
-            checked={checkedIndex}
-            onChange={(data, index, item) => {
-              this.setState({
-                placeholder: item.placeholder,
-                checkedIndex: index,
-                prefix: item.prefix || '',
-                suffix: item.suffix || '',
-              })
-            }}
-          />
-        </Col>
-      </Row>
-      <Row gutter={true}>
-        <Col span={12}>
-           <Input
-            value=""
-            placeholder={placeholder}
-            style={{width: '250px'}}
-            suffix={suffix}
-            prefix={prefix}
-            onChange={this.changeEvent.bind(this)}
-          />
-        </Col>
-      </Row>
+      <Input
+        style={{ width: 250 }}
+        placeholder='010-12345678'
+        prefix='+86'
+        onChange={this.changeEvent.bind(this)}
+      />
+      <p />
+      <Input
+        style={{ width: 250 }}
+        placeholder='mife'
+        suffix='@xiaomi.com'
+        onChange={this.changeEvent.bind(this)}
+      />
+      <p />
+      <Input
+        style={{ width: 250 }}
+        placeholder='mi'
+        prefix='www.'
+        suffix='.com'
+        onChange={this.changeEvent.bind(this)}
+      />
     </div>
   )
 }
 ```
-:::
 
+:::
 
 ### 前置元素
 
@@ -221,89 +158,39 @@ render() {
 国际号码
 
 ```js
-constructor () {
-  super()
-  const ele = <Select
-    mode='single'
-    clearable={false}
-    style={{width: '80px'}}
-    list={[
-      { name:'+86', id:'86' },
-      { name:'+1', id:'1' },
-      { name:'+33', id:'33' },
-      { name:'+91', id:'91' },
-    ]}
-    value='86'
-    onChange={(item) => {
-      console.log('单选结果', item)
-      const selectValue = item[0].id
-      this.setState({selectValue, tel: `${selectValue} ${value}`})
-    }}
-  />
-  this.state = {
-    prepend: ele,
-    append: null,
-    checkedIndex: 0,
-    radioList: [{
-      name: '前置元素',
-      prepend: ele
-    }, {
-      name: '后置元素',
-      append: <Button type="primary">搜索</Button>
-    }],
-    value: ''
-	}
-}
 render() {
-  const {
-    value,
-    radioList,
-    checkedIndex,
-    prepend,
-    append    
-  } = this.state
-  const Row = Grid.Row
-  const Col = Grid.Col
   return (
     <div>
-    <Row gutter={true}>
-        <Col span={12}>
-          <Radio
-            list={radioList}
-            mode='button'
-            checked={checkedIndex}
-            onChange={(data, index, item) => {
-              this.setState({
-                checkedIndex: index,
-                prepend: item.prepend,
-                append: item.append,
-              })
-            }}
-          />
-        </Col>
-      </Row>
-      <Row gutter={true}>
-        <Col span={12}>
-           <Input
-              id="customId"
-              value={value}
-              type="text"
-              placeholder="请输入手机号"
-              onChange={e => this.setState({value: e.target.value})}
-              prepend={prepend}
-              append={append}
-              style={{width: '250px'}}
-            />
-        </Col>
-      </Row>
-      
+      <Input
+        type="text"
+        placeholder="请输入手机号"
+        prepend={<Select
+          mode='single'
+          clearable={false}
+          style={{ width: 80 }}
+          list={[
+            { name:'+86', id:'86' },
+            { name:'+1', id:'1' },
+            { name:'+33', id:'33' },
+            { name:'+91', id:'91' },
+          ]}
+          value='86'
+        />}
+        style={{ width: 250 }}
+      />
+      <p />
+      <Input
+        type="text"
+        placeholder="请输入手机号"
+        append={<Button>搜索</Button>}
+        style={{ width: 250 }}
+      />
     </div>
   )
 }
 ```
+
 :::
-
-
 
 ### 多行文本
 
@@ -314,42 +201,38 @@ render() {
 ```js
 render() {
   return (
-    <div>
-      <Input
-        value=""
-        type="textarea"
-        placeholder="多行文本"
-        style={{width: '540px', height: '300px'}}
-      />
-    </div>
+    <Input
+      type="textarea"
+      placeholder="多行文本"
+      style={{ width: 540, height: 300 }}
+    />
   )
 }
 ```
-:::
 
+:::
 
 ### Input Attributes
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| -------- | ----- | ---- | ---- | ---- |
-| type | 设置输入框类型 | String | text \| textarea \| id \| tel \| card \| amount \| email  | text |
-| disabled | 是否禁用 | Boolean | true \| false | false |
-| required | 是否必填 | String | true \| false | false |
-| prefix | 前缀 | String | - | - |
-| suffix | 后缀 | String | - | - |
-| prepend | 前置元素 | Element | - | - |
-| append | 后置元素 | Element | - | - |
-| placeholder |  占位符 |  String | - | - |
+| 参数        | 说明           | 类型    | 可选值                                                   | 默认值 |
+| ----------- | -------------- | ------- | -------------------------------------------------------- | ------ |
+| type        | 设置输入框类型 | String  | text \| textarea \| id \| tel \| card \| amount \| email | text   |
+| disabled    | 是否禁用       | Boolean | true \| false                                            | false  |
+| required    | 是否必填       | String  | true \| false                                            | false  |
+| prefix      | 前缀           | String  | -                                                        | -      |
+| suffix      | 后缀           | String  | -                                                        | -      |
+| prepend     | 前置元素       | Element | -                                                        | -      |
+| append      | 后置元素       | Element | -                                                        | -      |
+| placeholder | 占位符         | String  | -                                                        | -      |
 
 ### Input Events
 
-| 参数 | 说明 | 回调参数 |
-| -------- | ----- | ---- |
-| onFocus | 获得焦点时触发 | (event: Event, value: 原始值) |
-| onBlur | 失去焦点时触发 | (event: Event, value: 原始值) |
-| onKeyDown | 触发 keydown 事件 | (event: Event, value: 原始值) |
-| onKeyPress | 触发 keypress 事件 | (event: Event, value: 原始值) |
-| onInput | 触发 input 事件 | (event: Event, value: 原始值) |
-| onChange | 值改变时触发 | (event: Event, value: 原始值)<br/> 当 Input 包含 prefix 或 suffix 属性时，value 会得到拼接后的值，如果需要得到原始的值，可以使用 event.target.value 获取 |
-| onKeyUp | 触发 keyup 事件 | (event: Event, value: 原始值) |
-
+| 参数       | 说明               | 回调参数                                                                                                                                                 |
+| ---------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| onFocus    | 获得焦点时触发     | (event: Event, value: 原始值)                                                                                                                            |
+| onBlur     | 失去焦点时触发     | (event: Event, value: 原始值)                                                                                                                            |
+| onKeyDown  | 触发 keydown 事件  | (event: Event, value: 原始值)                                                                                                                            |
+| onKeyPress | 触发 keypress 事件 | (event: Event, value: 原始值)                                                                                                                            |
+| onInput    | 触发 input 事件    | (event: Event, value: 原始值)                                                                                                                            |
+| onChange   | 值改变时触发       | (event: Event, value: 原始值)<br/> 当 Input 包含 prefix 或 suffix 属性时，value 会得到拼接后的值，如果需要得到原始的值，可以使用 event.target.value 获取 |
+| onKeyUp    | 触发 keyup 事件    | (event: Event, value: 原始值)                                                                                                                            |

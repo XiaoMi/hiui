@@ -18,7 +18,6 @@ class Radio extends React.Component {
     return null
   }
   handleChange = (event) => {
-    console.log(event)
     const { onChange } = this.props
     onChange && onChange(event)
     hasChecked(this.props) ||

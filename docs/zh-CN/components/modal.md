@@ -53,19 +53,18 @@
       size: 'normal',
       sizeList: [
         {
-          name: '标准',
+          content: '标准',
           id: 'normal'
         },
         {
-          name: '大',
+          content: '大',
           id: 'large'
         },
         {
-          name: '小',
+          content: '小',
           id: 'small'
         }
-      ],
-      sizeListActive: 0
+      ]
     }
   }
   cancelEvent () {
@@ -77,17 +76,16 @@
   render(){
     return(
       <div>
-        <Radio
-          list={this.state.sizeList}
-          checked={this.state.sizeListActive}
-          onChange={(data, index) => {
-            this.setState({
-              size: data,
-              sizeListActive: index
-            })
+        <Radio.Group
+          type='button'
+          data={this.state.sizeList}
+          value={this.state.size}
+          onChange={(size) => {
+            this.setState({ size })
           }}
         />
-        <Button type="primary" onClick={() => this.setState({show: true})}>打开</Button>
+        <p />
+        <Button type="primary" onClick={() => this.setState({ show: true })}>打开</Button>
         <Modal
           title="窗口大小演示"
           size={this.state.size}
@@ -100,7 +98,6 @@
           <span>一些消息</span>
           <span>一些消息</span>
         </Modal>
-
       </div>
     )
   }
