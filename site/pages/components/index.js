@@ -10,7 +10,7 @@ export default {
     template: components['template'],
     theme: components['theme'],
     i18n: components['i18n'],
-    changelog: require('../../../CHANGELOG.md')
+    changelog: components['changelog']
   },
   components: {
     'group-basic': {
