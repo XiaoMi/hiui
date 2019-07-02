@@ -142,6 +142,14 @@
         font-size: 16px;
       }
     }
+
+    pre {
+      width: 100%;
+      max-width: 880px;
+      overflow: auto;
+      padding: 16px;
+      background-color: #f6f7f9;
+    }
   }
 
   &:lang(zh) {
