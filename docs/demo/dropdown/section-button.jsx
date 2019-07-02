@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Dropdown from '../../../components/dropdown'
 import Icon from '../../../components/icon'
+const desc = '自定义前缀、后缀'
 const prefix = 'dropdown-button'
 
 const code = `
@@ -39,10 +40,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoButton = () => (
-  <DocViewer
-    code={code}
-    scope={{ Dropdown, Icon }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} scope={{ Dropdown, Icon }} prefix={prefix} desc={desc} />
 )
 export default DemoButton

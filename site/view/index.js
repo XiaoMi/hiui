@@ -68,6 +68,7 @@ class Index extends React.Component {
     )
     setComponents(components)
   }
+
   getSiderName(key) {
     const map = locales[this.state.locale] || {}
     return key.split('.').reduce((a, b) => {

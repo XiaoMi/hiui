@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Tree from '../../../components/tree'
 const prefix = 'tree-drag'
-
+const desc = '对树的节点进行拖拽操作'
 const code = `
 import React from 'react'
 import Tree from '@hiui/hiui/es/tree'\n
@@ -65,11 +65,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoDrag = () => (
-  <DocViewer
-    code={code}
-    scope={{ Tree }}
-    prefix={prefix}
-  />
-)
+const DemoDrag = () => <DocViewer code={code} scope={{ Tree }} prefix={prefix} desc={desc} />
 export default DemoDrag

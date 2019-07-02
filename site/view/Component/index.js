@@ -19,7 +19,9 @@ class Component extends React.Component {
     }
     this.contentRef = React.createRef()
   }
-
+  componentDidUpdate(prevProps) {
+    window.scrollTo(0, 0)
+  }
   componentDidMount() {
     this.getCurrentPage(() => {
       this.setState(

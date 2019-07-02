@@ -1,6 +1,11 @@
 # Stepper 步骤
 
-步骤
+用来标识和组织完成一个任务时的信息
+
+## 何时使用
+
+- 当完成的目标需要分布来执行，且带有明确的先后次序
+- 一个任务的每一步都需要较为复杂的信息和执行操作
 
 ## 基础用法
 
@@ -10,15 +15,11 @@ import DemoBase from '../../demo/stepper/section-base.jsx'
 
 ## 图标用法
 
-stepper 图标用法传入 src 值
-
 import DemoIcon from '../../demo/stepper/section-icon.jsx'
 
 <DemoIcon />
 
 ## 上下结构
-
-stepper 上下结构只需加入 up=true；只有上下结构有 text 描述
 
 import DemoUpDown from '../../demo/stepper/section-up-down.jsx'
 
@@ -26,15 +27,11 @@ import DemoUpDown from '../../demo/stepper/section-up-down.jsx'
 
 ## 上下结构的图标用法
 
-stepper 上下结构的图标用法需要加入 `up=true`，并在数值列表中添加 src 值
-
 import DemoUpDownIcon from '../../demo/stepper/section-up-down-icon.jsx'
 
 <DemoUpDownIcon />
 
 ## 竖直方向
-
-stepper 竖直方向只需传入属性 `vertical=true`
 
 import DemoVertical from '../../demo/stepper/section-vertical.jsx'
 
@@ -42,11 +39,45 @@ import DemoVertical from '../../demo/stepper/section-vertical.jsx'
 
 ## 竖直方向图标用法
 
-stepper 竖直方向只需传入属性 `vertical=true`
-
 import DemoVerticalIcon from '../../demo/stepper/section-vertical-icon.jsx'
 
 <DemoVerticalIcon />
+
+## Stepper Attributes
+
+| 参数      | 说明                            | 类型              | 可选值        | 默认值 |
+| --------- | ------------------------------- | ----------------- | ------------- | ------ |
+| id        | 组件 id                         | String            | -             | -      |
+| className | 样式名                          | String            | -             | -      |
+| list      | 步骤元素列表                    | 参见 List Options | -             | -      |
+| current   | 当前步骤位置索引，从 0 开始计数 | Number            | -             | -      |
+| vertical  | 是否竖直显示                    | Boolean           | true \| false | false  |
+| up        | 在水平显示时符号是否在上        | Boolean           | true \| false | false  |
+
+## List Options
+
+| 参数  | 说明        | 类型              | 可选值 | 默认值 |
+| ----- | ----------- | ----------------- | ------ | ------ |
+| title | 显示文案    | Element \| String | 必需   | -      |
+| text  | 副文本      | Element \| String | -      | -      |
+| icon  | 自定义 icon | Element           | -      | -      |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: ' translate(-50%,-50%)',
+      fontSize: '18px',
+      padding: 5,
+      color: '#f63'
+    }}
+  >
+    以下调整将随 2.0.0 版本发布，敬请期待
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
 
 ## Props
 

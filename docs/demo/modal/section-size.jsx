@@ -3,6 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Modal from '../../../components/modal'
 import Radio from '../../../components/radio'
+const desc = '通过 size 自定义尺寸，可使用 large、normal、small，默认为 normal'
 const prefix = 'modal-size'
 const code = `
 import React from 'react'
@@ -70,10 +71,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoSize = () => (
-  <DocViewer
-    code={code}
-    scope={{ Button, Modal, Radio }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} scope={{ Button, Modal, Radio }} prefix={prefix} desc={desc} />
 )
 export default DemoSize

@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Tree from '../../../components/tree'
 const prefix = 'tree-async'
-
+const desc = '点击展开异步加载树的子节点'
 const code = `
 import React from 'react'
 import Tree from '@hiui/hiui/es/tree'\n
@@ -62,11 +62,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoAsync = () => (
-  <DocViewer
-    code={code}
-    scope={{ Tree }}
-    prefix={prefix}
-  />
-)
+const DemoAsync = () => <DocViewer code={code} scope={{ Tree }} prefix={prefix} desc={desc} />
 export default DemoAsync

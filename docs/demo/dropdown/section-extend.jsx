@@ -3,6 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Dropdown from '../../../components/dropdown'
 import Icon from '../../../components/icon'
 const prefix = 'dropdown-extend'
+const desc = '传入 type 为 group，组件会将 title 执行对应的点击响应，点击箭头打开菜单项'
 const code = `
 import React from 'react'
 import Icon from '@hiui/hiui/es/icon'
@@ -38,10 +39,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoExtend = () => (
-  <DocViewer
-    code={code}
-    scope={{ Dropdown, Icon }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} scope={{ Dropdown, Icon }} prefix={prefix} desc={desc} />
 )
 export default DemoExtend

@@ -4,6 +4,8 @@ import Button from '../../../components/button'
 import Modal from '../../../components/modal'
 import Select from '../../../components/select'
 import Table from '../../../components/table'
+const desc =
+  '未传入 title 及 closeBtn 为 false，可取消 title 部分，footers 传入空数组，可取消底部按钮'
 const prefix = 'modal-nest'
 const code = `
 import React from 'react'
@@ -103,10 +105,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoNest = () => (
-  <DocViewer
-    code={code}
-    scope={{ Button, Modal, Select, Table }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} scope={{ Button, Modal, Select, Table }} prefix={prefix} desc={desc} />
 )
 export default DemoNest

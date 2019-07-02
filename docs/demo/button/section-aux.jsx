@@ -3,6 +3,8 @@ import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 const prefix = 'button-aux'
 const rightOptions = ['正常', '禁用']
+const desc =
+  '辅助按钮用于对产品的开启、停止等操作，不同颜色对用户的警示作用不同。红色：停止等警示性操作；绿色：开启等操作'
 const code = [
   {
     code: `import React from 'react'
@@ -46,6 +48,7 @@ const DemoAux = () => (
     scope={{ Button }}
     prefix={prefix}
     rightOptions={rightOptions}
+    desc={desc}
   />
 )
 export default DemoAux

@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Tree from '../../../components/tree'
 const prefix = 'tree-search'
+const desc = '通过搜索框对树进行过滤'
 
 const code = `
 import React from 'react'
@@ -59,11 +60,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoSearch = () => (
-  <DocViewer
-    code={code}
-    scope={{ Tree }}
-    prefix={prefix}
-  />
-)
+const DemoSearch = () => <DocViewer code={code} scope={{ Tree }} prefix={prefix} desc={desc} />
 export default DemoSearch

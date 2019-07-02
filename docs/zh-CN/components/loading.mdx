@@ -1,6 +1,11 @@
 # Loading 动效加载
 
-常用的动态加载提示组件
+用于请求和数据加载成功的中间状态，缓冲用户的等待焦虑
+
+## 何时使用
+
+- 页面加载时
+- 页面卡片、浮层面板加载时
 
 ## 基础用法
 
@@ -25,6 +30,33 @@ import DemoPage from '../../demo/loading/section-page.jsx'
 import DemoApi from '../../demo/loading/section-api.jsx'
 
 <DemoApi />
+
+## Loading Attributes
+
+| 参数   | 说明                                                | 类型    | 可选值                    | 默认值  |
+| ------ | --------------------------------------------------- | ------- | ------------------------- | ------- |
+| size   | 组件大小                                            | String  | large \| default \| small | default |
+| tip    | 自定义的旋转动画下的文字                            | String  | -                         | -       |
+| full   | 是否全屏                                            | Boolean | true \| false             | false   |
+| show   | 是否显示加载动画                                    | Boolean | true \| false             | false   |
+| target | 用于指令调用时,Loading 遮罩的元素，为空时将整页遮罩 | Element | -                         | -       |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: ' translate(-50%,-50%)',
+      fontSize: '18px',
+      padding: 5,
+      color: '#f63'
+    }}
+  >
+    以下调整将随 2.0.0 版本发布，敬请期待
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
 
 ## Props
 
