@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Stepper from '../../../components/stepper'
 import Icon from '../../../components/icon'
+const desc = '图标用法传入 src 值'
 const prefix = 'stepper-icon'
 const code = `
 import React from 'react'
@@ -35,10 +36,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoIcon = () => (
-  <DocViewer
-    code={code}
-    scope={{ Stepper, Icon }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} scope={{ Stepper, Icon }} prefix={prefix} desc={desc} />
 )
 export default DemoIcon

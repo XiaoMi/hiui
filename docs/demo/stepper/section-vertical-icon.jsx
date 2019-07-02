@@ -3,6 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Stepper from '../../../components/stepper'
 import Icon from '../../../components/icon'
 const prefix = 'stepper-vertical-icon'
+const desc = '竖直方向只需传入属性 vertical=true'
 const code = `
 import React from 'react'
 import Icon from '@hiui/hiui/es/icon'
@@ -42,10 +43,6 @@ class Demo extends React.Component {
 }`
 
 const DemoVerticalIcon = () => (
-  <DocViewer
-    code={code}
-    scope={{ Stepper, Icon }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} scope={{ Stepper, Icon }} prefix={prefix} desc={desc} />
 )
 export default DemoVerticalIcon
