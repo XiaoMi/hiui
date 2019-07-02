@@ -94,7 +94,6 @@ class Component extends React.Component {
     let footNavs = []
     let page = this.props.match.path.split('/')[3]
     footNavs = this.props[page] || {}
-    console.log('footNav', page, footNavs, this.props)
     this.setState({ footNavs, topNav: page }, fn)
   }
 
@@ -169,6 +168,7 @@ export default connect(state => ({
   theme: state.global.theme,
   locale: state.global.locale,
   designs: state.global.designNavs,
+  templates: state.global.templatesNavs,
   docs: state.global.componentsNavs,
   allComponents: state.global.components
 }))(Component)

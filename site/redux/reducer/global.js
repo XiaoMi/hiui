@@ -17,7 +17,6 @@ export default (state = initState, action = '') => {
     templatesNavs,
     components
   } = action
-  console.log('^^^^^^^^^^^^^^^^^', designNavs)
   switch (type) {
     case 'GLOBAL_SIDER':
       return Object.assign({}, state, { sider })

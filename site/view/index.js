@@ -124,7 +124,6 @@ class Index extends React.Component {
     })
     this.componentNavs = navs
     setComponentsNavs(navs)
-    console.log('siderDocuments', siderDocuments)
     return [].concat(siderDocuments, [
       {
         title: <span className="components-page">{locales[locale]['misc']['components']}</span>,
@@ -176,7 +175,6 @@ class Index extends React.Component {
     const siders = this.getSiderItems(pages)
     const _designs = this.getDesignTemplatesItems(designs, 'designs', setDesignNavs)
     const _templates = this.getDesignTemplatesItems(templates, 'templates', setTemplatesNavs)
-    console.log('_designs', _designs, this.props.locale)
     return (
       <Page
         header={<Header locale={this.props.locale} />}

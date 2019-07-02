@@ -40,7 +40,6 @@ function getRoutes(locale, siders, designs, templates) {
     {
       path: `/hiui/${locale}/designs`,
       render: props => {
-        console.log('>>>>>>', props)
         return <SiderLayout deepClone={false} sider={designs} routes={desArr} {...props} />
       }
     },
