@@ -23,6 +23,7 @@ class Home extends React.Component {
                 <i className='hi-fa fa-github' />
                 GitHub (v{version})
               </a>
+              <p style={{ marginTop: '12px', marginLeft: '16px', color: '#999' }}>v2.0.0 即将发布</p>
             </div>
             <div className='section__figure' />
           </div>
@@ -149,7 +150,7 @@ class Home extends React.Component {
                     HIUI Template<sup>*</sup>
                   </h3>
                   <div className='flat-list__desc'>
-                    无需掌握前端框架即可进行页面开发，<a href='javascript: void(0)'>了解更多→</a>
+                    无需掌握前端框架即可进行页面开发，<a href='javascript: void(0)'>即将发布</a>
                   </div>
                 </li>
                 <li className='flat-list__item'>
@@ -157,7 +158,7 @@ class Home extends React.Component {
                   <h3 className='flat-list__name'>HIUI Library</h3>
                   <div className='flat-list__desc'>
                     集成所有 HIUI 组件的 Axure/Sketch 部件库，
-                    <a href='javascript: void(0)'>现在下载→</a>
+                    <a href='javascript: void(0)'>即将发布</a>
                   </div>
                 </li>
               </ul>

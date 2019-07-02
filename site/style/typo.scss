@@ -7,9 +7,9 @@
   @include typoImages;
   @include typoLists;
 
-  > h1 + p {
-    font-size: 16px;
-  }
+  //> h1 + p {
+  //  font-size: 16px;
+  //}
 
   figure {
     margin: 0;
@@ -81,7 +81,7 @@
       code {
         margin: 0 1px;
         padding: 0.2em 0.4em;
-        font-size: 1.1em;
+        //font-size: 1.1em;
         background: #f2f4f5;
         border: 1px solid #eee;
         border-radius: 3px;
@@ -130,7 +130,7 @@
       code {
         margin: 0 1px;
         padding: 0.4em 0.4em;
-        font-size: 1.1em;
+        //font-size: 1.1em;
         background: #f2f4f5;
         border: 1px solid #eee;
         border-radius: 3px;
