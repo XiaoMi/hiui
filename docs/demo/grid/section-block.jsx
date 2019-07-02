@@ -12,18 +12,18 @@ class Demo extends React.Component {
 
     return (
       <Row gutter={true}>
-        <Col span={6}>
-          <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-6</div>
-        </Col>
-        <Col span={6}>
-          <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-6</div>
-        </Col>
-        <Col span={6}>
-          <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-6</div>
-        </Col>
-        <Col span={6}>
-          <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-6</div>
-        </Col>
+      <Col span={6}>
+      <div style={{backgroundColor: '#4284F5', width: '100%', padding: '20px 0', textAlign: 'center', opacity: '.8', color:'#fff'}}>col-6</div>
+    </Col>
+    <Col span={6}>
+      <div style={{backgroundColor: '#ff6700', width: '100%', padding: '20px 0', textAlign: 'center', opacity: '.8'}}>col-6</div>
+    </Col>
+    <Col span={6}>
+      <div style={{backgroundColor: '#4284F5', width: '100%', padding: '20px 0', textAlign: 'center', opacity: '.8',color:'#fff'}}>col-6</div>
+    </Col>
+    <Col span={6}>
+      <div style={{backgroundColor: '#ff6700', width: '100%', padding: '20px 0', textAlign: 'center', opacity: '.8'}}>col-6</div>
+    </Col>
       </Row>
     )
   }

@@ -1,7 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { connect } from 'react-redux'
-import Icon from '../../../components/icon'
 import './style/index.scss'
 
 class Component extends React.Component {
@@ -132,13 +131,13 @@ class Component extends React.Component {
           <div className="foot-nav clearfix">
             <a
               className={`pre ${pre.to ? '' : 'none'}`}
-              href={pre.to ? `/${this.props.locale}/${topNav}/${pre.to}` : ''}
+              href={pre.to ? `/hiui/${this.props.locale}/${topNav}/${pre.to}` : ''}
             >
               {pre.text ? pre.text : ''}
             </a>
             <a
               className={`next ${next.to ? '' : 'none'}`}
-              href={next.to ? `/${this.props.locale}/${topNav}/${next.to}` : ''}
+              href={next.to ? `/hiui/${this.props.locale}/${topNav}/${next.to}` : ''}
             >
               {next.text ? next.text : ''}
             </a>
