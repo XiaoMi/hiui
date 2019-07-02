@@ -39,7 +39,7 @@ async function render (content, url) {
  * @returns {string[]}
  */
 function getUrls () {
-  const urls = [...getComponentUrls(), ...getTemplateUrls(), ...getExtraUrls()]
+  const urls = [...getComponentUrls(), ...getDesignUrls(), ...getTemplateUrls(), ...getExtraUrls()]
   const zh = urls.map(v => `http://localhost:${port}/hiui/zh-CN/${v}`)
   const en = urls.map(v => `http://localhost:${port}/hiui/en-US/${v}`)
   return [...zh, ...en]
@@ -51,7 +51,16 @@ function getUrls () {
  */
 function getComponentUrls () {
   const compPath = path.resolve(__dirname, '../docs/zh-CN/components')
-  return fs.readdirSync(compPath).map(v => `docs/${v.replace('.md', '')}`)
+  return fs.readdirSync(compPath).map(v => `docs/${v.replace('.mdx', '')}`)
+}
+
+/**
+ * get designs dir pages.
+ * @returns {string[]}
+ */
+function getDesignUrls () {
+  const compPath = path.resolve(__dirname, '../docs/zh-CN/designs')
+  return fs.readdirSync(compPath).map(v => `designs/${v.replace('.mdx', '')}`)
 }
 
 /**

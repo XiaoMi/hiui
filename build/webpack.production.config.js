@@ -145,7 +145,7 @@ module.exports = {
       allChunks: true
     }),
     new HtmlWebpackPlugin({
-      title: 'HIUI Design',
+      title: 'HIUI',
       template: path.resolve(__dirname, '../site/index.template.html')
     }),
     // new webpack.optimize.UglifyJsPlugin({
