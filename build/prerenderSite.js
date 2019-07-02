@@ -77,12 +77,5 @@ function getTemplateUrls () {
  * @returns {string[]}
  */
 function getExtraUrls () {
-  return [
-    '',
-    'docs/quick-start',
-    'docs/template',
-    'docs/theme',
-    'docs/i18n',
-    'docs/changelog'
-  ]
+  return ['', 'docs/quick-start', 'docs/template', 'docs/theme', 'docs/i18n', 'docs/changelog']
 }
