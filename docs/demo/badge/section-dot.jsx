@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Badge from '../../../components/badge'
 import Button from '../../../components/button'
+const desc = '小红点将优先于其他显示'
 const prefix = 'badge-dot'
 const code = `
 import React from 'react'
@@ -20,10 +21,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoDot = () => (
-  <DocViewer
-    code={code}
-    scope={{ Button, Badge }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} scope={{ Button, Badge }} prefix={prefix} desc={desc} />
 )
 export default DemoDot

@@ -3,6 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Badge from '../../../components/badge'
 import Button from '../../../components/button'
 const prefix = 'badge-hidden'
+const desc = '设置 hidden 属性隐藏气泡'
 const code = `
 import React from 'react'
 import Button from '@hiui/hiui/es/button'
@@ -17,10 +18,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoHidden = () => (
-  <DocViewer
-    code={code}
-    scope={{ Button, Badge }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} scope={{ Button, Badge }} prefix={prefix} desc={desc} />
 )
 export default DemoHidden
