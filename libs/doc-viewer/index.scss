@@ -4,23 +4,23 @@
       height: 41px;
       overflow: hidden;
       transition: height 0.3s;
-    }
 
-    .hi-tooltip {
-      transform: scale(1);
-      transition: all 0.3s;
-    }
-
-    .hi-tooltip:hover {
-      .hi-icon {
-        color: #4284f8;
+      .hi-tooltip {
+        transform: scale(1);
+        transition: all 0.3s;
       }
 
-      transform: scale(1.4);
-    }
+      .hi-tooltip:hover {
+        .hi-icon {
+          color: #4284f8;
+        }
 
-    .hi-icon {
-      transition: all 0.3s;
+        transform: scale(1.4);
+      }
+
+      .hi-icon {
+        transition: all 0.3s;
+      }
     }
 
     pre {
