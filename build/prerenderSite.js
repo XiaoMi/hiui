@@ -18,18 +18,18 @@ const server = createSPAServer({
   onCreated: renderUrls
 })
 
-async function renderUrls () {
+async function renderUrls() {
   renderUrlsToString({
     urls: getUrls(),
     onItemRendered: render,
-    onFinished () {
+    onFinished() {
       server.close()
       process.exit(0)
     }
   })
 }
 
-async function render (content, url) {
+async function render(content, url) {
   const dir = getRelativePathFromUrl(url).replace(baseRoute, '')
   writeFile(path.join(dist, dir), content)
 }
@@ -38,7 +38,7 @@ async function render (content, url) {
  * get all prerender needed urls.
  * @returns {string[]}
  */
-function getUrls () {
+function getUrls() {
   const urls = [...getComponentUrls(), ...getTemplateUrls(), ...getExtraUrls()]
   const zh = urls.map(v => `http://localhost:${port}/hiui/zh-CN/${v}`)
   const en = urls.map(v => `http://localhost:${port}/hiui/en-US/${v}`)
@@ -49,31 +49,29 @@ function getUrls () {
  * get components dir pages.
  * @returns {string[]}
  */
-function getComponentUrls () {
+function getComponentUrls() {
   const compPath = path.resolve(__dirname, '../docs/zh-CN/components')
-  return fs.readdirSync(compPath).map(v => `docs/${v.replace('.md', '')}`)
+  return fs.readdirSync(compPath).map(v => `docs/${v.replace('.mdx', '')}`)
 }
 
 /**
  * get templates dir pages.
  * @returns {string[]}
  */
-function getTemplateUrls () {
+function getTemplateUrls() {
   const tempPath = path.resolve(__dirname, '../docs/zh-CN/templates')
   return fs.readdirSync(tempPath).map(v => `templates/${v.replace('.md', '')}`)
+}
+
+function getDesignUrls() {
+  const desPath = path.resolve(__dirname, '../docs/zh-CN/designs')
+  return fs.readdirSync(desPath).map(v => `designs/${v.replace('.mdx', '')}`)
 }
 
 /**
  * get non-regular pages
  * @returns {string[]}
  */
-function getExtraUrls () {
-  return [
-    '',
-    'docs/quick-start',
-    'docs/template',
-    'docs/theme',
-    'docs/i18n',
-    'docs/changelog'
-  ]
+function getExtraUrls() {
+  return ['', 'docs/quick-start', 'docs/template', 'docs/theme', 'docs/i18n', 'docs/changelog']
 }

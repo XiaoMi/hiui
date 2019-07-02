@@ -38,6 +38,7 @@ module.exports = {
           path.resolve(__dirname, '../libs'),
           path.resolve(__dirname, '../locales'),
           path.resolve(__dirname, '../site'),
+          path.resolve(__dirname, '../docs'),
           path.resolve(__dirname, '../template'),
           path.resolve(__dirname, '../transform'),
           path.resolve(__dirname, '../node_modules/@hi-ui/classic-theme')
