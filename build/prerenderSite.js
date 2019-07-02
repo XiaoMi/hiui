@@ -39,7 +39,7 @@ async function render(content, url) {
  * @returns {string[]}
  */
 function getUrls() {
-  const urls = [...getComponentUrls(), ...getTemplateUrls(), ...getExtraUrls()]
+  const urls = [...getComponentUrls(), ...getTemplateUrls(), ...getDesignUrls(), ...getExtraUrls()]
   const zh = urls.map(v => `http://localhost:${port}/hiui/zh-CN/${v}`)
   const en = urls.map(v => `http://localhost:${port}/hiui/en-US/${v}`)
   return [...zh, ...en]
