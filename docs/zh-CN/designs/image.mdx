@@ -6,25 +6,34 @@
 
 一般应用在首页 Banner、背景图、运营宣传等场景，图片比例 3:1。
 
-<img src="/static/img/designs/image-1.png" srcset="/static/img/designs/image-1@2x.png 2x" alt="1176 x 392" />
-宽 x 高 1176 x 392（单位：px）
+<figure>
+  <img src="/static/img/designs/image-1.png" srcSet="/static/img/designs/image-1@2x.png 2x" alt="1176 x 392" />
+  <figcaption style={{ fontSize: '14px' }}>宽 x 高 1176 x 392（单位：px）</figcaption>
+</figure>
 
 ## 卡片图片
 
 卡片图片应用在卡片组件里，目前有 S/M/L 三种尺寸，图片比例 16:9。
 
-<img src="/static/img/designs/image-2.png" srcset="/static/img/designs/image-2@2x.png 2x" alt="576 x 324" />
-L：宽 x 高 576 x 324（单位：px）
+<figure style={{ width: '576px', marginBottom: '24px' }}>
+  <img src="/static/img/designs/image-2.png" srcSet="/static/img/designs/image-2@2x.png 2x" alt="576 x 324" />
+  <figcaption style={{ fontSize: '14px' }}>L：宽 x 高 576 x 324（单位：px）</figcaption>
+</figure>
 
-<img src="/static/img/designs/image-3.png" srcset="/static/img/designs/image-3@2x.png 2x" alt="376 x 212" />
-M：宽 x 高 376 x 212（单位：px）
+<figure style={{ width: '376px', marginBottom: '24px' }}>
+  <img src="/static/img/designs/image-3.png" srcSet="/static/img/designs/image-3@2x.png 2x" alt="376 x 212" />
+  <figcaption style={{ fontSize: '14px' }}>M：宽 x 高 376 x 212（单位：px）</figcaption>
+</figure>
 
-<img src="/static/img/designs/image-4.png" srcset="/static/img/designs/image-4@2x.png 2x" alt="276 x 156" />
-S：宽 x 高 276 x 156（单位：px）
+<figure style={{ width: '276px', marginBottom: '24px' }}>
+  <img src="/static/img/designs/image-4.png" srcSet="/static/img/designs/image-4@2x.png 2x" alt="276 x 156" />
+  <figcaption style={{ fontSize: '14px' }}>S：宽 x 高 276 x 156（单位：px）</figcaption>
+</figure>
 
 ## 预览图片
 
-应用于预览图片的场景，点击放大缩略图后的图片。灰色部分为浏览器区域，蓝色为最大展示区。红色区域是距离浏览器边缘距离。 上下间距 48 px，左右间距 96 px。
+应用于预览图片的场景，点击放大缩略图后的图片。灰色部分为浏览器区域，蓝色为最大展示区。红色区域是距离浏览器边缘距离。
+上下间距 48 px，左右间距 96 px。
 
 - 当图片超出高度时，高度缩小为最大值，宽度等比例缩小。
 - 当图片超出宽度时，宽度缩小为最大值，高度等比例缩小。
@@ -32,21 +41,42 @@ S：宽 x 高 276 x 156（单位：px）
 
 图片根据浏览器自适应宽高。
 
-<img src="/static/img/designs/image-5.png" srcset="/static/img/designs/image-5@2x.png 2x" alt="预览图片" />
+<img src="/static/img/designs/image-5.png" srcSet="/static/img/designs/image-5@2x.png 2x" alt="预览图片" />
 
 ## 缩略图
 
 一般用户列表、上传图片、Table 组件的单元格中，以缩略图的形式存在。图片比例 1:1 。
 
+<figure style={{ display: 'flex', marginTop: '24px' }}>
+  <img src="/static/img/designs/image-8.png" srcSet="/static/img/designs/image-8@2x.png 2x" alt="50 x 50px" style={{ width: '50px', marginRight: '12px' }} />
+  <figcaption style={{ alignSelf: 'center', fontSize: '14px', textAlign: 'left' }}>S（50 x 50px）<br />用于 list、信息流等</figcaption>
+</figure>
+
+<figure style={{ display: 'flex', marginTop: '24px' }}>
+  <img src="/static/img/designs/image-8.png" srcSet="/static/img/designs/image-8@2x.png 2x" alt="80 x 80px" style={{ width: '80px', marginRight: '12px' }} />
+  <figcaption style={{ alignSelf: 'center', fontSize: '14px', textAlign: 'left' }}>M（80 x 80px）<br />用于 Table 单元格等</figcaption>
+</figure>
+
+<figure style={{ display: 'flex', marginTop: '24px' }}>
+  <img src="/static/img/designs/image-8.png" srcSet="/static/img/designs/image-8@2x.png 2x" alt="140 x 140px" style={{ width: '140px', marginRight: '12px' }} />
+  <figcaption style={{ alignSelf: 'center', fontSize: '14px', textAlign: 'left' }}>L（140 x 140px）<br />用于上传、表单等</figcaption>
+</figure>
+
 ## 头像图片
 
 一般用于个人账号、名片、通讯录等场景
 
-<img src="/static/img/designs/image-9-1.png" srcset="/static/img/designs/image-9-1@2x.png 2x" alt="40 x 40" />
-小头像 40 x 40px
+<figure style={{ display: 'inline-block', verticalAlign: 'top', width: '72px', marginRight: '72px' }}>
+  <img src="/static/img/designs/image-9-1.png" srcSet="/static/img/designs/image-9-1@2x.png 2x" alt="40 x 40" />
+  <figcaption style={{ fontSize: '14px' }}>小头像<br />40 x 40px</figcaption>
+</figure>
 
-<img src="/static/img/designs/image-9-2.png" srcset="/static/img/designs/image-9-2@2x.png 2x" alt="80 x 80" />
-中头像 80 x 80px
+<figure style={{ display: 'inline-block', verticalAlign: 'top', width: '80px', marginRight: '72px' }}>
+  <img src="/static/img/designs/image-9-2.png" srcSet="/static/img/designs/image-9-2@2x.png 2x" alt="80 x 80" />
+  <figcaption style={{ fontSize: '14px' }}>中头像<br />80 x 80px</figcaption>
+</figure>
 
-<img src="/static/img/designs/image-9-3.png" srcset="/static/img/designs/image-9-3@2x.png 2x" alt="140 x 140" />
-大头像 140 x 140px
+<figure style={{ display: 'inline-block', verticalAlign: 'top', width: '140px', marginRight: '72px' }}>
+  <img src="/static/img/designs/image-9-3.png" srcSet="/static/img/designs/image-9-3@2x.png 2x" alt="140 x 140" />
+  <figcaption style={{ fontSize: '14px' }}>大头像<br />140 x 140px</figcaption>
+</figure>
