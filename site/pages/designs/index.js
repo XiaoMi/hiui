@@ -22,7 +22,7 @@ export default {
     'visual-framework': {
       color: designs['color'],
       'content-layout': designs['content-layout'],
-      palette: designs['palette'],
+      // palette: designs['palette'],
       font: designs['font'],
       icon: designs['icon'],
       image: designs['image']

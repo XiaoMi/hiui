@@ -3,7 +3,7 @@
 核心数据的监控平台
 
 <a href="https://hiui-group.github.io/hiui-template/#/home-dashboard" target="_blank" style="margin-top:8px;">
-  <img src="/static/img/templates/temp3.png" width="60%"/>
+  <img src="/hiui/static/img/templates/temp3.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/home-dashboard" target="_blank">查看 Demo</a>

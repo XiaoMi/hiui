@@ -7,7 +7,7 @@
 当页面的主体信息是表单时，表单的并列内容可按照标签形式组织，常见于表单项数量较多且在业务上需要分组展示时使用。
 
 <a href="https://hiui-group.github.io/hiui-template/#/form-vertical-group" target="_blank" style="margin-top:8px;">
-  <img src="/static/img/templates/form5.png" width="60%"/>
+  <img src="/hiui/static/img/templates/form5.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/form-vertical-group" target="_blank">查看 Demo</a>
@@ -25,7 +25,7 @@
 用分组标题将表单项进行分组，可快速定位表单项，提高操作效率
 
 <a href="https://hiui-group.github.io/hiui-template/#/form-group" target="_blank" style="margin-top:8px;">
-  <img src="/static/img/templates/form6.png" width="60%"/>
+  <img src="/hiui/static/img/templates/form6.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/form-group" target="_blank">查看 Demo</a>
@@ -41,7 +41,7 @@
 当分组数很多时可使用
 
 <a href="https://hiui-group.github.io/hiui-template/#/form-unfold-group" target="_blank" style="margin-top:8px;">
-  <img src="/static/img/templates/form7.png" width="60%"/>
+  <img src="/hiui/static/img/templates/form7.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/form-unfold-group" target="_blank">查看 Demo</a>
