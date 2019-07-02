@@ -7,7 +7,12 @@ import locales from '../locales'
 import designs from '../pages/designs'
 import pages from '../pages/components'
 import templates from '../pages/templates'
-import { setDesignNavs, setComponentsNavs, setComponents } from '../redux/action/global'
+import {
+  setDesignNavs,
+  setComponentsNavs,
+  setComponents,
+  setTemplatesNavs
+} from '../redux/action/global'
 History.createBrowserHistory()
 
 const logo = (
@@ -131,6 +136,7 @@ class Index extends React.Component {
   componentDidUpdate() {
     setComponentsNavs(this.componentNavs)
     setDesignNavs(this.designNavs)
+    setDesignNavs(this.templatesNavs)
   }
   getDesignTemplatesItems(items, path, callback) {
     let components = []
@@ -160,14 +166,16 @@ class Index extends React.Component {
         children: temp
       })
     })
-    this.designNavs = navs
-    setDesignNavs(this.designNavs)
+    this[path] = navs
+    if (callback) {
+      callback(this[path])
+    }
     return [].concat(siderDocuments, components)
   }
   render() {
     const siders = this.getSiderItems(pages)
     const _designs = this.getDesignTemplatesItems(designs, 'designs', setDesignNavs)
-    const _templates = this.getDesignTemplatesItems(templates, 'templates')
+    const _templates = this.getDesignTemplatesItems(templates, 'templates', setTemplatesNavs)
     console.log('_designs', _designs, this.props.locale)
     return (
       <Page

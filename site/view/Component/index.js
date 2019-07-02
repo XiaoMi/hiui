@@ -94,7 +94,7 @@ class Component extends React.Component {
     let footNavs = []
     let page = this.props.match.path.split('/')[3]
     footNavs = this.props[page] || {}
-
+    console.log('footNav', page, footNavs, this.props)
     this.setState({ footNavs, topNav: page }, fn)
   }
 
@@ -120,7 +120,6 @@ class Component extends React.Component {
 
   render() {
     const { pre, next, anchors, cComponent, topNav, activeAnchor } = this.state
-    console.log('activeAnchor', activeAnchor)
     return (
       <div className="component">
         <div className="home-container">

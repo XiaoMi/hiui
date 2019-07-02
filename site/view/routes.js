@@ -19,7 +19,7 @@ const loop = (locale, items, targets, component) => {
   })
   return targets
 }
-function getRoutes (locale, siders, designs, templates) {
+function getRoutes(locale, siders, designs, templates) {
   let sideArr = []
   let desArr = []
   let templateArr = []
@@ -40,6 +40,7 @@ function getRoutes (locale, siders, designs, templates) {
     {
       path: `/hiui/${locale}/designs`,
       render: props => {
+        console.log('>>>>>>', props)
         return <SiderLayout deepClone={false} sider={designs} routes={desArr} {...props} />
       }
     },
