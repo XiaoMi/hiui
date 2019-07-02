@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Grid from '../../../components/grid'
 const prefix = 'grid-justify'
-
+const desc = '设置 justify 来指定对齐方式'
 const code = `
 import React from 'react'
 import Grid from '@hiui/hiui/es/grid'\n
@@ -37,5 +37,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoJustify = () => <DocViewer code={code} scope={{ Grid }} prefix={prefix} />
+const DemoJustify = () => <DocViewer code={code} scope={{ Grid }} prefix={prefix} desc={desc} />
 export default DemoJustify

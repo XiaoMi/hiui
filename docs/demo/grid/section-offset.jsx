@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Grid from '../../../components/grid'
 const prefix = 'grid-offset'
-
+const desc = '设置 offset 来指定左右的偏移量'
 const code = `
 import React from 'react'
 import Grid from '@hiui/hiui/es/grid'\n
@@ -42,5 +42,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoOffset = () => <DocViewer code={code} scope={{ Grid }} prefix={prefix} />
+const DemoOffset = () => <DocViewer code={code} scope={{ Grid }} prefix={prefix} desc={desc} />
 export default DemoOffset

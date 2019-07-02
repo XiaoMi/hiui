@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Grid from '../../../components/grid'
 const prefix = 'grid-nest'
+const desc = '嵌套栅格来完成布局'
 const code = `
 import React from 'react'
 import Grid from '@hiui/hiui/es/grid'\n
@@ -32,5 +33,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoNest = () => <DocViewer code={code} scope={{ Grid }} prefix={prefix} />
+const DemoNest = () => <DocViewer code={code} scope={{ Grid }} prefix={prefix} desc={desc} />
 export default DemoNest
