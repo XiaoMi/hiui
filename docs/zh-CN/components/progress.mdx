@@ -39,6 +39,35 @@ import DemoWord from '../../demo/progress/section-word.jsx'
 
 ## Progress Attributes
 
+| 参数        | 说明                                   | 类型                | 可选值                              | 默认值         |
+| ----------- | -------------------------------------- | ------------------- | ----------------------------------- | -------------- |
+| type        | 进度条类型                             | String              | bar \| circle \| dashboard          | bar            |
+| size        | 进度条大小                             | String              | large \| middle \| small            | -              |
+| texxt       | 显示文本                               | String \| Component | -                                   | 当前进度百分比 |
+| withOutText | 是否显示文本                           | Boolean             | true \| false                       | false          |
+| status      | 进度条类型                             | String              | primary \| success \| warn \| error | primary        |
+| radius      | 环形进度条半径                         | Number              | -                                   | 40             |
+| inside      | 文字在进度条内显示，需配合 height 使用 | Boolean             | true \| false                       | false          |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: ' translate(-50%,-50%)',
+      fontSize: '18px',
+      padding: 5,
+      color: '#f63'
+    }}
+  >
+    新版本即将发布，敬请期待
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
+
+## Progress Attributes
+
 | 参数      | 说明                                   | 类型                | 可选值                                         | 默认值         |
 | --------- | -------------------------------------- | ------------------- | ---------------------------------------------- | -------------- |
 | apperance | 进度条类型                             | string              | 'bar' \| 'circle' \| 'dashboard'               | 'bar'          |

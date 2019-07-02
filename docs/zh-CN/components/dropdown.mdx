@@ -30,6 +30,45 @@ import DemoExtend from '../../demo/dropdown/section-extend.jsx'
 
 <DemoExtend />
 
+## Dropdown Attributes
+
+| 参数    | 说明                                   | 类型                | 可选值                  | 默认值 |
+| ------- | -------------------------------------- | ------------------- | ----------------------- | ------ |
+| list    | 数据                                   | Array               | 参见 List Options       | -      |
+| title   | 显示的文字内容<br/>传入"-"时代表分隔符 | String \| Component | -                       | -      |
+| type    | 下拉按钮类型                           | String              | text \| button \| group | text   |
+| onClick | 点击回调函数                           | Function            | -                       | -      |
+| prefix  | 前缀图标                               | String \| Component | -                       | -      |
+| suffix  | 后缀图标                               | String \| Component | -                       | -      |
+| trigger | 触发方式                               | String \| array     | click \| contextmenu    | click  |
+
+## List Options
+
+| 参数     | 说明                                          | 类型              | 可选值 | 默认值 |
+| -------- | --------------------------------------------- | ----------------- | ------ | ------ |
+| title    | 显示文案                                      | Element \| String | 必需   | -      |
+| prefix   | 文案前缀，选项中包含此值时将替换外部的 prefix | Element \| String | -      | -      |
+| suffix   | 文案后缀，选项中包含此值时将替换外部的 suffix | Element \| String | -      | -      |
+| disabled | 是否禁用                                      | Boolean           | -      | false  |
+| value    | 点击后回调的值                                | String            | Number | -      | - |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: ' translate(-50%,-50%)',
+      fontSize: '18px',
+      padding: 5,
+      color: '#f63'
+    }}
+  >
+    新版本即将发布，敬请期待
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
+
 ## Props
 
 | 参数    | 说明                   | 类型                      | 可选值                              | 默认值  |

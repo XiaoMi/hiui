@@ -37,6 +37,32 @@ import DemoCustom from '../../demo/badge/section-custom.jsx'
 
 <DemoCustom />
 
+## Badge Attributes
+
+| 参数   | 说明                   | 类型             | 默认值 |
+| ------ | ---------------------- | ---------------- | ------ |
+| value  | 气泡内容               | String \| Number | ''     |
+| dot    | 气泡是否显示为红点     | Boolean          | false  |
+| max    | 气泡中显示数字的最大值 | Number           | 99     |
+| hidden | 是否隐藏气泡           | Boolean          | false  |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: ' translate(-50%,-50%)',
+      fontSize: '18px',
+      padding: 5,
+      color: '#f63'
+    }}
+  >
+    新版本即将发布，敬请期待
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
+
 ## Props
 
 | 参数    | 说明                                | 类型             | 可选值            | 默认值   |

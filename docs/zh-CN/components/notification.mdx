@@ -13,6 +13,35 @@ import DemoBase from '../../demo/notification/section-base.jsx'
 
 <DemoBase />
 
+## Notification Attributes
+
+| 参数                | 说明                                 | 类型     | 可选值                              | 默认值 |
+| ------------------- | ------------------------------------ | -------- | ----------------------------------- | ------ |
+| type                | 类型                                 | String   | info \| error \| success \| warning | info   |
+| message             | 提示内容                             | String   | -                                   | 无     |
+| title               | 提示标题                             | String   | -                                   | 无     |
+| duration (1.4 新增) | 自动关闭时，设置的等待时间，单位毫秒 | number   | -                                   | 3000   |
+| autoClose           | 是否自动关闭                         | Boolean  | true \| false                       | false  |
+| showClose           | 是否显示关闭图标                     | Boolean  | true \| false                       | true   |
+| onClose             | 关闭回调                             | Function | -                                   | 无     |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: ' translate(-50%,-50%)',
+      fontSize: '18px',
+      padding: 5,
+      color: '#f63'
+    }}
+  >
+    新版本即将发布，敬请期待
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
+
 ## Methods
 
 `Notification.open({ key, type, title, content, closesable, confirmText, onConfirm, size, duration })`
