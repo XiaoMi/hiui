@@ -1,91 +1,31 @@
-<style scoped>
-
-.hiicon-list {
-  width: 100%;
-}
-
-.hiicon-list li {
-  list-style: none;
-  float: left;
-  width: 16.6%;
-  height: 120px;
-  border-radius: 4px;
-  color: #333;
-  text-align: center;
-  transition: color, background-color 0.2s;
-}
-
-.hiicon-list li:hover {
-  background: #4284f5;
-  color: #fff;
-}
-
-.hiicon-list .hi-icon {
-  margin: 20px 0;
-  font-size: 32px;
-  display: inline-block;
-}
-
-.hiicon-class {
-  font-size: 12px;
-  display: block;
-}
-
-</style>
-
-## Icon 图标
+# Icon 图标
 
 Icon 图标
 
-### 基础用法
+## 基础用法
 
-:::demo
+import DemoBase from '../../demo/icon/section-base.jsx'
 
-Icon 图标
+<DemoBase />
 
-```js
-render () {
-  return (
-    <div>
-      <Icon name="info-circle-o" style={{color: '#4284F5', fontSize: '24px'}} />
-      <Icon name="check-circle-o" style={{color: '#1DA653', fontSize: '24px'}} />
-      <Icon name="close-circle-o" style={{color: '#EB5252', fontSize: '24px'}} />
-      <Icon name="close" style={{color: '#999', fontSize: '24px'}} />
-    </div>
-  )
-}
-```
+## 嵌套用法
 
-:::
+import DemoNest from '../../demo/icon/section-nest.jsx'
 
-### 嵌套用法
+<DemoNest />
 
-:::demo
-
-icon 嵌套图标
-
-```js
-render () {
-  return (
-    <div>
-      <Button type="default"><Icon name="close" /></Button>
-      <Button type="line"><Icon name="edit" /> 编辑</Button>
-    </div>
-  )
-}
-```
-
-:::
-
-### Icon Attributes
+## Icon Attributes
 
 | 参数      | 说明         | 类型   | 可选值       | 默认值 |
 | --------- | ------------ | ------ | ------------ | ------ |
 | name      | 图标名称     | string | 参考图标集合 | -      |
+| className | 自定义 class | string | -            | -      |
 
-### 图标集合
+## 图标集合
 
-<ul class='hiicon-list'>
+import './style/icon.scss'
+
+<div><ul class='hiicon-list'>
   <li>
     <i class='hi-icon icon-up'></i>
     <span class='hiicon-class'>up</span>
@@ -330,10 +270,10 @@ render () {
     <span class='hiicon-class'>info-circle-o</span>
   </li>
 
-  <li>
-    <i class='hi-icon icon-info'></i>
-    <span class='hiicon-class'>info</span>
-  </li>
+<li>
+  <i class='hi-icon icon-info' />
+  <span class='hiicon-class'>info</span>
+</li>
 
   <li>
     <i class='hi-icon icon-internet'></i>
@@ -584,7 +524,6 @@ render () {
     <span class='hiicon-class'>web</span>
   </li>
 
-  <!-- 2019-05-21 new icon -->
   <li>
     <i class='hi-icon icon-reset'></i>
     <span class='hiicon-class'>reset</span>
@@ -642,3 +581,4 @@ render () {
     <span class='hiicon-class'>stattistics</span>
   </li>
 </ul>
+</div>

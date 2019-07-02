@@ -14,10 +14,10 @@ export default {
   },
   components: {
     'group-basic': {
-      grid: require('../../../docs/zh-CN/components/grid'),
+      grid: components['grid'],
       typography: require('../../../docs/zh-CN/components/typography'),
       button: components['button'],
-      icon: require('../../../docs/zh-CN/components/icon')
+      icon: components['icon']
     },
     'group-navgation': {
       tabs: components['tabs'],
