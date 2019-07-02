@@ -2,57 +2,57 @@
 
 ## 水平排列
 
-import DemoRow from '../../demo/menu/section-row.jsx';
+import DemoRow from '../../demo/menu/section-row.jsx'
 
 <DemoRow />
 
 ## 胖菜单
 
-import DemoFat from '../../demo/menu/section-fat.jsx';
+import DemoFat from '../../demo/menu/section-fat.jsx'
 
 <DemoFat />
 
 ## 竖向展开菜单
 
-import DemoVertical from '../../demo/menu/section-vertical.jsx';
+import DemoVertical from '../../demo/menu/section-vertical.jsx'
 
 <DemoVertical />
 
 ## 非手风琴菜单
 
-import DemoNoAccordion from '../../demo/menu/section-no-accordion.jsx';
+import DemoNoAccordion from '../../demo/menu/section-no-accordion.jsx'
 
 <DemoNoAccordion />
 
 ## 竖向收起菜单
 
-import DemoPack from '../../demo/menu/section-pack.jsx';
+import DemoPack from '../../demo/menu/section-pack.jsx'
 
 <DemoPack />
 
 ## Props
 
-| 参数            | 说明                         | 类型                             | 可选值                     | 默认值     |
-| --------------- | ---------------------------- | -------------------------------- | -------------------------- | ---------- |
-| data            | 菜单选项                     | DataItem[]                       | -                          | -          |
-| activeId        | 激活的菜单 id                | string                           | -                          | -          |
-| placement       | 菜单位置                     | string                           | 'horizontal' \| 'vertical' | 'vertical' |
-| collapsed       | 垂直菜单时，是否收起         | boolean                          | true \| false              | false      |
-| showCollpse     | 垂直菜单时，是否显示收缩开关 | boolean                          | true \| false              | true       |
-| showAllSubMenus | 所有子菜单一起展示           | boolean                          | true \| false              | false      |
-| accordion       | 手风琴模式，水平时生效       | boolean                          | true \| false              | true       |
-| onClick         | 点击菜单选项触发的回调       | (activeId, prevActiveId) => void | -                          | -          |
-| onClickSubMenu  | 点击父菜单选项触发的回调     | (subMenuIndexs) => void          | -                          | -          |
-| onCollapse      | 点击收缩开关触发的回调       | (collapsed: boolean) => void     | -                          | -          |
+| 参数            | 说明                                 | 类型                             | 可选值                     | 默认值     |
+| --------------- | ------------------------------------ | -------------------------------- | -------------------------- | ---------- |
+| data            | 菜单项数据源                         | DataItem[]                       | -                          | -          |
+| activeId        | 激活的菜单项 id                      | string                           | -                          | -          |
+| placement       | 设置菜单水平或垂直展示               | string                           | 'horizontal' \| 'vertical' | 'vertical' |
+| collapsed       | 是否收起子菜单，菜单垂直展示时有效   | boolean                          | true \| false              | false      |
+| showCollpse     | 是否显示收缩开关，菜单垂直展示时有效 | boolean                          | true \| false              | true       |
+| showAllSubMenus | 是否展开所有菜单                     | boolean                          | true \| false              | false      |
+| accordion       | 手风琴模式，菜单水平展示时有效       | boolean                          | true \| false              | true       |
+| onClick         | 点击菜单选项时的回调                 | (activeId, prevActiveId) => void | -                          | -          |
+| onClickSubMenu  | 点击父菜单项时的回调                 | (subMenuIndexs) => void          | -                          | -          |
+| onCollapse      | 点击收缩开关时的回调                 | (collapsed: boolean) => void     | -                          | -          |
 
 ## Type
 
 **_DataItem_**
 
-| 参数     | 说明                                               | 类型                | 可选值        | 默认值 |
-| -------- | -------------------------------------------------- | ------------------- | ------------- | ------ |
-| content  | 菜单选项标题                                       | string \| ReactNode | -             | -      |
-| icon     | 菜单选项 icon，为 string 时会作文 Icon 组件的 name | string \| ReactNode | -             | -      |
-| id       | 菜单选项唯一标识                                   | string \| number    | -             | -      |
-| disabled | 菜单选项是否禁止                                   | boolean             | true \| false | false  |
-| children | 字菜单选项配置                                     | DataItem[]          | -             | -      |
+| 参数     | 说明                                             | 类型                | 可选值        | 默认值 |
+| -------- | ------------------------------------------------ | ------------------- | ------------- | ------ |
+| content  | 菜单项标题                                       | string \| ReactNode | -             | -      |
+| icon     | 菜单项 icon，为 string 时会座位 Icon 组件的 name | string \| ReactNode | -             | -      |
+| id       | 菜单项唯一标识                                   | string \| number    | -             | -      |
+| disabled | 菜单项是否禁止点击                               | boolean             | true \| false | false  |
+| children | 字菜单项配置                                     | DataItem[]          | -             | -      |

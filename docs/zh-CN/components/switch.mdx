@@ -2,16 +2,16 @@
 
 ## 基础用法
 
-import DemoBase from '../../demo/switch/section-base.jsx';
+import DemoBase from '../../demo/switch/section-base.jsx'
 
 <DemoBase />
 
 ## Props
 
-| 参数     | 说明                     | 类型                    | 可选值               | 默认值    |
-| -------- | ------------------------ | ----------------------- | -------------------- | --------- |
-| content  | 开关状态文案展示         | string[] \| ReactNode[] | -                    | -         |
-| checked  | 指定开关选中状态         | boolean                 | true \| false        | -         |
-| disabled | 是否禁用                 | boolean                 | true \| false        | false     |
-| size     | 开关尺寸                 | string                  | 'default' \| 'large' | 'default' |
-| onChange | 开关选中状态改变时的回调 | （checked）=>void       | -                    | -         |
+| 参数     | 说明                                                             | 类型                    | 可选值               | 默认值    |
+| -------- | ---------------------------------------------------------------- | ----------------------- | -------------------- | --------- |
+| content  | 开关状态内容，数组第一项为关闭时显示的内容，第二项为开启时显示的 | string[] \| ReactNode[] | -                    | -         |
+| checked  | 设置是否开启开关                                                 | boolean                 | true \| false        | -         |
+| disabled | 是否禁用                                                         | boolean                 | true \| false        | false     |
+| size     | 开关尺寸                                                         | string                  | 'default' \| 'large' | 'default' |
+| onChange | 开关选中状态改变时的回调                                         | （checked）=>void       | -                    | -         |

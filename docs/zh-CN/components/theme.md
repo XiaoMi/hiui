@@ -1,20 +1,23 @@
-## 配色主题
+# 配色主题
 
 支持的配色主题详见下表，默认为 **hiui-blue**
 
-### 使用方法
+## 使用方法
 
 通过 `ThemeContext` 使内部的组件可以通过 `props.theme` 获取到设置的主题，所以在页面根组件嵌套即可。
 
 ```js
-  import { ThemeContext } from '@hi-ui/hiui/es/context'
+import { ThemeContext } from '@hi-ui/hiui/es/context'
 
-  <ThemeContext.Provider value='hiui-blue'>
+ReactDOM.render(
+  <ThemeContext.Provider value="hiui-blue">
     <App />
-  </ThemeContext.Provider>
+  </ThemeContext.Provider>,
+  mountNode
+)
 ```
 
-### 示例
+## 示例
 
 :::demo
 
@@ -25,14 +28,14 @@ render() {
 
   const stepperList = [
     {
-      title: '账号信息',
+      title: '账号信息'
     },
     {
-      title: '邮箱激活',
+      title: '邮箱激活'
     },
     {
-      title: '信息登记',
-    },
+      title: '信息登记'
+    }
   ]
 
   return (
@@ -182,14 +185,15 @@ render() {
           </Col>
         </Row>
       </ThemeContext.Provider>
-
     </div>
   )
 }
 ```
+
 :::
 
 ### 支持的主题
+
 :::demo
 
 ```run
@@ -208,4 +212,5 @@ render() {
   )
 }
 ```
+
 :::

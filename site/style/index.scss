@@ -24,6 +24,11 @@
   .sidebar__wrapper {
     .sidebar__list {
       width: 100%;
+      overflow-y: hidden;
+
+      &:hover {
+        overflow-y: auto;
+      }
 
       & > li:first-child {
         margin-top: 24px;

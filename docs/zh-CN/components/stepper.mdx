@@ -26,7 +26,7 @@ import DemoUpDown from '../../demo/stepper/section-up-down.jsx'
 
 ## 上下结构的图标用法
 
-stepper 上下结构的图标用法需要加入 up=true，并在数值列表中添加 src 值
+stepper 上下结构的图标用法需要加入 `up=true`，并在数值列表中添加 src 值
 
 import DemoUpDownIcon from '../../demo/stepper/section-up-down-icon.jsx'
 
@@ -34,7 +34,7 @@ import DemoUpDownIcon from '../../demo/stepper/section-up-down-icon.jsx'
 
 ## 竖直方向
 
-stepper 竖直方向只需传入属性 vertical=true
+stepper 竖直方向只需传入属性 `vertical=true`
 
 import DemoVertical from '../../demo/stepper/section-vertical.jsx'
 
@@ -42,7 +42,7 @@ import DemoVertical from '../../demo/stepper/section-vertical.jsx'
 
 ## 竖直方向图标用法
 
-stepper 竖直方向只需传入属性 vertical=true
+stepper 竖直方向只需传入属性 `vertical=true`
 
 import DemoVerticalIcon from '../../demo/stepper/section-vertical-icon.jsx'
 
@@ -52,18 +52,17 @@ import DemoVerticalIcon from '../../demo/stepper/section-vertical-icon.jsx'
 
 | 参数       | 说明                            | 类型       | 可选值                     | 默认值       |
 | ---------- | ------------------------------- | ---------- | -------------------------- | ------------ |
-| className  | 样式名                          | string     | -                          | -            |
-| data       | 步骤数据项                      | DataItem[] | -                          | -            |
+| data       | 步骤数据项源                    | DataItem[] | -                          | -            |
 | current    | 当前步骤位置索引，从 0 开始计数 | number     | -                          | -            |
-| placement  | 位置                            | string     | 'vertical' \| 'horizontal' | 'horizontal' |
-| itemLayout | 步骤点的布局方式                | string     | 'vertical' \| 'horizontal' | 'vertical'   |
+| placement  | 水平或垂直展示步骤条            | string     | 'vertical' \| 'horizontal' | 'horizontal' |
+| itemLayout | 步骤项的布局方式                | string     | 'vertical' \| 'horizontal' | 'vertical'   |
 
 ## Type
 
 **_DateItem_**
 
-| 参数    | 说明        | 类型                | 可选值 | 默认值 |
-| ------- | ----------- | ------------------- | ------ | ------ |
-| title   | 显示文案    | string \| ReactNode | -      | -      |
-| content | 内容文案    | string \| ReactNode | -      | -      |
-| icon    | 自定义 icon | string \| ReactNode | -      | -      |
+| 参数    | 说明       | 类型                | 可选值 | 默认值 |
+| ------- | ---------- | ------------------- | ------ | ------ |
+| title   | 步骤项标题 | string \| ReactNode | -      | -      |
+| content | 步骤项内容 | string \| ReactNode | -      | -      |
+| icon    | 步骤项图标 | string \| ReactNode | -      | -      |

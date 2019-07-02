@@ -1,8 +1,8 @@
-## 主题
+# 主题
 
 目前有两款主题可以使用，分别是 `Classic` 和 `Genuine`，具体使用方法请看仓库 `README.md`
 
-### Classic Theme
+## Classic Theme
 
 主题链接：[GitHub](https://github.com/hiui-group/classic-theme) [NPM](https://www.npmjs.com/package/@hi-ui/classic-theme)
 
@@ -11,7 +11,7 @@
 <p><img src="/static/img/themes/classic/classic-theme-03.png" width="90%" /></p>
 <p><img src="/static/img/themes/classic/classic-theme-04.png" width="90%" /></p>
 
-### Genuine Theme
+## Genuine Theme
 
 主题链接：[GitHub](https://github.com/hiui-group/genuine-theme) [NPM](https://www.npmjs.com/package/@hi-ui/genuine-theme)
 

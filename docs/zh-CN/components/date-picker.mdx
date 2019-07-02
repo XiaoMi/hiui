@@ -4,85 +4,85 @@
 
 ## 普通模式
 
-import DemoNormal from '../../demo/date-picker/section-normal.jsx';
+import DemoNormal from '../../demo/date-picker/section-normal.jsx'
 
 <DemoNormal />
 
 ## 禁用模式
 
-import DemoBan from '../../demo/date-picker/section-ban.jsx';
+import DemoBan from '../../demo/date-picker/section-ban.jsx'
 
 <DemoBan />
 
 ## 禁用模式（禁用日期）
 
-import DemoBanDate from '../../demo/date-picker/section-ban-date.jsx';
+import DemoBanDate from '../../demo/date-picker/section-ban-date.jsx'
 
 <DemoBanDate />
 
 ## 周选择
 
-import DemoWeek from '../../demo/date-picker/section-week.jsx';
+import DemoWeek from '../../demo/date-picker/section-week.jsx'
 
 <DemoWeek />
 
 ## 年选择
 
-import DemoYear from '../../demo/date-picker/section-year.jsx';
+import DemoYear from '../../demo/date-picker/section-year.jsx'
 
 <DemoYear />
 
 ## 月选择
 
-import DemoMonth from '../../demo/date-picker/section-month.jsx';
+import DemoMonth from '../../demo/date-picker/section-month.jsx'
 
 <DemoMonth />
 
 ## 范围选择
 
-import DemoScope from '../../demo/date-picker/section-scope.jsx';
+import DemoScope from '../../demo/date-picker/section-scope.jsx'
 
 <DemoScope />
 
 ## 范围选择（禁选日期）
 
-import DemoScopeBan from '../../demo/date-picker/section-scope-ban.jsx';
+import DemoScopeBan from '../../demo/date-picker/section-scope-ban.jsx'
 
 <DemoScopeBan />
 
 ## 周范围选择
 
-import DemoWeekScope from '../../demo/date-picker/section-week-scope.jsx';
+import DemoWeekScope from '../../demo/date-picker/section-week-scope.jsx'
 
 <DemoWeekScope />
 
 ## 日期选范围选择（快捷选项）
 
-import DemoFastCheck from '../../demo/date-picker/section-fast-check.jsx';
+import DemoFastCheck from '../../demo/date-picker/section-fast-check.jsx'
 
 <DemoFastCheck />
 
 ## 日期 + 时间
 
-import DemoDateTime from '../../demo/date-picker/section-date-time.jsx';
+import DemoDateTime from '../../demo/date-picker/section-date-time.jsx'
 
 <DemoDateTime />
 
 ## 日期/时间段选择
 
-import DemoDateTimeCheck from '../../demo/date-picker/section-date-time-check.jsx';
+import DemoDateTimeCheck from '../../demo/date-picker/section-date-time-check.jsx'
 
 <DemoDateTimeCheck />
 
 ## 日期/时间（范围选择）
 
-import DemoDateTimeScope from '../../demo/date-picker/section-date-time-scope.jsx';
+import DemoDateTimeScope from '../../demo/date-picker/section-date-time-scope.jsx'
 
 <DemoDateTimeScope />
 
 ## 嵌入 Modal
 
-import DemoModal from '../../demo/date-picker/section-modal.jsx';
+import DemoModal from '../../demo/date-picker/section-modal.jsx'
 
 <DemoModal />
 
@@ -92,15 +92,15 @@ import DemoModal from '../../demo/date-picker/section-modal.jsx';
 | ----------- | -------------------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------ |
 | type        | 选择器类型                       | string                                                  | 'date' \| 'daterange' \| 'year' \| 'month' \| 'week' \| 'weekrang' \| 'timeperiod' | 'date' |
 | value       | 默认显示的日期                   | Date \| string \| number \| object \| undefined \| null | --                                                                                 | null   |
-| min         | 最小日期                         | Date                                                    | null                                                                               | null   |
-| max         | 最大日期                         | Date                                                    | null                                                                               | null   |
-| disabled    | 是否禁用输入框                   | Boolean                                                 | true \| false                                                                      | false  |
-| showTime    | 是否在日期选择器中显示时间选择器 | Boolean                                                 | true \| false                                                                      | false  |
-| shortcuts   | 快捷面板                         | string []                                               | 近一周, 近一月, 近三月, 近一年                                                     | null   |
+| min         | 可选择的最小日期                 | Date                                                    | null                                                                               | null   |
+| max         | 可选择的最大日期                 | Date                                                    | null                                                                               | null   |
+| disabled    | 是否禁用选择器                   | boolean                                                 | true \| false                                                                      | false  |
+| showTime    | 是否在日期选择器中显示时间选择器 | boolean                                                 | true \| false                                                                      | false  |
+| shortcuts   | 设置快捷面板                     | string []                                               | 近一周, 近一月, 近三月, 近一年                                                     | null   |
 | weekOffset  | 周起始<br/>默认周日做为第一列    | number                                                  | 0/1                                                                                | 0      |
-| placeholder | 自定义占位符                     | string \| string []                                     | -                                                                                  | -      |
+| placeholder | 设置输入框占位符                 | string \| string []                                     | -                                                                                  | -      |
 | format      | 格式化显示日期                   | string                                                  | -                                                                                  | -      |
-| onChange    | 选中回调函数                     | (date: Date \| { start: Date, end: Date }) => void      | 普通时间选择返回 date 格式数据、范围选择返回对象{start:开始时间,end:结束时间}      |
+| onChange    | 选择后的回调                     | (date: Date \| { start: Date, end: Date }) => void      | 普通时间选择返回 date 格式数据、范围选择返回对象{start:开始时间,end:结束时间}      |
 
 ## Methods
 

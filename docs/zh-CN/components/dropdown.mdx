@@ -2,13 +2,13 @@
 
 ## 基础用法
 
-import DemoBase from '../../demo/dropdown/section-base.jsx';
+import DemoBase from '../../demo/dropdown/section-base.jsx'
 
 <DemoBase />
 
 ## 触发方式
 
-import DemoTrigger from '../../demo/dropdown/section-trigger.jsx';
+import DemoTrigger from '../../demo/dropdown/section-trigger.jsx'
 
 <DemoTrigger />
 
@@ -16,7 +16,7 @@ import DemoTrigger from '../../demo/dropdown/section-trigger.jsx';
 
 自定义前缀、后缀
 
-import DemoButton from '../../demo/dropdown/section-button.jsx';
+import DemoButton from '../../demo/dropdown/section-button.jsx'
 
 <DemoButton />
 
@@ -24,7 +24,7 @@ import DemoButton from '../../demo/dropdown/section-button.jsx';
 
 传入 type 为 group，组件会将 title 执行对应的点击响应，点击箭头打开菜单项
 
-import DemoExtend from '../../demo/dropdown/section-extend.jsx';
+import DemoExtend from '../../demo/dropdown/section-extend.jsx'
 
 <DemoExtend />
 
@@ -35,10 +35,10 @@ import DemoExtend from '../../demo/dropdown/section-extend.jsx';
 | data    | 下拉菜单数据项         | DataItem []               | -                                   | -       |
 | title   | 下拉菜单显示标题的内容 | string \| ReactNode       | -                                   | -       |
 | type    | 下拉菜单类型           | string                    | 'text' \| 'button' \| 'group'       | 'text'  |
-| onClick | 点击回调函数           | （item: DataItem）=> void | -                                   | -       |
-| prefix  | 前缀图标               | string \| ReactNode       | -                                   | -       |
-| suffix  | 后缀图标               | string \| ReactNode       | -                                   | -       |
-| trigger | 触发方式               | string \| string []       | 'click' \| 'contextmenu' \| 'hover' | 'click' |
+| onClick | 点击后的回调           | （item: DataItem）=> void | -                                   | -       |
+| prefix  | 前缀内容               | string \| ReactNode       | -                                   | -       |
+| suffix  | 后缀内容               | string \| ReactNode       | -                                   | -       |
+| trigger | 下拉菜单触发方式       | string \| string []       | 'click' \| 'contextmenu' \| 'hover' | 'click' |
 
 ## Type
 
@@ -46,8 +46,8 @@ import DemoExtend from '../../demo/dropdown/section-extend.jsx';
 
 | 参数     | 说明           | 类型                | 可选值        | 默认值 |
 | -------- | -------------- | ------------------- | ------------- | ------ |
-| title    | 显示文案       | string \| ReactNode | -             | -      |
-| prefix   | 文案前缀       | string \| ReactNode | -             | -      |
-| suffix   | 文案后缀       | string \| ReactNode | -             | -      |
+| title    | 标题的内容     | string \| ReactNode | -             | -      |
+| prefix   | 菜单项前缀内容 | string \| ReactNode | -             | -      |
+| suffix   | 菜单项后缀内容 | string \| ReactNode | -             | -      |
 | disabled | 是否禁用       | boolean             | true \| false | false  |
 | url      | 点击跳转的路径 | string              | -             | -      |

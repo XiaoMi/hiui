@@ -10,27 +10,31 @@
 
 ```js
 render(){
-    const Row = Grid.Row
-    const Col = Grid.Col
-    return (
-      <div>
-        <Row>
-          <Col span={6}>
-            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center', opacity: '.8',}}>col-6</div>
-          </Col>
-          <Col span={6}>
-            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-6</div>
-          </Col>
-          <Col span={6}>
-            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center', opacity: '.8',}}>col-6</div>
-          </Col>
-          <Col span={6}>
-            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-6</div>
-          </Col>
-        </Row>
-      </div>
-    )
-  }
+  const Row = Grid.Row
+  const Col = Grid.Col
+  const style = o => ({
+    backgroundColor: '#4284F5',
+    padding: '10px 0',
+    textAlign: 'center',
+    opacity: o && 0.8
+  })
+  return (
+    <Row style={{ color: '#fff' }}>
+      <Col span={6} style={style()}>
+        col-6
+      </Col>
+      <Col span={6} style={style(true)}>
+        col-6
+      </Col>
+      <Col span={6} style={style()}>
+        col-6
+      </Col>
+      <Col span={6} style={style(true)}>
+        col-6
+      </Col>
+    </Row>
+  )
+}
 ```
 :::
 
@@ -47,18 +51,18 @@ render() {
   const Col = Grid.Col
 
   return (
-    <Row gutter={true}>
+    <Row gutter style={{ color: '#fff' }}>
       <Col span={6}>
-        <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-6</div>
+        <div style={{ backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center' }}>col-6</div>
       </Col>
       <Col span={6}>
-        <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-6</div>
+        <div style={{ backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center' }}>col-6</div>
       </Col>
       <Col span={6}>
-        <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-6</div>
+        <div style={{ backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center' }}>col-6</div>
       </Col>
       <Col span={6}>
-        <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-6</div>
+        <div style={{ backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center' }}>col-6</div>
       </Col>
     </Row>
   )
@@ -79,8 +83,8 @@ render() {
   const Col = Grid.Col
 
   return (
-    <div>
-      <Row gutter={true}>
+    <div style={{ color: '#fff' }}>
+      <Row gutter>
         <Col span={8}>
           <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-8</div>
         </Col>
@@ -91,7 +95,7 @@ render() {
           <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-4</div>
         </Col>
       </Row>
-      <Row gutter={true}>
+      <Row gutter>
         <Col span={4}>
           <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-4</div>
         </Col>
@@ -124,24 +128,24 @@ render() {
   const Col = Grid.Col
 
   return (
-    <Row gutter={true}>
-      <Col span={16} style={{outline: '1px dotted #999'}}>
-        <Row gutter={true}>
+    <Row gutter style={{ color: '#fff' }}>
+      <Col span={16}>
+        <Row gutter>
           <Col span={24}>
-            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-16</div>
+            <div style={{ backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center' }}>col-16</div>
           </Col>
         </Row>
-        <Row gutter={true}>
+        <Row gutter>
           <Col span={12}>
-            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center', opacity: '0.8'}}>col-12</div>
+            <div style={{ backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center', opacity: '0.8' }}>col-12</div>
           </Col>
           <Col span={12}>
-            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center', opacity: '0.8'}}>col-12</div>
+            <div style={{ backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center', opacity: '0.8' }}>col-12</div>
           </Col>
         </Row>
       </Col>
       <Col span={8}>
-        <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-8</div>
+        <div style={{ backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center' }}>col-8</div>
       </Col>
     </Row>
   )
@@ -162,28 +166,28 @@ render() {
   const Col = Grid.Col
 
   return (
-    <div>
-      <Row justify='center' gutter={true}>
+    <div style={{ color: '#fff' }}>
+      <Row justify='center' gutter>
         <Col span={6}>
-          <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-6</div>
+          <div style={{ backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center' }}>col-6</div>
         </Col>
         <Col span={6}>
-          <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-6</div>
+          <div style={{ backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center' }}>col-6</div>
         </Col>
       </Row>
 
       <Row justify='space-between'>
         <Col span={6}>
-          <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-6</div>
+          <div style={{ backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center' }}>col-6</div>
         </Col>
         <Col span={6}>
-          <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-6</div>
+          <div style={{ backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center' }}>col-6</div>
         </Col>
         <Col span={6}>
-          <div style={{backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center'}}>col-6</div>
+          <div style={{ backgroundColor: '#4284F5', width: '100%', padding: '10px 0', textAlign: 'center' }}>col-6</div>
         </Col>
       </Row>
-      </div>
+    </div>
   )
 }
 ```

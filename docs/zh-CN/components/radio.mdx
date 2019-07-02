@@ -4,34 +4,34 @@
 
 ## 普通模式
 
-import DemoNormal from '../../demo/radio/section-normal';
+import DemoNormal from '../../demo/radio/section-normal'
 
 <DemoNormal />
 
 ## 按钮模式
 
-import DemoType from '../../demo/radio/section-type';
+import DemoType from '../../demo/radio/section-type'
 
 <DemoType />
 
 ## Props
 
-| 参数      | 说明             | 类型                    | 可选值                     | 默认值       |
-| --------- | ---------------- | ----------------------- | -------------------------- | ------------ |
-| data      | 选择项           | DataItem[]              | -                          | -            |
-| autoFocus | 是否自动获取焦点 | boolean                 | true \| false              | false        |
-| placement | 放置方式         | string                  | 'vertical' \| 'horizontal' | 'horizontal' |
-| checked   | 选中项           | string                  | 'vertical' \| 'horizontal' | 'horizontal' |
-| onChange  | 选中事件         | (value: string) => void | -                          | -            |
-| disabled  | 是否禁用         | boolean                 | -                          | -            |
-| type      | 类型             | string                  | 'default' \| 'button'      | 'default'    |
+| 参数      | 说明                                     | 类型                    | 可选值                     | 默认值       |
+| --------- | ---------------------------------------- | ----------------------- | -------------------------- | ------------ |
+| data      | 选择项数据源                             | DataItem[]              | -                          | -            |
+| autoFocus | 页面载入时，是否自动获取焦点             | boolean                 | true \| false              | false        |
+| placement | 设置水平或垂直展示                       | string                  | 'vertical' \| 'horizontal' | 'horizontal' |
+| checked   | 设置选中项                               | string                  | 'vertical' \| 'horizontal' | 'horizontal' |
+| onChange  | 选中项改变时的回调，回调值为新选中项的值 | (value: string) => void | -                          | -            |
+| disabled  | 是否禁用                                 | boolean                 | -                          | -            |
+| type      | 单选按钮展示形状                         | string                  | 'default' \| 'button'      | 'default'    |
 
 ## Type
 
 **_DataItem_**
 
-| 参数     | 说明     | 类型    | 可选值        | 默认值 |
-| -------- | -------- | ------- | ------------- | ------ |
-| content  | 选择项   | string  | -             | -      |
-| id       | 选择项值 | string  | -             | -      |
-| disabled | 是否禁用 | boolean | true \| false | false  |
+| 参数     | 说明             | 类型    | 可选值        | 默认值 |
+| -------- | ---------------- | ------- | ------------- | ------ |
+| content  | 选择项的展示内容 | string  | -             | -      |
+| id       | 选择项对应的值   | string  | -             | -      |
+| disabled | 是否禁用         | boolean | true \| false | false  |
