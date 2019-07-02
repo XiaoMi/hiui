@@ -1,0 +1,27 @@
+# 配色主题
+
+支持的配色主题详见下表，默认为 **hiui-blue**
+
+## 使用方法
+
+通过 `ThemeContext` 使内部的组件可以通过 `props.theme` 获取到设置的主题，所以在页面根组件嵌套即可。
+
+```js
+import { ThemeContext } from '@hi-ui/hiui/es/context'
+
+;<ThemeContext.Provider value='hiui-blue'>
+  <App />
+</ThemeContext.Provider>
+```
+
+## 示例
+
+import DemoExample from '../../demo/theme/section-example.jsx'
+
+<DemoExample />
+
+## 支持的主题
+
+import DemoTheme from '../../demo/theme/section-theme.jsx'
+
+<DemoTheme />

@@ -8,14 +8,14 @@ export default {
   documents: {
     'quick-start': require('../../../docs/zh-CN/components/quick-start'),
     template: require('../../../docs/zh-CN/components/template'),
-    theme: require('../../../docs/zh-CN/components/theme'),
-    i18n: require('../../../docs/zh-CN/components/i18n'),
+    theme: components['theme'],
+    i18n: components['i18n'],
     changelog: require('../../../docs/zh-CN/components/changelog')
   },
   components: {
     'group-basic': {
       grid: components['grid'],
-      typography: require('../../../docs/zh-CN/components/typography'),
+      typography: components['typography'],
       button: components['button'],
       icon: components['icon']
     },

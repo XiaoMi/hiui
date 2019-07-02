@@ -30,7 +30,7 @@ class Component extends React.Component {
         },
         () => {
           this.getAnchors()
-          const anchorsDOM = document.querySelectorAll('#markdown-content h2')
+          const anchorsDOM = document.querySelectorAll('#markdown-content > div > h2')
           const anchorsDOMList = [].slice.call(anchorsDOM)
           anchorsDOMList.map((v, i) => {
             v.id = v.innerHTML
