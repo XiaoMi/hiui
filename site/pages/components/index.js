@@ -6,11 +6,11 @@ files.keys().forEach(key => {
 })
 export default {
   documents: {
-    'quick-start': require('../../../docs/zh-CN/components/quick-start'),
-    template: require('../../../docs/zh-CN/components/template'),
+    'quick-start': components['quick-start'],
+    template: components['template'],
     theme: components['theme'],
     i18n: components['i18n'],
-    changelog: require('../../../docs/zh-CN/components/changelog')
+    changelog: require('../../../CHANGELOG.md')
   },
   components: {
     'group-basic': {
