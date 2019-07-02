@@ -7,43 +7,48 @@
   @include typoImages;
   @include typoLists;
 
-  > {
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      a {
-        color: inherit;
-      }
+  > h1 + p {
+    font-size: 16px;
+  }
+
+  figure {
+    margin: 0;
+    text-align: center;
+
+    p {
+      margin-left: 12px;
+      margin-right: 12px;
+      font-size: 12px;
     }
+  }
 
+  figcaption {
+    font-size: 16px;
+  }
+
+  > {
     h2 {
-      padding-top: 63px;
-      margin-top: -23px;
-
-      a {
-        display: none;
-      }
-
       span {
         display: flex;
-      }
 
-      span:hover {
+        &:hover {
+          a {
+            margin-left: 8px;
+            visibility: visible;
+            font-size: 16px;
+            color: #4284f5;
+          }
+        }
+
         a {
-          margin-left: 5px;
-          color: #4284f5;
-          display: inline-block;
-          font-size: 16px;
+          visibility: hidden;
         }
       }
     }
 
     // @To-do: 表格样式
-    table {
-      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    table:not(.no-border):not(.no-vertical-border) {
+      font-family: $font-family-mono;
       width: 100%;
       border-radius: 2px;
       border-collapse: collapse;
@@ -51,21 +56,14 @@
       line-height: 22px;
       color: #666;
 
-      code {
-        margin: 0 1px;
-        padding: 0.2em 0.4em;
-        font-size: 1.1em;
-        background: #f2f4f5;
-        border: 1px solid #eee;
-        border-radius: 3px;
-      }
+      tr {
+        > td:first-of-type {
+          color: #3b77db;
+        }
 
-      tr > td:first-of-type {
-        color: #3b77db;
-      }
-
-      tr > td:nth-of-type(3) {
-        color: #e65069;
+        > td:nth-of-type(3) {
+          color: #e65069;
+        }
       }
 
       th {
@@ -78,6 +76,53 @@
       td {
         padding: 10px 9px;
         border: 1px solid #e7e7e7;
+      }
+
+      code {
+        margin: 0 1px;
+        padding: 0.2em 0.4em;
+        font-size: 1.1em;
+        background: #f2f4f5;
+        border: 1px solid #eee;
+        border-radius: 3px;
+      }
+    }
+
+    table.no-border {
+      border-collapse: collapse;
+
+      td {
+        padding: 12px 16px;
+        border: 0;
+        vertical-align: top;
+      }
+    }
+
+    table.no-vertical-border {
+      border-collapse: collapse;
+
+      th {
+        padding: 12px;
+        font-weight: 400;
+        text-align: left;
+        background-color: #f0f5ff;
+        border-color: #f0f5ff;
+      }
+
+      td {
+        padding: 12px;
+        border-left-width: 0;
+        border-right-width: 0;
+        border-bottom: 1px solid #e8e8e8;
+        vertical-align: top;
+      }
+
+      p:first-child {
+        margin-top: 0;
+      }
+
+      p:last-child {
+        margin-bottom: 0;
       }
     }
 
