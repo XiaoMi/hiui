@@ -1,6 +1,3 @@
-// import React, { Component } from 'react'
-// import { render, unmountComponentAtNode } from 'react-dom'
-// import classNames from 'classnames'
 import open from '../notice'
 import './style/index'
 
@@ -12,7 +9,10 @@ const notification = {
     key = Math.random(),
     duration,
     closable = true,
-    type = 'info'
+    type = 'info',
+    confirmText,
+    onConfirm,
+    onClose
   }) => {
     open({
       title,
@@ -20,7 +20,11 @@ const notification = {
       prefix,
       key,
       closable,
-      type
+      duration,
+      type,
+      confirmText,
+      onConfirm,
+      onClose
     })
   }
 }

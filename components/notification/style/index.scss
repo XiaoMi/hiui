@@ -8,7 +8,7 @@
   z-index: 1020;
 
   .hi-notification {
-    padding: 10px 12px;
+    padding: 9px 12px;
     margin-bottom: 10px;
     border-radius: 2px;
     transition: 0.3s ease;
@@ -16,6 +16,10 @@
     align-items: flex-start;
     width: 400px;
     box-sizing: border-box;
+  }
+
+  .hi-notification--single {
+    width: 280px;
   }
 
   .hi-notification__title {

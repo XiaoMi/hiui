@@ -23,7 +23,9 @@
   open1(){
     Notification.open({
       title:'通知',
-      content:'通知内容'
+      content:'通知内容',
+      duration:null,
+      onConfirm:()=>{console.log()}
     })
   }
 
