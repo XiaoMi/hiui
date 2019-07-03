@@ -10,28 +10,27 @@ Upload 上传
 
 ```js
 constructor(props) {
-	super(props)
-	this.state={param:{id:'uid',channel:'youpin'}}
+  super(props)
+  this.state={param:{id:'uid',channel:'youpin'}}
 }
 render () {
-	const param = this.state.param
-	return (
-		<div>
-			<Upload
-				type="normal"
-				uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
-				headers={{name: 'mi'}}
-				buttonText="上传文件"
-				param={param}
-				name={'files[]'}
-				onChange = {(file, fileList, response) => {
-					console.log('upload callback', file, fileList, response)
-					// if(response&&response.status !== 200) return false // 返回 false 则该文件会从列表里删除
-				}}
-				disabled={false}
-			/>
-		</div>
-	)
+  const param = this.state.param
+  return (
+    <Upload
+      type="normal"
+      uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
+      headers={{name: 'mi'}}
+      buttonText="上传文件"
+      param={param}
+      name={'files[]'}
+      onChange = {(file, fileList, response, callback) => {
+        console.log('upload callback', file, fileList, response)
+        if(response && response.status !== 200) {
+          // callback(false)      // callback 回调 false 则该文件会从列表里删除
+        }
+      }}
+    />
+  )
 }
 ```
 :::
@@ -305,5 +304,5 @@ render () {
 | defaultFileList | 带默认列表的上传 | Array[object] (object参见上面demo) | - | 无 |
 | beforeUpload | 上传文件前的钩子,返回true继续上传，其他终止上传 | Function(files, fileList) | - | 一个返回true的空函数 |
 | customUpload | 自定义上传，此时不会再触发onChange，所有上传逻辑转移到该函数  | Function(files) | - | - |
-| onChange | 上传回调。当function返回false或者返回promise（如果promise resolve(false)）则已上传的文件列表不会展示该文件 | Function(file, fileList, response) | - | - |
+| onChange | 上传回调。当第四个参数回调false或者promise（如果promise resolve(false)）则已上传的文件列表不会展示该文件 | Function(file, fileList, response, callback) | - | - |
 | onRemove | 删除上传的文件,为false时不可删除。当function返回true或者返回promise（如果promise resolve(true)）则会在前端删除文件（可参考demo：照片墙上传）| Function(file, fileList, index)，boolean | - | 一个返回true的空函数，即前端删除 |

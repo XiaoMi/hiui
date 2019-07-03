@@ -171,7 +171,7 @@ export default class Upload extends Component {
     const {
       onChange
     } = this.props
-    const ret = onChange(file, fileList, response)
+
     const onUploadError = () => {
       for (const index in fileList) {
         if (fileList[index].fileId === file.fileId) {
@@ -182,15 +182,19 @@ export default class Upload extends Component {
       }
     }
 
-    if (ret === false) {
-      onUploadError()
-    } else if (ret && typeof ret.then === 'function') {
-      ret.then(res => {
-        if (res === false) {
-          onUploadError()
-        }
-      })
+    const callback = (ret) => {
+      if (ret === false) {
+        onUploadError()
+      } else if (ret && typeof ret.then === 'function') {
+        ret.then(res => {
+          if (res === false) {
+            onUploadError()
+          }
+        })
+      }
     }
+
+    onChange(file, fileList, response, callback)
   }
 
   uploadFile (file, dataUrl = '') {
