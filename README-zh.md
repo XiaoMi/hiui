@@ -56,16 +56,10 @@ npm install @hi-ui/hiui
 
 ```sh
 # 安装依赖
-$ yarn
+$ npm i
 
 # 开启本地开发环境 localhost:4200
-$ yarn dev
-
-# 编译代码
-$ yarn compile
-
-# 构造文档
-$ yarn build
+$ npm start
 ```
 
 打开 http://localhost:4200

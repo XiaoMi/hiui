@@ -56,16 +56,10 @@ For components usage, see more at [HIUI Documents](https://xiaomi.github.io/hiui
 
 ```sh
 # install dependencies
-$ yarn
+$ npm i
 
 # serve in dev mode, with hot reload at localhost:4200
-$ yarn dev
-
-# compile for production
-$ yarn compile
-
-# build for production
-$ yarn build
+$ npm start
 ```
 
 Open http://localhost:4200
