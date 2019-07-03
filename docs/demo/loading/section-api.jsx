@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Panel from '../../../components/panel'
+import Loading from '../../../components/loading'
 const prefix = 'loading-api'
 const code = `
 import React from 'react'
@@ -53,7 +54,7 @@ class Demo extends React.Component {
 const DemoApi = () => (
   <DocViewer
     code={code}
-    scope={{ Button, Panel }}
+    scope={{ Button, Panel, Loading }}
     prefix={prefix}
   />
 )
