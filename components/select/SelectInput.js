@@ -90,7 +90,9 @@ export default class SelectInput extends Component {
       disabled,
       searchable,
       clearable,
-      multipleMode
+      multipleMode,
+      onFocus,
+      onBlur
     } = this.props
     let icon = dropdownShow ? 'up' : 'down'
     let {
@@ -153,6 +155,8 @@ export default class SelectInput extends Component {
                 }}
                 onChange={this.handleKeywordChange.bind(this)}
                 onKeyDown={this.handleKeyDown.bind(this)}
+                onFocus={onFocus.bind(this)}
+                onBlur={onBlur.bind(this)}
               />
             </div>
           }
@@ -172,7 +176,9 @@ export default class SelectInput extends Component {
       dropdownShow,
       disabled,
       searchable,
-      clearable
+      clearable,
+      onFocus,
+      onBlur
     } = this.props
     placeholder = selectedItems.length > 0 ? selectedItems[0].name : placeholder
     let icon = dropdownShow ? 'up' : 'down'
@@ -193,6 +199,8 @@ export default class SelectInput extends Component {
               placeholder={placeholder}
               onChange={this.handleKeywordChange.bind(this)}
               onKeyDown={this.handleKeyDown.bind(this)}
+              onFocus={onFocus.bind(this)}
+              onBlur={onBlur.bind(this)}
               readOnly={disabled || !searchable}
             />
           </div>

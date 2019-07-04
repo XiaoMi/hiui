@@ -1,0 +1,58 @@
+# Radio 单选按钮
+
+单选按钮是用来在一组平铺选项中选择目标选项，每次只选一个
+
+## 何时使用
+
+- 需要快速完成多选一且备选项数量不多时
+- 常见于后台设置、调研问卷等场景
+
+## 普通模式
+
+import DemoNormal from '../../demo/radio/section-normal'
+
+<DemoNormal />
+
+## 单选组合
+
+import DemoMulti from '../../demo/radio/section-multi'
+
+<DemoMulti />
+
+## 按钮模式
+
+import DemoType from '../../demo/radio/section-type'
+
+<DemoType />
+
+## Radio Props
+
+| 参数           | 说明             | 类型                                                 | 可选值                | 默认值    |
+| -------------- | ---------------- | ---------------------------------------------------- | --------------------- | --------- |
+| autoFocus      | 是否自动获取焦点 | boolean                                              | true \| false         | false     |
+| checked        | 是否选中         | boolean                                              | true \| false         | false     |
+| defaultChecked | 是否默认选中     | boolean                                              | true \| false         | false     |
+| disabled       | 是否禁用         | boolean                                              | true \| false         | false     |
+| type           | 按钮形状         | string                                               | 'default' \| 'button' | 'default' |
+| onChange       | 变化时的回调     | (event: React.ChangeEvent\<HTMLInputElement\>) => void | -                     | -         |
+
+## Radio.Group Props
+
+| 参数         | 说明                                                    | 类型                                     | 可选值        | 默认值 |
+| ------------ | ------------------------------------------------------- | ---------------------------------------- | ------------- | ------ |
+| data         | 指定可选项                                              | string[] \| number[] \| DataItem[]       | -             | []     |
+| defaultValue | 默认选中的项                                            | string \| number                         | -             | []     |
+| disabled     | 是否禁用                                                | boolean                                  | true \| false | false  |
+| name         | `Radio.Group` 下所有 `input[type="radio"]` 的 name 属性 | string                                   | -             | -      |
+| value        | 指定选中的项                                            | string \| number                         | -             | -      |
+| onChange     | 变化时的回调                                            | (checkedValue: string \| number) => void | -             | -      |
+
+## Type
+
+### _DataItem_
+
+| 参数     | 说明         | 类型             |
+| -------- | ------------ | ---------------- |
+| id       | 数据唯一标识 | string \| number |
+| content  | 数据显示内容 | string \| number |
+| disabled | 是否禁用该项 | boolean          |

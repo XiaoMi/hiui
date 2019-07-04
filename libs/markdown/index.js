@@ -66,7 +66,7 @@ class Markdown extends Component {
       const html = marked(document)
       // console.log(document)
       return (
-        <div className='markdown-body entry' dangerouslySetInnerHTML={{__html: html}} />
+        <div className='markdown-body' dangerouslySetInnerHTML={{__html: html}} />
       )
     } else {
       return <span />

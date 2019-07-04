@@ -1,60 +1,62 @@
+const components = {}
+const files = require.context(`../../../docs/zh-CN/components`, false, /.mdx$/)
+files.keys().forEach(key => {
+  let _key = key.split('/')[1].split('.')[0]
+  components[_key] = files(key).default
+})
 export default {
   documents: {
-    'quick-start': require('./quick-start'),
-    'template': require('./template'),
-    'theme': require('./theme'),
-    'i18n': require('./i18n'),
-    'changelog': require('./changelog')
+    'quick-start': components['quick-start'],
+    template: components['template'],
+    theme: components['theme'],
+    i18n: components['i18n'],
+    changelog: components['changelog']
   },
   components: {
     'group-basic': {
-      'grid': require('./grid'),
-      'typography': require('./typography'),
-      'button': require('./button'),
-      'icon': require('./icon')
-      // 'ficon': require('./ficon')
+      grid: components['grid'],
+      typography: components['typography'],
+      button: components['button'],
+      icon: components['icon']
     },
     'group-navgation': {
-      'tabs': require('./tabs'),
-      'navMenu': require('./nav-menu'),
-      'dropdown': require('./dropdown'),
-      'pagination': require('./pagination'),
-      'stepper': require('./stepper'),
-      'menu': require('./menu')
+      tabs: components['tabs'],
+      dropdown: components['dropdown'],
+      pagination: components['pagination'],
+      stepper: components['stepper'],
+      menu: components['menu']
     },
     'group-form': {
-      'form': require('./form'),
-      'input': require('./input'),
-      'counter': require('./counter'),
-      'select': require('./select'),
-      'cascader': require('./cascader'),
-      'radio': require('./radio'),
-      'checkbox': require('./checkbox'),
-      'date-picker': require('./date-picker'),
-      'time-picker': require('./time-picker'),
-      'upload': require('./upload'),
-      'rate': require('./rate')
+      form: components['form'],
+      input: components['input'],
+      counter: components['counter'],
+      select: components['select'],
+      cascader: components['cascader'],
+      radio: components['radio'],
+      checkbox: components['checkbox'],
+      'date-picker': components['date-picker'],
+      'time-picker': components['time-picker'],
+      upload: components['upload'],
+      rate: components['rate']
     },
     'group-data': {
-      'table': require('./table'),
-      'tree': require('./tree'),
-      'panel': require('./panel'),
-      'collapse': require('./collapse'),
-      'tooltip': require('./tooltip'),
-      'popover': require('./popover'),
-      'progress': require('./progress'),
-      'card': require('./card'),
-      'timeline': require('./timeline'),
-      'transfer': require('./transfer'),
-      'switch': require('./switch')
+      table: components['table'],
+      tree: components['tree'],
+      collapse: components['collapse'],
+      tooltip: components['tooltip'],
+      popover: components['popover'],
+      progress: components['progress'],
+      card: components['card'],
+      timeline: components['timeline'],
+      transfer: components['transfer'],
+      switch: components['switch']
     },
     'group-tips': {
-      'modal': require('./modal'),
-      // 'confirm': require('./confirm'),
-      'notification': require('./notification'),
-      'alert': require('./alert'),
-      'badge': require('./badge'),
-      'loading': require('./loading')
+      modal: components['modal'],
+      notification: components['notification'],
+      alert: components['alert'],
+      badge: components['badge'],
+      loading: components['loading']
     }
   }
 }

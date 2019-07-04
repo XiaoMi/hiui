@@ -49,7 +49,10 @@ class Select extends Component {
     placeholder: '请选择',
     noFoundTip: '无内容',
     showCheckAll: false,
-    open: true
+    open: true,
+    onClick: () => {},
+    onBlur: () => {},
+    onFocus: () => {}
   }
 
   constructor (props) {
@@ -481,7 +484,10 @@ class Select extends Component {
       noFoundTip,
       optionWidth,
       dropdownRender,
-      multipleMode
+      multipleMode,
+      onClick,
+      onBlur,
+      onFocus
     } = this.props
     const placeholder = this.localeDatasProps('placeholder')
     const {
@@ -517,7 +523,10 @@ class Select extends Component {
               if(this.props.open) {
                 this.handleInputClick()
               }
+              onClick()
             }}
+            onBlur={onBlur}
+            onFocus={onFocus}
             onDelete={this.deleteItem.bind(this)}
             onClear={this.deleteAllItems.bind(this)}
             onSearch={this.debouncedFilterItems.bind(this)}
