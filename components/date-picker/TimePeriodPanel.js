@@ -62,7 +62,6 @@ export default class TimePeriodPanel extends Component {
                 key={index}
                 onClick={(e) => {
                   const ts = item.split(' ~ ')
-                  console.log(ts)
                   onTimePeriodPick(ts[0], ts[1])
                 }}
               >{item}</li>

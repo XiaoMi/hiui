@@ -71,7 +71,13 @@ class BasePicker extends Component {
     showTime: PropTypes.bool,
     disabled: PropTypes.bool,
     showWeekNumber: PropTypes.bool,
-    weekOffset: PropTypes.oneOf([0, 1])
+    weekOffset: PropTypes.oneOf([0, 1]),
+    timeInterval: function (props, propName, componentName) {
+      const val = props[propName]
+      if (val < 5 || val > 480 || (val > 60 && val % 60 !== 0) || (val < 60 && 60 % val !== 0)) {
+        return new Error(`Invalid prop ${propName} supplied to ${componentName}. This value must be greater than 5 and less than 480 and is a multiple of 60.`)
+      }
+    }
   }
   static defaultProps = {
     type: 'date',
