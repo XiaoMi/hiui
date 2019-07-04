@@ -8,14 +8,19 @@ const code = [
     code: `import React from 'react'
 import Checkbox from '@hiui/hiui/es/checkbox'\n
 class Demo extends React.Component {
+  constructor () {
+    super()
+    this.state = {
+      list: ['手机', '电脑', '智能'],
+    }
+    this.onChange = this.onChange.bind(this)
+  }
+  onChange(list, value, isChecked) {
+    console.log(list, value, isChecked)
+  }
   render() {
     return (
-      <Checkbox.Group
-        name='strategy'
-        data={['手机', 'AI', 'IOT']}
-        defaultValue={['AI', 'IOT']}
-        onChange={console.log}
-      />
+      <Checkbox list={this.state.list} onChange={this.onChange} name="c1"/>
     )
   }
 }`,
@@ -25,29 +30,32 @@ class Demo extends React.Component {
     code: `import React from 'react'
 import Checkbox from '@hiui/hiui/es/checkbox'\n
 class Demo extends React.Component {
-  constructor() {
+  constructor () {
     super()
-    this.data = [{
-      content: '手机',
-      id: 0,
-      disabled: true
-    }, {
-      content: 'AI',
-      id: 1
-    }, {
-      content: 'IOT',
-      id: 2
-    }]
+    this.state = {
+      list: [{
+        text: '手机',
+        value: 'Phone',
+        checked: true
+      },{
+        text: '电脑',
+        value: 'Computer'
+      },{
+        text: '智能'
+      },{
+        text: '出行',
+        disabled: true,
+        checked: true
+      }]
+    }
+    this.onChange = this.onChange.bind(this)
   }
-
+  onChange(list, value, isChecked) {
+    console.log(list, value, isChecked)
+  }
   render() {
     return (
-      <React.Fragment>
-        <Checkbox.Group
-          data={this.data}
-          defaultValue={[0]}
-          onChange={console.log} />
-      </React.Fragment>
+      <Checkbox list={this.state.list} onChange={this.onChange} name="c2"/>
     )
   }
 }`,
@@ -61,7 +69,6 @@ const DemoBasic = () => (
     scope={{ Checkbox }}
     prefix={prefix}
     rightOptions={rightOptions}
-    desc='使用 Checkbox.Group 进行多选组合'
   />
 )
 export default DemoBasic

@@ -6,29 +6,26 @@ const code = `
 import React from 'react'
 import Radio from '@hiui/hiui/es/radio'\n
 class Demo extends React.Component {
-  constructor() {
+  constructor () {
     super()
-    this.data = [{
-      id: 0,
-      content: '手机',
-      disabled: true
-    }, {
-      id: 1,
-      content: 'AI'
-    }, {
-      id: 2,
-      content: 'IOT'
-    }]
+    this.state = {
+      disableNum : 2
+    }
   }
-
   render() {
-    return <React.Fragment>
-      <Radio.Group type='button' defaultValue='AI' data={['手机', 'AI', 'IOT']} />
-      <p />
-      <Radio.Group type='button' defaultValue='AI' data={['手机', 'AI', 'IOT']} disabled />
-      <p />
-      <Radio.Group type='button' defaultValue={1} data={this.data} />
-    </React.Fragment>
+    return (
+      <div>
+          <Radio
+            list={['手机类', '电脑类', '生活类', '其它']}
+            mode='button'
+            checked={0}
+            disabled={this.state.disableNum}
+            onChange={(data) => console.log(data)}
+          />
+          <br/>
+
+      </div>
+    )
   }
 }`
 const DemoType = () => (
@@ -36,7 +33,6 @@ const DemoType = () => (
     code={code}
     scope={{ Radio }}
     prefix={prefix}
-    desc='使用按钮样式'
   />
 )
 export default DemoType
