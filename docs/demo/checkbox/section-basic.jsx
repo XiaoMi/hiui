@@ -12,8 +12,8 @@ class Demo extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Checkbox value='default' onChange={(val, isCheck) => console.log(val, isCheck)}>Checkbox</Checkbox>
-        <Checkbox checked onChange={(val, isCheck) => console.log(val, isCheck)}>Checkbox</Checkbox>
+        <Checkbox autoFocus>Checkbox</Checkbox>
+        <Checkbox defaultChecked>默认勾选</Checkbox>
       </React.Fragment>
     )
   }
@@ -27,8 +27,8 @@ class Demo extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Checkbox disabled>Checkbox</Checkbox>
-        <Checkbox disabled checked>Checkbox</Checkbox>
+        <Checkbox diabled>Checkbox</Checkbox>
+        <Checkbox diabled defaultChecked>默认勾选</Checkbox>
       </React.Fragment>
     )
   }
@@ -43,6 +43,7 @@ const DemoBasic = () => (
     scope={{ Checkbox }}
     prefix={prefix}
     rightOptions={rightOptions}
+    desc='基础用法'
   />
 )
 export default DemoBasic
