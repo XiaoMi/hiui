@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Progress from '../../../components/progress'
-import Counter from '../../../components/Counter'
+import Counter from '../../../components/counter'
 const prefix = 'progress-circle'
 
 const code = `
