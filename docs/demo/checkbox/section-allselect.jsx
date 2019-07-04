@@ -2,66 +2,95 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Checkbox from '../../../components/checkbox'
 const prefix = 'section-allselect'
-const code = `import React from 'react'
+const rightOptions = ['单个', '组合']
+const code = [
+  {
+    code: `import React from 'react'
 import Checkbox from '@hiui/hiui/es/checkbox'\n
 class Demo extends React.Component {
-  constructor() {
+  constructor () {
     super()
-    this.data = ['手机', 'AI', 'IOT']
     this.state = {
-      value: ['AI'],
-      checkAll: false
+      list: [{
+        text: '手机',
+        value: 'Phone',
+        checked: true
+      },{
+        text: '电脑',
+        value: 'Computer'
+      },{
+        text: '智能'
+      },{
+        text: '出行',
+        disabled: true,
+        checked: true
+      }]
     }
-    this.getIndeterminate = () => {
-      const len = this.state.value.length
-      return len < 3 && len > 0
-    }
-    this.handleCheckAllChange = () => {
-      const len = this.state.value.length
-      if (len < 3) {
-        this.setState({
-          checkAll: true,
-          value: this.data
-        })
-      } else {
-        this.setState({
-          checkAll: false,
-          value: []
-        })
-      }
-    }
-    this.handleGroupChange = (value) => {
-      this.setState({
-        value,
-        checkAll: value.length === 3
-      })
-    }
+    this.onChange = this.onChange.bind(this)
   }
-
+  onChange(list, value, isChecked) {
+    console.log(list, value, isChecked)
+  }
   render() {
-    const CheckboxGroup = Checkbox.Group
     return (
       <React.Fragment>
-        <Checkbox
-          indeterminate={this.getIndeterminate()}
-          onChange={this.handleCheckAllChange}
-          checked={this.state.checkAll}>全选</Checkbox>
-        <p />
-        <CheckboxGroup
-          value={this.state.value}
-          data={this.data}
-          onChange={this.handleGroupChange} />
+        <Checkbox all='one' onChange={this.onChange}>全选</Checkbox>
+        <div><Checkbox list={this.state.list} name='one'/></div>
       </React.Fragment>
     )
   }
-}`
+}`,
+    opt: ['单个']
+  },
+  {
+    code: `import React from 'react'
+import Checkbox from '@hiui/hiui/es/checkbox'\n
+class Demo extends React.Component {
+  constructor () {
+    super()
+    this.state = {
+      list: [{
+        text: '手机',
+        value: 'phone'
+      },{
+        text: '电脑',
+        value: 'computer'
+      },{
+        text: '智能',
+        checked: true
+      },{
+        text: '出行',
+        disabled: true,
+        checked: true
+      }]
+    }
+    this.onChange = this.onChange.bind(this)
+  }
+  onChange() {
+
+  }
+  render() {
+    return (
+      <React.Fragment>
+        <Checkbox all='two' onChange={this.onChange}>全选</Checkbox>
+        <div><Checkbox name='two' text='手机'/></div>
+        <div><Checkbox name='two' value='computer'>电脑</Checkbox></div>
+        <div><Checkbox name='two' text='智能'/></div>
+        <div><Checkbox name='two' checked={true} text='出行'/></div>
+      </React.Fragment>
+    )
+  }
+}`,
+    opt: ['组合']
+  }
+]
 
 const DemoBasic = () => (
   <DocViewer
     code={code}
     scope={{ Checkbox }}
     prefix={prefix}
-    desc='用 `indeterminate` 属性控制不全选的状态'
+    rightOptions={rightOptions}
   />
 )
 export default DemoBasic
