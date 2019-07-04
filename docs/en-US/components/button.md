@@ -69,7 +69,9 @@ render() {
   return (
     <div>
       <Button type="primary" size="large">Large</Button>
-      <Button type="primary" size="large" disabled>Large</Button>
+      <Button type="primary" size="large" onClick={() => {
+        console.log('This button has been disabled.')
+      }} disabled>Large</Button>
       <Button type="primary" size="normal">Normal</Button>
       <Button type="primary" size="normal" disabled>Normal</Button>
       <Button type="primary" size="small">Small</Button>
