@@ -270,7 +270,7 @@ class DatePanel extends Component {
 
   render () {
     const {date, currentView} = this.state
-    const {theme, showTime, type} = this.props
+    const {theme, showTime, type, timeInterval} = this.props
     const _c = classNames(
       'hi-datepicker',
       theme && 'theme__' + theme
@@ -304,6 +304,7 @@ class DatePanel extends Component {
           {
             type === 'timeperiod' && (
               <TimePeriodPanel
+                timeInterval={timeInterval}
                 onTimePeriodPick={this.onTimePeriodPick.bind(this)}
                 date={date}
               />
