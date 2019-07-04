@@ -77,7 +77,8 @@ class BasePicker extends Component {
     type: 'date',
     disabled: false,
     showWeekNumber: true,
-    weekOffset: 0
+    weekOffset: 0,
+    timeInterval: 240
   }
   _parseProps (props, callback) {
     let {value, showTime, type, format, localeDatas, weekOffset} = props

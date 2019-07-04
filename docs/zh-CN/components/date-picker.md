@@ -282,11 +282,15 @@ render () {
 ```js
 render () {
   return (
-    <DatePicker
-      type="timeperiod"
-      value={new Date()}
-      onChange={(d) => {console.log('sec', d)}}
-    />
+    <div>
+      <DatePicker
+        type="timeperiod"
+        value={new Date()}
+        onChange={(d) => {console.log('sec', d)}}
+      />
+    </div>
+    
+    
   )
 }
 ```
