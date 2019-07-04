@@ -4,31 +4,40 @@
   right: 24px;
   width: 124px;
   height: auto;
-  border-left: 1px solid #F2F2F2;
+  border-left: 1px solid #f2f2f2;
+
   ul {
     margin: 0;
     padding: 0;
     list-style-type: none;
   }
+
   li {
+    cursor: pointer;
     padding-left: 16px;
     margin-left: -1px;
-    border-left: 1px solid #F2F2F2;
+    border-left: 1px solid #f2f2f2;
 
     &:hover {
-      border-color: #4284F5;
+      border-color: #4284f5;
 
       a {
-        color: #4284F5;
+        color: #4284f5;
       }
     }
   }
-  
+
+  li.active {
+    border-color: #4284f5;
+
+    a {
+      color: #4284f5;
+    }
+  }
+
   a {
-    //font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-size: 12px;
     line-height: 24px;
-    color: #333333;
-    cursor: pointer;
+    color: #333;
   }
 }

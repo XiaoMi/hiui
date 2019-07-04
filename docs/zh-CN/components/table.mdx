@@ -1,0 +1,173 @@
+# Table 表格
+
+可容纳多种数据类型的大型数据容器，并可支持多种数据相关和表格属性设置相关的操作，具有强大的统计功能
+
+## 何时使用
+
+- 当需要管理一定量级的统一结构的数据记录时
+- 当需要对一部分全部数据进行编辑、筛选过滤时
+
+## 基础用法
+
+Table 表格代码说明
+
+1. 右键菜单
+   1. 高亮
+   2. 列冻结 （需要配置 scrollX）
+   3. 隐藏列
+2. 表格 menu 菜单（控制列的显示与隐藏）
+3. 操作记忆 需要给每个表格添加 name 属性来为索引。非常重要
+
+data 属性的所有字段要加 key,columns 的每条数据需要添加加 key 属性
+
+import DemoBase from '../../demo/table/section-base.jsx'
+
+<DemoBase />
+
+## 紧凑表格
+
+import DemoCompact from '../../demo/table/section-compact.jsx'
+
+<DemoCompact />
+
+## 宽松表格
+
+import DemoLoose from '../../demo/table/section-loose.jsx'
+
+<DemoLoose />
+
+## 带边框的表格
+
+import DemoBorder from '../../demo/table/section-border.jsx'
+
+<DemoBorder />
+
+## 斑马纹
+
+import DemoZebra from '../../demo/table/section-zebra.jsx'
+
+<DemoZebra />
+
+## 前端排序
+
+import DemoSort from '../../demo/table/section-sort.jsx'
+
+<DemoSort />
+
+## 多选
+
+import DemoMultiple from '../../demo/table/section-multiple.jsx'
+
+<DemoMultiple />
+
+## 表头吸顶
+
+**fixTop : 表头窗口的高度**
+
+import DemoHeader from '../../demo/table/section-header.jsx'
+
+<DemoHeader />
+
+## 列冻结
+
+**被冻结的列建议传入 width 属性**
+
+import DemoRow from '../../demo/table/section-row.jsx'
+
+<DemoRow />
+
+## 右键列冻结
+
+import DemoRightHandRow from '../../demo/table/section-right-hand-row.jsx'
+
+<DemoRightHandRow />
+
+## 右键展开加冻结
+
+import DemoUnfold from '../../demo/table/section-unfold.jsx'
+
+<DemoUnfold />
+
+## 合并单元格
+
+import DemoMerge from '../../demo/table/section-merge.jsx'
+
+<DemoMerge />
+
+## 表头分组
+
+import DemoGroup from '../../demo/table/section-group.jsx'
+
+<DemoGroup />
+
+## 扩展一行
+
+import DemoExtend from '../../demo/table/section-extend.jsx'
+
+<DemoExtend />
+
+## 前端分页
+
+import DemoPaging from '../../demo/table/section-paging.jsx'
+
+<DemoPaging />
+
+## 服务端表格
+
+import DemoServer from '../../demo/table/section-server.jsx'
+
+<DemoServer />
+
+## origin Attributes
+
+| 参数            | 说明                             | 类型             | 默认值  |
+| --------------- | -------------------------------- | ---------------- | ------- |
+| url             | 请求地址                         | String           | -       |
+| currentPageName | 请求参数，分页字端名             | Sting            | current |
+| auto            | 当 data 变化时是不是自动发送请求 | Boolean          | false   |
+| autoDelayTime   | 当自动发送请求时，延迟时间       | Number           | 300     |
+| headers         | 请求头                           | Object           | -       |
+| data            | 请求参数                         | Object           | -       |
+| success         | 响应解析函数                     | Function(record) | -       |
+| error           | 请求错误回调函数                 | Function(record) | -       |
+| method          | 请求方法                         | String           | GET     |
+
+## rowSelection
+
+| 参数             | 说明                     | 类型                                    | 默认值 |
+| ---------------- | ------------------------ | --------------------------------------- | ------ |
+| onChange         | 列表项被选中时触发的回调 | Function(selectedRowKeys, selectedRows) | -      |
+| getCheckboxProps | 选择框的默认属性配置     | Function(record)                        | -      |
+
+## Props
+
+| 参数       | 说明                                                                                              | 类型    | 可选值             | 默认值  |
+| ---------- | ------------------------------------------------------------------------------------------------- | ------- | ------------------ | ------- |
+| size       | 表格尺寸                                                                                          | String  | large,small,normal | normal  |
+| bordered   | 是否显示边框                                                                                      | Bollean | -                  | false   |
+| striped    | 斑马纹                                                                                            | Bollean | -                  | false   |
+| columns    | 表格数据列对应信息                                                                                | array   | -                  | -       |
+| data       | 表格数据                                                                                          | array   | -                  | -       |
+| emptyText  | 数据为空时展示的文案                                                                              | string  | -                  | No Data |
+| scroll     | 设置横向滚动，也可用于指定滚动区域的宽，建议为`x`设置一个数字，如果不设置，默认 table 宽度为 100% | number  | true               | -       |
+| fixTop     | 吸顶                                                                                              | Number  | true               | false   |
+| pagination | 查看分页组件配置                                                                                  | Object  | -                  | false   |
+| advance    | 高级功能                                                                                          | Object  | -                  | -       |
+| origin     | 服务端功能                                                                                        | Object  | -                  | -       |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      fontSize: '14px',
+      padding: 8,
+      color: '#999'
+    }}
+  >
+    以下调整将随 2.0.0 版本发布，敬请期待
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>

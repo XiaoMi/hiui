@@ -1,0 +1,73 @@
+# Alert 警告
+
+## 基础用法
+
+import DemoBase from '../../demo/alert/section-base.jsx'
+
+<DemoBase />
+
+## 不可关闭
+
+import DemoCloseable from '../../demo/alert/section-closeable.jsx'
+
+<DemoCloseable />
+
+## 带标题
+
+import DemoTitle from '../../demo/alert/section-title.jsx'
+
+<DemoTitle />
+
+## 倒计时自动关闭
+
+3 秒自动关闭，所以你看不见它们。需要设置 autoClase={true} closeable={false}。使用 autoCloseTime 设置自动关闭时间。
+
+import DemoAutoClose from '../../demo/alert/section-autoClose.jsx'
+
+<DemoAutoClose />
+
+## Alert Attributes
+
+| 参数          | 说明                                      | 类型    | 可选值                              | 默认值 |
+| ------------- | ----------------------------------------- | ------- | ----------------------------------- | ------ |
+| type          | 类型                                      | String  | info \| success \| error \| warning | info   |
+| message       | 提示内容                                  | String  | -                                   | -      |
+| title         | 提示标题                                  | String  | -                                   | -      |
+| size          | 弹框大小类型                              | String  | small \| middle \| large            | middle |
+| closeable     | 是否显示关闭按钮                          | Boolean | true \| false                       | true   |
+| autoClose     | 是否自动关闭（closeable 为 false 时生效） | Boolean | true \| false                       | false  |
+| autoCloseTime | 自动关闭时间，单位为毫秒                  | Number  | -                                   | 3000   |
+
+## Alert Events
+
+| 参数    | 说明             | 回调参数 |
+| ------- | ---------------- | -------- |
+| onClose | 关闭时触发的事件 | -        |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      fontSize: '14px',
+      padding: 8,
+      color: '#999'
+    }}
+  >
+    以下调整将随 2.0.0 版本发布，敬请期待
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
+
+## Props
+
+| 参数     | 说明                     | 类型                    | 可选值                                      | 默认值 |
+| -------- | ------------------------ | ----------------------- | ------------------------------------------- | ------ |
+| type     | 警告框类型               | string                  | 'info' \| 'success' \| 'error' \| 'warning' | 'info' |
+| title    | 警告框标题               | string                  | -                                           | -      |
+| content  | 警告框内容               | string                  | -                                           | -      |
+| closable | 是否可关闭               | boolean                 | true \| false                               | false  |
+| onClose  | 关闭事件触发时的回调     | (e: MouseEvent) => void | -                                           | -      |
+| duration | 自动关闭时间，单位为毫秒 | number                  | -                                           | 3000   |

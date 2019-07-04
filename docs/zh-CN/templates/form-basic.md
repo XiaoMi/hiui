@@ -4,15 +4,15 @@
 
 1. 单列
 
-   采用直线视线流的设计方式组织表单项，数量20个以内为适宜
+   采用直线视线流的设计方式组织表单项，数量 20 个以内为适宜
 
   <a href="https://hiui-group.github.io/hiui-template/#/form-basic" target="_blank" style="margin-top:8px;">
-    <img src="./static/img/templates/form1.png" width="60%"/>
+    <img src="/hiui/static/img/templates/form1.png" width="60%"/>
   </a>
 
-  <a href="https://hiui-group.github.io/hiui-template/#/form-basic" target="_blank">查看 Demo</a>
-  &nbsp;&nbsp;
-  <a href="https://github.com/hiui-group/hiui-template" target="_blank">Github</a>
+<a href="https://hiui-group.github.io/hiui-template/#/form-basic" target="_blank">查看 Demo</a>
+&nbsp;&nbsp;
+<a href="https://github.com/hiui-group/hiui-template" target="_blank">Github</a>
 
 > 规则
 >
@@ -22,19 +22,17 @@
 >
 > 3. 当表单项数量较多时，自上而下依次分布，滚动条查看，“提交/取消”按钮组在表单尾部
 
-
-
 2. 双列
 
-   采用双列、上下的布局结构，有效节省屏幕空间，适用于数量在20个以上或界面空间局促的情况
+   采用双列、上下的布局结构，有效节省屏幕空间，适用于数量在 20 个以上或界面空间局促的情况
 
-   <a href="https://hiui-group.github.io/hiui-template/#/form-double-column" target="_blank" style="margin-top:8px;">
-    <img src="./static/img/templates/form2.png" width="60%"/>
-  </a>
+    <a href="https://hiui-group.github.io/hiui-template/#/form-double-column" target="_blank" style="margin-top:8px;">
+     <img src="/hiui/static/img/templates/form2.png" width="60%"/>
+   </a>
 
-  <a href="https://hiui-group.github.io/hiui-template/#/form-double-column" target="_blank">查看 Demo</a>
-  &nbsp;&nbsp;
-  <a href="https://github.com/hiui-group/hiui-template" target="_blank">Github</a>
+<a href="https://hiui-group.github.io/hiui-template/#/form-double-column" target="_blank">查看 Demo</a>
+&nbsp;&nbsp;
+<a href="https://github.com/hiui-group/hiui-template" target="_blank">Github</a>
 
 > 规则
 >
@@ -44,22 +42,20 @@
 >
 > 3. 当表单项数量较多时，自上而下、自左向右依次分布，滚动条查看，“提交/取消”按钮组在表单右上角，位置固定
 
-
-
 3. 弹层表单
 
-   弹层尺寸600*400时，采用单列形式，表单项数量在10个以内，一般用于基础设置的使用场景。
+   弹层尺寸 600\*400 时，采用单列形式，表单项数量在 10 个以内，一般用于基础设置的使用场景。
 
-   <a href="https://hiui-group.github.io/hiui-template/#/form-modal" target="_blank" style="margin-top:8px;">
-    <img src="./static/img/templates/form3.png" width="60%"/>
-  </a>
+    <a href="https://hiui-group.github.io/hiui-template/#/form-modal" target="_blank" style="margin-top:8px;">
+     <img src="/hiui/static/img/templates/form3.png" width="60%"/>
+   </a>
 
-  弹层尺寸800*450时，可采用单列或双列两种布局形式，表单项数量10个以上，一般用于复杂信息的编辑。
+弹层尺寸 800\*450 时，可采用单列或双列两种布局形式，表单项数量 10 个以上，一般用于复杂信息的编辑。
 
   <a href="https://hiui-group.github.io/hiui-template/#/form-modal" target="_blank" style="margin-top:8px;">
-    <img src="./static/img/templates/form4.png" width="60%"/>
+    <img src="/hiui/static/img/templates/form4.png" width="60%"/>
   </a>
 
-  <a href="https://hiui-group.github.io/hiui-template/#/form-modal" target="_blank">查看 Demo</a>
-  &nbsp;&nbsp;
-  <a href="https://github.com/hiui-group/hiui-template" target="_blank">Github</a>
+<a href="https://hiui-group.github.io/hiui-template/#/form-modal" target="_blank">查看 Demo</a>
+&nbsp;&nbsp;
+<a href="https://github.com/hiui-group/hiui-template" target="_blank">Github</a>

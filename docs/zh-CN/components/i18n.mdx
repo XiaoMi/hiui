@@ -1,0 +1,28 @@
+# 国际化
+
+支持的语言包详见下表，默认为 **zh-CN**
+
+## 使用方法
+
+使用 LocaleContext，嵌套的组件可以通过 props.locale 获取到设置的语言
+
+```js
+import { LocaleContext } from '@hi-ui/hiui/es/context'
+
+;<LocaleContext.Provider value='en-US'>
+  <App />
+</LocaleContext.Provider>
+```
+
+## 示例
+
+import DemoExample from '../../demo/i18n/section-example.jsx'
+
+<DemoExample />
+
+## 支持的语言
+
+| 语言     | 值    |
+| -------- | ----- |
+| 简体中文 | zh-CN |
+| 英语     | en-US |

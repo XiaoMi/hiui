@@ -21,7 +21,7 @@
 
   &--inline {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
   }
 
   &__title {
@@ -75,7 +75,6 @@
     position: relative;
     vertical-align: top;
     min-height: 32px;
-    line-height: 32px;
   }
 
   &__error {

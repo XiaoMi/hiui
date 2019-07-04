@@ -1,0 +1,54 @@
+# Checkbox 多选框
+
+## 基础用法
+
+import DemoBasic from '../../demo/checkbox/section-basic.jsx'
+
+<DemoBasic />
+
+## 多选
+
+import DemoMultiselect from '../../demo/checkbox/section-multiselect.jsx'
+
+<DemoMultiselect />
+
+## 全选
+
+import DemoAllselect from '../../demo/checkbox/section-allselect.jsx'
+
+<DemoAllselect />
+
+### Checkbox Props
+
+| 参数           | 说明             | 类型                                                 | 可选值        | 默认值 |
+| -------------- | ---------------- | ---------------------------------------------------- | ------------- | ------ |
+| autoFocus      | 是否自动获取焦点 | boolean                                              | true \| false | false  |
+| checked        | 是否选中         | boolean                                              | true \| false | false  |
+| className      | 自定义类名       | string                                               | -             | -      |
+| defaultChecked | 是否默认选中     | boolean                                              | true \| false | false  |
+| disabled       | 是否禁用         | boolean                                              | true \| false | false  |
+| indeterminate  | 不全选的样式控制 | boolean                                              | true \| false | false  |
+| onChange       | 变化时的回调     | (event: React.ChangeEvent\<HTMLInputElement\>) => void | -             | -      |
+
+### Checkbox.Group Props
+
+| 参数         | 说明                                                         | 类型                                        | 可选值        | 默认值 |
+| ------------ | ------------------------------------------------------------ | ------------------------------------------- | ------------- | ------ |
+| className    | 自定义类名                                                   | string                                      | -             | -      |
+| data         | 指定可选项                                                   | string[] \| number[] \| DataItem[]          | -             | []     |
+| defaultValue | 默认选中的项                                                 | string[] \| number[]                        | -             | []     |
+| disabled     | 是否禁用                                                     | boolean                                     | true \| false | false  |
+| name         | `CheckboxGroup` 下所有 `input[type="checkbox"]` 的 name 属性 | string                                      | -             | -      |
+| onChange     | 变化时的回调                                                 | (checkedList: string[] \| number[]) => void | -             | -      |
+| style        | 自定义样式                                                   | CSSProperties                               | -             | -      |
+| value        | 指定选中的项                                                 | string[] \| number[]                        | -             | -      |
+
+### Type
+
+#### _DataItem_
+
+| 参数     | 说明         | 类型             |
+| -------- | ------------ | ---------------- |
+| id       | 数据唯一标识 | string \| number |
+| content  | 数据显示内容 | string \| number |
+| disabled | 是否禁用该项 | boolean          |

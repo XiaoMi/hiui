@@ -3,6 +3,12 @@
 @import './anchor.scss';
 @import './foot-nav.scss';
 
+.app {
+  .sidebar {
+    box-shadow: inset -1px 0 0 0 #e7e7e7;
+  }
+}
+
 .sidebar__item {
   &:hover,
   &--active {
@@ -30,21 +36,27 @@
 .sider__icon-start {
   background-position-y: 0;
 }
+
 .sider__icon-principle {
   background-position-y: -16px;
 }
+
 .sider__icon-layout {
   background-position-y: -32px;
 }
+
 .sider__icon-vision {
   background-position-y: -48px;
 }
+
 .sider__icon-i18n {
   background-position-y: -80px;
 }
+
 .sider__icon-changelog {
   background-position-y: -18px;
 }
+
 .sider__icon-component {
   background-position-y: -64px;
 }

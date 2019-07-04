@@ -1,0 +1,30 @@
+.hiicon-list {
+  width: 100%;
+}
+
+.hiicon-list li {
+  list-style: none;
+  float: left;
+  width: 16.6%;
+  height: 120px;
+  border-radius: 4px;
+  color: #333;
+  text-align: center;
+  transition: color, background-color 0.2s;
+}
+
+.hiicon-list li:hover {
+  background: #4284f5;
+  color: #fff;
+}
+
+.hiicon-list .hi-icon {
+  margin: 20px 0;
+  font-size: 32px;
+  display: inline-block;
+}
+
+.hiicon-class {
+  font-size: 12px;
+  display: block;
+}
