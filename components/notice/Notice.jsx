@@ -2,18 +2,6 @@ import React, { Component } from 'react'
 import Icon from '../icon'
 import classNames from 'classnames'
 import { CSSTransition } from 'react-transition-group'
-const iconMap = {
-  success: 'chenggong',
-  error: 'shibai',
-  warning: 'jinggao',
-  info: 'tishi'
-}
-const iconColorMap = {
-  success: '#1DA653',
-  error: '#F44141',
-  warning: '#E19D0C',
-  info: '#4284F5'
-}
 
 export default class Notice extends Component {
   state = { open: false }
@@ -37,7 +25,7 @@ export default class Notice extends Component {
   }
 
   render() {
-    const { closable, children, prefix, type, isSingle } = this.props
+    const { closable, children, prefix, type } = this.props
     const { open } = this.state
     return (
       <CSSTransition
@@ -48,19 +36,11 @@ export default class Notice extends Component {
           setTimeout(() => this.closeNotice(), 300)
         }}
       >
-        <div
-          className={classNames(`hi-${prefix}--${type}`, `hi-${prefix}`, {
-            [`hi-${prefix}--single`]: isSingle
-          })}
-        >
-          {type && (
-            <span style={{ marginRight: 12, fontSize: '16px', color: iconColorMap[type] }}>
-              <i className={classNames('hi-icon', `icon-${iconMap[type]}`)} />
-            </span>
-          )}
-          <div style={{ flex: 1 }}>{children}</div>
+        <div className={classNames(`hi-${prefix}`, { [`hi-${prefix}--${type}`]: type })}>
+          <div style={{ paddingRight: 14 }}>{children}</div>
           {closable && (
             <Icon
+              className={`hi-${prefix}__closer`}
               name="close"
               onClick={() => {
                 this.setState({ open: false })

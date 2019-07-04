@@ -17,6 +17,12 @@
     align-items: flex-start;
   }
 
+  .hi-notice__closer {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+
   .hi-notice__title {
     font-size: 14px;
   }

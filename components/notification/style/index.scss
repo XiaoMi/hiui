@@ -8,18 +8,21 @@
   z-index: 1020;
 
   .hi-notification {
+    position: relative;
     padding: 9px 12px;
     margin-bottom: 10px;
     border-radius: 2px;
     transition: 0.3s ease;
     display: flex;
     align-items: flex-start;
-    width: 400px;
+    width: 340px;
     box-sizing: border-box;
-  }
 
-  .hi-notification--single {
-    width: 280px;
+    &__closer {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+    }
   }
 
   .hi-notification__title {

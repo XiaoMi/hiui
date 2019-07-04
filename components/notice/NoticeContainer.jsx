@@ -36,23 +36,9 @@ export default class NoticeContainer extends Component {
               prefix={prefix}
               type={notice.type}
               closable={notice.closable}
-              isSingle={!notice.content}
-              onClose={notice.onClose}
               onConfirm={notice.onConfirm}
             >
-              {notice.title && <div className={`hi-${prefix}__title`}>{notice.title}</div>}
-              {notice.content && <div className={`hi-${prefix}__content`}>{notice.content}</div>}
-              {notice.onConfirm && (
-                <div style={{ textAlign: 'right' }}>
-                  <Button
-                    onClick={() => {
-                      notice.onConfirm()
-                    }}
-                  >
-                    {notice.confirmText || '确认'}
-                  </Button>
-                </div>
-              )}
+              {notice.content}
             </Notice>
           )
         })}
