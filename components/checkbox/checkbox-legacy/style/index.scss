@@ -1,13 +1,13 @@
 @import '@hi-ui/core-css/index.scss';
 
-.hi-checkbox {
+.hi-checkbox-legacy {
   display: inline-block;
   cursor: pointer;
 
   @include component-reset();
 
-  &:not(.hi-checkbox--disabled):hover {
-    .hi-checkbox__input {
+  &:not(.hi-checkbox-legacy--disabled):hover {
+    .hi-checkbox-legacy__input {
       border: 1px solid #4284f5;
     }
   }
@@ -15,7 +15,7 @@
   &--disabled {
     cursor: not-allowed;
 
-    .hi-checkbox__input {
+    .hi-checkbox-legacy__input {
       background: #f2f2f2 !important;
       border: 1px solid #d8d8d8;
 
@@ -24,13 +24,13 @@
       }
     }
 
-    .hi-checkbox__label {
+    .hi-checkbox-legacy__label {
       color: rgba(204, 204, 204, 1);
     }
   }
 
   &--checked {
-    .hi-checkbox__input {
+    .hi-checkbox-legacy__input {
       background: #4284f5;
 
       &::after {
@@ -54,7 +54,7 @@
   }
 
   &--part {
-    .hi-checkbox__input {
+    .hi-checkbox-legacy__input {
       background: #4284f5;
 
       &::after {
