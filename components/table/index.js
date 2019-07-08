@@ -124,6 +124,12 @@ class Table extends Component {
     if (highlight) {
       highlightCols = highlight.split(',').filter(item => !!item)
     }
+    // 冻结记忆
+    let freezeCol = window.localStorage.getItem(name + '-freeze')
+    if (freezeCol) {
+      this.cbs.freezeCol(freezeCol)
+    }
+
     this.setState({columns, headerColumns, dataSource, highlightCols})
   }
 
@@ -145,7 +151,7 @@ class Table extends Component {
 
     freezeCol: (key) => {
       // let col =
-      let {scrollWidth, scroll, scrollX} = this.props
+      let {scrollWidth, scroll, scrollX, name} = this.props
       let {columns} = this.state
       let pin = false
       columns = columns.map(item => {
@@ -172,6 +178,7 @@ class Table extends Component {
       this.setState({...columnsDetail}, () => {
         this.xscroll()
       })
+      window.localStorage.setItem(name + '-freeze', key)
     },
     hideCol: (key) => {
       let {columns, headerColumns} = this.state
@@ -193,7 +200,7 @@ class Table extends Component {
       // 设置操作记忆
       let {name} = this.props
       window.localStorage.setItem(name + '-col', colMemory)
-
+      console.log(columns, headerColumns, 'hide-col', key)
       this.setState({columns, headerColumns})
     },
 
@@ -265,7 +272,7 @@ class Table extends Component {
         <div className={prifix('table-scroll')} onScroll={handleScroll} key='content'>
 
           <div className={prifix('table-body')} style={{overflowX: 'auto'}}>
-            <TableContent style={{...style}} {...Object.assign({}, {...props}, {columns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
+            <TableContent style={{...style}} {...Object.assign({}, {...props}, {columns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns, name: this.props.name})} />
           </div>
           {
             dataSource.length === 0 ? this.getEmptyContent() : null
@@ -278,7 +285,7 @@ class Table extends Component {
           <div className={prifix('table-fixed-left')} ref={this.fixLeft} style={{display: 'none'}} key='left'>
             <div className={prifix('table-outer')}>
               <div className={prifix('table-inner')}>
-                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: leftFiexColumns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
+                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: leftFiexColumns, headerColumns, name: this.props.name}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
               </div>
             </div>
           </div>
@@ -290,7 +297,7 @@ class Table extends Component {
           <div className={prifix('table-fixed-right')} ref={this.fixRight} key='right'>
             <div className={prifix('table-outer')}>
               <div className={prifix('table-inner')}>
-                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: rightFixColumns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
+                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: rightFixColumns, headerColumns, name: this.props.name}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
               </div>
             </div>
           </div>
@@ -504,7 +511,10 @@ class Table extends Component {
                           }
                         </div>
                         <div>
-                          <Checkbox checked={!item.hide} onChange={(e) => this.cbs.hideCol(item.key)} />
+                          <Checkbox checked={!item.hide} onChange={(e) => {
+                            console.log(item)
+                            this.cbs.hideCol(item.key)
+                          }} />
                         </div>
                       </div>
                     ))
