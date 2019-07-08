@@ -19,9 +19,9 @@ constructor(props){
 
   this.columns = [
    
-    { title: 'Column 1', dataIndex: 'name', key: '1'},
-    { title: 'Column 1', dataIndex: 'age', key: '2'},
-    { title: 'Column 1', dataIndex: 'address', key: '3'},
+    { title: 'Column 1', dataIndex: 'name', key: 'a'},
+    { title: 'Column 1', dataIndex: 'age', key: 'b'},
+    { title: 'Column 1', dataIndex: 'address', key: 'c'},
     { 
       title: ()=><div>自定义标题</div>, 
       dataIndex: 'address', key: '4',
@@ -100,7 +100,7 @@ constructor(props){
   }
 }
 render() {
-  return <Table size='small' columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
+  return <Table size='small' columns={this.columns} data={this.data} name='small'  checked={(item) => item.id === 1 || item.id === 3} />
 }
 ```
 :::
@@ -147,7 +147,7 @@ constructor(props){
   }
 }
 render() {
-  return <Table size='large' columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
+  return <Table size='large' columns={this.columns} data={this.data} name='large'  checked={(item) => item.id === 1 || item.id === 3} />
 }
 ```
 :::
@@ -194,7 +194,7 @@ constructor(props){
   }
 }
 render() {
-  return <Table bordered columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
+  return <Table bordered columns={this.columns} data={this.data} name='bordered'  checked={(item) => item.id === 1 || item.id === 3} />
 }
 ```
 :::
@@ -241,7 +241,7 @@ constructor(props){
   }
 }
 render() {
-  return <Table striped columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
+  return <Table striped columns={this.columns} data={this.data} name='striped'  checked={(item) => item.id === 1 || item.id === 3} />
 }
 ```
 :::
@@ -342,18 +342,18 @@ constructor(props){
     {
       title: 'name',
        dataIndex: 'name', 
-       key: '1',
+       key: 'a',
        width: '200px'
     },
     {
       dataIndex: 'age', 
-      key: '2',
+      key: 'b',
        width: '150px',
       sorter(pre,next){
         return pre.age - next.age
       }
     },
-    { title: 'Column 1', dataIndex: 'address', key: '3', width: '200px'},
+    { title: 'Column 1', dataIndex: 'address', key: 'c', width: '200px'},
     { 
       title: ()=><div>自定义标题</div>, 
       dataIndex: 'address', key: '4',
@@ -400,8 +400,8 @@ render(){
   }
   return <Table bordered columns={this.columns} data={data} rowSelection={rowSelection}
      advance={{
-       prefix:{name:'prefix-name',age:'pre-age',address: 'pre-address'},
-       suffix:{name:'append-name',age:'append-age',address: 'append-address'}
+       prefix:[{name:'prefix-name',age:'pre-age',address: 'pre-address'}],
+       suffix:]{name:'append-name',age:'append-age',address: 'append-address'}]
      }}
      header={() =>(
                 <div>表头</div>
@@ -527,14 +527,14 @@ constructor(props){
   super(props)
 
   this.columns = [
-    { title: 'Column 1', dataIndex: 'address', key: '1' ,width:200},
-    { title: 'Column 2', dataIndex: 'address', key: '2',width:200 },
-    { title: 'Column 3', dataIndex: 'address', key: '3',width:320 },
-    { title: 'Column 4', dataIndex: 'address', key: '4' ,width:210},
-    { title: 'Column 5', dataIndex: 'address', key: '5' ,width:220},
-    { title: 'Column 6', dataIndex: 'address', key: '6' ,width:230},
-    { title: 'Column 7', dataIndex: 'address', key: '7' ,width:240},
-    { title: 'Column 8', dataIndex: 'address', key: '8' ,width:250}
+    { title: 'Column 1', dataIndex: 'address', key: '1' },
+    { title: 'Column 2', dataIndex: 'address', key: '2' },
+    { title: 'Column 3', dataIndex: 'address', key: '3' },
+    { title: 'Column 4', dataIndex: 'address', key: '4' },
+    { title: 'Column 5', dataIndex: 'address', key: '5' },
+    { title: 'Column 6', dataIndex: 'address', key: '6' },
+    { title: 'Column 7', dataIndex: 'address', key: '7'},
+    { title: 'Column 8', dataIndex: 'address', key: '8' }
   ]
   
   this.data = [{
@@ -711,7 +711,7 @@ const renderContent = (value, row, index) => {
   }]
 } 
 render() {
-  return <Table columns={this.columns} data={this.data} fixTop={56} name='merge'/>
+  return <Table columns={this.columns} data={this.data} fixTop={56}/>
 }
 ```
 :::
@@ -810,7 +810,7 @@ constructor(props){
   this.data = data 
 }
 render() {
-  return <Table columns={this.columns} data={this.data} fixTop={56} name='headergroup'/>
+  return <Table columns={this.columns} data={this.data} fixTop={56}/>
 }
 ```
 :::
@@ -1079,6 +1079,9 @@ constructor (props) {
                     this.setState({
                       pageSize
                     })
+                  },
+                  onChange:(current) => {
+                    this.refs.table.fetch(current)
                   }
                   
                 }
@@ -1150,7 +1153,7 @@ constructor(props){
 render() {
   return <Table 
       columns={this.columns} 
-      data={[]} name='base'  
+      data={[]} name='advance'  
       checked={(item) => item.id === 1 || item.id === 3}
       header={() => <div>表格头部</div>}
       footer={() => <div>表格底部</div>}
