@@ -2,9 +2,48 @@
 
 $prefixCls: '.hi-radio' !default;
 
-#{$prefixCls} {
-  $active-color: get-color($palette-primary, 'hiui-blue');
+@mixin hi-radio-style($active-color: get-color($palette-primary, 'hiui-blue')) {
+  &:not(#{$prefixCls}--disabled):hover {
+    #{$prefixCls}__input {
+      border-color: $active-color;
+    }
+  }
+  input {
+    &:focus + #{$prefixCls}__input {
+      border-color: $active-color;
+    }
+  }
 
+  &__button.hi-btn {
+    &#{$prefixCls}__button--checked {
+      border-color: $active-color;
+      color: $active-color;
+      background-color: rgba($active-color, 0.1);
+      #{$prefixCls} {
+        color: $active-color;
+      }
+    }
+    &:not(.hi-btn--disabled):hover {
+      border-color: $active-color;
+    }
+  }
+
+  &__input {
+    &::after {
+      background: $active-color;
+    }
+
+    &--checked {
+      border-color: $active-color;
+    }
+  }
+
+  &__button--checked {
+    border-color: $active-color;
+  }
+}
+
+#{$prefixCls} {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -13,22 +52,12 @@ $prefixCls: '.hi-radio' !default;
 
   @include component-reset();
 
-  &:not(#{$prefixCls}--disabled):hover {
-    #{$prefixCls}__input {
-      border-color: $active-color;
-    }
-  }
-
   input {
     cursor: pointer;
     position: absolute;
     width: 16px;
     height: 16px;
     opacity: 0;
-
-    &:focus + #{$prefixCls}__input {
-      border-color: $active-color;
-    }
   }
 
   &__button.hi-btn {
@@ -45,23 +74,13 @@ $prefixCls: '.hi-radio' !default;
     }
 
     &#{$prefixCls}__button--checked {
-      border-color: $active-color;
-      color: $active-color;
-      background-color: rgba($active-color, 0.1);
       z-index: 2;
-      #{$prefixCls} {
-        color: $active-color;
-      }
     }
 
     &.hi-btn--disabled {
       input {
         cursor: not-allowed;
       }
-    }
-
-    &:not(.hi-btn--disabled):hover {
-      border-color: $active-color;
     }
   }
 
@@ -84,23 +103,17 @@ $prefixCls: '.hi-radio' !default;
       display: block;
       height: 8px;
       width: 8px;
-      background: $active-color;
       border-radius: 50%;
       opacity: 0;
       transition: 0.3s ease-out;
     }
 
     &--checked {
-      border-color: $active-color;
 
       &::after {
         opacity: 1;
       }
     }
-  }
-
-  &__button--checked {
-    border-color: $active-color;
   }
 
   &__text {
@@ -147,5 +160,12 @@ $prefixCls: '.hi-radio' !default;
         left: 0;
       }
     }
+  }
+  @include hi-radio-style();
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key$prefixCls} {
+    @include hi-radio-style($value);
   }
 }
