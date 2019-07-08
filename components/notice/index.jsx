@@ -27,4 +27,7 @@ function open ({ prefix, ...noticeProps }) {
     noticeInstance[prefix].add(noticeProps)
   }
 }
-export default open
+function close (prefix, key) {
+  noticeInstance[prefix].remove(key)
+}
+export default { open, close }

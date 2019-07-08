@@ -1,4 +1,4 @@
-import open from '../notice'
+import notice from '../notice'
 import './style/index'
 import React from 'react'
 import Button from '../button'
@@ -18,6 +18,9 @@ const iconColorMap = {
 }
 
 const notification = {
+  close: (key) => {
+    notice.close( 'notification', key)
+  },
   open: ({
     title,
     content,
@@ -31,9 +34,9 @@ const notification = {
     onClose
   }) => {
     const NoticeContent = (
-      <div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <span style={{ marginRight: 12, fontSize: '16px', color: iconColorMap[type] }}>
+      <React.Fragment>
+        <div className={`hi-${prefix}__title--wrapper`} >
+          <span className={`hi-${prefix}__icon`}>
             <i className={classNames('hi-icon', `icon-${iconMap[type]}`)} />
           </span>
           {title && <div className={`hi-${prefix}__title`}>{title}</div>}
@@ -41,8 +44,10 @@ const notification = {
 
         {content && <div className={`hi-${prefix}__content`}>{content}</div>}
         {onConfirm && (
-          <div style={{ textAlign: 'right' }}>
+          <div className={`hi-${prefix}__button--wrapper`}>
             <Button
+              size="small"
+              className={`hi-${prefix}__button`}
               onClick={() => {
                 onConfirm()
               }}
@@ -51,9 +56,9 @@ const notification = {
             </Button>
           </div>
         )}
-      </div>
+      </React.Fragment>
     )
-    open({
+    notice.open({
       title,
       content: NoticeContent,
       prefix,
@@ -61,8 +66,6 @@ const notification = {
       closable,
       duration,
       type,
-      // confirmText,
-      // onConfirm,
       onClose
     })
   }

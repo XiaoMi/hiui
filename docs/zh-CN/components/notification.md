@@ -25,7 +25,9 @@
       title:'通知',
       content:'通知内容',
       duration:null,
-      onConfirm:()=>{console.log()}
+      key:123,
+      type:'success',
+      onConfirm:()=>{Notification.close(123)}
     })
   }
 

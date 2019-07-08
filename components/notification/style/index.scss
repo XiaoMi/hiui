@@ -25,22 +25,53 @@
     }
   }
 
-  .hi-notification__title {
-    font-size: 14px;
+  .hi-notification__title--wrapper {
+    display: flex;
+    align-items: center;
+
+    .hi-notification__title {
+      font-size: 14px;
+    }
+  }
+
+  .hi-notification__icon {
+    font-size: 16px;
+    margin-right: 12px;
   }
 
   .hi-notification__content {
+    padding-left: 28px;
     font-size: 12px;
     line-height: 20px;
     color: #666;
+  }
+
+  .hi-notification__content--wrapper {
+    width: 100%;
+    padding-right: 14px;
+  }
+
+  .hi-notification__button--wrapper {
+    text-align: right;
+    margin-top: 9px;
+
+    .hi-notification__button {
+      margin-right: -14px;
+      color: #fff;
+    }
   }
 
   .hi-notification--info {
     background: #edf2fc;
     border: 1px solid #d8e5ff;
 
-    .hi-notification__title {
+    .hi-notification__title,
+    .hi-notification__icon {
       color: #4284f5;
+    }
+
+    .hi-notification__button {
+      background-color: #4284f5;
     }
   }
 
@@ -48,8 +79,13 @@
     background: #feeff0;
     border: 1px solid #ffe0e3;
 
-    .hi-notification__title {
+    .hi-notification__title,
+    .hi-notification__icon {
       color: #eb5252;
+    }
+
+    .hi-notification__button {
+      background-color: #eb5252;
     }
   }
 
@@ -57,8 +93,13 @@
     background: #e8f6ee;
     border: 1px solid #cae9d7;
 
-    .hi-notification__title {
+    .hi-notification__title,
+    .hi-notification__icon {
       color: #1da653;
+    }
+
+    .hi-notification__button {
+      background-color: #1da653;
     }
   }
 
@@ -66,8 +107,13 @@
     background: #fbf5e6;
     border: 1px solid #fcf0d4;
 
-    .hi-notification__title {
+    .hi-notification__title,
+    .hi-notification__icon {
       color: #e19d0c;
+    }
+
+    .hi-notification__button {
+      background-color: #e19d0c;
     }
   }
 

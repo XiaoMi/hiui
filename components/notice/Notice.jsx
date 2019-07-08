@@ -37,7 +37,7 @@ export default class Notice extends Component {
         }}
       >
         <div className={classNames(`hi-${prefix}`, { [`hi-${prefix}--${type}`]: type })}>
-          <div style={{ paddingRight: 14 }}>{children}</div>
+          <div className={`hi-${prefix}__content--wrapper`} >{children}</div>
           {closable && (
             <Icon
               className={`hi-${prefix}__closer`}
