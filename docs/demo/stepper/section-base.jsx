@@ -4,7 +4,7 @@ import Stepper from '../../../components/stepper'
 const prefix = 'stepper-base'
 const code = `
 import React from 'react'
-import Stepper from '@hiui/hiui/es/stepper'\n
+import Stepper from '@hi-ui/hiui/es/stepper'\n
 class Demo extends React.Component {
   render() {
     const list = [

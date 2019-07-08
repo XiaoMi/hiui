@@ -4,7 +4,7 @@ import Progress from '../../../components/progress'
 const prefix = 'progress-type'
 const code = `
 import React from 'reac
-import Progress from '@hiui/hiui/es/progress'\n
+import Progress from '@hi-ui/hiui/es/progress'\n
 class Demo extends React.Component {
   render() {
     return (

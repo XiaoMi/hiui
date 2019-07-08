@@ -5,7 +5,7 @@ const prefix = 'grid-nest'
 const desc = '嵌套栅格来完成布局'
 const code = `
 import React from 'react'
-import Grid from '@hiui/hiui/es/grid'\n
+import Grid from '@hi-ui/hiui/es/grid'\n
 class Demo extends React.Component {
   render() {
     const Row = Grid.Row

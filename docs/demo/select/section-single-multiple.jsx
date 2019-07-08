@@ -4,7 +4,7 @@ import Select from '../../../components/select'
 const prefix = 'select-single-multiple'
 const code = `
 import React from 'react'
-import Select from '@hiui/hiui/es/select'\n
+import Select from '@hi-ui/hiui/es/select'\n
 class Demo extends React.Component {
   constructor () {
     super()
