@@ -24,6 +24,34 @@ import DemoAutoClose from '../../demo/alert/section-autoClose.jsx'
 
 <DemoAutoClose />
 
+## Props
+
+| 参数     | 说明                     | 类型                    | 可选值                                      | 默认值 |
+| -------- | ------------------------ | ----------------------- | ------------------------------------------- | ------ |
+| type     | 警告框类型               | string                  | 'info' \| 'success' \| 'error' \| 'warning' | 'info' |
+| title    | 警告框标题               | string                  | -                                           | -      |
+| content  | 警告框内容               | string                  | -                                           | -      |
+| closable | 是否可关闭               | boolean                 | true \| false                               | false  |
+| onClose  | 关闭事件触发时的回调     | (e: MouseEvent) => void | -                                           | -      |
+| duration | 自动关闭时间，单位为毫秒 | number \| null          | -                                           | null   |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      fontSize: '14px',
+      padding: 8,
+      color: '#999'
+    }}
+  >
+    1.5.x 版本 api 如下
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
+
 ## Alert Attributes
 
 | 参数          | 说明                                      | 类型    | 可选值                              | 默认值 |
@@ -41,31 +69,3 @@ import DemoAutoClose from '../../demo/alert/section-autoClose.jsx'
 | 参数    | 说明             | 回调参数 |
 | ------- | ---------------- | -------- |
 | onClose | 关闭时触发的事件 | -        |
-
-<div style={{ position: 'relative' }}>
-  <span
-    style={{
-      position: 'absolute',
-      background: '#fff',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
-      padding: 8,
-      color: '#999'
-    }}
-  >
-    以下调整将随 2.0.0 版本发布，敬请期待
-  </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
-</div>
-
-## Props
-
-| 参数     | 说明                     | 类型                    | 可选值                                      | 默认值 |
-| -------- | ------------------------ | ----------------------- | ------------------------------------------- | ------ |
-| type     | 警告框类型               | string                  | 'info' \| 'success' \| 'error' \| 'warning' | 'info' |
-| title    | 警告框标题               | string                  | -                                           | -      |
-| content  | 警告框内容               | string                  | -                                           | -      |
-| closable | 是否可关闭               | boolean                 | true \| false                               | false  |
-| onClose  | 关闭事件触发时的回调     | (e: MouseEvent) => void | -                                           | -      |
-| duration | 自动关闭时间，单位为毫秒 | number \| null          | -                                           | null   |
