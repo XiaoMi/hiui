@@ -32,15 +32,15 @@ import DemoExtend from '../../demo/dropdown/section-extend.jsx'
 
 ## Dropdown Attributes
 
-| 参数    | 说明                                   | 类型                | 可选值                  | 默认值 |
-| ------- | -------------------------------------- | ------------------- | ----------------------- | ------ |
-| list    | 数据                                   | Array               | 参见 List Options       | -      |
-| title   | 显示的文字内容<br/>传入"-"时代表分隔符 | String \| Component | -                       | -      |
-| type    | 下拉按钮类型                           | String              | text \| button \| group | text   |
-| onClick | 点击回调函数                           | Function            | -                       | -      |
-| prefix  | 前缀图标                               | String \| Component | -                       | -      |
-| suffix  | 后缀图标                               | String \| Component | -                       | -      |
-| trigger | 触发方式                               | String \| array     | click \| contextmenu    | click  |
+| 参数                           | 说明                                   | 类型                | 可选值                  | 默认值 |
+| ------------------------------ | -------------------------------------- | ------------------- | ----------------------- | ------ |
+| list(即将废弃，请用`data`代替) | 数据                                   | Array               | 参见 List Options       | -      |
+| title                          | 显示的文字内容<br/>传入"-"时代表分隔符 | String \| Component | -                       | -      |
+| type                           | 下拉按钮类型                           | String              | text \| button \| group | text   |
+| onClick                        | 点击回调函数                           | Function            | -                       | -      |
+| prefix                         | 前缀图标                               | String \| Component | -                       | -      |
+| suffix                         | 后缀图标                               | String \| Component | -                       | -      |
+| trigger                        | 触发方式                               | String \| array     | click \| contextmenu    | click  |
 
 ## List Options
 
@@ -66,7 +66,9 @@ import DemoExtend from '../../demo/dropdown/section-extend.jsx'
   >
     以下调整将随 2.0.0 版本发布，敬请期待
   </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+  <hr
+    style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }}
+  />
 </div>
 
 ## Props

@@ -1,2 +1,6 @@
+import Pagination from './Pagination'
 import './style/index'
-export { default } from './Pagination'
+import SwitchVersion from '../_util/SwitchVersion'
+import PaginationLegacy from './pagination-legacy/index'
+
+export default SwitchVersion(Pagination, PaginationLegacy)

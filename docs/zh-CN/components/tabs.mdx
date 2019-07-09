@@ -73,21 +73,24 @@ import DemoCapsule from '../../demo/tabs/section-capsule.jsx'
   >
     以下调整将随 2.0.0 版本发布，敬请期待
   </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+  <hr
+    style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }}
+  />
 </div>
 
 ## Props
 
 **_Tabs_**
 
-| 参数             | 说明                                                                                                                        | 类型                            | 可选值                                     | 默认值       |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------ | ------------ |
-| type             | 标签类型                                                                                                                    | string                          | 'desc' \| 'card' \| 'button' \| 'editable' | 'card'       |
-| placement        | 水平或竖直展示标签                                                                                                        | string                          | 'vertical' \| 'horizontal'                 | 'horizontal' |
-| defaultActiveKey | 设置默认激活的标签                                                                                                              | string \| number                | -                                          | 第一个选项卡 |
-| max              | 最多显示的选项卡数，仅在 `type='card'` 并且 `placement='horizonal'` 时生效                                                        | number                          | -                                          | 6            |
-| onTabClick       | 点击标签页时触发，回调值为点击点击标签的 key                                                                                                            | (tabKey, event) => void         | -                                          | -            |
-| onEdit           | 标签新增删减时触发，仅对 type='editable'时触发。参数：action 为事件类型，值为 add 或者 delete；index 为操作选项卡对应的索引 | (action, index, tabKey) => void | -                                          | -            |
+| 参数            | 说明                                                                                                                        | 类型                            | 可选值                                     | 默认值       |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------ | ------------ |
+| type            | 标签类型                                                                                                                    | string                          | 'desc' \| 'card' \| 'button' \| 'editable' | 'card'       |
+| placement       | 水平或竖直展示标签                                                                                                          | string                          | 'vertical' \| 'horizontal'                 | 'horizontal' |
+| defaultActiveId | 设置默认激活的标签                                                                                                          | string \| number                | -                                          | 第一个选项卡 |
+| activeId        | 设置激活的标签，设置此值后变为受控模式                                                                                      | string \| number                | -                                          | -            |
+| max             | 最多显示的选项卡数，仅在 `type='card'` 并且 `placement='horizonal'` 时生效                                                  | number                          | -                                          | 6            |
+| onTabClick      | 点击标签页时触发，回调值为点击点击标签的 key                                                                                | (tabKey, event) => void         | -                                          | -            |
+| onEdit          | 标签新增删减时触发，仅对 type='editable'时触发。参数：action 为事件类型，值为 add 或者 delete；index 为操作选项卡对应的索引 | (action, index, tabKey) => void | -                                          | -            |
 
 **_Tabs.Pane_**
 

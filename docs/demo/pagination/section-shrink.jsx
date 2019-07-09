@@ -16,17 +16,14 @@ class Demo extends React.Component {
   }
   render() {
     return (
-      <div>
-
-        <Pagination
-          mode='shrink'
-          defaultCurrent={this.state.current}
-          showQuickJumper={true}
-          total={250}
-          pageSize={30}
-          onChange={(page, prevPage, pageSize)=>{console.log(page, prevPage, pageSize)}}
-        />
-      </div>
+      <Pagination
+        type='shrink'
+        defaultCurrent={this.state.current}
+        showQuickJumper={true}
+        total={250}
+        pageSize={30}
+        onChange={(page, prevPage, pageSize)=>{console.log(page, prevPage, pageSize)}}
+      />
     )
   }
 }`

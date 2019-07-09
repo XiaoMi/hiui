@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import Provider from '../context'
-import Popper from '../popper'
+import Provider from '../../context'
+import Popper from '../../popper'
 
 class ItemDropdown extends Component {
   static propTypes = {
@@ -62,18 +62,18 @@ class ItemDropdown extends Component {
     } = this.state
 
     return (
-      <div className={classNames('hi-tabs-dropdown', {'hi-tabs-dropdown--active': !!items[activeIndex]})}>
-        <div className='hi-tabs-dropdown__toggle' ref={node => { this.toggleRef = node }} onClick={e => {
+      <div className={classNames('hi-tabs-legacy-dropdown', {'hi-tabs-legacy-dropdown--active': !!items[activeIndex]})}>
+        <div className='hi-tabs-legacy-dropdown__toggle' ref={node => { this.toggleRef = node }} onClick={e => {
           e.stopPropagation()
           this.toggle()
         }}>
-          <span className='hi-tabs-dropdown__toggle-title'>
-            { (items[activeIndex] && items[activeIndex].tabTitle) || localeDatas.tabs.more }
+          <span className='hi-tabs-legacy-dropdown__toggle-title'>
+            { (items[activeIndex] && items[activeIndex].tabName) || localeDatas.tabs.more }
           </span>
           <i className='hi-icon icon-down' />
         </div>
         <Popper
-          className='hi-tabs-dropdown__popper'
+          className='hi-tabs-legacy-dropdown__popper'
           show={visible}
           attachEle={this.toggleRef}
           zIndex={1010}
@@ -81,11 +81,11 @@ class ItemDropdown extends Component {
           leftGap={-18}
           topGap={3}
         >
-          <div className={classNames('hi-tabs-dropdown__items')}>
+          <div className={classNames('hi-tabs-legacy-dropdown__items')}>
             {
               items.map((item, index) => {
                 return (
-                  <div className={classNames('hi-tabs-dropdown__item', {'hi-tabs-dropdown__item--active': index === activeIndex})}
+                  <div className={classNames('hi-tabs-legacy-dropdown__item', {'hi-tabs-legacy-dropdown__item--active': index === activeIndex})}
                     onClick={e => {
                       this.setState({
                         activeIndex: index
@@ -96,7 +96,7 @@ class ItemDropdown extends Component {
                     }}
                     key={index}
                   >
-                    {item.tabTitle}
+                    {item.tabName}
                   </div>
                 )
               })

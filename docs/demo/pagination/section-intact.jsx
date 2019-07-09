@@ -16,13 +16,11 @@ class Demo extends React.Component {
       current: 4,
       pageSize: 10,
       optionsList: [{
-        text: '显示跳转至...',
-        value: 'showQuickJumper',
-        checked: true
+        content: '显示跳转至...',
+        id: 'showQuickJumper'
       }, {
-        text: '显示总数量',
-        value: 'showTotal',
-        checked: true
+        content: '显示总数量',
+        id: 'showTotal'
       }],
       showTotal: true,
       showQuickJumper: true
@@ -45,14 +43,15 @@ class Demo extends React.Component {
     }]
     const Row = Grid.Row
     const Col = Grid.Col
-    const {showQuickJumper, showTotal, optionsList, pageSize, current} = this.state
+    const { showQuickJumper, showTotal, optionsList, pageSize, current } = this.state
     return (
       <div>
         <Row gutter={true}>
           <Col span={12}>
-            <Checkbox
-              list={optionsList}
-              onChange={(val, isChecked) => {
+            <Checkbox.Group
+              data={optionsList}
+              legacy={false}
+              onChange={(val) => {
                 this.setState({
                   [val]: !this.state[val]
                 })

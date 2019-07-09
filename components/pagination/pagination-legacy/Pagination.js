@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Pager from './Pager'
-import Dropdown from '../dropdown/index'
-import Input from '../input'
-import Provider from '../context'
+import Dropdown from '../../dropdown/index'
+import Input from '../../input'
+import Provider from '../../context'
 
 function isInteger (value) {
   return (
@@ -30,14 +30,14 @@ class Pagination extends Component {
     sizeChangeEvent: PropTypes.func,
     jumpEvent: PropTypes.func,
     pageSizeOptions: PropTypes.array,
-    type: PropTypes.oneOf(['simple', 'default', 'shrink'])
+    mode: PropTypes.oneOf(['simple', 'normal', 'shrink'])
   }
 
   static defaultProps = {
     pageSizeOptions: [],
     showQuickJumper: false,
     hideOnSinglePage: false,
-    type: 'default',
+    mode: 'normal',
     defaultCurrent: 1,
     pageSize: 10,
     pageBufferSize: 2,
@@ -52,11 +52,10 @@ class Pagination extends Component {
 
     const {
       defaultCurrent,
-      current: propsCurrent,
       pageSize,
       total
     } = props
-    const current = this.getCurrent(propsCurrent !== undefined ? propsCurrent : defaultCurrent, this.calculatePage(total, pageSize))
+    const current = this.getCurrent(defaultCurrent, this.calculatePage(total, pageSize))
 
     this.state = {
       current,
@@ -76,8 +75,8 @@ class Pagination extends Component {
       states.total = props.total
     }
     let current
-    if (props.current !== undefined && this.state.current !== props.current) {
-      current = this.getCurrent(props.current, this.calculatePage(props.total, props.pageSize))
+    if (this.state.current !== props.defaultCurrent) {
+      current = this.getCurrent(props.defaultCurrent, this.calculatePage(props.total, props.pageSize))
     }
     if (current) {
       states.current = current
@@ -109,12 +108,13 @@ class Pagination extends Component {
     const maxPage = this.calculatePage(this.props.total)
 
     if (isInteger(page) && page !== prevPage && page >= 1 && page <= maxPage) {
-      const pageSize = this.state.pageSize
-      this.props.onChange(page, prevPage, pageSize)
-      this.props.current !== undefined || this.setState({
+      this.setState({
         current: page,
         jumpTo: page
       })
+
+      const pageSize = this.state.pageSize
+      this.props.onChange(page, prevPage, pageSize)
     }
   }
 
@@ -380,7 +380,7 @@ class Pagination extends Component {
     const {
       hideOnSinglePage,
       total,
-      type,
+      mode,
       prefixCls,
       className,
       theme
@@ -391,7 +391,11 @@ class Pagination extends Component {
     }
     let children
 
-    switch (type) {
+    switch (mode) {
+      case 'normal':
+        children = this.renderNormal()
+        break
+
       case 'simple':
         children = this.renderSimple()
         break
@@ -406,7 +410,7 @@ class Pagination extends Component {
     }
 
     return (
-      <div className={`${prefixCls} ${prefixCls}--${type} ${className} theme__${theme}`}>
+      <div className={`${prefixCls} ${prefixCls}--${mode} ${className} theme__${theme}`}>
         {children}
       </div>
     )

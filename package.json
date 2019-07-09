@@ -10,7 +10,7 @@
     "compile": "cross-env NODE_ENV=production gulp",
     "build": "cross-env NODE_ENV=production node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.production.config.js && gulp carry",
     "deploy": "gh-pages -d dist",
-    "dev": "cd site && cross-env NODE_ENV=development PORT=4200 node server.js",
+    "dev": "cd site && cross-env NODE_ENV=development PORT=4201 node server.js",
     "start": "npm run dev",
     "prerender": "npm run build && node build/prerenderSite.js"
   },

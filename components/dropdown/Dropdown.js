@@ -27,6 +27,13 @@ class Dropdown extends Component {
       suffix: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
       value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     })),
+    data: PropTypes.arrayOf(PropTypes.shape({
+      title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+      onClick: PropTypes.func,
+      prefix: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+      suffix: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    })),
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     prefix: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     suffix: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
@@ -36,6 +43,7 @@ class Dropdown extends Component {
     placement: 'top-bottom-start',
     trigger: 'click',
     onClick: () => {},
+    data: [],
     list: []
   }
   componentDidMount () {
@@ -103,7 +111,7 @@ class Dropdown extends Component {
 
   render () {
     // splitButton，disabled
-    const {list, width, prefix, suffix, theme, title, placement} = this.props
+    const {data, list, width, prefix, suffix, theme, title, placement} = this.props
     const {visible} = this.state
     const ulCls = classNames('hi-dropdown__menu')
     return (
@@ -118,7 +126,7 @@ class Dropdown extends Component {
         >
           <ul className={ulCls}>
             {
-              list.map((item, index) => {
+              (data || list).map((item, index) => {
                 if (item.title === '-') {
                   // 分隔线
                   return <li className='hi-dropdown__divider' key={index} />
