@@ -12,8 +12,8 @@ class Demo extends React.Component {
   render () {
     return (
       <div>
-        <Badge dot value='88' style={{marginRight: '32px'}}>最新报表</Badge>
-        <Badge dot>
+        <Badge type='dot' content='88' style={{marginRight: '32px'}}>最新报表</Badge>
+        <Badge type='dot'>
           <Button type='default'>最新报表</Button>
         </Badge>
       </div>

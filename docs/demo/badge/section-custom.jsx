@@ -11,7 +11,7 @@ import Badge from '@hiui/hiui/es/badge'\n
 class Demo extends React.Component {
   render () {
     return (
-      <Badge value="hot">
+      <Badge content="hot">
         <Button type='default'>最新报表</Button>
       </Badge>
     )
