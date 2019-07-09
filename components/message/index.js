@@ -1,7 +1,6 @@
 import notice from '../notice'
 import './style/index'
 import React from 'react'
-import Button from '../button'
 import classNames from 'classnames'
 
 const iconMap = {
@@ -11,21 +10,14 @@ const iconMap = {
   info: 'tishi'
 }
 
-const notification = {
-  close: (key) => {
-    notice.close( 'notification', key)
-  },
+const message = {
   open: ({
     title,
-    content,
-    prefix = 'notification',
+    prefix = 'message',
     key = Math.random(),
     duration,
-    closable = true,
+    closable = false,
     type = 'info',
-    confirmText,
-    onConfirm,
-    onClose
   }) => {
     const NoticeContent = (
       <React.Fragment>
@@ -35,21 +27,6 @@ const notification = {
           </span>
           {title && <div className={`hi-${prefix}__title`}>{title}</div>}
         </div>
-
-        {content && <div className={`hi-${prefix}__content`}>{content}</div>}
-        {onConfirm && (
-          <div className={`hi-${prefix}__button--wrapper`}>
-            <Button
-              size="small"
-              className={`hi-${prefix}__button`}
-              onClick={() => {
-                onConfirm()
-              }}
-            >
-              {confirmText || '确认'}
-            </Button>
-          </div>
-        )}
       </React.Fragment>
     )
     notice.open({
@@ -58,10 +35,9 @@ const notification = {
       key,
       closable,
       duration,
-      type,
-      onClose
+      type
     })
   }
 }
 
-export default notification
+export default message

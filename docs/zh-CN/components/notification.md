@@ -17,17 +17,17 @@
   open(){
     Notification.open({
       title:'通知',
-      content:'通知内容'
+      content:'通知内容',
+      duration:null,
     })
   }
   open1(){
-    Notification.open({
+    Message.open({
       title:'通知',
       content:'通知内容',
-      duration:null,
-      key:123,
+      // key:123,
       type:'success',
-      onConfirm:()=>{Notification.close(123)}
+      // onConfirm:()=>{Notification.close(123)}
     })
   }
 

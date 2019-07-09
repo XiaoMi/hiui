@@ -9,7 +9,6 @@ export default class Notice extends Component {
     this.setState({
       open: true
     })
-    console.log(this.props.duration)
     if (this.props.duration !== null) {
       setTimeout(() => {
         this.setState({ open: false })
