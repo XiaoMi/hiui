@@ -31,39 +31,6 @@ import DemoNest from '../../demo/modal/section-nest.jsx'
 
 <DemoNest />
 
-## Modal Attributes
-
-| 参数        | 说明                                           | 类型                | 可选值                   | 默认值 |
-| ----------- | ---------------------------------------------- | ------------------- | ------------------------ | ------ |
-| title       | 标题                                           | String \| Element   | -                        | 无     |
-| onConfirm   | 点击确定的回调                                 | Function            | -                        | 无     |
-| onCancel    | 点击遮罩或者右上角取消或者取消按钮的回调       | Function            | -                        | 无     |
-| confirmText | 确定按钮文字                                   | String              | -                        | 确定   |
-| cancelText  | 取消按钮文字                                   | String              | -                        | 取消   |
-| backDrop    | 点击黑色背景部分是否隐藏弹框                   | Boolean             | true \| false            | true   |
-| size        | 定义弹窗尺寸                                   | String              | normal \| large \| small | normal |
-| width       | 自定义弹窗宽度                                 | number <br/> String | -                        | 600px  |
-| closeBtn    | 是否显示右上角关闭按钮                         | Boolean             | true \| false            | true   |
-| footers     | 自定义底部按钮数组（传入空数组将取消底部按钮） | Array               | -                        | -      |
-| show        | 弹窗是否显示                                   | Boolean             | true \| false            | false  |
-
-<div style={{ position: 'relative' }}>
-  <span
-    style={{
-      position: 'absolute',
-      background: '#fff',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
-      padding: 8,
-      color: '#999'
-    }}
-  >
-    以下调整将随 2.0.0 版本发布，敬请期待
-  </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
-</div>
-
 ## Props
 
 | 参数          | 说明                       | 类型                    | 可选值               | 默认值    |
@@ -96,3 +63,40 @@ import DemoNest from '../../demo/modal/section-nest.jsx'
 | size          | 模态框尺寸                 | string                  | 'default' \| 'large' | 'default' |
 | style         | 自定义模态框样式           | object                  | -                    | -         |
 | footer        | 自定义气模态框底部         | ReactNode \| null       | -                    | -         |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      fontSize: '14px',
+      padding: 8,
+      color: '#999'
+    }}
+  >
+    1.5.x 版本 api 如下
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
+
+## Modal Attributes
+
+| 参数        | 说明                                           | 类型                | 可选值                   | 默认值 |
+| ----------- | ---------------------------------------------- | ------------------- | ------------------------ | ------ |
+| title       | 标题                                           | String \| Element   | -                        | 无     |
+| onConfirm   | 点击确定的回调                                 | Function            | -                        | 无     |
+| onCancel    | 点击遮罩或者右上角取消或者取消按钮的回调       | Function            | -                        | 无     |
+| confirmText | 确定按钮文字                                   | String              | -                        | 确定   |
+| cancelText  | 取消按钮文字                                   | String              | -                        | 取消   |
+| backDrop    | 点击黑色背景部分是否隐藏弹框                   | Boolean             | true \| false            | true   |
+| size        | 定义弹窗尺寸                                   | String              | normal \| large \| small | normal |
+| width       | 自定义弹窗宽度                                 | number <br/> String | -                        | 600px  |
+| closeBtn    | 是否显示右上角关闭按钮                         | Boolean             | true \| false            | true   |
+| footers     | 自定义底部按钮数组（传入空数组将取消底部按钮） | Array               | -                        | -      |
+| show        | 弹窗是否显示                                   | Boolean             | true \| false            | false  |
+
+
+
+
