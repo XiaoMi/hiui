@@ -37,12 +37,12 @@ describe('Radio', () => {
     expect(wrapper.state().checked).toEqual(1)
 
     // 禁止选项不可点
-    wrapper.find('.hi-radio__item').at(3).simulate('click')
+    wrapper.find('.hi-radio-legacy__item').at(3).simulate('click')
     expect(changeCallback).toHaveBeenCalledTimes(0)
     expect(wrapper.state().checked).toEqual(1)
 
     // 选中第一项
-    wrapper.find('.hi-radio__item').at(0).simulate('click')
+    wrapper.find('.hi-radio-legacy__item').at(0).simulate('click')
     expect(changeCallback).toHaveBeenCalledTimes(1)
     expect(wrapper.state().checked).toEqual(0)
   })
@@ -56,11 +56,11 @@ describe('Radio', () => {
       />
     )
 
-    expect(wrapper.find('.hi-radio').hasClass('hi-radio--vertical')).toBeTruthy()
+    expect(wrapper.find('.hi-radio-legacy').hasClass('hi-radio-legacy--vertical')).toBeTruthy()
     // 无默认选择项
-    expect(wrapper.find('.hi-radio__item--checked')).toHaveLength(0)
+    expect(wrapper.find('.hi-radio-legacy__item--checked')).toHaveLength(0)
     // 选中第一项
-    wrapper.find('.hi-radio__item').at(0).simulate('click')
+    wrapper.find('.hi-radio-legacy__item').at(0).simulate('click')
     expect(changeCallback).toHaveBeenCalledTimes(1)
     expect(wrapper.state().checked).toEqual(0)
   })
@@ -74,11 +74,11 @@ describe('Radio', () => {
       />
     )
 
-    expect(wrapper.find('.hi-radio').hasClass('hi-radio--button')).toBeTruthy()
+    expect(wrapper.find('.hi-radio-legacy').hasClass('hi-radio-legacy--button')).toBeTruthy()
     // 无默认选择项
-    expect(wrapper.find('.hi-radio__item--checked')).toHaveLength(0)
+    expect(wrapper.find('.hi-radio-legacy__item--checked')).toHaveLength(0)
     // 选中第一项
-    wrapper.find('.hi-radio__item').at(0).simulate('click')
+    wrapper.find('.hi-radio-legacy__item').at(0).simulate('click')
     expect(changeCallback).toHaveBeenCalledTimes(1)
     expect(wrapper.state().checked).toEqual(0)
   })

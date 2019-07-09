@@ -4,6 +4,9 @@ import Group from './Group'
 import SwitchVersion from '../_util/SwitchVersion'
 import './style/index'
 
-Checkbox.Group = Group
+const VGroup = SwitchVersion(Group, undefined)
+const VCheckbox = SwitchVersion(Checkbox, CheckboxLegacy)
 
-export default SwitchVersion(Checkbox, CheckboxLegacy)
+VCheckbox.Group = VGroup
+
+export default VCheckbox

@@ -32,6 +32,7 @@ class Checkbox extends Component {
       disabled,
       indeterminate,
       style,
+      theme,
       name,
       value
     } = this.props
@@ -39,7 +40,8 @@ class Checkbox extends Component {
     const checkboxCls = classNames(
       prefixCls,
       className,
-      disabled && `${prefixCls}--disabled`
+      disabled && `${prefixCls}--disabled`,
+      `theme__${theme}`
     )
     const inputCls = classNames(
       `${prefixCls}__input`,
