@@ -1,0 +1,24 @@
+# Message 消息
+
+来自各种业务类型的消息通知
+
+## 何时使用
+
+- 消息中心
+- 通知中心
+
+## 基础
+
+import DemoBase from '../../demo/message/section-base.jsx'
+
+<DemoBase />
+
+## Methods
+
+`Message.open({ type, title, duration })`
+
+| 参数     | 说明                     | 类型   | 可选值                                      | 默认值 |
+| -------- | ------------------------ | ------ | ------------------------------------------- | ------ |
+| type     | 通知框类型               | string | 'info' \| 'success' \| 'error' \| 'warning' | 'info' |
+| title    | 通知框标题               | string | -                                           | -      |
+| duration | 自动关闭时间，单位为毫秒 | number | -                                           | 3000   |
