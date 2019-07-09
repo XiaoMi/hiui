@@ -1,0 +1,142 @@
+.hi-loading {
+  &__mask {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+
+    &--part {
+      position: absolute;
+    }
+
+    &--global {
+      position: fixed;
+    }
+
+    &--hide {
+      display: none;
+    }
+  }
+
+  &__wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+
+  &__outter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  &__icon {
+    transform: translate(-50%);
+
+    &--small div {
+      height: 8px;
+      width: 8px;
+    }
+
+    &--default div {
+      height: 12px;
+      width: 12px;
+    }
+
+    &--large div {
+      height: 16px;
+      width: 16px;
+    }
+
+    div {
+      border-radius: 50%;
+      display: inline-block;
+      position: absolute;
+
+      @keyframes animDotF {
+        0% {
+          transform: translateX(-100%);
+          z-index: 1;
+        }
+
+        25% {
+          transform: translateX(0) scale(1.5);
+          z-index: 1;
+        }
+
+        50% {
+          transform: translateX(100%);
+          z-index: 0;
+        }
+
+        75% {
+          transform: scale(0.5);
+          z-index: 0;
+        }
+
+        100% {
+          transform: translateX(-100%);
+          z-index: 1;
+        }
+      }
+
+      @keyframes animDotL {
+        0% {
+          transform: translateX(100%);
+          z-index: 0;
+        }
+
+        25% {
+          transform: translateX(0) scale(0.5);
+          z-index: 0;
+        }
+
+        50% {
+          transform: translateX(-100%);
+          z-index: 1;
+        }
+
+        75% {
+          transform: scale(1.5);
+          z-index: 1;
+        }
+
+        100% {
+          transform: translateX(100%);
+          z-index: 0;
+        }
+      }
+
+      &:first-child {
+        background: #f63;
+        transform: translateX(-100%);
+        animation: animDotF 1.5s linear infinite;
+      }
+
+      &:last-child {
+        background: #4284f5;
+        transform: translateX(100%);
+        animation: animDotL 1.5s linear infinite;
+        // display: none;
+      }
+    }
+  }
+
+  &__text {
+    text-align: center;
+    color: #ff6700;
+    font-size: 12px;
+    line-height: 2em;
+    transform: translateY(100%);
+    padding-left: 1em;
+  }
+}
