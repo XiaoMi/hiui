@@ -1,8 +1,11 @@
+@import '@hi-ui/core-css/index.scss';
 @import '../../style/index.scss';
 $tree: 'hi-tree' !default;
 
 .hi-tree {
   font-size: 14px;
+
+  @include component-reset();
 
   .hi-tree__searcher {
     position: relative;
@@ -58,13 +61,6 @@ $tree: 'hi-tree' !default;
       border-radius: 2.5px;
       box-sizing: border-box;
     }
-  }
-
-  ul,
-  li {
-    margin: 0;
-    padding: 0;
-    list-style: none;
   }
 
   ul {

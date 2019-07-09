@@ -1,0 +1,175 @@
+@import '@hi-ui/core-css/index.scss';
+
+.article > div {
+  @include typoBase;
+  @include typoCode;
+  @include typoHeadings;
+  @include typoImages;
+  @include typoLists;
+
+  //> h1 + p {
+  //  font-size: 16px;
+  //}
+
+  figure {
+    margin: 0;
+    text-align: center;
+
+    p {
+      margin-left: 12px;
+      margin-right: 12px;
+      font-size: 12px;
+    }
+  }
+
+  figcaption {
+    font-size: 16px;
+  }
+
+  > {
+    h2 {
+      span {
+        display: flex;
+
+        &:hover {
+          a {
+            margin-left: 8px;
+            visibility: visible;
+            font-size: 16px;
+            color: #4284f5;
+          }
+        }
+
+        a {
+          visibility: hidden;
+        }
+      }
+    }
+
+    // @To-do: 表格样式
+    table:not(.no-border):not(.no-vertical-border) {
+      font-family: $font-family-mono;
+      width: 100%;
+      border-radius: 2px;
+      border-collapse: collapse;
+      border: 1px solid rgba(231, 231, 231, 1);
+      line-height: 22px;
+      color: #666;
+
+      tr {
+        > td:first-of-type {
+          color: #3b77db;
+        }
+
+        > td:nth-of-type(3) {
+          color: #e65069;
+        }
+      }
+
+      th {
+        text-align: left;
+        border: 1px solid #e7e7e7;
+        padding: 11px 10px;
+        background: #f6f6f6;
+      }
+
+      td {
+        padding: 10px 9px;
+        border: 1px solid #e7e7e7;
+      }
+
+      code {
+        margin: 0 1px;
+        padding: 0.2em 0.4em;
+        //font-size: 1.1em;
+        background: #f2f4f5;
+        border: 1px solid #eee;
+        border-radius: 3px;
+      }
+    }
+
+    table.no-border {
+      border-collapse: collapse;
+
+      td {
+        padding: 12px 16px;
+        border: 0;
+        vertical-align: top;
+      }
+    }
+
+    table.no-vertical-border {
+      border-collapse: collapse;
+
+      th {
+        padding: 12px;
+        font-weight: 400;
+        text-align: left;
+        background-color: #f0f5ff;
+        border-color: #f0f5ff;
+      }
+
+      td {
+        padding: 12px;
+        border-left-width: 0;
+        border-right-width: 0;
+        border-bottom: 1px solid #e8e8e8;
+        vertical-align: top;
+      }
+
+      p:first-child {
+        margin-top: 0;
+      }
+
+      p:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    p {
+      code {
+        margin: 0 1px;
+        padding: 0.4em 0.4em;
+        //font-size: 1.1em;
+        background: #f2f4f5;
+        border: 1px solid #eee;
+        border-radius: 3px;
+      }
+
+      em {
+        color: #2e5caa;
+        font-style: normal;
+        font-size: 16px;
+      }
+    }
+
+    pre {
+      width: 100%;
+      max-width: 880px;
+      overflow: auto;
+      padding: 16px;
+      background-color: #f6f7f9;
+    }
+  }
+
+  &:lang(zh) {
+    > {
+      // 修改中文标题文字渲染
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        -webkit-font-smoothing: antialiased;
+      }
+
+      // 中文不使用斜体
+      dl {
+        dt {
+          font-style: normal;
+        }
+      }
+    }
+  }
+}

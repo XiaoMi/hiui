@@ -1,0 +1,42 @@
+# Grid 栅格组件
+
+24 栏栅格系统
+
+## 基础用法
+
+import DemoBase from '../../demo/grid/section-base.jsx'
+
+<DemoBase />
+
+## 区块间隔
+
+import DemoBlock from '../../demo/grid/section-block.jsx'
+
+<DemoBlock />
+
+## 左右偏移
+
+import Demooffset from '../../demo/grid/section-offset.jsx'
+
+<Demooffset />
+
+## 嵌套
+
+import DemoNest from '../../demo/grid/section-nest.jsx'
+
+<DemoNest />
+
+## 对齐排列
+
+import DemoJustify from '../../demo/grid/section-justify.jsx'
+
+<DemoJustify />
+
+## Grid Attributes
+
+| 参数    | 说明                                                   | 类型    | 可选值                                                            | 默认值 |
+| ------- | ------------------------------------------------------ | ------- | ----------------------------------------------------------------- | ------ |
+| gutter  | 属于 &#60;Row> 的属性，Row 里面元素之间是否有外边距    | boolean | true \| false                                                     | false  |
+| span    | 属于 &#60;Col> 的属性， Col 元素占多少个栅格           | number  | -                                                                 | -      |
+| offset  | 属于 &#60;Col> 的属性， Col 元素偏移多少个栅格         | number  | -                                                                 | -      |
+| justify | 属于 &#60;Row> 和 &#60;Col> 的属性，里面的元素排布方式 | string  | flex-start \| flex-end \| center \| space-around \| space-between | -      |

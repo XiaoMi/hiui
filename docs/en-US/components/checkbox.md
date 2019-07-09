@@ -1,143 +1,245 @@
 ## Checkbox
 
-Normal
+### Basic usage
 
 :::demo
-```js
-render() {
-  return (
-    <div>
-      <p><Checkbox value='one' onChange={(val, isCheck) => console.log(val, isCheck)}>unCheck</Checkbox></p>
-      <p><Checkbox disabled>unCheck & disabled</Checkbox></p>
-      <p><Checkbox checked onChange={(val, isCheck) => console.log(val, isCheck)}>Checked</Checkbox></p>
-      <p><Checkbox disabled checked>Checked & disabled</Checkbox></p>
-    </div>
-  )
-}
-```
-:::
 
-trueValue | falseValue
-:::demo
 ```js
-render() {
-  return (
-    <div>
-      <p>Set selected and unselected values with trueValue and falseValue (trueValue | falseValue  > value > content)</p>
-      <p><Checkbox  trueValue='yes' falseValue='no' onChange={(val, isCheck) => console.log(val, isCheck)}>basketball</Checkbox>--Both trueValue and falseValue</p>
-      <p><Checkbox  value='yes' falseValue='no' onChange={(val, isCheck) => console.log(val, isCheck)}>football</Checkbox>--Both value and falseValue</p>
-      <p><Checkbox  falseValue='no'  onChange={(val, isCheck) => console.log(val, isCheck)}>volleyball</Checkbox>--only falseValue</p>
-    </div>
-  )
-}
-```
-:::
-
-多选
-:::demo
-```js
-constructor () {
+constructor() {
   super()
   this.state = {
-    list: ['football', 'basketball', 'volleyball'],
-    list2: [{
-      text: 'BeiJing',
-      value: 'BeiJint',
-      trueValue: 'BJ',
-      falseValue: 'b',
-      checked: true
-    },{
-      text: 'ShangHai',
-      value: ' ShangHai'
-    },{
-      text: 'ShenZhen'
-    },{
-      text: 'TianJin',
-      disabled: true,
-      checked: true
-    }]
+    checked: true
   }
 }
 render() {
   return (
-    <div>
-      <p>multi-select mode, suboption name is the same</p>
-      <br/>
-      <div><Checkbox list={this.state.list} onChange={(list) => console.log(list)} name="c1"/></div>
-      <br/>
-      <div><Checkbox list={this.state.list2} onChange={(list) => console.log(list)} name="c2"/></div>
-      <br/>
-      <p>any position</p>
-      <div>
-        <Checkbox value='one' onChange={(val) => console.log(val)} name='c3'>apple</Checkbox>
-        <Checkbox value='two' onChange={(val) => console.log(val)} name='c3'>banana</Checkbox>
-        <Checkbox value='three' onChange={(val) => console.log(val)} name='c3'>pear</Checkbox>
-        <Checkbox value='four' onChange={(val) => console.log(val)} name='c3'>durian</Checkbox>
-      </div>
-    </div>
+    <React.Fragment>
+      <Checkbox autoFocus>Checkbox</Checkbox>
+      <Checkbox defaultChecked>Default checked</Checkbox>
+    </React.Fragment>
   )
 }
 ```
+
 :::
 
-select all
+### disabled
+
 :::demo
+
 ```js
-constructor () {
+render() {
+  return (
+    <React.Fragment>
+      <Checkbox disabled>Checkbox</Checkbox>
+      <Checkbox defaultChecked disabled>Checkbox</Checkbox>
+    </React.Fragment>
+  )
+}
+```
+
+:::
+
+### Controlled
+
+:::demo
+
+```js
+constructor() {
   super()
   this.state = {
-    list: [{
-      text: 'BeiJing',
-      value: 'bj'
-    },{
-      text: 'ShangHai',
-      value: ' sh'
-    },{
-      text: 'ShenZhen'
-    },{
-      text: 'TianJin',
-      disabled: true,
-      checked: true
-    }]
+    checked: true
   }
 }
 render() {
   return (
-    <div>
-      <div>
-        <Checkbox all='one' onChange={(list) => console.log(list)}>all</Checkbox>
-        <div><Checkbox list={this.state.list} name='one'/></div>
-        <br/>
-      </div>
-      <br/>
-      <div>
-        <Checkbox all='two' onChange={(list, target) => console.log(list, target)}> all</Checkbox>
-        <div><Checkbox text='BeiJing' name='two'/></div>
-        <div><Checkbox name='two' value='ShangeHai'>ShangHai</Checkbox></div>
-        <div><Checkbox name='two' text='ShenZhen'/></div>
-        <div><Checkbox name='two' text='TianJin'/></div>
-        <br/>
-      </div>
-    </div>
+    <React.Fragment>
+      <Checkbox checked={this.state.checked}>Controlled</Checkbox>
+      <Button size='small' type='primary' onClick={() => {
+        this.setState(({ checked }) => ({
+          checked: !checked
+        }))
+      }}>Toggle</Button>
+    </React.Fragment>
   )
 }
 ```
+
 :::
 
-### Attributes
+### Group
 
-| Attribute | Description | Type | Options | Default  |
-| --------   | -----  | ----  |    ----  |   ----  |
-| value |  checkbox value  |  string,number,boolean   | - | |
-| trueValue |  checked value  |  string,number   | - | |
-| falseValue |  Uncheck value  |  string,number   | - | |
-| checked |   default checked  |  boolean   | true 或 false | false |
-| disabled |   disabled  |  boolean   | true 或 false | false |
-|  list |   multiple selection list |  array   | - |  |
-|  all |   all check  |   string   | - |  |
-|  name |   Sub-option identification in all-select or multi-select mode(all-select: The 'name' value is consistent with the 'all' value  multi-select: Peer name should be consistent)  |   string   | - |  |
+:::demo
 
-### Events
-| Attribute | Description | Type
-| --------   | -----  | ----  |    
-| onChange | triggers when the Checkbox changed   |   function 
+```js
+render() {
+  const CheckboxGroup = Checkbox.Group
+  return (
+    <React.Fragment>
+      <CheckboxGroup
+        name='strategy'
+        data={['Smart Phone', 'AI', 'IOT']}
+        defaultValue={['AI', 'IOT']}
+        onChange={console.log} />
+      <p />
+      <CheckboxGroup
+        name='strategy'
+        disabled
+        data={['Smart Phone', 'AI', 'IOT']}
+        defaultValue={['AI', 'IOT']}
+        onChange={console.log} />
+    </React.Fragment>
+  )
+}
+```
+
+:::
+
+### Controlled group
+
+:::demo
+
+```js
+constructor() {
+  super()
+  this.state = {
+    value: ['AI']
+  }
+}
+
+render() {
+  const CheckboxGroup = Checkbox.Group
+  return (
+    <React.Fragment>
+      <CheckboxGroup
+        value={this.state.value}
+        data={['Smart Phone', 'AI', 'IOT']}
+        defaultValue={['AI', 'IOT']}
+        onChange={value => {
+          this.setState({ value })
+        }} />
+    </React.Fragment>
+  )
+}
+```
+
+:::
+
+### Complex data
+
+:::demo
+
+```js
+constructor() {
+  super()
+  this.data = [{
+    label: 'Smart Phone',
+    value: 0,
+    disabled: true
+  }, {
+    label: 'AI',
+    value: 1
+  }, {
+    label: 'IOT',
+    value: 2
+  }]
+}
+
+render() {
+  const CheckboxGroup = Checkbox.Group
+  return (
+    <React.Fragment>
+      <CheckboxGroup
+        data={this.data}
+        defaultValue={[0]}
+        onChange={console.log} />
+    </React.Fragment>
+  )
+}
+```
+
+:::
+
+### Check all
+
+:::demo
+
+```js
+constructor() {
+  super()
+  this.data = ['Smart Phone', 'AI', 'IOT']
+  this.state = {
+    value: ['AI'],
+    checkAll: false
+  }
+  this.getIndeterminate = () => {
+    const len = this.state.value.length
+    return len < 3 && len > 0
+  }
+  this.handleCheckAllChange = () => {
+    const len = this.state.value.length
+    if (len < 3) {
+      this.setState({
+        checkAll: true,
+        value: this.data
+      })
+    } else {
+      this.setState({
+        checkAll: false,
+        value: []
+      })
+    }
+  }
+  this.handleGroupChange = (value) => {
+    this.setState({
+      value,
+      checkAll: value.length === 3
+    })
+  }
+}
+
+render() {
+  const CheckboxGroup = Checkbox.Group
+  return (
+    <React.Fragment>
+      <Checkbox
+        indeterminate={this.getIndeterminate()}
+        onChange={this.handleCheckAllChange}
+        checked={this.state.checkAll}>Check all</Checkbox>
+      <hr />
+      <CheckboxGroup
+        value={this.state.value}
+        data={this.data}
+        onChange={this.handleGroupChange} />
+    </React.Fragment>
+  )
+}
+```
+
+:::
+
+### Checkbox Attributes
+
+| Attribute      | Description              | Type                       | Options       | Default |
+| -------------- | ------------------------ | -------------------------- | ------------- | ------- |
+| autoFocus      | wheather auto focus      | boolean                    | true \| false | false   |
+| checked        | wheather checked         | boolean                    | true \| false | false   |
+| className      | custom classname         | string                     | -             | -       |
+| defaultChecked | wheather default checked | boolean                    | true \| false | false   |
+| disabled       | wheather disabled        | boolean                    | true \| false | false   |
+| indeterminate  | wheather indeterminate   | boolean                    | true \| false | false   |
+| onChange       | change callback          | function(checked: boolean) | -             | -       |
+| style          | custom styles            | CSSProperties              | -             | -       |
+
+### Checkbox Group Attributes
+
+| Attribute    | Description                                               | Type                                                                                      | Options       | Default |
+| ------------ | --------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------- | ------- |
+| className    | custom classname                                          | string                                                                                    | -             | -       |
+| data         | checked options                                           | Array<string \| number \| { label: string, value: string \| number, disabled?: boolean }> | -             | []      |
+| defaultValue | default checked values                                    | Array<string \| number>                                                                   | -             | []      |
+| disabled     | wheather disabled                                         | boolean                                                                                   | true \| false | false   |
+| name         | `CheckboxGroup`'s `input[type="checkbox"]` name attribute | string                                                                                    | -             | -       |
+| onChange     | change callback                                           | function(checkedList: Array<string \| number>)                                            | -             | -       |
+| style        | custom styles                                             | CSSProperties                                                                             | -             | -       |
+| value        | checked values                                            | Array<string \| number>                                                                   | -             | -       |
