@@ -16,34 +16,29 @@ class Demo extends React.Component {
       current: 4,
       pageSize: 10,
       optionsList: [{
-        content: '显示跳转至...',
-        id: 'showQuickJumper'
-      }, {
         content: '显示总数量',
         id: 'showTotal'
+      }, {
+        content: '显示跳转至...',
+        id: 'showJumper'
       }],
-      showTotal: true,
-      showQuickJumper: true
+      value: ['showJumper', 'showTotal']
     }
   }
 
+  get showTotal () {
+    return this.state.value.includes('showTotal')
+  }
+
+  get showJumper () {
+    return this.state.value.includes('showJumper')
+  }
+
   render() {
-    const pageSizeOptions = [{
-      value: 10,
-      title: '10'
-    }, {
-      value: 20,
-      title: '20'
-    }, {
-      value: 50,
-      title: '50'
-    }, {
-      value: 100,
-      title: '100'
-    }]
+    const pageSizeOptions = [10, 20, 50, 100]
     const Row = Grid.Row
     const Col = Grid.Col
-    const { showQuickJumper, showTotal, optionsList, pageSize, current } = this.state
+    const { optionsList, pageSize, current, value } = this.state
     return (
       <div>
         <Row gutter={true}>
@@ -51,10 +46,9 @@ class Demo extends React.Component {
             <Checkbox.Group
               data={optionsList}
               legacy={false}
-              onChange={(val) => {
-                this.setState({
-                  [val]: !this.state[val]
-                })
+              value={value}
+              onChange={(value) => {
+                this.setState({ value })
               }}
             />
           </Col>
@@ -65,11 +59,11 @@ class Demo extends React.Component {
               total={60000}
               pageSize={pageSize}
               pageSizeOptions={pageSizeOptions}
-              defaultCurrent={current}
-              showTotal={showTotal}
-              showQuickJumper={showQuickJumper}
-              jumpEvent={(val) => {this.setState({current: val})}}
-              sizeChangeEvent={(val, current) => {
+              current={current}
+              showTotal={this.showTotal}
+              showJumper={this.showJumper}
+              onJump={(val) => { this.setState({ current: val })} }
+              onPageSizeChange={(val, current) => {
                   console.log('每页', val, '条', '当前第', current, '页')
                   this.setState({pageSize: val})
                 }

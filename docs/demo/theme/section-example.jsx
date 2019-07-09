@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import { ThemeContext } from '../../../components/context'
 import Grid from '../../../components/grid'
 import Button from '../../../components/button'
-import Stepper from '../../../components/stepper'
+import Stepper from '../../../components/stepper/Stepper'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'theme-example'
 const code = `

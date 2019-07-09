@@ -19,7 +19,7 @@ class Demo extends React.Component {
       <Pagination
         type='shrink'
         defaultCurrent={this.state.current}
-        showQuickJumper={true}
+        showJumper={true}
         total={250}
         pageSize={30}
         onChange={(page, prevPage, pageSize)=>{console.log(page, prevPage, pageSize)}}

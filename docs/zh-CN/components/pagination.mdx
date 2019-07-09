@@ -62,7 +62,9 @@ import DemoIntack from '../../demo/pagination/section-intact.jsx'
   >
     以下调整将随 2.0.0 版本发布，敬请期待
   </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+  <hr
+    style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }}
+  />
 </div>
 
 ## Props
@@ -78,5 +80,6 @@ import DemoIntack from '../../demo/pagination/section-intact.jsx'
 | total            | 数据总数                                                   | number                                                    | -                                 | -         |
 | autoHide         | 只有一页时是否隐藏分页器                                   | boolean                                                   | true \| false                     | false     |
 | showJumper       | 是否显示跳转                                               | boolean                                                   | true \| false                     | false     |
+| onJump           | 快速跳转时触发，回调值为当前页数                           | (current: number) => void                                 | -                                 | -         |
 | onChange         | 页码改变时的回调，回调值为当前页数、之前的页数和每页条数   | (current: number, prev: number, pageSize: number) => void | -                                 | -         | - |
 | onPageSizeChange | 每页显示条数改变的回调函数，返回改变后的每页条数及当前页数 | (current: number, pageSize: number) => void               | -                                 | -         | - |
