@@ -4,8 +4,7 @@ import Button from '../../../components/button'
 import Modal from '../../../components/modal'
 import Select from '../../../components/select'
 import Table from '../../../components/table'
-const desc =
-  '未传入 title 及 closeBtn 为 false，可取消 title 部分，footers 传入空数组，可取消底部按钮'
+const desc = '未传入 title 及 closable 为 false，可取消 title 部分，footer 为 null，可取消底部按钮'
 const prefix = 'modal-nest'
 const code = `
 import React from 'react'
@@ -17,7 +16,7 @@ class Demo extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      show: false,
+      visible: false,
       singleList: [
         { name:'手机', id:'2' },
         { name:'电视', id:'3', disabled: true },
@@ -69,20 +68,20 @@ class Demo extends React.Component {
   }
   clickEvent () {
     this.setState({
-      show: false
+      visible: false
     })
     console.log("关闭事件")
   }
   render(){
     return(
       <div>
-        <Button type="primary" onClick={() => this.setState({show: true})}>打开</Button>
+        <Button type="primary" onClick={() => this.setState({visible: true})}>打开</Button>
         <Modal
-          closeBtn={false}
-          show={this.state.show}
+          closable={false}
+          visible={this.state.visible}
           onConfirm={this.clickEvent.bind(this)}
           onCancel={this.clickEvent.bind(this)}
-          footers={[]}
+          footer={null}
         >
           <Table
             columns={this.columns}

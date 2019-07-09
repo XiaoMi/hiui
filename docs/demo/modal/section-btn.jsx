@@ -13,26 +13,26 @@ class Demo extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      show: false
+      visible: false
     }
   }
   cancelEvent () {
     this.setState({
-      show: false
+      visible: false
     })
     console.log("关闭事件")
   }
   render(){
     return(
       <div>
-        <Button type="primary" onClick={() => this.setState({show: true})}>打开</Button>
+        <Button type="primary" onClick={() => this.setState({visible: true})}>打开</Button>
         <Modal
           title="提示消息"
           closeBtn={false}
-          show={this.state.show}
+          visible={this.state.visible}
           onConfirm={()=>{console.log('自定义确定事件')}}
           onCancel={this.cancelEvent.bind(this)}
-          footers={[
+          footer={[
             <Button type="primary" key={0} onClick={() => console.log(1)}>自定义按钮1</Button>,
             <Button type="success" key={1} onClick={() => console.log(2)}>自定义按钮2</Button>,
             <Button type="danger" key={2} onClick={() => console.log(3)}>自定义按钮3</Button>,
