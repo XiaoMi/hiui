@@ -157,7 +157,7 @@ class Home extends React.Component {
                   <div className='flat-list__figure' />
                   <h3 className='flat-list__name'>HIUI Library <sup>20190709</sup></h3>
                   <div className='flat-list__desc'>
-                    点击下载集成所有 HIUI 组件的 <a href='https://xiaomi.github.io/hiui/static/resources/HIUI_2_0_0_beta(20190709).rplib'>Axure</a> / <a href='https://xiaomi.github.io/hiui/static/resources/HIUI_2_0_0_beta(20190709).sketch'>Sketch</a> 部件库
+                    点击下载集成所有 HIUI 组件的 <a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/static/resources/HIUI_2_0_0_beta(20190709).rplib'>Axure</a> / <a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/static/resources/HIUI_2_0_0_beta(20190709).sketch'>Sketch</a> 部件库
                   </div>
                 </li>
               </ul>
