@@ -7,7 +7,7 @@ const rightOptions = ['正常', '禁用']
 const code = [
   {
     code: `import React from 'react'
-import Button from '@hiui/hiui/es/button'\n
+import Button from '@hi-ui/hiui/es/button'\n
 class Demo extends React.Component {
   render () {
     return (
@@ -25,7 +25,7 @@ class Demo extends React.Component {
   },
   {
     code: `import React from 'react'
-import Button from '@hiui/hiui/es/button'\n
+import Button from '@hi-ui/hiui/es/button'\n
 class Demo extends React.Component {
   render () {
     return (

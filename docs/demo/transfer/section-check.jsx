@@ -5,7 +5,7 @@ const prefix = 'transfer-check'
 
 const code = `
 import React from 'react'
-import Transfer from '@hiui/hiui/es/transfer'\n
+import Transfer from '@hi-ui/hiui/es/transfer'\n
 class Demo extends React.Component {
   constructor () {
     super()

@@ -5,8 +5,8 @@ import Icon from '../../../components/icon'
 const prefix = 'timeline-collapse'
 
 const code = `import React from 'react'
-import Icon from '@hiui/hiui/es/icon'
-import Timeline from '@hiui/hiui/es/timeline'\n
+import Icon from '@hi-ui/hiui/es/icon'
+import Timeline from '@hi-ui/hiui/es/timeline'\n
 class Demo extends React.Component {
   render () {
     const datas = [{

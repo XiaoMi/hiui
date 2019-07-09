@@ -4,7 +4,7 @@ import Loading from '../../../components/loading'
 const prefix = 'loading-base'
 const code = `
 import React from 'react'
-import Loading from '@hiui/hiui/es/loading'\n
+import Loading from '@hi-ui/hiui/es/loading'\n
 class Demo extends React.Component {
   render () {
     return <div style={{display:'flex', height: 100}}>

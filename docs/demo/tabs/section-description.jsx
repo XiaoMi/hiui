@@ -4,7 +4,7 @@ import DocViewer from '../../../libs/doc-viewer'
 const prefix = 'tabs-description'
 const desc = '需要为标签进行解释或附加信息时，4-6 个时使用'
 
-const code = `import Tabs from '@hiui/hiui/es/tabs'
+const code = `import Tabs from '@hi-ui/hiui/es/tabs'
 import React from 'react'\n
 class Demo extends React.Component {
   constructor() {

@@ -6,7 +6,7 @@ const prefix = 'timeline-cross'
 
 const code = `import React from 'react'
 import Icon from '../../../components/icon'
-import Timeline from '@hiui/hiui/es/timeline'\n
+import Timeline from '@hi-ui/hiui/es/timeline'\n
 class Demo extends React.Component {
   render () {
     const datas = [{
