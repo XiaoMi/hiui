@@ -5,6 +5,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const basePath = path.resolve(__dirname, '../')
+const rehypePrism = require('@mapbox/rehype-prism')
 
 module.exports = {
   mode: process.env.NODE_ENV,
@@ -13,9 +14,12 @@ module.exports = {
     // 列出第三方库
     vendor: ['react', 'react-dom']
   },
+  node: {
+    fs: 'empty'
+  },
   output: {
     path: path.resolve(basePath, 'dist'),
-    publicPath: './',
+    publicPath: '/hiui/',
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].chunk.[chunkhash].js'
   },
@@ -34,6 +38,7 @@ module.exports = {
           path.resolve(__dirname, '../libs'),
           path.resolve(__dirname, '../locales'),
           path.resolve(__dirname, '../site'),
+          path.resolve(__dirname, '../docs'),
           path.resolve(__dirname, '../template'),
           path.resolve(__dirname, '../transform'),
           path.resolve(__dirname, '../node_modules/@hi-ui/classic-theme')
@@ -74,19 +79,33 @@ module.exports = {
         })
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(png|jpg|gif)$/,
         loader: 'url-loader',
         options: {
           limit: 1000,
-          name: './static/img/[name].[ext]?[hash]'
+          name: '[name].[ext]?[hash]',
+          outputPath: 'static/img'
         }
       },
       {
-        test: /\.(eot|ttf|woff|woff2|otf)$/,
+        test: /\.(eot|ttf|woff|woff2|otf|svg)$/,
         loader: 'file-loader',
         options: {
-          name: './static/fonts/[name].[ext]?[hash]'
+          name: '[name].[ext]?[hash]',
+          outputPath: 'static/fonts'
         }
+      },
+      {
+        test: /\.mdx$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react']
+            }
+          },
+          { loader: '@mdx-js/loader', options: { hastPlugins: [rehypePrism] } }
+        ]
       },
       {
         test: /\.md$/,
@@ -110,9 +129,7 @@ module.exports = {
         }
       }
     },
-    minimizer: [
-      new TerserPlugin()
-    ],
+    minimizer: [new TerserPlugin()],
     usedExports: true,
     sideEffects: true
   },
@@ -128,7 +145,7 @@ module.exports = {
       allChunks: true
     }),
     new HtmlWebpackPlugin({
-      title: 'HIUI Design',
+      title: 'HIUI',
       template: path.resolve(__dirname, '../site/index.template.html')
     }),
     // new webpack.optimize.UglifyJsPlugin({
