@@ -6,8 +6,8 @@ const prefix = 'card-button'
 
 const code = `
 import React from 'react'
-import Icon from '@hiui/hiui/es/icon'
-import Card from '@hiui/hiui/es/card'\n
+import Icon from '@hi-ui/hiui/es/icon'
+import Card from '@hi-ui/hiui/es/card'\n
 class Demo extends React.Component {
   render() {
     return (

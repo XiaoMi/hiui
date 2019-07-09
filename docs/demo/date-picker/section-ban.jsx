@@ -5,7 +5,7 @@ const prefix = 'date-picker-ban'
 
 const code = `
 import React from 'react'
-import DatePicker from '@hiui/hiui/es/date-picker'\n
+import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   render () {
     return (

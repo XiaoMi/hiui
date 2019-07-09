@@ -8,10 +8,10 @@ const prefix = 'rate-face'
 
 const code = `
 import React from 'react'
-import Rate from '@hiui/hiui/es/rate'
-import Form from '@hiui/hiui/es/form/index'
-import FormItem from '@hiui/hiui/es/form/item'
-import Alert from '@hiui/hiui/es/alert'\n
+import Rate from '@hi-ui/hiui/es/rate'
+import Form from '@hi-ui/hiui/es/form/index'
+import FormItem from '@hi-ui/hiui/es/form/item'
+import Alert from '@hi-ui/hiui/es/alert'\n
 class Demo extends React.Component {
   constructor() {
     super()

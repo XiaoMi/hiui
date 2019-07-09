@@ -5,8 +5,8 @@ import Button from '../../../components/button'
 const prefix = 'radio-noraml'
 const code = `
 import React from 'react'
-import Button from '@hiui/hiui/es/button'
-import Radio from '@hiui/hiui/es/radio'\n
+import Button from '@hi-ui/hiui/es/button'
+import Radio from '@hi-ui/hiui/es/radio'\n
 class Demo extends React.Component {
   constructor () {
     super()

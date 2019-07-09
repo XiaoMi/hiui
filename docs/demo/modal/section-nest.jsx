@@ -9,10 +9,10 @@ const desc =
 const prefix = 'modal-nest'
 const code = `
 import React from 'react'
-import Button from '@hiui/hiui/es/button'
-import Modal from '@hiui/hiui/es/modal'
-import Select from '@hiui/hiui/es/select'
-import Table from '@hiui/hiui/es/table'\n
+import Button from '@hi-ui/hiui/es/button'
+import Modal from '@hi-ui/hiui/es/modal'
+import Select from '@hi-ui/hiui/es/select'
+import Table from '@hi-ui/hiui/es/table'\n
 class Demo extends React.Component {
   constructor (props) {
     super(props)

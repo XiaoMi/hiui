@@ -5,8 +5,8 @@ import Counter from '../../../components/counter'
 const prefix = 'progress-active'
 const code = `
 import React from 'react'
-import Progress from '@hiui/hiui/es/select'
-import Counter from '@hiui/hiui/es/counter'\n
+import Progress from '@hi-ui/hiui/es/select'
+import Counter from '@hi-ui/hiui/es/counter'\n
 class Demo extends React.Component {
   constructor () {
     super()
