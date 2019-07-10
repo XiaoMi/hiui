@@ -384,6 +384,7 @@ class Pagination extends Component {
       autoHide,
       total,
       type,
+      mode,
       prefixCls,
       className,
       theme
@@ -394,7 +395,7 @@ class Pagination extends Component {
     }
     let children
 
-    switch (type) {
+    switch (type || mode) {
       case 'simple':
         children = this.renderSimple()
         break
