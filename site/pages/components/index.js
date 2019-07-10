@@ -55,6 +55,7 @@ export default {
       modal: components['modal'],
       notification: components['notification'],
       alert: components['alert'],
+      tag: components['tag'],
       badge: components['badge'],
       loading: components['loading']
     }

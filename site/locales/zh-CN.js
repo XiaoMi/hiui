@@ -15,6 +15,7 @@ module.exports = {
     dropdown: 'Dropdown 下拉菜单',
     pagination: 'Pagination 分页',
     tabs: 'Tabs 切换',
+    tag: 'Tag 标签',
     table: 'Table 表格',
     tooltip: 'Tooltip 文字提示',
     popover: 'Popover 气泡卡片',
