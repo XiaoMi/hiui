@@ -10,7 +10,7 @@ import './style'
 import loading from '../loading'
 import '../pagination/style'
 import '../icon/style'
-import {setKey, scrollTop, getStyle, getPosition} from './tool'
+import {setKey, scrollTop, getStyle, getPosition, offset} from './tool'
 import request from 'axios'
 import qs from 'qs'
 
@@ -570,22 +570,26 @@ class Table extends Component {
     }
     let dom = this.dom.current
     let thead = dom ? dom.querySelectorAll('thead') : null
+
+    let offsetTop = offset(dom).top
+
+    //     表格距离顶部的位置 < 表格+ 自己的高度
     if (thead) {
-      if (scrollTop() + fixTop > dom.offsetTop && scrollTop() + fixTop < dom.offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(thead ? getStyle(thead[0], 'height') : 0)) {
+      if (scrollTop() + fixTop > offsetTop && offsetTop + fixTop < offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(thead ? getStyle(thead[0], 'height') : 0)) {
         thead.forEach(th => {
           th.style.display = 'table-header-group'
           // let h = (dom.offsetTop - scrollTop() - fixTop) * -1
           let h = getPosition(dom).y * -1 + fixTop
           th.style.transform = `translate(0,${h}px)`
           if (name) {
-            this.setting.current.style.transform = `translate(0,${h}px)`
+            this.setting.current.style.display = `none`
           }
         })
       } else {
         thead.forEach(th => {
           th.style.transform = `translate(0,0)`
           if (name) {
-            this.setting.current.style.transform = `translate(0,0)`
+            this.setting.current.style.display = `block`
             let h = parseInt(getStyle(dom.querySelector('thead'), 'height')) + 'px'
             this.setting.current.style.height = h
             this.setting.current.style.lineHeight = h
