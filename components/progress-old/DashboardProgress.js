@@ -1,7 +1,7 @@
 import React from 'react'
-export const DashboardProgress = props => {
+export const DashboardProgress = (props) => {
   let prefix = 'hi-progress'
-  const { percent: percentNum, content, status, radius: radiusThis, showInfo } = props
+  const {percent: percentNum, text, status, radius: radiusThis, withOutText = false} = props
   const percent = percentNum > 0 ? percentNum : 0
   const radius = radiusThis > 0 ? radiusThis : 40
   const totalRadiusWidth = radius + 10
@@ -24,9 +24,9 @@ export const DashboardProgress = props => {
   return (
     <div
       className={`${prefix}__svg ${prefix}__svg_dashboard`}
-      style={{ width: radius * 2, height: radius * 2 }}
-    >
-      <svg viewBox={`0 0 ${totalRadiusWidth * 2} ${totalRadiusWidth * 2}`}>
+      style={{width: radius * 2, height: radius * 2}}>
+      <svg
+        viewBox={`0 0 ${totalRadiusWidth * 2} ${totalRadiusWidth * 2}`}>
         <path
           className={`${prefix}__svgbackground`}
           d={pathString}
@@ -38,14 +38,14 @@ export const DashboardProgress = props => {
           className={`${prefix}__dashboard ${prefix}__dashboard--${status}`}
           d={pathString}
           strokeLinecap='round'
+          // ref={(path) => { this.path = path }}
           style={strokePathStyle}
         />
       </svg>
-      {showInfo && (
-        <div className={`${prefix}__text ${prefix}__text--${status}`}>
-          {content || `${percent}%`}
-        </div>
-      )}
+      {!withOutText && <div
+        className={`${prefix}__text ${prefix}__text--${status}`}>
+        {text || `${percent}%`}
+      </div>}
     </div>
   )
 }
