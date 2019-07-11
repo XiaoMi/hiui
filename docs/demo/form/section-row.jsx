@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Form from '../../../components/form/index'
-import FormItem from '../../../components/form/item'
+import FormItem from '../../../components/form/Item'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
 const prefix = 'form-row'
@@ -15,7 +15,7 @@ class Demo extends React.Component {
     return (
       <div>
         <div>
-           <Form inline={true}>
+           <Form placement='horizontal'>
               <FormItem label='账号' labelWidth='50'>
                 <Input placeholder={'账号'} />
               </FormItem>

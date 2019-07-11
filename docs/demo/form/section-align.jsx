@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Form from '../../../components/form/index'
-import FormItem from '../../../components/form/item'
+import FormItem from '../../../components/form/Item'
 import Input from '../../../components/input'
 import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
@@ -20,38 +20,21 @@ class Demo extends React.Component {
     super()
 
     this.state = {
-      alignCheckedIndex: 0,
       alignList: [
         {
           id: 'left',
-          name: '左对齐'
+          content: '左对齐'
         },
         {
           id: 'right',
-          name: '右对齐'
+          content: '右对齐'
         },
         {
           id: 'top',
-          name: '顶对齐'
+          content: '顶对齐'
         },
       ],
-      columnCheckedIndex: 0,
-      columnList: [
-        {
-          id: '12',
-          name: 'S'
-        },
-        {
-          id: '16',
-          name: 'M'
-        },
-        {
-          id: '20',
-          name: 'L'
-        },
-      ],
-      position: 'left',
-      column: '12'
+      position: 'left'
     }
   }
 
@@ -63,39 +46,20 @@ class Demo extends React.Component {
       <div>
         <Row gutter={true}>
           <Col span={12}>
-
-            <Radio
-              list={this.state.alignList}
-              mode='button'
-              checked={alignCheckedIndex}
-              onChange={(data, index) => {
+            <Radio.Group
+              type='button'
+              data={this.state.alignList}
+              value={this.state.position}
+              onChange={(data) => {
                 this.setState({
-                  position: data,
-                  alignCheckedIndex: index
+                  position: data
                 })
               }}
             />
-
-          </Col>
-          <Col span={12}>
-
-            <Radio
-              list={this.state.columnList}
-              mode='button'
-              checked={columnCheckedIndex}
-              onChange={(data, index) => {
-                this.setState({
-                  column: data,
-                  columnCheckedIndex: index
-                })
-              }}
-            />
-
           </Col>
         </Row>
         <Row gutter={true}>
-          <Col span={this.state.column}>
-
+          <Col span={12}>
             <Form labelWidth='80' labelPosition={this.state.position}>
               <FormItem label={'姓名'}>
                 <Input placeholder={'username'} />
@@ -109,7 +73,6 @@ class Demo extends React.Component {
                 <Button type={'primary'}>提交</Button>
               </FormItem>
             </Form>
-
           </Col>
         </Row>
       </div>

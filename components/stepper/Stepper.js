@@ -41,7 +41,7 @@ class Stepper extends React.Component {
 
           <span className='hi-stepper__title'> {info.title}</span>
           {(arg === 'v' || itemLayout) && (
-            <span className='hi-stepper__text'>{info.text}</span>
+            <span className='hi-stepper__text'>{info.content}</span>
           )}
         </div>
       </li>

@@ -1,24 +1,24 @@
+import React from 'react'
+
 /**
  *
  * compat old api
  * @export
- * @param {[[string, string], [string, string]]} compatPair
+ * @param {[[string, string, Function], [string, string, Function]]} compatPair
  * @returns
  */
-export function depreactedPropsCompat (compatPair) {
-  return function (target) {
-    const origin = class extends target {}
-    origin.prototype.constructor = function (props) {
-      const compatedProps = { ...props }
-      compatPair.forEach(([newProp, oldProp]) => {
-        if (
-          compatedProps[oldProp] !== undefined &&
-          compatedProps[newProp] === undefined
-        ) {
-          compatedProps[newProp] = compatedProps[oldProp]
+export const depreactedPropsCompat = (compatPair) => {
+  return (WrappedComponent) => {
+    return (props) => {
+      const compatProps = { ...props }
+      compatPair.forEach(([newProp, oldProp, convert]) => {
+        if (props[oldProp] !== undefined && props[newProp] === undefined) {
+          compatProps[newProp] = convert
+            ? convert(props[oldProp])
+            : props[oldProp]
         }
       })
+      return React.createElement(WrappedComponent, compatProps)
     }
-    return origin
   }
 }

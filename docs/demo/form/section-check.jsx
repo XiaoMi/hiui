@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Form from '../../../components/form/index'
-import FormItem from '../../../components/form/item'
+import FormItem from '../../../components/form/Item'
 import Input from '../../../components/input'
 import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
@@ -17,8 +17,8 @@ import FormItem from '@hiui/hiui/es/form/item'
 import Input from '@hiui/hiui/es/input'
 import Form from '@hiui/hiui/es/form/index'\n
 class Demo extends React.Component {
-  constructor(props) {
-    super(props)
+  constructor(fields) {
+    super(fields)
 
     this.form = React.createRef()
 
@@ -69,7 +69,7 @@ class Demo extends React.Component {
   }
 
   handleSubmit() {
-    this.form.validate(valid => {
+    this.form.current.validate(valid => {
       if(valid) {
         console.log(this.state.form)
         alert('submit')
@@ -109,33 +109,31 @@ class Demo extends React.Component {
     const {form, checkedIndex} = this.state
 
     return (
-      <div>
-        <Form ref={node => this.form = node} model={form} rules={this.state.rules} labelWidth='80'>
-          <Row>
-            <Col span={12}>
+      <Form ref={this.form} model={form} rules={this.state.rules} labelWidth='80'>
+        <Row>
+          <Col span={12}>
 
-              <FormItem label='名称' prop='name'>
-                <Input value={form.name} placeholder={'name'} onChange={this.handleChange.bind(this, 'name')}/>
-              </FormItem>
-              <FormItem label='数量' prop='count'>
-                <Input value={form.count} placeholder={'count'} onChange={this.handleChange.bind(this, 'count')}/>
-              </FormItem>
-              <FormItem label='地区' prop='region'>
-                <Radio
-                  list={['北京', '上海', '重庆']}
-                  checked={checkedIndex}
-                  onChange={this.handleChange.bind(this, 'region','')}
-                />
-              </FormItem>
-              <FormItem>
-                <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
-                <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
-              </FormItem>
+            <FormItem label='名称' field='name'>
+              <Input value={form.name} placeholder={'name'} onChange={this.handleChange.bind(this, 'name')}/>
+            </FormItem>
+            <FormItem label='数量' field='count'>
+              <Input value={form.count} placeholder={'count'} onChange={this.handleChange.bind(this, 'count')}/>
+            </FormItem>
+            <FormItem label='地区' field='region'>
+              <Radio.Group
+                data={['北京', '上海', '重庆']}
+                value={form.region}
+                onChange={this.handleChange.bind(this, 'region','')}
+              />
+            </FormItem>
+            <FormItem>
+              <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
+              <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
+            </FormItem>
 
-            </Col>
-          </Row>
-        </Form>
-      </div>
+          </Col>
+        </Row>
+      </Form>
     )
   }
 }`
