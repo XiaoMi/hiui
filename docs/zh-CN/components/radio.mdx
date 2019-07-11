@@ -19,36 +19,6 @@ import DemoType from '../../demo/radio/section-type'
 
 <DemoType />
 
-## Radio Attributes
-
-| 参数     | 说明                                                                                                                                                                                                                                                              | 类型               | 可选值                 | 默认值                           |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ---------------------- | -------------------------------- |
-| name     | 单选组名称                                                                                                                                                                                                                                                        | String             | -                      | 一般情况下无需传递，组件默认生成 |
-| list     | 选择项                                                                                                                                                                                                                                                            | Array              | -                      | -                                |
-| align    | label 对齐方式                                                                                                                                                                                                                                                    | String             | left \| right          | right                            |
-| checked  | 应用于 list 内的数据项时为布尔值，表示该项是否被选中<br/>多个列表项均含有此属性时，会以最后一项为主<br/>---<br/>应用于组件属性时为数字或函数<br/>为数字时，代表被选中项的索引值，从 0 开始<br/>为函数时，函数返回当前项，通过比对后返回布尔值来决定该项是否被选中 | bool/number/func   | -                      | -1                               |
-| onChange | 选中事件                                                                                                                                                                                                                                                          | Function           | -                      | -                                |
-| disabled | 是否禁用（应用于数据源无效）                                                                                                                                                                                                                                      | Number \| Function | -                      | -                                |
-| mode     | 单选按钮样式                                                                                                                                                                                                                                                      | String             | normal \| button       | normal                           |
-| layout   | 排列方式                                                                                                                                                                                                                                                          | String             | horizontal \| vertical | horizontal                       |
-
-<div style={{ position: 'relative' }}>
-  <span
-    style={{
-      position: 'absolute',
-      background: '#fff',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
-      padding: 8,
-      color: '#999'
-    }}
-  >
-    以下调整将随 2.0.0 版本发布，敬请期待
-  </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
-</div>
-
 ## Props
 
 | 参数      | 说明                                     | 类型                    | 可选值                     | 默认值       |
@@ -70,3 +40,33 @@ import DemoType from '../../demo/radio/section-type'
 | content  | 选择项的展示内容 | string  | -             | -      |
 | id       | 选择项对应的值   | string  | -             | -      |
 | disabled | 是否禁用         | boolean | true \| false | false  |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      fontSize: '14px',
+      padding: 8,
+      color: '#999'
+    }}
+  >
+    以下调整将随 2.0.0 版本发布，敬请期待
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
+
+## Radio Attributes
+
+| 参数     | 说明                                                                                                                                                                                                                                                              | 类型               | 可选值                 | 默认值                           |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ---------------------- | -------------------------------- |
+| name     | 单选组名称                                                                                                                                                                                                                                                        | String             | -                      | 一般情况下无需传递，组件默认生成 |
+| list     | 选择项                                                                                                                                                                                                                                                            | Array              | -                      | -                                |
+| align    | label 对齐方式                                                                                                                                                                                                                                                    | String             | left \| right          | right                            |
+| checked  | 应用于 list 内的数据项时为布尔值，表示该项是否被选中<br/>多个列表项均含有此属性时，会以最后一项为主<br/>---<br/>应用于组件属性时为数字或函数<br/>为数字时，代表被选中项的索引值，从 0 开始<br/>为函数时，函数返回当前项，通过比对后返回布尔值来决定该项是否被选中 | bool/number/func   | -                      | -1                               |
+| onChange | 选中事件                                                                                                                                                                                                                                                          | Function           | -                      | -                                |
+| disabled | 是否禁用（应用于数据源无效）                                                                                                                                                                                                                                      | Number \| Function | -                      | -                                |
+| mode     | 单选按钮样式                                                                                                                                                                                                                                                      | String             | normal \| button       | normal                           |
+| layout   | 排列方式                                                                                                                                                                                                                                                          | String             | horizontal \| vertical | horizontal                       |
