@@ -16,7 +16,7 @@ class Demo extends React.Component {
   }
   render() {
     return (
-      <Checkbox data={this.state.list} />
+      <Checkbox.Group data={this.state.list} />
     )
   }
 }`,

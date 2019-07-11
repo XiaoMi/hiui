@@ -33,7 +33,7 @@ class Demo extends React.Component {
           <Rate defaultValue={3} useEmoji disabled />
         </FormItem>
         <FormItem label="禁止清除">
-          <Rate defaultValue={3} useEmoji allowClear={false} />
+          <Rate defaultValue={3} useEmoji clearable={false} />
         </FormItem>
       </Form>
     )

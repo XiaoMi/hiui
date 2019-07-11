@@ -34,7 +34,7 @@ class Demo extends React.Component {
           <Rate allowHalf disabled defaultValue={2.5} />
         </FormItem>
         <FormItem label="禁止清除">
-          <Rate allowHalf allowClear={false} defaultValue={2.5} />
+          <Rate allowHalf clearable={false} defaultValue={2.5} />
         </FormItem>
       </Form>
     )

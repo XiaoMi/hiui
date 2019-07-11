@@ -5,30 +5,15 @@ import * as Icons from './Icons'
 import ToolTip from '../tooltip'
 
 class Rate extends Component {
-  static propTypes = {
-    useEmoji: PropTypes.bool,
-    allowClear: PropTypes.bool,
-    allowHalf: PropTypes.bool,
-    className: PropTypes.string,
-    defaultValue: PropTypes.number,
-    disabled: PropTypes.bool,
-    style: PropTypes.object,
-    tooltips: PropTypes.arrayOf(PropTypes.string),
-    value: PropTypes.number,
-    count: PropTypes.number,
-    onChange: PropTypes.func
-  }
-  static defaultProps = {
-    allowClear: true,
-    value: undefined,
-    defaultValue: 0,
-    count: 5,
-    prefixCls: 'hi-rate',
-    tooltips: [],
-    onChange: () => {}
+  constructor (props) {
+    super(props)
+    const { value, defaultValue } = props
+    this.state = {
+      value: value === undefined ? defaultValue : value
+    }
   }
   static getDerivedStateFromProps ({ value }) {
-    if (value || value === 0) {
+    if (value !== undefined) {
       return {
         value
       }
@@ -37,15 +22,6 @@ class Rate extends Component {
   state = {
     value: 0,
     hoverValue: 0
-  }
-  componentDidMount () {
-    this.initValue()
-  }
-  initValue = () => {
-    const { value, defaultValue } = this.props
-    this.setState({
-      value: (value || value === 0) ? value : defaultValue
-    })
   }
   renderIcon = (idx) => {
     const { useEmoji, allowHalf, disabled } = this.props
@@ -59,15 +35,15 @@ class Rate extends Component {
     )
   }
   handleIconClick = (value) => {
-    const { allowHalf, allowClear, onChange, disabled } = this.props
+    const { allowHalf, clearable, onChange, disabled } = this.props
     if (disabled) {
       return
     }
     if (!allowHalf) {
       value = Math.ceil(value)
     }
-    if (value === this.state.value && allowClear) {
-      onChange && onChange({value: 0})
+    if (value === this.state.value && clearable) {
+      onChange && onChange({ value: 0 })
       this.setState({
         value: 0
       })
@@ -137,6 +113,29 @@ class Rate extends Component {
       </ul>
     )
   }
+}
+
+Rate.propTypes = {
+  useEmoji: PropTypes.bool,
+  clearable: PropTypes.bool,
+  allowHalf: PropTypes.bool,
+  className: PropTypes.string,
+  defaultValue: PropTypes.number,
+  disabled: PropTypes.bool,
+  style: PropTypes.object,
+  tooltips: PropTypes.arrayOf(PropTypes.string),
+  value: PropTypes.number,
+  count: PropTypes.number,
+  onChange: PropTypes.func
+}
+
+Rate.defaultProps = {
+  clearable: true,
+  defaultValue: 0,
+  count: 5,
+  prefixCls: 'hi-rate',
+  tooltips: [],
+  onChange: () => {}
 }
 
 function ToolTipWrapper ({ children, title }) {
