@@ -3,11 +3,6 @@ import classNames from 'classnames'
 import PropTypes from 'prop-types'
 
 class Form extends Component {
-  static defaultProps = {
-    size: 'small',
-    labelPlacement: 'right'
-  }
-
   constructor (props) {
     super(props)
 
@@ -46,7 +41,7 @@ class Form extends Component {
 
   removeField (prop) {
     const fields = this.state.fields.filter(
-      (field) => field.props.prop !== prop
+      (field) => field.props.field !== prop
     )
 
     this.setState({
@@ -78,7 +73,7 @@ class Form extends Component {
 
   validateField (key, cb) {
     const field = this.state.fields.filter(
-      (field) => field.props.prop === key
+      (field) => field.props.field === key
     )[0]
 
     if (!field) {
@@ -113,10 +108,16 @@ Form.propTypes = {
   model: PropTypes.object,
   rules: PropTypes.object,
   labelPlacement: PropTypes.oneOf(['right', 'left', 'top']),
+  labelPosition: PropTypes.oneOf(['right', 'left', 'top']),
   labWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placement: PropTypes.oneOf(['horizontal', 'vertical']),
   inline: PropTypes.bool,
   onSubmit: PropTypes.func
+}
+
+Form.defaultProps = {
+  size: 'small',
+  labelPosition: 'left'
 }
 
 export default Form
