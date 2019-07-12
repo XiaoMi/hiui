@@ -5,8 +5,8 @@ import Grid from '../../../components/grid'
 const prefix = 'card-base'
 const code = `
 import React from 'react'
-import Grid from '@hiui/hiui/es/grid'
-import Card from '@hiui/hiui/es/card'\n
+import Grid from '@hi-ui/hiui/es/grid'
+import Card from '@hi-ui/hiui/es/card'\n
 class Demo extends React.Component {
   render() {
     const Row = Grid.Row

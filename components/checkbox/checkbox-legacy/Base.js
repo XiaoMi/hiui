@@ -16,7 +16,7 @@ class Base extends Component {
   componentDidMount () {
     const root = MultipleCheckboxsOpera.getRoot(this.props.name)
     if (this.state.checked) {
-      root && root.setState({part: true})
+      root && root.setState({ part: true })
     }
   }
   componentWillReceiveProps (nextProps) {
@@ -28,7 +28,7 @@ class Base extends Component {
     }
   }
   handleChange (data) {
-    const {value, checked, name, all} = data
+    const { value, checked, name, all } = data
     let checkedList = []
     if (all) {
       const list = MultipleCheckboxsOpera.getAll(all)
@@ -83,9 +83,9 @@ class Base extends Component {
     this.state.onChange(value, checked)
   }
   render () {
-    const {disabled, checked, part} = this.state
+    const { disabled, checked, part } = this.state
 
-    const {value, name, all, content} = this.props
+    const { value, name, all, content } = this.props
     const labelClass = classnames(
       'hi-checkbox-legacy',
       disabled && 'hi-checkbox-legacy--disabled',
@@ -101,7 +101,7 @@ class Base extends Component {
             checked: !this.state.checked,
             part: false
           }, () => {
-            this.handleChange({value, checked: this.state.checked, name, all})
+            this.handleChange({ value, checked: this.state.checked, name, all })
           })
         }}
       >

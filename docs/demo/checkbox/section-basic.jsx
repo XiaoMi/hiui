@@ -7,7 +7,7 @@ const code = [
   {
     code: `
 import React from 'react'
-import Checkbox from '@hiui/hiui/es/checkbox'\n
+import Checkbox from '@hi-ui/hiui/es/checkbox'\n
 class Demo extends React.Component {
   render() {
     return (
@@ -22,7 +22,7 @@ class Demo extends React.Component {
   },
   {
     code: `import React from 'react'
-import Checkbox from '@hiui/hiui/es/checkbox'\n
+import Checkbox from '@hi-ui/hiui/es/checkbox'\n
 class Demo extends React.Component {
   render() {
     return (
@@ -38,11 +38,6 @@ class Demo extends React.Component {
 ]
 
 const DemoBasic = () => (
-  <DocViewer
-    code={code}
-    scope={{ Checkbox }}
-    prefix={prefix}
-    rightOptions={rightOptions}
-  />
+  <DocViewer code={code} scope={{ Checkbox }} prefix={prefix} rightOptions={rightOptions} />
 )
 export default DemoBasic

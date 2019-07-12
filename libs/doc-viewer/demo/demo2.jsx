@@ -7,7 +7,7 @@ const desc =
 const leftOptions = ['居左', '居中', '仅标题', '禁用']
 const code = [
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {
@@ -25,7 +25,7 @@ class Demo extends React.Component {
     opt: ['居左']
   },
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {
@@ -43,7 +43,7 @@ class Demo extends React.Component {
     opt: ['居中']
   },
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {
@@ -57,7 +57,7 @@ class Demo extends React.Component {
     opt: ['仅标题']
   },
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {

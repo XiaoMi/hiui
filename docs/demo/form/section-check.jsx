@@ -10,12 +10,12 @@ const prefix = 'form-check'
 
 const code = `
 import React from 'react'
-import Grid from '@hiui/hiui/es/grid'
-import Button from '@hiui/hiui/es/button'
-import Radio from '@hiui/hiui/es/radio'
-import FormItem from '@hiui/hiui/es/form/item'
-import Input from '@hiui/hiui/es/input'
-import Form from '@hiui/hiui/es/form/index'\n
+import Grid from '@hi-ui/hiui/es/grid'
+import Button from '@hi-ui/hiui/es/button'
+import Radio from '@hi-ui/hiui/es/radio'
+import FormItem from '@hi-ui/hiui/es/form/item'
+import Input from '@hi-ui/hiui/es/input'
+import Form from '@hi-ui/hiui/es/form/index'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)
@@ -140,10 +140,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoCloseable = () => (
-  <DocViewer
-    code={code}
-    scope={{ Form, FormItem, Radio, Grid, Input, Button }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} scope={{ Form, FormItem, Radio, Grid, Input, Button }} prefix={prefix} />
 )
 export default DemoCloseable

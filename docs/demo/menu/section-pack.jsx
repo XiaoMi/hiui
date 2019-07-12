@@ -4,7 +4,7 @@ import Menu from '../../../components/menu'
 const prefix = 'menu-pack'
 const code = `
 import React from 'react'
-import Menu from '@hiui/hiui/es/menu'\n
+import Menu from '@hi-ui/hiui/es/menu'\n
 class Demo extends React.Component {
   render(){
     const datas = [
@@ -109,11 +109,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoPack = () => (
-  <DocViewer
-    code={code}
-    scope={{ Menu }}
-    prefix={prefix}
-  />
-)
+const DemoPack = () => <DocViewer code={code} scope={{ Menu }} prefix={prefix} />
 export default DemoPack

@@ -9,17 +9,20 @@ $prefixCls: '.hi-checkbox' !default;
         border-color: $color;
       }
     }
+
     input {
       &:focus + #{$prefixCls}__input {
         border-color: $color;
       }
     }
+
     &__input {
       &--indeterminate {
         &::after {
           background: $color;
         }
       }
+
       &--checked {
         background: $color;
         border-color: $color;
@@ -34,13 +37,16 @@ $prefixCls: '.hi-checkbox' !default;
   align-items: center;
   height: 32px;
   vertical-align: middle;
+
   @include component-reset();
+
   input {
     position: absolute;
     width: 16px;
     height: 16px;
     opacity: 0;
   }
+
   &__input {
     position: relative;
     box-sizing: border-box;
@@ -52,6 +58,7 @@ $prefixCls: '.hi-checkbox' !default;
     border-radius: 2px;
     transition: 0.3s ease-out;
     line-height: 1;
+
     &--indeterminate {
       &::after {
         content: '';
@@ -63,6 +70,7 @@ $prefixCls: '.hi-checkbox' !default;
         display: block;
       }
     }
+
     &--checked {
       &::after {
         transform: rotate(45deg) scaleY(1);
@@ -81,12 +89,15 @@ $prefixCls: '.hi-checkbox' !default;
       }
     }
   }
+
   &__text {
     padding: 0 32px 0 8px;
     line-height: unset;
   }
+
   &--disabled {
     cursor: not-allowed;
+
     #{$prefixCls}__input {
       border-color: #d8d8d8;
       background: #f2f2f2;
@@ -95,13 +106,16 @@ $prefixCls: '.hi-checkbox' !default;
         border-color: #d8d8d8;
       }
     }
+
     #{$prefixCls}__text {
       color: rgba(#000, 0.65);
     }
   }
+
   &-group {
     display: inline-block;
   }
+
   @include hi-checkbox-style();
 }
 

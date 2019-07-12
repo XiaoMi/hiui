@@ -5,8 +5,8 @@ import Button from '../../../components/button'
 const prefix = 'icon-nest'
 const code = `
 import React from 'react'
-import Button from '@hiui/hiui/es/button'
-import Icon from '@hiui/hiui/es/icon'\n
+import Button from '@hi-ui/hiui/es/button'
+import Icon from '@hi-ui/hiui/es/icon'\n
 class Demo extends React.Component {
   render () {
     return (

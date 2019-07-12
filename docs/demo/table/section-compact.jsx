@@ -4,7 +4,7 @@ import Table from '../../../components/table'
 const prefix = 'table-compact'
 const code = `
 import React from 'react'
-import Table from '@hiui/hiui/es/table'\n
+import Table from '@hi-ui/hiui/es/table'\n
 class Demo extends React.Component {
   constructor(props){
     super(props)
@@ -46,11 +46,5 @@ class Demo extends React.Component {
     return <Table size='small' columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
   }
 }`
-const DemoCompact = () => (
-  <DocViewer
-    code={code}
-    scope={{ Table }}
-    prefix={prefix}
-  />
-)
+const DemoCompact = () => <DocViewer code={code} scope={{ Table }} prefix={prefix} />
 export default DemoCompact

@@ -7,8 +7,8 @@ const desc = '通过 footers 自定义底部的按钮，并执行对应自定义
 
 const code = `
 import React from 'react'
-import Button from '@hiui/hiui/es/button'
-import Modal from '@hiui/hiui/es/modal'\n
+import Button from '@hi-ui/hiui/es/button'
+import Modal from '@hi-ui/hiui/es/modal'\n
 class Demo extends React.Component {
   constructor (props) {
     super(props)

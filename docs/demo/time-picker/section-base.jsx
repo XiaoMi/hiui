@@ -4,7 +4,7 @@ import TimePicker from '../../../components/date-picker/TimePicker'
 const prefix = 'time-picker-base'
 const code = `
 import React from 'react'
-import TimePicker from '@hiui/hiui/es/time-picker/TimePicker'\n
+import TimePicker from '@hi-ui/hiui/es/time-picker/TimePicker'\n
 class Demo extends React.Component {
   render() {
     return (
@@ -30,11 +30,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ TimePicker }}
-    prefix={prefix}
-  />
-)
+const DemoBase = () => <DocViewer code={code} scope={{ TimePicker }} prefix={prefix} />
 export default DemoBase

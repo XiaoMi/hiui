@@ -153,7 +153,7 @@ export default class Upload extends Component {
     } = this.props
     const doRemove = () => {
       fileList.splice(index, 1)
-      this.setState({fileList})
+      this.setState({ fileList })
     }
     const ret = onRemove(file, fileList, index)
     if (ret === true) {
@@ -171,26 +171,30 @@ export default class Upload extends Component {
     const {
       onChange
     } = this.props
-    const ret = onChange(file, fileList, response)
+
     const onUploadError = () => {
       for (const index in fileList) {
         if (fileList[index].fileId === file.fileId) {
           fileList.splice(index, 1)
-          this.setState({fileList})
+          this.setState({ fileList })
           break
         }
       }
     }
 
-    if (ret === false) {
-      onUploadError()
-    } else if (ret && typeof ret.then === 'function') {
-      ret.then(res => {
-        if (res === false) {
-          onUploadError()
-        }
-      })
+    const callback = (ret) => {
+      if (ret === false) {
+        onUploadError()
+      } else if (ret && typeof ret.then === 'function') {
+        ret.then(res => {
+          if (res === false) {
+            onUploadError()
+          }
+        })
+      }
     }
+
+    onChange(file, fileList, response, callback)
   }
 
   uploadFile (file, dataUrl = '') {

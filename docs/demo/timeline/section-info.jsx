@@ -4,7 +4,7 @@ import Timeline from '../../../components/timeline'
 const prefix = 'timeline-info'
 
 const code = `import React from 'react'
-import Timeline from '@hiui/hiui/es/timeline'\n
+import Timeline from '@hi-ui/hiui/es/timeline'\n
 class Demo extends React.Component {
   render () {
     const datas = [{

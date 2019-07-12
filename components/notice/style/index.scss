@@ -1,0 +1,55 @@
+@import '../../style/index.scss';
+@import '../../style/icon/index.scss';
+
+.hi-notice__container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1020;
+
+  .hi-notice {
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    border: 1px solid #e7e7e7;
+    background: #fff;
+    transition: 0.3s ease;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .hi-notice__closer {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+
+  .hi-notice__title {
+    font-size: 14px;
+  }
+
+  .hi-notice__content--wrapper {
+    width: 100%;
+    padding-right: 14px;
+  }
+
+  .hi-notice__content {
+    font-size: 12px;
+    color: #666;
+  }
+
+  .hi-notice-enter {
+    transform: translateX(100%);
+  }
+
+  .hi-notice-enter-done {
+    transform: none;
+  }
+
+  .hi-notice-exit {
+    transform: none;
+  }
+
+  .hi-notice-exit-done {
+    transform: translateX(100%);
+  }
+}

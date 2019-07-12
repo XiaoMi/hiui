@@ -4,7 +4,7 @@ import DatePicker from '../../../components/date-picker'
 const prefix = 'date-picker-fast-check'
 const code = `
 import React from 'react'
-import DatePicker from '@hiui/hiui/es/date-picker'\n
+import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   render () {
     return (
@@ -17,11 +17,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoFastCheck = () => (
-  <DocViewer
-    code={code}
-    scope={{ DatePicker }}
-    prefix={prefix}
-  />
-)
+const DemoFastCheck = () => <DocViewer code={code} scope={{ DatePicker }} prefix={prefix} />
 export default DemoFastCheck

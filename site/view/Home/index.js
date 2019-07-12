@@ -23,7 +23,9 @@ class Home extends React.Component {
                 <i className='hi-fa fa-github' />
                 GitHub (v{version})
               </a>
-              <p style={{ marginTop: '12px', marginLeft: '16px', color: '#999' }}>v2.0.0 即将发布</p>
+              <p style={{ marginTop: '12px', marginLeft: '16px', color: '#999' }}>
+                v2.0.0 即将发布
+              </p>
             </div>
             <div className='section__figure' />
           </div>
@@ -150,15 +152,24 @@ class Home extends React.Component {
                     HIUI Template<sup>*</sup>
                   </h3>
                   <div className='flat-list__desc'>
-                    无需掌握前端框架即可进行页面开发，<a href='javascript: void(0)'>即将发布</a>
+                    无需掌握前端框架即可进行单模板开发，即将发布
                   </div>
                 </li>
                 <li className='flat-list__item'>
                   <div className='flat-list__figure' />
-                  <h3 className='flat-list__name'>HIUI Library</h3>
+                  <h3 className='flat-list__name'>
+                    HIUI Library <sup>20190709</sup>
+                  </h3>
                   <div className='flat-list__desc'>
-                    集成所有 HIUI 组件的 Axure/Sketch 部件库，
-                    <a href='javascript: void(0)'>即将发布</a>
+                    点击下载集成所有 HIUI 组件的{' '}
+                    <a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/static/resources/HIUI_2_0_0_beta(20190709).rplib'>
+                      Axure
+                    </a>{' '}
+                    /{' '}
+                    <a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/static/resources/HIUI_2_0_0_beta(20190709).sketch'>
+                      Sketch
+                    </a>{' '}
+                    部件库
                   </div>
                 </li>
               </ul>

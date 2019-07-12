@@ -5,8 +5,8 @@ import Modal from '../../../components/modal'
 const prefix = 'modal-base'
 const code = `
 import React from 'react'
-import Button from '@hiui/hiui/es/button'
-import Modal from '@hiui/hiui/es/modal'\n
+import Button from '@hi-ui/hiui/es/button'
+import Modal from '@hi-ui/hiui/es/modal'\n
 class Demo extends React.Component {
   constructor (props) {
     super(props)
@@ -38,11 +38,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ Button, Modal }}
-    prefix={prefix}
-  />
-)
+const DemoBase = () => <DocViewer code={code} scope={{ Button, Modal }} prefix={prefix} />
 export default DemoBase

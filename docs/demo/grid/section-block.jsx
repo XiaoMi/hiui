@@ -5,7 +5,7 @@ const prefix = 'grid-block'
 const desc = '在 Row 设置 gutter = true 来使水平排列有间隔'
 const code = `
 import React from 'react'
-import Grid from '@hiui/hiui/es/grid'\n
+import Grid from '@hi-ui/hiui/es/grid'\n
 class Demo extends React.Component {
   render() {
     const Row = Grid.Row
