@@ -102,9 +102,9 @@ class Radio extends Component {
     let { list, align, layout, mode, buttonStyle } = this.props
     const { checked, disabled } = this.state
     const cls = classnames(
-      'hi-radio',
-      layout === 'vertical' && 'hi-radio--vertical',
-      mode === 'button' && 'hi-radio--button'
+      'hi-radio-legacy',
+      layout === 'vertical' && 'hi-radio-legacy--vertical',
+      mode === 'button' && 'hi-radio-legacy--button'
     )
     return (
       <div className={cls}>
@@ -118,15 +118,15 @@ class Radio extends Component {
           }
           const _disabled = disabled.indexOf(index) > -1
           const itemCls = classnames(
-            'hi-radio__item',
-            _disabled && 'hi-radio__item--disabled',
-            checked === index && 'hi-radio__item--checked'
+            'hi-radio-legacy__item',
+            _disabled && 'hi-radio-legacy__item--disabled',
+            checked === index && 'hi-radio-legacy__item--checked'
           )
           const eles = [
-            <span className='hi-radio__label' key={'label' + index}>
+            <span className='hi-radio-legacy__label' key={'label' + index}>
               {_item.name}
             </span>,
-            <span className='hi-radio__simulation-input' key={'input' + index} />
+            <span className='hi-radio-legacy__simulation-input' key={'input' + index} />
           ]
           return (
             <div

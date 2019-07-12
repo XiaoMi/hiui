@@ -32,6 +32,7 @@ class Radio extends React.Component {
       children,
       disabled,
       style,
+      theme,
       type,
       value
     } = this.props
@@ -41,7 +42,8 @@ class Radio extends React.Component {
       className,
       prefixCls,
       disabled && `${prefixCls}--disabled`,
-      shouldUseButton && checked && `${prefixCls}__button--checked`
+      shouldUseButton && checked && `${prefixCls}__button--checked`,
+      `theme__${theme}`
     )
     const inputCls = classNames(
       `${prefixCls}__input`,
