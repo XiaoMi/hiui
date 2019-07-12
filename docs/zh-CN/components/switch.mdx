@@ -13,44 +13,11 @@ import DemoBase from '../../demo/switch/section-base.jsx'
 
 <DemoBase />
 
-## Switch Attributes
-
-| 参数     | 说明             | 类型                     | 可选值                   | 默认值 |
-| -------- | ---------------- | ------------------------ | ------------------------ | ------ |
-| content  | 自定义显示内容   | Array[String \| Element] | -                        | ''     |
-| checked  | 是否默认开启状态 | Boolean                  | true \| false            | false  |
-| disabled | 是否默认禁用状态 | Boolean                  | true \| false            | false  |
-| size     | 弹框大小类型     | String                   | small \| middle \| large | middle |
-
-## Switch Events
-
-| 参数     | 说明           | 回调参数 |
-| -------- | -------------- | -------- |
-| onChange | 切换的回调函数 | 当前状态 |
-
-<div style={{ position: 'relative' }}>
-  <span
-    style={{
-      position: 'absolute',
-      background: '#fff',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
-      padding: 8,
-      color: '#999'
-    }}
-  >
-    以下调整将随 2.0.0 版本发布，敬请期待
-  </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
-</div>
-
 ## Props
 
-| 参数     | 说明                                                             | 类型                    | 可选值               | 默认值    |
-| -------- | ---------------------------------------------------------------- | ----------------------- | -------------------- | --------- |
-| content  | 开关状态内容，数组第一项为关闭时显示的内容，第二项为开启时显示的 | string[] \| ReactNode[] | -                    | -         |
-| checked  | 设置是否开启开关                                                 | boolean                 | true \| false        | -         |
-| disabled | 是否禁用                                                         | boolean                 | true \| false        | false     |
-| size     | 开关尺寸                                                         | string                  | 'default' \| 'large' | 'default' |
-| onChange | 开关选中状态改变时的回调                                         | （checked）=>void       | -                    | -         |
+| 参数     | 说明                                                             | 类型                    | 可选值        | 默认值 |
+| -------- | ---------------------------------------------------------------- | ----------------------- | ------------- | ------ |
+| content  | 开关状态内容，数组第一项为关闭时显示的内容，第二项为开启时显示的 | string[] \| ReactNode[] | -             | -      |
+| checked  | 设置是否开启开关                                                 | boolean                 | true \| false | -      |
+| disabled | 是否禁用                                                         | boolean                 | true \| false | false  |
+| onChange | 开关选中状态改变时的回调                                         | （ checked ）=> void    | -             | -      |
