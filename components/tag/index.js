@@ -31,6 +31,7 @@ class Tag extends Component {
     const eleClass = classNames(
       `${prefixCls}__container`,
       className,
+      onClick && `${prefixCls}__container--click`,
       `${prefixCls}__container--${type}`,
       `${prefixCls}__container--${appearance}`
     )

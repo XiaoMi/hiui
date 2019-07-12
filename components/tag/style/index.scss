@@ -6,7 +6,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
   &__container {
     display: inline-block;
     vertical-align: middle;
-    padding: 4px 6px;
+    padding: 2px 6px;
     font-size: 12px;
     border-radius: 4px;
 
@@ -40,6 +40,10 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
           color: $status-color;
         }
       }
+    }
+
+    &--click {
+      cursor: pointer;
     }
   }
 }
