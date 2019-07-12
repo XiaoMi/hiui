@@ -20,13 +20,12 @@ class Dropdown extends Component {
       PropTypes.arrayOf(PropTypes.string)
     ]),
     onClick: PropTypes.func,
-    data: PropTypes.arrayOf(PropTypes.shape({
+    list: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
       onClick: PropTypes.func,
       prefix: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
       suffix: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      url: PropTypes.string
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     })),
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     prefix: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
@@ -37,7 +36,7 @@ class Dropdown extends Component {
     placement: 'top-bottom-start',
     trigger: 'click',
     onClick: () => {},
-    data: []
+    list: []
   }
   componentDidMount () {
     this.registerEvent()
@@ -104,7 +103,7 @@ class Dropdown extends Component {
 
   render () {
     // splitButton，disabled
-    const {data, width, prefix, suffix, theme, title, placement} = this.props
+    const {list, width, prefix, suffix, theme, title, placement} = this.props
     const {visible} = this.state
     const ulCls = classNames('hi-dropdown__menu')
     return (
@@ -119,7 +118,7 @@ class Dropdown extends Component {
         >
           <ul className={ulCls}>
             {
-              (data).map((item, index) => {
+              list.map((item, index) => {
                 if (item.title === '-') {
                   // 分隔线
                   return <li className='hi-dropdown__divider' key={index} />
@@ -131,16 +130,10 @@ class Dropdown extends Component {
                   String(item.title) === String(title) && 'hi-dropdown__item--active'
                 )
 
-                const ItemWrapper = ({href, children}) => {
-                  return href ? <a href={href}>{children}</a> : <React.Fragment>{children}</React.Fragment>
-                }
-
                 return <li className={liCls} key={index} onClick={this.handlerClick.bind(this, item)}>
-                  <ItemWrapper href={item.url}>
-                    {(prefix || item.prefix) && <div className='hi-dropdown__item-prefix'>{prefix || item.prefix}</div>}
-                    <div className='hi-dropdown__item-title' title={item.title}>{item.title}</div>
-                    {(suffix || item.suffix) && <div className='hi-dropdown__item-suffix'>{suffix || item.suffix}</div>}
-                  </ItemWrapper>
+                  {(prefix || item.prefix) && <div className='hi-dropdown__item-prefix'>{prefix || item.prefix}</div>}
+                  <div className='hi-dropdown__item-title' title={item.title}>{item.title}</div>
+                  {(suffix || item.suffix) && <div className='hi-dropdown__item-suffix'>{suffix || item.suffix}</div>}
                 </li>
               })
             }

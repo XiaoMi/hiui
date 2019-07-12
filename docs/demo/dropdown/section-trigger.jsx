@@ -5,8 +5,8 @@ import Icon from '../../../components/icon'
 const prefix = 'dropdown-trigger'
 const code = `
 import React from 'react'
-import Icon from '@hi-ui/hiui/es/icon'
-import Dropdown from '@hi-ui/hiui/es/dropdown'\n
+import Icon from '@hiui/hiui/es/icon'
+import Dropdown from '@hiui/hiui/es/dropdown'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -36,7 +36,7 @@ class Demo extends React.Component {
     return (
       <div>
         <Dropdown
-          data={this.state.list}
+          list={this.state.list}
           trigger={['click', 'contextmenu']}
           onClick={(val) => {console.log(val)}}
           title="左键或右键点击"
@@ -47,5 +47,11 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoTrigger = () => <DocViewer code={code} scope={{ Dropdown, Icon }} prefix={prefix} />
+const DemoTrigger = () => (
+  <DocViewer
+    code={code}
+    scope={{ Dropdown, Icon }}
+    prefix={prefix}
+  />
+)
 export default DemoTrigger

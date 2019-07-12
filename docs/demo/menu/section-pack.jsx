@@ -4,7 +4,7 @@ import Menu from '../../../components/menu'
 const prefix = 'menu-pack'
 const code = `
 import React from 'react'
-import Menu from '@hi-ui/hiui/es/menu'\n
+import Menu from '@hiui/hiui/es/menu'\n
 class Demo extends React.Component {
   render(){
     const datas = [
@@ -95,19 +95,25 @@ class Demo extends React.Component {
     return(
       <div>
         <Menu
-          collapsed
-          showCollapse
-          placement="vertical"
+          mini
+          miniToggle={true}
+          mode="vertical"
           activeId={'xiaomi9'}
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
-          onCollapse={toggle => console.log('-----onMiniChange', toggle)}
+          onMiniChange={toggle => console.log('-----onMiniChange', toggle)}
           onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
-          data={datas}
+          datas={datas}
         />
       </div>
     )
   }
 }`
 
-const DemoPack = () => <DocViewer code={code} scope={{ Menu }} prefix={prefix} />
+const DemoPack = () => (
+  <DocViewer
+    code={code}
+    scope={{ Menu }}
+    prefix={prefix}
+  />
+)
 export default DemoPack

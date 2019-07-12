@@ -121,7 +121,7 @@ export default class SelectInput extends Component {
           {
             selectedItems.slice(0, showCount).map((item, index) => {
               const _item = <div key={index} className='hi-select__input--item'>
-                <div className='hi-select__input--item__name'>{item.title}</div>
+                <div className='hi-select__input--item__name'>{item.name}</div>
                 <span
                   className='hi-select__input--item__remove'
                   onClick={e => {
@@ -180,13 +180,13 @@ export default class SelectInput extends Component {
       onFocus,
       onBlur
     } = this.props
-    placeholder = selectedItems.length > 0 ? selectedItems[0].title : placeholder
+    placeholder = selectedItems.length > 0 ? selectedItems[0].name : placeholder
     let icon = dropdownShow ? 'up' : 'down'
 
     return (
       <div className={classNames('hi-select__input', 'single-value', {disabled})} onClick={this.props.onClick}>
         <div className={classNames('hi-select__input--item', {'hi-select__hide': !(!dropdownShow && selectedItems.length > 0)})}>
-          <div className='hi-select__input--item__name'>{selectedItems[0] && selectedItems[0].title}</div>
+          <div className='hi-select__input--item__name'>{selectedItems[0] && selectedItems[0].name}</div>
         </div>
         {
           (dropdownShow || selectedItems.length === 0) &&

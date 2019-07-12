@@ -6,8 +6,8 @@ const prefix = 'dropdown-extend'
 const desc = '传入 type 为 group，组件会将 title 执行对应的点击响应，点击箭头打开菜单项'
 const code = `
 import React from 'react'
-import Icon from '@hi-ui/hiui/es/icon'
-import Dropdown from '@hi-ui/hiui/es/dropdown'\n
+import Icon from '@hiui/hiui/es/icon'
+import Dropdown from '@hiui/hiui/es/dropdown'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -27,7 +27,7 @@ class Demo extends React.Component {
     return (
       <div>
         <Dropdown
-          data={this.state.list}
+          list={this.state.list}
           title="按钮菜单"
           type="group"
           // trigger={['click']}

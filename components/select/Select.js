@@ -14,10 +14,10 @@ class Select extends Component {
   autoloadFlag = true // 第一次自动加载数据标识
 
   static propTypes = {
-    type: PropTypes.oneOf(['single', 'multiple']),
-    multipleType: PropTypes.oneOf(['wrap', 'nowrap']),
-    data: PropTypes.array,
-    dataSource: PropTypes.object,
+    mode: PropTypes.oneOf(['single', 'multiple']),
+    multipleMode: PropTypes.oneOf(['wrap', 'nowrap']),
+    list: PropTypes.array,
+    origin: PropTypes.object,
     value: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.array,
@@ -30,24 +30,24 @@ class Select extends Component {
     clearable: PropTypes.bool,
     disabled: PropTypes.bool,
     placeholder: PropTypes.string,
-    emptyContent: PropTypes.string,
+    noFoundTip: PropTypes.string,
     optionWidth: PropTypes.number,
     style: PropTypes.object,
     onChange: PropTypes.func,
-    render: PropTypes.func,
+    dropdownRender: PropTypes.func,
     open: PropTypes.bool
   }
 
   static defaultProps = {
-    data: [],
-    type: 'single',
-    multipleType: 'wrap',
+    list: [],
+    mode: 'single',
+    multipleMode: 'wrap',
     disabled: false,
     clearable: true,
     value: '',
     autoload: false,
     placeholder: '请选择',
-    emptyContent: '无内容',
+    noFoundTip: '无内容',
     showCheckAll: false,
     open: true,
     onClick: () => {},
@@ -59,9 +59,9 @@ class Select extends Component {
     super(props)
 
     let {
-      data
+      list
     } = this.props
-    const dropdownItems = cloneDeep(data)
+    const dropdownItems = cloneDeep(list)
     const selectedItems = this.resetSelectedItems(this.props.value, dropdownItems)
     const searchable = this.getSearchable()
     this.debouncedFilterItems = debounce(this.onFilterItems.bind(this), 300)
@@ -122,12 +122,12 @@ class Select extends Component {
         // this.onChange()
       })
     }
-    if (!shallowEqual(props.data, this.props.data)) {
-      const selectedItems = this.resetSelectedItems(props.value, props.data, true)
+    if (!shallowEqual(props.list, this.props.list)) {
+      const selectedItems = this.resetSelectedItems(props.value, props.list, true)
 
       this.setState({
         selectedItems,
-        dropdownItems: cloneDeep(props.data)
+        dropdownItems: cloneDeep(props.list)
       })
     }
   }
@@ -140,6 +140,9 @@ class Select extends Component {
     if (this.isRemote()) {
       return true
     }
+    // if(mode==='multiple' && searchable===undefined) {
+    //   return true
+    // }
     return !!searchable
   }
 
@@ -155,14 +158,14 @@ class Select extends Component {
 
   isRemote () {
     let {
-      dataSource
+      origin
     } = this.props
-    return dataSource && !!dataSource.url
+    return origin && !!origin.url
   }
 
   resetSelectedItems (value, dropdownItems, listChanged = false) {
     const values = this.parseValue(value)
-    const selectedItems = listChanged && this.props.type === 'multiple' ? this.state.selectedItems : [] // 如果是多选，dropdownItems有改动，需要保留之前的选中值
+    const selectedItems = listChanged && this.props.mode === 'multiple' ? this.state.selectedItems : [] // 如果是多选，dropdownItems有改动，需要保留之前的选中值
 
     dropdownItems && dropdownItems.map(item => {
       if (values.indexOf(item.id) !== -1) {
@@ -229,7 +232,7 @@ class Select extends Component {
     let selectedItems = this.state.selectedItems.concat()
     let focusedIndex = index
 
-    if (this.props.type === 'multiple') {
+    if (this.props.mode === 'multiple') {
       let itemIndex = this.state.selectedItems.findIndex((sItem) => {
         return sItem.id === item.id
       })
@@ -246,7 +249,7 @@ class Select extends Component {
       selectedItems,
       focusedIndex
     }, () => {
-      if (this.props.type !== 'multiple') {
+      if (this.props.mode !== 'multiple') {
         this.hideDropdown()
       } else {
         this.selectInput.focus()
@@ -320,7 +323,7 @@ class Select extends Component {
       focusedIndex,
       selectedItems: []
     }, () => {
-      this.onChange(this.props.type === 'multiple' ? changedItems : changedItems[0])
+      this.onChange(this.props.mode === 'multiple' ? changedItems : changedItems[0])
       this.onFilterItems('')
     })
   }
@@ -328,33 +331,17 @@ class Select extends Component {
   remoteSearch (keyword) {
     let {
       url,
-      transformResponse,
+      func,
       error,
-      params,
-      headers,
-      mode,
       data = {},
       type = 'GET',
       key = 'keyword',
       jsonpCallback = 'callback',
       ...options
-    } = this.props.dataSource
-    keyword = !keyword && this.autoloadFlag && this.props.autoload ? this.props.dataSource.keyword : keyword
+    } = this.props.origin
+    keyword = !keyword && this.autoloadFlag && this.props.autoload ? this.props.origin.keyword : keyword
     this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
-
-    const queryParams = (() => {
-      if (!queryParams) {
-        return ''
-      }
-      if (typeof params === 'string') {
-        return params
-      }
-      if (Object.prototype.toString.call(params) === '[object Object]') {
-        return Object.keys(params).map(key => `&${key}=${params[key]}`).join('')
-      }
-    })()
-
-    url = url.indexOf('?') === -1 ? `${url}?${[key]}=${keyword}${queryParams}` : `${url}&${[key]}=${keyword}${queryParams}`
+    url = url.indexOf('?') === -1 ? `${url}?${[key]}=${keyword}` : `${url}&${[key]}=${keyword}`
 
     if (type.toUpperCase() === 'POST') {
       options.body = JSON.stringify(data)
@@ -365,7 +352,7 @@ class Select extends Component {
 
     if (type.toUpperCase() === 'JSONP') {
       const _o = {jsonpCallback: jsonpCallback, jsonpCallbackFunction: jsonpCallback}
-      fetchJsonp(url, _o).then((res) => res.json()).then((json) => { this._setDropdownItems(json, transformResponse) })
+      fetchJsonp(url, _o).then((res) => res.json()).then((json) => { this._setDropdownItems(json, func) })
     } else {
       /* eslint-disable */
       fetch(url, {
@@ -374,7 +361,7 @@ class Select extends Component {
       })
       .then(response => response.json())
       .then(res => {
-        this._setDropdownItems(res, transformResponse)
+        this._setDropdownItems(res, func)
       }, err => {
         error && error(err)
         this.setState({
@@ -406,7 +393,10 @@ class Select extends Component {
       keyword
     }, ()=>this.resetFocusedIndex())
 
-    if (this.props.dataSource) {
+    if (this.props.origin) {
+      // this.setState({
+      //   dropdownItems: []
+      // })
       if (this.props.autoload || keyword.toString().length >= this.state.queryLength) {
         this.remoteSearch(keyword)
       }
@@ -418,7 +408,7 @@ class Select extends Component {
       searchable,
       keyword
     } = this.state
-    return this.isRemote() || (!searchable || !keyword) || (searchable && keyword && (String(item.id).includes(keyword) || String(item.title).includes(keyword)))
+    return this.isRemote() || (!searchable || !keyword) || (searchable && keyword && (String(item.id).includes(keyword) || String(item.name).includes(keyword)))
   }
 
   resetFocusedIndex (setState = true) {
@@ -484,17 +474,17 @@ class Select extends Component {
 
   render () {
     const {
-      type,
+      mode,
       showCheckAll,
       className,
       disabled,
       clearable,
       style,
       children,
-      emptyContent,
+      noFoundTip,
       optionWidth,
-      render,
-      multipleType,
+      dropdownRender,
+      multipleMode,
       onClick,
       onBlur,
       onFocus
@@ -509,8 +499,8 @@ class Select extends Component {
       fetching
     } = this.state
     const extraClass = {
-      'is-multiple': type === 'multiple',
-      'is-single': type === 'single'
+      'is-multiple': mode === 'multiple',
+      'is-single': mode === 'single'
     }
 
     return (
@@ -518,7 +508,7 @@ class Select extends Component {
         <div className='hi-select__input-container' ref={node => { this.selectInputContainer = node }}>
           <SelectInput
             ref={node => { this.selectInput = node }}
-            mode={type}
+            mode={mode}
             disabled={disabled}
             searchable={searchable}
             clearable={clearable}
@@ -526,7 +516,7 @@ class Select extends Component {
             placeholder={placeholder}
             selectedItems={selectedItems}
             dropdownItems={dropdownItems}
-            multipleMode={multipleType}
+            multipleMode={multipleMode}
             container={this.selectInputContainer}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
             onClick={()=>{
@@ -553,8 +543,8 @@ class Select extends Component {
           placement="top-bottom-start"
         >
           <SelectDropdown
-            noFoundTip={emptyContent}
-            mode={type}
+            noFoundTip={noFoundTip}
+            mode={mode}
             showCheckAll={showCheckAll}
             checkAll={this.checkAll.bind(this)}
             loading={fetching}
@@ -564,7 +554,7 @@ class Select extends Component {
             optionWidth={optionWidth}
             dropdownItems={dropdownItems}
             selectedItems={selectedItems}
-            dropdownRender={render}
+            dropdownRender={dropdownRender}
             onClickOption={this.onClickOption.bind(this)}
           />
         </Popper>

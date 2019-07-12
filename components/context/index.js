@@ -3,11 +3,10 @@ import locales from '../locales'
 
 export const ThemeContext = React.createContext('hiui-blue')
 export const LocaleContext = React.createContext('zh-CN')
-export const VersionContext = React.createContext(2)
+export const VersionContext = React.createContext(1.5)
 
 export default (WrappedComponent) =>
   class WrapperComponent extends Component {
-    static displayName = WrappedComponent.name
     render () {
       const { theme, locale, version, ...restProps } = this.props
       let ConsumerComponent = (

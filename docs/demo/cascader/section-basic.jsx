@@ -6,57 +6,57 @@ const rightOptions = ['正常', '禁用']
 const code = [
   {
     code: `import React from 'react'
-import Cascader from '@hi-ui/hiui/es/cascader'\n
+import Cascader from '@hiui/hiui/es/cascader'\n
 class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
       options: [
         {
-          id: '手机',
-          content: '手机',
+          value: '手机',
+          label: '手机',
           children: [
             {
-              id: '小米',
-              content: '小米',
+              value: '小米',
+              label: '小米',
               children: [
                 {
-                  id: '小米3',
-                  content: '小米3'
+                  value: '小米3',
+                  label: '小米3'
                 },
                 {
-                  id: '小米4',
-                  content: '小米4'
+                  value: '小米4',
+                  label: '小米4'
                 },
               ]
             },
             {
-              id: '红米',
-              content: '红米',
+              value: '红米',
+              label: '红米',
               children: [
                 {
-                  id: '红米3',
-                  content: '红米3'
+                  value: '红米3',
+                  label: '红米3'
                 },
                 {
-                  id: '红米4',
-                  content: '红米4'
+                  value: '红米4',
+                  label: '红米4'
                 }
               ]
             }
           ]
         },
         {
-          id: '电视',
-          content: '电视',
+          value: '电视',
+          label: '电视',
           children: [
             {
-              id: '小米电视4A',
-              content: '小米电视4A'
+              value: '小米电视4A',
+              label: '小米电视4A'
             },
             {
-              id: '小米电视4C',
-              content: '小米电视4C'
+              value: '小米电视4C',
+              label: '小米电视4C'
             }
           ]
         }
@@ -66,70 +66,69 @@ class Demo extends React.Component {
   render(){
     return(
       <Cascader
-        onChange={(id)=>{
-          console.log('on change', id)
+        onChange={(value)=>{
+          console.log('on change', value)
         }}
-        data={this.state.options}
-        style={{ width: 240 }}
+        options={this.state.options}
+        style={{width: 240}}
       />
     )
   }
 }`,
     opt: ['正常']
-  },
-  {
+  }, {
     code: `import React from 'react'
-import Cascader from '@hi-ui/hiui/es/cascader'\n
+import Cascader from '@hiui/hiui/es/cascader'\n
 class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
       options: [
         {
-          id: '手机',
-          content: '手机',
+          value: '手机',
+          label: '手机',
           children: [
             {
-              id: '小米',
-              content: '小米',
+              value: '小米',
+              label: '小米',
               children: [
                 {
-                  id: '小米3',
-                  content: '小米3'
+                  value: '小米3',
+                  label: '小米3'
                 },
                 {
-                  id: '小米4',
-                  content: '小米4'
+                  value: '小米4',
+                  label: '小米4'
                 },
               ]
             },
             {
-              id: '红米',
-              content: '红米',
+              value: '红米',
+              label: '红米',
               children: [
                 {
-                  id: '红米3',
-                  content: '红米3'
+                  value: '红米3',
+                  label: '红米3'
                 },
                 {
-                  id: '红米4',
-                  content: '红米4'
+                  value: '红米4',
+                  label: '红米4'
                 }
               ]
             }
           ]
         },
         {
-          id: '电视',
-          content: '电视',
+          value: '电视',
+          label: '电视',
           children: [
             {
-              id: '小米电视4A',
-              content: '小米电视4A'
+              value: '小米电视4A',
+              label: '小米电视4A'
             },
             {
-              id: '小米电视4C',
-              content: '小米电视4C'
+              value: '小米电视4C',
+              label: '小米电视4C'
             }
           ]
         }
@@ -140,11 +139,11 @@ class Demo extends React.Component {
     return(
       <Cascader
         disabled
-        onChange={(id)=>{
-          console.log('on change', id)
+        onChange={(value)=>{
+          console.log('on change', value)
         }}
-        data={this.state.options}
-        style={{ width: 240 }}
+        options={this.state.options}
+        style={{width: 240}}
       />
     )
   }
@@ -154,6 +153,11 @@ class Demo extends React.Component {
 ]
 
 const DemoBasic = () => (
-  <DocViewer code={code} scope={{ Cascader }} prefix={prefix} rightOptions={rightOptions} />
+  <DocViewer
+    code={code}
+    scope={{ Cascader }}
+    prefix={prefix}
+    rightOptions={rightOptions}
+  />
 )
 export default DemoBasic

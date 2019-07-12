@@ -6,9 +6,9 @@ import Checkbox from '../../../components/checkbox'
 const prefix = 'pagination-intact'
 const code = `
 import React from 'react'
-import Grid from '@hi-ui/hiui/es/grid'
-import Checkbox from '@hi-ui/hiui/es/Checkbox'
-import Pagination from '@hi-ui/hiui/es/pagination'\n
+import Grid from '@hiui/hiui/es/grid'
+import Checkbox from '@hiui/hiui/es/Checkbox'
+import Pagination from '@hiui/hiui/es/pagination'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)
@@ -16,39 +16,46 @@ class Demo extends React.Component {
       current: 4,
       pageSize: 10,
       optionsList: [{
-        content: '显示总数量',
-        id: 'showTotal'
+        text: '显示跳转至...',
+        value: 'showQuickJumper',
+        checked: true
       }, {
-        content: '显示跳转至...',
-        id: 'showJumper'
+        text: '显示总数量',
+        value: 'showTotal',
+        checked: true
       }],
-      value: ['showJumper', 'showTotal']
+      showTotal: true,
+      showQuickJumper: true
     }
   }
 
-  get showTotal () {
-    return this.state.value.includes('showTotal')
-  }
-
-  get showJumper () {
-    return this.state.value.includes('showJumper')
-  }
-
   render() {
-    const pageSizeOptions = [10, 20, 50, 100]
+    const pageSizeOptions = [{
+      value: 10,
+      title: '10'
+    }, {
+      value: 20,
+      title: '20'
+    }, {
+      value: 50,
+      title: '50'
+    }, {
+      value: 100,
+      title: '100'
+    }]
     const Row = Grid.Row
     const Col = Grid.Col
-    const { optionsList, pageSize, current, value } = this.state
+    const {showQuickJumper, showTotal, optionsList, pageSize, current} = this.state
     return (
       <div>
         <Row gutter={true}>
           <Col span={12}>
-            <Checkbox.Group
-              data={optionsList}
-              legacy={false}
-              value={value}
-              onChange={(value) => {
-                this.setState({ value })
+            <Checkbox
+              list={optionsList}
+              onChange={(val, isChecked) => {
+                this.setState({
+                  [val]: !this.state[val]
+                })
               }}
             />
           </Col>
@@ -59,11 +66,11 @@ class Demo extends React.Component {
               total={60000}
               pageSize={pageSize}
               pageSizeOptions={pageSizeOptions}
-              current={current}
-              showTotal={this.showTotal}
-              showJumper={this.showJumper}
-              onJump={(val) => { this.setState({ current: val })} }
-              onPageSizeChange={(val, current) => {
+              defaultCurrent={current}
+              showTotal={showTotal}
+              showQuickJumper={showQuickJumper}
+              jumpEvent={(val) => {this.setState({current: val})}}
+              sizeChangeEvent={(val, current) => {
                   console.log('每页', val, '条', '当前第', current, '页')
                   this.setState({pageSize: val})
                 }
@@ -82,6 +89,10 @@ class Demo extends React.Component {
   }
 }`
 const DemoIntact = () => (
-  <DocViewer code={code} scope={{ Pagination, Grid, Checkbox }} prefix={prefix} />
+  <DocViewer
+    code={code}
+    scope={{ Pagination, Grid, Checkbox }}
+    prefix={prefix}
+  />
 )
 export default DemoIntact

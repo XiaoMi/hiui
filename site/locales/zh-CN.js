@@ -22,7 +22,6 @@ module.exports = {
     loading: 'Loading 动效加载',
     badge: 'Badge 消息气泡',
     notification: 'Notification 通知框',
-    message: 'Message 消息',
     modal: 'Modal 模态对话框',
     confirm: 'confirm 方法组件',
     form: 'Form 表单',

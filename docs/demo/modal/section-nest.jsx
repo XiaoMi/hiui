@@ -4,19 +4,20 @@ import Button from '../../../components/button'
 import Modal from '../../../components/modal'
 import Select from '../../../components/select'
 import Table from '../../../components/table'
-const desc = '未传入 title 及 closable 为 false，可取消 title 部分，footer 为 null，可取消底部按钮'
+const desc =
+  '未传入 title 及 closeBtn 为 false，可取消 title 部分，footers 传入空数组，可取消底部按钮'
 const prefix = 'modal-nest'
 const code = `
 import React from 'react'
-import Button from '@hi-ui/hiui/es/button'
-import Modal from '@hi-ui/hiui/es/modal'
-import Select from '@hi-ui/hiui/es/select'
-import Table from '@hi-ui/hiui/es/table'\n
+import Button from '@hiui/hiui/es/button'
+import Modal from '@hiui/hiui/es/modal'
+import Select from '@hiui/hiui/es/select'
+import Table from '@hiui/hiui/es/table'\n
 class Demo extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      visible: false,
+      show: false,
       singleList: [
         { name:'手机', id:'2' },
         { name:'电视', id:'3', disabled: true },
@@ -68,20 +69,20 @@ class Demo extends React.Component {
   }
   clickEvent () {
     this.setState({
-      visible: false
+      show: false
     })
     console.log("关闭事件")
   }
   render(){
     return(
       <div>
-        <Button type="primary" onClick={() => this.setState({visible: true})}>打开</Button>
+        <Button type="primary" onClick={() => this.setState({show: true})}>打开</Button>
         <Modal
-          closable={false}
-          visible={this.state.visible}
+          closeBtn={false}
+          show={this.state.show}
           onConfirm={this.clickEvent.bind(this)}
           onCancel={this.clickEvent.bind(this)}
-          footer={null}
+          footers={[]}
         >
           <Table
             columns={this.columns}

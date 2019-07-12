@@ -8,32 +8,25 @@ class Collapse extends Component {
   static propTypes = {
     accordion: PropTypes.bool, // 手风琴模式
     activeKey: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-    activeId: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     onChange: PropTypes.func,
     icon: PropTypes.string,
-    type: PropTypes.string, // TODO:废弃
-    arrow: PropTypes.oneOf(['left', 'right']), // TODO:废弃，使用 arrowPlacement
-    arrowPlacement: PropTypes.oneOf(['left', 'right']),
-    showArrow: PropTypes.bool
+    type: PropTypes.string, //
+    arrow: PropTypes.string
   }
   static defaultProps = {
     prefixCls: 'hi-collapse',
     accordion: false,
     arrow: 'left',
-    arrowPlacement: 'left',
-    type: 'default',
-    showArrow: true
+    type: 'default'
   }
   constructor (props) {
     super(props)
-    const { activeId, activeKey } = this.props
-    const _activeId = activeId || activeKey
     this.state = {
-      activeId: Array.isArray(_activeId) ? _activeId : [_activeId]
+      activeKey: Array.isArray(this.props.activeKey) ? this.props.activeKey : [this.props.activeKey]
     }
   }
   onClickPanel (key) {
-    let activeKey = this.state.activeId
+    let activeKey = this.state.activeKey
     if (this.props.accordion) {
       activeKey = activeKey[0] === key ? [] : [key]
     } else {
@@ -49,18 +42,20 @@ class Collapse extends Component {
     this.setActiveKey(activeKey)
   }
   setActiveKey (activeKey) {
-    this.setState({ activeId: activeKey })
+    // if (!('activeKey' in this.props)) {
+    this.setState({ activeKey })
+    // }
     this.props.onChange(this.props.accordion ? activeKey[0] : activeKey)
   }
 
   renderPanels () {
-    const activeKey = this.state.activeId
-    const { children, accordion, arrow, arrowPlacement, showArrow } = this.props
+    const activeKey = this.state.activeKey
+    const { children, accordion, arrow } = this.props
     const newChildren = []
     Children.forEach(children, (child, index) => {
       if (!child) return
-      const key = child.id || child.key || String(index)
-      const { header, disabled, title } = child.props
+      const key = child.key || String(index)
+      const { header, disabled } = child.props
       let isActive = false
       if (accordion) {
         isActive = activeKey[0] === key
@@ -69,11 +64,10 @@ class Collapse extends Component {
       }
       const props = {
         key,
-        header: title || header,
+        header,
         disabled,
         isActive,
-        arrow: arrowPlacement !== 'left' ? arrowPlacement : arrow,
-        showArrow,
+        arrow,
         children: child.props.children,
         onClickPanel: disabled ? noop : () => this.onClickPanel(key)
       }
@@ -84,7 +78,11 @@ class Collapse extends Component {
   render () {
     const { prefixCls, type } = this.props
     let classnames = classNames(prefixCls, type && `${prefixCls}__${type}`)
-    return <div className={classnames}>{this.renderPanels()}</div>
+    return (
+      <div className={classnames}>
+        {this.renderPanels()}
+      </div>
+    )
   }
 }
 
@@ -94,7 +92,6 @@ class CollapsePanel extends Component {
     disabled: PropTypes.bool,
     isActive: PropTypes.bool,
     arrow: PropTypes.string,
-    showArrow: PropTypes.bool,
     onClickPanel: PropTypes.func
   }
   static defaultProps = {
@@ -102,18 +99,25 @@ class CollapsePanel extends Component {
   }
 
   render () {
-    const { key, arrow, header, disabled, isActive, children, onClickPanel, showArrow } = this.props
-    let classnames = classNames('collapse-item', {
-      'collapse-item--show': isActive,
-      'collapse-item--disabled': disabled
-    })
+    const {
+      key,
+      arrow,
+      header,
+      disabled,
+      isActive,
+      children,
+      onClickPanel
+    } = this.props
+    let classnames = classNames('collapse-item', { 'collapse-item--show': isActive, 'collapse-item--disabled': disabled })
     const collapseIcon = classNames('collapse-item__icon', 'hi-icon', 'icon-right')
     return (
       <div className={classnames}>
         <div className='collapse-item__head' onClick={() => onClickPanel(key)}>
-          {showArrow && arrow === 'left' && <i className={collapseIcon} />}
-          <div className='collapse-item__title'>{header}</div>
-          {showArrow && arrow === 'right' && <i className={collapseIcon} />}
+          { arrow === 'left' && <i className={collapseIcon} /> }
+          <div className='collapse-item__title'>
+            {header}
+          </div>
+          { arrow === 'right' && <i className={collapseIcon} /> }
         </div>
         <div className='collapse-item__content'>{children}</div>
       </div>

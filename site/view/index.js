@@ -17,17 +17,17 @@ History.createBrowserHistory()
 
 const logo = (
   <Logo
-    url='https://xiaomi.github.io/hiui/'
-    logoUrl='https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05'
-    text='HIUI'
-    title='HIUI'
-    alt='HIUI'
+    url="https://xiaomi.github.io/hiui/"
+    logoUrl="https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05"
+    text="HIUI"
+    title="HIUI"
+    alt="HIUI"
   />
 )
 class Index extends React.Component {
   componentNavs = []
   designNavs = []
-  constructor (props) {
+  constructor(props) {
     super(props)
     const _h = History.getHistory()
     let locale = window.location.pathname.split('/')[2]
@@ -74,7 +74,7 @@ class Index extends React.Component {
     setComponents(components)
   }
 
-  getSiderName (key) {
+  getSiderName(key) {
     const map = locales[this.state.locale] || {}
     return key.split('.').reduce((a, b) => {
       const parent = map[a]
@@ -85,7 +85,7 @@ class Index extends React.Component {
       return parent
     })
   }
-  getSiderItems (items) {
+  getSiderItems(items) {
     // const icons = [
     //   <span className="sider__icon-start" />,
     //   // <span className='sider__icon-principle' />,
@@ -102,7 +102,7 @@ class Index extends React.Component {
     Object.keys(items.documents).forEach((title, i) => {
       const _title = locales[locale]['components'][title]
       siderDocuments.push({
-        title: <span className='components-title'>{_title}</span>,
+        title: <span className="components-title">{_title}</span>,
         to: `/hiui/${locale}/docs/${title}`
         // icon: icons[i]
       })
@@ -110,14 +110,14 @@ class Index extends React.Component {
     })
     Object.keys(items.components).forEach((title, i) => {
       components.push({
-        title: <span className='components-title'>{locales[locale]['components'][title]}</span>
+        title: <span className="components-title">{locales[locale]['components'][title]}</span>
       })
 
       Object.keys(items.components[title]).forEach((page, j) => {
         const _title = locales[locale]['components'][page]
         navs[page] = _title
         components.push({
-          title: <span className='components-page'>{_title}</span>,
+          title: <span className="components-page">{_title}</span>,
           to: `/hiui/${locale}/docs/${page}`
         })
       })
@@ -126,18 +126,18 @@ class Index extends React.Component {
     setComponentsNavs(navs)
     return [].concat(siderDocuments, [
       {
-        title: <span className='components-page'>{locales[locale]['misc']['components']}</span>,
+        title: <span className="components-page">{locales[locale]['misc']['components']}</span>,
         // icon: icons[icons.length - 1],
         children: components
       }
     ])
   }
-  componentDidUpdate () {
+  componentDidUpdate() {
     setComponentsNavs(this.componentNavs)
     setDesignNavs(this.designNavs)
     setDesignNavs(this.templatesNavs)
   }
-  getDesignTemplatesItems (items, path, callback) {
+  getDesignTemplatesItems(items, path, callback) {
     let components = []
     let siderDocuments = []
     let navs = {}
@@ -155,13 +155,13 @@ class Index extends React.Component {
       Object.keys(items.components[title]).forEach((page, j) => {
         const _title = locales[locale][path][page]
         temp.push({
-          title: <span className='components-page'>{_title}</span>,
+          title: <span className="components-page">{_title}</span>,
           to: `/hiui/${locale}/${path}/${page}`
         })
         navs[page] = _title
       })
       components.push({
-        title: <span className='components-title'>{locales[locale][path][title]}</span>,
+        title: <span className="components-title">{locales[locale][path][title]}</span>,
         children: temp
       })
     })
@@ -171,7 +171,7 @@ class Index extends React.Component {
     }
     return [].concat(siderDocuments, components)
   }
-  render () {
+  render() {
     const siders = this.getSiderItems(pages)
     const _designs = this.getDesignTemplatesItems(designs, 'designs', setDesignNavs)
     const _templates = this.getDesignTemplatesItems(templates, 'templates', setTemplatesNavs)

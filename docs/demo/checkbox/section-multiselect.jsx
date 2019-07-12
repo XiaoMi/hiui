@@ -6,17 +6,21 @@ const rightOptions = ['简单数据', '复杂数据']
 const code = [
   {
     code: `import React from 'react'
-import Checkbox from '@hi-ui/hiui/es/checkbox'\n
+import Checkbox from '@hiui/hiui/es/checkbox'\n
 class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
       list: ['手机', '电脑', '智能'],
     }
+    this.onChange = this.onChange.bind(this)
+  }
+  onChange(list, value, isChecked) {
+    console.log(list, value, isChecked)
   }
   render() {
     return (
-      <Checkbox.Group data={this.state.list} />
+      <Checkbox list={this.state.list} onChange={this.onChange} name="c1"/>
     )
   }
 }`,
@@ -24,31 +28,34 @@ class Demo extends React.Component {
   },
   {
     code: `import React from 'react'
-import Checkbox from '@hi-ui/hiui/es/checkbox'\n
+import Checkbox from '@hiui/hiui/es/checkbox'\n
 class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
       list: [{
-        content: '手机',
-        id: 'Phone'
+        text: '手机',
+        value: 'Phone',
+        checked: true
       },{
-        content: '电脑',
-        id: 'Computer'
+        text: '电脑',
+        value: 'Computer'
       },{
-        content: '智能',
-        id: 'Intelli'
+        text: '智能'
       },{
-        content: '出行',
-        id: 'Transfer',
-        disabled: true
-      }],
-      value: ['Phone']
+        text: '出行',
+        disabled: true,
+        checked: true
+      }]
     }
+    this.onChange = this.onChange.bind(this)
+  }
+  onChange(list, value, isChecked) {
+    console.log(list, value, isChecked)
   }
   render() {
     return (
-      <Checkbox.Group data={this.state.list} defaultValue={this.state.value} />
+      <Checkbox list={this.state.list} onChange={this.onChange} name="c2"/>
     )
   }
 }`,
@@ -57,6 +64,11 @@ class Demo extends React.Component {
 ]
 
 const DemoBasic = () => (
-  <DocViewer code={code} scope={{ Checkbox }} prefix={prefix} rightOptions={rightOptions} />
+  <DocViewer
+    code={code}
+    scope={{ Checkbox }}
+    prefix={prefix}
+    rightOptions={rightOptions}
+  />
 )
 export default DemoBasic

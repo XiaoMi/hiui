@@ -6,8 +6,8 @@ const prefix = 'card-button'
 
 const code = `
 import React from 'react'
-import Icon from '@hi-ui/hiui/es/icon'
-import Card from '@hi-ui/hiui/es/card'\n
+import Icon from '@hiui/hiui/es/icon'
+import Card from '@hiui/hiui/es/card'\n
 class Demo extends React.Component {
   render() {
     return (
@@ -15,6 +15,7 @@ class Demo extends React.Component {
         <Card
           hoverable
           extra={[<Icon name='edit' key={1}/>, <Icon name='delete' key={2}/>]}
+          extraShow='stay'
           title='这里是标题这里是标题这里是标题'
         >
           <p>包含额外扩展按钮</p>
@@ -24,7 +25,7 @@ class Demo extends React.Component {
         <Card
           hoverable
           extra={[<Icon name='edit' key={1} />, <Icon name='delete' key={2}/>]}
-          extraType='hover'
+          extraShow='hover'
         >
           <p>有扩展按钮，无标题</p>
           <p>扩展按钮移入后显示</p>

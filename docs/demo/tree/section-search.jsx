@@ -6,7 +6,7 @@ const desc = '通过搜索框对树进行过滤'
 
 const code = `
 import React from 'react'
-import Tree from '@hi-ui/hiui/es/tree'\n
+import Tree from '@hiui/hiui/es/tree'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)

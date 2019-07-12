@@ -54,7 +54,6 @@ export default {
     'group-tips': {
       modal: components['modal'],
       notification: components['notification'],
-      message: components['message'],
       alert: components['alert'],
       tag: components['tag'],
       badge: components['badge'],

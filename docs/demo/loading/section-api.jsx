@@ -6,8 +6,8 @@ import Loading from '../../../components/loading'
 const prefix = 'loading-api'
 const code = `
 import React from 'react'
-import Button from '@hi-ui/hiui/es/button'
-import Panel from '@hi-ui/hiui/es/panel'
+import Button from '@hiui/hiui/es/button'
+import Panel from '@hiui/hiui/es/panel'
 class Demo extends React.Component {
   constructor () {
     super()
@@ -18,19 +18,18 @@ class Demo extends React.Component {
   }
 
   demoEvent1 () {
-    Loading.open(null, {key: 123})
+    const l = Loading.open()
     setTimeout(() => {
-      Loading.close(123)
+      l.close()
     }, 3000)
   }
   demoEvent2 () {
-    Loading.open(this.el,
-    {
-      content: '加载中',
-      key: 666
+    const l = Loading.open({
+      target: this.el,
+      tip: '加载中'
     })
     setTimeout(() => {
-      Loading.close(666)
+      l.close()
     }, 3000)
   }
   render () {
@@ -52,5 +51,11 @@ class Demo extends React.Component {
     </div>
   }
 }`
-const DemoApi = () => <DocViewer code={code} scope={{ Button, Panel, Loading }} prefix={prefix} />
+const DemoApi = () => (
+  <DocViewer
+    code={code}
+    scope={{ Button, Panel, Loading }}
+    prefix={prefix}
+  />
+)
 export default DemoApi

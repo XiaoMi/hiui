@@ -10,7 +10,7 @@ import Provider from '../context'
 
 class Cascader extends Component {
   static propTypes = {
-    data: PropTypes.array,
+    options: PropTypes.array,
     value: PropTypes.oneOfType([
       PropTypes.array
     ]),
@@ -21,7 +21,7 @@ class Cascader extends Component {
     changeOnSelect: PropTypes.bool,
     className: PropTypes.string,
     placeholder: PropTypes.string,
-    emptyContent: PropTypes.string,
+    noFoundTip: PropTypes.string,
     style: PropTypes.object,
     onActiveItemChange: PropTypes.func,
     onChange: PropTypes.func,
@@ -30,7 +30,7 @@ class Cascader extends Component {
 
   static defaultProps = {
     fieldNames: {},
-    data: [],
+    options: [],
     value: [],
     searchable: false,
     clearable: true,
@@ -117,7 +117,7 @@ class Cascader extends Component {
     } else {
       let labels = []
       let index = 0
-      let _options = this.props.data
+      let _options = this.props.options
       const labelKey = this.labelKey()
       const valueKey = this.valueKey()
       const childrenKey = this.childrenKey()
@@ -173,7 +173,7 @@ class Cascader extends Component {
 
   onKeywordChange () {
     const {
-      data
+      options
     } = this.props
     const {
       keyword
@@ -213,7 +213,7 @@ class Cascader extends Component {
         match.options.pop()
       })
     }
-    checkOptions(data, initMatchOptions)
+    checkOptions(options, initMatchOptions)
     filterOptions = this.formatFilterOptions(filterOptions, keyword)
 
     this.setState({
@@ -236,11 +236,11 @@ class Cascader extends Component {
     const jointOptions = []
     const labelKey = this.labelKey()
     const valueKey = this.valueKey()
-    const emptyContent = this.localeDatasProps('noFoundTip')
+    const noFoundTip = this.localeDatasProps('noFoundTip')
 
     if (filterOptions.length === 0) {
       return [{
-        [labelKey]: emptyContent,
+        [labelKey]: noFoundTip,
         [valueKey]: '',
         disabled: true
       }]
@@ -293,11 +293,11 @@ class Cascader extends Component {
   }
 
   labelKey () {
-    return this.props.fieldNames.label || 'content'
+    return this.props.fieldNames.label || 'label'
   }
 
   valueKey () {
-    return this.props.fieldNames.value || 'id'
+    return this.props.fieldNames.value || 'value'
   }
 
   childrenKey () {
@@ -307,7 +307,7 @@ class Cascader extends Component {
   render () {
     const {
       className,
-      data,
+      options,
       disabled,
       searchable,
       clearable,
@@ -363,7 +363,7 @@ class Cascader extends Component {
           <Menu
             ref={node => { this.menuNode = node }}
             value={cascaderValue}
-            options={filterOptions || data}
+            options={filterOptions || options}
             root={() => this}
             onSelect={this.onChangeValue.bind(this)}
           />

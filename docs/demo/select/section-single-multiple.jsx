@@ -4,21 +4,21 @@ import Select from '../../../components/select'
 const prefix = 'select-single-multiple'
 const code = `
 import React from 'react'
-import Select from '@hi-ui/hiui/es/select'\n
+import Select from '@hiui/hiui/es/select'\n
 class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
       multipleList: [
-        { title:'手机', id:'2' },
-        { title:'小米2', id:'2-1' },
-        { title:'小米3', id:'2-2' },
-        { title:'小米4', id:'2-3' },
-        { title:'小米5', id:'2-4' },
-        { title:'电脑', id:'3' },
-        { title:'笔记本', id:'4' },
-        { title:'生活周边', id:'5' },
-        { title:'其它', id:'6' }
+        { name:'手机', id:'2' },
+        { name:'小米2', id:'2-1' },
+        { name:'小米3', id:'2-2' },
+        { name:'小米4', id:'2-3' },
+        { name:'小米5', id:'2-4' },
+        { name:'电脑', id:'3' },
+        { name:'笔记本', id:'4' },
+        { name:'生活周边', id:'5' },
+        { name:'其它', id:'6' }
       ]
     }
   }
@@ -27,23 +27,29 @@ class Demo extends React.Component {
     return (
       <React.Fragment>
         <Select
-          type='multiple'
+          mode='multiple'
           style={{width: '300px'}}
           optionWidth={400}
-          multipleWrap="nowrap"
-          data={this.state.multipleList}
+          multipleMode="nowrap"
+          list={this.state.multipleList}
           value={['4', '5','2','3']}
-          searchable
-          showCheckAll
+          searchable={true}
+          showCheckAll={true}
           placeholder='请选择...'
-          emptyContent='无匹配数据'
+          noFoundTip='无匹配数据'
           onChange={(item) => {
-            console.log('多选结果', item)
+              console.log('多选结果', item)
           }}
         />
       </React.Fragment>
     )
   }
 }`
-const DemoSingleMultiple = () => <DocViewer code={code} scope={{ Select }} prefix={prefix} />
+const DemoSingleMultiple = () => (
+  <DocViewer
+    code={code}
+    scope={{ Select }}
+    prefix={prefix}
+  />
+)
 export default DemoSingleMultiple
