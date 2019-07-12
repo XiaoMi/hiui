@@ -4,7 +4,7 @@ import Dropdown from '../../../components/dropdown'
 const prefix = 'dropdown-base'
 const code = `
 import React from 'react'
-import Dropdown from '@hiui/hiui/es/dropdown'\n
+import Dropdown from '@hi-ui/hiui/es/dropdown'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -21,17 +21,11 @@ class Demo extends React.Component {
   render() {
     return (
       <div>
-        <Dropdown list={this.state.list} title="电子产品" onClick={(val) => console.log(val)}></Dropdown>
+        <Dropdown data={this.state.list} title="电子产品" onClick={(val) => console.log(val)}></Dropdown>
       </div>
     )
   }
 }`
 
-const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ Dropdown }}
-    prefix={prefix}
-  />
-)
+const DemoBase = () => <DocViewer code={code} scope={{ Dropdown }} prefix={prefix} />
 export default DemoBase

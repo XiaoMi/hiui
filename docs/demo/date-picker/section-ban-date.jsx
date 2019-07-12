@@ -4,7 +4,7 @@ import DatePicker from '../../../components/date-picker'
 const prefix = 'date-picker-date'
 const code = `
 import React from 'react'
-import DatePicker from '@hiui/hiui/es/date-picker'\n
+import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -26,11 +26,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBanDate = () => (
-  <DocViewer
-    code={code}
-    scope={{ DatePicker }}
-    prefix={prefix}
-  />
-)
+const DemoBanDate = () => <DocViewer code={code} scope={{ DatePicker }} prefix={prefix} />
 export default DemoBanDate

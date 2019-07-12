@@ -6,7 +6,7 @@ const rightOptions = ['自定义字段名', '自定义显示', '搜索', '动态
 const code = [
   {
     code: `import React from 'react'
-import Cascader from '@hiui/hiui/es/cascader'\n
+import Cascader from '@hi-ui/hiui/es/cascader'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -81,59 +81,60 @@ class Demo extends React.Component {
   }
 }`,
     opt: ['自定义字段名']
-  }, {
+  },
+  {
     code: `import React from 'react'
-import Cascader from '@hiui/hiui/es/cascader'\n
+import Cascader from '@hi-ui/hiui/es/cascader'\n
 class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
       options: [
         {
-          value: '手机',
-          label: '手机',
+          id: '手机',
+          content: '手机',
           children: [
             {
-              value: '小米',
-              label: '小米',
+              id: '小米',
+              content: '小米',
               children: [
                 {
-                  value: '小米3',
-                  label: '小米3'
+                  id: '小米3',
+                  content: '小米3'
                 },
                 {
-                  value: '小米4',
-                  label: '小米4'
+                  id: '小米4',
+                  content: '小米4'
                 },
               ]
             },
             {
-              value: '红米',
-              label: '红米',
+              id: '红米',
+              content: '红米',
               children: [
                 {
-                  value: '红米3',
-                  label: '红米3'
+                  id: '红米3',
+                  content: '红米3'
                 },
                 {
-                  value: '红米4',
-                  label: '红米4'
+                  id: '红米4',
+                  content: '红米4'
                 }
               ]
             }
           ]
         },
         {
-          value: '电视',
-          label: '电视',
+          id: '电视',
+          content: '电视',
           children: [
             {
-              value: '小米电视4A',
-              label: '小米电视4A'
+              id: '小米电视4A',
+              content: '小米电视4A'
             },
             {
-              value: '小米电视4C',
-              label: '小米电视4C'
+              id: '小米电视4C',
+              content: '小米电视4C'
             }
           ]
         }
@@ -147,7 +148,7 @@ class Demo extends React.Component {
           console.log('on change', value)
         }}
         options={this.state.options}
-        style={{width: '240px'}}
+        style={{ width: 240 }}
         displayRender={values => {
           return values.join(' > ')
         }}
@@ -156,101 +157,102 @@ class Demo extends React.Component {
   }
 }`,
     opt: ['自定义显示']
-  }, {
+  },
+  {
     code: `import React from 'react'
-import Cascader from '@hiui/hiui/es/cascader'\n
+import Cascader from '@hi-ui/hiui/es/cascader'\n
 class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
       options: [
         {
-          value: '手机',
-          label: '手机',
+          id: '手机',
+          content: '手机',
           children: [
             {
-              value: '小米',
-              label: '小米',
+              id: '小米',
+              content: '小米',
               children: [
                 {
-                  value: '小米1',
-                  label: '小米1'
+                  id: '小米1',
+                  content: '小米1'
                 },
                 {
-                  value: '小米2',
-                  label: '小米2',
+                  id: '小米2',
+                  content: '小米2',
                   disabled: true
                 },
                 {
-                  value: '小米3',
-                  label: '小米3'
+                  id: '小米3',
+                  content: '小米3'
                 },
                 {
-                  value: '小米4',
-                  label: '小米4'
+                  id: '小米4',
+                  content: '小米4'
                 },
                 {
-                  value: '小米5',
-                  label: '小米5'
+                  id: '小米5',
+                  content: '小米5'
                 },
                 {
-                  value: '小米6',
-                  label: '小米6'
+                  id: '小米6',
+                  content: '小米6'
                 },
                 {
-                  value: '小米7',
-                  label: '小米7'
+                  id: '小米7',
+                  content: '小米7'
                 },
                 {
-                  value: '小米8',
-                  label: '小米8'
+                  id: '小米8',
+                  content: '小米8'
                 }
               ]
             },
             {
-              value: '红米',
-              label: '红米',
+              id: '红米',
+              content: '红米',
               disabled: true,
               children: [
                 {
-                  value: '红米1',
-                  label: '红米1'
+                  id: '红米1',
+                  content: '红米1'
                 },
                 {
-                  value: '红米2',
-                  label: '红米2'
+                  id: '红米2',
+                  content: '红米2'
                 },
                 {
-                  value: '红米3',
-                  label: '红米3'
+                  id: '红米3',
+                  content: '红米3'
                 },
                 {
-                  value: '红米4',
-                  label: '红米4'
+                  id: '红米4',
+                  content: '红米4'
                 }
               ]
             }
           ]
         },
         {
-          value: '电视',
-          label: '电视',
+          id: '电视',
+          content: '电视',
           children: [
             {
-              value: '小米电视4A',
-              label: '小米电视4A 55寸 1GB+4GB大内存 64位四核处理器'
+              id: '小米电视4A',
+              content: '小米电视4A 55寸 1GB+4GB大内存 64位四核处理器'
             },
             {
-              value: '小米电视4C',
-              label: '小米电视4C'
+              id: '小米电视4C',
+              content: '小米电视4C'
             },
             {
-              value: '小米电视4X',
-              label: '小米电视4X'
+              id: '小米电视4X',
+              content: '小米电视4X'
             },
             {
-              value: '小米电视4',
-              label: '小米电视4'
+              id: '小米电视4',
+              content: '小米电视4'
             }
           ]
         }
@@ -266,112 +268,113 @@ class Demo extends React.Component {
         noFoundTip="未搜索到相关内容"
         searchable={true}
         options={this.state.options}
-        style={{width: '240px'}}
+        style={{ width: 240 }}
       />
     )
   }
 }`,
     opt: ['搜索']
-  }, {
+  },
+  {
     code: `import React from 'react'
-import Cascader from '@hiui/hiui/es/cascader'\n
+import Cascader from '@hi-ui/hiui/es/cascader'\n
 class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
       options: [
         {
-          value: '手机',
-          label: '手机',
+          id: '手机',
+          content: '手机',
           children: [
             {
-              value: '小米',
-              label: '小米',
+              id: '小米',
+              content: '小米',
               children: [
                 {
-                  value: '小米1',
-                  label: '小米1'
+                  id: '小米1',
+                  content: '小米1'
                 },
                 {
-                  value: '小米2',
-                  label: '小米2',
+                  id: '小米2',
+                  content: '小米2',
                   disabled: true
                 },
                 {
-                  value: '小米3',
-                  label: '小米3'
+                  id: '小米3',
+                  content: '小米3'
                 },
                 {
-                  value: '小米4',
-                  label: '小米4'
+                  id: '小米4',
+                  content: '小米4'
                 },
                 {
-                  value: '小米5',
-                  label: '小米5'
+                  id: '小米5',
+                  content: '小米5'
                 },
                 {
-                  value: '小米6',
-                  label: '小米6'
+                  id: '小米6',
+                  content: '小米6'
                 },
                 {
-                  value: '小米7',
-                  label: '小米7'
+                  id: '小米7',
+                  content: '小米7'
                 },
                 {
-                  value: '小米8',
-                  label: '小米8'
+                  id: '小米8',
+                  content: '小米8'
                 }
               ]
             },
             {
-              value: '红米',
-              label: '红米',
+              id: '红米',
+              content: '红米',
               children: [
                 {
-                  value: '红米1',
-                  label: '红米1'
+                  id: '红米1',
+                  content: '红米1'
                 },
                 {
-                  value: '红米2',
-                  label: '红米2'
+                  id: '红米2',
+                  content: '红米2'
                 },
                 {
-                  value: '红米3',
-                  label: '红米3'
+                  id: '红米3',
+                  content: '红米3'
                 },
                 {
-                  value: '红米4',
-                  label: '红米4'
+                  id: '红米4',
+                  content: '红米4'
                 }
               ]
             }
           ]
         },
         {
-          value: '电视',
-          label: '电视',
+          id: '电视',
+          content: '电视',
           children: [
             {
-              value: '小米电视4A',
-              label: '小米电视4A'
+              id: '小米电视4A',
+              content: '小米电视4A'
             },
             {
-              value: '小米电视4C',
-              label: '小米电视4C'
+              id: '小米电视4C',
+              content: '小米电视4C'
             },
             {
-              value: '小米电视4X',
-              label: '小米电视4X'
+              id: '小米电视4X',
+              content: '小米电视4X'
             },
             {
-              value: '小米电视4',
-              label: '小米电视4'
+              id: '小米电视4',
+              content: '小米电视4'
             }
           ]
         },
         {
-          value: 'mix',
-          label: 'Mix',
+          id: 'mix',
+          content: 'Mix',
           children: []
         }
       ]
@@ -384,20 +387,20 @@ class Demo extends React.Component {
           console.log('on change', value)
         }}
         options={this.state.options}
-        style={{width: '240px'}}
+        style={{ width: 240 }}
         onActiveItemChange={values=>{
           if(values[0] == 'mix') {
             setTimeout(()=>{
               this.state.options[2].children = [
                 {
-                  value: 'mix1',
-                  label: 'Mix1'
+                  id: 'mix1',
+                  content: 'Mix1'
                 },{
-                  value: 'mix2',
-                  label: 'Mix2'
+                  id: 'mix2',
+                  content: 'Mix2'
                 },{
-                  value: 'mix3',
-                  label: 'Mix3'
+                  id: 'mix3',
+                  content: 'Mix3'
                 }
               ]
               this.forceUpdate()
@@ -413,11 +416,6 @@ class Demo extends React.Component {
 ]
 
 const DemoBasic = () => (
-  <DocViewer
-    code={code}
-    scope={{ Cascader }}
-    prefix={prefix}
-    rightOptions={rightOptions}
-  />
+  <DocViewer code={code} scope={{ Cascader }} prefix={prefix} rightOptions={rightOptions} />
 )
 export default DemoBasic

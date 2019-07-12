@@ -5,7 +5,7 @@ const prefix = 'menu-vertical'
 
 const code = `
 import React from 'react'
-import Menu from '@hiui/hiui/es/menu'\n
+import Menu from '@hi-ui/hiui/es/menu'\n
 class Demo extends React.Component {
   render(){
     const datas = [
@@ -95,21 +95,15 @@ class Demo extends React.Component {
     return(
       <div>
         <Menu
-          mode="vertical"
+          placement="vertical"
           activeId={'xiaomi9'}
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
           onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
-          datas={datas}
+          data={datas}
         />
       </div>
     )
   }
 }`
-const DemoVertical = () => (
-  <DocViewer
-    code={code}
-    scope={{ Menu }}
-    prefix={prefix}
-  />
-)
+const DemoVertical = () => <DocViewer code={code} scope={{ Menu }} prefix={prefix} />
 export default DemoVertical

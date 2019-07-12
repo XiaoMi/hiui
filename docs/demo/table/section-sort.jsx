@@ -5,8 +5,8 @@ import Tooltip from '../../../components/tooltip'
 const prefix = 'table-sort'
 const code = `
 import React from 'react'
-import Tooltip from '@hiui/hiui/es/tooltip'
-import Table from '@hiui/hiui/es/table'\n
+import Tooltip from '@hi-ui/hiui/es/tooltip'
+import Table from '@hi-ui/hiui/es/table'\n
 class Demo extends React.Component {
   constructor(props){
     super(props)
@@ -62,11 +62,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoSort = () => (
-  <DocViewer
-    code={code}
-    scope={{ Table, Tooltip }}
-    prefix={prefix}
-  />
-)
+const DemoSort = () => <DocViewer code={code} scope={{ Table, Tooltip }} prefix={prefix} />
 export default DemoSort

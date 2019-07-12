@@ -4,7 +4,7 @@ import Card from '../../../components/card'
 const prefix = 'card-simple'
 const code = `
 import React from 'react'
-import Card from '@hiui/hiui/es/card'\n
+import Card from '@hi-ui/hiui/es/card'\n
 class Demo extends React.Component {
   render() {
     return (
@@ -24,15 +24,7 @@ class Demo extends React.Component {
           >
             简易卡片
           </Card>
-          <br/>
-          <Card
-            hoverable
-            type='simple'
-            size='large'
-            disabled
-          >
-            简易卡片
-          </Card>
+
           <br/>
           <Card
             hoverable

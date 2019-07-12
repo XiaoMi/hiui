@@ -3,11 +3,11 @@ import DocViewer from '../../../libs/doc-viewer'
 import Stepper from '../../../components/stepper'
 import Icon from '../../../components/icon'
 const prefix = 'stepper-up-down'
-const desc = '上下结构只需加入 up=true；只有上下结构有 text 描述'
+const desc = '上下结构只需加入 itemLayout="vertical"；只有上下结构有 text 描述'
 const code = `
 import React from 'react'
-import Icon from '@hiui/hiui/es/icon'
-import Stepper from '@hiui/hiui/es/stepper'\n
+import Icon from '@hi-ui/hiui/es/icon'
+import Stepper from '@hi-ui/hiui/es/stepper'\n
 class Demo extends React.Component {
   render() {
     const list = [
@@ -26,13 +26,11 @@ class Demo extends React.Component {
     ]
 
     return (
-      <div>
-        <Stepper
-          list={list}
-          current={2}
-          up={true}
-        />
-      </div>
+      <Stepper
+        data={list}
+        current={2}
+        itemLayout='vertical'
+      />
     )
   }
 }`

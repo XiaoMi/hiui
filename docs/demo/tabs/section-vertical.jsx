@@ -4,7 +4,7 @@ import DocViewer from '../../../libs/doc-viewer'
 const prefix = 'tabs-vertical'
 const desc = '建议标签数量在 10 个以上时使用'
 
-const code = `import Tabs from '@hiui/hiui/es/tabs'
+const code = `import Tabs from '@hi-ui/hiui/es/tabs'
 import React from 'react'\n
 class Demo extends React.Component {
   constructor() {
@@ -12,62 +12,62 @@ class Demo extends React.Component {
     this.state = {
       panes: [
         {
-          tabName: '我的订单',
-          tabKey: 'tabKey-1'
+          tabTitle: '我的订单',
+          tabId: 'tabId-1'
         },
         {
-          tabName: '团购订单',
-          tabKey: 'tabKey-2',
+          tabTitle: '团购订单',
+          tabId: 'tabId-2',
           closable: false
         },
         {
-          tabName: '以旧换新订单',
-          tabKey: 'tabKey-3'
+          tabTitle: '以旧换新订单',
+          tabId: 'tabId-3'
         },
         {
-          tabName: <span>消息通知</span>,
-          tabKey: 'tabKey-4'
+          tabTitle: <span>消息通知</span>,
+          tabId: 'tabId-4'
         },
         {
-          tabName: '购买资格',
-          tabKey: 'tabKey-5'
+          tabTitle: '购买资格',
+          tabId: 'tabId-5'
         },
         {
-          tabName: '团购通知',
-          tabKey: 'tabKey-6'
+          tabTitle: '团购通知',
+          tabId: 'tabId-6'
         },
         {
-          tabName: '订单详情',
-          tabKey: 'tabKey-7'
+          tabTitle: '订单详情',
+          tabId: 'tabId-7'
         },
         {
-          tabName: '订单详情',
-          tabKey: 'tabKey-8'
+          tabTitle: '订单详情',
+          tabId: 'tabId-8'
         },
         {
-          tabName: '订单详情',
-          tabKey: 'tabKey-9'
+          tabTitle: '订单详情',
+          tabId: 'tabId-9'
         },
         {
-          tabName: '订单详情',
-          tabKey: 'tabKey-10'
+          tabTitle: '订单详情',
+          tabId: 'tabId-10'
         }
       ]
     }
   }
   render () {
     return (
-      <Tabs placement="left" activeTabKey="1" onTabClick={(tab,e)=>console.log(tab,e)}>
+      <Tabs placement="vertical" onTabClick={(tab,e)=>console.log(tab,e)}>
         {
           this.state.panes.map((pane, index) => {
             return (
               <Tabs.Pane
-                tabName={pane.tabName}
-                tabKey={pane.tabKey}
+                tabTitle={pane.tabTitle}
+                tabId={pane.tabId}
                 closable={pane.closable}
                 key={index}
               >
-                <div style={{padding: '16px'}}>{pane.tabName}</div>
+                <div style={{padding: '16px'}}>{pane.tabTitle}</div>
               </Tabs.Pane>
             )
           })

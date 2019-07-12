@@ -4,7 +4,7 @@ import Transfer from '../../../components/transfer'
 const prefix = 'transfer-base'
 const code = `
 import React from 'react'
-import Transfer from '@hiui/hiui/es/transfer'\n
+import Transfer from '@hi-ui/hiui/es/transfer'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -43,11 +43,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ Transfer }}
-    prefix={prefix}
-  />
-)
+const DemoBase = () => <DocViewer code={code} scope={{ Transfer }} prefix={prefix} />
 export default DemoBase

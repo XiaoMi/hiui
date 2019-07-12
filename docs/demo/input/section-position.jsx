@@ -8,11 +8,11 @@ import Button from '../../../components/button'
 const prefix = 'input-position'
 const code = `
 import React from 'react'
-import Grid from '@hiui/hiui/es/grid'
-import Button from '@hiui/hiui/es/button'
-import Select from '@hiui/hiui/es/select'
-import Radio from '@hiui/hiui/es/radio'
-import Input from '@hiui/hiui/es/input'\n
+import Grid from '@hi-ui/hiui/es/grid'
+import Button from '@hi-ui/hiui/es/button'
+import Select from '@hi-ui/hiui/es/select'
+import Radio from '@hi-ui/hiui/es/radio'
+import Input from '@hi-ui/hiui/es/input'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -34,71 +34,64 @@ class Demo extends React.Component {
       }}
     />
     this.state = {
-      prepend: ele,
-      append: null,
-      checkedIndex: 0,
       radioList: [{
-        name: '前置元素',
-        prepend: ele
+        content: '前置元素',
+        id: 'prepend'
       }, {
-        name: '后置元素',
-        append: <Button type="primary">搜索</Button>
+        content: '后置元素',
+        id: 'append'
       }],
-      value: ''
+      value: 'prepend'
+    }
+    this.getFix = () => {
+      return {
+        prepend: {
+          prepend: ele
+        },
+        append: {
+          append: <Button type="primary">搜索</Button>
+        }
+      }[this.state.value]
     }
   }
   render() {
     const {
       value,
-      radioList,
-      checkedIndex,
-      prepend,
-      append
+      radioList
     } = this.state
+    const { prepend, append } = this.getFix()
     const Row = Grid.Row
     const Col = Grid.Col
     return (
       <div>
-      <Row gutter={true}>
+        <Row gutter>
           <Col span={12}>
-            <Radio
-              list={radioList}
-              mode='button'
-              checked={checkedIndex}
-              onChange={(data, index, item) => {
-                this.setState({
-                  checkedIndex: index,
-                  prepend: item.prepend,
-                  append: item.append,
-                })
+            <Radio.Group
+              data={radioList}
+              value={value}
+              type='button'
+              onChange={(value) => {
+                this.setState({ value })
               }}
             />
           </Col>
         </Row>
-        <Row gutter={true}>
+        <Row gutter>
           <Col span={12}>
-             <Input
-                id="customId"
-                value={value}
-                type="text"
-                placeholder="请输入手机号"
-                onChange={e => this.setState({value: e.target.value})}
-                prepend={prepend}
-                append={append}
-                style={{width: '250px'}}
-              />
+            <Input
+              id="customId"
+              placeholder="请输入手机号"
+              prepend={prepend}
+              append={append}
+              style={{ width: 250 }}
+            />
           </Col>
         </Row>
-
       </div>
     )
   }
 }`
 const DemoPosition = () => (
-  <DocViewer
-    code={code}
-    scope={{ Grid, Input, Radio, Select, Button }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} scope={{ Grid, Input, Radio, Select, Button }} prefix={prefix} />
 )
 export default DemoPosition

@@ -24,62 +24,24 @@ import DemoAdvanced from '../../demo/cascader/section-advanced.jsx'
 
 <DemoAdvanced />
 
-## Cascader Attributes
-
-| 参数           | 说明                                          | 类型     | 可选值        | 默认值                                              |
-| -------------- | --------------------------------------------- | -------- | ------------- | --------------------------------------------------- |
-| options        | 可选项数据源                                  | Array    | -             | -                                                   |
-| value          | 默认值                                        | Array    | -             | []                                                  |
-| fieldNames     | 自定义 options 中 label,value,children 的字段 | Object   | -             | {label:'label', value:'value', children:'children'} |
-| searchable     | 是否可搜索                                    | Boolean  | true \| false | false                                               |
-| clearable      | 是否可清空                                    | Boolean  | true \| false | true                                                |
-| disabled       | 是否禁止使用                                  | Boolean  | true \| false | false                                               |
-| changeOnSelect | 是否启用选择即改变功能                        | Boolean  | true \| false | false                                               |
-| placeholder    | placeholder                                   | String   | -             | 请选择                                              |
-| noFoundTip     | 未搜索到的提示                                | String   | -             | 无匹配数据                                          |
-| className      | 自定义 class                                  | String   | -             | -                                                   |
-| style          | 自定义样式                                    | Object   | -             | -                                                   |
-| displayRender  | 自定义选中的标签展示                          | Function | -             | -                                                   |
-
-## Cascader Events
-
-| 参数               | 说明                 | 回调参数 |
-| ------------------ | -------------------- | -------- |
-| onChange           | 选择完成后回调       | 选中的值 |
-| onActiveItemChange | 父级选项变化时的回调 | 选中的值 |
-
-<div style={{ position: 'relative' }}>
-  <span
-    style={{
-      position: 'absolute',
-      background: '#fff',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
-      padding: 8,
-      color: '#999'
-    }}
-  >
-    以下调整将随 2.0.0 版本发布，敬请期待
-  </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
-</div>
+import { Badge } from '@libs'
 
 ## Props
 
-| 参数           | 说明                                              | 类型                        | 可选值        | 默认值                                                  |
-| -------------- | ------------------------------------------------- | --------------------------- | ------------- | ------------------------------------------------------- |
-| fieldNames     | 设置 options 中 label, value, children 对应的 key | object                      | -             | { label: 'label', value: 'value', children: 'children'} |
-| data           | 设置选择项数据源                                  | DataItem[]                  | -             | -                                                       |
-| value          | 设置当前选中值                                    | string[]                    | -             | []                                                      |
-| searchable     | 是否可搜索                                        | boolean                     | true \| false | false                                                   |
-| clearable      | 是否可清空                                        | boolean                     | true \| false | true                                                    |
-| disabled       | 是否禁止使用                                      | boolean                     | true \| false | false                                                   |
-| changeOnSelect | 是否启用选择即改变功能                            | boolean                     | true \| false | false                                                   |
-| placeholder    | 输入框占位                                        | string                      | -             | '请选择'                                                |
-| emptyContent   | 设置选项为空时展示的内容                          | string \| ReactNode         | -             | '无匹配数据'                                            |
-| displayRender  | 自定义选择后展示的内容                            | (value: string[]) => string | -             | -                                                       |
-| onChange       | 选择后的回调                                      | (value: string[]) => void   | -             | -                                                       |
+| 参数                               | 说明                                              | 类型                        | 可选值        | 默认值                                                                                     |
+| ---------------------------------- | ------------------------------------------------- | --------------------------- | ------------- | ------------------------------------------------------------------------------------------ |
+| fieldNames                         | 设置 options 中 label, value, children 对应的 key | object                      | -             | { label: 'label', value: 'value', children: 'children'}<Badge type='feature' text='new' /> |
+| data                               | 设置选择项数据源                                  | DataItem[]                  | -             | -                                                                                          |
+| value                              | 设置当前选中值                                    | string[]                    | -             | []                                                                                         |
+| searchable                         | 是否可搜索                                        | boolean                     | true \| false | false                                                                                      |
+| clearable                          | 是否可清空                                        | boolean                     | true \| false | true                                                                                       |
+| disabled                           | 是否禁止使用                                      | boolean                     | true \| false | false                                                                                      |
+| changeOnSelect                     | 是否启用选择即改变功能                            | boolean                     | true \| false | false                                                                                      |
+| placeholder                        | 输入框占位                                        | string                      | -             | '请选择'                                                                                   |
+| emptyContent                       | 设置选项为空时展示的内容                          | string \| ReactNode         | -             | '无匹配数据'                                                                               |
+| displayRender                      | 自定义选择后展示的内容                            | (value: string[]) => string | -             | -                                                                                          |
+| onChange                           | 选择后的回调                                      | (value: string[]) => void   | -             | -                                                                                          |
+| options<Badge text='deprecated' /> | 可选项数据源。即将废弃，请使用 data 代替          | Array                       | -             | -                                                                                          |
 
 ## Type
 

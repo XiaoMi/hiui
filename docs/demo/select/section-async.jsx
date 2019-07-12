@@ -4,14 +4,14 @@ import Select from '../../../components/select'
 const prefix = 'select-async'
 const code = `
 import React from 'react'
-import Select from '@hiui/hiui/es/select'\n
+import Select from '@hi-ui/hiui/es/select'\n
 class Demo extends React.Component {
   render () {
     return (
       <div>
         <Select
-          mode='single'
-          origin={{
+          type='single'
+          dataSource={{
             type: 'GET',
             headers: {token: 'tokenXXXXXXX'},
             mode: 'cors',
@@ -25,18 +25,12 @@ class Demo extends React.Component {
           placeholder='请选择种类'
           style={{width: '200px'}}
           onChange={(item) => {
-              console.log('异步单选结果', item)
+            console.log('异步单选结果', item)
           }}
         />
       </div>
     )
   }
 }`
-const DemoAsync = () => (
-  <DocViewer
-    code={code}
-    scope={{ Select }}
-    prefix={prefix}
-  />
-)
+const DemoAsync = () => <DocViewer code={code} scope={{ Select }} prefix={prefix} />
 export default DemoAsync

@@ -4,7 +4,7 @@ import Icon from '../../../components/icon'
 const prefix = 'icon-base'
 const code = `
 import React from 'react'
-import Icon from '@hiui/hiui/es/icon'\n
+import Icon from '@hi-ui/hiui/es/icon'\n
 class Demo extends React.Component {
   render () {
     return (

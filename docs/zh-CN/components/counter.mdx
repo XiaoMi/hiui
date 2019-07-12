@@ -6,47 +6,16 @@ import DemoBase from '../../demo/counter/section-base.jsx'
 
 <DemoBase />
 
-## Counter Attributes
-
-| 参数      | 说明         | 类型             | 可选值 | 默认值 |
-| --------- | ------------ | ---------------- | ------ | ------ |
-| value     | 默认值       | String \| Number | -      |
-| step      | 每次改变步数 | Number           | -      |
-| min       | 最小值       | Number           | -      |
-| max       | 最大值       | Number           | -      |
-| disabled  | 是否禁用     | Boolean          | -      |
-| className | String       | -                | -      |
-
-## Counter Events
-
-| 参数     | 说明             | 回调参数                      |
-| -------- | ---------------- | ----------------------------- |
-| onChange | 点击加减号时触发 | (event: Event, value: 原始值) |
-
-<div style={{ position: 'relative' }}>
-  <span
-    style={{
-      position: 'absolute',
-      background: '#fff',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
-      padding: 8,
-      color: '#999'
-    }}
-  >
-    以下调整将随 2.0.0 版本发布，敬请期待
-  </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
-</div>
+import { Badge } from '@libs'
 
 ## Props
 
-| 参数     | 说明             | 类型       | 可选值 | 默认值 |
-| -------- | ---------------- | ---------- | ------ | ------ |
-| value    | 设置当前值       | number     | -      | -      |
-| step     | 每次改变值的大小 | number     | -      | -      |
-| min      | 最小值           | number     | -      | -      |
-| max      | 最大值           | number     | -      | -      |
-| disabled | 是否禁用         | boolean    | -      | -      |
-| onChange | 改变值时的回调   | (e: Event) | -      | -      |
+| 参数                                            | 说明             | 类型       | 可选值 | 默认值 |
+| ----------------------------------------------- | ---------------- | ---------- | ------ | ------ |
+| value                                           | 设置当前值       | number     | -      | -      |
+| defaultValue<Badge type='feature' text='new' /> | 设置默认值       | number     | -      | -      |
+| step                                            | 每次改变值的大小 | number     | -      | -      |
+| min                                             | 最小值           | number     | -      | -      |
+| max                                             | 最大值           | number     | -      | -      |
+| disabled                                        | 是否禁用         | boolean    | -      | -      |
+| onChange                                        | 改变值时的回调   | (e: Event) | -      | -      |

@@ -1,12 +1,12 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
-import { handleNotificate } from '../../../components/notification'
+import Notification from '../../../components/notification'
 const prefix = 'notification-base'
 const code = `
 import React from 'react'
-import Button from '@hiui/hiui/es/button'
-import { handleNotificate } from '@hiui/hiui/es/notification'\n
+import Button from '@hi-ui/hiui/es/button'
+import Notification from '@hi-ui/hiui/es/notification'\n
 class Demo extends React.Component {
   render(){
     return(
@@ -18,18 +18,19 @@ class Demo extends React.Component {
   }
 
   open(){
-    handleNotificate({type: 'success', duration: 5000, showClose:false,autoClose:true,title:'标题',message:'自动关闭通知框',onClose:()=>{console.log('关闭回调')}})
+    Notification.open({
+      title:'通知',
+      content:'通知内容',
+    })
   }
   open1(){
-    handleNotificate({autoClose:false,title:'标题',message:'手动关闭通知框',onClose:()=>{console.log('关闭回调')}})
+    Notification.open({
+      title:'通知',
+      content:'通知内容',
+      duration:null,
+    })
   }
 }`
 
-const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ Button, handleNotificate }}
-    prefix={prefix}
-  />
-)
+const DemoBase = () => <DocViewer code={code} scope={{ Button, Notification }} prefix={prefix} />
 export default DemoBase

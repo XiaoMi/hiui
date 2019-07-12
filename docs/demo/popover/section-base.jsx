@@ -5,8 +5,13 @@ import Button from '../../../components/button'
 const prefix = 'Popover-base'
 const code = `
 import React from 'react'
-import Button from '@hiui/hiui/es/button'
-import Popover from '@hiui/hiui/es/popover'\n
+<<<<<<< HEAD
+import Button from '@hi-ui/hiui/es/button'
+import Popover from '@hi-ui/hiui/es/popover'\n
+=======
+import Button from '@hi-ui/hiui/es/button'
+import Popover from '@hi-ui/hiui/es/popover'\n
+>>>>>>> 96193778cf65d94b39118960f8b50c323cf9ca4d
 class Demo extends React.Component {
   render() {
     const title = <span>Popover Title</span>

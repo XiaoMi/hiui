@@ -4,7 +4,7 @@ import Menu from '../../../components/menu'
 const prefix = 'menu-no-accordion'
 const code = `
 import React from 'react'
-import Menu from '@hiui/hiui/es/menu'\n
+import Menu from '@hi-ui/hiui/es/menu'\n
 class Demo extends React.Component {
   render(){
     const datas = [
@@ -95,22 +95,16 @@ class Demo extends React.Component {
       <div>
         <Menu
           accordion={false}
-          mode="vertical"
+          placement="vertical"
           activeId={'xiaomi9'}
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
           onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
-          datas={datas}
+          data={datas}
         />
       </div>
     )
   }
 
 }`
-const DemoNoAccordion = () => (
-  <DocViewer
-    code={code}
-    scope={{ Menu }}
-    prefix={prefix}
-  />
-)
+const DemoNoAccordion = () => <DocViewer code={code} scope={{ Menu }} prefix={prefix} />
 export default DemoNoAccordion

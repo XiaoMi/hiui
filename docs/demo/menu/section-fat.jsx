@@ -4,7 +4,7 @@ import Menu from '../../../components/menu'
 const prefix = 'menu-fat'
 const code = `
 import React from 'react'
-import Menu from '@hiui/hiui/es/menu'\n
+import Menu from '@hi-ui/hiui/es/menu'\n
 class Demo extends React.Component {
   render(){
     const datas = [
@@ -113,24 +113,16 @@ class Demo extends React.Component {
       }
     ]
     return(
-      <div>
-        <Menu
-          mode="horizontal"
-          activeId={'xiaomi9'}
-          fatMenu
-          onClick={(id, prevId)=>console.log('-----click', id, prevId)}
-          datas={datas}
-        />
-      </div>
+      <Menu
+        placement="horizontal"
+        activeId={'xiaomi9'}
+        showAllSubMenus
+        onClick={(id, prevId)=>console.log('-----click', id, prevId)}
+        data={datas}
+      />
     )
   }
 }`
 
-const DemoFat = () => (
-  <DocViewer
-    code={code}
-    scope={{ Menu }}
-    prefix={prefix}
-  />
-)
+const DemoFat = () => <DocViewer code={code} scope={{ Menu }} prefix={prefix} />
 export default DemoFat
