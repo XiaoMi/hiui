@@ -10,8 +10,8 @@ class Demo extends React.Component {
     return (
       <div>
         <Select
-          mode='single'
-          origin={{
+          type='single'
+          dataSource={{
             type: 'GET',
             headers: {token: 'tokenXXXXXXX'},
             mode: 'cors',
@@ -25,7 +25,7 @@ class Demo extends React.Component {
           placeholder='请选择种类'
           style={{width: '200px'}}
           onChange={(item) => {
-              console.log('异步单选结果', item)
+            console.log('异步单选结果', item)
           }}
         />
       </div>

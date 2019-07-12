@@ -10,12 +10,12 @@ class Demo extends React.Component {
     return (
       <div>
         <Select
-          mode='multiple'
-          autoload={true}
+          type='multiple'
+          autoload
           style={{width: '300px'}}
-          multipleMode="nowrap"
+          multipleWrap="nowrap"
           value="1"
-          origin={{
+          dataSource={{
             type: 'get',
             key: 'text',
             keyword: 'xiaomi',

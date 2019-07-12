@@ -11,11 +11,11 @@ class Demo extends React.Component {
     this.state = {
       value: '3',
       singleList: [
-        { name:'电视', id:'3', disabled: true },
-        { name:'手机', id:'2' },
-        { name:'笔记本', id:'4', disabled: true },
-        { name:'生活周边', id:'5' },
-        { name:'办公', id:'6' },
+        { title:'电视', id:'3', disabled: true },
+        { title:'手机', id:'2' },
+        { title:'笔记本', id:'4', disabled: true },
+        { title:'生活周边', id:'5' },
+        { title:'办公', id:'6' },
       ]
     }
   }
@@ -24,10 +24,10 @@ class Demo extends React.Component {
     return (
       <div>
         <Select
-          mode='single'
+          type='single'
           clearable={false}
           style={{width: '200px'}}
-          list={this.state.singleList}
+          data={this.state.singleList}
           value={this.state.value}
           onChange={(item) => {
             console.log('单选结果', item)
