@@ -4,6 +4,9 @@ import Group from './Group'
 import SwitchVersion from '../_util/SwitchVersion'
 import './style/index'
 
-Radio.Group = Group
+const VRadio = SwitchVersion(Radio, RadioLegacy)
+const VGroup = SwitchVersion(Group, undefined)
 
-export default SwitchVersion(Radio, RadioLegacy)
+VRadio.Group = VGroup
+
+export default VRadio

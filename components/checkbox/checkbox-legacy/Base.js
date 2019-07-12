@@ -87,10 +87,10 @@ class Base extends Component {
 
     const {value, name, all, content} = this.props
     const labelClass = classnames(
-      'hi-checkbox',
-      disabled && 'hi-checkbox--disabled',
-      checked && 'hi-checkbox--checked',
-      part && `hi-checkbox--part`
+      'hi-checkbox-legacy',
+      disabled && 'hi-checkbox-legacy--disabled',
+      checked && 'hi-checkbox-legacy--checked',
+      part && `hi-checkbox-legacy--part`
     )
     return (
       <div
@@ -105,8 +105,8 @@ class Base extends Component {
           })
         }}
       >
-        <span className='hi-checkbox__input' />
-        <span className='hi-checkbox__label'>
+        <span className='hi-checkbox-legacy__input' />
+        <span className='hi-checkbox-legacy__label'>
           {content}
         </span>
       </div>
