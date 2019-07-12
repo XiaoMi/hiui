@@ -181,7 +181,17 @@ class Transfer extends Component {
     this.setState({ sourceNode: null })
   }
   renderContainer (dir, datas) {
-    const { mode, type, showCheckAll, showAllSelect, searchable, draggable, emptyContent, title, disabled } = this.props
+    const {
+      mode,
+      type,
+      showCheckAll,
+      showAllSelect,
+      searchable,
+      draggable,
+      emptyContent,
+      title,
+      disabled
+    } = this.props
     const {
       sourceSelectedKeys,
       targetSelectedKeys,
@@ -206,9 +216,7 @@ class Transfer extends Component {
     return (
       <div className='hi-transfer__container'>
         {disabled && <div className='hi-transfer__mask' />}
-        {
-          _title && <div className='hi-transfer__title'>{_title}</div>
-        }
+        {_title && <div className='hi-transfer__title'>{_title}</div>}
         {searchable && (
           <div className='hi-transfer__searchbar'>
             <Icon name='search' />
@@ -220,7 +228,9 @@ class Transfer extends Component {
           </div>
         )}
         <div
-          className={`hi-transfer__body ${filterResult.length === 0 ? 'hi-transfer__body--empty' : ''}`}
+          className={`hi-transfer__body ${
+            filterResult.length === 0 ? 'hi-transfer__body--empty' : ''
+          }`}
         >
           {filterResult.length > 0 ? (
             <ul className='hi-transfer__list'>
@@ -264,6 +274,7 @@ class Transfer extends Component {
         {(mode !== 'basic' || type !== 'default') && (showAllSelect || showCheckAll) && (
           <div className={footerCls}>
             <Checkbox
+              legacy
               text='全选'
               checked={
                 selectedKeys.length !== 0 &&
@@ -284,7 +295,7 @@ class Transfer extends Component {
     const { sourceList, targetList, sourceSelectedKeys, targetSelectedKeys, limited } = this.state
     const operCls = classNames(
       'hi-transfer__operation',
-      (mode === 'basic' && type === 'default') && 'hi-transfer__operation--basic'
+      mode === 'basic' && type === 'default' && 'hi-transfer__operation--basic'
     )
     const isLeftDisabled = targetSelectedKeys.length === 0
     const isRightDisabled = sourceSelectedKeys.length === 0 || limited
