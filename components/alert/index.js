@@ -18,22 +18,22 @@ class Alert extends Component {
     closeable: true,
     duration: null
   }
-  componentDidMount() {
+  componentDidMount () {
     if (this.props.duration !== null) {
       window.setTimeout(() => {
         this.handleClose()
       }, this.props.duration)
     }
   }
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = { visible: true }
   }
-  handleClose() {
+  handleClose () {
     this.setState({ visible: false })
     this.props.onClose && this.props.onClose()
   }
-  render() {
+  render () {
     let classnames = classNames(this.props.prefixCls, this.state.visible, this.props.type, {
       noTitle: !this.props.title
     })
@@ -57,14 +57,14 @@ class Alert extends Component {
     return (
       this.state.visible && (
         <div className={classnames}>
-          <div className="hi-icon__title">
+          <div className='hi-icon__title'>
             <i className={`hi-icon icon-${type}`} />
-            {this.props.title && <div className="text-title">{this.props.title}</div>}
+            {this.props.title && <div className='text-title'>{this.props.title}</div>}
           </div>
-          {this.props.content && <div className="text-message">{this.props.content}</div>}
+          {this.props.content && <div className='text-message'>{this.props.content}</div>}
           {this.props.closeable && (
-            <div className="close-btn icon-img-delete" onClick={this.handleClose.bind(this)}>
-              <i className="hi-icon icon-close" />
+            <div className='close-btn icon-img-delete' onClick={this.handleClose.bind(this)}>
+              <i className='hi-icon icon-close' />
             </div>
           )}
         </div>

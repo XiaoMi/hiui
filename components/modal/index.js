@@ -37,13 +37,13 @@ class Modal extends Component {
     destory: false,
     size: 'default'
   }
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {}
     this.node = document.createElement('div')
     document.body.appendChild(this.node)
   }
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps (props, state) {
     // 屏蔽滚动条
     if (props.show || props.visible) {
       document.body.style.setProperty('overflow', 'hidden')
@@ -52,26 +52,26 @@ class Modal extends Component {
     }
     return null
   }
-  componentWillUnMount() {
+  componentWillUnMount () {
     this._unblock()
   }
-  _unblock() {
+  _unblock () {
     this.props.destory && document.body.removeChild(this.node)
     document.body.style.removeProperty('overflow')
   }
-  handleConfirm() {
+  handleConfirm () {
     if (this.props.onConfirm) {
       this.props.onConfirm()
     }
     this._unblock()
   }
-  handleClose() {
+  handleClose () {
     if (this.props.onCancel) {
       this.props.onCancel()
     }
     this._unblock()
   }
-  localeDatasProps(key) {
+  localeDatasProps (key) {
     const { localeDatas } = this.props
     if (this.props[key]) {
       return this.props[key]
@@ -79,7 +79,7 @@ class Modal extends Component {
       return localeDatas.modal[key]
     }
   }
-  renderFooter() {
+  renderFooter () {
     const { footers, footer } = this.props
     const cancelText = this.localeDatasProps('cancelText')
     const confirmText = this.localeDatasProps('confirmText')
@@ -87,16 +87,16 @@ class Modal extends Component {
       return footers || footer
     } else {
       return [
-        <Button type="default" key={0} onClick={this.handleClose.bind(this)}>
+        <Button type='default' key={0} onClick={this.handleClose.bind(this)}>
           {cancelText}
         </Button>,
-        <Button type="primary" key={1} onClick={this.handleConfirm.bind(this)}>
+        <Button type='primary' key={1} onClick={this.handleConfirm.bind(this)}>
           {confirmText}
         </Button>
       ]
     }
   }
-  render() {
+  render () {
     const {
       width,
       style = {},
@@ -106,7 +106,7 @@ class Modal extends Component {
       maskClosable,
       closeBtn,
       closable,
-      footers, //TODO: 废弃，使用 footer 代替
+      footers, // TODO: 废弃，使用 footer 代替
       footer,
       show,
       visible,
@@ -118,7 +118,7 @@ class Modal extends Component {
     return createPortal(
       <div className={classnames}>
         <div
-          className="hi-modal__mask"
+          className='hi-modal__mask'
           onClick={() => {
             ((backDrop && maskClosable !== false) || (maskClosable && backDrop !== false)) &&
               this.handleClose.apply(this)
@@ -132,18 +132,18 @@ class Modal extends Component {
           style={_style}
         >
           {(title || (closeBtn && closable !== false) || (closable && closeBtn !== false)) && (
-            <div className="hi-modal__header">
-              <h3 className="hi-modal__title">{title}</h3>
+            <div className='hi-modal__header'>
+              <h3 className='hi-modal__title'>{title}</h3>
               {((closeBtn && closable !== false) || (closable && closeBtn !== false)) && (
-                <div className="hi-modal__close" onClick={this.handleClose.bind(this)}>
-                  <Icon name="close" />
+                <div className='hi-modal__close' onClick={this.handleClose.bind(this)}>
+                  <Icon name='close' />
                 </div>
               )}
             </div>
           )}
-          <div className="hi-modal__content">{children}</div>
+          <div className='hi-modal__content'>{children}</div>
           {(((!footers || footers.length > 0) && footer !== null) || footer) && (
-            <div className="hi-modal__footer">{this.renderFooter()}</div>
+            <div className='hi-modal__footer'>{this.renderFooter()}</div>
           )}
         </div>
       </div>,

@@ -2,8 +2,10 @@ $prefixCls: '.doc-components-badge' !default;
 
 #{$prefixCls} {
   display: inline;
+
   &-text {
     $h: 1.5em;
+
     display: inline-block;
     transform: translateX(4px) translateY(-30%);
     height: $h;
@@ -13,13 +15,16 @@ $prefixCls: '.doc-components-badge' !default;
     line-height: $h;
     padding: 0 0.6em;
   }
+
   &-deperacted {
-    background: #E19D0C;
+    background: #e19d0c;
   }
+
   &-feature {
     background: #4285f4;
   }
+
   &-warning {
-    background: #E19D0C;
+    background: #e19d0c;
   }
 }

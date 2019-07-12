@@ -551,6 +551,14 @@
   content: '\e602';
 }
 
+.icon-stattistics::before { content: '\e602'; }
+
+.icon-zoom-in::before { content: '\e687'; }
+.icon-zoom-out::before { content: '\e686'; }
+.icon-ratio::before { content: '\e689'; }
+.icon-rotate-left::before { content: '\e688'; }
+.icon-rotate-right::before { content: '\e68e'; }
+
 .icon-maodian::before {
   content: '\e68f';
 }

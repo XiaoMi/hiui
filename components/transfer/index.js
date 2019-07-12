@@ -284,7 +284,7 @@ class Transfer extends Component {
     const { sourceList, targetList, sourceSelectedKeys, targetSelectedKeys, limited } = this.state
     const operCls = classNames(
       'hi-transfer__operation',
-      (mode === 'basic'&& type === 'default') && 'hi-transfer__operation--basic'
+      (mode === 'basic' && type === 'default') && 'hi-transfer__operation--basic'
     )
     const isLeftDisabled = targetSelectedKeys.length === 0
     const isRightDisabled = sourceSelectedKeys.length === 0 || limited
