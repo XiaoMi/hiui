@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Stepper from '../../../components/stepper'
 import Icon from '../../../components/icon'
-const desc = '图标用法传入 src 值'
+const desc = '图标用法传入 Icon 组件'
 const prefix = 'stepper-icon'
 const code = `
 import React from 'react'
@@ -26,12 +26,10 @@ class Demo extends React.Component {
     ]
 
     return (
-      <div>
-        <Stepper
-          list={list}
-          current={1}
-        />
-      </div>
+      <Stepper
+        data={list}
+        current={1}
+      />
     )
   }
 }`

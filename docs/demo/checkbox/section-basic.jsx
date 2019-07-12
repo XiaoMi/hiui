@@ -12,8 +12,8 @@ class Demo extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Checkbox value='default' onChange={(val, isCheck) => console.log(val, isCheck)}>Checkbox</Checkbox>
-        <Checkbox checked onChange={(val, isCheck) => console.log(val, isCheck)}>Checkbox</Checkbox>
+        <Checkbox>Checkbox</Checkbox>
+        <Checkbox defaultChecked>Checkbox</Checkbox>
       </React.Fragment>
     )
   }
@@ -28,7 +28,7 @@ class Demo extends React.Component {
     return (
       <React.Fragment>
         <Checkbox disabled>Checkbox</Checkbox>
-        <Checkbox disabled checked>Checkbox</Checkbox>
+        <Checkbox disabled defaultChecked>Checkbox</Checkbox>
       </React.Fragment>
     )
   }

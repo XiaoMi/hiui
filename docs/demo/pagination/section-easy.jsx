@@ -15,17 +15,13 @@ class Demo extends React.Component {
   }
   render() {
     return (
-      <div>
-
-        <Pagination
-          mode='simple'
-          defaultCurrent={this.state.current}
-          total={150}
-          pageSize={30}
-          onChange={(page, prevPage, pageSize)=>{console.log(page, prevPage, pageSize)}}
-        />
-
-      </div>
+      <Pagination
+        type='simple'
+        defaultCurrent={this.state.current}
+        total={150}
+        pageSize={30}
+        onChange={(page, prevPage, pageSize)=>{console.log(page, prevPage, pageSize)}}
+      />
     )
   }
 }`

@@ -68,7 +68,7 @@ class ItemDropdown extends Component {
           this.toggle()
         }}>
           <span className='hi-tabs-dropdown__toggle-title'>
-            { (items[activeIndex] && items[activeIndex].tabName) || localeDatas.tabs.more }
+            { (items[activeIndex] && items[activeIndex].tabTitle) || localeDatas.tabs.more }
           </span>
           <i className='hi-icon icon-down' />
         </div>
@@ -96,7 +96,7 @@ class ItemDropdown extends Component {
                     }}
                     key={index}
                   >
-                    {item.tabName}
+                    {item.tabTitle}
                   </div>
                 )
               })

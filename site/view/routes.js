@@ -19,7 +19,7 @@ const loop = (locale, items, targets, component) => {
   })
   return targets
 }
-function getRoutes(locale, siders, designs, templates) {
+function getRoutes (locale, siders, designs, templates) {
   let sideArr = []
   let desArr = []
   let templateArr = []

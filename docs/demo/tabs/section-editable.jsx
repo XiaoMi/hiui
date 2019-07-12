@@ -12,40 +12,40 @@ class Demo extends React.Component {
     this.state = {
       panes: [
         {
-          tabName: '我的订单',
-          tabKey: 'tabKey-1'
+          tabTitle: '我的订单',
+          tabId: 'tabId-1'
         },
         {
-          tabName: '团购订单',
-          tabKey: 'tabKey-2',
+          tabTitle: '团购订单',
+          tabId: 'tabId-2',
           closable: false
         },
         {
-          tabName: '以旧换新订单',
-          tabKey: 'tabKey-3'
+          tabTitle: '以旧换新订单',
+          tabId: 'tabId-3'
         },
         {
-          tabName: '消息通知',
-          tabKey: 'tabKey-4'
+          tabTitle: '消息通知',
+          tabId: 'tabId-4'
         }
       ]
     }
   }
-  onEdit(action, index, tabKey) {
-    console.log('----------onEdit', action, index, tabKey)
-    this[\`\${action}Tab\`](index, tabKey)
+  onEdit(action, index, tabId) {
+    console.log('----------onEdit', action, index, tabId)
+    this[\`\${action}Tab\`](index, tabId)
   }
   addTab() {
     const panes = this.state.panes;
     this.setState({
       panes: panes.concat([{
-        tabName: \`新增标签\${panes.length + 1}\`,
-      tabKey: \`tabKey-\${panes.length + 1}\`
+        tabTitle: \`新增标签\${panes.length + 1}\`,
+      tabId: \`tabId-\${panes.length + 1}\`
       }])
     })
   }
 
-  deleteTab(index, tabKey) {
+  deleteTab(index, tabId) {
     const panes = this.state.panes.slice()
     panes.splice(index, 1)
 
@@ -56,17 +56,17 @@ class Demo extends React.Component {
 
   render () {
     return (
-      <Tabs type="editable" activeTabKey="1" onTabClick={(tab,e)=>console.log(tab,e)} editable onEdit={this.onEdit.bind(this)}>
+      <Tabs type="editable" onTabClick={(tab,e)=>console.log(tab,e)} editable onEdit={this.onEdit.bind(this)}>
         {
           this.state.panes.map((pane, index) => {
             return (
               <Tabs.Pane
-                tabName={pane.tabName}
-                tabKey={pane.tabKey}
+                tabTitle={pane.tabTitle}
+                tabId={pane.tabId}
                 closable={pane.closable}
                 key={index}
               >
-                <div style={{padding: '16px'}}>{pane.tabName}</div>
+                <div style={{padding: '16px'}}>{pane.tabTitle}</div>
               </Tabs.Pane>
             )
           })

@@ -69,7 +69,7 @@ $prefix: 'hi-tabs' !default;
     }
   }
 
-  &--card.#{$prefix}--top {
+  &--card.#{$prefix}--horizontal {
     .#{$prefix}__nav {
       margin-bottom: -1px;
     }
@@ -87,7 +87,7 @@ $prefix: 'hi-tabs' !default;
     }
   }
 
-  &--card.#{$prefix}--left {
+  &--card.#{$prefix}--vertical {
     display: flex;
     flex-wrap: nowrap;
 

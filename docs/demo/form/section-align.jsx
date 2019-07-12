@@ -1,7 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Form from '../../../components/form/index'
-import FormItem from '../../../components/form/item'
 import Input from '../../../components/input'
 import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
@@ -9,107 +8,62 @@ import Button from '../../../components/button'
 const prefix = 'form-align'
 const code = `
 import React from 'react'
-import Grid from '@hi-ui/hiui/es/grid'
-import Radio from '@hi-ui/hiui/es/radio'
-import FormItem from '@hi-ui/hiui/es/form/item'
-import Button from '@hi-ui/hiui/es/form/button'
-import Input from '@hi-ui/hiui/es/input'
-import Form from '@hi-ui/hiui/es/form/index'\n
+import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
 class Demo extends React.Component {
   constructor() {
     super()
-
     this.state = {
-      alignCheckedIndex: 0,
       alignList: [
         {
           id: 'left',
-          name: '左对齐'
+          content: '左对齐'
         },
         {
           id: 'right',
-          name: '右对齐'
+          content: '右对齐'
         },
         {
           id: 'top',
-          name: '顶对齐'
-        },
+          content: '顶对齐'
+        }
       ],
-      columnCheckedIndex: 0,
-      columnList: [
-        {
-          id: '12',
-          name: 'S'
-        },
-        {
-          id: '16',
-          name: 'M'
-        },
-        {
-          id: '20',
-          name: 'L'
-        },
-      ],
-      position: 'left',
-      column: '12'
+      position: 'left'
     }
   }
-
-  render(){
-    const {position, alignCheckedIndex, columnCheckedIndex} = this.state
+  render (){
+    const { position, alignCheckedIndex, columnCheckedIndex } = this.state
+    const FormItem = Form.Item
     const Row = Grid.Row
     const Col = Grid.Col
     return (
       <div>
-        <Row gutter={true}>
+        <Row gutter>
           <Col span={12}>
-
-            <Radio
-              list={this.state.alignList}
-              mode='button'
-              checked={alignCheckedIndex}
-              onChange={(data, index) => {
+            <Radio.Group
+              type='button'
+              data={this.state.alignList}
+              value={this.state.position}
+              onChange={(data) => {
                 this.setState({
-                  position: data,
-                  alignCheckedIndex: index
+                  position: data
                 })
               }}
             />
-
-          </Col>
-          <Col span={12}>
-
-            <Radio
-              list={this.state.columnList}
-              mode='button'
-              checked={columnCheckedIndex}
-              onChange={(data, index) => {
-                this.setState({
-                  column: data,
-                  columnCheckedIndex: index
-                })
-              }}
-            />
-
           </Col>
         </Row>
-        <Row gutter={true}>
-          <Col span={this.state.column}>
-
-            <Form labelWidth='80' labelPosition={this.state.position}>
-              <FormItem label={'姓名'}>
-                <Input placeholder={'username'} />
+        <Row gutter>
+          <Col span={12}>
+            <Form labelWidth='80' labelPlacement={this.state.position}>
+              <FormItem label='姓名'>
+                <Input placeholder='username' />
               </FormItem>
-
-              <FormItem label={'手机号码'}  >
-                <Input placeholder={'phone'} />
+              <FormItem label='手机号码'>
+                <Input placeholder='phone' />
               </FormItem>
-
               <FormItem>
-                <Button type={'primary'}>提交</Button>
+                <Button type='primary'>提交</Button>
               </FormItem>
             </Form>
-
           </Col>
         </Row>
       </div>
@@ -117,6 +71,10 @@ class Demo extends React.Component {
   }
 }`
 const DemoAlign = () => (
-  <DocViewer code={code} scope={{ Form, FormItem, Radio, Grid, Input, Button }} prefix={prefix} />
+  <DocViewer
+    code={code}
+    scope={{ Form, Radio, Grid, Input, Button }}
+    prefix={prefix}
+  />
 )
 export default DemoAlign

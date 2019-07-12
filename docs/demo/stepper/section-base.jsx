@@ -20,12 +20,10 @@ class Demo extends React.Component {
     ]
 
     return (
-      <div>
-        <Stepper
-          list={list}
-          current={1}
-        />
-      </div>
+      <Stepper
+        data={list}
+        current={1}
+      />
     )
   }
 }`

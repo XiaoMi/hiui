@@ -13,50 +13,50 @@ class Demo extends React.Component {
     this.state = {
       options: [
         {
-          value: '手机',
-          label: '手机',
+          id: '手机',
+          content: '手机',
           children: [
             {
-              value: '小米',
-              label: '小米',
+              id: '小米',
+              content: '小米',
               children: [
                 {
-                  value: '小米3',
-                  label: '小米3'
+                  id: '小米3',
+                  content: '小米3'
                 },
                 {
-                  value: '小米4',
-                  label: '小米4'
+                  id: '小米4',
+                  content: '小米4'
                 },
               ]
             },
             {
-              value: '红米',
-              label: '红米',
+              id: '红米',
+              content: '红米',
               children: [
                 {
-                  value: '红米3',
-                  label: '红米3'
+                  id: '红米3',
+                  content: '红米3'
                 },
                 {
-                  value: '红米4',
-                  label: '红米4'
+                  id: '红米4',
+                  content: '红米4'
                 }
               ]
             }
           ]
         },
         {
-          value: '电视',
-          label: '电视',
+          id: '电视',
+          content: '电视',
           children: [
             {
-              value: '小米电视4A',
-              label: '小米电视4A'
+              id: '小米电视4A',
+              content: '小米电视4A'
             },
             {
-              value: '小米电视4C',
-              label: '小米电视4C'
+              id: '小米电视4C',
+              content: '小米电视4C'
             }
           ]
         }
@@ -66,11 +66,11 @@ class Demo extends React.Component {
   render(){
     return(
       <Cascader
-        onChange={(value)=>{
-          console.log('on change', value)
+        onChange={(id)=>{
+          console.log('on change', id)
         }}
-        options={this.state.options}
-        style={{width: 240}}
+        data={this.state.options}
+        style={{ width: 240 }}
       />
     )
   }
@@ -86,50 +86,50 @@ class Demo extends React.Component {
     this.state = {
       options: [
         {
-          value: '手机',
-          label: '手机',
+          id: '手机',
+          content: '手机',
           children: [
             {
-              value: '小米',
-              label: '小米',
+              id: '小米',
+              content: '小米',
               children: [
                 {
-                  value: '小米3',
-                  label: '小米3'
+                  id: '小米3',
+                  content: '小米3'
                 },
                 {
-                  value: '小米4',
-                  label: '小米4'
+                  id: '小米4',
+                  content: '小米4'
                 },
               ]
             },
             {
-              value: '红米',
-              label: '红米',
+              id: '红米',
+              content: '红米',
               children: [
                 {
-                  value: '红米3',
-                  label: '红米3'
+                  id: '红米3',
+                  content: '红米3'
                 },
                 {
-                  value: '红米4',
-                  label: '红米4'
+                  id: '红米4',
+                  content: '红米4'
                 }
               ]
             }
           ]
         },
         {
-          value: '电视',
-          label: '电视',
+          id: '电视',
+          content: '电视',
           children: [
             {
-              value: '小米电视4A',
-              label: '小米电视4A'
+              id: '小米电视4A',
+              content: '小米电视4A'
             },
             {
-              value: '小米电视4C',
-              label: '小米电视4C'
+              id: '小米电视4C',
+              content: '小米电视4C'
             }
           ]
         }
@@ -140,11 +140,11 @@ class Demo extends React.Component {
     return(
       <Cascader
         disabled
-        onChange={(value)=>{
-          console.log('on change', value)
+        onChange={(id)=>{
+          console.log('on change', id)
         }}
-        options={this.state.options}
-        style={{width: 240}}
+        data={this.state.options}
+        style={{ width: 240 }}
       />
     )
   }

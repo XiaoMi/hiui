@@ -23,19 +23,19 @@ class FormItem extends Component {
   }
 
   componentDidMount () {
-    const { prop } = this.props
-    if (prop) {
+    const { field } = this.props
+    if (field) {
       this.parent.addField(this)
       this.valueInit()
     }
   }
 
   componentWillUnmount () {
-    this.parent.removeField(this.props.prop)
+    this.parent.removeField(this.props.field)
   }
 
   valueInit () {
-    const value = this.parent.props.model[this.props.prop]
+    const value = this.parent.props.model[this.props.field]
     if (value === undefined) {
       this.initValue = value
     } else {
@@ -47,7 +47,7 @@ class FormItem extends Component {
     let formRules = this.parent.props.rules
     let selfRules = this.props.rules
 
-    formRules = formRules ? formRules[this.props.prop] : []
+    formRules = formRules ? formRules[this.props.field] : []
 
     return [].concat(selfRules || formRules || [])
   }
@@ -61,12 +61,12 @@ class FormItem extends Component {
 
   getfieldValue () {
     const model = this.parent.props.model
-    if (!model || !this.props.prop) {
+    if (!model || !this.props.field) {
       return
     }
 
-    const keyList = this.props.prop.split(':')
-    return keyList.length > 1 ? model[keyList[0]][keyList[1]] : model[this.props.prop]
+    const keyList = this.props.field.split(':')
+    return keyList.length > 1 ? model[keyList[0]][keyList[1]] : model[this.props.field]
   }
 
   validate (trigger, cb) {
@@ -85,9 +85,9 @@ class FormItem extends Component {
     })
 
     const validator = new AsyncValidator({
-      [this.props.prop]: rules
+      [this.props.field]: rules
     })
-    const model = { [this.props.prop]: this.getfieldValue() }
+    const model = { [this.props.field]: this.getfieldValue() }
     validator.validate(
       model,
       {
@@ -200,7 +200,7 @@ FormItem.contextTypes = {
 }
 
 FormItem.propTypes = {
-  prop: PropTypes.string,
+  field: PropTypes.string,
   rules: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   required: PropTypes.bool,
   label: PropTypes.string,

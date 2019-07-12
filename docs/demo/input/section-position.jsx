@@ -34,62 +34,59 @@ class Demo extends React.Component {
       }}
     />
     this.state = {
-      prepend: ele,
-      append: null,
-      checkedIndex: 0,
       radioList: [{
-        name: '前置元素',
-        prepend: ele
+        content: '前置元素',
+        id: 'prepend'
       }, {
-        name: '后置元素',
-        append: <Button type="primary">搜索</Button>
+        content: '后置元素',
+        id: 'append'
       }],
-      value: ''
+      value: 'prepend'
+    }
+    this.getFix = () => {
+      return {
+        prepend: {
+          prepend: ele
+        },
+        append: {
+          append: <Button type="primary">搜索</Button>
+        }
+      }[this.state.value]
     }
   }
   render() {
     const {
       value,
-      radioList,
-      checkedIndex,
-      prepend,
-      append
+      radioList
     } = this.state
+    const { prepend, append } = this.getFix()
     const Row = Grid.Row
     const Col = Grid.Col
     return (
       <div>
-      <Row gutter={true}>
+        <Row gutter>
           <Col span={12}>
-            <Radio
-              list={radioList}
-              mode='button'
-              checked={checkedIndex}
-              onChange={(data, index, item) => {
-                this.setState({
-                  checkedIndex: index,
-                  prepend: item.prepend,
-                  append: item.append,
-                })
+            <Radio.Group
+              data={radioList}
+              value={value}
+              type='button'
+              onChange={(value) => {
+                this.setState({ value })
               }}
             />
           </Col>
         </Row>
-        <Row gutter={true}>
+        <Row gutter>
           <Col span={12}>
-             <Input
-                id="customId"
-                value={value}
-                type="text"
-                placeholder="请输入手机号"
-                onChange={e => this.setState({value: e.target.value})}
-                prepend={prepend}
-                append={append}
-                style={{width: '250px'}}
-              />
+            <Input
+              id="customId"
+              placeholder="请输入手机号"
+              prepend={prepend}
+              append={append}
+              style={{ width: 250 }}
+            />
           </Col>
         </Row>
-
       </div>
     )
   }

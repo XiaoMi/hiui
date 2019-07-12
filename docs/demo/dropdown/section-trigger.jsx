@@ -36,7 +36,7 @@ class Demo extends React.Component {
     return (
       <div>
         <Dropdown
-          list={this.state.list}
+          data={this.state.list}
           trigger={['click', 'contextmenu']}
           onClick={(val) => {console.log(val)}}
           title="左键或右键点击"

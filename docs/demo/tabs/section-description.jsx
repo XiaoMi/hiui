@@ -12,24 +12,24 @@ class Demo extends React.Component {
     this.state = {
       panes: [
         {
-          tabName: '我的订单',
-          tabKey: 'tabKey-1',
+          tabTitle: '我的订单',
+          tabId: 'tabId-1',
           tabDesc: '关于标签的描述信息'
         },
         {
-          tabName: '团购订单',
-          tabKey: 'tabKey-2',
+          tabTitle: '团购订单',
+          tabId: 'tabId-2',
           closable: false,
           tabDesc: '关于标签的描述信息'
         },
         {
-          tabName: '以旧换新订单',
-          tabKey: 'tabKey-3',
+          tabTitle: '以旧换新订单',
+          tabId: 'tabId-3',
           tabDesc: '关于标签的描述信息'
         },
         {
-          tabName: '消息通知',
-          tabKey: 'tabKey-4',
+          tabTitle: '消息通知',
+          tabId: 'tabId-4',
           tabDesc: '关于标签的描述信息'
         }
       ]
@@ -37,18 +37,18 @@ class Demo extends React.Component {
   }
   render () {
     return (
-      <Tabs type="desc" activeTabKey="1" onTabClick={(tab,e)=>console.log(tab,e)}>
+      <Tabs type="desc" onTabClick={(tab,e)=>console.log(tab,e)}>
       {
         this.state.panes.map((pane, index) => {
           return (
             <Tabs.Pane
-              tabName={pane.tabName}
+              tabTitle={pane.tabTitle}
               tabDesc={pane.tabDesc}
-              tabKey={pane.tabKey}
+              tabId={pane.tabId}
               closable={pane.closable}
               key={index}
             >
-              <div style={{padding: '16px'}}>{pane.tabName}</div>
+              <div style={{padding: '16px'}}>{pane.tabTitle}</div>
             </Tabs.Pane>
           )
         })
