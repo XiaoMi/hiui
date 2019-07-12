@@ -6,7 +6,7 @@ const rightOptions = ['禁止清空', '不禁止']
 const code = [
   {
     code: `import React from 'react'
-import Cascader from '@hiui/hiui/es/cascader'\n
+import Cascader from '@hi-ui/hiui/es/cascader'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -78,9 +78,10 @@ class Demo extends React.Component {
   }
 }`,
     opt: ['禁止清空']
-  }, {
+  },
+  {
     code: `import React from 'react'
-import Cascader from '@hiui/hiui/es/cascader'\n
+import Cascader from '@hi-ui/hiui/es/cascader'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -155,11 +156,6 @@ class Demo extends React.Component {
 ]
 
 const DemoBasic = () => (
-  <DocViewer
-    code={code}
-    scope={{ Cascader }}
-    prefix={prefix}
-    rightOptions={rightOptions}
-  />
+  <DocViewer code={code} scope={{ Cascader }} prefix={prefix} rightOptions={rightOptions} />
 )
 export default DemoBasic

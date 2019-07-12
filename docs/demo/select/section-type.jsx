@@ -4,7 +4,7 @@ import Select from '../../../components/select'
 const prefix = 'alert-autoClose'
 const code = `
 import React from 'react'
-import Select from '@hiui/hiui/es/select'\n
+import Select from '@hi-ui/hiui/es/select'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -38,11 +38,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoType = () => (
-  <DocViewer
-    code={code}
-    scope={{ Select }}
-    prefix={prefix}
-  />
-)
+const DemoType = () => <DocViewer code={code} scope={{ Select }} prefix={prefix} />
 export default DemoType

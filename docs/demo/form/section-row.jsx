@@ -7,9 +7,9 @@ import Button from '../../../components/button'
 const prefix = 'form-row'
 const code = `
 import React from 'react'
-import FormItem from '@hiui/hiui/es/form/item'
-import Input from '@hiui/hiui/es/input'
-import Form from '@hiui/hiui/es/form/index'\n
+import FormItem from '@hi-ui/hiui/es/form/item'
+import Input from '@hi-ui/hiui/es/input'
+import Form from '@hi-ui/hiui/es/form/index'\n
 class Demo extends React.Component {
   render(){
     return (
@@ -33,10 +33,6 @@ class Demo extends React.Component {
 }`
 
 const DemoRow = () => (
-  <DocViewer
-    code={code}
-    scope={{ Form, FormItem, Button, Input }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} scope={{ Form, FormItem, Button, Input }} prefix={prefix} />
 )
 export default DemoRow

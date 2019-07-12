@@ -5,8 +5,8 @@ import Message from '../../../components/message'
 const prefix = 'message-base'
 const code = `
 import React from 'react'
-import Button from '@hiui/hiui/es/button'
-import Message from '@hiui/hiui/es/message'\n
+import Button from '@hi-ui/hiui/es/button'
+import Message from '@hi-ui/hiui/es/message'\n
 class Demo extends React.Component {
   render(){
     return(

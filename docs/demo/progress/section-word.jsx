@@ -4,7 +4,7 @@ import Progress from '../../../components/progress'
 const prefix = 'progress-word'
 const code = `
 import React from 'react'
-import Progress from '@hiui/hiui/es/select'\n
+import Progress from '@hi-ui/hiui/es/select'\n
 class Demo extends React.Component {
   render() {
     return (
@@ -18,11 +18,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoWord = () => (
-  <DocViewer
-    code={code}
-    scope={{ Progress }}
-    prefix={prefix}
-  />
-)
+const DemoWord = () => <DocViewer code={code} scope={{ Progress }} prefix={prefix} />
 export default DemoWord

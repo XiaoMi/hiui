@@ -1,12 +1,12 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Progress from '../../../components/progress'
-import Counter from '../../../components/counter'
+import Counter from '../../../components/Counter'
 const prefix = 'progress-dash'
 const code = `
 import React from 'react'
-import Progress from '@hiui/hiui/es/progress'
-import Counter from '@hiui/hiui/es/Counter'\n
+import Progress from '@hi-ui/hiui/es/progress'
+import Counter from '@hi-ui/hiui/es/Counter'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -33,11 +33,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoDash = () => (
-  <DocViewer
-    code={code}
-    scope={{ Progress, Counter }}
-    prefix={prefix}
-  />
-)
+const DemoDash = () => <DocViewer code={code} scope={{ Progress, Counter }} prefix={prefix} />
 export default DemoDash

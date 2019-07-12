@@ -5,7 +5,7 @@ const prefix = 'Upload-ban'
 
 const code = `
 import React from 'react'
-import Upload from '@hiui/hiui/es/upload'\n
+import Upload from '@hi-ui/hiui/es/upload'\n
 class Demo extends React.Component {
   render () {
     return (

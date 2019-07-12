@@ -5,8 +5,8 @@ import Notification from '../../../components/notification'
 const prefix = 'notification-base'
 const code = `
 import React from 'react'
-import Button from '@hiui/hiui/es/button'
-import Notification from '@hiui/hiui/es/notification'\n
+import Button from '@hi-ui/hiui/es/button'
+import Notification from '@hi-ui/hiui/es/notification'\n
 class Demo extends React.Component {
   render(){
     return(
@@ -32,11 +32,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ Button, Notification }}
-    prefix={prefix}
-  />
-)
+const DemoBase = () => <DocViewer code={code} scope={{ Button, Notification }} prefix={prefix} />
 export default DemoBase

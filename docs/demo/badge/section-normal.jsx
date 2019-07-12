@@ -5,8 +5,8 @@ import Button from '../../../components/button'
 const prefix = 'badge-normal'
 const code = `
 import React from 'react'
-import Button from '@hiui/hiui/es/button'
-import Badge from '@hiui/hiui/es/badge'\n
+import Button from '@hi-ui/hiui/es/button'
+import Badge from '@hi-ui/hiui/es/badge'\n
 class Demo extends React.Component {
   render () {
     return (

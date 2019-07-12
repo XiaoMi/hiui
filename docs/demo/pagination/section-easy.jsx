@@ -4,7 +4,7 @@ import Pagination from '../../../components/pagination'
 const prefix = 'pagination-easy'
 const code = `
 import React from 'react'
-import Pagination from '@hiui/hiui/es/pagination'\n
+import Pagination from '@hi-ui/hiui/es/pagination'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -29,11 +29,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoEasy = () => (
-  <DocViewer
-    code={code}
-    scope={{ Pagination }}
-    prefix={prefix}
-  />
-)
+const DemoEasy = () => <DocViewer code={code} scope={{ Pagination }} prefix={prefix} />
 export default DemoEasy

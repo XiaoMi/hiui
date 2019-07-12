@@ -5,8 +5,8 @@ import Loading from '../../../components/loading'
 const prefix = 'loading-page'
 const code = `
 import React from 'react'
-import Button from '@hiui/hiui/es/button'
-import Loading from '@hiui/hiui/es/loading'
+import Button from '@hi-ui/hiui/es/button'
+import Loading from '@hi-ui/hiui/es/loading'
 class Demo extends React.Component {
   constructor () {
     super()

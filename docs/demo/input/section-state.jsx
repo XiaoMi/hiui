@@ -6,9 +6,9 @@ import Radio from '../../../components/radio'
 const prefix = 'input-state'
 const code = `
 import React from 'react'
-import Grid from '@hiui/hiui/es/grid'
-import Radio from '@hiui/hiui/es/radio'
-import Input from '@hiui/hiui/es/input'\n
+import Grid from '@hi-ui/hiui/es/grid'
+import Radio from '@hi-ui/hiui/es/radio'
+import Input from '@hi-ui/hiui/es/input'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -65,11 +65,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoState = () => (
-  <DocViewer
-    code={code}
-    scope={{ Grid, Input, Radio }}
-    prefix={prefix}
-  />
-)
+const DemoState = () => <DocViewer code={code} scope={{ Grid, Input, Radio }} prefix={prefix} />
 export default DemoState

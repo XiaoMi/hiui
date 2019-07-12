@@ -6,12 +6,12 @@ const prefix = 'badge-custom'
 const desc = '小红点将优先于其他显示'
 const code = `
 import React from 'react'
-import Button from '@hiui/hiui/es/button'
-import Badge from '@hiui/hiui/es/badge'\n
+import Button from '@hi-ui/hiui/es/button'
+import Badge from '@hi-ui/hiui/es/badge'\n
 class Demo extends React.Component {
   render () {
     return (
-      <Badge content="hot">
+      <Badge value="hot">
         <Button type='default'>最新报表</Button>
       </Badge>
     )

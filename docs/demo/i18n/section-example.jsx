@@ -8,8 +8,8 @@ const prefix = 'i18n-example'
 const code = `
 import React from 'react'
 import { LocaleContext } from '@hi-ui/hiui/es/context'
-import Pagination from '@hiui/hiui/es/pagination'
-import Grid from '@hiui/hiui/es/grid'\n
+import Pagination from '@hi-ui/hiui/es/pagination'
+import Grid from '@hi-ui/hiui/es/grid'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)

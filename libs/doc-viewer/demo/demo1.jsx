@@ -7,7 +7,7 @@ const leftOptions = ['基础', '无标题', '无内容', '禁用']
 const rightOptions = ['S', 'M', 'L']
 const code = [
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {
@@ -21,7 +21,7 @@ class Demo extends React.Component {
     opt: ['基础', 'S']
   },
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {
@@ -35,7 +35,7 @@ class Demo extends React.Component {
     opt: ['基础', 'M']
   },
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {
@@ -49,7 +49,7 @@ class Demo extends React.Component {
     opt: ['基础', 'L']
   },
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {
@@ -65,7 +65,7 @@ class Demo extends React.Component {
     opt: ['无标题', 'S']
   },
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {
@@ -81,7 +81,7 @@ class Demo extends React.Component {
     opt: ['无标题', 'M']
   },
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {
@@ -97,7 +97,7 @@ class Demo extends React.Component {
     opt: ['无标题', 'L']
   },
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {
@@ -111,7 +111,7 @@ class Demo extends React.Component {
     opt: ['无内容', 'S']
   },
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {
@@ -125,7 +125,7 @@ class Demo extends React.Component {
     opt: ['无内容', 'M']
   },
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {
@@ -139,7 +139,7 @@ class Demo extends React.Component {
     opt: ['无内容', 'L']
   },
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {
@@ -153,7 +153,7 @@ class Demo extends React.Component {
     opt: ['禁用', 'S']
   },
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {
@@ -167,7 +167,7 @@ class Demo extends React.Component {
     opt: ['禁用', 'M']
   },
   {
-    code: `import Card from '@hiui/hiui/es/card'
+    code: `import Card from '@hi-ui/hiui/es/card'
 import React from 'react'\n
 class Demo extends React.Component {
   render () {

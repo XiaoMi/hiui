@@ -5,7 +5,7 @@ const prefix = 'pagination-shrink'
 
 const code = `
 import React from 'react'
-import Pagination from '@hiui/hiui/es/pagination'\n
+import Pagination from '@hi-ui/hiui/es/pagination'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -30,11 +30,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoCloseable = () => (
-  <DocViewer
-    code={code}
-    scope={{ Pagination }}
-    prefix={prefix}
-  />
-)
+const DemoCloseable = () => <DocViewer code={code} scope={{ Pagination }} prefix={prefix} />
 export default DemoCloseable

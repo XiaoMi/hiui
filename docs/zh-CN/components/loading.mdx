@@ -76,6 +76,8 @@ import DemoApi from '../../demo/loading/section-api.jsx'
   <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
 </div>
 
+<<<<<<< HEAD
+
 ## Loading Attributes
 
 | 参数   | 说明                                                | 类型    | 可选值                    | 默认值  |
@@ -85,3 +87,34 @@ import DemoApi from '../../demo/loading/section-api.jsx'
 | full   | 是否全屏                                            | Boolean | true \| false             | false   |
 | show   | 是否显示加载动画                                    | Boolean | true \| false             | false   |
 | target | 用于指令调用时,Loading 遮罩的元素，为空时将整页遮罩 | Element | -                         | -       |
+
+=======
+
+## Props
+
+| 参数     | 说明                               | 类型                | 可选值                          | 默认值    |
+| -------- | ---------------------------------- | ------------------- | ------------------------------- | --------- |
+| size     | loading 大小                       | string              | 'large' \| 'default' \| 'small' | 'default' |
+| content  | 自定义加载中状态的文案             | string \| ReactNode | -                               | -         |
+| visible  | 是否显示 loading                   | boolean             | true \| false                   | true      |
+| duration | loading 自动关闭的时间，单位为毫秒 | number              | -                               | -         |
+
+## Methods
+
+`Loading.open(target, {content, size, duration, key})`
+
+| 参数     | 说明                                  | 类型                | 可选值                          | 默认值    |
+| -------- | ------------------------------------- | ------------------- | ------------------------------- | --------- |
+| key      | 标识 `Loading` 的唯一 key，仅用于关闭 | string              | -                               | -         |
+| target   | 需要 `Loading` 遮罩的元素             | Element             | -                               | -         |
+| content  | 自定义加载中状态的文案                | string \| ReactNode | -                               | -         |
+| duration | loading 自动关闭的时间，单位为毫秒    | number              | -                               | -         |
+| size     | loading 大小                          | string              | 'large' \| 'default' \| 'small' | 'default' |
+
+`Loading.close(key)` comming soon
+
+| 参数 | 说明                      | 类型   | 可选值 | 默认值 |
+| ---- | ------------------------- | ------ | ------ | ------ |
+| key  | 标识 `Loading` 的唯一 key | string | -      | -      |
+
+> > > > > > > 96193778cf65d94b39118960f8b50c323cf9ca4d

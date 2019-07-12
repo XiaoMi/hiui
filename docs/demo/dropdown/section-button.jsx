@@ -7,8 +7,8 @@ const prefix = 'dropdown-button'
 
 const code = `
 import React from 'react'
-import Icon from '@hiui/hiui/es/icon'
-import Dropdown from '@hiui/hiui/es/dropdown'\n
+import Icon from '@hi-ui/hiui/es/icon'
+import Dropdown from '@hi-ui/hiui/es/dropdown'\n
 class Demo extends React.Component {
   constructor () {
     super()

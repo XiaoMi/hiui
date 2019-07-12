@@ -4,7 +4,7 @@ import Table from '../../../components/table'
 const prefix = 'table-header'
 const code = `
 import React from 'react'
-import Table from '@hiui/hiui/es/table'\n
+import Table from '@hi-ui/hiui/es/table'\n
 class Demo extends React.Component {
   constructor(props){
     super(props)
@@ -47,11 +47,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoHeader = () => (
-  <DocViewer
-    code={code}
-    scope={{ Table }}
-    prefix={prefix}
-  />
-)
+const DemoHeader = () => <DocViewer code={code} scope={{ Table }} prefix={prefix} />
 export default DemoHeader

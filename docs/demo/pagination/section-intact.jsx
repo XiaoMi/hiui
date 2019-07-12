@@ -6,9 +6,9 @@ import Checkbox from '../../../components/checkbox'
 const prefix = 'pagination-intact'
 const code = `
 import React from 'react'
-import Grid from '@hiui/hiui/es/grid'
-import Checkbox from '@hiui/hiui/es/Checkbox'
-import Pagination from '@hiui/hiui/es/pagination'\n
+import Grid from '@hi-ui/hiui/es/grid'
+import Checkbox from '@hi-ui/hiui/es/Checkbox'
+import Pagination from '@hi-ui/hiui/es/pagination'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)
@@ -89,10 +89,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoIntact = () => (
-  <DocViewer
-    code={code}
-    scope={{ Pagination, Grid, Checkbox }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} scope={{ Pagination, Grid, Checkbox }} prefix={prefix} />
 )
 export default DemoIntact

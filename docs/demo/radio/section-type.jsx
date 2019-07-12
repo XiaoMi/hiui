@@ -4,7 +4,7 @@ import Radio from '../../../components/radio'
 const prefix = 'radio-type'
 const code = `
 import React from 'react'
-import Radio from '@hiui/hiui/es/radio'\n
+import Radio from '@hi-ui/hiui/es/radio'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -28,11 +28,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoType = () => (
-  <DocViewer
-    code={code}
-    scope={{ Radio }}
-    prefix={prefix}
-  />
-)
+const DemoType = () => <DocViewer code={code} scope={{ Radio }} prefix={prefix} />
 export default DemoType

@@ -5,7 +5,7 @@ const prefix = 'grid-offset'
 const desc = '设置 offset 来指定左右的偏移量'
 const code = `
 import React from 'react'
-import Grid from '@hiui/hiui/es/grid'\n
+import Grid from '@hi-ui/hiui/es/grid'\n
 class Demo extends React.Component {
   render() {
     const Row = Grid.Row

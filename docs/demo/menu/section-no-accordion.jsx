@@ -4,7 +4,7 @@ import Menu from '../../../components/menu'
 const prefix = 'menu-no-accordion'
 const code = `
 import React from 'react'
-import Menu from '@hiui/hiui/es/menu'\n
+import Menu from '@hi-ui/hiui/es/menu'\n
 class Demo extends React.Component {
   render(){
     const datas = [
@@ -106,11 +106,5 @@ class Demo extends React.Component {
   }
 
 }`
-const DemoNoAccordion = () => (
-  <DocViewer
-    code={code}
-    scope={{ Menu }}
-    prefix={prefix}
-  />
-)
+const DemoNoAccordion = () => <DocViewer code={code} scope={{ Menu }} prefix={prefix} />
 export default DemoNoAccordion

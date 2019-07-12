@@ -9,10 +9,10 @@ const prefix = 'theme-example'
 const code = `
 import React from 'react'
 import { ThemeContext } from '@hi-ui/hiui/es/context'
-import Button from '@hiui/hiui/es/button'
-import DatePicker from '@hiui/hiui/es/date-picker'
-import Stepper from '@hiui/hiui/es/stepper'
-import Grid from '@hiui/hiui/es/grid'\n
+import Button from '@hi-ui/hiui/es/button'
+import DatePicker from '@hi-ui/hiui/es/date-picker'
+import Stepper from '@hi-ui/hiui/es/stepper'
+import Grid from '@hi-ui/hiui/es/grid'\n
 class Demo extends React.Component {
   render() {
     const Row = Grid.Row
