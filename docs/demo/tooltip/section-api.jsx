@@ -39,9 +39,5 @@ class Demo extends React.Component {
   }
 }`
 
-<<<<<<< HEAD
 const DemoApi = () => <DocViewer code={code} scope={{ Button, Tooltip }} prefix={prefix} />
-=======
-const DemoApi = () => <DocViewer code={code} scope={{ Button }} prefix={prefix} />
->>>>>>> origin/feature/notify
 export default DemoApi
