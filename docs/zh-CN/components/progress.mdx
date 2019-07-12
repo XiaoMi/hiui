@@ -1,0 +1,81 @@
+# Progress 进度条
+
+用来展示当前任务、事件或操作的进展程度
+
+## 何时使用
+
+- 需要显示、掌控某件事务的进展的状态，如百分比等
+- 常用于上传、下载文件等场景
+
+## 进度条类型
+
+import DemoType from '../../demo/progress/section-type.jsx'
+
+<DemoType />
+
+## 进度条动态
+
+import DemoActive from '../../demo/progress/section-active.jsx'
+
+<DemoActive />
+
+## 环形进度条
+
+import DemoCircle from '../../demo/progress/section-circle.jsx'
+
+<DemoCircle />
+
+## 仪表盘进度条
+
+import DemoDash from '../../demo/progress/section-dash.jsx'
+
+<DemoDash />
+
+## 进度条文字内显
+
+import DemoWord from '../../demo/progress/section-word.jsx'
+
+<DemoWord />
+
+## Props
+
+| 参数      | 说明                                          | 类型                | 可选值                                         | 默认值         |
+| --------- | --------------------------------------------- | ------------------- | ---------------------------------------------- | -------------- |
+| apperance | 进度条类型                                    | string              | 'bar' \| 'circle' \| 'dashboard'               | 'bar'          |
+| size      | 进度条大小                                    | string              | 'large' \| 'default' \| 'small'                | 'default'      |
+| content   | 显示文本                                      | string \| ReactNode | -                                              | 当前进度百分比 |
+| showInfo  | 是否显示文本                                  | boolean             | true \| false                                  | true           |
+| type      | 进度条类型                                    | string              | 'primary' \| 'success' \| 'warning' \| 'error' | 'primary'      |
+| radius    | 环形进度条半径                                | number              | -                                              | 40             |
+| placement | 文字在进度条内显示，需配合 height 使用        | string              | 'inside' \| 'outside'                          | 'outside'      |
+| width     | 进度条宽度度，仅在 `apperance = 'bar'` 时有效 | number              | -                                              | -              |
+| height    | 进度条高度，仅在 `apperance = 'bar'` 时有效   | number              | -                                              | -              |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      fontSize: '14px',
+      padding: 8,
+      color: '#999'
+    }}
+  >
+    1.5.x 版本 api 如下
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
+
+## Progress Attributes
+
+| 参数        | 说明                                   | 类型                | 可选值                              | 默认值         |
+| ----------- | -------------------------------------- | ------------------- | ----------------------------------- | -------------- |
+| type        | 进度条类型                             | String              | bar \| circle \| dashboard          | bar            |
+| size        | 进度条大小                             | String              | large \| middle \| small            | -              |
+| text        | 显示文本                               | String \| Component | -                                   | 当前进度百分比 |
+| withOutText | 是否显示文本                           | Boolean             | true \| false                       | false          |
+| status      | 进度条类型                             | String              | primary \| success \| warn \| error | primary        |
+| radius      | 环形进度条半径                         | Number              | -                                   | 40             |
+| inside      | 文字在进度条内显示，需配合 height 使用 | Boolean             | true \| false                       | false          |

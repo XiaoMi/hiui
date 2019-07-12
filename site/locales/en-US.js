@@ -62,7 +62,7 @@ module.exports = {
     copywriting: '文案',
     colors: '色彩',
     layout: '布局',
-    theme: '主题',
+    palette: 'Color Theme',
     icon: '图标'
   },
   templates: {
@@ -92,6 +92,7 @@ module.exports = {
     home: 'Home',
     components: 'Docs',
     design: 'Design',
-    template: 'Template'
+    template: 'Template',
+    github: 'GitHub'
   }
 }

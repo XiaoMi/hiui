@@ -1,0 +1,49 @@
+@import '@hi-ui/core-css/index.scss';
+$prefix: 'hi-tag' !default;
+$primary: get-color($palette-primary, 'hiui-blue') !default;
+
+.#{$prefix} {
+  &__container {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 2px 6px;
+    font-size: 12px;
+    border-radius: 4px;
+
+    & + & {
+      margin-left: 10px;
+    }
+
+    &--default {
+      color: #fff;
+      background: $primary;
+
+      @each $key in 'success', 'danger', 'warning' {
+        &.#{$prefix}__container--#{$key} {
+          $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
+
+          background: $status-color;
+        }
+      }
+    }
+
+    &--line {
+      background: transparent;
+      border: 1px solid $primary;
+      color: $primary;
+
+      @each $key in 'success', 'danger', 'warning' {
+        &.#{$prefix}__container--#{$key} {
+          $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
+
+          border: 1px solid $status-color;
+          color: $status-color;
+        }
+      }
+    }
+
+    &--click {
+      cursor: pointer;
+    }
+  }
+}

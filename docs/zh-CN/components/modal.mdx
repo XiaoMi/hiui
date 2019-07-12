@@ -1,0 +1,102 @@
+# Modal 模态框
+
+模态对话框一般会中断当前任务流，在相对无信息干扰的环境下完成微型任务
+
+## 何时使用
+
+- 当前任务中需要中途填写信息或执行别的动作
+- 常见于后台设置、新建编辑等场景
+
+## 基础用法
+
+import DemoBase from '../../demo/modal/section-base.jsx'
+
+<DemoBase />
+
+## 自定义尺寸
+
+import DemoSize from '../../demo/modal/section-size.jsx'
+
+<DemoSize />
+
+## 自定义按钮
+
+import DemoBtn from '../../demo/modal/section-btn.jsx'
+
+<DemoBtn />
+
+## 嵌套用法
+
+import DemoNest from '../../demo/modal/section-nest.jsx'
+
+<DemoNest />
+
+## Props
+
+| 参数          | 说明                       | 类型                    | 可选值               | 默认值    |
+| ------------- | -------------------------- | ----------------------- | -------------------- | --------- |
+| title         | 模态框标题                 | string \| ReactNode     | -                    | -         |
+| visible       | 是否显示模态框             | boolean                 | true \| false        | false     |
+| closeable     | 是否展示右上角关闭按钮     | boolean                 | true \| false        | true      |
+| maskCloseable | 是否允许点击蒙层关闭模态框 | boolean                 | true \| false        | true      |
+| cancelText    | 取消按钮文案               | string                  | -                    | '取消'    |
+| onCancel      | 取消事件触发时的回调       | (e: MouseEvent) => void | -                    | -         |
+| confirmText   | 确认按钮文案               | string                  | -                    | '确定'    |
+| onConfirm     | 确认事件触发时的回调       | (e: MouseEvent) => void | -                    | -         |
+| size          | 模态框尺寸                 | string                  | 'default' \| 'large' | 'default' |
+| style         | 自定义模态框样式           | object                  | -                    | -         |
+| footer        | 自定义模态框底部           | ReactNode \| null       | -                    | -         |
+
+## Methods
+
+`Modal.open({ title, closeable, size, footer，style，onConfirm，confirmText，onCancel，maskCloseable，cancelText })`
+
+| 参数          | 说明                       | 类型                    | 可选值               | 默认值    |
+| ------------- | -------------------------- | ----------------------- | -------------------- | --------- |
+| title         | 模态框标题                 | string \| ReactNode     | -                    | -         |
+| closeable     | 是否展示右上角关闭按钮     | boolean                 | true \| false        | false     |
+| maskCloseable | 是否允许点击蒙层关闭模态框 | boolean                 | true \| false        | false     |
+| cancelText    | 取消按钮文案               | string                  | -                    | '取消'    |
+| onCancel      | 取消事件触发时的回调       | (e: MouseEvent) => void | -                    | -         |
+| confirmText   | 确认按钮文案               | string                  | -                    | '确定'    |
+| onConfirm     | 确认事件触发时的回调       | (e: MouseEvent) => void | -                    | -         |
+| size          | 模态框尺寸                 | string                  | 'default' \| 'large' | 'default' |
+| style         | 自定义模态框样式           | object                  | -                    | -         |
+| footer        | 自定义气模态框底部         | ReactNode \| null       | -                    | -         |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      fontSize: '14px',
+      padding: 8,
+      color: '#999'
+    }}
+  >
+    1.5.x 版本 api 如下
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
+
+## Modal Attributes
+
+| 参数        | 说明                                           | 类型                | 可选值                   | 默认值 |
+| ----------- | ---------------------------------------------- | ------------------- | ------------------------ | ------ |
+| title       | 标题                                           | String \| Element   | -                        | 无     |
+| onConfirm   | 点击确定的回调                                 | Function            | -                        | 无     |
+| onCancel    | 点击遮罩或者右上角取消或者取消按钮的回调       | Function            | -                        | 无     |
+| confirmText | 确定按钮文字                                   | String              | -                        | 确定   |
+| cancelText  | 取消按钮文字                                   | String              | -                        | 取消   |
+| backDrop    | 点击黑色背景部分是否隐藏弹框                   | Boolean             | true \| false            | true   |
+| size        | 定义弹窗尺寸                                   | String              | normal \| large \| small | normal |
+| width       | 自定义弹窗宽度                                 | number <br/> String | -                        | 600px  |
+| closeBtn    | 是否显示右上角关闭按钮                         | Boolean             | true \| false            | true   |
+| footers     | 自定义底部按钮数组（传入空数组将取消底部按钮） | Array               | -                        | -      |
+| show        | 弹窗是否显示                                   | Boolean             | true \| false            | false  |
+
+
+
+

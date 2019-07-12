@@ -20,7 +20,8 @@ const server = new WebpackDevServer(compiler, {
   publicPath: config.output.publicPath,
   stats: {
     colors: true
-  }
+  },
+  historyApiFallback: true
 })
 
 server.listen(PORT, () => {

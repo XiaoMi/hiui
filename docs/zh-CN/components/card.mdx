@@ -1,0 +1,119 @@
+# Card 卡片
+
+用来展示不同类型信息或信息组的轻量容器
+
+## 何时使用
+
+- 当一组同类信息不能自然形成区块感时，需借助卡片来组织
+- 当一个应用或功能由大量信息组成，需要通过重点信息快速识别时
+- 后台展示概览信息时
+
+## 内容
+
+卡片可以展示多种类型的信息：
+
+- 文本、数字
+- 段落
+- 信息图表，如环形图、柱状图、表格、折线图等
+- 图片、图片组
+- 图标
+- 列表
+
+## 基础
+
+import DemoBase from '../../demo/card/section-base.jsx'
+
+<DemoBase />
+
+## 不同大小
+
+import DemoSize from '../../demo/card/section-size.jsx'
+
+<DemoSize />
+
+## 额外按钮
+
+import DemoButton from '../../demo/card/section-button.jsx'
+
+<DemoButton />
+
+## 图片卡片
+
+import DemoImage from '../../demo/card/section-image.jsx'
+
+<DemoImage />
+
+## 简易卡片
+
+import DemoSimple from '../../demo/card/section-simple.jsx'
+
+<DemoSimple />
+
+## 配合 Gird 布局 - 图片排版
+
+配合 Grid 布局实现更加简单
+
+import DemoGridImage from '../../demo/card/section-grid-image.jsx'
+
+<DemoGridImage />
+
+## 配合 Gird 布局 - 展示
+
+配合 Grid 布局实现更加简单
+
+import DemoGridDisplay from '../../demo/card/section-grid-display.jsx'
+
+<DemoGridDisplay />
+
+## 配合 Gird 布局 - 自定义展示
+
+配合 Grid 布局实现更加简单
+
+import DemoGridCustom from '../../demo/card/section-grid-custom.jsx'
+
+<DemoGridCustom />
+
+## Props
+
+| 参数      | 说明                       | 类型                | 可选值                          | 默认值    |
+| --------- | -------------------------- | ------------------- | ------------------------------- | --------- |
+| title     | 设置卡片标题               | string \| ReactNode | -                               | -         |
+| size      | 设置卡片大小               | string              | 'small' \| 'default' \| 'large' | 'default' |
+| type      | 设置卡片类型               | string              | 'simple' \| 'default'           | 'default' |
+| hoverable | 鼠标移入卡片时是否显示阴影 | boolean             | true \| false                   | false     |
+| extra     | 卡片右上角的扩展           | ReactNode           | -                               | -         |
+| extraType | 卡片右上角的扩展显示模式   | string              | 'default' \| 'hover'            | 'default' |
+| coverUrl  | 卡片的封面图片链接         | string              | -                               | -         |
+| content   | 卡片的描述信息             | string \| ReactNode | -                               | -         |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      fontSize: '14px',
+      padding: 8,
+      color: '#999'
+    }}
+  >
+    1.5.x 版本 api 如下
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
+
+## Card Attributes
+
+| 参数        | 说明                                                                                                    | 类型                     | 可选值                   | 默认值 |
+| ----------- | ------------------------------------------------------------------------------------------------------- | ------------------------ | ------------------------ | ------ |
+| title       | 卡片标题                                                                                                | String \| Element        | -                        | -      |
+| size        | 卡片大小<br/> small -> 276px <br/> middle -> 376px <br/> large -> 576px <br/> 不传入 size 将占 100%宽度 | String                   | small \| middle \| large | 100%   |
+| type        | 卡片类型                                                                                                | String                   | simple                   | -      |
+| style       | 自定义样式                                                                                              | Object                   | -                        | -      |
+| hoverable   | 鼠标移入卡片是否显示浮起效果                                                                            | Boolean                  | true \| false            | false  |
+| extra       | 卡片右上的扩展按钮                                                                                      | Array[Elemnt] \| Element | -                        | -      |
+| extraShow   | 扩展按钮的显示模式                                                                                      | String                   | stay \| hover            | stay   |
+| cover       | 图片卡片                                                                                                | ImgElement               | -                        | -      |
+| description | 图片卡片的信息描述                                                                                      | String \| Element        | -                        | -      |
+| disabled    | 是否禁用卡片                                                                                            | Boolean                  | true \| false            | -      |

@@ -3,26 +3,39 @@ import locales from '../locales'
 
 export const ThemeContext = React.createContext('hiui-blue')
 export const LocaleContext = React.createContext('zh-CN')
+export const VersionContext = React.createContext(2)
 
 export default (WrappedComponent) =>
   class WrapperComponent extends Component {
+    static displayName = WrappedComponent.name
     render () {
-      const {
-        theme,
-        locale,
-        ...restProps
-      } = this.props
+      const { theme, locale, version, ...restProps } = this.props
       let ConsumerComponent = (
         <ThemeContext.Consumer>
-          {contextTheme => (
+          {(contextTheme) => (
             <LocaleContext.Consumer>
-              {contextLocale => <WrappedComponent theme={contextTheme} locale={contextLocale} localeDatas={locales[contextLocale]} {...restProps} />}
+              {(contextLocale) => (
+                <VersionContext.Consumer>
+                  {(contextVersion) => (
+                    <WrappedComponent
+                      theme={contextTheme}
+                      version={contextVersion}
+                      locale={contextLocale}
+                      localeDatas={locales[contextLocale]}
+                      {...restProps}
+                    />
+                  )}
+                </VersionContext.Consumer>
+              )}
             </LocaleContext.Consumer>
           )}
         </ThemeContext.Consumer>
       )
 
-      return wrapProvider(theme, ThemeContext)(locale, LocaleContext)(ConsumerComponent)
+      return wrapProvider(theme, ThemeContext)(locale, LocaleContext)(
+        version,
+        VersionContext
+      )(ConsumerComponent)
     }
   }
 
@@ -36,7 +49,7 @@ function wrapProvider (value, context) {
   }
   if (!context) {
     let component = value
-    wrapProvider.Providers.reverse().map(obj => {
+    wrapProvider.Providers.reverse().map((obj) => {
       component = (
         <obj.context.Provider value={obj.value}>
           {component}

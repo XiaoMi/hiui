@@ -1,0 +1,75 @@
+# Radio 单选按钮
+
+单选按钮是用来在一组平铺选项中选择目标选项，每次只选一个
+
+## 何时使用
+
+- 需要快速完成多选一且备选项数量不多时
+- 常见于后台设置、调研问卷等场景
+
+## 普通模式
+
+import DemoNormal from '../../demo/radio/section-normal'
+
+<DemoNormal />
+
+## 按钮模式
+
+import DemoType from '../../demo/radio/section-type'
+
+<DemoType />
+
+## Props
+
+| 参数      | 说明                                     | 类型                    | 可选值                     | 默认值       |
+| --------- | ---------------------------------------- | ----------------------- | -------------------------- | ------------ |
+| data      | 选择项数据源                             | DataItem[]              | -                          | -            |
+| autoFocus | 页面载入时，是否自动获取焦点             | boolean                 | true \| false              | false        |
+| placement | 设置水平或垂直展示                       | string                  | 'vertical' \| 'horizontal' | 'horizontal' |
+| checked   | 设置选中项                               | string                  | 'vertical' \| 'horizontal' | 'horizontal' |
+| onChange  | 选中项改变时的回调，回调值为新选中项的值 | (value: string) => void | -                          | -            |
+| disabled  | 是否禁用                                 | boolean                 | -                          | -            |
+| type      | 单选按钮展示形状                         | string                  | 'default' \| 'button'      | 'default'    |
+
+## Type
+
+**_DataItem_**
+
+| 参数     | 说明             | 类型    | 可选值        | 默认值 |
+| -------- | ---------------- | ------- | ------------- | ------ |
+| content  | 选择项的展示内容 | string  | -             | -      |
+| id       | 选择项对应的值   | string  | -             | -      |
+| disabled | 是否禁用         | boolean | true \| false | false  |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      fontSize: '14px',
+      padding: 8,
+      color: '#999'
+    }}
+  >
+    以下为 1.5.x 版本 API
+  </span>
+  <hr
+    style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }}
+  />
+</div>
+
+## Radio Attributes
+
+| 参数     | 说明                                                                                                                                                                                                                                                              | 类型               | 可选值                 | 默认值                           |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ---------------------- | -------------------------------- |
+| legacy   | 使用 1.5 版本的 API                                                                                                                                                                                                                                               | boolean            | -                      | -                                |
+| name     | 单选组名称                                                                                                                                                                                                                                                        | String             | -                      | 一般情况下无需传递，组件默认生成 |
+| list     | 选择项                                                                                                                                                                                                                                                            | Array              | -                      | -                                |
+| align    | label 对齐方式                                                                                                                                                                                                                                                    | String             | left \| right          | right                            |
+| checked  | 应用于 list 内的数据项时为布尔值，表示该项是否被选中<br/>多个列表项均含有此属性时，会以最后一项为主<br/>---<br/>应用于组件属性时为数字或函数<br/>为数字时，代表被选中项的索引值，从 0 开始<br/>为函数时，函数返回当前项，通过比对后返回布尔值来决定该项是否被选中 | bool/number/func   | -                      | -1                               |
+| onChange | 选中事件                                                                                                                                                                                                                                                          | Function           | -                      | -                                |
+| disabled | 是否禁用（应用于数据源无效）                                                                                                                                                                                                                                      | Number \| Function | -                      | -                                |
+| mode     | 单选按钮样式                                                                                                                                                                                                                                                      | String             | normal \| button       | normal                           |
+| layout   | 排列方式                                                                                                                                                                                                                                                          | String             | horizontal \| vertical | horizontal                       |

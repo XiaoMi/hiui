@@ -6,50 +6,37 @@ import './style/index'
 class Alert extends Component {
   static propTypes = {
     type: PropTypes.oneOf(['info', 'error', 'success', 'warning']),
-    onCancel: PropTypes.func, // 废气，用 onClose 代替
     onClose: PropTypes.func,
-    size: PropTypes.oneOf(['small', 'middle', 'large']),
-    content: PropTypes.string, // 废弃，用 message 代替
-    message: PropTypes.string,
+    content: PropTypes.string,
     title: PropTypes.string,
     closeable: PropTypes.bool,
-    autoClose: PropTypes.bool,
-    autoCloseTime: PropTypes.number
+    duration: PropTypes.number
   }
   static defaultProps = {
     prefixCls: 'hi-alert',
     type: 'info',
-    size: 'middle',
     closeable: true,
-    autoClose: false,
-    autoCloseTime: 3000
+    duration: null
   }
   componentDidMount () {
-    if (!this.props.closeable && this.props.autoClose) {
+    if (this.props.duration !== null) {
       window.setTimeout(() => {
         this.handleClose()
-      }, this.props.autoCloseTime)
+      }, this.props.duration)
     }
   }
   constructor (props) {
     super(props)
-    this.state = { show: true }
+    this.state = { visible: true }
   }
   handleClose () {
-    this.setState({ show: false })
+    this.setState({ visible: false })
     this.props.onClose && this.props.onClose()
-    this.props.onCancel && this.props.onCancel()
   }
   render () {
-    let classnames = classNames(
-      this.props.prefixCls,
-      this.state.show,
-      this.props.type,
-      this.props.size,
-      {
-        noTitle: !this.props.title
-      }
-    )
+    let classnames = classNames(this.props.prefixCls, this.state.visible, this.props.type, {
+      noTitle: !this.props.title
+    })
 
     let type = this.props.type
 
@@ -67,34 +54,22 @@ class Alert extends Component {
         type = 'info-circle-o'
     }
 
-    return this.state.show ? (
-      <div className={classnames}>
-        <div className='icon-contain'>
-          <i className={`hi-icon icon-${type}`} />
-        </div>
-        <div className='text-contain'>
-          {
-            this.props.title &&
-            <div className='text-title'>
-              {this.props.title}
-            </div>
-          }
-          <div className='text-message'>
-            {this.props.message || this.props.content}
-            {React.Children.map(this.props.children, (item) => item)}
+    return (
+      this.state.visible && (
+        <div className={classnames}>
+          <div className='hi-icon__title'>
+            <i className={`hi-icon icon-${type}`} />
+            {this.props.title && <div className='text-title'>{this.props.title}</div>}
           </div>
+          {this.props.content && <div className='text-message'>{this.props.content}</div>}
+          {this.props.closeable && (
+            <div className='close-btn icon-img-delete' onClick={this.handleClose.bind(this)}>
+              <i className='hi-icon icon-close' />
+            </div>
+          )}
         </div>
-        {
-          this.props.closeable
-            ? (
-              <div className='close-btn icon-img-delete' onClick={this.handleClose.bind(this)}>
-                <i className='hi-icon icon-close' />
-              </div>
-            )
-            : null
-        }
-      </div>
-    ) : null
+      )
+    )
   }
 }
 export default Alert

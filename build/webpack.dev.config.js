@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const basePath = path.resolve(__dirname, '../')
+const rehypePrism = require('@mapbox/rehype-prism')
 
 module.exports = {
   mode: 'development',
@@ -9,15 +10,22 @@ module.exports = {
     // 列出第三方库
     vendor: ['react', 'react-dom']
   },
+  node: {
+    fs: 'empty'
+  },
   output: {
     path: path.resolve(basePath, 'dist'),
-    publicPath: '/dist/',
+    publicPath: '/hiui/dist/',
     filename: '[name].js',
     chunkFilename: '[name].chunk.js'
   },
   resolve: {
     modules: ['node_modules'],
-    extensions: ['.web.js', '.js', '.jsx', '.json']
+    extensions: ['.web.js', '.js', '.jsx', '.json'],
+    alias: {
+      '@components': path.resolve(basePath, 'components'),
+      '@libs': path.resolve(basePath, 'libs')
+    }
   },
   module: {
     rules: [
@@ -36,6 +44,7 @@ module.exports = {
           path.resolve(__dirname, '../libs'),
           path.resolve(__dirname, '../locales'),
           path.resolve(__dirname, '../site'),
+          path.resolve(__dirname, '../docs'),
           path.resolve(__dirname, '../template'),
           path.resolve(__dirname, '../transform'),
           path.resolve(__dirname, '../node_modules/@hi-ui/classic-theme')
@@ -70,6 +79,18 @@ module.exports = {
         options: {
           name: './static/fonts/[name].[ext]?[hash]'
         }
+      },
+      {
+        test: /\.mdx$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react']
+            }
+          },
+          { loader: '@mdx-js/loader', options: { hastPlugins: [rehypePrism] } }
+        ]
       },
       {
         test: /\.md$/,

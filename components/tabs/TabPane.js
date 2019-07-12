@@ -9,9 +9,9 @@ class TabPane extends Component {
   }
 
   static propTypes = {
-    tabName: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    tabTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     tabDesc: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    tabKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    tabId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     closable: PropTypes.bool,
     disabled: PropTypes.bool
   }
