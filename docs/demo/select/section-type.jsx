@@ -26,7 +26,7 @@ class Demo extends React.Component {
         <Select
           type='single'
           clearable={false}
-          style={{width: '200px'}}
+          style={{ width: 200 }}
           data={this.state.singleList}
           value={this.state.value}
           onChange={(item) => {
