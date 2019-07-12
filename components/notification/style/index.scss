@@ -1,135 +1,92 @@
 @import '../../style/index.scss';
 @import '../../style/icon/index.scss';
 
-.hi-notification__container {
-  position: absolute;
-  top: 20px;
+.hi-notification {
+  position: fixed;
+  top: -10px;
   right: 20px;
+  padding: 15px 40px 15px 50px;
+  width: 20%;
+  background-color: rgb(233, 241, 255);
+  border-color: rgb(180, 208, 255);
+  color: #4284f5;
+  transition: all 0.2s ease-out;
+  opacity: 0;
   z-index: 1020;
 
-  .hi-notification {
-    position: relative;
-    padding: 9px 12px;
-    margin-bottom: 10px;
-    border-radius: 2px;
-    transition: 0.3s ease;
-    display: flex;
-    align-items: flex-start;
-    width: 340px;
-    box-sizing: border-box;
-
-    &__closer {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-    }
-  }
-
-  .hi-notification__title--wrapper {
-    display: flex;
-    align-items: center;
-
-    .hi-notification__title {
-      font-size: 14px;
-    }
-  }
-
-  .hi-notification__icon {
+  .title {
     font-size: 16px;
-    margin-right: 12px;
+    display: block;
+    margin-bottom: 5px;
   }
 
-  .hi-notification__content {
-    padding-left: 28px;
+  .message {
     font-size: 12px;
-    line-height: 20px;
-    color: #666;
+    display: block;
   }
 
-  .hi-notification__content--wrapper {
-    width: 100%;
-    padding-right: 14px;
-  }
+  .close {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    margin-top: -0.5em;
+    cursor: pointer;
+    color: #999;
+    font-size: 12px;
+    font-family: sans-serif;
+    font-weight: 700;
 
-  .hi-notification__button--wrapper {
-    text-align: right;
-    margin-top: 9px;
-
-    .hi-notification__button {
-      margin-right: -14px;
-      color: #fff;
+    &::before {
+      color: #999;
     }
   }
 
-  .hi-notification--info {
-    background: #edf2fc;
-    border: 1px solid #d8e5ff;
+  &.show {
+    opacity: 1;
+    top: 20px;
+  }
 
-    .hi-notification__title,
-    .hi-notification__icon {
-      color: #4284f5;
-    }
+  .icon-contain {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    margin-top: -10px;
+    font-size: 0;
+    color: #4284f5;
+    font-weight: 600;
 
-    .hi-notification__button {
-      background-color: #4284f5;
+    .hi-icon {
+      font-size: 20px;
     }
   }
 
-  .hi-notification--error {
-    background: #feeff0;
-    border: 1px solid #ffe0e3;
+  &.error {
+    background: rgb(255, 234, 235);
+    border: 1px solid rgb(251, 191, 191);
+    color: #eb5252;
 
-    .hi-notification__title,
-    .hi-notification__icon {
+    .icon-contain {
       color: #eb5252;
     }
-
-    .hi-notification__button {
-      background-color: #eb5252;
-    }
   }
 
-  .hi-notification--success {
-    background: #e8f6ee;
-    border: 1px solid #cae9d7;
+  &.success {
+    background: rgb(233, 245, 237);
+    border: 1px solid rgb(197, 220, 206);
+    color: #1da653;
 
-    .hi-notification__title,
-    .hi-notification__icon {
+    .icon-contain {
       color: #1da653;
     }
-
-    .hi-notification__button {
-      background-color: #1da653;
-    }
   }
 
-  .hi-notification--warning {
-    background: #fbf5e6;
-    border: 1px solid #fcf0d4;
+  &.warning {
+    background: rgb(255, 249, 236);
+    border: 1px solid rgb(253, 202, 94);
+    color: #e19d0c;
 
-    .hi-notification__title,
-    .hi-notification__icon {
+    .icon-contain {
       color: #e19d0c;
     }
-
-    .hi-notification__button {
-      background-color: #e19d0c;
-    }
-  }
-
-  .hi-notification-enter {
-    transform: translateX(100%);
-  }
-
-  .hi-notification-enter-done {
-    transform: none;
-  }
-
-  .hi-notification-exit {
-    transform: none;
-  }
-
-  .hi-notification-exit-done {
-    transform: translateX(100%);
   }
 }

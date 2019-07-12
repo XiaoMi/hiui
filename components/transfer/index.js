@@ -39,12 +39,13 @@ class Transfer extends Component {
     }
   }
   parseDatas (props) {
-    const { data, targetKeys, targetIds } = props
+    const { data, targetKeys } = props
     const sourceList = []
-    const targetList = []
-    data.forEach(item => {
-      if ((targetIds || targetKeys).includes(item.id)) {
-        targetList.push(item)
+    const targetList = new Array(targetKeys.length)
+    data.forEach((item, index) => {
+      const targetIndexKey = targetKeys.indexOf(item.id)
+      if (targetIndexKey > -1) {
+        targetList[targetIndexKey] = item
       } else {
         sourceList.push(item)
       }
@@ -63,11 +64,11 @@ class Transfer extends Component {
     return dir === 'left' ? 'sourceSelectedKeys' : 'targetSelectedKeys'
   }
   clickItemEvent (item, index, dir) {
-    const { mode, type } = this.props
+    const { mode } = this.props
     if (item.disabled) {
       return
     }
-    if (mode === 'basic' && type === 'default') {
+    if (mode === 'basic') {
       this.parseSelectedKeys(dir, item.id, () => {
         this.moveTo(dir)
       })
@@ -96,13 +97,13 @@ class Transfer extends Component {
     this.parseSelectedKeys(dir, value, null)
   }
   moveTo (dir) {
-    const { targetKeys, targetIds } = this.props
+    const { targetKeys } = this.props
     const { sourceSelectedKeys, targetSelectedKeys } = this.state
     const selectedItem = dir === 'left' ? [...sourceSelectedKeys] : [...targetSelectedKeys]
     const newTargetKeys =
       dir === 'left'
-        ? selectedItem.concat(targetIds || targetKeys)
-        : (targetIds || targetKeys).filter(tk => !selectedItem.includes(tk))
+        ? selectedItem.concat(targetKeys)
+        : targetKeys.filter(tk => selectedItem.indexOf(tk) === -1)
     this.setState(
       {
         [this.getSelectedKeysByDir(dir)]: newTargetKeys
@@ -181,7 +182,7 @@ class Transfer extends Component {
     this.setState({ sourceNode: null })
   }
   renderContainer (dir, datas) {
-    const { mode, type, showCheckAll, showAllSelect, searchable, draggable, emptyContent, title, disabled } = this.props
+    const { mode, showAllSelect, searchable, draggable, emptyContent, title, disabled } = this.props
     const {
       sourceSelectedKeys,
       targetSelectedKeys,
@@ -261,7 +262,7 @@ class Transfer extends Component {
             emptyContent[1] || emptyContent[0]
           )}
         </div>
-        {(mode !== 'basic' || type !== 'default') && (showAllSelect || showCheckAll) && (
+        {mode !== 'basic' && showAllSelect && (
           <div className={footerCls}>
             <Checkbox
               text='全选'
@@ -280,11 +281,11 @@ class Transfer extends Component {
   }
 
   render () {
-    const { mode, type } = this.props
+    const { mode } = this.props
     const { sourceList, targetList, sourceSelectedKeys, targetSelectedKeys, limited } = this.state
     const operCls = classNames(
       'hi-transfer__operation',
-      (mode === 'basic'&& type === 'default') && 'hi-transfer__operation--basic'
+      mode === 'basic' && 'hi-transfer__operation--basic'
     )
     const isLeftDisabled = targetSelectedKeys.length === 0
     const isRightDisabled = sourceSelectedKeys.length === 0 || limited
@@ -292,7 +293,7 @@ class Transfer extends Component {
       <div className='hi-transfer'>
         {this.renderContainer('left', sourceList)}
         <div className={operCls}>
-          {(mode !== 'basic' || type !== 'default') && (
+          {mode !== 'basic' && (
             <React.Fragment>
               <Button
                 type={isRightDisabled ? 'default' : 'primary'}
@@ -325,10 +326,8 @@ class Transfer extends Component {
 }
 Transfer.defaultProps = {
   mode: 'basic',
-  type: 'default',
-  targetKeys: [], // TODO:废弃，使用 targetIds
+  targetKeys: [],
   showAllSelect: false,
-  showCheckAll: false,
   searchable: false,
   draggable: false,
   emptyContent: ['暂无数据', '暂无数据'],
@@ -336,10 +335,8 @@ Transfer.defaultProps = {
   disabled: false
 }
 Transfer.propTypes = {
-  mode: PropTypes.oneOf(['basic', 'multiple']), // TODO: 废弃，使用 type
-  type: PropTypes.oneOf(['default', 'multiple']),
-  showAllSelect: PropTypes.bool, // TODO: 废弃，使用 showCheckAll
-  showCheckAll: PropTypes.bool,
+  mode: PropTypes.oneOf(['basic', 'multiple']),
+  showAllSelect: PropTypes.bool,
   searchable: PropTypes.bool,
   draggable: PropTypes.bool,
   disabled: PropTypes.bool,

@@ -4,18 +4,18 @@ import Select from '../../../components/select'
 const prefix = 'select-async-multiple'
 const code = `
 import React from 'react'
-import Select from '@hi-ui/hiui/es/select'\n
+import Select from '@hiui/hiui/es/select'\n
 class Demo extends React.Component {
   render () {
     return (
       <div>
         <Select
-          type='multiple'
-          autoload
+          mode='multiple'
+          autoload={true}
           style={{width: '300px'}}
-          multipleWrap="nowrap"
+          multipleMode="nowrap"
           value="1"
-          dataSource={{
+          origin={{
             type: 'get',
             key: 'text',
             keyword: 'xiaomi',
@@ -34,5 +34,11 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoSingleMultiple = () => <DocViewer code={code} scope={{ Select }} prefix={prefix} />
+const DemoSingleMultiple = () => (
+  <DocViewer
+    code={code}
+    scope={{ Select }}
+    prefix={prefix}
+  />
+)
 export default DemoSingleMultiple

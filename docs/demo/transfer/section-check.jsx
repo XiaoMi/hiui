@@ -5,7 +5,7 @@ const prefix = 'transfer-check'
 
 const code = `
 import React from 'react'
-import Transfer from '@hi-ui/hiui/es/transfer'\n
+import Transfer from '@hiui/hiui/es/transfer'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -41,5 +41,11 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoCheck = () => <DocViewer code={code} scope={{ Transfer }} prefix={prefix} />
+const DemoCheck = () => (
+  <DocViewer
+    code={code}
+    scope={{ Transfer }}
+    prefix={prefix}
+  />
+)
 export default DemoCheck

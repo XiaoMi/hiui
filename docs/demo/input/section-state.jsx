@@ -6,54 +6,70 @@ import Radio from '../../../components/radio'
 const prefix = 'input-state'
 const code = `
 import React from 'react'
-import Grid from '@hi-ui/hiui/es/grid'
-import Radio from '@hi-ui/hiui/es/radio'
-import Input from '@hi-ui/hiui/es/input'\n
+import Grid from '@hiui/hiui/es/grid'
+import Radio from '@hiui/hiui/es/radio'
+import Input from '@hiui/hiui/es/input'\n
 class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
+      disabled: false,
+      required: false,
+      checkedIndex: 0,
+      placeholder: '禁用状态',
       list: [{
         id: 'disabled',
-        content: '禁用状态'
+        name: '禁用状态'
       }, {
         id: 'required',
-        content: '必填项'
-      }],
-      value: 'disabled'
+        name: '必填项'
+      }]
     }
   }
   render() {
     const Row = Grid.Row
     const Col = Grid.Col
-    const { list, required, disabled, value } = this.state
+    const {list, required, disabled, placeholder, checkedIndex} = this.state
     return (
       <div>
-        <Row gutter>
+        <Row gutter={true}>
           <Col span={12}>
-            <Radio.Group
-              data={list}
-              value={value}
-              type='button'
-              onChange={(value) => {
-                this.setState({ value })
+            <Radio
+              list={list}
+              mode='button'
+              checked={checkedIndex}
+              onChange={(data, index) => {
+                this.setState({
+                  placeholder: list[index].name,
+                  checkedIndex: index,
+                  required: data === 'required',
+                  disabled: data === 'disabled'
+                })
               }}
             />
           </Col>
         </Row>
-        <Row gutter>
+        <Row gutter={true}>
           <Col span={12}>
-            <Input
-              style={{ width: 250 }}
-              placeholder='请输入'
-              required={value === 'required'}
-              disabled={value === 'disabled'}
+             <Input
+              value=""
+              placeholder={placeholder}
+              style={{width: '250px'}}
+              required={required}
+              disabled={disabled}
             />
           </Col>
         </Row>
+
       </div>
     )
   }
 }`
-const DemoState = () => <DocViewer code={code} scope={{ Grid, Input, Radio }} prefix={prefix} />
+const DemoState = () => (
+  <DocViewer
+    code={code}
+    scope={{ Grid, Input, Radio }}
+    prefix={prefix}
+  />
+)
 export default DemoState

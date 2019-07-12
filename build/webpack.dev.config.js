@@ -21,11 +21,7 @@ module.exports = {
   },
   resolve: {
     modules: ['node_modules'],
-    extensions: ['.web.js', '.js', '.jsx', '.json'],
-    alias: {
-      '@components': path.resolve(basePath, 'components'),
-      '@libs': path.resolve(basePath, 'libs')
-    }
+    extensions: ['.web.js', '.js', '.jsx', '.json']
   },
   module: {
     rules: [

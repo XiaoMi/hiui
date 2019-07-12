@@ -21,26 +21,26 @@ class Pagination extends Component {
   static propTypes = {
     defaultCurrent: PropTypes.number,
     pageSize: PropTypes.number,
-    max: PropTypes.number,
-    showJumper: PropTypes.bool,
-    autoHide: PropTypes.bool,
+    pageBufferSize: PropTypes.number,
+    showQuickJumper: PropTypes.bool,
+    hideOnSinglePage: PropTypes.bool,
     total: PropTypes.number,
     onChange: PropTypes.func,
     itemRender: PropTypes.func,
-    onPageSizeChange: PropTypes.func,
-    onJump: PropTypes.func,
+    sizeChangeEvent: PropTypes.func,
+    jumpEvent: PropTypes.func,
     pageSizeOptions: PropTypes.array,
-    type: PropTypes.oneOf(['simple', 'default', 'shrink'])
+    mode: PropTypes.oneOf(['simple', 'normal', 'shrink'])
   }
 
   static defaultProps = {
     pageSizeOptions: [],
-    showJumper: false,
-    autoHide: false,
-    type: 'default',
+    showQuickJumper: false,
+    hideOnSinglePage: false,
+    mode: 'normal',
     defaultCurrent: 1,
     pageSize: 10,
-    max: 2,
+    pageBufferSize: 2,
     total: 0,
     onChange: noop,
     className: '',
@@ -52,11 +52,10 @@ class Pagination extends Component {
 
     const {
       defaultCurrent,
-      current: propsCurrent,
       pageSize,
       total
     } = props
-    const current = this.getCurrent(propsCurrent !== undefined ? propsCurrent : defaultCurrent, this.calculatePage(total, pageSize))
+    const current = this.getCurrent(defaultCurrent, this.calculatePage(total, pageSize))
 
     this.state = {
       current,
@@ -76,8 +75,8 @@ class Pagination extends Component {
       states.total = props.total
     }
     let current
-    if (props.current !== undefined && this.state.current !== props.current) {
-      current = this.getCurrent(props.current, this.calculatePage(props.total, props.pageSize))
+    if (this.state.current !== props.defaultCurrent) {
+      current = this.getCurrent(props.defaultCurrent, this.calculatePage(props.total, props.pageSize))
     }
     if (current) {
       states.current = current
@@ -109,12 +108,13 @@ class Pagination extends Component {
     const maxPage = this.calculatePage(this.props.total)
 
     if (isInteger(page) && page !== prevPage && page >= 1 && page <= maxPage) {
-      const pageSize = this.state.pageSize
-      this.props.onChange(page, prevPage, pageSize)
-      this.props.current !== undefined || this.setState({
+      this.setState({
         current: page,
         jumpTo: page
       })
+
+      const pageSize = this.state.pageSize
+      this.props.onChange(page, prevPage, pageSize)
     }
   }
 
@@ -132,17 +132,17 @@ class Pagination extends Component {
     return -1
   }
 
-  onPageSizeChange (pageSize) {
+  sizeChangeEvent (pageSize) {
     const {
       total,
-      onPageSizeChange
+      sizeChangeEvent
     } = this.props
     const current = this.getCurrent(this.state.current, this.calculatePage(total, pageSize)) // pageSize改动需要重新计算当前页，避免超过最大页情况
 
     this.setState({
       pageSize
     }, () => {
-      onPageSizeChange && onPageSizeChange(pageSize, current)
+      sizeChangeEvent && sizeChangeEvent(pageSize, current)
       this.handleChange(current)
     })
   }
@@ -158,13 +158,10 @@ class Pagination extends Component {
       <div className={`${prefixCls}__sizes ${prefixCls}__text`}>
         {localeDatas.pagination.itemPerPage}
         <div className={`${prefixCls}__span`}>
-          <Dropdown legacy={false} title={pageSize} type='button'
-            data={pageSizeOptions.map(n => ({
-              value: n,
-              title: String(n)
-            }))}
+          <Dropdown title={pageSize} type='button'
+            list={pageSizeOptions}
             onClick={(val) => {
-              this.onPageSizeChange(val)
+              this.sizeChangeEvent(val)
             }}
           />
         </div>
@@ -174,9 +171,9 @@ class Pagination extends Component {
   }
 
   renderJumper () {
-    const { showJumper, prefixCls, localeDatas } = this.props
+    const { showQuickJumper, prefixCls, localeDatas } = this.props
 
-    if (!showJumper) {
+    if (!showQuickJumper) {
       return null
     }
 
@@ -217,7 +214,7 @@ class Pagination extends Component {
     const pageNum = parseInt(e.target.value)
     const setPageNum = (page) => {
       this.handleChange(page)
-      this.props.onJump && this.props.onJump(Number(page))
+      this.props.jumpEvent && this.props.jumpEvent(Number(page))
     }
 
     if (e.type === 'blur') {
@@ -230,7 +227,7 @@ class Pagination extends Component {
   }
 
   renderPagers () {
-    const { max, total, prefixCls } = this.props
+    const { pageBufferSize, total, prefixCls } = this.props
     const {
       current
     } = this.state
@@ -239,20 +236,20 @@ class Pagination extends Component {
     const nextPager = this.renderNextPager() // 下一页
     let pagers = [prevPager]
     let leftBuffer, rightBuffer
-    if (max * 2 + 1 + 2 >= maxPage) {
+    if (pageBufferSize * 2 + 1 + 2 >= maxPage) {
       leftBuffer = 1
       rightBuffer = maxPage
-    } else if ((maxPage - current) <= max) {
+    } else if ((maxPage - current) <= pageBufferSize) {
       rightBuffer = maxPage
-      leftBuffer = maxPage - 2 * max - 1
+      leftBuffer = maxPage - 2 * pageBufferSize - 1
       leftBuffer = leftBuffer <= 1 ? 1 : leftBuffer
-    } else if ((current - max) <= 1) {
+    } else if ((current - pageBufferSize) <= 1) {
       leftBuffer = 1
-      rightBuffer = 2 * max + leftBuffer + 1
+      rightBuffer = 2 * pageBufferSize + leftBuffer + 1
       rightBuffer = rightBuffer >= maxPage ? maxPage : rightBuffer
     } else {
-      leftBuffer = current - max
-      rightBuffer = current + max
+      leftBuffer = current - pageBufferSize
+      rightBuffer = current + pageBufferSize
     }
 
     if (leftBuffer !== 1) {
@@ -352,7 +349,7 @@ class Pagination extends Component {
     const {
       prefixCls,
       total,
-      showJumper
+      showQuickJumper
     } = this.props
     const maxPage = this.calculatePage(total)
 
@@ -367,7 +364,7 @@ class Pagination extends Component {
       <React.Fragment>
         {prevPager}
         {
-          showJumper &&
+          showQuickJumper &&
           <div className={`${prefixCls}__text`}>
             {this.renderJumperInput()}
             /
@@ -381,21 +378,24 @@ class Pagination extends Component {
 
   render () {
     const {
-      autoHide,
+      hideOnSinglePage,
       total,
-      type,
       mode,
       prefixCls,
       className,
       theme
     } = this.props
     const maxPage = this.calculatePage(total)
-    if (maxPage === 0 || (autoHide && (maxPage === 1))) {
+    if (maxPage === 0 || (hideOnSinglePage && (maxPage === 1))) {
       return null
     }
     let children
 
-    switch (type || mode) {
+    switch (mode) {
+      case 'normal':
+        children = this.renderNormal()
+        break
+
       case 'simple':
         children = this.renderSimple()
         break
@@ -410,7 +410,7 @@ class Pagination extends Component {
     }
 
     return (
-      <div className={`${prefixCls} ${prefixCls}--${type} ${className} theme__${theme}`}>
+      <div className={`${prefixCls} ${prefixCls}--${mode} ${className} theme__${theme}`}>
         {children}
       </div>
     )

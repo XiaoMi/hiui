@@ -1,10 +1,5 @@
 # 更新日志
 
-## 1.5.2
-
-- 修复：`<Upload />` 组件放入 `<Form.Item />` 后 `onChange return false` 无效 [#344](https://github.com/XiaoMi/hiui/issues/344)
-- 新增：`<DatePicker />` 组件 `timeperiod` 模式支持自定义时间间隔 [#349](https://github.com/XiaoMi/hiui/issues/349)
-
 ## 1.5.1
 
 - 新增：`<Select />` 组件 `onClick` `onBlur` `onFocus` 事件回调函数 [#321](https://github.com/XiaoMi/hiui/issues/321)

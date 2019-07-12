@@ -5,7 +5,7 @@ const prefix = 'tree-async'
 const desc = '点击展开异步加载树的子节点'
 const code = `
 import React from 'react'
-import Tree from '@hi-ui/hiui/es/tree'\n
+import Tree from '@hiui/hiui/es/tree'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)

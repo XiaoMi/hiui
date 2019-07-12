@@ -35,18 +35,14 @@ export default class SelectDropdown extends Component {
       <React.Fragment>
         {mode === 'multiple' && (
           <div className='hi-select__dropdown--item__checkbox'>
-            <Checkbox checked={isSelected} disabled={item.disabled}>
-              <div className='hi-select__dropdown--item__name'>{item.title}</div>
-            </Checkbox>
+            <Checkbox checked={isSelected} disabled={item.disabled} />
           </div>
         )}
-        {mode === 'single' && <div className='hi-select__dropdown--item__name'>{item.title}</div>}
+        <div className='hi-select__dropdown--item__name'>{item.name}</div>
         {mode === 'single' && isSelected && (
-          <React.Fragment>
-            <div className='hi-select__dropdown--item__check-icon'>
-              <i className='hi-icon icon-check' />
-            </div>
-          </React.Fragment>
+          <div className='hi-select__dropdown--item__check-icon'>
+            <i className='hi-icon icon-check' />
+          </div>
         )}
       </React.Fragment>
     )

@@ -5,35 +5,48 @@ import './style/index'
 
 class Badge extends Component {
   static propTypes = {
-    content: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    type: PropTypes.oneOf(['bubble', 'dot']),
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]),
+    dot: PropTypes.bool,
     max: PropTypes.number,
-    visible: PropTypes.bool,
+    hidden: PropTypes.bool,
     style: PropTypes.object
   }
 
   static defaultProps = {
     prefixCls: 'hi-badge',
     style: {},
-    content: '',
-    type: 'bubble',
+    value: '',
+    dot: false,
     max: 99,
-    visible: true
+    hidden: false
   }
 
-  render() {
-    const { content, prefixCls, max, type, visible, style } = this.props
+  render () {
+    const {value, prefixCls, max, dot, hidden, style} = this.props
     const eleClass = classNames(`${prefixCls}-base`)
     return (
       <div className={eleClass} style={style}>
         {this.props.children}
-        {type === 'dot' ? (
-          <span className={`${prefixCls}-dot${!visible ? ' hi-hide' : ''}`} />
-        ) : (
-          <span className={`${prefixCls}-value${!visible ? ' hi-hide' : ''}`}>
-            {typeof +content === 'number' ? (+content > max ? max + '+' : content) : content}
-          </span>
-        )}
+        {
+          dot
+            ? (
+              <span className={`${prefixCls}-dot${hidden ? ' hi-hide' : ''}`} />
+            )
+            : (
+              <span className={`${prefixCls}-value${hidden ? ' hi-hide' : ''}`}>
+                {
+                  typeof +value === 'number'
+                    ? (
+                      +value > max ? max + '+' : value
+                    )
+                    : value
+                }
+              </span>
+            )
+        }
       </div>
     )
   }

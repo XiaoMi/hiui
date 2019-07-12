@@ -2,12 +2,12 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Stepper from '../../../components/stepper'
 import Icon from '../../../components/icon'
-const desc = '图标用法传入 Icon 组件'
+const desc = '图标用法传入 src 值'
 const prefix = 'stepper-icon'
 const code = `
 import React from 'react'
-import Icon from '@hi-ui/hiui/es/icon'
-import Stepper from '@hi-ui/hiui/es/stepper'\n
+import Icon from '@hiui/hiui/es/icon'
+import Stepper from '@hiui/hiui/es/stepper'\n
 class Demo extends React.Component {
   render() {
     const list = [
@@ -26,10 +26,12 @@ class Demo extends React.Component {
     ]
 
     return (
-      <Stepper
-        data={list}
-        current={1}
-      />
+      <div>
+        <Stepper
+          list={list}
+          current={1}
+        />
+      </div>
     )
   }
 }`

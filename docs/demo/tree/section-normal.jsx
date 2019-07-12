@@ -4,7 +4,7 @@ import Tree from '../../../components/tree'
 const prefix = 'tree-normal'
 const code = `
 import React from 'react'
-import Tree from '@hi-ui/hiui/es/tree'\n
+import Tree from '@hiui/hiui/es/tree'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)
@@ -58,5 +58,11 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoNormal = () => <DocViewer code={code} scope={{ Tree }} prefix={prefix} />
+const DemoNormal = () => (
+  <DocViewer
+    code={code}
+    scope={{ Tree }}
+    prefix={prefix}
+  />
+)
 export default DemoNormal

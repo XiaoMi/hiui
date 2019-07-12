@@ -4,7 +4,7 @@ import Menu from '../../../components/menu'
 const prefix = 'menu-row'
 const code = `
 import React from 'react'
-import Menu from '@hi-ui/hiui/es/menu'\n
+import Menu from '@hiui/hiui/es/menu'\n
 class Demo extends React.Component {
   render(){
     const datas = [
@@ -95,15 +95,21 @@ class Demo extends React.Component {
     return(
       <div>
         <Menu
-          placement="horizontal"
+          mode="horizontal"
           activeId={'xiaomi9'}
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
           onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
-          data={datas}
+          datas={datas}
         />
       </div>
     )
   }
 }`
-const DemoRow = () => <DocViewer code={code} scope={{ Menu }} prefix={prefix} />
+const DemoRow = () => (
+  <DocViewer
+    code={code}
+    scope={{ Menu }}
+    prefix={prefix}
+  />
+)
 export default DemoRow

@@ -31,33 +31,15 @@ import DemoApi from '../../demo/loading/section-api.jsx'
 
 <DemoApi />
 
-## Props
+## Loading Attributes
 
-| 参数     | 说明                               | 类型                | 可选值                          | 默认值    |
-| -------- | ---------------------------------- | ------------------- | ------------------------------- | --------- |
-| size     | loading 大小                       | string              | 'large' \| 'default' \| 'small' | 'default' |
-| content  | 自定义加载中状态的文案             | string \| ReactNode | -                               | -         |
-| visible  | 是否显示 loading                   | boolean             | true \| false                   | true      |
-| duration | loading 自动关闭的时间，单位为毫秒 | number              | -                               | -         |
-| full     | 是否全屏                           | boolean             | true \| false                   | false     |
-
-## Methods
-
-`Loading.open(target, {content, size, duration, key})`
-
-| 参数     | 说明                                          | 类型                | 可选值                          | 默认值    |
-| -------- | --------------------------------------------- | ------------------- | ------------------------------- | --------- |
-| key      | 标识 `Loading` 的唯一 key，仅用于关闭         | string              | -                               | -         |
-| target   | 需要 `Loading` 遮罩的元素, 当不传时为全屏遮罩 | HTMLElement         | -                               | -         |
-| content  | 自定义加载中状态的文案                        | string \| ReactNode | -                               | -         |
-| duration | loading 自动关闭的时间，单位为毫秒            | number              | -                               | -         |
-| size     | loading 大小                                  | string              | 'large' \| 'default' \| 'small' | 'default' |
-
-`Loading.close(key)`
-
-| 参数 | 说明                      | 类型   | 可选值 | 默认值 |
-| ---- | ------------------------- | ------ | ------ | ------ |
-| key  | 标识 `Loading` 的唯一 key | string | -      | -      |
+| 参数   | 说明                                                | 类型    | 可选值                    | 默认值  |
+| ------ | --------------------------------------------------- | ------- | ------------------------- | ------- |
+| size   | 组件大小                                            | String  | large \| default \| small | default |
+| tip    | 自定义的旋转动画下的文字                            | String  | -                         | -       |
+| full   | 是否全屏                                            | Boolean | true \| false             | false   |
+| show   | 是否显示加载动画                                    | Boolean | true \| false             | false   |
+| target | 用于指令调用时,Loading 遮罩的元素，为空时将整页遮罩 | Element | -                         | -       |
 
 <div style={{ position: 'relative' }}>
   <span
@@ -71,24 +53,10 @@ import DemoApi from '../../demo/loading/section-api.jsx'
       color: '#999'
     }}
   >
-    1.5.x 版本 api
+    以下调整将随 2.0.0 版本发布，敬请期待
   </span>
   <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
 </div>
-
-<<<<<<< HEAD
-
-## Loading Attributes
-
-| 参数   | 说明                                                | 类型    | 可选值                    | 默认值  |
-| ------ | --------------------------------------------------- | ------- | ------------------------- | ------- |
-| size   | 组件大小                                            | String  | large \| default \| small | default |
-| tip    | 自定义的旋转动画下的文字                            | String  | -                         | -       |
-| full   | 是否全屏                                            | Boolean | true \| false             | false   |
-| show   | 是否显示加载动画                                    | Boolean | true \| false             | false   |
-| target | 用于指令调用时,Loading 遮罩的元素，为空时将整页遮罩 | Element | -                         | -       |
-
-=======
 
 ## Props
 
@@ -116,5 +84,3 @@ import DemoApi from '../../demo/loading/section-api.jsx'
 | 参数 | 说明                      | 类型   | 可选值 | 默认值 |
 | ---- | ------------------------- | ------ | ------ | ------ |
 | key  | 标识 `Loading` 的唯一 key | string | -      | -      |
-
-> > > > > > > 96193778cf65d94b39118960f8b50c323cf9ca4d

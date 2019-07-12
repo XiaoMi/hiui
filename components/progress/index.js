@@ -1,33 +1,31 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import './style'
-import { BarProgress } from './BarProgress.js'
-import { CircleProgress } from './CircleProgress.js'
-import { DashboardProgress } from './DashboardProgress'
+import {BarProgress} from './BarProgress.js'
+import {CircleProgress} from './CircleProgress.js'
+import {DashboardProgress} from './DashboardProgress'
 
 class Progress extends Component {
   static propTypes = {
-    apperance: PropTypes.string,
-    type: PropTypes.oneOf(['success', 'warn', 'error', 'primary']),
+    type: PropTypes.string,
+    status: PropTypes.oneOf(['success', 'warn', 'error', 'primary']),
     percent: PropTypes.number,
     width: PropTypes.number,
     height: PropTypes.number,
     tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    size: PropTypes.oneOf(['large', 'default', 'small'])
+    text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    size: PropTypes.oneOf(['big', 'large', 'middle', 'small'])
   }
   static defaultProps = {
-    apperance: 'bar',
-    size: 'default',
+    type: 'bar',
+    size: 'large',
     percent: 0,
     radius: 40,
-    type: 'primary',
-    showInfo: true,
-    placement: 'outside'
+    status: 'primary'
   }
 
-  getRenderType (apperance) {
-    switch (apperance) {
+  getRenderType (type) {
+    switch (type) {
       case 'circle':
         return <CircleProgress {...this.props} />
       case 'dashboard':
@@ -39,10 +37,12 @@ class Progress extends Component {
 
   render () {
     let prefix = 'hi-progress'
-    const { className = '', apperance } = this.props
+    const {className = '', type} = this.props
 
     return (
-      <div className={`${prefix}__container ${className}`}>{this.getRenderType(apperance)}</div>
+      <div className={`${prefix}__container ${className}`}>
+        {this.getRenderType(type)}
+      </div>
     )
   }
 }

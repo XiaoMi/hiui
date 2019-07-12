@@ -4,7 +4,7 @@ import Timeline from '../../../components/timeline'
 const prefix = 'timeline-basic'
 
 const code = `import React from 'react'
-import Timeline from '@hi-ui/hiui/es/timeline'\n
+import Timeline from '@hiui/hiui/es/timeline'\n
 class Demo extends React.Component {
   render () {
     const datas = [{
@@ -15,6 +15,7 @@ class Demo extends React.Component {
           timestamp: '10:00',
           extraTime: '02-23'
         }, {
+          dot: 'circle',
           title: 'Title 2',
           description: 'Here are some descriptions',
           timestamp: '10:00',
@@ -23,11 +24,13 @@ class Demo extends React.Component {
       }, {
         groupTitle: '3月',
         children: [{
+          dot: 'circle',
           title: 'Title 3',
           description: 'Here are some descriptions',
           timestamp: '12:00',
           extraTime: '03-02'
         }, {
+          dot: 'circle',
           title: 'Title 4',
           description: 'Here are some descriptions',
           timestamp: '11:00',

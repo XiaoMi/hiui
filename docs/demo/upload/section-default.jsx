@@ -4,7 +4,7 @@ import Upload from '../../../components/upload'
 const prefix = 'upload-default'
 const code = `
 import React from 'react'
-import Upload from '@hi-ui/hiui/es/upload'\n
+import Upload from '@hiui/hiui/es/upload'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)

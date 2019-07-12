@@ -5,8 +5,8 @@ import Grid from '../../../components/grid'
 const prefix = 'card-base'
 const code = `
 import React from 'react'
-import Grid from '@hi-ui/hiui/es/grid'
-import Card from '@hi-ui/hiui/es/card'\n
+import Grid from '@hiui/hiui/es/grid'
+import Card from '@hiui/hiui/es/card'\n
 class Demo extends React.Component {
   render() {
     const Row = Grid.Row
@@ -21,6 +21,14 @@ class Demo extends React.Component {
           <p>无标题</p>
           <p>鼠标移入悬浮效果</p>
           <p>其它额外内容</p>
+        </Card>
+        <br />
+        <Card hoverable size='large' disabled title='标题'>
+          <p>禁用状态</p>
+        </Card>
+        <br />
+        <Card hoverable size='large' disabled>
+          无标题,禁用状态
         </Card>
       </div>
     )

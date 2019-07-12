@@ -6,8 +6,8 @@ const prefix = 'badge-hidden'
 const desc = '设置 hidden 属性隐藏气泡'
 const code = `
 import React from 'react'
-import Button from '@hi-ui/hiui/es/button'
-import Badge from '@hi-ui/hiui/es/badge'\n
+import Button from '@hiui/hiui/es/button'
+import Badge from '@hiui/hiui/es/badge'\n
 class Demo extends React.Component {
   render () {
     return (

@@ -6,7 +6,7 @@ import Popper from '../popper'
 import './style/index'
 
 const prefixCls = 'hi-tooltip'
-const tooltipInstance = {}
+
 class Tooltip extends Component {
   static propTypes = {
     defaultVisible: PropTypes.bool,
@@ -28,7 +28,10 @@ class Tooltip extends Component {
 
   render () {
     const { placement, style, className, onClick, title, children } = this.props
-    const eleClass = classNames(`${prefixCls}-base`, placement && `${prefixCls}-${placement}`)
+    const eleClass = classNames(
+      `${prefixCls}-base`,
+      placement && `${prefixCls}-${placement}`
+    )
     const { tooltipShow } = this.state
     return (
       <div
@@ -43,7 +46,7 @@ class Tooltip extends Component {
         onClick={() => {
           onClick && onClick()
         }}
-        ref={node => {
+        ref={(node) => {
           this.tooltipContainer = node
         }}
       >
@@ -63,9 +66,12 @@ class Tooltip extends Component {
   }
 }
 
-function deprecatedOpen ({ target, placement = 'top', title }) {
+function open ({ target, placement = 'top', title }) {
   let mountNode = document.createElement('div')
-  const eleClass = classNames(`${prefixCls}-base`, placement && `${prefixCls}-${placement}`)
+  const eleClass = classNames(
+    `${prefixCls}-base`,
+    placement && `${prefixCls}-${placement}`
+  )
   render(
     <Popper
       className={`${prefixCls}__popper`}
@@ -79,47 +85,13 @@ function deprecatedOpen ({ target, placement = 'top', title }) {
     </Popper>,
     mountNode
   )
-  function deprecatedClose () {
+  function close () {
     mountNode && unmountComponentAtNode(mountNode)
     mountNode = undefined
   }
-  return { close: deprecatedClose }
+  return { close }
 }
 
-function open (target, { placement = 'top', title, key }) {
-  let mountNode = document.createElement('div')
-  const eleClass = classNames(`${prefixCls}-base`, placement && `${prefixCls}-${placement}`)
-  render(
-    <Popper
-      className={`${prefixCls}__popper`}
-      show
-      attachEle={target}
-      placement={placement}
-      zIndex={1070}
-      width='auto'
-    >
-      <div className={eleClass}>{title}</div>
-    </Popper>,
-    mountNode
-  )
-  tooltipInstance[key] = mountNode
-}
-function close (key) {
-  if (tooltipInstance[key]) {
-    unmountComponentAtNode(tooltipInstance[key])
-    tooltipInstance[key].parentNode &&
-      tooltipInstance[key].parentNode.removeChild(tooltipInstance[key])
-  }
-}
-function openWrapper (target, options) {
-  if (React.isValidElement(React.cloneElement(target))) {
-    open(target, options)
-  } else {
-    return deprecatedOpen(target)
-  }
-}
-
-Tooltip.open = openWrapper
-Tooltip.close = close
+Tooltip.open = open
 
 export default Tooltip

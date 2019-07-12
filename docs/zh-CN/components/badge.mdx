@@ -37,15 +37,14 @@ import DemoCustom from '../../demo/badge/section-custom.jsx'
 
 <DemoCustom />
 
-## Props
+## Badge Attributes
 
-| 参数    | 说明                                     | 类型             | 可选值            | 默认值   |
-| ------- | ---------------------------------------- | ---------------- | ----------------- | -------- |
-| content | 气泡显示内容                             | string \| number | -                 | -        |
-| type    | 气泡显示的形态，可选带文字的气泡或小红点 | string           | 'bubble' \| 'dot' | 'bubble' |
-| max     | 气泡显示的最大值，超过值用'+'号替代      | number           | -                 | 99       |
-| visible | 是否显示气泡                             | boolean          | true \| false     | true     |
-| color   | 气泡颜色                                 | string           | -                 | -        |
+| 参数   | 说明                   | 类型             | 默认值 |
+| ------ | ---------------------- | ---------------- | ------ |
+| value  | 气泡内容               | String \| Number | ''     |
+| dot    | 气泡是否显示为红点     | Boolean          | false  |
+| max    | 气泡中显示数字的最大值 | Number           | 99     |
+| hidden | 是否隐藏气泡           | Boolean          | false  |
 
 <div style={{ position: 'relative' }}>
   <span
@@ -59,16 +58,17 @@ import DemoCustom from '../../demo/badge/section-custom.jsx'
       color: '#999'
     }}
   >
-    1.5.x 版本 api 如下
+    以下调整将随 2.0.0 版本发布，敬请期待
   </span>
   <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
 </div>
 
-## Badge Attributes
+## Props
 
-| 参数   | 说明                   | 类型             | 默认值 |
-| ------ | ---------------------- | ---------------- | ------ |
-| value  | 气泡内容               | String \| Number | ''     |
-| dot    | 气泡是否显示为红点     | Boolean          | false  |
-| max    | 气泡中显示数字的最大值 | Number           | 99     |
-| hidden | 是否隐藏气泡           | Boolean          | false  |
+| 参数    | 说明                                     | 类型             | 可选值            | 默认值   |
+| ------- | ---------------------------------------- | ---------------- | ----------------- | -------- |
+| content | 气泡显示内容                             | string \| number | -                 | -        |
+| type    | 气泡显示的形态，可选带文字的气泡或小红点 | string           | 'bubble' \| 'dot' | 'bubble' |
+| max     | 气泡显示的最大值，超过值用'+'号替代      | number           | -                 | 99       |
+| visible | 是否显示气泡                             | boolean          | true \| false     | true     |
+| color   | 气泡颜色                                 | string           | -                 | -        |

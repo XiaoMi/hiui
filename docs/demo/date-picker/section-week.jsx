@@ -5,8 +5,8 @@ import Grid from '../../../components/grid'
 const prefix = 'date-picker-week'
 const code = `
 import React from 'react'
-import Grid from '@hi-ui/hiui/es/grid'
-import DatePicker from '@hi-ui/hiui/es/date-picker'\n
+import Grid from '@hiui/hiui/es/grid'
+import DatePicker from '@hiui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   render () {
     const Row = Grid.Row
@@ -38,5 +38,11 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoWeek = () => <DocViewer code={code} scope={{ DatePicker, Grid }} prefix={prefix} />
+const DemoWeek = () => (
+  <DocViewer
+    code={code}
+    scope={{ DatePicker, Grid }}
+    prefix={prefix}
+  />
+)
 export default DemoWeek

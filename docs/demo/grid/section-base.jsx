@@ -5,7 +5,7 @@ const prefix = 'grid-base'
 const desc = '无间隔水平排列'
 const code = `
 import React from 'react'
-import Grid from '@hi-ui/hiui/es/grid'\n
+import Grid from '@hiui/hiui/es/grid'\n
 class Demo extends React.Component {
   render(){
     const Row = Grid.Row

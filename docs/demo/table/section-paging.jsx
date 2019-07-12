@@ -4,15 +4,15 @@ import Table from '../../../components/table'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
 import Form from '../../../components/form/index'
-import FormItem from '../../../components/form/Item'
+import FormItem from '../../../components/form/item'
 const prefix = 'table-paging'
 const code = `
 import React from 'react'
-import Button from '@hi-ui/hiui/es/button'
-import Form from '@hi-ui/hiui/es/form/index'
-import FormItem from '@hi-ui/hiui/es/form/item'
-import Input from '@hi-ui/hiui/es/input'
-import Table from '@hi-ui/hiui/es/table'\n
+import Button from '@hiui/hiui/es/button'
+import Form from '@hiui/hiui/es/form/index'
+import FormItem from '@hiui/hiui/es/form/item'
+import Input from '@hiui/hiui/es/input'
+import Table from '@hiui/hiui/es/table'\n
 class Demo extends React.Component {
   constructor(props){
     super(props)
@@ -101,6 +101,10 @@ class Demo extends React.Component {
   }
 }`
 const DemoPaging = () => (
-  <DocViewer code={code} scope={{ Table, Input, Form, FormItem, Button }} prefix={prefix} />
+  <DocViewer
+    code={code}
+    scope={{ Table, Input, Form, FormItem, Button }}
+    prefix={prefix}
+  />
 )
 export default DemoPaging

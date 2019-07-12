@@ -7,9 +7,9 @@ const prefix = 'loading-localControl'
 
 const code = `
 import React from 'react'
-import Button from '@hi-ui/hiui/es/button'
-import Loading from '@hi-ui/hiui/es/loading'
-import Table from '@hi-ui/hiui/es/table'\n
+import Button from '@hiui/hiui/es/button'
+import Loading from '@hiui/hiui/es/loading'
+import Table from '@hiui/hiui/es/table'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -81,7 +81,7 @@ class Demo extends React.Component {
   render () {
     return (
       <div style={{width: 500, height:260, border: '1px solid gray', position: 'reletive'}}>
-        <Loading visible={this.state.showLoading}>
+        <Loading show={this.state.showLoading}>
           <Table
             columns={this.columns}
             data={this.state.list}
@@ -95,6 +95,10 @@ class Demo extends React.Component {
   }
 }`
 const DemoLocalControl = () => (
-  <DocViewer code={code} scope={{ Button, Table, Loading }} prefix={prefix} />
+  <DocViewer
+    code={code}
+    scope={{ Button, Table, Loading }}
+    prefix={prefix}
+  />
 )
 export default DemoLocalControl

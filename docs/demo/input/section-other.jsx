@@ -7,67 +7,62 @@ const prefix = 'input-other'
 
 const code = `
 import React from 'react'
-import Grid from '@hi-ui/hiui/es/grid'
-import Radio from '@hi-ui/hiui/es/radio'
-import Input from '@hi-ui/hiui/es/input'\n
+import Grid from '@hiui/hiui/es/grid'
+import Radio from '@hiui/hiui/es/radio'
+import Input from '@hiui/hiui/es/input'\n
 class Demo extends React.Component {
   constructor () {
     super()
-    this.list = [{
-      content: '前缀',
-      id: 'prefix'
-    }, {
-      content: '后缀',
-      id: 'suffix'
-    }, {
-      content: '两者',
-      id: 'both'
-    }]
     this.state = {
-      value: 'prefix'
-    }
-    this.getFix = () => {
-      return {
-        prefix: {
-          prefix: '+86',
-          placeholder: '010-12345678'
-        },
-        suffix: {
-          suffix: '@xiaomi.com',
-          placeholder: 'mife'
-        },
-        both: {
-          prefix: 'www.',
-          suffix: '.com',
-          placeholder: 'mi'
-        }
-      }[this.state.value]
+      prefix: '+86',
+      suffix: '',
+      checkedIndex: 0,
+      placeholder: '010-12345678',
+      list: [{
+        name: '前缀',
+        prefix: '+86',
+        placeholder: '010-12345678'
+      }, {
+        name: '后缀',
+        suffix: '@xiaomi.com',
+        placeholder: 'mife'
+      }, {
+        name: '两者',
+        prefix: 'www.',
+        suffix: '.com',
+        placeholder: 'mi'
+      }]
     }
   }
   render() {
     const Row = Grid.Row
     const Col = Grid.Col
-    const { value } = this.state
-    const { prefix, suffix, placeholder } = this.getFix()
+    const {list, prefix, suffix, placeholder, checkedIndex} = this.state
     return (
       <div>
-        <Row gutter>
+        <Row gutter={true}>
           <Col span={12}>
-            <Radio.Group
-              data={this.list}
-              value={value}
-              type='button'
-              onChange={value => {
-                this.setState({ value })
+            <Radio
+              list={list}
+              mode='button'
+              checked={checkedIndex}
+              onChange={(data, index, item) => {
+                this.setState({
+                  placeholder: item.placeholder,
+                  checkedIndex: index,
+                  prefix: item.prefix || '',
+                  suffix: item.suffix || '',
+                })
               }}
             />
           </Col>
         </Row>
-        <Row gutter>
+        <Row gutter={true}>
           <Col span={12}>
-            <Input
+             <Input
+              value=""
               placeholder={placeholder}
-              style={{width: 250}}
+              style={{width: '250px'}}
               suffix={suffix}
               prefix={prefix}
             />
@@ -77,7 +72,6 @@ class Demo extends React.Component {
     )
   }
 }`
-
 const DemoOther = () => (
   <DocViewer
     code={code}
@@ -85,5 +79,4 @@ const DemoOther = () => (
     prefix={prefix}
   />
 )
-
 export default DemoOther

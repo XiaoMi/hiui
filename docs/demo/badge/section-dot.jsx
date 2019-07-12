@@ -6,14 +6,14 @@ const desc = '小红点将优先于其他显示'
 const prefix = 'badge-dot'
 const code = `
 import React from 'react'
-import Button from '@hi-ui/hiui/es/button'
-import Badge from '@hi-ui/hiui/es/badge'\n
+import Button from '@hiui/hiui/es/button'
+import Badge from '@hiui/hiui/es/badge'\n
 class Demo extends React.Component {
   render () {
     return (
       <div>
-        <Badge type='dot' content='88' style={{marginRight: '32px'}}>最新报表</Badge>
-        <Badge type='dot'>
+        <Badge dot value='88' style={{marginRight: '32px'}}>最新报表</Badge>
+        <Badge dot>
           <Button type='default'>最新报表</Button>
         </Badge>
       </div>
