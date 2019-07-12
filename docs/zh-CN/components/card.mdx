@@ -73,6 +73,36 @@ import DemoGridCustom from '../../demo/card/section-grid-custom.jsx'
 
 <DemoGridCustom />
 
+## Props
+
+| 参数      | 说明                       | 类型                | 可选值                          | 默认值    |
+| --------- | -------------------------- | ------------------- | ------------------------------- | --------- |
+| title     | 设置卡片标题               | string \| ReactNode | -                               | -         |
+| size      | 设置卡片大小               | string              | 'small' \| 'default' \| 'large' | 'default' |
+| type      | 设置卡片类型               | string              | 'simple' \| 'default'           | 'default' |
+| hoverable | 鼠标移入卡片时是否显示阴影 | boolean             | true \| false                   | false     |
+| extra     | 卡片右上角的扩展           | ReactNode           | -                               | -         |
+| extraType | 卡片右上角的扩展显示模式   | string              | 'default' \| 'hover'            | 'default' |
+| coverUrl  | 卡片的封面图片链接         | string              | -                               | -         |
+| content   | 卡片的描述信息             | string \| ReactNode | -                               | -         |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      fontSize: '14px',
+      padding: 8,
+      color: '#999'
+    }}
+  >
+    1.5.x 版本 api 如下
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
+
 ## Card Attributes
 
 | 参数        | 说明                                                                                                    | 类型                     | 可选值                   | 默认值 |
@@ -87,32 +117,3 @@ import DemoGridCustom from '../../demo/card/section-grid-custom.jsx'
 | cover       | 图片卡片                                                                                                | ImgElement               | -                        | -      |
 | description | 图片卡片的信息描述                                                                                      | String \| Element        | -                        | -      |
 | disabled    | 是否禁用卡片                                                                                            | Boolean                  | true \| false            | -      |
-
-<div style={{ position: 'relative' }}>
-  <span
-    style={{
-      position: 'absolute',
-      background: '#fff',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
-      padding: 8,
-      color: '#999'
-    }}
-  >
-    以下调整将随 2.0.0 版本发布，敬请期待
-  </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
-</div>
-
-## Props
-
-| 参数      | 说明                       | 类型                | 可选值                          | 默认值    |
-| --------- | -------------------------- | ------------------- | ------------------------------- | --------- |
-| title     | 设置卡片标题               | string \| ReactNode | -                               | -         |
-| size      | 设置卡片大小               | string              | 'small' \| 'default' \| 'large' | 'default' |
-| type      | 设置卡片类型               | string              | 'simple' \| 'default'           | 'default' |
-| hoverable | 鼠标移入卡片时是否显示阴影 | boolean             | true \| false                   | false     |
-| extra     | 卡片右上角的扩展           | ReactNode           | -                               | -         |
-| coverUrl  | 卡片的封面图片链接         | string              | -                               | -         |
-| content   | 卡片的描述信息             | string \| ReactNode | -                               | -         |

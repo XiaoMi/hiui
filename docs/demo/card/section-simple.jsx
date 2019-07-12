@@ -24,15 +24,7 @@ class Demo extends React.Component {
           >
             简易卡片
           </Card>
-          <br/>
-          <Card
-            hoverable
-            type='simple'
-            size='large'
-            disabled
-          >
-            简易卡片
-          </Card>
+
           <br/>
           <Card
             hoverable
