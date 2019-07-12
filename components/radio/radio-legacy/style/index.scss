@@ -1,4 +1,4 @@
-.hi-radio {
+.hi-radio-legacy {
   display: inline-block;
 
   &__simulation-input {
@@ -18,7 +18,7 @@
   }
 
   &--vertical {
-    .hi-radio__item {
+    .hi-radio-legacy__item {
       display: block;
       // padding: 5px 0;
       // margin: 4px;
@@ -33,14 +33,14 @@
     height: 32px;
     line-height: 32px;
 
-    &:hover:not(.hi-radio__item--disabled) {
+    &:hover:not(.hi-radio-legacy__item--disabled) {
       .hi-btn {
         color: #4284f5;
       }
     }
 
     &--checked {
-      .hi-radio__simulation-input {
+      .hi-radio-legacy__simulation-input {
         &::before {
           content: '';
           display: inline-block;
@@ -67,7 +67,7 @@
       cursor: not-allowed;
       color: #d8d8d8;
 
-      .hi-radio__simulation-input {
+      .hi-radio-legacy__simulation-input {
         &::before {
           background: #d8d8d8;
         }
@@ -82,7 +82,7 @@
   }
 
   &--button {
-    .hi-radio__item:not(:first-child) {
+    .hi-radio-legacy__item:not(:first-child) {
       margin-left: -1px;
 
       &:last-child {
