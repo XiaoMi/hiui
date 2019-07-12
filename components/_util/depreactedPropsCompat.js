@@ -1,5 +1,7 @@
 import React from 'react'
 
+const isDevelopment = /development/gi.test(process.env.NODE_ENV)
+
 /**
  * compat old api
  * 参数为一个二维数组，里面的一维数组的第一个参数为新 prop，第二个参数为旧 prop，第三个参数为转换函数，
@@ -12,8 +14,16 @@ export const depreactedPropsCompat = (compatPair) => {
   return (WrappedComponent) => {
     return (props) => {
       const compatProps = { ...props }
+      const componentName =
+        WrappedComponent.displayName ||
+        WrappedComponent.name ||
+        'unknown component'
       compatPair.forEach(([newProp, oldProp, convert]) => {
         if (props[oldProp] !== undefined && props[newProp] === undefined) {
+          isDevelopment &&
+            console.warn(
+              `${componentName}'s prop "${oldProp}" will be depreacted in next version ! use ${newProp} instead.`
+            )
           compatProps[newProp] = convert
             ? convert(props[oldProp])
             : props[oldProp]

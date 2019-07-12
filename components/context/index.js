@@ -7,6 +7,7 @@ export const VersionContext = React.createContext(2)
 
 export default (WrappedComponent) =>
   class WrapperComponent extends Component {
+    static displayName = WrappedComponent.name
     render () {
       const { theme, locale, version, ...restProps } = this.props
       let ConsumerComponent = (
