@@ -25,15 +25,13 @@ class Item extends Component {
           color: 'rgba(204,204,204,1)'
         }
         : {}
-    const itemCls = classNames(
-      'hi-transfer__item',
-      item.disabled && 'hi-transfer__item--disabled'
-    )
+    const itemCls = classNames('hi-transfer__item', item.disabled && 'hi-transfer__item--disabled')
     const el = (
       <li style={sourceStyle} className={itemCls} onClick={onClick.bind(this)}>
         {targetNode === item.id && isDragging && <div className='hi-transfer__underline' />}
         {mode !== 'basic' ? (
           <Checkbox
+            legacy
             text={item.content}
             value={item.id}
             checked={checked}
@@ -45,7 +43,7 @@ class Item extends Component {
         )}
       </li>
     )
-    return (dir === 'right' && draggable) ? connectDropTarget(connectDragSource(el)) : el
+    return dir === 'right' && draggable ? connectDropTarget(connectDragSource(el)) : el
   }
 }
 
