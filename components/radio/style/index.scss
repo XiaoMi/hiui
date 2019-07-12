@@ -112,6 +112,7 @@ $prefixCls: '.hi-radio' !default;
     }
 
     &--checked {
+
       &::after {
         opacity: 1;
       }
