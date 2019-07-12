@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-// import { render, unmountComponentAtNode } from 'react-dom'
+import { render, unmountComponentAtNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import open from '../notice'
 import './style/index'
 /**
  *
@@ -12,29 +11,19 @@ import './style/index'
  */
 // info/error/success/warning
 function handleNotificate (props) {
-  // props = props || {}
-  // const div = document.createElement('div')
-  // const ref = React.createRef()
-  // const noti = React.createElement(
-  //   Notification,
-  //   Object.assign({}, props, {
-  //     ref,
-  //     removeContainDiv: () => {
-  //       unmountComponentAtNode(div)
-  //       document.body.removeChild(div)
-  //     }
-  //   })
-  // )
-
-  // render(noti, div)
-
-  // document.body.appendChild(div)
-  open({
-    title: 'test',
-    content: '内容',
-    prefix: 'notice',
-    key: Math.random()
-  })
+  props = props || {}
+  const div = document.createElement('div')
+  const noti = React.createElement(
+    Notification,
+    Object.assign({}, props, {
+      removeContainDiv: () => {
+        unmountComponentAtNode(div)
+        document.body.removeChild(div)
+      }
+    })
+  )
+  render(noti, div)
+  document.body.appendChild(div)
 }
 
 class Notification extends Component {
@@ -58,7 +47,7 @@ class Notification extends Component {
     title: PropTypes.string,
     message: PropTypes.string,
     removeContainDiv: PropTypes.func
-  };
+  }
 
   static defaultProps = {
     showClose: true,
@@ -71,7 +60,7 @@ class Notification extends Component {
     type: 'info',
     title: 'title',
     message: 'message content'
-  };
+  }
   componentWillMount () {
     const lastele = [].slice
       .call(document.querySelectorAll('.' + this.props.prefixCls + '.show'))
@@ -165,10 +154,7 @@ class Notification extends Component {
         <span className='title'>{this.props.title}</span>
         <span className='message'>{this.props.message}</span>
         {this.props.showClose && (
-          <a
-            className='close icon-img-delete'
-            onClick={this.closeNotify.bind(this)}
-          >
+          <a className='close icon-img-delete' onClick={this.closeNotify.bind(this)}>
             <i className='hi-icon icon-close' />
           </a>
         )}
@@ -177,5 +163,4 @@ class Notification extends Component {
   }
 }
 
-export default Notification
-export { handleNotificate }
+export default handleNotificate

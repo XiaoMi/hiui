@@ -3,6 +3,7 @@ import './style/index'
 import React from 'react'
 import Button from '../button'
 import classNames from 'classnames'
+import handleNotification from './handleNotification'
 
 const iconMap = {
   success: 'chenggong',
@@ -12,9 +13,10 @@ const iconMap = {
 }
 
 const notification = {
-  close: (key) => {
-    notice.close( 'notification', key)
+  close: key => {
+    notice.close('notification', key)
   },
+  handleNotification,
   open: ({
     title,
     content,
@@ -29,7 +31,7 @@ const notification = {
   }) => {
     const NoticeContent = (
       <React.Fragment>
-        <div className={`hi-${prefix}__title--wrapper`} >
+        <div className={`hi-${prefix}__title--wrapper`}>
           <span className={`hi-${prefix}__icon`}>
             <i className={classNames('hi-icon', `icon-${iconMap[type]}`)} />
           </span>
@@ -40,7 +42,7 @@ const notification = {
         {onConfirm && (
           <div className={`hi-${prefix}__button--wrapper`}>
             <Button
-              size="small"
+              size='small'
               className={`hi-${prefix}__button`}
               onClick={() => {
                 onConfirm()

@@ -19,7 +19,7 @@ class Loading extends Component {
   static defaultProps = {
     size: 'default'
   }
-  render() {
+  render () {
     const { size, full, content, visible, children, target } = this.props
     const mountNode = target || (full ? document.body : '')
     const iconCls = classNames(`${prefixCls}__icon`, `${prefixCls}__icon--${size}`)
@@ -45,7 +45,7 @@ class Loading extends Component {
   }
 }
 
-function PortalWrapper({ mountNode, children }) {
+function PortalWrapper ({ mountNode, children }) {
   return mountNode ? (
     ReactDOM.createPortal(children, mountNode)
   ) : (
@@ -53,7 +53,7 @@ function PortalWrapper({ mountNode, children }) {
   )
 }
 
-function open(target, { content, key, duration, size } = {}) {
+function open (target, { content, key, duration, size } = {}) {
   let renderNode = document.createElement('div')
   const mountNode = target || document.body
   window.getComputedStyle(mountNode).position === 'absolute' ||
@@ -63,14 +63,35 @@ function open(target, { content, key, duration, size } = {}) {
 
   loadingInstance[key] = renderNode
 }
-function close(key) {
+function deprecatedOpen ({ target, tip } = {}) {
+  let renderNode = document.createElement('div')
+  const mountNode = target || document.body
+  window.getComputedStyle(mountNode).position === 'absolute' ||
+    mountNode.style.setProperty('position', 'relative')
+  const full = !target
+  ReactDOM.render(<Loading {...{ tip, full, show: true, target: mountNode }} />, renderNode)
+  function close () {
+    renderNode && ReactDOM.unmountComponentAtNode(renderNode)
+    renderNode = undefined
+  }
+  return { close }
+}
+
+function openWrapper (target, options) {
+  if (target === null || React.isValidElement(React.cloneElement(target))) {
+    open(target, options)
+  } else {
+    return deprecatedOpen(target)
+  }
+}
+function close (key) {
   if (loadingInstance[key]) {
     ReactDOM.unmountComponentAtNode(loadingInstance[key])
     loadingInstance[key].parentNode.removeChild(loadingInstance[key])
   }
 }
 
-Loading.open = open
+Loading.open = openWrapper
 Loading.close = close
 
 export default Loading
