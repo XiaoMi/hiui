@@ -4,7 +4,7 @@ import Table from '../../../components/table'
 import Form from '../../../components/form/index'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
-import FormItem from '../../../components/form/item'
+import FormItem from '../../../components/form/Item'
 const prefix = 'table-server'
 const code = `
 import React from 'react'

@@ -9,17 +9,20 @@ $prefixCls: '.hi-checkbox' !default;
         border-color: $color;
       }
     }
+
     input {
       &:focus + #{$prefixCls}__input {
         border-color: $color;
       }
     }
+
     &__input {
       &--indeterminate {
         &::after {
           background: $color;
         }
       }
+
       &--checked {
         background: $color;
         border-color: $color;
@@ -35,6 +38,7 @@ $prefixCls: '.hi-checkbox' !default;
   height: 32px;
   vertical-align: middle;
   @include component-reset();
+
   input {
     position: absolute;
     width: 16px;
@@ -102,6 +106,7 @@ $prefixCls: '.hi-checkbox' !default;
   &-group {
     display: inline-block;
   }
+
   @include hi-checkbox-style();
 }
 

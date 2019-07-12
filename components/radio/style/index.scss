@@ -8,6 +8,7 @@ $prefixCls: '.hi-radio' !default;
       border-color: $active-color;
     }
   }
+
   input {
     &:focus + #{$prefixCls}__input {
       border-color: $active-color;
@@ -19,10 +20,12 @@ $prefixCls: '.hi-radio' !default;
       border-color: $active-color;
       color: $active-color;
       background-color: rgba($active-color, 0.1);
+
       #{$prefixCls} {
         color: $active-color;
       }
     }
+
     &:not(.hi-btn--disabled):hover {
       border-color: $active-color;
     }
@@ -161,6 +164,7 @@ $prefixCls: '.hi-radio' !default;
       }
     }
   }
+
   @include hi-radio-style();
 }
 

@@ -25,74 +25,35 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 
 <DemoCheck />
 
-## Form Attributes
-
-| 参数          | 说明         | 类型    | 可选值               | 默认值 |
-| ------------- | ------------ | ------- | -------------------- | ------ |
-| model         | 表单数据     | object  | -                    | -      |
-| rules         | 表单验证规则 | object  | -                    | -      |
-| labelWidth    | label 宽度   | string  | -                    | -      |
-| labelPosition | label 位置   | string  | right \| left \| top | right  |
-| inline        | 是否横向排列 | boolean | true \| false        | false  |
-
-## FormItem Attributes
-
-| 参数       | 说明              | 类型    | 可选值        | 默认值 |
-| ---------- | ----------------- | ------- | ------------- | ------ |
-| prop       | 表单域 model 字段 | string  | -             | -      |
-| label      | 标签文本          | string  | -             | -      |
-| labelWidth | label 宽度        | string  | -             | -      |
-| required   | 是否必填          | boolean | true \| false | false  |
-
-## Form Methods
-
-| 方法名                        | 说明               | 回调参数                                 |
-| ----------------------------- | ------------------ | ---------------------------------------- |
-| validate(callback)            | 对整个表单进行校验 | (valid: boolean) => void                 |
-| validateField(prop, callback) | 对表单字段进行校验 | (prop: string, (valid: boolean) => void) |
-| resetValidates()              | 重置整个表单的验证 | -                                        |
-
-<div style={{ position: 'relative' }}>
-  <span
-    style={{
-      position: 'absolute',
-      background: '#fff',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
-      padding: 8,
-      color: '#999'
-    }}
-  >
-    以下调整将随 2.0.0 版本发布，敬请期待
-  </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
-</div>
+import { Badge } from '@libs'
 
 ## Props
 
 **_Form_**
 
-| 参数           | 说明                                                                                  | 类型    | 可选值                     | 默认值  |
-| -------------- | ------------------------------------------------------------------------------------- | ------- | -------------------------- | ------- |
-| model          | 表单数据                                                                              | object  | -                          | -       |
-| rules          | 表单验证规则，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object  | -                          | -       |
-| labelWidth     | label 宽度，可用任意 CSS 长度单位                                                     | string  |                            |
-| labelPlacement | label 放置的位置                                                                      | string  | 'right' \| 'left' \| 'top' | 'right' |
-| placement      | 是否横向排列                                                                          | boolean | true \| false              | false   |
+| 参数                                     | 说明                                                                                  | 类型    | 可选值                     | 默认值     |
+| ---------------------------------------- | ------------------------------------------------------------------------------------- | ------- | -------------------------- | ---------- |
+| model                                    | 表单数据                                                                              | object  | -                          | -          |
+| rules                                    | 表单验证规则，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object  | -                          | -          |
+| labelWidth                               | label 宽度，可用任意 CSS 长度单位                                                     | string  |                            |
+| labelPlacement                           | label 放置的位置                                                                      | string  | 'right' \| 'left' \| 'top' | 'right'    |
+| placement                                | 是否横向排列                                                                          | string  | 'horizontal' \| 'vertical' | 'vertical' |
+| labelPosition<Badge text='deprecated' /> | label 放置的位置。即将废弃，请使用 labelPlacement 代替                                | string  | 'right' \| 'left' \| 'top' | 'right'    |
+| inline<Badge text='deprecated' />        | 是否横向排列。即将废弃，请使用 placement 代替                                         | boolean | true \| false              | false      |
 
 **_Form.Item_**
 
-| 参数     | 说明                       | 类型    | 可选值        | 默认值 |
-| -------- | -------------------------- | ------- | ------------- | ------ |
-| field    | 表单域对应 model 的字段    | string  | -             | -      |
-| label    | 标签文本，默认自动添加冒号 | string  | -             | -      |
-| required | 是否必填                   | boolean | true \| false | false  |
+| 参数                            | 说明                                           | 类型    | 可选值        | 默认值 |
+| ------------------------------- | ---------------------------------------------- | ------- | ------------- | ------ |
+| field                           | 表单域对应 model 的字段                        | string  | -             | -      |
+| label                           | 标签文本，默认自动添加冒号                     | string  | -             | -      |
+| required                        | 是否必填                                       | boolean | true \| false | false  |
+| prop<Badge text='deprecated' /> | 表单域 model 字段。即将废弃，请使用 field 代替 | string  | -             | -      |
 
 ## Methods
 
-| 方法名                        | 说明               |
-| ----------------------------- | ------------------ |
-| validate(callback)            | 对整个表单进行校验 |
-| validateField(prop, callback) | 对表单字段进行校验 |
-| resetValidates()              | 重置整个表单的验证 |
+| 方法名                                                      | 说明               |
+| ----------------------------------------------------------- | ------------------ |
+| validate(callback: isValid => void)                         | 对整个表单进行校验 |
+| validateField(field: string, callback: isValid => void) | 对表单字段进行校验 |
+| resetValidates()                                            | 重置整个表单的验证 |

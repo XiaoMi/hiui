@@ -28,7 +28,7 @@ class Demo extends React.Component {
     return (
       <div>
         <Dropdown
-          list={this.state.list}
+          data={this.state.list}
           title="按钮菜单"
           type="button"
           // trigger={['click']}
