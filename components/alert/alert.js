@@ -9,13 +9,13 @@ class Alert extends Component {
     onClose: PropTypes.func,
     content: PropTypes.string,
     title: PropTypes.string,
-    closeable: PropTypes.bool,
+    closable: PropTypes.bool,
     duration: PropTypes.number
   }
   static defaultProps = {
     prefixCls: 'hi-alert',
     type: 'info',
-    closeable: true,
+    closable: true,
     duration: null
   }
   componentDidMount () {
@@ -62,7 +62,7 @@ class Alert extends Component {
             {this.props.title && <div className='text-title'>{this.props.title}</div>}
           </div>
           {this.props.content && <div className='text-message'>{this.props.content}</div>}
-          {this.props.closeable && (
+          {this.props.closable && (
             <div className='close-btn icon-img-delete' onClick={this.handleClose.bind(this)}>
               <i className='hi-icon icon-close' />
             </div>

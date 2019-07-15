@@ -4,18 +4,18 @@ import Alert from '../../../components/alert'
 const prefix = 'alert-autoClose'
 const code = `
 import React from 'react'
-import Alert from '@hiui/hiui/es/alert'\n
+import Alert from '@hi-ui/hiui/es/alert'\n
 class Demo extends React.Component {
   render () {
     return (
       <div>
-        <Alert type="info" duration={3000} title="信息提示的文案"  closeable={false} onClose={()=>{console.log('alert关闭回调')}} />
+        <Alert type="info" title="信息提示的文案"   onClose={()=>{console.log('alert关闭回调')}} />
         <br />
-        <Alert type="success" duration={3000} title="成功提示的文案"  closeable={false} onClose={()=>{console.log('alert关闭回调')}} />
+        <Alert type="success" title="成功提示的文案"   onClose={()=>{console.log('alert关闭回调')}} />
         <br />
-        <Alert type="error" duration={3000} title="错误提示的文案"  closeable={false} onClose={()=>{console.log('alert关闭回调')}} />
+        <Alert type="error" title="错误提示的文案"   onClose={()=>{console.log('alert关闭回调')}} />
         <br />
-        <Alert type="warning" duration={3000} title="警示提示的文案"  closeable={false} onClose={()=>{console.log('alert关闭回调')}} />
+        <Alert type="warning" title="警示提示的文案"   onClose={()=>{console.log('alert关闭回调')}} />
       </div>
     )
   }

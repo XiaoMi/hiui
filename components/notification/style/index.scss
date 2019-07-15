@@ -20,14 +20,14 @@
 
     &__closer {
       position: absolute;
-      top: 12px;
+      top: 10px;
       right: 12px;
     }
   }
 
   .hi-notification__title--wrapper {
     display: flex;
-    align-items: center;
+    line-height: 22px;
 
     .hi-notification__title {
       font-size: 14px;
