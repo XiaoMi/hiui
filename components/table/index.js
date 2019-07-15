@@ -200,7 +200,6 @@ class Table extends Component {
       // 设置操作记忆
       let {name} = this.props
       window.localStorage.setItem(name + '-col', colMemory)
-      console.log(columns, headerColumns, 'hide-col', key)
       this.setState({columns, headerColumns})
     },
 
@@ -512,7 +511,6 @@ class Table extends Component {
                         </div>
                         <div>
                           <Checkbox checked={!item.hide} onChange={(e) => {
-                            console.log(item)
                             this.cbs.hideCol(item.key)
                           }} />
                         </div>
