@@ -1018,7 +1018,6 @@ constructor (props) {
           </FormItem>
         </Form>
         <Table
-          name='server'
           scrollX
           ref={'serverTable'}
           rowSelection={rowSelection}
