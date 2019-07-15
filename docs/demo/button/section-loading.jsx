@@ -25,15 +25,16 @@ class Demo extends React.Component {
     }
   }
   render () {
+    const { loading } = this.state
     return (
       <React.Fragment>
-        <Button loading icon="delete" />
         <Button loading type="primary">通过</Button>
         <Button loading type="line">驳回</Button>
-        <Button loading type="success" icon="play" />
         <Button loading type="danger" icon="delete" />
         <p />
-        <Button loading={this.state.loading} onClick={this.handleLoadingClick} type="primary">点击进入 loading </Button>
+        <Button loading={loading} onClick={this.handleLoadingClick} type="primary">
+          {loading ? '加载中...' : '点击进入 loading'}
+        </Button>
       </React.Fragment>
     )
   }
