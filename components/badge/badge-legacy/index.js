@@ -5,10 +5,7 @@ import './style/index'
 
 class Badge extends Component {
   static propTypes = {
-    value: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number
-    ]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     dot: PropTypes.bool,
     max: PropTypes.number,
     hidden: PropTypes.bool,
@@ -16,7 +13,7 @@ class Badge extends Component {
   }
 
   static defaultProps = {
-    prefixCls: 'hi-badge',
+    prefixCls: 'hi-badge-legacy',
     style: {},
     value: '',
     dot: false,
@@ -30,23 +27,13 @@ class Badge extends Component {
     return (
       <div className={eleClass} style={style}>
         {this.props.children}
-        {
-          dot
-            ? (
-              <span className={`${prefixCls}-dot${hidden ? ' hi-hide' : ''}`} />
-            )
-            : (
-              <span className={`${prefixCls}-value${hidden ? ' hi-hide' : ''}`}>
-                {
-                  typeof +value === 'number'
-                    ? (
-                      +value > max ? max + '+' : value
-                    )
-                    : value
-                }
-              </span>
-            )
-        }
+        {dot ? (
+          <span className={`${prefixCls}-dot${hidden ? ' hi-hide' : ''}`} />
+        ) : (
+          <span className={`${prefixCls}-value${hidden ? ' hi-hide' : ''}`}>
+            {typeof +value === 'number' ? (+value > max ? max + '+' : value) : value}
+          </span>
+        )}
       </div>
     )
   }

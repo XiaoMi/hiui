@@ -8,7 +8,7 @@ export const BarProgress = (props) => {
   }
 
   function getHeight () {
-    const {size, height} = props
+    const { size, height } = props
     if (!height || height <= 0) {
       return (size === 'big' || size === 'large') ? 8 : (size === 'middle' ? 6 : 2)
     }
@@ -16,16 +16,16 @@ export const BarProgress = (props) => {
   }
 
   let prefix = 'hi-progress'
-  const {percent: percentNum, text, status, withOutText = false, inside = false, tooltip = null} = props
+  const { percent: percentNum, text, status, withOutText = false, inside = false, tooltip = null } = props
   const percent = percentNum > 0 ? percentNum : 0
   return (
     <div>
       <div
         className={`${prefix}__inner`}
-        style={{width: getWidth() + 'px', height: getHeight() + 'px'}}>
+        style={{ width: getWidth() + 'px', height: getHeight() + 'px' }}>
         <div
           className={`${prefix}__bar ${prefix}__bar--${status}`}
-          style={{width: `${percent}%`}}>
+          style={{ width: `${percent}%` }}>
           {(!withOutText && inside && getHeight() >= 14) && <div
             className={`${prefix}__text--inside`}>
             {text || `${percent}%`}
