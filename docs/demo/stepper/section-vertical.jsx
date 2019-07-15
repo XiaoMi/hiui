@@ -39,5 +39,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoVertical = () => <DocViewer code={code} scope={{ Stepper, Icon }} prefix={prefix} desc />
+const DemoVertical = () => <DocViewer code={code} scope={{ Stepper, Icon }} prefix={prefix} desc={desc} />
 export default DemoVertical
