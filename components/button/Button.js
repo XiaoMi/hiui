@@ -55,13 +55,14 @@ class Button extends Component {
       style,
       children
     } = this.props
+    const isDisabled = disabled || loading
     const classes = classNames(
       'theme__' + theme,
       `hi-btn`,
       className,
       appearance && `hi-btn--appearance--${appearance}`,
       size && `hi-btn--size--${size}`,
-      disabled && `hi-btn--disabled`,
+      isDisabled && `hi-btn--disabled`,
       icon && `hi-btn--icon`,
       loading && `hi-btn--loading`,
 
@@ -70,7 +71,8 @@ class Button extends Component {
         ? `hi-btn--type--line`
         : `hi-btn--type--${type}`
     )
-    const restProps = { href, style, onClick, disabled }
+
+    const restProps = { href, style, onClick, disabled: isDisabled }
 
     deprecatedPropsCheck(this.deprecatedProps, this.props, 'Button')
 
