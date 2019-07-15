@@ -29,11 +29,11 @@ class Demo extends React.Component {
   render () {
     return (
       <React.Fragment>
-        <Button type="default" appearance="link" disabled>默认链接</Button>
-        <Button type="primary" appearance="link" disabled>主要链接</Button>
-        <Button type="success" appearance="link" disabled>成功链接</Button>
-        <Button type="danger" appearance="link" disabled>危险链接</Button>
-        <Button type="primary" appearance="link" icon="edit" disabled />
+        <Button disabled type="default" appearance="link">默认链接</Button>
+        <Button disabled type="primary" appearance="link">主要链接</Button>
+        <Button disabled type="success" appearance="link">成功链接</Button>
+        <Button disabled type="danger" appearance="link">危险链接</Button>
+        <Button disabled type="primary" appearance="link" icon="edit" />
       </React.Fragment>
     )
   }
