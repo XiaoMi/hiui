@@ -55,7 +55,6 @@ class Row extends Component {
 
     return (
       <tr onClick={(e) => {
-        console.log('dbclick')
         this.setState({picked: !this.state.picked})
       }} {...this.props} className={prifix(classNames)}>{this.props.children}</tr>
     )
