@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import './style'
-import {BarProgress} from './BarProgress.js'
-import {CircleProgress} from './CircleProgress.js'
-import {DashboardProgress} from './DashboardProgress'
+import { BarProgress } from './BarProgress.js'
+import { CircleProgress } from './CircleProgress.js'
+import { DashboardProgress } from './DashboardProgress'
 
 class Progress extends Component {
   static propTypes = {
@@ -36,14 +36,10 @@ class Progress extends Component {
   }
 
   render () {
-    let prefix = 'hi-progress'
-    const {className = '', type} = this.props
+    let prefix = 'hi-progress-legacy'
+    const { className = '', type } = this.props
 
-    return (
-      <div className={`${prefix}__container ${className}`}>
-        {this.getRenderType(type)}
-      </div>
-    )
+    return <div className={`${prefix}__container ${className}`}>{this.getRenderType(type)}</div>
   }
 }
 export default Progress

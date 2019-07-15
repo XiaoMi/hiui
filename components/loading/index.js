@@ -4,30 +4,29 @@ import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import './style/index'
 
-const prefixCls = 'hi-loading'
+const loadingInstance = {}
 
+const prefixCls = 'hi-loading'
 class Loading extends Component {
   static propTypes = {
     size: PropTypes.oneOf(['large', 'default', 'small']),
     full: PropTypes.bool,
-    show: PropTypes.bool,
-    tip: PropTypes.string,
-    target: PropTypes.any
+    visible: PropTypes.bool,
+    content: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    target: PropTypes.any,
+    duration: PropTypes.number
   }
   static defaultProps = {
     size: 'default'
   }
   render () {
-    const { size, full, tip, show, children, target } = this.props
+    const { size, full, content, visible, children, target } = this.props
     const mountNode = target || (full ? document.body : '')
-    const iconCls = classNames(
-      `${prefixCls}__icon`,
-      `${prefixCls}__icon--${size}`
-    )
+    const iconCls = classNames(`${prefixCls}__icon`, `${prefixCls}__icon--${size}`)
     const maskCls = classNames(`${prefixCls}__mask`, {
       [`${prefixCls}__mask--global`]: full,
       [`${prefixCls}__mask--part`]: !full,
-      [`${prefixCls}__mask--hide`]: show === false
+      [`${prefixCls}__mask--hide`]: visible === false
     })
     return (
       <PortalWrapper mountNode={mountNode}>
@@ -35,9 +34,10 @@ class Loading extends Component {
         <div className={maskCls}>
           <div className={`${prefixCls}__outter`}>
             <div className={iconCls}>
-              <div /><div />
+              <div />
+              <div />
             </div>
-            <div className={`${prefixCls}__text`}>{tip}</div>
+            <div className={`${prefixCls}__text`}>{content}</div>
           </div>
         </div>
       </PortalWrapper>
@@ -53,16 +53,23 @@ function PortalWrapper ({ mountNode, children }) {
   )
 }
 
-function open ({ target, tip } = {}) {
+function open (target, { content, key, duration, size } = {}) {
   let renderNode = document.createElement('div')
   const mountNode = target || document.body
   window.getComputedStyle(mountNode).position === 'absolute' ||
     mountNode.style.setProperty('position', 'relative')
   const full = !target
-  ReactDOM.render(
-    <Loading {...{ tip, full, show: true, target: mountNode }} />,
-    renderNode
-  )
+  ReactDOM.render(<Loading {...{ content, full, visible: true, target: mountNode }} />, renderNode)
+
+  loadingInstance[key] = renderNode
+}
+function deprecatedOpen ({ target, tip } = {}) {
+  let renderNode = document.createElement('div')
+  const mountNode = target || document.body
+  window.getComputedStyle(mountNode).position === 'absolute' ||
+    mountNode.style.setProperty('position', 'relative')
+  const full = !target
+  ReactDOM.render(<Loading {...{ tip, full, show: true, target: mountNode }} />, renderNode)
   function close () {
     renderNode && ReactDOM.unmountComponentAtNode(renderNode)
     renderNode = undefined
@@ -70,6 +77,21 @@ function open ({ target, tip } = {}) {
   return { close }
 }
 
-Loading.open = open
+function openWrapper (target, options) {
+  if (target === null || React.isValidElement(React.cloneElement(target))) {
+    open(target, options)
+  } else {
+    return deprecatedOpen(target)
+  }
+}
+function close (key) {
+  if (loadingInstance[key]) {
+    ReactDOM.unmountComponentAtNode(loadingInstance[key])
+    loadingInstance[key].parentNode.removeChild(loadingInstance[key])
+  }
+}
+
+Loading.open = openWrapper
+Loading.close = close
 
 export default Loading

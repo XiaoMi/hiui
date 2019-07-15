@@ -4,7 +4,7 @@ import Alert from '../../../components/alert'
 const prefix = 'alert-base'
 const code = `
 import React from 'react'
-import Alert from '@hiui/hiui/es/alert'\n
+import Alert from '@hi-ui/hiui/es/alert'\n
 class Demo extends React.Component {
   render () {
     return (
