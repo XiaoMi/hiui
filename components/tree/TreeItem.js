@@ -50,7 +50,8 @@ class TreeItem extends Component {
       <li key={item.id}>
         <div
           style={{
-            display: 'flex'
+            display: 'flex',
+            paddingBottom: 5
           }}
         >
           {targetNode === item.id && dropDividerPosition === 'down' && isOver && (

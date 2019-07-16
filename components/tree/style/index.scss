@@ -7,6 +7,8 @@ $tree: 'hi-tree' !default;
 
   @include component-reset();
 
+  color: #383e47;
+
   .hi-tree__searcher {
     position: relative;
     padding-left: 15px;
@@ -41,7 +43,7 @@ $tree: 'hi-tree' !default;
     align-items: center;
 
     &--top {
-      top: 21px;
+      top: 23px;
     }
 
     &--bottom {
@@ -76,9 +78,8 @@ $tree: 'hi-tree' !default;
   }
 
   li {
-    // padding: 6px 0;
     position: relative;
-    // display: flex;
+
     &.with-line {
       &::before {
         content: ' ';
@@ -114,23 +115,15 @@ $tree: 'hi-tree' !default;
         }
       }
     }
-    // &.switcher-none {
-    //   .#{$tree}-switcher {
-    //     cursor: default;
-    //     &::after {
-    //       content: none
-    //     }
-    //   }
-    // }
   }
 
   &_item-text {
-    // width: calc(100% - 18px);
     cursor: pointer;
     display: inline-block;
     vertical-align: middle;
     padding: 0 4px;
     position: relative;
+    line-height: 24px;
 
     &.dragTo {
       background-color: #4284f5;
