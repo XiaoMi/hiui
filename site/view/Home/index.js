@@ -1,8 +1,8 @@
 import React from 'react'
 import HomeBase from './HomeBase'
-import '../../../components/ficon/style/index'
-import Button from '../../../components/button/Button'
-import Badge from '../../../components/badge/index'
+import '@components/ficon/style/index'
+import { Badge } from '@components'
+import Button from '@components/button/Button'
 import { version } from '../../../package.json'
 
 class Home extends React.Component {
@@ -17,7 +17,7 @@ class Home extends React.Component {
               <div className='section__desc'>
                 <p>HIUI是一套适用于前中后台交互与界面设计标准的制定与实施的前端解决方案</p>
               </div>
-              <Button type='primary' href='/hiui/zh-CN/docs/quick-start'>
+              <Button type='primary' href={`<BASE_URL>/zh-CN/docs/quick-start`}>
                 开始使用
               </Button>
               <a className='github-link' href='https://github.com/XiaoMi/hiui'>
