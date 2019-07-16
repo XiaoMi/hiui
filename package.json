@@ -110,7 +110,6 @@
     "rucksack-css": "^1.0.2",
     "run-sequence": "^2.2.1",
     "sass-loader": "^7.0.1",
-    "schema-utils": "^1.0.0",
     "standard": "^11.0.1",
     "style-loader": "^0.21.0",
     "stylelint": "^9.10.1",
