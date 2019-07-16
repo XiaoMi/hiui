@@ -44,6 +44,68 @@ import DemoDrag from '../../demo/tree/section-drag.jsx'
 
 <DemoDrag />
 
+## Props
+
+| 参数             | 说明                                                                    | 类型                                                                     | 可选值        | 默认值 |
+| ---------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------- | ------ |
+| data             | 展示数据                                                                | DataItem []                                                              | -             | -      |
+| checkable        | 节点前添加 Checkbox 复选框（暂不支持与 draggable 和 editable 同时使用） | boolean                                                                  | true \| false | false  |
+| editable         | 节点右键可编辑（添加同级节点、添加子节点、编辑节点、删除节点）          | boolean                                                                  | true \| false | false  |
+| draggable        | 节点可拖拽                                                              | boolean                                                                  | true \| false | false  |
+| searchable       | 节点可搜索                                                              | boolean                                                                  | true \| false | false  |
+| loadTreeNode     | 点击异步加载子项                                                        | object                                                                   | -             | -      |
+| defaultExpandAll | 是否默认展开所有树节点                                                  | boolean                                                                  | true \| false | false  |
+| checkedIds       | 选中的 checkbox                                                         | string[]                                                                 | -             | -      |
+| openIcon         | 表示展开的图标                                                          | string                                                                   | Icon 图标名称 | -      |
+| closeIcon        | 表示闭合的图标                                                          | string                                                                   | Icon 图标名称 | -      |
+| onChange         | 树组件改变时触发                                                        | (data:TreeNode[]) => void                                                | -             | -      |
+| onExpand         | 节点被点击(展开/收起)时触发                                             | (expanded: boolean, expandIds: string[], expandedNode: TreeNode) => void | -             | -      |
+| onCheck          | 点击节点多选框触发                                                      | (checked: boolean, checkedIds: string[], checkedNode: TreeNode) => void  | -             | -      |
+| onClick          | 点击节点文字时触发                                                      | (clickNode: TreeNode) => void                                            | -             | -      |
+| onDragStart      | 节点开始拖拽时触发                                                      | (dragNode: TreeNode) => void                                             | -             | -      |
+| onDrop           | 节点拖拽时触发                                                          | (dragNode: TreeNode, dropNode: TreeNode) => boolean                      | -             | -      |
+| onDropEnd        | 节点拖拽成功时触发                                                      | (dragNode: TreeNode, dropNode: TreeNode) => void                         | -             | -      |
+| onDelete         | 节点删除时触发                                                          | (deletedNode: TreeNode, data: TreeNode[]) => void                        | -             | -      |
+| onSave           | 节点保存新增、编辑状态时触发                                            | (savedNode: TreeNode, data: TreeNode[]) => void                          | -             | -      |
+
+## Type
+
+**_LoadTreeNode_**
+
+| 参数              | 说明                                                       | 类型                             | 可选值          | 默认值 |
+| ----------------- | ---------------------------------------------------------- | -------------------------------- | --------------- | ------ |
+| method            | 异步请求的方法                                             | string                           | 'get' \| 'post' | 'get'  |
+| url               | 异步请求的 url                                             | string                           | -               | -      |
+| headers           | 异步请求的请求头                                           | TreeNode                         | -               | -      |
+| data              | post 请求时的请求体                                        | object                           | -               | -      |
+| params            | 异步请求时的 url 参数                                      | object                           | -               | -      |
+| transformResponse | 对异步请求结果进行加工处理的函数，返回结果用于生成子节点项 | (response: object) => TreeNode[] | -               | -      |
+
+**_TreeNode_**
+
+| 参数     | 说明           | 类型                | 可选值 | 默认值 |
+| -------- | -------------- | ------------------- | ------ | ------ |
+| id       | 树节点唯一 id  | string              | -      | -      |
+| title    | 树节点标题     | string \| ReactNode | -      | -      |
+| children | 该节点的子节点 | TreeNode[]          | -      | -      |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      fontSize: '14px',
+      padding: 8,
+      color: '#999'
+    }}
+  >
+    1.5.x api 如下
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
+
 ## Tree Attributes
 
 | 参数             | 说明                                                                    | 类型                                                           | 可选值                       | 默认值 |
@@ -97,64 +159,3 @@ import DemoDrag from '../../demo/tree/section-drag.jsx'
 | -------- | ---------------------------------- | ------ | ------ | -------- |
 | title    | 指定节点标签为节点对象的某个属性值 | String | -      | title    |
 | children | 指定子树为节点对象的某个属性值     | String | -      | children |
-
-<div style={{ position: 'relative' }}>
-  <span
-    style={{
-      position: 'absolute',
-      background: '#fff',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
-      padding: 8,
-      color: '#999'
-    }}
-  >
-    以下调整将随 2.0.0 版本发布，敬请期待
-  </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
-</div>
-
-## Props
-
-| 参数             | 说明                                                                    | 类型                                                                     | 可选值        | 默认值 |
-| ---------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------- | ------ |
-| data             | 展示数据                                                                | DataItem []                                                              | -             | -      |
-| checkable        | 节点前添加 Checkbox 复选框（暂不支持与 draggable 和 editable 同时使用） | boolean                                                                  | true \| false | false  |
-| editable         | 节点右键可编辑（添加同级节点、添加子节点、编辑节点、删除节点）          | boolean                                                                  | true \| false | false  |
-| draggable        | 节点可拖拽                                                              | boolean                                                                  | true \| false | false  |
-| searchable       | 节点可搜索                                                              | boolean                                                                  | true \| false | false  |
-| loadTreeNode     | 点击异步加载子项                                                        | object                                                                   | -             | -      |
-| defaultExpandAll | 是否默认展开所有树节点                                                  | boolean                                                                  | true \| false | false  |
-| checkedIds       | 选中的 checkbox                                                         | string[]                                                                 | -             | -      |
-| openIcon         | 表示展开的图标                                                          | string                                                                   | Icon 图标名称 | -      |
-| closeIcon        | 表示闭合的图标                                                          | string                                                                   | Icon 图标名称 | -      |
-| onChange         | 树组件改变时触发                                                        | (data:TreeNode[]) => void                                                | -             | -      |
-| onExpand         | 节点被点击(展开/收起)时触发                                             | (expanded: boolean, expandIds: string[], expandedNode: TreeNode) => void | -             | -      |
-| onCheck          | 点击节点多选框触发                                                      | (checked: boolean, checkedIds: string[], checkedNode: TreeNode) => void  | -             | -      |
-| onDragStart      | 节点开始拖拽时触发                                                      | (dragNode: TreeNode) => void                                             | -             | -      |
-| onDrop           | 节点拖拽时触发                                                          | (dragNode: TreeNode, dropNode: TreeNode) => boolean                      | -             | -      |
-| onDropEnd        | 节点拖拽成功时触发                                                      | (dragNode: TreeNode, dropNode: TreeNode) => void                         | -             | -      |
-| onDelete         | 节点删除时触发                                                          | (deletedNode: TreeNode, data: TreeNode[]) => void                        | -             | -      |
-| onSave           | 节点保存新增、编辑状态时触发                                            | (savedNode: TreeNode, data: TreeNode[]) => void                          | -             | -      |
-
-## Type
-
-**_LoadTreeNode_**
-
-| 参数              | 说明                                                       | 类型                             | 可选值          | 默认值 |
-| ----------------- | ---------------------------------------------------------- | -------------------------------- | --------------- | ------ |
-| method            | 异步请求的方法                                             | string                           | 'get' \| 'post' | 'get'  |
-| url               | 异步请求的 url                                             | string                           | -               | -      |
-| headers           | 异步请求的请求头                                           | TreeNode                         | -               | -      |
-| data              | post 请求时的请求体                                        | object                           | -               | -      |
-| params            | 异步请求时的 url 参数                                      | object                           | -               | -      |
-| transformResponse | 对异步请求结果进行加工处理的函数，返回结果用于生成子节点项 | (response: object) => TreeNode[] | -               | -      |
-
-**_TreeNode_**
-
-| 参数     | 说明           | 类型                | 可选值 | 默认值 |
-| -------- | -------------- | ------------------- | ------ | ------ |
-| id       | 树节点唯一 id  | string              | -      | -      |
-| title    | 树节点标题     | string \| ReactNode | -      | -      |
-| children | 该节点的子节点 | TreeNode[]          | -      | -      |

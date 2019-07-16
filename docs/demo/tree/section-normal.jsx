@@ -44,25 +44,14 @@ class Demo extends React.Component {
       <div style={{width:500}}>
         <Tree
           defaultExpandAll
-          editable={true}
           data={this.state.treeData}
-          defaultCheckedKeys={[2]}
-          onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
           onChange={data => {console.log('Tree data:', data)}}
-          openIcon='down'
-          closeIcon='up'
           highlightable
-          onNodeClick={(item) => console.log('------click node', item)}
+          onClick={(item) => console.log('------click node', item)}
         />
       </div>
     )
   }
 }`
-const DemoNormal = () => (
-  <DocViewer
-    code={code}
-    scope={{ Tree }}
-    prefix={prefix}
-  />
-)
+const DemoNormal = () => <DocViewer code={code} scope={{ Tree }} prefix={prefix} />
 export default DemoNormal
