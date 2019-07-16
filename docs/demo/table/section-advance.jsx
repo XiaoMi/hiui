@@ -1,22 +1,23 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
-const prefix = 'table-compact'
+const prefix = 'table-base'
 const code = `
 import React from 'react'
-import Table from '@hi-ui/hiui/es/table'\n
+import Table from '@hiui/hiui/es/table'\n
 class Demo extends React.Component {
   constructor(props){
     super(props)
 
     this.columns = [
 
-      { title: 'Column 1', dataIndex: 'name', key: '1'},
-      { title: 'Column 1', dataIndex: 'age', key: '2'},
-      { title: 'Column 1', dataIndex: 'address', key: '3'},
+      { title: '姓名', dataIndex: 'name', key: '1'},
+      { title: '年龄', dataIndex: 'age', key: '2',type:'number'},
+      { title: '地址', dataIndex: 'address', key: '3'},
       {
         title: ()=><div>自定义标题</div>,
         dataIndex: 'address', key: '4',
+        width: '500px',
         render(text,record,index){
         return (
           <div>
@@ -33,24 +34,50 @@ class Demo extends React.Component {
     ]
 
     this.data = []
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       this.data.push({
         // key: i,
         name: \`Don Diablo \${i}\`,
-        age: \`\${i}\${i}\`,
+        age: i,
         address: \`EDC Las Vegas no. \${i}\`,
       });
     }
   }
   render() {
-    return <Table size='small' columns={this.columns} data={this.data} name='compact'  checked={(item) => item.id === 1 || item.id === 3} />
+    return <Table
+     height="250px" 
+     columns={this.columns} 
+     data={this.data} 
+     name='advance' 
+     advance={{
+      sum:true,
+      avg:true,
+      prefix:[{
+        name: 'hiui',
+        age: 2,
+        address: 'beijing',
+      },
+      {
+        name: 'hiui2',
+        age: 1.5,
+        address: 'beijing',
+      }],
+      suffix:[{
+        name: 'xiaomi',
+        age: 9,
+        address: 'BJ',
+      }]
+     }}
+      />
   }
+  
 }`
-const DemoCompact = () => (
+
+const DemoBase = () => (
   <DocViewer
     code={code}
     scope={{ Table }}
     prefix={prefix}
   />
 )
-export default DemoCompact
+export default DemoBase

@@ -65,7 +65,6 @@ class Demo extends React.Component {
     const rowSelection = {
       selectedRowKeys,
       onChange: (selectedRowKeys,rows)=>{
-        console.log('onchange',selectedRowKeys,rows)
         this.setState({selectedRowKeys})
       },
       dataName:'age'

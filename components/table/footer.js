@@ -13,9 +13,10 @@ class Footer extends Component {
       columns
     } = this.props
     const tds = columns.map((item, index) => {
+      let key = 'sum-' + index
       if (item.type === 'number') {
         return (
-          <td className={prifix('table-col')}>
+          <td className={prifix('table-col')} key={key}>
             {this.getSum(item)}
           </td>
         )
@@ -25,9 +26,9 @@ class Footer extends Component {
           <td>合计</td>
         )
       }
-      return <td className={prifix('table-col')} />
+      return <td className={prifix('table-col')} key={key} />
     })
-    return <tr className={prifix('table-row')}>{tds}</tr>
+    return <tr className={prifix('table-row')} key='sum-nodes'>{tds}</tr>
   }
   getAveNodes () {
     const {
@@ -35,34 +36,37 @@ class Footer extends Component {
       dataSource
     } = this.props
     const tds = columns.map((item, index) => {
+      let key = 'ave-' + index
       if (item.type === 'number') {
         let num = this.getSum(item) / dataSource.length
 
         return (
-          <td>
+          <td key={key}>
             {Math.round(num * 100) / 100}
           </td>
         )
       }
       if (index === 0) {
         return (
-          <td className={prifix('table-col')}>均值</td>
+          <td className={prifix('table-col')} key={key}>均值</td>
         )
       }
-      return <td className={prifix('table-col')} />
+      return <td className={prifix('table-col')} key={key} />
     })
-    return <tr className={prifix('table-row')}>{tds}</tr>
+    return <tr className={prifix('table-row')} key='ave-nodes'>{tds}</tr>
   }
   getSuffixNodes () {
     const {
       columns,
       advance
     } = this.props
-    return advance.suffix.map(suf => {
+
+    return advance.suffix.map((suf, index) => {
+      let key = 'suf-' + index
       return (
-        <tr className={prifix('table-row')}>{
+        <tr className={prifix('table-row')} key={key}>{
           columns.map(item => {
-            return <td className={prifix('table-col')}>{suf[item.dataIndex]}</td>
+            return <td className={prifix('table-col')} key={key + '-' + item.dataIndex}>{suf[item.dataIndex]}</td>
           })
         }</tr>
       )

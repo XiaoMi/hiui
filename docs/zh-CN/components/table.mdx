@@ -68,6 +68,14 @@ import DemoHeader from '../../demo/table/section-header.jsx'
 
 <DemoHeader />
 
+## 表头冻结
+
+**fixTop : 表头窗口的高度**
+
+import DemoHeight from '../../demo/table/section-height.jsx'
+
+<DemoHeight />
+
 ## 列冻结
 
 **被冻结的列建议传入 width 属性**
@@ -118,6 +126,13 @@ import DemoServer from '../../demo/table/section-server.jsx'
 
 <DemoServer />
 
+
+## 高级功能
+
+import DemoAdvance from '../../demo/table/section-advance.jsx'
+
+<DemoAdvance />
+
 ## origin Attributes
 
 | 参数            | 说明                             | 类型             | 默认值  |
@@ -139,6 +154,16 @@ import DemoServer from '../../demo/table/section-server.jsx'
 | onChange         | 列表项被选中时触发的回调 | Function(selectedRowKeys, selectedRows) | -      |
 | getCheckboxProps | 选择框的默认属性配置     | Function(record)                        | -      |
 
+## advance
+
+| 参数              | 说明                      | 类型                                    | 默认值 |
+| ---------------- | ------------------------  | --------------------------------------- | ------ |
+| sum              | 是否前端求合                | Bollean                                 |     false
+| ave              | 是否前端求均值               |     Bollean                            | false      |
+| header           | 表格头部                   |   Component                                 |     false
+| footer           | 表格底部                    |     Component                            | false      |
+| prefix           | 表格头部插入多行                   |   ReactNode []                                |     false
+| suffix           | 表格底部插入多行                    |  ReactNode []                            | false      |
 ## Props
 
 | 参数       | 说明                                                                                              | 类型    | 可选值             | 默认值  |
@@ -151,6 +176,7 @@ import DemoServer from '../../demo/table/section-server.jsx'
 | emptyText  | 数据为空时展示的文案                                                                              | string  | -                  | No Data |
 | scroll     | 设置横向滚动，也可用于指定滚动区域的宽，建议为`x`设置一个数字，如果不设置，默认 table 宽度为 100% | number  | true               | -       |
 | fixTop     | 吸顶                                                                                              | Number  | true               | false   |
+| height     | 表格最大高度（用于冻结表头）                                                                                              | String  | -               | -   |
 | pagination | 查看分页组件配置                                                                                  | Object  | -                  | false   |
 | advance    | 高级功能                                                                                          | Object  | -                  | -       |
 | origin     | 服务端功能                                                                                        | Object  | -                  | -       |

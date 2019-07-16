@@ -33,7 +33,6 @@ class Demo extends React.Component {
     const rowSelection = {
       selectedRowKeys: [],
       onChange: (selectedRowKeys, rows) => {
-        console.log('onchange', selectedRowKeys, rows)
         this.setState({selectedRowKeys})
       },
       dataName: 'id'
@@ -53,7 +52,6 @@ class Demo extends React.Component {
           </FormItem>
         </Form>
         <Table
-          name='server'
           scrollX
           ref={'serverTable'}
           rowSelection={rowSelection}
