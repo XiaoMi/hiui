@@ -49,6 +49,9 @@ export function offset (element) {
   // 递归获取 offset, 可以考虑使用 getBoundingClientRect
   function getOffset (node, init) {
     // 非Element 终止递归
+    if (!node) {
+      return
+    }
     if (node.nodeType !== 1) {
       return
     }
