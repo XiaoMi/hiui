@@ -14,11 +14,11 @@
 
    适用于列数量较少、不需要横向滚动条的场景。
 
-<img src="/hiui/static/img/templates/table1.png" width="60%"/>
+<img src="/static/img/templates/table1.png" width="60%"/>
 
 ​ 适用于列数较多、行操作高频且出现横向滚动条的场景。
 
-<img src="/hiui/static/img/templates/table2.png" width="60%"/>
+<img src="/static/img/templates/table2.png" width="60%"/>
 
 按照不同的业务需求，将功能模块进行组合，分出大致以下几种列表模版，可供用户快速应用
 

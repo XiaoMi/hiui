@@ -7,7 +7,7 @@
 适用于搜索作为高频使用的场景
 
 <a href="https://hiui-group.github.io/hiui-template/#/common-search" target="_blank" style="margin-top:8px;">
-  <img src="/hiui/static/img/templates/table3.png" width="60%"/>
+  <img src="/static/img/templates/table3.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/common-search" target="_blank">查看 Demo</a>
@@ -17,7 +17,7 @@
 适用于筛选等基础设置作为高频使用的场景
 
 <a href="https://hiui-group.github.io/hiui-template/#/common-basic" target="_blank" style="margin-top:8px;">
-  <img src="/hiui/static/img/templates/table4.png" width="60%"/>
+  <img src="/static/img/templates/table4.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/common-basic" target="_blank">查看 Demo</a>

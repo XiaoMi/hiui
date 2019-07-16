@@ -30,7 +30,7 @@ class Index extends React.Component {
   constructor (props) {
     super(props)
     const _h = History.getHistory()
-    let locale = window.location.pathname.split('/')[2]
+    let locale = props.locale
     if (!locale || !(locale in locales)) {
       locale = window.localStorage.getItem('HIUI_LANGUAGE')
       // if (locale && locale in locales) {
@@ -86,15 +86,6 @@ class Index extends React.Component {
     })
   }
   getSiderItems (items) {
-    // const icons = [
-    //   <span className="sider__icon-start" />,
-    //   // <span className='sider__icon-principle' />,
-    //   <span className="sider__icon-layout" />,
-    //   <span className="sider__icon-vision" />,
-    //   <span className="sider__icon-i18n" />,
-    //   <span className="sider__icon-changelog" />,
-    //   <span className="sider__icon-component" />
-    // ]
     const { locale } = this.props
     let components = []
     let navs = {}

@@ -7,7 +7,7 @@
 适用于多个筛选条件的情况。
 
 <a href="https://hiui-group.github.io/hiui-template/#/query" target="_blank" style="margin-top:8px;">
-  <img src="/hiui/static/img/templates/table10.png" width="60%"/>
+  <img src="/static/img/templates/table10.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/query" target="_blank">查看 Demo</a>
@@ -30,7 +30,7 @@
 
 适用于仅对单个字段进行快捷过滤的场景。
 
-<img src="/hiui/static/img/templates/table11.png" width="60%"/>
+<img src="/static/img/templates/table11.png" width="60%"/>
 
 > 规则
 >

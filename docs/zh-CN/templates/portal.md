@@ -7,7 +7,7 @@
 以搜索为主要内容，可搜索全站内容，同时可支持推荐应用和用户级应用入口。
 
 <a href="https://hiui-group.github.io/hiui-template/#/home-search" target="_blank" style="margin-top:8px;">
-  <img src="/hiui/static/img/templates/temp1.png" width="60%"/>
+  <img src="/static/img/templates/temp1.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/home-search" target="_blank">查看 Demo</a>
@@ -25,7 +25,7 @@
 提供给用户使用频率最高的任务、网站最新的或最受欢迎的应用、通知/消息等。
 
 <a href="https://hiui-group.github.io/hiui-template/#/home-portal" target="_blank" style="margin-top:8px;">
-  <img src="/hiui/static/img/templates/temp2.png" width="60%"/>
+  <img src="/static/img/templates/temp2.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/home-portal" target="_blank">查看 Demo</a>

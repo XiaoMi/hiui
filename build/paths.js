@@ -13,5 +13,6 @@ module.exports = {
   siteLibs: path.join(basePath, 'libs'),
   siteBase: path.join(basePath, 'site'),
   siteTemplate: path.join(basePath, 'site', 'index.html'),
+  siteStatic: path.join(basePath, 'site', 'static'),
   components: path.join(basePath, 'components')
 }

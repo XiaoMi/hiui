@@ -9,7 +9,7 @@
 适用分组数较少，组间关联性弱的并列关系，且分组间无需比较的应用场景
 
 <a href="https://hiui-group.github.io/hiui-template/#/group-horizontal" target="_blank" style="margin-top:8px;">
-  <img src="/hiui/static/img/templates/table12.png" width="60%"/>
+  <img src="/static/img/templates/table12.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/group-horizontal" target="_blank">查看 Demo</a>
@@ -25,7 +25,7 @@
 当 Tab 数超过 10 个时可选择：
 
 <a href="https://hiui-group.github.io/hiui-template/#/group-vertical" target="_blank" style="margin-top:8px;">
-  <img src="/hiui/static/img/templates/table13.png" width="60%"/>
+  <img src="/static/img/templates/table13.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/group-vertical" target="_blank">查看 Demo</a>

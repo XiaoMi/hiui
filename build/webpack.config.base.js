@@ -1,6 +1,8 @@
 const rehypePrism = require('@mapbox/rehype-prism')
 const paths = require('./paths')
 
+const IS_GITHUB = process.env.DOC_ENV === 'github'
+
 module.exports = {
   output: {
     publicPath: paths.publicPath,
@@ -11,7 +13,8 @@ module.exports = {
     extensions: ['.web.js', '.js', '.jsx', '.json'],
     alias: {
       '@components': paths.components,
-      '@libs': paths.siteLibs
+      '@libs': paths.siteLibs,
+      '@static': paths.siteStatic
     }
   },
   module: {
@@ -60,6 +63,13 @@ module.exports = {
       {
         test: /\.mdx$/,
         use: [
+          {
+            loader: require.resolve('./loaders'),
+            options: {
+              from: /\/static\//g,
+              to: IS_GITHUB ? '/hiui/static/' : '/static/'
+            }
+          },
           {
             loader: 'babel-loader',
             options: {
