@@ -1,30 +1,40 @@
-.hiicon-list {
+.hi-icon-list {
   width: 100%;
-}
+  margin: 24px 0;
+  padding: 0;
+  list-style-type: none;
+  overflow: hidden;
 
-.hiicon-list li {
-  list-style: none;
-  float: left;
-  width: 16.6%;
-  height: 120px;
-  border-radius: 4px;
-  color: #333;
-  text-align: center;
-  transition: color, background-color 0.2s;
-}
+  li {
+    float: left;
+    width: 16.6%;
+    height: 124px;
+    margin: 4px 0;
+    border-radius: 4px;
+    text-align: center;
+    color: #333;
+    transition: color, background-color 0.2s;
 
-.hiicon-list li:hover {
-  background: #4284f5;
-  color: #fff;
-}
+    &:hover {
+      background: #4284f5;
+      color: #fff;
+    }
+  }
 
-.hiicon-list .hi-icon {
-  margin: 20px 0;
-  font-size: 32px;
-  display: inline-block;
-}
+  .hi-icon {
+    display: inline-block;
+    margin: 16px 0;
+    font-size: 32px;
+  }
 
-.hiicon-class {
-  font-size: 12px;
-  display: block;
+  .hi-icon-name {
+    display: block;
+    font-size: 12px;
+  }
+
+  .hi-icon-cname {
+    display: block;
+    margin: 4px 0;
+    font-size: 12px;
+  }
 }
