@@ -23,7 +23,6 @@ class Demo extends React.Component {
       title: 'Name',
       dataIndex: 'name',
       render: (text, row, index) => {
-        console.log(index, '---index---')
         if (index < 4) {
           return <a href='javascript:;'>{text}</a>
         }

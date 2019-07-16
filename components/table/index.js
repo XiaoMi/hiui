@@ -388,6 +388,10 @@ class Table extends Component {
   }
 
   componentDidUpdate () {
+    const {
+      fixTop,
+      height
+    } = this.props
     let leftFixTable = this.dom.current.querySelectorAll('.hi-table-fixed-left table tr')
     let rightFixTable = this.dom.current.querySelectorAll('.hi-table-fixed-right table tr')
     let scrollTable = this.dom.current.querySelectorAll('.hi-table-scroll table tr')
@@ -403,6 +407,28 @@ class Table extends Component {
         }
         if (rightFixTable.length > index) {
           rightFixTable[index].style.height = getStyle(tr, 'height')
+        }
+      })
+    }
+
+    if (!fixTop && height) {
+      let hiTableBody = this.dom.current.querySelectorAll('.hi-table-body')
+      hiTableBody && hiTableBody.length > 0 && hiTableBody.forEach(item => {
+        item.style.maxHeight = height
+        item.style.overflowY = 'auto'
+        item.onscroll = (e) => {
+          let thead = item.querySelectorAll('thead')
+          thead.forEach(h => {
+            h.style.transform = `translate(0,${item.scrollTop}px)`
+          })
+
+          let fixTableBodyArr = this.dom.current.querySelectorAll('.hi-table-inner')
+          fixTableBodyArr && fixTableBodyArr.length > 0 && fixTableBodyArr.forEach(fixTableBody => {
+            fixTableBody.style.maxHeight = (parseInt(height) - '18') + 'px'
+            fixTableBody.style.overflowY = 'hidden'
+            fixTableBody.scrollTop = item.scrollTop
+            fixTableBody.querySelector('thead').style.transform = `translate(0,${item.scrollTop}px)`
+          })
         }
       })
     }
@@ -890,7 +916,7 @@ class Table extends Component {
   }
 
   componentDidMount () {
-    let {fixTop, scroll, name, origin, height} = this.props
+    let {fixTop, scroll, name, origin} = this.props
     let dom = this.dom.current
     if (fixTop) {
       // 吸顶逻辑
@@ -898,29 +924,7 @@ class Table extends Component {
         this.xscroll()
       })
     } else {
-      if (height) {
-        setTimeout(() => {
-          let hiTableBody = this.dom.current.querySelectorAll('.hi-table-body')
-          hiTableBody.forEach(item => {
-            item.style.maxHeight = height
-            item.style.overflowY = 'auto'
-            item.onscroll = (e) => {
-              let thead = item.querySelectorAll('thead')
-              thead.forEach(h => {
-                h.style.transform = `translate(0,${item.scrollTop}px)`
-              })
 
-              let fixTableBodyArr = this.dom.current.querySelectorAll('.hi-table-inner')
-              fixTableBodyArr.forEach(fixTableBody => {
-                fixTableBody.style.maxHeight = (parseInt(height) - '18') + 'px'
-                fixTableBody.style.overflowY = 'hidden'
-                fixTableBody.scrollTop = item.scrollTop
-                fixTableBody.querySelector('thead').style.transform = `translate(0,${item.scrollTop}px)`
-              })
-            }
-          })
-        }, 0)
-      }
     }
 
     // 如果有列冻结的配置
