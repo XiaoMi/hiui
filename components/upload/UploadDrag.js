@@ -62,6 +62,11 @@ class UploadDrag extends Upload {
         onDragOver={e => this.dragoverFn(e)}
         onDragLeave={e => this.dragleaveFn(e)}
         onDrop={e => this.dropFn(e)}
+        onClick={(e) => {
+          if (!e.target.className.includes('icon-delete') && !e.target.className.includes('upload-input')) {
+            this.uploadRef.click()
+          }
+        }}
       >
         <div
           className={
@@ -119,11 +124,11 @@ class UploadDrag extends Upload {
                 <span className={`Ficon-${file.fileType}`} />
                 <div className='hi-upload__right-content'>
                   <span className={fileNameCls}>{listName}</span>
-                  <span>
+                  <span className='hi-upload__operate-icon'>
                     { onRemove &&
                       <Icon
                         name={file.uploadState === 'loading' ? 'close' : 'delete'}
-                        onClick={() => this.deleteFile(file, index)}
+                        onClick={(e) => this.deleteFile(e, file, index)}
                       />
                     }
                   </span>

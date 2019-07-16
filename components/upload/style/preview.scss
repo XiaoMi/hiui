@@ -7,61 +7,15 @@
   background: rgba(0, 0, 0, 0.54);
   z-index: 9999;
 
-  &-leave {
-    display: block !important;
-  }
-
-  &-leave.hi-preview-leave-active {
-    background: rgba(0, 0, 0, 0);
-
-    .hi-preview-image {
-      width: 0 !important;
-      height: 0 !important;
-    }
-  }
-
-  &-enter {
-    background: rgba(0, 0, 0, 0);
-
-    .hi-preview-image {
-      width: 0 !important;
-      height: 0 !important;
-    }
-  }
-
-  &--hide {
-    display: none;
-  }
-
-  &--width {
-    img {
-      width: 100%;
-    }
-  }
-
-  &--height {
-    img {
-      height: 100%;
-    }
-  }
-
-  &__image {
-    position: absolute;
-    display: inline-block;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    // transition: width 0.3s ease-out, height 0.3s ease-out;
-    overflow: auto;
-
-    &--hide {
-      visibility: hidden;
+  img {
+    &:hover {
+      cursor: move;
     }
   }
 
   &-toolbar {
     position: absolute;
-    bottom: 40px;
+    bottom: 20px;
     left: 50%;
     transform: translate(-50%, -50%);
     background: #fff;
@@ -75,11 +29,6 @@
       margin: 0 12px;
       font-size: 20px;
       cursor: pointer;
-
-      &--disabled {
-        color: #ccc;
-        cursor: not-allowed;
-      }
     }
   }
 
@@ -88,14 +37,14 @@
     right: 10px;
     top: 10px;
     background: #fff;
-    width: 46px;
-    height: 46px;
+    width: 40px;
+    height: 40px;
     line-height: 1;
     border-radius: 50%;
     text-align: center;
 
     .hi-icon {
-      font-size: 46px;
+      font-size: 40px;
       cursor: pointer;
       color: #000;
     }

@@ -6,58 +6,19 @@ import cloneDeep from 'lodash/cloneDeep'
 
 let fileId = 0
 
-export default class Upload extends Component {
+class Upload extends Component {
   constructor (props) {
     super(props)
-    const fileList = this.prepareDefaultFileList(this.props.defaultFileList)
+    const fileList = this.prepareDefaultFileList(props.fileList || props.defaultFileList)
     this.state = {
-      fileList
+      fileList,
+      fileCountLimted: false
     }
   }
-
-  static propTypes = {
-    type: PropTypes.string,
-    accept: PropTypes.string,
-    limit: PropTypes.number,
-    buttonText: PropTypes.string,
-    buttonIcon: PropTypes.string,
-    uploadAction: PropTypes.string,
-    param: PropTypes.object,
-    name: PropTypes.string,
-    disabled: PropTypes.bool,
-    headers: PropTypes.object,
-    showUploadList: PropTypes.bool,
-    multiple: PropTypes.bool,
-    onChange: PropTypes.func,
-    customUpload: PropTypes.func,
-    beforeUpload: PropTypes.func,
-    defaultFileList: PropTypes.array,
-    onRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool])
-  }
-
-  static defaultProps = {
-    defaultFileList: [],
-    // headers: {'Content-type': 'multipart/form-data'}, // headers 不可以设置Content-type https://stackoverflow.com/questions/17415084/multipart-data-post-using-python-requests-no-multipart-boundary-was-found/17438575
-    headers: {},
-    accept: '',
-    limit: null,
-    buttonIcon: 'upload',
-    uploadAction: '',
-    param: null,
-    name: 'file',
-    disabled: false,
-    showUploadList: true,
-    multiple: false,
-    beforeUpload: () => true,
-    onRemove: () => true,
-    onChange: () => true
-    // overEvent: false
-  }
-
   componentWillReceiveProps (nextProps) {
-    if (!shallowEqual(nextProps.defaultFileList, this.props.defaultFileList)) {
+    if (!shallowEqual(nextProps.fileList, this.props.fileList)) {
       this.setState({
-        fileList: this.prepareDefaultFileList(nextProps.defaultFileList)
+        fileList: this.prepareDefaultFileList(nextProps.fileList)
       })
     }
   }
@@ -130,12 +91,17 @@ export default class Upload extends Component {
   uploadFiles (files) {
     const {
       beforeUpload,
-      customUpload
+      customUpload,
+      maxSize,
+      maxCount
     } = this.props
     const {
-      fileList
+      fileList,
+      fileCountLimted
     } = this.state
-
+    if (fileCountLimted) {
+      return
+    }
     if (!beforeUpload(files, fileList)) {
       return
     }
@@ -148,12 +114,18 @@ export default class Upload extends Component {
     for (let key in files) {
       if (!files.hasOwnProperty(key)) continue
       let file = files[key]
+      if (file.size > maxSize * 1024) {
+        return
+      }
       file.fileId = this.getFileId()
       file.uploadState = 'loading'
       file.fileType = this.getFileType(file)
       fileList.unshift(file)
       this.setState({ fileList })
       this.uploadFile(file)
+    }
+    if (fileList.length === maxCount) {
+      this.setState({fileCountLimted: true})
     }
     ReactDOM.findDOMNode(this.uploadRef).value = ''
   }
@@ -167,7 +139,7 @@ export default class Upload extends Component {
     } = this.props
     const doRemove = () => {
       fileList.splice(index, 1)
-      this.setState({fileList})
+      this.setState({fileList, fileCountLimted: false})
     }
     const ret = onRemove(file, fileList, index)
     if (ret === true) {
@@ -303,3 +275,44 @@ export default class Upload extends Component {
     }
   }
 }
+
+Upload.propTypes = {
+  type: PropTypes.string,
+  accept: PropTypes.string,
+  limit: PropTypes.number,
+  buttonText: PropTypes.string,
+  buttonIcon: PropTypes.string,
+  uploadAction: PropTypes.string,
+  param: PropTypes.object,
+  name: PropTypes.string,
+  disabled: PropTypes.bool,
+  headers: PropTypes.object,
+  showUploadList: PropTypes.bool,
+  multiple: PropTypes.bool,
+  onChange: PropTypes.func,
+  customUpload: PropTypes.func,
+  beforeUpload: PropTypes.func,
+  defaultFileList: PropTypes.array,
+  onRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+  maxSize: PropTypes.number
+}
+
+Upload.defaultProps = {
+  defaultFileList: [],
+  // headers: {'Content-type': 'multipart/form-data'}, // headers 不可以设置Content-type https://stackoverflow.com/questions/17415084/multipart-data-post-using-python-requests-no-multipart-boundary-was-found/17438575
+  headers: {},
+  accept: '',
+  limit: null,
+  buttonIcon: 'upload',
+  uploadAction: '',
+  param: null,
+  name: 'file',
+  disabled: false,
+  showUploadList: true,
+  multiple: false,
+  beforeUpload: () => true,
+  onRemove: () => true,
+  onChange: () => true
+  // overEvent: false
+}
+export default Upload

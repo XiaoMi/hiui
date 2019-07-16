@@ -13,7 +13,9 @@ class UploadPhoto extends Upload {
         uploading: false,
         progressNumber: 0,
         showModal: false,
-        previewFile: {}
+        previewFile: {},
+        activeIndex: 0,
+        images: []
       },
       this.state
     )
@@ -26,10 +28,11 @@ class UploadPhoto extends Upload {
     })
   }
 
-  previewImage (file) {
+  previewImage (file, activeIndex) {
     this.setState({
       previewFile: file,
-      showModal: true
+      showModal: true,
+      activeIndex
     })
   }
 
@@ -37,14 +40,19 @@ class UploadPhoto extends Upload {
     const {
       fileList,
       showModal,
-      previewFile
+      previewFile,
+      activeIndex
     } = this.state
     const {
       onRemove,
       disabled,
       accept
     } = this.props
-
+    const images = fileList.map(file => {
+      return {
+        url: file.url
+      }
+    })
     return (
       <div className={classNames('hi-upload hi-upload--photo', {'hi-upload--disabled': disabled})}>
         <ul className='hi-upload__list'>
@@ -60,10 +68,9 @@ class UploadPhoto extends Upload {
                 </li>
               )
             } else {
-              console.log(file.uploadState)
               return (
                 <li key={index} className='hi-upload__item'>
-                  <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} onClick={() => this.previewImage(file)} />
+                  <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} onClick={() => this.previewImage(file, index)} />
                   {
                     onRemove && <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, index)} />
                   }
@@ -96,11 +103,15 @@ class UploadPhoto extends Upload {
             </label>
           </li>
         </ul>
-        <Preview
-          src={previewFile.url}
-          show={showModal}
-          onClose={this.closeModal.bind(this)}
-        />
+        {
+          showModal && <Preview
+            src={previewFile.url}
+            images={images}
+            activeIndex={activeIndex}
+            show={showModal}
+            onClose={this.closeModal.bind(this)}
+          />
+        }
       </div>
     )
   }

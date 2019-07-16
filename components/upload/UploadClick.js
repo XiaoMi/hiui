@@ -16,9 +16,9 @@ class UploadClick extends Upload {
       accept
     } = this.props
     const {
-      fileList
+      fileList,
+      fileCountLimted
     } = this.state
-
     return (
       <div className='hi-upload hi-upload--normal'>
         <label>
@@ -27,11 +27,11 @@ class UploadClick extends Upload {
             type='file'
             onChange={e => this.uploadFiles(e.target.files)}
             multiple={multiple && 'multiple'}
-            disabled={disabled && 'disabled'}
+            disabled={(disabled || fileCountLimted) && 'disabled'}
             accept={accept}
             hidden
           />
-          <span className={`hi-upload__button ${disabled ? 'hi-upload__button--disabled' : ''}`}>
+          <span className={`hi-upload__button ${(disabled || fileCountLimted) ? 'hi-upload__button--disabled' : ''}`}>
             { buttonText }
           </span>
         </label>

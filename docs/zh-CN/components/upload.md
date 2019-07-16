@@ -22,7 +22,10 @@ render () {
 				uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 				headers={{name: 'mi'}}
         buttonText="上传文件"
-        tips="只能上传 jpg/png 文件，且不超过500kb"
+        tips="只能上传图片类型文件，且不超过500kb，最多上传两个文件"
+        maxSize={500}
+        maxCount={2}
+        accept='image/*'
 				param={param}
 				name={'files[]'}
 				onChange = {(file, fileList, response) => {
@@ -57,7 +60,8 @@ render () {
 				type="normal"
 				uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 				buttonText="上传文件"
-				param={param}
+        param={param}
+        accept='image/jpeg'
 				name={'files[]'}
 				onChange = {(file, fileList, response) => {
 					console.log('upload callback', file, fileList, response)
@@ -294,7 +298,9 @@ render () {
 | type | 上传组件类型 | String | normal: 普通上传按钮<br/> drag: 拖拽上传<br/>  pictureCard:照片卡片上传<br/>  avatar: 头像上传（裁剪）<br/> photo:照片上传（预览）<br/> | normal |
 | width | 仅对avatar生效，头像上传的裁切框尺寸,最大450 | Number | - | 200 |
 | height | 仅对avatar生效，头像上传的裁切框尺寸,最大450 | Number | - | 200 |
-| accept | 接收上传的文件类型 | String | - | - |
+| accept | 接收上传的文件类型,用逗号隔开的 MIME 类型列表 | String | - | - |
+| maxSize |  文件大小限制，（单位：KB） | Number | - | - |
+| maxCount |   可上传文件最大数量 | Number | - | - |
 | buttonText | 按钮文案 | String | - | 上传 |
 | buttonIcon | 按钮文案前面的图标 | String | - | upload |
 | uploadAction | 必选，上传的地址 | String | - | - |
