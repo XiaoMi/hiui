@@ -3,7 +3,7 @@
 用于管理个人日常事务
 
 <a href="https://hiui-group.github.io/hiui-template/#/home-workbench" target="_blank" style="margin-top:8px;">
-  <img src="/static/img/templates/temp4.png" width="60%"/>
+  <img src="<BASE_URL>/static/img/templates/temp4.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/home-workbench" target="_blank">查看 Demo</a>

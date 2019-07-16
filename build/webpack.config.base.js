@@ -3,9 +3,11 @@ const paths = require('./paths')
 
 const IS_GITHUB = process.env.DOC_ENV === 'github'
 
+console.log(IS_GITHUB)
+
 module.exports = {
   output: {
-    publicPath: paths.publicPath,
+    publicPath: IS_GITHUB ? '/hiui/' : '/',
     filename: '[name].js',
     chunkFilename: '[name].chunk.js'
   },
@@ -21,21 +23,26 @@ module.exports = {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
-            plugins: ['@babel/plugin-proposal-class-properties']
+        use: [
+          {
+            loader: require.resolve('./loaders'),
+            options: {
+              from: /<BASE_URL>/g,
+              to: IS_GITHUB ? '/hiui' : ''
+            }
+          },
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react'],
+              plugins: ['@babel/plugin-proposal-class-properties']
+            }
           }
-        },
+        ],
         exclude: [/node_modules/]
       },
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      },
-      {
-        test: /\.scss$/,
+        test: /\.s?css$/,
         use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
@@ -66,8 +73,8 @@ module.exports = {
           {
             loader: require.resolve('./loaders'),
             options: {
-              from: /\/static\//g,
-              to: IS_GITHUB ? '/hiui/static/' : '/static/'
+              from: /<BASE_URL>/g,
+              to: IS_GITHUB ? '/hiui' : ''
             }
           },
           {
@@ -81,7 +88,18 @@ module.exports = {
       },
       {
         test: /\.md$/,
-        loader: 'raw-loader'
+        use: [
+          {
+            loader: require.resolve('./loaders'),
+            options: {
+              from: /<BASE_URL>/g,
+              to: IS_GITHUB ? '/hiui' : ''
+            }
+          },
+          {
+            loader: 'raw-loader'
+          }
+        ]
       }
     ]
   }

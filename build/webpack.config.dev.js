@@ -32,8 +32,6 @@ module.exports = merge(baseConfig, {
       colors: true
     },
     clientLogLevel: 'none',
-    historyApiFallback: {
-      index: '/index.html'
-    }
+    historyApiFallback: true
   }
 })

@@ -7,6 +7,7 @@ import locales from '../locales'
 import designs from '../pages/designs'
 import pages from '../pages/components'
 import templates from '../pages/templates'
+import utils from '../utils'
 import {
   setDesignNavs,
   setComponentsNavs,
@@ -17,8 +18,8 @@ History.createBrowserHistory()
 
 const logo = (
   <Logo
-    url='https://xiaomi.github.io/hiui/'
-    logoUrl='https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05'
+    url='<BASE_URL>/'
+    logoUrl='<BASE_URL>/static/img/logo.png'
     text='HIUI'
     title='HIUI'
     alt='HIUI'
@@ -31,15 +32,9 @@ class Index extends React.Component {
     super(props)
     const _h = History.getHistory()
     let locale = props.locale
-    if (!locale || !(locale in locales)) {
-      locale = window.localStorage.getItem('HIUI_LANGUAGE')
-      // if (locale && locale in locales) {
-      //   _h.push(`/hiui/${locale}`)
-      // } else {
-      //   window.localStorage.setItem('HIUI_LANGUAGE', this.props.locale)
-      //   _h.push(`/hiui/${this.props.locale}`)
-      // }
-    } else {
+    if (!utils.getLocaleFromPath()) {
+      const locale = window.localStorage.getItem('HIUI_LANGUAGE') || 'zh-CN'
+      _h.push(`<BASE_URL>/${locale}`)
       window.localStorage.setItem('HIUI_LANGUAGE', locale)
     }
     this.state = {
@@ -94,7 +89,8 @@ class Index extends React.Component {
       const _title = locales[locale]['components'][title]
       siderDocuments.push({
         title: <span className='components-title'>{_title}</span>,
-        to: `/hiui/${locale}/docs/${title}`
+        to: `<BASE_URL>/${locale}/docs/${title}`,
+        name: title
         // icon: icons[i]
       })
       navs[title] = _title
@@ -109,7 +105,8 @@ class Index extends React.Component {
         navs[page] = _title
         components.push({
           title: <span className='components-page'>{_title}</span>,
-          to: `/hiui/${locale}/docs/${page}`
+          to: `<BASE_URL>/${locale}/docs/${page}`,
+          name: title
         })
       })
     })
@@ -138,7 +135,8 @@ class Index extends React.Component {
       navs[title] = _title
       siderDocuments.push({
         title: _title,
-        to: `/hiui/${locale}/${path}/${title}`
+        to: `<BASE_URL>/${locale}/${path}/${title}`,
+        name: title
       })
     })
     Object.keys(items.components).forEach((title, i) => {
@@ -147,7 +145,8 @@ class Index extends React.Component {
         const _title = locales[locale][path][page]
         temp.push({
           title: <span className='components-page'>{_title}</span>,
-          to: `/hiui/${locale}/${path}/${page}`
+          to: `<BASE_URL>/${locale}/${path}/${page}`,
+          name: title
         })
         navs[page] = _title
       })

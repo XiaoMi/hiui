@@ -3,7 +3,7 @@
 填写表单时必须按照一定的次序完成。
 
 <a href="https://hiui-group.github.io/hiui-template/#/form-with-stepper" target="_blank" style="margin-top:8px;">
-  <img src="/static/img/templates/form9.png" width="60%"/>
+  <img src="<BASE_URL>/static/img/templates/form9.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/form-with-stepper" target="_blank">查看 Demo</a>

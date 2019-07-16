@@ -8,12 +8,12 @@
     "fix": "node_modules/.bin/standard --fix && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss' --fix",
     "precommit": "lint-staged",
     "compile": "cross-env NODE_ENV=production gulp",
-    "build": "cross-env node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.production.config.js && gulp carry",
+    "build": "cross-env node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.config.prod.js && gulp carry",
     "deploy": "gh-pages -d dist",
-    "dev": "cd site && cross-env NODE_ENV=development PORT=4200 node server.js",
+    "dev": "cd site && cross-env NODE_ENV=development DOC_ENV=github PORT=4200 node server.js",
     "start": "node build/start.js",
-    "prerender:gh-pages": "corss-env DOC_ENV=github npm run build && node build/prerenderSite.js",
-    "prerender": "corss-env npm run build && node build/prerenderSite.js"
+    "prerender:gh-pages": "cross-env DOC_ENV=github npm run build && cross-env DOC_ENV=github node build/prerenderSite.js",
+    "prerender": "npm run build && node build/prerenderSite.js"
   },
   "repository": {
     "type": "git",

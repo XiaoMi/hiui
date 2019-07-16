@@ -1,10 +1,8 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { connect } from 'react-redux'
-import { paths, isGithub } from '@libs'
+import utils from '../../utils'
 import './style/index.scss'
-
-const baseRoute = paths.publicPath
 
 class Component extends React.Component {
   constructor (props) {
@@ -97,14 +95,14 @@ class Component extends React.Component {
   // 收集所有导航
   collectNavs (fn) {
     let footNavs = []
-    let topNav = this.props.match.path.split('/')[isGithub ? 3 : 2]
+    let topNav = utils.getTopNavFromPath(this.props.match.path)
     footNavs = this.props[topNav] || {}
     this.setState({ footNavs, topNav }, fn)
   }
 
   getCurrentPage (fn) {
     // TODO:这里可能要修改
-    let page = this.props.match.path.split('/')[4]
+    let page = utils.getPageFromPath(this.props.match.path)
     page = page || 'quick-start'
     this.setState({ page }, fn)
   }
@@ -138,7 +136,7 @@ class Component extends React.Component {
               className={`pre ${pre.to ? '' : 'none'}`}
               href={
                 pre.to
-                  ? `${baseRoute}${this.props.locale}/${topNav}/${pre.to}`
+                  ? `<BASE_URL>/${this.props.locale}/${topNav}/${pre.to}`
                   : ''
               }
             >
@@ -148,7 +146,7 @@ class Component extends React.Component {
               className={`next ${next.to ? '' : 'none'}`}
               href={
                 next.to
-                  ? `${baseRoute}${this.props.locale}/${topNav}/${next.to}`
+                  ? `<BASE_URL>/${this.props.locale}/${topNav}/${next.to}`
                   : ''
               }
             >
