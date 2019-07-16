@@ -78,7 +78,7 @@ function deprecatedOpen ({ target, tip } = {}) {
 }
 
 function openWrapper (target, options) {
-  if (target === null || React.isValidElement(React.cloneElement(target))) {
+  if (target === null || (target && React.isValidElement(React.cloneElement(target)))) {
     open(target, options)
   } else {
     return deprecatedOpen(target)
