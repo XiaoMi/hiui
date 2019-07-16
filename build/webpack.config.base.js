@@ -24,7 +24,7 @@ module.exports = {
         test: /\.(js|jsx)$/,
         use: [
           {
-            loader: require.resolve('./loaders'),
+            loader: require.resolve('./stringReplace'),
             options: {
               from: /<BASE_URL>/g,
               to: IS_GITHUB ? '/hiui' : ''
@@ -66,7 +66,7 @@ module.exports = {
         test: /\.mdx$/,
         use: [
           {
-            loader: require.resolve('./loaders'),
+            loader: require.resolve('./stringReplace'),
             options: {
               from: /<BASE_URL>/g,
               to: IS_GITHUB ? '/hiui' : ''
@@ -85,7 +85,7 @@ module.exports = {
         test: /\.md$/,
         use: [
           {
-            loader: require.resolve('./loaders'),
+            loader: require.resolve('./stringReplace'),
             options: {
               from: /<BASE_URL>/g,
               to: IS_GITHUB ? '/hiui' : ''
