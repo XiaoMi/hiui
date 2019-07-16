@@ -104,7 +104,7 @@ export default class TreeNode extends Component {
       'hi-icon',
       `icon-${expanded ? 'open' : 'packup'}`
     )
-    return <i className={switcherClsName} style={{ color: '#999', fontSize: '16px' }} />
+    return <i className={switcherClsName} />
   }
 
   renderItemIcon = () => {
