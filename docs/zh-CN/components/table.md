@@ -393,7 +393,6 @@ render(){
   const rowSelection = {
     selectedRowKeys,
     onChange: (selectedRowKeys,rows)=>{
-      console.log('onchange',selectedRowKeys,rows)
       this.setState({selectedRowKeys})
     },
     dataName:'age'
@@ -621,7 +620,6 @@ const renderContent = (value, row, index) => {
     title: 'Name',
     dataIndex: 'name',
     render: (text, row, index) => {
-      console.log(index, '---index---')
       if (index < 4) {
         return <a href='javascript:;'>{text}</a>
       }
@@ -632,17 +630,17 @@ const renderContent = (value, row, index) => {
         }
       }
     },
-    key:1
+    key:"1"
   }, {
     title: 'Age',
     dataIndex: 'age',
     render: renderContent,
-    key:2
+    key:"2"
   }, {
     title: 'Home phone',
     colSpan: 2,
     dataIndex: 'tel',
-    key:3,
+    key:"3",
     render: (value, row, index) => {
       const obj = {
         children: value,
@@ -665,12 +663,12 @@ const renderContent = (value, row, index) => {
     colSpan: 0,
     dataIndex: 'phone',
     render: renderContent,
-    key:4
+    key: "4"
   }, {
     title: 'Address',
     dataIndex: 'address',
     render: renderContent,
-    key:5
+    key:"5"
   }]
   
   this.data = [{
@@ -711,7 +709,7 @@ const renderContent = (value, row, index) => {
   }]
 } 
 render() {
-  return <Table columns={this.columns} data={this.data} fixTop={56}/>
+  return <Table name='merge' columns={this.columns} data={this.data} fixTop={56}/>
 }
 ```
 :::
@@ -998,7 +996,6 @@ constructor (props) {
     const rowSelection = {
       selectedRowKeys: [],
       onChange: (selectedRowKeys, rows) => {
-        console.log('onchange', selectedRowKeys, rows)
         this.setState({selectedRowKeys})
       },
       dataName: 'id'

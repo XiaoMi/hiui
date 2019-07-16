@@ -68,6 +68,7 @@ export default class Body extends Component {
       pickedRows: []
     }
   }
+
   render () {
     let {columns, dataSource, cbs: {addExpand}, rowSelection = { }, highlightCols, advance} = this.props
     columns = columns.filter(item => !item.hide)

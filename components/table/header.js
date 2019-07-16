@@ -102,6 +102,7 @@ export default class Header extends Component {
     if (headerColumns && headerColumns.length > 1) {
       nodes = headerColumns.map((columns, k) => {
         let tr = []
+        columns = columns.filter(item => !item.hide)
         for (let i = 0; i < columns.length; i++) {
           tr.push(<GroupCell {...this.props} item={columns[i]} index={i} contextMenu={this.contextMenu} key={columns[i].key} />)
         }

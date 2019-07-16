@@ -441,10 +441,9 @@ $borderColor: #e6e7e8 !default;
 
   &-setting {
     position: absolute;
-    right: 0;
+    right: 10px;
     top: 0;
     cursor: pointer;
-    background: $bgColor;
     width: 50px;
     text-align: center;
     border-left: 1px solid #e6e7e8;
