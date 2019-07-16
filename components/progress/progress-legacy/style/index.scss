@@ -5,7 +5,7 @@ $progress-warn: #eb5252 !default;
 $progress-error: #e19d0c !default;
 $progress-text: #666 !default;
 
-.hi-progress {
+.hi-progress-legacy {
   &__inner {
     background-color: $progress-bg;
     border-radius: 9px;

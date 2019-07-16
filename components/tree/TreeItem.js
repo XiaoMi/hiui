@@ -48,11 +48,7 @@ class TreeItem extends Component {
     } = this.props
     const treeItem = (
       <li key={item.id}>
-        <div
-          style={{
-            display: 'flex'
-          }}
-        >
+        <div className='item--wrapper'>
           {targetNode === item.id && dropDividerPosition === 'down' && isOver && (
             <TreeDivider top />
           )}

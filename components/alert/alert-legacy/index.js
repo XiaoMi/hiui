@@ -17,7 +17,7 @@ class Alert extends Component {
     autoCloseTime: PropTypes.number
   }
   static defaultProps = {
-    prefixCls: 'hi-alert',
+    prefixCls: 'hi-alert-legacy',
     type: 'info',
     size: 'middle',
     closeable: true,
@@ -73,26 +73,17 @@ class Alert extends Component {
           <i className={`hi-icon icon-${type}`} />
         </div>
         <div className='text-contain'>
-          {
-            this.props.title &&
-            <div className='text-title'>
-              {this.props.title}
-            </div>
-          }
+          {this.props.title && <div className='text-title'>{this.props.title}</div>}
           <div className='text-message'>
             {this.props.message || this.props.content}
-            {React.Children.map(this.props.children, (item) => item)}
+            {React.Children.map(this.props.children, item => item)}
           </div>
         </div>
-        {
-          this.props.closeable
-            ? (
-              <div className='close-btn icon-img-delete' onClick={this.handleClose.bind(this)}>
-                <i className='hi-icon icon-close' />
-              </div>
-            )
-            : null
-        }
+        {this.props.closeable ? (
+          <div className='close-btn icon-img-delete' onClick={this.handleClose.bind(this)}>
+            <i className='hi-icon icon-close' />
+          </div>
+        ) : null}
       </div>
     ) : null
   }
