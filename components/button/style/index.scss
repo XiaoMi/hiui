@@ -107,7 +107,7 @@
   transition:
     background-color $speed-normal $easing,
     border-color $speed-normal $easing,
- box-shadow $speed-fast $easing,
+    box-shadow $speed-fast $easing,
     color $speed-normal $easing;
 
   @include hi-btn-style();

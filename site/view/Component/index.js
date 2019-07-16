@@ -110,7 +110,6 @@ class Component extends React.Component {
   getComponent (page) {
     const { theme, locale, allComponents } = this.props
     const { topNav } = this.state
-    console.log(allComponents, topNav, page)
     // 控制markdown显示隐藏
     const currentPage = allComponents[topNav][page]
     if (currentPage) {

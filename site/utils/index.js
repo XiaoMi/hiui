@@ -2,7 +2,7 @@ import locales from '../locales'
 
 const legalLocales = Object.keys(locales).map((v) => v.toLowerCase())
 
-function getLocaleFromPath(url = window.location.pathname) {
+function getLocaleFromPath (url = window.location.pathname) {
   url = url.replace('/hiui', '').toLowerCase()
   let currentLocale = ''
   for (const item of legalLocales) {
@@ -14,7 +14,7 @@ function getLocaleFromPath(url = window.location.pathname) {
   return currentLocale
 }
 
-function getTopNavFromPath(url = window.location.pathname) {
+function getTopNavFromPath (url = window.location.pathname) {
   url = url.replace('/hiui', '').toLowerCase()
   const locale = getLocaleFromPath(url)
   return url
@@ -23,7 +23,7 @@ function getTopNavFromPath(url = window.location.pathname) {
     .replace(/\/.*/, '')
 }
 
-function getPageFromPath(url = window.location.pathname) {
+function getPageFromPath (url = window.location.pathname) {
   url = url.replace('/hiui', '').toLowerCase()
   const locale = getLocaleFromPath(url)
   const topNav = getTopNavFromPath(url)
