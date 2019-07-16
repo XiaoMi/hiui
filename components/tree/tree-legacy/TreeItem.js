@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Checkbox from '../table/checkbox/index'
+import Checkbox from '../../table/checkbox/index'
 import { DragSource, DropTarget } from 'react-dnd'
-import Input from '../input'
+import Input from '../../input'
 import { findDOMNode } from 'react-dom'
 import TreeDivider from './TreeDivider'
 const Types = {

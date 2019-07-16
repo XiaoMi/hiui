@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
 import { getAll, dealData } from './util'
-import withDragDropContext from '../lib/withDragDropContext'
+import withDragDropContext from '../../lib/withDragDropContext'
 
 import './style/index'
 
@@ -43,7 +43,8 @@ class Tree extends Component {
         for (let key in dataMap) {
           const item = dataMap[key]
           const itemHasChildren = item.children && item.children.length > 0
-          const itemShouldExpand = (props.defaultExpandAll && item.expanded !== false) || item.expanded === true
+          const itemShouldExpand =
+            (props.defaultExpandAll && item.expanded !== false) || item.expanded === true
           if (itemHasChildren && itemShouldExpand) {
             defaultExpandedArr.push(item.id)
           }
