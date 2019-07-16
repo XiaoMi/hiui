@@ -8,11 +8,15 @@ module.exports = merge(baseConfig, {
   mode: 'development',
   entry: [paths.siteEntry],
   devtool: 'source-map',
+  module: {
+    rules: [
+      {
+        test: /\.s?css$/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
+      }
+    ]
+  },
   plugins: [
-    new HtmlWebpackPlugin({
-      inject: true,
-      template: paths.siteTemplate
-    }),
     new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {

@@ -1,9 +1,8 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const rehypePrism = require('@mapbox/rehype-prism')
 const paths = require('./paths')
 
 const IS_GITHUB = process.env.DOC_ENV === 'github'
-
-console.log(IS_GITHUB)
 
 module.exports = {
   output: {
@@ -40,10 +39,6 @@ module.exports = {
           }
         ],
         exclude: [/node_modules/]
-      },
-      {
-        test: /\.s?css$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /(fontawesome-webfont)\.(svg)$/,
@@ -102,5 +97,12 @@ module.exports = {
         ]
       }
     ]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      inject: true,
+      template: paths.siteTemplate,
+      baseUrl: IS_GITHUB ? '/hiui' : ''
+    })
+  ]
 }
