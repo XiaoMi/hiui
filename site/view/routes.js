@@ -3,13 +3,16 @@ import React from 'react'
 import Home from './Home'
 import HomeEn from './Home/en-US'
 import { SiderLayout } from '@hi-ui/classic-theme'
+import { paths } from '@libs'
 import Component from './Component'
+
+const baseRoute = paths.publicPath
 
 const loop = (locale, items, targets, component) => {
   items.forEach(item => {
     if (item.to) {
       targets.push({
-        path: `/hiui/${locale}/${item.to.split('/')[3]}/${item.to.split('/')[4]}`,
+        path: `${baseRoute}${locale}/${item.to.split('/')[3]}/${item.to.split('/')[4]}`,
         component: component
       })
     }
@@ -28,29 +31,29 @@ function getRoutes (locale, siders, designs, templates) {
   templateArr = loop(locale, templates, templateArr, Component)
   return [
     {
-      path: `/hiui/zh-CN`,
+      path: `${baseRoute}zh-CN`,
       component: Home,
       exact: true
     },
     {
-      path: `/hiui/en-US`,
+      path: `${baseRoute}en-US`,
       component: HomeEn,
       exact: true
     },
     {
-      path: `/hiui/${locale}/designs`,
+      path: `${baseRoute}${locale}/designs`,
       render: props => {
         return <SiderLayout deepClone={false} sider={designs} routes={desArr} {...props} />
       }
     },
     {
-      path: `/hiui/${locale}/templates`,
+      path: `${baseRoute}${locale}/templates`,
       render: props => {
         return <SiderLayout deepClone={false} sider={templates} routes={templateArr} {...props} />
       }
     },
     {
-      path: `/hiui/${locale}/docs`,
+      path: `${baseRoute}${locale}/docs`,
       render: props => {
         return <SiderLayout deepClone={false} sider={siders} routes={sideArr} {...props} />
       }

@@ -33,12 +33,12 @@ class Index extends React.Component {
     let locale = window.location.pathname.split('/')[2]
     if (!locale || !(locale in locales)) {
       locale = window.localStorage.getItem('HIUI_LANGUAGE')
-      if (locale && locale in locales) {
-        _h.push(`/hiui/${locale}`)
-      } else {
-        window.localStorage.setItem('HIUI_LANGUAGE', this.props.locale)
-        _h.push(`/hiui/${this.props.locale}`)
-      }
+      // if (locale && locale in locales) {
+      //   _h.push(`/hiui/${locale}`)
+      // } else {
+      //   window.localStorage.setItem('HIUI_LANGUAGE', this.props.locale)
+      //   _h.push(`/hiui/${this.props.locale}`)
+      // }
     } else {
       window.localStorage.setItem('HIUI_LANGUAGE', locale)
     }

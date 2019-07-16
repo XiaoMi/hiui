@@ -6,6 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const basePath = path.resolve(__dirname, '../')
 const rehypePrism = require('@mapbox/rehype-prism')
+const paths = require('./paths')
 
 module.exports = {
   mode: process.env.NODE_ENV,
@@ -19,7 +20,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(basePath, 'dist'),
-    publicPath: '/hiui/',
+    publicPath: paths.publicPath,
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].chunk.[chunkhash].js'
   },
@@ -146,16 +147,9 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       title: 'HIUI',
+      publicPath: paths.publicPath,
       template: path.resolve(__dirname, '../site/index.template.html')
     }),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false
-    //   }
-    // }),
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: ['vendor', 'runtime']
-    // }),
     new webpack.HashedModuleIdsPlugin()
   ]
 }

@@ -1,31 +1,17 @@
-const path = require('path')
-const webpack = require('webpack')
-const basePath = path.resolve(__dirname, '../')
 const rehypePrism = require('@mapbox/rehype-prism')
 const paths = require('./paths')
 
 module.exports = {
-  mode: 'development',
-  entry: {
-    main: ['@babel/polyfill', `${path.resolve(basePath, 'site/main.js')}`],
-    // 列出第三方库
-    vendor: ['react', 'react-dom']
-  },
-  node: {
-    fs: 'empty'
-  },
   output: {
-    // path: path.resolve(basePath, 'dist'),
     publicPath: paths.publicPath,
     filename: '[name].js',
     chunkFilename: '[name].chunk.js'
   },
   resolve: {
-    modules: ['node_modules'],
     extensions: ['.web.js', '.js', '.jsx', '.json'],
     alias: {
-      '@components': path.resolve(basePath, 'components'),
-      '@libs': path.resolve(basePath, 'libs')
+      '@components': paths.components,
+      '@libs': paths.siteLibs
     }
   },
   module: {
@@ -39,17 +25,7 @@ module.exports = {
             plugins: ['@babel/plugin-proposal-class-properties']
           }
         },
-        // exclude: ['node_modules', 'bower_components'],
-        include: [
-          path.resolve(__dirname, '../component'),
-          path.resolve(__dirname, '../libs'),
-          path.resolve(__dirname, '../locales'),
-          path.resolve(__dirname, '../site'),
-          path.resolve(__dirname, '../docs'),
-          path.resolve(__dirname, '../template'),
-          path.resolve(__dirname, '../transform'),
-          path.resolve(__dirname, '../node_modules/@hi-ui/classic-theme')
-        ]
+        exclude: [/node_modules/]
       },
       {
         test: /\.css$/,
@@ -98,23 +74,5 @@ module.exports = {
         loader: 'raw-loader'
       }
     ]
-  },
-  stats: {
-    chunks: false,
-    children: false
-  },
-  devtool: 'source-map',
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          name: 'vendor'
-        }
-      }
-    }
-  },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-    // new webpack.optimize.CommonsChunkPlugin({ name: 'vendor' })
-  ]
+  }
 }
