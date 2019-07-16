@@ -912,7 +912,7 @@ class Table extends Component {
 
               let fixTableBodyArr = this.dom.current.querySelectorAll('.hi-table-inner')
               fixTableBodyArr.forEach(fixTableBody => {
-                fixTableBody.style.maxHeight = (parseInt(height) - '20') + 'px'
+                fixTableBody.style.maxHeight = (parseInt(height) - '18') + 'px'
                 fixTableBody.style.overflowY = 'hidden'
                 fixTableBody.scrollTop = item.scrollTop
                 fixTableBody.querySelector('thead').style.transform = `translate(0,${item.scrollTop}px)`
