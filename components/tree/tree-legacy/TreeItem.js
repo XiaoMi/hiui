@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Checkbox from '../table/checkbox/index'
+import Checkbox from '../../table/checkbox/index'
 import { DragSource, DropTarget } from 'react-dnd'
-import Input from '../input'
+import Input from '../../input'
 import { findDOMNode } from 'react-dom'
 import TreeDivider from './TreeDivider'
 const Types = {
@@ -20,6 +20,7 @@ class TreeItem extends Component {
       editingNodes,
       prefixCls,
       semiChecked,
+      onNodeClick,
       onClick,
       highlightable,
       item,
@@ -71,6 +72,7 @@ class TreeItem extends Component {
               checked={checked}
               onChange={() => onCheckChange(checked, item)}
               onTitleClick={e => {
+                onNodeClick && onNodeClick(item)
                 onClick && onClick(item)
                 highlightable && onSetHighlight(item)
                 e.stopPropagation()
@@ -124,6 +126,7 @@ class TreeItem extends Component {
                 }}
                 onClick={e => {
                   closeRightClickMenu()
+                  onNodeClick && onNodeClick(item)
                   onClick && onClick(item)
                   highlightable && onSetHighlight(item)
                   e.stopPropagation()
@@ -150,6 +153,7 @@ class TreeItem extends Component {
               }}
               onClick={e => {
                 closeRightClickMenu()
+                onNodeClick && onNodeClick(item)
                 onClick && onClick(item)
                 highlightable && onSetHighlight(item)
                 e.stopPropagation()

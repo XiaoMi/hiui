@@ -47,19 +47,15 @@ class Demo extends React.Component {
           defaultExpandAll
           draggable={true}
           data={this.state.treeData}
-          defaultCheckedKeys={[2]}
           onDragStart = {(dragNode)=> {
             console.log(dragNode)
           }}
-          onDrop = {(dragNode,dropNode)=> {
+          onDropEnd = {(dragNode,dropNode)=> {
             console.log(dragNode,dropNode)
           }}
-          onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
           onChange={data => {console.log('Tree data:', data)}}
-          openIcon='down'
-          closeIcon='up'
           highlightable
-          onNodeClick={(item) => console.log('------click node', item)}
+          onClick={(item) => console.log('------click node', item)}
         />
       </div>
     )

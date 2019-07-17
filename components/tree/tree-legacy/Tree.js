@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
 import { getAll, dealData } from './util'
-import withDragDropContext from '../lib/withDragDropContext'
+import withDragDropContext from '../../lib/withDragDropContext'
 
 import './style/index'
 
@@ -53,16 +53,16 @@ class Tree extends Component {
       }
     }
 
-    if (props.data && props.checkedIds) {
-      data.all = getAll(props.data, props.checkedIds)
+    if (props.data && props.checkedKeys) {
+      data.all = getAll(props.data, props.checkedKeys)
     }
 
     return data
   }
 
   onCheckChange = (checked, item) => {
-    const { onChange, checkedIds, onCheckChange, onCheck } = this.props
-    let checkedArr = checkedIds
+    const { onChange, checkedKeys, onCheckChange, onCheck } = this.props
+    let checkedArr = checkedKeys
 
     let { all } = this.state
     let semiChecked = all.filter(item => item.semi).map(item => item.id)
@@ -149,7 +149,6 @@ class Tree extends Component {
     this.setState({
       hasExpanded: expandedArr
     })
-    this.props.onExpand && this.props.onExpand(expanded, expandedArr, item)
   }
   // 展开节点
   expandTreeNode = id => {
@@ -182,21 +181,20 @@ class Tree extends Component {
       searchable,
       draggable,
       style,
-      loadTreeNode,
+      origin,
       onDragStart,
       onDrop,
-      onDropEnd,
       onDelete,
-      onSave,
-      onClick
+      onSave
     } = this.props
     const { data } = this.state
     return (
       <div className={classNames(`${prefixCls}`)} style={style}>
         <TreeNode
-          origin={loadTreeNode}
-          checked={this.props.checkedIds || []}
-          onClick={onClick}
+          origin={origin}
+          checked={this.props.checkedKeys || []}
+          onNodeClick={this.props.onNodeClick}
+          onClick={this.props.onClick}
           semiChecked={this.state.all.filter(item => item.semi).map(item => item.id)}
           expanded={this.state.hasExpanded}
           closeExpandedTreeNode={this.closeExpandedTreeNode}
@@ -217,7 +215,6 @@ class Tree extends Component {
           draggable={draggable}
           onDragStart={onDragStart}
           onDrop={onDrop}
-          onDropEnd={onDropEnd}
           onDelete={onDelete}
           onSave={onSave}
         />

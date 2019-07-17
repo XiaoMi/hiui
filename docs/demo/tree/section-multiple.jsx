@@ -46,8 +46,7 @@ class Demo extends React.Component {
           checkable
           editable={true}
           data={this.treeData}
-          checkedKeys={this.state.checkedKeys}
-          onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
+          checkedIds={this.state.checkedKeys}
           onChange={(checkedKeys, title, bool, semi) => {
             console.log('Tree data:', checkedKeys, title, bool ,semi)
             this.setState({
@@ -56,18 +55,11 @@ class Demo extends React.Component {
           }}
           highlightable
           onClick={data=>{console.log('tree node click',data)}}
-          withLine
         />
       </div>
     )
   }
 }`
 
-const DemoMultiple = () => (
-  <DocViewer
-    code={code}
-    scope={{ Tree }}
-    prefix={prefix}
-  />
-)
+const DemoMultiple = () => <DocViewer code={code} scope={{ Tree }} prefix={prefix} />
 export default DemoMultiple

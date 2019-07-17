@@ -46,8 +46,6 @@ class Demo extends React.Component {
           defaultExpandAll
           editable={true}
           data={this.state.treeData}
-          defaultCheckedKeys={[2]}
-          onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
           onSave={(saveNode, data) => {
             console.log(saveNode, data)
           }}
@@ -55,10 +53,7 @@ class Demo extends React.Component {
             console.log(deleteNode, data)
           }}
           onChange={data => {console.log('Tree data:', data)}}
-          openIcon='down'
-          closeIcon='up'
           highlightable
-          onNodeClick={(item) => console.log('------click node', item)}
         />
       </div>
     )

@@ -39,7 +39,7 @@ class Demo extends React.Component {
     return (
       <div style={{width:500}}>
         <Tree
-          origin={{
+          loadTreeNode={{
             method:'get',
             headers:{},
             data:{},
@@ -50,13 +50,9 @@ class Demo extends React.Component {
           defaultExpandAll
           editable={true}
           data={this.state.treeData}
-          defaultCheckedKeys={[2]}
-          onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
           onChange={data => {console.log('Tree data:', data)}}
-          openIcon='down'
-          closeIcon='up'
           highlightable
-          onNodeClick={(item) => console.log('------click node', item)}
+          onClick={(item) => console.log('------click node', item)}
         />
       </div>
     )
