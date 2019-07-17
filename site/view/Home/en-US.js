@@ -2,6 +2,7 @@ import React from 'react'
 import HomeBase from './HomeBase'
 import '@components/ficon/style/index'
 import Button from '@components/button/Button'
+import { version } from '../../../package.json'
 
 class Home extends React.Component {
   render () {
@@ -23,7 +24,7 @@ class Home extends React.Component {
               </Button>
               <a className='github-link' href='https://github.com/XiaoMi/hiui'>
                 <i className='hi-fa fa-github' />
-                GitHub (v1.4)
+                GitHub (v{version})
               </a>
             </div>
             <div className='section__figure' />
