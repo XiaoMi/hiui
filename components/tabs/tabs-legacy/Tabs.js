@@ -213,7 +213,6 @@ class Tabs extends Component {
                   active={activeTabInHiddenItems}
                   items={hiddenTabItems}
                   onChoose={(item, e) => {
-                    console.log(item)
                     this.handleClick(item, e)
                   }}
                 />

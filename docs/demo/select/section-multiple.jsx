@@ -25,20 +25,18 @@ class Demo extends React.Component {
 
   render () {
     return (
-      <React.Fragment>
-        <Select
-          type='multiple'
-          style={{width: '300px'}}
-          data={this.state.multipleList}
-          value={['5']}
-          searchable
-          placeholder='请选择...'
-          emptyContent='无匹配数据'
-          onChange={(item) => {
-              console.log('多选结果', item)
-          }}
-        />
-      </React.Fragment>
+      <Select
+        type='multiple'
+        style={{ width: 300 }}
+        data={this.state.multipleList}
+        defaultValue={['5']}
+        searchable
+        placeholder='请选择...'
+        emptyContent='无匹配数据'
+        onChange={(item) => {
+          console.log('多选结果', item)
+        }}
+      />
     )
   }
 }`

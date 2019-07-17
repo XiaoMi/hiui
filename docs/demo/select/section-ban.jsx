@@ -21,18 +21,16 @@ class Demo extends React.Component {
 
   render () {
     return (
-      <div>
-        <Select
-          type='single'
-          data={this.state.singleList}
-          placeholder='请选择品类'
-          style={{width: '200px'}}
-          onChange={(item) => {
-            console.log('单选结果', item)
-          }}
-          disabled
-        />
-      </div>
+      <Select
+        type='single'
+        data={this.state.singleList}
+        placeholder='请选择品类'
+        style={{ width: 200 }}
+        onChange={(item) => {
+          console.log('单选结果', item)
+        }}
+        disabled
+      />
     )
   }
 }`
