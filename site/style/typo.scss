@@ -7,10 +7,7 @@
   @include typoImages;
   @include typoLists;
 
-  //> h1 + p {
-  //  font-size: 16px;
-  //}
-
+  // 设计语言图片描述
   figure {
     margin: 0;
     text-align: center;
@@ -27,6 +24,7 @@
   }
 
   > {
+    // 锚点样式
     h2 {
       span {
         display: flex;
@@ -46,7 +44,12 @@
       }
     }
 
-    // @To-do: 表格样式
+    // 首段大号概述
+    p.large {
+      font-size: 16px;
+    }
+
+    // @To-do: 表格缺省样式
     table:not(.no-border):not(.no-vertical-border) {
       font-family: $font-family-mono;
       width: 100%;
@@ -81,13 +84,13 @@
       code {
         margin: 0 1px;
         padding: 0.2em 0.4em;
-        //font-size: 1.1em;
-        background: #f2f4f5;
         border: 1px solid #eee;
         border-radius: 3px;
+        background: #f2f4f5;
       }
     }
 
+    // 表格无边框样式
     table.no-border {
       border-collapse: collapse;
 
@@ -98,6 +101,7 @@
       }
     }
 
+    // 表格无垂直边框样式
     table.no-vertical-border {
       border-collapse: collapse;
 
@@ -125,31 +129,6 @@
         margin-bottom: 0;
       }
     }
-
-    p {
-      code {
-        margin: 0 1px;
-        padding: 0.4em 0.4em;
-        //font-size: 1.1em;
-        background: #f2f4f5;
-        border: 1px solid #eee;
-        border-radius: 3px;
-      }
-
-      em {
-        color: #2e5caa;
-        font-style: normal;
-        font-size: 16px;
-      }
-    }
-
-    pre {
-      width: 100%;
-      max-width: 880px;
-      overflow: auto;
-      padding: 16px;
-      background-color: #f6f7f9;
-    }
   }
 
   &:lang(zh) {
@@ -171,5 +150,17 @@
         }
       }
     }
+  }
+}
+
+// 排版区域样式重置
+.article--typography-demo > div {
+  > h1,
+  > h2,
+  > h3,
+  > h4,
+  > h5,
+  > h6 {
+    margin-top: 0;
   }
 }

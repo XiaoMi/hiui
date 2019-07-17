@@ -63,7 +63,7 @@ class Button extends Component {
       appearance && `hi-btn--appearance--${appearance}`,
       size && `hi-btn--size--${size}`,
       isDisabled && `hi-btn--disabled`,
-      icon && `hi-btn--icon`,
+      icon && (!children || (typeof children === 'string' && !children.trim())) && `hi-btn--icon`,
       loading && `hi-btn--loading`,
 
       // For version < 1.1.0
@@ -80,9 +80,6 @@ class Button extends Component {
       <ButtonWrapper className={classes} {...restProps}>
         {loading && <IconLoading />}
         {icon && !loading && <Icon name={icon} />}
-        {(icon || loading) && children && (
-          <span className='hi-btn--icon__spacer' />
-        )}
         {children}
       </ButtonWrapper>
     )
