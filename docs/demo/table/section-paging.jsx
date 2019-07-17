@@ -74,7 +74,7 @@ class Demo extends React.Component {
         address: 'address-' + i
       })
     }
-    this.setState({data})
+    this.setState({data,current})
   }
 
   componentDidMount(){

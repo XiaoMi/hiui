@@ -58,7 +58,7 @@ class Demo extends React.Component {
     }
   }
   render() {
-    return <Table size='small' name={'sorter'} columns={this.columns} data={this.data} name='sorter'/>
+    return <Table size='small' columns={this.columns} data={this.data} name='sorter'/>
   }
 }`
 

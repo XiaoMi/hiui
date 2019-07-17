@@ -43,7 +43,7 @@ class Demo extends React.Component {
     }
   }
   render() {
-    return <Table size='small' columns={this.columns} data={this.data} name='compact'  checked={(item) => item.id === 1 || item.id === 3} />
+    return <Table size='small' columns={this.columns} data={this.data}  checked={(item) => item.id === 1 || item.id === 3} />
   }
 }`
 const DemoCompact = () => (
