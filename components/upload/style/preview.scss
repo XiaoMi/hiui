@@ -7,7 +7,7 @@
   background: rgba(0, 0, 0, 0.54);
   z-index: 9999;
 
-  img {
+  &__image {
     &:hover {
       cursor: move;
     }
@@ -19,7 +19,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background: #fff;
-    padding: 0 50px;
+    padding: 0 32px;
     height: 48px;
     display: flex;
     align-items: center;
@@ -36,17 +36,16 @@
     position: absolute;
     right: 10px;
     top: 10px;
-    background: #fff;
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     line-height: 1;
     border-radius: 50%;
     text-align: center;
 
-    .hi-icon {
-      font-size: 40px;
+    img {
+      width: 100%;
+      height: 100%;
       cursor: pointer;
-      color: #000;
     }
   }
 }

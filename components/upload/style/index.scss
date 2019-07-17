@@ -125,11 +125,7 @@
     cursor: pointer;
     padding: 12px;
 
-    &-border {
-      border: 1px solid #dbdbdb;
-    }
-
-    &:hover {
+    &:hover:not(.hi-upload--nohover) {
       border-color: #4284f5;
     }
 

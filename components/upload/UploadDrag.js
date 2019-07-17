@@ -54,7 +54,7 @@ class UploadDrag extends Upload {
       'hi-upload--drag',
       overEvent && !disabled && 'drop-over',
       disabled && 'hi-upload--disabled',
-      fileList.length > 0 && 'hi-upload--drag-border'
+      fileList.length > 0 && 'hi-upload--nohover'
     )
     return (
       <div
@@ -63,7 +63,8 @@ class UploadDrag extends Upload {
         onDragLeave={e => this.dragleaveFn(e)}
         onDrop={e => this.dropFn(e)}
         onClick={(e) => {
-          if (!e.target.className.includes('icon-delete') && !e.target.className.includes('upload-input')) {
+          e.stopImmediatePropagation()
+          if (!e.target.className.includes('hi-upload__operate-icon') && !e.target.className.includes('upload-input')) {
             this.uploadRef.click()
           }
         }}
@@ -85,7 +86,9 @@ class UploadDrag extends Upload {
               ref={node => { this.uploadRef = node }}
               type='file'
               className='upload-input'
-              onChange={e => this.uploadFiles(e.target.files)}
+              onChange={e => {
+                this.uploadFiles(e.target.files)
+              }}
               multiple={multiple && 'multiple'}
               disabled={disabled && 'disabled'}
               hidden

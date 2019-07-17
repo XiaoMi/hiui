@@ -42,7 +42,6 @@ class UploadClick extends Upload {
         {showUploadList && (
           <ul className='hi-upload__list'>
             {fileList.map((file, index) => {
-              console.log(file.progressNumber)
               const fileNameCls = classNames(
                 'hi-upload__filename',
                 file.uploadState === 'error' && 'hi-upload__filename--error'
