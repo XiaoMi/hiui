@@ -6,7 +6,7 @@ const rightOptions = ['简单数据', '复杂数据']
 const code = [
   {
     code: `import React from 'react'
-import Checkbox from '@hiui/hiui/es/checkbox'\n
+import Checkbox from '@hi-ui/hiui/es/checkbox'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -24,7 +24,7 @@ class Demo extends React.Component {
   },
   {
     code: `import React from 'react'
-import Checkbox from '@hiui/hiui/es/checkbox'\n
+import Checkbox from '@hi-ui/hiui/es/checkbox'\n
 class Demo extends React.Component {
   constructor () {
     super()

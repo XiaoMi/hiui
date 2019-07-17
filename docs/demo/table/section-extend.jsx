@@ -8,11 +8,11 @@ import FormItem from '../../../components/form/Item'
 const prefix = 'table-extend'
 const code = `
 import React from 'react'
-import Form from '@hiui/hiui/es/form/index'
-import Button from '@hiui/hiui/es/button'
-import FormItem from '@hiui/hiui/es/form/item'
-import Input from '@hiui/hiui/es/input'
-import Table from '@hiui/hiui/es/table'\n
+import Form from '@hi-ui/hiui/es/form/index'
+import Button from '@hi-ui/hiui/es/button'
+import FormItem from '@hi-ui/hiui/es/form/item'
+import Input from '@hi-ui/hiui/es/input'
+import Table from '@hi-ui/hiui/es/table'\n
 class Demo extends React.Component {
   constructor(props){
     super(props)

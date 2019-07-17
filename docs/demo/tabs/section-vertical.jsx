@@ -4,7 +4,7 @@ import DocViewer from '../../../libs/doc-viewer'
 const prefix = 'tabs-vertical'
 const desc = '建议标签数量在 10 个以上时使用'
 
-const code = `import Tabs from '@hiui/hiui/es/tabs'
+const code = `import Tabs from '@hi-ui/hiui/es/tabs'
 import React from 'react'\n
 class Demo extends React.Component {
   constructor() {

@@ -5,8 +5,8 @@ import Tooltip from '../../../components/tooltip'
 const prefix = 'tooltip-api'
 const code = `
 import React from 'react'
-import Button from '@hiui/hiui/es/button'
-import Tooltip from '@hiui/hiui/es/tooltip'
+import Button from '@hi-ui/hiui/es/button'
+import Tooltip from '@hi-ui/hiui/es/tooltip'
 class Demo extends React.Component {
   constructor() {
     super()

@@ -4,7 +4,7 @@ import Radio from '../../../components/radio'
 const prefix = 'radio-type'
 const code = `
 import React from 'react'
-import Radio from '@hiui/hiui/es/radio'\n
+import Radio from '@hi-ui/hiui/es/radio'\n
 class Demo extends React.Component {
   render() {
     return (

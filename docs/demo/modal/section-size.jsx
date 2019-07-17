@@ -7,9 +7,9 @@ const desc = '通过 size 自定义尺寸，可使用 large、normal、small，�
 const prefix = 'modal-size'
 const code = `
 import React from 'react'
-import Button from '@hiui/hiui/es/button'
-import Modal from '@hiui/hiui/es/modal'
-import Radio from '@hiui/hiui/es/radio'\n
+import Button from '@hi-ui/hiui/es/button'
+import Modal from '@hi-ui/hiui/es/modal'
+import Radio from '@hi-ui/hiui/es/radio'\n
 class Demo extends React.Component {
   constructor (props) {
     super(props)

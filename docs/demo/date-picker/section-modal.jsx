@@ -6,9 +6,9 @@ import Button from '../../../components/button'
 const prefix = 'date-picker-modal'
 const code = `
 import React from 'react'
-import Button from '@hiui/hiui/es/button'
-import Modal from '@hiui/hiui/es/modal'
-import DatePicker from '@hiui/hiui/es/date-picker'\n
+import Button from '@hi-ui/hiui/es/button'
+import Modal from '@hi-ui/hiui/es/modal'
+import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   constructor () {
     super()

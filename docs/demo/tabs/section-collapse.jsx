@@ -4,7 +4,7 @@ import DocViewer from '../../../libs/doc-viewer'
 const prefix = 'tabs-collapse'
 const desc = '当标签的操作频率有明显的高低之分时，可收起低频率标签'
 
-const code = `import Tabs from '@hiui/hiui/es/tabs'
+const code = `import Tabs from '@hi-ui/hiui/es/tabs'
 import React from 'react'\n
 class Demo extends React.Component {
   constructor() {

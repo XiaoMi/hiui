@@ -6,7 +6,7 @@ const rightOptions = ['自定义字段名', '自定义显示', '搜索', '动态
 const code = [
   {
     code: `import React from 'react'
-import Cascader from '@hiui/hiui/es/cascader'\n
+import Cascader from '@hi-ui/hiui/es/cascader'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -83,7 +83,7 @@ class Demo extends React.Component {
     opt: ['自定义字段名']
   }, {
     code: `import React from 'react'
-import Cascader from '@hiui/hiui/es/cascader'\n
+import Cascader from '@hi-ui/hiui/es/cascader'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -158,7 +158,7 @@ class Demo extends React.Component {
     opt: ['自定义显示']
   }, {
     code: `import React from 'react'
-import Cascader from '@hiui/hiui/es/cascader'\n
+import Cascader from '@hi-ui/hiui/es/cascader'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -274,7 +274,7 @@ class Demo extends React.Component {
     opt: ['搜索']
   }, {
     code: `import React from 'react'
-import Cascader from '@hiui/hiui/es/cascader'\n
+import Cascader from '@hi-ui/hiui/es/cascader'\n
 class Demo extends React.Component {
   constructor () {
     super()

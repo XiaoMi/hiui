@@ -4,7 +4,7 @@ import Progress from '../../../components/progress'
 const prefix = 'progress-word'
 const code = `
 import React from 'react'
-import Progress from '@hiui/hiui/es/select'\n
+import Progress from '@hi-ui/hiui/es/select'\n
 class Demo extends React.Component {
   render() {
     return (

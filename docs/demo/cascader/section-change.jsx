@@ -6,7 +6,7 @@ const rightOptions = ['不受控', '受控']
 const code = [
   {
     code: `import React from 'react'
-import Cascader from '@hiui/hiui/es/cascader'\n
+import Cascader from '@hi-ui/hiui/es/cascader'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -79,7 +79,7 @@ class Demo extends React.Component {
     opt: ['不受控']
   }, {
     code: `import React from 'react'
-import Cascader from '@hiui/hiui/es/cascader'\n
+import Cascader from '@hi-ui/hiui/es/cascader'\n
 class Demo extends React.Component {
   constructor () {
     super()

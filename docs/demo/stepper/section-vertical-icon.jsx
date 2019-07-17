@@ -6,8 +6,8 @@ const prefix = 'stepper-vertical-icon'
 const desc = '竖直方向只需传入属性 placement="vertical"'
 const code = `
 import React from 'react'
-import Icon from '@hiui/hiui/es/icon'
-import Stepper from '@hiui/hiui/es/stepper'\n
+import Icon from '@hi-ui/hiui/es/icon'
+import Stepper from '@hi-ui/hiui/es/stepper'\n
 class Demo extends React.Component {
   render() {
     const list = [

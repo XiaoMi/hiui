@@ -4,7 +4,7 @@ import Card from '../../../components/card'
 const prefix = 'card-image'
 const code = `
 import React from 'react'
-import Card from '@hiui/hiui/es/card'\n
+import Card from '@hi-ui/hiui/es/card'\n
 class Demo extends React.Component {
   render() {
     return (

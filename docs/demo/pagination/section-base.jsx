@@ -8,7 +8,7 @@ const code = [
   {
     code: `
 import React from 'react'
-import Pagination from '@hiui/hiui/es/pagination'\n
+import Pagination from '@hi-ui/hiui/es/pagination'\n
 class Demo extends React.Component {
   constructor () {
     super()
@@ -33,7 +33,7 @@ class Demo extends React.Component {
   {
     code: `
 import React from 'react'
-import Pagination from '@hiui/hiui/es/pagination'\n
+import Pagination from '@hi-ui/hiui/es/pagination'\n
 class Demo extends React.Component {
   constructor () {
     super()

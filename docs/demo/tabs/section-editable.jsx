@@ -4,7 +4,7 @@ import DocViewer from '../../../libs/doc-viewer'
 const prefix = 'tabs-editable'
 const desc = '需要新增、删除标签时使用'
 
-const code = `import Tabs from '@hiui/hiui/es/tabs'
+const code = `import Tabs from '@hi-ui/hiui/es/tabs'
 import React from 'react'\n
 class Demo extends React.Component {
   constructor() {
