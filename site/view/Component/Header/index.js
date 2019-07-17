@@ -44,9 +44,9 @@ export default class NavHeader extends Component {
             </NavLink>
           </NavGroup.Item>
 
-          <NavGroup.Item>
+          {/* <NavGroup.Item>
             <LocaleDropdown changeDropdown={val => onLocaleChange(val)} />
-          </NavGroup.Item>
+          </NavGroup.Item> */}
 
           <NavGroup.Item>
             <a href='https://github.com/XiaoMi/hiui'>
