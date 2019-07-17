@@ -89,10 +89,8 @@ class Table extends Component {
       col = col.split(',').filter(item => item)
       // 列隐藏记忆
       columns.map(item => {
-        if (col.includes(item.key)) {
+        if (col.includes(item.key.toString())) {
           item.hide = false
-        } else if (/^\d+$/.test(item.key)) {
-          item.hide = !col.includes(item.key.toString())
         } else {
           item.hide = true
         }
