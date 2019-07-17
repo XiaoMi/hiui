@@ -14,7 +14,6 @@ const HomeBase = WrapperComponent => class extends WrapperComponent {
       featureContent: false
     }
 
-    // this.hashChangeEvent = this.hashChangeEvent.bind(this)
     this.scrollEvent = this.scrollEvent.bind(this)
   }
 
