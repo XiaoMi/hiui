@@ -4,7 +4,7 @@ import DocViewer from '../../../libs/doc-viewer'
 const prefix = 'tag-line'
 const desc = '线型直角标签 一般提示内容，如“原创”、“活动”'
 
-const code = `import Tag from '@hiui/hiui/es/tag'
+const code = `import Tag from '@hi-ui/hiui/es/tag'
 import React from 'react'\n
 class Demo extends React.Component {
   constructor() {
