@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import Provider from '../context'
 import Upload from './Upload'
 import Preview from './Preview'
+import Icon from '../icon'
 
 class UploadPhoto extends Upload {
   constructor (props) {
@@ -12,7 +13,9 @@ class UploadPhoto extends Upload {
         uploading: false,
         progressNumber: 0,
         showModal: false,
-        previewFile: {}
+        previewFile: {},
+        activeIndex: 0,
+        images: []
       },
       this.state
     )
@@ -25,10 +28,11 @@ class UploadPhoto extends Upload {
     })
   }
 
-  previewImage (file) {
+  previewImage (file, activeIndex) {
     this.setState({
       previewFile: file,
-      showModal: true
+      showModal: true,
+      activeIndex
     })
   }
 
@@ -36,75 +40,79 @@ class UploadPhoto extends Upload {
     const {
       fileList,
       showModal,
-      previewFile
+      previewFile,
+      activeIndex
     } = this.state
     const {
       onRemove,
       disabled,
       accept,
-      hasBorder
+      localeDatas
     } = this.props
-
+    const images = fileList.map(file => {
+      return {
+        url: file.url
+      }
+    })
     return (
-      <div className={classNames('hi-upload upload-photo', hasBorder && 'hasborder', {'hi-upload--disabled': disabled})}>
-        <ul className='photo-display'>
+      <div className={classNames('hi-upload hi-upload--photo', {'hi-upload--disabled': disabled})}>
+        <ul className='hi-upload__list'>
           {fileList.map((file, index) => {
             if (file.uploadState === 'loading') {
               return (
-                <li key={index}>
-                  <div className='img-uploading'>
-                    <img src={file.url} />
-                    <div className='upload-precent'>
-                      <p className='precent-num'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : '上传成功') : (0 + '%')}</p>
-                      <div className='precent-loading' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
-                    </div>
+                <li key={index} className='hi-upload__item'>
+                  <img src={file.url} className='hi-upload__thumb' />
+                  <div className='hi-upload__precent'>
+                    <p className='hi-upload__loading-text'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : localeDatas.upload.uploadSuccess) : (0 + '%')}</p>
+                    <div className='hi-upload__loading-bar' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
                   </div>
                 </li>
               )
             } else {
               return (
-                <li key={index}>
-                  <div className='img-uploaded'>
-                    <img src={file.url} />
-                    <div className='upload-comperate'>
-                      <span
-                        className='icon Ficon-origin'
-                        onClick={() => this.previewImage(file)}
-                      />
-                      { onRemove &&
-                        <span
-                          className='icon Ficon-delete-photo'
-                          onClick={() => this.deleteFile(file, index)}
-                        />
-                      }
+                <li key={index} className='hi-upload__item'>
+                  <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} onClick={() => this.previewImage(file, index)} />
+                  {
+                    onRemove && <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, index)} />
+                  }
+                  {
+                    file.uploadState === 'error' && <div className='hi-upload__precent'>
+                      <div>
+                        <Icon name='comment-circle-o' />
+                        <br />
+                        {localeDatas.upload.uploadFailed}
+                      </div>
                     </div>
-                  </div>
+                  }
                 </li>
               )
             }
           })}
-          <li>
-            <label>
+          <li className='hi-upload__item hi-upload__item--upload'>
+            <label style={{display: 'block'}}>
               <input
                 ref={node => {
                   this.uploadRef = node
                 }}
                 type='file'
-                className='upload-input'
                 accept={accept}
                 disabled={disabled && 'disabled'}
                 onChange={e => this.uploadFiles(e.target.files)}
                 hidden
               />
-              <span className='photo-upload'>+</span>
+              <Icon name='plus' />
             </label>
           </li>
         </ul>
-        <Preview
-          src={previewFile.url}
-          show={showModal}
-          onClose={this.closeModal.bind(this)}
-        />
+        {
+          showModal && <Preview
+            src={previewFile.url}
+            images={images}
+            activeIndex={activeIndex}
+            show={showModal}
+            onClose={this.closeModal.bind(this)}
+          />
+        }
       </div>
     )
   }

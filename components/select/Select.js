@@ -354,23 +354,22 @@ class Select extends Component {
       const _o = {jsonpCallback: jsonpCallback, jsonpCallbackFunction: jsonpCallback}
       fetchJsonp(url, _o).then((res) => res.json()).then((json) => { this._setDropdownItems(json, func) })
     } else {
-      /* eslint-disable */
-      fetch(url, {
+      window.fetch(url, {
         method: type,
         ...options
       })
-      .then(response => response.json())
-      .then(res => {
-        this._setDropdownItems(res, func)
-      }, err => {
-        error && error(err)
-        this.setState({
-          fetching: false
+        .then(response => response.json())
+        .then(res => {
+          this._setDropdownItems(res, func)
+        }, err => {
+          error && error(err)
+          this.setState({
+            fetching: false
+          })
         })
-      })
     }
   }
-  _setDropdownItems(res, func) {
+  _setDropdownItems (res, func) {
     let dropdownItems = []
     if (func) {
       dropdownItems = func(res)
@@ -391,7 +390,7 @@ class Select extends Component {
   onFilterItems (keyword) {
     this.setState({
       keyword
-    }, ()=>this.resetFocusedIndex())
+    }, () => this.resetFocusedIndex())
 
     if (this.props.origin) {
       // this.setState({
@@ -519,8 +518,8 @@ class Select extends Component {
             multipleMode={multipleMode}
             container={this.selectInputContainer}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
-            onClick={()=>{
-              if(this.props.open) {
+            onClick={() => {
+              if (this.props.open) {
                 this.handleInputClick()
               }
               onClick()
@@ -540,7 +539,7 @@ class Select extends Component {
           zIndex={1050}
           topGap={5}
           className='hi-select__popper'
-          placement="top-bottom-start"
+          placement='top-bottom-start'
         >
           <SelectDropdown
             noFoundTip={noFoundTip}

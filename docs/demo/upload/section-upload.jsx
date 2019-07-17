@@ -18,6 +18,8 @@ class Demo extends React.Component {
           type="normal"
           uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
           headers={{name: 'mi'}}
+          tips="仅允许上传图片文件，且最多两个"
+          maxCount={2}
           buttonText="上传文件"
           param={param}
           name={'files[]'}

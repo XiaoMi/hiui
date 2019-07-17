@@ -1,53 +1,104 @@
 ## Upload 
 
 
-### Click to upload
+### Normal
 
 :::demo
 
-Click to upload
+Normal
 
 ```js
+constructor(props) {
+	super(props)
+	this.state={param:{id:'uid',channel:'youpin'}}
+}
 render () {
+	const param = this.state.param
 	return (
-		<Upload
-			uploadType="normal"
-			uploadAction= "http://10.236.94.247:3005/jvid"
-			headers={{"Content-type":"application/x-www-form-urlencoded",name: 'mi'}}
-			buttonText="Upload files"
-			param={{id:'uid',channel:'youpin'}}
-			name={'files[]'}
-			onUploadSuccess = {(res) => {console.log(res,'success callback')}}
-			onDeleteSuccess = {(res) => {console.log(res,'normal delete callback')}}
-			deleteParam={{
-				deleteAction: 'http://10.236.94.247:3005/del',
-				type: 'POST',
-				hearders:{"Content-type":"application/x-www-form-urlencoded",name: 'mi'},
-				data: {type:'del',id:3},
-				onDeleteSuccess: function(res) {console.log(res,'delete callback')}
-			}}
-			disabled={false}
-		/>
+		<div>
+			<Upload
+				type="normal"
+				uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
+				headers={{name: 'mi'}}
+        tips="Only upload image type files, no more than 500kb, upload up to two files"
+        maxSize={500}
+        maxCount={2}
+        accept='image/*'
+				param={param}
+				name={'files[]'}
+				onChange = {(file, fileList, response) => {
+					console.log('upload callback', file, fileList, response)
+					// if(response&&response.status !== 200) return false // 返回 false 则该文件会从列表里删除
+				}}
+				disabled={false}
+			/>
+		</div>
 	)
 }
 ```
 :::
 
 
-### Disabled state
+### Default FileList
 
 :::demo
 
+Default FileList
 
-Disabled state
+```js
+constructor(props) {
+	super(props)
+	this.state={param:{id:'uid',channel:'youpin'}}
+}
+render () {
+	const param = this.state.param
+	return (
+		<div>
+			<Upload
+				type="normal"
+				uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
+				buttonText="Upload File"
+        param={param}
+        accept='image/jpeg'
+				name={'files[]'}
+				onChange = {(file, fileList, response) => {
+					console.log('upload callback', file, fileList, response)
+				}}
+				defaultFileList={[
+					{
+						name: 'a.png',
+						fileType: 'img',
+						uploadState: 'success',
+						url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
+					},
+					{
+						name: 'b.png',
+						fileType: 'img',
+						uploadState: 'error',
+						url: 'https://i1.mifile.cn/f/i/2018/mix3/specs_black.png'
+					}
+				]}
+			/>
+		</div>
+	)
+}
+```
+:::
+
+
+### Disabled
+
+:::demo
+
+Disabled
 
 ```js
 render () {
 	return (
 		<Upload
-			uploadType="normal"
-			uploadAction= "http://10.236.94.247:3005/jvid"
-			buttonText="Upload files"
+			type="normal"
+			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
+			buttonText="Upload File"
 			param={{id:'uid',channel:'youpin'}}
 			disabled={true}
 		/>
@@ -57,24 +108,27 @@ render () {
 :::
 
 
-### Drag and drop upload
+### Drag and drop
 
 :::demo
 
-Drag and drop upload
+Drag and drop
 
 ```js
 render () {
 	return (
 		<Upload
-			uploadType="drag"
-			uploadAction= "http://10.236.94.247:3005/jvid"
-			headers={{"Content-type":"application/x-www-form-urlencoded",name: 'mi'}}
-			onDeleteSuccess = {(res) => {console.log(res,'normal delete callback')}}
+			type="drag"
+			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
+			headers={{name: 'mi'}}
+			onChange = {(file, fileList, response) => {
+				console.log('upload callback', file, fileList, response)
+      }}
+      hasBorder={true}
 			param={{id:'uid',channel:'youpin'}}
 			name={'files[]'}
-			onUploadSuccess = {(res) => {console.log(res,'success callback')}}
-			multiple={true}
+      multiple={true}
+      tips='Only images'
 		/>
 	)
 }
@@ -82,31 +136,40 @@ render () {
 :::
 
 
-### Photo wall upload
+### Picture
 
 :::demo
 
-Photo wall upload
+Picture
 
 ```js
 render () {
 	return (
 		<Upload
-			uploadType="photo"
-			uploadAction= "http://10.236.94.247:3005/jvid"
-			headers={{"Content-type":"application/x-www-form-urlencoded",name: 'mi'}}
-			onUploadSuccess = {(res) => {console.log(res,'success callback')}}
-			onDeleteSuccess = {(res) => {console.log(res,'normal delete callback')}}
+			type="photo"
+			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
+			onChange = {(file, fileList, response) => {
+				file.id = 'file唯一标识'
+				console.log('upload callback', file, fileList, response)
+			}}
+			onRemove = {(file, fileList, index) => {
+				console.log('remove callback', file, fileList, index)
+				return new Promise((resolve, reject)=>resolve(true))
+			}}
 			param={{id:'uid',channel:'youpin'}}
 			name={'files[]'}
 			defaultFileList={[
 				{
 					name: 'a.png',
-					url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528693612926&di=d93c60813466295d3a5189dafc960093&imgtype=0&src=http%3A%2F%2Fpic1.5442.com%2F2015%2F0604%2F10%2F09.jpg'
+					fileType: 'img',
+					uploadState: 'success',
+					url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
 				},
 				{
 					name: 'b.png',
-					url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528693593598&di=d26eeb830f40abb2664c04d0392f8ee1&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1108%2F19%2Fc1%2F8697694_8697694_1313719805021.jpg'
+					fileType: 'img',
+					uploadState: 'success',
+					url: 'https://i1.mifile.cn/f/i/2018/mix3/specs_black.png'
 				}
 			]}
 		/>
@@ -116,28 +179,24 @@ render () {
 :::
 
 
-### Avatar upload
+### Avatar
 
 :::demo
 
-Avatar upload
+Avatar
 
 ```js
 render () {
 	return (
 		<Upload
-			uploadType="avatar"
-			uploadAction= "http://10.236.94.247:3005/jvid"
-			headers={{"Content-type":"application/x-www-form-urlencoded",name: 'mi'}}
-			onUploadSuccess = {(res) => {console.log(res,'success callback')}}
-			onDeleteSuccess = {(res) => {console.log(res,'normal delete callback')}}
+			type="avatar"
+			width={180}
+			height={180}
+			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
+			headers={{name: 'mi'}}
 			param={{id:'uid',channel:'youpin'}}
-			deleteParam={{
-				deleteAction: 'http://10.236.94.247:3005/del',
-				type: 'POST',
-				hearders:{"Content-type":"application/x-www-form-urlencoded",name: 'mi'},
-				data: {type:'del',id:3},
-				onDeleteSuccess: function(res) {console.log(res,'delete callback')}
+			onChange = {(file, fileList, response) => {
+				console.log('upload callback', file, fileList, response)
 			}}
 			name='uploadAvatar'
 		/>
@@ -147,31 +206,81 @@ render () {
 :::
 
 
-### Photo card
+### PictureCard
 
 :::demo
 
-Photo card
+PictureCard
 
 ```js
 render () {
 	return (
 		<Upload
-			uploadType="pictureCard"
-			uploadAction= "http://10.236.94.247:3005/jvid"
-			headers={{"Content-type":"application/x-www-form-urlencoded",name: 'mi'}}
-			onUploadSuccess = {(res) => {console.log(res,'success callback')}}
-			onDeleteSuccess = {(res) => {console.log(res,'normal delete callback')}}
-			deleteParam={{
-				deleteAction: 'http://10.236.94.247:3005/del',
-				type: 'GET',
-				hearders:{"Content-type":"application/x-www-form-urlencoded",name: 'mi'},
-				data: {type:'del',id:3},
-				onDeleteSuccess: function(res) {console.log(res,'delete callback')}
+			type="pictureCard"
+			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
+			headers={{name: 'mi'}}
+			onChange = {(file, fileList, response) => {
+				console.log('upload callback', file, fileList, response)
 			}}
 			param={{id:'uid',channel:'youpin'}}
 			name="pictureCard"
 		/>
+	)
+}
+```
+:::
+
+
+### Customer
+
+:::demo
+
+Customer
+
+```js
+constructor(props) {
+	super(props)
+	this.state={
+		fileList: [
+			{
+				name: 'a.png',
+				fileType: 'img', // 文件类型，可取值img, zip, word, pdf, ppt, excel, other
+				uploadState: 'success' // 上传状态，可取值success, error
+			},
+			{
+				name: 'b.png',
+				fileType: 'img',
+				uploadState: 'error'
+			}
+		]
+	}
+}
+render () {
+	const {
+		fileList
+	} = this.state
+
+	return (
+		<div>
+			<Upload
+				type="normal"
+				beforeUpload={(files, fileList) => {
+					console.log('---------beforeUpload', files, fileList)
+					return true
+				}}
+				customUpload={files => {
+					const _fileList = fileList.concat({
+						name: files[0].name,
+						fileType: 'img',
+						uploadState: 'success'
+					})
+					this.setState({
+						fileList: _fileList
+					})
+				}}
+				fileList={fileList}
+			/>
+		</div>
 	)
 }
 ```

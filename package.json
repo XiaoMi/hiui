@@ -49,6 +49,7 @@
     "react": "^16.8.6",
     "react-addons-css-transition-group": "^15.6.2",
     "react-click-outside": "^3.0.1",
+    "react-cropper": "^1.2.0",
     "react-dnd": "^7.4.5",
     "react-dnd-html5-backend": "^7.4.4",
     "react-dom": "^16.8.2",
