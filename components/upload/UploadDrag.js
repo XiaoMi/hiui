@@ -63,8 +63,8 @@ class UploadDrag extends Upload {
         onDragLeave={e => this.dragleaveFn(e)}
         onDrop={e => this.dropFn(e)}
         onClick={(e) => {
-          e.stopImmediatePropagation()
-          if (!e.target.className.includes('hi-upload__operate-icon') && !e.target.className.includes('upload-input')) {
+          const cls = e.target.className
+          if (!cls.includes('hi-upload__operate-icon') && !cls.includes('upload-input') && !cls.includes('drop-click') && !cls.includes('icon-upload-cloud')) {
             this.uploadRef.click()
           }
         }}
