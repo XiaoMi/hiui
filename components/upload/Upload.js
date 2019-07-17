@@ -191,7 +191,7 @@ class Upload extends Component {
     } = this.state
     const {
       name,
-      param,
+      params,
       headers,
       uploadAction
     } = this.props
@@ -226,9 +226,9 @@ class Upload extends Component {
       formFile.append(name, file)
     }
     // 设置除file外需要带入的参数
-    if (param) {
-      for (let i in param) {
-        formFile.append(i, param[i])
+    if (params) {
+      for (let i in params) {
+        formFile.append(i, params[i])
       }
     }
     xhr.upload.onload = () => {
