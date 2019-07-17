@@ -21,7 +21,7 @@ class Demo extends React.Component {
   render() {
     return (
       <div>
-        <Dropdown list={this.state.list} title="电子产品" onClick={(val) => console.log(val)}></Dropdown>
+        <Dropdown data={this.state.list} title="电子产品" onClick={(val) => console.log(val)}></Dropdown>
       </div>
     )
   }

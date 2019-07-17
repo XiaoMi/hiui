@@ -13,54 +13,44 @@ class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
-      disabled: false,
-      required: false,
-      checkedIndex: 0,
-      placeholder: '禁用状态',
       list: [{
         id: 'disabled',
-        name: '禁用状态'
+        content: '禁用状态'
       }, {
         id: 'required',
-        name: '必填项'
-      }]
+        content: '必填项'
+      }],
+      value: 'disabled'
     }
   }
   render() {
     const Row = Grid.Row
     const Col = Grid.Col
-    const {list, required, disabled, placeholder, checkedIndex} = this.state
+    const { list, required, disabled, value } = this.state
     return (
       <div>
-        <Row gutter={true}>
+        <Row gutter>
           <Col span={12}>
-            <Radio
-              list={list}
-              mode='button'
-              checked={checkedIndex}
-              onChange={(data, index) => {
-                this.setState({
-                  placeholder: list[index].name,
-                  checkedIndex: index,
-                  required: data === 'required',
-                  disabled: data === 'disabled'
-                })
+            <Radio.Group
+              data={list}
+              value={value}
+              type='button'
+              onChange={(value) => {
+                this.setState({ value })
               }}
             />
           </Col>
         </Row>
-        <Row gutter={true}>
+        <Row gutter>
           <Col span={12}>
-             <Input
-              value=""
-              placeholder={placeholder}
-              style={{width: '250px'}}
-              required={required}
-              disabled={disabled}
+            <Input
+              style={{ width: 250 }}
+              placeholder='请输入'
+              required={value === 'required'}
+              disabled={value === 'disabled'}
             />
           </Col>
         </Row>
-
       </div>
     )
   }

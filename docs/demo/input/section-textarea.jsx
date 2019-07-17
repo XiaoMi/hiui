@@ -13,10 +13,8 @@ class Demo extends React.Component {
     return (
       <div>
         <Input
-          value=""
           type="textarea"
           placeholder="多行文本"
-          style={{width: '540px', height: '300px'}}
         />
       </div>
     )

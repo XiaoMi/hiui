@@ -8,7 +8,6 @@ import uuidv4 from 'uuid/v4'
 import TreeItem from './TreeItem'
 import Modal from '../modal'
 import { collectExpandId, findNode } from './util'
-import { handleNotificate } from '../notification'
 import axios from 'axios'
 import qs from 'qs'
 
@@ -98,11 +97,11 @@ export default class TreeNode extends Component {
     return count
   }
   renderSwitcher = expanded => {
-    const { prefixCls } = this.props
+    const { prefixCls, openIcon, closeIcon } = this.props
     const switcherClsName = classNames(
       `${prefixCls}-switcher`,
       'hi-icon',
-      `icon-${expanded ? 'down' : 'right'}`
+      `icon-${expanded ? openIcon || 'open' : closeIcon || 'packup'}`
     )
     return <i className={switcherClsName} />
   }
@@ -295,7 +294,7 @@ export default class TreeNode extends Component {
   // 异步加载子节点
   loadChildren = itemId => {
     const { origin } = this.props
-    const { method, url, headers, data, params, func, errorHandler } = origin
+    const { method, url, headers, data, params, transformResponse } = origin
     const { dataCache } = this.state
     const that = this
     axios({
@@ -312,25 +311,14 @@ export default class TreeNode extends Component {
         const _dataCache = cloneDeep(dataCache)
         const node = findNode(itemId, _dataCache)
         if (!node.children) {
-          node.children = func(res.data)
+          node.children = transformResponse(res.data)
           that.setState({
             dataCache: _dataCache
           })
         }
       })
       .catch(error => {
-        if (errorHandler) {
-          errorHandler(error)
-        } else {
-          handleNotificate({
-            type: 'error',
-            showClose: true,
-            autoClose: true,
-            title: 'Error',
-            duration: 5000,
-            message: error
-          })
-        }
+        transformResponse(error)
       })
   }
   switchDropNode = (targetItemId, sourceItemId, data, allData) => {
@@ -358,10 +346,19 @@ export default class TreeNode extends Component {
     }
     const _sourceItem = findNode(sourceItem.id, dataCache)
     const _targetItem = findNode(targetItem.id, dataCache)
-    this.props.onDrop(_sourceItem, _targetItem)
-    this.setState({
-      dataCache: _dataCache
-    })
+    if (this.props.onDrop) {
+      if (this.props.onDrop(_sourceItem, _targetItem)) {
+        this.props.onDropEnd(_sourceItem, _targetItem)
+        this.setState({
+          dataCache: _dataCache
+        })
+      }
+    } else {
+      this.props.onDropEnd(_sourceItem, _targetItem)
+      this.setState({
+        dataCache: _dataCache
+      })
+    }
   }
   // 删除节点
   _deleteNode = (itemId, data) => {
@@ -440,7 +437,6 @@ export default class TreeNode extends Component {
       draggable,
       prefixCls,
       semiChecked,
-      onNodeClick,
       onClick,
       highlightable,
       checkable,
@@ -453,7 +449,6 @@ export default class TreeNode extends Component {
       expanded,
       origin,
       onDragStart
-      // onDrop
     } = this.props
     const {
       highlight,
@@ -478,7 +473,6 @@ export default class TreeNode extends Component {
               prefixCls={prefixCls}
               draggable={draggable}
               onDragStart={onDragStart}
-              // onDrop={onDrop}
               checked={!!checked.includes(item.id)}
               highlight={highlight}
               highlightable={highlightable}
@@ -501,7 +495,6 @@ export default class TreeNode extends Component {
               onCheckChange={onCheckChange}
               saveEditNode={this.saveEditNode}
               renderItemIcon={this.renderItemIcon}
-              onNodeClick={onNodeClick}
               onClick={onClick}
               onSetHighlight={this.onSetHighlight}
               showRightClickMenu={this.showRightClickMenu}

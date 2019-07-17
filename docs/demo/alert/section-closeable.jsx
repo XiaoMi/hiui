@@ -10,13 +10,13 @@ class Demo extends React.Component {
   render () {
     return (
       <div>
-        <Alert type="info" message="信息提示的文案" closeable={false} />
+        <Alert type="info" title="信息提示的文案" closable={false}  />
         <br />
-        <Alert type="success" message="成功提示的文案" closeable={false} />
+        <Alert type="success" title="成功提示的文案" closable={false}  />
         <br />
-        <Alert type="error" message="错误提示的文案" closeable={false} />
+        <Alert type="error" title="错误提示的文案" closable={false}  />
         <br />
-        <Alert type="warning" message="警示提示的文案" closeable={false} />
+        <Alert type="warning" title="警示提示的文案" closable={false}  />
       </div>
     )
   }

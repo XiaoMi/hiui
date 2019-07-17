@@ -95,14 +95,14 @@ class Demo extends React.Component {
     return(
       <div>
         <Menu
-          mini
-          miniToggle={true}
-          mode="vertical"
+          collapsed
+          showCollapse
+          placement="vertical"
           activeId={'xiaomi9'}
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
-          onMiniChange={toggle => console.log('-----onMiniChange', toggle)}
+          onCollapse={toggle => console.log('-----onMiniChange', toggle)}
           onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
-          datas={datas}
+          data={datas}
         />
       </div>
     )

@@ -32,6 +32,49 @@ import DemoCross from '../../demo/timeline/section-cross.jsx'
 
 <DemoCross />
 
+## Props
+
+| 参数 | 说明       | 类型                      | 可选值                          | 默认值    |
+| ---- | ---------- | ------------------------- | ------------------------------- | --------- |
+| type | 时间轴类型 | string                    | 'default' \| 'right' \| 'cross' | 'default' |
+| data | 时间轴数据 | DataItem[] \| GroupItem[] | -                               | -         |
+
+## Type
+
+### GroupItem
+
+| 参数       | 说明       | 类型                | 可选值 | 默认值 |
+| ---------- | ---------- | ------------------- | ------ | ------ |
+| groupTitle | 分组标题   | string \| ReactNode | -      | -      |
+| children   | 标题下集合 | DataItem[]          | -      | -      |
+
+### DataItem
+
+| 参数      | 说明           | 类型                | 可选值 | 默认值 |
+| --------- | -------------- | ------------------- | ------ | ------ |
+| title     | 标题           | string \| ReactNode | -      | -      |
+| content   | 内容信息       | string \| ReactNode | -      | -      |
+| timestamp | 时间点         | string              | -      | -      |
+| extraTime | 额外展示时间点 | string              | -      | -      |
+| icon      | 自定义图标     | ReactNode \| string | -      | -      |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      fontSize: '14px',
+      padding: 8,
+      color: '#999'
+    }}
+  >
+    1.5.x 版本 api 如下
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
+
 ## Timeline Attributes
 
 | 参数   | 说明     | 类型   | 可选值                                                    | 默认值 |
@@ -57,46 +100,3 @@ import DemoCross from '../../demo/timeline/section-cross.jsx'
   children: [{List Options}]
 }
 ```
-
-<div style={{ position: 'relative' }}>
-  <span
-    style={{
-      position: 'absolute',
-      background: '#fff',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
-      padding: 8,
-      color: '#999'
-    }}
-  >
-    以下调整将随 2.0.0 版本发布，敬请期待
-  </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
-</div>
-
-## Props
-
-| 参数 | 说明       | 类型                      | 可选值                          | 默认值    |
-| ---- | ---------- | ------------------------- | ------------------------------- | --------- |
-| type | 时间轴类型 | string                    | 'default' \| 'right' \| 'cross' | 'default' |
-| data | 时间轴数据 | DataItem[] \| GroupItem[] | -                               | -         |
-
-## Type
-
-**_GroupItem_**
-
-| 参数       | 说明       | 类型                | 可选值 | 默认值 |
-| ---------- | ---------- | ------------------- | ------ | ------ |
-| groupTitle | 分组标题   | string \| ReactNode | -      | -      |
-| children   | 标题下集合 | DataItem[]          | -      | -      |
-
-**_DataItem_**
-
-| 参数      | 说明           | 类型                | 可选值 | 默认值 |
-| --------- | -------------- | ------------------- | ------ | ------ |
-| title     | 标题           | string \| ReactNode | -      | -      |
-| content   | 内容信息       | string \| ReactNode | -      | -      |
-| timestamp | 时间点         | string              | -      | -      |
-| extraTime | 额外展示时间点 | string              | -      | -      |
-| icon      | 自定义图标     | ReactNode \| string | -      | -      |

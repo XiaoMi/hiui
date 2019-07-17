@@ -19,7 +19,7 @@ class Demo extends React.Component {
     return (
       <div>
         <div style={{display:'inline-block'}}>
-          <Progress percent={this.state.percent} type='dashboard' radius={50}/>
+          <Progress percent={this.state.percent} apperance='dashboard' radius={50}/>
         </div>
         <br/>
         <Counter

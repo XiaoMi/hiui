@@ -43,7 +43,7 @@ class Demo extends React.Component {
     }
   }
   render() {
-    return <Table bordered columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
+    return <Table bordered columns={this.columns} data={this.data} name='border'  checked={(item) => item.id === 1 || item.id === 3} />
   }
 }`
 const DemoBorder = () => (

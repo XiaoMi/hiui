@@ -113,15 +113,13 @@ class Demo extends React.Component {
       }
     ]
     return(
-      <div>
-        <Menu
-          mode="horizontal"
-          activeId={'xiaomi9'}
-          fatMenu
-          onClick={(id, prevId)=>console.log('-----click', id, prevId)}
-          datas={datas}
-        />
-      </div>
+      <Menu
+        placement="horizontal"
+        activeId={'xiaomi9'}
+        showAllSubMenus
+        onClick={(id, prevId)=>console.log('-----click', id, prevId)}
+        data={datas}
+      />
     )
   }
 }`

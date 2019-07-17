@@ -55,14 +55,15 @@ class Button extends Component {
       style,
       children
     } = this.props
+    const isDisabled = disabled || loading
     const classes = classNames(
       'theme__' + theme,
       `hi-btn`,
       className,
       appearance && `hi-btn--appearance--${appearance}`,
       size && `hi-btn--size--${size}`,
-      disabled && `hi-btn--disabled`,
-      icon && `hi-btn--icon`,
+      isDisabled && `hi-btn--disabled`,
+      icon && (!children || (typeof children === 'string' && !children.trim())) && `hi-btn--icon`,
       loading && `hi-btn--loading`,
 
       // For version < 1.1.0
@@ -70,7 +71,8 @@ class Button extends Component {
         ? `hi-btn--type--line`
         : `hi-btn--type--${type}`
     )
-    const restProps = { href, style, onClick, disabled }
+
+    const restProps = { href, style, onClick, disabled: isDisabled }
 
     deprecatedPropsCheck(this.deprecatedProps, this.props, 'Button')
 
@@ -78,9 +80,6 @@ class Button extends Component {
       <ButtonWrapper className={classes} {...restProps}>
         {loading && <IconLoading />}
         {icon && !loading && <Icon name={icon} />}
-        {(icon || loading) && children && (
-          <span className='hi-btn--icon__spacer' />
-        )}
         {children}
       </ButtonWrapper>
     )

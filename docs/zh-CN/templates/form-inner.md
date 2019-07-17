@@ -4,7 +4,7 @@
 
 表格是一种特殊的表单项，用于收集二维信息
 
-<img src="/hiui/static/img/templates/form8.png" width="60%"/>
+<img src="<BASE_URL>/static/img/templates/form8.png" width="60%"/>
 
 > 规则
 >

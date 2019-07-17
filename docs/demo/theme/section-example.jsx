@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import { ThemeContext } from '../../../components/context'
 import Grid from '../../../components/grid'
 import Button from '../../../components/button'
-import Stepper from '../../../components/stepper'
+import Stepper from '../../../components/stepper/Stepper'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'theme-example'
 const code = `
@@ -86,8 +86,27 @@ class Demo extends React.Component {
             </Col>
           </Row>
         </ThemeContext.Provider>
-
-        <ThemeContext.Provider value='blue'>
+        
+        <ThemeContext.Provider value='magenta'>
+          <Row gutter={true}>
+            <Col span={12}>
+              <Button type="primary">突出按钮</Button>
+              <Button type="line">普通按钮</Button>
+              <Button type="default">默认按钮</Button>
+              <Button type="primary">确认</Button>
+              <Button type="line">取消</Button>
+            </Col>
+            <Col span={12}>
+              <DatePicker
+                type='daterange'
+                value={new Date()}
+                onChange={(d) => {console.log('last', d)}}
+              />
+            </Col>
+          </Row>
+        </ThemeContext.Provider>
+        
+        <ThemeContext.Provider value='lavender'>
           <Row gutter={true}>
             <Col span={12}>
               <Button type="primary">突出按钮</Button>
@@ -106,7 +125,7 @@ class Demo extends React.Component {
           </Row>
         </ThemeContext.Provider>
 
-        <ThemeContext.Provider value='purple'>
+        <ThemeContext.Provider value='blue'>
           <Row gutter={true}>
             <Col span={12}>
               <Button type="primary">突出按钮</Button>
@@ -128,7 +147,7 @@ class Demo extends React.Component {
         <Row gutter={true}>
           <Col span={24}>
             <Stepper
-              list={stepperList}
+              data={stepperList}
               current={1}
             />
           </Col>
@@ -138,7 +157,7 @@ class Demo extends React.Component {
           <Row gutter={true}>
             <Col span={24}>
               <Stepper
-                list={stepperList}
+                data={stepperList}
                 current={1}
               />
             </Col>
@@ -149,7 +168,29 @@ class Demo extends React.Component {
           <Row gutter={true}>
             <Col span={24}>
               <Stepper
-                list={stepperList}
+                data={stepperList}
+                current={1}
+              />
+            </Col>
+          </Row>
+        </ThemeContext.Provider>
+        
+        <ThemeContext.Provider value='magenta'>
+          <Row gutter={true}>
+            <Col span={24}>
+              <Stepper
+                data={stepperList}
+                current={1}
+              />
+            </Col>
+          </Row>
+        </ThemeContext.Provider>
+        
+        <ThemeContext.Provider value='lavender'>
+          <Row gutter={true}>
+            <Col span={24}>
+              <Stepper
+                data={stepperList}
                 current={1}
               />
             </Col>
@@ -160,18 +201,7 @@ class Demo extends React.Component {
           <Row gutter={true}>
             <Col span={24}>
               <Stepper
-                list={stepperList}
-                current={1}
-              />
-            </Col>
-          </Row>
-        </ThemeContext.Provider>
-
-        <ThemeContext.Provider value='purple'>
-          <Row gutter={true}>
-            <Col span={24}>
-              <Stepper
-                list={stepperList}
+                data={stepperList}
                 current={1}
               />
             </Col>
@@ -189,4 +219,5 @@ const DemoExample = () => (
     prefix={prefix}
   />
 )
+
 export default DemoExample

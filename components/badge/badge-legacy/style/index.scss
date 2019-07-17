@@ -1,0 +1,43 @@
+.hi-badge-legacy {
+  &-base {
+    display: inline-block;
+    position: relative;
+  }
+
+  &-value {
+    position: absolute;
+    top: -12px;
+    right: 0;
+    transform: translateX(50%);
+    height: 16px;
+    padding: 0 5px;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    line-height: 16px;
+    background: #eb5252;
+    font-size: 12px;
+    color: #fff;
+    letter-spacing: 0;
+    text-align: center;
+
+    &.hi-hide {
+      display: none;
+    }
+  }
+
+  &-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    top: -7px;
+    right: -5px;
+    background: #eb5252;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    font-size: 0;
+
+    &.hi-hide {
+      display: none;
+    }
+  }
+}

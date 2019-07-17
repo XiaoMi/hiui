@@ -2,9 +2,36 @@
 
 $prefixCls: '.hi-checkbox' !default;
 
-#{$prefixCls} {
-  $active-color: get-color($palette-primary, 'hiui-blue');
+@mixin hi-checkbox-style($color: get-color($palette-primary, 'hiui-blue')) {
+  & {
+    &:not(#{$prefixCls}--disabled):hover {
+      #{$prefixCls}__input {
+        border-color: $color;
+      }
+    }
 
+    input {
+      &:focus + #{$prefixCls}__input {
+        border-color: $color;
+      }
+    }
+
+    &__input {
+      &--indeterminate {
+        &::after {
+          background: $color;
+        }
+      }
+
+      &--checked {
+        background: $color;
+        border-color: $color;
+      }
+    }
+  }
+}
+
+#{$prefixCls} {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -13,21 +40,11 @@ $prefixCls: '.hi-checkbox' !default;
 
   @include component-reset();
 
-  &:not(#{$prefixCls}--disabled):hover {
-    #{$prefixCls}__input {
-      border-color: $active-color;
-    }
-  }
-
   input {
     position: absolute;
     width: 16px;
     height: 16px;
     opacity: 0;
-
-    &:focus + #{$prefixCls}__input {
-      border-color: $active-color;
-    }
   }
 
   &__input {
@@ -51,14 +68,10 @@ $prefixCls: '.hi-checkbox' !default;
         bottom: 3px;
         position: absolute;
         display: block;
-        background: $active-color;
       }
     }
 
     &--checked {
-      background: $active-color;
-      border-color: $active-color;
-
       &::after {
         transform: rotate(45deg) scaleY(1);
         pointer-events: none;
@@ -101,5 +114,13 @@ $prefixCls: '.hi-checkbox' !default;
 
   &-group {
     display: inline-block;
+  }
+
+  @include hi-checkbox-style();
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key$prefixCls} {
+    @include hi-checkbox-style($value);
   }
 }

@@ -7,6 +7,7 @@ import locales from '../locales'
 import designs from '../pages/designs'
 import pages from '../pages/components'
 import templates from '../pages/templates'
+import utils from '../utils'
 import {
   setDesignNavs,
   setComponentsNavs,
@@ -17,29 +18,23 @@ History.createBrowserHistory()
 
 const logo = (
   <Logo
-    url="https://xiaomi.github.io/hiui/"
-    logoUrl="https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05"
-    text="HIUI"
-    title="HIUI"
-    alt="HIUI"
+    url='<BASE_URL>/'
+    logoUrl='<BASE_URL>/static/img/logo.png'
+    text='HIUI'
+    title='HIUI'
+    alt='HIUI'
   />
 )
 class Index extends React.Component {
   componentNavs = []
   designNavs = []
-  constructor(props) {
+  constructor (props) {
     super(props)
     const _h = History.getHistory()
-    let locale = window.location.pathname.split('/')[2]
-    if (!locale || !(locale in locales)) {
-      locale = window.localStorage.getItem('HIUI_LANGUAGE')
-      if (locale && locale in locales) {
-        _h.push(`/hiui/${locale}`)
-      } else {
-        window.localStorage.setItem('HIUI_LANGUAGE', this.props.locale)
-        _h.push(`/hiui/${this.props.locale}`)
-      }
-    } else {
+    let locale = props.locale
+    if (!utils.getLocaleFromPath()) {
+      const locale = window.localStorage.getItem('HIUI_LANGUAGE') || 'zh-CN'
+      _h.push(`<BASE_URL>/${locale}`)
       window.localStorage.setItem('HIUI_LANGUAGE', locale)
     }
     this.state = {
@@ -74,7 +69,7 @@ class Index extends React.Component {
     setComponents(components)
   }
 
-  getSiderName(key) {
+  getSiderName (key) {
     const map = locales[this.state.locale] || {}
     return key.split('.').reduce((a, b) => {
       const parent = map[a]
@@ -85,16 +80,7 @@ class Index extends React.Component {
       return parent
     })
   }
-  getSiderItems(items) {
-    // const icons = [
-    //   <span className="sider__icon-start" />,
-    //   // <span className='sider__icon-principle' />,
-    //   <span className="sider__icon-layout" />,
-    //   <span className="sider__icon-vision" />,
-    //   <span className="sider__icon-i18n" />,
-    //   <span className="sider__icon-changelog" />,
-    //   <span className="sider__icon-component" />
-    // ]
+  getSiderItems (items) {
     const { locale } = this.props
     let components = []
     let navs = {}
@@ -102,23 +88,25 @@ class Index extends React.Component {
     Object.keys(items.documents).forEach((title, i) => {
       const _title = locales[locale]['components'][title]
       siderDocuments.push({
-        title: <span className="components-title">{_title}</span>,
-        to: `/hiui/${locale}/docs/${title}`
+        title: <span className='components-title'>{_title}</span>,
+        to: `<BASE_URL>/${locale}/docs/${title}`,
+        name: title
         // icon: icons[i]
       })
       navs[title] = _title
     })
     Object.keys(items.components).forEach((title, i) => {
       components.push({
-        title: <span className="components-title">{locales[locale]['components'][title]}</span>
+        title: <span className='components-title'>{locales[locale]['components'][title]}</span>
       })
 
       Object.keys(items.components[title]).forEach((page, j) => {
         const _title = locales[locale]['components'][page]
         navs[page] = _title
         components.push({
-          title: <span className="components-page">{_title}</span>,
-          to: `/hiui/${locale}/docs/${page}`
+          title: <span className='components-page'>{_title}</span>,
+          to: `<BASE_URL>/${locale}/docs/${page}`,
+          name: title
         })
       })
     })
@@ -126,18 +114,18 @@ class Index extends React.Component {
     setComponentsNavs(navs)
     return [].concat(siderDocuments, [
       {
-        title: <span className="components-page">{locales[locale]['misc']['components']}</span>,
+        title: <span className='components-page'>{locales[locale]['misc']['components']}</span>,
         // icon: icons[icons.length - 1],
         children: components
       }
     ])
   }
-  componentDidUpdate() {
+  componentDidUpdate () {
     setComponentsNavs(this.componentNavs)
     setDesignNavs(this.designNavs)
     setDesignNavs(this.templatesNavs)
   }
-  getDesignTemplatesItems(items, path, callback) {
+  getDesignTemplatesItems (items, path, callback) {
     let components = []
     let siderDocuments = []
     let navs = {}
@@ -147,7 +135,8 @@ class Index extends React.Component {
       navs[title] = _title
       siderDocuments.push({
         title: _title,
-        to: `/hiui/${locale}/${path}/${title}`
+        to: `<BASE_URL>/${locale}/${path}/${title}`,
+        name: title
       })
     })
     Object.keys(items.components).forEach((title, i) => {
@@ -155,13 +144,14 @@ class Index extends React.Component {
       Object.keys(items.components[title]).forEach((page, j) => {
         const _title = locales[locale][path][page]
         temp.push({
-          title: <span className="components-page">{_title}</span>,
-          to: `/hiui/${locale}/${path}/${page}`
+          title: <span className='components-page'>{_title}</span>,
+          to: `<BASE_URL>/${locale}/${path}/${page}`,
+          name: title
         })
         navs[page] = _title
       })
       components.push({
-        title: <span className="components-title">{locales[locale][path][title]}</span>,
+        title: <span className='components-title'>{locales[locale][path][title]}</span>,
         children: temp
       })
     })
@@ -171,7 +161,7 @@ class Index extends React.Component {
     }
     return [].concat(siderDocuments, components)
   }
-  render() {
+  render () {
     const siders = this.getSiderItems(pages)
     const _designs = this.getDesignTemplatesItems(designs, 'designs', setDesignNavs)
     const _templates = this.getDesignTemplatesItems(templates, 'templates', setTemplatesNavs)

@@ -24,54 +24,19 @@ import DemoFace from '../../demo/rate/section-face.jsx'
 
 <DemoFace />
 
-## Rate Attributes
-
-| 参数         | 说明                      | 类型     | 可选值        | 默认值 |
-| ------------ | ------------------------- | -------- | ------------- | ------ |
-| allowClear   | 是否允许再次点击后清除    | boolean  | true \| false | true   |
-| allowHalf    | 是否允许半选              | boolean  | true \| false | true   |
-| useEmoji     | 是否使用表情              | boolean  | true \| false | false  |
-| className    | 自定义类名                | string   | -             | -      |
-| count        | star 数量，Emoji 时不可用 | number   | -             | 5      |
-| defaultValue | 默认值                    | number   | -             | 0      |
-| disabled     | 只读，无法进行交互        | boolean  | true \| false | false  |
-| style        | 自定义样式对象            | object   | -             | -      |
-| tooltips     | 自定义每项的提示信息      | string[] | -             | -      |
-| value        | 当前数，受控值            | number   | -             | -      |
-
-## Rate Events
-
-| 参数     | 说明           | 回调参数        |
-| -------- | -------------- | --------------- |
-| onChange | 改变值时的回调 | (value: number) |
-
-<div style={{ position: 'relative' }}>
-  <span
-    style={{
-      position: 'absolute',
-      background: '#fff',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
-      padding: 8,
-      color: '#999'
-    }}
-  >
-    以下调整将随 2.0.0 版本发布，敬请期待
-  </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
-</div>
+import { Badge } from '@libs'
 
 ## Props
 
-| 参数         | 说明                      | 类型                    | 可选值        | 默认值 |
-| ------------ | ------------------------- | ----------------------- | ------------- | ------ |
-| clearable    | 是否允许再次点击后清除    | boolean                 | true \| false | true   |
-| allowHalf    | 是否允许半选              | boolean                 | true \| false | true   |
-| useEmoji     | 是否使用表情              | boolean                 | true \| false | false  |
-| count        | star 数量，Emoji 时不可用 | number                  | -             | 5      |
-| defaultValue | 默认值                    | number                  | -             | 0      |
-| disabled     | 只读，无法进行交互        | boolean                 | true \| false | false  |
-| tooltips     | 自定义每项的提示信息      | string[]                | -             | -      |
-| value        | 当前数，受控值            | number                  | -             | -      |
-| onChange     | 选择时的回调              | (value: number) => void | -             | -      |
+| 参数                                  | 说明                                                  | 类型                    | 可选值        | 默认值 |
+| ------------------------------------- | ----------------------------------------------------- | ----------------------- | ------------- | ------ |
+| clearable                             | 是否允许再次点击后清除                                | boolean                 | true \| false | true   |
+| allowHalf                             | 是否允许半选                                          | boolean                 | true \| false | true   |
+| useEmoji                              | 是否使用表情                                          | boolean                 | true \| false | false  |
+| count                                 | star 数量，Emoji 时不可用                             | number                  | -             | 5      |
+| defaultValue                          | 默认值                                                | number                  | -             | 0      |
+| disabled                              | 只读，无法进行交互                                    | boolean                 | true \| false | false  |
+| tooltips                              | 自定义每项的提示信息                                  | string[]                | -             | -      |
+| value                                 | 当前数，受控值                                        | number                  | -             | -      |
+| onChange                              | 选择时的回调                                          | (value: number) => void | -             | -      |
+| allowClear<Badge text='deprecated' /> | 是否允许再次点击后清除。即将废弃，使用 clearable 代替 | boolean                 | true \| false | true   |

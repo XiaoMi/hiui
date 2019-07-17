@@ -38,26 +38,28 @@ import DemoCapsule from '../../demo/tabs/section-capsule.jsx'
 
 <DemoCapsule />
 
-## Tabs Attributes
+## Props
 
-| 参数             | 说明                                                                                                                        | 类型                        | 可选值                             | 默认值       |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------- | ---------------------------------- | ------------ |
-| type             | 标签类型                                                                                                                    | String                      | desc \| card \| button \| editable | card         |
-| placement        | 卡片式标签位置                                                                                                              | String                      | top \| left                        | top          |
-| defaultActiveKey | 默认激活的标签                                                                                                              | String \| number            | -                                  | 第一个选项卡 |
-| showTabsNum      | 显示的选项卡数，仅对 type='card'并且 placement='top'时生效                                                                  | number                      | -                                  | 6            |
-| editable         | 是否可以对标签增加删除，仅对 type='editable'时生效                                                                          | Boolean                     | true \| false                      | true         |
-| onTabClick       | 点击标签页时触发                                                                                                            | func(tabKey , event)        | -                                  | -            |
-| onEdit           | 标签新增删减时触发，仅对 type='editable'时触发。参数：action 为事件类型，值为 add 或者 delete；index 为操作选项卡对应的索引 | func(action, index, tabKey) | -                                  | -            |
+### Tabs
 
-## Tabs.Pane Attributes
+| 参数            | 说明                                                                                                                        | 类型                            | 可选值                                     | 默认值       |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------ | ------------ |
+| type            | 标签类型                                                                                                                    | string                          | 'desc' \| 'card' \| 'button' \| 'editable' | 'card'       |
+| placement       | 水平或竖直展示标签                                                                                                          | string                          | 'vertical' \| 'horizontal'                 | 'horizontal' |
+| defaultActiveId | 设置默认激活的标签                                                                                                          | string \| number                | -                                          | 第一个选项卡 |
+| activeId        | 设置激活的标签，设置此值后变为受控模式                                                                                      | string \| number                | -                                          | -            |
+| max             | 最多显示的选项卡数，仅在 `type='card'` 并且 `placement='horizonal'` 时生效                                                  | number                          | -                                          | 6            |
+| onTabClick      | 点击标签页时触发，回调值为点击点击标签的 key                                                                                | (tabKey, event) => void         | -                                          | -            |
+| onEdit          | 标签新增删减时触发，仅对 type='editable'时触发。参数：action 为事件类型，值为 add 或者 delete；index 为操作选项卡对应的索引 | (action, index, tabKey) => void | -                                          | -            |
 
-| 参数     | 说明                                         | 类型              | 可选值        | 默认值 |
-| -------- | -------------------------------------------- | ----------------- | ------------- | ------ |
-| tabName  | 选项卡头显示文字                             | String \| Element | -             | -      |
-| tabDesc  | 选项卡头描述文字，仅对 type='desc'时生效     | String \| Element | -             | -      |
-| tabKey   | 每个标签的唯一标识                           | String \| Number  | -             | -      |
-| closable | 标签是否可以关闭，仅对 type='editable'时生效 | Boolean           | true \| false | true   |
+### Tabs.Pane
+
+| 参数     | 说明                                         | 类型                | 可选值        | 默认值 |
+| -------- | -------------------------------------------- | ------------------- | ------------- | ------ |
+| tabTitle | 选项卡头显示文字                             | string \| ReactNode | -             | -      |
+| tabDesc  | 选项卡头描述文字，仅对 type='desc'时生效     | string \| ReactNode | -             | -      |
+| tabId    | 每个标签的唯一标识                           | string \| number    | -             | -      |
+| closable | 标签是否可以关闭，仅对 type='editable'时生效 | boolean             | true \| false | true   |
 
 <div style={{ position: 'relative' }}>
   <span
@@ -71,29 +73,32 @@ import DemoCapsule from '../../demo/tabs/section-capsule.jsx'
       color: '#999'
     }}
   >
-    以下调整将随 2.0.0 版本发布，敬请期待
+    以下为 1.5.x 版本 API
   </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+  <hr
+    style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }}
+  />
 </div>
 
-## Props
+## Tabs Attributes
 
-**_Tabs_**
+| 参数             | 说明                                                                                                                        | 类型                        | 可选值                             | 默认值       |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------- | ---------------------------------- | ------------ |
+| legacy           | 使用 1.5 版本的 API                                                                                                         | boolean                     | -                                  | -            |
+| type             | 标签类型                                                                                                                    | String                      | desc \| card \| button \| editable | card         |
+| placement        | 卡片式标签位置                                                                                                              | String                      | top \| left                        | top          |
+| defaultActiveKey | 默认激活的标签                                                                                                              | String \| number            | -                                  | 第一个选项卡 |
+| showTabsNum      | 显示的选项卡数，仅对 type='card'并且 placement='top'时生效                                                                  | number                      | -                                  | 6            |
+| editable         | 是否可以对标签增加删除，仅对 type='editable'时生效                                                                          | Boolean                     | true \| false                      | true         |
+| onTabClick       | 点击标签页时触发                                                                                                            | func(tabKey , event)        | -                                  | -            |
+| onEdit           | 标签新增删减时触发，仅对 type='editable'时触发。参数：action 为事件类型，值为 add 或者 delete；index 为操作选项卡对应的索引 | func(action, index, tabKey) | -                                  | -            |
 
-| 参数             | 说明                                                                                                                        | 类型                            | 可选值                                     | 默认值       |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------ | ------------ |
-| type             | 标签类型                                                                                                                    | string                          | 'desc' \| 'card' \| 'button' \| 'editable' | 'card'       |
-| placement        | 水平或竖直展示标签                                                                                                        | string                          | 'vertical' \| 'horizontal'                 | 'horizontal' |
-| defaultActiveKey | 设置默认激活的标签                                                                                                              | string \| number                | -                                          | 第一个选项卡 |
-| max              | 最多显示的选项卡数，仅在 `type='card'` 并且 `placement='horizonal'` 时生效                                                        | number                          | -                                          | 6            |
-| onTabClick       | 点击标签页时触发，回调值为点击点击标签的 key                                                                                                            | (tabKey, event) => void         | -                                          | -            |
-| onEdit           | 标签新增删减时触发，仅对 type='editable'时触发。参数：action 为事件类型，值为 add 或者 delete；index 为操作选项卡对应的索引 | (action, index, tabKey) => void | -                                          | -            |
+## Tabs.Pane Attributes
 
-**_Tabs.Pane_**
-
-| 参数     | 说明                                         | 类型                | 可选值        | 默认值 |
-| -------- | -------------------------------------------- | ------------------- | ------------- | ------ |
-| tabTitle | 选项卡头显示文字                             | string \| ReactNode | -             | -      |
-| tabDesc  | 选项卡头描述文字，仅对 type='desc'时生效     | string \| ReactNode | -             | -      |
-| tabId    | 每个标签的唯一标识                           | string \| number    | -             | -      |
-| closable | 标签是否可以关闭，仅对 type='editable'时生效 | boolean             | true \| false | true   |
+| 参数     | 说明                                         | 类型              | 可选值        | 默认值 |
+| -------- | -------------------------------------------- | ----------------- | ------------- | ------ |
+| legacy   | 使用 1.5 版本的 API                          | boolean           | -             | -      |
+| tabName  | 选项卡头显示文字                             | String \| Element | -             | -      |
+| tabDesc  | 选项卡头描述文字，仅对 type='desc'时生效     | String \| Element | -             | -      |
+| tabKey   | 每个标签的唯一标识                           | String \| Number  | -             | -      |
+| closable | 标签是否可以关闭，仅对 type='editable'时生效 | Boolean           | true \| false | true   |

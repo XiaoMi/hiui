@@ -13,56 +13,61 @@ import Input from '@hi-ui/hiui/es/input'\n
 class Demo extends React.Component {
   constructor () {
     super()
+    this.list = [{
+      content: '前缀',
+      id: 'prefix'
+    }, {
+      content: '后缀',
+      id: 'suffix'
+    }, {
+      content: '两者',
+      id: 'both'
+    }]
     this.state = {
-      prefix: '+86',
-      suffix: '',
-      checkedIndex: 0,
-      placeholder: '010-12345678',
-      list: [{
-        name: '前缀',
-        prefix: '+86',
-        placeholder: '010-12345678'
-      }, {
-        name: '后缀',
-        suffix: '@xiaomi.com',
-        placeholder: 'mife'
-      }, {
-        name: '两者',
-        prefix: 'www.',
-        suffix: '.com',
-        placeholder: 'mi'
-      }]
+      value: 'prefix'
+    }
+    this.getFix = () => {
+      return {
+        prefix: {
+          prefix: '+86',
+          placeholder: '010-12345678'
+        },
+        suffix: {
+          suffix: '@xiaomi.com',
+          placeholder: 'mife'
+        },
+        both: {
+          prefix: 'www.',
+          suffix: '.com',
+          placeholder: 'mi'
+        }
+      }[this.state.value]
     }
   }
   render() {
     const Row = Grid.Row
     const Col = Grid.Col
-    const {list, prefix, suffix, placeholder, checkedIndex} = this.state
+    const { value } = this.state
+    const { prefix, suffix, placeholder } = this.getFix()
     return (
       <div>
-        <Row gutter={true}>
+        <Row gutter>
           <Col span={12}>
-            <Radio
-              list={list}
-              mode='button'
-              checked={checkedIndex}
-              onChange={(data, index, item) => {
-                this.setState({
-                  placeholder: item.placeholder,
-                  checkedIndex: index,
-                  prefix: item.prefix || '',
-                  suffix: item.suffix || '',
-                })
+            <Radio.Group
+              data={this.list}
+              value={value}
+              type='button'
+              onChange={value => {
+                this.setState({ value })
               }}
             />
           </Col>
         </Row>
-        <Row gutter={true}>
+        <Row gutter>
           <Col span={12}>
-             <Input
-              value=""
+            <Input
               placeholder={placeholder}
-              style={{width: '250px'}}
+              style={{width: 250}}
               suffix={suffix}
               prefix={prefix}
             />
@@ -72,6 +77,7 @@ class Demo extends React.Component {
     )
   }
 }`
+
 const DemoOther = () => (
   <DocViewer
     code={code}
@@ -79,4 +85,5 @@ const DemoOther = () => (
     prefix={prefix}
   />
 )
+
 export default DemoOther

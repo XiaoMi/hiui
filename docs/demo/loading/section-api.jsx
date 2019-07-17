@@ -18,18 +18,19 @@ class Demo extends React.Component {
   }
 
   demoEvent1 () {
-    const l = Loading.open()
+    Loading.open(null, {key: 123})
     setTimeout(() => {
-      l.close()
+      Loading.close(123)
     }, 3000)
   }
   demoEvent2 () {
-    const l = Loading.open({
-      target: this.el,
-      tip: '加载中'
+    Loading.open(this.el,
+    {
+      content: '加载中',
+      key: 666
     })
     setTimeout(() => {
-      l.close()
+      Loading.close(666)
     }, 3000)
   }
   render () {
@@ -51,11 +52,5 @@ class Demo extends React.Component {
     </div>
   }
 }`
-const DemoApi = () => (
-  <DocViewer
-    code={code}
-    scope={{ Button, Panel, Loading }}
-    prefix={prefix}
-  />
-)
+const DemoApi = () => <DocViewer code={code} scope={{ Button, Panel, Loading }} prefix={prefix} />
 export default DemoApi

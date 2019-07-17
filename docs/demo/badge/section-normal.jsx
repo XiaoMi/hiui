@@ -10,18 +10,12 @@ import Badge from '@hi-ui/hiui/es/badge'\n
 class Demo extends React.Component {
   render () {
     return (
-      <Badge value={8}>
+      <Badge content={8}>
         <Button type='default'>最新报表</Button>
       </Badge>
     )
   }
 }`
 
-const DemoNormal = () => (
-  <DocViewer
-    code={code}
-    scope={{ Badge, Button }}
-    prefix={prefix}
-  />
-)
+const DemoNormal = () => <DocViewer code={code} scope={{ Badge, Button }} prefix={prefix} />
 export default DemoNormal

@@ -20,8 +20,10 @@
   // Status: disabled
   &.hi-btn--disabled,
   &[disabled] {
-    border-color: rgba($color, 0.2);
-    color: rgba($color, 0.3);
+    &:not(.hi-btn--loading) {
+      border-color: rgba($color, 0.2);
+      color: rgba($color, 0.3);
+    }
   }
 }
 
@@ -34,12 +36,12 @@
       color: $white;
 
       &:not(.hi-btn--disabled):hover {
-        background-color: map-get(get-palette($color), '40');
+        background-color: map-get(get-palette($color), '60');
         color: $white;
       }
 
       &:not(.hi-btn--disabled):active {
-        background-color: map-get(get-palette($color), '60');
+        background-color: map-get(get-palette($color), '80');
         color: $white;
         box-shadow: inset 0 4px 4px rgba(map-get(get-palette($color), '50'), 0.25);
       }
@@ -47,8 +49,10 @@
       // Status: disabled
       &.hi-btn--disabled,
       &[disabled] {
-        background-color: rgba(map-get(get-palette($color), '50'), 0.2);
-        color: $white;
+        &:not(.hi-btn--loading) {
+          background-color: rgba(map-get(get-palette($color), '50'), 0.2);
+          color: $white;
+        }
       }
 
       // Make a button look and behave like a link
@@ -85,13 +89,13 @@
   display: inline-block;
   box-sizing: border-box;
   margin: 0; // For input.btn
-  height: $font-size-normal * 1 + 8px * 2 + 1px * 2;
-  padding: 8px 15px;
+  height: $line-height-size-normal + 4px * 2 + 1px * 2;
+  padding: 4px 15px;
   border: 1px solid transparent;
   border-radius: 2px;
   font-size: $font-size-normal;
   font-weight: $font-weight-normal;
-  line-height: 1;
+  line-height: $line-height-size-normal;
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
@@ -102,29 +106,62 @@
 
   @include hi-btn-style();
 
-  & + & {
-    margin-left: $spacer-2;
-  }
-
   &:focus {
     outline: 0;
   }
 
-  &::before {
-    content: '';
-    display: block;
-    position: absolute;
-    top: -1px;
-    bottom: -1px;
-    left: -1px;
-    right: -1px;
-    background-color: #fff;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  & + & {
+    margin-left: $spacer-2;
+  }
+
+  .hi-icon {
+    margin-right: $font-size-normal - 8;
+  }
+
+  // Sizes
+  &--size--large {
+    height: $line-height-size-x-large + 13px * 2 + 1px * 2;
+    padding: 13px 60px;
+    font-size: $font-size-x-large;
+    line-height: $line-height-size-x-large;
+
+    &.hi-btn--icon {
+      padding-left: 17px;
+      padding-right: 17px;
+    }
+
+    .hi-icon {
+      margin-right: $font-size-x-large - 8;
+    }
+  }
+
+  &--size--small {
+    height: $line-height-size-small + 1px * 2 + 1px * 2;
+    padding: 1px 11px;
+    font-size: $font-size-small;
+    line-height: $line-height-size-small;
+
+    &.hi-btn--icon {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .hi-icon {
+      margin-right: $font-size-small - 8;
+    }
   }
 
   &--loading {
     &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      cursor: default;
+      top: -1px;
+      bottom: -1px;
+      left: -1px;
+      right: -1px;
+      background-color: #fff;
       opacity: 0.4;
     }
 
@@ -132,6 +169,7 @@
       width: 1em;
       height: 1em;
       display: inline-block;
+      cursor: default;
 
       svg {
         @keyframes rotate {
@@ -149,9 +187,8 @@
     padding-left: 8px;
     padding-right: 8px;
 
-    &__spacer {
-      width: $spacer-2;
-      display: inline-block;
+    .hi-icon {
+      margin-right: 0;
     }
   }
 
@@ -237,31 +274,8 @@
 
   // Status
   &--disabled,
-  &[disabled] {
+  &[disabled]:not(&--loading) {
     cursor: not-allowed;
-  }
-
-  // Sizes
-  &--size--large {
-    height: $font-size-x-large * 1 + 18px * 2;
-    padding: 17px 60px;
-    font-size: $font-size-x-large;
-
-    &.hi-btn--icon {
-      padding-left: 17px;
-      padding-right: 17px;
-    }
-  }
-
-  &--size--small {
-    height: $font-size-small * 1 + 6px * 2;
-    padding: 5px 11px;
-    font-size: $font-size-small;
-
-    &.hi-btn--icon {
-      padding-left: 5px;
-      padding-right: 5px;
-    }
   }
 
   // Block

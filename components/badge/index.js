@@ -1,55 +1,6 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import classNames from 'classnames'
+import Badge from './badge'
 import './style/index'
+import SwitchVersion from '../_util/SwitchVersion'
+import BadgeLegacy from './badge-legacy'
 
-class Badge extends Component {
-  static propTypes = {
-    value: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number
-    ]),
-    dot: PropTypes.bool,
-    max: PropTypes.number,
-    hidden: PropTypes.bool,
-    style: PropTypes.object
-  }
-
-  static defaultProps = {
-    prefixCls: 'hi-badge',
-    style: {},
-    value: '',
-    dot: false,
-    max: 99,
-    hidden: false
-  }
-
-  render () {
-    const {value, prefixCls, max, dot, hidden, style} = this.props
-    const eleClass = classNames(`${prefixCls}-base`)
-    return (
-      <div className={eleClass} style={style}>
-        {this.props.children}
-        {
-          dot
-            ? (
-              <span className={`${prefixCls}-dot${hidden ? ' hi-hide' : ''}`} />
-            )
-            : (
-              <span className={`${prefixCls}-value${hidden ? ' hi-hide' : ''}`}>
-                {
-                  typeof +value === 'number'
-                    ? (
-                      +value > max ? max + '+' : value
-                    )
-                    : value
-                }
-              </span>
-            )
-        }
-      </div>
-    )
-  }
-}
-
-export default Badge
+export default SwitchVersion(Badge, BadgeLegacy)

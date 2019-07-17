@@ -30,60 +30,24 @@ import DemoExtend from '../../demo/dropdown/section-extend.jsx'
 
 <DemoExtend />
 
-## Dropdown Attributes
-
-| 参数    | 说明                                   | 类型                | 可选值                  | 默认值 |
-| ------- | -------------------------------------- | ------------------- | ----------------------- | ------ |
-| list    | 数据                                   | Array               | 参见 List Options       | -      |
-| title   | 显示的文字内容<br/>传入"-"时代表分隔符 | String \| Component | -                       | -      |
-| type    | 下拉按钮类型                           | String              | text \| button \| group | text   |
-| onClick | 点击回调函数                           | Function            | -                       | -      |
-| prefix  | 前缀图标                               | String \| Component | -                       | -      |
-| suffix  | 后缀图标                               | String \| Component | -                       | -      |
-| trigger | 触发方式                               | String \| array     | click \| contextmenu    | click  |
-
-## List Options
-
-| 参数     | 说明                                          | 类型              | 可选值 | 默认值 |
-| -------- | --------------------------------------------- | ----------------- | ------ | ------ |
-| title    | 显示文案                                      | Element \| String | 必需   | -      |
-| prefix   | 文案前缀，选项中包含此值时将替换外部的 prefix | Element \| String | -      | -      |
-| suffix   | 文案后缀，选项中包含此值时将替换外部的 suffix | Element \| String | -      | -      |
-| disabled | 是否禁用                                      | Boolean           | -      | false  |
-| value    | 点击后回调的值                                | String            | Number | -      | - |
-
-<div style={{ position: 'relative' }}>
-  <span
-    style={{
-      position: 'absolute',
-      background: '#fff',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
-      padding: 8,
-      color: '#999'
-    }}
-  >
-    以下调整将随 2.0.0 版本发布，敬请期待
-  </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
-</div>
+import { Badge } from '@libs'
 
 ## Props
 
-| 参数    | 说明                   | 类型                      | 可选值                              | 默认值  |
-| ------- | ---------------------- | ------------------------- | ----------------------------------- | ------- |
-| data    | 下拉菜单数据项         | DataItem []               | -                                   | -       |
-| title   | 下拉菜单显示标题的内容 | string \| ReactNode       | -                                   | -       |
-| type    | 下拉菜单类型           | string                    | 'text' \| 'button' \| 'group'       | 'text'  |
-| onClick | 点击后的回调           | （item: DataItem）=> void | -                                   | -       |
-| prefix  | 前缀内容               | string \| ReactNode       | -                                   | -       |
-| suffix  | 后缀内容               | string \| ReactNode       | -                                   | -       |
-| trigger | 下拉菜单触发方式       | string \| string []       | 'click' \| 'contextmenu' \| 'hover' | 'click' |
+| 参数                                     | 说明                             | 类型                      | 可选值                              | 默认值  |
+| ---------------------------------------- | -------------------------------- | ------------------------- | ----------------------------------- | ------- |
+| data<Badge type='feature' text='new' /> | 下拉菜单数据项                   | DataItem []               | -                                   | -       |
+| list<Badge text='deprecated' />          | 数据。即将废弃，请使用 data 代替 | Array                     | 参见 List Options                   | -       |
+| title                                    | 下拉菜单显示标题的内容           | string \| ReactNode       | -                                   | -       |
+| type                                     | 下拉菜单类型                     | string                    | 'text' \| 'button' \| 'group'       | 'text'  |
+| onClick                                  | 点击后的回调                     | （item: DataItem）=> void | -                                   | -       |
+| prefix                                   | 前缀内容                         | string \| ReactNode       | -                                   | -       |
+| suffix                                   | 后缀内容                         | string \| ReactNode       | -                                   | -       |
+| trigger                                  | 下拉菜单触发方式                 | string \| string []       | 'click' \| 'contextmenu' \| 'hover' | 'click' |
 
 ## Type
 
-**_DateItem_**
+### DateItem
 
 | 参数     | 说明           | 类型                | 可选值        | 默认值 |
 | -------- | -------------- | ------------------- | ------------- | ------ |
@@ -91,4 +55,5 @@ import DemoExtend from '../../demo/dropdown/section-extend.jsx'
 | prefix   | 菜单项前缀内容 | string \| ReactNode | -             | -      |
 | suffix   | 菜单项后缀内容 | string \| ReactNode | -             | -      |
 | disabled | 是否禁用       | boolean             | true \| false | false  |
+| value    | 点击后回调的值 | String              | Number        | -      |
 | url      | 点击跳转的路径 | string              | -             | -      |

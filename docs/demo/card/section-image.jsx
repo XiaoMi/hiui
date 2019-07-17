@@ -11,26 +11,26 @@ class Demo extends React.Component {
       <React.Fragment>
         <Card
           hoverable
-          cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>}
+          coverUrl='https://i.loli.net/2019/04/18/5cb82488403de.png'
           title='图片展示'
-          description='图片信息描述：size=small;width:276px'
+          content='图片信息描述：size=small;width:276px'
           size='small'
         ></Card>
         <br />
         <Card
           hoverable
-          cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>}
+          coverUrl='https://i.loli.net/2019/04/18/5cb82488403de.png'
           title='图片展示'
-          description='图片信息描述：size=middle;width:376px'
-          size='middle'
+          content='图片信息描述：size=middle;width:376px'
+          size='default'
         ></Card>
 
         <br />
         <Card
           hoverable
-          cover={<img src='https://i.loli.net/2019/04/18/5cb82488403de.png'/>}
+          coverUrl='https://i.loli.net/2019/04/18/5cb82488403de.png'
           title='图片展示'
-          description='图片信息描述：size=large;width:576px'
+          content='图片信息描述：size=large;width:576px'
           size='large'
         ></Card>
       </React.Fragment>

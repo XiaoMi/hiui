@@ -1,10 +1,11 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { connect } from 'react-redux'
+import utils from '../../utils'
 import './style/index.scss'
 
 class Component extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       anchors: [],
@@ -18,10 +19,10 @@ class Component extends React.Component {
     }
     this.contentRef = React.createRef()
   }
-  componentDidUpdate(prevProps) {
+  componentDidUpdate (prevProps) {
     window.scrollTo(0, 0)
   }
-  componentDidMount() {
+  componentDidMount () {
     this.getCurrentPage(() => {
       this.setState(
         {
@@ -29,7 +30,9 @@ class Component extends React.Component {
         },
         () => {
           this.getAnchors()
-          const anchorsDOM = document.querySelectorAll('#markdown-content > div > h2')
+          const anchorsDOM = document.querySelectorAll(
+            '#markdown-content > div > h2'
+          )
           const anchorsDOMList = [].slice.call(anchorsDOM)
           anchorsDOMList.map((v, i) => {
             v.id = v.innerHTML
@@ -43,7 +46,7 @@ class Component extends React.Component {
                     this.setActiveAnchor(v.id)
                   }}
                 >
-                  <i className="hi-icon icon-maodian" />
+                  <i className='hi-icon icon-maodian' />
                 </a>
               </span>,
               v
@@ -61,10 +64,10 @@ class Component extends React.Component {
       this.getSiblingNav()
     })
   }
-  setActiveAnchor = id => {
+  setActiveAnchor = (id) => {
     this.setState({ activeAnchor: id })
   }
-  getAnchors() {
+  getAnchors () {
     const anchorsDOM = document.querySelectorAll('#markdown-content h2')
     const anchorsDOMList = [].slice.call(anchorsDOM)
     const anchors = anchorsDOMList.map((v, i) => {
@@ -74,7 +77,7 @@ class Component extends React.Component {
     this.setState({ anchors })
   }
 
-  getSiblingNav() {
+  getSiblingNav () {
     const footNavs = this.state.footNavs
     const tempArr = Object.keys(footNavs)
     const index = tempArr.indexOf(this.state.page)
@@ -90,24 +93,25 @@ class Component extends React.Component {
   }
 
   // 收集所有导航
-  collectNavs(fn) {
+  collectNavs (fn) {
     let footNavs = []
-    let page = this.props.match.path.split('/')[3]
-    footNavs = this.props[page] || {}
-    this.setState({ footNavs, topNav: page }, fn)
+    let topNav = utils.getTopNavFromPath(this.props.match.path)
+    footNavs = this.props[topNav] || {}
+    this.setState({ footNavs, topNav }, fn)
   }
 
-  getCurrentPage(fn) {
+  getCurrentPage (fn) {
     // TODO:这里可能要修改
-    let page = this.props.match.path.split('/')[4]
+    let page = utils.getPageFromPath(this.props.match.path)
     page = page || 'quick-start'
     this.setState({ page }, fn)
   }
 
-  getComponent(page) {
-    const { theme, locale } = this.props
+  getComponent (page) {
+    const { theme, locale, allComponents } = this.props
+    const { topNav } = this.state
     // 控制markdown显示隐藏
-    const currentPage = this.props.allComponents[this.state.topNav][page]
+    const currentPage = allComponents[topNav][page]
     if (currentPage) {
       const el = React.createElement(currentPage.default || currentPage, {
         theme,
@@ -117,32 +121,40 @@ class Component extends React.Component {
     }
   }
 
-  render() {
+  render () {
     const { pre, next, anchors, cComponent, topNav, activeAnchor } = this.state
     return (
-      <div className="component">
-        <div className="home-container">
-          <div className="markdown-content article" id="markdown-content">
+      <div className='component'>
+        <div className='home-container'>
+          <div className='markdown-content article' id='markdown-content'>
             {cComponent}
           </div>
 
-          <div className="foot-nav clearfix">
+          <div className='foot-nav clearfix'>
             <a
               className={`pre ${pre.to ? '' : 'none'}`}
-              href={pre.to ? `/hiui/${this.props.locale}/${topNav}/${pre.to}` : ''}
+              href={
+                pre.to
+                  ? `<BASE_URL>/${this.props.locale}/${topNav}/${pre.to}`
+                  : ''
+              }
             >
               {pre.text ? pre.text : ''}
             </a>
             <a
               className={`next ${next.to ? '' : 'none'}`}
-              href={next.to ? `/hiui/${this.props.locale}/${topNav}/${next.to}` : ''}
+              href={
+                next.to
+                  ? `<BASE_URL>/${this.props.locale}/${topNav}/${next.to}`
+                  : ''
+              }
             >
               {next.text ? next.text : ''}
             </a>
           </div>
         </div>
 
-        <div className="anchor">
+        <div className='anchor'>
           <ul>
             {anchors.map((v, i) => (
               <li key={i} className={activeAnchor === v.text ? 'active' : ''}>
@@ -163,7 +175,7 @@ class Component extends React.Component {
   }
 }
 
-export default connect(state => ({
+export default connect((state) => ({
   sider: state.global.sider,
   theme: state.global.theme,
   locale: state.global.locale,

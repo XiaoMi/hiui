@@ -39,13 +39,12 @@ class Transfer extends Component {
     }
   }
   parseDatas (props) {
-    const { data, targetKeys } = props
+    const { data, targetKeys, targetIds } = props
     const sourceList = []
-    const targetList = new Array(targetKeys.length)
-    data.forEach((item, index) => {
-      const targetIndexKey = targetKeys.indexOf(item.id)
-      if (targetIndexKey > -1) {
-        targetList[targetIndexKey] = item
+    const targetList = []
+    data.forEach(item => {
+      if ((targetIds || targetKeys).includes(item.id)) {
+        targetList.push(item)
       } else {
         sourceList.push(item)
       }
@@ -64,11 +63,11 @@ class Transfer extends Component {
     return dir === 'left' ? 'sourceSelectedKeys' : 'targetSelectedKeys'
   }
   clickItemEvent (item, index, dir) {
-    const { mode } = this.props
+    const { mode, type } = this.props
     if (item.disabled) {
       return
     }
-    if (mode === 'basic') {
+    if (mode === 'basic' && type === 'default') {
       this.parseSelectedKeys(dir, item.id, () => {
         this.moveTo(dir)
       })
@@ -97,13 +96,13 @@ class Transfer extends Component {
     this.parseSelectedKeys(dir, value, null)
   }
   moveTo (dir) {
-    const { targetKeys } = this.props
+    const { targetKeys, targetIds } = this.props
     const { sourceSelectedKeys, targetSelectedKeys } = this.state
     const selectedItem = dir === 'left' ? [...sourceSelectedKeys] : [...targetSelectedKeys]
     const newTargetKeys =
       dir === 'left'
-        ? selectedItem.concat(targetKeys)
-        : targetKeys.filter(tk => selectedItem.indexOf(tk) === -1)
+        ? selectedItem.concat(targetIds || targetKeys)
+        : (targetIds || targetKeys).filter(tk => !selectedItem.includes(tk))
     this.setState(
       {
         [this.getSelectedKeysByDir(dir)]: newTargetKeys
@@ -182,7 +181,17 @@ class Transfer extends Component {
     this.setState({ sourceNode: null })
   }
   renderContainer (dir, datas) {
-    const { mode, showAllSelect, searchable, draggable, emptyContent, title, disabled } = this.props
+    const {
+      mode,
+      type,
+      showCheckAll,
+      showAllSelect,
+      searchable,
+      draggable,
+      emptyContent,
+      title,
+      disabled
+    } = this.props
     const {
       sourceSelectedKeys,
       targetSelectedKeys,
@@ -207,9 +216,7 @@ class Transfer extends Component {
     return (
       <div className='hi-transfer__container'>
         {disabled && <div className='hi-transfer__mask' />}
-        {
-          _title && <div className='hi-transfer__title'>{_title}</div>
-        }
+        {_title && <div className='hi-transfer__title'>{_title}</div>}
         {searchable && (
           <div className='hi-transfer__searchbar'>
             <Icon name='search' />
@@ -221,7 +228,9 @@ class Transfer extends Component {
           </div>
         )}
         <div
-          className={`hi-transfer__body ${filterResult.length === 0 ? 'hi-transfer__body--empty' : ''}`}
+          className={`hi-transfer__body ${
+            filterResult.length === 0 ? 'hi-transfer__body--empty' : ''
+          }`}
         >
           {filterResult.length > 0 ? (
             <ul className='hi-transfer__list'>
@@ -262,9 +271,10 @@ class Transfer extends Component {
             emptyContent[1] || emptyContent[0]
           )}
         </div>
-        {mode !== 'basic' && showAllSelect && (
+        {(mode !== 'basic' || type !== 'default') && (showAllSelect || showCheckAll) && (
           <div className={footerCls}>
             <Checkbox
+              legacy
               text='全选'
               checked={
                 selectedKeys.length !== 0 &&
@@ -281,11 +291,11 @@ class Transfer extends Component {
   }
 
   render () {
-    const { mode } = this.props
+    const { mode, type } = this.props
     const { sourceList, targetList, sourceSelectedKeys, targetSelectedKeys, limited } = this.state
     const operCls = classNames(
       'hi-transfer__operation',
-      mode === 'basic' && 'hi-transfer__operation--basic'
+      mode === 'basic' && type === 'default' && 'hi-transfer__operation--basic'
     )
     const isLeftDisabled = targetSelectedKeys.length === 0
     const isRightDisabled = sourceSelectedKeys.length === 0 || limited
@@ -293,7 +303,7 @@ class Transfer extends Component {
       <div className='hi-transfer'>
         {this.renderContainer('left', sourceList)}
         <div className={operCls}>
-          {mode !== 'basic' && (
+          {(mode !== 'basic' || type !== 'default') && (
             <React.Fragment>
               <Button
                 type={isRightDisabled ? 'default' : 'primary'}
@@ -326,8 +336,10 @@ class Transfer extends Component {
 }
 Transfer.defaultProps = {
   mode: 'basic',
-  targetKeys: [],
+  type: 'default',
+  targetKeys: [], // TODO:废弃，使用 targetIds
   showAllSelect: false,
+  showCheckAll: false,
   searchable: false,
   draggable: false,
   emptyContent: ['暂无数据', '暂无数据'],
@@ -335,8 +347,10 @@ Transfer.defaultProps = {
   disabled: false
 }
 Transfer.propTypes = {
-  mode: PropTypes.oneOf(['basic', 'multiple']),
-  showAllSelect: PropTypes.bool,
+  mode: PropTypes.oneOf(['basic', 'multiple']), // TODO: 废弃，使用 type
+  type: PropTypes.oneOf(['default', 'multiple']),
+  showAllSelect: PropTypes.bool, // TODO: 废弃，使用 showCheckAll
+  showCheckAll: PropTypes.bool,
   searchable: PropTypes.bool,
   draggable: PropTypes.bool,
   disabled: PropTypes.bool,

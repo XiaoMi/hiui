@@ -18,7 +18,7 @@ class Demo extends React.Component {
   render() {
     return (
       <div>
-        <Progress percent={this.state.percent}/>
+        <Progress percent={this.state.percent} size='large' />
         <br/>
         <Counter
             value={this.state.percent}
@@ -31,11 +31,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoActive = () => (
-  <DocViewer
-    code={code}
-    scope={{ Progress, Counter }}
-    prefix={prefix}
-  />
-)
+const DemoActive = () => <DocViewer code={code} scope={{ Progress, Counter }} prefix={prefix} />
 export default DemoActive

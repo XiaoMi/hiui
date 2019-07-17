@@ -4,7 +4,7 @@ import Table from '../../../components/table'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
 import Form from '../../../components/form/index'
-import FormItem from '../../../components/form/item'
+import FormItem from '../../../components/form/Item'
 const prefix = 'table-paging'
 const code = `
 import React from 'react'

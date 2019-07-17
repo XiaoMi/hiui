@@ -13,14 +13,10 @@ class Demo extends React.Component {
     this.state = {
       list: ['手机', '电脑', '智能'],
     }
-    this.onChange = this.onChange.bind(this)
-  }
-  onChange(list, value, isChecked) {
-    console.log(list, value, isChecked)
   }
   render() {
     return (
-      <Checkbox list={this.state.list} onChange={this.onChange} name="c1"/>
+      <Checkbox.Group data={this.state.list} />
     )
   }
 }`,
@@ -34,28 +30,25 @@ class Demo extends React.Component {
     super()
     this.state = {
       list: [{
-        text: '手机',
-        value: 'Phone',
-        checked: true
+        content: '手机',
+        id: 'Phone'
       },{
-        text: '电脑',
-        value: 'Computer'
+        content: '电脑',
+        id: 'Computer'
       },{
-        text: '智能'
+        content: '智能',
+        id: 'Intelli'
       },{
-        text: '出行',
-        disabled: true,
-        checked: true
-      }]
+        content: '出行',
+        id: 'Transfer',
+        disabled: true
+      }],
+      value: ['Phone']
     }
-    this.onChange = this.onChange.bind(this)
-  }
-  onChange(list, value, isChecked) {
-    console.log(list, value, isChecked)
   }
   render() {
     return (
-      <Checkbox list={this.state.list} onChange={this.onChange} name="c2"/>
+      <Checkbox.Group data={this.state.list} defaultValue={this.state.value} />
     )
   }
 }`,

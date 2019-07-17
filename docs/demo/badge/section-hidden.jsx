@@ -11,7 +11,7 @@ import Badge from '@hi-ui/hiui/es/badge'\n
 class Demo extends React.Component {
   render () {
     return (
-      <Badge value={90} hidden>
+      <Badge content={90} hidden>
         <Button type='default'>最新报表</Button>
       </Badge>
     )

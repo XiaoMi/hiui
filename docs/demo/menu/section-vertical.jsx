@@ -95,11 +95,11 @@ class Demo extends React.Component {
     return(
       <div>
         <Menu
-          mode="vertical"
+          placement="vertical"
           activeId={'xiaomi9'}
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
           onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
-          datas={datas}
+          data={datas}
         />
       </div>
     )

@@ -9,7 +9,7 @@ const loop = (locale, items, targets, component) => {
   items.forEach(item => {
     if (item.to) {
       targets.push({
-        path: `/hiui/${locale}/${item.to.split('/')[3]}/${item.to.split('/')[4]}`,
+        path: item.to,
         component: component
       })
     }
@@ -19,7 +19,7 @@ const loop = (locale, items, targets, component) => {
   })
   return targets
 }
-function getRoutes(locale, siders, designs, templates) {
+function getRoutes (locale, siders, designs, templates) {
   let sideArr = []
   let desArr = []
   let templateArr = []
@@ -28,29 +28,29 @@ function getRoutes(locale, siders, designs, templates) {
   templateArr = loop(locale, templates, templateArr, Component)
   return [
     {
-      path: `/hiui/zh-CN`,
+      path: `<BASE_URL>/zh-CN`,
       component: Home,
       exact: true
     },
     {
-      path: `/hiui/en-US`,
+      path: `<BASE_URL>/en-US`,
       component: HomeEn,
       exact: true
     },
     {
-      path: `/hiui/${locale}/designs`,
+      path: `<BASE_URL>/${locale}/designs`,
       render: props => {
         return <SiderLayout deepClone={false} sider={designs} routes={desArr} {...props} />
       }
     },
     {
-      path: `/hiui/${locale}/templates`,
+      path: `<BASE_URL>/${locale}/templates`,
       render: props => {
         return <SiderLayout deepClone={false} sider={templates} routes={templateArr} {...props} />
       }
     },
     {
-      path: `/hiui/${locale}/docs`,
+      path: `<BASE_URL>/${locale}/docs`,
       render: props => {
         return <SiderLayout deepClone={false} sider={siders} routes={sideArr} {...props} />
       }
