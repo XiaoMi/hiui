@@ -16,6 +16,9 @@ class HeaderMenu extends Component {
       </div>
     )
   }
+  componentDidMount () {
+    console.log('hello world')
+  }
 }
 
 let div
@@ -32,10 +35,12 @@ document.addEventListener('click', () => {
   setTimeout(hide, 0)
 })
 export default {
-  show (e, cbs, key, freeze, size) {
+  show (e, cbs, key, freeze, size = 'normal') {
+    console.log('show')
     div && hide()
     div = document.createElement('div')
-    div.className = 'hi-table-header-menu-' + size || ''
+    div.className = 'hi-table-header-menu-' + size
+    div.style.zIndex = '99999'
     ReactDOM.render(<HeaderMenu {...cbs} index={key} freeze={freeze} />, div)
     div.style.position = 'absolute'
     div.style.left = e.pageX + 'px'

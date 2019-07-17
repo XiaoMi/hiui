@@ -410,6 +410,7 @@ class Table extends Component {
     }
 
     if (!fixTop && height) {
+      console.log('height', height)
       let hiTableBody = this.dom.current.querySelectorAll('.hi-table-body')
       hiTableBody && hiTableBody.length > 0 && hiTableBody.forEach(item => {
         item.style.maxHeight = height

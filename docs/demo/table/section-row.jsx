@@ -11,14 +11,13 @@ class Demo extends React.Component {
 
     this.columns = [
 
-      { title: 'Column 1', dataIndex: 'address', key: '1',fixed:'left' },
-      { title: 'Column 2', dataIndex: 'address', key: '2',  },
-      { title: 'Column 3', dataIndex: 'address', key: '3', },
-      { title: 'Column 4', dataIndex: 'address', key: '4', },
-        { title: 'Column 1', dataIndex: 'address', key: '5', },
-        { title: 'Column 2', dataIndex: 'address', key: '6',  },
-        { title: 'Column 3', dataIndex: 'address', key: '7', },
-        { title: 'Column 4', dataIndex: 'address', key: '8', },
+      { title: 'Column 1', dataIndex: 'address', key: 'a',fixed:'left' },
+      { title: 'Column 2', dataIndex: 'address', key: 'b',  },
+      { title: 'Column 3', dataIndex: 'address', key: 'c', },
+      { title: 'Column 4', dataIndex: 'address', key: 'd', },
+        { title: 'Column 1', dataIndex: 'address', key: 'e', },
+        { title: 'Column 2', dataIndex: 'address', key: 'f',  },
+       
       {
         title: 'Action',
         key: 'operation',
@@ -47,7 +46,6 @@ class Demo extends React.Component {
          data={this.data}
          scrollX
          fixTop={56}
-         name='fixcol'
        />
       </div>
     )

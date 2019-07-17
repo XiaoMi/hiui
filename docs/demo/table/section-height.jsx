@@ -44,7 +44,7 @@ class Demo extends React.Component {
     }
   }
   render() {
-    return <Table height="250px" columns={this.columns} data={this.data} name='height' checked={(item) => item.id === 1 || item.id === 3} />
+    return <Table height="250px" columns={this.columns} data={this.data} checked={(item) => item.id === 1 || item.id === 3} />
   }
 }`
 
