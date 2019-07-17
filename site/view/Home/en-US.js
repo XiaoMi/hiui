@@ -1,7 +1,7 @@
 import React from 'react'
 import HomeBase from './HomeBase'
-import '../../../components/ficon/style/index'
-import Button from '../../../components/button/Button'
+import '@components/ficon/style/index'
+import Button from '@components/button/Button'
 
 class Home extends React.Component {
   render () {

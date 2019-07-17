@@ -8,10 +8,12 @@
     "fix": "node_modules/.bin/standard --fix && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss' --fix",
     "precommit": "lint-staged",
     "compile": "cross-env NODE_ENV=production gulp",
-    "build": "cross-env NODE_ENV=production node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.production.config.js && gulp carry",
+    "build": "node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.config.prod.js && gulp carry",
+    "build:gh-pages": "cross-env DOC_ENV=github node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.config.prod.js && gulp carry",
     "deploy": "gh-pages -d dist",
-    "dev": "cd site && cross-env NODE_ENV=development PORT=4200 node server.js",
-    "start": "npm run dev",
+    "dev": "npm start",
+    "start": "node build/start.js",
+    "prerender:gh-pages": "cross-env DOC_ENV=github npm run build && cross-env DOC_ENV=github node build/prerenderSite.js",
     "prerender": "npm run build && node build/prerenderSite.js"
   },
   "repository": {
@@ -84,7 +86,6 @@
     "date-fns": "^1.30.1",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.13.2",
-    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^1.1.11",
     "gh-pages": "^2.0.1",
     "gulp": "^3.9.1",
@@ -95,8 +96,10 @@
     "jest-fetch-mock": "^2.1.2",
     "jsx-loader": "^0.13.2",
     "lint-staged": "^7.2.2",
+    "loader-utils": "^1.2.3",
     "marked": "^0.4.0",
     "merge2": "^1.2.2",
+    "mini-css-extract-plugin": "^0.7.0",
     "node-sass": "^4.12.0",
     "postcss-loader": "^2.1.5",
     "prismjs": "^1.16.0",
@@ -119,7 +122,8 @@
     "url-loader": "^1.0.1",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
-    "webpack-dev-server": "^3.4.1"
+    "webpack-dev-server": "^3.4.1",
+    "webpack-merge": "^4.2.1"
   },
   "standard": {
     "env": [
