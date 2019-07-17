@@ -128,7 +128,7 @@ class Demo extends React.Component {
         <Row gutter={true}>
           <Col span={24}>
             <Stepper
-              list={stepperList}
+              data={stepperList}
               current={1}
             />
           </Col>
@@ -138,7 +138,7 @@ class Demo extends React.Component {
           <Row gutter={true}>
             <Col span={24}>
               <Stepper
-                list={stepperList}
+                data={stepperList}
                 current={1}
               />
             </Col>
@@ -149,7 +149,7 @@ class Demo extends React.Component {
           <Row gutter={true}>
             <Col span={24}>
               <Stepper
-                list={stepperList}
+                data={stepperList}
                 current={1}
               />
             </Col>
@@ -160,7 +160,7 @@ class Demo extends React.Component {
           <Row gutter={true}>
             <Col span={24}>
               <Stepper
-                list={stepperList}
+                data={stepperList}
                 current={1}
               />
             </Col>
@@ -171,7 +171,7 @@ class Demo extends React.Component {
           <Row gutter={true}>
             <Col span={24}>
               <Stepper
-                list={stepperList}
+                data={stepperList}
                 current={1}
               />
             </Col>
