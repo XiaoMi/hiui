@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import { NavGroup } from '@hi-ui/classic-theme'
-import LocaleDropdown from '../Dropdown/LocaleDropdown'
+// import LocaleDropdown from '../Dropdown/LocaleDropdown'
 import locales from '../../../locales'
 
 export default class NavHeader extends Component {
   render () {
-    const { locale, onLocaleChange } = this.props
+    const { locale } = this.props
+    // const { locale, onLocaleChange } = this.props
     const { home, components, template, design } = locales[locale].headers
     return (
       <React.Fragment>

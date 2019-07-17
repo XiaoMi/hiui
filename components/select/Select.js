@@ -18,6 +18,12 @@ class Select extends Component {
     multipleType: PropTypes.oneOf(['wrap', 'nowrap']),
     data: PropTypes.array,
     dataSource: PropTypes.object,
+    defaultValue: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.array,
+      PropTypes.bool,
+      PropTypes.number
+    ]),
     value: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.array,
@@ -44,7 +50,7 @@ class Select extends Component {
     multipleType: 'wrap',
     disabled: false,
     clearable: true,
-    value: '',
+    defaultValue: '',
     autoload: false,
     placeholder: '请选择',
     emptyContent: '无内容',
@@ -58,15 +64,13 @@ class Select extends Component {
   constructor (props) {
     super(props)
 
-    let {
-      data
-    } = this.props
+    const { data, value, defaultValue } = props
     const dropdownItems = cloneDeep(data)
-    const selectedItems = this.resetSelectedItems(this.props.value, dropdownItems)
+    const initialValue = value === undefined ? defaultValue : value
+    const selectedItems = this.resetSelectedItems(initialValue, dropdownItems)
     const searchable = this.getSearchable()
     this.debouncedFilterItems = debounce(this.onFilterItems.bind(this), 300)
     this.clickOutsideHandel = this.clickOutside.bind(this)
-    // const focusedIndex = this.resetFocusedIndex(false)
 
     this.state = {
       searchable,
@@ -78,7 +82,7 @@ class Select extends Component {
       fetching: false,
       keyword: '',
       searchInput: {
-        width: '2px'
+        width: 2
       }
     }
   }
@@ -112,30 +116,32 @@ class Select extends Component {
     this.hideDropdown()
   }
 
-  componentWillReceiveProps (props) {
-    if (!shallowEqual(props.value, this.props.value)) {
-      const selectedItems = this.resetSelectedItems(props.value, this.state.dropdownItems) // 异步获取时会从内部改变dropdownItems，所以不能从list取
+  componentWillReceiveProps (nextProps) {
+    if (!shallowEqual(nextProps.value, this.props.value)) {
+      const selectedItems = this.resetSelectedItems(
+        nextProps.value,
+        this.state.dropdownItems
+      ) // 异步获取时会从内部改变dropdownItems，所以不能从list取
 
       this.setState({
         selectedItems
-      }, () => {
-        // this.onChange()
       })
     }
-    if (!shallowEqual(props.data, this.props.data)) {
-      const selectedItems = this.resetSelectedItems(props.value, props.data, true)
-
+    if (!shallowEqual(nextProps.data, this.props.data)) {
+      const selectedItems = this.resetSelectedItems(
+        nextProps.value,
+        nextProps.data,
+        true
+      )
       this.setState({
         selectedItems,
-        dropdownItems: cloneDeep(props.data)
+        dropdownItems: cloneDeep(nextProps.data)
       })
     }
   }
 
   getSearchable () {
-    let {
-      searchable
-    } = this.props
+    const { searchable } = this.props
 
     if (this.isRemote()) {
       return true
@@ -154,25 +160,28 @@ class Select extends Component {
   }
 
   isRemote () {
-    let {
-      dataSource
-    } = this.props
+    const { dataSource } = this.props
     return dataSource && !!dataSource.url
   }
 
   resetSelectedItems (value, dropdownItems, listChanged = false) {
     const values = this.parseValue(value)
-    const selectedItems = listChanged && this.props.type === 'multiple' ? this.state.selectedItems : [] // 如果是多选，dropdownItems有改动，需要保留之前的选中值
+    const selectedItems =
+      listChanged && this.props.type === 'multiple'
+        ? this.state.selectedItems
+        : [] // 如果是多选，dropdownItems有改动，需要保留之前的选中值
 
-    dropdownItems && dropdownItems.map(item => {
-      if (values.indexOf(item.id) !== -1) {
-        let itemIndex = selectedItems.findIndex((sItem) => { // 多选时检查是否已选中
-          return sItem.id === item.id
-        })
+    dropdownItems &&
+      dropdownItems.map((item) => {
+        if (values.indexOf(item.id) !== -1) {
+          const itemIndex = selectedItems.findIndex((sItem) => {
+            // 多选时检查是否已选中
+            return sItem.id === item.id
+          })
 
-        itemIndex === -1 && selectedItems.push(item)
-      }
-    })
+          itemIndex === -1 && selectedItems.push(item)
+        }
+      })
     return selectedItems
   }
 
@@ -185,19 +194,23 @@ class Select extends Component {
   }
 
   onEnterSelect () {
-    const {
-      dropdownItems,
-      focusedIndex
-    } = this.state
+    const { dropdownItems, focusedIndex } = this.state
     const item = dropdownItems[focusedIndex]
 
     this.onClickOption(item, focusedIndex)
   }
 
-  onChange (changedItems) {
-    const { selectedItems } = this.state
-
-    this.props.onChange && this.props.onChange(selectedItems, changedItems)
+  onChange (selectedItems, changedItems, callback) {
+    const { onChange, value } = this.props
+    value === undefined &&
+      this.setState(
+        {
+          selectedItems
+        },
+        callback
+      )
+    const selectedIds = selectedItems.map(({ id }) => id)
+    onChange && onChange(selectedIds, changedItems)
   }
 
   checkAll (e) {
@@ -207,20 +220,18 @@ class Select extends Component {
     const { dropdownItems, selectedItems } = this.state
     let _selectedItems = [...selectedItems]
     let changedItems = []
-    dropdownItems.forEach(item => {
+    dropdownItems.forEach((item) => {
       if (!item.disabled && this.matchFilter(item)) {
-        if (!_selectedItems.map(selectItem => selectItem.id).includes(item.id)) {
+        if (
+          !_selectedItems.map((selectItem) => selectItem.id).includes(item.id)
+        ) {
           _selectedItems.push(item)
           changedItems.push(item)
         }
       }
     })
-    this.setState({
-      selectedItems: _selectedItems
-    }, () => {
-      this.selectInput.focus()
-      this.onChange(changedItems)
-    })
+    this.onChange(_selectedItems, changedItems)
+    this.selectInput.focus()
   }
 
   onClickOption (item, index) {
@@ -242,33 +253,34 @@ class Select extends Component {
       selectedItems = [item]
     }
 
-    this.setState({
-      selectedItems,
-      focusedIndex
-    }, () => {
-      if (this.props.type !== 'multiple') {
-        this.hideDropdown()
-      } else {
-        this.selectInput.focus()
-        this.clearKeyword() // 多选状态清空筛选
-      }
-
-      this.onChange(item)
+    this.onChange(selectedItems, item, () => {
+      this.setState(
+        {
+          focusedIndex
+        }
+      )
     })
+    if (this.props.type !== 'multiple') {
+      this.hideDropdown()
+    } else {
+      this.selectInput.focus()
+      this.clearKeyword() // 多选状态清空筛选
+    }
   }
 
   clearKeyword () {
-    this.setState({
-      keyword: ''
-    }, () => {
-      this.selectInput.clearInput()
-    })
+    this.setState(
+      {
+        keyword: ''
+      },
+      () => {
+        this.selectInput.clearInput()
+      }
+    )
   }
 
   handleInputClick = (e) => {
-    let {
-      dropdownShow
-    } = this.state
+    let { dropdownShow } = this.state
 
     if (dropdownShow) {
       this.hideDropdown()
@@ -286,13 +298,14 @@ class Select extends Component {
   }
 
   hideDropdown () {
-    this.state.dropdownShow === true && this.setState({dropdownShow: false}, () => {
-      this.clearKeyword()
-    })
+    this.state.dropdownShow === true &&
+      this.setState({ dropdownShow: false }, () => {
+        this.clearKeyword()
+      })
   }
 
   showDropdown () {
-    this.state.dropdownShow === false && this.setState({dropdownShow: true})
+    this.state.dropdownShow === false && this.setState({ dropdownShow: true })
     this.selectInput.focus()
   }
 
@@ -305,24 +318,23 @@ class Select extends Component {
     })
 
     selectedItems.splice(sIndex, 1)
-    this.setState({
-      selectedItems
-    }, () => {
+    this.onChange(selectedItems, item, () => {
       this.selectInput.focus()
-      this.onChange(item)
     })
   }
   // 全部删除
   deleteAllItems () {
+    const { type } = this.props
     const focusedIndex = this.resetFocusedIndex()
     const changedItems = [...this.state.selectedItems]
-    this.setState({
-      focusedIndex,
-      selectedItems: []
-    }, () => {
-      this.onChange(this.props.type === 'multiple' ? changedItems : changedItems[0])
-      this.onFilterItems('')
-    })
+    this.onChange(
+      [],
+      type === 'multiple' ? changedItems : changedItems[0],
+      () => {
+        this.setState({ focusedIndex })
+        this.onFilterItems('')
+      }
+    )
   }
 
   remoteSearch (keyword) {
@@ -339,7 +351,10 @@ class Select extends Component {
       jsonpCallback = 'callback',
       ...options
     } = this.props.dataSource
-    keyword = !keyword && this.autoloadFlag && this.props.autoload ? this.props.dataSource.keyword : keyword
+    keyword =
+      !keyword && this.autoloadFlag && this.props.autoload
+        ? this.props.dataSource.keyword
+        : keyword
     this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
 
     const queryParams = (() => {
@@ -350,11 +365,16 @@ class Select extends Component {
         return params
       }
       if (Object.prototype.toString.call(params) === '[object Object]') {
-        return Object.keys(params).map(key => `&${key}=${params[key]}`).join('')
+        return Object.keys(params)
+          .map((key) => `&${key}=${params[key]}`)
+          .join('')
       }
     })()
 
-    url = url.indexOf('?') === -1 ? `${url}?${[key]}=${keyword}${queryParams}` : `${url}&${[key]}=${keyword}${queryParams}`
+    url =
+      url.indexOf('?') === -1
+        ? `${url}?${[key]}=${keyword}${queryParams}`
+        : `${url}&${[key]}=${keyword}${queryParams}`
 
     if (type.toUpperCase() === 'POST') {
       options.body = JSON.stringify(data)
@@ -364,23 +384,33 @@ class Select extends Component {
     })
 
     if (type.toUpperCase() === 'JSONP') {
-      const _o = {jsonpCallback: jsonpCallback, jsonpCallbackFunction: jsonpCallback}
-      fetchJsonp(url, _o).then((res) => res.json()).then((json) => { this._setDropdownItems(json, transformResponse) })
+      const _o = {
+        jsonpCallback: jsonpCallback,
+        jsonpCallbackFunction: jsonpCallback
+      }
+      fetchJsonp(url, _o)
+        .then((res) => res.json())
+        .then((json) => {
+          this._setDropdownItems(json, transformResponse)
+        })
     } else {
       /* eslint-disable */
       fetch(url, {
         method: type,
         ...options
       })
-      .then(response => response.json())
-      .then(res => {
-        this._setDropdownItems(res, transformResponse)
-      }, err => {
-        error && error(err)
-        this.setState({
-          fetching: false
-        })
-      })
+        .then((response) => response.json())
+        .then(
+          (res) => {
+            this._setDropdownItems(res, transformResponse)
+          },
+          (err) => {
+            error && error(err)
+            this.setState({
+              fetching: false
+            })
+          }
+        )
     }
   }
   _setDropdownItems(res, func) {
@@ -391,7 +421,11 @@ class Select extends Component {
       dropdownItems = res.data
     }
     if (Array.isArray(dropdownItems)) {
-      const selectedItems = this.resetSelectedItems(this.props.value, dropdownItems, true)
+      const selectedItems = this.resetSelectedItems(
+        this.props.value,
+        dropdownItems,
+        true
+      )
       this.setState({
         dropdownItems,
         selectedItems
@@ -401,64 +435,74 @@ class Select extends Component {
       fetching: false
     })
   }
-  onFilterItems (keyword) {
-    this.setState({
-      keyword
-    }, ()=>this.resetFocusedIndex())
+  onFilterItems(keyword) {
+    this.setState(
+      {
+        keyword
+      },
+      () => this.resetFocusedIndex()
+    )
 
     if (this.props.dataSource) {
-      if (this.props.autoload || keyword.toString().length >= this.state.queryLength) {
+      if (
+        this.props.autoload ||
+        keyword.toString().length >= this.state.queryLength
+      ) {
         this.remoteSearch(keyword)
       }
     }
   }
 
-  matchFilter (item) {
-    const {
-      searchable,
-      keyword
-    } = this.state
-    return this.isRemote() || (!searchable || !keyword) || (searchable && keyword && (String(item.id).includes(keyword) || String(item.title).includes(keyword)))
+  matchFilter(item) {
+    const { searchable, keyword } = this.state
+    return (
+      this.isRemote() ||
+      (!searchable || !keyword) ||
+      (searchable &&
+        keyword &&
+        (String(item.id).includes(keyword) ||
+          String(item.title).includes(keyword)))
+    )
   }
 
-  resetFocusedIndex (setState = true) {
+  resetFocusedIndex(setState = true) {
     let focusedIndex = -1
 
-    this.state.dropdownItems.every(item => {
+    this.state.dropdownItems.every((item) => {
       focusedIndex++
       if (!item.disabled && this.matchFilter(item)) {
         return false
       }
       return true
     })
-    setState && this.setState({
-      focusedIndex
-    })
+    setState &&
+      this.setState({
+        focusedIndex
+      })
     return focusedIndex
   }
 
-  setFocusedIndex (focusedIndex) {
-    this.setState({focusedIndex})
+  setFocusedIndex(focusedIndex) {
+    this.setState({ focusedIndex })
   }
 
-  moveFocusedIndex (direction) {
-    let {
-      focusedIndex
-    } = this.state
-    const {
-      dropdownItems
-    } = this.state
+  moveFocusedIndex(direction) {
+    let { focusedIndex } = this.state
+    const { dropdownItems } = this.state
 
     if (direction === 'up') {
-      dropdownItems.slice(0, focusedIndex).reverse().every(item => {
-        focusedIndex--
-        if (!item.disabled && this.matchFilter(item)) {
-          return false
-        }
-        return true
-      })
+      dropdownItems
+        .slice(0, focusedIndex)
+        .reverse()
+        .every((item) => {
+          focusedIndex--
+          if (!item.disabled && this.matchFilter(item)) {
+            return false
+          }
+          return true
+        })
     } else {
-      dropdownItems.slice(focusedIndex + 1).every(item => {
+      dropdownItems.slice(focusedIndex + 1).every((item) => {
         focusedIndex++
         if (!item.disabled && this.matchFilter(item)) {
           return false
@@ -471,10 +515,8 @@ class Select extends Component {
     })
   }
 
-  localeDatasProps (key) {
-    const {
-      localeDatas
-    } = this.props
+  localeDatasProps(key) {
+    const { localeDatas } = this.props
     if (this.props[key]) {
       return this.props[key]
     } else {
@@ -482,7 +524,7 @@ class Select extends Component {
     }
   }
 
-  render () {
+  render() {
     const {
       type,
       showCheckAll,
@@ -514,10 +556,20 @@ class Select extends Component {
     }
 
     return (
-      <div className={classNames('hi-select', className, extraClass)} style={style}>
-        <div className='hi-select__input-container' ref={node => { this.selectInputContainer = node }}>
+      <div
+        className={classNames('hi-select', className, extraClass)}
+        style={style}
+      >
+        <div
+          className="hi-select__input-container"
+          ref={(node) => {
+            this.selectInputContainer = node
+          }}
+        >
           <SelectInput
-            ref={node => { this.selectInput = node }}
+            ref={(node) => {
+              this.selectInput = node
+            }}
             mode={type}
             disabled={disabled}
             searchable={searchable}
@@ -529,8 +581,8 @@ class Select extends Component {
             multipleMode={multipleType}
             container={this.selectInputContainer}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
-            onClick={()=>{
-              if(this.props.open) {
+            onClick={() => {
+              if (this.props.open) {
                 this.handleInputClick()
               }
               onClick()
@@ -543,13 +595,13 @@ class Select extends Component {
             onEnterSelect={this.onEnterSelect.bind(this)}
           />
         </div>
-        { children }
+        {children}
         <Popper
           show={dropdownShow && this.props.open}
           attachEle={this.selectInputContainer}
           zIndex={1050}
           topGap={5}
-          className='hi-select__popper'
+          className="hi-select__popper"
           placement="top-bottom-start"
         >
           <SelectDropdown

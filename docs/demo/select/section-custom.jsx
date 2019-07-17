@@ -23,26 +23,24 @@ class Demo extends React.Component {
 
   render () {
     return (
-      <div>
-        <Select
-          placeholder='请选择种类'
-          style={{width: '200px'}}
-          value={'3'}
-          data={this.state.singleList}
-          searchable
-          onChange={(item) => {
-            console.log('单选结果', item)
-          }}
-          render={(item, isSelected) => {
-            return (
-              <React.Fragment>
-                <span style={{float: 'left'}}>{item.title}</span>
-                <span style={{float: 'right', color: '#999', fontSize: 14}}>{item.id}</span>
-              </React.Fragment>
-            )
-          }}
-        />
-      </div>
+      <Select
+        placeholder='请选择种类'
+        style={{ width: 200 }}
+        defaultValue={3}
+        data={this.state.singleList}
+        searchable
+        onChange={(item) => {
+          console.log('单选结果', item)
+        }}
+        render={(item, isSelected) => {
+          return (
+            <React.Fragment>
+              <span style={{ float: 'left' }}>{item.title}</span>
+              <span style={{ float: 'right', color: '#999', fontSize: 14}}>{item.id}</span>
+            </React.Fragment>
+          )
+        }}
+      />
     )
   }
 }`
