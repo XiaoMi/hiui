@@ -32,9 +32,46 @@ let defaultRender = (text, record, index) => {
   return text
 }
 
-export default class Body extends Component {
+class Row extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      picked: false
+    }
+  }
+
   render () {
-    let {columns, dataSource, cbs: {addExpand}, rowSelection = { }, highlightCols} = this.props
+    const {
+      selectedRowKeys,
+      expand,
+      k
+    } = this.props
+    let classNames = {
+      'table-row': true,
+      picked: selectedRowKeys.includes(k) || this.state.picked,
+      expand,
+      test: 't'
+    }
+
+    return (
+      <tr onClick={(e) => {
+        this.setState({picked: !this.state.picked})
+      }} {...this.props} className={prifix(classNames)}>{this.props.children}</tr>
+    )
+  }
+}
+
+export default class Body extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      pickedRows: []
+    }
+  }
+
+  render () {
+    let {columns, dataSource, cbs: {addExpand}, rowSelection = { }, highlightCols, advance} = this.props
+    columns = columns.filter(item => !item.hide)
     let selectedRowKeys = rowSelection.selectedRowKeys || []
     // 表头分组
     let i = 0
@@ -94,14 +131,31 @@ export default class Body extends Component {
         i++
         // 动态插入的组件不累加
       }
-      return <tr className={prifix('table-row', selectedRowKeys.includes(item.key) ? 'picked' : null, item.expand ? 'expanded' : null)} key={item.key || 'tr-' + k} >{tr}</tr>
+      return <Row selectedRowKeys={selectedRowKeys} k={item.key} expand={item.expand} key={item.key || 'tr-' + k} >{tr}</Row>
     })
 
     return (
       <tbody className={prifix('table-tbody')}>
+        {advance && advance.prefix && this.getPrefixNodes()}
         {nodes}
         <Footer className={'table-footer'} {...this.props} />
       </tbody>
     )
+  }
+
+  getPrefixNodes () {
+    const {
+      columns,
+      advance
+    } = this.props
+    return advance.prefix.map(suf => {
+      return (
+        <tr className={prifix('table-row')}>{
+          columns.map(item => {
+            return <td className={prifix('table-col')}>{suf[item.dataIndex]}</td>
+          })
+        }</tr>
+      )
+    })
   }
 }

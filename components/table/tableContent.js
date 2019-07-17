@@ -8,8 +8,13 @@ export default class TableContent extends Component {
     this.dom = React.createRef()
   }
   render () {
-    let {columns, className, style, head = true, body = true, ...rest} = this.props
+    let {columns, className, style, head = true, body = true, parent, ...rest} = this.props
     rest.columns = columns
+    let showColumns = rest.columns.filter(item => !item.hide)
+    let showHeaderColumns = rest.headerColumns.filter(item => !item.hide)
+    if (rest.headerColumns.length > 1 && parent.setting && parent.setting.current) {
+      parent.setting.current.style.display = 'none'
+    }
 
     return (
       <table className={className} style={style} ref={this.dom}>
@@ -29,10 +34,10 @@ export default class TableContent extends Component {
           })}
         </colgroup>
         {head
-          ? <Header {...rest} /> : null
+          ? <Header {...rest} columns={showColumns} showHeaderColumns={showHeaderColumns} /> : null
         }
         {body
-          ? <Body {...rest} /> : null
+          ? <Body {...rest} columns={showColumns} showHeaderColumns={showHeaderColumns} /> : null
         }
       </table>
     )

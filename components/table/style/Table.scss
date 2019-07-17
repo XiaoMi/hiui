@@ -31,13 +31,31 @@ $borderColor: #e6e7e8 !default;
 }
 
 .#{$table} {
-  position: relative;
-
   td,
   th {
     box-sizing: border-box;
   }
   //width: 100%;
+  &-container {
+    position: relative;
+  }
+
+  &-pre-header {
+    height: $normalHeight;
+    line-height: $normalHeight;
+    border-top: 1px solid $borderColor;
+    padding-left: 8px;
+    padding-right: 16px;
+  }
+
+  &-pre-footer {
+    height: $normalHeight;
+    line-height: $normalHeight;
+    border-bottom: 1px solid $borderColor;
+    padding-left: 8px;
+    padding-right: 16px;
+    background: $bgColor;
+  }
 
   &.striped {
     table {
@@ -48,17 +66,41 @@ $borderColor: #e6e7e8 !default;
   }
 
   &.bordered {
+    .#{$table}-pre-header {
+      border-left: 1px solid $borderColor;
+      border-right: 1px solid $borderColor;
+    }
+
+    .#{$table}-pre-footer {
+      border-left: 1px solid $borderColor;
+      border-right: 1px solid $borderColor;
+    }
+
     table {
       tr {
         td,
         th {
           border-left: 1px solid $borderColor;
+
+          &:last-child {
+            border-right: 1px solid $borderColor;
+          }
         }
       }
     }
   }
 
   &.large {
+    &-pre-header {
+      height: $largeHeight;
+      line-height: $largeHeight;
+    }
+
+    &-pre-footer {
+      height: $largeHeight;
+      line-height: $largeHeight;
+    }
+
     table {
       tr {
         height: $largeHeight;
@@ -81,6 +123,16 @@ $borderColor: #e6e7e8 !default;
   }
 
   &.small {
+    &-pre-header {
+      height: $smallHeight;
+      line-height: $smallHeight;
+    }
+
+    &-pre-footer {
+      height: $smallHeight;
+      line-height: $smallHeight;
+    }
+
     table {
       tr {
         height: $smallHeight;
@@ -103,6 +155,16 @@ $borderColor: #e6e7e8 !default;
   }
 
   &.mini {
+    &-pre-header {
+      height: $miniHeight;
+      line-height: $miniHeight;
+    }
+
+    &-pre-footer {
+      height: $miniHeight;
+      line-height: $miniHeight;
+    }
+
     table {
       tr {
         height: $miniHeight;
@@ -205,7 +267,7 @@ $borderColor: #e6e7e8 !default;
     }
   }
 
-  table {
+  &-container table {
     width: 100%;
     border-collapse: separate;
     background: #fff;
@@ -254,6 +316,7 @@ $borderColor: #e6e7e8 !default;
       font-size: $nornamFontSize;
       padding: 0;
       box-sizing: border-box;
+      cursor: pointer;
 
       &.picked td {
         background: $bgColor;
@@ -378,10 +441,9 @@ $borderColor: #e6e7e8 !default;
 
   &-setting {
     position: absolute;
-    right: 0;
+    right: 10px;
     top: 0;
     cursor: pointer;
-    background: $bgColor;
     width: 50px;
     text-align: center;
     border-left: 1px solid #e6e7e8;

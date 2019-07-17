@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import prifix from './prefix'
 class Footer extends Component {
   getSum (item) {
     const {
@@ -13,9 +13,10 @@ class Footer extends Component {
       columns
     } = this.props
     const tds = columns.map((item, index) => {
+      let key = 'sum-' + index
       if (item.type === 'number') {
         return (
-          <td>
+          <td className={prifix('table-col')} key={key}>
             {this.getSum(item)}
           </td>
         )
@@ -25,9 +26,9 @@ class Footer extends Component {
           <td>合计</td>
         )
       }
-      return <td />
+      return <td className={prifix('table-col')} key={key} />
     })
-    return <tr>{tds}</tr>
+    return <tr className={prifix('table-row')} key='sum-nodes'>{tds}</tr>
   }
   getAveNodes () {
     const {
@@ -35,23 +36,41 @@ class Footer extends Component {
       dataSource
     } = this.props
     const tds = columns.map((item, index) => {
+      let key = 'ave-' + index
       if (item.type === 'number') {
         let num = this.getSum(item) / dataSource.length
 
         return (
-          <td>
+          <td key={key}>
             {Math.round(num * 100) / 100}
           </td>
         )
       }
       if (index === 0) {
         return (
-          <td>均值</td>
+          <td className={prifix('table-col')} key={key}>均值</td>
         )
       }
-      return <td />
+      return <td className={prifix('table-col')} key={key} />
     })
-    return <tr>{tds}</tr>
+    return <tr className={prifix('table-row')} key='ave-nodes'>{tds}</tr>
+  }
+  getSuffixNodes () {
+    const {
+      columns,
+      advance
+    } = this.props
+
+    return advance.suffix.map((suf, index) => {
+      let key = 'suf-' + index
+      return (
+        <tr className={prifix('table-row')} key={key}>{
+          columns.map(item => {
+            return <td className={prifix('table-col')} key={key + '-' + item.dataIndex}>{suf[item.dataIndex]}</td>
+          })
+        }</tr>
+      )
+    })
   }
 
   render () {
@@ -62,6 +81,7 @@ class Footer extends Component {
 
     return (
       <React.Fragment >
+        {advance && advance.suffix && this.getSuffixNodes()}
         {dataSource.length > 0 && advance && advance.sum && this.getSumNodes()}
         {dataSource.length > 0 && advance && advance.avg && this.getAveNodes()}
       </React.Fragment>
