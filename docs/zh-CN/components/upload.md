@@ -16,14 +16,14 @@ constructor(props) {
 render () {
 	const param = this.state.param
 	return (
-		<div>
+		<div style={{width: 200}}>
 			<Upload
 				type="normal"
 				uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 				headers={{name: 'mi'}}
         buttonText="上传文件"
         tips="只能上传图片类型文件，且不超过500kb，最多上传两个文件"
-        maxSize={500}
+        // maxSize={500}
         maxCount={2}
         accept='image/*'
 				param={param}
@@ -191,9 +191,7 @@ render () {
 render () {
 	return (
 		<Upload
-			type="avatar"
-			width={180}
-			height={180}
+      type="avatar"
 			uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
 			headers={{name: 'mi'}}
 			param={{id:'uid',channel:'youpin'}}

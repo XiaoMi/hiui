@@ -13,7 +13,8 @@ class UploadClick extends Upload {
       tips,
       showUploadList,
       onRemove,
-      accept
+      accept,
+      localeDatas
     } = this.props
     const {
       fileList,
@@ -32,7 +33,7 @@ class UploadClick extends Upload {
             hidden
           />
           <span className={`hi-upload__button ${(disabled || fileCountLimted) ? 'hi-upload__button--disabled' : ''}`}>
-            { buttonText }
+            { buttonText || localeDatas.upload.buttonText}
           </span>
         </label>
         {
@@ -41,11 +42,7 @@ class UploadClick extends Upload {
         {showUploadList && (
           <ul className='hi-upload__list'>
             {fileList.map((file, index) => {
-              let listName = file.name.split('.')
-              listName =
-              listName[0].length > 20
-                ? file.name.substring(0, 19) + '....' + listName[1]
-                : listName.join('.')
+              console.log(file.progressNumber)
               const fileNameCls = classNames(
                 'hi-upload__filename',
                 file.uploadState === 'error' && 'hi-upload__filename--error'
@@ -58,9 +55,8 @@ class UploadClick extends Upload {
                 >
                   <span className={classNames(`Ficon-${file.fileType}`)} />
                   <div className='hi-upload__right-content'>
-                    <span className={fileNameCls}>{listName}</span>
+                    <span className={fileNameCls} title={file.name}>{file.name}</span>
                     <span>
-                      {/* {file.uploadState !== 'loading' && (<span className={'Ficon-' + this.uploadStatusIcon(file.uploadState)} />)} */}
                       { onRemove &&
                         <Icon
                           name={file.uploadState === 'loading' ? 'close' : 'delete'}
@@ -68,15 +64,14 @@ class UploadClick extends Upload {
                         />
                       }
                     </span>
-                    {
-                      file.uploadState === 'loading' && (
-                        <div className='hi-upload__upstatus'>
-                          <i className='hi-upload__upstatus-line' style={{ width: (file.progressNumber * 3.25) + 'px' }} />
-                          <i className='hi-upload__upstatus-num'>{file.progressNumber || 0}%</i>
-                        </div>
-                      )
-                    }
                   </div>
+                  {
+                    file.uploadState === 'loading' && (
+                      <div className='hi-upload__upstatus'>
+                        <i className='hi-upload__upstatus-line' style={{ width: file.progressNumber + '%' }} />
+                      </div>
+                    )
+                  }
                 </li>
               )
             })}

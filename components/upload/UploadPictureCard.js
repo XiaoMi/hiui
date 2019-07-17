@@ -12,7 +12,8 @@ class UploadPictureCard extends Upload {
       multiple,
       disabled,
       accept,
-      onRemove
+      onRemove,
+      localeDatas
     } = this.props
     const {
       fileList
@@ -33,27 +34,29 @@ class UploadPictureCard extends Upload {
               hidden
             />
             <span className={`hi-upload__button ${disabled ? 'hi-upload__button--disabled' : ''}`}>
-              {buttonText || '本地上传'}
+              {buttonText || localeDatas.upload.buttonText}
             </span>
           </label>
         </div>
         {showUploadList && (
           <ul className='hi-upload__list'>
             {fileList.map((file, index) => {
-              let listName = file.name.split('.')
-              listName = listName[0].length > 20 ? file.name.substring(0, 19) + '....' + listName[1] : listName.join('.')
               const fileNameCls = classNames(
                 'hi-upload__filename',
                 file.uploadState === 'error' && 'hi-upload__filename--error'
               )
+              const itemCls = classNames(
+                'hi-upload__item',
+                file.uploadState === 'error' && 'hi-upload__item--error'
+              )
               return (
-                <li key={index} title={file.name} className={'hi-upload__item'}>
+                <li key={index} title={file.name} className={itemCls}>
                   <div className='img-wrap'>
                     <img src={file.url} />
                     {file.uploadState === 'loading' && (<div className='img-mask' />)}
                   </div>
                   <div className='hi-upload__right-content'>
-                    <span className={fileNameCls}>{listName}</span>
+                    <span className={fileNameCls} title={file.name}>{file.name}</span>
                     <span>
                       {/* {file.uploadState !== 'loading' && (<span className={'Ficon-' + this.uploadStatusIcon(file.uploadState)} />)} */}
                       { onRemove &&
@@ -66,8 +69,7 @@ class UploadPictureCard extends Upload {
                     {
                       file.uploadState === 'loading' && (
                         <div className='hi-upload__upstatus'>
-                          <i className='hi-upload__upstatus-line' style={{ width: (file.progressNumber * 3.25) + 'px' }} />
-                          <i className='hi-upload__upstatus-num'>{file.progressNumber || 0}%</i>
+                          <i className='hi-upload__upstatus-line' style={{ width: file.progressNumber + '%' }} />
                         </div>
                       )
                     }

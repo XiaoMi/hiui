@@ -41,8 +41,8 @@ class UploadDrag extends Upload {
       multiple,
       accept,
       disabled,
-      onRemove,
-      tips
+      tips,
+      localeDatas
     } = this.props
     const {
       overEvent,
@@ -77,7 +77,7 @@ class UploadDrag extends Upload {
         >
           <label className='hi-upload-label'>
             <Icon name='upload-cloud' className='icon' />
-            <span className='drop-click'>拖拽文件上传</span>
+            <span className='drop-click'>{localeDatas.upload.drag}</span>
             {
               tips && <span className='hi-upload__tips hi-upload__tips--single-line'>{tips}</span>
             }
@@ -102,14 +102,10 @@ class UploadDrag extends Upload {
         >
           {
             fileList.length > 0 && <li className='hi-upload__item hi-upload__item-tips'>
-              <Icon name='comment-circle-o' />请拖拽文件进行上传
+              <Icon name='comment-circle-o' />{localeDatas.upload.dragTips}
             </li>
           }
           {fileList.map((file, index) => {
-            let listName = file.name.split('.')
-            listName = listName[0].length > 20
-              ? file.name.substring(0, 19) + '....' + listName[1]
-              : listName.join('.')
             const fileNameCls = classNames(
               'file-name',
               'upload-list__item-name',
@@ -123,24 +119,22 @@ class UploadDrag extends Upload {
               >
                 <span className={`Ficon-${file.fileType}`} />
                 <div className='hi-upload__right-content'>
-                  <span className={fileNameCls}>{listName}</span>
-                  <span className='hi-upload__operate-icon'>
-                    { onRemove &&
-                      <Icon
-                        name={file.uploadState === 'loading' ? 'close' : 'delete'}
-                        onClick={(e) => this.deleteFile(e, file, index)}
-                      />
-                    }
+                  <span className={fileNameCls}>{file.name}</span>
+                  <span
+                    className='hi-upload__operate-icon'
+                    onClick={(e) => this.deleteFile(e, file, index)}
+                  >
+                    {file.uploadState === 'loading' ? localeDatas.upload.cancel : localeDatas.upload.delete }
                   </span>
-                  {
-                    file.uploadState === 'loading' && (
-                      <div className='hi-upload__upstatus'>
-                        <i className='hi-upload__upstatus-line' style={{ width: (file.progressNumber * 3.25) + 'px' }} />
-                        <i className='hi-upload__upstatus-num'>{file.progressNumber || 0}%</i>
-                      </div>
-                    )
-                  }
                 </div>
+                {
+                  file.uploadState === 'loading' && (
+                    <div className='hi-upload__upstatus'>
+                      <i className='hi-upload__upstatus-line' style={{ width: file.progressNumber + '%' }} />
+                      <i className='hi-upload__upstatus-num'>{file.progressNumber || 0}%</i>
+                    </div>
+                  )
+                }
               </li>
             )
           })}

@@ -1,12 +1,3 @@
-/* stylelint-disable */
-.file-name {
-  margin-left: 10px;
-
-  &--error {
-    color: rgb(255, 0, 0);
-  }
-}
-
 .hi-upload {
   &--disabled {
     cursor: not-allowed;
@@ -37,7 +28,7 @@
 
     &--single-line {
       display: block;
-      padding: 4px 0;
+      padding: 12px 0 8px;
     }
   }
 
@@ -45,7 +36,6 @@
     width: 100%;
     overflow: hidden;
   }
-
 
   &__item {
     height: 36px;
@@ -55,6 +45,7 @@
     align-items: center;
     padding-bottom: 8px;
     overflow: hidden;
+    position: relative;
 
     &-tips {
       color: #428ef5;
@@ -79,6 +70,7 @@
     justify-content: space-between;
     align-items: center;
     padding-left: 8px;
+    overflow: hidden;
   }
 
   &__filename {
@@ -99,7 +91,7 @@
     background: #f2f2f2;
     border-radius: 9px;
     position: absolute;
-    bottom: -8px;
+    bottom: 0;
 
     &-line {
       display: inline-block;
@@ -116,7 +108,7 @@
     &-num {
       position: absolute;
       right: 38px;
-      top: -25px;
+      top: -32px;
       font-style: normal;
       font-size: 12px;
       color: #999;
@@ -141,6 +133,11 @@
       border-color: #4284f5;
     }
 
+    .hi-upload__operate-icon {
+      color: #4284f5;
+      cursor: pointer;
+    }
+
     &.hi-upload--disabled {
       cursor: not-allowed;
       opacity: 0.6;
@@ -159,10 +156,6 @@
       display: none;
     }
 
-    .drop-click {
-      // cursor: pointer;
-    }
-
     .show-drop-content {
       position: absolute;
       left: 0;
@@ -176,7 +169,6 @@
       font-size: 12px;
       color: #333;
       letter-spacing: 0;
-      text-align: center;
       line-height: 20px;
       cursor: inherit;
 
@@ -218,16 +210,16 @@
       width: 140px;
       height: 140px;
       display: inline-block;
-      cursor: pointer;
       position: relative;
       text-align: center;
       padding: 0;
-      margin-right: 16px;
+      margin: 8px;
+      // margin-right: 16px;
       overflow: visible;
-      margin-top: 0;
+      // margin-top: 0;
       vertical-align: middle;
       background: #fff;
-      margin-bottom: 16px;
+      // margin-bottom: 16px;
 
       &:not(:last-child) {
         background: #e7e7e7;
@@ -257,8 +249,6 @@
       }
     }
   }
-
-
 
   &__photo-del {
     position: absolute;
@@ -297,133 +287,12 @@
     max-height: 140px;
   }
 
-  &--avatar {
-    li {
-      width: 140px;
-      height: 140px;
-      box-sizing: border-box;
-      list-style: none;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-
-      .photo-upload {
-        margin: 0;
-        display: block;
-        width: 140px;
-        height: 140px;
-        line-height: 130px;
-        text-align: center;
-        font-size: 50px;
-        color: #8b939b;
-        cursor: pointer;
-      }
-
-      .upload-comperate {
-        position: absolute;
-        width: 140px;
-        height: 140px;
-        line-height: 140px;
-        background: rgba(0, 0, 0, 0.3);
-        left: 0;
-        top: 0;
-        text-align: center;
-        cursor: default;
-        display: none;
-
-        .icon::before {
-          color: #fff;
-          font-size: 16px;
-          cursor: pointer;
-        }
-
-        .icon-origin::before {
-          font-size: 18px;
-        }
-
-        .icon:first-child {
-          margin-right: 15px;
-        }
-      }
-
-      .upload-precent {
-        position: absolute;
-        width: 140px;
-        height: 140px;
-        left: 0;
-        top: 0;
-        background: rgba(0, 0, 0, 0.3);
-        color: #fff;
-        font-size: 14px;
-        text-align: center;
-        line-height: 120px;
-
-        .precent-loading {
-          width: 0;
-          height: 4px;
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          background: #4284f5;
-        }
-      }
-
-      .img-uploaded {
-        width: 100%;
-        height: 100%;
-
-        img {
-          max-width: 140px;
-          max-height: 140px;
-          position: absolute;
-          left: 0;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          margin: auto;
-        }
-      }
-
-      .img-uploading {
-        width: 100%;
-        height: 100%;
-
-        img {
-          max-width: 140px;
-          max-height: 140px;
-          position: absolute;
-          left: 0;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          margin: auto;
-        }
-      }
-
-      &:hover {
-        .upload-comperate {
-          display: block;
-        }
-      }
-    }
-
-    .upload-li {
-      border: 1px dotted #bcbcbc;
-
-      &:hover {
-        border: 1px dotted #0099fb;
-      }
-    }
-  }
-
   &--picture-card {
     .upload--disabled {
       cursor: not-allowed;
     }
 
     .hi-upload__list {
-      width: 415px;
-      max-height: 250px;
       margin-top: 15px;
       overflow: auto;
 
@@ -436,6 +305,14 @@
         margin-bottom: 8px;
         font-size: 12px;
         color: #333;
+
+        &--error {
+          border: 1px solid rgba(244, 65, 65, 1);
+        }
+
+        &:hover {
+          background: rgba(247, 247, 247, 1);
+        }
 
         &.loading {
           color: #999;
@@ -468,71 +345,6 @@
             background: rgba(0, 0, 0, 0.3);
           }
         }
-
-        .img-info-wrap {
-          float: left;
-          height: 50px;
-          position: relative;
-
-          .file-wrap {
-            height: 50px;
-            width: 303px;
-            line-height: 50px;
-          }
-
-          .loading-line-wrap {
-            width: 303px;
-            height: 2px;
-            background: #f2f2f2;
-            border-radius: 9px;
-            margin: 0;
-            position: absolute;
-            left: 0;
-            bottom: 6px;
-
-            .loading-line {
-              display: inline-block;
-              height: 2px;
-              width: 0;
-              background: #4284f5;
-              border-radius: 4px 0 0 4px;
-              position: absolute;
-              left: 0;
-              top: 0;
-              transition: width linear 0.1s;
-            }
-
-            .loading-num {
-              position: absolute;
-              right: 0;
-              top: -25px;
-              font-style: normal;
-              font-size: 12px;
-              color: #999;
-            }
-          }
-
-          .state-wrap {
-            float: right;
-            width: 20px;
-
-            .icon-wrong {
-              display: none;
-            }
-
-            &:hover {
-              .icon-wrong {
-                display: inline;
-              }
-
-              .icon-success,
-              .icon-error,
-              .icon-loading {
-                display: none;
-              }
-            }
-          }
-        }
       }
     }
   }
@@ -558,7 +370,3 @@
     font-size: 0;
   }
 }
-
-.upload-pictureCard {
-}
-

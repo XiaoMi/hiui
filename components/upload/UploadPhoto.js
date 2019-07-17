@@ -46,7 +46,8 @@ class UploadPhoto extends Upload {
     const {
       onRemove,
       disabled,
-      accept
+      accept,
+      localeDatas
     } = this.props
     const images = fileList.map(file => {
       return {
@@ -62,7 +63,7 @@ class UploadPhoto extends Upload {
                 <li key={index} className='hi-upload__item'>
                   <img src={file.url} className='hi-upload__thumb' />
                   <div className='hi-upload__precent'>
-                    <p className='hi-upload__loading-text'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : '上传成功') : (0 + '%')}</p>
+                    <p className='hi-upload__loading-text'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : localeDatas.upload.uploadSuccess) : (0 + '%')}</p>
                     <div className='hi-upload__loading-bar' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
                   </div>
                 </li>
@@ -79,7 +80,7 @@ class UploadPhoto extends Upload {
                       <div>
                         <Icon name='comment-circle-o' />
                         <br />
-                        上传失败
+                        {localeDatas.upload.uploadFailed}
                       </div>
                     </div>
                   }
@@ -88,7 +89,7 @@ class UploadPhoto extends Upload {
             }
           })}
           <li className='hi-upload__item hi-upload__item--upload'>
-            <label>
+            <label style={{display: 'block'}}>
               <input
                 ref={node => {
                   this.uploadRef = node
@@ -119,7 +120,7 @@ class UploadPhoto extends Upload {
 UploadPhoto.defaultProps = Object.assign({}, {
   ...Upload.defaultProps
 }, {
-  // accept: 'image/jpg,image/jpeg,image/png'
+  accept: 'image/jpg,image/jpeg,image/png'
 })
 
 export default Provider(UploadPhoto)

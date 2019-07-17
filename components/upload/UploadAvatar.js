@@ -126,13 +126,16 @@ class UploadAvatar extends Upload {
   render () {
     const {
       disabled,
-      accept
+      accept,
+      localeDatas,
+      avatarOptions = {}
     } = this.props
     const {
       fileList,
       showCropperModal,
       showPreviewModal
     } = this.state
+    const { aspectRatio = 0, dragMode = 'move', dropBoxSize = [] } = avatarOptions
     const file = fileList[0]
     return (
       <div className='hi-upload hi-upload--avatar'>
@@ -144,7 +147,7 @@ class UploadAvatar extends Upload {
                   <li className='hi-upload__item'>
                     <img src={file.url} className='hi-upload__thumb' />
                     <div className='hi-upload__precent'>
-                      <p className='hi-upload__loading-text'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : '上传成功') : (0 + '%')}</p>
+                      <p className='hi-upload__loading-text'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : localeDatas.upload.uploadSuccess) : (0 + '%')}</p>
                       <div className='hi-upload__loading-bar' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
                     </div>
                   </li>
@@ -162,7 +165,7 @@ class UploadAvatar extends Upload {
           {
             !file && (
               <li className='hi-upload__item hi-upload__item--upload'>
-                <label>
+                <label style={{display: 'block'}}>
                   <input
                     ref={node => {
                       this.uploadRef = node
@@ -187,8 +190,17 @@ class UploadAvatar extends Upload {
         >
           <Cropper
             src={this.state.src}
-            aspectRatio={16 / 9}
+            ready={(e) => {
+              if (dropBoxSize.length > 0) {
+                this.cropperRef.current.setCropBoxData({
+                  width: dropBoxSize[0],
+                  height: dropBoxSize[1] || dropBoxSize[0]
+                })
+              }
+            }}
+            aspectRatio={aspectRatio}
             guides={false}
+            dragMode={dragMode}
             ref={this.cropperRef}
             crop={() => {
             }}

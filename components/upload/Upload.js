@@ -9,16 +9,16 @@ let fileId = 0
 class Upload extends Component {
   constructor (props) {
     super(props)
-    const fileList = this.prepareDefaultFileList(props.fileList || props.defaultFileList)
+    const fileList = this.prepareDefaultFileList(props.defaultFileList)
     this.state = {
       fileList,
       fileCountLimted: false
     }
   }
   componentWillReceiveProps (nextProps) {
-    if (!shallowEqual(nextProps.fileList, this.props.fileList)) {
+    if (!shallowEqual(nextProps.defaultFileList, this.props.defaultFileList)) {
       this.setState({
-        fileList: this.prepareDefaultFileList(nextProps.fileList)
+        fileList: this.prepareDefaultFileList(nextProps.defaultFileList)
       })
     }
   }
@@ -34,7 +34,6 @@ class Upload extends Component {
 
   getFileType (file) {
     let ext = file.name.slice(file.name.lastIndexOf('.') + 1).toLowerCase()
-    console.log('扩展', ext)
     let fileType = ''
 
     switch (ext) {
@@ -247,7 +246,6 @@ class Upload extends Component {
     xhr.upload.onprogress = event => {
       var e = event || window.event
       var percentComplete = Math.ceil(e.loaded / e.total * 100)
-      console.log(' 比率', percentComplete)
       file.progressNumber = percentComplete
       this.setState({ fileList })
     }
@@ -293,6 +291,7 @@ Upload.propTypes = {
   customUpload: PropTypes.func,
   beforeUpload: PropTypes.func,
   defaultFileList: PropTypes.array,
+  fileList: PropTypes.array,
   onRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
   maxSize: PropTypes.number
 }
