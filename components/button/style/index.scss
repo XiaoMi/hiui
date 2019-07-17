@@ -20,8 +20,10 @@
   // Status: disabled
   &.hi-btn--disabled,
   &[disabled] {
-    border-color: rgba($color, 0.2);
-    color: rgba($color, 0.3);
+    &:not(.hi-btn--loading) {
+      border-color: rgba($color, 0.2);
+      color: rgba($color, 0.3);
+    }
   }
 }
 
@@ -41,14 +43,18 @@
       &:not(.hi-btn--disabled):active {
         background-color: map-get(get-palette($color), '60');
         color: $white;
-        box-shadow: inset 0 4px 4px rgba(map-get(get-palette($color), '50'), 0.25);
+        box-shadow:
+          inset 0 4px 4px
+          rgba(map-get(get-palette($color), '50'), 0.25);
       }
 
       // Status: disabled
       &.hi-btn--disabled,
       &[disabled] {
-        background-color: rgba(map-get(get-palette($color), '50'), 0.2);
-        color: $white;
+        &:not(.hi-btn--loading) {
+          background-color: rgba(map-get(get-palette($color), '50'), 0.2);
+          color: $white;
+        }
       }
 
       // Make a button look and behave like a link
@@ -98,7 +104,11 @@
   white-space: nowrap;
   touch-action: manipulation;
   cursor: pointer;
-  transition: background-color $speed-normal $easing, border-color $speed-normal $easing, box-shadow $speed-fast $easing, color $speed-normal $easing;
+  transition:
+    background-color $speed-normal $easing,
+    border-color $speed-normal $easing,
+    box-shadow $speed-fast $easing,
+    color $speed-normal $easing;
 
   @include hi-btn-style();
 
@@ -110,21 +120,17 @@
     outline: 0;
   }
 
-  &::before {
-    content: '';
-    display: block;
-    position: absolute;
-    top: -1px;
-    bottom: -1px;
-    left: -1px;
-    right: -1px;
-    background-color: #fff;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
   &--loading {
     &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      cursor: default;
+      top: -1px;
+      bottom: -1px;
+      left: -1px;
+      right: -1px;
+      background-color: #fff;
       opacity: 0.4;
     }
 
@@ -132,6 +138,7 @@
       width: 1em;
       height: 1em;
       display: inline-block;
+      cursor: default;
 
       svg {
         @keyframes rotate {
@@ -207,7 +214,10 @@
 
   @each $key in 'success', 'danger', 'warning' {
     &--type--#{$key} {
-      $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
+      $status-color: map-get(
+        get-palette(get-color($palette-secondary, $key)),
+        '50'
+      );
 
       @include render-line-button($status-color);
 
@@ -237,7 +247,7 @@
 
   // Status
   &--disabled,
-  &[disabled] {
+  &[disabled]:not(&--loading) {
     cursor: not-allowed;
   }
 
