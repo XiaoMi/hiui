@@ -1,8 +1,8 @@
 import React from 'react'
 import classNames from 'classnames'
-import Provider from '../context'
+import Provider from '../../context'
 import Upload from './Upload'
-import Icon from '../icon'
+import Icon from '../../icon'
 
 class UploadClick extends Upload {
   render () {

@@ -9,16 +9,16 @@ let fileId = 0
 class Upload extends Component {
   constructor (props) {
     super(props)
-    const fileList = this.prepareDefaultFileList(props.fileList || props.defaultFileList)
+    const fileList = this.prepareDefaultFileList(props.defaultFileList)
     this.state = {
       fileList,
       fileCountLimted: false
     }
   }
   componentWillReceiveProps (nextProps) {
-    if (!shallowEqual(nextProps.fileList, this.props.fileList)) {
+    if (!shallowEqual(nextProps.defaultFileList, this.props.defaultFileList)) {
       this.setState({
-        fileList: this.prepareDefaultFileList(nextProps.fileList)
+        fileList: this.prepareDefaultFileList(nextProps.defaultFileList)
       })
     }
   }

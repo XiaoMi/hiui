@@ -1,8 +1,8 @@
 import React from 'react'
 import classNames from 'classnames'
-import Provider from '../context'
+import Provider from '../../context'
 import Upload from './Upload'
-import Icon from '../icon'
+import Icon from '../../icon'
 
 class UploadDrag extends Upload {
   constructor (props) {
@@ -13,19 +13,8 @@ class UploadDrag extends Upload {
       },
       this.state
     )
-    this.dragBoxRef = React.createRef()
   }
 
-  // componentDidMount () {
-  //   this.dragBoxRef.current.addEventListener('click', (e) => {
-  //     e.stopImmediatePropagation()
-  //     console.log(e.target.className, e.stopImmediatePropagation)
-  //     const cls = e.target.className
-  //     if (!cls.includes('hi-upload__operate-icon') && !cls.includes('upload-input') && !cls.includes('drop-click') && !cls.includes('icon')) {
-  //       this.uploadRef.click()
-  //     }
-  //   }, true)
-  // }
   dragoverFn (e) {
     e.preventDefault()
     this.setState({ overEvent: true })
@@ -73,10 +62,9 @@ class UploadDrag extends Upload {
         onDragOver={e => this.dragoverFn(e)}
         onDragLeave={e => this.dragleaveFn(e)}
         onDrop={e => this.dropFn(e)}
-        ref={this.dragBoxRef}
         onClick={(e) => {
-          const cls = e.target.className
-          if (!cls.includes('hi-upload__operate-icon') && !cls.includes('upload-input') && !cls.includes('drop-click') && !cls.includes('icon-upload-cloud')) {
+          e.stopImmediatePropagation()
+          if (!e.target.className.includes('hi-upload__operate-icon') && !e.target.className.includes('upload-input')) {
             this.uploadRef.click()
           }
         }}

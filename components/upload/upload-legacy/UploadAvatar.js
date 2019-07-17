@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Modal from '../modal'
-import Provider from '../context'
+import Modal from '../../modal'
+import Provider from '../../context'
 import Upload from './Upload'
 import Preview from './Preview'
 import Cropper from 'react-cropper'
-import Icon from '../icon'
+import Icon from '../../icon'
 import 'cropperjs/dist/cropper.css'
 class UploadAvatar extends Upload {
   containerWidth = 550

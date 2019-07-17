@@ -1,7 +1,7 @@
 import React from 'react'
 import Upload from './Upload'
-import Provider from '../context'
-import Icon from '../icon'
+import Provider from '../../context'
+import Icon from '../../icon'
 import classNames from 'classnames'
 
 class UploadPictureCard extends Upload {
