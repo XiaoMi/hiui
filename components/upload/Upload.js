@@ -12,7 +12,7 @@ class Upload extends Component {
     const fileList = this.prepareDefaultFileList(props.defaultFileList)
     this.state = {
       fileList,
-      fileCountLimted: false
+      fileCountLimted: props.defaultFileList.length >= props.maxCount
     }
   }
   componentWillReceiveProps (nextProps) {
@@ -123,7 +123,7 @@ class Upload extends Component {
       this.setState({ fileList })
       this.uploadFile(file)
     }
-    if (fileList.length === maxCount) {
+    if (fileList.length >= maxCount) {
       this.setState({fileCountLimted: true})
     }
     ReactDOM.findDOMNode(this.uploadRef).value = ''

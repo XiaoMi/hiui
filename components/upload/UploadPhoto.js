@@ -41,7 +41,8 @@ class UploadPhoto extends Upload {
       fileList,
       showModal,
       previewFile,
-      activeIndex
+      activeIndex,
+      fileCountLimted
     } = this.state
     const {
       onRemove,
@@ -96,7 +97,7 @@ class UploadPhoto extends Upload {
                 }}
                 type='file'
                 accept={accept}
-                disabled={disabled && 'disabled'}
+                disabled={(disabled || fileCountLimted) && 'disabled'}
                 onChange={e => this.uploadFiles(e.target.files)}
                 hidden
               />
