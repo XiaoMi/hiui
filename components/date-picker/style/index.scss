@@ -362,6 +362,7 @@ $basic-color: #4284f5 !default;
   width: 180px;
   background: #fff;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+  z-index: 1;
 
   .hi-timepicker__body {
     width: 180px;
@@ -371,10 +372,6 @@ $basic-color: #4284f5 !default;
     width: 400px;
     display: flex;
     justify-content: space-between;
-
-    .hi-timepicker__body {
-      // flex: 1;
-    }
   }
 
   &__split {
