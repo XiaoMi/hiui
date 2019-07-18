@@ -71,7 +71,7 @@ class Demo extends React.Component {
     }]
   }
   render() {
-    return <Table columns={this.columns} scrollX data={this.data} fixTop={56}/>
+    return <Table columns={this.columns} data={this.data} fixTop={56}/>
   }
 }`
 const DemoExtend = () => (

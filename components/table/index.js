@@ -66,6 +66,7 @@ class Table extends Component {
     this.state = {
       dataSource: data,
       highlightCols: [],
+      highlightRows: [],
       scroll,
       columnMenu: false,
       // 由外部属性重构为内部状态
@@ -240,7 +241,7 @@ class Table extends Component {
 
   getScrollXContent () {
     let scrollTable
-    let {dataSource, highlightCols, columns, headerColumns, leftFiexColumns, rightFixColumns} = this.state
+    let {dataSource, highlightCols, columns, headerColumns, leftFiexColumns, rightFixColumns, highlightRows} = this.state
     // let {scroll} = this.state
     let {style = {}, ...props} = this.props
     let handleScroll = (e) => {
@@ -271,7 +272,7 @@ class Table extends Component {
         <div className={prifix('table-scroll')} onScroll={handleScroll} key='content'>
 
           <div className={prifix('table-body')} style={{overflowX: 'auto'}}>
-            <TableContent style={{...style}} {...Object.assign({}, {...props}, {columns}, {dataSource, highlightCols}, {parent: this, cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns, name: this.props.name})} />
+            <TableContent style={{...style}} {...Object.assign({}, {...props}, {columns}, {dataSource, highlightCols, highlightRows}, {parent: this, cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns, name: this.props.name})} />
           </div>
           {
             dataSource.length === 0 ? this.getEmptyContent() : null
@@ -284,7 +285,7 @@ class Table extends Component {
           <div className={prifix('table-fixed-left')} ref={this.fixLeft} style={{display: 'none'}} key='left'>
             <div className={prifix('table-outer')}>
               <div className={prifix('table-inner')}>
-                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {parent: this, columns: leftFiexColumns, headerColumns, name: this.props.name}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
+                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {highlightRows, parent: this, columns: leftFiexColumns, headerColumns, name: this.props.name}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
               </div>
             </div>
           </div>
@@ -296,7 +297,7 @@ class Table extends Component {
           <div className={prifix('table-fixed-right')} ref={this.fixRight} key='right'>
             <div className={prifix('table-outer')}>
               <div className={prifix('table-inner')}>
-                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {parent: this, columns: rightFixColumns, headerColumns, name: this.props.name}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
+                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {highlightRows, parent: this, columns: rightFixColumns, headerColumns, name: this.props.name}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
               </div>
             </div>
           </div>
@@ -316,17 +317,17 @@ class Table extends Component {
   }
 
   getScrollYContent () {
-    let {dataSource, highlightCols, columns, headerColumns} = this.state
+    let {dataSource, highlightCols, columns, headerColumns, highlightRows} = this.state
     let {scroll} = this.state
     let {style = {}, ...props} = this.props
     return (
       <div className={prifix('table-content')}>
         <div className={prifix('table-scroll')}>
           <div className={prifix('table-head')}>
-            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols}, {parent: this, body: false, cbs: this.cbs, fetch: this.fetch, t: this})} />
+            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols, highlightRows}, {parent: this, body: false, cbs: this.cbs, fetch: this.fetch, t: this})} />
           </div>
           <div className={prifix('table-body')} style={{maxHeight: scroll.y + 'px', overflow: 'auto'}} >
-            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols}, {parent: this, head: false, cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
+            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols, highlightRows}, {parent: this, head: false, cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
           </div>
         </div>
         {
@@ -337,14 +338,14 @@ class Table extends Component {
   }
 
   getBaseContent () {
-    let {dataSource, highlightCols, columns, headerColumns} = this.state
+    let {dataSource, highlightCols, columns, headerColumns, highlightRows} = this.state
 
     let {style = {}, ...props} = this.props
     return (
       <div className={prifix('table-content')}>
 
         <div className={prifix('table-body')} style={{overflowX: 'auto'}}>
-          <TableContent {...Object.assign({}, {style: {...style}}, {...props}, {columns}, {dataSource, highlightCols}, {parent: this, cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
+          <TableContent {...Object.assign({}, {style: {...style}}, {...props}, {columns}, {dataSource, highlightCols, highlightRows}, {parent: this, cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
         </div>
         {
           this.isEmpty ? this.getEmptyContent() : null
@@ -410,7 +411,6 @@ class Table extends Component {
     }
 
     if (!fixTop && height) {
-      console.log('height', height)
       let hiTableBody = this.dom.current.querySelectorAll('.hi-table-body')
       hiTableBody && hiTableBody.length > 0 && hiTableBody.forEach(item => {
         item.style.maxHeight = height
@@ -492,16 +492,7 @@ class Table extends Component {
         serverPagePosition = 'flex-end'
       }
     }
-
-    // 分页组件从受控模式，变成非受控模式，兼容处理
-    let serverPaginationConfig
-    if (serverPagination && serverPagination.current) {
-      serverPaginationConfig = {
-        ...serverPagination,
-        defaultCurrent: serverPagination.current
-      }
-      delete serverPaginationConfig.current
-    }
+    let serverPaginationConfig = serverPagination
     return (
       <div className={prifix({table: true, [size]: size, bordered, striped})} ref={this.dom}>
         {header && <div className={prifix({'table-pre-header': true})}>{header()}</div>}
@@ -565,13 +556,13 @@ class Table extends Component {
             }
           </div>
         }
-        {serverPaginationConfig && serverPaginationConfig.defaultCurrent && <div style={{display: 'flex', justifyContent: serverPagePosition}} a='1'>
+        {serverPaginationConfig && <div style={{display: 'flex', justifyContent: serverPagePosition}} a='1'>
           {
             <div className={prifix('table-page')} >
               <Pagination
                 {...serverPaginationConfig}
                 onChange={(current) => {
-                  serverPaginationConfig.onChange(current)
+                  serverPaginationConfig.onChange && serverPaginationConfig.onChange(current)
                   this.setState({
                     serverPagination: {
                       ...serverPagination,
@@ -806,9 +797,7 @@ class Table extends Component {
       currentPageName = Table.config.currentPageName
     } = origin
 
-    let l = loading.open({
-      target: this.dom.current
-    })
+    loading.open(this.dom.current, {key: 'loading'})
     const {
       serverPagination: {current}
     } = this.state
@@ -843,9 +832,9 @@ class Table extends Component {
         serverPagination: page
       })
       this.runMemory()
-      l.close()
+      loading.close('loading')
     }).catch((e) => {
-      l.close()
+      loading.close('loading')
       error(e)
     })
   }
@@ -867,7 +856,7 @@ class Table extends Component {
       }
     } = props || this.props
 
-    let l = loading.open({target: this.dom.current})
+    loading.open(this.dom.current, {key: 'loading'})
     this.setState({
       loading: true
     })
@@ -906,10 +895,10 @@ class Table extends Component {
           ...columnsDetail
         })
         this.runMemory()
-        l.close()
+        loading.close('loading')
       })
     }).catch((e) => {
-      l.close()
+      loading.close('loading')
       error(e)
     })
   }

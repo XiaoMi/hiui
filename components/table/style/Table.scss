@@ -77,6 +77,8 @@ $borderColor: #e6e7e8 !default;
     }
 
     table {
+      border-top: 1px solid $borderColor;
+
       tr {
         td,
         th {
@@ -223,8 +225,8 @@ $borderColor: #e6e7e8 !default;
   &-setting-menu {
     z-index: 999999;
     background: #fff;
-    border: 1px solid $borderColor;
-    box-shadow: 0 2px 8px 0 rgba(56, 62, 71, 0.1);
+    //border: 1px solid $borderColor;
+    //box-shadow: 0 2px 8px 0 rgba(56, 62, 71, 0.1);
     border-radius: 2px;
     width: 140px;
 
@@ -446,8 +448,6 @@ $borderColor: #e6e7e8 !default;
     cursor: pointer;
     width: 50px;
     text-align: center;
-    border-left: 1px solid #e6e7e8;
-    border-bottom: 1px solid #e6e7e8;
     box-sizing: border-box;
   }
 }

@@ -11,9 +11,9 @@ class Demo extends React.Component {
 
     this.columns = [
 
-      { title: '姓名', dataIndex: 'name', key: '1'},
-      { title: '年龄', dataIndex: 'age', key: '2',type:'number'},
-      { title: '地址', dataIndex: 'address', key: '3'},
+      { title: 'Column 1', dataIndex: 'name', key: '1'},
+      { title: 'Column 1', dataIndex: 'age', key: '2'},
+      { title: 'Column 1', dataIndex: 'address', key: '3'},
       {
         title: ()=><div>自定义标题</div>,
         dataIndex: 'address', key: '4',
@@ -34,42 +34,18 @@ class Demo extends React.Component {
     ]
 
     this.data = []
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       this.data.push({
         // key: i,
         name: \`Don Diablo \${i}\`,
-        age: i,
+        age: \`\${i}\${i}\`,
         address: \`EDC Las Vegas no. \${i}\`,
       });
     }
   }
   render() {
-    return <Table
-     height="250px" 
-     columns={this.columns} 
-     data={this.data} 
-     advance={{
-      sum:true,
-      avg:true,
-      prefix:[{
-        name: 'hiui',
-        age: 2,
-        address: 'beijing',
-      },
-      {
-        name: 'hiui2',
-        age: 1.5,
-        address: 'beijing',
-      }],
-      suffix:[{
-        name: 'xiaomi',
-        age: 9,
-        address: 'BJ',
-      }]
-     }}
-      />
+    return <Table name='base' columns={this.columns} data={this.data}  checked={(item) => item.id === 1 || item.id === 3} />
   }
-  
 }`
 
 const DemoBase = () => (
@@ -77,6 +53,7 @@ const DemoBase = () => (
     code={code}
     scope={{ Table }}
     prefix={prefix}
+    name='memory'
   />
 )
 export default DemoBase

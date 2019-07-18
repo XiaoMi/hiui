@@ -19,7 +19,7 @@ export default class TableContent extends Component {
     return (
       <table className={className} style={style} ref={this.dom}>
         <colgroup>
-          {columns.map((item, index) => {
+          {showColumns.map((item, index) => {
             let sty = {}
             if (item.width) {
               sty.minWidth = parseInt(item.width) + 'px'
@@ -34,10 +34,10 @@ export default class TableContent extends Component {
           })}
         </colgroup>
         {head
-          ? <Header {...rest} columns={showColumns} showHeaderColumns={showHeaderColumns} /> : null
+          ? <Header {...rest} columns={showColumns} showHeaderColumns={showHeaderColumns} parent={parent} /> : null
         }
         {body
-          ? <Body {...rest} columns={showColumns} showHeaderColumns={showHeaderColumns} /> : null
+          ? <Body {...rest} columns={showColumns} showHeaderColumns={showHeaderColumns} parent={parent} /> : null
         }
       </table>
     )

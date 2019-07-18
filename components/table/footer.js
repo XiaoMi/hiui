@@ -1,11 +1,27 @@
 import React, { Component } from 'react'
 import prifix from './prefix'
+import { Decimal } from 'decimal.js'
+
 class Footer extends Component {
   getSum (item) {
     const {
-      dataSource
+      dataSource = [],
+      advance: {
+        suffix = [],
+        prefix = []
+      }
     } = this.props
-    return dataSource.length > 0 ? dataSource.map(dataItem => dataItem[item.dataIndex]).reduce((pre, next) => pre + next) : 0
+    let res = [
+      ...prefix,
+      ...dataSource,
+      ...suffix
+    ].map(data => data[item.dataIndex])
+
+    let total = new Decimal(0)
+    res.forEach((item, index) => {
+      total = total.plus(new Decimal(item))
+    })
+    return total.valueOf()
   }
 
   getSumNodes () {
@@ -23,26 +39,40 @@ class Footer extends Component {
       }
       if (index === 0) {
         return (
-          <td>合计</td>
+          <td key='sum-name'>合计</td>
         )
       }
       return <td className={prifix('table-col')} key={key} />
     })
     return <tr className={prifix('table-row')} key='sum-nodes'>{tds}</tr>
   }
+
+  getAveNum (item) {
+    const {
+      dataSource = [],
+      advance: {
+        suffix = [],
+        prefix = []
+      }
+    } = this.props
+    let data = [
+      ...prefix,
+      ...dataSource,
+      ...suffix
+    ]
+    return new Decimal(this.getSum(item)).dividedBy(data.length).toFixed(2).valueOf() * 1
+  }
+
   getAveNodes () {
     const {
-      columns,
-      dataSource
+      columns
     } = this.props
     const tds = columns.map((item, index) => {
       let key = 'ave-' + index
       if (item.type === 'number') {
-        let num = this.getSum(item) / dataSource.length
-
         return (
           <td key={key}>
-            {Math.round(num * 100) / 100}
+            {this.getAveNum(item)}
           </td>
         )
       }
@@ -65,8 +95,8 @@ class Footer extends Component {
       let key = 'suf-' + index
       return (
         <tr className={prifix('table-row')} key={key}>{
-          columns.map(item => {
-            return <td className={prifix('table-col')} key={key + '-' + item.dataIndex}>{suf[item.dataIndex]}</td>
+          columns.map((item, j) => {
+            return <td className={prifix('table-col')} key={`${key}-${item.dataIndex}-${index}-${j}`}>{suf[item.dataIndex]}</td>
           })
         }</tr>
       )

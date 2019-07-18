@@ -17,7 +17,8 @@ class Demo extends React.Component {
       { title: 'Column 4', dataIndex: 'address', key: 'd', },
         { title: 'Column 1', dataIndex: 'address', key: 'e', },
         { title: 'Column 2', dataIndex: 'address', key: 'f',  },
-       
+         { title: 'Column 1', dataIndex: 'address', key: 'g', },
+        { title: 'Column 2', dataIndex: 'address', key: 'h',  },
       {
         title: 'Action',
         key: 'operation',
@@ -40,14 +41,16 @@ class Demo extends React.Component {
   }
   render() {
     return (
-      <div >
-       <Table
-         columns={this.columns}
-         data={this.data}
-         scrollX
-         fixTop={56}
-       />
+      <div style={{maxWidth: '1080px'}}>
+         <Table  
+           columns={this.columns}
+           data={this.data}
+           scrollX
+           fixTop={64}
+           height="300px"
+         /> 
       </div>
+     
     )
   }
 }`
