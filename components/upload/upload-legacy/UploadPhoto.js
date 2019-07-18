@@ -1,9 +1,9 @@
 import React from 'react'
 import classNames from 'classnames'
-import Provider from '../context'
+import Provider from '../../context'
 import Upload from './Upload'
 import Preview from './Preview'
-import Icon from '../icon'
+import Icon from '../../icon'
 
 class UploadPhoto extends Upload {
   constructor (props) {
@@ -41,8 +41,7 @@ class UploadPhoto extends Upload {
       fileList,
       showModal,
       previewFile,
-      activeIndex,
-      fileCountLimted
+      activeIndex
     } = this.state
     const {
       onRemove,
@@ -97,7 +96,7 @@ class UploadPhoto extends Upload {
                 }}
                 type='file'
                 accept={accept}
-                disabled={(disabled || fileCountLimted) && 'disabled'}
+                disabled={disabled && 'disabled'}
                 onChange={e => this.uploadFiles(e.target.files)}
                 hidden
               />

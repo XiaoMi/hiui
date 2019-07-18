@@ -16,7 +16,7 @@ class Demo extends React.Component {
           console.log('upload callback', file, fileList, response)
         }}
         hasBorder={true}
-        param={{id:'uid',channel:'youpin'}}
+        params={{id:'uid',channel:'youpin'}}
         name={'files[]'}
         multiple={true}
       />

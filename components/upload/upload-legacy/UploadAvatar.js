@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Modal from '../modal'
-import Provider from '../context'
+import Modal from '../../modal'
+import Provider from '../../context'
 import Upload from './Upload'
 import Preview from './Preview'
 import Cropper from 'react-cropper'
-import Icon from '../icon'
+import Icon from '../../icon'
 import 'cropperjs/dist/cropper.css'
 class UploadAvatar extends Upload {
   containerWidth = 550
@@ -128,8 +128,7 @@ class UploadAvatar extends Upload {
       disabled,
       accept,
       localeDatas,
-      avatarOptions = {},
-      onRemove
+      avatarOptions = {}
     } = this.props
     const {
       fileList,
@@ -157,7 +156,7 @@ class UploadAvatar extends Upload {
                   <li className='hi-upload__item'>
                     <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} onClick={() => this.previewImage(file)} />
                     {
-                      onRemove && <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, 0)} />
+                      <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, 0)} />
                     }
                   </li>
                 )

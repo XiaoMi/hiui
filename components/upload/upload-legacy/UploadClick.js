@@ -1,13 +1,13 @@
 import React from 'react'
 import classNames from 'classnames'
-import Provider from '../context'
+import Provider from '../../context'
 import Upload from './Upload'
-import Icon from '../icon'
+import Icon from '../../icon'
 
 class UploadClick extends Upload {
   render () {
     const {
-      content,
+      buttonText,
       disabled,
       multiple,
       tips,
@@ -33,7 +33,7 @@ class UploadClick extends Upload {
             hidden
           />
           <span className={`hi-upload__button ${(disabled || fileCountLimted) ? 'hi-upload__button--disabled' : ''}`}>
-            { content || localeDatas.upload.buttonText}
+            { buttonText || localeDatas.upload.buttonText}
           </span>
         </label>
         {
@@ -55,12 +55,11 @@ class UploadClick extends Upload {
                   <span className={classNames(`Ficon-${file.fileType}`)} />
                   <div className='hi-upload__right-content'>
                     <span className={fileNameCls} title={file.name}>{file.name}</span>
-                    <span
-                    >
+                    <span>
                       { onRemove &&
                         <Icon
-                          onClick={() => this.deleteFile(file, index)}
                           name={file.uploadState === 'loading' ? 'close' : 'delete'}
+                          onClick={() => this.deleteFile(file, index)}
                         />
                       }
                     </span>

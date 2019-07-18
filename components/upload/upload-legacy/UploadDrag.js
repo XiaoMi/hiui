@@ -1,8 +1,8 @@
 import React from 'react'
 import classNames from 'classnames'
-import Provider from '../context'
+import Provider from '../../context'
 import Upload from './Upload'
-import Icon from '../icon'
+import Icon from '../../icon'
 
 class UploadDrag extends Upload {
   constructor (props) {
@@ -13,7 +13,6 @@ class UploadDrag extends Upload {
       },
       this.state
     )
-    this.dragBoxRef = React.createRef()
   }
 
   dragoverFn (e) {
@@ -43,13 +42,11 @@ class UploadDrag extends Upload {
       accept,
       disabled,
       tips,
-      localeDatas,
-      onRemove
+      localeDatas
     } = this.props
     const {
       overEvent,
-      fileList,
-      fileCountLimted
+      fileList
     } = this.state
 
     const dragCls = classNames(
@@ -65,10 +62,9 @@ class UploadDrag extends Upload {
         onDragOver={e => this.dragoverFn(e)}
         onDragLeave={e => this.dragleaveFn(e)}
         onDrop={e => this.dropFn(e)}
-        ref={this.dragBoxRef}
         onClick={(e) => {
-          const cls = e.target.className
-          if (!cls.includes('hi-upload__operate-icon') && !cls.includes('upload-input') && !cls.includes('drop-click') && !cls.includes('icon-upload-cloud')) {
+          e.stopImmediatePropagation()
+          if (!e.target.className.includes('hi-upload__operate-icon') && !e.target.className.includes('upload-input')) {
             this.uploadRef.click()
           }
         }}
@@ -94,7 +90,7 @@ class UploadDrag extends Upload {
                 this.uploadFiles(e.target.files)
               }}
               multiple={multiple && 'multiple'}
-              disabled={(disabled || fileCountLimted) && 'disabled'}
+              disabled={disabled && 'disabled'}
               hidden
               accept={accept}
             />
@@ -109,10 +105,7 @@ class UploadDrag extends Upload {
         >
           {
             fileList.length > 0 && <li className='hi-upload__item hi-upload__item-tips'>
-              <Icon name='comment-circle-o' />
-              <span className='hi-upload__tips--exist'>
-                {localeDatas.upload.dragTips}
-              </span>
+              <Icon name='comment-circle-o' />{localeDatas.upload.dragTips}
             </li>
           }
           {fileList.map((file, index) => {
@@ -130,14 +123,12 @@ class UploadDrag extends Upload {
                 <span className={`Ficon-${file.fileType}`} />
                 <div className='hi-upload__right-content'>
                   <span className={fileNameCls}>{file.name}</span>
-                  {
-                    onRemove && <span
-                      className='hi-upload__operate-icon'
-                      onClick={(e) => this.deleteFile(e, file, index)}
-                    >
-                      {file.uploadState === 'loading' ? localeDatas.upload.cancel : localeDatas.upload.delete }
-                    </span>
-                  }
+                  <span
+                    className='hi-upload__operate-icon'
+                    onClick={(e) => this.deleteFile(e, file, index)}
+                  >
+                    {file.uploadState === 'loading' ? localeDatas.upload.cancel : localeDatas.upload.delete }
+                  </span>
                 </div>
                 {
                   file.uploadState === 'loading' && (
