@@ -1,11 +1,9 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
-import Tooltip from '../../../components/tooltip'
-const prefix = 'table-sort'
+const prefix = 'table-base'
 const code = `
 import React from 'react'
-import Tooltip from '@hi-ui/hiui/es/tooltip'
 import Table from '@hi-ui/hiui/es/table'\n
 class Demo extends React.Component {
   constructor(props){
@@ -13,25 +11,13 @@ class Demo extends React.Component {
 
     this.columns = [
 
-      {
-        title: <Tooltip
-           title="long long long long long long long long long long tex"
-           style={{margin: '0 10px'}}>
-           短文本
-         </Tooltip>,
-         dataIndex: 'name', key: '1',
-      },
-      {
-        dataIndex: 'age',
-        key: '2',
-        sorter(pre,next){
-          return pre.age - next.age
-        }
-      },
+      { title: 'Column 1', dataIndex: 'name', key: '1'},
+      { title: 'Column 1', dataIndex: 'age', key: '2'},
       { title: 'Column 1', dataIndex: 'address', key: '3'},
       {
         title: ()=><div>自定义标题</div>,
         dataIndex: 'address', key: '4',
+        width: '500px',
         render(text,record,index){
         return (
           <div>
@@ -50,23 +36,24 @@ class Demo extends React.Component {
     this.data = []
     for (let i = 0; i < 10; i++) {
       this.data.push({
-        key: i,
+        // key: i,
         name: \`Don Diablo \${i}\`,
-        age: \`\${i}\`,
+        age: \`\${i}\${i}\`,
         address: \`EDC Las Vegas no. \${i}\`,
       });
     }
   }
   render() {
-    return <Table size='small' columns={this.columns} data={this.data} name='sorter'/>
+    return <Table name='base' columns={this.columns} data={this.data}  checked={(item) => item.id === 1 || item.id === 3} />
   }
 }`
 
-const DemoSort = () => (
+const DemoBase = () => (
   <DocViewer
     code={code}
-    scope={{ Table, Tooltip }}
+    scope={{ Table }}
     prefix={prefix}
+    name='memory'
   />
 )
-export default DemoSort
+export default DemoBase

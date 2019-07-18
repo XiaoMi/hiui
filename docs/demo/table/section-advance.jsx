@@ -48,7 +48,6 @@ class Demo extends React.Component {
      height="250px" 
      columns={this.columns} 
      data={this.data} 
-     name='advance' 
      advance={{
       sum:true,
       avg:true,

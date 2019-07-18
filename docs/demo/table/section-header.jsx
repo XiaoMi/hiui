@@ -43,7 +43,7 @@ class Demo extends React.Component {
     }
   }
   render() {
-    return <Table columns={this.columns} data={this.data} fixTop={56} name='fixtop' />
+    return <Table columns={this.columns} data={this.data} fixTop={64}  />
   }
 }`
 

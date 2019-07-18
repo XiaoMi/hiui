@@ -4,11 +4,11 @@ import './style/index'
 
 class Icon extends React.Component {
   render () {
-    const { className, name, style } = this.props
+    const {className, name, style, ...rest} = this.props
 
     const iconCls = classNames(`hi-icon`, `icon-${name}`, className)
 
-    return <i className={iconCls} style={style} />
+    return <i className={iconCls} style={style} {...rest} />
   }
 }
 
