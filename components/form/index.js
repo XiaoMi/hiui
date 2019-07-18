@@ -1,5 +1,5 @@
 import Form from './Form'
-import Item from './item'
+import Item from './Item'
 import './style/index'
 import { depreactedPropsCompat } from '../_util'
 
