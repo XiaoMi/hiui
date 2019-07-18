@@ -74,7 +74,7 @@ class Demo extends React.Component {
         address: 'address-' + i
       })
     }
-    this.setState({data})
+    this.setState({data,current})
   }
 
   componentDidMount(){
@@ -84,13 +84,11 @@ class Demo extends React.Component {
   render() {
     return <Table
           columns={this.columns}
-          data={this.state.data}
-          fixTop={56}
-          scrollX
+          data={this.state.data} 
           pagination={{
             pageSize: this.state.pageSize,
             total:this.state.total,
-            current: this.state.current,
+            defaultCurrent: this.state.current,
             onChange:(page,pre,size)=>{
               this.set(page)
             },

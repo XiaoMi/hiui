@@ -43,7 +43,7 @@ class Demo extends React.Component {
     }
   }
   render() {
-    return <Table striped columns={this.columns} data={this.data} name='base'  checked={(item) => item.id === 1 || item.id === 3} />
+    return <Table striped columns={this.columns} data={this.data}  checked={(item) => item.id === 1 || item.id === 3} />
   }
 }`
 

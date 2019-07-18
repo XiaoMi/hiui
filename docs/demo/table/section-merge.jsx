@@ -23,7 +23,6 @@ class Demo extends React.Component {
       title: 'Name',
       dataIndex: 'name',
       render: (text, row, index) => {
-        console.log(index, '---index---')
         if (index < 4) {
           return <a href='javascript:;'>{text}</a>
         }
@@ -113,7 +112,7 @@ class Demo extends React.Component {
     }]
   }
   render() {
-    return <Table columns={this.columns} data={this.data} fixTop={56} name='merge'/>
+    return <Table columns={this.columns} data={this.data} fixTop={56} />
   }
 }`
 

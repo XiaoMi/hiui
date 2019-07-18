@@ -94,7 +94,7 @@ class Demo extends React.Component {
     this.data = data
   }
   render() {
-    return <Table columns={this.columns} data={this.data} fixTop={56} name='headergroup'/>
+    return <Table columns={this.columns} data={this.data} fixTop={64} />
   }
 }`
 

@@ -10,7 +10,7 @@ import './style'
 import loading from '../loading'
 import '../pagination/style'
 import '../icon/style'
-import {setKey, scrollTop, getStyle, getPosition} from './tool'
+import {setKey, scrollTop, getStyle, getPosition, offset} from './tool'
 import request from 'axios'
 import qs from 'qs'
 
@@ -66,6 +66,7 @@ class Table extends Component {
     this.state = {
       dataSource: data,
       highlightCols: [],
+      highlightRows: [],
       scroll,
       columnMenu: false,
       // 由外部属性重构为内部状态
@@ -89,7 +90,7 @@ class Table extends Component {
       col = col.split(',').filter(item => item)
       // 列隐藏记忆
       columns.map(item => {
-        if (col.includes(item.key)) {
+        if (col.includes(item.key.toString())) {
           item.hide = false
         } else {
           item.hide = true
@@ -124,6 +125,12 @@ class Table extends Component {
     if (highlight) {
       highlightCols = highlight.split(',').filter(item => !!item)
     }
+    // 冻结记忆
+    let freezeCol = window.localStorage.getItem(name + '-freeze')
+    if (freezeCol) {
+      this.cbs.freezeCol(freezeCol)
+    }
+
     this.setState({columns, headerColumns, dataSource, highlightCols})
   }
 
@@ -145,7 +152,7 @@ class Table extends Component {
 
     freezeCol: (key) => {
       // let col =
-      let {scrollWidth, scroll, scrollX} = this.props
+      let {scrollWidth, scroll, scrollX, name} = this.props
       let {columns} = this.state
       let pin = false
       columns = columns.map(item => {
@@ -172,6 +179,7 @@ class Table extends Component {
       this.setState({...columnsDetail}, () => {
         this.xscroll()
       })
+      window.localStorage.setItem(name + '-freeze', key)
     },
     hideCol: (key) => {
       let {columns, headerColumns} = this.state
@@ -193,7 +201,6 @@ class Table extends Component {
       // 设置操作记忆
       let {name} = this.props
       window.localStorage.setItem(name + '-col', colMemory)
-
       this.setState({columns, headerColumns})
     },
 
@@ -234,7 +241,7 @@ class Table extends Component {
 
   getScrollXContent () {
     let scrollTable
-    let {dataSource, highlightCols, columns, headerColumns, leftFiexColumns, rightFixColumns} = this.state
+    let {dataSource, highlightCols, columns, headerColumns, leftFiexColumns, rightFixColumns, highlightRows} = this.state
     // let {scroll} = this.state
     let {style = {}, ...props} = this.props
     let handleScroll = (e) => {
@@ -265,7 +272,7 @@ class Table extends Component {
         <div className={prifix('table-scroll')} onScroll={handleScroll} key='content'>
 
           <div className={prifix('table-body')} style={{overflowX: 'auto'}}>
-            <TableContent style={{...style}} {...Object.assign({}, {...props}, {columns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
+            <TableContent style={{...style}} {...Object.assign({}, {...props}, {columns}, {dataSource, highlightCols, highlightRows}, {parent: this, cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns, name: this.props.name})} />
           </div>
           {
             dataSource.length === 0 ? this.getEmptyContent() : null
@@ -278,7 +285,7 @@ class Table extends Component {
           <div className={prifix('table-fixed-left')} ref={this.fixLeft} style={{display: 'none'}} key='left'>
             <div className={prifix('table-outer')}>
               <div className={prifix('table-inner')}>
-                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: leftFiexColumns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
+                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {highlightRows, parent: this, columns: leftFiexColumns, headerColumns, name: this.props.name}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
               </div>
             </div>
           </div>
@@ -290,7 +297,7 @@ class Table extends Component {
           <div className={prifix('table-fixed-right')} ref={this.fixRight} key='right'>
             <div className={prifix('table-outer')}>
               <div className={prifix('table-inner')}>
-                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {columns: rightFixColumns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
+                <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {highlightRows, parent: this, columns: rightFixColumns, headerColumns, name: this.props.name}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
               </div>
             </div>
           </div>
@@ -310,17 +317,17 @@ class Table extends Component {
   }
 
   getScrollYContent () {
-    let {dataSource, highlightCols, columns, headerColumns} = this.state
+    let {dataSource, highlightCols, columns, headerColumns, highlightRows} = this.state
     let {scroll} = this.state
     let {style = {}, ...props} = this.props
     return (
       <div className={prifix('table-content')}>
         <div className={prifix('table-scroll')}>
           <div className={prifix('table-head')}>
-            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols}, {body: false, cbs: this.cbs, fetch: this.fetch, t: this})} />
+            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols, highlightRows}, {parent: this, body: false, cbs: this.cbs, fetch: this.fetch, t: this})} />
           </div>
           <div className={prifix('table-body')} style={{maxHeight: scroll.y + 'px', overflow: 'auto'}} >
-            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols}, {head: false, cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
+            <TableContent {...Object.assign({}, {...props}, {style: {...style}}, {columns}, {dataSource, highlightCols, highlightRows}, {parent: this, head: false, cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
           </div>
         </div>
         {
@@ -331,20 +338,46 @@ class Table extends Component {
   }
 
   getBaseContent () {
-    let {dataSource, highlightCols, columns, headerColumns} = this.state
+    let {dataSource, highlightCols, columns, headerColumns, highlightRows} = this.state
 
     let {style = {}, ...props} = this.props
     return (
       <div className={prifix('table-content')}>
 
         <div className={prifix('table-body')} style={{overflowX: 'auto'}}>
-          <TableContent {...Object.assign({}, {style: {...style}}, {...props}, {columns}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
+          <TableContent {...Object.assign({}, {style: {...style}}, {...props}, {columns}, {dataSource, highlightCols, highlightRows}, {parent: this, cbs: this.cbs, fetch: this.fetch, t: this}, {headerColumns})} />
         </div>
         {
-          dataSource.length === 0 ? this.getEmptyContent() : null
+          this.isEmpty ? this.getEmptyContent() : null
         }
       </div>
     )
+  }
+  get isEmpty () {
+    let dataLen = this.state.dataSource.length
+    if (dataLen > 0) {
+      return false
+    }
+
+    if (!this.props.advance) {
+      return true
+    }
+    let {
+      advance
+    } = this.props
+    let prefixLen = 0
+    let suffixLen = 0
+    if (advance.prefix) {
+      prefixLen = advance.prefix.length
+    }
+    if (advance.suffix) {
+      suffixLen = advance.suffix.length
+    }
+    if (prefixLen + suffixLen > 0) {
+      return false
+    }
+
+    return true
   }
 
   getEmptyContent () {
@@ -354,6 +387,10 @@ class Table extends Component {
   }
 
   componentDidUpdate () {
+    const {
+      fixTop,
+      height
+    } = this.props
     let leftFixTable = this.dom.current.querySelectorAll('.hi-table-fixed-left table tr')
     let rightFixTable = this.dom.current.querySelectorAll('.hi-table-fixed-right table tr')
     let scrollTable = this.dom.current.querySelectorAll('.hi-table-scroll table tr')
@@ -372,13 +409,35 @@ class Table extends Component {
         }
       })
     }
+
+    if (!fixTop && height) {
+      let hiTableBody = this.dom.current.querySelectorAll('.hi-table-body')
+      hiTableBody && hiTableBody.length > 0 && hiTableBody.forEach(item => {
+        item.style.maxHeight = height
+        item.style.overflowY = 'auto'
+        item.onscroll = (e) => {
+          let thead = item.querySelectorAll('thead')
+          thead.forEach(h => {
+            h.style.transform = `translate(0,${item.scrollTop}px)`
+          })
+
+          let fixTableBodyArr = this.dom.current.querySelectorAll('.hi-table-inner')
+          fixTableBodyArr && fixTableBodyArr.length > 0 && fixTableBodyArr.forEach(fixTableBody => {
+            fixTableBody.style.maxHeight = (parseInt(height) - '18') + 'px'
+            fixTableBody.style.overflowY = 'hidden'
+            fixTableBody.scrollTop = item.scrollTop
+            fixTableBody.querySelector('thead').style.transform = `translate(0,${item.scrollTop}px)`
+          })
+        }
+      })
+    }
   }
 
   render () {
     // 多选配置
     // noinspection JSAnnotator
 
-    let {pagination, name, size = 'normal', bordered = false, striped = false, scrollX} = this.props
+    let {pagination, name, size = 'normal', bordered = false, striped = false, scrollX, header = null, footer = null} = this.props
     // noinspection JSAnnotator
     let {scroll, columnMenu, serverPagination} = this.state
     let content
@@ -433,9 +492,7 @@ class Table extends Component {
         serverPagePosition = 'flex-end'
       }
     }
-
-    // 分页组件从受控模式，变成非受控模式，兼容处理
-    let serverPaginationConfig
+    let serverPaginationConfig = serverPagination
     if (serverPagination && serverPagination.current) {
       serverPaginationConfig = {
         ...serverPagination,
@@ -445,47 +502,18 @@ class Table extends Component {
     }
     return (
       <div className={prifix({table: true, [size]: size, bordered, striped})} ref={this.dom}>
-        <div >
+        {header && <div className={prifix({'table-pre-header': true})}>{header()}</div>}
+        <div className={prifix({'table-container': true})}>
           <div >{content}</div>
-        </div>
-        {(pagination || columns) && <br /> }
-        {
-          pagination && <div style={{display: 'flex', justifyContent: pagePosition}}>
-            {
-              <div className={prifix('table-page')} >
-                <Pagination
-                  {...pagination}
-                />
-              </div>
-            }
-          </div>
-        }
-        {serverPaginationConfig && serverPaginationConfig.defaultCurrent && <div style={{display: 'flex', justifyContent: serverPagePosition}} a='1'>
-          {
-            <div className={prifix('table-page')} >
-              <Pagination
-                {...serverPaginationConfig}
-                onChange={(current) => {
-                  serverPaginationConfig.onChange(current)
-                  this.setState({
-                    serverPagination: {
-                      ...serverPagination,
-                      current
-                    }
-                  }, this.fetch)
-                }}
+          { name &&
+          <div className={prifix('table-setting')} ref={this.setting}>
+            <div onClick={(e) => {
+              let {columnMenu} = this.state
+              this.setState({columnMenu: !columnMenu})
+            }}>
+              <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}}
               />
             </div>
-          }
-        </div>
-        }
-        { name &&
-          <div className={prifix('table-setting')} ref={this.setting}>
-            <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}}
-              onClick={(e) => {
-                let {columnMenu} = this.state
-                this.setState({columnMenu: !columnMenu})
-              }} />
             {
               columnMenu && <ClickOutside onClickOutside={(e) => this.setState({columnMenu: false})} >
                 <div className={prifix('table-setting-menu column-menu')} >
@@ -509,7 +537,9 @@ class Table extends Component {
                           }
                         </div>
                         <div>
-                          <Checkbox checked={!item.hide} onChange={(e) => this.cbs.hideCol(item.key)} />
+                          <Checkbox checked={!item.hide} onChange={(e) => {
+                            this.cbs.hideCol(item.key)
+                          }} />
                         </div>
                       </div>
                     ))
@@ -518,6 +548,39 @@ class Table extends Component {
               </ClickOutside>
             }
           </div>
+          }
+        </div>
+        {footer && <div className={prifix({'table-pre-footer': true})}>{footer()}</div>}
+        {(pagination || columns) && <br /> }
+        {
+          pagination && <div style={{display: 'flex', justifyContent: pagePosition}}>
+            {
+              <div className={prifix('table-page')} >
+                <Pagination
+                  {...pagination}
+                />
+              </div>
+            }
+          </div>
+        }
+        {serverPaginationConfig && serverPaginationConfig.defaultCurrent && <div style={{display: 'flex', justifyContent: serverPagePosition}} a='1'>
+          {
+            <div className={prifix('table-page')} >
+              <Pagination
+                {...serverPaginationConfig}
+                onChange={(current) => {
+                  serverPaginationConfig.onChange && serverPaginationConfig.onChange(current)
+                  this.setState({
+                    serverPagination: {
+                      ...serverPagination,
+                      current
+                    }
+                  }, this.fetch)
+                }}
+              />
+            </div>
+          }
+        </div>
         }
       </div>
     )
@@ -532,22 +595,26 @@ class Table extends Component {
     }
     let dom = this.dom.current
     let thead = dom ? dom.querySelectorAll('thead') : null
+
+    let offsetTop = offset(dom).top
+
+    //     表格距离顶部的位置 < 表格+ 自己的高度
     if (thead) {
-      if (scrollTop() + fixTop > dom.offsetTop && scrollTop() + fixTop < dom.offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(thead ? getStyle(thead[0], 'height') : 0)) {
+      if (scrollTop() + fixTop > offsetTop && offsetTop + fixTop < offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(thead ? getStyle(thead[0], 'height') : 0)) {
         thead.forEach(th => {
           th.style.display = 'table-header-group'
           // let h = (dom.offsetTop - scrollTop() - fixTop) * -1
           let h = getPosition(dom).y * -1 + fixTop
           th.style.transform = `translate(0,${h}px)`
           if (name) {
-            this.setting.current.style.transform = `translate(0,${h}px)`
+            this.setting.current.style.display = `none`
           }
         })
       } else {
         thead.forEach(th => {
           th.style.transform = `translate(0,0)`
           if (name) {
-            this.setting.current.style.transform = `translate(0,0)`
+            this.setting.current.style.display = `block`
             let h = parseInt(getStyle(dom.querySelector('thead'), 'height')) + 'px'
             this.setting.current.style.height = h
             this.setting.current.style.lineHeight = h
@@ -798,7 +865,9 @@ class Table extends Component {
       }
     } = props || this.props
 
-    let l = loading.open({target: this.dom.current})
+    let l = loading.open({
+      target: this.dom.current
+    })
     this.setState({
       loading: true
     })
@@ -853,6 +922,8 @@ class Table extends Component {
       document.addEventListener('scroll', () => {
         this.xscroll()
       })
+    } else {
+
     }
 
     // 如果有列冻结的配置
