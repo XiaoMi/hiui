@@ -48,7 +48,8 @@ class UploadDrag extends Upload {
     } = this.props
     const {
       overEvent,
-      fileList
+      fileList,
+      fileCountLimted
     } = this.state
 
     const dragCls = classNames(
@@ -93,7 +94,7 @@ class UploadDrag extends Upload {
                 this.uploadFiles(e.target.files)
               }}
               multiple={multiple && 'multiple'}
-              disabled={disabled && 'disabled'}
+              disabled={(disabled || fileCountLimted) && 'disabled'}
               hidden
               accept={accept}
             />
@@ -108,7 +109,10 @@ class UploadDrag extends Upload {
         >
           {
             fileList.length > 0 && <li className='hi-upload__item hi-upload__item-tips'>
-              <Icon name='comment-circle-o' />{localeDatas.upload.dragTips}
+              <Icon name='comment-circle-o' />
+              <span className='hi-upload__tips--exist'>
+                {localeDatas.upload.dragTips}
+              </span>
             </li>
           }
           {fileList.map((file, index) => {
