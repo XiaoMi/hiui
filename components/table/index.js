@@ -797,7 +797,9 @@ class Table extends Component {
       currentPageName = Table.config.currentPageName
     } = origin
 
-    loading.open(this.dom.current, {key: 'loading'})
+    let l = loading.open({
+      target: this.dom.current
+    })
     const {
       serverPagination: {current}
     } = this.state
@@ -832,9 +834,9 @@ class Table extends Component {
         serverPagination: page
       })
       this.runMemory()
-      loading.close('loading')
+      l.close()
     }).catch((e) => {
-      loading.close('loading')
+      l.close()
       error(e)
     })
   }
@@ -856,7 +858,9 @@ class Table extends Component {
       }
     } = props || this.props
 
-    loading.open(this.dom.current, {key: 'loading'})
+    let l = loading.open({
+      target: this.dom.current
+    })
     this.setState({
       loading: true
     })
@@ -895,10 +899,10 @@ class Table extends Component {
           ...columnsDetail
         })
         this.runMemory()
-        loading.close('loading')
+        l.close()
       })
     }).catch((e) => {
-      loading.close('loading')
+      l.close()
       error(e)
     })
   }
