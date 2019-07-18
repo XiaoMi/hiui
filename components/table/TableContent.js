@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Body from './body'
-import Header from './header'
+import Header from './Header'
 
 export default class TableContent extends Component {
   constructor (props) {
