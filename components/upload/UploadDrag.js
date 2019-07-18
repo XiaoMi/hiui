@@ -53,7 +53,8 @@ class UploadDrag extends Upload {
       accept,
       disabled,
       tips,
-      localeDatas
+      localeDatas,
+      onRemove
     } = this.props
     const {
       overEvent,
@@ -135,12 +136,14 @@ class UploadDrag extends Upload {
                 <span className={`Ficon-${file.fileType}`} />
                 <div className='hi-upload__right-content'>
                   <span className={fileNameCls}>{file.name}</span>
-                  <span
-                    className='hi-upload__operate-icon'
-                    onClick={(e) => this.deleteFile(e, file, index)}
-                  >
-                    {file.uploadState === 'loading' ? localeDatas.upload.cancel : localeDatas.upload.delete }
-                  </span>
+                  {
+                    onRemove && <span
+                      className='hi-upload__operate-icon'
+                      onClick={(e) => this.deleteFile(e, file, index)}
+                    >
+                      {file.uploadState === 'loading' ? localeDatas.upload.cancel : localeDatas.upload.delete }
+                    </span>
+                  }
                 </div>
                 {
                   file.uploadState === 'loading' && (

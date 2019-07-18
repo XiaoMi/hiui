@@ -55,11 +55,12 @@ class UploadClick extends Upload {
                   <span className={classNames(`Ficon-${file.fileType}`)} />
                   <div className='hi-upload__right-content'>
                     <span className={fileNameCls} title={file.name}>{file.name}</span>
-                    <span>
+                    <span
+                    >
                       { onRemove &&
                         <Icon
-                          name={file.uploadState === 'loading' ? 'close' : 'delete'}
                           onClick={() => this.deleteFile(file, index)}
+                          name={file.uploadState === 'loading' ? 'close' : 'delete'}
                         />
                       }
                     </span>

@@ -128,7 +128,8 @@ class UploadAvatar extends Upload {
       disabled,
       accept,
       localeDatas,
-      avatarOptions = {}
+      avatarOptions = {},
+      onRemove
     } = this.props
     const {
       fileList,
@@ -156,7 +157,7 @@ class UploadAvatar extends Upload {
                   <li className='hi-upload__item'>
                     <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} onClick={() => this.previewImage(file)} />
                     {
-                      <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, 0)} />
+                      onRemove && <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, 0)} />
                     }
                   </li>
                 )
