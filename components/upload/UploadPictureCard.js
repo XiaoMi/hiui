@@ -59,7 +59,6 @@ class UploadPictureCard extends Upload {
                   <div className='hi-upload__right-content'>
                     <span className={fileNameCls} title={file.name}>{file.name}</span>
                     <span>
-                      {/* {file.uploadState !== 'loading' && (<span className={'Ficon-' + this.uploadStatusIcon(file.uploadState)} />)} */}
                       { onRemove &&
                         <Icon
                           name={file.uploadState === 'loading' ? 'close' : 'delete'}
