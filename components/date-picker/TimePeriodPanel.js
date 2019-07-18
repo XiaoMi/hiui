@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import classNames from 'classnames'
+import Provider from '../context'
 import {getHours, getMinutes} from './dateUtil'
-export default class TimePeriodPanel extends Component {
+class TimePeriodPanel extends Component {
   constructor (props) {
     super(props)
     this.listEl = React.createRef()
@@ -26,29 +27,18 @@ export default class TimePeriodPanel extends Component {
     return timeInterval >= 60 ? getHours(date) * 60 / timeInterval : (getMinutes(date) + getHours(date) * 60) / timeInterval
   }
   componentDidMount () {
-    // const { date, timeInterval } = this.props
-    // const activeIndex = timeInterval >= 60 ? getHours(date) * 60 / timeInterval : (getMinutes(date) + getHours(date) * 60) / timeInterval
     setTimeout(() => {
       this.listEl.current.scrollTop = this.getActiveIndex() * 37
     }, 0)
   }
   render () {
     const list = this.calcInterval()
-    // const list = [
-    //   '00:00 ~ 04:00',
-    //   '04:00 ~ 08:00',
-    //   '08:00 ~ 12:00',
-    //   '12:00 ~ 16:00',
-    //   '16:00 ~ 20:00',
-    //   '20:00 ~ 24:00'
-    // ]
-    const { onTimePeriodPick } = this.props
-    // const activeIndex = timeInterval >= 60 ? getHours(date) * 60 / timeInterval : (getMinutes(date) + getHours(date) * 60) / timeInterval
+    const { onTimePeriodPick, localeDatas } = this.props
     const activeIndex = this.getActiveIndex()
     return <div
       className='hi-datepicker__time-period'
     >
-      <div className='hi-datepicker__period-header'>时间段</div>
+      <div className='hi-datepicker__period-header'>{localeDatas.datePicker.timePeriod}</div>
       <div className='hi-datepicker__period-body'>
         <ul className='hi-datepicker__period-list' ref={this.listEl}>
           {
@@ -72,3 +62,5 @@ export default class TimePeriodPanel extends Component {
     </div>
   }
 }
+
+export default Provider(TimePeriodPanel)
