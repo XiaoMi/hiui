@@ -16,16 +16,6 @@ class UploadDrag extends Upload {
     this.dragBoxRef = React.createRef()
   }
 
-  // componentDidMount () {
-  //   this.dragBoxRef.current.addEventListener('click', (e) => {
-  //     e.stopImmediatePropagation()
-  //     console.log(e.target.className, e.stopImmediatePropagation)
-  //     const cls = e.target.className
-  //     if (!cls.includes('hi-upload__operate-icon') && !cls.includes('upload-input') && !cls.includes('drop-click') && !cls.includes('icon')) {
-  //       this.uploadRef.click()
-  //     }
-  //   }, true)
-  // }
   dragoverFn (e) {
     e.preventDefault()
     this.setState({ overEvent: true })
