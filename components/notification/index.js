@@ -3,7 +3,7 @@ import './style/index'
 import React from 'react'
 import Button from '../button'
 import classNames from 'classnames'
-import handleNotification from './handleNotification'
+import handleNotification from './HandleNotification'
 
 const iconMap = {
   success: 'chenggong',
