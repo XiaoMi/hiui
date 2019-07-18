@@ -46,7 +46,13 @@ module.exports = {
     noFoundTip: 'Not found'
   },
   upload: {
-    buttonText: 'Upload'
+    buttonText: 'Upload',
+    uploadSuccess: 'Success',
+    uploadFailed: 'Failed',
+    cancel: 'Cancel',
+    delete: 'Delete',
+    drag: 'Drag and drop files for uploading',
+    dragTips: 'Please click or drag and drop file upload'
   },
   modal: {
     confirmText: 'OK',

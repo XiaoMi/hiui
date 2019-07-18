@@ -9,16 +9,16 @@ let fileId = 0
 class Upload extends Component {
   constructor (props) {
     super(props)
-    const fileList = this.prepareDefaultFileList(props.fileList || props.defaultFileList)
+    const fileList = this.prepareDefaultFileList(props.defaultFileList)
     this.state = {
       fileList,
-      fileCountLimted: fileList.length >= props.maxCount
+      fileCountLimted: false
     }
   }
   componentWillReceiveProps (nextProps) {
-    if (!shallowEqual(nextProps.fileList, this.props.fileList)) {
+    if (!shallowEqual(nextProps.defaultFileList, this.props.defaultFileList)) {
       this.setState({
-        fileList: this.prepareDefaultFileList(nextProps.fileList)
+        fileList: this.prepareDefaultFileList(nextProps.defaultFileList)
       })
     }
   }
@@ -123,7 +123,7 @@ class Upload extends Component {
       this.setState({ fileList })
       this.uploadFile(file)
     }
-    if (fileList.length >= maxCount) {
+    if (fileList.length === maxCount) {
       this.setState({fileCountLimted: true})
     }
     ReactDOM.findDOMNode(this.uploadRef).value = ''
@@ -191,7 +191,7 @@ class Upload extends Component {
     } = this.state
     const {
       name,
-      params,
+      param,
       headers,
       uploadAction
     } = this.props
@@ -226,9 +226,9 @@ class Upload extends Component {
       formFile.append(name, file)
     }
     // 设置除file外需要带入的参数
-    if (params) {
-      for (let i in params) {
-        formFile.append(i, params[i])
+    if (param) {
+      for (let i in param) {
+        formFile.append(i, param[i])
       }
     }
     xhr.upload.onload = () => {

@@ -3,7 +3,7 @@ import {createPortal} from 'react-dom'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import Icon from '../icon'
+import Icon from '../../icon'
 import './style/preview.js'
 
 class Preview extends Component {
@@ -50,6 +50,15 @@ class Preview extends Component {
     this.previewRef.current.removeEventListener('mousewheel', this.handleMouseWheel, false)
     this.previewRef.current.removeEventListener('DOMMouseScroll', this.handleMouseWheel, false)
   }
+  // static getDerivedStateFromProps (nextProps, prevState) {
+  //   const { activeIndex } = nextProps
+  //   if (nextProps.activeIndex !== prevState.activeIndex) {
+  //     return {
+  //       activeIndex
+  //     }
+  //   }
+  //   return null
+  // }
   onClose (e) {
     this.setState({
       style: {},

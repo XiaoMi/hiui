@@ -1,7 +1,7 @@
 import React from 'react'
 import Upload from './Upload'
-import Provider from '../context'
-import Icon from '../icon'
+import Provider from '../../context'
+import Icon from '../../icon'
 import classNames from 'classnames'
 
 class UploadPictureCard extends Upload {
@@ -16,8 +16,7 @@ class UploadPictureCard extends Upload {
       localeDatas
     } = this.props
     const {
-      fileList,
-      fileCountLimted
+      fileList
     } = this.state
 
     return (
@@ -30,11 +29,11 @@ class UploadPictureCard extends Upload {
               className='upload-input'
               onChange={e => this.uploadFiles(e.target.files)}
               multiple={multiple && 'multiple'}
-              disabled={(disabled || fileCountLimted) && 'disabled'}
+              disabled={disabled && 'disabled'}
               accept={accept}
               hidden
             />
-            <span className={`hi-upload__button ${(disabled || fileCountLimted) ? 'hi-upload__button--disabled' : ''}`}>
+            <span className={`hi-upload__button ${disabled ? 'hi-upload__button--disabled' : ''}`}>
               {buttonText || localeDatas.upload.buttonText}
             </span>
           </label>
@@ -59,6 +58,7 @@ class UploadPictureCard extends Upload {
                   <div className='hi-upload__right-content'>
                     <span className={fileNameCls} title={file.name}>{file.name}</span>
                     <span>
+                      {/* {file.uploadState !== 'loading' && (<span className={'Ficon-' + this.uploadStatusIcon(file.uploadState)} />)} */}
                       { onRemove &&
                         <Icon
                           name={file.uploadState === 'loading' ? 'close' : 'delete'}

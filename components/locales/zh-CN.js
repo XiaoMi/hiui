@@ -46,7 +46,13 @@ module.exports = {
     noFoundTip: '无匹配数据'
   },
   upload: {
-    buttonText: '上传'
+    buttonText: '本地上传',
+    uploadSuccess: '上传成功',
+    uploadFailed: '上传失败',
+    cancel: '取消',
+    delete: '删除',
+    drag: '拖拽文件上传',
+    dragTips: '请点击或拖拽文件上传'
   },
   modal: {
     confirmText: '确定',
