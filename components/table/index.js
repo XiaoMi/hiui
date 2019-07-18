@@ -493,6 +493,13 @@ class Table extends Component {
       }
     }
     let serverPaginationConfig = serverPagination
+    if (serverPagination && serverPagination.current) {
+      serverPaginationConfig = {
+        ...serverPagination,
+        defaultCurrent: serverPagination.current
+      }
+      delete serverPaginationConfig.current
+    }
     return (
       <div className={prifix({table: true, [size]: size, bordered, striped})} ref={this.dom}>
         {header && <div className={prifix({'table-pre-header': true})}>{header()}</div>}
@@ -556,7 +563,7 @@ class Table extends Component {
             }
           </div>
         }
-        {serverPaginationConfig && <div style={{display: 'flex', justifyContent: serverPagePosition}} a='1'>
+        {serverPaginationConfig && serverPaginationConfig.defaultCurrent && <div style={{display: 'flex', justifyContent: serverPagePosition}} a='1'>
           {
             <div className={prifix('table-page')} >
               <Pagination

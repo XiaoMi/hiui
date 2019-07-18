@@ -88,7 +88,7 @@ class Demo extends React.Component {
           pagination={{
             pageSize: this.state.pageSize,
             total:this.state.total,
-            current: this.state.current,
+            defaultCurrent: this.state.current,
             onChange:(page,pre,size)=>{
               this.set(page)
             },
