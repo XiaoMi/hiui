@@ -30,6 +30,10 @@
       display: block;
       padding: 12px 0 8px;
     }
+
+    &--exist {
+      padding-left: 3px;
+    }
   }
 
   &__list {
@@ -43,7 +47,7 @@
     color: #666;
     display: flex;
     align-items: center;
-    padding-bottom: 8px;
+    padding: 4px 0;
     overflow: hidden;
     position: relative;
 
@@ -60,6 +64,10 @@
     .hi-icon {
       cursor: pointer;
       font-size: 18px;
+    }
+
+    .icon-plus {
+      font-size: 32px;
     }
   }
 
@@ -121,7 +129,7 @@
     width: 100%;
     min-height: 140px;
     box-sizing: border-box;
-    border: 1px dotted #dbdbdb;
+    border: 1px dashed #dbdbdb;
     cursor: pointer;
     padding: 12px;
 
@@ -145,6 +153,12 @@
 
       .drop-click {
         cursor: not-allowed;
+      }
+    }
+
+    .hi-upload__item {
+      &:not(:first-child):not(:last-child) {
+        border-bottom: 1px solid rgba(230, 230, 230, 1);
       }
     }
 
@@ -230,7 +244,7 @@
         text-align: center;
         font-size: 28px;
         color: #e7e7e7;
-        border: 1px dotted #bcbcbc;
+        border: 1px dashed rgba(216, 216, 216, 1);
         line-height: 140px;
 
         &:hover {
