@@ -74,13 +74,7 @@ class Demo extends React.Component {
             auto:true, // 自动发请求配置(默认false)
             success: (res) => {
               let {data: {data, columns,page: {pageSize, totalNum, pageNum}}} = res
-              columns.unshift({
-                title:'排序demo',
-                dataIndex:'id',
-                key:'sort',
-                serverSort:[{sort:'desc', sort:'adesc'}] //点击排序的箭头图标会将数组中某一项放到请求参数里
-              })
-
+ 
                const pageSizeOptions = [{
                   value: 10,
                   title: '10'
@@ -112,7 +106,8 @@ class Demo extends React.Component {
                     this.setState({
                       pageSize
                     })
-                  }
+                  },
+              
 
                 }
               }

@@ -16,9 +16,6 @@ class HeaderMenu extends Component {
       </div>
     )
   }
-  componentDidMount () {
-    console.log('hello world')
-  }
 }
 
 let div
@@ -36,7 +33,6 @@ document.addEventListener('click', () => {
 })
 export default {
   show (e, cbs, key, freeze, size = 'normal') {
-    console.log('show')
     div && hide()
     div = document.createElement('div')
     div.className = 'hi-table-header-menu-' + size
