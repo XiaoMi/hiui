@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import debounce from 'lodash/debounce'
 import shallowequal from 'shallowequal'
 import Popper from '../popper'
-import Menu from './menu'
+import Menu from './Menu'
 import Provider from '../context'
 
 class Cascader extends Component {

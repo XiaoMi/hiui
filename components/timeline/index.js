@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 import Provider from '../context'
 import './style/index'
-import FoldingItem from './foldingItem'
+import FoldingItem from './FoldingItem'
 import Icon from '../icon'
 
 const Time = props => {
