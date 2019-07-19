@@ -2,6 +2,7 @@ import React from 'react'
 import HomeBase from './HomeBase'
 import '@components/ficon/style/index'
 import Button from '@components/button/Button'
+import Badge from '@components/badge/Badge'
 import { version } from '../../../package.json'
 
 class Home extends React.Component {
@@ -154,9 +155,9 @@ class Home extends React.Component {
                 </li>
                 <li className='flat-list__item'>
                   <div className='flat-list__figure' />
-                  <h3 className='flat-list__name'>HIUI Library</h3>
+                  <h3 className='flat-list__name'>HIUI Library <sup>20190719</sup></h3>
                   <div className='flat-list__desc'>
-                    点击下载集成所有 HIUI 组件的 <a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/static/resources/HIUI_2_0_0_beta(20190709).rplib'>Axure</a> / <a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/static/resources/HIUI_2_0_0_beta(20190709).sketch'>Sketch</a> 部件库
+                    点击下载集成所有 HIUI 组件的 <Badge type='dot' style={{ display: 'inline', paddingRight: 4 }}><a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/resources/HIUI_2_0_0_beta(20190719).rplib.zip'>Axure</a></Badge> / <a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/resources/HIUI_2_0_0_beta(20190709).sketch.zip'>Sketch</a> 部件库
                   </div>
                 </li>
               </ul>
