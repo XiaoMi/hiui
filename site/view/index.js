@@ -20,7 +20,7 @@ const logo = (
   <Logo
     url='https://xiaomi.github.io/hiui/'
     logoUrl='https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05'
-    text={<div className='title--wrapper'>HIUI<span className='version'>{`v${version}`}</span></div>}
+    text={<div>HIUI<span className='version'>{`v${version}`}</span></div>}
     title='HIUI'
     alt='HIUI'
   />
