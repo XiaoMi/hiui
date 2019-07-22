@@ -8,6 +8,7 @@ import designs from '../pages/designs'
 import pages from '../pages/components'
 import templates from '../pages/templates'
 import utils from '../utils'
+import { version } from '../../package.json'
 import {
   setDesignNavs,
   setComponentsNavs,
@@ -20,7 +21,7 @@ const logo = (
   <Logo
     url='<BASE_URL>/'
     logoUrl='<BASE_URL>/static/img/logo.png'
-    text='HIUI'
+    text={<div>HIUI<span className='version'>{`v${version}`}</span></div>}
     title='HIUI'
     alt='HIUI'
   />
