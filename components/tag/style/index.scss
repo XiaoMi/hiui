@@ -6,8 +6,9 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
   &__container {
     display: inline-block;
     vertical-align: middle;
-    padding: 2px 6px;
-    font-size: 12px;
+    padding: 1px 6px;
+    font-size: $font-size-small;
+    line-height: $line-height-size-small;
     border-radius: 4px;
 
     & + & {
