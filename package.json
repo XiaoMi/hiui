@@ -99,7 +99,7 @@
     "jsx-loader": "^0.13.2",
     "lint-staged": "^7.2.2",
     "loader-utils": "^1.2.3",
-    "marked": "^0.4.0",
+    "marked": "^0.7.0",
     "merge2": "^1.2.2",
     "mini-css-extract-plugin": "^0.7.0",
     "node-sass": "^4.12.0",

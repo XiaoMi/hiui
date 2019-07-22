@@ -21,7 +21,7 @@ const logo = (
   <Logo
     url='<BASE_URL>/'
     logoUrl='<BASE_URL>/static/img/logo.png'
-    text={<div>HIUI<span className='version'>{`v${version}`}</span></div>}
+    text={<React.Fragment>HIUI<span className='version'>{`v${version}`}</span></React.Fragment>}
     title='HIUI'
     alt='HIUI'
   />

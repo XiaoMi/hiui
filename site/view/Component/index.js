@@ -69,9 +69,12 @@ class Component extends React.Component {
   }
   getAnchors () {
     const anchorsDOM = document.querySelectorAll('#markdown-content h2')
-    const anchorsDOMList = [].slice.call(anchorsDOM)
-    const anchors = anchorsDOMList.map((v, i) => {
-      return { id: v.id, text: anchorsDOM[i].innerHTML }
+    const anchors = Array.from(anchorsDOM).map((v, i) => {
+      const anchorText = Array.from(anchorsDOM[i].childNodes).reduce((aText, val) => {
+        return val.nodeType === 3 ? aText + val.nodeValue : aText
+      }, '')
+
+      return { id: v.id, text: anchorText }
     })
 
     this.setState({ anchors })
