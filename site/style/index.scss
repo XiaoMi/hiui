@@ -12,6 +12,27 @@
     margin-left: 240px;
   }
 
+  .logo__title {
+    .title--wrapper {
+      position: relative;
+
+      .version {
+        position: absolute;
+        left: calc(100% + 2px);
+        height: 20px;
+        line-height: 18px;
+        padding: 0 8px;
+        border: 1px solid rgb(66, 133, 244);
+        color: rgb(66, 133, 244);
+        border-radius: 10px;
+        top: 8px;
+        font-size: 12px;
+        box-sizing: border-box;
+        font-weight: 500;
+      }
+    }
+  }
+
   .sidebar {
     box-shadow: inset -1px 0 0 0 #e7e7e7;
     width: 240px;

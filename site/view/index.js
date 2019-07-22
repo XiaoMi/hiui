@@ -7,6 +7,7 @@ import locales from '../locales'
 import designs from '../pages/designs'
 import pages from '../pages/components'
 import templates from '../pages/templates'
+import { version } from '../../package.json'
 import {
   setDesignNavs,
   setComponentsNavs,
@@ -19,11 +20,12 @@ const logo = (
   <Logo
     url='https://xiaomi.github.io/hiui/'
     logoUrl='https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05'
-    text='HIUI'
+    text={<div className='title--wrapper'>HIUI<span className='version'>{`v${version}`}</span></div>}
     title='HIUI'
     alt='HIUI'
   />
 )
+
 class Index extends React.Component {
   componentNavs = []
   designNavs = []
