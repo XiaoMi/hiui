@@ -1,4 +1,5 @@
 @import '@hi-ui/core-css/index.scss';
+
 $prefix: 'hi-tag' !default;
 $primary: get-color($palette-primary, 'hiui-blue') !default;
 
@@ -9,6 +10,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     padding: 1px 6px;
     font-size: $font-size-small;
     line-height: $line-height-size-small;
+    -webkit-font-smoothing: antialiased;
     border-radius: 4px;
 
     & + & {
@@ -16,8 +18,8 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     }
 
     &--default {
-      color: #fff;
       background: $primary;
+      color: $white;
 
       @each $key in 'success', 'danger', 'warning' {
         &.#{$prefix}__container--#{$key} {
