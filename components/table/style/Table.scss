@@ -34,6 +34,10 @@ $borderColor: #e6e7e8 !default;
   td,
   th {
     box-sizing: border-box;
+
+    button.hi-btn {
+      position: static;
+    }
   }
   //width: 100%;
   &-container {
