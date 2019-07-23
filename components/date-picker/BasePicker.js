@@ -89,7 +89,6 @@ class BasePicker extends Component {
   _parseProps (props, callback) {
     let {value, showTime, type, format, localeDatas, weekOffset} = props
     format = format || FORMATS[type]
-    // let date = new Date() // 当前时间
     let date
     let noText = false
     /**
@@ -173,7 +172,6 @@ class BasePicker extends Component {
   onPick (date, showPanel) {
     const {type, showTime, localeDatas, weekOffset} = this.props
     const {format} = this.state
-    console.log('%%%%%%%%%')
     this.setState({
       date,
       texts: [formatterDate(type, date.startDate || date, format, showTime, localeDatas, weekOffset), formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset)],
