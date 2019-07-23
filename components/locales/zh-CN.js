@@ -70,5 +70,8 @@ module.exports = {
   timeline: {
     expand: '展开',
     collapse: '收起'
+  },
+  form: {
+    colon: '：'
   }
 }

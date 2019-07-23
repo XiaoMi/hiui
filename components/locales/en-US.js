@@ -69,5 +69,8 @@ module.exports = {
   timeline: {
     expand: 'Expand',
     collapse: 'Collapse'
+  },
+  form: {
+    colon: ':'
   }
 }
