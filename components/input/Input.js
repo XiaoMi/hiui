@@ -55,7 +55,7 @@ class Input extends Component {
    */
   renderText () {
     let { hover, active, value } = this.state
-    let { disabled, type, prefix, suffix, prepend, append, id, placeholder } = this.props
+    let { disabled, type, prefix, suffix, prepend, append, id, placeholder, clearable } = this.props
 
     const noClear = ['textarea']
     let prefixId = id ? id + '_prefix' : ''
@@ -153,7 +153,7 @@ class Input extends Component {
             noClear.indexOf(type) === -1 &&
             typeof prefix === 'undefined' &&
             typeof suffix === 'undefined' &&
-            value !== '' && (
+            (value !== '' && clearable) && (
               <span
                 className={`hi-input__fix-box ${hover && !disabled ? '' : 'invisible'}`}
                 onClick={() => {
