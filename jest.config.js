@@ -1,24 +1,54 @@
-const transformIgnorePatterns = [
-  '/output/',
-  'node_modules/[^/]+?/(?!(es|node_modules)/)'
-]
-
 module.exports = {
-  // automock: true,
-  // clearMocks: true,
-  // verbose: false,
-  // testEnvironment: 'jsdom',
-  setupFiles: [ '<rootDir>/jest.setup.js' ],
-  moduleFileExtensions: [ 'ts', 'tsx', 'js', 'jsx' ],
-  modulePathIgnorePatterns: [ '/_site/', '/output/' ],
-  // unmockedModulePathPatterns: [
-  //   'node_modules/react/',
-  //   'node_modules/enzyme/'
+  // Stop running tests after the first failure
+  bail: false,
+
+  // Indicates whether the coverage information should be collected while executing the test
+  collectCoverage: false,
+
+  // An array of regexp pattern strings used to skip coverage collection
+  coveragePathIgnorePatterns: [
+    '/node_modules/'
+  ],
+
+  // The directory where Jest should output its coverage files
+  coverageDirectory: '<rootDir>/test/coverage',
+
+  // A list of reporter names that Jest uses when writing coverage reports
+  coverageReporters: [
+    'json-summary',
+    'text',
+    'lcov'
+  ],
+
+  // An array of glob patterns indicating a set of files for which coverage information should be collected
+  collectCoverageFrom: [
+    '<rootDir>/components/**/*',
+    '!<rootDir>/components/**/index.js',
+    '!<rootDir>/components/**/__test__/**/*',
+    '!<rootDir>/components/**/(*-legacy)/**/*'
+  ],
+  // collectCoverageFrom: [
+  //   '<rootDir>/components/button/**/*'
   // ],
+
+  // The test environment that will be used for testing
+  testEnvironment: 'jest-environment-jsdom-global',
+
+  // The paths to modules that run some code to configure or set up the testing environment before each test
+  setupFiles: [
+    '<rootDir>/jest.setup.js'
+  ],
+
+  // An array of file extensions your modules use
+  moduleFileExtensions: [ 'ts', 'tsx', 'js', 'jsx' ],
+
+  // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
     '\\.(css|scss)$': '<rootDir>/test/stylesMock.js',
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/test/fileMock.js'
   },
+
+  // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   testPathIgnorePatterns: [
     '/node_modules/',
     '/output/',
@@ -26,19 +56,17 @@ module.exports = {
     'dekko',
     'node'
   ],
+
+  // A map from regular expressions to paths to transformers
   transform: {
     '^.+\\.(js|jsx|mjs)$': '<rootDir>/node_modules/babel-jest'
   },
-  testRegex: '(.*/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
-  collectCoverage: false, // 是否收集测试时的覆盖率信息
-  collectCoverageFrom: ['<rootDir>/components/**/*.{js,jsx,mjs}'], // 哪些文件需要收集覆盖率信息
-  coverageDirectory: '<rootDir>/test/coverage',
-  // setupTestFrameworkScriptFile: './node_modules/jest-enzyme/lib/index.js',
-  transformIgnorePatterns
-  // runner: 'jest-electron-runner',
-  // testEnvironment: 'jest-environment-electron',
-  //   snapshotSerializers: [
-  //     'enzyme-to-json/serializer',
-  //   ],
 
+  // The regexp pattern Jest uses to detect test files
+  testRegex: '(.*/__tests__/.*(\\.|/)(test|spec))\\.[jt]sx?$',
+
+  transformIgnorePatterns: [
+    '/output/',
+    'node_modules/[^/]+?/(?!(es|node_modules)/)'
+  ]
 }
