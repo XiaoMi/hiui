@@ -87,7 +87,6 @@
 }
 
 .hi-btn {
-  position: relative;
   display: inline-block;
   box-sizing: border-box;
   margin: 0; // For input.btn
@@ -121,6 +120,8 @@
   }
 
   &--loading {
+    position: relative;
+
     &::before {
       content: '';
       display: block;
@@ -293,16 +294,14 @@
 
 // Button Group
 .hi-btn-group {
-  position: relative;
   display: inline-block;
 
   > .hi-btn {
-    position: relative;
-    z-index: 0;
     margin-left: 0;
     margin-right: 0;
 
     &:hover {
+      position: relative;
       z-index: 1;
     }
 
