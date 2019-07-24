@@ -1,6 +1,6 @@
 @import '@hi-ui/core-css/index.scss';
 
-.article > div {
+.article {
   @include typoBase;
   @include typoCode;
   @include typoHeadings;
@@ -154,7 +154,7 @@
 }
 
 // 排版区域样式重置
-.article--typography-demo > div {
+.entry--typography-demo {
   > h1,
   > h2,
   > h3,

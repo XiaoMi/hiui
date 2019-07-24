@@ -75,7 +75,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/standalone": "^7.4.5",
     "@bougiel/puppeteer-prerenderer": "^0.0.3",
-    "@mdx-js/loader": "^0.15.5",
+    "@mdx-js/loader": "^1.1.0",
     "autoprefixer": "^8.5.0",
     "babel-eslint": "^8.2.6",
     "babel-jest": "^24.8.0",

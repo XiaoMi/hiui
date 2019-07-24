@@ -31,7 +31,7 @@ class Component extends React.Component {
         () => {
           this.getAnchors()
           const anchorsDOM = document.querySelectorAll(
-            '#markdown-content > div > h2'
+            '#markdown-content > h2'
           )
           const anchorsDOMList = [].slice.call(anchorsDOM)
           anchorsDOMList.map((v, i) => {
@@ -68,7 +68,7 @@ class Component extends React.Component {
     this.setState({ activeAnchor: id })
   }
   getAnchors () {
-    const anchorsDOM = document.querySelectorAll('#markdown-content h2')
+    const anchorsDOM = document.querySelectorAll('#markdown-content > h2')
     const anchors = Array.from(anchorsDOM).map((v, i) => {
       const anchorText = Array.from(anchorsDOM[i].childNodes).reduce((aText, val) => {
         return val.nodeType === 3 ? aText + val.nodeValue : aText
