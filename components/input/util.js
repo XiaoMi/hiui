@@ -98,7 +98,9 @@ export const format = (val, type) => {
     case 'email':
       return val.replace(/\W/g, '')
     case 'amount':
-      val = val.replace(/[^\d|.|,]/g, '')
+      val = val.replace(/[^\d|.|,]/g, '').replace(/(\.\d*?)(\.|\,).*/, (_, $1) => {
+        return $1
+      })
       return val
     default:
       return val

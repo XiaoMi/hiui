@@ -19,7 +19,7 @@ module.exports = merge(baseConfig, {
     new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
-    host: '127.0.0.1',
+    host: '0.0.0.0',
     port: 4200,
     disableHostCheck: false,
     hot: true,
