@@ -68,7 +68,8 @@ class Demo extends React.Component {
     }
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault()
     this.form.validate(valid => {
       if(valid) {
         console.log(this.state.form)
@@ -128,8 +129,8 @@ class Demo extends React.Component {
                 />
               </FormItem>
               <FormItem>
-                <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
-                <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
+                <Button htmlType="submit" type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
+                <Button htmlType="reset" onClick={this.cancelSubmit.bind(this)}>重置</Button>
               </FormItem>
 
             </Col>

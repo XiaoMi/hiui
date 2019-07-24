@@ -25,7 +25,8 @@ class Button extends Component {
     onClick: PropTypes.func,
     href: PropTypes.string,
     loading: PropTypes.bool,
-    target: PropTypes.oneOf(['_self', '_blank', '_parent', '_top'])
+    target: PropTypes.oneOf(['_self', '_blank', '_parent', '_top']),
+    htmlType: PropTypes.oneOf(['button', 'submit', 'reset'])
   }
 
   deprecatedProps = {
@@ -37,7 +38,8 @@ class Button extends Component {
     type: 'default',
     disabled: false,
     appearance: 'button',
-    size: 'normal'
+    size: 'normal',
+    htmlType: 'button'
   }
 
   render () {
@@ -53,7 +55,8 @@ class Button extends Component {
       onClick,
       href,
       style,
-      children
+      children,
+      htmlType
     } = this.props
     const isDisabled = disabled || loading
     const classes = classNames(
@@ -72,7 +75,7 @@ class Button extends Component {
         : `hi-btn--type--${type}`
     )
 
-    const restProps = { href, style, onClick, disabled: isDisabled }
+    const restProps = { href, style, onClick, disabled: isDisabled, type: htmlType }
 
     deprecatedPropsCheck(this.deprecatedProps, this.props, 'Button')
 
@@ -93,7 +96,7 @@ function ButtonWrapper ({ children, ...restProps }) {
   return restProps.href ? (
     <a {...restProps}>{children}</a>
   ) : (
-    <button {...restProps} type='button'>
+    <button {...restProps}>
       {children}
     </button>
   )

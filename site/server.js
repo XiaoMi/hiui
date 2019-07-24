@@ -24,6 +24,6 @@ const server = new WebpackDevServer(compiler, {
   historyApiFallback: true
 })
 
-server.listen(PORT, () => {
-  console.log(`server started at localhost:${PORT} , please open localhost:${PORT}`)
+server.listen(PORT, 'localhost', () => {
+  console.log(`server started at http://localhost:${PORT} , please open http://localhost:${PORT}`)
 })
