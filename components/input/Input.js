@@ -24,19 +24,25 @@ class Input extends Component {
 
     const oldProps = Object.assign({}, commonAttrs, this.props)
     const newProps = getAttrs(oldProps)
-
+    const { prepend, append, value, defaultValue } = props
     // 分离有效属性和事件
     this.attrs = newProps.attrs
-    const type = typeof this.props.value
-    const prefix = typeof this.props.prefix === 'undefined' ? '' : this.props.prefix
-    const suffix = typeof this.props.suffix === 'undefined' ? '' : this.props.suffix
-    const valueSource = props.value === undefined ? props.defaultValue : props.value
+    const type = typeof value
+    const valueSource = value === undefined ? defaultValue : value
+    const prefix = typeof prepend === 'string' ? prepend : ''
+    const suffix = typeof append === 'string' ? append : ''
+    const prependNode = typeof prepend !== 'string' && prepend
+    const appendNode = typeof append !== 'string' && append
     this.state = {
       value:
         type === 'string' || type === 'number' ? format(valueSource, this.props.type) : '',
       valueTrue: prefix + valueSource + suffix,
       hover: false,
-      active: false
+      active: false,
+      prefix,
+      suffix,
+      prepend: prependNode,
+      append: appendNode
     }
   }
 
@@ -49,13 +55,28 @@ class Input extends Component {
         })
       }
     }
+    if (nextProps.prepend !== this.state.prepend || nextProps.append !== this.state.append) {
+      const { prepend, append } = nextProps
+      const prefix = typeof prepend === 'string' ? prepend : ''
+      const suffix = typeof append === 'string' ? append : ''
+      const prependNode = typeof prepend !== 'string' && prepend
+      const appendNode = typeof append !== 'string' && append
+      this.setState({
+        prefix,
+        suffix,
+        prepend: prependNode,
+        append: appendNode
+      })
+    }
   }
+
   /**
    * 渲染 text 输入框
    */
   renderText () {
     let { hover, active, value } = this.state
-    let { disabled, type, prefix, suffix, prepend, append, id, placeholder } = this.props
+    let { disabled, type, id, placeholder, clearable } = this.props
+    let { prefix, suffix, prepend, append } = this.state
 
     const noClear = ['textarea']
     let prefixId = id ? id + '_prefix' : ''
@@ -153,7 +174,7 @@ class Input extends Component {
             noClear.indexOf(type) === -1 &&
             typeof prefix === 'undefined' &&
             typeof suffix === 'undefined' &&
-            value !== '' && (
+            (value !== '' && clearable) && (
               <span
                 className={`hi-input__fix-box ${hover && !disabled ? '' : 'invisible'}`}
                 onClick={() => {

@@ -15,30 +15,30 @@ class Demo extends React.Component {
     super()
     this.list = [{
       content: '前缀',
-      id: 'prefix'
+      id: 'prepend'
     }, {
       content: '后缀',
-      id: 'suffix'
+      id: 'append'
     }, {
       content: '两者',
       id: 'both'
     }]
     this.state = {
-      value: 'prefix'
+      value: 'prepend'
     }
     this.getFix = () => {
       return {
-        prefix: {
-          prefix: '+86',
+        prepend: {
+          prepend: '+86',
           placeholder: '010-12345678'
         },
-        suffix: {
-          suffix: '@xiaomi.com',
+        append: {
+          append: '@xiaomi.com',
           placeholder: 'mife'
         },
         both: {
-          prefix: 'www.',
-          suffix: '.com',
+          prepend: 'www.',
+          append: '.com',
           placeholder: 'mi'
         }
       }[this.state.value]
@@ -48,7 +48,8 @@ class Demo extends React.Component {
     const Row = Grid.Row
     const Col = Grid.Col
     const { value } = this.state
-    const { prefix, suffix, placeholder } = this.getFix()
+    const { prepend, append, placeholder } = this.getFix()
+    console.log(prepend, append)
     return (
       <div>
         <Row gutter>
@@ -67,9 +68,9 @@ class Demo extends React.Component {
           <Col span={12}>
             <Input
               placeholder={placeholder}
-              style={{width: 250}}
-              suffix={suffix}
-              prefix={prefix}
+              style={{ width: 250 }}
+              append={append}
+              prepend={prepend}
             />
           </Col>
         </Row>

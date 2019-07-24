@@ -17,21 +17,16 @@ class Demo extends React.Component {
   constructor () {
     super()
     const ele = <Select
-      mode='single'
+      type='single'
       clearable={false}
-      style={{width: '80px'}}
-      list={[
-        { name:'+86', id:'86' },
-        { name:'+1', id:'1' },
-        { name:'+33', id:'33' },
-        { name:'+91', id:'91' },
+      style={{ width: 80 }}
+      data={[
+        { title:'+86', id:'86' },
+        { title:'+1', id:'1' },
+        { title:'+33', id:'33' },
+        { title:'+91', id:'91' },
       ]}
-      value='86'
-      onChange={(item) => {
-        console.log('单选结果', item)
-        const selectValue = item[0].id
-        this.setState({selectValue, tel: \`\${selectValue} \${value}\`})
-      }}
+      defaultValue='86'
     />
     this.state = {
       radioList: [{

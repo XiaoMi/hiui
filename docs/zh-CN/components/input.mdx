@@ -13,7 +13,7 @@ import DemoType from '../../demo/input/section-type.jsx'
 
 <DemoType />
 
-## 状态
+## 禁用状态
 
 import DemoState from '../../demo/input/section-state.jsx'
 
@@ -41,20 +41,21 @@ import { Badge } from '@libs'
 
 ## Props
 
-| 参数                                            | 说明               | 类型                | 可选值                                                                 | 默认值 |
-| ----------------------------------------------- | ------------------ | ------------------- | ---------------------------------------------------------------------- | ------ |
-| value                                           | 设置输入框的值     | string              | -                                                                      | -      |
-| defaultValue<Badge type='feature' text='new' /> | 设置输入框的默认值 | string              | -                                                                      | -      |
-| type                                            | 设置输入框类型     | string              | 'text' \| 'textarea' \| 'id' \| 'tel' \| 'card' \| 'amount' \| 'email' | 'text' |
-| disabled                                        | 是否禁用           | boolean             | true \| false                                                          | false  |
-| required                                        | 是否必填           | string \| ReactNode | true \| false                                                          | false  |
-| prefix                                          | 输入框前置内容     | string \| ReactNode | -                                                                      | -      |
-| suffix                                          | 输入框后置内容     | string \| ReactNode | -                                                                      | -      |
-| placeholder                                     | 输入框占位符       | string \| ReactNode | -                                                                      | -      |
-| onFocus                                         | 获得焦点时的回调   | (e: Event) => void  | -                                                                      | -      |
-| onBlur                                          | 失去焦点时的回调   | (e: Event) => void  | -                                                                      | -      |
-| onKeyDown                                       | 键盘按下时的回调   | (e: Event) => void  | -                                                                      | -      |
-| onKeyPress                                      | 字符键按下时的回调 | (e: Event) => void  | -                                                                      | -      |
-| onInput                                         | 输入字符时的回调   | (e: Event) => void  | -                                                                      | -      |
-| onChange                                        | 值改变时的回调     | (e: Event) => void  | -                                                                      | -      |
-| onKeyUp                                         | 键盘弹起时的回调   | (e: Event) => void  | -                                                                      | -      |
+| 参数                                            | 说明                                          | 类型                | 可选值                                                                 | 默认值 |
+| ----------------------------------------------- | --------------------------------------------- | ------------------- | ---------------------------------------------------------------------- | ------ |
+| value                                           | 设置输入框的值                                | string              | -                                                                      | -      |
+| defaultValue<Badge type='feature' text='new' /> | 设置输入框的默认值                            | string              | -                                                                      | -      |
+| type                                            | 设置输入框类型                                | string              | 'text' \| 'textarea' \| 'id' \| 'tel' \| 'card' \| 'amount' \| 'email' | 'text' |
+| disabled                                        | 是否禁用                                      | boolean             | true \| false                                                          | false  |
+| required<Badge text='deprecated' />             | 是否必填，即将废弃                            | string \| ReactNode | true \| false                                                          | false  |
+| clearable<Badge type='feature' text='new' />    | 是否显示清除按钮                              | boolean             | true \| false                                                          | false  |
+| prefix<Badge text='deprecated' />               | 输入框前置内容，即将废弃，请使用 prepend 代替 | string \| ReactNode | -                                                                      | -      |
+| suffix<Badge text='deprecated' />               | 输入框后置内容，即将废弃，请使用 suffix 代替  | string \| ReactNode | -                                                                      | -      |
+| placeholder                                     | 输入框占位符                                  | string \| ReactNode | -                                                                      | -      |
+| onFocus                                         | 获得焦点时的回调                              | (e: Event) => void  | -                                                                      | -      |
+| onBlur                                          | 失去焦点时的回调                              | (e: Event) => void  | -                                                                      | -      |
+| onKeyDown                                       | 键盘按下时的回调                              | (e: Event) => void  | -                                                                      | -      |
+| onKeyPress                                      | 字符键按下时的回调                            | (e: Event) => void  | -                                                                      | -      |
+| onInput                                         | 输入字符时的回调                              | (e: Event) => void  | -                                                                      | -      |
+| onChange                                        | 值改变时的回调                                | (e: Event) => void  | -                                                                      | -      |
+| onKeyUp                                         | 键盘弹起时的回调                              | (e: Event) => void  | -                                                                      | -      |
