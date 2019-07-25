@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 import BasePicker from './BasePicker'
 import TimePanel from './TimePanel'
-import Provider from '../context'
+import Provider from '../../context'
 import TimeRangePanel from './TimeRangePanel'
 class TimePicker extends BasePicker {
   initPanel (state, props) {

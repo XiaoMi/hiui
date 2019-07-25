@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import classNames from 'classnames'
-import Provider from '../context'
+import Provider from '../../context'
 import {getHours, getMinutes} from './dateUtil'
 class TimePeriodPanel extends Component {
   constructor (props) {

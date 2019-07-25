@@ -1,25 +1,29 @@
 import React, {Component} from 'react'
 import Modal from './Modal'
 import classNames from 'classnames'
-import {formatterDate, FORMATS} from './constants'
+import {formatterDate, FORMATS, isVaildDate} from './constants'
 
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
-import {parse, dateFormat, isValid} from './dateUtil'
+import {startOfDay, endOfDay, parse, startOfWeek, endOfWeek, dateFormat} from './dateUtil'
+import { addHours } from 'date-fns'
 class BasePicker extends Component {
   inputRoot = null
   input = null
   rInput = null
   constructor (props) {
     super(props)
+    console.log('老版')
     this.state = {
       showPanel: false,
       style: {},
       date: null,
       isFocus: false,
+      // input 框内的显示的时间内容
       texts: ['', ''],
       placeholder: '',
+      rText: '',
       leftPlaceholder: '',
       rightPlaceholder: '',
       format: ''
@@ -43,43 +47,96 @@ class BasePicker extends Component {
       rightPlaceholder
     })
   }
-  _parseProps (props, callback) {
-    let {value, defaultValue, showTime, type, format, localeDatas, weekOffset, timeInterval = 240} = props
-    format = format || FORMATS[type]
-    let _value = value || defaultValue
-    let start
-    let end
-    let date
-    let leftText = ''
-    let rightText = ''
-    if (_value) {
-      if (Object.prototype.toString.call(_value) === '[object Object]') {
-        start = _value.start || null
-        end = _value.end || new Date()
+  static propTypes = {
+    type: PropTypes.oneOf(Object.values(DatePickerType)),
+    value: function (props, propName, componentName) {
+      // Invalid Date
+      const val = props[propName]
+      if (val === undefined || val === null) {
+        return null
+      }
+      if (val.start && val.end) {
+        const _start = dateFormat(val.start)
+        const _end = dateFormat(val.end)
+        if (_start === 'Invalid Date' || _end === 'Invalid Date') {
+          return new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed. start or end is an invalid date.`)
+        }
       } else {
-        start = _value
+        if (dateFormat(val) === 'Invalid Date') {
+          return new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed. value is an invalid data.`)
+        }
       }
+    },
+    onChange: PropTypes.func,
+    format: PropTypes.string,
+    showTime: PropTypes.bool,
+    disabled: PropTypes.bool,
+    showWeekNumber: PropTypes.bool,
+    weekOffset: PropTypes.oneOf([0, 1]),
+    timeInterval: function (props, propName, componentName) {
+      const val = props[propName]
+      if (val < 5 || val > 480 || (val > 60 && val % 60 !== 0) || (val < 60 && 60 % val !== 0)) {
+        return new Error(`Invalid prop ${propName} supplied to ${componentName}. This value must be greater than 5 and less than 480 and is a multiple of 60.`)
+      }
+    }
+  }
+  static defaultProps = {
+    type: 'date',
+    disabled: false,
+    showWeekNumber: true,
+    weekOffset: 0,
+    timeInterval: 240
+  }
+  _parseProps (props, callback) {
+    let {value, showTime, type, format, localeDatas, weekOffset} = props
+    format = format || FORMATS[type]
+    let date = new Date() // 当前时间
+    let noText = false
+    /**
+     * value 可能的格式：
+     *  '' | undefined  | null | Date | String | Number | {start: xxx, end: xxx}
+     */
+    if (value === '' || !value) {
+      // value 未传入情况
+      date = new Date()
+      noText = true
+    }
+    if (typeof value === 'number' || (typeof value === 'string' && value.trim().length > 4)) {
+      // value 为数字（times）
+      date = parse(value)
+    }
+    if (value instanceof Date) {
+      date = value
+    }
 
-      if (type === 'timeperiod' && isValid(start)) {
-        let startTime = start.getTime()
-        startTime += timeInterval * 60 * 1000
-        end = new Date(startTime)
+    if (type.includes('range') || type === 'timeperiod') {
+      if (value instanceof Date || !value) {
+        // 如果为时间段选择，则取默认的第一个范围
+        date = {startDate: startOfDay(date), endDate: type === 'timeperiod' ? addHours(startOfDay(date), 4) : endOfDay(date)}
+      }
+      if (value && value.start && value.end) {
+        date = {startDate: value.start, endDate: value.end}
       }
     }
-    date = {
-      startDate: parse(start),
-      endDate: parse(end)
-    }
-    leftText = isValid(date.startDate) ? formatterDate(type, date.startDate, format, showTime, localeDatas, weekOffset) : ''
-    rightText = isValid(date.endDate) ? formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset) : ''
+    const leftText = noText ? '' : formatterDate(type, date.startDate || date, format, showTime, localeDatas, weekOffset)
+    const rightText = noText ? '' : formatterDate(type, date.endDate || date, format, showTime, localeDatas, weekOffset)
     this.setState({
       texts: [leftText, rightText],
       date,
       format
+    }, () => {
+      callback && callback(this.state.date)
     })
   }
   componentDidMount () {
-    this._parseProps(this.props)
+    this._parseProps(this.props, (date) => {
+      if (date.startDate && date.endDate) {
+        date = ({start: new Date(date.startDate), end: new Date(date.endDate)})
+      } else {
+        date = new Date(date)
+      }
+      this.props.value && this.props.onChange && this.props.onChange(date)
+    })
     this.setPlaceholder()
     let rect = this.inputRoot.getBoundingClientRect()
     this.calcPanelPos(rect)
@@ -111,19 +168,14 @@ class BasePicker extends Component {
     })
   }
   componentWillReceiveProps (nextProps) {
-    if (nextProps.value !== this.props.value) {
-      this._parseProps(nextProps)
-    }
+    this._parseProps(nextProps)
   }
   onPick (date, showPanel) {
-    if (!date.startDate) {
-      date = {startDate: date, endDate: undefined}
-    }
     const {type, showTime, localeDatas, weekOffset} = this.props
     const {format} = this.state
     this.setState({
       date,
-      texts: [formatterDate(type, date.startDate, format, showTime, localeDatas, weekOffset), formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset)],
+      texts: [formatterDate(type, date.startDate || date, format, showTime, localeDatas, weekOffset), formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset)],
       showPanel,
       isFocus: false
     }, () => {
@@ -133,22 +185,26 @@ class BasePicker extends Component {
     })
   }
   callback () {
-    const {type, onChange} = this.props
+    const {type, onChange, weekOffset} = this.props
     const {date} = this.state
     if (onChange) {
-      let {startDate, endDate} = date
-      startDate = isValid(startDate) ? startDate : ''
-      endDate = isValid(endDate) ? endDate : ''
-      if (type === 'week' || type === 'weekrange') {
+      const {startDate, endDate} = date
+      const _weekOffset = {weekStartsOn: weekOffset}
+      if (type === 'week') {
+        onChange({start: startOfWeek(date, _weekOffset), end: endOfWeek(date, _weekOffset)})
+        return
+      }
+      if (startDate && endDate) {
+        if (type === 'weekrange') {
+          onChange({start: startOfWeek(startDate, _weekOffset), end: endOfWeek(endDate, _weekOffset)})
+        } else if (['timerange', 'timeperiod', 'daterange'].includes(type)) {
+          onChange({start: startDate, end: endDate})
+        } else {
+          onChange({start: startOfDay(startDate), end: endOfDay(endDate)})
+        }
+      } else {
         onChange(date)
-        return
       }
-
-      if (['timerange', 'timeperiod', 'daterange'].includes(type)) {
-        onChange({start: startDate, end: endDate})
-        return
-      }
-      onChange(startDate)
     }
   }
   timeConfirm (date, onlyTime) {
@@ -185,41 +241,23 @@ class BasePicker extends Component {
       })
     }
   }
-  inputChangeEvent () {
-    let { texts, date } = this.state
-    // const {type, showTime, localeDatas, weekOffset} = this.props
-    let startDate = parse(texts[0])
-    let endDate = parse(texts[1])
-
-    if (startDate && isValid(startDate)) {
-      date.startDate ? date.startDate = startDate : date = startDate
-    }
-    if (endDate && isValid(endDate)) {
-      date.endDate && (date.endDate = endDate)
-    }
-    this.setState({date})
-  }
   clickOutSide (e) {
     const tar = e.target
-    this.inputChangeEvent()
     if (tar.className.indexOf('clear') !== -1) {
       this.setState({
         texts: ['', ''],
-        showPanel: false,
-        date: null
+        showPanel: false
       })
       return false
     }
     if (tar !== this.input && tar !== this.rInput) {
       this.timeCancel()
     }
-    if (!this.showPanel && tar !== this.input && tar !== this.rInput) {
-      this.callback()
-    }
+    this.callback()
   }
   _input (text, ref = 'input', placeholder = 'Please Select...') {
-    const {disabled} = this.props
-    const { texts } = this.state
+    const {disabled, type, onChange} = this.props
+
     return (
       <input
         type='text'
@@ -228,11 +266,9 @@ class BasePicker extends Component {
         className={disabled ? 'disabled' : ''}
         disabled={disabled}
         onChange={e => {
-          ref === 'input' ? (texts[0] = e.target.value) : (texts[1] = e.target.value)
+          isVaildDate(new Date(e.target.value)) && type === 'date' && onChange(new Date(e.target.value))
           this.setState({
-            texts
-          }, () => {
-            this.inputChangeEvent()
+            text: e.target.value
           })
         }}
         onFocus={(e) => {
@@ -247,13 +283,11 @@ class BasePicker extends Component {
     )
   }
   _clear () {
-    const {onChange, type} = this.props
+    const {onChange} = this.props
     if (onChange) {
-      onChange(
-        type.includes('range') || type === 'timeperiod' ? {start: '', end: ''} : ''
-      )
+      onChange(null)
     }
-    this.setState({date: {startDate: null, endDate: null}, texts: ['', ''], isFocus: false})
+    this.setState({texts: ['', ''], isFocus: false})
   }
   _icon () {
     const {isFocus} = this.state
@@ -327,43 +361,5 @@ class BasePicker extends Component {
     )
   }
 }
-BasePicker.propTypes = {
-  type: PropTypes.oneOf(Object.values(DatePickerType)),
-  value: function (props, propName, componentName) {
-    const val = props[propName]
-    if (val === undefined || val === null) {
-      return null
-    }
-    if (val.start && val.end) {
-      const _start = dateFormat(val.start)
-      const _end = dateFormat(val.end)
-      if (_start === 'Invalid Date' || _end === 'Invalid Date') {
-        return new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed. start or end is an invalid date.`)
-      }
-    } else {
-      if (dateFormat(val) === 'Invalid Date') {
-        return new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed. value is an invalid data.`)
-      }
-    }
-  },
-  onChange: PropTypes.func,
-  format: PropTypes.string,
-  showTime: PropTypes.bool,
-  disabled: PropTypes.bool,
-  showWeekNumber: PropTypes.bool,
-  weekOffset: PropTypes.oneOf([0, 1]),
-  timeInterval: function (props, propName, componentName) {
-    const val = props[propName]
-    if (val < 5 || val > 480 || (val > 60 && val % 60 !== 0) || (val < 60 && 60 % val !== 0)) {
-      return new Error(`Invalid prop ${propName} supplied to ${componentName}. This value must be greater than 5 and less than 480 and is a multiple of 60.`)
-    }
-  }
-}
-BasePicker.defaultProps = {
-  type: 'date',
-  disabled: false,
-  showWeekNumber: true,
-  weekOffset: 0,
-  timeInterval: 240
-}
+
 export default BasePicker
