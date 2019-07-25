@@ -4,8 +4,7 @@ import Pagination from '../../../components/pagination'
 import Grid from '../../../components/grid'
 import Checkbox from '../../../components/checkbox'
 const prefix = 'pagination-intact'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Checkbox from '@hi-ui/hiui/es/Checkbox'
 import Pagination from '@hi-ui/hiui/es/pagination'\n

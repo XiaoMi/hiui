@@ -4,19 +4,9 @@ import classNames from 'classnames'
 import './style/index'
 
 class Alert extends Component {
-  static propTypes = {
-    type: PropTypes.oneOf(['info', 'error', 'success', 'warning']),
-    onClose: PropTypes.func,
-    content: PropTypes.string,
-    title: PropTypes.string,
-    closable: PropTypes.bool,
-    duration: PropTypes.number
-  }
-  static defaultProps = {
-    prefixCls: 'hi-alert',
-    type: 'info',
-    closable: true,
-    duration: null
+  constructor (props) {
+    super(props)
+    this.state = { visible: true }
   }
   componentDidMount () {
     if (this.props.duration !== null) {
@@ -24,10 +14,6 @@ class Alert extends Component {
         this.handleClose()
       }, this.props.duration)
     }
-  }
-  constructor (props) {
-    super(props)
-    this.state = { visible: true }
   }
   handleClose () {
     this.setState({ visible: false })
@@ -62,7 +48,7 @@ class Alert extends Component {
             {this.props.title && <div className='text-title'>{this.props.title}</div>}
           </div>
           {this.props.content && <div className='text-message'>{this.props.content}</div>}
-          {this.props.closable && (
+          {this.props.closeable && (
             <div className='close-btn icon-img-delete' onClick={this.handleClose.bind(this)}>
               <i className='hi-icon icon-close' />
             </div>
@@ -72,4 +58,21 @@ class Alert extends Component {
     )
   }
 }
+
+Alert.propTypes = {
+  type: PropTypes.oneOf(['info', 'error', 'success', 'warning']),
+  onClose: PropTypes.func,
+  content: PropTypes.string,
+  title: PropTypes.string,
+  closeable: PropTypes.bool,
+  duration: PropTypes.number
+}
+
+Alert.defaultProps = {
+  prefixCls: 'hi-alert',
+  type: 'info',
+  closeable: true,
+  duration: null
+}
+
 export default Alert

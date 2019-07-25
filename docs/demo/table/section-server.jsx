@@ -6,8 +6,7 @@ import Input from '../../../components/input'
 import Button from '../../../components/button'
 import FormItem from '../../../components/form/Item'
 const prefix = 'table-server'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Form from '@hi-ui/hiui/es/form/index'
 import FormItem from '@hi-ui/hiui/es/form/item'
@@ -74,7 +73,7 @@ class Demo extends React.Component {
             auto:true, // 自动发请求配置(默认false)
             success: (res) => {
               let {data: {data, columns,page: {pageSize, totalNum, pageNum}}} = res
- 
+
                const pageSizeOptions = [{
                   value: 10,
                   title: '10'
@@ -107,7 +106,7 @@ class Demo extends React.Component {
                       pageSize
                     })
                   },
-              
+
 
                 }
               }

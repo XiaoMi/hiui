@@ -6,8 +6,7 @@ import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
 import Button from '../../../components/button'
 const prefix = 'form-align'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
 class Demo extends React.Component {
   constructor() {

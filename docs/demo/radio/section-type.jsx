@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Radio from '../../../components/radio'
 const prefix = 'radio-type'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Radio from '@hi-ui/hiui/es/radio'\n
 class Demo extends React.Component {
   constructor() {

@@ -4,8 +4,7 @@ import Dropdown from '../../../components/dropdown'
 import Icon from '../../../components/icon'
 const prefix = 'dropdown-extend'
 const desc = '传入 type 为 group，组件会将 title 执行对应的点击响应，点击箭头打开菜单项'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Icon from '@hi-ui/hiui/es/icon'
 import Dropdown from '@hi-ui/hiui/es/dropdown'\n
 class Demo extends React.Component {

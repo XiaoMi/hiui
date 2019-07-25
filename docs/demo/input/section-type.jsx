@@ -4,8 +4,7 @@ import Grid from '../../../components/grid'
 import Input from '../../../components/input'
 import Radio from '../../../components/radio'
 const prefix = 'input-type'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Radio from '@hi-ui/hiui/es/radio'
 import Input from '@hi-ui/hiui/es/input'\n

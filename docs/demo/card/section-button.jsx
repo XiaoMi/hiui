@@ -4,8 +4,7 @@ import Card from '../../../components/card'
 import Icon from '../../../components/icon'
 const prefix = 'card-button'
 
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Icon from '@hi-ui/hiui/es/icon'
 import Card from '@hi-ui/hiui/es/card'\n
 class Demo extends React.Component {

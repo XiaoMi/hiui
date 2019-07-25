@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Loading from '../../../components/loading'
 const prefix = 'loading-base'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Loading from '@hi-ui/hiui/es/loading'\n
 class Demo extends React.Component {
   render () {

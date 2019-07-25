@@ -24,7 +24,7 @@ export default class Notice extends Component {
   }
 
   render () {
-    const { closable, children, prefix, type } = this.props
+    const { closeable, children, prefix, type } = this.props
     const { open } = this.state
     return (
       <CSSTransition
@@ -37,7 +37,7 @@ export default class Notice extends Component {
       >
         <div className={classNames(`hi-${prefix}`, { [`hi-${prefix}--${type}`]: type })}>
           <div className={`hi-${prefix}__content--wrapper`}>{children}</div>
-          {closable && (
+          {closeable && (
             <span
               onClick={() => {
                 this.setState({ open: false })

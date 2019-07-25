@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Grid from '../../../components/grid'
 const prefix = 'grid-base'
 const desc = '无间隔水平排列'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'\n
 class Demo extends React.Component {
   render(){

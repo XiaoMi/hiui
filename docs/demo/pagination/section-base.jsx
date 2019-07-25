@@ -6,8 +6,7 @@ const prefix = 'pagination-base'
 const desc = '分页组件会根据项目数量自己处理翻页数量。'
 const code = [
   {
-    code: `
-import React from 'react'
+    code: `import React from 'react'
 import Pagination from '@hi-ui/hiui/es/pagination'\n
 class Demo extends React.Component {
   constructor () {
@@ -31,8 +30,7 @@ class Demo extends React.Component {
     opt: ['默认']
   },
   {
-    code: `
-import React from 'react'
+    code: `import React from 'react'
 import Pagination from '@hi-ui/hiui/es/pagination'\n
 class Demo extends React.Component {
   constructor () {

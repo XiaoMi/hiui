@@ -4,8 +4,7 @@ import Form from '../../../components/form/index'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
 const prefix = 'form-row'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import { Form, Input } from '@hi-ui/hiui'
 class Demo extends React.Component {
   render (){

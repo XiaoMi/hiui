@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Icon from '../../../components/icon'
 import Button from '../../../components/button'
 const prefix = 'icon-nest'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Icon from '@hi-ui/hiui/es/icon'\n
 class Demo extends React.Component {
