@@ -26,6 +26,7 @@ class Demo extends React.Component {
         <Switch />
         <p>自定义内容</p>
         <Switch content={['ON', 'OFF']} onChange={() => console.log('change')}/>
+        <p>自定义图标</p>
         <Switch content={[<Icon name='check' />, <Icon name='close' />]} onClick={() => {return false}}/>
         <p>禁用状态</p>
         <p>

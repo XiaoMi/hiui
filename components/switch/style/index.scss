@@ -32,6 +32,7 @@ $basic-color: #4284f5 !default;
   border-radius: 10px;
   cursor: pointer;
   position: relative;
+  vertical-align: middle;
 
   @include hi-switch-style();
 
@@ -50,11 +51,11 @@ $basic-color: #4284f5 !default;
   }
 
   &__text {
-    color: #fff;
+    color: rgba(255, 255, 255, 0.5);
     font-size: 12px;
-    display: inline-block;
     position: absolute;
-    top: 2px;
+    top: 0;
+    line-height: 20px;
     left: 6px;
     transition: all 200ms linear;
     user-select: none;
