@@ -24,13 +24,14 @@ class Switch extends Component {
     const { disabled, onChange, onClick } = this.props
     if (!disabled) {
       const res = onClick(this.state.checked)
-      if (res) {
-        this.setState({
-          checked: !this.state.checked
-        }, () => {
-          onChange(this.state.checked)
-        })
+      if (Object.prototype.toString.call(res) === '[object Boolean]' && res.toString() === 'false') {
+        return
       }
+      this.setState({
+        checked: !this.state.checked
+      }, () => {
+        onChange(this.state.checked)
+      })
     }
   }
   render () {
