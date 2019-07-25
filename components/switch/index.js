@@ -24,7 +24,7 @@ class Switch extends Component {
     const { disabled, onChange, onClick } = this.props
     if (!disabled) {
       const res = onClick(this.state.checked)
-      if (Object.prototype.toString.call(res) === '[object Boolean]' && res.toString() === 'false') {
+      if (typeof res === 'boolean' && !res) {
         return
       }
       this.setState({
