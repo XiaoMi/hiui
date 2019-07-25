@@ -1,6 +1,8 @@
-import Alert from './alert'
+import Alert from './Alert'
 import './style/index'
-import SwitchVersion from '../_util/SwitchVersion'
-import AlertLegacy from './alert-legacy'
+import { depreactedPropsCompat } from '../_util'
 
-export default SwitchVersion(Alert, AlertLegacy)
+export default depreactedPropsCompat([
+  ['content', 'message'],
+  ['duration', 'autoCloseTime']
+])(Alert)

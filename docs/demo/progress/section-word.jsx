@@ -2,9 +2,8 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Progress from '../../../components/progress'
 const prefix = 'progress-word'
-const code = `
-import React from 'react'
-import Progress from '@hi-ui/hiui/es/select'\n
+const code = `import React from 'react'
+import Progress from '@hi-ui/hiui/es/progress'\n
 class Demo extends React.Component {
   render() {
     return (

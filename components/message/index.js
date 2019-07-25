@@ -16,7 +16,7 @@ const message = {
     prefix = 'message',
     key = Math.random(),
     duration,
-    closable = false,
+    closeable = false,
     type = 'info'
   }) => {
     const NoticeContent = (
@@ -33,7 +33,7 @@ const message = {
       content: NoticeContent,
       prefix,
       key,
-      closable,
+      closeable,
       duration,
       type
     })

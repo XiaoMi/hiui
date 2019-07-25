@@ -1,6 +1,11 @@
 import Progress from './Progress'
+import { depreactedPropsCompat } from '../_util'
 import './style/index'
-import SwitchVersion from '../_util/SwitchVersion'
-import ProgressLegacy from './progress-legacy'
 
-export default SwitchVersion(Progress, ProgressLegacy)
+export default depreactedPropsCompat([
+  ['apperance', 'type'],
+  ['content', 'text'],
+  ['showInfo', 'withOutText'],
+  ['type', 'status'],
+  ['placement', 'inside', (data) => (data ? 'inside' : 'outside')]
+])(Progress)

@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Progress from '../../../components/progress'
 const prefix = 'progress-type'
-const code = `
-import React from 'reac
+const code = `import React from 'reac
 import Progress from '@hi-ui/hiui/es/progress'\n
 class Demo extends React.Component {
   render() {

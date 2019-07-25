@@ -85,8 +85,8 @@ class Tabs extends Component {
 
     React.Children.map(children, (child, index) => {
       if (child) {
-        const { tabName, tabKey, tabDesc, disabled, closable } = child.props
-        const item = { tabName, tabKey, tabDesc, disabled, closable }
+        const { tabName, tabKey, tabDesc, disabled, closeable } = child.props
+        const item = { tabName, tabKey, tabDesc, disabled, closeable }
 
         if (type === 'card' && placement === 'top' && showTabItems.length >= showTabsNum) { // 卡片式标签超过showTabsNum时，其余标签的隐藏
           hiddenTabItems.push(item)
@@ -173,7 +173,7 @@ class Tabs extends Component {
         <div className={`${prefixCls}__header`}>
           <div className={`${prefixCls}__nav`}>
             {showTabItems.map((item, index) => {
-              const { tabName, tabKey, tabDesc, disabled, closable } = item
+              const { tabName, tabKey, tabDesc, disabled, closeable } = item
               const itemClasses = classNames(`${prefixCls}__item`, {
                 [`${prefixCls}__item--active`]: tabKey === activeKey,
                 [`${prefixCls}__item--disabled`]: disabled
@@ -195,7 +195,7 @@ class Tabs extends Component {
                     <span className={`${prefixCls}__item-desc`}>{tabDesc}</span>
                   }
                   {
-                    editable && closable &&
+                    editable && closeable &&
                     <span className={`${prefixCls}__item-close`}>
                       <Icon onClick={e => this.deleteTab(e, tabKey, index)} name='close' />
                     </span>

@@ -4,8 +4,7 @@ import Stepper from '../../../components/stepper'
 import Icon from '../../../components/icon'
 const prefix = 'stepper-vertical'
 const desc = '竖直方向只需传入属性 placement="vertical"'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Icon from '@hi-ui/hiui/es/icon'
 import Stepper from '@hi-ui/hiui/es/stepper'\n
 class Demo extends React.Component {

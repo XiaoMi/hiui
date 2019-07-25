@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Grid from '../../../components/grid'
 const prefix = 'grid-block'
 const desc = '在 Row 设置 gutter = true 来使水平排列有间隔'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'\n
 class Demo extends React.Component {
   render() {

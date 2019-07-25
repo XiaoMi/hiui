@@ -4,8 +4,7 @@ import Badge from '../../../components/badge'
 import Button from '../../../components/button'
 const desc = '小红点将优先于其他显示'
 const prefix = 'badge-dot'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Badge from '@hi-ui/hiui/es/badge'\n
 class Demo extends React.Component {

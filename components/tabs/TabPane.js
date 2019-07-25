@@ -5,14 +5,14 @@ class TabPane extends Component {
   static defaultProps = {
     prefixCls: 'hi-tabs-pane',
     disabled: false,
-    closable: true
+    closeable: true
   }
 
   static propTypes = {
     tabTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     tabDesc: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     tabId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    closable: PropTypes.bool,
+    closeable: PropTypes.bool,
     disabled: PropTypes.bool
   }
 

@@ -17,7 +17,7 @@ class Demo extends React.Component {
       {
         tabTitle: '团购订单',
         tabId: 'tabId-2',
-        closable: false
+        closeable: false
       },
       {
         tabTitle: '以旧换新订单',
@@ -62,7 +62,7 @@ class Demo extends React.Component {
               <Tabs.Pane
                 tabTitle={pane.tabTitle}
                 tabId={pane.tabId}
-                closable={pane.closable}
+                closeable={pane.closeable}
                 key={index}
               >
                 <div style={{padding: '16px'}}>{pane.tabTitle}</div>

@@ -14,7 +14,8 @@ class Progress extends Component {
     height: PropTypes.number,
     tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    size: PropTypes.oneOf(['large', 'default', 'small'])
+    size: PropTypes.oneOf(['large', 'default', 'small']),
+    placement: PropTypes.oneOf(['inside', 'outside'])
   }
   static defaultProps = {
     apperance: 'bar',

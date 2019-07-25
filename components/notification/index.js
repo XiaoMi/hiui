@@ -23,7 +23,7 @@ const notification = {
     prefix = 'notification',
     key = Math.random(),
     duration,
-    closable = true,
+    closeable = true,
     type = 'info',
     confirmText,
     onConfirm,
@@ -58,7 +58,7 @@ const notification = {
       content: NoticeContent,
       prefix,
       key,
-      closable,
+      closeable,
       duration,
       type,
       onClose

@@ -5,8 +5,7 @@ import DatePicker from '../../../components/date-picker'
 import Pagination from '../../../components/pagination'
 import { LocaleContext } from '../../../components/context'
 const prefix = 'i18n-example'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import { LocaleContext } from '@hi-ui/hiui/es/context'
 import Pagination from '@hi-ui/hiui/es/pagination'
 import Grid from '@hi-ui/hiui/es/grid'\n

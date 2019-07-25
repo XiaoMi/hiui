@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Loading from '../../../components/loading'
 const prefix = 'loading-page'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Loading from '@hi-ui/hiui/es/loading'
 class Demo extends React.Component {

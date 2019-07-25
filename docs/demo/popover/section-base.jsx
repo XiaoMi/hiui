@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Popover from '../../../components/popover'
 import Button from '../../../components/button'
 const prefix = 'Popover-base'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Popover from '@hi-ui/hiui/es/popover'\n
 class Demo extends React.Component {

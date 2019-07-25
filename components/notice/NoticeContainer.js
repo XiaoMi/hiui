@@ -34,7 +34,7 @@ export default class NoticeContainer extends Component {
               duration={notice.duration}
               prefix={prefix}
               type={notice.type}
-              closable={notice.closable}
+              closeable={notice.closeable}
               onConfirm={notice.onConfirm}
             >
               {notice.content}

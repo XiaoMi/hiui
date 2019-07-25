@@ -4,8 +4,7 @@ import Button from '../../../components/button'
 import Panel from '../../../components/panel'
 import Loading from '../../../components/loading'
 const prefix = 'loading-api'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Panel from '@hi-ui/hiui/es/panel'
 class Demo extends React.Component {

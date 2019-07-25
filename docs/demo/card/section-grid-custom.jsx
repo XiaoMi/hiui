@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Card from '../../../components/card'
 import Grid from '../../../components/grid'
 const prefix = 'card-grid-custom'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Card from '@hi-ui/hiui/es/card'\n
 class Demo extends React.Component {
