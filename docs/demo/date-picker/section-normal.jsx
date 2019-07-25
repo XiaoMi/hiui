@@ -17,7 +17,7 @@ class Demo extends React.Component {
         <DatePicker
           value={new Date}
           onChange={(d) => {
-            console.log('value 为 Date 实例', DatePicker.format(d, 'YYYY-MM-DD E'))
+            console.log('返回值', d)
           }}
         />
       </div>

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {deconstructDate, getYearWeek} from './util'
-import Provider from '../context'
+import Provider from '../../context'
 
 import {
   getDaysInMonth,
@@ -29,8 +29,7 @@ class Calender extends Component {
   }
 
   getRows () {
-    let {type, range, date, minDate, maxDate, weekOffset} = this.props
-    let _date = date
+    let {type, range, date: _date, minDate, maxDate, weekOffset} = this.props
     let {year, month, week} = deconstructDate(_date, weekOffset)
     let {endDate, startDate} = range || {startDate: null, endDate: null}
     // *  dayCount: 当月天数
@@ -126,30 +125,30 @@ class Calender extends Component {
   }
   handlerClick (e) {
     const {onPick, date, type, range} = this.props
-
-    let { year, month, day, hours, minutes, seconds } = deconstructDate(date)
+    let {year, month, hours, minutes, seconds} = deconstructDate(date)
 
     const td = e.target
     const cls = this._getClassName(td)
     const value = td.getAttribute('value')
     if ((td.nodeName !== 'SPAN' && td.nodeName !== 'TD' && td.nodeName !== 'DIV') || td.disabled) return false
     if (cls.indexOf('disabled') !== -1) return false
-    const clickVal = parseInt(value)
-    let newDate = new Date(year, month - 1, day, hours, minutes, seconds)
-    if (type === 'year') {
-      year = parseInt(value)
-      newDate.setFullYear(year)
-    } else if (type === 'month') {
-      month = parseInt(value)
-      newDate.setMonth(month - 1)
-    } else {
-      newDate.setDate(clickVal)
-    }
+    const day = parseInt(value)
+    let newDate = new Date(year, month - 1)
     if (cls.indexOf('prev') !== -1) {
       newDate = addMonths(newDate, -1)
     }
     if (cls.indexOf('next') !== -1) {
       newDate = addMonths(newDate, 1)
+    }
+    newDate.setDate(day)
+    newDate.setHours(hours, minutes, seconds)
+    if (type === 'year') {
+      year = parseInt(value)
+      newDate.setFullYear(year)
+    }
+    if (type === 'month') {
+      month = parseInt(value)
+      newDate.setMonth(month - 1)
     }
     if (type === 'daterange' || type === 'weekrange') {
       if (range.selecting) {

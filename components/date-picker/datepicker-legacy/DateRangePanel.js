@@ -2,21 +2,21 @@ import React, {Component} from 'react'
 import Calender from './Calender'
 import {deconstructDate, nextMonth} from './util'
 import {DAY_MILLISECONDS} from './constants'
-import Icon from '../icon'
+import Icon from '../../icon'
 import classNames from 'classnames'
-import Provider from '../context'
-import {dateFormat, isValid, getStartDate} from './dateUtil'
+import Provider from '../../context'
+import {dateFormat} from './dateUtil'
 import TimeRangePanel from './TimeRangePanel'
 
 class DatePanel extends Component {
   constructor (props) {
     super(props)
     let {startDate, endDate} = props.date
-    let leftDate = getStartDate(props.date)
-    let rightDate = isValid(endDate) ? endDate : nextMonth(leftDate)
+    let leftDate = new Date(startDate)
+    let rightDate = endDate ? new Date(endDate) : nextMonth(leftDate)
     if (endDate) {
-      const {year: sYear, month: sMonth} = deconstructDate(leftDate)
-      const {year: eYear, month: eMonth} = deconstructDate(rightDate)
+      const {year: sYear, month: sMonth} = deconstructDate(startDate)
+      const {year: eYear, month: eMonth} = deconstructDate(endDate)
       if (sYear === eYear && sMonth === eMonth) {
         rightDate = nextMonth(leftDate)
       }
@@ -32,8 +32,8 @@ class DatePanel extends Component {
       currentView: props.type || 'date',
       yearData: null,
       monthData: null,
-      minDate: props.min,
-      maxDate: props.max,
+      minDate: props.minDate,
+      maxDate: props.maxDate,
       range,
       leftDate,
       rightDate,

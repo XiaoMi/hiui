@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import Time from './Time'
-import Provider from '../context'
+import Provider from '../../context'
 
 class TimeRangePanel extends Component {
   constructor (props) {
