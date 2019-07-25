@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
-import { mount, shallow } from 'enzyme'
-import sinon, { spy, fake, stub } from 'sinon'
+import { mount } from 'enzyme'
+import { fake } from 'sinon'
 import Button from '../'
 import Icon from '../../icon'
 import IconLoading from '../IconLoading'

@@ -378,3 +378,6 @@ Cascader.childContextTypes = {
 }
 
 export default Provider(Cascader)
+export {
+  Cascader
+}

@@ -3,7 +3,7 @@ module.exports = {
   bail: false,
 
   // Indicates whether the coverage information should be collected while executing the test
-  collectCoverage: false,
+  collectCoverage: true,
 
   // An array of regexp pattern strings used to skip coverage collection
   coveragePathIgnorePatterns: [
@@ -23,12 +23,16 @@ module.exports = {
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
     '<rootDir>/components/**/*',
-    '!<rootDir>/components/**/index.js',
+    '!<rootDir>/components/(alert|badge|button)/index.js',
+    '!<rootDir>/components/**/style/**/*',
     '!<rootDir>/components/**/__test__/**/*',
     '!<rootDir>/components/**/(*-legacy)/**/*'
   ],
   // collectCoverageFrom: [
-  //   '<rootDir>/components/button/**/*'
+  //   '<rootDir>/components/cascader/**/*',
+  //   '!<rootDir>/components/**/style/**/*',
+  //   '!<rootDir>/components/**/__test__/**/*',
+  //   '!<rootDir>/components/**/(*-legacy)/**/*'
   // ],
 
   // The test environment that will be used for testing
