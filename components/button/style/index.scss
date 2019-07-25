@@ -102,6 +102,7 @@
 }
 
 .hi-btn {
+  position: relative; // Used by button radio...
   display: inline-block;
   box-sizing: border-box;
   margin: 0; // For input.btn
@@ -168,7 +169,7 @@
   }
 
   &--loading {
-    position: relative;
+    //position: relative;
 
     &::before {
       content: '';
