@@ -21,13 +21,16 @@ class Switch extends Component {
     }
   }
   clickEvent () {
-    const { disabled, onChange } = this.props
+    const { disabled, onChange, onClick } = this.props
     if (!disabled) {
-      this.setState({
-        checked: !this.state.checked
-      }, () => {
-        onChange(this.state.checked)
-      })
+      const res = onClick(this.state.checked)
+      if (res) {
+        this.setState({
+          checked: !this.state.checked
+        }, () => {
+          onChange(this.state.checked)
+        })
+      }
     }
   }
   render () {
@@ -57,12 +60,14 @@ Switch.defaultProps = {
   content: [],
   checked: false,
   disabled: false,
-  onChange: () => {}
+  onChange: () => {},
+  onClick: () => { return true }
 }
 Switch.propTypes = {
   content: PropTypes.array,
   checked: PropTypes.bool,
   disabled: PropTypes.bool,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  onClick: PropTypes.func
 }
 export default Provider(Switch)
