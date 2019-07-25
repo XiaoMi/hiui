@@ -1,5 +1,19 @@
 # 更新日志
 
+## 1.5.3
+
+- 新增：`<Upload />` 组件上传图片后点击展示支持旋转 [#183](https://github.com/XiaoMi/hiui/issues/183)
+- 新增：`<Upload />` 组件上传数量限制 [#249](https://github.com/XiaoMi/hiui/issues/249)
+- 新增：`<Upload />` 组件样式优化，交互调整 [#274](https://github.com/XiaoMi/hiui/issues/274)[#297](https://github.com/XiaoMi/hiui/issues/297)
+- 修复：`<Input />` 组件 `type = amount` 时显示错误的问题 [#409](https://github.com/XiaoMi/hiui/issues/409)
+- 修复：`<Button />` 修改按钮逻辑，去除图标与文字间元素，通过内容控制间距。调整行高等逻辑 [#418](https://github.com/XiaoMi/hiui/issues/418)
+- 修复：`<Table />` 记忆功能 [#420](https://github.com/XiaoMi/hiui/issues/420)
+
+## 1.5.2
+
+- 修复：`<Upload />` 组件放入 `<Form.Item />` 后 `onChange return false` 无效 [#344](https://github.com/XiaoMi/hiui/issues/344)
+- 新增：`<DatePicker />` 组件 `timeperiod` 模式支持自定义时间间隔 [#349](https://github.com/XiaoMi/hiui/issues/349)
+
 ## 1.5.1
 
 - 新增：`<Select />` 组件 `onClick` `onBlur` `onFocus` 事件回调函数 [#321](https://github.com/XiaoMi/hiui/issues/321)
@@ -155,14 +169,3 @@
 
 - 第一个公开版本，发布基本组件；
 - 发布 HIUI 首页和文档。
-
----
-
-## Roadmap
-
-- 增加 `<Switch />` 组件
-- 增加 `<Card />` 组件
-- 增加 `<Menu />` 组件
-- 增加 `<Transfer />` 组件
-- 优化 `<DatePicker />` 组件，优化范围选择逻辑
-- [More](https://github.com/XiaoMi/hiui/issues)……
