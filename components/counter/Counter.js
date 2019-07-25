@@ -140,7 +140,6 @@ class Counter extends React.Component {
     const min = +this.props.min
     const max = +this.props.max
     let { value, valueTrue } = this.state
-    console.log(attrs)
     const { defaultValue, ...attrs } = this.attrs
 
     return (
