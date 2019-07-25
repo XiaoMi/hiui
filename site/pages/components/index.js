@@ -10,6 +10,7 @@ export default {
     template: components['template'],
     theme: components['theme'],
     i18n: components['i18n'],
+    'upgrade-1x': components['upgrade-1x'],
     changelog: components['changelog']
   },
   components: {
