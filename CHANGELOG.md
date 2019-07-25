@@ -1,5 +1,11 @@
 # 更新日志
 
+## 1.5.4
+
+- 修复：`<DatePicker />` 范围选择初始值不正确的问题 [#338](https://github.com/XiaoMi/hiui/issues/338)
+- 修复：`<Form />` 的横向显示，FormItem 组件不传 label 属性的时候，内容会上移的问题 [#436](https://github.com/XiaoMi/hiui/issues/436)
+- 修复：`<Table />` 吸顶后的 bug [#429](https://github.com/XiaoMi/hiui/issues/429)
+
 ## 1.5.3
 
 - 新增：`<Upload />` 组件上传图片后点击展示支持旋转 [#183](https://github.com/XiaoMi/hiui/issues/183)
