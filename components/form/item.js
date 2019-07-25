@@ -166,7 +166,7 @@ class FormItem extends Component {
     return (
       <div className={classNames('hi-form-item', className, obj)}>
         <label className={'hi-form-item' + '__label'} style={{ width: this.labelWidth }}>
-          {label}{shouldShowColon && colon}
+          {typeof label === 'string' && label.trim()}{shouldShowColon && colon}
         </label>
         <div className={'hi-form-item' + '__content'}>
           {Array.isArray(children) || !children
