@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import Item from './item'
+import Provider from '../context'
 import './style/index'
 const PropTypes = require('prop-types')
 class Form extends Component {
-  static defaultProps = {
-    size: 'small',
-    labelPosition: 'right'
-  }
-
   constructor (props) {
     super(props)
 
@@ -116,9 +112,16 @@ Form.propTypes = {
   labelPosition: PropTypes.oneOf(['right', 'left', 'top']),
   labWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   inline: PropTypes.bool,
+  showColon: PropTypes.bool,
   onSubmit: PropTypes.func
+}
+
+Form.defaultProps = {
+  size: 'small',
+  labelPosition: 'right',
+  showColon: true
 }
 
 Form.Item = Item
 
-export default Form
+export default Provider(Form)

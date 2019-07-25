@@ -4,10 +4,6 @@ import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
 
 class FormItem extends Component {
-  static defaultProps = {
-    size: 'small'
-  }
-
   constructor (props, context) {
     super(props)
 
@@ -154,9 +150,14 @@ class FormItem extends Component {
   }
 
   render () {
-    const { children, label, required, className } = this.props
+    const { children, label, required, className, showColon: shouldItemShowColon } = this.props
+    const { showColon: shouldFormShowColon, localeDatas: {
+      form: { colon }
+    } } = this.parent.props
     const { error, validating } = this.state
-
+    const shouldShowColon = shouldItemShowColon === undefined
+      ? (shouldFormShowColon && typeof label === 'string' && label.trim())
+      : shouldItemShowColon
     const obj = {}
     obj['hi-form-item__error'] = error !== ''
     obj['hi-form-item--validating'] = validating
@@ -164,13 +165,9 @@ class FormItem extends Component {
 
     return (
       <div className={classNames('hi-form-item', className, obj)}>
-        {label ? (
-          <label className={'hi-form-item' + '__label'} style={{ width: this.labelWidth }}>
-            {label}：
-          </label>
-        ) : (
-          <span style={{ width: this.labelWidth }} />
-        )}
+        <label className={'hi-form-item' + '__label'} style={{ width: this.labelWidth }}>
+          {typeof label === 'string' && label.trim()}{shouldShowColon && colon}
+        </label>
         <div className={'hi-form-item' + '__content'}>
           {Array.isArray(children) || !children
             ? children
@@ -204,7 +201,12 @@ FormItem.propTypes = {
   rules: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   required: PropTypes.bool,
   label: PropTypes.string,
-  labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  showColon: PropTypes.bool
+}
+
+FormItem.defaultProps = {
+  size: 'small'
 }
 
 export default FormItem
