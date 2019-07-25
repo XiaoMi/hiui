@@ -6,7 +6,7 @@ import Checkbox from '../../../components/checkbox'
 const prefix = 'pagination-intact'
 const code = `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
-import Checkbox from '@hi-ui/hiui/es/Checkbox'
+import Checkbox from '@hi-ui/hiui/es/checkbox'
 import Pagination from '@hi-ui/hiui/es/pagination'\n
 class Demo extends React.Component {
   constructor(props) {

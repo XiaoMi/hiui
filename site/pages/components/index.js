@@ -7,10 +7,10 @@ files.keys().forEach(key => {
 export default {
   documents: {
     'quick-start': components['quick-start'],
-    template: components['template'],
+    'upgrade-from-1x': components['upgrade-from-1x'],
     theme: components['theme'],
+    palette: components['palette'],
     i18n: components['i18n'],
-    'upgrade-1x': components['upgrade-1x'],
     changelog: components['changelog']
   },
   components: {
@@ -21,11 +21,11 @@ export default {
       icon: components['icon']
     },
     'group-navgation': {
-      tabs: components['tabs'],
       dropdown: components['dropdown'],
       pagination: components['pagination'],
       stepper: components['stepper'],
-      menu: components['menu']
+      menu: components['menu'],
+      tabs: components['tabs']
     },
     'group-form': {
       form: components['form'],
@@ -35,22 +35,22 @@ export default {
       cascader: components['cascader'],
       radio: components['radio'],
       checkbox: components['checkbox'],
+      switch: components['switch'],
       'date-picker': components['date-picker'],
       'time-picker': components['time-picker'],
+      transfer: components['transfer'],
+      tree: components['tree'],
       upload: components['upload'],
       rate: components['rate']
     },
     'group-data': {
       table: components['table'],
-      tree: components['tree'],
       collapse: components['collapse'],
       tooltip: components['tooltip'],
       popover: components['popover'],
       progress: components['progress'],
       card: components['card'],
-      timeline: components['timeline'],
-      transfer: components['transfer'],
-      switch: components['switch']
+      timeline: components['timeline']
     },
     'group-tips': {
       modal: components['modal'],

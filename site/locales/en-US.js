@@ -2,8 +2,8 @@ module.exports = {
   components: {
     'quick-start': 'Quick Start',
     i18n: 'i18n',
-    theme: 'Customize Theme',
-    template: 'Layout Theme',
+    palette: 'Customize Theme',
+    theme: 'Layout Theme',
     changelog: 'Changelog',
     'group-basic': 'General',
     'group-navgation': 'Navigation',
