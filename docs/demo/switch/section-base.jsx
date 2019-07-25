@@ -3,8 +3,10 @@ import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Switch from '../../../components/switch'
 import Icon from '../../../components/icon'
+
 const prefix = 'switch-base'
-const code = `import React from 'react'
+const code = `
+import React from 'react'
 import Switch from '@hi-ui/hiui/es/switch'
 import Button from '@hi-ui/hiui/es/button'\n
 class Demo extends React.Component {
@@ -21,16 +23,17 @@ class Demo extends React.Component {
   render () {
     return (
       <div>
-        <p>默认</p>
+        <p>默认</p >
         <Switch />
-        <p>自定义内容</p>
-        <Switch content={['ON', 'OFF']}/>
+        <p>自定义内容</p >
+        <Switch content={['ON', 'OFF']} onChange={() => console.log('change')}/>
+        <p>自定义图标</p >
         <Switch content={[<Icon name='check' />, <Icon name='close' />]}/>
-        <p>禁用状态</p>
+        <p>禁用状态</p >
         <p>
           <Button onClick={() => {this.setState({disabled: !this.state.disabled})}}>切换禁用</Button>
           <Button onClick={() => {this.setState({checked: !this.state.checked})}}>切换开启</Button>
-        </p>
+        </p >
         <Switch checked={this.state.checked} disabled={this.state.disabled} content={['开', '关']} onChange={this.onChange.bind(this)}/>
       </div>
     )

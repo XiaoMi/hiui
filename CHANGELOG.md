@@ -1,5 +1,26 @@
 # 更新日志
 
+## 2.0.0
+- 修改：`<Dropdown />` 弃用 list 属性，使用 data 属性代替
+- 修改：`<Pagination />` 组件
+  - 弃用 `mode` 属性，使用 `type` 属性代替
+  - 新增 `current` 受控属性
+  - 新增 `max` 最大页数属性
+  - 废弃`hideOnSinglePage` 属性，使用 `autoHide` 属性代替
+  - 废弃`sizeChangeEvent` 属性，使用`onPageSizeChange` 属性代替
+  - 废弃`showQuickJumper` 属性，使用`showJumper`属性代替
+- 修改：`<Stepper />` 组件
+  - 废弃`id`、`className`属性
+  - 废弃 `list` 属性，使用`data` 属性代替
+  - 废弃`vertical` 属性，使用`placement` 属性代替
+  - 废弃`up` 属性，使用`itemLayout` 属性代替
+- 修改：`<Menu />` 组件
+  - 废弃`mode` 属性，使用`placement` 属性代替
+  - 废弃`mini` 属性，使用`collapsed` 属性代替
+  - 废弃`miniToggle` 属性，使用`showCollpse` 属性代替
+  - 废弃`onMiniChange` 属性，使用`onCollapse` 属性代替
+- 更新中…
+
 ## 1.5.4
 
 - 修复：`<DatePicker />` 范围选择初始值不正确的问题 [#338](https://github.com/XiaoMi/hiui/issues/338)
