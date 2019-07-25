@@ -6,8 +6,7 @@ import Button from '../../../components/button'
 import Stepper from '../../../components/stepper/Stepper'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'theme-example'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import { ThemeContext } from '@hi-ui/hiui/es/context'
 import Button from '@hi-ui/hiui/es/button'
 import DatePicker from '@hi-ui/hiui/es/date-picker'
@@ -86,7 +85,7 @@ class Demo extends React.Component {
             </Col>
           </Row>
         </ThemeContext.Provider>
-        
+
         <ThemeContext.Provider value='magenta'>
           <Row gutter={true}>
             <Col span={12}>
@@ -105,7 +104,7 @@ class Demo extends React.Component {
             </Col>
           </Row>
         </ThemeContext.Provider>
-        
+
         <ThemeContext.Provider value='lavender'>
           <Row gutter={true}>
             <Col span={12}>
@@ -174,7 +173,7 @@ class Demo extends React.Component {
             </Col>
           </Row>
         </ThemeContext.Provider>
-        
+
         <ThemeContext.Provider value='magenta'>
           <Row gutter={true}>
             <Col span={24}>
@@ -185,7 +184,7 @@ class Demo extends React.Component {
             </Col>
           </Row>
         </ThemeContext.Provider>
-        
+
         <ThemeContext.Provider value='lavender'>
           <Row gutter={true}>
             <Col span={24}>

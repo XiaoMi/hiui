@@ -17,11 +17,11 @@ class Modal extends Component {
     onCancel: PropTypes.func,
     confirmText: PropTypes.string,
     cancelText: PropTypes.string,
-    backDrop: PropTypes.bool, // TODO: 废弃，使用 maskClosable
-    maskClosable: PropTypes.bool,
+    backDrop: PropTypes.bool, // TODO: 废弃，使用 maskCloseable
+    maskCloseable: PropTypes.bool,
     confirmType: PropTypes.string,
     cancelType: PropTypes.string,
-    closeBtn: PropTypes.bool, // TODO: 废弃，使用 maskClosable
+    closeBtn: PropTypes.bool, // TODO: 废弃，使用 maskCloseable
     closabble: PropTypes.bool
   }
 
@@ -29,11 +29,11 @@ class Modal extends Component {
     title: '',
     adaptive: false,
     backDrop: true,
-    maskClosable: true,
+    maskCloseable: true,
     show: false,
     visible: false,
     closeBtn: true,
-    closable: true,
+    closeable: true,
     destory: false,
     size: 'default'
   }
@@ -103,9 +103,9 @@ class Modal extends Component {
       title,
       children,
       backDrop,
-      maskClosable,
+      maskCloseable,
       closeBtn,
-      closable,
+      closeable,
       footers, // TODO: 废弃，使用 footer 代替
       footer,
       show,
@@ -120,7 +120,7 @@ class Modal extends Component {
         <div
           className='hi-modal__mask'
           onClick={() => {
-            ((backDrop && maskClosable !== false) || (maskClosable && backDrop !== false)) &&
+            ((backDrop && maskCloseable !== false) || (maskCloseable && backDrop !== false)) &&
               this.handleClose.apply(this)
           }}
         />
@@ -131,10 +131,10 @@ class Modal extends Component {
           )}
           style={_style}
         >
-          {(title || (closeBtn && closable !== false) || (closable && closeBtn !== false)) && (
+          {(title || (closeBtn && closeable !== false) || (closeable && closeBtn !== false)) && (
             <div className='hi-modal__header'>
               <h3 className='hi-modal__title'>{title}</h3>
-              {((closeBtn && closable !== false) || (closable && closeBtn !== false)) && (
+              {((closeBtn && closeable !== false) || (closeable && closeBtn !== false)) && (
                 <div className='hi-modal__close' onClick={this.handleClose.bind(this)}>
                   <Icon name='close' />
                 </div>

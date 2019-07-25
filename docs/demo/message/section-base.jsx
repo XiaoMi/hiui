@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Message from '../../../components/message'
 const prefix = 'message-base'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Message from '@hi-ui/hiui/es/message'\n
 class Demo extends React.Component {

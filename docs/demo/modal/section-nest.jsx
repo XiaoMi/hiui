@@ -4,10 +4,9 @@ import Button from '../../../components/button'
 import Modal from '../../../components/modal'
 import Select from '../../../components/select'
 import Table from '../../../components/table'
-const desc = '未传入 title 及 closable 为 false，可取消 title 部分，footer 为 null，可取消底部按钮'
+const desc = '未传入 title 及 closeable 为 false，可取消 title 部分，footer 为 null，可取消底部按钮'
 const prefix = 'modal-nest'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Modal from '@hi-ui/hiui/es/modal'
 import Select from '@hi-ui/hiui/es/select'
@@ -77,7 +76,7 @@ class Demo extends React.Component {
       <div>
         <Button type="primary" onClick={() => this.setState({visible: true})}>打开</Button>
         <Modal
-          closable={false}
+          closeable={false}
           visible={this.state.visible}
           onConfirm={this.clickEvent.bind(this)}
           onCancel={this.clickEvent.bind(this)}

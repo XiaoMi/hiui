@@ -22,7 +22,7 @@ export const depreactedPropsCompat = (compatPair) => {
         if (props[oldProp] !== undefined && props[newProp] === undefined) {
           isDevelopment &&
             console.warn(
-              `${componentName}'s prop "${oldProp}" will be depreacted in next version ! use ${newProp} instead.`
+              `${componentName}'s prop "${oldProp}" will be depreacted in next version! use ${newProp} instead.`
             )
           compatProps[newProp] = convert
             ? convert(props[oldProp])

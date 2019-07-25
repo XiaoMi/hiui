@@ -5,8 +5,7 @@ const prefix = 'section-basic'
 const rightOptions = ['正常', '禁用']
 const code = [
   {
-    code: `
-import React from 'react'
+    code: `import React from 'react'
 import Checkbox from '@hi-ui/hiui/es/checkbox'\n
 class Demo extends React.Component {
   render() {

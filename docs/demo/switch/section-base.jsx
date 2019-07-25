@@ -4,8 +4,7 @@ import Button from '../../../components/button'
 import Switch from '../../../components/switch'
 import Icon from '../../../components/icon'
 const prefix = 'switch-base'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Switch from '@hi-ui/hiui/es/switch'
 import Button from '@hi-ui/hiui/es/button'\n
 class Demo extends React.Component {

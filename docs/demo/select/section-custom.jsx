@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Select from '../../../components/select'
 const prefix = 'select-custom'
 
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Select from '@hi-ui/hiui/es/select'\n
 class Demo extends React.Component {
   constructor () {

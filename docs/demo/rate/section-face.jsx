@@ -6,8 +6,7 @@ import Rate from '../../../components/rate'
 import Alert from '../../../components/alert'
 const prefix = 'rate-face'
 
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Rate from '@hi-ui/hiui/es/rate'
 import Form from '@hi-ui/hiui/es/form/index'
 import FormItem from '@hi-ui/hiui/es/form/item'
@@ -21,7 +20,7 @@ class Demo extends React.Component {
   render() {
     return (
       <Form labelWidth="80" labelPosition="left">
-        <Alert type="warning" message="使用表情后将不可自定义数量，不可定义半星" closeable={false} />
+        <Alert type="warning" title="使用表情后将不可自定义数量，不可定义半星" closeable={false} />
         <br />
         <FormItem label="基础">
           <Rate defaultValue={3} useEmoji />

@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Card from '../../../components/card'
 const prefix = 'card-simple'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Card from '@hi-ui/hiui/es/card'\n
 class Demo extends React.Component {
   render() {

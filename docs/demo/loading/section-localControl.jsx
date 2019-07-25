@@ -5,8 +5,7 @@ import Table from '../../../components/table'
 import Loading from '../../../components/loading'
 const prefix = 'loading-localControl'
 
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Loading from '@hi-ui/hiui/es/loading'
 import Table from '@hi-ui/hiui/es/table'\n

@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Counter from '../../../components/counter'
 const prefix = 'counter-base'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Counter from '@hi-ui/hiui/es/counter'\n
 class Demo extends React.Component {
   render() {
