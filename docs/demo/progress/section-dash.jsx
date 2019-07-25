@@ -1,12 +1,12 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Progress from '../../../components/progress'
-import Counter from '../../../components/Counter'
+import Counter from '../../../components/counter'
 const prefix = 'progress-dash'
 const code = `
 import React from 'react'
 import Progress from '@hi-ui/hiui/es/progress'
-import Counter from '@hi-ui/hiui/es/Counter'\n
+import Counter from '@hi-ui/hiui/es/counter'\n
 class Demo extends React.Component {
   constructor () {
     super()
