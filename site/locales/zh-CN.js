@@ -1,6 +1,7 @@
 module.exports = {
   components: {
     'quick-start': '快速上手',
+    'upgrade-1x': '从 1.x 升级至 2.0',
     i18n: 'i18n',
     template: '布局主题',
     theme: '配色主题',
