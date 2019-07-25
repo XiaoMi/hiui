@@ -87,6 +87,7 @@
 }
 
 .hi-btn {
+  position: relative;
   display: inline-block;
   box-sizing: border-box;
   margin: 0; // For input.btn
@@ -120,19 +121,17 @@
   }
 
   &--loading {
-    position: relative;
-
     &::before {
       content: '';
       display: block;
       position: absolute;
-      cursor: default;
       top: -1px;
       bottom: -1px;
       left: -1px;
       right: -1px;
       background-color: #fff;
       opacity: 0.4;
+      cursor: default;
     }
 
     &--icon {
