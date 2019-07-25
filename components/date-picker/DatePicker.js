@@ -9,10 +9,7 @@ import dateFormat from 'date-fns/format'
 class DatePicker extends BasePicker {
   initPanel (state, props) {
     let component = null
-    let d = state.date
-    if (!d.startDate) {
-      d = {startDate: d, endDate: null}
-    }
+
     switch (props.type) {
       case 'month':
       case 'year':
@@ -43,7 +40,7 @@ class DatePicker extends BasePicker {
         component = (
           <DateRangePanel
             {...props}
-            date={d}
+            date={state.date || {startDate: null, endDate: null}}
             timeConfirm={this.timeConfirm.bind(this)}
             onPick={this.onPick.bind(this)}
             style={state.style}
@@ -54,7 +51,7 @@ class DatePicker extends BasePicker {
         component = (
           <WeekRangePanel
             {...props}
-            date={d}
+            date={state.date || {startDate: null, endDate: null}}
             range={state.range}
             onPick={this.onPick.bind(this)}
             style={state.style}
