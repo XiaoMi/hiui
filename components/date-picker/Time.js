@@ -272,17 +272,7 @@ export default class TimePanel extends Component {
             </ul>
             {secondsArrow && this.renderArrow('seconds')}
           </div>
-          <div className='hi-timepicker__current-line' style={{top: this.props.onlyTime ? 108 : 140}} >
-            {/* <span>{hours}</span>
-            <span>{minutes}</span>
-            <span>{seconds}</span> */}
-          </div>
-          {/* <span className='hi-timepicker__page-turn' ref={this.pageUpRef}>
-            <Icon name='up' />
-          </span>
-          <span className='hi-timepicker__page-turn' ref={this.pageDownRef}>
-            <Icon name='down' />
-          </span> */}
+          <div className='hi-timepicker__current-line' style={{top: this.props.onlyTime ? 108 : 140}} />
         </div>
       </div>
     )

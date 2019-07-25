@@ -28,7 +28,6 @@ export default class WeekRangePanel extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      // date: leftDate,
       ..._parseProps(props.date)
     }
   }
@@ -73,9 +72,6 @@ export default class WeekRangePanel extends Component {
         <span className='hi-datepicker__header-text'>
           {this.getHeaderCenterContent(year, month)}
         </span>
-        {/* <span className='hi-datepicker__header-text'>
-          {month}月
-        </span> */}
         <div className='hi-datepicker__header-btns'>
           <span onClick={() => this.changeMonth(false, lr)} ><Icon name='right' /></span>
           <span onClick={() => this.changeYear(false, lr)} ><Icon name='double-right' /></span>
@@ -203,8 +199,6 @@ export default class WeekRangePanel extends Component {
       'hi-datepicker',
       theme && 'theme__' + theme
     )
-    // const {year, month, day} = deconstructDate(date)
-    // const _date = new Date(year, month, day)
     return (
       <div
         style={this.props.style}

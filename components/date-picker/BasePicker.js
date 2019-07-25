@@ -11,7 +11,6 @@ class BasePicker extends Component {
   inputRoot = null
   input = null
   rInput = null
-  static format2 = 2
   constructor (props) {
     super(props)
     this.state = {
@@ -57,12 +56,8 @@ class BasePicker extends Component {
       if (Object.prototype.toString.call(_value) === '[object Object]') {
         start = _value.start || null
         end = _value.end || new Date()
-        // if (type === 'timeperiod') {
-
-        // }
       } else {
         start = _value
-        // end = nextMonth(start)
       }
 
       if (type === 'timeperiod' && isValid(start)) {
@@ -202,7 +197,6 @@ class BasePicker extends Component {
     if (endDate && isValid(endDate)) {
       date.endDate && (date.endDate = endDate)
     }
-    // this.setState({date, texts: [formatterDate(type, date.startDate || date, format, showTime, localeDatas, weekOffset), formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset)]})
     this.setState({date})
   }
   clickOutSide (e) {
@@ -336,7 +330,6 @@ class BasePicker extends Component {
 BasePicker.propTypes = {
   type: PropTypes.oneOf(Object.values(DatePickerType)),
   value: function (props, propName, componentName) {
-    // Invalid Date
     const val = props[propName]
     if (val === undefined || val === null) {
       return null
