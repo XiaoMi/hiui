@@ -69,7 +69,7 @@ class Demo extends React.Component {
   }
 
   handleSubmit() {
-    this.form.validate(valid => {
+    this.form.current.validate(valid => {
       if(valid) {
         console.log(this.state.form)
         alert('submit')
@@ -88,7 +88,7 @@ class Demo extends React.Component {
         count: ''
       }
     })
-    this.form.resetValidates()
+    this.form.current.resetValidates()
   }
 
   handleChange(key, e, value, index) {
@@ -110,7 +110,7 @@ class Demo extends React.Component {
 
     return (
       <div>
-        <Form ref={node => this.form = node} model={form} rules={this.state.rules} labelWidth='80'>
+        <Form ref={this.form} model={form} rules={this.state.rules} labelWidth='80'>
           <Row>
             <Col span={12}>
 
