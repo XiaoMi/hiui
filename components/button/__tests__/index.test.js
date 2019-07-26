@@ -134,6 +134,7 @@ describe('Button', () => {
       expect(wrapper.find(`a`).prop('href')).toEqual(expect.stringMatching(href))
     })
 
+    // FIXME 源码 target 有遗漏
     it('target', () => {
       const targets = [
         '_self',

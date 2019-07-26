@@ -4,6 +4,7 @@ import Badge from '../Badge'
 
 describe('Badge', () => {
   describe('Lifecycle', () => {
+    // FIXME #34 typeof +content === 'number' always be true
     it('componentDidMount', () => {
       const wrapper = mount(<Badge />)
 

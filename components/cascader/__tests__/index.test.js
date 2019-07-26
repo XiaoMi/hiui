@@ -379,7 +379,6 @@ describe('Cascader', () => {
     })
   })
 
-  // NOTE has not else path
   describe('Branch', () => {
     it('state: { popperShow: true } && props: { disabled: false } && handleClick', () => {
       const wrapper = mount(
