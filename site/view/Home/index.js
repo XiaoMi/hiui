@@ -24,7 +24,6 @@ class Home extends React.Component {
                 <i className='hi-fa fa-github' />
                 GitHub (v{version})
               </a>
-              <p style={{ marginTop: '12px', marginLeft: '16px', color: '#999' }}>v2.0.0 即将发布</p>
             </div>
             <div className='section__figure' />
           </div>
