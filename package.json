@@ -63,6 +63,7 @@
     "redux-thunk": "^2.3.0",
     "shallowequal": "^1.0.2",
     "warning": "^3.0.0",
+    "webpack-merge": "^4.2.1",
     "whatwg-fetch": "^2.0.4"
   },
   "devDependencies": {
@@ -100,6 +101,7 @@
     "lint-staged": "^7.2.2",
     "marked": "^0.4.0",
     "merge2": "^1.2.2",
+    "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
     "postcss-loader": "^2.1.5",
     "prismjs": "^1.16.0",
@@ -121,7 +123,7 @@
     "through2": "^2.0.5",
     "url-loader": "^1.0.1",
     "webpack": "^4.32.2",
-    "webpack-cli": "^3.3.2",
+    "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.4.1"
   },
   "standard": {
