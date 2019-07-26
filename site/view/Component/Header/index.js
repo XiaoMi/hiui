@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-
 import { NavGroup } from '@hi-ui/classic-theme'
 import LocaleDropdown from '../Dropdown/LocaleDropdown'
 import locales from '../../../locales'
+
 export default class NavHeader extends Component {
   render () {
     const { locale, onLocaleChange } = this.props
@@ -12,14 +12,14 @@ export default class NavHeader extends Component {
       <React.Fragment>
         <NavGroup position='right'>
           <NavGroup.Item>
-            <NavLink to={`/hiui/${locale}`} exact activeClassName='header__nav-link--active'>
+            <NavLink to={`<BASE_URL>/${locale}`} exact activeClassName='header__nav-link--active'>
               {home}
             </NavLink>
           </NavGroup.Item>
 
           <NavGroup.Item>
             <NavLink
-              to={`/hiui/${locale}/designs/summarize`}
+              to={`<BASE_URL>/${locale}/designs/summarize`}
               activeClassName='header__nav-link--active'
             >
               {design}
@@ -28,7 +28,7 @@ export default class NavHeader extends Component {
 
           <NavGroup.Item>
             <NavLink
-              to={`/hiui/${locale}/docs/quick-start`}
+              to={`<BASE_URL>/${locale}/docs/quick-start`}
               activeClassName='header__nav-link--active'
             >
               {components}
@@ -37,7 +37,7 @@ export default class NavHeader extends Component {
 
           <NavGroup.Item>
             <NavLink
-              to={`/hiui/${locale}/templates/portal`}
+              to={`<BASE_URL>/${locale}/templates/portal`}
               activeClassName='header__nav-link--active'
             >
               {template}

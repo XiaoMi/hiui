@@ -9,12 +9,15 @@ const {
 
 const dist = path.resolve(__dirname, '../dist')
 const port = 4200
-const baseRoute = '/hiui'
+
+const isGithub = process.env.DOC_ENV === 'github'
+
+const baseUrl = isGithub ? '/hiui' : ''
 
 const server = createSPAServer({
   dist,
   port,
-  base: baseRoute,
+  base: baseUrl,
   onCreated: renderUrls
 })
 
@@ -30,7 +33,7 @@ async function renderUrls () {
 }
 
 async function render (content, url) {
-  const dir = getRelativePathFromUrl(url).replace(baseRoute, '')
+  const dir = getRelativePathFromUrl(url).replace(baseUrl, '')
   writeFile(path.join(dist, dir), content)
 }
 
@@ -40,8 +43,8 @@ async function render (content, url) {
  */
 function getUrls () {
   const urls = [...getComponentUrls(), ...getDesignUrls(), ...getTemplateUrls(), ...getExtraUrls()]
-  const zh = urls.map(v => `http://localhost:${port}/hiui/zh-CN/${v}`)
-  const en = urls.map(v => `http://localhost:${port}/hiui/en-US/${v}`)
+  const zh = urls.map(v => `http://localhost:${port}${baseUrl}/zh-CN/${v}`)
+  const en = urls.map(v => `http://localhost:${port}${baseUrl}/en-US/${v}`)
   return [...zh, ...en]
 }
 

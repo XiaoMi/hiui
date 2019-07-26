@@ -7,7 +7,7 @@
 适用于查询条件少，关系均为且可灵活管理条件的情况。
 
 <a href="https://hiui-group.github.io/hiui-template/#/query-basic" target="_blank" style="margin-top:8px;">
-  <img src="/hiui/static/img/templates/table5.png" width="60%"/>
+  <img src="<BASE_URL>/static/img/templates/table5.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/query-basic" target="_blank">查看 Demo</a>
@@ -31,7 +31,7 @@
 适用于查询条件数为 3-5 个，操作高频且筛选项少于 20 个的情况（多选）。
 
 <a href="https://hiui-group.github.io/hiui-template/#/tile-multiple" target="_blank" style="margin-top:8px;">
-  <img src="/hiui/static/img/templates/table6.png" width="60%"/>
+  <img src="<BASE_URL>/static/img/templates/table6.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/tile-multiple" target="_blank">查看 Demo</a>
@@ -47,7 +47,7 @@
 适用于查询条件数为 3-5 个，操作高频且筛选项少于 20 个的情况（单选）。
 
 <a href="https://hiui-group.github.io/hiui-template/#/tile-single" target="_blank" style="margin-top:8px;">
-  <img src="/hiui/static/img/templates/table7.png" width="60%"/>
+  <img src="<BASE_URL>/static/img/templates/table7.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/tile-single" target="_blank">查看 Demo</a>
@@ -65,7 +65,7 @@
 适用于查询条件为多叉树结构的情况（单选）：
 
 <a href="https://hiui-group.github.io/hiui-template/#/tree-single-query" target="_blank" style="margin-top:8px;">
-  <img src="/hiui/static/img/templates/table8.png" width="60%"/>
+  <img src="<BASE_URL>/static/img/templates/table8.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/tree-single-query" target="_blank">查看 Demo</a>
@@ -81,7 +81,7 @@
 适用于查询条件为多叉树结构的情况（多选）。
 
 <a href="https://hiui-group.github.io/hiui-template/#/tree-multiple-query" target="_blank" style="margin-top:8px;">
-  <img src="/hiui/static/img/templates/table9.png" width="60%"/>
+  <img src="<BASE_URL>/static/img/templates/table9.png" width="60%"/>
 </a>
 
 <a href="https://hiui-group.github.io/hiui-template/#/tree-multiple-query" target="_blank">查看 Demo</a>
