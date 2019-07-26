@@ -25,7 +25,7 @@ Node 安装完成后，npm 即可以使用。
 
 #### 1.1 全局安装 create-react-app
 
-``` bash
+```bash
 npm install -g create-react-app
 ```
 
@@ -33,7 +33,7 @@ npm install -g create-react-app
 
 在终端顺序执行以下命令：
 
-``` bash
+```bash
 # 使用 create-react-app 创建工程目录
 create-react-app projectName
 
@@ -46,13 +46,13 @@ npm start
 yarn start
 ```
 
-<img src="<BASE_URL>/static/img/docs/create-react-app.gif" />
+<img src='<BASE_URL>/static/img/docs/create-react-app.gif' />
 
 完毕后，将会自动打开新的标签页 `localhost:3000`，至此 React 项目初始化完成
 
 **目录结构**
 
-``` html
+```html
 ├── README.md
 ├── package.json
 ├── public
@@ -72,15 +72,15 @@ yarn start
 
 #### 1.3 安装 HIUI
 
-``` bash
+```bash
 cd projectName
 npm install @hi-ui/hiui --save
 ```
 
-``` diff
+```diff
 // package.json
 "dependencies": {
-+   "@hi-ui/hiui": "^1.3.7",
++   "@hi-ui/hiui": "^2.0.0-rc.2",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-scripts": "2.1.5"
@@ -89,7 +89,7 @@ npm install @hi-ui/hiui --save
 
 修改 src/App.js
 
-``` javascript
+```javascript
 import React, { Component } from 'react'
 import { Button } from '@hi-ui/hiui' //引入所需组件
 import logo from './logo.svg'
