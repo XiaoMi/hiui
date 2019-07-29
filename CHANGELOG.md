@@ -1,14 +1,22 @@
 # 更新日志
 
+## 1.5.7
+
+- 修复：`<Form />` Form.Item 丢失的问题[#472](https://github.com/XiaoMi/hiui/issues/472)
+
 ## 1.5.6
 
 - 修复：`<Form />` ref 无法获取 validate 方法的 bug[#469](https://github.com/XiaoMi/hiui/issues/469)
+
+## 1.5.5
+
+- 修复：`<DatePicker />` 范围选择初始值不正确的问题 [#338](https://github.com/XiaoMi/hiui/issues/338)
+- 修复：`<Form />` 的横向显示，FormItem 组件不传 label 属性的时候，内容会上移的问题 [#436](https://github.com/XiaoMi/hiui/issues/436)
 
 ## 1.5.4
 
 - 修复：`<DatePicker />` 范围选择初始值不正确的问题 [#338](https://github.com/XiaoMi/hiui/issues/338)
 - 修复：`<Form />` 的横向显示，FormItem 组件不传 label 属性的时候，内容会上移的问题 [#436](https://github.com/XiaoMi/hiui/issues/436)
-  
 
 ## 1.5.3
 

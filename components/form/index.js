@@ -122,6 +122,7 @@ Form.defaultProps = {
   showColon: true
 }
 
-Form.Item = Item
+const FormWrapper = Provider(Form)
+FormWrapper.Item = Item
 
-export default Provider(Form)
+export default FormWrapper

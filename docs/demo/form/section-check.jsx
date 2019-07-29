@@ -1,7 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Form from '../../../components/form/index'
-import FormItem from '../../../components/form/item'
+import Form from '../../../components/form'
 import Input from '../../../components/input'
 import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
@@ -13,9 +12,8 @@ import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Button from '@hi-ui/hiui/es/button'
 import Radio from '@hi-ui/hiui/es/radio'
-import FormItem from '@hi-ui/hiui/es/form/item'
 import Input from '@hi-ui/hiui/es/input'
-import Form from '@hi-ui/hiui/es/form/index'\n
+import Form from '@hi-ui/hiui/es/form'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)
@@ -114,23 +112,23 @@ class Demo extends React.Component {
           <Row>
             <Col span={12}>
 
-              <FormItem label='名称' prop='name'>
+              <Form.Item label='名称' prop='name'>
                 <Input value={form.name} placeholder={'name'} onChange={this.handleChange.bind(this, 'name')}/>
-              </FormItem>
-              <FormItem label='数量' prop='count'>
+              </Form.Item>
+              <Form.Item label='数量' prop='count'>
                 <Input value={form.count} placeholder={'count'} onChange={this.handleChange.bind(this, 'count')}/>
-              </FormItem>
-              <FormItem label='地区' prop='region'>
+              </Form.Item>
+              <Form.Item label='地区' prop='region'>
                 <Radio
                   list={['北京', '上海', '重庆']}
                   checked={checkedIndex}
                   onChange={this.handleChange.bind(this, 'region','')}
                 />
-              </FormItem>
-              <FormItem>
+              </Form.Item>
+              <Form.Item>
                 <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
                 <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
-              </FormItem>
+              </Form.Item>
 
             </Col>
           </Row>
@@ -142,7 +140,7 @@ class Demo extends React.Component {
 const DemoCloseable = () => (
   <DocViewer
     code={code}
-    scope={{ Form, FormItem, Radio, Grid, Input, Button }}
+    scope={{ Form, Radio, Grid, Input, Button }}
     prefix={prefix}
   />
 )

@@ -1,30 +1,28 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Form from '../../../components/form/index'
-import FormItem from '../../../components/form/item'
+import Form from '../../../components/form'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
 const prefix = 'form-row'
 const code = `
 import React from 'react'
-import FormItem from '@hi-ui/hiui/es/form/item'
 import Input from '@hi-ui/hiui/es/input'
-import Form from '@hi-ui/hiui/es/form/index'\n
+import Form from '@hi-ui/hiui/es/form'\n
 class Demo extends React.Component {
   render(){
     return (
       <div>
         <div>
            <Form inline={true}>
-              <FormItem label='账号' labelWidth='50'>
+              <Form.Item label='账号' labelWidth='50'>
                 <Input placeholder={'账号'} />
-              </FormItem>
-              <FormItem label='密码' labelWidth='50'>
+              </Form.Item>
+              <Form.Item label='密码' labelWidth='50'>
                 <Input type='password' placeholder={'密码'} />
-              </FormItem>
-              <FormItem>
+              </Form.Item>
+              <Form.Item>
                 <Button type={'primary'}>提交</Button>
-              </FormItem>
+              </Form.Item>
             </Form>
          </div>
       </div>
@@ -35,7 +33,7 @@ class Demo extends React.Component {
 const DemoRow = () => (
   <DocViewer
     code={code}
-    scope={{ Form, FormItem, Button, Input }}
+    scope={{ Form, Button, Input }}
     prefix={prefix}
   />
 )
