@@ -43,9 +43,7 @@
       &:not(.hi-btn--disabled):active {
         background-color: map-get(get-palette($color), '60');
         color: $white;
-        box-shadow:
-          inset 0 4px 4px
-          rgba(map-get(get-palette($color), '50'), 0.25);
+        box-shadow: inset 0 4px 4px rgba(map-get(get-palette($color), '50'), 0.25);
       }
 
       // Status: disabled
