@@ -1,7 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Form from '../../../components/form/index'
-import FormItem from '../../../components/form/item'
+import Form from '../../../components/form'
 import Input from '../../../components/input'
 import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
@@ -11,10 +10,9 @@ const code = `
 import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Radio from '@hi-ui/hiui/es/radio'
-import FormItem from '@hi-ui/hiui/es/form/item'
 import Button from '@hi-ui/hiui/es/form/button'
 import Input from '@hi-ui/hiui/es/input'
-import Form from '@hi-ui/hiui/es/form/index'\n
+import Form from '@hi-ui/hiui/es/form'\n
 class Demo extends React.Component {
   constructor() {
     super()
@@ -97,17 +95,17 @@ class Demo extends React.Component {
           <Col span={this.state.column}>
 
             <Form labelWidth='80' labelPosition={this.state.position}>
-              <FormItem label={'姓名'}>
+              <Form.Item label={'姓名'}>
                 <Input placeholder={'username'} />
-              </FormItem>
+              </Form.Item>
 
-              <FormItem label={'手机号码'}  >
+              <Form.Item label={'手机号码'}  >
                 <Input placeholder={'phone'} />
-              </FormItem>
+              </Form.Item>
 
-              <FormItem>
+              <Form.Item>
                 <Button type={'primary'}>提交</Button>
-              </FormItem>
+              </Form.Item>
             </Form>
 
           </Col>
@@ -119,7 +117,7 @@ class Demo extends React.Component {
 const DemoAlign = () => (
   <DocViewer
     code={code}
-    scope={{ Form, FormItem, Radio, Grid, Input, Button }}
+    scope={{ Form, Radio, Grid, Input, Button }}
     prefix={prefix}
   />
 )
