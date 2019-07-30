@@ -78,6 +78,7 @@ $tree: 'hi-tree' !default;
 
   li {
     position: relative;
+    padding: 2px;
 
     & > .item--wrapper {
       display: flex;
