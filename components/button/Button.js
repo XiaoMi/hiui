@@ -14,11 +14,15 @@ class Button extends Component {
       'success',
       'danger',
       'default',
-      'warning',
-      'info'
+      'warning', // deprecated
+      'info' // deprecated
     ]),
     size: PropTypes.oneOf(['large', 'small', 'normal']),
-    appearance: PropTypes.oneOf(['link', 'button', 'line']),
+    appearance: PropTypes.oneOf([
+      'button',
+      'link',
+      'line' // deprecated
+    ]),
     className: PropTypes.string,
     style: PropTypes.object,
     disabled: PropTypes.bool,
@@ -63,8 +67,16 @@ class Button extends Component {
       appearance && `hi-btn--appearance--${appearance}`,
       size && `hi-btn--size--${size}`,
       isDisabled && `hi-btn--disabled`,
-      icon && (!children || (typeof children === 'string' && !children.trim())) && `hi-btn--icon`,
       loading && `hi-btn--loading`,
+      {
+        'hi-btn--icon': (function () {
+          // Detect if children is empty
+          if (!children || (typeof children === 'string' && !children.trim())) return true
+
+          // Detect if children is an Icon
+          if (React.isValidElement(children) && children.type.name === 'Icon') return true
+        })()
+      },
 
       // For version < 1.1.0
       type === 'primary' && appearance === 'line'
