@@ -85,10 +85,10 @@ export default class TreeNode extends Component {
     })
   }
   // 统计高亮项
-  recordHighlight = (data, highlightValue, count) => {
+  recordHighlight = (data, highlightValue, count = []) => {
     data.forEach(item => {
       if (typeof item.title === 'string' && item.title.includes(highlightValue)) {
-        count = count + 1
+        count.push(item)
       }
       if (item.children) {
         this.recordHighlight(item.children, highlightValue, count)
@@ -530,7 +530,7 @@ export default class TreeNode extends Component {
               onChange={e => {
                 this.setState({
                   searchValue: e.target.value,
-                  highlightNum: this.recordHighlight(dataCache, e.target.value, 0)
+                  highlightNum: this.recordHighlight(dataCache, e.target.value, []).length
                 })
 
                 this.props.setExpandTreeNodes(

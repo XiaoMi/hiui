@@ -48,7 +48,7 @@ class TreeItem extends Component {
     const treeItem = (
       <li key={item.id}>
         <div className='item--wrapper'>
-          {targetNode === item.id && dropDividerPosition === 'down' && isOver && (
+          {(!item.children || (item.children && !expanded)) && targetNode === item.id && dropDividerPosition === 'down' && isOver && (
             <TreeDivider top />
           )}
           {
@@ -161,6 +161,9 @@ class TreeItem extends Component {
           )}
         </div>
         {item.children && item.children.length > 0 && expanded ? renderTree(item.children) : null}
+        {(item.children && expanded) && targetNode === item.id && dropDividerPosition === 'down' && isOver && (
+          <TreeDivider />
+        )}
       </li>
     )
     return draggable ? connectDropTarget(treeItem) : treeItem
@@ -200,7 +203,7 @@ const target = {
     if (monitor.isOver({ shallow: true })) {
       if (
         sourceItem.id === targetItem.id ||
-        (targetItem.children && targetItem.children.map(t => t.id).includes(sourceItem.id))
+        ((targetItem.children && targetItem.children.map(t => t.id).includes(sourceItem.id)) && dropDividerPosition === 'sub')
       ) {
         // 如果源节点就是目的节点或者源节点是目的节点的子节点（直系）再或者源节点是目的节点的父节点，那么什么都不做
         // 如果什么都不做，原来展开则现在还展开
