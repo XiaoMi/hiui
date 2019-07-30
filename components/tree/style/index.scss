@@ -1,5 +1,4 @@
 @import '@hi-ui/core-css/index.scss';
-@import '../../style/index.scss';
 $tree: 'hi-tree' !default;
 
 .hi-tree {
@@ -18,8 +17,8 @@ $tree: 'hi-tree' !default;
       position: absolute;
       top: 34px;
       color: #999;
-      left: 39;
-      font-size: 12;
+      left: 39px;
+      font-size: 12px;
     }
 
     .hi-input__inner {

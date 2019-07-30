@@ -6,8 +6,7 @@ const rightOptions = ['正常', '受控']
 
 const code = [
   {
-    code: `
-import React from 'react'
+    code: `import React from 'react'
 import Select from '@hi-ui/hiui/es/select'\n
 class Demo extends React.Component {
   constructor () {
@@ -40,8 +39,7 @@ class Demo extends React.Component {
     opt: ['正常']
   },
   {
-    code: `
-import React from 'react'
+    code: `import React from 'react'
 import Select from '@hi-ui/hiui/es/select'\n
 class Demo extends React.Component {
   constructor () {

@@ -4,8 +4,7 @@ import Stepper from '../../../components/stepper'
 import Icon from '../../../components/icon'
 const prefix = 'stepper-up-down-icon'
 const desc = '上下结构的图标用法需要加入 itemLayout="vertical"，并在添加 Icon'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Icon from '@hi-ui/hiui/es/icon'
 import Stepper from '@hi-ui/hiui/es/stepper'\n
 class Demo extends React.Component {

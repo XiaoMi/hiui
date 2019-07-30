@@ -4,8 +4,7 @@ import Grid from '../../../components/grid'
 import Input from '../../../components/input'
 import Radio from '../../../components/radio'
 const prefix = 'input-type'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Radio from '@hi-ui/hiui/es/radio'
 import Input from '@hi-ui/hiui/es/input'\n
@@ -26,7 +25,7 @@ class Demo extends React.Component {
         id: 'amount',
         content: '浮点数'
       }],
-      value: 'text'
+      type: 'text'
     }
     this.getPlaceholder = () => {
       return {
@@ -34,13 +33,13 @@ class Demo extends React.Component {
         id: '请输入身份证号',
         tel: '请输入手机号码',
         amount: '请输入浮点数'
-      }[this.state.value]
+      }[this.state.type]
     }
   }
   render() {
     const Row = Grid.Row
     const Col = Grid.Col
-    const { types, type, value } = this.state
+    const { types, type } = this.state
     return (
       <div>
         <Row gutter>
@@ -48,9 +47,9 @@ class Demo extends React.Component {
             <Radio.Group
               data={types}
               type='button'
-              value={value}
-              onChange={(value) => {
-                this.setState({ value })
+              value={type}
+              onChange={(type) => {
+                this.setState({ type })
               }}
             />
           </Col>

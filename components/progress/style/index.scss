@@ -23,7 +23,7 @@ $progress-text: #666 !default;
     transition: width 0.4s cubic-bezier(0.3, 0, 0.7, 1);
   }
 
-  &__bar-success {
+  &__bar--success {
     background-color: $progress-success;
   }
 

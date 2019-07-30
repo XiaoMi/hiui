@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Upload from '../../../components/upload'
 const prefix = 'Upload-ban'
 
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Upload from '@hi-ui/hiui/es/upload'\n
 class Demo extends React.Component {
   render () {

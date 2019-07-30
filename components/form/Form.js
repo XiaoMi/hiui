@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
+import Provider from '../context'
 
 class Form extends Component {
   constructor (props) {
@@ -112,12 +113,14 @@ Form.propTypes = {
   labWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placement: PropTypes.oneOf(['horizontal', 'vertical']),
   inline: PropTypes.bool,
-  onSubmit: PropTypes.func
+  onSubmit: PropTypes.func,
+  showColon: PropTypes.bool
 }
 
 Form.defaultProps = {
   size: 'small',
-  labelPosition: 'left'
+  labelPlacement: 'left',
+  showColon: true
 }
 
-export default Form
+export default Provider(Form)

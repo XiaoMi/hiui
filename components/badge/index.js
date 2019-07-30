@@ -1,6 +1,9 @@
 import Badge from './Badge'
 import './style/index'
-import SwitchVersion from '../_util/SwitchVersion'
-import BadgeLegacy from './badge-legacy'
+import { depreactedPropsCompat } from '../_util'
 
-export default SwitchVersion(Badge, BadgeLegacy)
+export default depreactedPropsCompat([
+  ['content', 'value'],
+  ['type', 'dot', (data) => (data ? 'dot' : 'bubble')],
+  ['visible', 'hidden', (data) => !data]
+])(Badge)

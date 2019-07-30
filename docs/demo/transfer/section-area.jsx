@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Transfer from '../../../components/transfer'
 const prefix = 'transfer-area'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Transfer from '@hi-ui/hiui/es/transfer'\n
 class Demo extends React.Component {
   constructor () {

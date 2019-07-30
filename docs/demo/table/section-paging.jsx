@@ -6,8 +6,7 @@ import Button from '../../../components/button'
 import Form from '../../../components/form/index'
 import FormItem from '../../../components/form/Item'
 const prefix = 'table-paging'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Form from '@hi-ui/hiui/es/form/index'
 import FormItem from '@hi-ui/hiui/es/form/item'
@@ -84,7 +83,7 @@ class Demo extends React.Component {
   render() {
     return <Table
           columns={this.columns}
-          data={this.state.data} 
+          data={this.state.data}
           pagination={{
             pageSize: this.state.pageSize,
             total:this.state.total,

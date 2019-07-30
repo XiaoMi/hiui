@@ -5,18 +5,18 @@ import {DAY_MILLISECONDS} from './constants'
 import Icon from '../icon'
 import classNames from 'classnames'
 import Provider from '../context'
-import {dateFormat} from './dateUtil'
+import {dateFormat, isValid, getStartDate} from './dateUtil'
 import TimeRangePanel from './TimeRangePanel'
 
 class DatePanel extends Component {
   constructor (props) {
     super(props)
     let {startDate, endDate} = props.date
-    let leftDate = new Date(startDate)
-    let rightDate = endDate ? new Date(endDate) : nextMonth(leftDate)
+    let leftDate = getStartDate(props.date)
+    let rightDate = isValid(endDate) ? endDate : nextMonth(leftDate)
     if (endDate) {
-      const {year: sYear, month: sMonth} = deconstructDate(startDate)
-      const {year: eYear, month: eMonth} = deconstructDate(endDate)
+      const {year: sYear, month: sMonth} = deconstructDate(leftDate)
+      const {year: eYear, month: eMonth} = deconstructDate(rightDate)
       if (sYear === eYear && sMonth === eMonth) {
         rightDate = nextMonth(leftDate)
       }
@@ -32,8 +32,8 @@ class DatePanel extends Component {
       currentView: props.type || 'date',
       yearData: null,
       monthData: null,
-      minDate: props.minDate,
-      maxDate: props.maxDate,
+      minDate: props.min,
+      maxDate: props.max,
       range,
       leftDate,
       rightDate,
@@ -145,13 +145,19 @@ class DatePanel extends Component {
    * @param {Number} year 当前年份
    * @param {Number} month 当前月份
    */
-  getHeaderCenterContent (year) {
+  getHeaderCenterContent (year, month) {
+    const { localeDatas, locale } = this.props
     const {currentView} = this.state
-    let d1 = year + '年'
     if (currentView === 'year') {
-      return (year - 6) + '~' + (year + 4)
+      return (year - 4) + '~' + (year + 7)
     }
-    return d1
+    let arr = [localeDatas.datePicker.monthShort[month - 1]]
+    if (locale === 'zh-CN') {
+      arr.unshift(year + '年    ')
+    } else {
+      arr.push(`    ${year}`)
+    }
+    return arr
   }
   /**
    * 渲染 Header 部分（包含箭头快捷操作）
@@ -163,7 +169,6 @@ class DatePanel extends Component {
    * }
    */
   renderHeader (type, value, lr) {
-    const {currentView} = this.state
     const {year, month} = deconstructDate(value)
 
     return (
@@ -177,15 +182,8 @@ class DatePanel extends Component {
           </div>
         }
         <span className='hi-datepicker__header-text'>
-          {this.getHeaderCenterContent(year)}
+          {this.getHeaderCenterContent(year, month)}
         </span>
-        {
-          (currentView === 'date' || currentView === 'daterange') && (
-            <span className='hi-datepicker__header-text'>
-              {month}月
-            </span>
-          )
-        }
         {
           <div className='hi-datepicker__header-btns'>
             {

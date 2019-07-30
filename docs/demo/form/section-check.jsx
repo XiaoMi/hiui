@@ -7,8 +7,7 @@ import Radio from '../../../components/radio'
 import Button from '../../../components/button'
 const prefix = 'form-check'
 
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import { Grid, Button, Radio, Input, Form } from '@hi-ui/hiui'\n
 class Demo extends React.Component {
   constructor() {

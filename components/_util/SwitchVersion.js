@@ -1,8 +1,8 @@
 import React from 'react'
 import Provider from '../context'
 
-function SwitchVersion (component, componentLegacy) {
-  return Provider(({ version, legacy, ...props }) => {
+function SwitchVersion (component = {}, componentLegacy = {}) {
+  const wrapperComponent = Provider(({ version, legacy, ...props }) => {
     if (legacy === false) {
       return React.createElement(component, props)
     }
@@ -14,6 +14,10 @@ function SwitchVersion (component, componentLegacy) {
     }
     return React.createElement(component, props)
   })
+  if (component.format || componentLegacy.format) {
+    wrapperComponent.format = component.format || componentLegacy.format
+  }
+  return wrapperComponent
 }
 
 export default SwitchVersion

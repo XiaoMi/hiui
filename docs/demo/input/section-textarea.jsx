@@ -4,8 +4,7 @@ import Grid from '../../../components/grid'
 import Input from '../../../components/input'
 const prefix = 'input-textarea'
 
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Input from '@hi-ui/hiui/es/input'\n
 class Demo extends React.Component {

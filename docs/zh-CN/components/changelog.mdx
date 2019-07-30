@@ -1,5 +1,46 @@
 # 更新日志
 
+## 2.0.0
+- 修改：`<Dropdown />` 弃用 list 属性，使用 data 属性代替
+- 修改：`<Pagination />` 组件
+  - 弃用 `mode` 属性，使用 `type` 属性代替
+  - 新增 `current` 受控属性
+  - 新增 `max` 最大页数属性
+  - 废弃 `hideOnSinglePage` 属性，使用 `autoHide` 属性代替
+  - 废弃 `sizeChangeEvent` 属性，使用 `onPageSizeChange` 属性代替
+  - 废弃 `showQuickJumper` 属性，使用 `showJumper` 属性代替
+- 修改：`<Stepper />` 组件
+  - 废弃 `id`、`className` 属性
+  - 废弃 `list` 属性，使用 `data` 属性代替
+  - 废弃 `vertical` 属性，使用 `placement` 属性代替
+  - 废弃 `up` 属性，使用 `itemLayout` 属性代替
+- 修改：`<Menu />` 组件
+  - 废弃 `mode` 属性，使用 `placement` 属性代替
+  - 废弃 `mini` 属性，使用 `collapsed` 属性代替
+  - 废弃 `miniToggle` 属性，使用 `showCollpse` 属性代替
+  - 废弃 `onMiniChange` 属性，使用 `onCollapse` 属性代替
+- 更新中…
+
+## 1.5.4
+
+- 修复：`<DatePicker />` 范围选择初始值不正确的问题 [#338](https://github.com/XiaoMi/hiui/issues/338)
+- 修复：`<Form />` 的横向显示，FormItem 组件不传 label 属性的时候，内容会上移的问题 [#436](https://github.com/XiaoMi/hiui/issues/436)
+- 修复：`<Table />` 吸顶后的 bug [#429](https://github.com/XiaoMi/hiui/issues/429)
+
+## 1.5.3
+
+- 新增：`<Upload />` 组件上传图片后点击展示支持旋转 [#183](https://github.com/XiaoMi/hiui/issues/183)
+- 新增：`<Upload />` 组件上传数量限制 [#249](https://github.com/XiaoMi/hiui/issues/249)
+- 新增：`<Upload />` 组件样式优化，交互调整 [#274](https://github.com/XiaoMi/hiui/issues/274)[#297](https://github.com/XiaoMi/hiui/issues/297)
+- 修复：`<Input />` 组件 `type = amount` 时显示错误的问题 [#409](https://github.com/XiaoMi/hiui/issues/409)
+- 修复：`<Button />` 修改按钮逻辑，去除图标与文字间元素，通过内容控制间距。调整行高等逻辑 [#418](https://github.com/XiaoMi/hiui/issues/418)
+- 修复：`<Table />` 记忆功能 [#420](https://github.com/XiaoMi/hiui/issues/420)
+
+## 1.5.2
+
+- 修复：`<Upload />` 组件放入 `<Form.Item />` 后 `onChange return false` 无效 [#344](https://github.com/XiaoMi/hiui/issues/344)
+- 新增：`<DatePicker />` 组件 `timeperiod` 模式支持自定义时间间隔 [#349](https://github.com/XiaoMi/hiui/issues/349)
+
 ## 1.5.1
 
 - 新增：`<Select />` 组件 `onClick` `onBlur` `onFocus` 事件回调函数 [#321](https://github.com/XiaoMi/hiui/issues/321)

@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Dropdown from '../../../components/dropdown'
 import Icon from '../../../components/icon'
 const prefix = 'dropdown-trigger'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Icon from '@hi-ui/hiui/es/icon'
 import Dropdown from '@hi-ui/hiui/es/dropdown'\n
 class Demo extends React.Component {

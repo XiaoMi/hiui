@@ -4,8 +4,7 @@ import Tree from '../../../components/tree'
 const prefix = 'tree-search'
 const desc = '通过搜索框对树进行过滤'
 
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Tree from '@hi-ui/hiui/es/tree'\n
 class Demo extends React.Component {
   constructor(props) {

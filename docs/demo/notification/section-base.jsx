@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Notification from '../../../components/notification'
 const prefix = 'notification-base'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Notification from '@hi-ui/hiui/es/notification'\n
 class Demo extends React.Component {
