@@ -15,7 +15,7 @@ class Select extends Component {
 
   static propTypes = {
     type: PropTypes.oneOf(['single', 'multiple']),
-    multipleType: PropTypes.oneOf(['wrap', 'nowrap']),
+    multipleWrap: PropTypes.oneOf(['wrap', 'nowrap']),
     data: PropTypes.array,
     dataSource: PropTypes.object,
     defaultValue: PropTypes.oneOfType([
@@ -47,7 +47,7 @@ class Select extends Component {
   static defaultProps = {
     data: [],
     type: 'single',
-    multipleType: 'wrap',
+    multipleWrap: 'nowrap',
     disabled: false,
     clearable: true,
     defaultValue: '',
@@ -536,7 +536,7 @@ class Select extends Component {
       emptyContent,
       optionWidth,
       render,
-      multipleType,
+      multipleWrap,
       onClick,
       onBlur,
       onFocus
@@ -578,7 +578,7 @@ class Select extends Component {
             placeholder={placeholder}
             selectedItems={selectedItems}
             dropdownItems={dropdownItems}
-            multipleMode={multipleType}
+            multipleMode={multipleWrap}
             container={this.selectInputContainer}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
             onClick={() => {

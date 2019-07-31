@@ -11,8 +11,7 @@ class Demo extends React.Component {
         type='multiple'
         autoload
         style={{ width: 300 }}
-        multipleWrap='nowrap'
-        value={1}
+        defaultValue={1}
         dataSource={{
           type: 'get',
           key: 'text',

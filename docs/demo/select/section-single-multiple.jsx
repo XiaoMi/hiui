@@ -28,9 +28,8 @@ class Demo extends React.Component {
         type='multiple'
         style={{width: '300px'}}
         optionWidth={400}
-        multipleWrap="nowrap"
         data={this.state.multipleList}
-        value={['4', '5','2','3']}
+        defaultValue={['4', '5','2','3']}
         searchable
         showCheckAll
         placeholder='请选择...'

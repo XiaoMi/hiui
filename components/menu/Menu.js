@@ -63,7 +63,7 @@ class Menu extends Component {
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.activeId !== this.props.activeId) {
-      const activeIndex = this.getActiveIndex(nextProps.activeId)
+      const activeIndex = this.getActiveIndex(nextProps.activeId, nextProps.data)
 
       this.setState({
         activeId: nextProps.activeId,
@@ -162,14 +162,14 @@ class Menu extends Component {
     }
   }
 
-  getActiveIndex (activeId) {
+  getActiveIndex (activeId, menu) {
     // 获取激活item对应的索引，以'-'拼接成字符串
     const { data } = this.props
 
     if (activeId === undefined || activeId === '') {
       return ''
     }
-    const activeMenus = this.getActiveMenus(data, activeId, [])
+    const activeMenus = this.getActiveMenus(menu || data, activeId, [])
     return (activeMenus && activeMenus.join('-')) || ''
   }
 
