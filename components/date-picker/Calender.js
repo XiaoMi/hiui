@@ -11,7 +11,8 @@ import {
   isSameDay,
   compareAsc,
   addMonths,
-  isToday
+  isToday,
+  getYear
 } from './dateUtil'
 import {DAY_MILLISECONDS} from './constants'
 class Calender extends Component {
@@ -186,17 +187,22 @@ class Calender extends Component {
     mouseMove(newDate)
   }
   getTDClass (td) {
+    const { type: layerType, date } = this.props
     let _class = ['hi-datepicker__cell']
     if (td.disabled) {
       _class.push('disabled')
       return _class.join(' ')
     }
+    const nDate = getYear(new Date())
+    const propDate = getYear(date)
+    const isAddToday = nDate === propDate
     switch (td.type) {
       case 'normal':
         _class.push('normal')
         break
       case 'today':
-        this.props.type !== 'week' && _class.push('today')
+        layerType !== 'week' && _class.push('today')
+        layerType === 'month' && !isAddToday && _class.pop()
         break
       case 'current':
         _class.push('current')

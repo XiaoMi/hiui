@@ -106,6 +106,9 @@ class DatePanel extends Component {
     if (currentView === 'year') {
       return year - 4 + '~' + (year + 7)
     }
+    if (currentView === 'month') {
+      return year
+    }
     let arr = [localeDatas.datePicker.monthShort[month - 1]]
     if (locale === 'zh-CN') {
       arr.unshift(year + '年    ')
