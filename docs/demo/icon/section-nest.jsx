@@ -10,7 +10,8 @@ class Demo extends React.Component {
   render () {
     return (
       <div>
-        <Button type="default"><Icon name="close" /></Button>
+        <Button type="success" icon="check" />
+        <Button type="danger"><Icon name="close" /></Button>
         <Button type="line"><Icon name="edit" /> 编辑</Button>
       </div>
     )
