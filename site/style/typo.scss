@@ -24,11 +24,19 @@
   }
 
   code {
-    margin: 0 1px;
-    padding: 0.2em 0.4em;
+    padding: 4px;
     border: 1px solid #eee;
-    border-radius: 3px;
-    background: #f2f4f5;
+    border-radius: 4px;
+    background-color: #f2f4f5;
+  }
+
+  pre {
+    padding: 4px 8px;
+    background-color: #f2f4f5;
+
+    code {
+      all: unset;
+    }
   }
 
   > {
@@ -144,10 +152,9 @@
       }
 
       // 中文不使用斜体
-      dl {
-        dt {
-          font-style: normal;
-        }
+      dl dt,
+      p em {
+        font-style: normal;
       }
     }
   }
