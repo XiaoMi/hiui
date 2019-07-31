@@ -10,7 +10,6 @@ export default (WrappedComponent) => {
     static displayName = WrappedComponent.name
     render () {
       const { theme, locale, version, innerRef, ...restProps } = this.props
-      console.log('############', innerRef)
       let ConsumerComponent = (
         <ThemeContext.Consumer>
           {(contextTheme) => (
@@ -42,7 +41,6 @@ export default (WrappedComponent) => {
     }
   }
   return forwardRef((props, ref) => {
-    console.log('REF@@@@@', ref)
     return (
       <WrapperComponent {...props} innerRef={ref} />
     )
