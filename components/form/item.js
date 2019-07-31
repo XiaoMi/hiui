@@ -165,9 +165,15 @@ class FormItem extends Component {
 
     return (
       <div className={classNames('hi-form-item', className, obj)}>
-        <label className={'hi-form-item' + '__label'} style={{ width: this.labelWidth }}>
-          {typeof label === 'string' && label.trim()}{shouldShowColon && colon}
-        </label>
+        {
+          (label || label === '') ? (
+            <label className='hi-form-item__label' style={{ width: this.labelWidth }}>
+              { typeof label === 'string' && label.trim() }{ shouldShowColon && colon }
+            </label>
+          ) : (
+            <span className='hi-form-item__span' style={{ width: this.labelWidth }} />
+          )
+        }
         <div className={'hi-form-item' + '__content'}>
           {Array.isArray(children) || !children
             ? children
