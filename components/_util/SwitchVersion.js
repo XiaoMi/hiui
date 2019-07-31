@@ -1,23 +1,27 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import Provider from '../context'
 
 function SwitchVersion (component = {}, componentLegacy = {}) {
-  const wrapperComponent = Provider(({ version, legacy, ...props }) => {
+  const WrapperComponent = Provider(({ version, legacy, innerRef, ...props }) => {
     if (legacy === false) {
-      return React.createElement(component, props)
+      return React.createElement(component, Object.assign({}, props, {ref: innerRef}))
     }
     if (legacy === true) {
-      return React.createElement(componentLegacy, props)
+      return React.createElement(componentLegacy, Object.assign({}, props, {ref: innerRef}))
     }
     if (version < 2) {
-      return React.createElement(componentLegacy, props)
+      return React.createElement(componentLegacy, Object.assign({}, props, {ref: innerRef}))
     }
-    return React.createElement(component, props)
+    return React.createElement(component, Object.assign({}, props, {ref: innerRef}))
   })
   if (component.format || componentLegacy.format) {
-    wrapperComponent.format = component.format || componentLegacy.format
+    WrapperComponent.format = component.format || componentLegacy.format
   }
-  return wrapperComponent
+  return forwardRef((props, ref) => {
+    return (
+      <WrapperComponent {...props} ref={ref} />
+    )
+  })
 }
 
 export default SwitchVersion

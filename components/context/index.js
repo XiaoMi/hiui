@@ -10,6 +10,7 @@ export default (WrappedComponent) => {
     static displayName = WrappedComponent.name
     render () {
       const { theme, locale, version, innerRef, ...restProps } = this.props
+      console.log('############', innerRef)
       let ConsumerComponent = (
         <ThemeContext.Consumer>
           {(contextTheme) => (
@@ -23,6 +24,7 @@ export default (WrappedComponent) => {
                       locale={contextLocale}
                       localeDatas={locales[contextLocale]}
                       ref={innerRef}
+                      innerRef={innerRef}
                       {...restProps}
                     />
                   )}
@@ -39,9 +41,12 @@ export default (WrappedComponent) => {
       )(ConsumerComponent)
     }
   }
-  return forwardRef((props, ref) => (
-    <WrapperComponent {...props} innerRef={ref} />
-  ))
+  return forwardRef((props, ref) => {
+    console.log('REF@@@@@', ref)
+    return (
+      <WrapperComponent {...props} innerRef={ref} />
+    )
+  })
 }
 
 function wrapProvider (value, context) {
