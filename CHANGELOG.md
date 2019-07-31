@@ -2,16 +2,16 @@
 
 ## 1.5.8
 
-- 修复：`<Timepicker />`  在时间列表滚动时引起的日期变化问题[#499](https://github.com/XiaoMi/hiui/issues/499)
-- 修复：因修复 [#436](https://github.com/XiaoMi/hiui/issues/436) 导致的 `Form.Item` 组件不传 label 属性依旧占位的问题。
+- 修复：`<Timepicker />` 在时间列表滚动时引起的日期变化问题 [#499](https://github.com/XiaoMi/hiui/issues/499)
+- 修复 `Form.Item` 组件不传 label 属性依旧占位的问题 [#504](https://github.com/XiaoMi/hiui/issues/504)
 
 ## 1.5.7
 
-- 修复：`<Form />` Form.Item 丢失的问题[#472](https://github.com/XiaoMi/hiui/issues/472)
+- 修复：`<Form />` Form.Item 丢失的问题 [#472](https://github.com/XiaoMi/hiui/issues/472)
 
 ## 1.5.6
 
-- 修复：`<Form />` ref 无法获取 validate 方法的 bug[#469](https://github.com/XiaoMi/hiui/issues/469)
+- 修复：`<Form />` ref 无法获取 validate 方法的 bug [#469](https://github.com/XiaoMi/hiui/issues/469)
 
 ## 1.5.5
 
