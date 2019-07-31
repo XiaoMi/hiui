@@ -57,7 +57,7 @@ class Pagination extends Component {
       total
     } = props
     const current = this.getCurrent(propsCurrent !== undefined ? propsCurrent : defaultCurrent, this.calculatePage(total, pageSize))
-
+    this.jumper = React.createRef()
     this.state = {
       current,
       jumpTo: current,
@@ -68,7 +68,6 @@ class Pagination extends Component {
 
   componentWillReceiveProps (props) {
     let states = {}
-
     if (props.pageSize !== this.props.pageSize) {
       states.pageSize = props.pageSize
     }
@@ -194,7 +193,7 @@ class Pagination extends Component {
 
     return (
       <div className={`${prefixCls}__jumper-input`}>
-        <Input onKeyPress={this.gotoPage.bind(this)} onBlur={this.gotoPage.bind(this)} value={this.state.jumpTo} onChange={(e, tVal) => {
+        <Input ref={this.jumper} onKeyPress={this.gotoPage.bind(this)} onBlur={this.gotoPage.bind(this)} value={this.state.jumpTo} onChange={(e, tVal) => {
           const val = e.target.value
           if (/^\d+$/.test(val)) {
             const maxPage = this.calculatePage(total)
@@ -225,6 +224,7 @@ class Pagination extends Component {
     } else if (e.type === 'keypress') {
       if (e.charCode === 13) {
         setPageNum(pageNum)
+        this.jumper.current._Input.blur()
       }
     }
   }

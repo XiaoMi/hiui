@@ -23,6 +23,7 @@ export default (WrappedComponent) => {
                       locale={contextLocale}
                       localeDatas={locales[contextLocale]}
                       ref={innerRef}
+                      innerRef={innerRef}
                       {...restProps}
                     />
                   )}
@@ -39,9 +40,11 @@ export default (WrappedComponent) => {
       )(ConsumerComponent)
     }
   }
-  return forwardRef((props, ref) => (
-    <WrapperComponent {...props} innerRef={ref} />
-  ))
+  return forwardRef((props, ref) => {
+    return (
+      <WrapperComponent {...props} innerRef={ref} />
+    )
+  })
 }
 
 function wrapProvider (value, context) {
