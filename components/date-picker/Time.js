@@ -27,6 +27,9 @@ export default class TimePanel extends Component {
     this.secondsScrollEvent = this.scrollEvent.bind(this, 'seconds')
     this.pageUpRef = React.createRef()
     this.pageDownRef = React.createRef()
+    this.topValue_1 = 0
+    this.topValue_2 = 0
+    this.timer = null
   }
   range (num) {
     let arr = []
@@ -43,9 +46,21 @@ export default class TimePanel extends Component {
     this.minutesList && this.minutesList.addEventListener('scroll', this.minutesScrollEvent)
     this.secondsList && this.secondsList.addEventListener('scroll', this.secondsScrollEvent)
   }
+  isScrollStop (val, el) {
+    this.topValue_2 = el.scrollTop
+    if (this.topValue_1 === this.topValue_2) {
+      el.scrollTop = val * 32
+    }
+  }
   scrollEvent (type, e) {
+    clearTimeout(this.timer)
     const st = e.target.scrollTop
+    this.topValue_1 = st
     const val = Math.round(st / 32)
+    if ((type === 'hours' && val > 23) || ((type === 'minutes' || type === 'seconds') && val > 59)) {
+      return false
+    }
+    this.timer = setTimeout(this.isScrollStop.bind(this, val, e.target), 200)
     const {date} = this.state
     if (type === 'hours') {
       date.setHours(val)
