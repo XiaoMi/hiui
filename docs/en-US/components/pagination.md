@@ -20,7 +20,7 @@ render() {
       <Pagination
         current={this.state.current}
         total={150}
-        pageSize={30} 
+        pageSize={30}
         defaultCurrent={1}
         onChange={(page, prevPage, pageSize)=>{console.log(page, prevPage, pageSize)}}
       />
@@ -29,6 +29,7 @@ render() {
   )
 }
 ```
+
 :::
 
 ### Control
@@ -63,8 +64,8 @@ render() {
   )
 }
 ```
-:::
 
+:::
 
 ### Full
 
@@ -103,15 +104,16 @@ render() {
   )
 }
 ```
+
 :::
 
 ### Pagination Attributes
 
-| Attribute | Description | Type | Options |Default |
-| --------   | -----  | ----  |  ----  | ----  |
-| defaultCurrent | default current page number  | number | - | 1 |
-| pageSize | page size  | number | - |  10 |
-| total | total count  | number   | - | - |
-| pageLink | If this parameter is set, `#/page={page}` will be added in the url | boolean | - | - |
-| onChange | callback  | function | -  |  - | - |
-| sizeChangeEvent |  size change callback  | function | - | - | - |
+| Attribute       | Description                                                       | Type     | Options | Default |
+| --------------- | ----------------------------------------------------------------- | -------- | ------- | ------- |
+| defaultCurrent  | default current page number                                       | number   | -       | 1       |
+| pageSize        | page size                                                         | number   | -       | 10      |
+| total           | total count                                                       | number   | -       | -       |
+| pageLink        | If this parameter is set, `/page={page}` will be added in the url | boolean  | -       | -       |
+| onChange        | callback                                                          | function | -       | -       | - |
+| sizeChangeEvent | size change callback                                              | function | -       | -       | - |

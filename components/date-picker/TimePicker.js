@@ -7,18 +7,6 @@ import TimePanel from './TimePanel'
 import Provider from '../context'
 import TimeRangePanel from './TimeRangePanel'
 class TimePicker extends BasePicker {
-  static propTypes = {
-    type: PropTypes.oneOf(Object.values(DatePickerType)),
-    date: PropTypes.instanceOf(Date),
-    size: PropTypes.string,
-    onChange: PropTypes.func,
-    format: PropTypes.string
-  }
-  static defaultProps = {
-    type: 'time',
-    format: 'HH:mm:ss',
-    disabled: false
-  }
   initPanel (state, props) {
     return (
       props.type === 'time'
@@ -40,5 +28,17 @@ class TimePicker extends BasePicker {
         />
     )
   }
+}
+TimePicker.propTypes = {
+  type: PropTypes.oneOf(Object.values(DatePickerType)),
+  date: PropTypes.instanceOf(Date),
+  size: PropTypes.string,
+  onChange: PropTypes.func,
+  format: PropTypes.string
+}
+TimePicker.defaultProps = {
+  type: 'time',
+  format: 'HH:mm:ss',
+  disabled: false
 }
 export default Provider(TimePicker)

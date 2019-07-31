@@ -2,6 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import Provider from '../context'
 import Upload from './Upload'
+import Icon from '../icon'
 
 class UploadClick extends Upload {
   render () {
@@ -9,64 +10,67 @@ class UploadClick extends Upload {
       buttonText,
       disabled,
       multiple,
-      buttonIcon,
+      tips,
       showUploadList,
       onRemove,
-      accept
+      accept,
+      localeDatas
     } = this.props
     const {
-      fileList
+      fileList,
+      fileCountLimted
     } = this.state
-
     return (
-      <div className='hi-upload upload-normal'>
-        <div>
-          <label>
-            <input
-              ref={node => { this.uploadRef = node }}
-              type='file'
-              className='upload-input'
-              onChange={e => this.uploadFiles(e.target.files)}
-              multiple={multiple && 'multiple'}
-              disabled={disabled && 'disabled'}
-              accept={accept}
-              hidden
-            />
-            <span className={`upload-title ${disabled ? 'disabled' : ''}`}>
-              <i className={`icon Ficon-${buttonIcon}`} />&nbsp;{ buttonText }
-            </span>
-          </label>
-        </div>
+      <div className='hi-upload hi-upload--normal'>
+        <label>
+          <input
+            ref={node => { this.uploadRef = node }}
+            type='file'
+            onChange={e => this.uploadFiles(e.target.files)}
+            multiple={multiple && 'multiple'}
+            disabled={(disabled || fileCountLimted) && 'disabled'}
+            accept={accept}
+            hidden
+          />
+          <span className={`hi-upload__button ${(disabled || fileCountLimted) ? 'hi-upload__button--disabled' : ''}`}>
+            { buttonText || localeDatas.upload.buttonText}
+          </span>
+        </label>
+        {
+          tips && <span className='hi-upload__tips hi-upload__tips--single-line'>{tips}</span>
+        }
         {showUploadList && (
-          <ul className='upload-list'>
+          <ul className='hi-upload__list'>
             {fileList.map((file, index) => {
-              let listName = file.name.split('.')
-              listName =
-              listName[0].length > 20
-                ? file.name.substring(0, 19) + '....' + listName[1]
-                : listName.join('.')
+              const fileNameCls = classNames(
+                'hi-upload__filename',
+                file.uploadState === 'error' && 'hi-upload__filename--error'
+              )
               return (
                 <li
                   key={index}
+                  className='hi-upload__item'
                   title={file.name}
                 >
-                  <p className='upload-list__item'>
-                    <span className={classNames(`Ficon-${file.fileType}`, 'upload-list__item-icon')} />
-                    <span className='file-name upload-list__item-name'>{listName}</span>
-                    <span className='state-wrap upload-list__item-status'>
-                      {file.uploadState !== 'loading' && (<span className={'Ficon-' + this.uploadStatusIcon(file.uploadState)} />)}
+                  <span className={classNames(`Ficon-${file.fileType}`)} />
+                  <div className='hi-upload__right-content'>
+                    <span className={fileNameCls} title={file.name}>{file.name}</span>
+                    <span>
                       { onRemove &&
-                        <span
-                          className='Ficon-wrong upload-list__item-remove'
+                        <Icon
+                          name={file.uploadState === 'loading' ? 'close' : 'delete'}
                           onClick={() => this.deleteFile(file, index)}
                         />
                       }
                     </span>
-                  </p>
-                  {file.uploadState === 'loading' && (<div className='loading-line-wrap'>
-                    <i className='loading-line' style={{ width: (file.progressNumber * 3.25) + 'px' }} />
-                    <i className='loading-num'>{file.progressNumber || 0}%</i>
-                  </div>)}
+                  </div>
+                  {
+                    file.uploadState === 'loading' && (
+                      <div className='hi-upload__upstatus'>
+                        <i className='hi-upload__upstatus-line' style={{ width: file.progressNumber + '%' }} />
+                      </div>
+                    )
+                  }
                 </li>
               )
             })}

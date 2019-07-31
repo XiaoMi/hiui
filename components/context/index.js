@@ -1,22 +1,23 @@
-import React, { Component } from 'react'
+import React, { Component, forwardRef } from 'react'
 import locales from '../locales'
 
 export const ThemeContext = React.createContext('hiui-blue')
 export const LocaleContext = React.createContext('zh-CN')
 
-export default (WrappedComponent) =>
+export default (WrappedComponent) => {
   class WrapperComponent extends Component {
     render () {
       const {
         theme,
         locale,
+        innerRef,
         ...restProps
       } = this.props
       let ConsumerComponent = (
         <ThemeContext.Consumer>
           {contextTheme => (
             <LocaleContext.Consumer>
-              {contextLocale => <WrappedComponent theme={contextTheme} locale={contextLocale} localeDatas={locales[contextLocale]} {...restProps} />}
+              {contextLocale => <WrappedComponent theme={contextTheme} locale={contextLocale} localeDatas={locales[contextLocale]} ref={innerRef} {...restProps} />}
             </LocaleContext.Consumer>
           )}
         </ThemeContext.Consumer>
@@ -25,6 +26,11 @@ export default (WrappedComponent) =>
       return wrapProvider(theme, ThemeContext)(locale, LocaleContext)(ConsumerComponent)
     }
   }
+
+  return forwardRef((props, ref) => (
+    <WrapperComponent {...props} innerRef={ref} />
+  ))
+}
 
 function wrapProvider (value, context) {
   wrapProvider.Providers || (wrapProvider.Providers = [])

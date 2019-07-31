@@ -1,24 +1,27 @@
 import React from 'react'
 import Upload from './Upload'
 import Provider from '../context'
+import Icon from '../icon'
+import classNames from 'classnames'
 
 class UploadPictureCard extends Upload {
   render () {
     const {
       buttonText,
       showUploadList,
-      buttonIcon,
       multiple,
       disabled,
       accept,
-      onRemove
+      onRemove,
+      localeDatas
     } = this.props
     const {
-      fileList
+      fileList,
+      fileCountLimted
     } = this.state
 
     return (
-      <div className='hi-upload upload-pictureCard'>
+      <div className='hi-upload hi-upload--picture-card'>
         <div>
           <label>
             <input
@@ -27,57 +30,50 @@ class UploadPictureCard extends Upload {
               className='upload-input'
               onChange={e => this.uploadFiles(e.target.files)}
               multiple={multiple && 'multiple'}
-              disabled={disabled && 'disabled'}
+              disabled={(disabled || fileCountLimted) && 'disabled'}
               accept={accept}
               hidden
             />
-            <span
-              className={`upload-title ${
-                disabled ? 'disabled' : ''
-              }`}
-            >
-              <i className={`icon Ficon-${buttonIcon}`} />&nbsp;{ buttonText }
+            <span className={`hi-upload__button ${(disabled || fileCountLimted) ? 'hi-upload__button--disabled' : ''}`}>
+              {buttonText || localeDatas.upload.buttonText}
             </span>
           </label>
         </div>
         {showUploadList && (
-          <ul className='upload-list'>
+          <ul className='hi-upload__list'>
             {fileList.map((file, index) => {
-              let listName = file.name.split('.')
-              listName =
-                listName[0].length > 20
-                  ? file.name.substring(0, 19) + '....' + listName[1]
-                  : listName.join('.')
+              const fileNameCls = classNames(
+                'hi-upload__filename',
+                file.uploadState === 'error' && 'hi-upload__filename--error'
+              )
+              const itemCls = classNames(
+                'hi-upload__item',
+                file.uploadState === 'error' && 'hi-upload__item--error'
+              )
               return (
-                <li key={index} title={file.name} className={file.uploadState === 'loading' ? 'loading' : ''}>
+                <li key={index} title={file.name} className={itemCls}>
                   <div className='img-wrap'>
                     <img src={file.url} />
                     {file.uploadState === 'loading' && (<div className='img-mask' />)}
                   </div>
-                  <div className='img-info-wrap'>
-                    <p className='upload-list__item file-wrap'>
-                      <span className='file-name upload-list__item-name'>{listName}</span>
-                      {file.uploadState !== 'loading' && (
-                        <span className='state-wrap upload-list__item-status'>
-                          <span className={'Ficon-' + this.uploadStatusIcon(file.uploadState)} />
-                          { onRemove &&
-                            <span
-                              className='Ficon-wrong upload-list__item-remove'
-                              onClick={() => this.deleteFile(file, index)}
-                            />
-                          }
-                        </span>
-                      )}
-                    </p>
-                    {file.uploadState === 'loading' && (
-                      <div className='loading-line-wrap'>
-                        <i
-                          className='loading-line'
-                          style={{ width: file.progressNumber * 3.03 + 'px' }}
+                  <div className='hi-upload__right-content'>
+                    <span className={fileNameCls} title={file.name}>{file.name}</span>
+                    <span>
+                      {/* {file.uploadState !== 'loading' && (<span className={'Ficon-' + this.uploadStatusIcon(file.uploadState)} />)} */}
+                      { onRemove &&
+                        <Icon
+                          name={file.uploadState === 'loading' ? 'close' : 'delete'}
+                          onClick={() => this.deleteFile(file, index)}
                         />
-                        <i className='loading-num'>{file.progressNumber || 0}%</i>
-                      </div>
-                    )}
+                      }
+                    </span>
+                    {
+                      file.uploadState === 'loading' && (
+                        <div className='hi-upload__upstatus'>
+                          <i className='hi-upload__upstatus-line' style={{ width: file.progressNumber + '%' }} />
+                        </div>
+                      )
+                    }
                   </div>
 
                 </li>

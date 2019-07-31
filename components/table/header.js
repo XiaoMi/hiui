@@ -16,17 +16,15 @@ class Sorter extends Component {
   }
 
   sortDsec = () => {
-    if (!this.reversed) {
-      let {index, columns, name, kname} = this.props
-      let sorter = columns[index].sorter
-      let {cbs: {resetData}, dataSource} = this.props
+    let {index, columns, name, kname} = this.props
+    let sorter = columns[index].sorter
+    let {cbs: {resetData}, dataSource} = this.props
 
-      dataSource.sort(sorter)
-      dataSource.reverse()
-      resetData(dataSource)
-      this.reversed = true
-      window.localStorage.setItem(name + '-sorter', [kname, 1])
-    }
+    dataSource.sort(sorter)
+    dataSource.reverse()
+    resetData(dataSource)
+    this.reversed = true
+    window.localStorage.setItem(name + '-sorter', [kname, 1])
   }
 
   render () {
@@ -104,6 +102,7 @@ export default class Header extends Component {
     if (headerColumns && headerColumns.length > 1) {
       nodes = headerColumns.map((columns, k) => {
         let tr = []
+        columns = columns.filter(item => !item.hide)
         for (let i = 0; i < columns.length; i++) {
           tr.push(<GroupCell {...this.props} item={columns[i]} index={i} contextMenu={this.contextMenu} key={columns[i].key} />)
         }

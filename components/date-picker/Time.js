@@ -185,6 +185,8 @@ export default class TimePanel extends Component {
     )
   }
   render () {
+    const { localeDatas } = this.props
+    const { hours: lHours, minutes: lMinutes, seconds: lSeconds } = localeDatas.datePicker
     const {date, hoursArrow, minutesArrow, secondsArrow} = this.state
     const {hours, minutes, seconds} = deconstructDate(date)
     this.liPrefix = this.liPrefix.map((item, index) => {
@@ -196,9 +198,9 @@ export default class TimePanel extends Component {
     return (
       <div className='hi-timepicker__body'>
         <div className='hi-timepicker__timeheader'>
-          <span className='hi-timepicker__mark'>时</span>
-          <span className='hi-timepicker__mark'>分</span>
-          <span className='hi-timepicker__mark'>秒</span>
+          <span className='hi-timepicker__mark'>{lHours}</span>
+          <span className='hi-timepicker__mark'>{lMinutes}</span>
+          <span className='hi-timepicker__mark'>{lSeconds}</span>
         </div>
         <div className='hi-timepicker__timebody'>
           <div

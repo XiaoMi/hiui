@@ -32,16 +32,19 @@ export default class WeekRangePanel extends Component {
    * @param {Number} year 当前年份
    * @param {Number} month 当前月份
    */
-  getHeaderCenterContent (year) {
+  getHeaderCenterContent (year, month) {
+    const { localeDatas, locale } = this.props
     const {currentView} = this.state
-    // const {year} = deconstructDate(date)
-    let d1 = year + '年'
-    // let d2 = month + '月'
     if (currentView === 'year') {
-      // const ys = this.getYearSelectorRange(year)
-      return (year - 6) + '~' + (year + 4)
+      return (year - 4) + '~' + (year + 7)
     }
-    return d1
+    let arr = [localeDatas.datePicker.monthShort[month - 1]]
+    if (locale === 'zh-CN') {
+      arr.unshift(year + '年    ')
+    } else {
+      arr.push(`    ${year}`)
+    }
+    return arr
   }
   /**
    * 渲染 Header 部分（包含箭头快捷操作）
@@ -61,11 +64,11 @@ export default class WeekRangePanel extends Component {
           <span onClick={() => this.changeMonth(true, lr)} ><Icon name='left' /></span>
         </div>
         <span className='hi-datepicker__header-text'>
-          {this.getHeaderCenterContent(year)}
+          {this.getHeaderCenterContent(year, month)}
         </span>
-        <span className='hi-datepicker__header-text'>
+        {/* <span className='hi-datepicker__header-text'>
           {month}月
-        </span>
+        </span> */}
         <div className='hi-datepicker__header-btns'>
           <span onClick={() => this.changeMonth(false, lr)} ><Icon name='right' /></span>
           <span onClick={() => this.changeYear(false, lr)} ><Icon name='double-right' /></span>

@@ -20,8 +20,10 @@
   // Status: disabled
   &.hi-btn--disabled,
   &[disabled] {
-    border-color: rgba($color, 0.2);
-    color: rgba($color, 0.3);
+    &:not(.hi-btn--loading) {
+      border-color: rgba($color, 0.2);
+      color: rgba($color, 0.3);
+    }
   }
 }
 
@@ -47,8 +49,10 @@
       // Status: disabled
       &.hi-btn--disabled,
       &[disabled] {
-        background-color: rgba(map-get(get-palette($color), '50'), 0.2);
-        color: $white;
+        &:not(.hi-btn--loading) {
+          background-color: rgba(map-get(get-palette($color), '50'), 0.2);
+          color: $white;
+        }
       }
 
       // Make a button look and behave like a link
@@ -110,28 +114,25 @@
     outline: 0;
   }
 
-  &::before {
-    content: '';
-    display: block;
-    position: absolute;
-    top: -1px;
-    bottom: -1px;
-    left: -1px;
-    right: -1px;
-    background-color: #fff;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
   &--loading {
     &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: -1px;
+      bottom: -1px;
+      left: -1px;
+      right: -1px;
+      background-color: #fff;
       opacity: 0.4;
+      cursor: default;
     }
 
     &--icon {
       width: 1em;
       height: 1em;
       display: inline-block;
+      cursor: default;
 
       svg {
         @keyframes rotate {
@@ -207,7 +208,10 @@
 
   @each $key in 'success', 'danger', 'warning' {
     &--type--#{$key} {
-      $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
+      $status-color: map-get(
+        get-palette(get-color($palette-secondary, $key)),
+        '50'
+      );
 
       @include render-line-button($status-color);
 
@@ -237,7 +241,7 @@
 
   // Status
   &--disabled,
-  &[disabled] {
+  &[disabled]:not(&--loading) {
     cursor: not-allowed;
   }
 
@@ -283,16 +287,14 @@
 
 // Button Group
 .hi-btn-group {
-  position: relative;
   display: inline-block;
 
   > .hi-btn {
-    position: relative;
-    z-index: 0;
     margin-left: 0;
     margin-right: 0;
 
     &:hover {
+      position: relative;
       z-index: 1;
     }
 

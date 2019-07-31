@@ -102,9 +102,6 @@ class Calender extends Component {
             _month = 1
           }
         }
-        // let num = getDay(new Date(year, 0, 1))
-        // console.log(num)
-        // const weekStart = subDays(date, num-1)
         const cw = getYearWeek(new Date(_year, _month - 1, row[1].value), weekOffset).weekNum
         let bol = cw === week
         row.forEach(col => {

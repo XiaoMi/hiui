@@ -71,18 +71,25 @@ class BasePicker extends Component {
     showTime: PropTypes.bool,
     disabled: PropTypes.bool,
     showWeekNumber: PropTypes.bool,
-    weekOffset: PropTypes.oneOf([0, 1])
+    weekOffset: PropTypes.oneOf([0, 1]),
+    timeInterval: function (props, propName, componentName) {
+      const val = props[propName]
+      if (val < 5 || val > 480 || (val > 60 && val % 60 !== 0) || (val < 60 && 60 % val !== 0)) {
+        return new Error(`Invalid prop ${propName} supplied to ${componentName}. This value must be greater than 5 and less than 480 and is a multiple of 60.`)
+      }
+    }
   }
   static defaultProps = {
     type: 'date',
     disabled: false,
     showWeekNumber: true,
-    weekOffset: 0
+    weekOffset: 0,
+    timeInterval: 240
   }
   _parseProps (props, callback) {
     let {value, showTime, type, format, localeDatas, weekOffset} = props
     format = format || FORMATS[type]
-    let date = new Date() // 当前时间
+    let date
     let noText = false
     /**
      * value 可能的格式：
@@ -90,7 +97,7 @@ class BasePicker extends Component {
      */
     if (value === '' || !value) {
       // value 未传入情况
-      date = new Date()
+      date = null
       noText = true
     }
     if (typeof value === 'number' || (typeof value === 'string' && value.trim().length > 4)) {
@@ -102,7 +109,7 @@ class BasePicker extends Component {
     }
 
     if (type.includes('range') || type === 'timeperiod') {
-      if (value instanceof Date || !value) {
+      if (value instanceof Date) {
         // 如果为时间段选择，则取默认的第一个范围
         date = {startDate: startOfDay(date), endDate: type === 'timeperiod' ? addHours(startOfDay(date), 4) : endOfDay(date)}
       }
@@ -122,9 +129,9 @@ class BasePicker extends Component {
   }
   componentDidMount () {
     this._parseProps(this.props, (date) => {
-      if (date.startDate && date.endDate) {
+      if (date && date.startDate && date.endDate) {
         date = ({start: new Date(date.startDate), end: new Date(date.endDate)})
-      } else {
+      } else if (date !== null) {
         date = new Date(date)
       }
       this.props.value && this.props.onChange && this.props.onChange(date)
@@ -180,19 +187,18 @@ class BasePicker extends Component {
     const {type, onChange, weekOffset} = this.props
     const {date} = this.state
     if (onChange) {
-      const {startDate, endDate} = date
       const _weekOffset = {weekStartsOn: weekOffset}
       if (type === 'week') {
         onChange({start: startOfWeek(date, _weekOffset), end: endOfWeek(date, _weekOffset)})
         return
       }
-      if (startDate && endDate) {
+      if (date && date.startDate && date.endDate) {
         if (type === 'weekrange') {
-          onChange({start: startOfWeek(startDate, _weekOffset), end: endOfWeek(endDate, _weekOffset)})
+          onChange({start: startOfWeek(date.startDate, _weekOffset), end: endOfWeek(date.endDate, _weekOffset)})
         } else if (['timerange', 'timeperiod', 'daterange'].includes(type)) {
-          onChange({start: startDate, end: endDate})
+          onChange({start: date.startDate, end: date.endDate})
         } else {
-          onChange({start: startOfDay(startDate), end: endOfDay(endDate)})
+          onChange({start: startOfDay(date.startDate), end: endOfDay(date.endDate)})
         }
       } else {
         onChange(date)

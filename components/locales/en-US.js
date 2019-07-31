@@ -14,6 +14,7 @@ module.exports = {
     lastThreeMonth: 'Nearly three months',
     lastYear: 'Nearly year',
     month: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
+    monthShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     week: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
     placeholders: {
       date: 'Select Date',
@@ -24,6 +25,10 @@ module.exports = {
       week: 'Select Week',
       weekrange: 'Select Week'
     },
+    timePeriod: 'Period',
+    hours: 'H',
+    minutes: 'M',
+    seconds: 'S',
     weekrange: function (year, week) {
       return year + '-W' + week
     }
@@ -46,7 +51,13 @@ module.exports = {
     noFoundTip: 'Not found'
   },
   upload: {
-    buttonText: 'Upload'
+    buttonText: 'Upload',
+    uploadSuccess: 'Success',
+    uploadFailed: 'Failed',
+    cancel: 'Cancel',
+    delete: 'Delete',
+    drag: 'Drag and drop files for uploading',
+    dragTips: 'Please click or drag and drop file upload'
   },
   modal: {
     confirmText: 'OK',
@@ -58,5 +69,8 @@ module.exports = {
   timeline: {
     expand: 'Expand',
     collapse: 'Collapse'
+  },
+  form: {
+    colon: ':'
   }
 }

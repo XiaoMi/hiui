@@ -1,0 +1,82 @@
+# Pagination 分页
+
+用来分隔一个长列表，每次只加载一个页面，从而可释放后端服务器加载压力
+
+## 何时使用
+
+- 当数据量级较大，请求数据时延过长
+- 当展示数据的页面空间有限，无法一次性展示时
+- 用户更关心前几条或前几十条数据情况时
+
+## 基础分页
+
+import DemoBase from '../../demo/pagination/section-base.jsx'
+
+<DemoBase />
+
+## 简单分页
+
+import DemoEasy from '../../demo/pagination/section-easy.jsx'
+
+<DemoEasy />
+
+## 收缩型分页
+
+import DemoShrink from '../../demo/pagination/section-shrink.jsx'
+
+<DemoShrink />
+
+## 完整分页
+
+import DemoIntack from '../../demo/pagination/section-intact.jsx'
+
+<DemoIntack />
+
+## Pagination Attributes
+
+| 参数                        | 说明                                                                           | 类型     | 可选值                     | 默认值 |
+| --------------------------- | ------------------------------------------------------------------------------ | -------- | -------------------------- | ------ |
+| mode (1.4 新增)             | 分页模式                                                                       | String   | normal \| simple \| shrink | normal |
+| defaultCurrent              | 默认的当前页数                                                                 | Number   | -                          | 1      |
+| pageBufferSize (1.4 新增)   | 超过时隐藏页数                                                                 | Number   | -                          | 2      |
+| pageSize                    | 每页条数                                                                       | Number   | -                          | 10     |
+| pageSizeOptions (1.4 新增)  | 指定每页可以显示多少条                                                         | Array    | -                          | []     |
+| total                       | 数据总数                                                                       | Number   | -                          | -      |
+| hideOnSinglePage (1.4 新增) | 只有一页时是否隐藏分页器                                                       | Boolean  | true \| false              | false  |
+| showQuickJumper (1.4 新增)  | 是否显示跳转                                                                   | Boolean  | true \| false              | false  |
+| pageLink (1.4 废弃)         | 如果设置该参数，则在 url 中会添加`#/page={page}`                               | boolean  | -                          | -      |
+| onChange                    | 页码改变的回调，参数为当前页（page），前一页（prevPage），每页条数（pageSize） | Function | -                          | -      | - |
+| sizeChangeEvent             | 每页条数改变的回调函数，返回 改变后的每页条数 及 当前页数                      | Function | -                          | -      | - |
+
+<div style={{ position: 'relative' }}>
+  <span
+    style={{
+      position: 'absolute',
+      background: '#fff',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      fontSize: '14px',
+      padding: 8,
+      color: '#999'
+    }}
+  >
+    以下调整将随 2.0.0 版本发布，敬请期待
+  </span>
+  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
+</div>
+
+## Props
+
+| 参数             | 说明                                                       | 类型                                                      | 可选值                            | 默认值    |
+| ---------------- | ---------------------------------------------------------- | --------------------------------------------------------- | --------------------------------- | --------- |
+| type             | 分页的类型                                                 | string                                                    | 'default' \| 'simple' \| 'shrink' | 'default' |
+| defaultCurrent   | 默认的当前页数                                             | number                                                    | -                                 | 1         |
+| current          | 当前页数                                                   | number                                                    | -                                 | -         |
+| max              | 最大显示的页数                                             | number                                                    | -                                 | 2         |
+| pageSize         | 每页条数                                                   | number                                                    | -                                 | 10        |
+| pageSizeOptions  | 指定每页可以显示多少条                                     | number[]                                                  | -                                 | []        |
+| total            | 数据总数                                                   | number                                                    | -                                 | -         |
+| autoHide         | 只有一页时是否隐藏分页器                                   | boolean                                                   | true \| false                     | false     |
+| showJumper       | 是否显示跳转                                               | boolean                                                   | true \| false                     | false     |
+| onChange         | 页码改变时的回调，回调值为当前页数、之前的页数和每页条数   | (current: number, prev: number, pageSize: number) => void | -                                 | -         | - |
+| onPageSizeChange | 每页显示条数改变的回调函数，返回改变后的每页条数及当前页数 | (current: number, pageSize: number) => void               | -                                 | -         | - |

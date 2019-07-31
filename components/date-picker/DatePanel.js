@@ -113,15 +113,19 @@ class DatePanel extends Component {
    * @param {Number} month 当前月份
    */
   getHeaderCenterContent () {
+    const { localeDatas, locale } = this.props
     const {date, currentView} = this.state
-    const {year} = deconstructDate(date)
-    let d1 = year + '年'
-    // let d2 = month + '月'
+    const {year, month} = deconstructDate(date)
     if (currentView === 'year') {
-      // const ys = this.getYearSelectorRange(year)
-      return (year - 6) + '~' + (year + 5)
+      return (year - 4) + '~' + (year + 7)
     }
-    return d1
+    let arr = [localeDatas.datePicker.monthShort[month - 1]]
+    if (locale === 'zh-CN') {
+      arr.unshift(year + '年    ')
+    } else {
+      arr.push(`    ${year}`)
+    }
+    return arr
   }
   /**
    * 渲染 Header 部分（包含箭头快捷操作）
@@ -133,11 +137,9 @@ class DatePanel extends Component {
    * }
    */
   renderHeader (type, value) {
-    const {month} = deconstructDate(value)
     return (
       <div className='hi-datepicker__header'>
         <div className='hi-datepicker__header-btns'>
-          {/* <span className='hi-icon icon-left-double' onClick={() => this.changeYear(true)} /> */}
           <span onClick={() => this.changeYear(true)} ><Icon name='double-left' /></span>
           {
             (type !== 'month' && type !== 'year') && <span onClick={() => this.changeMonth(true)} ><Icon name='left' /></span>
@@ -146,13 +148,6 @@ class DatePanel extends Component {
         <span className='hi-datepicker__header-text' onClick={() => this.setState({currentView: 'year'})}>
           {this.getHeaderCenterContent()}
         </span>
-        {
-          type !== 'month' && type !== 'year' && (
-            <span className='hi-datepicker__header-text'>
-              {month}月
-            </span>
-          )
-        }
         <div className='hi-datepicker__header-btns'>
           {
             (type !== 'month' && type !== 'year') && <span onClick={() => this.changeMonth(false)}><Icon name='right' /></span>
@@ -270,7 +265,7 @@ class DatePanel extends Component {
 
   render () {
     const {date, currentView} = this.state
-    const {theme, showTime, type} = this.props
+    const {theme, showTime, type, timeInterval} = this.props
     const _c = classNames(
       'hi-datepicker',
       theme && 'theme__' + theme
@@ -304,6 +299,7 @@ class DatePanel extends Component {
           {
             type === 'timeperiod' && (
               <TimePeriodPanel
+                timeInterval={timeInterval}
                 onTimePeriodPick={this.onTimePeriodPick.bind(this)}
                 date={date}
               />
