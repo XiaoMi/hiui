@@ -36,7 +36,7 @@ class Demo extends React.Component {
           message: '请输入数量',
           trigger: 'onChange',
           validator: (rule, value, cb) => {
-            const count = parseInt(value)
+            const count = +value
             if(isNaN(count)) {
               cb('请输入数字')
             } else if(count <= 0) {
