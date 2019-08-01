@@ -25,10 +25,40 @@
 - 修改：`<Select />` 组件
   - 废弃`mode` 属性，使用`type` 属性代替
   - 废弃`multipleMode ` 属性
-  - 废弃`list ` 属性，使用`data` 属性代替
-  - 废弃`origin ` 属性，使用`dataSource` 属性代替
-  - 废弃`noFoundTip ` 属性，使用`emptyContent` 属性代替
+  - 废弃`list` 属性，使用`data` 属性代替
+  - 废弃`origin` 属性，使用`dataSource` 属性代替
+  - 废弃`noFoundTip` 属性，使用`emptyContent` 属性代替
   - 新增`render` 属性
+- 修改：`<Cascader />` 组件
+  - 废弃`options` 属性，使用`data` 属性代替
+  - 废弃`className` 属性
+  - 废弃`noFoundTip` 属性，使用`emptyContent` 属性代替
+  - 废弃`origin` 属性，使用`dataSource` 属性代替
+  - 废弃`noFoundTip` 属性，使用`emptyContent` 属性代替
+  - 新增`render` 属性
+- 修改：`<Radio />` 组件
+  - 废弃`list` 属性，使用`data` 属性代替
+  - 废弃`name` 属性
+  - 废弃`align` 属性
+  - 废弃`layout` 属性，使用`placement` 属性代替
+  - 废弃`mode` 属性，使用`type` 属性代替
+  - 新增`autoFocus` 属性
+- 修改：`<Checkbox />` 组件
+  - 废弃`name` 属性
+  - 废弃`align` 属性
+  - 废弃`all` 属性
+  - 废弃`list` 属性
+  - 新增`autoFocus` 属性
+  - 新增`className` 属性
+  - 新增`defaultChecked` 属性
+  - 新增`indeterminate` 属性
+  - 新增`<Checkbox.Group />` 组件
+- 修改：`<Switch />` 组件
+  - 废弃`size` 属性
+- 修改：`<Datepicker />` 组件
+  - 废弃`minDate` 属性，使用`min` 属性代替
+  - 废弃`maxDate` 属性，使用`max` 属性代替
+  - 新增`defaultValue` 属性
 
 ## 1.5.4
 
