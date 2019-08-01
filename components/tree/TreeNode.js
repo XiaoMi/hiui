@@ -27,7 +27,7 @@ export default class TreeNode extends Component {
       draggingNode: null,
       // 处于目标状态的节点
       targetNode: null,
-      // 放置线的位置,分为下线和子线，下线则放置在该节点下侧，子线为放置在该节点内部
+      // 放置线的位置,分为上线、下线和子线，上线则放置在该节点上方，下线则放置在该节点下侧，子线为放置在该节点内部
       dropDividerPosition: null,
       searchValue: '',
       showModal: false,
@@ -321,15 +321,26 @@ export default class TreeNode extends Component {
         transformResponse(error)
       })
   }
-  switchDropNode = (targetItemId, sourceItemId, data, allData) => {
+  switchDropNode = (targetItemId, sourceItemId, data, allData, dropDividerPosition) => {
     data.forEach(item => {
       if (item.children) {
         if (item.children.some(e => e.id === targetItemId)) {
           const index = item.children.findIndex(i => i.id === targetItemId)
           const sourceNode = findNode(sourceItemId, allData)
-          item.children.splice(index + 1, 0, sourceNode)
+          console.log('>>>>>>>>>>>>>>>>>', dropDividerPosition)
+          if (dropDividerPosition === 'down') {
+            item.children.splice(index + 1, 0, sourceNode)
+          } else {
+            item.children.splice(index, 0, sourceNode)
+          }
         } else {
-          this.switchDropNode(targetItemId, sourceItemId, item.children, allData)
+          this.switchDropNode(
+            targetItemId,
+            sourceItemId,
+            item.children,
+            allData,
+            dropDividerPosition
+          )
         }
       }
     })
@@ -342,7 +353,7 @@ export default class TreeNode extends Component {
       // 这里为什么用 sourceItem.id不用 sourceItem 是因为 sourceItem 有可能是 highlight 过得
       this._addDropNode(targetItem.id, sourceItem.id, _dataCache, dataCache)
     } else {
-      this.switchDropNode(targetItem.id, sourceItem.id, _dataCache, dataCache)
+      this.switchDropNode(targetItem.id, sourceItem.id, _dataCache, dataCache, dropDividerPosition)
     }
     const _sourceItem = findNode(sourceItem.id, dataCache)
     const _targetItem = findNode(targetItem.id, dataCache)

@@ -3,7 +3,7 @@ import Provider from '../context'
 
 function SwitchVersion (component = {}, componentLegacy = {}) {
   const WrapperComponent = Provider(({ version, legacy, innerRef, ...props }) => {
-    const innerComponent = (legacy === false || version < 2) ? component : componentLegacy
+    const innerComponent = (legacy === false || version < 2) ? componentLegacy : component
     return React.createElement(innerComponent, Object.assign({}, props, {ref: innerRef}))
   })
   if (component.format || componentLegacy.format) {
