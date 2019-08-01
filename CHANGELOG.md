@@ -19,7 +19,16 @@
   - 废弃`mini` 属性，使用`collapsed` 属性代替
   - 废弃`miniToggle` 属性，使用`showCollpse` 属性代替
   - 废弃`onMiniChange` 属性，使用`onCollapse` 属性代替
-- 更新中…
+- 修改：`<Form />` 组件
+  - 废弃`labelPosition` 属性，使用`labelPlacement` 属性代替
+  - 废弃`inline` 属性，使用`placement` 属性代替
+- 修改：`<Select />` 组件
+  - 废弃`mode` 属性，使用`type` 属性代替
+  - 废弃`multipleMode ` 属性
+  - 废弃`list ` 属性，使用`data` 属性代替
+  - 废弃`origin ` 属性，使用`dataSource` 属性代替
+  - 废弃`noFoundTip ` 属性，使用`emptyContent` 属性代替
+  - 新增`render` 属性
 
 ## 1.5.4
 
