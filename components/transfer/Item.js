@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { findDOMNode } from 'react-dom'
 import Checkbox from '../checkbox'
 import { DragSource, DropTarget } from 'react-dnd'
 import classNames from 'classnames'
@@ -16,7 +17,8 @@ class Item extends Component {
       targetNode,
       sourceNode,
       dir,
-      draggable
+      draggable,
+      dividerPosition
     } = this.props
     const sourceStyle =
       sourceNode === item.id && isDragging
@@ -28,7 +30,9 @@ class Item extends Component {
     const itemCls = classNames('hi-transfer__item', item.disabled && 'hi-transfer__item--disabled')
     const el = (
       <li style={sourceStyle} className={itemCls} onClick={onClick.bind(this)}>
-        {targetNode === item.id && isDragging && <div className='hi-transfer__underline' />}
+        {targetNode === item.id && isDragging && (
+          <div className={`hi-transfer__divider--${dividerPosition}`} />
+        )}
         {mode !== 'basic' ? (
           <Checkbox
             legacy
@@ -76,9 +80,12 @@ const target = {
     if (monitor.isOver({ shallow: true })) {
       const { item: targetItem, setTargetNode, positionX, positionY, setPosition } = props
       const sourcePosition = monitor.getClientOffset()
+      const targetComponent = findDOMNode(component).getBoundingClientRect()
       if (!(sourcePosition.x === positionX && sourcePosition.y === positionY)) {
         setPosition(sourcePosition.x, sourcePosition.y)
-        setTargetNode(targetItem.id)
+        const dividerPosition =
+          sourcePosition.y <= targetComponent.y + targetComponent.height / 2 ? 'up' : 'down'
+        setTargetNode(targetItem.id, dividerPosition)
       }
     }
   }

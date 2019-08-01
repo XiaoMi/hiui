@@ -42,11 +42,15 @@ $tree: 'hi-tree' !default;
     align-items: center;
 
     &--top {
-      top: 23px;
+      top: 0;
+    }
+
+    &--inner {
+      bottom: -2px;
     }
 
     &--bottom {
-      bottom: -2px;
+      bottom: 0;
     }
 
     .divider-line {

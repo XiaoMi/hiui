@@ -48,7 +48,6 @@ class Demo extends React.Component {
     const Col = Grid.Col
     const { value } = this.state
     const { prepend, append, placeholder } = this.getFix()
-    console.log(prepend, append)
     return (
       <div>
         <Row gutter>

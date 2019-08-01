@@ -9,18 +9,18 @@ class Demo extends React.Component {
     super()
     this.state = {
       list: [{
-        title: '电视'
+        title: '移动至…'
       },{
-        title: '手机'
+        title: '复制至…'
       },{
-        title: '电脑'
+        title: '删除'
       }]
     }
   }
   render() {
     return (
       <div>
-        <Dropdown data={this.state.list} title="电子产品" onClick={(val) => console.log(val)}></Dropdown>
+        <Dropdown data={this.state.list} title="将选中项…" onClick={(val) => console.log('Go to ' + val)}></Dropdown>
       </div>
     )
   }
