@@ -326,20 +326,14 @@ export default class TreeNode extends Component {
     const _data = [...data]
     _data.forEach((item, idx) => {
       if (item.id === targetItemId) {
-        if (dropDividerPosition === 'down') {
-          data.splice(idx + 1, 0, sourceNode)
-        } else {
-          data.splice(idx, 0, sourceNode)
-        }
+        const position = dropDividerPosition === 'down' ? idx + 1 : idx
+        data.splice(position, 0, sourceNode)
       } else {
         if (item.children) {
           if (item.children.some(e => e.id === targetItemId)) {
             const index = item.children.findIndex(i => i.id === targetItemId)
-            if (dropDividerPosition === 'down') {
-              item.children.splice(index + 1, 0, sourceNode)
-            } else {
-              item.children.splice(index, 0, sourceNode)
-            }
+            const position = dropDividerPosition === 'down' ? index + 1 : index
+            item.children.splice(position, 0, sourceNode)
           } else {
             this.switchDropNode(
               targetItemId,
