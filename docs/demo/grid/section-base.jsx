@@ -13,16 +13,16 @@ class Demo extends React.Component {
       <div>
         <Row>
           <Col span={6}>
-            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '20px 0', textAlign: 'center', opacity: '.8', color:'#fff'}}>col-6</div>
+            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '16px 0', textAlign: 'center', opacity: '.8', color:'#fff'}}>col-6<br />25%</div>
           </Col>
           <Col span={6}>
-            <div style={{backgroundColor: '#ff6700', width: '100%', padding: '20px 0', textAlign: 'center', opacity: '.8'}}>col-6</div>
+            <div style={{backgroundColor: '#ff6700', width: '100%', padding: '16px 0', textAlign: 'center', opacity: '.8', color:'#fff'}}>col-6<br />25%</div>
           </Col>
           <Col span={6}>
-            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '20px 0', textAlign: 'center', opacity: '.8',color:'#fff'}}>col-6</div>
+            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '16px 0', textAlign: 'center', opacity: '.8',color:'#fff'}}>col-6<br />25%</div>
           </Col>
           <Col span={6}>
-            <div style={{backgroundColor: '#ff6700', width: '100%', padding: '20px 0', textAlign: 'center', opacity: '.8'}}>col-6</div>
+            <div style={{backgroundColor: '#ff6700', width: '100%', padding: '16px 0', textAlign: 'center', opacity: '.8', color:'#fff'}}>col-6<br />25%</div>
           </Col>
         </Row>
       </div>

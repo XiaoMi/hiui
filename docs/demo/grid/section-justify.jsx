@@ -14,22 +14,22 @@ class Demo extends React.Component {
       <div>
         <Row justify='center' gutter={true}>
           <Col span={6}>
-            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '20px 0', textAlign: 'center', color:'#fff', opacity:'0.8'}}>col-6</div>
+            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '16px 0', textAlign: 'center', color:'#fff', opacity:'0.8'}}>col-6</div>
           </Col>
           <Col span={6}>
-            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '20px 0', textAlign: 'center', color:'#fff', opacity:'0.8'}}>col-6</div>
+            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '16px 0', textAlign: 'center', color:'#fff', opacity:'0.8'}}>col-6</div>
           </Col>
         </Row>
 
         <Row justify='space-between'>
           <Col span={6}>
-            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '20px 0', textAlign: 'center', color:'#fff', opacity:'0.8'}}>col-6</div>
+            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '16px 0', textAlign: 'center', color:'#fff', opacity:'0.8'}}>col-6</div>
           </Col>
           <Col span={6}>
-            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '20px 0', textAlign: 'center', color:'#fff', opacity:'0.8'}}>col-6</div>
+            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '16px 0', textAlign: 'center', color:'#fff', opacity:'0.8'}}>col-6</div>
           </Col>
           <Col span={6}>
-            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '20px 0', textAlign: 'center', color:'#fff', opacity:'0.8'}}>col-6</div>
+            <div style={{backgroundColor: '#4284F5', width: '100%', padding: '16px 0', textAlign: 'center', color:'#fff', opacity:'0.8'}}>col-6</div>
           </Col>
         </Row>
         </div>
