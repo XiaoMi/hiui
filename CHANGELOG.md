@@ -11,7 +11,7 @@
   - 废弃`sizeChangeEvent` 属性，使用`onPageSizeChange` 属性代替
   - 废弃`showQuickJumper` 属性，使用`showJumper`属性代替
 - 修改：`<Stepper />` 组件
-  - 废弃`id`、`className`属性
+  - 废弃`id`属性
   - 废弃 `list` 属性，使用`data` 属性代替
   - 废弃`vertical` 属性，使用`placement` 属性代替
   - 废弃`up` 属性，使用`itemLayout` 属性代替
@@ -32,7 +32,6 @@
   - 新增`render` 属性
 - 修改：`<Cascader />` 组件
   - 废弃`options` 属性，使用`data` 属性代替
-  - 废弃`className` 属性
   - 废弃`noFoundTip` 属性，使用`emptyContent` 属性代替
   - 废弃`origin` 属性，使用`dataSource` 属性代替
   - 废弃`noFoundTip` 属性，使用`emptyContent` 属性代替
@@ -50,7 +49,6 @@
   - 废弃`all` 属性
   - 废弃`list` 属性
   - 新增`autoFocus` 属性
-  - 新增`className` 属性
   - 新增`defaultChecked` 属性
   - 新增`indeterminate` 属性
   - 新增`<Checkbox.Group />` 组件
