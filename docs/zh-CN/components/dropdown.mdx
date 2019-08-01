@@ -36,26 +36,25 @@ import { Badge } from '@libs'
 
 ## Props
 
-| 参数                                     | 说明                             | 类型                      | 可选值                              | 默认值  |
-| ---------------------------------------- | -------------------------------- | ------------------------- | ----------------------------------- | ------- |
-| data<Badge type='feature' text='new' /> | 下拉菜单数据项                   | DataItem []               | -                                   | -       |
-| list<Badge text='deprecated' />          | 数据。即将废弃，请使用 data 代替 | Array                     | 参见 List Options                   | -       |
-| title                                    | 下拉菜单显示标题的内容           | string \| ReactNode       | -                                   | -       |
-| type                                     | 下拉菜单类型                     | string                    | 'text' \| 'button' \| 'group'       | 'text'  |
-| onClick                                  | 点击后的回调                     | （item: DataItem）=> void | -                                   | -       |
-| prefix                                   | 前缀内容                         | string \| ReactNode       | -                                   | -       |
-| suffix                                   | 后缀内容                         | string \| ReactNode       | -                                   | -       |
-| trigger                                  | 下拉菜单触发方式                 | string \| string []       | 'click' \| 'contextmenu' \| 'hover' | 'click' |
+| 参数    | 说明                   | 类型                      | 可选值                              | 默认值  |
+| ------- | ---------------------- | ------------------------- | ----------------------------------- | ------- |
+| data    | 下拉菜单数据项         | DataItem []               | -                                   | -       |
+| title   | 下拉菜单显示标题的内容 | string \| ReactNode       | -                                   | -       |
+| type    | 下拉菜单类型           | string                    | 'text' \| 'button' \| 'group'       | 'text'  |
+| onClick | 点击后的回调           | （item: DataItem）=> void | -                                   | -       |
+| prefix  | 前缀内容               | string \| ReactNode       | -                                   | -       |
+| suffix  | 后缀内容               | string \| ReactNode       | -                                   | -       |
+| trigger | 下拉菜单触发方式       | string \| string []       | 'click' \| 'contextmenu' \| 'hover' | 'click' |
 
 ## Type
 
 ### DateItem
 
-| 参数     | 说明           | 类型                | 可选值        | 默认值 |
-| -------- | -------------- | ------------------- | ------------- | ------ |
-| title    | 标题的内容，设置为 `'-'` 时是分割线     | string \| ReactNode | -             | -      |
-| prefix   | 菜单项前缀内容 | string \| ReactNode | -             | -      |
-| suffix   | 菜单项后缀内容 | string \| ReactNode | -             | -      |
-| disabled | 是否禁用       | boolean             | true \| false | false  |
-| value    | 点击后回调的值 | String              | Number        | -      |
-| url      | 点击跳转的路径 | string              | -             | -      |
+| 参数     | 说明                                | 类型                | 可选值        | 默认值 |
+| -------- | ----------------------------------- | ------------------- | ------------- | ------ |
+| title    | 标题的内容，设置为 `'-'` 时是分割线 | string \| ReactNode | -             | -      |
+| prefix   | 菜单项前缀内容                      | string \| ReactNode | -             | -      |
+| suffix   | 菜单项后缀内容                      | string \| ReactNode | -             | -      |
+| disabled | 是否禁用                            | boolean             | true \| false | false  |
+| value    | 点击后回调的值                      | String              | Number        | -      |
+| url      | 点击跳转的路径                      | string              | -             | -      |

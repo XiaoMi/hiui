@@ -43,6 +43,7 @@ class Demo extends React.Component {
       <div>
         <Radio
           list={this.state.sizeList}
+          legacy
           checked={this.state.sizeListActive}
           onChange={(data, index) => {
             this.setState({

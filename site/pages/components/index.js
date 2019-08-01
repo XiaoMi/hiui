@@ -24,8 +24,7 @@ export default {
       dropdown: components['dropdown'],
       pagination: components['pagination'],
       stepper: components['stepper'],
-      menu: components['menu'],
-      tabs: components['tabs']
+      menu: components['menu']
     },
     'group-form': {
       form: components['form'],
@@ -44,6 +43,7 @@ export default {
       rate: components['rate']
     },
     'group-data': {
+      tabs: components['tabs'],
       table: components['table'],
       collapse: components['collapse'],
       tooltip: components['tooltip'],
