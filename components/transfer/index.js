@@ -23,7 +23,8 @@ class Transfer extends Component {
       targetNode: null,
       sourceNode: null,
       positionX: null,
-      positionY: null
+      positionY: null,
+      dividerPosition: null
     }
   }
   componentDidMount () {
@@ -150,26 +151,30 @@ class Transfer extends Component {
       [dir + 'Filter']: e.target.value
     })
   }
-  move (targetItem, sourceItem) {
-    const { targetList } = this.state
-    let tempItem
-    let fIndex
-    let tIndex
+  move (sourceItem, targetItem) {
+    const { targetList, dividerPosition } = this.state
+    const _targetList = [...targetList]
+    let sIdx
+    let tIdx
     targetList.forEach((item, index) => {
       if (item.id === targetItem.id) {
-        tempItem = item
-        fIndex = index
+        const position = dividerPosition === 'down' ? index + 1 : index
+        _targetList.splice(position, 0, sourceItem)
+        tIdx = index
       }
       if (item.id === sourceItem.id) {
-        tIndex = index
+        sIdx = index
       }
     })
-    targetList.splice(fIndex, 1)
-    targetList.splice(tIndex, 0, tempItem)
-    this.setState({ targetList })
+    if (sIdx < tIdx) {
+      _targetList.splice(sIdx, 1)
+    } else {
+      _targetList.splice(sIdx + 1, 1)
+    }
+    this.setState({ targetList: _targetList })
   }
-  setTargetNode (id) {
-    this.setState({ targetNode: id })
+  setTargetNode (id, dividerPosition) {
+    this.setState({ targetNode: id, dividerPosition })
   }
   removeTargetNode () {
     this.setState({ targetNode: null })
@@ -201,7 +206,8 @@ class Transfer extends Component {
       targetNode,
       sourceNode,
       positionX,
-      positionY
+      positionY,
+      dividerPosition
     } = this.state
     const selectedKeys = dir === 'left' ? sourceSelectedKeys : targetSelectedKeys
     const filterText = dir === 'left' ? leftFilter : rightFilter
@@ -244,6 +250,7 @@ class Transfer extends Component {
                 return (
                   <Item
                     dir={dir}
+                    dividerPosition={dividerPosition}
                     draggable={draggable}
                     key={index}
                     onClick={this.clickItemEvent.bind(this, item, index, dir)}
