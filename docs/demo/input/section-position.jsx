@@ -5,12 +5,14 @@ import Input from '../../../components/input'
 import Radio from '../../../components/radio'
 import Select from '../../../components/select'
 import Button from '../../../components/button'
+import Message from '../../../components/message'
 const prefix = 'input-position'
 const code = `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Button from '@hi-ui/hiui/es/button'
 import Select from '@hi-ui/hiui/es/select'
 import Radio from '@hi-ui/hiui/es/radio'
+import Message from '@hi-ui/hiui/es/message'
 import Input from '@hi-ui/hiui/es/input'\n
 class Demo extends React.Component {
   constructor () {
@@ -43,7 +45,9 @@ class Demo extends React.Component {
           prepend: ele
         },
         append: {
-          append: <Button type="primary">搜索</Button>
+          append: <Button type="primary" onClick={() => {
+            Message.open({ type: 'success', title: '查询成功', duration: 2000 })
+          }}>查询</Button>
         }
       }[this.state.value]
     }
@@ -74,6 +78,7 @@ class Demo extends React.Component {
           <Col span={12}>
             <Input
               id="customId"
+              type="tel"
               placeholder="请输入手机号"
               prepend={prepend}
               append={append}
@@ -88,7 +93,7 @@ class Demo extends React.Component {
 const DemoPosition = () => (
   <DocViewer
     code={code}
-    scope={{ Grid, Input, Radio, Select, Button }}
+    scope={{ Grid, Input, Radio, Select, Button, Message }}
     prefix={prefix}
   />
 )
