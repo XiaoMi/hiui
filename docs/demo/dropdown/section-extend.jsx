@@ -2,23 +2,45 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Dropdown from '../../../components/dropdown'
 import Icon from '../../../components/icon'
+import Message from '../../../components/message'
 const prefix = 'dropdown-extend'
 const desc = '传入 type 为 group，组件会将 title 执行对应的点击响应，点击箭头打开菜单项'
 const code = `import React from 'react'
 import Icon from '@hi-ui/hiui/es/icon'
-import Dropdown from '@hi-ui/hiui/es/dropdown'\n
+import Dropdown from '@hi-ui/hiui/es/dropdown'
+import Message from '../../../components/message'\n
 class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
       list: [{
-        title: 'one'
+        title: '同步',
+        prefix: <Icon name='synchronize'/>,
+        onClick: () => {
+          Message.open({ type: 'success', title: '同步成功', duration: 2000 })
+        }
       },{
-        title: 'two',
-        prefix: <Icon name='add'/> // 此 prefix 将会被替换为外部的 prefix
+        title: '转为草稿',
+        prefix: <Icon name='document'/>,
+        disabled: true,
+        onClick: () => {
+          Message.open({ type: 'danger', title: '尚未发布', duration: 2000 })
+        }
       },{
-        title: 'three',
-        suffix: <Icon name='truck'/>
+        title: '修改权限',
+        prefix: <Icon name='list'/>,
+        onClick: () => {
+          console.log('页面跳转')
+        }
+      },{
+        title: '-'
+      },{
+        title: '删除',
+        prefix: <Icon name='delete'/>,
+        value: 'other',
+        onClick: () => {
+          Message.open({ type: 'success', title: '删除成功', duration: 2000 })
+        }
       }]
     }
   }
@@ -27,17 +49,17 @@ class Demo extends React.Component {
       <div>
         <Dropdown
           data={this.state.list}
-          title="按钮菜单"
+          title="发布"
+          onClick={() => {
+            Message.open({ type: 'success', title: '发布成功', duration: 2000 })
+          }}
           type="group"
-          // trigger={['click']}
-          onClick={(val) => console.log(val)}
-          prefix={<Icon name='list'/>}
         />
       </div>
     )
   }
 }`
 const DemoExtend = () => (
-  <DocViewer code={code} scope={{ Dropdown, Icon }} prefix={prefix} desc={desc} />
+  <DocViewer code={code} scope={{ Dropdown, Icon, Message }} prefix={prefix} desc={desc} />
 )
 export default DemoExtend
