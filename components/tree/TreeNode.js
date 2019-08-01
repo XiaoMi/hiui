@@ -327,14 +327,11 @@ export default class TreeNode extends Component {
     _data.forEach((item, idx) => {
       if (item.id === targetItemId) {
         if (dropDividerPosition === 'down') {
-          console.log('111111')
           data.splice(idx + 1, 0, sourceNode)
         } else {
-          console.log('22222')
           data.splice(idx, 0, sourceNode)
         }
       } else {
-        console.log('123123123')
         if (item.children) {
           if (item.children.some(e => e.id === targetItemId)) {
             const index = item.children.findIndex(i => i.id === targetItemId)
@@ -364,7 +361,6 @@ export default class TreeNode extends Component {
       // 这里为什么用 sourceItem.id不用 sourceItem 是因为 sourceItem 有可能是 highlight 过得
       this._addDropNode(targetItem.id, sourceItem.id, _dataCache, dataCache)
     } else {
-      console.log('22222222222222')
       this.switchDropNode(targetItem.id, sourceItem.id, _dataCache, dataCache, dropDividerPosition)
     }
     const _sourceItem = findNode(sourceItem.id, dataCache)

@@ -223,7 +223,6 @@ const target = {
       } else {
         // 移动节点到相应位置
         dropNode(sourceItem, targetItem, dropDividerPosition)
-        console.log('*******')
         removeDraggingNode()
         removeTargetNode()
       }
