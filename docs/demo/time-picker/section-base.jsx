@@ -19,7 +19,7 @@ class Demo extends React.Component {
         <div style={{margin: '10px'}}>
           <p>时间范围选择</p>
           <TimePicker
-            value={new Date()}
+            value={{start: new Date(), end: new Date()}}
             type="timerange"
             format="HH:mm"
             onChange={date => console.log('时间范围', date)}

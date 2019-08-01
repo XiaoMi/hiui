@@ -185,7 +185,7 @@ class Calender extends Component {
     mouseMove(newDate)
   }
   getTDClass (td) {
-    let _class = ['hi-datepicker__cell']
+    let _class = ['hi-datepicker-legacy__cell']
     if (td.disabled) {
       _class.push('disabled')
       return _class.join(' ')
@@ -228,7 +228,7 @@ class Calender extends Component {
     const rows = data || this.getRows()
     return (
       <table
-        className='hi-datepicker__calender'
+        className='hi-datepicker-legacy__calender'
         onClick={this.handlerClick.bind(this)}
         onMouseMove={this.handlerMouseMove.bind(this)}
       >
@@ -251,7 +251,7 @@ class Calender extends Component {
               return (
                 <tr
                   key={index}
-                  className={`hi-datepicker__row ${row.currentWeek ? 'hi-datepicker__row--current-week' : ''}`}
+                  className={`hi-datepicker-legacy__row ${row.currentWeek ? 'hi-datepicker-legacy__row--current-week' : ''}`}
                   onMouseEnter={this.TRMouseOver.bind(this, row.weekNum)}
                 >
                   {
@@ -262,8 +262,8 @@ class Calender extends Component {
                           value={cell.value}
                           className={this.getTDClass(cell)}
                         >
-                          <div className='hi-datepicker__content' value={cell.value}>
-                            <span value={cell.value} className='hi-datepicker__text'>
+                          <div className='hi-datepicker-legacy__content' value={cell.value}>
+                            <span value={cell.value} className='hi-datepicker-legacy__text'>
                               {cell.text || cell.value}
                             </span>
                           </div>

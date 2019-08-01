@@ -6,7 +6,7 @@ import {formatterDate, FORMATS} from './constants'
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
-import {parse, dateFormat, isValid} from './dateUtil'
+import {parse, dateFormat, isValid, startOfWeek, endOfWeek} from './dateUtil'
 class BasePicker extends Component {
   inputRoot = null
   input = null
@@ -58,6 +58,13 @@ class BasePicker extends Component {
         end = _value.end || new Date()
       } else {
         start = _value
+        if (type.includes('range')) {
+          end = parse(start)
+          if (type === 'weekrange') {
+            start = startOfWeek(start)
+            end = endOfWeek(end)
+          }
+        }
       }
 
       if (type === 'timeperiod' && isValid(start)) {

@@ -5,7 +5,7 @@ import {DAY_MILLISECONDS} from './constants'
 import Icon from '../icon'
 import classNames from 'classnames'
 import Provider from '../context'
-import {dateFormat, isValid, getStartDate} from './dateUtil'
+import { dateFormat, isValid, getStartDate } from './dateUtil'
 import TimeRangePanel from './TimeRangePanel'
 
 class DatePanel extends Component {
@@ -201,9 +201,9 @@ class DatePanel extends Component {
     range.startDate = startDate
     range.endDate = endDate
     this.setState({
-      range,
-      leftDate: startDate || this.state.leftDate,
-      rightDate: endDate || this.state.rightDate
+      range
+      // leftDate: startDate || this.state.leftDate,
+      // rightDate: endDate || this.state.rightDate
     })
     if (endDate) {
       onPick(range, showTime)

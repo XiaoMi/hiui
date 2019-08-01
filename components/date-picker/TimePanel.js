@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Time from './Time'
 import Provider from '../context'
+import { isValid } from './dateUtil'
 
 class TimePanel extends Component {
   constructor (props) {
@@ -23,7 +24,8 @@ class TimePanel extends Component {
     }
   }
   render () {
-    const { localeDatas, date, type } = this.props
+    let { localeDatas, date, type } = this.props
+    date = isValid(date) ? date : date.startDate
     return (
       <div className='hi-timepicker' style={this.state.style}>
         <Time localeDatas={localeDatas} date={date} onPick={this.onTimePick.bind(this)} onlyTime={type === 'time'} />

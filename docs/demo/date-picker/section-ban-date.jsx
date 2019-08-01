@@ -15,8 +15,8 @@ class Demo extends React.Component {
     return (
       <DatePicker
         value={this.state.date}
-        minDate={new Date()}
-        maxDate={new Date(2019, 4, 28)}
+        min={new Date()}
+        max={new Date().getTime() + 30 * 24 * 60 * 60 * 1000}
         onChange={(date) => {
           this.setState({date})
         }}

@@ -16,13 +16,12 @@ class Demo extends React.Component {
       <div>
         <DatePicker
           type='daterange'
-          format='YYYY-MM-DD HH:mm:ss'
+          format='YYYY-MM-DD'
           defaultValue={this.state.rangeDate}
           onChange={(d) => {
             console.log(1, d)
           }}
         />
-        <span style={{color: 'red', fontSize: '14px', cursor: 'pointer', marginLeft:'5px'}} onClick={() => {this.setState({rangeDate: {start: new Date(), end: new Date()}})}}>重置</span>
       </div>
     )
   }
