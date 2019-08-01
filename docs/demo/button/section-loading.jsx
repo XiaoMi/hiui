@@ -7,7 +7,7 @@ const desc =
   '加载中状态可用来设置点击按钮后的状态，点击示例中最后的「确认」按钮来预览效果'
 const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
-import Message from '../../../components/message'\n
+import Message from '@hi-ui/hiui/es/message'\n
 class Demo extends React.Component {
   constructor () {
     super()

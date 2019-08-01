@@ -8,7 +8,7 @@ const desc = '传入 type 为 group，组件会将 title 执行对应的点击�
 const code = `import React from 'react'
 import Icon from '@hi-ui/hiui/es/icon'
 import Dropdown from '@hi-ui/hiui/es/dropdown'
-import Message from '../../../components/message'\n
+import Message from '@hi-ui/hiui/es/message'\n
 class Demo extends React.Component {
   constructor () {
     super()

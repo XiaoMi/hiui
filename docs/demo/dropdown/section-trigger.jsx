@@ -8,7 +8,7 @@ const desc = '使用左键或右键单击'
 const code = `import React from 'react'
 import Icon from '@hi-ui/hiui/es/icon'
 import Dropdown from '@hi-ui/hiui/es/dropdown'
-import Message from '../../../components/message'\n
+import Message from '@hi-ui/hiui/es/message'\n
 class Demo extends React.Component {
   constructor () {
     super()
