@@ -24,7 +24,7 @@ class Tree extends Component {
   }
 
   static defaultProps = {
-    prefixCls: 'hi-tree',
+    prefixCls: 'hi-tree--legacy',
     defaultCheckedKeys: [],
     data: []
   }
