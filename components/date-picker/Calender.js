@@ -12,7 +12,8 @@ import {
   compareAsc,
   addMonths,
   isToday,
-  getYear
+  getYear,
+  parse
 } from './dateUtil'
 import {DAY_MILLISECONDS} from './constants'
 class Calender extends Component {
@@ -72,7 +73,8 @@ class Calender extends Component {
         // if (range && (isSameDay(range.startDate, currentTime) || isSameDay(range.endDate, currentTime))) {
         //   col.type = 'current'
         // }
-        if (isToday(currentTime)) {
+
+        if (isToday(currentTime) && (col.type !== 'next' && col.type !== 'prev')) {
           col.type = 'today'
         }
         if (isSameDay(_date, currentTime) && !range && type !== 'week') {
@@ -85,7 +87,7 @@ class Calender extends Component {
           col.range = endDate && isWithinRange(currentTime, ..._ds)
           row.weekNum = getYearWeek(new Date(currentTime), weekOffset).weekNum
         }
-        col.disabled = (minDate && compareAsc(currentTime, minDate) === -1) || (maxDate && compareAsc(currentTime, maxDate) === 1)
+        col.disabled = (minDate && compareAsc(currentTime, parse(minDate).setHours(0, 0, 0, 0)) === -1) || (maxDate && compareAsc(currentTime, parse(maxDate).setHours(0, 0, 0, 0)) === 1)
       }
       if (type === 'week') {
         let _month = month

@@ -8,7 +8,7 @@ class Demo extends React.Component {
   render () {
     return (
       <DatePicker
-        value={new Date()}
+        value={{start: new Date(), end: new Date().getTime() + 7 * 24 * 60*60*1000}}
         type='weekrange'
         onChange={(d) => {
           console.log(d)
