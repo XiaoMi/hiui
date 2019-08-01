@@ -10,7 +10,7 @@
     "compile": "cross-env NODE_ENV=production gulp",
     "build": "node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.config.prod.js && gulp carry",
     "build:gh-pages": "cross-env DOC_ENV=github node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.config.prod.js && gulp carry",
-    "deploy": "gh-pages -d dist",
+    "deploy": "gh-pages -d dist --git \"$(which git)\"",
     "dev": "npm start",
     "start": "node build/start.js",
     "prerender:gh-pages": "cross-env DOC_ENV=github npm run build && cross-env DOC_ENV=github node build/prerenderSite.js",
