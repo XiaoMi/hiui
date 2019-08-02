@@ -1,7 +1,13 @@
 # 更新日志
 
+## 2.0.1
+
+- 修复 <Tag /> 、<Message /> 组件的导出问题 [#516](https://github.com/XiaoMi/hiui/issues/516)
+- 修复 Upload 组件 onchange 返回 boolean 无效的问题 [#514](https://github.com/XiaoMi/hiui/issues/514)
+
 ## 2.0.0
-- 修改：`<Dropdown />` 
+
+- 修改：`<Dropdown />`
   - 废弃 `list` 属性，使用 `data` 属性代替
 - 修改：`<Pagination />` 组件
   - 废弃 `mode` 属性，使用 `type` 属性代替
@@ -25,7 +31,7 @@
   - 废弃`inline` 属性，使用`placement` 属性代替
 - 修改：`<Select />` 组件
   - 废弃`mode` 属性，使用`type` 属性代替
-  - 废弃`multipleMode ` 属性
+  - 废弃`multipleMode` 属性
   - 废弃`list` 属性，使用`data` 属性代替
   - 废弃`origin` 属性，使用`dataSource` 属性代替
   - 废弃`noFoundTip` 属性，使用`emptyContent` 属性代替
@@ -74,7 +80,7 @@
   - 新增`showArrow` 属性
   - 废弃`type` 属性
 - 修改：`<Tooltip />` 组件
-  - 重写Tooltip.open 方法
+  - 重写 Tooltip.open 方法
 - 修改：`<Progress />` 组件
   - 废弃原`type` 属性，使用`apperance` 属性代替
   - 废弃`text` 属性，使用`content` 属性代替
