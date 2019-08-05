@@ -2,8 +2,9 @@
 
 ## 2.0.1
 
-- 修复 <Tag /> 、<Message /> 组件的导出问题 [#516](https://github.com/XiaoMi/hiui/issues/516)
-- 修复 Upload 组件 onchange 返回 boolean 无效的问题 [#514](https://github.com/XiaoMi/hiui/issues/514)
+- 修复：`Table` 组件服务端表格分页和错误请求处理的问题 [#519](https://github.com/XiaoMi/hiui/issues/519)
+- 修复：`<Tag />` 、`<Message />` 组件的导出问题 [#516](https://github.com/XiaoMi/hiui/issues/516)
+- 修复：`<Upload/>` 组件 onchange 返回 boolean 无效的问题 [#514](https://github.com/XiaoMi/hiui/issues/514)
 
 ## 2.0.0
 
