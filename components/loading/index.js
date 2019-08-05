@@ -87,7 +87,7 @@ function openWrapper (target, options) {
 function close (key) {
   if (loadingInstance[key]) {
     ReactDOM.unmountComponentAtNode(loadingInstance[key])
-    loadingInstance[key].parentNode.removeChild(loadingInstance[key])
+    loadingInstance[key].parentNode && loadingInstance[key].parentNode.removeChild(loadingInstance[key])
   }
 }
 
