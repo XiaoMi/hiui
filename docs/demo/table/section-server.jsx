@@ -73,23 +73,6 @@ class Demo extends React.Component {
             auto:true, // 自动发请求配置(默认false)
             success: (res) => {
               let {data: {data, columns,page: {pageSize, totalNum, pageNum}}} = res
-
-               const pageSizeOptions = [{
-                  value: 10,
-                  title: '10'
-                }, {
-                  value: 20,
-                  title: '20'
-                }, {
-                  value: 50,
-                  title: '50'
-                }, {
-                  value: 100,
-                  title: '100'
-                }]
-
-
-
               return {
                 data,
                 columns,
@@ -100,7 +83,7 @@ class Demo extends React.Component {
                   position: 'middle',
                   showTotal: true,
 
-                  pageSizeOptions,
+                  pageSizeOptions:[10,20,50,100],
                   sizeChangeEvent:(pageSize,current) => {
                     this.setState({
                       pageSize
@@ -111,8 +94,8 @@ class Demo extends React.Component {
                 }
               }
             },
-            error: () => {
-
+            error: (e) => {
+              console.log('err',e)
             }
           }}
         />
