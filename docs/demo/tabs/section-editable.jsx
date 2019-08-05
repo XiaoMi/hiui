@@ -63,7 +63,7 @@ class Demo extends React.Component {
               <Tabs.Pane
                 tabTitle={pane.tabTitle}
                 tabId={pane.tabId}
-                closeable={pane.closeable}
+                closeable
                 key={index}
               >
                 <div style={{padding: '16px'}}>{pane.tabTitle}</div>

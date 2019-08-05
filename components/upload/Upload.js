@@ -88,16 +88,8 @@ class Upload extends Component {
   }
 
   uploadFiles (files) {
-    const {
-      beforeUpload,
-      customUpload,
-      maxSize,
-      maxCount
-    } = this.props
-    const {
-      fileList,
-      fileCountLimted
-    } = this.state
+    const { beforeUpload, customUpload, maxSize, maxCount } = this.props
+    const { fileList, fileCountLimted } = this.state
     if (fileCountLimted) {
       return
     }
@@ -124,21 +116,17 @@ class Upload extends Component {
       this.uploadFile(file)
     }
     if (fileList.length >= maxCount) {
-      this.setState({fileCountLimted: true})
+      this.setState({ fileCountLimted: true })
     }
     ReactDOM.findDOMNode(this.uploadRef).value = ''
   }
 
   deleteFile (file, index) {
-    const {
-      fileList
-    } = this.state
-    const {
-      onRemove
-    } = this.props
+    const { fileList } = this.state
+    const { onRemove } = this.props
     const doRemove = () => {
       fileList.splice(index, 1)
-      this.setState({fileList, fileCountLimted: false})
+      this.setState({ fileList, fileCountLimted: false })
     }
     const ret = onRemove(file, fileList, index)
     if (ret === true) {
@@ -153,56 +141,44 @@ class Upload extends Component {
   }
 
   onUpload (file, fileList, response) {
-    const {
-      onChange
-    } = this.props
+    const { onChange } = this.props
 
     const onUploadError = () => {
       for (const index in fileList) {
         if (fileList[index].fileId === file.fileId) {
           fileList.splice(index, 1)
-          this.setState({fileList})
+          this.setState({ fileList })
           break
         }
       }
     }
-
-    const callback = (ret) => {
-      if (ret === false) {
-        onUploadError()
-      } else if (ret && typeof ret.then === 'function') {
-        ret.then(res => {
-          if (res === false) {
-            onUploadError()
-          }
-        })
-      }
+    const changeResult = onChange(file, fileList, response)
+    if (changeResult === false) {
+      onUploadError()
+    } else if (changeResult && typeof changeResult.then === 'function') {
+      changeResult.then(res => {
+        if (res === false) {
+          onUploadError()
+        }
+      })
     }
-
-    onChange(file, fileList, response, callback)
   }
 
   uploadFile (file, dataUrl = '') {
     const FileReader = window.FileReader
     const XMLHttpRequest = window.XMLHttpRequest
     const FormData = window.FormData
-    const {
-      fileList
-    } = this.state
-    const {
-      name,
-      params,
-      headers,
-      uploadAction
-    } = this.props
-    const onerror = (err) => {
+    const { fileList } = this.state
+    const { name, params, headers, uploadAction } = this.props
+    const onerror = err => {
       const errRes = err !== undefined ? err : { status: xhr.status, statusText: xhr.statusText }
       file.uploadState = 'error'
       this.setState({ fileList })
       this.onUpload(file, fileList, errRes)
     }
 
-    if (file.fileType === 'img') { // 用来图片预览
+    if (file.fileType === 'img') {
+      // 用来图片预览
       if (dataUrl) {
         file.url = dataUrl
       } else if (dataUrl !== false) {
@@ -249,7 +225,7 @@ class Upload extends Component {
     }
     xhr.upload.onprogress = event => {
       var e = event || window.event
-      var percentComplete = Math.ceil(e.loaded / e.total * 100)
+      var percentComplete = Math.ceil((e.loaded / e.total) * 100)
       file.progressNumber = percentComplete
       this.setState({ fileList })
     }
