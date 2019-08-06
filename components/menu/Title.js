@@ -5,7 +5,7 @@ import Icon from '../icon'
 class Title extends Component {
   renderIcon (icon) {
     if (!icon) {
-      icon = <i />
+      icon = null
     }
     if (typeof icon === 'string') {
       icon = <Icon name={icon} />
