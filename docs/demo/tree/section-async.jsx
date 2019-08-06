@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Tree from '../../../components/tree'
 const prefix = 'tree-async'
 const desc = '点击展开异步加载树的子节点'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Tree from '@hi-ui/hiui/es/tree'\n
 class Demo extends React.Component {
   constructor(props) {
@@ -39,24 +38,20 @@ class Demo extends React.Component {
     return (
       <div style={{width:500}}>
         <Tree
-          origin={{
+          loadTreeNode={{
             method:'get',
             headers:{},
             data:{},
             params:{},
             url:'https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/select/options',
-            func:(res)=>{return res.data}
+            transformResponse:(res)=>{return res.data}
           }}
           defaultExpandAll
           editable={true}
           data={this.state.treeData}
-          defaultCheckedKeys={[2]}
-          onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
           onChange={data => {console.log('Tree data:', data)}}
-          openIcon='down'
-          closeIcon='up'
           highlightable
-          onNodeClick={(item) => console.log('------click node', item)}
+          onClick={(item) => console.log('------click node', item)}
         />
       </div>
     )

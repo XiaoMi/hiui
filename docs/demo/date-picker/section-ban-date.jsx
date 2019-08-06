@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'date-picker-date'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   constructor () {
@@ -16,8 +15,8 @@ class Demo extends React.Component {
     return (
       <DatePicker
         value={this.state.date}
-        minDate={new Date()}
-        maxDate={new Date(2019, 4, 28)}
+        min={new Date()}
+        max={new Date().getTime() + 30 * 24 * 60 * 60 * 1000}
         onChange={(date) => {
           this.setState({date})
         }}

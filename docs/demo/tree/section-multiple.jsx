@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Tree from '../../../components/tree'
 const prefix = 'tree-multiple'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Tree from '@hi-ui/hiui/es/tree'\n
 class Demo extends React.Component {
   constructor(props) {
@@ -46,8 +45,7 @@ class Demo extends React.Component {
           checkable
           editable={true}
           data={this.treeData}
-          checkedKeys={this.state.checkedKeys}
-          onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
+          checkedIds={this.state.checkedKeys}
           onChange={(checkedKeys, title, bool, semi) => {
             console.log('Tree data:', checkedKeys, title, bool ,semi)
             this.setState({
@@ -56,18 +54,11 @@ class Demo extends React.Component {
           }}
           highlightable
           onClick={data=>{console.log('tree node click',data)}}
-          withLine
         />
       </div>
     )
   }
 }`
 
-const DemoMultiple = () => (
-  <DocViewer
-    code={code}
-    scope={{ Tree }}
-    prefix={prefix}
-  />
-)
+const DemoMultiple = () => <DocViewer code={code} scope={{ Tree }} prefix={prefix} />
 export default DemoMultiple

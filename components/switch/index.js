@@ -11,6 +11,7 @@ class Switch extends Component {
       checked: props.checked
     }
   }
+
   componentWillReceiveProps (nextProps) {
     if (nextProps.checked !== this.state.checked) {
       this.setState({
@@ -20,6 +21,7 @@ class Switch extends Component {
       })
     }
   }
+
   clickEvent () {
     const { disabled, onChange, onClick } = this.props
     if (!disabled) {
@@ -34,6 +36,7 @@ class Switch extends Component {
       })
     }
   }
+
   render () {
     const { theme, content, disabled } = this.props
     const { checked } = this.state
@@ -57,6 +60,7 @@ class Switch extends Component {
     </span>
   }
 }
+
 Switch.defaultProps = {
   content: [],
   checked: false,

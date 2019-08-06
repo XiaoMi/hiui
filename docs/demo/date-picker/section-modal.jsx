@@ -4,8 +4,7 @@ import DatePicker from '../../../components/date-picker'
 import Modal from '../../../components/modal'
 import Button from '../../../components/button'
 const prefix = 'date-picker-modal'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Modal from '@hi-ui/hiui/es/modal'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n

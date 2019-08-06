@@ -7,7 +7,7 @@ import Icon from '../icon'
 class UploadClick extends Upload {
   render () {
     const {
-      buttonText,
+      content,
       disabled,
       multiple,
       tips,
@@ -33,7 +33,7 @@ class UploadClick extends Upload {
             hidden
           />
           <span className={`hi-upload__button ${(disabled || fileCountLimted) ? 'hi-upload__button--disabled' : ''}`}>
-            { buttonText || localeDatas.upload.buttonText}
+            { content || localeDatas.upload.buttonText}
           </span>
         </label>
         {
@@ -55,11 +55,12 @@ class UploadClick extends Upload {
                   <span className={classNames(`Ficon-${file.fileType}`)} />
                   <div className='hi-upload__right-content'>
                     <span className={fileNameCls} title={file.name}>{file.name}</span>
-                    <span>
+                    <span
+                    >
                       { onRemove &&
                         <Icon
-                          name={file.uploadState === 'loading' ? 'close' : 'delete'}
                           onClick={() => this.deleteFile(file, index)}
+                          name={file.uploadState === 'loading' ? 'close' : 'delete'}
                         />
                       }
                     </span>

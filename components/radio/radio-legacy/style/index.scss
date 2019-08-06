@@ -1,0 +1,100 @@
+.hi-radio-legacy {
+  display: inline-block;
+
+  &__simulation-input {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid #d8d8d8;
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: sub;
+    position: relative;
+    background-color: #fff;
+  }
+
+  &__label {
+    padding: 0 16px 0 4px;
+  }
+
+  &--vertical {
+    .hi-radio-legacy__item {
+      display: block;
+      // padding: 5px 0;
+      // margin: 4px;
+    }
+  }
+
+  &__item {
+    position: relative;
+    user-select: none;
+    display: inline-block;
+    cursor: pointer;
+    height: 32px;
+    line-height: 32px;
+
+    &:hover:not(.hi-radio-legacy__item--disabled) {
+      .hi-btn {
+        color: #4284f5;
+      }
+    }
+
+    &--checked {
+      .hi-radio-legacy__simulation-input {
+        &::before {
+          content: '';
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          background: #4284f5;
+          border-radius: 50%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) scale(0.5);
+        }
+      }
+
+      button {
+        color: #4284f5;
+        background: rgba(66, 132, 245, 0.1);
+        border: 1px solid #a8c6fb;
+        z-index: 2;
+      }
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+      color: #d8d8d8;
+
+      .hi-radio-legacy__simulation-input {
+        &::before {
+          background: #d8d8d8;
+        }
+      }
+    }
+
+    button.hi-btn {
+      &:hover {
+        z-index: 1;
+      }
+    }
+  }
+
+  &--button {
+    .hi-radio-legacy__item:not(:first-child) {
+      margin-left: -1px;
+
+      &:last-child {
+        .hi-btn {
+          border-top-right-radius: 2px;
+          border-bottom-right-radius: 2px;
+        }
+      }
+
+      .hi-btn {
+        border-radius: 0;
+      }
+    }
+  }
+}

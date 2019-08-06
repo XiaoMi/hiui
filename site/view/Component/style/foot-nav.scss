@@ -1,15 +1,14 @@
 .foot-nav {
-  border-top: 1px solid #E7E7E7;
-  margin: 80px 24px 0 48px;
+  border-top: 1px solid #e7e7e7;
+  margin: 80px 32px 0;
 
   a {
     display: inline-block;
     padding: 24px 0;
     font-size: 14px;
-    color: #4284F5;
-    -moz-user-select:none;
-    -webkit-user-select:none;
-    user-select:none;
+    color: #4284f5;
+    user-select: none;
+
     &.none {
       display: none;
     }
@@ -19,20 +18,23 @@
     position: relative;
     float: left;
     padding-left: 18px;
-    &:before {
+
+    &::before {
       position: absolute;
       left: 3px;
       top: 50%;
       content: '';
       border-top: 4px solid transparent;
       border-bottom: 4px solid transparent;
-      border-right: 4px solid #4284F5;
+      border-right: 4px solid #4284f5;
       transform: translateY(-50%);
-      transition: all .2s;
+      transition: all 0.2s;
     }
+
     &:hover {
       color: #50a8f3;
-      &:before {
+
+      &::before {
         transform: translateX(3px) translateY(-50%);
         border-right-color: #4283f3;
       }
@@ -44,7 +46,8 @@
     float: right;
     text-align: right;
     padding-right: 18px;
-    &:before {
+
+    &::before {
       content: '';
       position: absolute;
       right: 3px;
@@ -52,12 +55,14 @@
       transform: translateY(-50%);
       border-top: 4px solid transparent;
       border-bottom: 4px solid transparent;
-      border-left: 4px solid #4284F5;
-      transition: all .2s;
+      border-left: 4px solid #4284f5;
+      transition: all 0.2s;
     }
+
     &:hover {
       color: #50a8f3;
-      &:before {
+
+      &::before {
         transform: translateX(-3px) translateY(-50%);
         border-left-color: #4283f3;
       }

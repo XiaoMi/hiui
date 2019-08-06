@@ -13,7 +13,7 @@ import DemoType from '../../demo/input/section-type.jsx'
 
 <DemoType />
 
-## 状态
+## 禁用状态
 
 import DemoState from '../../demo/input/section-state.jsx'
 
@@ -37,62 +37,21 @@ import DemoTextarea from '../../demo/input/section-textarea.jsx'
 
 <DemoTextarea />
 
-## Input Attributes
-
-| 参数        | 说明           | 类型    | 可选值                                                   | 默认值 |
-| ----------- | -------------- | ------- | -------------------------------------------------------- | ------ |
-| type        | 设置输入框类型 | String  | text \| textarea \| id \| tel \| card \| amount \| email | text   |
-| disabled    | 是否禁用       | Boolean | true \| false                                            | false  |
-| required    | 是否必填       | String  | true \| false                                            | false  |
-| prefix      | 前缀           | String  | -                                                        | -      |
-| suffix      | 后缀           | String  | -                                                        | -      |
-| prepend     | 前置元素       | Element | -                                                        | -      |
-| append      | 后置元素       | Element | -                                                        | -      |
-| placeholder | 占位符         | String  | -                                                        | -      |
-
-## Input Events
-
-| 参数       | 说明               | 回调参数                                                                                                                                                 |
-| ---------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| onFocus    | 获得焦点时触发     | (event: Event, value: 原始值)                                                                                                                            |
-| onBlur     | 失去焦点时触发     | (event: Event, value: 原始值)                                                                                                                            |
-| onKeyDown  | 触发 keydown 事件  | (event: Event, value: 原始值)                                                                                                                            |
-| onKeyPress | 触发 keypress 事件 | (event: Event, value: 原始值)                                                                                                                            |
-| onInput    | 触发 input 事件    | (event: Event, value: 原始值)                                                                                                                            |
-| onChange   | 值改变时触发       | (event: Event, value: 原始值)<br/> 当 Input 包含 prefix 或 suffix 属性时，value 会得到拼接后的值，如果需要得到原始的值，可以使用 event.target.value 获取 |
-| onKeyUp    | 触发 keyup 事件    | (event: Event, value: 原始值)                                                                                                                            |
-
-<div style={{ position: 'relative' }}>
-  <span
-    style={{
-      position: 'absolute',
-      background: '#fff',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
-      padding: 8,
-      color: '#999'
-    }}
-  >
-    以下调整将随 2.0.0 版本发布，敬请期待
-  </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
-</div>
+import { Badge } from '@libs'
 
 ## Props
 
-| 参数        | 说明               | 类型                | 可选值                                                                 | 默认值 |
-| ----------- | ------------------ | ------------------- | ---------------------------------------------------------------------- | ------ |
-| type        | 设置输入框类型     | string              | 'text' \| 'textarea' \| 'id' \| 'tel' \| 'card' \| 'amount' \| 'email' | 'text' |
-| disabled    | 是否禁用           | boolean             | true \| false                                                          | false  |
-| required    | 是否必填           | string \| ReactNode | true \| false                                                          | false  |
-| prefix      | 输入框前置内容     | string \| ReactNode | -                                                                      | -      |
-| suffix      | 输入框后置内容     | string \| ReactNode | -                                                                      | -      |
-| placeholder | 输入框占位符       | string \| ReactNode | -                                                                      | -      |
-| onFocus     | 获得焦点时的回调   | (e: Event) => void  | -                                                                      | -      |
-| onBlur      | 失去焦点时的回调   | (e: Event) => void  | -                                                                      | -      |
-| onKeyDown   | 键盘按下时的回调   | (e: Event) => void  | -                                                                      | -      |
-| onKeyPress  | 字符键按下时的回调 | (e: Event) => void  | -                                                                      | -      |
-| onInput     | 输入字符时的回调   | (e: Event) => void  | -                                                                      | -      |
-| onChange    | 值改变时的回调     | (e: Event) => void  | -                                                                      | -      |
-| onKeyUp     | 键盘弹起时的回调   | (e: Event) => void  | -                                                                      | -      |
+| 参数         | 说明               | 类型                | 可选值                                                                 | 默认值 |
+| ------------ | ------------------ | ------------------- | ---------------------------------------------------------------------- | ------ |
+| value        | 设置输入框的值     | string              | -                                                                      | -      |
+| defaultValue | 设置输入框的默认值 | string              | -                                                                      | -      |
+| type         | 设置输入框类型     | string              | 'text' \| 'textarea' \| 'id' \| 'tel' \| 'card' \| 'amount' \| 'email' | 'text' |
+| disabled     | 是否禁用           | boolean             | true \| false                                                          | false  |
+| placeholder  | 输入框占位符       | string \| ReactNode | -                                                                      | -      |
+| onFocus      | 获得焦点时的回调   | (e: Event) => void  | -                                                                      | -      |
+| onBlur       | 失去焦点时的回调   | (e: Event) => void  | -                                                                      | -      |
+| onKeyDown    | 键盘按下时的回调   | (e: Event) => void  | -                                                                      | -      |
+| onKeyPress   | 字符键按下时的回调 | (e: Event) => void  | -                                                                      | -      |
+| onInput      | 输入字符时的回调   | (e: Event) => void  | -                                                                      | -      |
+| onChange     | 值改变时的回调     | (e: Event) => void  | -                                                                      | -      |
+| onKeyUp      | 键盘弹起时的回调   | (e: Event) => void  | -                                                                      | -      |

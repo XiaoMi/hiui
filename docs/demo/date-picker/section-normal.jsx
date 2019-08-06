@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'date-picker-normal'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   constructor() {
@@ -18,7 +17,7 @@ class Demo extends React.Component {
         <DatePicker
           value={new Date}
           onChange={(d) => {
-            console.log('value 为 Date 实例', DatePicker.format(d, 'YYYY-MM-DD E'))
+            console.log('返回值', d)
           }}
         />
       </div>

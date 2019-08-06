@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'date-picker-scope'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   constructor() {
@@ -17,14 +16,12 @@ class Demo extends React.Component {
       <div>
         <DatePicker
           type='daterange'
-          format='YYYY-MM-DD HH:mm:ss'
-          // value={this.state.rangeDate}
-          value={new Date()}
+          format='YYYY-MM-DD'
+          defaultValue={this.state.rangeDate}
           onChange={(d) => {
             console.log(1, d)
           }}
         />
-        <span style={{color: 'red', fontSize: '14px', cursor: 'pointer', marginLeft:'5px'}} onClick={() => {this.setState({rangeDate: ''})}}>重置</span>
       </div>
     )
   }

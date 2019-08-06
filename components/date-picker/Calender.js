@@ -11,7 +11,9 @@ import {
   isSameDay,
   compareAsc,
   addMonths,
-  isToday
+  isToday,
+  getYear,
+  parse
 } from './dateUtil'
 import {DAY_MILLISECONDS} from './constants'
 class Calender extends Component {
@@ -29,7 +31,8 @@ class Calender extends Component {
   }
 
   getRows () {
-    let {type, range, date: _date, minDate, maxDate, weekOffset} = this.props
+    let {type, range, date, minDate, maxDate, weekOffset} = this.props
+    let _date = date
     let {year, month, week} = deconstructDate(_date, weekOffset)
     let {endDate, startDate} = range || {startDate: null, endDate: null}
     // *  dayCount: 当月天数
@@ -70,7 +73,8 @@ class Calender extends Component {
         // if (range && (isSameDay(range.startDate, currentTime) || isSameDay(range.endDate, currentTime))) {
         //   col.type = 'current'
         // }
-        if (isToday(currentTime)) {
+
+        if (isToday(currentTime) && (col.type !== 'next' && col.type !== 'prev')) {
           col.type = 'today'
         }
         if (isSameDay(_date, currentTime) && !range && type !== 'week') {
@@ -83,7 +87,7 @@ class Calender extends Component {
           col.range = endDate && isWithinRange(currentTime, ..._ds)
           row.weekNum = getYearWeek(new Date(currentTime), weekOffset).weekNum
         }
-        col.disabled = (minDate && compareAsc(currentTime, minDate) === -1) || (maxDate && compareAsc(currentTime, maxDate) === 1)
+        col.disabled = (minDate && compareAsc(currentTime, parse(minDate).setHours(0, 0, 0, 0)) === -1) || (maxDate && compareAsc(currentTime, parse(maxDate).setHours(0, 0, 0, 0)) === 1)
       }
       if (type === 'week') {
         let _month = month
@@ -125,30 +129,30 @@ class Calender extends Component {
   }
   handlerClick (e) {
     const {onPick, date, type, range} = this.props
-    let {year, month, hours, minutes, seconds} = deconstructDate(date)
+
+    let { year, month, day, hours, minutes, seconds } = deconstructDate(date)
 
     const td = e.target
     const cls = this._getClassName(td)
     const value = td.getAttribute('value')
     if ((td.nodeName !== 'SPAN' && td.nodeName !== 'TD' && td.nodeName !== 'DIV') || td.disabled) return false
     if (cls.indexOf('disabled') !== -1) return false
-    const day = parseInt(value)
-    let newDate = new Date(year, month - 1)
+    const clickVal = parseInt(value)
+    let newDate = new Date(year, month - 1, day, hours, minutes, seconds)
+    if (type === 'year') {
+      year = parseInt(value)
+      newDate.setFullYear(year)
+    } else if (type === 'month') {
+      month = parseInt(value)
+      newDate.setMonth(month - 1)
+    } else {
+      newDate.setDate(clickVal)
+    }
     if (cls.indexOf('prev') !== -1) {
       newDate = addMonths(newDate, -1)
     }
     if (cls.indexOf('next') !== -1) {
       newDate = addMonths(newDate, 1)
-    }
-    newDate.setDate(day)
-    newDate.setHours(hours, minutes, seconds)
-    if (type === 'year') {
-      year = parseInt(value)
-      newDate.setFullYear(year)
-    }
-    if (type === 'month') {
-      month = parseInt(value)
-      newDate.setMonth(month - 1)
     }
     if (type === 'daterange' || type === 'weekrange') {
       if (range.selecting) {
@@ -185,17 +189,22 @@ class Calender extends Component {
     mouseMove(newDate)
   }
   getTDClass (td) {
+    const { type: layerType, date } = this.props
     let _class = ['hi-datepicker__cell']
     if (td.disabled) {
       _class.push('disabled')
       return _class.join(' ')
     }
+    const nDate = getYear(new Date())
+    const propDate = getYear(date)
+    const isAddToday = nDate === propDate
     switch (td.type) {
       case 'normal':
         _class.push('normal')
         break
       case 'today':
-        this.props.type !== 'week' && _class.push('today')
+        layerType !== 'week' && _class.push('today')
+        layerType === 'month' && !isAddToday && _class.pop()
         break
       case 'current':
         _class.push('current')

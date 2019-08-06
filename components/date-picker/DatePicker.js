@@ -4,12 +4,11 @@ import BasePicker from './BasePicker'
 import DatePanel from './DatePanel'
 import DateRangePanel from './DateRangePanel'
 import WeekRangePanel from './WeekRangePanel'
-import Provider from '../context'
 import dateFormat from 'date-fns/format'
 class DatePicker extends BasePicker {
   initPanel (state, props) {
     let component = null
-
+    let d = state.date
     switch (props.type) {
       case 'month':
       case 'year':
@@ -30,7 +29,7 @@ class DatePicker extends BasePicker {
         component = (
           <DatePanel
             {...props}
-            date={state.date.startDate}
+            date={state.date}
             onPick={this.onPick.bind(this)}
             style={state.style}
           />
@@ -40,7 +39,7 @@ class DatePicker extends BasePicker {
         component = (
           <DateRangePanel
             {...props}
-            date={state.date || {startDate: null, endDate: null}}
+            date={d}
             timeConfirm={this.timeConfirm.bind(this)}
             onPick={this.onPick.bind(this)}
             style={state.style}
@@ -51,7 +50,7 @@ class DatePicker extends BasePicker {
         component = (
           <WeekRangePanel
             {...props}
-            date={state.date || {startDate: null, endDate: null}}
+            date={d}
             range={state.range}
             onPick={this.onPick.bind(this)}
             style={state.style}
@@ -64,6 +63,5 @@ class DatePicker extends BasePicker {
     return component
   }
 }
-const pd = Provider(DatePicker)
-pd.format = dateFormat
-export default pd
+DatePicker.format = dateFormat
+export default DatePicker

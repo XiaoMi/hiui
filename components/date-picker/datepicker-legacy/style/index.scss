@@ -1,0 +1,612 @@
+@import '@hi-ui/core-css/index.scss';
+
+$basic-color: #4284f5 !default;
+
+.hi-datepicker-legacy {
+  position: relative;
+  // display: flex;
+  background: #fff;
+  z-index: 1060;
+  font-size: 14px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+
+  &__input-root {
+    display: inline-block;
+  }
+
+  &__input {
+    background: #fff;
+    border: 1px solid #d8d8d8;
+    border-radius: 2px;
+    height: 32px;
+    width: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    box-sizing: border-box;
+
+    &:hover {
+      border: 1px solid #4284f5;
+    }
+
+    &--range {
+      width: 320px;
+
+      input {
+        flex: 0 1 40%;
+        text-align: center;
+      }
+    }
+
+    input {
+      outline: none;
+      border: 0;
+      min-width: 0;
+      min-height: 0;
+      height: 28px;
+      padding-left: 10px;
+      flex: 1;
+
+      &::-webkit-input-placeholder {
+        color: #ccc;
+      }
+    }
+
+    &--disabled {
+      .hi-datepicker-legacy__input-icon,
+      input {
+        cursor: not-allowed;
+        background: #f4f4f4;
+        color: rgba(44, 48, 78, 0.2);
+      }
+    }
+
+    &--middle {
+      width: 240px;
+    }
+  }
+
+  &__input-icon {
+    height: 100%;
+    flex: 0 0 32px;
+    line-height: 32px;
+    text-align: center;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+
+  &__header {
+    border-bottom: 1px solid #f2f2f2;
+    display: flex;
+    justify-content: space-between;
+    height: 47px;
+    align-items: center;
+    padding: 0 15px;
+
+    &-btns {
+      width: 50px;
+      display: flex;
+      justify-content: space-around;
+
+      .hi-icon {
+        cursor: pointer;
+        flex: 1;
+      }
+    }
+
+    &-text {
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
+
+  &__body {
+    background: #fff;
+    border: 1px solid #d1dbe5;
+    border-radius: 2px;
+    box-sizing: border-box;
+    width: 288px;
+
+    &--hastime {
+      width: 468px;
+      display: flex;
+
+      .hi-timepicker {
+        box-shadow: none;
+        border-left: 1px solid #f2f2f2;
+      }
+    }
+
+    &--period {
+      display: flex;
+      width: 432px;
+    }
+
+    &--range {
+      width: 578px;
+      display: flex;
+      border: none;
+
+      .hi-datepicker-legacy__panel {
+        flex: 1;
+      }
+    }
+
+    &--shortcuts {
+      width: 683px;
+    }
+  }
+
+  &__time-period {
+    width: 144px;
+    border-left: 1px solid #f2f2f2;
+    text-align: center;
+  }
+
+  &__period-header {
+    line-height: 48px;
+    height: 48px;
+    font-weight: 600;
+    border-bottom: 1px solid #f2f2f2;
+    box-sizing: border-box;
+  }
+
+  &__period-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-top: 8px;
+    overflow: auto;
+    height: 241px;
+  }
+
+  &__period-item {
+    padding: 8px;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(240, 246, 255, 1);
+    }
+
+    &--active {
+      color: #4284f5;
+    }
+  }
+
+  &__footer {
+    height: 48px;
+    border-top: 1px solid #f2f2f2;
+    box-sizing: border-box;
+    line-height: 48px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      color: #4284f5;
+    }
+  }
+
+  &__mask {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &__time-text {
+    position: absolute;
+    width: 148px;
+    height: 32px;
+    border-radius: 2px;
+    left: 50%;
+    top: 8px;
+    transform: translateX(-50%);
+    background: #fff;
+    z-index: 2;
+    line-height: 32px;
+  }
+
+  &__calender-container {
+    padding: 17px 18px 15px;
+
+    &--year,
+    &--month {
+      padding: 10px 5px;
+
+      .hi-datepicker-legacy__row {
+        height: 57px;
+      }
+
+      .hi-datepicker-legacy__cell {
+        width: 92px;
+
+        &.today {
+          .hi-datepicker-legacy__text {
+            background: $basic-color;
+            opacity: 1;
+            color: #fff;
+          }
+        }
+      }
+
+      .hi-datepicker-legacy__text {
+        width: 48px;
+      }
+    }
+
+    &--week {
+      .hi-datepicker-legacy__row {
+        &:hover {
+          .hi-datepicker-legacy__content {
+            background: rgba(66, 132, 245, 0.1);
+          }
+        }
+      }
+    }
+  }
+
+  &__calender {
+    border: 0;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    th {
+      line-height: 24px;
+      padding: 0;
+    }
+  }
+
+  &__row {
+    &::after {
+      content: '';
+    }
+
+    &--current-week {
+      .range-se {
+        .hi-datepicker-legacy__content {
+          background: $basic-color;
+        }
+      }
+    }
+  }
+
+  // &__content {
+  //   margin: 0 3px;
+  //   background: #fff;
+  //   color: #fff;
+  //   border-radius: 2px;
+  // }
+
+  &__cell {
+    cursor: pointer;
+    text-align: center;
+    line-height: 24px;
+    padding: 4px 0;
+    width: 36px;
+    height: 24px;
+
+    &.disabled {
+      .hi-datepicker-legacy__content {
+        cursor: not-allowed;
+        color: map-get(get-palette($basic-color), 'g80');
+        background: rgba(246, 246, 246, 1);
+      }
+    }
+
+    &.range-se:not(.prev):not(.next) {
+      .hi-datepicker-legacy__content {
+        margin: 0 3px;
+        background: $basic-color;
+        color: #fff;
+        border-radius: 2px;
+      }
+    }
+
+    &.prev,
+    &.next {
+      .hi-datepicker-legacy__text {
+        color: rgba(44, 48, 78, 0.2);
+      }
+    }
+
+    // &.in-range:not(.next):not(.prev) {
+    //   .hi-datepicker-legacy__content {
+    //     background: rgba(66, 132, 245, 0.1);
+    //   }
+    // }
+
+    &.today:not(.in-range) {
+      .hi-datepicker-legacy__text {
+        border: 1px solid $basic-color;
+        opacity: 0.8;
+      }
+    }
+
+    &.current:not(.in-range) {
+      .hi-datepicker-legacy__text {
+        background: $basic-color;
+        color: #fff;
+      }
+    }
+  }
+
+  &__text {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    box-sizing: border-box;
+    border-radius: 2px;
+  }
+
+  &__shortcuts {
+    background: #fff;
+    border-right: 1px solid #f2f2f2;
+    width: 105px;
+    text-align: center;
+
+    p {
+      cursor: pointer;
+    }
+  }
+
+  .hide {
+    display: none !important;
+  }
+}
+
+.hi-timepicker {
+  width: 180px;
+  background: #fff;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+  z-index: 1;
+
+  .hi-timepicker__body {
+    width: 180px;
+  }
+
+  &--timerange {
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__split {
+    flex: 1;
+    height: 248px;
+    margin-top: 47px;
+    align-self: flex-end;
+    border: 1px solid #f2f2f2;
+    border-bottom: none;
+  }
+
+  &__timeheader {
+    display: flex;
+    height: 48px;
+    text-align: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(51, 51, 51, 1);
+    border-bottom: 1px solid rgba(242, 242, 242, 1);
+    box-sizing: border-box;
+  }
+
+  &__mark {
+    flex: 1;
+  }
+
+  &__timebody {
+    display: flex;
+    height: 248px;
+    // border-bottom: 1px solid #f2f2f2;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__page-turn {
+    position: absolute;
+    z-index: 2;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    font-size: 16px;
+    left: 22px;
+    top: 0;
+    cursor: pointer;
+
+    &:last-child {
+      top: auto;
+      bottom: 0;
+    }
+  }
+
+  &__list-container {
+    width: 60px;
+    overflow: hidden;
+    position: relative;
+    padding: 12px 0;
+  }
+
+  &__list {
+    // position: absolute;
+    // z-index: 2;
+    width: 80px;
+    height: 224px;
+    margin: 0;
+    list-style-type: none;
+    // overflow-x: hidden;
+    overflow-y: auto;
+    padding: 0;
+
+    &:nth-child(2) {
+      left: 60px;
+      z-index: 3;
+    }
+
+    &:nth-child(3) {
+      left: 120px;
+      z-index: 4;
+    }
+  }
+
+  &__item {
+    text-align: center;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.65);
+    line-height: 32px;
+    height: 32px;
+    width: 60px;
+    cursor: pointer;
+    box-sizing: border-box;
+    // border-right: 1px solid rgba(242, 242, 242, 1);
+    background-color: #fff;
+
+    &--empty {
+      cursor: default;
+    }
+
+    &--current {
+      font-weight: bold;
+    }
+
+    &--disabled {
+      color: rgba(44, 48, 78, 0.2);
+      cursor: not-allowed;
+    }
+
+    &:hover:not(.hi-timepicker__item--current):not(.hi-timepikcer__item--empty):not(.hi-timepicker__item--disabled) {
+      background-color: #eff5fe;
+    }
+  }
+
+  &__footer {
+    padding: 2px 0;
+    text-align: right;
+
+    button {
+      margin-right: 4px;
+    }
+  }
+
+  &__current-line {
+    height: 32px;
+    box-sizing: border-box;
+    border-top: 1px solid rgba(242, 242, 242, 1);
+    border-bottom: 1px solid rgba(242, 242, 242, 1);
+
+    // background: rgba(247, 247, 247, 1);
+    position: absolute;
+    top: 108px;
+    width: 156px;
+    z-index: 4;
+    pointer-events: none;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    margin: 0 12px;
+
+    span {
+      flex: 1;
+    }
+  }
+}
+
+@each $key, $value in $palette-primary {
+  .theme__#{$key} {
+    .hi-datepicker-legacy {
+      &__time-header {
+        &--active {
+          color: map-get(get-palette($value), '50');
+        }
+      }
+
+      &__time-footer {
+        color: map-get(get-palette($value), '50');
+      }
+
+      &__calender-container--year,
+      &__calender-container--month {
+        .hi-datepicker-legacy__cell {
+          &.today {
+            .hi-datepicker-legacy__text {
+              border: 1px solid map-get(get-palette($value), '50') !important;
+              color: map-get(get-palette($value), '50') !important;
+              background: #fff !important;
+            }
+          }
+        }
+      }
+
+      &__row {
+        &--current-week {
+          .hi-datepicker-legacy__content {
+            // TODO: 色板值
+            // background: map-get(get-palette($value), '10');
+            background: rgba(66, 132, 245, 0.1);
+          }
+
+          .range-se {
+            .hi-datepicker-legacy__content {
+              background: map-get(get-palette($value), '50');
+              color: #fff;
+              margin: 0 3px;
+              border-radius: 2px;
+            }
+
+            .hi-datepicker-legacy__text {
+              color: #fff;
+            }
+          }
+        }
+      }
+
+      &__cell {
+        &.today:not(.in-range) {
+          .hi-datepicker-legacy__text {
+            border: 1px solid map-get(get-palette($value), '50');
+            color: map-get(get-palette($value), '50');
+          }
+        }
+
+        &.in-range:not(.next):not(.prev) {
+          .hi-datepicker-legacy__content {
+            // TODO: 色板值
+            // background: map-get(get-palette($value), '10');
+            background: rgba(66, 142, 245, 0.1);
+          }
+        }
+
+        &.range-se:not(.next):not(.prev) {
+          .hi-datepicker-legacy__content {
+            background: map-get(get-palette($value), '50');
+          }
+        }
+
+        &:hover:not(.today):not(.current):not(.in-range):not(.range-se):not(.disabled) {
+          .hi-datepicker-legacy__text {
+            // TODO: 色板值
+            background: rgba(66, 142, 245, 0.1);
+            // background: map-get(get-palette($value), '10');
+          }
+        }
+      }
+
+      &__body {
+        .hi-datepicker-legacy__time-footer {
+          color: map-get(get-palette($value), '40');
+        }
+      }
+    }
+  }
+}

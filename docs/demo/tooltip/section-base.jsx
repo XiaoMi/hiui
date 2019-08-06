@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Tooltip from '../../../components/tooltip'
 const prefix = 'tooltip-base'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Tooltip from '@hi-ui/hiui/es/tooltip'\n
 class Demo extends React.Component {

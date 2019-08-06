@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Upload from '../../../components/upload'
 const prefix = 'Upload-custom'
 
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Upload from '@hi-ui/hiui/es/upload'\n
 class Demo extends React.Component {
   constructor(props) {
@@ -48,7 +47,7 @@ class Demo extends React.Component {
             })
           }}
           buttonText="上传文件"
-          defaultFileList={fileList}
+          fileList={fileList}
         />
       </div>
     )

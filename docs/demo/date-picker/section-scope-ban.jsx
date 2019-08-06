@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'date-picker-scope-ban'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   render () {
@@ -11,8 +10,8 @@ class Demo extends React.Component {
       <DatePicker
         placeholder={['开始日期', '结束日期']}
         type='daterange'
-        minDate={new Date()}
-        maxDate={new Date(2019, 4, 28)}
+        min={new Date()}
+        max={new Date().getTime() + 30 * 24 * 60 * 60 * 1000}
       />
     )
   }

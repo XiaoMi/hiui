@@ -5,7 +5,7 @@ const TreeDivider = props => {
     <div
       className={ClassNames(
         'hi-tree__divider',
-        `hi-tree__divider--${props.top ? 'top' : 'bottom'}`
+        `hi-tree__divider--${props.placement}`
       )}
     >
       <div className='divider-circle' />

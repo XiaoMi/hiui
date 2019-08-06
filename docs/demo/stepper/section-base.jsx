@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Stepper from '../../../components/stepper'
 const prefix = 'stepper-base'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Stepper from '@hi-ui/hiui/es/stepper'\n
 class Demo extends React.Component {
   render() {
@@ -20,12 +19,10 @@ class Demo extends React.Component {
     ]
 
     return (
-      <div>
-        <Stepper
-          list={list}
-          current={1}
-        />
-      </div>
+      <Stepper
+        data={list}
+        current={1}
+      />
     )
   }
 }`

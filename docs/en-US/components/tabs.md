@@ -16,7 +16,7 @@ constructor(props) {
       {
         tabName: 'Tab - 2',
         tabKey: 'tabKey-2',
-        closable: false
+        closeable: false
       },
       {
         tabName: 'Tab - 3',
@@ -64,7 +64,7 @@ render() {
               <Tabs.Pane 
                 tabName={pane.tabName} 
                 tabKey={pane.tabKey} 
-                closable={pane.closable}
+                closeable={pane.closeable}
                 key={index}
               >
                 <div style={{padding: '16px'}}>{pane.tabName}</div>
@@ -95,7 +95,7 @@ constructor(props) {
       {
         tabName: 'Tab - 2',
         tabKey: 'tabKey-2',
-        closable: false
+        closeable: false
       },
       {
         tabName: 'Tab - 3',
@@ -144,7 +144,7 @@ render() {
               <Tabs.Pane 
                 tabName={pane.tabName} 
                 tabKey={pane.tabKey} 
-                closable={pane.closable}
+                closeable={pane.closeable}
                 key={index}
               >
                 <div style={{padding: '16px'}}>{pane.tabName}</div> 
@@ -175,7 +175,7 @@ constructor(props) {
       {
         tabName: 'Tab - 2',
         tabKey: 'tabKey-2',
-        closable: false
+        closeable: false
       },
       {
         tabName: 'Tab - 3',
@@ -199,7 +199,7 @@ render() {
               <Tabs.Pane 
                 tabName={pane.tabName} 
                 tabKey={pane.tabKey} 
-                closable={pane.closable}
+                closeable={pane.closeable}
                 key={index}
               >
                 <div style={{padding: '16px'}}>{pane.tabName}</div>
@@ -231,7 +231,7 @@ constructor(props) {
       {
         tabName: 'Tab - 2',
         tabKey: 'tabKey-2',
-        closable: false,
+        closeable: false,
         tabDesc: 'Description'
       },
       {
@@ -259,7 +259,7 @@ render() {
                 tabName={pane.tabName} 
                 tabDesc={pane.tabDesc} 
                 tabKey={pane.tabKey} 
-                closable={pane.closable}
+                closeable={pane.closeable}
                 key={index}
               >
                 <div style={{padding: '16px'}}>{pane.tabName}</div> 
@@ -292,7 +292,7 @@ constructor(props) {
       {
         tabName: 'Tab - 2',
         tabKey: 'tabKey-2',
-        closable: false
+        closeable: false
       },
       {
         tabName: 'Tab - 3',
@@ -316,7 +316,7 @@ render() {
               <Tabs.Pane 
                 tabName={pane.tabName} 
                 tabKey={pane.tabKey} 
-                closable={pane.closable}
+                closeable={pane.closeable}
                 key={index}
               >
                 <div style={{padding: '16px'}}>{pane.tabName}</div>
@@ -354,4 +354,4 @@ render() {
 | tabName | tabname | String \| Element | - | - |
 | tabDesc | description | String \| Element | - | - |
 | tabKey | key | String \| Number | - | - |
-| closable | Whether the tag can be closed, only valid for type='editable' | Boolean | true \| false | true |
+| closeable | Whether the tag can be closed, only valid for type='editable' | Boolean | true \| false | true |

@@ -20,55 +20,19 @@ import DemoNobottom from '../../demo/collapse/section-nobottom.jsx'
 
 <DemoNobottom />
 
-## Collapse Attributes
-
-| 参数      | 说明           | 类型               | 可选值                | 默认值          |
-| --------- | -------------- | ------------------ | --------------------- | --------------- |
-| accordion | 手风琴模式     | Boolean            | true \| false         | false（不激活） |
-| onChange  | 切换回调       | Function           | -                     | 无              |
-| activeKey | 默认激活的面板 | String \| String[] | -                     | -               |
-| type      | collapse 类型  | String             | default \| simple     | default         |
-| arrow     | 箭头所在位置   | String             | left \| right \| none | left            |
-
-## Collapse Attributes
-
-| 参数     | 说明           | 类型              | 可选值 | 默认值 |
-| -------- | -------------- | ----------------- | ------ | ------ |
-| key      | 面板唯一标识   | String            | -      | index  |
-| header   | 面板头部       | String \| Element | -      | -      |
-| disabled | 面板是否可点击 | Boolean           | -      | false  |
-
-<div style={{ position: 'relative' }}>
-  <span
-    style={{
-      position: 'absolute',
-      background: '#fff',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
-      padding: 8,
-      color: '#999'
-    }}
-  >
-    以下调整将随 2.0.0 版本发布，敬请期待
-  </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
-</div>
-
 ## Props
 
-**_Collapse_**
+### Collapse
 
-| 参数      | 说明                                           | 类型               | 可选值        | 默认值 |
-| --------- | ---------------------------------------------- | ------------------ | ------------- | ------ |
-| accordion | 是否启用手风琴模式，手风琴模式下最多只展开一项 | boolean            | true \| false | false  |
-| onChange  | 切换时的回调                                   | () => void         | -             | -      |
-| activeId  | 默认展开的面板                                 | string \| string[] | -             | -      |
+| 参数           | 说明                                           | 类型               | 可选值            | 默认值 |
+| -------------- | ---------------------------------------------- | ------------------ | ----------------- | ------ |
+| accordion      | 是否启用手风琴模式，手风琴模式下最多只展开一项 | boolean            | true \| false     | false  |
+| onChange       | 切换时的回调                                   | () => void         | -                 | -      |
+| activeId       | 默认展开的面板                                 | string \| string[] | -                 | -      |
+| arrowPlacement | 箭头所在位置                                   | string             | 'left' \| 'right' | 'left' |
+| showArrow      | 是否显示展开箭头                               | boolean            | true \| false     | true   |
 
-<!-- | type           | collapse 类型                                  | string             | 'default' \| 'simple'       | 'default' |
-| arrowPlacement | 箭头所在位置                                   | string             | 'left' \| 'right' \| 'none' | 'left'    | -->
-
-**_Collapse.Panel_**
+### Collapse.Panel
 
 | 参数     | 说明         | 类型                | 可选值        | 默认值 |
 | -------- | ------------ | ------------------- | ------------- | ------ |

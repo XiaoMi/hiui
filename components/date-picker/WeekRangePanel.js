@@ -3,29 +3,35 @@ import {deconstructDate, nextMonth} from './util'
 import Calender from './Calender'
 import Icon from '../icon'
 import classNames from 'classnames'
-import {startOfWeek, endOfWeek, isSameMonth} from './dateUtil'
+import {startOfWeek, endOfWeek, isSameMonth, isValid, getStartDate} from './dateUtil'
+
+const _parseProps = (date) => {
+  const {startDate, endDate} = date
+  let leftDate = getStartDate(date)
+  let rightDate = isValid(endDate) ? endDate : nextMonth(leftDate)
+  if (endDate) {
+    if (isSameMonth(startDate, endDate)) {
+      rightDate = nextMonth(leftDate)
+    }
+  }
+  return {
+    range: {
+      startDate,
+      endDate,
+      selecting: false
+    },
+    leftDate,
+    rightDate
+  }
+}
 export default class WeekRangePanel extends Component {
   constructor (props) {
     super(props)
-    const {startDate, endDate} = props.date
-    let leftDate = new Date(startDate)
-    let rightDate = endDate || nextMonth(leftDate)
-    if (endDate) {
-      if (isSameMonth(startDate, endDate)) {
-        rightDate = nextMonth(leftDate)
-      }
-    }
     this.state = {
-      date: leftDate,
-      range: {
-        startDate: startOfWeek(startDate),
-        endDate: endDate ? endOfWeek(endDate) : endOfWeek(startDate),
-        selecting: false
-      },
-      leftDate,
-      rightDate
+      ..._parseProps(props.date)
     }
   }
+
   /**
    * Header 中间部分内容
    * @param {String} type 选择器类型
@@ -66,9 +72,6 @@ export default class WeekRangePanel extends Component {
         <span className='hi-datepicker__header-text'>
           {this.getHeaderCenterContent(year, month)}
         </span>
-        {/* <span className='hi-datepicker__header-text'>
-          {month}月
-        </span> */}
         <div className='hi-datepicker__header-btns'>
           <span onClick={() => this.changeMonth(false, lr)} ><Icon name='right' /></span>
           <span onClick={() => this.changeYear(false, lr)} ><Icon name='double-right' /></span>
@@ -150,9 +153,6 @@ export default class WeekRangePanel extends Component {
         left.year += 1
       }
       nLeftDate.setFullYear(left.year)
-      // this.setState({
-      //   leftDate
-      // })
     } else {
       if (flag) {
         right.year -= 1
@@ -160,9 +160,6 @@ export default class WeekRangePanel extends Component {
         right.year += 1
       }
       nRightDate.setFullYear(right.year)
-      // this.setState({
-      //   rightDate
-      // })
     }
     if (nLeftDate <= nRightDate) {
       this.setState({
@@ -177,10 +174,15 @@ export default class WeekRangePanel extends Component {
     range.startDate = startDate
     range.endDate = endDate
     this.setState({
-      range
+      range,
+      leftDate: startDate || this.state.leftDate,
+      rightDate: endDate || this.state.rightDate
     })
     if (endDate) {
-      onPick(range)
+      onPick({
+        startDate: startOfWeek(range.startDate),
+        endDate: endOfWeek(range.endDate)
+      })
     }
   }
   onMouseMoveHandler (date) {
@@ -197,9 +199,6 @@ export default class WeekRangePanel extends Component {
       'hi-datepicker',
       theme && 'theme__' + theme
     )
-    // const {year, month, day} = deconstructDate(date)
-    // const _date = new Date(year, month, day)
-
     return (
       <div
         style={this.props.style}

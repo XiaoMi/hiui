@@ -5,8 +5,7 @@ import Modal from '../../../components/modal'
 import Radio from '../../../components/radio'
 const desc = '通过 size 自定义尺寸，可使用 large、normal、small，默认为 normal'
 const prefix = 'modal-size'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Modal from '@hi-ui/hiui/es/modal'
 import Radio from '@hi-ui/hiui/es/radio'\n
@@ -44,6 +43,7 @@ class Demo extends React.Component {
       <div>
         <Radio
           list={this.state.sizeList}
+          legacy
           checked={this.state.sizeListActive}
           onChange={(data, index) => {
             this.setState({

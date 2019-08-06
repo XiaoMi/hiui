@@ -1,8 +1,8 @@
 import React from 'react'
 import HomeBase from './HomeBase'
-import '../../../components/ficon/style/index'
-import Button from '../../../components/button/Button'
-import Badge from '../../../components/badge/index'
+import '@components/ficon/style/index'
+import Button from '@components/button/Button'
+import Badge from '@components/badge/Badge'
 import { version } from '../../../package.json'
 
 class Home extends React.Component {
@@ -17,14 +17,13 @@ class Home extends React.Component {
               <div className='section__desc'>
                 <p>HIUI是一套适用于前中后台交互与界面设计标准的制定与实施的前端解决方案</p>
               </div>
-              <Button type='primary' href='/hiui/zh-CN/docs/quick-start'>
+              <Button type='primary' href={`<BASE_URL>/zh-CN/docs/quick-start`}>
                 开始使用
               </Button>
               <a className='github-link' href='https://github.com/XiaoMi/hiui'>
                 <i className='hi-fa fa-github' />
                 GitHub (v{version})
               </a>
-              <p style={{ marginTop: '12px', marginLeft: '16px', color: '#999' }}>v2.0.0 即将发布</p>
             </div>
             <div className='section__figure' />
           </div>
@@ -158,7 +157,7 @@ class Home extends React.Component {
                   <div className='flat-list__figure' />
                   <h3 className='flat-list__name'>HIUI Library <sup>20190719</sup></h3>
                   <div className='flat-list__desc'>
-                    点击下载集成所有 HIUI 组件的 <Badge dot style={{ display: 'inline', paddingRight: 4 }}><a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/resources/HIUI_2_0_0_beta(20190719).rplib.zip'>Axure</a></Badge> / <a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/resources/HIUI_2_0_0_beta(20190709).sketch.zip'>Sketch</a> 部件库
+                    点击下载集成所有 HIUI 组件的 <Badge type='dot' style={{ display: 'inline', paddingRight: 4 }}><a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/resources/HIUI_2_0_0_beta(20190719).rplib.zip'>Axure</a></Badge> / <a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/resources/HIUI_2_0_0_beta(20190709).sketch.zip'>Sketch</a> 部件库
                   </div>
                 </li>
               </ul>

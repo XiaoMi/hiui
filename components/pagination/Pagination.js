@@ -21,26 +21,26 @@ class Pagination extends Component {
   static propTypes = {
     defaultCurrent: PropTypes.number,
     pageSize: PropTypes.number,
-    pageBufferSize: PropTypes.number,
-    showQuickJumper: PropTypes.bool,
-    hideOnSinglePage: PropTypes.bool,
+    max: PropTypes.number,
+    showJumper: PropTypes.bool,
+    autoHide: PropTypes.bool,
     total: PropTypes.number,
     onChange: PropTypes.func,
     itemRender: PropTypes.func,
-    sizeChangeEvent: PropTypes.func,
-    jumpEvent: PropTypes.func,
+    onPageSizeChange: PropTypes.func,
+    onJump: PropTypes.func,
     pageSizeOptions: PropTypes.array,
-    mode: PropTypes.oneOf(['simple', 'normal', 'shrink'])
+    type: PropTypes.oneOf(['simple', 'default', 'shrink'])
   }
 
   static defaultProps = {
     pageSizeOptions: [],
-    showQuickJumper: false,
-    hideOnSinglePage: false,
-    mode: 'normal',
+    showJumper: false,
+    autoHide: false,
+    type: 'default',
     defaultCurrent: 1,
     pageSize: 10,
-    pageBufferSize: 2,
+    max: 2,
     total: 0,
     onChange: noop,
     className: '',
@@ -52,11 +52,12 @@ class Pagination extends Component {
 
     const {
       defaultCurrent,
+      current: propsCurrent,
       pageSize,
       total
     } = props
-    const current = this.getCurrent(defaultCurrent, this.calculatePage(total, pageSize))
-
+    const current = this.getCurrent(propsCurrent !== undefined ? propsCurrent : defaultCurrent, this.calculatePage(total, pageSize))
+    this.jumper = React.createRef()
     this.state = {
       current,
       jumpTo: current,
@@ -67,7 +68,6 @@ class Pagination extends Component {
 
   componentWillReceiveProps (props) {
     let states = {}
-
     if (props.pageSize !== this.props.pageSize) {
       states.pageSize = props.pageSize
     }
@@ -75,8 +75,8 @@ class Pagination extends Component {
       states.total = props.total
     }
     let current
-    if (this.state.current !== props.defaultCurrent) {
-      current = this.getCurrent(props.defaultCurrent, this.calculatePage(props.total, props.pageSize))
+    if (props.current !== undefined && this.state.current !== props.current) {
+      current = this.getCurrent(props.current, this.calculatePage(props.total, props.pageSize))
     }
     if (current) {
       states.current = current
@@ -108,13 +108,12 @@ class Pagination extends Component {
     const maxPage = this.calculatePage(this.props.total)
 
     if (isInteger(page) && page !== prevPage && page >= 1 && page <= maxPage) {
-      this.setState({
+      const pageSize = this.state.pageSize
+      this.props.onChange(page, prevPage, pageSize)
+      this.props.current !== undefined || this.setState({
         current: page,
         jumpTo: page
       })
-
-      const pageSize = this.state.pageSize
-      this.props.onChange(page, prevPage, pageSize)
     }
   }
 
@@ -132,17 +131,17 @@ class Pagination extends Component {
     return -1
   }
 
-  sizeChangeEvent (pageSize) {
+  onPageSizeChange (pageSize) {
     const {
       total,
-      sizeChangeEvent
+      onPageSizeChange
     } = this.props
     const current = this.getCurrent(this.state.current, this.calculatePage(total, pageSize)) // pageSize改动需要重新计算当前页，避免超过最大页情况
 
     this.setState({
       pageSize
     }, () => {
-      sizeChangeEvent && sizeChangeEvent(pageSize, current)
+      onPageSizeChange && onPageSizeChange(pageSize, current)
       this.handleChange(current)
     })
   }
@@ -158,10 +157,13 @@ class Pagination extends Component {
       <div className={`${prefixCls}__sizes ${prefixCls}__text`}>
         {localeDatas.pagination.itemPerPage}
         <div className={`${prefixCls}__span`}>
-          <Dropdown title={pageSize} type='button'
-            list={pageSizeOptions}
+          <Dropdown legacy={false} title={pageSize} type='button'
+            data={pageSizeOptions.map(n => ({
+              value: n,
+              title: String(n)
+            }))}
             onClick={(val) => {
-              this.sizeChangeEvent(val)
+              this.onPageSizeChange(val)
             }}
           />
         </div>
@@ -171,9 +173,9 @@ class Pagination extends Component {
   }
 
   renderJumper () {
-    const { showQuickJumper, prefixCls, localeDatas } = this.props
+    const { showJumper, prefixCls, localeDatas } = this.props
 
-    if (!showQuickJumper) {
+    if (!showJumper) {
       return null
     }
 
@@ -191,7 +193,7 @@ class Pagination extends Component {
 
     return (
       <div className={`${prefixCls}__jumper-input`}>
-        <Input onKeyPress={this.gotoPage.bind(this)} onBlur={this.gotoPage.bind(this)} value={this.state.jumpTo} onChange={(e, tVal) => {
+        <Input ref={this.jumper} onKeyPress={this.gotoPage.bind(this)} onBlur={this.gotoPage.bind(this)} value={this.state.jumpTo} onChange={(e, tVal) => {
           const val = e.target.value
           if (/^\d+$/.test(val)) {
             const maxPage = this.calculatePage(total)
@@ -214,7 +216,7 @@ class Pagination extends Component {
     const pageNum = parseInt(e.target.value)
     const setPageNum = (page) => {
       this.handleChange(page)
-      this.props.jumpEvent && this.props.jumpEvent(Number(page))
+      this.props.onJump && this.props.onJump(Number(page))
     }
 
     if (e.type === 'blur') {
@@ -222,12 +224,13 @@ class Pagination extends Component {
     } else if (e.type === 'keypress') {
       if (e.charCode === 13) {
         setPageNum(pageNum)
+        this.jumper.current._Input.blur()
       }
     }
   }
 
   renderPagers () {
-    const { pageBufferSize, total, prefixCls } = this.props
+    const { max, total, prefixCls } = this.props
     const {
       current
     } = this.state
@@ -236,20 +239,20 @@ class Pagination extends Component {
     const nextPager = this.renderNextPager() // 下一页
     let pagers = [prevPager]
     let leftBuffer, rightBuffer
-    if (pageBufferSize * 2 + 1 + 2 >= maxPage) {
+    if (max * 2 + 1 + 2 >= maxPage) {
       leftBuffer = 1
       rightBuffer = maxPage
-    } else if ((maxPage - current) <= pageBufferSize) {
+    } else if ((maxPage - current) <= max) {
       rightBuffer = maxPage
-      leftBuffer = maxPage - 2 * pageBufferSize - 1
+      leftBuffer = maxPage - 2 * max - 1
       leftBuffer = leftBuffer <= 1 ? 1 : leftBuffer
-    } else if ((current - pageBufferSize) <= 1) {
+    } else if ((current - max) <= 1) {
       leftBuffer = 1
-      rightBuffer = 2 * pageBufferSize + leftBuffer + 1
+      rightBuffer = 2 * max + leftBuffer + 1
       rightBuffer = rightBuffer >= maxPage ? maxPage : rightBuffer
     } else {
-      leftBuffer = current - pageBufferSize
-      rightBuffer = current + pageBufferSize
+      leftBuffer = current - max
+      rightBuffer = current + max
     }
 
     if (leftBuffer !== 1) {
@@ -349,7 +352,7 @@ class Pagination extends Component {
     const {
       prefixCls,
       total,
-      showQuickJumper
+      showJumper
     } = this.props
     const maxPage = this.calculatePage(total)
 
@@ -364,7 +367,7 @@ class Pagination extends Component {
       <React.Fragment>
         {prevPager}
         {
-          showQuickJumper &&
+          showJumper &&
           <div className={`${prefixCls}__text`}>
             {this.renderJumperInput()}
             /
@@ -378,24 +381,21 @@ class Pagination extends Component {
 
   render () {
     const {
-      hideOnSinglePage,
+      autoHide,
       total,
+      type,
       mode,
       prefixCls,
       className,
       theme
     } = this.props
     const maxPage = this.calculatePage(total)
-    if (maxPage === 0 || (hideOnSinglePage && (maxPage === 1))) {
+    if (maxPage === 0 || (autoHide && (maxPage === 1))) {
       return null
     }
     let children
 
-    switch (mode) {
-      case 'normal':
-        children = this.renderNormal()
-        break
-
+    switch (type || mode) {
       case 'simple':
         children = this.renderSimple()
         break
@@ -410,7 +410,7 @@ class Pagination extends Component {
     }
 
     return (
-      <div className={`${prefixCls} ${prefixCls}--${mode} ${className} theme__${theme}`}>
+      <div className={`${prefixCls} ${prefixCls}--${type} ${className} theme__${theme}`}>
         {children}
       </div>
     )

@@ -4,8 +4,7 @@ import Tree from '../../../components/tree'
 const prefix = 'tree-search'
 const desc = '通过搜索框对树进行过滤'
 
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Tree from '@hi-ui/hiui/es/tree'\n
 class Demo extends React.Component {
   constructor(props) {
@@ -48,13 +47,9 @@ class Demo extends React.Component {
           defaultExpandAll
           searchable={true}
           data={this.state.treeData}
-          defaultCheckedKeys={[2]}
-          onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
           onChange={data => {console.log('Tree data:', data)}}
-          openIcon='down'
-          closeIcon='up'
           highlightable
-          onNodeClick={(item) => console.log('------click node', item)}
+          onClick={(item) => console.log('------click node', item)}
         />
       </div>
     )
