@@ -7,40 +7,8 @@ import Item from './Item'
 import SubMenu from './SubMenu'
 import './style/index'
 class Menu extends Component {
-  static defaultProps = {
-    placement: 'vertical',
-    onClick: () => {},
-    activeId: '',
-    collapsed: false,
-    showCollapse: false,
-    showAllSubMenus: false,
-    accordion: true
-  }
-  static propTypes = {
-    data: PropTypes.arrayOf(PropTypes.shape({
-      content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-      id: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number
-      ]),
-      disabled: PropTypes.bool,
-      icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-      children: PropTypes.array
-    })),
-    activeId: PropTypes.string,
-    placement: PropTypes.oneOf(['horizontal', 'vertical']),
-    collapsed: PropTypes.bool, // 是否是mini模式，需要同时placement=vertical时才生效
-    showCollapse: PropTypes.bool, // mini状态开关，需要同时placement=vertical时才生效
-    showAllSubMenus: PropTypes.bool, // 胖菜单，需要同时placement=horizontal时才生效
-    accordion: PropTypes.bool,
-    onClick: PropTypes.func,
-    onClickSubMenu: PropTypes.func,
-    onCollapse: PropTypes.func
-  }
-
   constructor (props) {
     super(props)
-
     const {
       activeId,
       collapsed
@@ -48,17 +16,16 @@ class Menu extends Component {
     const activeIndex = this.getActiveIndex(activeId)
     let expandIndex = []
     this.clickOutsideHandel = this.clickOutside.bind(this)
-
     if (this.isNoMiniVertaicalMenu(collapsed)) { // 垂直非mini菜单默认打开激活项
       expandIndex = [activeIndex.split('-').slice(0, -1).join('-')]
     }
-
     this.state = {
       activeId: this.props.activeId,
       expandIndex,
       activeIndex,
       collapsed
     }
+    this.clickInsideFlag = false // click在menu标识
   }
 
   componentWillReceiveProps (nextProps) {
@@ -86,7 +53,6 @@ class Menu extends Component {
     window.removeEventListener('click', this.clickOutsideHandel)
   }
 
-  clickInsideFlag = false // click在menu标识
   clickOutside () {
     if (!this.clickInsideFlag && !this.isNoMiniVertaicalMenu()) {
       this.setState({
@@ -142,7 +108,7 @@ class Menu extends Component {
     return this.props.placement === 'vertical' && !collapsed
   }
 
-  getActiveMenus = (menus, activeId, activeMenus = []) => {
+  getActiveMenus (menus, activeId, activeMenus = []) {
     let result
     for (let index in menus) {
       let _activeMenus = [...activeMenus]
@@ -175,9 +141,9 @@ class Menu extends Component {
 
   toggleMini () {
     const collapsed = !this.state.collapsed
-    const expandIndex = collapsed ? [] : this.state.expandIndex // 切换为mini清空展开态，否则记录展开态
+    const expandIndex = collapsed ? [] : this.state.expandIndex
 
-    setTimeout(() => { // fix mini 切换为 非mini 时子菜单不隐藏
+    setTimeout(() => {
       this.setState({
         collapsed,
         expandIndex
@@ -265,11 +231,11 @@ class Menu extends Component {
     let items = []
     const renderMenu = showAllSubMenus ? this.renderFatSubMenu.bind(this) : this.renderMenu.bind(this)
 
-    data.forEach((data, index) => {
+    data.forEach((item, index) => {
       const indexStr = parentIndex !== '' ? parentIndex + '-' + index : '' + index
       const level = indexStr.split('-').length
 
-      if (data.children) {
+      if (item.children) {
         items.push(
           <SubMenu
             key={index}
@@ -280,17 +246,17 @@ class Menu extends Component {
             fatMenu={showAllSubMenus}
             activeIndex={activeIndex}
             expandIndex={expandIndex}
-            disabled={data.disabled}
-            content={data.content}
-            icon={data.icon}
+            disabled={item.disabled}
+            content={item.content}
+            icon={item.icon}
             renderMenu={renderMenu}
-            datas={data.children}
+            datas={item.children}
             mode={placement}
             mini={collapsed}
           />
         )
       } else {
-        items.push(this.renderItem(data, indexStr, {level}))
+        items.push(this.renderItem(item, indexStr, {level}))
       }
     })
 
@@ -324,4 +290,34 @@ class Menu extends Component {
   }
 }
 
+Menu.defaultProps = {
+  placement: 'vertical',
+  onClick: () => {},
+  activeId: '',
+  collapsed: false,
+  showCollapse: false,
+  showAllSubMenus: false,
+  accordion: true
+}
+Menu.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.shape({
+    content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]),
+    disabled: PropTypes.bool,
+    icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    children: PropTypes.array
+  })),
+  activeId: PropTypes.string,
+  placement: PropTypes.oneOf(['horizontal', 'vertical']),
+  collapsed: PropTypes.bool, // 是否是mini模式，需要同时placement=vertical时才生效
+  showCollapse: PropTypes.bool, // mini状态开关，需要同时placement=vertical时才生效
+  showAllSubMenus: PropTypes.bool, // 胖菜单，需要同时placement=horizontal时才生效
+  accordion: PropTypes.bool,
+  onClick: PropTypes.func,
+  onClickSubMenu: PropTypes.func,
+  onCollapse: PropTypes.func
+}
 export default Menu

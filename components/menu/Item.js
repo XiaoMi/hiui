@@ -4,23 +4,6 @@ import classNames from 'classnames'
 import Title from './Title'
 
 class Item extends Component {
-  static componentName = 'MenuItem'
-
-  static propTypes = {
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    level: PropTypes.number,
-    index: PropTypes.string,
-    onClick: PropTypes.func,
-    disabled: PropTypes.bool,
-    activeIndex: PropTypes.string
-  }
-
-  static defaultProps = {
-    disabled: false,
-    activeIndex: ''
-  }
-
   render () {
     const {
       children,
@@ -51,4 +34,17 @@ class Item extends Component {
   }
 }
 
+Item.propTypes = {
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  level: PropTypes.number,
+  index: PropTypes.string,
+  onClick: PropTypes.func,
+  disabled: PropTypes.bool,
+  activeIndex: PropTypes.string
+}
+Item.defaultProps = {
+  disabled: false,
+  activeIndex: ''
+}
 export default Item

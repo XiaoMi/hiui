@@ -19,7 +19,6 @@ class Demo extends React.Component {
       },
       {
         content: '手机',
-        icon: 'phone',
         children: [
           {
             content: '小米',
