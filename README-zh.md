@@ -26,7 +26,7 @@ HIUI 是一个面向中后台系统的前端组件库，可以帮助开发人员
 npm install @hi-ui/hiui
 ```
 
-组件使用详见[官方文档](https://xiaomi.github.io/hiui/zh-CN/components/quick-start)。
+组件使用详见[官方文档](https://xiaomi.github.io/hiui/zh-CN/docs/quick-start)。
 
 ## 贡献
 
