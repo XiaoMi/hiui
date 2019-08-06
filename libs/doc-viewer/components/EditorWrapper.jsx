@@ -49,7 +49,7 @@ export default class EditorWrapper extends React.Component {
   render () {
     const { copyed, innerHeight, descBarHeight } = this.state
     const {
-      live: { theme, code, language, disabled },
+      live: { theme, code, language },
       desc,
       prefix
     } = this.props
@@ -126,7 +126,7 @@ export default class EditorWrapper extends React.Component {
             theme={theme}
             code={code}
             language={language}
-            disabled={disabled}
+            disabled={!this.state.collapse}
             onChange={this.onCodeChange}
           />
         </div>
