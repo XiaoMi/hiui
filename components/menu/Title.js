@@ -7,7 +7,6 @@ class Title extends Component {
     if (!icon) {
       icon = <i />
     }
-    console.log(icon)
     if (typeof icon === 'string') {
       icon = <Icon name={icon} />
     }
