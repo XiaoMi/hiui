@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Upload from '../../../components/upload'
 const prefix = 'upload-default'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Upload from '@hi-ui/hiui/es/upload'\n
 class Demo extends React.Component {
   constructor(props) {
@@ -18,7 +17,7 @@ class Demo extends React.Component {
           type="normal"
           uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
           buttonText="上传文件"
-          param={param}
+          params={param}
           name={'files[]'}
           onChange = {(file, fileList, response) => {
             console.log('upload callback', file, fileList, response)

@@ -1,92 +1,134 @@
-@import '../../style/index.scss';
 @import '../../style/icon/index.scss';
 
-.hi-notification {
+.hi-notification__container {
   position: fixed;
-  top: -10px;
+  top: 20px;
   right: 20px;
-  padding: 15px 40px 15px 50px;
-  width: 20%;
-  background-color: rgb(233, 241, 255);
-  border-color: rgb(180, 208, 255);
-  color: #4284f5;
-  transition: all 0.2s ease-out;
-  opacity: 0;
   z-index: 1020;
 
-  .title {
+  .hi-notification {
+    position: relative;
+    padding: 9px 12px;
+    margin-bottom: 10px;
+    border-radius: 2px;
+    transition: 0.3s ease;
+    display: flex;
+    align-items: flex-start;
+    width: 340px;
+    box-sizing: border-box;
+
+    &__closer {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+    }
+  }
+
+  .hi-notification__title--wrapper {
+    display: flex;
+    line-height: 22px;
+
+    .hi-notification__title {
+      font-size: 14px;
+    }
+  }
+
+  .hi-notification__icon {
     font-size: 16px;
-    display: block;
-    margin-bottom: 5px;
+    margin-right: 12px;
   }
 
-  .message {
+  .hi-notification__content {
+    padding-left: 28px;
     font-size: 12px;
-    display: block;
+    line-height: 20px;
+    color: #666;
   }
 
-  .close {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    margin-top: -0.5em;
-    cursor: pointer;
-    color: #999;
-    font-size: 12px;
-    font-family: sans-serif;
-    font-weight: 700;
+  .hi-notification__content--wrapper {
+    width: 100%;
+    padding-right: 14px;
+  }
 
-    &::before {
-      color: #999;
+  .hi-notification__button--wrapper {
+    text-align: right;
+    margin-top: 9px;
+
+    .hi-notification__button {
+      margin-right: -14px;
+      color: #fff;
     }
   }
 
-  &.show {
-    opacity: 1;
-    top: 20px;
-  }
+  .hi-notification--info {
+    background: #edf2fc;
+    border: 1px solid #d8e5ff;
 
-  .icon-contain {
-    position: absolute;
-    top: 50%;
-    left: 16px;
-    margin-top: -10px;
-    font-size: 0;
-    color: #4284f5;
-    font-weight: 600;
+    .hi-notification__title,
+    .hi-notification__icon {
+      color: #4284f5;
+    }
 
-    .hi-icon {
-      font-size: 20px;
+    .hi-notification__button {
+      background-color: #4284f5;
     }
   }
 
-  &.error {
-    background: rgb(255, 234, 235);
-    border: 1px solid rgb(251, 191, 191);
-    color: #eb5252;
+  .hi-notification--error {
+    background: #feeff0;
+    border: 1px solid #ffe0e3;
 
-    .icon-contain {
+    .hi-notification__title,
+    .hi-notification__icon {
       color: #eb5252;
     }
+
+    .hi-notification__button {
+      background-color: #eb5252;
+    }
   }
 
-  &.success {
-    background: rgb(233, 245, 237);
-    border: 1px solid rgb(197, 220, 206);
-    color: #1da653;
+  .hi-notification--success {
+    background: #e8f6ee;
+    border: 1px solid #cae9d7;
 
-    .icon-contain {
+    .hi-notification__title,
+    .hi-notification__icon {
       color: #1da653;
     }
+
+    .hi-notification__button {
+      background-color: #1da653;
+    }
   }
 
-  &.warning {
-    background: rgb(255, 249, 236);
-    border: 1px solid rgb(253, 202, 94);
-    color: #e19d0c;
+  .hi-notification--warning {
+    background: #fbf5e6;
+    border: 1px solid #fcf0d4;
 
-    .icon-contain {
+    .hi-notification__title,
+    .hi-notification__icon {
       color: #e19d0c;
     }
+
+    .hi-notification__button {
+      background-color: #e19d0c;
+    }
+  }
+
+  .hi-notification-enter {
+    transform: translateX(100%);
+  }
+
+  .hi-notification-enter-done {
+    transform: none;
+  }
+
+  .hi-notification-exit {
+    transform: none;
+  }
+
+  .hi-notification-exit-done {
+    transform: translateX(100%);
   }
 }

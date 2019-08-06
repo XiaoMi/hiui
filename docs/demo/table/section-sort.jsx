@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
 import Tooltip from '../../../components/tooltip'
 const prefix = 'table-sort'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Tooltip from '@hi-ui/hiui/es/tooltip'
 import Table from '@hi-ui/hiui/es/table'\n
 class Demo extends React.Component {

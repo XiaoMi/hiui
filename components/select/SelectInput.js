@@ -11,14 +11,19 @@ export default class SelectInput extends Component {
       showCount: 0,
       value: '',
       inputStyle: {
-        width: '2px'
+        width: 2
       }
     }
   }
 
   calShowCountFlag = true
   componentDidUpdate () {
-    if (this.props.multipleMode === 'nowrap' && this.calShowCountFlag && this.itemsRef) { // 多选超过一行时以数字显示
+    if (
+      this.props.multipleMode === 'nowrap' &&
+      this.calShowCountFlag &&
+      this.itemsRef
+    ) {
+      // 多选超过一行时以数字显示
       const itemsRect = this.itemsRef.getBoundingClientRect()
       let width = 0
       let showCount = 0
@@ -27,13 +32,19 @@ export default class SelectInput extends Component {
       for (const item of items) {
         const itemRect = item.getBoundingClientRect()
         width += itemRect.width
-        if ((width + 50) < itemsRect.width || (width > itemsRect.width && (width + 50) <= itemsRect.width && (showCount + 1) === items.length)) { // 50是留给显示剩余选项的空间
+        if (
+          width + 50 < itemsRect.width ||
+          (width > itemsRect.width &&
+            width + 50 <= itemsRect.width &&
+            showCount + 1 === items.length)
+        ) {
+          // 50是留给显示剩余选项的空间
           ++showCount
         } else {
           break
         }
       }
-      this.setState({showCount})
+      this.setState({ showCount })
       this.calShowCountFlag = false
     } else {
       this.calShowCountFlag = true
@@ -49,7 +60,7 @@ export default class SelectInput extends Component {
     this.setState({
       value: val,
       inputStyle: {
-        width: getTextWidth(val) + 'px'
+        width: getTextWidth(val)
       }
     })
     this.props.onSearch(evt.target.value)
@@ -95,36 +106,41 @@ export default class SelectInput extends Component {
       onBlur
     } = this.props
     let icon = dropdownShow ? 'up' : 'down'
-    let {
-      showCount,
-      value,
-      inputStyle
-    } = this.state
-    showCount = showCount === 0 || this.calShowCountFlag ? selectedItems.length : showCount
+    let { showCount, value, inputStyle } = this.state
+    showCount =
+      showCount === 0 || this.calShowCountFlag
+        ? selectedItems.length
+        : showCount
 
     if (!selectedItems.length) {
-      inputStyle = {width: '100%'}
+      inputStyle = { width: '100%' }
     }
 
     return (
-      <div className={classNames('hi-select__input', 'multiple-values', {disabled})} onClick={this.props.onClick}>
-        {
-          selectedItems.length === 0 && !value &&
-          <div className='hi-select__input--placeholder'>
-            {placeholder}
-          </div>
-        }
+      <div
+        className={classNames('hi-select__input', 'multiple-values', {
+          disabled
+        })}
+        onClick={this.props.onClick}
+      >
+        {selectedItems.length === 0 && !value && (
+          <div className='hi-select__input--placeholder'>{placeholder}</div>
+        )}
         <div
-          className={classNames('hi-select__input-items', {'hi-select__input-items--all': multipleMode === 'wrap'})}
-          ref={node => { this.itemsRef = node }}
+          className={classNames('hi-select__input-items', {
+            'hi-select__input-items--all': multipleMode === 'wrap'
+          })}
+          ref={(node) => {
+            this.itemsRef = node
+          }}
         >
-          {
-            selectedItems.slice(0, showCount).map((item, index) => {
-              const _item = <div key={index} className='hi-select__input--item'>
-                <div className='hi-select__input--item__name'>{item.name}</div>
+          {selectedItems.slice(0, showCount).map((item, index) => {
+            const _item = (
+              <div key={index} className='hi-select__input--item'>
+                <div className='hi-select__input--item__name'>{item.title}</div>
                 <span
                   className='hi-select__input--item__remove'
-                  onClick={e => {
+                  onClick={(e) => {
                     e.stopPropagation()
                     this.props.onDelete(item)
                   }}
@@ -132,25 +148,23 @@ export default class SelectInput extends Component {
                   <i className='hi-icon icon-close' />
                 </span>
               </div>
-              return _item
-            })
-          }
-          {
-            showCount < selectedItems.length &&
+            )
+            return _item
+          })}
+          {showCount < selectedItems.length && (
             <div className='hi-select__input-items--left'>
               +
               <span className='hi-select__input-items--left-count'>
                 {selectedItems.length - showCount}
               </span>
             </div>
-          }
-          {
-            searchable && !disabled &&
+          )}
+          {searchable && !disabled && (
             <div className='hi-select__input--search'>
               <input
                 type='text'
                 style={inputStyle}
-                ref={input => {
+                ref={(input) => {
                   this.searchInput = input
                 }}
                 onChange={this.handleKeywordChange.bind(this)}
@@ -159,11 +173,21 @@ export default class SelectInput extends Component {
                 onBlur={onBlur.bind(this)}
               />
             </div>
-          }
+          )}
         </div>
         <span className='hi-select__input--icon'>
-          <i className={classNames(`hi-icon icon-${icon} hi-select__input--icon__expand`, {clearable: clearable && selectedItems.length > 0})} />
-          { clearable && selectedItems.length > 0 && <i className={`hi-icon icon-close-circle hi-select__input--icon__close`} onClick={this.handleClear.bind(this)} /> }
+          <i
+            className={classNames(
+              `hi-icon icon-${icon} hi-select__input--icon__expand`,
+              { clearable: clearable && selectedItems.length > 0 }
+            )}
+          />
+          {clearable && selectedItems.length > 0 && (
+            <i
+              className={`hi-icon icon-close-circle hi-select__input--icon__close`}
+              onClick={this.handleClear.bind(this)}
+            />
+          )}
         </span>
       </div>
     )
@@ -180,20 +204,29 @@ export default class SelectInput extends Component {
       onFocus,
       onBlur
     } = this.props
-    placeholder = selectedItems.length > 0 ? selectedItems[0].name : placeholder
+    placeholder =
+      selectedItems.length > 0 ? selectedItems[0].title : placeholder
     let icon = dropdownShow ? 'up' : 'down'
 
     return (
-      <div className={classNames('hi-select__input', 'single-value', {disabled})} onClick={this.props.onClick}>
-        <div className={classNames('hi-select__input--item', {'hi-select__hide': !(!dropdownShow && selectedItems.length > 0)})}>
-          <div className='hi-select__input--item__name'>{selectedItems[0] && selectedItems[0].name}</div>
+      <div
+        className={classNames('hi-select__input', 'single-value', { disabled })}
+        onClick={this.props.onClick}
+      >
+        <div
+          className={classNames('hi-select__input--item', {
+            'hi-select__hide': !(!dropdownShow && selectedItems.length > 0)
+          })}
+        >
+          <div className='hi-select__input--item__name'>
+            {selectedItems[0] && selectedItems[0].title}
+          </div>
         </div>
-        {
-          (dropdownShow || selectedItems.length === 0) &&
+        {(dropdownShow || selectedItems.length === 0) && (
           <div className='hi-select__input--search'>
             <input
               type='text'
-              ref={input => {
+              ref={(input) => {
                 this.searchInput = input
               }}
               placeholder={placeholder}
@@ -204,19 +237,27 @@ export default class SelectInput extends Component {
               readOnly={disabled || !searchable}
             />
           </div>
-        }
+        )}
         <span className='hi-select__input--icon'>
-          <i className={classNames(`hi-icon icon-${icon} hi-select__input--icon__expand`, {clearable: clearable && selectedItems.length > 0})} />
-          { clearable && selectedItems.length > 0 && <i className={`hi-icon icon-close-circle hi-select__input--icon__close`} onClick={this.handleClear.bind(this)} /> }
+          <i
+            className={classNames(
+              `hi-icon icon-${icon} hi-select__input--icon__expand`,
+              { clearable: clearable && selectedItems.length > 0 }
+            )}
+          />
+          {clearable && selectedItems.length > 0 && (
+            <i
+              className={`hi-icon icon-close-circle hi-select__input--icon__close`}
+              onClick={this.handleClear.bind(this)}
+            />
+          )}
         </span>
       </div>
     )
   }
 
   render () {
-    let {
-      mode
-    } = this.props
+    let { mode } = this.props
 
     if (mode === 'multiple') {
       return this.renderMultiple()

@@ -1,5 +1,3 @@
-@import '../../style/index.scss';
-
 .hi-transfer {
   display: flex;
 
@@ -163,13 +161,22 @@
     border-bottom-right-radius: 2px;
   }
 
-  &__underline {
+  &__divider--up {
     position: absolute;
     width: 100%;
     height: 1px;
     background-color: rgba(66, 132, 245, 1);
+    top: 0;
     left: 0;
-    top: 36px;
+  }
+
+  &__divider--down {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background-color: rgba(66, 132, 245, 1);
+    bottom: 0;
+    left: 0;
   }
 
   &__mask {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-import Alert from '../'
+import Alert from '../alert'
 
 describe('Alert', () => {
   beforeAll(() => {
@@ -24,9 +24,7 @@ describe('Alert', () => {
   // })
   it('could be closed', () => {
     const onClose = jest.fn()
-    const wrapper = mount(
-      <Alert type='info' message='信息提示的文案' onClose={onClose} />
-    )
+    const wrapper = mount(<Alert type="info" message="信息提示的文案" onClose={onClose} />)
     wrapper.find('.close-btn').simulate('click')
     expect(onClose).toBeCalled()
     console.log(wrapper.find('.hi-alert'))
@@ -46,7 +44,7 @@ describe('Alert', () => {
   it('auto close', () => {
     const onClose = jest.fn()
     const wrapper = mount(
-      <Alert type='info' message='信息提示的文案' autoClose closeable={false} onClose={onClose} />
+      <Alert type="info" message="信息提示的文案" autoClose closeable={false} onClose={onClose} />
     )
     expect(wrapper.find('.hi-alert')).toHaveLength(1)
     expect(onClose).not.toBeCalled()

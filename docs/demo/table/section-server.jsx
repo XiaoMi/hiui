@@ -4,10 +4,9 @@ import Table from '../../../components/table'
 import Form from '../../../components/form/index'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
-import FormItem from '../../../components/form/item'
+import FormItem from '../../../components/form/Item'
 const prefix = 'table-server'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Form from '@hi-ui/hiui/es/form/index'
 import FormItem from '@hi-ui/hiui/es/form/item'
@@ -74,23 +73,6 @@ class Demo extends React.Component {
             auto:true, // 自动发请求配置(默认false)
             success: (res) => {
               let {data: {data, columns,page: {pageSize, totalNum, pageNum}}} = res
- 
-               const pageSizeOptions = [{
-                  value: 10,
-                  title: '10'
-                }, {
-                  value: 20,
-                  title: '20'
-                }, {
-                  value: 50,
-                  title: '50'
-                }, {
-                  value: 100,
-                  title: '100'
-                }]
-
-
-
               return {
                 data,
                 columns,
@@ -101,19 +83,19 @@ class Demo extends React.Component {
                   position: 'middle',
                   showTotal: true,
 
-                  pageSizeOptions,
+                  pageSizeOptions:[10,20,50,100],
                   sizeChangeEvent:(pageSize,current) => {
                     this.setState({
                       pageSize
                     })
                   },
-              
+
 
                 }
               }
             },
-            error: () => {
-
+            error: (e) => {
+              console.log('err',e)
             }
           }}
         />

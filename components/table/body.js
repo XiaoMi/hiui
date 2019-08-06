@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Icon from '../icon'
 import '../icon/style'
 import prifix from './prefix'
-import Footer from './footer'
+import Footer from './Footer'
 // 点击后会展开的那个图标
 class Expand extends Component {
   constructor (props) {

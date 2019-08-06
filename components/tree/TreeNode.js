@@ -8,7 +8,6 @@ import uuidv4 from 'uuid/v4'
 import TreeItem from './TreeItem'
 import Modal from '../modal'
 import { collectExpandId, findNode } from './util'
-import { handleNotificate } from '../notification'
 import axios from 'axios'
 import qs from 'qs'
 
@@ -28,7 +27,7 @@ export default class TreeNode extends Component {
       draggingNode: null,
       // 处于目标状态的节点
       targetNode: null,
-      // 放置线的位置,分为下线和子线，下线则放置在该节点下侧，子线为放置在该节点内部
+      // 放置线的位置,分为上线、下线和子线，上线则放置在该节点上方，下线则放置在该节点下侧，子线为放置在该节点内部
       dropDividerPosition: null,
       searchValue: '',
       showModal: false,
@@ -86,10 +85,10 @@ export default class TreeNode extends Component {
     })
   }
   // 统计高亮项
-  recordHighlight = (data, highlightValue, count) => {
+  recordHighlight = (data, highlightValue, count = []) => {
     data.forEach(item => {
       if (typeof item.title === 'string' && item.title.includes(highlightValue)) {
-        count = count + 1
+        count.push(item)
       }
       if (item.children) {
         this.recordHighlight(item.children, highlightValue, count)
@@ -98,11 +97,11 @@ export default class TreeNode extends Component {
     return count
   }
   renderSwitcher = expanded => {
-    const { prefixCls } = this.props
+    const { prefixCls, openIcon, closeIcon } = this.props
     const switcherClsName = classNames(
       `${prefixCls}-switcher`,
       'hi-icon',
-      `icon-${expanded ? 'down' : 'right'}`
+      `icon-${expanded ? openIcon || 'open' : closeIcon || 'packup'}`
     )
     return <i className={switcherClsName} />
   }
@@ -295,7 +294,7 @@ export default class TreeNode extends Component {
   // 异步加载子节点
   loadChildren = itemId => {
     const { origin } = this.props
-    const { method, url, headers, data, params, func, errorHandler } = origin
+    const { method, url, headers, data, params, transformResponse } = origin
     const { dataCache } = this.state
     const that = this
     axios({
@@ -312,36 +311,38 @@ export default class TreeNode extends Component {
         const _dataCache = cloneDeep(dataCache)
         const node = findNode(itemId, _dataCache)
         if (!node.children) {
-          node.children = func(res.data)
+          node.children = transformResponse(res.data)
           that.setState({
             dataCache: _dataCache
           })
         }
       })
       .catch(error => {
-        if (errorHandler) {
-          errorHandler(error)
-        } else {
-          handleNotificate({
-            type: 'error',
-            showClose: true,
-            autoClose: true,
-            title: 'Error',
-            duration: 5000,
-            message: error
-          })
-        }
+        transformResponse(error)
       })
   }
-  switchDropNode = (targetItemId, sourceItemId, data, allData) => {
-    data.forEach(item => {
-      if (item.children) {
-        if (item.children.some(e => e.id === targetItemId)) {
-          const index = item.children.findIndex(i => i.id === targetItemId)
-          const sourceNode = findNode(sourceItemId, allData)
-          item.children.splice(index + 1, 0, sourceNode)
-        } else {
-          this.switchDropNode(targetItemId, sourceItemId, item.children, allData)
+  switchDropNode = (targetItemId, sourceItemId, data, allData, dropDividerPosition) => {
+    const sourceNode = findNode(sourceItemId, allData)
+    const _data = [...data]
+    _data.forEach((item, idx) => {
+      if (item.id === targetItemId) {
+        const position = dropDividerPosition === 'down' ? idx + 1 : idx
+        data.splice(position, 0, sourceNode)
+      } else {
+        if (item.children) {
+          if (item.children.some(e => e.id === targetItemId)) {
+            const index = item.children.findIndex(i => i.id === targetItemId)
+            const position = dropDividerPosition === 'down' ? index + 1 : index
+            item.children.splice(position, 0, sourceNode)
+          } else {
+            this.switchDropNode(
+              targetItemId,
+              sourceItemId,
+              item.children,
+              allData,
+              dropDividerPosition
+            )
+          }
         }
       }
     })
@@ -354,14 +355,23 @@ export default class TreeNode extends Component {
       // 这里为什么用 sourceItem.id不用 sourceItem 是因为 sourceItem 有可能是 highlight 过得
       this._addDropNode(targetItem.id, sourceItem.id, _dataCache, dataCache)
     } else {
-      this.switchDropNode(targetItem.id, sourceItem.id, _dataCache, dataCache)
+      this.switchDropNode(targetItem.id, sourceItem.id, _dataCache, dataCache, dropDividerPosition)
     }
     const _sourceItem = findNode(sourceItem.id, dataCache)
     const _targetItem = findNode(targetItem.id, dataCache)
-    this.props.onDrop(_sourceItem, _targetItem)
-    this.setState({
-      dataCache: _dataCache
-    })
+    if (this.props.onDrop) {
+      if (this.props.onDrop(_sourceItem, _targetItem)) {
+        this.props.onDropEnd(_sourceItem, _targetItem)
+        this.setState({
+          dataCache: _dataCache
+        })
+      }
+    } else {
+      this.props.onDropEnd(_sourceItem, _targetItem)
+      this.setState({
+        dataCache: _dataCache
+      })
+    }
   }
   // 删除节点
   _deleteNode = (itemId, data) => {
@@ -440,7 +450,6 @@ export default class TreeNode extends Component {
       draggable,
       prefixCls,
       semiChecked,
-      onNodeClick,
       onClick,
       highlightable,
       checkable,
@@ -453,7 +462,6 @@ export default class TreeNode extends Component {
       expanded,
       origin,
       onDragStart
-      // onDrop
     } = this.props
     const {
       highlight,
@@ -478,7 +486,6 @@ export default class TreeNode extends Component {
               prefixCls={prefixCls}
               draggable={draggable}
               onDragStart={onDragStart}
-              // onDrop={onDrop}
               checked={!!checked.includes(item.id)}
               highlight={highlight}
               highlightable={highlightable}
@@ -501,7 +508,6 @@ export default class TreeNode extends Component {
               onCheckChange={onCheckChange}
               saveEditNode={this.saveEditNode}
               renderItemIcon={this.renderItemIcon}
-              onNodeClick={onNodeClick}
               onClick={onClick}
               onSetHighlight={this.onSetHighlight}
               showRightClickMenu={this.showRightClickMenu}
@@ -537,7 +543,7 @@ export default class TreeNode extends Component {
               onChange={e => {
                 this.setState({
                   searchValue: e.target.value,
-                  highlightNum: this.recordHighlight(dataCache, e.target.value, 0)
+                  highlightNum: this.recordHighlight(dataCache, e.target.value, []).length
                 })
 
                 this.props.setExpandTreeNodes(

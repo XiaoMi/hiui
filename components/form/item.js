@@ -19,19 +19,19 @@ class FormItem extends Component {
   }
 
   componentDidMount () {
-    const { prop } = this.props
-    if (prop) {
+    const { field } = this.props
+    if (field) {
       this.parent.addField(this)
       this.valueInit()
     }
   }
 
   componentWillUnmount () {
-    this.parent.removeField(this.props.prop)
+    this.parent.removeField(this.props.field)
   }
 
   valueInit () {
-    const value = this.parent.props.model[this.props.prop]
+    const value = this.parent.props.model[this.props.field]
     if (value === undefined) {
       this.initValue = value
     } else {
@@ -43,7 +43,7 @@ class FormItem extends Component {
     let formRules = this.parent.props.rules
     let selfRules = this.props.rules
 
-    formRules = formRules ? formRules[this.props.prop] : []
+    formRules = formRules ? formRules[this.props.field] : []
 
     return [].concat(selfRules || formRules || [])
   }
@@ -57,12 +57,12 @@ class FormItem extends Component {
 
   getfieldValue () {
     const model = this.parent.props.model
-    if (!model || !this.props.prop) {
+    if (!model || !this.props.field) {
       return
     }
 
-    const keyList = this.props.prop.split(':')
-    return keyList.length > 1 ? model[keyList[0]][keyList[1]] : model[this.props.prop]
+    const keyList = this.props.field.split(':')
+    return keyList.length > 1 ? model[keyList[0]][keyList[1]] : model[this.props.field]
   }
 
   validate (trigger, cb) {
@@ -81,9 +81,9 @@ class FormItem extends Component {
     })
 
     const validator = new AsyncValidator({
-      [this.props.prop]: rules
+      [this.props.field]: rules
     })
-    const model = { [this.props.prop]: this.getfieldValue() }
+    const model = { [this.props.field]: this.getfieldValue() }
     validator.validate(
       model,
       {
@@ -165,9 +165,15 @@ class FormItem extends Component {
 
     return (
       <div className={classNames('hi-form-item', className, obj)}>
-        <label className={'hi-form-item' + '__label'} style={{ width: this.labelWidth }}>
-          {typeof label === 'string' && label.trim()}{shouldShowColon && colon}
-        </label>
+        {
+          (label || label === '') ? (
+            <label className='hi-form-item__label' style={{ width: this.labelWidth }}>
+              {typeof label === 'string' && label.trim()}{shouldShowColon && colon}
+            </label>
+          ) : (
+            <span className='hi-form-item__span' style={{ width: this.labelWidth }} />
+          )
+        }
         <div className={'hi-form-item' + '__content'}>
           {Array.isArray(children) || !children
             ? children
@@ -197,7 +203,7 @@ FormItem.contextTypes = {
 }
 
 FormItem.propTypes = {
-  prop: PropTypes.string,
+  field: PropTypes.string,
   rules: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   required: PropTypes.bool,
   label: PropTypes.string,

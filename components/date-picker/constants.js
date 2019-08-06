@@ -1,5 +1,6 @@
 import {getYearWeek} from './util'
 import dateFormat from 'date-fns/format'
+import { isValid } from './dateUtil'
 export const TIME_BLOCK = {
   lineHeight: 22,
   padding: 8
@@ -21,7 +22,7 @@ export const isVaildDate = (date) => {
   return date && (date instanceof Date || date.startDate || typeof date === 'number')
 }
 export const formatterDate = (type, date, formatter, showTime, localeDatas, weekOffset = 0) => {
-  if (!isVaildDate(date)) {
+  if (!isValid(date)) {
     return ''
   }
   date = new Date(date)

@@ -11,36 +11,36 @@ class Demo extends React.Component {
     super()
     this.state = {
       panes: [{
-        tabName: '我的订单',
-        tabKey: 'tabKey-1'
+        tabTitle: '我的订单',
+        tabId: 'tabId-1'
       },
       {
-        tabName: '团购订单',
-        tabKey: 'tabKey-2',
-        closable: false
+        tabTitle: '团购订单',
+        tabId: 'tabId-2',
+        closeable: false
       },
       {
-        tabName: '以旧换新订单',
-        tabKey: 'tabKey-3'
+        tabTitle: '以旧换新订单',
+        tabId: 'tabId-3'
       },{
-        tabName: '购买资格',
-        tabKey: 'tabKey-5'
+        tabTitle: '购买资格',
+        tabId: 'tabId-5'
       },]
     }
   }
   render () {
     return (
-      <Tabs activeTabKey="1" onTabClick={(tab,e)=>console.log(tab,e)}>
+      <Tabs defaultActiveId='tabId-2' onTabClick={(tab,e) => console.log(tab,e)}>
         {
           this.state.panes.map((pane, index) => {
             return (
               <Tabs.Pane
-                tabName={pane.tabName}
-                tabKey={pane.tabKey}
-                closable={pane.closable}
+                tabTitle={pane.tabTitle}
+                tabId={pane.tabId}
+                closeable={pane.closeable}
                 key={index}
               >
-                <div style={{padding: '16px'}}>{pane.tabName}</div>
+                <div style={{padding: '16px'}}>{pane.tabTitle}</div>
               </Tabs.Pane>
             )
           })

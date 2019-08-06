@@ -1,92 +1,97 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Base from './Base'
-import MultipleCheckboxsOpera from './common'
-class CheckBox extends Component {
-  static _type = 'CheckBox'
-  static propTypes = {
-    onChange: PropTypes.func,
-    checked: PropTypes.bool,
-    disabled: PropTypes.bool,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
-    list: PropTypes.array
+import classNames from 'classnames'
+import Provider from '../context'
+
+const prefixCls = 'hi-checkbox'
+
+class Checkbox extends Component {
+  constructor (props) {
+    super(props)
+    this.state = getChecked(props)
   }
-  static defaultProps = {
-    checked: false,
-    value: ''
+  static getDerivedStateFromProps (nextProps) {
+    if (hasChecked(nextProps)) {
+      return getChecked(nextProps)
+    }
+    return null
   }
-  componentWillReceiveProps (nextProps) {
-    const groups = MultipleCheckboxsOpera.getAll(nextProps.name)
-    const list = this.props.list
-    const arr = []
-    list && list.length > 0 && list.forEach((item) => {
-      const value = item.value || item.text
-      groups && groups.length > 0 && groups.forEach((g) => {
-        if (g.state.value === value) {
-          arr.push(g)
-        }
+  handleChange = (event) => {
+    const { onChange } = this.props
+    onChange && onChange(event)
+    hasChecked(this.props) ||
+      this.setState({
+        checked: event.target.checked
       })
-    })
-    MultipleCheckboxsOpera.replace(nextProps.name, arr)
-  }
-  componentWillUnmount () {
-    MultipleCheckboxsOpera.remove(this.props.name || this.props.all)
-  }
-  renderCheckBoxGroup (list) {
-    return <div>
-      {
-        list && list.map((item, index) => {
-          if (typeof item === 'object') {
-            const {value, text, checked, disabled} = item
-            return <Base
-              ref={el => {
-                this.props.name && MultipleCheckboxsOpera.add(this.props.name, el)
-              }}
-              content={text || ''}
-              value={value || text}
-              checked={checked}
-              disabled={disabled}
-              key={(value || text)}
-              onChange={this.props.onChange}
-              name={this.props.name}
-            />
-          } else if (typeof item === 'string') {
-            return <Base
-              ref={el => {
-                this.props.name && MultipleCheckboxsOpera.add(this.props.name, el)
-              }}
-              content={item || ''}
-              value={item || ''}
-              checked={false}
-              disabled={false}
-              key={item}
-              onChange={this.props.onChange}
-              name={this.props.name}
-            />
-          }
-        })
-      }
-    </div>
   }
   render () {
-    const {list, checked, disabled, text, children, value, name, all, onChange} = this.props
-    if (list) {
-      return this.renderCheckBoxGroup(list)
-    }
-    return <Base
-      ref={el => {
-        this.props.name && MultipleCheckboxsOpera.add(this.props.name, el)
-        this.props.all && MultipleCheckboxsOpera.addRoot(this.props.all, el)
-      }}
-      content={text || children}
-      value={value || text || children}
-      checked={checked}
-      disabled={disabled}
-      name={name}
-      all={all}
-      onChange={onChange}
-    />
+    const {
+      autoFocus,
+      className,
+      children,
+      disabled,
+      indeterminate,
+      style,
+      theme,
+      name,
+      value
+    } = this.props
+    const { checked } = this.state
+    const checkboxCls = classNames(
+      prefixCls,
+      className,
+      disabled && `${prefixCls}--disabled`,
+      `theme__${theme}`
+    )
+    const inputCls = classNames(
+      `${prefixCls}__input`,
+      checked && !indeterminate && `${prefixCls}__input--checked`,
+      indeterminate && `${prefixCls}__input--indeterminate`
+    )
+    return (
+      <label className={checkboxCls} style={style}>
+        <input
+          type='checkbox'
+          autoFocus={autoFocus}
+          onChange={this.handleChange}
+          checked={checked}
+          disabled={disabled}
+          name={name}
+          value={value}
+        />
+        <span className={inputCls} />
+        {children !== undefined && <span className={`${prefixCls}__text`}>{children}</span>}
+      </label>
+    )
   }
 }
 
-export default CheckBox
+Checkbox.propTypes = {
+  checked: PropTypes.bool,
+  className: PropTypes.string,
+  style: PropTypes.object,
+  defaultChecked: PropTypes.bool,
+  disabled: PropTypes.bool,
+  indeterminate: PropTypes.bool,
+  name: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onChange: PropTypes.func
+}
+
+Checkbox.defaultProps = {
+  defaultChecked: false
+}
+
+function hasChecked (props) {
+  const has = (key) => Object.prototype.hasOwnProperty.call(props, key)
+  return has('checked')
+}
+
+function getChecked (props) {
+  const { checked, defaultChecked } = props
+  return {
+    checked: hasChecked(props) ? checked || false : defaultChecked
+  }
+}
+
+export default Provider(Checkbox)

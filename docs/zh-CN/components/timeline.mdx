@@ -32,49 +32,6 @@ import DemoCross from '../../demo/timeline/section-cross.jsx'
 
 <DemoCross />
 
-## Timeline Attributes
-
-| 参数   | 说明     | 类型   | 可选值                                                    | 默认值 |
-| ------ | -------- | ------ | --------------------------------------------------------- | ------ |
-| layout | 布局形式 | String | normal:基础布局 <br/> right:靠右布局 <br/> cross:交替布局 | normal |
-| list   | 数据     | Array  | -                                                         | -      |
-
-## List Options
-
-| 参数        | 说明           | 类型              | 可选值 | 默认值 |
-| ----------- | -------------- | ----------------- | ------ | ------ |
-| title       | 标题           | String \| Element | -      | -      |
-| description | 描述信息       | String \| Element | -      | -      |
-| timestamp   | 时间点         | String            | -      | -      |
-| extraTime   | 额外展示时间点 | String            | -      | -      |
-| dot         | 自定义图标     | Element           | -      | -      |
-
-> 使用分组时间轴，需要结合 groutTitle\*
-
-```json
-{
-  groupTitle: '分组标题',
-  children: [{List Options}]
-}
-```
-
-<div style={{ position: 'relative' }}>
-  <span
-    style={{
-      position: 'absolute',
-      background: '#fff',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
-      padding: 8,
-      color: '#999'
-    }}
-  >
-    以下调整将随 2.0.0 版本发布，敬请期待
-  </span>
-  <hr style={{ marginTop: 50, marginBottom: 20, border: '0.5px dashed #c8c8c8' }} />
-</div>
-
 ## Props
 
 | 参数 | 说明       | 类型                      | 可选值                          | 默认值    |
@@ -84,14 +41,14 @@ import DemoCross from '../../demo/timeline/section-cross.jsx'
 
 ## Type
 
-**_GroupItem_**
+### GroupItem
 
 | 参数       | 说明       | 类型                | 可选值 | 默认值 |
 | ---------- | ---------- | ------------------- | ------ | ------ |
 | groupTitle | 分组标题   | string \| ReactNode | -      | -      |
 | children   | 标题下集合 | DataItem[]          | -      | -      |
 
-**_DataItem_**
+### DataItem
 
 | 参数      | 说明           | 类型                | 可选值 | 默认值 |
 | --------- | -------------- | ------------------- | ------ | ------ |

@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Menu from '../../../components/menu'
 const prefix = 'menu-fat'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Menu from '@hi-ui/hiui/es/menu'\n
 class Demo extends React.Component {
   render(){
@@ -113,15 +112,13 @@ class Demo extends React.Component {
       }
     ]
     return(
-      <div>
-        <Menu
-          mode="horizontal"
-          activeId={'xiaomi9'}
-          fatMenu
-          onClick={(id, prevId)=>console.log('-----click', id, prevId)}
-          datas={datas}
-        />
-      </div>
+      <Menu
+        placement="horizontal"
+        activeId={'xiaomi9'}
+        showAllSubMenus
+        onClick={(id, prevId)=>console.log('-----click', id, prevId)}
+        data={datas}
+      />
     )
   }
 }`

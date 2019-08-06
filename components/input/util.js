@@ -1,8 +1,8 @@
 /**
- * 提取非函数属性
- * @param {object} oldProps 原始props
- */
-export const getAttrs = oldProps => {
+   * 提取非函数属性
+   * @param {object} oldProps 原始props
+   */
+export const getAttrs = (oldProps) => {
   const noNeed = ['value', 'className', 'class', 'id', 'style', 'size', 'disabled']
   const attrs = {}
   const events = {}
@@ -23,7 +23,7 @@ export const getAttrs = oldProps => {
 /**
  * 格式化身份证
  */
-export const formatId = val => {
+export const formatId = (val) => {
   val = val.replace(/[^a-zA-Z0-9]/g, '')
   const len = val.length
 
@@ -36,16 +36,14 @@ export const formatId = val => {
   } else if (len < 15) {
     return val.slice(0, 6) + ' ' + val.slice(6, 10) + ' ' + val.slice(10, 14)
   } else {
-    return (
-      val.slice(0, 6) + ' ' + val.slice(6, 10) + ' ' + val.slice(10, 14) + ' ' + val.slice(14, 18)
-    )
+    return val.slice(0, 6) + ' ' + val.slice(6, 10) + ' ' + val.slice(10, 14) + ' ' + val.slice(14, 18)
   }
 }
 
 /**
  * 格式化手机号
  */
-export const formatTel = val => {
+export const formatTel = (val) => {
   val = val.replace(/\D/g, '')
   const len = val.length
 
@@ -63,7 +61,7 @@ export const formatTel = val => {
 /**
  * 格式化银行卡号
  */
-export const formatCard = val => {
+export const formatCard = (val) => {
   val = val.replace(/\D/g, '')
   const len = val.length
 
@@ -78,21 +76,9 @@ export const formatCard = val => {
   } else if (len < 13) {
     return val.slice(0, 4) + ' ' + val.slice(4, 8) + ' ' + val.slice(8, 12)
   } else if (len < 17) {
-    return (
-      val.slice(0, 4) + ' ' + val.slice(4, 8) + ' ' + val.slice(8, 12) + ' ' + val.slice(12, 16)
-    )
+    return val.slice(0, 4) + ' ' + val.slice(4, 8) + ' ' + val.slice(8, 12) + ' ' + val.slice(12, 16)
   } else {
-    return (
-      val.slice(0, 4) +
-      ' ' +
-      val.slice(4, 8) +
-      ' ' +
-      val.slice(8, 12) +
-      ' ' +
-      val.slice(12, 16) +
-      ' ' +
-      val.slice(16, 19)
-    )
+    return val.slice(0, 4) + ' ' + val.slice(4, 8) + ' ' + val.slice(8, 12) + ' ' + val.slice(12, 16) + ' ' + val.slice(16, 19)
   }
 }
 
@@ -112,7 +98,9 @@ export const format = (val, type) => {
     case 'email':
       return val.replace(/\W/g, '')
     case 'amount':
-      val = val.replace(/[^\d|.|,]/g, '')
+      val = val.replace(/[^\d|.|,]/g, '').replace(/(\.\d*?)(\.|,).*/, (_, $1) => {
+        return $1
+      })
       return val
     default:
       return val
@@ -120,17 +108,11 @@ export const format = (val, type) => {
 }
 
 /**
- * 浮点数
+ * 金额自动生成小数
  * @param {string} val  需要处理的值
  */
-export const formatAmount = val => {
-  if (val.includes('.')) {
-    const valueArray = val.split('.')
-    val = `${+(valueArray[0] || 0)}.${valueArray[1] || 0}`
-  } else {
-    val = +val + '.0'
-  }
-  return val.includes(',') ? '0.0' : val
+export const formatAmount = (val) => {
+  return val.indexOf('.') > -1 ? val : val + '.00'
 }
 
 /**
@@ -142,14 +124,10 @@ export const formatValue = (val, type) => {
   if (numberType.indexOf(type) > -1) {
     let tmp = val.replace(/[^\d|.]/g, '')
     switch (type) {
-      case 'id':
-        return tmp.slice(0, 18)
-      case 'tel':
-        return tmp.slice(0, 11)
-      case 'card':
-        return tmp.slice(0, 19)
-      default:
-        return tmp
+      case 'id': return tmp.slice(0, 18)
+      case 'tel': return tmp.slice(0, 11)
+      case 'card': return tmp.slice(0, 19)
+      default: return tmp
     }
   } else {
     return val

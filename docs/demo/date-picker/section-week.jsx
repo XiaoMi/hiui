@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import DatePicker from '../../../components/date-picker'
 import Grid from '../../../components/grid'
 const prefix = 'date-picker-week'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {

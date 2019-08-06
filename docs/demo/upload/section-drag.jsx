@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Upload from '../../../components/upload'
 const prefix = 'upload-drag'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Upload from '@hi-ui/hiui/es/upload'\n
 class Demo extends React.Component {
   render () {
@@ -16,7 +15,7 @@ class Demo extends React.Component {
           console.log('upload callback', file, fileList, response)
         }}
         hasBorder={true}
-        param={{id:'uid',channel:'youpin'}}
+        params={{id:'uid',channel:'youpin'}}
         name={'files[]'}
         multiple={true}
       />

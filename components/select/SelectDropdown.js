@@ -1,5 +1,3 @@
-/* @flow */
-
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import Checkbox from '../checkbox'
@@ -7,7 +5,8 @@ import Loading from '../loading'
 
 export default class SelectDropdown extends Component {
   onClickOption (e, item, index) {
-    e && e.stopPropagation()
+    e.stopPropagation()
+    e.preventDefault()
     if (item.disabled) {
       return
     }
@@ -21,7 +20,7 @@ export default class SelectDropdown extends Component {
   itemSelected (item) {
     const selectedItems = this.props.selectedItems
 
-    return selectedItems.map(item => item.id).indexOf(item.id) > -1
+    return selectedItems.map((item) => item.id).indexOf(item.id) > -1
   }
 
   renderOption (mode, isSelected, item) {
@@ -34,11 +33,17 @@ export default class SelectDropdown extends Component {
     return (
       <React.Fragment>
         {mode === 'multiple' && (
-          <div className='hi-select__dropdown--item__checkbox'>
-            <Checkbox checked={isSelected} disabled={item.disabled} />
-          </div>
+          <Checkbox
+            className='hi-select__dropdown--item__checkbox'
+            checked={isSelected}
+            disabled={item.disabled}
+          >
+            <div className='hi-select__dropdown--item__name'>{item.title}</div>
+          </Checkbox>
         )}
-        <div className='hi-select__dropdown--item__name'>{item.name}</div>
+        {mode === 'single' && (
+          <div className='hi-select__dropdown--item__name'>{item.title}</div>
+        )}
         {mode === 'single' && isSelected && (
           <div className='hi-select__dropdown--item__check-icon'>
             <i className='hi-icon icon-check' />
@@ -67,7 +72,11 @@ export default class SelectDropdown extends Component {
     }
 
     return (
-      <div className='hi-select__dropdown' onClick={this.props.onClick} style={style}>
+      <div
+        className='hi-select__dropdown'
+        onClick={this.props.onClick}
+        style={style}
+      >
         {loading && (
           <div className='hi-select__dropdown--loading'>
             <Loading size='small' />
@@ -86,9 +95,10 @@ export default class SelectDropdown extends Component {
                     className={classNames('hi-select__dropdown--item', {
                       'is-active': isSelected,
                       'is-disabled': isDisabled,
-                      'hi-select__dropdown--item-default': !item.children && !dropdownRender
+                      'hi-select__dropdown--item-default':
+                        !item.children && !dropdownRender
                     })}
-                    onClick={e => this.onClickOption(e, item, index)}
+                    onClick={(e) => this.onClickOption(e, item, index)}
                     key={item.id}
                     data-focused={focusedIndex === index}
                     onMouseEnter={() => this.onMouseEnter(item, index)}
@@ -101,7 +111,7 @@ export default class SelectDropdown extends Component {
             {matched === 0 && (
               <li
                 className='hi-select__dropdown--item hi-select__dropdown-item--empty is-disabled'
-                onClick={e => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()}
               >
                 {noFoundTip}
               </li>

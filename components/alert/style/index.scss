@@ -1,60 +1,45 @@
-@import '../../style/index.scss';
-
 .hi-alert {
   position: relative;
-  padding: 12px;
+  padding: 9px 12px;
   background: #ebf2fd;
   border: 1px solid #b3cdfb;
   border-radius: 2px;
   color: #4284f5;
   font-size: 14px;
-  overflow: hidden;
   min-width: 280px;
   display: block;
+  align-items: flex-start;
 
-  .icon-contain {
-    position: absolute;
-    top: 50%;
-    left: 16px;
-    transform: translateY(-50%);
-    font-size: 0;
-    color: #4284f5;
+  .hi-icon__title {
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+    line-height: 22px;
 
     .hi-icon {
-      font-size: 20px;
+      font-size: 16px;
+      margin-right: 8px;
     }
   }
 
-  .text-contain {
-    margin: 0 32px;
+  .text-message {
+    margin: 2px 24px 0 24px;
     font-weight: 400;
-
-    .text-title {
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
-
-    .text-message {
-      font-size: 12px;
-    }
+    font-size: 12px;
+    line-height: 20px;
+    color: #666;
   }
 
   .close-btn {
     position: absolute;
-    top: 50%;
-    right: 16px;
-    transform: translateY(-50%);
-    font-size: 0;
+    top: 12px;
+    right: 12px;
     cursor: pointer;
 
     .hi-icon {
       font-size: 14px;
       color: #999;
     }
-  }
-
-  &.info {
-    // 都是默认的
   }
 
   &.error {
@@ -88,7 +73,6 @@
   }
 
   &.noTitle {
-    //width: 280px;
     .text-contain {
       .text-message {
         font-size: 14px;
