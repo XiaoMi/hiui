@@ -591,9 +591,12 @@ class Table extends Component {
 
     let offsetTop = offset(dom).top
 
-    //     表格距离顶部的位置 < 表格+ 自己的高度
+    // 表格距离顶部的位置 < 表格+ 自己的高度
     if (thead) {
-      if (scrollTop() + fixTop > offsetTop && offsetTop + fixTop < offsetTop + parseInt(getStyle(dom, 'height')) - parseInt(thead ? getStyle(thead[0], 'height') : 0)) {
+      if (
+        scrollTop() + fixTop > offsetTop &&
+        fixTop < parseInt(getStyle(dom, 'height'), 10) - parseInt(getStyle(thead[0], 'height'), 10)
+      ) {
         thead.forEach(th => {
           th.style.display = 'table-header-group'
           // let h = (dom.offsetTop - scrollTop() - fixTop) * -1

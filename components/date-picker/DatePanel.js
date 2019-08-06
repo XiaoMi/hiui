@@ -186,7 +186,7 @@ class DatePanel extends Component {
     if (type === 'week') {
       const _weekOffset = {weekStartsOn: weekOffset}
       let weekStart = startOfWeek(_date, _weekOffset)
-      let weekEnd = type === 'week' ? endOfWeek(_date, _weekOffset) : endOfWeek(_date, _weekOffset)
+      let weekEnd = endOfWeek(_date, _weekOffset)
       onPick({
         startDate: weekStart,
         endDate: weekEnd
