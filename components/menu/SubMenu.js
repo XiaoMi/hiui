@@ -5,30 +5,7 @@ import Popper from '../popper'
 import Icon from '../icon'
 import Title from './Title'
 
-export default class SubMenu extends Component {
-  static componentName = 'SubMenu'
-
-  static propTypes = {
-    icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    datas: PropTypes.array,
-    renderMenu: PropTypes.func,
-    onClick: PropTypes.func,
-    index: PropTypes.string,
-    level: PropTypes.number,
-    mode: PropTypes.oneOf(['horizontal', 'vertical']),
-    mini: PropTypes.bool,
-    fatMenu: PropTypes.bool,
-    disabled: PropTypes.bool,
-    activeIndex: PropTypes.string,
-    expandIndex: PropTypes.array
-  }
-
-  static defaultProps = {
-    level: 1,
-    expandIndex: []
-  }
-
+class SubMenu extends Component {
   onClick (index) {
     this.props.onClick(index)
   }
@@ -41,20 +18,6 @@ export default class SubMenu extends Component {
     return expandIndex.some(item => {
       return item.indexOf(index) === 0
     })
-
-    // const {
-    //   mini,
-    //   mode
-    // } = this.props
-
-    // if (!mini && mode==='vertical' && expandIndex.length===0) {
-    //   return activeIndex.indexOf(index) === 0
-    // } else {
-    //   return expandIndex.some(item => {
-    //     // return item.indexOf(index) === 0 || (activeIndex.indexOf(item) === 0 && activeIndex.indexOf(index) === 0)
-    //     return item.indexOf(index) === 0
-    //   })
-    // }
   }
 
   renderPopperMenu (deepSubmenu, isExpand) {
@@ -178,3 +141,26 @@ export default class SubMenu extends Component {
     )
   }
 }
+
+SubMenu.propTypes = {
+  icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  datas: PropTypes.array,
+  renderMenu: PropTypes.func,
+  onClick: PropTypes.func,
+  index: PropTypes.string,
+  level: PropTypes.number,
+  mode: PropTypes.oneOf(['horizontal', 'vertical']),
+  mini: PropTypes.bool,
+  fatMenu: PropTypes.bool,
+  disabled: PropTypes.bool,
+  activeIndex: PropTypes.string,
+  expandIndex: PropTypes.array
+}
+
+SubMenu.defaultProps = {
+  level: 1,
+  expandIndex: []
+}
+
+export default SubMenu

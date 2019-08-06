@@ -13,44 +13,44 @@ class Demo extends React.Component {
         groupTitle: '上午',
         children: [{
           title: 'Title - 1',
-          description: 'Here are some descriptions',
+          content: 'Here are some descriptions',
           timestamp: '9:00',
           extraTime: '02-25'
         }, {
           title: 'Title 1-2',
-          description: 'Here are some descriptions',
+          content: 'Here are some descriptions',
           timestamp: '10:00'
         }]
       }, {
         groupTitle: '下午',
         children: [{
           title: 'Title 2-1',
-          description: 'Here are some descriptions',
+          content: 'Here are some descriptions',
           timestamp: '12:00',
           folding: true,
           children: [{
             title: 'Sub 1',
-            description: 'Here are some descriptions'
+            content: 'Here are some descriptions'
           }, {
             title: 'Sub 2',
-            description: 'Here are some descriptions'
+            content: 'Here are some descriptions'
           }]
         }, {
           icon: <Icon name='collection' style={{fontSize: 16, color: 'red'}} />,
           title: 'Title 2-2',
-          description: 'Here are some descriptions',
+          content: 'Here are some descriptions',
           timestamp: '12:00'
         }]
       }, {
         groupTitle: 'Group 3',
         children: [{
           title: 'Title 3-1',
-          description: 'Here are some descriptions',
+          content: 'Here are some descriptions',
           timestamp: '11:00',
           extraTime: '11-25'
         }, {
           title: 'Title 3-2',
-          description: 'Here are some descriptions',
+          content: 'Here are some descriptions',
           timestamp: '12:00'
         }]
       }]
