@@ -50,15 +50,6 @@ class Preview extends Component {
     this.previewRef.current.removeEventListener('mousewheel', this.handleMouseWheel, false)
     this.previewRef.current.removeEventListener('DOMMouseScroll', this.handleMouseWheel, false)
   }
-  // static getDerivedStateFromProps (nextProps, prevState) {
-  //   const { activeIndex } = nextProps
-  //   if (nextProps.activeIndex !== prevState.activeIndex) {
-  //     return {
-  //       activeIndex
-  //     }
-  //   }
-  //   return null
-  // }
   onClose (e) {
     this.setState({
       style: {},

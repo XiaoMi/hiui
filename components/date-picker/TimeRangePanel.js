@@ -6,18 +6,14 @@ class TimeRangePanel extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      date: props.date,
       style: props.style
     }
   }
   onTimePick (flag, _date, bol) {
     const {date} = this.props
-    const sd = flag === 'left' ? _date : date.startDate
-    const ed = flag === 'right' ? _date : date.endDate
-    let r = {
-      startDate: sd,
-      endDate: ed
-    }
+    const r = {}
+    r.startDate = flag === 'left' ? _date : date.startDate
+    r.endDate = flag === 'right' ? _date : date.endDate
     this.props.onPick(r, bol)
   }
   render () {

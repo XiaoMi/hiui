@@ -13,8 +13,6 @@ es/
 test/coverage/
 # Dev dependencies and cache files
 node_modules/
-yarn.lock
-package-lock.json
 
 # Misc files
 *~

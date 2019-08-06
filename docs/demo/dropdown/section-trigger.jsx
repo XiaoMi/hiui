@@ -2,33 +2,45 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Dropdown from '../../../components/dropdown'
 import Icon from '../../../components/icon'
+import Message from '../../../components/message'
 const prefix = 'dropdown-trigger'
-const code = `
-import React from 'react'
+const desc = '使用左键或右键单击'
+const code = `import React from 'react'
 import Icon from '@hi-ui/hiui/es/icon'
-import Dropdown from '@hi-ui/hiui/es/dropdown'\n
+import Dropdown from '@hi-ui/hiui/es/dropdown'
+import Message from '@hi-ui/hiui/es/message'\n
 class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
       list: [{
-        title: '小米手机',
+        title: '同步',
+        prefix: <Icon name='synchronize'/>,
         onClick: () => {
-          console.log('one')
+          Message.open({ type: 'success', title: '同步成功', duration: 2000 })
         }
       },{
-        title: '小米电视',
-        prefix: <Icon name='list'/>,
-        disabled: true
+        title: '转为草稿',
+        prefix: <Icon name='document'/>,
+        disabled: true,
+        onClick: () => {
+          Message.open({ type: 'danger', title: '尚未发布', duration: 2000 })
+        }
       },{
-        title: '小米生态链相关产品',
+        title: '修改权限',
         prefix: <Icon name='list'/>,
-        suffix: <Icon name='truck'/>
+        onClick: () => {
+          console.log('页面跳转')
+        }
       },{
         title: '-'
       },{
-        title: '其它',
-        value: 'other'
+        title: '删除',
+        prefix: <Icon name='delete'/>,
+        value: 'other',
+        onClick: () => {
+          Message.open({ type: 'success', title: '删除成功', duration: 2000 })
+        }
       }]
     }
   }
@@ -36,11 +48,10 @@ class Demo extends React.Component {
     return (
       <div>
         <Dropdown
-          list={this.state.list}
+          data={this.state.list}
           trigger={['click', 'contextmenu']}
-          onClick={(val) => {console.log(val)}}
-          title="左键或右键点击"
-          width={160}
+          title="操作"
+          width={100}
         >
         </Dropdown>
       </div>
@@ -50,8 +61,9 @@ class Demo extends React.Component {
 const DemoTrigger = () => (
   <DocViewer
     code={code}
-    scope={{ Dropdown, Icon }}
+    scope={{ Dropdown, Icon, Message }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoTrigger

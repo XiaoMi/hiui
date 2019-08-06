@@ -2,9 +2,9 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Upload from '../../../components/upload'
 const prefix = 'upload-upload'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Upload from '@hi-ui/hiui/es/upload'\n
+import Icon from '@hi-ui/hiui/es/icon'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)
@@ -18,9 +18,7 @@ class Demo extends React.Component {
           type="normal"
           uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
           headers={{name: 'mi'}}
-          tips="仅允许上传图片文件，且最多两个"
-          maxCount={2}
-          buttonText="上传文件"
+          content='选择文件'
           param={param}
           name={'files[]'}
           onChange = {(file, fileList, response) => {

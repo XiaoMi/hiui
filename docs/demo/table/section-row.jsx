@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
 const prefix = 'table-row'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Table from '@hi-ui/hiui/es/table'\n
 class Demo extends React.Component {
   constructor(props){
@@ -42,15 +41,15 @@ class Demo extends React.Component {
   render() {
     return (
       <div style={{maxWidth: '1080px'}}>
-         <Table  
+         <Table
            columns={this.columns}
            data={this.data}
            scrollX
            fixTop={64}
            height="300px"
-         /> 
+         />
       </div>
-     
+
     )
   }
 }`

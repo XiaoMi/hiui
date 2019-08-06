@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Tree from '../../../components/tree'
 const prefix = 'tree-drag'
 const desc = '对树的节点进行拖拽操作'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Tree from '@hi-ui/hiui/es/tree'\n
 class Demo extends React.Component {
   constructor(props) {
@@ -47,19 +46,15 @@ class Demo extends React.Component {
           defaultExpandAll
           draggable={true}
           data={this.state.treeData}
-          defaultCheckedKeys={[2]}
           onDragStart = {(dragNode)=> {
             console.log(dragNode)
           }}
-          onDrop = {(dragNode,dropNode)=> {
+          onDropEnd = {(dragNode,dropNode)=> {
             console.log(dragNode,dropNode)
           }}
-          onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
           onChange={data => {console.log('Tree data:', data)}}
-          openIcon='down'
-          closeIcon='up'
           highlightable
-          onNodeClick={(item) => console.log('------click node', item)}
+          onClick={(item) => console.log('------click node', item)}
         />
       </div>
     )

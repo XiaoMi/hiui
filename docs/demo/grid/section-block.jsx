@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Grid from '../../../components/grid'
 const prefix = 'grid-block'
 const desc = '在 Row 设置 gutter = true 来使水平排列有间隔'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'\n
 class Demo extends React.Component {
   render() {
@@ -14,16 +13,16 @@ class Demo extends React.Component {
     return (
       <Row gutter={true}>
         <Col span={6}>
-          <div style={{backgroundColor: '#4284F5', width: '100%', padding: '20px 0', textAlign: 'center', opacity: '.8', color:'#fff'}}>col-6</div>
+          <div style={{backgroundColor: '#4284F5', width: '100%', padding: '16px 0', textAlign: 'center', opacity: '.8', color:'#fff'}}>col-6<br />25%</div>
         </Col>
         <Col span={6}>
-          <div style={{backgroundColor: '#ff6700', width: '100%', padding: '20px 0', textAlign: 'center', opacity: '.8'}}>col-6</div>
+          <div style={{backgroundColor: '#ff6700', width: '100%', padding: '16px 0', textAlign: 'center', opacity: '.8'}}>col-6<br />25%</div>
         </Col>
         <Col span={6}>
-          <div style={{backgroundColor: '#4284F5', width: '100%', padding: '20px 0', textAlign: 'center', opacity: '.8',color:'#fff'}}>col-6</div>
+          <div style={{backgroundColor: '#4284F5', width: '100%', padding: '16px 0', textAlign: 'center', opacity: '.8',color:'#fff'}}>col-6<br />25%</div>
         </Col>
         <Col span={6}>
-          <div style={{backgroundColor: '#ff6700', width: '100%', padding: '20px 0', textAlign: 'center', opacity: '.8'}}>col-6</div>
+          <div style={{backgroundColor: '#ff6700', width: '100%', padding: '16px 0', textAlign: 'center', opacity: '.8'}}>col-6<br />25%</div>
         </Col>
       </Row>
     )

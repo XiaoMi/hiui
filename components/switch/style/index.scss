@@ -1,11 +1,5 @@
 @import '@hi-ui/core-css/index.scss';
 
-// Define component colors
-// @mixin hi-btn-style($color: get-color($palette-primary, 'hiui-blue')) {
-//   & {
-
-//   }
-// }
 $basic-color: #4284f5 !default;
 
 @mixin hi-switch-style($color: get-color($palette-primary, 'hiui-blue')) {

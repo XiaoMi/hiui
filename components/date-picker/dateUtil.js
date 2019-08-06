@@ -22,10 +22,29 @@ import getSeconds from 'date-fns/get_seconds'
 import addHours from 'date-fns/add_hours'
 import subDays from 'date-fns/sub_days'
 import differenceInDays from 'date-fns/difference_in_days'
+import dfIsValid from 'date-fns/is_valid'
+import addYears from 'date-fns/add_years'
+import subYears from 'date-fns/sub_years'
+
+const isValid = (date) => {
+  return (date && dfIsValid(parse(date)))
+}
+const getValidDate = (date) => {
+  return isValid(date) ? parse(date) : new Date()
+}
+const getStartDate = (dateObj) => {
+  return getValidDate(dateObj.startDate)
+}
+const getEndDate = (dateObj) => {
+  return getValidDate(dateObj.endDate)
+}
+
 export {
   getDaysInMonth, // 获取当月的天数
   subMonths, // 月份减法
   addMonths, // 月份加法
+  addYears, // 年份加
+  subYears, // 年份减
   getDay, // 获取周几
   startOfMonth, // 指定日期月份的1日
   isWithinRange, // 是否在指定日期范围内
@@ -38,13 +57,17 @@ export {
   endOfWeek, // 一周的结束
   dateFormat, // 格式化时间
   isSameMonth, // 是否是同一个月
-  getYear,
-  getMonth,
-  isToday,
-  getHours,
-  getMinutes,
-  getSeconds,
-  addHours,
-  subDays,
-  differenceInDays
+  getYear, // 获取年
+  getMonth, // 获取月
+  isToday, // 是否是今天
+  getHours, // 获取小时
+  getMinutes, // 获取分钟
+  getSeconds, // 获取秒
+  addHours, // 小时加
+  subDays, // 天减
+  differenceInDays, // 相差多少天
+  isValid, // 是否有效时间
+  getStartDate, // 封装 - 获取开始时间
+  getEndDate, // 封装 - 获取结果时间
+  getValidDate // 获取有效的时间
 }

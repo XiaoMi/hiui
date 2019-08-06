@@ -2,12 +2,12 @@ import React, {Component} from 'react'
 import {deconstructDate} from './util'
 import Icon from '../icon'
 import classNames from 'classnames'
-import { isSameDay } from './dateUtil'
+import { isSameDay, getValidDate } from './dateUtil'
 export default class TimePanel extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      date: new Date(props.date),
+      date: getValidDate(props.date),
       prefix: {
         hours: 0,
         minutes: 0,
@@ -27,6 +27,9 @@ export default class TimePanel extends Component {
     this.secondsScrollEvent = this.scrollEvent.bind(this, 'seconds')
     this.pageUpRef = React.createRef()
     this.pageDownRef = React.createRef()
+    this.topValue_1 = 0
+    this.topValue_2 = 0
+    this.timer = null
   }
   range (num) {
     let arr = []
@@ -43,9 +46,21 @@ export default class TimePanel extends Component {
     this.minutesList && this.minutesList.addEventListener('scroll', this.minutesScrollEvent)
     this.secondsList && this.secondsList.addEventListener('scroll', this.secondsScrollEvent)
   }
+  isScrollStop (val, el) {
+    this.topValue_2 = el.scrollTop
+    if (this.topValue_1 === this.topValue_2) {
+      el.scrollTop = val * 32
+    }
+  }
   scrollEvent (type, e) {
+    clearTimeout(this.timer)
     const st = e.target.scrollTop
+    this.topValue_1 = st
     const val = Math.round(st / 32)
+    if ((type === 'hours' && val > 23) || ((type === 'minutes' || type === 'seconds') && val > 59)) {
+      return false
+    }
+    this.timer = setTimeout(this.isScrollStop.bind(this, val, e.target), 200)
     const {date} = this.state
     if (type === 'hours') {
       date.setHours(val)
@@ -67,7 +82,7 @@ export default class TimePanel extends Component {
   componentWillReceiveProps (props) {
     if (!isSameDay(props.date, this.state.date)) {
       this.setState({
-        date: props.date
+        date: getValidDate(props.date)
       })
     }
   }
@@ -86,6 +101,7 @@ export default class TimePanel extends Component {
   }
 
   clickEvent (flag, e) {
+    e.stopPropagation()
     const li = e.target
     if (!li.innerText) return
     const {date} = this.state
@@ -257,17 +273,7 @@ export default class TimePanel extends Component {
             </ul>
             {secondsArrow && this.renderArrow('seconds')}
           </div>
-          <div className='hi-timepicker__current-line' style={{top: this.props.onlyTime ? 108 : 140}} >
-            {/* <span>{hours}</span>
-            <span>{minutes}</span>
-            <span>{seconds}</span> */}
-          </div>
-          {/* <span className='hi-timepicker__page-turn' ref={this.pageUpRef}>
-            <Icon name='up' />
-          </span>
-          <span className='hi-timepicker__page-turn' ref={this.pageDownRef}>
-            <Icon name='down' />
-          </span> */}
+          <div className='hi-timepicker__current-line' style={{top: this.props.onlyTime ? 108 : 140}} />
         </div>
       </div>
     )

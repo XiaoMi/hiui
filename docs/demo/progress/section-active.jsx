@@ -3,9 +3,8 @@ import DocViewer from '../../../libs/doc-viewer'
 import Progress from '../../../components/progress'
 import Counter from '../../../components/counter'
 const prefix = 'progress-active'
-const code = `
-import React from 'react'
-import Progress from '@hi-ui/hiui/es/select'
+const code = `import React from 'react'
+import Progress from '@hi-ui/hiui/es/progress'
 import Counter from '@hi-ui/hiui/es/counter'\n
 class Demo extends React.Component {
   constructor () {
@@ -18,7 +17,7 @@ class Demo extends React.Component {
   render() {
     return (
       <div>
-        <Progress percent={this.state.percent}/>
+        <Progress percent={this.state.percent} size='large' />
         <br/>
         <Counter
             value={this.state.percent}
@@ -31,11 +30,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoActive = () => (
-  <DocViewer
-    code={code}
-    scope={{ Progress, Counter }}
-    prefix={prefix}
-  />
-)
+const DemoActive = () => <DocViewer code={code} scope={{ Progress, Counter }} prefix={prefix} />
 export default DemoActive

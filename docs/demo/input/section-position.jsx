@@ -5,91 +5,87 @@ import Input from '../../../components/input'
 import Radio from '../../../components/radio'
 import Select from '../../../components/select'
 import Button from '../../../components/button'
+import Message from '../../../components/message'
 const prefix = 'input-position'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Button from '@hi-ui/hiui/es/button'
 import Select from '@hi-ui/hiui/es/select'
 import Radio from '@hi-ui/hiui/es/radio'
+import Message from '@hi-ui/hiui/es/message'
 import Input from '@hi-ui/hiui/es/input'\n
 class Demo extends React.Component {
   constructor () {
     super()
     const ele = <Select
-      mode='single'
+      type='single'
       clearable={false}
-      style={{width: '80px'}}
-      list={[
-        { name:'+86', id:'86' },
-        { name:'+1', id:'1' },
-        { name:'+33', id:'33' },
-        { name:'+91', id:'91' },
+      style={{ width: 80 }}
+      data={[
+        { title:'+86', id:'86' },
+        { title:'+1', id:'1' },
+        { title:'+33', id:'33' },
+        { title:'+91', id:'91' },
       ]}
-      value='86'
-      onChange={(item) => {
-        console.log('单选结果', item)
-        const selectValue = item[0].id
-        this.setState({selectValue, tel: \`\${selectValue} \${value}\`})
-      }}
+      defaultValue='86'
     />
     this.state = {
-      prepend: ele,
-      append: null,
-      checkedIndex: 0,
       radioList: [{
-        name: '前置元素',
-        prepend: ele
+        content: '前置元素',
+        id: 'prepend'
       }, {
-        name: '后置元素',
-        append: <Button type="primary">搜索</Button>
+        content: '后置元素',
+        id: 'append'
       }],
-      value: ''
+      value: 'prepend'
+    }
+    this.getFix = () => {
+      return {
+        prepend: {
+          prepend: ele
+        },
+        append: {
+          append: <Button type="primary" onClick={() => {
+            Message.open({ type: 'success', title: '查询成功', duration: 2000 })
+          }}>查询</Button>
+        }
+      }[this.state.value]
     }
   }
   render() {
     const {
       value,
-      radioList,
-      checkedIndex,
-      prepend,
-      append
+      radioList
     } = this.state
+    const { prepend, append } = this.getFix()
     const Row = Grid.Row
     const Col = Grid.Col
     return (
       <div>
-      <Row gutter={true}>
+        <Row gutter>
           <Col span={12}>
-            <Radio
-              list={radioList}
-              mode='button'
-              checked={checkedIndex}
-              onChange={(data, index, item) => {
-                this.setState({
-                  checkedIndex: index,
-                  prepend: item.prepend,
-                  append: item.append,
-                })
+            <Radio.Group
+              data={radioList}
+              value={value}
+              type='button'
+              onChange={(value) => {
+                this.setState({ value })
               }}
             />
           </Col>
         </Row>
-        <Row gutter={true}>
+        <Row gutter>
           <Col span={12}>
-             <Input
-                id="customId"
-                value={value}
-                type="text"
-                placeholder="请输入手机号"
-                onChange={e => this.setState({value: e.target.value})}
-                prepend={prepend}
-                append={append}
-                style={{width: '250px'}}
-              />
+            <Input
+              id="customId"
+              type="tel"
+              placeholder="请输入手机号"
+              prepend={prepend}
+              append={append}
+              style={{ width: 250 }}
+            />
           </Col>
         </Row>
-
       </div>
     )
   }
@@ -97,7 +93,7 @@ class Demo extends React.Component {
 const DemoPosition = () => (
   <DocViewer
     code={code}
-    scope={{ Grid, Input, Radio, Select, Button }}
+    scope={{ Grid, Input, Radio, Select, Button, Message }}
     prefix={prefix}
   />
 )

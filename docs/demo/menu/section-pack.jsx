@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Menu from '../../../components/menu'
 const prefix = 'menu-pack'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Menu from '@hi-ui/hiui/es/menu'\n
 class Demo extends React.Component {
   render(){
@@ -95,14 +94,14 @@ class Demo extends React.Component {
     return(
       <div>
         <Menu
-          mini
-          miniToggle={true}
-          mode="vertical"
+          collapsed
+          showCollapse
+          placement="vertical"
           activeId={'xiaomi9'}
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
-          onMiniChange={toggle => console.log('-----onMiniChange', toggle)}
+          onCollapse={toggle => console.log('-----onMiniChange', toggle)}
           onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
-          datas={datas}
+          data={datas}
         />
       </div>
     )

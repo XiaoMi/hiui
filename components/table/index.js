@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import ClickOutside from './clickOuterside'
-import TableContent from './tableContent'
+import ClickOutside from './ClickOuterside'
+import TableContent from './TableContent'
 import prifix from './prefix'
 import Checkbox from './checkbox'
 import Pagination from '../pagination'
@@ -493,13 +493,6 @@ class Table extends Component {
       }
     }
     let serverPaginationConfig = serverPagination
-    if (serverPagination && serverPagination.current) {
-      serverPaginationConfig = {
-        ...serverPagination,
-        defaultCurrent: serverPagination.current
-      }
-      delete serverPaginationConfig.current
-    }
     return (
       <div className={prifix({table: true, [size]: size, bordered, striped})} ref={this.dom}>
         {header && <div className={prifix({'table-pre-header': true})}>{header()}</div>}
@@ -563,7 +556,7 @@ class Table extends Component {
             }
           </div>
         }
-        {serverPaginationConfig && serverPaginationConfig.defaultCurrent && <div style={{display: 'flex', justifyContent: serverPagePosition}} a='1'>
+        {serverPaginationConfig && <div style={{display: 'flex', justifyContent: serverPagePosition}} a='1'>
           {
             <div className={prifix('table-page')} >
               <Pagination
@@ -804,9 +797,7 @@ class Table extends Component {
       currentPageName = Table.config.currentPageName
     } = origin
 
-    let l = loading.open({
-      target: this.dom.current
-    })
+    loading.open(this.dom.current, {key: 'loading'})
     const {
       serverPagination: {current}
     } = this.state
@@ -841,9 +832,9 @@ class Table extends Component {
         serverPagination: page
       })
       this.runMemory()
-      l.close()
+      loading.close('loading')
     }).catch((e) => {
-      l.close()
+      loading.close('loading')
       error(e)
     })
   }
@@ -865,9 +856,7 @@ class Table extends Component {
       }
     } = props || this.props
 
-    let l = loading.open({
-      target: this.dom.current
-    })
+    loading.open(this.dom.current, {key: 'loading'})
     this.setState({
       loading: true
     })
@@ -906,10 +895,10 @@ class Table extends Component {
           ...columnsDetail
         })
         this.runMemory()
-        l.close()
+        loading.close('loading')
       })
     }).catch((e) => {
-      l.close()
+      loading.close('loading')
       error(e)
     })
   }

@@ -1,30 +1,35 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Radio from '../../../components/radio'
-const prefix = 'radio-type'
-const code = `
-import React from 'react'
+const prefix = 'btn-type'
+const code = `import React from 'react'
 import Radio from '@hi-ui/hiui/es/radio'\n
 class Demo extends React.Component {
-  constructor () {
+  constructor() {
     super()
-    this.state = {
-      disableNum : 2
-    }
+    this.list = [{
+      id: 0,
+      content: '手机类'
+    }, {
+      id: 1,
+      content: '电脑类',
+      disabled: true
+    }, {
+      id: 2,
+      content: '生活类'
+    }, {
+      id: 3,
+      content: '其它'
+    }]
   }
   render() {
     return (
-      <div>
-          <Radio
-            list={['手机类', '电脑类', '生活类', '其它']}
-            mode='button'
-            checked={0}
-            disabled={this.state.disableNum}
-            onChange={(data) => console.log(data)}
-          />
-          <br/>
-
-      </div>
+      <Radio.Group
+        data={this.list}
+        type='button'
+        defaultValue={0}
+        onChange={(data) => console.log(data)}
+      />
     )
   }
 }`

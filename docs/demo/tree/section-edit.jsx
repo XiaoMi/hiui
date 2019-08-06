@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Tree from '../../../components/tree'
 const prefix = 'tree-edit'
 const desc = '通过树的节点进行新增、删除、编辑等操作'
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Tree from '@hi-ui/hiui/es/tree'\n
 class Demo extends React.Component {
   constructor(props) {
@@ -46,8 +45,6 @@ class Demo extends React.Component {
           defaultExpandAll
           editable={true}
           data={this.state.treeData}
-          defaultCheckedKeys={[2]}
-          onNodeToggle={(data, isExpanded) => {console.log('toggle: data isExpanded', data, isExpanded)}}
           onSave={(saveNode, data) => {
             console.log(saveNode, data)
           }}
@@ -55,10 +52,7 @@ class Demo extends React.Component {
             console.log(deleteNode, data)
           }}
           onChange={data => {console.log('Tree data:', data)}}
-          openIcon='down'
-          closeIcon='up'
           highlightable
-          onNodeClick={(item) => console.log('------click node', item)}
         />
       </div>
     )

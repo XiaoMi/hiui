@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Menu from '../../../components/menu'
 const prefix = 'menu-vertical'
 
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Menu from '@hi-ui/hiui/es/menu'\n
 class Demo extends React.Component {
   render(){
@@ -95,11 +94,11 @@ class Demo extends React.Component {
     return(
       <div>
         <Menu
-          mode="vertical"
+          placement="vertical"
           activeId={'xiaomi9'}
           onClick={(id, prevId)=>console.log('-----click', id, prevId)}
           onClickSubMenu={index => console.log('-----onClickSubMenu', index)}
-          datas={datas}
+          data={datas}
         />
       </div>
     )

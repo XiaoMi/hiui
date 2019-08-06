@@ -1,9 +1,0 @@
-// 获取颜色
-// $palette：色板
-// $name：色值
-// $i：颜色位置索引（选填）
-// color: get-color($palettePrimary, grayLight); => color: #eee;
-// color: get-color($paletteSecondary, purple, 2); => color: #773686;
-@function get-color($palette, $name, $i: 1) {
-  @return if(type-of(map-get($palette, $name)) == 'list', nth(map-get($palette, $name), $i), map-get($palette, $name));
-}

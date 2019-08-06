@@ -20,7 +20,6 @@ class TreeItem extends Component {
       editingNodes,
       prefixCls,
       semiChecked,
-      onNodeClick,
       onClick,
       highlightable,
       item,
@@ -48,14 +47,14 @@ class TreeItem extends Component {
     } = this.props
     const treeItem = (
       <li key={item.id}>
-        <div
-          style={{
-            display: 'flex'
-          }}
-        >
-          {targetNode === item.id && dropDividerPosition === 'down' && isOver && (
-            <TreeDivider top />
-          )}
+        {targetNode === item.id && dropDividerPosition === 'up' && isOver && (
+          <TreeDivider placement='top' />
+        )}
+        <div className='item--wrapper'>
+          {(!item.children || (item.children && !expanded)) &&
+            targetNode === item.id &&
+            dropDividerPosition === 'down' &&
+            isOver && <TreeDivider placement='bottom' />}
           {
             <span
               onClick={() => {
@@ -76,7 +75,6 @@ class TreeItem extends Component {
               checked={checked}
               onChange={() => onCheckChange(checked, item)}
               onTitleClick={e => {
-                onNodeClick && onNodeClick(item)
                 onClick && onClick(item)
                 highlightable && onSetHighlight(item)
                 e.stopPropagation()
@@ -130,7 +128,6 @@ class TreeItem extends Component {
                 }}
                 onClick={e => {
                   closeRightClickMenu()
-                  onNodeClick && onNodeClick(item)
                   onClick && onClick(item)
                   highlightable && onSetHighlight(item)
                   e.stopPropagation()
@@ -139,7 +136,7 @@ class TreeItem extends Component {
                 {item.title}
                 {renderRightClickMenu(item)}
                 {targetNode === item.id && dropDividerPosition === 'sub' && isOver && (
-                  <TreeDivider />
+                  <TreeDivider placement='inner' />
                 )}
               </span>
             )
@@ -157,7 +154,6 @@ class TreeItem extends Component {
               }}
               onClick={e => {
                 closeRightClickMenu()
-                onNodeClick && onNodeClick(item)
                 onClick && onClick(item)
                 highlightable && onSetHighlight(item)
                 e.stopPropagation()
@@ -169,6 +165,11 @@ class TreeItem extends Component {
           )}
         </div>
         {item.children && item.children.length > 0 && expanded ? renderTree(item.children) : null}
+        {item.children &&
+          expanded &&
+          targetNode === item.id &&
+          dropDividerPosition === 'down' &&
+          isOver && <TreeDivider placement='bottom' />}
       </li>
     )
     return draggable ? connectDropTarget(treeItem) : treeItem
@@ -208,7 +209,9 @@ const target = {
     if (monitor.isOver({ shallow: true })) {
       if (
         sourceItem.id === targetItem.id ||
-        (targetItem.children && targetItem.children.map(t => t.id).includes(sourceItem.id))
+        (targetItem.children &&
+          targetItem.children.map(t => t.id).includes(sourceItem.id) &&
+          dropDividerPosition === 'sub')
       ) {
         // 如果源节点就是目的节点或者源节点是目的节点的子节点（直系）再或者源节点是目的节点的父节点，那么什么都不做
         // 如果什么都不做，原来展开则现在还展开
@@ -242,7 +245,12 @@ const target = {
       if (!(sourcePosition.x === positionX && sourcePosition.y === positionY)) {
         setPosition(sourcePosition.x, sourcePosition.y)
         // 如果在节点的上半部分，则为移动其内部，如果为下半部分，则为节点下方
-        if (sourcePosition.y <= targetComponent.y + targetComponent.height / 2) {
+        if (sourcePosition.y <= targetComponent.y + targetComponent.height / 3) {
+          setTargetNode(targetItem.id, 'up')
+        } else if (
+          targetComponent.y + targetComponent.height / 3 < sourcePosition.y &&
+          sourcePosition.y <= targetComponent.y + (targetComponent.height * 2) / 3
+        ) {
           setTargetNode(targetItem.id, 'sub')
         } else {
           setTargetNode(targetItem.id, 'down')

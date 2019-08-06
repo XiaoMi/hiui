@@ -5,8 +5,7 @@ import Icon from '../../../components/icon'
 const desc = '自定义前缀、后缀'
 const prefix = 'dropdown-button'
 
-const code = `
-import React from 'react'
+const code = `import React from 'react'
 import Icon from '@hi-ui/hiui/es/icon'
 import Dropdown from '@hi-ui/hiui/es/dropdown'\n
 class Demo extends React.Component {
@@ -28,7 +27,7 @@ class Demo extends React.Component {
     return (
       <div>
         <Dropdown
-          list={this.state.list}
+          data={this.state.list}
           title="按钮菜单"
           type="button"
           // trigger={['click']}
