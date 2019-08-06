@@ -11,31 +11,31 @@ class Demo extends React.Component {
   render () {
     const datas = [{
           title: 'Title - 1',
-          description: 'Here are some descriptions',
+          content: 'Here are some descriptions',
           timestamp: '2019.02.24 12:00:00'
         }, {
           title: 'Title 2',
-          description: 'Here are some descriptions',
+          content: 'Here are some descriptions',
           timestamp: '2019.02.24 14:24:00'
         },{
           title: 'Title 3',
-          description: 'Here are some descriptions',
+          content: 'Here are some descriptions',
           timestamp: '2019.02.24 15:00:00',
           children: [{
             title: 'Sub 1',
-            description: 'Here are some descriptions'
+            content: 'Here are some descriptions'
           }, {
             title: 'Sub 2',
-            description: 'Here are some descriptions'
+            content: 'Here are some descriptions'
           }]
         }, {
           icon: <Icon name='collection' style={{fontSize: 16, color: 'red'}} />,
           title: 'Title 2-2',
-          description: 'Here are some descriptions',
+          content: 'Here are some descriptions',
           timestamp: '12:00'
         }, {
           title: 'Title 4',
-          description: 'Here are some descriptions',
+          content: 'Here are some descriptions',
           timestamp: '2019.02.24 19:55:00'
         }]
     return (
