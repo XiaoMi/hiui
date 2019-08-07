@@ -1,9 +1,6 @@
 import React from 'react'
-import TestUtils from 'react-dom/test-utils'
 import { mount } from 'enzyme'
-import renderer from 'react-test-renderer'
 import Pagination from '../'
-import Dropdown from '../../dropdown'
 
 const jumpCallback = jest.fn(key => key)
 const sizeChangeCallback = jest.fn((val, current) => [val, current])

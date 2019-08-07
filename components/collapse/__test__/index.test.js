@@ -1,6 +1,5 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import renderer from 'react-test-renderer'
 import Collapse from '../'
 
 const changeCallback = jest.fn(key => key)

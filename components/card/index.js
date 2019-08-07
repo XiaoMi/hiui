@@ -76,13 +76,13 @@ class Card extends Component {
         className={cls}
         style={style}
         onMouseEnter={() => {
-          ;(extraShow === 'hover' || extraType === 'hover') &&
+          (extraShow === 'hover' || extraType === 'hover') &&
             this.setState({
               extraShow: true
             })
         }}
         onMouseLeave={() => {
-          ;(extraShow === 'hover' || extraType === 'hover') &&
+          (extraShow === 'hover' || extraType === 'hover') &&
             this.setState({
               extraShow: false
             })
