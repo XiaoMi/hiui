@@ -292,7 +292,7 @@ class Select extends Component {
       return
     }
 
-    if (!dropdownShow) {
+    if (dropdownShow === false) {
       this.showDropdown()
     }
   }
@@ -458,10 +458,8 @@ class Select extends Component {
     return (
       this.isRemote() ||
       (!searchable || !keyword) ||
-      (searchable &&
-        keyword &&
         (String(item.id).includes(keyword) ||
-          String(item.title).includes(keyword)))
+          String(item.title).includes(keyword))
     )
   }
 

@@ -224,25 +224,12 @@ class Table extends Component {
       let obj = dataSource.find(o => o.key === item.key)
       obj.ishiuitableopen = !obj.ishiuitableopen
       this.setState({dataSource: dataSource, ...columnsDetail})
-      // let {index, open} = e.target.dataset
-      // index = parseInt(index)
-      // open = open === 'true'
-      //
-      // let {data} = this.props
-      // if (!open) {
-      //   data.splice(index + 1, 0, {expand: true, parent: index, ...{width: '50px'}, ...item})
-      // } else {
-      //   data.splice(index + 1, 1)
-      // }
-      // e.target.dataset.open = !open
-      // this.setState({dataSource: data})
     }
   }
 
   getScrollXContent () {
     let scrollTable
     let {dataSource, highlightCols, columns, headerColumns, leftFiexColumns, rightFixColumns, highlightRows} = this.state
-    // let {scroll} = this.state
     let {style = {}, ...props} = this.props
     let handleScroll = (e) => {
       let onLeft = e.target.scrollLeft === 0
@@ -395,10 +382,6 @@ class Table extends Component {
     let rightFixTable = this.dom.current.querySelectorAll('.hi-table-fixed-right table tr')
     let scrollTable = this.dom.current.querySelectorAll('.hi-table-scroll table tr')
 
-    // if(fixTable && scrollTable){
-    //
-
-    // }
     if (scrollTable) {
       scrollTable.forEach((tr, index) => {
         if (leftFixTable.length > index) {
@@ -599,7 +582,6 @@ class Table extends Component {
       ) {
         thead.forEach(th => {
           th.style.display = 'table-header-group'
-          // let h = (dom.offsetTop - scrollTop() - fixTop) * -1
           let h = getPosition(dom).y * -1 + fixTop
           th.style.transform = `translate(0,${h}px)`
           if (name) {
@@ -662,7 +644,6 @@ class Table extends Component {
         if (children && children.length > 0) {
           columns[key].isLast = false
           deepMap(children, columns[key])
-          // delete columns[key].children
         } else {
           columns[key].isLast = true
         }
@@ -914,8 +895,6 @@ class Table extends Component {
       document.addEventListener('scroll', () => {
         this.xscroll()
       })
-    } else {
-
     }
 
     // 如果有列冻结的配置
