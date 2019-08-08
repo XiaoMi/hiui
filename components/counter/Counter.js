@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { filterObjProps } from '../input/util'
 
 /**
  * 加减器
@@ -141,7 +142,7 @@ class Counter extends React.Component {
     const max = +this.props.max
     let { value, valueTrue } = this.state
     const { defaultValue, ...attrs } = this.attrs
-
+    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'localeDatas'])
     return (
       <div className={`hi-counter ${className || ''}`} id={id}>
         <div className={`hi-counter-outer`}>
@@ -166,7 +167,7 @@ class Counter extends React.Component {
             value={this.state.value}
             disabled={disabled}
             data-value={this.state.valueTrue}
-            {...attrs}
+            {...filterAttrs}
             onChange={e => {
               e.persist()
 
