@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2.0.4
+
+- 修复：`DatePicker.format` 方法丢失的问题  [#540](https://github.com/XiaoMi/hiui/issues/540)
+- 修复：`<Radio />` 垂直布局的问题  [#545](https://github.com/XiaoMi/hiui/issues/545)
+- 修复：`<Card />` 增加默认背景色  [#546](https://github.com/XiaoMi/hiui/issues/546)
+- 优化：过滤`<Input />` 、 `<Counter />` 无关属性  [#547](https://github.com/XiaoMi/hiui/issues/547)
+
 ## 2.0.2
 
 - 修复：`<Menu />` 组件未传入图标时收起的显示问题 [#529](https://github.com/XiaoMi/hiui/issues/529)
