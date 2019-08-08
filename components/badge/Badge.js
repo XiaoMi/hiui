@@ -31,7 +31,7 @@ class Badge extends Component {
           <span className={`${prefixCls}-dot${!visible ? ' hi-hide' : ''}`} />
         ) : (
           <span className={`${prefixCls}-value${!visible ? ' hi-hide' : ''}`}>
-            {typeof +content === 'number' ? (+content > max ? max + '+' : content) : content}
+            {typeof content === 'number' ? (content > max ? max + '+' : content) : content}
           </span>
         )}
       </div>

@@ -1,7 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import Counter from '../'
-import { wrap } from 'module'
 
 const changeCallback = jest.fn(val => val)
 
