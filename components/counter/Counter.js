@@ -142,7 +142,7 @@ class Counter extends React.Component {
     const max = +this.props.max
     let { value, valueTrue } = this.state
     const { defaultValue, ...attrs } = this.attrs
-    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'localeDatas'])
+    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'localeDatas', 'localedatas'])
     return (
       <div className={`hi-counter ${className || ''}`} id={id}>
         <div className={`hi-counter-outer`}>
