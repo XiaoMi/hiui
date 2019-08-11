@@ -9,7 +9,9 @@ let fileId = 0
 class Upload extends Component {
   constructor (props) {
     super(props)
-    const fileList = this.prepareDefaultFileList(props.fileList || props.defaultFileList)
+    const fileList = this.prepareDefaultFileList(
+      props.fileList || props.defaultFileList
+    )
     this.state = {
       fileList,
       fileCountLimted: fileList.length >= props.maxCount
@@ -113,8 +115,9 @@ class Upload extends Component {
 
     const _fileList = [...fileList]
     _fileList.unshift(file)
-    console.log('>>>>>>>>>>>>>', _fileList)
-    this.setState({ fileList: _fileList }, () => { this.uploadFile(file) })
+    this.setState({ fileList: _fileList }, () => {
+      this.uploadFile(file)
+    })
     ReactDOM.findDOMNode(this.uploadRef).value = ''
   }
 
@@ -166,17 +169,22 @@ class Upload extends Component {
   }
 
   uploadFile (file, dataUrl = '') {
-    console.log('^^^^^^^^^^^^^', file)
     const FileReader = window.FileReader
     const XMLHttpRequest = window.XMLHttpRequest
     const FormData = window.FormData
     const { fileList } = this.state
     const { name, params, headers, uploadAction } = this.props
     const onerror = err => {
-      const errRes = err !== undefined ? err : { status: xhr.status, statusText: xhr.statusText }
+      const errRes =
+        err !== undefined
+          ? err
+          : { status: xhr.status, statusText: xhr.statusText }
+      const _fileList = [...fileList]
       file.uploadState = 'error'
-      this.setState({ fileList })
-      this.onUpload(file, fileList, errRes)
+      const idx = _fileList.findIndex(item => item.fileId === file.fileId)
+      _fileList.splice(idx, 1, file)
+      this.setState({ fileList: _fileList })
+      this.onUpload(file, _fileList, errRes)
     }
 
     if (file.fileType === 'img') {
@@ -188,9 +196,11 @@ class Upload extends Component {
 
         fr.onload = e => {
           const url = e.target.result
+          const _fileList = [...fileList]
           file.url = url
-          // TODO:深拷贝然后替换
-          this.setState({ fileList })
+          const idx = _fileList.findIndex(item => item.fileId === file.fileId)
+          _fileList.splice(idx, 1, file)
+          this.setState({ fileList: _fileList })
         }
         fr.readAsDataURL(file)
       }
@@ -210,10 +220,6 @@ class Upload extends Component {
         formFile.append(i, params[i])
       }
     }
-    // xhr.upload.onload = () => {
-    //   file.uploadState = 'success'
-    //   this.setState({ fileList })
-    // }
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
@@ -221,7 +227,9 @@ class Upload extends Component {
           file.uploadState = 'success'
           const idx = _fileList.findIndex(item => item.fileId === file.fileId)
           _fileList.splice(idx, 1, file)
-          this.setState({ fileList: _fileList }, () => this.onUpload(file, _fileList, JSON.parse(xhr.response)))
+          this.setState({ fileList: _fileList }, () =>
+            this.onUpload(file, _fileList, JSON.parse(xhr.response))
+          )
         } else {
           onerror()
         }
@@ -233,8 +241,11 @@ class Upload extends Component {
     xhr.upload.onprogress = event => {
       var e = event || window.event
       var percentComplete = Math.ceil((e.loaded / e.total) * 100)
+      const _fileList = [...fileList]
+      const idx = _fileList.findIndex(item => item.fileId === file.fileId)
+      _fileList.splice(idx, 1, file)
       file.progressNumber = percentComplete
-      this.setState({ fileList })
+      this.setState({ fileList: _fileList })
     }
 
     xhr.open('post', uploadAction, true)
