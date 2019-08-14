@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Checkbox from '../table/checkbox/index'
 import { DragSource, DropTarget } from 'react-dnd'
+import classNames from 'classnames'
 import Input from '../input'
 import { findDOMNode } from 'react-dom'
 import TreeDivider from './TreeDivider'
@@ -43,14 +44,22 @@ class TreeItem extends Component {
       targetNode,
       saveEditNode,
       origin,
-      loadChildren
+      loadChildren,
+      isRoot,
+      isLevelLast
     } = this.props
     const treeItem = (
-      <li key={item.id}>
+      <li
+        key={item.id}
+        className={classNames(
+          { leaf: !item.children || (item.children && !expanded && !isRoot) },
+          { 'not-level-last': isRoot && !isLevelLast }
+        )}
+      >
         {targetNode === item.id && dropDividerPosition === 'up' && isOver && (
           <TreeDivider placement='top' />
         )}
-        <div className='item--wrapper'>
+        <div className={classNames('item--wrapper', { 'is-root': isRoot })}>
           {(!item.children || (item.children && !expanded)) &&
             targetNode === item.id &&
             dropDividerPosition === 'down' &&
@@ -63,10 +72,25 @@ class TreeItem extends Component {
                   loadChildren(item.id)
                 }
               }}
+              style={{ position: 'relative' }}
               className={`${prefixCls}_item-icon`}
             >
-              {((item.children && item.children.length > 0) || (origin && !expanded)) &&
-                renderSwitcher(expanded)}
+              {(item.children && item.children.length > 0) || (origin && !expanded) ? (
+                renderSwitcher(expanded)
+              ) : (
+                <span
+                  style={{
+                    position: 'absolute',
+                    width: 7,
+                    height: 7,
+                    borderRadius: '3.5px',
+                    background: '#c8c8c8',
+                    transform: 'translateY(-50%)',
+                    top: '50%',
+                    left: '3.5px'
+                  }}
+                />
+              )}
             </span>
           }
           {checkable ? (

@@ -97,11 +97,15 @@ export default class TreeNode extends Component {
     return count
   }
   renderSwitcher = expanded => {
-    const { prefixCls, openIcon, closeIcon } = this.props
+    const { prefixCls, openIcon, closeIcon, showLine } = this.props
     const switcherClsName = classNames(
       `${prefixCls}-switcher`,
       'hi-icon',
-      `icon-${expanded ? openIcon || 'open' : closeIcon || 'packup'}`
+      `icon-${
+        expanded
+          ? openIcon || (showLine && 'TreeMinus') || 'open'
+          : closeIcon || (showLine && 'TreePlus') || 'packup'
+      }`
     )
     return <i className={switcherClsName} />
   }
@@ -445,7 +449,7 @@ export default class TreeNode extends Component {
       currentDeleteNode: nodeId
     })
   }
-  renderTree = data => {
+  renderTree = (data, allData = []) => {
     const {
       draggable,
       prefixCls,
@@ -461,7 +465,8 @@ export default class TreeNode extends Component {
       checked,
       expanded,
       origin,
-      onDragStart
+      onDragStart,
+      showLine
     } = this.props
     const {
       highlight,
@@ -473,14 +478,16 @@ export default class TreeNode extends Component {
       positionX,
       positionY
     } = this.state
-
     return (
       <ul>
-        {data.map(item => {
+        {data.map((item, index) => {
           return (
             <TreeItem
               origin={origin}
+              showLine={showLine}
               key={item.id}
+              isRoot={allData.some(d => d.id === item.id)}
+              isLevelLast={index === data.length - 1}
               editable={editable}
               dropDividerPosition={dropDividerPosition}
               prefixCls={prefixCls}
@@ -560,8 +567,8 @@ export default class TreeNode extends Component {
         )}
 
         {searchable
-          ? this.renderTree(this.highlightData(cloneDeep(dataCache), searchValue))
-          : this.renderTree(cloneDeep(dataCache))}
+          ? this.renderTree(this.highlightData(cloneDeep(dataCache), searchValue), dataCache)
+          : this.renderTree(cloneDeep(dataCache), dataCache)}
 
         <Modal
           title='提示'
