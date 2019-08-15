@@ -136,37 +136,7 @@ import DemoAdvance from '../../demo/table/section-advance.jsx'
 
 <DemoAdvance />
 
-## origin Attributes
 
-| 参数            | 说明                             | 类型             | 默认值  |
-| --------------- | -------------------------------- | ---------------- | ------- |
-| url             | 请求地址                         | string           | -       |
-| currentPageName | 请求参数，分页字端名             | string            | current |
-| auto            | 当 data 变化时是不是自动发送请求 | boolean          | false   |
-| autoDelayTime   | 当自动发送请求时，延迟时间       | number           | 300     |
-| headers         | 请求头                           | object           | -       |
-| data            | 请求参数                         | object           | -       |
-| success         | 响应解析函数                     | (res) => void       | -
-| error           | 请求错误回调函数                 | (err) =>  void     |  -
-| method          | 请求方法                         | string           | GET     |
-
-## rowSelection
-
-| 参数             | 说明                     | 类型                                    | 默认值 |
-| ---------------- | ------------------------ | --------------------------------------- | ------ |
-| onChange         | 列表项被选中时触发的回调  |（selectedRowKeys,selectedRows）=> void | -      |
-| getCheckboxProps | 选择框的默认属性配置     | (record) => void                      | -      |
-
-## advance
-
-| 参数              | 说明                      | 类型                                    | 默认值 |
-| ---------------- | ------------------------  | --------------------------------------- | ------ |
-| sum              | 是否前端求合                | boolean                                 |     false
-| ave              | 是否前端求均值               |     boolean                            | false      |
-| header           | 表格头部                   |   ReactNode                                 |     -
-| footer           | 表格底部                    |     ReactNode                            | -      |
-| prefix           | 表格头部插入多行                   |   Array []                                |     -
-| suffix           | 表格底部插入多行                    |  Array []                            | -      |
 ## Props
 
 | 参数       | 说明                                                                                              | 类型    | 可选值             | 默认值  |
@@ -174,13 +144,59 @@ import DemoAdvance from '../../demo/table/section-advance.jsx'
 | size       | 表格尺寸                                                                                          | string  | 'large' | 'large' | 'large'  |
 | bordered   | 是否显示边框                                                                                      | object | -                  | false   |
 | striped    | 斑马纹                                                                                            | boolean | -                  | false   |
-| columns    | 表格数据列对应信息                                                                                | array   | -                  | -       |
-| data       | 表格数据                                                                                          | array   | -                  | -       |
+| columns    | 表格数据列对应信息                                                                                | ColumnItem[]   | -                  | -       |
+| data       | 表格数据                                                                                          |object[]   | -                  | -       |
 | emptyText  | 数据为空时展示的文案                                                                              | string  | -                  | No Data |
 | scroll     | 设置横向滚动，也可用于指定滚动区域的宽，建议为`x`设置一个数字，如果不设置，默认 table 宽度为 100% | number  | true               | -       |
 | fixTop     | 吸顶                                                                                              | number  | true               | false   |
 | height     | 表格最大高度（用于冻结表头）                                                                           | string  | -               | -   |
 | pagination | 查看分页组件配置                                                                                  | object  | -                  | false   |
 | advance    | 高级功能                                                                                          | object  | -                  | -       |
-| origin     | 服务端功能                                                                                        | object  | -                  | -       |
+| origin     | 服务端功能
+
+## Type
+### ColumnItem
+
+| 参数            | 说明                               | 类型             | 默认值  |
+| --------------- | --------------------------------  | ---------------- | ------- |
+| title           | 标题                               | string           | -       |
+| dataIndex       | 数据源索引                          | string            | - |
+| key             | 唯一key | boolean                   | -   |
+| render          |    自定义渲染                        | （text,record,index）=> ReactNode     |      _     |
+| type            | 高级功能配置                           | string    'number' | 'expand'             | -       |
+
+
+
+## Origin
+
+| 参数            | 说明                             | 类型             | 默认值  |
+| --------------- | -------------------------------- | ---------------- | ------- |
+| url             | 请求地址                          | string           | -       |
+| currentPageName | 请求参数，分页字端名                | string            | current |
+| auto            | 当 data 变化时是不是自动发送请求     | boolean          | false   |
+| autoDelayTime   | 当自动发送请求时，延迟时间           | number           | 300     |
+| headers         | 请求头                            | object           | -       |
+| data            | 请求参数                          | object           | -       |
+| success         | 响应解析函数                       | (res) => object       | -
+| error           | 请求错误回调函数                    | (err) =>  void     |  -
+| type            | 请求方法                            | string |   | GET     |
+
+## RowSelection
+
+| 参数             | 说明                     | 类型                                    | 默认值 |
+| ---------------- | ------------------------ | --------------------------------------- | ------ |
+| onChange         | 列表项被选中时触发的回调  |（selectedRowKeys,selectedRows）=> void | -      |
+| getCheckboxProps | 选择框的默认属性配置     | (record) => void                      | -      |
+
+## Advance
+
+| 参数              | 说明                      | 类型                                    | 默认值 |
+| ---------------- | ------------------------  | --------------------------------------- | ------ |
+| sum              | 是否前端求合                | boolean                                 |     false
+| ave              | 是否前端求均值               |     boolean                            | false      |
+| header           | 表格头部                   |   ReactNode                                 |     -
+| footer           | 表格底部                    |     ReactNode                            | -      |
+| prefix           | 表格头部插入多行                   |   object[]                                |     -
+| suffix           | 表格底部插入多行                    |  object[]                            | -      |
+
 
