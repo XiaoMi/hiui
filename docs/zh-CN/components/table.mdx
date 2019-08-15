@@ -141,16 +141,16 @@ import DemoAdvance from '../../demo/table/section-advance.jsx'
 
 | 参数       | 说明                                                                                              | 类型    | 可选值             | 默认值  |
 | ---------- | ----------------------------------------------------------------------------------------------- | ------- | ------------------ | ------- |
-| size       | 表格尺寸                                                                                          | string  | 'large' | 'large' | 'large'  |
-| bordered   | 是否显示边框                                                                                      | object | -                  | false   |
+| size       | 表格尺寸                                                                                          | string  | 'small' \| 'large' \| 'default'  | 'default' |
+| bordered   | 是否显示边框                                                                                      | boolean | -                  | false   |
 | striped    | 斑马纹                                                                                            | boolean | -                  | false   |
 | columns    | 表格数据列对应信息                                                                                | ColumnItem[]   | -                  | -       |
 | data       | 表格数据                                                                                          |object[]   | -                  | -       |
 | emptyText  | 数据为空时展示的文案                                                                              | string  | -                  | No Data |
-| scroll     | 设置横向滚动，也可用于指定滚动区域的宽，建议为`x`设置一个数字，如果不设置，默认 table 宽度为 100% | number  | true               | -       |
+| scroll     | 设置横向滚动，也可用于指定滚动区域的宽，建议为`x`设置一个数字，如果不设置，默认 table 宽度为 100% | number  | true               | false       |
 | fixTop     | 吸顶                                                                                              | number  | true               | false   |
 | height     | 表格最大高度（用于冻结表头）                                                                           | string  | -               | -   |
-| pagination | 查看分页组件配置                                                                                  | object  | -                  | false   |
+| pagination | 查看分页组件配置                                                                                  | object  | -                  | -   |
 | advance    | 高级功能                                                                                          | object  | -                  | -       |
 | origin     | 服务端功能
 
@@ -162,8 +162,8 @@ import DemoAdvance from '../../demo/table/section-advance.jsx'
 | title           | 标题                               | string           | -       |
 | dataIndex       | 数据源索引                          | string            | - |
 | key             | 唯一key | boolean                   | -   |
-| render          |    自定义渲染                        | （text,record,index）=> ReactNode     |      _     |
-| type            | 高级功能配置                           | string    'number' | 'expand'             | -       |
+| render          |    自定义渲染                        | (text: string,record: object,index: number)=> ReactNode     |      _     |
+| type            | 高级功能配置                           | string  |  'number' \| 'expand'            | -       |
 
 
 
@@ -185,7 +185,7 @@ import DemoAdvance from '../../demo/table/section-advance.jsx'
 
 | 参数             | 说明                     | 类型                                    | 默认值 |
 | ---------------- | ------------------------ | --------------------------------------- | ------ |
-| onChange         | 列表项被选中时触发的回调  |（selectedRowKeys,selectedRows）=> void | -      |
+| onChange         | 列表项被选中时触发的回调  |（selectedRowKeys: number[],selectedRows: object[]）=> void | -      |
 | getCheckboxProps | 选择框的默认属性配置     | (record) => void                      | -      |
 
 ## Advance
