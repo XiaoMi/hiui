@@ -152,7 +152,7 @@ import DemoAdvance from '../../demo/table/section-advance.jsx'
 | height     | 表格最大高度（用于冻结表头）                                                                           | string  | -               | -   |
 | pagination | 查看分页组件配置                                                                                  | object  | -                  | -   |
 | advance    | 高级功能                                                                                          | object  | -                  | -       |
-| origin     | 服务端功能
+| origin     | 服务端功能  | object  | -                  | -       |
 
 ## Type
 ### ColumnItem
@@ -177,8 +177,8 @@ import DemoAdvance from '../../demo/table/section-advance.jsx'
 | autoDelayTime   | 当自动发送请求时，延迟时间           | number           | 300     |
 | headers         | 请求头                            | object           | -       |
 | data            | 请求参数                          | object           | -       |
-| success         | 响应解析函数                       | (res) => object       | -
-| error           | 请求错误回调函数                    | (err) =>  void     |  -
+| success         | 响应解析函数                       | (res: object) => object       | -
+| error           | 请求错误回调函数                    | (err: object) =>  void     |  -
 | type            | 请求方法                            | string |   | GET     |
 
 ## RowSelection
