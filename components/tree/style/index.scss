@@ -73,8 +73,8 @@ $tree: 'hi-tree' !default;
       &::before {
         position: absolute;
         width: 1px;
-        height: calc(100% - 58px);
-        top: 29px;
+        height: calc(100% - 43px);
+        top: 22px;
         left: 9px;
         background: #c8c8c8;
         content: '';
@@ -90,8 +90,8 @@ $tree: 'hi-tree' !default;
         &::before {
           position: absolute;
           width: 1px;
-          height: calc(100% - 29px);
-          top: 29px;
+          height: calc(100% - 14px);
+          top: 21px;
           left: 9px;
           background: #c8c8c8;
           content: '';
@@ -106,14 +106,27 @@ $tree: 'hi-tree' !default;
         }
       }
 
+      &.can-expand {
+        &::before {
+          position: absolute;
+          left: -10px;
+          top: 50%;
+          height: 1px;
+          width: 10px;
+          background: #c8c8c8;
+          transform: translateY(-3px);
+          content: '';
+        }
+      }
+
       &::before {
         position: absolute;
         left: -10px;
         top: 50%;
         height: 1px;
-        width: 10px;
+        width: 14px;
         background: #c8c8c8;
-        transform: translateY(-4px);
+        transform: translateY(-3px);
         content: '';
       }
     }
@@ -123,34 +136,15 @@ $tree: 'hi-tree' !default;
     padding-left: 15px;
   }
 
-  li:last-child {
-    &.with-line {
-      &::before {
-        display: none;
-      }
-    }
-  }
-
   li {
     position: relative;
     padding: 2px;
 
     & > .item--wrapper {
       display: flex;
+      align-items: center;
       padding-bottom: 5px;
       position: relative;
-    }
-
-    &.with-line {
-      &::before {
-        content: ' ';
-        width: 1px;
-        border-left: 1px dashed #bfc1c3;
-        height: calc(100% - 16px);
-        position: absolute;
-        left: 6px;
-        margin: 22px 0;
-      }
     }
 
     .editing {
@@ -256,6 +250,17 @@ $tree: 'hi-tree' !default;
     .hi-tree-switcher {
       color: #999;
       font-size: 16px;
+    }
+
+    .hi-tree__dot {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 3.5px;
+      background: #c8c8c8;
+      transform: translateY(-50%);
+      top: 50%;
+      left: 3.5px;
     }
   }
 

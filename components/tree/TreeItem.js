@@ -46,7 +46,8 @@ class TreeItem extends Component {
       origin,
       loadChildren,
       isRoot,
-      isLevelLast
+      isLevelLast,
+      showLine
     } = this.props
     const treeItem = (
       <li
@@ -59,7 +60,7 @@ class TreeItem extends Component {
         {targetNode === item.id && dropDividerPosition === 'up' && isOver && (
           <TreeDivider placement='top' />
         )}
-        <div className={classNames('item--wrapper', { 'is-root': isRoot })}>
+        <div className={classNames('item--wrapper', { 'is-root': isRoot, 'can-expand': item.children && item.children.length > 0 })}>
           {(!item.children || (item.children && !expanded)) &&
             targetNode === item.id &&
             dropDividerPosition === 'down' &&
@@ -77,19 +78,8 @@ class TreeItem extends Component {
             >
               {(item.children && item.children.length > 0) || (origin && !expanded) ? (
                 renderSwitcher(expanded)
-              ) : (
-                <span
-                  style={{
-                    position: 'absolute',
-                    width: 7,
-                    height: 7,
-                    borderRadius: '3.5px',
-                    background: '#c8c8c8',
-                    transform: 'translateY(-50%)',
-                    top: '50%',
-                    left: '3.5px'
-                  }}
-                />
+              ) : showLine && (
+                <span className='hi-tree__dot' />
               )}
             </span>
           }
