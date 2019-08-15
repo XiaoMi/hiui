@@ -10,7 +10,7 @@ class Demo extends React.Component {
   render (){
     const FormItem = Form.Item
     return (
-      <Form placement='horizontal'>
+      <Form placement='horizontal' labelPlacement='right'>
         <FormItem label='账号' labelWidth='50'>
           <Input placeholder={'账号'} />
         </FormItem>
