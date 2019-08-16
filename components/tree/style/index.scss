@@ -70,39 +70,136 @@ $tree: 'hi-tree' !default;
 
   &.hi-tree--show-line {
     li {
-      &::before {
-        position: absolute;
-        width: 1px;
-        height: calc(100% - 43px);
-        top: 22px;
-        left: 9px;
-        background: #c8c8c8;
-        content: '';
-      }
+      & > ul {
+        position: relative;
 
-      &.leaf {
-        &::before {
-          display: none;
+        &::after {
+          position: absolute;
+          top: 0;
+          left: -10px;
+          width: 1px;
+          height: 100%;
+          background: #c8c8c8;
+          content: '';
         }
       }
 
-      &.not-level-last {
-        &::before {
-          position: absolute;
-          width: 1px;
-          height: calc(100% - 14px);
-          top: 21px;
-          left: 9px;
-          background: #c8c8c8;
-          content: '';
+      &.is-root {
+        &:not(:last-of-type) {
+          > ul {
+            > li {
+              &:last-of-type {
+                > .item--wrapper {
+                  &::after {
+                    position: absolute;
+                    top: -4px;
+                    left: -10px;
+                    height: calc(100% + 8px);
+                    width: 1px;
+                    background: #c8c8c8;
+                    content: '';
+                  }
+                }
+              }
+            }
+          }
+          // > .item--wrapper {
+          //   &::before {
+          //     position: absolute;
+          //     top: 0;
+          //     left: 9px;
+          //     width: 1px;
+          //     height: calc(50% - 11px);
+          //     background: #c8c8c8;
+          //     content: '';
+          //   }
+          // }
+
+          &.no-expanded {
+            &::before {
+              position: absolute;
+              top: calc(50% + 5px);
+              left: 9px;
+              width: 1px;
+              height: calc(50% - 5px);
+              background: #c8c8c8;
+              content: '';
+            }
+          }
+        }
+
+        &:not(:first-of-type) {
+          &.no-expanded {
+            &::after {
+              position: absolute;
+              top: 0;
+              left: 9px;
+              width: 1px;
+              height: calc(50% - 11px);
+              background: #c8c8c8;
+              content: '';
+            }
+          }
+        }
+
+        & > ul {
+          position: relative;
+
+          &::after {
+            display: none;
+          }
+        }
+      }
+
+      &:last-of-type {
+        > .item--wrapper {
+          &::after {
+            position: absolute;
+            top: -4px;
+            left: -10px;
+            height: calc(50% + 2px);
+            width: 1px;
+            background: #c8c8c8;
+            content: '';
+          }
+        }
+
+        & > ul {
+          position: relative;
+
+          &::after {
+            display: none;
+          }
         }
       }
     }
 
     .item--wrapper {
-      &.is-root {
+      .hi-checkbox-legacy {
+        height: 24px;
+      }
+
+      &.is-rooter {
         &::before {
           display: none;
+        }
+
+        &::after {
+          display: none;
+        }
+      }
+
+      &.not-expanded {
+        > .hi-tree_item-text {
+          &::before {
+            display: none;
+          }
+        }
+
+        > .editing {
+          &::before {
+            display: none;
+          }
         }
       }
 
@@ -117,6 +214,32 @@ $tree: 'hi-tree' !default;
           transform: translateY(-3px);
           content: '';
         }
+
+        > .hi-tree_item-text {
+          &::before {
+            position: absolute;
+            top: calc(50% + 8px);
+            left: -11px;
+            height: calc(50% - 4px);
+            width: 1px;
+            background: #c8c8c8;
+            content: '';
+          }
+        }
+
+        > .editing {
+          position: relative;
+
+          &::before {
+            position: absolute;
+            top: calc(50% + 7px);
+            left: -11px;
+            height: calc(50% - 2px);
+            width: 1px;
+            background: #c8c8c8;
+            content: '';
+          }
+        }
       }
 
       &::before {
@@ -127,6 +250,16 @@ $tree: 'hi-tree' !default;
         width: 14px;
         background: #c8c8c8;
         transform: translateY(-3px);
+        content: '';
+      }
+
+      &::after {
+        position: absolute;
+        top: -4px;
+        left: -10px;
+        height: calc(100% + 4px);
+        width: 1px;
+        background: #c8c8c8;
         content: '';
       }
     }

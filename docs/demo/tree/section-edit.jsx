@@ -43,6 +43,7 @@ class Demo extends React.Component {
       <div style={{width:500}}>
         <Tree
           defaultExpandAll
+          showLine
           editable={true}
           data={this.state.treeData}
           onSave={(saveNode, data) => {

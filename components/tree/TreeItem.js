@@ -54,13 +54,16 @@ class TreeItem extends Component {
         key={item.id}
         className={classNames(
           { leaf: !item.children || (item.children && !expanded && !isRoot) },
-          { 'not-level-last': isRoot && !isLevelLast }
+          { 'not-level-last': isRoot && !isLevelLast },
+          // {'level-last': isLevelLast},
+          {'is-root': isRoot},
+          {'no-expanded': !expanded}
         )}
       >
         {targetNode === item.id && dropDividerPosition === 'up' && isOver && (
           <TreeDivider placement='top' />
         )}
-        <div className={classNames('item--wrapper', { 'is-root': isRoot, 'can-expand': item.children && item.children.length > 0 })}>
+        <div className={classNames('item--wrapper', { 'is-rooter': isRoot, 'can-expand': item.children && item.children.length > 0, 'not-expanded': !expanded })}>
           {(!item.children || (item.children && !expanded)) &&
             targetNode === item.id &&
             dropDividerPosition === 'down' &&
