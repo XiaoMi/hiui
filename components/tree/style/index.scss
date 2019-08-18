@@ -85,6 +85,16 @@ $tree: 'hi-tree' !default;
       }
 
       &.is-root {
+        > .item--wrapper {
+          &::before {
+            display: none;
+          }
+
+          &::after {
+            display: none;
+          }
+        }
+
         &:not(:last-of-type) {
           > ul {
             > li {
@@ -129,7 +139,36 @@ $tree: 'hi-tree' !default;
         }
 
         &:not(:first-of-type) {
+          &:not(.no-expanded) {
+            > .item--wrapper {
+              &::before {
+                position: absolute;
+                top: 1px;
+                left: 7px;
+                width: 1px;
+                height: calc(50% - 9px);
+                background: #c8c8c8;
+                content: '';
+                display: block;
+              }
+            }
+          }
+
           &.no-expanded {
+            // > .item--wrapper {
+            //   &:not(.can-expand) {
+            //     &::before {
+            //       position: absolute;
+            //       top: 6px;
+            //       left: 7px;
+            //       width: 1px;
+            //       height: calc(50% - 9px);
+            //       background: #c8c8c8;
+            //       content: '';
+            //       display: block;
+            //     }
+            //   }
+            // }
             &::after {
               position: absolute;
               top: 0;
@@ -179,15 +218,15 @@ $tree: 'hi-tree' !default;
         height: 24px;
       }
 
-      &.is-rooter {
-        &::before {
-          display: none;
-        }
+      // &.is-rooter {
+      //   &::before {
+      //     display: none;
+      //   }
 
-        &::after {
-          display: none;
-        }
-      }
+      //   &::after {
+      //     display: none;
+      //   }
+      // }
 
       &.not-expanded {
         > .hi-tree_item-text {

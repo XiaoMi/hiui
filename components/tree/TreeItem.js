@@ -46,24 +46,31 @@ class TreeItem extends Component {
       origin,
       loadChildren,
       isRoot,
-      isLevelLast,
       showLine
     } = this.props
     const treeItem = (
       <li
         key={item.id}
         className={classNames(
-          { leaf: !item.children || (item.children && !expanded && !isRoot) },
-          { 'not-level-last': isRoot && !isLevelLast },
-          // {'level-last': isLevelLast},
-          {'is-root': isRoot},
-          {'no-expanded': !expanded}
+          { 'is-root': isRoot },
+          {
+            'no-expanded':
+              !item.children ||
+              item.children.length === 0 ||
+              (item.children && !expanded)
+          }
         )}
       >
         {targetNode === item.id && dropDividerPosition === 'up' && isOver && (
           <TreeDivider placement='top' />
         )}
-        <div className={classNames('item--wrapper', { 'is-rooter': isRoot, 'can-expand': item.children && item.children.length > 0, 'not-expanded': !expanded })}>
+        <div
+          className={classNames('item--wrapper', {
+            'is-rooter': isRoot,
+            'can-expand': item.children && item.children.length > 0,
+            'not-expanded': !expanded
+          })}
+        >
           {(!item.children || (item.children && !expanded)) &&
             targetNode === item.id &&
             dropDividerPosition === 'down' &&
@@ -79,11 +86,10 @@ class TreeItem extends Component {
               style={{ position: 'relative' }}
               className={`${prefixCls}_item-icon`}
             >
-              {(item.children && item.children.length > 0) || (origin && !expanded) ? (
-                renderSwitcher(expanded)
-              ) : showLine && (
-                <span className='hi-tree__dot' />
-              )}
+              {(item.children && item.children.length > 0) ||
+              (origin && !expanded)
+                ? renderSwitcher(expanded)
+                : showLine && <span className='hi-tree__dot' />}
             </span>
           }
           {checkable ? (
@@ -100,45 +106,74 @@ class TreeItem extends Component {
               text={item.title}
               disabled={item.disabled}
             />
-          ) : item.status === 'editable' || editNodes.map(node => node.id).includes(item.id) ? (
-            <div className='editing'>
-              <Input
-                placeholder='请输入菜单名称'
-                value={(editingNodes.find(node => node.id === item.id) || {}).title}
-                onChange={e => {
-                  onValueChange(e.target.value, item.id)
-                }}
-              />
-              <span
-                style={{ cursor: 'pointer', marginRight: 12, color: '#4284F5' }}
-                onClick={() => {
-                  saveEditNode(item.id)
-                }}
-              >
-                确定
-              </span>
-              <span
-                style={{ cursor: 'pointer' }}
-                onClick={() => {
-                  if (editNodes.map(node => node.id).includes(item.id)) {
-                    cancelEditNode(item.id)
-                  } else {
-                    cancelAddSiblingNode(item.id)
+          ) : item.status === 'editable' ||
+            editNodes.map(node => node.id).includes(item.id) ? (
+              <div className='editing'>
+                <Input
+                  placeholder='请输入菜单名称'
+                  value={
+                    (editingNodes.find(node => node.id === item.id) || {}).title
                   }
-                }}
-              >
+                  onChange={e => {
+                    onValueChange(e.target.value, item.id)
+                  }}
+                />
+                <span
+                  style={{ cursor: 'pointer', marginRight: 12, color: '#4284F5' }}
+                  onClick={() => {
+                    saveEditNode(item.id)
+                  }}
+                >
+                确定
+                </span>
+                <span
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    if (editNodes.map(node => node.id).includes(item.id)) {
+                      cancelEditNode(item.id)
+                    } else {
+                      cancelAddSiblingNode(item.id)
+                    }
+                  }}
+                >
                 取消
-              </span>
-            </div>
-          ) : draggable ? (
-            connectDragSource(
+                </span>
+              </div>
+            ) : draggable ? (
+              connectDragSource(
+                <span
+                  style={item.style}
+                  className={`${prefixCls}_item-text ${itemStyle} ${
+                    highlight === item.id ? 'highlight' : ''
+                  } ${draggingNode === item.id ? 'dragging' : ''}`}
+                  onContextMenu={e => {
+                    if (editable) {
+                      e.preventDefault()
+                      showRightClickMenu(item)
+                    }
+                  }}
+                  onClick={e => {
+                    closeRightClickMenu()
+                    onClick && onClick(item)
+                    highlightable && onSetHighlight(item)
+                    e.stopPropagation()
+                  }}
+                >
+                  {item.title}
+                  {renderRightClickMenu(item)}
+                  {targetNode === item.id &&
+                  dropDividerPosition === 'sub' &&
+                  isOver && <TreeDivider placement='inner' />}
+                </span>
+              )
+            ) : (
               <span
                 style={item.style}
                 className={`${prefixCls}_item-text ${itemStyle} ${
                   highlight === item.id ? 'highlight' : ''
                 } ${draggingNode === item.id ? 'dragging' : ''}`}
                 onContextMenu={e => {
-                  if (editable) {
+                  if (this.props.editable) {
                     e.preventDefault()
                     showRightClickMenu(item)
                   }
@@ -152,36 +187,12 @@ class TreeItem extends Component {
               >
                 {item.title}
                 {renderRightClickMenu(item)}
-                {targetNode === item.id && dropDividerPosition === 'sub' && isOver && (
-                  <TreeDivider placement='inner' />
-                )}
               </span>
-            )
-          ) : (
-            <span
-              style={item.style}
-              className={`${prefixCls}_item-text ${itemStyle} ${
-                highlight === item.id ? 'highlight' : ''
-              } ${draggingNode === item.id ? 'dragging' : ''}`}
-              onContextMenu={e => {
-                if (this.props.editable) {
-                  e.preventDefault()
-                  showRightClickMenu(item)
-                }
-              }}
-              onClick={e => {
-                closeRightClickMenu()
-                onClick && onClick(item)
-                highlightable && onSetHighlight(item)
-                e.stopPropagation()
-              }}
-            >
-              {item.title}
-              {renderRightClickMenu(item)}
-            </span>
-          )}
+            )}
         </div>
-        {item.children && item.children.length > 0 && expanded ? renderTree(item.children) : null}
+        {item.children && item.children.length > 0 && expanded
+          ? renderTree(item.children)
+          : null}
         {item.children &&
           expanded &&
           targetNode === item.id &&
@@ -262,11 +273,15 @@ const target = {
       if (!(sourcePosition.x === positionX && sourcePosition.y === positionY)) {
         setPosition(sourcePosition.x, sourcePosition.y)
         // 如果在节点的上半部分，则为移动其内部，如果为下半部分，则为节点下方
-        if (sourcePosition.y <= targetComponent.y + targetComponent.height / 3) {
+        if (
+          sourcePosition.y <=
+          targetComponent.y + targetComponent.height / 3
+        ) {
           setTargetNode(targetItem.id, 'up')
         } else if (
           targetComponent.y + targetComponent.height / 3 < sourcePosition.y &&
-          sourcePosition.y <= targetComponent.y + (targetComponent.height * 2) / 3
+          sourcePosition.y <=
+            targetComponent.y + (targetComponent.height * 2) / 3
         ) {
           setTargetNode(targetItem.id, 'sub')
         } else {
