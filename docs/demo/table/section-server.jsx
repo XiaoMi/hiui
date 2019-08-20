@@ -69,7 +69,7 @@ class Demo extends React.Component {
               endTime: '',
               pageSize
             },
-            type: "POST",
+            type: "GET",
             auto:true, // 自动发请求配置(默认false)
             success: (res) => {
               let {data: {data, columns,page: {pageSize, totalNum, pageNum}}} = res
