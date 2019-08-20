@@ -9,9 +9,6 @@ export default class Popper extends Component {
   popperHeight = undefined
 
   static propTypes = {
-    // attachEle: PropTypes.oneOfType([
-    //   PropTypes.node
-    // ]).isRequired,
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number]), // 为false时不设置
     height: PropTypes.number,
     className: PropTypes.string,
@@ -25,7 +22,7 @@ export default class Popper extends Component {
   static defaultProps = {
     show: false,
     topGap: 2,
-    leftGap: 0,
+    leftGap: 2,
     zIndex: 1060,
     placement: 'bottom-start'
   }
@@ -81,12 +78,12 @@ export default class Popper extends Component {
         break
 
       case 'left':
-        top = top + topGap + rect.height / 2
-        left = left + leftGap
+        top = top + rect.height / 2
+        left = left - leftGap
         break
 
       case 'right':
-        top = top + topGap + rect.height / 2
+        top = top + rect.height / 2
         left = left + rect.width + leftGap
         break
       case 'right-start':
@@ -178,7 +175,6 @@ export default class Popper extends Component {
     container.style.top = '0'
     container.style.left = '0'
     container.style.width = '100%'
-    // const child = React.Children.only(this.props.children)
 
     document.body.appendChild(container)
 

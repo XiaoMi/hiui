@@ -1,5 +1,19 @@
 # 更新日志
 
+## 2.0.5
+
+- 修复 `<Tooltip />` hover 的闪烁问题 [#522](https://github.com/XiaoMi/hiui/issues/522)
+- 修复 `<Upload />` maxCount 结合 onChange return false的计算错误问题 [#549](https://github.com/XiaoMi/hiui/issues/549)
+- 修复 `<Dropdown />` 部分区域点击无效的问题 [#555](https://github.com/XiaoMi/hiui/issues/555)
+- 修复 `<Menu />` 高亮项计算错误的问题 [#556](https://github.com/XiaoMi/hiui/issues/556)
+
+## 2.0.4
+
+- 修复：`DatePicker.format` 方法丢失的问题  [#540](https://github.com/XiaoMi/hiui/issues/540)
+- 修复：`<Radio />` 垂直布局的问题  [#545](https://github.com/XiaoMi/hiui/issues/545)
+- 修复：`<Card />` 增加默认背景色  [#546](https://github.com/XiaoMi/hiui/issues/546)
+- 优化：过滤`<Input />` 、 `<Counter />` 无关属性  [#547](https://github.com/XiaoMi/hiui/issues/547)
+
 ## 2.0.2
 
 - 修复：`<Menu />` 组件未传入图标时收起的显示问题 [#529](https://github.com/XiaoMi/hiui/issues/529)

@@ -16,7 +16,7 @@ class Item extends Component {
       index,
       data
     } = this.props
-    const isActive = activeIndex.indexOf(index) === 0
+    const isActive = activeIndex === index
     const cls = classNames('hi-menu-item', 'hi-menu-item__title', 'hi-menu__title', `hi-menu--${level}`, {
       'hi-menu-item--disabled': disabled,
       'hi-menu-item--active': isActive

@@ -5,6 +5,10 @@ import classNames from 'classnames'
 import Button from '../button/index'
 import Popper from '../popper'
 import Provider from '../context'
+
+const ItemWrapper = ({href, children}) => {
+  return href ? <a href={href}>{children}</a> : <React.Fragment>{children}</React.Fragment>
+}
 class Dropdown extends Component {
   constructor (props) {
     super(props)
@@ -130,10 +134,6 @@ class Dropdown extends Component {
                   item.disabled && 'hi-dropdown__item--disabled',
                   String(item.title) === String(title) && 'hi-dropdown__item--active'
                 )
-
-                const ItemWrapper = ({href, children}) => {
-                  return href ? <a href={href}>{children}</a> : <React.Fragment>{children}</React.Fragment>
-                }
 
                 return <li className={liCls} key={index} onClick={this.handlerClick.bind(this, item)}>
                   <ItemWrapper href={item.url}>

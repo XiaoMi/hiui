@@ -16,6 +16,9 @@
   &::after {
     content: '';
     position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #4a4a4a;
   }
 }
 
@@ -24,11 +27,9 @@
   margin-bottom: 5px;
 
   &::after {
-    border: 5px solid transparent;
-    border-top-color: #4a4a4a;
-    bottom: -10px;
+    bottom: -2px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) rotate(45deg);
   }
 }
 
@@ -37,11 +38,9 @@
   margin-left: 5px;
 
   &::after {
-    border: 5px solid transparent;
-    border-right-color: #4a4a4a;
-    left: -10px;
+    left: -2px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%) rotate(45deg);
   }
 }
 
@@ -50,11 +49,9 @@
   margin-top: 5px;
 
   &::after {
-    border: 5px solid transparent;
-    border-bottom-color: #4a4a4a;
-    top: -10px;
+    top: -2px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) rotate(45deg);
   }
 }
 
@@ -63,11 +60,9 @@
   margin-right: 5px;
 
   &::after {
-    border: 5px solid transparent;
-    border-left-color: #4a4a4a;
-    right: -10px;
+    right: -2px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%) rotate(45deg);
   }
 }
 
@@ -76,11 +71,9 @@
   margin-bottom: 5px;
 
   &::after {
-    border: 5px solid transparent;
-    border-top-color: #4a4a4a;
-    bottom: -10px;
+    bottom: -2px;
     left: 20%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) rotate(45deg);
   }
 }
 
@@ -89,11 +82,9 @@
   margin-bottom: 5px;
 
   &::after {
-    border: 5px solid transparent;
-    border-top-color: #4a4a4a;
-    bottom: -10px;
+    bottom: -2px;
     right: 10%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) rotate(45deg);
   }
 }
 
@@ -102,11 +93,9 @@
   margin-top: 5px;
 
   &::after {
-    border: 5px solid transparent;
-    border-bottom-color: #4a4a4a;
-    top: -10px;
+    top: -2px;
     right: 10%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) rotate(45deg);
   }
 }
 
@@ -115,11 +104,9 @@
   margin-top: 5px;
 
   &::after {
-    border: 5px solid transparent;
-    border-bottom-color: #4a4a4a;
-    top: -10px;
+    top: -2px;
     left: 20%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) rotate(45deg);
   }
 }
 
@@ -128,9 +115,7 @@
   margin-right: 5px;
 
   &::after {
-    border: 5px solid transparent;
-    border-left-color: #4a4a4a;
-    right: -10px;
+    right: -2px;
     top: 15%;
   }
 }
@@ -140,9 +125,7 @@
   margin-right: 5px;
 
   &::after {
-    border: 5px solid transparent;
-    border-left-color: #4a4a4a;
-    right: -10px;
+    right: -2px;
     bottom: 15%;
   }
 }
@@ -152,9 +135,7 @@
   margin-left: 5px;
 
   &::after {
-    border: 5px solid transparent;
-    border-right-color: #4a4a4a;
-    left: -10px;
+    left: -2px;
     top: 15%;
   }
 }
@@ -164,9 +145,7 @@
   margin-left: 5px;
 
   &::after {
-    border: 5px solid transparent;
-    border-right-color: #4a4a4a;
-    left: -10px;
+    left: -2px;
     bottom: 15%;
   }
 }

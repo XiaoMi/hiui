@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import { format, formatValue, getAttrs, formatAmount } from './util'
+import { format, formatValue, getAttrs, formatAmount, filterObjProps } from './util'
 
 /**
  * 自定义属性全小写；原声属性驼峰法
@@ -82,7 +82,7 @@ class Input extends Component {
     let prefixId = id ? id + '_prefix' : ''
     let suffixId = id ? id + '_suffix' : ''
     const { defaultValue, ...attrs } = this.attrs
-
+    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'suffixicon', 'suffix', 'prepend', 'prefixicon', 'prefix', 'localeDatas', 'append'])
     return (
       <div
         className={classNames('hi-input__out', {
@@ -107,7 +107,7 @@ class Input extends Component {
             value={this.state.value}
             autoComplete='off'
             disabled={disabled}
-            {...attrs}
+            {...filterAttrs}
             placeholder={placeholder}
             onChange={e => {
               e.persist()
@@ -215,6 +215,7 @@ class Input extends Component {
     let { active } = this.state
     let { disabled } = this.props
     const { defaultValue, ...attrs } = this.attrs
+    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'suffixicon', 'suffix', 'prepend', 'prefixicon', 'prefix', 'localeDatas', 'append'])
 
     return (
       <textarea
@@ -223,7 +224,7 @@ class Input extends Component {
         autoComplete='off'
         value={this.state.value}
         disabled={disabled}
-        {...attrs}
+        {...filterAttrs}
         onChange={e => {
           e.persist()
           let valueTrue = e.target.value
