@@ -14,7 +14,7 @@ function open ({ prefix, ...noticeProps }) {
       prefix
     })
     render(noti, noticeContainer)
-    containterRef.current.addNotice(noticeProps)
+    setTimeout(() => containterRef.current.addNotice(noticeProps), 0)
     noticeInstance[prefix] = {
       add: notice => containterRef.current.addNotice(notice),
       remove: key => containterRef.current.removeNotice(key),

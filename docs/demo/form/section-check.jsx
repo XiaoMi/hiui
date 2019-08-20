@@ -36,7 +36,7 @@ class Demo extends React.Component {
           message: '请输入数量',
           trigger: 'onChange',
           validator: (rule, value, cb) => {
-            const count = parseInt(value)
+            const count = +value
             if(isNaN(count)) {
               cb('请输入数字')
             } else if(count <= 0) {
@@ -94,7 +94,7 @@ class Demo extends React.Component {
     return (
       <Row>
         <Col span={12}>
-          <Form ref={this.form} model={form} rules={this.state.rules} labelWidth='80'>
+          <Form ref={this.form} model={form} rules={this.state.rules} labelWidth='80' labelPlacement='right'>
             <FormItem label='名称' field='name'>
               <Input value={form.name} placeholder='name' onChange={this.handleChange.bind(this, 'name')}/>
             </FormItem>

@@ -143,6 +143,12 @@ $prefixCls: '.hi-radio' !default;
   &-group {
     display: inline-block;
 
+    &.vertical {
+      .hi-radio {
+        display: flex;
+      }
+    }
+
     &.hi-btn-group {
       #{$prefixCls} {
         &__input {

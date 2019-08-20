@@ -14,7 +14,6 @@ class BasePicker extends Component {
   rInput = null
   constructor (props) {
     super(props)
-    console.log('老版')
     this.state = {
       showPanel: false,
       style: {},
@@ -292,7 +291,7 @@ class BasePicker extends Component {
   _icon () {
     const {isFocus} = this.state
     const iconCls = classNames(
-      'hi-datepicker__input-icon',
+      'hi-datepicker-legacy__input-icon',
       'hi-icon',
       isFocus ? 'icon-close-circle clear' : 'icon-date'
     )
@@ -311,10 +310,10 @@ class BasePicker extends Component {
       showTime
     } = this.props
     const _cls = classNames(
-      'hi-datepicker__input',
-      'hi-datepicker__input--range',
-      showTime && 'hi-datepicker__input--range-time',
-      disabled && 'hi-datepicker__input--disabled'
+      'hi-datepicker-legacy__input',
+      'hi-datepicker-legacy__input--range',
+      showTime && 'hi-datepicker-legacy__input--range-time',
+      disabled && 'hi-datepicker-legacy__input--disabled'
     )
     return (
       <div className={_cls}>
@@ -331,10 +330,10 @@ class BasePicker extends Component {
       showTime
     } = this.props
     const _cls = classNames(
-      'hi-datepicker__input',
-      'hi-datepicker__input--normal',
-      disabled && 'hi-datepicker__input--disabled',
-      showTime && 'hi-datepicker__input--middle'
+      'hi-datepicker-legacy__input',
+      'hi-datepicker-legacy__input--normal',
+      disabled && 'hi-datepicker-legacy__input--disabled',
+      showTime && 'hi-datepicker-legacy__input--middle'
     )
     return (
       <div className={_cls}>
@@ -346,7 +345,7 @@ class BasePicker extends Component {
   render () {
     const {type, showTime} = this.props
     return (
-      <span ref={el => { this.inputRoot = el }} className='hi-datepicker__input-root'>
+      <span ref={el => { this.inputRoot = el }} className='hi-datepicker-legacy__input-root'>
         {
           (type.indexOf('range') !== -1 || type === 'timeperiod') ? this.renderRangeInput() : this.renderNormalInput()
         }

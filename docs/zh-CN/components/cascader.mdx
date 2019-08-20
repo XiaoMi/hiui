@@ -28,20 +28,20 @@ import { Badge } from '@libs'
 
 ## Props
 
-| 参数                               | 说明                                              | 类型                        | 可选值        | 默认值                                                                                     |
-| ---------------------------------- | ------------------------------------------------- | --------------------------- | ------------- | ------------------------------------------------------------------------------------------ |
-| fieldNames                         | 设置 options 中 label, value, children 对应的 key | object                      | -             | { label: 'label', value: 'value', children: 'children'}<Badge type='feature' text='new' /> |
-| data                               | 设置选择项数据源                                  | DataItem[]                  | -             | -                                                                                          |
-| value                              | 设置当前选中值                                    | string[]                    | -             | []                                                                                         |
-| searchable                         | 是否可搜索                                        | boolean                     | true \| false | false                                                                                      |
-| clearable                          | 是否可清空                                        | boolean                     | true \| false | true                                                                                       |
-| disabled                           | 是否禁止使用                                      | boolean                     | true \| false | false                                                                                      |
-| changeOnSelect                     | 是否启用选择即改变功能                            | boolean                     | true \| false | false                                                                                      |
-| placeholder                        | 输入框占位                                        | string                      | -             | '请选择'                                                                                   |
-| emptyContent                       | 设置选项为空时展示的内容                          | string \| ReactNode         | -             | '无匹配数据'                                                                               |
-| displayRender                      | 自定义选择后展示的内容                            | (value: string[]) => string | -             | -                                                                                          |
-| onChange                           | 选择后的回调                                      | (value: string[]) => void   | -             | -                                                                                          |
-| options<Badge text='deprecated' /> | 可选项数据源。即将废弃，请使用 data 代替          | Array                       | -             | -                                                                                          |
+| 参数           | 说明                                              | 类型                        | 可选值        | 默认值                                                  |
+| -------------- | ------------------------------------------------- | --------------------------- | ------------- | ------------------------------------------------------- |
+| fieldNames     | 设置 options 中 label, value, children 对应的 key | object                      | -             | { label: 'label', value: 'value', children: 'children'} |
+| data           | 设置选择项数据源                                  | DataItem[]                  | -             | -                                                       |
+| value          | 设置当前选中值                                    | string[]                    | -             | []                                                      |
+| searchable     | 是否可搜索                                        | boolean                     | true \| false | false                                                   |
+| clearable      | 是否可清空                                        | boolean                     | true \| false | true                                                    |
+| disabled       | 是否禁止使用                                      | boolean                     | true \| false | false                                                   |
+| changeOnSelect | 是否启用选择即改变功能                            | boolean                     | true \| false | false                                                   |
+| placeholder    | 输入框占位                                        | string                      | -             | '请选择'                                                |
+| emptyContent   | 设置选项为空时展示的内容                          | string \| ReactNode         | -             | '无匹配数据'                                            |
+| displayRender  | 自定义选择后展示的内容                            | (value: string[]) => string | -             | -                                                       |
+| style          | 自定义样式                                        | object                      | -             | -                                                       |
+| onChange       | 选择后的回调                                      | (value: string[]) => void   | -             | -                                                       |
 
 ## Type
 

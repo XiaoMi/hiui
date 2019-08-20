@@ -98,7 +98,7 @@ export const format = (val, type) => {
     case 'email':
       return val.replace(/\W/g, '')
     case 'amount':
-      val = val.replace(/[^\d|.|,]/g, '').replace(/(\.\d*?)(\.|\,).*/, (_, $1) => {
+      val = val.replace(/[^\d|.|,]/g, '').replace(/(\.\d*?)(\.|,).*/, (_, $1) => {
         return $1
       })
       return val
@@ -132,4 +132,14 @@ export const formatValue = (val, type) => {
   } else {
     return val
   }
+}
+
+/**
+ * 过滤属性
+ */
+export const filterObjProps = (obj, propsNeedFilter) => {
+  return Object.keys(obj).filter(key => !propsNeedFilter.includes(key)).reduce((filteredObj, key) => {
+    filteredObj[key] = obj[key]
+    return filteredObj
+  }, {})
 }

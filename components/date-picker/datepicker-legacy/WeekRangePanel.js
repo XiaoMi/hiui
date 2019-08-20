@@ -58,18 +58,18 @@ export default class WeekRangePanel extends Component {
   renderHeader (type, value, lr) {
     const {year, month} = deconstructDate(value)
     return (
-      <div className='hi-datepicker__header'>
-        <div className='hi-datepicker__header-btns'>
+      <div className='hi-datepicker-legacy__header'>
+        <div className='hi-datepicker-legacy__header-btns'>
           <span onClick={() => this.changeYear(true, lr)} ><Icon name='double-left' /></span>
           <span onClick={() => this.changeMonth(true, lr)} ><Icon name='left' /></span>
         </div>
-        <span className='hi-datepicker__header-text'>
+        <span className='hi-datepicker-legacy__header-text'>
           {this.getHeaderCenterContent(year, month)}
         </span>
-        {/* <span className='hi-datepicker__header-text'>
+        {/* <span className='hi-datepicker-legacy__header-text'>
           {month}月
         </span> */}
-        <div className='hi-datepicker__header-btns'>
+        <div className='hi-datepicker-legacy__header-btns'>
           <span onClick={() => this.changeMonth(false, lr)} ><Icon name='right' /></span>
           <span onClick={() => this.changeYear(false, lr)} ><Icon name='double-right' /></span>
         </div>
@@ -194,7 +194,7 @@ export default class WeekRangePanel extends Component {
     const {range, leftDate, rightDate} = this.state
     const {type, theme} = this.props
     const _c = classNames(
-      'hi-datepicker',
+      'hi-datepicker-legacy',
       theme && 'theme__' + theme
     )
     // const {year, month, day} = deconstructDate(date)
@@ -205,10 +205,10 @@ export default class WeekRangePanel extends Component {
         style={this.props.style}
         className={_c}
       >
-        <div className='hi-datepicker__body  hi-datepicker__body--range'>
-          <div className='hi-datepicker__panel hi-datepicker__panel--left'>
+        <div className='hi-datepicker-legacy__body  hi-datepicker-legacy__body--range'>
+          <div className='hi-datepicker-legacy__panel hi-datepicker-legacy__panel--left'>
             {this.renderHeader(type, leftDate, 'left')}
-            <div className='hi-datepicker__calender-container'>
+            <div className='hi-datepicker-legacy__calender-container'>
               <Calender
                 date={leftDate}
                 range={range}
@@ -218,9 +218,9 @@ export default class WeekRangePanel extends Component {
               />
             </div>
           </div>
-          <div className='hi-datepicker__panel hi-datepicker__panel--right'>
+          <div className='hi-datepicker-legacy__panel hi-datepicker-legacy__panel--right'>
             {this.renderHeader(type, rightDate, 'right')}
-            <div className='hi-datepicker__calender-container'>
+            <div className='hi-datepicker-legacy__calender-container'>
               <Calender
                 date={rightDate}
                 range={range}

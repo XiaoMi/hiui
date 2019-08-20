@@ -36,16 +36,16 @@ class TimePeriodPanel extends Component {
     const { onTimePeriodPick, localeDatas } = this.props
     const activeIndex = this.getActiveIndex()
     return <div
-      className='hi-datepicker__time-period'
+      className='hi-datepicker-legacy__time-period'
     >
-      <div className='hi-datepicker__period-header'>{localeDatas.datePicker.timePeriod}</div>
-      <div className='hi-datepicker__period-body'>
-        <ul className='hi-datepicker__period-list' ref={this.listEl}>
+      <div className='hi-datepicker-legacy__period-header'>{localeDatas.datePicker.timePeriod}</div>
+      <div className='hi-datepicker-legacy__period-body'>
+        <ul className='hi-datepicker-legacy__period-list' ref={this.listEl}>
           {
             list.map((item, index) => {
               const cls = classNames(
-                'hi-datepicker__period-item',
-                activeIndex === index && 'hi-datepicker__period-item--active'
+                'hi-datepicker-legacy__period-item',
+                activeIndex === index && 'hi-datepicker-legacy__period-item--active'
               )
               return <li
                 className={cls}

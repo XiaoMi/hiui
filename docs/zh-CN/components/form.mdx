@@ -25,32 +25,27 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 
 <DemoCheck />
 
-import { Badge } from '@libs'
-
 ## Props
 
 ### Form
 
-| 参数                                     | 说明                                                                                  | 类型    | 可选值                     | 默认值     |
-| ---------------------------------------- | ------------------------------------------------------------------------------------- | ------- | -------------------------- | ---------- |
-| model                                    | 表单数据                                                                              | object  | -                          | -          |
-| rules                                    | 表单验证规则，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object  | -                          | -          |
-| labelWidth                               | label 宽度，可用任意 CSS 长度单位                                                     | string  |                            |
-| labelPlacement                           | label 放置的位置                                                                      | string  | 'right' \| 'left' \| 'top' | 'right'    |
-| placement                                | 是否横向排列                                                                          | string  | 'horizontal' \| 'vertical' | 'vertical' |
-| showColon                                | 是否显示冒号                                                                          | boolean | true \| false              | true       |
-| labelPosition<Badge text='deprecated' /> | label 放置的位置。即将废弃，请使用 labelPlacement 代替                                | string  | 'right' \| 'left' \| 'top' | 'right'    |
-| inline<Badge text='deprecated' />        | 是否横向排列。即将废弃，请使用 placement 代替                                         | boolean | true \| false              | false      |
+| 参数           | 说明                                                                                  | 类型    | 可选值                     | 默认值     |
+| -------------- | ------------------------------------------------------------------------------------- | ------- | -------------------------- | ---------- |
+| model          | 表单数据                                                                              | object  | -                          | -          |
+| rules          | 表单验证规则，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object  | -                          | -          |
+| labelWidth     | label 宽度，可用任意 CSS 长度单位                                                     | string  |                            |
+| labelPlacement | label 放置的位置                                                                      | string  | 'right' \| 'left' \| 'top' | 'left'    |
+| placement      | 是否横向排列                                                                          | string  | 'horizontal' \| 'vertical' | 'vertical' |
+| showColon      | 是否显示冒号                                                                          | boolean | true \| false              | true       |
 
 ### Form.Item
 
-| 参数                            | 说明                                           | 类型    | 可选值        | 默认值 |
-| ------------------------------- | ---------------------------------------------- | ------- | ------------- | ------ |
-| field                           | 表单域对应 model 的字段                        | string  | -             | -      |
-| label                           | 标签文本，默认自动添加冒号                     | string  | -             | -      |
-| required                        | 是否必填                                       | boolean | true \| false | false  |
-| showColon                       | 是否显示冒号                                   | boolean | true \| false | -      |
-| prop<Badge text='deprecated' /> | 表单域 model 字段。即将废弃，请使用 field 代替 | string  | -             | -      |
+| 参数      | 说明                       | 类型    | 可选值        | 默认值 |
+| --------- | -------------------------- | ------- | ------------- | ------ |
+| field     | 表单域对应 model 的字段    | string  | -             | -      |
+| label     | 标签文本，默认自动添加冒号 | string  | -             | -      |
+| required  | 是否必填                   | boolean | true \| false | false  |
+| showColon | 是否显示冒号               | boolean | true \| false | -      |
 
 ## Methods
 

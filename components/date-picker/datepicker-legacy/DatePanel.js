@@ -138,17 +138,17 @@ class DatePanel extends Component {
    */
   renderHeader (type, value) {
     return (
-      <div className='hi-datepicker__header'>
-        <div className='hi-datepicker__header-btns'>
+      <div className='hi-datepicker-legacy__header'>
+        <div className='hi-datepicker-legacy__header-btns'>
           <span onClick={() => this.changeYear(true)} ><Icon name='double-left' /></span>
           {
             (type !== 'month' && type !== 'year') && <span onClick={() => this.changeMonth(true)} ><Icon name='left' /></span>
           }
         </div>
-        <span className='hi-datepicker__header-text' onClick={() => this.setState({currentView: 'year'})}>
+        <span className='hi-datepicker-legacy__header-text' onClick={() => this.setState({currentView: 'year'})}>
           {this.getHeaderCenterContent()}
         </span>
-        <div className='hi-datepicker__header-btns'>
+        <div className='hi-datepicker-legacy__header-btns'>
           {
             (type !== 'month' && type !== 'year') && <span onClick={() => this.changeMonth(false)}><Icon name='right' /></span>
           }
@@ -267,13 +267,13 @@ class DatePanel extends Component {
     const {date, currentView} = this.state
     const {theme, showTime, type, timeInterval} = this.props
     const _c = classNames(
-      'hi-datepicker',
+      'hi-datepicker-legacy',
       theme && 'theme__' + theme
     )
     const bodyCls = classNames(
-      'hi-datepicker__body',
-      showTime && 'hi-datepicker__body--hastime',
-      type === 'timeperiod' && 'hi-datepicker__body--period'
+      'hi-datepicker-legacy__body',
+      showTime && 'hi-datepicker-legacy__body--hastime',
+      type === 'timeperiod' && 'hi-datepicker-legacy__body--period'
     )
     return (
       <div
@@ -281,9 +281,9 @@ class DatePanel extends Component {
         className={_c}
       >
         <div className={bodyCls}>
-          <div className='hi-datepicker__panel hi-datepicker__panel--left'>
+          <div className='hi-datepicker-legacy__panel hi-datepicker-legacy__panel--left'>
             {currentView !== 'time' && this.renderHeader(currentView, date)}
-            <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${currentView}`}>
+            <div className={`hi-datepicker-legacy__calender-container hi-datepicker-legacy__calender-container--${currentView}`}>
               {this._getNormalComponent()}
             </div>
           </div>

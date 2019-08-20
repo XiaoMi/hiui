@@ -1,7 +1,7 @@
 @import '@hi-ui/core-css/index.scss';
 $tree: 'hi-tree' !default;
 
-.hi-tree {
+.hi-tree--legacy {
   font-size: 14px;
 
   @include component-reset();

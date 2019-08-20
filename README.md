@@ -26,7 +26,7 @@ HIUI is a solution that is adequate for the fomulation and implementation of int
 npm install @hi-ui/hiui
 ```
 
-For components usage, see more at [HIUI Documents](https://xiaomi.github.io/hiui//en-US/components).
+For components usage, see more at [HIUI Documents](https://xiaomi.github.io/hiui/zh-CN/docs/quick-start).
 
 ## Contribute
 

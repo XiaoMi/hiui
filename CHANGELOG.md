@@ -1,16 +1,42 @@
 # 更新日志
 
+## 2.0.5
+
+- 修复 `<Tooltip />` hover 的闪烁问题 [#522](https://github.com/XiaoMi/hiui/issues/522)
+- 修复 `<Upload />` maxCount 结合 onChange return false的计算错误问题 [#549](https://github.com/XiaoMi/hiui/issues/549)
+- 修复 `<Dropdown />` 部分区域点击无效的问题 [#555](https://github.com/XiaoMi/hiui/issues/555)
+- 修复 `<Menu />` 高亮项计算错误的问题 [#556](https://github.com/XiaoMi/hiui/issues/556)
+
+## 2.0.4
+
+- 修复：`DatePicker.format` 方法丢失的问题  [#540](https://github.com/XiaoMi/hiui/issues/540)
+- 修复：`<Radio />` 垂直布局的问题  [#545](https://github.com/XiaoMi/hiui/issues/545)
+- 修复：`<Card />` 增加默认背景色  [#546](https://github.com/XiaoMi/hiui/issues/546)
+- 优化：过滤`<Input />` 、 `<Counter />` 无关属性  [#547](https://github.com/XiaoMi/hiui/issues/547)
+
+## 2.0.2
+
+- 修复：`<Menu />` 组件未传入图标时收起的显示问题 [#529](https://github.com/XiaoMi/hiui/issues/529)
+
+## 2.0.1
+
+- 修复：`<Table />` 组件服务端表格分页和错误请求处理的问题 [#519](https://github.com/XiaoMi/hiui/issues/519)
+- 修复：`<Tag />` 、`<Message />` 组件的导出问题 [#516](https://github.com/XiaoMi/hiui/issues/516)
+- 修复：`<Upload/>` 组件 onchange 返回 boolean 无效的问题 [#514](https://github.com/XiaoMi/hiui/issues/514)
+
 ## 2.0.0
-- 修改：`<Dropdown />` 弃用 list 属性，使用 data 属性代替
+
+- 修改：`<Dropdown />`
+  - 废弃 `list` 属性，使用 `data` 属性代替
 - 修改：`<Pagination />` 组件
-  - 弃用 `mode` 属性，使用 `type` 属性代替
+  - 废弃 `mode` 属性，使用 `type` 属性代替
   - 新增 `current` 受控属性
   - 新增 `max` 最大页数属性
   - 废弃`hideOnSinglePage` 属性，使用 `autoHide` 属性代替
   - 废弃`sizeChangeEvent` 属性，使用`onPageSizeChange` 属性代替
   - 废弃`showQuickJumper` 属性，使用`showJumper`属性代替
 - 修改：`<Stepper />` 组件
-  - 废弃`id`、`className`属性
+  - 废弃`id`属性
   - 废弃 `list` 属性，使用`data` 属性代替
   - 废弃`vertical` 属性，使用`placement` 属性代替
   - 废弃`up` 属性，使用`itemLayout` 属性代替
@@ -19,7 +45,122 @@
   - 废弃`mini` 属性，使用`collapsed` 属性代替
   - 废弃`miniToggle` 属性，使用`showCollpse` 属性代替
   - 废弃`onMiniChange` 属性，使用`onCollapse` 属性代替
-- 更新中…
+- 修改：`<Form />` 组件
+  - 废弃`labelPosition` 属性，使用`labelPlacement` 属性代替
+  - 废弃`inline` 属性，使用`placement` 属性代替
+- 修改：`<Select />` 组件
+  - 废弃`mode` 属性，使用`type` 属性代替
+  - 废弃`multipleMode` 属性
+  - 废弃`list` 属性，使用`data` 属性代替
+  - 废弃`origin` 属性，使用`dataSource` 属性代替
+  - 废弃`noFoundTip` 属性，使用`emptyContent` 属性代替
+  - 新增`render` 属性
+- 修改：`<Cascader />` 组件
+  - 废弃`options` 属性，使用`data` 属性代替
+  - 废弃`noFoundTip` 属性，使用`emptyContent` 属性代替
+  - 废弃`origin` 属性，使用`dataSource` 属性代替
+  - 废弃`noFoundTip` 属性，使用`emptyContent` 属性代替
+  - 新增`render` 属性
+- 修改：`<Radio />` 组件
+  - 废弃`list` 属性，使用`data` 属性代替
+  - 废弃`name` 属性
+  - 废弃`align` 属性
+  - 废弃`layout` 属性，使用`placement` 属性代替
+  - 废弃`mode` 属性，使用`type` 属性代替
+  - 新增`autoFocus` 属性
+- 修改：`<Checkbox />` 组件
+  - 废弃`name` 属性
+  - 废弃`align` 属性
+  - 废弃`all` 属性
+  - 废弃`list` 属性
+  - 新增`autoFocus` 属性
+  - 新增`defaultChecked` 属性
+  - 新增`indeterminate` 属性
+  - 新增`<Checkbox.Group />` 组件
+- 修改：`<Switch />` 组件
+  - 废弃`size` 属性
+- 修改：`<Datepicker />` 组件
+  - 废弃`minDate` 属性，使用`min` 属性代替
+  - 废弃`maxDate` 属性，使用`max` 属性代替
+  - 新增`defaultValue` 属性
+- 修改：`<Upload />` 组件
+  - 废弃`width` `height` 属性
+  - 废弃`buttonIcon` 属性
+  - 废弃`buttonText` 属性，使用`content` 属性代替
+  - 废弃`param` 属性，使用`params` 属性代替
+  - 新增`maxSize` 属性
+  - 新增`maxCount` 属性
+  - 新增`tips` 属性
+- 修改：`<Rate />` 组件
+  - 废弃`allowClear` 属性，使用`clearable` 属性代替
+- 修改：`<Collapse />` 组件
+  - 废弃`activeKey` 属性，使用`activeId` 属性代替
+  - 废弃`arrow` 属性，使用`arrowPlacement` 属性代替
+  - 新增`showArrow` 属性
+  - 废弃`type` 属性
+- 修改：`<Tooltip />` 组件
+  - 重写 Tooltip.open 方法
+- 修改：`<Progress />` 组件
+  - 废弃原`type` 属性，使用`apperance` 属性代替
+  - 废弃`text` 属性，使用`content` 属性代替
+  - 废弃`withOutText` 属性，使用`showInfo` 属性代替
+  - 废弃原`status` 属性，使用`type` 属性代替
+  - 废弃`inside` 属性，使用`placement` 属性代替
+  - 新增`width` `height` 属性
+- 修改：`<Card />` 组件
+  - 废弃`extraShow` 属性，使用`extraType` 属性代替
+  - 废弃`description` 属性，使用`content` 属性代替
+  - 废弃`cover` 属性，使用`coverUrl` 属性代替
+- 修改：`<Timeline />` 组件
+  - 废弃`layout` 属性，使用`type` 属性代替
+  - 废弃`list` 属性，使用`data` 属性代替
+  - 修改`data`中的 `description`属性为 `content`
+  - 修改`data`中的 `dot`属性为 `icon`
+- 修改：`<Modal />` 组件
+  - 废弃`backDrop` 属性，使用`maskCloseable` 属性代替
+  - 废弃`footers` 属性，使用`footer` 属性代替
+  - 废弃`closeBtn` 属性，使用`closeable` 属性代替
+- 修改：`<Notification />` 组件
+  - 废弃`message` 属性，使用`content` 属性代替
+  - 新增`key` 属性
+  - 废弃`showClose` 属性，使用`closeable` 属性代替
+  - 新增`confirmText` 属性
+  - 新增`duration` 属性
+- 修改：`<Alert />` 组件
+  - 废弃`message` 属性，使用`content` 属性代替
+  - 新增`key` 属性
+  - 废弃`autoClose` `autoCloseTime` 属性，使用`duration` 属性代替
+- 修改：`<Badge />` 组件
+  - 废弃`value` 属性，使用`content` 属性代替
+  - 废弃`dot` 属性，使用`type` 属性代替
+  - 废弃`hidden` 属性，使用`visible` 属性代替
+  - 新增`color` 属性
+- 修改：`<Loading />` 组件
+  - 废弃`tip` 属性，使用`content` 属性代替
+  - 废弃`show` 属性，使用`visible` 属性代替
+  - 废弃`target` 属性
+- 修改：`<Tabs />` 组件
+  - 废弃`defaultActiveKey` 属性，使用`defaultActiveId` 属性代替
+  - 废弃`showTabsNum` 属性，使用`max` 属性代替
+  - 新增`activeId` 属性
+
+## 1.5.8
+
+- 修复：`<Timepicker />` 在时间列表滚动时引起的日期变化问题 [#499](https://github.com/XiaoMi/hiui/issues/499)
+- 修复 `Form.Item` 组件不传 label 属性依旧占位的问题 [#504](https://github.com/XiaoMi/hiui/issues/504)
+
+## 1.5.7
+
+- 修复：`<Form />` Form.Item 丢失的问题 [#472](https://github.com/XiaoMi/hiui/issues/472)
+
+## 1.5.6
+
+- 修复：`<Form />` ref 无法获取 validate 方法的 bug [#469](https://github.com/XiaoMi/hiui/issues/469)
+
+## 1.5.5
+
+- 修复：`<DatePicker />` 范围选择初始值不正确的问题 [#338](https://github.com/XiaoMi/hiui/issues/338)
+- 修复：`<Form />` 的横向显示，FormItem 组件不传 label 属性的时候，内容会上移的问题 [#436](https://github.com/XiaoMi/hiui/issues/436)
 
 ## 1.5.4
 

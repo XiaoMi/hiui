@@ -16,8 +16,8 @@ const _parseProps = (date) => {
   }
   return {
     range: {
-      startDate: startOfWeek(leftDate),
-      endDate: rightDate ? endOfWeek(rightDate) : endOfWeek(leftDate),
+      startDate,
+      endDate,
       selecting: false
     },
     leftDate,

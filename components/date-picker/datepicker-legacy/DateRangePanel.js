@@ -172,20 +172,20 @@ class DatePanel extends Component {
     const {year, month} = deconstructDate(value)
 
     return (
-      <div className='hi-datepicker__header'>
+      <div className='hi-datepicker-legacy__header'>
         {
-          <div className='hi-datepicker__header-btns'>
+          <div className='hi-datepicker-legacy__header-btns'>
             <span onClick={() => this.changeYear(true, lr)} ><Icon name='double-left' /></span>
             {
               type.indexOf('date') !== -1 && <span onClick={() => this.changeMonth(true, lr)} ><Icon name='left' /></span>
             }
           </div>
         }
-        <span className='hi-datepicker__header-text'>
+        <span className='hi-datepicker-legacy__header-text'>
           {this.getHeaderCenterContent(year, month)}
         </span>
         {
-          <div className='hi-datepicker__header-btns'>
+          <div className='hi-datepicker-legacy__header-btns'>
             {
               type.indexOf('date') !== -1 && <span onClick={() => this.changeMonth(false, lr)} ><Icon name='right' /></span>
             }
@@ -243,7 +243,7 @@ class DatePanel extends Component {
   }
   renderShortcut (shortcuts) {
     return (
-      <div className='hi-datepicker__shortcuts'>
+      <div className='hi-datepicker-legacy__shortcuts'>
         {
           shortcuts.map((m, n) => {
             return (
@@ -279,7 +279,7 @@ class DatePanel extends Component {
     let {leftDate, rightDate, showMask} = this.state
     const format = 'HH:mm:ss'
     const cls = classNames(
-      showMask && 'hi-datepicker__time-text'
+      showMask && 'hi-datepicker-legacy__time-text'
     )
     return (
       <span className={cls}>
@@ -297,13 +297,13 @@ class DatePanel extends Component {
     // const rightDate = nextMonth(leftDate)
     const {shortcuts, theme, showTime, date} = this.props
     const _c = classNames(
-      'hi-datepicker',
+      'hi-datepicker-legacy',
       theme && 'theme__' + theme
     )
     const bodyCls = classNames(
-      'hi-datepicker__body',
-      'hi-datepicker__body--range',
-      shortcuts && 'hi-datepicker__body--shortcuts'
+      'hi-datepicker-legacy__body',
+      'hi-datepicker-legacy__body--range',
+      shortcuts && 'hi-datepicker-legacy__body--shortcuts'
     )
     return (
       <div
@@ -314,11 +314,11 @@ class DatePanel extends Component {
           {
             shortcuts && this.renderShortcut(shortcuts)
           }
-          <div className='hi-datepicker__panel hi-datepicker__panel--left'>
+          <div className='hi-datepicker-legacy__panel hi-datepicker-legacy__panel--left'>
             {
               this.renderHeader(currentView, leftDate, 'left')
             }
-            <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${currentView}`}>
+            <div className={`hi-datepicker-legacy__calender-container hi-datepicker-legacy__calender-container--${currentView}`}>
               <Calender
                 date={leftDate}
                 range={range}
@@ -330,11 +330,11 @@ class DatePanel extends Component {
               />
             </div>
           </div>
-          <div className='hi-datepicker__panel hi-datepicker__panel--right'>
+          <div className='hi-datepicker-legacy__panel hi-datepicker-legacy__panel--right'>
             {
               this.renderHeader(currentView, rightDate, 'right')
             }
-            <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${currentView}`}>
+            <div className={`hi-datepicker-legacy__calender-container hi-datepicker-legacy__calender-container--${currentView}`}>
               <Calender
                 date={rightDate}
                 range={range}
@@ -350,7 +350,7 @@ class DatePanel extends Component {
         {
           showTime && (
             <div
-              className='hi-datepicker__footer'
+              className='hi-datepicker-legacy__footer'
               onClick={this.selectTimeEvent.bind(this)}
             >
               {this.getRangeDateStr()}
@@ -359,7 +359,7 @@ class DatePanel extends Component {
         }
         {
           showMask && (
-            <div className='hi-datepicker__mask' ref={this.maskRef} onClick={() => { this.setState({showMask: false}) }} />
+            <div className='hi-datepicker-legacy__mask' ref={this.maskRef} onClick={() => { this.setState({showMask: false}) }} />
           )
         }
         {

@@ -10,8 +10,8 @@ class Demo extends React.Component {
       <DatePicker
         placeholder={['开始日期', '结束日期']}
         type='daterange'
-        min={new Date(2019, 4, 28)}
-        max={new Date()}
+        min={new Date()}
+        max={new Date().getTime() + 30 * 24 * 60 * 60 * 1000}
       />
     )
   }

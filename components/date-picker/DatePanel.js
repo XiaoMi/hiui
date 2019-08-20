@@ -106,6 +106,9 @@ class DatePanel extends Component {
     if (currentView === 'year') {
       return year - 4 + '~' + (year + 7)
     }
+    if (currentView === 'month') {
+      return year
+    }
     let arr = [localeDatas.datePicker.monthShort[month - 1]]
     if (locale === 'zh-CN') {
       arr.unshift(year + '年    ')
@@ -183,7 +186,7 @@ class DatePanel extends Component {
     if (type === 'week') {
       const _weekOffset = {weekStartsOn: weekOffset}
       let weekStart = startOfWeek(_date, _weekOffset)
-      let weekEnd = type === 'week' ? endOfWeek(_date, _weekOffset) : endOfWeek(_date, _weekOffset)
+      let weekEnd = endOfWeek(_date, _weekOffset)
       onPick({
         startDate: weekStart,
         endDate: weekEnd

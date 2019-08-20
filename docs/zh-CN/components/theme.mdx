@@ -1,11 +1,8 @@
 # 主题
 
-目前有两款主题可以使用，分别是 `Classic` 和 `Genuine`
+目前有两款布局方式可用，分别是上下布局的 `Classic` 和左右布局的 `Genuine`
 
-<p><img src="<BASE_URL>/static/img/themes/classic/classic-theme-01.png" width="90%" /></p>
-<p><img src="<BASE_URL>/static/img/themes/classic/classic-theme-02.png" width="90%" /></p>
-<p><img src="<BASE_URL>/static/img/themes/classic/classic-theme-03.png" width="90%" /></p>
-<p><img src="<BASE_URL>/static/img/themes/classic/classic-theme-04.png" width="90%" /></p>
+**前往 [主题 Github](https://github.com/hiui-group/classic-theme/tree/develop) **
 
 ## 使用
 
@@ -21,27 +18,138 @@ npm i @hi-ui/classic-theme --save
 ```
 
 ```jsx
-import HIUITheme from '@hi-ui/classic-theme'
+import Layout from '@hi-ui/classic-theme'
 
-render(<HIUITheme />, document.getElementById('app'))
+render(<Layout />, document.getElementById('app'))
 ```
 
-## API
+## 示例
 
-Theme
+基于配置化实现主题布局和菜单匹配，数组中元素的层级即代表其在菜单中的层级
 
-| 属性名      | 描述         | 类型                              | 默认值           |
-| ----------- | ------------ | --------------------------------- | ---------------- |
-| type        | 主题类型     | 'classic' \| 'genuine'            | 'classic'        |
-| routes      | 路由配置项   | Route[]                           | -                |
-| logo        | 系统 logo    | ReactNode                         | -                |
-| historyType | 路由跳转类型 | 'hashHistory' \| 'browserHistory' | 'browserHistory' |
+```jsx
+import React, { Component } from 'react'
+import { Theme, Login } from '@hi-ui/classic-theme'
 
-Route
+// 路由组件
+const Mi = () => <div>小米手机</div>
+const RedMi = () => <div>红米手机</div>
+const BlackShark = () => <div>黑鲨手机</div>
+const TV = () => <div>小米电视</div>
+const SoundBox = () => <div>小米音响</div>
+const Robot = () => <div>米家扫地机器人</div>
 
-| 属性名    | 描述             | 类型      | 默认值 |
-| --------- | ---------------- | --------- | ------ |
-| name      | 菜单名称         | string    | -      |
-| children  | 子菜单配置项     | Route[]   | -      |
-| path      | 菜单跳转路由     | string    | -      |
-| component | 菜单对应页面组件 | ReactNode | -      |
+// 路由菜单配置项
+const routeConfig = [
+  {
+    name: '手机', // 一级菜单名称
+    children: [
+      { name: '小米', path: '/mi', component: Mi }, // 二级菜单名称、跳转路径、匹配的路由组件
+      { name: '红米', path: '/red-mi', component: RedMi },
+      { name: '黑鲨', path: '/black-shark', component: BlackShark }
+    ]
+  },
+  { name: '电视', path: '/tv', component: TV }, // 不存在 children 属性将不会渲染二级菜单
+  {
+    name: '智能硬件',
+    children: [
+      { name: '音响', path: '/audio', component: SoundBox },
+      { name: '扫地机器人', path: '/robot', component: Robot }
+    ]
+  }
+]
+
+// 系统 logo 配置项
+const logoConfig = {
+  logoUrl: 'https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05', // 点击 logo 跳转地址
+  name: 'HIUI Theme', // logo 名称
+  url: 'https://xiaomi.github.io/hiui/#/' // logo 资源地址
+}
+
+// 系统登录信息配置项
+const loginConfig = {
+  name: 'Mi Guest', // 登录用户
+  icon: 'user', // 登录用户 icon
+  children: [
+    <div key='user-info' style={{ textAlign: 'center', margin: 4, width: 100 }}>
+      <a href='#info'>个人信息</a>
+    </div>,
+    <div key='logout' style={{ textAlign: 'center', margin: 4, width: 100 }}>
+      <a href='#logout'>注销</a>
+    </div>
+  ] // 登录项菜单
+}
+
+class App extends Component {
+  render() {
+    return <Theme routes={routeConfig} logo={logoConfig} login={loginConfig} type='classic' /> // 传递各配置项供主题使用
+  }
+}
+
+export default App
+```
+
+- 当 `type = 'classic' apperance={{color:'dark'}}` 时，为上下布局，顶部导航栏为深色
+
+<p><img src="<BASE_URL>/static/img/themes/classic/classic-theme-demo.png" width="80%" /></p>
+
+- 当 `type = 'classic' apperance={{color:'light'}}` 时，为上下布局，顶部导航栏为浅色
+
+<p><img src="<BASE_URL>/static/img/themes/classic/classic-theme-demo-light.png" width="80%" /></p>
+
+- 当 `type = 'genuine' apperance={{color:'dark'}}` 时，为左右布局，侧边导航栏为深色
+
+<p><img src="<BASE_URL>/static/img/themes/genuine/genuine-theme-demo.png" width="80%" /></p>
+
+- 当 `type = 'genuine' apperance={{color:'light'}}` 时，为左右布局，侧边导航栏为浅色
+
+<p><img src="<BASE_URL>/static/img/themes/genuine/genuine-theme-demo-light.png" width="80%" /></p>
+
+## Props
+
+| 属性名      | 描述                       | 类型                              | 默认值                      |
+| ----------- | -------------------------- | --------------------------------- | --------------------------- |
+| type        | 主题类型                   | 'classic' \| 'genuine'            | 'classic'                   |
+| routes      | 路由配置项                 | Route[]                           | -                           |
+| logo        | 系统 logo                  | ReactNode                         | -                           |
+| login       | 系统登录配置项             | ReactNode                         | -                           |
+| historyType | 路由跳转类型               | 'hashHistory' \| 'browserHistory' | 'browserHistory'            |
+| header      | genuine 类型下的顶部功能栏 | ReactNode \| null                 | 不传时默认为主题自带 header |
+| apperance   | 主题外观配置项             | Apperance                         | {color:'dark'}              |
+| logo        | 主题 logo 配置项           | Logo                              | -                           |
+| login       | 主题登录信息配置项         | Login                             | -                           |
+
+## Type
+
+### Route
+
+| 属性名    | 描述                                     | 类型      | 默认值 |
+| --------- | ---------------------------------------- | --------- | ------ |
+| name      | 菜单名称                                 | string    | -      |
+| icon      | 菜单 icon                                | string    | -      |
+| children  | 子菜单配置项                             | Route[]   | -      |
+| path      | 菜单跳转路径                             | string    | -      |
+| exact     | 菜单跳转路径是否严格匹配对应的 component | boolean   | true   |
+| component | 菜单对应页面组件                         | ReactNode | -      |
+
+### Apperance
+
+| 属性名 | 描述     | 类型              | 默认值 |
+| ------ | -------- | ----------------- | ------ |
+| color  | 主题颜色 | 'dark' \| 'light' | 'dark' |
+
+### Logo
+
+| 属性名  | 描述               | 类型   | 默认值 |
+| ------- | ------------------ | ------ | ------ |
+| name    | 系统名称           | string | -      |
+| logoUrl | logo 图片地址      | string | -      |
+| url     | 点击 logo 跳转地址 | string | -      |
+
+### Login
+
+| 属性名   | 描述          | 类型        | 默认值 |
+| -------- | ------------- | ----------- | ------ |
+| name     | 登录用户姓名  | string      | -      |
+| icon     | 登录用户 icon | string      | -      |
+| children | 登录菜单项    | ReactNode[] | -      |

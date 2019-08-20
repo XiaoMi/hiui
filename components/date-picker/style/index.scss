@@ -573,12 +573,12 @@ $basic-color: #4284f5 !default;
       }
 
       &__cell {
-        &.today:not(.in-range) {
-          .hi-datepicker__text {
-            border: 1px solid map-get(get-palette($value), '50');
-            color: map-get(get-palette($value), '50');
-          }
-        }
+        // &.today:not(.in-range):not(.range-se) {
+        //   .hi-datepicker__text {
+        //     border: 1px solid map-get(get-palette($value), '50');
+        //     color: map-get(get-palette($value), '50');
+        //   }
+        // }
 
         &.in-range:not(.next):not(.prev) {
           .hi-datepicker__content {

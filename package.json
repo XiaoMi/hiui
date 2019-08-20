@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.5",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
@@ -12,7 +12,7 @@
     "compile": "cross-env NODE_ENV=production gulp",
     "build": "node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.config.prod.js && gulp carry",
     "build:gh-pages": "cross-env DOC_ENV=github node_modules/.bin/webpack --progress --profile --colors --config ./build/webpack.config.prod.js && gulp carry",
-    "deploy": "gh-pages -d dist",
+    "deploy": "gh-pages -d dist --git \"$(which git)\"",
     "dev": "npm start",
     "start": "node build/start.js",
     "prerender:gh-pages": "cross-env DOC_ENV=github npm run build && cross-env DOC_ENV=github node build/prerenderSite.js",
@@ -40,7 +40,7 @@
   ],
   "dependencies": {
     "@hi-ui/classic-theme": "1.2.5",
-    "@hi-ui/core-css": "^2.0.0",
+    "@hi-ui/core-css": "^2.0.1",
     "@mapbox/rehype-prism": "^0.3.1",
     "async-validator": "^1.11.2",
     "axios": "^0.18.0",
@@ -51,7 +51,7 @@
     "fetch-jsonp": "^1.1.3",
     "github-markdown-css": "^3.0.1",
     "hoist-non-react-statics": "^2.5.0",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.11",
     "react": "^16.8.6",
     "react-addons-css-transition-group": "^15.6.2",
     "react-click-outside": "^3.0.1",
@@ -62,6 +62,7 @@
     "react-lifecycles-compat": "^3.0.4",
     "react-live": "^2.1.1",
     "react-redux": "^5.1.1",
+    "react-transition-group": "^4.2.1",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "shallowequal": "^1.0.2",

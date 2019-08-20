@@ -4,7 +4,6 @@ import BasePicker from './BasePicker'
 import DatePanel from './DatePanel'
 import DateRangePanel from './DateRangePanel'
 import WeekRangePanel from './WeekRangePanel'
-import dateFormat from 'date-fns/format'
 class DatePicker extends BasePicker {
   initPanel (state, props) {
     let component = null
@@ -66,5 +65,4 @@ class DatePicker extends BasePicker {
     return component
   }
 }
-DatePicker.format = dateFormat
 export default DatePicker

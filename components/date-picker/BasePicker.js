@@ -6,7 +6,7 @@ import {formatterDate, FORMATS} from './constants'
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
-import {parse, dateFormat, isValid} from './dateUtil'
+import {parse, dateFormat, isValid, startOfWeek, endOfWeek} from './dateUtil'
 class BasePicker extends Component {
   inputRoot = null
   input = null
@@ -58,6 +58,13 @@ class BasePicker extends Component {
         end = _value.end || new Date()
       } else {
         start = _value
+        if (type.includes('range')) {
+          end = parse(start)
+          if (type === 'weekrange') {
+            start = startOfWeek(start)
+            end = endOfWeek(end)
+          }
+        }
       }
 
       if (type === 'timeperiod' && isValid(start)) {
@@ -91,9 +98,9 @@ class BasePicker extends Component {
     if (type === 'daterange' && showTime) {
       _h = 344
     }
-    const _cw = document.body.clientWidth || document.documentElement.clientWidth
-    const _ch = document.body.clientHeight || document.documentElement.clientHeight
-    const _st = document.body.scrollTop || document.documentElement.scrollTop
+    const _cw = document.documentElement.clientWidth || document.body.clientWidth
+    const _ch = document.documentElement.clientHeight || document.body.clientHeight
+    const _st = document.documentElement.scrollTop || document.body.scrollTop
     let {left, width, top, height} = rect
     let _top = rect.top + rect.height + _st
     if (left + _w > _cw) {

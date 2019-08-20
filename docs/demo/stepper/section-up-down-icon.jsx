@@ -12,17 +12,17 @@ class Demo extends React.Component {
     const list = [
       {
         title: '账号信息',
-        text: '请输入账号信息',
+        content: '请输入账号信息',
         icon: <Icon name='user' />
       },
       {
         title: '邮箱激活',
-        text: '请输入邮箱',
+        content: '请输入邮箱',
         icon: <Icon name='time' />
       },
       {
         title: '信息登记',
-        text: '请输入个人信息',
+        content: '请输入个人信息',
         icon: <Icon name='list' />
       },
     ]
