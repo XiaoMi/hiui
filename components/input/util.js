@@ -133,3 +133,13 @@ export const formatValue = (val, type) => {
     return val
   }
 }
+
+/**
+ * 过滤属性
+ */
+export const filterObjProps = (obj, propsNeedFilter) => {
+  return Object.keys(obj).filter(key => !propsNeedFilter.includes(key)).reduce((filteredObj, key) => {
+    filteredObj[key] = obj[key]
+    return filteredObj
+  }, {})
+}

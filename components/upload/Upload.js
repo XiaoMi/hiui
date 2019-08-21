@@ -88,7 +88,7 @@ class Upload extends Component {
   }
 
   uploadFiles (files) {
-    const { beforeUpload, customUpload, maxSize, maxCount } = this.props
+    const { beforeUpload, customUpload, maxSize } = this.props
     const { fileList, fileCountLimted } = this.state
     if (fileCountLimted) {
       return
@@ -98,26 +98,25 @@ class Upload extends Component {
     }
     if (customUpload) {
       customUpload(files)
+      ReactDOM.findDOMNode(this.uploadRef).value = ''
       return
     }
 
     if (files.length === 0) return
-    for (let key in files) {
-      if (!files.hasOwnProperty(key)) continue
-      let file = files[key]
-      if (file.size > maxSize * 1024) {
-        return
-      }
-      file.fileId = this.getFileId()
-      file.uploadState = 'loading'
-      file.fileType = this.getFileType(file)
-      fileList.unshift(file)
-      this.setState({ fileList })
+
+    const file = files[0]
+    if (file.size > maxSize * 1024) {
+      return
+    }
+    file.fileId = this.getFileId()
+    file.uploadState = 'loading'
+    file.fileType = this.getFileType(file)
+
+    const _fileList = [...fileList]
+    _fileList.unshift(file)
+    this.setState({ fileList: _fileList }, () => {
       this.uploadFile(file)
-    }
-    if (fileList.length >= maxCount) {
-      this.setState({ fileCountLimted: true })
-    }
+    })
     ReactDOM.findDOMNode(this.uploadRef).value = ''
   }
 
@@ -141,13 +140,13 @@ class Upload extends Component {
   }
 
   onUpload (file, fileList, response) {
-    const { onChange } = this.props
-
+    const { onChange, maxCount } = this.props
     const onUploadError = () => {
       for (const index in fileList) {
         if (fileList[index].fileId === file.fileId) {
-          fileList.splice(index, 1)
-          this.setState({ fileList })
+          const _fileList = [...fileList]
+          _fileList.splice(index, 1)
+          this.setState({ fileList: _fileList })
           break
         }
       }
@@ -161,6 +160,10 @@ class Upload extends Component {
           onUploadError()
         }
       })
+    } else {
+      if (fileList.length >= maxCount) {
+        this.setState({ fileCountLimted: true })
+      }
     }
   }
 
@@ -172,9 +175,12 @@ class Upload extends Component {
     const { name, params, headers, uploadAction } = this.props
     const onerror = err => {
       const errRes = err !== undefined ? err : { status: xhr.status, statusText: xhr.statusText }
+      const _fileList = [...fileList]
       file.uploadState = 'error'
-      this.setState({ fileList })
-      this.onUpload(file, fileList, errRes)
+      const idx = _fileList.findIndex(item => item.fileId === file.fileId)
+      _fileList.splice(idx, 1, file)
+      this.setState({ fileList: _fileList })
+      this.onUpload(file, _fileList, errRes)
     }
 
     if (file.fileType === 'img') {
@@ -186,8 +192,11 @@ class Upload extends Component {
 
         fr.onload = e => {
           const url = e.target.result
+          const _fileList = [...fileList]
           file.url = url
-          this.setState({ fileList })
+          const idx = _fileList.findIndex(item => item.fileId === file.fileId)
+          _fileList.splice(idx, 1, file)
+          this.setState({ fileList: _fileList })
         }
         fr.readAsDataURL(file)
       }
@@ -207,14 +216,16 @@ class Upload extends Component {
         formFile.append(i, params[i])
       }
     }
-    xhr.upload.onload = () => {
-      file.uploadState = 'success'
-      this.setState({ fileList })
-    }
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
-          this.onUpload(file, fileList, JSON.parse(xhr.response))
+          const _fileList = [...fileList]
+          file.uploadState = 'success'
+          const idx = _fileList.findIndex(item => item.fileId === file.fileId)
+          _fileList.splice(idx, 1, file)
+          this.setState({ fileList: _fileList }, () =>
+            this.onUpload(file, _fileList, JSON.parse(xhr.response))
+          )
         } else {
           onerror()
         }
@@ -226,8 +237,11 @@ class Upload extends Component {
     xhr.upload.onprogress = event => {
       var e = event || window.event
       var percentComplete = Math.ceil((e.loaded / e.total) * 100)
+      const _fileList = [...fileList]
+      const idx = _fileList.findIndex(item => item.fileId === file.fileId)
+      _fileList.splice(idx, 1, file)
       file.progressNumber = percentComplete
-      this.setState({ fileList })
+      this.setState({ fileList: _fileList })
     }
 
     xhr.open('post', uploadAction, true)
@@ -278,7 +292,6 @@ Upload.propTypes = {
 
 Upload.defaultProps = {
   defaultFileList: [],
-  // headers: {'Content-type': 'multipart/form-data'}, // headers 不可以设置Content-type https://stackoverflow.com/questions/17415084/multipart-data-post-using-python-requests-no-multipart-boundary-was-found/17438575
   headers: {},
   accept: '',
   limit: null,
@@ -292,6 +305,5 @@ Upload.defaultProps = {
   beforeUpload: () => true,
   onRemove: () => true,
   onChange: () => true
-  // overEvent: false
 }
 export default Upload
