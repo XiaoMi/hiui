@@ -15,7 +15,7 @@ class Demo extends React.Component {
           <Col span={6}>
             <Card
               hoverable
-              coverUrl='https://i.loli.net/2019/04/18/5cb82488403de.png'
+              coverUrl='http://i1.mifile.cn/f/i/hiui/docs/pic_8.png'
               title='图片展示'
               content='这是图片描述'
             ></Card>
@@ -23,7 +23,7 @@ class Demo extends React.Component {
           <Col span={6}>
             <Card
               hoverable
-              coverUrl='https://i.loli.net/2019/04/18/5cb82488403de.png'
+              coverUrl='http://i1.mifile.cn/f/i/hiui/docs/pic_7.png'
               title='图片展示'
               content='这是图片描述'
             ></Card>
@@ -31,7 +31,7 @@ class Demo extends React.Component {
           <Col span={6}>
             <Card
               hoverable
-              coverUrl='https://i.loli.net/2019/04/18/5cb82488403de.png'
+              coverUrl='http://i1.mifile.cn/f/i/hiui/docs/pic_6.png'
               title='图片展示'
               content='这是图片描述'
             ></Card>
@@ -39,7 +39,7 @@ class Demo extends React.Component {
           <Col span={6}>
             <Card
               hoverable
-              coverUrl='https://i.loli.net/2019/04/18/5cb82488403de.png'
+              coverUrl='http://i1.mifile.cn/f/i/hiui/docs/pic_5.png'
               title='图片展示'
               content='这是图片描述'
             ></Card>
@@ -49,7 +49,7 @@ class Demo extends React.Component {
           <Col span={6}>
             <Card
               hoverable
-              coverUrl='https://i.loli.net/2019/04/18/5cb82488403de.png'
+              coverUrl='http://i1.mifile.cn/f/i/hiui/docs/pic_4.png'
               title='图片展示'
               content='这是图片描述'
             ></Card>
@@ -57,7 +57,7 @@ class Demo extends React.Component {
           <Col span={6}>
             <Card
               hoverable
-              coverUrl='https://i.loli.net/2019/04/18/5cb82488403de.png'
+              coverUrl='http://i1.mifile.cn/f/i/hiui/docs/pic_3.png'
               title='图片展示'
               content='这是图片描述'
             ></Card>
@@ -65,7 +65,7 @@ class Demo extends React.Component {
           <Col span={6}>
             <Card
               hoverable
-              coverUrl='https://i.loli.net/2019/04/18/5cb82488403de.png'
+              coverUrl='http://i1.mifile.cn/f/i/hiui/docs/pic_2.png'
               title='图片展示'
               content='这是图片描述'
             ></Card>
@@ -73,7 +73,7 @@ class Demo extends React.Component {
           <Col span={6}>
             <Card
               hoverable
-              coverUrl='https://i.loli.net/2019/04/18/5cb82488403de.png'
+              coverUrl='http://i1.mifile.cn/f/i/hiui/docs/pic_1.png'
               title='图片展示'
               content='这是图片描述'
             ></Card>
