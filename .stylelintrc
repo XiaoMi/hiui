@@ -1,7 +1,7 @@
 {
   "extends": ["stylelint-config-standard", "stylelint-config-recommended-scss"],
   "rules": {
-    "max-nesting-depth": 10,
+    "max-nesting-depth": 9,
     "string-quotes": "single",
     "declaration-colon-space-after": "always",
     "declaration-colon-space-before": "never",

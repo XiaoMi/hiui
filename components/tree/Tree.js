@@ -27,7 +27,7 @@ class Tree extends Component {
     prefixCls: 'hi-tree',
     defaultCheckedKeys: [],
     data: [],
-    showLine: false
+    apperance: 'default'
   }
 
   static getDerivedStateFromProps (props, state) {
@@ -190,14 +190,17 @@ class Tree extends Component {
       onDelete,
       onSave,
       onClick,
-      showLine
+      apperance
     } = this.props
     const { data } = this.state
     return (
-      <div className={classNames(`${prefixCls}`, { 'hi-tree--show-line': showLine })} style={style}>
+      <div
+        className={classNames(`${prefixCls}`, { 'hi-tree--show-line': apperance === 'line' })}
+        style={style}
+      >
         <TreeNode
           origin={loadTreeNode}
-          showLine={showLine}
+          showLine={apperance === 'line'}
           checked={this.props.checkedIds || []}
           onClick={onClick}
           semiChecked={this.state.all.filter(item => item.semi).map(item => item.id)}

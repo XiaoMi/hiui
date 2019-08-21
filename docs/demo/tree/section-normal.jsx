@@ -42,7 +42,6 @@ class Demo extends React.Component {
     return (
       <div style={{width:500}}>
         <Tree
-          showLine
           defaultExpandAll
           data={this.state.treeData}
           onChange={data => {console.log('Tree data:', data)}}

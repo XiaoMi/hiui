@@ -95,10 +95,25 @@ $tree: 'hi-tree' !default;
           }
         }
 
+        & > ul {
+          position: relative;
+
+          &::after {
+            display: none;
+          }
+        }
+
         &:not(:last-of-type) {
           > ul {
             > li {
               &:last-of-type {
+                > ul {
+                  &::after {
+                    display: block;
+                    height: calc(100% + 4px);
+                  }
+                }
+
                 > .item--wrapper {
                   &::after {
                     position: absolute;
@@ -113,17 +128,6 @@ $tree: 'hi-tree' !default;
               }
             }
           }
-          // > .item--wrapper {
-          //   &::before {
-          //     position: absolute;
-          //     top: 0;
-          //     left: 9px;
-          //     width: 1px;
-          //     height: calc(50% - 11px);
-          //     background: #c8c8c8;
-          //     content: '';
-          //   }
-          // }
 
           &.no-expanded {
             &::before {
@@ -155,20 +159,6 @@ $tree: 'hi-tree' !default;
           }
 
           &.no-expanded {
-            // > .item--wrapper {
-            //   &:not(.can-expand) {
-            //     &::before {
-            //       position: absolute;
-            //       top: 6px;
-            //       left: 7px;
-            //       width: 1px;
-            //       height: calc(50% - 9px);
-            //       background: #c8c8c8;
-            //       content: '';
-            //       display: block;
-            //     }
-            //   }
-            // }
             &::after {
               position: absolute;
               top: 0;
@@ -178,14 +168,6 @@ $tree: 'hi-tree' !default;
               background: #c8c8c8;
               content: '';
             }
-          }
-        }
-
-        & > ul {
-          position: relative;
-
-          &::after {
-            display: none;
           }
         }
       }
@@ -204,8 +186,6 @@ $tree: 'hi-tree' !default;
         }
 
         & > ul {
-          position: relative;
-
           &::after {
             display: none;
           }
@@ -218,65 +198,38 @@ $tree: 'hi-tree' !default;
         height: 24px;
       }
 
-      // &.is-rooter {
-      //   &::before {
-      //     display: none;
-      //   }
-
-      //   &::after {
-      //     display: none;
-      //   }
-      // }
-
-      &.not-expanded {
-        > .hi-tree_item-text {
-          &::before {
-            display: none;
-          }
-        }
-
-        > .editing {
-          &::before {
-            display: none;
-          }
+      &.can-expand {
+        &::before {
+          width: 10px;
         }
       }
 
-      &.can-expand {
-        &::before {
-          position: absolute;
-          left: -10px;
-          top: 50%;
-          height: 1px;
-          width: 10px;
-          background: #c8c8c8;
-          transform: translateY(-3px);
-          content: '';
-        }
-
-        > .hi-tree_item-text {
-          &::before {
-            position: absolute;
-            top: calc(50% + 8px);
-            left: -11px;
-            height: calc(50% - 4px);
-            width: 1px;
-            background: #c8c8c8;
-            content: '';
+      &--expanded {
+        &.can-expand {
+          > .hi-tree_item-text {
+            &::before {
+              position: absolute;
+              top: calc(50% + 8px);
+              left: -11px;
+              height: calc(50% - 4px);
+              width: 1px;
+              background: #c8c8c8;
+              content: '';
+            }
           }
-        }
 
-        > .editing {
-          position: relative;
+          > .editing {
+            position: relative;
 
-          &::before {
-            position: absolute;
-            top: calc(50% + 7px);
-            left: -11px;
-            height: calc(50% - 2px);
-            width: 1px;
-            background: #c8c8c8;
-            content: '';
+            &::before {
+              position: absolute;
+              top: calc(50% + 7px);
+              left: -11px;
+              height: calc(50% - 2px);
+              width: 1px;
+              background: #c8c8c8;
+              content: '';
+            }
           }
         }
       }
