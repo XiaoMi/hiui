@@ -3,7 +3,7 @@ import './style/index'
 import React from 'react'
 import Button from '../button'
 import classNames from 'classnames'
-import handleNotification from './HandleNotification'
+import handleNotificate from './HandleNotification'
 
 const iconMap = {
   success: 'chenggong',
@@ -16,7 +16,7 @@ const notification = {
   close: key => {
     notice.close('notification', key)
   },
-  handleNotification,
+  handleNotificate,
   open: ({
     title,
     content,

@@ -9,9 +9,7 @@ let fileId = 0
 class Upload extends Component {
   constructor (props) {
     super(props)
-    const fileList = this.prepareDefaultFileList(
-      props.fileList || props.defaultFileList
-    )
+    const fileList = this.prepareDefaultFileList(props.fileList || props.defaultFileList)
     this.state = {
       fileList,
       fileCountLimted: fileList.length >= props.maxCount
@@ -100,6 +98,7 @@ class Upload extends Component {
     }
     if (customUpload) {
       customUpload(files)
+      ReactDOM.findDOMNode(this.uploadRef).value = ''
       return
     }
 
@@ -175,10 +174,7 @@ class Upload extends Component {
     const { fileList } = this.state
     const { name, params, headers, uploadAction } = this.props
     const onerror = err => {
-      const errRes =
-        err !== undefined
-          ? err
-          : { status: xhr.status, statusText: xhr.statusText }
+      const errRes = err !== undefined ? err : { status: xhr.status, statusText: xhr.statusText }
       const _fileList = [...fileList]
       file.uploadState = 'error'
       const idx = _fileList.findIndex(item => item.fileId === file.fileId)

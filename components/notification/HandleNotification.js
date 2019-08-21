@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import './style/index'
+import './style-legacy/index'
 /**
  *
  *
@@ -52,7 +52,7 @@ class Notification extends Component {
   static defaultProps = {
     showClose: true,
     banner: false,
-    prefixCls: 'hi-notification',
+    prefixCls: 'hi-notification-legacy',
     autoClose: false,
     duration: 3000,
     positionFrom: 'top',
