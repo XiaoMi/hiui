@@ -10,7 +10,7 @@ class Demo extends React.Component {
       <React.Fragment>
         <Card
           hoverable
-          coverUrl='https://i.loli.net/2019/04/18/5cb82488403de.png'
+          coverUrl='http://i1.mifile.cn/f/i/hiui/docs/pic_9.png'
           title='图片展示'
           content='图片信息描述：size=small;width:276px'
           size='small'
@@ -18,7 +18,7 @@ class Demo extends React.Component {
         <br />
         <Card
           hoverable
-          coverUrl='https://i.loli.net/2019/04/18/5cb82488403de.png'
+          coverUrl='http://i1.mifile.cn/f/i/hiui/docs/pic_10.png'
           title='图片展示'
           content='图片信息描述：size=middle;width:376px'
           size='default'
@@ -27,7 +27,7 @@ class Demo extends React.Component {
         <br />
         <Card
           hoverable
-          coverUrl='https://i.loli.net/2019/04/18/5cb82488403de.png'
+          coverUrl='http://i1.mifile.cn/f/i/hiui/docs/pic_2.png'
           title='图片展示'
           content='图片信息描述：size=large;width:576px'
           size='large'
