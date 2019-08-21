@@ -63,10 +63,9 @@ class TreeItem extends Component {
           <TreeDivider placement='top' />
         )}
         <div
-          className={classNames('item--wrapper', {
+          className={classNames('item__wrapper', {
             'can-expand': item.children && item.children.length > 0,
-            'item--wrapper--expanded': expanded
-            // 'not-expanded': !expanded
+            'item__wrapper--expanded': expanded
           })}
         >
           {(!item.children || (item.children && !expanded)) &&

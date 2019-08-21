@@ -85,7 +85,7 @@ $tree: 'hi-tree' !default;
       }
 
       &.is-root {
-        > .item--wrapper {
+        > .item__wrapper {
           &::before {
             display: none;
           }
@@ -114,7 +114,7 @@ $tree: 'hi-tree' !default;
                   }
                 }
 
-                > .item--wrapper {
+                > .item__wrapper {
                   &::after {
                     position: absolute;
                     top: -4px;
@@ -144,7 +144,7 @@ $tree: 'hi-tree' !default;
 
         &:not(:first-of-type) {
           &:not(.no-expanded) {
-            > .item--wrapper {
+            > .item__wrapper {
               &::before {
                 position: absolute;
                 top: 1px;
@@ -173,7 +173,7 @@ $tree: 'hi-tree' !default;
       }
 
       &:last-of-type {
-        > .item--wrapper {
+        > .item__wrapper {
           &::after {
             position: absolute;
             top: -4px;
@@ -193,7 +193,7 @@ $tree: 'hi-tree' !default;
       }
     }
 
-    .item--wrapper {
+    .item__wrapper {
       .hi-checkbox-legacy {
         height: 24px;
       }
@@ -265,7 +265,7 @@ $tree: 'hi-tree' !default;
     position: relative;
     padding: 2px;
 
-    & > .item--wrapper {
+    & > .item__wrapper {
       display: flex;
       align-items: center;
       padding-bottom: 5px;
