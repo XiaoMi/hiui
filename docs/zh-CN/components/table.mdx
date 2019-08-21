@@ -146,14 +146,14 @@ import DemoAdvance from '../../demo/table/section-advance.jsx'
 | striped    | 斑马纹                                                                                            | boolean | true \| false                 | false   |
 | columns    | 表格数据列对应信息                                                                                | ColumnItem[]   | -                  | -       |
 | data       | 表格数据                                                                                          |object[]   | -                  | -       |
-| emptyText  | 数据为空时展示的文案                                                                              | string  | -                  | No Data |
+| emptyText  | 数据为空时展示的文案                                                                              | string  | -                  | 'No Data' |
 | scrollX     | 设置列冻结 | boolean   |   true \| false | false         |
 | fixTop     | 吸顶                                                                                              | number  | -               | 0   |
 | height     | 表格最大高度（用于冻结表头）                                                                           | string  | -               | -   |
-| pagination | 查看分页组件配置                                                                                  | object  | -                  | -   |
-| advance    | 高级功能                                                                                          | object  | -                  | -       |
+| pagination | 查看分页组件配置                                                                                  | Advance  | -                  | -   |
+| advance    | 高级功能                                                                                          | Origin  | -                  | -       |
 | origin     | 服务端功能  | object  | -                  | -       |
-| name     | 操作记忆功能  | string  | -                  | -       |
+
 ## Type
 ### ColumnItem
 
@@ -181,7 +181,7 @@ import DemoAdvance from '../../demo/table/section-advance.jsx'
 | data            | 请求参数                          | object           | -       | - | - |
 | success         | 响应解析函数                       | (res: object) => object       | - | - |
 | error           | 请求错误回调函数                    | (err: object) =>  void     |  - | - |
-| type            | 请求方法                            | string | 'GET' \| 'POST'   | GET     | - |
+| type            | 请求方法                            | string | 'GET' \| 'POST'   | 'GET'     | - |
 
 ## RowSelection
 
@@ -194,8 +194,8 @@ import DemoAdvance from '../../demo/table/section-advance.jsx'
 
 | 参数              | 说明                      | 类型                           | 可选值         | 默认值 |
 | - | -  | - | - | - |
-| sum              | 是否前端求合                | boolean                       | 'left' \| 'right'     |  false |
-| ave              | 是否前端求均值               |     boolean                  | 'left' \| 'right'     | false      |
+| sum              | 是否前端求合                | boolean                       |  true \| false   |  false |
+| ave              | 是否前端求均值               |     boolean                  |  true \| false    | false      |
 | header           | 表格头部                   |   ReactNode                    | -             |     -
 | footer           | 表格底部                    |     ReactNode                  | -          | -      |
 | prefix           | 表格头部插入多行                   |   object[]               | -                 |     -
