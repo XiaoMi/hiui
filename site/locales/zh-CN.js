@@ -50,7 +50,8 @@ module.exports = {
     timeline: 'Timeline 时间轴',
     transfer: 'Transfer 穿梭框',
     switch: 'Switch 开关',
-    rate: 'Rate 评分'
+    rate: 'Rate 评分',
+    breadcrumb: 'Breadcrumb 面包屑'
   },
   designs: {
     summarize: '概述',
