@@ -11,7 +11,7 @@ class Demo extends React.Component {
     return(
       <div>
         <Button type="success" onClick={this.open.bind(this)}>自动关闭</Button>
-        <Button type="info" onClick={this.open1.bind(this)}>不自动关闭</Button>
+        <Button onClick={this.openManual.bind(this)}>不自动关闭</Button>
       </div>
     )
   }
@@ -22,7 +22,7 @@ class Demo extends React.Component {
       content:'通知内容',
     })
   }
-  open1(){
+  openManual(){
     Notification.open({
       title:'通知',
       content:'通知内容',
