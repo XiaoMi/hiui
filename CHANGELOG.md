@@ -3,7 +3,7 @@
 ## 2.1.0
 
 - 新增 `<Breadcrumb />` 面包屑组件 [#573](https://github.com/XiaoMi/hiui/issues/573)
-- 新增 `<Tree />` 线型展示模式 [#549](https://github.com/XiaoMi/hiui/issues/549)
+- 新增 `<Tree />` 线型展示模式 [#541](https://github.com/XiaoMi/hiui/issues/541)
 - 修复 `<Upload />` 中的自定义上传同一个文件失败的问题 [#567](https://github.com/XiaoMi/hiui/issues/567)
 - 修复 `<Switch />` 重复渲染问题 [#565](https://github.com/XiaoMi/hiui/issues/565)
 - 修复 `<Collapse />` activeId 无效的问题 [#560](https://github.com/XiaoMi/hiui/issues/560)
