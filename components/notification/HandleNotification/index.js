@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import './style-legacy/index'
+import './style/index'
 /**
  *
  *
@@ -109,16 +109,6 @@ class Notification extends Component {
   }
 
   render () {
-    // const {
-    //   autoClose,
-    //   duration,
-    //   positionAlign,
-    //   positionFrom,
-    //   type,
-    //   onClose,
-    //   title,
-    //   message
-    // } = this.props
     const classnames = classNames(this.props.prefixCls, this.props.type, {
       show: this.state.show
     })
