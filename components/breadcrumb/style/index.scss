@@ -1,0 +1,33 @@
+.hi-breadcrumb {
+  color: rgba(153, 153, 153, 1);
+
+  &__content {
+    cursor: pointer;
+
+    &:hover {
+      color: #4284f5;
+    }
+
+    .hi-icon {
+      margin: 0 4px;
+    }
+  }
+
+  &__separator {
+    margin: 0 10px;
+  }
+
+  &__item:last-child {
+    .hi-breadcrumb__content {
+      cursor: text;
+
+      &:hover {
+        color: rgba(153, 153, 153, 1);
+      }
+    }
+
+    .hi-breadcrumb__separator {
+      display: none;
+    }
+  }
+}
