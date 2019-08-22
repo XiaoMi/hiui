@@ -24,7 +24,8 @@ export default {
       dropdown: components['dropdown'],
       pagination: components['pagination'],
       stepper: components['stepper'],
-      menu: components['menu']
+      menu: components['menu'],
+      breadcrumb: components['breadcrumb']
     },
     'group-form': {
       form: components['form'],

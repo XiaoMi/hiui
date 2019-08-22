@@ -13,10 +13,8 @@ class Switch extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.checked !== this.state.checked) {
-      this.setState({
-        checked: nextProps.checked
-      }, () => {
+    if (nextProps.checked !== this.props.checked) {
+      this.setState({ checked: nextProps.checked }, () => {
         this.props.onChange(nextProps.checked)
       })
     }
@@ -29,9 +27,7 @@ class Switch extends Component {
       if (typeof res === 'boolean' && !res) {
         return
       }
-      this.setState({
-        checked: !this.state.checked
-      }, () => {
+      this.setState({ checked: !this.state.checked }, () => {
         onChange(this.state.checked)
       })
     }
@@ -46,18 +42,13 @@ class Switch extends Component {
       !checked && 'hi-switch--closed',
       disabled && 'hi-switch--disabled'
     )
-    return <span
-      className={sCls}
-      onClick={this.clickEvent.bind(this)}
-    >
-      <span className='hi-switch__text'>
-        {
-          content.length > 0 && (
-            checked ? content[0] : content[1]
-          )
-        }
+    return (
+      <span className={sCls} onClick={this.clickEvent.bind(this)}>
+        <span className='hi-switch__text'>
+          {content.length > 0 && (checked ? content[0] : content[1])}
+        </span>
       </span>
-    </span>
+    )
   }
 }
 
@@ -66,7 +57,9 @@ Switch.defaultProps = {
   checked: false,
   disabled: false,
   onChange: () => {},
-  onClick: () => { return true }
+  onClick: () => {
+    return true
+  }
 }
 Switch.propTypes = {
   content: PropTypes.array,

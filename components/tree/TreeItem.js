@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Checkbox from '../table/checkbox/index'
 import { DragSource, DropTarget } from 'react-dnd'
+import classNames from 'classnames'
 import Input from '../input'
 import { findDOMNode } from 'react-dom'
 import TreeDivider from './TreeDivider'
@@ -43,14 +44,30 @@ class TreeItem extends Component {
       targetNode,
       saveEditNode,
       origin,
-      loadChildren
+      loadChildren,
+      isRoot,
+      showLine
     } = this.props
     const treeItem = (
-      <li key={item.id}>
+      <li
+        key={item.id}
+        className={classNames(
+          { 'is-root': isRoot },
+          {
+            'no-expanded':
+              !item.children || item.children.length === 0 || (item.children && !expanded)
+          }
+        )}
+      >
         {targetNode === item.id && dropDividerPosition === 'up' && isOver && (
           <TreeDivider placement='top' />
         )}
-        <div className='item--wrapper'>
+        <div
+          className={classNames('item__wrapper', {
+            'can-expand': item.children && item.children.length > 0,
+            'item__wrapper--expanded': expanded
+          })}
+        >
           {(!item.children || (item.children && !expanded)) &&
             targetNode === item.id &&
             dropDividerPosition === 'down' &&
@@ -63,10 +80,12 @@ class TreeItem extends Component {
                   loadChildren(item.id)
                 }
               }}
+              style={{ position: 'relative' }}
               className={`${prefixCls}_item-icon`}
             >
-              {((item.children && item.children.length > 0) || (origin && !expanded)) &&
-                renderSwitcher(expanded)}
+              {(item.children && item.children.length > 0) || (origin && !expanded)
+                ? renderSwitcher(expanded)
+                : showLine && <span className='hi-tree__dot' />}
             </span>
           }
           {checkable ? (

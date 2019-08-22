@@ -68,37 +68,208 @@ $tree: 'hi-tree' !default;
     }
   }
 
-  ul {
-    padding-left: 15px;
-  }
+  &.hi-tree--show-line {
+    li {
+      & > ul {
+        position: relative;
 
-  li:last-child {
-    &.with-line {
-      &::before {
-        display: none;
+        &::after {
+          position: absolute;
+          top: 0;
+          left: -10px;
+          width: 1px;
+          height: 100%;
+          background: #c8c8c8;
+          content: '';
+        }
+      }
+
+      &.is-root {
+        > .item__wrapper {
+          &::before {
+            display: none;
+          }
+
+          &::after {
+            display: none;
+          }
+        }
+
+        & > ul {
+          position: relative;
+
+          &::after {
+            display: none;
+          }
+        }
+
+        &:not(:last-of-type) {
+          > ul {
+            > li {
+              &:last-of-type {
+                > ul {
+                  &::after {
+                    display: block;
+                    height: calc(100% + 4px);
+                  }
+                }
+
+                > .item__wrapper {
+                  &::after {
+                    position: absolute;
+                    top: -4px;
+                    left: -10px;
+                    height: calc(100% + 8px);
+                    width: 1px;
+                    background: #c8c8c8;
+                    content: '';
+                  }
+                }
+              }
+            }
+          }
+
+          &.no-expanded {
+            &::before {
+              position: absolute;
+              top: calc(50% + 5px);
+              left: 9px;
+              width: 1px;
+              height: calc(50% - 5px);
+              background: #c8c8c8;
+              content: '';
+            }
+          }
+        }
+
+        &:not(:first-of-type) {
+          &:not(.no-expanded) {
+            > .item__wrapper {
+              &::before {
+                position: absolute;
+                top: 1px;
+                left: 7px;
+                width: 1px;
+                height: calc(50% - 9px);
+                background: #c8c8c8;
+                content: '';
+                display: block;
+              }
+            }
+          }
+
+          &.no-expanded {
+            &::after {
+              position: absolute;
+              top: 0;
+              left: 9px;
+              width: 1px;
+              height: calc(50% - 11px);
+              background: #c8c8c8;
+              content: '';
+            }
+          }
+        }
+      }
+
+      &:last-of-type {
+        > .item__wrapper {
+          &::after {
+            position: absolute;
+            top: -4px;
+            left: -10px;
+            height: calc(50% + 2px);
+            width: 1px;
+            background: #c8c8c8;
+            content: '';
+          }
+        }
+
+        & > ul {
+          &::after {
+            display: none;
+          }
+        }
       }
     }
+
+    .item__wrapper {
+      .hi-checkbox-legacy {
+        height: 24px;
+      }
+
+      &.can-expand {
+        &::before {
+          width: 10px;
+        }
+      }
+
+      &--expanded {
+        &.can-expand {
+          > .hi-tree_item-text {
+            &::before {
+              position: absolute;
+              top: calc(50% + 8px);
+              left: -11px;
+              height: calc(50% - 4px);
+              width: 1px;
+              background: #c8c8c8;
+              content: '';
+            }
+          }
+
+          > .editing {
+            position: relative;
+
+            &::before {
+              position: absolute;
+              top: calc(50% + 7px);
+              left: -11px;
+              height: calc(50% - 2px);
+              width: 1px;
+              background: #c8c8c8;
+              content: '';
+            }
+          }
+        }
+      }
+
+      &::before {
+        position: absolute;
+        left: -10px;
+        top: 50%;
+        height: 1px;
+        width: 14px;
+        background: #c8c8c8;
+        transform: translateY(-3px);
+        content: '';
+      }
+
+      &::after {
+        position: absolute;
+        top: -4px;
+        left: -10px;
+        height: calc(100% + 4px);
+        width: 1px;
+        background: #c8c8c8;
+        content: '';
+      }
+    }
+  }
+
+  ul {
+    padding-left: 15px;
   }
 
   li {
     position: relative;
     padding: 2px;
 
-    & > .item--wrapper {
+    & > .item__wrapper {
       display: flex;
+      align-items: center;
       padding-bottom: 5px;
-    }
-
-    &.with-line {
-      &::before {
-        content: ' ';
-        width: 1px;
-        border-left: 1px dashed #bfc1c3;
-        height: calc(100% - 16px);
-        position: absolute;
-        left: 6px;
-        margin: 22px 0;
-      }
+      position: relative;
     }
 
     .editing {
@@ -204,6 +375,17 @@ $tree: 'hi-tree' !default;
     .hi-tree-switcher {
       color: #999;
       font-size: 16px;
+    }
+
+    .hi-tree__dot {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 3.5px;
+      background: #c8c8c8;
+      transform: translateY(-50%);
+      top: 50%;
+      left: 3.5px;
     }
   }
 
