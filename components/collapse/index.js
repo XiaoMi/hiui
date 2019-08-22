@@ -56,17 +56,13 @@ class Collapse extends Component {
   renderPanels () {
     const activeKey = this.state.activeId
     const { children, accordion, arrow, arrowPlacement, showArrow } = this.props
+
     const newChildren = []
     Children.forEach(children, (child, index) => {
       if (!child) return
-      const key = child.id || child.key || String(index)
+      const key = child.props.id || child.key || String(index)
       const { header, disabled, title } = child.props
-      let isActive = false
-      if (accordion) {
-        isActive = activeKey[0] === key
-      } else {
-        isActive = activeKey.indexOf(key) > -1
-      }
+      let isActive = accordion ? activeKey[0] === key : activeKey.includes(key)
       const props = {
         key,
         header: title || header,

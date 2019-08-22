@@ -1,8 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Tree from '../../../components/tree'
-const prefix = 'tree-edit'
-const desc = '通过树的节点进行新增、删除、编辑等操作'
+const prefix = 'tree-line'
 const code = `import React from 'react'
 import Tree from '@hi-ui/hiui/es/tree'\n
 class Demo extends React.Component {
@@ -10,7 +9,7 @@ class Demo extends React.Component {
     super(props)
     this.state = {
       treeData: [
-        { id: 1, title: '小米快递',
+        { id: 1, title: '小米',
           children: [
             { id: 2, title: '技术',
               children: [
@@ -38,26 +37,21 @@ class Demo extends React.Component {
     }
 
   }
+
   render() {
     return (
       <div style={{width:500}}>
         <Tree
+          apperance='line'
           defaultExpandAll
-          apperance="line"
-          editable={true}
           data={this.state.treeData}
-          onSave={(saveNode, data) => {
-            console.log(saveNode, data)
-          }}
-          onDelete={(deleteNode, data) => {
-            console.log(deleteNode, data)
-          }}
           onChange={data => {console.log('Tree data:', data)}}
           highlightable
+          onClick={(item) => console.log('------click node', item)}
         />
       </div>
     )
   }
 }`
-const DemoEdit = () => <DocViewer code={code} scope={{ Tree }} prefix={prefix} desc={desc} />
-export default DemoEdit
+const DemoLine = () => <DocViewer code={code} scope={{ Tree }} prefix={prefix} />
+export default DemoLine

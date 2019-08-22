@@ -20,13 +20,13 @@ class Loading extends Component {
     size: 'default'
   }
   render () {
-    const { size, full, content, visible, children, target } = this.props
+    const { size, full, content, visible, children, target, show } = this.props
     const mountNode = target || (full ? document.body : '')
     const iconCls = classNames(`${prefixCls}__icon`, `${prefixCls}__icon--${size}`)
     const maskCls = classNames(`${prefixCls}__mask`, {
       [`${prefixCls}__mask--global`]: full,
       [`${prefixCls}__mask--part`]: !full,
-      [`${prefixCls}__mask--hide`]: visible === false
+      [`${prefixCls}__mask--hide`]: visible === false || show === false
     })
     return (
       <PortalWrapper mountNode={mountNode}>
