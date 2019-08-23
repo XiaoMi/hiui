@@ -18,7 +18,8 @@ class Upload extends Component {
   componentWillReceiveProps (nextProps) {
     if (!shallowEqual(nextProps.fileList, this.props.fileList)) {
       this.setState({
-        fileList: this.prepareDefaultFileList(nextProps.fileList)
+        fileList: this.prepareDefaultFileList(nextProps.fileList),
+        fileCountLimted: nextProps.fileList.length >= nextProps.maxCount
       })
     }
   }

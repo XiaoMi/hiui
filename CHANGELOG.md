@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2.1.2
+
+- 修复 `<Input />` clearable 不生效的问题 [#580](https://github.com/XiaoMi/hiui/issues/580)
+- 修复 `<Upload />` 中的自定义上传结合 maxCount 不能上传的问题 [#582](https://github.com/XiaoMi/hiui/issues/582)
+- 修复 `<Input />` type 为 textarea 时的底部的样式问题 [#584](https://github.com/XiaoMi/hiui/issues/584)
+
+
 ## 2.1.0
 
 - 新增 `<Breadcrumb />` 面包屑组件 [#573](https://github.com/XiaoMi/hiui/issues/573)

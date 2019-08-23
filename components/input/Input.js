@@ -172,8 +172,8 @@ class Input extends Component {
           />
           {// 清除
             noClear.indexOf(type) === -1 &&
-            typeof prefix === 'undefined' &&
-            typeof suffix === 'undefined' &&
+            prefix === '' &&
+            suffix === '' &&
             (value !== '' && clearable) && (
               <span
                 className={`hi-input__fix-box ${hover && !disabled ? '' : 'invisible'}`}
