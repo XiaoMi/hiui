@@ -8,10 +8,10 @@ textarea.#{$input} {
   color: $normal-color;
   font-size: $font-size;
   min-height: 30px;
+  height: auto;
   line-height: $line-height;
   resize: vertical;
   overflow: auto;
-  height: 100%;
   padding: 4px 12px;
   border: 1px solid $border-color-normal;
   box-sizing: border-box;
