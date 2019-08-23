@@ -59,6 +59,12 @@ class Demo extends React.Component {
               <FormItem label='手机号码'>
                 <Input placeholder='phone' />
               </FormItem>
+              <FormItem label='备注'>
+              <Input
+                type="textarea"
+                placeholder="多行文本"
+              />
+              </FormItem>
               <FormItem>
                 <Button type='primary'>提交</Button>
               </FormItem>
