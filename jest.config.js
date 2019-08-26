@@ -75,5 +75,7 @@ module.exports = {
   transformIgnorePatterns: [
     '/output/',
     'node_modules/[^/]+?/(?!(es|node_modules)/)'
-  ]
+  ],
+  verbose: true,
+  testURL: 'http://localhost/'
 }
