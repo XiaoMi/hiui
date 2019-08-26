@@ -1,0 +1,9 @@
+.hi-carousel {
+  color: rgba(153, 153, 153, 1);
+  overflow: hidden;
+
+  &__container {
+    height: 100%;
+    display: inline-block;
+  }
+}

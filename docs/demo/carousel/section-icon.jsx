@@ -1,20 +1,20 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Breadcrumb from '../../../components/breadcrumb'
-const prefix = 'alert-base'
+const prefix = 'breadcrumb-base'
 const code = `import React from 'react'
-import Breadcrumb from '@hi-ui/hiui/es/breadcrumb'\n
+import Breadcrumb from '@hi-ui/hiui/es/Breadcrumb'\n
 class Demo extends React.Component {
   render () {
     const data = [{
       content: '首页',
       path: '/home'
     }, {
-      content: '产品类',
       icon: 'document',
       path: '/product'
     }, {
       icon: 'component',
+      content: '手机',
       path: '/phone'
     }, {
       content: '红米系列',
@@ -25,7 +25,7 @@ class Demo extends React.Component {
     }]
     return (
       <div>
-        <Breadcrumb data={data}/>
+        <Breadcrumb data={data} separator=">"/>
       </div>
     )
   }

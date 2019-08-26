@@ -1,0 +1,26 @@
+# Breadcrumb 面包屑
+
+## 基础用法
+
+import DemoBase from '../../demo/carousel/section-base.jsx'
+
+<DemoBase />
+
+## Props
+
+| 参数      | 说明                     | 类型                    | 可选值                                      | 默认值 |
+| --------- | ------------------------ | ----------------------- | ------------------------------------------- | ------ |
+| data      | 面包屑数据               | DataItem []             | -                                           | -      |
+| separator | 自定义分隔符             | string                  | -                                           | '|'    |
+| onClick   |  点击回调函数            | （path: string）=> void | -                                           | -      |
+
+
+## Type
+
+### DataItem
+
+| 参数     | 说明                                | 类型                | 可选值        | 默认值 |
+| -------- | ----------------------------------- | ------------------- | ------------- | ------ |
+| content  | 面包屑的内容                        | string \| ReactNode | -             | -      |
+| path     | 要跳转的路径                        | string              | -             | -      |
+| icon     | 自定义图标                          | string              | 详见 [`<Icon/>`](/hiui/zh-CN/docs/icon) 组件 ︎ | -      |
