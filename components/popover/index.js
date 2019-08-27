@@ -65,7 +65,6 @@ export default class Popover extends Component {
 
     this.element = ReactDOM.findDOMNode(this)
     const referenceRef = ReactDOM.findDOMNode(this.referenceRef)
-    // this.reference = ReactDOM.findDOMNode(this.refs.reference)
     if (referenceRef === null) return
 
     if (trigger === 'click') {
@@ -105,7 +104,6 @@ export default class Popover extends Component {
       this.unbindHover = false
       popper.current.addEventListener('mouseenter', e => {
         this.eventTarget = e.target
-        // this.showPopper()
       })
       popper.current.addEventListener('mouseleave', e => {
         this.delayHidePopper(e)
@@ -118,14 +116,13 @@ export default class Popover extends Component {
     const {
       showPopper
     } = this.state
-
     return (
       <div className={classNames(className, 'hi-popover')} style={style} ref={node => { this.popoverContainer = node }}>
         { React.cloneElement(React.Children.only(this.props.children), { ref: (el) => { this.referenceRef = el }, tabIndex: '0' }) }
 
         <Popper
           className='hi-popover__popper'
-          show={showPopper}
+          show={[true, false].includes(this.props.visible) ? this.props.visible : showPopper}
           attachEle={this.popoverContainer}
           placement={placement}
           zIndex={1040}
