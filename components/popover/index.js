@@ -106,7 +106,10 @@ export default class Popover extends Component {
         this.eventTarget = e.target
       })
       popper.current.addEventListener('mouseleave', e => {
-        this.delayHidePopper(e)
+        const poperPosition = popper.current.getBoundingClientRect()
+        if (e.clientY > poperPosition.y + poperPosition.height - 1 || e.clientY < poperPosition.y || e.clientX < poperPosition.x || e.clientX > poperPosition.x + poperPosition.width - 1) {
+          this.delayHidePopper(e)
+        }
       })
     }
   }
