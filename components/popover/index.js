@@ -112,7 +112,7 @@ export default class Popover extends Component {
   }
 
   render () {
-    const { style, className, title, content, placement, width } = this.props
+    const { style, className, title, content, placement, width, visible } = this.props
     const {
       showPopper
     } = this.state
@@ -122,7 +122,7 @@ export default class Popover extends Component {
 
         <Popper
           className='hi-popover__popper'
-          show={[true, false].includes(this.props.visible) ? this.props.visible : showPopper}
+          show={[true, false].includes(visible) ? visible : showPopper}
           attachEle={this.popoverContainer}
           placement={placement}
           zIndex={1040}

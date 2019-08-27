@@ -27,7 +27,7 @@ class Tooltip extends Component {
   }
 
   render () {
-    const { placement, style, className, onClick, title, children } = this.props
+    const { placement, style, className, onClick, title, children, visible } = this.props
     const eleClass = classNames(`${prefixCls}-base`, placement && `${prefixCls}-${placement}`)
     const { tooltipShow } = this.state
     return (
@@ -49,7 +49,7 @@ class Tooltip extends Component {
       >
         <Popper
           className={`${prefixCls}__popper`}
-          show={tooltipShow}
+          show={[true, false].includes(visible) ? visible : tooltipShow}
           attachEle={this.tooltipContainer}
           placement={placement}
           zIndex={1070}
