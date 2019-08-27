@@ -1,35 +1,27 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Breadcrumb from '../../../components/breadcrumb'
-const prefix = 'breadcrumb-base'
+import Carousel from '../../../components/carousel'
+const prefix = 'alert-base'
 const code = `import React from 'react'
-import Breadcrumb from '@hi-ui/hiui/es/Breadcrumb'\n
+import Carousel from '@hi-ui/hiui/es/carousel'\n
 class Demo extends React.Component {
   render () {
-    const data = [{
-      content: '首页',
-      path: '/home'
-    }, {
-      icon: 'document',
-      path: '/product'
-    }, {
-      icon: 'component',
-      content: '手机',
-      path: '/phone'
-    }, {
-      content: '红米系列',
-      path: '/redmi'
-    }, {
-      content: 'Note7',
-      path: '/note7'
-    }]
+    const data = [1, 2, 3, 4, 5, 6, 7, 8]
     return (
-      <div>
-        <Breadcrumb data={data} separator=">"/>
+      <div style={{width: 800}}>
+        <Carousel
+          duration={2000}
+        >
+          {
+            data.map((item, index) => {
+              return <img src={'http://i1.mifile.cn/f/i/hiui/docs/pic_'+item+'.png'} style={{height: 300}} />
+            })
+          }
+        </Carousel>
       </div>
     )
   }
 }`
 
-const DemoBase = () => <DocViewer code={code} scope={{ Breadcrumb }} prefix={prefix} />
+const DemoBase = () => <DocViewer code={code} scope={{ Carousel }} prefix={prefix} />
 export default DemoBase

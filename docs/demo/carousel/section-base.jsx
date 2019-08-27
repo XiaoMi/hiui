@@ -5,23 +5,20 @@ const prefix = 'alert-base'
 const code = `import React from 'react'
 import Carousel from '@hi-ui/hiui/es/carousel'\n
 class Demo extends React.Component {
+  constructor (props) {
+    super(props)
+  }
+
   render () {
-    const data = [1, 2, 3, 4, 5, 6, 7, 8]
+    const data = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     return (
-      <div style={{width: 400}}>
-        <Carousel>
-          {
-            /*
-            {
-              data.map((item, index) => {
-                return <img style={{height: '100%', display: 'inline-block'}} src={'http://i1.mifile.cn/f/i/hiui/docs/pic_'+item+'.png'} />
-              })
-            }
-            */
-          }
+      <div style={{width: 800}}>
+        <Carousel
+          defaultActive={2}
+        >
           {
             data.map((item) => {
-              return <div>{item}</div>
+              return <div style={{height: 300, textAlign: 'center', lineHeight: '300px', background: '#428ef5', color: '#fff'}}>{item}</div>
             })
           }
         </Carousel>
