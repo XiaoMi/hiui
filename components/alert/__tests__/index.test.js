@@ -2,7 +2,7 @@ import React from 'react'
 import { mount, shallow } from 'enzyme'
 import { spy, fake } from 'sinon'
 import Alert from '../alert'
-
+/* eslint-env jest */
 describe('Alert', () => {
   beforeAll(() => {
     jest.useFakeTimers()

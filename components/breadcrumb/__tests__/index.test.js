@@ -2,7 +2,7 @@ import React from 'react'
 import { mount, shallow } from 'enzyme'
 import { spy, fake } from 'sinon'
 import Breadcrumb from '../index'
-
+/* eslint-env jest */
 const data = [{
   content: '首页',
   path: '/home'
