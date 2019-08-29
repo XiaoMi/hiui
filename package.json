@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
@@ -52,6 +52,7 @@
     "github-markdown-css": "^3.0.1",
     "hoist-non-react-statics": "^2.5.0",
     "lodash": "^4.17.11",
+    "qs": "^6.8.0",
     "react": "^16.8.6",
     "react-addons-css-transition-group": "^15.6.2",
     "react-click-outside": "^3.0.1",

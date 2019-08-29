@@ -264,12 +264,13 @@ class BasePicker extends Component {
   }
   _icon () {
     const {isFocus} = this.state
+    const { clearable } = this.props
     const iconCls = classNames(
       'hi-datepicker__input-icon',
       'hi-icon',
-      isFocus ? 'icon-close-circle clear' : 'icon-date'
+      (isFocus && clearable) ? 'icon-close-circle clear' : 'icon-date'
     )
-    return isFocus
+    return (isFocus && clearable)
       ? <span className={iconCls} onClick={this._clear.bind(this)} />
       : <span className={iconCls} onClick={(e) => {
         if (this.props.disabled) return
@@ -341,6 +342,9 @@ BasePicker.propTypes = {
     if (val === undefined || val === null) {
       return null
     }
+    if (!val) {
+      return null
+    }
     if (val.start && val.end) {
       const _start = dateFormat(val.start)
       const _end = dateFormat(val.end)
@@ -364,13 +368,15 @@ BasePicker.propTypes = {
     if (val < 5 || val > 480 || (val > 60 && val % 60 !== 0) || (val < 60 && 60 % val !== 0)) {
       return new Error(`Invalid prop ${propName} supplied to ${componentName}. This value must be greater than 5 and less than 480 and is a multiple of 60.`)
     }
-  }
+  },
+  clearable: PropTypes.bool
 }
 BasePicker.defaultProps = {
   type: 'date',
   disabled: false,
   showWeekNumber: true,
   weekOffset: 0,
-  timeInterval: 240
+  timeInterval: 240,
+  clearable: true
 }
 export default BasePicker

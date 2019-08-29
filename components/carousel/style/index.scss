@@ -1,0 +1,74 @@
+.hi-carousel {
+  width: 100%;
+  color: rgba(153, 153, 153, 1);
+  overflow: hidden;
+  position: relative;
+
+  &__container {
+    height: 100%;
+    transition: all 500ms;
+  }
+
+  &__dots {
+    position: absolute;
+    bottom: 24px;
+    margin: 0;
+    padding: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &__dot {
+    width: 24px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 2px;
+    display: inline-block;
+    margin-left: 4px;
+    cursor: pointer;
+    transition: all 1s;
+
+    &--active:not(.hi-carousel__dot--sign) {
+      background: rgba(255, 255, 255, 1);
+      width: 48px;
+    }
+
+    &--sign {
+      width: 24px;
+    }
+  }
+
+  &__arrows {
+    position: absolute;
+    width: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    top: 50%;
+    transform: translateY(-28px);
+    display: flex;
+    justify-content: space-between;
+    visibility: hidden;
+
+    &--show {
+      visibility: visible;
+    }
+  }
+
+  &__arrow {
+    width: 56px;
+    height: 56px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 56px;
+    color: #fff;
+    font-size: 32px;
+    margin-left: 24px;
+    cursor: pointer;
+
+    &:last-child {
+      margin-right: 24px;
+    }
+  }
+}

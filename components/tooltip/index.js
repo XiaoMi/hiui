@@ -25,9 +25,21 @@ class Tooltip extends Component {
   state = {
     tooltipShow: this.props.defaultVisible
   }
-
+  // 兼容处理 button disabled tooltip 不消失的问题
+  compatDisabledBtn = el => {
+    if (el.type.IS_HI_COMPONENT && el.props.disabled) {
+      return React.cloneElement(el, {
+        style: {
+          ...el.props.style,
+          pointerEvents: 'none'
+        }
+      })
+    } else {
+      return el
+    }
+  }
   render () {
-    const { placement, style, className, onClick, title, children } = this.props
+    const { placement, style, className, onClick, title, children, visible } = this.props
     const eleClass = classNames(`${prefixCls}-base`, placement && `${prefixCls}-${placement}`)
     const { tooltipShow } = this.state
     return (
@@ -49,7 +61,7 @@ class Tooltip extends Component {
       >
         <Popper
           className={`${prefixCls}__popper`}
-          show={tooltipShow}
+          show={[true, false].includes(visible) ? visible : tooltipShow}
           attachEle={this.tooltipContainer}
           placement={placement}
           zIndex={1070}
@@ -57,7 +69,7 @@ class Tooltip extends Component {
         >
           <div className={eleClass}>{title}</div>
         </Popper>
-        {children}
+        {this.compatDisabledBtn(children)}
       </div>
     )
   }

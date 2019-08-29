@@ -18,6 +18,7 @@ class Demo extends React.Component {
         min={new Date()}
         max={new Date().getTime() + 30 * 24 * 60 * 60 * 1000}
         onChange={(date) => {
+          console.log(date)
           this.setState({date})
         }}
       />
