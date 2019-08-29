@@ -51,7 +51,8 @@ export default {
       popover: components['popover'],
       progress: components['progress'],
       card: components['card'],
-      timeline: components['timeline']
+      timeline: components['timeline'],
+      carousel: components['carousel']
     },
     'group-tips': {
       modal: components['modal'],

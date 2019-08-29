@@ -51,7 +51,8 @@ module.exports = {
     transfer: 'Transfer 穿梭框',
     switch: 'Switch 开关',
     rate: 'Rate 评分',
-    breadcrumb: 'Breadcrumb 面包屑'
+    breadcrumb: 'Breadcrumb 面包屑',
+    carousel: 'Carousel 走马灯'
   },
   designs: {
     summarize: '概述',
