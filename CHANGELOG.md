@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2.2.0
+
+- 新增 `<Carousel />` 走马灯组件 [#115](https://github.com/XiaoMi/hiui/issues/115)
+- 新增 `<DatePicker />` clearable 属性控制是否可清空 [#590](https://github.com/XiaoMi/hiui/issues/590)
+- 新增 `<Tooltip />` visible 属性手动控制显示或隐藏 [#589](https://github.com/XiaoMi/hiui/issues/589)
+- 新增 `<Popover />` visible 属性手动控制显示或隐藏 [#588](https://github.com/XiaoMi/hiui/issues/588)
+- 修复 `<Select />` 异步用法 params 不生效的问题 [#587](https://github.com/XiaoMi/hiui/issues/587)
+- 修复 `<Tooltip />` 包裹禁用按钮时不能隐藏的问题 [#583](https://github.com/XiaoMi/hiui/issues/583)
+- 修复 `<Popover />` 中含输入项时失焦造成的问题 [#581](https://github.com/XiaoMi/hiui/issues/581)
+- 修复 `<Tree />` 清空搜索条件后无法收起的问题 [#561](https://github.com/XiaoMi/hiui/issues/561)
+
 ## 2.1.2
 
 - 修复 `<Input />` clearable 不生效的问题 [#580](https://github.com/XiaoMi/hiui/issues/580)
