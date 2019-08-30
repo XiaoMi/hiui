@@ -10,6 +10,8 @@ import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
 import Provider from '../context'
 import fetchJsonp from 'fetch-jsonp'
+import qs from 'qs'
+
 class Select extends Component {
   autoloadFlag = true // 第一次自动加载数据标识
 
@@ -347,7 +349,7 @@ class Select extends Component {
       mode,
       data = {},
       type = 'GET',
-      key = 'keyword',
+      key,
       jsonpCallback = 'callback',
       ...options
     } = this.props.dataSource
@@ -357,24 +359,11 @@ class Select extends Component {
         : keyword
     this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
 
-    const queryParams = (() => {
-      if (!queryParams) {
-        return ''
-      }
-      if (typeof params === 'string') {
-        return params
-      }
-      if (Object.prototype.toString.call(params) === '[object Object]') {
-        return Object.keys(params)
-          .map((key) => `&${key}=${params[key]}`)
-          .join('')
-      }
-    })()
-
+    const queryParams = qs.stringify(Object.assign({}, params, key && {[key]: keyword}))
     url =
-      url.indexOf('?') === -1
-        ? `${url}?${[key]}=${keyword}${queryParams}`
-        : `${url}&${[key]}=${keyword}${queryParams}`
+      url.includes('?')
+        ? `${url}&${queryParams}`
+        : `${url}?${queryParams}`
 
     if (type.toUpperCase() === 'POST') {
       options.body = JSON.stringify(data)
@@ -443,7 +432,7 @@ class Select extends Component {
       () => this.resetFocusedIndex()
     )
 
-    if (this.props.dataSource) {
+    if (this.props.dataSource && this.props.dataSource.key) {
       if (
         this.props.autoload ||
         keyword.toString().length >= this.state.queryLength

@@ -293,7 +293,7 @@ export const getAncestorIds = (id, data, arr = []) => {
 // 收集所有需要展开的节点 id
 export const collectExpandId = (data, searchValue, collection = [], allData) => {
   data.forEach(item => {
-    if (item.title.includes(searchValue)) {
+    if (searchValue && item.title.includes(searchValue)) {
       const parentIds = getAncestorIds(item.id, allData, [])
       collection.splice(collection.length - 1, 0, ...parentIds)
     }

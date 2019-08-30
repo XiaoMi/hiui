@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Breadcrumb from '../../../components/breadcrumb'
 const prefix = 'alert-base'
 const code = `import React from 'react'
-import Alert from '@hi-ui/hiui/es/alert'\n
+import Breadcrumb from '@hi-ui/hiui/es/breadcrumb'\n
 class Demo extends React.Component {
   render () {
     const data = [{
