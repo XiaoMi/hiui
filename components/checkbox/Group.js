@@ -72,7 +72,7 @@ function getData (props) {
   const _value = hasValue(props) ? value : defaultValue
   return {
     data: data.map((item) => {
-      const isPlain = typeof item === 'string'
+      const isPlain = ['string', 'number'].includes(typeof item)
       const label = isPlain ? item : item.content
       const value = isPlain ? item : item.id
       const disabled = !isPlain && item.disabled
