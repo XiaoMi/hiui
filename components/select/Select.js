@@ -119,19 +119,10 @@ class Select extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!shallowEqual(nextProps.value, this.props.value)) {
-      const selectedItems = this.resetSelectedItems(
-        nextProps.value,
-        this.state.dropdownItems
-      ) // 异步获取时会从内部改变dropdownItems，所以不能从list取
-
-      this.setState({
-        selectedItems
-      })
-    }
     if (!shallowEqual(nextProps.data, this.props.data)) {
+      console.log('&&&&')
       const selectedItems = this.resetSelectedItems(
-        nextProps.value,
+        nextProps.value || this.state.selectedItems,
         nextProps.data,
         true
       )
@@ -139,6 +130,17 @@ class Select extends Component {
         selectedItems,
         dropdownItems: cloneDeep(nextProps.data)
       })
+    } else {
+      if (!shallowEqual(nextProps.value, this.props.value)) {
+        const selectedItems = this.resetSelectedItems(
+          nextProps.value,
+          this.state.dropdownItems
+        ) // 异步获取时会从内部改变dropdownItems，所以不能从list取
+
+        this.setState({
+          selectedItems
+        })
+      }
     }
   }
 
@@ -166,24 +168,14 @@ class Select extends Component {
     return dataSource && !!dataSource.url
   }
 
-  resetSelectedItems (value, dropdownItems, listChanged = false) {
+  resetSelectedItems (value, dropdownItems = [], listChanged = false) {
     const values = this.parseValue(value)
-    const selectedItems =
-      listChanged && this.props.type === 'multiple'
-        ? this.state.selectedItems
-        : [] // 如果是多选，dropdownItems有改动，需要保留之前的选中值
-
-    dropdownItems &&
-      dropdownItems.map((item) => {
-        if (values.indexOf(item.id) !== -1) {
-          const itemIndex = selectedItems.findIndex((sItem) => {
-            // 多选时检查是否已选中
-            return sItem.id === item.id
-          })
-
-          itemIndex === -1 && selectedItems.push(item)
-        }
-      })
+    let selectedItems = []
+    dropdownItems.forEach(item => {
+      if (values.includes(item.id)) {
+        selectedItems.push(item)
+      }
+    })
     return selectedItems
   }
 
