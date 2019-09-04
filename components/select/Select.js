@@ -120,7 +120,6 @@ class Select extends Component {
 
   componentWillReceiveProps (nextProps) {
     if (!shallowEqual(nextProps.data, this.props.data)) {
-      console.log('&&&&')
       const selectedItems = this.resetSelectedItems(
         nextProps.value || this.state.selectedItems,
         nextProps.data,
