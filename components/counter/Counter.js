@@ -16,9 +16,7 @@ class Counter extends React.Component {
   }
   static defaultProps = {
     defaultValue: 0,
-    step: 1,
-    min: 0,
-    max: 100
+    step: 1
   }
 
   constructor (props) {
