@@ -131,6 +131,10 @@ class Counter extends React.Component {
       target: this._Input
     }
     this.props.onChange && this.props.onChange(e, valueTrue)
+    this.props.value === undefined && this.setState({
+      value: this.format(valueTrue),
+      valueTrue: this.formatValue(valueTrue)
+    })
   }
 
   render () {
