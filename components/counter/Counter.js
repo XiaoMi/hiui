@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { filterObjProps } from '../input/util'
-
+import { Decimal } from 'decimal.js'
 /**
  * 加减器
  */
@@ -109,7 +109,7 @@ class Counter extends React.Component {
           <span
             className={`hi-counter-minus hi-counter-sign ${this.hasReachedMin ? 'disabled' : ''}`}
             onClick={e => {
-              let value = valueTrue - parseInt(step)
+              let value = new Decimal(valueTrue).minus(step).valueOf()
               if (this.willReachMin) {
                 value = min
               }
@@ -146,8 +146,10 @@ class Counter extends React.Component {
           <span
             className={`hi-counter-plus hi-counter-sign ${this.hasReachedMax ? 'disabled' : ''}`}
             onClick={e => {
-              let value = parseInt(valueTrue) + parseInt(step)
+              let value = new Decimal(valueTrue).plus(step).valueOf()
+
               if (this.willReachMax) {
+                console.log(this.willReachMax)
                 value = max
               }
               if (this.hasReachedMax) {
@@ -186,7 +188,7 @@ class Counter extends React.Component {
     let value = this.state.value
 
     if (/[^0-9]/.test(value)) {
-      value = value.match(/\d/)[0]
+      value = value.match(/\d/)
     }
 
     if (value - max >= 0) {
@@ -203,7 +205,8 @@ class Counter extends React.Component {
       max = Infinity,
       step
     } = this.props
-    return max <= this.state.valueTrue * 1 + step * 1
+    let num = new Decimal(this.state.valueTrue).plus(step).valueOf() * 1
+    return max <= num
   }
 
   get willReachMin () {
@@ -211,20 +214,22 @@ class Counter extends React.Component {
       min = -1 * Infinity,
       step
     } = this.props
-    return min >= parseInt(this.state.valueTrue) - parseInt(step)
+    let num = new Decimal(this.state.valueTrue).minus(step).valueOf() * 1
+    return min >= num
   }
 
   get hasReachedMax () {
     const {
       max = Infinity
     } = this.props
-    return max <= this.state.valueTrue
+
+    return max <= this.state.valueTrue * 1
   }
   get hasReachedMin () {
     const {
       min = -1 * Infinity
     } = this.props
-    return min >= this.state.valueTrue
+    return min >= this.state.valueTrue * 1
   }
 }
 
