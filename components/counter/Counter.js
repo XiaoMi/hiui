@@ -26,7 +26,7 @@ class Counter extends React.Component {
 
     this.attrs = this.getAttrs(oldProps)
 
-    const { value, defaultValue, min, max } = this.props
+    const { value, defaultValue, min = -1 * Infinity, max = Infinity } = this.props
     const finalValue = Math.min(Math.max(Number(value === undefined ? defaultValue : value), Number(min)), Number(max))
     this.state = {
       value: this.format(finalValue),
@@ -35,12 +35,10 @@ class Counter extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.value && +nextProps.value !== +this.props.value) {
-      this.setState({
-        value: this.format(nextProps.value),
-        valueTrue: this.formatValue(nextProps.value)
-      })
-    }
+    this.setState({
+      value: this.format(nextProps.value),
+      valueTrue: this.formatValue(nextProps.value)
+    })
   }
 
   /**
@@ -99,10 +97,11 @@ class Counter extends React.Component {
    * @param {string} plus 类型
    */
   signEvent (type, disabled) {
-    const min = +this.props.min
-    const max = +this.props.max
-    const step = +this.props.step
-
+    const {
+      min = -1 * Infinity,
+      max = 1 * Infinity,
+      step
+    } = this.props
     if (disabled) {
       return false
     }
@@ -128,18 +127,18 @@ class Counter extends React.Component {
       default:
     }
 
-    const value = this.format(valueTrue + '')
     const e = {
       target: this._Input
     }
     this.props.onChange && this.props.onChange(e, valueTrue)
-    this.props.value === undefined && this.setState({ value, valueTrue })
   }
 
   render () {
     const { className, id, disabled } = this.props
-    const min = +this.props.min
-    const max = +this.props.max
+    const {
+      min = -1 * Infinity,
+      max = Infinity
+    } = this.props
     let { value, valueTrue } = this.state
     const { defaultValue, ...attrs } = this.attrs
     const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'localeDatas', 'localedatas'])
@@ -174,7 +173,7 @@ class Counter extends React.Component {
               let value = e.target.value
               value = this.format(value)
               let valueTrue = this.formatValue(value)
-              this.props.value === undefined && this.setState({ value, valueTrue })
+              valueTrue <= max && valueTrue >= min && this.setState({ value, valueTrue })
             }}
             onBlur={e => {
               e.persist()
