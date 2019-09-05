@@ -35,10 +35,12 @@ class Counter extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    this.setState({
-      value: this.format(nextProps.value),
-      valueTrue: this.formatValue(nextProps.value)
-    })
+    if (this.props.hasOwnProperty('value')) {
+      this.setState({
+        value: this.format(nextProps.value),
+        valueTrue: this.formatValue(nextProps.value)
+      })
+    }
   }
 
   /**
@@ -91,73 +93,30 @@ class Counter extends React.Component {
     )
   }
 
-  /**
-   * minus plus 事件
-   * @param {string} minus 类型
-   * @param {string} plus 类型
-   */
-  signEvent (type, disabled) {
-    const {
-      min = -1 * Infinity,
-      max = 1 * Infinity,
-      step
-    } = this.props
-    if (disabled) {
-      return false
-    }
-
-    let valueTrue = +this.state.valueTrue
-    const steps = +step
-
-    switch (type) {
-      case 'minus':
-        valueTrue -= steps
-
-        if (valueTrue < min) {
-          valueTrue = min
-        }
-        break
-      case 'plus':
-        valueTrue += steps
-
-        if (valueTrue > max) {
-          valueTrue = max
-        }
-        break
-      default:
-    }
-
-    const e = {
-      target: this._Input
-    }
-    this.props.onChange && this.props.onChange(e, valueTrue)
-    this.props.value === undefined && this.setState({
-      value: this.format(valueTrue),
-      valueTrue: this.formatValue(valueTrue)
-    })
-  }
-
   render () {
     const { className, id, disabled } = this.props
     const {
       min = -1 * Infinity,
-      max = Infinity
+      max = Infinity,
+      step
     } = this.props
-    let { value, valueTrue } = this.state
+    let { valueTrue } = this.state
     const { defaultValue, ...attrs } = this.attrs
     const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'localeDatas', 'localedatas'])
     return (
       <div className={`hi-counter ${className || ''}`} id={id}>
         <div className={`hi-counter-outer`}>
           <span
-            className={`hi-counter-minus hi-counter-sign ${
-              (min !== undefined && this.state.valueTrue <= min) || disabled ? 'disabled' : ''
-            }`}
+            className={`hi-counter-minus hi-counter-sign ${this.hasReachedMin ? 'disabled' : ''}`}
             onClick={e => {
-              this.signEvent(
-                'minus',
-                (min !== undefined && this.state.valueTrue <= min) || disabled
-              )
+              let value = valueTrue - parseInt(step)
+              if (this.willReachMin) {
+                value = min
+              }
+              if (this.hasReachedMin) {
+                return
+              }
+              this.update(value)
             }}
           >
             -
@@ -173,36 +132,28 @@ class Counter extends React.Component {
             {...filterAttrs}
             onChange={e => {
               e.persist()
-
               let value = e.target.value
-              value = this.format(value)
-              let valueTrue = this.formatValue(value)
-              valueTrue <= max && valueTrue >= min && this.setState({ value, valueTrue })
-
-              this.props.onChange && this.props.onChange(e, valueTrue)
+              this.setState({
+                value: this.format(value),
+                valueTrue: this.formatValue(value)
+              })
             }}
             onBlur={e => {
-              e.persist()
-              if (typeof min !== 'undefined' && +valueTrue < min) {
-                value = this.format(min)
-                valueTrue = min
-              } else if (typeof max !== 'undefined' && +valueTrue > max) {
-                value = this.format(max)
-                valueTrue = max
-              } else {
-                value = this.format(valueTrue)
-              }
-              this.setState({ value, valueTrue }, () => {
-                this.props.onChange && this.props.onChange(e, valueTrue)
-              })
+              let value = this.getInputNumber()
+              this.update(value)
             }}
           />
           <span
-            className={`hi-counter-plus hi-counter-sign ${
-              (max !== undefined && this.state.valueTrue >= max) || disabled ? 'disabled' : ''
-            }`}
+            className={`hi-counter-plus hi-counter-sign ${this.hasReachedMax ? 'disabled' : ''}`}
             onClick={e => {
-              this.signEvent('plus', (max !== undefined && this.state.valueTrue >= max) || disabled)
+              let value = parseInt(valueTrue) + parseInt(step)
+              if (this.willReachMax) {
+                value = max
+              }
+              if (this.hasReachedMax) {
+                return
+              }
+              this.update(value)
             }}
           >
             +
@@ -210,6 +161,70 @@ class Counter extends React.Component {
         </div>
       </div>
     )
+  }
+
+  update (value) {
+    const {
+      onChange
+    } = this.props
+    if (!this.props.hasOwnProperty('value')) {
+      this.setState({
+        value: this.format(value),
+        valueTrue: this.formatValue(value)
+      })
+    }
+    onChange && onChange({
+      target: this._Input
+    }, value)
+  }
+
+  getInputNumber () {
+    const {
+      max = Infinity,
+      min = 0
+    } = this.props
+    let value = this.state.value
+
+    if (/[^0-9]/.test(value)) {
+      value = value.match(/\d/)[0]
+    }
+
+    if (value - max >= 0) {
+      value = max
+    }
+    if (value - min <= 0) {
+      value = min
+    }
+    return value
+  }
+
+  get willReachMax () {
+    const {
+      max = Infinity,
+      step
+    } = this.props
+    return max <= this.state.valueTrue * 1 + step * 1
+  }
+
+  get willReachMin () {
+    const {
+      min = -1 * Infinity,
+      step
+    } = this.props
+    return min >= parseInt(this.state.valueTrue) - parseInt(step)
+  }
+
+  get hasReachedMax () {
+    const {
+      max = Infinity
+    } = this.props
+    return max <= this.state.valueTrue
+  }
+  get hasReachedMin () {
+    const {
+      min = -1 * Infinity
+    } = this.props
+    return min >= this.state.valueTrue
   }
 }
 
