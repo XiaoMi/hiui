@@ -178,6 +178,8 @@ class Counter extends React.Component {
               value = this.format(value)
               let valueTrue = this.formatValue(value)
               valueTrue <= max && valueTrue >= min && this.setState({ value, valueTrue })
+
+              this.props.onChange && this.props.onChange(e, valueTrue)
             }}
             onBlur={e => {
               e.persist()
