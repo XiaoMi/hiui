@@ -50,11 +50,24 @@ describe('Collapse', () => {
     it('arrow', () => {
       const wrapper = mount(
         React.cloneElement(component, {
-          arrow: 'right'
+          arrow: 'left'
         })
       )
       // expect(wrapper.find('.collapse-item__icon').at(0).hasClass('icon-right')).toBeFalsy()
-      expect(wrapper.find('.collapse-item__icon').at(0).hasClass('icon-right')).toBeTruthy()
+      expect(wrapper.find('.collapse-item__head').first().childAt(0).hasClass('collapse-item__title')).toBeFalsy()
+      wrapper.setProps({arrow: 'right'})
+      expect(wrapper.find('.collapse-item__head').first().childAt(0).hasClass('collapse-item__title')).toBeTruthy()
+    })
+    it('showArrow', () => {
+      const wrapper = mount(
+        React.cloneElement(component, {
+          showArrow: true
+        })
+      )
+      // expect(wrapper.find('.collapse-item__icon').at(0).hasClass('icon-right')).toBeFalsy()
+      expect(wrapper.find('.collapse-item__icon')).toHaveLength(3)
+      wrapper.setProps({showArrow: false})
+      expect(wrapper.find('.collapse-item__icon')).toHaveLength(0)
     })
     // it('手风琴模式&不可点击状态测试成功', () => {
     //   const wrapper = mount(
@@ -135,3 +148,6 @@ describe('Collapse', () => {
   })
 })
 
+describe('Collapse.Panel', () => {
+  // TODO: 组件需要梳理
+})

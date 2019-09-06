@@ -57,12 +57,13 @@ class Dropdown extends Component {
         })
       } else {
         this.MENUTITLE.addEventListener(trigger, (e) => {
-          this.triggerEvent(e)
+          this.triggerEvent(e, trigger)
         }, false)
       }
     }
   }
-  triggerEvent (e) {
+  triggerEvent (e, trigger) {
+    console.log(111, trigger, e)
     e && e.preventDefault()
     this.setState({
       visible: !this.state.visible

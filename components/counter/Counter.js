@@ -27,6 +27,7 @@ class Counter extends React.Component {
     this.attrs = this.getAttrs(oldProps)
 
     const { value, defaultValue, min, max } = this.props
+
     const finalValue = Math.min(Math.max(Number(value === undefined ? defaultValue : value), Number(min)), Number(max))
     this.state = {
       value: this.format(finalValue),
