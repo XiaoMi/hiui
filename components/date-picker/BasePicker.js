@@ -264,11 +264,11 @@ class BasePicker extends Component {
   }
   _icon () {
     const {isFocus} = this.state
-    const { clearable } = this.props
+    const { clearable, type, showTime } = this.props
     const iconCls = classNames(
       'hi-datepicker__input-icon',
       'hi-icon',
-      (isFocus && clearable) ? 'icon-close-circle clear' : 'icon-date'
+      (isFocus && clearable) ? 'icon-close-circle clear' : ((showTime || type === 'timeperiod') ? 'icon-time' : 'icon-date')
     )
     return (isFocus && clearable)
       ? <span className={iconCls} onClick={this._clear.bind(this)} />
@@ -282,12 +282,13 @@ class BasePicker extends Component {
     const {
       localeDatas,
       disabled,
-      showTime
+      showTime,
+      type
     } = this.props
     const _cls = classNames(
       'hi-datepicker__input',
       'hi-datepicker__input--range',
-      showTime && 'hi-datepicker__input--range-time',
+      (showTime || type === 'timeperiod') && 'hi-datepicker__input--range-time',
       disabled && 'hi-datepicker__input--disabled'
     )
     return (

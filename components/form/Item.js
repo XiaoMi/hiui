@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
+import { depreactedPropsCompat } from '../_util'
 
 class FormItem extends Component {
   constructor (props, context) {
@@ -215,4 +216,4 @@ FormItem.defaultProps = {
   size: 'small'
 }
 
-export default FormItem
+export default depreactedPropsCompat([['field', 'prop']])(FormItem)

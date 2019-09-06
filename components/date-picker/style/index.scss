@@ -32,6 +32,10 @@ $basic-color: #4284f5 !default;
     &--range {
       width: 320px;
 
+      &-time {
+        width: 400px;
+      }
+
       input {
         flex: 0 1 40%;
         text-align: center;
