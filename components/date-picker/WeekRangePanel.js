@@ -207,7 +207,7 @@ export default class WeekRangePanel extends Component {
         <div className='hi-datepicker__body  hi-datepicker__body--range'>
           <div className='hi-datepicker__panel hi-datepicker__panel--left'>
             {this.renderHeader(type, leftDate, 'left')}
-            <div className='hi-datepicker__calender-container'>
+            <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${type}`}>
               <Calender
                 date={leftDate}
                 range={range}
@@ -219,7 +219,7 @@ export default class WeekRangePanel extends Component {
           </div>
           <div className='hi-datepicker__panel hi-datepicker__panel--right'>
             {this.renderHeader(type, rightDate, 'right')}
-            <div className='hi-datepicker__calender-container'>
+            <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${type}`}>
               <Calender
                 date={rightDate}
                 range={range}
