@@ -16,9 +16,9 @@ class Demo extends React.Component {
       checked: true,
       disabled: true
     }
-  }
-  onChange (status) {
-    console.log(status)
+    this.onChange = (checked) => {
+      this.setState({ checked })
+    }
   }
   render () {
     return (
@@ -34,7 +34,7 @@ class Demo extends React.Component {
           <Button onClick={() => {this.setState({disabled: !this.state.disabled})}}>切换禁用</Button>
           <Button onClick={() => {this.setState({checked: !this.state.checked})}}>切换开启</Button>
         </p >
-        <Switch checked={this.state.checked} disabled={this.state.disabled} content={['开', '关']} onChange={this.onChange.bind(this)}/>
+        <Switch checked={this.state.checked} disabled={this.state.disabled} content={['开', '关']} onChange={this.onChange}/>
       </div>
     )
   }
