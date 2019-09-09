@@ -15,9 +15,11 @@ import DemoBase from '../../demo/switch/section-base.jsx'
 
 ## Props
 
-| 参数     | 说明                                                             | 类型                    | 可选值        | 默认值 |
-| -------- | ---------------------------------------------------------------- | ----------------------- | ------------- | ------ |
-| content  | 开关状态内容，数组第一项为关闭时显示的内容，第二项为开启时显示的 | string[] \| ReactNode[] | -             | -      |
-| checked  | 设置是否开启开关                                                 | boolean                 | true \| false | -      |
-| disabled | 是否禁用                                                         | boolean                 | true \| false | false  |
-| onChange | 开关选中状态改变时的回调                                         | （ checked ）=> void    | -             | -      |
+| 参数           | 说明                                                             | 类型                                     | 可选值        | 默认值 |
+| -------------- | ---------------------------------------------------------------- | ---------------------------------------- | ------------- | ------ |
+| content        | 开关状态内容，数组第一项为关闭时显示的内容，第二项为开启时显示的 | string[] \| ReactNode[]                  | -             | -      |
+| defaultChecked | 初始是否选中                                                     | boolean                                  | -             | false  |
+| checked        | 设置是否开启开关                                                 | boolean                                  | true \| false | -      |
+| disabled       | 是否禁用                                                         | boolean                                  | true \| false | false  |
+| onChange       | 开关选中状态改变时的回调                                         | (checked: boolean, event: Event) => void | -             | -      |
+| onClick        | 点击时的回调                                                     | (checked: boolean, event: Event) => void | -             | -      |
