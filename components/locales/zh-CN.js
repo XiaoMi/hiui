@@ -1,4 +1,6 @@
-module.exports = {
+import React from 'react'
+
+export default {
   misc: {
     components: '基础组件'
   },
@@ -35,8 +37,10 @@ module.exports = {
     }
   },
   pagination: {
-    total: function (total) {
-      return '共 ' + total + ' 条'
+    total (total, prefixCls) {
+      return <div className={`${prefixCls}__total ${prefixCls}__text`}>
+        共<span className={`${prefixCls}__span`}>{total}</span>条
+      </div>
     },
     item: '条',
     itemPerPage: '每页',
