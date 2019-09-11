@@ -31,6 +31,7 @@ export default class Popover extends Component {
     this.eventTarget = null
     this.popperRef = React.createRef()
     this.referenceRef = null
+    this.delayHidePopperTimer = null
   }
 
   showPopper () {
@@ -44,7 +45,7 @@ export default class Popover extends Component {
     })
   }
   delayHidePopper (e) {
-    setTimeout(() => {
+    this.delayHidePopperTimer = setTimeout(() => {
       if (this.eventTarget !== e.target && this.isInPopover()) return
       this.hidePopper()
     }, 200)
@@ -58,6 +59,21 @@ export default class Popover extends Component {
             !popper || popper.contains(this.eventTarget)
     this.eventTarget = null
     return bool
+  }
+
+  handlePopperMouseOver = () => {
+    const { trigger } = this.props
+    if (trigger === 'hover') {
+      this.showPopper()
+      clearTimeout(this.delayHidePopperTimer)
+    }
+  }
+
+  handlePopperMouseOut = () => {
+    const { trigger } = this.props
+    if (trigger === 'hover') {
+      this.hidePopper()
+    }
   }
 
   componentDidMount () {
@@ -96,24 +112,6 @@ export default class Popover extends Component {
     }
   }
 
-  componentDidUpdate () {
-    const { trigger } = this.props
-    const popper = this.popperRef
-
-    if (popper.current && trigger === 'hover' && this.unbindHover) {
-      this.unbindHover = false
-      popper.current.addEventListener('mouseenter', e => {
-        this.eventTarget = e.target
-      })
-      popper.current.addEventListener('mouseleave', e => {
-        const poperPosition = popper.current.getBoundingClientRect()
-        if (e.clientY > poperPosition.y + poperPosition.height - 1 || e.clientY < poperPosition.y || e.clientX < poperPosition.x || e.clientX > poperPosition.x + poperPosition.width - 1) {
-          this.delayHidePopper(e)
-        }
-      })
-    }
-  }
-
   render () {
     const { style, className, title, content, placement, width, visible } = this.props
     const {
@@ -130,6 +128,8 @@ export default class Popover extends Component {
           placement={placement}
           zIndex={1040}
           width={width}
+          onMouseOver={this.handlePopperMouseOver}
+          onMouseOut={this.handlePopperMouseOut}
         >
           <div ref={this.popperRef} className={classNames('hi-popover-base', `hi-popover-${placement}`)}>
             { title && <div className='hi-popover__title'>{title}</div> }
