@@ -1,4 +1,6 @@
-module.exports = {
+import React from 'react'
+
+export default {
   misc: {
     components: 'Basic Components'
   },
@@ -34,8 +36,10 @@ module.exports = {
     }
   },
   pagination: {
-    total: function (total) {
-      return 'Total ' + total + ' items'
+    total (total, prefixCls) {
+      return <div className={`${prefixCls}__total ${prefixCls}__text`}>
+        Total<span className={`${prefixCls}__span`}>{total}</span>items
+      </div>
     },
     item: '',
     itemPerPage: 'Items per page',
