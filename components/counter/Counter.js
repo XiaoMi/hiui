@@ -81,16 +81,7 @@ class Counter extends React.Component {
    * @param {string} val 值
    */
   format (val) {
-    return (
-      val &&
-      (val.toString().indexOf('.') !== -1
-        ? val.toString().replace(/(\d)(?=(\d{3})+\.)/g, ($0, $1) => {
-          return $1 + ','
-        })
-        : val.toString().replace(/(\d)(?=(\d{3}))/g, ($0, $1) => {
-          return $1 + ','
-        }))
-    )
+    return val
   }
 
   render () {
@@ -109,7 +100,7 @@ class Counter extends React.Component {
           <span
             className={`hi-counter-minus hi-counter-sign ${this.hasReachedMin ? 'disabled' : ''}`}
             onClick={e => {
-              let value = new Decimal(valueTrue).minus(step).valueOf()
+              let value = new Decimal(this.getInputNumber()).minus(step).valueOf()
               if (this.willReachMin) {
                 value = min
               }
@@ -140,6 +131,7 @@ class Counter extends React.Component {
             }}
             onBlur={e => {
               let value = this.getInputNumber()
+
               this.update(value)
             }}
           />
@@ -149,7 +141,6 @@ class Counter extends React.Component {
               let value = new Decimal(valueTrue).plus(step).valueOf()
 
               if (this.willReachMax) {
-                console.log(this.willReachMax)
                 value = max
               }
               if (this.hasReachedMax) {
@@ -169,15 +160,32 @@ class Counter extends React.Component {
     const {
       onChange
     } = this.props
-    if (!this.props.hasOwnProperty('value')) {
+
+    if (this.isControlledComponent) {
+      this.setState({
+        value: this.format(this.props.value),
+        valueTrue: this.formatValue(this.props.value)
+      })
+    }
+
+    if (this.isUncontrolledComponent) {
       this.setState({
         value: this.format(value),
         valueTrue: this.formatValue(value)
       })
     }
+
     onChange && onChange({
       target: this._Input
     }, value)
+  }
+
+  get isControlledComponent () {
+    return this.props.hasOwnProperty('value')
+  }
+
+  get isUncontrolledComponent () {
+    return !this.isControlledComponent
   }
 
   getInputNumber () {
@@ -185,12 +193,10 @@ class Counter extends React.Component {
       max = Infinity,
       min = 0
     } = this.props
-    let value = this.state.value
-
-    if (/[^0-9]/.test(value)) {
-      value = value.match(/\d/)
+    let value = this.valueTrue
+    if (isNaN(value)) {
+      value = min
     }
-
     if (value - max >= 0) {
       value = max
     }
@@ -200,12 +206,17 @@ class Counter extends React.Component {
     return value
   }
 
+  get valueTrue () {
+    return parseFloat(this.state.value.toString().replace(/[^0-9|.|\-(e+)]+/, ''))
+  }
+
   get willReachMax () {
     const {
       max = Infinity,
       step
     } = this.props
-    let num = new Decimal(this.state.valueTrue).plus(step).valueOf() * 1
+
+    let num = new Decimal(this.valueTrue).plus(step).valueOf() * 1
     return max <= num
   }
 
@@ -214,7 +225,7 @@ class Counter extends React.Component {
       min = -1 * Infinity,
       step
     } = this.props
-    let num = new Decimal(this.state.valueTrue).minus(step).valueOf() * 1
+    let num = new Decimal(this.valueTrue).minus(step).valueOf() * 1
     return min >= num
   }
 
@@ -223,13 +234,16 @@ class Counter extends React.Component {
       max = Infinity
     } = this.props
 
-    return max <= this.state.valueTrue * 1
+    return max <= this.valueTrue * 1
   }
   get hasReachedMin () {
     const {
       min = -1 * Infinity
     } = this.props
-    return min >= this.state.valueTrue * 1
+    return min >= this.valueTrue * 1
+  }
+  get hasReachedBoundary () {
+    return this.hasReachedMin || this.hasReachedMax
   }
 }
 
