@@ -94,18 +94,39 @@ class Counter extends React.Component {
     let { valueTrue } = this.state
     const { defaultValue, ...attrs } = this.attrs
     const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'localeDatas', 'localedatas'])
+
+    let isAddDisabled = false
+    let isMinusDisabled = false
+    if (step > 0) {
+      isMinusDisabled = this.hasReachedMin
+      isAddDisabled = this.hasReachedMax
+    } else {
+      isMinusDisabled = this.hasReachedMax
+      isAddDisabled = this.hasReachedMin
+    }
+
     return (
       <div className={`hi-counter ${className || ''}`} id={id}>
         <div className={`hi-counter-outer`}>
           <span
-            className={`hi-counter-minus hi-counter-sign ${this.hasReachedMin ? 'disabled' : ''}`}
+            className={`hi-counter-minus hi-counter-sign ${isMinusDisabled ? 'disabled' : ''}`}
             onClick={e => {
               let value = new Decimal(this.getInputNumber()).minus(step).valueOf()
-              if (this.willReachMin) {
-                value = min
-              }
-              if (this.hasReachedMin) {
-                return
+
+              if (step > 0) {
+                if (this.willReachMin) {
+                  value = min
+                }
+                if (this.hasReachedMin) {
+                  return
+                }
+              } else {
+                if (this.willReachMax) {
+                  value = max
+                }
+                if (this.hasReachedMax) {
+                  return
+                }
               }
               this.update(value)
             }}
@@ -136,15 +157,23 @@ class Counter extends React.Component {
             }}
           />
           <span
-            className={`hi-counter-plus hi-counter-sign ${this.hasReachedMax ? 'disabled' : ''}`}
+            className={`hi-counter-plus hi-counter-sign ${isAddDisabled ? 'disabled' : ''}`}
             onClick={e => {
               let value = new Decimal(valueTrue).plus(step).valueOf()
-
-              if (this.willReachMax) {
-                value = max
-              }
-              if (this.hasReachedMax) {
-                return
+              if (step > 0) {
+                if (this.willReachMax) {
+                  value = max
+                }
+                if (this.hasReachedMax) {
+                  return
+                }
+              } else {
+                if (this.willReachMin) {
+                  value = min
+                }
+                if (this.hasReachedMin) {
+                  return
+                }
               }
               this.update(value)
             }}
