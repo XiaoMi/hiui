@@ -174,10 +174,11 @@ class Counter extends React.Component {
         valueTrue: this.formatValue(value)
       })
     }
-
-    onChange && onChange({
-      target: this._Input
-    }, value)
+    setTimeout(() => {
+      onChange && onChange({
+        target: this._Input
+      }, value)
+    }, 0)
   }
 
   get isControlledComponent () {
