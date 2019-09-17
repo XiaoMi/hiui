@@ -31,6 +31,16 @@ export default class Dropdown extends React.Component {
         event.nativeEvent.stopImmediatePropagation()
       }
     }
+    this.setState({ visible: false })
+  }
+  setPopperDelayHide = (event) => {
+    if (event) {
+      event.stopPropagation()
+      event.preventDefault()
+      if (event.nativeEvent) {
+        event.nativeEvent.stopImmediatePropagation()
+      }
+    }
     this.timerHideMenu = setTimeout(() => {
       this.setState({ visible: false })
     }, 200)
@@ -62,11 +72,11 @@ export default class Dropdown extends React.Component {
     const { disabled } = this.props
     if (disabled) return {}
     return getIsTriggerEqualHover(this.props) ? {
-      onMouseLeave: this.setPopperHide
+      onMouseLeave: this.setPopperDelayHide
     } : {}
   }
   handleMenuMouseLeave = () => {
-    getIsTriggerEqualHover(this.props) && this.setPopperHide()
+    getIsTriggerEqualHover(this.props) && this.setPopperDelayHide()
   }
   handleMenuMouseEnter = () => {
     clearTimeout(this.timerHideMenu)
@@ -75,18 +85,21 @@ export default class Dropdown extends React.Component {
     clearTimeout(this.timerHideMenu)
   }
   handleChildMenuMouseLeave = () => {
-    getIsTriggerEqualHover(this.props) && this.setPopperHide()
+    getIsTriggerEqualHover(this.props) && this.setPopperDelayHide()
   }
   handleMenuItemClick = (data) => {
     const { onClick } = this.props
-    this.setPopperHide()
+    this.setPopperDelayHide()
     onClick && onClick(data)
   }
+  handleDocumentClick = () => {
+    this.setState({ visible: false })
+  }
   componentDidMount () {
-    document.addEventListener('click', this.setPopperHide)
+    document.addEventListener('click', this.handleDocumentClick)
   }
   componentWillUnmount () {
-    document.removeEventListener('click', this.setPopperHide)
+    document.removeEventListener('click', this.handleDocumentClick)
   }
   render () {
     const { className, style, title, type, placement, data, disabled, width, onButtonClick } = this.props
