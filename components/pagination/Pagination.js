@@ -147,7 +147,9 @@ class Pagination extends Component {
   }
 
   renderPageSizes () {
-    const { pageSize, pageSizeOptions, prefixCls, localeDatas } = this.props
+    const { pageSize, pageSizeOptions, prefixCls, localeDatas: {
+      pagination: { itemPerPage: i18nItemPerPage, item: i18nItem }
+    } } = this.props
 
     if (pageSizeOptions.length === 0) {
       return null
@@ -155,19 +157,17 @@ class Pagination extends Component {
 
     return (
       <div className={`${prefixCls}__sizes ${prefixCls}__text`}>
-        {localeDatas.pagination.itemPerPage}
         <div className={`${prefixCls}__span`}>
-          <Dropdown legacy={false} title={pageSize} type='button'
+          <Dropdown legacy={false} title={`${pageSize} ${i18nItem}/${i18nItemPerPage}`} type='button'
             data={pageSizeOptions.map(n => ({
               value: typeof n === 'object' ? n.value : n,
-              title: typeof n === 'object' ? n.title : String(n)
+              title: `${n} ${i18nItem}/${i18nItemPerPage}`
             }))}
             onClick={(val) => {
               this.onPageSizeChange(val)
             }}
           />
         </div>
-        {localeDatas.pagination.item}
       </div>
     )
   }
@@ -308,13 +308,15 @@ class Pagination extends Component {
   }
 
   renderNormal () { // 标准分页
-    const { prefixCls, showTotal, total, localeDatas: { pagination: { total: getLocaleTotal } } } = this.props
+    const { prefixCls, showTotal, total, localeDatas: { pagination: { total: i18nTotal } } } = this.props
 
     return (
       <React.Fragment>
         {
           showTotal &&
-          getLocaleTotal(total, prefixCls)
+          <div className={`${prefixCls}__total ${prefixCls}__text`}>
+            {i18nTotal[0]}<span className={`${prefixCls}__span`}>{total}</span>{i18nTotal[1]}
+          </div>
         }
         {this.renderPageSizes()}
         {this.renderPagers()}
@@ -326,7 +328,10 @@ class Pagination extends Component {
   renderSimple () { // 简单分页
     const {
       total,
-      prefixCls
+      prefixCls,
+      localeDatas: {
+        pagination: { simple: i18nSimple }
+      }
     } = this.props
     const maxPage = this.calculatePage(total)
 
@@ -336,12 +341,12 @@ class Pagination extends Component {
 
     return (
       <div className={`${prefixCls}__text`}>
-        <span>第</span>
+        <span>{i18nSimple[0]}</span>
         {this.renderJumperInput()}
-        <span>页</span>
+        <span>{i18nSimple[1]}</span>
         <span className={`${prefixCls}__span`}>/</span>
-        共<span className={`${prefixCls}__span`}>{maxPage}</span>页,
-        <span className={`${prefixCls}__span`}>{total}条记录</span>
+        {i18nSimple[2]}<span className={`${prefixCls}__span`}>{maxPage}</span>{i18nSimple[3]},
+        <span className={`${prefixCls}__span`}>{total} {i18nSimple[4]}</span>
       </div>
     )
   }
