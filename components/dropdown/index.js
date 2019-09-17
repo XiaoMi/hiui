@@ -1,5 +1,11 @@
 import Dropdown from './Dropdown'
+import DropdownLegacy from './dropdown-legacy'
 import './style/index'
-import { depreactedPropsCompat } from '../_util'
+import { depreactedPropsCompat, SwitchVersion } from '../_util'
 
-export default depreactedPropsCompat([['data', 'list']])(Dropdown)
+export const prefixCls = 'hi-dropdown'
+
+export default SwitchVersion(
+  depreactedPropsCompat([['data', 'list']])(Dropdown),
+  DropdownLegacy
+)

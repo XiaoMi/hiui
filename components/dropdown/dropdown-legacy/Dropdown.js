@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import clickOutside from 'react-click-outside'
 import classNames from 'classnames'
-import Button from '../button/index'
-import Popper from '../popper'
-import Provider from '../context'
+import Button from '../../button/index'
+import Popper from '../../popper'
+import Provider from '../../context'
 
 const ItemWrapper = ({href, children}) => {
   return href ? <a href={href}>{children}</a> : <React.Fragment>{children}</React.Fragment>
@@ -94,13 +94,13 @@ class Dropdown extends Component {
     if (type === 'button') {
       return <Button type='default'>{title} &nbsp;<i className='hi-icon icon-down' /></Button>
     } else if (type === 'group') {
-      return <div className='hi-dropdown__button-group'>
+      return <div className='hi-dropdown-legacy__button-group'>
         <Button type='default' onClick={this.handlerClick.bind(this, {title})}>{title}</Button>
         <Button type='default' onClick={this.triggerEvent.bind(this)}><i className='hi-icon icon-down' /></Button>
       </div>
     } else {
-      return <div className='hi-dropdown__title'>
-        <span className='hi-dropdown__title-text'>{title}</span>
+      return <div className='hi-dropdown-legacy__title'>
+        <span className='hi-dropdown-legacy__title-text'>{title}</span>
         <i className='hi-icon icon-down' />
       </div>
     }
@@ -110,12 +110,12 @@ class Dropdown extends Component {
     // splitButton，disabled
     const {data, width, prefix, suffix, theme, title, placement} = this.props
     const {visible} = this.state
-    const ulCls = classNames('hi-dropdown__menu')
+    const ulCls = classNames('hi-dropdown-legacy__menu')
     return (
-      <div className={`hi-dropdown theme__${theme}`} ref={el => { this.MENUTITLE = el }} style={{width: width}}>
+      <div className={`hi-dropdown-legacy theme__${theme}`} ref={el => { this.MENUTITLE = el }} style={{width: width}}>
         {this.renderTitle()}
         <Popper
-          className='hi-dropdown__popper'
+          className='hi-dropdown-legacy__popper'
           show={visible}
           attachEle={this.MENUTITLE}
           zIndex={1060}
@@ -126,20 +126,20 @@ class Dropdown extends Component {
               (data).map((item, index) => {
                 if (item.title === '-') {
                   // 分隔线
-                  return <li className='hi-dropdown__divider' key={index} />
+                  return <li className='hi-dropdown-legacy__divider' key={index} />
                 }
 
                 const liCls = classNames(
-                  'hi-dropdown__item',
-                  item.disabled && 'hi-dropdown__item--disabled',
-                  String(item.title) === String(title) && 'hi-dropdown__item--active'
+                  'hi-dropdown-legacy__item',
+                  item.disabled && 'hi-dropdown-legacy__item--disabled',
+                  String(item.title) === String(title) && 'hi-dropdown-legacy__item--active'
                 )
 
                 return <li className={liCls} key={index} onClick={this.handlerClick.bind(this, item)}>
                   <ItemWrapper href={item.url}>
-                    {(prefix || item.prefix) && <div className='hi-dropdown__item-prefix'>{prefix || item.prefix}</div>}
-                    <div className='hi-dropdown__item-title' title={item.title}>{item.title}</div>
-                    {(suffix || item.suffix) && <div className='hi-dropdown__item-suffix'>{suffix || item.suffix}</div>}
+                    {(prefix || item.prefix) && <div className='hi-dropdown-legacy__item-prefix'>{prefix || item.prefix}</div>}
+                    <div className='hi-dropdown-legacy__item-title' title={item.title}>{item.title}</div>
+                    {(suffix || item.suffix) && <div className='hi-dropdown-legacy__item-suffix'>{suffix || item.suffix}</div>}
                   </ItemWrapper>
                 </li>
               })
