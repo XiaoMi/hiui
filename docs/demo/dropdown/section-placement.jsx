@@ -1,9 +1,9 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Dropdown from '../../../components/dropdown'
-const prefix = 'dropdown-trigger'
-const rightOptions = ['鼠标悬停', '左键单击', '右键单击', '多种组合']
-const desc = '通过 trigger 属性切换菜单触发方式'
+const prefix = 'dropdown-type'
+const rightOptions = ['Bottom Start', 'Top Start', 'Bottom', 'Top']
+const desc = '通过 placement 属性切换菜单显示位置'
 
 const code = [
   {
@@ -34,14 +34,14 @@ class Demo extends React.Component {
     return (
       <Dropdown
         data={list}
-        trigger='hover'
+        placement='bottom-start'
+        type='button'
         title='鼠标悬停'
-        type='button'
       />
     )
   }
 }`,
-    opt: ['鼠标悬停']
+    opt: ['Bottom Start']
   },
   {
     code: `import React from 'react'
@@ -72,13 +72,13 @@ class Demo extends React.Component {
       <Dropdown
         data={list}
         type='button'
-        trigger='click'
-        title='左键单击'
+        placement='top-start'
+        title='鼠标悬停'
       />
     )
   }
 }`,
-    opt: ['左键单击']
+    opt: ['Top Start']
   },
   {
     code: `import React from 'react'
@@ -109,13 +109,13 @@ class Demo extends React.Component {
       <Dropdown
         data={list}
         type='button'
-        trigger='contextmenu'
-        title='右键单击'
+        placement='bottom'
+        title='鼠标悬停'
       />
     )
   }
 }`,
-    opt: ['右键单击']
+    opt: ['Bottom']
   },
   {
     code: `import React from 'react'
@@ -145,14 +145,14 @@ class Demo extends React.Component {
     return (
       <Dropdown
         data={list}
-        trigger={['click', 'contextmenu']}
         type='button'
-        title='左键或右键单击'
+        placement='top'
+        title='鼠标悬停'
       />
     )
   }
 }`,
-    opt: ['多种组合']
+    opt: ['Top']
   }
 ]
 
