@@ -34,6 +34,7 @@ export default class DropdownButton extends React.Component {
       iconProps.onMouseEnter = restProps.onMouseEnter
       iconProps.onMouseLeave = restProps.onMouseLeave
       iconProps.onClick = restProps.onClick
+      iconProps.disabled = restProps.disabled
       Reflect.deleteProperty(restProps, 'onContextMenu')
       Reflect.deleteProperty(restProps, 'onMouseEnter')
       Reflect.deleteProperty(restProps, 'onMouseLeave')

@@ -99,15 +99,6 @@ $prefixCls: 'hi-dropdown' !default;
       user-select: none;
       transition: 0.3s ease;
 
-      &__icon {
-        display: inline-block;
-        transition: 0.3s ease;
-
-        &--active {
-          transform: rotate(180deg);
-        }
-      }
-
       &--disabled {
         color: #ccc;
         cursor: not-allowed;
