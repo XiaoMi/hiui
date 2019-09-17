@@ -98,11 +98,11 @@ class Counter extends React.Component {
     let isAddDisabled = false
     let isMinusDisabled = false
     if (step > 0) {
-      isMinusDisabled = this.hasReachedMin
-      isAddDisabled = this.hasReachedMax
+      isMinusDisabled = this.hasReachedMin || disabled
+      isAddDisabled = this.hasReachedMax || disabled
     } else {
-      isMinusDisabled = this.hasReachedMax
-      isAddDisabled = this.hasReachedMin
+      isMinusDisabled = this.hasReachedMax || disabled
+      isAddDisabled = this.hasReachedMin || disabled
     }
 
     return (
@@ -112,20 +112,16 @@ class Counter extends React.Component {
             className={`hi-counter-minus hi-counter-sign ${isMinusDisabled ? 'disabled' : ''}`}
             onClick={e => {
               let value = new Decimal(this.getInputNumber()).minus(step).valueOf()
-
+              if (isMinusDisabled) {
+                return
+              }
               if (step > 0) {
                 if (this.willReachMin) {
                   value = min
                 }
-                if (this.hasReachedMin) {
-                  return
-                }
               } else {
                 if (this.willReachMax) {
                   value = max
-                }
-                if (this.hasReachedMax) {
-                  return
                 }
               }
               this.update(value)
@@ -160,19 +156,16 @@ class Counter extends React.Component {
             className={`hi-counter-plus hi-counter-sign ${isAddDisabled ? 'disabled' : ''}`}
             onClick={e => {
               let value = new Decimal(valueTrue).plus(step).valueOf()
+              if (isAddDisabled) {
+                return
+              }
               if (step > 0) {
                 if (this.willReachMax) {
                   value = max
                 }
-                if (this.hasReachedMax) {
-                  return
-                }
               } else {
                 if (this.willReachMin) {
                   value = min
-                }
-                if (this.hasReachedMin) {
-                  return
                 }
               }
               this.update(value)
