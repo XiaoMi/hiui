@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default {
   misc: {
     components: 'Basic Components'
@@ -36,15 +34,12 @@ export default {
     }
   },
   pagination: {
-    total (total, prefixCls) {
-      return <div className={`${prefixCls}__total ${prefixCls}__text`}>
-        Total<span className={`${prefixCls}__span`}>{total}</span>items
-      </div>
-    },
+    total: ['Total', 'items'],
+    simple: ['The', 'page', '', 'pages', 'items'],
     item: '',
     itemPerPage: 'Items per page',
     goto: 'Goto',
-    page: 'page'
+    page: ''
   },
   cascader: {
     placeholder: 'Please select',

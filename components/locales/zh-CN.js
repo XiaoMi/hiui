@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default {
   misc: {
     components: '基础组件'
@@ -37,14 +35,11 @@ export default {
     }
   },
   pagination: {
-    total (total, prefixCls) {
-      return <div className={`${prefixCls}__total ${prefixCls}__text`}>
-        共<span className={`${prefixCls}__span`}>{total}</span>条
-      </div>
-    },
+    total: ['共', '条'],
+    simple: ['第', '页', '共', '页', '条记录'],
     item: '条',
-    itemPerPage: '每页',
-    goto: '跳至',
+    itemPerPage: '页',
+    goto: '前往',
     page: '页'
   },
   cascader: {
