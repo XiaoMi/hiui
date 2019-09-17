@@ -159,9 +159,11 @@ class Pagination extends Component {
         <div className={`${prefixCls}__span`}>
           <Dropdown legacy={false} title={pageSize} type='button'
             data={pageSizeOptions.map(n => ({
-              value: typeof n === 'object' ? n.value : n,
+              id: typeof n === 'object' ? n.value : n,
               title: typeof n === 'object' ? n.title : String(n)
             }))}
+            width={100}
+            trigger='click'
             onClick={(val) => {
               this.onPageSizeChange(val)
             }}

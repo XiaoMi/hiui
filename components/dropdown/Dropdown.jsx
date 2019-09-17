@@ -113,6 +113,7 @@ export default class Dropdown extends React.Component {
           type={type}
           visible={visible}
           onButtonClick={onButtonClick}
+          disabled={disabled}
         >
           {title}
         </DropdownButton>
