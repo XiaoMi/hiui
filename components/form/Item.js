@@ -169,7 +169,7 @@ class FormItem extends Component {
         {
           (label || label === '') ? (
             <label className='hi-form-item__label' style={{ width: this.labelWidth }}>
-              {typeof label === 'string' && label.trim()}{shouldShowColon && colon}
+              {(typeof label === 'string' && label.trim()) || label}{shouldShowColon && colon}
             </label>
           ) : (
             <span className='hi-form-item__span' style={{ width: this.labelWidth }} />
