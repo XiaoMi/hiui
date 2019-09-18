@@ -1,141 +1,116 @@
 @import '@hi-ui/core-css/index.scss';
 
-// Define component colors
-@mixin hi-dropdown-style($color: get-color($palette-primary, 'hiui-blue')) {
-  .hi-dropdown {
-    &__item {
-      &:hover {
-        background-color: rgba($color, 0.08);
-      }
+$prefixCls: 'hi-dropdown' !default;
 
-      &--active {
-        color: $color;
-      }
-
-      &--disabled {
-        color: map-get(get-palette($color), 'g70');
-      }
-    }
+%reset-active {
+  &,
+  &:active,
+  &:hover,
+  &:focus {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+    outline: none !important;
   }
 }
 
-.hi-dropdown {
-  position: relative;
-  user-select: none;
-  max-width: 200px;
-
+.#{$prefixCls} {
   @include component-reset();
 
-  &__popper {
-    &.hi-popper__content--top-start {
-      .hi-dropdown__menu {
-        box-shadow: 8px 0 12px rgba(0, 0, 0, 0.175);
-      }
-    }
+  user-select: none;
+  display: inline-block;
 
-    &.hi-popper__content--bottom-start {
-      .hi-dropdown__menu {
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.175);
-      }
-    }
-  }
-
-  &__title {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 $spacer-4;
-    cursor: pointer;
-  }
-
-  &__text {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  &__menu {
-    box-sizing: border-box;
-    width: 100%;
-    min-width: 140px;
-    margin-top: 2px !important;
-    margin-bottom: 2px;
-    padding: $spacer-1 0 !important;
-    border: 1px solid $gray;
-    list-style: none;
-    font-size: $font-size-normal;
-    text-align: left;
-    background-color: $white;
-    background-clip: padding-box;
-  }
-
-  &__item {
-    display: flex;
-    height: 36px;
-    padding: 0 $spacer-4;
-    line-height: 36px;
-    color: $black;
-    cursor: pointer;
-
-    &--disabled {
+  &--disabled {
+    .#{$prefixCls}__button {
+      color: #ccc;
       cursor: not-allowed;
+
+      &:hover {
+        color: #ccc !important;
+      }
     }
   }
 
-  &__item-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  &__button {
+    i {
+      margin-left: 4px;
+      margin-right: 0 !important;
+    }
+
+    &--text {
+      @extend %reset-active;
+
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    &--active {
+      color: get-color($palette-primary, 'hiui-blue') !important;
+    }
   }
 
-  &__item-prefix {
-    flex: 0 0 18px;
+  &__icon {
+    padding-right: 8px;
+    padding-left: 8px;
+    transition: 0.3s ease;
+    position: relative;
+    display: inline-block;
+
+    &--active {
+      transform: rotate(180deg);
+    }
+
+    i {
+      margin-right: 0 !important;
+    }
+
+    &--text {
+      @extend %reset-active;
+    }
   }
 
-  &__item-suffix {
-    flex: 1;
-    text-align: right;
+  &__popper {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
   }
 
   &__divider {
+    background-color: #e8e8e8;
+    width: 100%;
     height: 1px;
-    overflow: hidden;
-    background-color: $gray-light;
-    line-height: 0;
+    margin: 4px 0;
   }
 
-  &__button-group {
-    .hi-btn {
-      position: relative;
+  &__menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    padding: 4px 0;
+    max-height: 267px;
+    overflow: auto;
 
-      &:first-child {
-        margin-left: 0;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
+    &-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: 0.3s ease;
 
-        &:hover {
-          z-index: 1;
-        }
+      &--disabled {
+        color: #ccc;
+        cursor: not-allowed;
       }
 
-      & + .hi-btn {
-        margin-left: -1px;
-        padding: 0 8px;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+      a {
+        color: #333;
+      }
 
-        &:hover {
-          z-index: 1;
-        }
+      &:not(#{&}--disabled):hover {
+        background-color: #ecf2fe;
       }
     }
-  }
-}
-
-// Component colors
-@include hi-dropdown-style();
-
-@each $key, $value in $theme-colors {
-  .theme__#{$key} {
-    @include hi-dropdown-style($value);
   }
 }

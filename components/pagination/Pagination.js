@@ -163,6 +163,8 @@ class Pagination extends Component {
               value: typeof n === 'object' ? n.value : n,
               title: `${n} ${i18nItem}/${i18nItemPerPage}`
             }))}
+            width={100}
+            trigger='click'
             onClick={(val) => {
               this.onPageSizeChange(val)
             }}
