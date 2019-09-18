@@ -168,6 +168,8 @@ export default class Popper extends Component {
           ref={node => {
             this.popperRef = node
           }}
+          onMouseOver={onMouseOver}
+          onMouseOut={onMouseOut}
           className={classNames(className, 'hi-popper__content', `hi-popper__content--${offset.placement}`, {'hi-popper__content--hide': this.popperHeight === 0})}
           style={{width, height}}
           onMouseOut={onMouseOut}

@@ -5,7 +5,7 @@ import Provider from '../context'
 
 function defaultItemRender (page, element) {
   return (
-    <a href='javascript:void 0'>{element}</a>
+    <span>{element}</span>
   )
 }
 

@@ -636,18 +636,19 @@ class Table extends Component {
     })
     let bodyColumns = []
     let headerColumns = []
+
     let deepMap = (columns, parent) => {
-      for (let key in columns) {
-        columns[key].key = columns[key].key || columns[key].title
-        columns[key].depth = parent.depth + 1
-        let children = columns[key].children
+      for (let i = 0; i < columns.length; i++) {
+        columns[i].key = columns[i].key || columns[i].title
+        columns[i].depth = parent.depth + 1
+        let children = columns[i].children
         if (children && children.length > 0) {
-          columns[key].isLast = false
-          deepMap(children, columns[key])
+          columns[i].isLast = false
+          deepMap(children, columns[i])
         } else {
-          columns[key].isLast = true
+          columns[i].isLast = true
         }
-        bodyColumns.push(columns[key])
+        bodyColumns.push(columns[i])
       }
     }
 
