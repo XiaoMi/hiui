@@ -385,6 +385,7 @@ $basic-color: #4284f5 !default;
 
   &__timeheader {
     display: flex;
+    justify-content: space-around;
     height: 48px;
     text-align: center;
     align-items: center;
@@ -396,7 +397,7 @@ $basic-color: #4284f5 !default;
   }
 
   &__mark {
-    flex: 1;
+    // flex: 1;
   }
 
   &__timebody {
@@ -404,6 +405,7 @@ $basic-color: #4284f5 !default;
     height: 248px;
     // border-bottom: 1px solid #f2f2f2;
     position: relative;
+    justify-content: space-around;
     box-sizing: border-box;
     overflow: hidden;
     padding: 0;

@@ -6,11 +6,8 @@ import {formatterDate, FORMATS} from './constants'
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
-import {parse, dateFormat, isValid, startOfWeek, endOfWeek} from './dateUtil'
+import {parseISO, dateFormat, isValid, startOfWeek, endOfWeek, toDate} from './dateUtil'
 class BasePicker extends Component {
-  inputRoot = null
-  input = null
-  rInput = null
   constructor (props) {
     super(props)
     this.state = {
@@ -24,6 +21,9 @@ class BasePicker extends Component {
       rightPlaceholder: '',
       format: ''
     }
+    this.inputRoot = React.createRef()
+    this.input = null
+    this.rInput = null
   }
   setPlaceholder () {
     const {placeholder, localeDatas, type} = this.props
@@ -43,52 +43,10 @@ class BasePicker extends Component {
       rightPlaceholder
     })
   }
-  _parseProps (props, callback) {
-    let {value, defaultValue, showTime, type, format, localeDatas, weekOffset, timeInterval = 240} = props
-    format = format || FORMATS[type]
-    let _value = value || defaultValue
-    let start
-    let end
-    let date
-    let leftText = ''
-    let rightText = ''
-    if (_value) {
-      if (Object.prototype.toString.call(_value) === '[object Object]') {
-        start = _value.start || null
-        end = _value.end || new Date()
-      } else {
-        start = _value
-        if (type.includes('range')) {
-          end = parse(start)
-          if (type === 'weekrange') {
-            start = startOfWeek(start)
-            end = endOfWeek(end)
-          }
-        }
-      }
-
-      if (type === 'timeperiod' && isValid(start)) {
-        let startTime = start.getTime()
-        startTime += timeInterval * 60 * 1000
-        end = new Date(startTime)
-      }
-    }
-    date = {
-      startDate: parse(start),
-      endDate: parse(end)
-    }
-    leftText = isValid(date.startDate) ? formatterDate(type, date.startDate, format, showTime, localeDatas, weekOffset) : ''
-    rightText = isValid(date.endDate) ? formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset) : ''
-    this.setState({
-      texts: [leftText, rightText],
-      date,
-      format
-    })
-  }
   componentDidMount () {
     this._parseProps(this.props)
     this.setPlaceholder()
-    let rect = this.inputRoot.getBoundingClientRect()
+    let rect = this.inputRoot.current.getBoundingClientRect()
     this.calcPanelPos(rect)
   }
   calcPanelPos (rect) {
@@ -122,12 +80,60 @@ class BasePicker extends Component {
       this._parseProps(nextProps)
     }
   }
+  compatibleFormatString (format) {
+    return format.replace(/[Y+|D+]/g, (word) => {
+      return word.toLowerCase()
+    })
+  }
+  _parseProps (props) {
+    let {value, defaultValue, showTime, type, format, localeDatas, weekOffset, timeInterval = 240} = props
+    format = this.compatibleFormatString(format || FORMATS[type])
+    let _value = value || defaultValue
+    let start
+    let end
+    let date
+    let leftText = ''
+    let rightText = ''
+    if (_value) {
+      if (Object.prototype.toString.call(_value) === '[object Object]') {
+        start = toDate(_value.start) || null
+        end = toDate(_value.end) || new Date()
+      } else {
+        start = toDate(_value)
+        if (type.includes('range')) {
+          end = toDate(start)
+          if (type === 'weekrange') {
+            start = startOfWeek(start)
+            end = endOfWeek(end)
+          }
+        }
+      }
+
+      if (type === 'timeperiod' && isValid(start)) {
+        let startTime = start.getTime()
+        startTime += timeInterval * 60 * 1000
+        end = new Date(startTime)
+      }
+    }
+    date = {
+      startDate: toDate(start),
+      endDate: toDate(end)
+    }
+    leftText = isValid(date.startDate) ? formatterDate(type, date.startDate, format, showTime, localeDatas, weekOffset) : ''
+    rightText = isValid(date.endDate) ? formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset) : ''
+    this.setState({
+      texts: [leftText, rightText],
+      date,
+      format
+    })
+  }
   onPick (date, showPanel) {
     if (!date.startDate) {
       date = {startDate: date, endDate: undefined}
     }
     const {type, showTime, localeDatas, weekOffset} = this.props
     const {format} = this.state
+    console.log(date)
     this.setState({
       date,
       texts: [formatterDate(type, date.startDate, format, showTime, localeDatas, weekOffset), formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset)],
@@ -142,6 +148,7 @@ class BasePicker extends Component {
   callback () {
     const {type, onChange} = this.props
     const {date} = this.state
+    console.log(1, date)
     if (onChange) {
       let {startDate, endDate} = date
       startDate = isValid(startDate) ? startDate : ''
@@ -151,6 +158,10 @@ class BasePicker extends Component {
         return
       }
 
+      if (type === 'time') {
+        onChange(startDate, dateFormat(startDate, this.state.format))
+        return
+      }
       if (['timerange', 'timeperiod', 'daterange'].includes(type)) {
         onChange({start: startDate, end: endDate})
         return
@@ -195,8 +206,8 @@ class BasePicker extends Component {
   inputChangeEvent () {
     let { texts, date } = this.state
     // const {type, showTime, localeDatas, weekOffset} = this.props
-    let startDate = parse(texts[0])
-    let endDate = parse(texts[1])
+    let startDate = parseISO(texts[0])
+    let endDate = parseISO(texts[1])
 
     if (startDate && isValid(startDate)) {
       date.startDate ? date.startDate = startDate : date = startDate
@@ -247,7 +258,7 @@ class BasePicker extends Component {
             showPanel: true,
             isFocus: true
           })
-          this.calcPanelPos(this.inputRoot.getBoundingClientRect())
+          this.calcPanelPos(this.inputRoot.current.getBoundingClientRect())
         }}
         value={text}
       />
@@ -274,7 +285,7 @@ class BasePicker extends Component {
       ? <span className={iconCls} onClick={this._clear.bind(this)} />
       : <span className={iconCls} onClick={(e) => {
         if (this.props.disabled) return
-        this.calcPanelPos(this.inputRoot.getBoundingClientRect())
+        this.calcPanelPos(this.inputRoot.current.getBoundingClientRect())
         this.setState({showPanel: true, isFocus: true})
       }} />
   }
@@ -320,7 +331,7 @@ class BasePicker extends Component {
   render () {
     const {type, showTime} = this.props
     return (
-      <span ref={el => { this.inputRoot = el }} className='hi-datepicker__input-root'>
+      <span ref={this.inputRoot} className='hi-datepicker__input-root'>
         {
           (type.indexOf('range') !== -1 || type === 'timeperiod') ? this.renderRangeInput() : this.renderNormalInput()
         }

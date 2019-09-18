@@ -13,7 +13,16 @@ class Demo extends React.Component {
           <TimePicker
             value={new Date()}
             format="HH:mm"
-            onChange={date => console.log('时间', date)}
+            hourStep={1}
+            minuteStep={1}
+            secondStep={1}
+            disabledHours={() => {
+              return [1, 2, 3]
+            }}
+            disabledMinutes={(sHour) => {
+              return [1, 2, 3]
+            }}
+            onChange={(date, dateString) => console.log('时间', date, dateString)}
           />
         </div>
         <div style={{margin: '10px'}}>

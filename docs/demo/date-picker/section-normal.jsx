@@ -15,11 +15,12 @@ class Demo extends React.Component {
     return (
       <div style={{display:'flex', flexWrap: 'wrap'}}>
         <DatePicker
-          value={new Date}
+          value={this.state.date}
           onChange={(d) => {
             console.log('返回值', d)
           }}
         />
+        <button onClick={() => {this.setState({date: new Date().getTime()+24*3560*1000*7})}}>Click</button>
       </div>
     )
   }
