@@ -9,11 +9,11 @@ const prefixCls = 'hi-checkbox-group'
 class Group extends Component {
   constructor (props) {
     super(props)
-    this.state = getData(props)
+    this.state = { data: getData(props), value: props.value }
   }
-  static getDerivedStateFromProps (nextProps) {
-    if (hasValue(nextProps)) {
-      return getData(nextProps)
+  static getDerivedStateFromProps (nextProps, state) {
+    if (nextProps.value !== state.value || getData(nextProps) !== state.data) {
+      return { data: getData(nextProps), value: nextProps.value }
     }
     return null
   }
@@ -63,27 +63,24 @@ class Group extends Component {
 }
 
 function hasValue (props) {
-  const has = (key) => Object.prototype.hasOwnProperty.call(props, key)
-  return has('value')
+  return props.value !== undefined
 }
 
 function getData (props) {
   const { data, value, defaultValue } = props
   const _value = hasValue(props) ? value : defaultValue
-  return {
-    data: data.map((item) => {
-      const isPlain = typeof item === 'string'
-      const label = isPlain ? item : item.content
-      const value = isPlain ? item : item.id
-      const disabled = !isPlain && item.disabled
-      return {
-        label,
-        value,
-        disabled,
-        checked: (_value || []).includes(value)
-      }
-    })
-  }
+  return data.map((item) => {
+    const isPlain = ['string', 'number'].includes(typeof item)
+    const label = isPlain ? item : item.content
+    const value = isPlain ? item : item.id
+    const disabled = !isPlain && item.disabled
+    return {
+      label,
+      value,
+      disabled,
+      checked: (_value || []).includes(value)
+    }
+  })
 }
 
 const PropTypesArrayOfStringOrNumber = PropTypes.oneOfType([

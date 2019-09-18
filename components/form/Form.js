@@ -41,13 +41,11 @@ class Form extends Component {
   }
 
   removeField (prop) {
-    const fields = this.state.fields.filter(
-      (field) => field.props.field !== prop
-    )
-
-    this.setState({
-      fields
-    })
+    this.setState((prevState) => ({
+      fields: prevState.fields.filter(
+        (field) => field.props.field !== prop
+      )
+    }))
   }
 
   validate (cb) {

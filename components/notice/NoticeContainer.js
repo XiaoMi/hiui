@@ -30,7 +30,10 @@ export default class NoticeContainer extends Component {
             <Notice
               key={notice.key}
               id={notice.key}
-              onClose={this.removeNotice}
+              onClose={noticeId => {
+                this.removeNotice(noticeId)
+                notice.onClose && notice.onClose()
+              }}
               duration={notice.duration}
               prefix={prefix}
               type={notice.type}

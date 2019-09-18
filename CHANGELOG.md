@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2.2.1
+
+- 修复 `<Select />` 多选时历史数据污染的问题 [#606](https://github.com/XiaoMi/hiui/issues/606)
+- 修复 `<Checkbox />` data 无法更新的问题 [#603](https://github.com/XiaoMi/hiui/issues/603)
+- 修复 `<Radio />` data 无法更新的问题 [#607](https://github.com/XiaoMi/hiui/issues/607)
+- 修复 `<Notification />` 组件销毁没有清空定时器的问题 [#624](https://github.com/XiaoMi/hiui/issues/624)
+- 修复 `<Notification />` onClose 失效的问题 [#627](https://github.com/XiaoMi/hiui/issues/627)
+- 修复 `<DatePicker />` 长度不够展示时间被遮挡的问题 [#615](https://github.com/XiaoMi/hiui/issues/615)
+- 修复 `<Form />` 动态渲染的时候 removeField 数量不正确的问题 [#636](https://github.com/XiaoMi/hiui/issues/636)
+
 ## 2.2.0
 
 - 新增 `<Carousel />` 走马灯组件 [#115](https://github.com/XiaoMi/hiui/issues/115)
