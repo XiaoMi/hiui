@@ -5,17 +5,22 @@ import { CSSTransition } from 'react-transition-group'
 
 export default class Notice extends Component {
   state = { open: false }
+  openTimer = null
+  closeTimer = null
   componentDidMount () {
     this.setState({
       open: true
     })
     if (this.props.duration !== null) {
-      setTimeout(() => {
+      this.openTimer = setTimeout(() => {
         this.setState({ open: false })
       }, this.props.duration || 3000)
     }
   }
-
+  componentWillUnmount () {
+    clearTimeout(this.openTimer)
+    clearTimeout(this.closeTimer)
+  }
   closeNotice = e => {
     if (e) {
       e.stopPropagation()
@@ -32,7 +37,7 @@ export default class Notice extends Component {
         timeout={0}
         classNames={`hi-${prefix}`}
         onExited={() => {
-          setTimeout(() => this.closeNotice(), 300)
+          this.closeTimer = setTimeout(() => this.closeNotice(), 300)
         }}
       >
         <div className={classNames(`hi-${prefix}`, { [`hi-${prefix}--${type}`]: type })}>

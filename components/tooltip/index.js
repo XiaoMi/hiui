@@ -27,7 +27,7 @@ class Tooltip extends Component {
   }
   // 兼容处理 button disabled tooltip 不消失的问题
   compatDisabledBtn = el => {
-    if (el.type.IS_HI_COMPONENT && el.props.disabled) {
+    if (el && el.type && el.type.IS_HI_COMPONENT && el.props.disabled) {
       return React.cloneElement(el, {
         style: {
           ...el.props.style,

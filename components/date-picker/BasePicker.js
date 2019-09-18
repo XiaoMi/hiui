@@ -293,12 +293,13 @@ class BasePicker extends Component {
     const {
       localeDatas,
       disabled,
-      showTime
+      showTime,
+      type
     } = this.props
     const _cls = classNames(
       'hi-datepicker__input',
       'hi-datepicker__input--range',
-      showTime && 'hi-datepicker__input--range-time',
+      (showTime || type === 'timeperiod') && 'hi-datepicker__input--range-time',
       disabled && 'hi-datepicker__input--disabled'
     )
     return (
