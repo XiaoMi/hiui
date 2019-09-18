@@ -10,6 +10,9 @@ class Demo extends React.Component {
       <TimePicker
         value={new Date()}
         format="HH:mm:ss"
+        hourStep={2}
+        minuteStep={10}
+        secondStep={10}
         onChange={(date, dateString) => console.log('时间', date, dateString)}
       />
     )

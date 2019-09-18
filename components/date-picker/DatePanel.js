@@ -310,6 +310,7 @@ class DatePanel extends Component {
             />}
           {type === 'timeperiod' &&
             <TimePeriodPanel
+              {...this.props}
               timeInterval={timeInterval}
               onTimePeriodPick={this.onTimePeriodPick.bind(this)}
               date={getStartDate(this.props.date)}

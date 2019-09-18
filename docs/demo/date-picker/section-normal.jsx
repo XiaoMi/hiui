@@ -20,7 +20,6 @@ class Demo extends React.Component {
             console.log('返回值', d)
           }}
         />
-        <button onClick={() => {this.setState({date: new Date().getTime()+24*3560*1000*7})}}>Click</button>
       </div>
     )
   }

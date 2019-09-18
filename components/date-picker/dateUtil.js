@@ -29,6 +29,12 @@ import subYears from 'date-fns/subYears'
 import parseISO from 'date-fns/parseISO'
 
 const isValid = (date) => {
+  if (typeof date === 'string') {
+    return dfIsValid(parseISO(date))
+  }
+  if (typeof date === 'number') {
+    return dfIsValid(toDate(date))
+  }
   return (date && dfIsValid(toDate(date)))
 }
 const getValidDate = (date) => {

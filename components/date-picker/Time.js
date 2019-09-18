@@ -32,13 +32,13 @@ class Time extends Component {
     const { date } = this.state
     const currentDate = deconstructDate(date)
     const { disabledHours, disabledMinutes, disabledSeconds } = this.props
-    if (type === 'hours' && !disabledHours().includes(value)) {
+    if (type === 'hours' && !(disabledHours() || []).includes(value)) {
       date.setHours(value)
       this.callback(date)
-    } else if (type === 'minutes' && !disabledMinutes(currentDate['hours']).includes(value)) {
+    } else if (type === 'minutes' && !(disabledMinutes(currentDate['hours']) || []).includes(value)) {
       date.setMinutes(value)
       this.callback(date)
-    } else if (type === 'seconds' && !disabledSeconds(currentDate['hours'], currentDate['minutes']).includes(value)) {
+    } else if (type === 'seconds' && !(disabledSeconds(currentDate['hours'], currentDate['minutes']) || []).includes(value)) {
       date.setSeconds(value)
       this.callback(date)
     }
@@ -61,15 +61,15 @@ class Time extends Component {
     const { disabledHours, disabledMinutes, disabledSeconds } = this.props
     if (type === 'hours') {
       count = 24
-      disabledTime = disabledHours()
+      disabledTime = disabledHours() || []
       step = this.props.hourStep || 1
     } else if (type === 'minutes') {
       count = 60
-      disabledTime = disabledMinutes(currentDate['hours'])
+      disabledTime = disabledMinutes(currentDate['hours']) || []
       step = this.props.minuteStep || 1
     } else {
       count = 60
-      disabledTime = disabledSeconds(currentDate['hours'], currentDate['minutes'])
+      disabledTime = disabledSeconds(currentDate['hours'], currentDate['minutes']) || []
       step = this.props.secondStep || 1
     }
     for (let i = 0; i < count; i += step) {

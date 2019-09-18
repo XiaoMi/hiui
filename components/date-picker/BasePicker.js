@@ -6,7 +6,7 @@ import {formatterDate, FORMATS} from './constants'
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
-import {parseISO, dateFormat, isValid, startOfWeek, endOfWeek, toDate} from './dateUtil'
+import { parseISO, dateFormat, isValid, startOfWeek, endOfWeek, toDate } from './dateUtil'
 class BasePicker extends Component {
   constructor (props) {
     super(props)
@@ -275,11 +275,11 @@ class BasePicker extends Component {
   }
   _icon () {
     const {isFocus} = this.state
-    const { clearable } = this.props
+    const { clearable, type, showTime } = this.props
     const iconCls = classNames(
       'hi-datepicker__input-icon',
       'hi-icon',
-      (isFocus && clearable) ? 'icon-close-circle clear' : 'icon-date'
+      (isFocus && clearable) ? 'icon-close-circle clear' : ((type.includes('time') || showTime) ? 'icon-time' : 'icon-date')
     )
     return (isFocus && clearable)
       ? <span className={iconCls} onClick={this._clear.bind(this)} />
@@ -357,13 +357,13 @@ BasePicker.propTypes = {
       return null
     }
     if (val.start && val.end) {
-      const _start = dateFormat(val.start)
-      const _end = dateFormat(val.end)
-      if (_start === 'Invalid Date' || _end === 'Invalid Date') {
+      const _start = isValid(val.start)
+      const _end = isValid(val.end)
+      if (!_start || !_end) {
         return new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed. start or end is an invalid date.`)
       }
     } else {
-      if (dateFormat(val) === 'Invalid Date') {
+      if (!isValid(val)) {
         return new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed. value is an invalid data.`)
       }
     }
