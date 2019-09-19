@@ -8,6 +8,8 @@
 - 修复 `<Popover />` 初次 hover 触发时移入气泡框，气泡框会消失的问题 [#650](https://github.com/XiaoMi/hiui/issues/650)
 - 修复 `<Counter />` 部分情况下展示不正确的问题 [#593](https://github.com/XiaoMi/hiui/issues/593)
 - 修复 `<Pagination />` 关于 "javascript:void(0)" 的警告 [#656](https://github.com/XiaoMi/hiui/issues/656)
+- 修复 `<TimePicker />` 层级太低的问题 [#637](https://github.com/XiaoMi/hiui/issues/637)
+- 新增 `<TimePicker />` 配置支持 [#638](https://github.com/XiaoMi/hiui/issues/638)
 - 新增 `<Dropdown />` 多级数据支持 [#594](https://github.com/XiaoMi/hiui/issues/594)
 - 新增 `<Dropdown />` 自定义展开项宽度支持 [#444](https://github.com/XiaoMi/hiui/issues/444)
 - 新增 `<Form />` Form.Item label 支持 ReactNode [#664](https://github.com/XiaoMi/hiui/issues/664)
