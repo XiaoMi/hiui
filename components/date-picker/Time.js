@@ -6,7 +6,6 @@ import { isSameDay, getValidDate } from './dateUtil'
 class Time extends Component {
   constructor (props) {
     super(props)
-    console.log(1, getValidDate(props.date))
     this.state = {
       date: getValidDate(props.date),
       prefix: {
