@@ -10,17 +10,17 @@ class Demo extends React.Component {
       <TimePicker
         value={new Date()}
         format="HH:mm:ss"
-        disabledHours={() => {
-          return [2, 3, 4, 5, 6]
-        }}
+        disabledHours={[2, 3, 4, 5, 6]}
         disabledMinutes={(selectedHour) => {
-          console.log('hour:'+ selectedHour)
           if (selectedHour > 12) {
-            return [0, 1, 2, 3]
+            const arr = []
+            for (let i=0; i<12; i++) {
+              arr.push(i)
+            }
+            return arr
           }
         }}
         disabledSeconds={(selectedHour, selectedMinute) => {
-          console.log('hour:'+ selectedHour, 'minute:'+selectedMinute)
           if (selectedHour > 12 && selectedMinute > 12) {
             return [30, 31, 32, 33, 34, 35]
           }

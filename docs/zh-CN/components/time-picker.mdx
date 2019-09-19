@@ -34,7 +34,7 @@ import DemoDisableSelect from '../../demo/time-picker/section-disable-select.jsx
 | format      | 格式化时间                         | string                                               | -                                                                             | -         |
 | disabled    | 是否禁用                           | boolean                                              | true \| false                                                                 | false     |
 | placeholder | 设置输入框占位                     | string \| string[]                                   | -                                                                             | -         |
-| disabledHours | 禁止选择的小时                   | () => number[]                                       | -                                                                             | -         |
-| disabledMinutes | 禁止选择的分钟                 | (selectedHour) => number[]                           | -                                                                             | -         |
-| disabledSeconds | 禁止选择的秒数                 | (selectedHour， selectedMinute) => number[]          | -                                                                             | -         |
+| disabledHours | 禁止选择的小时                   | () => number[]  \| number[]                                    | -                                                                             | -         |
+| disabledMinutes | 禁止选择的分钟                 | (selectedHour) => number[]  \| number[]                          | -                                                                             | -         |
+| disabledSeconds | 禁止选择的秒数                 | (selectedHour， selectedMinute) => number[]  \| number[]         | -                                                                             | -         |
 | onChange    | 选中时的回调，回调值为当前选择的值 | (date: Date \| { start: Date, end: Date }) => void   | 普通时间选择返回 date 格式数据、范围选择返回对象{start:开始时间,end:结束时间} |

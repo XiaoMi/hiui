@@ -89,9 +89,9 @@ class Time extends Component {
     const { disabledHours, disabledMinutes, disabledSeconds } = this.props
     const currentDate = deconstructDate(this.state.date)
     return {
-      hours: disabledHours() || [],
-      minutes: disabledMinutes(currentDate['hours']) || [],
-      seconds: disabledSeconds(currentDate['hours'], currentDate['minutes']) || []
+      hours: Object.prototype.toString.call(disabledHours) === '[object Array]' ? disabledHours : (disabledHours() || []),
+      minutes: Object.prototype.toString.call(disabledMinutes) === '[object Array]' ? disabledMinutes : (disabledMinutes(currentDate['hours']) || []),
+      seconds: Object.prototype.toString.call(disabledSeconds) === '[object Array]' ? disabledSeconds : (disabledSeconds(currentDate['hours'], currentDate['minutes']) || [])
     }
   }
   renderTimeList (type) {
