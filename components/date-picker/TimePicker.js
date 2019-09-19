@@ -37,7 +37,8 @@ TimePicker.propTypes = {
   format: PropTypes.string,
   hourStep: PropTypes.number,
   minuteStep: PropTypes.number,
-  secondStep: PropTypes.number
+  secondStep: PropTypes.number,
+  clearable: PropTypes.bool
 }
 TimePicker.defaultProps = {
   type: 'time',
@@ -46,6 +47,7 @@ TimePicker.defaultProps = {
   hourStep: 1,
   minuteStep: 1,
   secondStep: 1,
+  clearable: true,
   disabledHours: () => [],
   disabledMinutes: () => [],
   disabledSeconds: () => []

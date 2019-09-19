@@ -89,7 +89,6 @@ class Calender extends Component {
           }
           if (sv && ev) {
             const _ds = [startDate, endDate].sort(compareAsc)
-            // console.log(toDate(currentTime), _ds)
             col.range = endDate && isWithinInterval(toDate(currentTime), {start: _ds[0], end: _ds[1]})
           }
           row.weekNum = getYearWeek(new Date(currentTime), weekOffset).weekNum

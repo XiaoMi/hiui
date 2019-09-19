@@ -136,8 +136,7 @@ class BasePicker extends Component {
     this.setState({
       date,
       texts: [formatterDate(type, date.startDate, format, showTime, localeDatas, weekOffset), formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset)],
-      showPanel,
-      isFocus: false
+      showPanel
     }, () => {
       if (!showPanel) {
         this.callback()
@@ -212,15 +211,12 @@ class BasePicker extends Component {
     if (tar.className.indexOf('clear') !== -1) {
       this.setState({
         texts: ['', ''],
-        showPanel: false,
-        date: null
+        showPanel: false
       })
       return false
     }
     if (tar !== this.input && tar !== this.rInput) {
       this.timeCancel()
-    }
-    if (!this.showPanel && tar !== this.input && tar !== this.rInput) {
       this.callback()
     }
   }
@@ -257,7 +253,7 @@ class BasePicker extends Component {
     const {onChange, type} = this.props
     if (onChange) {
       onChange(
-        type.includes('range') || type === 'timeperiod' ? {start: '', end: ''} : ''
+        (type.includes('range') || type === 'timeperiod') ? {start: '', end: ''} : ''
       )
     }
     this.setState({date: {startDate: null, endDate: null}, texts: ['', ''], isFocus: false})
@@ -294,7 +290,7 @@ class BasePicker extends Component {
     return (
       <div className={_cls}>
         {this._input(this.state.texts[0], 'input', this.state.leftPlaceholder)}
-        <span>{localeDatas.datePicker.to}</span>
+        <span className='hi-datepicker__input--connection'>{localeDatas.datePicker.to}</span>
         {this._input(this.state.texts[1], 'rInput', this.state.rightPlaceholder)}
         {this._icon()}
       </div>

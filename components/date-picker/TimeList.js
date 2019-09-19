@@ -32,6 +32,10 @@ export default class TimeList extends Component {
     const dVal = 32
     this.listRef.current && (this.listRef.current.scrollTop = value * dVal)
   }
+  componentWillUnmount () {
+    window.clearTimeout(this.timer)
+    this.listRef.current.removeEventListener('scroll', this.scrollEvent)
+  }
   renderArrow (type) {
     return (
       <React.Fragment>
