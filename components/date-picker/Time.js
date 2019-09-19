@@ -56,23 +56,19 @@ class Time extends Component {
     let count
     let datas = []
     let disabledTime
-    let step = 1
     const currentDate = deconstructDate(this.state.date)
     const { disabledHours, disabledMinutes, disabledSeconds } = this.props
     if (type === 'hours') {
       count = 24
       disabledTime = disabledHours() || []
-      step = this.props.hourStep || 1
     } else if (type === 'minutes') {
       count = 60
       disabledTime = disabledMinutes(currentDate['hours']) || []
-      step = this.props.minuteStep || 1
     } else {
       count = 60
       disabledTime = disabledSeconds(currentDate['hours'], currentDate['minutes']) || []
-      step = this.props.secondStep || 1
     }
-    for (let i = 0; i < count; i += step) {
+    for (let i = 0; i < count; i += 1) {
       datas.push({
         value: i,
         text: i < 10 ? '0' + i : i.toString(),
@@ -83,6 +79,7 @@ class Time extends Component {
     return datas
   }
   renderTimeList (type) {
+    const { hourStep, minuteStep, secondStep } = this.props
     const dDate = deconstructDate(this.state.date)
     const isShow = this.isShowHMS()[type]
     if (!isShow) { return null }
@@ -91,6 +88,9 @@ class Time extends Component {
       value={dDate[type]}
       onlyTime={this.props.onlyTime}
       datas={this.generateDatas(type)}
+      hourStep={hourStep}
+      minuteStep={minuteStep}
+      secondStep={secondStep}
       onSelect={this.selectedEvent.bind(this)}
       show={this.isShowHMS()[type]}
     />

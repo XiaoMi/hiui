@@ -14,7 +14,7 @@ class Demo extends React.Component {
         >
           {
             data.map((item, index) => {
-              return <img src={'http://i1.mifile.cn/f/i/hiui/docs/pic_'+item+'.png'} style={{height: 300}} />
+              return <img src={'http://i1.mifile.cn/f/i/hiui/docs/carousel/pic_'+item+'.png'} style={{height: 300}} />
             })
           }
         </Carousel>

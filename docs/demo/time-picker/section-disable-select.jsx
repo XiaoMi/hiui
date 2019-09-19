@@ -11,12 +11,12 @@ class Demo extends React.Component {
         value={new Date()}
         format="HH:mm:ss"
         disabledHours={() => {
-          return [1, 2, 3, 4, 5, 6]
+          return [0, 1, 2, 3, 4, 5, 6]
         }}
         disabledMinutes={(selectedHour) => {
           console.log('hour:'+ selectedHour)
           if (selectedHour > 12) {
-            return [1, 2, 3]
+            return [0, 1, 2, 3]
           }
         }}
         disabledSeconds={(selectedHour, selectedMinute) => {
@@ -24,7 +24,7 @@ class Demo extends React.Component {
           if (selectedHour > 12 && selectedMinute > 12) {
             return [30, 31, 32, 33, 34, 35]
           }
-          return [1, 2, 3]
+          return [0, 1, 2, 3]
         }}
         onChange={(date, dateString) => console.log(date, dateString)}
       />
