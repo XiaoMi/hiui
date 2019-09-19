@@ -1,16 +1,17 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import TimePicker from '../../../components/date-picker/TimePicker'
-const prefix = 'section-base'
+const prefix = 'section-range'
 const code = `import React from 'react'
 import TimePicker from '@hi-ui/hiui/es/time-picker/TimePicker'\n
 class Demo extends React.Component {
   render() {
     return (
       <TimePicker
-        value={new Date()}
+        value={{start: new Date(), end: new Date()}}
+        type="timerange"
         format="HH:mm:ss"
-        onChange={(date, dateString) => console.log('时间', date, dateString)}
+        onChange={date => console.log('时间范围', date)}
       />
     )
   }

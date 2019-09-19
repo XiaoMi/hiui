@@ -27,7 +27,6 @@ export default (WrappedComponent) => {
           )}
         </ThemeContext.Consumer>
       )
-
       return wrapProvider(theme, ThemeContext)(locale, LocaleContext)(
         ConsumerComponent
       )

@@ -16,7 +16,7 @@ class Demo extends React.Component {
       <div>
         <DatePicker
           type='daterange'
-          format='YYYY-MM-DD'
+          format='yyyy-MM-dd'
           defaultValue={this.state.rangeDate}
           onChange={(d) => {
             console.log(1, d)
