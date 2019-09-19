@@ -55,6 +55,11 @@ class Button extends Component {
       icon,
       loading,
       onClick,
+      onContextMenu,
+      onMouseOver,
+      onMouseOut,
+      onMouseEnter,
+      onMouseLeave,
       href,
       style,
       children
@@ -84,7 +89,7 @@ class Button extends Component {
         : `hi-btn--type--${type}`
     )
 
-    const restProps = { href, style, onClick, disabled: isDisabled }
+    const restProps = { href, style, onClick, disabled: isDisabled, onContextMenu, onMouseOver, onMouseEnter, onMouseLeave, onMouseOut }
 
     deprecatedPropsCheck(this.deprecatedProps, this.props, 'Button')
 

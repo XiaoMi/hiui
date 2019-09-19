@@ -15,7 +15,7 @@ class Demo extends React.Component {
     return (
       <div style={{display:'flex', flexWrap: 'wrap'}}>
         <DatePicker
-          value={new Date}
+          value={this.state.date}
           onChange={(d) => {
             console.log('返回值', d)
           }}

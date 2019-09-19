@@ -16,7 +16,11 @@ export default class Popper extends Component {
     topGap: PropTypes.number,
     leftGap: PropTypes.number,
     zIndex: PropTypes.number,
-    placement: PropTypes.oneOf(['bottom', 'bottom-start', 'top', 'top-start', 'left', 'right', 'right-start', 'top-bottom-start', 'top-bottom'])
+    placement: PropTypes.oneOf(['bottom', 'bottom-start', 'top', 'top-start', 'left', 'right', 'right-start', 'top-bottom-start', 'top-bottom']),
+    onMouseOver: PropTypes.func,
+    onMouseOut: PropTypes.func,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func
   }
 
   static defaultProps = {
@@ -143,7 +147,11 @@ export default class Popper extends Component {
       className,
       show,
       height,
-      zIndex
+      zIndex,
+      onMouseOver,
+      onMouseOut,
+      onMouseEnter,
+      onMouseLeave
     } = this.props
     if (!attachEle) return
     const offset = this.getOffset()
@@ -162,6 +170,10 @@ export default class Popper extends Component {
           }}
           className={classNames(className, 'hi-popper__content', `hi-popper__content--${offset.placement}`, {'hi-popper__content--hide': this.popperHeight === 0})}
           style={{width, height}}
+          onMouseOut={onMouseOut}
+          onMouseOver={onMouseOver}
+          onMouseLeave={onMouseLeave}
+          onMouseEnter={onMouseEnter}
         >
           { children }
         </div>

@@ -8,7 +8,7 @@ import Provider from '../context'
 import { dateFormat, isValid, getStartDate } from './dateUtil'
 import TimeRangePanel from './TimeRangePanel'
 
-class DatePanel extends Component {
+class DateRangePanel extends Component {
   constructor (props) {
     super(props)
     let {startDate, endDate} = props.date
@@ -387,4 +387,4 @@ class DatePanel extends Component {
   }
 }
 
-export default Provider(DatePanel)
+export default Provider(DateRangePanel)

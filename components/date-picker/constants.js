@@ -1,6 +1,5 @@
 import {getYearWeek} from './util'
-import dateFormat from 'date-fns/format'
-import { isValid } from './dateUtil'
+import { isValid, dateFormat } from './dateUtil'
 export const TIME_BLOCK = {
   lineHeight: 22,
   padding: 8
@@ -8,14 +7,14 @@ export const TIME_BLOCK = {
 export const DAY_MILLISECONDS = 86400000
 export const RANGE_SPLIT = '~'
 export const FORMATS = {
-  date: 'YYYY-MM-DD',
-  month: 'YYYY-MM',
-  year: 'YYYY',
+  date: 'yyyy-MM-dd',
+  month: 'yyyy-MM',
+  year: 'yyyy',
   time: 'HH:mm:ss',
-  daterange: 'YYYY-MM-DD',
-  week: 'YYYY',
-  weekrange: 'YYYY',
-  timeperiod: 'YYYY-MM-DD HH:mm:ss'
+  daterange: 'yyyy-MM-dd',
+  week: 'yyyy',
+  weekrange: 'yyyy',
+  timeperiod: 'yyyy-MM-dd HH:mm:ss'
 }
 
 export const isVaildDate = (date) => {

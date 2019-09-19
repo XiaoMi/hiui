@@ -34,11 +34,22 @@ TimePicker.propTypes = {
   date: PropTypes.instanceOf(Date),
   size: PropTypes.string,
   onChange: PropTypes.func,
-  format: PropTypes.string
+  format: PropTypes.string,
+  hourStep: PropTypes.number,
+  minuteStep: PropTypes.number,
+  secondStep: PropTypes.number,
+  clearable: PropTypes.bool
 }
 TimePicker.defaultProps = {
   type: 'time',
   format: 'HH:mm:ss',
-  disabled: false
+  disabled: false,
+  hourStep: 1,
+  minuteStep: 1,
+  secondStep: 1,
+  clearable: true,
+  disabledHours: () => [],
+  disabledMinutes: () => [],
+  disabledSeconds: () => []
 }
 export default Provider(TimePicker)

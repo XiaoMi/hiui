@@ -7,13 +7,14 @@ import {
   subMonths,
   getDay,
   startOfMonth,
-  isWithinRange,
+  isWithinInterval,
   isSameDay,
   compareAsc,
   addMonths,
   isToday,
   getYear,
-  parse
+  toDate,
+  isValid
 } from './dateUtil'
 import {DAY_MILLISECONDS} from './constants'
 class Calender extends Component {
@@ -70,10 +71,6 @@ class Calender extends Component {
             col.type = 'next'
           }
         }
-        // if (range && (isSameDay(range.startDate, currentTime) || isSameDay(range.endDate, currentTime))) {
-        //   col.type = 'current'
-        // }
-
         if (isToday(currentTime) && (col.type !== 'next' && col.type !== 'prev')) {
           col.type = 'today'
         }
@@ -81,13 +78,21 @@ class Calender extends Component {
           col.type = 'current'
         }
         if (type === 'daterange' || type === 'weekrange') {
-          col.rangeStart = startDate && isSameDay(currentTime, startDate)
-          col.rangeEnd = endDate && isSameDay(currentTime, endDate)
-          const _ds = [startDate, endDate].sort(compareAsc)
-          col.range = endDate && isWithinRange(currentTime, ..._ds)
+          const sv = isValid(startDate)
+          const ev = isValid(endDate)
+          if (sv) {
+            col.rangeStart = startDate && isSameDay(currentTime, startDate)
+          }
+          if (ev) {
+            col.rangeEnd = endDate && isSameDay(currentTime, endDate)
+          }
+          if (sv && ev) {
+            const _ds = [startDate, endDate].sort(compareAsc)
+            col.range = endDate && isWithinInterval(toDate(currentTime), {start: _ds[0], end: _ds[1]})
+          }
           row.weekNum = getYearWeek(new Date(currentTime), weekOffset).weekNum
         }
-        col.disabled = (minDate && compareAsc(currentTime, parse(minDate).setHours(0, 0, 0, 0)) === -1) || (maxDate && compareAsc(currentTime, parse(maxDate).setHours(0, 0, 0, 0)) === 1)
+        col.disabled = (minDate && compareAsc(currentTime, toDate(minDate).setHours(0, 0, 0, 0)) === -1) || (maxDate && compareAsc(currentTime, toDate(maxDate).setHours(0, 0, 0, 0)) === 1)
       }
       if (type === 'week') {
         let _month = month

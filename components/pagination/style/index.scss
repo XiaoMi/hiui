@@ -5,7 +5,7 @@
   .hi-pagination {
     &__item {
       &:not(.hi-pagination__item--disabled) {
-        > a {
+        > span {
           &:hover {
             border-color: rgba($color, 0.8);
             color: $color;
@@ -14,7 +14,7 @@
       }
 
       &--active:not(.hi-pagination__item--disabled) {
-        > a {
+        > span {
           border-color: $color;
           background-color: $color;
           color: $white;
@@ -33,6 +33,7 @@
 .hi-pagination {
   display: flex;
   align-items: center;
+  user-select: none;
 
   @include component-reset();
 
@@ -83,7 +84,7 @@
       margin-left: $spacer-2;
     }
 
-    > a {
+    > span {
       box-sizing: border-box;
       display: inline-block;
       min-width: 32px;
@@ -105,13 +106,13 @@
     }
 
     &--active {
-      > a {
+      > span {
         border: 1px solid transparent;
       }
     }
 
     &--disabled {
-      > a {
+      > span {
         border: 1px solid $gray-light;
         color: $gray-light;
         cursor: default;

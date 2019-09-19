@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { filterObjProps } from '../input/util'
-
+import { Decimal } from 'decimal.js'
 /**
  * 加减器
  */
@@ -26,7 +26,7 @@ class Counter extends React.Component {
 
     this.attrs = this.getAttrs(oldProps)
 
-    const { value, defaultValue, min, max } = this.props
+    const { value, defaultValue, min = -1 * Infinity, max = Infinity } = this.props
     const finalValue = Math.min(Math.max(Number(value === undefined ? defaultValue : value), Number(min)), Number(max))
     this.state = {
       value: this.format(finalValue),
@@ -35,7 +35,7 @@ class Counter extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.value && +nextProps.value !== +this.props.value) {
+    if (this.props.hasOwnProperty('value')) {
       this.setState({
         value: this.format(nextProps.value),
         valueTrue: this.formatValue(nextProps.value)
@@ -81,80 +81,50 @@ class Counter extends React.Component {
    * @param {string} val 值
    */
   format (val) {
-    return (
-      val &&
-      (val.toString().indexOf('.') !== -1
-        ? val.toString().replace(/(\d)(?=(\d{3})+\.)/g, ($0, $1) => {
-          return $1 + ','
-        })
-        : val.toString().replace(/(\d)(?=(\d{3}))/g, ($0, $1) => {
-          return $1 + ','
-        }))
-    )
-  }
-
-  /**
-   * minus plus 事件
-   * @param {string} minus 类型
-   * @param {string} plus 类型
-   */
-  signEvent (type, disabled) {
-    const min = +this.props.min
-    const max = +this.props.max
-    const step = +this.props.step
-
-    if (disabled) {
-      return false
-    }
-
-    let valueTrue = +this.state.valueTrue
-    const steps = +step
-
-    switch (type) {
-      case 'minus':
-        valueTrue -= steps
-
-        if (valueTrue < min) {
-          valueTrue = min
-        }
-        break
-      case 'plus':
-        valueTrue += steps
-
-        if (valueTrue > max) {
-          valueTrue = max
-        }
-        break
-      default:
-    }
-
-    const value = this.format(valueTrue + '')
-    const e = {
-      target: this._Input
-    }
-    this.props.onChange && this.props.onChange(e, valueTrue)
-    this.props.value === undefined && this.setState({ value, valueTrue })
+    return val
   }
 
   render () {
     const { className, id, disabled } = this.props
-    const min = +this.props.min
-    const max = +this.props.max
-    let { value, valueTrue } = this.state
+    const {
+      min = -1 * Infinity,
+      max = Infinity,
+      step
+    } = this.props
+    let { valueTrue } = this.state
     const { defaultValue, ...attrs } = this.attrs
     const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'localeDatas', 'localedatas'])
+
+    let isAddDisabled = false
+    let isMinusDisabled = false
+    if (step > 0) {
+      isMinusDisabled = this.hasReachedMin || disabled
+      isAddDisabled = this.hasReachedMax || disabled
+    } else {
+      isMinusDisabled = this.hasReachedMax || disabled
+      isAddDisabled = this.hasReachedMin || disabled
+    }
+
     return (
       <div className={`hi-counter ${className || ''}`} id={id}>
         <div className={`hi-counter-outer`}>
           <span
-            className={`hi-counter-minus hi-counter-sign ${
-              (min !== undefined && this.state.valueTrue <= min) || disabled ? 'disabled' : ''
-            }`}
+            className={`hi-counter-minus hi-counter-sign ${isMinusDisabled ? 'disabled' : ''}`}
             onClick={e => {
-              this.signEvent(
-                'minus',
-                (min !== undefined && this.state.valueTrue <= min) || disabled
-              )
+              let value = new Decimal(this.getInputNumber()).minus(step).valueOf()
+              if (isMinusDisabled) {
+                return
+              }
+              if (step > 0) {
+                if (this.willReachMin) {
+                  value = min
+                }
+              } else {
+                if (this.willReachMax) {
+                  value = max
+                }
+              }
+              this.update(value)
             }}
           >
             -
@@ -170,34 +140,35 @@ class Counter extends React.Component {
             {...filterAttrs}
             onChange={e => {
               e.persist()
-
               let value = e.target.value
-              value = this.format(value)
-              let valueTrue = this.formatValue(value)
-              this.props.value === undefined && this.setState({ value, valueTrue })
+              this.setState({
+                value: this.format(value),
+                valueTrue: this.formatValue(value)
+              })
             }}
             onBlur={e => {
-              e.persist()
-              if (typeof min !== 'undefined' && +valueTrue < min) {
-                value = this.format(min)
-                valueTrue = min
-              } else if (typeof max !== 'undefined' && +valueTrue > max) {
-                value = this.format(max)
-                valueTrue = max
-              } else {
-                value = this.format(valueTrue)
-              }
-              this.setState({ value, valueTrue }, () => {
-                this.props.onChange && this.props.onChange(e, valueTrue)
-              })
+              let value = this.getInputNumber()
+
+              this.update(value)
             }}
           />
           <span
-            className={`hi-counter-plus hi-counter-sign ${
-              (max !== undefined && this.state.valueTrue >= max) || disabled ? 'disabled' : ''
-            }`}
+            className={`hi-counter-plus hi-counter-sign ${isAddDisabled ? 'disabled' : ''}`}
             onClick={e => {
-              this.signEvent('plus', (max !== undefined && this.state.valueTrue >= max) || disabled)
+              let value = new Decimal(valueTrue).plus(step).valueOf()
+              if (isAddDisabled) {
+                return
+              }
+              if (step > 0) {
+                if (this.willReachMax) {
+                  value = max
+                }
+              } else {
+                if (this.willReachMin) {
+                  value = min
+                }
+              }
+              this.update(value)
             }}
           >
             +
@@ -205,6 +176,97 @@ class Counter extends React.Component {
         </div>
       </div>
     )
+  }
+
+  update (value) {
+    const {
+      onChange
+    } = this.props
+
+    if (this.isControlledComponent) {
+      this.setState({
+        value: this.format(this.props.value),
+        valueTrue: this.formatValue(this.props.value)
+      })
+    }
+
+    if (this.isUncontrolledComponent) {
+      this.setState({
+        value: this.format(value),
+        valueTrue: this.formatValue(value)
+      })
+    }
+    setTimeout(() => {
+      onChange && onChange({
+        target: this._Input
+      }, value)
+    }, 0)
+  }
+
+  get isControlledComponent () {
+    return this.props.hasOwnProperty('value')
+  }
+
+  get isUncontrolledComponent () {
+    return !this.isControlledComponent
+  }
+
+  getInputNumber () {
+    const {
+      max = Infinity,
+      min = 0
+    } = this.props
+    let value = this.valueTrue
+    if (isNaN(value)) {
+      value = min
+    }
+    if (value - max >= 0) {
+      value = max
+    }
+    if (value - min <= 0) {
+      value = min
+    }
+    return value
+  }
+
+  get valueTrue () {
+    return parseFloat(this.state.value.toString().replace(/[^0-9|.|\-(e+)]+/, ''))
+  }
+
+  get willReachMax () {
+    const {
+      max = Infinity,
+      step
+    } = this.props
+
+    let num = new Decimal(this.valueTrue).plus(step).valueOf() * 1
+    return max <= num
+  }
+
+  get willReachMin () {
+    const {
+      min = -1 * Infinity,
+      step
+    } = this.props
+    let num = new Decimal(this.valueTrue).minus(step).valueOf() * 1
+    return min >= num
+  }
+
+  get hasReachedMax () {
+    const {
+      max = Infinity
+    } = this.props
+
+    return max <= this.valueTrue * 1
+  }
+  get hasReachedMin () {
+    const {
+      min = -1 * Infinity
+    } = this.props
+    return min >= this.valueTrue * 1
+  }
+  get hasReachedBoundary () {
+    return this.hasReachedMin || this.hasReachedMax
   }
 }
 

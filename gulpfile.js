@@ -40,7 +40,7 @@ const compile = modules => {
     .src(['components/**/*.@(png|svg|eot|ttf|woff|woff2|otf)'])
     .pipe(gulp.dest(modules === false ? esDir : libDir))
   const js = gulp
-    .src('components/**/*.js')
+    .src(['components/**/*.@(js|jsx)'])
     .pipe(
       babel({
         presets: ['@babel/preset-env', '@babel/preset-react'],

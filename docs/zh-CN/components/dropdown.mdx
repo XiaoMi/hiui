@@ -14,37 +14,51 @@ import DemoBase from '../../demo/dropdown/section-base.jsx'
 
 <DemoBase />
 
+## 禁用菜单项
+
+import DemoDisabled from '../../demo/dropdown/section-disabled.jsx'
+
+<DemoDisabled />
+
+## 多级菜单
+
+import DemoMultiple from '../../demo/dropdown/section-multiple.jsx'
+
+<DemoMultiple />
+
+## 按钮类型
+
+import DemoType from '../../demo/dropdown/section-type.jsx'
+
+<DemoType />
+
 ## 触发方式
 
 import DemoTrigger from '../../demo/dropdown/section-trigger.jsx'
 
 <DemoTrigger />
 
-## 按钮菜单
+## 菜单位置
 
-import DemoButton from '../../demo/dropdown/section-button.jsx'
+import DemoPlacement from '../../demo/dropdown/section-placement.jsx'
 
-<DemoButton />
-
-## 拓展菜单
-
-import DemoExtend from '../../demo/dropdown/section-extend.jsx'
-
-<DemoExtend />
-
-import { Badge } from '@libs'
+<DemoPlacement />
 
 ## Props
 
-| 参数    | 说明                   | 类型                      | 可选值                              | 默认值  |
-| ------- | ---------------------- | ------------------------- | ----------------------------------- | ------- |
-| data    | 下拉菜单数据项         | DataItem []               | -                                   | -       |
-| title   | 下拉菜单显示标题的内容 | string \| ReactNode       | -                                   | -       |
-| type    | 下拉菜单类型           | string                    | 'text' \| 'button' \| 'group'       | 'text'  |
-| onClick | 点击后的回调           | （item: DataItem）=> void | -                                   | -       |
-| prefix  | 前缀内容               | string \| ReactNode       | -                                   | -       |
-| suffix  | 后缀内容               | string \| ReactNode       | -                                   | -       |
-| trigger | 下拉菜单触发方式       | string \| string []       | 'click' \| 'contextmenu' | 'click' |
+| 参数          | 说明                                          | 类型                           | 可选值                                             | 默认值         |
+| ------------- | --------------------------------------------- | ------------------------------ | -------------------------------------------------- | -------------- |
+| data          | 下拉菜单数据项                                | DataItem []                    | -                                                  | -              |
+| title         | 下拉菜单显示标题的内容                        | string \| ReactNode            | -                                                  | -              |
+| type          | 下拉菜单按钮类型                              | string                         | 'text' \| 'button' \| 'group'                      | 'text'         |
+| placement     | 下拉菜单显示位置                              | string                         | 'bottom-start' \| 'top-start' \| 'bottom' \| 'top' | 'bottom-start' |
+| onClick       | 点击后的回调                                  | (id: string \| number) => void | -                                                  | -              |
+| onButtonClick | 点击左侧按钮的回调，仅在 type 为 group 时有效 | (event: Event) => void         | -                                                  | -              |
+| trigger       | 下拉菜单触发方式                              | string \| string []            | 'click' \| 'contextmenu' \| 'hover'                | 'hover'        |
+| disabled      | 是否禁用下拉菜单                              | boolean                        | true \| false                                      | -              |
+| width         | 菜单项宽度                                    | number                         | -                                                  | 240            |
+| className     | 自定义类名                                    | string                         | -                                                  | -              |
+| style         | 自定义样式                                    | object                         | -                                                  | -              |
 
 ## Type
 
@@ -53,8 +67,6 @@ import { Badge } from '@libs'
 | 参数     | 说明                                | 类型                | 可选值        | 默认值 |
 | -------- | ----------------------------------- | ------------------- | ------------- | ------ |
 | title    | 标题的内容，设置为 `'-'` 时是分割线 | string \| ReactNode | -             | -      |
-| prefix   | 菜单项前缀内容                      | string \| ReactNode | -             | -      |
-| suffix   | 菜单项后缀内容                      | string \| ReactNode | -             | -      |
+| id       | 唯一标识 id                         | string \| number    | -             | -      |
 | disabled | 是否禁用                            | boolean             | true \| false | false  |
-| value    | 点击后回调的值                      | String              | Number        | -      |
-| url      | 点击跳转的路径                      | string              | -             | -      |
+| href     | 点击跳转的路径                      | string              | -             | -      |

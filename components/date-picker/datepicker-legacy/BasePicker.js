@@ -6,7 +6,7 @@ import {formatterDate, FORMATS, isVaildDate} from './constants'
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
-import {startOfDay, endOfDay, parse, startOfWeek, endOfWeek, dateFormat} from './dateUtil'
+import {startOfDay, endOfDay, toDate, startOfWeek, endOfWeek, dateFormat} from './dateUtil'
 import { addHours } from 'date-fns'
 class BasePicker extends Component {
   inputRoot = null
@@ -102,7 +102,7 @@ class BasePicker extends Component {
     }
     if (typeof value === 'number' || (typeof value === 'string' && value.trim().length > 4)) {
       // value 为数字（times）
-      date = parse(value)
+      date = toDate(value)
     }
     if (value instanceof Date) {
       date = value

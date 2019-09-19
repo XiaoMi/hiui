@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import TimePicker from '../../../components/date-picker/TimePicker'
-const prefix = 'section-base'
+const prefix = 'section-step'
 const code = `import React from 'react'
 import TimePicker from '@hi-ui/hiui/es/time-picker/TimePicker'\n
 class Demo extends React.Component {
@@ -10,6 +10,9 @@ class Demo extends React.Component {
       <TimePicker
         value={new Date()}
         format="HH:mm:ss"
+        hourStep={2}
+        minuteStep={10}
+        secondStep={10}
         onChange={(date, dateString) => console.log('时间', date, dateString)}
       />
     )
