@@ -22,15 +22,19 @@ export default class TimeList extends Component {
     this.topValue_1 = 0
     this.topValue_2 = 0
   }
-  componentDidMount () {
-    setTimeout(() => {
-      this.addListener()
-    }, 200)
-  }
-  componentDidUpdate () {
+  scrollTo () {
     const { value } = this.props
     const dVal = 32
     this.listRef.current && (this.listRef.current.scrollTop = value * dVal)
+  }
+  componentDidMount () {
+    setTimeout(() => {
+      this.addListener()
+      this.scrollTo()
+    }, 0)
+  }
+  componentDidUpdate () {
+    this.scrollTo()
   }
   componentWillUnmount () {
     window.clearTimeout(this.timer)
