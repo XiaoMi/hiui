@@ -11,7 +11,7 @@ class Demo extends React.Component {
         value={new Date()}
         format="HH:mm:ss"
         disabledHours={() => {
-          return [0, 1, 2, 3, 4, 5, 6]
+          return [2, 3, 4, 5, 6]
         }}
         disabledMinutes={(selectedHour) => {
           console.log('hour:'+ selectedHour)

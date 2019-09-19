@@ -53,16 +53,19 @@ export default class TimeList extends Component {
   arrowEvent (arrow) {
     const st = this.listRef.current.scrollTop
     const val = Math.round(st / 32)
-    this.props.onSelect(this.props.type, val + arrow)
+    this.props.onSelect(this.props.type, val + arrow, arrow)
   }
   addListener () {
     this.listRef.current.addEventListener('scroll', this.scrollEvent)
   }
   isScrollStop (val, el) {
+    const { disabledList } = this.props
     this.topValue_2 = el.scrollTop
     if (this.topValue_1 === this.topValue_2) {
       el.scrollTop = val * 32
-      this.props.onSelect(this.props.type, val)
+      if (!disabledList.includes(val)) {
+        this.props.onSelect(this.props.type, val)
+      }
     }
   }
   scrollEvent (e) {

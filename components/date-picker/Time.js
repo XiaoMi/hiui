@@ -28,20 +28,30 @@ class Time extends Component {
       })
     }
   }
-  selectedEvent (type, value) {
-    const { date } = this.state
-    const currentDate = deconstructDate(date)
-    const { disabledHours, disabledMinutes, disabledSeconds } = this.props
-    if (type === 'hours' && !(disabledHours() || []).includes(value)) {
-      date.setHours(value)
-      this.callback(date)
-    } else if (type === 'minutes' && !(disabledMinutes(currentDate['hours']) || []).includes(value)) {
-      date.setMinutes(value)
-      this.callback(date)
-    } else if (type === 'seconds' && !(disabledSeconds(currentDate['hours'], currentDate['minutes']) || []).includes(value)) {
-      date.setSeconds(value)
-      this.callback(date)
+  whenDisableChange (list, val, arrowVal) {
+    if (!arrowVal) {
+      return val
     }
+    let _value = val + arrowVal
+    while (list.includes(_value)) {
+      _value += arrowVal
+    }
+    return _value
+  }
+  selectedEvent (type, value, arrow) {
+    const { date } = this.state
+    const disabledList = this._getDsiabledList()[type]
+    if (disabledList.includes(value) && arrow) {
+      value = this.whenDisableChange(disabledList, value, arrow)
+    }
+    if (type === 'hours') {
+      date.setHours(value)
+    } else if (type === 'minutes') {
+      date.setMinutes(value)
+    } else if (type === 'seconds') {
+      date.setSeconds(value)
+    }
+    this.callback(date)
   }
 
   isShowHMS () {
@@ -55,18 +65,15 @@ class Time extends Component {
   generateDatas (type) {
     let count
     let datas = []
-    let disabledTime
     const currentDate = deconstructDate(this.state.date)
-    const { disabledHours, disabledMinutes, disabledSeconds } = this.props
+    const disabledList = this._getDsiabledList()
+    const disabledTime = disabledList[type]
     if (type === 'hours') {
       count = 24
-      disabledTime = disabledHours() || []
     } else if (type === 'minutes') {
       count = 60
-      disabledTime = disabledMinutes(currentDate['hours']) || []
     } else {
       count = 60
-      disabledTime = disabledSeconds(currentDate['hours'], currentDate['minutes']) || []
     }
     for (let i = 0; i < count; i += 1) {
       datas.push({
@@ -78,9 +85,19 @@ class Time extends Component {
     }
     return datas
   }
+  _getDsiabledList () {
+    const { disabledHours, disabledMinutes, disabledSeconds } = this.props
+    const currentDate = deconstructDate(this.state.date)
+    return {
+      hours: disabledHours() || [],
+      minutes: disabledMinutes(currentDate['hours']) || [],
+      seconds: disabledSeconds(currentDate['hours'], currentDate['minutes']) || []
+    }
+  }
   renderTimeList (type) {
     const { hourStep, minuteStep, secondStep } = this.props
     const dDate = deconstructDate(this.state.date)
+    const disabledList = this._getDsiabledList()
     const isShow = this.isShowHMS()[type]
     if (!isShow) { return null }
     return <TimeList
@@ -88,6 +105,7 @@ class Time extends Component {
       value={dDate[type]}
       onlyTime={this.props.onlyTime}
       datas={this.generateDatas(type)}
+      disabledList={disabledList[type]}
       hourStep={hourStep}
       minuteStep={minuteStep}
       secondStep={secondStep}

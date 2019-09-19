@@ -6,7 +6,7 @@ import {formatterDate, FORMATS} from './constants'
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
-import { parseISO, dateFormat, isValid, startOfWeek, endOfWeek, toDate } from './dateUtil'
+import { dateFormat, isValid, startOfWeek, endOfWeek, toDate, parse } from './dateUtil'
 class BasePicker extends Component {
   constructor (props) {
     super(props)
@@ -133,7 +133,6 @@ class BasePicker extends Component {
     }
     const {type, showTime, localeDatas, weekOffset} = this.props
     const {format} = this.state
-    console.log(date)
     this.setState({
       date,
       texts: [formatterDate(type, date.startDate, format, showTime, localeDatas, weekOffset), formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset)],
@@ -148,7 +147,6 @@ class BasePicker extends Component {
   callback () {
     const {type, onChange} = this.props
     const {date} = this.state
-    console.log(1, date)
     if (onChange) {
       let {startDate, endDate} = date
       startDate = isValid(startDate) ? startDate : ''
@@ -188,27 +186,18 @@ class BasePicker extends Component {
     }
   }
   timeCancel () {
-    const {tempDate, format} = this.state
+    const {format, date} = this.state
     const {type, showTime, localeDatas, weekOffset} = this.props
-    if (tempDate) {
-      this.setState({
-        date: new Date(tempDate),
-        text: formatterDate(type, new Date(tempDate), format, showTime, localeDatas, weekOffset),
-        showPanel: false
-      })
-    } else {
-      this.setState({
-        showPanel: false,
-        isFocus: false
-      })
-    }
+    this.setState({
+      showPanel: false,
+      texts: [formatterDate(type, date.startDate || date, format, showTime, localeDatas, weekOffset), formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset)],
+      isFocus: false
+    })
   }
   inputChangeEvent () {
-    let { texts, date } = this.state
-    // const {type, showTime, localeDatas, weekOffset} = this.props
-    let startDate = parseISO(texts[0])
-    let endDate = parseISO(texts[1])
-
+    let { texts, date, format } = this.state
+    let startDate = parse(texts[0], format, new Date())
+    let endDate = parse(texts[1], format, new Date())
     if (startDate && isValid(startDate)) {
       date.startDate ? date.startDate = startDate : date = startDate
     }
