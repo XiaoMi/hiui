@@ -38,6 +38,10 @@
     "dist",
     "es"
   ],
+  "peerDependencies": {
+    "react": ">=16.0.0",
+    "react-dom": ">=16.0.0"
+  },
   "dependencies": {
     "@hi-ui/classic-theme": "1.2.5",
     "@hi-ui/core-css": "^2.0.1",
@@ -53,13 +57,11 @@
     "hoist-non-react-statics": "^2.5.0",
     "lodash": "^4.17.11",
     "qs": "^6.8.0",
-    "react": "^16.8.6",
     "react-addons-css-transition-group": "^15.6.2",
     "react-click-outside": "^3.0.1",
     "react-cropper": "^1.2.0",
     "react-dnd": "^7.4.5",
     "react-dnd-html5-backend": "^7.4.4",
-    "react-dom": "^16.8.2",
     "react-lifecycles-compat": "^3.0.4",
     "react-live": "^2.1.1",
     "react-redux": "^5.1.1",
@@ -112,7 +114,9 @@
     "postcss-loader": "^2.1.5",
     "prismjs": "^1.16.0",
     "raw-loader": "^0.5.1",
+    "react": "^16.9.0",
     "react-custom-scrollbars": "^4.2.1",
+    "react-dom": "^16.9.0",
     "react-hot-loader": "4.2.0",
     "react-test-renderer": "^16.8.6",
     "rimraf": "^2.6.3",
