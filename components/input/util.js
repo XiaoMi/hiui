@@ -69,9 +69,7 @@ export const formatCard = (val) => {
     return val
   }
 
-  if (len < 5) {
-    return val.slice(0, 4)
-  } else if (len < 9) {
+  if (len < 9) {
     return val.slice(0, 4) + ' ' + val.slice(4, 8)
   } else if (len < 13) {
     return val.slice(0, 4) + ' ' + val.slice(4, 8) + ' ' + val.slice(8, 12)

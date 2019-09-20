@@ -4,3 +4,4 @@ import InputLegacy from './input-legacy'
 import SwitchVersion from '../_util/SwitchVersion'
 
 export default SwitchVersion(Input, InputLegacy)
+export {Input}
