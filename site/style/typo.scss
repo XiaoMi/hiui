@@ -58,6 +58,9 @@
           visibility: hidden;
         }
       }
+      // for anchor offset
+      padding-top: 80px;
+      margin-top: -40px;
     }
 
     // 首段大号概述
@@ -169,5 +172,6 @@
   > h5,
   > h6 {
     margin-top: 0;
+    padding-top: 0;
   }
 }

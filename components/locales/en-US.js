@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   misc: {
     components: 'Basic Components'
   },
@@ -34,13 +34,12 @@ module.exports = {
     }
   },
   pagination: {
-    total: function (total) {
-      return 'Total ' + total + ' items'
-    },
+    total: ['Total', 'items'],
+    simple: ['The', 'page', '', 'pages', 'items'],
     item: '',
     itemPerPage: 'Items per page',
     goto: 'Goto',
-    page: 'page'
+    page: ''
   },
   cascader: {
     placeholder: 'Please select',

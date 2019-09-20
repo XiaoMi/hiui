@@ -25,7 +25,7 @@ $basic-color: #4284f5 !default;
     justify-content: space-around;
     box-sizing: border-box;
 
-    &:hover {
+    &:hover:not(.hi-datepicker__input--disabled) {
       border: 1px solid #4284f5;
     }
 
@@ -56,9 +56,15 @@ $basic-color: #4284f5 !default;
       }
     }
 
+    &--connection {
+      height: 30px;
+      line-height: 32px;
+    }
+
     &--disabled {
       .hi-datepicker__input-icon,
-      input {
+      input,
+      span {
         cursor: not-allowed;
         background: #f4f4f4;
         color: rgba(44, 48, 78, 0.2);
@@ -366,7 +372,7 @@ $basic-color: #4284f5 !default;
   width: 180px;
   background: #fff;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
-  z-index: 1;
+  z-index: 1060;
 
   .hi-timepicker__body {
     width: 180px;
@@ -389,6 +395,7 @@ $basic-color: #4284f5 !default;
 
   &__timeheader {
     display: flex;
+    justify-content: space-around;
     height: 48px;
     text-align: center;
     align-items: center;
@@ -400,7 +407,7 @@ $basic-color: #4284f5 !default;
   }
 
   &__mark {
-    flex: 1;
+    // flex: 1;
   }
 
   &__timebody {
@@ -408,6 +415,7 @@ $basic-color: #4284f5 !default;
     height: 248px;
     // border-bottom: 1px solid #f2f2f2;
     position: relative;
+    justify-content: space-around;
     box-sizing: border-box;
     overflow: hidden;
     padding: 0;
@@ -513,6 +521,7 @@ $basic-color: #4284f5 !default;
     // background: rgba(247, 247, 247, 1);
     position: absolute;
     top: 108px;
+    left: 0;
     width: 156px;
     z-index: 4;
     pointer-events: none;

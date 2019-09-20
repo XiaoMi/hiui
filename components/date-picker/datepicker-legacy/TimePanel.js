@@ -25,7 +25,7 @@ class TimePanel extends Component {
   render () {
     const { localeDatas, date, type } = this.props
     return (
-      <div className='hi-timepicker' style={this.state.style}>
+      <div className='hi-timepicker-legacy' style={this.state.style}>
         <Time localeDatas={localeDatas} date={date} onPick={this.onTimePick.bind(this)} onlyTime={type === 'time'} />
       </div>
     )

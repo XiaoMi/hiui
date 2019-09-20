@@ -6,15 +6,34 @@ import DemoBase from '../../demo/time-picker/section-base.jsx'
 
 <DemoBase />
 
+## 格式
+
+import DemoFormat from '../../demo/time-picker/section-format.jsx'
+
+<DemoFormat />
+
+## 时间范围
+
+import DemoRange from '../../demo/time-picker/section-range.jsx'
+
+<DemoRange />
+
+## 禁选时间
+
+import DemoDisableSelect from '../../demo/time-picker/section-disable-select.jsx'
+
+<DemoDisableSelect />
+
 ## Props
 
-| 参数        | 说明                               | 类型                                                 | 可选值                                                                        | 默认值    |
-| ----------- | ---------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------- | --------- |
-| type        | 选择器类型                         | string                                               | 'default' \| 'timerange'                                                      | 'default' |
-| value       | 显示的日期                         | Date \| string \| number \| object \| undefined \| - | -                                                                             | -         |
-| format      | 格式化时间                         | string                                               | -                                                                             | -         |
-| min         | 最小可选时间                       | Date                                                 | -                                                                             | -         |
-| max         | 最大可选时间                       | Date                                                 | -                                                                             | -         |
-| disabled    | 是否禁用                           | boolean                                              | true \| false                                                                 | false     |
-| placeholder | 设置输入框占位                     | string \| string[]                                   | -                                                                             | -         |
-| onChange    | 选中时的回调，回调值为当前选择的值 | (date: Date \| { start: Date, end: Date }) => void   | 普通时间选择返回 date 格式数据、范围选择返回对象{start:开始时间,end:结束时间} |
+| 参数            | 说明                                                                                                                    | 类型                                                                   | 可选值                   | 默认值    |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------ | --------- |
+| type            | 选择器类型                                                                                                              | string                                                                 | 'default' \| 'timerange' | 'default' |
+| value           | 显示的日期                                                                                                              | Date \| string \| number \| object \| -                                | -                        | -         |
+| format          | 格式化时间                                                                                                              | string                                                                 | -                        | -         |
+| disabled        | 是否禁用                                                                                                                | boolean                                                                | true \| false            | false     |
+| placeholder     | 设置输入框占位                                                                                                          | string \| string[]                                                     | -                        | -         |
+| disabledHours   | 禁止选择的小时                                                                                                          | () => number[] \| number[]                                             | -                        | -         |
+| disabledMinutes | 禁止选择的分钟                                                                                                          | (selectedHour: number) => number[] \| number[]                         | -                        | -         |
+| disabledSeconds | 禁止选择的秒数                                                                                                          | (selectedHour: number, selectedMinute: number) => number[] \| number[] | -                        | -         |
+| onChange        | 选中时的回调，回调值为当前选择的值。普通时间选择返回 date 格式数据、范围选择返回对象 { start: 开始时间, end: 结束时间 } | (date: Date \| { start: Date, end: Date }) => void                     | -                        | -         |

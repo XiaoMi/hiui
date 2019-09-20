@@ -7,11 +7,13 @@ import {
   subMonths,
   getDay,
   startOfMonth,
-  isWithinRange,
   isSameDay,
   compareAsc,
   addMonths,
-  isToday
+  isToday,
+  isValid,
+  isWithinInterval,
+  toDate
 } from './dateUtil'
 import {DAY_MILLISECONDS} from './constants'
 class Calender extends Component {
@@ -77,10 +79,18 @@ class Calender extends Component {
           col.type = 'current'
         }
         if (type === 'daterange' || type === 'weekrange') {
-          col.rangeStart = startDate && isSameDay(currentTime, startDate)
-          col.rangeEnd = endDate && isSameDay(currentTime, endDate)
-          const _ds = [startDate, endDate].sort(compareAsc)
-          col.range = endDate && isWithinRange(currentTime, ..._ds)
+          const sv = isValid(startDate)
+          const ev = isValid(endDate)
+          if (sv) {
+            col.rangeStart = startDate && isSameDay(currentTime, startDate)
+          }
+          if (ev) {
+            col.rangeEnd = endDate && isSameDay(currentTime, endDate)
+          }
+          if (sv && ev) {
+            const _ds = [startDate, endDate].sort(compareAsc)
+            col.range = endDate && isWithinInterval(toDate(currentTime), {start: _ds[0], end: _ds[1]})
+          }
           row.weekNum = getYearWeek(new Date(currentTime), weekOffset).weekNum
         }
         col.disabled = (minDate && compareAsc(currentTime, minDate) === -1) || (maxDate && compareAsc(currentTime, maxDate) === 1)

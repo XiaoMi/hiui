@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   misc: {
     components: '基础组件'
   },
@@ -35,12 +35,11 @@ module.exports = {
     }
   },
   pagination: {
-    total: function (total) {
-      return '共 ' + total + ' 条'
-    },
+    total: ['共', '条'],
+    simple: ['第', '页', '共', '页', '条记录'],
     item: '条',
-    itemPerPage: '每页',
-    goto: '跳至',
+    itemPerPage: '页',
+    goto: '前往',
     page: '页'
   },
   cascader: {

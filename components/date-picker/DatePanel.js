@@ -4,9 +4,8 @@ import { deconstructDate } from './util'
 import TimePanel from './TimePanel'
 import Icon from '../icon'
 import classNames from 'classnames'
-import Provider from '../context'
 import TimePeriodPanel from './TimePeriodPanel'
-import { dateFormat, parse, getStartDate, addMonths, subMonths, startOfWeek, endOfWeek } from './dateUtil'
+import { dateFormat, parseISO, getStartDate, addMonths, subMonths, startOfWeek, endOfWeek } from './dateUtil'
 
 class DatePanel extends Component {
   constructor (props) {
@@ -205,11 +204,11 @@ class DatePanel extends Component {
   }
   onTimePeriodPick (periodS, periodE) {
     const date = getStartDate(this.props.date)
-    const currentDate = dateFormat(date, 'YYYY-MM-DD')
+    const currentDate = dateFormat(date, 'yyyy-MM-dd')
     this.props.onPick(
       {
-        startDate: parse(`${currentDate} ${periodS}`),
-        endDate: parse(`${currentDate} ${periodE}`)
+        startDate: parseISO(`${currentDate} ${periodS}`),
+        endDate: parseISO(`${currentDate} ${periodE}`)
       },
       true
     )
@@ -311,6 +310,7 @@ class DatePanel extends Component {
             />}
           {type === 'timeperiod' &&
             <TimePeriodPanel
+              {...this.props}
               timeInterval={timeInterval}
               onTimePeriodPick={this.onTimePeriodPick.bind(this)}
               date={getStartDate(this.props.date)}
@@ -321,4 +321,4 @@ class DatePanel extends Component {
   }
 }
 
-export default Provider(DatePanel)
+export default DatePanel
