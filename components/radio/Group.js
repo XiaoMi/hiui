@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
+import isEqual from 'lodash/isEqual'
 import Provider from '../context'
 import Radio from './Radio'
 import Button from '../button'
@@ -13,7 +14,7 @@ class Group extends React.Component {
     this.state = { data: getData(props), value: props.value }
   }
   static getDerivedStateFromProps (nextProps, state) {
-    if (nextProps.value !== state.value || getData(nextProps) !== state.data) {
+    if (nextProps.value !== state.value || !isEqual(getData(nextProps), state.data)) {
       return { data: getData(nextProps), value: nextProps.value }
     }
     return null

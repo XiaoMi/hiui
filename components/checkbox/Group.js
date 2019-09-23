@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import isEqual from 'lodash/isEqual'
 import Checkbox from './Checkbox'
-import Provider from '../context'
 
 const prefixCls = 'hi-checkbox-group'
 
@@ -12,7 +12,7 @@ class Group extends Component {
     this.state = { data: getData(props), value: props.value }
   }
   static getDerivedStateFromProps (nextProps, state) {
-    if (nextProps.value !== state.value || getData(nextProps) !== state.data) {
+    if (nextProps.value !== state.value || !isEqual(getData(nextProps), state.data)) {
       return { data: getData(nextProps), value: nextProps.value }
     }
     return null
@@ -114,4 +114,4 @@ Group.defaultProps = {
   defaultValue: []
 }
 
-export default Provider(Group)
+export default Group
