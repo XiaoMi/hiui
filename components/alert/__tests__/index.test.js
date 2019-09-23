@@ -79,7 +79,7 @@ describe('Alert', () => {
       const handleCloseSpy = spy(Alert.prototype, 'handleClose')
 
       expect(handleCloseSpy.callCount).toEqual(0)
-      expect(setTimeout).toHaveBeenCalledTimes(1);
+      expect(setTimeout).toHaveBeenCalledTimes(1)
       expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), duration)
 
       jest.runAllTimers()

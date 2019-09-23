@@ -53,11 +53,14 @@ function PortalWrapper ({ mountNode, children }) {
   )
 }
 
-function open (target, { content, key, duration, size } = {}) {
+function open (target, { content, key, duration, size }) {
   let renderNode = document.createElement('div')
   const mountNode = target || document.body
   window.getComputedStyle(mountNode).position === 'absolute' ||
     mountNode.style.setProperty('position', 'relative')
+  if (!key) {
+    throw new Error('Key must exist and be a unique value')
+  }
   const full = !target
   ReactDOM.render(<Loading {...{ content, full, visible: true, target: mountNode }} />, renderNode)
 
@@ -85,10 +88,9 @@ function openWrapper (target, options) {
   }
 }
 function close (key) {
-  if (loadingInstance[key]) {
-    ReactDOM.unmountComponentAtNode(loadingInstance[key])
-    loadingInstance[key].parentNode && loadingInstance[key].parentNode.removeChild(loadingInstance[key])
-  }
+  loadingInstance[key] && ReactDOM.unmountComponentAtNode(loadingInstance[key])
+  // console.log(loadingInstance[key], loadingInstance[key].parentNode)
+  // loadingInstance[key].parentNode && loadingInstance[key].parentNode.removeChild(loadingInstance[key])
 }
 
 Loading.open = openWrapper
