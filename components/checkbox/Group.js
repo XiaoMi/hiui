@@ -9,11 +9,14 @@ const prefixCls = 'hi-checkbox-group'
 class Group extends Component {
   constructor (props) {
     super(props)
-    this.state = { data: getData(props), value: props.value }
+    this.state = { data: getData(props), originValue: props.value, originData: props.data }
   }
   static getDerivedStateFromProps (nextProps, state) {
-    if (nextProps.value !== state.value || !isEqual(getData(nextProps), state.data)) {
-      return { data: getData(nextProps), value: nextProps.value }
+    if (nextProps.value !== state.originValue) {
+      return { value: nextProps.value }
+    }
+    if (!isEqual(nextProps.data, state.originData)) {
+      return { data: getData(nextProps), originData: nextProps.data }
     }
     return null
   }
