@@ -116,6 +116,7 @@ $prefix: 'hi-tabs' !default;
       overflow: hidden;
       margin-bottom: -1px;
       margin-right: 40px;
+      min-height: 48px;
     }
 
     .#{$prefix}__header {
