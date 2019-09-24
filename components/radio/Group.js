@@ -14,8 +14,8 @@ class Group extends React.Component {
     this.state = { data: getData(props), originValue: props.value, originData: props.data }
   }
   static getDerivedStateFromProps (nextProps, state) {
-    if (nextProps.value !== state.originValue) {
-      return { originValue: nextProps.value }
+    if (!isEqual(nextProps.value, state.originValue)) {
+      return { data: getData(nextProps), originValue: nextProps.value }
     }
     if (!isEqual(nextProps.data, state.originData)) {
       return { data: getData(nextProps), originData: nextProps.data }
