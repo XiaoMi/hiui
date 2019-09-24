@@ -15,7 +15,7 @@
     "deploy": "gh-pages -d dist --git \"$(which git)\"",
     "dev": "npm start",
     "start": "node build/start.js",
-    "prerender:gh-pages": "cross-env DOC_ENV=github npm run build && cross-env DOC_ENV=github node build/prerenderSite.js",
+    "prerender:gh-pages": "cross-env DOC_ENV=github npm run build && node build/prerenderSite.js",
     "prerender": "npm run build && node build/prerenderSite.js"
   },
   "repository": {
@@ -79,7 +79,6 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/standalone": "^7.4.5",
-    "@bougiel/puppeteer-prerenderer": "^0.0.3",
     "@mdx-js/loader": "^1.1.0",
     "autoprefixer": "^8.5.0",
     "babel-eslint": "^8.2.6",
@@ -95,6 +94,7 @@
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.13.2",
     "file-loader": "^1.1.11",
+    "fs-extra": "^8.1.0",
     "gh-pages": "^2.0.1",
     "gulp": "^3.9.1",
     "gulp-babel": "^8.0.0",

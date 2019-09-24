@@ -1,50 +1,28 @@
 const path = require('path')
-const fs = require('fs')
-const {
-  createSPAServer,
-  renderUrlsToString,
-  getRelativePathFromUrl,
-  writeFile
-} = require('@bougiel/puppeteer-prerenderer')
+const fs = require('fs-extra')
 
 const dist = path.resolve(__dirname, '../dist')
-const port = 4200
+const tempContent = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
 
-const isGithub = process.env.DOC_ENV === 'github'
-
-const baseUrl = isGithub ? '/hiui' : ''
-
-const server = createSPAServer({
-  dist,
-  port,
-  base: baseUrl,
-  onCreated: renderUrls
-})
-
-async function renderUrls () {
-  renderUrlsToString({
-    urls: getUrls(),
-    onItemRendered: render,
-    onFinished () {
-      server.close()
-      process.exit(0)
-    }
+const main = () => {
+  const allPaths = getAllPaths()
+  allPaths.forEach(relativePath => {
+    const absolutePath = path.join(dist, relativePath, 'index.html')
+    fs.ensureFileSync(absolutePath)
+    fs.writeFileSync(absolutePath, tempContent)
   })
 }
 
-async function render (content, url) {
-  const dir = getRelativePathFromUrl(url).replace(baseUrl, '')
-  writeFile(path.join(dist, dir), content)
-}
+main()
 
 /**
  * get all prerender needed urls.
  * @returns {string[]}
  */
-function getUrls () {
-  const urls = [...getComponentUrls(), ...getDesignUrls(), ...getTemplateUrls(), ...getExtraUrls()]
-  const zh = urls.map(v => `http://localhost:${port}${baseUrl}/zh-CN/${v}`)
-  const en = urls.map(v => `http://localhost:${port}${baseUrl}/en-US/${v}`)
+function getAllPaths () {
+  const urls = [...getComponentPaths(), ...getDesignPaths(), ...getTemplatePaths(), ...getExtraPaths()]
+  const zh = urls.map(v => `/zh-CN/${v}`)
+  const en = urls.map(v => `/en-US/${v}`)
   return [...zh, ...en]
 }
 
@@ -52,7 +30,7 @@ function getUrls () {
  * get components dir pages.
  * @returns {string[]}
  */
-function getComponentUrls () {
+function getComponentPaths () {
   const compPath = path.resolve(__dirname, '../docs/zh-CN/components')
   return fs.readdirSync(compPath).map(v => `docs/${v.replace('.mdx', '')}`)
 }
@@ -61,7 +39,7 @@ function getComponentUrls () {
  * get designs dir pages.
  * @returns {string[]}
  */
-function getDesignUrls () {
+function getDesignPaths () {
   const compPath = path.resolve(__dirname, '../docs/zh-CN/designs')
   return fs.readdirSync(compPath).map(v => `designs/${v.replace('.mdx', '')}`)
 }
@@ -70,7 +48,7 @@ function getDesignUrls () {
  * get templates dir pages.
  * @returns {string[]}
  */
-function getTemplateUrls () {
+function getTemplatePaths () {
   const tempPath = path.resolve(__dirname, '../docs/zh-CN/templates')
   return fs.readdirSync(tempPath).map(v => `templates/${v.replace('.md', '')}`)
 }
@@ -79,6 +57,6 @@ function getTemplateUrls () {
  * get non-regular pages
  * @returns {string[]}
  */
-function getExtraUrls () {
+function getExtraPaths () {
   return ['', 'docs/quick-start', 'docs/template', 'docs/theme', 'docs/i18n', 'docs/changelog']
 }
