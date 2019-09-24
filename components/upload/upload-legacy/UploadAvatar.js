@@ -138,25 +138,25 @@ class UploadAvatar extends Upload {
     const { aspectRatio = 0, dragMode = 'move', dropBoxSize = [] } = avatarOptions
     const file = fileList[0]
     return (
-      <div className='hi-upload hi-upload--avatar'>
-        <ul className='hi-upload__list'>
+      <div className='hi-upload-legacy hi-upload-legacy--avatar'>
+        <ul className='hi-upload-legacy__list'>
           {
             !!file && (
               file.uploadState === 'loading'
                 ? (
-                  <li className='hi-upload__item'>
-                    <img src={file.url} className='hi-upload__thumb' />
-                    <div className='hi-upload__precent'>
-                      <p className='hi-upload__loading-text'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : localeDatas.upload.uploadSuccess) : (0 + '%')}</p>
-                      <div className='hi-upload__loading-bar' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
+                  <li className='hi-upload-legacy__item'>
+                    <img src={file.url} className='hi-upload-legacy__thumb' />
+                    <div className='hi-upload-legacy__precent'>
+                      <p className='hi-upload-legacy__loading-text'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : localeDatas.upload.uploadSuccess) : (0 + '%')}</p>
+                      <div className='hi-upload-legacy__loading-bar' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
                     </div>
                   </li>
                 )
                 : (
-                  <li className='hi-upload__item'>
-                    <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} onClick={() => this.previewImage(file)} />
+                  <li className='hi-upload-legacy__item'>
+                    <img src={file.url} className={`hi-upload-legacy__thumb ${file.uploadState === 'error' && 'error'}`} onClick={() => this.previewImage(file)} />
                     {
-                      <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, 0)} />
+                      <Icon name='close-circle' className='hi-upload-legacy__photo-del' onClick={() => this.deleteFile(file, 0)} />
                     }
                   </li>
                 )
@@ -164,7 +164,7 @@ class UploadAvatar extends Upload {
           }
           {
             !file && (
-              <li className='hi-upload__item hi-upload__item--upload'>
+              <li className='hi-upload-legacy__item hi-upload-legacy__item--upload'>
                 <label style={{display: 'block'}}>
                   <input
                     ref={node => {
