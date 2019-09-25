@@ -418,7 +418,7 @@ class Select extends Component {
   onFilterItems(keyword) {
     this.setState(
       {
-        keyword
+        keyword: keyword.toLowerCase()
       },
       () => this.resetFocusedIndex()
     )
@@ -438,8 +438,8 @@ class Select extends Component {
     return (
       this.isRemote() ||
       (!searchable || !keyword) ||
-        (String(item.id).includes(keyword) ||
-          String(item.title).includes(keyword))
+        (String(item.id).toLowerCase().includes(keyword) ||
+          String(item.title).toLowerCase().includes(keyword))
     )
   }
 
