@@ -18,35 +18,6 @@ function breakItemRender (page, element) {
 function noop () {}
 
 class Pagination extends Component {
-  static propTypes = {
-    defaultCurrent: PropTypes.number,
-    pageSize: PropTypes.number,
-    max: PropTypes.number,
-    showJumper: PropTypes.bool,
-    autoHide: PropTypes.bool,
-    total: PropTypes.number,
-    onChange: PropTypes.func,
-    itemRender: PropTypes.func,
-    onPageSizeChange: PropTypes.func,
-    onJump: PropTypes.func,
-    pageSizeOptions: PropTypes.array,
-    type: PropTypes.oneOf(['simple', 'default', 'shrink'])
-  }
-
-  static defaultProps = {
-    pageSizeOptions: [],
-    showJumper: false,
-    autoHide: false,
-    type: 'default',
-    defaultCurrent: 1,
-    pageSize: 10,
-    max: 2,
-    total: 0,
-    onChange: noop,
-    className: '',
-    prefixCls: 'hi-pagination'
-  }
-
   constructor (props) {
     super(props)
 
@@ -233,7 +204,7 @@ class Pagination extends Component {
     } else if (e.type === 'keypress') {
       if (e.charCode === 13) {
         setPageNum(pageNum)
-        this.jumper.current._Input.blur()
+        this.jumper.current.blur()
       }
     }
   }
@@ -427,6 +398,35 @@ class Pagination extends Component {
       </div>
     )
   }
+}
+
+Pagination.propTypes = {
+  defaultCurrent: PropTypes.number,
+  pageSize: PropTypes.number,
+  max: PropTypes.number,
+  showJumper: PropTypes.bool,
+  autoHide: PropTypes.bool,
+  total: PropTypes.number,
+  onChange: PropTypes.func,
+  itemRender: PropTypes.func,
+  onPageSizeChange: PropTypes.func,
+  onJump: PropTypes.func,
+  pageSizeOptions: PropTypes.array,
+  type: PropTypes.oneOf(['simple', 'default', 'shrink'])
+}
+
+Pagination.defaultProps = {
+  pageSizeOptions: [],
+  showJumper: false,
+  autoHide: false,
+  type: 'default',
+  defaultCurrent: 1,
+  pageSize: 10,
+  max: 2,
+  total: 0,
+  onChange: noop,
+  className: '',
+  prefixCls: 'hi-pagination'
 }
 
 export default Provider(Pagination)
