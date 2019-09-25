@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 
 const isDevelopment = /development/gi.test(process.env.NODE_ENV)
 
@@ -11,7 +11,7 @@ const isDevelopment = /development/gi.test(process.env.NODE_ENV)
  * @returns
  */
 export const depreactedPropsCompat = (compatPair) => (WrappedComponent) => {
-  const WrapperComponent = (props) => {
+  const WrapperComponent = forwardRef((props, ref) => {
     const compatProps = { ...props }
     const componentName =
       WrappedComponent.displayName ||
@@ -28,8 +28,8 @@ export const depreactedPropsCompat = (compatPair) => (WrappedComponent) => {
           : props[oldProp]
       }
     })
-    return <WrappedComponent {...compatProps} />
-  }
+    return <WrappedComponent {...compatProps} ref={ref} />
+  })
   for (const staticProp in WrappedComponent) {
     WrapperComponent[staticProp] = WrappedComponent[staticProp]
   }

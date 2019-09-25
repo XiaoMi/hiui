@@ -1,4 +1,10 @@
+@import '@hi-ui/core-css/index.scss';
+
 /* stylelint-disable */
+@mixin input-theme($themeColor) {
+  border-color: $themeColor;
+}
+
 .hi-select__input {
   position: relative;
   display: flex;
@@ -228,6 +234,15 @@
       height: 22px;
       line-height: 22px;
       margin-bottom: 4px;
+    }
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.hi-select__input {
+    &.active,
+    &:not(.disabled):hover {
+      @include input-theme($value);
     }
   }
 }
