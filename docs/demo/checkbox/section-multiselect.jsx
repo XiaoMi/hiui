@@ -11,12 +11,12 @@ class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
-      list: ['手机', '电脑', '智能'],
+      data: ['手机', '电脑', '智能'],
     }
   }
   render() {
     return (
-      <Checkbox.Group data={this.state.list} />
+      <Checkbox.Group data={this.state.data} />
     )
   }
 }`,
