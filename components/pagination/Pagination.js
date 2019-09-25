@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Pager from './Pager'
-import Dropdown from '../dropdown/index'
+import Select from '../select'
 import Input from '../input'
 import Provider from '../context'
 
@@ -158,17 +158,18 @@ class Pagination extends Component {
     return (
       <div className={`${prefixCls}__sizes ${prefixCls}__text`}>
         <div className={`${prefixCls}__span`}>
-          <Dropdown legacy={false} title={`${pageSize} ${i18nItem}/${i18nItemPerPage}`} type='button'
+          <Select
+            type='single'
+            clearable={false}
+            style={{ width: 120 }}
             data={pageSizeOptions.map(n => ({
-              value: typeof n === 'object' ? n.value : n,
+              id: n,
               title: `${n} ${i18nItem}/${i18nItemPerPage}`
             }))}
-            width={100}
-            trigger='click'
-            onClick={(val) => {
-              this.onPageSizeChange(val)
-            }}
-          />
+            value={pageSize}
+            onChange={ids => {
+              this.onPageSizeChange(ids[0])
+            }} />
         </div>
       </div>
     )
@@ -197,6 +198,12 @@ class Pagination extends Component {
       <div className={`${prefixCls}__jumper-input`}>
         <Input ref={this.jumper} onKeyPress={this.gotoPage.bind(this)} onBlur={this.gotoPage.bind(this)} value={this.state.jumpTo} onChange={(e, tVal) => {
           const val = e.target.value
+          if (!val) {
+            this.setState({
+              jumpTo: val
+            })
+            return
+          }
           if (/^\d+$/.test(val)) {
             const maxPage = this.calculatePage(total)
             const jumpTo = val < 1 ? 1 : (val > maxPage ? maxPage : val)
