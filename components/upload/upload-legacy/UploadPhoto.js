@@ -55,28 +55,28 @@ class UploadPhoto extends Upload {
       }
     })
     return (
-      <div className={classNames('hi-upload hi-upload--photo', {'hi-upload--disabled': disabled})}>
-        <ul className='hi-upload__list'>
+      <div className={classNames('hi-upload-legacy hi-upload-legacy--photo', {'hi-upload-legacy--disabled': disabled})}>
+        <ul className='hi-upload-legacy__list'>
           {fileList.map((file, index) => {
             if (file.uploadState === 'loading') {
               return (
-                <li key={index} className='hi-upload__item'>
-                  <img src={file.url} className='hi-upload__thumb' />
-                  <div className='hi-upload__precent'>
-                    <p className='hi-upload__loading-text'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : localeDatas.upload.uploadSuccess) : (0 + '%')}</p>
-                    <div className='hi-upload__loading-bar' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
+                <li key={index} className='hi-upload-legacy__item'>
+                  <img src={file.url} className='hi-upload-legacy__thumb' />
+                  <div className='hi-upload-legacy__precent'>
+                    <p className='hi-upload-legacy__loading-text'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : localeDatas.upload.uploadSuccess) : (0 + '%')}</p>
+                    <div className='hi-upload-legacy__loading-bar' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
                   </div>
                 </li>
               )
             } else {
               return (
-                <li key={index} className='hi-upload__item'>
-                  <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} onClick={() => this.previewImage(file, index)} />
+                <li key={index} className='hi-upload-legacy__item'>
+                  <img src={file.url} className={`hi-upload-legacy__thumb ${file.uploadState === 'error' && 'error'}`} onClick={() => this.previewImage(file, index)} />
                   {
-                    onRemove && <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, index)} />
+                    onRemove && <Icon name='close-circle' className='hi-upload-legacy__photo-del' onClick={() => this.deleteFile(file, index)} />
                   }
                   {
-                    file.uploadState === 'error' && <div className='hi-upload__precent'>
+                    file.uploadState === 'error' && <div className='hi-upload-legacy__precent'>
                       <div>
                         <Icon name='comment-circle-o' />
                         <br />
@@ -88,7 +88,7 @@ class UploadPhoto extends Upload {
               )
             }
           })}
-          <li className='hi-upload__item hi-upload__item--upload'>
+          <li className='hi-upload-legacy__item hi-upload-legacy__item--upload'>
             <label style={{display: 'block'}}>
               <input
                 ref={node => {

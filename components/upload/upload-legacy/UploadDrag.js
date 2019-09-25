@@ -50,11 +50,11 @@ class UploadDrag extends Upload {
     } = this.state
 
     const dragCls = classNames(
-      'hi-upload',
-      'hi-upload--drag',
+      'hi-upload-legacy',
+      'hi-upload-legacy--drag',
       overEvent && !disabled && 'drop-over',
-      disabled && 'hi-upload--disabled',
-      fileList.length > 0 && 'hi-upload--nohover'
+      disabled && 'hi-upload-legacy--disabled',
+      fileList.length > 0 && 'hi-upload-legacy--nohover'
     )
     return (
       <div
@@ -64,7 +64,7 @@ class UploadDrag extends Upload {
         onDrop={e => this.dropFn(e)}
         onClick={(e) => {
           e.stopImmediatePropagation()
-          if (!e.target.className.includes('hi-upload__operate-icon') && !e.target.className.includes('upload-input')) {
+          if (!e.target.className.includes('hi-upload-legacy__operate-icon') && !e.target.className.includes('upload-input')) {
             this.uploadRef.click()
           }
         }}
@@ -76,11 +76,11 @@ class UploadDrag extends Upload {
               : 'drop-content'
           }
         >
-          <label className='hi-upload-label'>
+          <label className='hi-upload-legacy-label'>
             <Icon name='upload-cloud' className='icon' />
             <span className='drop-click'>{localeDatas.upload.drag}</span>
             {
-              tips && <span className='hi-upload__tips hi-upload__tips--single-line'>{tips}</span>
+              tips && <span className='hi-upload-legacy__tips hi-upload-legacy__tips--single-line'>{tips}</span>
             }
             <input
               ref={node => { this.uploadRef = node }}
@@ -100,11 +100,11 @@ class UploadDrag extends Upload {
           className={
             fileList.length === 0
               ? 'hide-upload-list'
-              : 'hi-upload__list'
+              : 'hi-upload-legacy__list'
           }
         >
           {
-            fileList.length > 0 && <li className='hi-upload__item hi-upload__item-tips'>
+            fileList.length > 0 && <li className='hi-upload-legacy__item hi-upload-legacy__item-tips'>
               <Icon name='comment-circle-o' />{localeDatas.upload.dragTips}
             </li>
           }
@@ -118,13 +118,13 @@ class UploadDrag extends Upload {
               <li
                 key={index}
                 title={file.name}
-                className='hi-upload__item'
+                className='hi-upload-legacy__item'
               >
                 <span className={`Ficon-${file.fileType}`} />
-                <div className='hi-upload__right-content'>
+                <div className='hi-upload-legacy__right-content'>
                   <span className={fileNameCls}>{file.name}</span>
                   <span
-                    className='hi-upload__operate-icon'
+                    className='hi-upload-legacy__operate-icon'
                     onClick={(e) => this.deleteFile(e, file, index)}
                   >
                     {file.uploadState === 'loading' ? localeDatas.upload.cancel : localeDatas.upload.delete }
@@ -132,9 +132,9 @@ class UploadDrag extends Upload {
                 </div>
                 {
                   file.uploadState === 'loading' && (
-                    <div className='hi-upload__upstatus'>
-                      <i className='hi-upload__upstatus-line' style={{ width: file.progressNumber + '%' }} />
-                      <i className='hi-upload__upstatus-num'>{file.progressNumber || 0}%</i>
+                    <div className='hi-upload-legacy__upstatus'>
+                      <i className='hi-upload-legacy__upstatus-line' style={{ width: file.progressNumber + '%' }} />
+                      <i className='hi-upload-legacy__upstatus-num'>{file.progressNumber || 0}%</i>
                     </div>
                   )
                 }
