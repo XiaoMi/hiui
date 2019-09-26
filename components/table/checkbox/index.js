@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import '../../checkbox/checkbox-legacy/style'
+import './style'
 export default class Checkbox extends Component {
   render () {
     let {
@@ -17,7 +17,6 @@ export default class Checkbox extends Component {
     }
     return (
       <div
-        style={{ position: 'relative' }}
         onClick={e => {
           if (disabled) {
             return
@@ -25,13 +24,13 @@ export default class Checkbox extends Component {
           onChange(e, !checked)
         }}
         className={classNames({
-          'hi-checkbox-legacy': true,
-          'hi-checkbox-legacy--part': semi,
-          'hi-checkbox-legacy--checked': checked,
-          'hi-checkbox-legacy--disabled': disabled
+          'hi-table-checkbox': true,
+          'hi-table-checkbox--part': semi,
+          'hi-table-checkbox--checked': checked,
+          'hi-table-checkbox--disabled': disabled
         })}
       >
-        <span className='hi-checkbox-legacy__input' />
+        <span className='hi-table-checkbox__input' />
         {text && (
           <span
             className={classNames({ 'hi-checkbox-legacy__label': true, highlight })}

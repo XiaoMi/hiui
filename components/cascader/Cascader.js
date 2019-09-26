@@ -179,6 +179,9 @@ class Cascader extends Component {
       keyword
     } = this.state
     if (!keyword) {
+      this.setState({
+        filterOptions: data
+      })
       return
     }
     const labelKey = this.labelKey()
