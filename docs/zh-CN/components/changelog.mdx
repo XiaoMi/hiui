@@ -13,8 +13,6 @@
 - 新增 `<Upload />` 增加 loading 状态 [#680](https://github.com/XiaoMi/hiui/issues/680)
 - 新增 `<Upload />` 增加照片墙预览提示 icon [#490](https://github.com/XiaoMi/hiui/issues/490)
 - 新增 `<Select />` filterOption 属性支持自定义搜索 [#673](https://github.com/XiaoMi/hiui/issues/673)
-- 新增 `<Dropdown />` 自定义展开项宽度支持 [#444](https://github.com/XiaoMi/hiui/issues/444)
-- 新增 `<Form />` Form.Item label 支持 ReactNode [#664](https://github.com/XiaoMi/hiui/issues/664)
 
 ## 2.3.0
 
