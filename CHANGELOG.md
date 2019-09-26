@@ -1,5 +1,21 @@
 # 更新日志
 
+## 2.4.0
+
+- 修复 `<Select />` 没有适配主题色的问题 [#257](https://github.com/XiaoMi/hiui/issues/257)
+- 修复 `<Tabs />` 空状态下报错的问题 [#674](https://github.com/XiaoMi/hiui/issues/674)
+- 修复 `<Radio />`  非受控状态下切换失效的问题 [#683](https://github.com/XiaoMi/hiui/issues/683)
+- 修复 `<Cascader />` 清空搜索展示不正确的问题 [#333](https://github.com/XiaoMi/hiui/issues/333)
+- 修复 `<Collpase />` disabled 没有样式区分的问题 [#483](https://github.com/XiaoMi/hiui/issues/483)
+- 修复 `<Checkbox />` 非受控情况下 onChange 参数不全的问题 [#688](https://github.com/XiaoMi/hiui/issues/688)
+- 修复 `<Table />` 多选的显示问题 [#685](https://github.com/XiaoMi/hiui/issues/685)
+- 修复 `<Pagination />` 每页大小切换无效的问题 [#691](https://github.com/XiaoMi/hiui/issues/691)
+- 新增 `<Upload />` 增加 loading 状态 [#680](https://github.com/XiaoMi/hiui/issues/680)
+- 新增 `<Upload />` 增加照片墙预览提示 icon [#490](https://github.com/XiaoMi/hiui/issues/490)
+- 新增 `<Select />` filterOption 属性支持自定义搜索 [#673](https://github.com/XiaoMi/hiui/issues/673)
+- 新增 `<Dropdown />` 自定义展开项宽度支持 [#444](https://github.com/XiaoMi/hiui/issues/444)
+- 新增 `<Form />` Form.Item label 支持 ReactNode [#664](https://github.com/XiaoMi/hiui/issues/664)
+
 ## 2.3.0
 
 - 修复 `<Checkbox />` 同时渲染多个 context provider 的问题 [#649](https://github.com/XiaoMi/hiui/issues/649)
