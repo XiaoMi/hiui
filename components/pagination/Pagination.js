@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Pager from './Pager'
-import Dropdown from '../dropdown/index'
+import Select from '../select'
 import Input from '../input'
 import Provider from '../context'
 
@@ -18,35 +18,6 @@ function breakItemRender (page, element) {
 function noop () {}
 
 class Pagination extends Component {
-  static propTypes = {
-    defaultCurrent: PropTypes.number,
-    pageSize: PropTypes.number,
-    max: PropTypes.number,
-    showJumper: PropTypes.bool,
-    autoHide: PropTypes.bool,
-    total: PropTypes.number,
-    onChange: PropTypes.func,
-    itemRender: PropTypes.func,
-    onPageSizeChange: PropTypes.func,
-    onJump: PropTypes.func,
-    pageSizeOptions: PropTypes.array,
-    type: PropTypes.oneOf(['simple', 'default', 'shrink'])
-  }
-
-  static defaultProps = {
-    pageSizeOptions: [],
-    showJumper: false,
-    autoHide: false,
-    type: 'default',
-    defaultCurrent: 1,
-    pageSize: 10,
-    max: 2,
-    total: 0,
-    onChange: noop,
-    className: '',
-    prefixCls: 'hi-pagination'
-  }
-
   constructor (props) {
     super(props)
 
@@ -158,17 +129,18 @@ class Pagination extends Component {
     return (
       <div className={`${prefixCls}__sizes ${prefixCls}__text`}>
         <div className={`${prefixCls}__span`}>
-          <Dropdown legacy={false} title={`${pageSize} ${i18nItem}/${i18nItemPerPage}`} type='button'
+          <Select
+            type='single'
+            clearable={false}
+            style={{ width: 120 }}
             data={pageSizeOptions.map(n => ({
-              value: typeof n === 'object' ? n.value : n,
+              id: n,
               title: `${n} ${i18nItem}/${i18nItemPerPage}`
             }))}
-            width={100}
-            trigger='click'
-            onClick={(val) => {
-              this.onPageSizeChange(val)
-            }}
-          />
+            value={pageSize}
+            onChange={ids => {
+              this.onPageSizeChange(ids[0])
+            }} />
         </div>
       </div>
     )
@@ -197,6 +169,12 @@ class Pagination extends Component {
       <div className={`${prefixCls}__jumper-input`}>
         <Input ref={this.jumper} onKeyPress={this.gotoPage.bind(this)} onBlur={this.gotoPage.bind(this)} value={this.state.jumpTo} onChange={(e, tVal) => {
           const val = e.target.value
+          if (!val) {
+            this.setState({
+              jumpTo: val
+            })
+            return
+          }
           if (/^\d+$/.test(val)) {
             const maxPage = this.calculatePage(total)
             const jumpTo = val < 1 ? 1 : (val > maxPage ? maxPage : val)
@@ -226,7 +204,7 @@ class Pagination extends Component {
     } else if (e.type === 'keypress') {
       if (e.charCode === 13) {
         setPageNum(pageNum)
-        this.jumper.current._Input.blur()
+        this.jumper.current.blur()
       }
     }
   }
@@ -420,6 +398,35 @@ class Pagination extends Component {
       </div>
     )
   }
+}
+
+Pagination.propTypes = {
+  defaultCurrent: PropTypes.number,
+  pageSize: PropTypes.number,
+  max: PropTypes.number,
+  showJumper: PropTypes.bool,
+  autoHide: PropTypes.bool,
+  total: PropTypes.number,
+  onChange: PropTypes.func,
+  itemRender: PropTypes.func,
+  onPageSizeChange: PropTypes.func,
+  onJump: PropTypes.func,
+  pageSizeOptions: PropTypes.array,
+  type: PropTypes.oneOf(['simple', 'default', 'shrink'])
+}
+
+Pagination.defaultProps = {
+  pageSizeOptions: [],
+  showJumper: false,
+  autoHide: false,
+  type: 'default',
+  defaultCurrent: 1,
+  pageSize: 10,
+  max: 2,
+  total: 0,
+  onChange: noop,
+  className: '',
+  prefixCls: 'hi-pagination'
 }
 
 export default Provider(Pagination)

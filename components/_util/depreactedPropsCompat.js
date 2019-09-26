@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 
 const isDevelopment = /development/gi.test(process.env.NODE_ENV)
 
@@ -10,26 +10,28 @@ const isDevelopment = /development/gi.test(process.env.NODE_ENV)
  * @param {[[string, string, Function], [string, string, Function]]} compatPair
  * @returns
  */
-export const depreactedPropsCompat = (compatPair) => {
-  return (WrappedComponent) => {
-    return (props) => {
-      const compatProps = { ...props }
-      const componentName =
-        WrappedComponent.displayName ||
-        WrappedComponent.name ||
-        'unknown component'
-      compatPair.forEach(([newProp, oldProp, convert]) => {
-        if (props[oldProp] !== undefined && props[newProp] === undefined) {
-          isDevelopment &&
-            console.warn(
-              `${componentName}'s prop "${oldProp}" will be depreacted in next version! use ${newProp} instead.`
-            )
-          compatProps[newProp] = convert
-            ? convert(props[oldProp])
-            : props[oldProp]
-        }
-      })
-      return React.createElement(WrappedComponent, compatProps)
-    }
+export const depreactedPropsCompat = (compatPair) => (WrappedComponent) => {
+  const WrapperComponent = forwardRef((props, ref) => {
+    const compatProps = { ...props }
+    const componentName =
+      WrappedComponent.displayName ||
+      WrappedComponent.name ||
+      'unknown component'
+    compatPair.forEach(([newProp, oldProp, convert]) => {
+      if (props[oldProp] !== undefined && props[newProp] === undefined) {
+        isDevelopment &&
+          console.warn(
+            `${componentName}'s prop "${oldProp}" will be depreacted in next version! use ${newProp} instead.`
+          )
+        compatProps[newProp] = convert
+          ? convert(props[oldProp])
+          : props[oldProp]
+      }
+    })
+    return <WrappedComponent {...compatProps} ref={ref} />
+  })
+  for (const staticProp in WrappedComponent) {
+    WrapperComponent[staticProp] = WrappedComponent[staticProp]
   }
+  return WrapperComponent
 }

@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 import Checkbox from '../checkbox'
 import Loading from '../loading'
+import Provider from '../context'
 
-export default class SelectDropdown extends Component {
+class SelectDropdown extends Component {
   onClickOption (e, item, index) {
     e.stopPropagation()
     e.preventDefault()
@@ -64,7 +65,8 @@ export default class SelectDropdown extends Component {
       optionWidth,
       showCheckAll,
       checkAll,
-      dropdownRender
+      dropdownRender,
+      theme
     } = this.props
     let matched = 0
     const style = optionWidth && {
@@ -92,7 +94,7 @@ export default class SelectDropdown extends Component {
                 const isDisabled = item.disabled
                 return (
                   <li
-                    className={classNames('hi-select__dropdown--item', {
+                    className={classNames('hi-select__dropdown--item', `theme__${theme}`, {
                       'is-active': isSelected,
                       'is-disabled': isDisabled,
                       'hi-select__dropdown--item-default':
@@ -119,7 +121,7 @@ export default class SelectDropdown extends Component {
           </ul>
         )}
         {mode === 'multiple' && showCheckAll && (
-          <div className='hi-select__dropdown-check-all' onClick={checkAll}>
+          <div className={`hi-select__dropdown-check-all theme__${theme}`} onClick={checkAll}>
             全选
           </div>
         )}
@@ -127,3 +129,5 @@ export default class SelectDropdown extends Component {
     )
   }
 }
+
+export default Provider(SelectDropdown)
