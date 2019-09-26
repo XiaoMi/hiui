@@ -106,6 +106,7 @@ class SubMenu extends Component {
       'hi-menu-item--active': isActive,
       'hi-submenu--fat': fatMenu
     })
+    console.log(3, isExpand, expandIndex)
     let toggleIcon
     if (deepSubmenu && (mode === 'horizontal' || mini)) {
       toggleIcon = isExpand ? 'left' : 'right'
