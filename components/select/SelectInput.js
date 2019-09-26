@@ -3,7 +3,9 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import { getTextWidth } from './common.js'
-export default class SelectInput extends Component {
+import Proivder from '../context'
+
+class SelectInput extends Component {
   constructor (props) {
     super(props)
 
@@ -103,6 +105,7 @@ export default class SelectInput extends Component {
       clearable,
       multipleMode,
       onFocus,
+      theme,
       onBlur
     } = this.props
     let icon = dropdownShow ? 'up' : 'down'
@@ -118,7 +121,7 @@ export default class SelectInput extends Component {
 
     return (
       <div
-        className={classNames('hi-select__input', 'multiple-values', {
+        className={classNames('hi-select__input', 'multiple-values', `theme__${theme}`, {
           disabled
         })}
         onClick={this.props.onClick}
@@ -202,6 +205,7 @@ export default class SelectInput extends Component {
       searchable,
       clearable,
       onFocus,
+      theme,
       onBlur
     } = this.props
     placeholder =
@@ -210,7 +214,7 @@ export default class SelectInput extends Component {
 
     return (
       <div
-        className={classNames('hi-select__input', 'single-value', { disabled })}
+        className={classNames('hi-select__input', 'single-value', `theme__${theme}`, { disabled })}
         onClick={this.props.onClick}
       >
         <div
@@ -266,3 +270,5 @@ export default class SelectInput extends Component {
     }
   }
 }
+
+export default Proivder(SelectInput)
