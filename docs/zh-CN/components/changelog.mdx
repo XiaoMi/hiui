@@ -1,5 +1,9 @@
 # 更新日志
 
+## 2.4.1
+
+- 修复 `<Table />` 多选失效的问题 [#699](https://github.com/XiaoMi/hiui/issues/699)
+
 ## 2.4.0
 
 - 修复 `<Select />` 没有适配主题色的问题 [#257](https://github.com/XiaoMi/hiui/issues/257)
