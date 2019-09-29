@@ -134,7 +134,8 @@ class Pagination extends Component {
             clearable={false}
             style={{ width: 120 }}
             data={pageSizeOptions.map(n => ({
-              id: n,
+              // 这里的类型判断是考虑对过去的兼容写法
+              id: typeof n === 'object' ? n.value : n,
               title: `${n} ${i18nItem}/${i18nItemPerPage}`
             }))}
             value={pageSize}
