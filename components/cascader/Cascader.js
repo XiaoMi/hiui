@@ -25,7 +25,8 @@ class Cascader extends Component {
     style: PropTypes.object,
     onActiveItemChange: PropTypes.func,
     onChange: PropTypes.func,
-    displayRender: PropTypes.func
+    displayRender: PropTypes.func,
+    filterOption: PropTypes.func
   }
 
   static defaultProps = {
@@ -173,7 +174,8 @@ class Cascader extends Component {
 
   onKeywordChange () {
     const {
-      data
+      data,
+      filterOption: filterFunc
     } = this.props
     const {
       keyword
@@ -194,7 +196,7 @@ class Cascader extends Component {
         let label = option[labelKey]
         const value = option[valueKey]
         const children = option[childrenKey]
-        if (label.toString().indexOf(keyword) > -1 || value.toString().indexOf(keyword) > -1) {
+        if ((filterFunc && filterFunc(keyword, option)) || label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount++
         }
         match.options.push({
@@ -210,7 +212,7 @@ class Cascader extends Component {
             filterOptions.push(match.options.slice())
           }
         }
-        if (label.toString().indexOf(keyword) > -1 || value.toString().indexOf(keyword) > -1) {
+        if ((filterFunc && filterFunc(keyword, option)) || label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount--
         }
         match.options.pop()
