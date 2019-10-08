@@ -170,7 +170,6 @@ class Menu extends Component {
     const expandIndex = this.getExpandIndex(index)
 
     this.clickInside()
-    console.log(1, '点击子菜单', index, expandIndex)
     this.setState({
       expandIndex
     }, () => {
@@ -231,7 +230,6 @@ class Menu extends Component {
     } = this.state
     let items = []
     const renderMenu = showAllSubMenus ? this.renderFatSubMenu.bind(this) : this.renderMenu.bind(this)
-    console.log('renderMenu', expandIndex)
     data.forEach((item, index) => {
       const indexStr = parentIndex !== '' ? parentIndex + '-' + index : '' + index
       const level = indexStr.split('-').length

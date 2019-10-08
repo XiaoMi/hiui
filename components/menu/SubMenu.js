@@ -58,7 +58,6 @@ class SubMenu extends Component {
       >
         <ul
           className={classNames('hi-submenu__items')}
-          ref={node => { this.submenuNode = node }}
           onClick={() => clickInside()} // 利用事件冒泡设置clickInsideFlag
         >
           { renderMenu(datas, index) }
@@ -106,7 +105,6 @@ class SubMenu extends Component {
       'hi-menu-item--active': isActive,
       'hi-submenu--fat': fatMenu
     })
-    console.log(3, isExpand, expandIndex)
     let toggleIcon
     if (deepSubmenu && (mode === 'horizontal' || mini)) {
       toggleIcon = isExpand ? 'left' : 'right'
@@ -123,9 +121,7 @@ class SubMenu extends Component {
         <div
           className='hi-submenu__title hi-menu__title'
           onClick={() => {
-            if (!disabled) {
-              this.onClick(index)
-            }
+            !disabled && this.onClick(index)
           }}
         >
           <Title icon={icon} content={content} />
