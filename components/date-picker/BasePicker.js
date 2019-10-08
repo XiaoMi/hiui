@@ -6,7 +6,7 @@ import {formatterDate, FORMATS} from './constants'
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
-import { dateFormat, isValid, startOfWeek, endOfWeek, toDate, parse } from './dateUtil'
+import { dateFormat, isValid, startOfWeek, endOfWeek, parse, compatibleToDate } from './dateUtil'
 class BasePicker extends Component {
   constructor (props) {
     super(props)
@@ -85,6 +85,7 @@ class BasePicker extends Component {
       return word.toLowerCase()
     })
   }
+
   _parseProps (props) {
     let {value, defaultValue, showTime, type, format, localeDatas, weekOffset, timeInterval = 240} = props
     format = this.compatibleFormatString(format || FORMATS[type])
@@ -96,12 +97,12 @@ class BasePicker extends Component {
     let rightText = ''
     if (_value) {
       if (Object.prototype.toString.call(_value) === '[object Object]') {
-        start = toDate(_value.start) || null
-        end = toDate(_value.end) || new Date()
+        start = compatibleToDate(_value.start) || null
+        end = compatibleToDate(_value.end) || new Date()
       } else {
-        start = toDate(_value)
+        start = compatibleToDate(_value)
         if (type.includes('range')) {
-          end = toDate(start)
+          end = compatibleToDate(start)
           if (type === 'weekrange') {
             start = startOfWeek(start)
             end = endOfWeek(end)
@@ -116,8 +117,8 @@ class BasePicker extends Component {
       }
     }
     date = {
-      startDate: toDate(start),
-      endDate: toDate(end)
+      startDate: compatibleToDate(start),
+      endDate: compatibleToDate(end)
     }
     leftText = isValid(date.startDate) ? formatterDate(type, date.startDate, format, showTime, localeDatas, weekOffset) : ''
     rightText = isValid(date.endDate) ? formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset) : ''
