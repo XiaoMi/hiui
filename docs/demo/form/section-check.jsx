@@ -70,7 +70,7 @@ class Demo extends React.Component {
         count: ''
       }
     })
-    this.form.resetValidates()
+    this.form.current.resetValidates()
   }
 
   handleChange(key, e, value, index) {
