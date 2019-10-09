@@ -46,7 +46,12 @@ const getStartDate = (dateObj) => {
 const getEndDate = (dateObj) => {
   return getValidDate(dateObj.endDate)
 }
-
+const compatibleToDate = (value) => {
+  if (typeof value === 'string') {
+    return parseISO(value)
+  }
+  return toDate(value)
+}
 export {
   getDaysInMonth, // 获取当月的天数
   subMonths, // 月份减法
@@ -79,5 +84,6 @@ export {
   getEndDate, // 封装 - 获取结果时间
   getValidDate, // 获取有效的时间
   toDate,
-  parseISO
+  parseISO,
+  compatibleToDate
 }
