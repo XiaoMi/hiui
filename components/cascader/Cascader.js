@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import debounce from 'lodash/debounce'
+import isEqual from 'lodash/isEqual'
 import shallowequal from 'shallowequal'
 import Popper from '../popper'
 import Menu from './Menu'
@@ -66,8 +67,8 @@ class Cascader extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!shallowequal(nextProps.value, this.props.value)) {
-      const cascaderLabel = this.getCascaderLabel(nextProps.value)
+    if (!shallowequal(nextProps.value, this.props.value) || !isEqual(nextProps.data, this.props.data)) {
+      const cascaderLabel = this.getCascaderLabel(nextProps.value, nextProps.data)
       this.setState({
         cacheValue: nextProps.value, // 缓存原始value，用户可能点击option但是没选中，用于恢复初始value
         cascaderLabel
@@ -109,7 +110,7 @@ class Cascader extends Component {
     this.inputRef.focus()
   }
 
-  getCascaderLabel (values) {
+  getCascaderLabel (values, data) {
     if (this.props.displayRender) {
       return this.props.displayRender(values)
     }
@@ -118,7 +119,7 @@ class Cascader extends Component {
     } else {
       let labels = []
       let index = 0
-      let _options = this.props.data
+      let _options = data || this.props.data
       const labelKey = this.labelKey()
       const valueKey = this.valueKey()
       const childrenKey = this.childrenKey()
