@@ -56,7 +56,8 @@ export default {
     cancel: 'Cancel',
     delete: 'Delete',
     drag: 'Drag and drop files for uploading',
-    dragTips: 'Please click or drag and drop file upload'
+    dragTips: 'Please click or drag and drop file upload',
+    preview: 'Preview'
   },
   modal: {
     confirmText: 'OK',

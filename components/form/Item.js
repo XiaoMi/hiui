@@ -151,7 +151,7 @@ class FormItem extends Component {
   }
 
   render () {
-    const { children, label, required, className, showColon: shouldItemShowColon } = this.props
+    const { children, label, required, className, showColon: shouldItemShowColon, style } = this.props
     const { showColon: shouldFormShowColon, localeDatas: {
       form: { colon }
     } } = this.parent.props
@@ -165,7 +165,7 @@ class FormItem extends Component {
     obj['hi-form-item--required'] = this.isRequired() || required
 
     return (
-      <div className={classNames('hi-form-item', className, obj)}>
+      <div className={classNames('hi-form-item', className, obj)} style={style}>
         {
           (label || label === '') ? (
             <label className='hi-form-item__label' style={{ width: this.labelWidth }}>
@@ -209,7 +209,9 @@ FormItem.propTypes = {
   required: PropTypes.bool,
   label: PropTypes.string,
   labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  showColon: PropTypes.bool
+  showColon: PropTypes.bool,
+  className: PropTypes.string,
+  style: PropTypes.object
 }
 
 FormItem.defaultProps = {

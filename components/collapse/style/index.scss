@@ -57,6 +57,7 @@
     &--disabled {
       .collapse-item__head {
         cursor: not-allowed;
+        color: #ccc;
       }
     }
   }

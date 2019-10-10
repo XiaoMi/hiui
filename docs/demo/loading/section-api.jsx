@@ -17,14 +17,10 @@ class Demo extends React.Component {
   }
 
   demoEvent1 () {
-    Loading.open(null, {key: 123})
-    setTimeout(() => {
-      Loading.close(123)
-    }, 3000)
+    Loading.open(null, { duration: 3000 })
   }
   demoEvent2 () {
-    Loading.open(this.el,
-    {
+    Loading.open(this.el, {
       content: '加载中',
       key: 666
     })

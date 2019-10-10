@@ -70,6 +70,10 @@ class Input extends Component {
     }
   }
 
+  blur = () => {
+    this._Input.blur()
+  }
+
   /**
    * 渲染 text 输入框
    */

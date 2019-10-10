@@ -44,7 +44,7 @@ class Tabs extends Component {
     } = this.getTabItems(this.props)
 
     this.state = {
-      activeId: activeId !== undefined ? activeId : (defaultActiveId || showTabItems[0].tabId),
+      activeId: activeId !== undefined ? activeId : (defaultActiveId || (showTabItems && showTabItems[0] && showTabItems[0].tabId)),
       showTabItems,
       hiddenTabItems
     }
