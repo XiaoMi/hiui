@@ -10,6 +10,7 @@ class Demo extends React.Component {
       <DatePicker
         value={new Date()}
         showTime={true}
+        format='yyyy-MM-dd HH:mm:ss'
         onChange={(d) => {console.log('sec', d)}}
       />
     )

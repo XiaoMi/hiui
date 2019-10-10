@@ -85,9 +85,19 @@ class BasePicker extends Component {
       return word.toLowerCase()
     })
   }
-  _parseProps (props) {
-    let {value, defaultValue, showTime, type, format, localeDatas, weekOffset, timeInterval = 240} = props
+  callFormatterDate (date) {
+    let { type, format, showTime, localeDatas, weekOffset } = this.props
+    let { format: stateFormat } = this.state
+    format = stateFormat || format
+    let isFormat = !!format
     format = this.compatibleFormatString(format || FORMATS[type])
+    this.setState({
+      format
+    })
+    return formatterDate(type, date, format, showTime, localeDatas, weekOffset, isFormat)
+  }
+  _parseProps (props) {
+    let {value, defaultValue, type, timeInterval = 240} = props
     let _value = value || defaultValue
     let start
     let end
@@ -119,23 +129,20 @@ class BasePicker extends Component {
       startDate: toDate(start),
       endDate: toDate(end)
     }
-    leftText = isValid(date.startDate) ? formatterDate(type, date.startDate, format, showTime, localeDatas, weekOffset) : ''
-    rightText = isValid(date.endDate) ? formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset) : ''
+    leftText = isValid(date.startDate) ? this.callFormatterDate(date.startDate) : ''
+    rightText = isValid(date.endDate) ? this.callFormatterDate(date.endDate) : ''
     this.setState({
       texts: [leftText, rightText],
-      date,
-      format
+      date
     })
   }
   onPick (date, showPanel) {
     if (!date.startDate) {
       date = {startDate: date, endDate: undefined}
     }
-    const {type, showTime, localeDatas, weekOffset} = this.props
-    const {format} = this.state
     this.setState({
       date,
-      texts: [formatterDate(type, date.startDate, format, showTime, localeDatas, weekOffset), formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset)],
+      texts: [this.callFormatterDate(date.startDate), this.callFormatterDate(date.endDate)],
       showPanel
     }, () => {
       if (!showPanel) {
@@ -167,12 +174,11 @@ class BasePicker extends Component {
     }
   }
   timeConfirm (date, onlyTime) {
-    const {type, showTime, onChange, localeDatas, weekOffset} = this.props
-    let {format} = this.state
-    onlyTime && (format = FORMATS['time'])
+    const { onChange } = this.props
+    // onlyTime && (format = FORMATS['time'])
     this.setState({
       date: date,
-      texts: [formatterDate(type, date.startDate || date, format, showTime, localeDatas, weekOffset), formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset)],
+      texts: [this.callFormatterDate(date.startDate || date), this.callFormatterDate(date.endDate)],
       showPanel: false,
       isFocus: false
     })
@@ -185,11 +191,10 @@ class BasePicker extends Component {
     }
   }
   timeCancel () {
-    const {format, date} = this.state
-    const {type, showTime, localeDatas, weekOffset} = this.props
+    const { date } = this.state
     this.setState({
       showPanel: false,
-      texts: [formatterDate(type, date.startDate || date, format, showTime, localeDatas, weekOffset), formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset)],
+      texts: [this.callFormatterDate(date.startDate || date), this.callFormatterDate(date.endDate)],
       isFocus: false
     })
   }
