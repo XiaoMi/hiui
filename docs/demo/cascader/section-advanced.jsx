@@ -74,7 +74,7 @@ class Demo extends React.Component {
           value: 'goodsId',
           children: 'subGoods',
         }}
-        options={this.state.options}
+        data={this.state.options}
         style={{width: '240px'}}
       />
     )
@@ -146,7 +146,7 @@ class Demo extends React.Component {
         onChange={(value)=>{
           console.log('on change', value)
         }}
-        options={this.state.options}
+        data={this.state.options}
         style={{ width: 240 }}
         displayRender={values => {
           return values.join(' > ')
@@ -265,7 +265,7 @@ class Demo extends React.Component {
         }}
         noFoundTip="未搜索到相关内容"
         searchable={true}
-        options={this.state.options}
+        data={this.state.options}
         style={{ width: 240 }}
       />
     )
@@ -383,7 +383,7 @@ class Demo extends React.Component {
         onChange={(value)=>{
           console.log('on change', value)
         }}
-        options={this.state.options}
+        data={this.state.options}
         style={{ width: 240 }}
         onActiveItemChange={values=>{
           if(values[0] == 'mix') {
