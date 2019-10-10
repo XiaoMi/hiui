@@ -281,7 +281,7 @@ class Table extends Component {
 
       if (rightFixColumns.length > 0) {
         scrollTable.push(
-          <div className={prifix('table-fixed-right')} ref={this.fixRight} key='right'>
+          <div className={prifix('table-fixed-right')} ref={this.fixRight} key='right' style={{display: 'none'}}>
             <div className={prifix('table-outer')}>
               <div className={prifix('table-inner')}>
                 <TableContent style={{width: 'auto', ...style}} className={prifix('table-fixed')} {...Object.assign({}, {...props}, {highlightRows, parent: this, columns: rightFixColumns, headerColumns, name: this.props.name}, {dataSource, highlightCols}, {cbs: this.cbs, fetch: this.fetch, t: this})} />
