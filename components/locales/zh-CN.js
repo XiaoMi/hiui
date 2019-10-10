@@ -57,7 +57,8 @@ export default {
     cancel: '取消',
     delete: '删除',
     drag: '拖拽文件上传',
-    dragTips: '请点击或拖拽文件上传'
+    dragTips: '请点击或拖拽文件上传',
+    preview: '预览'
   },
   modal: {
     confirmText: '确定',

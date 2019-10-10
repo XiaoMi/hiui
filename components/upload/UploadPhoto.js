@@ -72,7 +72,11 @@ class UploadPhoto extends Upload {
             } else {
               return (
                 <li key={index} className='hi-upload__item'>
-                  <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} onClick={() => this.previewImage(file, index)} />
+                  <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} />
+                  <div className='hi-upload__item-mask' onClick={() => this.previewImage(file, index)}>
+                    <Icon name='eye' />
+                    <span>{localeDatas.upload.preview}</span>
+                  </div>
                   {
                     onRemove && <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, index)} />
                   }

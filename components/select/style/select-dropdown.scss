@@ -1,3 +1,5 @@
+@import '@hi-ui/core-css/index.scss';
+
 .hi-select__dropdown {
   width: 100%;
   max-height: 300px;
@@ -93,6 +95,20 @@
 
     &__check-icon {
       flex: none;
+    }
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.hi-select__dropdown {
+    &-check-all {
+      color: $value;
+    }
+
+    &--item {
+      &.is-active {
+        color: $value;
+      }
     }
   }
 }

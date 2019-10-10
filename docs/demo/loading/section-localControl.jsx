@@ -22,7 +22,7 @@ class Demo extends React.Component {
       dataIndex: 'name',
       key: 'name',
       render: (text, row, index) => {
-        return <a href="javascript:;">{text}</a>
+        return <a href="#">{text}</a>
       }
     }, {
       title: 'Age',
@@ -37,7 +37,7 @@ class Demo extends React.Component {
     key: 'action',
     render: (text, record) => (
         <span>
-          <a href="javascript:;">Action 一 {record.name}</a>
+          <a href="#">Action 一 {record.name}</a>
         </span>
       ),
     }];
