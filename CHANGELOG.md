@@ -8,6 +8,7 @@
 - 修复 `<Carousel />` 第一张图向前翻页跳转不正确的问题 [#696](https://github.com/XiaoMi/hiui/issues/696)
 - 修复 兼容属性 legacy 造成的组件污染问题 [#708](https://github.com/XiaoMi/hiui/issues/708)
 - 修复 `<DatePicker />` 传入字符串值时控制台抛出的警告问题 [#709](https://github.com/XiaoMi/hiui/issues/709)
+- 修复 `<Table />` 列冻结情况下容器宽度大于可滚动宽度的展示不正确的问题 [#718](https://github.com/XiaoMi/hiui/issues/718)
 
 ## 2.4.1
 
