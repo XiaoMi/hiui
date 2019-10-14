@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
 import MultipleCheckboxsOpera from './common'
-
 class Base extends Component {
   constructor (props) {
     super(props)
@@ -86,13 +85,12 @@ class Base extends Component {
   render () {
     const {disabled, checked, part} = this.state
 
-    const {value, name, all, content, theme} = this.props
+    const {value, name, all, content} = this.props
     const labelClass = classnames(
       'hi-checkbox-legacy',
       disabled && 'hi-checkbox-legacy--disabled',
       checked && 'hi-checkbox-legacy--checked',
-      part && `hi-checkbox-legacy--part`,
-      `theme__${theme}`
+      part && `hi-checkbox-legacy--part`
     )
     return (
       <div

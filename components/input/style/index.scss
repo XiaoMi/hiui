@@ -43,14 +43,6 @@ textarea.#{$input} {
   background-color: #fff;
   transition: border-color 0.3s;
 
-  // &:not(.disabled):hover {
-  //   border-color: $border-color-active;
-  // }
-
-  // &.active {
-  //   border-color: $border-color-active;
-  // }
-
   &.disabled {
     color: $disabled-color;
     background-color: $disabled-bg-color;
@@ -139,14 +131,6 @@ textarea.#{$input} {
     border-radius: $border-radius;
     background-color: #fff;
     transition: border-color 0.3s;
-
-    // &:not(.disabled):hover {
-    //   border-color: $border-color-active;
-    // }
-
-    // &.active {
-    //   border-color: $border-color-active;
-    // }
 
     &.disabled {
       color: $disabled-color;
