@@ -97,7 +97,7 @@ class BasePicker extends Component {
      */
     if (value === '' || !value) {
       // value 未传入情况
-      date = null
+      date = new Date()
       noText = true
     }
     if (typeof value === 'number' || (typeof value === 'string' && value.trim().length > 4)) {
@@ -109,12 +109,16 @@ class BasePicker extends Component {
     }
 
     if (type.includes('range') || type === 'timeperiod') {
-      if (value instanceof Date) {
-        // 如果为时间段选择，则取默认的第一个范围
-        date = {startDate: startOfDay(date), endDate: type === 'timeperiod' ? addHours(startOfDay(date), 4) : endOfDay(date)}
-      }
-      if (value && value.start && value.end) {
-        date = {startDate: value.start, endDate: value.end}
+      if (value) {
+        if (value instanceof Date) {
+          // 如果为时间段选择，则取默认的第一个范围
+          date = {startDate: startOfDay(date), endDate: type === 'timeperiod' ? addHours(startOfDay(date), 4) : endOfDay(date)}
+        }
+        if (value.start && value.end) {
+          date = {startDate: value.start, endDate: value.end}
+        }
+      } else {
+        date = {startDate: new Date(), endDate: new Date()}
       }
     }
     const leftText = noText ? '' : formatterDate(type, date.startDate || date, format, showTime, localeDatas, weekOffset)
