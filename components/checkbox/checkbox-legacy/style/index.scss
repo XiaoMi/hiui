@@ -1,16 +1,46 @@
 @import '@hi-ui/core-css/index.scss';
 
+@mixin checkbox-styles($themeColor: get-color($palette-primary, 'hiui-blue')) {
+  .hi-checkbox-legacy {
+    &:not(.hi-checkbox-legacy--disabled):hover {
+      .hi-checkbox-legacy__input {
+        border: 1px solid $themeColor;
+      }
+    }
+
+    &--checked {
+      outline: none;
+
+      .hi-checkbox-legacy__input {
+        background: $themeColor;
+      }
+    }
+
+    &--part {
+      .hi-checkbox-legacy__input {
+        background: $themeColor;
+      }
+    }
+
+    &__label {
+      &.highlight {
+        color: $themeColor;
+      }
+    }
+  }
+}
+
 .hi-checkbox-legacy {
   display: inline-block;
   cursor: pointer;
 
   @include component-reset();
 
-  &:not(.hi-checkbox-legacy--disabled):hover {
-    .hi-checkbox-legacy__input {
-      border: 1px solid #4284f5;
-    }
-  }
+  // &:not(.hi-checkbox-legacy--disabled):hover {
+  //   .hi-checkbox-legacy__input {
+  //     border: 1px solid #4284f5;
+  //   }
+  // }
 
   &--disabled {
     cursor: not-allowed;
@@ -31,7 +61,7 @@
 
   &--checked {
     .hi-checkbox-legacy__input {
-      background: #4284f5;
+      // background: #4284f5;
 
       &::after {
         transform: rotate(45deg) scaleY(1);
@@ -55,7 +85,7 @@
 
   &--part {
     .hi-checkbox-legacy__input {
-      background: #4284f5;
+      // background: #4284f5;
 
       &::after {
         content: '';
@@ -87,8 +117,14 @@
     vertical-align: middle;
     user-select: none;
 
-    &.highlight {
-      color: #4284f5;
-    }
+    // &.highlight {
+    //   color: #4284f5;
+    // }
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key} {
+    @include checkbox-styles ($value);
   }
 }

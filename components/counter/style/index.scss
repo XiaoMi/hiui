@@ -1,6 +1,16 @@
+@import '@hi-ui/core-css/index.scss';
 @import './variables.scss';
 
 $counter: 'hi-counter' !default;
+
+@mixin counter-picker-styles($themeColor: get-color($palette-primary, 'hiui-blue')) {
+  .#{$counter},
+  .#{$counter}.m {
+    &-sign {
+      color: $themeColor;
+    }
+  }
+}
 
 @mixin justify-center() {
   display: flex;
@@ -34,7 +44,7 @@ $counter: 'hi-counter' !default;
     border: 1px solid $border-color-normal;
     border-radius: 2px;
     font-weight: bold;
-    color: $active-color;
+    // color: $active-color;
     box-sizing: border-box;
     cursor: pointer;
     user-select: none;
@@ -67,5 +77,11 @@ $counter: 'hi-counter' !default;
     color: $normal-color;
     outline: none;
     box-sizing: border-box;
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key} {
+    @include counter-picker-styles($value);
   }
 }
