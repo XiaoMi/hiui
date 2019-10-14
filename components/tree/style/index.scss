@@ -512,6 +512,8 @@ $tree: 'hi-tree' !default;
   }
 }
 
+@include tree-styles();
+
 @each $key, $value in $theme-colors {
   .theme__#{$key} {
     @include tree-styles($value);

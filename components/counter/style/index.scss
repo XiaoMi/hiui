@@ -79,6 +79,8 @@ $counter: 'hi-counter' !default;
   }
 }
 
+@include counter-picker-styles();
+
 @each $key, $value in $theme-colors {
   .theme__#{$key} {
     @include counter-picker-styles($value);

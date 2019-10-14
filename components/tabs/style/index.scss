@@ -307,6 +307,8 @@ $prefix: 'hi-tabs' !default;
   }
 }
 
+@include tabs-styles();
+
 @each $key, $value in $theme-colors {
   .theme__#{$key} {
     @include tabs-styles($value);

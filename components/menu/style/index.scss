@@ -260,6 +260,8 @@
   }
 }
 
+@include menu-styles();
+
 @each $key, $value in $theme-colors {
   .theme__#{$key} {
     @include menu-styles($value);

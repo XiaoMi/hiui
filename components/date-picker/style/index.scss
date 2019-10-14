@@ -648,6 +648,8 @@
   }
 }
 
+@include date-picker-styles();
+
 @each $key, $value in $theme-colors {
   .theme__#{$key} {
     @include date-picker-styles($value);

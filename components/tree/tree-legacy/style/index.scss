@@ -320,6 +320,8 @@ $tree: 'hi-tree' !default;
   }
 }
 
+@include tree-styles-legacy();
+
 @each $key, $value in $theme-colors {
   .theme__#{$key} {
     @include tree-styles-legacy ($value);

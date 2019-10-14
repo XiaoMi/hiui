@@ -106,6 +106,7 @@ class Timeline extends Component {
 
   render () {
     const { layout, type, list, data, theme } = this.props
+    console.log(theme)
     const _layout = type === 'default' ? layout : type
     const rootCls = classNames('hi-timeline', `hi-timeline--${_layout}`, `theme__${theme}`)
     return (
