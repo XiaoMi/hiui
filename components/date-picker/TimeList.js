@@ -29,7 +29,8 @@ export default class TimeList extends Component {
   }
   componentDidMount () {
     setTimeout(() => {
-      this.addListener()
+      // this.addListener()
+      this.listRef.current.addEventListener('scroll', this.scrollEvent)
       this.scrollTo()
     }, 0)
   }

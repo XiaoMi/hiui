@@ -140,6 +140,7 @@ class BasePicker extends Component {
     if (!date.startDate) {
       date = {startDate: date, endDate: undefined}
     }
+    console.log('onPick')
     this.setState({
       date,
       texts: [this.callFormatterDate(date.startDate), this.callFormatterDate(date.endDate)],
@@ -191,10 +192,11 @@ class BasePicker extends Component {
     }
   }
   timeCancel () {
-    const { date } = this.state
+    // const { date } = this.state
+    console.log('取消')
     this.setState({
       showPanel: false,
-      texts: [this.callFormatterDate(date.startDate || date), this.callFormatterDate(date.endDate)],
+      // texts: [this.callFormatterDate(date.startDate || date), this.callFormatterDate(date.endDate)],
       isFocus: false
     })
   }
