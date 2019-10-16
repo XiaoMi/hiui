@@ -7,11 +7,11 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
   &__container {
     display: inline-block;
     vertical-align: middle;
-    padding: 1px 6px;
+    padding: 0 4px;
     font-size: $font-size-small;
-    line-height: $line-height-size-small;
+    line-height: $line-height-size-x-small;
     -webkit-font-smoothing: antialiased;
-    border-radius: 4px;
+    border-radius: 2px;
 
     & + & {
       margin-left: 10px;
@@ -34,6 +34,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
       background: transparent;
       border: 1px solid $primary;
       color: $primary;
+      line-height: $line-height-size-x-small - 2;
 
       @each $key in 'success', 'danger', 'warning' {
         &.#{$prefix}__container--#{$key} {
