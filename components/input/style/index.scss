@@ -7,12 +7,12 @@ textarea.#{$input} {
   outline: none;
   color: $normal-color;
   font-size: $font-size;
-  min-height: 30px;
+  min-height: 32px;
   height: auto;
   line-height: $line-height;
   resize: vertical;
   overflow: auto;
-  padding: 5px 12px;
+  padding: 4px 12px;
   border: 1px solid $border-color-normal;
   box-sizing: border-box;
   border-radius: $border-radius;
