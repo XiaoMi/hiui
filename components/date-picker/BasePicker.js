@@ -152,8 +152,9 @@ class BasePicker extends Component {
     })
   }
   callback () {
-    const {type, onChange} = this.props
-    const {date} = this.state
+    const { type, onChange } = this.props
+    const { date, format } = this.state
+    console.log('callback', date)
     if (onChange) {
       let {startDate, endDate} = date
       startDate = isValid(startDate) ? startDate : ''
@@ -164,14 +165,14 @@ class BasePicker extends Component {
       }
 
       if (type === 'time') {
-        onChange(startDate, dateFormat(startDate, this.state.format))
+        onChange(startDate, dateFormat(startDate, format))
         return
       }
       if (['timerange', 'timeperiod', 'daterange'].includes(type)) {
-        onChange({start: startDate, end: endDate})
+        onChange({start: startDate, end: endDate}, {start: dateFormat(startDate, format), end: dateFormat(endDate, format)})
         return
       }
-      onChange(startDate)
+      onChange(startDate, dateFormat(startDate, format))
     }
   }
   timeConfirm (date, onlyTime) {
@@ -193,7 +194,6 @@ class BasePicker extends Component {
   }
   timeCancel () {
     // const { date } = this.state
-    console.log('取消')
     this.setState({
       showPanel: false,
       // texts: [this.callFormatterDate(date.startDate || date), this.callFormatterDate(date.endDate)],
@@ -206,11 +206,20 @@ class BasePicker extends Component {
     let endDate = parse(texts[1], format, new Date())
     if (startDate && isValid(startDate)) {
       date.startDate ? date.startDate = startDate : date = startDate
+      this.setState({date})
     }
     if (endDate && isValid(endDate)) {
       date.endDate && (date.endDate = endDate)
+      this.setState({date})
     }
-    this.setState({date})
+    if (texts[0].trim().length === 0) {
+      date.startDate = null
+      this.setState({date})
+    }
+    if (texts[1].trim().length === 0) {
+      date.endDate = null
+      this.setState({date})
+    }
   }
   clickOutSide (e) {
     const tar = e.target

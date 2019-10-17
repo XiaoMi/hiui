@@ -28,14 +28,10 @@ export default class TimeList extends Component {
     this.listRef.current && (this.listRef.current.scrollTop = value * dVal)
   }
   componentDidMount () {
+    this.listRef.current.addEventListener('scroll', this.scrollEvent)
     setTimeout(() => {
-      // this.addListener()
-      this.listRef.current.addEventListener('scroll', this.scrollEvent)
       this.scrollTo()
     }, 0)
-  }
-  componentDidUpdate () {
-    this.scrollTo()
   }
   componentWillUnmount () {
     window.clearTimeout(this.timer)
