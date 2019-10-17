@@ -4,13 +4,15 @@ $tree: 'hi-tree' !default;
 // Define component colors
 @mixin tree-styles($themeColor: get-color($palette-primary, 'hiui-blue')) {
   .hi-tree {
-    .hi-tree__divider {
-      .divider-line {
-        background-color: $themeColor;
-      }
+    .hi-tree {
+      .hi-tree__divider {
+        .divider-line {
+          background-color: $themeColor;
+        }
 
-      .divider-circle {
-        border: 1px solid $themeColor;
+        .divider-circle {
+          border: 1px solid $themeColor;
+        }
       }
     }
 
@@ -509,6 +511,8 @@ $tree: 'hi-tree' !default;
     }
   }
 }
+
+@include tree-styles();
 
 @each $key, $value in $theme-colors {
   .theme__#{$key} {

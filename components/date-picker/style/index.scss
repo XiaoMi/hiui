@@ -1,6 +1,73 @@
 @import '@hi-ui/core-css/index.scss';
 
-$basic-color: #4284f5 !default;
+@mixin date-picker-styles($themeColor: get-color($palette-primary, 'hiui-blue')) {
+  .hi-datepicker {
+    &__input {
+      &:hover:not(.hi-datepicker__input--disabled) {
+        border: 1px solid $themeColor;
+      }
+    }
+
+    &__period-item {
+      &--active {
+        color: $themeColor;
+      }
+    }
+
+    &__footer {
+      &:hover {
+        color: $themeColor;
+      }
+    }
+
+    &__calender-container {
+      &--month {
+        &.today {
+          .hi-datepicker__text {
+            background: $themeColor;
+          }
+        }
+      }
+    }
+
+    &__row {
+      &--current-week {
+        .range-se {
+          .hi-datepicker__content {
+            background: $themeColor;
+          }
+        }
+      }
+    }
+
+    &__cell {
+      &.disabled {
+        .hi-datepicker__content {
+          cursor: not-allowed;
+          color: map-get(get-palette($themeColor), 'g80');
+        }
+      }
+
+      &.range-se:not(.prev):not(.next) {
+        .hi-datepicker__content {
+          background: $themeColor;
+        }
+      }
+
+      &.today:not(.in-range) {
+        .hi-datepicker__text {
+          border: 1px solid $themeColor;
+        }
+      }
+
+      &.current:not(.in-range) {
+        .hi-datepicker__text {
+          background: $themeColor;
+        }
+      }
+    }
+  }
+}
 
 .hi-datepicker {
   position: relative;
@@ -24,10 +91,6 @@ $basic-color: #4284f5 !default;
     align-items: center;
     justify-content: space-around;
     box-sizing: border-box;
-
-    &:hover:not(.hi-datepicker__input--disabled) {
-      border: 1px solid #4284f5;
-    }
 
     &--range {
       width: 320px;
@@ -177,10 +240,6 @@ $basic-color: #4284f5 !default;
     &:hover {
       background: rgba(240, 246, 255, 1);
     }
-
-    &--active {
-      color: #4284f5;
-    }
   }
 
   &__footer {
@@ -191,10 +250,6 @@ $basic-color: #4284f5 !default;
     text-align: center;
     cursor: pointer;
     position: relative;
-
-    &:hover {
-      color: #4284f5;
-    }
   }
 
   &__mask {
@@ -235,7 +290,6 @@ $basic-color: #4284f5 !default;
 
         &.today {
           .hi-datepicker__text {
-            background: $basic-color;
             opacity: 1;
             color: #fff;
           }
@@ -274,22 +328,7 @@ $basic-color: #4284f5 !default;
     &::after {
       content: '';
     }
-
-    &--current-week {
-      .range-se {
-        .hi-datepicker__content {
-          background: $basic-color;
-        }
-      }
-    }
   }
-
-  // &__content {
-  //   margin: 0 3px;
-  //   background: #fff;
-  //   color: #fff;
-  //   border-radius: 2px;
-  // }
 
   &__cell {
     cursor: pointer;
@@ -302,7 +341,6 @@ $basic-color: #4284f5 !default;
     &.disabled {
       .hi-datepicker__content {
         cursor: not-allowed;
-        color: map-get(get-palette($basic-color), 'g80');
         background: rgba(246, 246, 246, 1);
       }
     }
@@ -310,7 +348,6 @@ $basic-color: #4284f5 !default;
     &.range-se:not(.prev):not(.next) {
       .hi-datepicker__content {
         margin: 0 3px;
-        background: $basic-color;
         color: #fff;
         border-radius: 2px;
       }
@@ -323,22 +360,14 @@ $basic-color: #4284f5 !default;
       }
     }
 
-    // &.in-range:not(.next):not(.prev) {
-    //   .hi-datepicker__content {
-    //     background: rgba(66, 132, 245, 0.1);
-    //   }
-    // }
-
     &.today:not(.in-range) {
       .hi-datepicker__text {
-        border: 1px solid $basic-color;
         opacity: 0.8;
       }
     }
 
     &.current:not(.in-range) {
       .hi-datepicker__text {
-        background: $basic-color;
         color: #fff;
       }
     }
@@ -406,14 +435,9 @@ $basic-color: #4284f5 !default;
     box-sizing: border-box;
   }
 
-  &__mark {
-    // flex: 1;
-  }
-
   &__timebody {
     display: flex;
     height: 248px;
-    // border-bottom: 1px solid #f2f2f2;
     position: relative;
     justify-content: space-around;
     box-sizing: border-box;
@@ -482,7 +506,6 @@ $basic-color: #4284f5 !default;
     width: 60px;
     cursor: pointer;
     box-sizing: border-box;
-    // border-right: 1px solid rgba(242, 242, 242, 1);
     background-color: #fff;
 
     &--empty {
@@ -622,5 +645,13 @@ $basic-color: #4284f5 !default;
         }
       }
     }
+  }
+}
+
+@include date-picker-styles();
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key} {
+    @include date-picker-styles($value);
   }
 }

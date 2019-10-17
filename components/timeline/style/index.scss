@@ -230,6 +230,8 @@
   }
 }
 
+@include timeline-styles();
+
 @each $key, $value in $theme-colors {
   .theme__#{$key} {
     @include timeline-styles($value);

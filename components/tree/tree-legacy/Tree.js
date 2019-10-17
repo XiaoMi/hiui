@@ -191,35 +191,37 @@ class Tree extends Component {
     } = this.props
     const { data } = this.state
     return (
-      <div className={classNames(`${prefixCls}`, `theme__${theme}`)} style={style}>
-        <TreeNode
-          origin={origin}
-          checked={this.props.checkedKeys || []}
-          onNodeClick={this.props.onNodeClick}
-          onClick={this.props.onClick}
-          semiChecked={this.state.all.filter(item => item.semi).map(item => item.id)}
-          expanded={this.state.hasExpanded}
-          closeExpandedTreeNode={this.closeExpandedTreeNode}
-          expandTreeNode={this.expandTreeNode}
-          setExpandTreeNodes={this.setExpandTreeNodes}
-          onCheckChange={this.onCheckChange}
-          hightLightNodes={this.props.hightLightNodes}
-          onHightLightChange={this.props.onHightLightChange}
-          onExpanded={this.onExpanded}
-          data={data}
-          prefixCls={prefixCls}
-          checkable={checkable}
-          highlightable={highlightable}
-          editable={editable}
-          searchable={searchable}
-          openIcon={openIcon}
-          closeIcon={closeIcon}
-          draggable={draggable}
-          onDragStart={onDragStart}
-          onDrop={onDrop}
-          onDelete={onDelete}
-          onSave={onSave}
-        />
+      <div className={`theme__${theme}`}>
+        <div className={classNames(`${prefixCls}`, `${prefixCls}--legacy`)} style={style}>
+          <TreeNode
+            origin={origin}
+            checked={this.props.checkedKeys || []}
+            onNodeClick={this.props.onNodeClick}
+            onClick={this.props.onClick}
+            semiChecked={this.state.all.filter(item => item.semi).map(item => item.id)}
+            expanded={this.state.hasExpanded}
+            closeExpandedTreeNode={this.closeExpandedTreeNode}
+            expandTreeNode={this.expandTreeNode}
+            setExpandTreeNodes={this.setExpandTreeNodes}
+            onCheckChange={this.onCheckChange}
+            hightLightNodes={this.props.hightLightNodes}
+            onHightLightChange={this.props.onHightLightChange}
+            onExpanded={this.onExpanded}
+            data={data}
+            prefixCls={prefixCls}
+            checkable={checkable}
+            highlightable={highlightable}
+            editable={editable}
+            searchable={searchable}
+            openIcon={openIcon}
+            closeIcon={closeIcon}
+            draggable={draggable}
+            onDragStart={onDragStart}
+            onDrop={onDrop}
+            onDelete={onDelete}
+            onSave={onSave}
+          />
+        </div>
       </div>
     )
   }

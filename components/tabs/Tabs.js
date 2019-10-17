@@ -163,72 +163,73 @@ class Tabs extends Component {
     const { prefixCls, type, placement, children, className, theme } = this.props
     const editable = this.checkEditable()
     const tabsClasses = classNames(prefixCls, className, `${prefixCls}--${type}`, {
-      [`${prefixCls}--${placement}`]: type === 'card'
-    }, `theme__${theme}`)
+      [`${prefixCls}--${placement}`]: type === 'card'})
     let activeTabInHiddenItems = true
 
     return (
-      <div className={tabsClasses}>
-        <div className={`${prefixCls}__header`}>
-          <div className={`${prefixCls}__nav`}>
-            {showTabItems.map((item, index) => {
-              const { tabTitle, tabId, tabDesc, disabled, closeable } = item
-              const itemClasses = classNames(`${prefixCls}__item`, {
-                [`${prefixCls}__item--active`]: tabId === activeId,
-                [`${prefixCls}__item--disabled`]: disabled
-              })
+      <div className={`theme__${theme}`}>
+        <div className={tabsClasses}>
+          <div className={`${prefixCls}__header`}>
+            <div className={`${prefixCls}__nav`}>
+              {showTabItems.map((item, index) => {
+                const { tabTitle, tabId, tabDesc, disabled, closeable } = item
+                const itemClasses = classNames(`${prefixCls}__item`, {
+                  [`${prefixCls}__item--active`]: tabId === activeId,
+                  [`${prefixCls}__item--disabled`]: disabled
+                })
 
-              activeTabInHiddenItems = activeTabInHiddenItems && tabId !== activeId
-              let ToolNav = type === 'editable' && tabId !== activeId ? Tooltip : 'div'
+                activeTabInHiddenItems = activeTabInHiddenItems && tabId !== activeId
+                let ToolNav = type === 'editable' && tabId !== activeId ? Tooltip : 'div'
 
-              return (
-                <ToolNav
-                  className={itemClasses}
-                  key={`${prefixCls}__item-${index}`}
-                  onClick={e => this.handleClick(item, e)}
-                  title={tabTitle}
-                >
-                  <span className={`${prefixCls}__item-name`}>{tabTitle}</span>
-                  {
-                    type === 'desc' &&
-                    <span className={`${prefixCls}__item-desc`}>{tabDesc}</span>
-                  }
-                  {
-                    editable && closeable &&
-                    <span className={`${prefixCls}__item-close`}>
-                      <Icon onClick={e => this.deleteTab(e, tabId, index)} name='close' />
-                    </span>
-                  }
-                </ToolNav>
-              )
-            })}
-            {
-              hiddenTabItems.length > 0 &&
-              <div className={classNames(`${prefixCls}__item`, {
-                [`${prefixCls}__item--active`]: activeTabInHiddenItems
+                return (
+                  <ToolNav
+                    className={itemClasses}
+                    key={`${prefixCls}__item-${index}`}
+                    onClick={e => this.handleClick(item, e)}
+                    title={tabTitle}
+                  >
+                    <span className={`${prefixCls}__item-name`}>{tabTitle}</span>
+                    {
+                      type === 'desc' &&
+                      <span className={`${prefixCls}__item-desc`}>{tabDesc}</span>
+                    }
+                    {
+                      editable && closeable &&
+                      <span className={`${prefixCls}__item-close`}>
+                        <Icon onClick={e => this.deleteTab(e, tabId, index)} name='close' />
+                      </span>
+                    }
+                  </ToolNav>
+                )
               })}
-              >
-                <ItemDropdown
-                  active={activeTabInHiddenItems}
-                  items={hiddenTabItems}
-                  onChoose={(item, e) => {
-                    this.handleClick(item, e)
-                  }}
-                />
+              {
+                hiddenTabItems.length > 0 &&
+                <div className={classNames(`${prefixCls}__item`, {
+                  [`${prefixCls}__item--active`]: activeTabInHiddenItems
+                })}
+                >
+                  <ItemDropdown
+                    active={activeTabInHiddenItems}
+                    items={hiddenTabItems}
+                    onChoose={(item, e) => {
+                      this.handleClick(item, e)
+                    }}
+                  />
+                </div>
+              }
+            </div>
+            {
+              editable &&
+              <div className={`${prefixCls}__add`}>
+                <Icon onClick={this.addTab.bind(this)} name='plus' />
               </div>
             }
           </div>
-          {
-            editable &&
-            <div className={`${prefixCls}__add`}>
-              <Icon onClick={this.addTab.bind(this)} name='plus' />
-            </div>
-          }
-        </div>
-        <div className={`${prefixCls}__content`}>
-          {React.Children.map(children, item => {
-            return item && this.renderTabContent(item)
-          })}
+          <div className={`${prefixCls}__content`}>
+            {React.Children.map(children, item => {
+              return item && this.renderTabContent(item)
+            })}
+          </div>
         </div>
       </div>
     )

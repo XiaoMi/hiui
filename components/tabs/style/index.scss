@@ -229,6 +229,10 @@ $prefix: 'hi-tabs' !default;
         margin-left: -1px;
       }
 
+      &--active {
+        z-index: 1;
+      }
+
       &-name {
         margin-top: 4px;
       }
@@ -296,6 +300,8 @@ $prefix: 'hi-tabs' !default;
     }
   }
 }
+
+@include tabs-styles();
 
 @each $key, $value in $theme-colors {
   .theme__#{$key} {
