@@ -4,6 +4,7 @@ import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
 import { getAll, dealData } from './util'
 import withDragDropContext from '../../lib/withDragDropContext'
+import Provider from '../../context'
 
 import './style/index'
 
@@ -185,11 +186,12 @@ class Tree extends Component {
       onDragStart,
       onDrop,
       onDelete,
-      onSave
+      onSave,
+      theme
     } = this.props
     const { data } = this.state
     return (
-      <div className={classNames(`${prefixCls}`)} style={style}>
+      <div className={classNames(`${prefixCls}`, `theme__${theme}`)} style={style}>
         <TreeNode
           origin={origin}
           checked={this.props.checkedKeys || []}
@@ -232,4 +234,4 @@ const HOCTree = TreeComponent => {
     }
   }
 }
-export default HOCTree(Tree)
+export default Provider(HOCTree(Tree))

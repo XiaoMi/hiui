@@ -1,4 +1,63 @@
-$prefix: 'hi-tabs-legacy' !default;
+@import '@hi-ui/core-css/index.scss';
+$prefix: 'hi-tabs' !default;
+
+@mixin tabs-styles($themeColor: get-color($palette-primary, 'hiui-blue')) {
+  .#{$prefix} {
+    &--card {
+      #{$prefix}__item {
+        &:hover {
+          color: $themeColor;
+        }
+
+        &--active {
+          color: $themeColor;
+        }
+      }
+    }
+
+    &--editable {
+      .#{$prefix}__item {
+        &--active {
+          color: $themeColor;
+        }
+      }
+    }
+
+    &--desc {
+      .#{$prefix}__item {
+        &:hover {
+          color: $themeColor;
+
+          .#{$prefix}__item-desc {
+            color: $themeColor;
+          }
+        }
+
+        &--active {
+          color: $themeColor;
+          border-color: $themeColor;
+
+          .#{$prefix}__item-desc {
+            color: $themeColor;
+          }
+        }
+      }
+    }
+
+    &--button {
+      .#{$prefix}__item {
+        &:hover {
+          color: $themeColor;
+        }
+
+        &--active {
+          color: $themeColor;
+          border: 1px solid $themeColor;
+        }
+      }
+    }
+  }
+}
 
 .#{$prefix} {
   .#{$prefix}__header {
@@ -58,18 +117,13 @@ $prefix: 'hi-tabs-legacy' !default;
       padding: 0 16px;
       box-sizing: border-box;
 
-      &:hover {
-        color: #4284f5;
-      }
-
       &--active {
         border: 1px solid #e6e7e8;
-        color: #4284f5;
       }
     }
   }
 
-  &--card.#{$prefix}--top {
+  &--card.#{$prefix}--horizontal {
     .#{$prefix}__nav {
       margin-bottom: -1px;
     }
@@ -87,7 +141,7 @@ $prefix: 'hi-tabs-legacy' !default;
     }
   }
 
-  &--card.#{$prefix}--left {
+  &--card.#{$prefix}--vertical {
     display: flex;
     flex-wrap: nowrap;
 
@@ -116,6 +170,7 @@ $prefix: 'hi-tabs-legacy' !default;
       overflow: hidden;
       margin-bottom: -1px;
       margin-right: 40px;
+      min-height: 48px;
     }
 
     .#{$prefix}__header {
@@ -145,7 +200,6 @@ $prefix: 'hi-tabs-legacy' !default;
       &--active {
         background-color: #fff;
         border-bottom-color: #fff;
-        color: #4284f5;
       }
     }
 
@@ -175,24 +229,6 @@ $prefix: 'hi-tabs-legacy' !default;
         margin-left: -1px;
       }
 
-      &:hover {
-        color: #4284f5;
-
-        .#{$prefix}__item-desc {
-          color: #4284f5;
-        }
-      }
-
-      &--active {
-        color: #4284f5;
-        border-color: #4284f5;
-        z-index: 1;
-
-        .#{$prefix}__item-desc {
-          color: #4284f5;
-        }
-      }
-
       &-name {
         margin-top: 4px;
       }
@@ -218,20 +254,14 @@ $prefix: 'hi-tabs-legacy' !default;
       margin-right: 32px;
       box-sizing: border-box;
 
-      &:hover {
-        color: #4284f5;
-      }
-
       &--active {
-        color: #4284f5;
-        border: 1px solid #4284f5;
         border-radius: 18px;
       }
     }
   }
 }
 
-.hi-tabs-legacy-dropdown {
+.hi-tabs-dropdown {
   &__toggle-title {
     margin-right: 8px;
   }
@@ -264,5 +294,11 @@ $prefix: 'hi-tabs-legacy' !default;
     &--active {
       background-color: rgba(66, 133, 244, 0.08);
     }
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key} {
+    @include tabs-styles($value);
   }
 }

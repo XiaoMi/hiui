@@ -1,5 +1,17 @@
 @import '@hi-ui/core-css/index.scss';
 
+@mixin timeline-styles($themeColor: get-color($palette-primary, 'hiui-blue')) {
+  .hi-timeline {
+    &__dot {
+      border: 2px solid $themeColor;
+
+      &--sub {
+        background: $themeColor;
+      }
+    }
+  }
+}
+
 .hi-timeline {
   position: relative;
   padding: 8px;
@@ -100,13 +112,11 @@
     width: 2px;
     background: rgba(242, 242, 242, 1);
     left: 55px;
-    // border-left: 2px solid #e8e8e8;
   }
 
   &__dot {
     width: 8px;
     height: 8px;
-    border: 2px solid #4284f5;
     border-radius: 50%;
     box-sizing: border-box;
     position: absolute;
@@ -118,7 +128,6 @@
       width: 6px;
       height: 6px;
       border: 0;
-      background: #4284f5;
       left: 53px;
     }
 
@@ -128,7 +137,6 @@
       font-size: 12px;
       width: auto;
       height: auto;
-      // left: 4px;
       background: #fff;
       transform: translate(-50%, -30%);
     }
@@ -219,5 +227,11 @@
     font-size: 12px;
     color: #666;
     margin-bottom: 4px;
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key} {
+    @include timeline-styles($value);
   }
 }

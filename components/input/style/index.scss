@@ -2,6 +2,30 @@
 
 $input: 'hi-input' !default;
 
+// input-styles
+// @mixin input-styles($themeColor: get-color($palette-primary, 'hiui-blue')) {
+//   textarea.#{$input} {
+//     &:not(.disabled):hover {
+//       border-color: $themeColor;
+//     }
+
+//     &.active {
+//       border-color: $themeColor;
+//     }
+//   }
+
+//   .#{$input},
+//   .#{$input}_m {
+//     &:not(.disabled):hover {
+//       border-color: $border-color-active;
+//     }
+
+//     &.active {
+//       border-color: $border-color-active;
+//     }
+//   }
+// }
+
 textarea.#{$input} {
   box-shadow: none;
   outline: none;
@@ -239,3 +263,9 @@ textarea.#{$input} {
     }
   }
 }
+
+// @each $key, $value in $theme-colors {
+//   .theme__#{$key} {
+//     @include input-styles ($value);
+//   }
+// }

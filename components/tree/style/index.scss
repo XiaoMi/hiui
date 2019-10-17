@@ -1,6 +1,50 @@
 @import '@hi-ui/core-css/index.scss';
 $tree: 'hi-tree' !default;
 
+// Define component colors
+@mixin tree-styles($themeColor: get-color($palette-primary, 'hiui-blue')) {
+  .hi-tree {
+    .hi-tree__divider {
+      .divider-line {
+        background-color: $themeColor;
+      }
+
+      .divider-circle {
+        border: 1px solid $themeColor;
+      }
+    }
+
+    &_item-text {
+      &.dragTo {
+        background-color: $themeColor;
+      }
+
+      &.dragToGapBottom {
+        border-top: 1px solid $themeColor;
+      }
+
+      &.dragToGapTop {
+        border-bottom: 1px solid $themeColor;
+      }
+
+      &.highlight {
+        color: #fff;
+        background-color: $themeColor;
+      }
+    }
+
+    .#{$tree} {
+      &-bar {
+        .#{$tree} {
+          &-input:checked + .#{$tree}-checkbox {
+            background-color: $themeColor;
+          }
+        }
+      }
+    }
+  }
+}
+
 .hi-tree {
   font-size: 14px;
 
@@ -56,13 +100,11 @@ $tree: 'hi-tree' !default;
     .divider-line {
       flex: 1;
       height: 1px;
-      background-color: rgba(66, 132, 245, 1);
     }
 
     .divider-circle {
       flex: 0 0 5px;
       height: 5px;
-      border: 1px solid rgba(66, 132, 245, 1);
       border-radius: 2.5px;
       box-sizing: border-box;
     }
@@ -305,18 +347,6 @@ $tree: 'hi-tree' !default;
     position: relative;
     line-height: 24px;
 
-    &.dragTo {
-      background-color: #4284f5;
-    }
-
-    &.dragToGapBottom {
-      border-top: 1px solid #4284f5;
-    }
-
-    &.dragToGapTop {
-      border-bottom: 1px solid #4284f5;
-    }
-
     &.has_checkbox {
       width: calc(100% - 40px);
       padding-left: 4px;
@@ -332,11 +362,6 @@ $tree: 'hi-tree' !default;
     &.dragging {
       background-color: rgba(246, 246, 246, 1);
       color: rgba(204, 204, 204, 1);
-    }
-
-    &.highlight {
-      color: #fff;
-      background-color: #4285f4;
     }
 
     .right-click-menu {
@@ -442,10 +467,6 @@ $tree: 'hi-tree' !default;
           transform: rotate(-45deg) translate(6px, -4px);
         }
 
-        &-input:checked + .#{$tree}-checkbox {
-          background-color: #4284f5;
-        }
-
         &-checkbox {
           width: 14px;
           height: 14px;
@@ -486,5 +507,11 @@ $tree: 'hi-tree' !default;
     &-child {
       overflow: hidden;
     }
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key} {
+    @include tree-styles($value);
   }
 }

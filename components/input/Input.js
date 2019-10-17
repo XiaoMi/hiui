@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import { format, formatValue, getAttrs, formatAmount, filterObjProps } from './util'
+import Provider from '../context'
 
 /**
  * 自定义属性全小写；原声属性驼峰法
@@ -79,7 +80,7 @@ class Input extends Component {
    */
   renderText () {
     let { hover, active, value } = this.state
-    let { disabled, type, id, placeholder, clearable } = this.props
+    let { disabled, type, id, placeholder, clearable, theme } = this.props
     let { prefix, suffix, prepend, append } = this.state
 
     const noClear = ['textarea']
@@ -92,7 +93,8 @@ class Input extends Component {
         className={classNames('hi-input__out', {
           'hi-input--prepend': prepend,
           'hi-input--append': append
-        })}
+        },
+        `theme__${theme}`)}
       >
         {// 前置元素
           prepend && <span className='hi-input__prepend'>{prepend}</span>}
@@ -320,4 +322,4 @@ Input.defaultProps = {
   defaultValue: ''
 }
 
-export default Input
+export default Provider(Input)
