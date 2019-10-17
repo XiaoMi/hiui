@@ -181,7 +181,7 @@ class BasePicker extends Component {
   }
   timeConfirm (date, onlyTime) {
     const { onChange } = this.props
-    // onlyTime && (format = FORMATS['time'])
+
     this.setState({
       date: date,
       texts: [this.callFormatterDate(date.startDate || date), this.callFormatterDate(date.endDate)],
@@ -197,10 +197,8 @@ class BasePicker extends Component {
     }
   }
   timeCancel () {
-    // const { date } = this.state
     this.setState({
       showPanel: false,
-      // texts: [this.callFormatterDate(date.startDate || date), this.callFormatterDate(date.endDate)],
       isFocus: false
     })
   }
@@ -233,7 +231,6 @@ class BasePicker extends Component {
         texts: ['', ''],
         showPanel: false
       })
-      // this.callback()
       return false
     }
     if (tar !== this.input && tar !== this.rInput) {
