@@ -24,6 +24,16 @@ $input: 'hi-input' !default;
       border-color: $themeColor;
     }
   }
+
+  .hi-input__inner {
+    &:not(.disabled):hover {
+      border-color: $themeColor;
+    }
+
+    &.active {
+      border-color: $themeColor;
+    }
+  }
 }
 
 textarea.#{$input} {
@@ -247,6 +257,8 @@ textarea.#{$input} {
     }
   }
 }
+
+@include input-styles();
 
 @each $key, $value in $theme-colors {
   .theme__#{$key} {

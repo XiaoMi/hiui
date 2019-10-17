@@ -112,7 +112,8 @@ class TreeItem extends Component {
                 }}
               />
               <span
-                style={{ cursor: 'pointer', marginRight: 12, color: '#4284F5' }}
+                className='sureButton'
+                style={{ cursor: 'pointer', marginRight: 12 }}
                 onClick={() => {
                   saveEditNode(item.id)
                 }}

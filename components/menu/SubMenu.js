@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import Popper from '../popper'
 import Icon from '../icon'
 import Title from './Title'
+import Provider from '../context'
 
 class SubMenu extends Component {
   onClick (index) {
@@ -27,7 +28,8 @@ class SubMenu extends Component {
       index,
       renderMenu,
       fatMenu,
-      clickInside
+      clickInside,
+      theme
     } = this.props
     let leftGap
     let topGap
@@ -44,26 +46,28 @@ class SubMenu extends Component {
     }
 
     return (
-      <Popper
-        show={isExpand}
-        attachEle={this.submenuTrigger}
-        zIndex={1050}
-        topGap={topGap}
-        leftGap={leftGap}
-        className={
-          classNames('hi-submenu__popper', {'hi-submenu__popper--fat': fatMenu})
-        }
-        width={false}
-        placement={placement}
-      >
-        <ul
-          className={classNames('hi-submenu__items')}
-          ref={node => { this.submenuNode = node }}
-          onClick={() => clickInside()} // 利用事件冒泡设置clickInsideFlag
+      <div className={`theme__${theme}`}>
+        <Popper
+          show={isExpand}
+          attachEle={this.submenuTrigger}
+          zIndex={1050}
+          topGap={topGap}
+          leftGap={leftGap}
+          className={
+            classNames('hi-submenu__popper', {'hi-submenu__popper--fat': fatMenu})
+          }
+          width={false}
+          placement={placement}
         >
-          { renderMenu(datas, index) }
-        </ul>
-      </Popper>
+          <ul
+            className={classNames('hi-submenu__items')}
+            ref={node => { this.submenuNode = node }}
+            onClick={() => clickInside()} // 利用事件冒泡设置clickInsideFlag
+          >
+            { renderMenu(datas, index) }
+          </ul>
+        </Popper>
+      </div>
     )
   }
 
@@ -72,16 +76,19 @@ class SubMenu extends Component {
       datas,
       index,
       renderMenu,
-      clickInside
+      clickInside,
+      theme
     } = this.props
     return (
-      <ul
-        className={classNames('hi-submenu__items', {'hi-submenu__items--hide': !isExpand})}
-        onClick={() => clickInside()} // 利用事件冒泡设置clickInsideFlag
-        key={index}
-      >
-        { renderMenu(datas, index) }
-      </ul>
+      <div className={`theme__${theme}`}>
+        <ul
+          className={classNames('hi-submenu__items', {'hi-submenu__items--hide': !isExpand})}
+          onClick={() => clickInside()} // 利用事件冒泡设置clickInsideFlag
+          key={index}
+        >
+          { renderMenu(datas, index) }
+        </ul>
+      </div>
     )
   }
 
@@ -96,7 +103,8 @@ class SubMenu extends Component {
       activeIndex,
       expandIndex,
       disabled,
-      fatMenu
+      fatMenu,
+      theme
     } = this.props
     const isExpand = this.checkExpand(activeIndex, expandIndex, index)
     const isActive = this.checkActive(activeIndex, index)
@@ -105,7 +113,7 @@ class SubMenu extends Component {
       'hi-menu-item--disabled': disabled,
       'hi-menu-item--active': isActive,
       'hi-submenu--fat': fatMenu
-    })
+    }, `theme__${theme}`)
     let toggleIcon
     if (deepSubmenu && (mode === 'horizontal' || mini)) {
       toggleIcon = isExpand ? 'left' : 'right'
@@ -163,4 +171,4 @@ SubMenu.defaultProps = {
   expandIndex: []
 }
 
-export default SubMenu
+export default Provider(SubMenu)

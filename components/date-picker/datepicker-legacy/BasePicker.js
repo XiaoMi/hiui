@@ -8,6 +8,7 @@ import DatePickerType from './Type'
 
 import {startOfDay, endOfDay, toDate, startOfWeek, endOfWeek, dateFormat} from './dateUtil'
 import { addHours } from 'date-fns'
+import Provider from '../context'
 class BasePicker extends Component {
   inputRoot = null
   input = null
@@ -343,22 +344,24 @@ class BasePicker extends Component {
     )
   }
   render () {
-    const {type, showTime} = this.props
+    const {type, showTime, theme} = this.props
     return (
-      <span ref={el => { this.inputRoot = el }} className='hi-datepicker-legacy__input-root'>
-        {
-          (type.indexOf('range') !== -1 || type === 'timeperiod') ? this.renderRangeInput() : this.renderNormalInput()
-        }
-        {
-          this.state.showPanel ? (
-            <Modal clickOutSide={this.clickOutSide.bind(this)} showTime={showTime}>
-              {this.initPanel(this.state, this.props)}
-            </Modal>
-          ) : null
-        }
-      </span>
+      <div className={`theme__${theme}`}>
+        <span ref={el => { this.inputRoot = el }} className='hi-datepicker-legacy__input-root'>
+          {
+            (type.indexOf('range') !== -1 || type === 'timeperiod') ? this.renderRangeInput() : this.renderNormalInput()
+          }
+          {
+            this.state.showPanel ? (
+              <Modal clickOutSide={this.clickOutSide.bind(this)} showTime={showTime}>
+                {this.initPanel(this.state, this.props)}
+              </Modal>
+            ) : null
+          }
+        </span>
+      </div>
     )
   }
 }
 
-export default BasePicker
+export default Provider(BasePicker)

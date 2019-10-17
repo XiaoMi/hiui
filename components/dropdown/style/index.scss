@@ -2,6 +2,20 @@
 
 $prefixCls: 'hi-dropdown' !default;
 
+@mixin hi-dropdown-styles($themeColor: get-color($palette-primary, 'hiui-blue')) {
+  .#{$prefixCls} {
+    &__button {
+      &--active {
+        color: $themeColor !important;
+      }
+
+      &:hover {
+        color: $themeColor !important;
+      }
+    }
+  }
+}
+
 %reset-active {
   &,
   &:active,
@@ -44,9 +58,9 @@ $prefixCls: 'hi-dropdown' !default;
       padding-right: 0;
     }
 
-    &--active {
-      color: get-color($palette-primary, 'hiui-blue') !important;
-    }
+    // &--active {
+    //   color: get-color($palette-primary, 'hiui-blue') !important;
+    // }
   }
 
   &__icon {
@@ -112,5 +126,13 @@ $prefixCls: 'hi-dropdown' !default;
         background-color: #ecf2fe;
       }
     }
+  }
+}
+
+@include hi-dropdown-styles();
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key} {
+    @include hi-dropdown-styles($value);
   }
 }

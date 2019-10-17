@@ -3,12 +3,13 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Button from '../button'
 import { prefixCls } from '.'
+import Provider from '../context'
 
 const ButtonGroup = Button.Group
 
-export default class DropdownButton extends React.Component {
+class DropdownButton extends React.Component {
   render () {
-    const { children, type, onIconClick, visible, onButtonClick, ...restProps } = this.props
+    const { children, type, onIconClick, visible, onButtonClick, theme, ...restProps } = this.props
     const isButton = ['button', 'group'].includes(type)
     const isGroup = type === 'group'
     const buttonCls = classNames(
@@ -42,21 +43,23 @@ export default class DropdownButton extends React.Component {
       restProps.onClick = onButtonClick
     }
     return (
-      <ButtonGroup>
-        <Button {...restProps} className={buttonCls}>
-          {children}
-          {isGroup || <i className={iconCls} />}
-        </Button>
-        {isGroup && (
-          <Button
-            appearance={isButton ? 'button' : 'link'}
-            className={iconGroupCls}
-            {...iconProps}
-          >
-            <i className={iconCls} />
+      <div className={`theme__${theme}`}>
+        <ButtonGroup>
+          <Button {...restProps} className={buttonCls}>
+            {children}
+            {isGroup || <i className={iconCls} />}
           </Button>
-        )}
-      </ButtonGroup>
+          {isGroup && (
+            <Button
+              appearance={isButton ? 'button' : 'link'}
+              className={iconGroupCls}
+              {...iconProps}
+            >
+              <i className={iconCls} />
+            </Button>
+          )}
+        </ButtonGroup>
+      </div>
     )
   }
 }
@@ -70,3 +73,5 @@ DropdownButton.propTypes = {
 }
 
 DropdownButton.defaultProps = {}
+
+export default Provider(DropdownButton)

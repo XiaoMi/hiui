@@ -4,7 +4,7 @@ $prefix: 'hi-tabs' !default;
 @mixin tabs-styles($themeColor: get-color($palette-primary, 'hiui-blue')) {
   .#{$prefix} {
     &--card {
-      #{$prefix}__item {
+      .#{$prefix}__item {
         &:hover {
           color: $themeColor;
         }

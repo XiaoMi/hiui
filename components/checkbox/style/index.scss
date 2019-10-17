@@ -3,20 +3,25 @@
 $prefixCls: '.hi-checkbox' !default;
 
 @mixin hi-checkbox-style($color: get-color($palette-primary, 'hiui-blue')) {
-  & {
-    &:not(#{$prefixCls}--disabled):hover {
-      #{$prefixCls}__input {
-        border-color: $color;
-      }
-    }
+  .hi-checkbox {
 
-    input {
-      &:focus + #{$prefixCls}__input {
-        border-color: $color;
-      }
-    }
+    // &:not(#{$prefixCls}--disabled):hover {
+    //   #{$prefixCls}__input {
+    //     border-color: $color;
+    //   }
+    // }
+
+    // input {
+    //   &:focus + #{$prefixCls}__input {
+    //     border-color: $color;
+    //   }
+    // }
 
     &__input {
+      &:hover {
+        border-color: $color;
+      }
+
       &--indeterminate {
         &::after {
           background: $color;
@@ -115,12 +120,12 @@ $prefixCls: '.hi-checkbox' !default;
   &-group {
     display: inline-block;
   }
-
-  @include hi-checkbox-style();
 }
 
+@include hi-checkbox-style();
+
 @each $key, $value in $theme-colors {
-  .theme__#{$key$prefixCls} {
+  .theme__#{$key} {
     @include hi-checkbox-style($value);
   }
 }

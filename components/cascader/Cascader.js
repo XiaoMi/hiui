@@ -317,7 +317,8 @@ class Cascader extends Component {
       disabled,
       searchable,
       clearable,
-      style
+      style,
+      theme
     } = this.props
     const {
       cascaderValue,
@@ -335,45 +336,47 @@ class Cascader extends Component {
     const placeholder = cascaderLabel || this.localeDatasProps('placeholder')
 
     return (
-      <div className={classNames('hi-cascader', className, extraClass)} style={style}>
-        <div className='hi-cascader__input-container' ref={node => { this.inputContainer = node }} onClick={this.handleClick.bind(this)}>
-          <input
-            ref={node => {
-              this.inputRef = node
-            }}
-            className='hi-cascader__input-keyword'
-            value={(popperShow && keyword) || (!popperShow && cascaderLabel) || ''}
-            readOnly={!searchable}
-            disabled={disabled}
-            placeholder={placeholder}
-            onChange={e => { this.setState({keyword: e.target.value}) }}
-            onKeyUp={this.debouncedKeywordChange.bind(this)}
-          />
-          <span className='hi-cascader__icon'>
-            <i className={classNames('hi-cascader__icon--expand', 'hi-icon', expandIcon)} />
-            {
-              clearable &&
-              <i className='hi-cascader__icon--clear hi-icon icon-close-circle' onClick={this.clearValue.bind(this)} />
-            }
-          </span>
+      <div className={`theme__${theme}`}>
+        <div className={classNames('hi-cascader', className, extraClass)} style={style}>
+          <div className='hi-cascader__input-container' ref={node => { this.inputContainer = node }} onClick={this.handleClick.bind(this)}>
+            <input
+              ref={node => {
+                this.inputRef = node
+              }}
+              className='hi-cascader__input-keyword'
+              value={(popperShow && keyword) || (!popperShow && cascaderLabel) || ''}
+              readOnly={!searchable}
+              disabled={disabled}
+              placeholder={placeholder}
+              onChange={e => { this.setState({keyword: e.target.value}) }}
+              onKeyUp={this.debouncedKeywordChange.bind(this)}
+            />
+            <span className='hi-cascader__icon'>
+              <i className={classNames('hi-cascader__icon--expand', 'hi-icon', expandIcon)} />
+              {
+                clearable &&
+                <i className='hi-cascader__icon--clear hi-icon icon-close-circle' onClick={this.clearValue.bind(this)} />
+              }
+            </span>
+          </div>
+          <Popper
+            show={popperShow}
+            attachEle={this.inputContainer}
+            zIndex={1050}
+            topGap={5}
+            width={'auto'}
+            className='hi-cascader__popper'
+            placement='top-bottom-start'
+          >
+            <Menu
+              ref={node => { this.menuNode = node }}
+              value={cascaderValue}
+              options={filterOptions || data}
+              root={() => this}
+              onSelect={this.onChangeValue.bind(this)}
+            />
+          </Popper>
         </div>
-        <Popper
-          show={popperShow}
-          attachEle={this.inputContainer}
-          zIndex={1050}
-          topGap={5}
-          width={'auto'}
-          className='hi-cascader__popper'
-          placement='top-bottom-start'
-        >
-          <Menu
-            ref={node => { this.menuNode = node }}
-            value={cascaderValue}
-            options={filterOptions || data}
-            root={() => this}
-            onSelect={this.onChangeValue.bind(this)}
-          />
-        </Popper>
       </div>
     )
   }

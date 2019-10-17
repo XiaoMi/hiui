@@ -1,12 +1,26 @@
+@import '@hi-ui/core-css/index.scss';
 
-.hi-cascader {
-  &.hi-cascader--focused {
-    .hi-cascader {
-      &__input-container {
-        border-color: #4284f5;
+// Define component colors
+@mixin hi-cascader-style($color: get-color($palette-primary, 'hiui-blue')) {
+  .hi-cascader {
+    &.hi-cascader--focused {
+      .hi-cascader {
+        &__input-container {
+          border-color: $color;
+        }
       }
     }
   }
+}
+
+.hi-cascader {
+  // &.hi-cascader--focused {
+  //   .hi-cascader {
+  //     &__input-container {
+  //       border-color: #4284f5;
+  //     }
+  //   }
+  // }
 
   &.hi-cascader--disabled {
     cursor: not-allowed;
@@ -58,5 +72,13 @@
       display: none;
       cursor: pointer;
     }
+  }
+}
+
+@include hi-cascader-style();
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key} {
+    @include hi-cascader-style($value);
   }
 }

@@ -316,9 +316,9 @@ class BasePicker extends Component {
     )
   }
   render () {
-    const {type, showTime} = this.props
+    const {type, showTime, theme} = this.props
     return (
-      <span ref={this.inputRoot} className='hi-datepicker__input-root'>
+      <span ref={this.inputRoot} className={classNames('hi-datepicker__input-root', `theme__${theme}`)}>
         {
           (type.indexOf('range') !== -1 || type === 'timeperiod') ? this.renderRangeInput() : this.renderNormalInput()
         }

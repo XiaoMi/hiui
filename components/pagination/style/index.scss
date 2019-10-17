@@ -27,6 +27,16 @@
         }
       }
     }
+
+    .hi-input__text {
+      &:hover {
+        border-color: rgba($color, 0.8);
+      }
+
+      &.active {
+        border-color: $color;
+      }
+    }
   }
 }
 

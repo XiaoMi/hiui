@@ -132,7 +132,7 @@
     }
 
     &--custom {
-      border: none;
+      border: none !important;
       border-radius: 0;
       font-size: 12px;
       width: auto;

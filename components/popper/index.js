@@ -3,8 +3,9 @@ import { render } from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './style/index'
+import Provider from '../context'
 
-export default class Popper extends Component {
+class Popper extends Component {
   container = undefined
   popperHeight = undefined
 
@@ -151,7 +152,8 @@ export default class Popper extends Component {
       onMouseOver,
       onMouseOut,
       onMouseEnter,
-      onMouseLeave
+      onMouseLeave,
+      theme
     } = this.props
     if (!attachEle) return
     const offset = this.getOffset()
@@ -161,7 +163,7 @@ export default class Popper extends Component {
 
     return (
       <div
-        className={classNames('hi-popper__container', {'hi-popper__container--hide': !show})}
+        className={classNames('hi-popper__container', {'hi-popper__container--hide': !show}, `theme__${theme}`)}
         style={{left, top, zIndex}}
       >
         <div
@@ -197,3 +199,4 @@ export default class Popper extends Component {
     return null
   }
 }
+export default Provider(Popper)

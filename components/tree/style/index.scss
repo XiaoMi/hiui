@@ -44,6 +44,10 @@ $tree: 'hi-tree' !default;
         }
       }
     }
+
+    .sureButton {
+      color: $themeColor;
+    }
   }
 }
 
@@ -509,6 +513,10 @@ $tree: 'hi-tree' !default;
     &-child {
       overflow: hidden;
     }
+  }
+
+  .hi-tree_item-text {
+    user-select: none;
   }
 }
 
