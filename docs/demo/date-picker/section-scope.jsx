@@ -18,9 +18,7 @@ class Demo extends React.Component {
           type='daterange'
           format='yyyy-MM-dd'
           defaultValue={this.state.rangeDate}
-          onChange={(d) => {
-            console.log(1, d)
-          }}
+          onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
         />
       </div>
     )
