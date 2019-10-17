@@ -82,8 +82,8 @@ export default {
     cancel: 'Cancel',
     nodePlaceholder: 'Please enter the node name',
     searchPlaceholder: 'Keyword search',
-    searchEmptyResult: 'No search results found',
+    searchEmptyResult: 'No serach results',
     modalTitle: 'Warning',
-    delTips: 'Deleting a node will delete all child nodes, confirm deletion?'
+    delTips: 'Deleting a node will delete all child nodes, are you sure to delete this node?'
   }
 }
