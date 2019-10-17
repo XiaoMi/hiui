@@ -133,7 +133,7 @@ class UploadDrag extends Upload {
                   {
                     onRemove && <span
                       className='hi-upload__operate-icon'
-                      onClick={(e) => this.deleteFile(e, file, index)}
+                      onClick={() => this.deleteFile(file, index)}
                     >
                       {file.uploadState === 'loading' ? localeDatas.upload.cancel : localeDatas.upload.delete }
                     </span>

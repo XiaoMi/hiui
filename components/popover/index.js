@@ -51,6 +51,12 @@ export default class Popover extends Component {
     }, 200)
   }
 
+  delayShowPopper (e) {
+    this.delayShowPopperTimer = setTimeout(() => {
+      this.showPopper()
+    }, 200)
+  }
+
   isInPopover () {
     const popper = this.popperRef.current
     const referenceRef = ReactDOM.findDOMNode(this.referenceRef)
@@ -101,10 +107,11 @@ export default class Popover extends Component {
     } else if (trigger === 'hover') {
       referenceRef.addEventListener('mouseenter', e => {
         this.eventTarget = e.target
-        this.showPopper()
+        this.delayShowPopper(e)
       })
       referenceRef.addEventListener('mouseleave', e => {
         this.delayHidePopper(e)
+        clearTimeout(this.delayShowPopperTimer)
       })
     } else {
       referenceRef.addEventListener('focus', this.showPopper.bind(this))

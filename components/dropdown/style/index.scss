@@ -106,6 +106,7 @@ $prefixCls: 'hi-dropdown' !default;
 
       a {
         color: #333;
+        width: 100%;
       }
 
       &:not(#{&}--disabled):hover {

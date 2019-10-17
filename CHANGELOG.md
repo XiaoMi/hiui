@@ -1,5 +1,21 @@
 # 更新日志
 
+## 2.5.1
+
+- 修复 `<Input />` defaultValue 设置无效的问题 [#717](https://github.com/XiaoMi/hiui/issues/717)
+- 修复 `<Upload />` 拖拽上传场景下，删除文件不正确的问题 [#705](https://github.com/XiaoMi/hiui/issues/705)
+- 修复 `<Menu />` showAllSubMenus 对传入 data 的容错问题  [#687](https://github.com/XiaoMi/hiui/issues/687)
+- 修复 `<Popover />` 在某些场景下显示、隐藏的顺序不正确的问题 [#706](https://github.com/XiaoMi/hiui/issues/706)
+
+## 2.5.0
+
+- 新增 `<Cascader />` filterOption 属性支持自定义搜索 [#704](https://github.com/XiaoMi/hiui/issues/704)
+- 修复 `<Cascader />` 刷新后 value 不能正确显示的问题 [#667](https://github.com/XiaoMi/hiui/issues/667)
+- 修复 `<Pagination />` pageSizeOptions 写法兼容性问题  [#703](https://github.com/XiaoMi/hiui/issues/703)
+- 修复 `<Carousel />` 第一张图向前翻页跳转不正确的问题 [#696](https://github.com/XiaoMi/hiui/issues/696)
+- 修复 兼容属性 legacy 造成的组件污染问题 [#708](https://github.com/XiaoMi/hiui/issues/708)
+- 修复 `<DatePicker />` 传入字符串值时控制台抛出的警告问题 [#709](https://github.com/XiaoMi/hiui/issues/709)
+
 ## 2.4.1
 
 - 修复 `<Table />` 多选失效的问题 [#699](https://github.com/XiaoMi/hiui/issues/699)
