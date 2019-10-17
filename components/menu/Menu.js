@@ -202,19 +202,19 @@ class Menu extends Component {
   renderFatSubMenu (data, parentIndex) { // render胖菜单
     let groups = []
 
-    data.forEach((data, groupIndex) => {
+    data.forEach((dataItem, groupIndex) => {
       groups.push(
         <li className='hi-menu-fat' key={groupIndex}>
           <div className='hi-menu-fat__title hi-menu__title'>
-            <Title icon={data.icon} content={data.content} />
+            <Title icon={dataItem.icon} content={dataItem.content} />
           </div>
-          <ul className='hi-menu-fat__content'>
+          {dataItem.children && <ul className='hi-menu-fat__content'>
             {
-              data.children.map((child, index) => {
+              dataItem.children.map((child, index) => {
                 return this.renderItem(child, parentIndex + '-' + groupIndex + '-' + index, {level: 2})
               })
             }
-          </ul>
+          </ul>}
         </li>
       )
     })

@@ -5,7 +5,7 @@ export default depreactedPropsCompat([
   ['placement', 'mode'],
   ['collapsed', 'mini'],
   ['showCollapse', 'miniToggle'],
-  ['fatMenu', 'showAllSubMenus'],
+  ['showAllSubMenus', 'fatMenu'],
   ['onCollapse', 'onMiniChange'],
   ['data', 'datas']
 ])(Menu)
