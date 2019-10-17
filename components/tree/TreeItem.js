@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import Input from '../input'
 import { findDOMNode } from 'react-dom'
 import TreeDivider from './TreeDivider'
+import Provider from '../context'
 const Types = {
   TreeNode: 'treeNode'
 }
@@ -46,8 +47,11 @@ class TreeItem extends Component {
       origin,
       loadChildren,
       isRoot,
-      showLine
+      showLine,
+      localeDatas
     } = this.props
+    const { nodePlaceholder, confirm, cancel } = localeDatas.tree
+    console.log(nodePlaceholder)
     const treeItem = (
       <li
         key={item.id}
@@ -105,7 +109,7 @@ class TreeItem extends Component {
           ) : item.status === 'editable' || editNodes.map(node => node.id).includes(item.id) ? (
             <div className='editing'>
               <Input
-                placeholder='请输入菜单名称'
+                placeholder={nodePlaceholder}
                 value={(editingNodes.find(node => node.id === item.id) || {}).title}
                 onChange={e => {
                   onValueChange(e.target.value, item.id)
@@ -117,7 +121,7 @@ class TreeItem extends Component {
                   saveEditNode(item.id)
                 }}
               >
-                确定
+                {confirm}
               </span>
               <span
                 style={{ cursor: 'pointer' }}
@@ -129,7 +133,7 @@ class TreeItem extends Component {
                   }
                 }}
               >
-                取消
+                {cancel}
               </span>
             </div>
           ) : draggable ? (
@@ -308,4 +312,4 @@ const HOCTreeItem = TreeItemComponent => {
     }
   }
 }
-export default HOCTreeItem(TreeItem)
+export default Provider(HOCTreeItem(TreeItem))
