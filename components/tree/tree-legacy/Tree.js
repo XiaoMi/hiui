@@ -4,7 +4,6 @@ import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
 import { getAll, dealData } from './util'
 import withDragDropContext from '../../lib/withDragDropContext'
-import Provider from '../../context'
 
 import './style/index'
 
@@ -186,42 +185,39 @@ class Tree extends Component {
       onDragStart,
       onDrop,
       onDelete,
-      onSave,
-      theme
+      onSave
     } = this.props
     const { data } = this.state
     return (
-      <div className={`theme__${theme}`}>
-        <div className={classNames(`${prefixCls}`, `${prefixCls}--legacy`)} style={style}>
-          <TreeNode
-            origin={origin}
-            checked={this.props.checkedKeys || []}
-            onNodeClick={this.props.onNodeClick}
-            onClick={this.props.onClick}
-            semiChecked={this.state.all.filter(item => item.semi).map(item => item.id)}
-            expanded={this.state.hasExpanded}
-            closeExpandedTreeNode={this.closeExpandedTreeNode}
-            expandTreeNode={this.expandTreeNode}
-            setExpandTreeNodes={this.setExpandTreeNodes}
-            onCheckChange={this.onCheckChange}
-            hightLightNodes={this.props.hightLightNodes}
-            onHightLightChange={this.props.onHightLightChange}
-            onExpanded={this.onExpanded}
-            data={data}
-            prefixCls={prefixCls}
-            checkable={checkable}
-            highlightable={highlightable}
-            editable={editable}
-            searchable={searchable}
-            openIcon={openIcon}
-            closeIcon={closeIcon}
-            draggable={draggable}
-            onDragStart={onDragStart}
-            onDrop={onDrop}
-            onDelete={onDelete}
-            onSave={onSave}
-          />
-        </div>
+      <div className={classNames(`${prefixCls}`)} style={style}>
+        <TreeNode
+          origin={origin}
+          checked={this.props.checkedKeys || []}
+          onNodeClick={this.props.onNodeClick}
+          onClick={this.props.onClick}
+          semiChecked={this.state.all.filter(item => item.semi).map(item => item.id)}
+          expanded={this.state.hasExpanded}
+          closeExpandedTreeNode={this.closeExpandedTreeNode}
+          expandTreeNode={this.expandTreeNode}
+          setExpandTreeNodes={this.setExpandTreeNodes}
+          onCheckChange={this.onCheckChange}
+          hightLightNodes={this.props.hightLightNodes}
+          onHightLightChange={this.props.onHightLightChange}
+          onExpanded={this.onExpanded}
+          data={data}
+          prefixCls={prefixCls}
+          checkable={checkable}
+          highlightable={highlightable}
+          editable={editable}
+          searchable={searchable}
+          openIcon={openIcon}
+          closeIcon={closeIcon}
+          draggable={draggable}
+          onDragStart={onDragStart}
+          onDrop={onDrop}
+          onDelete={onDelete}
+          onSave={onSave}
+        />
       </div>
     )
   }
@@ -236,4 +232,4 @@ const HOCTree = TreeComponent => {
     }
   }
 }
-export default Provider(HOCTree(Tree))
+export default HOCTree(Tree)

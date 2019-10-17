@@ -1,5 +1,4 @@
 import React from 'react'
-import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import { filterObjProps } from '../input/util'
 import { Decimal } from 'decimal.js'
@@ -94,7 +93,7 @@ class Counter extends React.Component {
     } = this.props
     let { valueTrue } = this.state
     const { defaultValue, ...attrs } = this.attrs
-    const filterAttrs = filterObjProps(attrs, ['locale', 'localeDatas', 'localedatas'])
+    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'localeDatas', 'localedatas'])
 
     let isAddDisabled = false
     let isMinusDisabled = false
@@ -108,7 +107,7 @@ class Counter extends React.Component {
 
     return (
       <div className={`hi-counter ${className || ''}`} id={id}>
-        <div className={classNames(`hi-counter-outer`, `theme__${filterAttrs.theme}`)}>
+        <div className={`hi-counter-outer`}>
           <span
             className={`hi-counter-minus hi-counter-sign ${isMinusDisabled ? 'disabled' : ''}`}
             onClick={e => {

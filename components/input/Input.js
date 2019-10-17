@@ -79,7 +79,7 @@ class Input extends Component {
    */
   renderText () {
     let { hover, active, value } = this.state
-    let { disabled, type, id, placeholder, clearable, theme } = this.props
+    let { disabled, type, id, placeholder, clearable } = this.props
     let { prefix, suffix, prepend, append } = this.state
 
     const noClear = ['textarea']
@@ -92,8 +92,7 @@ class Input extends Component {
         className={classNames('hi-input__out', {
           'hi-input--prepend': prepend,
           'hi-input--append': append
-        },
-        `theme__${theme}`)}
+        })}
       >
         {// 前置元素
           prepend && <span className='hi-input__prepend'>{prepend}</span>}

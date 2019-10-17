@@ -105,10 +105,9 @@ class Timeline extends Component {
   }
 
   render () {
-    const { layout, type, list, data, theme } = this.props
-    console.log(theme)
+    const { layout, type, list, data } = this.props
     const _layout = type === 'default' ? layout : type
-    const rootCls = classNames('hi-timeline', `hi-timeline--${_layout}`, `theme__${theme}`)
+    const rootCls = classNames('hi-timeline', `hi-timeline--${_layout}`)
     return (
       <div className={rootCls}>
         <ul>{this.renderItems(data || list)}</ul>

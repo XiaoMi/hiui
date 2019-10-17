@@ -41,9 +41,9 @@ class Group extends React.Component {
     hasValue(this.props) || this.setState({ data: newData })
   }
   render () {
-    const { className, style, disabled, type, placement, theme } = this.props
+    const { className, style, disabled, type, placement } = this.props
     const { data } = this.state
-    const groupCls = classNames(className, prefixCls, { vertical: placement === 'vertical' }, `theme__${theme}`)
+    const groupCls = classNames(className, prefixCls, { vertical: placement === 'vertical' })
     return (
       <GroupWrapper className={groupCls} style={style} type={type}>
         {data.map(({ label, value, checked, disabled: itemDisabled }, idx) => (

@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Base from './Base'
 import MultipleCheckboxsOpera from './common'
-import Provider from '../../context'
-
 class CheckBox extends Component {
   static _type = 'CheckBox'
   static propTypes = {
@@ -71,11 +69,10 @@ class CheckBox extends Component {
     </div>
   }
   render () {
-    const {list, checked, disabled, text, children, value, name, all, onChange, theme} = this.props
+    const {list, checked, disabled, text, children, value, name, all, onChange} = this.props
     if (list) {
       return this.renderCheckBoxGroup(list)
     }
-
     return <Base
       ref={el => {
         this.props.name && MultipleCheckboxsOpera.add(this.props.name, el)
@@ -88,9 +85,8 @@ class CheckBox extends Component {
       name={name}
       all={all}
       onChange={onChange}
-      className={`theme__${theme}`}
     />
   }
 }
 
-export default Provider(CheckBox)
+export default CheckBox

@@ -1,5 +1,4 @@
 import React from 'react'
-import classNames from 'classnames'
 import PropTypes from 'prop-types'
 
 /**
@@ -142,14 +141,14 @@ class Counter extends React.Component {
   }
 
   render () {
-    const { className, id, disabled, theme } = this.props
+    const { className, id, disabled } = this.props
     const min = +this.props.min
     const max = +this.props.max
     let { value, valueTrue } = this.state
 
     return (
       <div className={`hi-counter ${className || ''}`} id={id}>
-        <div className={classNames(`hi-counter-outer`, `theme__${theme}`)}>
+        <div className={`hi-counter-outer`}>
           <span
             className={`hi-counter-minus hi-counter-sign ${
               (min !== undefined && this.state.valueTrue <= min) || disabled ? 'disabled' : ''

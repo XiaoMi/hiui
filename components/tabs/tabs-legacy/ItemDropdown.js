@@ -54,8 +54,7 @@ class ItemDropdown extends Component {
     const {
       items,
       onChoose,
-      localeDatas,
-      theme
+      localeDatas
     } = this.props
     const {
       activeIndex,
@@ -63,49 +62,47 @@ class ItemDropdown extends Component {
     } = this.state
 
     return (
-      <div className={`theme__${theme}`}>
-        <div className={classNames('hi-tabs-legacy-dropdown', {'hi-tabs-legacy-dropdown--active': !!items[activeIndex]})}>
-          <div className='hi-tabs-legacy-dropdown__toggle' ref={node => { this.toggleRef = node }} onClick={e => {
-            e.stopPropagation()
-            this.toggle()
-          }}>
-            <span className='hi-tabs-legacy-dropdown__toggle-title'>
-              { (items[activeIndex] && items[activeIndex].tabName) || localeDatas.tabs.more }
-            </span>
-            <i className='hi-icon icon-down' />
-          </div>
-          <Popper
-            className='hi-tabs-legacy-dropdown__popper'
-            show={visible}
-            attachEle={this.toggleRef}
-            zIndex={1010}
-            width='auto'
-            leftGap={-18}
-            topGap={3}
-          >
-            <div className={classNames('hi-tabs-legacy-dropdown__items')}>
-              {
-                items.map((item, index) => {
-                  return (
-                    <div className={classNames('hi-tabs-legacy-dropdown__item', {'hi-tabs-legacy-dropdown__item--active': index === activeIndex})}
-                      onClick={e => {
-                        this.setState({
-                          activeIndex: index
-                        }, () => {
-                          this.toggle()
-                          onChoose(item, e)
-                        })
-                      }}
-                      key={index}
-                    >
-                      {item.tabName}
-                    </div>
-                  )
-                })
-              }
-            </div>
-          </Popper>
+      <div className={classNames('hi-tabs-legacy-dropdown', {'hi-tabs-legacy-dropdown--active': !!items[activeIndex]})}>
+        <div className='hi-tabs-legacy-dropdown__toggle' ref={node => { this.toggleRef = node }} onClick={e => {
+          e.stopPropagation()
+          this.toggle()
+        }}>
+          <span className='hi-tabs-legacy-dropdown__toggle-title'>
+            { (items[activeIndex] && items[activeIndex].tabName) || localeDatas.tabs.more }
+          </span>
+          <i className='hi-icon icon-down' />
         </div>
+        <Popper
+          className='hi-tabs-legacy-dropdown__popper'
+          show={visible}
+          attachEle={this.toggleRef}
+          zIndex={1010}
+          width='auto'
+          leftGap={-18}
+          topGap={3}
+        >
+          <div className={classNames('hi-tabs-legacy-dropdown__items')}>
+            {
+              items.map((item, index) => {
+                return (
+                  <div className={classNames('hi-tabs-legacy-dropdown__item', {'hi-tabs-legacy-dropdown__item--active': index === activeIndex})}
+                    onClick={e => {
+                      this.setState({
+                        activeIndex: index
+                      }, () => {
+                        this.toggle()
+                        onChoose(item, e)
+                      })
+                    }}
+                    key={index}
+                  >
+                    {item.tabName}
+                  </div>
+                )
+              })
+            }
+          </div>
+        </Popper>
       </div>
     )
   }

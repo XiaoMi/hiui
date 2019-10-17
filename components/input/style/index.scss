@@ -1,30 +1,6 @@
 @import './variables.scss';
-@import '@hi-ui/core-css/index.scss';
 
 $input: 'hi-input' !default;
-
-@mixin input-styles($themeColor: get-color($palette-primary, 'hiui-blue')) {
-  textarea.#{$input} {
-    &:not(.disabled):hover {
-      border-color: $themeColor;
-    }
-
-    &.active {
-      border-color: $themeColor;
-    }
-  }
-
-  .#{$input},
-  .#{$input}_m {
-    &:not(.disabled):hover {
-      border-color: $themeColor;
-    }
-
-    &.active {
-      border-color: $themeColor;
-    }
-  }
-}
 
 textarea.#{$input} {
   box-shadow: none;
@@ -42,6 +18,14 @@ textarea.#{$input} {
   border-radius: $border-radius;
   background-color: #fff;
   transition: border-color 0.3s;
+
+  &:not(.disabled):hover {
+    border-color: $border-color-active;
+  }
+
+  &.active {
+    border-color: $border-color-active;
+  }
 
   &.disabled {
     color: $disabled-color;
@@ -131,6 +115,14 @@ textarea.#{$input} {
     border-radius: $border-radius;
     background-color: #fff;
     transition: border-color 0.3s;
+
+    &:not(.disabled):hover {
+      border-color: $border-color-active;
+    }
+
+    &.active {
+      border-color: $border-color-active;
+    }
 
     &.disabled {
       color: $disabled-color;
@@ -245,11 +237,5 @@ textarea.#{$input} {
       align-items: center;
       color: #f00;
     }
-  }
-}
-
-@each $key, $value in $theme-colors {
-  .theme__#{$key} {
-    @include input-styles ($value);
   }
 }

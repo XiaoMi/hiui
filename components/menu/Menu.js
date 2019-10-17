@@ -6,8 +6,6 @@ import Title from './Title'
 import Item from './Item'
 import SubMenu from './SubMenu'
 import './style/index'
-import Provider from '../context'
-
 class Menu extends Component {
   constructor (props) {
     super(props)
@@ -266,7 +264,7 @@ class Menu extends Component {
   }
 
   render () {
-    const {data, placement, showCollapse, theme} = this.props
+    const {data, placement, showCollapse} = this.props
     const {collapsed} = this.state
     const cls = classNames('hi-menu', `hi-menu--${placement}`, {
       'hi-menu--mini': collapsed
@@ -274,21 +272,19 @@ class Menu extends Component {
     const miniIcon = collapsed ? 'double-right' : 'double-left'
 
     return (
-      <div className={`theme__${theme}`}>
-        <div className={cls}>
-          <ul className='hi-menu-items'>
-            { this.renderMenu(data) }
-          </ul>
-          {
-            placement === 'vertical' && showCollapse &&
-            <div
-              className='hi-menu--mini__toggle'
-              onClick={this.toggleMini.bind(this)}
-            >
-              <Icon name={miniIcon} />
-            </div>
-          }
-        </div>
+      <div className={cls}>
+        <ul className='hi-menu-items'>
+          { this.renderMenu(data) }
+        </ul>
+        {
+          placement === 'vertical' && showCollapse &&
+          <div
+            className='hi-menu--mini__toggle'
+            onClick={this.toggleMini.bind(this)}
+          >
+            <Icon name={miniIcon} />
+          </div>
+        }
       </div>
     )
   }
@@ -324,4 +320,4 @@ Menu.propTypes = {
   onClickSubMenu: PropTypes.func,
   onCollapse: PropTypes.func
 }
-export default Provider(Menu)
+export default Menu

@@ -44,18 +44,6 @@ $prefixCls: '.hi-radio' !default;
   &__button--checked {
     border-color: $active-color;
   }
-
-  #{$prefixCls} {
-    &-group {
-      &.hi-btn-group {
-        #{$prefixCls} {
-          &__text {
-            color: $active-color;
-          }
-        }
-      }
-    }
-  }
 }
 
 #{$prefixCls} {

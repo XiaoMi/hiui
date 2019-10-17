@@ -2,6 +2,5 @@ import Input from './Input'
 import './style/index'
 import InputLegacy from './input-legacy'
 import SwitchVersion from '../_util/SwitchVersion'
-import Provider from '../context'
 
-export default Provider(SwitchVersion(Input, InputLegacy))
+export default SwitchVersion(Input, InputLegacy)

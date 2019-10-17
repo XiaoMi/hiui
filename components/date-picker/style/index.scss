@@ -1,73 +1,6 @@
 @import '@hi-ui/core-css/index.scss';
 
-@mixin date-picker-styles($themeColor: get-color($palette-primary, 'hiui-blue')) {
-  .hi-datepicker {
-    &__input {
-      &:hover:not(.hi-datepicker__input--disabled) {
-        border: 1px solid $themeColor;
-      }
-    }
-
-    &__period-item {
-      &--active {
-        color: $themeColor;
-      }
-    }
-
-    &__footer {
-      &:hover {
-        color: $themeColor;
-      }
-    }
-
-    &__calender-container {
-      &--month {
-        &.today {
-          .hi-datepicker__text {
-            background: $themeColor;
-          }
-        }
-      }
-    }
-
-    &__row {
-      &--current-week {
-        .range-se {
-          .hi-datepicker__content {
-            background: $themeColor;
-          }
-        }
-      }
-    }
-
-    &__cell {
-      &.disabled {
-        .hi-datepicker__content {
-          cursor: not-allowed;
-          color: map-get(get-palette($themeColor), 'g80');
-        }
-      }
-
-      &.range-se:not(.prev):not(.next) {
-        .hi-datepicker__content {
-          background: $themeColor;
-        }
-      }
-
-      &.today:not(.in-range) {
-        .hi-datepicker__text {
-          border: 1px solid $themeColor;
-        }
-      }
-
-      &.current:not(.in-range) {
-        .hi-datepicker__text {
-          background: $themeColor;
-        }
-      }
-    }
-  }
-}
+$basic-color: #4284f5 !default;
 
 .hi-datepicker {
   position: relative;
@@ -91,6 +24,10 @@
     align-items: center;
     justify-content: space-around;
     box-sizing: border-box;
+
+    &:hover:not(.hi-datepicker__input--disabled) {
+      border: 1px solid #4284f5;
+    }
 
     &--range {
       width: 320px;
@@ -240,6 +177,10 @@
     &:hover {
       background: rgba(240, 246, 255, 1);
     }
+
+    &--active {
+      color: #4284f5;
+    }
   }
 
   &__footer {
@@ -250,6 +191,10 @@
     text-align: center;
     cursor: pointer;
     position: relative;
+
+    &:hover {
+      color: #4284f5;
+    }
   }
 
   &__mask {
@@ -290,6 +235,7 @@
 
         &.today {
           .hi-datepicker__text {
+            background: $basic-color;
             opacity: 1;
             color: #fff;
           }
@@ -328,7 +274,22 @@
     &::after {
       content: '';
     }
+
+    &--current-week {
+      .range-se {
+        .hi-datepicker__content {
+          background: $basic-color;
+        }
+      }
+    }
   }
+
+  // &__content {
+  //   margin: 0 3px;
+  //   background: #fff;
+  //   color: #fff;
+  //   border-radius: 2px;
+  // }
 
   &__cell {
     cursor: pointer;
@@ -341,6 +302,7 @@
     &.disabled {
       .hi-datepicker__content {
         cursor: not-allowed;
+        color: map-get(get-palette($basic-color), 'g80');
         background: rgba(246, 246, 246, 1);
       }
     }
@@ -348,6 +310,7 @@
     &.range-se:not(.prev):not(.next) {
       .hi-datepicker__content {
         margin: 0 3px;
+        background: $basic-color;
         color: #fff;
         border-radius: 2px;
       }
@@ -360,14 +323,22 @@
       }
     }
 
+    // &.in-range:not(.next):not(.prev) {
+    //   .hi-datepicker__content {
+    //     background: rgba(66, 132, 245, 0.1);
+    //   }
+    // }
+
     &.today:not(.in-range) {
       .hi-datepicker__text {
+        border: 1px solid $basic-color;
         opacity: 0.8;
       }
     }
 
     &.current:not(.in-range) {
       .hi-datepicker__text {
+        background: $basic-color;
         color: #fff;
       }
     }
@@ -435,9 +406,14 @@
     box-sizing: border-box;
   }
 
+  &__mark {
+    // flex: 1;
+  }
+
   &__timebody {
     display: flex;
     height: 248px;
+    // border-bottom: 1px solid #f2f2f2;
     position: relative;
     justify-content: space-around;
     box-sizing: border-box;
@@ -506,6 +482,7 @@
     width: 60px;
     cursor: pointer;
     box-sizing: border-box;
+    // border-right: 1px solid rgba(242, 242, 242, 1);
     background-color: #fff;
 
     &--empty {
@@ -645,13 +622,5 @@
         }
       }
     }
-  }
-}
-
-@include date-picker-styles();
-
-@each $key, $value in $theme-colors {
-  .theme__#{$key} {
-    @include date-picker-styles($value);
   }
 }
