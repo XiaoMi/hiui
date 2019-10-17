@@ -10,9 +10,7 @@ class Demo extends React.Component {
       <DatePicker
         value={{start: new Date(), end: new Date().getTime() + 7 * 24 * 60*60*1000}}
         type='weekrange'
-        onChange={(d) => {
-          console.log(d)
-        }}
+        onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
       />
     )
   }

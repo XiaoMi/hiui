@@ -11,7 +11,7 @@ class Demo extends React.Component {
         type='daterange'
         value={new Date()}
         showTime={true}
-        onChange={(d) => {console.log('last', d)}}
+        onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
       />
     )
   }

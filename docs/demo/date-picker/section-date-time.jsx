@@ -11,7 +11,7 @@ class Demo extends React.Component {
         value={new Date()}
         showTime={true}
         format='yyyy-MM-dd HH:mm:ss'
-        onChange={(d) => {console.log('sec', d)}}
+        onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
       />
     )
   }

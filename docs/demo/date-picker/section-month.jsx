@@ -7,9 +7,7 @@ import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   render () {
     return (
-      <DatePicker type='month'  onChange={(d) => {
-          console.log('选择月份', d)
-        }}/>
+      <DatePicker type='month'  onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}/>
     )
   }
 }`
