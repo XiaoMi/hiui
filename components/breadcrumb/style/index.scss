@@ -1,12 +1,21 @@
+
+@import '@hi-ui/core-css/index.scss';
+
+@mixin breadcrumb-styles($themeColor: get-color($palette-primary, 'hiui-blue')) {
+  .hi-breadcrumb {
+    &__content {
+      &:hover {
+        color: $themeColor;
+      }
+    }
+  }
+}
+
 .hi-breadcrumb {
   color: rgba(153, 153, 153, 1);
 
   &__content {
     cursor: pointer;
-
-    &:hover {
-      color: #4284f5;
-    }
 
     .hi-icon {
       margin: 0 4px;
@@ -29,5 +38,13 @@
     .hi-breadcrumb__separator {
       display: none;
     }
+  }
+}
+
+@include breadcrumb-styles();
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key} {
+    @include breadcrumb-styles($value);
   }
 }
