@@ -2,7 +2,7 @@ import React, { Component, forwardRef } from 'react'
 import locales from '../locales'
 
 export const ThemeContext = React.createContext('hiui-blue')
-export const LocaleContext = React.createContext('en-US')
+export const LocaleContext = React.createContext('zh-CN')
 
 export default (WrappedComponent) => {
   class WrapperComponent extends Component {
