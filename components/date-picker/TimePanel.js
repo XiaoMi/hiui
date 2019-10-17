@@ -24,7 +24,6 @@ class TimePanel extends Component {
   }
   render () {
     let { localeDatas, date, type, format } = this.props
-    console.log(format)
     return (
       <div className='hi-timepicker' style={this.state.style}>
         <Time

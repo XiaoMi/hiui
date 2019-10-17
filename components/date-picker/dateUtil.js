@@ -11,7 +11,7 @@ import parse from 'date-fns/parse'
 import toDate from 'date-fns/toDate'
 import startOfWeek from 'date-fns/startOfWeek'
 import endOfWeek from 'date-fns/endOfWeek'
-import dateFormat from 'date-fns/format'
+import format from 'date-fns/format'
 import addMonths from 'date-fns/addMonths'
 import isSameMonth from 'date-fns/isSameMonth'
 import getYear from 'date-fns/getYear'
@@ -46,11 +46,14 @@ const getStartDate = (dateObj) => {
 const getEndDate = (dateObj) => {
   return getValidDate(dateObj.endDate)
 }
-const compatibleToDate = (value) => {
+const compatibleToDate = (value, format) => {
   if (typeof value === 'string') {
-    return parseISO(value)
+    return parse(value, format, new Date())
   }
   return toDate(value)
+}
+const dateFormat = (value, formatStr) => {
+  return isValid(value) ? format(value, formatStr) : ''
 }
 export {
   getDaysInMonth, // 获取当月的天数

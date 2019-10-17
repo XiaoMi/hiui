@@ -27,6 +27,9 @@ export default class TimeList extends Component {
     const dVal = 32
     this.listRef.current && (this.listRef.current.scrollTop = value * dVal)
   }
+  componentDidUpdate () {
+    this.scrollTo()
+  }
   componentDidMount () {
     this.listRef.current.addEventListener('scroll', this.scrollEvent)
     setTimeout(() => {
@@ -123,7 +126,7 @@ export default class TimeList extends Component {
         }
         {this.liSuffix}
       </ul>
-      {showArrow && this.renderArrow('hours')}
+      {showArrow && this.renderArrow(type)}
     </div>
   }
 }

@@ -46,13 +46,10 @@ class Time extends Component {
       value = this.whenDisableChange(disabledList, value, arrow)
     }
     if (type === 'hours') {
-      // date.setHours(value)
       cDate.setHours(value)
     } else if (type === 'minutes') {
-      // date.setMinutes(value)
       cDate.setMinutes(value)
     } else if (type === 'seconds') {
-      // date.setSeconds(value)
       cDate.setSeconds(value)
     }
     if (cDate.getTime() !== date.getTime()) {

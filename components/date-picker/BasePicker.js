@@ -85,10 +85,15 @@ class BasePicker extends Component {
       return word.toLowerCase()
     })
   }
-  callFormatterDate (date) {
-    let { type, format, showTime, localeDatas, weekOffset } = this.props
+  getFormatString () {
+    let { format } = this.props
     let { format: stateFormat } = this.state
     format = stateFormat || format
+    return format
+  }
+  callFormatterDate (date) {
+    let { type, showTime, localeDatas, weekOffset } = this.props
+    let format = this.getFormatString()
     let isFormat = !!format
     format = this.compatibleFormatString(format || FORMATS[type])
     this.setState({
@@ -104,14 +109,15 @@ class BasePicker extends Component {
     let date
     let leftText = ''
     let rightText = ''
+    const format = this.compatibleFormatString(this.getFormatString() || FORMATS[type])
     if (_value) {
       if (Object.prototype.toString.call(_value) === '[object Object]') {
-        start = compatibleToDate(_value.start) || null
-        end = compatibleToDate(_value.end) || new Date()
+        start = compatibleToDate(_value.start, format) || null
+        end = compatibleToDate(_value.end, format) || new Date()
       } else {
-        start = compatibleToDate(_value)
+        start = compatibleToDate(_value, format)
         if (type.includes('range')) {
-          end = compatibleToDate(start)
+          end = compatibleToDate(start, format)
           if (type === 'weekrange') {
             start = startOfWeek(start)
             end = endOfWeek(end)
@@ -126,8 +132,8 @@ class BasePicker extends Component {
       }
     }
     date = {
-      startDate: compatibleToDate(start),
-      endDate: compatibleToDate(end)
+      startDate: compatibleToDate(start, format),
+      endDate: compatibleToDate(end, format)
     }
     leftText = isValid(date.startDate) ? this.callFormatterDate(date.startDate) : ''
     rightText = isValid(date.endDate) ? this.callFormatterDate(date.endDate) : ''
@@ -140,7 +146,6 @@ class BasePicker extends Component {
     if (!date.startDate) {
       date = {startDate: date, endDate: undefined}
     }
-    console.log('onPick')
     this.setState({
       date,
       texts: [this.callFormatterDate(date.startDate), this.callFormatterDate(date.endDate)],
@@ -154,7 +159,6 @@ class BasePicker extends Component {
   callback () {
     const { type, onChange } = this.props
     const { date, format } = this.state
-    console.log('callback', date)
     if (onChange) {
       let {startDate, endDate} = date
       startDate = isValid(startDate) ? startDate : ''
@@ -172,7 +176,7 @@ class BasePicker extends Component {
         onChange({start: startDate, end: endDate}, {start: dateFormat(startDate, format), end: dateFormat(endDate, format)})
         return
       }
-      onChange(startDate, dateFormat(startDate, format))
+      onChange(startDate, startDate ? dateFormat(startDate, format) : '')
     }
   }
   timeConfirm (date, onlyTime) {
@@ -229,6 +233,7 @@ class BasePicker extends Component {
         texts: ['', ''],
         showPanel: false
       })
+      // this.callback()
       return false
     }
     if (tar !== this.input && tar !== this.rInput) {
@@ -266,13 +271,7 @@ class BasePicker extends Component {
     )
   }
   _clear () {
-    const {onChange, type} = this.props
-    if (onChange) {
-      onChange(
-        (type.includes('range') || type === 'timeperiod') ? {start: '', end: ''} : ''
-      )
-    }
-    this.setState({date: {startDate: null, endDate: null}, texts: ['', ''], isFocus: false})
+    this.setState({date: {startDate: null, endDate: null}, texts: ['', ''], isFocus: false}, () => { this.callback() })
   }
   _icon () {
     const {isFocus} = this.state
