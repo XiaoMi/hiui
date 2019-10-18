@@ -52,8 +52,13 @@ const compatibleToDate = (value, format) => {
   }
   return toDate(value)
 }
+const compatibleFormatString = (formatStr) => {
+  return formatStr.replace(/[Y+|D+]/g, (word) => {
+    return word.toLowerCase()
+  })
+}
 const dateFormat = (value, formatStr) => {
-  return isValid(value) ? format(value, formatStr) : ''
+  return isValid(value) ? format(value, compatibleFormatString(formatStr)) : ''
 }
 export {
   getDaysInMonth, // 获取当月的天数
@@ -88,5 +93,6 @@ export {
   getValidDate, // 获取有效的时间
   toDate,
   parseISO,
-  compatibleToDate
+  compatibleToDate,
+  compatibleFormatString
 }
