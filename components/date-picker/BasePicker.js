@@ -6,7 +6,7 @@ import {formatterDate, FORMATS} from './constants'
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
-import { dateFormat, isValid, startOfWeek, endOfWeek, parse, compatibleToDate } from './dateUtil'
+import { dateFormat, isValid, startOfWeek, endOfWeek, parse, compatibleToDate, compatibleFormatString } from './dateUtil'
 class BasePicker extends Component {
   constructor (props) {
     super(props)
@@ -80,11 +80,7 @@ class BasePicker extends Component {
       this._parseProps(nextProps)
     }
   }
-  compatibleFormatString (format) {
-    return format.replace(/[Y+|D+]/g, (word) => {
-      return word.toLowerCase()
-    })
-  }
+
   getFormatString () {
     let { format } = this.props
     let { format: stateFormat } = this.state
@@ -95,7 +91,7 @@ class BasePicker extends Component {
     let { type, showTime, localeDatas, weekOffset } = this.props
     let format = this.getFormatString()
     let isFormat = !!format
-    format = this.compatibleFormatString(format || FORMATS[type])
+    format = compatibleFormatString(format || FORMATS[type])
     this.setState({
       format
     })
@@ -109,7 +105,7 @@ class BasePicker extends Component {
     let date
     let leftText = ''
     let rightText = ''
-    const format = this.compatibleFormatString(this.getFormatString() || FORMATS[type])
+    const format = compatibleFormatString(this.getFormatString() || FORMATS[type])
     if (_value) {
       if (Object.prototype.toString.call(_value) === '[object Object]') {
         start = compatibleToDate(_value.start, format) || null
