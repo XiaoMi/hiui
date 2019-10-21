@@ -156,8 +156,6 @@ class Select extends Component {
   parseValue (value = this.props.value) {
     if (Array.isArray(value)) {
       return value.slice()
-    } else if (typeof value === 'string') {
-      return value.split(',')
     } else {
       return [value]
     }
@@ -176,6 +174,7 @@ class Select extends Component {
         selectedItems.push(item)
       }
     })
+    console.log('**********', values, selectedItems)
     return selectedItems
   }
 
