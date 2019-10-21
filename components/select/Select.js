@@ -174,7 +174,6 @@ class Select extends Component {
         selectedItems.push(item)
       }
     })
-    console.log('**********', values, selectedItems)
     return selectedItems
   }
 
