@@ -21,15 +21,15 @@
       .hi-icon {
         transition: all 0.3s;
       }
+
+      textarea {
+        padding: 20px !important;
+        outline: none !important;
+      }
     }
 
     pre {
       padding: 20px !important;
-    }
-
-    textarea {
-      padding: 20px !important;
-      outline: none !important;
     }
   }
 }

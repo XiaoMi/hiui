@@ -2,9 +2,13 @@ import React from 'react'
 import classNames from 'classnames'
 import Provider from '../context'
 import Upload from './Upload'
+import Button from '../button'
 import Icon from '../icon'
 
 class UploadClick extends Upload {
+  handleButtonClick = () => {
+    this.uploadRef.click()
+  }
   render () {
     const {
       content,
@@ -14,6 +18,7 @@ class UploadClick extends Upload {
       showUploadList,
       onRemove,
       accept,
+      loading,
       localeDatas
     } = this.props
     const {
@@ -32,9 +37,9 @@ class UploadClick extends Upload {
             accept={accept}
             hidden
           />
-          <span className={`hi-upload__button ${(disabled || fileCountLimted) ? 'hi-upload__button--disabled' : ''}`}>
+          <Button type='primary' disabled={disabled || fileCountLimted} onClick={this.handleButtonClick} loading={loading}>
             { content || localeDatas.upload.buttonText}
-          </span>
+          </Button>
         </label>
         {
           tips && <span className='hi-upload__tips hi-upload__tips--single-line'>{tips}</span>

@@ -57,7 +57,8 @@ export default {
     cancel: '取消',
     delete: '删除',
     drag: '拖拽文件上传',
-    dragTips: '请点击或拖拽文件上传'
+    dragTips: '请点击或拖拽文件上传',
+    preview: '预览'
   },
   modal: {
     confirmText: '确定',
@@ -72,5 +73,18 @@ export default {
   },
   form: {
     colon: '：'
+  },
+  tree: {
+    addNode: '添加节点',
+    addChildNode: '添加子节点',
+    edit: '编辑节点',
+    del: '删除',
+    confirm: '确认',
+    cancel: '取消',
+    nodePlaceholder: '请输入节点名称',
+    searchPlaceholder: '关键词搜索',
+    searchEmptyResult: '未找到搜索结果',
+    modalTitle: '提示',
+    delTips: '删除节点将删除所有子节点，确定删除吗？'
   }
 }

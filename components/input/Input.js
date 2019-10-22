@@ -27,8 +27,8 @@ class Input extends Component {
     const { prepend, append, value, defaultValue } = props
     // 分离有效属性和事件
     this.attrs = newProps.attrs
-    const type = typeof value
     const valueSource = value === undefined ? defaultValue : value
+    const type = typeof valueSource
     const prefix = typeof prepend === 'string' ? prepend : ''
     const suffix = typeof append === 'string' ? append : ''
     const prependNode = typeof prepend !== 'string' && prepend
@@ -68,6 +68,10 @@ class Input extends Component {
         append: appendNode
       })
     }
+  }
+
+  blur = () => {
+    this._Input.blur()
   }
 
   /**

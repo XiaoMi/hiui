@@ -376,7 +376,8 @@ class Table extends Component {
   componentDidUpdate () {
     const {
       fixTop,
-      height
+      height,
+      rowSelection
     } = this.props
     let leftFixTable = this.dom.current.querySelectorAll('.hi-table-fixed-left table tr')
     let rightFixTable = this.dom.current.querySelectorAll('.hi-table-fixed-right table tr')
@@ -393,7 +394,7 @@ class Table extends Component {
       })
     }
 
-    if (!fixTop && height) {
+    if (!fixTop && !rowSelection && height) {
       let hiTableBody = this.dom.current.querySelectorAll('.hi-table-body')
       hiTableBody && hiTableBody.length > 0 && hiTableBody.forEach(item => {
         item.style.maxHeight = height

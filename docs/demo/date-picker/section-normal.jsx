@@ -16,9 +16,7 @@ class Demo extends React.Component {
       <div style={{display:'flex', flexWrap: 'wrap'}}>
         <DatePicker
           value={this.state.date}
-          onChange={(d) => {
-            console.log('返回值', d)
-          }}
+          onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
         />
       </div>
     )

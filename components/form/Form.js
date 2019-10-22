@@ -89,10 +89,10 @@ class Form extends Component {
   }
 
   render () {
-    const { children } = this.props
+    const { children, className, style } = this.props
 
     return (
-      <form className={classNames('hi-form', this.getClassNames())}>
+      <form className={classNames('hi-form', className, this.getClassNames())} style={style}>
         {children}
       </form>
     )
@@ -112,7 +112,9 @@ Form.propTypes = {
   placement: PropTypes.oneOf(['horizontal', 'vertical']),
   inline: PropTypes.bool,
   onSubmit: PropTypes.func,
-  showColon: PropTypes.bool
+  showColon: PropTypes.bool,
+  className: PropTypes.string,
+  style: PropTypes.object
 }
 
 Form.defaultProps = {

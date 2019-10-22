@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
+import isEqual from 'lodash/isEqual'
 import Provider from '../context'
 import Radio from './Radio'
 import Button from '../button'
@@ -10,11 +11,14 @@ const prefixCls = 'hi-radio-group'
 class Group extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { data: getData(props), value: props.value }
+    this.state = { data: getData(props), originValue: props.value, originData: props.data }
   }
   static getDerivedStateFromProps (nextProps, state) {
-    if (nextProps.value !== state.value || getData(nextProps) !== state.data) {
-      return { data: getData(nextProps), value: nextProps.value }
+    if (!isEqual(nextProps.value, state.originValue)) {
+      return { data: getData(nextProps), originValue: nextProps.value }
+    }
+    if (!isEqual(nextProps.data, state.originData)) {
+      return { data: getData(nextProps), originData: nextProps.data }
     }
     return null
   }
@@ -26,9 +30,7 @@ class Group extends React.Component {
     const newData = data.map(({ value, checked, ...rest }) => {
       const isValueEquel =
         updatedValue === value || Number(updatedValue) === value
-      if (isValueEquel) {
-        callbackValue = value
-      }
+      isValueEquel && (callbackValue = value)
       return {
         value,
         checked: isValueEquel,

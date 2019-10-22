@@ -56,7 +56,8 @@ export default {
     cancel: 'Cancel',
     delete: 'Delete',
     drag: 'Drag and drop files for uploading',
-    dragTips: 'Please click or drag and drop file upload'
+    dragTips: 'Please click or drag and drop file upload',
+    preview: 'Preview'
   },
   modal: {
     confirmText: 'OK',
@@ -71,5 +72,18 @@ export default {
   },
   form: {
     colon: ':'
+  },
+  tree: {
+    addNode: 'Add Node',
+    addChildNode: 'Add Child Node',
+    edit: 'Edit Node',
+    del: 'Delete',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    nodePlaceholder: 'Please enter the node name',
+    searchPlaceholder: 'Keyword search',
+    searchEmptyResult: 'No serach results',
+    modalTitle: 'Warning',
+    delTips: 'Deleting a node will delete all child nodes, are you sure to delete this node?'
   }
 }

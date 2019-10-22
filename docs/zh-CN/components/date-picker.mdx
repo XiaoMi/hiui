@@ -91,15 +91,24 @@ import DemoModal from '../../demo/date-picker/section-modal.jsx'
 | 参数        | 说明                              | 类型                                               | 可选值                                                                                                                                       | 默认值 |
 | ----------- | --------------------------------- | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
 | type        | 选择器类型                        | string                                             | date 普通日期 <br/> daterange 日期范围<br/> year 年份<br/> month 月份<br/> week 周<br/> weekrange 周范围 <br/> timeperiod 时间段（1.5 新增） | date   |
-| value       | 默认显示的日期                    | Date \| string \| number\| object \| undefined \| null | --                                                                                                                                           | null   |
+| value       | 默认显示的日期                    | Date \| string \| number\| DateRange \| undefined \| null | -                                                                                                                                           | null   |
 | minDate     | 最小日期                          | Date                                               | null                                                                                                                                         | null   |
 | maxDate     | 最大日期                          | Date                                               | null                                                                                                                                         | null   |
 | disabled    | 是否禁用输入框                    | boolean                                            | true \| false                                                                                                                                | false  |
 | clearable   | 是否可以清空                      | boolean                                            | true \| false                                                                                                                                | true   |
 | showTime    | 是否在日期选择器中显示时间选择器  | boolean                                            | true \| false                                                                                                                                | false  |
 | shortcuts   | 快捷面板                          | string[]                                              | 近一周, 近一月, 近三月, 近一年                                                                                                               | null   |
-| weekOffset  | 周起始<br/>默认周日做为第一列     | number                                             | 0/1                                                                                                                                          | 0      |
+| weekOffset  | 周起始<br/>默认周日做为第一列     | number                                             | 0 \| 1                                                                                                                                          | 0      |
 | placeholder | 自定义占位符<br/>数组用于范围日期 | string \| string[]                                    | -                                                                                                                                            | -      |
+| onChange    | 值变化时的回调函数                | (date: Date \| DateRange, dateStr: string \| DateRange ) => void                                    | -                                                                                                | -      |
+
+
+## Type
+### DateRange
+| 参数     | 说明            | 类型             | 可选值 | 默认值 |
+| -------- | --------------- | ---------------- | ------ | ------ |
+| start    | 起始时间    | Date \| string \| number \| undefined \| null          | -      | -      |
+| end       | 截止时间 | Date \| string \| number \| undefined \| null | -      | -      |
 
 ## Methods
 

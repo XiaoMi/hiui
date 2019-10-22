@@ -44,7 +44,7 @@ class Tabs extends Component {
     } = this.getTabItems(this.props)
 
     this.state = {
-      activeId: activeId !== undefined ? activeId : (defaultActiveId || showTabItems[0].tabId),
+      activeId: activeId !== undefined ? activeId : (defaultActiveId || (showTabItems && showTabItems[0] && showTabItems[0].tabId)),
       showTabItems,
       hiddenTabItems
     }
@@ -65,9 +65,14 @@ class Tabs extends Component {
         activeId: nextProps.activeId
       })
     }
+    // 考虑 tab 删完又新增一个的情况
+    if (this.props.children.length === 0 && nextProps.children.length > 0) {
+      this.setState({ activeId: nextProps.children[0] && nextProps.children[0].props.tabId })
+    }
+
     if (this.props.children.length > nextProps.children.length && this.deletetabId && this.deletetabId === this.state.activeId) { // 删除的是当前激活的tab，需重置激活tab
       this.setState({
-        activeId: nextProps.children[0].props.tabId
+        activeId: (nextProps.children[0] && nextProps.children[0].props.tabId) || undefined
       }, () => {
         this.deletetabId = null
       })

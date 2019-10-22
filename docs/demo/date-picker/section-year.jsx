@@ -9,9 +9,7 @@ class Demo extends React.Component {
     return (
       <DatePicker
         type='year'
-        onChange={(d) => {
-          console.log('选择年份', d)
-        }}
+        onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
       />
     )
   }

@@ -10,8 +10,9 @@ import Modal from '../modal'
 import { collectExpandId, findNode } from './util'
 import axios from 'axios'
 import qs from 'qs'
+import Provider from '../context'
 
-export default class TreeNode extends Component {
+class TreeNode extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -399,19 +400,21 @@ export default class TreeNode extends Component {
   }
   // 渲染右键菜单
   renderRightClickMenu = item => {
+    const { localeDatas } = this.props
+    const { addNode, addChildNode, edit, del } = localeDatas.tree
     return (
       item.id === this.state.showRightClickMenu && (
         <ul className='right-click-menu'>
-          <li onClick={() => this.addSiblingNode(item.id)}>添加节点</li>
-          <li onClick={() => this.addChildNode(item)}>添加子节点</li>
-          <li onClick={() => this.editNode(item)}>编辑</li>
+          <li onClick={() => this.addSiblingNode(item.id)}>{addNode}</li>
+          <li onClick={() => this.addChildNode(item)}>{addChildNode}</li>
+          <li onClick={() => this.editNode(item)}>{edit}</li>
           <li
             onClick={() => {
               this.setCurrentDeleteNode(item.id)
               this.openModal()
             }}
           >
-            删除
+            {del}
           </li>
         </ul>
       )
@@ -538,7 +541,8 @@ export default class TreeNode extends Component {
   }
   render () {
     const { dataCache, searchValue, highlightNum } = this.state
-    const { searchable } = this.props
+    const { searchable, localeDatas } = this.props
+    const { searchPlaceholder, searchEmptyResult, modalTitle, delTips } = localeDatas.tree
     return (
       <div>
         {searchable && (
@@ -546,7 +550,7 @@ export default class TreeNode extends Component {
             <Input
               value={this.state.searchValue}
               type='text'
-              placeholder='关键词搜索'
+              placeholder={searchPlaceholder}
               onChange={e => {
                 this.setState({
                   searchValue: e.target.value,
@@ -561,7 +565,7 @@ export default class TreeNode extends Component {
               style={{ width: '272px' }}
             />
             {highlightNum === 0 && searchValue !== '' && (
-              <div className='hi-tree__searcher--empty'>未找到搜索结果</div>
+              <div className='hi-tree__searcher--empty'>{searchEmptyResult}</div>
             )}
           </div>
         )}
@@ -571,7 +575,7 @@ export default class TreeNode extends Component {
           : this.renderTree(cloneDeep(dataCache), dataCache)}
 
         <Modal
-          title='提示'
+          title={modalTitle}
           show={this.state.showModal}
           onConfirm={() => {
             this.deleteNode(this.state.currentDeleteNode)
@@ -585,9 +589,10 @@ export default class TreeNode extends Component {
             })
           }}
         >
-          <span>删除节点将删除所有子节点，确定删除吗？</span>
+          <span>{delTips}</span>
         </Modal>
       </div>
     )
   }
 }
+export default Provider(TreeNode)

@@ -20,7 +20,7 @@ export const FORMATS = {
 export const isVaildDate = (date) => {
   return date && (date instanceof Date || date.startDate || typeof date === 'number')
 }
-export const formatterDate = (type, date, formatter, showTime, localeDatas, weekOffset = 0) => {
+export const formatterDate = (type, date, formatter, showTime, localeDatas, weekOffset = 0, isFormat = false) => {
   if (!isValid(date)) {
     return ''
   }
@@ -44,7 +44,7 @@ export const formatterDate = (type, date, formatter, showTime, localeDatas, week
       str = localeDatas.datePicker.weekrange(date.getFullYear(), getYearWeek(date, weekOffset).weekNum)
       break
     default:
-      str = dateFormat(date, `${formatter}${showTime ? ' HH:mm:ss' : ''}`)
+      str = dateFormat(date, `${formatter}${(!isFormat && showTime) ? ' HH:mm:ss' : ''}`)
       break
   }
 

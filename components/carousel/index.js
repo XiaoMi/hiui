@@ -57,6 +57,9 @@ class Carousel extends Component {
     if (active >= this.props.children.length) {
       active = 0
     }
+    if (active < 0) {
+      active = this.props.children.length + active
+    }
     this.setState({
       active
     })

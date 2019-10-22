@@ -35,6 +35,7 @@ class Select extends Component {
     showCheckAll: PropTypes.bool,
     autoload: PropTypes.bool,
     searchable: PropTypes.bool,
+    filterOption: PropTypes.func,
     clearable: PropTypes.bool,
     disabled: PropTypes.bool,
     placeholder: PropTypes.string,
@@ -149,14 +150,12 @@ class Select extends Component {
     if (this.isRemote()) {
       return true
     }
-    return !!searchable
+    return searchable
   }
 
   parseValue (value = this.props.value) {
     if (Array.isArray(value)) {
       return value.slice()
-    } else if (typeof value === 'string') {
-      return value.split(',')
     } else {
       return [value]
     }
@@ -170,7 +169,7 @@ class Select extends Component {
   resetSelectedItems (value, dropdownItems = [], listChanged = false) {
     const values = this.parseValue(value)
     let selectedItems = []
-    dropdownItems.forEach(item => {
+    dropdownItems.forEach((item) => {
       if (values.includes(item.id)) {
         selectedItems.push(item)
       }
@@ -247,11 +246,9 @@ class Select extends Component {
     }
 
     this.onChange(selectedItems, item, () => {
-      this.setState(
-        {
-          focusedIndex
-        }
-      )
+      this.setState({
+        focusedIndex
+      })
     })
     if (this.props.type !== 'multiple') {
       this.hideDropdown()
@@ -350,11 +347,10 @@ class Select extends Component {
         : keyword
     this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
 
-    const queryParams = qs.stringify(Object.assign({}, params, key && {[key]: keyword}))
-    url =
-      url.includes('?')
-        ? `${url}&${queryParams}`
-        : `${url}?${queryParams}`
+    const queryParams = qs.stringify(
+      Object.assign({}, params, key && { [key]: keyword })
+    )
+    url = url.includes('?') ? `${url}&${queryParams}` : `${url}?${queryParams}`
 
     if (type.toUpperCase() === 'POST') {
       options.body = JSON.stringify(data)
@@ -418,7 +414,7 @@ class Select extends Component {
   onFilterItems(keyword) {
     this.setState(
       {
-        keyword
+        keyword: keyword
       },
       () => this.resetFocusedIndex()
     )
@@ -434,13 +430,18 @@ class Select extends Component {
   }
 
   matchFilter(item) {
+    const { filterOption } = this.props
     const { searchable, keyword } = this.state
-    return (
-      this.isRemote() ||
-      (!searchable || !keyword) ||
-        (String(item.id).includes(keyword) ||
-          String(item.title).includes(keyword))
-    )
+
+    const shouldMatch = this.isRemote() ||
+      (!searchable || !keyword)
+
+    if (typeof filterOption === 'function') {
+      return shouldMatch || filterOption(keyword, item)
+    }
+
+    return shouldMatch || (String(item.id).includes(keyword) ||
+    String(item.title).includes(keyword))
   }
 
   resetFocusedIndex(setState = true) {
@@ -539,7 +540,7 @@ class Select extends Component {
         style={style}
       >
         <div
-          className="hi-select__input-container"
+          className='hi-select__input-container'
           ref={(node) => {
             this.selectInputContainer = node
           }}
@@ -579,8 +580,8 @@ class Select extends Component {
           attachEle={this.selectInputContainer}
           zIndex={1050}
           topGap={5}
-          className="hi-select__popper"
-          placement="top-bottom-start"
+          className='hi-select__popper'
+          placement='top-bottom-start'
         >
           <SelectDropdown
             noFoundTip={emptyContent}

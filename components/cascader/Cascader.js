@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import debounce from 'lodash/debounce'
+import isEqual from 'lodash/isEqual'
 import shallowequal from 'shallowequal'
 import Popper from '../popper'
 import Menu from './Menu'
@@ -25,7 +26,8 @@ class Cascader extends Component {
     style: PropTypes.object,
     onActiveItemChange: PropTypes.func,
     onChange: PropTypes.func,
-    displayRender: PropTypes.func
+    displayRender: PropTypes.func,
+    filterOption: PropTypes.func
   }
 
   static defaultProps = {
@@ -65,8 +67,8 @@ class Cascader extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!shallowequal(nextProps.value, this.props.value)) {
-      const cascaderLabel = this.getCascaderLabel(nextProps.value)
+    if (!shallowequal(nextProps.value, this.props.value) || !isEqual(nextProps.data, this.props.data)) {
+      const cascaderLabel = this.getCascaderLabel(nextProps.value, nextProps.data)
       this.setState({
         cacheValue: nextProps.value, // 缓存原始value，用户可能点击option但是没选中，用于恢复初始value
         cascaderLabel
@@ -108,7 +110,7 @@ class Cascader extends Component {
     this.inputRef.focus()
   }
 
-  getCascaderLabel (values) {
+  getCascaderLabel (values, data) {
     if (this.props.displayRender) {
       return this.props.displayRender(values)
     }
@@ -117,7 +119,7 @@ class Cascader extends Component {
     } else {
       let labels = []
       let index = 0
-      let _options = this.props.data
+      let _options = data || this.props.data
       const labelKey = this.labelKey()
       const valueKey = this.valueKey()
       const childrenKey = this.childrenKey()
@@ -173,12 +175,16 @@ class Cascader extends Component {
 
   onKeywordChange () {
     const {
-      data
+      data,
+      filterOption: filterFunc
     } = this.props
     const {
       keyword
     } = this.state
     if (!keyword) {
+      this.setState({
+        filterOptions: data
+      })
       return
     }
     const labelKey = this.labelKey()
@@ -191,7 +197,7 @@ class Cascader extends Component {
         let label = option[labelKey]
         const value = option[valueKey]
         const children = option[childrenKey]
-        if (label.toString().indexOf(keyword) > -1 || value.toString().indexOf(keyword) > -1) {
+        if ((filterFunc && filterFunc(keyword, option)) || label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount++
         }
         match.options.push({
@@ -207,7 +213,7 @@ class Cascader extends Component {
             filterOptions.push(match.options.slice())
           }
         }
-        if (label.toString().indexOf(keyword) > -1 || value.toString().indexOf(keyword) > -1) {
+        if ((filterFunc && filterFunc(keyword, option)) || label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount--
         }
         match.options.pop()
