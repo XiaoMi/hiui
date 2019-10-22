@@ -47,7 +47,7 @@ class Cascader extends Component {
     const cascaderValue = this.props.value
     const cacheValue = this.props.value
     const cascaderLabel = this.getCascaderLabel(cascaderValue)
-
+    this.hiCascader = React.createRef()
     this.debouncedKeywordChange = debounce(this.onKeywordChange.bind(this), 300)
     this.clickOutsideHandel = this.clickOutside.bind(this)
     this.state = {
@@ -183,7 +183,7 @@ class Cascader extends Component {
     } = this.state
     if (!keyword) {
       this.setState({
-        filterOptions: data
+        filterOptions: false
       })
       return
     }
@@ -333,9 +333,8 @@ class Cascader extends Component {
     }
     const expandIcon = popperShow ? 'icon-up' : 'icon-down'
     const placeholder = cascaderLabel || this.localeDatasProps('placeholder')
-
     return (
-      <div className={classNames('hi-cascader', className, extraClass)} style={style}>
+      <div className={classNames('hi-cascader', className, extraClass)} style={style} ref={this.hiCascader}>
         <div className='hi-cascader__input-container' ref={node => { this.inputContainer = node }} onClick={this.handleClick.bind(this)}>
           <input
             ref={node => {
@@ -371,6 +370,8 @@ class Cascader extends Component {
             value={cascaderValue}
             options={filterOptions || data}
             root={() => this}
+            isFiltered={filterOptions}
+            filterOptionWidth={this.hiCascader.current && this.hiCascader.current.clientWidth}
             onSelect={this.onChangeValue.bind(this)}
           />
         </Popper>
