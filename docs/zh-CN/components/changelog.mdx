@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2.5.2
+
+- 修复 `<Tabs />` 编辑模式下删除最后一个 tab 报错的问题 [#735](https://github.com/XiaoMi/hiui/issues/735)
+- 修复 `<Select />` value 解析不正确的问题 [#737](https://github.com/XiaoMi/hiui/issues/737)
+- 修复 `<Cascader />` 搜索后结果展示宽度太窄的问题 [#721](https://github.com/XiaoMi/hiui/issues/721)
+
 ## 2.5.1
 
 - 修复 `<Input />` defaultValue 设置无效的问题 [#717](https://github.com/XiaoMi/hiui/issues/717)
