@@ -114,3 +114,6 @@ function ButtonWrapper ({ children, ...restProps }) {
 }
 
 export default Provider(Button)
+export {
+  Button
+}
