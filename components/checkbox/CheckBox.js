@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Base from './Base'
 import MultipleCheckboxsOpera from './common'
+import isEqual from 'lodash/isEqual'
 class CheckBox extends Component {
   static _type = 'CheckBox'
   static propTypes = {
@@ -31,6 +32,12 @@ class CheckBox extends Component {
   }
   componentWillUnmount () {
     MultipleCheckboxsOpera.remove(this.props.name || this.props.all)
+  }
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.props.list && isEqual(this.props.list, nextProps.list)) {
+      return false
+    }
+    return true
   }
   renderCheckBoxGroup (list) {
     return <div>
