@@ -59,13 +59,13 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | editable         | 节点右键可编辑（添加同级节点、添加子节点、编辑节点、删除节点）          | boolean                                                                  | true \| false       | false     |
 | draggable        | 节点可拖拽                                                              | boolean                                                                  | true \| false       | false     |
 | searchable       | 节点可搜索                                                              | boolean                                                                  | true \| false       | false     |
-| loadTreeNode     | 点击异步加载子项                                                        | object                                                                   | -                   | -         |
+| loadTreeNode     | 点击异步加载子项                                                        | LoadTreeNode \| (id: string) =>  LoadTreeNode                                                                  | -                   | -         |
 | defaultExpandAll | 是否默认展开所有树节点                                                  | boolean                                                                  | true \| false       | false     |
 | checkedIds       | 选中的 checkbox                                                         | string[]                                                                 | -                   | -         |
 | openIcon         | 表示展开的图标                                                          | string                                                                   | Icon 图标名称       | -         |
 | closeIcon        | 表示闭合的图标                                                          | string                                                                   | Icon 图标名称       | -         |
 | apperance        | 树形控件的展现形态                                                      | string                                                                   | 'default' \| 'line' | 'default' |
-| onChange         | 树组件改变时触发                                                        | (data:TreeNode[]) => void                                                | -                   | -         |
+| onChange         | 树组件改变时触发                                                        | (data: TreeNode[]) => void                                                | -                   | -         |
 | onExpand         | 节点被点击(展开/收起)时触发                                             | (expanded: boolean, expandIds: string[], expandedNode: TreeNode) => void | -                   | -         |
 | onCheck          | 点击节点多选框触发                                                      | (checked: boolean, checkedIds: string[], checkedNode: TreeNode) => void  | -                   | -         |
 | onClick          | 点击节点文字时触发                                                      | (clickNode: TreeNode) => void                                            | -                   | -         |

@@ -5,11 +5,17 @@ import classNames from 'classnames'
 import Input from '../input'
 import { findDOMNode } from 'react-dom'
 import TreeDivider from './TreeDivider'
+import IconLoading from './IconLoading'
 import Provider from '../context'
 const Types = {
   TreeNode: 'treeNode'
 }
 class TreeItem extends Component {
+  state={ loading: false }
+  loadingTimer = null
+  componentWillUnmount () {
+    clearTimeout(this.loadingTimer)
+  }
   render () {
     const {
       editable,
@@ -51,7 +57,7 @@ class TreeItem extends Component {
       localeDatas
     } = this.props
     const { nodePlaceholder, confirm, cancel } = localeDatas.tree
-    console.log(nodePlaceholder)
+
     const treeItem = (
       <li
         key={item.id}
@@ -80,8 +86,13 @@ class TreeItem extends Component {
             <span
               onClick={() => {
                 onExpanded(expanded, item)
-                if (origin) {
-                  loadChildren(item.id)
+                if (origin && (!item.children || item.children.length === 0)) {
+                  this.setState({loading: true})
+                  loadChildren(item.id).finally(() => {
+                    this.loadingTimer = setTimeout(() => {
+                      this.setState({loading: false})
+                    }, 300)
+                  })
                 }
               }}
               style={{ position: 'relative' }}
@@ -90,6 +101,7 @@ class TreeItem extends Component {
               {(item.children && item.children.length > 0) || (origin && !expanded)
                 ? renderSwitcher(expanded)
                 : showLine && <span className='hi-tree__dot' />}
+              {this.state.loading && <IconLoading />}
             </span>
           }
           {checkable ? (
