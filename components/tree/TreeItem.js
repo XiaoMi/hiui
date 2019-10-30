@@ -5,11 +5,17 @@ import classNames from 'classnames'
 import Input from '../input'
 import { findDOMNode } from 'react-dom'
 import TreeDivider from './TreeDivider'
+import IconLoading from './IconLoading'
 import Provider from '../context'
 const Types = {
   TreeNode: 'treeNode'
 }
 class TreeItem extends Component {
+  state={ loading: false }
+  loadingTimer = null
+  componentWillUnmount () {
+    clearTimeout(this.loadingTimer)
+  }
   render () {
     const {
       editable,
@@ -33,7 +39,6 @@ class TreeItem extends Component {
       cancelEditNode,
       cancelAddSiblingNode,
       renderTree,
-      renderRightClickMenu,
       onCheckChange,
       onSetHighlight,
       showRightClickMenu,
@@ -51,7 +56,7 @@ class TreeItem extends Component {
       localeDatas
     } = this.props
     const { nodePlaceholder, confirm, cancel } = localeDatas.tree
-    console.log(nodePlaceholder)
+
     const treeItem = (
       <li
         key={item.id}
@@ -80,8 +85,13 @@ class TreeItem extends Component {
             <span
               onClick={() => {
                 onExpanded(expanded, item)
-                if (origin) {
-                  loadChildren(item.id)
+                if (origin && (!item.children || item.children.length === 0)) {
+                  this.setState({loading: true})
+                  loadChildren(item.id).finally(() => {
+                    this.loadingTimer = setTimeout(() => {
+                      this.setState({loading: false})
+                    }, 300)
+                  })
                 }
               }}
               style={{ position: 'relative' }}
@@ -90,6 +100,7 @@ class TreeItem extends Component {
               {(item.children && item.children.length > 0) || (origin && !expanded)
                 ? renderSwitcher(expanded)
                 : showLine && <span className='hi-tree__dot' />}
+              {this.state.loading && <IconLoading />}
             </span>
           }
           {checkable ? (
@@ -98,6 +109,9 @@ class TreeItem extends Component {
               checked={checked}
               onChange={() => onCheckChange(checked, item)}
               onTitleClick={e => {
+                if (item.disabled) {
+                  return false
+                }
                 onClick && onClick(item)
                 highlightable && onSetHighlight(item)
                 e.stopPropagation()
@@ -142,14 +156,20 @@ class TreeItem extends Component {
                 style={item.style}
                 className={`${prefixCls}_item-text ${itemStyle} ${
                   highlight === item.id ? 'highlight' : ''
-                } ${draggingNode === item.id ? 'dragging' : ''}`}
+                } ${draggingNode === item.id ? 'dragging' : ''} ${item.disabled ? prefixCls + '_item-text--disabled' : ''}`}
                 onContextMenu={e => {
+                  if (item.disabled) {
+                    return false
+                  }
                   if (editable) {
                     e.preventDefault()
-                    showRightClickMenu(item)
+                    showRightClickMenu(item, e)
                   }
                 }}
                 onClick={e => {
+                  if (item.disabled) {
+                    return false
+                  }
                   closeRightClickMenu()
                   onClick && onClick(item)
                   highlightable && onSetHighlight(item)
@@ -157,7 +177,7 @@ class TreeItem extends Component {
                 }}
               >
                 {item.title}
-                {renderRightClickMenu(item)}
+                {/* {renderRightClickMenu(item)} */}
                 {targetNode === item.id && dropDividerPosition === 'sub' && isOver && (
                   <TreeDivider placement='inner' />
                 )}
@@ -168,14 +188,20 @@ class TreeItem extends Component {
               style={item.style}
               className={`${prefixCls}_item-text ${itemStyle} ${
                 highlight === item.id ? 'highlight' : ''
-              } ${draggingNode === item.id ? 'dragging' : ''}`}
+              } ${draggingNode === item.id ? 'dragging' : ''} ${item.disabled ? prefixCls + '_item-text--disabled' : ''}`}
               onContextMenu={e => {
+                if (item.disabled) {
+                  return false
+                }
                 if (this.props.editable) {
                   e.preventDefault()
-                  showRightClickMenu(item)
+                  showRightClickMenu(item, e)
                 }
               }}
               onClick={e => {
+                if (item.disabled) {
+                  return false
+                }
                 closeRightClickMenu()
                 onClick && onClick(item)
                 highlightable && onSetHighlight(item)
@@ -183,7 +209,7 @@ class TreeItem extends Component {
               }}
             >
               {item.title}
-              {renderRightClickMenu(item)}
+              {/* {renderRightClickMenu(item)} */}
             </span>
           )}
         </div>

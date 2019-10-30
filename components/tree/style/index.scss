@@ -304,6 +304,7 @@ $tree: 'hi-tree' !default;
     padding: 0 4px;
     position: relative;
     line-height: 24px;
+    user-select: none;
 
     &.dragTo {
       background-color: #4284f5;
@@ -324,7 +325,12 @@ $tree: 'hi-tree' !default;
 
     transition: background 0.3s;
 
-    &:hover {
+    &--disabled {
+      color: rgba(0, 0, 0, 0.25);
+      cursor: not-allowed;
+    }
+
+    &:hover:not(.hi-tree_item-text--disabled) {
       background-color: rgba(66, 133, 244, 0.08);
       color: rgba(56, 62, 71, 1);
     }
@@ -337,32 +343,6 @@ $tree: 'hi-tree' !default;
     &.highlight {
       color: #fff;
       background-color: #4285f4;
-    }
-
-    .right-click-menu {
-      color: #333;
-      position: absolute;
-      top: 0;
-      left: calc(100% + 5px);
-      z-index: 1;
-      width: 120px;
-      background: #fff;
-      border: 1px solid #e6e7e8;
-      border-radius: 2px;
-      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
-      box-sizing: border-box;
-      padding: 4px 1px;
-
-      li {
-        padding-left: 15px;
-        height: 36px;
-        line-height: 36px;
-        transition: background 0.3s;
-
-        &:hover {
-          background: rgba(66, 133, 244, 0.08);
-        }
-      }
     }
   }
 
@@ -485,6 +465,40 @@ $tree: 'hi-tree' !default;
 
     &-child {
       overflow: hidden;
+    }
+  }
+}
+
+.right-click-menu {
+  color: #333;
+  position: absolute;
+  // top: 0;
+  // left: calc(100% + 5px);
+  z-index: 1060;
+  // width: 120px;
+  background: #fff;
+  border: 1px solid #e6e7e8;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  padding: 0;
+  list-style: none;
+  margin: 0;
+  max-height: 240px;
+  overflow: auto;
+
+  li {
+    padding: 0 15px;
+    height: 36px;
+    line-height: 36px;
+    transition: background 0.3s;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    &:hover {
+      background: rgba(66, 133, 244, 0.08);
     }
   }
 }

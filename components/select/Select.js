@@ -162,8 +162,8 @@ class Select extends Component {
   }
 
   isRemote () {
-    const { dataSource } = this.props
-    return dataSource && !!dataSource.url
+    const { dataSource, onSearch } = this.props
+    return onSearch || (dataSource && !!dataSource.url)
   }
 
   resetSelectedItems (value, dropdownItems = [], listChanged = false) {
@@ -328,66 +328,77 @@ class Select extends Component {
   }
 
   remoteSearch (keyword) {
-    let {
-      url,
-      transformResponse,
-      error,
-      params,
-      headers,
-      mode,
-      data = {},
-      type = 'GET',
-      key,
-      jsonpCallback = 'callback',
-      ...options
-    } = this.props.dataSource
-    keyword =
-      !keyword && this.autoloadFlag && this.props.autoload
-        ? this.props.dataSource.keyword
-        : keyword
-    this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
-
-    const queryParams = qs.stringify(
-      Object.assign({}, params, key && { [key]: keyword })
-    )
-    url = url.includes('?') ? `${url}&${queryParams}` : `${url}?${queryParams}`
-
-    if (type.toUpperCase() === 'POST') {
-      options.body = JSON.stringify(data)
-    }
-    this.setState({
-      fetching: true
-    })
-
-    if (type.toUpperCase() === 'JSONP') {
-      const _o = {
-        jsonpCallback: jsonpCallback,
-        jsonpCallbackFunction: jsonpCallback
-      }
-      fetchJsonp(url, _o)
-        .then((res) => res.json())
-        .then((json) => {
-          this._setDropdownItems(json, transformResponse)
-        })
-    } else {
-      /* eslint-disable */
-      fetch(url, {
-        method: type,
-        ...options
+    const {onSearch, dataSource, autoload} = this.props
+    if (onSearch && typeof onSearch === 'function') {
+      this.setState({
+        fetching: true
       })
-        .then((response) => response.json())
-        .then(
-          (res) => {
-            this._setDropdownItems(res, transformResponse)
-          },
-          (err) => {
-            error && error(err)
-            this.setState({
-              fetching: false
-            })
-          }
-        )
+      onSearch(keyword).finally(() => {
+        this.setState({fetching: false})
+      })
+    } else {
+      let {
+        url,
+        transformResponse,
+        error,
+        params,
+        headers,
+        mode,
+        data = {},
+        type = 'GET',
+        key,
+        jsonpCallback = 'callback',
+        ...options
+      } = dataSource
+      keyword =
+      !keyword && this.autoloadFlag && autoload
+        ? dataSource.keyword
+        : keyword
+      this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
+
+      const queryParams = qs.stringify(
+        Object.assign({}, params, key && { [key]: keyword })
+      )
+      url = url.includes('?') ? `${url}&${queryParams}` : `${url}?${queryParams}`
+
+      if (type.toUpperCase() === 'POST') {
+        options.body = JSON.stringify(data)
+      }
+      this.setState({
+        fetching: true
+      })
+
+      if (type.toUpperCase() === 'JSONP') {
+        const _o = {
+          jsonpCallback: jsonpCallback,
+          jsonpCallbackFunction: jsonpCallback
+        }
+        fetchJsonp(url, _o)
+          .then((res) => res.json())
+          .then((json) => {
+            this._setDropdownItems(json, transformResponse)
+          })
+      } else {
+        /* eslint-disable */
+        fetch(url, {
+          method: type,
+          ...options
+        })
+          .then((response) => response.json())
+          .then(
+            (res) => {
+              this._setDropdownItems(res, transformResponse)
+            },
+            (err) => {
+              error && error(err)
+              this.setState({
+                fetching: false
+              })
+            }
+          )
+      }
     }
+
   }
   _setDropdownItems(res, func) {
     let dropdownItems = []
@@ -412,6 +423,7 @@ class Select extends Component {
     })
   }
   onFilterItems(keyword) {
+    const { onSearch, dataSource, autoload } = this.props
     this.setState(
       {
         keyword: keyword
@@ -419,13 +431,15 @@ class Select extends Component {
       () => this.resetFocusedIndex()
     )
 
-    if (this.props.dataSource && this.props.dataSource.key) {
+    if (dataSource && dataSource.key) {
       if (
-        this.props.autoload ||
+        autoload ||
         keyword.toString().length >= this.state.queryLength
       ) {
         this.remoteSearch(keyword)
       }
+    }else if(onSearch) {
+      this.remoteSearch(keyword)
     }
   }
 
@@ -533,7 +547,6 @@ class Select extends Component {
       'is-multiple': type === 'multiple',
       'is-single': type === 'single'
     }
-
     return (
       <div
         className={classNames('hi-select', className, extraClass)}
