@@ -5,6 +5,7 @@ import Button from '../'
 import Icon from '../../icon'
 import IconLoading from '../IconLoading'
 
+/* eslint-env jest */
 describe('Button', () => {
   describe('Lifecycle', () => {
     it('componentDidMount', () => {
@@ -188,6 +189,15 @@ describe('Button', () => {
 
       expect(wrapper.find(Icon)).toHaveLength(1)
       expect(wrapper.text()).toEqual(expect.stringContaining(children))
+    })
+    it('props: icon && children is Icon', () => {
+      const children = <Icon name='close' />
+      const wrapper = mount(
+        <Button>
+          {children}
+        </Button>
+      )
+      expect(wrapper.find(Icon)).toHaveLength(1)
     })
 
     it('props: type && appearance', () => {

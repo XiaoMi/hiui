@@ -47,6 +47,7 @@ class Pagination extends Component {
     }
     let current
     if (props.current !== undefined && this.state.current !== props.current) {
+      console.log(111, props.current)
       current = this.getCurrent(props.current, this.calculatePage(props.total, props.pageSize))
     }
     if (current) {
