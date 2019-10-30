@@ -11,9 +11,9 @@ class Demo extends React.Component {
       treeData: [
         { id: 1, title: '小米',
           children: [
-            { id: 2, title: '技术',
+            { id: 2, title: '技术', disabled: true,
               children: [
-                { id: 3, title: '后端', onClick: data => {console.log('后端：', data)} },
+                { id: 3, title: '后端', onClick: data => {console.log('后端：', data)} , disabled: true},
                 { id: 4, title: '运维' },
                 { id: 5, title: '前端' }
               ]

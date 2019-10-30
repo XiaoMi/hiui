@@ -39,7 +39,6 @@ class TreeItem extends Component {
       cancelEditNode,
       cancelAddSiblingNode,
       renderTree,
-      renderRightClickMenu,
       onCheckChange,
       onSetHighlight,
       showRightClickMenu,
@@ -110,6 +109,9 @@ class TreeItem extends Component {
               checked={checked}
               onChange={() => onCheckChange(checked, item)}
               onTitleClick={e => {
+                if (item.disabled) {
+                  return false
+                }
                 onClick && onClick(item)
                 highlightable && onSetHighlight(item)
                 e.stopPropagation()
@@ -154,14 +156,20 @@ class TreeItem extends Component {
                 style={item.style}
                 className={`${prefixCls}_item-text ${itemStyle} ${
                   highlight === item.id ? 'highlight' : ''
-                } ${draggingNode === item.id ? 'dragging' : ''}`}
+                } ${draggingNode === item.id ? 'dragging' : ''} ${item.disabled ? prefixCls + '_item-text--disabled' : ''}`}
                 onContextMenu={e => {
+                  if (item.disabled) {
+                    return false
+                  }
                   if (editable) {
                     e.preventDefault()
-                    showRightClickMenu(item)
+                    showRightClickMenu(item, e)
                   }
                 }}
                 onClick={e => {
+                  if (item.disabled) {
+                    return false
+                  }
                   closeRightClickMenu()
                   onClick && onClick(item)
                   highlightable && onSetHighlight(item)
@@ -169,7 +177,7 @@ class TreeItem extends Component {
                 }}
               >
                 {item.title}
-                {renderRightClickMenu(item)}
+                {/* {renderRightClickMenu(item)} */}
                 {targetNode === item.id && dropDividerPosition === 'sub' && isOver && (
                   <TreeDivider placement='inner' />
                 )}
@@ -180,14 +188,20 @@ class TreeItem extends Component {
               style={item.style}
               className={`${prefixCls}_item-text ${itemStyle} ${
                 highlight === item.id ? 'highlight' : ''
-              } ${draggingNode === item.id ? 'dragging' : ''}`}
+              } ${draggingNode === item.id ? 'dragging' : ''} ${item.disabled ? prefixCls + '_item-text--disabled' : ''}`}
               onContextMenu={e => {
+                if (item.disabled) {
+                  return false
+                }
                 if (this.props.editable) {
                   e.preventDefault()
-                  showRightClickMenu(item)
+                  showRightClickMenu(item, e)
                 }
               }}
               onClick={e => {
+                if (item.disabled) {
+                  return false
+                }
                 closeRightClickMenu()
                 onClick && onClick(item)
                 highlightable && onSetHighlight(item)
@@ -195,7 +209,7 @@ class TreeItem extends Component {
               }}
             >
               {item.title}
-              {renderRightClickMenu(item)}
+              {/* {renderRightClickMenu(item)} */}
             </span>
           )}
         </div>
