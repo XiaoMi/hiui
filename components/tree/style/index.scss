@@ -475,20 +475,27 @@ $tree: 'hi-tree' !default;
   // top: 0;
   // left: calc(100% + 5px);
   z-index: 1060;
-  width: 120px;
+  // width: 120px;
   background: #fff;
   border: 1px solid #e6e7e8;
   border-radius: 2px;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  padding: 4px 1px;
+  padding: 0;
   list-style: none;
+  margin: 0;
+  max-height: 240px;
+  overflow: auto;
 
   li {
-    padding-left: 15px;
+    padding: 0 15px;
     height: 36px;
     line-height: 36px;
     transition: background 0.3s;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 
     &:hover {
       background: rgba(66, 133, 244, 0.08);

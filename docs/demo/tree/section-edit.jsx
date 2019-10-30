@@ -26,7 +26,7 @@ class Demo extends React.Component {
           children: [
             { id: 22, title: '技术',
               children: [
-                { id: 33, title: '后端' },
+                { id: 33, title: '后端', other: 1 },
                 { id: 44, title: '运维' },
                 { id: 55, title: '前端' }
               ]
