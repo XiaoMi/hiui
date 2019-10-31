@@ -53,7 +53,8 @@ class Button extends Component {
       onClick,
       href,
       style,
-      children
+      children,
+      target
     } = this.props
     const isDisabled = disabled || loading
     const classes = classNames(
@@ -72,7 +73,7 @@ class Button extends Component {
         : `hi-btn--type--${type}`
     )
 
-    const restProps = { href, style, onClick, disabled: isDisabled }
+    const restProps = { href, style, onClick, disabled: isDisabled, target }
 
     deprecatedPropsCheck(this.deprecatedProps, this.props, 'Button')
 
