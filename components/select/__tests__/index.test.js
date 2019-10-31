@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import Select from '../'
-
+/* eslint-env jest */
 let wrapper
 const changeCallback = jest.fn(items => items)
 const successCallback = jest.fn(res => res.data)

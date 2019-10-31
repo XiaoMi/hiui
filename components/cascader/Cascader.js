@@ -47,8 +47,8 @@ class Cascader extends Component {
     const cascaderValue = this.props.value
     const cacheValue = this.props.value
     const cascaderLabel = this.getCascaderLabel(cascaderValue)
-
-    this.debouncedKeywordChange = debounce(this.onKeywordChange.bind(this), 300)
+    this.onKeywordChange = this.onKeywordChange.bind(this)
+    this.debouncedKeywordChange = debounce(this.onKeywordChange, 300)
     this.clickOutsideHandel = this.clickOutside.bind(this)
     this.state = {
       filterOptions: false,
@@ -176,7 +176,7 @@ class Cascader extends Component {
   onKeywordChange () {
     const {
       data,
-      filterOption: filterFunc
+      filterOption
     } = this.props
     const {
       keyword
@@ -197,7 +197,7 @@ class Cascader extends Component {
         let label = option[labelKey]
         const value = option[valueKey]
         const children = option[childrenKey]
-        if ((filterFunc && filterFunc(keyword, option)) || label.toString().includes(keyword) || value.toString().includes(keyword)) {
+        if ((filterOption && filterOption(keyword, option)) || label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount++
         }
         match.options.push({
@@ -213,7 +213,7 @@ class Cascader extends Component {
             filterOptions.push(match.options.slice())
           }
         }
-        if ((filterFunc && filterFunc(keyword, option)) || label.toString().includes(keyword) || value.toString().includes(keyword)) {
+        if ((filterOption && filterOption(keyword, option)) || label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount--
         }
         match.options.pop()

@@ -122,28 +122,21 @@ describe('Checkbox', () => {
 describe('Checkbox.Goup', () => {
   it('normal1', () => {
     const wrapper = mount(
-      <div>
-        <Checkbox.Group data={list} />
-      </div>
+      <Checkbox.Group data={list} />
     )
     expect(wrapper.find('.hi-checkbox')).toHaveLength(3)
-
-    // TODO: BUG
-    // wrapper.setProps({data: ['手机', '电脑']})
-    // expect(wrapper.find('.hi-checkbox')).toHaveLength(2)
+    wrapper.setProps({data: ['手机', '电脑']})
+    expect(wrapper.find('.hi-checkbox')).toHaveLength(2)
   })
 
   it('normal2', () => {
     const wrapper = mount(
-      <div>
-        <Checkbox.Group data={nList} />
-      </div>
+      <Checkbox.Group data={nList} />
     )
     expect(wrapper.find('.hi-checkbox')).toHaveLength(3)
     expect(wrapper.find('.hi-checkbox--disabled')).toHaveLength(1)
-    // TODO: BUG
-    // wrapper.setProps({data: ['手机', '电脑']})
-    // expect(wrapper.find('.hi-checkbox')).toHaveLength(2)
+    wrapper.setProps({data: ['手机', '电脑']})
+    expect(wrapper.find('.hi-checkbox')).toHaveLength(2)
   })
 
   it('defaultValue', () => {
