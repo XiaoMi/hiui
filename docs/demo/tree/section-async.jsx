@@ -40,12 +40,12 @@ class Demo extends React.Component {
         <Tree
           loadTreeNode={id=>{
             const obj = {
-              method:'get',
+              method:'GET',
               headers:{},
               data:{},
               params:{id:id},
-              url:'https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/select/options',
-              transformResponse:(res)=>{return res.data}
+              url:'http://yapi.demo.qunar.com/mock/26534/hiui/select',
+              transformResponse:(res)=>{return res.list}
             }
             return obj
           }}

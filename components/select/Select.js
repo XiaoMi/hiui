@@ -70,7 +70,7 @@ class Select extends Component {
     const { data, value, defaultValue } = props
     const dropdownItems = cloneDeep(data)
     const initialValue = value === undefined ? defaultValue : value
-    const selectedItems = this.resetSelectedItems(initialValue, dropdownItems)
+    const selectedItems = this.resetSelectedItems(initialValue, dropdownItems, [])
     const searchable = this.getSearchable()
     this.debouncedFilterItems = debounce(this.onFilterItems.bind(this), 300)
     this.clickOutsideHandel = this.clickOutside.bind(this)
@@ -124,7 +124,7 @@ class Select extends Component {
       const selectedItems = this.resetSelectedItems(
         nextProps.value || this.state.selectedItems,
         nextProps.data,
-        true
+        this.state.selectedItems
       )
       this.setState({
         selectedItems,
@@ -134,7 +134,8 @@ class Select extends Component {
       if (!shallowEqual(nextProps.value, this.props.value)) {
         const selectedItems = this.resetSelectedItems(
           nextProps.value,
-          this.state.dropdownItems
+          this.state.dropdownItems,
+          this.state.selectedItems
         ) // 异步获取时会从内部改变dropdownItems，所以不能从list取
 
         this.setState({
@@ -166,7 +167,7 @@ class Select extends Component {
     return onSearch || (dataSource && !!dataSource.url)
   }
 
-  resetSelectedItems (value, dropdownItems = [], listChanged = false) {
+  resetSelectedItems (value, dropdownItems = [], reviceSelectedItems = []) {
     const values = this.parseValue(value)
     let selectedItems = []
     dropdownItems.forEach((item) => {
@@ -174,7 +175,7 @@ class Select extends Component {
         selectedItems.push(item)
       }
     })
-    return selectedItems
+    return reviceSelectedItems.concat(selectedItems)
   }
 
   addOption (option) {
@@ -411,7 +412,7 @@ class Select extends Component {
       const selectedItems = this.resetSelectedItems(
         this.props.value,
         dropdownItems,
-        true
+        this.state.selectedItems
       )
       this.setState({
         dropdownItems,
