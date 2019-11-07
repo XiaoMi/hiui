@@ -40,18 +40,21 @@ class Time extends Component {
   }
   selectedEvent (type, value, arrow) {
     const { date } = this.state
+    const cDate = new Date(date.getTime())
     const disabledList = this._getDsiabledList()[type]
     if (disabledList.includes(value) && arrow) {
       value = this.whenDisableChange(disabledList, value, arrow)
     }
     if (type === 'hours') {
-      date.setHours(value)
+      cDate.setHours(value)
     } else if (type === 'minutes') {
-      date.setMinutes(value)
+      cDate.setMinutes(value)
     } else if (type === 'seconds') {
-      date.setSeconds(value)
+      cDate.setSeconds(value)
     }
-    this.callback(date)
+    if (cDate.getTime() !== date.getTime()) {
+      this.callback(cDate)
+    }
   }
 
   isShowHMS () {

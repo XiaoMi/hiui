@@ -18,18 +18,14 @@ class Demo extends React.Component {
             <DatePicker
               type='week'
               weekOffset={1}
-              onChange={(d) => {
-                console.log('周选择', d)
-              }}
+              onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
             />
           </Col>
           <Col span={6}>
             <p>周日起始</p>
             <DatePicker
               type='week'
-              onChange={(d) => {
-                console.log('周选择', d)
-              }}
+              onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
             />
           </Col>
         </Row>

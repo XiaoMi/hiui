@@ -10,7 +10,7 @@ class Demo extends React.Component {
       <DatePicker
         type="timeperiod"
         value={new Date()}
-        onChange={(d) => {console.log('sec', d)}}
+        onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
       />
     )
   }
