@@ -5,6 +5,10 @@
 - 修复 `<Select />` 异步多选在输入关键字时会清除已选择项的问题 [#746](https://github.com/XiaoMi/hiui/issues/746)
 - 变更 `<Select />`、`<Tree />`、`<Tree />` 的远程 Mock 数据地址
 
+## 2.6.0-rc.1
+- 新增 `<Tree />` 右键菜单允许自定义内容
+- 优化 `<Tree />` 异步加载时的加载状态 [#744](https://github.com/XiaoMi/hiui/issues/744)
+
 ## 2.5.2
 
 - 修复 `<Tabs />` 编辑模式下删除最后一个 tab 报错的问题 [#735](https://github.com/XiaoMi/hiui/issues/735)
