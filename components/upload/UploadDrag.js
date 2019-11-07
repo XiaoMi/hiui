@@ -108,7 +108,7 @@ class UploadDrag extends Upload {
             fileList.length > 0 && <li className='hi-upload__item hi-upload__item-tips'>
               <Icon name='comment-circle-o' />
               <span className='hi-upload__tips--exist'>
-                {localeDatas.upload.dragTips}
+                {fileCountLimted ? localeDatas.upload.dragTipsLimited : localeDatas.upload.dragTips}
               </span>
             </li>
           }
