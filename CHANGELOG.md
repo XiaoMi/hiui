@@ -7,7 +7,6 @@
 - 修复 `<Rate />`  组件的控制台警告 [#760](https://github.com/XiaoMi/hiui/issues/760)
 - 变更 `<Select />`、`<Tree />`、`<Table />` 的远程 Mock 数据地址
 
-
 ## 2.5.2
 
 - 修复 `<Tabs />` 编辑模式下删除最后一个 tab 报错的问题 [#735](https://github.com/XiaoMi/hiui/issues/735)
@@ -42,7 +41,7 @@
 
 - 修复 `<Select />` 没有适配主题色的问题 [#257](https://github.com/XiaoMi/hiui/issues/257)
 - 修复 `<Tabs />` 空状态下报错的问题 [#674](https://github.com/XiaoMi/hiui/issues/674)
-- 修复 `<Radio />`  非受控状态下切换失效的问题 [#683](https://github.com/XiaoMi/hiui/issues/683)
+- 修复 `<Radio />` 非受控状态下切换失效的问题 [#683](https://github.com/XiaoMi/hiui/issues/683)
 - 修复 `<Cascader />` 清空搜索展示不正确的问题 [#333](https://github.com/XiaoMi/hiui/issues/333)
 - 修复 `<Collpase />` disabled 没有样式区分的问题 [#483](https://github.com/XiaoMi/hiui/issues/483)
 - 修复 `<Checkbox />` 非受控情况下 onChange 参数不全的问题 [#688](https://github.com/XiaoMi/hiui/issues/688)
@@ -92,7 +91,6 @@
 - 修复 `<Input />` clearable 不生效的问题 [#580](https://github.com/XiaoMi/hiui/issues/580)
 - 修复 `<Upload />` 中的自定义上传结合 maxCount 不能上传的问题 [#582](https://github.com/XiaoMi/hiui/issues/582)
 - 修复 `<Input />` type 为 textarea 时的底部的样式问题 [#584](https://github.com/XiaoMi/hiui/issues/584)
-
 
 ## 2.1.0
 

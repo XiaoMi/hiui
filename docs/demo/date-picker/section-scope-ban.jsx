@@ -12,6 +12,7 @@ class Demo extends React.Component {
         type='daterange'
         min={new Date()}
         max={new Date().getTime() + 30 * 24 * 60 * 60 * 1000}
+        onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
       />
     )
   }

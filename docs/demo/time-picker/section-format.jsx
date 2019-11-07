@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import TimePicker from '../../../components/date-picker/TimePicker'
 const prefix = 'section-format'
 const code = `import React from 'react'
-import TimePicker from '@hi-ui/hiui/es/time-picker/TimePicker'\n
+import TimePicker from '@hi-ui/hiui/es/date-picker/TimePicker'\n
 class Demo extends React.Component {
   render() {
     return (

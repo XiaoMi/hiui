@@ -37,16 +37,12 @@ class Demo extends React.Component {
         >
           <DatePicker
             value={this.state.date}
-            onChange={(d) => {
-              console.log(DatePicker.format(d, 'yyyy-MM E'))
-            }}
+            onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
           />
           <DatePicker
             type='daterange'
             value={this.state.rangeDate}
-            onChange={(d) => {
-              console.log(d)
-            }}
+            onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
           />
         </Modal>
        }

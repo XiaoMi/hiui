@@ -65,7 +65,7 @@
     color: $gray-darker;
 
     .hi-input {
-      width: 60px;
+      width: 64px;
 
       &__text {
         text-align: center;
@@ -90,7 +90,7 @@
       min-width: 32px;
       padding: 0 4px;
       height: 32px;
-      border: 1px solid $gray;
+      border: 1px solid $gray-light;
       border-radius: 2px;
       font-size: $font-size-normal;
       line-height: 30px;

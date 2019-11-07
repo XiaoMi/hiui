@@ -74,5 +74,18 @@ export default {
   },
   form: {
     colon: '：'
+  },
+  tree: {
+    addNode: '添加节点',
+    addChildNode: '添加子节点',
+    edit: '编辑节点',
+    del: '删除',
+    confirm: '确认',
+    cancel: '取消',
+    nodePlaceholder: '请输入节点名称',
+    searchPlaceholder: '关键词搜索',
+    searchEmptyResult: '未找到搜索结果',
+    modalTitle: '提示',
+    delTips: '删除节点将删除所有子节点，确定删除吗？'
   }
 }
