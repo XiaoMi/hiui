@@ -1,5 +1,8 @@
 # 更新日志
 
+## 1.5.14
+- 修改：`<Upload />` 照片上传、拖拽上传数量达到限制时的展示状态 [#757](https://github.com/XiaoMi/hiui/issues/757)
+
 ## 1.5.8
 
 - 修复：`<Timepicker />` 在时间列表滚动时引起的日期变化问题 [#499](https://github.com/XiaoMi/hiui/issues/499)
