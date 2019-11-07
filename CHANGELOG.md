@@ -1,5 +1,39 @@
 # 更新日志
 
+## 2.5.3
+- 修复 `<Select />` 异步多选在输入关键字时会清除已选择项的问题 [#746](https://github.com/XiaoMi/hiui/issues/746)
+- 修复 `<Loading />` 在某些情况下导致页面布局发生变化的问题 [#749](https://github.com/XiaoMi/hiui/issues/749)
+- 修改 `<Upload />` photo 模式、drag 模式下超出数量限制的展现形式 [#756](https://github.com/XiaoMi/hiui/issues/756)
+- 修复 `<Rate />`  组件的控制台警告 [#760](https://github.com/XiaoMi/hiui/issues/760)
+- 变更 `<Select />`、`<Tree />`、`<Table />` 的远程 Mock 数据地址
+
+
+## 2.5.2
+
+- 修复 `<Tabs />` 编辑模式下删除最后一个 tab 报错的问题 [#735](https://github.com/XiaoMi/hiui/issues/735)
+- 修复 `<Select />` value 解析不正确的问题 [#737](https://github.com/XiaoMi/hiui/issues/737)
+- 修复 `<Cascader />` 搜索后结果展示宽度太窄的问题 [#721](https://github.com/XiaoMi/hiui/issues/721)
+
+## 2.5.1
+
+- 修复 `<Input />` defaultValue 设置无效的问题 [#717](https://github.com/XiaoMi/hiui/issues/717)
+- 修复 `<Upload />` 拖拽上传场景下，删除文件不正确的问题 [#705](https://github.com/XiaoMi/hiui/issues/705)
+- 修复 `<Menu />` showAllSubMenus 对传入 data 的容错问题 [#687](https://github.com/XiaoMi/hiui/issues/687)
+- 修复 `<DatePicker />` format 后格式不符合预期的问题 [#712](https://github.com/XiaoMi/hiui/issues/712)
+- 修复 `<TimePicker />` 清空后再次打开面板清空无效的问题 [#722](https://github.com/XiaoMi/hiui/issues/722)
+- 修复 `<Popover />` 在某些场景下显示、隐藏的顺序不正确的问题 [#706](https://github.com/XiaoMi/hiui/issues/706)
+- 修复 `<Tree />` 国际化支持不完全的问题 [#729](https://github.com/XiaoMi/hiui/issues/729)
+- 修复 `<Dropdown />` 数据项 href 仅点击文字才能跳转的问题 [#726](https://github.com/XiaoMi/hiui/issues/726)
+
+## 2.5.0
+
+- 新增 `<Cascader />` filterOption 属性支持自定义搜索 [#704](https://github.com/XiaoMi/hiui/issues/704)
+- 修复 `<Cascader />` 刷新后 value 不能正确显示的问题 [#667](https://github.com/XiaoMi/hiui/issues/667)
+- 修复 `<Pagination />` pageSizeOptions 写法兼容性问题 [#703](https://github.com/XiaoMi/hiui/issues/703)
+- 修复 `<Carousel />` 第一张图向前翻页跳转不正确的问题 [#696](https://github.com/XiaoMi/hiui/issues/696)
+- 修复 兼容属性 legacy 造成的组件污染问题 [#708](https://github.com/XiaoMi/hiui/issues/708)
+- 修复 `<DatePicker />` 传入字符串值时控制台抛出的警告问题 [#709](https://github.com/XiaoMi/hiui/issues/709)
+
 ## 2.4.1
 
 - 修复 `<Table />` 多选失效的问题 [#699](https://github.com/XiaoMi/hiui/issues/699)
