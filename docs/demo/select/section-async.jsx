@@ -11,13 +11,10 @@ class Demo extends React.Component {
         type='single'
         dataSource={{
           type: 'GET',
-          headers: {token: 'tokenXXXXXXX'},
-          mode: 'cors',
-          credentials: 'same-origin',
-          url: 'https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/select/options',
+          key: 'id',
+          url: 'http://yapi.demo.qunar.com/mock/26534/hiui/select',
           transformResponse: (res) => {
-            console.log('----', res)
-            return res.data
+            return res.list
           }
         }}
         placeholder='请选择种类'

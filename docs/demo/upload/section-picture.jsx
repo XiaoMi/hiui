@@ -9,7 +9,7 @@ class Demo extends React.Component {
     return (
       <Upload
         type="pictureCard"
-        uploadAction= "https://easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/upload"
+        uploadAction= "http://www.mocky.io/v2/5dc3b4413000007600347501"
         headers={{name: 'mi'}}
         onChange = {(file, fileList, response) => {
           console.log('upload callback', file, fileList, response)

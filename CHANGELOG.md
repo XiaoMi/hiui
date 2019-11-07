@@ -1,5 +1,12 @@
 # 更新日志
 
+## 2.5.3
+- 修复 `<Select />` 异步多选在输入关键字时会清除已选择项的问题 [#746](https://github.com/XiaoMi/hiui/issues/746)
+- 修复 `<Loading />` 在某些情况下导致页面布局发生变化的问题 [#749](https://github.com/XiaoMi/hiui/issues/749)
+- 修改 `<Upload />` photo 模式、drag 模式下超出数量限制的展现形式 [#756](https://github.com/XiaoMi/hiui/issues/756)
+- 修复 `<Rate />`  组件的控制台警告 [#760](https://github.com/XiaoMi/hiui/issues/760)
+- 变更 `<Select />`、`<Tree />`、`<Table />` 的远程 Mock 数据地址
+
 ## 2.5.2
 
 - 修复 `<Tabs />` 编辑模式下删除最后一个 tab 报错的问题 [#735](https://github.com/XiaoMi/hiui/issues/735)
