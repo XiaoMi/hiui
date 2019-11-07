@@ -40,12 +40,12 @@ class Demo extends React.Component {
         <Tree
           loadTreeNode={id=>{
             const obj = {
-              method:'GET',
-              headers:{},
+              method:'get',
+              headers:{'Content-Type': 'application/x-www-form-urlencoded'},
               data:{},
               params:{id:id},
-              url:'http://yapi.demo.qunar.com/mock/26534/hiui/select',
-              transformResponse:(res)=>{return res.list}
+              url:'http://yapi.demo.qunar.com/mock/26534/hiui/async-tree',
+              transformResponse:(res)=>{return res.data}
             }
             return obj
           }}
