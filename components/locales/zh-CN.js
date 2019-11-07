@@ -58,6 +58,7 @@ export default {
     delete: '删除',
     drag: '拖拽文件上传',
     dragTips: '请点击或拖拽文件上传',
+    dragTipsLimited: '数量已达上限',
     preview: '预览'
   },
   modal: {

@@ -57,6 +57,7 @@ export default {
     delete: 'Delete',
     drag: 'Drag and drop files for uploading',
     dragTips: 'Please click or drag and drop file upload',
+    dragTipsLimited: 'The number has reached the upper limit',
     preview: 'Preview'
   },
   modal: {

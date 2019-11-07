@@ -17,7 +17,7 @@ class Demo extends React.Component {
     super(props)
     this.state = {
       from: '',
-      pageSize:''
+      pageSize:2
     }
 
     window.selectTable = this
@@ -59,22 +59,21 @@ class Demo extends React.Component {
             avg: true
           }}
           origin={{
-            url: 'https://www.easy-mock.com/mock/5c1b42e3fe5907404e6540e9/hiui/table',
+            url: 'http://yapi.demo.qunar.com/mock/26534/hiui/server-table',
             currentPageName: 'pageNum', //分页的页码字端名(默认 current)
             autoDelayTime: 500,   // 自动发请求的时候，延迟时间(默认 200)
-            headers: {'OS': 'WEB'}, //设置请求头
+            // headers: {'OS': 'WEB'}, //设置请求头
             data: {
               from,
-              startTime: '',
-              endTime: '',
               pageSize
             },
             type: "GET",
             auto:true, // 自动发请求配置(默认false)
             success: (res) => {
-              let {data: {data, columns,page: {pageSize, totalNum, pageNum}}} = res
+              let {data: {list, columns,page: {pageSize, totalNum, pageNum}}} = res
+              console.log(list, columns)
               return {
-                data,
+                data: list,
                 columns,
                 page: {
                   pageSize,
