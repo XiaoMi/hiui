@@ -89,21 +89,23 @@ class UploadPhoto extends Upload {
               )
             }
           })}
-          <li className='hi-upload__item hi-upload__item--upload'>
-            <label style={{display: 'block'}}>
-              <input
-                ref={node => {
-                  this.uploadRef = node
-                }}
-                type='file'
-                accept={accept}
-                disabled={(disabled || fileCountLimted) && 'disabled'}
-                onChange={e => this.uploadFiles(e.target.files)}
-                hidden
-              />
-              <Icon name='plus' />
-            </label>
-          </li>
+          {
+            !fileCountLimted && <li className='hi-upload__item hi-upload__item--upload'>
+              <label style={{display: 'block'}}>
+                <input
+                  ref={node => {
+                    this.uploadRef = node
+                  }}
+                  type='file'
+                  accept={accept}
+                  disabled={(disabled || fileCountLimted) && 'disabled'}
+                  onChange={e => this.uploadFiles(e.target.files)}
+                  hidden
+                />
+                <Icon name='plus' />
+              </label>
+            </li>
+          }
         </ul>
         {
           showModal && <Preview
