@@ -60,8 +60,10 @@ function PortalWrapper ({ mountNode, children }) {
 function open (target, { content, key, duration, size } = {}) {
   let renderNode = document.createElement('div')
   const mountNode = target || document.body
-  window.getComputedStyle(mountNode).position === 'absolute' ||
+  mountNode.nodeName !== 'BODY' && (
+    window.getComputedStyle(mountNode).position === 'absolute' ||
     mountNode.style.setProperty('position', 'relative')
+  )
   const full = !target
   ReactDOM.render(
     <Loading {...{ content, full, visible: true, target: mountNode, size }} />,
@@ -79,8 +81,10 @@ function open (target, { content, key, duration, size } = {}) {
 function deprecatedOpen ({ target, tip } = {}) {
   let renderNode = document.createElement('div')
   const mountNode = target || document.body
-  window.getComputedStyle(mountNode).position === 'absolute' ||
+  mountNode.nodeName !== 'BODY' && (
+    window.getComputedStyle(mountNode).position === 'absolute' ||
     mountNode.style.setProperty('position', 'relative')
+  )
   const full = !target
   ReactDOM.render(
     <Loading {...{ tip, full, show: true, target: mountNode }} />,

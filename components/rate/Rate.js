@@ -18,6 +18,7 @@ class Rate extends Component {
         value
       }
     }
+    return null
   }
   state = {
     value: 0,

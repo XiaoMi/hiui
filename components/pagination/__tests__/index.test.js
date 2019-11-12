@@ -61,12 +61,14 @@ describe('Pagination', () => {
       expect(wrapper.find(`.hi-pagination__item-10`).hasClass('hi-pagination__item--active')).toBeTruthy()
     })
     it('max', () => {
-      // TODO: max 属性
+      // TODO:MAX 属性
       const wrapper = mount(
-        <ProviderPagination total={100} pageSize={10} max={5} />
+        <ProviderPagination current={1} total={200} pageSize={10}/>
       )
       wrapper.setProps({current: 3})
       expect(wrapper.find(`.hi-pagination__item-3`).hasClass('hi-pagination__item--active')).toBeTruthy()
+      wrapper.find('.hi-pagination__item-1').at(0).simulate('click')
+      wrapper.find('.hi-pagination__item-4').at(0).simulate('click')
     })
     it('pageSize', () => {
       const wrapper = mount(

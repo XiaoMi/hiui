@@ -1,5 +1,20 @@
 # 更新日志
 
+## 2.6.0-rc.2
+- 修复 `<Loading />` 在某些情况下导致页面布局发生变化的问题 [#749](https://github.com/XiaoMi/hiui/issues/749)
+- 修复 `<Select />` 异步多选在输入关键字时会清除已选择项的问题 [#746](https://github.com/XiaoMi/hiui/issues/746)
+- 变更 `<Select />`、`<Tree />`、`<Tree />` 的远程 Mock 数据地址
+
+## 2.6.0-rc.1
+- 新增 `<Tree />` 右键菜单允许自定义内容
+- 优化 `<Tree />` 异步加载时的加载状态 [#744](https://github.com/XiaoMi/hiui/issues/744)
+
+## 2.5.2
+
+- 修复 `<Tabs />` 编辑模式下删除最后一个 tab 报错的问题 [#735](https://github.com/XiaoMi/hiui/issues/735)
+- 修复 `<Select />` value 解析不正确的问题 [#737](https://github.com/XiaoMi/hiui/issues/737)
+- 修复 `<Cascader />` 搜索后结果展示宽度太窄的问题 [#721](https://github.com/XiaoMi/hiui/issues/721)
+
 ## 2.5.1
 
 - 修复 `<Input />` defaultValue 设置无效的问题 [#717](https://github.com/XiaoMi/hiui/issues/717)

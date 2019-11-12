@@ -15,7 +15,7 @@ class Demo extends React.Component {
             { id: 2, title: '技术',
               children: [
                 { id: 3, title: '后端', onClick: data => {console.log('后端：', data)} },
-                { id: 4, title: '运维' },
+                { id: 4, title: '运维' , disabled: true},
                 { id: 5, title: '前端' }
               ]
             },

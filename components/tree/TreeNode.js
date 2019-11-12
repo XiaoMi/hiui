@@ -11,6 +11,7 @@ import { collectExpandId, findNode } from './util'
 import axios from 'axios'
 import qs from 'qs'
 import Provider from '../context'
+import CModal from '../date-picker/Modal'
 
 class TreeNode extends Component {
   constructor (props) {
@@ -36,7 +37,49 @@ class TreeNode extends Component {
       // 总共高亮的项
       highlightNum: 0,
       positionX: null,
-      positionY: null
+      positionY: null,
+      contextMenuPanel: null
+    }
+    const { addNode, addChildNode, edit, del } = props.localeDatas.tree
+    this.defaultEditNodeMenu = {
+      'editNode': (item, menu, index) => {
+        return <li key={index} onClick={() => {
+          menu.onClick ? menu.onClick(item, this) : this.editNode(item)
+          this.closeRightClickMenu()
+        }}>{menu.title || edit}</li>
+      },
+      'addChildNode': (item, menu, index) => {
+        return <li key={index} onClick={() => {
+          menu.onClick ? menu.onClick(item, this) : this.addChildNode(item)
+          this.closeRightClickMenu()
+        }}>{menu.title || addChildNode}</li>
+      },
+      'addSiblingNode': (item, menu, index) => {
+        return <li key={index} onClick={() => {
+          menu.onClick ? menu.onClick(item, this) : this.addSiblingNode(item.id)
+          this.closeRightClickMenu()
+        }}>{menu.title || addNode}</li>
+      },
+      'deleteNode': (item, menu, index) => {
+        return <li key={index}
+          onClick={() => {
+            menu.onClick ? menu.onClick(item, this) : this.deleteNode(item)
+            this.closeRightClickMenu()
+          }}
+        >
+          {menu.title || del}
+        </li>
+      },
+      'customer': (item, menu, index) => {
+        return <li key={index}
+          onClick={() => {
+            menu.onClick && menu.onClick(item)
+            this.closeRightClickMenu()
+          }}
+        >
+          {menu.title}
+        </li>
+      }
     }
   }
   static getDerivedStateFromProps (props, state) {
@@ -199,6 +242,10 @@ class TreeNode extends Component {
     this._addChildNode(item.id, _dataCache, _editingNodes)
     this.setState({ dataCache: _dataCache, editingNodes: _editingNodes })
   }
+  deleteNode = item => {
+    this.setCurrentDeleteNode(item.id)
+    this.openModal()
+  }
   // 编辑节点
   editNode = item => {
     const _editNodes = [...this.state.editNodes]
@@ -299,10 +346,11 @@ class TreeNode extends Component {
   // 异步加载子节点
   loadChildren = itemId => {
     const { origin } = this.props
-    const { method, url, headers, data, params, transformResponse } = origin
+    const _orgin = typeof orgin === 'object' ? origin : origin(itemId)
+    const { method, url, headers, data, params, transformResponse } = _orgin
     const { dataCache } = this.state
     const that = this
-    axios({
+    return axios({
       method: method,
       url: url,
       headers,
@@ -379,60 +427,77 @@ class TreeNode extends Component {
     }
   }
   // 删除节点
-  _deleteNode = (itemId, data) => {
+  __deleteNode = (itemId, data) => {
     data.forEach((d, index) => {
       if (d.id === itemId) {
         data.splice(index, 1)
       } else {
         if (d.children) {
-          this._deleteNode(itemId, d.children)
+          this.__deleteNode(itemId, d.children)
         }
       }
     })
   }
-  deleteNode = itemId => {
+  _deleteNode = itemId => {
     const { dataCache } = this.state
     const _dataCache = cloneDeep(dataCache)
-    this._deleteNode(itemId, _dataCache)
+    this.__deleteNode(itemId, _dataCache)
     this.setState({ dataCache: _dataCache })
     const node = findNode(itemId, dataCache)
     this.props.onDelete(node, _dataCache)
-  }
-  // 渲染右键菜单
-  renderRightClickMenu = item => {
-    const { localeDatas } = this.props
-    const { addNode, addChildNode, edit, del } = localeDatas.tree
-    return (
-      item.id === this.state.showRightClickMenu && (
-        <ul className='right-click-menu'>
-          <li onClick={() => this.addSiblingNode(item.id)}>{addNode}</li>
-          <li onClick={() => this.addChildNode(item)}>{addChildNode}</li>
-          <li onClick={() => this.editNode(item)}>{edit}</li>
-          <li
-            onClick={() => {
-              this.setCurrentDeleteNode(item.id)
-              this.openModal()
-            }}
-          >
-            {del}
-          </li>
-        </ul>
-      )
-    )
   }
   onSetHighlight = item => {
     this.setState({
       highlight: item.id
     })
   }
-  showRightClickMenu = item => {
+  showRightClickMenu = (item, e) => {
+    const rect = e.target ? e.target.getBoundingClientRect() : {left: 0, top: 0, width: 0}
+    const _st = document.documentElement.scrollTop || document.body.scrollTop
+    const { contextMenu } = this.props
+    if (!contextMenu) {
+      return
+    }
+    let _cm = []
+    let type = Object.prototype.toString.call(contextMenu)
+    if (type === '[object Array]') {
+      _cm = contextMenu
+    }
+    if (type === '[object Function]') {
+      _cm = contextMenu(item)
+      if (!_cm) {
+        return
+      }
+    }
+    // if (type === '[object Boolean]') {
+    //   _cm = null
+    // }
+    let contextMenuPanel = <ul className='right-click-menu' style={{left: rect.left + rect.width + 5, top: rect.top + _st}}>
+      {
+        _cm.length > 0
+          ? _cm.map((cm, index) => {
+            if (cm.type && this.defaultEditNodeMenu[cm.type]) {
+              return this.defaultEditNodeMenu[cm.type](item, cm, index)
+            } else {
+              return this.defaultEditNodeMenu['customer'](item, cm, index)
+            }
+          }) : Object.keys(this.defaultEditNodeMenu).map((key, index) => {
+            if (key === 'customer') {
+              return null
+            }
+            return this.defaultEditNodeMenu[key](item, {}, index)
+          })
+      }
+    </ul>
+
     this.setState({
-      showRightClickMenu: item.id,
+      contextMenuPanel: contextMenuPanel,
       highlight: item.id
     })
   }
   closeRightClickMenu = () => {
     this.setState({
+      contextMenuPanel: null,
       showRightClickMenu: null
     })
   }
@@ -514,7 +579,7 @@ class TreeNode extends Component {
               positionY={positionY}
               renderSwitcher={this.renderSwitcher}
               cancelAddSiblingNode={this.cancelAddSiblingNode}
-              renderRightClickMenu={this.renderRightClickMenu}
+              // renderRightClickMenu={this.renderRightClickMenu}
               onCheckChange={onCheckChange}
               saveEditNode={this.saveEditNode}
               renderItemIcon={this.renderItemIcon}
@@ -578,7 +643,7 @@ class TreeNode extends Component {
           title={modalTitle}
           show={this.state.showModal}
           onConfirm={() => {
-            this.deleteNode(this.state.currentDeleteNode)
+            this._deleteNode(this.state.currentDeleteNode)
             this.setState({
               showModal: false
             })
@@ -591,6 +656,7 @@ class TreeNode extends Component {
         >
           <span>{delTips}</span>
         </Modal>
+        { this.state.contextMenuPanel && <CModal clickOutSide={() => { this.setState({contextMenuPanel: null}) }}>{this.state.contextMenuPanel}</CModal> }
       </div>
     )
   }
