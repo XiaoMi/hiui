@@ -17,7 +17,12 @@ describe('Button', () => {
       expect(wrapper.find(`button`)).toHaveLength(1)
     })
   })
+  describe('IS_HI_COMPONENT',() => {
+    it('is hi component', () => {
+      expect(Button["IS_HI_COMPONENT"]).toEqual(true)
+    })
 
+  })
   describe('PropTypes', () => {
     it('type', () => {
       const types = [
@@ -157,6 +162,8 @@ describe('Button', () => {
 
       targets.map((target, index) => expect(wrapper.find('a').at(index).prop('target')).toEqual(target))
     })
+
+
 
     it('children', () => {
       const Children = function () {
