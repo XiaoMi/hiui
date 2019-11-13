@@ -13,7 +13,7 @@ import fetchJsonp from 'fetch-jsonp'
 import qs from 'qs'
 
 class Select extends Component {
-  autoloadFlag = true // 第一次自动加载数据标识
+  autoloadFlag = true; // 第一次自动加载数据标识
 
   static propTypes = {
     type: PropTypes.oneOf(['single', 'multiple']),
@@ -45,7 +45,7 @@ class Select extends Component {
     onChange: PropTypes.func,
     render: PropTypes.func,
     open: PropTypes.bool
-  }
+  };
 
   static defaultProps = {
     data: [],
@@ -62,7 +62,7 @@ class Select extends Component {
     onClick: () => {},
     onBlur: () => {},
     onFocus: () => {}
-  }
+  };
 
   constructor (props) {
     super(props)
@@ -70,7 +70,11 @@ class Select extends Component {
     const { data, value, defaultValue } = props
     const dropdownItems = cloneDeep(data)
     const initialValue = value === undefined ? defaultValue : value
-    const selectedItems = this.resetSelectedItems(initialValue, dropdownItems, [])
+    const selectedItems = this.resetSelectedItems(
+      initialValue,
+      dropdownItems,
+      []
+    )
     const searchable = this.getSearchable()
     this.debouncedFilterItems = debounce(this.onFilterItems.bind(this), 300)
     this.clickOutsideHandel = this.clickOutside.bind(this)
@@ -170,7 +174,7 @@ class Select extends Component {
   resetSelectedItems (value, dropdownItems = [], reviceSelectedItems = []) {
     const values = this.parseValue(value)
     let selectedItems = []
-    dropdownItems.forEach((item) => {
+    dropdownItems.forEach(item => {
       if (values.includes(item.id)) {
         selectedItems.push(item)
       }
@@ -213,10 +217,10 @@ class Select extends Component {
     const { dropdownItems, selectedItems } = this.state
     let _selectedItems = [...selectedItems]
     let changedItems = []
-    dropdownItems.forEach((item) => {
+    dropdownItems.forEach(item => {
       if (!item.disabled && this.matchFilter(item)) {
         if (
-          !_selectedItems.map((selectItem) => selectItem.id).includes(item.id)
+          !_selectedItems.map(selectItem => selectItem.id).includes(item.id)
         ) {
           _selectedItems.push(item)
           changedItems.push(item)
@@ -234,7 +238,7 @@ class Select extends Component {
     let focusedIndex = index
 
     if (this.props.type === 'multiple') {
-      let itemIndex = this.state.selectedItems.findIndex((sItem) => {
+      let itemIndex = this.state.selectedItems.findIndex(sItem => {
         return sItem.id === item.id
       })
       if (itemIndex === -1) {
@@ -270,7 +274,7 @@ class Select extends Component {
     )
   }
 
-  handleInputClick = (e) => {
+  handleInputClick = e => {
     let { dropdownShow } = this.state
 
     if (dropdownShow) {
@@ -286,7 +290,7 @@ class Select extends Component {
     if (dropdownShow === false) {
       this.showDropdown()
     }
-  }
+  };
 
   hideDropdown () {
     this.state.dropdownShow === true &&
@@ -329,13 +333,13 @@ class Select extends Component {
   }
 
   remoteSearch (keyword) {
-    const {onSearch, dataSource, autoload} = this.props
+    const { onSearch, dataSource, autoload } = this.props
     if (onSearch && typeof onSearch === 'function') {
       this.setState({
         fetching: true
       })
       onSearch(keyword).finally(() => {
-        this.setState({fetching: false})
+        this.setState({ fetching: false })
       })
     } else {
       let {
@@ -352,15 +356,17 @@ class Select extends Component {
         ...options
       } = dataSource
       keyword =
-      !keyword && this.autoloadFlag && autoload
-        ? dataSource.keyword
-        : keyword
+        !keyword && this.autoloadFlag && autoload
+          ? dataSource.keyword
+          : keyword
       this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
 
       const queryParams = qs.stringify(
         Object.assign({}, params, key && { [key]: keyword })
       )
-      url = url.includes('?') ? `${url}&${queryParams}` : `${url}?${queryParams}`
+      url = url.includes('?')
+        ? `${url}&${queryParams}`
+        : `${url}?${queryParams}`
 
       if (type.toUpperCase() === 'POST') {
         options.body = JSON.stringify(data)
@@ -375,8 +381,8 @@ class Select extends Component {
           jsonpCallbackFunction: jsonpCallback
         }
         fetchJsonp(url, _o)
-          .then((res) => res.json())
-          .then((json) => {
+          .then(res => res.json())
+          .then(json => {
             this._setDropdownItems(json, transformResponse)
           })
       } else {
@@ -385,136 +391,133 @@ class Select extends Component {
           method: type,
           ...options
         })
-          .then((response) => response.json())
+          .then(response => response.json())
           .then(
-            (res) => {
-              this._setDropdownItems(res, transformResponse)
+            res => {
+              this._setDropdownItems(res, transformResponse);
             },
-            (err) => {
-              error && error(err)
+            err => {
+              error && error(err);
               this.setState({
                 fetching: false
-              })
+              });
             }
-          )
+          );
       }
     }
-
   }
   _setDropdownItems(res, func) {
-    let dropdownItems = []
+    let dropdownItems = [];
     if (func) {
-      dropdownItems = func(res)
+      dropdownItems = func(res);
     } else {
-      dropdownItems = res.data
+      dropdownItems = res.data;
     }
     if (Array.isArray(dropdownItems)) {
       const selectedItems = this.resetSelectedItems(
         this.props.value,
         dropdownItems,
         this.state.selectedItems
-      )
+      );
       this.setState({
         dropdownItems,
         selectedItems
-      })
+      });
     }
     this.setState({
       fetching: false
-    })
+    });
   }
   onFilterItems(keyword) {
-    const { onSearch, dataSource, autoload } = this.props
+    const { onSearch, dataSource, autoload } = this.props;
     this.setState(
       {
         keyword: keyword
       },
       () => this.resetFocusedIndex()
-    )
+    );
 
     if (dataSource && dataSource.key) {
-      if (
-        autoload ||
-        keyword.toString().length >= this.state.queryLength
-      ) {
-        this.remoteSearch(keyword)
+      if (autoload || keyword.toString().length >= this.state.queryLength) {
+        this.remoteSearch(keyword);
       }
-    }else if(onSearch) {
-      this.remoteSearch(keyword)
+    } else if (onSearch) {
+      this.remoteSearch(keyword);
     }
   }
 
   matchFilter(item) {
-    const { filterOption } = this.props
-    const { searchable, keyword } = this.state
+    const { filterOption } = this.props;
+    const { searchable, keyword } = this.state;
 
-    const shouldMatch = this.isRemote() ||
-      (!searchable || !keyword)
+    const shouldMatch = this.isRemote() || !searchable || !keyword;
 
-    if (typeof filterOption === 'function') {
-      return shouldMatch || filterOption(keyword, item)
+    if (typeof filterOption === "function") {
+      return shouldMatch || filterOption(keyword, item);
     }
 
-    return shouldMatch || (String(item.id).includes(keyword) ||
-    String(item.title).includes(keyword))
+    return (
+      shouldMatch ||
+      String(item.id).includes(keyword) || String(item.title).includes(keyword)
+    );
   }
 
   resetFocusedIndex(setState = true) {
-    let focusedIndex = -1
+    let focusedIndex = -1;
 
-    this.state.dropdownItems.every((item) => {
-      focusedIndex++
+    this.state.dropdownItems.every(item => {
+      focusedIndex++;
       if (!item.disabled && this.matchFilter(item)) {
-        return false
+        return false;
       }
-      return true
-    })
+      return true;
+    });
     setState &&
       this.setState({
         focusedIndex
-      })
-    return focusedIndex
+      });
+    return focusedIndex;
   }
 
   setFocusedIndex(focusedIndex) {
-    this.setState({ focusedIndex })
+    this.setState({ focusedIndex });
   }
 
   moveFocusedIndex(direction) {
-    let { focusedIndex } = this.state
-    const { dropdownItems } = this.state
+    let { focusedIndex } = this.state;
+    const { dropdownItems } = this.state;
 
-    if (direction === 'up') {
+    if (direction === "up") {
       dropdownItems
         .slice(0, focusedIndex)
         .reverse()
-        .every((item) => {
-          focusedIndex--
+        .every(item => {
+          focusedIndex--;
           if (!item.disabled && this.matchFilter(item)) {
-            return false
+            return false;
           }
-          return true
-        })
+          return true;
+        });
     } else {
-      dropdownItems.slice(focusedIndex + 1).every((item) => {
-        focusedIndex++
+      dropdownItems.slice(focusedIndex + 1).every(item => {
+        focusedIndex++;
         if (!item.disabled && this.matchFilter(item)) {
-          return false
+          return false;
         }
-        return true
-      })
+        return true;
+      });
     }
     this.setState({
       focusedIndex
-    })
+    });
   }
 
   localeDatasProps(key) {
-    const { localeDatas } = this.props
+    const { localeDatas } = this.props;
     if (this.props[key]) {
-      return this.props[key]
+      return this.props[key];
     } else {
-      return localeDatas.select[key]
+      return localeDatas.select[key];
     }
   }
 
@@ -534,8 +537,8 @@ class Select extends Component {
       onClick,
       onBlur,
       onFocus
-    } = this.props
-    const placeholder = this.localeDatasProps('placeholder')
+    } = this.props;
+    const placeholder = this.localeDatasProps("placeholder");
     const {
       selectedItems,
       dropdownItems,
@@ -543,25 +546,25 @@ class Select extends Component {
       dropdownShow,
       focusedIndex,
       fetching
-    } = this.state
+    } = this.state;
     const extraClass = {
-      'is-multiple': type === 'multiple',
-      'is-single': type === 'single'
-    }
+      "is-multiple": type === "multiple",
+      "is-single": type === "single"
+    };
     return (
       <div
-        className={classNames('hi-select', className, extraClass)}
+        className={classNames("hi-select", className, extraClass)}
         style={style}
       >
         <div
-          className='hi-select__input-container'
-          ref={(node) => {
-            this.selectInputContainer = node
+          className="hi-select__input-container"
+          ref={node => {
+            this.selectInputContainer = node;
           }}
         >
           <SelectInput
-            ref={(node) => {
-              this.selectInput = node
+            ref={node => {
+              this.selectInput = node;
             }}
             mode={type}
             disabled={disabled}
@@ -576,9 +579,9 @@ class Select extends Component {
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
             onClick={() => {
               if (this.props.open) {
-                this.handleInputClick()
+                this.handleInputClick();
               }
-              onClick()
+              onClick();
             }}
             onBlur={onBlur}
             onFocus={onFocus}
@@ -594,8 +597,8 @@ class Select extends Component {
           attachEle={this.selectInputContainer}
           zIndex={1050}
           topGap={5}
-          className='hi-select__popper'
-          placement='top-bottom-start'
+          className="hi-select__popper"
+          placement="top-bottom-start"
         >
           <SelectDropdown
             noFoundTip={emptyContent}
@@ -614,11 +617,11 @@ class Select extends Component {
           />
         </Popper>
       </div>
-    )
+    );
   }
 }
 Select.childContextTypes = {
   component: PropTypes.any
-}
+};
 
-export default Provider(Select)
+export default Provider(Select);
