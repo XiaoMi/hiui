@@ -234,4 +234,37 @@ describe('Upload', () => {
       expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(3)
     }
   })
+
+  it('should stop upload when return value of beforeUpload is not true', () => {
+    const fileList = [
+      {
+        name: 'a.png',
+        fileType: 'img', // 文件类型，可取值img, zip, word, pdf, ppt, excel, other
+        uploadState: 'success', // 上传状态，可取值success, error
+        url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
+      },
+    ];
+    const mockFile = new File(["foo"], "foo.txt", {
+      type: "text/plain",
+    })
+    const props = {
+      uploadAction= "https://www.mocky.io/v2/5dc3b4413000007600347501",
+      fileList,
+      beforeUpload: () => false,
+      onChange: () => {
+      },
+    };
+
+    const wrapper = mount(
+      <Upload {...props}>
+        <button type="button">upload</button>
+      </Upload>,
+    );
+
+    wrapper.find('input').simulate('change', {
+      target: {
+        files: [mockFile],
+      },
+    });
+  });
 })
