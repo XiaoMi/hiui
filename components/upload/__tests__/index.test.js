@@ -198,10 +198,12 @@ describe('Upload', () => {
         ]}
         uploadAction= "https://www.mocky.io/v2/5dc3b4413000007600347501"
       />)
-      console.log('>>>>>>>>',index,wrapper.find('.hi-upload').find('input').debug())
-      wrapper.find('.hi-upload').find('input').simulate('change',{target: {
-        files: [mockFile],
-      },})
+      // avatar 类型下只允许展示一张图片
+      if(type !== 'avatar') {
+        wrapper.find('.hi-upload').find('input').simulate('change',{target: {
+          files: [mockFile],
+        },})
+      }
       if(['default','pictureCard'].includes(type)) {
         expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(2)
       } else if(type === 'avatar') {
@@ -209,6 +211,27 @@ describe('Upload', () => {
       } else {
         expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(3)
       }
+      wrapper.setProps({defaultFileList: [
+        {
+          name: 'a.png',
+          fileType: 'img', // 文件类型，可取值img, zip, word, pdf, ppt, excel, other
+          uploadState: 'success', // 上传状态，可取值success, error
+          url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
+        },
+        {
+          name: 'b.png',
+          fileType: 'img',
+          uploadState: 'error',
+          url: 'https://i1.mifile.cn/f/i/2018/mix3/specs_black.png'
+        }
+      ]})
     })
+    if(['default','pictureCard'].includes(type)) {
+      expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(2)
+    } else if(type === 'avatar') {
+      expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(1)
+    } else {
+      expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(3)
+    }
   })
 })
