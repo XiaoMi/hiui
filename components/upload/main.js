@@ -9,9 +9,7 @@ import './style/index'
 export default class Upload extends Component {
   render () {
     const { type } = this.props
-    if (type === 'normal') {
-      return <UploadClick {...this.props} />
-    } else if (type === 'drag') {
+    if (type === 'drag') {
       return <UploadDrag {...this.props} />
     } else if (type === 'photo') {
       return <UploadPhoto {...this.props} />
@@ -19,6 +17,8 @@ export default class Upload extends Component {
       return <UploadAvatar {...this.props} />
     } else if (type === 'pictureCard') {
       return <UploadPictureCard {...this.props} />
+    } else {
+      return <UploadClick {...this.props} />
     }
   }
 }
