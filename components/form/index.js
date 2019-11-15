@@ -42,12 +42,12 @@ class Form extends Component {
   }
 
   removeField (prop) {
-    const fields = this.state.fields.filter(
-      (field) => field.props.prop !== prop
-    )
-
-    this.setState({
-      fields
+    this.setState((prevState) => {
+      return {
+        fields: prevState.fields.filter(function (field) {
+          return field.props.prop !== prop
+        })
+      }
     })
   }
 
