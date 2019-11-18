@@ -135,8 +135,8 @@ describe('Upload', () => {
         defaultFileList={[
           {
             name: 'a.png',
-            fileType: 'img', // 文件类型，可取值img, zip, word, pdf, ppt, excel, other
-            uploadState: 'success', // 上传状态，可取值success, error
+            fileType: 'img',
+            uploadState: 'success',
             url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
           },
           {
@@ -166,8 +166,8 @@ describe('Upload', () => {
         fileList={[
           {
             name: 'a.png',
-            fileType: 'img', // 文件类型，可取值img, zip, word, pdf, ppt, excel, other
-            uploadState: 'success', // 上传状态，可取值success, error
+            fileType: 'img',
+            uploadState: 'success',
             url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
           },
           {
@@ -180,8 +180,8 @@ describe('Upload', () => {
         defaultFileList={[
           {
             name: 'a.png',
-            fileType: 'img', // 文件类型，可取值img, zip, word, pdf, ppt, excel, other
-            uploadState: 'success', // 上传状态，可取值success, error
+            fileType: 'img',
+            uploadState: 'success',
             url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
           }
         ]}
@@ -208,8 +208,8 @@ describe('Upload', () => {
         fileList={[
           {
             name: 'a.png',
-            fileType: 'img', // 文件类型，可取值img, zip, word, pdf, ppt, excel, other
-            uploadState: 'success', // 上传状态，可取值success, error
+            fileType: 'img',
+            uploadState: 'success',
             url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
           }
         ]}
@@ -231,8 +231,8 @@ describe('Upload', () => {
       wrapper.setProps({defaultFileList: [
         {
           name: 'a.png',
-          fileType: 'img', // 文件类型，可取值img, zip, word, pdf, ppt, excel, other
-          uploadState: 'success', // 上传状态，可取值success, error
+          fileType: 'img',
+          uploadState: 'success',
           url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
         },
         {
@@ -257,8 +257,8 @@ describe('Upload', () => {
     const fileList = [
       {
         name: 'a.png',
-        fileType: 'img', // 文件类型，可取值img, zip, word, pdf, ppt, excel, other
-        uploadState: 'success', // 上传状态，可取值success, error
+        fileType: 'img',
+        uploadState: 'success',
         url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
       },
     ];
@@ -284,12 +284,155 @@ describe('Upload', () => {
       },
     });
     expect(spyFunc).not.toHaveBeenCalled()
-    wrapper.setProps({beforeUpload: () => false})
+    wrapper.setProps({beforeUpload: () => true})
     wrapper.find('input').simulate('change', {
       target: {
         files: [mockFile],
       },
     });
+    expect(spyFunc).toHaveBeenCalled()
     spyFunc.mockRestore();
   });
+
+  it('should stop upload when file size is bigger than maxSize', () => {
+    const fileList = [
+      {
+        name: 'a.png',
+        fileType: 'img',
+        uploadState: 'success',
+        url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
+      },
+    ];
+    const mockFile = new File(["foo"], "foo.txt", {
+      type: "text/plain",
+    })
+    const props = {
+      uploadAction: "https://www.mocky.io/v2/5dc3b4413000007600347501",
+      fileList,
+      localeDatas,
+      maxSize:0.001,
+      onChange: () => {
+      },
+    };
+
+    const wrapper = mount(
+      <Upload {...props} />
+    )
+    const spyFunc =  jest.spyOn(wrapper.instance().uploadRef.current, 'uploadFile');
+    wrapper.find('input').simulate('change', {
+      target: {
+        files: [mockFile],
+      },
+    })
+    expect(spyFunc).not.toHaveBeenCalled()
+    wrapper.setProps({ maxSize: 1 })
+    wrapper.find('input').simulate('change', {
+      target: {
+        files: [mockFile],
+      },
+    })
+    expect(spyFunc).toHaveBeenCalled()
+    spyFunc.mockRestore()
+  })
+  it('should not invoke onChange when customUpload exist', () => {
+    const fileList = [
+      {
+        name: 'a.png',
+        fileType: 'img',
+        uploadState: 'success',
+        url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
+      },
+    ];
+    const mockFile = new File(["foo"], "foo.txt", {
+      type: "text/plain",
+    })
+    const props = {
+      uploadAction: "https://www.mocky.io/v2/5dc3b4413000007600347501",
+      fileList,
+      localeDatas,
+      maxSize:0.001,
+      customUpload: jest.fn(),
+      onChange: jest.fn(),
+    };
+
+    const wrapper = mount(
+      <Upload {...props} />
+    )
+    wrapper.find('input').simulate('change', {
+      target: {
+        files: [mockFile],
+      },
+    })
+    expect(wrapper.prop('customUpload')).toHaveBeenCalled()
+    expect(wrapper.prop('onChange')).not.toHaveBeenCalled()
+  })
+
+  it('can remove', () => {
+
+    types.forEach((type,index) => {
+      const wrapper = mount(<Upload
+        localeDatas={localeDatas}
+        type={type}
+        fileList={[
+          {
+            name: 'a.png',
+            fileType: 'img',
+            uploadState: 'success',
+            url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
+          }
+        ]}
+        uploadAction= "https://www.mocky.io/v2/5dc3b4413000007600347501"
+      />)
+      if (['photo','avatar'].includes(type)) {
+        wrapper.find('.hi-upload').find('ul.hi-upload__list').not('.hi-upload__item--upload').simulate('mouseover')
+        wrapper.find('.hi-upload').find('ul.hi-upload__list').not('.hi-upload__item--upload').find('Icon.hi-upload__photo-del').simulate('click')
+        expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(1)
+      } else if (type === 'drag') {
+        wrapper.find('.hi-upload').find('span.hi-upload__operate-icon').simulate('click')
+        expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(0)
+      } else {
+        wrapper.find('.hi-upload').find('.icon-delete').simulate('click')
+        expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(0)
+      }
+
+    })
+  })
+  it('can not remove file when onRemove return false', () => {
+
+    types.forEach((type,index) => {
+      const wrapper = mount(<Upload
+        localeDatas={localeDatas}
+        type={type}
+        fileList={[
+          {
+            name: 'a.png',
+            fileType: 'img',
+            uploadState: 'success',
+            url: 'https://i8.mifile.cn/a1/pms_1531116957.78852376.jpg'
+          }
+        ]}
+        onRemove={() => {
+          return false
+        }}
+        uploadAction= "https://www.mocky.io/v2/5dc3b4413000007600347501"
+      />)
+      if (['photo','avatar'].includes(type)) {
+        wrapper.find('.hi-upload').find('ul.hi-upload__list').not('.hi-upload__item--upload').simulate('mouseover')
+        wrapper.find('.hi-upload').find('ul.hi-upload__list').not('.hi-upload__item--upload').find('Icon.hi-upload__photo-del').simulate('click')
+        if(type === 'photo') {
+          expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(2)
+        } else {
+          expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(1)
+        }
+
+      } else if (type === 'drag') {
+        wrapper.find('.hi-upload').find('span.hi-upload__operate-icon').simulate('click')
+        expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(2)
+      } else {
+        wrapper.find('.hi-upload').find('.icon-delete').simulate('click')
+        expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(1)
+      }
+
+    })
+  })
 })
