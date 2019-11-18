@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Modal from '../modal'
-import Provider from '../context'
 import Upload from './Upload'
 import Preview from './Preview'
 import Cropper from 'react-cropper'
@@ -240,4 +239,4 @@ UploadAvatar.defaultProps = Object.assign({}, {
   accept: 'image/jpg,image/jpeg,image/png'
 })
 
-export default Provider(UploadAvatar)
+export default UploadAvatar
