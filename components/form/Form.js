@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-import Provider from '../context'
 
 class Form extends Component {
   constructor (props) {
@@ -123,4 +122,4 @@ Form.defaultProps = {
   showColon: true
 }
 
-export default Provider(Form)
+export default Form
