@@ -56,19 +56,6 @@ describe('Form', () => {
     expect(wrapper.find('label.hi-form-item__label').map(label => label.prop('style').width)).toEqual([50, 50])
   })
 
-  it('should have the label width', () => {
-    const wrapper = mount(
-      <Form>
-        <Form.Item label='账号' labelWidth='50'>
-          <Input placeholder={'账号'} />
-        </Form.Item>
-        <Form.Item label='密码' labelWidth='50'>
-          <Input type='password' placeholder={'密码'} />
-        </Form.Item>
-      </Form>
-    )
-    expect(wrapper.find('label.hi-form-item__label').map(label => label.prop('style').width)).toEqual([50, 50])
-  })
 
   it('should show colon', () => {
     const wrapper = mount(
