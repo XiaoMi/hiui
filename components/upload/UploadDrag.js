@@ -73,6 +73,9 @@ class UploadDrag extends Upload {
           }
         }}
       >
+        {
+          this.outMaxsizeTip()
+        }
         <div
           className={
             fileList.length === 0
@@ -122,6 +125,7 @@ class UploadDrag extends Upload {
               file.uploadState === 'error' && 'file-name--error'
             )
             return (
+
               <li
                 key={index}
                 title={file.name}

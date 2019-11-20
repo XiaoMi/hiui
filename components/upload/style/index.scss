@@ -373,6 +373,30 @@
     }
   }
 
+  &__modal-tips {
+    display: flex;
+    padding-bottom: 15px;
+  }
+
+  &__error {
+    &—content {
+      margin: 14px;
+    }
+
+    &-title {
+      width: 300px;
+      line-height: 24px;
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    &-info {
+      font-size: 14px;
+      color: #666;
+    }
+  }
+
   p {
     margin: 0;
     padding: 0;
