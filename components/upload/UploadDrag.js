@@ -70,6 +70,9 @@ class UploadDrag extends Upload {
           }
         }}
       >
+        {
+          this.outMaxsizeTip()
+        }
         <div
           className={
             fileList.length === 0

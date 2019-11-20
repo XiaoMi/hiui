@@ -22,6 +22,9 @@ class UploadPictureCard extends Upload {
 
     return (
       <div className='hi-upload hi-upload--picture-card'>
+        {
+          this.outMaxsizeTip()
+        }
         <div>
           <label>
             <input

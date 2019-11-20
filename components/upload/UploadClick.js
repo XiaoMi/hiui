@@ -5,6 +5,9 @@ import Upload from './Upload'
 import Icon from '../icon'
 
 class UploadClick extends Upload {
+  handleButtonClick = () => {
+    this.uploadRef.value = ''
+  }
   render () {
     const {
       buttonText,
@@ -22,6 +25,9 @@ class UploadClick extends Upload {
     } = this.state
     return (
       <div className='hi-upload hi-upload--normal'>
+        {
+          this.outMaxsizeTip()
+        }
         <label>
           <input
             ref={node => { this.uploadRef = node }}
@@ -32,7 +38,7 @@ class UploadClick extends Upload {
             accept={accept}
             hidden
           />
-          <span className={`hi-upload__button ${(disabled || fileCountLimted) ? 'hi-upload__button--disabled' : ''}`}>
+          <span className={`hi-upload__button ${(disabled || fileCountLimted) ? 'hi-upload__button--disabled' : ''}`} onClick={this.handleButtonClick}>
             { buttonText || localeDatas.upload.buttonText}
           </span>
         </label>
