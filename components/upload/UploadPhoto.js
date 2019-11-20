@@ -57,6 +57,9 @@ class UploadPhoto extends Upload {
     })
     return (
       <div className={classNames('hi-upload hi-upload--photo', {'hi-upload--disabled': disabled})}>
+        {
+          this.outMaxsizeTip()
+        }
         <ul className='hi-upload__list'>
           {fileList.map((file, index) => {
             if (file.uploadState === 'loading') {

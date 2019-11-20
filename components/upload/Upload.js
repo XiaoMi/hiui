@@ -1,16 +1,22 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import shallowEqual from 'shallowequal'
 import cloneDeep from 'lodash/cloneDeep'
+import Modal from '../modal'
+import Button from '../button'
+import Icon from '../icon'
 
 let fileId = 0
 
 class Upload extends Component {
   constructor (props) {
     super(props)
+
+    this.visibleModal = false
     const fileList = this.prepareDefaultFileList(props.fileList || props.defaultFileList)
     this.state = {
+      visibleModal: false,
       fileList,
       fileCountLimted: fileList.length >= props.maxCount
     }
@@ -87,6 +93,33 @@ class Upload extends Component {
   getFileId () {
     return `$$HIUI_FILE_ID_${fileId++}`
   }
+  outMaxsizeTip () {
+    const { localeDatas } = this.props
+    return (
+      <Modal
+        title={localeDatas.upload.modalTitle}
+        style={{width: '480px'}}
+        visible={this.state.visibleModal}
+        footer={[
+          <Button type='primary' key={0} onClick={this.cancelEvent.bind(this)}>{localeDatas.upload.modalBtn}</Button>
+        ]}
+      >
+        <div className='maxSize_content'>
+          <span className='upload_Modal_icon'><Icon name='info-circle-o' style={{color: '#db9639', fontSize: '48px'}} /></span>
+          <div className='upload_Modal_txt'>
+            <p className='upload_Modal_title'>{localeDatas.upload.modalTiptitle}</p>
+            <p className='upload_Modal_tip'>{localeDatas.upload.modalTiptxt}</p>
+          </div>
+        </div>
+      </Modal>
+    )
+  }
+  cancelEvent () {
+    this.visibleModal = false
+    this.setState({
+      visibleModal: false
+    })
+  }
 
   uploadFiles (files) {
     const { beforeUpload, customUpload, maxSize } = this.props
@@ -107,6 +140,10 @@ class Upload extends Component {
 
     const file = files[0]
     if (file.size > maxSize * 1024) {
+      this.visibleModal = true
+      this.setState({
+        visibleModal: true
+      })
       return
     }
     file.fileId = this.getFileId()

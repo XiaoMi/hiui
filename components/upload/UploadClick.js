@@ -27,6 +27,9 @@ class UploadClick extends Upload {
     } = this.state
     return (
       <div className='hi-upload hi-upload--normal'>
+        {
+          this.visibleModal && this.outMaxsizeTip()
+        }
         <label>
           <input
             ref={node => { this.uploadRef = node }}

@@ -58,7 +58,11 @@ export default {
     drag: 'Drag and drop files for uploading',
     dragTips: 'Please click or drag and drop file upload',
     dragTipsLimited: 'The number has reached the upper limit',
-    preview: 'Preview'
+    preview: 'Preview',
+    modalTiptitle: 'Upload failed',
+    modalTiptxt: 'The upload file exceeds the specified upload file size',
+    modalBtn: 'I know the',
+    modalTitle: 'Prompt'
   },
   modal: {
     confirmText: 'OK',

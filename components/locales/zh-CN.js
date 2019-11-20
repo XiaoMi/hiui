@@ -59,7 +59,11 @@ export default {
     drag: '拖拽文件上传',
     dragTips: '请点击或拖拽文件上传',
     dragTipsLimited: '数量已达上限',
-    preview: '预览'
+    preview: '预览',
+    modalTiptitle: '上传失败',
+    modalTiptxt: '该上传文件超过指定上传文件大小',
+    modalBtn: '我知道了',
+    modalTitle: '提示'
   },
   modal: {
     confirmText: '确定',
