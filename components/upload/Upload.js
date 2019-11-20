@@ -99,6 +99,7 @@ class Upload extends Component {
         <Modal
           title={localeDatas.upload.modalTitle}
           style={{width: '480px'}}
+          onCancel={this.cancelEvent}
           visible={this.state.visibleModal}
           footer={[
             <Button type='primary' key={0} onClick={this.cancelEvent}>{localeDatas.upload.modalBtn}</Button>
