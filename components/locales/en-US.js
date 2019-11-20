@@ -61,7 +61,7 @@ export default {
     preview: 'Preview',
     modalTiptitle: 'Upload failed',
     modalTiptxt: 'The upload file exceeds the specified upload file size',
-    modalBtn: 'I know the',
+    modalBtn: 'I know',
     modalTitle: 'Prompt'
   },
   modal: {

@@ -7,8 +7,10 @@ import Icon from '../icon'
 
 class UploadClick extends Upload {
   handleButtonClick = () => {
+    this.uploadRef.value = ''
     this.uploadRef.click()
   }
+
   render () {
     const {
       content,
@@ -28,7 +30,7 @@ class UploadClick extends Upload {
     return (
       <div className='hi-upload hi-upload--normal'>
         {
-          this.visibleModal && this.outMaxsizeTip()
+          this.state.visibleModal && this.outMaxsizeTip()
         }
         <label>
           <input

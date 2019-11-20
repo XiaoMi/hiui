@@ -13,7 +13,6 @@ class Upload extends Component {
   constructor (props) {
     super(props)
 
-    this.visibleModal = false
     const fileList = this.prepareDefaultFileList(props.fileList || props.defaultFileList)
     this.state = {
       visibleModal: false,
@@ -101,26 +100,25 @@ class Upload extends Component {
         style={{width: '480px'}}
         visible={this.state.visibleModal}
         footer={[
-          <Button type='primary' key={0} onClick={this.cancelEvent.bind(this)}>{localeDatas.upload.modalBtn}</Button>
+          <Button type='primary' key={0} onClick={this.cancelEvent}>{localeDatas.upload.modalBtn}</Button>
         ]}
       >
-        <div className='maxSize_content'>
-          <span className='upload_Modal_icon'><Icon name='info-circle-o' style={{color: '#db9639', fontSize: '48px'}} /></span>
-          <div className='upload_Modal_txt'>
-            <p className='upload_Modal_title'>{localeDatas.upload.modalTiptitle}</p>
-            <p className='upload_Modal_tip'>{localeDatas.upload.modalTiptxt}</p>
+        <div className='hi-upload__modal-tips'>
+          <Icon name='info-circle-o' style={{color: '#db9639', fontSize: '48px'}} />
+          <div className='hi-upload__error—content'>
+            <div className='hi-upload__error-title'>{localeDatas.upload.modalTiptitle}</div>
+            <div className='hi-upload__error-info'>{localeDatas.upload.modalTiptxt}</div>
           </div>
         </div>
       </Modal>
     )
   }
-  cancelEvent () {
-    this.visibleModal = false
+
+  cancelEvent = () => {
     this.setState({
       visibleModal: false
     })
   }
-
   uploadFiles (files) {
     const { beforeUpload, customUpload, maxSize } = this.props
     const { fileList, fileCountLimted } = this.state
@@ -139,13 +137,14 @@ class Upload extends Component {
     if (files.length === 0) return
 
     const file = files[0]
+
     if (file.size > maxSize * 1024) {
-      this.visibleModal = true
       this.setState({
         visibleModal: true
       })
       return
     }
+
     file.fileId = this.getFileId()
     file.uploadState = 'loading'
     file.fileType = this.getFileType(file)
