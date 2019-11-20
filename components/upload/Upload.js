@@ -94,24 +94,27 @@ class Upload extends Component {
   }
   outMaxsizeTip () {
     const { localeDatas } = this.props
-    return (
-      <Modal
-        title={localeDatas.upload.modalTitle}
-        style={{width: '480px'}}
-        visible={this.state.visibleModal}
-        footer={[
-          <Button type='primary' key={0} onClick={this.cancelEvent}>{localeDatas.upload.modalBtn}</Button>
-        ]}
-      >
-        <div className='hi-upload__modal-tips'>
-          <Icon name='info-circle-o' style={{color: '#db9639', fontSize: '48px'}} />
-          <div className='hi-upload__error—content'>
-            <div className='hi-upload__error-title'>{localeDatas.upload.modalTiptitle}</div>
-            <div className='hi-upload__error-info'>{localeDatas.upload.modalTiptxt}</div>
+    if (this.state.visibleModal) {
+      return (
+        <Modal
+          title={localeDatas.upload.modalTitle}
+          style={{width: '480px'}}
+          visible={this.state.visibleModal}
+          footer={[
+            <Button type='primary' key={0} onClick={this.cancelEvent}>{localeDatas.upload.modalBtn}</Button>
+          ]}
+        >
+          <div className='hi-upload__modal-tips'>
+            <Icon name='info-circle-o' style={{color: '#db9639', fontSize: '48px'}} />
+            <div className='hi-upload__error—content'>
+              <div className='hi-upload__error-title'>{localeDatas.upload.modalTiptitle}</div>
+              <div className='hi-upload__error-info'>{localeDatas.upload.modalTiptxt}</div>
+            </div>
           </div>
-        </div>
-      </Modal>
-    )
+        </Modal>
+      )
+    }
+    return null
   }
 
   cancelEvent = () => {
