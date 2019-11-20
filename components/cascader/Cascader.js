@@ -197,9 +197,12 @@ class Cascader extends Component {
         let label = option[labelKey]
         const value = option[valueKey]
         const children = option[childrenKey]
-        if ((filterFunc && filterFunc(keyword, option)) || label.toString().includes(keyword) || value.toString().includes(keyword)) {
+        if (filterFunc) {
+          filterFunc(keyword, option) && match.matchCount++
+        } else if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount++
         }
+
         match.options.push({
           [labelKey]: label,
           [valueKey]: value,
@@ -213,9 +216,12 @@ class Cascader extends Component {
             filterOptions.push(match.options.slice())
           }
         }
-        if ((filterFunc && filterFunc(keyword, option)) || label.toString().includes(keyword) || value.toString().includes(keyword)) {
+        if (filterFunc) {
+          filterFunc(keyword, option) && match.matchCount--
+        } else if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount--
         }
+
         match.options.pop()
       })
     }
