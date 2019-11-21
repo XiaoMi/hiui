@@ -254,7 +254,6 @@ class Select extends Component {
       this.hideDropdown()
     } else {
       this.selectInput.focus()
-      this.clearKeyword() // 多选状态清空筛选
     }
   }
 
@@ -531,7 +530,8 @@ class Select extends Component {
       multipleWrap,
       onClick,
       onBlur,
-      onFocus
+      onFocus,
+      dataSource
     } = this.props
     const placeholder = this.localeDatasProps('placeholder')
     const {
@@ -546,7 +546,6 @@ class Select extends Component {
       'is-multiple': type === 'multiple',
       'is-single': type === 'single'
     }
-
     return (
       <div
         className={classNames('hi-select', className, extraClass)}
@@ -606,7 +605,7 @@ class Select extends Component {
             matchFilter={this.matchFilter.bind(this)}
             setFocusedIndex={this.setFocusedIndex.bind(this)}
             optionWidth={optionWidth}
-            dropdownItems={dropdownItems}
+            dropdownItems={type === 'multiple' && dataSource && this.state.keyword ==='' ? selectedItems : dropdownItems}
             selectedItems={selectedItems}
             dropdownRender={render}
             onClickOption={this.onClickOption.bind(this)}
