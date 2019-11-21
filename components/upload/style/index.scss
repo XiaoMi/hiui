@@ -373,22 +373,25 @@
     }
   }
 
+  .hi-modal__content {
+    padding: 16px 24px;
+  }
+
   &__modal-tips {
     display: flex;
-    padding-bottom: 15px;
   }
 
   &__error {
     &—content {
-      margin: 14px;
+      margin: 12px;
     }
 
     &-title {
       width: 300px;
       line-height: 24px;
-      font-size: 24px;
+      font-size: 16px;
       color: #333;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
 
     &-info {

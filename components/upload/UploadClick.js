@@ -30,7 +30,7 @@ class UploadClick extends Upload {
     return (
       <div className='hi-upload hi-upload--normal'>
         {
-          this.state.visibleModal && this.outMaxsizeTip()
+          this.outMaxsizeTip()
         }
         <label>
           <input
