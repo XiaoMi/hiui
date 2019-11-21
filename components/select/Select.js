@@ -160,7 +160,7 @@ class Select extends Component {
   parseValue (value = this.props.value) {
     if (Array.isArray(value)) {
       return value.map(v => {
-        if (typeof value === 'object') {
+        if (typeof v === 'object') {
           return v.id
         } else {
           return v
