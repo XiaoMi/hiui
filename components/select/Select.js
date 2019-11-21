@@ -135,13 +135,14 @@ class Select extends Component {
         dropdownItems: cloneDeep(nextProps.data)
       })
     } else {
+      console.log('Value', nextProps.value, this.props.value)
       if (!shallowEqual(nextProps.value, this.props.value)) {
         const selectedItems = this.resetSelectedItems(
           nextProps.value,
           this.state.dropdownItems,
           this.state.selectedItems
         ) // 异步获取时会从内部改变dropdownItems，所以不能从list取
-
+        console.log('*******', selectedItems)
         this.setState({
           selectedItems
         })

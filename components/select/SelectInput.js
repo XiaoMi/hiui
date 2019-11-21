@@ -211,7 +211,7 @@ class SelectInput extends Component {
     placeholder =
       selectedItems.length > 0 ? selectedItems[0].title : placeholder
     let icon = dropdownShow ? 'up' : 'down'
-
+    console.log('>>>>>>>>>>>>', selectedItems)
     return (
       <div
         className={classNames('hi-select__input', 'single-value', `theme__${theme}`, { disabled })}
