@@ -71,7 +71,7 @@ describe('Select', () => {
         document.querySelectorAll('.hi-select__dropdown--item')[2].click()
         wrapper.update()
         expect(wrapper.find('.hi-select__popper').prop('show')).toEqual(false)
-        expect(wrapper.find('.hi-select__input').find('.hi-select__input--item__name').text()).toEqual('办公')
+        expect(wrapper.find('.hi-select__input').find('.hi-select__input--item__name').text()).toEqual('笔记本')
       }
 
       if (type === 'multiple') {
@@ -106,8 +106,7 @@ describe('Select', () => {
         wrapper.setProps({
           value: '6'
         })
-        // wrapper.update()
-        expect(wrapper.find('.hi-select__input').find('.hi-select__input--item__name').text()).toEqual('笔记本')
+        expect(wrapper.find('.hi-select__input').find('.hi-select__input--item__name').text()).toEqual('办公')
       }
 
       if (type === 'multiple') {
@@ -115,7 +114,6 @@ describe('Select', () => {
         wrapper.find('.hi-select__input').simulate('click')
         expect(wrapper.find('.hi-select__popper').prop('show')).toEqual(true)
         document.querySelectorAll('.hi-select__dropdown')[1].querySelectorAll('.hi-select__dropdown--item')[2].click()
-        // wrapper.update()
         expect(wrapper.find('.hi-select__input').find('.hi-select__input--item').map(val => val.find('.hi-select__input--item__name').text())).toEqual(['手机', '笔记本'])
       }
     })

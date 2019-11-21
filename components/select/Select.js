@@ -75,6 +75,7 @@ class Select extends Component {
       dropdownItems,
       []
     )
+
     const searchable = this.getSearchable()
     this.debouncedFilterItems = debounce(this.onFilterItems.bind(this), 300)
     this.clickOutsideHandel = this.clickOutside.bind(this)
@@ -84,6 +85,7 @@ class Select extends Component {
       queryLength: 1,
       focusedIndex: 0,
       selectedItems,
+      cacheSelectedItems: selectedItems,
       dropdownItems,
       dropdownShow: false,
       fetching: false,
@@ -128,23 +130,23 @@ class Select extends Component {
       const selectedItems = this.resetSelectedItems(
         nextProps.value || this.state.selectedItems,
         nextProps.data,
-        this.state.selectedItems
+        []
       )
       this.setState({
         selectedItems,
+        cacheSelectedItems: selectedItems,
         dropdownItems: cloneDeep(nextProps.data)
       })
     } else {
-      console.log('Value', nextProps.value, this.props.value)
       if (!shallowEqual(nextProps.value, this.props.value)) {
         const selectedItems = this.resetSelectedItems(
           nextProps.value,
           this.state.dropdownItems,
-          this.state.selectedItems
+          []
         ) // 异步获取时会从内部改变dropdownItems，所以不能从list取
-        console.log('*******', selectedItems)
         this.setState({
-          selectedItems
+          selectedItems,
+          cacheSelectedItems: selectedItems
         })
       }
     }
@@ -161,7 +163,13 @@ class Select extends Component {
 
   parseValue (value = this.props.value) {
     if (Array.isArray(value)) {
-      return value.slice()
+      return value.map(v => {
+        if (typeof v === 'object') {
+          return v.id
+        } else {
+          return v
+        }
+      })
     } else {
       return [value]
     }
@@ -198,12 +206,13 @@ class Select extends Component {
     this.onClickOption(item, focusedIndex)
   }
 
-  onChange (selectedItems, changedItems, callback) {
+  onChange (selectedItems, changedItems, callback, cacheSelectedItems) {
     const { onChange, value } = this.props
     value === undefined &&
       this.setState(
         {
-          selectedItems
+          selectedItems,
+          cacheSelectedItems: cacheSelectedItems
         },
         callback
       )
@@ -236,6 +245,7 @@ class Select extends Component {
     if (!item || item.disabled) return
 
     let selectedItems = this.state.selectedItems.concat()
+    let cacheSelectedItems = this.state.cacheSelectedItems.concat()
     let focusedIndex = index
 
     if (this.props.type === 'multiple') {
@@ -244,6 +254,9 @@ class Select extends Component {
       })
       if (itemIndex === -1) {
         selectedItems.push(item)
+        if (!cacheSelectedItems.map(cacheItem => cacheItem.id).includes(item.id)) {
+          cacheSelectedItems.push(item)
+        }
       } else {
         selectedItems.splice(itemIndex, 1)
       }
@@ -255,12 +268,11 @@ class Select extends Component {
       this.setState({
         focusedIndex
       })
-    })
+    }, cacheSelectedItems)
     if (this.props.type !== 'multiple') {
       this.hideDropdown()
     } else {
       this.selectInput.focus()
-      this.clearKeyword() // 多选状态清空筛选
     }
   }
 
@@ -295,7 +307,7 @@ class Select extends Component {
 
   hideDropdown () {
     this.state.dropdownShow === true &&
-      this.setState({ dropdownShow: false }, () => {
+      this.setState({ dropdownShow: false, cacheSelectedItems: this.state.selectedItems }, () => {
         this.clearKeyword()
       })
   }
@@ -307,7 +319,6 @@ class Select extends Component {
 
   deleteItem (item) {
     if (item.disabled) return
-
     let selectedItems = this.state.selectedItems.concat()
     const sIndex = selectedItems.findIndex((obj, index, arr) => {
       return obj.id === item.id
@@ -316,7 +327,7 @@ class Select extends Component {
     selectedItems.splice(sIndex, 1)
     this.onChange(selectedItems, item, () => {
       this.selectInput.focus()
-    })
+    }, selectedItems)
   }
   // 全部删除
   deleteAllItems () {
@@ -329,7 +340,8 @@ class Select extends Component {
       () => {
         this.setState({ focusedIndex })
         this.onFilterItems('')
-      }
+      },
+      []
     )
   }
 
@@ -418,8 +430,8 @@ class Select extends Component {
       const selectedItems = this.resetSelectedItems(
         this.props.value,
         dropdownItems,
-        this.state.selectedItems
-      );
+        this.props.type === 'multiple' && this.props.dataSource && this.state.selectedItems || []
+      )
       this.setState({
         dropdownItems,
         selectedItems
@@ -537,11 +549,13 @@ class Select extends Component {
       multipleWrap,
       onClick,
       onBlur,
-      onFocus
-    } = this.props;
-    const placeholder = this.localeDatasProps("placeholder");
+      onFocus,
+      dataSource
+    } = this.props
+    const placeholder = this.localeDatasProps('placeholder')
     const {
       selectedItems,
+      cacheSelectedItems,
       dropdownItems,
       searchable,
       dropdownShow,
@@ -611,7 +625,7 @@ class Select extends Component {
             matchFilter={this.matchFilter.bind(this)}
             setFocusedIndex={this.setFocusedIndex.bind(this)}
             optionWidth={optionWidth}
-            dropdownItems={dropdownItems}
+            dropdownItems={type === 'multiple' && dataSource && this.state.keyword === '' ? cacheSelectedItems : dropdownItems}
             selectedItems={selectedItems}
             dropdownRender={render}
             onClickOption={this.onClickOption.bind(this)}
