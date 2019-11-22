@@ -15,16 +15,12 @@ class TimePicker extends BasePicker {
           onPick={this.onPick.bind(this)}
           style={state.style}
           date={state.date}
-          timeConfirm={this.timeConfirm.bind(this)}
-          timeCancel={this.timeCancel.bind(this)}
         />
         : <TimeRangePanel
           {...props}
           onPick={this.onPick.bind(this)}
           style={state.style}
           date={state.date}
-          timeConfirm={this.timeConfirm.bind(this)}
-          timeCancel={this.timeCancel.bind(this)}
         />
     )
   }
@@ -53,3 +49,4 @@ TimePicker.defaultProps = {
   disabledSeconds: () => []
 }
 export default Provider(TimePicker)
+export {TimePicker}

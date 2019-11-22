@@ -27,12 +27,7 @@ export const getYearWeek = (date, weekStart = 0) => {
   }
 }
 
-export const calcDayCount = (year, month) => {
-  return new Date(year, parseInt(month, 10), 0).getDate()
-}
-
 export const nextMonth = function (date) {
   !(date instanceof Date) && (date = new Date(date))
-
   return addMonths(date, 1)
 }

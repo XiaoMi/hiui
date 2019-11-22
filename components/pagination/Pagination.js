@@ -221,23 +221,18 @@ class Pagination extends Component {
     const nextPager = this.renderNextPager() // 下一页
     let pagers = [prevPager]
     let leftBuffer, rightBuffer
-    console.log(maxPage, max, current)
     if (max * 2 + 1 + 2 >= maxPage) {
-      console.log(1)
       leftBuffer = 1
       rightBuffer = maxPage
     } else if ((maxPage - current) <= max) {
-      console.log(2)
       rightBuffer = maxPage
       leftBuffer = maxPage - 2 * max - 1
       leftBuffer = leftBuffer <= 1 ? 1 : leftBuffer
     } else if ((current - max) <= 1) {
-      console.log(3)
       leftBuffer = 1
       rightBuffer = 2 * max + leftBuffer + 1
       rightBuffer = rightBuffer >= maxPage ? maxPage : rightBuffer
     } else {
-      console.log(4)
       leftBuffer = current - max
       rightBuffer = current + max
     }

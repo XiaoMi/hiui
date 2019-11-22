@@ -138,6 +138,7 @@ class Calender extends Component {
     let { year, month, day, hours, minutes, seconds } = deconstructDate(date)
 
     const td = e.target
+
     const cls = this._getClassName(td)
     const value = td.getAttribute('value')
     if ((td.nodeName !== 'SPAN' && td.nodeName !== 'TD' && td.nodeName !== 'DIV') || td.disabled) return false
@@ -182,7 +183,7 @@ class Calender extends Component {
     let {year, month} = deconstructDate(date)
     if (td.nodeName !== 'SPAN' || td.disabled || type.indexOf('range') === -1 || !range.selecting) return false
     td = td.parentNode.parentNode
-    const day = parseInt(td.innerText)
+    const day = parseInt(td.textContent)
     const cls = td.className
     let newDate = new Date(year, month - 1, day)
     if (cls.indexOf('prev') !== -1) {

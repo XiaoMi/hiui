@@ -29,9 +29,6 @@ class Time extends Component {
     }
   }
   whenDisableChange (list, val, arrowVal) {
-    if (!arrowVal) {
-      return val
-    }
     let _value = val + arrowVal
     while (list.includes(_value)) {
       _value += arrowVal
@@ -113,7 +110,6 @@ class Time extends Component {
       minuteStep={minuteStep}
       secondStep={secondStep}
       onSelect={this.selectedEvent.bind(this)}
-      show={this.isShowHMS()[type]}
     />
   }
   render () {

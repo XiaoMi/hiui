@@ -27,7 +27,7 @@ class TimePeriodPanel extends Component {
   }
   componentDidMount () {
     setTimeout(() => {
-      this.listEl.current.scrollTop = this.getActiveIndex() * 37
+      this.listEl.current && (this.listEl.current.scrollTop = this.getActiveIndex() * 37)
     }, 0)
   }
   render () {

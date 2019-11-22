@@ -206,24 +206,6 @@ class BasePicker extends Component {
       }
     }
   }
-  timeConfirm (date, onlyTime) {
-    const {type, showTime, onChange, localeDatas, weekOffset} = this.props
-    let {format} = this.state
-    onlyTime && (format = FORMATS['time'])
-    this.setState({
-      date: date,
-      texts: [formatterDate(type, date.startDate || date, format, showTime, localeDatas, weekOffset), formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset)],
-      showPanel: false,
-      isFocus: false
-    })
-    if (onChange) {
-      if (date.startDate && date.endDate) {
-        onChange({start: date.startDate, end: date.endDate})
-      } else {
-        onChange(date)
-      }
-    }
-  }
   timeCancel () {
     const {tempDate, format} = this.state
     const {type, showTime, localeDatas, weekOffset} = this.props
