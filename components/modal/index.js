@@ -46,7 +46,7 @@ class Modal extends Component {
     }
     return null
   }
-  componentWillUnMount () {
+  componentWillUnmount () {
     this._unblock()
   }
   _unblock () {

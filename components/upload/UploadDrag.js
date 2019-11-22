@@ -35,7 +35,10 @@ class UploadDrag extends Upload {
     let files = e.dataTransfer.files
     this.uploadFiles(files)
   }
-
+  targetInput = () => {
+    this.uploadRef.value = ''
+    this.uploadRef.click()
+  }
   render () {
     const {
       multiple,
@@ -64,9 +67,8 @@ class UploadDrag extends Upload {
         onDragLeave={e => this.dragleaveFn(e)}
         onDrop={e => this.dropFn(e)}
         onClick={(e) => {
-          const cls = e.target.className
-          if (!cls.includes('hi-upload__operate-icon') && !cls.includes('upload-input') && !cls.includes('drop-click') && !cls.includes('icon-upload-cloud')) {
-            this.uploadRef.click()
+          if (e.target.nodeName === 'INPUT' && e.target.type === 'file') {
+            this.uploadRef.value = ''
           }
         }}
       >
@@ -108,7 +110,7 @@ class UploadDrag extends Upload {
           }
         >
           {
-            fileList.length > 0 && <li className='hi-upload__item hi-upload__item-tips'>
+            fileList.length > 0 && <li className='hi-upload__item hi-upload__item-tips' onClick={this.targetInput}>
               <Icon name='comment-circle-o' />
               <span className='hi-upload__tips--exist'>
                 {fileCountLimted ? localeDatas.upload.dragTipsLimited : localeDatas.upload.dragTips}

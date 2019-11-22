@@ -99,6 +99,7 @@ class Upload extends Component {
 
   outMaxsizeTip () {
     const { localeDatas } = this.props
+    console.log('sss')
     if (this.state.visibleModal) {
       return (
         <Modal
@@ -144,7 +145,6 @@ class Upload extends Component {
       customUpload(files)
       return
     }
-
     if (files.length === 0) return
     if (files[0].size > maxSize * 1024) {
       this.setState({

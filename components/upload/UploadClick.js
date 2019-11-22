@@ -5,7 +5,7 @@ import Upload from './Upload'
 import Icon from '../icon'
 
 class UploadClick extends Upload {
-  handleButtonClick = () => {
+  handleButtonClick = (e) => {
     this.uploadRef.value = ''
   }
   render () {
