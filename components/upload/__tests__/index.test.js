@@ -1,8 +1,6 @@
 import React from 'react'
-import { mount, shallow } from 'enzyme'
-import { spy, fake } from 'sinon'
+import { mount } from 'enzyme'
 import Upload from '../main'
-import BaseUpload from '../Upload'
 /* eslint-env jest */
 describe('Upload', () => {
   const types = ['default','drag','pictureCard','avatar','photo']
