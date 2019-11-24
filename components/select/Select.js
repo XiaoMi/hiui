@@ -191,18 +191,9 @@ class Select extends Component {
     return reviceSelectedItems.concat(selectedItems)
   }
 
-  addOption (option) {
-    const values = this.parseValue()
-
-    this.state.dropdownItems.push(option)
-    values.indexOf(option.id) > -1 && this.state.selectedItems.push(option)
-    this.forceUpdate()
-  }
-
   onEnterSelect () {
     const { dropdownItems, focusedIndex } = this.state
     const item = dropdownItems[focusedIndex]
-
     this.onClickOption(item, focusedIndex)
   }
 
