@@ -32,8 +32,8 @@ module.exports = {
   // 1. 修改范围 <rootDir>/components/[组件名称]/**/*
   // 2. 运行单测命令 npx jest components/[组件名称]/__tests__/index.test.js --coverage 即可看到当前文件夹的覆盖率
   collectCoverageFrom: [
-    // '<rootDir>/components/checkbox/**/*',
-    '<rootDir>/components/**/*',
+    '<rootDir>/components/loading/**/*',
+    // '<rootDir>/components/**/*',
     '!<rootDir>/components/**/style/**/*',
     '!<rootDir>/components/**/__test__/**/*',
     '!<rootDir>/components/**/(*-legacy)/**/*'

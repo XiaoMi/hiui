@@ -65,11 +65,13 @@ function open (target, { content, key, duration, size } = {}) {
     mountNode.style.setProperty('position', 'relative')
   )
   const full = !target
+  console.log(renderNode)
   ReactDOM.render(
     <Loading {...{ content, full, visible: true, target: mountNode, size }} />,
     renderNode
   )
   loadingInstance[key] = renderNode
+  console.log(renderNode.innerHTML)
   if (!isNaN(duration) && duration > 0) {
     setTimeout(() => {
       ReactDOM.unmountComponentAtNode(renderNode)
