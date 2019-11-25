@@ -234,7 +234,7 @@ class Select extends Component {
         }
       }
     })
-    this.onChange(_selectedItems, changedItems)
+    this.onChange(_selectedItems, changedItems, () => {}, _selectedItems)
     this.selectInput.focus()
   }
 
