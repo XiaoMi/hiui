@@ -1,7 +1,36 @@
 # 更新日志
 
+## 1.5.18
+
+- 修复 `<Upload />` 上传文件大小超过 maxSize 限制后没有提示反馈的问题 [#764](https://github.com/XiaoMi/hiui/issues/764)
+
+## 1.5.17
+
+- 修复 `<Form />` 动态渲染的时候removeField存在问题 [#636](https://github.com/XiaoMi/hiui/issues/636)
+
+## 1.5.15
+
+- 修复 `<Modal/>` 决定定位采用百分比，导致内部组件随窗口变动布局错误 [#765](https://github.com/XiaoMi/hiui/issues/765)
+
 ## 1.5.14
-- 修改：`<Upload />` 照片上传、拖拽上传数量达到限制时的展示状态 [#757](https://github.com/XiaoMi/hiui/issues/757)
+
+- 修复：`<Upload />` 照片上传、拖拽上传数量达到限制时的展示状态 [#757](https://github.com/XiaoMi/hiui/issues/757)
+
+## 1.5.13
+
+- 修复 `<Button />` target 不起作用 [#747](https://github.com/XiaoMi/hiui/issues/747)
+
+## 1.5.12
+
+- 修复 `<Checkbox />` 改变值不生效的问题 [#743](https://github.com/XiaoMi/hiui/issues/743)
+
+## 1.5.11
+
+- 修复 `<Datepicker />` 选中日期和当日重合是的展示问题 [#732](https://github.com/XiaoMi/hiui/pull/732)
+
+## 1.5.9
+
+- 修复 `<Datepicker />` 清空后起始时间为 1970 的问题 [#720](https://github.com/XiaoMi/hiui/pull/720)
 
 ## 1.5.8
 
