@@ -290,7 +290,6 @@ class Cascader extends Component {
         jointOptions.push(jointOption)
       })
     }
-    // return jointOptions
     return levelItems
   }
 
