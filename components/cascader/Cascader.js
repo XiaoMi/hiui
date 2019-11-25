@@ -46,7 +46,6 @@ class Cascader extends Component {
     super(props)
     const cascaderValue = this.props.value
     this.valueProps = this.props.value
-    this.hasChildrenflag = true
     const cacheValue = this.props.value
     const cascaderLabel = this.getCascaderLabel(cascaderValue)
     this.hiCascader = React.createRef()
@@ -58,12 +57,9 @@ class Cascader extends Component {
       cascaderValue,
       cascaderLabel,
       popperShow: false,
-      keyword: ''
+      keyword: '',
+      hasChildrenflag: true
     }
-  }
-
-  componentWillUpdate (props) {
-    this.valueProps = props.value
   }
 
   getChildContext () {
@@ -154,7 +150,6 @@ class Cascader extends Component {
   }
 
   onChangeValue (value, hasChildren) {
-    this.hasChildrenflag = hasChildren
     const {
       onChange,
       onActiveItemChange,
@@ -164,6 +159,7 @@ class Cascader extends Component {
     this.setState({
       filterOptions: false,
       keyword: '',
+      hasChildrenflag: hasChildren,
       cascaderValue: value
     }, () => {
       if (changeOnSelect || !hasChildren) {
@@ -344,6 +340,7 @@ class Cascader extends Component {
       disabled,
       searchable,
       clearable,
+      value,
       style
     } = this.props
     let {
@@ -351,11 +348,12 @@ class Cascader extends Component {
       cascaderLabel,
       keyword,
       popperShow,
-      filterOptions
+      filterOptions,
+      hasChildrenflag
     } = this.state
 
-    if (this.valueProps.length && !this.hasChildrenflag) {
-      cascaderValue = this.valueProps
+    if (value.length && !hasChildrenflag) {
+      cascaderValue = value
       cascaderLabel = this.getCascaderLabel(cascaderValue)
     }
     const extraClass = {
