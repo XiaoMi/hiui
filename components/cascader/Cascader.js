@@ -45,7 +45,6 @@ class Cascader extends Component {
   constructor (props) {
     super(props)
     const cascaderValue = this.props.value
-    this.valueProps = this.props.value
     const cacheValue = this.props.value
     const cascaderLabel = this.getCascaderLabel(cascaderValue)
     this.hiCascader = React.createRef()
