@@ -4,7 +4,7 @@
 
 - 优化 `<Select />` 异步多选的交互，支持多次搜索选择 [#774](https://github.com/XiaoMi/hiui/issues/774)
 - 修复 `<Select />` dataSource 不能根据搜索项动态调整请求参数的问题 [#781](https://github.com/XiaoMi/hiui/issues/781)
-- 修改 `<Upload />` 上传文件大小超过 maxSize 限制后，缺少反馈信息的问题 [#764](https://github.com/XiaoMi/hiui/issues/764)
+- 修复 `<Upload />` 上传文件大小超过 maxSize 限制后，缺少反馈信息的问题 [#764](https://github.com/XiaoMi/hiui/issues/764)
 - 修复 `<Cascader />` filterOption 属性不能按预期过滤选项的问题 [#770](https://github.com/XiaoMi/hiui/issues/770)
 
 ## 2.5.3
