@@ -1,11 +1,18 @@
 # 更新日志
 
+## 2.5.4
+
+- 优化 `<Select />` 异步多选的交互，支持多次搜索选择 [#774](https://github.com/XiaoMi/hiui/issues/774)
+- 修复 `<Select />` dataSource 不能根据搜索项动态调整请求参数的问题 [#781](https://github.com/XiaoMi/hiui/issues/781)
+- 修改 `<Upload />` 上传文件大小超过 maxSize 限制后，缺少反馈信息的问题 [#764](https://github.com/XiaoMi/hiui/issues/764)
+- 修复 `<Cascader />` filterOption 属性不能按预期过滤选项的问题 [#770](https://github.com/XiaoMi/hiui/issues/770)
+
 ## 2.5.3
+
 - 修复 `<Select />` 异步多选在输入关键字时会清除已选择项的问题 [#746](https://github.com/XiaoMi/hiui/issues/746)
 - 修复 `<Loading />` 在某些情况下导致页面布局发生变化的问题 [#749](https://github.com/XiaoMi/hiui/issues/749)
 - 修改 `<Upload />` photo 模式、drag 模式下超出数量限制的展现形式 [#756](https://github.com/XiaoMi/hiui/issues/756)
 - 修复 `<Rate />`  组件的控制台警告 [#760](https://github.com/XiaoMi/hiui/issues/760)
-- 变更 `<Select />`、`<Tree />`、`<Table />` 的远程 Mock 数据地址
 
 ## 2.5.2
 
