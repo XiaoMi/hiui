@@ -11,6 +11,7 @@ import SelectDropdown from './SelectDropdown'
 import Provider from '../context'
 import fetchJsonp from 'fetch-jsonp'
 import qs from 'qs'
+import _ from 'lodash'
 
 class Select extends Component {
   autoloadFlag = true // 第一次自动加载数据标识
@@ -173,7 +174,7 @@ class Select extends Component {
 
   isRemote () {
     const { dataSource, onSearch } = this.props
-    return onSearch || (dataSource && !!dataSource.url)
+    return onSearch || dataSource
   }
 
   resetSelectedItems (value, dropdownItems = [], reviceSelectedItems = []) {
@@ -351,6 +352,7 @@ class Select extends Component {
         this.setState({fetching: false})
       })
     } else {
+      const _dataSource = typeof dataSource === 'function' ? dataSource(keyword) : dataSource
       let {
         url,
         transformResponse,
@@ -363,17 +365,19 @@ class Select extends Component {
         key,
         jsonpCallback = 'callback',
         ...options
-      } = dataSource
+      } = _dataSource
       keyword =
       !keyword && this.autoloadFlag && autoload
-        ? dataSource.keyword
+        ? _dataSource.keyword
         : keyword
       this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
 
       const queryParams = qs.stringify(
         Object.assign({}, params, key && { [key]: keyword })
       )
-      url = url.includes('?') ? `${url}&${queryParams}` : `${url}?${queryParams}`
+      if (!_.isEmpty(queryParams)) {
+        url = url.includes('?') ? `${url}&${queryParams}` : `${url}?${queryParams}`
+      }
 
       if (type.toUpperCase() === 'POST') {
         options.body = JSON.stringify(data)
@@ -444,7 +448,7 @@ class Select extends Component {
       () => this.resetFocusedIndex()
     )
 
-    if (dataSource && dataSource.key) {
+    if (dataSource) {
       if (
         autoload ||
         keyword.toString().length >= this.state.queryLength
