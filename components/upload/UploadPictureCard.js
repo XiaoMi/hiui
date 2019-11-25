@@ -3,8 +3,13 @@ import Upload from './Upload'
 import Provider from '../context'
 import Icon from '../icon'
 import classNames from 'classnames'
+import Button from '../button'
 
 class UploadPictureCard extends Upload {
+  handleButtonClick = () => {
+    this.uploadRef.value = ''
+    this.uploadRef.click()
+  }
   render () {
     const {
       buttonText,
@@ -22,6 +27,9 @@ class UploadPictureCard extends Upload {
 
     return (
       <div className='hi-upload hi-upload--picture-card'>
+        {
+          this.outMaxsizeTip()
+        }
         <div>
           <label>
             <input
@@ -34,9 +42,9 @@ class UploadPictureCard extends Upload {
               accept={accept}
               hidden
             />
-            <span className={`hi-upload__button ${(disabled || fileCountLimted) ? 'hi-upload__button--disabled' : ''}`}>
-              {buttonText || localeDatas.upload.buttonText}
-            </span>
+            <Button type='primary' disabled={disabled || fileCountLimted} onClick={this.handleButtonClick}>
+              { buttonText || localeDatas.upload.buttonText}
+            </Button>
           </label>
         </div>
         {showUploadList && (

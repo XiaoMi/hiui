@@ -37,7 +37,6 @@ class Menu extends Component {
     const childrenKey = root.childrenKey()
     let currentOptions = options.slice()
     let deep = 0
-
     while (currentOptions) {
       let currentValue = value[deep]
       const _currentOptions = currentOptions.slice()
@@ -50,7 +49,7 @@ class Menu extends Component {
             <Loading size='small' />
           }
           {
-            _currentOptions.map(option => {
+            _currentOptions.map((option, index) => {
               const optionValue = option[valueKey]
               const hasChildren = Array.isArray(option[childrenKey])
               const isExpanded = hasChildren && optionValue === currentValue
@@ -72,7 +71,7 @@ class Menu extends Component {
                     e.stopPropagation()
                     !option.disabled && onSelect(optionValues, hasChildren)
                   }}
-                  key={optionValue}
+                  key={optionValue + index}
                 >
                   <span className='hi-cascader-menu__item--label'>
                     { option[labelKey] }

@@ -197,9 +197,12 @@ class Cascader extends Component {
         let label = option[labelKey]
         const value = option[valueKey]
         const children = option[childrenKey]
-        if ((filterFunc && filterFunc(keyword, option)) || label.toString().includes(keyword) || value.toString().includes(keyword)) {
+        if (filterFunc) {
+          filterFunc(keyword, option) && match.matchCount++
+        } else if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount++
         }
+
         match.options.push({
           [labelKey]: label,
           [valueKey]: value,
@@ -213,15 +216,17 @@ class Cascader extends Component {
             filterOptions.push(match.options.slice())
           }
         }
-        if ((filterFunc && filterFunc(keyword, option)) || label.toString().includes(keyword) || value.toString().includes(keyword)) {
+        if (filterFunc) {
+          filterFunc(keyword, option) && match.matchCount--
+        } else if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount--
         }
+
         match.options.pop()
       })
     }
     checkOptions(data, initMatchOptions)
     filterOptions = this.formatFilterOptions(filterOptions, keyword)
-
     this.setState({
       filterOptions
     })
@@ -240,6 +245,9 @@ class Cascader extends Component {
 
   formatFilterOptions (filterOptions, keyword) {
     const jointOptions = []
+    const levelItems = []
+    const levelItemsObj = {}
+
     const labelKey = this.labelKey()
     const valueKey = this.valueKey()
     const emptyContent = this.localeDatasProps('noFoundTip')
@@ -257,20 +265,32 @@ class Cascader extends Component {
           [labelKey]: [],
           [valueKey]: []
         }
-
         options.map((option, index) => {
+          let levelItem = {
+            jointOption: true,
+            [labelKey]: [],
+            [valueKey]: []
+          }
           if (index !== 0) {
             jointOption[labelKey].push(<span className='hi-cascader-menu__item--label-split' key={`split-${index}`}>/</span>)
           }
+          levelItem[labelKey] = jointOption[labelKey].concat(this.hightlightKeyword(option[labelKey], keyword, index + '-' + jointOption[labelKey].length))
+          levelItem[valueKey] = jointOption[valueKey].concat(option[valueKey])
+
           jointOption[labelKey].push(this.hightlightKeyword(option[labelKey], keyword, index))
           jointOption[valueKey].push(option[valueKey])
           option.disabled && (jointOption.disabled = option.disabled)
+          option.disabled && (levelItem.disabled = option.disabled)
+          if (!levelItemsObj[levelItem[valueKey]]) {
+            levelItemsObj[levelItem[valueKey]] = levelItem[valueKey]
+            levelItem[valueKey].toString().includes(keyword) && levelItems.push(levelItem)
+          }
         })
+
         jointOptions.push(jointOption)
       })
     }
-
-    return jointOptions
+    return levelItems
   }
 
   hightlightKeyword (text, keyword, uniqueKey) {

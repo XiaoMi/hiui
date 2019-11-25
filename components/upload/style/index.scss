@@ -373,6 +373,33 @@
     }
   }
 
+  .hi-modal__content {
+    padding: 16px 24px;
+  }
+
+  &__modal-tips {
+    display: flex;
+  }
+
+  &__error {
+    &—content {
+      margin: 12px;
+    }
+
+    &-title {
+      width: 300px;
+      line-height: 24px;
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    &-info {
+      font-size: 14px;
+      color: #666;
+    }
+  }
+
   p {
     margin: 0;
     padding: 0;
