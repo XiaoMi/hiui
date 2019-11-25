@@ -99,7 +99,6 @@ class Upload extends Component {
 
   outMaxsizeTip () {
     const { localeDatas } = this.props
-    console.log('sss')
     if (this.state.visibleModal) {
       return (
         <Modal
