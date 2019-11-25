@@ -58,7 +58,11 @@ module.exports = {
     delete: 'Delete',
     drag: 'Drag and drop files for uploading',
     dragTips: 'Please click or drag and drop file upload',
-    dragTipsLimited: 'The number has reached the upper limit'
+    dragTipsLimited: 'The number has reached the upper limit',
+    modalTiptitle: 'Upload failed',
+    modalTiptxt: 'The upload file exceeds the specified upload file size',
+    modalBtn: 'I know',
+    modalTitle: 'Prompt'
   },
   modal: {
     confirmText: 'OK',

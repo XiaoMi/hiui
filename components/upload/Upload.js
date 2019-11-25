@@ -1,8 +1,11 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import shallowEqual from 'shallowequal'
 import cloneDeep from 'lodash/cloneDeep'
+import Modal from '../modal'
+import Button from '../button'
+import Icon from '../icon'
 
 let fileId = 0
 
@@ -11,6 +14,7 @@ class Upload extends Component {
     super(props)
     const fileList = this.prepareDefaultFileList(props.defaultFileList)
     this.state = {
+      visibleModal: false,
       fileList,
       fileCountLimted: props.defaultFileList.length >= props.maxCount
     }
@@ -87,6 +91,38 @@ class Upload extends Component {
     return `$$HIUI_FILE_ID_${fileId++}`
   }
 
+  cancelEvent = () => {
+    this.setState({
+      visibleModal: false
+    })
+  }
+
+  outMaxsizeTip () {
+    const { localeDatas } = this.props
+    if (this.state.visibleModal) {
+      return (
+        <Modal
+          title={localeDatas.upload.modalTitle}
+          style={{width: '480px'}}
+          onCancel={this.cancelEvent}
+          show={this.state.visibleModal}
+          footers={[
+            <Button type='primary' key={0} onClick={this.cancelEvent}>{localeDatas.upload.modalBtn}</Button>
+          ]}
+        >
+          <div className='hi-upload__modal-tips'>
+            <Icon name='info-circle-o' style={{color: '#db9639', fontSize: '48px'}} />
+            <div className='hi-upload__error—content'>
+              <div className='hi-upload__error-title'>{localeDatas.upload.modalTiptitle}</div>
+              <div className='hi-upload__error-info'>{localeDatas.upload.modalTiptxt}</div>
+            </div>
+          </div>
+        </Modal>
+      )
+    }
+    return null
+  }
+
   uploadFiles (files) {
     const {
       beforeUpload,
@@ -108,14 +144,17 @@ class Upload extends Component {
       customUpload(files)
       return
     }
-
     if (files.length === 0) return
+    if (files[0].size > maxSize * 1024) {
+      this.setState({
+        visibleModal: true
+      })
+      return
+    }
     for (let key in files) {
       if (!files.hasOwnProperty(key)) continue
       let file = files[key]
-      if (file.size > maxSize * 1024) {
-        return
-      }
+
       file.fileId = this.getFileId()
       file.uploadState = 'loading'
       file.fileType = this.getFileType(file)
