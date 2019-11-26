@@ -84,6 +84,7 @@ class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
+      value:['手机'],
       options: [
         {
           id: '手机',
@@ -137,11 +138,16 @@ class Demo extends React.Component {
     }
   }
   render(){
+    const {value} = this.state
     return(
       <Cascader
         onChange={(id) => {
           console.log('on change', id)
+          this.setState({
+            value:id
+          })
         }}
+        value = {value}
         data={this.state.options}
         style={{ width: 240 }}
       />

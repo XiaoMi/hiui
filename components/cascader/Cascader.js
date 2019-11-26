@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import debounce from 'lodash/debounce'
-import isEqual from 'lodash/isEqual'
-import shallowequal from 'shallowequal'
 import Popper from '../popper'
 import Menu from './Menu'
 import Provider from '../context'
@@ -67,16 +65,6 @@ class Cascader extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (!shallowequal(nextProps.value, this.props.value) || !isEqual(nextProps.data, this.props.data)) {
-      const cascaderLabel = this.getCascaderLabel(nextProps.value, nextProps.data)
-      this.setState({
-        cacheValue: nextProps.value, // 缓存原始value，用户可能点击option但是没选中，用于恢复初始value
-        cascaderLabel
-      })
-    }
-  }
-
   componentDidMount () {
     window.addEventListener('click', this.clickOutsideHandel)
   }
@@ -105,7 +93,8 @@ class Cascader extends Component {
     this.setState({
       keyword: '',
       filterOptions: false,
-      cascaderValue: this.state.cacheValue,
+      cascaderValue: this.props.value.length ? this.props.value : this.state.cacheValue,
+      cascaderLabel: this.getCascaderLabel(this.props.value.length ? this.props.value : this.state.cacheValue),
       popperShow: true
     })
     this.inputRef.focus()
@@ -154,7 +143,6 @@ class Cascader extends Component {
       onActiveItemChange,
       changeOnSelect
     } = this.props
-
     this.setState({
       filterOptions: false,
       keyword: '',
@@ -238,6 +226,7 @@ class Cascader extends Component {
     const {
       localeDatas
     } = this.props
+
     if (this.props[key]) {
       return this.props[key]
     } else {
@@ -342,26 +331,22 @@ class Cascader extends Component {
       value,
       style
     } = this.props
-    let {
+    const {
       cascaderValue,
-      cascaderLabel,
       keyword,
       popperShow,
       filterOptions,
-      hasChildrenflag
+      cascaderLabel
     } = this.state
-
-    if (value.length && !hasChildrenflag) {
-      cascaderValue = value
-      cascaderLabel = this.getCascaderLabel(cascaderValue)
-    }
+    const _cascaderValue = (value.length && !popperShow) ? value : cascaderValue
+    const _cascaderLabel = (value.length && !popperShow) ? this.getCascaderLabel(_cascaderValue) : cascaderLabel
     const extraClass = {
       'hi-cascader--disabled': disabled,
       'hi-cascader--focused': popperShow,
       'hi-cascader--clearable': clearable
     }
     const expandIcon = popperShow ? 'icon-up' : 'icon-down'
-    const placeholder = cascaderLabel || this.localeDatasProps('placeholder')
+    const placeholder = _cascaderLabel || this.localeDatasProps('placeholder')
     return (
       <div className={classNames('hi-cascader', className, extraClass)} style={style} ref={this.hiCascader}>
         <div className='hi-cascader__input-container' ref={node => { this.inputContainer = node }} onClick={this.handleClick.bind(this)}>
@@ -370,7 +355,7 @@ class Cascader extends Component {
               this.inputRef = node
             }}
             className='hi-cascader__input-keyword'
-            value={(popperShow && keyword) || (!popperShow && cascaderLabel) || ''}
+            value={(popperShow && keyword) || (!popperShow && _cascaderLabel) || ''}
             readOnly={!searchable}
             disabled={disabled}
             placeholder={placeholder}
@@ -396,7 +381,7 @@ class Cascader extends Component {
         >
           <Menu
             ref={node => { this.menuNode = node }}
-            value={cascaderValue}
+            value={_cascaderValue}
             options={filterOptions || data}
             root={() => this}
             isFiltered={filterOptions}
