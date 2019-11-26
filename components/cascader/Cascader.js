@@ -4,6 +4,8 @@ import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import debounce from 'lodash/debounce'
 import Popper from '../popper'
+import isEqual from 'lodash/isEqual'
+import shallowequal from 'shallowequal'
 import Menu from './Menu'
 import Provider from '../context'
 
@@ -63,7 +65,15 @@ class Cascader extends Component {
       component: this
     }
   }
-
+  componentWillReceiveProps (nextProps) {
+    if (!shallowequal(nextProps.value, this.props.value) || !isEqual(nextProps.data, this.props.data)) {
+      const cascaderLabel = this.getCascaderLabel(nextProps.value, nextProps.data)
+      this.setState({
+        cacheValue: nextProps.value, // 缓存原始value，用户可能点击option但是没选中，用于恢复初始value
+        cascaderLabel
+      })
+    }
+  }
   componentDidMount () {
     window.addEventListener('click', this.clickOutsideHandel)
   }
