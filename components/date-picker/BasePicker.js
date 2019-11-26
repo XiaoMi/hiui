@@ -107,7 +107,6 @@ class BasePicker extends Component {
     let date
     let leftText = ''
     let rightText = ''
-    // const format = compatibleFormatString(this.getFormatString() || FORMATS[type])
     if (_value) {
       if (Object.prototype.toString.call(_value) === '[object Object]') {
         start = compatibleToDate(_value.start, format) || null
