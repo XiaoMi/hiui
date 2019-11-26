@@ -17,7 +17,12 @@ describe('Button', () => {
       expect(wrapper.find(`button`)).toHaveLength(1)
     })
   })
+  describe('IS_HI_COMPONENT',() => {
+    it('is hi component', () => {
+      expect(Button["IS_HI_COMPONENT"]).toEqual(true)
+    })
 
+  })
   describe('PropTypes', () => {
     it('type', () => {
       const types = [
@@ -59,7 +64,6 @@ describe('Button', () => {
       const appearances = [
         'link',
         'button',
-        'line'
       ]
 
       const wrapper = mount(
@@ -70,6 +74,20 @@ describe('Button', () => {
 
       appearances.map((appearance) => expect(wrapper.find(`button.hi-btn--appearance--${appearance}`)).toHaveLength(1))
     })
+
+    it('href', () => {
+      const wrapper1 = mount(<Button appearance='link' href='' />)
+      expect(wrapper1.find('button')).toHaveLength(1)
+
+      const wrapper2 = mount(
+        <Button appearance='link' href='https://xiaomi.github.io/hiui' />
+      )
+      expect(wrapper2.find(`a`).prop('href')).toEqual('https://xiaomi.github.io/hiui')
+
+      const wrapper3 = mount(<Button appearance='button' href='https://xiaomi.github.io/hiui' />)
+      expect(wrapper3.find(`a`).prop('href')).toEqual('https://xiaomi.github.io/hiui')
+    })
+
 
     it('theme', () => {
       const theme = 'custom-theme'
@@ -127,17 +145,8 @@ describe('Button', () => {
       expect(wrapper.find(`button.hi-btn--disabled`)).toHaveLength(1)
     })
 
-    it('href', () => {
-      const href = 'https://www.mi.com'
-      const wrapper = mount(
-        <Button {...{href}} />
-      )
 
-      expect(wrapper.find(`a`).prop('href')).toEqual(expect.stringMatching(href))
-    })
-
-    // FIXME 源码 target 有遗漏
-    it.skip('target', () => {
+    it('target', () => {
       const targets = [
         '_self',
         '_blank',
@@ -151,8 +160,10 @@ describe('Button', () => {
         </div>
       )
 
-      targets.map((target, index) => expect(wrapper.find(`a`).at(index).prop('target')).toEqual(expect.stringMatching(target)))
+      targets.map((target, index) => expect(wrapper.find('a').at(index).prop('target')).toEqual(target))
     })
+
+
 
     it('children', () => {
       const Children = function () {

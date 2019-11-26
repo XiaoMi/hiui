@@ -1,6 +1,5 @@
 import React from 'react'
 import Upload from './Upload'
-import Provider from '../context'
 import Icon from '../icon'
 import classNames from 'classnames'
 
@@ -90,4 +89,4 @@ UploadPictureCard.defaultProps = Object.assign({}, {
   accept: 'image/jpg,image/jpeg,image/png'
 })
 
-export default Provider(UploadPictureCard)
+export default UploadPictureCard

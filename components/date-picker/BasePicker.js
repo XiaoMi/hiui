@@ -98,7 +98,7 @@ class BasePicker extends Component {
     return formatterDate(type, date, format, showTime, localeDatas, weekOffset, isFormat)
   }
   _parseProps (props) {
-    let {value, defaultValue, type, timeInterval = 240} = props
+    let {value, defaultValue, type, timeInterval} = props
     let _value = value || defaultValue
     let start
     let end
@@ -108,8 +108,8 @@ class BasePicker extends Component {
     const format = compatibleFormatString(this.getFormatString() || FORMATS[type])
     if (_value) {
       if (Object.prototype.toString.call(_value) === '[object Object]') {
-        start = compatibleToDate(_value.start, format) || null
-        end = compatibleToDate(_value.end, format) || new Date()
+        start = compatibleToDate(_value.start, format)
+        end = compatibleToDate(_value.end, format)
       } else {
         start = compatibleToDate(_value, format)
         if (type.includes('range')) {
@@ -175,23 +175,6 @@ class BasePicker extends Component {
       onChange(startDate, startDate ? dateFormat(startDate, format) : '')
     }
   }
-  timeConfirm (date, onlyTime) {
-    const { onChange } = this.props
-
-    this.setState({
-      date: date,
-      texts: [this.callFormatterDate(date.startDate || date), this.callFormatterDate(date.endDate)],
-      showPanel: false,
-      isFocus: false
-    })
-    if (onChange) {
-      if (date.startDate && date.endDate) {
-        onChange({start: date.startDate, end: date.endDate})
-      } else {
-        onChange(date)
-      }
-    }
-  }
   timeCancel () {
     this.setState({
       showPanel: false,
@@ -234,7 +217,7 @@ class BasePicker extends Component {
       this.callback()
     }
   }
-  _input (text, ref = 'input', placeholder = 'Please Select...') {
+  _input (text, ref, placeholder) {
     const {disabled} = this.props
     const { texts } = this.state
     return (
@@ -291,6 +274,7 @@ class BasePicker extends Component {
     } = this.props
     const _cls = classNames(
       'hi-datepicker__input',
+      `hi-datepicker__input--${type}`,
       'hi-datepicker__input--range',
       (showTime || type === 'timeperiod') && 'hi-datepicker__input--range-time',
       disabled && 'hi-datepicker__input--disabled'
@@ -307,11 +291,12 @@ class BasePicker extends Component {
   renderNormalInput () {
     const {
       disabled,
-      showTime
+      showTime,
+      type
     } = this.props
     const _cls = classNames(
       'hi-datepicker__input',
-      'hi-datepicker__input--normal',
+      `hi-datepicker__input--${type}`,
       disabled && 'hi-datepicker__input--disabled',
       showTime && 'hi-datepicker__input--middle'
     )

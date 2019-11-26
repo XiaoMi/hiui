@@ -15,17 +15,6 @@ class DatePicker extends BasePicker {
       case 'year':
       case 'week':
       case 'date':
-        component = (
-          <DatePanel
-            {...props}
-            date={state.date}
-            onPick={this.onPick.bind(this)}
-            style={state.style}
-            timeConfirm={this.timeConfirm.bind(this)}
-            timeCancel={this.timeCancel.bind(this)}
-          />
-        )
-        break
       case 'timeperiod':
         component = (
           <DatePanel
@@ -41,7 +30,6 @@ class DatePicker extends BasePicker {
           <DateRangePanel
             {...props}
             date={d}
-            timeConfirm={this.timeConfirm.bind(this)}
             onPick={this.onPick.bind(this)}
             style={state.style}
           />
@@ -58,10 +46,9 @@ class DatePicker extends BasePicker {
           />
         )
         break
-      default:
-        throw new Error(props.localeDatas.datePicker.undefinedType)
     }
     return component
   }
 }
 export default Provider(DatePicker)
+export {DatePicker}

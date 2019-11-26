@@ -268,12 +268,6 @@ class DatePanel extends Component {
       [pos]: date
     })
   }
-  timeConfirm () {
-    this.props.onPick(this.state.date)
-  }
-  timeCancel () {
-
-  }
 
   getRangeDateStr () {
     let {leftDate, rightDate, showMask} = this.state
