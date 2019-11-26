@@ -54,8 +54,7 @@ class Cascader extends Component {
       cascaderValue,
       cascaderLabel,
       popperShow: false,
-      keyword: '',
-      hasChildrenflag: true
+      keyword: ''
     }
   }
 
@@ -146,7 +145,6 @@ class Cascader extends Component {
     this.setState({
       filterOptions: false,
       keyword: '',
-      hasChildrenflag: hasChildren,
       cascaderValue: value
     }, () => {
       if (changeOnSelect || !hasChildren) {
