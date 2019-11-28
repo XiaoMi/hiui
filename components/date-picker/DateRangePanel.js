@@ -295,8 +295,7 @@ class DateRangePanel extends Component {
   }
   render () {
     let {minDate, maxDate, currentView, range, leftDate, rightDate, showMask} = this.state
-    // const rightDate = nextMonth(leftDate)
-    const {shortcuts, theme, showTime, date} = this.props
+    const {shortcuts, theme, showTime} = this.props
     const _c = classNames(
       'hi-datepicker',
       theme && 'theme__' + theme
@@ -372,7 +371,7 @@ class DateRangePanel extends Component {
                 top: 5,
                 left: 89
               }}
-              date={date}
+              date={{startDate: leftDate, endDate: rightDate}}
               onPick={(d, r) => {
                 this.setState({
                   leftDate: d.startDate,
