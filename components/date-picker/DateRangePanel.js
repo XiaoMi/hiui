@@ -30,6 +30,10 @@ class DateRangePanel extends Component {
     this.state = {
       date: leftDate,
       currentView: props.type || 'date',
+      layout: {
+        left: 'date',
+        right: 'date'
+      },
       yearData: null,
       monthData: null,
       minDate: props.min,
@@ -181,7 +185,14 @@ class DateRangePanel extends Component {
             }
           </div>
         }
-        <span className='hi-datepicker__header-text'>
+        <span
+          className='hi-datepicker__header-text'
+          onClick={() => {
+            const layout = JSON.parse(JSON.stringify(this.state.layout))
+            layout[lr] = 'year'
+            this.setState({ layout })
+          }}
+        >
           {this.getHeaderCenterContent(year, month)}
         </span>
         {
@@ -200,10 +211,9 @@ class DateRangePanel extends Component {
     const {onPick, showTime} = this.props
     range.startDate = startDate
     range.endDate = endDate
+    console.log('pick', range)
     this.setState({
       range
-      // leftDate: startDate || this.state.leftDate,
-      // rightDate: endDate || this.state.rightDate
     })
     if (endDate) {
       onPick(range, showTime)
@@ -249,7 +259,6 @@ class DateRangePanel extends Component {
             return (
               <p
                 key={n}
-                // onMouseOver={this.shortcutsMouseEvent.bind(this)}
                 onClick={this.shortcutsClickEvent.bind(this)}
               >
                 {m}
@@ -293,9 +302,94 @@ class DateRangePanel extends Component {
       showMask: !this.state.showMask
     })
   }
+  getYearOrMonthData (val, type) {
+    const start = type === 'year' ? val - 4 : 1
+    let trs = [[], [], [], []]
+    let num = 0
+    const currentYear = new Date().getFullYear()
+    const currentMonth = new Date().getMonth()
+    for (let i = 0; i < 4; i++) {
+      let row = trs[i]
+      for (let j = 0; j < 3; j++) {
+        let col = row[j] || (row[j] = { type: 'normal' })
+        const y = start + num
+        if (y === currentYear || y === currentMonth + 1) {
+          col.type = 'today'
+        }
+        if (y === val) {
+          col.type = 'current'
+        }
+        type === 'year'
+          ? (col.text = y)
+          : (col.text = this.props.localeDatas.datePicker.month[y - 1])
+        col.value = y
+        num++
+      }
+    }
+    return trs
+  }
+  yearPick (flag, date) {
+    const layout = Object.assign({}, this.state.layout, {[flag]: 'month'})
+    const _d = flag === 'left' ? {leftDate: date} : {rightDate: date}
+    this.setState({
+      ..._d,
+      layout
+    })
+  }
+  monthPick (flag, date) {
+    const layout = Object.assign({}, this.state.layout, {[flag]: 'date'})
+    const _d = flag === 'left' ? {leftDate: date} : {rightDate: date}
+    this.setState({
+      ..._d,
+      layout
+    })
+  }
+  _getNormalComponent (date, flag) {
+    let { minDate, maxDate, range, layout } = this.state
+    console.log(layout)
+    let component = null
+    const { year, month } = deconstructDate(date)
+    switch (layout[flag]) {
+      case 'year':
+        const yearData = this.getYearOrMonthData(year, 'year')
+        component = (
+          <Calender
+            date={date}
+            data={yearData}
+            type={layout[flag]}
+            onPick={this.yearPick.bind(this, flag)}
+          />
+        )
+        break
+      case 'month':
+        const monthData = this.getYearOrMonthData(month, 'month')
+        component = (
+          <Calender
+            date={date}
+            data={monthData}
+            type={layout[flag]}
+            onPick={this.monthPick.bind(this, flag)}
+          />
+        )
+        break
+      default:
+        component = (
+          <Calender
+            date={date}
+            range={range}
+            type={this.props.type}
+            minDate={minDate}
+            maxDate={maxDate}
+            onPick={this.pick.bind(this)}
+            mouseMove={this.onMouseMoveHandler.bind(this)}
+          />
+        )
+        break
+    }
+    return component
+  }
   render () {
-    let {minDate, maxDate, currentView, range, leftDate, rightDate, showMask} = this.state
-    // const rightDate = nextMonth(leftDate)
+    let { currentView, leftDate, rightDate, showMask, layout } = this.state
     const {shortcuts, theme, showTime, date} = this.props
     const _c = classNames(
       'hi-datepicker',
@@ -319,32 +413,16 @@ class DateRangePanel extends Component {
             {
               this.renderHeader(currentView, leftDate, 'left')
             }
-            <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${currentView}`}>
-              <Calender
-                date={leftDate}
-                range={range}
-                type={currentView}
-                minDate={minDate}
-                maxDate={maxDate}
-                onPick={this.pick.bind(this)}
-                mouseMove={this.onMouseMoveHandler.bind(this)}
-              />
+            <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${layout['left']}`}>
+              {this._getNormalComponent(leftDate, 'left')}
             </div>
           </div>
           <div className='hi-datepicker__panel hi-datepicker__panel--right'>
             {
               this.renderHeader(currentView, rightDate, 'right')
             }
-            <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${currentView}`}>
-              <Calender
-                date={rightDate}
-                range={range}
-                minDate={minDate}
-                maxDate={maxDate}
-                type={currentView}
-                onPick={this.pick.bind(this)}
-                mouseMove={this.onMouseMoveHandler.bind(this)}
-              />
+            <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${layout['right']}`}>
+              {this._getNormalComponent(rightDate, 'right')}
             </div>
           </div>
         </div>
