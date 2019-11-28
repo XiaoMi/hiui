@@ -345,7 +345,6 @@ class DateRangePanel extends Component {
   }
   _getNormalComponent (date, flag) {
     let { minDate, maxDate, range, layout } = this.state
-    console.log(layout)
     let component = null
     const { year, month } = deconstructDate(date)
     switch (layout[flag]) {
