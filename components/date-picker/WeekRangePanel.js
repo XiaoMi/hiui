@@ -28,7 +28,11 @@ export default class WeekRangePanel extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      ..._parseProps(props.date)
+      ..._parseProps(props.date),
+      layout: {
+        left: 'date',
+        right: 'date'
+      }
     }
   }
 
@@ -52,6 +56,32 @@ export default class WeekRangePanel extends Component {
     }
     return arr
   }
+  getYearOrMonthData (val, type) {
+    const start = type === 'year' ? val - 4 : 1
+    let trs = [[], [], [], []]
+    let num = 0
+    const currentYear = new Date().getFullYear()
+    const currentMonth = new Date().getMonth()
+    for (let i = 0; i < 4; i++) {
+      let row = trs[i]
+      for (let j = 0; j < 3; j++) {
+        let col = row[j] || (row[j] = { type: 'normal' })
+        const y = start + num
+        if (y === currentYear || y === currentMonth + 1) {
+          col.type = 'today'
+        }
+        if (y === val) {
+          col.type = 'current'
+        }
+        type === 'year'
+          ? (col.text = y)
+          : (col.text = this.props.localeDatas.datePicker.month[y - 1])
+        col.value = y
+        num++
+      }
+    }
+    return trs
+  }
   /**
    * 渲染 Header 部分（包含箭头快捷操作）
    * @param {Object} args {
@@ -69,7 +99,12 @@ export default class WeekRangePanel extends Component {
           <span onClick={() => this.changeYear(true, lr)} ><Icon name='double-left' /></span>
           <span onClick={() => this.changeMonth(true, lr)} ><Icon name='left' /></span>
         </div>
-        <span className='hi-datepicker__header-text'>
+        <span
+          className='hi-datepicker__header-text'
+          onClick={() => {
+            const layout = Object.assign({}, this.state.layout, {[lr]: 'year'})
+            this.setState({ layout })
+          }}>
           {this.getHeaderCenterContent(year, month)}
         </span>
         <div className='hi-datepicker__header-btns'>
@@ -192,8 +227,65 @@ export default class WeekRangePanel extends Component {
       range
     })
   }
+  yearPick (flag, date) {
+    const layout = Object.assign({}, this.state.layout, {[flag]: 'month'})
+    const _d = flag === 'left' ? {leftDate: date} : {rightDate: date}
+    this.setState({
+      ..._d,
+      layout
+    })
+  }
+  monthPick (flag, date) {
+    const layout = Object.assign({}, this.state.layout, {[flag]: 'date'})
+    const _d = flag === 'left' ? {leftDate: date} : {rightDate: date}
+    this.setState({
+      ..._d,
+      layout
+    })
+  }
+  _getNormalComponent (date, flag) {
+    let { range, layout } = this.state
+    let component = null
+    const { year, month } = deconstructDate(date)
+    switch (layout[flag]) {
+      case 'year':
+        const yearData = this.getYearOrMonthData(year, 'year')
+        component = (
+          <Calender
+            date={date}
+            data={yearData}
+            type={layout[flag]}
+            onPick={this.yearPick.bind(this, flag)}
+          />
+        )
+        break
+      case 'month':
+        const monthData = this.getYearOrMonthData(month, 'month')
+        component = (
+          <Calender
+            date={date}
+            data={monthData}
+            type={layout[flag]}
+            onPick={this.monthPick.bind(this, flag)}
+          />
+        )
+        break
+      default:
+        component = (
+          <Calender
+            date={date}
+            range={range}
+            type='weekrange'
+            onPick={this.pick.bind(this)}
+            mouseMove={this.onMouseMoveHandler.bind(this)}
+          />
+        )
+        break
+    }
+    return component
+  }
   render () {
-    const {range, leftDate, rightDate} = this.state
+    const { leftDate, rightDate, layout } = this.state
     const {type, theme} = this.props
     const _c = classNames(
       'hi-datepicker',
@@ -207,26 +299,14 @@ export default class WeekRangePanel extends Component {
         <div className='hi-datepicker__body  hi-datepicker__body--range'>
           <div className='hi-datepicker__panel hi-datepicker__panel--left'>
             {this.renderHeader(type, leftDate, 'left')}
-            <div className='hi-datepicker__calender-container'>
-              <Calender
-                date={leftDate}
-                range={range}
-                type='weekrange'
-                onPick={this.pick.bind(this)}
-                mouseMove={this.onMouseMoveHandler.bind(this)}
-              />
+            <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${layout['left']}`}>
+              {this._getNormalComponent(leftDate, 'left')}
             </div>
           </div>
           <div className='hi-datepicker__panel hi-datepicker__panel--right'>
             {this.renderHeader(type, rightDate, 'right')}
-            <div className='hi-datepicker__calender-container'>
-              <Calender
-                date={rightDate}
-                range={range}
-                type='weekrange'
-                onPick={this.pick.bind(this)}
-                mouseMove={this.onMouseMoveHandler.bind(this)}
-              />
+            <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${layout['right']}`}>
+              {this._getNormalComponent(rightDate, 'right')}
             </div>
           </div>
         </div>
