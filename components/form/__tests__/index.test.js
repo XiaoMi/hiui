@@ -24,6 +24,7 @@ describe('Form', () => {
     expect(wrapper.find('.hi-form--line')).toHaveLength(0)
     wrapper.setProps({placement:'horizontal'})
     expect(wrapper.find('.hi-form--inline')).toHaveLength(1)
+    wrapper.unmount()
   })
 
   it('should align the label by labelPlacement', () => {
@@ -39,7 +40,9 @@ describe('Form', () => {
         </Form>
       )
       expect(wrapper.find(`.hi-form--label--${labelPlacement}`)).toHaveLength(1)
+      wrapper.unmount()
     })
+
   })
 
   it('should have the label width', () => {
@@ -54,6 +57,7 @@ describe('Form', () => {
       </Form>
     )
     expect(wrapper.find('label.hi-form-item__label').map(label => label.prop('style').width)).toEqual([50, 50])
+    wrapper.unmount()
   })
 
 
@@ -71,6 +75,7 @@ describe('Form', () => {
     expect(wrapper.find('label.hi-form-item__label').map(label => label.text())).toEqual(['账号：', '密码：'])
     wrapper.setProps({ showColon: false })
     expect(wrapper.find('label.hi-form-item__label').map(label => label.text())).toEqual(['账号', '密码'])
+    wrapper.unmount()
   })
 
   it('should field has colon when field showColon is true and form showColon is false',() => {
@@ -85,9 +90,11 @@ describe('Form', () => {
       </Form>
     )
     expect(wrapper.find('label.hi-form-item__label').map(label => label.text())).toEqual(['账号：', '密码'])
+    wrapper.unmount()
   })
 
   it('should validate require field',() => {
+    jest.useFakeTimers()
     const localeDatas = {
       form: {
         colon: '：'
@@ -105,18 +112,25 @@ describe('Form', () => {
       }}
       >
       <FormItem label='名称' field='name'>
-        <Input  placeholder='name' onChange={(e)=>{
-          wrapper.setProps({ model:{name: e.target.value, count:''}})
-        }}/>
+        <Input  placeholder='name'
+        onChange={(e)=>{
+          wrapper.setProps({ model:{name: e.target.value}})
+        }}
+        onBlur={jest.fn()}
+        />
       </FormItem>
       </_Form>
     )
     const cb = jest.fn()
     wrapper.instance().validate(cb)
     expect(wrapper.find('.hi-form-item--msg__error').text()).toEqual('请输入名称')
-    wrapper.setProps({ model: { name: 'hiui'}})
+    wrapper.find('input').simulate('change', { target: { value: 'hiui' } })
+    jest.runAllTimers()
     wrapper.instance().validate(cb)
     expect(wrapper.find('.hi-form-item--msg__error').text()).toEqual('')
+    wrapper.unmount()
+
+    jest.useRealTimers()
   })
 
 })

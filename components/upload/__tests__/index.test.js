@@ -36,8 +36,8 @@ describe('Upload', () => {
         } else {
           expect(wrapper.find(`.hi-upload--${type}`)).toHaveLength(1)
         }
-
       })
+      wrapper.unmount()
     })
 
     it('accept', () => {
@@ -46,6 +46,7 @@ describe('Upload', () => {
           <Upload accept='image/png' type={type} localeDatas={localeDatas} />
         )
         expect(wrapper.find('input').getDOMNode().getAttribute('accept')).toEqual('image/png')
+        wrapper.unmount()
       })
 
     })
@@ -79,6 +80,7 @@ describe('Upload', () => {
           expect(wrapper.find('.hi-upload').find('input').prop('disabled')).toEqual(false)
           expect(wrapper.find('.hi-upload').find('span.hi-upload__button').hasClass('hi-upload__button--disabled')).toEqual(false)
         }
+        wrapper.unmount
       })
     })
 
@@ -90,6 +92,7 @@ describe('Upload', () => {
       expect(wrapper.find('.hi-upload').find('button').hasClass('hi-btn--disabled')).toEqual(true)
       wrapper.setProps({disabled: false})
       expect(wrapper.find('.hi-upload').find('button').hasClass('hi-btn--disabled')).toEqual(false)
+      wrapper.unmount()
     })
 
     it('content', () => {
@@ -99,7 +102,77 @@ describe('Upload', () => {
       expect(wrapper.find('.hi-upload').find('button').text()).toEqual('本地上传')
       wrapper.setProps({content: 'Upload'})
       expect(wrapper.find('.hi-upload').find('button').text()).toEqual('Upload')
+      wrapper.unmount()
     })
+  })
+
+  it('should can preview', () => {
+    const wrapper = mount(
+      <Upload
+        type="photo"
+        uploadAction= "http://www.mocky.io/v2/5dc3b4413000007600347501"
+        onChange = {(file, fileList, response) => {
+          file.id = 'file唯一标识'
+          console.log('upload callback', file, fileList, response)
+        }}
+        onRemove = {(file, fileList, index) => {
+          console.log('remove callback', file, fileList, index)
+          return new Promise((resolve, reject)=>resolve(true))
+        }}
+        localeDatas={localeDatas}
+        params={{id:'uid',channel:'youpin'}}
+        name={'files[]'}
+        fileList={[
+          {
+            name: 'b.png',
+            fileType: 'img',
+            uploadState: 'success',
+            url: 'https://i1.mifile.cn/f/i/2018/mix3/specs_black.png'
+          }
+        ]}
+      />
+    )
+    wrapper.find('.hi-upload__item-mask').simulate('click')
+    expect(wrapper.find('Preview').prop('show')).toEqual(true)
+    wrapper.unmount()
+  })
+
+  it('should can drag', () => {
+    const wrapper = mount(
+      <Upload
+        type="drag"
+        uploadAction= "http://www.mocky.io/v2/5dc3b4413000007600347501"
+        onChange = {(file, fileList, response) => {
+          file.id = 'file唯一标识'
+          console.log('upload callback', file, fileList, response)
+        }}
+        onRemove = {(file, fileList, index) => {
+          console.log('remove callback', file, fileList, index)
+          return new Promise((resolve, reject)=>resolve(true))
+        }}
+        localeDatas={localeDatas}
+        params={{id:'uid',channel:'youpin'}}
+        name={'files[]'}
+        defaultFileList={[
+          {
+            name: 'b.png',
+            fileType: 'img',
+            uploadState: 'success',
+            url: 'https://i1.mifile.cn/f/i/2018/mix3/specs_black.png'
+          }
+        ]}
+      />
+    )
+    const mockFile = new File(["foo"], "foo.txt", {
+      type: "text/plain",
+    })
+    wrapper.find('.hi-upload--drag').simulate('drop', {
+      dataTransfer: {
+        files: [mockFile],
+      },
+    })
+    expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(3)
+    wrapper.unmount()
   })
 
   it('show upload list', () => {
@@ -122,6 +195,7 @@ describe('Upload', () => {
       if (['default', 'pictureCard'].includes(type)) {
         expect(wrapper.find('.hi-upload').find('ul.hi-upload__list')).toHaveLength(0)
       }
+      wrapper.unmount()
     })
   })
 
@@ -153,6 +227,7 @@ describe('Upload', () => {
       } else {
         expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(3)
       }
+      wrapper.unmount
     })
   })
 
@@ -192,6 +267,7 @@ describe('Upload', () => {
       } else {
         expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(3)
       }
+      wrapper.unmount()
     })
   })
 
@@ -247,6 +323,7 @@ describe('Upload', () => {
       } else {
         expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(3)
       }
+      wrapper.unmount()
     })
 
   })
@@ -290,6 +367,7 @@ describe('Upload', () => {
     });
     expect(spyFunc).toHaveBeenCalled()
     spyFunc.mockRestore();
+    wrapper.unmount()
   });
 
   it('should stop upload when file size is bigger than maxSize', () => {
@@ -331,6 +409,7 @@ describe('Upload', () => {
     })
     expect(spyFunc).toHaveBeenCalled()
     spyFunc.mockRestore()
+    wrapper.unmount()
   })
   it('should not invoke onChange when customUpload exist', () => {
     const fileList = [
@@ -363,6 +442,7 @@ describe('Upload', () => {
     })
     expect(wrapper.prop('customUpload')).toHaveBeenCalled()
     expect(wrapper.prop('onChange')).not.toHaveBeenCalled()
+    wrapper.unmount()
   })
 
   it('can remove', () => {
@@ -392,7 +472,7 @@ describe('Upload', () => {
         wrapper.find('.hi-upload').find('.icon-delete').simulate('click')
         expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(0)
       }
-
+      wrapper.unmount()
     })
   })
   it('can not remove file when onRemove return false', () => {
@@ -430,7 +510,7 @@ describe('Upload', () => {
         wrapper.find('.hi-upload').find('.icon-delete').simulate('click')
         expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(1)
       }
-
+      wrapper.unmount()
     })
   })
 })
