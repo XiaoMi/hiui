@@ -39,16 +39,22 @@ class Transfer extends Component {
       })
     }
   }
+
   parseDatas (props) {
     const { data, targetKeys, targetIds } = props
     const sourceList = []
     const targetList = []
+    const _dataObj = {}
+
     data.forEach(item => {
-      if ((targetIds || targetKeys).includes(item.id)) {
-        targetList.push(item)
-      } else {
+      _dataObj[item.id] = item
+      if (!(targetIds || targetKeys).includes(item.id)) {
         sourceList.push(item)
       }
+    });
+
+    (targetIds || targetKeys).forEach(item => {
+      _dataObj[item] && targetList.push(_dataObj[item])
     })
 
     this.setState({
@@ -97,19 +103,27 @@ class Transfer extends Component {
     this.parseSelectedKeys(dir, value, null)
   }
   moveTo (dir) {
-    const { targetKeys, targetIds } = this.props
+    const { targetKeys, targetIds, data, targetSortType } = this.props
     const { sourceSelectedKeys, targetSelectedKeys } = this.state
     const selectedItem = dir === 'left' ? [...sourceSelectedKeys] : [...targetSelectedKeys]
+    const _concatTargetKeys = targetSortType === 'queue' ? (targetIds || targetKeys).concat(selectedItem) : selectedItem.concat((targetIds || targetKeys))
     const newTargetKeys =
       dir === 'left'
-        ? selectedItem.concat(targetIds || targetKeys)
+        ? _concatTargetKeys
         : (targetIds || targetKeys).filter(tk => !selectedItem.includes(tk))
     this.setState(
       {
         [this.getSelectedKeysByDir(dir)]: newTargetKeys
       },
       () => {
-        this.props.onChange(newTargetKeys)
+        const moveDatas = []
+        selectedItem.forEach(key => {
+          data.forEach((item) => {
+            item.id === key && moveDatas.push(item)
+          })
+        })
+
+        this.props.onChange(newTargetKeys, dir === 'left' ? 'right' : 'left', moveDatas)
         this.setState({
           [this.getSelectedKeysByDir(dir)]: [],
           [dir + 'Filter']: '',
@@ -228,6 +242,7 @@ class Transfer extends Component {
             <Icon name='search' />
             <Input
               placeholder='搜索'
+              clearable='true'
               onChange={this.searchEvent.bind(this, dir)}
               value={filterText}
             />
