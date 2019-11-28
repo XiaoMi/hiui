@@ -54,11 +54,11 @@ import DemoArea from '../../demo/transfer/section-area.jsx'
 | searchable   | 是否可筛选                                                                 | boolean                                   | true \| false           | false     |
 | emptyContent | 数据为空时的显示内容                                                       | string[] \| ReactNode[]                   | -                       | -         |
 | disabled     | 是否禁用                                                                   | boolean                                   | true \| false           | false     |
-| data         | 穿梭框数据源                                                               | string                                    | DataItem[]              | -         |
+| data         | 穿梭框数据源                                                               | DataItem[]                                    | -              | —        |
 | targetLimit  | 最大可穿梭上线                                                             | number                                    | -                       | -         |
-| targetIds    | 目标框内的元素 id 集合                                                     | number[] \| string[]                      |                         | -         |
+| targetIds    | 目标框内的元素 id 集合                                                     | number[] \| string[]                      |  -                       | -         |
 | targetSortType    | 目标框内的排序方式                                                    | string                                      | 'default' \| 'queue'   | 'default'  |
-| onChange     | 选中元素被移动到目标框内后的回调，回调值为目标框的值                       | (targetKey: number[] \| string[], dir: string, items: data[] ) => void | -                       | -         |
+| onChange     | 选中元素被移动到目标框内后的回调，回调值为目标框的值                       | (targetKey: number[] \| string[], direction: 'left' \| 'right', moveDatas: DataItem[]) => void | -                       | -         |
 
 ## Type
 

@@ -116,14 +116,14 @@ class Transfer extends Component {
         [this.getSelectedKeysByDir(dir)]: newTargetKeys
       },
       () => {
-        const items = []
+        const moveDatas = []
         selectedItem.forEach(key => {
           data.forEach((item) => {
-            item.id === key && items.push(item)
+            item.id === key && moveDatas.push(item)
           })
         })
 
-        this.props.onChange(newTargetKeys, dir === 'left' ? 'right' : 'left', items)
+        this.props.onChange(newTargetKeys, dir === 'left' ? 'right' : 'left', moveDatas)
         this.setState({
           [this.getSelectedKeysByDir(dir)]: [],
           [dir + 'Filter']: '',
