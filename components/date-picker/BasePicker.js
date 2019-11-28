@@ -19,7 +19,7 @@ class BasePicker extends Component {
       placeholder: '',
       leftPlaceholder: '',
       rightPlaceholder: '',
-      format: ''
+      format: this.getFormatString(props)
     }
     this.inputRoot = React.createRef()
     this.input = null
@@ -44,12 +44,10 @@ class BasePicker extends Component {
     })
   }
   componentDidMount () {
-    this.getFormatString(() => {
-      this._parseProps(this.props)
-      this.setPlaceholder()
-      let rect = this.inputRoot.current.getBoundingClientRect()
-      this.calcPanelPos(rect)
-    })
+    this._parseProps(this.props)
+    this.setPlaceholder()
+    let rect = this.inputRoot.current.getBoundingClientRect()
+    this.calcPanelPos(rect)
   }
   calcPanelPos (rect) {
     const {showTime, type} = this.props
@@ -83,16 +81,13 @@ class BasePicker extends Component {
     }
   }
 
-  getFormatString (callback) {
-    let { format, showTime, type } = this.props
-    let { format: stateFormat } = this.state
-    format = compatibleFormatString(stateFormat || format || FORMATS[type])
+  getFormatString (props) {
+    let { format, showTime, type } = props
+    format = compatibleFormatString(format || FORMATS[type])
     if ((showTime || type === 'timeperiod') && !/[H|h|m|s]/.test(format)) {
       format = format + ' HH:mm:ss'
     }
-    this.setState({
-      format
-    }, callback)
+    return format
   }
   callFormatterDate (date) {
     let { type, showTime, localeDatas, weekOffset } = this.props

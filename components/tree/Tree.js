@@ -27,7 +27,8 @@ class Tree extends Component {
     prefixCls: 'hi-tree',
     defaultCheckedKeys: [],
     data: [],
-    apperance: 'default'
+    apperance: 'default',
+    contextMenu: []
   }
 
   static getDerivedStateFromProps (props, state) {
@@ -190,7 +191,8 @@ class Tree extends Component {
       onDelete,
       onSave,
       onClick,
-      apperance
+      apperance,
+      contextMenu
     } = this.props
     const { data } = this.state
     return (
@@ -226,6 +228,7 @@ class Tree extends Component {
           onDropEnd={onDropEnd}
           onDelete={onDelete}
           onSave={onSave}
+          contextMenu={contextMenu}
         />
       </div>
     )

@@ -416,6 +416,7 @@ class Select extends Component {
           )
       }
     }
+
   }
   _setDropdownItems(res, func) {
     let dropdownItems = []
@@ -566,7 +567,6 @@ class Select extends Component {
       'is-multiple': type === 'multiple',
       'is-single': type === 'single'
     }
-
     return (
       <div
         className={classNames('hi-select', className, extraClass)}

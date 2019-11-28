@@ -1,5 +1,10 @@
 # 更新日志
 
+## 2.6.0
+
+- 新增 `<Tree />` 右键菜单允许自定义内容
+- 优化 `<Tree />` 异步加载时的加载状态 [#744](https://github.com/XiaoMi/hiui/issues/744)
+
 ## 2.5.4
 
 - 优化 `<Select />` 异步多选的交互，支持多次搜索选择 [#774](https://github.com/XiaoMi/hiui/issues/774)

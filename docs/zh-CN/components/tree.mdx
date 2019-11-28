@@ -38,6 +38,12 @@ import DemoEdit from '../../demo/tree/section-edit.jsx'
 
 <DemoEdit />
 
+## 自定义右键菜单
+
+import DemoContextMenu from '../../demo/tree/section-context-menu.jsx'
+
+<DemoContextMenu />
+
 ## 可拖拽
 
 import DemoDrag from '../../demo/tree/section-drag.jsx'
@@ -59,13 +65,14 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | editable         | 节点右键可编辑（添加同级节点、添加子节点、编辑节点、删除节点）          | boolean                                                                  | true \| false       | false     |
 | draggable        | 节点可拖拽                                                              | boolean                                                                  | true \| false       | false     |
 | searchable       | 节点可搜索                                                              | boolean                                                                  | true \| false       | false     |
-| loadTreeNode     | 点击异步加载子项                                                        | object                                                                   | -                   | -         |
+| loadTreeNode     | 点击异步加载子项                                                        | LoadTreeNode \| (id: string) =>  LoadTreeNode                                                                  | -                   | -         |
 | defaultExpandAll | 是否默认展开所有树节点                                                  | boolean                                                                  | true \| false       | false     |
 | checkedIds       | 选中的 checkbox                                                         | string[]                                                                 | -                   | -         |
 | openIcon         | 表示展开的图标                                                          | string                                                                   | Icon 图标名称       | -         |
 | closeIcon        | 表示闭合的图标                                                          | string                                                                   | Icon 图标名称       | -         |
 | apperance        | 树形控件的展现形态                                                      | string                                                                   | 'default' \| 'line' | 'default' |
-| onChange         | 树组件改变时触发                                                        | (data:TreeNode[]) => void                                                | -                   | -         |
+| contextMenu      | 自定义右键菜单,参考 *示例* 及 *页面底部自定义右键菜单使用说明*          | ContextMenuOption[] \| (item: DataItem)  =>  ContextMenuOption[]         |                     | []        |
+| onChange         | 树组件改变时触发                                                        | (data: TreeNode[]) => void                                               | -                   | -         |
 | onExpand         | 节点被点击(展开/收起)时触发                                             | (expanded: boolean, expandIds: string[], expandedNode: TreeNode) => void | -                   | -         |
 | onCheck          | 点击节点多选框触发                                                      | (checked: boolean, checkedIds: string[], checkedNode: TreeNode) => void  | -                   | -         |
 | onClick          | 点击节点文字时触发                                                      | (clickNode: TreeNode) => void                                            | -                   | -         |
@@ -94,4 +101,30 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | -------- | -------------- | ------------------- | ------ | ------ |
 | id       | 树节点唯一 id  | string              | -      | -      |
 | title    | 树节点标题     | string \| ReactNode | -      | -      |
+| disabled | 是否禁用节点   |  boolean            | true \| false      | false      |
 | children | 该节点的子节点 | TreeNode[]          | -      | -      |
+
+### ContextMenuOption
+
+| 参数     | 说明           | 类型                | 可选值 | 默认值 |
+| -------- | -------------- | ------------------- | ------ | ------ |
+| type     | 菜单执行的功能 | string              | editNode: 编辑当前节点 <br/> addChildNode: 添加子节点 <br/>  addSiblingNode: 添加同级节点 <br/>  deleteNode: 删除当前节点   | -      |
+| title    | 菜单标题       | string \| ReactNode | -      | -      |
+| onClick  | 点击菜单项时的回调 | ( item: DataItem, node: TreeNode) => void     | -      | -      |
+
+
+> **自定义右键菜单使用说明**
+>
+> contextMenu 参数：
+>
+> - type: editNode / addChildNode / addSiblingNode / deleteNode
+> - title: 自定义 Title / 行为默认Title
+> - onClick: (item: 当前节点数据, node: 当前节点) => {
+>
+>    *如需调用组件提供的 新增同级节点 / 新增子节点 / 编辑当前节点/ 删除当前节点*
+>
+>    *需调用  node.addSiblingNode/ addChildNode/ editNode / deleteNode*
+>
+> }
+
+
