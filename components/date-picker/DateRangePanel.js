@@ -210,7 +210,6 @@ class DateRangePanel extends Component {
     const {onPick, showTime} = this.props
     range.startDate = startDate
     range.endDate = endDate
-    console.log('pick', range)
     this.setState({
       range
     })
