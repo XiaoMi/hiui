@@ -346,7 +346,7 @@ class TreeNode extends Component {
   // 异步加载子节点
   loadChildren = itemId => {
     const { origin } = this.props
-    const _orgin = typeof orgin === 'object' ? origin : origin(itemId)
+    const _orgin = typeof origin === 'function' ? origin(itemId) : origin
     const { method, url, headers, data, params, transformResponse } = _orgin
     const { dataCache } = this.state
     const that = this
