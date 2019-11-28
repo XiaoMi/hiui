@@ -447,10 +447,9 @@ class DateRangePanel extends Component {
                 top: 5,
                 left: 89
               }}
-              date={range}
+              date={date}
               onPick={(d, r) => {
                 this.setState({
-                  range: d,
                   leftDate: d.startDate,
                   rightDate: d.endDate
                 })
