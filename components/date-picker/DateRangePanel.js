@@ -149,10 +149,10 @@ class DateRangePanel extends Component {
    * @param {Number} year 当前年份
    * @param {Number} month 当前月份
    */
-  getHeaderCenterContent (year, month) {
+  getHeaderCenterContent (year, month, flag) {
     const { localeDatas, locale } = this.props
-    const {currentView} = this.state
-    if (currentView === 'year') {
+    const { layout } = this.state
+    if (layout[flag] === 'year') {
       return (year - 4) + '~' + (year + 7)
     }
     let arr = [localeDatas.datePicker.monthShort[month - 1]]
@@ -192,7 +192,7 @@ class DateRangePanel extends Component {
             this.setState({ layout })
           }}
         >
-          {this.getHeaderCenterContent(year, month)}
+          {this.getHeaderCenterContent(year, month, lr)}
         </span>
         {
           <div className='hi-datepicker__header-btns'>
@@ -283,7 +283,7 @@ class DateRangePanel extends Component {
   }
 
   getRangeDateStr () {
-    let {leftDate, rightDate, showMask} = this.state
+    let { range, showMask, leftDate, rightDate } = this.state
     let { format } = this.props
     format = format.substr(format.match(/[H|h]\s*/).index)
     const cls = classNames(
@@ -291,7 +291,7 @@ class DateRangePanel extends Component {
     )
     return (
       <span className={cls}>
-        {`${dateFormat(leftDate, format)} - ${dateFormat(rightDate, format)}`}
+        {`${dateFormat(range.startDate ? range.startDate : leftDate, format)} - ${dateFormat(range.endDate ? range.endDate : rightDate, format)}`}
       </span>
     )
   }
@@ -450,6 +450,7 @@ class DateRangePanel extends Component {
               date={date}
               onPick={(d, r) => {
                 this.setState({
+                  range: d,
                   leftDate: d.startDate,
                   rightDate: d.endDate
                 })

@@ -42,10 +42,10 @@ export default class WeekRangePanel extends Component {
    * @param {Number} year 当前年份
    * @param {Number} month 当前月份
    */
-  getHeaderCenterContent (year, month) {
+  getHeaderCenterContent (year, month, flag) {
     const { localeDatas, locale } = this.props
-    const {currentView} = this.state
-    if (currentView === 'year') {
+    const { layout } = this.state
+    if (layout[flag] === 'year') {
       return (year - 4) + '~' + (year + 7)
     }
     let arr = [localeDatas.datePicker.monthShort[month - 1]]
@@ -105,7 +105,7 @@ export default class WeekRangePanel extends Component {
             const layout = Object.assign({}, this.state.layout, {[lr]: 'year'})
             this.setState({ layout })
           }}>
-          {this.getHeaderCenterContent(year, month)}
+          {this.getHeaderCenterContent(year, month, lr)}
         </span>
         <div className='hi-datepicker__header-btns'>
           <span onClick={() => this.changeMonth(false, lr)} ><Icon name='right' /></span>
