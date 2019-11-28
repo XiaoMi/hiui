@@ -188,8 +188,7 @@ class DateRangePanel extends Component {
         <span
           className='hi-datepicker__header-text'
           onClick={() => {
-            const layout = JSON.parse(JSON.stringify(this.state.layout))
-            layout[lr] = 'year'
+            const layout = Object.assign({}, this.state.layout, {[lr]: 'year'})
             this.setState({ layout })
           }}
         >
