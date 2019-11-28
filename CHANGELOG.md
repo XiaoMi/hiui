@@ -2,8 +2,12 @@
 
 ## 2.6.0
 
-- 新增 `<Tree />` 右键菜单允许自定义内容
-- 优化 `<Tree />` 异步加载时的加载状态 [#744](https://github.com/XiaoMi/hiui/issues/744)
+- 新增 `<Tree />` 右键菜单允许自定义内容[#217](https://github.com/XiaoMi/hiui/issues/217)
+- 新增 `<Tree />` 异步加载时的加载状态 [#744](https://github.com/XiaoMi/hiui/issues/744)
+- 新增 `<DatePicker />` daterange / weekrange 类型下，可直接选择年份/月份 [#801](https://github.com/XiaoMi/hiui/issues/801)
+- 新增 `<Transfer />` onChange 函数入参 dir（穿梭方向）、movedItems（穿梭数据项） [#793](https://github.com/XiaoMi/hiui/issues/793)
+- 新增 `<Transfer />` targetSortType 解决穿梭项的排序问题 [#792](https://github.com/XiaoMi/hiui/issues/792)
+- 修复 `<DatePicker />` daterange 类型日期选择器展开时间与面板展示时间不一致的问题 [#794](https://github.com/XiaoMi/hiui/issues/794)
 
 ## 2.5.4
 
