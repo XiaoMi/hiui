@@ -14,7 +14,6 @@ class Demo extends React.Component {
           key: 'id',
           url: 'http://yapi.demo.qunar.com/mock/26534/hiui/select',
           transformResponse: (res) => {
-            console.log('----', res)
             return res.list
           }
         }}

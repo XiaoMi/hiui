@@ -13,9 +13,9 @@ export default {
     lastMonth: '近一月',
     lastThreeMonth: '近三月',
     lastYear: '近一年',
-    month: [ '一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月' ],
+    month: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
     monthShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-    week: [ '日', '一', '二', '三', '四', '五', '六' ],
+    week: ['日', '一', '二', '三', '四', '五', '六'],
     placeholders: {
       date: '请选择日期',
       month: '请选择月',
@@ -59,7 +59,11 @@ export default {
     drag: '拖拽文件上传',
     dragTips: '请点击或拖拽文件上传',
     dragTipsLimited: '数量已达上限',
-    preview: '预览'
+    preview: '预览',
+    modalTiptitle: '上传失败',
+    modalTiptxt: '该上传文件超过指定上传文件大小',
+    modalBtn: '我知道了',
+    modalTitle: '提示'
   },
   modal: {
     confirmText: '确定',

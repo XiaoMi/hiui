@@ -35,16 +35,11 @@ export const formatterDate = (type, date, formatter, showTime, localeDatas, week
       // if (date instanceof Date) { date = {startDate: date, endDate: date} }
       str = localeDatas.datePicker.weekrange(date.getFullYear(), getYearWeek(date, weekOffset).weekNum)
       break
-    case 'year':
-    case 'month':
-    case 'time':
-      str = dateFormat(date, formatter)
-      break
     case 'week':
       str = localeDatas.datePicker.weekrange(date.getFullYear(), getYearWeek(date, weekOffset).weekNum)
       break
     default:
-      str = dateFormat(date, `${formatter}${(!isFormat && showTime) ? ' HH:mm:ss' : ''}`)
+      str = dateFormat(date, formatter)
       break
   }
 
