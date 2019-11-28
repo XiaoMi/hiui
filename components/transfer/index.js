@@ -106,10 +106,10 @@ class Transfer extends Component {
     const { targetKeys, targetIds, data, targetSortType } = this.props
     const { sourceSelectedKeys, targetSelectedKeys } = this.state
     const selectedItem = dir === 'left' ? [...sourceSelectedKeys] : [...targetSelectedKeys]
-
+    const _concatTargetKeys = targetSortType === 'queue' ? (targetIds || targetKeys).concat(selectedItem) : selectedItem.concat((targetIds || targetKeys))
     const newTargetKeys =
       dir === 'left'
-        ? targetSortType === 'queue' ? (targetIds || targetKeys).concat(selectedItem) : selectedItem.concat((targetIds || targetKeys))
+        ? _concatTargetKeys
         : (targetIds || targetKeys).filter(tk => !selectedItem.includes(tk))
     this.setState(
       {
@@ -117,9 +117,9 @@ class Transfer extends Component {
       },
       () => {
         const items = []
-        newTargetKeys.forEach(keys => {
+        selectedItem.forEach(key => {
           data.forEach((item) => {
-            item.id === keys && items.push(item)
+            item.id === key && items.push(item)
           })
         })
 
@@ -242,6 +242,7 @@ class Transfer extends Component {
             <Icon name='search' />
             <Input
               placeholder='搜索'
+              clearable='true'
               onChange={this.searchEvent.bind(this, dir)}
               value={filterText}
             />
