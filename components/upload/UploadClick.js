@@ -7,8 +7,10 @@ import Icon from '../icon'
 
 class UploadClick extends Upload {
   handleButtonClick = () => {
+    this.uploadRef.value = ''
     this.uploadRef.click()
   }
+
   render () {
     const {
       content,
@@ -27,6 +29,9 @@ class UploadClick extends Upload {
     } = this.state
     return (
       <div className='hi-upload hi-upload--normal'>
+        {
+          this.outMaxsizeTip()
+        }
         <label>
           <input
             ref={node => { this.uploadRef = node }}

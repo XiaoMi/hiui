@@ -277,7 +277,8 @@ class DateRangePanel extends Component {
 
   getRangeDateStr () {
     let {leftDate, rightDate, showMask} = this.state
-    const format = 'HH:mm:ss'
+    let { format } = this.props
+    format = format.substr(format.match(/[H|h]\s*/).index)
     const cls = classNames(
       showMask && 'hi-datepicker__time-text'
     )

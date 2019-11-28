@@ -56,7 +56,16 @@ class UploadPhoto extends Upload {
       }
     })
     return (
-      <div className={classNames('hi-upload hi-upload--photo', {'hi-upload--disabled': disabled})}>
+      <div className={classNames('hi-upload hi-upload--photo', {'hi-upload--disabled': disabled})}
+        onClick={(e) => {
+          if (e.target.nodeName === 'INPUT' && e.target.type === 'file') {
+            this.uploadRef.value = ''
+          }
+        }}
+      >
+        {
+          this.outMaxsizeTip()
+        }
         <ul className='hi-upload__list'>
           {fileList.map((file, index) => {
             if (file.uploadState === 'loading') {

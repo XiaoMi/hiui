@@ -13,9 +13,35 @@ export default {
     lastMonth: 'Nearly month',
     lastThreeMonth: 'Nearly three months',
     lastYear: 'Nearly year',
-    month: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
-    monthShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    week: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
+    month: [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ],
+    monthShort: [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ],
+    week: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     placeholders: {
       date: 'Select Date',
       month: 'Select Month',
@@ -58,7 +84,11 @@ export default {
     drag: 'Drag and drop files for uploading',
     dragTips: 'Please click or drag and drop file upload',
     dragTipsLimited: 'The number has reached the upper limit',
-    preview: 'Preview'
+    preview: 'Preview',
+    modalTiptitle: 'Upload failed',
+    modalTiptxt: 'The upload file exceeds the specified upload file size',
+    modalBtn: 'I know',
+    modalTitle: 'Prompt'
   },
   modal: {
     confirmText: 'OK',

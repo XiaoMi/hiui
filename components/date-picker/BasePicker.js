@@ -44,10 +44,12 @@ class BasePicker extends Component {
     })
   }
   componentDidMount () {
-    this._parseProps(this.props)
-    this.setPlaceholder()
-    let rect = this.inputRoot.current.getBoundingClientRect()
-    this.calcPanelPos(rect)
+    this.getFormatString(() => {
+      this._parseProps(this.props)
+      this.setPlaceholder()
+      let rect = this.inputRoot.current.getBoundingClientRect()
+      this.calcPanelPos(rect)
+    })
   }
   calcPanelPos (rect) {
     const {showTime, type} = this.props
@@ -81,31 +83,30 @@ class BasePicker extends Component {
     }
   }
 
-  getFormatString () {
-    let { format } = this.props
+  getFormatString (callback) {
+    let { format, showTime, type } = this.props
     let { format: stateFormat } = this.state
-    format = stateFormat || format
-    return format
+    format = compatibleFormatString(stateFormat || format || FORMATS[type])
+    if ((showTime || type === 'timeperiod') && !/[H|h|m|s]/.test(format)) {
+      format = format + ' HH:mm:ss'
+    }
+    this.setState({
+      format
+    }, callback)
   }
   callFormatterDate (date) {
     let { type, showTime, localeDatas, weekOffset } = this.props
-    let format = this.getFormatString()
-    let isFormat = !!format
-    format = compatibleFormatString(format || FORMATS[type])
-    this.setState({
-      format
-    })
-    return formatterDate(type, date, format, showTime, localeDatas, weekOffset, isFormat)
+    return formatterDate(type, date, this.state.format, showTime, localeDatas, weekOffset)
   }
   _parseProps (props) {
     let {value, defaultValue, type, timeInterval = 240} = props
+    const { format } = this.state
     let _value = value || defaultValue
     let start
     let end
     let date
     let leftText = ''
     let rightText = ''
-    const format = compatibleFormatString(this.getFormatString() || FORMATS[type])
     if (_value) {
       if (Object.prototype.toString.call(_value) === '[object Object]') {
         start = compatibleToDate(_value.start, format) || null

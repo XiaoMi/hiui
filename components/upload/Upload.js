@@ -1,16 +1,21 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import shallowEqual from 'shallowequal'
 import cloneDeep from 'lodash/cloneDeep'
+import Modal from '../modal'
+import Button from '../button'
+import Icon from '../icon'
 
 let fileId = 0
 
 class Upload extends Component {
   constructor (props) {
     super(props)
+
     const fileList = this.prepareDefaultFileList(props.fileList || props.defaultFileList)
     this.state = {
+      visibleModal: false,
       fileList,
       fileCountLimted: fileList.length >= props.maxCount
     }
@@ -87,7 +92,37 @@ class Upload extends Component {
   getFileId () {
     return `$$HIUI_FILE_ID_${fileId++}`
   }
+  outMaxsizeTip () {
+    const { localeDatas } = this.props
+    if (this.state.visibleModal) {
+      return (
+        <Modal
+          title={localeDatas.upload.modalTitle}
+          style={{width: '480px'}}
+          onCancel={this.cancelEvent}
+          visible={this.state.visibleModal}
+          footer={[
+            <Button type='primary' key={0} onClick={this.cancelEvent}>{localeDatas.upload.modalBtn}</Button>
+          ]}
+        >
+          <div className='hi-upload__modal-tips'>
+            <Icon name='info-circle-o' style={{color: '#db9639', fontSize: '48px'}} />
+            <div className='hi-upload__error—content'>
+              <div className='hi-upload__error-title'>{localeDatas.upload.modalTiptitle}</div>
+              <div className='hi-upload__error-info'>{localeDatas.upload.modalTiptxt}</div>
+            </div>
+          </div>
+        </Modal>
+      )
+    }
+    return null
+  }
 
+  cancelEvent = () => {
+    this.setState({
+      visibleModal: false
+    })
+  }
   uploadFiles (files) {
     const { beforeUpload, customUpload, maxSize } = this.props
     const { fileList, fileCountLimted } = this.state
@@ -106,9 +141,14 @@ class Upload extends Component {
     if (files.length === 0) return
 
     const file = files[0]
+
     if (file.size > maxSize * 1024) {
+      this.setState({
+        visibleModal: true
+      })
       return
     }
+
     file.fileId = this.getFileId()
     file.uploadState = 'loading'
     file.fileType = this.getFileType(file)

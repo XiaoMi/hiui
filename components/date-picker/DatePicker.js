@@ -19,6 +19,7 @@ class DatePicker extends BasePicker {
           <DatePanel
             {...props}
             date={state.date}
+            format={this.state.format}
             onPick={this.onPick.bind(this)}
             style={state.style}
             timeConfirm={this.timeConfirm.bind(this)}
@@ -30,6 +31,7 @@ class DatePicker extends BasePicker {
         component = (
           <DatePanel
             {...props}
+            format={this.state.format}
             date={state.date}
             onPick={this.onPick.bind(this)}
             style={state.style}
@@ -40,6 +42,7 @@ class DatePicker extends BasePicker {
         component = (
           <DateRangePanel
             {...props}
+            format={this.state.format}
             date={d}
             timeConfirm={this.timeConfirm.bind(this)}
             onPick={this.onPick.bind(this)}
@@ -51,6 +54,7 @@ class DatePicker extends BasePicker {
         component = (
           <WeekRangePanel
             {...props}
+            format={this.state.format}
             date={d}
             range={state.range}
             onPick={this.onPick.bind(this)}

@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "2.6.0-rc.2",
+  "version": "2.6.0",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
@@ -22,22 +22,12 @@
     "type": "git",
     "url": "git@github.com:XiaoMi/hiui.git"
   },
-  "keywords": [
-    "component",
-    "design",
-    "react",
-    "react component",
-    "template",
-    "ui"
-  ],
+  "keywords": ["component", "design", "react", "react component", "template", "ui"],
   "author": "HIUI <mi-hiui@xiaomi.com>",
   "license": "MIT",
   "main": "index.js",
   "module": "es/index.js",
-  "file": [
-    "dist",
-    "es"
-  ],
+  "file": ["dist", "es"],
   "peerDependencies": {
     "react": ">=16.0.0",
     "react-dom": ">=16.0.0"
@@ -139,9 +129,7 @@
     "webpack-merge": "^4.2.1"
   },
   "standard": {
-    "env": [
-      "jest"
-    ],
+    "env": ["jest"],
     "parser": "babel-eslint",
     "ignore": [
       "/es/",
@@ -153,13 +141,7 @@
     ]
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "node_modules/.bin/standard --fix",
-      "git add"
-    ],
-    "*.scss": [
-      "stylelint --config .stylelintrc  --fix",
-      "git add"
-    ]
+    "*.{js,jsx}": ["node_modules/.bin/standard --fix", "git add"],
+    "*.scss": ["stylelint --config .stylelintrc  --fix", "git add"]
   }
 }
