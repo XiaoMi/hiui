@@ -7,6 +7,8 @@ import Input from '../input'
 import classNames from 'classnames'
 import withDragDropContext from '../lib/withDragDropContext'
 import Item from './Item'
+import shallowEqual from 'shallowequal'
+
 import './style/index'
 
 class Transfer extends Component {
@@ -19,6 +21,8 @@ class Transfer extends Component {
       targetSelectedKeys: [],
       leftFilter: '',
       rightFilter: '',
+      leftChecked: false,
+      rightChecked: false,
       limited: false,
       targetNode: null,
       sourceNode: null,
@@ -81,17 +85,28 @@ class Transfer extends Component {
     }
   }
   parseSelectedKeys (dir, key, callback) {
-    const { sourceSelectedKeys, targetSelectedKeys } = this.state
+    const {sourceSelectedKeys, targetSelectedKeys, sourceList, targetList, leftFilter, rightFilter} = this.state
     const selectedItem = dir === 'left' ? [...sourceSelectedKeys] : [...targetSelectedKeys]
+    const checkedKey = dir + 'Checked'
+    const originDatas = dir === 'left' ? sourceList : targetList
+    const filterText = dir === 'left' ? leftFilter : rightFilter
     const selectedIndex = selectedItem.indexOf(key)
     if (selectedIndex > -1) {
       selectedItem.splice(selectedIndex, 1)
     } else {
       selectedItem.push(key)
     }
+    const filterResult = []
+    originDatas.forEach(item => {
+      item.content.includes(filterText) && filterResult.push(item.id)
+    })
+    const checkoutStatue = filterText.length ? filterResult.every((item) => {
+      return selectedItem.includes(item)
+    }) : shallowEqual(selectedItem.sort(), filterResult.sort())
     this.setState(
       {
-        [this.getSelectedKeysByDir(dir)]: selectedItem
+        [this.getSelectedKeysByDir(dir)]: selectedItem,
+        [checkedKey]: checkoutStatue
       },
       () => {
         callback && callback()
@@ -113,7 +128,9 @@ class Transfer extends Component {
         : (targetIds || targetKeys).filter(tk => !selectedItem.includes(tk))
     this.setState(
       {
-        [this.getSelectedKeysByDir(dir)]: newTargetKeys
+        [this.getSelectedKeysByDir(dir)]: newTargetKeys,
+        leftChecked: false,
+        rightChecked: false
       },
       () => {
         const moveDatas = []
@@ -132,19 +149,22 @@ class Transfer extends Component {
       }
     )
   }
-  allCheckboxEvent (dir, value, isChecked) {
-    const { sourceList, targetList, leftFilter, rightFilter } = this.state
-    const arr = []
+  allCheckboxEvent (dir) {
+    const {sourceList, targetList, leftFilter, rightFilter} = this.state
     const originDatas = dir === 'left' ? sourceList : targetList
     const filterText = dir === 'left' ? leftFilter : rightFilter
-    if (isChecked) {
+    const checkedKey = dir + 'Checked'
+    const arr = []
+
+    if (!this.state[checkedKey]) {
       originDatas.forEach(data => {
         data.content.includes(filterText) && !data.disabled && arr.push(data.id)
       })
     }
     this.setState(
       {
-        [this.getSelectedKeysByDir(dir)]: arr
+        [this.getSelectedKeysByDir(dir)]: arr,
+        [checkedKey]: !this.state[checkedKey]
       },
       () => {
         this.isLimited(dir)
@@ -161,10 +181,27 @@ class Transfer extends Component {
     })
   }
   searchEvent (dir, e) {
+    const {sourceList, targetList, sourceSelectedKeys, targetSelectedKeys} = this.state
+    const originDatas = dir === 'left' ? sourceList : targetList
+    const filterResult = []
+    const filterText = e.target.value
+    originDatas.forEach(item => {
+      item.content.includes(filterText) && filterResult.push(item.id)
+    })
+    const selectedKeys = dir === 'left' ? sourceSelectedKeys : targetSelectedKeys
+    const checkedKey = dir + 'Checked'
+
+    const checkoutStatue = e.target.value.length
+      ? filterResult.every((item) => {
+        return selectedKeys.includes(item)
+      }) : shallowEqual(selectedKeys.sort(), filterResult.sort())
+
     this.setState({
-      [dir + 'Filter']: e.target.value
+      [dir + 'Filter']: e.target.value,
+      [checkedKey]: checkoutStatue
     })
   }
+
   move (sourceItem, targetItem) {
     const { targetList, dividerPosition } = this.state
     const _targetList = [...targetList]
@@ -216,6 +253,8 @@ class Transfer extends Component {
       targetSelectedKeys,
       leftFilter,
       rightFilter,
+      leftChecked,
+      rightChecked,
       limited,
       targetNode,
       sourceNode,
@@ -226,12 +265,8 @@ class Transfer extends Component {
     const selectedKeys = dir === 'left' ? sourceSelectedKeys : targetSelectedKeys
     const filterText = dir === 'left' ? leftFilter : rightFilter
     const filterResult = datas.filter(item => item.content.includes(filterText))
-    const footerCls = classNames(
-      'hi-transfer__footer',
-      selectedKeys.length !== filterResult.length &&
-        selectedKeys.length !== 0 &&
-        'hi-transfer__footer--checkbox-part'
-    )
+    const _isChecked = dir === 'left' ? leftChecked : rightChecked
+
     const _title = dir === 'left' ? title[0] : title[1] || title[0]
     return (
       <div className='hi-transfer__container'>
@@ -243,6 +278,8 @@ class Transfer extends Component {
             <Input
               placeholder='搜索'
               clearable='true'
+
+              onInput={this.searchEvent.bind(this, dir)}
               onChange={this.searchEvent.bind(this, dir)}
               value={filterText}
             />
@@ -294,18 +331,15 @@ class Transfer extends Component {
           )}
         </div>
         {(mode !== 'basic' || type !== 'default') && (showAllSelect || showCheckAll) && (
-          <div className={footerCls}>
+          <div className='hi-transfer__footer'>
             <Checkbox
-              legacy
-              text='全选'
-              checked={
-                selectedKeys.length !== 0 &&
-                selectedKeys.length === filterResult.length &&
-                filterResult.length !== 0
-              }
+              indeterminate={!!selectedKeys.length && !_isChecked}
+              checked={_isChecked && !!filterResult.length}
               onChange={this.allCheckboxEvent.bind(this, dir)}
-            />
-            <span>已选：{selectedKeys.length}</span>
+            >
+              全选
+            </Checkbox>
+            <span>{selectedKeys.length !== 0 && selectedKeys.length + '/'}{filterResult.length}项</span>
           </div>
         )}
       </div>
