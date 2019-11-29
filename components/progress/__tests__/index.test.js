@@ -37,9 +37,9 @@ describe('Progress',()=>{
             )
 
             expect(wrapper.find('.hi-progress__container')).toHaveLength(4)
-            expect(window.getComputedStyle(wrapper.find('.hi-progress__inner').first().getDOMNode()).getPropertyValue('height')).toEqual('6px'),
-            expect(window.getComputedStyle(wrapper.find('.hi-progress__inner').at(1).getDOMNode()).getPropertyValue('height')).toEqual('6px'),
-            expect(window.getComputedStyle(wrapper.find('.hi-progress__inner').at(2).getDOMNode()).getPropertyValue('height')).toEqual('2px'),
+            expect(window.getComputedStyle(wrapper.find('.hi-progress__inner').first().getDOMNode()).getPropertyValue('height')).toEqual('6px')
+            expect(window.getComputedStyle(wrapper.find('.hi-progress__inner').at(1).getDOMNode()).getPropertyValue('height')).toEqual('6px')
+            expect(window.getComputedStyle(wrapper.find('.hi-progress__inner').at(2).getDOMNode()).getPropertyValue('height')).toEqual('2px')
             expect(window.getComputedStyle(wrapper.find('.hi-progress__inner').last().getDOMNode()).getPropertyValue('height')).toEqual('8px')
         })
 
@@ -89,14 +89,49 @@ describe('Progress',()=>{
 
             const wrapper=mount(<Progress percent={50} apperance='circle'/>)
 
-            expect(window.getComputedStyle(wrapper.find('.hi-progress__svg_dashboard').first().getDOMNode()).getPropertyValue('width')).toEqual('80px')
-            expect(window.getComputedStyle(wrapper.find('.hi-progress__svg_dashboard').first().getDOMNode()).getPropertyValue('height')).toEqual('80px')
+            expect(window.getComputedStyle(wrapper.find('.hi-progress__svg').first().getDOMNode()).getPropertyValue('width')).toEqual('80px')
+            expect(window.getComputedStyle(wrapper.find('.hi-progress__svg').first().getDOMNode()).getPropertyValue('height')).toEqual('80px')
            
             wrapper.setProps({radius:50})
 
-            expect(window.getComputedStyle(wrapper.find('.hi-progress__svg_dashboard').first().getDOMNode()).getPropertyValue('width')).toEqual('100px')
-            expect(window.getComputedStyle(wrapper.find('.hi-progress__svg_dashboard').first().getDOMNode()).getPropertyValue('height')).toEqual('100px')
+            expect(window.getComputedStyle(wrapper.find('.hi-progress__svg').first().getDOMNode()).getPropertyValue('width')).toEqual('100px')
+            expect(window.getComputedStyle(wrapper.find('.hi-progress__svg').first().getDOMNode()).getPropertyValue('height')).toEqual('100px')
+
+            wrapper.setProps({radius:-1})
+
+            expect(window.getComputedStyle(wrapper.find('.hi-progress__svg').first().getDOMNode()).getPropertyValue('width')).toEqual('80px')
+            expect(window.getComputedStyle(wrapper.find('.hi-progress__svg').first().getDOMNode()).getPropertyValue('height')).toEqual('80px')
+            expect(wrapper.find('.hi-progress__svg').first().hasClass('hi-progress__svg_dashboard')).toBeFalsy()
+
+            wrapper.setProps({apperance:'dashboard'})
+
+            expect(wrapper.find('.hi-progress__svg').first().hasClass('hi-progress__svg_dashboard')).toBeTruthy()
+            expect(window.getComputedStyle(wrapper.find('.hi-progress__svg_dashboard').first().getDOMNode()).getPropertyValue('width')).toEqual('80px')
+            expect(window.getComputedStyle(wrapper.find('.hi-progress__svg_dashboard').first().getDOMNode()).getPropertyValue('height')).toEqual('80px')
             
         })
+
+        it('width&&height&&placement',()=>{
+
+            const wrapper=mount(<Progress percent={50} />)
+
+            expect(window.getComputedStyle(wrapper.find('.hi-progress__inner').first().getDOMNode()).getPropertyValue('height')).toEqual('6px')
+            expect(window.getComputedStyle(wrapper.find('.hi-progress__inner').first().getDOMNode()).getPropertyValue('width')).toEqual('160px')
+
+            wrapper.setProps({width:200})
+
+            expect(window.getComputedStyle(wrapper.find('.hi-progress__inner').first().getDOMNode()).getPropertyValue('width')).toEqual('200px')
+
+            wrapper.setProps({placement:'inside'})
+            
+            expect(wrapper.exists('.hi-progress__text')).toBeFalsy()
+            expect(wrapper.exists('.hi-progress__text--inside')).toBeFalsy()
+
+            wrapper.setProps({height:20})
+            
+            expect(wrapper.exists('.hi-progress__text--inside')).toBeTruthy()
+            expect(window.getComputedStyle(wrapper.find('.hi-progress__inner').first().getDOMNode()).getPropertyValue('height')).toEqual('20px')
+        })
+
     })
 })
