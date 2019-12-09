@@ -9,8 +9,9 @@ import Message from '../index'
 describe('Message', () => {
   describe('Methods', () => {
     it('open&close', () => {
-    })
-    it('deprecatedOpen', () => {
+      Message.open({
+        title: 'Tip'
+      })
     })
   })
 })

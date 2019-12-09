@@ -19,6 +19,7 @@ class Loading extends Component {
       [`${prefixCls}__mask--part`]: !full,
       [`${prefixCls}__mask--hide`]: visible === false
     })
+    console.log(2, mountNode)
     return (
       <PortalWrapper mountNode={mountNode}>
         {children}
@@ -65,6 +66,7 @@ function open (target, { content, key, duration, size } = {}) {
     mountNode.style.setProperty('position', 'relative')
   )
   const full = !target
+  console.log(1, renderNode)
   ReactDOM.render(
     <Loading {...{ content, full, visible: true, target: mountNode, size }} />,
     renderNode
