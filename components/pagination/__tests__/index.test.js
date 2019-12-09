@@ -1,5 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
+import ReactTestUtils from 'react-dom/test-utils'
 import ProviderPagination, {Pagination} from '../Pagination'
 import simulant from 'simulant'
 import Input from '../../input/Input'
@@ -85,7 +86,7 @@ describe('Pagination', () => {
       )
       expect(wrapper.find('.hi-pagination__sizes')).toHaveLength(1)
       wrapper.find('.hi-select__input').simulate('click')
-      simulant.fire(document.querySelectorAll('.hi-select__dropdown--item')[1], 'click')
+      ReactTestUtils.Simulate.click(document.querySelectorAll('.hi-select__dropdown--item')[1])
       expect(callback).toHaveBeenCalled()
       expect(callback).toHaveBeenCalledWith(20, 1)
       expect(wrapper.find(Pagination).state('pageSize')).toEqual(20)

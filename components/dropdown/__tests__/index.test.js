@@ -1,17 +1,22 @@
 import React, { Fragment } from 'react'
+import { Simulate } from 'react-dom/test-utils'
 import { mount } from 'enzyme'
 import sinon, { fake, spy } from 'sinon'
-import simulant from 'simulant'
 import Dropdown from '../index'
+import DropdownMenuItem from '../DropdownMenuItem'
 import Button from '../../button'
 
 const datas = [{
-  title: '移动'
+  title: '移动',
+  id: 1
 }, {
-  title: '复制'
+  title: '复制',
+  id: 2
 }, {
-  title: '删除'
+  title: '删除',
+  id: 3
 }]
+
 /* eslint-env jest */
 describe('Dropdown', () => {
   let clock
@@ -22,52 +27,36 @@ describe('Dropdown', () => {
 
   afterEach(() => {
     clock.restore()
+    document.querySelectorAll('.hi-popper__container')[0] && document.querySelectorAll('.hi-popper__container')[0].remove()
   })
-  describe('Lifecycle', () => {
-    it('componentDidMount', () => {
-      // const wrapper = mount(<Dropdown />)
-
-      // wrappered by Provider
-      // expect(wrapper.instance()).toBeInstanceOf(Button)
-
-      // expect(wrapper.find('input')).toHaveLength(1)
-    })
-  })
-
+  jest.useFakeTimers()
   describe('PropTypes', () => {
     it('title', () => {
       const wrapper = mount(
         <Dropdown title='删除' data={datas} trigger='click' />
       )
-      wrapper.find('.hi-dropdown__button').first().simulate('click')
+      wrapper.find(Button).first().simulate('click')
       expect(wrapper.find('.hi-dropdown__button--active').first().text()).toEqual('删除')
       expect(wrapper.find('.hi-dropdown__icon--active')).toHaveLength(1)
       wrapper.unmount()
     })
-    // it('type', () => {
-    //   const types = ['text', 'button', 'group']
-    //   const title = '操作'
-    //   const wrapper = mount(
-    //     <div>
-    //       {types.map((type, index) => <Dropdown type={type} key={index} title={title} />)}
-    //     </div>
-    //   )
-
-    //   expect(wrapper.find('.hi-dropdown').at(0).childAt(0).contains(
-    //     <div className='hi-dropdown__title'>
-    //       <span className='hi-dropdown__title-text'>{title}</span>
-    //       <i className='hi-icon icon-down' />
-    //     </div>
-    //   )).toBeTruthy()
-    //   expect(wrapper.find('.hi-dropdown').at(1).childAt(0).contains(<Button type='default'>{title} &nbsp;<i className='hi-icon icon-down' /></Button>)).toBeTruthy()
-    //   expect(wrapper.find('.hi-dropdown').at(2).childAt(0).matchesElement(
-    //     <div className='hi-dropdown__button-group'>
-    //       <Button type='default' >{title}</Button>
-    //       <Button type='default' ><i className='hi-icon icon-down' /></Button>
-    //     </div>
-    //   )).toBeTruthy()
-    //   wrapper.unmount()
-    // })
+    it('type', () => {
+      const types = ['text', 'button', 'group']
+      const title = '操作'
+      const wrapper = mount(
+        <div>
+          {types.map((type, index) => <Dropdown data={datas} type={type} key={index} title={title} />)}
+        </div>
+      )
+      types.map((type) => {
+        expect(wrapper.find(`.hi-dropdown--${type}`)).toHaveLength(1)
+      })
+      // console.log(wrapper.debug())
+      expect(wrapper.find('.hi-dropdown--text').find('button.hi-btn--appearance--link')).toHaveLength(1)
+      expect(wrapper.find('.hi-dropdown--button').find('button.hi-btn--type--default')).toHaveLength(1)
+      expect(wrapper.find('.hi-dropdown--group').find(Button)).toHaveLength(2)
+      wrapper.unmount()
+    })
 
     // it('prefix&suffix', () => {
     //   const wrapper = mount(
@@ -78,92 +67,154 @@ describe('Dropdown', () => {
     //   expect(document.querySelectorAll('.hi-dropdown__item-suffix')[0].innerHTML).toEqual('-')
     //   wrapper.unmount()
     // })
-    // it('trigger', () => {
-    //   const triggers = ['click', 'contextmenu']
-    //   const wrapper = mount(
-    //     <div>
-    //       {
-    //         triggers.map((tt, index) => <Dropdown key={index} title='其它操作' data={datas} trigger={tt} />)
-    //       }
-    //       <Dropdown title='其它操作' data={datas} trigger={[...triggers]} />
-    //     </div>
-    //   )
-    //   simulant.fire(wrapper.find('.hi-dropdown').at(0).getDOMNode(), 'click', { button: 2 })
-    //   expect(document.querySelectorAll('.hi-popper__container')).toHaveLength(1)
-    //   simulant.fire(wrapper.find('.hi-dropdown').at(0).getDOMNode(), 'click', { button: 2 })
-    //   expect(document.querySelectorAll('.hi-popper__container--hide')).toHaveLength(1)
-    //   document.querySelectorAll('.hi-popper__container')[0].remove()
+    it('trigger', () => {
+      const triggers = ['click', 'contextmenu', 'hover']
+      const wrapper = mount(
+        <div>
+          {
+            triggers.map((tt, index) => <Dropdown key={index} title='其它操作' data={datas} trigger={tt} />)
+          }
+          <Dropdown title='其它操作' data={datas} trigger={[...triggers]} />
+        </div>
+      )
+      expect(document.querySelectorAll('.hi-popper__container')).toHaveLength(0)
+      wrapper.find('.hi-dropdown').at(0).find(Button).simulate('click')
+      expect(document.querySelectorAll('.hi-popper__container')).toHaveLength(1)
+      wrapper.find('.hi-dropdown').at(0).find(Button).simulate('click')
 
-    //   simulant.fire(wrapper.find('.hi-dropdown').at(1).getDOMNode(), 'contextmenu', { button: 2 })
-    //   expect(document.querySelectorAll('.hi-popper__container')).toHaveLength(1)
-    //   simulant.fire(wrapper.find('.hi-dropdown').at(1).getDOMNode(), 'contextmenu', { button: 2 })
-    //   expect(document.querySelectorAll('.hi-popper__container--hide')).toHaveLength(1)
-    //   document.querySelectorAll('.hi-popper__container')[0].remove()
+      wrapper.find('.hi-dropdown').at(1).find(Button).simulate('contextmenu')
+      expect(document.querySelectorAll('.hi-popper__container')).toHaveLength(2)
+      wrapper.find('.hi-dropdown').at(1).find(Button).simulate('click')
 
-    //   simulant.fire(wrapper.find('.hi-dropdown').at(2).getDOMNode(), 'contextmenu', { button: 2 })
-    //   expect(document.querySelectorAll('.hi-popper__container')).toHaveLength(1)
-    //   simulant.fire(wrapper.find('.hi-dropdown').at(2).getDOMNode(), 'click', { button: 2 })
-    //   expect(document.querySelectorAll('.hi-popper__container--hide')).toHaveLength(1)
-    //   document.querySelectorAll('.hi-popper__container')[0].remove()
-    //   wrapper.unmount()
-    // })
-    // it('onClick', () => {
-    //   const callback = fake()
-    //   const wrapper = mount(
-    //     <div>
-    //       <Dropdown title='其它操作' data={datas} onClick={callback} />
-    //       <Dropdown title='其它操作' data={datas} />
-    //     </div>
-    //   )
-    //   wrapper.find('.hi-dropdown').at(0).getDOMNode().click()
-    //   wrapper.find('.hi-dropdown').at(1).getDOMNode().click()
-    //   document.querySelectorAll('.hi-dropdown__item')[0].click()
-    //   document.querySelectorAll('.hi-dropdown__item')[3].click()
-    //   expect(callback.callCount).toEqual(1)
-    //   wrapper.unmount()
-    // })
+      wrapper.find('.hi-dropdown').at(2).find(Button).simulate('mouseEnter')
+      expect(document.querySelectorAll('.hi-popper__container')).toHaveLength(3)
+      wrapper.find('.hi-dropdown').at(2).find(Button).simulate('mouseLeave')
+      wrapper.unmount()
+    })
+    it('onClick', () => {
+      const callback = jest.fn()
+      const wrapper = mount(
+        <div>
+          <Dropdown title='其它操作' data={datas} onClick={callback} trigger='click' />
+          <Dropdown title='其它操作' data={datas} />
+        </div>
+      )
+      wrapper.find('.hi-dropdown').at(0).find('button').simulate('click')
+      Simulate.click(document.querySelectorAll('.hi-dropdown__menu-item')[0])
+      expect(callback).toHaveBeenCalled()
+      expect(callback).toHaveBeenCalledWith(1)
+      wrapper.unmount()
+    })
+    it('placement', () => {
+      const plcs = ['bottom-start', 'top-start', 'bottom', 'top']
+      const wrapper = mount(
+        <div>
+          {
+            plcs.map((plc, index) => {
+              return <Dropdown key={index} data={datas} placement={plc} />
+            })
+          }
+        </div>
+      )
+      plcs.map((plc, index) => {
+        wrapper.find('.hi-dropdown').at(index).find('button').simulate('mouseEnter')
+        expect(document.querySelectorAll(`.hi-popper__content--${plc}`)).toHaveLength(1)
+      })
+      wrapper.unmount()
+    })
   })
 
-  // describe('DataItem', () => {
-  //   const callback = spy()
-  //   const outCallback = spy()
-  //   const _datas = [{
-  //     title: '同步',
-  //     prefix: '...',
-  //     onClick: callback
-  //   }, {
-  //     title: '上传',
-  //     disabled: true
-  //   }, {
-  //     title: '-'
-  //   }, {
-  //     title: '删除',
-  //     suffix: '...',
-  //     value: 'other'
-  //   }, {
-  //     title: '删除',
-  //     url: 'xx.com'
-  //   }]
-  //   it('prefix&suffix', () => {
-  //     const wrapper = mount(
-  //       <Dropdown title='其它操作' data={_datas} onClick={outCallback} />
-  //     )
-  //     wrapper.find('.hi-dropdown').getDOMNode().click()
-  //     expect(document.querySelectorAll('.hi-dropdown__item--disabled')).toHaveLength(1)
-  //     expect(document.querySelectorAll('.hi-dropdown__divider')).toHaveLength(1)
-  //     expect(document.querySelector('.hi-dropdown__item-prefix').innerHTML).toEqual('...')
-  //     expect(document.querySelector('.hi-dropdown__item-suffix').innerHTML).toEqual('...')
-  //     expect(document.querySelector('.hi-dropdown__item-title').innerHTML).toEqual('同步')
-  //     document.querySelector('.hi-dropdown__item-title').click()
-  //     expect(callback.called).toBeTruthy()
-  //     expect(outCallback.called).toBeFalsy()
+  describe('DataItem', () => {
 
-  //     document.querySelectorAll('.hi-dropdown__item-title')[1].click()
-  //     expect(outCallback.called).toBeFalsy()
-  //     document.querySelectorAll('.hi-dropdown__item-title')[2].click()
-  //     expect(outCallback.called).toBeTruthy()
-  //     // expect(document.querySelectorAll('.hi-dropdown__item-suffix')[0].innerHTML).toEqual('-')
-  //     wrapper.unmount()
-  //   })
-  // })
+    const callback = spy()
+    const outCallback = spy()
+    const _datas = [{
+      title: '同步',
+      onClick: callback
+    }, {
+      title: '上传',
+      disabled: true
+    }, {
+      title: '-'
+    }, {
+      title: '删除',
+      value: 'other'
+    }, {
+      title: '删除',
+      url: 'xx.com'
+    }]
+    it('item', () => {
+      jest.useFakeTimers()
+      const wrapper = mount(
+        <Dropdown title='操作' data={_datas} onClick={outCallback} trigger={['click', 'hover']} />
+      )
+      wrapper.find('.hi-dropdown').at(0).find('button').simulate('click')
+      expect(document.querySelectorAll('.hi-dropdown__menu-item--disabled')).toHaveLength(1)
+      expect(document.querySelectorAll('.hi-dropdown__divider')).toHaveLength(1)
+      Simulate.mouseEnter(document.querySelector('.hi-dropdown__menu-item'))
+      jest.runAllTimers()
+      Simulate.mouseLeave(document.querySelector('.hi-dropdown__menu-item'))
+      wrapper.find('.hi-dropdown').at(0).find('button').simulate('click')
+      expect(document.querySelectorAll('.hi-popper__container--hide')).toHaveLength(1)
+    })
+    it('level', () => {
+      const _data = [{
+        title: 'Move',
+        children: [{
+          title: '2019',
+          children: [{
+            title: 'Q1',
+            children: [{
+              title: '01'
+            }, {
+              title: '02'
+            }, {
+              title: '03'
+            }]
+          }, {
+            title: 'Q2',
+            disabled: true
+          }, {
+            title: 'Q3'
+          }]
+        }]
+      }, {
+        title: 'Copy',
+        children: [{
+          title: '2019',
+          children: [{
+            title: 'Q1',
+            disabled: true,
+            children: [{
+              title: '01'
+            }, {
+              title: '02'
+            }, {
+              title: '03'
+            }]
+          }, {
+            title: 'Q2'
+          }, {
+            title: 'Q3'
+          }]
+        }]
+      }, {
+        title: '删除'
+      }]
+
+      const wrapper = mount(
+        <Dropdown data={_data} trigger='click' />
+      )
+      wrapper.find('.hi-dropdown').at(0).find('button').simulate('click')
+      Simulate.mouseEnter(document.querySelector('.hi-dropdown__menu-item'))
+      expect(document.querySelectorAll('.hi-popper__container')).toHaveLength(2)
+      Simulate.mouseEnter(document.querySelectorAll('.hi-popper__container')[1].querySelector('.hi-dropdown__menu-item'))
+      expect(document.querySelectorAll('.hi-popper__container')).toHaveLength(3)
+    })
+  })
+  describe('Branches', () => {
+    const wrapper = mount(
+      <Dropdown title='操作' list={datas} trigger={['click', 'hover']} />
+    )
+  })
 })
