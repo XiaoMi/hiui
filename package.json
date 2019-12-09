@@ -6,6 +6,7 @@
     "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
     "jest": "jest",
     "jest:coverage": "npm run jest -- --coverage",
+    "jest:components": "npx jest components/popover/__tests__/index.test.js --coverage",
     "jest:badges": "npm run jest:coverage && jest-coverage-badges --input ./test/coverage/coverage-summary.json --output ./test/button",
     "fix": "node_modules/.bin/standard --fix && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss' --fix",
     "precommit": "lint-staged",
