@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react'
+import React from 'react'
+import ReactTestUtils from 'react-dom/test-utils'
 import { mount } from 'enzyme'
-import sinon, { fake, spy } from 'sinon'
-import simulant from 'simulant'
+import { fake, spy } from 'sinon'
 import Menu, { Menu as OriginalClass } from '../index'
 
 /* eslint-env jest */
@@ -115,8 +115,8 @@ describe('Menu', () => {
       )
       expect(wrapper.find('.hi-menu--horizontal')).toHaveLength(1)
       wrapper.find('.hi-menu-item').at(2).childAt(0).simulate('click')
-      simulant.fire(document.querySelector('.hi-submenu__items'), 'click')
-      simulant.fire(document.querySelector('.hi-submenu__items .hi-submenu__title'), 'click')
+      ReactTestUtils.Simulate.click(document.querySelector('.hi-submenu__items'))
+      ReactTestUtils.Simulate.click(document.querySelector('.hi-submenu__items .hi-submenu__title'))
       expect(document.querySelector('.hi-submenu__items .hi-menu__title-toggle-icon>.hi-icon').className).toEqual('hi-icon icon-left')
     })
     it('collapsed', () => {

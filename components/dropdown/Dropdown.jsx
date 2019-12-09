@@ -12,35 +12,26 @@ export default class Dropdown extends React.Component {
   state = {
     visible: false
   }
-  setPopperShow = (event) => {
+  eventHandler (event) {
     if (event) {
       event.stopPropagation()
       event.preventDefault()
-      if (event.nativeEvent) {
+      if (event.nativeEvent && event.nativeEvent.stopImmediatePropagation) {
         event.nativeEvent.stopImmediatePropagation()
       }
     }
+  }
+  setPopperShow = (event) => {
+    this.eventHandler(event)
     clearTimeout(this.timerHideMenu)
     this.setState({ visible: true })
   }
   setPopperHide = (event) => {
-    if (event) {
-      event.stopPropagation()
-      event.preventDefault()
-      if (event.nativeEvent) {
-        event.nativeEvent.stopImmediatePropagation()
-      }
-    }
+    this.eventHandler(event)
     this.setState({ visible: false })
   }
   setPopperDelayHide = (event) => {
-    if (event) {
-      event.stopPropagation()
-      event.preventDefault()
-      if (event.nativeEvent) {
-        event.nativeEvent.stopImmediatePropagation()
-      }
-    }
+    this.eventHandler(event)
     this.timerHideMenu = setTimeout(() => {
       this.setState({ visible: false })
     }, 200)
@@ -88,6 +79,7 @@ export default class Dropdown extends React.Component {
     getIsTriggerEqualHover(this.props) && this.setPopperDelayHide()
   }
   handleMenuItemClick = (data) => {
+    console.log('click', data)
     const { onClick } = this.props
     this.setPopperDelayHide()
     onClick && onClick(data)
@@ -104,7 +96,7 @@ export default class Dropdown extends React.Component {
   render () {
     const { className, style, title, type, placement, data, disabled, width, onButtonClick } = this.props
     const { visible } = this.state
-    const dropdownCls = classNames(prefixCls, className, disabled && `${prefixCls}--disabled`)
+    const dropdownCls = classNames(prefixCls, prefixCls + '--' + type, className, disabled && `${prefixCls}--disabled`)
     return (
       <div className={dropdownCls} style={style} ref={this.refDropdown}>
         <DropdownButton

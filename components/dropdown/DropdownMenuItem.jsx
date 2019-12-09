@@ -12,7 +12,7 @@ const MenuItemWrapper = forwardRef(({ href, children, disabled, ...props }, ref)
     Reflect.deleteProperty(props, 'onClick')
   }
   return (
-    <li ref={ref} {...props}>
+    <li ref={ref} {...props} >
       {shouldUseLink ? <a href={href}>{children}</a> : children}
     </li>
   )
@@ -32,6 +32,7 @@ export default class DropdownMenuItem extends React.Component {
     }, 200)
   }
   handleMenuItemMouseEnter = () => {
+    console.log('mouseEnter--------item')
     clearTimeout(this.timerHideDropdownMenu)
     this.setState({
       visible: true
@@ -41,6 +42,7 @@ export default class DropdownMenuItem extends React.Component {
     this.setMenuHide()
   }
   handleMenuMouseEnter = () => {
+    console.log('handleMenuMouseEnter--------item')
     const { onChildMenuMouseEnter } = this.props
     onChildMenuMouseEnter && onChildMenuMouseEnter()
     clearTimeout(this.timerHideDropdownMenu)
