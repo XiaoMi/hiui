@@ -13,5 +13,27 @@ describe('Message', () => {
         title: 'Tip'
       })
     })
+    it('type',()=>{
+      Message.open({
+        title: 'Tip',
+        type:'info',
+      })
+      Message.open({
+        title: 'Tip',
+        type:'success',
+      })
+      Message.open({
+        title: 'Tip',
+        type:'error',
+      })
+      Message.open({
+        title: 'Tip',
+        type:'warning',
+      })
+    })
+    it('duration',()=>{
+
+    })
   })
+  
 })

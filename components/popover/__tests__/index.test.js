@@ -51,7 +51,7 @@ describe('Tooltip', () => {
   afterEach(() => {
     clock.restore()
   })
-  it('触发方式测试通过', () => {
+  it('trigger', () => {
     
 
     expect(document.querySelectorAll('.hi-popover__popper')).toHaveLength(0)
@@ -95,7 +95,7 @@ describe('Tooltip', () => {
     expect(document.querySelectorAll('.hi-popover__popper')).toHaveLength(3)
   })
 
-  it('显示的位置测试通过', () => {
+  it('placement', () => {
     topClickTarget.find('button').getDOMNode().click()
     leftTarget.find('button').getDOMNode().click()
     bottomTarget.find('button').getDOMNode().click()
