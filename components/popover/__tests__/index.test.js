@@ -1,7 +1,6 @@
 import React from 'react'
 import { mount,shallow} from 'enzyme'
-import sinon, { spy, stub } from 'sinon'
-import { Simulate } from 'react-dom/test-utils'
+import sinon from 'sinon'
 
 import Popover from '../'
 import Button from '../../button'
