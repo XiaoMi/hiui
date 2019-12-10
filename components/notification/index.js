@@ -48,6 +48,7 @@ const notification = {
               size='small'
               className={`hi-${prefix}__button`}
               onClick={() => {
+                console.log('123')
                 onConfirm()
               }}
             >
