@@ -279,10 +279,9 @@ class Cascader extends Component {
           jointOption[valueKey].push(option[valueKey])
           option.disabled && (jointOption.disabled = option.disabled)
           option.disabled && (levelItem.disabled = option.disabled)
-
           if (!levelItemsObj[levelItem[valueKey]]) {
             levelItemsObj[levelItem[valueKey]] = levelItem[valueKey]
-            levelItems.push(levelItem)
+            if (levelItem[valueKey].toString().includes(keyword) || option[labelKey].toString().includes(keyword)) levelItems.push(levelItem)
           }
         })
 
