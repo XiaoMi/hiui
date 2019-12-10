@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import { mount } from 'enzyme'
 import sinon from 'sinon'
 import Message from '../index'
 
@@ -21,6 +20,8 @@ describe('Message', () => {
         title: 'Tip'
       })
     })
+  })
+  describe('PropTypes',()=>{
     it('duration',()=>{
       Message.open({
         title: 'Tip',
@@ -58,7 +59,6 @@ describe('Message', () => {
       expect(document.querySelectorAll('.hi-message--warning')).toHaveLength(1)
 
     })
-    
   })
   
 })
