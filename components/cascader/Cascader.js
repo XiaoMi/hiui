@@ -250,7 +250,6 @@ class Cascader extends Component {
     const labelKey = this.labelKey()
     const valueKey = this.valueKey()
     const emptyContent = this.localeDatasProps('noFoundTip')
-
     if (filterOptions.length === 0) {
       return [{
         [labelKey]: emptyContent,
@@ -280,9 +279,10 @@ class Cascader extends Component {
           jointOption[valueKey].push(option[valueKey])
           option.disabled && (jointOption.disabled = option.disabled)
           option.disabled && (levelItem.disabled = option.disabled)
+
           if (!levelItemsObj[levelItem[valueKey]]) {
             levelItemsObj[levelItem[valueKey]] = levelItem[valueKey]
-            levelItem[valueKey].toString().includes(keyword) && levelItems.push(levelItem)
+            levelItems.push(levelItem)
           }
         })
 
