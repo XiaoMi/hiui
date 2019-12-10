@@ -1,5 +1,10 @@
 # 更新日志
 
+## 1.5.19
+
+- 修复 `<Upload />` pictureCard 模式下点击上传无反应的问题 [#808](https://github.com/XiaoMi/hiui/issues/808)
+- 修复 `<Cascader />` 下拉选项不能自适应文字宽度产生折行的问题 [#811](https://github.com/XiaoMi/hiui/issues/811)
+
 ## 1.5.18
 
 - 修复 `<Upload />` 上传文件大小超过 maxSize 限制后没有提示反馈的问题 [#764](https://github.com/XiaoMi/hiui/issues/764)
