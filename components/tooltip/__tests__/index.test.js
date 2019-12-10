@@ -12,6 +12,7 @@ class Foo extends React.Component {
   }
 }
 describe('Tooltip', () => {
+  
     beforeAll(() => {
       jest.useFakeTimers()
     })
