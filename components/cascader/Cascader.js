@@ -173,8 +173,7 @@ class Cascader extends Component {
 
   onKeywordChange () {
     const {
-      data,
-      filterOption: filterFunc
+      data
     } = this.props
     const {
       keyword
@@ -195,9 +194,7 @@ class Cascader extends Component {
         let label = option[labelKey]
         const value = option[valueKey]
         const children = option[childrenKey]
-        if (filterFunc) {
-          filterFunc(keyword, option) && match.matchCount++
-        } else if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
+        if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount++
         }
 
@@ -214,9 +211,7 @@ class Cascader extends Component {
             filterOptions.push(match.options.slice())
           }
         }
-        if (filterFunc) {
-          filterFunc(keyword, option) && match.matchCount--
-        } else if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
+        if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount--
         }
 
@@ -243,6 +238,9 @@ class Cascader extends Component {
   }
 
   formatFilterOptions (filterOptions, keyword) {
+    const {
+      filterOption: filterFunc
+    } = this.props
     const jointOptions = []
     const levelItems = []
     const levelItemsObj = {}
@@ -281,12 +279,23 @@ class Cascader extends Component {
           option.disabled && (levelItem.disabled = option.disabled)
           if (!levelItemsObj[levelItem[valueKey]]) {
             levelItemsObj[levelItem[valueKey]] = levelItem[valueKey]
-            if (levelItem[valueKey].toString().includes(keyword) || option[labelKey].toString().includes(keyword)) levelItems.push(levelItem)
+            if (filterFunc) {
+              if (filterFunc(keyword, option) && (levelItem[valueKey].toString().includes(keyword) || option[labelKey].toString().includes(keyword))) levelItems.push(levelItem)
+            } else {
+              if (levelItem[valueKey].toString().includes(keyword) || option[labelKey].toString().includes(keyword)) levelItems.push(levelItem)
+            }
           }
         })
 
         jointOptions.push(jointOption)
       })
+    }
+    if (levelItems.length === 0) {
+      return [{
+        [labelKey]: emptyContent,
+        [valueKey]: '',
+        disabled: true
+      }]
     }
     return levelItems
   }
