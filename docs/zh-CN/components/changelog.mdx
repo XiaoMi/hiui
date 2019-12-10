@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2.6.1
+
+- 修复 `<Cascader />` 不能正确通过搜索过滤选项的问题 [#812](https://github.com/XiaoMi/hiui/issues/812)
+- 修复 `<Cascader />` 下拉选项不能自适应文字宽度产生折行的问题 [#811](https://github.com/XiaoMi/hiui/issues/811)
+- 修复 `<Transfer />` 全选状态不能正确展示的问题 [#799](https://github.com/XiaoMi/hiui/issues/799)
+
 ## 2.6.0
 
 - 新增 `<Tree />` 右键菜单允许自定义内容[#217](https://github.com/XiaoMi/hiui/issues/217)
