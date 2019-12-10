@@ -6,6 +6,10 @@ import classNames from 'classnames'
 import Button from '../button'
 
 class UploadPictureCard extends Upload {
+  handleButtonClick = () => {
+    this.uploadRef.value = ''
+    this.uploadRef.click()
+  }
   render () {
     const {
       buttonText,
