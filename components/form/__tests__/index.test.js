@@ -107,6 +107,7 @@ describe('Form', () => {
         colon: '：'
       }
     }
+    const blurCb = jest.fn()
     const wrapper = mount(
       <_Form
         rules={{
@@ -127,7 +128,7 @@ describe('Form', () => {
             onChange={e => {
               wrapper.setProps({ model: { name: e.target.value } })
             }}
-            onBlur={jest.fn()}
+            onBlur={blurCb}
           />
         </FormItem>
       </_Form>
@@ -139,6 +140,12 @@ describe('Form', () => {
     jest.runAllTimers()
     wrapper.instance().validate(cb)
     expect(wrapper.find('.hi-form-item--msg__error').text()).toEqual('')
+    wrapper.find('input').simulate('change', { target: { value: '' } })
+    jest.runAllTimers()
+    wrapper.find('input').simulate('blur')
+    jest.runAllTimers()
+    expect(blurCb).toHaveBeenCalled()
+    expect(wrapper.find('.hi-form-item--msg__error').text()).toEqual('请输入名称')
     wrapper.unmount()
 
     jest.useRealTimers()
