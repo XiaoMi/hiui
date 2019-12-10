@@ -15,12 +15,19 @@ describe('Notification', () => {
     clock.restore()
   })
   describe('Methods', () => {
-    it('open', () => {
+    it('open&&close', () => {
+      const key = 'key'
       Notification.open({
         title:'通知',
         content:'通知内容',
+        closeable:false,
+        key
       })
+      clock.tick(1000)
       expect(document.querySelectorAll('.hi-notification--info')).toHaveLength(1)
+      Notification.close()
+      clock.tick(1000)
+      expect(document.querySelectorAll('.hi-notification--info')).toHaveLength(0)
     })
   })
 })

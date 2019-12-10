@@ -31,6 +31,7 @@ const notification = {
     onConfirm,
     onClose
   }) => {
+    console.log('打开')
     const NoticeContent = (
       <React.Fragment>
         <div className={`hi-${prefix}__title--wrapper`}>
