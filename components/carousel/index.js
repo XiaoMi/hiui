@@ -28,14 +28,14 @@ class Carousel extends Component {
     })
   }
 
-  goTo (page) {
-    if (page > this.props.children.length || page < 0) {
-      return
-    }
-    this.setState({
-      active: page
-    })
-  }
+  // goTo (page) {
+  //   if (page > this.props.children.length || page < 0) {
+  //     return
+  //   }
+  //   this.setState({
+  //     active: page
+  //   })
+  // }
   componentWillUnmount () {
     this.timer && window.clearInterval(this.timer)
   }
@@ -65,23 +65,23 @@ class Carousel extends Component {
     })
   }
 
-  renderDot (type, key, index, active) {
-    if (type === 'sign') {
-      return <li className='hi-carousel__dot hi-carousel__dot--sign' />
-    } else {
-      const cls = classNames(
-        'hi-carousel__dot',
-        active === index && 'hi-carousel__dot--active'
-      )
-      return (
-        <li
-          className={cls}
-          key={index}
-          onClick={this.pageEvent.bind(this, index)}
-        />
-      )
-    }
-  }
+  // renderDot (type, key, index, active) {
+  //   if (type === 'sign') {
+  //     return <li className='hi-carousel__dot hi-carousel__dot--sign' />
+  //   } else {
+  //     const cls = classNames(
+  //       'hi-carousel__dot',
+  //       active === index && 'hi-carousel__dot--active'
+  //     )
+  //     return (
+  //       <li
+  //         className={cls}
+  //         key={index}
+  //         onClick={this.pageEvent.bind(this, index)}
+  //       />
+  //     )
+  //   }
+  // }
 
   mouseEvent (type) {
     let showArrow = true
