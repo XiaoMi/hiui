@@ -301,10 +301,11 @@ class Cascader extends Component {
   }
 
   hightlightKeyword (text, keyword, uniqueKey) {
-    let parts = text.split(new RegExp(`(${keyword})`, 'gi'))
+    let parts = text.split(new RegExp(`(${keyword.replace(/\[/gi, '\\[')})`, 'gi'))
     return (
       <span key={uniqueKey}>
         { parts.map((part, i) =>
+
           <span key={i} className={part === keyword ? 'hi-cascader-menu__item--label-hightlight' : ''}>
             { part }
           </span>
