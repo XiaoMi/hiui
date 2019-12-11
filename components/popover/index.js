@@ -4,16 +4,13 @@ import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import Popper from '../popper'
 import './style/index'
-
 export default class Popover extends Component {
   unbindHover = true
-
   static defaultProps = {
     trigger: 'click',
     placement: 'top',
     width: 'auto'
   }
-
   static propTypes = {
     placement: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
     trigger: PropTypes.oneOf(['click', 'focus', 'hover']),
@@ -21,10 +18,8 @@ export default class Popover extends Component {
     content: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     width: PropTypes.string
   }
-
   constructor (props) {
     super(props)
-
     this.state = {
       showPopper: false
     }
@@ -69,6 +64,7 @@ export default class Popover extends Component {
 
   handlePopperMouseOver = () => {
     const { trigger } = this.props
+    console.log('sss', trigger)
     if (trigger === 'hover') {
       this.showPopper()
       clearTimeout(this.delayHidePopperTimer)
@@ -87,6 +83,7 @@ export default class Popover extends Component {
 
     this.element = ReactDOM.findDOMNode(this)
     const referenceRef = ReactDOM.findDOMNode(this.referenceRef)
+
     if (referenceRef === null) return
 
     if (trigger === 'click') {
@@ -106,6 +103,7 @@ export default class Popover extends Component {
       })
     } else if (trigger === 'hover') {
       referenceRef.addEventListener('mouseenter', e => {
+        console.log('okokok')
         this.eventTarget = e.target
         this.delayShowPopper(e)
       })
