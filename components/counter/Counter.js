@@ -27,7 +27,10 @@ class Counter extends React.Component {
     this.attrs = this.getAttrs(oldProps)
 
     const { value, defaultValue, min = -1 * Infinity, max = Infinity } = this.props
-    const finalValue = Math.min(Math.max(Number(value === undefined ? defaultValue : value), Number(min)), Number(max))
+    const finalValue = Math.min(
+      Math.max(Number(value === undefined ? defaultValue : value), Number(min)),
+      Number(max)
+    )
     this.state = {
       value: this.format(finalValue),
       valueTrue: this.formatValue(finalValue)
@@ -67,10 +70,13 @@ class Counter extends React.Component {
    * @param {string} val 值
    */
   formatValue (value) {
-    const type = typeof value
-    if (type !== 'string' && type !== 'number') {
-      value = ''
-    }
+    // TODO: 此段代码永远覆盖不到，因为现在的调用方式，保证了value 不是 string 就是 number
+    // const type = typeof value
+
+    // if (type !== 'string' && type !== 'number') {
+    //
+    //   value = ''
+    // }
 
     return isNaN(Number(value)) ? value.toString().replace(/[^-\d]/g, '') : value
   }
@@ -86,11 +92,7 @@ class Counter extends React.Component {
 
   render () {
     const { className, id, disabled } = this.props
-    const {
-      min = -1 * Infinity,
-      max = Infinity,
-      step
-    } = this.props
+    const { min = -1 * Infinity, max = Infinity, step } = this.props
     let { valueTrue } = this.state
     const { defaultValue, ...attrs } = this.attrs
     const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'localeDatas', 'localedatas'])
@@ -179,9 +181,7 @@ class Counter extends React.Component {
   }
 
   update (value) {
-    const {
-      onChange
-    } = this.props
+    const { onChange } = this.props
 
     if (this.isControlledComponent) {
       this.setState({
@@ -197,9 +197,13 @@ class Counter extends React.Component {
       })
     }
     setTimeout(() => {
-      onChange && onChange({
-        target: this._Input
-      }, value)
+      onChange &&
+        onChange(
+          {
+            target: this._Input
+          },
+          value
+        )
     }, 0)
   }
 
@@ -212,10 +216,7 @@ class Counter extends React.Component {
   }
 
   getInputNumber () {
-    const {
-      max = Infinity,
-      min = 0
-    } = this.props
+    const { max = Infinity, min = 0 } = this.props
     let value = this.valueTrue
     if (isNaN(value)) {
       value = min
@@ -234,40 +235,31 @@ class Counter extends React.Component {
   }
 
   get willReachMax () {
-    const {
-      max = Infinity,
-      step
-    } = this.props
+    const { max = Infinity, step } = this.props
 
-    let num = new Decimal(this.valueTrue).plus(step).valueOf() * 1
+    let num = new Decimal(this.valueTrue).plus(step > 0 ? step : -step).valueOf() * 1
     return max <= num
   }
 
   get willReachMin () {
-    const {
-      min = -1 * Infinity,
-      step
-    } = this.props
-    let num = new Decimal(this.valueTrue).minus(step).valueOf() * 1
+    const { min = -1 * Infinity, step } = this.props
+    let num = new Decimal(this.valueTrue).minus(step > 0 ? step : -step).valueOf() * 1
     return min >= num
   }
 
   get hasReachedMax () {
-    const {
-      max = Infinity
-    } = this.props
+    const { max = Infinity } = this.props
 
     return max <= this.valueTrue * 1
   }
   get hasReachedMin () {
-    const {
-      min = -1 * Infinity
-    } = this.props
+    const { min = -1 * Infinity } = this.props
     return min >= this.valueTrue * 1
   }
-  get hasReachedBoundary () {
-    return this.hasReachedMin || this.hasReachedMax
-  }
+  // 此段代码没有被调用过
+  // get hasReachedBoundary () {
+  //   return this.hasReachedMin || this.hasReachedMax
+  // }
 }
 
 export default Counter
