@@ -80,7 +80,7 @@ describe('Upload', () => {
           expect(wrapper.find('.hi-upload').find('input').prop('disabled')).toEqual(false)
           expect(wrapper.find('.hi-upload').find('span.hi-upload__button').hasClass('hi-upload__button--disabled')).toEqual(false)
         }
-        wrapper.unmount
+        wrapper.unmount()
       })
     })
 
@@ -134,8 +134,18 @@ describe('Upload', () => {
     )
     wrapper.find('.hi-upload__item-mask').simulate('click')
     expect(wrapper.find('Preview').prop('show')).toEqual(true)
+    wrapper.find('Preview Icon').at(0).simulate('click')
+    wrapper.find('Preview Icon').at(1).simulate('click')
+    wrapper.find('Preview Icon').at(2).simulate('click')
+    wrapper.find('Preview Icon').at(3).simulate('click')
+    wrapper.find('Preview Icon').at(4).simulate('click')
+    wrapper.find('Preview Icon').at(5).simulate('click')
+    wrapper.find('Preview Icon').at(6).simulate('click')
+    expect(wrapper.find('Preview img').at(0).prop('style').transform).toEqual('translateX(0px) translateY(0px) rotate(0deg) scaleX(1) scaleY(1)')
     wrapper.unmount()
   })
+
+
 
   it('should can drag', () => {
     const wrapper = mount(
@@ -227,7 +237,7 @@ describe('Upload', () => {
       } else {
         expect(wrapper.find('.hi-upload').find('ul.hi-upload__list').find('li.hi-upload__item')).toHaveLength(3)
       }
-      wrapper.unmount
+      wrapper.unmount()
     })
   })
 
