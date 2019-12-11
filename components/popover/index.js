@@ -64,7 +64,6 @@ export default class Popover extends Component {
 
   handlePopperMouseOver = () => {
     const { trigger } = this.props
-    console.log('sss', trigger)
     if (trigger === 'hover') {
       this.showPopper()
       clearTimeout(this.delayHidePopperTimer)
@@ -103,7 +102,6 @@ export default class Popover extends Component {
       })
     } else if (trigger === 'hover') {
       referenceRef.addEventListener('mouseenter', e => {
-        console.log('okokok')
         this.eventTarget = e.target
         this.delayShowPopper(e)
       })

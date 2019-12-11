@@ -16,7 +16,15 @@ const datas = [{
   title: '删除',
   id: 3
 }]
+function trigger(elem, event){
 
+  var myEvent = document.createEvent('Event')        // 初始化这个事件对象，为它提高需要的“特性”
+
+  myEvent.initEvent(event, true, true);        //执行事件
+
+  elem.dispatchEvent(myEvent);
+
+}
 /* eslint-env jest */
 describe('Dropdown', () => {
   let clock
@@ -89,6 +97,7 @@ describe('Dropdown', () => {
       wrapper.find('.hi-dropdown').at(2).find(Button).simulate('mouseEnter')
       expect(document.querySelectorAll('.hi-popper__container')).toHaveLength(3)
       wrapper.find('.hi-dropdown').at(2).find(Button).simulate('mouseLeave')
+      
       wrapper.unmount()
     })
     it('onClick', () => {
@@ -125,7 +134,6 @@ describe('Dropdown', () => {
   })
 
   describe('DataItem', () => {
-
     const callback = spy()
     const outCallback = spy()
     const _datas = [{
@@ -144,20 +152,33 @@ describe('Dropdown', () => {
       url: 'xx.com'
     }]
     it('item', () => {
-      jest.useFakeTimers()
       const wrapper = mount(
         <Dropdown title='操作' data={_datas} onClick={outCallback} trigger={['click', 'hover']} />
       )
       wrapper.find('.hi-dropdown').at(0).find('button').simulate('click')
       expect(document.querySelectorAll('.hi-dropdown__menu-item--disabled')).toHaveLength(1)
       expect(document.querySelectorAll('.hi-dropdown__divider')).toHaveLength(1)
+      Simulate.mouseEnter(document.querySelector('.hi-dropdown__popper'))
       Simulate.mouseEnter(document.querySelector('.hi-dropdown__menu-item'))
-      jest.runAllTimers()
       Simulate.mouseLeave(document.querySelector('.hi-dropdown__menu-item'))
+      Simulate.mouseLeave(document.querySelector('.hi-dropdown__popper'))
       wrapper.find('.hi-dropdown').at(0).find('button').simulate('click')
       expect(document.querySelectorAll('.hi-popper__container--hide')).toHaveLength(1)
+      wrapper.unmount()
+    })
+    it('handleDocumentClick', () => {
+      const wrapper = mount(
+        <Dropdown title='操作' data={_datas} onClick={outCallback} trigger={['click', 'hover']} />
+      )
+      wrapper.find('.hi-dropdown').at(0).find('button').simulate('click')
+      expect(document.querySelectorAll('.hi-dropdown__menu-item--disabled')).toHaveLength(1)
+      expect(document.querySelectorAll('.hi-dropdown__divider')).toHaveLength(1)
+      trigger(document,'click')
+      expect(document.querySelectorAll('.hi-popper__container--hide')).toHaveLength(1)
+      wrapper.unmount()
     })
     it('level', () => {
+      console.log('执行了')
       const _data = [{
         title: 'Move',
         children: [{
@@ -207,9 +228,14 @@ describe('Dropdown', () => {
       )
       wrapper.find('.hi-dropdown').at(0).find('button').simulate('click')
       Simulate.mouseEnter(document.querySelector('.hi-dropdown__menu-item'))
+
       expect(document.querySelectorAll('.hi-popper__container')).toHaveLength(2)
-      Simulate.mouseEnter(document.querySelectorAll('.hi-popper__container')[1].querySelector('.hi-dropdown__menu-item'))
+      Simulate.mouseEnter(document.querySelectorAll('.hi-dropdown__popper')[1])
+      Simulate.mouseEnter(document.querySelectorAll('.hi-dropdown__popper')[1].querySelector('.hi-dropdown__menu-item'))
+      Simulate.mouseLeave(document.querySelectorAll('.hi-dropdown__popper')[1].querySelector('.hi-dropdown__menu-item'))
+      Simulate.mouseLeave(document.querySelectorAll('.hi-dropdown__popper')[1])
       expect(document.querySelectorAll('.hi-popper__container')).toHaveLength(3)
+      wrapper.unmount()
     })
   })
   describe('Branches', () => {
