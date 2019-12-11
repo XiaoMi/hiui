@@ -31,7 +31,6 @@ const notification = {
     onConfirm,
     onClose
   }) => {
-    console.log('打开')
     const NoticeContent = (
       <React.Fragment>
         <div className={`hi-${prefix}__title--wrapper`}>
@@ -48,7 +47,6 @@ const notification = {
               size='small'
               className={`hi-${prefix}__button`}
               onClick={() => {
-                console.log('123')
                 onConfirm()
               }}
             >
