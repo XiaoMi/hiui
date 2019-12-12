@@ -50,16 +50,7 @@ export default class DropdownMenuItem extends React.Component {
     onChildMenuMouseLeave && onChildMenuMouseLeave()
     this.setMenuHide()
   }
-  // handleChildMenuMouseEnter = () => {
-  //   const { onChildMenuMouseEnter } = this.props
-  //   onChildMenuMouseEnter && onChildMenuMouseEnter()
-  //   clearTimeout(this.timerHideDropdownMenu)
-  // }
-  // handleChildMenuMouseLeave = () => {
-  //   const { onChildMenuMouseLeave } = this.props
-  //   onChildMenuMouseLeave && onChildMenuMouseLeave()
-  //   this.setMenuHide()
-  // }
+
   handleMenuItemClick = () => {
     const { onMenuItemClick, id } = this.props
     onMenuItemClick(id)
