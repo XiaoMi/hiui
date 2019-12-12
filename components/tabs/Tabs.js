@@ -46,7 +46,8 @@ class Tabs extends Component {
     this.state = {
       activeId: activeId !== undefined ? activeId : (defaultActiveId || (showTabItems && showTabItems[0] && showTabItems[0].tabId)),
       showTabItems,
-      hiddenTabItems
+      hiddenTabItems,
+      defaultActiveId
     }
   }
 
@@ -109,10 +110,10 @@ class Tabs extends Component {
       return false
     }
 
-    const { onTabClick, activeId } = this.props
+    const { onTabClick } = this.props
 
     onTabClick(tab.tabId, e)
-
+    const activeId = this.props.activeId
     activeId !== undefined || this.setState({
       activeId: tab.tabId
     })
@@ -163,7 +164,7 @@ class Tabs extends Component {
   }
 
   render () {
-    const { activeId, showTabItems, hiddenTabItems } = this.state
+    const { activeId, showTabItems, hiddenTabItems, defaultActiveId } = this.state
     const { prefixCls, type, placement, children, className } = this.props
     const editable = this.checkEditable()
     const tabsClasses = classNames(prefixCls, className, `${prefixCls}--${type}`, {
@@ -214,6 +215,8 @@ class Tabs extends Component {
               >
                 <ItemDropdown
                   active={activeTabInHiddenItems}
+                  activeId={activeId}
+                  defaultActiveId={defaultActiveId}
                   items={hiddenTabItems}
                   onChoose={(item, e) => {
                     this.handleClick(item, e)
