@@ -25,7 +25,6 @@ class Form extends Component {
     if (labelPlacement || labelPosition) {
       obj[`hi-form--label--${labelPlacement || labelPosition}`] = true
     }
-
     if (placement === 'horizontal' || inline) {
       obj[`hi-form--inline`] = true
     }
@@ -34,16 +33,14 @@ class Form extends Component {
   }
 
   addField (field) {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       fields: prevState.fields.concat(field)
     }))
   }
 
   removeField (prop) {
-    this.setState((prevState) => ({
-      fields: prevState.fields.filter(
-        (field) => field.props.field !== prop
-      )
+    this.setState(prevState => ({
+      fields: prevState.fields.filter(field => field.props.field !== prop)
     }))
   }
 
@@ -56,8 +53,8 @@ class Form extends Component {
       cb(valid)
     }
 
-    fields.forEach((field) => {
-      field.validate('', (errors) => {
+    fields.forEach(field => {
+      field.validate('', errors => {
         if (errors) {
           valid = false
         } else {
@@ -70,9 +67,7 @@ class Form extends Component {
   }
 
   validateField (key, cb) {
-    const field = this.state.fields.filter(
-      (field) => field.props.field === key
-    )[0]
+    const field = this.state.fields.filter(field => field.props.field === key)[0]
 
     if (!field) {
       throw new Error('must call validate Field with valid key string!')
@@ -82,7 +77,7 @@ class Form extends Component {
   }
 
   resetValidates () {
-    this.state.fields.forEach((field) => {
+    this.state.fields.forEach(field => {
       field.resetValidate()
     })
   }
@@ -118,7 +113,6 @@ Form.propTypes = {
 
 Form.defaultProps = {
   size: 'small',
-  labelPlacement: 'left',
   showColon: true
 }
 

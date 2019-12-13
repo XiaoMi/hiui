@@ -8,7 +8,7 @@ import FormItem from '../Item'
 describe('Form', () => {
   it('should have the correct placement', () => {
     const wrapper = mount(
-      <Form labelPlacement="right">
+      <Form>
         <Form.Item label="账号" labelWidth="50">
           <Input placeholder={'账号'} />
         </Form.Item>
@@ -38,7 +38,19 @@ describe('Form', () => {
         </Form>
       )
       expect(wrapper.find(`.hi-form--label--${labelPlacement}`)).toHaveLength(1)
+      const wrapperLegacy = mount(
+        <Form labelPositon={labelPlacement}>
+          <Form.Item label="账号" labelWidth="50">
+            <Input placeholder={'账号'} />
+          </Form.Item>
+          <Form.Item label="密码" labelWidth="50">
+            <Input type="password" placeholder={'密码'} />
+          </Form.Item>
+        </Form>
+      )
+      expect(wrapperLegacy.find(`.hi-form--label--${labelPlacement}`)).toHaveLength(1)
       wrapper.unmount()
+      wrapperLegacy.unmount()
     })
   })
 
@@ -190,6 +202,7 @@ describe('Form', () => {
     jest.runAllTimers()
     wrapper.instance().validate(cb)
     expect(wrapper.find('.hi-form-item--msg__error').text()).toEqual('')
+    expect(() => wrapper.instance().validateField('errorField', cb)).toThrow()
     wrapper.unmount()
 
     jest.useRealTimers()
