@@ -37,6 +37,7 @@ describe('Collapse', () => {
       wrapper.find('.collapse-item__head').at(2).simulate('click')
       expect(wrapper.find('.collapse-item--show')).toHaveLength(1)
       expect(changeCallback.mock.results[1].value).toBe('2')
+
     })
     it('activeId', () => {
       const wrapper = mount(
@@ -145,6 +146,39 @@ describe('Collapse', () => {
     //   expect(wrapper.find('.collapse-item--show')).toHaveLength(2)
     //   expect(changeCallback.mock.results[2].value).toEqual([ '2', '0' ])
     // })
+    it('非手风琴模式',()=>{
+      const wrapper = mount(<Collapse
+        onChange={changeCallback}
+        activeId={1}
+      >
+        <Collapse.Panel
+          header='panel title 1'
+          id={1}
+        >
+          <p>Collapse Panel Content</p>
+        </Collapse.Panel>
+        <Collapse.Panel
+          header='panel title 2'
+          id={2}
+        >
+          <p>Collapse Panel Content</p>
+        </Collapse.Panel>
+        <Collapse.Panel
+          header='panel title 3'
+          id={3}
+        >
+          <p>Collapse Panel Content</p>
+        </Collapse.Panel>
+      </Collapse>)
+      wrapper.find('.collapse-item__head').at(0).simulate('click')
+      expect(wrapper.find('.collapse-item--show')).toHaveLength(0)
+      wrapper.find('.collapse-item__head').at(0).simulate('click')
+      expect(wrapper.find('.collapse-item--show')).toHaveLength(1)
+      wrapper.find('.collapse-item__head').at(1).simulate('click')
+      expect(wrapper.find('.collapse-item--show')).toHaveLength(2)
+      wrapper.find('.collapse-item__head').at(2).simulate('click')
+      expect(wrapper.find('.collapse-item--show')).toHaveLength(3)
+    })
   })
 })
 
