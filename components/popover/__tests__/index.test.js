@@ -53,7 +53,6 @@ describe('Tooltip', () => {
   })
   it('trigger', () => {
     
-
     expect(document.querySelectorAll('.hi-popover__popper')).toHaveLength(0)
     
     topClickTarget.find('button').getDOMNode().click();
@@ -104,6 +103,11 @@ describe('Tooltip', () => {
     expect(document.querySelectorAll('.hi-popper__content--right')).toHaveLength(1)
     expect(document.querySelectorAll('.hi-popper__content--left')).toHaveLength(1)
     expect(document.querySelectorAll('.hi-popper__content--bottom')).toHaveLength(1)
+    topClickTarget.unmount()
+    hoverClickTarget.unmount()
+    focusRightTarget.unmount()
+    leftTarget.unmount()
+    bottomTarget.unmount()
   })
   it('showPopper',() => {
     // const componentDidMountSpy = spy(Popover.prototype, 'componentDidMount')
@@ -119,11 +123,12 @@ describe('Tooltip', () => {
       </Popover>
     )
     wrapper.find('button').getDOMNode().click();
-    expect(document.querySelectorAll('.hi-popover__popper')).toHaveLength(6)
+    expect(document.querySelectorAll('.hi-popover__popper')).toHaveLength(1)
     wrapper.setState({
       showPopper:true
     })
     wrapper.find('button').getDOMNode().click()
-    expect(document.querySelectorAll('.hi-popper__container--hide')).toHaveLength(3)
+    expect(document.querySelectorAll('.hi-popper__container--hide')).toHaveLength(1)
+    wrapper.unmount()
   })
 })

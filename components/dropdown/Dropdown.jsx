@@ -79,7 +79,6 @@ export default class Dropdown extends React.Component {
     getIsTriggerEqualHover(this.props) && this.setPopperDelayHide()
   }
   handleMenuItemClick = (data) => {
-    console.log('click', data)
     const { onClick } = this.props
     this.setPopperDelayHide()
     onClick && onClick(data)

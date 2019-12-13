@@ -32,7 +32,6 @@ export default class DropdownMenuItem extends React.Component {
     }, 200)
   }
   handleMenuItemMouseEnter = () => {
-    console.log('mouseEnter--------item')
     clearTimeout(this.timerHideDropdownMenu)
     this.setState({
       visible: true
@@ -42,7 +41,6 @@ export default class DropdownMenuItem extends React.Component {
     this.setMenuHide()
   }
   handleMenuMouseEnter = () => {
-    console.log('handleMenuMouseEnter--------item')
     const { onChildMenuMouseEnter } = this.props
     onChildMenuMouseEnter && onChildMenuMouseEnter()
     clearTimeout(this.timerHideDropdownMenu)
@@ -52,16 +50,7 @@ export default class DropdownMenuItem extends React.Component {
     onChildMenuMouseLeave && onChildMenuMouseLeave()
     this.setMenuHide()
   }
-  handleChildMenuMouseEnter = () => {
-    const { onChildMenuMouseEnter } = this.props
-    onChildMenuMouseEnter && onChildMenuMouseEnter()
-    clearTimeout(this.timerHideDropdownMenu)
-  }
-  handleChildMenuMouseLeave = () => {
-    const { onChildMenuMouseLeave } = this.props
-    onChildMenuMouseLeave && onChildMenuMouseLeave()
-    this.setMenuHide()
-  }
+
   handleMenuItemClick = () => {
     const { onMenuItemClick, id } = this.props
     onMenuItemClick(id)
@@ -109,8 +98,8 @@ export default class DropdownMenuItem extends React.Component {
               attachEle={this.refItem.current}
               onMouseLeave={this.handleMenuMouseLeave}
               onMouseEnter={this.handleMenuMouseEnter}
-              onChildMenuMouseEnter={this.handleChildMenuMouseEnter}
-              onChildMenuMouseLeave={this.handleChildMenuMouseLeave}
+              onChildMenuMouseEnter={this.handleMenuMouseEnter}
+              onChildMenuMouseLeave={this.handleMenuMouseLeave}
               onMenuItemClick={onMenuItemClick}
               width={width}
             />
