@@ -60,7 +60,6 @@ class Tabs extends Component {
       showTabItems,
       hiddenTabItems
     })
-
     if (this.props.activeId !== nextProps.activeId) {
       this.setState({
         activeId: nextProps.activeId
@@ -184,7 +183,6 @@ class Tabs extends Component {
 
               activeTabInHiddenItems = activeTabInHiddenItems && tabId !== activeId
               let ToolNav = type === 'editable' && tabId !== activeId ? Tooltip : 'div'
-
               return (
                 <ToolNav
                   className={itemClasses}

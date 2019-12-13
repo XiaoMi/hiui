@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Provider from '../context'
@@ -38,9 +37,6 @@ class ItemDropdown extends Component {
   }
 
   clickOutside (e) {
-    if (ReactDOM.findDOMNode(this.toggleRef) && ReactDOM.findDOMNode(this.toggleRef).contains(e.target)) {
-      return
-    }
     this.toggle(true)
   }
 
