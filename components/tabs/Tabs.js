@@ -162,7 +162,6 @@ class Tabs extends Component {
       show: tabId === activeId
     })
   }
-
   render () {
     const { activeId, showTabItems, hiddenTabItems, defaultActiveId } = this.state
     const { prefixCls, type, placement, children, className } = this.props
