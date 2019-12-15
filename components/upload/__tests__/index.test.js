@@ -110,6 +110,14 @@ describe('Upload', () => {
 
   it('avatar', () => {
     // TODO: 测试覆盖率的关键在于 mock fileReader
+    const fileContents       = 'file contents';
+    let dummyFileReader    = {result: fileContents};
+    dummyFileReader.readAsDataURL = (file) => {
+      if(dummyFileReader.onload) {
+        dummyFileReader.onload({target:{result:dummyFileReader.result}})
+      }
+    }
+    window.FileReader = jest.fn(() => dummyFileReader);
     const wrapper = mount(
       <Upload
         type="avatar"
@@ -128,7 +136,6 @@ describe('Upload', () => {
         fileList={[]}
       />
     )
-    // console.log(wrapper.find('.hi-upload__item').debug())
     const mockFile = new File(['foo'], 'foo.txt', {
       type: 'text/plain'
     })
@@ -138,7 +145,8 @@ describe('Upload', () => {
       }
     })
     expect(wrapper.instance().uploadRef.current.state['showCropperModal']).toBeTruthy()
-
+    wrapper.find('button').at(1).simulate('click')
+    console.log('>>>>>>>>>>>>>.',wrapper.find('button').at(1).debug())
     wrapper.unmount()
   })
 
