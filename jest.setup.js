@@ -2,6 +2,8 @@ import jsdom from 'jsdom'
 const enzyme = require('enzyme')
 const Adapter = require('enzyme-adapter-react-16')
 global.fetch = require('jest-fetch-mock')
+require('jest-canvas-mock')
+// require('canvas')
 
 const { JSDOM } = jsdom
 if (typeof document === 'undefined') {
