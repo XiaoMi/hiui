@@ -278,6 +278,7 @@ const target = {
     }
   },
   hover (props, monitor, component) {
+    console.log('hover')
     const { sourceItem } = monitor.getItem()
     const {
       item: targetItem,
