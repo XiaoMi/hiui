@@ -128,7 +128,6 @@ class UploadAvatar extends Upload {
     const { disabled, accept, localeDatas, avatarOptions = {}, onRemove } = this.props
     const { fileList, showCropperModal, showPreviewModal } = this.state
     const { aspectRatio = 0, dragMode = 'move', dropBoxSize = [] } = avatarOptions
-    console.log(this.state.src, showCropperModal)
     const file = fileList[0]
     return (
       <div className='hi-upload hi-upload--avatar'>
