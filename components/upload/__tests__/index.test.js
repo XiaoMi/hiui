@@ -1,7 +1,8 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import Upload from '../main'
-/* eslint-env jest */
+import sinon from 'sinon'
+
 describe('Upload', () => {
   const types = ['default', 'drag', 'pictureCard', 'avatar', 'photo']
   const localeDatas = {
@@ -17,6 +18,16 @@ describe('Upload', () => {
       preview: '预览'
     }
   }
+  let xhr, requests
+  beforeEach(() => {
+    xhr = sinon.useFakeXMLHttpRequest()
+    requests = []
+    xhr.onCreate = req => requests.push(req)
+  })
+
+  afterEach(() => {
+    xhr.restore()
+  })
   describe('PropTypes', () => {
     it('type', () => {
       const wrapper = mount(
@@ -108,26 +119,100 @@ describe('Upload', () => {
     })
   })
 
+  it('can upload fileType', () => {
+    const fileTypes = [
+      { type: 'jpg', fileType: 'img' },
+      { type: 'rar', fileType: 'zip' },
+      { type: 'doc', fileType: 'word' },
+      { type: 'pdf', fileType: 'pdf' },
+      { type: 'ppt', fileType: 'ppt' },
+      { type: 'xls', fileType: 'excel' },
+      { type: 'key', fileType: 'key' },
+      { type: 'exe', fileType: 'exe' },
+      { type: 'mp4', fileType: 'video' },
+      { type: 'mp3', fileType: 'audio' },
+      { type: 'txt', fileType: 'other' }
+    ]
+    fileTypes.map(ft => {
+      const mockFile = new File(['foo'], `foo.${ft.type}`)
+      const wrapper = mount(
+        <Upload
+          localeDatas={localeDatas}
+          uploadAction="https://www.mocky.io/v2/5dc3b4413000007600347501"
+        />
+      )
+      wrapper.find('.hi-upload').find('input').simulate('change', {
+        target: {
+          files: [mockFile]
+        }
+      })
+      expect(
+        wrapper.instance().uploadRef.current.state['fileList'][
+          wrapper.instance().uploadRef.current.state['fileList'].length - 1
+        ].fileType === ft.fileType
+      )
+      wrapper.unmount()
+    })
+  })
+
+  it('can upload', () => {
+    const mockFile = new File(['foo'], 'foo.jpg')
+    const wrapper = mount(
+      <Upload
+        localeDatas={localeDatas}
+        uploadAction="https://www.mocky.io/v2/5dc3b4413000007600347501"
+      />
+    )
+    wrapper.find('.hi-upload').find('input').simulate('change', {
+      target: {
+        files: [mockFile]
+      }
+    })
+    requests[0].respond(200, {}, `[""]`)
+    wrapper.unmount()
+  })
+  it('on error', () => {
+    const mockFile = new File(['foo'], 'foo.txt', {
+      type: 'text/plain'
+    })
+    const wrapper = mount(
+      <Upload
+        localeDatas={localeDatas}
+        uploadAction="https://www.mocky.io/v2/5dc3b4413000007600347501"
+      />
+    )
+    wrapper.find('.hi-upload').find('input').simulate('change', {
+      target: {
+        files: [mockFile]
+      }
+    })
+    requests[0].respond(500, {}, `[""]`)
+    wrapper.unmount()
+  })
   it('avatar', () => {
     // TODO: 测试覆盖率的关键在于 mock fileReader
-    const fileContents       = 'file contents';
-    let dummyFileReader    = {result: fileContents};
-    dummyFileReader.readAsDataURL = (file) => {
-      if(dummyFileReader.onload) {
-        dummyFileReader.onload({target:{result:dummyFileReader.result}})
+    let dummyFileReader = {
+      result:
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH0AAAB9CAYAAACPgGwlAAAFJElEQVR4Xu2dS0hUURzG/1Yqlj2otJe10AqCoiJaFFTUpgcUhLaKCIogKCEiCl0U1SIIF1EIQlFEtCmkpbWSHlAQYRYUlI9Ie6nYmI9hfIx1LpzL3PGO/aeuM/r/f7PRufe7d873/ea75xw3ZjTumDtMeKlKIAPQVfF2zAK6PuaArpA5oAO6xgQUesacDugKE1BoGU0HdIUJKLSMpgO6wgQUWkbTAV1hAgoto+mArjABhZbRdEBXmIBCy2g6oCtMQKFlNB3QFSag0DKaDugKE1BoGU0HdIUJKLSMpgO6wgQUWkbTAV1hAgoto+mArjABhZbRdEBXmIBCy2g6oCtMQKFlNB3QFSag0DKaDugKE1BoGU0HdIUJKLSMpgO6wgQUWkbTAV1hAgoto+mArjABhZbRdEBXmIBCy2g6oCtMQKFlNB3QFSag0DKaDugKE1BoGU0HdIUJKLQ8bpo+fft+ylxYSJ23LvpisOfNST/N7ENniYa9/0xy4GsTdT+6+09Yx9t4/slEgovSDt2EO3P3YcoqWuUMsWln3oihFlTWUlbhSvf4UKid2iqOUfhVrXussKZ9xHXh10/oW1lxUnmNt/EkNXimOK3QTTtn7Sv1DDUees66rTT/3B0a/NFCvc9raOqf9+YL0PfiIX0/f8ADPdrXTZEPde6xyMd66rx5wXlvnwThN8/cL4ttc7S3i0L3rjqaVI2HyWdMZGmFbhwtvv7cgZm7ZS9NyS/wbboBb1ttwQy2tdLng2s90OOPxSa24FI15azZTAOtDdRyZAOZe84ru0GTps2g0P1r7pcjVeMZE5rMm6Yduh3nktt1CaHHesk/XUW5W4sp8v4lfTm5ywN9eCBCQz/baOBLE0Ua3rgg4z/DPCUmz5xD2SvWU6IpIBXjYTIKXDahoNtHvUmho/KMZ5HmN6f31FZT2+Wjbmix12dkZtNoTwYO9P8dT+A0mTecMNBNwPmnKmnyrDyKhxnv1U4B0d5f9KmkyHPaPinMwfYrJxKu7v8GPajxMDkFKpsQ0JMJ2KZjmm8e9817CjxNt/O4Odjf+JZaj2/zDXQ06EGNJ1CSSdws7dDNAsvsr7OXr3UWVeG6x87wv5WXOD9jAzZbtf7md669nscP3KbOLa2gaE+Xc27axl2UWbB0xLxvFmnmuJnTzU/7e+wuIJXjSYJToNK0Q/ebi41Du3Xz20bZBGJX3fH3Mav0jqpyd9Xvt3o3W0Ezt492H/tZQY8nUIpJ3izt0J39s8/L7q9N03NWb/LVhOuferZyWYuX0WDnD2evHv+XOPs5sdc4+/RFRX+eECFnn25eqRpPkpwClacdeqBucDNWAoDOikmWCNBl8WS5AXRWTLJEgC6LJ8sNoLNikiUCdFk8WW4AnRWTLBGgy+LJcgPorJhkiQBdFk+WG0BnxSRLBOiyeLLcADorJlkiQJfFk+UG0FkxyRIBuiyeLDeAzopJlgjQZfFkuQF0VkyyRIAuiyfLDaCzYpIlAnRZPFluAJ0VkywRoMviyXID6KyYZIkAXRZPlhtAZ8UkSwTosniy3AA6KyZZIkCXxZPlBtBZMckSAbosniw3gM6KSZYI0GXxZLkBdFZMskSALosnyw2gs2KSJQJ0WTxZbgCdFZMsEaDL4slyA+ismGSJAF0WT5YbQGfFJEsE6LJ4stwAOismWSJAl8WT5QbQWTHJEgG6LJ4sN4DOikmWCNBl8WS5AXRWTLJEgC6LJ8sNoLNikiUCdFk8WW4AnRWTLNFvXskYA3TG3JwAAAAASUVORK5CYII='
+    }
+    dummyFileReader.readAsDataURL = file => {
+      if (dummyFileReader.onload) {
+        dummyFileReader.onload({ target: { result: dummyFileReader.result } })
       }
     }
-    window.FileReader = jest.fn(() => dummyFileReader);
+    window.FileReader = jest.fn(() => dummyFileReader)
+    Object.defineProperty(Image.prototype, 'complete', { value: true })
+    Object.defineProperty(Image.prototype, 'naturalHeight', { get: () => 120 })
+    Object.defineProperty(Image.prototype, 'naturalWidth', { get: () => 120 })
+
     const wrapper = mount(
       <Upload
         type="avatar"
         uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
         onChange={(file, fileList, response) => {
           file.id = 'file唯一标识'
-          console.log('upload callback', file, fileList, response)
         }}
         onRemove={(file, fileList, index) => {
-          console.log('remove callback', file, fileList, index)
           return new Promise((resolve, reject) => resolve(true))
         }}
         localeDatas={localeDatas}
@@ -145,8 +230,14 @@ describe('Upload', () => {
       }
     })
     expect(wrapper.instance().uploadRef.current.state['showCropperModal']).toBeTruthy()
+
     wrapper.find('button').at(1).simulate('click')
-    console.log('>>>>>>>>>>>>>.',wrapper.find('button').at(1).debug())
+    wrapper.find('button').at(0).simulate('click')
+    expect(wrapper.instance().uploadRef.current.state['showCropperModal']).toBeFalsy()
+    wrapper.find('.hi-upload__item-mask').at(0).simulate('click')
+    expect(wrapper.instance().uploadRef.current.state['showModal']).toBeTruthy()
+    wrapper.find('.hi-preview__close').simulate('click')
+    expect(wrapper.instance().uploadRef.current.state['showModal']).toBeFalsy()
     wrapper.unmount()
   })
 
@@ -157,10 +248,8 @@ describe('Upload', () => {
         uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
         onChange={(file, fileList, response) => {
           file.id = 'file唯一标识'
-          console.log('upload callback', file, fileList, response)
         }}
         onRemove={(file, fileList, index) => {
-          console.log('remove callback', file, fileList, index)
           return new Promise((resolve, reject) => resolve(true))
         }}
         localeDatas={localeDatas}
@@ -172,12 +261,18 @@ describe('Upload', () => {
             fileType: 'img',
             uploadState: 'success',
             url: 'https://i1.mifile.cn/f/i/2018/mix3/specs_black.png'
+          },
+          {
+            name: 'a.png',
+            fileType: 'img',
+            uploadState: 'success',
+            url: 'https://i1.mifile.cn/f/i/2018/mix3/specs_black.png'
           }
         ]}
       />
     )
-    wrapper.find('.hi-upload__item-mask').simulate('click')
-    expect(wrapper.find('Preview').prop('show')).toEqual(true)
+    wrapper.find('.hi-upload__item-mask').at(0).simulate('click')
+    expect(wrapper.instance().uploadRef.current.state['showModal']).toBeTruthy()
     wrapper.find('Preview Icon').at(0).simulate('click')
     wrapper.find('Preview Icon').at(1).simulate('click')
     wrapper.find('Preview Icon').at(2).simulate('click')
@@ -188,6 +283,23 @@ describe('Upload', () => {
     expect(wrapper.find('Preview img').at(0).prop('style').transform).toEqual(
       'translateX(0px) translateY(0px) rotate(0deg) scaleX(1) scaleY(1)'
     )
+
+    wrapper
+      .find('.hi-preview__image')
+      .simulate('mousedown', { target: { nativeEvent: { clientX: 1214, clientY: 350 } } })
+    wrapper.find('.hi-preview').simulate('mousemove')
+    wrapper
+      .find('.hi-preview__image')
+      .simulate('mouseup', { target: { nativeEvent: { clientX: 987, clientY: 349 } } })
+
+    wrapper.find('.hi-preview').simulate('wheel', { wheelDelta: 1 })
+    wrapper.find('.hi-preview').simulate('wheel', { wheelDelta: 0 })
+    wrapper.find('.hi-preview').simulate('wheel', { detail: 1 })
+    // expect(wrapper.find('Preview img').at(0).prop('style').transform).toEqual(
+    //   'translateX(633px) translateY(46px) rotate(0deg) scaleX(1) scaleY(1)'
+    // )
+    wrapper.find('.hi-preview__close').simulate('click')
+    expect(wrapper.instance().uploadRef.current.state['showModal']).toBeFalsy()
     wrapper.unmount()
   })
 
@@ -198,10 +310,8 @@ describe('Upload', () => {
         uploadAction="http://www.mocky.io/v2/5dc3b4413000007600347501"
         onChange={(file, fileList, response) => {
           file.id = 'file唯一标识'
-          console.log('upload callback', file, fileList, response)
         }}
         onRemove={(file, fileList, index) => {
-          console.log('remove callback', file, fileList, index)
           return new Promise((resolve, reject) => resolve(true))
         }}
         localeDatas={localeDatas}
@@ -249,7 +359,7 @@ describe('Upload', () => {
     })
 
     // TODO: 目前只有 type === 'default' 和 type === 'pictureCard' 支持 showUploadList 为 false 时隐藏上传列表
-    types.forEach(type => {
+    types.forEach((type, index) => {
       const wrapper = mount(
         <Upload
           localeDatas={localeDatas}
@@ -267,7 +377,6 @@ describe('Upload', () => {
       if (['default', 'pictureCard'].includes(type)) {
         expect(wrapper.find('.hi-upload').find('ul.hi-upload__list')).toHaveLength(0)
       }
-      wrapper.unmount()
     })
   })
 
