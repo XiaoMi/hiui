@@ -109,6 +109,7 @@ class TreeItem extends Component {
               checked={checked}
               onChange={() => onCheckChange(checked, item)}
               onTitleClick={e => {
+                console.log('onTitleClick')
                 if (item.disabled) {
                   return false
                 }
@@ -141,6 +142,7 @@ class TreeItem extends Component {
                 style={{ cursor: 'pointer' }}
                 onClick={() => {
                   if (editNodes.map(node => node.id).includes(item.id)) {
+                    console.log('取消')
                     cancelEditNode(item.id)
                   } else {
                     cancelAddSiblingNode(item.id)

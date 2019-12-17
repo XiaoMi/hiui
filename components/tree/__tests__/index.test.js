@@ -1,26 +1,19 @@
 import React from 'react'
-import { mount } from 'enzyme'
-import { wrapInTestContext,getBackendFromInstance } from 'react-dnd-test-utils'
-import { DragDropContext } from 'react-dnd'
+import { mount, shallow} from 'enzyme'
+import { wrapInTestContext,getBackendFromInstance,simulateDragDropSequence} from 'react-dnd-test-utils'
+import Trees from '../'
+import { Tree } from '../Tree'
+import sinon from 'sinon'
+
 import TestUtils from 'react-dom/test-utils'
-import Tree from '../index'
-import _Tree from '../Tree'
-function trigger(elem, event){
 
-  var myEvent = document.createEvent('Event')        // 初始化这个事件对象，为它提高需要的“特性”
-
-  myEvent.initEvent(event, true, true);        //执行事件
-
-  elem.dispatchEvent(myEvent);
-
-}
 class Foo extends React.Component {
   constructor(props){
     super(props)
     this.treeData = [
       { id: 1, title: '小米人',
         children: [
-          { id: 2, title: '技术',
+          { id: 2, title: '技术',disabled:true,
             children: [
               { id: 3, title: '后端',disabled:true },
               { id: 4, title: '运维' },
@@ -50,31 +43,41 @@ class Foo extends React.Component {
   render() {
     return (
       <div style={{width:300}}>
-        <Tree
+        <Trees
           checkable
+          defaultExpandAll
           editable={true}
           data={this.treeData}
           checkedIds={this.state.checkedKeys}
           onChange={(checkedKeys, title, bool, semi) => {
-            console.log('Tree data:', checkedKeys, title, bool ,semi)
+            console.log('Trees data:')
             this.setState({
               checkedKeys
             })
           }}
           highlightable
-          onClick={data=>{console.log('tree node click',data)}}
+          onClick={data=>{}}
         />
       </div>
     )
   }
 }
 describe('tree', () => {
+  let clock
+
+  beforeEach(() => {
+    clock = sinon.useFakeTimers()
+  })
+
+  afterEach(() => {
+    clock.restore()
+  })
     const treeData = [
       { id: 1, title: '小米',
         children: [
           { id: 2, title: '技术', disabled: true,
             children: [
-              { id: 3, title: '后端', onClick: data => {console.log('后端：', data)} , disabled: true},
+              { id: 3, title: '后端', onClick: data => {console.log('后端：')} , disabled: true},
               { id: 4, title: '运维' },
               { id: 5, title: '前端' }
             ]
@@ -98,12 +101,31 @@ describe('tree', () => {
     it('basic And defaultExpandAll',()=>{
             const wrapper = mount(
               <div style={{width:500}}>
-                <Tree
+                <Trees
                   data={treeData}
                   defaultExpandAll
-                  onChange={data => {console.log('Tree data:', data)}}
+                  onChange={data => {}}
                   highlightable
-                  onClick={(item) => console.log('------click node', item)}
+                  onClick={(item) => {}}
+                />
+              </div>
+            )
+            expect(wrapper.find('.hi-tree')).toHaveLength(1)
+            wrapper.find('.hi-tree_item-icon').at(0).simulate('click')
+            expect(wrapper.find('.can-expand')).toHaveLength(3)
+            expect(wrapper.find('.is-root').at(0).find('ul')).toHaveLength(0)
+            wrapper.unmount();
+        })
+    it('basic Legacy',()=>{
+            const wrapper = mount(
+              <div style={{width:500}}>
+                <Trees
+                  Legacy
+                  data={treeData}
+                  defaultExpandAll
+                  onChange={data => {}}
+                  highlightable
+                  onClick={(item) => {}}
                 />
               </div>
             )
@@ -118,24 +140,34 @@ describe('tree', () => {
               <Foo/>
             )
             expect(wrapper.find('.hi-tree')).toHaveLength(1)
-            expect(wrapper.find('.hi-checkbox-legacy__input')).toHaveLength(2)
-            expect(wrapper.find('.is-root').at(0).find('.hi-checkbox-legacy__input')).toHaveLength(1)
-            wrapper.find('.is-root').at(0).find('.hi-checkbox-legacy__input').simulate('click')
-            expect(wrapper.find('.hi-checkbox-legacy--checked')).toHaveLength(1)
+            expect(wrapper.find('.hi-checkbox-legacy__input')).toHaveLength(12)
+            expect(wrapper.find('.is-root').at(0).find('.hi-checkbox-legacy__input')).toHaveLength(6)
+            wrapper.find('.is-root').at(0).find('.hi-checkbox-legacy__label').at(0).simulate('click')
+            wrapper.find('.is-root').at(0).find('.hi-checkbox-legacy--disabled').find('.hi-checkbox-legacy__label').at(0).simulate('click')
+            expect(wrapper.find('.hi-checkbox-legacy--checked')).toHaveLength(0)
+            wrapper.find('.is-root').at(0).find('.hi-checkbox-legacy__input').at(0).simulate('click')
+            expect(wrapper.find('.hi-checkbox-legacy--checked')).toHaveLength(6)
+            wrapper.find('.is-root').at(0).find('.hi-checkbox-legacy__input').at(0).simulate('click')
+            expect(wrapper.find('.hi-checkbox-legacy--checked')).toHaveLength(0)
+            wrapper.find('.is-root').at(0).find('.hi-checkbox-legacy__input').at(5).simulate('click')
+            wrapper.find('.is-root').at(0).find('.hi-checkbox-legacy__input').at(0).simulate('click')
+            expect(wrapper.find('.hi-checkbox-legacy--checked')).toHaveLength(0)
+            wrapper.find('.is-root').at(0).find('.hi-checkbox-legacy__input').at(5).simulate('click')
+            expect(wrapper.find('.hi-checkbox-legacy--part')).toHaveLength(1)
+            wrapper.find('.is-root').at(0).find('.hi-checkbox-legacy__input').at(5).simulate('click')
+            expect(wrapper.find('.hi-checkbox-legacy--checked')).toHaveLength(0)
             wrapper.unmount()
         })
       it('ContextMenuOption',()=>{
         const fn = jest.fn()
         const wrapper = mount(
           <div style={{width:500}}>
-            <Tree
+            <Trees
               editable={true}
               data={treeData}
               onSave={(saveNode, data) => {
-                console.log(saveNode, data)
               }}
               onDelete={(deleteNode, data) => {
-                console.log(deleteNode, data)
               }}
               contextMenu={
                 [{
@@ -145,7 +177,7 @@ describe('tree', () => {
                   }
                 }]
               }
-              onChange={data => {console.log('Tree data:', data)}}
+              onChange={data => {}}
               highlightable
             />
           </div>
@@ -161,7 +193,7 @@ describe('tree', () => {
       it('should editable Node CRUD For contextMenu And apperance Is line',()=>{
             const wrapper = mount(
               <div style={{width:500}}>
-                <Tree
+                <Trees
                   data={treeData}
                   editable={true}
                   apperance="line"
@@ -179,12 +211,30 @@ describe('tree', () => {
             )
             expect(wrapper.find('.hi-tree')).toHaveLength(1)
             expect(wrapper.find('.hi-tree--show-line')).toHaveLength(1)
+            wrapper.find('.hi-tree_item-icon').at(0).simulate('click')
+            expect(wrapper.find('.is-root').at(0).find('ul')).toHaveLength(1)
+            wrapper.find('.is-root').at(0).find('.hi-tree_item-text--disabled').at(0).simulate('click')
+            wrapper.find('.is-root').at(0).find('.hi-tree_item-text--disabled').at(0).simulate('contextmenu')
+            wrapper.find('.hi-tree_item-icon').at(0).simulate('click')
             // console.log(wrapper.debug())
-            // 编辑节点
+            // 编辑节点取消
             wrapper.find('.is-root').at(0).find('.hi-tree_item-text').simulate('contextmenu')
             expect(document.querySelectorAll('.right-click-menu')).toHaveLength(1)
 
             wrapper.find('.right-click-menu li').at(0).simulate('click')
+            expect(wrapper.find('.is-root').at(0).find('.editing')).toHaveLength(1)
+            expect(wrapper.find('.is-root').at(0).find('.hi-input__text')).toHaveLength(1)
+            wrapper.find('.is-root').at(0).find('.editing').find('span').at(1).simulate('click')
+            expect(wrapper.find('.is-root').at(0).find('.editing')).toHaveLength(0)
+            expect(wrapper.find('.is-root').at(0).find('.hi-input__text')).toHaveLength(0)
+
+            // 编辑节点确定
+            wrapper.find('.is-root').at(0).find('.hi-tree_item-text').simulate('click')
+            wrapper.find('.is-root').at(0).find('.hi-tree_item-text').simulate('contextmenu')
+            expect(document.querySelectorAll('.right-click-menu')).toHaveLength(1)
+
+            wrapper.find('.right-click-menu li').at(0).simulate('click')
+            wrapper.find('input').simulate('change',{target:{value:'小米'}})
             expect(wrapper.find('.is-root').at(0).find('.editing')).toHaveLength(1)
             expect(wrapper.find('.is-root').at(0).find('.hi-input__text')).toHaveLength(1)
 
@@ -195,10 +245,21 @@ describe('tree', () => {
             wrapper.find('.hi-tree_item-icon').at(0).simulate('click')
             expect(wrapper.find('.is-root').at(0).find('ul li')).toHaveLength(2)
             // 添加子节点
+            wrapper.find('.is-root').at(0).find('.hi-tree_item-icon').at(0).simulate('click')
+
             wrapper.find('.is-root').at(0).find('.hi-tree_item-text').at(0).simulate('contextmenu')
             wrapper.find('.right-click-menu li').at(1).simulate('click')
             wrapper.find('.is-root').at(0).find('.editing').find('span').at(0).simulate('click')
             expect(wrapper.find('.is-root').at(0).find('ul li')).toHaveLength(3)
+            wrapper.find('.is-root').at(0).find('.hi-tree_item-icon').at(0).simulate('click')
+
+            // 添加子节点未展开
+            wrapper.find('.is-root').at(0).find('.hi-tree_item-icon').at(0).simulate('click')
+            
+            wrapper.find('.is-root').at(0).find('.hi-tree_item-text').at(0).simulate('contextmenu')
+            wrapper.find('.right-click-menu li').at(1).simulate('click')
+            wrapper.find('.is-root').at(0).find('.editing').find('span').at(0).simulate('click')
+            expect(wrapper.find('.is-root').at(0).find('ul li')).toHaveLength(4)
             
             // 添加节点取消
             wrapper.find('.is-root').at(0).find('.hi-tree_item-text').at(0).simulate('contextmenu')
@@ -224,12 +285,12 @@ describe('tree', () => {
         it('should searchable',()=>{
           const wrapper = mount(
             <div style={{width:500}}>
-              <Tree
+              <Trees
                 searchable={true}
                 data={treeData}
-                onChange={data => {console.log('Tree data:', data)}}
+                onChange={data => {}}
                 highlightable
-                onClick={(item) => console.log('------click node', item)}
+                onClick={(item) => {}}
               />
             </div>
           )
@@ -238,24 +299,117 @@ describe('tree', () => {
           expect(wrapper.find('.is-root')).toHaveLength(2)
         })
         it('should draggable',()=>{
+          const WrapTrees = wrapInTestContext(Tree)
+          const wrapper = mount(
+              <WrapTrees
+              // defaultExpandAll
+              draggable={true}
+              editable={true}
+              data={treeData}
+              onDragStart = {(dragNode)=> {
+              }}
+              onDropEnd = {(dragNode,dropNode)=> {
+              }}
+              onChange={data => {}}
+              highlightable
+              onClick={(item) => {}}
+            />
+          )
+          wrapper.find('.hi-tree_item-icon').at(0).simulate('click')
+          expect(wrapper.find('.is-root').at(0).find('ul')).toHaveLength(1)
+          wrapper.find('.is-root').at(0).find('.hi-tree_item-text--disabled').at(0).simulate('click')
+          wrapper.find('.is-root').at(0).find('.hi-tree_item-text--disabled').at(0).simulate('contextmenu')
+          // const backend = getBackendFromInstance(wrapper.instance())
+          wrapper.find('.hi-tree_item-icon').at(0).simulate('click')
+
+
+          wrapper.find('.hi-tree_item-text').at(0).simulate('click')
+          expect(wrapper.find('.hi-tree_item-text').at(0).hasClass('highlight')).toBeTruthy()
+          // 右键
+          wrapper.find('.is-root').at(0).find('.hi-tree_item-text').simulate('contextmenu')
+          expect(document.querySelectorAll('.right-click-menu')).toHaveLength(1)
+
+          wrapper.find('.right-click-menu li').at(0).simulate('click')
+          expect(wrapper.find('.is-root').at(0).find('.editing')).toHaveLength(1)
+          expect(wrapper.find('.is-root').at(0).find('.hi-input__text')).toHaveLength(1)
+          wrapper.find('.is-root').at(0).find('.editing').find('span').at(1).simulate('click')
+          expect(wrapper.find('.is-root').at(0).find('.editing')).toHaveLength(0)
+          expect(wrapper.find('.is-root').at(0).find('.hi-input__text')).toHaveLength(0)
+
+          const backend = wrapper.instance().getManager().getBackend()
+          const sourceItem = wrapper.find('DragSource(TreeItem)').at(0)
+          backend.simulateBeginDrag([sourceItem.instance().getHandlerId()])
+
+          const targetItem = wrapper
+            .find('DropTarget(DragSource(TreeItem))')
+            .at(1)
+
+          backend.simulateHover([targetItem.instance().getHandlerId()])
+          backend.simulateDrop()
+          backend.simulateEndDrag()
+          const sourceItem2 = wrapper.find('DragSource(TreeItem)').at(1)
+
+          backend.simulateBeginDrag([sourceItem2.instance().getHandlerId()])
+          const targetItem2 = wrapper
+            .find('DropTarget(DragSource(TreeItem))')
+            .at(1)
+
+          backend.simulateHover([targetItem2.instance().getHandlerId()])
+          backend.simulateDrop()
+          backend.simulateEndDrag()
+          simulateDragDropSequence(sourceItem.instance(),targetItem2.instance(),backend)
+          wrapper.unmount()
+        })
+        it('should loadTreeNode',()=>{
+         const treeDataLoad = [
+            { id: 1, title: '小米',
+              children: [
+                { id: 2, title: '技术',
+                  children: [
+                    { id: 3, title: '后端', onClick: data => {} },
+                    { id: 4, title: '运维' },
+                    { id: 5, title: '前端' }
+                  ]
+                },
+                { id: 6, title: '产品' }
+              ]
+            },
+            { id: 11, title: '小米',
+              children: [
+                { id: 22, title: '技术'
+                },
+                { id: 66, title: '产品' }
+              ]
+            }
+          ]
+         
           const wrapper = mount(
             <div style={{width:500}}>
-              <Tree
-                defaultExpandAll
-                draggable={true}
-                data={treeData}
-                onDragStart = {(dragNode)=> {
-                  console.log(dragNode)
-                }}
-                onDropEnd = {(dragNode,dropNode)=> {
-                  console.log(dragNode,dropNode)
-                }}
-                onChange={data => {console.log('Tree data:', data)}}
-                highlightable
-                onClick={(item) => console.log('------click node', item)}
-              />
-            </div>
+            <Trees
+              loadTreeNode={id=>{
+                const obj = {
+                  method:'get',
+                  headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+                  data:{},
+                  params:{id:id},
+                  url:'http://yapi.demo.qunar.com/mock/26534/hiui/async-tree',
+                  transformResponse:(res)=>{return res.data}
+                }
+                return obj
+              }}
+              defaultExpandAll
+              editable={true}
+              data={treeDataLoad}
+              onChange={data => {}}
+              highlightable
+              onClick={(item) => {}}
+            />
+          </div>
           )
-          wrapper.find('.is-root').at(0).find('.hi-tree_item-text').at(0).simulate('drag')
+          wrapper.find('.is-root').at(1).find('ul').find('li').at(1).find('.hi-tree_item-icon').simulate('click')
+          clock.tick(400)
+
+          wrapper.unmount()
         })
 })
+//DropTarget(DragSource(TreeItem))
