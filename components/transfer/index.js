@@ -306,7 +306,7 @@ class Transfer extends Component {
                     draggable={draggable}
                     key={index}
                     onClick={this.clickItemEvent.bind(this, item, index, dir)}
-                    mode={mode}
+                    mode={mode === 'basic' && type === 'default' ? 'basic' : 'multiple'}
                     item={item}
                     checked={selectedKeys.includes(item.id)}
                     checkboxOnChange={this.checkboxEvent.bind(this, dir)}
