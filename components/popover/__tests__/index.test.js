@@ -57,7 +57,10 @@ describe('Tooltip', () => {
     
     topClickTarget.find('button').getDOMNode().click();
     expect(document.querySelectorAll('.hi-popover__popper')).toHaveLength(1);
-    
+    trigger(document.querySelectorAll('.hi-popover__popper')[0],'mouseenter')
+    trigger(document.querySelectorAll('.hi-popover__popper')[0],'mouseout')
+
+    trigger(document.querySelectorAll('.hi-popover__popper')[0],'mouseover')
     document.body.click()
     expect(document.querySelectorAll('.hi-popper__container--hide')).toHaveLength(1)
     
