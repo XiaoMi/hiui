@@ -30,7 +30,7 @@ class Demo extends React.Component {
   render () {
     return (
       <Transfer
-        Type='multiple'
+        type='multiple'
         showCheckAll
         searchable
         targetIds={this.state.targetKeys}
