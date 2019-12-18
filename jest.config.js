@@ -17,7 +17,7 @@ module.exports = {
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   // collectCoverageFrom: [
   //   '<rootDir>/components/**/*',
-  //   '!<rootDir>/components/(alert|badge|button)/index.js',
+  //   '!<rootDir>/components/(table|nav-menu)/**/*',
   //   '!<rootDir>/components/**/style/**/*',
   //   '!<rootDir>/components/**/__test__/**/*',
   //   '!<rootDir>/components/**/(*-legacy)/**/*'
@@ -26,7 +26,7 @@ module.exports = {
   // 1. 修改范围 <rootDir>/components/[组件名称]/**/*
   // 2. 运行单测命令 npx jest components/switch/__tests__/index.test.js --coverage 即可看到当前文件夹的覆盖率
   collectCoverageFrom: [
-    '<rootDir>/components/progress/**/*',
+    '<rootDir>/components/dropdown/**/*',
     '!<rootDir>/components/table/**/*',
     '!<rootDir>/components/nav-menu/**/*',
     '!<rootDir>/components/**/style/**/*',

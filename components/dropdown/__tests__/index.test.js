@@ -5,7 +5,7 @@ import sinon, { fake, spy } from 'sinon'
 import Dropdown from '../index'
 import DropdownMenuItem from '../DropdownMenuItem'
 import Button from '../../button'
-
+import Icon from '../../icon'
 const datas = [{
   title: '移动',
   id: 1
@@ -26,6 +26,7 @@ function trigger(elem, event){
 
 }
 /* eslint-env jest */
+
 describe('Dropdown', () => {
   let clock
 
@@ -35,9 +36,10 @@ describe('Dropdown', () => {
 
   afterEach(() => {
     clock.restore()
+    jest.useRealTimers()
+
     document.querySelectorAll('.hi-popper__container')[0] && document.querySelectorAll('.hi-popper__container')[0].remove()
   })
-  jest.useFakeTimers()
   describe('PropTypes', () => {
     it('title', () => {
       const wrapper = mount(
@@ -65,16 +67,6 @@ describe('Dropdown', () => {
       expect(wrapper.find('.hi-dropdown--group').find(Button)).toHaveLength(2)
       wrapper.unmount()
     })
-
-    // it('prefix&suffix', () => {
-    //   const wrapper = mount(
-    //     <Dropdown title='其它操作' data={datas} prefix='...' suffix='-' trigger='click' />
-    //   )
-    //   wrapper.find('.hi-dropdown').getDOMNode().click()
-    //   expect(document.querySelectorAll('.hi-dropdown__item-prefix')[0].innerHTML).toEqual('...')
-    //   expect(document.querySelectorAll('.hi-dropdown__item-suffix')[0].innerHTML).toEqual('-')
-    //   wrapper.unmount()
-    // })
     it('trigger', () => {
       const triggers = ['click', 'contextmenu', 'hover']
       const wrapper = mount(
@@ -85,6 +77,7 @@ describe('Dropdown', () => {
           <Dropdown title='其它操作' data={datas} trigger={[...triggers]} />
         </div>
       )
+      
       expect(document.querySelectorAll('.hi-popper__container')).toHaveLength(0)
       wrapper.find('.hi-dropdown').at(0).find(Button).simulate('click')
       expect(document.querySelectorAll('.hi-popper__container')).toHaveLength(1)
@@ -157,16 +150,18 @@ describe('Dropdown', () => {
       )
       wrapper.find('.hi-dropdown').at(0).find('button').simulate('click')
       expect(document.querySelectorAll('.hi-dropdown__menu-item--disabled')).toHaveLength(1)
+      wrapper.find('.hi-dropdown').at(0).find('button').simulate('click')
       expect(document.querySelectorAll('.hi-dropdown__divider')).toHaveLength(1)
       Simulate.mouseEnter(document.querySelector('.hi-dropdown__popper'))
       Simulate.mouseEnter(document.querySelector('.hi-dropdown__menu-item'))
       Simulate.mouseLeave(document.querySelector('.hi-dropdown__menu-item'))
       Simulate.mouseLeave(document.querySelector('.hi-dropdown__popper'))
       wrapper.find('.hi-dropdown').at(0).find('button').simulate('click')
-      expect(document.querySelectorAll('.hi-popper__container--hide')).toHaveLength(1)
       wrapper.unmount()
     })
     it('handleDocumentClick', () => {
+      jest.useFakeTimers()
+
       const wrapper = mount(
         <Dropdown title='操作' data={_datas} onClick={outCallback} trigger={['click', 'hover']} />
       )
@@ -175,6 +170,40 @@ describe('Dropdown', () => {
       expect(document.querySelectorAll('.hi-dropdown__divider')).toHaveLength(1)
       trigger(document,'click')
       expect(document.querySelectorAll('.hi-popper__container--hide')).toHaveLength(1)
+      trigger(wrapper.find('.hi-dropdown').at(0).find('button').getDOMNode(),'mouseenter')
+      expect(document.querySelectorAll('.hi-dropdown__menu-item--disabled')).toHaveLength(1)
+      jest.runAllTimers();
+      
+      wrapper.unmount()
+    })
+    it('disabled', () => {
+      const wrapper = mount(
+        <Dropdown title='操作' disabled data={_datas} onClick={outCallback} trigger={['click', 'hover']} />
+      )
+      wrapper.find('.hi-dropdown').at(0).find('button').simulate('click')
+      expect(wrapper.find('.hi-dropdown--disabled')).toHaveLength(1)
+      wrapper.unmount()
+    })
+    it('prefix && suffix', () => {
+      const dataV1 = [{
+        title: 'one'
+      },{
+        title: 'two',
+        prefix: <Icon name='add'/> // 此 prefix 将会被替换为外部的 prefix
+      },{
+        title: 'three',
+        suffix: <Icon name='truck'/>
+      }]
+      const wrapper = mount(
+        <Dropdown
+          list={dataV1}
+          title="按钮菜单"
+          type="button"
+          onClick={(val) => {}}
+          prefix={<Icon name='list'/>}
+        />
+      )
+      wrapper.find('.hi-dropdown').at(0).find('button').at(0).simulate('click')
       wrapper.unmount()
     })
     it('level', () => {
