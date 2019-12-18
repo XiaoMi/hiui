@@ -199,14 +199,9 @@ describe('Transfer', () => {
         showCheckAll
       />
     )
-    console.log(wrapper.debug())
-    console.log(wrapper.instance())
     const backend = getBackendFromInstance(wrapper.instance())
-    console.log('backend',backend)
     const monitor = wrapper.instance().getManager().getMonitor()
     const sourceItem = wrapper.find('.hi-transfer__container').at(1).find('DragSource(Item)').at(0)
-    console.log(sourceItem.debug())
-
     backend.simulateBeginDrag([sourceItem.instance().getHandlerId()])
     expect(monitor.isDragging()).toBeTruthy()
     const targetItem = wrapper
