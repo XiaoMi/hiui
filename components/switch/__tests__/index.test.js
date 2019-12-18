@@ -46,4 +46,24 @@ describe('Switch', () => {
     wrapper.find('.hi-switch').simulate('click')
     expect(onChange).not.toBeCalled()
   })
+  it("checked",()=>{
+    const wrapper = mount(<Switch checked content={['开', '关']} />)
+    expect(wrapper.find('.hi-switch--closed')).toHaveLength(0)
+    wrapper.setProps({checked:false})
+    expect(wrapper.find('.hi-switch--closed')).toHaveLength(1)
+  })
+  it("disabled",()=>{
+    const wrapper = mount(
+      <Switch checked disabled />
+    )
+    wrapper.find('.hi-switch').simulate('click')
+    expect(wrapper.find('.hi-switch--closed')).toHaveLength(0)
+  })
+  it('oldProps onClick', () => {
+    const wrapper = mount(
+      <Switch checked onClick={() => {return false}} />
+    )
+    wrapper.find('.hi-switch').simulate('click')
+    expect(wrapper.find('.hi-switch--closed')).toHaveLength(0)
+  })
 })
