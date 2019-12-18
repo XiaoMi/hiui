@@ -160,7 +160,6 @@ describe('Dropdown', () => {
       wrapper.unmount()
     })
     it('handleDocumentClick', () => {
-      jest.useFakeTimers()
 
       const wrapper = mount(
         <Dropdown title='操作' data={_datas} onClick={outCallback} trigger={['click', 'hover']} />
@@ -172,7 +171,6 @@ describe('Dropdown', () => {
       expect(document.querySelectorAll('.hi-popper__container--hide')).toHaveLength(1)
       trigger(wrapper.find('.hi-dropdown').at(0).find('button').getDOMNode(),'mouseenter')
       expect(document.querySelectorAll('.hi-dropdown__menu-item--disabled')).toHaveLength(1)
-      jest.runAllTimers();
       
       wrapper.unmount()
     })

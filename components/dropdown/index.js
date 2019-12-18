@@ -21,8 +21,6 @@ function convertData (data, prefix = '', suffix = '') {
       }
       if (item.title !== '-') {
         if (item.prefix) {
-          console.log('item', item)
-
           item.title = <Fragment>{item.prefix} {item.title}</Fragment>
         } else {
           item.title = <Fragment>{prefix} {item.title}</Fragment>

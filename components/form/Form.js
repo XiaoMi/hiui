@@ -48,7 +48,6 @@ class Form extends Component {
     let valid = true
     let count = 0
     const fields = this.state.fields
-
     if (fields.length === 0 && cb) {
       cb(valid)
     }
