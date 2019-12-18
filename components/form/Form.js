@@ -119,7 +119,6 @@ Form.propTypes = {
 
 Form.defaultProps = {
   size: 'small',
-  labelPlacement: 'left',
   showColon: true
 }
 
