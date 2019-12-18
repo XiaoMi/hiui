@@ -1,6 +1,6 @@
 module.exports = {
   // Stop running tests after the first failure
-  // bail: true,
+  bail: false,
 
   // Indicates whether the coverage information should be collected while executing the test
   collectCoverage: false,
@@ -26,7 +26,7 @@ module.exports = {
   // 1. 修改范围 <rootDir>/components/[组件名称]/**/*
   // 2. 运行单测命令 npx jest components/switch/__tests__/index.test.js --coverage 即可看到当前文件夹的覆盖率
   collectCoverageFrom: [
-    '<rootDir>/components/dropdown/**/*',
+    '<rootDir>/components/**/*',
     '!<rootDir>/components/table/**/*',
     '!<rootDir>/components/nav-menu/**/*',
     '!<rootDir>/components/**/style/**/*',
