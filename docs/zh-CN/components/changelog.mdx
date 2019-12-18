@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2.6.2
+
+- 修复 `<Form />` labelPosition 兼容属性不生效的问题 [#828](https://github.com/XiaoMi/hiui/issues/828)
+- 修复 `<Transfer />` type 的问题 [#821](https://github.com/XiaoMi/hiui/issues/821)
+- 修复 `<Counter />` step 为负值，max 和 min 不起作用的问题 [#799](https://github.com/XiaoMi/hiui/issues/799)
+
 ## 2.6.1
 
 - 修复 `<Cascader />` 不能正确通过搜索过滤选项的问题 [#812](https://github.com/XiaoMi/hiui/issues/812)
