@@ -239,7 +239,7 @@ class Counter extends React.Component {
       step
     } = this.props
 
-    let num = new Decimal(this.valueTrue).plus(step).valueOf() * 1
+    let num = new Decimal(this.valueTrue).plus(step > 0 ? step : -step).valueOf() * 1
     return max <= num
   }
 
@@ -248,7 +248,7 @@ class Counter extends React.Component {
       min = -1 * Infinity,
       step
     } = this.props
-    let num = new Decimal(this.valueTrue).minus(step).valueOf() * 1
+    let num = new Decimal(this.valueTrue).minus(step > 0 ? step : -step).valueOf() * 1
     return min >= num
   }
 
