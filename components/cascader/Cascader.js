@@ -102,8 +102,7 @@ class Cascader extends Component {
     this.setState({
       keyword: '',
       filterOptions: false,
-      cascaderValue: this.props.value.length ? this.props.value : this.state.cacheValue,
-      cascaderLabel: this.getCascaderLabel(this.props.value.length ? this.props.value : this.state.cacheValue),
+      cascaderValue: this.state.cacheValue,
       popperShow: true
     })
     this.inputRef.focus()
@@ -173,8 +172,7 @@ class Cascader extends Component {
 
   onKeywordChange () {
     const {
-      data,
-      filterOption: filterFunc
+      data
     } = this.props
     const {
       keyword
@@ -195,9 +193,7 @@ class Cascader extends Component {
         let label = option[labelKey]
         const value = option[valueKey]
         const children = option[childrenKey]
-        if (filterFunc) {
-          filterFunc(keyword, option) && match.matchCount++
-        } else if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
+        if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount++
         }
 
@@ -214,15 +210,14 @@ class Cascader extends Component {
             filterOptions.push(match.options.slice())
           }
         }
-        if (filterFunc) {
-          filterFunc(keyword, option) && match.matchCount--
-        } else if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
+        if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount--
         }
 
         match.options.pop()
       })
     }
+
     checkOptions(data, initMatchOptions)
     filterOptions = this.formatFilterOptions(filterOptions, keyword)
     this.setState({
@@ -243,6 +238,9 @@ class Cascader extends Component {
   }
 
   formatFilterOptions (filterOptions, keyword) {
+    const {
+      filterOption: filterFunc
+    } = this.props
     const jointOptions = []
     const levelItems = []
     const levelItemsObj = {}
@@ -279,21 +277,36 @@ class Cascader extends Component {
           jointOption[valueKey].push(option[valueKey])
           option.disabled && (jointOption.disabled = option.disabled)
           option.disabled && (levelItem.disabled = option.disabled)
-
           if (!levelItemsObj[levelItem[valueKey]]) {
             levelItemsObj[levelItem[valueKey]] = levelItem[valueKey]
-            levelItems.push(levelItem)
+            if (filterFunc) {
+              if (filterFunc(keyword, option) && (levelItem[valueKey].toString().includes(keyword) || option[labelKey].toString().includes(keyword))) levelItems.push(levelItem)
+            } else {
+              if (levelItem[valueKey].toString().includes(keyword) || option[labelKey].toString().includes(keyword)) levelItems.push(levelItem)
+            }
           }
         })
 
         jointOptions.push(jointOption)
       })
     }
+    if (levelItems.length === 0) {
+      return [{
+        [labelKey]: emptyContent,
+        [valueKey]: '',
+        disabled: true
+      }]
+    }
     return levelItems
   }
 
   hightlightKeyword (text, keyword, uniqueKey) {
-    let parts = text.split(new RegExp(`(${keyword})`, 'gi'))
+    let _keyword = keyword
+    _keyword = keyword.includes('[') ? _keyword.replace(/\[/gi, '\\[') : _keyword
+    _keyword = keyword.includes('(') ? _keyword.replace(/\(/gi, '\\(') : _keyword
+    _keyword = keyword.includes(')') ? _keyword.replace(/\)/gi, '\\)') : _keyword
+
+    let parts = text.split(new RegExp(`(${_keyword})`, 'gi'))
     return (
       <span key={uniqueKey}>
         { parts.map((part, i) =>
@@ -336,7 +349,6 @@ class Cascader extends Component {
       disabled,
       searchable,
       clearable,
-      value,
       style
     } = this.props
     const {
@@ -346,15 +358,13 @@ class Cascader extends Component {
       filterOptions,
       cascaderLabel
     } = this.state
-    const _cascaderValue = (value.length && !popperShow) ? value : cascaderValue
-    const _cascaderLabel = (value.length && !popperShow) ? this.getCascaderLabel(_cascaderValue) : cascaderLabel
     const extraClass = {
       'hi-cascader--disabled': disabled,
       'hi-cascader--focused': popperShow,
       'hi-cascader--clearable': clearable
     }
     const expandIcon = popperShow ? 'icon-up' : 'icon-down'
-    const placeholder = _cascaderLabel || this.localeDatasProps('placeholder')
+    const placeholder = cascaderLabel || this.localeDatasProps('placeholder')
     return (
       <div className={classNames('hi-cascader', className, extraClass)} style={style} ref={this.hiCascader}>
         <div className='hi-cascader__input-container' ref={node => { this.inputContainer = node }} onClick={this.handleClick.bind(this)}>
@@ -363,7 +373,7 @@ class Cascader extends Component {
               this.inputRef = node
             }}
             className='hi-cascader__input-keyword'
-            value={(popperShow && keyword) || (!popperShow && _cascaderLabel) || ''}
+            value={(popperShow && keyword) || (!popperShow && cascaderLabel) || ''}
             readOnly={!searchable}
             disabled={disabled}
             placeholder={placeholder}
@@ -389,7 +399,7 @@ class Cascader extends Component {
         >
           <Menu
             ref={node => { this.menuNode = node }}
-            value={_cascaderValue}
+            value={cascaderValue}
             options={filterOptions || data}
             root={() => this}
             isFiltered={filterOptions}
