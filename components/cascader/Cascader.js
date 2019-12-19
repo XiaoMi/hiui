@@ -65,7 +65,7 @@ class Cascader extends Component {
       component: this
     }
   }
-  componentWillReceiveProps (nextProps, b) {
+  componentWillReceiveProps (nextProps) {
     if (!shallowequal(nextProps.value, this.props.value) || !isEqual(nextProps.data, this.props.data)) {
       const cascaderLabel = this.getCascaderLabel(nextProps.value, nextProps.data)
       this.setState({
