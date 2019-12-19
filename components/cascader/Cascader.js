@@ -65,7 +65,7 @@ class Cascader extends Component {
       component: this
     }
   }
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps (nextProps, b) {
     if (!shallowequal(nextProps.value, this.props.value) || !isEqual(nextProps.data, this.props.data)) {
       const cascaderLabel = this.getCascaderLabel(nextProps.value, nextProps.data)
       this.setState({
@@ -217,6 +217,7 @@ class Cascader extends Component {
         match.options.pop()
       })
     }
+
     checkOptions(data, initMatchOptions)
     filterOptions = this.formatFilterOptions(filterOptions, keyword)
     this.setState({
@@ -300,7 +301,7 @@ class Cascader extends Component {
   }
 
   hightlightKeyword (text, keyword, uniqueKey) {
-    let parts = text.split(new RegExp(`(${keyword.replace(/\[/gi, '\\[')})`, 'gi'))
+    let parts = text.split(new RegExp(`(\\${keyword})`, 'gi'))
     return (
       <span key={uniqueKey}>
         { parts.map((part, i) =>
