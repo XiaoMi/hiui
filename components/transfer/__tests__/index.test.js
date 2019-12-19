@@ -212,6 +212,44 @@ describe('Transfer', () => {
     backend.simulateHover([targetItem.instance().getHandlerId()])
     backend.simulateDrop()
     backend.simulateEndDrag()
+
+    backend.simulateBeginDrag([sourceItem.instance().getHandlerId()], {
+      clientOffset: { x: 30, y: 20 },
+      getSourceClientOffset: () => ({ x: 0, y: 0 })
+    });
+    const targetId = targetItem.instance().getHandlerId()
+
+    let raisedChange = false;
+    monitor.subscribeToOffsetChange(() => {
+      raisedChange = true;
+    });
+
+    backend.simulateHover([targetId], {
+      clientOffset: { x: 10, y: 20 }
+    });
+    backend.simulateHover([], {
+      clientOffset: { x: 10, y: 22 }
+    });
+    backend.simulateHover([targetId], {
+      clientOffset: { x: 16, y: 20 }
+    });
+    
+    backend.simulateHover([targetId], {
+      clientOffset: { x: 5, y: 20 }
+    });
+    expect(monitor.getClientOffset()).toEqual({ x: 5, y: 20 });
+    backend.simulateDrop()
+    expect(monitor.getInitialSourceClientOffset()).toEqual(null)
+    expect(monitor.getInitialClientOffset()).toEqual(null)
+    expect(monitor.getClientOffset()).toEqual(null)
+    expect(monitor.getSourceClientOffset()).toEqual(null)
+    expect(monitor.getDifferenceFromInitialOffset()).toEqual(null)
+    backend.simulateEndDrag()
+    expect(monitor.getInitialSourceClientOffset()).toEqual(null);
+    expect(monitor.getInitialClientOffset()).toEqual(null);
+    expect(monitor.getClientOffset()).toEqual(null);
+    expect(monitor.getSourceClientOffset()).toEqual(null);
+    expect(monitor.getDifferenceFromInitialOffset()).toEqual(null);
     wrapper.unmount()
   })
 })

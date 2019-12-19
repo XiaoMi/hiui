@@ -353,8 +353,20 @@ describe('tree', () => {
           backend.simulateHover([targetItem.instance().getHandlerId()],{
             clientOffset: { x: 0, y: 0 }
           });
+          expect(monitor.getClientOffset()).toEqual({ x: 0, y: 0 });
           backend.simulateDrop()
+          expect(monitor.getInitialSourceClientOffset()).toEqual(null)
+          expect(monitor.getInitialClientOffset()).toEqual(null)
+          expect(monitor.getClientOffset()).toEqual(null)
+          expect(monitor.getSourceClientOffset()).toEqual(null)
+          expect(monitor.getDifferenceFromInitialOffset()).toEqual(null)
           backend.simulateEndDrag()
+          expect(monitor.getInitialSourceClientOffset()).toEqual(null)
+          expect(monitor.getInitialClientOffset()).toEqual(null)
+          expect(monitor.getClientOffset()).toEqual(null)
+          expect(monitor.getSourceClientOffset()).toEqual(null)
+          expect(monitor.getDifferenceFromInitialOffset()).toEqual(null)
+
           const sourceItem2 = wrapper.find('DragSource(TreeItem)').at(1)
 
           backend.simulateBeginDrag([sourceItem2.instance().getHandlerId()],{
@@ -392,7 +404,6 @@ describe('tree', () => {
           wrapper.find('.hi-tree_item-icon').at(1).simulate('click')
           wrapper.find('.hi-tree_item-icon').at(2).simulate('click')
           wrapper.find('.hi-tree_item-icon').at(3).simulate('click')
-          console.log(wrapper.debug(),wrapper.find('.hi-tree_item-icon').debug())
           backend.simulateBeginDrag([sourceItem2.instance().getHandlerId()], {
             clientOffset: { x: 30, y: 20 },
             getSourceClientOffset: () => ({ x: 0, y: 0 })
@@ -406,7 +417,7 @@ describe('tree', () => {
           backend.simulateHover([targetId], {
             clientOffset: { x: 10, y: 20 }
           });
-          backend.simulateHover([], {
+          backend.simulateHover([targetId], {
             clientOffset: { x: 10, y: 22 }
           });
           backend.simulateHover([targetId], {
@@ -415,8 +426,20 @@ describe('tree', () => {
           backend.simulateHover([targetId], {
             clientOffset: { x: 5, y: 20 }
           });
+          expect(monitor.getClientOffset()).toEqual({ x: 5, y: 20 });
+         
           backend.simulateDrop()
+          expect(monitor.getInitialSourceClientOffset()).toEqual(null)
+          expect(monitor.getInitialClientOffset()).toEqual(null)
+          expect(monitor.getClientOffset()).toEqual(null)
+          expect(monitor.getSourceClientOffset()).toEqual(null)
+          expect(monitor.getDifferenceFromInitialOffset()).toEqual(null)
           backend.simulateEndDrag()
+          expect(monitor.getInitialSourceClientOffset()).toEqual(null)
+          expect(monitor.getInitialClientOffset()).toEqual(null)
+          expect(monitor.getClientOffset()).toEqual(null)
+          expect(monitor.getSourceClientOffset()).toEqual(null)
+          expect(monitor.getDifferenceFromInitialOffset()).toEqual(null)
           wrapper.unmount()
         })
         it('should loadTreeNode',()=>{
