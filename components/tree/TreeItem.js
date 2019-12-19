@@ -109,7 +109,6 @@ class TreeItem extends Component {
               checked={checked}
               onChange={() => onCheckChange(checked, item)}
               onTitleClick={e => {
-                console.log('onTitleClick')
                 if (item.disabled) {
                   return false
                 }
@@ -142,7 +141,6 @@ class TreeItem extends Component {
                 style={{ cursor: 'pointer' }}
                 onClick={() => {
                   if (editNodes.map(node => node.id).includes(item.id)) {
-                    console.log('取消')
                     cancelEditNode(item.id)
                   } else {
                     cancelAddSiblingNode(item.id)
@@ -297,6 +295,7 @@ const target = {
       if (!(sourcePosition.x === positionX && sourcePosition.y === positionY)) {
         setPosition(sourcePosition.x, sourcePosition.y)
         // 如果在节点的上半部分，则为移动其内部，如果为下半部分，则为节点下方
+        console.log('sourcePosition.y', sourcePosition.y)
         if (sourcePosition.y <= targetComponent.y + targetComponent.height / 3) {
           setTargetNode(targetItem.id, 'up')
         } else if (

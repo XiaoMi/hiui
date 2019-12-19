@@ -1,6 +1,6 @@
 module.exports = {
   // Stop running tests after the first failure
-  // bail: true,
+  bail: false,
 
   // Indicates whether the coverage information should be collected while executing the test
   collectCoverage: false,
@@ -17,7 +17,8 @@ module.exports = {
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
     '<rootDir>/components/**/*',
-    '!<rootDir>/components/(table|nav-menu)/**/*',
+    '!<rootDir>/components/table/**/*',
+    '!<rootDir>/components/nav-menu/**/*',
     '!<rootDir>/components/**/style/**/*',
     '!<rootDir>/components/**/__test__/**/*',
     '!<rootDir>/components/**/(*-legacy)/**/*'
@@ -26,7 +27,7 @@ module.exports = {
   // 1. 修改范围 <rootDir>/components/[组件名称]/**/*
   // 2. 运行单测命令 npx jest components/switch/__tests__/index.test.js --coverage 即可看到当前文件夹的覆盖率
   // collectCoverageFrom: [
-  //   '<rootDir>/components/popover/**/*',
+  //   '<rootDir>/components/tree/**/*',
   //   '!<rootDir>/components/table/**/*',
   //   '!<rootDir>/components/nav-menu/**/*',
   //   '!<rootDir>/components/**/style/**/*',

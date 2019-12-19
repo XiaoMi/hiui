@@ -298,7 +298,7 @@ describe('tree', () => {
           wrapper.find('input').simulate('change',{target:{value:'小米'}})
           expect(wrapper.find('.is-root')).toHaveLength(2)
         })
-        it('should draggable',()=>{
+        it('should draggable',(done)=>{
           const WrapTrees = wrapInTestContext(Tree)
           const wrapper = mount(
               <WrapTrees
@@ -338,26 +338,85 @@ describe('tree', () => {
 
           const backend = wrapper.instance().getManager().getBackend()
           const sourceItem = wrapper.find('DragSource(TreeItem)').at(0)
-          backend.simulateBeginDrag([sourceItem.instance().getHandlerId()])
+          const monitor = wrapper.instance().getManager().getMonitor()
+          const registry = wrapper.instance().getManager().getRegistry()
 
+          backend.simulateBeginDrag([sourceItem.instance().getHandlerId()])
           const targetItem = wrapper
             .find('DropTarget(DragSource(TreeItem))')
-            .at(1)
+            .at(0)
 
-          backend.simulateHover([targetItem.instance().getHandlerId()])
+            
+          backend.simulateHover([targetItem.instance().getHandlerId()],{
+              clientOffset: { x: 60, y: 70 }
+          })
+          backend.simulateHover([targetItem.instance().getHandlerId()],{
+            clientOffset: { x: 0, y: 0 }
+          });
           backend.simulateDrop()
           backend.simulateEndDrag()
           const sourceItem2 = wrapper.find('DragSource(TreeItem)').at(1)
 
-          backend.simulateBeginDrag([sourceItem2.instance().getHandlerId()])
+          backend.simulateBeginDrag([sourceItem2.instance().getHandlerId()],{
+            clientOffset: { x: 50, y: 40 },
+            getSourceClientOffset: () => ({ x: 20, y: 10 })
+          })
           const targetItem2 = wrapper
             .find('DropTarget(DragSource(TreeItem))')
             .at(1)
 
-          backend.simulateHover([targetItem2.instance().getHandlerId()])
+          backend.simulateHover([targetItem2.instance().getHandlerId(),targetItem.instance().getHandlerId()])
           backend.simulateDrop()
           backend.simulateEndDrag()
           simulateDragDropSequence(sourceItem.instance(),targetItem2.instance(),backend)
+
+          monitor.subscribeToStateChange(done);
+          backend.simulateBeginDrag([sourceItem.instance().getHandlerId()],{
+            clientOffset: { x: 0, y: 0 },
+            getSourceClientOffset: () => ({ x: 0, y: 0 })
+          });
+          backend.simulateDrop()
+          backend.simulateEndDrag()
+
+          monitor.subscribeToStateChange(done);
+          backend.simulateBeginDrag([sourceItem.instance().getHandlerId()],{
+            clientOffset: { x: 20, y: 20 },
+            getSourceClientOffset: () => ({ x: 0, y: 0 })
+          });
+          monitor.subscribeToOffsetChange(done);
+          backend.simulateHover([targetItem2.instance().getHandlerId()], {
+            clientOffset: { x: 20, y: 10 }
+          });
+          backend.simulateDrop()
+          backend.simulateEndDrag()
+          wrapper.find('.hi-tree_item-icon').at(1).simulate('click')
+          wrapper.find('.hi-tree_item-icon').at(2).simulate('click')
+          wrapper.find('.hi-tree_item-icon').at(3).simulate('click')
+          console.log(wrapper.debug(),wrapper.find('.hi-tree_item-icon').debug())
+          backend.simulateBeginDrag([sourceItem2.instance().getHandlerId()], {
+            clientOffset: { x: 30, y: 20 },
+            getSourceClientOffset: () => ({ x: 0, y: 0 })
+          });
+          const targetId = targetItem2.instance().getHandlerId()
+          let raisedChange = false;
+          monitor.subscribeToOffsetChange(() => {
+            raisedChange = true;
+          });
+    
+          backend.simulateHover([targetId], {
+            clientOffset: { x: 10, y: 20 }
+          });
+          backend.simulateHover([], {
+            clientOffset: { x: 10, y: 22 }
+          });
+          backend.simulateHover([targetId], {
+            clientOffset: { x: 16, y: 20 }
+          });
+          backend.simulateHover([targetId], {
+            clientOffset: { x: 5, y: 20 }
+          });
+          backend.simulateDrop()
+          backend.simulateEndDrag()
           wrapper.unmount()
         })
         it('should loadTreeNode',()=>{
