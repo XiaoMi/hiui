@@ -102,8 +102,7 @@ class Cascader extends Component {
     this.setState({
       keyword: '',
       filterOptions: false,
-      cascaderValue: this.props.value.length ? this.props.value : this.state.cacheValue,
-      cascaderLabel: this.getCascaderLabel(this.props.value.length ? this.props.value : this.state.cacheValue),
+      cascaderValue: this.state.cacheValue,
       popperShow: true
     })
     this.inputRef.focus()
@@ -345,7 +344,6 @@ class Cascader extends Component {
       disabled,
       searchable,
       clearable,
-      value,
       style
     } = this.props
     const {
@@ -355,15 +353,13 @@ class Cascader extends Component {
       filterOptions,
       cascaderLabel
     } = this.state
-    const _cascaderValue = (value.length && !popperShow) ? value : cascaderValue
-    const _cascaderLabel = (value.length && !popperShow) ? this.getCascaderLabel(_cascaderValue) : cascaderLabel
     const extraClass = {
       'hi-cascader--disabled': disabled,
       'hi-cascader--focused': popperShow,
       'hi-cascader--clearable': clearable
     }
     const expandIcon = popperShow ? 'icon-up' : 'icon-down'
-    const placeholder = _cascaderLabel || this.localeDatasProps('placeholder')
+    const placeholder = cascaderLabel || this.localeDatasProps('placeholder')
     return (
       <div className={classNames('hi-cascader', className, extraClass)} style={style} ref={this.hiCascader}>
         <div className='hi-cascader__input-container' ref={node => { this.inputContainer = node }} onClick={this.handleClick.bind(this)}>
@@ -372,7 +368,7 @@ class Cascader extends Component {
               this.inputRef = node
             }}
             className='hi-cascader__input-keyword'
-            value={(popperShow && keyword) || (!popperShow && _cascaderLabel) || ''}
+            value={(popperShow && keyword) || (!popperShow && cascaderLabel) || ''}
             readOnly={!searchable}
             disabled={disabled}
             placeholder={placeholder}
@@ -398,7 +394,7 @@ class Cascader extends Component {
         >
           <Menu
             ref={node => { this.menuNode = node }}
-            value={_cascaderValue}
+            value={cascaderValue}
             options={filterOptions || data}
             root={() => this}
             isFiltered={filterOptions}
