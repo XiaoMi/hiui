@@ -34,10 +34,10 @@ class Demo extends React.Component {
     return (
       <div>
         <Transfer
-          mode='multiple'
+          type='multiple'
           title={['批量']}
           disabled={this.state.disabled}
-          targetKeys={this.state.targetKeys}
+          targetIds={this.state.targetKeys}
           data={this.state.datas}
           onChange={this.onChange.bind(this)}
         />

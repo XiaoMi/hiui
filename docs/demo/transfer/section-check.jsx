@@ -31,9 +31,9 @@ class Demo extends React.Component {
   render () {
     return (
       <Transfer
-        mode='multiple'
-        showAllSelect
-        targetKeys={this.state.targetKeys}
+        type='multiple'
+        showCheckAll
+        targetIds={this.state.targetKeys}
         data={this.state.datas}
         onChange={this.onChange.bind(this)}
       />

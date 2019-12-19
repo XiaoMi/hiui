@@ -30,8 +30,8 @@ class Demo extends React.Component {
   render () {
     return (
       <Transfer
-        mode='multiple'
-        showAllSelect
+        type='multiple'
+        showCheckAll
         draggable
         targetKeys={this.state.targetKeys}
         data={this.state.datas}

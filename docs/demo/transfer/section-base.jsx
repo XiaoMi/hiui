@@ -31,10 +31,9 @@ class Demo extends React.Component {
   render () {
     return (
       <Transfer
-        mode='basic'
         emptyContent={['空', '无数据']}
         title={['左标题', '右标题']}
-        targetKeys={this.state.targetKeys}
+        targetIds={this.state.targetKeys}
         data={this.state.datas}
         onChange={this.onChange.bind(this)}
       />

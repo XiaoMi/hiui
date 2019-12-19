@@ -13,25 +13,25 @@ class Demo extends React.Component {
       <Collapse
         onChange={()=>{console.log('切换了！');}}
         accordion={true}
-        arrow="right"
+        arrowPlacement="right"
       >
         <Collapse.Panel
           disabled={true}
-          header="panel title 1"
+          title="panel title 1"
         >
           <p>Collapse Panel Content 1</p>
           <p>Collapse Panel Content 1</p>
           <p>Collapse Panel Content 1</p>
         </Collapse.Panel>
         <Collapse.Panel
-          header="panel title 2"
+          title="panel title 2"
         >
           <p>Collapse Panel Content 2</p>
           <p>Collapse Panel Content 2</p>
           <p>Collapse Panel Content 2</p>
         </Collapse.Panel>
         <Collapse.Panel
-          header="panel title 3"
+          title="panel title 3"
         >
           <p>Collapse Panel Content 3</p>
           <p>Collapse Panel Content 3</p>
