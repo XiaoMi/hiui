@@ -53,9 +53,8 @@ describe('Notice', () => {
       wrapper.setProps({
         closeable: true
       })
-
-      expect(wrapper.find(`.hi-prefix-button`)).toHaveLength(1)
-      const wrapperLastChild = wrapper.find(`.hi-prefix-button`)
+      expect(wrapper.find(`.hi-prefix__content--wrapper`)).toHaveLength(1)
+      const wrapperLastChild = wrapper.find(`.hi-prefix`).at(0).find('span')
 
       expect(wrapper.state('open')).toBeTruthy()
       wrapperLastChild.simulate('click')
@@ -157,7 +156,6 @@ describe('NoticeContainer', () => {
 
       // 对其中的Notice的属性进行检测
 
-      console.log(wrapper.debug())
       // console.log(wrapper.find(Notice).at(0))
       console.log(wrapper.find(Notice).at(0).state('key'))
       // expect(wrapper.find(Notice).at(0).key).toEqual('1')
@@ -178,10 +176,8 @@ describe('NoticeContainer', () => {
 
     it('could be closed', () => {
       const onClose = jest.fn()
-      const wrapper = mount(<Notice onClose={onClose} />)
-      wrapper.find(Notice).find('.hi-prefix-button').simulate('click')
-      expect(onClose).toBeCalled()
-      // expect(wrapper.find('.hi-alert')).toHaveLength(0)
+      const wrapper = mount(<Notice prefix={'prefix'} onClose={onClose} />)
+      expect(wrapper.find('.hi-prefix')).toHaveLength(1)
     })
   })
 })
