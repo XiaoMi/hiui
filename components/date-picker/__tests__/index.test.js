@@ -6,6 +6,7 @@ import { DatePicker as DatePickerClass } from '../DatePicker'
 import { getDate, subDays, getYear, getMonth, subMonths, addDays, startOfWeek, endOfWeek, addHours, dateFormat, compatibleFormatString } from '../dateUtil'
 import { nextMonth, deconstructDate } from '../util'
 import { isVaildDate } from '../constants'
+import sinon from 'sinon'
 /* eslint-env jest */
 
 const mockDate = new Date('2019-11-15 12:00:00')
@@ -129,12 +130,12 @@ describe('Datepicker', () => {
     it('month', () => {
       const callback = jest.fn()
       const wrapper = mount(
-        <Datepicker type='month' onChange={callback} />
+        <Datepicker type='month' onChange={callback}/>
       )
       expect(wrapper.find('input').getDOMNode().getAttribute('value')).toEqual('')
       expect(wrapper.find('input').getDOMNode().getAttribute('placeholder')).toEqual('请选择月')
       wrapper.find('input').simulate('focus')
-      expect(wrapper.find(`td[value=${mockCurrentMonth}]`).hasClass('current')).toBeTruthy()
+      expect(wrapper.find(`td[value=${(mockCurrentMonth + 1)+ ''}]`).hasClass('current')).toBeTruthy()
       wrapper.setProps({ value: subMonths(mockDate, 1) })
       expect(wrapper.find(`td[value=${(mockCurrentMonth - 1) + ''}]`).hasClass('current')).toBeTruthy()
       wrapper.find('.hi-datepicker__calender').simulate('click', { target: wrapper.find(`td[value=${mockCurrentMonth}]`).getDOMNode() })
@@ -347,9 +348,9 @@ describe('Datepicker', () => {
       const callback = jest.fn()
       const wrapper = mount(
         <div>
-          <Datepicker type='date' min={mockMinDate} onChange={callback} />
-          <Datepicker type='date' max={mockMaxDate} onChange={callback} />
-          <Datepicker type='date' min={mockMinDate} max={mockMaxDate} onChange={callback} />
+          <Datepicker type='date' min={mockMinDate} onChange={callback} value={mockDate}/>
+          <Datepicker type='date' max={mockMaxDate} onChange={callback} value={mockDate}/>
+          <Datepicker type='date' min={mockMinDate} max={mockMaxDate} onChange={callback} value={mockDate}/>
         </div>
       )
       wrapper.find('input').first().simulate('focus')
