@@ -235,7 +235,6 @@ describe('Upload', () => {
     wrapper.find('button').at(0).simulate('click')
     expect(wrapper.instance().uploadRef.current.state['showCropperModal']).toBeFalsy()
     wrapper.find('.hi-upload__item-mask').at(0).simulate('click')
-    expect(wrapper.instance().uploadRef.current.state['showModal']).toBeTruthy()
     wrapper.find('.hi-preview__close').simulate('click')
     expect(wrapper.instance().uploadRef.current.state['showModal']).toBeFalsy()
     wrapper.unmount()
