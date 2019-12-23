@@ -22,8 +22,6 @@ class DatePicker extends BasePicker {
             format={this.state.format}
             onPick={this.onPick.bind(this)}
             style={state.style}
-            timeConfirm={this.timeConfirm.bind(this)}
-            timeCancel={this.timeCancel.bind(this)}
           />
         )
         break
