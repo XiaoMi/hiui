@@ -62,7 +62,6 @@ class DatePanel extends Component {
     } else {
       year += num
     }
-    // day = this.calcDayCount(year, month)
     date.setFullYear(year)
     this.setState({
       date
@@ -208,12 +207,6 @@ class DatePanel extends Component {
     // }
     this.props.onPick(date, bol)
   }
-  timeConfirm () {
-    this.props.timeConfirm(this.state.date)
-  }
-  timeCancel () {
-
-  }
   _getNormalComponent () {
     const {currentView, date} = this.state
     const {minDate, maxDate, weekOffset} = this.props
@@ -292,8 +285,6 @@ class DatePanel extends Component {
               {...this.props}
               onPick={this.onTimePick.bind(this)}
               // date={date}
-              timeConfirm={this.timeConfirm.bind(this)}
-              timeCancel={this.timeCancel.bind(this)}
             />
           }
           {

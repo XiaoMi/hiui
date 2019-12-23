@@ -51,21 +51,6 @@ class DatePanel extends Component {
     onPick(cDate, true)
   }
 
-  renderInput () {
-    return (
-      <input
-        type='text'
-        className='dp-input'
-        onClick={() => {
-          this.setState({
-            show: !this.state.show
-          })
-        }}
-        value={this.state.value}
-      />
-    )
-  }
-
   getYearOrMonthData (val, type) {
     const start = type === 'year' ? val - 4 : 1
     let trs = [[], [], [], []]
@@ -180,7 +165,7 @@ class DatePanel extends Component {
     }
   }
   onDatePick (_date) {
-    const { type, showTime, onPick, timeInterval = 240, weekOffset } = this.props
+    const { type, showTime, onPick, timeInterval, weekOffset } = this.props
     // const { hours, minutes, seconds } = deconstructDate(this.props.date)
     if (type === 'week') {
       const _weekOffset = {weekStartsOn: weekOffset}
@@ -219,10 +204,6 @@ class DatePanel extends Component {
     })
     this.props.onPick(date, bol)
   }
-  timeConfirm () {
-    this.props.timeConfirm(this.state.date)
-  }
-  timeCancel () {}
   _getNormalComponent () {
     const { currentView } = this.state
     const { min, max, weekOffset, date } = this.props
@@ -266,17 +247,6 @@ class DatePanel extends Component {
           />
         )
         break
-      default:
-        component = (
-          <Calender
-            {...this.props}
-            date={date}
-            onClick={data => {
-              this.changeDay(data.value)
-            }}
-          />
-        )
-        break
     }
     return component
   }
@@ -305,8 +275,6 @@ class DatePanel extends Component {
               {...this.props}
               onPick={this.onTimePick.bind(this)}
               date={getStartDate(this.props.date)}
-              timeConfirm={this.timeConfirm.bind(this)}
-              timeCancel={this.timeCancel.bind(this)}
             />}
           {type === 'timeperiod' &&
             <TimePeriodPanel

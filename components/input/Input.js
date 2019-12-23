@@ -287,12 +287,11 @@ class Input extends Component {
 
   render () {
     const { type } = this.attrs
-
     const { size, id, className, required } = this.props
 
     return type === 'textarea' ? this.renderTextarea() : (<div
       id={id}
-      className={`hi-input ${className || ''} ${type || ''}${size ? ' hi-input_' + size : ''}${
+      className={`hi-input ${className || ''} ${type}${size ? ' hi-input_' + size : ''}${
         required ? ' required' : ''
       }`}
       style={this.props.style}

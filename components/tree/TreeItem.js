@@ -278,6 +278,7 @@ const target = {
     }
   },
   hover (props, monitor, component) {
+    console.log('hover')
     const { sourceItem } = monitor.getItem()
     const {
       item: targetItem,
@@ -294,6 +295,7 @@ const target = {
       if (!(sourcePosition.x === positionX && sourcePosition.y === positionY)) {
         setPosition(sourcePosition.x, sourcePosition.y)
         // 如果在节点的上半部分，则为移动其内部，如果为下半部分，则为节点下方
+        console.log('sourcePosition.y', sourcePosition.y)
         if (sourcePosition.y <= targetComponent.y + targetComponent.height / 3) {
           setTargetNode(targetItem.id, 'up')
         } else if (

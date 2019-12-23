@@ -9,3 +9,4 @@ export default depreactedPropsCompat([
   ['onCollapse', 'onMiniChange'],
   ['data', 'datas']
 ])(Menu)
+export { Menu }

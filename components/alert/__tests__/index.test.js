@@ -1,14 +1,17 @@
 import React from 'react'
 import { mount, shallow } from 'enzyme'
-import { spy, fake } from 'sinon'
+import sinon,{ spy, fake } from 'sinon'
 import Alert from '../alert'
-
+/* eslint-env jest */
 describe('Alert', () => {
-  beforeAll(() => {
-    jest.useFakeTimers()
+  let clock
+
+  beforeEach(() => {
+    clock = sinon.useFakeTimers()
   })
-  afterAll(() => {
-    jest.useRealTimers()
+
+  afterEach(() => {
+    clock.restore()
   })
 
   describe('Lifecycle', () => {
@@ -79,12 +82,8 @@ describe('Alert', () => {
       const handleCloseSpy = spy(Alert.prototype, 'handleClose')
 
       expect(handleCloseSpy.callCount).toEqual(0)
-      expect(setTimeout).toHaveBeenCalledTimes(1);
-      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), duration)
-
-      jest.runAllTimers()
+      clock.tick(110)
       expect(handleCloseSpy.callCount).toEqual(1)
-      handleCloseSpy.restore()
     })
   })
 })

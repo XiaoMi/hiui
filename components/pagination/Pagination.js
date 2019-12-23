@@ -29,6 +29,7 @@ class Pagination extends Component {
     } = props
     const current = this.getCurrent(propsCurrent !== undefined ? propsCurrent : defaultCurrent, this.calculatePage(total, pageSize))
     this.jumper = React.createRef()
+    this.tempRef = React.createRef()
     this.state = {
       current,
       jumpTo: current,
@@ -168,7 +169,7 @@ class Pagination extends Component {
 
     return (
       <div className={`${prefixCls}__jumper-input`}>
-        <Input ref={this.jumper} onKeyPress={this.gotoPage.bind(this)} onBlur={this.gotoPage.bind(this)} value={this.state.jumpTo} onChange={(e, tVal) => {
+        <Input innerRef={this.jumper} onKeyPress={this.gotoPage.bind(this)} onBlur={this.gotoPage.bind(this)} value={this.state.jumpTo} onChange={(e, tVal) => {
           const val = e.target.value
           if (!val) {
             this.setState({
@@ -315,11 +316,6 @@ class Pagination extends Component {
       }
     } = this.props
     const maxPage = this.calculatePage(total)
-
-    if (maxPage === 0) {
-      return null
-    }
-
     return (
       <div className={`${prefixCls}__text`}>
         <span>{i18nSimple[0]}</span>
@@ -339,11 +335,6 @@ class Pagination extends Component {
       showJumper
     } = this.props
     const maxPage = this.calculatePage(total)
-
-    if (maxPage === 0) {
-      return null
-    }
-
     const prevPager = this.renderPrevPager()
     const nextPager = this.renderNextPager()
 
@@ -368,7 +359,6 @@ class Pagination extends Component {
       autoHide,
       total,
       type,
-      mode,
       prefixCls,
       className,
       theme
@@ -378,8 +368,7 @@ class Pagination extends Component {
       return null
     }
     let children
-
-    switch (type || mode) {
+    switch (type) {
       case 'simple':
         children = this.renderSimple()
         break
@@ -394,7 +383,7 @@ class Pagination extends Component {
     }
 
     return (
-      <div className={`${prefixCls} ${prefixCls}--${type} ${className} theme__${theme}`}>
+      <div ref={this.tempRef} className={`${prefixCls} ${prefixCls}--${type} ${className} theme__${theme}`}>
         {children}
       </div>
     )
@@ -431,3 +420,4 @@ Pagination.defaultProps = {
 }
 
 export default Provider(Pagination)
+export {Pagination}

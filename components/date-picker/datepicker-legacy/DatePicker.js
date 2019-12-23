@@ -22,8 +22,6 @@ class DatePicker extends BasePicker {
             date={state.date}
             onPick={this.onPick.bind(this)}
             style={state.style}
-            timeConfirm={this.timeConfirm.bind(this)}
-            timeCancel={this.timeCancel.bind(this)}
           />
         )
         break
@@ -42,7 +40,6 @@ class DatePicker extends BasePicker {
           <DateRangePanel
             {...props}
             date={d}
-            timeConfirm={this.timeConfirm.bind(this)}
             onPick={this.onPick.bind(this)}
             style={state.style}
           />

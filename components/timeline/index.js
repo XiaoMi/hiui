@@ -10,7 +10,7 @@ const Time = props => {
     <div className='hi-timeline__time'>
       {props.groupTitle && (
         <div
-          style={props.groupTitle ? { marginTop: -22 } : {}}
+          style={{ marginTop: -22 }}
           className='hi-timeline__group-title'
         >
           {props.groupTitle}

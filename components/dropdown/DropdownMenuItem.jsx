@@ -12,7 +12,7 @@ const MenuItemWrapper = forwardRef(({ href, children, disabled, ...props }, ref)
     Reflect.deleteProperty(props, 'onClick')
   }
   return (
-    <li ref={ref} {...props}>
+    <li ref={ref} {...props} >
       {shouldUseLink ? <a href={href}>{children}</a> : children}
     </li>
   )
@@ -50,16 +50,7 @@ export default class DropdownMenuItem extends React.Component {
     onChildMenuMouseLeave && onChildMenuMouseLeave()
     this.setMenuHide()
   }
-  handleChildMenuMouseEnter = () => {
-    const { onChildMenuMouseEnter } = this.props
-    onChildMenuMouseEnter && onChildMenuMouseEnter()
-    clearTimeout(this.timerHideDropdownMenu)
-  }
-  handleChildMenuMouseLeave = () => {
-    const { onChildMenuMouseLeave } = this.props
-    onChildMenuMouseLeave && onChildMenuMouseLeave()
-    this.setMenuHide()
-  }
+
   handleMenuItemClick = () => {
     const { onMenuItemClick, id } = this.props
     onMenuItemClick(id)
@@ -107,8 +98,8 @@ export default class DropdownMenuItem extends React.Component {
               attachEle={this.refItem.current}
               onMouseLeave={this.handleMenuMouseLeave}
               onMouseEnter={this.handleMenuMouseEnter}
-              onChildMenuMouseEnter={this.handleChildMenuMouseEnter}
-              onChildMenuMouseLeave={this.handleChildMenuMouseLeave}
+              onChildMenuMouseEnter={this.handleMenuMouseEnter}
+              onChildMenuMouseLeave={this.handleMenuMouseLeave}
               onMenuItemClick={onMenuItemClick}
               width={width}
             />

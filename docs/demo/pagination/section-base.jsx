@@ -20,8 +20,8 @@ class Demo extends React.Component {
     return (
       <Pagination
         defaultCurrent={this.state.current}
-        total={150}
-        pageSize={30}
+        total={200}
+        pageSize={10}
         onChange={(page, prevPage, pageSize)=>{console.log(page, prevPage, pageSize)}}
       />
     )

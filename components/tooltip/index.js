@@ -124,12 +124,19 @@ function close (key) {
   }
 }
 function openWrapper (target, options) {
-  if (React.isValidElement(React.cloneElement(target))) {
-    open(target, options)
-  } else {
+  if (React.isValidElement(target)) {
     return deprecatedOpen(target)
+  } else {
+    open(target, options)
   }
 }
+// function openWrapper (target, options) {
+//   if (React.isValidElement(React.cloneElement(target))) {
+//     open(target, options)
+//   } else {
+//     return deprecatedOpen(target)
+//   }
+// }
 
 Tooltip.open = openWrapper
 Tooltip.close = close

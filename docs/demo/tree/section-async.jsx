@@ -38,13 +38,16 @@ class Demo extends React.Component {
     return (
       <div style={{width:500}}>
         <Tree
-          loadTreeNode={{
-            method:'get',
-            headers:{},
-            data:{},
-            params:{},
-            url:'http://yapi.demo.qunar.com/mock/26534/hiui/async-tree',
-            transformResponse:(res)=>{return res.data}
+          loadTreeNode={id=>{
+            const obj = {
+              method:'get',
+              headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+              data:{},
+              params:{id:id},
+              url:'http://yapi.demo.qunar.com/mock/26534/hiui/async-tree',
+              transformResponse:(res)=>{return res.data}
+            }
+            return obj
           }}
           defaultExpandAll
           editable={true}

@@ -44,7 +44,6 @@ class DatePicker extends BasePicker {
             {...props}
             format={this.state.format}
             date={d}
-            timeConfirm={this.timeConfirm.bind(this)}
             onPick={this.onPick.bind(this)}
             style={state.style}
           />
@@ -62,10 +61,9 @@ class DatePicker extends BasePicker {
           />
         )
         break
-      default:
-        throw new Error(props.localeDatas.datePicker.undefinedType)
     }
     return component
   }
 }
 export default Provider(DatePicker)
+export {DatePicker}

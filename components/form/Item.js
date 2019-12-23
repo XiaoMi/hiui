@@ -34,6 +34,7 @@ class FormItem extends Component {
   valueInit () {
     const value = this.parent.props.model[this.props.field]
     if (value === undefined) {
+      console.log('sdfsdfasdf')
       this.initValue = value
     } else {
       this.initValue = JSON.parse(JSON.stringify(value))
@@ -68,7 +69,6 @@ class FormItem extends Component {
 
   validate (trigger, cb) {
     const rules = this.getFilteredRule(trigger)
-
     if (!rules || rules.length === 0) {
       if (cb instanceof Function) {
         cb()
