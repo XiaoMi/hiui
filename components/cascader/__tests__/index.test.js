@@ -195,7 +195,7 @@ describe('Cascader', () => {
           filterOption={callback}
         />
       )
-      wrapper.find('input').simulate('change', { target: { value: 'a' } })
+      wrapper.find('input').simulate('change', { target: { value: '手机' } })
       wrapper.find('input').simulate('keyUp')
       clock.tick(500)
       expect(callback).toHaveBeenCalled()
