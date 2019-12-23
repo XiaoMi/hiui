@@ -86,16 +86,16 @@ describe('Upload', () => {
           expect(
             wrapper
               .find('.hi-upload')
-              .find('span.hi-upload__button')
-              .hasClass('hi-upload__button--disabled')
+              .find('button')
+              .hasClass('hi-btn--disabled')
           ).toEqual(true)
           wrapper.setProps({ disabled: false })
           expect(wrapper.find('.hi-upload').find('input').prop('disabled')).toEqual(false)
           expect(
             wrapper
               .find('.hi-upload')
-              .find('span.hi-upload__button')
-              .hasClass('hi-upload__button--disabled')
+              .find('button')
+              .hasClass('hi-btn--disabled')
           ).toEqual(false)
         }
         wrapper.unmount()
