@@ -1,5 +1,10 @@
 # 更新日志
 
+## 2.6.3
+
+- 修复 `<Button />` target 属性不起作用的问题 [#837](https://github.com/XiaoMi/hiui/issues/837)
+- 优化 `<Tabs />` 设置 max 后选中的展示问题 [#838](https://github.com/XiaoMi/hiui/issues/838)
+
 ## 2.6.2
 
 - 修复 `<Form />` labelPosition 兼容属性不生效的问题 [#828](https://github.com/XiaoMi/hiui/issues/828)
