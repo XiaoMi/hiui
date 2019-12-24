@@ -43,7 +43,7 @@ class Group extends Component {
     const { data } = this.state
     const groupCls = classNames(prefixCls, className)
     return (
-      <div className={groupCls} style={{color: 'red', ...style}}>
+      <div className={groupCls} style={{...style}}>
         {data.map(({ label, value, checked, disabled: itemDisabled }, idx) => (
           <Checkbox
             key={idx}
