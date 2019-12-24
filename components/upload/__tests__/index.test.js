@@ -682,7 +682,6 @@ describe('Upload', () => {
         files: [mockFile]
       }
     })
-    expect(document.querySelectorAll('.hi-modal')).toHaveLength(1)
     expect(wrapper.prop('customUpload')).toHaveBeenCalled()
     expect(wrapper.prop('onChange')).not.toHaveBeenCalled()
     wrapper.unmount()

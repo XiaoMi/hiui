@@ -153,25 +153,6 @@ describe('NoticeContainer', () => {
 
       expect(wrapper.find(`.hi-prefix__container`)).toHaveLength(1)
       expect(wrapper.find(Notice)).toHaveLength(2)
-
-      // 对其中的Notice的属性进行检测
-
-      // console.log(wrapper.find(Notice).at(0))
-      console.log(wrapper.find(Notice).at(0).state('key'))
-      // expect(wrapper.find(Notice).at(0).key).toEqual('1')
-      // expect(wrapper.find(Notice).at(1).prop('key')).toEqual(expect.assertions(2))
-
-      // queue.map((notice, index) => {
-      //    expect(wrapper.find(Notice).at(index).prop('key')).toEqual(notice[index].key)
-      //    expect(wrapper.find(notice).at(index).prop('id')).toEqual(notice[index].id)
-      //    expect(wrapper.find(Notice).at(index)).prop('duration').toEqual(notice[index].duraction)
-      //    expect(wrapper.find(Notice).at(index)).prop('type').toEqual(notice[index].type)
-      //    expect(wrapper.find(Notice).at(index)).prop('onConfirm').toEqual(notice[index].onConfirm)
-      //    expect(wrapper.find(Notice).at(index).text()).toEqual(expect.stringContaining(notice[index].content))
-      //   //  expect(wrapper.find(Notice).at(index)).prop('duration').toEqual(notice[index].duraction)
-      //   //  expect(wrapper.find(Notice).at(index)).prop('duration').toEqual(notice[index].duraction)
-
-      // })
     })
 
     it('could be closed', () => {

@@ -24,7 +24,6 @@ const AJAX = function (obj) { // 做网络请求的时候，以对象形式传�
           obj.success(JSON.parse(ajaxObj.responseText))
         }
       } else {
-        // console.log(JSON.parse(ajaxObj))
       }
     }
   }

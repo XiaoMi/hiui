@@ -50,7 +50,6 @@ class Foo extends React.Component {
           data={this.treeData}
           checkedIds={this.state.checkedKeys}
           onChange={(checkedKeys, title, bool, semi) => {
-            console.log('Trees data:')
             this.setState({
               checkedKeys
             })
@@ -216,7 +215,6 @@ describe('tree', () => {
             wrapper.find('.is-root').at(0).find('.hi-tree_item-text--disabled').at(0).simulate('click')
             wrapper.find('.is-root').at(0).find('.hi-tree_item-text--disabled').at(0).simulate('contextmenu')
             wrapper.find('.hi-tree_item-icon').at(0).simulate('click')
-            // console.log(wrapper.debug())
             // 编辑节点取消
             wrapper.find('.is-root').at(0).find('.hi-tree_item-text').simulate('contextmenu')
             expect(document.querySelectorAll('.right-click-menu')).toHaveLength(1)

@@ -34,7 +34,6 @@ class FormItem extends Component {
   valueInit () {
     const value = this.parent.props.model[this.props.field]
     if (value === undefined) {
-      console.log('sdfsdfasdf')
       this.initValue = value
     } else {
       this.initValue = JSON.parse(JSON.stringify(value))

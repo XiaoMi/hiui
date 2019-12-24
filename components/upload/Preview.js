@@ -42,11 +42,9 @@ class Preview extends Component {
 
   componentDidMount () {
     this.loadImg(this.state.activeIndex)
-    // this.previewRef.current.addEventListener('mousewheel', this.handleMouseWheel, false)
     this.previewRef.current.addEventListener('DOMMouseScroll', this.handleMouseWheel, false)
   }
   componentWillUnmount () {
-    // this.previewRef.current.removeEventListener('mousewheel', this.handleMouseWheel, false)
     this.previewRef.current.removeEventListener('DOMMouseScroll', this.handleMouseWheel, false)
   }
   onClose (e) {
