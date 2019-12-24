@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount, shallow } from 'enzyme'
 import Badge from '../Badge'
-
+/* eslint-env jest */
 describe('Badge', () => {
   describe('Lifecycle', () => {
     // FIXME #34 typeof +content === 'number' always be true

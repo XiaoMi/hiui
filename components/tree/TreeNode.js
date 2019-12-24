@@ -102,11 +102,6 @@ class TreeNode extends Component {
     }
   }
 
-  setHighlightNum = () => {
-    this.setState({
-      highlightNum: this.state.highlightNum + 1
-    })
-  }
   // 高亮检索值
   highlightData = (data, highlightValue) => {
     return data.map(item => {
@@ -150,16 +145,6 @@ class TreeNode extends Component {
           ? openIcon || (showLine && 'TreeMinus') || 'open'
           : closeIcon || (showLine && 'TreePlus') || 'packup'
       }`
-    )
-    return <i className={switcherClsName} />
-  }
-
-  renderItemIcon = () => {
-    const { prefixCls, itemIcon } = this.props
-    const switcherClsName = classNames(
-      `${prefixCls}-switcher`,
-      'hi-icon',
-      `icon-${itemIcon || 'document'}`
     )
     return <i className={switcherClsName} />
   }
@@ -582,7 +567,6 @@ class TreeNode extends Component {
               // renderRightClickMenu={this.renderRightClickMenu}
               onCheckChange={onCheckChange}
               saveEditNode={this.saveEditNode}
-              renderItemIcon={this.renderItemIcon}
               onClick={onClick}
               onSetHighlight={this.onSetHighlight}
               showRightClickMenu={this.showRightClickMenu}

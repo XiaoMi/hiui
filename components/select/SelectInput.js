@@ -118,7 +118,6 @@ class SelectInput extends Component {
     if (!selectedItems.length) {
       inputStyle = { width: '100%' }
     }
-
     return (
       <div
         className={classNames('hi-select__input', 'multiple-values', `theme__${theme}`, {
@@ -211,7 +210,6 @@ class SelectInput extends Component {
     placeholder =
       selectedItems.length > 0 ? selectedItems[0].title : placeholder
     let icon = dropdownShow ? 'up' : 'down'
-
     return (
       <div
         className={classNames('hi-select__input', 'single-value', `theme__${theme}`, { disabled })}

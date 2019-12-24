@@ -3,7 +3,7 @@ import {deconstructDate, nextMonth} from './util'
 import Calender from './Calender'
 import Icon from '../icon'
 import classNames from 'classnames'
-import {startOfWeek, endOfWeek, isSameMonth, isValid, getStartDate} from './dateUtil'
+import {startOfWeek, endOfWeek, isSameMonth, isValid, getStartDate, toDate, changeYear, changeMonth} from './dateUtil'
 
 const _parseProps = (date) => {
   const {startDate, endDate} = date
@@ -120,51 +120,14 @@ export default class WeekRangePanel extends Component {
    */
   changeMonth (flag, pos) {
     let {leftDate, rightDate} = this.state
-    let nLeftDate = new Date(leftDate.getTime())
-    let nRightDate = new Date(rightDate.getTime())
-    let left = deconstructDate(nLeftDate)
-    let right = deconstructDate(nRightDate)
+    let nLeftDate = toDate(leftDate)
+    let nRightDate = toDate(rightDate)
     if (pos === 'left') {
-      if (flag) {
-        left.month -= 1
-        if (left.month < 0) {
-          left.month = 12
-          left.year -= 1
-        }
-      } else {
-        left.month += 1
-        if (left.month > 12) {
-          left.month = 1
-          left.year += 1
-        }
-      }
-      nLeftDate.setFullYear(left.year)
-      nLeftDate.setMonth(left.month - 1)
+      nLeftDate = changeMonth(leftDate, flag)
     } else {
-      if (flag) {
-        right.month -= 1
-        if (right.month < 0) {
-          right.month = 12
-          right.year -= 1
-        }
-      } else {
-        right.month += 1
-        if (right.month > 12) {
-          right.month = 1
-          right.year += 1
-        }
-      }
-      if (left.month === right.month - 1) {
-        this.setState({
-          disableArrow: {
-            month: false
-          }
-        })
-      }
-      nRightDate.setFullYear(right.year)
-      nRightDate.setMonth(right.month - 1)
+      nRightDate = changeMonth(rightDate, flag)
     }
-    if (nLeftDate <= nRightDate) {
+    if (nLeftDate < nRightDate) {
       this.setState({
         leftDate: nLeftDate,
         rightDate: nRightDate
@@ -177,26 +140,14 @@ export default class WeekRangePanel extends Component {
    */
   changeYear (flag, pos) {
     let {leftDate, rightDate} = this.state
-    let nLeftDate = new Date(leftDate.getTime())
-    let nRightDate = new Date(rightDate.getTime())
-    let left = deconstructDate(nLeftDate)
-    let right = deconstructDate(nRightDate)
+    let nLeftDate = toDate(leftDate)
+    let nRightDate = toDate(rightDate)
     if (pos === 'left') {
-      if (flag) {
-        left.year -= 1
-      } else {
-        left.year += 1
-      }
-      nLeftDate.setFullYear(left.year)
+      nLeftDate = changeYear(leftDate, flag)
     } else {
-      if (flag) {
-        right.year -= 1
-      } else {
-        right.year += 1
-      }
-      nRightDate.setFullYear(right.year)
+      nRightDate = changeYear(rightDate, flag)
     }
-    if (nLeftDate <= nRightDate) {
+    if (nLeftDate < nRightDate) {
       this.setState({
         leftDate: nLeftDate,
         rightDate: nRightDate

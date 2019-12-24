@@ -21,12 +21,14 @@ import getHours from 'date-fns/getHours'
 import getMinutes from 'date-fns/getMinutes'
 import getSeconds from 'date-fns/getSeconds'
 import addHours from 'date-fns/addHours'
+import addDays from 'date-fns/addDays'
 import subDays from 'date-fns/subDays'
 import differenceInDays from 'date-fns/differenceInDays'
 import dfIsValid from 'date-fns/isValid'
 import addYears from 'date-fns/addYears'
 import subYears from 'date-fns/subYears'
 import parseISO from 'date-fns/parseISO'
+import getDate from 'date-fns/getDate'
 
 const isValid = (date) => {
   if (typeof date === 'string') {
@@ -43,9 +45,11 @@ const getValidDate = (date) => {
 const getStartDate = (dateObj) => {
   return getValidDate(dateObj.startDate)
 }
-const getEndDate = (dateObj) => {
-  return getValidDate(dateObj.endDate)
-}
+/**
+ * 兼容 datefns 的 转换日期方法
+ * @param {}} value
+ * @param {*} format
+ */
 const compatibleToDate = (value, format) => {
   if (typeof value === 'string') {
     return parse(value, format, new Date())
@@ -60,6 +64,29 @@ const compatibleFormatString = (formatStr) => {
 const dateFormat = (value, formatStr) => {
   return isValid(value) ? format(value, compatibleFormatString(formatStr)) : ''
 }
+/**
+ * 箭头切换年份
+ * @param {*} date
+ * @param {*} flag
+ */
+const changeYear = (date, flag) => {
+  let nDate
+  if (flag) {
+    nDate = subYears(date, 1)
+  } else {
+    nDate = addYears(date, 1)
+  }
+  return nDate
+}
+const changeMonth = (date, flag) => {
+  let nDate
+  if (flag) {
+    nDate = subMonths(date, 1)
+  } else {
+    nDate = addMonths(date, 1)
+  }
+  return nDate
+}
 export {
   getDaysInMonth, // 获取当月的天数
   subMonths, // 月份减法
@@ -67,6 +94,7 @@ export {
   addYears, // 年份加
   subYears, // 年份减
   getDay, // 获取周几
+  getDate, // 获取具体期
   startOfMonth, // 指定日期月份的1日
   isWithinInterval, // 是否在指定日期范围内
   isSameDay, // 是否是同一天（忽略时分秒）
@@ -86,13 +114,15 @@ export {
   getSeconds, // 获取秒
   addHours, // 小时加
   subDays, // 天减
+  addDays, // 天加
   differenceInDays, // 相差多少天
   isValid, // 是否有效时间
   getStartDate, // 封装 - 获取开始时间
-  getEndDate, // 封装 - 获取结果时间
   getValidDate, // 获取有效的时间
   toDate,
   parseISO,
   compatibleToDate,
-  compatibleFormatString
+  compatibleFormatString,
+  changeYear,
+  changeMonth
 }

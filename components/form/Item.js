@@ -68,7 +68,6 @@ class FormItem extends Component {
 
   validate (trigger, cb) {
     const rules = this.getFilteredRule(trigger)
-
     if (!rules || rules.length === 0) {
       if (cb instanceof Function) {
         cb()

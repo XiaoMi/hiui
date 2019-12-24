@@ -4,10 +4,9 @@ import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
 import { getAll, dealData } from './util'
 import withDragDropContext from '../lib/withDragDropContext'
-
 import './style/index'
 
-class Tree extends Component {
+export class Tree extends Component {
   constructor (props) {
     super(props)
 
@@ -72,7 +71,6 @@ class Tree extends Component {
     let myself = all.find(a => a.id === item.id)
     let children = myself.child
     let parent = myself.parent
-
     if (semiChecked.includes(item.id)) {
       children.forEach(child => {
         checkedArr = checkedArr.filter(c => c !== child)
@@ -104,13 +102,7 @@ class Tree extends Component {
     }
 
     disabledKeys.forEach(d => {
-      if (d.checked) {
-        if (!checkedArr.includes(d.id)) {
-          checkedArr.push(d.id)
-        }
-      } else {
-        checkedArr = checkedArr.filter(c => c !== d.id)
-      }
+      checkedArr = checkedArr.filter(c => c !== d.id)
     })
 
     parent.forEach(p => {

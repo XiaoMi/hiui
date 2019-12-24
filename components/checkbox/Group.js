@@ -34,9 +34,7 @@ class Group extends Component {
         ...rest
       }
     })
-    const checkedList = newData
-      .filter(({ checked }) => checked)
-      .map(({ value }) => value)
+    const checkedList = newData.filter(({ checked }) => checked).map(({ value }) => value)
     onChange && onChange(checkedList)
     hasValue(this.props) || this.setState({ data: newData })
   }
@@ -45,7 +43,7 @@ class Group extends Component {
     const { data } = this.state
     const groupCls = classNames(prefixCls, className)
     return (
-      <div className={groupCls} style={style}>
+      <div className={groupCls} style={{...style}}>
         {data.map(({ label, value, checked, disabled: itemDisabled }, idx) => (
           <Checkbox
             key={idx}

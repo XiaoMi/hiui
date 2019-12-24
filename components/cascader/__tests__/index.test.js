@@ -2,7 +2,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 import sinon, { spy, stub } from 'sinon'
 import CascaderProvider, { Cascader } from '../Cascader'
-
+/* eslint-env jest */
 describe('Cascader', () => {
   const data = [
     {
@@ -162,7 +162,7 @@ describe('Cascader', () => {
     it('searchable', () => {
       const wrapper = mount(
         <CascaderProvider
-          searchable={true}
+          searchable
           {...{data}}
         />
       )
@@ -186,10 +186,25 @@ describe('Cascader', () => {
       wrapper.unmount()
     })
 
+    it('filterOption', () => {
+      const callback = jest.fn()
+      const wrapper = mount(
+        <CascaderProvider
+          data={data}
+          searchable
+          filterOption={callback}
+        />
+      )
+      wrapper.find('input').simulate('change', { target: { value: '手机' } })
+      wrapper.find('input').simulate('keyUp')
+      clock.tick(500)
+      expect(callback).toHaveBeenCalled()
+    })
+
     it('clearable', () => {
       const wrapper = mount(
         <CascaderProvider
-          clearable={true}
+          clearable
           {...{data}}
         />
       )
@@ -218,12 +233,10 @@ describe('Cascader', () => {
     it('disabled', () => {
       const wrapper = mount(
         <CascaderProvider
-          disabled={true}
+          disabled
           {...{data}}
         />
       )
-
-
       expect(wrapper.find('.hi-cascader--disabled')).toHaveLength(1)
       expect(wrapper.find('input').prop('disabled')).toEqual(true)
 
@@ -236,7 +249,7 @@ describe('Cascader', () => {
     it('changeOnSelect', () => {
       const wrapper = mount(
         <CascaderProvider
-          changeOnSelect={true}
+          changeOnSelect
           {...{data}}
         />
       )
@@ -397,7 +410,7 @@ describe('Cascader', () => {
     it('state: { keyword：undefined }', () => {
       const wrapper = mount(
         <CascaderProvider
-          searchable={true}
+          searchable
           {...{data}}
         />
       )

@@ -20,7 +20,8 @@ export const FORMATS = {
 export const isVaildDate = (date) => {
   return date && (date instanceof Date || date.startDate || typeof date === 'number')
 }
-export const formatterDate = (type, date, formatter, showTime, localeDatas, weekOffset = 0, isFormat = false) => {
+export const formatterDate = (type, date, formatter, showTime, localeDatas, weekOffset, isFormat) => {
+  weekOffset = weekOffset || 0
   if (!isValid(date)) {
     return ''
   }

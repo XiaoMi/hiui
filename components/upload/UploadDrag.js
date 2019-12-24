@@ -1,6 +1,5 @@
 import React from 'react'
 import classNames from 'classnames'
-import Provider from '../context'
 import Upload from './Upload'
 import Icon from '../icon'
 
@@ -162,4 +161,4 @@ class UploadDrag extends Upload {
   }
 }
 
-export default Provider(UploadDrag)
+export default UploadDrag

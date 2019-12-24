@@ -123,8 +123,9 @@ function close (key) {
       tooltipInstance[key].parentNode.removeChild(tooltipInstance[key])
   }
 }
+
 function openWrapper (target, options) {
-  if (React.isValidElement(React.cloneElement(target))) {
+  if (target['nodeName'] || (typeof target === 'object' && target['$$typeof'])) {
     open(target, options)
   } else {
     return deprecatedOpen(target)

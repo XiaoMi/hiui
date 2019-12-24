@@ -1,6 +1,5 @@
 import React from 'react'
 import classNames from 'classnames'
-import Provider from '../context'
 import Upload from './Upload'
 import Button from '../button'
 import Icon from '../icon'
@@ -97,4 +96,4 @@ UploadClick.defaultProps = Object.assign({}, {
   type: 'normal'
 })
 
-export default Provider(UploadClick)
+export default UploadClick

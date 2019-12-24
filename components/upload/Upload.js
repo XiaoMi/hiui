@@ -41,7 +41,6 @@ class Upload extends Component {
   getFileType (file) {
     let ext = file.name.slice(file.name.lastIndexOf('.') + 1).toLowerCase()
     let fileType = ''
-
     switch (ext) {
       case 'jpg':
       case 'jpeg':
@@ -141,7 +140,6 @@ class Upload extends Component {
     if (files.length === 0) return
 
     const file = files[0]
-
     if (file.size > maxSize * 1024) {
       this.setState({
         visibleModal: true
@@ -277,7 +275,7 @@ class Upload extends Component {
     }
     xhr.upload.onprogress = event => {
       var e = event || window.event
-      var percentComplete = Math.ceil((e.loaded / e.total) * 100)
+      var percentComplete = Math.ceil(e.loaded / e.total * 100)
       const _fileList = [...fileList]
       const idx = _fileList.findIndex(item => item.fileId === file.fileId)
       _fileList.splice(idx, 1, file)
