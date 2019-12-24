@@ -140,7 +140,6 @@ class Upload extends Component {
     if (files.length === 0) return
 
     const file = files[0]
-
     if (file.size > maxSize * 1024) {
       this.setState({
         visibleModal: true
