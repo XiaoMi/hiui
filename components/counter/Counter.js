@@ -70,14 +70,6 @@ class Counter extends React.Component {
    * @param {string} val 值
    */
   formatValue (value) {
-    // TODO: 此段代码永远覆盖不到，因为现在的调用方式，保证了value 不是 string 就是 number
-    // const type = typeof value
-
-    // if (type !== 'string' && type !== 'number') {
-    //
-    //   value = ''
-    // }
-
     return isNaN(Number(value)) ? value.toString().replace(/[^-\d]/g, '') : value
   }
 
@@ -256,10 +248,6 @@ class Counter extends React.Component {
     const { min = -1 * Infinity } = this.props
     return min >= this.valueTrue * 1
   }
-  // 此段代码没有被调用过
-  // get hasReachedBoundary () {
-  //   return this.hasReachedMin || this.hasReachedMax
-  // }
 }
 
 export default Counter
