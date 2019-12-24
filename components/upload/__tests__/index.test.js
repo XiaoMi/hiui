@@ -2,7 +2,15 @@ import React from 'react'
 import { mount } from 'enzyme'
 import Upload from '../main'
 import sinon from 'sinon'
+function trigger(elem, event){
 
+  var myEvent = document.createEvent('Event')        // 初始化这个事件对象，为它提高需要的“特性”
+
+  myEvent.initEvent(event, true, true);        //执行事件
+
+  elem.dispatchEvent(myEvent);
+
+}
 describe('Upload', () => {
   const types = ['default', 'drag', 'pictureCard', 'avatar', 'photo']
   const localeDatas = {
@@ -19,13 +27,19 @@ describe('Upload', () => {
     }
   }
   let xhr, requests
+  let clock
+
   beforeEach(() => {
+    clock = sinon.useFakeTimers()
+
     xhr = sinon.useFakeXMLHttpRequest()
     requests = []
     xhr.onCreate = req => requests.push(req)
   })
 
   afterEach(() => {
+    clock.restore()
+
     xhr.restore()
   })
   describe('PropTypes', () => {
@@ -40,6 +54,8 @@ describe('Upload', () => {
       types.forEach(type => {
         if (type === 'pictureCard') {
           expect(wrapper.find(`.hi-upload--picture-card`)).toHaveLength(1)
+          wrapper.find('.hi-upload--picture-card').find('button').simulate('click')
+          expect(wrapper.find('.hi-upload--picture-card').find('input').instance().value).toBe('')
         } else if (type === 'default') {
           expect(wrapper.find(`.hi-upload--normal`)).toHaveLength(1)
         } else {
@@ -163,20 +179,14 @@ describe('Upload', () => {
         uploadAction="https://www.mocky.io/v2/5dc3b4413000007600347501"
       />
     )
-    console.log(wrapper.debug())
     wrapper.find('.hi-upload').find('input').simulate('change', {
       target: {
         files: [mockFile]
       }
     })
     requests[0].respond(200, {}, `[""]`)
-    wrapper.find('.hi-upload').find('button').simulate('click', {
-      target: {
-        files: [mockFile]
-      }
-    })
-    requests[0].respond(200, {}, `[""]`)
-
+    wrapper.find('.hi-upload').find('button').simulate('click')
+    expect(wrapper.find('input').instance().value).toBe('')
     wrapper.unmount()
   })
   it('on error', () => {
@@ -189,6 +199,7 @@ describe('Upload', () => {
         uploadAction="https://www.mocky.io/v2/5dc3b4413000007600347501"
       />
     )
+    clock.tick(400)
     wrapper.find('.hi-upload').find('input').simulate('change', {
       target: {
         files: [mockFile]
@@ -307,6 +318,8 @@ describe('Upload', () => {
     // )
     wrapper.find('.hi-preview__close').simulate('click')
     expect(wrapper.instance().uploadRef.current.state['showModal']).toBeFalsy()
+    wrapper.find('input').simulate('click')
+    expect(wrapper.find('input').instance().value).toBe('')
     wrapper.unmount()
   })
 
@@ -669,6 +682,7 @@ describe('Upload', () => {
         files: [mockFile]
       }
     })
+    expect(document.querySelectorAll('.hi-modal')).toHaveLength(1)
     expect(wrapper.prop('customUpload')).toHaveBeenCalled()
     expect(wrapper.prop('onChange')).not.toHaveBeenCalled()
     wrapper.unmount()
