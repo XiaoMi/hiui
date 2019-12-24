@@ -163,12 +163,20 @@ describe('Upload', () => {
         uploadAction="https://www.mocky.io/v2/5dc3b4413000007600347501"
       />
     )
+    console.log(wrapper.debug())
     wrapper.find('.hi-upload').find('input').simulate('change', {
       target: {
         files: [mockFile]
       }
     })
     requests[0].respond(200, {}, `[""]`)
+    wrapper.find('.hi-upload').find('button').simulate('click', {
+      target: {
+        files: [mockFile]
+      }
+    })
+    requests[0].respond(200, {}, `[""]`)
+
     wrapper.unmount()
   })
   it('on error', () => {
