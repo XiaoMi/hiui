@@ -91,10 +91,8 @@ describe('Tooltip', () => {
           expect(document.querySelectorAll('.hi-tooltip-right')).toHaveLength(1)
           expect(document.querySelector('.hi-tooltip-right').textContent).toEqual('title')
           Tooltip.close(key)
-          const key2 = 'key2'
 
           expect(document.querySelectorAll('.hi-tooltip-right')).toHaveLength(0)
-          Tooltip.open(<Foo/>,{title,placement,key2}).close()
           wrapper.unmount()
         })
         it('Methods target',()=>{
@@ -108,10 +106,8 @@ describe('Tooltip', () => {
           expect(document.querySelectorAll('.hi-tooltip-right')).toHaveLength(1)
           expect(document.querySelector('.hi-tooltip-right').textContent).toEqual('title')
           legacyTarget.close(key)
-          const key2 = 'key2'
 
           expect(document.querySelectorAll('.hi-tooltip-right')).toHaveLength(0)
-          Tooltip.open(<Foo/>,{title,placement,key2}).close()
         })
       })
 })
