@@ -66,7 +66,9 @@ $ npm start
 
 ### 单元测试
 
-```
+```sh
+# require node version >= 10
+
 $ npm run jest:coverage
 ```
 
