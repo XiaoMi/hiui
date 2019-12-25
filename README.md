@@ -64,6 +64,12 @@ $ npm start
 
 Open http://localhost:4200
 
+### Unit Testing
+
+```
+$ npm run jest:coverage
+```
+
 ### Style Guide
 
 - [BEM](https://en.bem.info/)
