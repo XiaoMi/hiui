@@ -64,9 +64,11 @@ $ npm start
 
 Open http://localhost:4200
 
-### Unit Testing [ node >= 10+ ]
+### Unit Testing 
 
-```
+```sh
+# require node version >= 10
+
 $ npm run jest:coverage
 ```
 

@@ -64,9 +64,11 @@ $ npm start
 
 打开 http://localhost:4200
 
-### 单元测试 [node >= 10+]
+### 单元测试
 
-```
+```sh
+# require node version >= 10
+
 $ npm run jest:coverage
 ```
 
