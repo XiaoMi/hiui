@@ -307,19 +307,6 @@ describe('Cascader', () => {
       expect(wrapper.find('input').prop('placeholder')).toEqual(placeholder)
     })
 
-    // NOTE emptyContent 没有展示预期内容
-    it.skip('emptyContent', () => {
-      const emptyContent = 'custom-emptyContent'
-      const wrapper = mount(
-        <CascaderProvider {...{data, emptyContent}} />
-      )
-
-      wrapper.find('.hi-cascader__input-keyword').simulate('click')
-      expect(document.querySelectorAll('.hi-cascader-menu')[0].innerHTML).toEqual(expect.stringContaining(emptyContent))
-
-      wrapper.unmount()
-    })
-
     it('style', () => {
       const style = {
         color: '#ffff00'
