@@ -20,7 +20,10 @@ class Select extends Component {
     type: PropTypes.oneOf(['single', 'multiple']),
     multipleWrap: PropTypes.oneOf(['wrap', 'nowrap']),
     data: PropTypes.array,
-    dataSource: PropTypes.object,
+    dataSource: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.func
+    ]),
     defaultValue: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.array,
