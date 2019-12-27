@@ -12,9 +12,10 @@ class Title extends Component {
     }
 
     return (
-      <div className='hi-menu__title-icon'>
-        {icon}
-      </div>
+      icon
+        ? (<div className='hi-menu__title-icon'>
+          {icon}
+        </div>) : null
     )
   }
 

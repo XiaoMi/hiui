@@ -12,13 +12,13 @@
   .hi-menu--#{$level} {
     @if $level > 1 {
       > .hi-menu__title {
-        padding-left: $level * 32px;
+        padding-left: 16px + ($level - 1) * 40px;
       }
     }
 
     .hi-submenu__items {
       > .hi-menu__title {
-        padding-left: ($level + 1) * 32px;
+        padding-left: 16px + ($level) * 40px;
       }
     }
   }
@@ -75,7 +75,7 @@
 
     &-icon {
       flex: none;
-      margin-right: 4px;
+      margin-right: 8px;
 
       .hi-icon {
         font-size: 16px;
@@ -170,10 +170,6 @@
     .hi-submenu {
       display: flex;
       flex-direction: column;
-    }
-
-    .hi-menu__title-icon {
-      font-size: 20px;
     }
 
     @include subMenuPadding(1);
