@@ -221,9 +221,10 @@
     &__toggle {
       height: 48px;
       line-height: 48px;
-      padding-left: 14px;
+      padding: 0 16px;
       cursor: pointer;
-      font-size: 20px;
+      font-size: 16px;
+      text-align: right;
     }
   }
 }
