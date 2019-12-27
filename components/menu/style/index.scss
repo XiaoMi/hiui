@@ -55,6 +55,12 @@
       > .hi-menu__title-icon {
         color: #4284f5;
       }
+
+      > .hi-submenu__title {
+        & > .hi-menu__title-toggle-icon {
+          color: #4284f5;
+        }
+      }
     }
 
     &--disabled {
