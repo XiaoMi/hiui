@@ -76,6 +76,10 @@
     &-icon {
       flex: none;
       margin-right: 4px;
+
+      .hi-icon {
+        font-size: 16px;
+      }
     }
 
     &-content {
@@ -137,6 +141,23 @@
       flex-direction: column;
     }
 
+    .hi-menu-item {
+      position: relative;
+
+      &--active:not(.hi-submenu) {
+        background-color: rgba(66, 133, 244, 0.08);
+
+        &::after {
+          content: '';
+          position: absolute;
+          width: 2px;
+          height: 100%;
+          background-color: #4284f5;
+          left: 0;
+        }
+      }
+    }
+
     .hi-menu__title {
       padding: 0 16px;
       height: 48px;
@@ -170,6 +191,23 @@
 
     .hi-menu__title {
       padding: 0;
+    }
+
+    .hi-menu-item {
+      position: relative;
+
+      &--active {
+        background-color: rgba(66, 133, 244, 0.08);
+
+        &::after {
+          content: '';
+          position: absolute;
+          width: 2px;
+          height: 100%;
+          background-color: #4284f5;
+          left: 0;
+        }
+      }
     }
 
     .hi-menu__title-icon {
