@@ -87,6 +87,13 @@ const changeMonth = (date, flag) => {
   }
   return nDate
 }
+/**
+ * 是否展示农历
+ * @param {Object} props
+ */
+const lunarCalendarisShow = (props) => {
+  return (props.type === 'date' || props.type === 'daterange') && props.lunarCalendar
+}
 export {
   getDaysInMonth, // 获取当月的天数
   subMonths, // 月份减法
@@ -124,5 +131,6 @@ export {
   compatibleToDate,
   compatibleFormatString,
   changeYear,
-  changeMonth
+  changeMonth,
+  lunarCalendarisShow // 是否展示农历
 }

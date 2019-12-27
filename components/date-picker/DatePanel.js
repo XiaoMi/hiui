@@ -5,7 +5,7 @@ import TimePanel from './TimePanel'
 import Icon from '../icon'
 import classNames from 'classnames'
 import TimePeriodPanel from './TimePeriodPanel'
-import { dateFormat, parseISO, getStartDate, addMonths, subMonths, startOfWeek, endOfWeek } from './dateUtil'
+import { dateFormat, parseISO, getStartDate, addMonths, subMonths, startOfWeek, endOfWeek, lunarCalendarisShow } from './dateUtil'
 
 class DatePanel extends Component {
   constructor (props) {
@@ -206,7 +206,7 @@ class DatePanel extends Component {
   }
   _getNormalComponent () {
     const { currentView } = this.state
-    const { min, max, weekOffset, date } = this.props
+    const { min, max, weekOffset, date, lunarCalendar } = this.props
     const validDate = getStartDate(date)
     const { year, month } = deconstructDate(validDate)
     let component = null
@@ -216,6 +216,7 @@ class DatePanel extends Component {
       case 'week':
         component = (
           <Calender
+            lunarCalendar={lunarCalendar}
             date={validDate}
             weekOffset={weekOffset}
             minDate={min}
@@ -257,7 +258,8 @@ class DatePanel extends Component {
     const bodyCls = classNames(
       'hi-datepicker__body',
       showTime && 'hi-datepicker__body--hastime',
-      type === 'timeperiod' && 'hi-datepicker__body--period'
+      type === 'timeperiod' && 'hi-datepicker__body--period',
+      lunarCalendarisShow(this.props) && 'hi-datepicker__body--large'
     )
     return (
       <div style={this.props.style} className={_c}>

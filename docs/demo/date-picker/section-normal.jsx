@@ -15,6 +15,7 @@ class Demo extends React.Component {
     return (
       <div style={{display:'flex', flexWrap: 'wrap'}}>
         <DatePicker
+          lunarCalendar
           value={this.state.date}
           onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
         />

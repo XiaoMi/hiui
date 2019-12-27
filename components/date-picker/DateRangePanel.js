@@ -5,7 +5,7 @@ import {DAY_MILLISECONDS} from './constants'
 import Icon from '../icon'
 import classNames from 'classnames'
 import Provider from '../context'
-import { dateFormat, isValid, getStartDate, toDate, changeYear, changeMonth } from './dateUtil'
+import { dateFormat, isValid, getStartDate, toDate, changeYear, changeMonth, endOfDay } from './dateUtil'
 import TimeRangePanel from './TimeRangePanel'
 
 class DateRangePanel extends Component {
@@ -189,7 +189,7 @@ class DateRangePanel extends Component {
         days = 365
         break
     }
-    const nDate = new Date(_date.getTime() - days * DAY_MILLISECONDS)
+    const nDate = new Date((endOfDay(_date).getTime() + 1) - days * DAY_MILLISECONDS)
     range.startDate = nDate
     range.endDate = _date
     this.props.onPick(range)

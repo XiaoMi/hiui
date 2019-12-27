@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import {deconstructDate, getYearWeek} from './util'
 import Provider from '../context'
-
+import Lunar from './toLunar'
+import holidaylist from './holidaylist'
+import {DAY_MILLISECONDS} from './constants'
 import {
   getDaysInMonth,
   subMonths,
@@ -13,10 +15,12 @@ import {
   addMonths,
   isToday,
   getYear,
+  getMonth,
   toDate,
-  isValid
+  isValid,
+  lunarCalendarisShow
 } from './dateUtil'
-import {DAY_MILLISECONDS} from './constants'
+
 class Calender extends Component {
   constructor (props) {
     super(props)
@@ -24,6 +28,7 @@ class Calender extends Component {
       rows: [[], [], [], [], [], []]
     }
     this.weekNum = 0
+    console.log(this.props)
   }
   _getTime (week, y, m) {
     const r = new Date(y, m - 1, 1)
@@ -160,6 +165,7 @@ class Calender extends Component {
     if (cls.indexOf('next') !== -1) {
       newDate = addMonths(newDate, 1)
     }
+    console.log('newDate', newDate)
     if (type === 'daterange' || type === 'weekrange') {
       if (range.selecting) {
         if (range.startDate > newDate) {
@@ -194,9 +200,113 @@ class Calender extends Component {
     }
     mouseMove(newDate)
   }
-  getTDClass (td) {
+  /**
+   * 是否是节假日
+   * @param {string} date yyyy-MM-dd
+   * @param {string} year yyyy
+   */
+  isHoliday (year, date) {
+    const holidayBase = holidaylist[year]
+    const holidayInfo = {}
+    if (holidayBase) {
+      holidayBase.holidaylist.forEach(item => {
+        item.startday === date && Object.assign(holidayInfo, item)
+      })
+      if (holidayInfo.name) {
+        holidayBase.holiday.forEach(item => {
+          item.name === holidayInfo.name && Object.assign(holidayInfo, item)
+        })
+      }
+    }
+
+    return holidayInfo
+  }
+  /**
+   * 获取完整时间
+   * @param {*} value 日
+   * @param {*} cls className
+   */
+  getFullTime (value, cls) {
+    const { date, type } = this.props
+
+    let { year, month, day, hours, minutes, seconds } = deconstructDate(date)
+
+    if (cls.indexOf('disabled') !== -1) return false
+    const clickVal = parseInt(value)
+    let newDate = new Date(year, month - 1, day, hours, minutes, seconds)
+    if (type === 'year') {
+      year = parseInt(value)
+      newDate.setFullYear(year)
+    } else if (type === 'month') {
+      month = parseInt(value)
+      newDate.setMonth(month - 1)
+    } else {
+      newDate.setDate(clickVal)
+    }
+    if (cls.indexOf('prev') !== -1) {
+      newDate = addMonths(newDate, -1)
+    }
+    if (cls.indexOf('next') !== -1) {
+      newDate = addMonths(newDate, 1)
+    }
+    // console.log('newsdfasd',new Date(newDate).toLocaleDateString(),getMonth(newDate))
+    // console.log(Lunar.toLunar(getYear(newDate),getMonth(newDate)+1,value))
+    const _year = getYear(newDate)
+    const _month = getMonth(newDate) + 1
+    const LunarInfo = Lunar.toLunar(_year, _month, value)
+    const lunarcellinfo = this.isHoliday(_year, _year + '-' + _month + '-' + value)
+    lunarcellinfo.Lunar = LunarInfo[6]
+    return lunarcellinfo
+  }
+  ToLunar (td) {
+    const { type: layerType, date } = this.props
+    const nDate = getYear(new Date())
+    const propDate = getYear(date)
+    const isAddToday = nDate === propDate
+    let _class = []
+
+    switch (td.type) {
+      case 'normal':
+        _class.push('normal')
+        break
+      case 'today':
+        layerType !== 'week' && _class.push('today')
+        layerType === 'month' && !isAddToday && _class.pop()
+        break
+      case 'current':
+        _class.push('current')
+        break
+      default:
+        _class.push(td.type)
+        break
+    }
+    const fullTimeInfo = this.getFullTime(td.value, _class)
+    if (fullTimeInfo.name) {
+      return (
+        <span>
+          <span className='hi-datepicker__text——holiday'>休</span>
+          <span value={td.value} className='hi-datepicker__text--lunarCalendar hi-datepicker__text--lunarCalendar--festival'>
+            {fullTimeInfo.name}
+          </span>
+        </span>
+      )
+    } else {
+      return (
+        <span>
+          <span value={td.value} className='hi-datepicker__text--lunarCalendar'>
+            {fullTimeInfo.Lunar}
+          </span>
+        </span>
+      )
+    }
+  }
+  getTDClass (td, _index) {
     const { type: layerType, date } = this.props
     let _class = ['hi-datepicker__cell']
+    if (lunarCalendarisShow(this.props)) {
+      _class.push('hi-datepicker__cell--large')
+      _index === 6 && _class.push('hi-datepicker__cell--large--laster')
+    }
     if (td.disabled) {
       _class.push('disabled')
       return _class.join(' ')
@@ -275,13 +385,21 @@ class Calender extends Component {
                         <td
                           key={_index}
                           value={cell.value}
-                          className={this.getTDClass(cell)}
+                          className={this.getTDClass(cell, _index)}
                         >
                           <div className='hi-datepicker__content' value={cell.value}>
                             <span value={cell.value} className='hi-datepicker__text'>
                               {cell.text || cell.value}
                             </span>
                           </div>
+                          {
+                            lunarCalendarisShow(this.props) && <div className='hi-datepicker__content' value={cell.value}>
+                              {
+                                this.ToLunar(cell)
+                              }
+                            </div>
+                          }
+
                         </td>
                       )
                     })

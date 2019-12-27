@@ -117,6 +117,10 @@ $basic-color: #4284f5 !default;
     box-sizing: border-box;
     width: 288px;
 
+    &--large {
+      width: 488px;
+    }
+
     &--hastime {
       width: 468px;
       display: flex;
@@ -299,6 +303,15 @@ $basic-color: #4284f5 !default;
     width: 36px;
     height: 24px;
 
+    &--large {
+      width: 56px;
+      padding-right: 8px;
+
+      &--laster {
+        padding-right: 4px;
+      }
+    }
+
     &.disabled {
       .hi-datepicker__content {
         cursor: not-allowed;
@@ -314,6 +327,25 @@ $basic-color: #4284f5 !default;
         color: #fff;
         border-radius: 2px;
       }
+    }
+
+    .hi-datepicker__text--lunarCalendar {
+      font-size: 12px;
+      color: rgba(44, 48, 78, 0.2);
+
+      &--festival {
+        color: #4284f5;
+      }
+    }
+
+    .hi-datepicker__text——holiday {
+      display: inline-block;
+      width: 0;
+      font-size: 12px;
+      position: relative;
+      top: -28px;
+      right: -28px;
+      color: #1da653;
     }
 
     &.prev,

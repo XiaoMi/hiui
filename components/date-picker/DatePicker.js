@@ -9,6 +9,7 @@ import Provider from '../context'
 class DatePicker extends BasePicker {
   initPanel (state, props) {
     let component = null
+    console.log('++', props)
     let d = state.date
     switch (props.type) {
       case 'month':
