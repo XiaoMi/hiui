@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import Icon from '../icon'
 import Title from './Title'
 import Item from './Item'
 import SubMenu from './SubMenu'
@@ -268,7 +267,7 @@ class Menu extends Component {
     const cls = classNames('hi-menu', `hi-menu--${placement}`, {
       'hi-menu--mini': collapsed
     })
-    const miniIcon = collapsed ? 'double-right' : 'double-left'
+    const miniIcon = <i className={`hi-icon icon-${collapsed ? 'Expand' : 'Collapse'}`} />
 
     return (
       <div className={cls}>
@@ -281,7 +280,7 @@ class Menu extends Component {
             className='hi-menu--mini__toggle'
             onClick={this.toggleMini.bind(this)}
           >
-            <Icon name={miniIcon} />
+            {miniIcon}
           </div>
         }
       </div>
