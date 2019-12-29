@@ -346,6 +346,16 @@ $basic-color: #4284f5 !default;
       top: -28px;
       right: -28px;
       color: #1da653;
+
+      &--work {
+        display: inline-block;
+        width: 0;
+        font-size: 12px;
+        position: relative;
+        top: -28px;
+        right: -28px;
+        color: #f63;
+      }
     }
 
     &.prev,

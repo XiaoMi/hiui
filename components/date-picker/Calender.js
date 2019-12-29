@@ -208,15 +208,18 @@ class Calender extends Component {
   isHoliday (year, date) {
     const holidayBase = holidaylist[year]
     const holidayInfo = {}
+    const reg = /[\u4E00-\u9FA5]+/
     if (holidayBase) {
       holidayBase.holidaylist.forEach(item => {
-        item.startday === date && Object.assign(holidayInfo, item)
+        const status = {status: 1}
+        item.startday === date && Object.assign(holidayInfo, item, status)
       })
-      if (holidayInfo.name) {
-        holidayBase.holiday.forEach(item => {
-          item.name === holidayInfo.name && Object.assign(holidayInfo, item)
-        })
-      }
+      if (holidayBase.holiday[date]) holidayInfo.status = Number(holidayBase.holiday[date])
+
+      reg.test(holidayInfo.name) || holidayBase.solarTerms.forEach(item => {
+        const status = {status: holidayInfo.status ? holidayInfo.status : 3}
+        item.date === date && Object.assign(holidayInfo, item, status)
+      })
     }
 
     return holidayInfo
@@ -281,12 +284,17 @@ class Calender extends Component {
         break
     }
     const fullTimeInfo = this.getFullTime(td.value, _class)
-    if (fullTimeInfo.name) {
+    if (fullTimeInfo.status) {
       return (
         <span>
-          <span className='hi-datepicker__text——holiday'>休</span>
+          {
+            fullTimeInfo.status === 1 ? <span className='hi-datepicker__text——holiday'>休</span> : null
+          }
+          {
+            fullTimeInfo.status === 2 ? <span className='hi-datepicker__text——holiday--work'>班</span> : null
+          }
           <span value={td.value} className='hi-datepicker__text--lunarCalendar hi-datepicker__text--lunarCalendar--festival'>
-            {fullTimeInfo.name}
+            {fullTimeInfo.name || fullTimeInfo.Lunar}
           </span>
         </span>
       )
