@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Timeline from '../../../components/timeline'
 const prefix = 'timeline-info'
-
+const desc = '在一段时间范围里，信息流向增长，数量庞大，必要时可收起部分'
 const code = `import React from 'react'
 import Timeline from '@hi-ui/hiui/es/timeline'\n
 class Demo extends React.Component {
@@ -49,7 +49,7 @@ const DemoInfo = () => (
     code={code}
     scope={{ Timeline }}
     prefix={prefix}
-    desc={'当每条信息的内容较长，时间跨度较大时使用'}
+    desc={desc}
   />
 )
 export default DemoInfo

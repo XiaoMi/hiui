@@ -6,6 +6,7 @@ import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
 import Button from '../../../components/button'
 const prefix = 'form-align'
+const desc = '左对齐：表单项较少，对应标题字数易对齐工整 右对齐：表单项较多，对填写效率有要求'
 const code = `import React from 'react'
 import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
 class Demo extends React.Component {
@@ -80,6 +81,7 @@ const DemoAlign = () => (
     code={code}
     scope={{ Form, Radio, Grid, Input, Button }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoAlign

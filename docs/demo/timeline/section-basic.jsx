@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Timeline from '../../../components/timeline'
 const prefix = 'timeline-basic'
-
+const desc = '以时间为第一维度，展示该时间点的事务、日程、任务或记录'
 const code = `import React from 'react'
 import Timeline from '@hi-ui/hiui/es/timeline'\n
 class Demo extends React.Component {
@@ -45,6 +45,6 @@ class Demo extends React.Component {
 }`
 
 const DemoBasic = () => (
-  <DocViewer code={code} scope={{ Timeline }} prefix={prefix} desc={'基础用法'} />
+  <DocViewer code={code} scope={{ Timeline }} prefix={prefix} desc={desc} />
 )
 export default DemoBasic

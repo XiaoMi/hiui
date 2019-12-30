@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Pagination from '../../../components/pagination'
 const rightOptions = ['默认', '受控']
 const prefix = 'pagination-base'
-const desc = '分页组件会根据项目数量自己处理翻页数量。'
+const desc = '数据量庞大，分页数较多时使用'
 const code = [
   {
     code: `import React from 'react'

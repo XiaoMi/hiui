@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Progress from '../../../components/progress'
 import Counter from '../../../components/counter'
 const prefix = 'progress-circle'
-
+const desc = '在局限空间里展示加载进度，如图片上传、附件上传'
 const code = `import React from 'react'
 import Progress from '@hi-ui/hiui/es/progress'
 import Counter from '@hi-ui/hiui/es/counter'\n
@@ -50,6 +50,7 @@ const DemoCircle = () => (
     code={code}
     scope={{ Progress, Counter }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoCircle

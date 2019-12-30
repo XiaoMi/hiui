@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Transfer from '../../../components/transfer'
 const prefix = 'transfer-base'
+const desc = '源集合中的数据可全部展示'
 const code = `import React from 'react'
 import Transfer from '@hi-ui/hiui/es/transfer'\n
 class Demo extends React.Component {
@@ -47,6 +48,7 @@ const DemoBase = () => (
     code={code}
     scope={{ Transfer }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoBase

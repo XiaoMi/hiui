@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Tree from '../../../components/tree'
 const prefix = 'tree-search'
-const desc = '通过搜索框对树进行过滤'
+const desc = '树的层级多、节点数量庞大，借助搜索工具快速找到结点'
 
 const code = `import React from 'react'
 import Tree from '@hi-ui/hiui/es/tree'\n

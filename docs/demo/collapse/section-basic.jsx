@@ -3,6 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Collapse from '../../../components/collapse'
 const prefix = 'section-basic'
 const rightOptions = []
+const desc = '可以同时展开多个面板，对垂直空间没有特别限制'
 const code = [
   {
     code: `import React from 'react'
@@ -50,6 +51,7 @@ const DemoBasic = () => (
     scope={{ Collapse }}
     prefix={prefix}
     rightOptions={rightOptions}
+    desc={desc}
   />
 )
 export default DemoBasic

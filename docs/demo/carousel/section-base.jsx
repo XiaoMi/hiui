@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Carousel from '../../../components/carousel'
 const prefix = 'carousel-base'
+const desc = ''
 const code = `import React from 'react'
 import Carousel from '@hi-ui/hiui/es/carousel'\n
 class Demo extends React.Component {
@@ -27,5 +28,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBase = () => <DocViewer code={code} scope={{ Carousel }} prefix={prefix} />
+const DemoBase = () => <DocViewer code={code} scope={{ Carousel }} prefix={prefix} desc={desc} />
 export default DemoBase

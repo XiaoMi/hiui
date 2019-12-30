@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Progress from '../../../components/progress'
 const prefix = 'progress-word'
+const desc = '突出加载的百分比，适用在有加载等待的场景'
 const code = `import React from 'react'
 import Progress from '@hi-ui/hiui/es/progress'\n
 class Demo extends React.Component {
@@ -17,5 +18,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoWord = () => <DocViewer code={code} scope={{ Progress }} prefix={prefix} />
+const DemoWord = () => <DocViewer code={code} scope={{ Progress }} prefix={prefix} desc={desc} />
 export default DemoWord

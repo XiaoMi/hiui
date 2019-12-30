@@ -2,7 +2,7 @@ import Tabs from '../../../components/tabs'
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 const prefix = 'tabs-basic'
-const desc = '建议标签数量在 4-7 个时使用'
+const desc = '常应用于页面、弹窗等区域，水平方向适用标签数量较少的情况'
 
 const code = `import Tabs from '@hi-ui/hiui/es/tabs'
 import React from 'react'\n

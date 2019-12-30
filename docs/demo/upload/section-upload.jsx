@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Upload from '../../../components/upload'
 const prefix = 'upload-upload'
+const desc = '突出上传附件的操作入口，节省页面空间'
 const code = `import React from 'react'
 import Upload from '@hi-ui/hiui/es/upload'\n
 import Icon from '@hi-ui/hiui/es/icon'\n
@@ -32,5 +33,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoUpload = () => <DocViewer code={code} scope={{ Upload }} prefix={prefix} />
+const DemoUpload = () => <DocViewer code={code} scope={{ Upload }} prefix={prefix} desc={desc} />
 export default DemoUpload

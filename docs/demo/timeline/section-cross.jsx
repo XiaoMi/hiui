@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Timeline from '../../../components/timeline'
 import Icon from '../../../components/icon'
 const prefix = 'timeline-cross'
-
+const desc = '不同样式的时间轴，突出时间走向'
 const code = `import React from 'react'
 import Icon from '../../../components/icon'
 import Timeline from '@hi-ui/hiui/es/timeline'\n
@@ -67,7 +67,7 @@ const DemoCross = () => (
     code={code}
     scope={{ Timeline, Icon }}
     prefix={prefix}
-    desc={'不同样式的时间轴，突出时间走向'}
+    desc={desc}
   />
 )
 export default DemoCross

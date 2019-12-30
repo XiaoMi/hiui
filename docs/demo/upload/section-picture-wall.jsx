@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Upload from '../../../components/upload'
 const prefix = 'Upload-picture-wall'
-
+const desc = '展示一组照片内容'
 const code = `import React from 'react'
 import Upload from '@hi-ui/hiui/es/upload'\n
 class Demo extends React.Component {
@@ -39,5 +39,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoPictureWall = () => <DocViewer code={code} scope={{ Upload }} prefix={prefix} />
+const DemoPictureWall = () => <DocViewer code={code} scope={{ Upload }} prefix={prefix} desc={desc} />
 export default DemoPictureWall

@@ -6,6 +6,7 @@ import Input from '../../../components/input'
 import Button from '../../../components/button'
 import FormItem from '../../../components/form/Item'
 const prefix = 'table-server'
+const desc = '运用搜索方式从服务器端实时请求数据，有效减轻前端显示压力'
 const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Form from '@hi-ui/hiui/es/form/index'
@@ -108,6 +109,7 @@ const DemoServer = () => (
     code={code}
     scope={{ Table, Form, FormItem, Input, Button }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoServer

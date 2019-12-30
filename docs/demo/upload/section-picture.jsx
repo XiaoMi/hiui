@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Upload from '../../../components/upload'
 const prefix = 'upload-picture'
+const desc = '识别一组照片的名称比内容更加方便快捷'
 const code = `import React from 'react'
 import Upload from '@hi-ui/hiui/es/upload'\n
 class Demo extends React.Component {
@@ -20,5 +21,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoPicture = () => <DocViewer code={code} scope={{ Upload }} prefix={prefix} />
+const DemoPicture = () => <DocViewer code={code} scope={{ Upload }} prefix={prefix} desc={desc} />
 export default DemoPicture

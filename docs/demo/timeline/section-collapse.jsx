@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Timeline from '../../../components/timeline'
 import Icon from '../../../components/icon'
 const prefix = 'timeline-collapse'
-
+const desc = '在同一时间维度上，同时展式两个层级的信息'
 const code = `import React from 'react'
 import Icon from '@hi-ui/hiui/es/icon'
 import Timeline from '@hi-ui/hiui/es/timeline'\n
@@ -53,7 +53,7 @@ const DemoCollapse = () => (
     code={code}
     scope={{ Timeline, Icon }}
     prefix={prefix}
-    desc={'当信息流包含两级信息时使用，当为左右结构式，暂不支持可折叠'}
+    desc={desc}
   />
 )
 export default DemoCollapse
