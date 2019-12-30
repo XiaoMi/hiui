@@ -133,7 +133,7 @@ class Pagination extends Component {
           <Select
             type='single'
             clearable={false}
-            style={{ width: 120 }}
+            style={{ width: 104 }}
             data={pageSizeOptions.map(n => ({
               // 这里的类型判断是考虑对过去的兼容写法
               id: typeof n === 'object' ? n.value : n,
@@ -346,7 +346,7 @@ class Pagination extends Component {
           <div className={`${prefixCls}__text`}>
             {this.renderJumperInput()}
             /
-            <span style={{margin: '0 8px'}}>{maxPage}</span>
+            <span style={{margin: '0 20px 0px 8px'}}>{maxPage}</span>
           </div>
         }
         {nextPager}
