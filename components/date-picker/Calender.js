@@ -165,7 +165,6 @@ class Calender extends Component {
     if (cls.indexOf('next') !== -1) {
       newDate = addMonths(newDate, 1)
     }
-    console.log('newDate', newDate)
     if (type === 'daterange' || type === 'weekrange') {
       if (range.selecting) {
         if (range.startDate > newDate) {
