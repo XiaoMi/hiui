@@ -5,7 +5,7 @@ import TimePanel from './TimePanel'
 import Icon from '../icon'
 import classNames from 'classnames'
 import TimePeriodPanel from './TimePeriodPanel'
-import { dateFormat, parseISO, getStartDate, addMonths, subMonths, startOfWeek, endOfWeek, lunarCalendarisShow } from './dateUtil'
+import { dateFormat, parseISO, getStartDate, addMonths, subMonths, startOfWeek, endOfWeek, showLunarStatus } from './dateUtil'
 
 class DatePanel extends Component {
   constructor (props) {
@@ -206,7 +206,7 @@ class DatePanel extends Component {
   }
   _getNormalComponent () {
     const { currentView } = this.state
-    const { min, max, weekOffset, date, lunarCalendar } = this.props
+    const { min, max, weekOffset, date, showLunar } = this.props
     const validDate = getStartDate(date)
     const { year, month } = deconstructDate(validDate)
     let component = null
@@ -216,7 +216,7 @@ class DatePanel extends Component {
       case 'week':
         component = (
           <Calender
-            lunarCalendar={lunarCalendar}
+            showLunar={showLunar}
             date={validDate}
             weekOffset={weekOffset}
             minDate={min}
@@ -230,6 +230,7 @@ class DatePanel extends Component {
         const yearData = this.getYearOrMonthData(year, 'year')
         component = (
           <Calender
+            showLunar={showLunar}
             date={validDate}
             data={yearData}
             type={currentView}
@@ -241,6 +242,7 @@ class DatePanel extends Component {
         const monthData = this.getYearOrMonthData(month, 'month')
         component = (
           <Calender
+            showLunar={showLunar}
             date={validDate}
             data={monthData}
             type={currentView}
@@ -259,7 +261,7 @@ class DatePanel extends Component {
       'hi-datepicker__body',
       showTime && 'hi-datepicker__body--hastime',
       type === 'timeperiod' && 'hi-datepicker__body--period',
-      lunarCalendarisShow(this.props) && 'hi-datepicker__body--large'
+      showLunarStatus(this.props) && 'hi-datepicker__body--large'
     )
     return (
       <div style={this.props.style} className={_c}>

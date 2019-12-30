@@ -5,7 +5,7 @@ import {DAY_MILLISECONDS} from './constants'
 import Icon from '../icon'
 import classNames from 'classnames'
 import Provider from '../context'
-import { dateFormat, isValid, getStartDate, toDate, changeYear, changeMonth, endOfDay } from './dateUtil'
+import { dateFormat, isValid, getStartDate, toDate, changeYear, changeMonth, endOfDay, showLunarStatus } from './dateUtil'
 import TimeRangePanel from './TimeRangePanel'
 
 class DateRangePanel extends Component {
@@ -272,7 +272,7 @@ class DateRangePanel extends Component {
       layout
     })
   }
-  _getNormalComponent (date, flag) {
+  _getNormalComponent (date, flag, showLunar) {
     let { minDate, maxDate, range, layout } = this.state
     let component = null
     const { year, month } = deconstructDate(date)
@@ -281,6 +281,7 @@ class DateRangePanel extends Component {
         const yearData = this.getYearOrMonthData(year, 'year')
         component = (
           <Calender
+            showLunar={showLunar}
             date={date}
             data={yearData}
             type={layout[flag]}
@@ -292,6 +293,7 @@ class DateRangePanel extends Component {
         const monthData = this.getYearOrMonthData(month, 'month')
         component = (
           <Calender
+            showLunar={showLunar}
             date={date}
             data={monthData}
             type={layout[flag]}
@@ -302,6 +304,7 @@ class DateRangePanel extends Component {
       default:
         component = (
           <Calender
+            showLunar={showLunar}
             date={date}
             range={range}
             type={this.props.type}
@@ -317,15 +320,27 @@ class DateRangePanel extends Component {
   }
   render () {
     let { currentView, leftDate, rightDate, showMask, layout } = this.state
-    const {shortcuts, theme, showTime, date} = this.props
+    const {shortcuts, theme, showTime, date, showLunar} = this.props
     const _c = classNames(
       'hi-datepicker',
       theme && 'theme__' + theme
     )
+    console.log('showLunarStatus(this.props)', showLunarStatus(this.props))
     const bodyCls = classNames(
       'hi-datepicker__body',
       'hi-datepicker__body--range',
-      shortcuts && 'hi-datepicker__body--shortcuts'
+      shortcuts && 'hi-datepicker__body--shortcuts',
+      shortcuts && showLunarStatus(this.props) && 'hi-datepicker__body--shortcuts--large',
+      (!shortcuts) && showLunarStatus(this.props) && 'hi-datepicker__body--range--large'
+
+    )
+    const panelClsleft = classNames(
+      'hi-datepicker__panel',
+      'hi-datepicker__panel--left'
+    )
+    const panelClsright = classNames(
+      'hi-datepicker__panel',
+      'hi-datepicker__panel--right'
     )
     return (
       <div
@@ -336,20 +351,20 @@ class DateRangePanel extends Component {
           {
             shortcuts && this.renderShortcut(shortcuts)
           }
-          <div className='hi-datepicker__panel hi-datepicker__panel--left'>
+          <div className={panelClsleft}>
             {
               this.renderHeader(currentView, leftDate, 'left')
             }
             <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${layout['left']}`}>
-              {this._getNormalComponent(leftDate, 'left')}
+              {this._getNormalComponent(leftDate, 'left', showLunar)}
             </div>
           </div>
-          <div className='hi-datepicker__panel hi-datepicker__panel--right'>
+          <div className={panelClsright}>
             {
               this.renderHeader(currentView, rightDate, 'right')
             }
             <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${layout['right']}`}>
-              {this._getNormalComponent(rightDate, 'right')}
+              {this._getNormalComponent(rightDate, 'right', showLunar)}
             </div>
           </div>
         </div>

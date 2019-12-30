@@ -141,6 +141,10 @@ $basic-color: #4284f5 !default;
       display: flex;
       border: none;
 
+      &--large {
+        width: 1000px;
+      }
+
       .hi-datepicker__panel {
         flex: 1;
       }
@@ -148,6 +152,10 @@ $basic-color: #4284f5 !default;
 
     &--shortcuts {
       width: 683px;
+
+      &--large {
+        width: 1060px;
+      }
     }
   }
 
@@ -237,6 +245,10 @@ $basic-color: #4284f5 !default;
       .hi-datepicker__cell {
         width: 92px;
 
+        &--large {
+          width: 160px;
+        }
+
         &.today {
           .hi-datepicker__text {
             background: $basic-color;
@@ -303,15 +315,6 @@ $basic-color: #4284f5 !default;
     width: 36px;
     height: 24px;
 
-    &--large {
-      width: 56px;
-      padding-right: 8px;
-
-      &--laster {
-        padding-right: 4px;
-      }
-    }
-
     &.disabled {
       .hi-datepicker__content {
         cursor: not-allowed;
@@ -320,7 +323,7 @@ $basic-color: #4284f5 !default;
       }
     }
 
-    &.range-se:not(.prev):not(.next) {
+    &.range-se:not(.prev):not(.next):not(.hi-datepicker__cell--large) {
       .hi-datepicker__content {
         margin: 0 3px;
         background: $basic-color;
@@ -329,7 +332,20 @@ $basic-color: #4284f5 !default;
       }
     }
 
-    .hi-datepicker__text--lunarCalendar {
+    &--large {
+      width: 56px;
+      padding: 4px 8px;
+
+      &--laster {
+        padding: 4px;
+      }
+
+      &:hover {
+        background-color: rgba(66, 142, 245, 0.1);
+      }
+    }
+
+    .hi-datepicker__text--showLunar {
       font-size: 12px;
       color: rgba(44, 48, 78, 0.2);
 
@@ -343,8 +359,8 @@ $basic-color: #4284f5 !default;
       width: 0;
       font-size: 12px;
       position: relative;
-      top: -28px;
-      right: -28px;
+      top: -32px;
+      right: -30px;
       color: #1da653;
 
       &--work {
@@ -352,8 +368,8 @@ $basic-color: #4284f5 !default;
         width: 0;
         font-size: 12px;
         position: relative;
-        top: -28px;
-        right: -28px;
+        top: -32px;
+        right: -30px;
         color: #f63;
       }
     }
@@ -625,6 +641,20 @@ $basic-color: #4284f5 !default;
               color: #fff;
             }
           }
+
+          .hi-datepicker__cell--large.range-se {
+            border-radius: 2px;
+            background: map-get(get-palette($value), '50');
+
+            .hi-datepicker__content {
+              color: #fff;
+              margin: 0 3px;
+            }
+
+            .hi-datepicker__text {
+              color: #fff;
+            }
+          }
         }
       }
 
@@ -650,7 +680,7 @@ $basic-color: #4284f5 !default;
           }
         }
 
-        &:hover:not(.today):not(.current):not(.in-range):not(.range-se):not(.disabled) {
+        &:hover:not(.today):not(.current):not(.in-range):not(.range-se):not(.disabled):not(.hi-datepicker__cell--large) {
           .hi-datepicker__text {
             // TODO: 色板值
             background: rgba(66, 142, 245, 0.1);
