@@ -102,7 +102,7 @@ Card.defaultProps = {
 }
 Card.propTypes = {
   // 支持三种宽度预设值 small -> 276px    middle -> 376px  large -> 576px，如果传入 style 则忽略该值，如果缺省 style 及 size 则默认100%
-  size: PropTypes.oneOf(['small', 'default', 'large']),
+  size: PropTypes.oneOf(['small', 'default', 'middle', 'large']),
   // 一种简单的小卡片
   type: PropTypes.oneOf(['simple', 'default']),
   style: PropTypes.object,
