@@ -297,7 +297,7 @@ class TreeNode extends Component {
       editNodes: editNodes.filter(node => node.id !== itemId),
       editingNodes: editingNodes.filter(node => node.id !== itemId)
     })
-    const node = findNode(itemId, dataCache)
+    const node = findNode(itemId, _dataCache)
     this.props.onSave(node, _dataCache)
   }
   // 删除拖动的节点
