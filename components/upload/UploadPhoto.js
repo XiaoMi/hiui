@@ -74,6 +74,8 @@ class UploadPhoto extends Upload {
                   <div className='hi-upload__precent'>
                     <p className='hi-upload__loading-text'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : localeDatas.upload.uploadSuccess) : (0 + '%')}</p>
                     <div className='hi-upload__loading-bar' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
+                    {/* 进度条底部阴影 */}
+                    <div className='hi-upload__loading-shadow' />
                   </div>
                 </li>
               )
