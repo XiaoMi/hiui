@@ -1,5 +1,10 @@
 # 更新日志
 
+## 2.6.4
+
+- 修复 `<Table />` 多级表头和多选同时使用的问题 [#867](https://github.com/XiaoMi/hiui/issues/867)
+- 修复 `<Tree />` onSave 入参不正确的问题 [#850](https://github.com/XiaoMi/hiui/issues/850)
+
 ## 2.6.3
 
 - 修复 `<Button />` target 属性不起作用的问题 [#837](https://github.com/XiaoMi/hiui/issues/837)
