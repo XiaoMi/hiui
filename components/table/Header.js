@@ -131,6 +131,6 @@ export default class Header extends Component {
     if (origin && origin.url) {
       sc = false
     }
-    Menu.show(e, cbs, key, !!sc, size)
+    Menu.show(e, cbs, key, !!sc, size, this.props.headerColumns.length === 1)
   }
 }
