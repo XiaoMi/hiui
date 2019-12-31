@@ -8,7 +8,7 @@ $progress-text: #666 !default;
 .hi-progress {
   &__inner {
     background-color: $progress-bg;
-    border-radius: 9px;
+    border-radius: 10px;
     position: relative;
     overflow: hidden;
     display: inline-block;
