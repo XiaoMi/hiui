@@ -4,6 +4,7 @@ import Pagination from '../../../components/pagination'
 import Grid from '../../../components/grid'
 import Checkbox from '../../../components/checkbox'
 const prefix = 'pagination-intact'
+const desc = '数据量庞大，分页数较多时使用'
 const code = `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Checkbox from '@hi-ui/hiui/es/checkbox'
@@ -85,6 +86,7 @@ const DemoIntact = () => (
     code={code}
     scope={{ Pagination, Grid, Checkbox }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoIntact

@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Pagination from '../../../components/pagination'
 const prefix = 'pagination-easy'
+const desc = '节省页码的占用空间'
 const code = `import React from 'react'
 import Pagination from '@hi-ui/hiui/es/pagination'\n
 class Demo extends React.Component {
@@ -29,6 +30,7 @@ const DemoEasy = () => (
     code={code}
     scope={{ Pagination }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoEasy
