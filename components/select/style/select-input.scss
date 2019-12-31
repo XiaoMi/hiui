@@ -22,7 +22,14 @@
 
   &.disabled {
     cursor: not-allowed;
-    opacity: 0.4;
+    background-color: #d8d8d8;
+    color: #ccc;
+
+    .hi-select__input--icon {
+      background-color: #d8d8d8;
+      color: #ccc;
+      margin-left: 0 !important;
+    }
 
     .hi-select__input--icon,
     input {
@@ -46,7 +53,7 @@
 
     .hi-select__input--icon__close {
       display: block;
-      color: #999;
+      color: #bbb;
     }
   }
 
@@ -125,7 +132,7 @@
     .hi-select__input--item,
     .hi-select__input--search {
       flex: auto;
-      padding: 0 0 0 13px;
+      padding: 0 0 0 12px;
     }
 
     .hi-select__input--item {
