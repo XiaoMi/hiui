@@ -64,6 +64,15 @@ $prefixCls: 'hi-dropdown' !default;
     }
   }
 
+  &__icon-btnwrap {
+    width: 32px;
+    height: 32px;
+
+    .hi-dropdown__icon {
+      padding: 0;
+    }
+  }
+
   &__popper {
     background: rgba(255, 255, 255, 1);
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
