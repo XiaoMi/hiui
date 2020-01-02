@@ -138,7 +138,7 @@ class TreeItem extends Component {
                 {confirm}
               </span>
               <span
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', color: '#999' }}
                 onClick={() => {
                   if (editNodes.map(node => node.id).includes(item.id)) {
                     cancelEditNode(item.id)
