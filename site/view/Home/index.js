@@ -15,7 +15,7 @@ class Home extends React.Component {
             <div className='section__content'>
               <h1 className='section__title'>HIUI，设计原则的布道者</h1>
               <div className='section__desc'>
-                <p>HIUI是一套适用于前中后台交互与界面设计标准的制定与实施的前端解决方案</p>
+                <p>HIUI 是一套适用于中后台系统的设计规范及前端组件化解决方案。</p>
               </div>
               <Button type='primary' href={`<BASE_URL>/zh-CN/docs/quick-start`}>
                 开始使用
@@ -43,23 +43,23 @@ class Home extends React.Component {
                 <li className='flat-list__item'>
                   <div className='flat-list__figure' />
                   <h3 className='flat-list__name'>交互一致性</h3>
-                  <div className='flat-list__desc'>
-                    最大限度减少用户对交互的认知成本及交互的可预期性
-                  </div>
+                  <p className='flat-list__desc'>
+                    最大限度减少用户对交互的认知成本，提高交互的可预期性
+                  </p>
                 </li>
                 <li className='flat-list__item'>
                   <div className='flat-list__figure' />
                   <h3 className='flat-list__name'>视觉统一</h3>
-                  <div className='flat-list__desc'>
+                  <p className='flat-list__desc'>
                     制定视觉风格，产出典型场景的视觉设计方案和界面规范
-                  </div>
+                  </p>
                 </li>
                 <li className='flat-list__item'>
                   <div className='flat-list__figure' />
                   <h3 className='flat-list__name'>从业务中来</h3>
-                  <div className='flat-list__desc'>
-                    高度提炼 OA、仓储售后系统、BI 系统、企业中台等项目的设计经验累积
-                  </div>
+                  <p className='flat-list__desc'>
+                    高度提炼企业中台、仓储物流、BI、OA 等系统的设计经验累积
+                  </p>
                 </li>
               </ul>
             </div>
@@ -82,8 +82,7 @@ class Home extends React.Component {
                 }`}
               >
                 <p>
-                  所有控件组件化，无论前端工程师、PHP 工程师、JAVA
-                  工程师，不必为日新月异的前端技术所困扰。规范统一所有 API 接口，方便调用。
+                  基于组件化开发，无论前端工程师、PHP 工程师还是 JAVA 工程师，都不必为日新月异的前端技术所困扰。统一规范所有 API 接口，方便调用，学习成本低。
                 </p>
               </div>
             </div>
@@ -126,7 +125,7 @@ class Home extends React.Component {
                   <div className='flat-list__figure' />
                   <h3 className='flat-list__name'>国际化</h3>
                   <div className='flat-list__desc'>
-                    充分预留项目 i18n 的需求，无论在 API 接口还是设计要求
+                    充分预留项目多语言需求，无论在 API 接口还是设计要求
                   </div>
                 </li>
                 <li className='flat-list__item'>
@@ -150,7 +149,7 @@ class Home extends React.Component {
                     HIUI Template<sup>*</sup>
                   </h3>
                   <div className='flat-list__desc'>
-                    无需掌握前端框架即可进行单模板开发，即将发布
+                    无需掌握前端框架即可进行单模板开发（敬请期待）
                   </div>
                 </li>
                 <li className='flat-list__item'>
