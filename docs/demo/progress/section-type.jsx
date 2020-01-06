@@ -57,11 +57,11 @@ class Demo extends React.Component {
         <Col span={12}>
           <Progress percent={10} size='position'/>
           <br/>
-          <Progress  type='success' content='成功' percent={40}/>
+          <Progress type='success' content='成功' percent={40} size='position'/>
           <br/>
-          <Progress size='position' type='warn' content='错误' percent={50}/>
+          <Progress type='warn' content='错误' percent={50} size='position'/>
           <br/>
-          <Progress size='position' type='error' content='警示' percent={100}/>
+          <Progress type='error' content='警示' percent={100} size='position'/>
         </Col>
       </Row>
     </div>
