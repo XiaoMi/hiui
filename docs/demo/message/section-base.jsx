@@ -18,7 +18,7 @@ class Demo extends React.Component {
 
   open() {
     Message.open({
-      title:'通知'
+      title:'网络错误，清重新连接'
     })
   }
 }`
