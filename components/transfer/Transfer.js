@@ -351,7 +351,7 @@ export default class Transfer extends Component {
               全选
             </Checkbox>
             <span>
-              {selectedKeys.length !== 0 && selectedKeys.length + '/'}
+              {selectedKeys.length + '/'}
               {filterResult.length}项
             </span>
           </div>}
