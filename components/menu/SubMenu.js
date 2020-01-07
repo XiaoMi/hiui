@@ -107,7 +107,7 @@ class SubMenu extends Component {
     })
     let toggleIcon
     if (deepSubmenu && (mode === 'horizontal' || mini)) {
-      toggleIcon = isExpand ? 'left' : 'right'
+      toggleIcon = 'right'
     } else {
       toggleIcon = isExpand ? 'up' : 'down'
     }
