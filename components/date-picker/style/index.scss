@@ -118,7 +118,7 @@ $basic-color: #4284f5 !default;
     width: 288px;
 
     &--large {
-      width: 488px;
+      width: 432px;
     }
 
     &--hastime {
@@ -142,7 +142,42 @@ $basic-color: #4284f5 !default;
       border: none;
 
       &--large {
-        width: 1000px;
+        width: 866px;
+
+        .hi-datepicker__cell.range-se.hi-datepicker__cell--large {
+          background-color: #fff;
+
+          .hi-datepicker__content__wrap {
+            background-color: #4285f4;
+
+            .hi-datepicker__text——holiday {
+              color: #fff;
+
+              &--work {
+                color: #fff;
+              }
+            }
+
+            .hi-datepicker__text--showLunar {
+              color: #fff;
+            }
+
+            .hi-datepicker__content {
+              background: none;
+              color: #fff;
+            }
+          }
+
+          &.today {
+            background: none;
+
+            .hi-datepicker__content__wrap {
+              background-color: #4285f4;
+              opacity: 1;
+              border: none;
+            }
+          }
+        }
       }
 
       .hi-datepicker__panel {
@@ -234,6 +269,42 @@ $basic-color: #4284f5 !default;
   &__calender-container {
     padding: 17px 18px 15px;
 
+    &--date {
+      .hi-datepicker__cell {
+        &.today:not(.in-range) {
+          &:not(.hi-datepicker__cell--large) .hi-datepicker__content__wrap {
+            .hi-datepicker__content {
+              width: 24px;
+              height: 24px;
+              box-sizing: border-box;
+            }
+          }
+        }
+
+        &.current:not(.in-range) {
+          &:not(.hi-datepicker__cell--large) .hi-datepicker__content__wrap {
+            .hi-datepicker__content {
+              width: 24px;
+              height: 24px;
+            }
+          }
+        }
+      }
+
+      .hi-datepicker__cell.in-range:not(.range-se) {
+        padding: 4px 0;
+
+        .hi-datepicker__content__wrap {
+          width: 100%;
+          background: rgba(66, 142, 245, 0.1);
+
+          .hi-datepicker__content {
+            background: none;
+          }
+        }
+      }
+    }
+
     &--year,
     &--month {
       padding: 10px 5px;
@@ -244,30 +315,120 @@ $basic-color: #4284f5 !default;
 
       .hi-datepicker__cell {
         width: 92px;
-
-        &--large {
-          width: 160px;
-        }
+        padding-left: 24px;
 
         &.today {
-          .hi-datepicker__text {
-            background: $basic-color;
-            opacity: 1;
-            color: #fff;
+          .hi-datepicker__content__wrap {
+            .hi-datepicker__content {
+              background: $basic-color;
+              opacity: 1;
+              color: #fff;
+            }
+          }
+        }
+
+        &:not(.hi-datepicker__cell--large) .hi-datepicker__content__wrap {
+          width: 48px;
+
+          .hi-datepicker__content {
+            width: 48px;
           }
         }
       }
+    }
 
-      .hi-datepicker__text {
-        width: 48px;
+    &--year {
+      .hi-datepicker__cell {
+        width: 92px;
+        padding-left: 24px;
+
+        &--large {
+          width: 160px;
+          padding-left: 38px;
+
+          .hi-datepicker__content__wrap {
+            width: 56px;
+          }
+        }
+      }
+    }
+
+    &--month {
+      .hi-datepicker__cell {
+        &--large {
+          padding-left: 48px;
+
+          .hi-datepicker__content__wrap {
+            width: 52px;
+          }
+
+          .hi-datepicker__content--showLunar {
+            padding-bottom: 0;
+          }
+        }
       }
     }
 
     &--week {
       .hi-datepicker__row {
-        &:hover {
+        .hi-datepicker__cell:not(.range-se) .hi-datepicker__content__wrap {
           .hi-datepicker__content {
-            background: rgba(66, 132, 245, 0.1);
+            width: 100%;
+          }
+
+          // &:hover {
+          //   .hi-datepicker__content {
+          //     background: rgba(66, 132, 245, 0.1);
+          //   }
+          // }
+        }
+
+        &:not(.hi-datepicker__row--current-week):hover {
+          // .hi-datepicker__cell:not(.range-se) {
+          //   padding: 4px 0;
+
+          //   .hi-datepicker__content__wrap {
+          //     width: 100%;
+          //   }
+          // }
+          background: rgba(66, 132, 245, 0.1);
+
+          .hi-datepicker__content__wrap:hover {
+            background: none;
+
+            .hi-datepicker__content:hover {
+              background: none;
+            }
+          }
+        }
+
+        &--current-week {
+          .hi-datepicker__cell.range-se.hi-datepicker__cell--large {
+            background-color: #fff;
+
+            .hi-datepicker__content__wrap {
+              background-color: #4285f4;
+
+              .hi-datepicker__text——holiday {
+                color: #fff;
+
+                &--work {
+                  color: #fff;
+                }
+              }
+
+              .hi-datepicker__text--showLunar {
+                color: #fff;
+              }
+            }
+          }
+
+          .hi-datepicker__cell.in-range.hi-datepicker__cell--large:not(.range-se) {
+            padding: 4px 0;
+
+            .hi-datepicker__content__wrap {
+              width: 100%;
+            }
           }
         }
       }
@@ -310,10 +471,8 @@ $basic-color: #4284f5 !default;
   &__cell {
     cursor: pointer;
     text-align: center;
-    line-height: 24px;
     padding: 4px 0;
     width: 36px;
-    height: 24px;
 
     &.disabled {
       .hi-datepicker__content {
@@ -323,9 +482,37 @@ $basic-color: #4284f5 !default;
       }
     }
 
-    &.range-se:not(.prev):not(.next):not(.hi-datepicker__cell--large) {
+    &.hi-datepicker__cell--large {
+      .hi-datepicker__content__wrap {
+        border-radius: 2px;
+
+        &:hover {
+          background-color: rgba(66, 142, 245, 0.1);
+        }
+      }
+    }
+
+    &:not(.hi-datepicker__cell--large):not(.disabled) {
       .hi-datepicker__content {
-        margin: 0 3px;
+        margin: auto;
+        width: 24px;
+
+        &:hover {
+          border-radius: 2px;
+          background-color: rgba(66, 142, 245, 0.1);
+        }
+      }
+    }
+
+    &.range-se:not(.prev):not(.next):not(.hi-datepicker__cell--large) {
+      .hi-datepicker__content__wrap {
+        &:hover {
+          background-color: rgba(66, 142, 245, 0.1);
+        }
+      }
+
+      .hi-datepicker__content {
+        // margin: 0 3px;
         background: $basic-color;
         color: #fff;
         border-radius: 2px;
@@ -333,16 +520,31 @@ $basic-color: #4284f5 !default;
     }
 
     &--large {
-      width: 56px;
-      padding: 4px 8px;
+      width: 48px;
+      height: 48px;
+      padding: 4px;
+
+      &.disabled {
+        padding: 4px 0;
+
+        .hi-datepicker__content__wrap {
+          width: 56px;
+          color: #a8aaaf;
+          background: #f6f6f6;
+        }
+      }
 
       &--laster {
-        padding: 4px;
+        padding: 0 4px;
       }
 
-      &:hover {
-        background-color: rgba(66, 142, 245, 0.1);
+      .hi-datepicker__content__wrap {
+        width: 48px;
       }
+    }
+
+    .hi-datepicker__content--showLunar {
+      padding-bottom: 3px;
     }
 
     .hi-datepicker__text--showLunar {
@@ -355,24 +557,29 @@ $basic-color: #4284f5 !default;
     }
 
     .hi-datepicker__text——holiday {
-      display: inline-block;
+      display: block;
       width: 0;
+      height: 0;
       font-size: 12px;
       position: relative;
-      top: -32px;
-      right: -30px;
-      color: #1da653;
+      top: -26px;
+      right: -36px;
+
+      &--rest {
+        color: #1da653;
+      }
 
       &--work {
-        display: inline-block;
-        width: 0;
-        font-size: 12px;
-        position: relative;
-        top: -32px;
-        right: -30px;
         color: #f63;
       }
     }
+
+    // .hi-datepicker__cell--large--laster {
+    //   .hi-datepicker__text——holiday {
+    //     top: -28px;
+    //     right: -26px;
+    //   }
+    // }
 
     &.prev,
     &.next {
@@ -388,26 +595,68 @@ $basic-color: #4284f5 !default;
     // }
 
     &.today:not(.in-range) {
-      .hi-datepicker__text {
+      .hi-datepicker__content__wrap {
+        .hi-datepicker__content {
+          border-radius: 2px;
+          margin: auto;
+          border: 1px solid $basic-color;
+          opacity: 0.8;
+        }
+      }
+    }
+
+    &.today:not(.in-range).hi-datepicker__cell--large {
+      .hi-datepicker__content__wrap {
+        border-radius: 2px;
+        margin: auto;
         border: 1px solid $basic-color;
         opacity: 0.8;
+        box-sizing: border-box;
+
+        .hi-datepicker__content {
+          border: none;
+        }
       }
     }
 
     &.current:not(.in-range) {
+      &:not(.hi-datepicker__cell--large) .hi-datepicker__content__wrap {
+        .hi-datepicker__content {
+          border-radius: 2px;
+          margin: auto;
+          background-color: $basic-color;
+        }
+      }
+
+      &.hi-datepicker__cell--large {
+        .hi-datepicker__content__wrap {
+          background-color: $basic-color;
+        }
+      }
+
       .hi-datepicker__text {
-        background: $basic-color;
         color: #fff;
+      }
+
+      .hi-datepicker__text--showLunar {
+        color: #fff;
+      }
+
+      .hi-datepicker__text——holiday {
+        color: #fff;
+
+        &--work {
+          color: #fff;
+        }
       }
     }
   }
 
   &__text {
     display: inline-block;
-    width: 24px;
     height: 24px;
-    box-sizing: border-box;
-    border-radius: 2px;
+    // box-sizing: border-box;
+    // border-radius: 2px;
   }
 
   &__shortcuts {
@@ -612,10 +861,33 @@ $basic-color: #4284f5 !default;
       &__calender-container--month {
         .hi-datepicker__cell {
           &.today {
-            .hi-datepicker__text {
-              border: 1px solid map-get(get-palette($value), '50') !important;
-              color: map-get(get-palette($value), '50') !important;
-              background: #fff !important;
+            .hi-datepicker__content__wrap {
+              color: map-get(get-palette($value), '50');
+              background: #fff;
+              margin: inherit;
+
+              .hi-datepicker__content {
+                box-sizing: border-box;
+                border: 1px solid map-get(get-palette($value), '50');
+                background-color: #fff;
+                color: #333;
+              }
+            }
+
+            &.hi-datepicker__cell--large {
+              .hi-datepicker__content__wrap {
+                box-sizing: border-box;
+                border: 1px solid map-get(get-palette($value), '50');
+                color: map-get(get-palette($value), '50');
+                background: #fff;
+                margin: inherit;
+
+                .hi-datepicker__content {
+                  border: none;
+                  background-color: #fff;
+                  color: #333;
+                }
+              }
             }
           }
         }
@@ -633,7 +905,7 @@ $basic-color: #4284f5 !default;
             .hi-datepicker__content {
               background: map-get(get-palette($value), '50');
               color: #fff;
-              margin: 0 3px;
+              // margin: 0 3px;
               border-radius: 2px;
             }
 
@@ -648,7 +920,7 @@ $basic-color: #4284f5 !default;
 
             .hi-datepicker__content {
               color: #fff;
-              margin: 0 3px;
+              // margin: 0 3px;
             }
 
             .hi-datepicker__text {
@@ -666,7 +938,7 @@ $basic-color: #4284f5 !default;
         //   }
         // }
 
-        &.in-range:not(.next):not(.prev) {
+        &.in-range {
           .hi-datepicker__content {
             // TODO: 色板值
             // background: map-get(get-palette($value), '10');
@@ -674,7 +946,7 @@ $basic-color: #4284f5 !default;
           }
         }
 
-        &.range-se:not(.next):not(.prev) {
+        &.range-se:not(.next):not(.prev):not(.hi-datepicker__cell--large) {
           .hi-datepicker__content {
             background: map-get(get-palette($value), '50');
           }
@@ -683,7 +955,7 @@ $basic-color: #4284f5 !default;
         &:hover:not(.today):not(.current):not(.in-range):not(.range-se):not(.disabled):not(.hi-datepicker__cell--large) {
           .hi-datepicker__text {
             // TODO: 色板值
-            background: rgba(66, 142, 245, 0.1);
+            // background: rgba(66, 142, 245, 0.1);
             // background: map-get(get-palette($value), '10');
           }
         }

@@ -138,7 +138,6 @@ class Calender extends Component {
   }
   handlerClick (e) {
     const {onPick, date, type, range} = this.props
-
     let { year, month, day, hours, minutes, seconds } = deconstructDate(date)
 
     const td = e.target
@@ -255,11 +254,13 @@ class Calender extends Component {
     const _value = type === 'year' ? 1 : value
 
     const LunarInfo = Lunar.toLunar(_year, _month, _value)
-    const lunarcellinfo = type === 'month' ? {} : this.isHoliday(_year, _year + '/' + _month + '/' + _value)
+    const lunarcellinfo = this.isHoliday(_year, _year + '/' + _month + '/' + _value)
 
     if (type === 'year') {
       delete lunarcellinfo.status
       lunarcellinfo.Lunar = LunarInfo[3] + '-' + LunarInfo[4]
+    } else if (type === 'month') {
+      delete lunarcellinfo.status
     } else {
       lunarcellinfo.Lunar = LunarInfo[6]
     }
@@ -291,17 +292,17 @@ class Calender extends Component {
     const fullTimeInfo = this.getFullTime(td.value, _class)
     if (fullTimeInfo.status) {
       return (
-        <span>
+        <React.Fragment>
           {
-            fullTimeInfo.status === 1 ? <span className='hi-datepicker__text——holiday'>休</span> : null
+            fullTimeInfo.status === 1 ? <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--rest'>休</span> : null
           }
           {
-            fullTimeInfo.status === 2 ? <span className='hi-datepicker__text——holiday--work'>班</span> : null
+            fullTimeInfo.status === 2 ? <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--work'>班</span> : null
           }
           <span value={td.value} className='hi-datepicker__text--showLunar hi-datepicker__text--showLunar--festival'>
             {fullTimeInfo.name || fullTimeInfo.Lunar}
           </span>
-        </span>
+        </React.Fragment>
       )
     } else {
       return (
@@ -400,19 +401,20 @@ class Calender extends Component {
                           value={cell.value}
                           className={this.getTDClass(cell, _index)}
                         >
-                          <div className='hi-datepicker__content' value={cell.value}>
-                            <span value={cell.value} className='hi-datepicker__text'>
-                              {cell.text || cell.value}
-                            </span>
-                          </div>
-                          {
-                            showLunarStatus(this.props) && <div className='hi-datepicker__content' value={cell.value}>
-                              {
-                                this.ToLunar(cell)
-                              }
+                          <div className='hi-datepicker__content__wrap'>
+                            <div className='hi-datepicker__content' value={cell.value}>
+                              <span value={cell.value} className='hi-datepicker__text'>
+                                {cell.text || cell.value}
+                              </span>
                             </div>
-                          }
-
+                            {
+                              showLunarStatus(this.props) && <div className='hi-datepicker__content hi-datepicker__content--showLunar' value={cell.value}>
+                                {
+                                  this.ToLunar(cell)
+                                }
+                              </div>
+                            }
+                          </div>
                         </td>
                       )
                     })

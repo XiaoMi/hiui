@@ -157,6 +157,11 @@ class DatePanel extends Component {
     const { type, onPick } = this.props
     if (type === 'month') {
       onPick(_date)
+    } else if (type === 'week') {
+      this.setState({
+        currentView: 'week'
+      })
+      onPick(_date, true)
     } else {
       this.setState({
         currentView: 'date'
