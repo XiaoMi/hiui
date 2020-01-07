@@ -42,9 +42,13 @@ class Demo extends React.Component {
             <Button type="primary" onClick={this.cancelEventError.bind(this)} >我知道了</Button>
           ]}
         >
-          <Icon name="close-circle-o" style={{color: '#EB5252', fontSize: '24px'}} />
-          <span>错误标题</span><br/>
-          <span>错误原因错误原因错误原因错误原因错误原因</span>
+          <div style={{display: 'flex'}}>
+            <Icon name="close-circle-o" style={{color: '#EB5252', fontSize: '30px'}} />
+            <div style={{marginLeft: '18px'}}>
+                <span>错误标题</span><br/>
+                <span style={{fontSize: '12px'}}>错误原因错误原因错误原因错误原因错误原因</span>
+            </div>
+          </div>  
         </Modal>
         <Modal
           title="提示"
@@ -54,9 +58,13 @@ class Demo extends React.Component {
             <Button type="primary" onClick={this.cancelEventWarning.bind(this)} >我知道了</Button>
           ]}
         >
-          <Icon name="info-circle-o" style={{color: '#4284F5', fontSize: '24px'}} />
-          <span>警告标题</span><br/>
-          <span>警告具体内容警告具体内容警告具体内容警告具体内容警告具体内容警告具体内容警告具体内容</span>
+          <div style={{display: 'flex'}}>
+            <Icon name="info-circle-o" style={{color: '#4284F5', fontSize: '30px'}} />
+            <div style={{marginLeft: '18px'}}>
+              <span>警告标题</span><br/>
+              <span style={{fontSize: '12px'}}>警告具体内容警告具体内容警告具体内容警告具体内容警告具体内容警告具体内容警告具体内容</span>
+            </div>
+          </div>
         </Modal>
       </div>
     )

@@ -27,7 +27,7 @@ class Demo extends React.Component {
         <Modal
           title="提示"
           visible={this.state.visible}
-          onConfirm={()=>{console.log('自定义确定事件')}}
+          onConfirm={this.cancelEvent.bind(this)}
           onCancel={this.cancelEvent.bind(this)}
         >
           <span>您还没保存，退出会导致数据丢失，确定退出吗？</span>

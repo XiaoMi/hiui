@@ -17,7 +17,7 @@ class Demo extends React.Component {
             简易卡片
           </Card>
           <br/>
-         <Card
+        <Card
             hoverable
             type='simple'
             size='default'

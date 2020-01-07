@@ -28,43 +28,41 @@ class Demo extends React.Component {
           content: '小号'
         }
       ],
-      position: 'large'
+      size: 'large'
     }
   }
   render() {
-    const { position } = this.state
+    const { size } = this.state
     const FormItem = Form.Item
     const Row = Grid.Row
     const Col = Grid.Col
     return (
       <div>
-      <div>
-      <Row gutter>
-        <Col span={12}>
-          <Radio.Group
-            type='button'
-            data={this.state.typeList}
-            value={this.state.position}
-            onChange={(data) => {
-              this.setState({
-                position: data
-              })
-            }}
-          />
-        </Col>
-      </Row>
-      <Row gutter>
-        <Col span={12}>
-          <Progress percent={10} size='position'/>
-          <br/>
-          <Progress type='success' content='成功' percent={40} size='position'/>
-          <br/>
-          <Progress type='warn' content='错误' percent={50} size='position'/>
-          <br/>
-          <Progress type='error' content='警示' percent={100} size='position'/>
-        </Col>
-      </Row>
-    </div>
+        <Row gutter>
+          <Col span={12}>
+            <Radio.Group
+              type='button'
+              data={this.state.typeList}
+              value={this.state.size}
+              onChange={(data) => {
+                this.setState({
+                  size: data
+                })
+              }}
+            />
+          </Col>
+        </Row>
+        <Row gutter>
+          <Col span={12}>
+            <Progress percent={10} size={size}/>
+            <br/>
+            <Progress type='success' content='成功' percent={40} size={size}/>
+            <br/>
+            <Progress type='warn' content='错误' percent={50} size={size}/>
+            <br/>
+            <Progress type='error' content='警示' percent={100} size={size}/>
+          </Col>
+        </Row>
       </div>
     )
   }
