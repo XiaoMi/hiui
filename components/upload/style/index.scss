@@ -45,7 +45,7 @@
 
     .hi-icon {
       cursor: pointer;
-      font-size: 32px;
+      font-size: 16px;
       color: #ccc;
     }
 
@@ -216,6 +216,18 @@
       // margin-bottom: 16px;
       border-radius: 4px;
 
+      &--photo-error {
+        height: 28px;
+        background: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        width: 100%;
+        color: #fff;
+        bottom: 0;
+        line-height: 28px;
+        font-size: 16px;
+        border-radius: 0 0 2px 2px;
+      }
+
       &:not(:last-child) {
         background: #e7e7e7;
       }
@@ -289,8 +301,8 @@
 
   &__photo-del {
     position: absolute;
-    right: -12px;
-    top: -12px;
+    right: -8px;
+    top: -10px;
     font-size: 20px;
     line-height: 20px;
     display: none;
@@ -364,6 +376,8 @@
         &--error {
           border: 1px solid rgba(244, 65, 65, 1);
         }
+
+
 
         &:hover {
           background: rgba(247, 247, 247, 1);
