@@ -140,7 +140,7 @@ Dropdown.propTypes = {
 }
 
 Dropdown.defaultProps = {
-  placement: 'bottom-start',
+  placement: 'top-bottom-start',
   trigger: 'hover',
   width: 240
 }

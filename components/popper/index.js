@@ -61,7 +61,6 @@ export default class Popper extends Component {
     let left = rect.left + (document.documentElement.scrollLeft || document.body.scrollLeft)
     width = width === false ? undefined : (width === undefined ? rect.width : width)
     let placement = this.getPlacement(rect)
-
     switch (placement) {
       case 'bottom':
         top = top + topGap + rect.height
@@ -71,7 +70,10 @@ export default class Popper extends Component {
         top = top + topGap + rect.height
         left = left + leftGap
         break
-
+      case 'bottom-end':
+        top = top + topGap + rect.height
+        left = left + leftGap - width + rect.width
+        break
       case 'top':
         top = top - topGap
         left = left + leftGap + rect.width / 2
@@ -79,6 +81,11 @@ export default class Popper extends Component {
       case 'top-start':
         top = top - topGap
         left = left + leftGap
+        break
+
+      case 'top-end':
+        top = top - topGap
+        left = left + leftGap - width + rect.width
         break
 
       case 'left':
