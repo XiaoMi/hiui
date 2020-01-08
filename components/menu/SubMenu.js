@@ -106,7 +106,9 @@ class SubMenu extends Component {
       'hi-submenu--fat': fatMenu
     })
     let toggleIcon
-    if (deepSubmenu && (mode === 'horizontal' || mini)) {
+    if (mode === 'horizontal' && !deepSubmenu) {
+      toggleIcon = 'down'
+    } else if (deepSubmenu && (mode === 'horizontal' || mini)) {
       toggleIcon = 'right'
     } else {
       toggleIcon = isExpand ? 'up' : 'down'
