@@ -130,9 +130,11 @@ class TreeItem extends Component {
                 }}
               />
               <span
-                style={{ cursor: 'pointer', marginRight: 12, color: '#4284F5' }}
+                style={(editingNodes.find(node => node.id === item.id) || {}).title === '' ? { marginRight: 12, color: '#999' } : { cursor: 'pointer', marginRight: 12, color: '#4284F5' }}
                 onClick={() => {
-                  saveEditNode(item.id)
+                  if ((editingNodes.find(node => node.id === item.id) || {}).title !== '') {
+                    saveEditNode(item.id)
+                  }
                 }}
               >
                 {confirm}
