@@ -26,7 +26,7 @@ class Demo extends React.Component {
         <Modal
           title="提示消息"
           visible={this.state.visible}
-          onConfirm={()=>{console.log('自定义确定事件')}}
+          onConfirm={this.cancelEvent.bind(this)}
           onCancel={this.cancelEvent.bind(this)}
         >
           <span>一些消息....</span><br/>
