@@ -1,10 +1,8 @@
 # 主题
 
-目前有两款布局方式可用，分别是上下布局的 `Classic` 和左右布局的 `Genuine`
+目前 HIUI 提供了两种布局主题供大家使用，分别是上下结构的 `classic` 形态和左右结构的 `genuine`。
 
-**前往 [主题 Github](https://github.com/hiui-group/classic-theme/tree/develop) **
-
-## 使用
+## 安装与使用
 
 ```bash
 npm i @hi-ui/classic-theme@next --save
@@ -61,9 +59,9 @@ const routeConfig = [
 
 // 系统 logo 配置项
 const logoConfig = {
-  logoUrl: 'https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05', // 点击 logo 跳转地址
+  logoUrl: 'https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05', // logo 资源地址
   name: 'HIUI Theme', // logo 名称
-  url: 'https://xiaomi.github.io/hiui/#/' // logo 资源地址
+  url: 'https://xiaomi.github.io/hiui/#/' // 点击 logo 跳转地址
 }
 
 // 系统登录信息配置项
@@ -89,19 +87,19 @@ class App extends Component {
 export default App
 ```
 
-- 当 `type = 'classic' apperance={{color:'dark'}}` 时，为上下布局，顶部导航栏为深色
+- 当属性设置为 `type='classic' apperance={{color:'dark'}}` 时，呈上下布局，顶部导航栏为深色
 
 <p><img src="<BASE_URL>/static/img/themes/classic/classic-theme-demo.png" width="80%" /></p>
 
-- 当 `type = 'classic' apperance={{color:'light'}}` 时，为上下布局，顶部导航栏为浅色
+- 当属性设置为 `type='classic' apperance={{color:'light'}}` 时，呈上下布局，顶部导航栏为浅色
 
 <p><img src="<BASE_URL>/static/img/themes/classic/classic-theme-demo-light.png" width="80%" /></p>
 
-- 当 `type = 'genuine' apperance={{color:'dark'}}` 时，为左右布局，侧边导航栏为深色
+- 当属性设置为 `type='genuine' apperance={{color:'dark'}}` 时，呈左右布局，侧边导航栏为深色
 
 <p><img src="<BASE_URL>/static/img/themes/genuine/genuine-theme-demo.png" width="80%" /></p>
 
-- 当 `type = 'genuine' apperance={{color:'light'}}` 时，为左右布局，侧边导航栏为浅色
+- 当属性设置为 `type = 'genuine' apperance={{color:'light'}}` 时，呈左右布局，侧边导航栏为浅色
 
 <p><img src="<BASE_URL>/static/img/themes/genuine/genuine-theme-demo-light.png" width="80%" /></p>
 
@@ -111,8 +109,6 @@ export default App
 | ----------- | -------------------------- | --------------------------------- | --------------------------- |
 | type        | 主题类型                   | 'classic' \| 'genuine'            | 'classic'                   |
 | routes      | 路由配置项                 | Route[]                           | -                           |
-| logo        | 系统 logo                  | ReactNode                         | -                           |
-| login       | 系统登录配置项             | ReactNode                         | -                           |
 | historyType | 路由跳转类型               | 'hashHistory' \| 'browserHistory' | 'browserHistory'            |
 | header      | genuine 类型下的顶部功能栏 | ReactNode \| null                 | 不传时默认为主题自带 header |
 | apperance   | 主题外观配置项             | Apperance                         | {color:'dark'}              |
