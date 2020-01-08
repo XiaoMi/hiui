@@ -292,6 +292,7 @@ export default class Transfer extends Component {
             <Input
               placeholder='搜索'
               clearable='true'
+              clearableTrigger='always'
               onInput={this.searchEvent.bind(this, dir)}
               onChange={this.searchEvent.bind(this, dir)}
               value={filterText}
