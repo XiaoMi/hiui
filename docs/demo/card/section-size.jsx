@@ -21,7 +21,7 @@ class Demo extends React.Component {
         </Card>
         <br />
         <Card hoverable size='default'>
-          <p>size = middle</p>
+          <p>size = default</p>
           <p>无标题</p>
           <p>其它额外内容</p>
         </Card>
