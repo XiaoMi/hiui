@@ -26,7 +26,7 @@ $basic-color: #4284f5 !default;
     box-sizing: border-box;
 
     &:hover:not(.hi-datepicker__input--disabled) {
-      border: 1px solid #4284f5;
+      border: 1px solid $basic-color;
     }
 
     &--range {
@@ -125,6 +125,10 @@ $basic-color: #4284f5 !default;
       width: 468px;
       display: flex;
 
+      .hi-datepicker__body--large {
+        width: 611px;
+      }
+
       .hi-timepicker {
         box-shadow: none;
         border-left: 1px solid #f2f2f2;
@@ -189,7 +193,46 @@ $basic-color: #4284f5 !default;
       width: 683px;
 
       &--large {
-        width: 1060px;
+        width: 970px;
+
+        .hi-datepicker__panel {
+          width: 432px;
+        }
+
+        .hi-datepicker__cell.range-se.hi-datepicker__cell--large {
+          background-color: #fff;
+
+          .hi-datepicker__content__wrap {
+            background-color: #4285f4;
+
+            .hi-datepicker__text——holiday {
+              color: #fff;
+
+              &--work {
+                color: #fff;
+              }
+            }
+
+            .hi-datepicker__text--showLunar {
+              color: #fff;
+            }
+
+            .hi-datepicker__content {
+              background: none;
+              color: #fff;
+            }
+          }
+
+          &.today {
+            background: none;
+
+            .hi-datepicker__content__wrap {
+              background-color: #4285f4;
+              opacity: 1;
+              border: none;
+            }
+          }
+        }
       }
     }
   }
@@ -226,7 +269,7 @@ $basic-color: #4284f5 !default;
     }
 
     &--active {
-      color: #4284f5;
+      color: $basic-color;
     }
   }
 
@@ -240,7 +283,7 @@ $basic-color: #4284f5 !default;
     position: relative;
 
     &:hover {
-      color: #4284f5;
+      color: $basic-color;
     }
   }
 
@@ -286,6 +329,7 @@ $basic-color: #4284f5 !default;
             .hi-datepicker__content {
               width: 24px;
               height: 24px;
+              border-radius: 2px;
             }
           }
         }
@@ -360,6 +404,7 @@ $basic-color: #4284f5 !default;
 
           .hi-datepicker__content__wrap {
             width: 52px;
+            height: 24px;
           }
 
           .hi-datepicker__content--showLunar {
@@ -540,6 +585,11 @@ $basic-color: #4284f5 !default;
 
       .hi-datepicker__content__wrap {
         width: 48px;
+        height: 48px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
       }
     }
 
@@ -552,7 +602,7 @@ $basic-color: #4284f5 !default;
       color: rgba(44, 48, 78, 0.2);
 
       &--festival {
-        color: #4284f5;
+        color: $basic-color;
       }
     }
 
@@ -597,17 +647,19 @@ $basic-color: #4284f5 !default;
     &.today:not(.in-range) {
       .hi-datepicker__content__wrap {
         .hi-datepicker__content {
-          border-radius: 2px;
           margin: auto;
           border: 1px solid $basic-color;
-          opacity: 0.8;
+          color: $basic-color;
+        }
+
+        .hi-datepicker__text--showLunar {
+          color: $basic-color;
         }
       }
     }
 
     &.today:not(.in-range).hi-datepicker__cell--large {
       .hi-datepicker__content__wrap {
-        border-radius: 2px;
         margin: auto;
         border: 1px solid $basic-color;
         opacity: 0.8;
@@ -622,7 +674,6 @@ $basic-color: #4284f5 !default;
     &.current:not(.in-range) {
       &:not(.hi-datepicker__cell--large) .hi-datepicker__content__wrap {
         .hi-datepicker__content {
-          border-radius: 2px;
           margin: auto;
           background-color: $basic-color;
         }

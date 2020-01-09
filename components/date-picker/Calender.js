@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
-import {deconstructDate, getYearWeek} from './util'
+import { deconstructDate, getYearWeek, showLunarStatus, getPRCDate } from './util'
 import Provider from '../context'
 import Lunar from './toLunar'
-import holidaylist from './holidaylist'
 import {DAY_MILLISECONDS} from './constants'
 import {
   getDaysInMonth,
@@ -17,18 +16,37 @@ import {
   getYear,
   getMonth,
   toDate,
-  isValid,
-  showLunarStatus
+  isValid
 } from './dateUtil'
 
 class Calender extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      rows: [[], [], [], [], [], []]
+      rows: [[], [], [], [], [], []],
+      altCalendarPresetData: {}
     }
     this.weekNum = 0
+    this._getPresetData()
   }
+  _getPresetData () {
+    this.props.altCalendarPreset && getPRCDate(this.props.altCalendarPreset).then(res => {
+      const _allPRCDate = {}
+      Object.keys(res.data).forEach(key => {
+        let oneYear
+        res.data[key].PRCLunar.forEach(item => {
+          Object.assign(oneYear, {
+            [item.date.replace('/-/g', '/')]: item.text
+          })
+        })
+        Object.assign(_allPRCDate, oneYear)
+      })
+      this.setState({
+        altCalendarPresetData: res.data
+      })
+    })
+  }
+
   _getTime (week, y, m) {
     const r = new Date(y, m - 1, 1)
     const t = r.getTime() - week * DAY_MILLISECONDS
@@ -199,10 +217,12 @@ class Calender extends Component {
   }
   /**
    * 是否是节假日
-   * @param {string} date yyyy-MM-dd
+   * @param {string} date yyyy/MM/dd
    * @param {string} year yyyy
    */
   isHoliday (year, date) {
+    const holidaylist = {}
+
     const holidayBase = holidaylist[year]
     const holidayInfo = {}
     const reg = /[\u4E00-\u9FA5]+/
@@ -252,10 +272,8 @@ class Calender extends Component {
     const _year = getYear(newDate)
     const _month = getMonth(newDate) + 1
     const _value = type === 'year' ? 1 : value
-
     const LunarInfo = Lunar.toLunar(_year, _month, _value)
     const lunarcellinfo = this.isHoliday(_year, _year + '/' + _month + '/' + _value)
-
     if (type === 'year') {
       delete lunarcellinfo.status
       lunarcellinfo.Lunar = LunarInfo[3] + '-' + LunarInfo[4]
@@ -306,10 +324,8 @@ class Calender extends Component {
       )
     } else {
       return (
-        <span>
-          <span value={td.value} className='hi-datepicker__text--showLunar'>
-            {fullTimeInfo.Lunar}
-          </span>
+        <span value={td.value} className='hi-datepicker__text--showLunar'>
+          {fullTimeInfo.Lunar}
         </span>
       )
     }
@@ -401,7 +417,7 @@ class Calender extends Component {
                           value={cell.value}
                           className={this.getTDClass(cell, _index)}
                         >
-                          <div className='hi-datepicker__content__wrap'>
+                          <div className='hi-datepicker__content__wrap' value={cell.value}>
                             <div className='hi-datepicker__content' value={cell.value}>
                               <span value={cell.value} className='hi-datepicker__text'>
                                 {cell.text || cell.value}

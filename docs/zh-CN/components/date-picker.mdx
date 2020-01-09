@@ -96,8 +96,12 @@ import DemoModal from '../../demo/date-picker/section-modal.jsx'
 | maxDate     | 最大日期                          | Date                                               | null                                                                                                                                         | null   |
 | disabled    | 是否禁用输入框                    | boolean                                            | true \| false                                                                                                                                | false  |
 | clearable   | 是否可以清空                      | boolean                                            | true \| false                                                                                                                                | true   |
-| showTime    | 是否在日期选择器中显示时间选择器  | boolean                                            | true \| false                                                                                                                                | false  |
-| showLunar | 是否在日期选择器中显示农历     | boolean                                            | true \| false                                                                                                                                | false  |
+| showTime    | 是否在日期选择器中显示时间选择器     | boolean                                            | true \| false                                                                                                                                     | false  |
+| showLunar | 是否在日期选择器中显示农历             | boolean                                            | true \| false                                                                                                                                       | false  |
+| altCalendar | 日期中历法信息                      | calendarItem                                    | -                                                                                                                                             | 农历 & 假日  |
+| altCalendarPreset | 预置农历信息                  | string                                           | PRCLunar                                                                                                                                       | PRCLunar  |
+| dateMarkRender | 日期的右上角标记     | function(currentDate: timestamp, today: timestamp) => React.ReactNode | -                                                                                                                      | 休 \| 班 |
+| dateMarkPreset | 预置中国大陆节假日                     | string                                         | PRCHoliday                                                                                                                                     | PRCHoliday |
 | shortcuts   | 快捷面板                          | string[]                                              | 近一周, 近一月, 近三月, 近一年                                                                                                               | null   |
 | weekOffset  | 周起始<br/>默认周日做为第一列     | number                                             | 0 \| 1                                                                                                                                          | 0      |
 | placeholder | 自定义占位符<br/>数组用于范围日期 | string \| string[]                                    | -                                                                                                                                            | -      |
@@ -105,6 +109,14 @@ import DemoModal from '../../demo/date-picker/section-modal.jsx'
 
 
 ## Type
+### calendarItem
+| 参数     | 说明      | 类型    | 可选值 | 默认值 |
+| -------- | ------- | ------- | ------ | ------ |
+| date    | 日期     | Date \| string  \| timestamp(ms) | -      | -      |
+| text    |  描述信息  | string  |  -  | - |
+
+
+
 ### DateRange
 | 参数     | 说明            | 类型             | 可选值 | 默认值 |
 | -------- | --------------- | ---------------- | ------ | ------ |
