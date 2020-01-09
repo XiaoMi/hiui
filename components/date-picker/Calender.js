@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { deconstructDate, getYearWeek, showLunarStatus, getPRCDate } from './util'
+import { deconstructDate, getYearWeek, showLunarStatus } from './util'
 import Provider from '../context'
 import Lunar from './toLunar'
 import {DAY_MILLISECONDS} from './constants'
@@ -24,27 +24,9 @@ class Calender extends Component {
     super(props)
     this.state = {
       rows: [[], [], [], [], [], []],
-      altCalendarPresetData: {}
+      altCalendarPresetData: this.props.altCalendarPresetData
     }
     this.weekNum = 0
-    this._getPresetData()
-  }
-  _getPresetData () {
-    this.props.altCalendarPreset && getPRCDate(this.props.altCalendarPreset).then(res => {
-      const allPRCDate = {}
-      Object.keys(res.data).forEach(key => {
-        let oneYear
-        res.data[key].PRCLunar.forEach(item => {
-          Object.assign(oneYear, {
-            [item.date.replace('/-/g', '/')]: item.text
-          })
-        })
-        Object.assign(allPRCDate, oneYear)
-      })
-      this.setState({
-        altCalendarPresetData: res.data
-      })
-    })
   }
 
   _getTime (week, y, m) {
@@ -215,33 +197,7 @@ class Calender extends Component {
     }
     mouseMove(newDate)
   }
-  /**
-   * 是否是节假日
-   * @param {string} date yyyy/MM/dd
-   * @param {string} year yyyy
-   */
-  isHoliday (year, date) {
-    console.log(this.state.altCalendarPresetData)
-    const holidaylist = {}
 
-    const holidayBase = holidaylist[year]
-    const holidayInfo = {}
-    const reg = /[\u4E00-\u9FA5]+/
-    if (holidayBase) {
-      holidayBase.holidaylist && holidayBase.holidaylist.forEach(item => {
-        const status = {status: 1}
-        item.startday === date && Object.assign(holidayInfo, item, status)
-      })
-      holidayInfo.status = holidayBase.holiday[date] ? Number(holidayBase.holiday[date]) : null
-      if (!reg.test(holidayInfo.name)) {
-        holidayBase.solarTerms && holidayBase.solarTerms.forEach(item => {
-          const status = {status: holidayInfo.status ? holidayInfo.status : 3}
-          item.date === date && Object.assign(holidayInfo, item, status)
-        })
-      }
-    }
-    return holidayInfo
-  }
   /**
    * 获取完整时间
    * @param {*} value 日
@@ -273,20 +229,33 @@ class Calender extends Component {
     const _year = getYear(newDate)
     const _month = getMonth(newDate) + 1
     const _value = type === 'year' ? 1 : value
+    const datainfo = _year + '/' + _month + '/' + _value
     const LunarInfo = Lunar.toLunar(_year, _month, _value)
-    const lunarcellinfo = this.isHoliday(_year, _year + '/' + _month + '/' + _value)
-    if (type === 'year') {
-      delete lunarcellinfo.status
-      lunarcellinfo.Lunar = LunarInfo[3] + '-' + LunarInfo[4]
-    } else if (type === 'month') {
-      delete lunarcellinfo.status
-    } else {
-      lunarcellinfo.Lunar = LunarInfo[6]
+    let lunarcellinfo = {
+      isHeightLine: false
     }
-
+    // if (type === 'year') {
+    //   lunarcellinfo.Lunar = LunarInfo[3] + '-' + LunarInfo[4]
+    // } else if (type === 'month') {
+    //   delete lunarcellinfo.status
+    // } else {
+    // lunarcellinfo.text = LunarInfo[6]
+    // }
+    if (this.state.altCalendarPresetData && this.state.altCalendarPresetData[datainfo]) {
+      lunarcellinfo = {
+        text: this.state.altCalendarPresetData[datainfo],
+        isHeightLine: true
+      }
+    } else {
+      lunarcellinfo = {
+        text: LunarInfo[6],
+        isHeightLine: false
+      }
+    }
     return lunarcellinfo
   }
-  ToLunar (td) {
+
+  altCalendar = (td) => {
     const { type: layerType, date } = this.props
     const nDate = getYear(new Date())
     const propDate = getYear(date)
@@ -309,26 +278,33 @@ class Calender extends Component {
         break
     }
     const fullTimeInfo = this.getFullTime(td.value, _class)
-    if (fullTimeInfo.status) {
+    if (this.state.altCalendarPresetData) {
       return (
-        <React.Fragment>
+        <div className='hi-datepicker__content hi-datepicker__content--showLunar' value={td.value}>
           {
-            fullTimeInfo.status === 1 ? <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--rest'>休</span> : null
+            fullTimeInfo.isHeightLine
+              ? <span value={td.value} className='hi-datepicker__text--showLunar hi-datepicker__text--showLunar--festival'>
+                {fullTimeInfo.text}
+              </span>
+              : <span value={td.value} className='hi-datepicker__text--showLunar'>
+                {fullTimeInfo.text}
+              </span>
           }
-          {
-            fullTimeInfo.status === 2 ? <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--work'>班</span> : null
-          }
-          <span value={td.value} className='hi-datepicker__text--showLunar hi-datepicker__text--showLunar--festival'>
-            {fullTimeInfo.name || fullTimeInfo.Lunar}
-          </span>
-        </React.Fragment>
+        </div>
+        // <React.Fragment>
+        //   {
+        //     fullTimeInfo.status === 1 ? <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--rest'>休</span> : null
+        //   }
+        //   {
+        //     fullTimeInfo.status === 2 ? <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--work'>班</span> : null
+        //   }
+        //   <span value={td.value} className='hi-datepicker__text--showLunar hi-datepicker__text--showLunar--festival'>
+        //     {fullTimeInfo.name || fullTimeInfo.Lunar}
+        //   </span>
+        // </React.Fragment>
       )
     } else {
-      return (
-        <span value={td.value} className='hi-datepicker__text--showLunar'>
-          {fullTimeInfo.Lunar}
-        </span>
-      )
+      return null
     }
   }
   getTDClass (td, _index) {
@@ -380,7 +356,7 @@ class Calender extends Component {
     }
   }
   render () {
-    const {type, data} = this.props
+    const { type, data } = this.props
     const rows = data || this.getRows()
     return (
       <table
@@ -425,11 +401,7 @@ class Calender extends Component {
                               </span>
                             </div>
                             {
-                              showLunarStatus(this.props) && <div className='hi-datepicker__content hi-datepicker__content--showLunar' value={cell.value}>
-                                {
-                                  this.ToLunar(cell)
-                                }
-                              </div>
+                              this.altCalendar(cell)
                             }
                           </div>
                         </td>

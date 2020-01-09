@@ -211,7 +211,7 @@ class DatePanel extends Component {
   }
   _getNormalComponent () {
     const { currentView } = this.state
-    const { min, max, weekOffset, date, showLunar, altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset } = this.props
+    const { min, max, weekOffset, date, showLunar, altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData } = this.props
     const validDate = getStartDate(date)
     const { year, month } = deconstructDate(validDate)
     let component = null
@@ -221,6 +221,7 @@ class DatePanel extends Component {
       case 'week':
         component = (
           <Calender
+            altCalendarPresetData={altCalendarPresetData}
             altCalendar={altCalendar}
             altCalendarPreset={altCalendarPreset}
             dateMarkRender={dateMarkRender}

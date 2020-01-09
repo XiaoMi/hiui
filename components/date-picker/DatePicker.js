@@ -5,8 +5,33 @@ import DatePanel from './DatePanel'
 import DateRangePanel from './DateRangePanel'
 import WeekRangePanel from './WeekRangePanel'
 import Provider from '../context'
+import { getPRCDate } from './util'
 
 class DatePicker extends BasePicker {
+  constructor (props) {
+    super(props)
+    this._getPresetData()
+  }
+  // 获取预置数据
+  _getPresetData () {
+    this.props.altCalendarPreset && getPRCDate(this.props.altCalendarPreset).then(res => {
+      const allPRCDate = {}
+      console.log(res)
+      Object.keys(res.data).forEach(key => {
+        let oneYear = {}
+        res.data[key].PRCLunar.forEach(item => {
+          Object.assign(oneYear, {
+            [item.date.replace(/-/g, '/')]: item.text
+          })
+        })
+        Object.assign(allPRCDate, oneYear)
+      })
+      console.log(allPRCDate)
+      this.setState({
+        altCalendarPresetData: allPRCDate
+      })
+    })
+  }
   initPanel (state, props) {
     let component = null
     let d = state.date
@@ -18,6 +43,7 @@ class DatePicker extends BasePicker {
         component = (
           <DatePanel
             {...props}
+            altCalendarPresetData={this.state.altCalendarPresetData}
             date={state.date}
             format={this.state.format}
             onPick={this.onPick.bind(this)}
