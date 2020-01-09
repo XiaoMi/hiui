@@ -28,16 +28,16 @@ class Alert extends Component {
 
     switch (type) {
       case 'warning':
-        type = 'info-circle-o'
+        type = 'jinggao'
         break
       case 'error':
-        type = 'close-circle-o'
+        type = 'shibai'
         break
       case 'success':
-        type = 'check-circle-o'
+        type = 'chenggong'
         break
       default:
-        type = 'info-circle-o'
+        type = 'tishi'
     }
 
     return (
