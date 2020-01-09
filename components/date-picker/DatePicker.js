@@ -16,7 +16,6 @@ class DatePicker extends BasePicker {
   _getPresetData () {
     this.props.altCalendarPreset && getPRCDate(this.props.altCalendarPreset).then(res => {
       const allPRCDate = {}
-      console.log(res)
       Object.keys(res.data).forEach(key => {
         let oneYear = {}
         res.data[key].PRCLunar.forEach(item => {
@@ -26,9 +25,20 @@ class DatePicker extends BasePicker {
         })
         Object.assign(allPRCDate, oneYear)
       })
-      console.log(allPRCDate)
       this.setState({
         altCalendarPresetData: allPRCDate
+      })
+    })
+    this.props.dateMarkPreset && getPRCDate(this.props.dateMarkPreset).then(res => {
+      const allPRCDate = {}
+      Object.keys(res.data).forEach(key => {
+        console.log(key)
+        Object.keys(res.data[key].PRCHoliday).forEach(elkey => {
+          allPRCDate[elkey.replace(/-/g, '/')] = res.data[key].PRCHoliday[elkey]
+        })
+      })
+      this.setState({
+        dateMarkPresetData: allPRCDate
       })
     })
   }
@@ -44,6 +54,7 @@ class DatePicker extends BasePicker {
           <DatePanel
             {...props}
             altCalendarPresetData={this.state.altCalendarPresetData}
+            dateMarkPresetData={this.state.dateMarkPresetData}
             date={state.date}
             format={this.state.format}
             onPick={this.onPick.bind(this)}

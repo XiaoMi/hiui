@@ -22,9 +22,11 @@ import {
 class Calender extends Component {
   constructor (props) {
     super(props)
+    console.log(props)
     this.state = {
       rows: [[], [], [], [], [], []],
-      altCalendarPresetData: this.props.altCalendarPresetData
+      altCalendarPresetData: this.props.altCalendarPresetData,
+      dateMarkPresetData: this.props.dateMarkPresetData
     }
     this.weekNum = 0
   }
@@ -234,6 +236,7 @@ class Calender extends Component {
     let lunarcellinfo = {
       isHeightLine: false
     }
+    console.log(this.state.dateMarkPresetData[datainfo])
     // if (type === 'year') {
     //   lunarcellinfo.Lunar = LunarInfo[3] + '-' + LunarInfo[4]
     // } else if (type === 'month') {
@@ -244,12 +247,20 @@ class Calender extends Component {
     if (this.state.altCalendarPresetData && this.state.altCalendarPresetData[datainfo]) {
       lunarcellinfo = {
         text: this.state.altCalendarPresetData[datainfo],
-        isHeightLine: true
+        isHeightLine: true,
+        isMark: false
+      }
+    } else if (this.state.dateMarkPresetData && this.state.dateMarkPresetData[datainfo]) {
+      lunarcellinfo = {
+        text: this.state.dateMarkPresetData[datainfo],
+        isHeightLine: false,
+        isMark: true
       }
     } else {
       lunarcellinfo = {
         text: LunarInfo[6],
-        isHeightLine: false
+        isHeightLine: false,
+        isMark: false
       }
     }
     return lunarcellinfo
@@ -278,9 +289,19 @@ class Calender extends Component {
         break
     }
     const fullTimeInfo = this.getFullTime(td.value, _class)
-    if (this.state.altCalendarPresetData) {
+    if (this.state.altCalendarPresetData || this.state.dateMarkPresetData) {
       return (
         <div className='hi-datepicker__content hi-datepicker__content--showLunar' value={td.value}>
+          {
+            this.state.dateMarkPresetData && fullTimeInfo.isMark ? <React.Fragment>
+              {
+                fullTimeInfo.text === '1' ? <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--rest'>休</span> : null
+              }
+              {
+                fullTimeInfo.text === '2' ? <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--work'>班</span> : null
+              }
+            </React.Fragment> : null
+          }
           {
             fullTimeInfo.isHeightLine
               ? <span value={td.value} className='hi-datepicker__text--showLunar hi-datepicker__text--showLunar--festival'>

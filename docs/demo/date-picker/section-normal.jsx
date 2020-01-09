@@ -17,7 +17,7 @@ class Demo extends React.Component {
         <DatePicker
           showLunar
           altCalendarPreset='PRCLunar'
-          dataMarkPreset='PRCHoliday'
+          dateMarkPreset='PRCHoliday'
           value={this.state.date}
           onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
         />
