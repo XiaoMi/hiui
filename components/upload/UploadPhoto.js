@@ -84,7 +84,10 @@ class UploadPhoto extends Upload {
                 <li key={index} className='hi-upload__item' style={{cursor: 'pointer'}} onClick={() => this.previewImage(file, index)}>
                   <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} />
                   {
-                    onRemove && <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, index)} />
+                    onRemove && <Icon name='close-circle' className='hi-upload__photo-del' onClick={(e) => {
+                      e.stopPropagation()
+                      this.deleteFile(file, index)
+                    }} />
                   }
                   {
                     file.uploadState === 'error' && <div className='hi-upload__item--photo-error'>
