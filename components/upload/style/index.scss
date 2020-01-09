@@ -116,6 +116,7 @@
     min-height: 172px;
     box-sizing: border-box;
     border: 1px dashed #dbdbdb;
+    border-radius: 2px;
     cursor: pointer;
     padding: 12px;
 
@@ -176,10 +177,10 @@
       .icon {
         display: block;
         cursor: inherit;
-        margin-bottom: 10px;
+        margin-bottom: 6px;
 
         &::before {
-          font-size: 34px;
+          font-size: 40px;
           color: #4284f5;
         }
       }
