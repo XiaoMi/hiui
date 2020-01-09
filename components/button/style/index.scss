@@ -227,18 +227,19 @@
     color: $black;
 
     &:not(.hi-btn--disabled):hover {
-      border-color: #4284f5;
-      color: #4284f5;
+      border-color: $gray-dark;
+      color: $black;
     }
 
     &:not(.hi-btn--disabled):active {
-      border-color: #055ecf;
-      color: #055ecf;
+      background-color: $gray-lighter;
+      color: $black;
     }
 
     // Status: disabled
     &.hi-btn--disabled,
     &[disabled] {
+      background-color: $gray-lighter;
       border-color: rgba($black, 0.1);
       color: $gray;
     }
