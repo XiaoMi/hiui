@@ -203,7 +203,7 @@ $basic-color: #4284f5 !default;
           background-color: #fff;
 
           .hi-datepicker__content__wrap {
-            background-color: #4285f4;
+            background-color: $basic-color;
 
             .hi-datepicker__text——holiday {
               color: #fff;

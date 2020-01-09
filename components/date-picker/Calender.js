@@ -31,7 +31,7 @@ class Calender extends Component {
   }
   _getPresetData () {
     this.props.altCalendarPreset && getPRCDate(this.props.altCalendarPreset).then(res => {
-      const _allPRCDate = {}
+      const allPRCDate = {}
       Object.keys(res.data).forEach(key => {
         let oneYear
         res.data[key].PRCLunar.forEach(item => {
@@ -39,7 +39,7 @@ class Calender extends Component {
             [item.date.replace('/-/g', '/')]: item.text
           })
         })
-        Object.assign(_allPRCDate, oneYear)
+        Object.assign(allPRCDate, oneYear)
       })
       this.setState({
         altCalendarPresetData: res.data
@@ -221,6 +221,7 @@ class Calender extends Component {
    * @param {string} year yyyy
    */
   isHoliday (year, date) {
+    console.log(this.state.altCalendarPresetData)
     const holidaylist = {}
 
     const holidayBase = holidaylist[year]
