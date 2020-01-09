@@ -69,6 +69,10 @@
   content: '\e610';
 }
 
+.icon-check-circle::before {
+  content: '\e695';
+}
+
 .icon-check::before {
   content: '\e611';
 }
@@ -465,6 +469,10 @@
   content: '\e673';
 }
 
+.icon-upload-cloud::before {
+  content: '\e674';
+}
+
 .icon-user::before {
   content: '\e675';
 }
@@ -489,96 +497,84 @@
   content: '\e67a';
 }
 
-.icon-statistics::before {
-  content: '\e602';
-}
-
-.icon-rowheight::before {
-  content: '\e603';
-}
-
-.icon-packup::before {
-  content: '\e67b';
-}
-
-.icon-screen::before {
-  content: '\e67c';
-}
-
-.icon-summation::before {
-  content: '\e67d';
-}
-
-.icon-descendingorder::before {
-  content: '\e67e';
-}
-
-.icon-freezingcolumn::before {
-  content: '\e67f';
-}
-
-.icon-import::before {
-  content: '\e680';
-}
-
-.icon-ascendingorder::before {
-  content: '\e681';
-}
-
-.icon-caveat::before {
-  content: '\e682';
-}
-
-.icon-open::before {
-  content: '\e683';
-}
-
-.icon-averagevalue::before {
-  content: '\e684';
-}
-
-.icon-columnshows::before {
-  content: '\e685';
-}
-
-.icon-copy2::before {
-  content: '\e68a';
-}
-
-.icon-noapi::before {
-  content: '\e68b';
+.icon-reset::before {
+  content: '\e68d';
 }
 
 .icon-api::before {
   content: '\e68c';
 }
 
-.icon-reset1::before {
-  content: '\e68d';
+.icon-noapi::before {
+  content: '\e68b';
 }
 
-.icon-fangda::before {
-  content: '\e686';
+.icon-columns::before {
+  content: '\e685';
 }
 
-.icon-suoxiao::before {
+.icon-average::before {
+  content: '\e684';
+}
+
+.icon-row-height::before {
+  content: '\e603';
+}
+
+.icon-caveat::before {
+  content: '\e682';
+}
+
+.icon-asc::before {
+  content: '\e681';
+}
+
+.icon-desc::before {
+  content: '\e67e';
+}
+
+.icon-import::before {
+  content: '\e680';
+}
+
+.icon-freezing::before {
+  content: '\e67f';
+}
+
+.icon-summation::before {
+  content: '\e67d';
+}
+
+.icon-screen::before {
+  content: '\e67c';
+}
+
+.icon-stattistics::before {
+  content: '\e602';
+}
+
+.icon-stattistics::before {
+  content: '\e602';
+}
+
+.icon-zoom-in::before {
   content: '\e687';
 }
 
-.icon-dengbi::before {
+.icon-zoom-out::before {
+  content: '\e686';
+}
+
+.icon-ratio::before {
   content: '\e689';
 }
 
-.icon-xiangzuoxuanzhuan::before {
+.icon-rotate-left::before {
   content: '\e688';
 }
 
-.icon-xiangyouxuanzhuan::before {
+.icon-rotate-right::before {
   content: '\e68e';
-}
-
-.icon-upload-cloud::before {
-  content: '\e674';
 }
 
 .icon-maodian::before {
@@ -601,12 +597,12 @@
   content: '\e693';
 }
 
-.icon-Close::before {
-  content: '\e694';
+.icon-open::before {
+  content: '\e683';
 }
 
-.icon-IconMenu::before {
-  content: '\e696';
+.icon-packup::before {
+  content: '\e67b';
 }
 
 .icon-TreeMinus::before {
@@ -615,6 +611,14 @@
 
 .icon-TreePlus::before {
   content: '\e698';
+}
+
+.icon-Collapse::before {
+  content: '\e695';
+}
+
+.icon-Expand::before {
+  content: '\e69f';
 }
 
 .icon-fire::before {
@@ -639,12 +643,4 @@
 
 .icon-Check-circle-o1::before {
   content: '\e69e';
-}
-
-.icon-Collapse::before {
-  content: '\e695';
-}
-
-.icon-Expand::before {
-  content: '\e69f';
 }
