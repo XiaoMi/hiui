@@ -52,7 +52,7 @@
     }
 
     .icon-plus {
-      font-size: 32px;
+      font-size: 24px;
     }
   }
 
@@ -221,13 +221,10 @@
       text-align: center;
       padding: 0;
       margin: 8px;
-      // margin-right: 16px;
       overflow: visible;
-      // margin-top: 0;
       vertical-align: middle;
       background: #fff;
-      // margin-bottom: 16px;
-      border-radius: 4px;
+      border-radius: 2px;
 
       &--photo-error {
         height: 28px;
@@ -328,13 +325,13 @@
     height: 140px;
     left: 0;
     top: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
     color: #fff;
     font-size: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 4px;
+    border-radius: 2px;
   }
 
   &__loading-bar {
