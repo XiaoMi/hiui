@@ -15,8 +15,25 @@ class Demo extends React.Component {
     return (
       <div style={{display:'flex', flexWrap: 'wrap'}}>
         <DatePicker
-          showLunar
           altCalendarPreset='PRCLunar'
+          altCalendar = {[
+            {
+              date:'2019/10/1',
+              text:'sss'
+            },
+        ]}
+        dateMarkRender = {
+          (c,t) => {
+            if(c == '2019/10/6'){
+              return (
+                <span>资</span>
+              )
+            }else {
+              return null
+            }
+            console.log(c,t)
+          }
+        }
           dateMarkPreset='PRCHoliday'
           value={this.state.date}
           onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}

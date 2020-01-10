@@ -5,15 +5,18 @@ import DatePanel from './DatePanel'
 import DateRangePanel from './DateRangePanel'
 import WeekRangePanel from './WeekRangePanel'
 import Provider from '../context'
-import { getPRCDate } from './util'
+import { getPRCDate, deconstructDate } from './util'
 
 class DatePicker extends BasePicker {
   constructor (props) {
     super(props)
-    this._getPresetData()
+    this.altCalendarPresetData = {}
+    this.dateMarkPresetData = {}
+    this.props.altCalendar ? this._altCalendarData() : this._getLunarPresetData()
+    this._getMarkPresetData()
   }
   // 获取预置数据
-  _getPresetData () {
+  _getLunarPresetData () {
     this.props.altCalendarPreset && getPRCDate(this.props.altCalendarPreset).then(res => {
       const allPRCDate = {}
       Object.keys(res.data).forEach(key => {
@@ -25,22 +28,37 @@ class DatePicker extends BasePicker {
         })
         Object.assign(allPRCDate, oneYear)
       })
-      this.setState({
-        altCalendarPresetData: allPRCDate
-      })
+
+      this.altCalendarPresetData = allPRCDate
     })
+  }
+  // 获取预置数据
+  _getMarkPresetData () {
     this.props.dateMarkPreset && getPRCDate(this.props.dateMarkPreset).then(res => {
       const allPRCDate = {}
       Object.keys(res.data).forEach(key => {
-        console.log(key)
         Object.keys(res.data[key].PRCHoliday).forEach(elkey => {
-          allPRCDate[elkey.replace(/-/g, '/')] = res.data[key].PRCHoliday[elkey]
+          allPRCDate[elkey.replace(/-/g, '/')] = res.data[key].PRCHoliday[elkey] === '1'
+            ? <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--rest'>休</span>
+            : <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--work'>班</span>
         })
       })
-      this.setState({
-        dateMarkPresetData: allPRCDate
-      })
+      this.dateMarkPresetData = allPRCDate
     })
+  }
+  _altCalendarData = () => {
+    const allData = {}
+    this.props.altCalendar.forEach(item => {
+      console.log(item, deconstructDate(item.date))
+      const dateInfo = deconstructDate(item.date)
+      if (!Number.isNaN(dateInfo.year)) {
+        Object.assign(allData, {
+          [dateInfo.year + '/' + dateInfo.month + '/' + dateInfo.day]: item.text
+        })
+      }
+    })
+    console.log('alldata', allData)
+    this.altCalendarPresetData = allData
   }
   initPanel (state, props) {
     let component = null
@@ -53,8 +71,8 @@ class DatePicker extends BasePicker {
         component = (
           <DatePanel
             {...props}
-            altCalendarPresetData={this.state.altCalendarPresetData}
-            dateMarkPresetData={this.state.dateMarkPresetData}
+            altCalendarPresetData={this.altCalendarPresetData}
+            dateMarkPresetData={this.dateMarkPresetData}
             date={state.date}
             format={this.state.format}
             onPick={this.onPick.bind(this)}
@@ -66,6 +84,8 @@ class DatePicker extends BasePicker {
         component = (
           <DatePanel
             {...props}
+            altCalendarPresetData={this.altCalendarPresetData}
+            dateMarkPresetData={this.dateMarkPresetData}
             format={this.state.format}
             date={state.date}
             onPick={this.onPick.bind(this)}
@@ -77,6 +97,8 @@ class DatePicker extends BasePicker {
         component = (
           <DateRangePanel
             {...props}
+            altCalendarPresetData={this.altCalendarPresetData}
+            dateMarkPresetData={this.dateMarkPresetData}
             format={this.state.format}
             date={d}
             onPick={this.onPick.bind(this)}

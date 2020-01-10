@@ -40,8 +40,8 @@ export const nextMonth = function (date) {
  * 是否展示历法次要信息
  * @param {Object} props
  */
-export const showLunarStatus = (props) => {
-  return props.showLunar
+export const showLargeCalendar = (props) => {
+  return props.altCalendar || props.altCalendarPreset || props.dateMarkRender || props.dateMarkPreset
 }
 
 export const getPRCDate = (api) => {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import Calender from './Calender'
-import { deconstructDate, nextMonth, showLunarStatus } from './util'
+import { deconstructDate, nextMonth, showLargeCalendar } from './util'
 import { DAY_MILLISECONDS } from './constants'
 import Icon from '../icon'
 import classNames from 'classnames'
@@ -274,7 +274,7 @@ class DateRangePanel extends Component {
   }
   _getNormalComponent (date, flag, showLunar) {
     let { minDate, maxDate, range, layout } = this.state
-    const { altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset } = this.props
+    const { altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData } = this.props
 
     let component = null
     const { year, month } = deconstructDate(date)
@@ -299,6 +299,8 @@ class DateRangePanel extends Component {
         const monthData = this.getYearOrMonthData(month, 'month')
         component = (
           <Calender
+            altCalendarPresetData={altCalendarPresetData}
+            dateMarkPresetData={dateMarkPresetData}
             altCalendar={altCalendar}
             altCalendarPreset={altCalendarPreset}
             dateMarkRender={dateMarkRender}
@@ -314,6 +316,8 @@ class DateRangePanel extends Component {
       default:
         component = (
           <Calender
+            altCalendarPresetData={altCalendarPresetData}
+            dateMarkPresetData={dateMarkPresetData}
             altCalendar={altCalendar}
             altCalendarPreset={altCalendarPreset}
             dateMarkRender={dateMarkRender}
@@ -339,13 +343,13 @@ class DateRangePanel extends Component {
       'hi-datepicker',
       theme && 'theme__' + theme
     )
-    console.log('showLunarStatus(this.props)', showLunarStatus(this.props))
+    console.log('showLargeCalendar(this.props)', showLargeCalendar(this.props))
     const bodyCls = classNames(
       'hi-datepicker__body',
       'hi-datepicker__body--range',
       shortcuts && 'hi-datepicker__body--shortcuts',
-      shortcuts && showLunarStatus(this.props) && 'hi-datepicker__body--shortcuts--large',
-      (!shortcuts) && showLunarStatus(this.props) && 'hi-datepicker__body--range--large'
+      shortcuts && showLargeCalendar(this.props) && 'hi-datepicker__body--shortcuts--large',
+      (!shortcuts) && showLargeCalendar(this.props) && 'hi-datepicker__body--range--large'
 
     )
     const panelClsleft = classNames(

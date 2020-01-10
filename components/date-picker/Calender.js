@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { deconstructDate, getYearWeek, showLunarStatus } from './util'
+import { deconstructDate, getYearWeek, showLargeCalendar } from './util'
 import Provider from '../context'
 import Lunar from './toLunar'
 import {DAY_MILLISECONDS} from './constants'
@@ -199,7 +199,13 @@ class Calender extends Component {
     }
     mouseMove(newDate)
   }
-
+  getMarkNode (node) {
+    return (
+      <span className='hi-datepicker__text——holiday'>
+        {node}
+      </span>
+    )
+  }
   /**
    * 获取完整时间
    * @param {*} value 日
@@ -234,33 +240,22 @@ class Calender extends Component {
     const datainfo = _year + '/' + _month + '/' + _value
     const LunarInfo = Lunar.toLunar(_year, _month, _value)
     let lunarcellinfo = {
+      text: LunarInfo[6],
       isHeightLine: false
     }
-    console.log(this.state.dateMarkPresetData[datainfo])
-    // if (type === 'year') {
-    //   lunarcellinfo.Lunar = LunarInfo[3] + '-' + LunarInfo[4]
-    // } else if (type === 'month') {
-    //   delete lunarcellinfo.status
-    // } else {
-    // lunarcellinfo.text = LunarInfo[6]
-    // }
-    if (this.state.altCalendarPresetData && this.state.altCalendarPresetData[datainfo]) {
+    if (this.props.altCalendar || this.props.dateMarkRender) {
+      const markFunc = this.props.dateMarkRender
+
       lunarcellinfo = {
-        text: this.state.altCalendarPresetData[datainfo],
-        isHeightLine: true,
-        isMark: false
+        text: this.state.altCalendarPresetData && this.state.altCalendarPresetData[datainfo] ? this.state.altCalendarPresetData[datainfo] : null,
+        isHeightLine: this.state.altCalendarPresetData && this.state.altCalendarPresetData[datainfo],
+        nodeMark: markFunc(datainfo) ? this.getMarkNode(markFunc(datainfo)) : this.state.dateMarkPresetData && this.state.dateMarkPresetData[datainfo] ? this.state.dateMarkPresetData[datainfo] : null
       }
-    } else if (this.state.dateMarkPresetData && this.state.dateMarkPresetData[datainfo]) {
+    } else if ((this.state.dateMarkPresetData && this.state.dateMarkPresetData[datainfo]) || (this.state.altCalendarPresetData && this.state.altCalendarPresetData[datainfo])) {
       lunarcellinfo = {
-        text: this.state.dateMarkPresetData[datainfo],
-        isHeightLine: false,
-        isMark: true
-      }
-    } else {
-      lunarcellinfo = {
-        text: LunarInfo[6],
-        isHeightLine: false,
-        isMark: false
+        text: this.state.altCalendarPresetData && this.state.altCalendarPresetData[datainfo] ? this.state.altCalendarPresetData[datainfo] : LunarInfo[6],
+        isHeightLine: this.state.altCalendarPresetData && this.state.altCalendarPresetData[datainfo],
+        nodeMark: this.state.dateMarkPresetData && this.state.dateMarkPresetData[datainfo] ? this.state.dateMarkPresetData[datainfo] : null
       }
     }
     return lunarcellinfo
@@ -288,41 +283,27 @@ class Calender extends Component {
         _class.push(td.type)
         break
     }
-    const fullTimeInfo = this.getFullTime(td.value, _class)
     if (this.state.altCalendarPresetData || this.state.dateMarkPresetData) {
+      const fullTimeInfo = this.getFullTime(td.value, _class)
       return (
-        <div className='hi-datepicker__content hi-datepicker__content--showLunar' value={td.value}>
+        <React.Fragment>
           {
-            this.state.dateMarkPresetData && fullTimeInfo.isMark ? <React.Fragment>
-              {
-                fullTimeInfo.text === '1' ? <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--rest'>休</span> : null
-              }
-              {
-                fullTimeInfo.text === '2' ? <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--work'>班</span> : null
-              }
-            </React.Fragment> : null
+            fullTimeInfo.nodeMark ? fullTimeInfo.nodeMark : null
           }
           {
-            fullTimeInfo.isHeightLine
-              ? <span value={td.value} className='hi-datepicker__text--showLunar hi-datepicker__text--showLunar--festival'>
-                {fullTimeInfo.text}
-              </span>
-              : <span value={td.value} className='hi-datepicker__text--showLunar'>
-                {fullTimeInfo.text}
-              </span>
+            this.state.altCalendarPresetData && fullTimeInfo.text ? <div className='hi-datepicker__content hi-datepicker__content--showLunar' value={td.value}>
+              {
+                fullTimeInfo.isHeightLine
+                  ? <span value={td.value} className='hi-datepicker__text--showLunar hi-datepicker__text--showLunar--festival'>
+                    {fullTimeInfo.text}
+                  </span>
+                  : <span value={td.value} className='hi-datepicker__text--showLunar'>
+                    {fullTimeInfo.text}
+                  </span>
+              }
+            </div> : null
           }
-        </div>
-        // <React.Fragment>
-        //   {
-        //     fullTimeInfo.status === 1 ? <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--rest'>休</span> : null
-        //   }
-        //   {
-        //     fullTimeInfo.status === 2 ? <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--work'>班</span> : null
-        //   }
-        //   <span value={td.value} className='hi-datepicker__text--showLunar hi-datepicker__text--showLunar--festival'>
-        //     {fullTimeInfo.name || fullTimeInfo.Lunar}
-        //   </span>
-        // </React.Fragment>
+        </React.Fragment>
       )
     } else {
       return null
@@ -331,7 +312,7 @@ class Calender extends Component {
   getTDClass (td, _index) {
     const { type: layerType, date } = this.props
     let _class = ['hi-datepicker__cell']
-    if (showLunarStatus(this.props)) {
+    if (showLargeCalendar(this.props)) {
       _class.push('hi-datepicker__cell--large')
       _index === 6 && _class.push('hi-datepicker__cell--large--laster')
     }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Calender from './Calender'
-import { deconstructDate, showLunarStatus } from './util'
+import { deconstructDate, showLargeCalendar } from './util'
 import TimePanel from './TimePanel'
 import Icon from '../icon'
 import classNames from 'classnames'
@@ -241,6 +241,8 @@ class DatePanel extends Component {
         const yearData = this.getYearOrMonthData(year, 'year')
         component = (
           <Calender
+            altCalendarPresetData={altCalendarPresetData}
+            dateMarkPresetData={dateMarkPresetData}
             altCalendar={altCalendar}
             altCalendarPreset={altCalendarPreset}
             dateMarkRender={dateMarkRender}
@@ -257,6 +259,8 @@ class DatePanel extends Component {
         const monthData = this.getYearOrMonthData(month, 'month')
         component = (
           <Calender
+            altCalendarPresetData={altCalendarPresetData}
+            dateMarkPresetData={dateMarkPresetData}
             altCalendar={altCalendar}
             altCalendarPreset={altCalendarPreset}
             dateMarkRender={dateMarkRender}
@@ -280,7 +284,7 @@ class DatePanel extends Component {
       'hi-datepicker__body',
       showTime && 'hi-datepicker__body--hastime',
       type === 'timeperiod' && 'hi-datepicker__body--period',
-      showLunarStatus(this.props) && 'hi-datepicker__body--large'
+      showLargeCalendar(this.props) && 'hi-datepicker__body--large'
     )
     return (
       <div style={this.props.style} className={_c}>
