@@ -94,6 +94,7 @@ class Select extends Component {
       dropdownShow: false,
       fetching: false,
       keyword: '',
+      filterText: '',
       searchInput: {
         width: 2
       }
@@ -123,7 +124,7 @@ class Select extends Component {
 
   clickOutside (e) {
     const selectInput = ReactDOM.findDOMNode(this.selectInput)
-    if (selectInput && selectInput.contains(e.target)) {
+    if ((selectInput && selectInput.contains(e.target)) || e.target.tagName === 'INPUT') {
       return
     }
     this.hideDropdown()
@@ -233,7 +234,6 @@ class Select extends Component {
       }
     })
     this.onChange(_selectedItems, changedItems, () => {}, _selectedItems)
-    this.selectInput.focus()
   }
 
   onClickOption (item, index) {
@@ -267,7 +267,7 @@ class Select extends Component {
     if (this.props.type !== 'multiple') {
       this.hideDropdown()
     } else {
-      this.selectInput.focus()
+
     }
   }
 
@@ -277,7 +277,7 @@ class Select extends Component {
         keyword: ''
       },
       () => {
-        this.selectInput.clearInput()
+        // this.selectInput.clearInput()
       }
     )
   }
@@ -290,7 +290,7 @@ class Select extends Component {
       return
     }
 
-    this.selectInput.focus()
+    //
     if (this.props.disabled) {
       return
     }
@@ -309,7 +309,6 @@ class Select extends Component {
 
   showDropdown () {
     this.state.dropdownShow === false && this.setState({ dropdownShow: true })
-    this.selectInput.focus()
   }
 
   deleteItem (item) {
@@ -321,7 +320,7 @@ class Select extends Component {
 
     selectedItems.splice(sIndex, 1)
     this.onChange(selectedItems, item, () => {
-      this.selectInput.focus()
+
     }, selectedItems)
   }
   // 全部删除
@@ -561,6 +560,7 @@ class Select extends Component {
       focusedIndex,
       fetching
     } = this.state
+
     const extraClass = {
       "is-multiple": type === "multiple",
       "is-single": type === "single"
@@ -582,7 +582,6 @@ class Select extends Component {
             }}
             mode={type}
             disabled={disabled}
-            searchable={searchable}
             clearable={clearable}
             dropdownShow={dropdownShow}
             placeholder={placeholder}
@@ -597,11 +596,9 @@ class Select extends Component {
               }
               onClick()
             }}
-            onBlur={onBlur}
-            onFocus={onFocus}
+            
             onDelete={this.deleteItem.bind(this)}
             onClear={this.deleteAllItems.bind(this)}
-            onSearch={this.debouncedFilterItems.bind(this)}
             onEnterSelect={this.onEnterSelect.bind(this)}
           />
         </div>
@@ -614,9 +611,14 @@ class Select extends Component {
           className="hi-select__popper"
           placement="top-bottom-start"
         >
+          
           <SelectDropdown
             noFoundTip={emptyContent}
             mode={type}
+            onBlur={onBlur}
+            onFocus={onFocus}
+            onSearch={this.debouncedFilterItems.bind(this)}
+            searchable={searchable}
             showCheckAll={showCheckAll}
             checkAll={this.checkAll.bind(this)}
             loading={fetching}
