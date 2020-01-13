@@ -528,6 +528,8 @@ $basic-color: #4284f5 !default;
     }
 
     &.hi-datepicker__cell--large {
+      position: relative;
+
       .hi-datepicker__content__wrap {
         border-radius: 2px;
 
@@ -595,6 +597,7 @@ $basic-color: #4284f5 !default;
 
     .hi-datepicker__content--showLunar {
       padding-bottom: 3px;
+      overflow: hidden;
     }
 
     .hi-datepicker__text--showLunar {
@@ -611,9 +614,9 @@ $basic-color: #4284f5 !default;
       width: 0;
       height: 0;
       font-size: 12px;
-      position: relative;
-      top: -26px;
-      right: -12px;
+      position: absolute;
+      top: 2px;
+      right: 16px;
 
       &--rest {
         color: #1da653;

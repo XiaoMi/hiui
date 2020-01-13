@@ -2,7 +2,10 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'date-picker-normal'
-const code = `import React from 'react'
+const rightOptions = ['基础', '带农历']
+const code = [
+  {
+    code: `import React from 'react'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   constructor() {
@@ -15,32 +18,66 @@ class Demo extends React.Component {
     return (
       <div style={{display:'flex', flexWrap: 'wrap'}}>
         <DatePicker
-          altCalendarPreset='PRCLunar'
-          altCalendar = {[
-            {
-              date:'2019/10/1',
-              text:'sss'
-            },
-        ]}
-        dateMarkRender = {
-          (c,t) => {
-            if(c == '2019/10/6'){
-              return (
-                <span>资</span>
-              )
-            }else {
-              return null
-            }
-            console.log(c,t)
-          }
-        }
-          dateMarkPreset='PRCHoliday'
           value={this.state.date}
           onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
         />
       </div>
     )
   }
-}`
-const DemoNormal = () => <DocViewer code={code} scope={{ DatePicker }} prefix={prefix} />
+}`,
+    opt: ['基础']
+  },
+  {
+    code:
+  `import React from 'react'
+import DatePicker from '@hi-ui/hiui/es/date-picker'\n
+class Demo extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      date: new Date(),
+    }
+  }
+  render () {
+    return (
+      <div style={{display:'flex', flexWrap: 'wrap'}}>
+        <DatePicker
+          altCalendarPreset='zh-CN'
+          dateMarkPreset='zh-CN'
+          altCalendar = {[
+              {
+                date:'2020/4/8',
+                text:'十周年'
+              },
+          ]}
+          dateMarkRender = {
+              (currentDate,today) => {
+                const date = DatePicker.format(currentDate, 'yyyy/M/D')
+                const yesterday = DatePicker.format(today-86400000, 'yyyy/M/D')
+
+                if(date == '2020/4/8'){
+                    return (
+                      <span style={{color:'#fa0'}}>米</span>
+                    )
+                } else if (date === yesterday){
+                    return (
+                      <span>昨</span>
+                    )
+                } else {
+                    return null
+                }
+              }
+          }
+          value={this.state.date}
+          onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
+        />
+      </div>
+    )
+  }
+}`,
+    opt: ['带农历']
+  }
+
+]
+const DemoNormal = () => <DocViewer code={code} rightOptions={rightOptions} scope={{ DatePicker }} prefix={prefix} />
 export default DemoNormal

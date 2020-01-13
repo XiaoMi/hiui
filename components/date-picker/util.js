@@ -50,5 +50,5 @@ export const getPRCDate = (api) => {
     url,
     method: 'GET'
   }
-  return request.create().request(options)
+  return url ? request.create().request(options) : null
 }

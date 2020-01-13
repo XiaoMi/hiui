@@ -12,13 +12,13 @@ class DatePicker extends BasePicker {
     super(props)
     this.altCalendarPresetData = {}
     this.dateMarkPresetData = {}
-    this.props.altCalendar ? this._altCalendarData() : this._getLunarPresetData()
+    this._getLunarPresetData()
     this._getMarkPresetData()
   }
   // 获取预置数据
   _getLunarPresetData () {
-    this.props.altCalendarPreset && getPRCDate(this.props.altCalendarPreset).then(res => {
-      const allPRCDate = {}
+    const allPRCDate = {}
+    this.props.altCalendarPreset === 'zh-CN' ? getPRCDate('PRCLunar').then(res => {
       Object.keys(res.data).forEach(key => {
         let oneYear = {}
         res.data[key].PRCLunar.forEach(item => {
@@ -28,13 +28,13 @@ class DatePicker extends BasePicker {
         })
         Object.assign(allPRCDate, oneYear)
       })
-
-      this.altCalendarPresetData = allPRCDate
+      this.altCalendarPresetData = this.props.altCalendar ? this._altCalendarData(allPRCDate) : allPRCDate
     })
+      : this.altCalendarPresetData = this.props.altCalendar ? this._altCalendarData(allPRCDate) : {}
   }
   // 获取预置数据
   _getMarkPresetData () {
-    this.props.dateMarkPreset && getPRCDate(this.props.dateMarkPreset).then(res => {
+    this.props.dateMarkPreset === 'zh-CN' && getPRCDate('PRCHoliday').then(res => {
       const allPRCDate = {}
       Object.keys(res.data).forEach(key => {
         Object.keys(res.data[key].PRCHoliday).forEach(elkey => {
@@ -46,7 +46,7 @@ class DatePicker extends BasePicker {
       this.dateMarkPresetData = allPRCDate
     })
   }
-  _altCalendarData = () => {
+  _altCalendarData = (allPRCDate) => {
     const allData = {}
     this.props.altCalendar.forEach(item => {
       console.log(item, deconstructDate(item.date))
@@ -57,8 +57,7 @@ class DatePicker extends BasePicker {
         })
       }
     })
-    console.log('alldata', allData)
-    this.altCalendarPresetData = allData
+    return Object.assign(allPRCDate, allData)
   }
   initPanel (state, props) {
     let component = null
