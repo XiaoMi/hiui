@@ -124,7 +124,7 @@ class Select extends Component {
 
   clickOutside (e) {
     const selectInput = ReactDOM.findDOMNode(this.selectInput)
-    if ((selectInput && selectInput.contains(e.target)) || e.target.tagName === 'INPUT') {
+    if ((selectInput && selectInput.contains(e.target)) || (e.target.tagName === 'INPUT' && e.target.className.includes('hi-input__text'))) {
       return
     }
     this.hideDropdown()
@@ -216,14 +216,14 @@ class Select extends Component {
     onChange && onChange(selectedIds, changedItems)
   }
 
-  checkAll (e) {
+  checkAll (filterItems, e) {
     // 全选
     e && e.stopPropagation()
 
-    const { dropdownItems, selectedItems } = this.state
+    const { selectedItems } = this.state
     let _selectedItems = [...selectedItems]
     let changedItems = []
-    dropdownItems.forEach(item => {
+    filterItems.forEach(item => {
       if (!item.disabled && this.matchFilter(item)) {
         if (
           !_selectedItems.map(selectItem => selectItem.id).includes(item.id)
@@ -548,7 +548,8 @@ class Select extends Component {
       onClick,
       onBlur,
       onFocus,
-      dataSource
+      dataSource,
+      filterOption
     } = this.props
     const placeholder = this.localeDatasProps('placeholder')
     const {
@@ -599,7 +600,6 @@ class Select extends Component {
             
             onDelete={this.deleteItem.bind(this)}
             onClear={this.deleteAllItems.bind(this)}
-            onEnterSelect={this.onEnterSelect.bind(this)}
           />
         </div>
         {children}
@@ -611,7 +611,6 @@ class Select extends Component {
           className="hi-select__popper"
           placement="top-bottom-start"
         >
-          
           <SelectDropdown
             noFoundTip={emptyContent}
             mode={type}
@@ -623,8 +622,12 @@ class Select extends Component {
             checkAll={this.checkAll.bind(this)}
             loading={fetching}
             focusedIndex={focusedIndex}
+            filterOption={filterOption}
             matchFilter={this.matchFilter.bind(this)}
             setFocusedIndex={this.setFocusedIndex.bind(this)}
+            moveFocusedIndex={this.moveFocusedIndex.bind(this)}
+            onEnterSelect={this.onEnterSelect.bind(this)}
+            show={dropdownShow && this.props.open}
             optionWidth={optionWidth}
             dropdownItems={type === 'multiple' && dataSource && this.state.keyword === '' ? cacheSelectedItems : dropdownItems}
             selectedItems={selectedItems}

@@ -11,8 +11,11 @@ class SelectDropdown extends Component {
     super(props)
     this.state = {
       filterItems: this.props.dropdownItems,
-      keyword: ''
+      searchbarValue: ''
     }
+  }
+  static getDerivedStateFromProps (nextProps) {
+    return nextProps.show ? null : { filterItems: nextProps.dropdownItems, searchbarValue: '' }
   }
   onClickOption (e, item, index) {
     e.stopPropagation()
@@ -20,36 +23,48 @@ class SelectDropdown extends Component {
     if (item.disabled) {
       return
     }
+    this.setState({
+      searchbarValue: ''
+    })
     this.props.onClickOption(item, index)
   }
   filterOptions = (keyword) => {
-    const { dropdownItems } = this.props
-    const filterItem = []
-    dropdownItems.map((item) => {
-      item.title.includes(keyword) && filterItem.push(item)
-    })
+    const { dropdownItems, filterOption } = this.props
+    let filterItems = []
+    if (typeof filterOption === 'function' || keyword === '') {
+      filterItems = dropdownItems
+    } else {
+      dropdownItems.map((item) => {
+        // item.title.includes(keyword) || item.id.includes(keyword) && filterItems.push(item)
+        item.title.includes(keyword) && filterItems.push(item)
+      })
+    }
     this.setState({
-      filterItems: filterItem,
-      keyword: keyword
+      filterItems: filterItems,
+      searchbarValue: keyword
     })
   }
   searchEvent (e) {
     const filterText = e.target.value
     this.filterOptions(filterText)
     this.props.onSearch(e.target.value)
+
+    this.setState({
+      searchbarValue: filterText
+    })
   }
   hightlightKeyword (text, uniqueKey) {
-    const { keyword } = this.state
-    let _keyword = this.state.keyword
-    _keyword = keyword.includes('[') ? _keyword.replace(/\[/gi, '\\[') : _keyword
-    _keyword = keyword.includes('(') ? _keyword.replace(/\(/gi, '\\(') : _keyword
-    _keyword = keyword.includes(')') ? _keyword.replace(/\)/gi, '\\)') : _keyword
+    const { searchbarValue } = this.state
+    let _keyword = this.state.searchbarValue
+    _keyword = searchbarValue.includes('[') ? _keyword.replace(/\[/gi, '\\[') : _keyword
+    _keyword = searchbarValue.includes('(') ? _keyword.replace(/\(/gi, '\\(') : _keyword
+    _keyword = searchbarValue.includes(')') ? _keyword.replace(/\)/gi, '\\)') : _keyword
 
     let parts = text.split(new RegExp(`(${_keyword})`, 'gi'))
     return (
       <span key={uniqueKey}>
         { parts.map((part, i) =>
-          <span key={i} className={part === keyword ? 'hi-select__dropdown--item__name-hightlight' : ''}>
+          <span key={i} className={part === searchbarValue ? 'hi-select__dropdown--item__name-hightlight' : ''}>
             { part }
           </span>
         )
@@ -124,14 +139,13 @@ class SelectDropdown extends Component {
       loading,
       optionWidth,
       showCheckAll,
-      checkAll,
       dropdownRender,
       theme,
       searchable,
       onFocus,
       onBlur
     } = this.props
-    const { filterItems } = this.state
+    const { filterItems, searchbarValue } = this.state
     let matched = 0
     const style = optionWidth && {
       width: optionWidth
@@ -150,6 +164,7 @@ class SelectDropdown extends Component {
               placeholder='搜索'
               clearable='true'
               autoFocus
+              value={searchbarValue}
               onKeyDown={this.handleKeyDown.bind(this)}
               onFocus={onFocus.bind(this)}
               onBlur={onBlur.bind(this)}
@@ -204,7 +219,7 @@ class SelectDropdown extends Component {
           </ul>
         )}
         {mode === 'multiple' && showCheckAll && (
-          <div className={`hi-select__dropdown-check-all theme__${theme}`} onClick={checkAll}>
+          <div className={`hi-select__dropdown-check-all theme__${theme}`} onClick={this.props.checkAll.bind(this, filterItems)}>
             全选
           </div>
         )}

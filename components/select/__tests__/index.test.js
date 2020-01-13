@@ -284,12 +284,12 @@ describe('Select', () => {
 
     wrapper.find('.hi-select__input').simulate('click')
     expect(
-      document.querySelectorAll('.hi-select__dropdown--item')[1].getAttribute('data-focused')
-    ).toEqual('false')
+      document.querySelectorAll('.hi-select__dropdown--item')[0].getAttribute('data-focused')
+    ).toEqual('true')
     wrapper.find('.hi-select__input--search').find('input').simulate('keydown', { keyCode: 40 })
     expect(
       document.querySelectorAll('.hi-select__dropdown--item')[1].getAttribute('data-focused')
-    ).toEqual('true')
+    ).toEqual('false')
     wrapper.find('.hi-select__input--search').find('input').simulate('keydown', { keyCode: 13 })
     expect(wrapper.find('.hi-select__input').find('.hi-select__input--item__name').text()).toEqual(
       '手机'
