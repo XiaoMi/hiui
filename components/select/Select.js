@@ -124,7 +124,7 @@ class Select extends Component {
 
   clickOutside (e) {
     const selectInput = ReactDOM.findDOMNode(this.selectInput)
-    if ((selectInput && selectInput.contains(e.target)) || (e.target.tagName === 'INPUT' && e.target.className.includes('hi-input__text'))) {
+    if ((selectInput && selectInput.contains(e.target)) || (e.target.tagName === 'INPUT' && e.target.className.includes('hi-select__dropdown__searchbar--input'))) {
       return
     }
     this.hideDropdown()
@@ -234,6 +234,7 @@ class Select extends Component {
       }
     })
     this.onChange(_selectedItems, changedItems, () => {}, _selectedItems)
+    // this.selectInput.focus()
   }
 
   onClickOption (item, index) {
@@ -267,7 +268,7 @@ class Select extends Component {
     if (this.props.type !== 'multiple') {
       this.hideDropdown()
     } else {
-
+      this.selectInput.focus()
     }
   }
 
@@ -277,7 +278,7 @@ class Select extends Component {
         keyword: ''
       },
       () => {
-        // this.selectInput.clearInput()
+        this.selectInput.clearInput()
       }
     )
   }
@@ -290,7 +291,7 @@ class Select extends Component {
       return
     }
 
-    //
+    this.selectInput.focus()
     if (this.props.disabled) {
       return
     }
@@ -309,6 +310,7 @@ class Select extends Component {
 
   showDropdown () {
     this.state.dropdownShow === false && this.setState({ dropdownShow: true })
+    // this.selectInput.focus()
   }
 
   deleteItem (item) {
@@ -320,7 +322,7 @@ class Select extends Component {
 
     selectedItems.splice(sIndex, 1)
     this.onChange(selectedItems, item, () => {
-
+      this.selectInput.focus()
     }, selectedItems)
   }
   // 全部删除
@@ -579,10 +581,11 @@ class Select extends Component {
         >
           <SelectInput
             ref={node => {
-              this.selectInput = node
+              this.selectInput = node;
             }}
             mode={type}
             disabled={disabled}
+            searchable={searchable}
             clearable={clearable}
             dropdownShow={dropdownShow}
             placeholder={placeholder}
@@ -593,13 +596,16 @@ class Select extends Component {
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
             onClick={() => {
               if (this.props.open) {
-                this.handleInputClick()
+                this.handleInputClick();
               }
-              onClick()
+              onClick();
             }}
-            
+            onBlur={onBlur}
+            onFocus={onFocus}
             onDelete={this.deleteItem.bind(this)}
             onClear={this.deleteAllItems.bind(this)}
+            onSearch={this.debouncedFilterItems.bind(this)}
+            onEnterSelect={this.onEnterSelect.bind(this)}
           />
         </div>
         {children}
@@ -625,10 +631,10 @@ class Select extends Component {
             filterOption={filterOption}
             matchFilter={this.matchFilter.bind(this)}
             setFocusedIndex={this.setFocusedIndex.bind(this)}
-            moveFocusedIndex={this.moveFocusedIndex.bind(this)}
-            onEnterSelect={this.onEnterSelect.bind(this)}
             show={dropdownShow && this.props.open}
             optionWidth={optionWidth}
+            onEnterSelect={this.onEnterSelect.bind(this)}
+            moveFocusedIndex={this.moveFocusedIndex.bind(this)}
             dropdownItems={type === 'multiple' && dataSource && this.state.keyword === '' ? cacheSelectedItems : dropdownItems}
             selectedItems={selectedItems}
             dropdownRender={render}

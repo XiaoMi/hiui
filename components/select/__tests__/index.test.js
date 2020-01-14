@@ -1,12 +1,27 @@
 import React from 'react'
 import { mount, shallow } from 'enzyme'
 import { Simulate } from 'react-dom/test-utils'
+import sinon from 'sinon'
+
 import Select from '../'
 /* eslint-env jest */
 const changeCallback = jest.fn(items => items)
 const successCallback = jest.fn(res => res.data)
 const errorCallback = jest.fn(err => err)
 jest.mock('lodash/debounce', () => jest.fn(fn => fn))
+function trigger(elem, event, code ){
+
+  var myEvent = document.createEvent('Event')        // 初始化这个事件对象，为它提高需要的“特性”
+  if (code) {
+    myEvent.which = code;
+    myEvent.keyCode = code; // Ctrl
+  }
+  
+  myEvent.initEvent(event, true, true);        //执行事件
+
+  elem.dispatchEvent(myEvent);
+
+}
 const options = [
   { title: '电视', id: '3' },
   { title: '手机', id: '2' },
@@ -215,8 +230,10 @@ describe('Select', () => {
     )
     wrapper.find('.hi-select__input').simulate('click')
     expect(wrapper.find('.hi-select__popper').prop('show')).toEqual(true)
+    document.querySelector('.hi-select__dropdown__searchbar--input').value = '米' 
+    trigger(document.querySelector('.hi-select__dropdown__searchbar--input'),'input')
     document.querySelectorAll('.hi-select__dropdown-check-all')[0].click()
-    expect(document.querySelectorAll('.hi-checkbox__input--checked')).toHaveLength(9)
+    expect(document.querySelectorAll('.hi-checkbox__input--checked')).toHaveLength(4)
     wrapper.unmount()
   })
 
@@ -288,7 +305,7 @@ describe('Select', () => {
     ).toEqual('true')
     wrapper.find('.hi-select__input--search').find('input').simulate('keydown', { keyCode: 40 })
     expect(
-      document.querySelectorAll('.hi-select__dropdown--item')[1].getAttribute('data-focused')
+      document.querySelectorAll('.hi-select__dropdown--item')[0].getAttribute('data-focused')
     ).toEqual('false')
     wrapper.find('.hi-select__input--search').find('input').simulate('keydown', { keyCode: 13 })
     expect(wrapper.find('.hi-select__input').find('.hi-select__input--item__name').text()).toEqual(
@@ -297,6 +314,43 @@ describe('Select', () => {
     wrapper.find('.hi-select__input').simulate('click')
     wrapper.find('.hi-select__input--search').find('input').simulate('keydown', { keyCode: 38 })
     wrapper.find('.hi-select__input--search').find('input').simulate('keydown', { keyCode: 13 })
+    expect(wrapper.find('.hi-select__input').find('.hi-select__input--item__name').text()).toEqual(
+      '电视'
+    )
+    wrapper.unmount()
+  })
+  it('should handle mouseEnter when searchable', () => {
+    const wrapper = mount(
+      <Select
+        type="single"
+        placeholder="请选择种类"
+        style={{ width: '200px' }}
+        searchable
+        defaultValue={'2'}
+        data={options}
+      />
+    )
+    
+    wrapper.find('.hi-select__input').simulate('click')
+    expect(document.querySelectorAll('.hi-select__dropdown__searchbar--input')).toHaveLength(1)
+    trigger(document.querySelector('.hi-select__dropdown__searchbar--input'),'focus')
+    trigger(document.querySelector('.hi-select__dropdown__searchbar--input'),'keydown',40)
+
+    expect(
+      document.querySelectorAll('.hi-select__dropdown--item')[1].getAttribute('data-focused')
+    ).toEqual('true')
+    trigger(document.querySelector('.hi-select__dropdown__searchbar--input'),'keydown',13)
+
+    expect(wrapper.find('.hi-select__input').find('.hi-select__input--item__name').text()).toEqual(
+      '手机'
+    )
+    wrapper.find('.hi-select__input').simulate('click')
+    trigger(document.querySelector('.hi-select__dropdown__searchbar--input'),'focus')
+    trigger(document.querySelector('.hi-select__dropdown__searchbar--input'),'keydown',38)
+    expect(
+      document.querySelectorAll('.hi-select__dropdown--item')[0].getAttribute('data-focused')
+    ).toEqual('true')
+    trigger(document.querySelector('.hi-select__dropdown__searchbar--input'),'keydown',13)
     expect(wrapper.find('.hi-select__input').find('.hi-select__input--item__name').text()).toEqual(
       '电视'
     )

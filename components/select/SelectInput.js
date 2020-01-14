@@ -1,7 +1,6 @@
-/* @flow */
-
 import React, { Component } from 'react'
 import classNames from 'classnames'
+import { getTextWidth } from './common.js'
 import Proivder from '../context'
 
 class SelectInput extends Component {
@@ -56,11 +55,37 @@ class SelectInput extends Component {
     setTimeout(() => this.searchInput && this.searchInput.focus(), 0)
   }
 
+  handleKeywordChange (evt) {
+    var val = evt.target.value
+    this.setState({
+      value: val,
+      inputStyle: {
+        width: getTextWidth(val)
+      }
+    })
+    this.props.onSearch(evt.target.value)
+  }
+
   clearInput () {
     this.searchInput && (this.searchInput.value = '')
     this.setState({
       value: ''
     })
+  }
+
+  handleKeyDown (evt) {
+    if (evt.keyCode === 13) {
+      this.props.onEnterSelect()
+    }
+
+    if (evt.keyCode === 38) {
+      evt.preventDefault()
+      this.props.moveFocusedIndex('up')
+    }
+    if (evt.keyCode === 40) {
+      evt.preventDefault()
+      this.props.moveFocusedIndex('down')
+    }
   }
 
   handleClear () {
@@ -74,17 +99,23 @@ class SelectInput extends Component {
       selectedItems,
       dropdownShow,
       disabled,
+      searchable,
       clearable,
       multipleMode,
-      theme
+      onFocus,
+      theme,
+      onBlur
     } = this.props
     let icon = dropdownShow ? 'up' : 'down'
-    let { showCount, value } = this.state
+    let { showCount, value, inputStyle } = this.state
     showCount =
       showCount === 0 || this.calShowCountFlag
         ? selectedItems.length
         : showCount
 
+    if (!selectedItems.length) {
+      inputStyle = { width: '100%' }
+    }
     return (
       <div
         className={classNames('hi-select__input', 'multiple-values', `theme__${theme}`, {
@@ -128,6 +159,22 @@ class SelectInput extends Component {
               </span>
             </div>
           )}
+          {searchable && !disabled && (
+            <div className='hi-select__input--search'>
+              <input
+                type='text'
+                style={inputStyle}
+                ref={(input) => {
+                  this.searchInput = input
+                }}
+                onChange={this.handleKeywordChange.bind(this)}
+                onKeyDown={this.handleKeyDown.bind(this)}
+                onFocus={onFocus.bind(this)}
+                onBlur={onBlur.bind(this)}
+                readOnly
+              />
+            </div>
+          )}
         </div>
         <span className='hi-select__input--icon'>
           <i
@@ -154,7 +201,9 @@ class SelectInput extends Component {
       dropdownShow,
       disabled,
       clearable,
-      theme
+      onFocus,
+      theme,
+      onBlur
     } = this.props
     placeholder =
       selectedItems.length > 0 ? selectedItems[0].title : placeholder
@@ -181,6 +230,10 @@ class SelectInput extends Component {
                 this.searchInput = input
               }}
               placeholder={placeholder}
+              onChange={this.handleKeywordChange.bind(this)}
+              onKeyDown={this.handleKeyDown.bind(this)}
+              onFocus={onFocus.bind(this)}
+              onBlur={onBlur.bind(this)}
               readOnly
             />
           </div>

@@ -4,7 +4,6 @@ import Checkbox from '../checkbox'
 import Loading from '../loading'
 import Provider from '../context'
 import Icon from '../icon'
-import Input from '../input'
 
 class SelectDropdown extends Component {
   constructor (props) {
@@ -14,18 +13,22 @@ class SelectDropdown extends Component {
       searchbarValue: ''
     }
   }
-  static getDerivedStateFromProps (nextProps) {
-    return nextProps.show ? null : { filterItems: nextProps.dropdownItems, searchbarValue: '' }
+  static getDerivedStateFromProps (nextProps, prevState) {
+    return { filterItems: nextProps.dropdownItems, searchbarValue: nextProps.show ? prevState.searchbarValue : '' }
   }
+  componentDidMount () {
+    this.props.searchable && this.searchbar.focus()
+  }
+
   onClickOption (e, item, index) {
     e.stopPropagation()
     e.preventDefault()
     if (item.disabled) {
       return
     }
-    this.setState({
-      searchbarValue: ''
-    })
+    // this.setState({
+    //   searchbarValue: ''
+    // })
     this.props.onClickOption(item, index)
   }
   filterOptions = (keyword) => {
@@ -46,6 +49,7 @@ class SelectDropdown extends Component {
   }
   searchEvent (e) {
     const filterText = e.target.value
+    console.log(filterText)
     this.filterOptions(filterText)
     this.props.onSearch(e.target.value)
 
@@ -81,6 +85,7 @@ class SelectDropdown extends Component {
 
     return selectedItems.map((item) => item.id).indexOf(item.id) > -1
   }
+
   handleKeyDown (evt) {
     if (evt.keyCode === 13) {
       this.props.onEnterSelect()
@@ -91,11 +96,11 @@ class SelectDropdown extends Component {
       this.props.moveFocusedIndex('up')
     }
     if (evt.keyCode === 40) {
+      console.log('sss')
       evt.preventDefault()
       this.props.moveFocusedIndex('down')
     }
   }
-
   renderOption (mode, isSelected, item) {
     if (item.children) {
       return item.children
@@ -160,18 +165,22 @@ class SelectDropdown extends Component {
         <div className='hi-select__dropdown__searchbar'>
           <div className='hi-select__dropdown__searchbar--content'>
             <Icon name='search' />
-            <Input
+            <input
+              className='hi-select__dropdown__searchbar--input'
               placeholder='搜索'
               clearable='true'
-              autoFocus
+              ref={(input) => {
+                this.searchbar = input
+              }}
               value={searchbarValue}
-              onKeyDown={this.handleKeyDown.bind(this)}
               onFocus={onFocus.bind(this)}
               onBlur={onBlur.bind(this)}
               clearabletrigger='always'
+              onKeyDown={this.handleKeyDown.bind(this)}
               onInput={this.searchEvent.bind(this)}
               onChange={this.searchEvent.bind(this)}
             />
+            {searchbarValue.length > 0 ? <Icon name='close-circle' /> : null}
           </div>
         </div>}
         {loading && (
