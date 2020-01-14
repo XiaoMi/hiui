@@ -1,5 +1,9 @@
 # 更新日志
 
+## 1.5.20
+
+- 修复 `<Datepicker />` 范围选择非受控情况下失效的问题 [#906](https://github.com/XiaoMi/hiui/issues/906)
+
 ## 1.5.19
 
 - 修复 `<Upload />` pictureCard 模式下点击上传无反应的问题 [#808](https://github.com/XiaoMi/hiui/issues/808)

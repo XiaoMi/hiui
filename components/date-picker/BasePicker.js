@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import Modal from './Modal'
 import classNames from 'classnames'
 import {formatterDate, FORMATS, isVaildDate} from './constants'
+import _ from 'lodash'
 
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
@@ -171,7 +172,11 @@ class BasePicker extends Component {
     })
   }
   componentWillReceiveProps (nextProps) {
-    this._parseProps(nextProps)
+    const {onChange, ...currentProps} = this.props
+    const {onChange: _onChange, ..._nextProps} = nextProps
+    if (!_.isEqual(currentProps, _nextProps)) {
+      this._parseProps(nextProps)
+    }
   }
   onPick (date, showPanel) {
     const {type, showTime, localeDatas, weekOffset} = this.props
