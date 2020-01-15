@@ -340,7 +340,6 @@ class DateRangePanel extends Component {
       'hi-datepicker',
       theme && 'theme__' + theme
     )
-    console.log('showLargeCalendar(this.props)', showLargeCalendar(this.props))
     const bodyCls = classNames(
       'hi-datepicker__body',
       'hi-datepicker__body--range',

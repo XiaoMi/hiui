@@ -22,7 +22,6 @@ import {
 class Calender extends Component {
   constructor (props) {
     super(props)
-    console.log(props)
     this.state = {
       rows: [[], [], [], [], [], []],
       altCalendarPresetData: this.props.altCalendarPresetData,

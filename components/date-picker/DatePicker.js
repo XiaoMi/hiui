@@ -49,7 +49,6 @@ class DatePicker extends BasePicker {
   _altCalendarData = (allPRCDate) => {
     const allData = {}
     this.props.altCalendar.forEach(item => {
-      console.log(item, deconstructDate(item.date))
       const dateInfo = deconstructDate(item.date)
       if (!Number.isNaN(dateInfo.year)) {
         Object.assign(allData, {
