@@ -26,9 +26,6 @@ class SelectDropdown extends Component {
     if (item.disabled) {
       return
     }
-    // this.setState({
-    //   searchbarValue: ''
-    // })
     this.props.onClickOption(item, index)
   }
   filterOptions = (keyword) => {
@@ -49,9 +46,8 @@ class SelectDropdown extends Component {
   }
   searchEvent (e) {
     const filterText = e.target.value
-    console.log(filterText)
     this.filterOptions(filterText)
-    this.props.onSearch(e.target.value)
+    this.props.onSearch(filterText)
 
     this.setState({
       searchbarValue: filterText
@@ -85,7 +81,13 @@ class SelectDropdown extends Component {
 
     return selectedItems.map((item) => item.id).indexOf(item.id) > -1
   }
-
+  cleanSearchbarValue (e) {
+    e.stopPropagation()
+    this.setState({
+      searchbarValue: ''
+    })
+    this.props.onSearch()
+  }
   handleKeyDown (evt) {
     if (evt.keyCode === 13) {
       this.props.onEnterSelect()
@@ -96,7 +98,6 @@ class SelectDropdown extends Component {
       this.props.moveFocusedIndex('up')
     }
     if (evt.keyCode === 40) {
-      console.log('sss')
       evt.preventDefault()
       this.props.moveFocusedIndex('down')
     }
@@ -117,13 +118,13 @@ class SelectDropdown extends Component {
             disabled={item.disabled}
           >
             <div className='hi-select__dropdown--item__name'>{
-              this.hightlightKeyword(item.title, item.id)
+              this.props.isOnSearch ? item.title : this.hightlightKeyword(item.title, item.id)
             }</div>
           </Checkbox>
         )}
         {mode === 'single' && (
           <div className='hi-select__dropdown--item__name'>{
-            this.hightlightKeyword(item.title, item.id)
+            this.props.isOnSearch ? item.title : this.hightlightKeyword(item.title, item.id)
           }</div>
         )}
         {mode === 'single' && isSelected && (
@@ -180,7 +181,7 @@ class SelectDropdown extends Component {
               onInput={this.searchEvent.bind(this)}
               onChange={this.searchEvent.bind(this)}
             />
-            {searchbarValue.length > 0 ? <Icon name='close-circle' /> : null}
+            {searchbarValue.length > 0 ? <Icon name='close-circle' onClick={this.cleanSearchbarValue.bind(this)} /> : null}
           </div>
         </div>}
         {loading && (
@@ -228,8 +229,10 @@ class SelectDropdown extends Component {
           </ul>
         )}
         {mode === 'multiple' && showCheckAll && (
-          <div className={`hi-select__dropdown-check-all theme__${theme}`} onClick={this.props.checkAll.bind(this, filterItems)}>
-            全选
+          <div className='hi-select__dropdown-check-all-wrap'>
+            <div className={`hi-select__dropdown-check-all theme__${theme}`} onClick={this.props.checkAll.bind(this, filterItems)}>
+              全选
+            </div>
           </div>
         )}
       </div>
