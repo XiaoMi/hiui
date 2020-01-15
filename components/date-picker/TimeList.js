@@ -94,7 +94,6 @@ export default class TimeList extends Component {
   render () {
     const { showArrow } = this.state
     const { type, datas } = this.props
-    console.log('时间', datas)
     return <div
       className='hi-timepicker__list-container'
       onMouseEnter={() => this.setState({showArrow: true})}
