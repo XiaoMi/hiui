@@ -242,7 +242,6 @@ class Select extends Component {
 
     let selectedItems = this.state.selectedItems.concat()
     let cacheSelectedItems = this.state.selectedItems.concat()
-    console.log('sss', cacheSelectedItems)
     let focusedIndex = index
 
     if (this.props.type === 'multiple') {
@@ -285,7 +284,6 @@ class Select extends Component {
 
   handleInputClick = e => {
     let { dropdownShow } = this.state
-    console.log('handleInputClick', this.state.selectedItems)
     if (dropdownShow) {
       this.hideDropdown()
       return
@@ -302,7 +300,6 @@ class Select extends Component {
   }
 
   hideDropdown () {
-    console.log('hideDropdown', this.state.cacheSelectedItems)
     this.state.dropdownShow === true &&
       this.setState({ dropdownShow: false, cacheSelectedItems: this.state.selectedItems }, () => {
         this.clearKeyword()
@@ -385,7 +382,6 @@ class Select extends Component {
       this.setState({
         fetching: true
       })
-      console.log('ssss++', this.state.cacheSelectedItems)
 
       if (type.toUpperCase() === 'JSONP') {
         const _o = {
@@ -426,7 +422,6 @@ class Select extends Component {
       dropdownItems = res.data
     }
     if (Array.isArray(dropdownItems)) {
-      console.log(this.cacheSelectedItems)
       const reviceSelectedItems = this.props.type === 'multiple' ? this.props.dataSource && this.state.selectedItems || [] : this.state.cacheSelectedItems 
       const selectedItems = this.resetSelectedItems(
         this.props.value,
