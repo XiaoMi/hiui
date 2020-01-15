@@ -35,13 +35,14 @@ class Demo extends React.Component {
   constructor() {
     super()
     this.state = {
-      date: new Date(),
+      value: new Date('2020/4/8')
     }
   }
   render () {
     return (
       <div style={{display:'flex', flexWrap: 'wrap'}}>
         <DatePicker
+          value={this.state.value}
           altCalendarPreset='zh-CN'
           dateMarkPreset='zh-CN'
           altCalendar = {[
@@ -54,10 +55,11 @@ class Demo extends React.Component {
               (currentDate,today) => {
                 const date = DatePicker.format(currentDate, 'yyyy/M/D')
                 const yesterday = DatePicker.format(today-86400000, 'yyyy/M/D')
-
-                if(date == '2020/4/8'){
+                const currentday = DatePicker.format(this.state.value, 'yyyy/M/D')
+                
+                if(date === '2020/4/8'){
                     return (
-                      <span style={{color:'#fa0'}}>米</span>
+                      <span style={{color: currentday === '2020/4/8' ? '#fff' : '#f63' }}>米</span> 
                     )
                 } else if (date === yesterday){
                     return (
@@ -68,8 +70,12 @@ class Demo extends React.Component {
                 }
               }
           }
-          value={this.state.date}
-          onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+            this.setState({
+              value: date
+            })
+          }}
         />
       </div>
     )
