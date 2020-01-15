@@ -152,9 +152,9 @@ class BasePicker extends Component {
     if (type === 'daterange' && showTime) {
       _h = 344
     }
-    const _cw = document.body.clientWidth || document.documentElement.clientWidth
-    const _ch = document.body.clientHeight || document.documentElement.clientHeight
-    const _st = document.body.scrollTop || document.documentElement.scrollTop
+    const _cw = document.documentElement.clientWidth || document.body.clientWidth
+    const _ch = document.documentElement.clientHeight || document.body.clientHeight
+    const _st = document.documentElement.scrollTop || document.body.scrollTop
     let {left, width, top, height} = rect
     let _top = rect.top + rect.height + _st
     if (left + _w > _cw) {
