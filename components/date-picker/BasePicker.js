@@ -141,7 +141,8 @@ class BasePicker extends Component {
     this.setState({
       date,
       texts: [this.callFormatterDate(date.startDate), this.callFormatterDate(date.endDate)],
-      showPanel
+      showPanel,
+      isFocus: false
     }, () => {
       if (!showPanel) {
         this.callback()
@@ -201,6 +202,7 @@ class BasePicker extends Component {
   clickOutSide (e) {
     const tar = e.target
     this.inputChangeEvent()
+
     if (tar.className.indexOf('clear') !== -1) {
       this.setState({
         texts: ['', ''],
@@ -268,8 +270,10 @@ class BasePicker extends Component {
       showTime,
       type
     } = this.props
+    const {isFocus} = this.state
     const _cls = classNames(
       'hi-datepicker__input',
+      isFocus && 'hi-datepicker__input--focus',
       `hi-datepicker__input--${type}`,
       'hi-datepicker__input--range',
       (showTime || type === 'timeperiod') && 'hi-datepicker__input--range-time',
@@ -290,8 +294,11 @@ class BasePicker extends Component {
       showTime,
       type
     } = this.props
+    const {isFocus} = this.state
+
     const _cls = classNames(
       'hi-datepicker__input',
+      isFocus && 'hi-datepicker__input--focus',
       `hi-datepicker__input--${type}`,
       disabled && 'hi-datepicker__input--disabled',
       showTime && 'hi-datepicker__input--middle'

@@ -272,7 +272,7 @@ class DateRangePanel extends Component {
       layout
     })
   }
-  _getNormalComponent (date, flag, showLunar) {
+  _getNormalComponent (date, flag) {
     let { minDate, maxDate, range, layout } = this.state
     const { altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData } = this.props
 
@@ -287,7 +287,6 @@ class DateRangePanel extends Component {
             altCalendarPreset={altCalendarPreset}
             dateMarkRender={dateMarkRender}
             dateMarkPreset={dateMarkPreset}
-            showLunar={showLunar}
             date={date}
             data={yearData}
             type={layout[flag]}
@@ -305,7 +304,6 @@ class DateRangePanel extends Component {
             altCalendarPreset={altCalendarPreset}
             dateMarkRender={dateMarkRender}
             dateMarkPreset={dateMarkPreset}
-            showLunar={showLunar}
             date={date}
             data={monthData}
             type={layout[flag]}
@@ -322,7 +320,6 @@ class DateRangePanel extends Component {
             altCalendarPreset={altCalendarPreset}
             dateMarkRender={dateMarkRender}
             dateMarkPreset={dateMarkPreset}
-            showLunar={showLunar}
             date={date}
             range={range}
             type={this.props.type}
@@ -338,7 +335,7 @@ class DateRangePanel extends Component {
   }
   render () {
     let { currentView, leftDate, rightDate, showMask, layout } = this.state
-    const { shortcuts, theme, showTime, date, showLunar } = this.props
+    const { shortcuts, theme, showTime, date } = this.props
     const _c = classNames(
       'hi-datepicker',
       theme && 'theme__' + theme
@@ -374,7 +371,7 @@ class DateRangePanel extends Component {
               this.renderHeader(currentView, leftDate, 'left')
             }
             <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${layout['left']}`}>
-              {this._getNormalComponent(leftDate, 'left', showLunar)}
+              {this._getNormalComponent(leftDate, 'left')}
             </div>
           </div>
           <div className={panelClsright}>
@@ -382,7 +379,7 @@ class DateRangePanel extends Component {
               this.renderHeader(currentView, rightDate, 'right')
             }
             <div className={`hi-datepicker__calender-container hi-datepicker__calender-container--${layout['right']}`}>
-              {this._getNormalComponent(rightDate, 'right', showLunar)}
+              {this._getNormalComponent(rightDate, 'right')}
             </div>
           </div>
         </div>

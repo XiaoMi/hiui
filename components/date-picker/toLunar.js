@@ -39,10 +39,6 @@ const Lunar = {
     [0, 2, 10, 53856], [8, 1, 30, 59696], [0, 2, 18, 54560], [0, 2, 7, 55968], [6, 1, 27, 27472], [0, 2, 15, 22224],
     [0, 2, 5, 19168], [4, 1, 25, 42216], [0, 2, 12, 42192], [0, 2, 1, 53584], [2, 1, 21, 55592], [0, 2, 9, 54560]
   ],
-  // 是否闰年
-  isLeapYear: function (year) {
-    return ((year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0))
-  },
   // 天干地支年
   lunarYear: function (year) {
     let gan = ['庚', '辛', '壬', '癸', '甲', '乙', '丙', '丁', '戊', '己'],
@@ -54,19 +50,6 @@ const Lunar = {
   zodiacYear: function (year) {
     let zodiac = ['猴', '鸡', '狗', '猪', '鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊']
     return zodiac[year % 12]
-  },
-  // 公历月份天数
-  // @param year 阳历-年
-  // @param month 阳历-月
-  solarMonthDays: function (year, month) {
-    let FebDays = this.isLeapYear(year) ? 29 : 28
-    let monthHash = ['', 31, FebDays, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    return monthHash[month]
-  },
-  // 农历月份天数
-  lunarMonthDays: function (year, month) {
-    let monthData = this.lunarMonths(year)
-    return monthData[month - 1]
   },
   // 农历月份天数数组
   lunarMonths: function (year) {
@@ -117,16 +100,7 @@ const Lunar = {
     let yearData = this.lunarInfo[year - this.MIN_YEAR]
     return yearData[0]
   },
-  // 计算农历日期与正月初一相隔的天数
-  betweenLunarDays: function (year, month, day) {
-    let yearMonth = this.lunarMonths(year)
-    let res = 0
-    for (let i = 1; i < month; i++) {
-      res += yearMonth[i - 1]
-    }
-    res += day - 1
-    return res
-  },
+
   // 计算2个阳历日期之间的天数
   // @param year 阳历年
   // @param month
@@ -206,21 +180,6 @@ const Lunar = {
     }
     return this.lunarByBetween(year, this.betweenSolarDays(year, month, day, yearData[1], yearData[2]))
   },
-  // 转换公历
-  // @param year  阴历-年
-  // @param month 阴历-月，闰月处理：例如如果当年闰五月，那么第二个五月就传六月，相当于阴历有13个月
-  // @param date  阴历-日
-  toSolar: function (year, month, day) {
-    let yearData = this.lunarInfo[year - this.MIN_YEAR]
-    let between = this.betweenLunarDays(year, month, day)
-    let ms = new Date(year + '/' + yearData[1] + '/' + yearData[2]).getTime()
-    let s = ms + between * 24 * 60 * 60 * 1000
-    let d = new Date()
-    d.setTime(s)
-    year = d.getFullYear()
-    month = d.getMonth() + 1
-    day = d.getDate()
-    return [year, month, day]
-  }
+
 }
 export default Lunar
