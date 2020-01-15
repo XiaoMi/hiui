@@ -93,13 +93,11 @@ describe('Datepicker', () => {
       const wrapper = mount(
         <Datepicker value={mockTime} altCalendarPreset = 'zh-CN'/>
       )
-      return getPRCDate('PRCLunar').then(res=>{
-        if(res.status === 200){
-          wrapper.find('input').simulate('focus')
-          expect(wrapper.find('.hi-datepicker__cell--large')).toHaveLength(42)
-          expect(wrapper.find('.hi-datepicker__text--showLunar[value=14]').text()).toEqual('二十')
-        }
-      })
+      setTimeout(()=>{
+        wrapper.find('input').simulate('focus')
+        expect(wrapper.find('.hi-datepicker__cell--large')).toHaveLength(42)
+        expect(wrapper.find('.hi-datepicker__text--showLunar[value=14]').text()).toEqual('二十')
+      },500)
 
     })
     it('altCalendar',()=>{
@@ -127,12 +125,10 @@ describe('Datepicker', () => {
           dateMarkPreset  = 'zh-CN'
         />
       )
-      return getPRCDate('PRCHoliday').then(res=>{
-        if(res.status === 200){
-          wrapper.find('input').simulate('focus')
-          expect(wrapper.find('.current').find('span').last().text()).toEqual('休')
-        } 
-      })
+      setTimeout(()=>{
+        wrapper.find('input').simulate('focus')
+        expect(wrapper.find('.current').find('span').last().text()).toEqual('休')
+      },500)
     })
     it('dateMarkRender',()=>{
       const mockTime = new Date('2020-1-14')
