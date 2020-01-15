@@ -12,7 +12,8 @@ class SelectInput extends Component {
       value: '',
       inputStyle: {
         width: 2
-      }
+      },
+      _cacheselectedItems: []
     }
   }
 
@@ -51,6 +52,9 @@ class SelectInput extends Component {
     }
   }
 
+  static getDerivedStateFromProps (nextProps, nextState) {
+    return {_cacheselectedItems: nextProps.selectedItems.length > 0 ? nextProps.selectedItems : nextState._cacheselectedItems}
+  }
   focus () {
     setTimeout(() => this.searchInput && this.searchInput.focus(), 0)
   }
@@ -205,9 +209,12 @@ class SelectInput extends Component {
       theme,
       onBlur
     } = this.props
+    selectedItems = selectedItems.length > 0 ? selectedItems : this.state._cacheselectedItems
+
     placeholder =
       selectedItems.length > 0 ? selectedItems[0].title : placeholder
     let icon = dropdownShow ? 'up' : 'down'
+
     return (
       <div
         className={classNames('hi-select__input', 'single-value', `theme__${theme}`, { disabled })}

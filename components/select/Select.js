@@ -439,7 +439,6 @@ class Select extends Component {
   }
   onFilterItems(keyword) {
     const { onSearch, dataSource, autoload } = this.props
-    console.log('ssss++++',this.state.cacheSelectedItems)
     this.setState(
       {
         keyword: keyword
@@ -447,11 +446,8 @@ class Select extends Component {
       () => this.resetFocusedIndex()
     )
 
-    if (dataSource) {
-      if (
-        autoload ||
-        keyword.toString().length >= this.state.queryLength
-      ) {
+    if (dataSource) { 
+      if (autoload ||(keyword && keyword.length >= this.state.queryLength)) {
         this.remoteSearch(keyword)
       }
     } else if(onSearch) {
@@ -564,7 +560,6 @@ class Select extends Component {
       focusedIndex,
       fetching
     } = this.state
-
     const extraClass = {
       "is-multiple": type === "multiple",
       "is-single": type === "single"
