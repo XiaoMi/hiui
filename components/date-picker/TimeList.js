@@ -5,8 +5,8 @@ import Icon from '../icon'
 export default class TimeList extends Component {
   constructor (props) {
     super(props)
-    const prefixCount = props.onlyTime ? [1, 2, 3] : [1, 2, 3, 4]
-    const suffixCount = props.onlyTime ? [1, 2, 3] : [1, 2, 3, 4]
+    const prefixCount = [1, 2, 3]
+    const suffixCount = [1, 2, 3]
     this.liPrefix = prefixCount.map((item, index) => {
       return <li className='hi-timepicker__item hi-timepikcer__item--empty' key={'pre' + index} />
     })
@@ -94,6 +94,7 @@ export default class TimeList extends Component {
   render () {
     const { showArrow } = this.state
     const { type, datas } = this.props
+    console.log('时间', datas)
     return <div
       className='hi-timepicker__list-container'
       onMouseEnter={() => this.setState({showArrow: true})}

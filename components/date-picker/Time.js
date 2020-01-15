@@ -137,7 +137,7 @@ class Time extends Component {
           {this.renderTimeList('hours')}
           {this.renderTimeList('minutes')}
           {this.renderTimeList('seconds')}
-          <div className='hi-timepicker__current-line' style={{top: this.props.onlyTime ? 108 : 140}} />
+          <div className='hi-timepicker__current-line' style={{top: 108}} />
         </div>
       </div>
     )

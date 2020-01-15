@@ -60,12 +60,12 @@ class BasePicker extends Component {
     const _ch = document.documentElement.clientHeight || document.body.clientHeight
     const _st = document.documentElement.scrollTop || document.body.scrollTop
     let {left, width, top, height} = rect
-    let _top = rect.top + rect.height + _st
+    let _top = rect.top + rect.height + _st + 4
     if (left + _w > _cw) {
       left = left + width - _w
     }
     if (top + _h + height > _ch) {
-      _top = top - _h + _st
+      _top = top - _h + _st - 4
     }
     this.setState({
       style: {
