@@ -292,7 +292,7 @@ describe('Datepicker', () => {
       wrapper.find('.hi-datepicker__panel--left').find('.hi-datepicker__calender').simulate('click', {target: wrapper.find(`.hi-datepicker__panel--left td[value=${11}]:not(.prev):not(.next)`).getDOMNode()})
       expect(wrapper.find(`.hi-datepicker__panel--left td[value=${11}]:not(.prev):not(.next)`).hasClass('range-se')).toBeTruthy()
       wrapper.find('.hi-datepicker__panel--right').find('.hi-datepicker__calender').simulate('click', {target: wrapper.find(`.hi-datepicker__panel--left td[value=${12}]:not(.prev):not(.next)`).getDOMNode()})
-      // expect(wrapper.find(DatePicker).state('showPanel')).toBeFalsy()
+      expect(wrapper.find('.hi-datepicker__panel')).toHaveLength(0)
       expect(callback).toHaveBeenCalled()
       expect(wrapper.find('input').at(0).getDOMNode().getAttribute('value')).toEqual('2018-11-11')
       expect(wrapper.find('input').at(1).getDOMNode().getAttribute('value')).toEqual('2020-01-12')
@@ -617,11 +617,11 @@ describe('Datepicker', () => {
         <Datepicker type='date' onChange={callback} />
       )
       wrapper.find('.hi-datepicker__input-icon').simulate('click')
-      // expect(wrapper.find(DatePicker).state('showPanel')).toBeTruthy()
+      expect(wrapper.find('.hi-datepicker__panel')).toHaveLength(1)
       wrapper.setProps({disabled: true})
       wrapper.find(DatePicker).setState({showPanel: false})
       wrapper.find('.hi-datepicker__input-icon').simulate('click')
-      // expect(wrapper.find(DatePicker).state('showPanel')).toBeFalsy()
+      expect(wrapper.find('.hi-datepicker__panel')).toHaveLength(0)
     })
     it('time-format', () => {
       const callback = jest.fn()
