@@ -1,5 +1,9 @@
 # 更新日志
 
+## 1.5.21
+
+- 修复 `<Datepicker />` 某些场景下日期面板定位计算错误的问题 [#908](https://github.com/XiaoMi/hiui/issues/908)
+
 ## 1.5.20
 
 - 修复 `<Datepicker />` 范围选择非受控情况下失效的问题 [#906](https://github.com/XiaoMi/hiui/issues/906)
