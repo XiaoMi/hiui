@@ -101,17 +101,17 @@ import DemoModal from '../../demo/date-picker/section-modal.jsx'
 | weekOffset  | 周起始<br/>默认周日做为第一列     | number                                             | 0 \| 1                                                                                                                                          | 0      |
 | placeholder | 自定义占位符<br/>数组用于范围日期 | string \| string[]                                    | -                                                                                                                                            | -      |
 | onChange    | 值变化时的回调函数                | (date: Date \| DateRange, dateStr: string \| DateRange ) => void                                    | -                                                                                                | -      |
-| altCalendar | 日期中历法信息                      | calendarItem                                    | -                                                                                                                                             | 农历 & 假日  |
-| altCalendarPreset | 暂预置农历信息                  | string                                           | zh-CN                                                                                                                                       | zh-CN  |
-| dateMarkRender | 日期的右上角标记     | function(currentDate: timestamp, today: timestamp) => React.ReactNode | -                                                                                                                      | 休 \| 班 |
-| dateMarkPreset | 暂预置中国大陆节假日                     | string                                         | zh-CN                                                                                                                                     | zh-CN |
+| altCalendar | 日期中历法信息                      | CalendarItem                                    | -                                                                                                                                             | 农历 & 假日  |
+| altCalendarPreset | 暂预置农历信息                  | string                                           | "zh-CN"                                                                                                                                       | "zh-CN"  |
+| dateMarkRender | 日期的右上角标记     | (currentDate: Date, today: Date) => React.ReactNode | -                                                                                                                      | 休 \| 班 |
+| dateMarkPreset | 暂预置中国大陆节假日                     | string                                         | "zh-CN"                                                                                                                                     | "zh-CN" |
 
 
 ## Type
-### calendarItem
+### CalendarItem
 | 参数     | 说明      | 类型    | 可选值 | 默认值 |
 | -------- | ------- | ------- | ------ | ------ |
-| date    | 日期     | Date \| string  \| timestamp(ms) | -      | -      |
+| date    | 日期     | Date \| string  | -      | -      |
 | text    |  描述信息  | string  |  -  | - |
 
 
