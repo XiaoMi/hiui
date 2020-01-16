@@ -991,6 +991,20 @@ $basic-color: #4284f5 !default;
         //     color: map-get(get-palette($value), '50');
         //   }
         // }
+        .hi-datepicker__text--showLunar {
+          font-size: 12px;
+          color: rgba(44, 48, 78, 0.2);
+
+          &--festival {
+            color: map-get(get-palette($value), '50');
+          }
+        }
+
+        .hi-datepicker__text——holiday {
+          &--rest {
+            color: map-get(get-palette($value), '50');
+          }
+        }
 
         &.in-range {
           .hi-datepicker__content {

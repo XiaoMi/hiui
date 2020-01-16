@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import BasePicker from './BasePicker'
 import DatePanel from './DatePanel'
@@ -8,6 +9,12 @@ import Provider from '../context'
 import { getPRCDate, deconstructDate } from './util'
 
 class DatePicker extends BasePicker {
+  static propTypes = {
+    altCalendar: PropTypes.array,
+    dateMarkRender: PropTypes.func,
+    altCalendarPreset: PropTypes.oneOf(['zh-CN']),
+    dateMarkPreset: PropTypes.oneOf(['zh-CN'])
+  }
   constructor (props) {
     super(props)
     this.altCalendarPresetData = {}
@@ -48,7 +55,7 @@ class DatePicker extends BasePicker {
   }
   _altCalendarData = (allPRCDate) => {
     const allData = {}
-    this.props.altCalendar.forEach(item => {
+    this.props.altCalendar.length > 0 && this.props.altCalendar.forEach(item => {
       const dateInfo = deconstructDate(item.date)
       if (!Number.isNaN(dateInfo.year)) {
         Object.assign(allData, {
