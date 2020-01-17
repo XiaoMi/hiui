@@ -10,11 +10,16 @@ class SelectDropdown extends Component {
     super(props)
     this.state = {
       filterItems: this.props.dropdownItems,
-      searchbarValue: ''
+      searchbarValue: '',
+      cachedropdownItems: []
     }
   }
   static getDerivedStateFromProps (nextProps, prevState) {
-    return { filterItems: nextProps.dropdownItems, searchbarValue: nextProps.show ? prevState.searchbarValue : '' }
+    if (nextProps.selectedItems.length > 0 && prevState.searchbarValue.length === 0 && nextProps.mode === 'single' && nextProps.isOnSearch) {
+      return { filterItems: prevState.cachedropdownItems, searchbarValue: nextProps.show ? prevState.searchbarValue : '' }
+    } else {
+      return { filterItems: nextProps.dropdownItems, searchbarValue: nextProps.show ? prevState.searchbarValue : '' }
+    }
   }
   componentDidMount () {
     this.props.searchable && this.searchbar.focus()
@@ -26,6 +31,9 @@ class SelectDropdown extends Component {
     if (item.disabled) {
       return
     }
+    this.props.mode === 'single' && this.props.isOnSearch && this.setState({
+      cachedropdownItems: this.props.dropdownItems
+    })
     this.props.onClickOption(item, index)
   }
   filterOptions = (keyword) => {
@@ -181,7 +189,7 @@ class SelectDropdown extends Component {
               onInput={this.searchEvent.bind(this)}
               onChange={this.searchEvent.bind(this)}
             />
-            {searchbarValue.length > 0 ? <Icon name='close-circle' onClick={this.cleanSearchbarValue.bind(this)} /> : null}
+            {searchbarValue.length > 0 ? <Icon name='close-circle' style={{cursor: 'pointer'}} onClick={this.cleanSearchbarValue.bind(this)} /> : null}
           </div>
         </div>}
         {loading && (

@@ -207,8 +207,7 @@ class Select extends Component {
     value === undefined &&
       this.setState(
         {
-          selectedItems,
-          cacheSelectedItems: cacheSelectedItems
+          selectedItems
         },
         callback
       )
@@ -258,14 +257,17 @@ class Select extends Component {
       }
     } else {
       selectedItems = [item]
-      cacheSelectedItems = selectedItems
+      this.setState({
+        cacheSelectedItems: [item]
+      })
     }
 
     this.onChange(selectedItems, item, () => {
       this.setState({
-        focusedIndex
+        focusedIndex,
+        cacheSelectedItems: this.props.type === 'multiple' ? cacheSelectedItems : [item]
       })
-    }, cacheSelectedItems)
+    }, this.props.type === 'multiple' ? cacheSelectedItems : [item])
     if (this.props.type !== 'multiple') {
       this.hideDropdown()
     }
@@ -368,7 +370,6 @@ class Select extends Component {
         ? _dataSource.keyword
         : keyword
       this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
-
       const queryParams = qs.stringify(
         Object.assign({}, params, key && { [key]: keyword })
       )
@@ -558,7 +559,7 @@ class Select extends Component {
       searchable,
       dropdownShow,
       focusedIndex,
-      fetching
+      fetching,
     } = this.state
     const extraClass = {
       "is-multiple": type === "multiple",
@@ -583,6 +584,7 @@ class Select extends Component {
             disabled={disabled}
             searchable={searchable}
             clearable={clearable}
+            show={dropdownShow && this.props.open}
             dropdownShow={dropdownShow}
             placeholder={placeholder}
             selectedItems={selectedItems}

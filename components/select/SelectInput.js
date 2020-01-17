@@ -53,7 +53,8 @@ class SelectInput extends Component {
   }
 
   static getDerivedStateFromProps (nextProps, nextState) {
-    return {_cacheselectedItems: nextProps.selectedItems.length > 0 ? nextProps.selectedItems : nextState._cacheselectedItems}
+    return nextProps.dropdownShow
+      ? { _cacheselectedItems: nextProps.selectedItems.length > 0 ? nextProps.selectedItems : nextState._cacheselectedItems } : { _cacheselectedItems: nextProps.selectedItems }
   }
   focus () {
     setTimeout(() => this.searchInput && this.searchInput.focus(), 0)
@@ -93,6 +94,9 @@ class SelectInput extends Component {
   }
 
   handleClear () {
+    this.setState({
+      _cacheselectedItems: []
+    })
     this.props.onClear()
     this.clearInput()
   }
@@ -209,8 +213,8 @@ class SelectInput extends Component {
       theme,
       onBlur
     } = this.props
-    selectedItems = selectedItems.length > 0 ? selectedItems : this.state._cacheselectedItems
 
+    selectedItems = selectedItems.length > 0 ? selectedItems : this.state._cacheselectedItems
     placeholder =
       selectedItems.length > 0 ? selectedItems[0].title : placeholder
     let icon = dropdownShow ? 'up' : 'down'
@@ -222,14 +226,14 @@ class SelectInput extends Component {
       >
         <div
           className={classNames('hi-select__input--item', {
-            'hi-select__hide': !(!dropdownShow && selectedItems.length > 0)
+            'hi-select__hide': !(selectedItems.length > 0)
           })}
         >
           <div className='hi-select__input--item__name'>
             {selectedItems[0] && selectedItems[0].title}
           </div>
         </div>
-        {(dropdownShow || selectedItems.length === 0) && (
+        {(selectedItems.length === 0) && (
           <div className='hi-select__input--search'>
             <input
               type='text'
