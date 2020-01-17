@@ -4,6 +4,7 @@ import Button from '../../../components/button'
 const prefix = 'button-size'
 const leftOptions = ['大按钮', '小按钮']
 const rightOptions = ['正常', '禁用']
+const desc = '不同的展示区域选择相应尺寸的按钮'
 const code = [
   {
     code: `import React from 'react'
@@ -74,6 +75,7 @@ const DemoAux = () => (
     leftOptions={leftOptions}
     prefix={prefix}
     rightOptions={rightOptions}
+    desc={desc}
   />
 )
 export default DemoAux

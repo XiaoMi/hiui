@@ -2,7 +2,7 @@ import Tag from '../../../components/tag/'
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 const prefix = 'tag-basic'
-const desc = '面型直角标签 重要提示所处状态，如“已通过”、“审批中”'
+const desc = '标签的信息重要级别高，识别度较高'
 
 const code = `import Tag from '@hi-ui/hiui/es/tag'
 import React from 'react'\n

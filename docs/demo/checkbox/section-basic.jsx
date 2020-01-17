@@ -3,6 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Checkbox from '../../../components/checkbox'
 const prefix = 'section-basic'
 const rightOptions = ['正常', '禁用']
+const desc = '展示所有备选项，数量不宜超出10个'
 const code = [
   {
     code: `import React from 'react'
@@ -42,6 +43,7 @@ const DemoBasic = () => (
     scope={{ Checkbox }}
     prefix={prefix}
     rightOptions={rightOptions}
+    desc={desc}
   />
 )
 export default DemoBasic

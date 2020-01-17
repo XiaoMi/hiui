@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Select from '../../../components/select'
 const prefix = 'alert-autoClose'
 const rightOptions = ['正常', '受控']
-
+const desc = '展示从多个收起的备选项中选出的一个选项'
 const code = [
   {
     code: `import React from 'react'
@@ -83,6 +83,7 @@ const DemoType = () => (
     scope={{ Select }}
     prefix={prefix}
     rightOptions={rightOptions}
+    desc={desc}
   />
 )
 export default DemoType

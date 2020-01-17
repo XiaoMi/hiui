@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'date-picker-normal'
+const desc = '以天为粒度，展示“YYYYMMDD”'
 const code = `import React from 'react'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
@@ -22,5 +23,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoNormal = () => <DocViewer code={code} scope={{ DatePicker }} prefix={prefix} />
+const DemoNormal = () => <DocViewer code={code} scope={{ DatePicker }} prefix={prefix} desc={desc} />
 export default DemoNormal

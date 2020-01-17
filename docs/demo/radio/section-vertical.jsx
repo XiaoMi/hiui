@@ -1,7 +1,8 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Radio from '../../../components/radio'
-const prefix = 'radio-type'
+const prefix = 'radio-vertical'
+const desc = '选项的另一种布局形式，视页面空间选用'
 const code = `import React from 'react'
 import Radio from '@hi-ui/hiui/es/radio'\n
 class Demo extends React.Component {
@@ -12,32 +13,29 @@ class Demo extends React.Component {
       content: '手机类'
     }, {
       id: 1,
-      content: '电脑类',
-      disabled: true
+      content: '电脑类'
     }, {
       id: 2,
       content: '生活类'
-    }, {
-      id: 3,
-      content: '其它'
     }]
   }
   render() {
     return (
-      <Radio.Group
-        data={this.list}
-        type='button'
-        defaultValue={0}
-        onChange={(data) => console.log(data)}
-      />
+        <Radio.Group
+          placement='vertical'
+          data={this.list}
+          defaultValue={0}
+          onChange={(data) => console.log(data)}
+        />
     )
   }
 }`
-const DemoType = () => (
+const DemoVertical = () => (
   <DocViewer
     code={code}
     scope={{ Radio }}
     prefix={prefix}
+    desc={desc}
   />
 )
-export default DemoType
+export default DemoVertical

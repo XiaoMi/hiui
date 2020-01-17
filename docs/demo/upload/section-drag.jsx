@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Upload from '../../../components/upload'
 const prefix = 'upload-drag'
+const desc = '附件上传的区域固定且宽敞，上传附件数量较多，拖拽可有效提高效率'
 const code = `import React from 'react'
 import Upload from '@hi-ui/hiui/es/upload'\n
 class Demo extends React.Component {
@@ -23,5 +24,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoDrag = () => <DocViewer code={code} scope={{ Upload }} prefix={prefix} />
+const DemoDrag = () => <DocViewer code={code} scope={{ Upload }} prefix={prefix} desc={desc} />
 export default DemoDrag

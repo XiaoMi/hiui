@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Card from '../../../components/card'
 const prefix = 'card-simple'
+const desc = '仅显示名称的卡片，用在筛选项、属性、指标等管理和展示场景'
 const code = `import React from 'react'
 import Card from '@hi-ui/hiui/es/card'\n
 class Demo extends React.Component {
@@ -16,7 +17,7 @@ class Demo extends React.Component {
             简易卡片
           </Card>
           <br/>
-         <Card
+        <Card
             hoverable
             type='simple'
             size='default'
@@ -35,5 +36,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoSimple = () => <DocViewer code={code} scope={{ Card }} prefix={prefix} />
+const DemoSimple = () => <DocViewer code={code} scope={{ Card }} prefix={prefix} desc={desc} />
 export default DemoSimple

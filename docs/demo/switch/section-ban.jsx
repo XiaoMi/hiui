@@ -3,8 +3,8 @@ import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Switch from '../../../components/switch'
 import Icon from '../../../components/icon'
-const desc = '状态识别，常见于功能或模块、板块启用，设置参数等'
-const prefix = 'switch-base'
+const desc = ''
+const prefix = 'switch-ban'
 const code = `
 import React from 'react'
 import Switch from '@hi-ui/hiui/es/switch'
@@ -23,18 +23,17 @@ class Demo extends React.Component {
   render () {
     return (
       <div>
-        <p>默认</p >
-        <Switch />
-        <p>自定义内容</p >
-        <Switch content={['ON', 'OFF']} onChange={() => console.log('change')}/>
-        <p>自定义图标</p >
-        <Switch content={[<Icon name='check' />, <Icon name='close' />]}/>
+        <p>
+          <Button onClick={() => {this.setState({disabled: !this.state.disabled})}}>切换禁用</Button>
+          <Button onClick={() => {this.setState({checked: !this.state.checked})}}>切换开启</Button>
+        </p >
+        <Switch checked={this.state.checked} disabled={this.state.disabled} content={['开', '关']} onChange={this.onChange.bind(this)}/>
       </div>
     )
   }
 }`
 
-const DemoBase = () => (
+const DemoBan = () => (
   <DocViewer
     code={code}
     scope={{ Button, Switch, Icon }}
@@ -42,4 +41,4 @@ const DemoBase = () => (
     desc={desc}
   />
 )
-export default DemoBase
+export default DemoBan
