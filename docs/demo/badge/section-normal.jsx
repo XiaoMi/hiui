@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Badge from '../../../components/badge'
 import Button from '../../../components/button'
 const prefix = 'badge-normal'
-const desc = '标识是否有新消息'
+const desc = '标识消息数'
 const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Badge from '@hi-ui/hiui/es/badge'\n

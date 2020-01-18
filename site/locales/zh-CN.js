@@ -21,7 +21,7 @@ module.exports = {
     tooltip: 'Tooltip 文字提示',
     popover: 'Popover 气泡卡片',
     loading: 'Loading 动效加载',
-    badge: 'Badge 消息气泡',
+    badge: 'Badge 红点 / 徽标',
     notification: 'Notification 通知框',
     modal: 'Modal 模态对话框',
     confirm: 'confirm 方法组件',
