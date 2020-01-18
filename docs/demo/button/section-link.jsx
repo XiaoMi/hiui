@@ -16,6 +16,8 @@ class Demo extends React.Component {
         <Button type="success" appearance="link">成功链接</Button>
         <Button type="danger" appearance="link">危险链接</Button>
         <Button type="line" appearance="link" icon="edit" />
+        <Button type="line" appearance="link" icon="down">展开更多</Button>
+        <Button type="line" appearance="link" icon="plus">新增筛选项</Button>
       </React.Fragment>
     )
   }
@@ -34,6 +36,8 @@ class Demo extends React.Component {
         <Button disabled type="success" appearance="link">成功链接</Button>
         <Button disabled type="danger" appearance="link">危险链接</Button>
         <Button disabled type="line" appearance="link" icon="edit" />
+        <Button disabled type="line" appearance="link" icon="down">展开更多</Button>
+        <Button disabled type="line" appearance="link" icon="plus">新增筛选项</Button>
       </React.Fragment>
     )
   }
