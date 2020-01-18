@@ -15,6 +15,7 @@ class Demo extends React.Component {
         onChange = {(file, fileList, response) => {
           console.log('upload callback', file, fileList, response)
         }}
+        content='上传文件'
         params={{id:'uid',channel:'youpin'}}
         name="pictureCard"
       />

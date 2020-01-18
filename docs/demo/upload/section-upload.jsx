@@ -22,7 +22,7 @@ const code = [
               uploadAction= "http://www.mocky.io/v2/5dc3b4413000007600347501"
               tips='仅支持 jpg/png 文件，且不超过 500kb'
               headers={{name: 'mi'}}
-              content='选择文件'
+              content='上传文件'
               param={param}
               name={'files[]'}
               onChange = {(file, fileList, response) => {
@@ -45,7 +45,7 @@ const code = [
           type="normal"
           tips='仅支持 jpg/png 文件，且不超过 500kb'
           uploadAction= "http://www.mocky.io/v2/5dc3b4413000007600347501"
-          buttonText="上传文件"
+          content='上传文件'
           params={{id:'uid',channel:'youpin'}}
           disabled={true}
         />
@@ -68,7 +68,7 @@ const code = [
             type="normal"
             tips='仅支持 jpg/png 文件，且不超过 500kb'
             uploadAction= "http://www.mocky.io/v2/5dc3b4413000007600347501"
-            buttonText="上传文件"
+            content='上传文件'
             params={param}
             name={'files[]'}
             onChange = {(file, fileList, response) => {

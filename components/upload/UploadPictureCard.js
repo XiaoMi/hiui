@@ -11,7 +11,7 @@ class UploadPictureCard extends Upload {
   }
   render () {
     const {
-      buttonText,
+      content,
       showUploadList,
       multiple,
       disabled,
@@ -42,7 +42,7 @@ class UploadPictureCard extends Upload {
               hidden
             />
             <Button type='primary' disabled={disabled || fileCountLimted} onClick={this.handleButtonClick}>
-              { buttonText || localeDatas.upload.buttonText}
+              { content || localeDatas.upload.buttonText}
             </Button>
           </label>
         </div>
