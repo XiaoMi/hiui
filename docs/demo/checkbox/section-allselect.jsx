@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Checkbox from '../../../components/checkbox'
 const prefix = 'section-allselect'
+const desc = '一次操作选中所有选项'
 const code = `import React from 'react'
 import Checkbox from '@hi-ui/hiui/es/checkbox'\n
 class Demo extends React.Component {
@@ -58,6 +59,7 @@ const DemoBasic = () => (
     code={code}
     scope={{ Checkbox }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoBasic
