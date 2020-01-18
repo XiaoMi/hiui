@@ -40,7 +40,7 @@ module.exports = {
     menu: 'Menu 菜单',
     select: 'Select 选择器',
     cascader: 'Cascader 级联选择器',
-    radio: 'Radio 单选按钮',
+    radio: 'Radio 单选',
     checkbox: 'Checkbox 复选按钮',
     grid: 'Grid 栅格',
     stepper: 'Stepper 步骤',
