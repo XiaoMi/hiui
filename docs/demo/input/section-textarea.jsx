@@ -13,7 +13,7 @@ class Demo extends React.Component {
       <div>
         <Input
           type="textarea"
-          placeholder="多行文本"
+          placeholder="请输入"
         />
       </div>
     )

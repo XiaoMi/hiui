@@ -1,77 +1,77 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Grid from '../../../components/grid'
 import Input from '../../../components/input'
-import Radio from '../../../components/radio'
+const leftOptions = ['身份证', '手机号', '金额', '银行卡']
 const prefix = 'input-type'
-const code = `import React from 'react'
+const desc = '在特定业务场景中使用'
+const code = [{code: `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Radio from '@hi-ui/hiui/es/radio'
 import Input from '@hi-ui/hiui/es/input'\n
 class Demo extends React.Component {
-  constructor () {
-    super()
-    this.state = {
-      types: [{
-        id: 'text',
-        content: '普通'
-      }, {
-        id: 'id',
-        content: '身份证'
-      }, {
-        id: 'tel',
-        content: '手机号'
-      }, {
-        id: 'amount',
-        content: '浮点数'
-      }],
-      type: 'text'
-    }
-    this.getPlaceholder = () => {
-      return {
-        text: '请输入...',
-        id: '请输入身份证号',
-        tel: '请输入手机号码',
-        amount: '请输入浮点数'
-      }[this.state.type]
-    }
-  }
   render() {
-    const Row = Grid.Row
-    const Col = Grid.Col
-    const { types, type } = this.state
     return (
-      <div>
-        <Row gutter>
-          <Col span={12}>
-            <Radio.Group
-              data={types}
-              type='button'
-              value={type}
-              onChange={(type) => {
-                this.setState({ type })
-              }}
-            />
-          </Col>
-        </Row>
-        <Row gutter>
-          <Col span={12}>
-            <Input
-              type={type}
-              placeholder={this.getPlaceholder()}
-              style={{ width: 250 }}
-            />
-          </Col>
-        </Row>
-      </div>
+      <Input
+        type='id'
+        style={{ width: 250 }}
+        placeholder='请输入'
+      />
     )
   }
-}`
+}`,
+opt: ['身份证']}, {code: `import React from 'react'
+import Grid from '@hi-ui/hiui/es/grid'
+import Radio from '@hi-ui/hiui/es/radio'
+import Input from '@hi-ui/hiui/es/input'\n
+class Demo extends React.Component {
+  render() {
+    return (
+      <Input
+        type='tel'
+        style={{ width: 250 }}
+        placeholder='请输入'
+      />
+    )
+  }
+}`,
+opt: ['手机号']}, {code: `import React from 'react'
+import Grid from '@hi-ui/hiui/es/grid'
+import Radio from '@hi-ui/hiui/es/radio'
+import Input from '@hi-ui/hiui/es/input'\n
+class Demo extends React.Component {
+  render() {
+    return (
+      <Input
+        type='amount'
+        style={{ width: 250 }}
+        placeholder='请输入'
+      />
+    )
+  }
+}`,
+opt: ['金额']}, {code: `import React from 'react'
+import Grid from '@hi-ui/hiui/es/grid'
+import Radio from '@hi-ui/hiui/es/radio'
+import Input from '@hi-ui/hiui/es/input'\n
+class Demo extends React.Component {
+  render() {
+    return (
+      <Input
+        type='card'
+        style={{ width: 250 }}
+        placeholder='请输入'
+      />
+    )
+  }
+}`,
+opt: ['银行卡']}]
 
 const DemoType = () => (
   <DocViewer
+    leftOptions={leftOptions}
     code={code}
-    scope={{ Grid, Input, Radio }}
+    desc={desc}
+    scope={{ Input }}
     prefix={prefix}
   />
 )
