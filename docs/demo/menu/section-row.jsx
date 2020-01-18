@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Menu from '../../../components/menu'
 const prefix = 'menu-row'
+const desc = '水平方向的导航菜单，菜单项在4-7个为适'
 const code = `import React from 'react'
 import Menu from '@hi-ui/hiui/es/menu'\n
 class Demo extends React.Component {
@@ -107,6 +108,7 @@ class Demo extends React.Component {
 const DemoRow = () => (
   <DocViewer
     code={code}
+    desc={desc}
     scope={{ Menu }}
     prefix={prefix}
   />

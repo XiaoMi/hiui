@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Menu from '../../../components/menu'
 const prefix = 'menu-fat'
+const desc = '二级菜单项，以分组的形式展示，分组数不宜'
 const code = `import React from 'react'
 import Menu from '@hi-ui/hiui/es/menu'\n
 class Demo extends React.Component {
@@ -126,6 +127,7 @@ class Demo extends React.Component {
 const DemoFat = () => (
   <DocViewer
     code={code}
+    desc={desc}
     scope={{ Menu }}
     prefix={prefix}
   />
