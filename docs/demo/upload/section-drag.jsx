@@ -15,7 +15,7 @@ class Demo extends React.Component {
         onChange = {(file, fileList, response) => {
           console.log('upload callback', file, fileList, response)
         }}
-        tips='仅支持 jpg/png 文件，且不超过5'
+        tips='仅支持 jpg/png 文件，且不超过 500kb'
         hasBorder={true}
         params={{id:'uid',channel:'youpin'}}
         name={'files[]'}
