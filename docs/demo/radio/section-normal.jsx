@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Radio from '../../../components/radio'
 const prefix = 'radio-type'
+const desc = '展示所有备选项，数量不宜超出10个'
 const code = `import React from 'react'
 import Radio from '@hi-ui/hiui/es/radio'\n
 class Demo extends React.Component {
@@ -49,6 +50,7 @@ const DemoType = () => (
     code={code}
     scope={{ Radio }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoType
