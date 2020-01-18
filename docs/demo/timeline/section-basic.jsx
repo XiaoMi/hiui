@@ -36,9 +36,9 @@ class Demo extends React.Component {
     const FormItem = Form.Item
     const Row = Grid.Row
     const Col = Grid.Col
-    let  Datas = []
+    let  data = []
     if(position === 'day'){
-      Datas = [{
+      data = [{
         groupTitle: '上午',
         children: [{
           title: '管理层例会',
@@ -62,7 +62,7 @@ class Demo extends React.Component {
         }]
       }]
     }else if(position === 'month'){
-      Datas = [{
+      data = [{
           title: '管理层例会',
           content: '毕加索会议室 B2层 可提前预定预…',
           timestamp: '10:00',
@@ -85,7 +85,7 @@ class Demo extends React.Component {
         }
       ]
       }else{
-        Datas = [{
+        data = [{
           groupTitle: '2019',
           children: [{
             title: '管理层例会',
@@ -130,7 +130,7 @@ class Demo extends React.Component {
       </Row>
       <Row gutter>
         <Col span={12}>
-        <Timeline list={Datas}/>
+        <Timeline data={data}/>
         </Col>
       </Row>
     </div>

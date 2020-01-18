@@ -9,18 +9,21 @@ import Icon from '@hi-ui/hiui/es/icon'
 import Timeline from '@hi-ui/hiui/es/timeline'\n
 class Demo extends React.Component {
   render () {
-    const datas = [{
+    const data = [{
           title: 'Title - 1',
           content: 'Here are some descriptions',
-          timestamp: '2019.02.24 12:00:00'
+          timestamp: '10:00',
+          extraTime: '02-23'
         }, {
           title: 'Title 2',
           content: 'Here are some descriptions',
-          timestamp: '2019.02.24 14:24:00'
+          timestamp: '10:00',
+          extraTime: '02-23'
         },{
           title: 'Title 3',
           content: 'Here are some descriptions',
-          timestamp: '2019.02.24 15:00:00',
+          timestamp: '10:00',
+          extraTime: '02-23',
           children: [{
             title: 'Sub 1',
             content: 'Here are some descriptions'
@@ -32,16 +35,18 @@ class Demo extends React.Component {
           icon: <Icon name='collection' style={{fontSize: 16, color: 'red'}} />,
           title: 'Title 2-2',
           content: 'Here are some descriptions',
-          timestamp: '12:00'
+          timestamp: '10:00',
+          extraTime: '02-23'
         }, {
           title: 'Title 4',
           content: 'Here are some descriptions',
-          timestamp: '2019.02.24 19:55:00'
+          timestamp: '10:00',
+          extraTime: '02-23'
         }]
     return (
       <div>
         <div style={{display: 'flex'}}>
-          <Timeline list={datas} layout='right'/>
+          <Timeline data={data} />
         </div>
       </div>
     )

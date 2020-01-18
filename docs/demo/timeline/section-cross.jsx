@@ -61,7 +61,7 @@ class Demo extends React.Component {
       }]
     return (
       <div>
-        <Timeline list={data} layout='cross'/>
+        <Timeline data={data} type='cross'/>
       </div>
     )
   }

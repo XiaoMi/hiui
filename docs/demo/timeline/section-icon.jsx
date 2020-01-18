@@ -9,7 +9,7 @@ import Icon from '@hi-ui/hiui/es/icon'
 import Timeline from '@hi-ui/hiui/es/timeline'\n
 class Demo extends React.Component {
   render () {
-    const datas = [{
+    const data = [{
           title: 'Title - 1',
           content: 'Here are some descriptions',
           timestamp: '2019.02.24 12:00:00'
@@ -34,7 +34,7 @@ class Demo extends React.Component {
     return (
       <div>
         <div style={{display: 'flex'}}>
-          <Timeline list={datas} layout='right'/>
+          <Timeline data={data} type='right'/>
         </div>
       </div>
     )

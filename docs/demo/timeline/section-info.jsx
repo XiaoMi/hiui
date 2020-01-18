@@ -7,7 +7,7 @@ const code = `import React from 'react'
 import Timeline from '@hi-ui/hiui/es/timeline'\n
 class Demo extends React.Component {
   render () {
-    const datas = [{
+    const data = [{
           title: '信息部全员财务培训需求收集',
           content: '为使信息部同事更好的研发、运维和服务财务部的需求和工作，财务部计划给信息部同事提供财务相关的培训',
           timestamp: '10:00',
@@ -32,7 +32,7 @@ class Demo extends React.Component {
     return (
       <div>
         <div style={{display: 'flex'}}>
-          <Timeline list={datas}/>
+          <Timeline data={data} type='right'/>
         </div>
       </div>
     )
