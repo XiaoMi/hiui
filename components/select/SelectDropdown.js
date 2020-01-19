@@ -15,11 +15,11 @@ class SelectDropdown extends Component {
     }
   }
   static getDerivedStateFromProps (nextProps, prevState) {
-    if (nextProps.selectedItems.length > 0 && prevState.searchbarValue.length === 0 && nextProps.mode === 'single' && nextProps.isOnSearch) {
-      return { filterItems: prevState.cachedropdownItems, searchbarValue: nextProps.show ? prevState.searchbarValue : '' }
-    } else {
-      return { filterItems: nextProps.dropdownItems, searchbarValue: nextProps.show ? prevState.searchbarValue : '' }
-    }
+    const {selectedItems, mode, isOnSearch, dropdownItems, show} = nextProps
+    const {searchbarValue, cachedropdownItems} = prevState
+    const _filterItems = selectedItems.length > 0 && searchbarValue.length === 0 && mode === 'single' && isOnSearch ? cachedropdownItems : dropdownItems
+    const _searchbarValue = show ? searchbarValue : ''
+    return {filterItems: _filterItems, searchbarValue: _searchbarValue}
   }
   componentDidMount () {
     this.props.searchable && this.searchbar.focus()
