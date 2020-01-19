@@ -8,8 +8,9 @@ class Demo extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Card hoverable style={{width: 200}} title='标题内容-标题内容-标题内容'>
+        <Card hoverable style={{width: 200,height: 200}} title='标题内容-标题内容-标题内容'>
           <p>自定义宽度：200px</p>
+          <p>自定义高度：200px</p>
           <p>其它额外内容</p>
         </Card>
         <br />
@@ -19,8 +20,8 @@ class Demo extends React.Component {
           <p>其它额外内容</p>
         </Card>
         <br />
-        <Card hoverable size='middle'>
-          <p>size = middle</p>
+        <Card hoverable size='default'>
+          <p>size = default</p>
           <p>无标题</p>
           <p>其它额外内容</p>
         </Card>

@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Badge from '../../../components/badge'
 import Button from '../../../components/button'
 const prefix = 'badge-custom'
-const desc = '小红点将优先于其他显示'
+const desc = '标识简洁描述'
 const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Badge from '@hi-ui/hiui/es/badge'\n

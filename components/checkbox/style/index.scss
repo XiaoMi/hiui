@@ -114,6 +114,11 @@ $prefixCls: '.hi-checkbox' !default;
 
   &-group {
     display: inline-block;
+
+    &--vertical {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   @include hi-checkbox-style();

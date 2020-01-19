@@ -29,7 +29,7 @@ export default class DropdownMenuItem extends React.Component {
       this.setState({
         visible: false
       })
-    }, 200)
+    }, 100)
   }
   handleMenuItemMouseEnter = () => {
     clearTimeout(this.timerHideDropdownMenu)
@@ -52,8 +52,8 @@ export default class DropdownMenuItem extends React.Component {
   }
 
   handleMenuItemClick = () => {
-    const { onMenuItemClick, id } = this.props
-    onMenuItemClick(id)
+    const { onMenuItemClick, id, children, href } = this.props
+    onMenuItemClick(id, (href || !children))
   }
   render () {
     const {

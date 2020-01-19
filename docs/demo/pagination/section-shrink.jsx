@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Pagination from '../../../components/pagination'
 const prefix = 'pagination-shrink'
-
+const desc = '节省页码的占用空间'
 const code = `import React from 'react'
 import Pagination from '@hi-ui/hiui/es/pagination'\n
 class Demo extends React.Component {
@@ -31,6 +31,7 @@ const DemoCloseable = () => (
     code={code}
     scope={{ Pagination }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoCloseable

@@ -1,5 +1,3 @@
-/* @flow */
-
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import { getTextWidth } from './common.js'
@@ -14,7 +12,8 @@ class SelectInput extends Component {
       value: '',
       inputStyle: {
         width: 2
-      }
+      },
+      cacheselectedItems: []
     }
   }
 
@@ -53,6 +52,10 @@ class SelectInput extends Component {
     }
   }
 
+  static getDerivedStateFromProps (nextProps, nextState) {
+    return nextProps.dropdownShow
+      ? { cacheselectedItems: nextProps.selectedItems.length > 0 ? nextProps.selectedItems : nextState.cacheselectedItems } : { cacheselectedItems: nextProps.selectedItems }
+  }
   focus () {
     setTimeout(() => this.searchInput && this.searchInput.focus(), 0)
   }
@@ -91,6 +94,9 @@ class SelectInput extends Component {
   }
 
   handleClear () {
+    this.setState({
+      cacheselectedItems: []
+    })
     this.props.onClear()
     this.clearInput()
   }
@@ -138,7 +144,7 @@ class SelectInput extends Component {
         >
           {selectedItems.slice(0, showCount).map((item, index) => {
             const _item = (
-              <div key={index} className='hi-select__input--item'>
+              <div key={index} className='hi-select__input--item' style={{ maxWidth: this.itemsRef ? (this.itemsRef.getBoundingClientRect().width - 50) * 0.8 : '80%' }}>
                 <div className='hi-select__input--item__name'>{item.title}</div>
                 <span
                   className='hi-select__input--item__remove'
@@ -173,6 +179,7 @@ class SelectInput extends Component {
                 onKeyDown={this.handleKeyDown.bind(this)}
                 onFocus={onFocus.bind(this)}
                 onBlur={onBlur.bind(this)}
+                readOnly
               />
             </div>
           )}
@@ -201,15 +208,17 @@ class SelectInput extends Component {
       selectedItems,
       dropdownShow,
       disabled,
-      searchable,
       clearable,
       onFocus,
       theme,
       onBlur
     } = this.props
+
+    selectedItems = selectedItems.length > 0 ? selectedItems : this.state.cacheselectedItems
     placeholder =
       selectedItems.length > 0 ? selectedItems[0].title : placeholder
     let icon = dropdownShow ? 'up' : 'down'
+
     return (
       <div
         className={classNames('hi-select__input', 'single-value', `theme__${theme}`, { disabled })}
@@ -225,18 +234,19 @@ class SelectInput extends Component {
           </div>
         </div>
         {(dropdownShow || selectedItems.length === 0) && (
-          <div className='hi-select__input--search'>
+          <div className={classNames('hi-select__input--search', {'hi-select__input--search--value': selectedItems.length > 0})}>
             <input
               type='text'
               ref={(input) => {
                 this.searchInput = input
               }}
+              value={selectedItems.length > 0 ? placeholder : ''}
               placeholder={placeholder}
               onChange={this.handleKeywordChange.bind(this)}
               onKeyDown={this.handleKeyDown.bind(this)}
               onFocus={onFocus.bind(this)}
               onBlur={onBlur.bind(this)}
-              readOnly={disabled || !searchable}
+              readOnly
             />
           </div>
         )}

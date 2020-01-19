@@ -6,7 +6,7 @@ import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
 import Button from '../../../components/button'
 const prefix = 'form-check'
-
+const desc = '表单项内容的格式、逻辑有特殊要求'
 const code = `import React from 'react'
 import { Grid, Button, Radio, Input, Form } from '@hi-ui/hiui'\n
 class Demo extends React.Component {
@@ -110,7 +110,7 @@ class Demo extends React.Component {
             </FormItem>
             <FormItem>
               <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
-              <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
+              <Button type='line' onClick={this.cancelSubmit.bind(this)}>重置</Button>
             </FormItem>
           </Form>
         </Col>
@@ -123,6 +123,7 @@ const DemoCloseable = () => (
     code={code}
     scope={{ Form, Radio, Grid, Input, Button }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoCloseable

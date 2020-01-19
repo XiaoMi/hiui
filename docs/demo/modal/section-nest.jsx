@@ -2,68 +2,48 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Modal from '../../../components/modal'
-import Select from '../../../components/select'
-import Table from '../../../components/table'
+import Form from '../../../components/form/index'
+import Input from '../../../components/input'
 const desc = '未传入 title 及 closeable 为 false，可取消 title 部分，footer 为 null，可取消底部按钮'
 const prefix = 'modal-nest'
 const code = `import React from 'react'
-import Button from '@hi-ui/hiui/es/button'
-import Modal from '@hi-ui/hiui/es/modal'
-import Select from '@hi-ui/hiui/es/select'
-import Table from '@hi-ui/hiui/es/table'\n
+import { Input, Form, Button, Modal } from '@hi-ui/hiui'\n
 class Demo extends React.Component {
   constructor (props) {
     super(props)
+    this.form = React.createRef()
     this.state = {
       visible: false,
-      singleList: [
-        { name:'手机', id:'2' },
-        { name:'电视', id:'3', disabled: true },
-        { name:'笔记本', id:'4', disabled: true },
-        { name:'生活周边', id:'5' },
-        { name:'办公', id:'6' },
-      ]
-    }
-    this.columns = [{
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text, row, index) => {
-        return <a href="javascript:;">{text}</a>
+      form: {
+        name: '',
+        count: '',
+        bank: '',
+        pwd: ''
+      },
+      checkedIndex: -1,
+      rules: {
+        name: {
+          required: true,
+          message: <span style={{color: '#ccc'}}>请输入名称</span>,
+          trigger: 'onBlur,onChange'
+        },
+        count: {
+          required: true,
+          message: '请输入数量',
+          trigger: 'onChange',
+          validator: (rule, value, cb) => {
+            const count = +value
+            if(isNaN(count)) {
+              cb('请输入数字')
+            } else if(count <= 0) {
+              cb('必须是正数')
+            } else {
+              cb()
+            }
+          }
+        }
       }
-    }, {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-    }, {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },{
-    title: 'Action',
-    key: 'action',
-    render: (text, record) => (
-        <span>
-          <a href="javascript:;">Action 一 {record.name}</a>
-        </span>
-      ),
-    }]
-    this.data = [{
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-    }, {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    }, {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-    }]
+    }
   }
   clickEvent () {
     this.setState({
@@ -71,31 +51,44 @@ class Demo extends React.Component {
     })
     console.log("关闭事件")
   }
+  handleChange(key, e, value, index) {
+    this.setState({
+      form: Object.assign({}, this.state.form, {[key]: value})
+    })
+
+    if(index !== undefined) {
+      this.setState({
+        checkedIndex: index
+      })
+    }
+  }
   render(){
+    const FormItem = Form.Item
+    const { form, checkedIndex } = this.state
     return(
       <div>
         <Button type="primary" onClick={() => this.setState({visible: true})}>打开</Button>
         <Modal
+          title="新建"
           closeable={false}
           visible={this.state.visible}
           onConfirm={this.clickEvent.bind(this)}
           onCancel={this.clickEvent.bind(this)}
-          footer={null}
         >
-          <Table
-            columns={this.columns}
-            data={this.data}
-          />
-          <Select
-            mode='single'
-            list={this.state.singleList}
-            placeholder='请选择品类'
-            style={{width: '200px'}}
-            value={'3'}
-            onChange={(item) => {
-                console.log('单选结果', item)
-            }}
-          />
+          <Form ref={this.form} model={form} rules={this.state.rules} labelWidth='80' labelPlacement='right'>
+            <FormItem label='姓名' field='name'>
+              <Input value={form.name} placeholder='name' onChange={this.handleChange.bind(this, 'name')}/>
+            </FormItem>
+            <FormItem label='账户' field='count'>
+              <Input value={form.count} placeholder='count' onChange={this.handleChange.bind(this, 'count')}/>
+            </FormItem>
+            <FormItem label='开户行' field='name'>
+              <Input value={form.bank} placeholder='bank' />
+            </FormItem>
+            <FormItem label='密码' field='count'>
+              <Input value={form.pwd} placeholder='pwd' />
+            </FormItem>
+          </Form>
         </Modal>
 
       </div>
@@ -103,6 +96,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoNest = () => (
-  <DocViewer code={code} scope={{ Button, Modal, Select, Table }} prefix={prefix} desc={desc} />
+  <DocViewer code={code} scope={{ Button, Modal, Input, Form }} prefix={prefix} desc={desc} />
 )
 export default DemoNest

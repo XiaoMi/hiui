@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Transfer from '../../../components/transfer'
 const prefix = 'transfer-check'
-
+const desc = '快速完成源集合的全部选择，避开冗余操作'
 const code = `import React from 'react'
 import Transfer from '@hi-ui/hiui/es/transfer'\n
 class Demo extends React.Component {
@@ -45,6 +45,7 @@ const DemoCheck = () => (
     code={code}
     scope={{ Transfer }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoCheck

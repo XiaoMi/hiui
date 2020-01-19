@@ -25,7 +25,7 @@ Breadcrumb.propTypes = {
   onClick: PropTypes.func
 }
 Breadcrumb.defaultProps = {
-  separator: '|',
+  separator: '/',
   data: [],
   onClick: () => {}
 }

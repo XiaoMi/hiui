@@ -195,6 +195,7 @@ export class Tree extends Component {
         <TreeNode
           origin={loadTreeNode}
           showLine={apperance === 'line'}
+          apperance={apperance}
           checked={this.props.checkedIds || []}
           onClick={onClick}
           semiChecked={this.state.all.filter(item => item.semi).map(item => item.id)}

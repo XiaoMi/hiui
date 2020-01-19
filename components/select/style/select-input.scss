@@ -19,6 +19,7 @@
   outline: none;
   user-select: none;
   box-sizing: border-box;
+  height: 32px;
 
   &.disabled {
     cursor: not-allowed;
@@ -103,6 +104,10 @@
       /* Internet Explorer 10-11 */
       font-weight: 300;
       color: #ccc;
+    }
+
+    &--value input {
+      color: #333;
     }
   }
 
@@ -206,7 +211,7 @@
     .hi-select__input--item {
       flex: none;
       position: relative;
-      max-width: 80%;
+      max-width: 60%;
       height: 22px;
       line-height: 22px;
       padding: 0 20px 0 10px;

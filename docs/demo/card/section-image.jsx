@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Card from '../../../components/card'
 const prefix = 'card-image'
+const desc = '卡片中加入图片，增强识别性，常用于描述应用、项目等'
 const code = `import React from 'react'
 import Card from '@hi-ui/hiui/es/card'\n
 class Demo extends React.Component {
@@ -36,5 +37,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoImage = () => <DocViewer code={code} scope={{ Card }} prefix={prefix} />
+const DemoImage = () => <DocViewer code={code} scope={{ Card }} prefix={prefix} desc={desc} />
 export default DemoImage

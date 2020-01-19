@@ -5,7 +5,7 @@ import FormItem from '../../../components/form/Item'
 import Rate from '../../../components/rate'
 import Alert from '../../../components/alert'
 const prefix = 'rate-face'
-
+const desc = '运用图标直观表达评级结果的优劣'
 const code = `import React from 'react'
 import Rate from '@hi-ui/hiui/es/rate'
 import Form from '@hi-ui/hiui/es/form/index'
@@ -43,6 +43,7 @@ const DemoBase = () => (
     code={code}
     scope={{ Form, FormItem, Rate, Alert }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoBase

@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Switch from '../../../components/switch'
 import Icon from '../../../components/icon'
-
+const desc = '状态识别，常见于功能或模块、板块启用，设置参数等'
 const prefix = 'switch-base'
 const code = `
 import React from 'react'
@@ -29,12 +29,6 @@ class Demo extends React.Component {
         <Switch content={['ON', 'OFF']} onChange={() => console.log('change')}/>
         <p>自定义图标</p >
         <Switch content={[<Icon name='check' />, <Icon name='close' />]}/>
-        <p>禁用状态</p >
-        <p>
-          <Button onClick={() => {this.setState({disabled: !this.state.disabled})}}>切换禁用</Button>
-          <Button onClick={() => {this.setState({checked: !this.state.checked})}}>切换开启</Button>
-        </p >
-        <Switch checked={this.state.checked} disabled={this.state.disabled} content={['开', '关']} onChange={this.onChange.bind(this)}/>
       </div>
     )
   }
@@ -45,6 +39,7 @@ const DemoBase = () => (
     code={code}
     scope={{ Button, Switch, Icon }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoBase

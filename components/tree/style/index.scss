@@ -8,16 +8,18 @@ $tree: 'hi-tree' !default;
 
   color: #383e47;
 
-  &:not(.hi-tree--show-line) {
-    li:not(.is-root):not(.no-expanded) {
-      margin-top: 10px;
-    }
+  /* TODO: The following style does not fully restore ui, so commented =========== */
+  // &:not(.hi-tree--show-line) {
+  //   li:not(.is-root):not(.no-expanded) {
+  //     margin-top: 10px;
+  //   }
 
-    .is-root {
-      margin-bottom: 10px;
-    }
-  }
+  //   .is-root {
+  //     margin-bottom: 10px;
+  //   }
+  // }
 
+  /* =========== */
   .hi-checkbox-legacy {
     margin-left: 8px;
   }
@@ -379,7 +381,7 @@ $tree: 'hi-tree' !default;
     cursor: pointer;
 
     .hi-tree-switcher {
-      color: #999;
+      color: #666;
       font-size: 16px;
     }
 

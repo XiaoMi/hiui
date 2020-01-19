@@ -26,7 +26,7 @@ class Demo extends React.Component {
       <Select
         type='single'
         data={this.state.singleList}
-        placeholder='搜索多大于等于某个版本'
+        placeholder='请选择'
         style={{ width: 200 }}
         onChange={(item) => {
           console.log('单选结果', item)

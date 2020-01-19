@@ -292,6 +292,7 @@ export default class Transfer extends Component {
             <Input
               placeholder='搜索'
               clearable='true'
+              clearableTrigger='always'
               onInput={this.searchEvent.bind(this, dir)}
               onChange={this.searchEvent.bind(this, dir)}
               value={filterText}
@@ -351,7 +352,7 @@ export default class Transfer extends Component {
               全选
             </Checkbox>
             <span>
-              {selectedKeys.length !== 0 && selectedKeys.length + '/'}
+              {selectedKeys.length + '/'}
               {filterResult.length}项
             </span>
           </div>}

@@ -6,6 +6,7 @@
   &__tips {
     font-size: 12px;
     color: rgb(153, 153, 153);
+    line-height: 20px;
     // padding-top: 12px !important;
 
     &--single-line {
@@ -15,6 +16,7 @@
 
     &--exist {
       padding-left: 3px;
+      line-height: 22px;
     }
   }
 
@@ -45,12 +47,12 @@
 
     .hi-icon {
       cursor: pointer;
-      font-size: 32px;
+      font-size: 16px;
       color: #ccc;
     }
 
     .icon-plus {
-      font-size: 32px;
+      font-size: 24px;
     }
   }
 
@@ -114,6 +116,7 @@
     min-height: 172px;
     box-sizing: border-box;
     border: 1px dashed #dbdbdb;
+    border-radius: 2px;
     cursor: pointer;
     padding: 12px;
 
@@ -124,6 +127,11 @@
     .hi-upload__operate-icon {
       color: #4284f5;
       cursor: pointer;
+    }
+
+    .icon-tishi {
+      color: #4284f5;
+      margin-right: 5px;
     }
 
     &.hi-upload--disabled {
@@ -163,16 +171,21 @@
       font-size: 14px;
       color: #333;
       letter-spacing: 0;
-      line-height: 20px;
+      line-height: 22px;
       cursor: inherit;
+
+      .hi-upload__tips--single-line {
+        padding: 0;
+        margin-top: 4px;
+      }
 
       .icon {
         display: block;
         cursor: inherit;
-        margin-bottom: 10px;
+        margin-bottom: 6px;
 
         &::before {
-          font-size: 34px;
+          font-size: 40px;
           color: #4284f5;
         }
       }
@@ -208,13 +221,22 @@
       text-align: center;
       padding: 0;
       margin: 8px;
-      // margin-right: 16px;
       overflow: visible;
-      // margin-top: 0;
       vertical-align: middle;
       background: #fff;
-      // margin-bottom: 16px;
-      border-radius: 4px;
+      border-radius: 2px;
+
+      &--photo-error {
+        height: 28px;
+        background: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        width: 100%;
+        color: #fff;
+        bottom: 0;
+        line-height: 28px;
+        font-size: 16px;
+        border-radius: 0 0 2px 2px;
+      }
 
       &:not(:last-child) {
         background: #e7e7e7;
@@ -289,8 +311,8 @@
 
   &__photo-del {
     position: absolute;
-    right: -12px;
-    top: -12px;
+    right: -8px;
+    top: -10px;
     font-size: 20px;
     line-height: 20px;
     display: none;
@@ -303,12 +325,13 @@
     height: 140px;
     left: 0;
     top: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
     color: #fff;
     font-size: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 2px;
   }
 
   &__loading-bar {

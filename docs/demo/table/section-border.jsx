@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
 const prefix = 'table-border'
+const desc = '另一种表格样式，运用分割线让行列关系更清晰明确'
 const code = `import React from 'react'
 import Table from '@hi-ui/hiui/es/table'\n
 class Demo extends React.Component {
@@ -50,6 +51,7 @@ const DemoBorder = () => (
     code={code}
     scope={{ Table }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoBorder

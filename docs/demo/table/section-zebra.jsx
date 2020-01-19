@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
 const prefix = 'table-zebra'
+const desc = '优化以行为主的阅读体验'
 const code = `import React from 'react'
 import Table from '@hi-ui/hiui/es/table'\n
 class Demo extends React.Component {
@@ -51,6 +52,7 @@ const DemoZebra = () => (
     code={code}
     scope={{ Table }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoZebra

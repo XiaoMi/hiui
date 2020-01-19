@@ -103,7 +103,7 @@ class CollapsePanel extends Component {
       'collapse-item--show': isActive,
       'collapse-item--disabled': disabled
     })
-    const collapseIcon = classNames('collapse-item__icon', 'hi-icon', 'icon-right')
+    const collapseIcon = classNames('collapse-item__icon', 'hi-icon', 'icon-down')
     return (
       <div className={classnames}>
         <div className='collapse-item__head' onClick={() => onClickPanel(key)}>

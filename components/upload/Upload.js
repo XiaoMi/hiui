@@ -211,7 +211,7 @@ class Upload extends Component {
     const XMLHttpRequest = window.XMLHttpRequest
     const FormData = window.FormData
     const { fileList } = this.state
-    const { name, params, headers, uploadAction } = this.props
+    const { name, params, headers, uploadAction, withCredentials } = this.props
     const onerror = err => {
       const errRes = err !== undefined ? err : { status: xhr.status, statusText: xhr.statusText }
       const _fileList = [...fileList]
@@ -243,7 +243,7 @@ class Upload extends Component {
 
     let xhr = new XMLHttpRequest()
     let formFile = new FormData()
-
+    xhr.withCredentials = withCredentials
     if (dataUrl) {
       formFile.append(name, dataUrl)
     } else {
@@ -326,7 +326,8 @@ Upload.propTypes = {
   defaultFileList: PropTypes.array,
   fileList: PropTypes.array,
   onRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-  maxSize: PropTypes.number
+  maxSize: PropTypes.number,
+  withCredentials: PropTypes.bool
 }
 
 Upload.defaultProps = {
@@ -341,6 +342,7 @@ Upload.defaultProps = {
   disabled: false,
   showUploadList: true,
   multiple: false,
+  withCredentials: false,
   beforeUpload: () => true,
   onRemove: () => true,
   onChange: () => true

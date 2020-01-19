@@ -53,7 +53,8 @@ class TreeItem extends Component {
       loadChildren,
       isRoot,
       showLine,
-      localeDatas
+      localeDatas,
+      apperance
     } = this.props
     const { nodePlaceholder, confirm, cancel } = localeDatas.tree
 
@@ -99,7 +100,7 @@ class TreeItem extends Component {
             >
               {(item.children && item.children.length > 0) || (origin && !expanded)
                 ? renderSwitcher(expanded)
-                : showLine && <span className='hi-tree__dot' />}
+                : ((showLine && <span className='hi-tree__dot' />) || (apperance === 'folder' && <i className='hi-icon icon-File' />))}
               {this.state.loading && <IconLoading />}
             </span>
           }
@@ -130,9 +131,11 @@ class TreeItem extends Component {
                 }}
               />
               <span
-                style={{ cursor: 'pointer', marginRight: 12, color: '#4284F5' }}
+                style={(editingNodes.find(node => node.id === item.id) || {}).title === '' ? { marginRight: 12, color: '#999' } : { cursor: 'pointer', marginRight: 12, color: '#4284F5' }}
                 onClick={() => {
-                  saveEditNode(item.id)
+                  if ((editingNodes.find(node => node.id === item.id) || {}).title !== '') {
+                    saveEditNode(item.id)
+                  }
                 }}
               >
                 {confirm}

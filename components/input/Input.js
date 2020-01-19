@@ -79,7 +79,8 @@ class Input extends Component {
    */
   renderText () {
     let { hover, active, value } = this.state
-    let { disabled, type, id, placeholder, clearable } = this.props
+    // clearableTrigger 为内部预留，主要表示清除按钮的触发形态，类型分为 'hover' 和 ‘always’
+    let { disabled, type, id, placeholder, clearable, clearableTrigger = 'hover' } = this.props
     let { prefix, suffix, prepend, append } = this.state
 
     const noClear = ['textarea']
@@ -180,7 +181,7 @@ class Input extends Component {
             suffix === '' &&
             (value !== '' && clearable) && (
               <span
-                className={`hi-input__fix-box ${hover && !disabled ? '' : 'invisible'}`}
+                className={`hi-input__fix-box ${(hover || clearableTrigger === 'always') && !disabled ? '' : 'invisible'}`}
                 onClick={() => {
                   this._Input.focus()
 

@@ -34,7 +34,7 @@ export default class Dropdown extends React.Component {
     this.eventHandler(event)
     this.timerHideMenu = setTimeout(() => {
       this.setState({ visible: false })
-    }, 200)
+    }, 100)
   }
   getPopperShowHandler = () => {
     const { disabled } = this.props
@@ -78,16 +78,16 @@ export default class Dropdown extends React.Component {
   handleChildMenuMouseLeave = () => {
     getIsTriggerEqualHover(this.props) && this.setPopperDelayHide()
   }
-  handleMenuItemClick = (data) => {
+  handleMenuItemClick = (data, isLinkOrNoChildren) => {
     const { onClick } = this.props
-    this.setPopperDelayHide()
+    if (isLinkOrNoChildren || onClick) {
+      this.setPopperDelayHide()
+    }
+
     onClick && onClick(data)
   }
   handleDocumentClick = () => {
     this.setState({ visible: false })
-  }
-  componentDidMount () {
-    document.addEventListener('click', this.handleDocumentClick)
   }
   componentWillUnmount () {
     document.removeEventListener('click', this.handleDocumentClick)
@@ -140,7 +140,7 @@ Dropdown.propTypes = {
 }
 
 Dropdown.defaultProps = {
-  placement: 'bottom-start',
+  placement: 'top-bottom-start',
   trigger: 'hover',
   width: 240
 }

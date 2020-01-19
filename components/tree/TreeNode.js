@@ -136,14 +136,14 @@ class TreeNode extends Component {
     return count
   }
   renderSwitcher = expanded => {
-    const { prefixCls, openIcon, closeIcon, showLine } = this.props
+    const { prefixCls, openIcon, closeIcon, showLine, apperance } = this.props
     const switcherClsName = classNames(
       `${prefixCls}-switcher`,
       'hi-icon',
       `icon-${
         expanded
-          ? openIcon || (showLine && 'TreeMinus') || 'open'
-          : closeIcon || (showLine && 'TreePlus') || 'packup'
+          ? openIcon || (showLine && 'TreeMinus') || (apperance === 'folder' && 'Folder-open') || 'open'
+          : closeIcon || (showLine && 'TreePlus') || (apperance === 'folder' && 'folder') || 'packup'
       }`
     )
     return <i className={switcherClsName} />
@@ -454,9 +454,7 @@ class TreeNode extends Component {
         return
       }
     }
-    // if (type === '[object Boolean]') {
-    //   _cm = null
-    // }
+
     let contextMenuPanel = <ul className='right-click-menu' style={{left: rect.left + rect.width + 5, top: rect.top + _st}}>
       {
         _cm.length > 0
@@ -519,7 +517,8 @@ class TreeNode extends Component {
       expanded,
       origin,
       onDragStart,
-      showLine
+      showLine,
+      apperance
     } = this.props
     const {
       highlight,
@@ -564,6 +563,7 @@ class TreeNode extends Component {
               positionY={positionY}
               renderSwitcher={this.renderSwitcher}
               cancelAddSiblingNode={this.cancelAddSiblingNode}
+              apperance={apperance}
               // renderRightClickMenu={this.renderRightClickMenu}
               onCheckChange={onCheckChange}
               saveEditNode={this.saveEditNode}

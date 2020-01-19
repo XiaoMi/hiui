@@ -1,4 +1,11 @@
-# Checkbox 多选框
+# Checkbox 复选
+
+复选是用来在一组平铺选项中同时选择1个以上的选项
+
+## 何时使用
+
+- 需要快速完成多选一且备选项数量不多时
+- 常见于后台设置、调研问卷、表单等场景
 
 ## 基础用法
 
@@ -6,11 +13,12 @@ import DemoBasic from '../../demo/checkbox/section-basic.jsx'
 
 <DemoBasic />
 
-## 多选
+## 垂直样式
 
-import DemoMultiselect from '../../demo/checkbox/section-multiselect.jsx'
+import DemoVetical from '../../demo/checkbox/section-vertical.jsx'
 
-<DemoMultiselect />
+<DemoVetical />
+
 
 ## 全选
 
@@ -18,7 +26,11 @@ import DemoAllselect from '../../demo/checkbox/section-allselect.jsx'
 
 <DemoAllselect />
 
-## Checkbox Props
+
+
+## Props
+
+### Checkbox 
 
 | 参数           | 说明             | 类型                                                   | 可选值        | 默认值 |
 | -------------- | ---------------- | ------------------------------------------------------ | ------------- | ------ |
@@ -30,11 +42,12 @@ import DemoAllselect from '../../demo/checkbox/section-allselect.jsx'
 | indeterminate  | 不全选的样式控制 | boolean                                                | true \| false | false  |
 | onChange       | 变化时的回调     | (event: React.ChangeEvent\<HTMLInputElement\>) => void | -             | -      |
 
-## Checkbox.Group Props
+### Checkbox.Group 
 
 | 参数         | 说明                                                         | 类型                                        | 可选值        | 默认值 |
 | ------------ | ------------------------------------------------------------ | ------------------------------------------- | ------------- | ------ |
 | className    | 自定义类名                                                   | string                                      | -             | -      |
+| placement    | 排列方式                                                   | string                                      | 'horizontal' \| 'vertical'             | 'horizontal'      |
 | data         | 指定可选项                                                   | string[] \| number[] \| DataItem[]          | -             | []     |
 | defaultValue | 默认选中的项                                                 | string[] \| number[]                        | -             | []     |
 | disabled     | 是否禁用                                                     | boolean                                     | true \| false | false  |
