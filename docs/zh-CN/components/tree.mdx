@@ -70,7 +70,7 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | checkedIds       | 选中的 checkbox                                                         | string[]                                                                 | -                   | -         |
 | openIcon         | 表示展开的图标                                                          | string                                                                   | Icon 图标名称       | -         |
 | closeIcon        | 表示闭合的图标                                                          | string                                                                   | Icon 图标名称       | -         |
-| apperance        | 树形控件的展现形态                                                      | string                                                                   | 'default' \| 'line' | 'default' |
+| apperance        | 树形控件的展现形态                                                      | string                                                                   | 'default' \| 'line' \| 'folder'| 'default' |
 | contextMenu      | 自定义右键菜单,参考 *示例* 及 *页面底部自定义右键菜单使用说明*          | ContextMenuOption[] \| (item: DataItem)  =>  ContextMenuOption[]         |                     | []        |
 | onChange         | 树组件改变时触发                                                        | (data: TreeNode[]) => void                                               | -                   | -         |
 | onExpand         | 节点被点击(展开/收起)时触发                                             | (expanded: boolean, expandIds: string[], expandedNode: TreeNode) => void | -                   | -         |
