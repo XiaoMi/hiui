@@ -233,7 +233,6 @@ class Select extends Component {
       }
     })
     this.onChange(_selectedItems, changedItems, () => {}, _selectedItems)
-    // this.selectInput.focus()
   }
 
   onClickOption (item, index) {
@@ -310,7 +309,6 @@ class Select extends Component {
 
   showDropdown () {
     this.state.dropdownShow === false && this.setState({ dropdownShow: true })
-    // this.selectInput.focus()
   }
 
   deleteItem (item) {
@@ -579,7 +577,7 @@ class Select extends Component {
         >
           <SelectInput
             ref={node => {
-              this.selectInput = node;
+              this.selectInput = node
             }}
             mode={type}
             disabled={disabled}
@@ -595,9 +593,9 @@ class Select extends Component {
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
             onClick={() => {
               if (this.props.open) {
-                this.handleInputClick();
+                this.handleInputClick()
               }
-              onClick();
+              onClick()
             }}
             onBlur={onBlur}
             onFocus={onFocus}
