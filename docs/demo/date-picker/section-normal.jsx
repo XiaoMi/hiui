@@ -48,7 +48,8 @@ class Demo extends React.Component {
           altCalendar = {[
               {
                 date:'2020/4/8',
-                text:'十周年'
+                text:'十周年',
+                hightlight: true
               },
           ]}
           dateMarkRender = {

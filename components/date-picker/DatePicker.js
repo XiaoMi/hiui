@@ -59,7 +59,7 @@ class DatePicker extends BasePicker {
       const dateInfo = deconstructDate(item.date)
       if (!Number.isNaN(dateInfo.year)) {
         Object.assign(allData, {
-          [dateInfo.year + '/' + dateInfo.month + '/' + dateInfo.day]: item.text
+          [dateInfo.year + '/' + dateInfo.month + '/' + dateInfo.day]: item
         })
       }
     })
