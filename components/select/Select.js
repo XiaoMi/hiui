@@ -565,6 +565,7 @@ class Select extends Component {
       "is-multiple": type === "multiple",
       "is-single": type === "single"
     }
+    const selectInputWidth = this.selectInputContainer ? this.selectInputContainer.getBoundingClientRect().width : null
     return (
       <div
         className={classNames("hi-select", className, extraClass)}
@@ -632,6 +633,7 @@ class Select extends Component {
             setFocusedIndex={this.setFocusedIndex.bind(this)}
             show={dropdownShow && this.props.open}
             optionWidth={optionWidth}
+            selectInputWidth={selectInputWidth}
             onEnterSelect={this.onEnterSelect.bind(this)}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
             dropdownItems={type === 'multiple' && dataSource && this.state.keyword === '' ? cacheSelectedItems : dropdownItems}

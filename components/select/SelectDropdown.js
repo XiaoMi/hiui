@@ -117,8 +117,10 @@ class SelectDropdown extends Component {
     if (this.props.dropdownRender) {
       return this.props.dropdownRender(item, isSelected)
     }
-
-    const title = this.props.optionWidth ? (item.title.length + 4) * 14 > this.props.optionWidth ? item.title.substring(0, parseInt(this.props.optionWidth / 14) - 4) + '...' : item.title : item.title
+    const paddingNum = mode === 'multiple' ? 48 : 24
+    const style = {
+      width: this.props.optionWidth ? this.props.optionWidth - paddingNum : this.props.selectInputWidth ? this.props.selectInputWidth - paddingNum : null
+    }
     return (
       <React.Fragment>
         {mode === 'multiple' && (
@@ -127,14 +129,14 @@ class SelectDropdown extends Component {
             checked={isSelected}
             disabled={item.disabled}
           >
-            <div className='hi-select__dropdown--item__name'>{
-              this.props.isOnSearch ? title : this.hightlightKeyword(title, item.id)
+            <div className='hi-select__dropdown--item__name' style={style}>{
+              this.props.isOnSearch ? item.title : this.hightlightKeyword(item.title, item.id)
             }</div>
           </Checkbox>
         )}
         {mode === 'single' && (
-          <div className='hi-select__dropdown--item__name'>{
-            this.props.isOnSearch ? title : this.hightlightKeyword(title, item.id)
+          <div className='hi-select__dropdown--item__name' style={style}>{
+            this.props.isOnSearch ? item.title : this.hightlightKeyword(item.title, item.id)
           }</div>
         )}
         {mode === 'single' && isSelected && (
