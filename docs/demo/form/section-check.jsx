@@ -110,7 +110,7 @@ class Demo extends React.Component {
             </FormItem>
             <FormItem>
               <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
-              <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
+              <Button type='line' onClick={this.cancelSubmit.bind(this)}>重置</Button>
             </FormItem>
           </Form>
         </Col>
