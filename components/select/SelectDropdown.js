@@ -70,14 +70,17 @@ class SelectDropdown extends Component {
 
     let parts = text.split(new RegExp(`(${_keyword})`, 'gi'))
     return (
-      <span key={uniqueKey}>
+      this.state.searchbarValue.length > 0 ? <p key={uniqueKey}>
         { parts.map((part, i) =>
-          <span key={i} className={part === searchbarValue ? 'hi-select__dropdown--item__name-hightlight' : ''}>
-            { part }
-          </span>
+          part === searchbarValue
+            ? <span key={i} className={'hi-select__dropdown--item__name-hightlight'}>
+              { part }
+            </span>
+            : part
         )
         }
-      </span>
+      </p>
+        : text
     )
   }
   onMouseEnter (item, index) {
@@ -121,6 +124,7 @@ class SelectDropdown extends Component {
     const style = {
       width: this.props.optionWidth ? this.props.optionWidth - paddingNum : this.props.selectInputWidth ? this.props.selectInputWidth - paddingNum : null
     }
+
     return (
       <React.Fragment>
         {mode === 'multiple' && (
