@@ -61,8 +61,6 @@ class UploadPictureCard extends Upload {
                 <li key={index} title={file.name} className={itemCls}>
                   <div className='img-wrap'>
                     <img src={file.url} />
-                    {/* UI不需要mask */}
-                    {/* {file.uploadState === 'loading' && (<div className='img-mask' />)} */}
                   </div>
                   <div className='hi-upload__right-content'>
                     <span className={fileNameCls} title={file.name}>{file.name}</span>
