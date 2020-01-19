@@ -70,7 +70,7 @@ class SelectDropdown extends Component {
 
     let parts = text.split(new RegExp(`(${_keyword})`, 'gi'))
     return (
-      this.state.searchbarValue.length > 0 ? <span key={uniqueKey}>
+      this.state.searchbarValue.length > 0 ? <p key={uniqueKey}>
         { parts.map((part, i) =>
           part === searchbarValue
             ? <span key={i} className={'hi-select__dropdown--item__name-hightlight'}>
@@ -79,7 +79,7 @@ class SelectDropdown extends Component {
             : part
         )
         }
-      </span>
+      </p>
         : text
     )
   }
