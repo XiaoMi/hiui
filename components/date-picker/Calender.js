@@ -23,9 +23,7 @@ class Calender extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      rows: [[], [], [], [], [], []],
-      altCalendarPresetData: this.props.altCalendarPresetData,
-      dateMarkPresetData: this.props.dateMarkPresetData
+      rows: [[], [], [], [], [], []]
     }
     this.weekNum = 0
   }
@@ -246,27 +244,27 @@ class Calender extends Component {
     if (this.props.altCalendar || this.props.dateMarkRender) {
       lunarcellinfo = {
         text: this.altCalendarText(datainfo, lunarcellinfo),
-        hightlight: this.state.altCalendarPresetData && this.state.altCalendarPresetData[datainfo] && this.state.altCalendarPresetData[datainfo].hightlight,
+        hightlight: this.props.altCalendarPresetData && this.props.altCalendarPresetData[datainfo] && this.props.altCalendarPresetData[datainfo].hightlight,
         nodeMark: this.markRender(datainfo)
       }
     }
-    if ((this.state.dateMarkPresetData && this.state.dateMarkPresetData[datainfo]) || (this.state.altCalendarPresetData && this.state.altCalendarPresetData[datainfo])) {
+    if ((this.props.dateMarkPresetData && this.props.dateMarkPresetData[datainfo]) || (this.props.altCalendarPresetData && this.props.altCalendarPresetData[datainfo])) {
       lunarcellinfo = {
         text: this.altCalendarText(datainfo, lunarcellinfo),
-        hightlight: this.state.altCalendarPresetData && this.state.altCalendarPresetData[datainfo] && this.state.altCalendarPresetData[datainfo].hightlight,
+        hightlight: this.props.altCalendarPresetData && this.props.altCalendarPresetData[datainfo] && this.props.altCalendarPresetData[datainfo].hightlight,
         nodeMark: this.markRender(datainfo)
       }
     }
     return lunarcellinfo
   }
   altCalendarText = (datainfo, lunarcellinfo) => {
-    return this.state.altCalendarPresetData && this.state.altCalendarPresetData[datainfo] ? this.state.altCalendarPresetData[datainfo].text ? this.state.altCalendarPresetData[datainfo].text : this.state.altCalendarPresetData[datainfo] : lunarcellinfo.text
+    return this.props.altCalendarPresetData && this.props.altCalendarPresetData[datainfo] ? this.props.altCalendarPresetData[datainfo].text ? this.props.altCalendarPresetData[datainfo].text : this.props.altCalendarPresetData[datainfo] : lunarcellinfo.text
   }
   markRender (datainfo) {
-    if (this.props.dateMarkRender || this.state.dateMarkPresetData) {
+    if (this.props.dateMarkRender || this.props.dateMarkPresetData) {
       const markFunc = this.props.dateMarkRender ? this.props.dateMarkRender : () => false
 
-      return markFunc(new Date(datainfo).getTime(), new Date().getTime()) ? this.getMarkNode(markFunc(new Date(datainfo).getTime(), new Date().getTime())) : this.state.dateMarkPresetData && this.state.dateMarkPresetData[datainfo] ? this.state.dateMarkPresetData[datainfo] : null
+      return markFunc(new Date(datainfo).getTime(), new Date().getTime()) ? this.getMarkNode(markFunc(new Date(datainfo).getTime(), new Date().getTime())) : this.props.dateMarkPresetData && this.props.dateMarkPresetData[datainfo] ? this.props.dateMarkPresetData[datainfo] : null
     } else {
       return null
     }
@@ -293,7 +291,7 @@ class Calender extends Component {
         _class.push(td.type)
         break
     }
-    if ((this.state.altCalendarPresetData || this.state.dateMarkPresetData) && layerType !== 'year' && layerType !== 'month') {
+    if ((this.props.altCalendarPresetData || this.props.dateMarkPresetData) && layerType !== 'year' && layerType !== 'month') {
       const fullTimeInfo = this.getFullTime(td.value, _class)
       return (
         <React.Fragment>
