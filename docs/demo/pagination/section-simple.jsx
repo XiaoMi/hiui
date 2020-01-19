@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Pagination from '../../../components/pagination'
-const prefix = 'pagination-base'
+const prefix = 'pagination-simple'
 const code = `import React from 'react'
 import Pagination from '@hi-ui/hiui/es/pagination'\n
 class Demo extends React.Component {
