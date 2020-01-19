@@ -144,7 +144,7 @@ class SelectInput extends Component {
         >
           {selectedItems.slice(0, showCount).map((item, index) => {
             const _item = (
-              <div key={index} className='hi-select__input--item'>
+              <div key={index} className='hi-select__input--item' style={{ maxWidth: this.itemsRef ? (this.itemsRef.getBoundingClientRect().width - 50) * 0.8 : '80%' }}>
                 <div className='hi-select__input--item__name'>{item.title}</div>
                 <span
                   className='hi-select__input--item__remove'
