@@ -1,5 +1,19 @@
 # 更新日志
 
+## 2.7.0
+
+- 新增 `<Checkbox />` 垂直样式 [#883](https://github.com/XiaoMi/hiui/issues/883)
+- 新增 `<Dropdown />` placement 可选项 'bottom-end' 和 'top-end' [#891](https://github.com/XiaoMi/hiui/issues/891)
+- 新增 `<Upload />` withCredentials 属性 [#905](https://github.com/XiaoMi/hiui/issues/905)
+- 新增 `<Tree />` 文件夹样式 [#913](https://github.com/XiaoMi/hiui/issues/913)
+- 优化 `<Menu />` 水平模式交互 [#884](https://github.com/XiaoMi/hiui/issues/884)
+- 优化 `<Select />` 异步单选和异步多选交互模式 [#903](https://github.com/XiaoMi/hiui/issues/903)
+- 优化 `<Upload />` 预览交互 [#893](https://github.com/XiaoMi/hiui/issues/893)
+- 优化 `<Transfer />` 可搜索时清除按钮的出现交互 [#890](https://github.com/XiaoMi/hiui/issues/890)
+- 优化 `<Tree />` 编辑节点的交互，输入为空时不可保存 [#889](https://github.com/XiaoMi/hiui/issues/889)
+- 优化 `<Transfer />` 多选未选中时的展示效果 [#888](https://github.com/XiaoMi/hiui/issues/888)
+- 优化若干视觉还原问题：[#841](https://github.com/XiaoMi/hiui/issues/841) [#842](https://github.com/XiaoMi/hiui/issues/842) [#843](https://github.com/XiaoMi/hiui/issues/843) [#844](https://github.com/XiaoMi/hiui/issues/844) [#845](https://github.com/XiaoMi/hiui/issues/845) [#848](https://github.com/XiaoMi/hiui/issues/848) [#851](https://github.com/XiaoMi/hiui/issues/851) [#852](https://github.com/XiaoMi/hiui/issues/852) [#853](https://github.com/XiaoMi/hiui/issues/853) [#854](https://github.com/XiaoMi/hiui/issues/854) [#855](https://github.com/XiaoMi/hiui/issues/855) [#856](https://github.com/XiaoMi/hiui/issues/856) [#857](https://github.com/XiaoMi/hiui/issues/857) [#858](https://github.com/XiaoMi/hiui/issues/858) [#859](https://github.com/XiaoMi/hiui/issues/859) [#862](https://github.com/XiaoMi/hiui/issues/862) [#869](https://github.com/XiaoMi/hiui/issues/869) [#875](https://github.com/XiaoMi/hiui/issues/875) [#876](https://github.com/XiaoMi/hiui/issues/876) [#886](https://github.com/XiaoMi/hiui/issues/886) [#895](https://github.com/XiaoMi/hiui/issues/895) [#896](https://github.com/XiaoMi/hiui/issues/896) [#897](https://github.com/XiaoMi/hiui/issues/897) [#898](https://github.com/XiaoMi/hiui/issues/898) [#899](https://github.com/XiaoMi/hiui/issues/899) [#900](https://github.com/XiaoMi/hiui/issues/900) [#901](https://github.com/XiaoMi/hiui/issues/901)
+
 ## 2.6.4
 
 - 修复 `<Table />` 多级表头和多选同时使用的问题 [#867](https://github.com/XiaoMi/hiui/issues/867)
