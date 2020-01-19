@@ -13,7 +13,7 @@ class SelectInput extends Component {
       inputStyle: {
         width: 2
       },
-      _cacheselectedItems: []
+      cacheselectedItems: []
     }
   }
 
@@ -54,7 +54,7 @@ class SelectInput extends Component {
 
   static getDerivedStateFromProps (nextProps, nextState) {
     return nextProps.dropdownShow
-      ? { _cacheselectedItems: nextProps.selectedItems.length > 0 ? nextProps.selectedItems : nextState._cacheselectedItems } : { _cacheselectedItems: nextProps.selectedItems }
+      ? { cacheselectedItems: nextProps.selectedItems.length > 0 ? nextProps.selectedItems : nextState.cacheselectedItems } : { cacheselectedItems: nextProps.selectedItems }
   }
   focus () {
     setTimeout(() => this.searchInput && this.searchInput.focus(), 0)
@@ -95,7 +95,7 @@ class SelectInput extends Component {
 
   handleClear () {
     this.setState({
-      _cacheselectedItems: []
+      cacheselectedItems: []
     })
     this.props.onClear()
     this.clearInput()
@@ -214,7 +214,7 @@ class SelectInput extends Component {
       onBlur
     } = this.props
 
-    selectedItems = selectedItems.length > 0 ? selectedItems : this.state._cacheselectedItems
+    selectedItems = selectedItems.length > 0 ? selectedItems : this.state.cacheselectedItems
     placeholder =
       selectedItems.length > 0 ? selectedItems[0].title : placeholder
     let icon = dropdownShow ? 'up' : 'down'
