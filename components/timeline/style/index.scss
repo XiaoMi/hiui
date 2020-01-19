@@ -139,6 +139,10 @@
       left: 3px;
     }
 
+    .hi-timeline__row {
+      margin-left: 24px;
+    }
+
     .hi-timeline__dot {
       left: 0;
 
@@ -171,7 +175,7 @@
 
     .hi-timeline__item:nth-child(even) {
       .hi-timeline__row {
-        margin-left: -36px;
+        margin-left: -24px;
         text-align: right;
         display: inline-block;
 
@@ -181,7 +185,7 @@
       }
 
       .hi-timeline__content-container {
-        margin-right: 36px;
+        margin-right: 24px;
       }
 
       .hi-timeline__title {
@@ -192,11 +196,11 @@
     .hi-timeline__item:nth-child(odd) {
       .hi-timeline__row {
         margin-left: 50%;
-        padding-left: 36px;
+        padding-left: 24px;
       }
 
       .hi-timeline__content-container {
-        margin-left: 36px;
+        margin-left: 24px;
       }
     }
 

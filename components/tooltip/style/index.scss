@@ -5,11 +5,11 @@
 
 .hi-tooltip-base {
   border-radius: 2px;
-  background: #4a4a4a;
+  background: #333;
   font-size: 12px;
   color: #fff;
-  padding: 0 5px;
-  line-height: 24px;
+  padding: 6px 12px;
+  line-height: 20px;
   white-space: nowrap;
   transition: all 0.5s;
 
@@ -18,7 +18,7 @@
     position: absolute;
     width: 5px;
     height: 5px;
-    background: #4a4a4a;
+    background: #333;
   }
 }
 

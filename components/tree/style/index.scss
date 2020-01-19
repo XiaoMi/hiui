@@ -8,6 +8,28 @@ $tree: 'hi-tree' !default;
 
   color: #383e47;
 
+  &:not(.hi-tree--show-line) {
+    li:not(.is-root):not(.no-expanded) {
+      margin-top: 10px;
+    }
+
+    .is-root {
+      margin-bottom: 10px;
+    }
+  }
+
+  .hi-checkbox-legacy {
+    margin-left: 8px;
+  }
+
+  .hi-checkbox-legacy--part .hi-checkbox-legacy__input {
+    border: 1px solid #4284f5;
+  }
+
+  .hi-checkbox-legacy--checked .hi-checkbox-legacy__input {
+    border: 1px solid #4284f5;
+  }
+
   .hi-tree__searcher {
     position: relative;
     padding-left: 15px;
@@ -30,6 +52,10 @@ $tree: 'hi-tree' !default;
 
       .hi-input__append {
         width: 32px;
+        height: 30px;
+        border-radius: 2px 0 0 2px;
+        border: 1px solid rgba(216, 216, 216, 1);
+        border-left: none;
         text-align: center;
       }
     }

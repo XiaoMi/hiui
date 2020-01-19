@@ -18,7 +18,6 @@
 
   &:not(.hi-btn--disabled):active {
     background-color: map-get($themePalette, '80');
-    box-shadow: inset 0 4px 4px rgba($themeColor, 0.25);
     color: $white;
   }
 
@@ -79,7 +78,6 @@
 
   &:not(.hi-btn--disabled):active {
     background-color: rgba($themeColor, 0.15);
-    box-shadow: inset 0 4px 4px rgba($themeColor, 0.25);
     color: $themeColor;
   }
 
@@ -110,7 +108,6 @@
 
     &:not(.hi-btn--disabled):active {
       background-color: rgba($themeColor, 0.15);
-      box-shadow: inset 0 4px 4px rgba($themeColor, 0.25);
       color: $themeColor;
     }
 
@@ -236,7 +233,6 @@
 
     &:not(.hi-btn--disabled):active {
       background-color: $gray-lighter;
-      box-shadow: inset 0 4px 4px rgba($black, 0.25);
       color: $black;
     }
 
@@ -261,7 +257,6 @@
 
       &:not(.hi-btn--disabled):active {
         background-color: $gray-lighter;
-        box-shadow: inset 0 4px 4px rgba($black, 0.25);
         color: $black;
       }
 

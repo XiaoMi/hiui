@@ -18,13 +18,13 @@ export default class DropdownButton extends React.Component {
     )
     const iconGroupCls = classNames(
       `${prefixCls}__icon`,
-      isButton || `${prefixCls}__icon--text`
+      isButton || `${prefixCls}__icon--text`,
+      isButton && `${prefixCls}__icon-btnwrap`
     )
     const iconCls = classNames(
       'hi-icon',
       'icon-down',
-      `${prefixCls}__icon`,
-      visible && `${prefixCls}__icon--active`
+      `${prefixCls}__icon`
     )
     isButton || (restProps.appearance = 'link')
     const iconProps = {}

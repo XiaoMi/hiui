@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { filterObjProps } from '../input/util'
 import { Decimal } from 'decimal.js'
+import Icon from '../icon'
 /**
  * 加减器
  */
@@ -121,7 +122,7 @@ class Counter extends React.Component {
               this.update(value)
             }}
           >
-            -
+            <Icon name='minus' />
           </span>
           <input
             id={id ? `${id}_value` : ''}
@@ -165,7 +166,7 @@ class Counter extends React.Component {
               this.update(value)
             }}
           >
-            +
+            <Icon name='plus' />
           </span>
         </div>
       </div>

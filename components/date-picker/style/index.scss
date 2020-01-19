@@ -29,6 +29,14 @@ $basic-color: #4284f5 !default;
       border: 1px solid #4284f5;
     }
 
+    .icon-close-circle {
+      color: #bbb;
+    }
+
+    .icon-close-circle:hover {
+      color: #333;
+    }
+
     &--range {
       width: 320px;
 
@@ -91,7 +99,7 @@ $basic-color: #4284f5 !default;
     justify-content: space-between;
     height: 47px;
     align-items: center;
-    padding: 0 15px;
+    padding: 0 12px;
 
     &-btns {
       width: 50px;
@@ -101,6 +109,12 @@ $basic-color: #4284f5 !default;
       .hi-icon {
         cursor: pointer;
         flex: 1;
+      }
+
+      .hi-icon:hover {
+        cursor: pointer;
+        flex: 1;
+        color: #4284f5;
       }
     }
 
@@ -112,8 +126,7 @@ $basic-color: #4284f5 !default;
 
   &__body {
     background: #fff;
-    border: 1px solid #d1dbe5;
-    border-radius: 2px;
+    border-radius: 4px;
     box-sizing: border-box;
     width: 288px;
 
@@ -249,9 +262,19 @@ $basic-color: #4284f5 !default;
 
     &--week {
       .hi-datepicker__row {
+        border-radius: 2px;
+
         &:hover {
           .hi-datepicker__content {
             background: rgba(66, 132, 245, 0.1);
+          }
+
+          .hi-datepicker__cell {
+            background-color: rgba(0, 0, 0, 0);
+
+            div.hi-datepicker__content span.hi-datepicker__text {
+              background-color: rgba(0, 0, 0, 0) !important;
+            }
           }
         }
       }
@@ -304,6 +327,18 @@ $basic-color: #4284f5 !default;
         cursor: not-allowed;
         color: map-get(get-palette($basic-color), 'g80');
         background: rgba(246, 246, 246, 1);
+      }
+
+      &:first-child {
+        .hi-datepicker__content {
+          border-radius: 2px;
+        }
+      }
+
+      &:last-child {
+        .hi-datepicker__content {
+          border-radius: 2px;
+        }
       }
     }
 
