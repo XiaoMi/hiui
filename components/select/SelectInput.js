@@ -226,20 +226,21 @@ class SelectInput extends Component {
       >
         <div
           className={classNames('hi-select__input--item', {
-            'hi-select__hide': !(selectedItems.length > 0)
+            'hi-select__hide': !(!dropdownShow && selectedItems.length > 0)
           })}
         >
           <div className='hi-select__input--item__name'>
             {selectedItems[0] && selectedItems[0].title}
           </div>
         </div>
-        {(selectedItems.length === 0) && (
-          <div className='hi-select__input--search'>
+        {(dropdownShow || selectedItems.length === 0) && (
+          <div className={classNames('hi-select__input--search', {'hi-select__input--search--value': selectedItems.length > 0})}>
             <input
               type='text'
               ref={(input) => {
                 this.searchInput = input
               }}
+              value={selectedItems.length > 0 ? placeholder : ''}
               placeholder={placeholder}
               onChange={this.handleKeywordChange.bind(this)}
               onKeyDown={this.handleKeyDown.bind(this)}
