@@ -239,10 +239,8 @@ class SelectDropdown extends Component {
           </ul>
         )}
         {mode === 'multiple' && showCheckAll && (
-          <div className='hi-select__dropdown-check-all-wrap'>
-            <div className={`hi-select__dropdown-check-all theme__${theme}`} onClick={this.props.checkAll.bind(this, filterItems)}>
+          <div className={`hi-select__dropdown-check-all theme__${theme}`} onClick={this.props.checkAll.bind(this, filterItems)}>
               全选
-            </div>
           </div>
         )}
       </div>
