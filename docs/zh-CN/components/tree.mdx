@@ -65,8 +65,10 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | editable         | 节点右键可编辑（添加同级节点、添加子节点、编辑节点、删除节点）          | boolean                                                                  | true \| false       | false     |
 | draggable        | 节点可拖拽                                                              | boolean                                                                  | true \| false       | false     |
 | searchable       | 节点可搜索                                                              | boolean                                                                  | true \| false       | false     |
+| highlightable       | 节点高亮                                                              | boolean                                                                  | true \| false       | false     |
 | loadTreeNode     | 点击异步加载子项                                                        | LoadTreeNode \| (id: string) =>  LoadTreeNode                                                                  | -                   | -         |
 | defaultExpandAll | 是否默认展开所有树节点                                                  | boolean                                                                  | true \| false       | false     |
+| defaultHighlightId | 默认高亮的节点                                                  | boolean                                                                  | true \| false       | false     |
 | checkedIds       | 选中的 checkbox                                                         | string[]                                                                 | -                   | -         |
 | openIcon         | 表示展开的图标                                                          | string                                                                   | Icon 图标名称       | -         |
 | closeIcon        | 表示闭合的图标                                                          | string                                                                   | Icon 图标名称       | -         |

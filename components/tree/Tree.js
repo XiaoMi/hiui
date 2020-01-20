@@ -184,7 +184,8 @@ export class Tree extends Component {
       onSave,
       onClick,
       apperance,
-      contextMenu
+      contextMenu,
+      defaultHighlightId
     } = this.props
     const { data } = this.state
     return (
@@ -204,13 +205,12 @@ export class Tree extends Component {
           expandTreeNode={this.expandTreeNode}
           setExpandTreeNodes={this.setExpandTreeNodes}
           onCheckChange={this.onCheckChange}
-          hightLightNodes={this.props.hightLightNodes}
-          onHightLightChange={this.props.onHightLightChange}
           onExpanded={this.onExpanded}
           data={data}
           prefixCls={prefixCls}
           checkable={checkable}
           highlightable={highlightable}
+          defaultHighlightId={defaultHighlightId}
           editable={editable}
           searchable={searchable}
           openIcon={openIcon}
