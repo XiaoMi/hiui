@@ -2,6 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import Upload from './Upload'
 import Icon from '../icon'
+import Provider from '../context'
 
 class UploadDrag extends Upload {
   constructor (props) {
@@ -46,7 +47,8 @@ class UploadDrag extends Upload {
       disabled,
       tips,
       localeDatas,
-      onRemove
+      onRemove,
+      theme
     } = this.props
     const {
       overEvent,
@@ -55,6 +57,7 @@ class UploadDrag extends Upload {
     } = this.state
 
     const dragCls = classNames(
+      `theme__${theme}`,
       'hi-upload',
       'hi-upload--drag',
       overEvent && !disabled && 'drop-over',
@@ -161,4 +164,4 @@ class UploadDrag extends Upload {
   }
 }
 
-export default UploadDrag
+export default Provider(UploadDrag)

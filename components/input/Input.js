@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
+import Provider from '../context'
 import { format, formatValue, getAttrs, formatAmount, filterObjProps } from './util'
 
 /**
@@ -21,7 +22,6 @@ class Input extends Component {
       prefix: '',
       suffix: ''
     }
-
     const oldProps = Object.assign({}, commonAttrs, this.props)
     const newProps = getAttrs(oldProps)
     const { prepend, append, value, defaultValue } = props
@@ -82,12 +82,11 @@ class Input extends Component {
     // clearableTrigger 为内部预留，主要表示清除按钮的触发形态，类型分为 'hover' 和 ‘always’
     let { disabled, type, id, placeholder, clearable, clearableTrigger = 'hover' } = this.props
     let { prefix, suffix, prepend, append } = this.state
-
     const noClear = ['textarea']
     let prefixId = id ? id + '_prefix' : ''
     let suffixId = id ? id + '_suffix' : ''
     const { defaultValue, ...attrs } = this.attrs
-    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'suffixicon', 'suffix', 'prepend', 'prefixicon', 'prefix', 'localeDatas', 'append'])
+    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'suffixicon', 'suffix', 'prepend', 'prefixicon', 'prefix', 'localeDatas', 'append', 'innerRef'])
     return (
       <div
         className={classNames('hi-input__out', {
@@ -218,13 +217,13 @@ class Input extends Component {
    */
   renderTextarea () {
     let { active } = this.state
-    let { disabled } = this.props
+    let { disabled, theme } = this.props
     const { defaultValue, ...attrs } = this.attrs
-    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'suffixicon', 'suffix', 'prepend', 'prefixicon', 'prefix', 'localeDatas', 'append'])
+    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'suffixicon', 'suffix', 'prepend', 'prefixicon', 'prefix', 'localeDatas', 'append', 'innerRef'])
 
     return (
       <textarea
-        className={`hi-input ${active ? 'active' : ''} ${disabled ? 'disabled' : ''}`}
+        className={`hi-input theme__${theme} ${active ? 'active' : ''} ${disabled ? 'disabled' : ''}`}
         style={this.props.style}
         autoComplete='off'
         value={this.state.value}
@@ -288,31 +287,32 @@ class Input extends Component {
 
   render () {
     const { type } = this.attrs
-    const { size, id, className, required } = this.props
 
-    return type === 'textarea' ? this.renderTextarea() : (<div
-      id={id}
-      className={`hi-input ${className || ''} ${type}${size ? ' hi-input_' + size : ''}${
-        required ? ' required' : ''
-      }`}
-      style={this.props.style}
-      data-value={this.state.valueTrue}
-      onClick={e => {
-        this._Input.focus()
-      }}
-      onMouseOver={e => {
-        this.setState({
-          hover: true
-        })
-      }}
-      onMouseLeave={e => {
-        this.setState({
-          hover: false
-        })
-      }}
-    >
-      {this.renderText()}
-    </div>)
+    const { size, id, className, required, theme } = this.props
+    return type === 'textarea' ? this.renderTextarea() : (
+      <div
+        id={id}
+        className={`hi-input theme__${theme} ${className || ''} ${type}${size ? ' hi-input_' + size : ''}${
+          required ? ' required' : ''
+        }`}
+        style={this.props.style}
+        data-value={this.state.valueTrue}
+        onClick={e => {
+          this._Input.focus()
+        }}
+        onMouseOver={e => {
+          this.setState({
+            hover: true
+          })
+        }}
+        onMouseLeave={e => {
+          this.setState({
+            hover: false
+          })
+        }}
+      >
+        {this.renderText()}
+      </div>)
   }
 }
 
@@ -320,4 +320,4 @@ Input.defaultProps = {
   defaultValue: ''
 }
 
-export default Input
+export default Provider(Input)

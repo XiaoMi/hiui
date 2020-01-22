@@ -4,7 +4,7 @@ import './style'
 import { BarProgress } from './BarProgress.js'
 import { CircleProgress } from './CircleProgress.js'
 import { DashboardProgress } from './DashboardProgress'
-
+import Provider from '../context'
 class Progress extends Component {
   static propTypes = {
     apperance: PropTypes.string,
@@ -40,11 +40,11 @@ class Progress extends Component {
 
   render () {
     let prefix = 'hi-progress'
-    const { className = '', apperance } = this.props
+    const {className = '', apperance, theme} = this.props
 
     return (
-      <div className={`${prefix}__container ${className}`}>{this.getRenderType(apperance)}</div>
+      <div className={`${prefix}__container ${className} theme__${theme}`}>{this.getRenderType(apperance)}</div>
     )
   }
 }
-export default Progress
+export default Provider(Progress)

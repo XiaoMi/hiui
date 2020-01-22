@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './style/index'
-
+import Provider from '../context'
 class Tag extends Component {
   static propTypes = {
     type: PropTypes.oneOf([
@@ -27,8 +27,9 @@ class Tag extends Component {
 
   render () {
     const prefixCls = 'hi-tag'
-    const {children, type, appearance, onClick, style, className} = this.props
+    const {children, type, appearance, onClick, style, className, theme} = this.props
     const eleClass = classNames(
+      `theme__${theme}`,
       `${prefixCls}__container`,
       className,
       onClick && `${prefixCls}__container--click`,
@@ -46,4 +47,4 @@ class Tag extends Component {
   }
 }
 
-export default Tag
+export default Provider(Tag)

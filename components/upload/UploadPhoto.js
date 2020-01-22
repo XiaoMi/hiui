@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import Upload from './Upload'
 import Preview from './Preview'
 import Icon from '../icon'
+import Provider from '../context'
 
 class UploadPhoto extends Upload {
   constructor (props) {
@@ -47,7 +48,8 @@ class UploadPhoto extends Upload {
       onRemove,
       disabled,
       accept,
-      localeDatas
+      localeDatas,
+      theme
     } = this.props
     const images = fileList.map(file => {
       return {
@@ -55,7 +57,7 @@ class UploadPhoto extends Upload {
       }
     })
     return (
-      <div className={classNames('hi-upload hi-upload--photo', {'hi-upload--disabled': disabled})}
+      <div className={classNames('hi-upload hi-upload--photo', `theme__${theme}`, {'hi-upload--disabled': disabled})}
         onClick={(e) => {
           if (e.target.nodeName === 'INPUT' && e.target.type === 'file') {
             this.uploadRef.value = ''
@@ -135,4 +137,4 @@ UploadPhoto.defaultProps = Object.assign({}, {
   accept: 'image/jpg,image/jpeg,image/png'
 })
 
-export default UploadPhoto
+export default Provider(UploadPhoto)

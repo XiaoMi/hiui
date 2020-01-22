@@ -17,9 +17,10 @@ export default class DropdownMenu extends React.Component {
       onChildMenuMouseEnter,
       onChildMenuMouseLeave,
       onMenuItemClick,
-      width
+      width,
+      theme
     } = this.props
-    const menuCls = classNames(`${prefixCls}__menu`)
+    const menuCls = classNames(`${prefixCls}__menu`, `theme__${theme}`)
     return (
       <Popper
         className={`${prefixCls}__popper`}

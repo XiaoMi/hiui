@@ -3,6 +3,7 @@ import Upload from './Upload'
 import Icon from '../icon'
 import classNames from 'classnames'
 import Button from '../button'
+import Provider from '../context'
 
 class UploadPictureCard extends Upload {
   handleButtonClick = () => {
@@ -17,7 +18,8 @@ class UploadPictureCard extends Upload {
       disabled,
       accept,
       onRemove,
-      localeDatas
+      localeDatas,
+      theme
     } = this.props
     const {
       fileList,
@@ -25,7 +27,7 @@ class UploadPictureCard extends Upload {
     } = this.state
 
     return (
-      <div className='hi-upload hi-upload--picture-card'>
+      <div className={`hi-upload hi-upload--picture-card theme__${theme}`}>
         {
           this.outMaxsizeTip()
         }
@@ -96,4 +98,4 @@ UploadPictureCard.defaultProps = Object.assign({}, {
   accept: 'image/jpg,image/jpeg,image/png'
 })
 
-export default UploadPictureCard
+export default Provider(UploadPictureCard)

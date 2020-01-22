@@ -1,3 +1,5 @@
+@import '@hi-ui/core-css/index.scss';
+
 .hi-upload {
   &--disabled {
     cursor: not-allowed;
@@ -473,5 +475,70 @@
 .hi-modal {
   .content {
     font-size: 0;
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.hi-upload {
+    &--drag {
+      &:hover:not(.hi-upload--nohover) {
+        border-color: $value;
+      }
+
+      .hi-upload__operate-icon {
+        color: $value;
+      }
+
+      .drop-over {
+        border: 1px dashed $value;
+      }
+
+      .show-drop-content {
+        .icon {
+          &::before {
+            color: $value;
+          }
+        }
+      }
+    }
+
+    .hi-upload__item {
+      &-tips {
+        color: $value;
+
+        .hi-upload__operate-icon {
+          color: $value;
+        }
+
+        .icon-tishi {
+          color: $value;
+        }
+      }
+    }
+
+    &--avatar,
+    &--photo {
+      .hi-upload__item {
+        &--upload {
+          &:hover {
+            border-color: $value;
+          }
+        }
+      }
+    }
+
+    .hi-upload__upstatus {
+      &-line {
+        background-color: $value;
+      }
+
+      &-num {
+        color: $value;
+      }
+    }
+
+    .hi-upload__loading-bar {
+      background: $value;
+    }
   }
 }

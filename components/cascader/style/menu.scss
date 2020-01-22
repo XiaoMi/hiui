@@ -1,3 +1,5 @@
+@import '@hi-ui/core-css/index.scss';
+
 .hi-cascader__popper {
   display: flex;
   background-color: #fff;
@@ -59,6 +61,18 @@
 
     &--label-split {
       margin: 0 3px;
+    }
+  }
+}
+
+@each $key, $value in $palette-primary {
+  .hi-cascader-menu.theme__#{$key} {
+    .hi-cascader-menu__item:hover {
+      background-color: rgba($value, 0.15);
+    }
+
+    .hi-cascader-menu__item.hi-cascader-menu__item-active {
+      background-color: rgba($value, 0.15);
     }
   }
 }

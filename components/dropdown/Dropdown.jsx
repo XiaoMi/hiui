@@ -5,8 +5,8 @@ import DropdownButton from './DropdownButton'
 import DropdownMenu, { propTypesOfMenuData } from './DropdownMenu'
 import { prefixCls } from '.'
 import { getIsTriggerEqualHover, getIsTriggerEqualContextmenu, trimTriggers } from './utils'
-
-export default class Dropdown extends React.Component {
+import Provider from '../context'
+class Dropdown extends React.Component {
   refDropdown = React.createRef()
   timerHideMenu = null
   state = {
@@ -93,7 +93,7 @@ export default class Dropdown extends React.Component {
     document.removeEventListener('click', this.handleDocumentClick)
   }
   render () {
-    const { className, style, title, type, placement, data, disabled, width, onButtonClick } = this.props
+    const { className, style, title, type, placement, data, disabled, width, onButtonClick, theme } = this.props
     const { visible } = this.state
     const dropdownCls = classNames(prefixCls, prefixCls + '--' + type, className, disabled && `${prefixCls}--disabled`)
     return (
@@ -112,6 +112,7 @@ export default class Dropdown extends React.Component {
           visible={visible}
           attachEle={this.refDropdown.current}
           data={data}
+          theme={theme}
           placement={placement}
           onMouseEnter={this.handleMenuMouseEnter}
           onMouseLeave={this.handleMenuMouseLeave}
@@ -140,7 +141,8 @@ Dropdown.propTypes = {
 }
 
 Dropdown.defaultProps = {
-  placement: 'top-bottom-start',
+  placement: 'bottom-start',
   trigger: 'hover',
   width: 240
 }
+export default Provider(Dropdown)

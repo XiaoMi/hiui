@@ -225,3 +225,19 @@
     margin-bottom: 4px;
   }
 }
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.hi-timeline {
+    .hi-timeline__dot {
+      border: 2px solid $value;
+
+      &.hi-timeline__dot--custom {
+        border: none;
+      }
+
+      &--sub {
+        background: $value;
+      }
+    }
+  }
+}

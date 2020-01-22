@@ -554,6 +554,7 @@ class TreeNode extends Component {
               expandTreeNode={expandTreeNode}
               itemStyle={classNames(checkable && 'has_checkbox')}
               semiChecked={semiChecked}
+              theme={this.props.theme}
               checkable={checkable}
               onExpanded={onExpanded}
               onValueChange={this.onValueChange}
@@ -610,7 +611,7 @@ class TreeNode extends Component {
                   collectExpandId(dataCache, e.target.value, [], dataCache)
                 )
               }}
-              append={<Icon name='search' style={{ color: '#4284F5', fontSize: '24px' }} />}
+              append={<Icon name='search' style={{ fontSize: '24px' }} />}
               style={{ width: '272px' }}
             />
             {highlightNum === 0 && searchValue !== '' && (

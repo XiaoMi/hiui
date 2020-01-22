@@ -119,3 +119,15 @@ $prefixCls: 'hi-dropdown' !default;
     }
   }
 }
+
+@each $key, $value in $palette-primary {
+  .theme__#{$key}.#{$prefixCls}__button--active {
+    color: $value !important;
+  }
+
+  .theme__#{$key}.#{$prefixCls}__menu {
+    .#{$prefixCls}__menu-item:not(.hi-dropdown__menu-item----disabled):hover {
+      background-color: rgba($value, 0.15);
+    }
+  }
+}

@@ -10,6 +10,7 @@ import './style'
 import loading from '../loading'
 import '../pagination/style'
 import '../icon/style'
+import Provider from '../context'
 import {setKey, scrollTop, getStyle, getPosition, offset} from './tool'
 import request from 'axios'
 import qs from 'qs'
@@ -421,7 +422,7 @@ class Table extends Component {
     // 多选配置
     // noinspection JSAnnotator
 
-    let {pagination, name, size = 'normal', bordered = false, striped = false, scrollX, header = null, footer = null} = this.props
+    let {pagination, name, size = 'normal', bordered = false, striped = false, scrollX, header = null, footer = null, theme} = this.props
     // noinspection JSAnnotator
     let {scroll, columnMenu, serverPagination} = this.state
     let content
@@ -478,7 +479,7 @@ class Table extends Component {
     }
     let serverPaginationConfig = serverPagination
     return (
-      <div className={prifix({table: true, [size]: size, bordered, striped})} ref={this.dom}>
+      <div className={prifix({table: true, [`theme__${theme}`]: true, [size]: size, bordered, striped})} ref={this.dom}>
         {header && <div className={prifix({'table-pre-header': true})}>{header()}</div>}
         <div className={prifix({'table-container': true})}>
           <div >{content}</div>
@@ -488,7 +489,7 @@ class Table extends Component {
               let {columnMenu} = this.state
               this.setState({columnMenu: !columnMenu})
             }}>
-              <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}}
+              <Icon name='menu' style={{fontSize: '24px'}}
               />
             </div>
             {
@@ -999,4 +1000,4 @@ Table.config = {
   host: ''
 }
 
-export default Table
+export default Provider(Table)

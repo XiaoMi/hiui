@@ -1,4 +1,5 @@
 @import './variables.scss';
+@import '@hi-ui/core-css/index.scss';
 
 $counter: 'hi-counter' !default;
 
@@ -67,5 +68,13 @@ $counter: 'hi-counter' !default;
     color: $normal-color;
     outline: none;
     box-sizing: border-box;
+  }
+}
+
+@each $key, $value in $palette-primary {
+  .#{$counter}.theme__#{$key} {
+    .#{$counter}-sign {
+      color: $value;
+    }
   }
 }

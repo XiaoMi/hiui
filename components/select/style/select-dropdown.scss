@@ -146,6 +146,10 @@
       &.is-active {
         color: $value;
       }
+
+      &[data-focused='true'] {
+        background-color: rgba($value, 0.08);
+      }
     }
   }
 }
