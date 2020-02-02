@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'date-picker-normal'
-const rightOptions = ['基础', '带农历']
+const rightOptions = ['基础', '预置农历', '自定义日期信息']
 const code = [
   {
     code: `import React from 'react'
@@ -35,7 +35,7 @@ class Demo extends React.Component {
   constructor() {
     super()
     this.state = {
-      value: new Date('2020/4/8')
+      value: new Date()
     }
   }
   render () {
@@ -45,6 +45,35 @@ class Demo extends React.Component {
           value={this.state.value}
           altCalendarPreset='zh-CN'
           dateMarkPreset='zh-CN'
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+            this.setState({
+              value: date
+            })
+          }}
+        />
+      </div>
+    )
+  }
+}`,
+    opt: ['预置农历']
+  },
+  {
+    code:
+  `import React from 'react'
+import DatePicker from '@hi-ui/hiui/es/date-picker'\n
+class Demo extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      value: new Date('2020/4/8')
+    }
+  }
+  render () {
+    return (
+      <div style={{display:'flex', flexWrap: 'wrap'}}>
+        <DatePicker
+          value={this.state.value}
           altCalendar = {[
               {
                 date:'2020/4/8',
@@ -82,7 +111,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['带农历']
+    opt: ['自定义日期信息']
   }
 
 ]
