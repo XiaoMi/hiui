@@ -1,15 +1,6 @@
 # 更新日志
 
 ## 2.6.3
-- 修复 `<collapse />` 修改展开内容背景颜色 [#876](https://github.com/XiaoMi/hiui/issues/876)
-- 修复 `<Modal />` 模态对话框 确定 按钮字重 由500改为400 [#898](https://github.com/XiaoMi/hiui/issues/898)
-- 修复 `<Pagination />`  数字与/ 的间距调整、省略符的间距调整、 [#862](https://github.com/XiaoMi/hiui/issues/862)
-- 修复 `<Timeline />` 视觉还原修改 元素间距调整 [#869](https://github.com/XiaoMi/hiui/issues/868)
-- 修复 `<Tabs />` 间距调整、可编辑高度修改、修改hover时颜色 [#875](https://github.com/XiaoMi/hiui/issues/875)
-- 修复 `<Transfer />`复选框选中边框样式调整、文案字号调整 [#896](https://github.com/XiaoMi/hiui/issues/896)
-- 修复 `<Tree />` 节点间间距修改 icon和文字间距修改、去除选中时checkbox灰边框 [#895](https://github.com/XiaoMi/hiui/issues/895)
-- 修复 `<Upload />`上传列表Icon颜色修改、上传列表与其他元素间距修改、照片墙上传区添加圆角、上传中显示灰色背景、修改上传失败图标大小 [#897](https://github.com/XiaoMi/hiui/issues/897)
-
 
 - 修复 `<Button />` target 属性不起作用的问题 [#837](https://github.com/XiaoMi/hiui/issues/837)
 - 优化 `<Tabs />` 设置 max 后选中的展示问题 [#838](https://github.com/XiaoMi/hiui/issues/838)
