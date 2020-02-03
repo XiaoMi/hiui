@@ -6,7 +6,6 @@ import Preview from './Preview'
 import Cropper from 'react-cropper'
 import Icon from '../icon'
 import 'cropperjs/dist/cropper.css'
-import Provider from '../context'
 
 class UploadAvatar extends Upload {
   containerWidth = 550
@@ -251,4 +250,4 @@ UploadAvatar.defaultProps = Object.assign(
   }
 )
 
-export default Provider(UploadAvatar)
+export default UploadAvatar

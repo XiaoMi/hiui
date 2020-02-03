@@ -3,7 +3,6 @@ import classNames from 'classnames'
 import Upload from './Upload'
 import Preview from './Preview'
 import Icon from '../icon'
-import Provider from '../context'
 
 class UploadPhoto extends Upload {
   constructor (props) {
@@ -137,4 +136,4 @@ UploadPhoto.defaultProps = Object.assign({}, {
   accept: 'image/jpg,image/jpeg,image/png'
 })
 
-export default Provider(UploadPhoto)
+export default UploadPhoto

@@ -3,7 +3,6 @@ import Upload from './Upload'
 import Icon from '../icon'
 import classNames from 'classnames'
 import Button from '../button'
-import Provider from '../context'
 
 class UploadPictureCard extends Upload {
   handleButtonClick = () => {
@@ -98,4 +97,4 @@ UploadPictureCard.defaultProps = Object.assign({}, {
   accept: 'image/jpg,image/jpeg,image/png'
 })
 
-export default Provider(UploadPictureCard)
+export default UploadPictureCard
