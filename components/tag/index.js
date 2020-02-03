@@ -48,3 +48,4 @@ class Tag extends Component {
 }
 
 export default Provider(Tag)
+export {Tag}

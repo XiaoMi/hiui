@@ -5,7 +5,6 @@ import Title from './Title'
 import Item from './Item'
 import SubMenu from './SubMenu'
 import './style/index'
-import Provider from '../context'
 class Menu extends Component {
   constructor (props) {
     super(props)
@@ -319,4 +318,4 @@ Menu.propTypes = {
   onClickSubMenu: PropTypes.func,
   onCollapse: PropTypes.func
 }
-export default Provider(Menu)
+export default Menu

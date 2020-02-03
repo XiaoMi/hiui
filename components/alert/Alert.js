@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './style/index'
-import Provider from '../context'
 class Alert extends Component {
   constructor (props) {
     super(props)
@@ -75,4 +74,4 @@ Alert.defaultProps = {
   duration: null
 }
 
-export default Provider(Alert)
+export default Alert

@@ -47,7 +47,6 @@ describe('Dropdown', () => {
       )
       wrapper.find(Button).first().simulate('click')
       expect(wrapper.find('.hi-dropdown__button--active').first().text()).toEqual('删除')
-      expect(wrapper.find('.hi-dropdown__icon--active')).toHaveLength(1)
       wrapper.unmount()
     })
     it('type', () => {
@@ -167,8 +166,6 @@ describe('Dropdown', () => {
       wrapper.find('.hi-dropdown').at(0).find('button').simulate('click')
       expect(document.querySelectorAll('.hi-dropdown__menu-item--disabled')).toHaveLength(1)
       expect(document.querySelectorAll('.hi-dropdown__divider')).toHaveLength(1)
-      trigger(document,'click')
-      expect(document.querySelectorAll('.hi-popper__container--hide')).toHaveLength(1)
       trigger(wrapper.find('.hi-dropdown').at(0).find('button').getDOMNode(),'mouseenter')
       expect(document.querySelectorAll('.hi-dropdown__menu-item--disabled')).toHaveLength(1)
       

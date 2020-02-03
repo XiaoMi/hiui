@@ -125,3 +125,4 @@ Card.propTypes = {
   extraType: PropTypes.oneOf(['default', 'hover'])
 }
 export default Provider(Card)
+export {Card}

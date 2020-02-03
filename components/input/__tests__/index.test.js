@@ -221,6 +221,7 @@ describe('Input', () => {
         <Input type='textarea' onChange={callback} />
       )
       wrapper.find('textarea').simulate('mouseover')
+      console.log(wrapper.find(OriginalClass).debug())
       expect(wrapper.find(OriginalClass).state('hover')).toEqual(true)
       wrapper.find('textarea').simulate('mouseleave')
       expect(wrapper.find(OriginalClass).state('hover')).toEqual(false)

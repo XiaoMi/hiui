@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import { spy } from 'sinon'
-import Notice from '../Notice'
+import {Notice} from '../Notice'
 import NoticeContainer from '../NoticeContainer'
 import Index from '../index'
 /* eslint-env jest */

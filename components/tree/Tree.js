@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import Provider from '../context'
 import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
 import { getAll, dealData } from './util'
@@ -240,4 +239,4 @@ const HOCTree = TreeComponent => {
     }
   }
 }
-export default Provider(HOCTree(Tree))
+export default HOCTree(Tree)

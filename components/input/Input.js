@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import Provider from '../context'
 import { format, formatValue, getAttrs, formatAmount, filterObjProps } from './util'
 
 /**
@@ -320,4 +319,4 @@ Input.defaultProps = {
   defaultValue: ''
 }
 
-export default Provider(Input)
+export default Input

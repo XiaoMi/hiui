@@ -4,8 +4,9 @@ import classNames from 'classnames'
 import Popper from '../popper'
 import { prefixCls } from '.'
 import DropdownMenuItem from './DropdownMenuItem'
+import Provider from '../context'
 
-export default class DropdownMenu extends React.Component {
+class DropdownMenu extends React.Component {
   render () {
     const {
       data,
@@ -49,7 +50,7 @@ export default class DropdownMenu extends React.Component {
     )
   }
 }
-
+export default Provider(DropdownMenu)
 export const propTypesOfMenuData = PropTypes.arrayOf(
   PropTypes.shape({
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),

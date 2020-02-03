@@ -1001,3 +1001,4 @@ Table.config = {
 }
 
 export default Provider(Table)
+export {Table}

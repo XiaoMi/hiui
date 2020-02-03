@@ -57,3 +57,4 @@ class Notice extends Component {
   }
 }
 export default Provider(Notice)
+export {Notice}
