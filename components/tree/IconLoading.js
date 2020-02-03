@@ -2,7 +2,6 @@ import React from 'react'
 
 const IconLoading = (props) => {
   const size = '0.8em'
-  console.log(props.theme)
   const themeColor = {
     'orange': '#f63',
     'cyan': '#46bc99',

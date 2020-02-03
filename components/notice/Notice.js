@@ -31,7 +31,6 @@ class Notice extends Component {
   render () {
     const { closeable, children, prefix, type, theme } = this.props
     const { open } = this.state
-    console.log(theme)
     return (
       <CSSTransition
         in={open}
