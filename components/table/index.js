@@ -809,13 +809,7 @@ class Table extends Component {
     if (headers) {
       options.headers = headers
     }
-    console.log(options)
-    // options = {
-    //   url:'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCHoliday.json',
-    //   method: 'GET',
-    // }
     request.create().request(options).then(res => {
-      console.log('++++', res)
       let {data, columns, page} = success(res)
       let columnsDetail = this.setColumnsDetail(null, null, columns)
       this.setState({
