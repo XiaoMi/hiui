@@ -2,7 +2,7 @@ import Tabs from '../../../components/tabs'
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 const prefix = 'tabs-collapse'
-const desc = '当标签的操作频率有明显的高低之分时，可收起低频率标签'
+const desc = '标签数量增多时的边界处理'
 
 const code = `import Tabs from '@hi-ui/hiui/es/tabs'
 import React from 'react'\n
@@ -75,5 +75,7 @@ class Demo extends React.Component {
   }
 }`
 
-const Demo = () => <DocViewer code={code} scope={{ Tabs }} desc={desc} prefix={prefix} />
+const Demo = () => (
+  <DocViewer code={code} scope={{ Tabs }} desc={desc} prefix={prefix} />
+)
 export default Demo
