@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Transfer from '../../../components/transfer'
 const prefix = 'transfer-area'
+const desc = '可通过拖拽的形式对目标区域内进行排序'
 const code = `import React from 'react'
 import Transfer from '@hi-ui/hiui/es/transfer'\n
 class Demo extends React.Component {
@@ -41,10 +42,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoArea = () => (
-  <DocViewer
-    code={code}
-    scope={{ Transfer }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} scope={{ Transfer }} prefix={prefix} desc={desc} />
 )
 export default DemoArea
