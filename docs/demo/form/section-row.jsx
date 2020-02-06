@@ -4,7 +4,7 @@ import Form from '../../../components/form/index'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
 const prefix = 'form-row'
-const desc = '屏幕分辨率较大，表单项较多且对应标题长度短且易对齐'
+const desc = '适用于筛选或查询数据的场景，和表格配合使用'
 const code = `import React from 'react'
 import { Form, Input } from '@hi-ui/hiui'
 class Demo extends React.Component {
