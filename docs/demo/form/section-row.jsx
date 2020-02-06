@@ -13,10 +13,10 @@ class Demo extends React.Component {
     return (
       <Form placement='horizontal' labelPlacement='right'>
         <FormItem label='账号' labelWidth='50'>
-          <Input placeholder={'账号'} />
+          <Input placeholder={'请输入'} />
         </FormItem>
         <FormItem label='密码' labelWidth='50'>
-          <Input type='password' placeholder={'密码'} />
+          <Input type='password' placeholder={'请输入'} />
         </FormItem>
         <FormItem>
           <Button type={'primary'}>提交</Button>
