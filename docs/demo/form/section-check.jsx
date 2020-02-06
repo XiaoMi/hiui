@@ -96,10 +96,10 @@ class Demo extends React.Component {
         <Col span={12}>
           <Form ref={this.form} model={form} rules={this.state.rules} labelWidth='80' labelPlacement='right'>
             <FormItem label='名称' field='name'>
-              <Input value={form.name} placeholder='name' onChange={this.handleChange.bind(this, 'name')}/>
+              <Input value={form.name} placeholder='请输入' onChange={this.handleChange.bind(this, 'name')}/>
             </FormItem>
             <FormItem label='数量' field='count'>
-              <Input value={form.count} placeholder='count' onChange={this.handleChange.bind(this, 'count')}/>
+              <Input value={form.count} placeholder='请输入' onChange={this.handleChange.bind(this, 'count')}/>
             </FormItem>
             <FormItem label='地区' field='region'>
               <Radio.Group

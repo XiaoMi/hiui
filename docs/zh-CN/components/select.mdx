@@ -4,20 +4,25 @@
 
 ## 何时使用
 
-- 需要从大量的离散型数据中选择一部分时使用
-- 备选项数量 5 个以上时
-- 不需要将全部备选项都展示给用户时
+需要从大量的离散型数据中选择一部分时使用
+
+备选项数量 5 个以上时
+
+不需要将全部备选项都展示给用户时
 
 ## 类型
 
-### 单选
+### 基础单选
 
 import DemoType from '../../demo/select/section-type'
 
 <DemoType />
 
+## 基础多选
 
-<DemoBan />
+import DemoSingleMultiple from '../../demo/select/section-single-multiple'
+
+<DemoSingleMultiple />
 
 ## 自定义模板
 
@@ -37,11 +42,7 @@ import DemoAsync from '../../demo/select/section-async'
 
 <DemoAsync />
 
-## 单行多选
 
-import DemoSingleMultiple from '../../demo/select/section-single-multiple'
-
-<DemoSingleMultiple />
 
 ## 异步多选
 
@@ -57,7 +58,7 @@ import { Badge } from '@libs'
 | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------- | -------- |
 | type                                                                                | 下拉框类型                                                                                               | string                                                | 'single' \| 'multiple'                       | 'single' |
 | data                                                                                | 下拉框选项数据源                                                                                         | DataItem[]                                            | -                                            | -        |
-| dataSource                                                                          | 异步下拉框选项数据源                                                                                     | DataSource \| (keyword: string) => DataSource                                           | -                                            | -        |
+| dataSource                                                                          | 异步下拉框选项数据源                                                                                     | DataSource \| (keyword: string) => DataSource         | -                                            | -        |
 | value                                                                               | 被选中项的值                                                                                             | string \| string[]                                    | -                                            | -        |
 | defaultValue                                                                        | 默认被选中项的值                                                                                         | string \| string[]                                    | -                                            | -        |
 | showCheckAll                                                                        | 是否显示全选，只对多选生效                                                                               | boolean                                               | true \| false                                | false    |

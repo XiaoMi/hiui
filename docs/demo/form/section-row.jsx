@@ -4,7 +4,7 @@ import Form from '../../../components/form/index'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
 const prefix = 'form-row'
-const desc = '屏幕分辨率较大，表单项较多且对应标题长度短且易对齐'
+const desc = '适用于筛选或查询数据的场景，和表格配合使用'
 const code = `import React from 'react'
 import { Form, Input } from '@hi-ui/hiui'
 class Demo extends React.Component {
@@ -13,10 +13,10 @@ class Demo extends React.Component {
     return (
       <Form placement='horizontal' labelPlacement='right'>
         <FormItem label='账号' labelWidth='50'>
-          <Input placeholder={'账号'} />
+          <Input placeholder={'请输入'} />
         </FormItem>
         <FormItem label='密码' labelWidth='50'>
-          <Input type='password' placeholder={'密码'} />
+          <Input type='password' placeholder={'请输入'} />
         </FormItem>
         <FormItem>
           <Button type={'primary'}>提交</Button>

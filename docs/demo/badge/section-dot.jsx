@@ -11,7 +11,6 @@ class Demo extends React.Component {
   render () {
     return (
       <div>
-        <Badge type='dot' content='88' style={{marginRight: '32px'}}>最新报表</Badge>
         <Badge type='dot'>
           <Button type='default'>最新报表</Button>
         </Badge>
@@ -20,6 +19,11 @@ class Demo extends React.Component {
   }
 }`
 const DemoDot = () => (
-  <DocViewer code={code} scope={{ Button, Badge }} prefix={prefix} desc={desc} />
+  <DocViewer
+    code={code}
+    scope={{ Button, Badge }}
+    prefix={prefix}
+    desc={desc}
+  />
 )
 export default DemoDot
