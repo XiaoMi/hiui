@@ -4,8 +4,9 @@
 
 ## 何时使用
 
-- 当需要管理一定量级的统一结构的数据记录时
-- 当需要对一部分全部数据进行编辑、筛选过滤时
+当需要管理一定量级的统一结构的数据记录时
+
+当需要对一部分全部数据进行编辑、筛选过滤时
 
 ## 基础用法
 
@@ -90,8 +91,6 @@ import DemoRightHandRow from '../../demo/table/section-right-hand-row.jsx'
 
 <DemoRightHandRow />
 
-
-
 ## 合并单元格
 
 import DemoMerge from '../../demo/table/section-merge.jsx'
@@ -122,13 +121,11 @@ import DemoServer from '../../demo/table/section-server.jsx'
 
 <DemoServer />
 
-
 ## 操作记忆
 
 import DemoMemory from '../../demo/table/section-memory.jsx'
 
 <DemoMemory />
-
 
 ## 高级功能
 
@@ -136,69 +133,65 @@ import DemoAdvance from '../../demo/table/section-advance.jsx'
 
 <DemoAdvance />
 
-
 ## Props
 
-| 参数       | 说明                                                                                              | 类型    | 可选值             | 默认值  |
-| - | - | - | - | - |
-| size       | 表格尺寸                                                                                          | string  | 'small' \| 'large' \| 'default'  | 'default' |
-| bordered   | 是否显示边框                                                                                      | boolean | true \| false                  | false   |
-| striped    | 斑马纹                                                                                            | boolean | true \| false                 | false   |
-| columns    | 表格数据列对应信息                                                                                | ColumnItem[]   | -                  | -       |
-| data       | 表格数据                                                                                          |object[]   | -                  | -       |
-| emptyText  | 数据为空时展示的文案                                                                              | string  | -                  | 'No Data' |
-| scrollX     | 设置列冻结 | boolean   |   true \| false | false         |
-| fixTop     | 吸顶                                                                                              | number  | -               | 0   |
-| height     | 表格最大高度（用于冻结表头）                                                                           | string  | -               | -   |
-| pagination | 查看分页组件配置                                                                                  | Advance  | -                  | -   |
-| advance    | 高级功能                                                                                          | Origin  | -                  | -       |
-| origin     | 服务端功能  | object  | -                  | -       |
+| 参数       | 说明                         | 类型         | 可选值                          | 默认值    |
+| ---------- | ---------------------------- | ------------ | ------------------------------- | --------- |
+| size       | 表格尺寸                     | string       | 'small' \| 'large' \| 'default' | 'default' |
+| bordered   | 是否显示边框                 | boolean      | true \| false                   | false     |
+| striped    | 斑马纹                       | boolean      | true \| false                   | false     |
+| columns    | 表格数据列对应信息           | ColumnItem[] | -                               | -         |
+| data       | 表格数据                     | object[]     | -                               | -         |
+| emptyText  | 数据为空时展示的文案         | string       | -                               | 'No Data' |
+| scrollX    | 设置列冻结                   | boolean      | true \| false                   | false     |
+| fixTop     | 吸顶                         | number       | -                               | 0         |
+| height     | 表格最大高度（用于冻结表头） | string       | -                               | -         |
+| pagination | 查看分页组件配置             | Advance      | -                               | -         |
+| advance    | 高级功能                     | Origin       | -                               | -         |
+| origin     | 服务端功能                   | object       | -                               | -         |
 
 ## Type
+
 ### ColumnItem
 
-| 参数            | 说明                               | 类型             | 可选值 | 默认值  |
-| -               | -                                 | -                 | - |  - |
-| title           | 标题                               | string           | - | - |
-| dataIndex       | 数据源索引                          | string            | - | - |
-| key             | 唯一key                             | string           | -  | - |
-| fixed           | 列冻结                               | string  |  'left' \| 'right'   | - |
-| width           | 列宽                                | number          | -    | - |
-| render          | 自定义渲染                        | (text: string,record: object,index: number)=> ReactNode     |      _     | - |
-| type            | 高级功能配置                           | string  |  'number' \| 'expand'            | -       | - |
-
-
+| 参数      | 说明         | 类型                                                    | 可选值               | 默认值 |
+| --------- | ------------ | ------------------------------------------------------- | -------------------- | ------ |
+| title     | 标题         | string                                                  | -                    | -      |
+| dataIndex | 数据源索引   | string                                                  | -                    | -      |
+| key       | 唯一 key     | string                                                  | -                    | -      |
+| fixed     | 列冻结       | string                                                  | 'left' \| 'right'    | -      |
+| width     | 列宽         | number                                                  | -                    | -      |
+| render    | 自定义渲染   | (text: string,record: object,index: number)=> ReactNode | \_                   | -      |
+| type      | 高级功能配置 | string                                                  | 'number' \| 'expand' | -      | - |
 
 ## Origin
 
-| 参数            | 说明                             | 类型             |  可选值  | 默认值  |
-| - | - | - | - |  - |
-| url             | 请求地址                          | string           | -       |  - |
-| currentPageName | 请求参数，分页字段名                | string            | - | 'current' |
-| auto            | 当 data 变化时是不是自动发送请求     | boolean          |  true \| false  | false |
-| autoDelayTime   | 当自动发送请求时，延迟时间           | number           | -     | 300 |
-| headers         | 请求头                            | object           | -       | - |
-| data            | 请求参数                          | object           | -       | - | - |
-| success         | 响应解析函数                       | (res: object) => object       | - | - |
-| error           | 请求错误回调函数                    | (err: object) =>  void     |  - | - |
-| type            | 请求方法                            | string | 'GET' \| 'POST'   | 'GET'     | - |
+| 参数            | 说明                             | 类型                    | 可选值          | 默认值    |
+| --------------- | -------------------------------- | ----------------------- | --------------- | --------- |
+| url             | 请求地址                         | string                  | -               | -         |
+| currentPageName | 请求参数，分页字段名             | string                  | -               | 'current' |
+| auto            | 当 data 变化时是不是自动发送请求 | boolean                 | true \| false   | false     |
+| autoDelayTime   | 当自动发送请求时，延迟时间       | number                  | -               | 300       |
+| headers         | 请求头                           | object                  | -               | -         |
+| data            | 请求参数                         | object                  | -               | -         | - |
+| success         | 响应解析函数                     | (res: object) => object | -               | -         |
+| error           | 请求错误回调函数                 | (err: object) => void   | -               | -         |
+| type            | 请求方法                         | string                  | 'GET' \| 'POST' | 'GET'     | - |
 
 ## RowSelection
 
-| 参数             | 说明                     | 类型                                  | 可选值  | 默认值 |
-| - | - | - | - | - |
-| onChange         | 列表项被选中时触发的回调  | (selectedRowKeys: number[],selectedRows: object[]）=> void | -      | - |
-| getCheckboxProps | 选择框的默认属性配置     | (record) => void                      | -      | - |
+| 参数             | 说明                     | 类型                                                       | 可选值 | 默认值 |
+| ---------------- | ------------------------ | ---------------------------------------------------------- | ------ | ------ |
+| onChange         | 列表项被选中时触发的回调 | (selectedRowKeys: number[],selectedRows: object[]）=> void | -      | -      |
+| getCheckboxProps | 选择框的默认属性配置     | (record) => void                                           | -      | -      |
 
 ## Advance
 
-| 参数              | 说明                      | 类型                           | 可选值         | 默认值 |
-| - | -  | - | - | - |
-| sum              | 是否前端求合                | boolean                       |  true \| false   |  false |
-| ave              | 是否前端求均值               |     boolean                  |  true \| false    | false      |
-| header           | 表格头部                   |   ReactNode                    | -             |     -
-| footer           | 表格底部                    |     ReactNode                  | -          | -      |
-| prefix           | 表格头部插入多行                   |   object[]               | -                 |     -
-| suffix           | 表格底部插入多行                    |  object[]                | -            | -      |
-
-
+| 参数   | 说明             | 类型      | 可选值        | 默认值 |
+| ------ | ---------------- | --------- | ------------- | ------ |
+| sum    | 是否前端求合     | boolean   | true \| false | false  |
+| ave    | 是否前端求均值   | boolean   | true \| false | false  |
+| header | 表格头部         | ReactNode | -             | -      |
+| footer | 表格底部         | ReactNode | -             | -      |
+| prefix | 表格头部插入多行 | object[]  | -             | -      |
+| suffix | 表格底部插入多行 | object[]  | -             | -      |
