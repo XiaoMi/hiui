@@ -78,7 +78,7 @@ export default class Transfer extends Component {
       return
     }
     if (mode === 'basic' && type === 'default') {
-      !limited && this.parseSelectedKeys(dir, item.id, () => {
+      !(dir === 'left' && limited) && this.parseSelectedKeys(dir, item.id, () => {
         this.moveTo(dir)
       })
     }
@@ -186,17 +186,12 @@ export default class Transfer extends Component {
   isLimited (dir) {
     const { targetList, sourceSelectedKeys } = this.state
     const { targetLimit, type } = this.props
-    type === 'default' ? this.setState({
-      limited:
-        sourceSelectedKeys.length > targetLimit ||
-        sourceSelectedKeys.length + targetList.length > targetLimit ||
-        targetList.length >= targetLimit
+    const defaultLimited = sourceSelectedKeys.length > targetLimit || sourceSelectedKeys.length + targetList.length > targetLimit
+    const _limited = type === 'default' ? defaultLimited || targetList.length >= targetLimit : defaultLimited
+
+    this.setState({
+      limited: _limited
     })
-      : this.setState({
-        limited:
-        sourceSelectedKeys.length > targetLimit ||
-        sourceSelectedKeys.length + targetList.length > targetLimit
-      })
   }
   searchEvent (dir, e) {
     const { sourceList, targetList, sourceSelectedKeys, targetSelectedKeys } = this.state
