@@ -775,6 +775,7 @@ class Table extends Component {
       data,
       url,
       headers,
+      withCredentials,
       type = 'GET',
       success = (res) => {},
       error = () => {},
@@ -794,7 +795,8 @@ class Table extends Component {
 
     let options = {
       url,
-      method: ['GET', 'get'].includes(type) ? 'GET' : 'POST'
+      method: ['GET', 'get'].includes(type) ? 'GET' : 'POST',
+      withCredentials: withCredentials || false
     }
     if (options.method === 'GET') {
       options.params = requestParams
@@ -833,6 +835,7 @@ class Table extends Component {
         headers,
         type = 'GET',
         mode = 'json',
+        withCredentials,
         success = (res) => {},
         error = () => {},
         // pageSize = Table.config.pageSize,
@@ -853,7 +856,8 @@ class Table extends Component {
     }
     let options = {
       method: ['GET', 'get'].includes(type) ? 'GET' : 'POST',
-      url
+      url,
+      withCredentials: withCredentials || false
     }
     if (options.method === 'GET') {
       options.params = requestParams

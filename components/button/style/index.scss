@@ -34,25 +34,33 @@
   &.hi-btn--appearance--link {
     background-color: transparent;
     color: $themeColor;
+    border: none;
+    box-shadow: none;
 
     &:not(.hi-btn--disabled):focus {
-      box-shadow: 0 0 0 2px rgba($themeColor, 0.25);
+      border: none;
+      box-shadow: none;
+      background-color: transparent;
     }
 
     &:not(.hi-btn--disabled):hover {
-      background-color: map-get($themePalette, '60');
-      color: $white;
+      border: none;
+      box-shadow: none;
+      background-color: transparent;
+      color: $themeColor;
     }
 
     &:not(.hi-btn--disabled):active {
-      background-color: map-get($themePalette, '80');
-      color: $white;
+      border: none;
+      box-shadow: none;
+      background-color: transparent;
+      color: $themeColor;
     }
 
     // Status: disabled
     &.hi-btn--disabled,
     &[disabled] {
-      background-color: transparent;
+      // background-color: transparent;
       color: $themeColor;
       opacity: 0.54;
     }
@@ -93,21 +101,27 @@
   // Make a button look and behave like a link
   &.hi-btn--appearance--link {
     background-color: transparent;
-    border-color: transparent;
+    border: none;
+    box-shadow: none;
     color: $themeColor;
 
     &:not(.hi-btn--disabled):focus {
-      box-shadow: 0 0 0 2px rgba($themeColor, 0.25);
+      border: none;
+      box-shadow: none;
+      background-color: transparent;
     }
 
     &:not(.hi-btn--disabled):hover {
-      background-color: rgba($themeColor, 0.1);
-      border-color: rgba($themeColor, 0.8);
+      border: none;
+      box-shadow: none;
+      background-color: transparent;
       color: $themeColor;
     }
 
     &:not(.hi-btn--disabled):active {
-      background-color: rgba($themeColor, 0.15);
+      border: none;
+      box-shadow: none;
+      background-color: transparent;
       color: $themeColor;
     }
 
@@ -247,16 +261,26 @@
     // Make a button look and behave like a link
     &.hi-btn--appearance--link {
       background-color: transparent;
-      border-color: transparent;
+      border: none;
+      box-shadow: none;
+
+      &:not(.hi-btn--disabled):focus {
+        border: none;
+        box-shadow: none;
+        background-color: transparent;
+      }
 
       &:not(.hi-btn--disabled):hover {
-        background-color: $white;
-        border-color: $gray-dark;
+        border: none;
+        box-shadow: none;
+        background-color: transparent;
         color: $black;
       }
 
       &:not(.hi-btn--disabled):active {
-        background-color: $gray-lighter;
+        border: none;
+        box-shadow: none;
+        background-color: transparent;
         color: $black;
       }
 

@@ -33,7 +33,6 @@ class Demo extends React.Component {
         },
         count: {
           required: true,
-          message: '请输入数量',
           trigger: 'onChange',
           validator: (rule, value, cb) => {
             const count = +value
