@@ -3,7 +3,7 @@
 exports[`Switch basic use 1`] = `
 <div>
   <span
-    className="theme__hiui-blue hi-switch hi-switch--closed"
+    className="theme__orange hi-switch hi-switch--closed"
     onClick={[Function]}
   >
     <span
@@ -11,7 +11,7 @@ exports[`Switch basic use 1`] = `
     />
   </span>
   <span
-    className="theme__hiui-blue hi-switch hi-switch--closed"
+    className="theme__orange hi-switch hi-switch--closed"
     onClick={[Function]}
   >
     <span
@@ -21,7 +21,7 @@ exports[`Switch basic use 1`] = `
     </span>
   </span>
   <span
-    className="theme__hiui-blue hi-switch hi-switch--disabled"
+    className="theme__orange hi-switch hi-switch--disabled"
     onClick={[Function]}
   >
     <span

@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount, shallow } from 'enzyme'
 import sinon, { spy, stub } from 'sinon'
-import Table from '../'
+import {Table} from '../'
 
 describe('Table', () => {
   const dataLength = 10

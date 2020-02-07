@@ -1,3 +1,5 @@
+@import '@hi-ui/core-css/index.scss';
+
 .hi-card {
   border-radius: 2px;
   border: 1px solid rgba(231, 231, 231, 1);
@@ -88,5 +90,17 @@
 
   &--simple-large {
     width: 176px;
+  }
+}
+
+@each $key, $value in $palette-primary {
+  .theme__#{$key}.hi-card {
+    &__extra {
+      color: $value;
+    }
+
+    .hi-icon {
+      color: $value;
+    }
   }
 }

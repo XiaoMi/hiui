@@ -1,5 +1,7 @@
+@import '@hi-ui/core-css/index.scss';
+$cascader: 'hi-cascader' !default;
 
-.hi-cascader {
+.#{$cascader} {
   &.hi-cascader--focused {
     .hi-cascader {
       &__input-container {
@@ -57,6 +59,18 @@
     &--clear {
       display: none;
       cursor: pointer;
+    }
+  }
+}
+
+@each $key, $value in $palette-primary {
+  .#{$cascader}.theme__#{$key} {
+    &.hi-cascader--focused {
+      .hi-cascader {
+        &__input-container {
+          border-color: $value;
+        }
+      }
     }
   }
 }

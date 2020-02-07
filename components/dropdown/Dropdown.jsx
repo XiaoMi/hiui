@@ -5,8 +5,7 @@ import DropdownButton from './DropdownButton'
 import DropdownMenu, { propTypesOfMenuData } from './DropdownMenu'
 import { prefixCls } from '.'
 import { getIsTriggerEqualHover, getIsTriggerEqualContextmenu, trimTriggers } from './utils'
-
-export default class Dropdown extends React.Component {
+class Dropdown extends React.Component {
   refDropdown = React.createRef()
   timerHideMenu = null
   state = {
@@ -140,7 +139,8 @@ Dropdown.propTypes = {
 }
 
 Dropdown.defaultProps = {
-  placement: 'top-bottom-start',
+  placement: 'bottom-start',
   trigger: 'hover',
   width: 240
 }
+export default Dropdown

@@ -29,7 +29,8 @@ const notification = {
     type = 'info',
     confirmText,
     onConfirm,
-    onClose
+    onClose,
+    theme
   }) => {
     const NoticeContent = (
       <React.Fragment>

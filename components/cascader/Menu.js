@@ -28,7 +28,8 @@ class Menu extends Component {
       options,
       onSelect,
       isFiltered,
-      filterOptionWidth
+      filterOptionWidth,
+      theme
     } = this.props
     const root = this.root()
     const menus = []
@@ -43,7 +44,7 @@ class Menu extends Component {
       currentOptions = false
 
       menus.push(
-        <ul className='hi-cascader-menu' key={deep} style={{width: isFiltered ? filterOptionWidth : 'auto'}}>
+        <ul className={`hi-cascader-menu theme__${theme}`} key={deep} style={{width: isFiltered ? filterOptionWidth : 'auto'}}>
           {
             _currentOptions.length === 0 &&
             <Loading size='small' />

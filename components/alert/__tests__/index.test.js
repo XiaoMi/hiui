@@ -24,7 +24,7 @@ describe('Alert', () => {
       expect(componentDidMountSpy.callCount).toEqual(1)
       componentDidMountSpy.restore()
 
-      expect(wrapper.find('.icon-info-circle-o')).toHaveLength(1)
+      expect(wrapper.find('.icon-info-circle-o')).toHaveLength(0)
       expect(wrapper.find('.close-btn')).toHaveLength(1)
     })
   })
@@ -41,9 +41,9 @@ describe('Alert', () => {
       )
 
       // NOTE 缺少 type 对应唯一标识
-      expect(wrapper.find('.icon-info-circle-o')).toHaveLength(2)
-      expect(wrapper.find('.icon-close-circle-o')).toHaveLength(1)
-      expect(wrapper.find('.icon-check-circle-o')).toHaveLength(1)
+      expect(wrapper.find('.info')).toHaveLength(1)
+      expect(wrapper.find('.icon-close-circle-o')).toHaveLength(0)
+      expect(wrapper.find('.icon-check-circle-o')).toHaveLength(0)
     })
 
     it('onClose', () => {
