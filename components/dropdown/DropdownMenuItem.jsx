@@ -63,7 +63,8 @@ export default class DropdownMenuItem extends React.Component {
       href,
       disabled,
       onMenuItemClick,
-      width
+      width,
+      theme
     } = this.props
     const { visible } = this.state
     const shouldRenderDivider = title === '-'
@@ -93,6 +94,7 @@ export default class DropdownMenuItem extends React.Component {
             <Icon name='right' className={iconCls} />
             <DropdownMenu
               data={children}
+              theme={theme}
               visible={visible && parentPopperVisible}
               placement='right-start'
               attachEle={this.refItem.current}

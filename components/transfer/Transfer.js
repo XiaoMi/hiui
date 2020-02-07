@@ -7,10 +7,10 @@ import Input from '../input'
 import classNames from 'classnames'
 import Item from './Item'
 import shallowEqual from 'shallowequal'
+import Provider from '../context'
 
 import './style/index'
-
-export default class Transfer extends Component {
+class Transfer extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -260,7 +260,8 @@ export default class Transfer extends Component {
       draggable,
       emptyContent,
       title,
-      disabled
+      disabled,
+      theme
     } = this.props
     const {
       sourceSelectedKeys,
@@ -321,6 +322,7 @@ export default class Transfer extends Component {
                     dividerPosition={dividerPosition}
                     draggable={draggable}
                     key={index}
+                    theme={theme}
                     onClick={this.clickItemEvent.bind(this, item, index, dir)}
                     mode={mode === 'basic' && type === 'default' ? 'basic' : 'multiple'}
                     item={item}
@@ -364,7 +366,7 @@ export default class Transfer extends Component {
   }
 
   render () {
-    const { mode, type } = this.props
+    const { mode, type, theme } = this.props
     const { sourceList, targetList, sourceSelectedKeys, targetSelectedKeys, limited } = this.state
     const operCls = classNames(
       'hi-transfer__operation',
@@ -373,7 +375,7 @@ export default class Transfer extends Component {
     const isLeftDisabled = targetSelectedKeys.length === 0
     const isRightDisabled = sourceSelectedKeys.length === 0 || limited
     return (
-      <div className='hi-transfer'>
+      <div className={`hi-transfer theme__${theme}`}>
         {this.renderContainer('left', sourceList)}
         <div className={operCls}>
           {(mode !== 'basic' || type !== 'default') &&
@@ -406,6 +408,7 @@ export default class Transfer extends Component {
     )
   }
 }
+export default Provider(Transfer)
 Transfer.defaultProps = {
   mode: 'basic',
   type: 'default',

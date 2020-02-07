@@ -336,7 +336,7 @@
       box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
 
       .hi-menu-item {
-        &--active:not(.hi-submenu) {
+        &--active {
           background-color: rgba($value, 0.15);
 
           &::after {
