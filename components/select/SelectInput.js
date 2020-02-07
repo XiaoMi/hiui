@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import { getTextWidth } from './common.js'
-import Proivder from '../context'
 
 class SelectInput extends Component {
   constructor (props) {
@@ -279,4 +278,4 @@ class SelectInput extends Component {
   }
 }
 
-export default Proivder(SelectInput)
+export default SelectInput

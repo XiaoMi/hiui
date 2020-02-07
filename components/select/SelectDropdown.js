@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 import Checkbox from '../checkbox'
 import Loading from '../loading'
-import Provider from '../context'
 import Icon from '../icon'
 
 class SelectDropdown extends Component {
@@ -253,4 +252,4 @@ class SelectDropdown extends Component {
   }
 }
 
-export default Provider(SelectDropdown)
+export default SelectDropdown
