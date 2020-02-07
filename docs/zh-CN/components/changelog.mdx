@@ -1,5 +1,15 @@
 # 更新日志
 
+## 2.8.0
+
+- 新增 `<Tree />` 默认高亮 [#915](https://github.com/XiaoMi/hiui/issues/915)
+- 新增 `<Table />` withCredentials 属性 [#922](https://github.com/XiaoMi/hiui/issues/922)
+- 修复 `<Transfer />` 单选模式下 targetLimit 无效的问题 [#919](https://github.com/XiaoMi/hiui/issues/919)
+- 修复 `<Select />` 多选出现双滚动条的样式问题 [#920](https://github.com/XiaoMi/hiui/issues/920)
+- 修复 `<Button />`  链接用法样式问题 [#923](https://github.com/XiaoMi/hiui/issues/923)
+- 修复 `<Dropdown />`  按钮样式 icon 边距问题 [#927](https://github.com/XiaoMi/hiui/issues/927)
+- 修复主题配色适配组件不完全的问题 [#733](https://github.com/XiaoMi/hiui/issues/733)
+
 ## 2.7.0
 
 - 新增 `<Checkbox />` 垂直样式 [#883](https://github.com/XiaoMi/hiui/issues/883)
