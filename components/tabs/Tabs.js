@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import Icon from '../icon'
 import Tooltip from '../tooltip'
 import ItemDropdown from './ItemDropdown'
-
+import Provider from '../context'
 const noop = () => {}
 
 class Tabs extends Component {
@@ -163,9 +163,9 @@ class Tabs extends Component {
   }
   render () {
     const { activeId, showTabItems, hiddenTabItems, defaultActiveId } = this.state
-    const { prefixCls, type, placement, children, className } = this.props
+    const { prefixCls, type, placement, children, className, theme } = this.props
     const editable = this.checkEditable()
-    const tabsClasses = classNames(prefixCls, className, `${prefixCls}--${type}`, {
+    const tabsClasses = classNames(prefixCls, className, `${prefixCls}--${type}`, `theme__${theme}`, {
       [`${prefixCls}--${placement}`]: type === 'card'
     })
     let activeTabInHiddenItems = true
@@ -239,4 +239,4 @@ class Tabs extends Component {
   }
 }
 
-export default Tabs
+export default Provider(Tabs)

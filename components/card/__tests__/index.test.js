@@ -1,6 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import Card from '../'
+import {Card} from '../'
 /* eslint-env jest */
 describe('Card', () => {
   describe('Lifecycle', () => {

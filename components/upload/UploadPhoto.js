@@ -47,7 +47,8 @@ class UploadPhoto extends Upload {
       onRemove,
       disabled,
       accept,
-      localeDatas
+      localeDatas,
+      theme
     } = this.props
     const images = fileList.map(file => {
       return {
@@ -55,7 +56,7 @@ class UploadPhoto extends Upload {
       }
     })
     return (
-      <div className={classNames('hi-upload hi-upload--photo', {'hi-upload--disabled': disabled})}
+      <div className={classNames('hi-upload hi-upload--photo', `theme__${theme}`, {'hi-upload--disabled': disabled})}
         onClick={(e) => {
           if (e.target.nodeName === 'INPUT' && e.target.type === 'file') {
             this.uploadRef.value = ''

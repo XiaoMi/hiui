@@ -184,12 +184,13 @@ export class Tree extends Component {
       onSave,
       onClick,
       apperance,
-      contextMenu
+      contextMenu,
+      theme
     } = this.props
     const { data } = this.state
     return (
       <div
-        className={classNames(`${prefixCls}`, { 'hi-tree--show-line': apperance === 'line' })}
+        className={classNames(`${prefixCls}`, `theme__${theme}`, { 'hi-tree--show-line': apperance === 'line' })}
         style={style}
       >
         <TreeNode
@@ -208,6 +209,7 @@ export class Tree extends Component {
           onHightLightChange={this.props.onHightLightChange}
           onExpanded={this.onExpanded}
           data={data}
+          theme={theme}
           prefixCls={prefixCls}
           checkable={checkable}
           highlightable={highlightable}

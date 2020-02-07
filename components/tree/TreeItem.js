@@ -54,10 +54,10 @@ class TreeItem extends Component {
       isRoot,
       showLine,
       localeDatas,
-      apperance
+      apperance,
+      theme
     } = this.props
     const { nodePlaceholder, confirm, cancel } = localeDatas.tree
-
     const treeItem = (
       <li
         key={item.id}
@@ -101,7 +101,7 @@ class TreeItem extends Component {
               {(item.children && item.children.length > 0) || (origin && !expanded)
                 ? renderSwitcher(expanded)
                 : ((showLine && <span className='hi-tree__dot' />) || (apperance === 'folder' && <i className='hi-icon icon-File' />))}
-              {this.state.loading && <IconLoading />}
+              {this.state.loading && <IconLoading theme={theme} />}
             </span>
           }
           {checkable ? (

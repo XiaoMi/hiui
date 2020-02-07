@@ -51,3 +51,15 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     }
   }
 }
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.hi-tag__container--primary.hi-tag__container--default {
+    background: $value;
+    border: 1px solid $value;
+  }
+
+  .theme__#{$key}.hi-tag__container--primary.hi-tag__container--line {
+    border: 1px solid $value;
+    color: $value;
+  }
+}

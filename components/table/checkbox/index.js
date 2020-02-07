@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
+import Provider from '../../context'
+
 import '../../checkbox/checkbox-legacy/style'
-export default class Checkbox extends Component {
+class Checkbox extends Component {
   render () {
     let {
       checked,
@@ -10,7 +12,8 @@ export default class Checkbox extends Component {
       text = null,
       semi = false,
       onTitleClick,
-      highlight
+      highlight,
+      theme
     } = this.props
     if (semi) {
       checked = false
@@ -24,7 +27,8 @@ export default class Checkbox extends Component {
           }
           onChange(e, !checked)
         }}
-        className={classNames({
+
+        className={classNames(`theme__${theme}`, {
           'hi-checkbox-legacy': true,
           'hi-checkbox-legacy--part': semi,
           'hi-checkbox-legacy--checked': checked,
@@ -46,3 +50,5 @@ export default class Checkbox extends Component {
     )
   }
 }
+
+export default Provider(Checkbox)

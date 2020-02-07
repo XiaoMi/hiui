@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './style/index'
-
 class Alert extends Component {
   constructor (props) {
     super(props)
@@ -20,7 +19,7 @@ class Alert extends Component {
     this.props.onClose && this.props.onClose()
   }
   render () {
-    let classnames = classNames(this.props.prefixCls, this.state.visible, this.props.type, {
+    let classnames = classNames(this.props.prefixCls, this.state.visible, this.props.type, `theme__${this.props.theme}`, {
       noTitle: !this.props.title
     })
 

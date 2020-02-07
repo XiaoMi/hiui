@@ -1,3 +1,5 @@
+@import '@hi-ui/core-css/index.scss';
+
 .hi-transfer {
   display: flex;
 
@@ -194,5 +196,19 @@
 
   .hi-checkbox__input {
     box-sizing: border-box;
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .hi-transfer {
+    &__item {
+      .theme__#{$key}.hi-checkbox-legacy--checked .hi-checkbox-legacy__input {
+        border: 1px solid $value;
+      }
+
+      &:hover {
+        background-color: rgba($value, 0.15);
+      }
+    }
   }
 }

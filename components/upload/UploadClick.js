@@ -20,14 +20,15 @@ class UploadClick extends Upload {
       onRemove,
       accept,
       loading,
-      localeDatas
+      localeDatas,
+      theme
     } = this.props
     const {
       fileList,
       fileCountLimted
     } = this.state
     return (
-      <div className='hi-upload hi-upload--normal'>
+      <div className={`hi-upload hi-upload--normal theme__${theme}`}>
         {
           this.outMaxsizeTip()
         }

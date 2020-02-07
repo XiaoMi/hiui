@@ -17,7 +17,8 @@ class UploadPictureCard extends Upload {
       disabled,
       accept,
       onRemove,
-      localeDatas
+      localeDatas,
+      theme
     } = this.props
     const {
       fileList,
@@ -25,7 +26,7 @@ class UploadPictureCard extends Upload {
     } = this.state
 
     return (
-      <div className='hi-upload hi-upload--picture-card'>
+      <div className={`hi-upload hi-upload--picture-card theme__${theme}`}>
         {
           this.outMaxsizeTip()
         }
