@@ -775,7 +775,7 @@ class Table extends Component {
       data,
       url,
       headers,
-      withCredentials,
+      withCredentials = false,
       type = 'GET',
       success = (res) => {},
       error = () => {},
@@ -796,7 +796,7 @@ class Table extends Component {
     let options = {
       url,
       method: ['GET', 'get'].includes(type) ? 'GET' : 'POST',
-      withCredentials: withCredentials || false
+      withCredentials: withCredentials
     }
     if (options.method === 'GET') {
       options.params = requestParams
@@ -835,7 +835,7 @@ class Table extends Component {
         headers,
         type = 'GET',
         mode = 'json',
-        withCredentials,
+        withCredentials = false,
         success = (res) => {},
         error = () => {},
         // pageSize = Table.config.pageSize,
@@ -857,7 +857,7 @@ class Table extends Component {
     let options = {
       method: ['GET', 'get'].includes(type) ? 'GET' : 'POST',
       url,
-      withCredentials: withCredentials || false
+      withCredentials: withCredentials
     }
     if (options.method === 'GET') {
       options.params = requestParams
