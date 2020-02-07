@@ -67,7 +67,7 @@ class Demo extends React.Component {
     const FormItem = Form.Item
     return (
       <div style={{width: 500}}>
-        <Form labelWidth='70' labelPlacement='right'>
+        <Form labelWidth='70' labelPlacement='left'>
           <Row>
             <Col span={12}>
               <FormItem label='姓名' >
