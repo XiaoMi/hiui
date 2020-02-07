@@ -37,7 +37,6 @@
     // Status: disabled
     &.hi-btn--disabled,
     &[disabled] {
-      // background-color: transparent;
       color: $themeColor;
       opacity: 0.54;
     }
