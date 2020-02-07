@@ -35,6 +35,10 @@ $prefixCls: 'hi-dropdown' !default;
     i {
       margin-left: 4px;
       margin-right: 0 !important;
+
+      &.not-group {
+        margin-right: -15px !important;
+      }
     }
 
     &--text {
