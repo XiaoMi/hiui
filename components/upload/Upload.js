@@ -243,6 +243,7 @@ class Upload extends Component {
 
     let xhr = new XMLHttpRequest()
     let formFile = new FormData()
+    xhr.withCredentials = withCredentials
     if (dataUrl) {
       formFile.append(name, dataUrl)
     } else {
@@ -283,8 +284,6 @@ class Upload extends Component {
     }
 
     xhr.open('post', uploadAction, true)
-    xhr.withCredentials = withCredentials
-
     // 设置用户传入的请求头
     if (headers) {
       for (let j in headers) {
