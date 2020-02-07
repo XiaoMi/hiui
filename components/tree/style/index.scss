@@ -570,5 +570,21 @@ $tree: 'hi-tree' !default;
         background-color: $value;
       }
     }
+
+    .hi-tree__divider {
+      .divider-line {
+        background-color: $value;
+      }
+
+      .divider-circle {
+        border: 1px solid $value;
+      }
+    }
+  }
+
+  .theme__#{$key}.right-click-menu {
+    li:hover {
+      background-color: rgba($value, 0.15);
+    }
   }
 }

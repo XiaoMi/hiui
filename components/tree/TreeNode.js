@@ -455,7 +455,7 @@ class TreeNode extends Component {
       }
     }
 
-    let contextMenuPanel = <ul className='right-click-menu' style={{left: rect.left + rect.width + 5, top: rect.top + _st}}>
+    let contextMenuPanel = <ul className={`right-click-menu theme__${this.props.theme}`} style={{left: rect.left + rect.width + 5, top: rect.top + _st}}>
       {
         _cm.length > 0
           ? _cm.map((cm, index) => {

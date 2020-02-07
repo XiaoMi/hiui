@@ -70,7 +70,7 @@ class TreeItem extends Component {
         )}
       >
         {targetNode === item.id && dropDividerPosition === 'up' && isOver && (
-          <TreeDivider placement='top' />
+          <TreeDivider placement='top' theme={theme} />
         )}
         <div
           className={classNames('item__wrapper', {
@@ -81,7 +81,7 @@ class TreeItem extends Component {
           {(!item.children || (item.children && !expanded)) &&
             targetNode === item.id &&
             dropDividerPosition === 'down' &&
-            isOver && <TreeDivider placement='bottom' />}
+            isOver && <TreeDivider theme={theme} placement='bottom' />}
           {
             <span
               onClick={() => {
@@ -182,7 +182,7 @@ class TreeItem extends Component {
                 {item.title}
                 {/* {renderRightClickMenu(item)} */}
                 {targetNode === item.id && dropDividerPosition === 'sub' && isOver && (
-                  <TreeDivider placement='inner' />
+                  <TreeDivider placement='inner' theme={this.props.theme} />
                 )}
               </span>
             )
@@ -221,7 +221,7 @@ class TreeItem extends Component {
           expanded &&
           targetNode === item.id &&
           dropDividerPosition === 'down' &&
-          isOver && <TreeDivider placement='bottom' />}
+          isOver && <TreeDivider placement='bottom' theme={this.props.theme} />}
       </li>
     )
     return draggable ? connectDropTarget(treeItem) : treeItem
