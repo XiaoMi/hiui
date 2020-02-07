@@ -221,7 +221,7 @@ class Menu extends Component {
   }
 
   renderMenu (data, parentIndex = '') {
-    const {showAllSubMenus, placement} = this.props
+    const {showAllSubMenus, placement, theme} = this.props
     const {
       activeIndex,
       expandIndex,
@@ -237,6 +237,7 @@ class Menu extends Component {
         items.push(
           <SubMenu
             key={index}
+            theme={theme}
             onClick={this.onClickSubMenu.bind(this)}
             clickInside={this.clickInside.bind(this)}
             index={indexStr}

@@ -56,5 +56,6 @@ class Notice extends Component {
     )
   }
 }
+Notice.IS_HIUI_NOTICE = true
 export default Provider(Notice)
 export {Notice}

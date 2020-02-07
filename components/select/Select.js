@@ -547,7 +547,8 @@ class Select extends Component {
       onFocus,
       dataSource,
       filterOption,
-      onSearch
+      onSearch,
+      theme
     } = this.props
     const placeholder = this.localeDatasProps('placeholder')
     const {
@@ -579,6 +580,7 @@ class Select extends Component {
             ref={node => {
               this.selectInput = node
             }}
+            theme={theme}
             mode={type}
             disabled={disabled}
             searchable={searchable}
@@ -617,6 +619,7 @@ class Select extends Component {
           <SelectDropdown
             noFoundTip={emptyContent}
             mode={type}
+            theme={theme}
             onBlur={onBlur}
             onFocus={onFocus}
             isOnSearch = {onSearch || dataSource}

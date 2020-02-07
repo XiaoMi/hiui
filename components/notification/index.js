@@ -4,7 +4,6 @@ import React from 'react'
 import Button from '../button'
 import classNames from 'classnames'
 import _handleNotificate from './HandleNotification'
-
 const iconMap = {
   success: 'chenggong',
   error: 'shibai',
@@ -29,8 +28,7 @@ const notification = {
     type = 'info',
     confirmText,
     onConfirm,
-    onClose,
-    theme
+    onClose
   }) => {
     const NoticeContent = (
       <React.Fragment>

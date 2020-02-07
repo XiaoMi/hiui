@@ -4,7 +4,6 @@ import classNames from 'classnames'
 import Popper from '../popper'
 import Icon from '../icon'
 import Title from './Title'
-import Provider from '../context'
 class SubMenu extends Component {
   onClick (index) {
     this.props.onClick(index)
@@ -165,4 +164,4 @@ SubMenu.defaultProps = {
   expandIndex: []
 }
 
-export default Provider(SubMenu)
+export default SubMenu
