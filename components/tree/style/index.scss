@@ -530,3 +530,45 @@ $tree: 'hi-tree' !default;
     }
   }
 }
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.#{$tree} {
+    .hi-checkbox-legacy--part .hi-checkbox-legacy__input {
+      border: 1px solid $value;
+    }
+
+    .hi-checkbox-legacy--checked .hi-checkbox-legacy__input {
+      border: 1px solid $value;
+    }
+
+    .#{$tree}_item-text {
+      &:hover:not(.hi-tree_item-text--disabled) {
+        background-color: rgba($value, 0.08);
+        color: rgba(56, 62, 71, 1);
+      }
+
+      &.dragTo {
+        background-color: $value;
+      }
+
+      &.dragToGapBottom {
+        border-top: 1px solid $value;
+      }
+
+      &.dragToGapTop {
+        border-bottom: 1px solid $value;
+      }
+
+      &.highlight {
+        color: #fff;
+        background-color: $value;
+      }
+    }
+
+    .#{$tree}-bar {
+      &-input:checked + .#{$tree}-checkbox {
+        background-color: $value;
+      }
+    }
+  }
+}

@@ -264,20 +264,19 @@ describe('tree', () => {
             wrapper.find('.right-click-menu li').at(2).simulate('click')
                 
             wrapper.find('.editing').find('span').at(1).simulate('click')
-            expect(wrapper.find('.is-root')).toHaveLength(2)
+            expect(wrapper.find('.is-root')).toHaveLength(3)
 
             // 添加节点确定
             wrapper.find('.is-root').at(0).find('.hi-tree_item-text').at(0).simulate('contextmenu')
             wrapper.find('.right-click-menu li').at(2).simulate('click')
                 
             wrapper.find('.editing').find('span').at(0).simulate('click')
-            expect(wrapper.find('.is-root')).toHaveLength(3)
+            expect(wrapper.find('.is-root')).toHaveLength(4)
             // 删除节点
             wrapper.find('.is-root').at(0).find('.hi-tree_item-text').at(0).simulate('contextmenu')
             wrapper.find('.right-click-menu li').at(3).simulate('click')
-                
-            wrapper.find('.hi-btn--type--primary').at(0).simulate('click')
-            expect(wrapper.find('.is-root')).toHaveLength(2)
+            wrapper.find('.hi-btn--type--primary').at(1).simulate('click')
+            expect(wrapper.find('.is-root')).toHaveLength(3)
             wrapper.unmount()
         })
         it('should searchable',()=>{

@@ -117,7 +117,7 @@ describe('Menu', () => {
       wrapper.find('.hi-menu-item').at(2).childAt(0).simulate('click')
       ReactTestUtils.Simulate.click(document.querySelector('.hi-submenu__items'))
       ReactTestUtils.Simulate.click(document.querySelector('.hi-submenu__items .hi-submenu__title'))
-      expect(document.querySelector('.hi-submenu__items .hi-menu__title-toggle-icon>.hi-icon').className).toEqual('hi-icon icon-left')
+      expect(document.querySelector('.hi-submenu__items .hi-menu__title-toggle-icon>.hi-icon').className).toEqual('hi-icon icon-right')
     })
     it('collapsed', () => {
       const wrapper = mount(

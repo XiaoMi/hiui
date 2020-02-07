@@ -6,6 +6,7 @@ import Preview from './Preview'
 import Cropper from 'react-cropper'
 import Icon from '../icon'
 import 'cropperjs/dist/cropper.css'
+
 class UploadAvatar extends Upload {
   containerWidth = 550
   containerHeight = 500
@@ -125,12 +126,12 @@ class UploadAvatar extends Upload {
   }
 
   render () {
-    const { disabled, accept, localeDatas, avatarOptions = {}, onRemove } = this.props
+    const { disabled, accept, localeDatas, avatarOptions = {}, onRemove, theme } = this.props
     const { fileList, showCropperModal, showPreviewModal } = this.state
     const { aspectRatio = 0, dragMode = 'move', dropBoxSize = [] } = avatarOptions
     const file = fileList[0]
     return (
-      <div className='hi-upload hi-upload--avatar'>
+      <div className={`theme__${theme} hi-upload hi-upload--avatar`}>
         <ul className='hi-upload__list'>
           {!!file &&
             (file.uploadState === 'loading'

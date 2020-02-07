@@ -284,3 +284,136 @@
     }
   }
 }
+
+@each $key, $value in $palette-primary {
+  .theme__#{$key}.hi-menu {
+    .hi-menu-item {
+      &--active {
+        > .hi-menu__title .hi-menu__title-content,
+        > .hi-menu__title-content {
+          color: $value;
+        }
+
+        > .hi-menu__title .hi-menu__title-icon,
+        > .hi-menu__title-icon {
+          color: $value;
+        }
+
+        > .hi-submenu__title {
+          & > .hi-menu__title-toggle-icon {
+            color: $value;
+          }
+        }
+      }
+
+      &--disabled {
+        .hi-menu__title {
+          cursor: not-allowed;
+          color: #d8d8d8;
+        }
+      }
+
+      &--active::after {
+        background-color: $value;
+      }
+    }
+
+    &.active {
+      border-color: $value;
+    }
+
+    &--mini {
+      .hi-menu-item {
+        &--active {
+          &::after {
+            background-color: $value;
+          }
+        }
+      }
+    }
+
+    &--vertical {
+      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+
+      .hi-menu-item {
+        &--active:not(.hi-submenu) {
+          background-color: rgba($value, 0.15);
+
+          &::after {
+            background-color: $value;
+          }
+        }
+      }
+
+      .hi-menu__title {
+        &:hover {
+          background-color: rgba($value, 0.15);
+        }
+      }
+    }
+  }
+
+  .theme__#{$key}.hi-menu-item {
+    &--active {
+      > .hi-menu__title .hi-menu__title-content,
+      > .hi-menu__title-content {
+        color: $value;
+      }
+
+      > .hi-menu__title .hi-menu__title-icon,
+      > .hi-menu__title-icon {
+        color: $value;
+      }
+
+      > .hi-submenu__title {
+        & > .hi-menu__title-toggle-icon {
+          color: $value;
+        }
+      }
+    }
+
+    &--disabled {
+      .hi-menu__title {
+        cursor: not-allowed;
+        color: #d8d8d8;
+      }
+    }
+
+    &--active::after {
+      background-color: $value;
+    }
+  }
+
+  .theme__#{$key}.hi-submenu__popper {
+    .hi-menu-item {
+      &--active {
+        > .hi-menu__title .hi-menu__title-content,
+        > .hi-menu__title-content {
+          color: $value;
+        }
+
+        > .hi-menu__title .hi-menu__title-icon,
+        > .hi-menu__title-icon {
+          color: $value;
+        }
+
+        > .hi-submenu__title {
+          & > .hi-menu__title-toggle-icon {
+            color: $value;
+          }
+        }
+      }
+
+      &--disabled {
+        .hi-menu__title {
+          cursor: not-allowed;
+          color: #d8d8d8;
+        }
+      }
+
+      &--active::after {
+        background-color: $value;
+      }
+    }
+  }
+}

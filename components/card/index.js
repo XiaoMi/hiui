@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import './style/index'
-
+import Provider from '../context'
 class Card extends Component {
   constructor (props) {
     super(props)
@@ -25,10 +25,12 @@ class Card extends Component {
       disabled,
       extraShow,
       extraType,
-      type
+      type,
+      theme
     } = this.props
     const cls = classNames(
       'hi-card',
+      `theme__${theme}`,
       hoverable && 'hi-card--hover',
       size && `hi-card--${size === 'default' ? 'middle' : size}`,
       disabled && 'hi-card--disabled',
@@ -122,4 +124,5 @@ Card.propTypes = {
   extraShow: PropTypes.oneOf(['stay', 'hover']), // TODO: 废弃，使用 extraType
   extraType: PropTypes.oneOf(['default', 'hover'])
 }
-export default Card
+export default Provider(Card)
+export {Card}

@@ -43,7 +43,7 @@ module.exports = {
     radio: 'Radio 单选',
     checkbox: 'Checkbox 复选',
     grid: 'Grid 栅格',
-    stepper: 'Stepper 步骤',
+    stepper: 'Stepper 步骤条',
     icon: 'Icon 图标',
     progress: 'Progress 进度条',
     card: 'Card 卡片',

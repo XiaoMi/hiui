@@ -2,7 +2,6 @@
 
 .hi-select__dropdown {
   width: 100%;
-  max-height: 320px;
   font-size: 12px;
   color: #333;
   overflow-x: hidden;
@@ -145,6 +144,10 @@
     &--item {
       &.is-active {
         color: $value;
+      }
+
+      &[data-focused='true'] {
+        background-color: rgba($value, 0.08);
       }
     }
   }

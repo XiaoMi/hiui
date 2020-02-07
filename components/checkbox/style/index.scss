@@ -128,4 +128,18 @@ $prefixCls: '.hi-checkbox' !default;
   .theme__#{$key$prefixCls} {
     @include hi-checkbox-style($value);
   }
+
+  .theme__#{$key}#{$prefixCls}:not(#{$prefixCls}--disabled):hover {
+    #{$prefixCls}__input {
+      border-color: $value;
+    }
+  }
+
+  .theme__#{$key}#{$prefixCls} {
+    input {
+      &:focus + #{$prefixCls}__input {
+        border-color: $value;
+      }
+    }
+  }
 }

@@ -349,7 +349,8 @@ class Cascader extends Component {
       disabled,
       searchable,
       clearable,
-      style
+      style,
+      theme
     } = this.props
     const {
       cascaderValue,
@@ -366,7 +367,7 @@ class Cascader extends Component {
     const expandIcon = popperShow ? 'icon-up' : 'icon-down'
     const placeholder = cascaderLabel || this.localeDatasProps('placeholder')
     return (
-      <div className={classNames('hi-cascader', className, extraClass)} style={style} ref={this.hiCascader}>
+      <div className={classNames('hi-cascader', `theme__${theme}`, className, extraClass)} style={style} ref={this.hiCascader}>
         <div className='hi-cascader__input-container' ref={node => { this.inputContainer = node }} onClick={this.handleClick.bind(this)}>
           <input
             ref={node => {
@@ -402,6 +403,7 @@ class Cascader extends Component {
             value={cascaderValue}
             options={filterOptions || data}
             root={() => this}
+            theme={theme}
             isFiltered={filterOptions}
             filterOptionWidth={this.hiCascader.current && this.hiCascader.current.clientWidth}
             onSelect={this.onChangeValue.bind(this)}

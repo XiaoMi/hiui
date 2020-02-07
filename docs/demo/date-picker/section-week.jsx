@@ -3,7 +3,11 @@ import DocViewer from '../../../libs/doc-viewer'
 import DatePicker from '../../../components/date-picker'
 import Grid from '../../../components/grid'
 const prefix = 'date-picker-week'
-const code = `import React from 'react'
+const desc = '以年份 / 月份 / 周为展示粒度'
+const rightOptions = ['年份', '月份', '周']
+const code = [
+  {
+    code: `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
@@ -32,12 +36,53 @@ class Demo extends React.Component {
       </div>
     )
   }
-}`
+}`,
+    opt: ['周']
+  },
+  {
+    code: `import React from 'react'
+import Grid from '@hi-ui/hiui/es/grid'
+import DatePicker from '@hi-ui/hiui/es/date-picker'\n
+class Demo extends React.Component {
+  render () {
+    const Row = Grid.Row
+    const Col = Grid.Col
+    return (
+      <DatePicker
+          type='month'
+          onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
+        />
+    )
+  }
+}`,
+    opt: ['月份']
+  },
+  {
+    code: `import React from 'react'
+import Grid from '@hi-ui/hiui/es/grid'
+import DatePicker from '@hi-ui/hiui/es/date-picker'\n
+class Demo extends React.Component {
+  render () {
+    const Row = Grid.Row
+    const Col = Grid.Col
+    return (
+      <DatePicker
+          type='year'
+          onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
+        />
+    )
+  }
+}`,
+    opt: ['年份']
+  }
+]
 const DemoWeek = () => (
   <DocViewer
     code={code}
     scope={{ DatePicker, Grid }}
     prefix={prefix}
+    desc={desc}
+    rightOptions={rightOptions}
   />
 )
 export default DemoWeek

@@ -35,6 +35,10 @@ $prefixCls: 'hi-dropdown' !default;
     i {
       margin-left: 4px;
       margin-right: 0 !important;
+
+      &.not-group {
+        margin-right: -15px !important;
+      }
     }
 
     &--text {
@@ -116,6 +120,18 @@ $prefixCls: 'hi-dropdown' !default;
       &:not(#{&}--disabled):hover {
         background-color: #ecf2fe;
       }
+    }
+  }
+}
+
+@each $key, $value in $palette-primary {
+  .theme__#{$key}.#{$prefixCls}__button--active {
+    color: $value !important;
+  }
+
+  .theme__#{$key}.#{$prefixCls}__menu {
+    .#{$prefixCls}__menu-item:not(.hi-dropdown__menu-item----disabled):hover {
+      background-color: rgba($value, 0.15);
     }
   }
 }

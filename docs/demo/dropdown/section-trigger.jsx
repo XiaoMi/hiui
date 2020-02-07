@@ -2,8 +2,8 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Dropdown from '../../../components/dropdown'
 const prefix = 'dropdown-trigger'
-const rightOptions = ['单击', '悬停', '右键单击']
-const desc = '通过 trigger 属性切换菜单触发方式'
+const rightOptions = ['左键单击', '悬停', '右键单击']
+const desc = '不同触发方式呼出菜单'
 
 const code = [
   {
@@ -78,7 +78,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['单击']
+    opt: ['左键单击']
   },
   {
     code: `import React from 'react'
