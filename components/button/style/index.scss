@@ -32,27 +32,11 @@
 
   // Make a button look and behave like a link
   &.hi-btn--appearance--link {
-    background-color: transparent;
-    color: $themeColor;
-
-    &:not(.hi-btn--disabled):focus {
-      box-shadow: 0 0 0 2px rgba($themeColor, 0.25);
-    }
-
-    &:not(.hi-btn--disabled):hover {
-      background-color: map-get($themePalette, '60');
-      color: $white;
-    }
-
-    &:not(.hi-btn--disabled):active {
-      background-color: map-get($themePalette, '80');
-      color: $white;
-    }
+    color: $themeColor !important;
 
     // Status: disabled
     &.hi-btn--disabled,
     &[disabled] {
-      background-color: transparent;
       color: $themeColor;
       opacity: 0.54;
     }
@@ -92,24 +76,7 @@
 
   // Make a button look and behave like a link
   &.hi-btn--appearance--link {
-    background-color: transparent;
-    border-color: transparent;
     color: $themeColor;
-
-    &:not(.hi-btn--disabled):focus {
-      box-shadow: 0 0 0 2px rgba($themeColor, 0.25);
-    }
-
-    &:not(.hi-btn--disabled):hover {
-      background-color: rgba($themeColor, 0.1);
-      border-color: rgba($themeColor, 0.8);
-      color: $themeColor;
-    }
-
-    &:not(.hi-btn--disabled):active {
-      background-color: rgba($themeColor, 0.15);
-      color: $themeColor;
-    }
 
     // Status: disabled
     &.hi-btn--disabled,
@@ -161,6 +128,12 @@
   touch-action: manipulation;
   cursor: pointer;
   transition: background-color $speed-normal $easing, border-color $speed-normal $easing, box-shadow $speed-fast $easing, color $speed-normal $easing;
+
+  &.hi-btn--appearance--link {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
 
   @include btn-theme-styles();
 
@@ -246,17 +219,11 @@
 
     // Make a button look and behave like a link
     &.hi-btn--appearance--link {
-      background-color: transparent;
-      border-color: transparent;
-
       &:not(.hi-btn--disabled):hover {
-        background-color: $white;
-        border-color: $gray-dark;
         color: $black;
       }
 
       &:not(.hi-btn--disabled):active {
-        background-color: $gray-lighter;
         color: $black;
       }
 

@@ -17,7 +17,7 @@ class Button extends Component {
       'warning', // deprecated
       'info' // deprecated
     ]),
-    size: PropTypes.oneOf(['large', 'small', 'normal']),
+    size: PropTypes.oneOf(['large', 'small', 'normal', 'default']),
     appearance: PropTypes.oneOf([
       'button',
       'link',
