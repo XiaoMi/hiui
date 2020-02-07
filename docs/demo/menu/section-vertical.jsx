@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Menu from '../../../components/menu'
 const prefix = 'menu-vertical'
 const desc = '当导航的菜单项和层级较多时适用，可收起'
-const rightOptions = ['基础', '可同时展开多个', '可收起']
+const rightOptions = ['手风琴式', '非手风琴', '可收起']
 
 const code = [
   {
@@ -109,7 +109,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['基础']
+    opt: ['手风琴式']
   },
   {
     code: `import React from 'react'
@@ -215,7 +215,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['可同时展开多个']
+    opt: ['非手风琴']
   },
   {
     code: `import React from 'react'
