@@ -47,6 +47,7 @@ class Demo extends React.Component {
           data={this.state.treeData}
           onChange={data => {console.log('Tree data:', data)}}
           highlightable
+          defaultHighlightId={1}
           onClick={(item) => console.log('------click node', item)}
         />
       </div>

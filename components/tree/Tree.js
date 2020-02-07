@@ -185,6 +185,7 @@ export class Tree extends Component {
       onClick,
       apperance,
       contextMenu,
+      defaultHighlightId,
       theme
     } = this.props
     const { data } = this.state
@@ -205,14 +206,13 @@ export class Tree extends Component {
           expandTreeNode={this.expandTreeNode}
           setExpandTreeNodes={this.setExpandTreeNodes}
           onCheckChange={this.onCheckChange}
-          hightLightNodes={this.props.hightLightNodes}
-          onHightLightChange={this.props.onHightLightChange}
           onExpanded={this.onExpanded}
           data={data}
           theme={theme}
           prefixCls={prefixCls}
           checkable={checkable}
           highlightable={highlightable}
+          defaultHighlightId={defaultHighlightId}
           editable={editable}
           searchable={searchable}
           openIcon={openIcon}

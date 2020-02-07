@@ -507,6 +507,7 @@ class TreeNode extends Component {
       semiChecked,
       onClick,
       highlightable,
+      defaultHighlightId,
       checkable,
       closeExpandedTreeNode,
       expandTreeNode,
@@ -546,7 +547,7 @@ class TreeNode extends Component {
               draggable={draggable}
               onDragStart={onDragStart}
               checked={!!checked.includes(item.id)}
-              highlight={highlight}
+              highlight={highlight || defaultHighlightId}
               highlightable={highlightable}
               editNodes={editNodes}
               editingNodes={editingNodes}
