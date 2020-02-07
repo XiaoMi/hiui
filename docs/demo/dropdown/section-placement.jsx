@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Dropdown from '../../../components/dropdown'
 const prefix = 'dropdown-type'
-const rightOptions = ['下左', '上左', '下右', '上右']
+const rightOptions = ['左下', '左上', '右下', '右上']
 const desc = '通过 placement 属性切换菜单显示位置'
 
 const code = [
@@ -41,7 +41,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['下左']
+    opt: ['左下']
   },
   {
     code: `import React from 'react'
@@ -78,7 +78,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['上左']
+    opt: ['左上']
   },
   {
     code: `import React from 'react'
@@ -115,7 +115,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['下右']
+    opt: ['右下']
   },
   {
     code: `import React from 'react'
@@ -152,7 +152,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['上右']
+    opt: ['右上']
   }
 ]
 
