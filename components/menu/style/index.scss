@@ -325,7 +325,7 @@
     &--mini {
       .hi-menu-item {
         &--active {
-          background-color: rgba($value, 0.15);
+          background-color: rgba($value, 0.1);
 
           &::after {
             background-color: $value;
@@ -339,7 +339,7 @@
 
       .hi-menu-item {
         &--active:not(.hi-submenu) {
-          background-color: rgba($value, 0.15);
+          background-color: rgba($value, 0.1);
 
           &::after {
             background-color: $value;
@@ -349,7 +349,7 @@
 
       .hi-menu__title {
         &:hover {
-          background-color: rgba($value, 0.15);
+          background-color: rgba($value, 0.1);
         }
       }
     }
