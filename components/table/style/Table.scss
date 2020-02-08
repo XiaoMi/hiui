@@ -470,8 +470,17 @@ $borderColor: #e6e7e8 !default;
       color: #83868c;
     }
 
+    .hi-table-thead tr {
+      background-color: #fff;
+      color: #83868c;
+    }
+
     .hi-table-container table .hi-table-thead tr:hover {
       background-color: #fff;
+    }
+
+    .hi-table-container table th i:hover {
+      color: $value;
     }
 
     .hi-icon.icon-menu {
