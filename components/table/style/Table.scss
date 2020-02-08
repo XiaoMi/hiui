@@ -42,7 +42,7 @@ $borderColor: #e6e7e8 !default;
     position: relative;
   }
 
-  .hi-icon {
+  .hi-icon.icon-menu {
     color: #4284f5;
   }
 
@@ -461,7 +461,7 @@ $borderColor: #e6e7e8 !default;
 @each $key, $value in $theme-colors {
   .theme__#{$key}.hi-table {
     .hi-table-container table th {
-      background-color: rgba($value, 0.3);
+      background-color: rgba($value, 0.1);
       color: #83868c;
     }
 
@@ -470,7 +470,11 @@ $borderColor: #e6e7e8 !default;
       color: #83868c;
     }
 
-    .hi-icon {
+    .hi-table-container table .hi-table-thead tr:hover {
+      background-color: #fff;
+    }
+
+    .hi-icon.icon-menu {
       color: $value;
     }
 
@@ -492,6 +496,22 @@ $borderColor: #e6e7e8 !default;
         tr:nth-child(2n) {
           background: rgba($value, 0.1);
         }
+      }
+    }
+
+    .hi-pagination {
+      .hi-icon {
+        color: #666;
+      }
+
+      .hi-icon:hover {
+        color: $value;
+      }
+    }
+
+    .hi-pagination:hover > span {
+      .hi-icon {
+        color: $value;
       }
     }
   }

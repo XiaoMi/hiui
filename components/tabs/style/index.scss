@@ -323,4 +323,14 @@ $prefix: 'hi-tabs' !default;
       }
     }
   }
+
+  .theme__#{$key}.hi-tabs-dropdown__items {
+    .hi-tabs-dropdown__item:hover {
+      background-color: rgba($value, 0.1);
+    }
+
+    .hi-tabs-dropdown__item.hi-tabs-dropdown__item--active {
+      background-color: rgba($value, 0.1);
+    }
+  }
 }
