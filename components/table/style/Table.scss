@@ -474,6 +474,10 @@ $borderColor: #e6e7e8 !default;
       background-color: #fff;
     }
 
+    .hi-table-container table th i:hover {
+      color: $value;
+    }
+
     .hi-icon.icon-menu {
       color: $value;
     }
