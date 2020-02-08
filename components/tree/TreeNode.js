@@ -104,6 +104,15 @@ class TreeNode extends Component {
 
   // 高亮检索值
   highlightData = (data, highlightValue) => {
+    const themeColor = {
+      'orange': '#f63',
+      'cyan': '#46bc99',
+      'magenta': '#ff5975',
+      'lavender': '#b450de',
+      'blue': '#3da8f5',
+      'purple': '#8a8acb',
+      'hiui-blue': '#4284f5'
+    }
     return data.map(item => {
       if (typeof item.title === 'string' && item.title.includes(highlightValue)) {
         const index = item.title.indexOf(highlightValue)
@@ -112,7 +121,7 @@ class TreeNode extends Component {
         item.title = (
           <span>
             {beforeStr}
-            <span style={{ color: '#4284f5' }}>{highlightValue}</span>
+            <span style={{ color: themeColor[this.props.theme] }}>{highlightValue}</span>
             {afterStr}
           </span>
         )

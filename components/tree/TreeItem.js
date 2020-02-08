@@ -57,6 +57,16 @@ class TreeItem extends Component {
       apperance,
       theme
     } = this.props
+
+    const themeColor = {
+      'orange': '#f63',
+      'cyan': '#46bc99',
+      'magenta': '#ff5975',
+      'lavender': '#b450de',
+      'blue': '#3da8f5',
+      'purple': '#8a8acb',
+      'hiui-blue': '#4284f5'
+    }
     const { nodePlaceholder, confirm, cancel } = localeDatas.tree
     const treeItem = (
       <li
@@ -131,7 +141,7 @@ class TreeItem extends Component {
                 }}
               />
               <span
-                style={(editingNodes.find(node => node.id === item.id) || {}).title === '' ? { marginRight: 12, color: '#999' } : { cursor: 'pointer', marginRight: 12, color: '#4284F5' }}
+                style={(editingNodes.find(node => node.id === item.id) || {}).title === '' ? { marginRight: 12, color: '#999', cursor: 'not-allowed' } : { cursor: 'pointer', marginRight: 12, color: themeColor[theme] }}
                 onClick={() => {
                   if ((editingNodes.find(node => node.id === item.id) || {}).title !== '') {
                     saveEditNode(item.id)

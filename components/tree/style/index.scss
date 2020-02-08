@@ -537,6 +537,10 @@ $tree: 'hi-tree' !default;
       border: 1px solid $value;
     }
 
+    .hi-checkbox-legacy__label.highlight {
+      color: $value;
+    }
+
     .hi-checkbox-legacy--checked .hi-checkbox-legacy__input {
       border: 1px solid $value;
     }

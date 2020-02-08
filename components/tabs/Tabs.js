@@ -213,6 +213,7 @@ class Tabs extends Component {
                 <ItemDropdown
                   active={activeTabInHiddenItems}
                   activeId={activeId}
+                  theme={theme}
                   defaultActiveId={defaultActiveId}
                   items={hiddenTabItems}
                   onChoose={(item, e) => {
