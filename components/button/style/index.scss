@@ -35,7 +35,7 @@
     color: $themeColor;
 
     &:not(.hi-btn--disabled):hover {
-      color: rgba($themeColor, 0.6);
+      color: map-get($themePalette, '70');
     }
     // Status: disabled
     &.hi-btn--disabled,
@@ -82,7 +82,7 @@
     color: $themeColor;
 
     &:not(.hi-btn--disabled):hover {
-      color: rgba($themeColor, 0.6);
+      color: map-get(get-palette($themeColor), '70');
     }
     // Status: disabled
     &.hi-btn--disabled,
@@ -226,7 +226,7 @@
     // Make a button look and behave like a link
     &.hi-btn--appearance--link {
       &:not(.hi-btn--disabled):hover {
-        color: rgba($black, 0.6);
+        color: map-get(get-palette($black), '70');
       }
 
       &:not(.hi-btn--disabled):active {
