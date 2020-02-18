@@ -4,9 +4,11 @@
 
 ## 何时使用
 
-- 一组数据进行两种状态的分类时
-- 有更多的空间进行选择时
-- 需快速批量的完成选项归类且可调整顺序时
+一组数据进行两种状态的分类时
+
+有更多的空间进行选择时
+
+需快速批量的完成选项归类且可调整顺序时
 
 ## 基础用法
 
@@ -14,31 +16,19 @@ import DemoBase from '../../demo/transfer/section-base.jsx'
 
 <DemoBase />
 
-## 批量
-
-import DemoBatch from '../../demo/transfer/section-batch.jsx'
-
-<DemoBatch />
-
-## 全选
+## 可全选
 
 import DemoCheck from '../../demo/transfer/section-check.jsx'
 
 <DemoCheck />
 
-## 搜索
+## 可搜索
 
 import DemoSearch from '../../demo/transfer/section-search.jsx'
 
 <DemoSearch />
 
-## 目标数量上限
-
-import DemoCount from '../../demo/transfer/section-count.jsx'
-
-<DemoCount />
-
-## 目标区域拖拽
+## 可排序
 
 import DemoArea from '../../demo/transfer/section-area.jsx'
 
@@ -46,18 +36,19 @@ import DemoArea from '../../demo/transfer/section-area.jsx'
 
 ## Props
 
-| 参数         | 说明                                                                       | 类型                                      | 可选值                  | 默认值    |
-| ------------ | -------------------------------------------------------------------------- | ----------------------------------------- | ----------------------- | --------- |
-| type         | 穿梭框类型                                                                 | string                                    | 'default' \| 'multiple' | 'default' |
-| showCheckAll | 是否展示全选按钮                                                           | boolean                                   | true \| false           | false     |
-| title        | 标题(数组长度为 1 或 2 位，1 位时左右标题将相同，2 位时将使用对应索引标题) | string[] \| ReactNode[]                   | -                       | -         |
-| searchable   | 是否可筛选                                                                 | boolean                                   | true \| false           | false     |
-| emptyContent | 数据为空时的显示内容                                                       | string[] \| ReactNode[]                   | -                       | -         |
-| disabled     | 是否禁用                                                                   | boolean                                   | true \| false           | false     |
-| data         | 穿梭框数据源                                                               | string                                    | DataItem[]              | -         |
-| targetLimit  | 最大可穿梭上线                                                             | number                                    | -                       | -         |
-| targetIds    | 目标框内的元素 id 集合                                                     | number[] \| string[]                      |                         | -         |
-| onChange     | 选中元素被移动到目标框内后的回调，回调值为目标框的值                       | (targetKey: number[] \| string[]) => void | -                       | -         |
+| 参数           | 说明                                                                       | 类型                                                                                           | 可选值                  | 默认值    |
+| -------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------- | --------- |
+| type           | 穿梭框类型                                                                 | string                                                                                         | 'default' \| 'multiple' | 'default' |
+| showCheckAll   | 是否展示全选按钮                                                           | boolean                                                                                        | true \| false           | false     |
+| title          | 标题(数组长度为 1 或 2 位，1 位时左右标题将相同，2 位时将使用对应索引标题) | string[] \| ReactNode[]                                                                        | -                       | -         |
+| searchable     | 是否可筛选                                                                 | boolean                                                                                        | true \| false           | false     |
+| emptyContent   | 数据为空时的显示内容                                                       | string[] \| ReactNode[]                                                                        | -                       | -         |
+| disabled       | 是否禁用                                                                   | boolean                                                                                        | true \| false           | false     |
+| data           | 穿梭框数据源                                                               | DataItem[]                                                                                     | -                       | —         |
+| targetLimit    | 最大可穿梭上限                                                             | number                                                                                         | -                       | -         |
+| targetIds      | 目标框内的元素 id 集合                                                     | number[] \| string[]                                                                           | -                       | -         |
+| targetSortType | 目标框内的排序方式                                                         | string                                                                                         | 'default' \| 'queue'    | 'default' |
+| onChange       | 选中元素被移动到目标框内后的回调，回调值为目标框的值                       | (targetKey: number[] \| string[], direction: 'left' \| 'right', moveDatas: DataItem[]) => void | -                       | -         |
 
 ## Type
 

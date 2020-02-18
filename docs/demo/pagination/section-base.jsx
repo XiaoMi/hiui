@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Pagination from '../../../components/pagination'
 const rightOptions = ['默认', '受控']
 const prefix = 'pagination-base'
-const desc = '分页组件会根据项目数量自己处理翻页数量。'
+const desc = '分页数在10页以内使用'
 const code = [
   {
     code: `import React from 'react'
@@ -20,8 +20,8 @@ class Demo extends React.Component {
     return (
       <Pagination
         defaultCurrent={this.state.current}
-        total={150}
-        pageSize={30}
+        total={200}
+        pageSize={10}
         onChange={(page, prevPage, pageSize)=>{console.log(page, prevPage, pageSize)}}
       />
     )

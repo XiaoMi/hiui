@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Alert from '../../../components/alert'
 const prefix = 'alert-autoClose'
+const desc = '反馈信息在出现一定时间后自动关闭，不打扰'
 const code = `import React from 'react'
 import Alert from '@hi-ui/hiui/es/alert'\n
 class Demo extends React.Component {
@@ -19,5 +20,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoAutoClose = () => <DocViewer code={code} scope={{ Alert }} prefix={prefix} />
+const DemoAutoClose = () => <DocViewer desc={desc} code={code} scope={{ Alert }} prefix={prefix} />
 export default DemoAutoClose

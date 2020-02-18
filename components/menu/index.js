@@ -1,5 +1,6 @@
 import Menu from './Menu'
 import { depreactedPropsCompat } from '../_util'
+import Provider from '../context'
 
 export default depreactedPropsCompat([
   ['placement', 'mode'],
@@ -8,4 +9,5 @@ export default depreactedPropsCompat([
   ['showAllSubMenus', 'fatMenu'],
   ['onCollapse', 'onMiniChange'],
   ['data', 'datas']
-])(Menu)
+])(Provider(Menu))
+export { Menu }

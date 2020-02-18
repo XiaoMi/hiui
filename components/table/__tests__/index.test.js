@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount, shallow } from 'enzyme'
 import sinon, { spy, stub } from 'sinon'
-import Table from '../'
+import {Table} from '../'
 
 describe('Table', () => {
   const dataLength = 10
@@ -100,17 +100,11 @@ describe('Table', () => {
       expect(wrapper.find(`Row`)).toHaveLength(dataLength)
     })
 
-    // NOTE useFixedHeader 源码中未使用
-    it.skip('useFixedHeader', () => {})
-
     it('columns', () => {
       const wrapper = mount(<Table {...{columns}} />)
 
       expect(wrapper.find(`.hi-table-thead`)).toHaveLength(1)
     })
-
-    // NOTE bodyStyle 源码中未使用
-    it.skip('bodyStyle', () => {})
 
     it('style', () => {
       const style = {
@@ -120,38 +114,5 @@ describe('Table', () => {
 
       expect(wrapper.find(`TableContent`).prop('style')).toMatchObject(style)
     })
-
-    // NOTE rowKey 源码中未使用
-    it.skip('rowKey', () => {})
-
-    // NOTE rowClassName 源码中未使用
-    it.skip('rowClassName', () => {})
-
-    // NOTE onRow 源码中未使用
-    it.skip('onRow', () => {})
-
-    // NOTE onHeaderRow 源码中未使用
-    it.skip('onHeaderRow', () => {})
-
-    // NOTE onRowDoubleClick 源码中未使用
-    it.skip('onRowDoubleClick', () => {})
-
-    // NOTE onRowContextMenu 源码中未使用
-    it.skip('onRowContextMenu', () => {})
-
-    // NOTE onRowMouseEnter 源码中未使用
-    it.skip('onRowMouseEnter', () => {})
-
-    // NOTE onRowMouseLeave 源码中未使用
-    it.skip('onRowMouseLeave', () => {})
-
-    // NOTE showHeader 源码中未使用
-    it.skip('showHeader', () => {})
-
-    // NOTE title 源码中未使用
-    it.skip('title', () => {})
-
-    // NOTE id 源码中未使用
-    it.skip('id', () => {})
   })
 })

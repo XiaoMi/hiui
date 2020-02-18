@@ -4,7 +4,6 @@ import classNames from 'classnames'
 import Popper from '../popper'
 import Icon from '../icon'
 import Title from './Title'
-
 class SubMenu extends Component {
   onClick (index) {
     this.props.onClick(index)
@@ -27,7 +26,8 @@ class SubMenu extends Component {
       index,
       renderMenu,
       fatMenu,
-      clickInside
+      clickInside,
+      theme
     } = this.props
     let leftGap
     let topGap
@@ -51,14 +51,13 @@ class SubMenu extends Component {
         topGap={topGap}
         leftGap={leftGap}
         className={
-          classNames('hi-submenu__popper', {'hi-submenu__popper--fat': fatMenu})
+          classNames('hi-submenu__popper', `theme__${theme}`, {'hi-submenu__popper--fat': fatMenu})
         }
         width={false}
         placement={placement}
       >
         <ul
           className={classNames('hi-submenu__items')}
-          ref={node => { this.submenuNode = node }}
           onClick={() => clickInside()} // 利用事件冒泡设置clickInsideFlag
         >
           { renderMenu(datas, index) }
@@ -72,11 +71,12 @@ class SubMenu extends Component {
       datas,
       index,
       renderMenu,
-      clickInside
+      clickInside,
+      theme
     } = this.props
     return (
       <ul
-        className={classNames('hi-submenu__items', {'hi-submenu__items--hide': !isExpand})}
+        className={classNames('hi-submenu__items', `theme__${theme}`, {'hi-submenu__items--hide': !isExpand})}
         onClick={() => clickInside()} // 利用事件冒泡设置clickInsideFlag
         key={index}
       >
@@ -96,19 +96,22 @@ class SubMenu extends Component {
       activeIndex,
       expandIndex,
       disabled,
-      fatMenu
+      fatMenu,
+      theme
     } = this.props
     const isExpand = this.checkExpand(activeIndex, expandIndex, index)
     const isActive = this.checkActive(activeIndex, index)
     const deepSubmenu = index.split('-').length > 1
-    const cls = classNames('hi-menu-item', 'hi-submenu', `hi-menu--${level}`, {
+    const cls = classNames('hi-menu-item', `theme__${theme}`, 'hi-submenu', `hi-menu--${level}`, {
       'hi-menu-item--disabled': disabled,
       'hi-menu-item--active': isActive,
       'hi-submenu--fat': fatMenu
     })
     let toggleIcon
-    if (deepSubmenu && (mode === 'horizontal' || mini)) {
-      toggleIcon = isExpand ? 'left' : 'right'
+    if (mode === 'horizontal' && !deepSubmenu) {
+      toggleIcon = 'down'
+    } else if (deepSubmenu && (mode === 'horizontal' || mini)) {
+      toggleIcon = 'right'
     } else {
       toggleIcon = isExpand ? 'up' : 'down'
     }
@@ -120,11 +123,9 @@ class SubMenu extends Component {
         key={index}
       >
         <div
-          className='hi-submenu__title hi-menu__title'
+          className={`theme__${theme} hi-submenu__title hi-menu__title`}
           onClick={() => {
-            if (!disabled) {
-              this.onClick(index)
-            }
+            !disabled && this.onClick(index)
           }}
         >
           <Title icon={icon} content={content} />

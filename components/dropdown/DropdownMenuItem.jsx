@@ -12,7 +12,7 @@ const MenuItemWrapper = forwardRef(({ href, children, disabled, ...props }, ref)
     Reflect.deleteProperty(props, 'onClick')
   }
   return (
-    <li ref={ref} {...props}>
+    <li ref={ref} {...props} >
       {shouldUseLink ? <a href={href}>{children}</a> : children}
     </li>
   )
@@ -29,7 +29,7 @@ export default class DropdownMenuItem extends React.Component {
       this.setState({
         visible: false
       })
-    }, 200)
+    }, 100)
   }
   handleMenuItemMouseEnter = () => {
     clearTimeout(this.timerHideDropdownMenu)
@@ -50,19 +50,10 @@ export default class DropdownMenuItem extends React.Component {
     onChildMenuMouseLeave && onChildMenuMouseLeave()
     this.setMenuHide()
   }
-  handleChildMenuMouseEnter = () => {
-    const { onChildMenuMouseEnter } = this.props
-    onChildMenuMouseEnter && onChildMenuMouseEnter()
-    clearTimeout(this.timerHideDropdownMenu)
-  }
-  handleChildMenuMouseLeave = () => {
-    const { onChildMenuMouseLeave } = this.props
-    onChildMenuMouseLeave && onChildMenuMouseLeave()
-    this.setMenuHide()
-  }
+
   handleMenuItemClick = () => {
-    const { onMenuItemClick, id } = this.props
-    onMenuItemClick(id)
+    const { onMenuItemClick, id, children, href } = this.props
+    onMenuItemClick(id, (href || !children))
   }
   render () {
     const {
@@ -72,7 +63,8 @@ export default class DropdownMenuItem extends React.Component {
       href,
       disabled,
       onMenuItemClick,
-      width
+      width,
+      theme
     } = this.props
     const { visible } = this.state
     const shouldRenderDivider = title === '-'
@@ -102,13 +94,14 @@ export default class DropdownMenuItem extends React.Component {
             <Icon name='right' className={iconCls} />
             <DropdownMenu
               data={children}
+              theme={theme}
               visible={visible && parentPopperVisible}
               placement='right-start'
               attachEle={this.refItem.current}
               onMouseLeave={this.handleMenuMouseLeave}
               onMouseEnter={this.handleMenuMouseEnter}
-              onChildMenuMouseEnter={this.handleChildMenuMouseEnter}
-              onChildMenuMouseLeave={this.handleChildMenuMouseLeave}
+              onChildMenuMouseEnter={this.handleMenuMouseEnter}
+              onChildMenuMouseLeave={this.handleMenuMouseLeave}
               onMenuItemClick={onMenuItemClick}
               width={width}
             />

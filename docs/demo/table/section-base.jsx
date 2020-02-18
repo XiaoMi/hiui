@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
 const prefix = 'table-base'
+const desc = '基础：展示二维数据'
 const code = `import React from 'react'
 import Table from '@hi-ui/hiui/es/table'\n
 class Demo extends React.Component {
@@ -52,6 +53,7 @@ const DemoBase = () => (
     code={code}
     scope={{ Table }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoBase

@@ -1,3 +1,4 @@
+@import '@hi-ui/core-css/index.scss';
 @import '../../style/icon/index.scss';
 
 .hi-message__container {
@@ -9,13 +10,13 @@
 
   .hi-message {
     position: relative;
-    padding: 9px 12px;
+    padding: 7px 12px;
     margin-bottom: 10px;
     border-radius: 2px;
     transition: 0.3s ease;
     display: flex;
     align-items: flex-start;
-    width: 340px;
+    width: 260px;
     box-sizing: border-box;
   }
 
@@ -103,5 +104,27 @@
 
   .hi-message-exit-done {
     transform: translateY(-100%);
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .hi-message__container {
+    .theme__#{$key}.hi-message.hi-message--info {
+      background-color: rgba(map-get(get-palette(get-color($palette-primary, $key)), '50'), 0.1);
+      border: 1px solid map-get(get-palette(get-color($palette-primary, $key)), '20');
+
+      .hi-icon {
+        color: $value;
+      }
+
+      .hi-message__title {
+        color: $value;
+      }
+
+      .hi-message__button {
+        background-color: $value;
+        border: 1px solid $value;
+      }
+    }
   }
 }

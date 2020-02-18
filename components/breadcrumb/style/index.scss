@@ -1,5 +1,8 @@
+@import '@hi-ui/core-css/index.scss';
+
 .hi-breadcrumb {
-  color: rgba(153, 153, 153, 1);
+  color: #666;
+  font-size: 12px;
 
   &__content {
     cursor: pointer;
@@ -15,6 +18,7 @@
 
   &__separator {
     margin: 0 10px;
+    color: #ccc;
   }
 
   &__item:last-child {
@@ -22,12 +26,22 @@
       cursor: text;
 
       &:hover {
-        color: rgba(153, 153, 153, 1);
+        color: #666;
       }
     }
 
     .hi-breadcrumb__separator {
       display: none;
+    }
+  }
+}
+
+@each $key, $value in $palette-primary {
+  .hi-breadcrumb.theme__#{$key} {
+    .hi-breadcrumb__content {
+      &:hover {
+        color: $value;
+      }
     }
   }
 }

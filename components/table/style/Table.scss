@@ -1,3 +1,5 @@
+@import '@hi-ui/core-css/index.scss';
+
 $table: 'hi-table' !default;
 $bgColor: #f7fafe !default;
 
@@ -38,6 +40,10 @@ $borderColor: #e6e7e8 !default;
   //width: 100%;
   &-container {
     position: relative;
+  }
+
+  .hi-icon.icon-menu {
+    color: #4284f5;
   }
 
   &-pre-header {
@@ -449,5 +455,68 @@ $borderColor: #e6e7e8 !default;
     width: 50px;
     text-align: center;
     box-sizing: border-box;
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.hi-table {
+    .hi-table-container table th {
+      background-color: rgba($value, 0.1);
+      color: #83868c;
+    }
+
+    .hi-table-container table tr {
+      background-color: #fff;
+      color: #83868c;
+    }
+
+    .hi-table-container table .hi-table-thead tr:hover {
+      background-color: #fff;
+    }
+
+    .hi-table-container table th i:hover {
+      color: $value;
+    }
+
+    .hi-icon.icon-menu {
+      color: $value;
+    }
+
+    .hi-table-container table tr:hover {
+      background-color: rgba($value, 0.1);
+    }
+
+    a {
+      color: $value;
+    }
+
+    .hi-table-setting-menu > div:hover {
+      background-color: rgba($value, 0.15);
+      color: $value;
+    }
+
+    &.striped {
+      table {
+        tr:nth-child(2n) {
+          background: rgba($value, 0.1);
+        }
+      }
+    }
+
+    .hi-pagination {
+      .hi-icon {
+        color: #666;
+      }
+
+      .hi-icon:hover {
+        color: $value;
+      }
+    }
+
+    .hi-pagination:hover > span {
+      .hi-icon {
+        color: $value;
+      }
+    }
   }
 }

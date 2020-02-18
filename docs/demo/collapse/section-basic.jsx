@@ -3,6 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Collapse from '../../../components/collapse'
 const prefix = 'section-basic'
 const rightOptions = []
+const desc = '可以同时展开多个面板，对垂直空间没有特别限制'
 const code = [
   {
     code: `import React from 'react'
@@ -12,25 +13,25 @@ class Demo extends React.Component {
     return(
       <Collapse
         onChange={()=>{console.log('切换了！');}}
-        arrow="right"
+        arrowPlacement="right"
       >
         <Collapse.Panel
           disabled={true}
-          header="panel title 1"
+          title="panel title 1"
         >
           <p>Collapse Panel Content 1</p>
           <p>Collapse Panel Content 1</p>
           <p>Collapse Panel Content 1</p>
         </Collapse.Panel>
         <Collapse.Panel
-          header="panel title 2"
+          title="panel title 2"
         >
           <p>Collapse Panel Content 2</p>
           <p>Collapse Panel Content 2</p>
           <p>Collapse Panel Content 2</p>
         </Collapse.Panel>
         <Collapse.Panel
-          header="panel title 3"
+          title="panel title 3"
         >
           <p>Collapse Panel Content 3</p>
           <p>Collapse Panel Content 3</p>
@@ -50,6 +51,7 @@ const DemoBasic = () => (
     scope={{ Collapse }}
     prefix={prefix}
     rightOptions={rightOptions}
+    desc={desc}
   />
 )
 export default DemoBasic

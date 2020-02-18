@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import Card from '../'
-
+import {Card} from '../'
+/* eslint-env jest */
 describe('Card', () => {
   describe('Lifecycle', () => {
     it('componentDidMount', () => {
@@ -53,7 +53,6 @@ describe('Card', () => {
       expect(firstCard.state().extraShow).toBeFalsy()
     })
 
-    // NOTE 将要废弃 添加 it.skip
     it('extraShow', () => {
       const extraShows = [
         'hover',
@@ -77,7 +76,6 @@ describe('Card', () => {
       expect(firstCard.state().extraShow).toEqual(false)
     })
 
-    // NOTE 将要废弃 添加 it.skip
     it('disabled', () => {
       const wrapper = mount(
         <Card disabled={true} />
@@ -108,7 +106,6 @@ describe('Card', () => {
       expect(wrapper.text()).toEqual(expect.stringContaining(content))
     })
 
-    // NOTE 将要废弃 添加 it.skip
     it('description', () => {
       const description = 'custom-description'
 

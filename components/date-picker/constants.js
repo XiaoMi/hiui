@@ -20,21 +20,15 @@ export const FORMATS = {
 export const isVaildDate = (date) => {
   return date && (date instanceof Date || date.startDate || typeof date === 'number')
 }
-export const formatterDate = (type, date, formatter, showTime, localeDatas, weekOffset = 0, isFormat = false) => {
+export const formatterDate = (type, date, formatter, showTime, localeDatas, weekOffset, isFormat) => {
+  weekOffset = weekOffset || 0
   if (!isValid(date)) {
     return ''
   }
   date = new Date(date)
   let str = ''
   switch (type) {
-    // case 'daterange':
-    //   if (date instanceof Date) { date = {startDate: date, endDate: date} }
-    //   str = dateFormat(date.startDate, `${formatter}${showTime ? ' hh:mm:ss' : ''}`) + RANGE_SPLIT + dateFormat(date.endDate, `${formatter}${showTime ? ' hh:mm:ss' : ''}`)
-    //   break
     case 'weekrange':
-      // if (date instanceof Date) { date = {startDate: date, endDate: date} }
-      str = localeDatas.datePicker.weekrange(date.getFullYear(), getYearWeek(date, weekOffset).weekNum)
-      break
     case 'week':
       str = localeDatas.datePicker.weekrange(date.getFullYear(), getYearWeek(date, weekOffset).weekNum)
       break

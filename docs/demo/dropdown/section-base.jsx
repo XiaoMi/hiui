@@ -1,9 +1,10 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Dropdown from '../../../components/dropdown'
-const desc = '传入 disabled 属性将禁用菜单'
+const desc =
+  '默认隐藏多个菜单项，必要时展开使用，常见于菜单、顶部工具、全局筛选等场景'
 const prefix = 'dropdown-base'
-const rightOptions = ['正常', '禁用']
+const rightOptions = ['基础', '禁用']
 
 const code = [
   {
@@ -38,7 +39,8 @@ class Demo extends React.Component {
         title: '-',
       }, {
         title: '链接一',
-        href: 'https://www.mi.com'
+        href: 'https://www.mi.com',
+        disabled: true
       }]
     }
   }
@@ -53,7 +55,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['正常']
+    opt: ['基础']
   },
   {
     code: `import React from 'react'

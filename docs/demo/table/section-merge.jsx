@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
 const prefix = 'table-merge'
+const desc = '相邻上下的单元格值相同，减轻数据冗余'
 const code = `import React from 'react'
 import Table from '@hi-ui/hiui/es/table'\n
 class Demo extends React.Component {
@@ -120,6 +121,7 @@ const DemoMerge = () => (
     code={code}
     scope={{ Table }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoMerge

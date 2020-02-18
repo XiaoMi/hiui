@@ -10,6 +10,7 @@ import './style'
 import loading from '../loading'
 import '../pagination/style'
 import '../icon/style'
+import Provider from '../context'
 import {setKey, scrollTop, getStyle, getPosition, offset} from './tool'
 import request from 'axios'
 import qs from 'qs'
@@ -421,7 +422,7 @@ class Table extends Component {
     // 多选配置
     // noinspection JSAnnotator
 
-    let {pagination, name, size = 'normal', bordered = false, striped = false, scrollX, header = null, footer = null} = this.props
+    let {pagination, name, size = 'normal', bordered = false, striped = false, scrollX, header = null, footer = null, theme} = this.props
     // noinspection JSAnnotator
     let {scroll, columnMenu, serverPagination} = this.state
     let content
@@ -478,7 +479,7 @@ class Table extends Component {
     }
     let serverPaginationConfig = serverPagination
     return (
-      <div className={prifix({table: true, [size]: size, bordered, striped})} ref={this.dom}>
+      <div className={prifix({table: true, [`theme__${theme}`]: true, [size]: size, bordered, striped})} ref={this.dom}>
         {header && <div className={prifix({'table-pre-header': true})}>{header()}</div>}
         <div className={prifix({'table-container': true})}>
           <div >{content}</div>
@@ -488,7 +489,7 @@ class Table extends Component {
               let {columnMenu} = this.state
               this.setState({columnMenu: !columnMenu})
             }}>
-              <Icon name='menu' style={{color: '#4284F5', fontSize: '24px'}}
+              <Icon name='menu' style={{fontSize: '24px'}}
               />
             </div>
             {
@@ -626,7 +627,7 @@ class Table extends Component {
     }
   }
 
-  getHeaderGroup (columns) {
+  getHeaderGroup (columns, rowSelection) {
     columns = columns.map((item) => {
       item.title = item.title || item.dataIndex
       item.key = item.key || item.dataIndex || item.title || item.id
@@ -635,6 +636,56 @@ class Table extends Component {
       }
       return item
     })
+    if (rowSelection) {
+      let {selectedRowKeys = [], dataName = 'key'} = rowSelection
+      columns.unshift({
+        width: '50px',
+        type: 'select',
+        key: 'hi-table-select-' + this.props.name,
+        title: () => {
+          let {getCheckboxProps = (record) => ({ disabled: false }), onChange} = rowSelection
+          return (
+            <Checkbox type='checkbox'
+              checked={selectedRowKeys.length === this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length && this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length > 0}
+              onChange={(e, checked) => {
+                let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
+                let _selectedRowKeys = [...selectedRowKeys]
+                if (checked) {
+                  _selectedRowKeys.splice(0, selectedRowKeys.length)
+                  for (let i = 0; i < data.length; i++) {
+                    _selectedRowKeys.push(data[i][dataName])
+                  }
+                } else {
+                  _selectedRowKeys.splice(0, _selectedRowKeys.length)
+                }
+                onChange(_selectedRowKeys, data.filter(record => _selectedRowKeys.includes(record[dataName])))
+              }}
+            />
+          )
+        },
+        render: (text, record, index) => {
+          let {getCheckboxProps = (record) => ({ disabled: false }), onChange} = rowSelection
+          // todo dataName 是干嘛的不明白
+          return (
+            <Checkbox type='checkbox'
+              checked={selectedRowKeys.includes(record[dataName])}
+              disabled={getCheckboxProps(record).disabled}
+              onChange={(e, checked) => {
+                let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
+                let _selectedRowKeys = [...selectedRowKeys]
+                if (checked) {
+                  _selectedRowKeys.push(record[dataName])
+                } else {
+                  _selectedRowKeys = _selectedRowKeys.filter(key => record[dataName] !== key)
+                }
+                onChange(_selectedRowKeys, data.filter(record => _selectedRowKeys.includes(record[dataName])))
+              }}
+              key={record[dataName]}
+            />
+          )
+        }
+      })
+    }
     let bodyColumns = []
     let headerColumns = []
 
@@ -698,60 +749,9 @@ class Table extends Component {
     let props = prop || this.props
     let leftFiexColumns = []
     let rightFixColumns = []
-    let [headerColumns, columns] = this.getHeaderGroup(c || props.columns)
+    let [headerColumns, columns] = this.getHeaderGroup(c || props.columns, props.rowSelection)
 
-    let {rowSelection, scroll, name, scrollX} = props
-
-    if (rowSelection) {
-      let {selectedRowKeys = [], dataName = 'key'} = rowSelection
-      columns.unshift({
-        width: '50px',
-        type: 'select',
-        key: 'hi-table-select-' + name,
-        title: () => {
-          let {getCheckboxProps = (record) => ({ disabled: false }), onChange} = rowSelection
-          return (
-            <Checkbox type='checkbox'
-              checked={selectedRowKeys.length === this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length && this.state.dataSource.filter(record => !getCheckboxProps(record).disabled).length > 0}
-              onChange={(e, checked) => {
-                let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
-                if (checked) {
-                  selectedRowKeys.splice(0, selectedRowKeys.length)
-                  for (let i = 0; i < data.length; i++) {
-                    selectedRowKeys.push(data[i][dataName])
-                  }
-                } else {
-                  selectedRowKeys.splice(0, selectedRowKeys.length)
-                }
-                onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record[dataName])))
-              }}
-            />
-          )
-        },
-        render: (text, record, index) => {
-          let {getCheckboxProps = (record) => ({ disabled: false }), onChange} = rowSelection
-          // todo dataName 是干嘛的不明白
-
-          return (
-            <Checkbox type='checkbox'
-              che={selectedRowKeys.includes(record[dataName])}
-              checked={selectedRowKeys.includes(record[dataName])}
-              disabled={getCheckboxProps(record).disabled}
-              onChange={(e, checked) => {
-                let data = this.state.dataSource.filter(record => !getCheckboxProps(record).disabled)
-                if (checked) {
-                  selectedRowKeys.push(record[dataName])
-                } else {
-                  selectedRowKeys = selectedRowKeys.filter(key => record[dataName] !== key)
-                }
-                onChange(selectedRowKeys, data.filter(record => selectedRowKeys.includes(record[dataName])))
-              }}
-              key={record[dataName]}
-            />
-          )
-        }
-      })
-    }
+    let {scroll, scrollX} = props
 
     // TODO 这里的逻辑要优化
     if (scroll.x || scrollX || bool) {
@@ -776,6 +776,7 @@ class Table extends Component {
       data,
       url,
       headers,
+      withCredentials = false,
       type = 'GET',
       success = (res) => {},
       error = () => {},
@@ -795,7 +796,8 @@ class Table extends Component {
 
     let options = {
       url,
-      method: ['GET', 'get'].includes(type) ? 'GET' : 'POST'
+      method: ['GET', 'get'].includes(type) ? 'GET' : 'POST',
+      withCredentials
     }
     if (options.method === 'GET') {
       options.params = requestParams
@@ -834,6 +836,7 @@ class Table extends Component {
         headers,
         type = 'GET',
         mode = 'json',
+        withCredentials = false,
         success = (res) => {},
         error = () => {},
         // pageSize = Table.config.pageSize,
@@ -854,7 +857,8 @@ class Table extends Component {
     }
     let options = {
       method: ['GET', 'get'].includes(type) ? 'GET' : 'POST',
-      url
+      url,
+      withCredentials
     }
     if (options.method === 'GET') {
       options.params = requestParams
@@ -1000,4 +1004,5 @@ Table.config = {
   host: ''
 }
 
-export default Table
+export default Provider(Table)
+export {Table}

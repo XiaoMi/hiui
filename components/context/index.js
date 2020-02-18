@@ -3,7 +3,10 @@ import locales from '../locales'
 
 export const ThemeContext = React.createContext('hiui-blue')
 export const LocaleContext = React.createContext('zh-CN')
-
+/**
+ * 临时解决 notice组件获取不到theme的问题
+ */
+let noticeTheme = ''
 export default (WrappedComponent) => {
   class WrapperComponent extends Component {
     static displayName = WrappedComponent.name
@@ -11,20 +14,23 @@ export default (WrappedComponent) => {
       const { theme, locale, innerRef, ...restProps } = this.props
       let ConsumerComponent = (
         <ThemeContext.Consumer>
-          {(contextTheme) => (
-            <LocaleContext.Consumer>
-              {(contextLocale) => (
-                <WrappedComponent
-                  theme={contextTheme}
-                  locale={contextLocale}
-                  localeDatas={locales[contextLocale]}
-                  ref={innerRef}
-                  innerRef={innerRef}
-                  {...restProps}
-                />
-              )}
-            </LocaleContext.Consumer>
-          )}
+          {(contextTheme) => {
+            noticeTheme = noticeTheme || contextTheme
+            return (
+              <LocaleContext.Consumer>
+                {(contextLocale) => (
+                  <WrappedComponent
+                    theme={WrappedComponent.IS_HIUI_NOTICE ? noticeTheme : contextTheme}
+                    locale={contextLocale}
+                    localeDatas={locales[contextLocale]}
+                    ref={innerRef}
+                    innerRef={innerRef}
+                    {...restProps}
+                  />
+                )}
+              </LocaleContext.Consumer>
+            )
+          }}
         </ThemeContext.Consumer>
       )
       return wrapProvider(theme, ThemeContext)(locale, LocaleContext)(

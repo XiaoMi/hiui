@@ -42,7 +42,6 @@ class Row extends Component {
 
   render () {
     const {
-      selectedRowKeys,
       expand,
       k,
       parent,
@@ -50,7 +49,7 @@ class Row extends Component {
     } = this.props
     let classNames = {
       'table-row': true,
-      picked: selectedRowKeys.includes(k) || highlightRows.includes(k),
+      picked: highlightRows.includes(k),
       expand,
       test: 't'
     }
@@ -83,6 +82,7 @@ export default class Body extends Component {
 
   render () {
     let {columns, dataSource, cbs: {addExpand}, rowSelection = { }, highlightCols, advance, ...rest} = this.props
+
     columns = columns.filter(item => !item.hide)
     let selectedRowKeys = rowSelection.selectedRowKeys || []
     // 表头分组

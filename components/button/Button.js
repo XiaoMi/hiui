@@ -17,7 +17,7 @@ class Button extends Component {
       'warning', // deprecated
       'info' // deprecated
     ]),
-    size: PropTypes.oneOf(['large', 'small', 'normal']),
+    size: PropTypes.oneOf(['large', 'small', 'normal', 'default']),
     appearance: PropTypes.oneOf([
       'button',
       'link',
@@ -62,7 +62,8 @@ class Button extends Component {
       onMouseLeave,
       href,
       style,
-      children
+      children,
+      target
     } = this.props
     const isDisabled = disabled || loading
     const classes = classNames(
@@ -89,7 +90,7 @@ class Button extends Component {
         : `hi-btn--type--${type}`
     )
 
-    const restProps = { href, style, onClick, disabled: isDisabled, onContextMenu, onMouseOver, onMouseEnter, onMouseLeave, onMouseOut }
+    const restProps = { href, style, onClick, disabled: isDisabled, onContextMenu, onMouseOver, onMouseEnter, onMouseLeave, onMouseOut, target }
 
     deprecatedPropsCheck(this.deprecatedProps, this.props, 'Button')
 
@@ -114,3 +115,6 @@ function ButtonWrapper ({ children, ...restProps }) {
 }
 
 export default Provider(Button)
+export {
+  Button
+}

@@ -1,12 +1,22 @@
 # Breadcrumb 面包屑
 
+一种特殊的导航，用来指引在系统中用户的行踪和方向
+
+## 何时使用
+
+用户处于界面的内容区域时，内容的信息层级有 2 层以上
+
+想要无需使用主导航系统就可以来去自如
+
+进入二级页面，除了给予逃生出口外，告知用户更详细的信息
+
 ## 基础用法
 
 import DemoBase from '../../demo/breadcrumb/section-base.jsx'
 
 <DemoBase />
 
-## 自定义图标
+## 自定义样式
 
 import DemoIcon from '../../demo/breadcrumb/section-icon.jsx'
 
@@ -14,19 +24,18 @@ import DemoIcon from '../../demo/breadcrumb/section-icon.jsx'
 
 ## Props
 
-| 参数      | 说明                     | 类型                    | 可选值                                      | 默认值 |
-| --------- | ------------------------ | ----------------------- | ------------------------------------------- | ------ |
-| data      | 面包屑数据               | DataItem []             | -                                           | -      |
-| separator | 自定义分隔符             | string                  | -                                           | '|'    |
-| onClick   |  点击回调函数            | （path: string）=> void | -                                           | -      |
-
+| 参数      | 说明         | 类型                    | 可选值 | 默认值 |
+| --------- | ------------ | ----------------------- | ------ | ------ |
+| data      | 面包屑数据   | DataItem []             | -      | -      |
+| separator | 自定义分隔符 | string                  | -      | '      | ' |
+| onClick   | 点击回调函数 | （path: string）=> void | -      | -      |
 
 ## Type
 
 ### DataItem
 
-| 参数     | 说明                                | 类型                | 可选值        | 默认值 |
-| -------- | ----------------------------------- | ------------------- | ------------- | ------ |
-| content  | 面包屑的内容                        | string \| ReactNode | -             | -      |
-| path     | 要跳转的路径                        | string              | -             | -      |
-| icon     | 自定义图标                          | string              | 详见 [`<Icon/>`](/hiui/zh-CN/docs/icon) 组件 ︎ | -      |
+| 参数    | 说明         | 类型                | 可选值                                         | 默认值 |
+| ------- | ------------ | ------------------- | ---------------------------------------------- | ------ |
+| content | 面包屑的内容 | string \| ReactNode | -                                              | -      |
+| path    | 要跳转的路径 | string              | -                                              | -      |
+| icon    | 自定义图标   | string              | 详见 [`<Icon/>`](/hiui/zh-CN/docs/icon) 组件 ︎ | -      |

@@ -64,6 +64,14 @@ $ npm start
 
 打开 http://localhost:4200
 
+### 单元测试
+
+```sh
+# require node version >= 10
+
+$ npm run jest:coverage
+```
+
 #### 添加展示/文档模块
 
 1. 在 `components/index.js` 下添加 `export { default as XXX } from './XXX'`

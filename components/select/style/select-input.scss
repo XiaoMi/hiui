@@ -19,10 +19,18 @@
   outline: none;
   user-select: none;
   box-sizing: border-box;
+  height: 32px;
 
   &.disabled {
     cursor: not-allowed;
-    opacity: 0.4;
+    background-color: #d8d8d8;
+    color: #ccc;
+
+    .hi-select__input--icon {
+      background-color: #d8d8d8;
+      color: #ccc;
+      margin-left: 0 !important;
+    }
 
     .hi-select__input--icon,
     input {
@@ -46,7 +54,7 @@
 
     .hi-select__input--icon__close {
       display: block;
-      color: #999;
+      color: #bbb;
     }
   }
 
@@ -97,6 +105,10 @@
       font-weight: 300;
       color: #ccc;
     }
+
+    &--value input {
+      color: #333;
+    }
   }
 
   &--icon {
@@ -125,7 +137,7 @@
     .hi-select__input--item,
     .hi-select__input--search {
       flex: auto;
-      padding: 0 0 0 13px;
+      padding: 0 0 0 12px;
     }
 
     .hi-select__input--item {
@@ -199,7 +211,7 @@
     .hi-select__input--item {
       flex: none;
       position: relative;
-      max-width: 80%;
+      max-width: 60%;
       height: 22px;
       line-height: 22px;
       padding: 0 20px 0 10px;

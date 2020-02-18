@@ -90,7 +90,6 @@ class Notification extends Component {
         const eletsArr = [].slice.call(
           document.querySelectorAll('.' + this.props.prefixCls + '.show')
         )
-        // console.log(eletsArr)
         eletsArr.reduce(function (top, item, idx, arr) {
           item.style.top = `${top}px`
           return top + item.offsetHeight - 0 + 10

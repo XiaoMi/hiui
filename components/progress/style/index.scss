@@ -1,3 +1,5 @@
+@import '@hi-ui/core-css/index.scss';
+
 $progress-bg: #f2f2f2 !default;
 $progress-primary: #3b76dc !default;
 $progress-success: #1da653 !default;
@@ -8,7 +10,7 @@ $progress-text: #666 !default;
 .hi-progress {
   &__inner {
     background-color: $progress-bg;
-    border-radius: 9px;
+    border-radius: 10px;
     position: relative;
     overflow: hidden;
     display: inline-block;
@@ -99,16 +101,18 @@ $progress-text: #666 !default;
     transition: stroke-dashoffset 0.4s cubic-bezier(0.3, 0, 0.7, 1);
   }
 
-  &__circle--success {
-    stroke: $progress-success;
-  }
+  .theme__hiui-blue {
+    &__circle--success {
+      stroke: $progress-success;
+    }
 
-  &__circle--warn {
-    stroke: $progress-warn;
-  }
+    &__circle--warn {
+      stroke: $progress-warn;
+    }
 
-  &__circle--error {
-    stroke: $progress-error;
+    &__circle--error {
+      stroke: $progress-error;
+    }
   }
 
   &__dashboard {
@@ -128,5 +132,49 @@ $progress-text: #666 !default;
 
   &__dashboard--error {
     stroke: $progress-error;
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key} {
+    .hi-progress__bar--primary {
+      background-color: $value;
+    }
+
+    .hi-progress__text--primary {
+      color: $value;
+    }
+
+    .hi-progress__circle {
+      stroke: $value;
+
+      &--success {
+        stroke: $progress-success;
+      }
+
+      &--warn {
+        stroke: $progress-warn;
+      }
+
+      &--error {
+        stroke: $progress-error;
+      }
+    }
+
+    .hi-progress__dashboard {
+      stroke: $value;
+    }
+
+    .hi-progress__dashboard--success {
+      stroke: $progress-success;
+    }
+
+    .hi-progress__dashboard--warn {
+      stroke: $progress-warn;
+    }
+
+    .hi-progress__dashboard--error {
+      stroke: $progress-error;
+    }
   }
 }

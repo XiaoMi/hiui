@@ -3,7 +3,6 @@ import DocViewer from '../../../libs/doc-viewer'
 import Card from '../../../components/card'
 import Icon from '../../../components/icon'
 const prefix = 'card-button'
-
 const code = `import React from 'react'
 import Icon from '@hi-ui/hiui/es/icon'
 import Card from '@hi-ui/hiui/es/card'\n
@@ -28,6 +27,25 @@ class Demo extends React.Component {
           <p>有扩展按钮，无标题</p>
           <p>扩展按钮移入后显示</p>
           <p>其它剩余内容；其它剩余内容；其它剩余内容；其它剩余内容；其它剩余内容；</p>
+        </Card>
+        <br/>
+        <Card
+          hoverable
+          extra={[<Icon name='edit' key={1} />, <Icon name='delete' key={2}/>]}
+          extraType='hover'
+        >
+          <div style={{display:'flex'}}>
+            <span>标签</span>
+            <span style={{marginLeft: '46px'}}>信息内容</span>
+          </div>
+          <div style={{display:'flex',marginTop: 12}}>
+            <span>标签</span>
+            <span style={{marginLeft: 46}}>信息内容</span>
+          </div>
+          <div style={{display:'flex',marginTop: 12}}>
+            <span>标签</span>
+            <span style={{marginLeft: 46}}>信息内容</span>
+          </div>
         </Card>
       </React.Fragment>
     )

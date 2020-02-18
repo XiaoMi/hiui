@@ -1,6 +1,5 @@
 import React from 'react'
 import classNames from 'classnames'
-import Provider from '../context'
 import Upload from './Upload'
 import Button from '../button'
 import Icon from '../icon'
@@ -21,14 +20,15 @@ class UploadClick extends Upload {
       onRemove,
       accept,
       loading,
-      localeDatas
+      localeDatas,
+      theme
     } = this.props
     const {
       fileList,
       fileCountLimted
     } = this.state
     return (
-      <div className='hi-upload hi-upload--normal'>
+      <div className={`hi-upload hi-upload--normal theme__${theme}`}>
         {
           this.outMaxsizeTip()
         }
@@ -97,4 +97,4 @@ UploadClick.defaultProps = Object.assign({}, {
   type: 'normal'
 })
 
-export default Provider(UploadClick)
+export default UploadClick

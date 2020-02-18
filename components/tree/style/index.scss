@@ -8,6 +8,30 @@ $tree: 'hi-tree' !default;
 
   color: #383e47;
 
+  /* TODO: The following style does not fully restore ui, so commented =========== */
+  // &:not(.hi-tree--show-line) {
+  //   li:not(.is-root):not(.no-expanded) {
+  //     margin-top: 10px;
+  //   }
+
+  //   .is-root {
+  //     margin-bottom: 10px;
+  //   }
+  // }
+
+  /* =========== */
+  .hi-checkbox-legacy {
+    margin-left: 8px;
+  }
+
+  .hi-checkbox-legacy--part .hi-checkbox-legacy__input {
+    border: 1px solid #4284f5;
+  }
+
+  .hi-checkbox-legacy--checked .hi-checkbox-legacy__input {
+    border: 1px solid #4284f5;
+  }
+
   .hi-tree__searcher {
     position: relative;
     padding-left: 15px;
@@ -30,6 +54,10 @@ $tree: 'hi-tree' !default;
 
       .hi-input__append {
         width: 32px;
+        height: 30px;
+        border-radius: 2px 0 0 2px;
+        border: 1px solid rgba(216, 216, 216, 1);
+        border-left: none;
         text-align: center;
       }
     }
@@ -304,6 +332,7 @@ $tree: 'hi-tree' !default;
     padding: 0 4px;
     position: relative;
     line-height: 24px;
+    user-select: none;
 
     &.dragTo {
       background-color: #4284f5;
@@ -324,7 +353,12 @@ $tree: 'hi-tree' !default;
 
     transition: background 0.3s;
 
-    &:hover {
+    &--disabled {
+      color: rgba(0, 0, 0, 0.25);
+      cursor: not-allowed;
+    }
+
+    &:hover:not(.hi-tree_item-text--disabled) {
       background-color: rgba(66, 133, 244, 0.08);
       color: rgba(56, 62, 71, 1);
     }
@@ -338,32 +372,6 @@ $tree: 'hi-tree' !default;
       color: #fff;
       background-color: #4285f4;
     }
-
-    .right-click-menu {
-      color: #333;
-      position: absolute;
-      top: 0;
-      left: calc(100% + 5px);
-      z-index: 1;
-      width: 120px;
-      background: #fff;
-      border: 1px solid #e6e7e8;
-      border-radius: 2px;
-      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
-      box-sizing: border-box;
-      padding: 4px 1px;
-
-      li {
-        padding-left: 15px;
-        height: 36px;
-        line-height: 36px;
-        transition: background 0.3s;
-
-        &:hover {
-          background: rgba(66, 133, 244, 0.08);
-        }
-      }
-    }
   }
 
   &_item-icon {
@@ -373,7 +381,7 @@ $tree: 'hi-tree' !default;
     cursor: pointer;
 
     .hi-tree-switcher {
-      color: #999;
+      color: #666;
       font-size: 16px;
     }
 
@@ -485,6 +493,102 @@ $tree: 'hi-tree' !default;
 
     &-child {
       overflow: hidden;
+    }
+  }
+}
+
+.right-click-menu {
+  color: #333;
+  position: absolute;
+  // top: 0;
+  // left: calc(100% + 5px);
+  z-index: 1060;
+  // width: 120px;
+  background: #fff;
+  border: 1px solid #e6e7e8;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  padding: 0;
+  list-style: none;
+  margin: 0;
+  max-height: 240px;
+  overflow: auto;
+
+  li {
+    padding: 0 15px;
+    height: 36px;
+    line-height: 36px;
+    transition: background 0.3s;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    &:hover {
+      background: rgba(66, 133, 244, 0.08);
+    }
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.#{$tree} {
+    .hi-checkbox-legacy--part .hi-checkbox-legacy__input {
+      border: 1px solid $value;
+    }
+
+    .hi-checkbox-legacy__label.highlight {
+      color: $value;
+    }
+
+    .hi-checkbox-legacy--checked .hi-checkbox-legacy__input {
+      border: 1px solid $value;
+    }
+
+    .#{$tree}_item-text {
+      &:hover:not(.hi-tree_item-text--disabled) {
+        background-color: rgba($value, 0.08);
+        color: rgba(56, 62, 71, 1);
+      }
+
+      &.dragTo {
+        background-color: $value;
+      }
+
+      &.dragToGapBottom {
+        border-top: 1px solid $value;
+      }
+
+      &.dragToGapTop {
+        border-bottom: 1px solid $value;
+      }
+
+      &.highlight {
+        color: #fff;
+        background-color: $value;
+      }
+    }
+
+    .#{$tree}-bar {
+      &-input:checked + .#{$tree}-checkbox {
+        background-color: $value;
+      }
+    }
+
+    .hi-tree__divider {
+      .divider-line {
+        background-color: $value;
+      }
+
+      .divider-circle {
+        border: 1px solid $value;
+      }
+    }
+  }
+
+  .theme__#{$key}.right-click-menu {
+    li:hover {
+      background-color: rgba($value, 0.15);
     }
   }
 }

@@ -4,9 +4,11 @@
 
 ## 何时使用
 
-- 当一组同类信息不能自然形成区块感时，需借助卡片来组织
-- 当一个应用或功能由大量信息组成，需要通过重点信息快速识别时
-- 后台展示概览信息时
+当一组同类信息不能自然形成区块感时，需借助卡片来组织
+
+当一个应用或功能由大量信息组成，需要通过重点信息快速识别时
+
+后台展示概览信息时
 
 ## 内容
 
@@ -31,7 +33,7 @@ import DemoSize from '../../demo/card/section-size.jsx'
 
 <DemoSize />
 
-## 额外按钮
+## 有操作的按钮
 
 import DemoButton from '../../demo/card/section-button.jsx'
 
@@ -42,6 +44,12 @@ import DemoButton from '../../demo/card/section-button.jsx'
 import DemoImage from '../../demo/card/section-image.jsx'
 
 <DemoImage />
+
+## 禁用卡片
+
+import DemoBan from '../../demo/card/section-ban.jsx'
+
+<DemoBan />
 
 ## 简易卡片
 
@@ -85,4 +93,4 @@ import DemoGridCustom from '../../demo/card/section-grid-custom.jsx'
 | extraType | 卡片右上角的扩展显示模式   | string              | 'default' \| 'hover'            | 'default' |
 | coverUrl  | 卡片的封面图片链接         | string              | -                               | -         |
 | content   | 卡片的描述信息             | string \| ReactNode | -                               | -         |
-| disabled    | 是否禁用卡片             | Boolean                  | true \| false            | -      |
+| disabled  | 是否禁用卡片               | Boolean             | true \| false                   | -         |

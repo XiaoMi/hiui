@@ -1,6 +1,5 @@
 import React from 'react'
 import Upload from './Upload'
-import Provider from '../context'
 import Icon from '../icon'
 import classNames from 'classnames'
 import Button from '../button'
@@ -12,13 +11,14 @@ class UploadPictureCard extends Upload {
   }
   render () {
     const {
-      buttonText,
+      content,
       showUploadList,
       multiple,
       disabled,
       accept,
       onRemove,
-      localeDatas
+      localeDatas,
+      theme
     } = this.props
     const {
       fileList,
@@ -26,7 +26,7 @@ class UploadPictureCard extends Upload {
     } = this.state
 
     return (
-      <div className='hi-upload hi-upload--picture-card'>
+      <div className={`hi-upload hi-upload--picture-card theme__${theme}`}>
         {
           this.outMaxsizeTip()
         }
@@ -43,7 +43,7 @@ class UploadPictureCard extends Upload {
               hidden
             />
             <Button type='primary' disabled={disabled || fileCountLimted} onClick={this.handleButtonClick}>
-              { buttonText || localeDatas.upload.buttonText}
+              { content || localeDatas.upload.buttonText}
             </Button>
           </label>
         </div>
@@ -62,7 +62,6 @@ class UploadPictureCard extends Upload {
                 <li key={index} title={file.name} className={itemCls}>
                   <div className='img-wrap'>
                     <img src={file.url} />
-                    {file.uploadState === 'loading' && (<div className='img-mask' />)}
                   </div>
                   <div className='hi-upload__right-content'>
                     <span className={fileNameCls} title={file.name}>{file.name}</span>
@@ -98,4 +97,4 @@ UploadPictureCard.defaultProps = Object.assign({}, {
   accept: 'image/jpg,image/jpeg,image/png'
 })
 
-export default Provider(UploadPictureCard)
+export default UploadPictureCard

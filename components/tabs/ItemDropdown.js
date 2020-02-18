@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Provider from '../context'
@@ -38,9 +37,6 @@ class ItemDropdown extends Component {
   }
 
   clickOutside (e) {
-    if (ReactDOM.findDOMNode(this.toggleRef) && ReactDOM.findDOMNode(this.toggleRef).contains(e.target)) {
-      return
-    }
     this.toggle(true)
   }
 
@@ -54,15 +50,19 @@ class ItemDropdown extends Component {
     const {
       items,
       onChoose,
-      localeDatas
+      localeDatas,
+      activeId,
+      theme
     } = this.props
     const {
-      activeIndex,
       visible
     } = this.state
-
+    let activeIndex = -1
+    items.map((item, index) => {
+      if (item.tabId === activeId) activeIndex = index
+    })
     return (
-      <div className={classNames('hi-tabs-dropdown', {'hi-tabs-dropdown--active': !!items[activeIndex]})}>
+      <div className={classNames('hi-tabs-dropdown', `theme__${theme}`, {'hi-tabs-dropdown--active': !!items[activeIndex]})}>
         <div className='hi-tabs-dropdown__toggle' ref={node => { this.toggleRef = node }} onClick={e => {
           e.stopPropagation()
           this.toggle()
@@ -81,18 +81,14 @@ class ItemDropdown extends Component {
           leftGap={-18}
           topGap={3}
         >
-          <div className={classNames('hi-tabs-dropdown__items')}>
+          <div className={classNames('hi-tabs-dropdown__items', `theme__${theme}`)}>
             {
               items.map((item, index) => {
                 return (
                   <div className={classNames('hi-tabs-dropdown__item', {'hi-tabs-dropdown__item--active': index === activeIndex})}
                     onClick={e => {
-                      this.setState({
-                        activeIndex: index
-                      }, () => {
-                        this.toggle()
-                        onChoose(item, e)
-                      })
+                      this.toggle()
+                      onChoose(item, e)
                     }}
                     key={index}
                   >

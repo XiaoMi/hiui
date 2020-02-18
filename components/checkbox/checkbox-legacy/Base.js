@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
+import Provider from '../../context'
 import MultipleCheckboxsOpera from './common'
 class Base extends Component {
   constructor (props) {
@@ -82,12 +83,22 @@ class Base extends Component {
     }
     this.state.onChange(value, checked)
   }
+  filterObjProps = (obj, propsNeedFilter) => {
+    return Object.keys(obj).filter(key => !propsNeedFilter.includes(key)).reduce((filteredObj, key) => {
+      filteredObj[key] = obj[key]
+      return filteredObj
+    }, {})
+  }
   render () {
     const {disabled, checked, part} = this.state
 
-    const {value, name, all, content} = this.props
+    const {value, name, all, content, theme, ...attrs} = this.props
+
+    const filterAttrs = this.filterObjProps(attrs, ['clearableTrigger', 'localeDatas', 'innerRef'])
+
     const labelClass = classnames(
       'hi-checkbox-legacy',
+      `theme__${theme}`,
       disabled && 'hi-checkbox-legacy--disabled',
       checked && 'hi-checkbox-legacy--checked',
       part && `hi-checkbox-legacy--part`
@@ -95,6 +106,7 @@ class Base extends Component {
     return (
       <div
         className={labelClass}
+        {...filterAttrs}
         onClick={() => {
           if (disabled) return
           this.setState({
@@ -114,4 +126,4 @@ class Base extends Component {
   }
 }
 
-export default Base
+export default Provider(Base)

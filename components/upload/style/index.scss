@@ -1,3 +1,5 @@
+@import '@hi-ui/core-css/index.scss';
+
 .hi-upload {
   &--disabled {
     cursor: not-allowed;
@@ -6,15 +8,17 @@
   &__tips {
     font-size: 12px;
     color: rgb(153, 153, 153);
+    line-height: 20px;
     // padding-top: 12px !important;
 
     &--single-line {
       display: block;
-      padding: 12px 0 8px;
+      padding: 7px 0 8px;
     }
 
     &--exist {
       padding-left: 3px;
+      line-height: 22px;
     }
   }
 
@@ -29,7 +33,7 @@
     color: #666;
     display: flex;
     align-items: center;
-    padding: 4px 0;
+    padding: 7px 0;
     overflow: hidden;
     position: relative;
 
@@ -38,18 +42,19 @@
       background: #edf2fc;
       border-radius: 2px;
       font-size: 14px;
-      padding: 4px 6px;
+      padding: 8px 6px;
       height: auto !important;
       border: 1px solid #d8e5ff;
     }
 
     .hi-icon {
       cursor: pointer;
-      font-size: 18px;
+      font-size: 16px;
+      color: #ccc;
     }
 
     .icon-plus {
-      font-size: 32px;
+      font-size: 24px;
     }
   }
 
@@ -76,7 +81,8 @@
   }
 
   &__upstatus {
-    width: 100%;
+    width: calc(100% - 30px);
+    margin-left: 30px;
     height: 2px;
     background: #f2f2f2;
     border-radius: 9px;
@@ -97,7 +103,7 @@
 
     &-num {
       position: absolute;
-      right: 38px;
+      right: 60px;
       top: -32px;
       font-style: normal;
       font-size: 12px;
@@ -109,9 +115,10 @@
   &--drag {
     position: relative;
     width: 100%;
-    min-height: 140px;
+    min-height: 172px;
     box-sizing: border-box;
     border: 1px dashed #dbdbdb;
+    border-radius: 2px;
     cursor: pointer;
     padding: 12px;
 
@@ -122,6 +129,11 @@
     .hi-upload__operate-icon {
       color: #4284f5;
       cursor: pointer;
+    }
+
+    .icon-tishi {
+      color: #4284f5;
+      margin-right: 5px;
     }
 
     &.hi-upload--disabled {
@@ -158,19 +170,24 @@
       display: inline-block;
       height: 60px;
       text-align: center;
-      font-size: 12px;
+      font-size: 14px;
       color: #333;
       letter-spacing: 0;
-      line-height: 20px;
+      line-height: 22px;
       cursor: inherit;
+
+      .hi-upload__tips--single-line {
+        padding: 0;
+        margin-top: 4px;
+      }
 
       .icon {
         display: block;
         cursor: inherit;
-        margin-bottom: 10px;
+        margin-bottom: 6px;
 
         &::before {
-          font-size: 30px;
+          font-size: 40px;
           color: #4284f5;
         }
       }
@@ -206,12 +223,22 @@
       text-align: center;
       padding: 0;
       margin: 8px;
-      // margin-right: 16px;
       overflow: visible;
-      // margin-top: 0;
       vertical-align: middle;
       background: #fff;
-      // margin-bottom: 16px;
+      border-radius: 2px;
+
+      &--photo-error {
+        height: 28px;
+        background: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        width: 100%;
+        color: #fff;
+        bottom: 0;
+        line-height: 28px;
+        font-size: 16px;
+        border-radius: 0 0 2px 2px;
+      }
 
       &:not(:last-child) {
         background: #e7e7e7;
@@ -249,6 +276,7 @@
         opacity: 0;
         transition: 0.3s ease;
         z-index: 2;
+        border-radius: 4px;
         cursor: pointer;
 
         i {
@@ -264,6 +292,8 @@
       &:hover {
         .hi-upload__photo-del {
           display: block;
+          color: #000;
+          z-index: 4;
         }
 
         .hi-upload__item-mask {
@@ -273,10 +303,18 @@
     }
   }
 
+  &--avatar {
+    .hi-upload__item--upload {
+      width: 80px;
+      height: 80px;
+      line-height: 80px;
+    }
+  }
+
   &__photo-del {
     position: absolute;
-    right: -12px;
-    top: -12px;
+    right: -8px;
+    top: -10px;
     font-size: 20px;
     line-height: 20px;
     display: none;
@@ -289,12 +327,13 @@
     height: 140px;
     left: 0;
     top: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
     color: #fff;
     font-size: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 2px;
   }
 
   &__loading-bar {
@@ -304,6 +343,18 @@
     left: 0;
     bottom: 0;
     background: #4284f5;
+    z-index: 3;
+  }
+
+  &__loading-shadow {
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: #000;
+    opacity: 0.34;
+    z-index: 2;
   }
 
   &__thumb {
@@ -312,6 +363,11 @@
   }
 
   &--picture-card {
+    .hi-upload__upstatus {
+      width: 100%;
+      margin-left: 0;
+    }
+
     .upload--disabled {
       cursor: not-allowed;
     }
@@ -325,8 +381,8 @@
         box-sizing: border-box;
         border: 1px solid #d8d8d8;
         border-radius: 2px;
-        padding: 8px 18px 8px 8px;
-        margin-bottom: 8px;
+        padding: 8px 18px 8px 6px;
+        margin-bottom: 12px;
         font-size: 12px;
         color: #333;
 
@@ -419,5 +475,70 @@
 .hi-modal {
   .content {
     font-size: 0;
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.hi-upload {
+    &--drag {
+      &:hover:not(.hi-upload--nohover) {
+        border-color: $value;
+      }
+
+      .hi-upload__operate-icon {
+        color: $value;
+      }
+
+      .drop-over {
+        border: 1px dashed $value;
+      }
+
+      .show-drop-content {
+        .icon {
+          &::before {
+            color: $value;
+          }
+        }
+      }
+    }
+
+    .hi-upload__item {
+      &-tips {
+        color: $value;
+
+        .hi-upload__operate-icon {
+          color: $value;
+        }
+
+        .icon-tishi {
+          color: $value;
+        }
+      }
+    }
+
+    &--avatar,
+    &--photo {
+      .hi-upload__item {
+        &--upload {
+          &:hover {
+            border-color: $value;
+          }
+        }
+      }
+    }
+
+    .hi-upload__upstatus {
+      &-line {
+        background-color: $value;
+      }
+
+      &-num {
+        color: $value;
+      }
+    }
+
+    .hi-upload__loading-bar {
+      background: $value;
+    }
   }
 }

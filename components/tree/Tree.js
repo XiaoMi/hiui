@@ -4,10 +4,9 @@ import TreeNode from './TreeNode'
 import isEqual from 'lodash/isEqual'
 import { getAll, dealData } from './util'
 import withDragDropContext from '../lib/withDragDropContext'
-
 import './style/index'
 
-class Tree extends Component {
+export class Tree extends Component {
   constructor (props) {
     super(props)
 
@@ -27,7 +26,8 @@ class Tree extends Component {
     prefixCls: 'hi-tree',
     defaultCheckedKeys: [],
     data: [],
-    apperance: 'default'
+    apperance: 'default',
+    contextMenu: []
   }
 
   static getDerivedStateFromProps (props, state) {
@@ -71,7 +71,6 @@ class Tree extends Component {
     let myself = all.find(a => a.id === item.id)
     let children = myself.child
     let parent = myself.parent
-
     if (semiChecked.includes(item.id)) {
       children.forEach(child => {
         checkedArr = checkedArr.filter(c => c !== child)
@@ -103,13 +102,7 @@ class Tree extends Component {
     }
 
     disabledKeys.forEach(d => {
-      if (d.checked) {
-        if (!checkedArr.includes(d.id)) {
-          checkedArr.push(d.id)
-        }
-      } else {
-        checkedArr = checkedArr.filter(c => c !== d.id)
-      }
+      checkedArr = checkedArr.filter(c => c !== d.id)
     })
 
     parent.forEach(p => {
@@ -190,17 +183,21 @@ class Tree extends Component {
       onDelete,
       onSave,
       onClick,
-      apperance
+      apperance,
+      contextMenu,
+      defaultHighlightId,
+      theme
     } = this.props
     const { data } = this.state
     return (
       <div
-        className={classNames(`${prefixCls}`, { 'hi-tree--show-line': apperance === 'line' })}
+        className={classNames(`${prefixCls}`, `theme__${theme}`, { 'hi-tree--show-line': apperance === 'line' })}
         style={style}
       >
         <TreeNode
           origin={loadTreeNode}
           showLine={apperance === 'line'}
+          apperance={apperance}
           checked={this.props.checkedIds || []}
           onClick={onClick}
           semiChecked={this.state.all.filter(item => item.semi).map(item => item.id)}
@@ -209,13 +206,13 @@ class Tree extends Component {
           expandTreeNode={this.expandTreeNode}
           setExpandTreeNodes={this.setExpandTreeNodes}
           onCheckChange={this.onCheckChange}
-          hightLightNodes={this.props.hightLightNodes}
-          onHightLightChange={this.props.onHightLightChange}
           onExpanded={this.onExpanded}
           data={data}
+          theme={theme}
           prefixCls={prefixCls}
           checkable={checkable}
           highlightable={highlightable}
+          defaultHighlightId={defaultHighlightId}
           editable={editable}
           searchable={searchable}
           openIcon={openIcon}
@@ -226,6 +223,7 @@ class Tree extends Component {
           onDropEnd={onDropEnd}
           onDelete={onDelete}
           onSave={onSave}
+          contextMenu={contextMenu}
         />
       </div>
     )

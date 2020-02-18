@@ -14,7 +14,7 @@ export default class TimeList extends Component {
       return <li className='hi-timepicker__item hi-timepikcer__item--empty' key={'suf' + index} />
     })
     this.listRef = React.createRef()
-    this.scrollEvent = this.scrollEvent.bind(this)
+    // this.scrollEvent = this.scrollEvent.bind(this)
     this.state = {
       showArrow: false
     }
@@ -31,14 +31,14 @@ export default class TimeList extends Component {
     this.scrollTo()
   }
   componentDidMount () {
-    this.listRef.current.addEventListener('scroll', this.scrollEvent)
+    // this.listRef.current.addEventListener('scroll', this.scrollEvent)
     setTimeout(() => {
       this.scrollTo()
     }, 0)
   }
   componentWillUnmount () {
     window.clearTimeout(this.timer)
-    this.listRef.current.removeEventListener('scroll', this.scrollEvent)
+    // this.listRef.current.removeEventListener('scroll', this.scrollEvent)
   }
   renderArrow (type) {
     return (
@@ -62,9 +62,6 @@ export default class TimeList extends Component {
     const st = this.listRef.current.scrollTop
     const val = Math.round(st / 32)
     this.props.onSelect(this.props.type, val + arrow, arrow)
-  }
-  addListener () {
-    this.listRef.current.addEventListener('scroll', this.scrollEvent)
   }
   isScrollStop (val, el) {
     const { disabledList } = this.props
@@ -91,13 +88,12 @@ export default class TimeList extends Component {
     e.stopPropagation()
     const li = e.target
     if (li.nodeName !== 'LI') return false
-    if (!li.innerText) return
-    this.props.onSelect(type, parseInt(li.innerText), e)
+    if (!li.textContent) return
+    this.props.onSelect(type, parseInt(li.textContent), e)
   }
   render () {
     const { showArrow } = this.state
-    const { type, datas, show } = this.props
-    if (!show) { return null }
+    const { type, datas } = this.props
     return <div
       className='hi-timepicker__list-container'
       onMouseEnter={() => this.setState({showArrow: true})}
@@ -107,6 +103,7 @@ export default class TimeList extends Component {
         ref={this.listRef}
         className={`hi-timepicker__list`}
         onClick={this.clickEvent.bind(this, type)}
+        onScroll={this.scrollEvent.bind(this)}
       >
         {this.liPrefix}
         {
@@ -120,6 +117,7 @@ export default class TimeList extends Component {
               <li
                 key={index}
                 className={_class}
+                value={parseInt(data.text)}
               >{data.text}</li>
             )
           })

@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Cascader from '../../../components/cascader'
 const prefix = 'section-advanced'
+const desc = '展示从多个收起的备选项中选出的一个选项'
 const rightOptions = ['自定义字段名', '自定义显示', '搜索', '动态加载选项']
 const code = [
   {
@@ -164,97 +165,168 @@ class Demo extends React.Component {
     super()
     this.state = {
       options: [
-        {
-          id: '手机',
-          content: '手机',
-          children: [
+    {
+        "id":1,
+
+        "children":[
             {
-              id: '小米',
-              content: '小米',
-              children: [
-                {
-                  id: '小米1',
-                  content: '小米1'
-                },
-                {
-                  id: '小米2',
-                  content: '小米2',
-                  disabled: true
-                },
-                {
-                  id: '小米3',
-                  content: '小米3'
-                },
-                {
-                  id: '小米4',
-                  content: '小米4'
-                },
-                {
-                  id: '小米5',
-                  content: '小米5'
-                },
-                {
-                  id: '小米6',
-                  content: '小米6'
-                },
-                {
-                  id: '小米7',
-                  content: '小米7'
-                },
-                {
-                  id: '小米8',
-                  content: '小米8'
-                }
-              ]
+                "id":195,
+
+                "children":[
+                    {
+                        "id":619,
+
+                        "children":[
+                            {
+                                "id":621,
+
+                                "children":[
+                                    {
+                                        "id":899,
+
+                                        "children":null,
+                                        "content":"testaaab[899]"
+                                    },
+                                    {
+                                        "id":908,
+
+                                        "children":null,
+                                        "content":"F11S[908]"
+                                    }
+                                ],
+                                "content":"POCO手机1[621]"
+                            }
+                        ],
+                        "content":"POCO手机[619]"
+                    },
+                    {
+                        "id":577,
+
+                        "children":[
+                            {
+                                "id":579,
+
+                                "children":null,
+                                "content":"黑鲨手机1[579]"
+                            },
+                            {
+                                "id":656,
+
+                                "children":null,
+                                "content":"黑鲨手机 Helo[656]"
+                            }
+                        ],
+                        "content":"黑鲨手机[577]"
+                    },
+                    {
+                        "id":196,
+
+                        "children":[
+                            {
+                                "id":663,
+
+                                "children":null,
+                                "content":"小米Play[663]"
+                            },
+                            
+                            {
+                                "id":207,
+
+                                "children":[
+                                    {
+                                        "id":620,
+
+                                        "children":null,
+                                        "content":"小米Max3[620]"
+                                    }
+                                ],
+                                "content":"小米Max[207]"
+                            }
+                        ],
+                        "content":"小米系列[196]"
+                    },
+                    
+                    {
+                        "id":925,
+
+                        "children":[
+                            {
+                                "id":926,
+
+                                "children":null,
+                                "content":"大象手机A[926]"
+                            },
+                            {
+                                "id":927,
+
+                                "children":null,
+                                "content":"大象手机B[927]"
+                            }
+                        ],
+                        "content":"大象手机[925]"
+                    }
+                ],
+                "content":"手机[195]"
             },
             {
-              id: '红米',
-              content: '红米',
-              disabled: true,
-              children: [
-                {
-                  id: '红米1',
-                  content: '红米1'
-                },
-                {
-                  id: '红米2',
-                  content: '红米2'
-                },
-                {
-                  id: '红米3',
-                  content: '红米3'
-                },
-                {
-                  id: '红米4',
-                  content: '红米4'
-                }
-              ]
+                "id":674,
+
+                "children":[
+                    {
+                        "id":830,
+
+                        "children":[
+                            {
+                                "id":831,
+
+                                "children":null,
+                                "content":"燃气灶[831]"
+                            }
+                        ],
+                        "content":"厨卫大电[830]"
+                    },
+                    
+                    {
+                        "id":930,
+
+                        "children":null,
+                        "content":"医疗器械[930]"
+                    },
+                    
+                    
+                    {
+                        "id":678,
+
+                        "children":[
+                            {
+                                "id":679,
+
+                                "children":null,
+                                "content":"礼品[679]"
+                            }
+                        ],
+                        "content":"钟表/珠宝首饰/礼品[678]"
+                    },
+                    {
+                        "id":845,
+
+                        "children":[
+                            {
+                                "id":677,
+
+                                "children":null,
+                                "content":"电视配件[677]"
+                            }
+                        ],
+                        "content":"手机电视配件[845]"
+                    }
+                ],
+                "content":"生态链[674]"
             }
-          ]
-        },
-        {
-          id: '电视',
-          content: '电视',
-          children: [
-            {
-              id: '小米电视4A',
-              content: '小米电视4A 55寸 1GB+4GB大内存 64位四核处理器'
-            },
-            {
-              id: '小米电视4C',
-              content: '小米电视4C'
-            },
-            {
-              id: '小米电视4X',
-              content: '小米电视4X'
-            },
-            {
-              id: '小米电视4',
-              content: '小米电视4'
-            }
-          ]
-        }
-      ]
+        ],
+        "content":"商品[1]"
+    }
+]
     }
   }
   render(){
@@ -417,6 +489,7 @@ const DemoBasic = () => (
     code={code}
     scope={{ Cascader }}
     prefix={prefix}
+    desc={desc}
     rightOptions={rightOptions}
   />
 )

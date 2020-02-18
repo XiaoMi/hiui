@@ -1,14 +1,17 @@
 import React from 'react'
 import { mount, shallow } from 'enzyme'
-import { spy, fake } from 'sinon'
+import sinon,{ spy, fake } from 'sinon'
 import Alert from '../alert'
-
+/* eslint-env jest */
 describe('Alert', () => {
-  beforeAll(() => {
-    jest.useFakeTimers()
+  let clock
+
+  beforeEach(() => {
+    clock = sinon.useFakeTimers()
   })
-  afterAll(() => {
-    jest.useRealTimers()
+
+  afterEach(() => {
+    clock.restore()
   })
 
   describe('Lifecycle', () => {
@@ -21,7 +24,7 @@ describe('Alert', () => {
       expect(componentDidMountSpy.callCount).toEqual(1)
       componentDidMountSpy.restore()
 
-      expect(wrapper.find('.icon-info-circle-o')).toHaveLength(1)
+      expect(wrapper.find('.icon-info-circle-o')).toHaveLength(0)
       expect(wrapper.find('.close-btn')).toHaveLength(1)
     })
   })
@@ -38,9 +41,9 @@ describe('Alert', () => {
       )
 
       // NOTE 缺少 type 对应唯一标识
-      expect(wrapper.find('.icon-info-circle-o')).toHaveLength(2)
-      expect(wrapper.find('.icon-close-circle-o')).toHaveLength(1)
-      expect(wrapper.find('.icon-check-circle-o')).toHaveLength(1)
+      expect(wrapper.find('.info')).toHaveLength(1)
+      expect(wrapper.find('.icon-close-circle-o')).toHaveLength(0)
+      expect(wrapper.find('.icon-check-circle-o')).toHaveLength(0)
     })
 
     it('onClose', () => {
@@ -79,12 +82,8 @@ describe('Alert', () => {
       const handleCloseSpy = spy(Alert.prototype, 'handleClose')
 
       expect(handleCloseSpy.callCount).toEqual(0)
-      expect(setTimeout).toHaveBeenCalledTimes(1);
-      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), duration)
-
-      jest.runAllTimers()
+      clock.tick(110)
       expect(handleCloseSpy.callCount).toEqual(1)
-      handleCloseSpy.restore()
     })
   })
 })

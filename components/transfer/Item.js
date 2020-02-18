@@ -18,7 +18,8 @@ class Item extends Component {
       sourceNode,
       dir,
       draggable,
-      dividerPosition
+      dividerPosition,
+      theme
     } = this.props
     const sourceStyle =
       sourceNode === item.id && isDragging
@@ -27,14 +28,14 @@ class Item extends Component {
           color: 'rgba(204,204,204,1)'
         }
         : {}
-    const itemCls = classNames('hi-transfer__item', item.disabled && 'hi-transfer__item--disabled')
+    const itemCls = classNames('hi-transfer__item', `theme__${theme}`, item.disabled && 'hi-transfer__item--disabled')
     const el = (
       <li style={sourceStyle} className={itemCls} onClick={onClick.bind(this)}>
-        {targetNode === item.id && isDragging && (
-          <div className={`hi-transfer__divider--${dividerPosition}`} />
-        )}
-        {mode !== 'basic' ? (
-          <Checkbox
+        {targetNode === item.id &&
+          isDragging &&
+          <div className={`hi-transfer__divider--${dividerPosition}`} />}
+        {mode !== 'basic'
+          ? <Checkbox
             legacy
             text={item.content}
             value={item.id}
@@ -42,9 +43,7 @@ class Item extends Component {
             disabled={item.disabled}
             onChange={checkboxOnChange.bind(this)}
           />
-        ) : (
-          item.content
-        )}
+          : item.content}
       </li>
     )
     return dir === 'right' && draggable ? connectDropTarget(connectDragSource(el)) : el
@@ -104,11 +103,9 @@ const HOCItem = ItemComponent => {
     render () {
       const { dir, draggable } = this.props
 
-      return draggable && dir === 'right' ? (
-        <DragItem {...this.props} />
-      ) : (
-        <ItemComponent {...this.props} />
-      )
+      return draggable && dir === 'right'
+        ? <DragItem {...this.props} />
+        : <ItemComponent {...this.props} />
     }
   }
 }

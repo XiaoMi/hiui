@@ -2,7 +2,7 @@ import Tabs from '../../../components/tabs'
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 const prefix = 'tabs-capsule'
-const desc = '胶囊样式'
+const desc = '可用于页面的卡片式布局样式'
 
 const code = `import Tabs from '@hi-ui/hiui/es/tabs'
 import React from 'react'\n

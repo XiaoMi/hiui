@@ -34,18 +34,16 @@ class Group extends Component {
         ...rest
       }
     })
-    const checkedList = newData
-      .filter(({ checked }) => checked)
-      .map(({ value }) => value)
+    const checkedList = newData.filter(({ checked }) => checked).map(({ value }) => value)
     onChange && onChange(checkedList)
     hasValue(this.props) || this.setState({ data: newData })
   }
   render () {
-    const { className, name, disabled, style } = this.props
+    const { className, name, disabled, style, placement } = this.props
     const { data } = this.state
-    const groupCls = classNames(prefixCls, className)
+    const groupCls = classNames(prefixCls, className, placement === 'vertical' && `${prefixCls}--vertical`)
     return (
-      <div className={groupCls} style={style}>
+      <div className={groupCls} style={{...style}}>
         {data.map(({ label, value, checked, disabled: itemDisabled }, idx) => (
           <Checkbox
             key={idx}
@@ -93,6 +91,7 @@ const PropTypesArrayOfStringOrNumber = PropTypes.oneOfType([
 
 Group.propTypes = {
   className: PropTypes.string,
+  placement: PropTypes.string,
   data: PropTypes.arrayOf(
     PropTypes.oneOfType([
       PropTypes.string,
@@ -114,6 +113,7 @@ Group.propTypes = {
 
 Group.defaultProps = {
   data: [],
+  placement: 'horizontal',
   defaultValue: []
 }
 

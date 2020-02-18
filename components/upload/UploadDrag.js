@@ -1,6 +1,5 @@
 import React from 'react'
 import classNames from 'classnames'
-import Provider from '../context'
 import Upload from './Upload'
 import Icon from '../icon'
 
@@ -47,7 +46,8 @@ class UploadDrag extends Upload {
       disabled,
       tips,
       localeDatas,
-      onRemove
+      onRemove,
+      theme
     } = this.props
     const {
       overEvent,
@@ -56,6 +56,7 @@ class UploadDrag extends Upload {
     } = this.state
 
     const dragCls = classNames(
+      `theme__${theme}`,
       'hi-upload',
       'hi-upload--drag',
       overEvent && !disabled && 'drop-over',
@@ -114,7 +115,7 @@ class UploadDrag extends Upload {
         >
           {
             fileList.length > 0 && <li className='hi-upload__item hi-upload__item-tips' onClick={this.targetInput}>
-              <Icon name='comment-circle-o' />
+              <Icon name='tishi' />
               <span className='hi-upload__tips--exist'>
                 {fileCountLimted ? localeDatas.upload.dragTipsLimited : localeDatas.upload.dragTips}
               </span>
@@ -162,4 +163,4 @@ class UploadDrag extends Upload {
   }
 }
 
-export default Provider(UploadDrag)
+export default UploadDrag
