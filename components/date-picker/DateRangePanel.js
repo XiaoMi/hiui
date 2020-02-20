@@ -307,6 +307,7 @@ class DateRangePanel extends Component {
             type={this.props.type}
             minDate={minDate}
             maxDate={maxDate}
+            disabledDate={this.props.disabledDate}
             onPick={this.pick.bind(this)}
             mouseMove={this.onMouseMoveHandler.bind(this)}
           />
