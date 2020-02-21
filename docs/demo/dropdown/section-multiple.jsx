@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Dropdown from '../../../components/dropdown'
-const prefix = 'dropdown-base'
+const prefix = 'dropdown-multiple'
 const desc = 'data 传入树形数据可渲染多级菜单'
 
 const code = `import React from 'react'
