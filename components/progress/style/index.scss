@@ -28,7 +28,7 @@ $progress-text: #666 !default;
       opacity: 0;
       content: '';
       animation:
-        hi-progress--active 2.4s cubic-bezier(0.23, 1, 0.32, 1)
+        hi-progress-active 2.4s cubic-bezier(0.23, 1, 0.32, 1)
         infinite;
     }
   }
@@ -195,7 +195,7 @@ $progress-text: #666 !default;
   }
 }
 
-@keyframes hi-progress--active {
+@keyframes hi-progress-active {
   0% {
     width: 0;
     opacity: 0.1;
