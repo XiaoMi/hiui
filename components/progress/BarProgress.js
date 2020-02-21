@@ -1,4 +1,6 @@
 import React from 'react'
+import Classnames from 'classnames'
+
 export const BarProgress = props => {
   function getWidth () {
     if (!props.width || props.width <= 0) {
@@ -16,7 +18,15 @@ export const BarProgress = props => {
   }
 
   let prefix = 'hi-progress'
-  const { percent: percentNum, content, type, showInfo, placement, tooltip = null } = props
+  const {
+    percent: percentNum,
+    content,
+    type,
+    showInfo,
+    placement,
+    tooltip = null,
+    active
+  } = props
   const percent = percentNum > 0 ? percentNum : 0
   return (
     <div>
@@ -24,7 +34,12 @@ export const BarProgress = props => {
         className={`${prefix}__inner`}
         style={{ width: getWidth() + 'px', height: getHeight() + 'px' }}
       >
-        <div className={`${prefix}__bar ${prefix}__bar--${type}`} style={{ width: `${percent}%` }}>
+        <div
+          className={Classnames(`${prefix}__bar ${prefix}__bar--${type}`, {
+            [`${prefix}__bar--active`]: active
+          })}
+          style={{ width: `${percent}%` }}
+        >
           {showInfo && placement === 'inside' && getHeight() >= 14 && (
             <div className={`${prefix}__text--inside`}>{content || `${percent}%`}</div>
           )}

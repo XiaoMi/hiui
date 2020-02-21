@@ -17,6 +17,23 @@ $progress-text: #666 !default;
     vertical-align: middle;
   }
 
+  &__bar--active.hi-progress__bar {
+    &::before {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: #fff;
+      border-radius: 10px;
+      opacity: 0;
+      content: '';
+      animation:
+        hi-progress--active 2.4s cubic-bezier(0.23, 1, 0.32, 1)
+        infinite;
+    }
+  }
+
   &__bar {
     height: 100%;
     display: block;
@@ -176,5 +193,22 @@ $progress-text: #666 !default;
     .hi-progress__dashboard--error {
       stroke: $progress-error;
     }
+  }
+}
+
+@keyframes hi-progress--active {
+  0% {
+    width: 0;
+    opacity: 0.1;
+  }
+
+  20% {
+    width: 0;
+    opacity: 0.5;
+  }
+
+  100% {
+    width: 100%;
+    opacity: 0;
   }
 }
