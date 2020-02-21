@@ -125,7 +125,7 @@ class Upload extends Component {
 
   uploadFiles (files) {
     const { beforeUpload, customUpload, maxSize } = this.props
-    let { fileList, fileCountLimted } = this.state
+    const { fileList, fileCountLimted } = this.state
     if (fileCountLimted) {
       return
     }
