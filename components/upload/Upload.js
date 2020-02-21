@@ -141,7 +141,7 @@ class Upload extends Component {
     if (files.length === 0) return
     const _fileList = [...fileList]
 
-    Object.keys(files).forEach((key, index) => {
+    Object.keys(files).forEach((key) => {
       const file = files[key]
       if (file.size > maxSize * 1024) {
         this.setState({
