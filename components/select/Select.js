@@ -59,8 +59,6 @@ class Select extends Component {
     clearable: true,
     defaultValue: '',
     autoload: false,
-    placeholder: '请选择',
-    emptyContent: '无内容',
     showCheckAll: false,
     open: true,
     onClick: () => {},
@@ -538,7 +536,6 @@ class Select extends Component {
       clearable,
       style,
       children,
-      emptyContent,
       optionWidth,
       render,
       multipleWrap,
@@ -548,9 +545,12 @@ class Select extends Component {
       dataSource,
       filterOption,
       onSearch,
-      theme
+      theme,
+      localeDatas
     } = this.props
     const placeholder = this.localeDatasProps('placeholder')
+    const emptyContent = this.localeDatasProps('emptyContent')
+    const searchPlaceholder = this.localeDatasProps('searchPlaceholder')
     const {
       selectedItems,
       cacheSelectedItems,
@@ -618,7 +618,9 @@ class Select extends Component {
         >
           <SelectDropdown
             noFoundTip={emptyContent}
+            localeMap={localeDatas.select || {} }
             mode={type}
+            searchPlaceholder={searchPlaceholder}
             theme={theme}
             onBlur={onBlur}
             onFocus={onFocus}
