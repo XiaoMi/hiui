@@ -1,9 +1,9 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Pagination from '../../../components/pagination'
-const rightOptions = ['默认', '受控']
+const rightOptions = ['默认值', '受控']
 const prefix = 'pagination-base'
-const desc = '分页数在10页以内使用'
+const desc = '常见的分页用法，用于数据量或分页数适中的场景，进行基础翻页操作'
 const code = [
   {
     code: `import React from 'react'
@@ -27,7 +27,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['默认']
+    opt: ['默认值']
   },
   {
     code: `import React from 'react'
