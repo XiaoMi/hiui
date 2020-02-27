@@ -48,7 +48,16 @@ export default {
   },
   select: {
     placeholder: '请选择',
-    noFoundTip: '无匹配数据'
+    emptyContent: '无匹配数据',
+    searchPlaceholder: '搜索',
+    checkAll: '全选'
+  },
+  transfer: {
+    checkAll: '全选',
+    items: '项',
+    searchPlaceholder: '搜索',
+    emptyContent: '暂无数据',
+    limit: '数量达上限，无法添加'
   },
   upload: {
     buttonText: '本地上传',

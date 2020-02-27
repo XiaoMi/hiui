@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Tree from '../../../components/tree'
 const prefix = 'tree-multiple'
+const desc = '用于一次性选中同级多个节点或全选同级节点，可与其它组件搭配使用'
 const code = `import React from 'react'
 import Tree from '@hi-ui/hiui/es/tree'\n
 class Demo extends React.Component {
@@ -60,5 +61,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoMultiple = () => <DocViewer code={code} scope={{ Tree }} prefix={prefix} />
+const DemoMultiple = () => <DocViewer desc={desc} code={code} scope={{ Tree }} prefix={prefix} />
 export default DemoMultiple

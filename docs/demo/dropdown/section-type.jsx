@@ -4,8 +4,7 @@ import { Dropdown, Message } from '../../../components'
 const prefix = 'dropdown-type'
 const rightOptions = ['按钮样式', '按钮动作']
 const desc = [
-  '按钮样式：以按钮为下拉菜单的入口样式，强调动作引导',
-  '按钮动作：一级动作前置曝光，减少操作成本'
+  '操作入口以 Button 样式展示，强调重要操作'
 ]
 
 const code = [

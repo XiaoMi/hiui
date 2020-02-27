@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Dropdown from '../../../components/dropdown'
 const desc =
-  '默认隐藏多个菜单项，必要时展开使用，常见于菜单、顶部工具、全局筛选等场景'
+  '将一组同类的动作收起成为菜单，由一个操作入口展示使用'
 const prefix = 'dropdown-base'
 const rightOptions = ['基础', '禁用']
 

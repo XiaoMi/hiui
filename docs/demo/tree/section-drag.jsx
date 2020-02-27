@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Tree from '../../../components/tree'
 const prefix = 'tree-drag'
-const desc = '对树的节点进行拖拽操作'
+const desc = '通过鼠标拖拽行为，改变树的层级结构'
 const code = `import React from 'react'
 import Tree from '@hi-ui/hiui/es/tree'\n
 class Demo extends React.Component {

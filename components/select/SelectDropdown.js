@@ -163,7 +163,9 @@ class SelectDropdown extends Component {
       theme,
       searchable,
       onFocus,
-      onBlur
+      onBlur,
+      searchPlaceholder,
+      localeMap
     } = this.props
     const { filterItems, searchbarValue } = this.state
     let matched = 0
@@ -182,7 +184,7 @@ class SelectDropdown extends Component {
             <Icon name='search' />
             <input
               className='hi-select__dropdown__searchbar--input'
-              placeholder='搜索'
+              placeholder={searchPlaceholder}
               clearable='true'
               ref={(input) => {
                 this.searchbar = input
@@ -210,7 +212,6 @@ class SelectDropdown extends Component {
               filterItems.map((item, index) => {
                 if (matchFilter(item)) {
                   matched++
-                  // const isSelected = selectedItems[item.id]
                   const isSelected = this.itemSelected(item)
                   const isDisabled = item.disabled
                   return (
@@ -244,7 +245,7 @@ class SelectDropdown extends Component {
         )}
         {mode === 'multiple' && showCheckAll && (
           <div className={`hi-select__dropdown-check-all theme__${theme}`} onClick={this.props.checkAll.bind(this, filterItems)}>
-              全选
+            {localeMap['checkAll']}
           </div>
         )}
       </div>

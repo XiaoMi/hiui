@@ -32,7 +32,7 @@ class Demo extends React.Component {
         defaultValue={['4', '5','2','3']}
         searchable
         showCheckAll
-        placeholder='请选择...'
+        placeholder='请选择'
         emptyContent='无匹配数据'
         onChange={(item) => {
           console.log('多选结果', item)

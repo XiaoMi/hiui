@@ -93,6 +93,9 @@ class Dropdown extends React.Component {
   componentWillUnmount () {
     document.removeEventListener('click', this.handleDocumentClick)
   }
+  componentDidMount () {
+    document.addEventListener('click', this.handleDocumentClick)
+  }
   render () {
     const { className, style, title, type, placement, data, disabled, width, onButtonClick, theme } = this.props
     const { visible } = this.state

@@ -1,5 +1,16 @@
 # 更新日志
 
+## 2.9.0
+
+- 新增 `<Progress />` active 属性展示加载动效 [#941](https://github.com/XiaoMi/hiui/issues/941)
+- 新增 `<Upload />` 拖拽用法支持多选上传 [#942](https://github.com/XiaoMi/hiui/issues/942)
+- 新增 `<DatePicker />`  disabledDate 属性自定义日期禁选 [#943](https://github.com/XiaoMi/hiui/issues/943)
+- 优化 `<Collapse />` 视觉效果 [#937](https://github.com/XiaoMi/hiui/issues/937)
+- 修复 `<Dropdown />` 点击外部区域不能正常隐藏菜单的问题 [#947](https://github.com/XiaoMi/hiui/issues/947)
+- 修复`<Upload />`同时上传多个文件的展示问题 [#948](https://github.com/XiaoMi/hiui/issues/948)
+- 修复 `<Upload />` 上传过程中点击取消功能无效的问题 [#938](https://github.com/XiaoMi/hiui/issues/938)
+- 修复部分组件国际化适配不完全的问题 [#951](https://github.com/XiaoMi/hiui/issues/951)
+
 ## 2.8.0
 
 - 新增 `<Tree />` 默认高亮 [#915](https://github.com/XiaoMi/hiui/issues/915)

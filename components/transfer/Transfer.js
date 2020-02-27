@@ -261,7 +261,8 @@ class Transfer extends Component {
       emptyContent,
       title,
       disabled,
-      theme
+      theme,
+      localeDatas
     } = this.props
     const {
       sourceSelectedKeys,
@@ -277,6 +278,7 @@ class Transfer extends Component {
       positionY,
       dividerPosition
     } = this.state
+    const localeMap = localeDatas.transfer || {}
     const selectedKeys = dir === 'left' ? sourceSelectedKeys : targetSelectedKeys
     const filterText = dir === 'left' ? leftFilter : rightFilter
     const filterResult = datas.filter(item => item.content.includes(filterText))
@@ -313,7 +315,7 @@ class Transfer extends Component {
                   limited &&
                   <li key='limit-tips' className='hi-transfer__item hi-transfer__item--limit'>
                     <div className='hi-transfer__warning' />
-                    <span>数量达上限，无法添加</span>
+                    <span>{localeMap['limit']}</span>
                   </li>}
               {filterResult.map((item, index) => {
                 return (
@@ -354,11 +356,11 @@ class Transfer extends Component {
                 this.allCheckboxEvent(dir)
               }}
             >
-              全选
+              {localeMap['checkAll']}
             </Checkbox>
             <span>
               {selectedKeys.length + '/'}
-              {filterResult.length}项
+              {filterResult.length} {localeMap['items']}
             </span>
           </div>}
       </div>
