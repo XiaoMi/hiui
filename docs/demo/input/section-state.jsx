@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Grid from '../../../components/grid'
 import Input from '../../../components/input'
 import Radio from '../../../components/radio'
-const leftOptions = ['基础', '默认', '禁用', '可清除']
+const leftOptions = ['基础', '默认值', '禁用', '可清除']
 const prefix = 'input-state'
 const desc = '可获取有限长度的字符串，不折行显示'
 const code = [{code: `import React from 'react'
@@ -52,7 +52,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-opt: ['默认']},
+opt: ['默认值']},
 {code: `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Radio from '@hi-ui/hiui/es/radio'
