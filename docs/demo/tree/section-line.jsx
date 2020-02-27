@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Tree from '../../../components/tree'
 const prefix = 'tree-line'
+const desc = '定义不同样式的树节点，满足多样性的业务场景'
 const leftOptions = ['线型', '文件夹型']
 const code = [{code: `import React from 'react'
 import Tree from '@hi-ui/hiui/es/tree'\n
@@ -106,5 +107,5 @@ class Demo extends React.Component {
   }
 }`,
 opt: ['文件夹型']}]
-const DemoLine = () => <DocViewer code={code} scope={{ Tree }} prefix={prefix} leftOptions={leftOptions} />
+const DemoLine = () => <DocViewer desc={desc} code={code} scope={{ Tree }} prefix={prefix} leftOptions={leftOptions} />
 export default DemoLine
