@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Dropdown from '../../../components/dropdown'
 const prefix = 'dropdown-type'
 const rightOptions = ['左下', '左上', '右下', '右上']
-const desc = '通过 placement 属性切换菜单显示位置'
+const desc = '下拉菜单可打开不同的方向，以应对页面边缘的遮盖问题'
 
 const code = [
   {

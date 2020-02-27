@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Dropdown from '../../../components/dropdown'
 const prefix = 'dropdown-multiple'
-const desc = 'data 传入树形数据可渲染多级菜单'
+const desc = '菜单项不属于同一级别，可分层级展开使用'
 
 const code = `import React from 'react'
 import Dropdown from '@hi-ui/hiui/es/dropdown'\n
