@@ -206,7 +206,7 @@ class DatePanel extends Component {
   }
   _getNormalComponent () {
     const { currentView } = this.state
-    const { min, max, weekOffset, date } = this.props
+    const { min, max, weekOffset, date, disabledDate } = this.props
     const validDate = getStartDate(date)
     const { year, month } = deconstructDate(validDate)
     let component = null
@@ -220,6 +220,7 @@ class DatePanel extends Component {
             weekOffset={weekOffset}
             minDate={min}
             maxDate={max}
+            disabledDate={disabledDate}
             type={currentView}
             onPick={this.onDatePick.bind(this)}
           />

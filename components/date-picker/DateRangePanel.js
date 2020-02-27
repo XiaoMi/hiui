@@ -274,6 +274,7 @@ class DateRangePanel extends Component {
   }
   _getNormalComponent (date, flag) {
     let { minDate, maxDate, range, layout } = this.state
+    const { type, disabledDate } = this.props
     let component = null
     const { year, month } = deconstructDate(date)
     switch (layout[flag]) {
@@ -304,9 +305,10 @@ class DateRangePanel extends Component {
           <Calender
             date={date}
             range={range}
-            type={this.props.type}
+            type={type}
             minDate={minDate}
             maxDate={maxDate}
+            disabledDate={disabledDate}
             onPick={this.pick.bind(this)}
             mouseMove={this.onMouseMoveHandler.bind(this)}
           />
