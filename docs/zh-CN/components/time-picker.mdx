@@ -1,16 +1,10 @@
 # TimePicker 时间选择器
 
-## 基础
+## 基础用法
 
 import DemoBase from '../../demo/time-picker/section-base.jsx'
 
 <DemoBase />
-
-## 格式
-
-import DemoFormat from '../../demo/time-picker/section-format.jsx'
-
-<DemoFormat />
 
 ## 时间范围
 
@@ -18,22 +12,22 @@ import DemoRange from '../../demo/time-picker/section-range.jsx'
 
 <DemoRange />
 
-## 禁选时间
+## 不同粒度
 
-import DemoDisableSelect from '../../demo/time-picker/section-disable-select.jsx'
+import DemoFormat from '../../demo/time-picker/section-format.jsx'
 
-<DemoDisableSelect />
+<DemoFormat />
 
 ## Props
 
-| 参数            | 说明                                                                                                                    | 类型                                                                   | 可选值                   | 默认值    |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------ | --------- |
-| type            | 选择器类型                                                                                                              | string                                                                 | 'default' \| 'timerange' | 'default' |
-| value           | 显示的日期                                                                                                              | Date \| string \| number \| object \| -                                | -                        | -         |
-| format          | 格式化时间                                                                                                              | string                                                                 | -                        | -         |
-| disabled        | 是否禁用                                                                                                                | boolean                                                                | true \| false            | false     |
-| placeholder     | 设置输入框占位                                                                                                          | string \| string[]                                                     | -                        | -         |
-| disabledHours   | 禁止选择的小时                                                                                                          | () => number[] \| number[]                                             | -                        | -         |
-| disabledMinutes | 禁止选择的分钟                                                                                                          | (selectedHour: number) => number[] \| number[]                         | -                        | -         |
-| disabledSeconds | 禁止选择的秒数                                                                                                          | (selectedHour: number, selectedMinute: number) => number[] \| number[] | -                        | -         |
-| onChange        | 值变化时的回调函数                | (date: Date \| DateRange, dateStr: string \| DateRange ) => void                                    | -                                                                                                | -      |
+| 参数            | 说明               | 类型                                                                   | 可选值                   | 默认值    |
+| --------------- | ------------------ | ---------------------------------------------------------------------- | ------------------------ | --------- |
+| type            | 选择器类型         | string                                                                 | 'default' \| 'timerange' | 'default' |
+| value           | 显示的日期         | Date \| string \| number \| object \| -                                | -                        | -         |
+| format          | 格式化时间         | string                                                                 | -                        | -         |
+| disabled        | 是否禁用           | boolean                                                                | true \| false            | false     |
+| placeholder     | 设置输入框占位     | string \| string[]                                                     | -                        | -         |
+| disabledHours   | 禁止选择的小时     | () => number[] \| number[]                                             | -                        | -         |
+| disabledMinutes | 禁止选择的分钟     | (selectedHour: number) => number[] \| number[]                         | -                        | -         |
+| disabledSeconds | 禁止选择的秒数     | (selectedHour: number, selectedMinute: number) => number[] \| number[] | -                        | -         |
+| onChange        | 值变化时的回调函数 | (date: Date \| DateRange, dateStr: string \| DateRange ) => void       | -                        | -         |
