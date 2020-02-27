@@ -125,7 +125,7 @@ class UploadDrag extends Upload {
             const fileNameCls = classNames(
               'file-name',
               'upload-list__item-name',
-              file.uploadState === 'error' && 'file-name--error'
+              file.uploadState === 'error' && 'hi-upload__filename--error'
             )
             return (
 
