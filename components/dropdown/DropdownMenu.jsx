@@ -29,6 +29,7 @@ class DropdownMenu extends React.Component {
         zIndex={1060}
         placement={placement}
         width={width}
+        leftGap={1}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
