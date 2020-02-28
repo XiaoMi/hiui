@@ -22,6 +22,7 @@ class Demo extends React.Component {
       path: '/redmi'
     }, {
       content: 'Note7',
+      icon: 'document',
       path: '/note7'
     }]
     return (

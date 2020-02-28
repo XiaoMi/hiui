@@ -12,8 +12,8 @@ class Breadcrumb extends Component {
       {
         data.map((item, index) => {
           return <span key={index} className='hi-breadcrumb__item'>
-            <span className='hi-breadcrumb__content' onClick={() => { onClick(item.path) }}>{item.icon && <Icon name={item.icon} />}{item.content}</span>
-            <span className='hi-breadcrumb__separator'>{separator}</span>
+            <span className={`hi-breadcrumb__content  ${index === data.length - 1 ? 'hi-breadcrumb--active' : ''}`} onClick={() => { onClick(item.path) }}>{item.icon && <Icon name={item.icon} />}{item.content}</span>
+            <span className={`hi-breadcrumb__separator`}>{separator}</span>
           </span>
         })
       }
