@@ -10,15 +10,17 @@
     right: 0;
     transform: translateX(50%);
     height: 16px;
+    min-width: 16px;
     padding: 0 4px;
-    border: 2px solid #fff;
-    border-radius: 10px;
+    // border: 2px solid #fff;
+    border-radius: 8px;
     line-height: 16px;
     background: #f44141;
     font-size: 12px;
     color: #fff;
     letter-spacing: 0;
     text-align: center;
+    box-sizing: border-box;
 
     &.hi-hide {
       display: none;
@@ -29,10 +31,10 @@
     position: absolute;
     width: 8px;
     height: 8px;
-    top: -7px;
-    right: -5px;
+    top: -4px;
+    right: -4px;
     background: #f44141;
-    border: 1px solid #fff;
+    // border: 1px solid #fff;
     border-radius: 50%;
     font-size: 0;
 

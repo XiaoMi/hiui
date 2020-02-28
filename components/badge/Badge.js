@@ -30,9 +30,9 @@ class Badge extends Component {
         {type === 'dot' ? (
           <span className={`${prefixCls}-dot${!visible ? ' hi-hide' : ''}`} />
         ) : (
-          <span className={`${prefixCls}-value${!visible ? ' hi-hide' : ''}`}>
+          <sup className={`${prefixCls}-value${!visible ? ' hi-hide' : ''}`}>
             {typeof content === 'number' ? (content > max ? max + '+' : content) : content}
-          </span>
+          </sup>
         )}
       </div>
     )
