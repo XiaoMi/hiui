@@ -24,16 +24,10 @@ $prefixCls: 'hi-dropdown' !default;
     .#{$prefixCls}__button {
       color: #ccc;
       cursor: not-allowed;
-
-      &:hover {
-        color: #ccc !important;
-      }
     }
   }
 
   &__button {
-    box-shadow: none !important;
-
     i {
       margin-left: 4px;
       margin-right: 0 !important;
@@ -48,6 +42,10 @@ $prefixCls: 'hi-dropdown' !default;
 
       padding-left: 0;
       padding-right: 0;
+    }
+
+    &--active {
+      color: get-color($palette-primary, 'hiui-blue') !important;
     }
   }
 
@@ -115,7 +113,7 @@ $prefixCls: 'hi-dropdown' !default;
         width: 100%;
       }
 
-      &:not(#{&}--disabled):hover {
+      &:not(.hi-dropdown__menu-item--disabled):hover {
         background-color: #ecf2fe;
       }
     }
@@ -123,8 +121,12 @@ $prefixCls: 'hi-dropdown' !default;
 }
 
 @each $key, $value in $palette-primary {
+  .theme__#{$key}.#{$prefixCls}__button--active {
+    color: $value !important;
+  }
+
   .theme__#{$key}.#{$prefixCls}__menu {
-    .#{$prefixCls}__menu-item:not(.hi-dropdown__menu-item----disabled):hover {
+    .#{$prefixCls}__menu-item:not(.hi-dropdown__menu-item--disabled):hover {
       background-color: rgba($value, 0.15);
     }
   }
