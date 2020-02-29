@@ -57,6 +57,12 @@
 
     .hi-form-item {
       flex-direction: column;
+
+      .hi-form-item__label {
+        height: 22px;
+        padding-right: 8px;
+        margin-bottom: 8px;
+      }
     }
   }
 }
