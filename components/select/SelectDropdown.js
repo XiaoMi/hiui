@@ -92,10 +92,13 @@ class SelectDropdown extends Component {
   }
   cleanSearchbarValue (e) {
     e.stopPropagation()
+    const filterText = ''
+    this.filterOptions(filterText)
+    this.props.onSearch(filterText)
+
     this.setState({
-      searchbarValue: ''
+      searchbarValue: filterText
     })
-    this.props.onSearch()
   }
   handleKeyDown (evt) {
     if (evt.keyCode === 13) {
