@@ -21,7 +21,7 @@ class SelectDropdown extends Component {
     return {filterItems: _filterItems, searchbarValue: _searchbarValue}
   }
   componentDidMount () {
-    this.props.searchable && this.searchbar.focus()
+    this.props.searchable && setTimeout(() => this.searchbar.focus(), 0)
   }
 
   onClickOption (e, item, index) {
@@ -172,6 +172,7 @@ class SelectDropdown extends Component {
     const style = optionWidth && {
       width: optionWidth
     }
+
     return (
       <div
         className='hi-select__dropdown'

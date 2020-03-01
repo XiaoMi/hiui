@@ -287,7 +287,7 @@ class Select extends Component {
       return
     }
 
-    this.selectInput.focus()
+    !this.getSearchable() && this.selectInput.focus()
     if (this.props.disabled) {
       return
     }
@@ -317,7 +317,7 @@ class Select extends Component {
 
     selectedItems.splice(sIndex, 1)
     this.onChange(selectedItems, item, () => {
-      this.selectInput.focus()
+      !this.getSearchable() && this.selectInput.focus()
     }, selectedItems)
   }
   // 全部删除
