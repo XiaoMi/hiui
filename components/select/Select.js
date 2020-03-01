@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-import shallowEqual from 'shallowequal'
 import debounce from 'lodash/debounce'
 import cloneDeep from 'lodash/cloneDeep'
 import Popper from '../popper'
@@ -129,7 +128,7 @@ class Select extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!shallowEqual(nextProps.data, this.props.data)) {
+    if (!_.isEqual(nextProps.data, this.props.data)) {
       const selectedItems = this.resetSelectedItems(
         nextProps.value || this.state.selectedItems,
         nextProps.data,
@@ -141,7 +140,7 @@ class Select extends Component {
         dropdownItems: cloneDeep(nextProps.data)
       })
     } else {
-      if (!shallowEqual(nextProps.value, this.props.value)) {
+      if (!_.isEqual(nextProps.value, this.props.value)) {
         const selectedItems = this.resetSelectedItems(
           nextProps.value,
           this.state.dropdownItems,

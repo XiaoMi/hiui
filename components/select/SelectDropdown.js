@@ -10,7 +10,7 @@ class SelectDropdown extends Component {
     this.state = {
       filterItems: this.props.dropdownItems,
       searchbarValue: '',
-      cachedropdownItems: []
+      cachedropdownItems: this.props.dropdownItems
     }
   }
   static getDerivedStateFromProps (nextProps, prevState) {
@@ -172,7 +172,6 @@ class SelectDropdown extends Component {
     const style = optionWidth && {
       width: optionWidth
     }
-
     return (
       <div
         className='hi-select__dropdown'
