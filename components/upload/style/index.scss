@@ -308,6 +308,7 @@
       width: 80px;
       height: 80px;
       line-height: 80px;
+      box-sizing: border-box;
     }
   }
 
@@ -366,6 +367,10 @@
     .hi-upload__upstatus {
       width: 100%;
       margin-left: 0;
+    }
+
+    .hi-upload__right-content {
+      padding-left: 0;
     }
 
     .upload--disabled {

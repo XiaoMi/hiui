@@ -54,8 +54,8 @@ $prefix: 'hi-tabs' !default;
     }
 
     .#{$prefix}__item {
-      height: 48px;
-      line-height: 48px;
+      height: 40px;
+      line-height: 40px;
       padding: 0 16px;
       box-sizing: border-box;
 
@@ -103,6 +103,9 @@ $prefix: 'hi-tabs' !default;
     }
 
     .#{$prefix}__item {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+
       &--active {
         border-right-color: #fff;
       }
