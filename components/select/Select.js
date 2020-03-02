@@ -616,33 +616,34 @@ class Select extends Component {
           placement="top-bottom-start"
         >
           { dropdownShow && this.props.open && <SelectDropdown
-            noFoundTip={emptyContent}
-            localeMap={localeDatas.select || {} }
-            mode={type}
-            searchPlaceholder={searchPlaceholder}
-            theme={theme}
-            onBlur={onBlur}
-            onFocus={onFocus}
-            isOnSearch = {onSearch || dataSource}
-            onSearch={this.debouncedFilterItems.bind(this)}
-            searchable={searchable}
-            showCheckAll={showCheckAll}
-            checkAll={this.checkAll.bind(this)}
-            loading={fetching}
-            focusedIndex={focusedIndex}
-            filterOption={filterOption}
-            matchFilter={this.matchFilter.bind(this)}
-            setFocusedIndex={this.setFocusedIndex.bind(this)}
-            show={dropdownShow && this.props.open}
-            optionWidth={optionWidth}
-            selectInputWidth={selectInputWidth}
-            onEnterSelect={this.onEnterSelect.bind(this)}
-            moveFocusedIndex={this.moveFocusedIndex.bind(this)}
-            dropdownItems={type === 'multiple' && dataSource && this.state.keyword === '' ? cacheSelectedItems : dropdownItems}
-            selectedItems={selectedItems}
-            dropdownRender={render}
-            onClickOption={this.onClickOption.bind(this)}
-  /> }
+                  noFoundTip={emptyContent}
+                  localeMap={localeDatas.select || {} }
+                  mode={type}
+                  searchPlaceholder={searchPlaceholder}
+                  theme={theme}
+                  onBlur={onBlur}
+                  onFocus={onFocus}
+                  isOnSearch = {onSearch || dataSource}
+                  onSearch={this.debouncedFilterItems.bind(this)}
+                  searchable={searchable}
+                  showCheckAll={showCheckAll}
+                  checkAll={this.checkAll.bind(this)}
+                  loading={fetching}
+                  focusedIndex={focusedIndex}
+                  filterOption={filterOption}
+                  matchFilter={this.matchFilter.bind(this)}
+                  setFocusedIndex={this.setFocusedIndex.bind(this)}
+                  show={dropdownShow && this.props.open}
+                  optionWidth={optionWidth}
+                  selectInputWidth={selectInputWidth}
+                  onEnterSelect={this.onEnterSelect.bind(this)}
+                  moveFocusedIndex={this.moveFocusedIndex.bind(this)}
+                  dropdownItems={type === 'multiple' && dataSource && this.state.keyword === '' ? cacheSelectedItems : dropdownItems}
+                  selectedItems={selectedItems}
+                  dropdownRender={render}
+                  onClickOption={this.onClickOption.bind(this)}
+            /> 
+          }
         </Popper>
       </div>
     )
