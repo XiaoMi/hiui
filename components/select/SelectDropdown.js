@@ -21,9 +21,11 @@ class SelectDropdown extends Component {
     return {filterItems: _filterItems, searchbarValue: _searchbarValue}
   }
   componentDidMount () {
+    this.focus()
+  }
+  focus = () => {
     this.props.searchable && setTimeout(() => this.searchbar.focus(), 0)
   }
-
   onClickOption (e, item, index) {
     e.stopPropagation()
     e.preventDefault()

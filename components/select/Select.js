@@ -615,7 +615,7 @@ class Select extends Component {
           className="hi-select__popper"
           placement="top-bottom-start"
         >
-          <SelectDropdown
+          { dropdownShow && this.props.open && <SelectDropdown
             noFoundTip={emptyContent}
             localeMap={localeDatas.select || {} }
             mode={type}
@@ -642,7 +642,7 @@ class Select extends Component {
             selectedItems={selectedItems}
             dropdownRender={render}
             onClickOption={this.onClickOption.bind(this)}
-          />
+  /> }
         </Popper>
       </div>
     )
