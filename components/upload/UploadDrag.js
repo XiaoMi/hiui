@@ -12,6 +12,7 @@ class UploadDrag extends Upload {
       },
       this.state
     )
+    console.log('props', props)
     this.dragBoxRef = React.createRef()
   }
 
@@ -118,6 +119,7 @@ class UploadDrag extends Upload {
               <Icon name='tishi' />
               <span className='hi-upload__tips--exist'>
                 {fileCountLimted ? localeDatas.upload.dragTipsLimited : localeDatas.upload.dragTips}
+                {'，' + tips}
               </span>
             </li>
           }
