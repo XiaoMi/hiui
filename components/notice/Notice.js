@@ -40,7 +40,7 @@ class Notice extends Component {
           this.closeTimer = setTimeout(() => this.closeNotice(), 300)
         }}
       >
-        <div className={classNames(`hi-${prefix}`, `theme__${theme}`, { [`hi-${prefix}--${type}`]: type })}>
+        <div style={{backgroundColor: '#fff'}} className={classNames(`hi-${prefix}`, `theme__${theme}`, { [`hi-${prefix}--${type}`]: type })}>
           <div className={`hi-${prefix}__content--wrapper`}>{children}</div>
           {closeable && (
             <span
