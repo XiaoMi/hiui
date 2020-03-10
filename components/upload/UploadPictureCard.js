@@ -18,7 +18,8 @@ class UploadPictureCard extends Upload {
       accept,
       onRemove,
       localeDatas,
-      theme
+      theme,
+      onDownload
     } = this.props
     const {
       fileList,
@@ -64,7 +65,14 @@ class UploadPictureCard extends Upload {
                     <img src={file.url} />
                   </div>
                   <div className='hi-upload__right-content'>
-                    <span className={fileNameCls} title={file.name}>{file.name}</span>
+                    <a target='_blank' href={file.url || null} className={fileNameCls} title={file.name} onClick={e => {
+                      if (onDownload) {
+                        e.preventDefault()
+                        onDownload(file)
+                      }
+                    }}>
+                      {file.name}
+                    </a>
                     <span>
                       { onRemove &&
                         <Icon

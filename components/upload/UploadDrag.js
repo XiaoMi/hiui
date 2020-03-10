@@ -47,7 +47,8 @@ class UploadDrag extends Upload {
       tips,
       localeDatas,
       onRemove,
-      theme
+      theme,
+      onDownload
     } = this.props
     const {
       overEvent,
@@ -123,7 +124,7 @@ class UploadDrag extends Upload {
           }
           {fileList.map((file, index) => {
             const fileNameCls = classNames(
-              'file-name',
+              'hi-upload__filename',
               'upload-list__item-name',
               file.uploadState === 'error' && 'hi-upload__filename--error'
             )
@@ -136,7 +137,14 @@ class UploadDrag extends Upload {
               >
                 <span className={`Ficon-${file.fileType}`} />
                 <div className='hi-upload__right-content'>
-                  <span className={fileNameCls}>{file.name}</span>
+                  <a target='_blank' href={file.url || null} className={fileNameCls} title={file.name} onClick={e => {
+                    if (onDownload) {
+                      e.preventDefault()
+                      onDownload(file)
+                    }
+                  }}>
+                    {file.name}
+                  </a>
                   {
                     onRemove && <span
                       className='hi-upload__operate-icon'
