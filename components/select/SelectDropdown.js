@@ -44,7 +44,7 @@ class SelectDropdown extends Component {
       filterItems = dropdownItems
     } else {
       dropdownItems.map((item) => {
-        item.title.includes(keyword) && filterItems.push(item)
+        String(item.title).includes(keyword) && filterItems.push(item)
       })
     }
     this.setState({

@@ -235,6 +235,8 @@ $tree: 'hi-tree' !default;
       &--expanded {
         &.can-expand {
           > .hi-tree_item-text {
+            padding-left: 8px;
+
             &::before {
               position: absolute;
               top: calc(50% + 8px);

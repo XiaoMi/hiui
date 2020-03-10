@@ -32,7 +32,7 @@
     color: #666;
     display: flex;
     align-items: center;
-    padding: 7px 0;
+    padding: 6px 0;
     overflow: hidden;
     position: relative;
 
@@ -59,7 +59,7 @@
       background: #edf2fc;
       border-radius: 2px;
       font-size: 14px;
-      padding: 8px 6px;
+      padding: 8px 12px;
       height: auto !important;
       border: 1px solid #d8e5ff;
     }
@@ -313,6 +313,7 @@
       width: 80px;
       height: 80px;
       line-height: 80px;
+      box-sizing: border-box;
     }
   }
 
@@ -371,6 +372,10 @@
     .hi-upload__upstatus {
       width: 100%;
       margin-left: 0;
+    }
+
+    .hi-upload__right-content {
+      padding-left: 0;
     }
 
     .upload--disabled {

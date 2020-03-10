@@ -621,7 +621,7 @@ class TreeNode extends Component {
                   collectExpandId(dataCache, e.target.value, [], dataCache)
                 )
               }}
-              append={<Icon name='search' style={{ fontSize: '24px' }} />}
+              append={<Icon name='search' style={{ fontSize: '16px' }} />}
               style={{ width: '272px' }}
             />
             {highlightNum === 0 && searchValue !== '' && (
