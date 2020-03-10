@@ -40,7 +40,11 @@ class Notice extends Component {
           this.closeTimer = setTimeout(() => this.closeNotice(), 300)
         }}
       >
-        <div style={{backgroundColor: '#fff'}} className={classNames(`hi-${prefix}`, `theme__${theme}`, { [`hi-${prefix}--${type}`]: type })}>
+        <div
+          className={classNames(`hi-${prefix}`, `theme__${theme}`, {
+            [`hi-${prefix}--${type}`]: type
+          })}
+        >
           <div className={`hi-${prefix}__content--wrapper`}>{children}</div>
           {closeable && (
             <span
@@ -58,4 +62,4 @@ class Notice extends Component {
 }
 Notice.IS_HIUI_NOTICE = true
 export default Provider(Notice)
-export {Notice}
+export { Notice }
