@@ -638,7 +638,7 @@ class Select extends Component {
                   selectInputWidth={selectInputWidth}
                   onEnterSelect={this.onEnterSelect.bind(this)}
                   moveFocusedIndex={this.moveFocusedIndex.bind(this)}
-                  dropdownItems={type === 'multiple' && dataSource && this.state.keyword === '' ? cacheSelectedItems : dropdownItems}
+                  dropdownItems={ dataSource && this.state.keyword === '' ? cacheSelectedItems : dropdownItems}
                   selectedItems={selectedItems}
                   dropdownRender={render}
                   onClickOption={this.onClickOption.bind(this)}
