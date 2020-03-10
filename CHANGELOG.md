@@ -1,5 +1,13 @@
 # 更新日志
 
+## 2.10.0
+
+- 新增 `<Upload />` onDownload 点击上传成功文件的回调 [#613](https://github.com/XiaoMi/hiui/issues/613)
+- 优化 `<Select />` 可搜索模式下自动获取输入框焦点 [#925](https://github.com/XiaoMi/hiui/issues/925)
+- 优化 `<Carousel />` 轮播定位交互，并新增 showPages 是否显示页码指示器 [#925](https://github.com/XiaoMi/hiui/issues/925)
+- 修复 `<Select />` 异步模式下有默认值不能正常使用的问题 [#962](https://github.com/XiaoMi/hiui/issues/962)
+- 优化若干视觉还原问题：[#952](https://github.com/XiaoMi/hiui/issues/952) [#954](https://github.com/XiaoMi/hiui/issues/954) [#956](https://github.com/XiaoMi/hiui/issues/956) [#958](https://github.com/XiaoMi/hiui/issues/958) [#960](https://github.com/XiaoMi/hiui/issues/960) [#961](https://github.com/XiaoMi/hiui/issues/961) [#965](https://github.com/XiaoMi/hiui/issues/965) [#967](https://github.com/XiaoMi/hiui/issues/967) [#968](https://github.com/XiaoMi/hiui/issues/968) [#969](https://github.com/XiaoMi/hiui/issues/969) [#970](https://github.com/XiaoMi/hiui/issues/970) [#971](https://github.com/XiaoMi/hiui/issues/971) [#975](https://github.com/XiaoMi/hiui/issues/975) [#976](https://github.com/XiaoMi/hiui/issues/976) [#977](https://github.com/XiaoMi/hiui/issues/977) [#978](https://github.com/XiaoMi/hiui/issues/978) [#982](https://github.com/XiaoMi/hiui/issues/982) [#983](https://github.com/XiaoMi/hiui/issues/983)
+
 ## 2.9.0
 
 - 新增 `<Progress />` active 属性展示加载动效 [#941](https://github.com/XiaoMi/hiui/issues/941)
