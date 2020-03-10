@@ -10,7 +10,7 @@
   .hi-notification {
     position: relative;
     padding: 9px 12px;
-    margin-top: 10px;
+    margin-bottom: 10px;
     border-radius: 2px;
     transition: 0.3s ease;
     display: flex;
@@ -138,8 +138,15 @@
 @each $key, $value in $theme-colors {
   .hi-notification__container {
     .theme__#{$key}.hi-notification.hi-notification--info {
-      background-color: rgba(map-get(get-palette(get-color($palette-primary, $key)), '50'), 0.1);
-      border: 1px solid map-get(get-palette(get-color($palette-primary, $key)), '20');
+      background-color:
+        rgba(
+          map-get(get-palette(get-color($palette-primary, $key)), '50'),
+          0.1
+        );
+      border:
+        1px
+        solid
+        map-get(get-palette(get-color($palette-primary, $key)), '20');
 
       .hi-icon {
         color: $value;
