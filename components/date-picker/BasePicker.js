@@ -26,11 +26,24 @@ class BasePicker extends Component {
     this.rInput = null
   }
   setPlaceholder () {
-    const {placeholder, localeDatas, type} = this.props
+    const {placeholder, localeDatas, type, showTime} = this.props
     const tempPlaceholder = localeDatas.datePicker.placeholders[type] || localeDatas.datePicker.placeholder
     let leftPlaceholder = tempPlaceholder
     let rightPlaceholder = tempPlaceholder
-
+    if (showTime) {
+      leftPlaceholder = localeDatas.datePicker.placeholderTimeperiod
+      rightPlaceholder = localeDatas.datePicker.placeholderTimeperiod
+    }
+    if (tempPlaceholder instanceof Array) {
+      if (showTime) {
+        const timeperiodPlaceholder = localeDatas.datePicker.placeholders.timeperiod
+        leftPlaceholder = timeperiodPlaceholder[0]
+        rightPlaceholder = timeperiodPlaceholder[1]
+      } else {
+        leftPlaceholder = tempPlaceholder[0]
+        rightPlaceholder = tempPlaceholder[1]
+      }
+    }
     if (placeholder instanceof Array) {
       leftPlaceholder = placeholder[0]
       rightPlaceholder = placeholder[1] || placeholder[0]

@@ -6,6 +6,7 @@ export default {
     ok: '确认',
     to: '至',
     placeholder: '请选择日期',
+    placeholderTimeperiod: '请选择日期时间',
     dateChoose: '日期选择',
     timeChoose: '时间选择',
     undefinedType: '类型未定义',
@@ -21,9 +22,10 @@ export default {
       month: '请选择月',
       year: '请选择年',
       time: '请选择时间',
-      daterange: '请选择日期',
+      daterange: ['开始日期', '结束日期'],
       week: '请选择周',
-      weekrange: '请选择周'
+      weekrange: ['开始周', '结束周'],
+      timeperiod: ['开始日期时间', '结束日期时间']
     },
     year: '年',
     timePeriod: '时间段',
