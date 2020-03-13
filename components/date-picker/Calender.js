@@ -209,7 +209,15 @@ class Calender extends Component {
    * @param {*} cls className
    */
   getFullTime (value, cls) {
-    const { date, type } = this.props
+    const {
+      date,
+      type,
+      altCalendarPreset,
+      altCalendar,
+      dateMarkRender,
+      altCalendarPresetData,
+      dateMarkPresetData
+    } = this.props
 
     let { year, month, day, hours, minutes, seconds } = deconstructDate(date)
 
@@ -237,40 +245,47 @@ class Calender extends Component {
     const datainfo = _year + '/' + _month + '/' + _value
     const LunarInfo = Lunar.toLunar(_year, _month, _value)
     let lunarcellinfo = {
-      text: this.props.altCalendarPreset === 'zh-CN' ? LunarInfo[6] : null,
+      text: altCalendarPreset === 'zh-CN' ? LunarInfo[6] : null, // 默认预置信息
       hightlight: false
     }
 
-    if (this.props.altCalendar || this.props.dateMarkRender) {
+    if (altCalendar || dateMarkRender) {
       lunarcellinfo = {
         text: this.altCalendarText(datainfo, lunarcellinfo),
-        hightlight: this.props.altCalendarPresetData && this.props.altCalendarPresetData[datainfo] && this.props.altCalendarPresetData[datainfo].hightlight,
+        hightlight: altCalendarPresetData && altCalendarPresetData[datainfo] && altCalendarPresetData[datainfo].hightlight,
         nodeMark: this.markRender(datainfo)
       }
     }
-    if ((this.props.dateMarkPresetData && this.props.dateMarkPresetData[datainfo]) || (this.props.altCalendarPresetData && this.props.altCalendarPresetData[datainfo])) {
+    if ((dateMarkPresetData && dateMarkPresetData[datainfo]) || (altCalendarPresetData && altCalendarPresetData[datainfo])) {
       lunarcellinfo = {
         text: this.altCalendarText(datainfo, lunarcellinfo),
-        hightlight: this.props.altCalendarPresetData && this.props.altCalendarPresetData[datainfo] && this.props.altCalendarPresetData[datainfo].hightlight,
+        hightlight: altCalendarPresetData && altCalendarPresetData[datainfo] && altCalendarPresetData[datainfo].hightlight,
         nodeMark: this.markRender(datainfo)
       }
     }
     return lunarcellinfo
   }
   altCalendarText = (datainfo, lunarcellinfo) => {
-    return this.props.altCalendarPresetData && this.props.altCalendarPresetData[datainfo] ? this.props.altCalendarPresetData[datainfo].text ? this.props.altCalendarPresetData[datainfo].text : this.props.altCalendarPresetData[datainfo] : lunarcellinfo.text
+    const {altCalendarPresetData} = this.props
+    if (altCalendarPresetData && altCalendarPresetData[datainfo]) {
+      return altCalendarPresetData[datainfo].text || altCalendarPresetData[datainfo]
+    }
+    return lunarcellinfo.text
   }
   markRender (datainfo) {
-    if (this.props.dateMarkRender || this.props.dateMarkPresetData) {
-      const markFunc = this.props.dateMarkRender ? this.props.dateMarkRender : () => false
-
-      return markFunc(new Date(datainfo).getTime(), new Date().getTime()) ? this.getMarkNode(markFunc(new Date(datainfo).getTime(), new Date().getTime())) : this.props.dateMarkPresetData && this.props.dateMarkPresetData[datainfo] ? this.props.dateMarkPresetData[datainfo] : null
-    } else {
-      return null
+    // 存在传入自定就优先使用自定义
+    const {dateMarkRender, dateMarkPresetData} = this.props
+    const markRenderNode = dateMarkRender ? dateMarkRender(new Date(datainfo).getTime(), new Date().getTime()) : false
+    if (markRenderNode) {
+      return this.getMarkNode(markRenderNode)
     }
+    if (dateMarkPresetData) {
+      return dateMarkPresetData[datainfo]
+    }
+    return null
   }
   altCalendar = (td) => {
-    const { type: layerType, date } = this.props
+    const { type: layerType, date, altCalendarPresetData, dateMarkPresetData } = this.props
     const nDate = getYear(new Date())
     const propDate = getYear(date)
     const isAddToday = nDate === propDate
@@ -291,7 +306,7 @@ class Calender extends Component {
         _class.push(td.type)
         break
     }
-    if ((this.props.altCalendarPresetData || this.props.dateMarkPresetData) && layerType !== 'year' && layerType !== 'month') {
+    if ((altCalendarPresetData || dateMarkPresetData) && layerType !== 'year' && layerType !== 'month') {
       const fullTimeInfo = this.getFullTime(td.value, _class)
       return (
         <React.Fragment>
