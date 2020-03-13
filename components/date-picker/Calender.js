@@ -3,6 +3,8 @@ import { deconstructDate, getYearWeek, showLargeCalendar } from './util'
 import Provider from '../context'
 import Lunar from './toLunar'
 import {DAY_MILLISECONDS} from './constants'
+import { CSSTransition } from 'react-transition-group'
+
 import {
   getDaysInMonth,
   subMonths,
@@ -23,7 +25,8 @@ class Calender extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      rows: [[], [], [], [], [], []]
+      rows: [[], [], [], [], [], []],
+      show: false
     }
     this.weekNum = 0
   }
@@ -248,7 +251,6 @@ class Calender extends Component {
       text: altCalendarPreset === 'zh-CN' ? LunarInfo[6] : null, // 默认预置信息
       hightlight: false
     }
-
     if (altCalendar || dateMarkRender) {
       lunarcellinfo = {
         text: this.altCalendarText(datainfo, lunarcellinfo),
@@ -263,7 +265,20 @@ class Calender extends Component {
         nodeMark: this.markRender(datainfo)
       }
     }
-    return lunarcellinfo
+    return {...altCalendarPresetData[datainfo], ...lunarcellinfo}
+  }
+  showHolidayTimeId = null
+  showHolidayDetail = (fullTimeInfo) => {
+    clearTimeout(this.showHolidayTimeId)
+    this.setState({
+      show: true,
+      holidayFullName: fullTimeInfo.FullText || fullTimeInfo.text
+    })
+    this.showHolidayTimeId = setTimeout(() => {
+      this.setState({
+        show: false
+      })
+    }, 3000)
   }
   altCalendarText = (datainfo, lunarcellinfo) => {
     const {altCalendarPresetData} = this.props
@@ -285,7 +300,7 @@ class Calender extends Component {
     return null
   }
   altCalendar = (td) => {
-    const { type: layerType, date, altCalendarPresetData, dateMarkPresetData } = this.props
+    const { type: layerType, date, altCalendarPresetData, dateMarkPresetData, altCalendarPreset } = this.props
     const nDate = getYear(new Date())
     const propDate = getYear(date)
     const isAddToday = nDate === propDate
@@ -314,17 +329,24 @@ class Calender extends Component {
             fullTimeInfo.nodeMark ? fullTimeInfo.nodeMark : null
           }
           {
-            fullTimeInfo.text ? <div className='hi-datepicker__content hi-datepicker__content--showLunar' value={td.value}>
-              {
-                fullTimeInfo.hightlight
-                  ? <span value={td.value} className='hi-datepicker__text--showLunar hi-datepicker__text--showLunar--festival'>
-                    {fullTimeInfo.text}
-                  </span>
-                  : <span value={td.value} className='hi-datepicker__text--showLunar'>
-                    {fullTimeInfo.text}
-                  </span>
-              }
-            </div> : null
+            fullTimeInfo.text
+              ? <div
+                className='hi-datepicker__content hi-datepicker__content--showLunar'
+                value={td.value}
+                onMouseEnter={() => {
+                  altCalendarPreset === 'id-ID' && this.showHolidayDetail(fullTimeInfo)
+                }}
+              >
+                {
+                  fullTimeInfo.hightlight
+                    ? <span value={td.value} className='hi-datepicker__text--showLunar hi-datepicker__text--showLunar--festival'>
+                      {fullTimeInfo.text}
+                    </span>
+                    : <span value={td.value} className='hi-datepicker__text--showLunar'>
+                      {fullTimeInfo.text}
+                    </span>
+                }
+              </div> : null
           }
         </React.Fragment>
       )
@@ -382,63 +404,76 @@ class Calender extends Component {
   }
   render () {
     const { type, data } = this.props
+    const { show, holidayFullName } = this.state
     const rows = data || this.getRows()
     return (
-      <table
-        className='hi-datepicker__calender'
-        onClick={this.handlerClick.bind(this)}
-        onMouseMove={this.handlerMouseMove.bind(this)}
-      >
-        {
-          (type.indexOf('date') !== -1 || type.indexOf('week') !== -1 || type.indexOf('timeperiod') !== -1) && (
-            <thead>
-              <tr>
-                {
-                  this.getWeeks().map((item, index) => {
-                    return <th key={index}>{item}</th>
-                  })
-                }
-              </tr>
-            </thead>
-          )
-        }
-        <tbody>
+      <div>
+        <CSSTransition
+          in={show}
+          timeout={300}
+          classNames='hi-datepicker__indiaHoli'
+        >
+          <div className='hi-datepicker__indiaHoli'>
+            <div className='hi-datepicker__indiaHoli-text'>{holidayFullName}</div>
+          </div>
+        </CSSTransition>
+        <table
+          className='hi-datepicker__calender'
+          onClick={this.handlerClick.bind(this)}
+          onMouseMove={this.handlerMouseMove.bind(this)}
+        >
+
           {
-            rows.map((row, index) => {
-              return (
-                <tr
-                  key={index}
-                  className={`hi-datepicker__row ${row.currentWeek ? 'hi-datepicker__row--current-week' : ''}`}
-                  onMouseEnter={this.TRMouseOver.bind(this, row.weekNum)}
-                >
+            (type.indexOf('date') !== -1 || type.indexOf('week') !== -1 || type.indexOf('timeperiod') !== -1) && (
+              <thead>
+                <tr>
                   {
-                    row.map((cell, _index) => {
-                      return (
-                        <td
-                          key={_index}
-                          value={cell.value}
-                          className={this.getTDClass(cell, _index)}
-                        >
-                          <div className='hi-datepicker__content__wrap' value={cell.value}>
-                            <div className='hi-datepicker__content' value={cell.value}>
-                              <span value={cell.value} className='hi-datepicker__text'>
-                                {cell.text || cell.value}
-                              </span>
-                            </div>
-                            {
-                              this.altCalendar(cell)
-                            }
-                          </div>
-                        </td>
-                      )
+                    this.getWeeks().map((item, index) => {
+                      return <th key={index}>{item}</th>
                     })
                   }
                 </tr>
-              )
-            })
+              </thead>
+            )
           }
-        </tbody>
-      </table>
+          <tbody>
+            {
+              rows.map((row, index) => {
+                return (
+                  <tr
+                    key={index}
+                    className={`hi-datepicker__row ${row.currentWeek ? 'hi-datepicker__row--current-week' : ''}`}
+                    onMouseEnter={this.TRMouseOver.bind(this, row.weekNum)}
+                  >
+                    {
+                      row.map((cell, _index) => {
+                        return (
+                          <td
+                            key={_index}
+                            value={cell.value}
+                            className={this.getTDClass(cell, _index)}
+                          >
+                            <div className='hi-datepicker__content__wrap' value={cell.value}>
+                              <div className='hi-datepicker__content' value={cell.value}>
+                                <span value={cell.value} className='hi-datepicker__text'>
+                                  {cell.text || cell.value}
+                                </span>
+                              </div>
+                              {
+                                this.altCalendar(cell)
+                              }
+                            </div>
+                          </td>
+                        )
+                      })
+                    }
+                  </tr>
+                )
+              })
+            }
+          </tbody>
+        </table>
+      </div>
     )
   }
 }

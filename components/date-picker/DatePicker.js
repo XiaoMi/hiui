@@ -7,12 +7,12 @@ import DateRangePanel from './DateRangePanel'
 import WeekRangePanel from './WeekRangePanel'
 import Provider from '../context'
 import { getPRCDate, deconstructDate } from './util'
-
+import IndiaHoliday from './IndiaHoliday'
 class DatePicker extends BasePicker {
   static propTypes = {
     altCalendar: PropTypes.array,
     dateMarkRender: PropTypes.func,
-    altCalendarPreset: PropTypes.oneOf(['zh-CN']),
+    altCalendarPreset: PropTypes.oneOf(['zh-CN', 'id-ID']),
     dateMarkPreset: PropTypes.oneOf(['zh-CN'])
   }
   constructor (props) {
@@ -24,24 +24,46 @@ class DatePicker extends BasePicker {
   }
   // 获取预置数据
   _getLunarPresetData () {
+    const {altCalendarPreset, altCalendar} = this.props
     const allPRCDate = {}
-    this.props.altCalendarPreset === 'zh-CN' ? getPRCDate('PRCLunar').then(res => {
-      Object.keys(res.data).forEach(key => {
+    if (altCalendarPreset === 'zh-CN') {
+      getPRCDate('PRCLunar').then(res => {
+        Object.keys(res.data).forEach(key => {
+          let oneYear = {}
+          res.data[key].PRCLunar.forEach(item => {
+            Object.assign(oneYear, {
+              [item.date.replace(/-/g, '/')]: item.text
+            })
+          })
+          Object.assign(allPRCDate, oneYear)
+        })
+        this.altCalendarPresetData = altCalendar ? this._altCalendarData(allPRCDate) : allPRCDate
+      })
+    } else if (altCalendarPreset === 'id-ID') {
+      Object.keys(IndiaHoliday).forEach(key => {
         let oneYear = {}
-        res.data[key].PRCLunar.forEach(item => {
+        IndiaHoliday[key].IndiaHoliday.forEach(item => {
           Object.assign(oneYear, {
-            [item.date.replace(/-/g, '/')]: item.text
+            [item.date.replace(/-/g, '/')]: {
+              ...item,
+              hightlight: true
+            }
           })
         })
         Object.assign(allPRCDate, oneYear)
       })
-      this.altCalendarPresetData = this.props.altCalendar ? this._altCalendarData(allPRCDate) : allPRCDate
-    })
-      : this.altCalendarPresetData = this.props.altCalendar ? this._altCalendarData(allPRCDate) : {}
+      this.altCalendarPresetData = altCalendar ? this._altCalendarData(allPRCDate) : allPRCDate
+    } else {
+      this.altCalendarPresetData = altCalendar ? this._altCalendarData(allPRCDate) : {}
+    }
   }
   // 获取预置数据
   _getMarkPresetData () {
-    this.props.dateMarkPreset === 'zh-CN' && getPRCDate('PRCHoliday').then(res => {
+    const {altCalendarPreset, dateMarkPreset} = this.props
+    if (altCalendarPreset && altCalendarPreset !== 'zh-CN') {
+      return
+    }
+    dateMarkPreset === 'zh-CN' && getPRCDate('PRCHoliday').then(res => {
       const allPRCDate = {}
       Object.keys(res.data).forEach(key => {
         Object.keys(res.data[key].PRCHoliday).forEach(elkey => {
@@ -53,6 +75,7 @@ class DatePicker extends BasePicker {
       this.dateMarkPresetData = allPRCDate
     })
   }
+  // 合并用户自定义的日期信息作为presetData
   _altCalendarData = (allPRCDate) => {
     const allData = {}
     this.props.altCalendar.length > 0 && this.props.altCalendar.forEach(item => {

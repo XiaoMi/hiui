@@ -10,6 +10,48 @@ $basic-color: #4284f5 !default;
   font-size: 14px;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
 
+  .hi-datepicker__indiaHoli {
+    display: none;
+    position: absolute;
+    top: 36px;
+    left: 66px;
+    width: 300px;
+    text-align: center;
+
+    &-text {
+      display: inline-block;
+      max-width: 300px;
+      word-break: break-all;
+      background: #edf2fc;
+      border: 1px solid #d8e5ff;
+      padding: 7px 12px;
+      border-radius: 2px;
+    }
+
+    &-enter {
+      display: none;
+      opacity: 0;
+      transition: all 0.3s ease-in;
+    }
+
+    &-enter-done {
+      display: block;
+      opacity: 1;
+      transition: all 0.3s ease-in;
+    }
+
+    &-exit {
+      display: block;
+      opacity: 1;
+    }
+
+    &-exit-done {
+      display: none;
+      opacity: 0;
+      transition: all 0.3s ease-in;
+    }
+  }
+
   &__input-root {
     display: inline-block;
   }
@@ -440,11 +482,11 @@ $basic-color: #4284f5 !default;
           //     width: 100%;
           //   }
           // }
-          background: rgba(66, 132, 245, 0.1);
+          td .hi-datepicker__content__wrap {
+            background: rgba(66, 132, 245, 0.1);
+          }
 
           .hi-datepicker__content__wrap:hover {
-            background: none;
-
             .hi-datepicker__content:hover {
               background: none;
             }
