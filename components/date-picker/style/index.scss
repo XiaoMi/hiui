@@ -14,13 +14,13 @@ $basic-color: #4284f5 !default;
     display: none;
     position: absolute;
     top: 36px;
-    left: 66px;
-    width: 300px;
+    left: 0;
+    width: 430px;
     text-align: center;
 
     &-text {
       display: inline-block;
-      max-width: 300px;
+      max-width: 410px;
       word-break: break-all;
       background: #edf2fc;
       border: 1px solid #d8e5ff;
