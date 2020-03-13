@@ -27,14 +27,15 @@ class BasePicker extends Component {
   }
   setPlaceholder () {
     const {placeholder, localeDatas, type, showTime} = this.props
-    const tempPlaceholder = localeDatas.datePicker.placeholders[type] || localeDatas.datePicker.placeholder
+    const typePlaceholder = localeDatas.datePicker.placeholders[type]
+    const tempPlaceholder = showTime
+      ? localeDatas.datePicker.placeholderTimeperiod
+      : typePlaceholder || localeDatas.datePicker.placeholder
+
     let leftPlaceholder = tempPlaceholder
     let rightPlaceholder = tempPlaceholder
-    if (showTime) {
-      leftPlaceholder = localeDatas.datePicker.placeholderTimeperiod
-      rightPlaceholder = localeDatas.datePicker.placeholderTimeperiod
-    }
-    if (tempPlaceholder instanceof Array) {
+
+    if (typePlaceholder instanceof Array) {
       if (showTime) {
         const timeperiodPlaceholder = localeDatas.datePicker.placeholders.timeperiod
         leftPlaceholder = timeperiodPlaceholder[0]
@@ -261,12 +262,14 @@ class BasePicker extends Component {
     this.setState({date: {startDate: null, endDate: null}, texts: ['', ''], isFocus: false}, () => { this.callback() })
   }
   _icon () {
-    const {isFocus} = this.state
+    const {isFocus, texts} = this.state
     const { clearable, type, showTime } = this.props
     const iconCls = classNames(
       'hi-datepicker__input-icon',
       'hi-icon',
-      (isFocus && clearable) ? 'icon-close-circle clear' : ((type.includes('time') || showTime) ? 'icon-time' : 'icon-date')
+      (texts[0].length && isFocus && clearable)
+        ? 'icon-close-circle clear'
+        : ((type.includes('time') || showTime) ? 'icon-time' : 'icon-date')
     )
     return (isFocus && clearable)
       ? <span className={iconCls} onClick={this._clear.bind(this)} />
@@ -293,7 +296,15 @@ class BasePicker extends Component {
       disabled && 'hi-datepicker__input--disabled'
     )
     return (
-      <div className={_cls}>
+      <div
+        className={_cls}
+        onMouseEnter={() => {
+          this.setState({ isFocus: true })
+        }}
+        onMouseLeave={() => {
+          this.setState({ isFocus: false })
+        }}
+      >
         {this._input(this.state.texts[0], 'input', this.state.leftPlaceholder)}
         <span className='hi-datepicker__input--connection'>{localeDatas.datePicker.to}</span>
         {this._input(this.state.texts[1], 'rInput', this.state.rightPlaceholder)}
@@ -317,8 +328,20 @@ class BasePicker extends Component {
       showTime && 'hi-datepicker__input--middle'
     )
     return (
-      <div className={_cls}>
-        {this._input(this.state.texts[0], 'input', this.state.leftPlaceholder)}
+      <div
+        className={_cls}
+        onMouseEnter={() => {
+          this.setState({ isFocus: true })
+        }}
+        onMouseLeave={() => {
+          this.setState({ isFocus: false })
+        }}
+      >
+        {this._input(
+          this.state.texts[0],
+          'input',
+          this.state.leftPlaceholder
+        )}
         {this._icon()}
       </div>
     )
