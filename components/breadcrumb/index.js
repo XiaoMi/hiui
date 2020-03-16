@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Icon from '../icon'
+import Provider from '../context'
+
 import './style/index'
 
 class Breadcrumb extends Component {
   render () {
-    const { separator, data, onClick } = this.props
-    return <div className='hi-breadcrumb'>
+    const { separator, data, onClick, theme } = this.props
+    return <div className={`hi-breadcrumb theme__${theme}`}>
       {
         data.map((item, index) => {
           return <span key={index} className='hi-breadcrumb__item'>
@@ -25,8 +27,8 @@ Breadcrumb.propTypes = {
   onClick: PropTypes.func
 }
 Breadcrumb.defaultProps = {
-  separator: '|',
+  separator: '/',
   data: [],
   onClick: () => {}
 }
-export default Breadcrumb
+export default Provider(Breadcrumb)

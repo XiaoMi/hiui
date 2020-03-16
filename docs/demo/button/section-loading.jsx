@@ -3,8 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Message from '../../../components/message'
 const prefix = 'button-loading'
-const desc =
-  '加载中状态可用来设置点击按钮后的状态，点击示例中最后的「确认」按钮来预览效果'
+const desc = '请求服务器发生延迟时或缓冲状态，使用加载中进行状态说明'
 const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Message from '@hi-ui/hiui/es/message'\n
@@ -14,35 +13,25 @@ class Demo extends React.Component {
     this.state = {
       loading: false
     }
-    this.handleLoadingClick = () => {
-      this.setState({
-        loading: true
-      }, () => {
-        // 三秒后自动恢复
-        setTimeout(() => {
-          Message.open({ type: 'success', title: '提交成功', duration: 2000 })
-          this.setState({
-            loading: false
-          })
-        }, 2000)
-      })
-    }
   }
   render () {
     const { loading } = this.state
     return (
       <React.Fragment>
-        <Button loading type="primary">通过</Button>
-        <Button loading type="line">查看</Button>
+        <Button loading type="primary">提交</Button>
+        <Button loading type="line">提交</Button>
+        <Button loading type="line" icon="delete" />
         <Button loading type="danger" icon="delete" />
-        <Button loading={loading} onClick={this.handleLoadingClick} type="primary">
-          {loading ? '提交中...' : '确认'}
-        </Button>
       </React.Fragment>
     )
   }
 }`
 
 export default () => (
-  <DocViewer code={code} scope={{ Button, Message }} prefix={prefix} desc={desc} />
+  <DocViewer
+    code={code}
+    scope={{ Button, Message }}
+    prefix={prefix}
+    desc={desc}
+  />
 )

@@ -51,7 +51,8 @@ class ItemDropdown extends Component {
       items,
       onChoose,
       localeDatas,
-      activeId
+      activeId,
+      theme
     } = this.props
     const {
       visible
@@ -61,7 +62,7 @@ class ItemDropdown extends Component {
       if (item.tabId === activeId) activeIndex = index
     })
     return (
-      <div className={classNames('hi-tabs-dropdown', {'hi-tabs-dropdown--active': !!items[activeIndex]})}>
+      <div className={classNames('hi-tabs-dropdown', `theme__${theme}`, {'hi-tabs-dropdown--active': !!items[activeIndex]})}>
         <div className='hi-tabs-dropdown__toggle' ref={node => { this.toggleRef = node }} onClick={e => {
           e.stopPropagation()
           this.toggle()
@@ -80,7 +81,7 @@ class ItemDropdown extends Component {
           leftGap={-18}
           topGap={3}
         >
-          <div className={classNames('hi-tabs-dropdown__items')}>
+          <div className={classNames('hi-tabs-dropdown__items', `theme__${theme}`)}>
             {
               items.map((item, index) => {
                 return (

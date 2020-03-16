@@ -2,8 +2,15 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Select from '../../../components/select'
 const prefix = 'select-custom'
+const desc = [
+  '选项结构：可自定义选项的信息结构或样式',
+  '搜索条件：可自定义搜索条件的算法'
+]
+const rightOptions = ['选项结构', '搜索条件']
 
-const code = `import React from 'react'
+const code = [
+  {
+    code: `import React from 'react'
 import Select from '@hi-ui/hiui/es/select'\n
 class Demo extends React.Component {
   constructor () {
@@ -23,7 +30,7 @@ class Demo extends React.Component {
   render () {
     return (
       <Select
-        placeholder='请选择种类'
+        placeholder='请选择'
         style={{ width: 200 }}
         defaultValue={3}
         data={this.state.singleList}
@@ -42,12 +49,58 @@ class Demo extends React.Component {
       />
     )
   }
-}`
+}`,
+    opt: ['选项结构']
+  },
+  {
+    code: `import React from 'react'
+    import Select from '@hi-ui/hiui/es/select'\n
+    class Demo extends React.Component {
+      constructor () {
+        super()
+        this.state = {
+          singleList: [
+            { title: '小米1', id: 1 },
+            { title: '小米2', id: 2, disabled: true },
+            { title: '小米3', id: 3, disabled: true },
+            { title: '小米4', id: 4 },
+            { title: '小米5', id: 5 },
+            { title: '小米6', id: 6 },
+            { title: '小米8', id: 8 },
+            { title: '小米9', id: 9 },
+          ]
+        }
+      }
+    
+      render () {
+        return (
+          <Select
+            type='single'
+            data={this.state.singleList}
+            placeholder='请选择'
+            style={{ width: 200 }}
+            onChange={(item) => {
+              console.log('单选结果', item)
+            }}
+            searchable
+            filterOption={(keyword, item) => {
+              keyword = parseInt(keyword)
+              return item.id >= keyword
+            }}
+          />
+        )
+      }
+    }`,
+    opt: ['搜索条件']
+  }
+]
 const DemoCustom = () => (
   <DocViewer
     code={code}
     scope={{ Select }}
     prefix={prefix}
+    desc={desc}
+    rightOptions={rightOptions}
   />
 )
 export default DemoCustom

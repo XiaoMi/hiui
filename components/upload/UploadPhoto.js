@@ -47,7 +47,8 @@ class UploadPhoto extends Upload {
       onRemove,
       disabled,
       accept,
-      localeDatas
+      localeDatas,
+      theme
     } = this.props
     const images = fileList.map(file => {
       return {
@@ -55,7 +56,7 @@ class UploadPhoto extends Upload {
       }
     })
     return (
-      <div className={classNames('hi-upload hi-upload--photo', {'hi-upload--disabled': disabled})}
+      <div className={classNames('hi-upload hi-upload--photo', `theme__${theme}`, {'hi-upload--disabled': disabled})}
         onClick={(e) => {
           if (e.target.nodeName === 'INPUT' && e.target.type === 'file') {
             this.uploadRef.value = ''
@@ -74,27 +75,24 @@ class UploadPhoto extends Upload {
                   <div className='hi-upload__precent'>
                     <p className='hi-upload__loading-text'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : localeDatas.upload.uploadSuccess) : (0 + '%')}</p>
                     <div className='hi-upload__loading-bar' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
+                    {/* 进度条底部阴影 */}
+                    <div className='hi-upload__loading-shadow' />
                   </div>
                 </li>
               )
             } else {
               return (
-                <li key={index} className='hi-upload__item'>
+                <li key={index} className='hi-upload__item' style={{cursor: 'pointer'}} onClick={() => this.previewImage(file, index)}>
                   <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} />
-                  <div className='hi-upload__item-mask' onClick={() => this.previewImage(file, index)}>
-                    <Icon name='eye' />
-                    <span>{localeDatas.upload.preview}</span>
-                  </div>
                   {
-                    onRemove && <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, index)} />
+                    onRemove && <Icon name='close-circle' className='hi-upload__photo-del' onClick={(e) => {
+                      e.stopPropagation()
+                      this.deleteFile(file, index)
+                    }} />
                   }
                   {
-                    file.uploadState === 'error' && <div className='hi-upload__precent'>
-                      <div>
-                        <Icon name='comment-circle-o' />
-                        <br />
-                        {localeDatas.upload.uploadFailed}
-                      </div>
+                    file.uploadState === 'error' && <div className='hi-upload__item--photo-error'>
+                      {localeDatas.upload.uploadFailed}
                     </div>
                   }
                 </li>

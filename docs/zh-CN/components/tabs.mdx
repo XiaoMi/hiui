@@ -4,29 +4,19 @@
 
 ## 何时使用
 
-- 当页面空间有限，要组织大量的信息且信息之间有明确的分界线
-- 节省屏幕空间，减少用户视觉和信息干扰
-- 无信息间的对比要求，即不同时查看
+当页面空间有限，要组织大量的信息且信息之间有明确的分界线
 
-## 基础用法
+节省屏幕空间，减少用户视觉和信息干扰
+
+无信息间的对比要求，即不同时查看
+
+## 卡片样式
 
 import DemoBasic from '../../demo/tabs/section-basic.jsx'
 
 <DemoBasic />
 
-## 可收起标签
-
-import DemoCollapse from '../../demo/tabs/section-collapse.jsx'
-
-<DemoCollapse />
-
-## 垂直用法
-
-import DemoVertical from '../../demo/tabs/section-vertical.jsx'
-
-<DemoVertical />
-
-## 可编辑标签
+## 可编辑用法
 
 import DemoEditable from '../../demo/tabs/section-editable.jsx'
 
@@ -37,6 +27,18 @@ import DemoEditable from '../../demo/tabs/section-editable.jsx'
 import DemoCapsule from '../../demo/tabs/section-capsule.jsx'
 
 <DemoCapsule />
+
+## 按钮样式
+
+import DemoButton from '../../demo/tabs/section-button.jsx'
+
+<DemoButton />
+
+## 可扩展用法
+
+import DemoCollapse from '../../demo/tabs/section-collapse.jsx'
+
+<DemoCollapse />
 
 ## Props
 
@@ -54,9 +56,9 @@ import DemoCapsule from '../../demo/tabs/section-capsule.jsx'
 
 ### Tabs.Pane
 
-| 参数     | 说明                                         | 类型                | 可选值        | 默认值 |
-| -------- | -------------------------------------------- | ------------------- | ------------- | ------ |
-| tabTitle | 选项卡头显示文字                             | string \| ReactNode | -             | -      |
-| tabDesc  | 选项卡头描述文字，仅对 type='desc'时生效     | string \| ReactNode | -             | -      |
-| tabId    | 每个标签的唯一标识                           | string \| number    | -             | -      |
+| 参数      | 说明                                         | 类型                | 可选值        | 默认值 |
+| --------- | -------------------------------------------- | ------------------- | ------------- | ------ |
+| tabTitle  | 选项卡头显示文字                             | string \| ReactNode | -             | -      |
+| tabDesc   | 选项卡头描述文字，仅对 type='desc'时生效     | string \| ReactNode | -             | -      |
+| tabId     | 每个标签的唯一标识                           | string \| number    | -             | -      |
 | closeable | 标签是否可以关闭，仅对 type='editable'时生效 | boolean             | true \| false | true   |

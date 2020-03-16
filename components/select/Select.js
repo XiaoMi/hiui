@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-import shallowEqual from 'shallowequal'
 import debounce from 'lodash/debounce'
 import cloneDeep from 'lodash/cloneDeep'
 import Popper from '../popper'
@@ -20,7 +19,10 @@ class Select extends Component {
     type: PropTypes.oneOf(['single', 'multiple']),
     multipleWrap: PropTypes.oneOf(['wrap', 'nowrap']),
     data: PropTypes.array,
-    dataSource: PropTypes.object,
+    dataSource: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.func
+    ]),
     defaultValue: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.array,
@@ -56,8 +58,6 @@ class Select extends Component {
     clearable: true,
     defaultValue: '',
     autoload: false,
-    placeholder: '请选择',
-    emptyContent: '无内容',
     showCheckAll: false,
     open: true,
     onClick: () => {},
@@ -91,6 +91,7 @@ class Select extends Component {
       dropdownShow: false,
       fetching: false,
       keyword: '',
+      filterText: '',
       searchInput: {
         width: 2
       }
@@ -120,14 +121,14 @@ class Select extends Component {
 
   clickOutside (e) {
     const selectInput = ReactDOM.findDOMNode(this.selectInput)
-    if (selectInput && selectInput.contains(e.target)) {
+    if ((selectInput && selectInput.contains(e.target)) || (e.target.tagName === 'INPUT' && e.target.className.includes('hi-select__dropdown__searchbar--input'))) {
       return
     }
     this.hideDropdown()
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!shallowEqual(nextProps.data, this.props.data)) {
+    if (!_.isEqual(nextProps.data, this.props.data)) {
       const selectedItems = this.resetSelectedItems(
         nextProps.value || this.state.selectedItems,
         nextProps.data,
@@ -139,7 +140,7 @@ class Select extends Component {
         dropdownItems: cloneDeep(nextProps.data)
       })
     } else {
-      if (!shallowEqual(nextProps.value, this.props.value)) {
+      if (!_.isEqual(nextProps.value, this.props.value)) {
         const selectedItems = this.resetSelectedItems(
           nextProps.value,
           this.state.dropdownItems,
@@ -203,8 +204,7 @@ class Select extends Component {
     value === undefined &&
       this.setState(
         {
-          selectedItems,
-          cacheSelectedItems: cacheSelectedItems
+          selectedItems
         },
         callback
       )
@@ -212,14 +212,14 @@ class Select extends Component {
     onChange && onChange(selectedIds, changedItems)
   }
 
-  checkAll (e) {
+  checkAll (filterItems, e) {
     // 全选
     e && e.stopPropagation()
 
-    const { dropdownItems, selectedItems } = this.state
+    const { selectedItems } = this.state
     let _selectedItems = [...selectedItems]
     let changedItems = []
-    dropdownItems.forEach(item => {
+    filterItems.forEach(item => {
       if (!item.disabled && this.matchFilter(item)) {
         if (
           !_selectedItems.map(selectItem => selectItem.id).includes(item.id)
@@ -230,14 +230,13 @@ class Select extends Component {
       }
     })
     this.onChange(_selectedItems, changedItems, () => {}, _selectedItems)
-    this.selectInput.focus()
   }
 
   onClickOption (item, index) {
     if (!item || item.disabled) return
 
     let selectedItems = this.state.selectedItems.concat()
-    let cacheSelectedItems = this.state.cacheSelectedItems.concat()
+    let cacheSelectedItems = this.state.selectedItems.concat()
     let focusedIndex = index
 
     if (this.props.type === 'multiple') {
@@ -254,17 +253,19 @@ class Select extends Component {
       }
     } else {
       selectedItems = [item]
+      this.setState({
+        cacheSelectedItems: [item]
+      })
     }
 
     this.onChange(selectedItems, item, () => {
       this.setState({
-        focusedIndex
+        focusedIndex,
+        cacheSelectedItems: this.props.type === 'multiple' ? cacheSelectedItems : [item]
       })
-    }, cacheSelectedItems)
+    }, this.props.type === 'multiple' ? cacheSelectedItems : [item])
     if (this.props.type !== 'multiple') {
       this.hideDropdown()
-    } else {
-      this.selectInput.focus()
     }
   }
 
@@ -281,13 +282,12 @@ class Select extends Component {
 
   handleInputClick = e => {
     let { dropdownShow } = this.state
-
     if (dropdownShow) {
       this.hideDropdown()
       return
     }
 
-    this.selectInput.focus()
+    !this.getSearchable() && this.selectInput.focus()
     if (this.props.disabled) {
       return
     }
@@ -306,7 +306,6 @@ class Select extends Component {
 
   showDropdown () {
     this.state.dropdownShow === false && this.setState({ dropdownShow: true })
-    this.selectInput.focus()
   }
 
   deleteItem (item) {
@@ -318,7 +317,7 @@ class Select extends Component {
 
     selectedItems.splice(sIndex, 1)
     this.onChange(selectedItems, item, () => {
-      this.selectInput.focus()
+      !this.getSearchable() && this.selectInput.focus()
     }, selectedItems)
   }
   // 全部删除
@@ -366,7 +365,6 @@ class Select extends Component {
         ? _dataSource.keyword
         : keyword
       this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
-
       const queryParams = qs.stringify(
         Object.assign({}, params, key && { [key]: keyword })
       )
@@ -420,10 +418,11 @@ class Select extends Component {
       dropdownItems = res.data
     }
     if (Array.isArray(dropdownItems)) {
+      const reviceSelectedItems = this.props.type === 'multiple' ? this.props.dataSource && this.state.selectedItems || [] : this.state.cacheSelectedItems 
       const selectedItems = this.resetSelectedItems(
         this.props.value,
         dropdownItems,
-        this.props.type === 'multiple' && this.props.dataSource && this.state.selectedItems || []
+        reviceSelectedItems
       )
       this.setState({
         dropdownItems,
@@ -443,11 +442,8 @@ class Select extends Component {
       () => this.resetFocusedIndex()
     )
 
-    if (dataSource) {
-      if (
-        autoload ||
-        keyword.toString().length >= this.state.queryLength
-      ) {
+    if (dataSource) { 
+      if (autoload ||(keyword && keyword.length >= this.state.queryLength)) {
         this.remoteSearch(keyword)
       }
     } else if(onSearch) {
@@ -539,16 +535,21 @@ class Select extends Component {
       clearable,
       style,
       children,
-      emptyContent,
       optionWidth,
       render,
       multipleWrap,
       onClick,
       onBlur,
       onFocus,
-      dataSource
+      dataSource,
+      filterOption,
+      onSearch,
+      theme,
+      localeDatas
     } = this.props
     const placeholder = this.localeDatasProps('placeholder')
+    const emptyContent = this.localeDatasProps('emptyContent')
+    const searchPlaceholder = this.localeDatasProps('searchPlaceholder')
     const {
       selectedItems,
       cacheSelectedItems,
@@ -556,12 +557,13 @@ class Select extends Component {
       searchable,
       dropdownShow,
       focusedIndex,
-      fetching
+      fetching,
     } = this.state
     const extraClass = {
       "is-multiple": type === "multiple",
       "is-single": type === "single"
     }
+    const selectInputWidth = this.selectInputContainer ? this.selectInputContainer.getBoundingClientRect().width : null
     return (
       <div
         className={classNames("hi-select", className, extraClass)}
@@ -577,10 +579,12 @@ class Select extends Component {
             ref={node => {
               this.selectInput = node
             }}
+            theme={theme}
             mode={type}
             disabled={disabled}
             searchable={searchable}
             clearable={clearable}
+            show={dropdownShow && this.props.open}
             dropdownShow={dropdownShow}
             placeholder={placeholder}
             selectedItems={selectedItems}
@@ -611,21 +615,35 @@ class Select extends Component {
           className="hi-select__popper"
           placement="top-bottom-start"
         >
-          <SelectDropdown
-            noFoundTip={emptyContent}
-            mode={type}
-            showCheckAll={showCheckAll}
-            checkAll={this.checkAll.bind(this)}
-            loading={fetching}
-            focusedIndex={focusedIndex}
-            matchFilter={this.matchFilter.bind(this)}
-            setFocusedIndex={this.setFocusedIndex.bind(this)}
-            optionWidth={optionWidth}
-            dropdownItems={type === 'multiple' && dataSource && this.state.keyword === '' ? cacheSelectedItems : dropdownItems}
-            selectedItems={selectedItems}
-            dropdownRender={render}
-            onClickOption={this.onClickOption.bind(this)}
-          />
+          { dropdownShow && this.props.open && <SelectDropdown
+                  noFoundTip={emptyContent}
+                  localeMap={localeDatas.select || {} }
+                  mode={type}
+                  searchPlaceholder={searchPlaceholder}
+                  theme={theme}
+                  onBlur={onBlur}
+                  onFocus={onFocus}
+                  isOnSearch = {onSearch || dataSource}
+                  onSearch={this.debouncedFilterItems.bind(this)}
+                  searchable={searchable}
+                  showCheckAll={showCheckAll}
+                  checkAll={this.checkAll.bind(this)}
+                  loading={fetching}
+                  focusedIndex={focusedIndex}
+                  filterOption={filterOption}
+                  matchFilter={this.matchFilter.bind(this)}
+                  setFocusedIndex={this.setFocusedIndex.bind(this)}
+                  show={dropdownShow && this.props.open}
+                  optionWidth={optionWidth}
+                  selectInputWidth={selectInputWidth}
+                  onEnterSelect={this.onEnterSelect.bind(this)}
+                  moveFocusedIndex={this.moveFocusedIndex.bind(this)}
+                  dropdownItems={ dataSource && this.state.keyword === '' ? cacheSelectedItems : dropdownItems}
+                  selectedItems={selectedItems}
+                  dropdownRender={render}
+                  onClickOption={this.onClickOption.bind(this)}
+            /> 
+          }
         </Popper>
       </div>
     )

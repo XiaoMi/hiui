@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Upload from '../../../components/upload'
 const prefix = 'Upload-head'
-
+const desc = '与其它组件配合使用，常见于名片、通讯录、账号管理等'
 const code = `import React from 'react'
 import Upload from '@hi-ui/hiui/es/upload'\n
 class Demo extends React.Component {
@@ -27,5 +27,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoHead = () => <DocViewer code={code} scope={{ Upload }} prefix={prefix} />
+const DemoHead = () => <DocViewer code={code} scope={{ Upload }} prefix={prefix} desc={desc} />
 export default DemoHead

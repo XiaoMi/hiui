@@ -2,8 +2,25 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'date-picker-normal'
-const rightOptions = ['基础', '预置农历', '自定义日期信息']
+const desc = '以天为粒度，展示“YYYY-MM-DD”'
+const rightOptions = ['基础', '带默认值', '禁用', '限制范围']
 const code = [
+  {
+    code: `import React from 'react'
+import DatePicker from '@hi-ui/hiui/es/date-picker'\n
+class Demo extends React.Component {
+  render () {
+    return (
+      <div style={{display:'flex', flexWrap: 'wrap'}}>
+        <DatePicker
+          onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
+        />
+      </div>
+    )
+  }
+}`,
+    opt: ['基础']
+  },
   {
     code: `import React from 'react'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
@@ -25,95 +42,51 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['基础']
+    opt: ['带默认值']
   },
   {
-    code:
-  `import React from 'react'
+    code: `import React from 'react'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      value: new Date()
-    }
-  }
   render () {
     return (
       <div style={{display:'flex', flexWrap: 'wrap'}}>
         <DatePicker
-          value={this.state.value}
-          altCalendarPreset='zh-CN'
-          dateMarkPreset='zh-CN'
-          onChange={(date, dateStr) => {
-            console.log('onChange', date, dateStr)
-            this.setState({
-              value: date
-            })
-          }}
+          disabled
+          onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
         />
       </div>
     )
   }
 }`,
-    opt: ['预置农历']
+    opt: ['禁用']
   },
   {
-    code:
-  `import React from 'react'
+    code: `import React from 'react'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      value: new Date('2020/4/8')
-    }
-  }
   render () {
     return (
       <div style={{display:'flex', flexWrap: 'wrap'}}>
         <DatePicker
-          value={this.state.value}
-          altCalendar = {[
-              {
-                date:'2020/4/8',
-                text:'十周年',
-                hightlight: true
-              },
-          ]}
-          dateMarkRender = {
-              (currentDate,today) => {
-                const date = DatePicker.format(currentDate, 'yyyy/M/D')
-                const yesterday = DatePicker.format(today-86400000, 'yyyy/M/D')
-                const currentday = DatePicker.format(this.state.value, 'yyyy/M/D')
-                
-                if(date === '2020/4/8'){
-                    return (
-                      <span style={{color: currentday === '2020/4/8' ? '#fff' : '#f63' }}>米</span> 
-                    )
-                } else if (date === yesterday){
-                    return (
-                      <span>昨</span>
-                    )
-                } else {
-                    return null
-                }
-              }
-          }
-          onChange={(date, dateStr) => {
-            console.log('onChange', date, dateStr)
-            this.setState({
-              value: date
-            })
-          }}
+          min={new Date()}
+          max={new Date().getTime() + 30 * 24 * 60 * 60 * 1000}
+          onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
         />
       </div>
     )
   }
 }`,
-    opt: ['自定义日期信息']
+    opt: ['限制范围']
   }
-
 ]
-const DemoNormal = () => <DocViewer code={code} rightOptions={rightOptions} scope={{ DatePicker }} prefix={prefix} />
+const DemoNormal = () => (
+  <DocViewer
+    code={code}
+    scope={{ DatePicker }}
+    prefix={prefix}
+    desc={desc}
+    rightOptions={rightOptions}
+  />
+)
 export default DemoNormal

@@ -1,5 +1,53 @@
 # 更新日志
 
+## 2.10.0
+
+- 新增 `<Upload />` onDownload 点击上传成功文件的回调 [#613](https://github.com/XiaoMi/hiui/issues/613)
+- 优化 `<Select />` 可搜索模式下自动获取输入框焦点 [#925](https://github.com/XiaoMi/hiui/issues/925)
+- 优化 `<Carousel />` 轮播定位交互，并新增 showPages 是否显示页码指示器 [#925](https://github.com/XiaoMi/hiui/issues/925)
+- 修复 `<Select />` 异步模式下有默认值不能正常使用的问题 [#962](https://github.com/XiaoMi/hiui/issues/962)
+- 优化若干视觉还原问题：[#952](https://github.com/XiaoMi/hiui/issues/952) [#958](https://github.com/XiaoMi/hiui/issues/958) [#971](https://github.com/XiaoMi/hiui/issues/971) [#973](https://github.com/XiaoMi/hiui/issues/973) [#975](https://github.com/XiaoMi/hiui/issues/975) [#976](https://github.com/XiaoMi/hiui/issues/976) [#977](https://github.com/XiaoMi/hiui/issues/977) [#983](https://github.com/XiaoMi/hiui/issues/983)[#987](https://github.com/XiaoMi/hiui/issues/987)
+
+## 2.9.0
+
+- 新增 `<Progress />` active 属性展示加载动效 [#941](https://github.com/XiaoMi/hiui/issues/941)
+- 新增 `<Upload />` 拖拽用法支持多选上传 [#942](https://github.com/XiaoMi/hiui/issues/942)
+- 新增 `<DatePicker />` disabledDate 属性自定义日期禁选 [#943](https://github.com/XiaoMi/hiui/issues/943)
+- 优化 `<Collapse />` 视觉效果 [#937](https://github.com/XiaoMi/hiui/issues/937)
+- 修复 `<Dropdown />` 点击外部区域不能正常隐藏菜单的问题 [#947](https://github.com/XiaoMi/hiui/issues/947)
+- 修复`<Upload />`同时上传多个文件的展示问题 [#948](https://github.com/XiaoMi/hiui/issues/948)
+- 修复 `<Upload />` 上传过程中点击取消功能无效的问题 [#938](https://github.com/XiaoMi/hiui/issues/938)
+- 修复部分组件国际化适配不完全的问题 [#951](https://github.com/XiaoMi/hiui/issues/951)
+
+## 2.8.0
+
+- 新增 `<Tree />` 默认高亮 [#915](https://github.com/XiaoMi/hiui/issues/915)
+- 新增 `<Table />` withCredentials 属性 [#922](https://github.com/XiaoMi/hiui/issues/922)
+- 修复 `<Transfer />` 单选模式下 targetLimit 无效的问题 [#919](https://github.com/XiaoMi/hiui/issues/919)
+- 修复 `<Select />` 多选出现双滚动条的样式问题 [#920](https://github.com/XiaoMi/hiui/issues/920)
+- 修复 `<Button />` 链接用法样式问题 [#923](https://github.com/XiaoMi/hiui/issues/923)
+- 修复 `<Dropdown />` 按钮样式 icon 边距问题 [#927](https://github.com/XiaoMi/hiui/issues/927)
+- 修复主题配色适配组件不完全的问题 [#733](https://github.com/XiaoMi/hiui/issues/733)
+
+## 2.7.0
+
+- 新增 `<Checkbox />` 垂直样式 [#883](https://github.com/XiaoMi/hiui/issues/883)
+- 新增 `<Dropdown />` placement 可选项 'bottom-end' 和 'top-end' [#891](https://github.com/XiaoMi/hiui/issues/891)
+- 新增 `<Upload />` withCredentials 属性 [#905](https://github.com/XiaoMi/hiui/issues/905)
+- 新增 `<Tree />` 文件夹样式 [#913](https://github.com/XiaoMi/hiui/issues/913)
+- 优化 `<Menu />` 水平模式交互 [#884](https://github.com/XiaoMi/hiui/issues/884)
+- 优化 `<Select />` 异步单选和异步多选交互模式 [#903](https://github.com/XiaoMi/hiui/issues/903)
+- 优化 `<Upload />` 预览交互 [#893](https://github.com/XiaoMi/hiui/issues/893)
+- 优化 `<Transfer />` 可搜索时清除按钮的出现交互 [#890](https://github.com/XiaoMi/hiui/issues/890)
+- 优化 `<Tree />` 编辑节点的交互，输入为空时不可保存 [#889](https://github.com/XiaoMi/hiui/issues/889)
+- 优化 `<Transfer />` 多选未选中时的展示效果 [#888](https://github.com/XiaoMi/hiui/issues/888)
+- 优化若干视觉还原问题：[#841](https://github.com/XiaoMi/hiui/issues/841) [#842](https://github.com/XiaoMi/hiui/issues/842) [#843](https://github.com/XiaoMi/hiui/issues/843) [#844](https://github.com/XiaoMi/hiui/issues/844) [#845](https://github.com/XiaoMi/hiui/issues/845) [#848](https://github.com/XiaoMi/hiui/issues/848) [#851](https://github.com/XiaoMi/hiui/issues/851) [#852](https://github.com/XiaoMi/hiui/issues/852) [#853](https://github.com/XiaoMi/hiui/issues/853) [#854](https://github.com/XiaoMi/hiui/issues/854) [#855](https://github.com/XiaoMi/hiui/issues/855) [#856](https://github.com/XiaoMi/hiui/issues/856) [#857](https://github.com/XiaoMi/hiui/issues/857) [#858](https://github.com/XiaoMi/hiui/issues/858) [#859](https://github.com/XiaoMi/hiui/issues/859) [#862](https://github.com/XiaoMi/hiui/issues/862) [#869](https://github.com/XiaoMi/hiui/issues/869) [#871](https://github.com/XiaoMi/hiui/issues/871) [#872](https://github.com/XiaoMi/hiui/issues/872) [#873](https://github.com/XiaoMi/hiui/issues/873) [#874](https://github.com/XiaoMi/hiui/issues/874) [#875](https://github.com/XiaoMi/hiui/issues/875) [#876](https://github.com/XiaoMi/hiui/issues/876) [#886](https://github.com/XiaoMi/hiui/issues/886) [#895](https://github.com/XiaoMi/hiui/issues/895) [#896](https://github.com/XiaoMi/hiui/issues/896) [#897](https://github.com/XiaoMi/hiui/issues/897) [#898](https://github.com/XiaoMi/hiui/issues/898) [#899](https://github.com/XiaoMi/hiui/issues/899) [#900](https://github.com/XiaoMi/hiui/issues/900) [#901](https://github.com/XiaoMi/hiui/issues/901)
+
+## 2.6.4
+
+- 修复 `<Table />` 多级表头和多选同时使用的问题 [#867](https://github.com/XiaoMi/hiui/issues/867)
+- 修复 `<Tree />` onSave 入参不正确的问题 [#850](https://github.com/XiaoMi/hiui/issues/850)
+
 ## 2.6.3
 
 - 修复 `<Button />` target 属性不起作用的问题 [#837](https://github.com/XiaoMi/hiui/issues/837)
@@ -42,7 +90,7 @@
 - 修复 `<Select />` 异步多选在输入关键字时会清除已选择项的问题 [#746](https://github.com/XiaoMi/hiui/issues/746)
 - 修复 `<Loading />` 在某些情况下导致页面布局发生变化的问题 [#749](https://github.com/XiaoMi/hiui/issues/749)
 - 修改 `<Upload />` photo 模式、drag 模式下超出数量限制的展现形式 [#756](https://github.com/XiaoMi/hiui/issues/756)
-- 修复 `<Rate />`  组件的控制台警告 [#760](https://github.com/XiaoMi/hiui/issues/760)
+- 修复 `<Rate />` 组件的控制台警告 [#760](https://github.com/XiaoMi/hiui/issues/760)
 
 ## 2.5.2
 

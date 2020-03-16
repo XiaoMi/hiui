@@ -18,7 +18,8 @@ class Item extends Component {
       sourceNode,
       dir,
       draggable,
-      dividerPosition
+      dividerPosition,
+      theme
     } = this.props
     const sourceStyle =
       sourceNode === item.id && isDragging
@@ -27,7 +28,7 @@ class Item extends Component {
           color: 'rgba(204,204,204,1)'
         }
         : {}
-    const itemCls = classNames('hi-transfer__item', item.disabled && 'hi-transfer__item--disabled')
+    const itemCls = classNames('hi-transfer__item', `theme__${theme}`, item.disabled && 'hi-transfer__item--disabled')
     const el = (
       <li style={sourceStyle} className={itemCls} onClick={onClick.bind(this)}>
         {targetNode === item.id &&

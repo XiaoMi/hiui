@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Alert from '../../../components/alert'
 const prefix = 'alert-closeable'
+const desc = '反馈信息较为重要，需要引导用户阅读或关注'
 
 const code = `import React from 'react'
 import Alert from '@hi-ui/hiui/es/alert'\n
@@ -20,5 +21,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoCloseable = () => <DocViewer code={code} scope={{ Alert }} prefix={prefix} />
+const DemoCloseable = () => <DocViewer desc={desc} code={code} scope={{ Alert }} prefix={prefix} />
 export default DemoCloseable

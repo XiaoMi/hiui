@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Tree from '../../../components/tree'
 const prefix = 'tree-normal'
+const desc = '二叉树或多叉树的展现形式，常见于组织架构、文件管理、索引目录等应用场景'
 const code = `import React from 'react'
 import Tree from '@hi-ui/hiui/es/tree'\n
 class Demo extends React.Component {
@@ -46,11 +47,12 @@ class Demo extends React.Component {
           data={this.state.treeData}
           onChange={data => {console.log('Tree data:', data)}}
           highlightable
+          defaultHighlightId={1}
           onClick={(item) => console.log('------click node', item)}
         />
       </div>
     )
   }
 }`
-const DemoNormal = () => <DocViewer code={code} scope={{ Tree }} prefix={prefix} />
+const DemoNormal = () => <DocViewer code={code} scope={{ Tree }} prefix={prefix} desc={desc} />
 export default DemoNormal

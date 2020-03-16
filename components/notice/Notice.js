@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import Icon from '../icon'
 import classNames from 'classnames'
 import { CSSTransition } from 'react-transition-group'
-
-export default class Notice extends Component {
+import Provider from '../context'
+class Notice extends Component {
   state = { open: false }
   openTimer = null
   closeTimer = null
@@ -29,7 +29,7 @@ export default class Notice extends Component {
   }
 
   render () {
-    const { closeable, children, prefix, type } = this.props
+    const { closeable, children, prefix, type, theme } = this.props
     const { open } = this.state
     return (
       <CSSTransition
@@ -40,7 +40,11 @@ export default class Notice extends Component {
           this.closeTimer = setTimeout(() => this.closeNotice(), 300)
         }}
       >
-        <div className={classNames(`hi-${prefix}`, { [`hi-${prefix}--${type}`]: type })}>
+        <div
+          className={classNames(`hi-${prefix}`, `theme__${theme}`, {
+            [`hi-${prefix}--${type}`]: type
+          })}
+        >
           <div className={`hi-${prefix}__content--wrapper`}>{children}</div>
           {closeable && (
             <span
@@ -56,3 +60,6 @@ export default class Notice extends Component {
     )
   }
 }
+Notice.IS_HIUI_NOTICE = true
+export default Provider(Notice)
+export { Notice }

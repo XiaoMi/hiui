@@ -4,8 +4,9 @@
 
 ## 何时使用
 
-- 当系统需要收集、录入时
-- 常见于调查问卷、登录、新建/编辑、设置等场景
+当系统需要收集、录入时
+
+常见于调查问卷、登录、新建/编辑、设置等场景
 
 ## 对齐方式
 
@@ -18,6 +19,12 @@ import DemoAlign from '../../demo/form/section-align.jsx'
 import DemoRow from '../../demo/form/section-row.jsx'
 
 <DemoRow />
+
+## 双列表单
+
+import DemoTwoCol from '../../demo/form/section-two-col.jsx'
+
+<DemoTwoCol />
 
 ## 表单验证
 
@@ -34,18 +41,19 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 | model          | 表单数据                                                                              | object  | -                          | -          |
 | rules          | 表单验证规则，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object  | -                          | -          |
 | labelWidth     | label 宽度，可用任意 CSS 长度单位                                                     | string  |                            |
-| labelPlacement | label 放置的位置                                                                      | string  | 'right' \| 'left' \| 'top' | 'left'    |
+| labelPlacement | label 放置的位置                                                                      | string  | 'right' \| 'left' \| 'top' | 'left'     |
 | placement      | 是否横向排列                                                                          | string  | 'horizontal' \| 'vertical' | 'vertical' |
 | showColon      | 是否显示冒号                                                                          | boolean | true \| false              | true       |
 
 ### Form.Item
 
-| 参数      | 说明                       | 类型    | 可选值        | 默认值 |
-| --------- | -------------------------- | ------- | ------------- | ------ |
-| field     | 表单域对应 model 的字段    | string  | -             | -      |
-| label     | 标签文本，默认自动添加冒号 | string  | -             | -      |
-| required  | 是否必填                   | boolean | true \| false | false  |
-| showColon | 是否显示冒号               | boolean | true \| false | -      |
+| 参数       | 说明                                                                 | 类型    | 可选值        | 默认值 |
+| ---------- | -------------------------------------------------------------------- | ------- | ------------- | ------ |
+| field      | 表单域对应 model 的字段                                              | string  | -             | -      |
+| label      | 标签文本，默认自动添加冒号                                           | string  | -             | -      |
+| labelWidth | label 宽度，可用任意 CSS 长度单位，优先级高于 Form 设置的 labelWidth | string  |               |
+| required   | 是否必填                                                             | boolean | true \| false | false  |
+| showColon  | 是否显示冒号                                                         | boolean | true \| false | -      |
 
 ## Methods
 

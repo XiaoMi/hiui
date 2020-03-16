@@ -24,7 +24,10 @@ export default class NoticeContainer extends Component {
     const { queue } = this.state
     const { prefix } = this.props
     return (
-      <div className={`hi-${prefix}__container`}>
+      <div
+        style={{ backgroundColor: '#fff' }}
+        className={`hi-${prefix}__container`}
+      >
         {queue.map((notice, index) => {
           return (
             <Notice

@@ -92,3 +92,32 @@
     }
   }
 }
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.hi-checkbox-legacy {
+    &:not(.hi-checkbox-legacy--disabled):hover {
+      .hi-checkbox-legacy__input {
+        border: 1px solid $value;
+      }
+    }
+
+    &--part {
+      .hi-checkbox-legacy__input {
+        background: $value;
+      }
+    }
+
+    &--checked {
+      .hi-checkbox-legacy__input {
+        background: $value;
+        border: 1px solid $value;
+      }
+    }
+
+    &__label {
+      &.highlight {
+        color: $value;
+      }
+    }
+  }
+}

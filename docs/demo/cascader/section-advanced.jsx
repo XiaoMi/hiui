@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Cascader from '../../../components/cascader'
 const prefix = 'section-advanced'
+const desc = '展示从多个收起的备选项中选出的一个选项'
 const rightOptions = ['自定义字段名', '自定义显示', '搜索', '动态加载选项']
 const code = [
   {
@@ -488,6 +489,7 @@ const DemoBasic = () => (
     code={code}
     scope={{ Cascader }}
     prefix={prefix}
+    desc={desc}
     rightOptions={rightOptions}
   />
 )

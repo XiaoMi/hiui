@@ -184,17 +184,20 @@ export class Tree extends Component {
       onSave,
       onClick,
       apperance,
-      contextMenu
+      contextMenu,
+      defaultHighlightId,
+      theme
     } = this.props
     const { data } = this.state
     return (
       <div
-        className={classNames(`${prefixCls}`, { 'hi-tree--show-line': apperance === 'line' })}
+        className={classNames(`${prefixCls}`, `theme__${theme}`, { 'hi-tree--show-line': apperance === 'line' })}
         style={style}
       >
         <TreeNode
           origin={loadTreeNode}
           showLine={apperance === 'line'}
+          apperance={apperance}
           checked={this.props.checkedIds || []}
           onClick={onClick}
           semiChecked={this.state.all.filter(item => item.semi).map(item => item.id)}
@@ -203,13 +206,13 @@ export class Tree extends Component {
           expandTreeNode={this.expandTreeNode}
           setExpandTreeNodes={this.setExpandTreeNodes}
           onCheckChange={this.onCheckChange}
-          hightLightNodes={this.props.hightLightNodes}
-          onHightLightChange={this.props.onHightLightChange}
           onExpanded={this.onExpanded}
           data={data}
+          theme={theme}
           prefixCls={prefixCls}
           checkable={checkable}
           highlightable={highlightable}
+          defaultHighlightId={defaultHighlightId}
           editable={editable}
           searchable={searchable}
           openIcon={openIcon}

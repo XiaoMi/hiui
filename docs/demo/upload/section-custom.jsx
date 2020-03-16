@@ -46,7 +46,7 @@ class Demo extends React.Component {
               fileList: _fileList
             })
           }}
-          buttonText="上传文件"
+          content="上传文件"
           fileList={fileList}
         />
       </div>

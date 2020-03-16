@@ -7,10 +7,10 @@ import Input from '../input'
 import classNames from 'classnames'
 import Item from './Item'
 import shallowEqual from 'shallowequal'
+import Provider from '../context'
 
 import './style/index'
-
-export default class Transfer extends Component {
+class Transfer extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -73,11 +73,12 @@ export default class Transfer extends Component {
   }
   clickItemEvent (item, index, dir) {
     const { mode, type } = this.props
+    const { limited } = this.state
     if (item.disabled) {
       return
     }
     if (mode === 'basic' && type === 'default') {
-      this.parseSelectedKeys(dir, item.id, () => {
+      !(dir === 'left' && limited) && this.parseSelectedKeys(dir, item.id, () => {
         this.moveTo(dir)
       })
     }
@@ -153,8 +154,9 @@ export default class Transfer extends Component {
         this.props.onChange(newTargetKeys, dir === 'left' ? 'right' : 'left', moveDatas)
         this.setState({
           [this.getSelectedKeysByDir(dir)]: [],
-          [dir + 'Filter']: '',
-          limited: false
+          [dir + 'Filter']: ''
+        }, () => {
+          this.isLimited(dir)
         })
       }
     )
@@ -183,11 +185,12 @@ export default class Transfer extends Component {
   }
   isLimited (dir) {
     const { targetList, sourceSelectedKeys } = this.state
-    const { targetLimit } = this.props
+    const { targetLimit, type } = this.props
+    const defaultLimited = sourceSelectedKeys.length > targetLimit || sourceSelectedKeys.length + targetList.length > targetLimit
+    const _limited = type === 'default' ? defaultLimited || targetList.length >= targetLimit : defaultLimited
+
     this.setState({
-      limited:
-        sourceSelectedKeys.length > targetLimit ||
-        sourceSelectedKeys.length + targetList.length > targetLimit
+      limited: _limited
     })
   }
   searchEvent (dir, e) {
@@ -257,7 +260,9 @@ export default class Transfer extends Component {
       draggable,
       emptyContent,
       title,
-      disabled
+      disabled,
+      theme,
+      localeDatas
     } = this.props
     const {
       sourceSelectedKeys,
@@ -273,6 +278,7 @@ export default class Transfer extends Component {
       positionY,
       dividerPosition
     } = this.state
+    const localeMap = localeDatas.transfer || {}
     const selectedKeys = dir === 'left' ? sourceSelectedKeys : targetSelectedKeys
     const filterText = dir === 'left' ? leftFilter : rightFilter
     const filterResult = datas.filter(item => item.content.includes(filterText))
@@ -292,6 +298,7 @@ export default class Transfer extends Component {
             <Input
               placeholder='搜索'
               clearable='true'
+              clearableTrigger='always'
               onInput={this.searchEvent.bind(this, dir)}
               onChange={this.searchEvent.bind(this, dir)}
               value={filterText}
@@ -307,8 +314,8 @@ export default class Transfer extends Component {
               {dir === 'left' &&
                   limited &&
                   <li key='limit-tips' className='hi-transfer__item hi-transfer__item--limit'>
-                    <div className='hi-transfer__warning' />
-                    <span>数量达上限，无法添加</span>
+                    <Icon name='info-circle-o' style={{fontSize: 16, color: '#D4A145', marginRight: 9}} />
+                    <span>{localeMap['limit']}</span>
                   </li>}
               {filterResult.map((item, index) => {
                 return (
@@ -317,6 +324,7 @@ export default class Transfer extends Component {
                     dividerPosition={dividerPosition}
                     draggable={draggable}
                     key={index}
+                    theme={theme}
                     onClick={this.clickItemEvent.bind(this, item, index, dir)}
                     mode={mode === 'basic' && type === 'default' ? 'basic' : 'multiple'}
                     item={item}
@@ -348,11 +356,11 @@ export default class Transfer extends Component {
                 this.allCheckboxEvent(dir)
               }}
             >
-              全选
+              {localeMap['checkAll']}
             </Checkbox>
             <span>
-              {selectedKeys.length !== 0 && selectedKeys.length + '/'}
-              {filterResult.length}项
+              {selectedKeys.length + '/'}
+              {filterResult.length} {localeMap['items']}
             </span>
           </div>}
       </div>
@@ -360,7 +368,7 @@ export default class Transfer extends Component {
   }
 
   render () {
-    const { mode, type } = this.props
+    const { mode, type, theme } = this.props
     const { sourceList, targetList, sourceSelectedKeys, targetSelectedKeys, limited } = this.state
     const operCls = classNames(
       'hi-transfer__operation',
@@ -369,7 +377,7 @@ export default class Transfer extends Component {
     const isLeftDisabled = targetSelectedKeys.length === 0
     const isRightDisabled = sourceSelectedKeys.length === 0 || limited
     return (
-      <div className='hi-transfer'>
+      <div className={`hi-transfer theme__${theme}`}>
         {this.renderContainer('left', sourceList)}
         <div className={operCls}>
           {(mode !== 'basic' || type !== 'default') &&
@@ -402,6 +410,7 @@ export default class Transfer extends Component {
     )
   }
 }
+export default Provider(Transfer)
 Transfer.defaultProps = {
   mode: 'basic',
   type: 'default',

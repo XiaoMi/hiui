@@ -20,14 +20,16 @@ class UploadClick extends Upload {
       onRemove,
       accept,
       loading,
-      localeDatas
+      localeDatas,
+      theme,
+      onDownload
     } = this.props
     const {
       fileList,
       fileCountLimted
     } = this.state
     return (
-      <div className='hi-upload hi-upload--normal'>
+      <div className={`hi-upload hi-upload--normal theme__${theme}`}>
         {
           this.outMaxsizeTip()
         }
@@ -63,7 +65,14 @@ class UploadClick extends Upload {
                 >
                   <span className={classNames(`Ficon-${file.fileType}`)} />
                   <div className='hi-upload__right-content'>
-                    <span className={fileNameCls} title={file.name}>{file.name}</span>
+                    <a target='_blank' href={file.url || null} className={fileNameCls} title={file.name} onClick={e => {
+                      if (onDownload) {
+                        e.preventDefault()
+                        onDownload(file)
+                      }
+                    }}>
+                      {file.name}
+                    </a>
                     <span
                     >
                       { onRemove &&

@@ -1,8 +1,10 @@
 @import './variables.scss';
+@import '@hi-ui/core-css/index.scss';
 
 $input: 'hi-input' !default;
 
 textarea.#{$input} {
+  display: block;
   box-shadow: none;
   outline: none;
   color: $normal-color;
@@ -214,6 +216,8 @@ textarea.#{$input} {
   }
 
   &__append {
+    color: $border-color-active;
+
     .hi-btn,
     .hi-select__input {
       border-left-color: transparent;
@@ -236,6 +240,34 @@ textarea.#{$input} {
       justify-content: space-around;
       align-items: center;
       color: #f00;
+    }
+  }
+}
+
+@each $key, $value in $palette-primary {
+  .theme__#{$key}.#{$input} {
+    .hi-input__inner:not(.disabled):hover {
+      border-color: $value;
+    }
+
+    .hi-input__inner.active {
+      border-color: $value;
+    }
+
+    .hi-input--append {
+      .hi-input__append {
+        color: $value;
+      }
+    }
+  }
+
+  textarea.#{$input}.theme__#{$key} {
+    &:not(.disabled):hover {
+      border-color: $value;
+    }
+
+    &.active {
+      border-color: $value;
     }
   }
 }

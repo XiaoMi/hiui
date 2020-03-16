@@ -1,27 +1,30 @@
 # 快速上手
 
-HIUI 是一套适用于前中后台的交互界面设计标准与前端解决方案，致力于提供给程序员更加简洁的开发体验。
+HIUI 是一套适用于中后台系统的设计规范及前端组件化解决方案。
 
 ## 使用脚手架安装（仅限小米集团用户）
 
-我们为小米的同事提供了可以快速实现项目建立、集成代码质量检查的解决方案，请[访问内网查看相关的使用说明](http://hiui.fe.team/cli/)。
+我们为集团内部同事提供了可快速生成项目、集成代码质量检查等功能解决方案，请[访问内网查看相关的使用说明](http://hiui.fe.team/cli/)。
 
 ---
 
 ## 独立安装
 
-非小米集团用户我们推荐使用 [create-react-app](https://www.npmjs.com/package/create-react-app) React 官方脚手架进行快速项目搭建
+非小米集团用户我们推荐使用 React 官方脚手架 [create-react-app](https://www.npmjs.com/package/create-react-app) 进行快速项目搭建。
 
 ### 1. 新项目
 
-环境依赖
-
+环境依赖：
 - Node >= 8.10
 - Npm >= 5.2 或 Yarn >= 0.25
 
 下载并安装 Node（[下载地址](https://nodejs.org/zh-cn/download/) ）或通过各平台通过包管理器进行安装（[安装方式介绍](https://nodejs.org/zh-cn/download/package-manager/)）
 
 Node 安装完成后，npm 即可以使用。
+
+```bash
+node -v
+```
 
 #### 1.1 全局安装 create-react-app
 
@@ -46,7 +49,7 @@ npm start
 yarn start
 ```
 
-<img src='<BASE_URL>/static/img/docs/create-react-app.gif' />
+<img src='<BASE_URL>/static/img/docs/create-react-app.gif' style={{width: 600}} />
 
 完毕后，将会自动打开新的标签页 `localhost:3000`，至此 React 项目初始化完成
 
@@ -80,7 +83,7 @@ npm install @hi-ui/hiui --save
 ```diff
 // package.json
 "dependencies": {
-+   "@hi-ui/hiui": "^2.0.0-rc.2",
++   "@hi-ui/hiui": "^2.6.4",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-scripts": "2.1.5"
@@ -102,7 +105,7 @@ class App extends Component {
         <header className='App-header'>
           <img src={logo} className='App-logo' alt='logo' />
 
-          {/* 使用组件 */}
+          {/* 使用 HIUI 组件 */}
           <Button type='primary' size='large'>
             HIUI 按钮
           </Button>
@@ -133,4 +136,4 @@ export default App
 
 ### 2. 在现有项目中使用
 
-**同 1.3**
+从步骤 1.3 开始，后续相同。

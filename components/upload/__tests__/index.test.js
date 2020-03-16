@@ -289,7 +289,7 @@ describe('Upload', () => {
         ]}
       />
     )
-    wrapper.find('.hi-upload__item-mask').at(0).simulate('click')
+    wrapper.find('.hi-upload__item').at(0).simulate('click')
     expect(wrapper.instance().uploadRef.current.state['showModal']).toBeTruthy()
     wrapper.find('Preview Icon').at(0).simulate('click')
     wrapper.find('Preview Icon').at(1).simulate('click')

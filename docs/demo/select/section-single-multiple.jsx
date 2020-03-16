@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Select from '../../../components/select'
 const prefix = 'select-single-multiple'
+const desc = '展示从全部备选项选出的部分选项'
 const code = `import React from 'react'
 import Select from '@hi-ui/hiui/es/select'\n
 class Demo extends React.Component {
@@ -27,12 +28,11 @@ class Demo extends React.Component {
       <Select
         type='multiple'
         style={{width: '300px'}}
-        optionWidth={400}
         data={this.state.multipleList}
         defaultValue={['4', '5','2','3']}
         searchable
         showCheckAll
-        placeholder='请选择...'
+        placeholder='请选择'
         emptyContent='无匹配数据'
         onChange={(item) => {
           console.log('多选结果', item)
@@ -42,10 +42,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoSingleMultiple = () => (
-  <DocViewer
-    code={code}
-    scope={{ Select }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} scope={{ Select }} prefix={prefix} desc={desc} />
 )
 export default DemoSingleMultiple

@@ -76,7 +76,16 @@ export default {
   },
   select: {
     placeholder: 'Please select',
-    noFoundTip: 'Not found'
+    emptyContent: 'Not found',
+    searchPlaceholder: 'Please search',
+    checkAll: 'Check all'
+  },
+  transfer: {
+    checkAll: 'Check all',
+    items: 'items',
+    searchPlaceholder: 'Please search',
+    emptyContent: 'No data',
+    limit: 'Reached limit, unable to add'
   },
   upload: {
     buttonText: 'Upload',

@@ -122,6 +122,7 @@ class Upload extends Component {
       visibleModal: false
     })
   }
+
   uploadFiles (files) {
     const { beforeUpload, customUpload, maxSize } = this.props
     const { fileList, fileCountLimted } = this.state
@@ -138,24 +139,27 @@ class Upload extends Component {
     }
 
     if (files.length === 0) return
-
-    const file = files[0]
-    if (file.size > maxSize * 1024) {
-      this.setState({
-        visibleModal: true
-      })
-      return
-    }
-
-    file.fileId = this.getFileId()
-    file.uploadState = 'loading'
-    file.fileType = this.getFileType(file)
-
     const _fileList = [...fileList]
-    _fileList.unshift(file)
-    this.setState({ fileList: _fileList }, () => {
-      this.uploadFile(file)
+
+    Object.keys(files).forEach((key) => {
+      const file = files[key]
+      if (file.size > maxSize * 1024) {
+        this.setState({
+          visibleModal: true
+        })
+        return
+      }
+
+      file.fileId = this.getFileId()
+      file.uploadState = 'loading'
+      file.fileType = this.getFileType(file)
+
+      _fileList.unshift(file)
+      this.setState({ fileList: _fileList }, () => {
+        this.uploadFile(file)
+      })
     })
+
     ReactDOM.findDOMNode(this.uploadRef).value = ''
   }
 
@@ -167,6 +171,8 @@ class Upload extends Component {
       this.setState({ fileList, fileCountLimted: false })
     }
     const ret = onRemove(file, fileList, index)
+
+    file.uploadState === 'loading' && file.xhr.abort()
     if (ret === true) {
       doRemove()
     } else if (ret && typeof ret.then === 'function') {
@@ -211,8 +217,9 @@ class Upload extends Component {
     const XMLHttpRequest = window.XMLHttpRequest
     const FormData = window.FormData
     const { fileList } = this.state
-    const { name, params, headers, uploadAction } = this.props
+    const { name, params, headers, uploadAction, withCredentials } = this.props
     const onerror = err => {
+      const { fileList } = this.state
       const errRes = err !== undefined ? err : { status: xhr.status, statusText: xhr.statusText }
       const _fileList = [...fileList]
       file.uploadState = 'error'
@@ -243,7 +250,8 @@ class Upload extends Component {
 
     let xhr = new XMLHttpRequest()
     let formFile = new FormData()
-
+    file.xhr = xhr
+    xhr.withCredentials = withCredentials
     if (dataUrl) {
       formFile.append(name, dataUrl)
     } else {
@@ -258,6 +266,7 @@ class Upload extends Component {
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
+          const { fileList } = this.state
           const _fileList = [...fileList]
           file.uploadState = 'success'
           const idx = _fileList.findIndex(item => item.fileId === file.fileId)
@@ -274,6 +283,7 @@ class Upload extends Component {
       onerror()
     }
     xhr.upload.onprogress = event => {
+      const { fileList } = this.state
       var e = event || window.event
       var percentComplete = Math.ceil(e.loaded / e.total * 100)
       const _fileList = [...fileList]
@@ -326,7 +336,8 @@ Upload.propTypes = {
   defaultFileList: PropTypes.array,
   fileList: PropTypes.array,
   onRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-  maxSize: PropTypes.number
+  maxSize: PropTypes.number,
+  withCredentials: PropTypes.bool
 }
 
 Upload.defaultProps = {
@@ -341,6 +352,7 @@ Upload.defaultProps = {
   disabled: false,
   showUploadList: true,
   multiple: false,
+  withCredentials: false,
   beforeUpload: () => true,
   onRemove: () => true,
   onChange: () => true

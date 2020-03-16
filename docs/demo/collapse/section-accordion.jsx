@@ -3,6 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Collapse from '../../../components/collapse'
 const prefix = 'section-accordion'
 const rightOptions = []
+const desc = '一次仅展开一个面板，有效减少垂直空间的占用'
 const code = [
   {
     code: `import React from 'react'
@@ -46,6 +47,6 @@ class Demo extends React.Component {
 ]
 
 const DemoBasic = () => (
-  <DocViewer code={code} scope={{ Collapse }} prefix={prefix} rightOptions={rightOptions} />
+  <DocViewer code={code} scope={{ Collapse }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
 )
 export default DemoBasic

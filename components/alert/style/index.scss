@@ -1,3 +1,5 @@
+@import '@hi-ui/core-css/index.scss';
+
 .hi-alert {
   position: relative;
   padding: 9px 12px;
@@ -35,9 +37,11 @@
     top: 12px;
     right: 12px;
     cursor: pointer;
+    height: 16px;
+    line-height: 16px;
 
     .hi-icon {
-      font-size: 14px;
+      font-size: 16px;
       color: #999;
     }
   }
@@ -77,6 +81,16 @@
       .text-message {
         font-size: 14px;
       }
+    }
+  }
+}
+
+@each $key, $value in $palette-primary {
+  .hi-alert.theme__#{$key} {
+    &.info {
+      color: $value;
+      background-color: rgba(map-get(get-palette(get-color($palette-primary, $key)), '50'), 0.1);
+      border: 1px solid map-get(get-palette(get-color($palette-primary, $key)), '20');
     }
   }
 }

@@ -4,6 +4,7 @@ import Form from '../../../components/form/index'
 import FormItem from '../../../components/form/Item'
 import Rate from '../../../components/rate'
 const prefix = 'rate-base'
+const desc = '评定业务指标、信用等级、满意度等'
 const code = `import React from 'react'
 import Rate from '@hi-ui/hiui/es/rate'
 import Form from '@hi-ui/hiui/es/form/index'
@@ -28,6 +29,7 @@ const DemoBase = () => (
     code={code}
     scope={{ Form, FormItem, Rate }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoBase

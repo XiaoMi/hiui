@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import Icon from '../icon'
 import Title from './Title'
 import Item from './Item'
 import SubMenu from './SubMenu'
@@ -222,7 +221,7 @@ class Menu extends Component {
   }
 
   renderMenu (data, parentIndex = '') {
-    const {showAllSubMenus, placement} = this.props
+    const {showAllSubMenus, placement, theme} = this.props
     const {
       activeIndex,
       expandIndex,
@@ -238,6 +237,7 @@ class Menu extends Component {
         items.push(
           <SubMenu
             key={index}
+            theme={theme}
             onClick={this.onClickSubMenu.bind(this)}
             clickInside={this.clickInside.bind(this)}
             index={indexStr}
@@ -263,12 +263,12 @@ class Menu extends Component {
   }
 
   render () {
-    const {data, placement, showCollapse} = this.props
+    const {data, placement, showCollapse, theme} = this.props
     const {collapsed} = this.state
-    const cls = classNames('hi-menu', `hi-menu--${placement}`, {
+    const cls = classNames('hi-menu', `theme__${theme}`, `hi-menu--${placement}`, {
       'hi-menu--mini': collapsed
     })
-    const miniIcon = collapsed ? 'double-right' : 'double-left'
+    const miniIcon = <i className={`hi-icon icon-${collapsed ? 'Expand' : 'Collapse'}`} />
 
     return (
       <div className={cls}>
@@ -281,7 +281,7 @@ class Menu extends Component {
             className='hi-menu--mini__toggle'
             onClick={this.toggleMini.bind(this)}
           >
-            <Icon name={miniIcon} />
+            {miniIcon}
           </div>
         }
       </div>

@@ -29,7 +29,7 @@ export default class DropdownMenuItem extends React.Component {
       this.setState({
         visible: false
       })
-    }, 200)
+    }, 100)
   }
   handleMenuItemMouseEnter = () => {
     clearTimeout(this.timerHideDropdownMenu)
@@ -51,9 +51,16 @@ export default class DropdownMenuItem extends React.Component {
     this.setMenuHide()
   }
 
-  handleMenuItemClick = () => {
-    const { onMenuItemClick, id } = this.props
-    onMenuItemClick(id)
+  handleMenuItemClick = (event) => {
+    if (event) {
+      event.stopPropagation()
+      event.preventDefault()
+      if (event.nativeEvent && event.nativeEvent.stopImmediatePropagation) {
+        event.nativeEvent.stopImmediatePropagation()
+      }
+    }
+    const { onMenuItemClick, id, children, href } = this.props
+    onMenuItemClick(id, (href || !children))
   }
   render () {
     const {
@@ -63,7 +70,8 @@ export default class DropdownMenuItem extends React.Component {
       href,
       disabled,
       onMenuItemClick,
-      width
+      width,
+      theme
     } = this.props
     const { visible } = this.state
     const shouldRenderDivider = title === '-'
@@ -93,6 +101,7 @@ export default class DropdownMenuItem extends React.Component {
             <Icon name='right' className={iconCls} />
             <DropdownMenu
               data={children}
+              theme={theme}
               visible={visible && parentPopperVisible}
               placement='right-start'
               attachEle={this.refItem.current}

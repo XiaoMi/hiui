@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Alert from '../../../components/alert'
 const prefix = 'alert-base'
+const desc = '根据用户的操作进行页面级或模块、区块级的'
 const code = `import React from 'react'
 import Alert from '@hi-ui/hiui/es/alert'\n
 class Demo extends React.Component {
@@ -20,5 +21,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBase = () => <DocViewer code={code} scope={{ Alert }} prefix={prefix} />
+const DemoBase = () => <DocViewer desc={desc} code={code} scope={{ Alert }} prefix={prefix} />
 export default DemoBase

@@ -8,7 +8,10 @@ class Demo extends React.Component {
   constructor(props){
     super(props)
 
-
+    this.state =  {
+      selectedRowKeys: [], // Check here to configure the default column
+      data
+    }
     this.columns = [{
       title: 'Name',
       dataIndex: 'name',
@@ -92,8 +95,17 @@ class Demo extends React.Component {
     }
     this.data = data
   }
+
   render() {
-    return <Table columns={this.columns} data={this.data} fixTop={64} />
+    const { selectedRowKeys ,data} = this.state
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: (selectedRowKeys,rows)=>{
+        this.setState({selectedRowKeys})
+      },
+      dataName:'age'
+    }
+    return <Table columns={this.columns} data={this.data} fixTop={64} rowSelection={rowSelection} />
   }
 }`
 

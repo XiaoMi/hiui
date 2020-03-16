@@ -1,3 +1,5 @@
+@import '@hi-ui/core-css/index.scss';
+
 .hi-transfer {
   display: flex;
 
@@ -72,6 +74,10 @@
     user-select: none;
     position: relative;
     text-align: left;
+
+    .hi-checkbox-legacy--checked .hi-checkbox-legacy__input {
+      border: 1px solid #4284f5;
+    }
 
     &:hover {
       background: rgba(66, 132, 245, 0.1);
@@ -190,5 +196,29 @@
 
   .hi-checkbox__input {
     box-sizing: border-box;
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .hi-transfer {
+    &.theme__#{$key} {
+      .hi-transfer__divider--up {
+        background-color: $value;
+      }
+
+      .hi-transfer__divider--down {
+        background-color: $value;
+      }
+    }
+
+    &__item.theme__#{$key} {
+      .hi-checkbox-legacy--checked .hi-checkbox-legacy__input {
+        border: 1px solid $value;
+      }
+
+      &:hover {
+        background-color: rgba($value, 0.15);
+      }
+    }
   }
 }

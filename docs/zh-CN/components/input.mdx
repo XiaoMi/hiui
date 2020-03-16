@@ -4,28 +4,23 @@
 
 ## 何时使用
 
-- 用户需要通过键盘输入内容时
-- 常见于表单，作为表单的组件类型之一
+用户需要通过键盘输入内容时
 
-## 类型
+常见于表单，作为表单的组件类型之一
 
-import DemoType from '../../demo/input/section-type.jsx'
-
-<DemoType />
-
-## 禁用状态
+## 单行文本
 
 import DemoState from '../../demo/input/section-state.jsx'
 
 <DemoState />
 
-## 附加
+## 特殊格式
 
-import DemoOther from '../../demo/input/section-other.jsx'
+import DemoType from '../../demo/input/section-type.jsx'
 
-<DemoOther />
+<DemoType />
 
-## 前置元素
+## 组合
 
 import DemoPosition from '../../demo/input/section-position.jsx'
 
@@ -46,10 +41,10 @@ import { Badge } from '@libs'
 | value        | 设置输入框的值     | string              | -                                                                      | -      |
 | defaultValue | 设置输入框的默认值 | string              | -                                                                      | -      |
 | type         | 设置输入框类型     | string              | 'text' \| 'textarea' \| 'id' \| 'tel' \| 'card' \| 'amount' \| 'email' | 'text' |
-| prepend       | 输入框前置内容     | string \| ReactNode | -                                                                      | -      |
+| prepend      | 输入框前置内容     | string \| ReactNode | -                                                                      | -      |
 | append       | 输入框后置内容     | string \| ReactNode | -                                                                      | -      |
 | disabled     | 是否禁用           | boolean             | true \| false                                                          | false  |
-| clearable     | 是否可清空           | boolean          | true \| false                                                          | false  |
+| clearable    | 是否可清空         | boolean             | true \| false                                                          | false  |
 | placeholder  | 输入框占位符       | string \| ReactNode | -                                                                      | -      |
 | onFocus      | 获得焦点时的回调   | (e: Event) => void  | -                                                                      | -      |
 | onBlur       | 失去焦点时的回调   | (e: Event) => void  | -                                                                      | -      |

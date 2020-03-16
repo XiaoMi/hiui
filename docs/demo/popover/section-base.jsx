@@ -3,6 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Popover from '../../../components/popover'
 import Button from '../../../components/button'
 const prefix = 'Popover-base'
+const desc = '用于信息描述、辅助信息等'
 const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Popover from '@hi-ui/hiui/es/popover'\n
@@ -39,6 +40,7 @@ const DemoBase = () => (
     code={code}
     scope={{ Popover, Button }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoBase

@@ -79,11 +79,10 @@ let HeaderCell = (props) => {
 
 let GroupCell = (props) => {
   let {item, index, contextMenu} = props
-
   return (
     <th colSpan={item.headColSpan} rowSpan={item.headRowSpan} key={'head-' + item.key || item.dataIndex || item.title} onContextMenu={(e) => contextMenu(e, item.key)}>
       <div style={{display: 'flex', alignItems: 'center'}}>&nbsp;
-        <div>{item.title}</div>
+        <div>{typeof item.title === 'function' ? item.title() : item.title}</div>
         {item.sorter && <Sorter {...props} col={item} index={index} kname={item.key} />}
         {item.serverSort && 'sirt'}
       </div>
@@ -132,6 +131,6 @@ export default class Header extends Component {
     if (origin && origin.url) {
       sc = false
     }
-    Menu.show(e, cbs, key, !!sc, size)
+    Menu.show(e, cbs, key, !!sc, size, this.props.headerColumns.length === 1)
   }
 }

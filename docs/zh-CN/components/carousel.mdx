@@ -1,12 +1,20 @@
 # Carousel 走马灯
 
-## 基础用法
+又叫图片轮播器，是用于在同一空间展示一组图片的容器。
+
+## 何时使用
+
+在空间有限的情况下，需要展示多张图片时
+
+常用于宣传营销 Banner、新功能上线等场景
+
+## 手动轮播
 
 import DemoBase from '../../demo/carousel/section-base.jsx'
 
 <DemoBase />
 
-## 图片展示
+## 自动轮播
 
 import DemoImage from '../../demo/carousel/section-icon.jsx'
 
@@ -14,9 +22,10 @@ import DemoImage from '../../demo/carousel/section-icon.jsx'
 
 ## Props
 
-| 参数           | 说明                                              | 类型                        | 可选值        | 默认值                                                  |
-| -------------- | ------------------------------------------------- | --------------------------- | ------------- | ------------------------------------------------------- |
-| duration       | 自动切换间隔，默认不自动切换                      | number                      | -             | 0                                                       |
-| showDots       | 是否显示分页指示器                                | boolean                     | true \| false              | false                                                   |
-| showArrows     | 是否显示箭头指示器                                | boolean                     | true \| false              | false                                                   |
-| defaultActive  | 默认激活索引，从0开始                             | number                      | -             | 0                                                       |
+| 参数          | 说明                         | 类型    | 可选值        | 默认值 |
+| ------------- | ---------------------------- | ------- | ------------- | ------ |
+| duration      | 自动切换间隔，默认不自动切换 | number  | -             | 0      |
+| showDots      | 是否显示分页指示器           | boolean | true \| false | false  |
+| showArrows    | 是否显示箭头指示器           | boolean | true \| false | false  |
+| defaultActive | 默认激活索引，从 0 开始      | number  | -             | 0      |
+| showPages     | 是否显示页码指示器           | boolean  | true \| false  | false      |

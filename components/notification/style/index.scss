@@ -1,3 +1,4 @@
+@import '@hi-ui/core-css/index.scss';
 @import '../../style/icon/index.scss';
 
 .hi-notification__container {
@@ -71,6 +72,7 @@
 
     .hi-notification__button {
       background-color: #4284f5;
+      border: 1px solid #4284f5;
     }
   }
 
@@ -130,5 +132,34 @@
 
   .hi-notification-exit-done {
     transform: translateX(100%);
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .hi-notification__container {
+    .theme__#{$key}.hi-notification.hi-notification--info {
+      background-color:
+        rgba(
+          map-get(get-palette(get-color($palette-primary, $key)), '50'),
+          0.1
+        );
+      border:
+        1px
+        solid
+        map-get(get-palette(get-color($palette-primary, $key)), '20');
+
+      .hi-icon {
+        color: $value;
+      }
+
+      .hi-notification__title {
+        color: $value;
+      }
+
+      .hi-notification__button {
+        background-color: $value;
+        border: 1px solid $value;
+      }
+    }
   }
 }

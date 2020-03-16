@@ -1,3 +1,4 @@
+@import '@hi-ui/core-css/index.scss';
 $prefix: 'hi-tabs' !default;
 
 .#{$prefix} {
@@ -36,14 +37,14 @@ $prefix: 'hi-tabs' !default;
     height: 24px;
     color: #979797;
     border-radius: 2px;
-    border: 1px solid rgba(216, 216, 216, 1);
     cursor: pointer;
     box-sizing: border-box;
+    font-size: 16px;
   }
 
   .#{$prefix}__item-close {
     margin-left: 8px;
-    font-size: 12px;
+    font-size: 16px;
   }
 
   &--card {
@@ -53,8 +54,8 @@ $prefix: 'hi-tabs' !default;
     }
 
     .#{$prefix}__item {
-      height: 48px;
-      line-height: 48px;
+      height: 40px;
+      line-height: 40px;
       padding: 0 16px;
       box-sizing: border-box;
 
@@ -64,6 +65,7 @@ $prefix: 'hi-tabs' !default;
 
       &--active {
         border: 1px solid #e6e7e8;
+        border-radius: 2px;
         color: #4284f5;
       }
     }
@@ -79,8 +81,6 @@ $prefix: 'hi-tabs' !default;
     }
 
     .#{$prefix}__item {
-      margin-right: 16px;
-
       &--active {
         border-bottom-color: #fff;
       }
@@ -103,6 +103,9 @@ $prefix: 'hi-tabs' !default;
     }
 
     .#{$prefix}__item {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+
       &--active {
         border-right-color: #fff;
       }
@@ -116,7 +119,7 @@ $prefix: 'hi-tabs' !default;
       overflow: hidden;
       margin-bottom: -1px;
       margin-right: 40px;
-      min-height: 48px;
+      min-height: 40px;
     }
 
     .#{$prefix}__header {
@@ -124,13 +127,13 @@ $prefix: 'hi-tabs' !default;
     }
 
     .#{$prefix}__item {
-      height: 48px;
+      height: 40px;
       min-width: 48px;
-      line-height: 48px;
+      line-height: 40px;
       margin-right: 4px;
       padding: 0 8px;
       background: #fafafa;
-      border-radius: 4px 4px 0 0;
+      border-radius: 2px 2px 0 0;
       border: 1px solid #e6e7e8;
       text-align: center;
       box-sizing: border-box;
@@ -140,7 +143,7 @@ $prefix: 'hi-tabs' !default;
       }
 
       &:hover:not(.#{$prefix}__item--active) {
-        background-color: #e6e7e8;
+        background-color: #f0f0f0;
       }
 
       &--active {
@@ -215,8 +218,7 @@ $prefix: 'hi-tabs' !default;
       flex: none;
       height: 36px;
       line-height: 36px;
-      padding: 0 20px;
-      margin-right: 32px;
+      padding: 0 24px;
       box-sizing: border-box;
 
       &:hover {
@@ -264,6 +266,74 @@ $prefix: 'hi-tabs' !default;
 
     &--active {
       background-color: rgba(66, 133, 244, 0.08);
+    }
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.#{$prefix} {
+    &--card {
+      .#{$prefix}__item {
+        &:hover {
+          color: $value;
+        }
+
+        &--active {
+          color: $value;
+        }
+      }
+    }
+
+    &--editable {
+      .#{$prefix}__item {
+        &--active {
+          color: $value;
+        }
+      }
+    }
+
+    &--desc {
+      .#{$prefix}__item {
+        &:hover {
+          color: $value;
+
+          .#{$prefix}__item-desc {
+            color: $value;
+          }
+        }
+
+        &--active {
+          color: $value;
+          border-color: $value;
+
+          .#{$prefix}__item-desc {
+            color: $value;
+          }
+        }
+      }
+    }
+
+    &--button {
+      .#{$prefix}__item {
+        &:hover {
+          color: $value;
+        }
+
+        &--active {
+          color: $value;
+          border: 1px solid $value;
+        }
+      }
+    }
+  }
+
+  .theme__#{$key}.hi-tabs-dropdown__items {
+    .hi-tabs-dropdown__item:hover {
+      background-color: rgba($value, 0.1);
+    }
+
+    .hi-tabs-dropdown__item.hi-tabs-dropdown__item--active {
+      background-color: rgba($value, 0.1);
     }
   }
 }

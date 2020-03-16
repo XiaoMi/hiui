@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Transfer from '../../../components/transfer'
 const prefix = 'transfer-search'
+const desc = '源集合庞大，需借助搜索工具完成'
 const code = `import React from 'react'
 import Transfer from '@hi-ui/hiui/es/transfer'\n
 class Demo extends React.Component {
@@ -45,6 +46,7 @@ const DemoSearch = () => (
     code={code}
     scope={{ Transfer }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoSearch

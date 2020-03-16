@@ -2,8 +2,10 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import { Dropdown, Message } from '../../../components'
 const prefix = 'dropdown-type'
-const rightOptions = ['文字型', '按钮型', '按钮组']
-const desc = '通过 type 属性切换按钮类型'
+const rightOptions = ['按钮样式', '按钮动作']
+const desc = [
+  '操作入口以 Button 样式展示，强调重要操作'
+]
 
 const code = [
   {
@@ -75,7 +77,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['按钮型']
+    opt: ['按钮样式']
   },
   {
     code: `import React from 'react'
@@ -114,7 +116,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['按钮组']
+    opt: ['按钮动作']
   }
 ]
 

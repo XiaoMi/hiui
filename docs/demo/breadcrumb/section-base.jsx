@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Breadcrumb from '../../../components/breadcrumb'
 const prefix = 'alert-base'
+const desc = '明确访问路径的每一个节点'
 const code = `import React from 'react'
 import Breadcrumb from '@hi-ui/hiui/es/breadcrumb'\n
 class Demo extends React.Component {
@@ -10,18 +11,11 @@ class Demo extends React.Component {
       content: '首页',
       path: '/home'
     }, {
-      content: '产品类',
-      icon: 'document',
-      path: '/product'
+      content: '列表',
+      path: '/list'
     }, {
-      icon: 'component',
+      content: '手机详情',
       path: '/phone'
-    }, {
-      content: '红米系列',
-      path: '/redmi'
-    }, {
-      content: 'Note7',
-      path: '/note7'
     }]
     return (
       <div>
@@ -31,5 +25,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBase = () => <DocViewer code={code} scope={{ Breadcrumb }} prefix={prefix} />
+const DemoBase = () => <DocViewer code={code} scope={{ Breadcrumb }} prefix={prefix} desc={desc} />
 export default DemoBase

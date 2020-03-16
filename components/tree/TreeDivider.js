@@ -5,6 +5,7 @@ const TreeDivider = props => {
     <div
       className={ClassNames(
         'hi-tree__divider',
+        `theme__${props.theme}`,
         `hi-tree__divider--${props.placement}`
       )}
     >

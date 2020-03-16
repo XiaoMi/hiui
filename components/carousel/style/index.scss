@@ -16,6 +16,8 @@
     padding: 0;
     left: 50%;
     transform: translateX(-50%);
+    max-width: 50%;
+    display: flex;
   }
 
   &__dot {
@@ -70,5 +72,20 @@
     &:last-child {
       margin-right: 24px;
     }
+  }
+
+  &__pages {
+    width: 46px;
+    height: 22px;
+    border-radius: 16px;
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    background: rgba(0, 0, 0, 0.5);
+    line-height: 22px;
+    font-size: 14px;
+    text-align: center;
+    user-select: none;
+    opacity: 0.5;
   }
 }

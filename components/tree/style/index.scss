@@ -8,6 +8,30 @@ $tree: 'hi-tree' !default;
 
   color: #383e47;
 
+  /* TODO: The following style does not fully restore ui, so commented =========== */
+  // &:not(.hi-tree--show-line) {
+  //   li:not(.is-root):not(.no-expanded) {
+  //     margin-top: 10px;
+  //   }
+
+  //   .is-root {
+  //     margin-bottom: 10px;
+  //   }
+  // }
+
+  /* =========== */
+  .hi-checkbox-legacy {
+    margin-left: 8px;
+  }
+
+  .hi-checkbox-legacy--part .hi-checkbox-legacy__input {
+    border: 1px solid #4284f5;
+  }
+
+  .hi-checkbox-legacy--checked .hi-checkbox-legacy__input {
+    border: 1px solid #4284f5;
+  }
+
   .hi-tree__searcher {
     position: relative;
     padding-left: 15px;
@@ -30,6 +54,10 @@ $tree: 'hi-tree' !default;
 
       .hi-input__append {
         width: 32px;
+        height: 30px;
+        border-radius: 2px 0 0 2px;
+        border: 1px solid rgba(216, 216, 216, 1);
+        border-left: none;
         text-align: center;
       }
     }
@@ -207,6 +235,8 @@ $tree: 'hi-tree' !default;
       &--expanded {
         &.can-expand {
           > .hi-tree_item-text {
+            padding-left: 8px;
+
             &::before {
               position: absolute;
               top: calc(50% + 8px);
@@ -353,7 +383,7 @@ $tree: 'hi-tree' !default;
     cursor: pointer;
 
     .hi-tree-switcher {
-      color: #999;
+      color: #666;
       font-size: 16px;
     }
 
@@ -499,6 +529,68 @@ $tree: 'hi-tree' !default;
 
     &:hover {
       background: rgba(66, 133, 244, 0.08);
+    }
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.#{$tree} {
+    .hi-checkbox-legacy--part .hi-checkbox-legacy__input {
+      border: 1px solid $value;
+    }
+
+    .hi-checkbox-legacy__label.highlight {
+      color: $value;
+    }
+
+    .hi-checkbox-legacy--checked .hi-checkbox-legacy__input {
+      border: 1px solid $value;
+    }
+
+    .#{$tree}_item-text {
+      &:hover:not(.hi-tree_item-text--disabled) {
+        background-color: rgba($value, 0.08);
+        color: rgba(56, 62, 71, 1);
+      }
+
+      &.dragTo {
+        background-color: $value;
+      }
+
+      &.dragToGapBottom {
+        border-top: 1px solid $value;
+      }
+
+      &.dragToGapTop {
+        border-bottom: 1px solid $value;
+      }
+
+      &.highlight {
+        color: #fff;
+        background-color: $value;
+      }
+    }
+
+    .#{$tree}-bar {
+      &-input:checked + .#{$tree}-checkbox {
+        background-color: $value;
+      }
+    }
+
+    .hi-tree__divider {
+      .divider-line {
+        background-color: $value;
+      }
+
+      .divider-circle {
+        border: 1px solid $value;
+      }
+    }
+  }
+
+  .theme__#{$key}.right-click-menu {
+    li:hover {
+      background-color: rgba($value, 0.15);
     }
   }
 }

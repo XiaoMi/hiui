@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Alert from '../../../components/alert'
 const prefix = 'alert-title'
+const desc = '反馈给用户的信息较多，需要用户阅读更详细'
 const code = `import React from 'react'
 import Alert from '@hi-ui/hiui/es/alert'\n
 class Demo extends React.Component {
@@ -19,5 +20,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoTitle = () => <DocViewer code={code} scope={{ Alert }} prefix={prefix} />
+const DemoTitle = () => <DocViewer desc={desc} code={code} scope={{ Alert }} prefix={prefix} />
 export default DemoTitle

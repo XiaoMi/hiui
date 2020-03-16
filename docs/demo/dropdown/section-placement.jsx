@@ -2,8 +2,8 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Dropdown from '../../../components/dropdown'
 const prefix = 'dropdown-type'
-const rightOptions = ['Bottom Start', 'Top Start', 'Bottom', 'Top']
-const desc = '通过 placement 属性切换菜单显示位置'
+const rightOptions = ['左下', '左上', '右下', '右上']
+const desc = '下拉菜单可打开不同的方向，以应对页面边缘的遮盖问题'
 
 const code = [
   {
@@ -41,7 +41,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['Bottom Start']
+    opt: ['左下']
   },
   {
     code: `import React from 'react'
@@ -78,7 +78,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['Top Start']
+    opt: ['左上']
   },
   {
     code: `import React from 'react'
@@ -109,13 +109,13 @@ class Demo extends React.Component {
       <Dropdown
         data={list}
         type='button'
-        placement='bottom'
+        placement='bottom-end'
         title='鼠标悬停'
       />
     )
   }
 }`,
-    opt: ['Bottom']
+    opt: ['右下']
   },
   {
     code: `import React from 'react'
@@ -146,13 +146,13 @@ class Demo extends React.Component {
       <Dropdown
         data={list}
         type='button'
-        placement='top'
+        placement='top-end'
         title='鼠标悬停'
       />
     )
   }
 }`,
-    opt: ['Top']
+    opt: ['右上']
   }
 ]
 

@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
 const prefix = 'table-header'
+const desc = '方便与主键数据的有效衔接'
 const code = `import React from 'react'
 import Table from '@hi-ui/hiui/es/table'\n
 class Demo extends React.Component {
@@ -51,6 +52,7 @@ const DemoHeader = () => (
     code={code}
     scope={{ Table }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoHeader

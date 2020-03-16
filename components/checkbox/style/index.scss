@@ -18,8 +18,11 @@ $prefixCls: '.hi-checkbox' !default;
 
     &__input {
       &--indeterminate {
+        background: $color;
+        border-color: $color;
+
         &::after {
-          background: $color;
+          background: #fff;
         }
       }
 
@@ -61,13 +64,18 @@ $prefixCls: '.hi-checkbox' !default;
 
     &--indeterminate {
       &::after {
+        transform: rotate(90deg) scaleY(1);
+        pointer-events: none;
+        box-sizing: content-box;
         content: '';
-        top: 3px;
-        left: 3px;
-        right: 3px;
-        bottom: 3px;
+        border: none;
+        border-bottom: 2px solid #fff;
+        height: 8px;
+        left: 6px;
         position: absolute;
-        display: block;
+        top: 2px;
+        width: 2px;
+        transform-origin: center;
       }
     }
 
@@ -114,6 +122,11 @@ $prefixCls: '.hi-checkbox' !default;
 
   &-group {
     display: inline-block;
+
+    &--vertical {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   @include hi-checkbox-style();
@@ -122,5 +135,19 @@ $prefixCls: '.hi-checkbox' !default;
 @each $key, $value in $theme-colors {
   .theme__#{$key$prefixCls} {
     @include hi-checkbox-style($value);
+  }
+
+  .theme__#{$key}#{$prefixCls}:not(#{$prefixCls}--disabled):hover {
+    #{$prefixCls}__input {
+      border-color: $value;
+    }
+  }
+
+  .theme__#{$key}#{$prefixCls} {
+    input {
+      &:focus + #{$prefixCls}__input {
+        border-color: $value;
+      }
+    }
   }
 }

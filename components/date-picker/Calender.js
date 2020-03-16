@@ -38,7 +38,7 @@ class Calender extends Component {
   }
 
   getRows () {
-    let {type, range, date, minDate, maxDate, weekOffset} = this.props
+    let {type, range, date, minDate, maxDate, weekOffset, disabledDate} = this.props
     let _date = date
     let {year, month, week} = deconstructDate(_date, weekOffset)
     let {endDate, startDate} = range || {startDate: null, endDate: null}
@@ -98,7 +98,7 @@ class Calender extends Component {
           }
           row.weekNum = getYearWeek(new Date(currentTime), weekOffset).weekNum
         }
-        col.disabled = (minDate && compareAsc(currentTime, toDate(minDate).setHours(0, 0, 0, 0)) === -1) || (maxDate && compareAsc(currentTime, toDate(maxDate).setHours(0, 0, 0, 0)) === 1)
+        col.disabled = (minDate && compareAsc(currentTime, toDate(minDate).setHours(0, 0, 0, 0)) === -1) || (maxDate && compareAsc(currentTime, toDate(maxDate).setHours(0, 0, 0, 0)) === 1) || (disabledDate && disabledDate(currentTime))
       }
       if (type === 'week') {
         let _month = month

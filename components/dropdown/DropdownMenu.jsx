@@ -5,7 +5,7 @@ import Popper from '../popper'
 import { prefixCls } from '.'
 import DropdownMenuItem from './DropdownMenuItem'
 
-export default class DropdownMenu extends React.Component {
+class DropdownMenu extends React.Component {
   render () {
     const {
       data,
@@ -17,9 +17,10 @@ export default class DropdownMenu extends React.Component {
       onChildMenuMouseEnter,
       onChildMenuMouseLeave,
       onMenuItemClick,
-      width
+      width,
+      theme
     } = this.props
-    const menuCls = classNames(`${prefixCls}__menu`)
+    const menuCls = classNames(`${prefixCls}__menu`, `theme__${theme}`)
     return (
       <Popper
         className={`${prefixCls}__popper`}
@@ -29,11 +30,13 @@ export default class DropdownMenu extends React.Component {
         placement={placement}
         width={width}
         onMouseEnter={onMouseEnter}
+        leftGap={1}
         onMouseLeave={onMouseLeave}
       >
         <ul className={menuCls}>
           {data.map((item, index) => (
             <DropdownMenuItem
+              theme={theme}
               key={index}
               {...item}
               parentPopperVisible={visible}
@@ -48,7 +51,7 @@ export default class DropdownMenu extends React.Component {
     )
   }
 }
-
+export default DropdownMenu
 export const propTypesOfMenuData = PropTypes.arrayOf(
   PropTypes.shape({
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),

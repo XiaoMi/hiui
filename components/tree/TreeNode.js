@@ -104,6 +104,15 @@ class TreeNode extends Component {
 
   // 高亮检索值
   highlightData = (data, highlightValue) => {
+    const themeColor = {
+      'orange': '#f63',
+      'cyan': '#46bc99',
+      'magenta': '#ff5975',
+      'lavender': '#b450de',
+      'blue': '#3da8f5',
+      'purple': '#8a8acb',
+      'hiui-blue': '#4284f5'
+    }
     return data.map(item => {
       if (typeof item.title === 'string' && item.title.includes(highlightValue)) {
         const index = item.title.indexOf(highlightValue)
@@ -112,7 +121,7 @@ class TreeNode extends Component {
         item.title = (
           <span>
             {beforeStr}
-            <span style={{ color: '#4284f5' }}>{highlightValue}</span>
+            <span style={{ color: themeColor[this.props.theme] }}>{highlightValue}</span>
             {afterStr}
           </span>
         )
@@ -136,14 +145,14 @@ class TreeNode extends Component {
     return count
   }
   renderSwitcher = expanded => {
-    const { prefixCls, openIcon, closeIcon, showLine } = this.props
+    const { prefixCls, openIcon, closeIcon, showLine, apperance } = this.props
     const switcherClsName = classNames(
       `${prefixCls}-switcher`,
       'hi-icon',
       `icon-${
         expanded
-          ? openIcon || (showLine && 'TreeMinus') || 'open'
-          : closeIcon || (showLine && 'TreePlus') || 'packup'
+          ? openIcon || (showLine && 'TreeMinus') || (apperance === 'folder' && 'Folder-open') || 'open'
+          : closeIcon || (showLine && 'TreePlus') || (apperance === 'folder' && 'folder') || 'packup'
       }`
     )
     return <i className={switcherClsName} />
@@ -297,7 +306,7 @@ class TreeNode extends Component {
       editNodes: editNodes.filter(node => node.id !== itemId),
       editingNodes: editingNodes.filter(node => node.id !== itemId)
     })
-    const node = findNode(itemId, dataCache)
+    const node = findNode(itemId, _dataCache)
     this.props.onSave(node, _dataCache)
   }
   // 删除拖动的节点
@@ -454,10 +463,8 @@ class TreeNode extends Component {
         return
       }
     }
-    // if (type === '[object Boolean]') {
-    //   _cm = null
-    // }
-    let contextMenuPanel = <ul className='right-click-menu' style={{left: rect.left + rect.width + 5, top: rect.top + _st}}>
+
+    let contextMenuPanel = <ul className={`right-click-menu theme__${this.props.theme}`} style={{left: rect.left + rect.width + 5, top: rect.top + _st}}>
       {
         _cm.length > 0
           ? _cm.map((cm, index) => {
@@ -509,6 +516,7 @@ class TreeNode extends Component {
       semiChecked,
       onClick,
       highlightable,
+      defaultHighlightId,
       checkable,
       closeExpandedTreeNode,
       expandTreeNode,
@@ -519,7 +527,8 @@ class TreeNode extends Component {
       expanded,
       origin,
       onDragStart,
-      showLine
+      showLine,
+      apperance
     } = this.props
     const {
       highlight,
@@ -547,7 +556,7 @@ class TreeNode extends Component {
               draggable={draggable}
               onDragStart={onDragStart}
               checked={!!checked.includes(item.id)}
-              highlight={highlight}
+              highlight={highlight || defaultHighlightId}
               highlightable={highlightable}
               editNodes={editNodes}
               editingNodes={editingNodes}
@@ -555,6 +564,7 @@ class TreeNode extends Component {
               expandTreeNode={expandTreeNode}
               itemStyle={classNames(checkable && 'has_checkbox')}
               semiChecked={semiChecked}
+              theme={this.props.theme}
               checkable={checkable}
               onExpanded={onExpanded}
               onValueChange={this.onValueChange}
@@ -564,6 +574,7 @@ class TreeNode extends Component {
               positionY={positionY}
               renderSwitcher={this.renderSwitcher}
               cancelAddSiblingNode={this.cancelAddSiblingNode}
+              apperance={apperance}
               // renderRightClickMenu={this.renderRightClickMenu}
               onCheckChange={onCheckChange}
               saveEditNode={this.saveEditNode}
@@ -610,7 +621,7 @@ class TreeNode extends Component {
                   collectExpandId(dataCache, e.target.value, [], dataCache)
                 )
               }}
-              append={<Icon name='search' style={{ color: '#4284F5', fontSize: '24px' }} />}
+              append={<Icon name='search' style={{ fontSize: '16px' }} />}
               style={{ width: '272px' }}
             />
             {highlightNum === 0 && searchValue !== '' && (

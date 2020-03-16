@@ -5,11 +5,14 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
 
 .#{$prefix} {
   &__container {
+    height: $line-height-size-normal;
     display: inline-block;
     vertical-align: middle;
-    padding: 0 4px;
+    padding: 0 6px;
     font-size: $font-size-small;
-    line-height: $line-height-size-x-small;
+    box-sizing: border-box;
+    text-align: center;
+    line-height: $line-height-size-normal;
     -webkit-font-smoothing: antialiased;
     border-radius: 2px;
 
@@ -34,7 +37,8 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
       background: transparent;
       border: 1px solid $primary;
       color: $primary;
-      line-height: $line-height-size-x-small - 2;
+      padding: 0 5px;
+      line-height: $line-height-size-normal - 2;
 
       @each $key in 'success', 'danger', 'warning' {
         &.#{$prefix}__container--#{$key} {
@@ -49,5 +53,16 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     &--click {
       cursor: pointer;
     }
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.hi-tag__container--primary.hi-tag__container--default {
+    background: $value;
+  }
+
+  .theme__#{$key}.hi-tag__container--primary.hi-tag__container--line {
+    border: 1px solid $value;
+    color: $value;
   }
 }

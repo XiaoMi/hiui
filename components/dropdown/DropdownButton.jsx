@@ -8,24 +8,28 @@ const ButtonGroup = Button.Group
 
 export default class DropdownButton extends React.Component {
   render () {
-    const { children, type, onIconClick, visible, onButtonClick, ...restProps } = this.props
+    const {
+      children,
+      type,
+      onIconClick,
+      visible,
+      onButtonClick,
+      ...restProps
+    } = this.props
     const isButton = ['button', 'group'].includes(type)
     const isGroup = type === 'group'
     const buttonCls = classNames(
       `${prefixCls}__button`,
-      isButton || `${prefixCls}__button--text`,
-      visible && `${prefixCls}__button--active`
+      isButton || `${prefixCls}__button--text`
     )
     const iconGroupCls = classNames(
       `${prefixCls}__icon`,
-      isButton || `${prefixCls}__icon--text`
+      isButton || `${prefixCls}__icon--text`,
+      isButton && `${prefixCls}__icon-btnwrap`
     )
-    const iconCls = classNames(
-      'hi-icon',
-      'icon-down',
-      `${prefixCls}__icon`,
-      visible && `${prefixCls}__icon--active`
-    )
+    const iconCls = classNames('hi-icon', 'icon-down', `${prefixCls}__icon`, {
+      'not-group': isButton && !isGroup
+    })
     isButton || (restProps.appearance = 'link')
     const iconProps = {}
     // move button events to icon

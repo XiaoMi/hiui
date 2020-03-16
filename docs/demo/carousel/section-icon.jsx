@@ -11,10 +11,11 @@ class Demo extends React.Component {
       <div style={{width: 800}}>
         <Carousel
           duration={2000}
+          showPages={true}
         >
           {
             data.map((item, index) => {
-              return <img src={'http://i1.mifile.cn/f/i/hiui/docs/carousel/pic_'+item+'.png'} style={{height: 300}} />
+              return <img src={'http://i1.mifile.cn/f/i/hiui/docs/carousel/pic_'+item+'.png'} style={{height: 300}} key={index}/>
             })
           }
         </Carousel>

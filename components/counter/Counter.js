@@ -2,6 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { filterObjProps } from '../input/util'
 import { Decimal } from 'decimal.js'
+import Provider from '../context'
+
+import Icon from '../icon'
 /**
  * 加减器
  */
@@ -84,10 +87,10 @@ class Counter extends React.Component {
 
   render () {
     const { className, id, disabled } = this.props
-    const { min = -1 * Infinity, max = Infinity, step } = this.props
+    const { min = -1 * Infinity, max = Infinity, step, theme } = this.props
     let { valueTrue } = this.state
     const { defaultValue, ...attrs } = this.attrs
-    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'localeDatas', 'localedatas'])
+    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'localeDatas', 'localedatas', 'innerRef'])
 
     let isAddDisabled = false
     let isMinusDisabled = false
@@ -100,7 +103,7 @@ class Counter extends React.Component {
     }
 
     return (
-      <div className={`hi-counter ${className || ''}`} id={id}>
+      <div className={`hi-counter theme__${theme} ${className || ''}`} id={id}>
         <div className={`hi-counter-outer`}>
           <span
             className={`hi-counter-minus hi-counter-sign ${isMinusDisabled ? 'disabled' : ''}`}
@@ -121,7 +124,7 @@ class Counter extends React.Component {
               this.update(value)
             }}
           >
-            -
+            <Icon name='minus' />
           </span>
           <input
             id={id ? `${id}_value` : ''}
@@ -165,7 +168,7 @@ class Counter extends React.Component {
               this.update(value)
             }}
           >
-            +
+            <Icon name='plus' />
           </span>
         </div>
       </div>
@@ -250,4 +253,4 @@ class Counter extends React.Component {
   }
 }
 
-export default Counter
+export default Provider(Counter)

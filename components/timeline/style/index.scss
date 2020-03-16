@@ -15,7 +15,7 @@
     list-style: none;
     display: flex;
     position: relative;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 
     &:last-child {
       .hi-timeline__line {
@@ -72,6 +72,7 @@
       text-align: left;
       font-size: 12px;
       color: #999;
+      margin-top: 6px;
     }
   }
 
@@ -88,7 +89,7 @@
   }
 
   &__desc {
-    margin-top: 2px;
+    margin-top: 8px;
     font-size: 12px;
     color: #666;
   }
@@ -139,6 +140,10 @@
       left: 3px;
     }
 
+    .hi-timeline__row {
+      margin-left: 24px;
+    }
+
     .hi-timeline__dot {
       left: 0;
 
@@ -171,7 +176,7 @@
 
     .hi-timeline__item:nth-child(even) {
       .hi-timeline__row {
-        margin-left: -36px;
+        margin-left: -19px;
         text-align: right;
         display: inline-block;
 
@@ -181,7 +186,7 @@
       }
 
       .hi-timeline__content-container {
-        margin-right: 36px;
+        margin-right: 20px;
       }
 
       .hi-timeline__title {
@@ -192,11 +197,16 @@
     .hi-timeline__item:nth-child(odd) {
       .hi-timeline__row {
         margin-left: 50%;
-        padding-left: 36px;
+        padding-left: 19px;
+        text-align: left;
+
+        .hi-timeline__time {
+          text-align: left;
+        }
       }
 
       .hi-timeline__content-container {
-        margin-left: 36px;
+        margin-left: 20px;
       }
     }
 
@@ -219,5 +229,21 @@
     font-size: 12px;
     color: #666;
     margin-bottom: 4px;
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.hi-timeline {
+    .hi-timeline__dot {
+      border: 2px solid $value;
+
+      &.hi-timeline__dot--custom {
+        border: none;
+      }
+
+      &--sub {
+        background: $value;
+      }
+    }
   }
 }

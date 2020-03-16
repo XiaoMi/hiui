@@ -6,7 +6,7 @@ import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
 import Button from '../../../components/button'
 const prefix = 'form-check'
-
+const desc = '表单项内容的格式、逻辑有特殊要求'
 const code = `import React from 'react'
 import { Grid, Button, Radio, Input, Form } from '@hi-ui/hiui'\n
 class Demo extends React.Component {
@@ -33,7 +33,6 @@ class Demo extends React.Component {
         },
         count: {
           required: true,
-          message: '请输入数量',
           trigger: 'onChange',
           validator: (rule, value, cb) => {
             const count = +value
@@ -96,10 +95,10 @@ class Demo extends React.Component {
         <Col span={12}>
           <Form ref={this.form} model={form} rules={this.state.rules} labelWidth='80' labelPlacement='right'>
             <FormItem label='名称' field='name'>
-              <Input value={form.name} placeholder='name' onChange={this.handleChange.bind(this, 'name')}/>
+              <Input value={form.name} placeholder='请输入' onChange={this.handleChange.bind(this, 'name')}/>
             </FormItem>
             <FormItem label='数量' field='count'>
-              <Input value={form.count} placeholder='count' onChange={this.handleChange.bind(this, 'count')}/>
+              <Input value={form.count} placeholder='请输入' onChange={this.handleChange.bind(this, 'count')}/>
             </FormItem>
             <FormItem label='地区' field='region'>
               <Radio.Group
@@ -110,7 +109,7 @@ class Demo extends React.Component {
             </FormItem>
             <FormItem>
               <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
-              <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
+              <Button type='line' onClick={this.cancelSubmit.bind(this)}>重置</Button>
             </FormItem>
           </Form>
         </Col>
@@ -123,6 +122,7 @@ const DemoCloseable = () => (
     code={code}
     scope={{ Form, Radio, Grid, Input, Button }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoCloseable

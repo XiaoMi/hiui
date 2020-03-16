@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Badge from '../../../components/badge'
 import Button from '../../../components/button'
-const desc = '小红点将优先于其他显示'
+const desc = '标识是否有新消息'
 const prefix = 'badge-dot'
 const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
@@ -11,7 +11,6 @@ class Demo extends React.Component {
   render () {
     return (
       <div>
-        <Badge type='dot' content='88' style={{marginRight: '32px'}}>最新报表</Badge>
         <Badge type='dot'>
           <Button type='default'>最新报表</Button>
         </Badge>
@@ -20,6 +19,11 @@ class Demo extends React.Component {
   }
 }`
 const DemoDot = () => (
-  <DocViewer code={code} scope={{ Button, Badge }} prefix={prefix} desc={desc} />
+  <DocViewer
+    code={code}
+    scope={{ Button, Badge }}
+    prefix={prefix}
+    desc={desc}
+  />
 )
 export default DemoDot
