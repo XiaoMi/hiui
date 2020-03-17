@@ -348,14 +348,6 @@ class DateRangePanel extends Component {
       (!shortcuts) && showLargeCalendar(this.props) && 'hi-datepicker__body--range--large'
 
     )
-    const panelClsleft = classNames(
-      'hi-datepicker__panel',
-      'hi-datepicker__panel--left'
-    )
-    const panelClsright = classNames(
-      'hi-datepicker__panel',
-      'hi-datepicker__panel--right'
-    )
     return (
       <div
         style={this.props.style}
@@ -365,7 +357,7 @@ class DateRangePanel extends Component {
           {
             shortcuts && this.renderShortcut(shortcuts)
           }
-          <div className={panelClsleft}>
+          <div className='hi-datepicker__panel hi-datepicker__panel--left'>
             {
               this.renderHeader(currentView, leftDate, 'left')
             }
@@ -373,7 +365,7 @@ class DateRangePanel extends Component {
               {this._getNormalComponent(leftDate, 'left')}
             </div>
           </div>
-          <div className={panelClsright}>
+          <div className='hi-datepicker__panel hi-datepicker__panel--right'>
             {
               this.renderHeader(currentView, rightDate, 'right')
             }

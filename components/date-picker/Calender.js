@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
+import { CSSTransition } from 'react-transition-group'
 import { deconstructDate, getYearWeek, showLargeCalendar } from './util'
 import Provider from '../context'
 import Lunar from './toLunar'
 import {DAY_MILLISECONDS} from './constants'
-import { CSSTransition } from 'react-transition-group'
 
 import {
   getDaysInMonth,
