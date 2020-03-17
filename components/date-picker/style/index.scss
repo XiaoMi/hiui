@@ -614,11 +614,16 @@ $basic-color: #4284f5 !default;
       .hi-datepicker__content {
         margin: auto;
         width: 24px;
-        border-radius: 2px;
 
         &:hover {
           background-color: rgba(66, 142, 245, 0.1);
         }
+      }
+    }
+
+    &:not(.in-range) {
+      .hi-datepicker__content {
+        border-radius: 2px;
       }
     }
 
@@ -780,6 +785,7 @@ $basic-color: #4284f5 !default;
   &__text {
     display: inline-block;
     height: 24px;
+    line-height: 24px;
     // box-sizing: border-box;
     // border-radius: 2px;
   }
