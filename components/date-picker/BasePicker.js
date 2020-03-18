@@ -26,11 +26,25 @@ class BasePicker extends Component {
     this.rInput = null
   }
   setPlaceholder () {
-    const {placeholder, localeDatas, type} = this.props
-    const tempPlaceholder = localeDatas.datePicker.placeholders[type] || localeDatas.datePicker.placeholder
+    const {placeholder, localeDatas, type, showTime} = this.props
+    const typePlaceholder = localeDatas.datePicker.placeholders[type]
+    const tempPlaceholder = showTime
+      ? localeDatas.datePicker.placeholderTimeperiod
+      : typePlaceholder || localeDatas.datePicker.placeholder
+
     let leftPlaceholder = tempPlaceholder
     let rightPlaceholder = tempPlaceholder
 
+    if (typePlaceholder instanceof Array) {
+      if (showTime) {
+        const timeperiodPlaceholder = localeDatas.datePicker.placeholders.timeperiod
+        leftPlaceholder = timeperiodPlaceholder[0]
+        rightPlaceholder = timeperiodPlaceholder[1]
+      } else {
+        leftPlaceholder = tempPlaceholder[0]
+        rightPlaceholder = tempPlaceholder[1]
+      }
+    }
     if (placeholder instanceof Array) {
       leftPlaceholder = placeholder[0]
       rightPlaceholder = placeholder[1] || placeholder[0]
@@ -60,12 +74,12 @@ class BasePicker extends Component {
     const _ch = document.documentElement.clientHeight || document.body.clientHeight
     const _st = document.documentElement.scrollTop || document.body.scrollTop
     let {left, width, top, height} = rect
-    let _top = rect.top + rect.height + _st
+    let _top = rect.top + rect.height + _st + 4
     if (left + _w > _cw) {
       left = left + width - _w
     }
     if (top + _h + height > _ch) {
-      _top = top - _h + _st
+      _top = top - _h + _st - 4
     }
     this.setState({
       style: {
@@ -141,7 +155,8 @@ class BasePicker extends Component {
     this.setState({
       date,
       texts: [this.callFormatterDate(date.startDate), this.callFormatterDate(date.endDate)],
-      showPanel
+      showPanel,
+      isFocus: false
     }, () => {
       if (!showPanel) {
         this.callback()
@@ -201,6 +216,7 @@ class BasePicker extends Component {
   clickOutSide (e) {
     const tar = e.target
     this.inputChangeEvent()
+
     if (tar.className.indexOf('clear') !== -1) {
       this.setState({
         texts: ['', ''],
@@ -246,12 +262,14 @@ class BasePicker extends Component {
     this.setState({date: {startDate: null, endDate: null}, texts: ['', ''], isFocus: false}, () => { this.callback() })
   }
   _icon () {
-    const {isFocus} = this.state
+    const {isFocus, texts} = this.state
     const { clearable, type, showTime } = this.props
     const iconCls = classNames(
       'hi-datepicker__input-icon',
       'hi-icon',
-      (isFocus && clearable) ? 'icon-close-circle clear' : ((type.includes('time') || showTime) ? 'icon-time' : 'icon-date')
+      (texts[0].length && isFocus && clearable)
+        ? 'icon-close-circle clear'
+        : ((type.includes('time') || showTime) ? 'icon-time' : 'icon-date')
     )
     return (isFocus && clearable)
       ? <span className={iconCls} onClick={this._clear.bind(this)} />
@@ -268,15 +286,25 @@ class BasePicker extends Component {
       showTime,
       type
     } = this.props
+    const {isFocus} = this.state
     const _cls = classNames(
       'hi-datepicker__input',
+      isFocus && 'hi-datepicker__input--focus',
       `hi-datepicker__input--${type}`,
       'hi-datepicker__input--range',
       (showTime || type === 'timeperiod') && 'hi-datepicker__input--range-time',
       disabled && 'hi-datepicker__input--disabled'
     )
     return (
-      <div className={_cls}>
+      <div
+        className={_cls}
+        onMouseEnter={() => {
+          this.setState({ isFocus: true })
+        }}
+        onMouseLeave={() => {
+          this.setState({ isFocus: false })
+        }}
+      >
         {this._input(this.state.texts[0], 'input', this.state.leftPlaceholder)}
         <span className='hi-datepicker__input--connection'>{localeDatas.datePicker.to}</span>
         {this._input(this.state.texts[1], 'rInput', this.state.rightPlaceholder)}
@@ -290,15 +318,30 @@ class BasePicker extends Component {
       showTime,
       type
     } = this.props
+    const {isFocus} = this.state
+
     const _cls = classNames(
       'hi-datepicker__input',
+      isFocus && 'hi-datepicker__input--focus',
       `hi-datepicker__input--${type}`,
       disabled && 'hi-datepicker__input--disabled',
       showTime && 'hi-datepicker__input--middle'
     )
     return (
-      <div className={_cls}>
-        {this._input(this.state.texts[0], 'input', this.state.leftPlaceholder)}
+      <div
+        className={_cls}
+        onMouseEnter={() => {
+          this.setState({ isFocus: true })
+        }}
+        onMouseLeave={() => {
+          this.setState({ isFocus: false })
+        }}
+      >
+        {this._input(
+          this.state.texts[0],
+          'input',
+          this.state.leftPlaceholder
+        )}
         {this._icon()}
       </div>
     )
