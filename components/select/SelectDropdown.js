@@ -12,15 +12,12 @@ class SelectDropdown extends Component {
       searchbarValue: '',
       cachedropdownItems: this.props.dropdownItems
     }
-    console.log('filterItems', this.state.filterItems)
   }
   static getDerivedStateFromProps (nextProps, prevState) {
     const {selectedItems, mode, isOnSearch, dropdownItems, show} = nextProps
     const {searchbarValue, cachedropdownItems} = prevState
     const _filterItems = selectedItems.length > 0 && searchbarValue.length === 0 && mode === 'single' && isOnSearch ? cachedropdownItems : dropdownItems
     const _searchbarValue = show ? searchbarValue : ''
-    console.log('_filterItems', _filterItems)
-
     return {filterItems: _filterItems, searchbarValue: _searchbarValue}
   }
   componentDidMount () {
