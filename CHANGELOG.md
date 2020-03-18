@@ -1,5 +1,9 @@
 # 更新日志
 
+## 2.11.1
+
+- 修复打包印度节假日数据问题
+
 ## 2.11.0
 
 - 新增 `<DatePicker />` altCalendarPreset 预设历法信息（支持中国农历和印度节假日），altCalendar 自定义日期显示，dateMarkRender 自定义日期右上角显示标志，dateMarkPreset 预设右上角显示标志「班」和「休」 [#902](https://github.com/XiaoMi/hiui/issues/902)[#992](https://github.com/XiaoMi/hiui/issues/992)
