@@ -17,7 +17,7 @@ class Demo extends React.Component {
             <div style={{backgroundColor: '#4284F5', width: '100%', padding: '16px 0', color: '#fff', opacity:'0.8', textAlign: 'center'}}>col-8</div>
           </Col>
           <Col span={6} offset={6}>
-            <div style={{backgroundColor: '#ff6700', width: '100%', padding: '16px 0', opacity:'0.8', textAlign: 'center'}}>col-6-offset-6</div>
+            <div style={{backgroundColor: '#ff6700', width: '100%', padding: '16px 0', color: '#fff', opacity:'0.8', textAlign: 'center'}}>col-6-offset-6</div>
           </Col>
           <Col span={4}>
             <div style={{backgroundColor: '#4284F5', width: '100%', padding: '16px 0', color: '#fff', opacity:'0.8', textAlign: 'center'}}>col-4</div>
@@ -28,7 +28,7 @@ class Demo extends React.Component {
             <div style={{backgroundColor: '#4284F5', width: '100%', padding: '16px 0', color: '#fff', opacity:'0.8', textAlign: 'center'}}>col-4</div>
           </Col>
           <Col span={6} offset={4}>
-            <div style={{backgroundColor: '#ff6700', width: '100%', padding: '16px 0', opacity:'0.8', textAlign: 'center'}}>col-6-offset-4</div>
+            <div style={{backgroundColor: '#ff6700', width: '100%', padding: '16px 0', color: '#fff', opacity:'0.8', textAlign: 'center'}}>col-6-offset-4</div>
           </Col>
           <Col span={4}>
             <div style={{backgroundColor: '#4284F5', width: '100%', padding: '16px 0', color: '#fff', opacity:'0.8', textAlign: 'center'}}>col-4</div>
@@ -41,5 +41,7 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoOffset = () => <DocViewer code={code} scope={{ Grid }} prefix={prefix} desc={desc} />
+const DemoOffset = () => (
+  <DocViewer code={code} scope={{ Grid }} prefix={prefix} desc={desc} />
+)
 export default DemoOffset
