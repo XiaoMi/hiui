@@ -46,7 +46,7 @@ class DatePicker extends BasePicker {
           Object.assign(oneYear, {
             [item.date.replace(/-/g, '/')]: {
               ...item,
-              hightlight: true
+              highlight: true
             }
           })
         })
