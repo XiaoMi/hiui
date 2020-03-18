@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import DatePicker from '../../../components/date-picker'
-const prefix = 'date-picker-normal'
+const prefix = 'date-picker-calendar'
 const rightOptions = ['预置农历', '自定义日期信息']
 const code = [
   {
