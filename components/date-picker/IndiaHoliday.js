@@ -1,0 +1,45 @@
+
+export default {
+  '2020': {
+    'IndiaHoliday': [
+      {'date': '2020-1-1', 'text': 'New Years', 'FullText': 'New Years Day'},
+      {'date': '2020-1-15', 'text': 'MS,Pongal', 'FullText': 'Makar Sankranti,Pongal'},
+      {'date': '2020-1-26', 'text': 'Republic', 'FullText': 'Republic Day'},
+      {'date': '2020-1-29', 'text': 'VP', 'FullText': 'Vasant Panchami'},
+      {'date': '2020-2-9', 'text': 'GRJ', 'FullText': 'Guru Ravidas Jayanti'},
+      {'date': '2020-2-18', 'text': 'MDSJ', 'FullText': 'Maharishi Dayanand Saraswati Jayanti'},
+      {'date': '2020-2-21', 'text': 'MS-S', 'FullText': 'Maha Shivaratri - Shivaratri'},
+      {'date': '2020-3-8', 'text': "H Ali's", 'FullText': "Hazarat Ali's Birthday"},
+      {'date': '2020-3-9', 'text': 'HD', 'FullText': 'Holika Dahana'},
+      {'date': '2020-3-10', 'text': 'Dolyatra', 'FullText': 'Dolyatra'},
+      {'date': '2020-3-12', 'text': 'SJ', 'FullText': 'Shivaji Jayanti'},
+      {'date': '2020-3-20', 'text': 'Parsi', 'FullText': 'Parsi New Year'},
+      {'date': '2020-3-25', 'text': 'CS', 'FullText': 'Chaitra Sukhladi'},
+      {'date': '2020-4-6', 'text': 'MJ', 'FullText': 'Mahavir Jayanti'},
+      {'date': '2020-4-10', 'text': 'GF', 'FullText': 'Good Friday'},
+      {'date': '2020-4-12', 'text': 'Easter', 'FullText': 'Easter'},
+      {'date': '2020-4-13', 'text': 'V,M-V', 'FullText': 'Vaisakhi,Mesadi - Vaisakhadi'},
+      {'date': '2020-5-7', 'text': 'BP,Ra', 'FullText': 'Buddha Purnima - Vesak,Birthday of Rabindranath'},
+      {'date': '2020-5-22', 'text': 'JUlV', 'FullText': 'Jamat Ul-Vida'},
+      {'date': '2020-6-23', 'text': 'RY', 'FullText': 'Rath Yatra'},
+      {'date': '2020-8-3 ', 'text': 'RB', 'FullText': 'Raksha Bandhan'},
+      {'date': '2020-8-11', 'text': 'Janma', 'FullText': 'Janmashtami'},
+      {'date': '2020-8-15', 'text': 'Indep', 'FullText': 'Independence Day'},
+      {'date': '2020-8-21', 'text': 'Onam', 'FullText': 'Onam'},
+      {'date': '2020-8-22', 'text': 'GCVC', 'FullText': 'Ganesh Chaturthi - Vinayaka Chaturthi'},
+      {'date': '2020-8-29', 'text': 'M-A', 'FullText': 'Muharram - Ashura'},
+      {'date': '2020-10-2', 'text': 'MGJ', 'FullText': 'Mahatma Gandhi Jayanti'},
+      {'date': '2020-10-25', 'text': 'Dusse', 'FullText': 'Dussehra'},
+      {'date': '2020-10-29', 'text': 'MuNIeM', 'FullText': 'Milad un-Nabi - Id-e-Milad'},
+      {'date': '2020-10-31', 'text': 'aVJ', 'FullText': 'aharishi Valmiki Jayanti'},
+      {'date': '2020-11-4', 'text': 'KC', 'FullText': 'Karaka Chaturthi'},
+      {'date': '2020-11-14', 'text': 'NC,DD', 'FullText': 'Naraka Chaturdasi,Diwali - Deepavali'},
+      {'date': '2020-11-15', 'text': 'GP', 'FullText': 'Govardhan Puja'},
+      {'date': '2020-11-16', 'text': 'B-Duj', 'FullText': 'Bhai Duj'},
+      {'date': '2020-11-20', 'text': 'C-Puja', 'FullText': 'Chhat Puja'},
+      {'date': '2020-11-24', 'text': 'Guru', 'FullText': "Guru Tegh Bahadur's Martyrdom Day"},
+      {'date': '2020-12-24', 'text': 'C-Eve', 'FullText': 'Christmas Eve'},
+      {'date': '2020-12-25', 'text': 'C-Day', 'FullText': 'Christmas Day'}
+    ]
+  }
+}
