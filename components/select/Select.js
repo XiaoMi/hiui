@@ -612,6 +612,7 @@ class Select extends Component {
           attachEle={this.selectInputContainer}
           zIndex={1050}
           topGap={5}
+          leftGap={0}
           className="hi-select__popper"
           placement="top-bottom-start"
         >
