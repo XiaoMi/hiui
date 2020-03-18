@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import Modal from './Modal'
 import classNames from 'classnames'
 import {formatterDate, FORMATS} from './constants'
-
+import {showLargeCalendar} from './util'
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
@@ -69,6 +69,9 @@ class BasePicker extends Component {
     let _h = 298
     if (type === 'daterange' && showTime) {
       _h = 344
+    }
+    if (showLargeCalendar(this.props)) {
+      _h = 440
     }
     const _cw = document.documentElement.clientWidth || document.body.clientWidth
     const _ch = document.documentElement.clientHeight || document.body.clientHeight
