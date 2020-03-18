@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2.11.0
+
+- 新增 `<DatePicker />` 支持农历、节假日（中国和印度）显示 [#902](https://github.com/XiaoMi/hiui/issues/902)[#992](https://github.com/XiaoMi/hiui/issues/992)
+- 修复 `<Menu />` 高亮、展开对应菜单项不正确的问题 [#993](https://github.com/XiaoMi/hiui/issues/993)
+- 优化若干视觉还原问题：[#990](https://github.com/XiaoMi/hiui/issues/990) [#991](https://github.com/XiaoMi/hiui/issues/991) [#998](https://github.com/XiaoMi/hiui/issues/998) [#1000](https://github.com/XiaoMi/hiui/issues/1000) [#954](https://github.com/XiaoMi/hiui/issues/954) [#1001](https://github.com/XiaoMi/hiui/issues/1001) [#1002](https://github.com/XiaoMi/hiui/issues/1002) [#1003](https://github.com/XiaoMi/hiui/issues/1003) [#1004](https://github.com/XiaoMi/hiui/issues/1004) [#1005](https://github.com/XiaoMi/hiui/issues/1005)
+
 ## 2.10.0
 
 - 新增 `<Upload />` onDownload 点击上传成功文件的回调 [#613](https://github.com/XiaoMi/hiui/issues/613)
