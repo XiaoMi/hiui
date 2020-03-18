@@ -6,6 +6,7 @@ export default {
     ok: 'OK',
     to: 'to',
     placeholder: 'Select Date',
+    placeholderTimeperiod: 'Select Date Time',
     dateChoose: 'Select Date',
     timeChoose: 'Select Time',
     undefinedType: 'undefined type',
@@ -47,9 +48,11 @@ export default {
       month: 'Select Month',
       year: 'Select Year',
       time: 'Select Time',
-      daterange: 'Select Date',
+      daterange: ['Select Start Date', 'Select End Date'],
       week: 'Select Week',
-      weekrange: 'Select Week'
+      weekrange: ['Select Start Week', 'Select End Week'],
+      timeperiod: ['Select Start Date Time', 'Select Start End Time']
+
     },
     timePeriod: 'Period',
     hours: 'H',

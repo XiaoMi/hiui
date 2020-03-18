@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Calender from './Calender'
-import { deconstructDate } from './util'
+import { deconstructDate, showLargeCalendar } from './util'
 import TimePanel from './TimePanel'
 import Icon from '../icon'
 import classNames from 'classnames'
@@ -157,6 +157,11 @@ class DatePanel extends Component {
     const { type, onPick } = this.props
     if (type === 'month') {
       onPick(_date)
+    } else if (type === 'week') {
+      this.setState({
+        currentView: 'week'
+      })
+      onPick(_date, true)
     } else {
       this.setState({
         currentView: 'date'
@@ -206,7 +211,7 @@ class DatePanel extends Component {
   }
   _getNormalComponent () {
     const { currentView } = this.state
-    const { min, max, weekOffset, date, disabledDate } = this.props
+    const { min, max, weekOffset, date, disabledDate, showLunar, altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData } = this.props
     const validDate = getStartDate(date)
     const { year, month } = deconstructDate(validDate)
     let component = null
@@ -216,6 +221,13 @@ class DatePanel extends Component {
       case 'week':
         component = (
           <Calender
+            altCalendarPresetData={altCalendarPresetData}
+            dateMarkPresetData={dateMarkPresetData}
+            altCalendar={altCalendar}
+            altCalendarPreset={altCalendarPreset}
+            dateMarkRender={dateMarkRender}
+            dateMarkPreset={dateMarkPreset}
+            showLunar={showLunar}
             date={validDate}
             weekOffset={weekOffset}
             minDate={min}
@@ -230,6 +242,13 @@ class DatePanel extends Component {
         const yearData = this.getYearOrMonthData(year, 'year')
         component = (
           <Calender
+            altCalendarPresetData={altCalendarPresetData}
+            dateMarkPresetData={dateMarkPresetData}
+            altCalendar={altCalendar}
+            altCalendarPreset={altCalendarPreset}
+            dateMarkRender={dateMarkRender}
+            dateMarkPreset={dateMarkPreset}
+            showLunar={showLunar}
             date={validDate}
             data={yearData}
             type={currentView}
@@ -241,6 +260,13 @@ class DatePanel extends Component {
         const monthData = this.getYearOrMonthData(month, 'month')
         component = (
           <Calender
+            altCalendarPresetData={altCalendarPresetData}
+            dateMarkPresetData={dateMarkPresetData}
+            altCalendar={altCalendar}
+            altCalendarPreset={altCalendarPreset}
+            dateMarkRender={dateMarkRender}
+            dateMarkPreset={dateMarkPreset}
+            showLunar={showLunar}
             date={validDate}
             data={monthData}
             type={currentView}
@@ -258,7 +284,8 @@ class DatePanel extends Component {
     const bodyCls = classNames(
       'hi-datepicker__body',
       showTime && 'hi-datepicker__body--hastime',
-      type === 'timeperiod' && 'hi-datepicker__body--period'
+      type === 'timeperiod' && 'hi-datepicker__body--period',
+      showLargeCalendar(this.props) && 'hi-datepicker__body--large'
     )
     return (
       <div style={this.props.style} className={_c}>

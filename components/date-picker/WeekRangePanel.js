@@ -196,6 +196,8 @@ export default class WeekRangePanel extends Component {
   }
   _getNormalComponent (date, flag) {
     let { range, layout } = this.state
+    const { altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData } = this.props
+
     let component = null
     const { year, month } = deconstructDate(date)
     switch (layout[flag]) {
@@ -203,6 +205,12 @@ export default class WeekRangePanel extends Component {
         const yearData = this.getYearOrMonthData(year, 'year')
         component = (
           <Calender
+            altCalendarPresetData={altCalendarPresetData}
+            dateMarkPresetData={dateMarkPresetData}
+            altCalendar={altCalendar}
+            altCalendarPreset={altCalendarPreset}
+            dateMarkRender={dateMarkRender}
+            dateMarkPreset={dateMarkPreset}
             date={date}
             data={yearData}
             type={layout[flag]}
@@ -214,6 +222,12 @@ export default class WeekRangePanel extends Component {
         const monthData = this.getYearOrMonthData(month, 'month')
         component = (
           <Calender
+            altCalendarPresetData={altCalendarPresetData}
+            dateMarkPresetData={dateMarkPresetData}
+            altCalendar={altCalendar}
+            altCalendarPreset={altCalendarPreset}
+            dateMarkRender={dateMarkRender}
+            dateMarkPreset={dateMarkPreset}
             date={date}
             data={monthData}
             type={layout[flag]}

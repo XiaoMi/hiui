@@ -2,14 +2,15 @@ import React from 'react'
 import { mount } from 'enzyme'
 import Datepicker from '../index'
 import Timepicker from '../TimePicker'
-import { DatePicker as DatePickerClass } from '../DatePicker'
+import { DatePicker } from '../DatePicker'
 import { getDate, subDays, getYear, getMonth, subMonths, addDays, startOfWeek, endOfWeek, addHours, dateFormat, compatibleFormatString } from '../dateUtil'
-import { nextMonth, deconstructDate } from '../util'
+import { nextMonth, deconstructDate, getPRCDate } from '../util'
 import { isVaildDate } from '../constants'
-import sinon from 'sinon'
+import util from '../util'
+import sinon,{spy} from 'sinon'
 /* eslint-env jest */
 
-const mockDate = new Date('2019-11-15 12:00:00')
+const mockDate = new Date('2019-11-20 12:00:00')
 const mockMinDate = subDays(mockDate, 3)
 const mockMaxDate = addDays(mockDate, 3)
 const mockCurrentDay = getDate(mockDate)
@@ -17,7 +18,6 @@ const mockCurrentYear = getYear(mockDate)
 const mockCurrentMonth = getMonth(mockDate) + 1 // 1~12
 const realCurrentDay = getDate(new Date())
 describe('Datepicker', () => {
-
   describe('PropTypes', () => {
     it('type', () => {
       const types = ['date', 'daterange', 'month', 'year', 'week', 'weekrange', 'timeperiod']
@@ -88,6 +88,73 @@ describe('Datepicker', () => {
       wrapper.find('input').at(0).simulate('focus')
       expect(wrapper.find('.hi-datepicker__panel--left').find('.hi-datepicker__header-text').text()).toEqual(expect.not.stringContaining('年'))
     })
+    it('altCalendarPreset',()=>{
+      const mockTime = new Date('2020-01-14')
+      const wrapper = mount(
+        <Datepicker value={mockTime} altCalendarPreset = 'zh-CN'/>
+      )
+      setTimeout(()=>{
+        wrapper.find('input').simulate('focus')
+        expect(wrapper.find('.hi-datepicker__cell--large')).toHaveLength(42)
+        expect(wrapper.find('.hi-datepicker__text--showLunar[value=14]').text()).toEqual('二十')
+      },500)
+
+    })
+    it('altCalendar',()=>{
+      const mockTime = new Date('2020-01-14')
+      const wrapper = mount(
+        <Datepicker 
+          value={mockTime} 
+          altCalendar={[
+              {
+                date:'2020/1/14',
+                text:'测试日'
+              }
+          ]}
+        />
+      )
+
+      wrapper.find('input').simulate('focus')
+      expect(wrapper.find('.hi-datepicker__text--showLunar[value=14]').text()).toEqual('测试日')
+    })
+    it('dateMarkPreset',()=>{
+      const mockTime = new Date('2020-10-01')
+      const wrapper = mount(
+        <Datepicker 
+          value={mockTime} 
+          dateMarkPreset  = 'zh-CN'
+        />
+      )
+      setTimeout(()=>{
+        wrapper.find('input').simulate('focus')
+        expect(wrapper.find('.current').find('span').last().text()).toEqual('休')
+      },500)
+    })
+    it('dateMarkRender',()=>{
+      const mockTime = new Date('2020-1-14')
+      const wrapper = mount(
+        <Datepicker 
+          value={mockTime} 
+          dateMarkPreset = 'zh-CN'
+          dateMarkRender = {
+            (currentDate) => {
+              const date = Datepicker.format(currentDate, 'yyyy/M/D')
+
+              if(date == '2020/1/14'){
+                  return (
+                    <span style={{color:'#fa0'}}>班</span>
+                  )
+              } else {
+                  return null
+              }
+            }
+        }
+        />
+      )
+      wrapper.find('input').simulate('focus')
+      expect(wrapper.find('.current').find('span').last().text()).toEqual('班')
+    })
+    
     it('week', () => {
       const callback = jest.fn()
       const wrapper = mount(
@@ -112,9 +179,9 @@ describe('Datepicker', () => {
     it('year', () => {
       const callback = jest.fn()
       const wrapper = mount(
-        <Datepicker type='year' onChange={callback} />
+        <Datepicker type='year' onChange={callback} value={mockDate}/>
       )
-      expect(wrapper.find('input').getDOMNode().getAttribute('value')).toEqual('')
+      expect(wrapper.find('input').getDOMNode().getAttribute('value')).toEqual('2019')
       expect(wrapper.find('input').getDOMNode().getAttribute('placeholder')).toEqual('请选择年')
       wrapper.find('input').simulate('focus')
       expect(wrapper.find(`td[value=${mockCurrentYear}]`).hasClass('current')).toBeTruthy()
@@ -131,12 +198,12 @@ describe('Datepicker', () => {
     it('month', () => {
       const callback = jest.fn()
       const wrapper = mount(
-        <Datepicker type='month' onChange={callback}/>
+        <Datepicker type='month' onChange={callback} value={mockDate}/>
       )
-      expect(wrapper.find('input').getDOMNode().getAttribute('value')).toEqual('')
+      expect(wrapper.find('input').getDOMNode().getAttribute('value')).toEqual('2019-11')
       expect(wrapper.find('input').getDOMNode().getAttribute('placeholder')).toEqual('请选择月')
       wrapper.find('input').simulate('focus')
-      expect(wrapper.find(`td[value=${(mockCurrentMonth + 1)+ ''}]`).hasClass('current')).toBeTruthy()
+      expect(wrapper.find(`td[value=${(mockCurrentMonth + 1)+ ''}]`).hasClass('current')).toBeFalsy()
       wrapper.setProps({ value: subMonths(mockDate, 1) })
       expect(wrapper.find(`td[value=${(mockCurrentMonth - 1) + ''}]`).hasClass('current')).toBeTruthy()
       wrapper.find('.hi-datepicker__calender').simulate('click', { target: wrapper.find(`td[value=${mockCurrentMonth}]`).getDOMNode() })
@@ -169,16 +236,16 @@ describe('Datepicker', () => {
       expect(wrapper.find('.hi-datepicker__header-text').first().text()).toEqual(`${year +1}年    12月`)
       // value 为 Date 实例的情况
       wrapper.setProps({ value: mockDate })
-      expect(wrapper.find('input').at(0).getDOMNode().getAttribute('value')).toEqual('2019-11-15')
-      expect(wrapper.find('input').at(1).getDOMNode().getAttribute('value')).toEqual('2019-11-15')
-      wrapper.find(DatePickerClass).setState({showPanel: false})
+      expect(wrapper.find('input').at(0).getDOMNode().getAttribute('value')).toEqual('2019-11-20')
+      expect(wrapper.find('input').at(1).getDOMNode().getAttribute('value')).toEqual('2019-11-20')
+      wrapper.find(DatePicker).setState({showPanel: false})
       wrapper.find('input').first().simulate('focus')
-      expect(wrapper.find(`.hi-datepicker__panel--left td[value=15]:not(.prev):not(.next)`).hasClass('range-se')).toBeTruthy()
+      expect(wrapper.find(`.hi-datepicker__panel--left td[value=20]:not(.prev):not(.next)`).hasClass('range-se')).toBeTruthy()
 
       // value 为 {start: Date, end: Date}
       const rangeEnd = addDays(mockDate, 30)
       wrapper.setProps({ value: {start: mockDate, end: rangeEnd} })
-      wrapper.find(DatePickerClass).setState({showPanel: false})
+      wrapper.find(DatePicker).setState({showPanel: false})
       wrapper.find('input').first().simulate('focus')
       expect(wrapper.find(`.hi-datepicker__panel--left td[value=${mockCurrentDay}]:not(.prev):not(.next)`).hasClass('range-se')).toBeTruthy()
       expect(wrapper.find(`.hi-datepicker__panel--right td[value=${getDate(rangeEnd)}]:not(.prev):not(.next)`).hasClass('range-se')).toBeTruthy()
@@ -224,11 +291,11 @@ describe('Datepicker', () => {
       // Pick
       wrapper.find('.hi-datepicker__panel--left').find('.hi-datepicker__calender').simulate('click', {target: wrapper.find(`.hi-datepicker__panel--left td[value=${11}]:not(.prev):not(.next)`).getDOMNode()})
       expect(wrapper.find(`.hi-datepicker__panel--left td[value=${11}]:not(.prev):not(.next)`).hasClass('range-se')).toBeTruthy()
-      wrapper.find('.hi-datepicker__panel--right').find('.hi-datepicker__calender').simulate('click', {target: wrapper.find(`.hi-datepicker__panel--left td[value=${11}]:not(.prev):not(.next)`).getDOMNode()})
-      expect(wrapper.find(DatePickerClass).state('showPanel')).toBeFalsy()
+      wrapper.find('.hi-datepicker__panel--right').find('.hi-datepicker__calender').simulate('click', {target: wrapper.find(`.hi-datepicker__panel--left td[value=${12}]:not(.prev):not(.next)`).getDOMNode()})
+      expect(wrapper.find('.hi-datepicker__panel')).toHaveLength(0)
       expect(callback).toHaveBeenCalled()
       expect(wrapper.find('input').at(0).getDOMNode().getAttribute('value')).toEqual('2018-11-11')
-      expect(wrapper.find('input').at(1).getDOMNode().getAttribute('value')).toEqual('2020-01-11')
+      expect(wrapper.find('input').at(1).getDOMNode().getAttribute('value')).toEqual('2020-01-12')
 
       wrapper.setProps({ value: mockDate })
       wrapper.find('input').first().simulate('focus')
@@ -262,13 +329,13 @@ describe('Datepicker', () => {
       
       // value 为 Date 实例的情况
       wrapper.setProps({ value: mockDate })
-      wrapper.find(DatePickerClass).setState({showPanel: false})
+      wrapper.find(DatePicker).setState({showPanel: false})
       wrapper.find('input').first().simulate('focus')
       expect(wrapper.find(`.hi-datepicker__panel--left td[value=${getDate(startOfWeek(mockDate))}]:not(.prev):not(.next)`).hasClass('range-se')).toBeTruthy()
       expect(wrapper.find(`.hi-datepicker__panel--left td[value=${getDate(endOfWeek(mockDate))}]:not(.prev):not(.next)`).hasClass('range-se')).toBeTruthy()
 
       // value 为 {start: Date, end: Date}
-      wrapper.find(DatePickerClass).setState({showPanel: false})
+      wrapper.find(DatePicker).setState({showPanel: false})
       const rangeEnd = addDays(mockDate, 30)
       wrapper.setProps({ value: {start: mockDate, end: rangeEnd} })
       wrapper.find('input').first().simulate('focus')
@@ -335,18 +402,18 @@ describe('Datepicker', () => {
       expect(wrapper.find(`.hi-datepicker__panel--left td[value=${realCurrentDay}]:not(.prev):not(.next)`).hasClass('current')).toBeTruthy()
       // value 为 Date 实例的情况
       wrapper.setProps({ value: mockDate })
-      expect(wrapper.find('input').at(0).getDOMNode().getAttribute('value')).toEqual('2019-11-15 12:00:00')
-      expect(wrapper.find('input').at(1).getDOMNode().getAttribute('value')).toEqual('2019-11-15 16:00:00')
-      wrapper.find(DatePickerClass).setState({showPanel: false})
+      expect(wrapper.find('input').at(0).getDOMNode().getAttribute('value')).toEqual('2019-11-20 12:00:00')
+      expect(wrapper.find('input').at(1).getDOMNode().getAttribute('value')).toEqual('2019-11-20 16:00:00')
+      wrapper.find(DatePicker).setState({showPanel: false})
       wrapper.find('input').first().simulate('focus')
-      expect(wrapper.find(`.hi-datepicker__panel--left td[value=15]:not(.prev):not(.next)`).hasClass('current')).toBeTruthy()
+      expect(wrapper.find(`.hi-datepicker__panel--left td[value=20]:not(.prev):not(.next)`).hasClass('current')).toBeTruthy()
       expect(wrapper.find('.hi-datepicker__period-item').at(3).hasClass('hi-datepicker__period-item--active')).toBeTruthy()
       // value 为 {start: Date, end: Date}
       const rangeEnd = addHours(mockDate, 4)
       wrapper.setProps({ value: {start: mockDate, end: rangeEnd} })
-      wrapper.find(DatePickerClass).setState({showPanel: false})
+      wrapper.find(DatePicker).setState({showPanel: false})
       wrapper.find('input').first().simulate('focus')
-      expect(wrapper.find(`.hi-datepicker__panel--left td[value=15]:not(.prev):not(.next)`).hasClass('current')).toBeTruthy()
+      expect(wrapper.find(`.hi-datepicker__panel--left td[value=20]:not(.prev):not(.next)`).hasClass('current')).toBeTruthy()
       expect(wrapper.find('.hi-datepicker__period-item').at(3).hasClass('hi-datepicker__period-item--active')).toBeTruthy()
 
       wrapper.find('.hi-datepicker__calender').simulate('click', {target: wrapper.find(`.hi-datepicker__panel--left td[value=14]:not(.prev):not(.next)`).getDOMNode()})
@@ -550,11 +617,11 @@ describe('Datepicker', () => {
         <Datepicker type='date' onChange={callback} />
       )
       wrapper.find('.hi-datepicker__input-icon').simulate('click')
-      expect(wrapper.find(DatePickerClass).state('showPanel')).toBeTruthy()
+      expect(wrapper.find('.hi-datepicker__panel')).toHaveLength(1)
       wrapper.setProps({disabled: true})
-      wrapper.find(DatePickerClass).setState({showPanel: false})
+      wrapper.find(DatePicker).setState({showPanel: false})
       wrapper.find('.hi-datepicker__input-icon').simulate('click')
-      expect(wrapper.find(DatePickerClass).state('showPanel')).toBeFalsy()
+      expect(wrapper.find('.hi-datepicker__panel')).toHaveLength(0)
     })
     it('time-format', () => {
       const callback = jest.fn()
