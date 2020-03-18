@@ -7,7 +7,7 @@ import DateRangePanel from './DateRangePanel'
 import WeekRangePanel from './WeekRangePanel'
 import Provider from '../context'
 import { getPRCDate, deconstructDate } from './util'
-import IndiaHoliday from './IndiaHoliday'
+import IndiaHoliday from './IndiaHoliday.js'
 class DatePicker extends BasePicker {
   static propTypes = {
     altCalendar: PropTypes.array,
