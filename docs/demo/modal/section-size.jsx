@@ -58,9 +58,6 @@ class Demo extends React.Component {
           size={this.state.size}
           show={this.state.show}
           onCancel={this.cancelEvent.bind(this)}
-          footers={[
-            <Button type="default" key={3} onClick={this.cancelEvent.bind(this)}>关闭</Button>
-          ]}
         >
           <span>一些消息</span>
           <span>一些消息</span>
