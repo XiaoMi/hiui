@@ -13,7 +13,7 @@ class Demo extends React.Component {
     return (
       <Row gutter={true}>
         <Col span={16} >
-          <div style={{textAlign:'center', background:'#ff6700',opacity: '0.8', padding:16 }}>
+          <div style={{textAlign:'center', background:'#ff6700',opacity: '0.8', padding:16, color:'#fff' }}>
             col-16
             <Row gutter={true}>
               <Col span={12}>
@@ -32,5 +32,7 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoNest = () => <DocViewer code={code} scope={{ Grid }} prefix={prefix} desc={desc} />
+const DemoNest = () => (
+  <DocViewer code={code} scope={{ Grid }} prefix={prefix} desc={desc} />
+)
 export default DemoNest

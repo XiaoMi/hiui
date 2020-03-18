@@ -249,19 +249,19 @@ class Calender extends Component {
     const LunarInfo = Lunar.toLunar(_year, _month, _value)
     let lunarcellinfo = {
       text: altCalendarPreset === 'zh-CN' ? LunarInfo[6] : null, // 默认预置信息
-      hightlight: false
+      highlight: false
     }
     if (altCalendar || dateMarkRender) {
       lunarcellinfo = {
         text: this.altCalendarText(datainfo, lunarcellinfo),
-        hightlight: altCalendarPresetData && altCalendarPresetData[datainfo] && altCalendarPresetData[datainfo].hightlight,
+        highlight: altCalendarPresetData && altCalendarPresetData[datainfo] && altCalendarPresetData[datainfo].highlight,
         nodeMark: this.markRender(datainfo)
       }
     }
     if ((dateMarkPresetData && dateMarkPresetData[datainfo]) || (altCalendarPresetData && altCalendarPresetData[datainfo])) {
       lunarcellinfo = {
         text: this.altCalendarText(datainfo, lunarcellinfo),
-        hightlight: altCalendarPresetData && altCalendarPresetData[datainfo] && altCalendarPresetData[datainfo].hightlight,
+        highlight: altCalendarPresetData && altCalendarPresetData[datainfo] && altCalendarPresetData[datainfo].highlight,
         nodeMark: this.markRender(datainfo)
       }
     }
@@ -338,7 +338,7 @@ class Calender extends Component {
                 }}
               >
                 {
-                  fullTimeInfo.hightlight
+                  fullTimeInfo.highlight
                     ? <span value={td.value} className='hi-datepicker__text--showLunar hi-datepicker__text--showLunar--festival'>
                       {fullTimeInfo.text}
                     </span>

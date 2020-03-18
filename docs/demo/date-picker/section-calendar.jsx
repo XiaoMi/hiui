@@ -55,7 +55,7 @@ class Demo extends React.Component {
               {
                 date:'2020/4/8',
                 text:'十周年',
-                hightlight: true
+                highlight: true
               },
           ]}
           dateMarkRender = {

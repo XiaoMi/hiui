@@ -1,6 +1,6 @@
 .hi-carousel {
   width: 100%;
-  color: rgba(153, 153, 153, 1);
+  color: #fff;
   overflow: hidden;
   position: relative;
 
@@ -68,6 +68,10 @@
     font-size: 32px;
     margin-left: 24px;
     cursor: pointer;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.45);
+    }
 
     &:last-child {
       margin-right: 24px;
