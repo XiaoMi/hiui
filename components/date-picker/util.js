@@ -48,8 +48,7 @@ export const getPRCDate = (api) => {
   const url = PRC[api]
   let options = {
     url,
-    method: 'GET',
-    withCredentials: true
+    method: 'GET'
   }
   return url ? request.create().request(options) : null
 }
