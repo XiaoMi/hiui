@@ -3,10 +3,14 @@ import Watermark from './watermark'
 class WatermarkComponent extends React.Component {
   constructor (props) {
     super(props)
+    console.log('props', props)
     this.rootRef = React.createRef()
   }
   componentDidMount () {
-    Watermark(this.rootRef)
+    const { contents, rotate, logo } = this.props
+    const options = {contents, rotate, logo}
+    const container = this.rootRef.current
+    Watermark(container, options)
   }
   render () {
     return (
@@ -18,4 +22,4 @@ class WatermarkComponent extends React.Component {
 }
 
 export default WatermarkComponent
-export {Watermark}
+// export {Watermark}
