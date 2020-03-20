@@ -1,7 +1,7 @@
 const defaultOptions = {
   id: null,
   width: 240,
-  height: 240,
+  height: 20,
   textAlign: 'left',
   font: '14px microsoft yahei',
   fillStyle: 'rgba(128, 128, 128, 0.2)',
@@ -99,11 +99,12 @@ const drawLogo = (ctx, logo, cb) => {
 
 const toImage = (canvas, key, container, options) => {
   var base64Url = canvas.toDataURL()
+  const _top = 0
   const __wm = document.querySelector(`.${key}`)
   const watermarkDiv = __wm || document.createElement('div')
   const styleStr = `
   position:absolute;
-  top:0;
+  top:${_top};
   left:0;
   width:100%;
   height:100%;
@@ -143,6 +144,7 @@ const toImage = (canvas, key, container, options) => {
   }
 }
 const WaterMarker = (container, args) => {
+  console.log('container', container)
   const _container = container || document.body
   const options = Object.assign({}, defaultOptions, args)
   const {

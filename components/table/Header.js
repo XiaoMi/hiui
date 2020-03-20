@@ -118,7 +118,7 @@ export default class Header extends Component {
     }
 
     return (
-      <thead className={prifix('table-thead')}>
+      <thead className={prifix('table-thead')} ref={this.tableHeader}>
         {nodes}
       </thead>
     )

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import WatermarkComponent from '../watermark'
 import ClickOutside from './ClickOuterside'
 import TableContent from './TableContent'
 import prifix from './prefix'
@@ -478,11 +479,14 @@ class Table extends Component {
       }
     }
     let serverPaginationConfig = serverPagination
+    const options = {rotate: -30, contents: ['HIUI', '做中台，就用 HIUI']}
     return (
       <div className={prifix({table: true, [`theme__${theme}`]: true, [size]: size, bordered, striped})} ref={this.dom}>
         {header && <div className={prifix({'table-pre-header': true})}>{header()}</div>}
         <div className={prifix({'table-container': true})}>
-          <div >{content}</div>
+          <WatermarkComponent {...options}>
+            <div >{content}</div>
+          </WatermarkComponent>
           { name &&
           <div className={prifix('table-setting')} ref={this.setting}>
             <div onClick={(e) => {
