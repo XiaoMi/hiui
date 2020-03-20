@@ -365,15 +365,14 @@ class Select extends Component {
         ? _dataSource.keyword
         : keyword
       this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
+      Object.assign(options, {mode}, {headers})
+
       const queryParams = qs.stringify(
         Object.assign({}, params, key && { [key]: keyword })
       )
       if (!_.isEmpty(queryParams)) {
         url = url.includes('?') ? `${url}&${queryParams}` : `${url}?${queryParams}`
       }
-
-      options.headers = headers
-
       if (type.toUpperCase() === 'POST') {
         options.body = JSON.stringify(data)
       }
