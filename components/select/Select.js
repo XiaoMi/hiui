@@ -372,9 +372,12 @@ class Select extends Component {
         url = url.includes('?') ? `${url}&${queryParams}` : `${url}?${queryParams}`
       }
 
+      options.headers = headers
+
       if (type.toUpperCase() === 'POST') {
         options.body = JSON.stringify(data)
       }
+
       this.setState({
         fetching: true
       })
