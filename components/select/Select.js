@@ -361,6 +361,7 @@ class Select extends Component {
         jsonpCallback = 'callback',
         ...options
       } = _dataSource
+
       keyword =
       !keyword && this.autoloadFlag && autoload
         ? _dataSource.keyword
