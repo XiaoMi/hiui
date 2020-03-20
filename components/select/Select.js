@@ -373,7 +373,6 @@ class Select extends Component {
       if (!_.isEmpty(queryParams)) {
         url = url.includes('?') ? `${url}&${queryParams}` : `${url}?${queryParams}`
       }
-
       if (type.toUpperCase() === 'POST') {
         options.body = JSON.stringify(data)
       }
