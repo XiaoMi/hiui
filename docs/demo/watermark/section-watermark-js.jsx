@@ -1,25 +1,26 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import WatermarkComponent from '../../../components/watermark'
+import { Watermark } from '../../../components/watermark'
 import logo from '../../../site/static/img/logo.png'
-const prefix = 'watermark-base'
+const prefix = 'watermark-js'
 const desc = ''
 const code = `import React from 'react'
-import WatermarkComponent from '@hi-ui/hiui/es/WatermarkComponent'\n
+import {watermark} from '@hi-ui/hiui/es/WatermarkComponent'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)
+    this.boxRef = React.createRef()
     this.options = {logo: logo, rotate: -30, contents: ['HIUI', '做中台，就用 HIUI']}
+  }
+  componentDidMount() {
+    Watermark(this.boxRef.current, this.options)
   }
   render () {
     return (
-      <WatermarkComponent
-        {...this.options}
-      >
-      <div id="watermark-box" 
-        style={{width: '100%', height: 400, border: '1px solid rgb(230, 231, 232)'}} ref={this.boxRef1} 
-        />
-      </WatermarkComponent>
+      <div
+        style={{width: '100%', height: 400, border: '1px solid rgb(230, 231, 232)'}} 
+        ref={this.boxRef} 
+      />
     )
   }
 }`
@@ -28,7 +29,8 @@ const DemoBase = () => (
   <DocViewer
     desc={desc}
     code={code}
-    scope={{ WatermarkComponent, logo }}
+    scope={{ Watermark, logo }}
     prefix={prefix}
-  />)
+  />
+)
 export default DemoBase
