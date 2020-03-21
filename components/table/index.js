@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import WatermarkComponent from '../watermark'
+import {Watermark} from '../watermark'
 import ClickOutside from './ClickOuterside'
 import TableContent from './TableContent'
 import prifix from './prefix'
@@ -12,7 +12,7 @@ import loading from '../loading'
 import '../pagination/style'
 import '../icon/style'
 import Provider from '../context'
-import {setKey, scrollTop, getStyle, getPosition, offset} from './tool'
+import {setKey, scrollTop, getStyle, getPosition, offset, randomString} from './tool'
 import request from 'axios'
 import qs from 'qs'
 
@@ -65,7 +65,10 @@ class Table extends Component {
     this.fixRight = React.createRef()
     this.fixRight = React.createRef()
     this.setting = React.createRef()
+    this.contentRef = React.createRef()
     this.state = {
+      theadHeight: 52,
+      tableContentId: 'hi-table' + randomString(4),
       dataSource: data,
       highlightCols: [],
       highlightRows: [],
@@ -479,14 +482,11 @@ class Table extends Component {
       }
     }
     let serverPaginationConfig = serverPagination
-    const options = {rotate: -30, contents: ['HIUI', '做中台，就用 HIUI']}
     return (
       <div className={prifix({table: true, [`theme__${theme}`]: true, [size]: size, bordered, striped})} ref={this.dom}>
         {header && <div className={prifix({'table-pre-header': true})}>{header()}</div>}
         <div className={prifix({'table-container': true})}>
-          <WatermarkComponent {...options}>
-            <div >{content}</div>
-          </WatermarkComponent>
+          <div ref={this.contentRef}>{content}</div>
           { name &&
           <div className={prifix('table-setting')} ref={this.setting}>
             <div onClick={(e) => {
@@ -900,6 +900,7 @@ class Table extends Component {
   componentDidMount () {
     let {fixTop, scroll, name, origin} = this.props
     let dom = this.dom.current
+
     if (fixTop) {
       // 吸顶逻辑
       document.addEventListener('scroll', () => {
@@ -940,6 +941,24 @@ class Table extends Component {
           }
         }, this.fetch)
       }
+      this.setState({
+        theadHeight: dom.querySelector('.hi-table-thead').offsetHeight,
+        tbodyHeight: dom.offsetHeight
+      }, () => {
+        if (this.props.addWaterMark) {
+          const {theadHeight, tbodyHeight} = this.state
+          const options = {
+            id: this.state.tableContentId,
+            rotate: -30,
+            contents: ['HIUI', '做中台，就用 HIUI'],
+            _top: theadHeight,
+            _height: tbodyHeight - theadHeight,
+            ...this.props.WaterMarkOptions
+          }
+          const container = this.contentRef.current
+          Watermark(container, options)
+        }
+      })
     }, 0)
   }
 

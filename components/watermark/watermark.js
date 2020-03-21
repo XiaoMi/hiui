@@ -1,7 +1,7 @@
 const defaultOptions = {
   id: null,
   width: 240,
-  height: 20,
+  height: 240,
   textAlign: 'left',
   font: '14px microsoft yahei',
   fillStyle: 'rgba(128, 128, 128, 0.2)',
@@ -99,7 +99,8 @@ const drawLogo = (ctx, logo, cb) => {
 
 const toImage = (canvas, key, container, options) => {
   var base64Url = canvas.toDataURL()
-  const _top = 0
+  const _top = (options._top || 0) + 'px'
+  const _height = options._height ? options._height + 'px' : '100%'
   const __wm = document.querySelector(`.${key}`)
   const watermarkDiv = __wm || document.createElement('div')
   const styleStr = `
@@ -107,7 +108,7 @@ const toImage = (canvas, key, container, options) => {
   top:${_top};
   left:0;
   width:100%;
-  height:100%;
+  height:${_height};
   z-index:${options.zIndex};
   pointer-events:none;
   background-repeat:repeat;
@@ -122,12 +123,10 @@ const toImage = (canvas, key, container, options) => {
     container.style.position = 'relative'
   }
   watermarkDiv.classList.add(key)
-  console.log(watermarkDiv)
   container.insertBefore(watermarkDiv, container.firstChild)
   const MutationObserver = window.MutationObserver || window.WebKitMutationObserver
   if (MutationObserver) {
     let mo = new MutationObserver(function () {
-      console.log(11)
       const __wm = document.querySelector(`.${key}`)
       const cs = __wm ? window.getComputedStyle(__wm) : {}
       if ((__wm && (__wm.getAttribute('style') !== styleStr || cs.visibility === 'hidden' || cs.display === 'none' || cs.opacity === 0)) || !__wm) {
@@ -144,7 +143,6 @@ const toImage = (canvas, key, container, options) => {
   }
 }
 const WaterMarker = (container, args) => {
-  console.log('container', container)
   const _container = container || document.body
   const options = Object.assign({}, defaultOptions, args)
   const {

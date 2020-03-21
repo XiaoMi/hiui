@@ -34,7 +34,7 @@ export default class TableContent extends Component {
           })}
         </colgroup>
         {head
-          ? <Header {...rest} columns={showColumns} showHeaderColumns={showHeaderColumns} parent={parent} ref={this.tableHeader} /> : null
+          ? <Header {...rest} columns={showColumns} showHeaderColumns={showHeaderColumns} parent={parent} /> : null
         }
         {body
           ? <Body {...rest} columns={showColumns} showHeaderColumns={showHeaderColumns} parent={parent} /> : null

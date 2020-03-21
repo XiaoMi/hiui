@@ -12,14 +12,20 @@ import DemoBase from '../../demo/watermark/section-base.jsx'
 
 <DemoBase />
 
-
 ## Props
 
 | 参数      | 说明                     | 类型                    | 可选值                                      | 默认值 |
 | --------- | ------------------------ | ----------------------- | ------------------------------------------- | ------ |
-| type      | 警告框类型               | string                  | 'info' \| 'success' \| 'error' \| 'warning' | 'info' |
-| title     | 警告框标题               | string                  | -                                           | -      |
-| content   | 警告框内容               | string                  | -                                           | -      |
-| closeable | 是否可关闭               | boolean                 | true \| false                               | false  |
-| onClose   | 关闭事件触发时的回调     | (e: MouseEvent) => void | -                                           | -      |
-| duration  | 自动关闭时间，单位为毫秒 | number \| null          | -                                           | null   |
+| id        | 元素ID,不传入默认随机生成  | string                  | -                                          | - |
+| width     | 水印宽度                 | number                  | -                                           | 240    |
+| height     | 水印宽度                | number                  | -                                           | 240    |
+| textAlign   | 文字对齐方式            | string                | -                                           | 'left'     |
+| font      | 文字样式设置             | string                   | -                                           | '14px microsoft yahei' |
+| fillStyle | 设置或返回用于填充绘画的颜色、渐变或模式  | string                 | -                           | 'rgba(128, 128, 128, 0.2)'  |
+| contents   | 水印文案               | string \| Array[string]  | -                                           | 请勿外传|
+| rotate    | 旋转角度               | number                    | -180 ~ +180                                          | 0   |
+| zIndex    | 层级                   | number                    | -                                        | 1000   |
+| logo     | 图片                    | imgSrc                   | -                                        | -   |
+| grayLogo     | 是否对图标进行灰度处理    | boolean               |true \| false                              | true  |
+| isAutoWrap     | 文字是否自动换行    | boolean               |true \| false                              | true  |
+| textOverflowEffect  | 文字是否自动缩放   | string               |zoom \| cut                              | zoom  |

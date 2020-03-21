@@ -6,7 +6,16 @@ export function insertAfter (newElement, targetElement) {
     parent.insertBefore(newElement, targetElement.nextSibling)
   }
 }
-
+export function randomString (len) {
+  const $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
+  const maxPos = $chars.length
+  let pwd = ''
+  len = len || 32
+  for (let i = 0; i < len; i++) {
+    pwd += $chars.charAt(Math.floor(Math.random() * maxPos))
+  }
+  return pwd
+}
 export function setKey (data, name) {
   name = name || 'id'
   return data.map(item => {
