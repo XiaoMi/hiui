@@ -1,16 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Watermark from './watermark'
-function randomString (len) {
-  const $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
-  const maxPos = $chars.length
-  let pwd = ''
-  len = len || 32
-  for (let i = 0; i < len; i++) {
-    pwd += $chars.charAt(Math.floor(Math.random() * maxPos))
-  }
-  return pwd
-}
 class WatermarkComponent extends React.Component {
   constructor (props) {
     super(props)
@@ -20,11 +10,7 @@ class WatermarkComponent extends React.Component {
   componentDidMount () {
     const container = this.rootRef.current
     const { props } = this
-    const options = {
-      ...props,
-      id: props.id || 'hi-' + randomString(4)
-    }
-    Watermark(container, options)
+    Watermark(container, props)
   }
   render () {
     return (

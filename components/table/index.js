@@ -942,17 +942,16 @@ class Table extends Component {
         }, this.fetch)
       }
       this.setState({
-        theadHeight: dom.querySelector('.hi-table-thead').offsetHeight,
-        tbodyHeight: dom.offsetHeight
+        theadHeight: dom.querySelector('.hi-table-thead').offsetHeight
       }, () => {
-        if (this.props.addWaterMark) {
-          const {theadHeight, tbodyHeight} = this.state
+        if (this.props.waterMark) {
+          const {theadHeight} = this.state
           const options = {
             id: this.state.tableContentId,
             rotate: -30,
+            // height:20,
             contents: ['HIUI', '做中台，就用 HIUI'],
             _top: theadHeight,
-            _height: tbodyHeight - theadHeight,
             ...this.props.WaterMarkOptions
           }
           const container = this.contentRef.current

@@ -13,6 +13,16 @@ const defaultOptions = {
   isAutoWrap: true, // 文字是否自动换行
   textOverflowEffect: 'zoom' // 当isAutoWrap 为 false 时，文本长度超出画布长度时的处理方式：  zoom - 缩小文字   cut - 截断文字
 }
+const randomString = (len) => {
+  const $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
+  const maxPos = $chars.length
+  let pwd = ''
+  len = len || 32
+  for (let i = 0; i < len; i++) {
+    pwd += $chars.charAt(Math.floor(Math.random() * maxPos))
+  }
+  return pwd
+}
 const parseTextData = (ctx, texts, width, isWrap) => {
   let contents = []
   let lines = []
@@ -100,15 +110,15 @@ const drawLogo = (ctx, logo, cb) => {
 const toImage = (canvas, key, container, options) => {
   var base64Url = canvas.toDataURL()
   const _top = (options._top || 0) + 'px'
-  const _height = options._height ? options._height + 'px' : '100%'
   const __wm = document.querySelector(`.${key}`)
   const watermarkDiv = __wm || document.createElement('div')
   const styleStr = `
   position:absolute;
   top:${_top};
   left:0;
+  bottom:0;
   width:100%;
-  height:${_height};
+  height:100%;
   z-index:${options.zIndex};
   pointer-events:none;
   background-repeat:repeat;
@@ -156,7 +166,7 @@ const WaterMarker = (container, args) => {
     logo,
     rotate
   } = options
-  let key = '__wm'
+  let key = 'hi-' + randomString(4) + '__wm'
   if (id && id.trim().length > 0 && !document.querySelector(id + '__wm')) {
     key = id + '__wm'
   }

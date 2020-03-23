@@ -44,7 +44,7 @@ class Demo extends React.Component {
     }
   }
   render() {
-    return <Table  columns={this.columns} data={this.data} addWaterMark/>
+    return <Table  columns={this.columns} data={this.data} waterMark/>
   }
 }`
 
