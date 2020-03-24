@@ -28,7 +28,7 @@ $tree: 'hi-tree' !default;
     border: 1px solid #4284f5;
   }
 
-  .hi-checkbox-legacy--checked .hi-checkbox-legacy__input {
+  .hi-checkbox-legacy--checked:not(.hi-checkbox-legacy--disabled) .hi-checkbox-legacy__input {
     border: 1px solid #4284f5;
   }
 
