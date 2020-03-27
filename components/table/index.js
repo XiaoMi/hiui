@@ -64,9 +64,7 @@ class Table extends Component {
     this.fixRight = React.createRef()
     this.fixRight = React.createRef()
     this.setting = React.createRef()
-    this.contentRef = React.createRef()
     this.state = {
-      theadHeight: 52,
       dataSource: data,
       highlightCols: [],
       highlightRows: [],
@@ -484,7 +482,7 @@ class Table extends Component {
       <div className={prifix({table: true, [`theme__${theme}`]: true, [size]: size, bordered, striped})} ref={this.dom}>
         {header && <div className={prifix({'table-pre-header': true})}>{header()}</div>}
         <div className={prifix({'table-container': true})}>
-          <div ref={this.contentRef}>{content}</div>
+          <div>{content}</div>
           { name &&
           <div className={prifix('table-setting')} ref={this.setting}>
             <div onClick={(e) => {
