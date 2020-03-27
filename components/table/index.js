@@ -945,10 +945,10 @@ class Table extends Component {
         theadHeight: dom.querySelector('.hi-table-thead').offsetHeight
       }, () => {
         if (this.props.waterMark) {
-          const {theadHeight} = this.state
+          const { theadHeight } = this.state
           const options = {
             id: this.state.tableContentId,
-            rotate: -45,
+            rotate: -30,
             contents: ['HIUI', '做中台，就用 HIUI'],
             _top: theadHeight,
             ...this.props.waterMarkOptions

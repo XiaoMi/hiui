@@ -39,12 +39,12 @@ Watermark.propTypes = {
 
 Watermark.defaultProps = {
   id: null,
-  markDensity: 'default',
+  density: 'default',
   textAlign: 'left',
-  font: '14px microsoft yahei',
+  font: '16px microsoft yahei',
   color: 'rgba(128, 128, 128, 0.2)',
   contents: '请勿外传',
-  rotate: '-45',
+  rotate: -30,
   zIndex: 1000,
   logo: null,
   grayLogo: true,

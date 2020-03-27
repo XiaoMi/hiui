@@ -1,10 +1,10 @@
 const defaultOptions = {
   id: null,
   textAlign: 'left',
-  font: '14px microsoft yahei',
+  font: '16px microsoft yahei',
   color: 'rgba(128, 128, 128, 0.2)',
   contents: '请勿外传',
-  rotate: '-45',
+  rotate: -30,
   zIndex: 1000,
   logo: null,
   grayLogo: true, // 是否对图标进行灰度处理
@@ -156,15 +156,15 @@ const toImage = (canvas, key, container, options) => {
 }
 const WaterMarker = (container, args) => {
   const _container = container || document.body
-  const {markDensity} = args
+  const {density} = args
   let _markSize = {
-    width: 190,
-    height: 160
+    width: 210,
+    height: 180
   }
-  if (['low', 'high'].includes(markDensity)) {
+  if (['low', 'high'].includes(density)) {
     _markSize = {
-      width: markDensity === 'low' ? 140 : 240,
-      height: markDensity === 'low' ? 110 : 210
+      width: density === 'low' ? 240 : 180,
+      height: density === 'low' ? 210 : 150
     }
   }
   const options = Object.assign({}, defaultOptions, _markSize, args)
