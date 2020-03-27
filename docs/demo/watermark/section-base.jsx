@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import WatermarkComponent from '../../../components/watermark'
+import Watermark from '../../../components/watermark'
 import logo from '../../../site/static/img/logo.png'
 const prefix = 'watermark-base'
 const desc = ''
@@ -13,13 +13,13 @@ class Demo extends React.Component {
   }
   render () {
     return (
-      <WatermarkComponent
+      <Watermark
         {...this.options}
       >
       <div id="watermark-box" 
         style={{width: '100%', height: 400, border: '1px solid rgb(230, 231, 232)'}} ref={this.boxRef1} 
         />
-      </WatermarkComponent>
+      </Watermark>
     )
   }
 }`
@@ -28,7 +28,7 @@ const DemoBase = () => (
   <DocViewer
     desc={desc}
     code={code}
-    scope={{ WatermarkComponent, logo }}
+    scope={{ Watermark, logo }}
     prefix={prefix}
   />)
 export default DemoBase
