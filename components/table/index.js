@@ -12,7 +12,7 @@ import loading from '../loading'
 import '../pagination/style'
 import '../icon/style'
 import Provider from '../context'
-import {setKey, scrollTop, getStyle, getPosition, offset, randomString} from './tool'
+import { setKey, scrollTop, getStyle, getPosition, offset } from './tool'
 import request from 'axios'
 import qs from 'qs'
 
@@ -68,7 +68,6 @@ class Table extends Component {
     this.contentRef = React.createRef()
     this.state = {
       theadHeight: 52,
-      tableContentId: 'hi-table' + randomString(4),
       dataSource: data,
       highlightCols: [],
       highlightRows: [],
@@ -947,7 +946,6 @@ class Table extends Component {
         if (this.props.waterMark) {
           const { theadHeight } = this.state
           const options = {
-            id: this.state.tableContentId,
             rotate: -30,
             contents: ['HIUI', '做中台，就用 HIUI'],
             _top: theadHeight,
