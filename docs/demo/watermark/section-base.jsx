@@ -5,11 +5,11 @@ import logo from '../../../site/static/img/logo.png'
 const prefix = 'watermark-base'
 const desc = ''
 const code = `import React from 'react'
-import WatermarkComponent from '@hi-ui/hiui/es/WatermarkComponent'\n
+import Watermark from '@hi-ui/hiui/es/Watermark'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)
-    this.options = {logo: logo, rotate: -30, contents: ['HIUI', '做中台，就用 HIUI']}
+    this.options = {logo: logo, contents: ['HIUI', '做中台，就用 HIUI']}
   }
   render () {
     return (

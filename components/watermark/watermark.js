@@ -1,16 +1,14 @@
 const defaultOptions = {
   id: null,
-  width: 240,
-  height: 240,
   textAlign: 'left',
   font: '14px microsoft yahei',
-  fillStyle: 'rgba(128, 128, 128, 0.2)',
+  color: 'rgba(128, 128, 128, 0.2)',
   contents: '请勿外传',
-  rotate: '0',
+  rotate: '-45',
   zIndex: 1000,
   logo: null,
   grayLogo: true, // 是否对图标进行灰度处理
-  isAutoWrap: true, // 文字是否自动换行
+  isAutoWrap: false, // 文字是否自动换行
   textOverflowEffect: 'zoom' // 当isAutoWrap 为 false 时，文本长度超出画布长度时的处理方式：  zoom - 缩小文字   cut - 截断文字
 }
 const randomString = (len) => {
@@ -55,13 +53,15 @@ const parseTextData = (ctx, texts, width, isWrap) => {
 const drawText = (ctx, options) => {
   let {
     width,
+    _w = width,
+    height,
     textOverflowEffect,
     contents: text,
     isAutoWrap,
     logo
   } = options
   let oldBaseLine = ctx.textBaseline
-  let x = 24
+  let x = 0
   let y = 0
   ctx.textBaseline = 'hanging'
   /**
@@ -70,11 +70,12 @@ const drawText = (ctx, options) => {
    * 如含 LOGO ，文字的起始 X 坐标为： 24(padding-left) + 32(logo size) + 4(logo 与 text 间距)
    */
   let lineHeight = parseInt(ctx.font) // ctx.font必须以'XXpx'开头
-  width -= (48 + 32)
-  const lines = parseTextData(ctx, text, width, isAutoWrap)
   if (logo) {
     x += 32
+    _w -= 32
   }
+  const lines = parseTextData(ctx, text, width, isAutoWrap)
+
   // 计算 Y 的起始位置
   let lineY = y + (ctx.canvas.height) / 2 - (lineHeight * lines.length) / 2
   const initLineY = lineY
@@ -88,7 +89,8 @@ const drawText = (ctx, options) => {
       lineX = x + 4
     }
     if (textOverflowEffect === 'zoom') {
-      ctx.fillText(line, lineX, lineY, width)
+      const size = parseInt(Math.sqrt((_w * _w + height * height) / 2))
+      ctx.fillText(line, lineX, lineY, size)
     } else {
       ctx.fillText(line, lineX, lineY)
     }
@@ -102,7 +104,7 @@ const drawLogo = (ctx, logo, cb) => {
   img.src = logo
   img.onload = () => {
     ctx.globalAlpha = 0.2
-    ctx.drawImage(img, 24, ctx.canvas.height / 2 - 16, 32, 32)
+    ctx.drawImage(img, 0, ctx.canvas.height / 2 - 16, 32, 32)
     cb()
   }
 }
@@ -154,7 +156,18 @@ const toImage = (canvas, key, container, options) => {
 }
 const WaterMarker = (container, args) => {
   const _container = container || document.body
-  const options = Object.assign({}, defaultOptions, args)
+  const {markDensity} = args
+  let _markSize = {
+    width: 190,
+    height: 160
+  }
+  if (['low', 'high'].includes(markDensity)) {
+    _markSize = {
+      width: markDensity === 'low' ? 140 : 240,
+      height: markDensity === 'low' ? 110 : 210
+    }
+  }
+  const options = Object.assign({}, defaultOptions, _markSize, args)
   const {
     id,
     width,
@@ -162,7 +175,7 @@ const WaterMarker = (container, args) => {
     textAlign,
     textBaseline,
     font,
-    fillStyle,
+    color,
     logo,
     rotate
   } = options
@@ -171,15 +184,14 @@ const WaterMarker = (container, args) => {
     key = id + '__wm'
   }
   const canvas = document.createElement('canvas')
+  var ctx = canvas.getContext('2d')
   canvas.setAttribute('width', width + 'px')
   canvas.setAttribute('height', height + 'px')
-  var ctx = canvas.getContext('2d')
-  // ctx.scale(dpr, dpr)
 
   ctx.textAlign = textAlign
   ctx.textBaseline = textBaseline
   ctx.font = font
-  ctx.fillStyle = fillStyle
+  ctx.fillStyle = color
   ctx.translate(width / 2, height / 2)
   ctx.rotate(Math.PI / 180 * rotate)
   ctx.translate(-width / 2, -height / 2)

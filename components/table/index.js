@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {Watermark} from '../watermark'
+import Watermark from '../watermark'
 import ClickOutside from './ClickOuterside'
 import TableContent from './TableContent'
 import prifix from './prefix'
@@ -948,14 +948,13 @@ class Table extends Component {
           const {theadHeight} = this.state
           const options = {
             id: this.state.tableContentId,
-            rotate: -30,
-            // height:20,
+            rotate: -45,
             contents: ['HIUI', '做中台，就用 HIUI'],
             _top: theadHeight,
-            ...this.props.WaterMarkOptions
+            ...this.props.waterMarkOptions
           }
           const container = this.contentRef.current
-          Watermark(container, options)
+          Watermark.generate(container, options)
         }
       })
     }, 0)

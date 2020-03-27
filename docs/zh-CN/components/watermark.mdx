@@ -22,16 +22,6 @@ import WatermarkJS from '../../demo/watermark/section-watermark-js.jsx'
 
 | 参数      | 说明                     | 类型                    | 可选值                                      | 默认值 |
 | --------- | ------------------------ | ----------------------- | ------------------------------------------- | ------ |
-| id        | 元素ID,不传入默认随机生成  | string                  | -                                          | - |
-| width     | 水印宽度                 | number                  | -                                           | 240    |
-| height     | 水印宽度                | number                  | -                                           | 240    |
-| textAlign   | 文字对齐方式            | string                | -                                           | 'left'     |
-| font      | 文字样式设置             | string                   | -                                           | '14px microsoft yahei' |
-| fillStyle | 设置或返回用于填充绘画的颜色、渐变或模式  | string                 | -                           | 'rgba(128, 128, 128, 0.2)'  |
-| contents   | 水印文案               | string \| Array[string]  | -                                           | 请勿外传|
-| rotate    | 旋转角度               | number                    | -                                         | 0   |
-| zIndex    | 层级                   | number                    | -                                        | 1000   |
-| logo     | 图片类的资源地址           | string                   | -                                        | -   |
-| grayLogo     | 是否对图标进行灰度处理    | boolean               |true \| false                              | true  |
-| isAutoWrap     | 文字是否自动换行    | boolean               |true \| false                              | true  |
-| textOverflowEffect  | 文字是否自动缩放   | string               |zoom \| cut                              | zoom  |
+| density | 水印间距,调节疏密程度     | string                      | 'low' \| 'default' \| 'high'                      | 'default'  |
+| content   | 水印文案,传入数组代表多行，不建议超过三行                 | string \| Array[string]  | -                       | 请勿外传|
+| logo     | 本地图片类的资源           | File                          | -                                        | -   |

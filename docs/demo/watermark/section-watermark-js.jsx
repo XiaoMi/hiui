@@ -1,19 +1,19 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import { Watermark } from '../../../components/watermark'
+import Watermark from '../../../components/watermark'
 import logo from '../../../site/static/img/logo.png'
 const prefix = 'watermark-js'
 const desc = ''
 const code = `import React from 'react'
-import {watermark} from '@hi-ui/hiui/es/WatermarkComponent'\n
+import Watermark from '@hi-ui/hiui/es/watermark'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)
     this.boxRef = React.createRef()
-    this.options = {logo: logo, rotate: -30, contents: ['HIUI', '做中台，就用 HIUI']}
+    this.options = {logo: logo, contents: ['HIUI', '做中台，就用 HIUI']}
   }
   componentDidMount() {
-    Watermark(this.boxRef.current, this.options)
+    Watermark.generate(this.boxRef.current, this.options)
   }
   render () {
     return (

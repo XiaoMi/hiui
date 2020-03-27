@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Watermark from './watermark'
-class WatermarkComponent extends React.Component {
+import WaterMarker from './watermark'
+class Watermark extends React.Component {
   constructor (props) {
     super(props)
 
@@ -10,7 +10,7 @@ class WatermarkComponent extends React.Component {
   componentDidMount () {
     const container = this.rootRef.current
     const { props } = this
-    Watermark(container, props)
+    WaterMarker(container, props)
   }
   render () {
     return (
@@ -21,13 +21,13 @@ class WatermarkComponent extends React.Component {
   }
 }
 
-WatermarkComponent.propTypes = {
+Watermark.propTypes = {
   id: PropTypes.string,
   width: PropTypes.number,
   height: PropTypes.number,
   textAlign: PropTypes.string,
   font: PropTypes.string,
-  fillStyle: PropTypes.string,
+  color: PropTypes.string,
   contents: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   rotate: PropTypes.number,
   zIndex: PropTypes.number,
@@ -37,20 +37,19 @@ WatermarkComponent.propTypes = {
   textOverflowEffect: PropTypes.oneOfType(['zoom', 'cut'])
 }
 
-WatermarkComponent.defaultProps = {
+Watermark.defaultProps = {
   id: null,
-  width: 240,
-  height: 240,
+  markDensity: 'default',
   textAlign: 'left',
   font: '14px microsoft yahei',
-  fillStyle: 'rgba(128, 128, 128, 0.2)',
+  color: 'rgba(128, 128, 128, 0.2)',
   contents: '请勿外传',
-  rotate: '0',
+  rotate: '-45',
   zIndex: 1000,
   logo: null,
   grayLogo: true,
   isAutoWrap: true,
   textOverflowEffect: 'zoom'
 }
-export default WatermarkComponent
-export { Watermark }
+Watermark.generate = WaterMarker
+export default Watermark
