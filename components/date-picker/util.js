@@ -1,8 +1,9 @@
 import request from 'axios'
 import { addMonths, getDay, subDays, differenceInDays, startOfWeek, endOfWeek } from './dateUtil'
-const PRC = {
+const holiday = {
   PRCHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCHoliday.json?',
-  PRCLunar: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCLunar.json?'
+  PRCLunar: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCLunar.json?',
+  IndiaHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/IndiaHoliday.json?'
 }
 
 export const deconstructDate = (date, weekOffset = 0) => {
@@ -45,11 +46,10 @@ export const showLargeCalendar = (props) => {
 }
 
 export const getPRCDate = (api) => {
-  const url = PRC[api]
+  const url = holiday[api]
   let options = {
     url,
-    method: 'GET',
-    withCredentials: true
+    method: 'GET'
   }
   return url ? request.create().request(options) : null
 }

@@ -7,7 +7,6 @@ import DateRangePanel from './DateRangePanel'
 import WeekRangePanel from './WeekRangePanel'
 import Provider from '../context'
 import { getPRCDate, deconstructDate } from './util'
-import IndiaHoliday from './IndiaHoliday.js'
 class DatePicker extends BasePicker {
   static propTypes = {
     altCalendar: PropTypes.array,
@@ -26,33 +25,23 @@ class DatePicker extends BasePicker {
   _getLunarPresetData () {
     const {altCalendarPreset, altCalendar} = this.props
     const allPRCDate = {}
-    if (altCalendarPreset === 'zh-CN') {
-      getPRCDate('PRCLunar').then(res => {
+    if (['zh-CN', 'id-ID'].includes(altCalendarPreset)) {
+      const _urlKey = altCalendarPreset === 'zh-CN' ? 'PRCLunar' : 'IndiaHoliday'
+      getPRCDate(_urlKey).then(res => {
         Object.keys(res.data).forEach(key => {
           let oneYear = {}
-          res.data[key].PRCLunar.forEach(item => {
+          res.data[key][_urlKey].forEach(item => {
             Object.assign(oneYear, {
-              [item.date.replace(/-/g, '/')]: item.text
+              [item.date.replace(/-/g, '/')]: {
+                ...item,
+                highlight: altCalendarPreset === 'id-ID'
+              }
             })
           })
           Object.assign(allPRCDate, oneYear)
         })
         this.altCalendarPresetData = altCalendar ? this._altCalendarData(allPRCDate) : allPRCDate
       })
-    } else if (altCalendarPreset === 'id-ID') {
-      Object.keys(IndiaHoliday).forEach(key => {
-        let oneYear = {}
-        IndiaHoliday[key].IndiaHoliday.forEach(item => {
-          Object.assign(oneYear, {
-            [item.date.replace(/-/g, '/')]: {
-              ...item,
-              highlight: true
-            }
-          })
-        })
-        Object.assign(allPRCDate, oneYear)
-      })
-      this.altCalendarPresetData = altCalendar ? this._altCalendarData(allPRCDate) : allPRCDate
     } else {
       this.altCalendarPresetData = altCalendar ? this._altCalendarData(allPRCDate) : {}
     }

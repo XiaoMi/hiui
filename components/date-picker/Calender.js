@@ -278,7 +278,7 @@ class Calender extends Component {
       this.setState({
         show: false
       })
-    }, 3000)
+    }, 2000)
   }
   altCalendarText = (datainfo, lunarcellinfo) => {
     const {altCalendarPresetData} = this.props
