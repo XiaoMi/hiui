@@ -10,7 +10,7 @@ class SelectDropdown extends Component {
     this.state = {
       filterItems: this.props.dropdownItems,
       searchbarValue: '',
-      cachedropdownItems: []
+      cachedropdownItems: this.props.dropdownItems
     }
   }
   static getDerivedStateFromProps (nextProps, prevState) {
@@ -21,9 +21,11 @@ class SelectDropdown extends Component {
     return {filterItems: _filterItems, searchbarValue: _searchbarValue}
   }
   componentDidMount () {
-    this.props.searchable && this.searchbar.focus()
+    this.focus()
   }
-
+  focus = () => {
+    this.props.searchable && setTimeout(() => this.searchbar.focus(), 0)
+  }
   onClickOption (e, item, index) {
     e.stopPropagation()
     e.preventDefault()
@@ -42,7 +44,7 @@ class SelectDropdown extends Component {
       filterItems = dropdownItems
     } else {
       dropdownItems.map((item) => {
-        item.title.includes(keyword) && filterItems.push(item)
+        String(item.title).includes(keyword) && filterItems.push(item)
       })
     }
     this.setState({
@@ -92,10 +94,13 @@ class SelectDropdown extends Component {
   }
   cleanSearchbarValue (e) {
     e.stopPropagation()
+    const filterText = ''
+    this.filterOptions(filterText)
+    this.props.onSearch(filterText)
+
     this.setState({
-      searchbarValue: ''
+      searchbarValue: filterText
     })
-    this.props.onSearch()
   }
   handleKeyDown (evt) {
     if (evt.keyCode === 13) {

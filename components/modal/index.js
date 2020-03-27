@@ -87,7 +87,7 @@ class Modal extends Component {
       return footers || footer
     } else {
       return [
-        <Button type='default' key={0} onClick={this.handleClose.bind(this)}>
+        <Button type='line' key={0} onClick={this.handleClose.bind(this)}>
           {cancelText}
         </Button>,
         <Button type='primary' key={1} onClick={this.handleConfirm.bind(this)}>

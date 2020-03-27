@@ -21,14 +21,14 @@ $tree: 'hi-tree' !default;
 
   /* =========== */
   .hi-checkbox-legacy {
-    margin-left: 8px;
+    margin-left: 6px;
   }
 
   .hi-checkbox-legacy--part .hi-checkbox-legacy__input {
     border: 1px solid #4284f5;
   }
 
-  .hi-checkbox-legacy--checked .hi-checkbox-legacy__input {
+  .hi-checkbox-legacy--checked:not(.hi-checkbox-legacy--disabled) .hi-checkbox-legacy__input {
     border: 1px solid #4284f5;
   }
 
@@ -235,6 +235,8 @@ $tree: 'hi-tree' !default;
       &--expanded {
         &.can-expand {
           > .hi-tree_item-text {
+            padding-left: 8px;
+
             &::before {
               position: absolute;
               top: calc(50% + 8px);

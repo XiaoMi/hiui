@@ -57,6 +57,10 @@
   &__span {
     display: inline-block;
     margin: 0 $spacer-1;
+
+    .hi-select__input {
+      border: 1px solid $gray-light;
+    }
   }
 
   &__jumper-input {
@@ -66,6 +70,10 @@
 
     .hi-input {
       width: 64px;
+
+      &__inner {
+        border: 1px solid $gray-light;
+      }
 
       &__text {
         text-align: center;

@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
 import Calender from './Calender'
-import {deconstructDate, nextMonth} from './util'
-import {DAY_MILLISECONDS} from './constants'
+import { deconstructDate, nextMonth, showLargeCalendar } from './util'
+import { DAY_MILLISECONDS } from './constants'
 import Icon from '../icon'
 import classNames from 'classnames'
 import Provider from '../context'
-import { dateFormat, isValid, getStartDate, toDate, changeYear, changeMonth } from './dateUtil'
+import { dateFormat, isValid, getStartDate, toDate, changeYear, changeMonth, endOfDay } from './dateUtil'
 import TimeRangePanel from './TimeRangePanel'
 
 class DateRangePanel extends Component {
@@ -189,7 +189,7 @@ class DateRangePanel extends Component {
         days = 365
         break
     }
-    const nDate = new Date(_date.getTime() - days * DAY_MILLISECONDS)
+    const nDate = new Date((endOfDay(_date).getTime() + 1) - days * DAY_MILLISECONDS)
     range.startDate = nDate
     range.endDate = _date
     this.props.onPick(range)
@@ -274,7 +274,7 @@ class DateRangePanel extends Component {
   }
   _getNormalComponent (date, flag) {
     let { minDate, maxDate, range, layout } = this.state
-    const { type, disabledDate } = this.props
+    const { altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData, type, disabledDate } = this.props
     let component = null
     const { year, month } = deconstructDate(date)
     switch (layout[flag]) {
@@ -282,6 +282,10 @@ class DateRangePanel extends Component {
         const yearData = this.getYearOrMonthData(year, 'year')
         component = (
           <Calender
+            altCalendar={altCalendar}
+            altCalendarPreset={altCalendarPreset}
+            dateMarkRender={dateMarkRender}
+            dateMarkPreset={dateMarkPreset}
             date={date}
             data={yearData}
             type={layout[flag]}
@@ -293,6 +297,12 @@ class DateRangePanel extends Component {
         const monthData = this.getYearOrMonthData(month, 'month')
         component = (
           <Calender
+            altCalendarPresetData={altCalendarPresetData}
+            dateMarkPresetData={dateMarkPresetData}
+            altCalendar={altCalendar}
+            altCalendarPreset={altCalendarPreset}
+            dateMarkRender={dateMarkRender}
+            dateMarkPreset={dateMarkPreset}
             date={date}
             data={monthData}
             type={layout[flag]}
@@ -303,6 +313,12 @@ class DateRangePanel extends Component {
       default:
         component = (
           <Calender
+            altCalendarPresetData={altCalendarPresetData}
+            dateMarkPresetData={dateMarkPresetData}
+            altCalendar={altCalendar}
+            altCalendarPreset={altCalendarPreset}
+            dateMarkRender={dateMarkRender}
+            dateMarkPreset={dateMarkPreset}
             date={date}
             range={range}
             type={type}
@@ -319,7 +335,7 @@ class DateRangePanel extends Component {
   }
   render () {
     let { currentView, leftDate, rightDate, showMask, layout } = this.state
-    const {shortcuts, theme, showTime, date} = this.props
+    const { shortcuts, theme, showTime, date } = this.props
     const _c = classNames(
       'hi-datepicker',
       theme && 'theme__' + theme
@@ -327,7 +343,10 @@ class DateRangePanel extends Component {
     const bodyCls = classNames(
       'hi-datepicker__body',
       'hi-datepicker__body--range',
-      shortcuts && 'hi-datepicker__body--shortcuts'
+      shortcuts && 'hi-datepicker__body--shortcuts',
+      shortcuts && showLargeCalendar(this.props) && 'hi-datepicker__body--shortcuts--large',
+      (!shortcuts) && showLargeCalendar(this.props) && 'hi-datepicker__body--range--large'
+
     )
     return (
       <div

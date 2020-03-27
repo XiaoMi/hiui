@@ -11,18 +11,11 @@ class Demo extends React.Component {
       content: '首页',
       path: '/home'
     }, {
-      content: '产品类',
-      icon: 'document',
-      path: '/product'
+      content: '列表',
+      path: '/list'
     }, {
-      icon: 'component',
+      content: '手机详情',
       path: '/phone'
-    }, {
-      content: '红米系列',
-      path: '/redmi'
-    }, {
-      content: 'Note7',
-      path: '/note7'
     }]
     return (
       <div>

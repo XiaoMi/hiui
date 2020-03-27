@@ -70,8 +70,9 @@ class Carousel extends Component {
 
   render () {
     const { rootWidth, active, showArrow } = this.state
-    const { showDots, showArrows } = this.props
+    const { showDots, showArrows, showPages } = this.props
     const children = React.Children.toArray(this.props.children)
+    const len = children.length || 0
     const arrowCls = classNames(
       'hi-carousel__arrows',
       showArrow && 'hi-carousel__arrows--show'
@@ -129,6 +130,11 @@ class Carousel extends Component {
           }
         </ul>
       }
+      {
+        showPages && <div className='hi-carousel__pages'>
+          <span>{active} / {len}</span>
+        </div>
+      }
     </div>
   }
 }
@@ -140,7 +146,8 @@ Carousel.propTypes = {
   afterChange: PropTypes.func,
   showDots: PropTypes.bool,
   showArrows: PropTypes.bool,
-  defaultActive: PropTypes.number
+  defaultActive: PropTypes.number,
+  showPages: PropTypes.bool
 }
 Carousel.defaultProps = {
   duration: 0,
@@ -149,7 +156,8 @@ Carousel.defaultProps = {
   afterChange: () => {},
   showDots: true,
   showArrows: true,
-  defaultActive: 0
+  defaultActive: 0,
+  showPages: false
 }
 
 export default Carousel

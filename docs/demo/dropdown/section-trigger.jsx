@@ -73,7 +73,7 @@ class Demo extends React.Component {
         data={list}
         type='button'
         trigger='click'
-        title='单击'
+        title='左键单击'
       />
     )
   }
