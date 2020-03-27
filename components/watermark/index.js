@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import WaterMarker from './watermark'
+import _ from 'lodash'
 class Watermark extends React.Component {
   constructor (props) {
     super(props)
@@ -9,8 +10,10 @@ class Watermark extends React.Component {
   }
   componentDidMount () {
     const container = this.rootRef.current
-    const { props } = this
-    WaterMarker(container, props)
+    const options = _.cloneDeep(this.props)
+    delete options.children
+
+    WaterMarker(container, options)
   }
   render () {
     return (
