@@ -943,13 +943,14 @@ class Table extends Component {
       this.setState({
         theadHeight: dom.querySelector('.hi-table-thead').offsetHeight
       }, () => {
-        if (this.props.waterMark) {
+        const {waterMark, waterMarkOptions} = this.props
+        if (waterMark) {
           const { theadHeight } = this.state
           const options = {
             rotate: -30,
             contents: ['HIUI', '做中台，就用 HIUI'],
             _top: theadHeight,
-            ...this.props.waterMarkOptions
+            ...waterMarkOptions
           }
           const container = this.contentRef.current
           Watermark.generate(container, options)
