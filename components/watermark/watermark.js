@@ -3,7 +3,7 @@ const defaultOptions = {
   textAlign: 'left',
   font: '16px microsoft yahei',
   color: 'rgba(128, 128, 128, 0.2)',
-  contents: '请勿外传',
+  content: '请勿外传',
   rotate: -30,
   zIndex: 1000,
   logo: null,
@@ -11,28 +11,19 @@ const defaultOptions = {
   isAutoWrap: false, // 文字是否自动换行
   textOverflowEffect: 'zoom' // 当isAutoWrap 为 false 时，文本长度超出画布长度时的处理方式：  zoom - 缩小文字   cut - 截断文字
 }
-const randomString = (len) => {
-  const $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
-  const maxPos = $chars.length
-  let pwd = ''
-  len = len || 32
-  for (let i = 0; i < len; i++) {
-    pwd += $chars.charAt(Math.floor(Math.random() * maxPos))
-  }
-  return pwd
-}
+
 const parseTextData = (ctx, texts, width, isWrap) => {
-  let contents = []
+  let content = []
   let lines = []
   if (texts instanceof Array) {
-    contents = texts
+    content = texts
   } else if (typeof texts === 'string') {
-    contents.push(texts)
+    content.push(texts)
   } else {
     console.warn('Only support String Or Array')
   }
   if (isWrap) {
-    contents.forEach((text) => {
+    content.forEach((text) => {
       let curLine = ''
       for (let char of text) {
         let nextLine = curLine + char
@@ -47,7 +38,7 @@ const parseTextData = (ctx, texts, width, isWrap) => {
     })
     return lines
   } else {
-    return contents
+    return content
   }
 }
 const drawText = (ctx, options) => {
@@ -56,7 +47,7 @@ const drawText = (ctx, options) => {
     _w = width,
     height,
     textOverflowEffect,
-    contents: text,
+    content: text,
     isAutoWrap,
     logo
   } = options
@@ -179,7 +170,7 @@ const WaterMarker = (container, args) => {
     logo,
     rotate
   } = options
-  let key = 'hi-' + randomString(4) + '__wm'
+  let key = 'hi-' + Math.floor(Math.random() * (9999 - 1000)) + 1000 + '__wm'
   if (id && id.trim().length > 0 && !document.querySelector(id + '__wm')) {
     key = id + '__wm'
   }

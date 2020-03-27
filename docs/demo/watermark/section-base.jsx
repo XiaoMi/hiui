@@ -9,7 +9,7 @@ import Watermark from '@hi-ui/hiui/es/Watermark'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)
-    this.options = {logo: logo, contents: ['HIUI', '做中台，就用 HIUI'],density:'high'}
+    this.options = {logo: logo, content: ['HIUI', '做中台，就用 HIUI'],density:'high'}
   }
   render () {
     return (
