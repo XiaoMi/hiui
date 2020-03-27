@@ -222,9 +222,9 @@ describe('Datepicker', () => {
         <Datepicker type='daterange' onChange={callback} />
       )
       expect(wrapper.find('input').at(0).getDOMNode().getAttribute('value')).toEqual('')
-      expect(wrapper.find('input').at(0).getDOMNode().getAttribute('placeholder')).toEqual('请选择日期')
+      expect(wrapper.find('input').at(0).getDOMNode().getAttribute('placeholder')).toEqual('开始日期')
       expect(wrapper.find('input').at(1).getDOMNode().getAttribute('value')).toEqual('')
-      expect(wrapper.find('input').at(1).getDOMNode().getAttribute('placeholder')).toEqual('请选择日期')
+      expect(wrapper.find('input').at(1).getDOMNode().getAttribute('placeholder')).toEqual('结束日期')
       wrapper.find('input').first().simulate('focus')
       expect(wrapper.find(`.hi-datepicker__panel--left td[value=${realCurrentDay}]:not(.prev):not(.next)`).hasClass('today')).toBeTruthy()
       wrapper.find('.hi-datepicker__header-text').first().simulate('click')
@@ -314,9 +314,9 @@ describe('Datepicker', () => {
         <Datepicker type='weekrange' onChange={callback} />
       )
       expect(wrapper.find('input').at(0).getDOMNode().getAttribute('value')).toEqual('')
-      expect(wrapper.find('input').at(0).getDOMNode().getAttribute('placeholder')).toEqual('请选择周')
+      expect(wrapper.find('input').at(0).getDOMNode().getAttribute('placeholder')).toEqual('开始周')
       expect(wrapper.find('input').at(1).getDOMNode().getAttribute('value')).toEqual('')
-      expect(wrapper.find('input').at(1).getDOMNode().getAttribute('placeholder')).toEqual('请选择周')
+      expect(wrapper.find('input').at(1).getDOMNode().getAttribute('placeholder')).toEqual('结束周')
       wrapper.find('input').first().simulate('focus')
       expect(wrapper.find(`.hi-datepicker__panel--left td[value=${realCurrentDay}]:not(.prev):not(.next)`).hasClass('today')).toBeTruthy()
       wrapper.find('.hi-datepicker__header-text').first().simulate('click')
@@ -395,9 +395,9 @@ describe('Datepicker', () => {
         <Datepicker type='timeperiod' onChange={callback} />
       )
       expect(wrapper.find('input').at(0).getDOMNode().getAttribute('value')).toEqual('')
-      expect(wrapper.find('input').at(0).getDOMNode().getAttribute('placeholder')).toEqual('请选择日期')
+      expect(wrapper.find('input').at(0).getDOMNode().getAttribute('placeholder')).toEqual('开始日期时间')
       expect(wrapper.find('input').at(1).getDOMNode().getAttribute('value')).toEqual('')
-      expect(wrapper.find('input').at(1).getDOMNode().getAttribute('placeholder')).toEqual('请选择日期')
+      expect(wrapper.find('input').at(1).getDOMNode().getAttribute('placeholder')).toEqual('结束日期时间')
       wrapper.find('input').first().simulate('focus')
       expect(wrapper.find(`.hi-datepicker__panel--left td[value=${realCurrentDay}]:not(.prev):not(.next)`).hasClass('current')).toBeTruthy()
       // value 为 Date 实例的情况
@@ -501,8 +501,8 @@ describe('Datepicker', () => {
           <Datepicker type='daterange' placeholder={['请选择开始日期', '请选择结束日期']} />
         </div>
       )
-      expect(wrapper.find('input').at(0).getDOMNode().getAttribute('placeholder')).toEqual('请选择日期')
-      expect(wrapper.find('input').at(1).getDOMNode().getAttribute('placeholder')).toEqual('请选择日期')
+      expect(wrapper.find('input').at(0).getDOMNode().getAttribute('placeholder')).toEqual('开始日期')
+      expect(wrapper.find('input').at(1).getDOMNode().getAttribute('placeholder')).toEqual('结束日期')
       expect(wrapper.find('input').at(2).getDOMNode().getAttribute('placeholder')).toEqual('请选择')
       expect(wrapper.find('input').at(3).getDOMNode().getAttribute('placeholder')).toEqual('请选择')
       expect(wrapper.find('input').at(4).getDOMNode().getAttribute('placeholder')).toEqual('请选择')
