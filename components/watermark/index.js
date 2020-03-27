@@ -48,7 +48,7 @@ Watermark.defaultProps = {
   zIndex: 1000,
   logo: null,
   grayLogo: true,
-  isAutoWrap: true,
+  isAutoWrap: false,
   textOverflowEffect: 'zoom'
 }
 Watermark.generate = WaterMarker

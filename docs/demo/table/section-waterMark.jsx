@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
 const prefix = 'table-waterMark'
-const desc = '基础：展示二维数据'
+const desc = '向表格添加水印'
 const code = `import React from 'react'
 import Table from '@hi-ui/hiui/es/table'\n
 class Demo extends React.Component {
