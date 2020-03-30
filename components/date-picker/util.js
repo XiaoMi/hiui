@@ -1,4 +1,10 @@
+import request from 'axios'
 import { addMonths, getDay, subDays, differenceInDays, startOfWeek, endOfWeek } from './dateUtil'
+const holiday = {
+  PRCHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCHoliday.json?',
+  PRCLunar: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCLunar.json?',
+  IndiaHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/IndiaHoliday.json?'
+}
 
 export const deconstructDate = (date, weekOffset = 0) => {
   !(date instanceof Date) && (date = new Date(date))
@@ -30,4 +36,20 @@ export const getYearWeek = (date, weekStart = 0) => {
 export const nextMonth = function (date) {
   !(date instanceof Date) && (date = new Date(date))
   return addMonths(date, 1)
+}
+/**
+ * 是否展示历法次要信息
+ * @param {Object} props
+ */
+export const showLargeCalendar = (props) => {
+  return props.altCalendar || props.altCalendarPreset || props.dateMarkRender || props.dateMarkPreset
+}
+
+export const getPRCDate = (api) => {
+  const url = holiday[api]
+  let options = {
+    url,
+    method: 'GET'
+  }
+  return url ? request.create().request(options) : null
 }

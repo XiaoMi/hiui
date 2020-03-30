@@ -1,10 +1,34 @@
 # 更新日志
 
+## 2.12.0
+
+- 新增 `<Watermark />` 水印组件 [#121](https://github.com/XiaoMi/hiui/issues/121)
+- 修复 `<Tree />` 多选模式下在禁用状态复选框样式异常的问题 [#1014](https://github.com/XiaoMi/hiui/issues/1014)
+- 修复 `<Select />` DataSource 配置 headers 参数无效的问题 [#1011](https://github.com/XiaoMi/hiui/issues/1011)
+
+## 2.11.1
+
+- 修复打包印度节假日数据问题
+
+## 2.11.0
+
+- 新增 `<DatePicker />` altCalendarPreset 预设历法信息（支持中国农历和印度节假日），altCalendar 自定义日期显示，dateMarkRender 自定义日期右上角显示标志，dateMarkPreset 预设右上角显示标志「班」和「休」 [#902](https://github.com/XiaoMi/hiui/issues/902)[#992](https://github.com/XiaoMi/hiui/issues/992)
+- 修复 `<Menu />` 高亮、展开对应菜单项不正确的问题 [#993](https://github.com/XiaoMi/hiui/issues/993)
+- 优化若干视觉还原问题：[#990](https://github.com/XiaoMi/hiui/issues/990) [#991](https://github.com/XiaoMi/hiui/issues/991) [#998](https://github.com/XiaoMi/hiui/issues/998) [#1000](https://github.com/XiaoMi/hiui/issues/1000) [#954](https://github.com/XiaoMi/hiui/issues/954) [#1001](https://github.com/XiaoMi/hiui/issues/1001) [#1002](https://github.com/XiaoMi/hiui/issues/1002) [#1003](https://github.com/XiaoMi/hiui/issues/1003) [#1004](https://github.com/XiaoMi/hiui/issues/1004) [#1005](https://github.com/XiaoMi/hiui/issues/1005)
+
+## 2.10.0
+
+- 新增 `<Upload />` onDownload 点击上传成功文件的回调 [#613](https://github.com/XiaoMi/hiui/issues/613)
+- 优化 `<Select />` 可搜索模式下自动获取输入框焦点 [#925](https://github.com/XiaoMi/hiui/issues/925)
+- 优化 `<Carousel />` 轮播定位交互，并新增 showPages 是否显示页码指示器 [#925](https://github.com/XiaoMi/hiui/issues/925)
+- 修复 `<Select />` 异步模式下有默认值不能正常使用的问题 [#962](https://github.com/XiaoMi/hiui/issues/962)
+- 优化若干视觉还原问题：[#952](https://github.com/XiaoMi/hiui/issues/952) [#958](https://github.com/XiaoMi/hiui/issues/958) [#971](https://github.com/XiaoMi/hiui/issues/971) [#973](https://github.com/XiaoMi/hiui/issues/973) [#975](https://github.com/XiaoMi/hiui/issues/975) [#976](https://github.com/XiaoMi/hiui/issues/976) [#977](https://github.com/XiaoMi/hiui/issues/977) [#983](https://github.com/XiaoMi/hiui/issues/983)[#987](https://github.com/XiaoMi/hiui/issues/987)
+
 ## 2.9.0
 
 - 新增 `<Progress />` active 属性展示加载动效 [#941](https://github.com/XiaoMi/hiui/issues/941)
 - 新增 `<Upload />` 拖拽用法支持多选上传 [#942](https://github.com/XiaoMi/hiui/issues/942)
-- 新增 `<DatePicker />`  disabledDate 属性自定义日期禁选 [#943](https://github.com/XiaoMi/hiui/issues/943)
+- 新增 `<DatePicker />` disabledDate 属性自定义日期禁选 [#943](https://github.com/XiaoMi/hiui/issues/943)
 - 优化 `<Collapse />` 视觉效果 [#937](https://github.com/XiaoMi/hiui/issues/937)
 - 修复 `<Dropdown />` 点击外部区域不能正常隐藏菜单的问题 [#947](https://github.com/XiaoMi/hiui/issues/947)
 - 修复`<Upload />`同时上传多个文件的展示问题 [#948](https://github.com/XiaoMi/hiui/issues/948)
@@ -17,8 +41,8 @@
 - 新增 `<Table />` withCredentials 属性 [#922](https://github.com/XiaoMi/hiui/issues/922)
 - 修复 `<Transfer />` 单选模式下 targetLimit 无效的问题 [#919](https://github.com/XiaoMi/hiui/issues/919)
 - 修复 `<Select />` 多选出现双滚动条的样式问题 [#920](https://github.com/XiaoMi/hiui/issues/920)
-- 修复 `<Button />`  链接用法样式问题 [#923](https://github.com/XiaoMi/hiui/issues/923)
-- 修复 `<Dropdown />`  按钮样式 icon 边距问题 [#927](https://github.com/XiaoMi/hiui/issues/927)
+- 修复 `<Button />` 链接用法样式问题 [#923](https://github.com/XiaoMi/hiui/issues/923)
+- 修复 `<Dropdown />` 按钮样式 icon 边距问题 [#927](https://github.com/XiaoMi/hiui/issues/927)
 - 修复主题配色适配组件不完全的问题 [#733](https://github.com/XiaoMi/hiui/issues/733)
 
 ## 2.7.0

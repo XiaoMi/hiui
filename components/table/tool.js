@@ -6,7 +6,6 @@ export function insertAfter (newElement, targetElement) {
     parent.insertBefore(newElement, targetElement.nextSibling)
   }
 }
-
 export function setKey (data, name) {
   name = name || 'id'
   return data.map(item => {

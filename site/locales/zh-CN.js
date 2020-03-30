@@ -26,7 +26,7 @@ module.exports = {
     modal: 'Modal 模态对话框',
     confirm: 'confirm 方法组件',
     form: 'Form 表单',
-    alert: 'Alert 警告框',
+    alert: 'Alert 警告提示',
     message: 'Message 消息',
     panel: 'Panel 面板',
     collapse: 'Collapse 折叠面板',
@@ -52,7 +52,8 @@ module.exports = {
     switch: 'Switch 开关',
     rate: 'Rate 评分',
     breadcrumb: 'Breadcrumb 面包屑',
-    carousel: 'Carousel 走马灯'
+    carousel: 'Carousel 走马灯',
+    watermark: 'Watermark 水印'
   },
   designs: {
     summarize: '概述',

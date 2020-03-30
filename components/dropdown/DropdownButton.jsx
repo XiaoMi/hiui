@@ -20,8 +20,7 @@ export default class DropdownButton extends React.Component {
     const isGroup = type === 'group'
     const buttonCls = classNames(
       `${prefixCls}__button`,
-      isButton || `${prefixCls}__button--text`,
-      visible && `${prefixCls}__button--active`
+      isButton || `${prefixCls}__button--text`
     )
     const iconGroupCls = classNames(
       `${prefixCls}__icon`,

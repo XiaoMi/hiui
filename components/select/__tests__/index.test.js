@@ -477,7 +477,7 @@ describe('Select', () => {
     process.nextTick(() => {
       // 首次加载数据
       wrapper.find('.hi-select__input').simulate('click') // 展开
-      expect(_document.querySelectorAll('.hi-select__dropdown--item')).toHaveLength(4)
+      expect(_document.querySelectorAll('.hi-select__dropdown--item')).toHaveLength(1)
       global.fetch.mockClear()
       done()
     })

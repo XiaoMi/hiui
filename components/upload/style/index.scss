@@ -9,7 +9,6 @@
     font-size: 12px;
     color: rgb(153, 153, 153);
     line-height: 20px;
-    // padding-top: 12px !important;
 
     &--single-line {
       display: block;
@@ -33,16 +32,34 @@
     color: #666;
     display: flex;
     align-items: center;
-    padding: 7px 0;
+    padding: 6px 0;
     overflow: hidden;
     position: relative;
+
+    a.hi-upload__filename {
+      flex: 1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      font-size: 14px;
+      cursor: pointer;
+      color: #666;
+
+      &--error {
+        color: rgb(255, 0, 0);
+
+        &:not([href]) {
+          color: rgb(255, 0, 0);
+        }
+      }
+    }
 
     &-tips {
       color: #428ef5;
       background: #edf2fc;
       border-radius: 2px;
       font-size: 14px;
-      padding: 8px 6px;
+      padding: 8px 12px;
       height: auto !important;
       border: 1px solid #d8e5ff;
     }
@@ -66,18 +83,6 @@
     align-items: center;
     padding-left: 8px;
     overflow: hidden;
-  }
-
-  &__filename {
-    flex: 1;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    font-size: 14px;
-
-    &--error {
-      color: rgb(255, 0, 0);
-    }
   }
 
   &__upstatus {
@@ -151,7 +156,7 @@
     }
 
     .hi-upload__item {
-      &:not(:first-child):not(:last-child) {
+      &:not(:first-child) {
         border-bottom: 1px solid rgba(230, 230, 230, 1);
       }
     }
@@ -308,6 +313,7 @@
       width: 80px;
       height: 80px;
       line-height: 80px;
+      box-sizing: border-box;
     }
   }
 
@@ -366,6 +372,10 @@
     .hi-upload__upstatus {
       width: 100%;
       margin-left: 0;
+    }
+
+    .hi-upload__right-content {
+      padding-left: 0;
     }
 
     .upload--disabled {

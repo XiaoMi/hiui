@@ -11,6 +11,7 @@ class Demo extends React.Component {
       <div style={{width: 800}}>
         <Carousel
           duration={2000}
+          showPages={true}
         >
           {
             data.map((item, index) => {

@@ -4,6 +4,7 @@
 $input: 'hi-input' !default;
 
 textarea.#{$input} {
+  display: block;
   box-shadow: none;
   outline: none;
   color: $normal-color;

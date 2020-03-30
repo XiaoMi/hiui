@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-import shallowEqual from 'shallowequal'
 import debounce from 'lodash/debounce'
 import cloneDeep from 'lodash/cloneDeep'
 import Popper from '../popper'
@@ -129,7 +128,7 @@ class Select extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!shallowEqual(nextProps.data, this.props.data)) {
+    if (!_.isEqual(nextProps.data, this.props.data)) {
       const selectedItems = this.resetSelectedItems(
         nextProps.value || this.state.selectedItems,
         nextProps.data,
@@ -141,7 +140,7 @@ class Select extends Component {
         dropdownItems: cloneDeep(nextProps.data)
       })
     } else {
-      if (!shallowEqual(nextProps.value, this.props.value)) {
+      if (!_.isEqual(nextProps.value, this.props.value)) {
         const selectedItems = this.resetSelectedItems(
           nextProps.value,
           this.state.dropdownItems,
@@ -288,7 +287,7 @@ class Select extends Component {
       return
     }
 
-    this.selectInput.focus()
+    !this.getSearchable() && this.selectInput.focus()
     if (this.props.disabled) {
       return
     }
@@ -318,7 +317,7 @@ class Select extends Component {
 
     selectedItems.splice(sIndex, 1)
     this.onChange(selectedItems, item, () => {
-      this.selectInput.focus()
+      !this.getSearchable() && this.selectInput.focus()
     }, selectedItems)
   }
   // 全部删除
@@ -361,21 +360,24 @@ class Select extends Component {
         jsonpCallback = 'callback',
         ...options
       } = _dataSource
+
       keyword =
       !keyword && this.autoloadFlag && autoload
         ? _dataSource.keyword
         : keyword
       this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
+      Object.assign(options, {mode}, {headers})
+
       const queryParams = qs.stringify(
         Object.assign({}, params, key && { [key]: keyword })
       )
       if (!_.isEmpty(queryParams)) {
         url = url.includes('?') ? `${url}&${queryParams}` : `${url}?${queryParams}`
       }
-
       if (type.toUpperCase() === 'POST') {
         options.body = JSON.stringify(data)
       }
+
       this.setState({
         fetching: true
       })
@@ -613,37 +615,39 @@ class Select extends Component {
           attachEle={this.selectInputContainer}
           zIndex={1050}
           topGap={5}
+          leftGap={0}
           className="hi-select__popper"
           placement="top-bottom-start"
         >
-          <SelectDropdown
-            noFoundTip={emptyContent}
-            localeMap={localeDatas.select || {} }
-            mode={type}
-            searchPlaceholder={searchPlaceholder}
-            theme={theme}
-            onBlur={onBlur}
-            onFocus={onFocus}
-            isOnSearch = {onSearch || dataSource}
-            onSearch={this.debouncedFilterItems.bind(this)}
-            searchable={searchable}
-            showCheckAll={showCheckAll}
-            checkAll={this.checkAll.bind(this)}
-            loading={fetching}
-            focusedIndex={focusedIndex}
-            filterOption={filterOption}
-            matchFilter={this.matchFilter.bind(this)}
-            setFocusedIndex={this.setFocusedIndex.bind(this)}
-            show={dropdownShow && this.props.open}
-            optionWidth={optionWidth}
-            selectInputWidth={selectInputWidth}
-            onEnterSelect={this.onEnterSelect.bind(this)}
-            moveFocusedIndex={this.moveFocusedIndex.bind(this)}
-            dropdownItems={type === 'multiple' && dataSource && this.state.keyword === '' ? cacheSelectedItems : dropdownItems}
-            selectedItems={selectedItems}
-            dropdownRender={render}
-            onClickOption={this.onClickOption.bind(this)}
-          />
+          { dropdownShow && this.props.open && <SelectDropdown
+                  noFoundTip={emptyContent}
+                  localeMap={localeDatas.select || {} }
+                  mode={type}
+                  searchPlaceholder={searchPlaceholder}
+                  theme={theme}
+                  onBlur={onBlur}
+                  onFocus={onFocus}
+                  isOnSearch = {onSearch || dataSource}
+                  onSearch={this.debouncedFilterItems.bind(this)}
+                  searchable={searchable}
+                  showCheckAll={showCheckAll}
+                  checkAll={this.checkAll.bind(this)}
+                  loading={fetching}
+                  focusedIndex={focusedIndex}
+                  filterOption={filterOption}
+                  matchFilter={this.matchFilter.bind(this)}
+                  setFocusedIndex={this.setFocusedIndex.bind(this)}
+                  show={dropdownShow && this.props.open}
+                  optionWidth={optionWidth}
+                  selectInputWidth={selectInputWidth}
+                  onEnterSelect={this.onEnterSelect.bind(this)}
+                  moveFocusedIndex={this.moveFocusedIndex.bind(this)}
+                  dropdownItems={ dataSource && this.state.keyword === '' ? cacheSelectedItems : dropdownItems}
+                  selectedItems={selectedItems}
+                  dropdownRender={render}
+                  onClickOption={this.onClickOption.bind(this)}
+            /> 
+          }
         </Popper>
       </div>
     )

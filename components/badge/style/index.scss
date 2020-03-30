@@ -11,6 +11,7 @@
     transform: translateX(50%);
     height: 16px;
     padding: 0 4px;
+    min-width: 8px;
     border: 2px solid #fff;
     border-radius: 10px;
     line-height: 16px;
@@ -29,7 +30,7 @@
     position: absolute;
     width: 8px;
     height: 8px;
-    top: -7px;
+    top: -5px;
     right: -5px;
     background: #f44141;
     border: 1px solid #fff;

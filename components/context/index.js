@@ -7,20 +7,24 @@ export const LocaleContext = React.createContext('zh-CN')
  * 临时解决 notice组件获取不到theme的问题
  */
 let noticeTheme = ''
-export default (WrappedComponent) => {
+export default WrappedComponent => {
   class WrapperComponent extends Component {
     static displayName = WrappedComponent.name
     render () {
       const { theme, locale, innerRef, ...restProps } = this.props
       let ConsumerComponent = (
         <ThemeContext.Consumer>
-          {(contextTheme) => {
+          {contextTheme => {
             noticeTheme = noticeTheme || contextTheme
             return (
               <LocaleContext.Consumer>
-                {(contextLocale) => (
+                {contextLocale => (
                   <WrappedComponent
-                    theme={WrappedComponent.IS_HIUI_NOTICE ? noticeTheme : contextTheme}
+                    theme={
+                      WrappedComponent.IS_HIUI_NOTICE
+                        ? noticeTheme
+                        : contextTheme
+                    }
                     locale={contextLocale}
                     localeDatas={locales[contextLocale]}
                     ref={innerRef}
@@ -53,7 +57,7 @@ function wrapProvider (value, context) {
   }
   if (!context) {
     let component = value
-    wrapProvider.Providers.reverse().map((obj) => {
+    wrapProvider.Providers.reverse().map(obj => {
       component = (
         <obj.context.Provider value={obj.value}>
           {component}

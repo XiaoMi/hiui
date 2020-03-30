@@ -55,7 +55,7 @@ $prefix: 'hi-tabs' !default;
 
     .#{$prefix}__item {
       height: 48px;
-      line-height: 48px;
+      line-height: 46px;
       padding: 0 16px;
       box-sizing: border-box;
 
@@ -103,6 +103,9 @@ $prefix: 'hi-tabs' !default;
     }
 
     .#{$prefix}__item {
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+
       &--active {
         border-right-color: #fff;
       }
@@ -130,7 +133,7 @@ $prefix: 'hi-tabs' !default;
       margin-right: 4px;
       padding: 0 8px;
       background: #fafafa;
-      border-radius: 4px 4px 0 0;
+      border-radius: 2px 2px 0 0;
       border: 1px solid #e6e7e8;
       text-align: center;
       box-sizing: border-box;
@@ -214,18 +217,22 @@ $prefix: 'hi-tabs' !default;
     .#{$prefix}__item {
       flex: none;
       height: 36px;
-      line-height: 36px;
-      padding: 0 20px;
+      line-height: 34px;
+      padding: 0 23px;
       box-sizing: border-box;
+      margin-right: 24px;
+      border: 1px solid #d8d8d8;
+      border-radius: 18px;
 
-      &:hover {
+      &:hover:not(.hi-tabs__item--active) {
         color: #4284f5;
+        border: 1px solid #4284f5;
       }
 
       &--active {
-        color: #4284f5;
+        color: #fff;
+        background-color: #4284f5;
         border: 1px solid #4284f5;
-        border-radius: 18px;
       }
     }
   }
@@ -312,12 +319,13 @@ $prefix: 'hi-tabs' !default;
 
     &--button {
       .#{$prefix}__item {
-        &:hover {
+        &:hover:not(.hi-tabs__item--active) {
           color: $value;
+          border: 1px solid $value;
         }
 
         &--active {
-          color: $value;
+          background-color: $value;
           border: 1px solid $value;
         }
       }

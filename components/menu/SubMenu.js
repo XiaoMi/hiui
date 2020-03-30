@@ -10,12 +10,16 @@ class SubMenu extends Component {
   }
 
   checkActive (activeIndex, index) {
-    return activeIndex.indexOf(index) === 0
+    const indexArr = index.split('-')
+    const activeIndexArr = activeIndex.split('-')
+    return activeIndexArr.slice(0, indexArr.length).join('-') === index
   }
 
   checkExpand (activeIndex, expandIndex, index) {
     return expandIndex.some(item => {
-      return item.indexOf(index) === 0
+      const indexArr = index.split('-')
+      const expandIndexArr = item.split('-')
+      return expandIndexArr.slice(0, indexArr.length).join('-') === index
     })
   }
 

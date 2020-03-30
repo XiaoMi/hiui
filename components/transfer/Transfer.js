@@ -314,7 +314,7 @@ class Transfer extends Component {
               {dir === 'left' &&
                   limited &&
                   <li key='limit-tips' className='hi-transfer__item hi-transfer__item--limit'>
-                    <div className='hi-transfer__warning' />
+                    <Icon name='info-circle-o' style={{fontSize: 16, color: '#D4A145', marginRight: 9}} />
                     <span>{localeMap['limit']}</span>
                   </li>}
               {filterResult.map((item, index) => {
