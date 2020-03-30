@@ -12,7 +12,6 @@ class UploadDrag extends Upload {
       },
       this.state
     )
-    console.log('props', props)
     this.dragBoxRef = React.createRef()
   }
 
