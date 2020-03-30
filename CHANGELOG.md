@@ -1,5 +1,11 @@
 # 更新日志
 
+## 2.12.0
+
+- 新增 `<Watermark />` 水印组件 [#121](https://github.com/XiaoMi/hiui/issues/121)
+- 修复 `<Tree />` 多选模式下在禁用状态复选框样式异常的问题 [#1014](https://github.com/XiaoMi/hiui/issues/1014)
+- 修复 `<Select />` DataSource 配置 headers 参数无效的问题 [#1011](https://github.com/XiaoMi/hiui/issues/1011)
+
 ## 2.11.1
 
 - 修复打包印度节假日数据问题

@@ -11,7 +11,7 @@ import loading from '../loading'
 import '../pagination/style'
 import '../icon/style'
 import Provider from '../context'
-import {setKey, scrollTop, getStyle, getPosition, offset} from './tool'
+import { setKey, scrollTop, getStyle, getPosition, offset } from './tool'
 import request from 'axios'
 import qs from 'qs'
 
@@ -482,7 +482,7 @@ class Table extends Component {
       <div className={prifix({table: true, [`theme__${theme}`]: true, [size]: size, bordered, striped})} ref={this.dom}>
         {header && <div className={prifix({'table-pre-header': true})}>{header()}</div>}
         <div className={prifix({'table-container': true})}>
-          <div >{content}</div>
+          <div>{content}</div>
           { name &&
           <div className={prifix('table-setting')} ref={this.setting}>
             <div onClick={(e) => {
@@ -896,6 +896,7 @@ class Table extends Component {
   componentDidMount () {
     let {fixTop, scroll, name, origin} = this.props
     let dom = this.dom.current
+
     if (fixTop) {
       // 吸顶逻辑
       document.addEventListener('scroll', () => {

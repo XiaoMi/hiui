@@ -18,7 +18,8 @@ export default {
       grid: components['grid'],
       typography: components['typography'],
       button: components['button'],
-      icon: components['icon']
+      icon: components['icon'],
+      watermark: components['watermark']
     },
     'group-navgation': {
       dropdown: components['dropdown'],
