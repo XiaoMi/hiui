@@ -22,7 +22,7 @@ class Demo extends React.Component {
         {...this.options}
       >
       <div id="watermark-box" 
-        style={{width: '100%', height: 400, border: '1px solid rgb(230, 231, 232)'}} ref={this.boxRef1} 
+        style={{width: '100%', height: 400, border: '1px solid rgb(230, 231, 232)'}} 
         />
       </Watermark>
     )
