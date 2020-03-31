@@ -5,11 +5,16 @@ import logo from '../../../site/static/img/logo.png'
 const prefix = 'watermark-base'
 const desc = ''
 const code = `import React from 'react'
+import logo from '本地图片路径或者base64'
 import Watermark from '@hi-ui/hiui/es/Watermark'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)
-    this.options = {logo: logo, content: ['HIUI', '做中台，就用 HIUI'],density:'high'}
+    this.options = {
+      logo: logo, // 本地图片路径或者base64
+      content: ['HIUI', '做中台，就用 HIUI'],
+      density:'high'
+    }
   }
   render () {
     return (
