@@ -445,7 +445,7 @@ class TreeNode extends Component {
       highlight: item.id
     })
   }
-  showRightClickMenu = (item, e) => {
+  showRightClickMenu = (item, e, level) => {
     const rect = e.target ? e.target.getBoundingClientRect() : {left: 0, top: 0, width: 0}
     const _st = document.documentElement.scrollTop || document.body.scrollTop
     const { contextMenu } = this.props
@@ -458,7 +458,7 @@ class TreeNode extends Component {
       _cm = contextMenu
     }
     if (type === '[object Function]') {
-      _cm = contextMenu(item)
+      _cm = contextMenu(item, level)
       if (!_cm) {
         return
       }
@@ -509,7 +509,7 @@ class TreeNode extends Component {
       currentDeleteNode: nodeId
     })
   }
-  renderTree = (data, allData = []) => {
+  renderTree = (data, allData = [], level) => {
     const {
       draggable,
       prefixCls,
@@ -548,6 +548,7 @@ class TreeNode extends Component {
               origin={origin}
               showLine={showLine}
               key={item.id}
+              level={level}
               isRoot={allData.some(d => d.id === item.id)}
               isLevelLast={index === data.length - 1}
               editable={editable}
@@ -631,8 +632,8 @@ class TreeNode extends Component {
         )}
 
         {searchable
-          ? this.renderTree(this.highlightData(cloneDeep(dataCache), searchValue), dataCache)
-          : this.renderTree(cloneDeep(dataCache), dataCache)}
+          ? this.renderTree(this.highlightData(cloneDeep(dataCache), searchValue), dataCache, 0)
+          : this.renderTree(cloneDeep(dataCache), dataCache, 0)}
 
         <Modal
           title={modalTitle}

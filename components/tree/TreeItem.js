@@ -18,6 +18,7 @@ class TreeItem extends Component {
   }
   render () {
     const {
+      level,
       editable,
       draggable,
       dropDividerPosition,
@@ -176,7 +177,7 @@ class TreeItem extends Component {
                   }
                   if (editable) {
                     e.preventDefault()
-                    showRightClickMenu(item, e)
+                    showRightClickMenu(item, e, level)
                   }
                 }}
                 onClick={e => {
@@ -208,7 +209,7 @@ class TreeItem extends Component {
                 }
                 if (this.props.editable) {
                   e.preventDefault()
-                  showRightClickMenu(item, e)
+                  showRightClickMenu(item, e, level)
                 }
               }}
               onClick={e => {
@@ -226,7 +227,7 @@ class TreeItem extends Component {
             </span>
           )}
         </div>
-        {item.children && item.children.length > 0 && expanded ? renderTree(item.children) : null}
+        {item.children && item.children.length > 0 && expanded ? renderTree(item.children, [], level + 1) : null}
         {item.children &&
           expanded &&
           targetNode === item.id &&
