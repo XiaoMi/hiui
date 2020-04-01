@@ -145,7 +145,7 @@ class TreeItem extends Component {
                 style={(editingNodes.find(node => node.id === item.id) || {}).title === '' ? { marginRight: 12, color: '#999', cursor: 'not-allowed' } : { cursor: 'pointer', marginRight: 12, color: themeColor[theme] }}
                 onClick={() => {
                   if ((editingNodes.find(node => node.id === item.id) || {}).title !== '') {
-                    saveEditNode(item.id)
+                    saveEditNode(item.id, level)
                   }
                 }}
               >

@@ -296,7 +296,7 @@ class TreeNode extends Component {
       }
     })
   }
-  saveEditNode = itemId => {
+  saveEditNode = (itemId, level) => {
     const { editNodes, dataCache, editingNodes } = this.state
     const nodeEdited = editingNodes.find(node => node.id === itemId)
     const _dataCache = cloneDeep(dataCache)
@@ -307,7 +307,7 @@ class TreeNode extends Component {
       editingNodes: editingNodes.filter(node => node.id !== itemId)
     })
     const node = findNode(itemId, _dataCache)
-    this.props.onSave(node, _dataCache)
+    this.props.onSave(node, _dataCache, level)
   }
   // 删除拖动的节点
   _delDragNode = (itemId, data) => {
