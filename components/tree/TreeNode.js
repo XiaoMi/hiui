@@ -301,8 +301,7 @@ class TreeNode extends Component {
     const { editNodes, dataCache, editingNodes } = this.state
     const nodeEdited = editingNodes.find(node => node.id === itemId)
     const _dataCache = cloneDeep(dataCache)
-    const node = findNode(itemId, _dataCache)
-    const result = this.props.onSave(node, _dataCache, level)
+    const result = this.props.onSave(nodeEdited, _dataCache, level)
     if (result !== false) {
       this._saveEditNode(itemId, _dataCache, nodeEdited)
       this.setState({
