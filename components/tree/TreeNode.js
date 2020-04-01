@@ -44,7 +44,8 @@ class TreeNode extends Component {
     this.defaultEditNodeMenu = {
       'editNode': (item, menu, index) => {
         return <li key={index} onClick={() => {
-          menu.onClick ? menu.onClick(item, this) : this.editNode(item)
+          const node = findNode(item.id, this.state.dataCache)
+          menu.onClick ? menu.onClick(item, this) : this.editNode(node)
           this.closeRightClickMenu()
         }}>{menu.title || edit}</li>
       },
@@ -300,14 +301,16 @@ class TreeNode extends Component {
     const { editNodes, dataCache, editingNodes } = this.state
     const nodeEdited = editingNodes.find(node => node.id === itemId)
     const _dataCache = cloneDeep(dataCache)
-    this._saveEditNode(itemId, _dataCache, nodeEdited)
-    this.setState({
-      dataCache: _dataCache,
-      editNodes: editNodes.filter(node => node.id !== itemId),
-      editingNodes: editingNodes.filter(node => node.id !== itemId)
-    })
     const node = findNode(itemId, _dataCache)
-    this.props.onSave(node, _dataCache, level)
+    const result = this.props.onSave(node, _dataCache, level)
+    if (result !== false) {
+      this._saveEditNode(itemId, _dataCache, nodeEdited)
+      this.setState({
+        dataCache: _dataCache,
+        editNodes: editNodes.filter(node => node.id !== itemId),
+        editingNodes: editingNodes.filter(node => node.id !== itemId)
+      })
+    }
   }
   // 删除拖动的节点
   _delDragNode = (itemId, data) => {

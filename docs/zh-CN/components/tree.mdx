@@ -69,7 +69,7 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | openIcon           | 表示展开的图标                                                          | string                                                                   | Icon 图标名称                   | -         |
 | closeIcon          | 表示闭合的图标                                                          | string                                                                   | Icon 图标名称                   | -         |
 | apperance          | 树形控件的展现形态                                                      | string                                                                   | 'default' \| 'line' \| 'folder' | 'default' |
-| contextMenu        | 自定义右键菜单,参考 _示例_ 及 _页面底部自定义右键菜单使用说明_          | ContextMenuOption[] \| (item: DataItem) => ContextMenuOption[]           |                                 | []        |
+| contextMenu        | 自定义右键菜单,参考 _示例_ 及 _页面底部自定义右键菜单使用说明_          | ContextMenuOption[] \| (item: DataItem,level: number) => ContextMenuOption[]           |                                 | []        |
 | onChange           | 树组件改变时触发                                                        | (data: TreeNode[]) => void                                               | -                               | -         |
 | onExpand           | 节点被点击(展开/收起)时触发                                             | (expanded: boolean, expandIds: string[], expandedNode: TreeNode) => void | -                               | -         |
 | onCheck            | 点击节点多选框触发                                                      | (checked: boolean, checkedIds: string[], checkedNode: TreeNode) => void  | -                               | -         |
@@ -78,7 +78,7 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | onDrop             | 节点拖拽时触发                                                          | (dragNode: TreeNode, dropNode: TreeNode) => boolean                      | -                               | -         |
 | onDropEnd          | 节点拖拽成功时触发                                                      | (dragNode: TreeNode, dropNode: TreeNode) => void                         | -                               | -         |
 | onDelete           | 节点删除时触发                                                          | (deletedNode: TreeNode, data: TreeNode[]) => void                        | -                               | -         |
-| onSave             | 节点保存新增、编辑状态时触发                                            | (savedNode: TreeNode, data: TreeNode[]) => void                          | -                               | -         |
+| onSave             | 节点保存新增、编辑状态时触发, 返回 false 则保存新增、编辑失败                                           | (savedNode: TreeNode, data: TreeNode[], level: number) => boolean                          | -                               | -         |
 
 ## Type
 
