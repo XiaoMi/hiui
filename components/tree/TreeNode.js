@@ -45,7 +45,7 @@ class TreeNode extends Component {
       'editNode': (item, menu, index) => {
         return <li key={index} onClick={() => {
           const node = findNode(item.id, this.state.dataCache)
-          menu.onClick ? menu.onClick(item, this) : this.editNode(node)
+          menu.onClick ? menu.onClick(node, this) : this.editNode(node)
           this.closeRightClickMenu()
         }}>{menu.title || edit}</li>
       },

@@ -50,7 +50,8 @@ class Demo extends React.Component {
           apperance="line"
           editable={true}
           data={this.state.treeData}
-          onSave={(saveNode, data) => {
+          onSave={(saveNode, data,level) => {
+            
             console.log(saveNode, data)
           }}
           onDelete={(deleteNode, data) => {
@@ -89,6 +90,7 @@ class Demo extends React.Component {
         return (
           <div style={{width:500}}>
             <Tree
+              searchable
               defaultExpandAll
               apperance="line"
               editable={true}
