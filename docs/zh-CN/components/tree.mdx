@@ -79,7 +79,8 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | onDropEnd          | 节点拖拽成功时触发                                                      | (dragNode: TreeNode, dropNode: TreeNode) => void                         | -                               | -         |
 | onBeforeDelete     | 节点删除前触发,返回 false 则节点删除失败，不会触发 onDelete                  | (deletedNode: TreeNode, data: TreeNode[], level: number) => boolean                       | -                               | -         |
 | onDelete           | 节点删除后触发                                                          | (deletedNode: TreeNode, data: TreeNode[]) => void                        | -                               | -         |
-| onSave             | 节点保存新增、编辑状态时触发, 返回 false 则保存新增、编辑失败                                           | (savedNode: TreeNode, data: TreeNode[], level: number) => boolean                          | -                               | -         |
+| onBeforeSave       | 节点保存新增、编辑状态时触发, 返回 false 则保存新增、编辑失败，不会触发 onSave                  | (savedNode: TreeNode, data: TreeNode[], level: number) => boolean                          | -                               | -         |
+| onSave             | 节点保存新增、编辑状态后触发                  | (savedNode: TreeNode, data: TreeNode[]) => void                          | -                               | -         |
 
 ## Type
 

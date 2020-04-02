@@ -301,14 +301,25 @@ class TreeNode extends Component {
     const { editNodes, dataCache, editingNodes } = this.state
     const nodeEdited = editingNodes.find(node => node.id === itemId)
     const _dataCache = cloneDeep(dataCache)
-    const result = this.props.onSave(nodeEdited, _dataCache, level)
-    if (result !== false) {
+    if (this.props.onBeforeSave) {
+      const result = this.props.onBeforeSave(nodeEdited, dataCache, level)
+      if (result === true) {
+        this._saveEditNode(itemId, _dataCache, nodeEdited)
+        this.setState({
+          dataCache: _dataCache,
+          editNodes: editNodes.filter(node => node.id !== itemId),
+          editingNodes: editingNodes.filter(node => node.id !== itemId)
+        })
+        this.props.onSave(nodeEdited, _dataCache)
+      }
+    } else {
       this._saveEditNode(itemId, _dataCache, nodeEdited)
       this.setState({
         dataCache: _dataCache,
         editNodes: editNodes.filter(node => node.id !== itemId),
         editingNodes: editingNodes.filter(node => node.id !== itemId)
       })
+      this.props.onSave(nodeEdited, _dataCache)
     }
   }
   // 删除拖动的节点

@@ -50,7 +50,11 @@ class Demo extends React.Component {
           apperance="line"
           editable={true}
           data={this.state.treeData}
-          onSave={(saveNode, data,level) => {
+          onBeforeSave={(saveNode, data, level) => {
+            console.log(saveNode, data,level)
+            return true
+          }}
+          onSave={(saveNode, data) => {
             
             console.log(saveNode, data)
           }}

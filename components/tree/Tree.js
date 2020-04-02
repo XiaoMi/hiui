@@ -183,6 +183,7 @@ export class Tree extends Component {
       onDelete,
       onBeforeDelete,
       onSave,
+      onBeforeSave,
       onClick,
       apperance,
       contextMenu,
@@ -225,6 +226,7 @@ export class Tree extends Component {
           onDelete={onDelete}
           onBeforeDelete={onBeforeDelete}
           onSave={onSave}
+          onBeforeSave={onBeforeSave}
           contextMenu={contextMenu}
         />
       </div>
