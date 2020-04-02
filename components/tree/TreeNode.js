@@ -7,7 +7,7 @@ import Icon from '../icon'
 import uuidv4 from 'uuid/v4'
 import TreeItem from './TreeItem'
 import Modal from '../modal'
-import { collectExpandId, findNode } from './util'
+import { collectExpandId, findNode, getParent } from './util'
 import axios from 'axios'
 import qs from 'qs'
 import Provider from '../context'
@@ -396,7 +396,7 @@ class TreeNode extends Component {
       }
     })
   }
-  dropNode = (sourceItem, targetItem, dropDividerPosition) => {
+  dropNode = (sourceItem, targetItem, dropDividerPosition, {before, after}) => {
     const { dataCache } = this.state
     const _dataCache = cloneDeep(dataCache)
     this._delDragNode(sourceItem.id, _dataCache)
@@ -408,8 +408,9 @@ class TreeNode extends Component {
     }
     const _sourceItem = findNode(sourceItem.id, dataCache)
     const _targetItem = findNode(targetItem.id, dataCache)
+    const targetParent = dropDividerPosition === 'sub' ? _targetItem : getParent(targetItem.id, dataCache)
     if (this.props.onDrop) {
-      if (this.props.onDrop(_sourceItem, _targetItem)) {
+      if (this.props.onDrop(_sourceItem, _targetItem, targetParent, {before, after: dropDividerPosition === 'sub' ? after + 1 : after})) {
         this.props.onDropEnd(_sourceItem, _targetItem)
         this.setState({
           dataCache: _dataCache
@@ -587,7 +588,6 @@ class TreeNode extends Component {
               renderSwitcher={this.renderSwitcher}
               cancelAddSiblingNode={this.cancelAddSiblingNode}
               apperance={apperance}
-              // renderRightClickMenu={this.renderRightClickMenu}
               onCheckChange={onCheckChange}
               saveEditNode={this.saveEditNode}
               onClick={onClick}

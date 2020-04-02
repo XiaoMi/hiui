@@ -75,7 +75,7 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | onCheck            | 点击节点多选框触发                                                      | (checked: boolean, checkedIds: string[], checkedNode: TreeNode) => void  | -                               | -         |
 | onClick            | 点击节点文字时触发                                                      | (clickNode: TreeNode) => void                                            | -                               | -         |
 | onDragStart        | 节点开始拖拽时触发                                                      | (dragNode: TreeNode) => void                                             | -                               | -         |
-| onDrop             | 节点拖拽时触发                                                          | (dragNode: TreeNode, dropNode: TreeNode) => boolean                      | -                               | -         |
+| onDrop             | 节点拖拽时触发                                                          | (dragNode: TreeNode, dropNode: TreeNode, newParent: TreeNode, level: Level) => boolean                      | -                               | -         |
 | onDropEnd          | 节点拖拽成功时触发                                                      | (dragNode: TreeNode, dropNode: TreeNode) => void                         | -                               | -         |
 | onBeforeDelete     | 节点删除前触发,返回 false 则节点删除失败，不会触发 onDelete                  | (deletedNode: TreeNode, data: TreeNode[], level: number) => boolean                       | -                               | -         |
 | onDelete           | 节点删除后触发                                                          | (deletedNode: TreeNode, data: TreeNode[]) => void                        | -                               | -         |
@@ -102,6 +102,14 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | title    | 树节点标题     | string \| ReactNode | -             | -      |
 | disabled | 是否禁用节点   | boolean             | true \| false | false  |
 | children | 该节点的子节点 | TreeNode[]          | -             | -      |
+
+### Level
+
+| 参数     | 说明           | 类型                | 可选值        | 默认值 |
+| -------- | -------------- | ------------------- | ------------- | ------ |
+| before   | 拖拽前在树中的层级  | number              | -             | -      |
+| after   | 拖拽后在树中的层级  | number              | -             | -      |
+
 
 ### ContextMenuOption
 

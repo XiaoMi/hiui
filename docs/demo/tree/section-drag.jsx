@@ -49,6 +49,9 @@ class Demo extends React.Component {
           onDragStart = {(dragNode)=> {
             console.log(dragNode)
           }}
+          onDrop = {(dragNode, dropNode, newParent, level)=> {
+            console.log(dragNode,dropNode,newParent, level)
+          }}
           onDropEnd = {(dragNode,dropNode)=> {
             console.log(dragNode,dropNode)
           }}

@@ -245,7 +245,7 @@ const source = {
       props.closeExpandedTreeNode(props.item.id)
     }
     props.onDragStart(props.item)
-    return { sourceItem: props.item, originalExpandStatus: props.expanded }
+    return { sourceItem: props.item, originalExpandStatus: props.expanded, sourceLevel: props.level }
   },
   endDrag (props, monitor) {
     const dropResult = monitor.getDropResult()
@@ -258,16 +258,16 @@ const source = {
 }
 const target = {
   drop (props, monitor) {
-    const { sourceItem, originalExpandStatus } = monitor.getItem()
+    const { sourceItem, originalExpandStatus, sourceLevel } = monitor.getItem()
     const {
       item: targetItem,
       dropNode,
       removeDraggingNode,
       expandTreeNode,
       removeTargetNode,
-      dropDividerPosition
+      dropDividerPosition,
+      level
     } = props
-
     // 先看下是不是在最近得组件
     if (monitor.isOver({ shallow: true })) {
       if (
@@ -285,7 +285,7 @@ const target = {
         removeTargetNode()
       } else {
         // 移动节点到相应位置
-        dropNode(sourceItem, targetItem, dropDividerPosition)
+        dropNode(sourceItem, targetItem, dropDividerPosition, {before: sourceLevel, after: level})
         removeDraggingNode()
         removeTargetNode()
       }
