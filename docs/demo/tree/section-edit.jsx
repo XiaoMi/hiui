@@ -54,6 +54,10 @@ class Demo extends React.Component {
             
             console.log(saveNode, data)
           }}
+          onBeforeDelete={(deleteNode, data, level) => {
+            console.log(deleteNode, data,level)
+            return true
+          }}
           onDelete={(deleteNode, data) => {
             console.log(deleteNode, data)
           }}
@@ -108,6 +112,7 @@ class Demo extends React.Component {
                 console.log(saveNode, data,level)
                 
               }}
+              
               onDelete={(deleteNode, data) => {
                 console.log(deleteNode, data)
               }}

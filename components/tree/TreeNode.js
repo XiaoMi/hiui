@@ -42,29 +42,29 @@ class TreeNode extends Component {
     }
     const { addNode, addChildNode, edit, del } = props.localeDatas.tree
     this.defaultEditNodeMenu = {
-      'editNode': (item, menu, index) => {
+      'editNode': (item, menu, index, level) => {
         return <li key={index} onClick={() => {
           const node = findNode(item.id, this.state.dataCache)
           menu.onClick ? menu.onClick(node, this) : this.editNode(node)
           this.closeRightClickMenu()
         }}>{menu.title || edit}</li>
       },
-      'addChildNode': (item, menu, index) => {
+      'addChildNode': (item, menu, index, level) => {
         return <li key={index} onClick={() => {
           menu.onClick ? menu.onClick(item, this) : this.addChildNode(item)
           this.closeRightClickMenu()
         }}>{menu.title || addChildNode}</li>
       },
-      'addSiblingNode': (item, menu, index) => {
+      'addSiblingNode': (item, menu, index, level) => {
         return <li key={index} onClick={() => {
           menu.onClick ? menu.onClick(item, this) : this.addSiblingNode(item.id)
           this.closeRightClickMenu()
         }}>{menu.title || addNode}</li>
       },
-      'deleteNode': (item, menu, index) => {
+      'deleteNode': (item, menu, index, level) => {
         return <li key={index}
           onClick={() => {
-            menu.onClick ? menu.onClick(item, this) : this.deleteNode(item)
+            menu.onClick ? menu.onClick(item, this) : this.deleteNode(item, level)
             this.closeRightClickMenu()
           }}
         >
@@ -237,8 +237,8 @@ class TreeNode extends Component {
     this._addChildNode(item.id, _dataCache, _editingNodes)
     this.setState({ dataCache: _dataCache, editingNodes: _editingNodes })
   }
-  deleteNode = item => {
-    this.setCurrentDeleteNode(item.id)
+  deleteNode = (item, level) => {
+    this.setCurrentDeleteNode({id: item.id, level})
     this.openModal()
   }
   // 编辑节点
@@ -434,13 +434,22 @@ class TreeNode extends Component {
       }
     })
   }
-  _deleteNode = itemId => {
+  _deleteNode = (delNode) => {
     const { dataCache } = this.state
     const _dataCache = cloneDeep(dataCache)
-    this.__deleteNode(itemId, _dataCache)
-    this.setState({ dataCache: _dataCache })
-    const node = findNode(itemId, dataCache)
-    this.props.onDelete(node, _dataCache)
+    const node = findNode(delNode.id, dataCache)
+    if (this.props.onBeforeDelete) {
+      const result = this.props.onBeforeDelete(node, dataCache, delNode.level)
+      if (result === true) {
+        this.__deleteNode(delNode.id, _dataCache)
+        this.setState({ dataCache: _dataCache })
+        this.props.onDelete(node, _dataCache)
+      }
+    } else {
+      this.__deleteNode(delNode.id, _dataCache)
+      this.setState({ dataCache: _dataCache })
+      this.props.onDelete(node, _dataCache)
+    }
   }
   onSetHighlight = item => {
     this.setState({
@@ -471,15 +480,15 @@ class TreeNode extends Component {
         _cm.length > 0
           ? _cm.map((cm, index) => {
             if (cm.type && this.defaultEditNodeMenu[cm.type]) {
-              return this.defaultEditNodeMenu[cm.type](item, cm, index)
+              return this.defaultEditNodeMenu[cm.type](item, cm, index, level)
             } else {
-              return this.defaultEditNodeMenu['customer'](item, cm, index)
+              return this.defaultEditNodeMenu['customer'](item, cm, index, level)
             }
           }) : Object.keys(this.defaultEditNodeMenu).map((key, index) => {
             if (key === 'customer') {
               return null
             }
-            return this.defaultEditNodeMenu[key](item, {}, index)
+            return this.defaultEditNodeMenu[key](item, {}, index, level)
           })
       }
     </ul>
@@ -506,9 +515,9 @@ class TreeNode extends Component {
       showModal: true
     })
   }
-  setCurrentDeleteNode = nodeId => {
+  setCurrentDeleteNode =(node) => {
     this.setState({
-      currentDeleteNode: nodeId
+      currentDeleteNode: node
     })
   }
   renderTree = (data, allData = [], level) => {
