@@ -7,7 +7,7 @@ import Icon from '../icon'
 import uuidv4 from 'uuid/v4'
 import TreeItem from './TreeItem'
 import Modal from '../modal'
-import { collectExpandId, findNode, getParent } from './util'
+import { collectExpandId, findNode } from './util'
 import axios from 'axios'
 import qs from 'qs'
 import Provider from '../context'
@@ -301,10 +301,10 @@ class TreeNode extends Component {
     const { editNodes, dataCache, editingNodes } = this.state
     const nodeEdited = editingNodes.find(node => node.id === itemId)
     const _dataCache = cloneDeep(dataCache)
+    this._saveEditNode(itemId, _dataCache, nodeEdited)
     if (this.props.onBeforeSave) {
-      const result = this.props.onBeforeSave(nodeEdited, dataCache, level)
+      const result = this.props.onBeforeSave(nodeEdited, {before: dataCache, after: _dataCache}, level)
       if (result === true) {
-        this._saveEditNode(itemId, _dataCache, nodeEdited)
         this.setState({
           dataCache: _dataCache,
           editNodes: editNodes.filter(node => node.id !== itemId),
@@ -313,7 +313,6 @@ class TreeNode extends Component {
         this.props.onSave(nodeEdited, _dataCache)
       }
     } else {
-      this._saveEditNode(itemId, _dataCache, nodeEdited)
       this.setState({
         dataCache: _dataCache,
         editNodes: editNodes.filter(node => node.id !== itemId),
@@ -419,9 +418,8 @@ class TreeNode extends Component {
     }
     const _sourceItem = findNode(sourceItem.id, dataCache)
     const _targetItem = findNode(targetItem.id, dataCache)
-    const targetParent = dropDividerPosition === 'sub' ? _targetItem : getParent(targetItem.id, dataCache)
     if (this.props.onDrop) {
-      if (this.props.onDrop(_sourceItem, _targetItem, targetParent, {before, after: dropDividerPosition === 'sub' ? after + 1 : after})) {
+      if (this.props.onDrop(_sourceItem, _targetItem, {before: dataCache, after: _dataCache}, {before, after: dropDividerPosition === 'sub' ? after + 1 : after})) {
         this.props.onDropEnd(_sourceItem, _targetItem)
         this.setState({
           dataCache: _dataCache
@@ -450,15 +448,14 @@ class TreeNode extends Component {
     const { dataCache } = this.state
     const _dataCache = cloneDeep(dataCache)
     const node = findNode(delNode.id, dataCache)
+    this.__deleteNode(delNode.id, _dataCache)
     if (this.props.onBeforeDelete) {
-      const result = this.props.onBeforeDelete(node, dataCache, delNode.level)
+      const result = this.props.onBeforeDelete(node, {before: dataCache, after: _dataCache}, delNode.level)
       if (result === true) {
-        this.__deleteNode(delNode.id, _dataCache)
         this.setState({ dataCache: _dataCache })
         this.props.onDelete(node, _dataCache)
       }
     } else {
-      this.__deleteNode(delNode.id, _dataCache)
       this.setState({ dataCache: _dataCache })
       this.props.onDelete(node, _dataCache)
     }

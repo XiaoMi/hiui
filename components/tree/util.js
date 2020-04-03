@@ -88,20 +88,6 @@ export const getParentId = (id, data) => {
   return parentId
 }
 
-// 寻找某一节点的父节点
-export const getParent = (id, data) => {
-  let parent
-  data.forEach(item => {
-    if (item.children) {
-      if (item.children.some(item => item.id === id)) {
-        parent = item
-      } else if (getParent(id, item.children)) {
-        parent = getParent(id, item.children)
-      }
-    }
-  })
-  return parent
-}
 // 寻找某一节点的所有子节点
 export const getChildrenIds = (node, arr = []) => {
   if (node.children) {

@@ -75,11 +75,11 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | onCheck            | 点击节点多选框触发                                                      | (checked: boolean, checkedIds: string[], checkedNode: TreeNode) => void  | -                               | -         |
 | onClick            | 点击节点文字时触发                                                      | (clickNode: TreeNode) => void                                            | -                               | -         |
 | onDragStart        | 节点开始拖拽时触发                                                      | (dragNode: TreeNode) => void                                             | -                               | -         |
-| onDrop             | 节点拖拽时触发                                                          | (dragNode: TreeNode, dropNode: TreeNode, newParent: TreeNode, level: Level) => boolean                      | -                               | -         |
+| onDrop             | 节点拖拽时触发                                                          | (dragNode: TreeNode, dropNode: TreeNode, data: DataStatus, level: Level) => boolean                      | -                               | -         |
 | onDropEnd          | 节点拖拽成功时触发                                                      | (dragNode: TreeNode, dropNode: TreeNode) => void                         | -                               | -         |
-| onBeforeDelete     | 节点删除前触发,返回 false 则节点删除失败，不会触发 onDelete                  | (deletedNode: TreeNode, data: TreeNode[], level: number) => boolean                       | -                               | -         |
+| onBeforeDelete     | 节点删除前触发,返回 false 则节点删除失败，不会触发 onDelete                  | (deletedNode: TreeNode, data: DataStatus, level: number) => boolean                       | -                               | -         |
 | onDelete           | 节点删除后触发                                                          | (deletedNode: TreeNode, data: TreeNode[]) => void                        | -                               | -         |
-| onBeforeSave       | 节点保存新增、编辑状态时触发, 返回 false 则保存新增、编辑失败，不会触发 onSave                  | (savedNode: TreeNode, data: TreeNode[], level: number) => boolean                          | -                               | -         |
+| onBeforeSave       | 节点保存新增、编辑状态时触发, 返回 false 则保存新增、编辑失败，不会触发 onSave                  | (savedNode: TreeNode, data: DataStatus, level: number) => boolean                          | -                               | -         |
 | onSave             | 节点保存新增、编辑状态后触发                  | (savedNode: TreeNode, data: TreeNode[]) => void                          | -                               | -         |
 
 ## Type
@@ -110,6 +110,13 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | -------- | -------------- | ------------------- | ------------- | ------ |
 | before   | 拖拽前在树中的层级  | number              | -             | -      |
 | after   | 拖拽后在树中的层级  | number              | -             | -      |
+
+### DataStatus
+
+| 参数     | 说明           | 类型                | 可选值        | 默认值 |
+| -------- | -------------- | ------------------- | ------------- | ------ |
+| before   | 更新前整个树的数据结构  | []TreeNode              | -             | -      |
+| after   | 更新后整个树的数据结构  | []TreeNode              | -             | -      |
 
 
 ### ContextMenuOption
