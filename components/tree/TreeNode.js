@@ -25,19 +25,11 @@ class TreeNode extends Component {
       editNodes: [],
       // 存储编辑节点的状态
       editingNodes: [],
-      // 处于拖拽状态的节点
-      draggingNode: null,
-      // 处于目标状态的节点
-      targetNode: null,
-      // 放置线的位置,分为上线、下线和子线，上线则放置在该节点上方，下线则放置在该节点下侧，子线为放置在该节点内部
-      dropDividerPosition: null,
       searchValue: '',
       showModal: false,
       currentDeleteNode: null,
       // 总共高亮的项
       highlightNum: 0,
-      positionX: null,
-      positionY: null,
       contextMenuPanel: null
     }
     const { addNode, addChildNode, edit, del } = props.localeDatas.tree
@@ -92,15 +84,6 @@ class TreeNode extends Component {
       }
     }
     return state
-  }
-  setPosition = (x, y) => {
-    const { positionX, positionY } = this.state
-    if (!(x === positionX && y === positionY)) {
-      this.setState({
-        positionX: x,
-        positionY: y
-      })
-    }
   }
 
   // 高亮检索值
@@ -159,18 +142,6 @@ class TreeNode extends Component {
     return <i className={switcherClsName} />
   }
 
-  // 设置拖拽中的节点
-  setDraggingNode = itemId => {
-    this.setState({
-      draggingNode: itemId
-    })
-  }
-  // 移除拖拽中的节点
-  removeDraggingNode = () => {
-    this.setState({
-      draggingNode: null
-    })
-  }
   // 添加兄弟节点
   _addSibNode = (itemId, data, editingNodes) => {
     data.forEach((d, index) => {
@@ -513,12 +484,6 @@ class TreeNode extends Component {
       showRightClickMenu: null
     })
   }
-  setTargetNode = (id, position) => {
-    this.setState({ targetNode: id, dropDividerPosition: position })
-  }
-  removeTargetNode = () => {
-    this.setState({ targetNode: null })
-  }
   openModal = () => {
     this.setState({
       showModal: true
@@ -553,12 +518,7 @@ class TreeNode extends Component {
     const {
       highlight,
       editNodes,
-      editingNodes,
-      draggingNode,
-      targetNode,
-      dropDividerPosition,
-      positionX,
-      positionY
+      editingNodes
     } = this.state
     return (
       <ul>
@@ -572,7 +532,6 @@ class TreeNode extends Component {
               isRoot={allData.some(d => d.id === item.id)}
               isLevelLast={index === data.length - 1}
               editable={editable}
-              dropDividerPosition={dropDividerPosition}
               prefixCls={prefixCls}
               draggable={draggable}
               onDragStart={onDragStart}
@@ -590,9 +549,6 @@ class TreeNode extends Component {
               onExpanded={onExpanded}
               onValueChange={this.onValueChange}
               renderTree={this.renderTree}
-              setPosition={this.setPosition}
-              positionX={positionX}
-              positionY={positionY}
               renderSwitcher={this.renderSwitcher}
               cancelAddSiblingNode={this.cancelAddSiblingNode}
               apperance={apperance}
@@ -603,13 +559,7 @@ class TreeNode extends Component {
               showRightClickMenu={this.showRightClickMenu}
               closeRightClickMenu={this.closeRightClickMenu}
               dropNode={this.dropNode}
-              setDraggingNode={this.setDraggingNode}
-              removeDraggingNode={this.removeDraggingNode}
-              draggingNode={draggingNode}
               closeExpandedTreeNode={closeExpandedTreeNode}
-              setTargetNode={this.setTargetNode}
-              targetNode={targetNode}
-              removeTargetNode={this.removeTargetNode}
               cancelEditNode={this.cancelEditNode}
               item={item}
               loadChildren={this.loadChildren}
