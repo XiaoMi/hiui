@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Title from './Title'
@@ -28,7 +29,7 @@ class Menu extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.activeId !== this.props.activeId) {
+    if (nextProps.activeId !== this.props.activeId || !_.isEqual(nextProps.data, this.props.data)) {
       const activeIndex = this.getActiveIndex(nextProps.activeId, nextProps.data)
 
       this.setState({
