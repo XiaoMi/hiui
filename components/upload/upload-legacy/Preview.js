@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {createPortal} from 'react-dom'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import { CSSTransition } from 'react-transition-group'
+
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Icon from '../../icon'
@@ -253,10 +254,9 @@ class Preview extends Component {
     } = this.state
     return (
       createPortal(
-        <ReactCSSTransitionGroup
-          transitionName='hi-preview'
-          transitionEnterTimeout={50}
-          transitionLeaveTimeout={50}
+        <CSSTransition
+          classNames='hi-preview'
+          timeout={{ enter: 50, exit: 50 }}
           component='div'
         >
           <div
@@ -291,7 +291,7 @@ class Preview extends Component {
             </div>
 
           </div>
-        </ReactCSSTransitionGroup>,
+        </CSSTransition>,
         this.node
       )
     )
