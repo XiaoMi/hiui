@@ -29,18 +29,28 @@ class Menu extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.activeId !== this.props.activeId || !_.isEqual(nextProps.data, this.props.data)) {
-      const activeIndex = this.getActiveIndex(nextProps.activeId, nextProps.data)
+    const { activeId, data, collapsed } = nextProps
+    if (activeId !== this.props.activeId || !_.isEqual(data, this.props.data)) {
+      const activeIndex = this.getActiveIndex(activeId, data)
 
       this.setState({
-        activeId: nextProps.activeId,
+        activeId: activeId,
         activeIndex
       })
+      this.isNoMiniVertaicalMenu(collapsed) &&
+        this.setState({
+          expandIndex: [
+            activeIndex
+              .split('-')
+              .slice(0, -1)
+              .join('-')
+          ]
+        })
     }
 
-    if (nextProps.collapsed !== this.props.collapsed) {
+    if (collapsed !== this.props.collapsed) {
       this.setState({
-        collapsed: nextProps.collapsed
+        collapsed: collapsed
       })
     }
   }
