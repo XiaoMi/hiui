@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { createPortal } from 'react-dom'
-// import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { CSSTransition } from 'react-transition-group'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
