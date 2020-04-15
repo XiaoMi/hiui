@@ -49,7 +49,7 @@ class Upload extends Component {
         fileType = 'zip'
         break
       case 'doc':
-      case 'dcox':
+      case 'docx':
         fileType = 'word'
         break
       case 'pdf':
@@ -119,6 +119,7 @@ class Upload extends Component {
       file.fileId = this.getFileId()
       file.uploadState = 'loading'
       file.fileType = this.getFileType(file)
+      console.log('file.fileType ', this.getFileType(file), file)
       fileList.unshift(file)
       this.setState({ fileList })
       this.uploadFile(file)
