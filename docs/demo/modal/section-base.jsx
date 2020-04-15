@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Modal from '../../../components/modal'
+import Select from '../../../components/select'
 const prefix = 'modal-base'
 const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
@@ -10,7 +11,14 @@ class Demo extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      visible: false
+      visible: false,
+      data:[
+        { title:'电视', id:'3', disabled: true },
+        { title:'手机', id:'2' },
+        { title:'笔记本', id:'4', disabled: true },
+        { title:'生活周边', id:'5' },
+        { title:'办公', id:'6' },
+      ]
     }
   }
   cancelEvent () {
@@ -29,14 +37,52 @@ class Demo extends React.Component {
           onConfirm={this.cancelEvent.bind(this)}
           onCancel={this.cancelEvent.bind(this)}
         >
-          <span>一些消息....</span><br/>
-          <span>一些消息...</span><br/>
-          <span>一些消息...</span>
+        <div style={{height: '200px',overflow:'auto'}}>
+            <span>一些消息....</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <Select
+              type='single'
+              clearable={false}
+              style={{ width: 200 }}
+              data={this.state.data}
+            />
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+        </div>
+          
         </Modal>
       </div>
     )
   }
 }`
 
-const DemoBase = () => <DocViewer code={code} scope={{ Button, Modal }} prefix={prefix} />
+const DemoBase = () => <DocViewer code={code} scope={{ Button, Modal, Select }} prefix={prefix} />
 export default DemoBase

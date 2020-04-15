@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { render } from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import {isFixed, setupEventListeners, getOffsetRectRelativeToCustomParent} from './popper'
 import './style/index'
 
 export default class Popper extends Component {
@@ -30,13 +31,19 @@ export default class Popper extends Component {
     zIndex: 1060,
     placement: 'bottom-start'
   }
-
+  constructor (props) {
+    super(props)
+    this.state = {
+      offset: this.getOffset(),
+      isAddevent: false,
+      cacheShow: props.cacheShow
+    }
+  }
   componentDidUpdate (prevProps) {
     if (prevProps.show !== this.props.show || this.props.show) {
       render(this.renderChildren(), this.container)
     }
   }
-
   componentDidMount () {
     this.getContainer()
     if (this.props.show) {
@@ -47,6 +54,15 @@ export default class Popper extends Component {
   componentWillUnmount () {
     document.body.removeChild(this.container)
   }
+  scrollCallBack (target) {
+    const {attachEle} = this.props
+    console.log(this.getOffset())
+    // 当前元素和滚动元素
+    console.log('getOffsetRectRelativeToCustomParent', getOffsetRectRelativeToCustomParent(attachEle, target, true))
+    this.setState({
+      offset: this.getOffset()
+    })
+  }
 
   getOffset () {
     let {
@@ -56,6 +72,7 @@ export default class Popper extends Component {
       width
     } = this.props
     if (!attachEle) return
+
     const rect = attachEle.getBoundingClientRect()
     let top = rect.top + (document.documentElement.scrollTop || document.body.scrollTop)
     let left = rect.left + (document.documentElement.scrollLeft || document.body.scrollLeft)
@@ -161,10 +178,18 @@ export default class Popper extends Component {
       onMouseLeave
     } = this.props
     if (!attachEle) return
-    const offset = this.getOffset()
+    // 判断一个固定元素中
+    const {offset = this.getOffset(), isAddevent} = this.state
     let width = offset.width
     let left = offset.left + 'px'
     let top = offset.top + 'px'
+
+    if (show && (!isAddevent) && isFixed(attachEle)) {
+      this.setState({
+        isAddevent: true
+      })
+      setupEventListeners(attachEle, this.scrollCallBack.bind(this))
+    }
 
     return (
       <div
@@ -194,7 +219,6 @@ export default class Popper extends Component {
     container.style.top = '0'
     container.style.left = '0'
     container.style.width = '100%'
-
     document.body.appendChild(container)
 
     this.container = container
