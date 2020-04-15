@@ -40,6 +40,7 @@ export default class Popper extends Component {
       hidden: false
     }
   }
+
   componentDidUpdate (prevProps) {
     if (prevProps.show !== this.props.show || this.props.show) {
       render(this.renderChildren(), this.container)
@@ -58,9 +59,10 @@ export default class Popper extends Component {
   scrollCallBack (target) {
     const {attachEle, show} = this.props
     // 当前元素和滚动元素
-    const {top, bottom} = getOffsetRectRelativeToCustomParent(attachEle, target, true)
-    const {height} = getBoundingClientRect(target)
-    if (top < 0 || bottom >= height) {
+    const {top, bottom, height} = getOffsetRectRelativeToCustomParent(attachEle, target, true)
+    const parentHeight = getBoundingClientRect(target).height
+
+    if (top + height <= 0 || bottom >= parentHeight + height) {
       this.setState({
         hidden: true
       })
@@ -196,7 +198,6 @@ export default class Popper extends Component {
     }
     // 判断一个固定元素中
     const {offset = this.getOffset(), isAddevent, hidden} = this.state
-    console.log('hidden', hidden)
     let width = offset.width
     let left = offset.left + 'px'
     let top = offset.top + 'px'
