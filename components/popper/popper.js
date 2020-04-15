@@ -1,35 +1,35 @@
-var root = window
-var boundariesElement = 'viewport'
-/**
+const root = window
+const boundariesElement = 'viewport'
+export default class Popper {
+  /**
    * 初始化更新 popper 位置时用到的事件监听器
    * @method
    * @memberof Popper
    * @access private
    */
-export const setupEventListeners = (element, callback) => {
-  // 1 DOM access here
-  // 注：这里会访问 DOM，原作者回复我说，这是他用来记录哪里访问到了 DOM
-  // this.state.updateBound = this.update.bind(this)
-  // 浏览器窗口改变的时候更新边界
-  root.addEventListener('resize', () => {
-    callback(target)
-  })
-  // 如果边界元素是窗口，就不需要监听滚动事件
-  if (boundariesElement !== 'window') {
-    var target = getScrollParent(element) // 获取相关元素可滚动的父级
-    // 这里可能是 `body` 或 `documentElement`（Firefox上），等价于要监听根元素
-    if (
-      target === root.document.body ||
+ setupEventListeners = (element, callback) => {
+   // 1 DOM access here
+   // 注：这里会访问 DOM，原作者回复我说，这是他用来记录哪里访问到了 DOM
+   // this.state.updateBound = this.update.bind(this)
+   // 浏览器窗口改变的时候更新边界
+   this.scrollCallback = () => {
+     callback(target)
+   }
+   root.addEventListener('resize', this.scrollCallback)
+   // 如果边界元素是窗口，就不需要监听滚动事件
+   if (boundariesElement !== 'window') {
+     var target = this.getScrollParent(element) // 获取相关元素可滚动的父级
+     // 这里可能是 `body` 或 `documentElement`（Firefox上），等价于要监听根元素
+     if (
+       target === root.document.body ||
         target === root.document.documentElement
-    ) {
-      target = root
-    }
-    // 监听滚动事件
-    target.addEventListener('scroll', (e) => {
-      callback(target)
-    })
-  }
-}
+     ) {
+       target = root
+     }
+     // 监听滚动事件
+     target.addEventListener('scroll', this.scrollCallback)
+   }
+ }
 
 /**
    * 返回给定元素用来计算滚动的父元素
@@ -38,7 +38,8 @@ export const setupEventListeners = (element, callback) => {
    * @argument {Element} element
    * @returns {Element} scroll parent
    */
-export const getScrollParent = (element) => {
+getScrollParent = (element) => {
+  const {getStyleComputedProperty, getScrollParent} = this
   var parent = element.parentNode
 
   if (!parent) {
@@ -84,7 +85,8 @@ export const getScrollParent = (element) => {
    * @argument {Element} customContainer 自定义的容器
    * @returns {Boolean}
    */
-export const isFixed = (element) => {
+isFixed = (element) => {
+  const {getStyleComputedProperty, isFixed} = this
   if (element === window.document.body) {
     // body 返回 false
     return false
@@ -103,13 +105,14 @@ export const isFixed = (element) => {
    * @argument {Eement} element 给定的元素
    * @argument {String} property 属性
    */
-export const getStyleComputedProperty = (element, property) => {
+getStyleComputedProperty = (element, property) => {
   // 注：这里会访问 DOM
   const css = window.getComputedStyle(element, null)
   return css[property]
 }
 
-export const _getPosition = (popper, reference) => {
+_getPosition = (popper, reference) => {
+  const {getOffsetParent, isFixed} = this
   var container = getOffsetParent(reference) // 获取父元素的偏移
 
   if (this._options.forceAbsolute) {
@@ -123,14 +126,15 @@ export const _getPosition = (popper, reference) => {
   return isParentFixed ? 'fixed' : 'absolute'
 }
 
-export const getOffsetParent = (element) => {
+getOffsetParent = (element) => {
   // 注：这里会访问 DOM
   var offsetParent = element.offsetParent
   return offsetParent === root.document.body || !offsetParent
     ? root.document.documentElement
     : offsetParent
 }
-export const getOffsetRectRelativeToCustomParent = (element, parent, fixed) => {
+getOffsetRectRelativeToCustomParent = (element, parent, fixed) => {
+  const {getScrollParent, getBoundingClientRect} = this
   var elementRect = getBoundingClientRect(element)
   var parentRect = getBoundingClientRect(parent)
 
@@ -161,7 +165,7 @@ export const getOffsetRectRelativeToCustomParent = (element, parent, fixed) => {
    * @param {HTMLElement} element
    * @return {Object} client rect
    */
-export const getBoundingClientRect = (element) => {
+getBoundingClientRect = (element) => {
   var rect = element.getBoundingClientRect()
 
   // IE11以下
@@ -179,4 +183,32 @@ export const getBoundingClientRect = (element) => {
     width: rect.right - rect.left,
     height: rect.bottom - rectTop
   }
+}
+
+/**
+   * 移除更新 popper 位置时用到的事件监听器
+   * @method
+   * @memberof Popper
+   * @access private
+   */
+removeEventListeners = (element) => {
+  const {getScrollParent} = this
+  // 注：这里会访问 DOM
+  // 移除 resize 事件监听
+  root.removeEventListener('resize', this.scrollCallback)
+  if (boundariesElement !== 'window') {
+    // 如果边界元素不是窗口，说明还监听了滚动事件
+    var target = getScrollParent(element)
+    if (
+      target === root.document.body ||
+        target === root.document.documentElement
+    ) {
+      target = root
+    }
+    // 移除滚动事件监听
+    target.removeEventListener('scroll', this.scrollCallback)
+  }
+  // 更新回调摄者为空
+  this.scrollCallback = null
+}
 }

@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { render } from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import {isFixed, setupEventListeners, getOffsetRectRelativeToCustomParent} from './popper'
+import PopperJS from './Popper'
 import './style/index'
+const {isFixed, setupEventListeners, getOffsetRectRelativeToCustomParent, removeEventListeners, getBoundingClientRect} = new PopperJS()
 
 export default class Popper extends Component {
   container = undefined
@@ -36,7 +37,7 @@ export default class Popper extends Component {
     this.state = {
       offset: this.getOffset(),
       isAddevent: false,
-      cacheShow: props.cacheShow
+      hidden: false
     }
   }
   componentDidUpdate (prevProps) {
@@ -55,10 +56,19 @@ export default class Popper extends Component {
     document.body.removeChild(this.container)
   }
   scrollCallBack (target) {
-    const {attachEle} = this.props
-    console.log(this.getOffset())
+    const {attachEle, show} = this.props
     // 当前元素和滚动元素
-    console.log('getOffsetRectRelativeToCustomParent', getOffsetRectRelativeToCustomParent(attachEle, target, true))
+    const {top, bottom} = getOffsetRectRelativeToCustomParent(attachEle, target, true)
+    const {height} = getBoundingClientRect(target)
+    if (top < 0 || bottom >= height) {
+      this.setState({
+        hidden: true
+      })
+    } else {
+      show && this.setState({
+        hidden: false
+      })
+    }
     this.setState({
       offset: this.getOffset()
     })
@@ -178,8 +188,15 @@ export default class Popper extends Component {
       onMouseLeave
     } = this.props
     if (!attachEle) return
+    if (!show) {
+      this.setState({
+        isAddevent: false
+      })
+      removeEventListeners(attachEle)
+    }
     // 判断一个固定元素中
-    const {offset = this.getOffset(), isAddevent} = this.state
+    const {offset = this.getOffset(), isAddevent, hidden} = this.state
+    console.log('hidden', hidden)
     let width = offset.width
     let left = offset.left + 'px'
     let top = offset.top + 'px'
@@ -193,7 +210,7 @@ export default class Popper extends Component {
 
     return (
       <div
-        className={classNames('hi-popper__container', {'hi-popper__container--hide': !show})}
+        className={classNames('hi-popper__container', {'hi-popper__container--hide': hidden || (!show)})}
         style={{left, top, zIndex}}
       >
         <div
