@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Modal from '../../../components/modal'
+import DatePicker from '../../../components/date-picker'
 import Select from '../../../components/select'
 const prefix = 'modal-base'
 const code = `import React from 'react'
@@ -66,6 +67,14 @@ class Demo extends React.Component {
             <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
+            <div style={{display:'flex', flexWrap: 'wrap'}}>
+            <Select
+            type='single'
+            clearable={false}
+            style={{ width: 200 }}
+            data={this.state.data}
+          />
+            </div>
             <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
@@ -84,5 +93,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBase = () => <DocViewer code={code} scope={{ Button, Modal, Select }} prefix={prefix} />
+const DemoBase = () => <DocViewer code={code} scope={{ Button, Modal, Select, DatePicker }} prefix={prefix} />
 export default DemoBase

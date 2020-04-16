@@ -37,12 +37,22 @@ export default class Popper extends Component {
     this.state = {
       offset: this.getOffset(),
       isAddevent: false,
-      hidden: false
+      hidden: props.show
     }
   }
-
+  static getDerivedStateFromProps (nextProps) {
+    if (!nextProps.show) {
+      return {
+        hidden: false,
+        isAddevent: false,
+        offset: undefined
+      }
+    }
+    return null
+  }
   componentDidUpdate (prevProps) {
-    if (prevProps.show !== this.props.show || this.props.show) {
+    const {show} = this.props
+    if (prevProps.show !== show || show) {
       render(this.renderChildren(), this.container)
     }
   }
@@ -190,23 +200,20 @@ export default class Popper extends Component {
       onMouseLeave
     } = this.props
     if (!attachEle) return
-    if (!show) {
-      this.setState({
-        isAddevent: false
-      })
-      removeEventListeners(attachEle)
-    }
-    // 判断一个固定元素中
+
     const {offset = this.getOffset(), isAddevent, hidden} = this.state
     let width = offset.width
     let left = offset.left + 'px'
     let top = offset.top + 'px'
-
     if (show && (!isAddevent) && isFixed(attachEle)) {
+      setupEventListeners(attachEle, this.scrollCallBack.bind(this))
       this.setState({
         isAddevent: true
       })
-      setupEventListeners(attachEle, this.scrollCallBack.bind(this))
+    }
+
+    if ((!show) && isAddevent) {
+      removeEventListeners(attachEle)
     }
 
     return (
