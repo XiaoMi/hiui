@@ -119,7 +119,6 @@ class Upload extends Component {
       file.fileId = this.getFileId()
       file.uploadState = 'loading'
       file.fileType = this.getFileType(file)
-      console.log('file.fileType ', this.getFileType(file), file)
       fileList.unshift(file)
       this.setState({ fileList })
       this.uploadFile(file)
