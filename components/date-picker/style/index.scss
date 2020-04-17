@@ -1022,6 +1022,18 @@ $basic-color: #4284f5 !default;
       background: rgba($value, 0.1);
     }
 
+    &__header-btns .hi-icon:hover {
+      color: $value;
+    }
+
+    &__period-item--active {
+      color: $value;
+    }
+
+    &__period-item:hover {
+      background: rgba($value, 0.1);
+    }
+
     &__row {
       &--current-week {
         .hi-datepicker__content {
@@ -1032,7 +1044,6 @@ $basic-color: #4284f5 !default;
           .hi-datepicker__content {
             background: map-get(get-palette($value), '50');
             color: #fff;
-            // margin: 0 3px;
             border-radius: 2px;
           }
 
@@ -1047,7 +1058,6 @@ $basic-color: #4284f5 !default;
 
           .hi-datepicker__content {
             color: #fff;
-            // margin: 0 3px;
           }
 
           .hi-datepicker__text {
@@ -1086,12 +1096,6 @@ $basic-color: #4284f5 !default;
     }
 
     &__cell {
-      // &.today:not(.in-range):not(.range-se) {
-      //   .hi-datepicker__text {
-      //     border: 1px solid map-get(get-palette($value), '50');
-      //     color: map-get(get-palette($value), '50');
-      //   }
-      // }
       &:not(.hi-datepicker__cell--large):not(.disabled) .hi-datepicker__content:hover {
         background-color: rgba($value, 0.1);
       }
@@ -1104,15 +1108,6 @@ $basic-color: #4284f5 !default;
         background-color: rgba($value, 0.1);
       }
 
-      // .hi-datepicker__text--showLunar {
-      //   font-size: 12px;
-      //   color: rgba(44, 48, 78, 0.2);
-
-      //   &--festival {
-      //     color: map-get(get-palette($value), '50');
-      //   }
-      // }
-
       .hi-datepicker__text——holiday {
         &--rest {
           color: map-get(get-palette($value), '50');
@@ -1121,14 +1116,10 @@ $basic-color: #4284f5 !default;
 
       &.in-range {
         .hi-datepicker__content {
-          // TODO: 色板值
-          // background: map-get(get-palette($value), '10');
           background: rgba($value, 0.1);
         }
 
         .hi-datepicker__content:hover {
-          // TODO: 色板值
-          // background: map-get(get-palette($value), '10');
           background: rgba($value, 0.1);
         }
       }
@@ -1136,14 +1127,6 @@ $basic-color: #4284f5 !default;
       &.range-se:not(.next):not(.prev):not(.hi-datepicker__cell--large) {
         .hi-datepicker__content {
           background: map-get(get-palette($value), '50');
-        }
-      }
-
-      &:hover:not(.today):not(.current):not(.in-range):not(.range-se):not(.disabled):not(.hi-datepicker__cell--large) {
-        .hi-datepicker__text {
-          // TODO: 色板值
-          // background: rgba(66, 142, 245, 0.1);
-          // background: map-get(get-palette($value), '10');
         }
       }
 
@@ -1246,8 +1229,6 @@ $basic-color: #4284f5 !default;
               .hi-datepicker__text {
                 display: inline-block;
                 height: 22px;
-                // box-sizing: border-box;
-                // border-radius: 2px;
               }
 
               .hi-datepicker__content {
