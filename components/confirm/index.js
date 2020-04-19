@@ -7,12 +7,12 @@ import './style/index'
 
 class Confirm extends Component {
   render () {
-    let {tip, onOk, onCancel} = this.props
+    let {content, onOk, onCancel, title} = this.props
 
     return (
       <div className='hi-confirm'>
         <Modal
-          title=''
+          title={title}
           ref='hi-confirm'
           show
           size='small'
@@ -23,17 +23,21 @@ class Confirm extends Component {
           confirmType='default'
           cancelType='danger'
           onConfirm={() => (function () {
-            onOk()
+            if (onOk) {
+              onOk()
+            }
 
             confirmInstance.destroy()
           }())}
           onCancel={() => (function () {
-            onCancel()
+            if (onCancel) {
+              onCancel()
+            }
 
             confirmInstance.destroy()
           }())}
         >
-          {tip}
+          {content}
 
         </Modal>
       </div>
@@ -41,9 +45,9 @@ class Confirm extends Component {
     )
   }
 
-  componentDidMount () {
-    Modal.show.call(this, 'hi-confirm')
-  }
+  // componentDidMount () {
+  //   Modal.show.call(this, 'hi-confirm')
+  // }
 }
 
 Confirm.propTypes = {
