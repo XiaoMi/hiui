@@ -122,12 +122,12 @@ class Menu extends Component {
     let result
     for (let index in menus) {
       let _activeMenus = [...activeMenus]
-      if (menus[index].children) {
-        _activeMenus.push(index)
-        result = this.getActiveMenus(menus[index].children, activeId, _activeMenus)
-      } else if (menus[index].id === activeId) {
+      if (menus[index].id === activeId) {
         _activeMenus.push(index)
         result = _activeMenus
+      } else if (menus[index].children) {
+        _activeMenus.push(index)
+        result = this.getActiveMenus(menus[index].children, activeId, _activeMenus)
       }
       if (result) {
         break
