@@ -141,11 +141,11 @@ class Calender extends Component {
   handlerClick (e) {
     const {onPick, date, type, range} = this.props
     let { year, month, day, hours, minutes, seconds } = deconstructDate(date)
-
     const td = e.target
 
     const cls = this._getClassName(td)
     const value = td.getAttribute('value')
+
     if ((td.nodeName !== 'SPAN' && td.nodeName !== 'TD' && td.nodeName !== 'DIV') || td.disabled) return false
     if (cls.indexOf('disabled') !== -1) return false
     const clickVal = parseInt(value)
@@ -156,15 +156,18 @@ class Calender extends Component {
     } else if (type === 'month') {
       month = parseInt(value)
       newDate.setMonth(month - 1)
-    } else {
-      newDate.setDate(clickVal)
     }
+
     if (cls.indexOf('prev') !== -1) {
       newDate = addMonths(newDate, -1)
     }
+
     if (cls.indexOf('next') !== -1) {
       newDate = addMonths(newDate, 1)
     }
+
+    !(type === 'year' || type === 'month') && newDate.setDate(clickVal)
+
     if (type === 'daterange' || type === 'weekrange') {
       if (range.selecting) {
         if (range.startDate > newDate) {
