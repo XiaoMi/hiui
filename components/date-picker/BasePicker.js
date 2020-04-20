@@ -287,11 +287,14 @@ class BasePicker extends Component {
       localeDatas,
       disabled,
       showTime,
-      type
+      type,
+      width,
+      theme
     } = this.props
     const {isFocus} = this.state
     const _cls = classNames(
       'hi-datepicker__input',
+      `theme__${theme}`,
       isFocus && 'hi-datepicker__input--focus',
       `hi-datepicker__input--${type}`,
       'hi-datepicker__input--range',
@@ -301,6 +304,7 @@ class BasePicker extends Component {
     return (
       <div
         className={_cls}
+        style={{width: width}}
         onMouseEnter={() => {
           this.setState({ isFocus: true })
         }}
@@ -319,12 +323,15 @@ class BasePicker extends Component {
     const {
       disabled,
       showTime,
-      type
+      type,
+      width,
+      theme
     } = this.props
     const {isFocus} = this.state
 
     const _cls = classNames(
       'hi-datepicker__input',
+      `theme__${theme}`,
       isFocus && 'hi-datepicker__input--focus',
       `hi-datepicker__input--${type}`,
       disabled && 'hi-datepicker__input--disabled',
@@ -333,6 +340,7 @@ class BasePicker extends Component {
     return (
       <div
         className={_cls}
+        style={{width: width}}
         onMouseEnter={() => {
           this.setState({ isFocus: true })
         }}
@@ -350,9 +358,9 @@ class BasePicker extends Component {
     )
   }
   render () {
-    const {type, showTime} = this.props
+    const {type, showTime, width} = this.props
     return (
-      <span ref={this.inputRoot} className='hi-datepicker__input-root'>
+      <span ref={this.inputRoot} className='hi-datepicker__input-root' style={{width: width}}>
         {
           (type.indexOf('range') !== -1 || type === 'timeperiod') ? this.renderRangeInput() : this.renderNormalInput()
         }
