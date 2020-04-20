@@ -95,7 +95,7 @@
   }
 
   &__error {
-    .hi-input__inner {
+    .hi-form-item__content .hi-input__inner {
       border-color: get-color($palette-secondary, 'danger');
     }
   }
