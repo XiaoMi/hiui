@@ -11,6 +11,7 @@ import Modal from '@hi-ui/hiui/es/modal'\n
 class Demo extends React.Component {
   constructor (props) {
     super(props)
+    this.textInput = React.createRef();
     this.state = {
       visible: false,
       data:[
@@ -34,11 +35,12 @@ class Demo extends React.Component {
         <Button type="primary" onClick={() => this.setState({visible: true})}>打开</Button>
         <Modal
           title="提示消息"
+          contains = {this.textInput}
           visible={this.state.visible}
           onConfirm={this.cancelEvent.bind(this)}
           onCancel={this.cancelEvent.bind(this)}
         >
-        <div style={{height: '200px',overflow:'auto'}}>
+        <div style={{height: '200px',overflow:'auto'}} ref={this.textInput}>
             <span>一些消息....</span><br/>
             <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
