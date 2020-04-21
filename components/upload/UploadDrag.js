@@ -119,7 +119,7 @@ class UploadDrag extends Upload {
               <Icon name='tishi' />
               <span className='hi-upload__tips--exist'>
                 {fileCountLimted ? localeDatas.upload.dragTipsLimited : localeDatas.upload.dragTips}
-                {'，' + tips}
+                {tips && '，' + tips}
               </span>
             </li>
           }
