@@ -166,7 +166,9 @@ class Calender extends Component {
       newDate = addMonths(newDate, 1)
     }
 
-    !(type === 'year' || type === 'month') && newDate.setDate(clickVal)
+    if (!(type === 'year' || type === 'month')) {
+      newDate.setDate(clickVal)
+    }
 
     if (type === 'daterange' || type === 'weekrange') {
       if (range.selecting) {
