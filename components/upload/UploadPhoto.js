@@ -48,7 +48,8 @@ class UploadPhoto extends Upload {
       disabled,
       accept,
       localeDatas,
-      theme
+      theme,
+      photoSize = 'default'
     } = this.props
     const images = fileList.map(file => {
       return {
@@ -70,7 +71,11 @@ class UploadPhoto extends Upload {
           {fileList.map((file, index) => {
             if (file.uploadState === 'loading') {
               return (
-                <li key={index} className='hi-upload__item'>
+                <li key={index} className={
+                  classNames(
+                    'hi-upload__item',
+                    `hi-upload__item--${photoSize}`
+                  )}>
                   <img src={file.url} className='hi-upload__thumb' />
                   <div className='hi-upload__precent'>
                     <p className='hi-upload__loading-text'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : localeDatas.upload.uploadSuccess) : (0 + '%')}</p>
@@ -82,7 +87,15 @@ class UploadPhoto extends Upload {
               )
             } else {
               return (
-                <li key={index} className='hi-upload__item' style={{cursor: 'pointer'}} onClick={() => this.previewImage(file, index)}>
+                <li
+                  key={index}
+                  className={classNames(
+                    'hi-upload__item',
+                    `hi-upload__item--${photoSize}`
+                  )}
+                  style={{cursor: 'pointer'}}
+                  onClick={() => this.previewImage(file, index)}
+                >
                   <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} />
                   {
                     onRemove && <Icon name='close-circle' className='hi-upload__photo-del' onClick={(e) => {
@@ -100,7 +113,13 @@ class UploadPhoto extends Upload {
             }
           })}
           {
-            !fileCountLimted && <li className='hi-upload__item hi-upload__item--upload'>
+            !fileCountLimted && <li
+              className={classNames(
+                'hi-upload__item',
+                'hi-upload__item--upload',
+                `hi-upload__item--${photoSize}`
+              )}
+            >
               <label style={{display: 'block'}}>
                 <input
                   ref={node => {

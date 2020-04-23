@@ -49,7 +49,7 @@ class Upload extends Component {
         fileType = 'zip'
         break
       case 'doc':
-      case 'dcox':
+      case 'docx':
         fileType = 'word'
         break
       case 'pdf':
