@@ -49,7 +49,7 @@ class UploadPhoto extends Upload {
       accept,
       localeDatas,
       theme,
-      size = 'default'
+      photoSize = 'default'
     } = this.props
     const images = fileList.map(file => {
       return {
@@ -74,7 +74,7 @@ class UploadPhoto extends Upload {
                 <li key={index} className={
                   classNames(
                     'hi-upload__item',
-                    `hi-upload__item--${size}`
+                    `hi-upload__item--${photoSize}`
                   )}>
                   <img src={file.url} className='hi-upload__thumb' />
                   <div className='hi-upload__precent'>
@@ -91,7 +91,7 @@ class UploadPhoto extends Upload {
                   key={index}
                   className={classNames(
                     'hi-upload__item',
-                    `hi-upload__item--${size}`
+                    `hi-upload__item--${photoSize}`
                   )}
                   style={{cursor: 'pointer'}}
                   onClick={() => this.previewImage(file, index)}
@@ -117,7 +117,7 @@ class UploadPhoto extends Upload {
               className={classNames(
                 'hi-upload__item',
                 'hi-upload__item--upload',
-                `hi-upload__item--${size}`
+                `hi-upload__item--${photoSize}`
               )}
             >
               <label style={{display: 'block'}}>
