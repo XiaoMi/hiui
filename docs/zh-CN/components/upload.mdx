@@ -71,7 +71,7 @@ import { Badge } from '@libs'
 | onRemove        | 删除上传的文件，为 false 时不可删除。当 function 返回 true 或者返回 promise（如果 promise resolve(true)）则会在前端删除文件（可参考 demo：照片墙上传） | (file: File, fileList: File[], index: number) => boolean    | -                                                 | () => true                                |
 | onDownload      | 点击已上传的文件时的回调，如果没有指定，则默认新标签页跳转到文件 url                                                                                   | (file: File) => void                                        | -                                                 | 新标签页访问文件 url                      |
 | loading         | 文件上传按钮是否 loading，为 true 时按钮不可点击。仅在 type='default' 时有效                                                                           | boolean                                                     | true \| false                                     | false                                     |
-
+| photoSize            | 设置上传按钮大小,仅在 type ===  'photo' 时有效                                                                                             | string                                                   | 'small' \| 'default' \| 'large'                       | 'default'                                 |
 ## Type
 
 ### File

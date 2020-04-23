@@ -37,7 +37,7 @@ Watermark.propTypes = {
   logo: PropTypes.string,
   grayLogo: PropTypes.bool,
   isAutoWrap: PropTypes.bool,
-  textOverflowEffect: PropTypes.oneOfType(['zoom', 'cut'])
+  textOverflowEffect: PropTypes.oneOf(['zoom', 'cut'])
 }
 
 Watermark.defaultProps = {
