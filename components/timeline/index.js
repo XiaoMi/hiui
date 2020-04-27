@@ -100,36 +100,101 @@ class Timeline extends Component {
   //     return this.renderItem(item, index, groupTitle, isSub)
   //   })
   // }
-  renderGroup = (item) => {
+  renderGroup = (item, index, isLast) => {
     return (
       <div>
-        <div>{item.groupTitle}</div>
-        <div>{item.children.map((i) => this.renderItem(i))}</div>
-      </div>
-    )
-  }
-
-  renderItem = (item) => {
-    return (
-      <div>
-        <div>{item.title}</div>
-        <div>{item.content}</div>
-        <div>{item.timestamp}</div>
-        <div>{item.extraTime}</div>
-      </div>
-    )
-  }
-
-  renderDefault = (item) => {
-    return (
-      <div style={{ display: 'flex' }}>
-        <div>
-          <div>{item.timestamp}</div>
-          <div>{item.extraTime}</div>
+        <div
+          className={classNames('timeline__group-title', {
+            'timeline__group-title--first': index === 0
+          })}
+        >
+          {item.groupTitle}
+          {index !== 0 && <div className='item__line' />}
         </div>
         <div>
-          <div>{item.title}</div>
-          <div>{item.content}</div>
+          {item.children.map((i, idx) => {
+            const isFirst = index === 0 && idx === 0
+            const _isLast = isLast && idx === item.children.length - 1
+            return this.renderItem(i, idx, _isLast, isFirst)
+          })}
+        </div>
+      </div>
+    )
+  }
+
+  renderItem = (item, index, isLast, isFirst) => {
+    if (this.props.type === 'default') {
+      return this.renderDefault(item, index, isLast, isFirst)
+    }
+    if (this.props.type === 'right') {
+      return this.renderRight(item, index, isLast, isFirst)
+    }
+    if (this.props.type === 'cross') {
+      return this.renderCross(item, index, isLast, isFirst)
+    }
+  }
+
+  renderRight = (item, index, isLast, isFirst) => {
+    return (
+      <div
+        className={classNames('timeline__item', {
+          'timeline__item--last': isLast,
+          'timeline__item--first': isFirst
+        })}
+      >
+        <div className='item__title'>{item.title}</div>
+        <div className='item__content'>{item.content}</div>
+        <div className='item__time'>
+          {item.timestamp} {item.extraTime}
+        </div>
+
+        <div className='item__dot' />
+        <div className='item__line' />
+      </div>
+    )
+  }
+
+  renderCross = (item, index, isLast, isFirst) => {
+    return (
+      <div
+        className={classNames('timeline__item', {
+          'timeline__item--last': isLast,
+          'timeline__item--first': isFirst,
+          'timeline__item--left': index % 2 === 1,
+          'timeline__item--right': index % 2 === 0
+        })}
+      >
+        <div className='item--left'>
+          <div className='item__time'>{item.timestamp}</div>
+          <div className='item__extra'>{item.extraTime}</div>
+        </div>
+        <div className='item__dot' />
+        <div className='item__line' />
+        <div className='item--right'>
+          <div className='item__title'>{item.title}</div>
+          <div className='item__content'>{item.content}</div>
+        </div>
+      </div>
+    )
+  }
+
+  renderDefault = (item, index, isLast, isFirst) => {
+    return (
+      <div
+        className={classNames('timeline__item', {
+          'timeline__item--last': isLast,
+          'timeline__item--first': isFirst
+        })}
+      >
+        <div className='item--left'>
+          <div className='item__time'>{item.timestamp}</div>
+          <div className='item__extra'>{item.extraTime}</div>
+        </div>
+        <div className='item__dot' />
+        <div className='item__line' />
+        <div className='item--right'>
+          <div className='item__title'>{item.title}</div>
+          <div className='item__content'>{item.content}</div>
         </div>
       </div>
     )
@@ -137,15 +202,24 @@ class Timeline extends Component {
   render () {
     const { layout, type, list, data, theme } = this.props
     const _layout = type === 'default' ? layout : type
-    const rootCls = classNames('hi-timeline', `theme__${theme}`, `hi-timeline--${_layout}`)
+    const rootCls = classNames(
+      'hi-timeline',
+      `theme__${theme}`,
+      `hi-timeline--${
+        ['normal', 'default'].includes(_layout) ? 'default' : _layout
+      }`
+    )
     return (
       <div className={rootCls}>
         <ul>
-          {(data || list).map((item) => {
+          {(data || list).map((item, index) => {
             if (item.groupTitle) {
-              return this.renderGroup(item)
+              const isLast = index === (data || list).length - 1
+              return this.renderGroup(item, index, isLast)
             } else {
-              return this.renderItem(item)
+              const isLast = index === (data || list).length - 1
+              const isFirst = index === 0
+              return this.renderItem(item, index, isLast, isFirst)
             }
           })}
         </ul>
