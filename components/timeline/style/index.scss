@@ -19,7 +19,7 @@
         margin-bottom: 0;
 
         .item__line {
-          height: 100% !important;
+          height: 7px !important;
         }
       }
 
@@ -43,6 +43,15 @@
           border-radius: 50%;
           box-sizing: border-box;
           position: absolute;
+          top: 7px;
+          right: -20px;
+          transform: translateX(50%);
+          z-index: 2;
+        }
+
+        .item__icon {
+          position: absolute;
+          background: #fff;
           top: 7px;
           right: -20px;
           transform: translateX(50%);
@@ -192,7 +201,7 @@
           margin-bottom: 0;
 
           .item__line {
-            height: calc(100%);
+            height: 7px;
           }
         }
       }
@@ -220,6 +229,15 @@
         z-index: 2;
       }
 
+      .item__icon {
+        position: absolute;
+        background: #fff;
+        top: 7px;
+        left: -20px;
+        transform: translateX(-50%);
+        z-index: 2;
+      }
+
       .item__line {
         position: absolute;
         left: -22px;
@@ -233,6 +251,35 @@
   }
 
   &--default {
+    .timeline__collapse {
+      margin-bottom: 24px;
+
+      .collapse-opt {
+        font-size: 12px;
+        margin-left: calc(30% + 20px);
+        cursor: pointer;
+        position: relative;
+      }
+
+      .item__line {
+        position: absolute;
+        top: 0;
+        left: -20px;
+        width: 2px;
+        background: #f2f2f2;
+        height: calc(100% + 24px);
+        transform: translateX(-50%);
+      }
+
+      .item__dot {
+        width: 4px !important;
+        height: 4px !important;
+        background: #4284f5 !important;
+        border-radius: 50%;
+        top: 9px !important;
+      }
+    }
+
     .timeline__group-title {
       text-align: right;
       width: calc(30% - 20px);
@@ -291,6 +338,15 @@
         z-index: 2;
       }
 
+      .item__icon {
+        position: absolute;
+        background: #fff;
+        top: 7px;
+        left: 30%;
+        transform: translateX(-50%);
+        z-index: 2;
+      }
+
       .item__line {
         position: absolute;
         left: 30%;
@@ -322,6 +378,10 @@
       &--last {
         .item--right {
           margin-bottom: 0;
+        }
+
+        .item__line {
+          height: 7px;
         }
       }
 

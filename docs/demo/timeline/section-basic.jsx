@@ -6,6 +6,7 @@ import Form from '../../../components/form'
 import Input from '../../../components/input'
 import Radio from '../../../components/radio'
 import Button from '../../../components/button'
+import Icon from '../../../components/icon'
 const prefix = 'timeline-basic'
 const desc = '以时间为第一维度，展示该时间点的事务、日程、任务或记录'
 const code = `import React from 'react'
@@ -108,8 +109,8 @@ class Demo extends React.Component {
             extraTime: '03-10'
           }]
         }]
-      
-    }  
+
+    }
 
     return (
       <div>
@@ -140,6 +141,11 @@ class Demo extends React.Component {
 }`
 
 const DemoBasic = () => (
-  <DocViewer code={code} scope={{ Timeline, Form, Radio, Grid, Input, Button }} prefix={prefix} desc={desc} />
+  <DocViewer
+    code={code}
+    scope={{ Timeline, Form, Radio, Grid, Input, Button, Icon }}
+    prefix={prefix}
+    desc={desc}
+  />
 )
 export default DemoBasic
