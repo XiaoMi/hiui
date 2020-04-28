@@ -8,7 +8,7 @@ class Timeline extends Component {
   state = { expanded: false }
   renderGroup = (item, index, isLast) => {
     return (
-      <div>
+      <div key={index}>
         <div
           className={classNames('timeline__group-title', {
             'timeline__group-title--first': index === 0
@@ -43,6 +43,7 @@ class Timeline extends Component {
   renderRight = (item, index, isLast, isFirst) => {
     return (
       <div
+        key={index}
         className={classNames('timeline__item', {
           'timeline__item--last': isLast,
           'timeline__item--first': isFirst
@@ -63,10 +64,10 @@ class Timeline extends Component {
   }
   renderCollapse = (subItems) => {
     return (
-      <div className='timeline__collapse'>
+      <div className='timeline__collapse' key={'collapse'}>
         {this.state.expanded === true &&
-          subItems.map((c) => {
-            return this.renderSub(c)
+          subItems.map((c, idx) => {
+            return this.renderSub(c, idx)
           })}
         <div
           className='collapse-opt'
@@ -84,6 +85,7 @@ class Timeline extends Component {
   renderSub = (item, index, isLast, isFirst) => {
     return (
       <div
+        key={index}
         className={classNames('timeline__item', {
           'timeline__item--last': isLast,
           'timeline__item--first': isFirst
@@ -105,6 +107,7 @@ class Timeline extends Component {
   renderCross = (item, index, isLast, isFirst) => {
     return (
       <div
+        key={index}
         className={classNames('timeline__item', {
           'timeline__item--last': isLast,
           'timeline__item--first': isFirst,
@@ -131,6 +134,7 @@ class Timeline extends Component {
   renderDefault = (item, index, isLast, isFirst) => {
     return [
       <div
+        key={index}
         className={classNames('timeline__item', {
           'timeline__item--last': isLast,
           'timeline__item--first': isFirst
