@@ -304,6 +304,7 @@
     .timeline__item {
       display: flex;
       position: relative;
+      margin-bottom: 20px;
 
       .item--left {
         text-align: right;
@@ -352,14 +353,13 @@
         left: 30%;
         width: 2px;
         background: rgb(242, 242, 242);
-        height: 100%;
+        height: calc(100% + 20px);
         transform: translateX(-50%);
       }
 
       .item--right {
         width: calc(70% - 20px);
         margin-left: 20px;
-        margin-bottom: 20px;
 
         .item__title {
           color: rgb(51, 51, 51);
@@ -388,7 +388,7 @@
       &--first {
         .item__line {
           top: 7px;
-          height: calc(100% - 7px);
+          height: calc(100% + 20px - 7px);
         }
       }
     }
