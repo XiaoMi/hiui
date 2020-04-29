@@ -11,9 +11,9 @@ class Demo extends React.Component {
   constructor(props) {
     super(props)
     this.options = {
-      logo: logo, // 本地图片路径或者base64
-      content: ['HIUI', '做中台，就用 HIUI'],
-      density:'high'
+      content: ['chenxian 陈晛'],
+      // density:'low',
+      rotate:-15
     }
   }
   render () {
@@ -21,7 +21,7 @@ class Demo extends React.Component {
       <Watermark
         {...this.options}
       >
-      <div id="watermark-box" 
+      <div id="watermark-box"
         style={{width: '100%', height: 400, border: '1px solid rgb(230, 231, 232)'}}
         />
       </Watermark>
@@ -30,10 +30,6 @@ class Demo extends React.Component {
 }`
 
 const DemoBase = () => (
-  <DocViewer
-    desc={desc}
-    code={code}
-    scope={{ Watermark, logo }}
-    prefix={prefix}
-  />)
+  <DocViewer desc={desc} code={code} scope={{ Watermark, logo }} prefix={prefix} />
+)
 export default DemoBase
