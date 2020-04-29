@@ -100,17 +100,17 @@ const drawLogo = (ctx, logo, cb) => {
   }
 }
 
-const getPixelRatio = (context) => {
-  const backingStore =
-    context.backingStorePixelRatio ||
-    context.webkitBackingStorePixelRatio ||
-    context.mozBackingStorePixelRatio ||
-    context.msBackingStorePixelRatio ||
-    context.oBackingStorePixelRatio ||
-    context.backingStorePixelRatio ||
-    1
-  return (window.devicePixelRatio || 1) / backingStore
-}
+// const getPixelRatio = (context) => {
+//   const backingStore =
+//     context.backingStorePixelRatio ||
+//     context.webkitBackingStorePixelRatio ||
+//     context.mozBackingStorePixelRatio ||
+//     context.msBackingStorePixelRatio ||
+//     context.oBackingStorePixelRatio ||
+//     context.backingStorePixelRatio ||
+//     1
+//   return (window.devicePixelRatio || 1) / backingStore
+// }
 
 const toImage = (canvas, key, container, options) => {
   const base64Url = canvas.toDataURL()
@@ -125,6 +125,7 @@ const toImage = (canvas, key, container, options) => {
   bottom:0;
   width:100%;
   height:100%;
+  transform:scale(0.5);
   z-index:${options.zIndex};
   pointer-events:none;
   background-repeat:repeat;
@@ -178,7 +179,7 @@ const WaterMarker = (container, args) => {
     height,
     textAlign,
     textBaseline,
-    // font,
+    font,
     color,
     logo,
     rotate
@@ -189,25 +190,30 @@ const WaterMarker = (container, args) => {
   }
   const canvas = document.createElement('canvas')
   var ctx = canvas.getContext('2d')
-  const ratio = getPixelRatio(ctx)
-  canvas.style.width = width / ratio + 'px'
-  canvas.style.height = height / ratio + 'px'
-  canvas.width = width
-  canvas.height = height
-
-  // canvas.setAttribute('width', width + 'px')
-  // canvas.setAttribute('height', height + 'px')
+  // const ratio = getPixelRatio(ctx)
+  canvas.setAttribute('width', width + 'px')
+  canvas.setAttribute('height', height + 'px')
   // canvas.width = canvas.width * ratio
   // canvas.width = canvas.height * ratio
-  ctx.scale(ratio, ratio)
   ctx.textAlign = textAlign
   ctx.textBaseline = textBaseline
-  ctx.font = '12px microsoft yahei'
-  ctx.fontWeight = 100
+  ctx.font = font
   ctx.fillStyle = color
-  // ctx.translate(width / (ratio * 2), height / (ratio * 2))
+  ctx.translate(width / 2, height / 2)
   ctx.rotate(Math.PI / 180 * rotate)
-  // ctx.translate(-width / (ratio * 2), -height / (ratio * 2))
+  ctx.translate(-width / 2, -height / 2)
+  // canvas.setAttribute('width', width + 'px')
+  // canvas.setAttribute('height', height + 'px')
+  // // canvas.width = canvas.width * ratio
+  // // canvas.width = canvas.height * ratio
+  // ctx.scale(ratio, ratio)
+  // ctx.textAlign = textAlign
+  // ctx.textBaseline = textBaseline
+  // ctx.font = '100 12px microsoft yahei'
+  // ctx.fillStyle = color
+  // ctx.translate(width / (ratio * 2), height / (ratio * 2))
+  // ctx.rotate(Math.PI / 180 * rotate)
+  // // ctx.translate(-width / (ratio * 2), -height / (ratio * 2))
 
   drawText(ctx, options)
   if (logo) {

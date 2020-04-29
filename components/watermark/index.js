@@ -45,8 +45,8 @@ Watermark.defaultProps = {
   density: 'default',
   textAlign: 'left',
   font:
-    '12px -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol""',
-  color: 'rgba(128, 128, 128, 0.2)',
+    'normal normal lighter 24px Microsoft YaHei',
+  color: 'rgba(148, 148, 148, 0.2)',
   content: '请勿外传',
   rotate: -30,
   zIndex: 1000,
