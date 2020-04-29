@@ -1,0 +1,103 @@
+@import '@hi-ui/core-css/index.scss';
+
+.hi-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+
+  &--hide {
+    display: none !important;
+  }
+
+  &__mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000; // @Todo: should be larger
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.54);
+    transition: all $speed-fast $easing;
+  }
+
+  &__dialog {
+    position: relative;
+    top: 10%;
+    z-index: 1001;
+    box-sizing: border-box;
+    width: 600px;
+    max-height: 80%;
+    margin: 0 auto;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    font-size: $font-size-normal;
+    background-color: $white;
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
+    transition: all $speed-fast $easing;
+
+    &--large {
+      width: 800px;
+    }
+
+    &--small {
+      width: 360px;
+    }
+  }
+
+  &__header {
+    flex: none;
+    display: flex;
+    align-items: center;
+    height: 56px;
+    border-bottom: 1px solid $gray-light;
+  }
+
+  &__title {
+    flex: 1;
+    margin: 0;
+    padding: 0 $spacer-4;
+    font-size: $font-size-large;
+    font-weight: $font-weight-semibold;
+    text-align: left;
+    color: $black;
+  }
+
+  &__close {
+    width: 56px;
+    height: 56px;
+    font-size: $font-size-large;
+    line-height: 56px;
+    text-align: center;
+    color: $gray-darker;
+    cursor: pointer;
+    transition: color $speed-fast $easing;
+
+    &:hover,
+    &:active {
+      color: $black;
+    }
+  }
+
+  &__content {
+    flex: auto;
+    box-sizing: border-box;
+    min-height: 54px;
+    padding: $spacer-4;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  &__footer {
+    flex: none;
+    display: flex;
+    border-top: 1px solid $gray-light;
+    padding: $spacer-3 $spacer-4;
+    justify-content: flex-end;
+  }
+}
