@@ -53,7 +53,7 @@ const drawText = (ctx, options) => {
   } = options
   let oldBaseLine = ctx.textBaseline
   let x = 0
-  let y = 0
+  let y = 16
   ctx.textBaseline = 'hanging'
   /**
    * LOGO 固定宽高： 32 * 32
@@ -62,8 +62,8 @@ const drawText = (ctx, options) => {
    */
   let lineHeight = parseInt(ctx.font) // ctx.font必须以'XXpx'开头
   if (logo) {
-    x += 32
-    _w -= 32
+    x += 64
+    _w -= 64
   }
   const lines = parseTextData(ctx, text, width, isAutoWrap)
 
@@ -73,11 +73,11 @@ const drawText = (ctx, options) => {
   for (let line of lines) {
     let lineX
     if (ctx.textAlign === 'center') {
-      lineX = x + width / 2 + 4
+      lineX = x + width + 40
     } else if (ctx.textAlign === 'right') {
-      lineX = x + width + 4
+      lineX = x + width + 40
     } else {
-      lineX = x + 4
+      lineX = x + 40
     }
     if (textOverflowEffect === 'zoom') {
       const size = parseInt(Math.sqrt((_w * _w + height * height) / 2))
@@ -95,22 +95,10 @@ const drawLogo = (ctx, logo, cb) => {
   img.src = logo
   img.onload = () => {
     ctx.globalAlpha = 0.2
-    ctx.drawImage(img, 0, ctx.canvas.height / 2 - 16, 32, 32)
+    ctx.drawImage(img, 32, ctx.canvas.height / 2 - 16, 64, 64)
     cb()
   }
 }
-
-// const getPixelRatio = (context) => {
-//   const backingStore =
-//     context.backingStorePixelRatio ||
-//     context.webkitBackingStorePixelRatio ||
-//     context.mozBackingStorePixelRatio ||
-//     context.msBackingStorePixelRatio ||
-//     context.oBackingStorePixelRatio ||
-//     context.backingStorePixelRatio ||
-//     1
-//   return (window.devicePixelRatio || 1) / backingStore
-// }
 
 const toImage = (canvas, key, container, options) => {
   const base64Url = canvas.toDataURL()
@@ -121,10 +109,10 @@ const toImage = (canvas, key, container, options) => {
   const styleStr = `
   position:absolute;
   top:${_top};
-  left:0;
-  bottom:0;
-  width:100%;
-  height:100%;
+  left:-50%;
+  top:-50%;
+  width:200%;
+  height:200%;
   transform:scale(0.5);
   z-index:${options.zIndex};
   pointer-events:none;
@@ -163,13 +151,13 @@ const WaterMarker = (container, args) => {
   const _container = container || document.body
   const {density} = args
   let _markSize = {
-    width: 210,
-    height: 180
+    width: 420,
+    height: 270
   }
   if (['low', 'high'].includes(density)) {
     _markSize = {
-      width: density === 'low' ? 240 : 180,
-      height: density === 'low' ? 210 : 150
+      width: density === 'low' ? 540 : 360,
+      height: density === 'low' ? 410 : 210
     }
   }
   const options = Object.assign({}, defaultOptions, _markSize, args)
@@ -190,11 +178,8 @@ const WaterMarker = (container, args) => {
   }
   const canvas = document.createElement('canvas')
   var ctx = canvas.getContext('2d')
-  // const ratio = getPixelRatio(ctx)
   canvas.setAttribute('width', width + 'px')
   canvas.setAttribute('height', height + 'px')
-  // canvas.width = canvas.width * ratio
-  // canvas.width = canvas.height * ratio
   ctx.textAlign = textAlign
   ctx.textBaseline = textBaseline
   ctx.font = font
@@ -202,18 +187,6 @@ const WaterMarker = (container, args) => {
   ctx.translate(width / 2, height / 2)
   ctx.rotate(Math.PI / 180 * rotate)
   ctx.translate(-width / 2, -height / 2)
-  // canvas.setAttribute('width', width + 'px')
-  // canvas.setAttribute('height', height + 'px')
-  // // canvas.width = canvas.width * ratio
-  // // canvas.width = canvas.height * ratio
-  // ctx.scale(ratio, ratio)
-  // ctx.textAlign = textAlign
-  // ctx.textBaseline = textBaseline
-  // ctx.font = '100 12px microsoft yahei'
-  // ctx.fillStyle = color
-  // ctx.translate(width / (ratio * 2), height / (ratio * 2))
-  // ctx.rotate(Math.PI / 180 * rotate)
-  // // ctx.translate(-width / (ratio * 2), -height / (ratio * 2))
 
   drawText(ctx, options)
   if (logo) {

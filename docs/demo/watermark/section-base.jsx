@@ -11,9 +11,8 @@ class Demo extends React.Component {
   constructor(props) {
     super(props)
     this.options = {
-      content: ['chenxian 陈晛'],
-      // density:'low',
-      rotate:-15
+      logo: logo, // 本地图片路径或者base64
+      content: ['HIUI', '做中台，就用 HIUI'],
     }
   }
   render () {
