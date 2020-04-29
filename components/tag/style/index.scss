@@ -16,13 +16,26 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
   font-size: 12px;
   display: inline-block;
 
-  &--line {
+  &.#{$prefix}--line {
     border: 1px solid $primary;
     color: $primary;
     background: #fff;
+
+    @each $key in 'success', 'danger', 'warning' {
+      &.#{$prefix}--#{$key} {
+        $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
+
+        border: 1px solid $status-color;
+        color: $status-color;
+      }
+    }
   }
 
-  &--primary {
-    background: $primary;
+  @each $key in 'success', 'danger', 'warning' {
+    &--#{$key} {
+      $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
+
+      background: $status-color;
+    }
   }
 }
