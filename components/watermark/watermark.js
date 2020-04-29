@@ -1,8 +1,8 @@
 const defaultOptions = {
   id: null,
   textAlign: 'left',
-  font: '12px microsoft yahei',
-  color: 'rgba(128, 128, 128, 0.2)',
+  font: 'normal normal lighter 28px -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
+  color: 'rgba(148, 148, 148, 0.2)',
   content: '请勿外传',
   rotate: -30,
   zIndex: 1000,
