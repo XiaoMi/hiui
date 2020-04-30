@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Input } from '../input'
 import TreeNode from './TreeNode'
 import TreeContext from './context'
@@ -16,15 +16,18 @@ const Tree = ({
   onSelect,
   editable,
   editMenu,
-  onClick
+  onClick,
+  checkedIds
 }) => {
   const [_selectedId, setSelectedId] = useState(null)
+
   useEffect(() => {
     if (selectable) {
       setSelectedId(selectedId)
     }
   }, [selectedId])
-  const onSelectNode = selectedId => {
+
+  const onSelectNode = useCallback(selectedId => {
     if (selectable) {
       if (selectedId !== undefined) {
         setSelectedId(selectedId)
@@ -33,12 +36,21 @@ const Tree = ({
         onSelect(selectedId)
       }
     }
-  }
+  }, [])
+
+  // 多选逻辑
+  const [checkedNodes, setCheckedNodes] = useEffect({checked: [], semiChecked: []})
+  const getCheckedNodes = useCallback()
+  useEffect(() => {
+    setCheckedNodes({})
+  }, [checkedIds])
+
   return (
     <TreeContext.Provider
       value={{
         treeNodeRender,
         checkable,
+        checkedIds,
         selectedId: _selectedId,
         onSelectNode,
         editable,

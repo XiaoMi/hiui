@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react'
+import React, { useContext, useState, useRef, useCallback } from 'react'
 import Checkbox from '../checkbox'
 import Icon from '../icon'
 import Popper from '../popper'
@@ -10,6 +10,7 @@ const TreeNode = ({ node }) => {
   const {
     treeNodeRender,
     checkable,
+    checkedIds,
     onSelectNode,
     onClick,
     selectedId,
@@ -17,15 +18,17 @@ const TreeNode = ({ node }) => {
     editMenu,
     PREFIX
   } = useContext(TreeContext)
+
   const [expanded, setExpanded] = useState(true)
   const [menuVisible, setMenuVisible] = useState(false)
   const treeNodeRef = useRef(null)
   const editMenuRef = useRef(null)
+
   useClickOutside(editMenuRef, () => {
     setMenuVisible(false)
   })
 
-  const renderChildren = children => {
+  const renderChildren = useCallback(children => {
     return (
       <ul>
         {children.map(child => (
@@ -33,8 +36,9 @@ const TreeNode = ({ node }) => {
         ))}
       </ul>
     )
-  }
-  const renderSwitcher = expanded => {
+  }, [])
+
+  const renderSwitcher = useCallback(expanded => {
     return (
       <Icon
         style={{ cursor: 'pointer', marginRight: 3 }}
@@ -42,14 +46,17 @@ const TreeNode = ({ node }) => {
         onClick={() => setExpanded(!expanded)}
       />
     )
-  }
-  const renderIndent = () => {
+  }, [])
+
+  const renderIndent = useCallback(() => {
     return <span style={{ width: 16, marginRight: 3 }} />
-  }
-  const renderCheckbox = () => {
+  }, [])
+
+  const renderCheckbox = useCallback(() => {
     return <Checkbox />
-  }
-  const renderTitle = (node, selectedId) => {
+  }, [])
+
+  const renderTitle = useCallback((node, selectedId) => {
     const { id, title } = node
     return (
       <div
@@ -69,8 +76,9 @@ const TreeNode = ({ node }) => {
         {treeNodeRender ? treeNodeRender(title) : title}
       </div>
     )
-  }
-  const renderEditMenu = (editMenu, node) => {
+  }, [])
+
+  const renderEditMenu = useCallback((editMenu, node) => {
     const _editMenu = typeof editMenu === 'function' ? editMenu(node) : editMenu
     return (
       <div className={`${PREFIX}-menu`} ref={editMenuRef}>
@@ -88,7 +96,8 @@ const TreeNode = ({ node }) => {
         ))}
       </div>
     )
-  }
+  }, [])
+
   return (
     <li className='tree-node'>
       <div className='tree-node__self'>
@@ -99,7 +108,7 @@ const TreeNode = ({ node }) => {
         {renderTitle(node, selectedId)}
       </div>
       {node.children && expanded ? renderChildren(node.children) : null}
-      {editable && (
+      {editable && null && (
         <Popper
           show={menuVisible}
           attachEle={treeNodeRef.current}
