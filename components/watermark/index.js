@@ -29,7 +29,7 @@ Watermark.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   textAlign: PropTypes.string,
-  font: PropTypes.string,
+  font: PropTypes.Number,
   color: PropTypes.string,
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   rotate: PropTypes.number,
@@ -44,8 +44,7 @@ Watermark.defaultProps = {
   id: null,
   density: 'default',
   textAlign: 'left',
-  font:
-    'normal normal lighter 28px Microsoft YaHei,helvetica,arial',
+  font: 14,
   color: 'rgba(148, 148, 148, 0.2)',
   content: '请勿外传',
   rotate: -30,

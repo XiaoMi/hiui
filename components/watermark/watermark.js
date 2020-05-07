@@ -1,8 +1,8 @@
 const defaultOptions = {
   id: null,
   textAlign: 'left',
-  font: '12px microsoft yahei',
-  color: 'rgba(128, 128, 128, 0.2)',
+  font: 'normal normal lighter 28px -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
+  color: 'rgba(148, 148, 148, 0.2)',
   content: '请勿外传',
   rotate: -30,
   zIndex: 1000,
@@ -48,6 +48,7 @@ const drawText = (ctx, options) => {
     height,
     textOverflowEffect,
     content: text,
+    font,
     isAutoWrap,
     logo
   } = options
@@ -60,7 +61,7 @@ const drawText = (ctx, options) => {
    * 内容区域为 画布宽度 - 48 （预留左右各24的 padding）
    * 如含 LOGO ，文字的起始 X 坐标为： 24(padding-left) + 32(logo size) + 4(logo 与 text 间距)
    */
-  let lineHeight = parseInt(ctx.font) // ctx.font必须以'XXpx'开头
+  let lineHeight = parseInt(font) // ctx.font必须以'XXpx'开头
   if (logo) {
     x += 64
     _w -= 64
@@ -182,7 +183,7 @@ const WaterMarker = (container, args) => {
   canvas.setAttribute('height', height + 'px')
   ctx.textAlign = textAlign
   ctx.textBaseline = textBaseline
-  ctx.font = font
+  ctx.font = `normal normal lighter ${Number(font * 2)}px Microsoft YaHei,helvetica,arial`
   ctx.fillStyle = color
   ctx.translate(width / 2, height / 2)
   ctx.rotate(Math.PI / 180 * rotate)
