@@ -61,7 +61,7 @@ const drawText = (ctx, options) => {
    * 内容区域为 画布宽度 - 48 （预留左右各24的 padding）
    * 如含 LOGO ，文字的起始 X 坐标为： 24(padding-left) + 32(logo size) + 4(logo 与 text 间距)
    */
-  let lineHeight = parseInt(font) // ctx.font必须以'XXpx'开头
+  let lineHeight = parseInt(font * 2) // ctx.font必须以'XXpx'开头
   if (logo) {
     x += 64
     _w -= 64
@@ -183,7 +183,7 @@ const WaterMarker = (container, args) => {
   canvas.setAttribute('height', height + 'px')
   ctx.textAlign = textAlign
   ctx.textBaseline = textBaseline
-  ctx.font = `normal normal lighter ${Number(font * 2)}px Microsoft YaHei,helvetica,arial`
+  ctx.font = `normal normal lighter ${Number(font * 2)}px -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"`
   ctx.fillStyle = color
   ctx.translate(width / 2, height / 2)
   ctx.rotate(Math.PI / 180 * rotate)

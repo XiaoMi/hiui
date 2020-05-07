@@ -6,7 +6,7 @@ const prefix = 'watermark-base'
 const desc = ''
 const code = `import React from 'react'
 import logo from '本地图片路径或者base64'
-import Watermark from '@hi-ui/hiui/es/Watermark'\n
+import Watermark from '@hi-ui/hiui/es/watermark'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)
