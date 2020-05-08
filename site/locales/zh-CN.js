@@ -53,7 +53,8 @@ module.exports = {
     rate: 'Rate 评分',
     breadcrumb: 'Breadcrumb 面包屑',
     carousel: 'Carousel 走马灯',
-    watermark: 'Watermark 水印'
+    watermark: 'Watermark 水印',
+    list: 'List 列表'
   },
   designs: {
     summarize: '概述',

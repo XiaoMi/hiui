@@ -1,0 +1,34 @@
+# List 列表
+
+通用列表
+
+## 何时使用
+
+最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面。
+
+## 基础用法
+
+import DemoBase from '../../demo/list/section-base.jsx'
+
+<DemoBase />
+
+## 信息流用法
+
+import DemoInfoFlow from '../../demo/list/section-info-flow.jsx'
+
+<DemoInfoFlow />
+
+## 图片用法
+
+import DemoImg from '../../demo/list/section-img.jsx'
+
+<DemoImg />
+
+## Props
+
+| 参数    | 说明                                       | 类型                    | 可选值                       | 默认值     |
+| ------- | ------------------------------------------ | ----------------------- | ---------------------------- | ---------- |
+| density | 水印间距，调节疏密程度                     | string                  | 'low' \| 'default' \| 'high' | 'default'  |
+| content | 水印文案，传入数组代表多行，不建议超过三行 | string \| Array[string] | -                            | '请勿外传' |
+| logo    | 图片资源地址（暂只支持本地资源）           | string                  | -                            | -          |
+| opacity | 水印透明度                                 | number                  | 0~1                          | 1          |
