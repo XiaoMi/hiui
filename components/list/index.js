@@ -52,7 +52,7 @@ const List = ({
   emptyText = '暂无数据',
   pagination = {},
   action,
-  actionPosition = {},
+  actionPosition = '',
   renderItem,
   ...others
 }) => {
