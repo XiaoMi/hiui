@@ -1,28 +1,3 @@
-/**
- data:[
-     {
-         id: ,
-         content:'',
-         disabled:'',
-         children:[
-
-         ]
-     }
- ],
- label:'',
- labelWidth:'',
- showUnderline: bool
- value:'', 受控
- defaultValue:'',
-
- onClick:()=>{}
- onChange:()=>{}
-
- 1：首先进入要显示全部筛选项；
-2： 默认选中第一项
-3：这个时候activeId也是数组了；不能是最后一级的
-
- */
 import React, { useState, useEffect } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
