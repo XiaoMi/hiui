@@ -35,6 +35,7 @@ export default {
       select: components['select'],
       cascader: components['cascader'],
       radio: components['radio'],
+      filter: components['filter'],
       checkbox: components['checkbox'],
       switch: components['switch'],
       'date-picker': components['date-picker'],

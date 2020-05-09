@@ -54,7 +54,8 @@ module.exports = {
     breadcrumb: 'Breadcrumb 面包屑',
     carousel: 'Carousel 走马灯',
     watermark: 'Watermark 水印',
-    list: 'List 列表'
+    list: 'List 列表',
+    filter: 'Fiter 筛选'
   },
   designs: {
     summarize: '概述',

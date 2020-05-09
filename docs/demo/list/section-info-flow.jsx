@@ -8,24 +8,27 @@ import List,{ IconText } from '@hi-ui/hiui/es/list'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)
-    this.data = [
-      {
-        title: '下单量-指标',
-        description: '下单量在交易环节中整体用户下单的数量',
-        extra: '最新使用：2019.12.23 下午07:07',
-
-      },
-      {
-        title: '下单量-指标',
-        description: '下单量在交易环节中整体用户下单的数量',
-        extra: '最新使用：2019.12.23 下午07:07',
-      },
-    ]
+    this.state = {
+      data: [
+        {
+          title: '下单量-指标',
+          description: '下单量在交易环节中整体用户下单的数量',
+          extra: '最新使用：2019.12.23 下午07:07',
+  
+        },
+        {
+          title: '下单量-指标',
+          description: '下单量在交易环节中整体用户下单的数量',
+          extra: '最新使用：2019.12.23 下午07:07',
+        },
+      ]
+    }
   }
   render () {
+    const {data} = this.state
     return (
       <List
-        data={this.data}
+        data={data}
         key='12'
         renderItem={dataItem => {
           const { Item } = List

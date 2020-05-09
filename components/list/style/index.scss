@@ -103,6 +103,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     color: #999;
     text-align: center;
     line-height: 88px;
+    list-style: none;
   }
 
   &-item__hoverable:hover {
