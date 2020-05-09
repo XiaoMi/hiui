@@ -28,18 +28,18 @@ import DemoImg from '../../demo/list/section-img.jsx'
 
 ## List
 
-| 参数           | 说明                                              | 类型                                                          | 可选值                       | 默认值                     |
-| -------------- | ------------------------------------------------- | ------------------------------------------------------------- | ---------------------------- | -------------------------- |
-| type           | 列表类型                                          | string                                                        | 'default' \| 'card'          | 'default'                  |
-| bordered       | 是否展示边框 (仅在 type==='default'时生效)        | boolean                                                       | -                            | false                      |
-| data           | 列表展示的数据                                    | DataItem                                                      | -                            | -                          |
-| emptyText      | 无数据提示内容                                    | string \|ReactNode                                            | -                            | '暂无数据'                 |
-| hoverable      | 鼠标移入时是否显示阴影 (仅在 type==='card'时生效) | boolean                                                       | -                            | false                      |
-| pagination     | 对应的 pagination 配置, 设置 false 不显示         | boolean \| object                                             | false                        | false                      |
-| renderItem     | 自定义渲染列表项                                  | item => ReactNode                                             | -                            | -                          |
-| action         | 列表操作内容                                      | ReactNode                                                     | -                            | -                          |
-| actionPosition | 指定列表操作显示的位置                            | string                                                        | 'top' \| 'center' \|'bottom' | 'bottom'                   |
-| <!--           | layout                                            | 设置 List.Item 布局, 设置成 vertical 则竖直样式显示, 默认横排 | string                       | 'vertical' \| 'horizontal' | 'vertical' | --> |
+| 参数           | 说明                                                          | 类型               | 可选值                       | 默认值     |
+| -------------- | ------------------------------------------------------------- | ------------------ | ---------------------------- | ---------- |
+| type           | 列表类型                                                      | string             | 'default' \| 'card'          | 'default'  |
+| data           | 列表展示的数据                                                | DataItem           | -                            | -          |
+| renderItem     | 自定义渲染列表项                                              | item => ReactNode  | -                            | -          |
+| action         | 列表操作内容                                                  | ReactNode          | -                            | -          |
+| actionPosition | 指定列表操作显示的位置                                        | string             | 'top' \| 'center' \|'bottom' | 'bottom'   |
+| pagination     | 对应的 pagination 配置, 设置 false 不显示                     | boolean \| object  | false                        | false      |
+| bordered       | 是否展示边框 (仅在 type==='default'时生效)                    | boolean            | -                            | false      |
+| hoverable      | 鼠标移入时是否显示阴影 (仅在 type==='card'时生效)             | boolean            | -                            | false      |
+| layout         | 设置 List.Item 布局, 设置成 vertical 则竖直样式显示, 默认横排 | string             | 'vertical' \| 'horizontal'   | 'vertical' |
+| emptyText      | 无数据提示内容                                                | string \|ReactNode | -                            | '暂无数据' |
 
 ## DataItem
 
