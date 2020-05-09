@@ -40,8 +40,8 @@ class Demo extends React.Component {
           }}
           action={() => {
             return (
-              <Button type='line'>
-                <Icon name='edit' /> 编辑
+              <Button type='line' icon='edit'>
+                编辑
               </Button>
             )
           }}

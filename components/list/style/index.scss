@@ -2,6 +2,7 @@
 
 $list: 'hi-list' !default;
 $borderColor: #e7e7e7 !default;
+$primary: get-color($palette-primary, 'hiui-blue') !default;
 
 .#{$list} {
   &-items {
@@ -11,6 +12,10 @@ $borderColor: #e7e7e7 !default;
     &__border {
       border: 1px solid $borderColor;
       border-bottom: none;
+
+      .hi-list-item {
+        padding-left: 12px;
+      }
     }
   }
 
@@ -44,12 +49,12 @@ $borderColor: #e7e7e7 !default;
       height: 18px;
       font-size: 12px;
       font-weight: 400;
-      color: rgba(29, 166, 83, 1);
       line-height: 18px;
       margin-left: 8px;
       padding: 0 6px;
       border-radius: 9px;
-      border: 1px solid rgba(29, 166, 83, 1);
+      color: $primary;
+      border: 1px solid $primary;
     }
 
     &__desc {
@@ -133,6 +138,18 @@ $borderColor: #e7e7e7 !default;
         content: '';
         width: 0;
       }
+    }
+  }
+
+  @each $key in 'success', 'danger', 'warning' {
+    &-titleTag__#{$key} {
+      $status-color: map-get(
+        get-palette(get-color($palette-secondary, $key)),
+        '50'
+      );
+
+      border: 1px solid $status-color;
+      color: $status-color;
     }
   }
 }

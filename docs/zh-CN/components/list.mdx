@@ -26,9 +26,38 @@ import DemoImg from '../../demo/list/section-img.jsx'
 
 ## Props
 
-| 参数    | 说明                                       | 类型                    | 可选值                       | 默认值     |
-| ------- | ------------------------------------------ | ----------------------- | ---------------------------- | ---------- |
-| density | 水印间距，调节疏密程度                     | string                  | 'low' \| 'default' \| 'high' | 'default'  |
-| content | 水印文案，传入数组代表多行，不建议超过三行 | string \| Array[string] | -                            | '请勿外传' |
-| logo    | 图片资源地址（暂只支持本地资源）           | string                  | -                            | -          |
-| opacity | 水印透明度                                 | number                  | 0~1                          | 1          |
+## List
+
+| 参数           | 说明                                              | 类型                                                          | 可选值                       | 默认值                     |
+| -------------- | ------------------------------------------------- | ------------------------------------------------------------- | ---------------------------- | -------------------------- |
+| type           | 列表类型                                          | string                                                        | 'default' \| 'card'          | 'default'                  |
+| bordered       | 是否展示边框 (仅在 type==='default'时生效)        | boolean                                                       | -                            | false                      |
+| data           | 列表展示的数据                                    | DataItem                                                      | -                            | -                          |
+| emptyText      | 无数据提示内容                                    | string \|ReactNode                                            | -                            | '暂无数据'                 |
+| hoverable      | 鼠标移入时是否显示阴影 (仅在 type==='card'时生效) | boolean                                                       | -                            | false                      |
+| pagination     | 对应的 pagination 配置, 设置 false 不显示         | boolean \| object                                             | false                        | false                      |
+| renderItem     | 自定义渲染列表项                                  | item => ReactNode                                             | -                            | -                          |
+| action         | 列表操作内容                                      | ReactNode                                                     | -                            | -                          |
+| actionPosition | 指定列表操作显示的位置                            | string                                                        | 'top' \| 'center' \|'bottom' | 'bottom'                   |
+| <!--           | layout                                            | 设置 List.Item 布局, 设置成 vertical 则竖直样式显示, 默认横排 | string                       | 'vertical' \| 'horizontal' | 'vertical' | --> |
+
+## DataItem
+
+List.Item 的配置项
+
+| 参数         | 说明                   | 类型                       | 可选值                                         | 默认值    |
+| ------------ | ---------------------- | -------------------------- | ---------------------------------------------- | --------- |
+| title        | 列表元素的标题         | string                     | ReactNode                                      | -         |
+| titleTag     | 列表元素的标题中的标签 | string                     | -                                              | -         |
+| titleTagType | 列表展示的数据         | string                     | 'primary' \| 'success' \|'warning' \| 'danger' | 'primary' |
+| description  | 列表元素的描述内容     | string \|ReactNode         | -                                              | -         |
+| extra        | 额外内容               | string \| Array&lt;string> | -                                              | -         |
+| avatar       | 列表元素的图标         | string                     | -                                              | -         |
+
+## pagination
+
+分页的配置项
+
+| 参数     | 说明               | 类型   | 可选值                       | 默认值  |
+| -------- | ------------------ | ------ | ---------------------------- | ------- |
+| position | 指定分页显示的位置 | string | 'left' \| 'middle' \|'right' | 'right' |

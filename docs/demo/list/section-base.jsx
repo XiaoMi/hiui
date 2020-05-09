@@ -12,10 +12,13 @@ class Demo extends React.Component {
       {
         title: '设备采购申请',
         titleTag: '已通过',
+        titleTagType: 'success',
         extra:['申请编号：YH7290121','申请人：张某某','申请时间：2019-02-11','申请部门：信息部-用户体验组']
       },
       {
         title: '2019年第一季度考核统计表',
+        titleTag: '已驳回',
+        titleTagType: 'danger',
         extra:['申请编号：YH7290121','申请人：张某某','申请时间：2019-02-11']
       }
     ]

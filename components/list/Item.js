@@ -1,4 +1,6 @@
 import React from 'react'
+import classNames from 'classnames'
+
 const prefixCls = 'hi-list'
 const isArray = arg => {
   return arg instanceof Array
@@ -16,7 +18,7 @@ const ExtraArray = ({ extra }) => {
     </ul>
   )
 }
-const Item = ({ title, titleTag, description, extra }) => {
+const Item = ({ title, titleTag, titleTagType, description, extra }) => {
   return (
     <div className={`${prefixCls}-item__content`} key='content'>
       {(title || titleTag) && (
@@ -27,7 +29,12 @@ const Item = ({ title, titleTag, description, extra }) => {
             </h4>
           )}
           {titleTag && (
-            <span className={`${prefixCls}-item__titleTag`} key='titleTag'>
+            <span
+              className={classNames(`${prefixCls}-item__titleTag`, {
+                [`${prefixCls}-titleTag__${titleTagType}`]: titleTagType
+              })}
+              key='titleTag'
+            >
               {titleTag}
             </span>
           )}

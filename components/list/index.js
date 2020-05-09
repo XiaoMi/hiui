@@ -1,21 +1,3 @@
-/**
-  type:'default' | 'card'
-  bordered?: boolean;
-  style?: React.CSSProperties;
-  layout?: 'vertical' | 'horizontal'
-  data:data,
-  emptyText?:'暂无数据'
-  hoverable?:boolean  鼠标移入卡片时是否显示阴影
-  interface data {
-    title?:string | ReactNode,
-    titleTag:string ,
-    titleType:'success' | 'warning' | 'error' | 'prima'
-    description?:string | ReactNode,
-    extra?:string | ReactNode,
-    avatar?:string // 图片
-  }
-  pagination?: PaginationConfig | false;
- */
 import React, { useState, useEffect } from 'react'
 import classNames from 'classnames'
 
