@@ -1,5 +1,27 @@
 # 更新日志
 
+## 2.13.0
+
+- 修复 `<Form />` validate 验证不通过回调函数没有调用的问题 [#1059](https://github.com/XiaoMi/hiui/issues/1059)
+- 修复 `<Form />` 校验不通过时的样式问题 [#1042](https://github.com/XiaoMi/hiui/issues/1042)
+- 修复 `<Cascader />` 高度不正确问题 [#1053](https://github.com/XiaoMi/hiui/issues/1053)
+- 修复 `<Notification />`、`<Message />` 白色背景的问题 [#1049](https://github.com/XiaoMi/hiui/issues/1049)
+- 修复 `<Upload />` 上传过程中 maxCount 不起作用的问题 [#1032](https://github.com/XiaoMi/hiui/issues/1032)
+- 修复 `<Upload />` 拖拽上传时，tips 展示不正确的问题 [#1041](https://github.com/XiaoMi/hiui/issues/1041)
+- 修复 `<DatePicker />` 点击每月 31 号，输入框显示异常的问题 [#1039](https://github.com/XiaoMi/hiui/issues/1039)
+- 修复 `<Select />` 异步多选受控时，选中项会重复添加的问题 [#1039](https://github.com/XiaoMi/hiui/issues/1039)
+- 修复 `<Tabs />` 嵌套使用 type 不生效的问题 [#](https://github.com/XiaoMi/hiui/issues/)
+- 修复 `<Menu />` activeId 发生改变时 [#1029](https://github.com/XiaoMi/hiui/issues/1029)
+- 修复 `<Menu />` 异步获取数据时，activeId 失效的问题 [#1027](https://github.com/XiaoMi/hiui/issues/1027)
+- 优化 `<WaterMark />` 展示效果 [#](https://github.com/XiaoMi/hiui/issues/)
+- 优化 `<Timeline />` 展示效果 [#](https://github.com/XiaoMi/hiui/issues/)
+- 优化 `<Tree />` 拖拽性能 [#](https://github.com/XiaoMi/hiui/issues/)
+- 新增 `<Tag />` 普通模式配色 [#1060](https://github.com/XiaoMi/hiui/issues/1060)
+- 新增 `<Tabs />` 线性模式 [#](https://github.com/XiaoMi/hiui/issues/)
+- 新增 `<Menu />` 支持单独选中父级菜单 [#1038](https://github.com/XiaoMi/hiui/issues/1038)
+- 新增 `<Modal />` confirm 调用方式 [#](https://github.com/XiaoMi/hiui/issues/)
+- 新增 `<Datepicker />` 支持宽度调整 [#1033](https://github.com/XiaoMi/hiui/issues/1033)
+
 ## 2.12.0
 
 - 新增 `<Watermark />` 水印组件 [#121](https://github.com/XiaoMi/hiui/issues/121)
