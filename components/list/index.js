@@ -57,11 +57,10 @@ const List = ({
   ...others
 }) => {
   const [datas, setData] = useState(data)
-  const [paginationProps, setPaginationProps] = useState(pagination)
+  const paginationProps = pagination
   useEffect(() => {
     setData(data)
-    setPaginationProps(pagination)
-  }, [data, pagination])
+  }, [data])
   const renderListItem = (item, index) => {
     const { avatar } = item || {}
 
