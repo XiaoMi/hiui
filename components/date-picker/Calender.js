@@ -465,7 +465,7 @@ class Calender extends Component {
                                 </span>
                               </div>
                               {
-                                this.altCalendar(cell)
+                                showLargeCalendar(this.props) && this.altCalendar(cell)
                               }
                             </div>
                           </td>
