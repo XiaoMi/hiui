@@ -10,13 +10,14 @@ const TreeNode = ({ node }) => {
   const {
     treeNodeRender,
     checkable,
-    checkedIds,
+    checkedNodes,
     onSelectNode,
     onClick,
     selectedId,
     editable,
     editMenu,
-    PREFIX
+    PREFIX,
+    onCheckboxChange
   } = useContext(TreeContext)
 
   const [expanded, setExpanded] = useState(true)
@@ -28,17 +29,17 @@ const TreeNode = ({ node }) => {
     setMenuVisible(false)
   })
 
-  const renderChildren = useCallback(children => {
+  const renderChildren = useCallback((children) => {
     return (
       <ul>
-        {children.map(child => (
+        {children.map((child) => (
           <TreeNode key={child.id} node={child} />
         ))}
       </ul>
     )
   }, [])
 
-  const renderSwitcher = useCallback(expanded => {
+  const renderSwitcher = useCallback((expanded) => {
     return (
       <Icon
         style={{ cursor: 'pointer', marginRight: 3 }}
@@ -52,8 +53,16 @@ const TreeNode = ({ node }) => {
     return <span style={{ width: 16, marginRight: 3 }} />
   }, [])
 
-  const renderCheckbox = useCallback(() => {
-    return <Checkbox />
+  const renderCheckbox = useCallback((node, { checked, semiChecked }) => {
+    return (
+      <Checkbox
+        indeterminate={semiChecked.includes(node.id)}
+        checked={checked.includes(node.id)}
+        onChange={(e) => {
+          onCheckboxChange(e.target.checked, node)
+        }}
+      />
+    )
   }, [])
 
   const renderTitle = useCallback((node, selectedId) => {
@@ -68,7 +77,7 @@ const TreeNode = ({ node }) => {
           onClick(node)
           onSelectNode(id)
         }}
-        onContextMenu={e => {
+        onContextMenu={(e) => {
           e.preventDefault()
           setMenuVisible(true)
         }}
@@ -104,7 +113,7 @@ const TreeNode = ({ node }) => {
         {node.children && node.children.length
           ? renderSwitcher(expanded)
           : renderIndent()}
-        {checkable && renderCheckbox()}
+        {checkable && renderCheckbox(node, checkedNodes)}
         {renderTitle(node, selectedId)}
       </div>
       {node.children && expanded ? renderChildren(node.children) : null}

@@ -22,7 +22,7 @@ export function deepMap (data, parent) {
 
 export function getChild (data, id) {
   let arr = []
-  data.forEach(item => {
+  data.forEach((item) => {
     if (!item.parent.includes(id)) {
       return
     }
@@ -36,12 +36,12 @@ export function getChild (data, id) {
 
 export function getAll (data, checkedKeys) {
   let all = deepMap(data)
-  all = all.map(item => {
+  all = all.map((item) => {
     item.child = getChild(all, item.id)
     item.family = item.parent.concat(item.child)
     item.semi = false
     let num = 0
-    checkedKeys.forEach(c => {
+    checkedKeys.forEach((c) => {
       if (item.child.includes(c)) {
         num = num + 1
       }
@@ -57,14 +57,14 @@ export const dealData = (data, tempData = {}, parent = null) => {
   if (data.length === 0) {
     return data
   }
-  data.map(item => {
+  data.map((item) => {
     tempData[item.id] = { ...item }
     if (parent) {
       tempData[item.id].parent = parent
     }
     if (item.children && item.children.length > 0) {
       const tempArr = []
-      item.children.map(i => {
+      item.children.map((i) => {
         tempArr.push(i.id)
       })
       tempData[item.id].children = tempArr
@@ -76,9 +76,9 @@ export const dealData = (data, tempData = {}, parent = null) => {
 // 寻找某一节点的父节点
 export const getParentId = (id, data) => {
   let parentId
-  data.forEach(item => {
+  data.forEach((item) => {
     if (item.children) {
-      if (item.children.some(item => item.id === id)) {
+      if (item.children.some((item) => item.id === id)) {
         parentId = item.id
       } else if (getParentId(id, item.children)) {
         parentId = getParentId(id, item.children)
@@ -91,9 +91,10 @@ export const getParentId = (id, data) => {
 // 寻找某一节点的所有子节点
 export const getChildrenIds = (node, arr = []) => {
   if (node.children) {
-    arr = node.children.map(i => i.id).concat(arr)
+    arr = node.children.map((i) => i.id).concat(arr)
+    node.children.forEach((c) => getChildrenIds(c, arr))
   }
-  node.children.forEach(c => getChildrenIds(c, arr))
+
   return arr
 }
 // 寻找某一节点的所有祖先节点
@@ -106,8 +107,13 @@ export const getAncestorIds = (id, data, arr = []) => {
 }
 
 // 收集所有需要展开的节点 id
-export const collectExpandId = (data, searchValue, collection = [], allData) => {
-  data.forEach(item => {
+export const collectExpandId = (
+  data,
+  searchValue,
+  collection = [],
+  allData
+) => {
+  data.forEach((item) => {
     if (searchValue && item.title.includes(searchValue)) {
       const parentIds = getAncestorIds(item.id, allData, [])
       collection.splice(collection.length - 1, 0, ...parentIds)
