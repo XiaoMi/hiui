@@ -1,0 +1,156 @@
+@import '@hi-ui/core-css/index.scss';
+
+$list: 'hi-list' !default;
+$borderColor: #e7e7e7 !default;
+$primary: get-color($palette-primary, 'hiui-blue') !default;
+
+.#{$list} {
+  &-items {
+    margin: 0;
+    padding: 0;
+
+    &__border {
+      border: 1px solid $borderColor;
+      border-bottom: none;
+
+      .hi-list-item {
+        padding-left: 12px;
+      }
+    }
+  }
+
+  &-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px 16px 0;
+    border-bottom: 1px solid $borderColor;
+
+    &__row {
+      display: flex;
+      align-items: flex-start;
+    }
+
+    &-title__content {
+      display: flex;
+      align-items: center;
+    }
+
+    &__title {
+      padding: 0;
+      margin: 0;
+      color: #333;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 400;
+    }
+
+    &__titleTag {
+      height: 18px;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 18px;
+      margin-left: 8px;
+      padding: 0 6px;
+      border-radius: 9px;
+      color: $primary;
+      border: 1px solid $primary;
+    }
+
+    &__desc {
+      color: #333;
+      font-size: 12px;
+      line-height: 20px;
+    }
+
+    &__extra {
+      color: #999;
+      font-size: 12px;
+      line-height: 20px;
+    }
+
+    &__avatar {
+      margin-right: 14px;
+
+      img {
+        width: 72px;
+        height: 72px;
+        display: inline-block;
+      }
+    }
+
+    &__action {
+      color: #333;
+      font-size: 12px;
+      line-height: 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+  }
+
+  &-item__card {
+    border: 1px solid $borderColor;
+    margin-top: 12px;
+    padding: 8px 16px 8px 12px;
+  }
+
+  &-item__colume {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &-item--empty {
+    color: #999;
+    text-align: center;
+    line-height: 88px;
+    list-style: none;
+  }
+
+  &-item__hoverable:hover {
+    box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.08);
+  }
+
+  &-extra-items {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+    }
+  }
+
+  &-extra-item {
+    line-height: 20px;
+
+    &::after {
+      display: inline-block;
+      content: '';
+      width: 1px;
+      height: 10px;
+      margin: 0 12px;
+      background-color: #d8d8d8;
+    }
+
+    &:last-child {
+      &::after {
+        display: inline-block;
+        content: '';
+        width: 0;
+      }
+    }
+  }
+
+  @each $key in 'success', 'danger', 'warning' {
+    &-titleTag__#{$key} {
+      $status-color: map-get(
+        get-palette(get-color($palette-secondary, $key)),
+        '50'
+      );
+
+      border: 1px solid $status-color;
+      color: $status-color;
+    }
+  }
+}

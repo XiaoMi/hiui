@@ -35,6 +35,7 @@ export default {
       select: components['select'],
       cascader: components['cascader'],
       radio: components['radio'],
+      filter: components['filter'],
       checkbox: components['checkbox'],
       switch: components['switch'],
       'date-picker': components['date-picker'],
@@ -53,7 +54,8 @@ export default {
       progress: components['progress'],
       card: components['card'],
       timeline: components['timeline'],
-      carousel: components['carousel']
+      carousel: components['carousel'],
+      list: components['list']
     },
     'group-tips': {
       modal: components['modal'],
