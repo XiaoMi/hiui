@@ -59,7 +59,10 @@ const compile = modules => {
       }
     }))
     .pipe(gulp.dest(modules === false ? esDir : libDir))
-  return merge2([sass, assets, js])
+  const ts = gulp
+    .src(['components/**/*.@(d.ts)'])
+    .pipe(gulp.dest(modules === false ? esDir : libDir))
+  return merge2([sass, assets, js, ts])
 }
 
 gulp.task('compile', () => compile(false))
