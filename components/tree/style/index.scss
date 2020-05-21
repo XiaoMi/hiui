@@ -371,8 +371,7 @@ $tree: 'hi-tree' !default;
     }
 
     &.highlight {
-      color: #fff;
-      background-color: #4285f4;
+      background-color: rgba(66, 133, 245, 0.2);
     }
   }
 
@@ -566,8 +565,7 @@ $tree: 'hi-tree' !default;
       }
 
       &.highlight {
-        color: #fff;
-        background-color: $value;
+        background-color: rgba($value, 0.2);
       }
     }
 
