@@ -185,6 +185,9 @@ class DateRangePanel extends Component {
       case localeDatas.datePicker.lastThreeMonth:
         days = 90
         break
+      case localeDatas.datePicker.lastSixMonth:
+        days = 180
+        break
       case localeDatas.datePicker.lastYear:
         days = 365
         break
