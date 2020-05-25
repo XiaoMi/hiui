@@ -29,7 +29,7 @@ Watermark.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   textAlign: PropTypes.string,
-  font: PropTypes.Number,
+  font: PropTypes.number,
   color: PropTypes.string,
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   rotate: PropTypes.number,
