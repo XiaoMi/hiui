@@ -24,7 +24,7 @@ class SelectDropdown extends Component {
     this.focus()
   }
   focus = () => {
-    this.props.searchable && setTimeout(() => this.searchbar && this.searchbar.focus(), 0)
+    this.props.searchable && setTimeout(() => this.searchbar.focus(), 0)
   }
   onClickOption (e, item, index) {
     e.stopPropagation()
