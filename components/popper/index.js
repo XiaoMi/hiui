@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { render } from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import PopperJS from './Popper'
 import './style/index'
+const {isFixed, setupEventListeners, getOffsetRectRelativeToCustomParent, removeEventListeners, getBoundingClientRect} = new PopperJS()
 
 export default class Popper extends Component {
   container = undefined
@@ -30,13 +32,30 @@ export default class Popper extends Component {
     zIndex: 1060,
     placement: 'bottom-start'
   }
-
+  constructor (props) {
+    super(props)
+    this.state = {
+      offset: this.getOffset(),
+      isAddevent: false,
+      hidden: props.show
+    }
+  }
+  static getDerivedStateFromProps (nextProps) {
+    if (!nextProps.show) {
+      return {
+        hidden: false,
+        isAddevent: false,
+        offset: undefined
+      }
+    }
+    return null
+  }
   componentDidUpdate (prevProps) {
-    if (prevProps.show !== this.props.show || this.props.show) {
+    const {show} = this.props
+    if (prevProps.show !== show || show) {
       render(this.renderChildren(), this.container)
     }
   }
-
   componentDidMount () {
     this.getContainer()
     if (this.props.show) {
@@ -47,6 +66,25 @@ export default class Popper extends Component {
   componentWillUnmount () {
     document.body.removeChild(this.container)
   }
+  scrollCallBack (target) {
+    const {attachEle, show} = this.props
+    // 当前元素和滚动元素
+    const {top, bottom, height} = getOffsetRectRelativeToCustomParent(attachEle, target, true)
+    const parentHeight = getBoundingClientRect(target).height
+
+    if (top + height <= 0 || bottom >= parentHeight + height) {
+      this.setState({
+        hidden: true
+      })
+    } else {
+      show && this.setState({
+        hidden: false
+      })
+    }
+    this.setState({
+      offset: this.getOffset()
+    })
+  }
 
   getOffset () {
     let {
@@ -56,6 +94,7 @@ export default class Popper extends Component {
       width
     } = this.props
     if (!attachEle) return
+
     const rect = attachEle.getBoundingClientRect()
     let top = rect.top + (document.documentElement.scrollTop || document.body.scrollTop)
     let left = rect.left + (document.documentElement.scrollLeft || document.body.scrollLeft)
@@ -161,14 +200,25 @@ export default class Popper extends Component {
       onMouseLeave
     } = this.props
     if (!attachEle) return
-    const offset = this.getOffset()
+
+    const {offset = this.getOffset(), isAddevent, hidden} = this.state
     let width = offset.width
     let left = offset.left + 'px'
     let top = offset.top + 'px'
+    if (show && (!isAddevent) && isFixed(attachEle)) {
+      setupEventListeners(attachEle, this.scrollCallBack.bind(this))
+      this.setState({
+        isAddevent: true
+      })
+    }
+
+    if ((!show) && isAddevent) {
+      removeEventListeners(attachEle)
+    }
 
     return (
       <div
-        className={classNames('hi-popper__container', {'hi-popper__container--hide': !show})}
+        className={classNames('hi-popper__container', {'hi-popper__container--hide': hidden || (!show)})}
         style={{left, top, zIndex}}
       >
         <div
@@ -194,7 +244,6 @@ export default class Popper extends Component {
     container.style.top = '0'
     container.style.left = '0'
     container.style.width = '100%'
-
     document.body.appendChild(container)
 
     this.container = container
