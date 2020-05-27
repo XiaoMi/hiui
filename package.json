@@ -44,6 +44,8 @@
   },
   "dependencies": {
     "@hi-ui/core-css": "^2.0.1",
+    "@popperjs/core": "^2.4.0",
+    "@restart/hooks": "^0.3.25",
     "async-validator": "^1.11.2",
     "axios": "^0.18.0",
     "classnames": "^2.2.5",
