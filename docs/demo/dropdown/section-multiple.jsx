@@ -61,6 +61,7 @@ class Demo extends React.Component {
       <Dropdown
         data={list}
         title='操作'
+        trigger='click'
         width={120}
       />
     )
@@ -68,11 +69,6 @@ class Demo extends React.Component {
 }`
 
 const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ Dropdown }}
-    prefix={prefix}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ Dropdown }} prefix={prefix} desc={desc} />
 )
 export default DemoBase

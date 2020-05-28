@@ -79,15 +79,10 @@ export default class Overlay extends Component {
 
       return {
         isAddevent: false,
-        offset: undefined,
-        container: container
+        offset: undefined
       }
     }
-    if (nextProps.show) {
-    }
-    return {
-      container: container
-    }
+    return null
   }
   componentDidMount () {
     const { container } = this.props
@@ -130,17 +125,28 @@ export default class Overlay extends Component {
     let { attachEle, topGap, leftGap, width, container } = this.props
 
     if (!attachEle) return
-    const { cacheContainerPosition } = this.state
+
     let rect = attachEle.getBoundingClientRect()
+
     if (isFixed(attachEle) || !isBody(container)) {
       rect = getOffsetRectRelativeToCustomParent(
         attachEle,
         container,
-        cacheContainerPosition
+        isFixed(attachEle)
       )
     }
-    let top = rect.top + container.scrollTop
-    let left = rect.left + container.scrollLeft
+
+    let _scrollTop = container.scrollTop
+    let _scrollLeft = container.scrollLeft
+    // 兼容处理
+    if (isBody(container)) {
+      _scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+      _scrollLeft =
+        document.documentElement.scrollLeft || document.body.scrollLeft
+    }
+
+    let top = rect.top + _scrollTop
+    let left = rect.left + _scrollLeft
     width =
       width === false ? undefined : width === undefined ? rect.width : width
     let placement = this.getPlacement(rect, container)
@@ -200,9 +206,15 @@ export default class Overlay extends Component {
     if (!attachEle) return
     let containerHeight =
       document.documentElement.clientHeight || document.body.clientHeight
-    if (isFixed(attachEle)) {
-      containerHeight = container.clientHeight || container.clientHeight
+
+    if (isFixed(attachEle) || !isBody(container)) {
+      containerHeight = container.clientHeight
     }
+    if (isBody(container)) {
+      containerHeight =
+        document.documentElement.clientHeight || document.body.clientHeight
+    }
+
     let poperTop = attachEleRect.top + attachEleRect.height
     const caclPlacement = (bottomPlacement, topPlacement) => {
       // 计算popper在元素上面或下面
@@ -253,7 +265,6 @@ export default class Overlay extends Component {
     let width = offset.width
     let left = offset.left + 'px'
     let top = offset.top + 'px'
-
     return (
       <div
         className={classNames('hi-popper__container', {

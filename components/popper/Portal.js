@@ -6,9 +6,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import useWaitForDOMRef from './useWaitForDOMRef'
-
+const getNodeName = element => {
+  return element ? (element.nodeName || '').toLowerCase() : null
+}
 const Portal = ({ container, children, onRendered }) => {
-  const resolvedContainer = useWaitForDOMRef(container, onRendered)
+  let resolvedContainer = useWaitForDOMRef(container, onRendered)
+  resolvedContainer = ['html', 'body', '#document'].includes(
+    getNodeName(resolvedContainer)
+  )
+    ? document.body
+    : resolvedContainer
 
   return children && resolvedContainer ? (
     <>{ReactDOM.createPortal(children, resolvedContainer)}</>

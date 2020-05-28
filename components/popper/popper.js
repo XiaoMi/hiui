@@ -236,9 +236,10 @@ export default class Popper {
    * @returns {Boolean}
    */
   isFixed = element => {
-    const { getStyleComputedProperty, isFixed } = this
-    if (element === window.document.body) {
-      // body 返回 false
+    const { getStyleComputedProperty, isFixed, getNodeName } = this
+
+    if (['html', 'body', '#document'].includes(getNodeName(element))) {
+      // $FlowFixMe: assume body is always available
       return false
     }
     if (getStyleComputedProperty(element, 'position') === 'fixed') {
@@ -256,7 +257,6 @@ export default class Popper {
    * @argument {String} property 属性
    */
   getStyleComputedProperty = (element, property) => {
-    // getStyleComputedProperty(element, property) {
     // 注：这里会访问 DOM
     const css = window.getComputedStyle(element, null)
     return css[property]
