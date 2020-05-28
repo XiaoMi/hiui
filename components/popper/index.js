@@ -5,13 +5,14 @@ import PopperJS from './popper'
 const { getScrollParent } = new PopperJS()
 
 const Popper = props => {
-  const [container, setContainer] = useState(null)
+  const [container, setContainer] = useState(
+    document.documentElement || document.body
+  )
   const { show, attachEle } = props
   useEffect(() => {
-    let _container = attachEle ? getScrollParent(attachEle) : null
+    const _container = attachEle ? getScrollParent(attachEle) : document.body
     setContainer(_container)
   }, [show, attachEle])
-
   return (
     <Portal container={container}>
       <Overlay {...props} container={container} />

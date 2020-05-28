@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import PopperJS from './Popper'
 import './style/index'
 const {
+  isBody,
   isFixed,
   setupEventListeners,
   removeEventListeners,
@@ -67,21 +68,29 @@ export default class Overlay extends Component {
     if (!nextProps.show) {
       // 删除滚动
       attachEle && isAddevent && removeEventListeners(attachEle)
-      container &&
-        isAddevent &&
-        setStyle(container, { position: cacheContainerPosition })
+      // 判断该元素中是否含有popper
+      setTimeout(() => {
+        if (container.querySelectorAll('.hi-popper__container').length === 0) {
+          container &&
+            isAddevent &&
+            setStyle(container, { position: cacheContainerPosition })
+        }
+      }, 0)
+
       return {
         isAddevent: false,
         offset: undefined,
-        container: container || null
+        container: container
       }
     }
+    if (nextProps.show) {
+    }
     return {
-      container: container || null
+      container: container
     }
   }
   componentDidMount () {
-    const { container } = this.state
+    const { container } = this.props
     this.setState({
       cacheContainerPosition: container
         ? getStyleComputedProperty(container, 'position')
@@ -89,24 +98,18 @@ export default class Overlay extends Component {
     })
   }
   componentDidUpdate () {
-    let { attachEle, show, children } = this.props
+    let { attachEle, show, children, container } = this.props
     if (!(attachEle && show && children)) return
+    const { isAddevent, cacheContainerPosition, popperRef } = this.state
 
-    const {
-      isAddevent,
-      container,
-      cacheContainerPosition,
-      popperRef
-    } = this.state
     if (show && !isAddevent && isFixed(attachEle)) {
       setupEventListeners(attachEle, this.scrollCallBack.bind(this))
       this.setState({
         isAddevent: true
       })
     }
-
     // 如果在一个固定定位的元素里面的话；更改计算方式
-    if (isFixed(attachEle)) {
+    if (isFixed(attachEle) || !isBody(container)) {
       cacheContainerPosition === 'static' &&
         setStyle(container, { position: 'relative' })
     }
@@ -124,16 +127,12 @@ export default class Overlay extends Component {
   }
 
   getOffset = () => {
-    let { attachEle, topGap, leftGap, width } = this.props
+    let { attachEle, topGap, leftGap, width, container } = this.props
 
     if (!attachEle) return
     const { cacheContainerPosition } = this.state
-
-    let container = document.documentElement || document.body
     let rect = attachEle.getBoundingClientRect()
-
-    if (isFixed(attachEle)) {
-      container = this.state.container
+    if (isFixed(attachEle) || !isBody(container)) {
       rect = getOffsetRectRelativeToCustomParent(
         attachEle,
         container,

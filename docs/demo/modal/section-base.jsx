@@ -2,6 +2,8 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Modal from '../../../components/modal'
+import Tooltip from '../../../components/tooltip'
+import Popover from '../../../components/popover'
 import DatePicker from '../../../components/date-picker'
 import Select from '../../../components/select'
 const prefix = 'modal-base'
@@ -66,8 +68,14 @@ class Demo extends React.Component {
             <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
+            <Tooltip title="tooltip top" style={{margin: '0 10px'}}>
+          <Button type="line">Tooltip Top</Button>
+        </Tooltip>
             <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
+            <Popover title={"第三方士大夫"} content={"sdfsdfasdfas"} style={{margin: '10px 10px'}}>
+            <Button type="line">Top & click触发</Button>
+          </Popover>
             <span>一些消息...</span><br/>
             <div style={{display:'flex', flexWrap: 'wrap'}}>
             <Select
@@ -90,6 +98,19 @@ class Demo extends React.Component {
         </div>
           
         </Modal>
+        <div style={{height:'300px',overflow:'scroll'}}>
+          <div style={{height:'600px'}}>
+          <Tooltip title="tooltip top" style={{margin: '0 10px'}} placement="bottom">
+          <Button type="line">Tooltip Top</Button>
+        </Tooltip>
+        <Select
+        type='single'
+        clearable={false}
+        style={{ width: 200 }}
+        data={this.state.data}
+      />
+          </div>
+        </div>
       </div>
     )
   }
@@ -98,7 +119,7 @@ class Demo extends React.Component {
 const DemoBase = () => (
   <DocViewer
     code={code}
-    scope={{ Button, Modal, Select, DatePicker }}
+    scope={{ Button, Modal, Select, DatePicker, Tooltip, Popover }}
     prefix={prefix}
   />
 )

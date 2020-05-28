@@ -170,6 +170,12 @@ export default class Popper {
   getNodeName (element) {
     return element ? (element.nodeName || '').toLowerCase() : null
   }
+  isBody = element => {
+    const { getNodeName } = this
+    return element
+      ? ['html', 'body', '#document'].includes(getNodeName(element))
+      : true
+  }
   /**
    * 返回给定元素用来计算滚动的父元素
    * @function
@@ -182,9 +188,9 @@ export default class Popper {
 
     const { getStyleComputedProperty, getScrollParent, getNodeName } = this
     var parent = element.parentNode
-    if (['html', 'body', '#document'].indexOf(getNodeName(element)) >= 0) {
+    if (['html', 'body', '#document'].includes(getNodeName(element))) {
       // $FlowFixMe: assume body is always available
-      return element.ownerDocument.body
+      return document.documentElement || document.body
     }
     if (!parent) {
       // 没有父级

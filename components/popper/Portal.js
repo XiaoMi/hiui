@@ -1,3 +1,7 @@
+/**
+ * 指定挂载点
+ */
+/* eslint-disable-next-line */
 import React from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
