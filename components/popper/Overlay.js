@@ -68,7 +68,7 @@ export default class Overlay extends Component {
     if (!nextProps.show) {
       // 删除滚动
       attachEle && isAddevent && removeEventListeners(attachEle)
-      // 判断该元素中是否含有popper
+      // 判断该元素中是否含有popper如果有popper在显示  就不要删除定位
       setTimeout(() => {
         if (container.querySelectorAll('.hi-popper__container').length === 0) {
           container &&
