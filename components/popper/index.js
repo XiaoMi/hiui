@@ -1,21 +1,45 @@
 import React, { useState, useEffect } from 'react'
+import { CSSTransition } from 'react-transition-group'
 import Portal from './Portal'
 import Overlay from './Overlay'
 import PopperJS from './popper'
+
+import './style/index'
+
 const { getScrollParent } = new PopperJS()
 // 指定container后  以指定的container为主
 const Popper = props => {
-  const [container, setContainer] = useState(props.container || document.body)
   const { show, attachEle } = props
+  const [transitionShow, setTransitionShow] = useState(show)
+  const [container, setContainer] = useState(props.container || document.body)
+  // const durationShow = () => {
+  //   if (show || !attachEle || !container) {
+  //     setTransitionShow(show)
+  //   } else {
+  //     setTimeout(() => {
+  //       container && setTransitionShow(false)
+  //     }, 200)
+  //   }
+  // }
   useEffect(() => {
     const _container = attachEle ? getScrollParent(attachEle) : document.body
     setContainer(props.container || _container)
+    setTransitionShow(show)
   }, [show, attachEle])
   return (
-    <Portal container={container}>
-      <Overlay {...props} container={container} />
-    </Portal>
+    <CSSTransition
+      in={transitionShow}
+      timeout={200}
+      classNames='hi-popper_transition'
+    >
+      <Portal container={container}>
+        <Overlay
+          {...Object.assign({}, props, { show: transitionShow })}
+          container={container}
+        />
+      </Portal>
+    </CSSTransition>
   )
 }
-
+export { Portal }
 export default Popper

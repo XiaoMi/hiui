@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+
 import PopperJS from './Popper'
 import './style/index'
 const {
@@ -63,9 +64,9 @@ export default class Overlay extends Component {
     }
   }
   static getDerivedStateFromProps (nextProps, prevState) {
-    const { attachEle, container } = nextProps
+    const { attachEle, container, show } = nextProps
     const { isAddevent, cacheContainerPosition } = prevState
-    if (!nextProps.show) {
+    if (!show) {
       // 删除滚动
       attachEle && isAddevent && removeEventListeners(attachEle)
       // 判断该元素中是否含有popper如果有popper在显示  就不要删除定位
