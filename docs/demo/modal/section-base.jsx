@@ -100,8 +100,10 @@ class Demo extends React.Component {
         </Modal>
         <div style={{height:'300px',overflow:'scroll'}}>
           <div style={{height:'600px'}}>
+         
           <Tooltip title="tooltip top" style={{margin: '0 10px'}} placement="bottom">
           <Button type="line">Tooltip Top</Button>
+          
         </Tooltip>
         <Select
         type='single'
@@ -109,6 +111,7 @@ class Demo extends React.Component {
         style={{ width: 200 }}
         data={this.state.data}
       />
+      
           </div>
         </div>
       </div>

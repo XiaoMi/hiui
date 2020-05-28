@@ -1,3 +1,5 @@
+$AnimationClassName :'hi-popper_transition' !default;
+
 .hi-popper__container {
   position: absolute;
 
@@ -47,23 +49,25 @@
   }
 }
 
-.hi-popper_transition-enter {
-  opacity: 0;
-  transform: scale(0.9);
-}
+.#{$AnimationClassName} {
+  &-enter {
+    opacity: 0;
+    transform: scale(0.9);
+  }
 
-.hi-popper_transition-enter-active {
-  opacity: 1;
-  transform: translateX(0);
-  transition: opacity 300ms, transform 300ms;
-}
+  &-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 300ms, transform 300ms;
+  }
 
-.hi-popper_transition-exit {
-  opacity: 1;
-}
+  &-exit {
+    opacity: 1;
+  }
 
-.hi-popper_transition-exit-active {
-  opacity: 0;
-  transform: scale(0.9);
-  transition: opacity 300ms, transform 300ms;
+  &-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 300ms, transform 300ms;
+  }
 }

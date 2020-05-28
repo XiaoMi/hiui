@@ -7,6 +7,11 @@ import PopperJS from './popper'
 import './style/index'
 
 const { getScrollParent } = new PopperJS()
+const AnimationClassName = 'hi-popper_transition'
+/**
+ *
+ * preventOverflow 防止溢出
+ */
 // 指定container后  以指定的container为主
 const Popper = props => {
   const { show, attachEle } = props
@@ -21,6 +26,7 @@ const Popper = props => {
   //     }, 200)
   //   }
   // }
+  const preventOverflow = true
   useEffect(() => {
     const _container = attachEle ? getScrollParent(attachEle) : document.body
     setContainer(props.container || _container)
@@ -30,12 +36,13 @@ const Popper = props => {
     <CSSTransition
       in={transitionShow}
       timeout={200}
-      classNames='hi-popper_transition'
+      classNames={AnimationClassName}
     >
       <Portal container={container}>
         <Overlay
           {...Object.assign({}, props, { show: transitionShow })}
           container={container}
+          preventOverflow={preventOverflow}
         />
       </Portal>
     </CSSTransition>

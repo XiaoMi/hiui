@@ -98,7 +98,7 @@ export default class Overlay extends Component {
     if (!(attachEle && show && children)) return
     const { isAddevent, cacheContainerPosition, popperRef } = this.state
 
-    if (show && !isAddevent && isFixed(attachEle)) {
+    if (show && !isAddevent && (isFixed(attachEle) || !isBody(container))) {
       setupEventListeners(attachEle, this.scrollCallBack.bind(this))
       this.setState({
         isAddevent: true
@@ -117,13 +117,14 @@ export default class Overlay extends Component {
   }
 
   scrollCallBack = () => {
+    console.log('滚动事件')
     this.setState({
       offset: this.getOffset()
     })
   }
 
   getOffset = () => {
-    let { attachEle, topGap, leftGap, width, container } = this.props
+    let { attachEle, topGap, leftGap, width, container, preventOverflow } = this.props
 
     if (!attachEle) return
 
@@ -193,6 +194,18 @@ export default class Overlay extends Component {
         left = left + rect.width + leftGap
         break
     }
+    // 防止溢出的算法
+    console.log('top', top, left, rect, _scrollTop)
+
+    if (preventOverflow) {
+      return {
+        top: _scrollTop - rect.height >= 0 ? _scrollTop + top - rect.height : top,
+        width,
+        left,
+        placement
+      }
+    }
+
     return {
       width,
       top,
