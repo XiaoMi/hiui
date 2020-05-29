@@ -642,8 +642,9 @@ class Select extends Component {
           zIndex={1050}
           topGap={5}
           leftGap={0}
+          preventOverflow={this.props.preventOverflow}
           className="hi-select__popper"
-          placement="top-bottom-start"
+          placement={this.props.placement || "top-bottom-start"}
         >
           {dropdownShow && this.props.open && (
             <SelectDropdown

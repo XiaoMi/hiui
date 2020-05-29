@@ -98,7 +98,8 @@ class Demo extends React.Component {
             clearable={false}
             style={{ width: 200 }}
             data={this.state.data}
-            optionWidth='500'
+            placeholder="防止溢出"
+            preventOverflow
           />
             </div>
             <span>一些消息...</span><br/>
@@ -189,17 +190,17 @@ class Demo extends React.Component {
           <span>一些消息...</span><br/>
           <span>一些消息...</span><br/>
           <span>一些消息...</span><br/>
-          <Tooltip title="tooltip top" style={{margin: '0 10px'}} placement="bottom">
+          <span>一些消息...</span><span>一些消息...</span><span>一些消息...</span><span>一些消息...</span><Tooltip title="tooltip top" style={{margin: '0 10px'}} placement="bottom">
             <Button type="line">Tooltip Top</Button> 
           </Tooltip>
-          <Select
+          <span>一些消息....</span> <span>一些消息....</span><Select
             type='single'
             clearable={false}
+            placeholder="自动翻转"
             style={{ width: 200 }}
             data={this.state.data}
-            optionWidth={500}
-
-          />
+            placement={'auto'}
+          /> <span>一些消息....</span> <span>一些消息....</span><span>一些消息...</span><span>一些消息...</span>
           <span>一些消息....</span><br/>
             <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>

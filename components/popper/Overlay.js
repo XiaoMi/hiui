@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import PopperJS from './Popper'
+import {getOffset} from './positionUtils'
 import './style/index'
 const {
   isBody,
@@ -10,8 +11,7 @@ const {
   setupEventListeners,
   removeEventListeners,
   setStyle,
-  getStyleComputedProperty,
-  getOffsetRectRelativeToCustomParent
+  getStyleComputedProperty
 } = new PopperJS()
 
 export default class Overlay extends Component {
@@ -30,6 +30,7 @@ export default class Overlay extends Component {
     leftGap: PropTypes.number,
     zIndex: PropTypes.number,
     placement: PropTypes.oneOf([
+      'auto', // 会计算最合适的位置
       'bottom',
       'bottom-start',
       'bottom-end',
@@ -125,170 +126,10 @@ export default class Overlay extends Component {
   }
 
   scrollCallBack = () => {
+    const {props, state} = this
     this.setState({
-      offset: this.getOffset()
+      offset: getOffset(props, state)
     })
-  }
-
-  getOffset = () => {
-    let { attachEle, topGap, leftGap, width, container, preventOverflow } = this.props
-
-    if (!attachEle) return
-    const {popperHeight} = this.state
-    let rect = attachEle.getBoundingClientRect()
-
-    if (isFixed(attachEle) || !isBody(container)) {
-      rect = getOffsetRectRelativeToCustomParent(
-        attachEle,
-        container,
-        isFixed(attachEle)
-      )
-    }
-
-    let _scrollTop = container.scrollTop
-    let _scrollLeft = container.scrollLeft
-    // 兼容处理
-    if (isBody(container)) {
-      _scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-      _scrollLeft =
-        document.documentElement.scrollLeft || document.body.scrollLeft
-    }
-
-    let top = rect.top + _scrollTop
-    let left = rect.left + _scrollLeft
-    width =
-      width === false ? undefined : width === undefined ? rect.width : width
-    let placement = this.getPlacement(rect, container)
-    switch (placement) {
-      case 'bottom':
-        top = top + topGap + rect.height
-        left = left + leftGap + rect.width / 2
-        break
-      case 'bottom-start':
-        top = top + topGap + rect.height
-        left = left + leftGap
-        break
-      case 'bottom-end':
-        top = top + topGap + rect.height
-        left = left + leftGap - width + rect.width
-        break
-      case 'top':
-        top = top - topGap
-        left = left + leftGap + rect.width / 2
-        break
-      case 'top-start':
-        top = top - topGap
-        left = left + leftGap
-        break
-
-      case 'top-end':
-        top = top - topGap
-        left = left + leftGap - width + rect.width
-        break
-
-      case 'left':
-        top = top + rect.height / 2
-        left = left - leftGap
-        break
-      case 'left-start':
-        top = top + topGap
-        left = left - rect.width
-        break
-      case 'left-end':
-        top = top + rect.height - topGap - popperHeight
-        left = left - rect.width
-        break
-
-      case 'right':
-        top = top + rect.height / 2
-        left = left + rect.width + leftGap
-        break
-      case 'right-start':
-        top = top + topGap
-        left = left + rect.width + leftGap
-        break
-      case 'right-end':
-        top = top + rect.height - topGap - popperHeight
-        left = left + rect.width + leftGap
-        break
-    }
-
-    if (preventOverflow) {
-      return this.overflowOffset(placement, _scrollTop, rect, top, left, width)
-    }
-
-    return {
-      width,
-      top,
-      left,
-      placement
-    }
-  }
-  // 上下防止溢出
-  overflowOffset (placement, scrollTop, rect, top, left, width) {
-    let { topGap, container } = this.props
-    let _top = top
-    switch (placement) {
-      case 'bottom-start':
-        _top = rect.top + rect.height + topGap <= 0 ? scrollTop + topGap : top
-        break
-      case 'top-start':
-        if (container.clientHeight + rect.height - rect.bottom <= 0) {
-          _top = top - (rect.top - container.clientHeight)
-        }
-        break
-    }
-    return {
-      top: _top,
-      width,
-      left,
-      placement
-    }
-  }
-  getPlacement (attachEleRect, container) {
-    let { attachEle, placement, height } = this.props
-
-    if (!attachEle) return
-    let containerHeight =
-      document.documentElement.clientHeight || document.body.clientHeight
-
-    if (isFixed(attachEle) || !isBody(container)) {
-      containerHeight = container.clientHeight
-    }
-    if (isBody(container)) {
-      containerHeight =
-        document.documentElement.clientHeight || document.body.clientHeight
-    }
-
-    let poperTop = attachEleRect.top + attachEleRect.height
-    const caclPlacement = (bottomPlacement, topPlacement) => {
-      // 计算popper在元素上面或下面
-      placement = bottomPlacement
-      this.popperHeight === undefined && (this.popperHeight = 0) // 自动探测边界，第一次时需设置为不可见，否则会闪跳,用来设置class hi-popper__content--hide
-      if (this.popperRef || height) {
-        // 元素已挂载到dom且当前popper处于显示状态
-        if (height) {
-          this.popperHeight = height
-        } else if (
-          this.popperRef.clientHeight &&
-          this.popperHeight !== this.popperRef.clientHeight
-        ) {
-          this.popperHeight = this.popperRef.clientHeight
-        }
-        poperTop += this.popperHeight
-        if (poperTop >= containerHeight) {
-          placement = topPlacement
-        }
-      }
-    }
-
-    if (placement === 'top-bottom-start') {
-      caclPlacement('bottom-start', 'top-start')
-    } else if (placement === 'top-bottom') {
-      caclPlacement('bottom', 'top')
-    }
-
-    return placement
   }
 
   render () {
@@ -306,7 +147,7 @@ export default class Overlay extends Component {
     } = this.props
 
     if (!(attachEle && show && children)) return null
-    const { offset = this.getOffset() } = this.state
+    const { offset = getOffset(this.props, this.state) } = this.state
     let width = offset.width
     let left = offset.left + 'px'
     let top = offset.top + 'px'

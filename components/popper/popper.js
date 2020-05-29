@@ -360,4 +360,12 @@ export default class Popper {
     // 更新回调摄者为空
     this.scrollCallback = null
   }
+  /**
+   * 防止overlay的合适的位置位置  在auto时候有效
+   * @method
+   * @memberof Popper
+   * @ignore
+   * @argument {Eement} element 给定的元素
+   * @argument {String} property 属性
+   */
 }
