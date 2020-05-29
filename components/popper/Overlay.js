@@ -117,7 +117,6 @@ export default class Overlay extends Component {
   }
 
   scrollCallBack = () => {
-    console.log('滚动事件')
     this.setState({
       offset: this.getOffset()
     })
@@ -194,16 +193,9 @@ export default class Overlay extends Component {
         left = left + rect.width + leftGap
         break
     }
-    // 防止溢出的算法
-    console.log('top', top, left, rect, _scrollTop)
 
     if (preventOverflow) {
-      return {
-        top: _scrollTop - rect.height >= 0 ? _scrollTop + top - rect.height : top,
-        width,
-        left,
-        placement
-      }
+      return this.overflowOffset(placement, _scrollTop, rect, top, left, width)
     }
 
     return {
@@ -213,7 +205,27 @@ export default class Overlay extends Component {
       placement
     }
   }
-
+  // 上下防止溢出
+  overflowOffset (placement, scrollTop, rect, top, left, width) {
+    let { topGap, container } = this.props
+    let _top = top
+    switch (placement) {
+      case 'bottom-start':
+        _top = rect.top + rect.height + topGap <= 0 ? scrollTop + topGap : top
+        break
+      case 'top-start':
+        if (container.clientHeight + rect.height - rect.bottom <= 0) {
+          _top = top - (rect.top - container.clientHeight)
+        }
+        break
+    }
+    return {
+      top: _top,
+      width,
+      left,
+      placement
+    }
+  }
   getPlacement (attachEleRect, container) {
     let { attachEle, placement, height } = this.props
 

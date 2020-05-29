@@ -42,8 +42,23 @@ class Demo extends React.Component {
           onConfirm={this.cancelEvent.bind(this)}
           onCancel={this.cancelEvent.bind(this)}
         >
-        <div style={{height: '200px',overflow:'auto'}} ref={this.textInput}>
+        <div style={{height: '400px',overflow:'auto'}} ref={this.textInput}>
             <span>一些消息....</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息....</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
@@ -92,26 +107,126 @@ class Demo extends React.Component {
             <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
+            <span>一些消息....</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
             <span>一些消息...</span><br/>
         </div>
           
         </Modal>
-        <div style={{height:'300px',overflow:'scroll'}}>
-          <div style={{height:'600px'}}>
-         
+        <div style={{height:'300px',width:'500px',overflow:'scroll'}}>
+          <div style={{height:'600px',width:'2000px'}}>
+          <span>一些消息....</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息....</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/><span>一些消息....</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/><span>一些消息....</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
+          <span>一些消息...</span><br/>
           <Tooltip title="tooltip top" style={{margin: '0 10px'}} placement="bottom">
-          <Button type="line">Tooltip Top</Button>
-          
-        </Tooltip>
-        <Select
-        type='single'
-        clearable={false}
-        style={{ width: 200 }}
-        data={this.state.data}
-      />
-      
+            <Button type="line">Tooltip Top</Button> 
+          </Tooltip>
+          <Select
+            type='single'
+            clearable={false}
+            style={{ width: 200 }}
+            data={this.state.data}
+          />
+          <span>一些消息....</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息....</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
+            <span>一些消息...</span><br/>
           </div>
         </div>
       </div>

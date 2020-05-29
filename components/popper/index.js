@@ -9,23 +9,14 @@ import './style/index'
 const { getScrollParent } = new PopperJS()
 const AnimationClassName = 'hi-popper_transition'
 /**
- *
+ * container 以指定的container为主
  * preventOverflow 防止溢出
  */
-// 指定container后  以指定的container为主
 const Popper = props => {
   const { show, attachEle } = props
   const [transitionShow, setTransitionShow] = useState(show)
   const [container, setContainer] = useState(props.container || document.body)
-  // const durationShow = () => {
-  //   if (show || !attachEle || !container) {
-  //     setTransitionShow(show)
-  //   } else {
-  //     setTimeout(() => {
-  //       container && setTransitionShow(false)
-  //     }, 200)
-  //   }
-  // }
+
   const preventOverflow = true
   useEffect(() => {
     const _container = attachEle ? getScrollParent(attachEle) : document.body
