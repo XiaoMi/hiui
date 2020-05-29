@@ -190,7 +190,6 @@ export const getOffset = (props, state) => {
       left = left + rect.width + leftGap
       break
   }
-  console.log(placement, _scrollTop, rect, top, left, width, props)
   if (preventOverflow) {
     return overflowOffset(placement, _scrollTop, rect, top, left, width, props)
   }
