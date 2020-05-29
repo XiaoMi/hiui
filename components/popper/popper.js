@@ -67,11 +67,9 @@ export default class Popper {
     // 获取 popper 的大小
     //
     var popperRect = getOuterSizes(popper)
-
     //
     // 计算 popper 的偏移
     //
-
     // 根据 popper 放置位置的不同，我们用不同的方法计算
     if (['right', 'left'].indexOf(placement) !== -1) {
       // 如果在水平方向，应当和相关元素垂直居中对齐

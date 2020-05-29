@@ -32,18 +32,25 @@ export default class Overlay extends Component {
     placement: PropTypes.oneOf([
       'bottom',
       'bottom-start',
+      'bottom-end',
       'top',
       'top-start',
+      'top-end',
       'left',
+      'left-start',
+      'left-end',
       'right',
       'right-start',
+      'right-end',
       'top-bottom-start',
       'top-bottom'
     ]),
     onMouseOver: PropTypes.func,
     onMouseOut: PropTypes.func,
     onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func
+    onMouseLeave: PropTypes.func,
+    container: PropTypes.any,
+    preventOverflow: PropTypes.bool // 防止溢出  top bottom
   }
 
   static defaultProps = {
@@ -111,7 +118,8 @@ export default class Overlay extends Component {
     }
     if (!popperRef) {
       this.setState({
-        popperRef: this.popperRef
+        popperRef: this.popperRef,
+        popperHeight: this.popperRef.clientHeight
       })
     }
   }
@@ -126,7 +134,7 @@ export default class Overlay extends Component {
     let { attachEle, topGap, leftGap, width, container, preventOverflow } = this.props
 
     if (!attachEle) return
-
+    const {popperHeight} = this.state
     let rect = attachEle.getBoundingClientRect()
 
     if (isFixed(attachEle) || !isBody(container)) {
@@ -151,7 +159,6 @@ export default class Overlay extends Component {
     width =
       width === false ? undefined : width === undefined ? rect.width : width
     let placement = this.getPlacement(rect, container)
-
     switch (placement) {
       case 'bottom':
         top = top + topGap + rect.height
@@ -183,6 +190,14 @@ export default class Overlay extends Component {
         top = top + rect.height / 2
         left = left - leftGap
         break
+      case 'left-start':
+        top = top + topGap
+        left = left - rect.width
+        break
+      case 'left-end':
+        top = top + rect.height - topGap - popperHeight
+        left = left - rect.width
+        break
 
       case 'right':
         top = top + rect.height / 2
@@ -190,6 +205,10 @@ export default class Overlay extends Component {
         break
       case 'right-start':
         top = top + topGap
+        left = left + rect.width + leftGap
+        break
+      case 'right-end':
+        top = top + rect.height - topGap - popperHeight
         left = left + rect.width + leftGap
         break
     }

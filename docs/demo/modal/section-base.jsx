@@ -98,6 +98,7 @@ class Demo extends React.Component {
             clearable={false}
             style={{ width: 200 }}
             data={this.state.data}
+            optionWidth='500'
           />
             </div>
             <span>一些消息...</span><br/>
@@ -196,6 +197,8 @@ class Demo extends React.Component {
             clearable={false}
             style={{ width: 200 }}
             data={this.state.data}
+            optionWidth={500}
+
           />
           <span>一些消息....</span><br/>
             <span>一些消息...</span><br/>
