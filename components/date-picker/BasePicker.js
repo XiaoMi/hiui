@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
-import Modal from './Modal'
+
+import Popper from '../popper'
 import classNames from 'classnames'
 import {formatterDate, FORMATS} from './constants'
-import {showLargeCalendar} from './util'
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
@@ -22,6 +22,7 @@ class BasePicker extends Component {
       format: this.getFormatString(props)
     }
     this.inputRoot = React.createRef()
+    this.popperContent = React.createRef()
     this.input = null
     this.rInput = null
   }
@@ -57,40 +58,19 @@ class BasePicker extends Component {
       rightPlaceholder
     })
   }
+  handleOutside = e => {
+    if (this.popperContent.current) {
+      !this.popperContent.current.contains(e.target) && this.setState({showPanel: false})
+    }
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener('mousedown', this.handleOutside)
+  }
   componentDidMount () {
     this._parseProps(this.props)
     this.setPlaceholder()
-    let rect = this.inputRoot.current.getBoundingClientRect()
-    this.calcPanelPos(rect)
-  }
-  calcPanelPos (rect) {
-    const {showTime, type} = this.props
-    let _w = type.indexOf('range') !== -1 ? 578 : 288
-    let _h = 298
-    if (type === 'daterange' && showTime) {
-      _h = 344
-    }
-    if (showLargeCalendar(this.props)) {
-      _h = 440
-    }
-    const _cw = document.documentElement.clientWidth || document.body.clientWidth
-    const _ch = document.documentElement.clientHeight || document.body.clientHeight
-    const _st = document.documentElement.scrollTop || document.body.scrollTop
-    let {left, width, top, height} = rect
-    let _top = rect.top + rect.height + _st + 4
-    if (left + _w > _cw) {
-      left = left + width - _w
-    }
-    if (top + _h + height > _ch) {
-      _top = top - _h + _st - 4
-    }
-    this.setState({
-      style: {
-        position: 'absolute',
-        left: left,
-        top: _top
-      }
-    })
+    document.addEventListener('mousedown', this.handleOutside)
   }
   componentWillReceiveProps (nextProps) {
     if (nextProps.value !== this.props.value) {
@@ -255,7 +235,6 @@ class BasePicker extends Component {
             showPanel: true,
             isFocus: true
           })
-          this.calcPanelPos(this.inputRoot.current.getBoundingClientRect())
         }}
         value={text}
       />
@@ -278,7 +257,6 @@ class BasePicker extends Component {
       ? <span className={iconCls} onClick={this._clear.bind(this)} />
       : <span className={iconCls} onClick={(e) => {
         if (this.props.disabled) return
-        this.calcPanelPos(this.inputRoot.current.getBoundingClientRect())
         this.setState({showPanel: true, isFocus: true})
       }} />
   }
@@ -358,18 +336,29 @@ class BasePicker extends Component {
     )
   }
   render () {
-    const {type, showTime, width} = this.props
+    const {type, width, preventOverflow, placement} = this.props
+    const {showPanel} = this.state
     return (
       <span ref={this.inputRoot} className='hi-datepicker__input-root' style={{width: width}}>
         {
           (type.indexOf('range') !== -1 || type === 'timeperiod') ? this.renderRangeInput() : this.renderNormalInput()
         }
         {
-          this.state.showPanel ? (
-            <Modal clickOutSide={this.clickOutSide.bind(this)} showTime={showTime}>
-              {this.initPanel(this.state, this.props)}
-            </Modal>
-          ) : null
+          <Popper
+            show={showPanel}
+            attachEle={this.inputRoot.current}
+            zIndex={1050}
+            topGap={5}
+            leftGap={0}
+            width={false}
+            preventOverflow={preventOverflow}
+            className='hi-datePicker__popper'
+            placement={placement || 'top-bottom-start'}
+          >
+            <div ref={this.popperContent}>
+              {this.initPanel(this.state, this.props, this.inputRoot) }
+            </div>
+          </Popper>
         }
       </span>
     )

@@ -277,6 +277,7 @@ class DatePanel extends Component {
     }
     return component
   }
+
   render () {
     const { date, currentView } = this.state
     const { theme, showTime, type, timeInterval } = this.props
@@ -287,8 +288,9 @@ class DatePanel extends Component {
       type === 'timeperiod' && 'hi-datepicker__body--period',
       showLargeCalendar(this.props) && 'hi-datepicker__body--large'
     )
+
     return (
-      <div style={this.props.style} className={_c}>
+      <div className={_c}>
         <div className={bodyCls}>
           <div className='hi-datepicker__panel hi-datepicker__panel--left'>
             {currentView !== 'time' && this.renderHeader(currentView, date)}

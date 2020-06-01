@@ -25,7 +25,7 @@ class TimePanel extends Component {
   render () {
     let { localeDatas, date, type, format } = this.props
     return (
-      <div className='hi-timepicker' style={this.state.style}>
+      <div className='hi-timepicker'>
         <Time
           {...this.props}
           format={format || 'HH:mm:ss'}

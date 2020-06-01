@@ -77,7 +77,7 @@ class DatePicker extends BasePicker {
     })
     return Object.assign(allPRCDate, allData)
   }
-  initPanel (state, props) {
+  initPanel (state, props, attachEle) {
     let component = null
     let d = state.date
     switch (props.type) {
