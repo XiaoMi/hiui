@@ -92,7 +92,7 @@ export default class DropdownMenuItem extends React.Component {
         className={itemCls}
         ref={this.refItem}
         onMouseEnter={this.handleMenuItemMouseEnter}
-        // onMouseLeave={this.handleMenuItemMouseLeave}
+        onMouseLeave={this.handleMenuItemMouseLeave}
         href={href}
         disabled={disabled}
         onClick={this.handleMenuItemClick}

@@ -61,7 +61,6 @@ class Demo extends React.Component {
       <Dropdown
         data={list}
         title='操作'
-        trigger='click'
         width={120}
       />
     )
