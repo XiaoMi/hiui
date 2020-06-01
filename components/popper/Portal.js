@@ -5,7 +5,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import useWaitForDOMRef from './useWaitForDOMRef'
+import useWaitForDOMRef from './utils/useWaitForDOMRef'
 const getNodeName = element => {
   return element ? (element.nodeName || '').toLowerCase() : null
 }

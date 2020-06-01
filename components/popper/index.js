@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import Portal from './Portal'
 import Overlay from './Overlay'
-import PopperJS from './popper'
+import PopperJS from './utils/popper'
 
 import './style/index'
 
@@ -18,16 +18,9 @@ const Popper = props => {
     setContainer(props.container || _container)
   }, [show, attachEle])
   return (
-    <CSSTransition
-      in={show}
-      timeout={200}
-      classNames={AnimationClassName}
-    >
+    <CSSTransition in={show} timeout={200} classNames={AnimationClassName}>
       <Portal container={container}>
-        <Overlay
-          {...props}
-          container={container}
-        />
+        <Overlay {...props} container={container} />
       </Portal>
     </CSSTransition>
   )

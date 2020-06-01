@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import PopperJS from './Popper'
-import {getOffset} from './positionUtils'
+import { getOffset } from './utils/positionUtils'
 import './style/index'
 const {
   isBody,
@@ -44,7 +44,9 @@ export default class Overlay extends Component {
       'right-start',
       'right-end',
       'top-bottom-start',
-      'top-bottom'
+      'top-bottom',
+      'left-right',
+      'left-right-start'
     ]),
     onMouseOver: PropTypes.func,
     onMouseOut: PropTypes.func,
@@ -126,7 +128,7 @@ export default class Overlay extends Component {
   }
 
   scrollCallBack = () => {
-    const {props, state} = this
+    const { props, state } = this
     this.setState({
       offset: getOffset(props, state)
     })
