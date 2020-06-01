@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import PopperJS from './Popper'
+import PopperJS from './utils/popper'
 import { getOffset } from './utils/positionUtils'
 import './style/index'
 const {
