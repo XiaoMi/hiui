@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
+import CustomCharacter from './CustomCharacter'
 import * as Icons from './Icons'
 import ToolTip from '../tooltip'
-
+/**
+ * renderCharacter 自定义渲染 character 函数
+ * character  自定义字符
+ * color
+ */
 class Rate extends Component {
   constructor (props) {
     super(props)
@@ -24,7 +29,7 @@ class Rate extends Component {
     value: 0,
     hoverValue: 0
   }
-  renderIcon = (idx) => {
+  renderIcon = idx => {
     const { useEmoji, allowHalf, disabled } = this.props
     const { value, hoverValue } = this.state
     let currentValue = hoverValue || value
@@ -35,7 +40,7 @@ class Rate extends Component {
       <Icon {...{ value: idx, currentValue, disabled, useEmoji, allowHalf }} />
     )
   }
-  handleIconClick = (value) => {
+  handleIconClick = value => {
     const { allowHalf, clearable, onChange, disabled } = this.props
     if (disabled) {
       return
@@ -53,7 +58,7 @@ class Rate extends Component {
     onChange && onChange(value)
     this.setState({ value })
   }
-  handleIconEnter = (hoverValue) => {
+  handleIconEnter = hoverValue => {
     if (this.props.disabled) {
       return
     }
@@ -73,7 +78,11 @@ class Rate extends Component {
       useEmoji,
       prefixCls,
       tooltips,
-      disabled
+      disabled,
+      character = 'A',
+      defaultValue,
+      allowHalf,
+      value: _value
     } = this.props
     const iconCount = Math.ceil(useEmoji ? 5 : count)
     const iconHalfCls = `${prefixCls}__star__half`
@@ -91,7 +100,16 @@ class Rate extends Component {
           .map((_, idx) => {
             const value = idx + 1
             const halfValue = idx + 0.5
-            return (
+            return character ? (
+              <CustomCharacter
+                value={_value}
+                halfValue={halfValue}
+                defaultValue={defaultValue}
+                allowHalf={allowHalf}
+                idx={idx}
+                key={idx}
+              />
+            ) : (
               <ToolTipWrapper title={tooltips[idx]} key={idx}>
                 <li className={starCls}>
                   <div

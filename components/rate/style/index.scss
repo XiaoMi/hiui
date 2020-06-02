@@ -61,4 +61,47 @@
       height: 100%;
     }
   }
+
+  &-customCharacter {
+    position: relative;
+    display: inline-block;
+    font-size: 30px;
+    color: #fa0;
+    cursor: pointer;
+    margin-right: 6px;
+
+    &-before {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      opacity: 0;
+      z-index: 1;
+    }
+
+    &-after {
+      color: inherit;
+      filter: grayscale(1);
+    }
+  }
+
+  &-customCharacter-half {
+    .hi-rate-customCharacter-before {
+      opacity: 1;
+    }
+
+    .hi-rate-customCharacter-after {
+      filter: grayscale(1);
+    }
+  }
+
+  &-customCharacter-full {
+    .hi-rate-customCharacter-before {
+      opacity: 1;
+    }
+
+    .hi-rate-customCharacter-after {
+      filter: none;
+    }
+  }
 }
