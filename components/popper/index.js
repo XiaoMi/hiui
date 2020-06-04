@@ -3,6 +3,7 @@ import { CSSTransition } from 'react-transition-group'
 import Portal from './Portal'
 import Overlay from './Overlay'
 import PopperJS from './utils/popper'
+import useClickOutside from './utils/useClickOutside'
 
 import './style/index'
 
@@ -25,5 +26,5 @@ const Popper = props => {
     </CSSTransition>
   )
 }
-export { Portal }
+export { Portal, useClickOutside }
 export default Popper
