@@ -45,7 +45,7 @@ const CustomCharacter = props => {
         onMouseLeave={() => handleIconLeave('before')}
         onClick={() => handleIconClick('before')}
       >
-        A
+        😈
       </div>
       <div
         className={`${prefixCls}-after`}
@@ -53,7 +53,7 @@ const CustomCharacter = props => {
         onMouseLeave={() => handleIconLeave('after')}
         onClick={() => handleIconClick('after')}
       >
-        A
+        😈
       </div>
     </li>
   )
