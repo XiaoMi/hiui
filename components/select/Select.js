@@ -11,7 +11,6 @@ import Provider from '../context'
 import fetchJsonp from 'fetch-jsonp'
 import qs from 'qs'
 import _ from 'lodash'
-
 class Select extends Component {
   autoloadFlag = true // 第一次自动加载数据标识
 
