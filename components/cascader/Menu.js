@@ -29,7 +29,10 @@ class Menu extends Component {
       onSelect,
       isFiltered,
       filterOptionWidth,
-      theme
+      theme,
+      trigger,
+      onHoverSelect,
+      onHoverClick
     } = this.props
     const root = this.root()
     const menus = []
@@ -66,11 +69,20 @@ class Menu extends Component {
                     'hi-cascader-menu__item-expanded': hasChildren,
                     'hi-cascader-menu__item-disabled': !!option.disabled,
                     'hi-cascader-menu__item-active': currentValue === optionValue
-                  }
-                  )}
+                  })}
+                  onMouseEnter={(e) => {
+                    if (trigger === 'hover') {
+                      e.stopPropagation()
+                      !option.disabled && onHoverSelect(optionValues, hasChildren)
+                    }
+                  }}
                   onClick={(e) => {
                     e.stopPropagation()
-                    !option.disabled && onSelect(optionValues, hasChildren)
+                    if (trigger === 'click') {
+                      !option.disabled && onSelect(optionValues, hasChildren)
+                    } else {
+                      !option.disabled && onHoverClick(optionValues, hasChildren)
+                    }
                   }}
                   key={optionValue + index}
                 >

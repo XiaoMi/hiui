@@ -39,7 +39,8 @@ class Cascader extends Component {
     disabled: false,
     changeOnSelect: false,
     onActiveItemChange: () => {},
-    onChange: () => {}
+    onChange: () => {},
+    trigger: 'click'
   }
 
   constructor (props) {
@@ -168,6 +169,28 @@ class Cascader extends Component {
         this.hidePopper()
       }
     })
+  }
+
+  onHoverSelect = (value) => {
+    this.setState({
+      filterOptions: false,
+      keyword: '',
+      cascaderValue: value
+    })
+  }
+
+  onHoverClick = (value, hasChildren) => {
+    const { onChange, changeOnSelect } = this.props
+    if (changeOnSelect || !hasChildren) {
+      this.setState(
+        {
+          cacheValue: value,
+          cascaderLabel: this.getCascaderLabel(value)
+        },
+        () => onChange(value)
+      )
+      this.hidePopper()
+    }
   }
 
   onKeywordChange () {
@@ -350,7 +373,8 @@ class Cascader extends Component {
       searchable,
       clearable,
       style,
-      theme
+      theme,
+      trigger
     } = this.props
     const {
       cascaderValue,
@@ -406,7 +430,10 @@ class Cascader extends Component {
             theme={theme}
             isFiltered={filterOptions}
             filterOptionWidth={this.hiCascader.current && this.hiCascader.current.clientWidth}
-            onSelect={this.onChangeValue.bind(this)}
+            onSelect={this.onChangeValue}
+            onHoverSelect={this.onHoverSelect}
+            onHoverClick={this.onHoverClick}
+            trigger={trigger}
           />
         </Popper>
       </div>
