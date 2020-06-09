@@ -79,15 +79,11 @@ const useCheckable = ({ defaultCheckedId, checkedId, onCheck, data, flatData }) 
         checkedIds = checkedIds.filter((id) => id !== checkedNode.id)
       }
 
-      // if (!checkedId) {
-      //   setCheckedId(
-      //     checked
-      //       ? _checkedId.concat((id) => id === checkedNode.id)
-      //       : _checkedId.filter((id) => id === checkedNode.id)
-      //   )
-      // }
+      if (!checkedId) {
+        setCheckedId(checkedIds)
+      }
       if (onCheck) {
-        onCheck(checkedNode)
+        onCheck({ checkedIds, semiCheckedIds }, { checked, ...checkedNode })
       }
     },
     [checkedId, _checkedId, flatData, data]
