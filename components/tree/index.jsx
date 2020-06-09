@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React from 'react'
 import { Input } from '../input'
 import TreeNode from './TreeNode'
 import TreeContext from './context'
 import './style/index.scss'
-import { getSemiChecked, getChildrenIds, getAncestorIds, findNode } from './util'
 import useFlatData from './hooks/useFlatData'
 import useSelect from './hooks/useSelect'
+import useCheckable from './hooks/useCheckable'
 
 const PREFIX = 'hi-editor-tree'
 
@@ -33,11 +33,8 @@ const Tree = ({
     onSelect
   })
 
-  // 多选逻辑
-  const [checkedNodes, setCheckedNodes] = useState({
-    checked: [],
-    semiChecked: []
-  })
+  const [{checkedNodes, semiCheckedIds}, onCheckNode] = useCheckable({defaultCheckedIds, checkedIds, onCheck, data, flatData})
+  console.log('>>>>>>2', checkedNodes, semiCheckedIds)
 
   return (
     <TreeContext.Provider
@@ -45,13 +42,14 @@ const Tree = ({
         treeNodeRender,
         checkable,
         checkedNodes,
+        semiCheckedIds,
         selectedId: selectNodeId,
         onSelectNode,
         editable,
         editMenu,
         PREFIX,
-        onClick
-        // onCheckboxChange
+        onClick,
+        onCheckNode
       }}
     >
       <div className={PREFIX}>

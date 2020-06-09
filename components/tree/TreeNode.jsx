@@ -11,13 +11,14 @@ const TreeNode = ({ node }) => {
     treeNodeRender,
     checkable,
     checkedNodes,
+    semiCheckedIds,
     onSelectNode,
     onClick,
     selectedId,
     editable,
     editMenu,
-    PREFIX
-    // onCheckboxChange
+    PREFIX,
+    onCheckNode
   } = useContext(TreeContext)
 
   const [expanded, setExpanded] = useState(true)
@@ -53,7 +54,7 @@ const TreeNode = ({ node }) => {
         indeterminate={semiChecked.includes(node.id)}
         checked={checked.includes(node.id)}
         onChange={(e) => {
-          // onCheckboxChange(e.target.checked, node)
+          onCheckNode(node, e.target.checked)
         }}
       />
     )
@@ -105,7 +106,7 @@ const TreeNode = ({ node }) => {
     <li className='tree-node'>
       {renderIndent(node.depth)}
       {node.children && node.children.length && renderSwitcher(expanded)}
-      {checkable && renderCheckbox(node, checkedNodes)}
+      {checkable && renderCheckbox(node, {checked: checkedNodes, semiChecked: semiCheckedIds})}
       {renderTitle(node, selectedId)}
       {editable && null && (
         <Popper show={menuVisible} attachEle={treeNodeRef.current} zIndex={1040} placement='right'>
