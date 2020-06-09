@@ -420,7 +420,7 @@ $basic-color: #4284f5 !default;
         width: 92px;
         padding-left: 24px;
 
-        &.today {
+        &.today:not(.in-range) {
           .hi-datepicker__content__wrap {
             .hi-datepicker__content {
               background: $basic-color;
@@ -1093,11 +1093,11 @@ $basic-color: #4284f5 !default;
           }
         }
 
-        &:hover:not(.today):not(.current):not(.in-range):not(.range-se):not(.disabled):not(.hi-datepicker__cell--large) {
-          .hi-datepicker__text {
+        &.today.in-range {
+          .hi-datepicker__content {
             // TODO: 色板值
-            // background: rgba(66, 142, 245, 0.1);
             // background: map-get(get-palette($value), '10');
+            background: rgba(66, 142, 245, 0.1);
           }
         }
 
@@ -1118,7 +1118,7 @@ $basic-color: #4284f5 !default;
         &.today.range-se {
           .hi-datepicker__content__wrap {
             .hi-datepicker__content {
-              color: #fff;
+              color: #fff !important;
             }
 
             .hi-datepicker__text--showLunar {
@@ -1175,7 +1175,7 @@ $basic-color: #4284f5 !default;
       &__calender-container--year,
       &__calender-container--month {
         .hi-datepicker__cell {
-          &.today {
+          &.today:not(.in-range) {
             .hi-datepicker__content__wrap {
               color: map-get(get-palette($value), '50');
               background: #fff;
