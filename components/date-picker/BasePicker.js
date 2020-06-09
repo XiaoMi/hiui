@@ -140,6 +140,7 @@ class BasePicker extends Component {
         end = new Date(startTime)
       }
     }
+
     date = {
       startDate: compatibleToDate(start, format),
       endDate: compatibleToDate(end, format)
@@ -182,7 +183,7 @@ class BasePicker extends Component {
         onChange(startDate, dateFormat(startDate, format))
         return
       }
-      if (['timerange', 'timeperiod', 'daterange'].includes(type)) {
+      if (['timerange', 'timeperiod', 'daterange', 'yearrange', 'monthrange'].includes(type)) {
         onChange({start: startDate, end: endDate}, {start: dateFormat(startDate, format), end: dateFormat(endDate, format)})
         return
       }
