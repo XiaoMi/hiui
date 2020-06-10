@@ -6,6 +6,8 @@ import './style/index.scss'
 import useFlatData from './hooks/useFlatData'
 import useSelect from './hooks/useSelect'
 import useCheckable from './hooks/useCheckable'
+import useExpand from './hooks/useExpand'
+import { getAncestorIds } from './util'
 
 const PREFIX = 'hi-editor-tree'
 
@@ -18,6 +20,9 @@ const Tree = ({
   selectedId,
   defaultSelectedId,
   onSelect,
+  expandedIds,
+  defaultExpandedIds,
+  onExpand,
   checkedIds,
   defaultCheckedIds,
   onCheck,
@@ -32,9 +37,15 @@ const Tree = ({
     defaultSelectedId,
     onSelect
   })
+  const [expandedNodeIds, onExpandNode] = useExpand({ expandedIds, defaultExpandedIds, onExpand })
 
-  const [{checkedNodes, semiCheckedIds}, onCheckNode] = useCheckable({defaultCheckedIds, checkedIds, onCheck, data, flatData})
-  console.log('>>>>>>2', checkedNodes, semiCheckedIds)
+  const [{ checkedNodes, semiCheckedIds }, onCheckNode] = useCheckable({
+    defaultCheckedIds,
+    checkedIds,
+    onCheck,
+    data,
+    flatData
+  })
 
   return (
     <TreeContext.Provider
@@ -45,6 +56,8 @@ const Tree = ({
         semiCheckedIds,
         selectedId: selectNodeId,
         onSelectNode,
+        expandedNodeIds,
+        onExpandNode,
         editable,
         editMenu,
         PREFIX,
@@ -59,9 +72,14 @@ const Tree = ({
           </div>
         )}
         <ul className='root-list'>
-          {flatData.map((node) => (
-            <TreeNode key={node.id} node={node} />
-          ))}
+          {flatData
+            .filter((node) => {
+              const ancestors = getAncestorIds(node.id, data)
+              return ancestors.every((ancestor) => expandedNodeIds.includes(ancestor))
+            })
+            .map((node) => (
+              <TreeNode key={node.id} node={node} />
+            ))}
         </ul>
       </div>
     </TreeContext.Provider>

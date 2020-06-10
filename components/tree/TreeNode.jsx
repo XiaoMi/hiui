@@ -18,10 +18,10 @@ const TreeNode = ({ node }) => {
     editable,
     editMenu,
     PREFIX,
-    onCheckNode
+    onCheckNode,
+    expandedNodeIds,
+    onExpandNode
   } = useContext(TreeContext)
-
-  const [expanded, setExpanded] = useState(true)
   const [menuVisible, setMenuVisible] = useState(false)
   const treeNodeRef = useRef(null)
   const editMenuRef = useRef(null)
@@ -30,12 +30,13 @@ const TreeNode = ({ node }) => {
     setMenuVisible(false)
   })
 
-  const renderSwitcher = useCallback((expanded) => {
+  const renderSwitcher = useCallback((expandedIds, node, onExpandNode) => {
+    const expanded = expandedIds.includes(node.id)
     return (
       <Icon
         style={{ cursor: 'pointer', marginRight: 3 }}
         name={expanded ? 'open' : 'packup'}
-        onClick={() => setExpanded(!expanded)}
+        onClick={() => onExpandNode(node, !expanded, expandedIds)}
       />
     )
   }, [])
@@ -104,9 +105,9 @@ const TreeNode = ({ node }) => {
 
   return (
     <li className='tree-node'>
-      {renderIndent(node.depth)}
-      {node.children && node.children.length && renderSwitcher(expanded)}
-      {checkable && renderCheckbox(node, {checked: checkedNodes, semiChecked: semiCheckedIds})}
+      {renderIndent(node.children && node.children.length ? node.depth : node.depth + 1)}
+      {node.children && node.children.length && renderSwitcher(expandedNodeIds, node, onExpandNode)}
+      {checkable && renderCheckbox(node, { checked: checkedNodes, semiChecked: semiCheckedIds })}
       {renderTitle(node, selectedId)}
       {editable && null && (
         <Popper show={menuVisible} attachEle={treeNodeRef.current} zIndex={1040} placement='right'>
