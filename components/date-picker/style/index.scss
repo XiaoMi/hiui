@@ -1118,7 +1118,7 @@ $basic-color: #4284f5 !default;
         &.today.range-se {
           .hi-datepicker__content__wrap {
             .hi-datepicker__content {
-              color: #fff !important;
+              color: #fff;
             }
 
             .hi-datepicker__text--showLunar {
@@ -1185,7 +1185,7 @@ $basic-color: #4284f5 !default;
                 box-sizing: border-box;
                 border: 1px solid map-get(get-palette($value), '50');
                 background-color: #fff;
-                color: #333;
+                color: map-get(get-palette($value), '50');
               }
             }
 
@@ -1207,8 +1207,23 @@ $basic-color: #4284f5 !default;
                 .hi-datepicker__content {
                   border: none;
                   background-color: #fff;
-                  color: #333;
+                  color: map-get(get-palette($value), '50');
                 }
+              }
+            }
+          }
+
+          &.today.range-se {
+            .hi-datepicker__content__wrap {
+              color: map-get(get-palette($value), '50');
+              background: #fff;
+              margin: inherit;
+
+              .hi-datepicker__content {
+                box-sizing: border-box;
+                border: 1px solid map-get(get-palette($value), '50');
+                background-color: map-get(get-palette($value), '50');
+                color: #fff;
               }
             }
           }
