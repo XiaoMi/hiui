@@ -49,10 +49,11 @@ export default {
       year: 'Select Year',
       time: 'Select Time',
       daterange: ['Select Start Date', 'Select End Date'],
+      yearrange: ['Select Start Year', 'Select End Year'],
+      monthrange: ['Select Start Month', 'Select End Month'],
       week: 'Select Week',
       weekrange: ['Select Start Week', 'Select End Week'],
       timeperiod: ['Select Start Date Time', 'Select Start End Time']
-
     },
     timePeriod: 'Period',
     hours: 'H',
