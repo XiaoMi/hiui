@@ -1,0 +1,90 @@
+.hi-select-tree {
+  font-size: 14px;
+  width: 320px;
+  // height: 560px;
+  overflow: hidden;
+
+  &__input {
+    width: 320px;
+    height: 32px;
+    line-height: 32px;
+    border: 1px solid #d8d8d8;
+    box-sizing: border-box;
+    border-radius: 2px;
+    text-align: left;
+    padding: 0 12px;
+    color: #000;
+    display: flex;
+    justify-content: space-between;
+
+    &:hover {
+      border: 1px solid #4284f5;
+
+      .hi-select-tree__input--expand.clearable {
+        display: none;
+      }
+
+      .hi-select-tree__icon-close {
+        display: block;
+      }
+    }
+
+    &--placeholder {
+      color: #ccc;
+    }
+  }
+
+  &__icon-close {
+    color: #bbb;
+    display: none;
+  }
+
+  &__selected {
+    flex: 1 0 80%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+
+    .hi-select__input--item {
+      flex: 0 0 auto;
+      position: relative;
+      max-width: 60%;
+      height: 22px;
+      line-height: 22px;
+      padding: 0 20px 0 10px;
+      margin: 0 2px;
+      // margin: 0 4px 4px 0;
+      overflow: hidden;
+      vertical-align: middle;
+      background-color: #f2f2f2;
+      border-radius: 2px;
+      text-align: left;
+      box-sizing: border-box;
+
+      &__name {
+        font-size: 13px;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
+
+      &__remove {
+        cursor: pointer;
+        display: inline-block;
+        font-size: 12px;
+        position: absolute;
+        top: 0;
+        right: 4px;
+        padding: 0 0 0 8px;
+      }
+    }
+  }
+
+  &__panel {
+    padding: 12px;
+  }
+}

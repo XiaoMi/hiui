@@ -33,6 +33,7 @@ export default {
       input: components['input'],
       counter: components['counter'],
       select: components['select'],
+      'select-tree': components['select-tree'],
       cascader: components['cascader'],
       radio: components['radio'],
       filter: components['filter'],

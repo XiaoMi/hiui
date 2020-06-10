@@ -39,6 +39,7 @@ module.exports = {
     navMenu: 'NavMenu 导航菜单',
     menu: 'Menu 菜单',
     select: 'Select 选择器',
+    'select-tree': 'SelectTree 选择器',
     cascader: 'Cascader 级联选择器',
     radio: 'Radio 单选',
     checkbox: 'Checkbox 复选',
