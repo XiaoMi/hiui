@@ -29,6 +29,7 @@ class Calender extends Component {
       show: false
     }
     this.weekNum = 0
+    this.months = props.localeDatas.datePicker.month
   }
 
   _getTime (week, y, m) {
@@ -148,12 +149,11 @@ class Calender extends Component {
 
     if ((td.nodeName !== 'SPAN' && td.nodeName !== 'TD' && td.nodeName !== 'DIV') || td.disabled) return false
     if (cls.indexOf('disabled') !== -1) return false
-    const clickVal = parseInt(value)
     let newDate = new Date(year, month - 1, day, hours, minutes, seconds)
-    if (type === 'year') {
+    if (type === 'year' || type === 'yearrange') {
       year = parseInt(value)
       newDate.setFullYear(year)
-    } else if (type === 'month') {
+    } else if (type === 'month' || type === 'monthrange') {
       month = parseInt(value)
       newDate.setMonth(month - 1)
     }
@@ -165,12 +165,7 @@ class Calender extends Component {
     if (cls.indexOf('next') !== -1) {
       newDate = addMonths(newDate, 1)
     }
-
-    if (!(type === 'year' || type === 'month')) {
-      newDate.setDate(clickVal)
-    }
-
-    if (type === 'daterange' || type === 'weekrange') {
+    if (type === 'daterange' || type === 'weekrange' || type === 'yearrange' || type === 'monthrange') {
       if (range.selecting) {
         if (range.startDate > newDate) {
           range.selecting = false
@@ -201,6 +196,12 @@ class Calender extends Component {
     }
     if (cls.indexOf('next') !== -1) {
       newDate = addMonths(newDate, 1)
+    }
+    if (type === 'yearrange') {
+      newDate = new Date(day + '')
+    }
+    if (type === 'monthrange') {
+      newDate = new Date(year, this.months.indexOf(td.textContent))
     }
     mouseMove(newDate)
   }

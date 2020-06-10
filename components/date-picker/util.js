@@ -42,7 +42,7 @@ export const nextMonth = function (date) {
  * @param {Object} props
  */
 export const showLargeCalendar = (props) => {
-  return props.altCalendar || props.altCalendarPreset || props.dateMarkRender || props.dateMarkPreset
+  return (props.type !== 'yearrange' && props.type !== 'monthrange') && (props.altCalendar || props.altCalendarPreset || props.dateMarkRender || props.dateMarkPreset)
 }
 
 export const getPRCDate = (api) => {

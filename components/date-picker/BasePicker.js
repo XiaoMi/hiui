@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import _ from 'lodash'
 import Modal from './Modal'
 import classNames from 'classnames'
 import {formatterDate, FORMATS} from './constants'
@@ -25,8 +26,9 @@ class BasePicker extends Component {
     this.input = null
     this.rInput = null
   }
-  setPlaceholder () {
-    const {placeholder, localeDatas, type, showTime} = this.props
+  setPlaceholder (_props) {
+    const {placeholder} = _props
+    const {localeDatas, type, showTime} = this.props
     const typePlaceholder = localeDatas.datePicker.placeholders[type]
     const tempPlaceholder = showTime
       ? localeDatas.datePicker.placeholderTimeperiod
@@ -59,7 +61,7 @@ class BasePicker extends Component {
   }
   componentDidMount () {
     this._parseProps(this.props)
-    this.setPlaceholder()
+    this.setPlaceholder(this.props)
     let rect = this.inputRoot.current.getBoundingClientRect()
     this.calcPanelPos(rect)
   }
@@ -95,6 +97,9 @@ class BasePicker extends Component {
   componentWillReceiveProps (nextProps) {
     if (nextProps.value !== this.props.value) {
       this._parseProps(nextProps)
+    }
+    if (!_.isEqual(nextProps.placeholder, this.props.placeholder)) {
+      this.setPlaceholder(nextProps)
     }
   }
 
@@ -140,6 +145,7 @@ class BasePicker extends Component {
         end = new Date(startTime)
       }
     }
+
     date = {
       startDate: compatibleToDate(start, format),
       endDate: compatibleToDate(end, format)
@@ -182,7 +188,7 @@ class BasePicker extends Component {
         onChange(startDate, dateFormat(startDate, format))
         return
       }
-      if (['timerange', 'timeperiod', 'daterange'].includes(type)) {
+      if (['timerange', 'timeperiod', 'daterange', 'yearrange', 'monthrange'].includes(type)) {
         onChange({start: startDate, end: endDate}, {start: dateFormat(startDate, format), end: dateFormat(endDate, format)})
         return
       }

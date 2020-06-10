@@ -14,7 +14,9 @@ export const FORMATS = {
   daterange: 'yyyy-MM-dd',
   week: 'yyyy',
   weekrange: 'yyyy',
-  timeperiod: 'yyyy-MM-dd HH:mm:ss'
+  timeperiod: 'yyyy-MM-dd HH:mm:ss',
+  monthrange: 'yyyy-MM',
+  yearrange: 'yyyy'
 }
 
 export const isVaildDate = (date) => {
