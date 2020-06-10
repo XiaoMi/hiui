@@ -5,7 +5,6 @@ import _ from 'lodash'
 const useCheckable = ({ defaultCheckedIds, checkedIds, onCheck, data, flatData }) => {
   const currentCheckedIds = checkedIds || defaultCheckedIds || []
   const [_checkedIds, setCheckedIds] = useState(currentCheckedIds)
-  console.log(7777, _checkedIds)
 
   useEffect(() => {
     if (checkedIds) {
@@ -29,8 +28,7 @@ const useCheckable = ({ defaultCheckedIds, checkedIds, onCheck, data, flatData }
   }
 
   const onCheckNode = useCallback(
-    (checkedNode, checked) => {
-      console.log('1111', _checkedIds)
+    (checkedNode, checked, _checkedIds) => {
       let semiCheckedIds = getSemiChecked(_checkedIds, flatData, data)
       let checkedNodes = [..._checkedIds]
       const children = getChildrenIds(checkedNode)
@@ -98,7 +96,7 @@ const useCheckable = ({ defaultCheckedIds, checkedIds, onCheck, data, flatData }
         onCheck({ checkedIds: checkedNodes, semiCheckedIds }, { checked, ...checkedNode })
       }
     },
-    [_checkedIds, checkedIds, flatData, data]
+    [checkedIds, flatData, data]
   )
   return [
     { checkedNodes: _checkedIds, semiCheckedIds: getSemiChecked(_checkedIds, flatData, data) },

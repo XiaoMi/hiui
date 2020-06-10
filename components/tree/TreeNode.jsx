@@ -54,7 +54,7 @@ const TreeNode = ({ node }) => {
         indeterminate={semiChecked.includes(node.id)}
         checked={checked.includes(node.id)}
         onChange={(e) => {
-          onCheckNode(node, e.target.checked)
+          onCheckNode(node, e.target.checked, checked)
         }}
       />
     )
