@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
 import { getChildrenIds, getAncestorIds, findNode } from '../util'
+import _ from 'lodash'
 
 const useCheckable = ({ defaultCheckedIds, checkedIds, onCheck, data, flatData }) => {
   const currentCheckedIds = checkedIds || defaultCheckedIds || []
   const [_checkedIds, setCheckedIds] = useState(currentCheckedIds)
+  console.log(7777, _checkedIds)
 
   useEffect(() => {
     if (checkedIds) {
@@ -11,19 +13,25 @@ const useCheckable = ({ defaultCheckedIds, checkedIds, onCheck, data, flatData }
     }
   }, [checkedIds])
 
-  const getSemiChecked = (checkedId, data) => {
+  const getSemiChecked = (checkedId, flatData, data) => {
     let semiChecked = []
-    data.forEach((node) => {
+    flatData.forEach((node) => {
       if (node.parentId && !checkedId.includes(node.parentId) && checkedId.includes(node.id)) {
         semiChecked.push(node.parentId)
       }
     })
-    return semiChecked
+    return _.uniq(
+      semiChecked
+        .map((s) => getAncestorIds(s, data))
+        .concat(semiChecked)
+        .flat()
+    )
   }
 
   const onCheckNode = useCallback(
     (checkedNode, checked) => {
-      let semiCheckedIds = getSemiChecked(_checkedIds, flatData)
+      console.log('1111', _checkedIds)
+      let semiCheckedIds = getSemiChecked(_checkedIds, flatData, data)
       let checkedNodes = [..._checkedIds]
       const children = getChildrenIds(checkedNode)
       const ancestors = getAncestorIds(checkedNode.id, data)
@@ -48,6 +56,8 @@ const useCheckable = ({ defaultCheckedIds, checkedIds, onCheck, data, flatData }
           ) {
             semiCheckedIds = semiCheckedIds.filter((id) => id !== ancestor)
             checkedNodes.push(ancestor)
+          } else {
+            semiCheckedIds.push(ancestor)
           }
         })
       } else {
@@ -88,9 +98,12 @@ const useCheckable = ({ defaultCheckedIds, checkedIds, onCheck, data, flatData }
         onCheck({ checkedIds: checkedNodes, semiCheckedIds }, { checked, ...checkedNode })
       }
     },
-    [checkedIds, _checkedIds, flatData, data]
+    [_checkedIds, checkedIds, flatData, data]
   )
-  return [{checkedNodes: _checkedIds, semiCheckedIds: getSemiChecked(_checkedIds, flatData)}, onCheckNode]
+  return [
+    { checkedNodes: _checkedIds, semiCheckedIds: getSemiChecked(_checkedIds, flatData, data) },
+    onCheckNode
+  ]
 }
 
 export default useCheckable
