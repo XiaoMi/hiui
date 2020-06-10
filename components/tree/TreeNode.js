@@ -391,13 +391,13 @@ class TreeNode extends Component {
     const _targetItem = findNode(targetItem.id, dataCache)
     if (this.props.onDrop) {
       if (this.props.onDrop(_sourceItem, _targetItem, {before: dataCache, after: _dataCache}, {before, after: dropDividerPosition === 'sub' ? after + 1 : after})) {
-        this.props.onDropEnd(_sourceItem, _targetItem)
+        this.props.onDropEnd(_sourceItem, _targetItem, dropDividerPosition)
         this.setState({
           dataCache: _dataCache
         })
       }
     } else {
-      this.props.onDropEnd(_sourceItem, _targetItem)
+      this.props.onDropEnd(_sourceItem, _targetItem, dropDividerPosition)
       this.setState({
         dataCache: _dataCache
       })
