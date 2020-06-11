@@ -157,14 +157,16 @@ class Calender extends Component {
     } else if (type === 'month' || type === 'monthrange') {
       month = parseInt(value)
       newDate.setMonth(month - 1)
-    } else {
-      newDate.setDate(clickVal)
     }
     if (cls.indexOf('prev') !== -1) {
       newDate = addMonths(newDate, -1)
     }
     if (cls.indexOf('next') !== -1) {
       newDate = addMonths(newDate, 1)
+    }
+
+    if (!(type === 'year' || type === 'month' || type === 'yearrange' || type === 'monthrange')) {
+      newDate.setDate(clickVal)
     }
     if (type === 'daterange' || type === 'weekrange' || type === 'yearrange' || type === 'monthrange') {
       if (range.selecting) {
