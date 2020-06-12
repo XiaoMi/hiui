@@ -643,6 +643,7 @@ class Select extends Component {
           zIndex={1050}
           topGap={5}
           leftGap={0}
+          width={false}
           preventOverflow={preventOverflow}
           className='hi-select__popper'
           placement={placement || 'top-bottom-start'}
