@@ -1,133 +1,118 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react'
 import classnames from 'classnames'
 import * as Icons from './Icons'
 import ToolTip from '../tooltip'
 
-class Rate extends Component {
-  constructor (props) {
-    super(props)
-    const { value, defaultValue } = props
-    this.state = {
-      value: value === undefined ? defaultValue : value
+const Rate = ({ value: trueVal, disabled, useEmoji, allowHalf, character, renderCharacter, defaultValue, className, style, count, prefixCls,
+  tooltips,
+  color,
+  vertical,
+  showDesc, desc, onChange, clearable }) => {
+  const [value, setValue] = useState(trueVal === undefined ? defaultValue : trueVal)
+  const [hoverValue, setHoverValue] = useState(0)
+
+  const handleIconLeave = () => {
+    if (disabled) {
+      return
     }
+    setHoverValue(0)
   }
-  static getDerivedStateFromProps ({ value }) {
-    if (value !== undefined) {
-      return {
-        value
-      }
+
+  const handleIconEnter = (hoverValue) => {
+    if (disabled) {
+      return
     }
-    return null
+
+    setHoverValue(hoverValue)
   }
-  state = {
-    value: 0,
-    hoverValue: 0
-  }
-  renderIcon = (idx) => {
-    const { useEmoji, allowHalf, disabled } = this.props
-    const { value, hoverValue } = this.state
-    let currentValue = hoverValue || value
-    if (!allowHalf || useEmoji) {
-      currentValue = Math.ceil(currentValue)
-    }
-    return (
-      <Icon {...{ value: idx, currentValue, disabled, useEmoji, allowHalf }} />
-    )
-  }
-  handleIconClick = (value) => {
-    const { allowHalf, clearable, onChange, disabled } = this.props
+
+  const handleIconClick = (valueIndex) => {
     if (disabled) {
       return
     }
     if (!allowHalf) {
-      value = Math.ceil(value)
+      valueIndex = Math.ceil(valueIndex)
     }
-    if (value === this.state.value && clearable) {
+    if (valueIndex === value && clearable) {
       onChange && onChange({ value: 0 })
-      this.setState({
-        value: 0
-      })
+      setValue(0)
       return
     }
-    onChange && onChange(value)
-    this.setState({ value })
+    onChange && onChange(valueIndex)
+    setValue(valueIndex)
   }
-  handleIconEnter = (hoverValue) => {
-    if (this.props.disabled) {
-      return
+
+  const renderIcon = (idx) => {
+    let currentValue = hoverValue || value
+    if (!allowHalf) {
+      currentValue = Math.ceil(currentValue)
     }
-    this.setState({ hoverValue })
-  }
-  handleIconLeave = () => {
-    if (this.props.disabled) {
-      return
-    }
-    this.setState({ hoverValue: 0 })
-  }
-  render () {
-    const {
-      className,
-      style,
-      count,
-      useEmoji,
-      prefixCls,
-      tooltips,
-      disabled
-    } = this.props
-    const iconCount = Math.ceil(useEmoji ? 5 : count)
-    const iconHalfCls = `${prefixCls}__star__half`
-    const starCls = classnames(`${prefixCls}__star`, {
-      [`${prefixCls}__star--disabled`]: disabled
-    })
+
     return (
-      <ul
-        className={classnames(prefixCls, className)}
-        style={style}
-        onMouseLeave={this.handleIconLeave}
-      >
-        {Array(iconCount)
-          .fill()
-          .map((_, idx) => {
-            const value = idx + 1
-            const halfValue = idx + 0.5
-            return (
-              <ToolTipWrapper title={tooltips[idx]} key={idx}>
-                <li className={starCls}>
-                  <div
-                    className={classnames(iconHalfCls, `${iconHalfCls}--left`)}
-                    onMouseEnter={() => this.handleIconEnter(halfValue)}
-                    onMouseMove={() => this.handleIconEnter(halfValue)}
-                    onClick={() => this.handleIconClick(halfValue)}
-                  />
-                  <div
-                    className={classnames(iconHalfCls, `${iconHalfCls}--right`)}
-                    onMouseEnter={() => this.handleIconEnter(value)}
-                    onMouseMove={() => this.handleIconEnter(value)}
-                    onClick={() => this.handleIconClick(value)}
-                  />
-                  {this.renderIcon(value)}
-                </li>
-              </ToolTipWrapper>
-            )
-          })}
-      </ul>
+      <Icon {...{ value: idx, currentValue, disabled, useEmoji, allowHalf, character, style, renderCharacter }} />
     )
   }
-}
 
-Rate.propTypes = {
-  useEmoji: PropTypes.bool,
-  clearable: PropTypes.bool,
-  allowHalf: PropTypes.bool,
-  className: PropTypes.string,
-  defaultValue: PropTypes.number,
-  disabled: PropTypes.bool,
-  style: PropTypes.object,
-  tooltips: PropTypes.arrayOf(PropTypes.string),
-  value: PropTypes.number,
-  count: PropTypes.number,
-  onChange: PropTypes.func
+  let currentValue = hoverValue || value
+  const iconCount = Math.ceil(useEmoji ? 5 : count)
+  const iconHalfCls = `${prefixCls}__star__half`
+  const starCls = classnames(`${prefixCls}__star`, {
+    [`${prefixCls}__star--disabled`]: disabled
+  })
+  // if (showDesc && !desc.length) {
+  //   desc = Array(count).fill().map((item, index) => `${index + 1}分`)
+  // }
+  const descCls = classnames(`${prefixCls}__desc`)
+
+  return <div className='hi-rate__outter'>
+    <ul
+      className={classnames(prefixCls, className)}
+      style={{ ...style, color }}
+      onMouseLeave={handleIconLeave}
+    >
+      {Array(iconCount)
+        .fill()
+        .map((_, idx) => {
+          const indexValue = idx + 1
+          const halfValue = allowHalf ? idx + 0.5 : indexValue
+          return (
+            <ToolTipWrapper title={tooltips[idx]} key={idx}>
+              <li className={starCls}>
+
+                <div
+                  className={classnames(iconHalfCls, `${iconHalfCls}--${vertical ? 'top' : 'left'}`, {
+                    'grayscale': vertical ? indexValue > currentValue : currentValue < halfValue
+                  })}
+                  onMouseEnter={() => handleIconEnter(vertical ? indexValue : halfValue)}
+                  onMouseMove={() => handleIconEnter(vertical ? indexValue : halfValue)}
+                  onClick={() => handleIconClick(vertical ? indexValue : halfValue)}
+                >
+                  {renderIcon(indexValue)}
+                </div>
+
+                <div
+                  className={classnames(iconHalfCls, `${iconHalfCls}--${vertical ? 'bottom' : 'right'}`, {
+                    'grayscale': vertical ? currentValue < halfValue : indexValue > currentValue
+                  })}
+                  onMouseEnter={() => handleIconEnter(vertical ? halfValue : indexValue)}
+                  onMouseMove={() => handleIconEnter(vertical ? halfValue : indexValue)}
+                  onClick={() => handleIconClick(vertical ? halfValue : indexValue)}
+                >
+                  {renderIcon(indexValue)}
+                </div>
+
+              </li>
+            </ToolTipWrapper>
+          )
+        })}
+    </ul>
+    {
+      (showDesc && desc.length > 0) && <span className={descCls}>{hoverValue ? desc[Math.ceil(hoverValue) - 1] : desc[Math.ceil(value) - 1]}</span>
+    }
+    {
+      (showDesc && desc.length === 0) && <span className={descCls} style={{color: '#EB5252'}}>{currentValue}分</span>
+    }
+  </div >
 }
 
 Rate.defaultProps = {
@@ -136,14 +121,26 @@ Rate.defaultProps = {
   count: 5,
   prefixCls: 'hi-rate',
   tooltips: [],
-  onChange: () => {}
+  desc: [],
+  onChange: () => { },
+  style: {
+    fontSize: 24
+  },
+  color: '#FFCA28',
+  vertical: false
 }
 
 function ToolTipWrapper ({ children, title }) {
   return title ? <ToolTip title={title}>{children}</ToolTip> : children
 }
 
-function Icon ({ value, currentValue, disabled, useEmoji, allowHalf }) {
+function Icon ({ value, currentValue, disabled, useEmoji, allowHalf, character, renderCharacter }) {
+  if (renderCharacter) {
+    return renderCharacter(currentValue, value)
+  }
+  if (character) {
+    return character
+  }
   if (useEmoji) {
     const Emojis = [
       Icons.EmojiOne,
@@ -158,6 +155,7 @@ function Icon ({ value, currentValue, disabled, useEmoji, allowHalf }) {
       return <Icons.EmojiDefault />
     }
   }
+
   if (value <= currentValue) {
     return <Icons.StarActive />
   } else if (value === currentValue + 0.5 && allowHalf) {
@@ -166,5 +164,4 @@ function Icon ({ value, currentValue, disabled, useEmoji, allowHalf }) {
     return disabled ? <Icons.StarDisable /> : <Icons.StarDefault />
   }
 }
-
 export default Rate
