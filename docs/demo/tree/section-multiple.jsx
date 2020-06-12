@@ -53,9 +53,6 @@ class Demo extends React.Component {
               checkedKeys
             })
           }}
-          onCheck={(a,b,c)=>{
-            console.log('>>>>>',a,b,c)
-            }}
           highlightable
           onClick={data=>{console.log('tree node click',data)}}
         />
@@ -64,7 +61,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoMultiple = () => (
-  <DocViewer desc={desc} code={code} scope={{ Tree }} prefix={prefix} />
-)
+const DemoMultiple = () => <DocViewer desc={desc} code={code} scope={{ Tree }} prefix={prefix} />
 export default DemoMultiple

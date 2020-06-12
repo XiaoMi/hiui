@@ -6,7 +6,6 @@ import Button from '../button'
 import Icon from '../icon'
 import './style/index'
 import Provider from '../context'
-import confirm from '../confirm'
 
 class Modal extends Component {
   static propTypes = {
@@ -153,6 +152,4 @@ class Modal extends Component {
   }
 }
 
-const ModalWrapper = Provider(Modal)
-ModalWrapper.confirm = confirm
-export default ModalWrapper
+export default Provider(Modal)

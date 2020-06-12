@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import _ from 'lodash'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Title from './Title'
@@ -29,28 +28,18 @@ class Menu extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    const { activeId, data, collapsed } = nextProps
-    if (activeId !== this.props.activeId || !_.isEqual(data, this.props.data)) {
-      const activeIndex = this.getActiveIndex(activeId, data)
+    if (nextProps.activeId !== this.props.activeId) {
+      const activeIndex = this.getActiveIndex(nextProps.activeId, nextProps.data)
 
       this.setState({
-        activeId: activeId,
+        activeId: nextProps.activeId,
         activeIndex
       })
-      this.isNoMiniVertaicalMenu(collapsed) &&
-        this.setState({
-          expandIndex: [
-            activeIndex
-              .split('-')
-              .slice(0, -1)
-              .join('-')
-          ]
-        })
     }
 
-    if (collapsed !== this.props.collapsed) {
+    if (nextProps.collapsed !== this.props.collapsed) {
       this.setState({
-        collapsed: collapsed
+        collapsed: nextProps.collapsed
       })
     }
   }
@@ -122,12 +111,12 @@ class Menu extends Component {
     let result
     for (let index in menus) {
       let _activeMenus = [...activeMenus]
-      if (menus[index].id === activeId) {
-        _activeMenus.push(index)
-        result = _activeMenus
-      } else if (menus[index].children) {
+      if (menus[index].children) {
         _activeMenus.push(index)
         result = this.getActiveMenus(menus[index].children, activeId, _activeMenus)
+      } else if (menus[index].id === activeId) {
+        _activeMenus.push(index)
+        result = _activeMenus
       }
       if (result) {
         break

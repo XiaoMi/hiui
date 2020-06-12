@@ -101,8 +101,7 @@ const drawLogo = (ctx, logo, cb) => {
 }
 
 const toImage = (canvas, key, container, options) => {
-  const base64Url = canvas.toDataURL()
-  const { opacity = 1 } = options
+  var base64Url = canvas.toDataURL()
   const _top = (options._top || 0) + 'px'
   const __wm = document.querySelector(`.${key}`)
   const watermarkDiv = __wm || document.createElement('div')
@@ -118,7 +117,7 @@ const toImage = (canvas, key, container, options) => {
   background-repeat:repeat;
   visibility:visible !important;
   display: block !important;
-  opacity: ${opacity} !important;
+  opacity: 1 !important;
   background-image:url('${base64Url}');
   ${options.grayLogo ? '-webkit-filter: grayscale(100%);-moz-filter: grayscale(100%);-ms-filter: grayscale(100%);-o-filter: grayscale(100%);filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);_filter:none;' : ''}
   `

@@ -38,7 +38,7 @@ $prefixCls: '.hi-checkbox' !default;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  height: 16px;
+  height: 32px;
   vertical-align: middle;
 
   @include component-reset();
@@ -58,7 +58,6 @@ $prefixCls: '.hi-checkbox' !default;
     width: 16px;
     height: 16px;
     border: 1px solid #d8d8d8;
-    margin-right: 8px;
     border-radius: 2px;
     transition: 0.3s ease-out;
     line-height: 1;
@@ -100,7 +99,7 @@ $prefixCls: '.hi-checkbox' !default;
   }
 
   &__text {
-    padding: 0 32px 0 0;
+    padding: 0 32px 0 8px;
     line-height: unset;
   }
 
@@ -127,10 +126,6 @@ $prefixCls: '.hi-checkbox' !default;
     &--vertical {
       display: flex;
       flex-direction: column;
-
-      #{$prefixCls} {
-        height: 32px;
-      }
     }
   }
 

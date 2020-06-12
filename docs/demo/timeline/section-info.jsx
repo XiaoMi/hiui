@@ -1,7 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Timeline from '../../../components/timeline'
-import Icon from '../../../components/icon'
 const prefix = 'timeline-info'
 const desc = '在一段时间范围里，信息流向增长，数量庞大，必要时可收起部分'
 const code = `import React from 'react'
@@ -41,6 +40,11 @@ class Demo extends React.Component {
 }`
 
 const DemoInfo = () => (
-  <DocViewer code={code} scope={{ Timeline, Icon }} prefix={prefix} desc={desc} />
+  <DocViewer
+    code={code}
+    scope={{ Timeline }}
+    prefix={prefix}
+    desc={desc}
+  />
 )
 export default DemoInfo

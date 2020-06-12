@@ -95,15 +95,8 @@
   }
 
   &__error {
-    .hi-form-item__content {
-      .hi-input__inner,
-      .hi-select__input,
-      .hi-cascader__input-container,
-      .hi-datepicker__input,
-      .tree-select__tag-wrapper,
-      .hi-input {
-        border-color: get-color($palette-secondary, 'danger');
-      }
+    .hi-input__inner {
+      border-color: get-color($palette-secondary, 'danger');
     }
   }
 

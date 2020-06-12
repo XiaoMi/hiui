@@ -5,9 +5,6 @@ import Input from '../../../components/input'
 import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
 import Button from '../../../components/button'
-import Select from '../../../components/select'
-import Cascader from '../../../components/cascader'
-import DatePicker from '../../../components/date-picker'
 const prefix = 'form-check'
 const desc = '表单项内容的格式、逻辑有特殊要求'
 const code = `import React from 'react'
@@ -123,7 +120,7 @@ class Demo extends React.Component {
 const DemoCloseable = () => (
   <DocViewer
     code={code}
-    scope={{ Form, Radio, Grid, Input, Button, Select, Cascader, DatePicker }}
+    scope={{ Form, Radio, Grid, Input, Button }}
     prefix={prefix}
     desc={desc}
   />

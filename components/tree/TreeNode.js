@@ -25,38 +25,45 @@ class TreeNode extends Component {
       editNodes: [],
       // 存储编辑节点的状态
       editingNodes: [],
+      // 处于拖拽状态的节点
+      draggingNode: null,
+      // 处于目标状态的节点
+      targetNode: null,
+      // 放置线的位置,分为上线、下线和子线，上线则放置在该节点上方，下线则放置在该节点下侧，子线为放置在该节点内部
+      dropDividerPosition: null,
       searchValue: '',
       showModal: false,
       currentDeleteNode: null,
       // 总共高亮的项
       highlightNum: 0,
+      positionX: null,
+      positionY: null,
       contextMenuPanel: null
     }
     const { addNode, addChildNode, edit, del } = props.localeDatas.tree
     this.defaultEditNodeMenu = {
-      'editNode': (item, menu, index, level) => {
+      'editNode': (item, menu, index) => {
         return <li key={index} onClick={() => {
-          const node = findNode(item.id, this.state.dataCache)
-          menu.onClick ? menu.onClick(node, this) : this.editNode(node)
+          menu.onClick ? menu.onClick(item, this) : this.editNode(item)
           this.closeRightClickMenu()
         }}>{menu.title || edit}</li>
       },
-      'addChildNode': (item, menu, index, level) => {
+      'addChildNode': (item, menu, index) => {
         return <li key={index} onClick={() => {
           menu.onClick ? menu.onClick(item, this) : this.addChildNode(item)
           this.closeRightClickMenu()
         }}>{menu.title || addChildNode}</li>
       },
-      'addSiblingNode': (item, menu, index, level) => {
+      'addSiblingNode': (item, menu, index) => {
         return <li key={index} onClick={() => {
           menu.onClick ? menu.onClick(item, this) : this.addSiblingNode(item.id)
           this.closeRightClickMenu()
         }}>{menu.title || addNode}</li>
       },
-      'deleteNode': (item, menu, index, level) => {
+      'deleteNode': (item, menu, index) => {
         return <li key={index}
           onClick={() => {
-            menu.onClick ? menu.onClick(item, this) : this.deleteNode(item, level)
+            menu.onClick ? menu.onClick(item, this) : this.deleteNode(item)
             this.closeRightClickMenu()
           }}
         >
@@ -84,6 +91,15 @@ class TreeNode extends Component {
       }
     }
     return state
+  }
+  setPosition = (x, y) => {
+    const { positionX, positionY } = this.state
+    if (!(x === positionX && y === positionY)) {
+      this.setState({
+        positionX: x,
+        positionY: y
+      })
+    }
   }
 
   // 高亮检索值
@@ -142,6 +158,18 @@ class TreeNode extends Component {
     return <i className={switcherClsName} />
   }
 
+  // 设置拖拽中的节点
+  setDraggingNode = itemId => {
+    this.setState({
+      draggingNode: itemId
+    })
+  }
+  // 移除拖拽中的节点
+  removeDraggingNode = () => {
+    this.setState({
+      draggingNode: null
+    })
+  }
   // 添加兄弟节点
   _addSibNode = (itemId, data, editingNodes) => {
     data.forEach((d, index) => {
@@ -208,8 +236,8 @@ class TreeNode extends Component {
     this._addChildNode(item.id, _dataCache, _editingNodes)
     this.setState({ dataCache: _dataCache, editingNodes: _editingNodes })
   }
-  deleteNode = (item, level) => {
-    this.setCurrentDeleteNode({id: item.id, level})
+  deleteNode = item => {
+    this.setCurrentDeleteNode(item.id)
     this.openModal()
   }
   // 编辑节点
@@ -268,29 +296,18 @@ class TreeNode extends Component {
       }
     })
   }
-  saveEditNode = (itemId, level) => {
+  saveEditNode = itemId => {
     const { editNodes, dataCache, editingNodes } = this.state
     const nodeEdited = editingNodes.find(node => node.id === itemId)
     const _dataCache = cloneDeep(dataCache)
     this._saveEditNode(itemId, _dataCache, nodeEdited)
-    if (this.props.onBeforeSave) {
-      const result = this.props.onBeforeSave(nodeEdited, {before: dataCache, after: _dataCache}, level)
-      if (result === true) {
-        this.setState({
-          dataCache: _dataCache,
-          editNodes: editNodes.filter(node => node.id !== itemId),
-          editingNodes: editingNodes.filter(node => node.id !== itemId)
-        })
-        this.props.onSave(nodeEdited, _dataCache)
-      }
-    } else {
-      this.setState({
-        dataCache: _dataCache,
-        editNodes: editNodes.filter(node => node.id !== itemId),
-        editingNodes: editingNodes.filter(node => node.id !== itemId)
-      })
-      this.props.onSave(nodeEdited, _dataCache)
-    }
+    this.setState({
+      dataCache: _dataCache,
+      editNodes: editNodes.filter(node => node.id !== itemId),
+      editingNodes: editingNodes.filter(node => node.id !== itemId)
+    })
+    const node = findNode(itemId, _dataCache)
+    this.props.onSave(node, _dataCache)
   }
   // 删除拖动的节点
   _delDragNode = (itemId, data) => {
@@ -377,7 +394,7 @@ class TreeNode extends Component {
       }
     })
   }
-  dropNode = (sourceItem, targetItem, dropDividerPosition, {before, after}) => {
+  dropNode = (sourceItem, targetItem, dropDividerPosition) => {
     const { dataCache } = this.state
     const _dataCache = cloneDeep(dataCache)
     this._delDragNode(sourceItem.id, _dataCache)
@@ -390,7 +407,7 @@ class TreeNode extends Component {
     const _sourceItem = findNode(sourceItem.id, dataCache)
     const _targetItem = findNode(targetItem.id, dataCache)
     if (this.props.onDrop) {
-      if (this.props.onDrop(_sourceItem, _targetItem, {before: dataCache, after: _dataCache}, {before, after: dropDividerPosition === 'sub' ? after + 1 : after})) {
+      if (this.props.onDrop(_sourceItem, _targetItem)) {
         this.props.onDropEnd(_sourceItem, _targetItem)
         this.setState({
           dataCache: _dataCache
@@ -415,28 +432,20 @@ class TreeNode extends Component {
       }
     })
   }
-  _deleteNode = (delNode) => {
+  _deleteNode = itemId => {
     const { dataCache } = this.state
     const _dataCache = cloneDeep(dataCache)
-    const node = findNode(delNode.id, dataCache)
-    this.__deleteNode(delNode.id, _dataCache)
-    if (this.props.onBeforeDelete) {
-      const result = this.props.onBeforeDelete(node, {before: dataCache, after: _dataCache}, delNode.level)
-      if (result === true) {
-        this.setState({ dataCache: _dataCache })
-        this.props.onDelete(node, _dataCache)
-      }
-    } else {
-      this.setState({ dataCache: _dataCache })
-      this.props.onDelete(node, _dataCache)
-    }
+    this.__deleteNode(itemId, _dataCache)
+    this.setState({ dataCache: _dataCache })
+    const node = findNode(itemId, dataCache)
+    this.props.onDelete(node, _dataCache)
   }
   onSetHighlight = item => {
     this.setState({
       highlight: item.id
     })
   }
-  showRightClickMenu = (item, e, level) => {
+  showRightClickMenu = (item, e) => {
     const rect = e.target ? e.target.getBoundingClientRect() : {left: 0, top: 0, width: 0}
     const _st = document.documentElement.scrollTop || document.body.scrollTop
     const { contextMenu } = this.props
@@ -449,7 +458,7 @@ class TreeNode extends Component {
       _cm = contextMenu
     }
     if (type === '[object Function]') {
-      _cm = contextMenu(item, level)
+      _cm = contextMenu(item)
       if (!_cm) {
         return
       }
@@ -460,15 +469,15 @@ class TreeNode extends Component {
         _cm.length > 0
           ? _cm.map((cm, index) => {
             if (cm.type && this.defaultEditNodeMenu[cm.type]) {
-              return this.defaultEditNodeMenu[cm.type](item, cm, index, level)
+              return this.defaultEditNodeMenu[cm.type](item, cm, index)
             } else {
-              return this.defaultEditNodeMenu['customer'](item, cm, index, level)
+              return this.defaultEditNodeMenu['customer'](item, cm, index)
             }
           }) : Object.keys(this.defaultEditNodeMenu).map((key, index) => {
             if (key === 'customer') {
               return null
             }
-            return this.defaultEditNodeMenu[key](item, {}, index, level)
+            return this.defaultEditNodeMenu[key](item, {}, index)
           })
       }
     </ul>
@@ -484,17 +493,23 @@ class TreeNode extends Component {
       showRightClickMenu: null
     })
   }
+  setTargetNode = (id, position) => {
+    this.setState({ targetNode: id, dropDividerPosition: position })
+  }
+  removeTargetNode = () => {
+    this.setState({ targetNode: null })
+  }
   openModal = () => {
     this.setState({
       showModal: true
     })
   }
-  setCurrentDeleteNode =(node) => {
+  setCurrentDeleteNode = nodeId => {
     this.setState({
-      currentDeleteNode: node
+      currentDeleteNode: nodeId
     })
   }
-  renderTree = (data, allData = [], level) => {
+  renderTree = (data, allData = []) => {
     const {
       draggable,
       prefixCls,
@@ -518,7 +533,12 @@ class TreeNode extends Component {
     const {
       highlight,
       editNodes,
-      editingNodes
+      editingNodes,
+      draggingNode,
+      targetNode,
+      dropDividerPosition,
+      positionX,
+      positionY
     } = this.state
     return (
       <ul>
@@ -528,10 +548,10 @@ class TreeNode extends Component {
               origin={origin}
               showLine={showLine}
               key={item.id}
-              level={level}
               isRoot={allData.some(d => d.id === item.id)}
               isLevelLast={index === data.length - 1}
               editable={editable}
+              dropDividerPosition={dropDividerPosition}
               prefixCls={prefixCls}
               draggable={draggable}
               onDragStart={onDragStart}
@@ -549,9 +569,13 @@ class TreeNode extends Component {
               onExpanded={onExpanded}
               onValueChange={this.onValueChange}
               renderTree={this.renderTree}
+              setPosition={this.setPosition}
+              positionX={positionX}
+              positionY={positionY}
               renderSwitcher={this.renderSwitcher}
               cancelAddSiblingNode={this.cancelAddSiblingNode}
               apperance={apperance}
+              // renderRightClickMenu={this.renderRightClickMenu}
               onCheckChange={onCheckChange}
               saveEditNode={this.saveEditNode}
               onClick={onClick}
@@ -559,7 +583,13 @@ class TreeNode extends Component {
               showRightClickMenu={this.showRightClickMenu}
               closeRightClickMenu={this.closeRightClickMenu}
               dropNode={this.dropNode}
+              setDraggingNode={this.setDraggingNode}
+              removeDraggingNode={this.removeDraggingNode}
+              draggingNode={draggingNode}
               closeExpandedTreeNode={closeExpandedTreeNode}
+              setTargetNode={this.setTargetNode}
+              targetNode={targetNode}
+              removeTargetNode={this.removeTargetNode}
               cancelEditNode={this.cancelEditNode}
               item={item}
               loadChildren={this.loadChildren}
@@ -601,8 +631,8 @@ class TreeNode extends Component {
         )}
 
         {searchable
-          ? this.renderTree(this.highlightData(cloneDeep(dataCache), searchValue), dataCache, 0)
-          : this.renderTree(cloneDeep(dataCache), dataCache, 0)}
+          ? this.renderTree(this.highlightData(cloneDeep(dataCache), searchValue), dataCache)
+          : this.renderTree(cloneDeep(dataCache), dataCache)}
 
         <Modal
           title={modalTitle}

@@ -4,21 +4,19 @@ import Icon from '../icon'
 import DropdownMenu from './DropdownMenu'
 import { prefixCls } from '.'
 
-const MenuItemWrapper = forwardRef(
-  ({ href, children, disabled, ...props }, ref) => {
-    const shouldUseLink = href && !disabled
-    if (disabled) {
-      Reflect.deleteProperty(props, 'onMouseEnter')
-      Reflect.deleteProperty(props, 'onMouseLeave')
-      Reflect.deleteProperty(props, 'onClick')
-    }
-    return (
-      <li ref={ref} {...props}>
-        {shouldUseLink ? <a href={href}>{children}</a> : children}
-      </li>
-    )
+const MenuItemWrapper = forwardRef(({ href, children, disabled, ...props }, ref) => {
+  const shouldUseLink = href && !disabled
+  if (disabled) {
+    Reflect.deleteProperty(props, 'onMouseEnter')
+    Reflect.deleteProperty(props, 'onMouseLeave')
+    Reflect.deleteProperty(props, 'onClick')
   }
-)
+  return (
+    <li ref={ref} {...props} >
+      {shouldUseLink ? <a href={href}>{children}</a> : children}
+    </li>
+  )
+})
 
 export default class DropdownMenuItem extends React.Component {
   refItem = React.createRef()
@@ -53,7 +51,7 @@ export default class DropdownMenuItem extends React.Component {
     this.setMenuHide()
   }
 
-  handleMenuItemClick = event => {
+  handleMenuItemClick = (event) => {
     if (event) {
       event.stopPropagation()
       event.preventDefault()
@@ -62,7 +60,7 @@ export default class DropdownMenuItem extends React.Component {
       }
     }
     const { onMenuItemClick, id, children, href } = this.props
-    onMenuItemClick(id, href || !children)
+    onMenuItemClick(id, (href || !children))
   }
   render () {
     const {

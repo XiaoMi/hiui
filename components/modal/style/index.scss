@@ -1,60 +1,103 @@
-$modal: 'hi-editor-modal';
-$fontColor: #383e47;
-$borderColor: #e7e7e7;
+@import '@hi-ui/core-css/index.scss';
 
-.#{$modal} {
-  color: $fontColor;
-  font-size: 14px;
+.hi-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+
+  &--hide {
+    display: none !important;
+  }
 
   &__mask {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    z-index: 1000; // @Todo: should be larger
+    width: 100%;
     height: 100%;
-    z-index: 1000;
-    background: rgba(0, 0, 0, 0.45);
+    background-color: rgba(0, 0, 0, 0.54);
+    transition: all $speed-fast $easing;
   }
 
-  &__wrapper {
+  &__dialog {
+    position: relative;
+    top: 10%;
+    z-index: 1001;
+    box-sizing: border-box;
     width: 600px;
-    background: #fff;
-    z-index: 1000;
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    position: fixed;
+    max-height: 80%;
+    margin: 0 auto;
     border-radius: 2px;
-    box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    font-size: $font-size-normal;
+    background-color: $white;
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
+    transition: all $speed-fast $easing;
+
+    &--large {
+      width: 800px;
+    }
+
+    &--small {
+      width: 360px;
+    }
   }
 
   &__header {
-    font-size: 16px;
-    color: #383e47;
-    font-weight: 500;
-    height: 54px;
-    border-bottom: 1px solid $borderColor;
-    box-sizing: border-box;
-    padding: 0 24px;
+    flex: none;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    height: 56px;
+    border-bottom: 1px solid $gray-light;
+  }
+
+  &__title {
+    flex: 1;
+    margin: 0;
+    padding: 0 $spacer-4;
+    font-size: $font-size-large;
+    font-weight: $font-weight-semibold;
+    text-align: left;
+    color: $black;
+  }
+
+  &__close {
+    width: 56px;
+    height: 56px;
+    font-size: $font-size-large;
+    line-height: 56px;
+    text-align: center;
+    color: $gray-darker;
+    cursor: pointer;
+    transition: color $speed-fast $easing;
+
+    &:hover,
+    &:active {
+      color: $black;
+    }
   }
 
   &__content {
+    flex: auto;
     box-sizing: border-box;
-    overflow: auto;
-    padding: 24px;
+    min-height: 54px;
+    padding: $spacer-4;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   &__footer {
-    height: 64px;
-    border-top: 1px solid $borderColor;
-    box-sizing: border-box;
-    padding: 0 24px;
+    flex: none;
     display: flex;
-    align-items: center;
+    border-top: 1px solid $gray-light;
+    padding: $spacer-3 $spacer-4;
     justify-content: flex-end;
   }
 }
