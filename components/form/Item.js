@@ -84,6 +84,7 @@ class FormItem extends Component {
       [this.props.field]: rules
     })
     const model = { [this.props.field]: this.getfieldValue() }
+    console.log('model', model)
     validator.validate(
       model,
       {
