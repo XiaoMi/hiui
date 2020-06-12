@@ -16,7 +16,7 @@ const {
 
 export default class Overlay extends Component {
   popperHeight = undefined
-
+  popperWidth = undefined
   static propTypes = {
     width: PropTypes.oneOfType([
       PropTypes.string,
@@ -69,6 +69,7 @@ export default class Overlay extends Component {
       offset: undefined,
       isAddevent: false,
       popperHeight: undefined,
+      popperWidth: undefined,
       cacheContainerPosition: 'static',
       popperRef: undefined
     }
@@ -122,7 +123,8 @@ export default class Overlay extends Component {
     if (!popperRef) {
       this.setState({
         popperRef: this.popperRef,
-        popperHeight: this.popperRef.clientHeight
+        popperHeight: this.popperRef.clientHeight,
+        popperWidth: this.popperRef.clientWidth
       })
     }
   }
@@ -168,7 +170,7 @@ export default class Overlay extends Component {
             className,
             'hi-popper__content',
             `hi-popper__content--${offset.placement}`,
-            { 'hi-popper__content--hide': this.popperHeight === 0 }
+            { 'hi-popper__content--hide': this.popperHeight === 0 || this.popperWidth === 0}
           )}
           style={{ width, height }}
           onMouseOut={onMouseOut}
