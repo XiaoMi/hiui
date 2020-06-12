@@ -11,9 +11,6 @@ const transformData = (_data) => {
         child.parentId = _data[i].id
         return child
       })
-      // _data[i].children = _data[i].children.map(child => {
-      //   return child.id
-      // })
       _data.splice(i + 1, 0, ..._children)
     }
   }

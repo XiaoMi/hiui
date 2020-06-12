@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Input } from '../input'
 import TreeNode from './TreeNode'
 import TreeContext from './context'
@@ -28,7 +28,8 @@ const Tree = ({
   onCheck,
   editable,
   editMenu,
-  onClick
+  onClick,
+  filtrable = false
 }) => {
   const [flatData, updateFlatData] = useFlatData(data)
   const [selectNodeId, onSelectNode] = useSelect({
@@ -46,6 +47,8 @@ const Tree = ({
     data,
     flatData
   })
+
+  const [searchValue, setSearchValue] = useState('')
 
   return (
     <TreeContext.Provider
@@ -68,7 +71,18 @@ const Tree = ({
       <div className={PREFIX}>
         {searchable && (
           <div style={{ width: 250, marginBottom: 15 }}>
-            <Input />
+            <Input
+              value={searchValue}
+              onChange={(e) => {
+                setSearchValue(e.target.value)
+                const matchedNodes = flatData.filter((node) => node.title.includes(e.target.value))
+                let filteredNodes = [...matchedNodes]
+                for (let i = 0; i < filteredNodes.length; i++) {
+                  const parent = flatData.find((node) => (node.id = filteredNodes[i].parentId))
+                  filteredNodes = filteredNodes.concat(parent)
+                }
+              }}
+            />
           </div>
         )}
         <ul className='root-list'>
