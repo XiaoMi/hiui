@@ -182,7 +182,7 @@ export const getOffset = (props, state) => {
   width =
     width === false ? popperWidth : width === undefined ? rect.width : width
 
-  let placement = getPlacement(rect, container, props, state)
+  let placement = getPlacement(rect, container, props, state) || 'bottom-start'
   const rectHeight = rect.height
 
   switch (placement) {
