@@ -150,7 +150,7 @@ const getPlacement = (attachEleRect, container, props, state) => {
       containerHeight
     )
   }
-  return placement
+  return placement || 'bottom-start'
 }
 export const getOffset = (props, state) => {
   let { attachEle, topGap, leftGap, width, container, preventOverflow } = props
@@ -178,10 +178,13 @@ export const getOffset = (props, state) => {
 
   let top = rect.top + _scrollTop
   let left = rect.left + _scrollLeft
-  width = width === false ? popperWidth : width === undefined ? rect.width : width
+
+  width =
+    width === false ? popperWidth : width === undefined ? rect.width : width
 
   let placement = getPlacement(rect, container, props, state)
   const rectHeight = rect.height
+
   switch (placement) {
     case 'bottom':
       top = top + topGap + rectHeight
@@ -234,13 +237,21 @@ export const getOffset = (props, state) => {
       break
   }
   if (preventOverflow) {
-    return overflowOffset(placement, _scrollTop, rect, top, left, width, props)
+    return overflowOffset(
+      (placement = 'bottom-start'),
+      _scrollTop,
+      rect,
+      top,
+      left,
+      width,
+      props
+    )
   }
 
   return {
     width,
     top,
     left,
-    placement
+    placement: placement || 'bottom-start'
   }
 }
