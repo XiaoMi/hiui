@@ -10,7 +10,7 @@ class Demo extends React.Component {
     return (
       <DatePicker
         type='daterange'
-        shortcuts={['近一周','近一月','近三月','近一年']}
+        shortcuts={['近一周','近一月','近三月','近半年','近一年']}
         onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
       />
     )
