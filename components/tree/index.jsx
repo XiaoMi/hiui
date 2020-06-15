@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { Input } from '../input'
+import React from 'react'
 import TreeNode from './TreeNode'
 import TreeContext from './context'
 import './style/index.scss'
@@ -8,11 +7,12 @@ import useSelect from './hooks/useSelect'
 import useCheckable from './hooks/useCheckable'
 import useExpand from './hooks/useExpand'
 import { getAncestorIds } from './util'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 const PREFIX = 'hi-editor-tree'
 
 const Tree = ({
-  searchable,
   data,
   treeNodeRender,
   checkable,
@@ -29,7 +29,7 @@ const Tree = ({
   editable,
   editMenu,
   onClick,
-  filtrable = false
+  draggable
 }) => {
   const [flatData, updateFlatData] = useFlatData(data)
   const [selectNodeId, onSelectNode] = useSelect({
@@ -47,8 +47,6 @@ const Tree = ({
     data,
     flatData
   })
-
-  const [searchValue, setSearchValue] = useState('')
 
   return (
     <TreeContext.Provider
@@ -69,22 +67,6 @@ const Tree = ({
       }}
     >
       <div className={PREFIX}>
-        {searchable && (
-          <div style={{ width: 250, marginBottom: 15 }}>
-            <Input
-              value={searchValue}
-              onChange={(e) => {
-                setSearchValue(e.target.value)
-                const matchedNodes = flatData.filter((node) => node.title.includes(e.target.value))
-                let filteredNodes = [...matchedNodes]
-                for (let i = 0; i < filteredNodes.length; i++) {
-                  const parent = flatData.find((node) => (node.id = filteredNodes[i].parentId))
-                  filteredNodes = filteredNodes.concat(parent)
-                }
-              }}
-            />
-          </div>
-        )}
         <ul className='root-list'>
           {flatData
             .filter((node) => {
@@ -100,4 +82,16 @@ const Tree = ({
   )
 }
 
-export default Tree
+const WrapperTree = (props) => {
+  const { draggable } = props
+  console.log('draggable', draggable)
+  return draggable ? (
+    <DndProvider backend={HTML5Backend}>
+      <Tree {...props} />
+    </DndProvider>
+  ) : (
+    <Tree {...props} />
+  )
+}
+
+export default WrapperTree

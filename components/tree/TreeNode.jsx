@@ -5,6 +5,7 @@ import Popper from '../popper'
 import Classnames from 'classnames'
 import TreeContext from './context'
 import useClickOutside from './hooks/useClickOutside'
+import useDnD from './hooks/useDnD'
 
 const TreeNode = ({ node }) => {
   const {
@@ -20,8 +21,13 @@ const TreeNode = ({ node }) => {
     PREFIX,
     onCheckNode,
     expandedNodeIds,
-    onExpandNode
+    onExpandNode,
+    draggable
   } = useContext(TreeContext)
+  const move = (a, b, c) => {
+    console.log(a, b, c)
+  }
+  const [{ isDragging, isOver, direction }, ref] = useDnD({ id: node.id, move })
   const [menuVisible, setMenuVisible] = useState(false)
   const treeNodeRef = useRef(null)
   const editMenuRef = useRef(null)
@@ -104,7 +110,7 @@ const TreeNode = ({ node }) => {
   }, [])
 
   return (
-    <li className='tree-node'>
+    <li className='tree-node' ref={ref}>
       {renderIndent(node.children && node.children.length ? node.depth : node.depth + 1)}
       {node.children && node.children.length && renderSwitcher(expandedNodeIds, node, onExpandNode)}
       {checkable && renderCheckbox(node, { checked: checkedNodes, semiChecked: semiCheckedIds })}
