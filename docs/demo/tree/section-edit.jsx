@@ -1,6 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Tree from '../../../components/tree'
+import Notification from '../../../components/notification'
 const prefix = 'tree-edit'
 const desc = '通过树的节点进行新增、删除、编辑等操作'
 const rightOptions = ['基础', '自定义菜单']
@@ -49,8 +50,17 @@ class Demo extends React.Component {
           apperance="line"
           editable={true}
           data={this.state.treeData}
+          onBeforeSave={(saveNode, data, level) => {
+            console.log(saveNode, data,level)
+            return true
+          }}
           onSave={(saveNode, data) => {
+            
             console.log(saveNode, data)
+          }}
+          onBeforeDelete={(deleteNode, data, level) => {
+            console.log(deleteNode, data,level)
+            return true
           }}
           onDelete={(deleteNode, data) => {
             console.log(deleteNode, data)
@@ -88,17 +98,29 @@ class Demo extends React.Component {
         return (
           <div style={{width:500}}>
             <Tree
+              searchable
               defaultExpandAll
               apperance="line"
               editable={true}
               data={this.state.treeData}
-              onSave={(saveNode, data) => {
-                console.log(saveNode, data)
+              onSave={(saveNode, data, level) => {
+                if (level === 0) {
+                  Notification.open({
+                    title:'保存失败',
+                    type:'error'
+                  })
+                  return false
+                } else {
+                  return true
+                }
+                console.log(saveNode, data,level)
+                
               }}
+              
               onDelete={(deleteNode, data) => {
                 console.log(deleteNode, data)
               }}
-              contextMenu={(currentItemData) => {
+              contextMenu={(currentItemData, level) => {
                 if (currentItemData.customData === 'Y') {
                   return [{
                     type: 'addChildNode'
@@ -141,7 +163,7 @@ class Demo extends React.Component {
 const DemoEdit = () => (
   <DocViewer
     code={code}
-    scope={{ Tree }}
+    scope={{ Tree, Notification }}
     prefix={prefix}
     desc={desc}
     rightOptions={rightOptions}

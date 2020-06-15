@@ -37,15 +37,14 @@ class Demo extends React.Component {
   constructor() {
     super()
     this.state = {
-      rangeDate: {start: new Date(), end: new Date()} // 或 rangeDate: new Date()
+      rangeDate: {start: new Date('2020'), end: new Date('2030')} // 或 rangeDate: new Date()
     }
   }
   render () {
     return (
       <div>
         <DatePicker
-          type='daterange'
-          format='yyyy'
+          type='yearrange'
           defaultValue={this.state.rangeDate}
           onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
         />
@@ -62,15 +61,14 @@ class Demo extends React.Component {
   constructor() {
     super()
     this.state = {
-      rangeDate: {start: new Date(), end: new Date()} // 或 rangeDate: new Date()
+      rangeDate: {start: new Date(2020, 9), end: new Date(2030, 10)} // 或 rangeDate: new Date()
     }
   }
   render () {
     return (
       <div>
         <DatePicker
-          type='daterange'
-          format='yyyy-MM'
+          type='monthrange'
           defaultValue={this.state.rangeDate}
           onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
         />

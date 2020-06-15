@@ -113,8 +113,10 @@ class Pagination extends Component {
     this.setState({
       pageSize
     }, () => {
-      onPageSizeChange && onPageSizeChange(pageSize, current)
-      this.handleChange(current)
+      const triggerOnchange = onPageSizeChange && onPageSizeChange(pageSize, current)
+      if (triggerOnchange !== false) {
+        this.handleChange(current)
+      }
     })
   }
 

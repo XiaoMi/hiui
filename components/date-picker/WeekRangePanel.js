@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {deconstructDate, nextMonth} from './util'
+import {deconstructDate, nextMonth, colDisabled} from './util'
 import Calender from './Calender'
 import Icon from '../icon'
 import classNames from 'classnames'
@@ -56,7 +56,7 @@ export default class WeekRangePanel extends Component {
     }
     return arr
   }
-  getYearOrMonthData (val, type) {
+  getYearOrMonthData (val, type, _year) {
     const start = type === 'year' ? val - 4 : 1
     let trs = [[], [], [], []]
     let num = 0
@@ -73,9 +73,7 @@ export default class WeekRangePanel extends Component {
         if (y === val) {
           col.type = 'current'
         }
-        type === 'year'
-          ? (col.text = y)
-          : (col.text = this.props.localeDatas.datePicker.month[y - 1])
+        col = colDisabled(type, col, _year, this.props, y)
         col.value = y
         num++
       }
@@ -196,7 +194,7 @@ export default class WeekRangePanel extends Component {
   }
   _getNormalComponent (date, flag) {
     let { range, layout } = this.state
-    const { altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData } = this.props
+    const { altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData, max: maxDate, min: minDate } = this.props
 
     let component = null
     const { year, month } = deconstructDate(date)
@@ -219,7 +217,7 @@ export default class WeekRangePanel extends Component {
         )
         break
       case 'month':
-        const monthData = this.getYearOrMonthData(month, 'month')
+        const monthData = this.getYearOrMonthData(month, 'month', year)
         component = (
           <Calender
             altCalendarPresetData={altCalendarPresetData}
@@ -241,6 +239,8 @@ export default class WeekRangePanel extends Component {
             date={date}
             range={range}
             type='weekrange'
+            minDate={minDate}
+            maxDate={maxDate}
             onPick={this.pick.bind(this)}
             mouseMove={this.onMouseMoveHandler.bind(this)}
           />

@@ -18,9 +18,10 @@ class TreeItem extends Component {
   }
   render () {
     const {
+      level,
       editable,
       draggable,
-      dropDividerPosition,
+      direction,
       checked,
       expanded,
       highlight,
@@ -31,7 +32,6 @@ class TreeItem extends Component {
       onClick,
       highlightable,
       item,
-      draggingNode,
       checkable,
       itemStyle,
       onExpanded,
@@ -47,7 +47,7 @@ class TreeItem extends Component {
       connectDragSource,
       connectDropTarget,
       isOver,
-      targetNode,
+      isDragging,
       saveEditNode,
       origin,
       loadChildren,
@@ -79,7 +79,7 @@ class TreeItem extends Component {
           }
         )}
       >
-        {targetNode === item.id && dropDividerPosition === 'up' && isOver && (
+        { direction === 'up' && isOver && (
           <TreeDivider placement='top' theme={theme} />
         )}
         <div
@@ -89,8 +89,7 @@ class TreeItem extends Component {
           })}
         >
           {(!item.children || (item.children && !expanded)) &&
-            targetNode === item.id &&
-            dropDividerPosition === 'down' &&
+            direction === 'down' &&
             isOver && <TreeDivider theme={theme} placement='bottom' />}
           {
             <span
@@ -144,7 +143,7 @@ class TreeItem extends Component {
                 style={(editingNodes.find(node => node.id === item.id) || {}).title === '' ? { marginRight: 12, color: '#999', cursor: 'not-allowed' } : { cursor: 'pointer', marginRight: 12, color: themeColor[theme] }}
                 onClick={() => {
                   if ((editingNodes.find(node => node.id === item.id) || {}).title !== '') {
-                    saveEditNode(item.id)
+                    saveEditNode(item.id, level)
                   }
                 }}
               >
@@ -169,14 +168,14 @@ class TreeItem extends Component {
                 style={item.style}
                 className={`${prefixCls}_item-text ${itemStyle} ${
                   highlight === item.id ? 'highlight' : ''
-                } ${draggingNode === item.id ? 'dragging' : ''} ${item.disabled ? prefixCls + '_item-text--disabled' : ''}`}
+                } ${isDragging ? 'dragging' : ''} ${item.disabled ? prefixCls + '_item-text--disabled' : ''}`}
                 onContextMenu={e => {
                   if (item.disabled) {
                     return false
                   }
                   if (editable) {
                     e.preventDefault()
-                    showRightClickMenu(item, e)
+                    showRightClickMenu(item, e, level)
                   }
                 }}
                 onClick={e => {
@@ -191,7 +190,7 @@ class TreeItem extends Component {
               >
                 {item.title}
                 {/* {renderRightClickMenu(item)} */}
-                {targetNode === item.id && dropDividerPosition === 'sub' && isOver && (
+                { direction === 'sub' && isOver && (
                   <TreeDivider placement='inner' theme={this.props.theme} />
                 )}
               </span>
@@ -201,14 +200,14 @@ class TreeItem extends Component {
               style={item.style}
               className={`${prefixCls}_item-text ${itemStyle} ${
                 highlight === item.id ? 'highlight' : ''
-              } ${draggingNode === item.id ? 'dragging' : ''} ${item.disabled ? prefixCls + '_item-text--disabled' : ''}`}
+              } ${isDragging ? 'dragging' : ''} ${item.disabled ? prefixCls + '_item-text--disabled' : ''}`}
               onContextMenu={e => {
                 if (item.disabled) {
                   return false
                 }
                 if (this.props.editable) {
                   e.preventDefault()
-                  showRightClickMenu(item, e)
+                  showRightClickMenu(item, e, level)
                 }
               }}
               onClick={e => {
@@ -226,11 +225,11 @@ class TreeItem extends Component {
             </span>
           )}
         </div>
-        {item.children && item.children.length > 0 && expanded ? renderTree(item.children) : null}
+        {item.children && item.children.length > 0 && expanded ? renderTree(item.children, [], level + 1) : null}
         {item.children &&
           expanded &&
-          targetNode === item.id &&
-          dropDividerPosition === 'down' &&
+
+          direction === 'down' &&
           isOver && <TreeDivider placement='bottom' theme={this.props.theme} />}
       </li>
     )
@@ -244,80 +243,55 @@ const source = {
       props.closeExpandedTreeNode(props.item.id)
     }
     props.onDragStart(props.item)
-    return { sourceItem: props.item, originalExpandStatus: props.expanded }
-  },
-  endDrag (props, monitor) {
-    const dropResult = monitor.getDropResult()
-    if (!dropResult) {
-      const { removeTargetNode, removeDraggingNode } = props
-      removeDraggingNode()
-      removeTargetNode()
-    }
+    return { sourceItem: props.item, originalExpandStatus: props.expanded, sourceLevel: props.level }
   }
 }
 const target = {
   drop (props, monitor) {
-    const { sourceItem, originalExpandStatus } = monitor.getItem()
+    const { sourceItem, originalExpandStatus, sourceLevel } = monitor.getItem()
     const {
       item: targetItem,
       dropNode,
-      removeDraggingNode,
       expandTreeNode,
-      removeTargetNode,
-      dropDividerPosition
+      direction,
+      level
     } = props
-
     // 先看下是不是在最近得组件
     if (monitor.isOver({ shallow: true })) {
       if (
         sourceItem.id === targetItem.id ||
         (targetItem.children &&
           targetItem.children.map(t => t.id).includes(sourceItem.id) &&
-          dropDividerPosition === 'sub')
+          direction === 'sub')
       ) {
         // 如果源节点就是目的节点或者源节点是目的节点的子节点（直系）再或者源节点是目的节点的父节点，那么什么都不做
         // 如果什么都不做，原来展开则现在还展开
         if (originalExpandStatus) {
           expandTreeNode(sourceItem.id)
         }
-        removeDraggingNode()
-        removeTargetNode()
       } else {
         // 移动节点到相应位置
-        dropNode(sourceItem, targetItem, dropDividerPosition)
-        removeDraggingNode()
-        removeTargetNode()
+        dropNode(sourceItem, targetItem, direction, {before: sourceLevel, after: level})
       }
     }
   },
   hover (props, monitor, component) {
-    const { sourceItem } = monitor.getItem()
     const {
-      item: targetItem,
-      setDraggingNode,
-      setTargetNode,
-      positionX,
-      positionY,
-      setPosition
+      setDirection
     } = props
     // 先看下是不是在最近得组件
     if (monitor.isOver({ shallow: true })) {
       const sourcePosition = monitor.getClientOffset()
       const targetComponent = findDOMNode(component).getBoundingClientRect()
-      if (!(sourcePosition.x === positionX && sourcePosition.y === positionY)) {
-        setPosition(sourcePosition.x, sourcePosition.y)
-        // 如果在节点的上半部分，则为移动其内部，如果为下半部分，则为节点下方
-        if (sourcePosition.y <= targetComponent.y + targetComponent.height / 3) {
-          setTargetNode(targetItem.id, 'up')
-        } else if (
-          targetComponent.y + targetComponent.height / 3 < sourcePosition.y &&
-          sourcePosition.y <= targetComponent.y + (targetComponent.height * 2) / 3
-        ) {
-          setTargetNode(targetItem.id, 'sub')
-        } else {
-          setTargetNode(targetItem.id, 'down')
-        }
-        setDraggingNode(sourceItem.id)
+      if (sourcePosition.y <= targetComponent.y + targetComponent.height / 3) {
+        setDirection('up')
+      } else if (
+        targetComponent.y + targetComponent.height / 3 < sourcePosition.y &&
+        sourcePosition.y <= targetComponent.y + (targetComponent.height * 2) / 3
+      ) {
+        setDirection('sub')
+      } else {
+        setDirection('down')
       }
     }
   }
@@ -331,7 +305,7 @@ function sourceCollect (connect, monitor) {
 function targetCollect (connect, monitor) {
   return {
     connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver()
+    isOver: monitor.isOver({ shallow: true })
   }
 }
 
@@ -340,11 +314,15 @@ const DraggableTreeItem = DropTarget(Types['TreeNode'], target, targetCollect)(
 )
 const HOCTreeItem = TreeItemComponent => {
   return class WrapperTreeItem extends Component {
+    state={direction: null}
+    setDirection = (direction) => {
+      this.setState({direction})
+    }
     render () {
       const { draggable } = this.props
 
       return draggable ? (
-        <DraggableTreeItem {...this.props} />
+        <DraggableTreeItem {...this.props} direction={this.state.direction} setDirection={this.setDirection} />
       ) : (
         <TreeItemComponent {...this.props} />
       )

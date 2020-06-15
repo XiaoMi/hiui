@@ -5,16 +5,16 @@ export default class NoticeContainer extends Component {
   state = {
     queue: []
   }
-  addNotice = notice => {
+  addNotice = (notice) => {
     const _queue = [...this.state.queue]
     _queue.push(notice)
     this.setState({
       queue: _queue
     })
   }
-  removeNotice = noticeKey => {
+  removeNotice = (noticeKey) => {
     const _queue = [...this.state.queue]
-    let idx = _queue.findIndex(item => item.key === noticeKey)
+    let idx = _queue.findIndex((item) => item.key === noticeKey)
     _queue.splice(idx, 1)
     this.setState({
       queue: _queue
@@ -24,15 +24,13 @@ export default class NoticeContainer extends Component {
     const { queue } = this.state
     const { prefix } = this.props
     return (
-      <div
-        className={`hi-${prefix}__container`}
-      >
+      <div className={`hi-${prefix}__container`}>
         {queue.map((notice, index) => {
           return (
             <Notice
               key={notice.key}
               id={notice.key}
-              onClose={noticeId => {
+              onClose={(noticeId) => {
                 this.removeNotice(noticeId)
                 notice.onClose && notice.onClose()
               }}

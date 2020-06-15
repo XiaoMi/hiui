@@ -29,6 +29,10 @@ import addYears from 'date-fns/addYears'
 import subYears from 'date-fns/subYears'
 import parseISO from 'date-fns/parseISO'
 import getDate from 'date-fns/getDate'
+import startOfYear from 'date-fns/startOfYear'
+import endOfYear from 'date-fns/endOfYear'
+import isSameYear from 'date-fns/isSameYear'
+import endOfMonth from 'date-fns/endOfMonth'
 
 const isValid = (date) => {
   if (typeof date === 'string') {
@@ -69,21 +73,21 @@ const dateFormat = (value, formatStr) => {
  * @param {*} date
  * @param {*} flag
  */
-const changeYear = (date, flag) => {
+const changeYear = (date, flag, num = 1) => {
   let nDate
   if (flag) {
-    nDate = subYears(date, 1)
+    nDate = subYears(date, num)
   } else {
-    nDate = addYears(date, 1)
+    nDate = addYears(date, num)
   }
   return nDate
 }
-const changeMonth = (date, flag) => {
+const changeMonth = (date, flag, num = 1) => {
   let nDate
   if (flag) {
-    nDate = subMonths(date, 1)
+    nDate = subMonths(date, num)
   } else {
-    nDate = addMonths(date, 1)
+    nDate = addMonths(date, num)
   }
   return nDate
 }
@@ -125,5 +129,9 @@ export {
   compatibleToDate,
   compatibleFormatString,
   changeYear,
-  changeMonth
+  changeMonth,
+  startOfYear,
+  endOfYear,
+  isSameYear,
+  endOfMonth
 }

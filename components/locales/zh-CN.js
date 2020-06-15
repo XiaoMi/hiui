@@ -24,6 +24,8 @@ export default {
       year: '请选择年',
       time: '请选择时间',
       daterange: ['开始日期', '结束日期'],
+      yearrange: ['开始年', '结束年'],
+      monthrange: ['开始月', '结束月'],
       week: '请选择周',
       weekrange: ['开始周', '结束周'],
       timeperiod: ['开始日期时间', '结束日期时间']
