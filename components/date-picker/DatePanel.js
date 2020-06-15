@@ -41,7 +41,6 @@ class DatePanel extends Component {
     let { date, onPick } = this.props
     const cDate = getStartDate(date)
     let { year } = deconstructDate(cDate)
-    console.log('date', date, this.state, this.props, cDate, year)
     const num = currentView === 'year' ? 10 : 1
     if (flag) {
       year -= num
