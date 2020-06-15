@@ -146,7 +146,7 @@ class Cascader extends Component {
     this.onChangeValue([], false)
   }
 
-  onChangeValue (value, hasChildren) {
+  onChangeValue = (value, hasChildren) => {
     const {
       onChange,
       onActiveItemChange,

@@ -22,7 +22,7 @@ class Menu extends Component {
     }
   }
 
-  renderMenus () {
+  renderMenus = () => {
     const {
       value,
       options,
