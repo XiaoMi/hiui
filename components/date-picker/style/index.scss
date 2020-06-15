@@ -1026,6 +1026,16 @@ $basic-color: #4284f5 !default;
       color: $value;
     }
 
+    &__header-btns-disabled .hi-icon {
+      color: #a8aaaf;
+      cursor: not-allowed;
+    }
+
+    &__header-btns-disabled .hi-icon:hover {
+      color: #a8aaaf;
+      cursor: not-allowed;
+    }
+
     &__period-item--active {
       color: $value;
     }

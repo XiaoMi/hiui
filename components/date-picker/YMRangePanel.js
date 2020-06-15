@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import Calender from './Calender'
-import { deconstructDate } from './util'
+import { deconstructDate, colDisabled } from './util'
 import Icon from '../icon'
 import classNames from 'classnames'
 import Provider from '../context'
@@ -138,9 +138,9 @@ class YMRangePanel extends Component {
       range
     })
   }
-  getYearOrMonthData (year, type) {
+  getYearOrMonthData (year, type, _year) {
     const start = type === 'year' ? year - 4 : 1
-    const { type: pType, minDate, maxDate } = this.props
+    const { type: pType } = this.props
     let trs = [[], [], [], []]
     let num = 0
     const currentYear = new Date().getFullYear()
@@ -157,12 +157,10 @@ class YMRangePanel extends Component {
         if (y === currentYear || (y === currentMonth + 1 && year === currentYear)) {
           col.type = 'today'
         }
-        type === 'year'
-          ? (col.text = y)
-          : (col.text = this.props.localeDatas.datePicker.month[y - 1])
+        col = colDisabled(type, col, _year, this.props, y)
+
         col.value = y
         let _val = pType === 'yearrange' ? new Date(y + '') : new Date(year, y - 1)
-        if (_val < minDate || _val > maxDate) { (col.disabled = true) }
         col.rangeStart = _fun(_val, range.startDate)
         col.rangeEnd = _fun(_val, range.endDate)
         const _ds = [range.startDate, range.endDate].sort(compareAsc)
@@ -179,7 +177,7 @@ class YMRangePanel extends Component {
     const { year } = deconstructDate(date)
     switch (type) {
       case 'yearrange':
-        const yearData = this.getYearOrMonthData(year, 'year')
+        const yearData = this.getYearOrMonthData(year, 'year', year)
         component = (
           <Calender
             range={range}
@@ -196,7 +194,7 @@ class YMRangePanel extends Component {
         )
         break
       case 'monthrange':
-        const monthData = this.getYearOrMonthData(year, 'month')
+        const monthData = this.getYearOrMonthData(year, 'month', year)
         component = (
           <Calender
             range={range}

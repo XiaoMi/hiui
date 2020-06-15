@@ -1,5 +1,5 @@
 import request from 'axios'
-import { addMonths, getDay, subDays, differenceInDays, startOfWeek, endOfWeek } from './dateUtil'
+import { addMonths, getDay, subDays, differenceInDays, startOfWeek, endOfWeek, getYear, getMonth } from './dateUtil'
 const holiday = {
   PRCHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCHoliday.json?',
   PRCLunar: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCLunar.json?',
@@ -36,6 +36,33 @@ export const getYearWeek = (date, weekStart = 0) => {
 export const nextMonth = function (date) {
   !(date instanceof Date) && (date = new Date(date))
   return addMonths(date, 1)
+}
+
+// 判读日期是不可点击
+export const colDisabled = (type, col, _year, props, y) => {
+  const {max: maxDate, min: minDate} = props
+  const maxYear = maxDate && getYear(maxDate)
+  const minYear = minDate && getYear(minDate)
+  if (type === 'year') {
+    col.text = y
+    if (minDate || maxDate) {
+      col.disabled = (y > maxYear || y < minYear)
+    }
+  } else {
+    col.text = props.localeDatas.datePicker.month[y - 1]
+
+    if (minDate || maxDate) {
+      col.disabled = (_year > maxYear || _year < minYear)
+
+      if (_year === minYear) {
+        col.disabled = y - 1 < getMonth(minDate)
+      }
+      if (_year === maxYear && !col.disabled) {
+        col.disabled = y - 1 > getMonth(maxDate)
+      }
+    }
+  }
+  return col
 }
 /**
  * 是否展示历法次要信息

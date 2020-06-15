@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import Calender from './Calender'
-import { deconstructDate, nextMonth, showLargeCalendar } from './util'
+import { deconstructDate, nextMonth, showLargeCalendar, colDisabled } from './util'
 import { DAY_MILLISECONDS } from './constants'
 import Icon from '../icon'
 import classNames from 'classnames'
@@ -230,7 +230,7 @@ class DateRangePanel extends Component {
       showMask: !this.state.showMask
     })
   }
-  getYearOrMonthData (val, type) {
+  getYearOrMonthData (val, type, _year) {
     const start = type === 'year' ? val - 4 : 1
     let trs = [[], [], [], []]
     let num = 0
@@ -247,9 +247,7 @@ class DateRangePanel extends Component {
         if (y === val) {
           col.type = 'current'
         }
-        type === 'year'
-          ? (col.text = y)
-          : (col.text = this.props.localeDatas.datePicker.month[y - 1])
+        col = colDisabled(type, col, _year, this.props, y)
         col.value = y
         num++
       }
@@ -294,7 +292,7 @@ class DateRangePanel extends Component {
         )
         break
       case 'month':
-        const monthData = this.getYearOrMonthData(month, 'month')
+        const monthData = this.getYearOrMonthData(month, 'month', year)
         component = (
           <Calender
             altCalendarPresetData={altCalendarPresetData}

@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import Calender from './Calender'
-import { deconstructDate, showLargeCalendar } from './util'
+import { deconstructDate, showLargeCalendar, colDisabled } from './util'
 import TimePanel from './TimePanel'
 import Icon from '../icon'
 import classNames from 'classnames'
 import TimePeriodPanel from './TimePeriodPanel'
-import { dateFormat, parseISO, getStartDate, addMonths, subMonths, startOfWeek, endOfWeek } from './dateUtil'
+import { dateFormat, parseISO, getStartDate, addMonths, subMonths, startOfWeek, endOfWeek, getYear, getMonth } from './dateUtil'
 
 class DatePanel extends Component {
   constructor (props) {
@@ -41,6 +41,7 @@ class DatePanel extends Component {
     let { date, onPick } = this.props
     const cDate = getStartDate(date)
     let { year } = deconstructDate(cDate)
+    console.log('date', date, this.state, this.props, cDate, year)
     const num = currentView === 'year' ? 10 : 1
     if (flag) {
       year -= num
@@ -51,7 +52,7 @@ class DatePanel extends Component {
     onPick(cDate, true)
   }
 
-  getYearOrMonthData (val, type) {
+  getYearOrMonthData (val, type, _year) {
     const start = type === 'year' ? val - 4 : 1
     let trs = [[], [], [], []]
     let num = 0
@@ -68,9 +69,8 @@ class DatePanel extends Component {
         if (y === val) {
           col.type = 'current'
         }
-        type === 'year'
-          ? (col.text = y)
-          : (col.text = this.props.localeDatas.datePicker.month[y - 1])
+
+        col = colDisabled(type, col, _year, this.props, y)
         col.value = y
         num++
       }
@@ -111,15 +111,50 @@ class DatePanel extends Component {
    * }
    */
   renderHeader (type) {
+    const {max: maxDate, min: minDate, date} = this.props
+    const maxYear = maxDate && getYear(maxDate)
+    const minYear = minDate && getYear(minDate)
+    let cDate = getStartDate(date)
+    let _year = getYear(cDate)
+    let _month = getMonth(cDate)
+    let yearDisableLeft = _year - 1 < minYear
+    let yearDisableRight = _year + 1 > maxYear
+    let monthDisabledLeft = false
+    let monthDisabledRight = false
+    if (minDate || maxDate) {
+      monthDisabledLeft = _year < minYear
+      monthDisabledRight = _year > maxYear
+      if (_year === minYear) {
+        monthDisabledLeft = _month - 1 < getMonth(minDate)
+      }
+      if (_year === maxYear) {
+        monthDisabledRight = _month + 1 > getMonth(maxDate) - 1
+      }
+    }
+
     return (
       <div className='hi-datepicker__header'>
         <div className='hi-datepicker__header-btns'>
-          <span onClick={() => this.changeYear(true)}>
+          <span className={classNames({'hi-datepicker__header-btns-disabled': yearDisableLeft})}
+            onClick={() => {
+              if (yearDisableLeft) {
+                return
+              }
+              this.changeYear(true)
+            }}
+          >
             <Icon name='double-left' />
           </span>
           {type !== 'month' &&
             type !== 'year' &&
-            <span onClick={() => this.changeMonth(true)}>
+            <span
+              className={classNames({'hi-datepicker__header-btns-disabled': monthDisabledLeft})}
+              onClick={() => {
+                if (monthDisabledLeft) {
+                  return
+                }
+                this.changeMonth(true)
+              }}>
               <Icon name='left' />
             </span>}
         </div>
@@ -132,10 +167,26 @@ class DatePanel extends Component {
         <div className='hi-datepicker__header-btns'>
           {type !== 'month' &&
             type !== 'year' &&
-            <span onClick={() => this.changeMonth(false)}>
+            <span
+              className={classNames({'hi-datepicker__header-btns-disabled': monthDisabledRight})}
+              onClick={() => {
+                if (monthDisabledRight) {
+                  return
+                }
+                this.changeMonth(false)
+              }
+              }>
               <Icon name='right' />
             </span>}
-          <span onClick={() => this.changeYear(false)}>
+          <span
+            className={classNames({'hi-datepicker__header-btns-disabled': yearDisableRight})}
+            onClick={() => {
+              if (yearDisableRight) {
+                return
+              }
+              this.changeYear(false)
+            }}
+          >
             <Icon name='double-right' />
           </span>
         </div>
@@ -214,6 +265,7 @@ class DatePanel extends Component {
     const { min, max, weekOffset, date, disabledDate, showLunar, altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData } = this.props
     const validDate = getStartDate(date)
     const { year, month } = deconstructDate(validDate)
+
     let component = null
     switch (currentView) {
       case 'date':
@@ -239,7 +291,7 @@ class DatePanel extends Component {
         )
         break
       case 'year':
-        const yearData = this.getYearOrMonthData(year, 'year')
+        const yearData = this.getYearOrMonthData(year, 'year', year)
         component = (
           <Calender
             altCalendarPresetData={altCalendarPresetData}
@@ -257,7 +309,7 @@ class DatePanel extends Component {
         )
         break
       case 'month':
-        const monthData = this.getYearOrMonthData(month, 'month')
+        const monthData = this.getYearOrMonthData(month, 'month', year)
         component = (
           <Calender
             altCalendarPresetData={altCalendarPresetData}
