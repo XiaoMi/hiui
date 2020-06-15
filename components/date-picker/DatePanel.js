@@ -5,15 +5,17 @@ import TimePanel from './TimePanel'
 import Icon from '../icon'
 import classNames from 'classnames'
 import TimePeriodPanel from './TimePeriodPanel'
-import { dateFormat, parseISO, getStartDate, addMonths, subMonths, startOfWeek, endOfWeek, getYear, getMonth } from './dateUtil'
+import { dateFormat, parseISO, getStartDate, addMonths, subMonths, startOfWeek, endOfWeek, getValidDate } from './dateUtil'
 
 class DatePanel extends Component {
   constructor (props) {
     super(props)
+
     this.state = {
       currentView: props.type,
       yearData: [],
-      monthData: []
+      monthData: [],
+      staticDate: getStartDate(props.date)
     }
   }
   /**
@@ -21,14 +23,16 @@ class DatePanel extends Component {
    * @param {Number} num  加减值
    */
   changeMonth (flag) {
-    let { date, onPick } = this.props
-    let cDate = getStartDate(date)
+    let {staticDate} = this.state
+    let cDate = getValidDate(staticDate)
     if (flag) {
       cDate = subMonths(cDate, 1)
     } else {
       cDate = addMonths(cDate, 1)
     }
-    onPick(cDate, true)
+    this.setState({
+      staticDate: cDate
+    })
   }
 
   /**
@@ -38,8 +42,8 @@ class DatePanel extends Component {
 
   changeYear (flag) {
     let { currentView } = this.state
-    let { date, onPick } = this.props
-    const cDate = getStartDate(date)
+    let {staticDate} = this.state
+    const cDate = getValidDate(staticDate)
     let { year } = deconstructDate(cDate)
     const num = currentView === 'year' ? 10 : 1
     if (flag) {
@@ -48,7 +52,9 @@ class DatePanel extends Component {
       year += num
     }
     cDate.setFullYear(year)
-    onPick(cDate, true)
+    this.setState({
+      staticDate: cDate
+    })
   }
 
   getYearOrMonthData (val, type, _year) {
@@ -83,9 +89,9 @@ class DatePanel extends Component {
    * @param {Number} month 当前月份
    */
   getHeaderCenterContent () {
-    const { localeDatas, locale, date } = this.props
-    const { currentView } = this.state
-    const { year, month } = deconstructDate(getStartDate(date))
+    const { localeDatas, locale } = this.props
+    const { staticDate, currentView } = this.state
+    const { year, month } = deconstructDate(getValidDate(staticDate))
     if (currentView === 'year') {
       return year - 4 + '~' + (year + 7)
     }
@@ -110,50 +116,15 @@ class DatePanel extends Component {
    * }
    */
   renderHeader (type) {
-    const {max: maxDate, min: minDate, date} = this.props
-    const maxYear = maxDate && getYear(maxDate)
-    const minYear = minDate && getYear(minDate)
-    let cDate = getStartDate(date)
-    let _year = getYear(cDate)
-    let _month = getMonth(cDate)
-    let yearDisableLeft = _year - 1 < minYear
-    let yearDisableRight = _year + 1 > maxYear
-    let monthDisabledLeft = false
-    let monthDisabledRight = false
-    if (minDate || maxDate) {
-      monthDisabledLeft = _year < minYear
-      monthDisabledRight = _year > maxYear
-      if (_year === minYear) {
-        monthDisabledLeft = _month - 1 < getMonth(minDate)
-      }
-      if (_year === maxYear) {
-        monthDisabledRight = _month + 1 > getMonth(maxDate) - 1
-      }
-    }
-
     return (
       <div className='hi-datepicker__header'>
         <div className='hi-datepicker__header-btns'>
-          <span className={classNames({'hi-datepicker__header-btns-disabled': yearDisableLeft})}
-            onClick={() => {
-              if (yearDisableLeft) {
-                return
-              }
-              this.changeYear(true)
-            }}
-          >
+          <span onClick={() => this.changeYear(true)}>
             <Icon name='double-left' />
           </span>
           {type !== 'month' &&
             type !== 'year' &&
-            <span
-              className={classNames({'hi-datepicker__header-btns-disabled': monthDisabledLeft})}
-              onClick={() => {
-                if (monthDisabledLeft) {
-                  return
-                }
-                this.changeMonth(true)
-              }}>
+            <span onClick={() => this.changeMonth(true)}>
               <Icon name='left' />
             </span>}
         </div>
@@ -166,45 +137,31 @@ class DatePanel extends Component {
         <div className='hi-datepicker__header-btns'>
           {type !== 'month' &&
             type !== 'year' &&
-            <span
-              className={classNames({'hi-datepicker__header-btns-disabled': monthDisabledRight})}
-              onClick={() => {
-                if (monthDisabledRight) {
-                  return
-                }
-                this.changeMonth(false)
-              }
-              }>
+            <span onClick={() => this.changeMonth(false)}>
               <Icon name='right' />
             </span>}
-          <span
-            className={classNames({'hi-datepicker__header-btns-disabled': yearDisableRight})}
-            onClick={() => {
-              if (yearDisableRight) {
-                return
-              }
-              this.changeYear(false)
-            }}
-          >
+          <span onClick={() => this.changeYear(false)}>
             <Icon name='double-right' />
           </span>
         </div>
       </div>
     )
   }
+
   yearPick (date) {
     const { type, onPick } = this.props
     if (type === 'year') {
       onPick(date)
     } else {
-      onPick(date, true)
       this.setState({
-        currentView: 'month'
+        currentView: 'month',
+        staticDate: date
       })
     }
   }
   monthPick (_date) {
     const { type, onPick } = this.props
+    const { currentView } = this.state
     if (type === 'month') {
       onPick(_date)
     } else if (type === 'week') {
@@ -215,13 +172,19 @@ class DatePanel extends Component {
     } else {
       this.setState({
         currentView: 'date'
+      }, () => {
+        if (currentView === type) {
+          onPick(_date, true)
+        } else {
+          this.setState({
+            staticDate: _date
+          })
+        }
       })
-      onPick(_date, true)
     }
   }
   onDatePick (_date) {
     const { type, showTime, onPick, timeInterval, weekOffset } = this.props
-    // const { hours, minutes, seconds } = deconstructDate(this.props.date)
     if (type === 'week') {
       const _weekOffset = {weekStartsOn: weekOffset}
       let weekStart = startOfWeek(_date, _weekOffset)
@@ -241,6 +204,9 @@ class DatePanel extends Component {
       // date.setHours(hours, minutes, seconds)
       onPick(_date, showTime)
     }
+    this.setState({
+      staticDate: _date
+    })
   }
   onTimePeriodPick (periodS, periodE) {
     const date = getStartDate(this.props.date)
@@ -255,14 +221,16 @@ class DatePanel extends Component {
   }
   onTimePick (date, bol) {
     this.setState({
-      date
+      date,
+      staticDate: date
     })
     this.props.onPick(date, bol)
   }
   _getNormalComponent () {
     const { currentView } = this.state
-    const { min, max, weekOffset, date, disabledDate, showLunar, altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData } = this.props
-    const validDate = getStartDate(date)
+    const { min, max, weekOffset, disabledDate, showLunar, altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData } = this.props
+    const {staticDate} = this.state
+    const validDate = getValidDate(staticDate)
     const { year, month } = deconstructDate(validDate)
 
     let component = null

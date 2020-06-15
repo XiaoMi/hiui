@@ -394,7 +394,7 @@ $basic-color: #4284f5 !default;
         }
       }
 
-      .hi-datepicker__cell.in-range:not(.range-se) {
+      .hi-datepicker__cell.in-range:not(.range-se):not(.prev):not(.next) {
         padding: 4px 0;
 
         .hi-datepicker__content__wrap {
@@ -1009,7 +1009,7 @@ $basic-color: #4284f5 !default;
       color: map-get(get-palette($value), '50');
     }
 
-    &__calender-container--date .hi-datepicker__cell.in-range:not(.range-se) .hi-datepicker__content__wrap {
+    &__calender-container--date .hi-datepicker__cell.in-range:not(.range-se):not(.prev):not(.next) .hi-datepicker__content__wrap {
       width: 100%;
       background: rgba($value, 0.1);
     }
@@ -1124,7 +1124,7 @@ $basic-color: #4284f5 !default;
         }
       }
 
-      &.in-range {
+      &.in-range:not(.next):not(.prev) {
         .hi-datepicker__content {
           background: rgba($value, 0.1);
         }
