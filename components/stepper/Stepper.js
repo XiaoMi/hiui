@@ -1,8 +1,9 @@
 import React from 'react'
-import Provider from '../context'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
 
+import Provider from '../context'
+import Icon from '../icon'
 /**
  * Props
  * @prop  id         {string}            id
@@ -21,6 +22,7 @@ import PropTypes from 'prop-types'
  */
 class Stepper extends React.Component {
   renderNode (arg, info) {
+    const { icon } = info
     const { itemLayout, current } = this.props
     const _c = classnames(
       'hi-stepper__item',
@@ -32,8 +34,12 @@ class Stepper extends React.Component {
       <li className={_c} key={info.key}>
         <div className='hi-stepper__item-content'>
           <span className='hi-stepper__icon'>
-            {info.icon ? (
-              info.icon
+            {icon ? (
+              typeof icon === 'string' ? (
+                <Icon name={icon} />
+              ) : (
+                icon
+              )
             ) : (
               <span className='hi-stepper__num'>{info.key + 1}</span>
             )}
@@ -74,7 +80,11 @@ class Stepper extends React.Component {
       className,
       theme && 'theme__' + theme
     )
-    return <div style={style} className={_className}>{this.renderStepperBar()}</div>
+    return (
+      <div style={style} className={_className}>
+        {this.renderStepperBar()}
+      </div>
+    )
   }
 }
 
@@ -82,11 +92,13 @@ Stepper.propTypes = {
   className: PropTypes.string,
   placement: PropTypes.oneOf(['vertical', 'horizontal']),
   itemLayout: PropTypes.oneOf(['vertical', 'horizontal']),
-  data: PropTypes.arrayOf(PropTypes.shape({
-    title: PropTypes.any,
-    content: PropTypes.any,
-    icon: PropTypes.any
-  })),
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.any,
+      content: PropTypes.any,
+      icon: PropTypes.any
+    })
+  ),
   current: PropTypes.number,
   style: PropTypes.object
 }
