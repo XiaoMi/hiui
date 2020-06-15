@@ -85,6 +85,7 @@ class Form extends Component {
     const { children, className, style } = this.props
 
     return (
+
       <form className={classNames('hi-form', className, this.getClassNames())} style={style}>
         {children}
       </form>
