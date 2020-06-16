@@ -163,7 +163,7 @@ class FormItem extends Component {
       : labelWidth && parseInt(labelWidth)
   }
   setChildrenDefaultValue = children => {
-    console.log(children)
+    return this.getfieldValue()
   }
   render () {
     const {
@@ -210,7 +210,7 @@ class FormItem extends Component {
           {Array.isArray(children) || !children
             ? children
             : React.cloneElement(children, {
-              defaultValue: 123,
+              value: this.setChildrenDefaultValue(children),
               onChange: (...args) => {
                 children.props.onChange && children.props.onChange(...args)
                 setTimeout(() => {
