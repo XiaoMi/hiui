@@ -11,16 +11,17 @@ const TreeNode = ({ node }) => {
     treeNodeRender,
     checkable,
     checkedNodes,
+    semiCheckedIds,
     onSelectNode,
     onClick,
     selectedId,
     editable,
     editMenu,
     PREFIX,
-    onCheckboxChange
+    onCheckNode,
+    expandedNodeIds,
+    onExpandNode
   } = useContext(TreeContext)
-
-  const [expanded, setExpanded] = useState(true)
   const [menuVisible, setMenuVisible] = useState(false)
   const treeNodeRef = useRef(null)
   const editMenuRef = useRef(null)
@@ -29,28 +30,23 @@ const TreeNode = ({ node }) => {
     setMenuVisible(false)
   })
 
-  const renderChildren = useCallback((children) => {
-    return (
-      <ul>
-        {children.map((child) => (
-          <TreeNode key={child.id} node={child} />
-        ))}
-      </ul>
-    )
-  }, [])
-
-  const renderSwitcher = useCallback((expanded) => {
+  const renderSwitcher = useCallback((expandedIds, node, onExpandNode) => {
+    const expanded = expandedIds.includes(node.id)
     return (
       <Icon
         style={{ cursor: 'pointer', marginRight: 3 }}
         name={expanded ? 'open' : 'packup'}
-        onClick={() => setExpanded(!expanded)}
+        onClick={() => onExpandNode(node, !expanded, expandedIds)}
       />
     )
   }, [])
 
-  const renderIndent = useCallback(() => {
-    return <span style={{ width: 16, marginRight: 3 }} />
+  const renderIndent = useCallback((times) => {
+    return (
+      <div style={{ marginRight: 3 }}>
+        {Array(times).fill(<span style={{ width: 16, display: 'inline-block' }} />)}
+      </div>
+    )
   }, [])
 
   const renderCheckbox = useCallback((node, { checked, semiChecked }) => {
@@ -59,7 +55,7 @@ const TreeNode = ({ node }) => {
         indeterminate={semiChecked.includes(node.id)}
         checked={checked.includes(node.id)}
         onChange={(e) => {
-          onCheckboxChange(e.target.checked, node)
+          onCheckNode(node, e.target.checked, checked)
         }}
       />
     )
@@ -75,7 +71,7 @@ const TreeNode = ({ node }) => {
         })}
         onClick={() => {
           onClick(node)
-          onSelectNode(id)
+          onSelectNode(node)
         }}
         onContextMenu={(e) => {
           e.preventDefault()
@@ -109,21 +105,12 @@ const TreeNode = ({ node }) => {
 
   return (
     <li className='tree-node'>
-      <div className='tree-node__self'>
-        {node.children && node.children.length
-          ? renderSwitcher(expanded)
-          : renderIndent()}
-        {checkable && renderCheckbox(node, checkedNodes)}
-        {renderTitle(node, selectedId)}
-      </div>
-      {node.children && expanded ? renderChildren(node.children) : null}
+      {renderIndent(node.children && node.children.length ? node.depth : node.depth + 1)}
+      {node.children && node.children.length && renderSwitcher(expandedNodeIds, node, onExpandNode)}
+      {checkable && renderCheckbox(node, { checked: checkedNodes, semiChecked: semiCheckedIds })}
+      {renderTitle(node, selectedId)}
       {editable && null && (
-        <Popper
-          show={menuVisible}
-          attachEle={treeNodeRef.current}
-          zIndex={1040}
-          placement='right'
-        >
+        <Popper show={menuVisible} attachEle={treeNodeRef.current} zIndex={1040} placement='right'>
           {renderEditMenu(editMenu, node)}
         </Popper>
       )}

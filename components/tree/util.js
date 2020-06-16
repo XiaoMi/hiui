@@ -24,9 +24,8 @@ export const getAncestorIds = (id, data, arr = []) => {
 
 // 寻找某一节点的所有子节点
 export const getChildrenIds = (node, arr = []) => {
-  console.log('ARR', arr)
   if (node.children) {
-    arr = node.children.map((i) => i.id).concat(arr)
+    arr.splice(0, 0, ...node.children.map((i) => i.id))
     node.children.forEach((c) => getChildrenIds(c, arr))
   }
 
@@ -53,10 +52,7 @@ export const getSemiChecked = (checkedIds, data, allData, semiChecked = []) => {
     const ancestorIds = getAncestorIds(node.id, allData)
     if (checkedIds.includes(node.id)) {
       ancestorIds.forEach((ancestorId) => {
-        if (
-          !checkedIds.includes(ancestorId) &&
-          !semiChecked.includes(ancestorId)
-        ) {
+        if (!checkedIds.includes(ancestorId) && !semiChecked.includes(ancestorId)) {
           semiChecked.push(ancestorId)
         }
       })

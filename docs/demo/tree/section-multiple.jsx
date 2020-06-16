@@ -46,7 +46,7 @@ class Demo extends React.Component {
           checkable
           editable={true}
           data={this.treeData}
-          checkedIds={this.state.checkedKeys}
+          // checkedIds={this.state.checkedKeys}
           onChange={(checkedKeys, title, bool, semi) => {
             console.log('Tree data:', checkedKeys, title, bool ,semi)
             this.setState({
@@ -64,7 +64,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoMultiple = () => (
-  <DocViewer desc={desc} code={code} scope={{ Tree }} prefix={prefix} />
-)
+const DemoMultiple = () => <DocViewer desc={desc} code={code} scope={{ Tree }} prefix={prefix} />
 export default DemoMultiple

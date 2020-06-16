@@ -17,10 +17,10 @@ class TimeRangePanel extends Component {
     this.props.onPick(r, bol)
   }
   render () {
-    const { date, style } = this.props
+    const { date } = this.props
     const {startDate, endDate} = date
     return (
-      <div className='hi-timepicker hi-timepicker--timerange' style={style}>
+      <div className='hi-timepicker hi-timepicker--timerange'>
         <Time {...this.props} date={startDate} onPick={this.onTimePick.bind(this, 'left')} onlyTime />
         <div className='hi-timepicker__split' />
         <Time {...this.props} date={endDate} onPick={this.onTimePick.bind(this, 'right')} onlyTime />
