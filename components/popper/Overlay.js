@@ -48,6 +48,7 @@ const Overlay = props => {
       onClickOutside && onClickOutside(e)
     }, undefined, 'click', attachEle)
   }
+
   const scrollCallBack = useCallback(() => {
     setState(Object.assign({}, state, { offset: getOffset(props, state) }))
   }, [props, state])
