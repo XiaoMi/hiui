@@ -30,7 +30,8 @@ const Tree = ({
   editMenu,
   onClick,
   draggable,
-  onLoadChildren
+  onLoadChildren,
+  apperance
 }) => {
   const [flatData, updateFlatData] = useFlatData(data)
   const [selectNodeId, onSelectNode] = useSelect({
@@ -66,7 +67,8 @@ const Tree = ({
         onClick,
         onCheckNode,
         draggable,
-        onLoadChildren
+        onLoadChildren,
+        apperance
       }}
     >
       <div className={PREFIX}>

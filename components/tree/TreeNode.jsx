@@ -7,6 +7,11 @@ import TreeContext from './context'
 import useClickOutside from './hooks/useClickOutside'
 import useDnD from './hooks/useDnD'
 import Loading from './IconLoading'
+const switcherApperanceMap = {
+  default: ['packup', 'open'],
+  folder: ['folder', 'Folder-open'],
+  line: ['TreePlus', 'TreeMinus']
+}
 
 const TreeNode = ({ node }) => {
   const {
@@ -15,16 +20,14 @@ const TreeNode = ({ node }) => {
     checkedNodes,
     semiCheckedIds,
     onSelectNode,
-    onClick,
     selectedId,
     editable,
-    editMenu,
-    PREFIX,
     onCheckNode,
     expandedNodeIds,
     onExpandNode,
     draggable,
-    onLoadChildren
+    onLoadChildren,
+    apperance = 'default'
   } = useContext(TreeContext)
   const move = (a, b, c) => {
     console.log(a, b, c)
@@ -40,7 +43,13 @@ const TreeNode = ({ node }) => {
   useClickOutside(editMenuRef, () => {
     setMenuVisible(false)
   })
-
+  // 渲染 apperance 占位
+  const renderApperancePlaceholder = useCallback((apperance) => {
+    if (apperance === 'folder') {
+      return <Icon name='File' style={{ marginRight: 3 }} />
+    }
+  }, [])
+  // 渲染展开收起
   const renderSwitcher = useCallback(
     (expandedIds, node, onExpandNode, onLoadChildren) => {
       const expanded = expandedIds.includes(node.id)
@@ -49,7 +58,7 @@ const TreeNode = ({ node }) => {
       ) : (
         <Icon
           style={{ cursor: 'pointer', marginRight: 3 }}
-          name={expanded ? 'open' : 'packup'}
+          name={expanded ? switcherApperanceMap[apperance][1] : switcherApperanceMap[apperance][0]}
           onClick={() => {
             if (onLoadChildren) {
               setLoading(true)
@@ -64,15 +73,18 @@ const TreeNode = ({ node }) => {
         />
       )
     },
-    [loading, setLoading]
+    [loading, setLoading, apperance]
   )
-
+  // 渲染空白占位
   const renderIndent = useCallback((times) => {
-    return (
-      <div style={{ marginRight: 3 }}>
-        {Array(times).fill(<span style={{ width: 16, display: 'inline-block' }} />)}
-      </div>
-    )
+    return Array(times)
+      .fill('')
+      .map((indent, index) => (
+        <span
+          key={index}
+          style={{ width: 16, display: 'inline-block', marginRight: index === times - 1 ? 3 : 0 }}
+        />
+      ))
   }, [])
 
   const renderCheckbox = useCallback((node, { checked, semiChecked }) => {
@@ -99,13 +111,15 @@ const TreeNode = ({ node }) => {
             [`tree-node__title--draggable`]: draggable
           })}
           onClick={() => {
-            onClick(node)
+            setMenuVisible(false)
             onSelectNode(node)
           }}
-          // onContextMenu={(e) => {
-          //   e.preventDefault()
-          //   setMenuVisible(true)
-          // }}
+          onContextMenu={(e) => {
+            if (editable) {
+              e.preventDefault()
+              setMenuVisible(true)
+            }
+          }}
         >
           {treeNodeRender ? treeNodeRender(title) : title}
         </div>
@@ -113,40 +127,31 @@ const TreeNode = ({ node }) => {
     },
     [treeNodeRef, ref, draggable, direction, isOver]
   )
-
-  const renderEditMenu = useCallback((editMenu, node) => {
-    const _editMenu = typeof editMenu === 'function' ? editMenu(node) : editMenu
-    return (
-      <div className={`${PREFIX}-menu`} ref={editMenuRef}>
-        {_editMenu.map((menu, index) => (
-          <div
-            className='menu-item'
-            key={index}
-            onClick={() => {
-              menu.onClick()
-              setMenuVisible(false)
-            }}
-          >
-            {menu.title}
-          </div>
-        ))}
-      </div>
-    )
-  }, [])
   return (
     <li className='tree-node'>
       {renderIndent(
         (node.children && node.children.length) || (onLoadChildren && !node.isLeaf)
           ? node.depth
-          : (node.depth && node.depth + 1) || 1
+          : apperance !== 'default'
+            ? node.depth
+            : (node.depth && node.depth + 1) || 1
       )}
+      {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
       {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf)) &&
         renderSwitcher(expandedNodeIds, node, onExpandNode, onLoadChildren)}
       {checkable && renderCheckbox(node, { checked: checkedNodes, semiChecked: semiCheckedIds })}
       {renderTitle(node, selectedId)}
-      {editable && null && (
-        <Popper show={menuVisible} attachEle={treeNodeRef.current} zIndex={1040} placement='right'>
-          {renderEditMenu(editMenu, node)}
+      {editable && (
+        <Popper
+          show={menuVisible}
+          attachEle={treeNodeRef.current}
+          zIndex={1040}
+          placement='right'
+          onClickOutside={() => {
+            setMenuVisible(false)
+          }}
+        >
+          <div>123</div>
         </Popper>
       )}
     </li>
