@@ -29,6 +29,12 @@
       }
     }
 
+    &.single-values {
+      .hi-select__input--item {
+        background: none;
+      }
+    }
+
     &--placeholder {
       color: #ccc;
     }

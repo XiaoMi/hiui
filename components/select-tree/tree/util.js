@@ -74,9 +74,17 @@ export const getSemiChecked = (checkedIds, data, allData, semiChecked = []) => {
   })
   return semiChecked
 }
-
+// 根据 ID 获取节点
 export const getNode = (id, data) => {
   return data.find(n => n.id === id)
+}
+// 根据 title 获取节点
+export const getNodeByTitle = (title, data) => {
+  return data.find(n => n.title === title)
+}
+// 根据 id || title 获取节点
+export const getNodeByIdTitle = (val, data) => {
+  return data.find(n => n.title === val || n.id === val)
 }
 // 获取指定节点的兄弟节点
 export const getSibilingsNodes = (node, data) => {
@@ -92,6 +100,7 @@ export const getParentNode = (node, data) => {
 export const getChildrenNodes = (node, data) => {
   return data.filter(n => n.pId === node.id)
 }
+// 获取根节点
 export const getRootNodes = (data) => {
   return data.filter(n => !n.pId)
 }
@@ -110,6 +119,22 @@ export const getDescendantNodes = (node, data, arr = []) => {
   return arr
 }
 
+export const hasChildren = (node, data) => {
+  let bol = false
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].pId === node.id) {
+      bol = true
+      break
+    }
+  }
+  return bol
+}
+// 移除指定节点的所有后代节点
+export const removeDescendantNodes = (node, data) => {
+  const descs = getDescendantNodes(node, data)
+  descs.map(d => d.id)
+  data.filter(n => descs.forEach())
+}
 // 获取指定节点的所有祖先节点
 export const getAncestorsNodes = (node, data, arr = []) => {
   const firstParentNode = getParentNode(node, data)
@@ -120,6 +145,13 @@ export const getAncestorsNodes = (node, data, arr = []) => {
   return arr
 }
 
+/**
+ * 处理选中数据
+ * @param {*} node 当前节点
+ * @param {*} data 拉平数据
+ * @param {*} checkedIds 选中 IDS
+ * @param {*} semiCheckedIds 半选 IDS
+ */
 export const updateCheckData = (node, data, checkedIds, semiCheckedIds) => {
   const children = node.isLeaf ? [] : getDescendantNodes(node, data)
   const ancestors = node.pId ? getAncestorsNodes(node, data) : []
@@ -145,6 +177,13 @@ export const updateCheckData = (node, data, checkedIds, semiCheckedIds) => {
   }
 }
 
+/**
+ * 处理取消选中数据
+ * @param {*} node 当前节点
+ * @param {*} data 拉平数据
+ * @param {*} checkedIds 选中 IDS
+ * @param {*} semiCheckedIds 半选 IDS
+ */
 export const updateUnCheckData = (node, data, checkedIds, semiCheckedIds) => {
   const children = node.isLeaf ? [] : getDescendantNodes(node, data)
   const ancestors = node.pId ? getAncestorsNodes(node, data) : []

@@ -4,33 +4,40 @@ import TreeNode from './TreeNode'
 import TreeContext from './context'
 import './style/index.scss'
 import {
-  getRootNodes,
-  getNode,
-  updateCheckData,
-  updateUnCheckData
+  getRootNodes
 } from './util'
 
 const PREFIX = 'select-tree'
 
-const _parseData = (data, pId = null, nArr = []) => {
+const _parseData = (data, defaultExpandIds = [], defaultExpandAll = false, expands = [], pId = null, nArr = []) => {
   data.forEach(node => {
     node.pId = pId
+    node.isLoaded = false
+    node._origin = true
     nArr.push(node)
     if (node.children) {
-      _parseData(node.children, node.id, nArr)
+      if (defaultExpandIds.includes(node.id) || defaultExpandAll) {
+        expands.push(node.id)
+      }
+      _parseData(node.children, defaultExpandIds, defaultExpandAll, expands, node.id, nArr)
     } else {
       node.isLeaf = true
     }
   })
-  return nArr
+  return {
+    data: nArr,
+    expands
+  }
 }
 const Tree = ({
   searchable,
   data,
+  originData,
+  expandIds,
+  checkedNodes,
   treeNodeRender,
   checkable,
   selectable = true,
-  selectedId,
   onSelect,
   editable,
   editMenu,
@@ -38,113 +45,199 @@ const Tree = ({
   checkedIds,
   onCheck,
   defaultCheckedIds,
-  searchMode
+  searchMode,
+  defaultExpandIds,
+  defaultExpandAll,
+  defaultValue,
+  onExpand,
+  dataSource,
+  loadDataOnExpand
 }) => {
   // 单选逻辑
-  const [_selectedId, setSelectedId] = useState(null)
-  const [parseData, setParseData] = useState(_parseData(data) || [])
+  const [selectedId, setSelectedId] = useState(null)
+  // const [expandIds, setExpandIds] = useState(defaultExpandIds || [])
+  // const [parseData, setParseData] = useState([])
+  // 多选逻辑
+  // const [checkedNodes, setCheckedNodes] = useState({
+  //   checked: [],
+  //   semiChecked: []
+  // })
+  // useEffect(() => {
+  //   const result = _parseData(data, defaultExpandIds, defaultExpandAll)
+  //   setParseData(result.data)
+  //   setExpandIds(result.expands)
+  // }, [data])
   useEffect(() => {
     if (selectable) {
       setSelectedId(selectedId)
     }
   }, [selectable, selectedId])
 
-  const onSelectNode = useCallback((selectedId) => {
+  // useEffect(() => {
+  //   defaultValue.forEach(val => {
+  //     let node
+  //     if (typeof val !== 'object') {
+  //       // [0, 'x']
+  //       node = getNodeByIdTitle(val, parseData)
+  //       console.log(node)
+  //     } else {
+  //       if (val.id && val.title) {
+  //         // [{id: '', title: ''}]
+  //         node = getNode(val.id, parseData)
+  //       } else {
+  //         node = getNodeByIdTitle(val.id || val.title, parseData)
+  //       }
+  //     }
+  //     if (node) {
+  //       _checkedEvents(true, node)
+  //     }
+  //   })
+  // }, [parseData])
+  const onSelectNode = useCallback((_selectedId) => {
     if (selectable) {
-      if (selectedId !== undefined) {
-        setSelectedId(selectedId)
+      if (_selectedId !== undefined) {
+        setSelectedId(_selectedId)
       }
       if (onSelect) {
-        onSelect(selectedId)
+        onSelect(_selectedId)
       }
     }
   }, [onSelect, selectable])
 
-  // 多选逻辑
-  const [checkedNodes, setCheckedNodes] = useState({
-    checked: [],
-    semiChecked: []
-  })
+  // useEffect(() => {
+  //   if (checkable && defaultCheckedIds) {
+  //     let semiCheckedIds = new Set(checkedNodes.semiChecked)
+  //     const _checkedIds = new Set(checkedNodes.checked)
+  //     semiCheckedIds.clear()
+  //     _checkedIds.clear()
+  //     let isUpdate = false
+  //     defaultCheckedIds.forEach(id => {
+  //       const node = getNode(id, parseData)
+  //       if (node) {
+  //         isUpdate = true
+  //         updateCheckData(node, parseData, _checkedIds, semiCheckedIds)
+  //       }
+  //     })
+  //     isUpdate && setCheckedNodes({
+  //       checked: [..._checkedIds],
+  //       semiChecked: [...semiCheckedIds]
+  //     })
+  //   }
+  // }, [parseData])
 
-  useEffect(() => {
-    if (checkable && defaultCheckedIds) {
-      let semiCheckedIds = new Set(checkedNodes.semiChecked)
-      let checkedIds = new Set(checkedNodes.checked)
-      semiCheckedIds.clear()
-      checkedIds.clear()
-      let isUpdate = false
-      defaultCheckedIds.forEach(id => {
-        const node = getNode(id, parseData)
-        if (node) {
-          isUpdate = true
-          updateCheckData(node, parseData, checkedIds, semiCheckedIds)
-        }
-      })
-      isUpdate && setCheckedNodes({
-        checked: [...checkedIds],
-        semiChecked: [...semiCheckedIds]
-      })
-    }
-  }, [defaultCheckedIds])
+  // const _checkedEvents = (checked, node) => {
+  //   let result = {}
+  //   let semiCheckedIds = new Set(checkedNodes.semiChecked)
+  //   let _checkedIds = new Set(checkedNodes.checked)
+  //   if (checked) {
+  //     result = updateCheckData(node, data, _checkedIds, semiCheckedIds)
+  //   } else {
+  //     result = updateUnCheckData(node, data, _checkedIds, semiCheckedIds)
+  //   }
+  //   setCheckedNodes(result)
+  //   let checkedArr = []
+  //   if (result.checked.length > 0) {
+  //     checkedArr = result.checked.map(id => {
+  //       return getNode(id, data)
+  //     })
+  //   }
+  //   onCheck(result, node, checkedArr)
+  // }
+  // const onCheckboxChange = useCallback(
+  //   onCheck,
+  //   [checkedNodes, data, onCheck]
+  // )
 
-  const onCheckboxChange = useCallback(
-    (checked, node) => {
-      let result = {}
-      let semiCheckedIds = new Set(checkedNodes.semiChecked)
-      let checkedIds = new Set(checkedNodes.checked)
-      if (checked) {
-        result = updateCheckData(node, parseData, checkedIds, semiCheckedIds)
-      } else {
-        result = updateUnCheckData(node, parseData, checkedIds, semiCheckedIds)
-      }
-      setCheckedNodes(result)
-      let checkedArr = []
-      if (result.checked.length > 0) {
-        checkedArr = result.checked.map(id => {
-          return getNode(id, parseData)
-        })
-      }
-      onCheck(result, node, checkedArr)
-    },
-    [checkedNodes, parseData, onCheck]
-  )
-  const searchTreeNode = useCallback((e) => {
-    const val = e.target.value
-    if (searchMode === 'highlight') {
-      const filterArr = parseData.map(node => {
-        const reg = new RegExp(val, 'g')
-        const str = `<span style="color: #428ef5">${val}</span>`
-        node._title = node.title.replace(reg, str)
-        return node
-      })
-      setParseData(filterArr)
-    }
-  }, [parseData])
+  // 节点展开或关闭方法
+  // const onExpandEvent = useCallback((bol, node) => {
+  //   onExpand(bol, node)
+  // const _expandIds = [...expandIds]
+  // const hasIndex = _expandIds.findIndex(id => id === node.id)
+  // if (hasIndex !== -1) {
+  //   _expandIds.splice(hasIndex, 1)
+  // } else {
+  //   _expandIds.push(node.id)
+  // }
+  // if (hasChildren(node, data)) {
+  //   // 如果包含节点，则不再拉取数据
+  //   setExpandIds(_expandIds)
+  //   onExpand()
+  //   return
+  // }
+  // // setExpandIds(_expandIds)
+  // const _dataSource = typeof dataSource === 'function' ? dataSource(node.id) : dataSource
+  // let {
+  //   url,
+  //   transformResponse,
+  //   params,
+  //   type = 'GET'
+  // } = _dataSource
+  // url = url.includes('?') ? `${url}&${qs.stringify(params)}` : `${url}?${qs.stringify(params)}`
+  // window.fetch(url, {
+  //   method: type
+  // })
+  //   .then(response => response.json())
+  //   .then(res => {
+  //     const _res = transformResponse(res)
+  //     const nArr = _res.map(n => {
+  //       return {
+  //         ...n,
+  //         isLeaf: true,
+  //         pId: node.id
+  //       }
+  //     })
+  //     // console.log(_expandIds)
+  //     setExpandIds(_expandIds)
+  //     setParseData(preData => preData.concat(nArr))
+  //   })
+  // onExpand()
+  // }, [expandIds, data])
+  // 过滤方法
+  // const searchTreeNode = useCallback((e) => {
+  //   const val = e.target.value
+  //   if (searchMode === 'highlight') {
+  //     const filterArr = parseData.map(node => {
+  //       const reg = new RegExp(val, 'g')
+  //       const str = `<span style="color: #428ef5">${val}</span>`
+  //       node._title = node.title.replace(reg, str)
+  //       return node
+  //     })
+  //     setParseData(filterArr)
+  //   }
+  // }, [parseData])
   return (
     <TreeContext.Provider
       value={{
         treeNodeRender,
         checkable,
         checkedNodes,
-        selectedId: _selectedId,
+        selectedId,
         onSelectNode,
         editable,
         editMenu,
         PREFIX,
         onClick,
-        onCheckboxChange
+        onCheckboxChange: onCheck,
+        expandIds,
+        onExpandEvent: onExpand,
+        loadDataOnExpand,
+        isRemoteLoadData: !!dataSource
       }}
     >
       <div className={PREFIX}>
         {searchable && (
           <div style={{ marginBottom: 12 }}>
-            <Input onChange={searchTreeNode} />
+            <Input />
           </div>
         )}
-        <TreeNode data={getRootNodes(parseData)} originData={parseData} />
+        <TreeNode data={getRootNodes(data)} flttenData={data} />
       </div>
     </TreeContext.Provider>
   )
 }
 
+Tree.defaultProps = {
+  onExpand: () => {},
+  loadDataOnExpand: false
+}
 export default Tree

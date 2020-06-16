@@ -18,7 +18,7 @@ class Demo extends React.Component {
           children: [
             {
               title: 'Child Node 0-0',
-              id: '0-0'
+              id: '3'
             },{
               title: 'ffff',
               id: '0-1',
@@ -134,8 +134,27 @@ class Demo extends React.Component {
     return (
       <SelectTree
         clearable
-        type='multiple'
+        // type='multiple'
         data={singleList}
+        defaultValue={[{id: '0-1-0-0-0'}]}
+        autoExpand={true}
+        // dataSource={key => {
+        //   return {
+        //     type: 'GET',
+        //     key: 'id',
+        //     params: {pId: key},
+        //     url: 'http://localhost:3000/tree',
+        //     transformResponse: (res) => {
+        //       return res.map(r => {
+        //         return {
+        //           ...r,
+        //           id: r.code,
+        //           title: r.name
+        //         }
+        //       })
+        //     }
+        //   }
+        // }}
       />
     )
   }

@@ -1,11 +1,12 @@
-import React, { useContext, useState, useRef, useCallback } from 'react'
+import React, { useContext, useRef, useCallback } from 'react'
 import Checkbox from '../../checkbox'
 import Icon from '../../icon'
 import Classnames from 'classnames'
 import TreeContext from './context'
 import { getChildrenNodes } from './util'
 
-const TreeNode = ({ data, originData }) => {
+const TreeNode = ({ data, flttenData }) => {
+  // 接受原始拉平数据，用于快速查找子元素
   const {
     treeNodeRender,
     checkable,
@@ -13,20 +14,21 @@ const TreeNode = ({ data, originData }) => {
     onSelectNode,
     onClick,
     selectedId,
-    onCheckboxChange
+    onCheckboxChange,
+    expandIds,
+    onExpandEvent,
+    isRemoteLoadData
   } = useContext(TreeContext)
 
-  const [expanded, setExpanded] = useState(true)
   const treeNodeRef = useRef(null)
-
-  const renderSwitcher = useCallback(expanded => {
+  const renderSwitcher = (expanded, node) => {
     return (
       <Icon
         name={expanded ? 'open' : 'packup'}
-        onClick={() => setExpanded(!expanded)}
+        onClick={() => onExpandEvent(!expanded, node)}
       />
     )
-  }, [])
+  }
 
   const renderIndent = useCallback(() => {
     return <span style={{ flex: '0 0 24px' }} />
@@ -60,24 +62,24 @@ const TreeNode = ({ data, originData }) => {
       />
     )
   }, [])
-
   return (
     <ul >
       {
         data.map((node, index) => {
-          const childrenNodes = getChildrenNodes(node, originData)
+          const childrenNodes = getChildrenNodes(node, flttenData)
+          const expand = expandIds.includes(node.id)
           return <React.Fragment key={index}>
             <li className='tree-node'>
               <div className='tree-node__self'>
-                {node.children && childrenNodes.length
-                  ? renderSwitcher(expanded)
+                {((node.children && childrenNodes.length) || isRemoteLoadData)
+                  ? renderSwitcher(expand, node)
                   : renderIndent()}
                 {checkable && renderCheckbox(node, checkedNodes)}
                 {renderTitle(node, selectedId)}
               </div>
             </li>
             {
-              childrenNodes.length > 0 && <li className='tree-node'><TreeNode data={childrenNodes} originData={originData} /></li>
+              childrenNodes.length > 0 && expand && <li className='tree-node'><TreeNode data={childrenNodes} flttenData={flttenData} /></li>
             }
           </React.Fragment>
         })
