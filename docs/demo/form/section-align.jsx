@@ -19,13 +19,19 @@ class Demo extends React.Component {
     const FormItem = Form.Item
     return (
       <Form labelWidth='80' labelPlacement='left'>
-        <FormItem label='姓名'>
+        <FormItem label='姓名' required>
           <Input placeholder='请输入' />
         </FormItem>
-        <FormItem label='手机号码'>
+        <FormItem label='手机号码' rules={{
+          tirgger:'blur',
+          validator: (rule, value,callback) => {
+            console.log(rule, value,callback)
+            callback()
+          },
+          }}>
           <Input placeholder='请输入' />
         </FormItem>
-        <FormItem label='备注'>
+        <FormItem label='备注' >
           <Input
             type="textarea"
             placeholder="请输入"

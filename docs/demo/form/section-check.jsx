@@ -100,7 +100,11 @@ class Demo extends React.Component {
             <FormItem label='名称' field='name'>
               <Input value={form.name} placeholder='请输入' onChange={this.handleChange.bind(this, 'name')}/>
             </FormItem>
-            <FormItem label='数量' field='count'>
+            <FormItem label='数量' field='count' rules={{
+              required: true,
+              message: '请输入数量123',
+              trigger: 'onChange'
+            }}>
               <Input value={form.count} placeholder='请输入' onChange={this.handleChange.bind(this, 'count')}/>
             </FormItem>
             <FormItem label='地区' field='region'>

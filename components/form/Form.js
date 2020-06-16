@@ -66,8 +66,9 @@ class Form extends Component {
   }
 
   validateField (key, cb) {
-    const field = this.state.fields.filter(field => field.props.field === key)[0]
-
+    const field = this.state.fields.filter(
+      field => field.props.field === key
+    )[0]
     if (!field) {
       throw new Error('must call validate Field with valid key string!')
     }
@@ -85,8 +86,10 @@ class Form extends Component {
     const { children, className, style } = this.props
 
     return (
-
-      <form className={classNames('hi-form', className, this.getClassNames())} style={style}>
+      <form
+        className={classNames('hi-form', className, this.getClassNames())}
+        style={style}
+      >
         {children}
       </form>
     )

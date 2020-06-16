@@ -3,7 +3,10 @@ import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
 import { depreactedPropsCompat } from '../_util'
-
+/**
+ * rules 中 如果trigger 不传入 则 在最后点击时候时候校验规则
+ *
+ */
 class FormItem extends Component {
   constructor (props, context) {
     super(props)
@@ -41,11 +44,10 @@ class FormItem extends Component {
   }
 
   getRules () {
+    const selfRules = this.props.rules
     let formRules = this.parent.props.rules
-    let selfRules = this.props.rules
 
     formRules = formRules ? formRules[this.props.field] : []
-
     return [].concat(selfRules || formRules || [])
   }
 
@@ -63,11 +65,15 @@ class FormItem extends Component {
     }
 
     const keyList = this.props.field.split(':')
-    return keyList.length > 1 ? model[keyList[0]][keyList[1]] : model[this.props.field]
+    return keyList.length > 1
+      ? model[keyList[0]][keyList[1]]
+      : model[this.props.field]
   }
 
   validate (trigger, cb) {
+    console.log('trigger', trigger)
     const rules = this.getFilteredRule(trigger)
+    console.log('rules', rules)
     if (!rules || rules.length === 0) {
       if (cb instanceof Function) {
         cb()
@@ -79,11 +85,12 @@ class FormItem extends Component {
     this.setState({
       validating: true
     })
+    const { field } = this.props
 
     const validator = new AsyncValidator({
-      [this.props.field]: rules
+      [field]: rules
     })
-    const model = { [this.props.field]: this.getfieldValue() }
+    const model = { [field]: this.getfieldValue() }
     console.log('model', model)
     validator.validate(
       model,
@@ -131,14 +138,18 @@ class FormItem extends Component {
   }
 
   handleFieldBlur () {
-    const hasOnBlur = this.getRules().some(rule => (rule.trigger || '').includes('onBlur'))
+    const hasOnBlur = this.getRules().some(rule =>
+      (rule.trigger || '').includes('onBlur')
+    )
     if (hasOnBlur) {
       this.validate('onBlur')
     }
   }
 
   handleFieldChange () {
-    const hasOnChange = this.getRules().some(rule => (rule.trigger || '').includes('onChange'))
+    const hasOnChange = this.getRules().some(rule =>
+      (rule.trigger || '').includes('onChange')
+    )
     if (hasOnChange) {
       this.validate('onChange')
     }
@@ -147,18 +158,33 @@ class FormItem extends Component {
   get labelWidth () {
     const labelWidth = this.props.labelWidth || this.parent.props.labelWidth
 
-    return this.parent.props.labelPosition === 'top' ? false : labelWidth && parseInt(labelWidth)
+    return this.parent.props.labelPosition === 'top'
+      ? false
+      : labelWidth && parseInt(labelWidth)
   }
-
+  setChildrenDefaultValue = children => {
+    console.log(children)
+  }
   render () {
-    const { children, label, required, className, showColon: shouldItemShowColon, style } = this.props
-    const { showColon: shouldFormShowColon, localeDatas: {
-      form: { colon }
-    } } = this.parent.props
+    const {
+      children,
+      label,
+      required,
+      className,
+      showColon: shouldItemShowColon,
+      style
+    } = this.props
+    const {
+      showColon: shouldFormShowColon,
+      localeDatas: {
+        form: { colon }
+      }
+    } = this.parent.props
     const { error, validating } = this.state
-    const shouldShowColon = shouldItemShowColon === undefined
-      ? (shouldFormShowColon && typeof label === 'string' && label.trim())
-      : shouldItemShowColon
+    const shouldShowColon =
+      shouldItemShowColon === undefined
+        ? shouldFormShowColon && typeof label === 'string' && label.trim()
+        : shouldItemShowColon
     const obj = {}
     obj['hi-form-item__error'] = error !== ''
     obj['hi-form-item--validating'] = validating
@@ -166,19 +192,25 @@ class FormItem extends Component {
 
     return (
       <div className={classNames('hi-form-item', className, obj)} style={style}>
-        {
-          (label || label === '') ? (
-            <label className='hi-form-item__label' style={{ width: this.labelWidth }}>
-              {(typeof label === 'string' && label.trim()) || label}{shouldShowColon && colon}
-            </label>
-          ) : (
-            <span className='hi-form-item__span' style={{ width: this.labelWidth }} />
-          )
-        }
+        {label || label === '' ? (
+          <label
+            className='hi-form-item__label'
+            style={{ width: this.labelWidth }}
+          >
+            {(typeof label === 'string' && label.trim()) || label}
+            {shouldShowColon && colon}
+          </label>
+        ) : (
+          <span
+            className='hi-form-item__span'
+            style={{ width: this.labelWidth }}
+          />
+        )}
         <div className={'hi-form-item' + '__content'}>
           {Array.isArray(children) || !children
             ? children
             : React.cloneElement(children, {
+              defaultValue: 123,
               onChange: (...args) => {
                 children.props.onChange && children.props.onChange(...args)
                 setTimeout(() => {
