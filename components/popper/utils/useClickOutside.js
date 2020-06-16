@@ -1,13 +1,17 @@
 import { useEffect, useCallback, useRef } from 'react'
 
-const useClickOutside = (onClickOutside, dom, eventName = 'click') => {
+const useClickOutside = (onClickOutside, dom, eventName = 'click', attachEle) => {
   const element = useRef('')
   const handleOutside = useCallback(
     e => {
       const targetElement = typeof dom === 'function' ? dom() : dom
       const el = targetElement || element.current
       if (el) {
-        !el.contains(e.target) && onClickOutside(e)
+        if (attachEle) {
+          !(attachEle.contains(e.target) || el.contains(e.target)) && onClickOutside(e)
+        } else {
+          !el.contains(e.target) && onClickOutside(e)
+        }
       }
     },
     [onClickOutside, dom, element]
