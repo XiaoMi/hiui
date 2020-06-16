@@ -29,7 +29,8 @@ const Tree = ({
   editable,
   editMenu,
   onClick,
-  draggable
+  draggable,
+  onLoadChildren
 }) => {
   const [flatData, updateFlatData] = useFlatData(data)
   const [selectNodeId, onSelectNode] = useSelect({
@@ -63,7 +64,9 @@ const Tree = ({
         editMenu,
         PREFIX,
         onClick,
-        onCheckNode
+        onCheckNode,
+        draggable,
+        onLoadChildren
       }}
     >
       <div className={PREFIX}>
@@ -83,14 +86,10 @@ const Tree = ({
 }
 
 const WrapperTree = (props) => {
-  const { draggable } = props
-  console.log('draggable', draggable)
-  return draggable ? (
+  return (
     <DndProvider backend={HTML5Backend}>
       <Tree {...props} />
     </DndProvider>
-  ) : (
-    <Tree {...props} />
   )
 }
 

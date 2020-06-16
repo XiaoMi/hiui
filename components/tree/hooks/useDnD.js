@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 
 const useDragAndDrop = ({ id, type = 'MENU_TREE', move, accept = 'MENU_TREE' }) => {
@@ -11,17 +11,16 @@ const useDragAndDrop = ({ id, type = 'MENU_TREE', move, accept = 'MENU_TREE' }) 
       isDragging: monitor.isDragging()
     })
   })
-
   const [{ isOver }, drop] = useDrop({
     accept: accept,
     collect: (monitor) => ({
       isOver: monitor.isOver({ shallow: true })
     }),
     hover: (item, monitor) => {
-      //鼠标位置（source）
+      // 鼠标位置（source）
       if (ref.current && item.id !== id && monitor.isOver({ shallow: true })) {
         const clientOffset = monitor.getClientOffset()
-        //目的节点范围
+        // 目的节点范围
         const targetBoundingRect = ref.current.getBoundingClientRect()
 
         const hoverTargetSortY = (targetBoundingRect.bottom - targetBoundingRect.top) / 3
@@ -45,9 +44,9 @@ const useDragAndDrop = ({ id, type = 'MENU_TREE', move, accept = 'MENU_TREE' }) 
          * 拖拽的源不能是目标的祖先
          * 拖拽的目标必须是源接触的最近一层
          */
-        //鼠标位置（source）
+        // 鼠标位置（source）
         const clientOffset = monitor.getClientOffset()
-        //目的节点范围
+        // 目的节点范围
         const targetBoundingRect = ref.current.getBoundingClientRect()
 
         const hoverTargetSortY = (targetBoundingRect.bottom - targetBoundingRect.top) / 3
