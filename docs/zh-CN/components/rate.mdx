@@ -49,12 +49,12 @@ import { Badge } from '@libs'
 | useEmoji     | 是否使用表情              | boolean                 | true \| false | false  |
 | count        | star 数量，Emoji 时不可用 | number                  | -             | 5      |
 | defaultValue | 默认值                    | number                  | -             | 0      |
-| disabled     | 只读，无法进行交互        | boolean                 | true \| false | false  |
+| disabled     | 禁用，无法进行交互,鼠标禁用交互效果       | boolean                 | true \| false | false  |
+| readOnly     | 只读，无法进行交互        | boolean                 | true \| false | false  |
 | tooltips     | 自定义每项的提示信息      | string[]                | -             | -      |
-| desc     | 自定义辅助文字     | string[]                | -             | -      |
+| descRender   | 自定义辅助文字函数     | (value: number,index: number) => ReactNode | -             | -      |
 | value        | 当前数，受控值            | number                  | -             | -      |
-| character        | 自定义字符            | ReactNode                 | -             | -      |
-| color        | 自定义颜色          | string                 | -             | -      |
-| vertical        | 是否竖直方向上半选         | boolean                  | -             | -      |
+| character    | 自定义字符            | ReactNode                 | -             | -      |
+| color        | 自定义颜色（支队icon、字体有效）        | string                 | -             | -      |
 | onChange     | 选择时的回调              | (value: number) => void | -             | -      |
-| renderCharacter     | 自定义渲染 character 函数              | 	(value: number,index: number) => React.ReactNode | -             | -      |
+| characterRender| 自定义渲染 character 函数  | 	(value: number,index: number) => ReactNode | -             | -      |

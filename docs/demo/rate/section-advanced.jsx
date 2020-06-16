@@ -19,6 +19,11 @@ class Demo extends React.Component {
     this.tooltips = ['terrible', 'bad', 'normal', 'good', 'wonderful']
   }
 
+  descRender (value, index) {
+    const arr =['极差','差', '一般', '满意','很满意']
+    console.log(value)
+    return <span style={{color:'#FF6633'}}>{arr[Math.ceil(value)-1]} </span>;
+  }
   render() {
     const { value } = this.state
     return (
@@ -34,17 +39,14 @@ class Demo extends React.Component {
         <FormItem label="禁用">
           <Rate allowHalf disabled defaultValue={2.5} />
         </FormItem>
+        <FormItem label="只读">
+          <Rate defaultValue={3} readOnly/>
+        </FormItem>
         <FormItem label="禁止清除">
           <Rate allowHalf clearable={false} defaultValue={2.5} />
         </FormItem>
         <FormItem label="辅助文字">
-          <Rate allowHalf desc={['极差','差', '一般', '满意','很满意']} defaultValue={0.5} showDesc/>
-        </FormItem>
-        <FormItem label="默认辅助文字">
-          <Rate allowHalf showDesc defaultValue={1.5} />
-        </FormItem>
-        <FormItem label="竖直方向">
-          <Rate count={5} allowHalf defaultValue={2.5} character={<Icon name="update"/>} color='#4284f5' vertical/> 
+          <Rate allowHalf descRender={this.descRender} defaultValue={0.5}/>
         </FormItem>
       </Form>
     )

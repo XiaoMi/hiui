@@ -23,7 +23,7 @@ class Demo extends React.Component {
           <Rate count={5} allowHalf defaultValue={2.5} character={<Icon name="check-circle-o"/>} color='#4284f5'/>
         </FormItem>
         <FormItem label="文字">
-          <Rate count={5} allowHalf defaultValue={2.5} character='米' showDesc/>
+          <Rate count={5} allowHalf defaultValue={2.5} character='米'/>
         </FormItem>
         <FormItem label="字母">
           <Rate count={5} allowHalf defaultValue={2.5} character='HIUI' style={{fontSize: 30}} color='#1da653'/>
