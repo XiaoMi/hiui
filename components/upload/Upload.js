@@ -54,7 +54,7 @@ class Upload extends Component {
         fileType = 'zip'
         break
       case 'doc':
-      case 'dcox':
+      case 'docx':
         fileType = 'word'
         break
       case 'pdf':
@@ -217,7 +217,9 @@ class Upload extends Component {
     const XMLHttpRequest = window.XMLHttpRequest
     const FormData = window.FormData
     const { fileList } = this.state
-    const { name, params, headers, uploadAction, withCredentials } = this.props
+    const { name, params, headers, uploadAction, withCredentials, maxCount } = this.props
+
+    this.setState({ fileCountLimted: fileList.length >= maxCount })
     const onerror = err => {
       const { fileList } = this.state
       const errRes = err !== undefined ? err : { status: xhr.status, statusText: xhr.statusText }

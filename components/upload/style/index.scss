@@ -308,6 +308,35 @@
     }
   }
 
+  &--photo {
+    .hi-upload__item--small {
+      width: 80px;
+      height: 80px;
+      line-height: 80px;
+
+      .hi-upload__thumb {
+        max-width: 80px;
+        max-height: 80px;
+      }
+    }
+
+    .hi-upload__item--large {
+      width: 200px;
+      height: 200px;
+      line-height: 200px;
+
+      .hi-upload__thumb {
+        max-width: 200px;
+        max-height: 200px;
+      }
+    }
+  }
+
+  &__thumb {
+    max-width: 140px;
+    max-height: 140px;
+  }
+
   &--avatar {
     .hi-upload__item--upload {
       width: 80px;
@@ -363,10 +392,7 @@
     z-index: 2;
   }
 
-  &__thumb {
-    max-width: 140px;
-    max-height: 140px;
-  }
+
 
   &--picture-card {
     .hi-upload__upstatus {

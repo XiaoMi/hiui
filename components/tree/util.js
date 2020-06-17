@@ -1,8 +1,3 @@
-/**
- * @Author lishuaishuai <lishuaishuai@xiaomi.com>
- * @Date 2018-03-22 11:14:48
- * @Description tree相关工具封装
- */
 export function deepMap (data, parent) {
   let arr = []
   for (let key in data) {
@@ -92,6 +87,7 @@ export const getParentId = (id, data) => {
   })
   return parentId
 }
+
 // 寻找某一节点的所有子节点
 export const getChildrenIds = (node, arr = []) => {
   if (node.children) {

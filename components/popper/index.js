@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { render } from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import _ from 'lodash'
 import './style/index'
 
 export default class Popper extends Component {
@@ -32,6 +33,9 @@ export default class Popper extends Component {
   }
 
   componentDidUpdate (prevProps) {
+    if (!_.isEqual(prevProps.children.props, this.props.children.props)) {
+      this.forceUpdate()
+    }
     if (prevProps.show !== this.props.show || this.props.show) {
       render(this.renderChildren(), this.container)
     }

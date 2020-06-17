@@ -7,7 +7,7 @@ const desc = '可以同时展开多个面板，对垂直空间没有特别限制
 const code = [
   {
     code: `import React from 'react'
-import Checkbox from '@hi-ui/hiui/es/checkbox'\n
+import Collapse from '@hi-ui/hiui/es/collapse'\n
 class Demo extends React.Component {
   render(){
     return(

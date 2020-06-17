@@ -68,7 +68,7 @@ class SelectDropdown extends Component {
     _keyword = searchbarValue.includes('(') ? _keyword.replace(/\(/gi, '\\(') : _keyword
     _keyword = searchbarValue.includes(')') ? _keyword.replace(/\)/gi, '\\)') : _keyword
 
-    let parts = text.split(new RegExp(`(${_keyword})`, 'gi'))
+    let parts = text.toString().split(new RegExp(`(${_keyword})`, 'gi'))
     return (
       this.state.searchbarValue.length > 0 ? <p key={uniqueKey}>
         { parts.map((part, i) =>

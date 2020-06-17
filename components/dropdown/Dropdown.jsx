@@ -23,12 +23,12 @@ class Dropdown extends React.Component {
     }
   }
   setPopperShow = (event) => {
-    this.eventHandler(event)
+    event.preventDefault()
     clearTimeout(this.timerHideMenu)
     this.setState({ visible: true })
   }
   setPopperHide = (event) => {
-    this.eventHandler(event)
+    event.preventDefault()
     this.setState({ visible: false })
   }
   setPopperDelayHide = (event) => {
@@ -37,10 +37,14 @@ class Dropdown extends React.Component {
       this.setState({ visible: false })
     }, 100)
   }
+  toggleVisible = () => {
+    const { visible } = this.state
+    const toggleVisible = visible ? this.setPopperHide : this.setPopperShow
+    return toggleVisible
+  }
   getPopperShowHandler = () => {
     const { disabled } = this.props
     if (disabled) return {}
-    const { visible } = this.state
     const triggers = trimTriggers(this.props)
     const getHandler = (props) => {
       if (getIsTriggerEqualHover(props)) {
@@ -48,14 +52,13 @@ class Dropdown extends React.Component {
           onMouseEnter: this.setPopperShow
         }
       }
-      const toggleVisible = visible ? this.setPopperHide : this.setPopperShow
       if (getIsTriggerEqualContextmenu(props)) {
         return {
-          onContextMenu: toggleVisible
+          onContextMenu: this.toggleVisible()
         }
       }
       return {
-        onClick: toggleVisible
+        onClick: this.toggleVisible()
       }
     }
     return triggers.reduce((prev, cur) => Object.assign(prev, getHandler(cur)), {})
@@ -87,14 +90,18 @@ class Dropdown extends React.Component {
 
     onClick && onClick(data)
   }
-  handleDocumentClick = () => {
-    this.setState({ visible: false })
+  handleDocumentClick = (e) => {
+    if (this.refDropdown.current) {
+      !this.refDropdown.current.contains(e.target) && this.setState({ visible: false })
+    }
   }
   componentWillUnmount () {
     document.removeEventListener('click', this.handleDocumentClick)
+    document.removeEventListener('contextmenu', this.handleDocumentClick)
   }
   componentDidMount () {
     document.addEventListener('click', this.handleDocumentClick)
+    document.addEventListener('contextmenu', this.handleDocumentClick)
   }
   render () {
     const { className, style, title, type, placement, data, disabled, width, onButtonClick, theme } = this.props

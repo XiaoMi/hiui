@@ -2,6 +2,7 @@
 
 $prefix: 'hi-tag' !default;
 $primary: get-color($palette-primary, 'hiui-blue') !default;
+$normal: #999 !default;
 
 .#{$prefix} {
   &__container {
@@ -24,6 +25,10 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
       background: $primary;
       color: $white;
 
+      &.#{$prefix}__container--normal {
+        background: $normal;
+      }
+
       @each $key in 'success', 'danger', 'warning' {
         &.#{$prefix}__container--#{$key} {
           $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
@@ -39,6 +44,11 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
       color: $primary;
       padding: 0 5px;
       line-height: $line-height-size-normal - 2;
+
+      &.#{$prefix}__container--normal {
+        border: 1px solid $normal;
+        color: $normal;
+      }
 
       @each $key in 'success', 'danger', 'warning' {
         &.#{$prefix}__container--#{$key} {

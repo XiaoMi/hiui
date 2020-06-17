@@ -9,7 +9,7 @@ const noop = () => {}
 
 class Tabs extends Component {
   static propTypes = {
-    type: PropTypes.oneOf(['desc', 'card', 'button', 'editable']),
+    type: PropTypes.oneOf(['desc', 'card', 'button', 'editable', 'line']),
     placement: PropTypes.oneOf(['horizontal', 'vertical']),
     activeId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     defaultActiveId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -38,13 +38,13 @@ class Tabs extends Component {
     super(props)
 
     const { defaultActiveId, activeId } = props
-    const {
-      showTabItems,
-      hiddenTabItems
-    } = this.getTabItems(this.props)
+    const { showTabItems, hiddenTabItems } = this.getTabItems(this.props)
 
     this.state = {
-      activeId: activeId !== undefined ? activeId : (defaultActiveId || (showTabItems && showTabItems[0] && showTabItems[0].tabId)),
+      activeId:
+        activeId !== undefined
+          ? activeId
+          : defaultActiveId || (showTabItems && showTabItems[0] && showTabItems[0].tabId),
       showTabItems,
       hiddenTabItems,
       defaultActiveId
@@ -52,10 +52,7 @@ class Tabs extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    const {
-      showTabItems,
-      hiddenTabItems
-    } = this.getTabItems(nextProps)
+    const { showTabItems, hiddenTabItems } = this.getTabItems(nextProps)
     this.setState({
       showTabItems,
       hiddenTabItems
@@ -70,22 +67,25 @@ class Tabs extends Component {
       this.setState({ activeId: nextProps.children[0] && nextProps.children[0].props.tabId })
     }
 
-    if (this.props.children.length > nextProps.children.length && this.deletetabId && this.deletetabId === this.state.activeId) { // 删除的是当前激活的tab，需重置激活tab
-      this.setState({
-        activeId: (nextProps.children[0] && nextProps.children[0].props.tabId) || undefined
-      }, () => {
-        this.deletetabId = null
-      })
+    if (
+      this.props.children.length > nextProps.children.length &&
+      this.deletetabId &&
+      this.deletetabId === this.state.activeId
+    ) {
+      // 删除的是当前激活的tab，需重置激活tab
+      this.setState(
+        {
+          activeId: (nextProps.children[0] && nextProps.children[0].props.tabId) || undefined
+        },
+        () => {
+          this.deletetabId = null
+        }
+      )
     }
   }
 
   getTabItems (props) {
-    const {
-      children,
-      type,
-      placement,
-      max
-    } = props
+    const { children, type, placement, max } = props
     const showTabItems = []
     const hiddenTabItems = []
 
@@ -94,14 +94,15 @@ class Tabs extends Component {
         const { tabTitle, tabId, tabDesc, disabled, closeable } = child.props
         const item = { tabTitle, tabId, tabDesc, disabled, closeable }
 
-        if (type === 'card' && placement === 'horizontal' && showTabItems.length >= max) { // 卡片式标签超过max时，其余标签的隐藏
+        if (type === 'card' && placement === 'horizontal' && showTabItems.length >= max) {
+          // 卡片式标签超过max时，其余标签的隐藏
           hiddenTabItems.push(item)
         } else {
           showTabItems.push(item)
         }
       }
     })
-    return {showTabItems, hiddenTabItems}
+    return { showTabItems, hiddenTabItems }
   }
 
   handleClick (tab, e) {
@@ -113,20 +114,17 @@ class Tabs extends Component {
 
     onTabClick(tab.tabId, e)
     const activeId = this.props.activeId
-    activeId !== undefined || this.setState({
-      activeId: tab.tabId
-    })
+    activeId !== undefined ||
+      this.setState({
+        activeId: tab.tabId
+      })
   }
 
   addTab () {
-    const {
-      onEdit,
-      editable,
-      children
-    } = this.props
+    const { onEdit, editable, children } = this.props
 
     if (editable) {
-      onEdit('add', (children.length + 1))
+      onEdit('add', children.length + 1)
     }
   }
 
@@ -134,10 +132,7 @@ class Tabs extends Component {
     e.stopPropagation()
     this.deletetabId = tabId
 
-    const {
-      onEdit,
-      editable
-    } = this.props
+    const { onEdit, editable } = this.props
 
     if (editable) {
       onEdit('delete', index, tabId)
@@ -145,10 +140,7 @@ class Tabs extends Component {
   }
 
   checkEditable () {
-    const {
-      editable,
-      type
-    } = this.props
+    const { editable, type } = this.props
 
     return editable && type === 'editable'
   }
@@ -165,9 +157,15 @@ class Tabs extends Component {
     const { activeId, showTabItems, hiddenTabItems, defaultActiveId } = this.state
     const { prefixCls, type, placement, children, className, theme } = this.props
     const editable = this.checkEditable()
-    const tabsClasses = classNames(prefixCls, className, `${prefixCls}--${type}`, `theme__${theme}`, {
-      [`${prefixCls}--${placement}`]: type === 'card'
-    })
+    const tabsClasses = classNames(
+      prefixCls,
+      className,
+      `${prefixCls}--${type}`,
+      `theme__${theme}`,
+      {
+        [`${prefixCls}--${placement}`]: type === 'card'
+      }
+    )
     let activeTabInHiddenItems = true
 
     return (
@@ -187,28 +185,24 @@ class Tabs extends Component {
                 <ToolNav
                   className={itemClasses}
                   key={`${prefixCls}__item-${index}`}
-                  onClick={e => this.handleClick(item, e)}
+                  onClick={(e) => this.handleClick(item, e)}
                   title={tabTitle}
                 >
                   <span className={`${prefixCls}__item-name`}>{tabTitle}</span>
-                  {
-                    type === 'desc' &&
-                    <span className={`${prefixCls}__item-desc`}>{tabDesc}</span>
-                  }
-                  {
-                    editable && closeable &&
+                  {type === 'desc' && <span className={`${prefixCls}__item-desc`}>{tabDesc}</span>}
+                  {editable && closeable && (
                     <span className={`${prefixCls}__item-close`}>
-                      <Icon onClick={e => this.deleteTab(e, tabId, index)} name='close' />
+                      <Icon onClick={(e) => this.deleteTab(e, tabId, index)} name='close' />
                     </span>
-                  }
+                  )}
                 </ToolNav>
               )
             })}
-            {
-              hiddenTabItems.length > 0 &&
-              <div className={classNames(`${prefixCls}__item`, {
-                [`${prefixCls}__item--active`]: activeTabInHiddenItems
-              })}
+            {hiddenTabItems.length > 0 && (
+              <div
+                className={classNames(`${prefixCls}__item`, {
+                  [`${prefixCls}__item--active`]: activeTabInHiddenItems
+                })}
               >
                 <ItemDropdown
                   active={activeTabInHiddenItems}
@@ -221,17 +215,16 @@ class Tabs extends Component {
                   }}
                 />
               </div>
-            }
+            )}
           </div>
-          {
-            editable &&
+          {editable && (
             <div className={`${prefixCls}__add`}>
               <Icon onClick={this.addTab.bind(this)} name='plus' />
             </div>
-          }
+          )}
         </div>
         <div className={`${prefixCls}__content`}>
-          {React.Children.map(children, item => {
+          {React.Children.map(children, (item) => {
             return item && this.renderTabContent(item)
           })}
         </div>

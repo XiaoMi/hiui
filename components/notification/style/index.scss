@@ -1,6 +1,15 @@
 @import '@hi-ui/core-css/index.scss';
 @import '../../style/icon/index.scss';
 
+$theme-colors-notice: (
+  'orange': #ffefea,
+  'cyan': #ecf8f4 ,
+  'magenta': #ffeef1,
+  'lavender': #f7edfb,
+  'blue': #ebf6fe,
+  'purple': #8a8acb
+) !default;
+
 .hi-notification__container {
   position: fixed;
   top: 20px;
@@ -138,11 +147,6 @@
 @each $key, $value in $theme-colors {
   .hi-notification__container {
     .theme__#{$key}.hi-notification.hi-notification--info {
-      background-color:
-        rgba(
-          map-get(get-palette(get-color($palette-primary, $key)), '50'),
-          0.1
-        );
       border:
         1px
         solid
@@ -160,6 +164,14 @@
         background-color: $value;
         border: 1px solid $value;
       }
+    }
+  }
+}
+
+@each $key, $value in $theme-colors-notice {
+  .hi-notification__container {
+    .theme__#{$key}.hi-notification.hi-notification--info {
+      background-color: $value;
     }
   }
 }

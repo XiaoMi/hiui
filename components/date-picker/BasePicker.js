@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import _ from 'lodash'
 import Modal from './Modal'
 import classNames from 'classnames'
 import {formatterDate, FORMATS} from './constants'
@@ -25,8 +26,9 @@ class BasePicker extends Component {
     this.input = null
     this.rInput = null
   }
-  setPlaceholder () {
-    const {placeholder, localeDatas, type, showTime} = this.props
+  setPlaceholder (_props) {
+    const {placeholder} = _props
+    const {localeDatas, type, showTime} = this.props
     const typePlaceholder = localeDatas.datePicker.placeholders[type]
     const tempPlaceholder = showTime
       ? localeDatas.datePicker.placeholderTimeperiod
@@ -59,7 +61,7 @@ class BasePicker extends Component {
   }
   componentDidMount () {
     this._parseProps(this.props)
-    this.setPlaceholder()
+    this.setPlaceholder(this.props)
     let rect = this.inputRoot.current.getBoundingClientRect()
     this.calcPanelPos(rect)
   }
@@ -95,6 +97,9 @@ class BasePicker extends Component {
   componentWillReceiveProps (nextProps) {
     if (nextProps.value !== this.props.value) {
       this._parseProps(nextProps)
+    }
+    if (!_.isEqual(nextProps.placeholder, this.props.placeholder)) {
+      this.setPlaceholder(nextProps)
     }
   }
 
@@ -140,6 +145,7 @@ class BasePicker extends Component {
         end = new Date(startTime)
       }
     }
+
     date = {
       startDate: compatibleToDate(start, format),
       endDate: compatibleToDate(end, format)
@@ -182,7 +188,7 @@ class BasePicker extends Component {
         onChange(startDate, dateFormat(startDate, format))
         return
       }
-      if (['timerange', 'timeperiod', 'daterange'].includes(type)) {
+      if (['timerange', 'timeperiod', 'daterange', 'yearrange', 'monthrange'].includes(type)) {
         onChange({start: startDate, end: endDate}, {start: dateFormat(startDate, format), end: dateFormat(endDate, format)})
         return
       }
@@ -287,11 +293,14 @@ class BasePicker extends Component {
       localeDatas,
       disabled,
       showTime,
-      type
+      type,
+      width,
+      theme
     } = this.props
     const {isFocus} = this.state
     const _cls = classNames(
       'hi-datepicker__input',
+      `theme__${theme}`,
       isFocus && 'hi-datepicker__input--focus',
       `hi-datepicker__input--${type}`,
       'hi-datepicker__input--range',
@@ -301,6 +310,7 @@ class BasePicker extends Component {
     return (
       <div
         className={_cls}
+        style={{width: width}}
         onMouseEnter={() => {
           this.setState({ isFocus: true })
         }}
@@ -319,12 +329,15 @@ class BasePicker extends Component {
     const {
       disabled,
       showTime,
-      type
+      type,
+      width,
+      theme
     } = this.props
     const {isFocus} = this.state
 
     const _cls = classNames(
       'hi-datepicker__input',
+      `theme__${theme}`,
       isFocus && 'hi-datepicker__input--focus',
       `hi-datepicker__input--${type}`,
       disabled && 'hi-datepicker__input--disabled',
@@ -333,6 +346,7 @@ class BasePicker extends Component {
     return (
       <div
         className={_cls}
+        style={{width: width}}
         onMouseEnter={() => {
           this.setState({ isFocus: true })
         }}
@@ -350,9 +364,9 @@ class BasePicker extends Component {
     )
   }
   render () {
-    const {type, showTime} = this.props
+    const {type, showTime, width} = this.props
     return (
-      <span ref={this.inputRoot} className='hi-datepicker__input-root'>
+      <span ref={this.inputRoot} className='hi-datepicker__input-root' style={{width: width}}>
         {
           (type.indexOf('range') !== -1 || type === 'timeperiod') ? this.renderRangeInput() : this.renderNormalInput()
         }

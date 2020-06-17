@@ -5,6 +5,7 @@ import BasePicker from './BasePicker'
 import DatePanel from './DatePanel'
 import DateRangePanel from './DateRangePanel'
 import WeekRangePanel from './WeekRangePanel'
+import YMRangePanel from './YMRangePanel'
 import Provider from '../context'
 import { getPRCDate, deconstructDate } from './util'
 class DatePicker extends BasePicker {
@@ -116,6 +117,18 @@ class DatePicker extends BasePicker {
             {...props}
             altCalendarPresetData={this.altCalendarPresetData}
             dateMarkPresetData={this.dateMarkPresetData}
+            format={this.state.format}
+            date={d}
+            onPick={this.onPick.bind(this)}
+            style={state.style}
+          />
+        )
+        break
+      case 'yearrange':
+      case 'monthrange':
+        component = (
+          <YMRangePanel
+            {...props}
             format={this.state.format}
             date={d}
             onPick={this.onPick.bind(this)}

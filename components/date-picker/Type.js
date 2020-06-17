@@ -20,6 +20,9 @@ export default {
   // 时间段选择
   TimePeriod: 'timeperiod',
   // 日期时间范围选择
-  DateTimeRange: 'datetimerange'
-
+  DateTimeRange: 'datetimerange',
+  // 月范围
+  MonthRange: 'monthrange',
+  // 年范围
+  YearRange: 'yearrnage'
 }

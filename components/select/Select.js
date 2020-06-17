@@ -190,7 +190,7 @@ class Select extends Component {
         selectedItems.push(item)
       }
     })
-    return reviceSelectedItems.concat(selectedItems)
+    return _.uniqBy(reviceSelectedItems.concat(selectedItems), 'id')
   }
 
   onEnterSelect () {
