@@ -86,7 +86,7 @@ const FormItem = props => {
     if (validating) {
       let rules = getRules()
       const validator = new AsyncValidator({
-        [field]: rules
+        [field]: Object.assign({}, rules, { required })
       })
       const model = { [field]: value }
       validator.validate(
@@ -169,25 +169,25 @@ const FormItem = props => {
         {children && Array.isArray(children)
           ? children
           : React.cloneElement(children, {
-            [valuePropName]: value,
-            onChange: (e, ...args) => {
-              children.props.onChange && children.props.onChange(e, ...args)
-              const value = e.target.value
-              setValue(value)
-              setTimeout(() => {
-                handleField('onChange')
-              })
-            },
-            onBlur: (e, ...args) => {
-              children.props.onBlur && children.props.onBlur(e, ...args)
-              const value = e.target.value
-              console.log(typeof value)
-              setValue(value)
-              setTimeout(() => {
-                handleField('onBlur')
-              })
-            }
-          })}
+              [valuePropName]: value,
+              onChange: (e, ...args) => {
+                children.props.onChange && children.props.onChange(e, ...args)
+                const value = e.target.value
+                setValue(value)
+                setTimeout(() => {
+                  handleField('onChange')
+                })
+              },
+              onBlur: (e, ...args) => {
+                children.props.onBlur && children.props.onBlur(e, ...args)
+                const value = e.target.value
+                console.log(typeof value)
+                setValue(value)
+                setTimeout(() => {
+                  handleField('onBlur')
+                })
+              }
+            })}
         <div className='hi-form-item--msg__error'>{error}</div>
       </div>
     </div>
