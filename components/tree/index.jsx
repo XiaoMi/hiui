@@ -16,7 +16,18 @@ const getMatchedNodes = (data, searchValue, matchedNodes = []) => {
   })
   return matchedNodes
 }
-
+const getShowData = (data, matchedIds, filtedIds) => {
+  for (let i = 0; i < data.length; i++) {
+    if (matchedIds.includes(data[i].id)) {
+    } else if (filtedIds.includes(data[i].id)) {
+      getShowData(data[i].children, matchedIds, filtedIds)
+    } else {
+      data.splice(i, 1)
+      i = i - 1
+    }
+  }
+  return data
+}
 const PREFIX = 'hi-editor-tree'
 const Tree = (props) => {
   const { searchable, searchConfig = {}, data, filter = false } = props
@@ -24,6 +35,11 @@ const Tree = (props) => {
   const [searchValue, setSearchValue] = useState('')
   const [matchedNodes, setMatchedNodes] = useState([])
   const [filteredIds, setFilteredIds] = useState([])
+  const showData = getShowData(
+    _.cloneDeep(data),
+    matchedNodes.map((n) => n.id),
+    filteredIds
+  )
 
   const treeNodeRender = useCallback(
     (title) => {
@@ -72,7 +88,12 @@ const Tree = (props) => {
           )}
         </div>
       )}
-      <BaseTree {...props} treeNodeRender={treeNodeRender} expandedIds={filteredIds} />
+      <BaseTree
+        {...props}
+        treeNodeRender={treeNodeRender}
+        expandedIds={filteredIds}
+        data={filter && searchable && searchValue !== '' ? showData : data}
+      />
     </React.Fragment>
   )
 }
