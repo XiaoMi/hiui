@@ -1,98 +1,80 @@
-import React from 'react'
-import TreeNode from './TreeNode'
-import TreeContext from './context'
-import './style/index.scss'
-import useFlatData from './hooks/useFlatData'
-import useSelect from './hooks/useSelect'
-import useCheckable from './hooks/useCheckable'
-import useExpand from './hooks/useExpand'
+import React, { useState, useCallback } from 'react'
+import BaseTree from './BaseTree'
+import Input from '../Input'
+import Icon from '../Icon'
 import { getAncestorIds } from './util'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
+import _ from 'lodash'
+
+const getMatchedNodes = (data, searchValue, matchedNodes = []) => {
+  data.forEach((item) => {
+    if (searchValue !== '' && item.title.includes(searchValue)) {
+      matchedNodes.push(item)
+    }
+    if (item.children) {
+      getMatchedNodes(item.children, searchValue, matchedNodes)
+    }
+  })
+  return matchedNodes
+}
 
 const PREFIX = 'hi-editor-tree'
+const Tree = (props) => {
+  const { searchable, searchConfig = {}, data, filter = false } = props
+  const { placeholder = '关键词搜索', emptyContent = '未找到搜索结果' } = searchConfig
+  const [searchValue, setSearchValue] = useState('')
+  const [matchedNodes, setMatchedNodes] = useState([])
+  const [filteredIds, setFilteredIds] = useState([])
 
-const Tree = ({
-  data,
-  treeNodeRender,
-  checkable,
-  selectable = true,
-  selectedId,
-  defaultSelectedId,
-  onSelect,
-  expandedIds,
-  defaultExpandedIds,
-  onExpand,
-  checkedIds,
-  defaultCheckedIds,
-  onCheck,
-  editable,
-  editMenu,
-  onClick,
-  draggable,
-  onLoadChildren,
-  apperance
-}) => {
-  const [flatData, updateFlatData] = useFlatData(data)
-  const [selectNodeId, onSelectNode] = useSelect({
-    selectedId,
-    selectable,
-    defaultSelectedId,
-    onSelect
-  })
-  const [expandedNodeIds, onExpandNode] = useExpand({ expandedIds, defaultExpandedIds, onExpand })
-
-  const [{ checkedNodes, semiCheckedIds }, onCheckNode] = useCheckable({
-    defaultCheckedIds,
-    checkedIds,
-    onCheck,
-    data,
-    flatData
-  })
-
+  const treeNodeRender = useCallback(
+    (title) => {
+      if (typeof title === 'string' && title.includes(searchValue)) {
+        const index = title.indexOf(searchValue)
+        const beforeStr = title.substr(0, index)
+        const afterStr = title.substr(index + searchValue.length)
+        return (
+          <span>
+            {beforeStr}
+            <span style={{ color: '#4284f5' }}>{searchValue}</span>
+            {afterStr}
+          </span>
+        )
+      } else {
+        return title
+      }
+    },
+    [searchValue]
+  )
   return (
-    <TreeContext.Provider
-      value={{
-        treeNodeRender,
-        checkable,
-        checkedNodes,
-        semiCheckedIds,
-        selectedId: selectNodeId,
-        onSelectNode,
-        expandedNodeIds,
-        onExpandNode,
-        editable,
-        editMenu,
-        PREFIX,
-        onClick,
-        onCheckNode,
-        draggable,
-        onLoadChildren,
-        apperance
-      }}
-    >
-      <div className={PREFIX}>
-        <ul className='root-list'>
-          {flatData
-            .filter((node) => {
-              const ancestors = getAncestorIds(node.id, data)
-              return ancestors.every((ancestor) => expandedNodeIds.includes(ancestor))
-            })
-            .map((node) => (
-              <TreeNode key={node.id} node={node} />
-            ))}
-        </ul>
-      </div>
-    </TreeContext.Provider>
+    <React.Fragment>
+      {searchable && (
+        <div className={`${PREFIX}__searcher`}>
+          <Input
+            value={searchValue}
+            type='text'
+            placeholder={placeholder}
+            onChange={(e) => {
+              const matchedNodes = getMatchedNodes(data, e.target.value)
+              let filteredNodes = []
+              matchedNodes.forEach((node) => {
+                const ancestors = getAncestorIds(node.id, data, [])
+                filteredNodes = filteredNodes.concat(ancestors)
+              })
+              setSearchValue(e.target.value)
+              setMatchedNodes(matchedNodes)
+              setFilteredIds(_.uniq(filteredNodes))
+            }}
+            append={<Icon name='search' style={{ fontSize: '16px' }} />}
+            style={{ width: '250px', marginBottom: '24px' }}
+          />
+          <div />
+          {matchedNodes.length === 0 && searchValue !== '' && (
+            <div className='searcher__result--empty'>{emptyContent}</div>
+          )}
+        </div>
+      )}
+      <BaseTree {...props} treeNodeRender={treeNodeRender} expandedIds={filteredIds} />
+    </React.Fragment>
   )
 }
 
-const WrapperTree = (props) => {
-  return (
-    <DndProvider backend={HTML5Backend}>
-      <Tree {...props} />
-    </DndProvider>
-  )
-}
-
-export default WrapperTree
+export default Tree
