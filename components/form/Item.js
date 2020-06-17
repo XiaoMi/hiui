@@ -1,10 +1,4 @@
-import React, {
-  Component,
-  useContext,
-  useState,
-  useEffect,
-  useRef
-} from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
@@ -26,7 +20,6 @@ const FormItem = props => {
     showColon: shouldItemShowColon,
     style,
     field,
-    rules,
     valuePropName = 'value'
   } = props
   const {
@@ -169,25 +162,25 @@ const FormItem = props => {
         {children && Array.isArray(children)
           ? children
           : React.cloneElement(children, {
-              [valuePropName]: value,
-              onChange: (e, ...args) => {
-                children.props.onChange && children.props.onChange(e, ...args)
-                const value = e.target.value
-                setValue(value)
-                setTimeout(() => {
-                  handleField('onChange')
-                })
-              },
-              onBlur: (e, ...args) => {
-                children.props.onBlur && children.props.onBlur(e, ...args)
-                const value = e.target.value
-                console.log(typeof value)
-                setValue(value)
-                setTimeout(() => {
-                  handleField('onBlur')
-                })
-              }
-            })}
+            [valuePropName]: value,
+            onChange: (e, ...args) => {
+              children.props.onChange && children.props.onChange(e, ...args)
+              const value = e.target.value
+              setValue(value)
+              setTimeout(() => {
+                handleField('onChange')
+              })
+            },
+            onBlur: (e, ...args) => {
+              children.props.onBlur && children.props.onBlur(e, ...args)
+              const value = e.target.value
+              console.log(typeof value)
+              setValue(value)
+              setTimeout(() => {
+                handleField('onBlur')
+              })
+            }
+          })}
         <div className='hi-form-item--msg__error'>{error}</div>
       </div>
     </div>

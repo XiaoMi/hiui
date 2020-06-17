@@ -24,12 +24,16 @@ class Demo extends React.Component {
         remark: ''
       }
     }
+    this.form = React.createRef()
   }
   render (){
     const FormItem = Form.Item
     const {formData} = this.state
     return (
-      <Form labelWidth='80' labelPlacement='left' initialValues={formData}>
+      <>
+      <Form labelWidth='80' labelPlacement='left' 
+        formRef={this.form}
+        initialValues={formData}>
         <FormItem label='姓名' required field="name" rules={{
           trigger:'onBlur',
           type:'number',
@@ -56,6 +60,14 @@ class Demo extends React.Component {
           <Button type='primary'>提交</Button>
         </FormItem>
       </Form>
+      <Button type='primary' onClick={()=>{
+        console.log(this.form.current.validate())
+      }}>提交</Button>
+      <Button type='primary' onClick={()=>{
+        console.log(this.form.current.resetValidates())
+      }}>重置</Button>
+
+      </>
     )
   }
 }`,

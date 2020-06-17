@@ -1,4 +1,10 @@
-import React, { Component, useState } from 'react'
+import React, {
+  Component,
+  useState,
+  useEffect,
+  useCallback,
+  useRef
+} from 'react'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 
@@ -19,10 +25,12 @@ const getClassNames = props => {
 }
 export const FormContext = React.createContext({})
 const Form = props => {
-  const { children, className, style } = props
+  const { children, className, style, formRef } = props
   const [fields, setFileds] = useState([])
   const addField = childrenFiled => {
-    setFileds(fields.concat(childrenFiled))
+    setFileds(preState => {
+      return preState.concat(childrenFiled)
+    })
   }
   const removeField = childrenFiled => {
     setFileds(
@@ -59,11 +67,19 @@ const Form = props => {
     field.validate('', cb)
   }
 
-  const resetValidates = () => {
+  const resetValidates = useCallback(() => {
+    console.log('sddd初始', fields)
     fields.forEach(field => {
       field.resetValidate()
     })
-  }
+  }, [fields])
+  useEffect(() => {
+    formRef.current = {
+      resetValidates,
+      validateField,
+      validate
+    }
+  }, [fields])
 
   return (
     <form
