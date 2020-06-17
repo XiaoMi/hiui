@@ -1,128 +1,119 @@
-import React, { Component } from 'react'
+import React, {
+  Component,
+  useContext,
+  useState,
+  useEffect,
+  useRef
+} from 'react'
 import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
 import { depreactedPropsCompat } from '../_util'
+import { FormContext } from './Form'
 /**
  * rules 中 如果trigger 不传入 则 在最后点击时候时候校验规则
- *
+ * model 删除掉这个属性
+ * 通过cloneEelement对value进行受控
  */
-class FormItem extends Component {
-  constructor (props, context) {
-    super(props)
 
-    this.state = {
-      error: '',
-      valid: false,
-      validating: false
+const FormItem = props => {
+  const { addField, formProps, removeField } = useContext(FormContext)
+  const {
+    children,
+    label,
+    required,
+    className,
+    showColon: shouldItemShowColon,
+    style,
+    field,
+    rules,
+    valuePropName = 'value'
+  } = props
+  const {
+    showColon: shouldFormShowColon,
+    initialValues = {},
+    localeDatas: {
+      form: { colon }
     }
+  } = formProps || {}
+  // 初始化FormItem的内容
+  const [value, setValue] = useState('')
+  const [error, setError] = useState('')
+  const [valid, setValid] = useState(false)
+  const [validating, setValidating] = useState(false)
 
-    this.initValue = ''
-
-    this.parent = context.component
+  const resetValidate = () => {
+    setError('')
+    setValid(false)
+    setValidating(false)
   }
-
-  componentDidMount () {
-    const { field } = this.props
+  useEffect(() => {
     if (field) {
-      this.parent.addField(this)
-      this.valueInit()
+      addField({
+        field,
+        value,
+        rules: getRules(),
+        resetValidate,
+        setValue
+      })
+      valueInit()
     }
-  }
-
-  componentWillUnmount () {
-    this.parent.removeField(this.props.field)
-  }
-
-  valueInit () {
-    const value = this.parent.props.model[this.props.field]
-    if (value === undefined) {
-      this.initValue = value
-    } else {
-      this.initValue = JSON.parse(JSON.stringify(value))
+    return () => {
+      removeField({ field })
     }
+  }, [])
+  const valueInit = () => {
+    setValue(initialValues && initialValues[field])
   }
+  // 获取该单元的规则
+  const getRules = () => {
+    const selfRules = props.rules
+    let formRules = formProps.rules
 
-  getRules () {
-    const selfRules = this.props.rules
-    let formRules = this.parent.props.rules
-
-    formRules = formRules ? formRules[this.props.field] : []
+    formRules = formRules ? formRules[props.field] : []
     return [].concat(selfRules || formRules || [])
   }
-
-  getFilteredRule (trigger) {
-    const rules = this.getRules()
+  // 过滤含有该trigger触发方式的rules
+  const getFilteredRule = trigger => {
+    const rules = getRules()
     return rules.filter(rule => {
       return !rule.trigger || rule.trigger.indexOf(trigger) !== -1
     })
   }
 
-  getfieldValue () {
-    const model = this.parent.props.model
-    if (!model || !this.props.field) {
-      return
+  // 校验数据
+  useEffect(() => {
+    if (validating) {
+      let rules = getRules()
+      const validator = new AsyncValidator({
+        [field]: rules
+      })
+      const model = { [field]: value }
+      validator.validate(
+        model,
+        {
+          firstFields: true
+        },
+        errors => {
+          setError(errors ? errors[0].message : '')
+          setValidating(false)
+          setValid(!errors)
+        }
+      )
     }
+  }, [value, validating])
 
-    const keyList = this.props.field.split(':')
-    return keyList.length > 1
-      ? model[keyList[0]][keyList[1]]
-      : model[this.props.field]
-  }
-
-  validate (trigger, cb) {
-    console.log('trigger', trigger)
-    const rules = this.getFilteredRule(trigger)
-    console.log('rules', rules)
+  const validate = trigger => {
+    const rules = getFilteredRule(trigger)
     if (!rules || rules.length === 0) {
-      if (cb instanceof Function) {
-        cb()
-      }
-
       return true
     }
-
-    this.setState({
-      validating: true
-    })
-    const { field } = this.props
-
-    const validator = new AsyncValidator({
-      [field]: rules
-    })
-    const model = { [field]: this.getfieldValue() }
-    console.log('model', model)
-    validator.validate(
-      model,
-      {
-        firstFields: true
-      },
-      errors => {
-        this.setState(
-          {
-            error: errors ? errors[0].message : '',
-            validating: false,
-            valid: !errors
-          },
-          () => {
-            if (cb instanceof Function) {
-              cb(errors)
-            }
-          }
-        )
-      }
-    )
+    setValidating(true)
   }
 
-  resetValidate () {
-    this.setState({
-      error: '',
-      valid: true
-    })
-  }
-
-  isRequired () {
-    let rules = this.getRules()
+  // 判断是否含有Rules
+  const isRequired = () => {
+    let rules = getRules()
     let isRequired = false
 
     if (rules && rules.length) {
@@ -137,102 +128,70 @@ class FormItem extends Component {
     return isRequired
   }
 
-  handleFieldBlur () {
-    const hasOnBlur = this.getRules().some(rule =>
-      (rule.trigger || '').includes('onBlur')
-    )
-    if (hasOnBlur) {
-      this.validate('onBlur')
-    }
+  // 对字段进行校验
+  const handleField = triggerType => {
+    let rules = getRules()
+    const hasTriggerType = rules.some(rule => {
+      const { trigger = '' } = rule
+      return trigger.includes(triggerType)
+    })
+    hasTriggerType && validate(triggerType)
   }
 
-  handleFieldChange () {
-    const hasOnChange = this.getRules().some(rule =>
-      (rule.trigger || '').includes('onChange')
-    )
-    if (hasOnChange) {
-      this.validate('onChange')
-    }
-  }
+  const labelWidth = () => {
+    const labelWidth = props.labelWidth || formProps.labelWidth
 
-  get labelWidth () {
-    const labelWidth = this.props.labelWidth || this.parent.props.labelWidth
-
-    return this.parent.props.labelPosition === 'top'
+    return formProps.labelPosition === 'top'
       ? false
       : labelWidth && parseInt(labelWidth)
   }
-  setChildrenDefaultValue = children => {
-    return this.getfieldValue()
-  }
-  render () {
-    const {
-      children,
-      label,
-      required,
-      className,
-      showColon: shouldItemShowColon,
-      style
-    } = this.props
-    const {
-      showColon: shouldFormShowColon,
-      localeDatas: {
-        form: { colon }
-      }
-    } = this.parent.props
-    const { error, validating } = this.state
-    const shouldShowColon =
-      shouldItemShowColon === undefined
-        ? shouldFormShowColon && typeof label === 'string' && label.trim()
-        : shouldItemShowColon
-    const obj = {}
-    obj['hi-form-item__error'] = error !== ''
-    obj['hi-form-item--validating'] = validating
-    obj['hi-form-item--required'] = this.isRequired() || required
 
-    return (
-      <div className={classNames('hi-form-item', className, obj)} style={style}>
-        {label || label === '' ? (
-          <label
-            className='hi-form-item__label'
-            style={{ width: this.labelWidth }}
-          >
-            {(typeof label === 'string' && label.trim()) || label}
-            {shouldShowColon && colon}
-          </label>
-        ) : (
-          <span
-            className='hi-form-item__span'
-            style={{ width: this.labelWidth }}
-          />
-        )}
-        <div className={'hi-form-item' + '__content'}>
-          {Array.isArray(children) || !children
-            ? children
-            : React.cloneElement(children, {
-              value: this.setChildrenDefaultValue(children),
-              onChange: (...args) => {
-                children.props.onChange && children.props.onChange(...args)
-                setTimeout(() => {
-                  this.handleFieldChange()
-                })
-              },
-              onBlur: (...args) => {
-                children.props.onBlur && children.props.onBlur(...args)
-                setTimeout(() => {
-                  this.handleFieldBlur()
-                })
-              }
-            })}
-          <div className='hi-form-item--msg__error'>{error}</div>
-        </div>
+  const shouldShowColon =
+    shouldItemShowColon === undefined
+      ? shouldFormShowColon && typeof label === 'string' && label.trim()
+      : shouldItemShowColon
+  const obj = {}
+  obj['hi-form-item__error'] = error !== ''
+  obj['hi-form-item--validating'] = validating
+  obj['hi-form-item--required'] = isRequired() || required
+
+  return (
+    <div className={classNames('hi-form-item', className, obj)} style={style}>
+      {label || label === '' ? (
+        <label className='hi-form-item__label' style={{ width: labelWidth() }}>
+          {(typeof label === 'string' && label.trim()) || label}
+          {shouldShowColon && colon}
+        </label>
+      ) : (
+        <span className='hi-form-item__span' style={{ width: labelWidth() }} />
+      )}
+      <div className={'hi-form-item' + '__content'}>
+        {children && Array.isArray(children)
+          ? children
+          : React.cloneElement(children, {
+            [valuePropName]: value,
+            onChange: (e, ...args) => {
+              children.props.onChange && children.props.onChange(e, ...args)
+              const value = e.target.value
+              setValue(value)
+              setTimeout(() => {
+                handleField('onChange')
+              })
+            },
+            onBlur: (e, ...args) => {
+              children.props.onBlur && children.props.onBlur(e, ...args)
+              const value = e.target.value
+              console.log(typeof value)
+              setValue(value)
+              setTimeout(() => {
+                handleField('onBlur')
+              })
+            }
+          })}
+        <div className='hi-form-item--msg__error'>{error}</div>
       </div>
-    )
-  }
-}
-
-FormItem.contextTypes = {
-  component: PropTypes.any
+    </div>
+  )
 }
 
 FormItem.propTypes = {
@@ -249,5 +208,4 @@ FormItem.propTypes = {
 FormItem.defaultProps = {
   size: 'small'
 }
-
 export default depreactedPropsCompat([['field', 'prop']])(FormItem)

@@ -1,53 +1,38 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 
-class Form extends Component {
-  constructor (props) {
-    super(props)
+// Form hooks
+const getClassNames = props => {
+  const { labelPlacement, labelPosition, placement, inline } = props
 
-    this.state = {
-      fields: []
-    }
+  const obj = {}
+
+  if (labelPlacement || labelPosition) {
+    obj[`hi-form--label--${labelPlacement || labelPosition}`] = true
+  }
+  if (placement === 'horizontal' || inline) {
+    obj[`hi-form--inline`] = true
   }
 
-  getChildContext () {
-    return {
-      component: this
-    }
+  return obj
+}
+export const FormContext = React.createContext({})
+const Form = props => {
+  const { children, className, style } = props
+  const [fields, setFileds] = useState([])
+  const addField = childrenFiled => {
+    setFileds(fields.concat(childrenFiled))
+  }
+  const removeField = childrenFiled => {
+    setFileds(
+      fields.filter(fieldItem => fieldItem.field !== childrenFiled.field)
+    )
   }
 
-  getClassNames () {
-    const { labelPlacement, labelPosition, placement, inline } = this.props
-
-    const obj = {}
-
-    if (labelPlacement || labelPosition) {
-      obj[`hi-form--label--${labelPlacement || labelPosition}`] = true
-    }
-    if (placement === 'horizontal' || inline) {
-      obj[`hi-form--inline`] = true
-    }
-
-    return obj
-  }
-
-  addField (field) {
-    this.setState(prevState => ({
-      fields: prevState.fields.concat(field)
-    }))
-  }
-
-  removeField (prop) {
-    this.setState(prevState => ({
-      fields: prevState.fields.filter(field => field.props.field !== prop)
-    }))
-  }
-
-  validate (cb) {
+  const validate = cb => {
     let valid = true
     let count = 0
-    const fields = this.state.fields
     if (fields.length === 0 && cb) {
       cb(valid)
     }
@@ -65,10 +50,8 @@ class Form extends Component {
     })
   }
 
-  validateField (key, cb) {
-    const field = this.state.fields.filter(
-      field => field.props.field === key
-    )[0]
+  const validateField = (key, cb) => {
+    const field = fields.filter(field => field.props.field === key)[0]
     if (!field) {
       throw new Error('must call validate Field with valid key string!')
     }
@@ -76,30 +59,29 @@ class Form extends Component {
     field.validate('', cb)
   }
 
-  resetValidates () {
-    this.state.fields.forEach(field => {
+  const resetValidates = () => {
+    fields.forEach(field => {
       field.resetValidate()
     })
   }
 
-  render () {
-    const { children, className, style } = this.props
-
-    return (
-      <form
-        className={classNames('hi-form', className, this.getClassNames())}
-        style={style}
+  return (
+    <form
+      className={classNames('hi-form', className, getClassNames(props))}
+      style={style}
+    >
+      <FormContext.Provider
+        value={{
+          formProps: props,
+          addField,
+          removeField
+        }}
       >
         {children}
-      </form>
-    )
-  }
+      </FormContext.Provider>
+    </form>
+  )
 }
-
-Form.childContextTypes = {
-  component: PropTypes.any
-}
-
 Form.propTypes = {
   model: PropTypes.object,
   rules: PropTypes.object,
@@ -113,7 +95,6 @@ Form.propTypes = {
   className: PropTypes.string,
   style: PropTypes.object
 }
-
 Form.defaultProps = {
   size: 'small',
   showColon: true

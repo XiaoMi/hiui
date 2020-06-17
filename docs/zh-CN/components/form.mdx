@@ -14,7 +14,7 @@ import DemoAlign from '../../demo/form/section-align.jsx'
 
 <DemoAlign />
 
-## 横向表单
+<!-- ## 横向表单
 
 import DemoRow from '../../demo/form/section-row.jsx'
 
@@ -30,7 +30,7 @@ import DemoTwoCol from '../../demo/form/section-two-col.jsx'
 
 import DemoCheck from '../../demo/form/section-check.jsx'
 
-<DemoCheck />
+<DemoCheck /> -->
 
 ## Props
 
@@ -39,6 +39,7 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 | 参数           | 说明                                                                                  | 类型    | 可选值                     | 默认值     |
 | -------------- | ------------------------------------------------------------------------------------- | ------- | -------------------------- | ---------- |
 | model          | 表单数据                                                                              | object  | -                          | -          |
+| initialValues  | 表单初始数据                                                                          | object  | -                          | -          |
 | rules          | 表单验证规则，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object  | -                          | -          |
 | labelWidth     | label 宽度，可用任意 CSS 长度单位                                                     | string  |                            |
 | labelPlacement | label 放置的位置                                                                      | string  | 'right' \| 'left' \| 'top' | 'left'     |
@@ -47,13 +48,15 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 
 ### Form.Item
 
-| 参数       | 说明                                                                 | 类型    | 可选值        | 默认值 |
-| ---------- | -------------------------------------------------------------------- | ------- | ------------- | ------ |
-| field      | 表单域对应 model 的字段                                              | string  | -             | -      |
-| label      | 标签文本，默认自动添加冒号                                           | string  | -             | -      |
-| labelWidth | label 宽度，可用任意 CSS 长度单位，优先级高于 Form 设置的 labelWidth | string  |               |
-| required   | 是否必填                                                             | boolean | true \| false | false  |
-| showColon  | 是否显示冒号                                                         | boolean | true \| false | -      |
+| 参数          | 说明                                                                                                            | 类型    | 可选值        | 默认值  |
+| ------------- | --------------------------------------------------------------------------------------------------------------- | ------- | ------------- | ------- |
+| field         | 表单域对应 model 的字段                                                                                         | string  | -             | -       |
+| label         | 标签文本，默认自动添加冒号                                                                                      | string  | -             | -       |
+| labelWidth    | label 宽度，可用任意 CSS 长度单位，优先级高于 Form 设置的 labelWidth                                            | string  |               |
+| required      | 是否必填                                                                                                        | boolean | true \| false | false   |
+| showColon     | 是否显示冒号                                                                                                    | boolean | true \| false | -       |
+| rules         | 表单验证规则，会覆盖 Form 设置的 rules，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object  | -             | -       |
+| valuePropName | 子节点的值的属性，如 Switch Radio Checkbox 的是 'checked'                                                       | string  | -             | 'value' |
 
 ## Methods
 

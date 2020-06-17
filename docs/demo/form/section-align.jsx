@@ -14,24 +14,39 @@ const code = [
   {
     code: `import React from 'react'
 import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
-class Demo extends React.Component {
+class Demo extends React.Component {  
+  constructor(props){
+    super(props)
+    this.state = {
+      formData : {
+        name: '',
+        phone: '',
+        remark: ''
+      }
+    }
+  }
   render (){
     const FormItem = Form.Item
+    const {formData} = this.state
     return (
-      <Form labelWidth='80' labelPlacement='left'>
-        <FormItem label='姓名' required>
+      <Form labelWidth='80' labelPlacement='left' initialValues={formData}>
+        <FormItem label='姓名' required field="name" rules={{
+          trigger:'onBlur',
+          type:'number',
+          }}>
           <Input placeholder='请输入' />
         </FormItem>
-        <FormItem label='手机号码' rules={{
-          tirgger:'blur',
+        <FormItem label='手机号码' field="phone" rules={{
+          trigger:'onChange',
+          type:'number',
           validator: (rule, value,callback) => {
-            console.log(rule, value,callback)
-            callback()
+            console.log(rule, value)
+            callback("dsdsds")
           },
           }}>
           <Input placeholder='请输入' />
         </FormItem>
-        <FormItem label='备注' >
+        <FormItem label='备注' field="remark">
           <Input
             type="textarea"
             placeholder="请输入"
