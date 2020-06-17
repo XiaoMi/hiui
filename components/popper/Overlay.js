@@ -144,8 +144,8 @@ const Overlay = props => {
 }
 Overlay.defaultProps = {
   show: false,
-  topGap: 2,
-  leftGap: 2,
+  topGap: 0,
+  leftGap: 0,
   zIndex: 1060,
   placement: 'bottom-start'
 }

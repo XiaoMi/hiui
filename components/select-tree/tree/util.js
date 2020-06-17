@@ -1,79 +1,4 @@
 import _ from 'lodash'
-// 寻找某一节点的父节点
-export const getParentId = (id, data) => {
-  let parentId
-  data.forEach((item) => {
-    if (item.children) {
-      if (item.children.some((item) => item.id === id)) {
-        parentId = item.id
-      } else if (getParentId(id, item.children)) {
-        parentId = getParentId(id, item.children)
-      }
-    }
-  })
-  return parentId
-}
-
-// 寻找某一节点的所有祖先节点
-export const getAncestorIds = (id, data, arr = []) => {
-  if (getParentId(id, data)) {
-    arr.push(getParentId(id, data))
-    getAncestorIds(getParentId(id, data), data, arr)
-  }
-  return arr
-}
-
-// 寻找某一节点的所有后代节点
-export const getChildrenIds = (node, arr = []) => {
-  if (node.children) {
-    node.children.forEach((_n) => {
-      arr.push(_n.id)
-      if (_n.children) {
-        getChildrenIds(_n, arr)
-      }
-    })
-    // arr = node.children.map((i) => i.id).concat(arr)
-    // console.log(node, arr)
-    // node.children.forEach((c) => getChildrenIds(c, arr))
-  }
-  console.log('arr', JSON.stringify(arr))
-  return arr
-}
-
-// 给定一个结合，根据 id 寻找节点
-export const findNode = (itemId, data) => {
-  let node
-  data.forEach((d, index) => {
-    if (d.id === itemId) {
-      node = d
-    } else {
-      if (d.children && findNode(itemId, d.children)) {
-        node = findNode(itemId, d.children)
-      }
-    }
-  })
-  return node
-}
-
-export const getSemiChecked = (checkedIds, data, allData, semiChecked = []) => {
-  data.forEach((node) => {
-    const ancestorIds = getAncestorIds(node.id, allData)
-    if (checkedIds.includes(node.id)) {
-      ancestorIds.forEach((ancestorId) => {
-        if (
-          !checkedIds.includes(ancestorId) &&
-          !semiChecked.includes(ancestorId)
-        ) {
-          semiChecked.push(ancestorId)
-        }
-      })
-    }
-    if (node.children) {
-      getSemiChecked(checkedIds, node.children, allData, semiChecked)
-    }
-  })
-  return semiChecked
-}
 // 根据 ID 获取节点
 export const getNode = (id, data) => {
   return data.find(n => n.id === id)
@@ -93,9 +18,8 @@ export const getSibilingsNodes = (node, data) => {
 
 // 获取指定节点的父节点
 export const getParentNode = (node, data) => {
-  return data.filter(n => n.id === node.pId)[0]
+  return data.find(n => n.id === node.pId)
 }
-
 // 获取指定节点的直接子节点
 export const getChildrenNodes = (node, data) => {
   return data.filter(n => n.pId === node.id)
@@ -104,7 +28,6 @@ export const getChildrenNodes = (node, data) => {
 export const getRootNodes = (data) => {
   return data.filter(n => !n.pId)
 }
-
 // 获取指定节点的所有后代节点
 export const getDescendantNodes = (node, data, arr = []) => {
   const children = getChildrenNodes(node, data)
@@ -205,5 +128,74 @@ export const updateUnCheckData = (node, data, checkedIds, semiCheckedIds) => {
   return {
     checked: [...checkedIds],
     semiChecked: [...semiCheckedIds]
+  }
+}
+
+/**
+ * 处理选中的回显数据
+ * @param {*} checkedIds 当前所有被选中的节点 ID 集合
+ * @param {*} nodeEntries 所有数据的Map 集合
+ * @param {*} type 数据回显方式
+ */
+export const processSelectedIds = (checkedIds, nodeEntries, type) => {
+  const keySet = new Set(checkedIds)
+  if (type === 'CHILD') {
+    return checkedIds.filter(id => {
+      const entity = nodeEntries[id]
+      if (entity && entity.children && entity.children.every(node => keySet.has(node.id))) {
+        return false
+      }
+      return true
+    })
+  }
+  if (type === 'PARENT') {
+    return checkedIds.filter(id => {
+      const entity = nodeEntries[id]
+      const parent = entity ? entity.parent : null
+      if (parent && keySet.has(parent.id)) {
+        return false
+      }
+      return true
+    })
+  }
+  return checkedIds
+}
+
+/**
+ * 将数据拉平为 pId 类数据
+ * @param {*} data 原始数据
+ * @param {*} defaultExpandIds 默认展开节点
+ * @param {*} defaultExpandAll 是否默认展开全部节点
+ * @param {*} isGenEntries 是否生成 map 集合（当多选且数据回显方式不等于 ALL 时）
+ */
+export const flattenNodesData = (data, defaultExpandIds = [], defaultExpandAll = false, isGenEntries = false) => {
+  let flattenData = []
+  const expandIds = []
+  const nodeEntries = {}
+  const fun = (datas, expands, nArr, parent) => {
+    datas.forEach(node => {
+      node.pId = parent ? parent.id : null
+      node.isLoaded = false
+      node._origin = true
+      nArr.push(node)
+      nodeEntries[node.id] = {
+        ...node,
+        parent
+      }
+      if (node.children) {
+        if (defaultExpandIds.includes(node.id) || defaultExpandAll) {
+          expands.push(node.id)
+        }
+        fun(node.children, expands, nArr, node)
+      } else {
+        node.isLeaf = true
+      }
+    })
+  }
+  fun(data, expandIds, flattenData)
+  return {
+    flattenData,
+    expandIds,
+    nodeEntries
   }
 }

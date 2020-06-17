@@ -18,14 +18,11 @@ class Demo extends React.Component {
           children: [
             {
               title: 'Child Node 0-0',
-              id: '0-0'
+              id: '3'
             },{
               title: 'ffff',
               id: '0-1',
               children: [{
-                id: '0-1-1',
-                title: 'fff-c'
-              },{
                 title: 'ggg',
                 id: '0-1-0',
                 children: [{
@@ -137,30 +134,11 @@ class Demo extends React.Component {
     return (
       <SelectTree
         clearable
+        mode='breadcrumb'
         type='multiple'
         data={singleList}
-        // defaultValue={[{id: '0-1-0-0-0'}]}
+        defaultValue={[{id: '0-1-0-0-0'}]}
         autoExpand={true}
-        // defaultExpandAll
-        defaultExpandIds={['1-2-0-0-0-0']}
-        showCheckedMode='PARENT'
-        // dataSource={key => {
-        //   return {
-        //     type: 'GET',
-        //     key: 'id',
-        //     params: {pId: key},
-        //     url: 'http://localhost:3000/tree',
-        //     transformResponse: (res) => {
-        //       return res.map(r => {
-        //         return {
-        //           ...r,
-        //           id: r.code,
-        //           title: r.name
-        //         }
-        //       })
-        //     }
-        //   }
-        // }}
       />
     )
   }

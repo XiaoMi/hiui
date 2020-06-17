@@ -32,7 +32,6 @@ const _parseData = (data, defaultExpandIds = [], defaultExpandAll = false, expan
 const Tree = ({
   searchable,
   data,
-  originData,
   expandIds,
   checkedNodes,
   treeNodeRender,
@@ -42,13 +41,8 @@ const Tree = ({
   editable,
   editMenu,
   onClick,
-  checkedIds,
   onCheck,
-  defaultCheckedIds,
   searchMode,
-  defaultExpandIds,
-  defaultExpandAll,
-  defaultValue,
   onExpand,
   dataSource,
   loadDataOnExpand

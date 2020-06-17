@@ -1,62 +1,39 @@
 import React from 'react'
 import Tree from './tree'
 import qs from 'qs'
-// import NavTree from './NavTree'
+import Popper from '../popper'
 import classNames from 'classnames'
 import {
+  flattenNodesData,
   getNode,
   updateCheckData,
   updateUnCheckData,
   hasChildren,
-  getNodeByIdTitle
+  getNodeByIdTitle,
+  processSelectedIds
 } from './tree/util'
+import NavTree from './NavTree'
 // const PREFIX = 'hi-select-tree'
 // const placeholder = '请选择'
 
-/**
- * 将数据拉平为 pId 类数据
- * @param {*} data 原始数据
- * @param {*} defaultExpandIds 默认展开节点
- * @param {*} defaultExpandAll 是否默认展开全部节点
- * @param {*} expands 递归用展开节点数组
- * @param {*} pId  递归用 pId
- * @param {*} nArr  递归用总数据
- */
-const parseData = (data, defaultExpandIds = [], defaultExpandAll = false, expands = [], pId = null, nArr = []) => {
-  data.forEach(node => {
-    node.pId = pId
-    node.isLoaded = false
-    node._origin = true
-    nArr.push(node)
-    if (node.children) {
-      if (defaultExpandIds.includes(node.id) || defaultExpandAll) {
-        expands.push(node.id)
-      }
-      parseData(node.children, defaultExpandIds, defaultExpandAll, expands, node.id, nArr)
-    } else {
-      node.isLeaf = true
-    }
-  })
-  return {
-    data: nArr,
-    expands
-  }
-}
 class SelectTree extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       dropdownShow: false,
       selectedItems: [],
+      selectedIds: [],
       showCount: 0,
       checkedNodes: {
         checked: [],
         semiChecked: []
       },
       flattenData: [],
-      expandIds: []
+      expandIds: [],
+      nodeEntries: {}
     }
     this.selectedItemsRef = React.createRef()
+    this.inputRef = React.createRef()
   }
   handleClear () {
     this.setState({
@@ -89,6 +66,7 @@ class SelectTree extends React.Component {
   }
   /**
    * 根据 defaultCheckedIds 解析全选/半选数据
+   * @param {*} selectedItems 已选中选项
    */
   parseCheckStatusData (selectedItems) {
     const { type, defaultValue } = this.props
@@ -157,15 +135,25 @@ class SelectTree extends React.Component {
     return defaultNodes
   }
   componentDidMount () {
-    const { data, defaultExpandIds, defaultExpandAll } = this.props
-    const result = parseData(data, defaultExpandIds, defaultExpandAll)
-    this.setState({
-      flattenData: result.data,
-      expandIds: result.expands
-    }, () => {
+    const { type, data, defaultExpandIds, defaultExpandAll, showCheckedMode } = this.props
+    const result = flattenNodesData(data, defaultExpandIds, defaultExpandAll, (type === 'multiple' && showCheckedMode !== 'ALL'))
+    console.log(1, result)
+    this.setState(result, () => {
+      // 拉平数据后，解析默认已选中的数据
       const selectedItems = this.parseDefaultSelectedItems()
       this.setState({selectedItems})
       this.parseCheckStatusData(selectedItems)
+    })
+  }
+  /**
+   * 根据数据回显方式设定显示的数据
+   * @param {*} checkIds 当前选中的节点 ID 集合
+   */
+  parseSelectedItems (checkIds) {
+    const { flattenData, nodeEntries } = this.state
+    const keys = processSelectedIds(checkIds, nodeEntries, 'CHILD')
+    this.setState({
+      selectedItems: keys.map(id => getNode(id, flattenData))
     })
   }
   /**
@@ -185,15 +173,17 @@ class SelectTree extends React.Component {
       result = updateUnCheckData(node, flattenData, checkedIds, semiCheckedIds)
     }
     this.setState({
-      checkedNodes: result
-    })
+      checkedNodes: {
+        checked: result.checked,
+        semiChecked: result.semiChecked
+      }
+    }, () => this.parseSelectedItems(result.checked))
     let checkedArr = []
     if (result.checked.length > 0) {
       checkedArr = result.checked.map(id => {
         return getNode(id, flattenData)
       })
     }
-    this.setState({ selectedItems: checkedArr })
     onChange(result, node, checkedArr)
   }
   /**
@@ -248,7 +238,7 @@ class SelectTree extends React.Component {
     onExpand()
   }
   render () {
-    const { clearable, data, onChange, defaultCheckedIds, defaultValue, type, dataSource } = this.props
+    const { clearable, data, onChange, type, dataSource, mode } = this.props
     let { selectedItems, showCount, dropdownShow, flattenData, expandIds, checkedNodes } = this.state
     showCount =
       showCount === 0 || this.calShowCountFlag
@@ -257,6 +247,7 @@ class SelectTree extends React.Component {
     return (
       <div className='hi-select-tree'>
         <div
+          ref={this.inputRef}
           className={classNames(
             'hi-select-tree__input',
             type === 'multiple' ? 'multiple-values' : 'single-values',
@@ -314,31 +305,46 @@ class SelectTree extends React.Component {
           </span>
         </div>
         {
-          dropdownShow && <Tree
-            data={flattenData}
-            originData={data}
-            expandIds={expandIds}
-            dataSource={dataSource}
-            loadDataOnExpand={false}
-            defaultCheckedIds={defaultCheckedIds}
-            defaultValue={defaultValue}
-            checkable={type === 'multiple'}
-            checkedNodes={checkedNodes}
-            // searchable
-            // searchMode='highlight'
-            // defaultExpandIds={[]}
-            // defaultExpandAll
-            onExpand={this._expandEvents.bind(this)}
-            onClick={node => {
-              this.setState({ selectedItems: [node] })
-              onChange(node.id)
-            }}
-            onCheck={(checked, node) => {
-              this._checkedEvents(checked, node)
-              // this.setState({ selectedItems: checkedArr })
-              // calcShowCount()
-            }}
-          />
+          <Popper
+            show={dropdownShow}
+            attachEle={this.inputRef.current}
+            className='hi-select-tree__popper'
+            // onClickOutside={() => this.setState({dropdownShow: false})}
+          >
+            {
+              mode === 'breadcrumb' ? <NavTree
+                data={flattenData}
+                originData={data}
+                checkedNodes={checkedNodes}
+                checkable={type === 'multiple'}
+                onCheck={(checked, node) => {
+                  this._checkedEvents(checked, node)
+                }}
+              /> : <Tree
+                data={flattenData}
+                originData={data}
+                expandIds={expandIds}
+                dataSource={dataSource}
+                loadDataOnExpand={false}
+                checkable={type === 'multiple'}
+                checkedNodes={checkedNodes}
+                // searchable
+                // searchMode='highlight'
+                // defaultExpandIds={[]}
+                // defaultExpandAll
+                onExpand={this._expandEvents.bind(this)}
+                onClick={node => {
+                  this.setState({ selectedItems: [node] })
+                  onChange(node.id)
+                }}
+                onCheck={(checked, node) => {
+                  this._checkedEvents(checked, node)
+                  // this.setState({ selectedItems: checkedArr })
+                  // calcShowCount()
+                }}
+              />
+            }
+          </Popper>
         }
         {/* <NavTree data={data} /> */}
       </div>
@@ -353,6 +359,7 @@ SelectTree.defaultProps = {
   clearable: true,
   onChange: () => {},
   onExpand: () => {},
-  checkable: false
+  checkable: false,
+  showCheckedMode: 'CHILD'
 }
 export default SelectTree

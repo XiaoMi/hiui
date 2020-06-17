@@ -5,23 +5,11 @@ import classNames from 'classnames'
 import './select-dropdown.scss'
 import Checkbox from '../checkbox'
 
-const _parseData = (data, pId = null, nArr = []) => {
-  data.forEach(node => {
-    node.pId = pId
-    nArr.push(node)
-    if (node.children) {
-      _parseData(node.children, node.id, nArr)
-    } else {
-      node.isLeaf = true
-    }
-  })
-  return nArr
-}
-const renderRootEl = (data, onExpand) => {
+const renderRootEl = (data, checkable, onExpand, onCheck) => {
   return data.map((node, index) => {
     return (
       <li key={index} className='hi-select__dropdown--item'>
-        {node.isLeaf && <Checkbox />}
+        {checkable && node.isLeaf && <Checkbox onChange={e => onCheck(e.target.checked, node)} />}
         <span className='hi-select__dropdown--text' onClick={() => onExpand(node)}>{node.title}</span>
         {node.children &&
           node.children.length > 0 &&
@@ -63,10 +51,9 @@ const Bread = ({datas, onClick, onReturnClick}) => {
     }
   </div>
 }
-const NavTree = ({ data }) => {
+const NavTree = ({ data, checkable, checkedNodes, onCheck }) => {
   const expandData = useRef()
-  const [parseData] = useState(_parseData(data) || [])
-  const [renderData, setRenderData] = useState(getRootNodes(parseData))
+  const [renderData, setRenderData] = useState(getRootNodes(data))
   const [fullBreadData, setFullBreadData] = useState({})
 
   const onBreadClick = (title) => {
@@ -82,7 +69,7 @@ const NavTree = ({ data }) => {
     })
   }
   const onReturnClick = () => {
-    setRenderData(getRootNodes(parseData))
+    setRenderData(getRootNodes(data))
     setFullBreadData({})
   }
   const onExpand = (node) => {
@@ -103,7 +90,7 @@ const NavTree = ({ data }) => {
         Object.keys(fullBreadData).length > 0 && <Bread datas={fullBreadData} onClick={onBreadClick} onReturnClick={onReturnClick} />
       }
       <ul className='hi-select__dropdown--items'>
-        {renderRootEl(renderData, onExpand)}
+        {renderRootEl(renderData, checkable, onExpand, onCheck)}
       </ul>
     </div>
   )
