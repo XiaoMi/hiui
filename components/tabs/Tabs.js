@@ -93,8 +93,6 @@ class Tabs extends Component {
     const hiddenTabItems = []
 
     React.Children.map(children, (child, index) => {
-      console.log(type)
-
       if (child) {
         const { tabTitle, tabId, tabDesc, disabled, closeable } = child.props
         const item = { tabTitle, tabId, tabDesc, disabled, closeable }
@@ -195,7 +193,7 @@ class Tabs extends Component {
     var from = Number(this.state.dragged.dataset.id)
 
     var to = Number(this.over.dataset.id)
-    console.log(from, to)
+
     data.splice(to, 0, data.splice(from, 1)[0])
 
     data = data.map((doc, index) => {
@@ -210,29 +208,32 @@ class Tabs extends Component {
     e.preventDefault()
     this.state.dragged.style.display = 'none'
     const { placement } = this.props
-    if (e.target.tagName === 'DIV' && e.target.classList.contains('hi-tabs__item')) {
-      const dgIndex = JSON.parse(this.state.dragged.dataset.item).newIndex
-      const taIndex = JSON.parse(e.target.dataset.item).newIndex
+    e.target = e.target.closest('.hi-tabs__item')
 
-      if (dgIndex === undefined && taIndex === undefined) {
-        return
-      }
-      let animateName
+    if (!e.target) {
+      return
+    }
+    const taIndex = JSON.parse(e.target.dataset.item).newIndex
+    const dgIndex = JSON.parse(this.state.dragged.dataset.item).newIndex
+    console.log(taIndex, dgIndex)
+    if (dgIndex === undefined && taIndex === undefined) {
+      return
+    }
+    let animateName
 
-      if (placement === 'horizontal') {
-        animateName = dgIndex > taIndex ? 'drag-left' : 'drag-right'
-      } else {
-        animateName = dgIndex > taIndex ? 'drag-up' : 'drag-down'
-      }
+    if (placement === 'horizontal') {
+      animateName = dgIndex > taIndex ? 'drag-left' : 'drag-right'
+    } else {
+      animateName = dgIndex > taIndex ? 'drag-up' : 'drag-down'
+    }
 
-      if (this.over && e.target.dataset.item !== this.over.dataset.item) {
-        this.over.classList.remove('drag-up', 'drag-down', 'drag-right', 'drag-left')
-      }
+    if (this.over && e.target.dataset.item !== this.over.dataset.item) {
+      this.over.classList.remove('drag-up', 'drag-down', 'drag-right', 'drag-left')
+    }
 
-      if (!e.target.classList.contains(animateName)) {
-        e.target.classList.add(animateName)
-        this.over = e.target
-      }
+    if (!e.target.classList.contains(animateName)) {
+      e.target.classList.add(animateName)
+      this.over = e.target
     }
   }
   render () {

@@ -1,7 +1,7 @@
 import Tabs from '../../../components/tabs'
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-const prefix = 'tabs-basic'
+const prefix = 'tabs-draggable'
 const desc = '实现 Tabs 拖拽功能'
 const rightOptions = ['水平方向', '垂直方向']
 
@@ -33,22 +33,24 @@ class Demo extends React.Component {
   }
   render () {
     return (
-      <Tabs defaultActiveId='tabId-2' onTabClick={(tab,e) => console.log(tab,e)} draggable={true}>
-        {
-          this.state.panes.map((pane, index) => {
-            return (
-              <Tabs.Pane
-                tabTitle={pane.tabTitle}
-                tabId={pane.tabId}
-                closeable={pane.closeable}
-                key={index}
-              >
-                <div style={{padding: '16px'}}>{pane.tabTitle}</div>
-              </Tabs.Pane>
-            )
-          })
-        }
+      <div id="tabs-draggable">
+        <Tabs defaultActiveId='tabId-2' onTabClick={(tab,e) => console.log(tab,e)} draggable={true}>
+          {
+            this.state.panes.map((pane, index) => {
+              return (
+                <Tabs.Pane
+                  tabTitle={pane.tabTitle}
+                  tabId={pane.tabId}
+                  closeable={pane.closeable}
+                  key={index}
+                >
+                  <div style={{padding: '16px'}}>{pane.tabTitle}</div>
+                </Tabs.Pane>
+              )
+            })
+          }
       </Tabs>
+      </div>
     )
   }
 }`,
@@ -82,21 +84,21 @@ class Demo extends React.Component {
   render () {
     return (
       <Tabs defaultActiveId='tabId-2' onTabClick={(tab,e) => console.log(tab,e)} placement='vertical' draggable={true}>
-        {
-          this.state.panes.map((pane, index) => {
-            return (
-              <Tabs.Pane
-                tabTitle={pane.tabTitle}
-                tabId={pane.tabId}
-                closeable={pane.closeable}
-                key={index}
-              >
-                <div style={{padding: '16px'}}>{pane.tabTitle}</div>
-              </Tabs.Pane>
-            )
-          })
-        }
-      </Tabs>
+      {
+        this.state.panes.map((pane, index) => {
+          return (
+            <Tabs.Pane
+              tabTitle={pane.tabTitle}
+              tabId={pane.tabId}
+              closeable={pane.closeable}
+              key={index}
+            >
+              <div style={{padding: '16px'}}>{pane.tabTitle}</div>
+            </Tabs.Pane>
+          )
+        })
+      }
+    </Tabs>
     )
   }
 }`,
