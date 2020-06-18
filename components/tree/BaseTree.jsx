@@ -42,7 +42,6 @@ const Tree = ({
     onSelect
   })
   const [expandedNodeIds, onExpandNode] = useExpand({ expandedIds, defaultExpandedIds, onExpand })
-  console.log('>>>>>>', expandedNodeIds)
 
   const [{ checkedNodes, semiCheckedIds }, onCheckNode] = useCheckable({
     defaultCheckedIds,

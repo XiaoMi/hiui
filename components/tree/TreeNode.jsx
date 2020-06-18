@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef, useCallback } from 'react'
 import Checkbox from '../checkbox'
 import Icon from '../icon'
-import Popper from '../popper'
+
 import Classnames from 'classnames'
 import TreeContext from './context'
 import useClickOutside from './hooks/useClickOutside'
@@ -16,13 +16,11 @@ const switcherApperanceMap = {
 const TreeNode = ({ node }) => {
   const {
     treeNodeRender,
-    menuRender,
     checkable,
     checkedNodes,
     semiCheckedIds,
     onSelectNode,
     selectedId,
-    editable,
     onCheckNode,
     expandedNodeIds,
     onExpandNode,
@@ -35,15 +33,11 @@ const TreeNode = ({ node }) => {
   }
 
   // const [{ isDragging, isOver, direction }, ref] = useDnD({ id: node.id, move })
-  const [menuVisible, setMenuVisible] = useState(false)
+
   const treeNodeRef = useRef(null)
-  const editMenuRef = useRef(null)
 
   const [loading, setLoading] = useState(false)
 
-  useClickOutside(editMenuRef, () => {
-    setMenuVisible(false)
-  })
   // 渲染 apperance 占位
   const renderApperancePlaceholder = useCallback((apperance) => {
     if (apperance === 'folder') {
@@ -108,22 +102,24 @@ const TreeNode = ({ node }) => {
           // ref={draggable ? ref : treeNodeRef}
           ref={treeNodeRef}
           className={Classnames('tree-node__title', {
-            'tree-node__title--selected': selectedId === id,
             // [`tree-node__title--${direction}`]: isOver && direction,
             [`tree-node__title--draggable`]: draggable
           })}
-          onClick={() => {
-            setMenuVisible(false)
-            onSelectNode(node)
-          }}
-          onContextMenu={(e) => {
-            if (editable) {
-              e.preventDefault()
-              setMenuVisible(true)
-            }
-          }}
         >
-          {treeNodeRender ? treeNodeRender(node) : title}
+          {treeNodeRender ? (
+            treeNodeRender(node, { selected: selectedId === id }, treeNodeRef, onSelectNode)
+          ) : (
+            <div
+              className={Classnames('title__text', {
+                'title__text--selected': selectedId === id
+              })}
+              onClick={() => {
+                onSelectNode(node)
+              }}
+            >
+              {title}
+            </div>
+          )}
         </div>
       )
     },
@@ -136,28 +132,14 @@ const TreeNode = ({ node }) => {
         (node.children && node.children.length) || (onLoadChildren && !node.isLeaf)
           ? node.depth
           : apperance !== 'default'
-          ? node.depth
-          : (node.depth && node.depth + 1) || 1
+            ? node.depth
+            : (node.depth && node.depth + 1) || 1
       )}
       {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
       {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf)) &&
         renderSwitcher(expandedNodeIds, node, onExpandNode, onLoadChildren)}
       {checkable && renderCheckbox(node, { checked: checkedNodes, semiChecked: semiCheckedIds })}
       {renderTitle(node, selectedId)}
-      {editable && (
-        <Popper
-          show={menuVisible}
-          attachEle={treeNodeRef.current}
-          width={false}
-          zIndex={1040}
-          placement='right-start'
-          onClickOutside={() => {
-            setMenuVisible(false)
-          }}
-        >
-          {menuRender(node)}
-        </Popper>
-      )}
     </li>
   )
 }
