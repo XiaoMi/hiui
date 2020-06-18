@@ -5,7 +5,7 @@ import Icon from '../icon'
 import Tooltip from '../tooltip'
 import ItemDropdown from './ItemDropdown'
 import Provider from '../context'
-const noop = () => {}
+const noop = () => { }
 
 class Tabs extends Component {
   static propTypes = {
@@ -47,7 +47,8 @@ class Tabs extends Component {
       activeId: activeId !== undefined ? activeId : (defaultActiveId || (showTabItems && showTabItems[0] && showTabItems[0].tabId)),
       showTabItems,
       hiddenTabItems,
-      defaultActiveId
+      defaultActiveId,
+      dragged: null
     }
   }
 
@@ -90,6 +91,8 @@ class Tabs extends Component {
     const hiddenTabItems = []
 
     React.Children.map(children, (child, index) => {
+      console.log(type)
+
       if (child) {
         const { tabTitle, tabId, tabDesc, disabled, closeable } = child.props
         const item = { tabTitle, tabId, tabDesc, disabled, closeable }
@@ -101,7 +104,7 @@ class Tabs extends Component {
         }
       }
     })
-    return {showTabItems, hiddenTabItems}
+    return { showTabItems, hiddenTabItems }
   }
 
   handleClick (tab, e) {
@@ -161,6 +164,58 @@ class Tabs extends Component {
       show: tabId === activeId
     })
   }
+  dragStart (e) {
+    this.setState({
+      dragged: e.currentTarget
+    })
+  }
+  dragEnd (e) {
+    this.state.dragged.style.display = 'block'
+
+    e.target.classList.remove('drag-up')
+    this.over.classList.remove('drag-up')
+
+    e.target.classList.remove('drag-down')
+    this.over.classList.remove('drag-down')
+
+    var data = this.state.data
+    var from = Number(this.state.dragged.dataset.id)
+    var to = Number(this.over.dataset.id)
+    data.splice(to, 0, data.splice(from, 1)[0])
+
+    // set newIndex to judge direction of drag and drop
+    data = data.map((doc, index) => {
+      doc.newIndex = index + 1
+      return doc
+    })
+
+    this.setState({ data: data })
+  }
+
+  dragOver (e) {
+    e.preventDefault()
+
+    this.dragged.style.display = 'none'
+
+    if (e.target.tagName !== 'LI') {
+      return
+    }
+
+    // 判断当前拖拽target 和 经过的target 的 newIndex
+
+    const dgIndex = JSON.parse(this.dragged.dataset.item).newIndex
+    const taIndex = JSON.parse(e.target.dataset.item).newIndex
+    const animateName = dgIndex > taIndex ? 'drag-up' : 'drag-down'
+
+    if (this.over && e.target.dataset.item !== this.over.dataset.item) {
+      this.over.classList.remove('drag-up', 'drag-down')
+    }
+
+    if (!e.target.classList.contains(animateName)) {
+      e.target.classList.add(animateName)
+      this.over = e.target
+    }
+  }
   render () {
     const { activeId, showTabItems, hiddenTabItems, defaultActiveId } = this.state
     const { prefixCls, type, placement, children, className, theme } = this.props
@@ -173,7 +228,7 @@ class Tabs extends Component {
     return (
       <div className={tabsClasses}>
         <div className={`${prefixCls}__header`}>
-          <div className={`${prefixCls}__nav`}>
+          <div className={`${prefixCls}__nav contain`} onDragOver={(e) => this.dragOver(e)}>
             {showTabItems.map((item, index) => {
               const { tabTitle, tabId, tabDesc, disabled, closeable } = item
               const itemClasses = classNames(`${prefixCls}__item`, {
@@ -185,10 +240,15 @@ class Tabs extends Component {
               let ToolNav = type === 'editable' && tabId !== activeId ? Tooltip : 'div'
               return (
                 <ToolNav
+                  data-id={index}
                   className={itemClasses}
                   key={`${prefixCls}__item-${index}`}
                   onClick={e => this.handleClick(item, e)}
                   title={tabTitle}
+                  draggable='true'
+                  data-item={JSON.stringify(item)}
+                  onDragEnd={(e) => this.dragEnd(e)}
+                  onDragStart={(e) => this.dragStart(e)}
                 >
                   <span className={`${prefixCls}__item-name`}>{tabTitle}</span>
                   {

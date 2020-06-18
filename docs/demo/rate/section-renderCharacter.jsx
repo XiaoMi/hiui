@@ -4,6 +4,8 @@ import Form from '../../../components/form/index'
 import FormItem from '../../../components/form/Item'
 import Rate from '../../../components/rate'
 import Icon from '../../../components/Icon'
+import '../style/iconfont.css'
+import * as Icons from '../../../components/rate/Icons'
 const prefix = 'rate-advanced'
 const code = `import React from 'react'
 import Rate from '@hi-ui/hiui/es/rate'
@@ -18,22 +20,22 @@ class Demo extends React.Component {
   }
 
   renderCharacter (value, index) {
-    if (value<=2) {
-      return <Icon name="step-on" style={{color:'#EB5252'}}/>;
-    }
-    if (value<=3) {
-      return <Icon name="star" style={{color:'#1da653'}}/>;
-    }
-   
-    return <Icon name="thumbs-up" style={{color:'#FFCA28'}}/>;
-  }
+    const Emojis = [
+      Icons.EmojiTwo,
+      Icons.EmojiTwo,
+      Icons.EmojiThree,
+      Icons.EmojiFour,
+      Icons.EmojiFive
+    ]
+    return Emojis[Math.ceil(value)-1]()
+   }
 
   render() {
     return (
       <>
-        <Rate count={5} allowHalf defaultValue={1} renderCharacter={this.renderCharacter} />  
-        <Rate count={5} allowHalf defaultValue={3} renderCharacter={this.renderCharacter} />  
-        <Rate count={5} allowHalf defaultValue={3.5} renderCharacter={this.renderCharacter} />  
+        <Rate count={5}  defaultValue={1} renderCharacter={this.renderCharacter} />  
+        <Rate count={5}  defaultValue={3} renderCharacter={this.renderCharacter} />  
+        <Rate count={5}  defaultValue={3.5} renderCharacter={this.renderCharacter} />  
       </>
     )
   }
@@ -43,7 +45,7 @@ class Demo extends React.Component {
 const DemoAdvanced = () => (
   <DocViewer
     code={code}
-    scope={{ Form, FormItem, Rate, Icon }}
+    scope={{ Form, FormItem, Rate, Icon, Icons }}
     prefix={prefix}
   />
 )
