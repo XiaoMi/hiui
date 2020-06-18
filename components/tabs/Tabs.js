@@ -175,14 +175,21 @@ class Tabs extends Component {
     if (!this.over) {
       return
     }
-    const { type } = this.props
+    const { type, placement } = this.props
     this.state.dragged.style.display = type === 'desc' ? 'flex' : 'block'
+    if (placement === 'horizontal') {
+      e.target.classList.remove('drag-left')
+      this.over.classList.remove('drag-left')
 
-    e.target.classList.remove('drag-up')
-    this.over.classList.remove('drag-up')
+      e.target.classList.remove('drag-right')
+      this.over.classList.remove('drag-right')
+    } else {
+      e.target.classList.remove('drag-up')
+      this.over.classList.remove('drag-up')
 
-    e.target.classList.remove('drag-down')
-    this.over.classList.remove('drag-down')
+      e.target.classList.remove('drag-down')
+      this.over.classList.remove('drag-down')
+    }
 
     var data = this.state.showTabItems
     var from = Number(this.state.dragged.dataset.id)
@@ -202,7 +209,7 @@ class Tabs extends Component {
   dragOver (e) {
     e.preventDefault()
     this.state.dragged.style.display = 'none'
-
+    const { placement } = this.props
     if (e.target.tagName === 'DIV' && e.target.classList.contains('hi-tabs__item')) {
       const dgIndex = JSON.parse(this.state.dragged.dataset.item).newIndex
       const taIndex = JSON.parse(e.target.dataset.item).newIndex
@@ -210,11 +217,16 @@ class Tabs extends Component {
       if (dgIndex === undefined && taIndex === undefined) {
         return
       }
+      let animateName
 
-      const animateName = dgIndex > taIndex ? 'drag-up' : 'drag-down'
+      if (placement === 'horizontal') {
+        animateName = dgIndex > taIndex ? 'drag-left' : 'drag-right'
+      } else {
+        animateName = dgIndex > taIndex ? 'drag-up' : 'drag-down'
+      }
 
       if (this.over && e.target.dataset.item !== this.over.dataset.item) {
-        this.over.classList.remove('drag-up', 'drag-down')
+        this.over.classList.remove('drag-up', 'drag-down', 'drag-right', 'drag-left')
       }
 
       if (!e.target.classList.contains(animateName)) {

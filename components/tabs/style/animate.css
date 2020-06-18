@@ -1,0 +1,60 @@
+.drag-up {
+  animation: dragup ease 0.2s 1;
+  animation-fill-mode: forwards;
+}
+.drag-down {
+  animation: dragdown ease 0.2s 1;
+  animation-fill-mode: forwards;
+}
+.drag-left {
+  animation: dragleft ease 0.2s 1;
+  animation-fill-mode: forwards;
+}
+.drag-right {
+  animation: dragright ease 0.2s 1;
+  animation-fill-mode: forwards;
+}
+@keyframes dragup
+{
+  from {
+    margin-top:0px;
+  }
+  to {
+    margin-top:48px;
+  }
+}
+
+@keyframes dragdown
+{
+  from {
+    margin-bottom:0px;
+    margin-top:48px;
+  }
+  to {
+    margin-bottom:48px;
+    margin-top:0px;
+
+  }
+}
+
+@keyframes dragleft
+{
+  from {
+    margin-left:0px;
+    
+  }
+  to {
+   margin-left: 90px;
+
+  }
+}
+
+@keyframes dragright
+{
+  from {
+    margin-right:0px; 
+  }
+  to {
+   margin-right: 90px;
+  }
+}

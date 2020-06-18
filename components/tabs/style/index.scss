@@ -1,4 +1,6 @@
 @import '@hi-ui/core-css/index.scss';
+@import './animate.css';
+
 $prefix: 'hi-tabs' !default;
 
 .#{$prefix} {
@@ -185,7 +187,7 @@ $prefix: 'hi-tabs' !default;
         }
 
         &:not(:first-child) {
-          margin-left: -1px;
+          margin-left: -3px;
         }
 
         &:hover {
