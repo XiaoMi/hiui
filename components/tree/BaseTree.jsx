@@ -15,6 +15,7 @@ const PREFIX = 'hi-editor-tree'
 const Tree = ({
   data,
   treeNodeRender,
+  menuRender,
   checkable,
   selectable = true,
   selectedId,
@@ -55,6 +56,7 @@ const Tree = ({
     <TreeContext.Provider
       value={{
         treeNodeRender,
+        menuRender,
         checkable,
         checkedNodes,
         semiCheckedIds,

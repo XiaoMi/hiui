@@ -16,6 +16,7 @@ const switcherApperanceMap = {
 const TreeNode = ({ node }) => {
   const {
     treeNodeRender,
+    menuRender,
     checkable,
     checkedNodes,
     semiCheckedIds,
@@ -122,7 +123,7 @@ const TreeNode = ({ node }) => {
             }
           }}
         >
-          {treeNodeRender ? treeNodeRender(title) : title}
+          {treeNodeRender ? treeNodeRender(node) : title}
         </div>
       )
     },
@@ -135,8 +136,8 @@ const TreeNode = ({ node }) => {
         (node.children && node.children.length) || (onLoadChildren && !node.isLeaf)
           ? node.depth
           : apperance !== 'default'
-            ? node.depth
-            : (node.depth && node.depth + 1) || 1
+          ? node.depth
+          : (node.depth && node.depth + 1) || 1
       )}
       {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
       {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf)) &&
@@ -147,13 +148,14 @@ const TreeNode = ({ node }) => {
         <Popper
           show={menuVisible}
           attachEle={treeNodeRef.current}
+          width={false}
           zIndex={1040}
-          placement='right'
+          placement='right-start'
           onClickOutside={() => {
             setMenuVisible(false)
           }}
         >
-          <div>123</div>
+          {menuRender(node)}
         </Popper>
       )}
     </li>

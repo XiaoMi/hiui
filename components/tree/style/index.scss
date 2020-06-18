@@ -3,23 +3,25 @@ $fontColor: #383e47 !default;
 $mainColor: #4284f5 !default;
 $hoverColor: rgba(66, 133, 244, 0.08) !default;
 
-.#{$tree}-menu {
+.#{$tree}__menu {
   background: #fff;
-  transform: translateY(calc(50% - 12px));
   width: 120px;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
   border-radius: 2px;
   padding: 4px 0;
-  margin-left: 4px;
+  margin: 0 0 0 4px;
   font-size: 14px;
 
-  .menu-item {
-    font-size: 14px;
-    color: $fontColor;
-    cursor: pointer;
+  li.menu-item {
+    list-style: none;
+    padding: 0 15px;
     height: 36px;
     line-height: 36px;
-    padding-left: 12px;
+    transition: background 0.3s;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 
     &:hover {
       background: $hoverColor;
