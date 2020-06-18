@@ -18,7 +18,8 @@ class Tabs extends Component {
     className: PropTypes.string,
     renderTabBar: PropTypes.func,
     onTabClick: PropTypes.func,
-    onEdit: PropTypes.func
+    onEdit: PropTypes.func,
+    draggable: PropTypes.bool
   }
 
   static defaultProps = {
@@ -29,7 +30,8 @@ class Tabs extends Component {
     max: 6,
     editable: true,
     onTabClick: noop,
-    onEdit: noop
+    onEdit: noop,
+    draggable: false
   }
 
   deletetabId = null
@@ -165,7 +167,6 @@ class Tabs extends Component {
     })
   }
   dragStart (e) {
-    console.log(e.currentTarget.tagName)
     this.setState({
       dragged: e.currentTarget
     })
@@ -224,7 +225,7 @@ class Tabs extends Component {
   }
   render () {
     const { activeId, showTabItems, hiddenTabItems, defaultActiveId } = this.state
-    const { prefixCls, type, placement, children, className, theme } = this.props
+    const { prefixCls, type, placement, children, className, theme, draggable } = this.props
     const editable = this.checkEditable()
     const tabsClasses = classNames(prefixCls, className, `${prefixCls}--${type}`, `theme__${theme}`, {
       [`${prefixCls}--${placement}`]: type === 'card'
@@ -248,7 +249,7 @@ class Tabs extends Component {
                 key={`${prefixCls}__item-${index}`}
                 onClick={e => this.handleClick(item, e)}
                 className={itemClasses}
-                draggable='true'
+                draggable={draggable}
                 data-item={JSON.stringify({ ...item, newIndex: index })}
                 onDragEnd={(e) => this.dragEnd(e)}
                 onDragStart={(e) => this.dragStart(e)}>

@@ -13,6 +13,10 @@ $prefix: 'hi-tabs' !default;
     cursor: pointer;
     border: 1px solid transparent;
 
+    .hi-tooltip {
+      height: 39px;
+    }
+
     &:not(&--active) {
       overflow: hidden;
       white-space: nowrap;
@@ -170,14 +174,15 @@ $prefix: 'hi-tabs' !default;
       }
 
       .#{$prefix}__item {
-        flex: none;
-        display: flex;
-        flex-direction: column;
-        padding: 16px 20px;
-        text-align: center;
-        border: 1px solid #e6e7e8;
-        box-sizing: border-box;
-        background-color: #fff;
+        & > div {
+          display: flex;
+          flex-direction: column;
+          padding: 16px 20px;
+          text-align: center;
+          border: 1px solid #e6e7e8;
+          box-sizing: border-box;
+          background-color: #fff;
+        }
 
         &:not(:first-child) {
           margin-left: -1px;
