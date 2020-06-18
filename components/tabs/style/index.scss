@@ -177,6 +177,7 @@ $prefix: 'hi-tabs' !default;
         text-align: center;
         border: 1px solid #e6e7e8;
         box-sizing: border-box;
+        background-color: #fff;
 
         &:not(:first-child) {
           margin-left: -1px;

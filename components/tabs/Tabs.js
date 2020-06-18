@@ -165,12 +165,17 @@ class Tabs extends Component {
     })
   }
   dragStart (e) {
+    console.log(e.currentTarget.tagName)
     this.setState({
       dragged: e.currentTarget
     })
   }
   dragEnd (e) {
-    this.state.dragged.style.display = 'block'
+    if (!this.over) {
+      return
+    }
+    const { type } = this.props
+    this.state.dragged.style.display = type === 'desc' ? 'flex' : 'block'
 
     e.target.classList.remove('drag-up')
     this.over.classList.remove('drag-up')
@@ -178,12 +183,13 @@ class Tabs extends Component {
     e.target.classList.remove('drag-down')
     this.over.classList.remove('drag-down')
 
-    var data = this.state.data
+    var data = this.state.showTabItems
     var from = Number(this.state.dragged.dataset.id)
+
     var to = Number(this.over.dataset.id)
+    console.log(from, to)
     data.splice(to, 0, data.splice(from, 1)[0])
 
-    // set newIndex to judge direction of drag and drop
     data = data.map((doc, index) => {
       doc.newIndex = index + 1
       return doc
@@ -194,26 +200,26 @@ class Tabs extends Component {
 
   dragOver (e) {
     e.preventDefault()
+    this.state.dragged.style.display = 'none'
 
-    this.dragged.style.display = 'none'
+    if (e.target.tagName === 'DIV' && e.target.classList.contains('hi-tabs__item')) {
+      const dgIndex = JSON.parse(this.state.dragged.dataset.item).newIndex
+      const taIndex = JSON.parse(e.target.dataset.item).newIndex
 
-    if (e.target.tagName !== 'LI') {
-      return
-    }
+      if (dgIndex === undefined && taIndex === undefined) {
+        return
+      }
 
-    // 判断当前拖拽target 和 经过的target 的 newIndex
+      const animateName = dgIndex > taIndex ? 'drag-up' : 'drag-down'
 
-    const dgIndex = JSON.parse(this.dragged.dataset.item).newIndex
-    const taIndex = JSON.parse(e.target.dataset.item).newIndex
-    const animateName = dgIndex > taIndex ? 'drag-up' : 'drag-down'
+      if (this.over && e.target.dataset.item !== this.over.dataset.item) {
+        this.over.classList.remove('drag-up', 'drag-down')
+      }
 
-    if (this.over && e.target.dataset.item !== this.over.dataset.item) {
-      this.over.classList.remove('drag-up', 'drag-down')
-    }
-
-    if (!e.target.classList.contains(animateName)) {
-      e.target.classList.add(animateName)
-      this.over = e.target
+      if (!e.target.classList.contains(animateName)) {
+        e.target.classList.add(animateName)
+        this.over = e.target
+      }
     }
   }
   render () {
@@ -237,19 +243,17 @@ class Tabs extends Component {
               })
 
               activeTabInHiddenItems = activeTabInHiddenItems && tabId !== activeId
-              let ToolNav = type === 'editable' && tabId !== activeId ? Tooltip : 'div'
-              return (
-                <ToolNav
-                  data-id={index}
-                  className={itemClasses}
-                  key={`${prefixCls}__item-${index}`}
-                  onClick={e => this.handleClick(item, e)}
-                  title={tabTitle}
-                  draggable='true'
-                  data-item={JSON.stringify(item)}
-                  onDragEnd={(e) => this.dragEnd(e)}
-                  onDragStart={(e) => this.dragStart(e)}
-                >
+              const Tag = type === 'editable' && tabId !== activeId ? Tooltip : 'div'
+              return <div data-id={index}
+                key={`${prefixCls}__item-${index}`}
+                onClick={e => this.handleClick(item, e)}
+                className={itemClasses}
+                draggable='true'
+                data-item={JSON.stringify({ ...item, newIndex: index })}
+                onDragEnd={(e) => this.dragEnd(e)}
+                onDragStart={(e) => this.dragStart(e)}>
+
+                <Tag title={tabTitle} key={`${prefixCls}__item-${index}`}>
                   <span className={`${prefixCls}__item-name`}>{tabTitle}</span>
                   {
                     type === 'desc' &&
@@ -261,8 +265,8 @@ class Tabs extends Component {
                       <Icon onClick={e => this.deleteTab(e, tabId, index)} name='close' />
                     </span>
                   }
-                </ToolNav>
-              )
+                </Tag>
+              </div>
             })}
             {
               hiddenTabItems.length > 0 &&
