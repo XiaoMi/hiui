@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useCallback } from 'react'
 import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
@@ -11,7 +11,9 @@ import { FormContext } from './Form'
  */
 
 const FormItem = props => {
-  const { addField, formProps, removeField } = useContext(FormContext)
+  const { updateFieldValue, formProps, removeField, initFields } = useContext(
+    FormContext
+  )
   const {
     children,
     label,
@@ -40,27 +42,23 @@ const FormItem = props => {
     setValid(false)
     setValidating(false)
   }
-  useEffect(() => {
-    if (field) {
-      addField({
-        field,
-        value,
-        rules: getRules(),
-        resetValidate,
-        setValue
-      })
-      valueInit()
-    }
-    return () => {
-      removeField({ field })
-    }
-  }, [])
-  const valueInit = () => {
-    setValue(initialValues && initialValues[field])
+  // 跟新值到父级元素
+  const updateFieldToParent = _value => {
+    updateFieldValue({
+      field,
+      value: _value,
+      rules: getRules(),
+      resetValidate,
+      setValue,
+      validate
+    })
   }
+
   // 获取该单元的规则
   const getRules = () => {
-    const selfRules = props.rules
+    const selfRules = required
+      ? Object.assign({}, props.rules, { required })
+      : props.rules
     let formRules = formProps.rules
 
     formRules = formRules ? formRules[props.field] : []
@@ -74,36 +72,54 @@ const FormItem = props => {
     })
   }
 
-  // 校验数据
-  useEffect(() => {
-    if (validating) {
-      let rules = getRules()
-      const validator = new AsyncValidator({
-        [field]: Object.assign({}, rules, { required })
-      })
-      const model = { [field]: value }
-      validator.validate(
-        model,
-        {
-          firstFields: true
-        },
-        errors => {
-          setError(errors ? errors[0].message : '')
-          setValidating(false)
-          setValid(!errors)
-        }
-      )
-    }
-  }, [value, validating])
-
-  const validate = trigger => {
-    const rules = getFilteredRule(trigger)
-    if (!rules || rules.length === 0) {
+  const validate = (trigger, cb) => {
+    const triggerRules = getFilteredRule(trigger)
+    if (!triggerRules || triggerRules.length === 0) {
+      if (cb instanceof Function) {
+        cb()
+      }
       return true
     }
-    setValidating(true)
+    let rules = getRules()
+    const validator = new AsyncValidator({
+      [field]: rules
+    })
+    const model = { [field]: value }
+    validator.validate(
+      model,
+      {
+        firstFields: true
+      },
+      errors => {
+        setError(errors ? errors[0].message : '')
+        setValidating(false)
+        setValid(!errors)
+        if (cb instanceof Function) {
+          cb(errors)
+        }
+      }
+    )
   }
 
+  useEffect(() => {
+    if (field) {
+      initFields({
+        field,
+        value: initialValues && initialValues[field],
+        rules: getRules(),
+        resetValidate,
+        setValue,
+        validate
+      })
+      valueInit()
+    }
+    return () => {
+      removeField({ field })
+    }
+  }, [])
+  const valueInit = () => {
+    setValue(initialValues && initialValues[field])
+  }
   // 判断是否含有Rules
   const isRequired = () => {
     let rules = getRules()
@@ -121,8 +137,10 @@ const FormItem = props => {
     return isRequired
   }
 
-  // 对字段进行校验
-  const handleField = triggerType => {
+  // 对字段的操作
+  const handleField = (triggerType, _value) => {
+    // 更新数据给父级
+    updateFieldToParent(_value)
     let rules = getRules()
     const hasTriggerType = rules.some(rule => {
       const { trigger = '' } = rule
@@ -168,16 +186,15 @@ const FormItem = props => {
               const value = e.target.value
               setValue(value)
               setTimeout(() => {
-                handleField('onChange')
+                handleField('onChange', value)
               })
             },
             onBlur: (e, ...args) => {
               children.props.onBlur && children.props.onBlur(e, ...args)
               const value = e.target.value
-              console.log(typeof value)
               setValue(value)
               setTimeout(() => {
-                handleField('onBlur')
+                handleField('onBlur', value)
               })
             }
           })}

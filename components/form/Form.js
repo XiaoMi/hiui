@@ -1,36 +1,43 @@
-import React, {
-  Component,
-  useState,
-  useEffect,
-  useCallback,
-  useRef
-} from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
+import _ from 'lodash'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 
 // Form hooks
 const getClassNames = props => {
   const { labelPlacement, labelPosition, placement, inline } = props
-
-  const obj = {}
+  const _className = {}
 
   if (labelPlacement || labelPosition) {
-    obj[`hi-form--label--${labelPlacement || labelPosition}`] = true
+    _className[`hi-form--label--${labelPlacement || labelPosition}`] = true
   }
   if (placement === 'horizontal' || inline) {
-    obj[`hi-form--inline`] = true
+    _className[`hi-form--inline`] = true
   }
-
-  return obj
+  return _className
 }
 export const FormContext = React.createContext({})
 const Form = props => {
   const { children, className, style, formRef } = props
   const [fields, setFileds] = useState([])
-  const addField = childrenFiled => {
+  // 获取子节点的所有filed
+  const initFields = childrenFiled => {
     setFileds(preState => {
-      return preState.concat(childrenFiled)
+      const isIncludes = preState.some(item => {
+        return item.field === childrenFiled.field
+      })
+      return preState.concat(isIncludes ? [] : childrenFiled)
     })
+  }
+  // 更新所有子节点的
+  const updateFieldValue = childrenFiled => {
+    const _fields = _.cloneDeep(fields)
+    _fields.forEach(item => {
+      if (item.field === childrenFiled.field) {
+        Object.assign(item, childrenFiled)
+      }
+    })
+    setFileds(_fields)
   }
   const removeField = childrenFiled => {
     setFileds(
@@ -38,41 +45,45 @@ const Form = props => {
     )
   }
 
+  // 对整个表单进行校验
   const validate = cb => {
     let valid = true
     let count = 0
+    const fieldModel = {}
     if (fields.length === 0 && cb) {
       cb(valid)
+      return
     }
-
-    fields.forEach(field => {
-      field.validate('', errors => {
+    fields.forEach(fieldChild => {
+      const { field, value } = fieldChild
+      fieldModel[field] = value
+      fieldChild.validate('', errors => {
         if (errors) {
           valid = false
         } else {
-          if (typeof cb === 'function' && ++count === fields.length) {
-            cb(valid)
-          }
+          cb instanceof Function &&
+            ++count === fields.length &&
+            cb(valid, fieldModel)
         }
       })
     })
   }
 
   const validateField = (key, cb) => {
-    const field = fields.filter(field => field.props.field === key)[0]
+    const field = fields.filter(fieldChild => fieldChild.field === key)[0]
     if (!field) {
       throw new Error('must call validate Field with valid key string!')
     }
 
     field.validate('', cb)
   }
-
+  // 重置校验
   const resetValidates = useCallback(() => {
-    console.log('sddd初始', fields)
     fields.forEach(field => {
       field.resetValidate()
     })
   }, [fields])
+
   useEffect(() => {
     formRef.current = {
       resetValidates,
@@ -89,8 +100,9 @@ const Form = props => {
       <FormContext.Provider
         value={{
           formProps: props,
-          addField,
-          removeField
+          updateFieldValue,
+          removeField,
+          initFields
         }}
       >
         {children}

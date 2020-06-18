@@ -34,9 +34,10 @@ class Demo extends React.Component {
       <Form labelWidth='80' labelPlacement='left' 
         formRef={this.form}
         initialValues={formData}>
-        <FormItem label='姓名' required field="name" rules={{
+        <FormItem label='姓名' field="name" rules={{
           trigger:'onBlur',
-          type:'number',
+          type:'string',
+          required:true,
           }}>
           <Input placeholder='请输入' />
         </FormItem>
@@ -60,8 +61,9 @@ class Demo extends React.Component {
           <Button type='primary'>提交</Button>
         </FormItem>
       </Form>
-      <Button type='primary' onClick={()=>{
-        console.log(this.form.current.validate())
+      <Button type='primary' onClick={()=>{this.form.current.validate((valid,fieldModel)=>{
+        console.log('valid',valid,fieldModel)
+      })
       }}>提交</Button>
       <Button type='primary' onClick={()=>{
         console.log(this.form.current.resetValidates())
