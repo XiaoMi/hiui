@@ -17,6 +17,11 @@ $prefix: 'hi-tabs' !default;
 
     .hi-tooltip {
       height: 39px;
+      display: flex;
+    }
+
+    > div {
+      display: flex;
     }
 
     &:not(&--active) {
@@ -145,6 +150,13 @@ $prefix: 'hi-tabs' !default;
         text-align: center;
         box-sizing: border-box;
 
+        &-name {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          display: block;
+        }
+
         &:last-child {
           margin-right: 0;
         }
@@ -246,6 +258,34 @@ $prefix: 'hi-tabs' !default;
           color: #fff;
           background-color: #4284f5;
           border: 1px solid #4284f5;
+        }
+      }
+    }
+  }
+
+  &--line {
+    & > .#{$prefix}__header {
+      border-bottom: 1px solid #e6e7e8;
+
+      .#{$prefix}__nav {
+        display: flex;
+        flex-wrap: nowrap;
+      }
+
+      .#{$prefix}__item {
+        height: 48px;
+        line-height: 46px;
+        padding: 0 16px;
+        box-sizing: border-box;
+
+        &:hover {
+          color: #4284f5;
+        }
+
+        &--active {
+          // border: 1px solid #e6e7e8;
+          border-radius: 2px;
+          color: #4284f5;
         }
       }
     }

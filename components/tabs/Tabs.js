@@ -40,6 +40,7 @@ class Tabs extends Component {
     super(props)
 
     const { defaultActiveId, activeId } = props
+    this.containRef = React.createRef()
     const {
       showTabItems,
       hiddenTabItems
@@ -50,7 +51,9 @@ class Tabs extends Component {
       showTabItems,
       hiddenTabItems,
       defaultActiveId,
-      dragged: null
+      dragged: null,
+      crossBorder: false,
+      crossWidth: 0
     }
   }
 
@@ -92,7 +95,7 @@ class Tabs extends Component {
     const showTabItems = []
     const hiddenTabItems = []
 
-    React.Children.map(children, (child, index) => {
+    React.Children.map(children, (child) => {
       if (child) {
         const { tabTitle, tabId, tabDesc, disabled, closeable } = child.props
         const item = { tabTitle, tabId, tabDesc, disabled, closeable }
@@ -130,13 +133,31 @@ class Tabs extends Component {
 
     if (editable) {
       onEdit('add', (children.length + 1))
+      this.BoundaryJudg()
+    }
+  }
+
+  BoundaryJudg () {
+    const current = this.containRef.current
+    const { right: containRight, width } = current.getBoundingClientRect()
+    const theLastChild = current.childNodes[current.childNodes.length - 1]
+    const { right: theLastRight } = theLastChild.getBoundingClientRect()
+
+    const { width: activeWidth } = current.getElementsByClassName('hi-tabs__item--active')[0].getBoundingClientRect()
+
+    if (containRight < theLastRight + 100) { // 重新计算li 宽度
+      // 当前 active 元素的宽度
+
+      this.setState({
+        crossBorder: true,
+        crossWidth: (width - activeWidth - current.childNodes.length * 4) / current.childNodes.length
+      })
     }
   }
 
   deleteTab (e, tabId, index) {
     e.stopPropagation()
     this.deletetabId = tabId
-
     const {
       onEdit,
       editable
@@ -144,6 +165,7 @@ class Tabs extends Component {
 
     if (editable) {
       onEdit('delete', index, tabId)
+      this.BoundaryJudg()
     }
   }
 
@@ -165,8 +187,11 @@ class Tabs extends Component {
     })
   }
   dragStart (e) {
+    // const taIndex = JSON.parse(e.target.dataset.item).newIndex
+
     this.setState({
       dragged: e.currentTarget
+
     })
   }
   dragEnd (e) {
@@ -201,12 +226,13 @@ class Tabs extends Component {
       return doc
     })
 
-    this.setState({ data: data })
+    this.setState({ showTabItems: data })
   }
 
   dragOver (e) {
     e.preventDefault()
     this.state.dragged.style.display = 'none'
+
     const { placement } = this.props
     e.target = e.target.closest('.hi-tabs__item')
 
@@ -215,7 +241,6 @@ class Tabs extends Component {
     }
     const taIndex = JSON.parse(e.target.dataset.item).newIndex
     const dgIndex = JSON.parse(this.state.dragged.dataset.item).newIndex
-    console.log(taIndex, dgIndex)
     if (dgIndex === undefined && taIndex === undefined) {
       return
     }
@@ -237,18 +262,18 @@ class Tabs extends Component {
     }
   }
   render () {
-    const { activeId, showTabItems, hiddenTabItems, defaultActiveId } = this.state
+    const { activeId, showTabItems, hiddenTabItems, defaultActiveId, crossBorder, crossWidth } = this.state
     const { prefixCls, type, placement, children, className, theme, draggable } = this.props
     const editable = this.checkEditable()
     const tabsClasses = classNames(prefixCls, className, `${prefixCls}--${type}`, `theme__${theme}`, {
       [`${prefixCls}--${placement}`]: type === 'card'
     })
     let activeTabInHiddenItems = true
-
+    console.log(crossBorder)
     return (
       <div className={tabsClasses}>
         <div className={`${prefixCls}__header`}>
-          <div className={`${prefixCls}__nav contain`} onDragOver={(e) => this.dragOver(e)}>
+          <div className={`${prefixCls}__nav contain`} onDragOver={(e) => this.dragOver(e)} ref={this.containRef}>
             {showTabItems.map((item, index) => {
               const { tabTitle, tabId, tabDesc, disabled, closeable } = item
               const itemClasses = classNames(`${prefixCls}__item`, {
@@ -265,13 +290,13 @@ class Tabs extends Component {
                 draggable={draggable}
                 data-item={JSON.stringify({ ...item, newIndex: index })}
                 onDragEnd={(e) => this.dragEnd(e)}
-                onDragStart={(e) => this.dragStart(e)}>
+                onDragStart={(e) => this.dragStart(e)} style={{ width: crossBorder && (tabId !== activeId) ? crossWidth : 'auto' }}>
 
-                <Tag title={tabTitle} key={`${prefixCls}__item-${index}`}>
-                  <span className={`${prefixCls}__item-name`}>{tabTitle}</span>
+                <Tag title={tabTitle} key={`${prefixCls}__item-${index}`} >
+                  <span className={`${prefixCls}__item-name`} >{tabTitle}</span>
                   {
                     type === 'desc' &&
-                    <span className={`${prefixCls}__item-desc`}>{tabDesc}</span>
+                    <span className={`${prefixCls}__item-desc`} >{tabDesc}</span>
                   }
                   {
                     editable && closeable &&
