@@ -76,7 +76,7 @@ export const getAncestorsNodes = (node, data, arr = []) => {
  * @param {*} semiCheckedIds 半选 IDS
  */
 export const updateCheckData = (node, data, checkedIds, semiCheckedIds) => {
-  const children = node.isLeaf ? [] : getDescendantNodes(node, data)
+  const children = getDescendantNodes(node, data)
   const ancestors = node.pId ? getAncestorsNodes(node, data) : []
   children.forEach((child) => {
     checkedIds.add(child.id)
@@ -108,7 +108,7 @@ export const updateCheckData = (node, data, checkedIds, semiCheckedIds) => {
  * @param {*} semiCheckedIds 半选 IDS
  */
 export const updateUnCheckData = (node, data, checkedIds, semiCheckedIds) => {
-  const children = node.isLeaf ? [] : getDescendantNodes(node, data)
+  const children = getDescendantNodes(node, data)
   const ancestors = node.pId ? getAncestorsNodes(node, data) : []
   checkedIds.delete(node.id)
   ancestors.forEach((ancestor) => {
@@ -170,9 +170,15 @@ export const processSelectedIds = (checkedIds, nodeEntries, type) => {
  */
 export const flattenNodesData = (data, defaultExpandIds = [], defaultExpandAll = false, isGenEntries = false) => {
   let flattenData = []
-  const expandIds = []
+  const expandIds = new Set([])
   const nodeEntries = {}
-  const fun = (datas, expands, nArr, parent) => {
+  let tempExpands = []
+  const addExpandIds = (node) => {
+    const ancestorsNodes = getAncestorsNodes(node, flattenData)
+    ancestorsNodes.forEach(n => expandIds.add(n.id))
+    expandIds.add(node.id)
+  }
+  const fun = (datas, nArr, parent) => {
     datas.forEach(node => {
       node.pId = parent ? parent.id : null
       node.isLoaded = false
@@ -183,19 +189,27 @@ export const flattenNodesData = (data, defaultExpandIds = [], defaultExpandAll =
         parent
       }
       if (node.children) {
-        if (defaultExpandIds.includes(node.id) || defaultExpandAll) {
-          expands.push(node.id)
+        if (defaultExpandAll) {
+          // 默认全展开时，所有节点加入展开集合
+          expandIds.add(node.id)
         }
-        fun(node.children, expands, nArr, node)
+        if (!defaultExpandAll && defaultExpandIds.includes(node.id)) {
+          // 非默认全部展开时，单独处理所有祖先元素的展开状态
+          tempExpands.push(node)
+        }
+        fun(node.children, nArr, node)
       } else {
         node.isLeaf = true
       }
     })
   }
-  fun(data, expandIds, flattenData)
+  fun(data, flattenData)
+  if (tempExpands.length > 0) {
+    tempExpands.forEach(te => addExpandIds(te))
+  }
   return {
     flattenData,
-    expandIds,
+    expandIds: [...expandIds],
     nodeEntries
   }
 }

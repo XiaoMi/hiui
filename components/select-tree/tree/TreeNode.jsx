@@ -1,9 +1,23 @@
-import React, { useContext, useRef, useCallback } from 'react'
+import React, { useContext, useRef, useCallback, useState } from 'react'
 import Checkbox from '../../checkbox'
 import Icon from '../../icon'
 import Classnames from 'classnames'
 import TreeContext from './context'
+import IconLoading from './LoadingIcon'
 import { getChildrenNodes } from './util'
+
+const Switcher = ({expanded, node, onExpandEvent}) => {
+  const [loading, setLoading] = useState(false)
+  return (
+    loading ? <IconLoading /> : <Icon
+      name={expanded ? 'open' : 'packup'}
+      onClick={() => {
+        !expanded && setLoading(true)
+        onExpandEvent(!expanded, node, () => setLoading(false))
+      }}
+    />
+  )
+}
 
 const TreeNode = ({ data, flttenData }) => {
   // 接受原始拉平数据，用于快速查找子元素
@@ -21,14 +35,6 @@ const TreeNode = ({ data, flttenData }) => {
   } = useContext(TreeContext)
 
   const treeNodeRef = useRef(null)
-  const renderSwitcher = (expanded, node) => {
-    return (
-      <Icon
-        name={expanded ? 'open' : 'packup'}
-        onClick={() => onExpandEvent(!expanded, node)}
-      />
-    )
-  }
 
   const renderIndent = useCallback(() => {
     return <span style={{ flex: '0 0 24px' }} />
@@ -46,13 +52,13 @@ const TreeNode = ({ data, flttenData }) => {
     )
   }, [checkedNodes])
 
-  const renderTitle = useCallback((node, selectedId) => {
+  const renderTitle = useCallback((node, _selectedId) => {
     const { id, title, _title } = node
     return (
       <div
         ref={treeNodeRef}
         className={Classnames('tree-node__title', {
-          'tree-node__title--selected': selectedId === id
+          'tree-node__title--selected': _selectedId === id
         })}
         onClick={() => {
           onClick(node)
@@ -72,7 +78,7 @@ const TreeNode = ({ data, flttenData }) => {
             <li className='tree-node'>
               <div className='tree-node__self'>
                 {((node.children && childrenNodes.length) || isRemoteLoadData)
-                  ? renderSwitcher(expand, node)
+                  ? <Switcher expanded={expand} node={node} onExpandEvent={onExpandEvent} />
                   : renderIndent()}
                 {checkable && renderCheckbox(node, checkedNodes)}
                 {renderTitle(node, selectedId)}

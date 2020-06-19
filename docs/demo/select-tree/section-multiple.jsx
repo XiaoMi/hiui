@@ -1,13 +1,10 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import SelectTree from '../../../components/select-tree'
-const prefix = 'alert-autoClose'
-const rightOptions = []
+const prefix = 'tree-select-multiple'
+const rightOptions = ['基础', '默认值', '数据回显', '默认展开']
 const desc = '展示从多个收起的备选项中选出的一个选项'
-const code = `import React from 'react'
-import SelectTree from '@hi-ui/hiui/es/select-tree'\n
-class Demo extends React.Component {
-  constructor () {
+const defaultStr = `constructor () {
     super()
     this.state = {
       value: '3',
@@ -131,19 +128,24 @@ class Demo extends React.Component {
       ]
     }
   }
-
+`
+const code = [
+  {
+    code: `import React from 'react'
+import SelectTree from '@hi-ui/hiui/es/select-tree'\n
+class Demo extends React.Component {
+  ${defaultStr}
   render () {
     const { value, singleList } = this.state
     return (
       <SelectTree
         clearable
-        type='multiple'
+        // type='multiple'
         data={singleList}
-        // defaultValue={[{id: '0-1-0-0-0'}]}
-        autoExpand={true}
-        // defaultExpandAll
-        defaultExpandIds={['1-2-0-0-0-0']}
-        showCheckedMode='PARENT'
+        // defaultValue={[{id: '0-1-0-0-0'}]} // done
+        // defaultExpandAll // done
+        // defaultExpandIds={['1-2-0-0-0-0']} // done
+        // showCheckedMode='ALL' //done
         // dataSource={key => {
         //   return {
         //     type: 'GET',
@@ -164,7 +166,70 @@ class Demo extends React.Component {
       />
     )
   }
-}`
+}`,
+    opt: ['基础']
+  },
+  {
+    code: `import React from 'react'
+    import SelectTree from '@hi-ui/hiui/es/select-tree'\n
+    class Demo extends React.Component {
+      ${defaultStr}
+
+      render () {
+        const { value, singleList } = this.state
+        return (
+          <SelectTree
+            type='multiple'
+            clearable
+            data={singleList}
+            defaultValue={[{id: '0-1-0-0-0'}, {id: 'xx', title: '未包含在列表中'}]} // done
+          />
+        )
+      }
+    }`,
+    opt: ['默认值']
+  },
+  {
+    code: `import React from 'react'
+    import SelectTree from '@hi-ui/hiui/es/select-tree'\n
+    class Demo extends React.Component {
+      ${defaultStr}
+
+      render () {
+        const { value, singleList } = this.state
+        return (
+          <SelectTree
+            clearable
+            type='multiple'
+            data={singleList}
+            showCheckedMode='PARENT'
+          />
+        )
+      }
+    }`,
+    opt: ['数据回显']
+  },
+  {
+    code: `import React from 'react'
+    import SelectTree from '@hi-ui/hiui/es/select-tree'\n
+    class Demo extends React.Component {
+      ${defaultStr}
+
+      render () {
+        const { singleList } = this.state
+        return (
+          <SelectTree
+            clearable
+            type='multiple'
+            data={singleList}
+            defaultExpandIds={['1-2-0-0-0-0']}
+          />
+        )
+      }
+    }`,
+    opt: ['默认展开']
+  }
+]
 const DemoType = () => (
   <DocViewer
     code={code}

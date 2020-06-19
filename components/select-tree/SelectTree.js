@@ -19,6 +19,7 @@ import NavTree from './NavTree'
 class SelectTree extends React.Component {
   constructor (props) {
     super(props)
+
     this.state = {
       dropdownShow: false,
       selectedItems: [],
@@ -30,17 +31,46 @@ class SelectTree extends React.Component {
       },
       flattenData: [],
       expandIds: [],
-      nodeEntries: {}
+      nodeEntries: {},
+      nodeDataState: 'normal'
     }
     this.selectedItemsRef = React.createRef()
     this.inputRef = React.createRef()
   }
   handleClear () {
     this.setState({
-      selectedItems: []
+      selectedItems: [],
+      expandIds: [],
+      checkedNodes: {
+        checked: [],
+        semiChecked: []
+      }
     })
   }
   calShowCountFlag = true
+  setStatus () {
+    const { data, dataSource } = this.props
+    if (data.length === 0) {
+      this.setState({nodeDataState: dataSource ? 'loading' : 'empty'})
+    } else {
+      this.setState({nodeDataState: 'normal'})
+    }
+  }
+  componentDidMount () {
+    const { type, data, defaultExpandIds, defaultExpandAll, showCheckedMode } = this.props
+    this.setStatus()
+    if (data) {
+      const result = flattenNodesData(data, defaultExpandIds, defaultExpandAll, (type === 'multiple' && showCheckedMode !== 'ALL'))
+      this.setState(result, () => {
+        // 拉平数据后，解析默认已选中的数据
+        const selectedItems = this.parseDefaultSelectedItems()
+        this.setState({selectedItems})
+        this.parseCheckStatusData(selectedItems, () => {
+          this.parseSelectedItems()
+        })
+      })
+    }
+  }
   componentDidUpdate () {
     if (this.calShowCountFlag && this.selectedItemsRef.current) {
       const sref = this.selectedItemsRef.current
@@ -68,7 +98,7 @@ class SelectTree extends React.Component {
    * 根据 defaultCheckedIds 解析全选/半选数据
    * @param {*} selectedItems 已选中选项
    */
-  parseCheckStatusData (selectedItems) {
+  parseCheckStatusData (selectedItems, callback) {
     const { type, defaultValue } = this.props
     const { checkedNodes, flattenData } = this.state
     if (type === 'multiple' && defaultValue) {
@@ -86,16 +116,7 @@ class SelectTree extends React.Component {
           checked: [...checkedIds],
           semiChecked: [...semiCheckedIds]
         }
-      })
-    }
-  }
-  parseExpandData () {
-    const { defaultExpandAll, autoExpand } = this.props
-    const { expandIds, checkedNodes } = this.state
-    if (!defaultExpandAll && autoExpand) {
-      const _expandIds = new Set([...expandIds, ...checkedNodes.checked, ...checkedNodes.semiChecked])
-      console.log(_expandIds)
-      this.setState({expandIds: _expandIds})
+      }, callback)
     }
   }
   /**
@@ -128,30 +149,49 @@ class SelectTree extends React.Component {
         }
         if (node) {
           defaultNodes.push(node)
-          // this._checkedEvents(true, node)
         }
       })
     }
     return defaultNodes
   }
-  componentDidMount () {
-    const { type, data, defaultExpandIds, defaultExpandAll, showCheckedMode } = this.props
-    const result = flattenNodesData(data, defaultExpandIds, defaultExpandAll, (type === 'multiple' && showCheckedMode !== 'ALL'))
-    console.log(1, result)
-    this.setState(result, () => {
-      // 拉平数据后，解析默认已选中的数据
-      const selectedItems = this.parseDefaultSelectedItems()
-      this.setState({selectedItems})
-      this.parseCheckStatusData(selectedItems)
+
+  loadNodes (id) {
+    const { dataSource } = this.props
+    return new Promise((resolve, reject) => {
+      const _dataSource = typeof dataSource === 'function' ? dataSource(id || '') : dataSource
+      let {
+        url,
+        transformResponse,
+        params,
+        type = 'GET'
+      } = _dataSource
+      url = url.includes('?') ? `${url}&${qs.stringify(params)}` : `${url}?${qs.stringify(params)}`
+      window.fetch(url, {
+        method: type
+      })
+        .then(response => response.json())
+        .then(res => {
+          const _res = transformResponse(res)
+          const nArr = _res.map(n => {
+            return {
+              ...n,
+              isLeaf: false,
+              pId: id
+            }
+          })
+          resolve(nArr)
+        })
+        .catch(err => reject(err))
     })
   }
   /**
    * 根据数据回显方式设定显示的数据
    * @param {*} checkIds 当前选中的节点 ID 集合
    */
-  parseSelectedItems (checkIds) {
-    const { flattenData, nodeEntries } = this.state
-    const keys = processSelectedIds(checkIds, nodeEntries, 'CHILD')
+  parseSelectedItems () {
+    const { flattenData, nodeEntries, checkedNodes } = this.state
+    const { showCheckedMode } = this.props
+    const keys = processSelectedIds(checkedNodes.checked, nodeEntries, showCheckedMode)
     this.setState({
       selectedItems: keys.map(id => getNode(id, flattenData))
     })
@@ -177,7 +217,7 @@ class SelectTree extends React.Component {
         checked: result.checked,
         semiChecked: result.semiChecked
       }
-    }, () => this.parseSelectedItems(result.checked))
+    }, () => this.parseSelectedItems())
     let checkedArr = []
     if (result.checked.length > 0) {
       checkedArr = result.checked.map(id => {
@@ -191,9 +231,9 @@ class SelectTree extends React.Component {
   * @param {*} bol 是否展开
   * @param {*} node 当前点击节点
   */
-  _expandEvents (bol, node) {
+  _expandEvents (bol, node, callback) {
     const { flattenData } = this.state
-    const { onExpand, dataSource } = this.props
+    const { onExpand } = this.props
     const expandIds = [...this.state.expandIds]
     const hasIndex = expandIds.findIndex(id => id === node.id)
     if (hasIndex !== -1) {
@@ -206,40 +246,18 @@ class SelectTree extends React.Component {
       this.setState({
         expandIds
       })
+      callback()
       onExpand()
       return
     }
-    const _dataSource = typeof dataSource === 'function' ? dataSource(node.id) : dataSource
-    let {
-      url,
-      transformResponse,
-      params,
-      type = 'GET'
-    } = _dataSource
-    url = url.includes('?') ? `${url}&${qs.stringify(params)}` : `${url}?${qs.stringify(params)}`
-    window.fetch(url, {
-      method: type
+    this.loadNodes(node.id).then((res) => {
+      this.setState({expandIds, flattenData: flattenData.concat(res)}, callback)
     })
-      .then(response => response.json())
-      .then(res => {
-        const _res = transformResponse(res)
-        const nArr = _res.map(n => {
-          return {
-            ...n,
-            isLeaf: true,
-            pId: node.id
-          }
-        })
-        this.setState({
-          expandIds,
-          flattenData: this.state.flattenData.concat(nArr)
-        })
-      })
     onExpand()
   }
   render () {
-    const { clearable, data, onChange, type, dataSource, mode } = this.props
-    let { selectedItems, showCount, dropdownShow, flattenData, expandIds, checkedNodes } = this.state
+    const { clearable, data, onChange, type, dataSource, mode, defaultLoadData = true } = this.props
+    let { selectedItems, showCount, dropdownShow, flattenData, expandIds, checkedNodes, nodeDataState } = this.state
     showCount =
       showCount === 0 || this.calShowCountFlag
         ? selectedItems.length
@@ -253,8 +271,21 @@ class SelectTree extends React.Component {
             type === 'multiple' ? 'multiple-values' : 'single-values',
             selectedItems.length === 0 && 'hi-select-tree__input--placeholder'
           )}
-          onClick={() =>
-            this.setState({ dropdownShow: !this.state.dropdownShow })}
+          onClick={() => {
+            if (defaultLoadData && (!data || data.length === 0 || dataSource)) {
+              // data 为空 且 存在 dataSource 时，默认进行首次数据加载.defaultLoadData不暴露
+              this.setState({nodeDataState: 'loading'})
+              this.loadNodes().then((res) => {
+                if (res.length === 0) {
+                  this.setState({nodeDataState: 'empty'})
+                }
+                this.setState({flattenData: res, nodeDataState: 'normal'})
+              }).catch(() => {
+                this.setState({nodeDataState: 'empty'})
+              })
+            }
+            this.setState({ dropdownShow: !this.state.dropdownShow })
+          }}
         >
           <div className='hi-select-tree__selected' ref={this.selectedItemsRef}>
             {selectedItems.length > 0 &&
@@ -308,7 +339,7 @@ class SelectTree extends React.Component {
           <Popper
             show={dropdownShow}
             attachEle={this.inputRef.current}
-            className='hi-select-tree__popper'
+            className={`hi-select-tree__popper ${data.length === 0 && dataSource ? 'hi-select-tree__popper--loading' : ''}`}
             // onClickOutside={() => this.setState({dropdownShow: false})}
           >
             {
@@ -328,6 +359,7 @@ class SelectTree extends React.Component {
                 loadDataOnExpand={false}
                 checkable={type === 'multiple'}
                 checkedNodes={checkedNodes}
+                nodeDataState={nodeDataState}
                 // searchable
                 // searchMode='highlight'
                 // defaultExpandIds={[]}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Input } from '../../input'
+import Loading from '../../loading'
 import TreeNode from './TreeNode'
 import TreeContext from './context'
 import './style/index.scss'
@@ -45,6 +46,7 @@ const Tree = ({
   searchMode,
   onExpand,
   dataSource,
+  nodeDataState,
   loadDataOnExpand
 }) => {
   // 单选逻辑
@@ -199,6 +201,7 @@ const Tree = ({
   //     setParseData(filterArr)
   //   }
   // }, [parseData])
+  console.log(1, nodeDataState)
   return (
     <TreeContext.Provider
       value={{
@@ -218,7 +221,13 @@ const Tree = ({
         isRemoteLoadData: !!dataSource
       }}
     >
-      <div className={PREFIX}>
+      <div className={`${PREFIX}`}>
+        {
+          nodeDataState === 'loading' && <Loading size='small' />
+        }
+        {
+          nodeDataState === 'empty' && <span>无结果</span>
+        }
         {searchable && (
           <div style={{ marginBottom: 12 }}>
             <Input />

@@ -14,10 +14,19 @@
 
 ## 基础单选
 
-import DemoBase from '../../demo/select-tree/section-base'
+import DemoSingle from '../../demo/select-tree/section-single'
 
-<DemoBase />
+<DemoSingle />
 
+## 基础多选
+import DemoMultiple from '../../demo/select-tree/section-multiple'
+
+<DemoMultiple />
+
+## 异步节点
+import DemoAsync from '../../demo/select-tree/section-async'
+
+<DemoAsync />
 
 
 ## Props
@@ -30,8 +39,8 @@ import DemoBase from '../../demo/select-tree/section-base'
 | searchable         | 节点可搜索                                                              | boolean                                                                  | true \| false                   | false     |
 | defaultExpandAll   | 是否默认展开所有树节点                                                  | boolean                                                                  | true \| false                   | false     |
 | defaultExpandIds | 默认高亮的节点                                                          | boolean                                                                  | true \| false                   | false     |
-| checkedIds         | 选中的 checkbox                                                         | string[]                                                                 | -                               | -         |
-| openIcon           | 表示展开的图标                                                          | string                                                                   | Icon 图标名称                   | -         |
+| defaultValue         | 默认值                                                         | DataItem[] \| string[]                                                                 | -                               | -         |
+| showCheckedMode           | 数据回显模式                                                          | string                                                                   | ALL \| PARENT \| CHILD                  | -         |
 | closeIcon          | 表示闭合的图标                                                          | string                                                                   | Icon 图标名称                   | -         |
 | apperance          | 树形控件的展现形态                                                      | string                                                                   | 'default' \| 'line' \| 'folder' | 'default' |
 | contextMenu        | 自定义右键菜单,参考 _示例_ 及 _页面底部自定义右键菜单使用说明_          | ContextMenuOption[] \| (item: DataItem,level: number) => ContextMenuOption[]           |                                 | []        |

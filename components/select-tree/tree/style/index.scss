@@ -32,6 +32,7 @@ $hoverColor: rgba(66, 133, 244, 0.08) !default;
   // width: 296px;
   height: 100%;
   padding: 0 12px 12px 12px;
+  box-sizing: border-box;
 
   ul {
     list-style-type: none;
@@ -51,6 +52,10 @@ $hoverColor: rgba(66, 133, 244, 0.08) !default;
 
   .tree-node {
     margin-top: 12px;
+
+    .hi-btn--loading--icon {
+      margin-top: -8px;
+    }
 
     ul {
       padding: 0 16px;

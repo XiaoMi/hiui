@@ -11,10 +11,14 @@
     border-radius: 2px;
     max-height: 300px;
     overflow: auto;
+
+    &--loading {
+      height: 300px;
+    }
   }
 
   &__input {
-    width: 100%;
+    width: 320px;
     height: 32px;
     line-height: 32px;
     border: 1px solid #d8d8d8;
