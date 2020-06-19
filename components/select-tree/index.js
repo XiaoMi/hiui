@@ -1,4 +1,4 @@
-import SelectTree from './SelectTree'
+import SelectTreeHook from './SelectTreeHook'
 import './style/index'
 
-export default SelectTree
+export default SelectTreeHook

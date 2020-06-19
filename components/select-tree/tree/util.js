@@ -213,3 +213,69 @@ export const flattenNodesData = (data, defaultExpandIds = [], defaultExpandAll =
     nodeEntries
   }
 }
+
+/**
+ * 根据 defaultValue 解析默认选中项（自动勾选）
+ * defaultValue:
+ * [id, ...]  |  [title, ...] | [{id: ..}] | [{id: ..., title: ...}]
+ * 匹配原则： 如果值不符合 {id, title}，会优先从现有数据中匹配 id 或 title，如匹配成功，取 node 做为已选中，如无匹配 则跳过
+ * 如同时包含{id, title}，从现有数据中匹配对应数据，如有，取 node 做为已选中，如无匹配，则直接使用该值，与现有数据无关联
+ */
+export const parseDefaultSelectedItems = (defaultValue, flattenData) => {
+  const defaultNodes = []
+  if (typeof defaultValue === 'string') {
+    const node = getNodeByIdTitle(defaultValue, flattenData)
+    node && defaultNodes.push(node)
+  } else if (defaultValue instanceof Array) {
+    defaultValue.forEach(val => {
+      let node
+      if (typeof val !== 'object') {
+        // [0, 'x']
+        node = getNodeByIdTitle(val, flattenData)
+      } else {
+        if (val.id && val.title) {
+          // [{id: '', title: ''}]
+          node = getNode(val.id, flattenData) || val
+        } else {
+          node = getNodeByIdTitle(val.id || val.title, flattenData)
+        }
+      }
+      if (node) {
+        defaultNodes.push(node)
+      }
+    })
+  }
+  return defaultNodes
+}
+
+/**
+ * 根据 defaultCheckedIds 解析全选/半选数据
+ * @param {*} selectedItems 已选中选项
+ */
+export const parseCheckStatusData = (selectedItems, checkedNodes, flattenData) => {
+  let semiCheckedIds = new Set(checkedNodes.semiChecked)
+  const checkedIds = new Set(checkedNodes.checked)
+  semiCheckedIds.clear()
+  checkedIds.clear()
+  let isUpdate = false
+  selectedItems.forEach(node => {
+    isUpdate = true
+    updateCheckData(node, flattenData, checkedIds, semiCheckedIds)
+  })
+  if (isUpdate) {
+    return {
+      checked: [...checkedIds],
+      semiChecked: [...semiCheckedIds]
+    }
+  }
+  return null
+}
+
+/**
+ * 根据数据回显方式设定显示的数据
+ * @param {*} checkIds 当前选中的节点 ID 集合
+ */
+export const parseSelectedItems = (checkedNodes, nodeEntries, showCheckedMode, flattenData) => {
+  const keys = processSelectedIds(checkedNodes.checked, nodeEntries, showCheckedMode)
+  return keys.map(id => getNode(id, flattenData))
+}
