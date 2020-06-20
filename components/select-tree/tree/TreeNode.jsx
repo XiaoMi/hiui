@@ -77,7 +77,7 @@ const TreeNode = ({ data, flttenData }) => {
           return <React.Fragment key={index}>
             <li className='tree-node'>
               <div className='tree-node__self'>
-                {((node.children && childrenNodes.length) || isRemoteLoadData)
+                {childrenNodes.length || isRemoteLoadData
                   ? <Switcher expanded={expand} node={node} onExpandEvent={onExpandEvent} />
                   : renderIndent()}
                 {checkable && renderCheckbox(node, checkedNodes)}

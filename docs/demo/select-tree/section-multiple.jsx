@@ -140,8 +140,10 @@ class Demo extends React.Component {
     return (
       <SelectTree
         clearable
-        // type='multiple'
+        searchable
+        type='multiple'
         data={singleList}
+        // searchMode='show'
         // defaultValue={[{id: '0-1-0-0-0'}]} // done
         // defaultExpandAll // done
         // defaultExpandIds={['1-2-0-0-0-0']} // done

@@ -178,17 +178,25 @@ export const flattenNodesData = (data, defaultExpandIds = [], defaultExpandAll =
     ancestorsNodes.forEach(n => expandIds.add(n.id))
     expandIds.add(node.id)
   }
-  const fun = (datas, nArr, parent) => {
+  const fun = (datas, newArr, parent = {}) => {
+    datas = _.cloneDeep(datas)
     datas.forEach(node => {
-      node.pId = parent ? parent.id : null
+      const pId = parent.id
+      node.pId = pId
+      if (pId) {
+        const arr = parent.ancestors ? [...parent.ancestors] : []
+        arr.unshift(pId)
+        node.ancestors = arr
+      }
       node.isLoaded = false
       node._origin = true
-      nArr.push(node)
+      const _children = node.children
+      newArr.push(node)
       nodeEntries[node.id] = {
         ...node,
         parent
       }
-      if (node.children) {
+      if (_children) {
         if (defaultExpandAll) {
           // 默认全展开时，所有节点加入展开集合
           expandIds.add(node.id)
@@ -197,7 +205,8 @@ export const flattenNodesData = (data, defaultExpandIds = [], defaultExpandAll =
           // 非默认全部展开时，单独处理所有祖先元素的展开状态
           tempExpands.push(node)
         }
-        fun(node.children, nArr, node)
+        fun(_children, newArr, node)
+        delete node.children
       } else {
         node.isLeaf = true
       }
@@ -278,4 +287,34 @@ export const parseCheckStatusData = (selectedItems, checkedNodes, flattenData) =
 export const parseSelectedItems = (checkedNodes, nodeEntries, showCheckedMode, flattenData) => {
   const keys = processSelectedIds(checkedNodes.checked, nodeEntries, showCheckedMode)
   return keys.map(id => getNode(id, flattenData))
+}
+
+export const arrayTreeFilter = (data, predicate) => {
+  const nodes = _.cloneDeep(data)
+  // 如果已经没有节点了，结束递归
+  if (!(nodes && nodes.length)) {
+    return
+  }
+  const newChildren = []
+  for (const node of nodes) {
+    if (predicate(node)) {
+      // 如果自己（节点）符合条件，直接加入到新的节点集
+      newChildren.push(node)
+      // 并接着处理其 children,（因为父节点符合，子节点一定要在，所以这一步就不递归了）
+      // node.children = arrayTreeFilter(node.children, predicate);
+    } else {
+      // 如果自己不符合条件，需要根据子集来判断它是否将其加入新节点集
+      // 根据递归调用 arrayTreeFilter() 的返回值来判断
+      const subs = arrayTreeFilter(node.children, predicate)
+      // const subs = arrayTreeFilter(getChildrenNodes(node, data2), predicate);
+      // 以下两个条件任何一个成立，当前节点都应该加入到新子节点集中
+      // 1. 子孙节点中存在符合条件的，即 subs 数组中有值
+      // 2. 自己本身符合条件
+      if ((subs && subs.length) || predicate(node)) {
+        node.children = subs
+        newChildren.push(node)
+      }
+    }
+  }
+  return newChildren
 }

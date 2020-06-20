@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import Tree from './tree'
 import qs from 'qs'
+import _ from 'lodash'
 import Popper from '../popper'
 import classNames from 'classnames'
 import {
@@ -11,7 +12,8 @@ import {
   hasChildren,
   parseDefaultSelectedItems,
   parseCheckStatusData,
-  parseSelectedItems
+  parseSelectedItems,
+  arrayTreeFilter
 } from './tree/util'
 import NavTree from './NavTree'
 
@@ -25,20 +27,21 @@ const SelectTree = ({
   defaultValue,
   onChange,
   onExpand,
-  defaultLoadData = true,
+  defaultLoadData,
   clearable,
-  mode = 'tree'
+  searchable,
+  searchMode,
+  mode
 }) => {
   const selectedItemsRef = useRef()
   const inputRef = useRef()
-  const [showCount, setShowCount] = useState(0)
+  const [showCount, setShowCount] = useState(1)
   const [show, setShow] = useState(false)
   const [nodeDataState, setNodeDataState] = useState('normal')
   const [selectedItems, setSelectedItems] = useState([])
   // const [selectedIds, setSelectedIds] = useState([])
   const [expandIds, setExpandIds] = useState([])
   const [nodeEntries, setNodeEntries] = useState({})
-  const [calShowCountFlag, setCalShowCountFlag] = useState(true)
   const [checkedNodes, setCheckNodes] = useState({
     checked: [],
     semiChecked: []
@@ -59,33 +62,75 @@ const SelectTree = ({
           setCheckNodes(cstatus)
         }
       }
+
       const res = parseSelectedItems(checkedNodes, nodeEntries, showCheckedMode, flattenData)
       setSelectedItems(res)
     }
   }, [data])
   useEffect(() => {
-    if (calShowCountFlag && selectedItemsRef.current) {
+    if (selectedItemsRef.current) {
       const sref = selectedItemsRef.current
       // 多选超过一行时以数字显示
       const itemsRect = sref.getBoundingClientRect()
       let width = 0
-      let showCount = 0
+      let num = 0
       const items = sref.querySelectorAll('.hi-select__input--item')
       for (const item of items) {
         const itemRect = item.getBoundingClientRect()
         width += itemRect.width
-        if (width + 16 < itemsRect.width) {
-          ++showCount
-        } else {
+        if (width + 16 > itemsRect.width) {
           break
+        } else {
+          num++
         }
       }
-      setShowCount(showCount)
-      setCalShowCountFlag(false)
-    } else {
-      setCalShowCountFlag(true)
+      setShowCount(num)
     }
+  }, [showCount])
+
+  useEffect(() => {
+    setShowCount(selectedItems.length)
   }, [selectedItems])
+
+  // 过滤方法
+  const searchTreeNode = useCallback((e) => {
+    const val = e.target.value
+    let matchNodes = []
+    if (searchMode === 'highlight') {
+      const filterArr = flattenData.map(node => {
+        const reg = new RegExp(val, 'g')
+        const str = `<span style="color: #428ef5">${val}</span>`
+        if (reg.test(node.title)) {
+          node._title = node.title.replace(reg, str)
+          matchNodes.push(node)
+        }
+        return node
+      })
+      setFlattenData(filterArr)
+      let matchNodesSet = []
+      matchNodes.forEach(mn => {
+        matchNodesSet.push(mn.id)
+        matchNodesSet = matchNodesSet.concat(mn.ancestors || [])
+      })
+      matchNodesSet = _.uniq(matchNodesSet)
+      setExpandIds(matchNodesSet)
+    } else {
+      const filterArr = arrayTreeFilter(data, item => {
+        return (
+          new RegExp(val, 'i').test(item.title)
+        )
+      })
+      const filterData = flattenNodesData(filterArr).flattenData
+      let matchNodesSet = []
+      filterData.forEach(mn => {
+        matchNodesSet.push(mn.id)
+        matchNodesSet = matchNodesSet.concat(mn.ancestors || [])
+      })
+      matchNodesSet = _.uniq(matchNodesSet)
+      setExpandIds(matchNodesSet)
+      setFlattenData(filterData)
+    }
+  })
 
   const handleClear = useCallback(() => {
     setSelectedItems([])
@@ -136,7 +181,7 @@ const SelectTree = ({
   * @param {*} checked 是否被选中
   * @param {*} node 当前节点
   */
-  const _checkedEvents = (checked, node) => {
+  const _checkedEvents = useCallback((checked, node) => {
     let result = {}
     let semiCheckedIds = new Set(checkedNodes.semiChecked)
     let checkedIds = new Set(checkedNodes.checked)
@@ -149,7 +194,8 @@ const SelectTree = ({
       checked: result.checked,
       semiChecked: result.semiChecked
     })
-    parseSelectedItems(result, nodeEntries, showCheckedMode, flattenData)
+    const _selectedItems = parseSelectedItems(result, nodeEntries, showCheckedMode, flattenData)
+    setSelectedItems(_selectedItems)
     let checkedArr = []
     if (result.checked.length > 0) {
       checkedArr = result.checked.map(id => {
@@ -157,7 +203,7 @@ const SelectTree = ({
       })
     }
     onChange(result, node, checkedArr)
-  }
+  })
 
   /**
   * 节点展开关闭事件
@@ -234,13 +280,16 @@ const SelectTree = ({
                 </div>
               )
             })}
-          {showCount < selectedItems.length &&
-            <div className='hi-select__input-items--left'>
-              +
-              <span className='hi-select__input-items--left-count'>
-                {selectedItems.length - showCount}
-              </span>
-            </div>}
+          {
+            showCount < selectedItems.length && (
+              <div className='hi-select__input-items--left'>
+                +
+                <span className='hi-select__input-items--left-count'>
+                  {selectedItems.length - showCount}
+                </span>
+              </div>
+            )
+          }
         </div>
 
         <span className='hi-select__input--icon'>
@@ -283,7 +332,8 @@ const SelectTree = ({
               checkable={type === 'multiple'}
               checkedNodes={checkedNodes}
               nodeDataState={nodeDataState}
-              // searchable
+              searchable={searchable}
+              onSearch={searchTreeNode}
               // searchMode='highlight'
               // defaultExpandIds={[]}
               // defaultExpandAll
@@ -315,6 +365,11 @@ SelectTree.defaultProps = {
   onChange: () => {},
   onExpand: () => {},
   checkable: false,
-  showCheckedMode: 'CHILD'
+  searchable: false,
+  defaultLoadData: true,
+  showCheckedMode: 'CHILD',
+  defaultExpandAll: false,
+  mode: 'tree',
+  searchMode: 'highlight'
 }
 export default SelectTree
