@@ -32,7 +32,7 @@ const TreeNode = ({ node }) => {
     console.log(a, b, c)
   }
 
-  // const [{ isDragging, isOver, direction }, ref] = useDnD({ id: node.id, move })
+  const [{ isDragging, isOver, direction }, ref] = useDnD({ id: node.id, move })
 
   const treeNodeRef = useRef(null)
 
@@ -99,10 +99,9 @@ const TreeNode = ({ node }) => {
       const { id, title } = node
       return (
         <div
-          // ref={draggable ? ref : treeNodeRef}
-          ref={treeNodeRef}
+          ref={draggable ? ref : treeNodeRef}
           className={Classnames('tree-node__title', {
-            // [`tree-node__title--${direction}`]: isOver && direction,
+            [`tree-node__title--${direction}`]: isOver && direction,
             [`tree-node__title--draggable`]: draggable
           })}
         >
@@ -123,8 +122,8 @@ const TreeNode = ({ node }) => {
         </div>
       )
     },
-    // [treeNodeRef, ref, draggable, direction, isOver]
-    [treeNodeRef, draggable, treeNodeRender]
+    [treeNodeRef, ref, draggable, direction, isOver]
+    // [treeNodeRef, draggable, treeNodeRender]
   )
   return (
     <li className='tree-node'>

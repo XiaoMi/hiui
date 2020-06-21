@@ -7,12 +7,10 @@ import useSelect from './hooks/useSelect'
 import useCheckable from './hooks/useCheckable'
 import useExpand from './hooks/useExpand'
 import { getAncestorIds } from './util'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 
 const PREFIX = 'hi-editor-tree'
 
-const Tree = ({
+const BaseTree = ({
   data,
   treeNodeRender,
   menuRender,
@@ -89,14 +87,4 @@ const Tree = ({
   )
 }
 
-const WrapperTree = (props) => {
-  return (
-    <Tree {...props} /> || (
-      <DndProvider backend={HTML5Backend}>
-        <Tree {...props} />
-      </DndProvider>
-    )
-  )
-}
-
-export default WrapperTree
+export default BaseTree

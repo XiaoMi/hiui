@@ -2,14 +2,14 @@ import React, { useState, useCallback, useEffect } from 'react'
 import BaseTree from './BaseTree'
 import Input from '../Input'
 import Button from '../button'
-import Popper from '../popper'
 import Modal from '../modal'
 import { getAncestorIds } from './util'
 import _ from 'lodash'
-import Classnames from 'classnames'
 import uuidv4 from 'uuid/v4'
 import CustomTreeNode from './customTreeNode'
 import './style/index.scss'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 const getMatchedNodes = (data, searchValue, matchedNodes = []) => {
   data.forEach((item) => {
@@ -42,6 +42,7 @@ const Tree = (props) => {
     searchConfig = {},
     data,
     expandedIds,
+    defaultExpandedIds,
     filter = false,
     contextMenu,
     editable,
@@ -65,12 +66,14 @@ const Tree = (props) => {
   const [searchValue, setSearchValue] = useState('')
   const [matchedNodes, setMatchedNodes] = useState([])
   const [filteredIds, setFilteredIds] = useState([])
-  const [expanded, setExpanded] = useState([])
+  const [expanded, setExpanded] = useState(expandedIds || defaultExpandedIds || [])
+
   useEffect(() => {
     if (expandedIds) {
       setExpanded(expandedIds)
     }
   }, [expandedIds])
+
   const showData = getShowData(
     _.cloneDeep(cacheData),
     matchedNodes.map((n) => n.id),
@@ -310,6 +313,9 @@ const Tree = (props) => {
         {...props}
         treeNodeRender={treeNodeRender}
         expandedIds={filteredIds.length ? filteredIds : expanded}
+        onExpand={(expandedNode, isExpanded, ids) => {
+          setExpanded(ids)
+        }}
         data={filter && searchable && searchValue !== '' ? showData : cacheData}
       />
       <Modal
@@ -328,5 +334,11 @@ const Tree = (props) => {
     </React.Fragment>
   )
 }
-
-export default Tree
+const WrapperTree = (props) => {
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <Tree {...props} />
+    </DndProvider>
+  )
+}
+export default WrapperTree
