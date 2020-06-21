@@ -34,7 +34,11 @@ class Demo extends React.Component {
   render () {
     return (
       <div id="tabs-draggable">
-        <Tabs defaultActiveId='tabId-2' onTabClick={(tab,e) => console.log(tab,e)} draggable={true}>
+        <Tabs defaultActiveId='tabId-2' onTabClick={(tab,e) => console.log(tab,e)} draggable={true} onDragStart={(tab)=>console.log(tab)}   onDropEnd = {(dragNode,dropNode)=> {
+          console.log(dragNode,dropNode)
+        }} onDrop={(dragNode,dropNode)=> {
+          console.log(dragNode,dropNode)
+        }}>
           {
             this.state.panes.map((pane, index) => {
               return (

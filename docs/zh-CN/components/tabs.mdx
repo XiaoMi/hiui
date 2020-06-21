@@ -66,6 +66,9 @@ import DemoDraggable from '../../demo/tabs/section-draggable.jsx'
 | draggable       | 是否支持拖拽                                                                                                                  | boolean                          | true \| false       |false
 | onTabClick      | 点击标签页时触发，回调值为点击点击标签的 key                                                                                | (tabKey, event) => void         | -                                          | -            |
 | onEdit          | 标签新增删减时触发，仅对 type='editable'时触发。参数：action 为事件类型，值为 add 或者 delete；index 为操作选项卡对应的索引 | (action, index, tabKey) => void | -                                          | -            |
+| onDragStart          | 节点开始拖拽时触发 | (dragNode: TabNode) => void | -                                          | -            |
+| onDropEnd          | 节点拖拽成功时触发 | (dragNode: TabNode, dropNode: TabNode) => void | -                                          | -            |
+| onDrop          | 节点拖拽时触发 | (dragNode: TabNode, dropNode: TabNode) => void | -                                          | -            |
 
 ### Tabs.Pane
 

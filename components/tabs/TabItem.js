@@ -13,10 +13,9 @@ const TabItem = ({ index, prefixCls, item, draggable, activeId, type, editable, 
 
   const toggleTooltip = (e, item) => {
     e.target = e.target.closest('.hi-tabs__item')
-
-    if (type === 'editable' && item.tabId !== activeId) {
+    if (type === 'editable') {
       if (e.type === 'mouseenter') {
-        Tooltip.open(e.target, { title: item.tabTitle, placement: 'top', key: `tab-${item.tabId}` })
+        item.tabId !== activeId && Tooltip.open(e.target, { title: item.tabTitle, placement: 'top', key: `tab-${item.tabId}` })
       } else {
         Tooltip.close(`tab-${item.tabId}`)
       }
@@ -28,8 +27,8 @@ const TabItem = ({ index, prefixCls, item, draggable, activeId, type, editable, 
     className={itemClasses}
     draggable={draggable}
     data-item={JSON.stringify({ ...item, newIndex: index })}
-    onDragEnd={dragEnd}
-    onDragStart={dragStart}
+    onDragEnd={(e) => dragEnd(e, item)}
+    onDragStart={(e) => dragStart(e, item)}
     onMouseEnter={(e) => toggleTooltip(e, item)}
     onMouseLeave={(e) => toggleTooltip(e, item)}
   >
