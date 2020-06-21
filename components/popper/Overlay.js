@@ -170,7 +170,7 @@ export default class Overlay extends Component {
             className,
             'hi-popper__content',
             `hi-popper__content--${offset.placement}`,
-            { 'hi-popper__content--hide': this.popperHeight === 0 || this.popperWidth === 0}
+            { 'hi-popper__content--hide': this.popperHeight === 0 || this.popperWidth === 0 }
           )}
           style={{ width, height }}
           onMouseOut={onMouseOut}

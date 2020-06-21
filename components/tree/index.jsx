@@ -31,7 +31,7 @@ const Tree = ({
   onClick,
   filtrable = false
 }) => {
-  const [flatData, updateFlatData] = useFlatData(data)
+  const [flatData] = useFlatData(data)
   const [selectNodeId, onSelectNode] = useSelect({
     selectedId,
     selectable,
