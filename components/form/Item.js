@@ -34,12 +34,10 @@ const FormItem = props => {
   // 初始化FormItem的内容
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
-  const [valid, setValid] = useState(false)
   const [validating, setValidating] = useState(false)
 
   const resetValidate = () => {
     setError('')
-    setValid(false)
     setValidating(false)
   }
   // 跟新值到父级元素
@@ -93,7 +91,6 @@ const FormItem = props => {
       errors => {
         setError(errors ? errors[0].message : '')
         setValidating(false)
-        setValid(!errors)
         if (cb instanceof Function) {
           cb(errors)
         }

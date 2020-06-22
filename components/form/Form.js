@@ -85,6 +85,9 @@ const Form = props => {
   }, [fields])
 
   useEffect(() => {
+    if (!formRef) {
+      return
+    }
     formRef.current = {
       resetValidates,
       validateField,
@@ -102,7 +105,8 @@ const Form = props => {
           formProps: props,
           updateFieldValue,
           removeField,
-          initFields
+          initFields,
+          fields
         }}
       >
         {children}

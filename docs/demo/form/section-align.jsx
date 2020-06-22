@@ -28,6 +28,7 @@ class Demo extends React.Component {
   }
   render (){
     const FormItem = Form.Item
+    const FormSubmit = Form.Submit
     const {formData} = this.state
     return (
       <>
@@ -58,9 +59,10 @@ class Demo extends React.Component {
           />
         </FormItem>
         <FormItem>
-          <Button type='primary'>提交</Button>
+          <FormSubmit type='primary' onClick={(...args)=>{console.log(...args)}}>提交</FormSubmit>
         </FormItem>
       </Form>
+
       <Button type='primary' onClick={()=>{this.form.current.validate((valid,fieldModel)=>{
         console.log('valid',valid,fieldModel)
       })

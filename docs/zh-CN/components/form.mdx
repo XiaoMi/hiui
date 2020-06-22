@@ -58,6 +58,37 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 | rules         | 表单验证规则，会覆盖 Form 设置的 rules，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object  | -             | -       |
 | valuePropName | 子节点的值的属性，如 Switch Radio Checkbox 的是 'checked'                                                       | string  | -             | 'value' |
 
+### Form.Submit
+
+> 继承 Button API
+
+| 参数     | 说明                                | 类型          | 可选值 | 默认值    |
+| -------- | ----------------------------------- | ------------- | ------ | --------- |
+| onClick  | 点击提交后触发                      | Function      | -      | func.noop |
+| validate | 是否校验/需要校验的 name 数组       | Boolean/Array | -      | -         |
+| field    | 自定义 field (在 Form 内不需要设置) | Object        | -      | -         |
+
+### Form.Reset
+
+> 继承 Button API
+
+| 参数      | 说明                                                                         | 类型     | 默认值    |
+| --------- | ---------------------------------------------------------------------------- | -------- | --------- |
+| names     | 自定义重置的字段                                                             | Array    | -         |
+| onClick   | 点击提交后触发 Function(value: Object, errors: Object, field: class) => void | Function | func.noop |
+| toDefault | 返回默认值                                                                   | Boolean  | -         |
+| field     | 自定义 field (在 Form 内不需要设置)                                          | Object   | -         |
+
+### Form.Error
+
+> 自定义错误展示
+
+| 参数     | 说明                                                     | 类型               | 默认值 |
+| -------- | -------------------------------------------------------- | ------------------ | ------ |
+| name     | 表单名                                                   | String/Array       | -      |
+| field    | 自定义 field (在 Form 内不需要设置)                      | Object             | -      |
+| children | 自定义错误渲染, 可以是 node 或者 function(errors, state) | ReactNode/Function | -      |
+
 ## Methods
 
 | 方法名                                                  | 说明               |
