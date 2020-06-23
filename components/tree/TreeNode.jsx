@@ -4,7 +4,7 @@ import Icon from '../icon'
 
 import Classnames from 'classnames'
 import TreeContext from './context'
-import useClickOutside from './hooks/useClickOutside'
+
 import useDnD from './hooks/useDnD'
 import Loading from './IconLoading'
 const switcherApperanceMap = {
@@ -122,7 +122,7 @@ const TreeNode = ({ node }) => {
         </div>
       )
     },
-    [treeNodeRef, ref, draggable, direction, isOver]
+    [treeNodeRef, ref, draggable, direction, isOver, treeNodeRender]
     // [treeNodeRef, draggable, treeNodeRender]
   )
   return (
@@ -131,8 +131,8 @@ const TreeNode = ({ node }) => {
         (node.children && node.children.length) || (onLoadChildren && !node.isLeaf)
           ? node.depth
           : apperance !== 'default'
-            ? node.depth
-            : (node.depth && node.depth + 1) || 1
+          ? node.depth
+          : (node.depth && node.depth + 1) || 1
       )}
       {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
       {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf)) &&
