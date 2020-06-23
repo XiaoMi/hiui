@@ -178,9 +178,9 @@ class BasePicker extends Component {
     })
   }
   callback () {
-    const { type, onChange } = this.props
+    const { type, onChange, disabled } = this.props
     const { date, format } = this.state
-    if (onChange) {
+    if (onChange && !disabled) {
       let {startDate, endDate} = date
       startDate = isValid(startDate) ? startDate : ''
       endDate = isValid(endDate) ? endDate : ''
@@ -273,15 +273,16 @@ class BasePicker extends Component {
     )
   }
   _clear () {
-    this.setState({date: {startDate: null, endDate: null}, texts: ['', ''], isFocus: false}, () => { this.callback() })
+    const { disabled } = this.props
+    !disabled && this.setState({date: {startDate: null, endDate: null}, texts: ['', ''], isFocus: false}, () => { this.callback() })
   }
   _icon () {
     const {isFocus, texts} = this.state
-    const { clearable, type, showTime } = this.props
+    const { clearable, type, showTime, disabled } = this.props
     const iconCls = classNames(
       'hi-datepicker__input-icon',
       'hi-icon',
-      (texts[0].length && isFocus && clearable)
+      (texts[0].length && isFocus && clearable && !disabled)
         ? 'icon-close-circle clear'
         : ((type.includes('time') || showTime) ? 'icon-time' : 'icon-date')
     )
