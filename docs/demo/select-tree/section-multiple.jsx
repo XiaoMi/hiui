@@ -7,7 +7,7 @@ const desc = '展示从多个收起的备选项中选出的一个选项'
 const defaultStr = `constructor () {
     super()
     this.state = {
-      value: '3',
+      value: '1-0-1',
       singleList: [
         {
           title: 'Node 0',
@@ -51,25 +51,7 @@ const defaultStr = `constructor () {
                 },
                 {
                   title: 'Child Node 1-0-1',
-                  id: '1-0-1',
-                  _children: [
-                    {
-                      title: 'Child Node 1-0-1-0',
-                      id: '1-0-1-0'
-                    },
-                    {
-                      title: 'Child Node 1-0-1-1',
-                      id: '1-0-1-1'
-                    },
-                    {
-                      title: 'Child Node 1-0-1-2',
-                      id: '1-0-1-2'
-                    },
-                    {
-                      title: 'Child Node 1-0-1-3',
-                      id: '1-0-1-3'
-                    }
-                  ]
+                  id: '1-0-1'
                 },
                 {
                   title: 'fff',
@@ -135,37 +117,55 @@ const code = [
 import SelectTree from '@hi-ui/hiui/es/select-tree'\n
 class Demo extends React.Component {
   ${defaultStr}
+  clickEvent1 () {
+    this.setState({
+      singleList: [{
+        id: '0',
+        title: 'new Tree'
+      }]
+    })
+  }
+  clickEvent2() {
+    this.setState({
+      value: ['0-1-0-0-0']
+      //0-1-0-0-0
+    })
+  }
   render () {
     const { value, singleList } = this.state
     return (
-      <SelectTree
-        clearable
-        searchable
-        type='multiple'
-        data={singleList}
-        // searchMode='show'
-        // defaultValue={[{id: '0-1-0-0-0'}]} // done
-        // defaultExpandAll // done
-        // defaultExpandIds={['1-2-0-0-0-0']} // done
-        // showCheckedMode='ALL' //done
-        // dataSource={key => {
-        //   return {
-        //     type: 'GET',
-        //     key: 'id',
-        //     params: {pId: key},
-        //     url: 'http://localhost:3000/tree',
-        //     transformResponse: (res) => {
-        //       return res.map(r => {
-        //         return {
-        //           ...r,
-        //           id: r.code,
-        //           title: r.name
-        //         }
-        //       })
-        //     }
-        //   }
-        // }}
-      />
+      <div>
+        <SelectTree
+          clearable
+          type='multiple'
+          data={singleList}
+          searchMode='filter'  //    highlight / filter
+          value={value} // done
+          // defaultExpandAll // done
+          // defaultExpandIds={['1-2-0-0-0-0']} // done
+          // showCheckedMode='ALL' //done
+          // dataSource={key => {
+          //   return {
+          //     type: 'GET',
+          //     key: 'id',
+          //     params: {pId: key},
+          //     url: 'http://localhost:3000/tree',
+          //     transformResponse: (res) => {
+          //       return res.map(r => {
+          //         return {
+          //           ...r,
+          //           id: r.code,
+          //           title: r.name
+          //         }
+          //       })
+          //     }
+          //   }
+          // }}
+        />
+        <button onClick={this.clickEvent1.bind(this)}>更改源数据</button>
+        <button onClick={this.clickEvent2.bind(this)}>更改默认值</button>
+
+      </div>
     )
   }
 }`,
@@ -178,13 +178,13 @@ class Demo extends React.Component {
       ${defaultStr}
 
       render () {
-        const { value, singleList } = this.state
+        const { singleList } = this.state
         return (
           <SelectTree
             type='multiple'
             clearable
             data={singleList}
-            defaultValue={[{id: '0-1-0-0-0'}, {id: 'xx', title: '未包含在列表中'}]} // done
+            // defaultValue={[{id: '0-1-0-0-0'}, {id: 'xx', title: '未包含在列表中'}]} // done
           />
         )
       }

@@ -192,10 +192,10 @@ export const flattenNodesData = (data, defaultExpandIds = [], defaultExpandAll =
       node._origin = true
       const _children = node.children
       newArr.push(node)
-      nodeEntries[node.id] = {
+      isGenEntries && (nodeEntries[node.id] = {
         ...node,
         parent
-      }
+      })
       if (_children) {
         if (defaultExpandAll) {
           // 默认全展开时，所有节点加入展开集合
@@ -232,7 +232,7 @@ export const flattenNodesData = (data, defaultExpandIds = [], defaultExpandAll =
  */
 export const parseDefaultSelectedItems = (defaultValue, flattenData) => {
   const defaultNodes = []
-  if (typeof defaultValue === 'string') {
+  if (typeof defaultValue === 'string' || typeof defaultValue === 'number') {
     const node = getNodeByIdTitle(defaultValue, flattenData)
     node && defaultNodes.push(node)
   } else if (defaultValue instanceof Array) {
@@ -271,6 +271,7 @@ export const parseCheckStatusData = (selectedItems, checkedNodes, flattenData) =
     isUpdate = true
     updateCheckData(node, flattenData, checkedIds, semiCheckedIds)
   })
+  console.log(checkedIds)
   if (isUpdate) {
     return {
       checked: [...checkedIds],
@@ -289,28 +290,39 @@ export const parseSelectedItems = (checkedNodes, nodeEntries, showCheckedMode, f
   return keys.map(id => getNode(id, flattenData))
 }
 
-export const arrayTreeFilter = (data, predicate) => {
+/**
+ * 匹配值替换为高亮项
+ * @param {*} val 搜索关键字
+ * @param {*} text 节点 title
+ */
+export const matchFilterKey = (val, text = '') => {
+  const reg = new RegExp(val, 'gi')
+  const str = `<span style="color: #428ef5">${val}</span>`
+  if (reg.test(text)) {
+    text = text.replace(reg, str)
+    return text
+  }
+  return null
+}
+
+/**
+ * 树节点过滤（根据原始数据）
+ * @param {*} data 原始数据
+ * @param {*} filterVal 过滤值
+ */
+export const treeFilterByOriginalData = (data, filterVal) => {
   const nodes = _.cloneDeep(data)
-  // 如果已经没有节点了，结束递归
   if (!(nodes && nodes.length)) {
     return
   }
   const newChildren = []
   for (const node of nodes) {
-    if (predicate(node)) {
-      // 如果自己（节点）符合条件，直接加入到新的节点集
+    const matchResult = matchFilterKey(filterVal, node.title)
+    if (matchResult) {
       newChildren.push(node)
-      // 并接着处理其 children,（因为父节点符合，子节点一定要在，所以这一步就不递归了）
-      // node.children = arrayTreeFilter(node.children, predicate);
     } else {
-      // 如果自己不符合条件，需要根据子集来判断它是否将其加入新节点集
-      // 根据递归调用 arrayTreeFilter() 的返回值来判断
-      const subs = arrayTreeFilter(node.children, predicate)
-      // const subs = arrayTreeFilter(getChildrenNodes(node, data2), predicate);
-      // 以下两个条件任何一个成立，当前节点都应该加入到新子节点集中
-      // 1. 子孙节点中存在符合条件的，即 subs 数组中有值
-      // 2. 自己本身符合条件
-      if ((subs && subs.length) || predicate(node)) {
+      const subs = treeFilterByOriginalData(node.children, filterVal)
+      if ((subs && subs.length) || matchResult) {
         node.children = subs
         newChildren.push(node)
       }

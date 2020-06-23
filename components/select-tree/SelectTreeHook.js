@@ -13,7 +13,7 @@ import {
   parseDefaultSelectedItems,
   parseCheckStatusData,
   parseSelectedItems,
-  arrayTreeFilter
+  treeFilterByOriginalData
 } from './tree/util'
 import NavTree from './NavTree'
 
@@ -25,11 +25,11 @@ const SelectTree = ({
   defaultExpandAll,
   showCheckedMode,
   defaultValue,
+  value,
   onChange,
   onExpand,
   defaultLoadData,
   clearable,
-  searchable,
   searchMode,
   mode
 }) => {
@@ -50,23 +50,34 @@ const SelectTree = ({
   useEffect(() => {
     setStatus()
     if (data) {
+      const val = defaultValue.length > 0 ? defaultValue : value
       const result = flattenNodesData(data, defaultExpandIds, defaultExpandAll, (type === 'multiple' && showCheckedMode !== 'ALL'))
       setFlattenData(result.flattenData)
       setExpandIds(result.expandIds)
       setNodeEntries(result.nodeEntries)
-      const _selectedItems = parseDefaultSelectedItems(defaultValue, result.flattenData)
+      const _selectedItems = parseDefaultSelectedItems(val, result.flattenData)
+      console.log(2, _selectedItems)
       setSelectedItems(_selectedItems)
-      if (type === 'multiple' && defaultValue) {
-        const cstatus = parseCheckStatusData(selectedItems, checkedNodes, flattenData)
+      if (type === 'multiple' && val.length > 0) {
+        const cstatus = parseCheckStatusData(_selectedItems, {checked: [], semiChecked: []}, flattenData)
         if (cstatus) {
           setCheckNodes(cstatus)
         }
       }
-
-      const res = parseSelectedItems(checkedNodes, nodeEntries, showCheckedMode, flattenData)
-      setSelectedItems(res)
     }
   }, [data])
+  useEffect(() => {
+    if (flattenData.length > 0) {
+      const _selectedItems = parseDefaultSelectedItems(value, flattenData)
+      setSelectedItems(_selectedItems)
+      if (type === 'multiple' && value.length > 0) {
+        const cstatus = parseCheckStatusData(_selectedItems, {checked: [], semiChecked: []}, flattenData)
+        if (cstatus) {
+          setCheckNodes(cstatus)
+        }
+      }
+    }
+  }, [value, flattenData])
   useEffect(() => {
     if (selectedItemsRef.current) {
       const sref = selectedItemsRef.current
@@ -98,7 +109,7 @@ const SelectTree = ({
     let matchNodes = []
     if (searchMode === 'highlight') {
       const filterArr = flattenData.map(node => {
-        const reg = new RegExp(val, 'g')
+        const reg = new RegExp(val, 'gi')
         const str = `<span style="color: #428ef5">${val}</span>`
         if (reg.test(node.title)) {
           node._title = node.title.replace(reg, str)
@@ -114,12 +125,8 @@ const SelectTree = ({
       })
       matchNodesSet = _.uniq(matchNodesSet)
       setExpandIds(matchNodesSet)
-    } else {
-      const filterArr = arrayTreeFilter(data, item => {
-        return (
-          new RegExp(val, 'i').test(item.title)
-        )
-      })
+    } else if (searchMode === 'filter') {
+      const filterArr = treeFilterByOriginalData(data, val)
       const filterData = flattenNodesData(filterArr).flattenData
       let matchNodesSet = []
       filterData.forEach(mn => {
@@ -332,7 +339,7 @@ const SelectTree = ({
               checkable={type === 'multiple'}
               checkedNodes={checkedNodes}
               nodeDataState={nodeDataState}
-              searchable={searchable}
+              searchable={searchMode === 'filter' || searchMode === 'highlight'}
               onSearch={searchTreeNode}
               // searchMode='highlight'
               // defaultExpandIds={[]}
@@ -360,16 +367,16 @@ SelectTree.defaultProps = {
   type: 'single',
   defaultCheckedIds: [],
   defaultValue: [],
+  value: [],
   data: [],
   clearable: true,
   onChange: () => {},
   onExpand: () => {},
   checkable: false,
-  searchable: false,
   defaultLoadData: true,
   showCheckedMode: 'CHILD',
   defaultExpandAll: false,
   mode: 'tree',
-  searchMode: 'highlight'
+  searchMode: null
 }
 export default SelectTree
