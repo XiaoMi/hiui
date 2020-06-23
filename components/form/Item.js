@@ -181,31 +181,33 @@ const FormItem = props => {
         {children && Array.isArray(children)
           ? children
           : React.cloneElement(children, {
-            [valuePropName]: value,
-            onChange: (e, ...args) => {
-              e.persist && e.persist()
-              children.props.onChange && children.props.onChange(e, ...args)
-              const value =
-                  e.target && e.target[valuePropName] !== 'undefined'
+              [valuePropName]: value,
+              onChange: (e, ...args) => {
+                e.persist && e.persist()
+                children.props.onChange && children.props.onChange(e, ...args)
+                const value =
+                  e.target &&
+                  e.target.hasOwnProperty.call(e.target, valuePropName)
                     ? e.target[valuePropName]
                     : e
-              setValue(value)
-              setTimeout(() => {
-                handleField('onChange', value)
-              })
-            },
-            onBlur: (e, ...args) => {
-              e.persist && e.persist()
-              children.props.onBlur && children.props.onBlur(e, ...args)
-              const value =
-                  e.target && e.target[valuePropName] !== 'undefined'
+                setValue(value)
+                setTimeout(() => {
+                  handleField('onChange', value)
+                })
+              },
+              onBlur: (e, ...args) => {
+                e.persist && e.persist()
+                children.props.onBlur && children.props.onBlur(e, ...args)
+                const value =
+                  e.target &&
+                  e.target.hasOwnProperty.call(e.target, valuePropName)
                     ? e.target[valuePropName]
                     : e
 
-              setValue(value)
-              handleField('onBlur', value)
-            }
-          })}
+                setValue(value)
+                handleField('onBlur', value)
+              }
+            })}
         <div className='hi-form-item--msg__error'>{error}</div>
       </div>
     </div>
