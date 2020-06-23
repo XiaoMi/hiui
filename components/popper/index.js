@@ -17,7 +17,7 @@ export default class Popper extends Component {
     topGap: PropTypes.number,
     leftGap: PropTypes.number,
     zIndex: PropTypes.number,
-    placement: PropTypes.oneOf(['bottom', 'bottom-start', 'top', 'top-start', 'left', 'right', 'right-start', 'top-bottom-start', 'top-bottom']),
+    placement: PropTypes.oneOf(['bottom', 'bottom-start', 'top', 'top-start', 'top-end', 'left', 'right', 'right-start', 'top-bottom-start', 'top-bottom', 'bottom-end']),
     onMouseOver: PropTypes.func,
     onMouseOut: PropTypes.func,
     onMouseEnter: PropTypes.func,
