@@ -163,9 +163,12 @@ const FormItem = props => {
   obj['hi-form-item__error'] = error !== ''
   obj['hi-form-item--validating'] = validating
   obj['hi-form-item--required'] = isRequired() || required
-
   return (
-    <div className={classNames('hi-form-item', className, obj)} style={style}>
+    <div
+      className={classNames('hi-form-item', className, obj)}
+      style={style}
+      key={field}
+    >
       {label || label === '' ? (
         <label className='hi-form-item__label' style={{ width: labelWidth() }}>
           {(typeof label === 'string' && label.trim()) || label}
@@ -180,21 +183,27 @@ const FormItem = props => {
           : React.cloneElement(children, {
             [valuePropName]: value,
             onChange: (e, ...args) => {
+              e.persist && e.persist()
               children.props.onChange && children.props.onChange(e, ...args)
-              const value = e.target.value
-              console.log('+++++++', value)
+              const value =
+                  e.target && e.target[valuePropName] !== 'undefined'
+                    ? e.target[valuePropName]
+                    : e
               setValue(value)
               setTimeout(() => {
                 handleField('onChange', value)
               })
             },
             onBlur: (e, ...args) => {
+              e.persist && e.persist()
               children.props.onBlur && children.props.onBlur(e, ...args)
-              const value = e.target.value
+              const value =
+                  e.target && e.target[valuePropName] !== 'undefined'
+                    ? e.target[valuePropName]
+                    : e
+
               setValue(value)
-              setTimeout(() => {
-                handleField('onBlur', value)
-              })
+              handleField('onBlur', value)
             }
           })}
         <div className='hi-form-item--msg__error'>{error}</div>

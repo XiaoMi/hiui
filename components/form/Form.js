@@ -46,14 +46,23 @@ const Form = props => {
   }
 
   // 重置校验
-  const resetValidates = useCallback(() => {
-    const _fields = _.cloneDeep(fields)
-    _fields.forEach(field => {
-      field.value = ''
-      field.resetValidate()
-    })
-    setFileds(_fields)
-  }, [fields])
+  const resetValidates = useCallback(
+    (cb, resetNames) => {
+      let _fields = _.cloneDeep(fields)
+      _fields = _fields.filter(childrenField => {
+        return Array.isArray(resetNames)
+          ? resetNames.includes(childrenField.field)
+          : true
+      })
+      _fields.forEach(field => {
+        field.value = ''
+        field.resetValidate()
+      })
+      setFileds(_fields)
+      cb instanceof Function && cb()
+    },
+    [fields]
+  )
   // 对整个表单进行校验
   const validate = (cb, validateNames) => {
     const values = {}
@@ -108,7 +117,6 @@ const Form = props => {
       validate
     }
   }, [fields])
-
   return (
     <form
       className={classNames('hi-form', className, getClassNames(props))}
