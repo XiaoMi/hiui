@@ -68,6 +68,10 @@ class BasePicker extends Component {
   calcPanelPos (rect) {
     const {showTime, type} = this.props
     let _w = type.indexOf('range') !== -1 ? 578 : 288
+    if (type === 'timerange') {
+      _w = 400
+    }
+
     let _h = 298
     if (type === 'daterange' && showTime) {
       _h = 344
@@ -80,6 +84,7 @@ class BasePicker extends Component {
     const _st = document.documentElement.scrollTop || document.body.scrollTop
     let {left, width, top, height} = rect
     let _top = rect.top + rect.height + _st + 4
+
     if (left + _w > _cw) {
       left = left + width - _w
     }
