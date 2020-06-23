@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import { depreactedPropsCompat } from '../_util'
 import { FormContext } from './Form'
 /**
+ * valuePropName 指定该表单的value 名称
  * rules 中 如果trigger 不传入 则 在最后点击时候时候校验规则
  * model 删除掉这个属性
  * 通过cloneEelement对value进行受控
@@ -35,11 +36,6 @@ const FormItem = props => {
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
   const [validating, setValidating] = useState(false)
-
-  const resetValidate = () => {
-    setError('')
-    setValidating(false)
-  }
   // 跟新值到父级元素
   const updateFieldToParent = _value => {
     updateFieldValue({
@@ -50,6 +46,12 @@ const FormItem = props => {
       setValue,
       validate
     })
+  }
+  const resetValidate = () => {
+    // 清空数据
+    setValue('')
+    setError('')
+    setValidating(false)
   }
 
   // 获取该单元的规则
@@ -69,8 +71,8 @@ const FormItem = props => {
       return !rule.trigger || rule.trigger.indexOf(trigger) !== -1
     })
   }
-
-  const validate = (trigger, cb) => {
+  // 父级调用
+  const validate = (trigger, cb, currentValue) => {
     const triggerRules = getFilteredRule(trigger)
     if (!triggerRules || triggerRules.length === 0) {
       if (cb instanceof Function) {
@@ -82,7 +84,7 @@ const FormItem = props => {
     const validator = new AsyncValidator({
       [field]: rules
     })
-    const model = { [field]: value }
+    const model = { [field]: currentValue }
     validator.validate(
       model,
       {
@@ -97,7 +99,6 @@ const FormItem = props => {
       }
     )
   }
-
   useEffect(() => {
     if (field) {
       initFields({
@@ -135,15 +136,15 @@ const FormItem = props => {
   }
 
   // 对字段的操作
-  const handleField = (triggerType, _value) => {
+  const handleField = (triggerType, currentValue) => {
     // 更新数据给父级
-    updateFieldToParent(_value)
+    updateFieldToParent(currentValue)
     let rules = getRules()
     const hasTriggerType = rules.some(rule => {
       const { trigger = '' } = rule
       return trigger.includes(triggerType)
     })
-    hasTriggerType && validate(triggerType)
+    hasTriggerType && validate(triggerType, '', currentValue)
   }
 
   const labelWidth = () => {
@@ -181,6 +182,7 @@ const FormItem = props => {
             onChange: (e, ...args) => {
               children.props.onChange && children.props.onChange(e, ...args)
               const value = e.target.value
+              console.log('+++++++', value)
               setValue(value)
               setTimeout(() => {
                 handleField('onChange', value)

@@ -29,6 +29,8 @@ class Demo extends React.Component {
   render (){
     const FormItem = Form.Item
     const FormSubmit = Form.Submit
+    const FormReset = Form.Reset
+
     const {formData} = this.state
     return (
       <>
@@ -46,8 +48,15 @@ class Demo extends React.Component {
           trigger:'onChange',
           type:'number',
           validator: (rule, value,callback) => {
-            console.log(rule, value)
-            callback("dsdsds")
+            const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
+            if(!value){
+              callback("请输入手机号")
+            } else if (!telReg.test(value)){
+              callback("请输入正确的手机号")
+            } else {
+              callback()
+              console.log(rule, value)
+            }
           },
           }}>
           <Input placeholder='请输入' />
@@ -60,11 +69,12 @@ class Demo extends React.Component {
         </FormItem>
         <FormItem>
           <FormSubmit type='primary' onClick={(...args)=>{console.log(...args)}}>提交</FormSubmit>
+          <FormReset type='line' onClick={(...args)=>{console.log(...args)}}>重置</FormReset>
         </FormItem>
       </Form>
 
-      <Button type='primary' onClick={()=>{this.form.current.validate((valid,fieldModel)=>{
-        console.log('valid',valid,fieldModel)
+      <Button type='primary' onClick={()=>{this.form.current.validate((values,errors)=>{
+        console.log('values,errors',values,errors)
       })
       }}>提交</Button>
       <Button type='primary' onClick={()=>{

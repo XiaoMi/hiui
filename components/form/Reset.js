@@ -3,11 +3,11 @@ import React, { useContext } from 'react'
 import { FormContext } from './Form'
 import Button from '../button'
 
-const Submit = props => {
-  const { children = 'submit', onClick, validate } = props
-  const { validate: formValidate } = useContext(FormContext)
+const Reset = props => {
+  const { children = 'reset', onClick, fields } = props
+  const { resetValidates } = useContext(FormContext)
   const submit = () => {
-    onClick && formValidate(onClick, validate)
+    onClick && resetValidates(onClick, fields)
   }
   return (
     <Button {...props} onClick={submit}>
@@ -15,4 +15,4 @@ const Submit = props => {
     </Button>
   )
 }
-export default Submit
+export default Reset

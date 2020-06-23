@@ -45,28 +45,48 @@ const Form = props => {
     )
   }
 
+  // 重置校验
+  const resetValidates = useCallback(() => {
+    const _fields = _.cloneDeep(fields)
+    _fields.forEach(field => {
+      field.value = ''
+      field.resetValidate()
+    })
+    setFileds(_fields)
+  }, [fields])
   // 对整个表单进行校验
-  const validate = cb => {
-    let valid = true
-    let count = 0
-    const fieldModel = {}
+  const validate = (cb, validateNames) => {
+    const values = {}
+    let errors = {}
+
     if (fields.length === 0 && cb) {
-      cb(valid)
+      cb(values, errors)
       return
     }
-    fields.forEach(fieldChild => {
+
+    const _fields = fields.filter(fieldChild => {
       const { field, value } = fieldChild
-      fieldModel[field] = value
-      fieldChild.validate('', errors => {
-        if (errors) {
-          valid = false
-        } else {
-          cb instanceof Function &&
-            ++count === fields.length &&
-            cb(valid, fieldModel)
-        }
-      })
+      values[field] = value
+      return Array.isArray(validateNames) ? validateNames.includes(field) : true
     })
+    _fields.forEach(fieldChild => {
+      const { field, value } = fieldChild
+      // 对指定的字段进行校验  其他字段直接提交
+      fieldChild.validate(
+        '',
+        error => {
+          if (error) {
+            const errorsMsg = error.map(err => {
+              return err.message
+            })
+            errors[field] = { errors: errorsMsg }
+          }
+        },
+        value
+      )
+    })
+    errors = Object.keys(errors).length === 0 ? null : errors
+    cb && cb(values, errors)
   }
 
   const validateField = (key, cb) => {
@@ -77,12 +97,6 @@ const Form = props => {
 
     field.validate('', cb)
   }
-  // 重置校验
-  const resetValidates = useCallback(() => {
-    fields.forEach(field => {
-      field.resetValidate()
-    })
-  }, [fields])
 
   useEffect(() => {
     if (!formRef) {
@@ -106,7 +120,9 @@ const Form = props => {
           updateFieldValue,
           removeField,
           initFields,
-          fields
+          fields,
+          validate,
+          resetValidates
         }}
       >
         {children}
