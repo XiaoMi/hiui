@@ -18,7 +18,7 @@ const getClassNames = props => {
 }
 export const FormContext = React.createContext({})
 const Form = props => {
-  const { children, className, style, formRef } = props
+  const { children, className, style, innerRef: formRef, initialValues } = props
   const [fields, setFileds] = useState([])
   // 获取子节点的所有filed
   const initFields = childrenFiled => {
@@ -44,24 +44,40 @@ const Form = props => {
       fields.filter(fieldItem => fieldItem.field !== childrenFiled.field)
     )
   }
-
+  // 用户手动设置表单数据
+  const setFieldsValue = values => {
+    const _fields = _.cloneDeep(fields)
+    _fields.forEach(item => {
+      const { field } = item
+      if (values.hasOwnProperty(field)) {
+        const value = values[field]
+        item.value = value
+        item.setValue(value)
+      }
+    })
+    setFileds(_fields)
+  }
   // 重置校验
   const resetValidates = useCallback(
-    (cb, resetNames) => {
+    (cb, resetNames, toDefault) => {
       let _fields = _.cloneDeep(fields)
       _fields = _fields.filter(childrenField => {
         return Array.isArray(resetNames)
           ? resetNames.includes(childrenField.field)
           : true
       })
-      _fields.forEach(field => {
-        field.value = ''
-        field.resetValidate()
+      _fields.forEach(childrenField => {
+        childrenField.value = toDefault
+          ? initialValues[childrenField.field]
+          : ''
+        childrenField.resetValidate(
+          toDefault ? initialValues[childrenField.field] : ''
+        )
       })
       setFileds(_fields)
       cb instanceof Function && cb()
     },
-    [fields]
+    [fields, initialValues]
   )
   // 对整个表单进行校验
   const validate = (cb, validateNames) => {
@@ -103,7 +119,6 @@ const Form = props => {
     if (!field) {
       throw new Error('must call validate Field with valid key string!')
     }
-
     field.validate('', cb)
   }
 
@@ -114,7 +129,8 @@ const Form = props => {
     formRef.current = {
       resetValidates,
       validateField,
-      validate
+      validate,
+      setFieldsValue
     }
   }, [fields])
   return (

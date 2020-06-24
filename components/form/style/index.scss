@@ -92,6 +92,12 @@
     position: relative;
     vertical-align: top;
     min-height: 32px;
+
+    p {
+      margin: 0;
+      padding: 0;
+      line-height: 32px;
+    }
   }
 
   &__error {

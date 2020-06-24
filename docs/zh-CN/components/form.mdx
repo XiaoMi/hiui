@@ -20,13 +20,19 @@ import DemoFillform from '../../demo/form/section-fillform.jsx'
 
 <DemoFillform />
 
-<!-- ## 横向表单
+## 横向表单
 
 import DemoRow from '../../demo/form/section-row.jsx'
 
 <DemoRow />
 
-## 双列表单
+## 组合表单
+
+import DemoSynthetic from '../../demo/form/section-synthetic.jsx'
+
+<DemoSynthetic />
+
+<!--  ## 双列表单
 
 import DemoTwoCol from '../../demo/form/section-two-col.jsx'
 
@@ -44,8 +50,7 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 
 | 参数           | 说明                                                                                  | 类型    | 可选值                     | 默认值     |
 | -------------- | ------------------------------------------------------------------------------------- | ------- | -------------------------- | ---------- |
-| model          | 表单数据                                                                              | object  | -                          | -          |
-| initialValues  | 表单初始数据                                                                          | object  | -                          | -          |
+| initialValues  | 表单默认值，只有初始化以及重置时生效                                                  | object  | -                          | -          |
 | rules          | 表单验证规则，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object  | -                          | -          |
 | labelWidth     | label 宽度，可用任意 CSS 长度单位                                                     | string  |                            |
 | labelPlacement | label 放置的位置                                                                      | string  | 'right' \| 'left' \| 'top' | 'left'     |
@@ -100,6 +105,7 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 | validate(callback: isValid => void)                     | 对整个表单进行校验 |
 | validateField(field: string, callback: isValid => void) | 对表单字段进行校验 |
 | resetValidates()                                        | 重置整个表单的验证 |
+| setFieldsValue()                                        | 设置表单的值       |
 
 ## rules
 

@@ -18,7 +18,7 @@ class Demo extends React.Component {
       formData : {
         phone: '',
         password:'',
-        remember:'',
+        remember:true,
       }
     }
     this.form = React.createRef()
@@ -31,7 +31,6 @@ class Demo extends React.Component {
 
     return (
       <Form labelWidth='80' labelPlacement='left' 
-        formRef={this.form}
         initialValues={formData}>
         <FormItem label='账号' field="phone" rules={{
           trigger:'onChange',
@@ -57,7 +56,7 @@ class Demo extends React.Component {
           }}>
           <Input placeholder='请输入' />
         </FormItem>
-        <FormItem label='' field="remember" valuePropName="checked">
+        <FormItem field="remember" valuePropName="checked">
           <Checkbox onChange={()=>{
             console.log('checkbox remeber me')
           }}> 记住我 </Checkbox>
@@ -88,7 +87,7 @@ class Demo extends React.Component {
           formData : {
             email: '',
             password:'',
-            remember:'',
+            remember:true,
           }
         }
         this.form = React.createRef()
@@ -101,7 +100,6 @@ class Demo extends React.Component {
     
         return (
           <Form labelWidth='80' labelPlacement='right' 
-            formRef={this.form}
             initialValues={formData}>
             <FormItem label='邮箱' field="email" rules={
               [
@@ -122,7 +120,7 @@ class Demo extends React.Component {
             }>
               <Input placeholder='请输入' />
             </FormItem>
-            <FormItem label='' field="remember" valuePropName="checked">
+            <FormItem field="remember" valuePropName="checked">
               <Checkbox onChange={()=>{
                 console.log('checkbox remeber me')
               }}> 记住我 </Checkbox>
@@ -153,7 +151,7 @@ class Demo extends React.Component {
           formData : {
             phone: '',
             password:'',
-            remember:'',
+            remember:true,
           },
           rules:{
             phone:{
@@ -187,7 +185,6 @@ class Demo extends React.Component {
         const {formData,rules} = this.state
         return (
           <Form labelWidth='80' labelPlacement='top' 
-            formRef={this.form}
             initialValues={formData}
             rules={rules}
             >
@@ -197,7 +194,7 @@ class Demo extends React.Component {
             <FormItem label='密码' field="password">
               <Input placeholder='请输入' />
             </FormItem>
-            <FormItem label='' field="remember" valuePropName="checked">
+            <FormItem field="remember" valuePropName="checked" style={{mariginTop:'-30px'}}>
               <Checkbox onChange={()=>{
                 console.log('checkbox remeber me')
               }}> 记住我 </Checkbox>

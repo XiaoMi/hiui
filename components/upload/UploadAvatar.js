@@ -187,7 +187,7 @@ class UploadAvatar extends Upload {
             </li>}
         </ul>
         <Modal
-          show={showCropperModal}
+          visible={showPreviewModal}
           onConfirm={() => {
             this.confirm()
           }}

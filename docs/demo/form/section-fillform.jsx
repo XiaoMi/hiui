@@ -4,6 +4,8 @@ import Form from '../../../components/form/index'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
 import Select from '../../../components/select'
+import Radio from '../../../components/radio'
+import Grid from '../../../components/grid'
 
 const prefix = 'form-fill'
 const desc = '对表单数据域进行交互'
@@ -15,9 +17,7 @@ class Demo extends React.Component {
     this.state = {
       formData : {
         phone: '',
-        password:'',
-        remember:'',
-        type:'3'
+        select:'3'
       },
       singleList: [
         { title:'电视', id:'3', disabled: true },
@@ -35,38 +35,48 @@ class Demo extends React.Component {
     const FormSubmit = Form.Submit
     const FormReset = Form.Reset
     const {formData,singleList} = this.state
+    const Row = Grid.Row
+    const Col = Grid.Col
 
     return (
-      <Form labelWidth='80' labelPlacement='left' 
-        formRef={this.form}
+      <Form labelWidth='80' labelPlacement='right' 
+        ref={this.form}
         initialValues={formData}>
-        <FormItem label='账号' field="phone" rules={{
-          trigger:'onChange',
-          type:'number',
-          required:true,
-          validator: (rule,value,callback) => {
-            const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
-            if(!value){
-              callback("请输入手机号")
-            } else if (!telReg.test(value)){
-              callback("请输入正确的手机号")
-            } else {
-              callback()
-            }
-          },
-          }}>
-          <Input placeholder='请输入手机号' style={{ width: 200 }}
-          />
-        </FormItem>
-        <FormItem label='类型' field="type">
+        <Row>
+        <Col>
+            <FormItem label='Input' field="phone"  rules={{
+                trigger:'onChange',
+                type:'number',
+                validator: (rule,value,callback) => {
+                const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
+                if(!value){
+                    callback("请输入手机号")
+                } else if (!telReg.test(value)){
+                    callback("请输入正确的手机号")
+                } else {
+                    callback()
+                }
+                },
+                }}>
+                <Input placeholder='请输入手机号' style={{ width: 200 }}
+                />
+            </FormItem>
+        </Col>
+        <Col>
+             <a href="#Props" style={{ margin: '0 8px',lineHeight:'32px' }}>
+                Need Help?
+            </a>
+        </Col>
+      </Row>
+        <FormItem label='Select' field="select" required={true}>
             <Select
             type='single'
             clearable={false}
             style={{ width: 200 }}
             data={singleList}
             onChange={ids => {
-            console.log('ids==',ids)
-        }}
+                console.log('select ids',ids)
+            }}
         />
         </FormItem>
         <FormItem>
@@ -80,6 +90,10 @@ class Demo extends React.Component {
           >重置</FormReset>
           <Button type="primary" appearance="link" onClick={()=>{
               console.log('填充表单')
+              this.form.current.setFieldsValue({
+                phone:'15652959628',
+                select:'2'
+              })
           }}>fill Form</Button>
         </FormItem>
       </Form>
@@ -90,7 +104,7 @@ class Demo extends React.Component {
 const DemoRow = () => (
   <DocViewer
     code={code}
-    scope={{ Form, Button, Input, Select }}
+    scope={{ Form, Button, Input, Select, Radio, Grid }}
     prefix={prefix}
     desc={desc}
   />

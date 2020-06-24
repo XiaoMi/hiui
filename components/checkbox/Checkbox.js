@@ -70,7 +70,7 @@ class Checkbox extends Component {
 }
 
 Checkbox.propTypes = {
-  checked: PropTypes.bool,
+  checked: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   className: PropTypes.string,
   style: PropTypes.object,
   defaultChecked: PropTypes.bool,

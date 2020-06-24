@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react'
 
-function SwitchVersion (component = {}, componentLegacy = {}) {
+function SwitchVersion(component = {}, componentLegacy = {}) {
   const WrapperComponent = ({ legacy, innerRef, ...props }) => {
     const innerComponent = legacy === true ? componentLegacy : component
     return React.createElement(

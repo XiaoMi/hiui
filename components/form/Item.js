@@ -47,9 +47,9 @@ const FormItem = props => {
       validate
     })
   }
-  const resetValidate = () => {
+  const resetValidate = (value = '') => {
     // 清空数据
-    setValue('')
+    setValue(value)
     setError('')
     setValidating(false)
   }
@@ -149,12 +149,43 @@ const FormItem = props => {
 
   const labelWidth = () => {
     const labelWidth = props.labelWidth || formProps.labelWidth
-
     return formProps.labelPosition === 'top'
-      ? false
-      : labelWidth && parseInt(labelWidth)
+      ? '100%'
+      : !Number.isNaN(Number(labelWidth)) && Number(labelWidth)
   }
+  const renderChildren = () => {
+    if (!children) {
+      return null
+    }
+    return Array.isArray(children) || !React.isValidElement(children)
+      ? children
+      : React.cloneElement(children, {
+          [valuePropName]: value,
+          onChange: (e, ...args) => {
+            e.persist && e.persist()
+            children.props.onChange && children.props.onChange(e, ...args)
+            const value =
+              e.target && e.target.hasOwnProperty(valuePropName)
+                ? e.target[valuePropName]
+                : e
+            setValue(value)
+            setTimeout(() => {
+              handleField('onChange', value)
+            })
+          },
+          onBlur: (e, ...args) => {
+            e.persist && e.persist()
+            children.props.onBlur && children.props.onBlur(e, ...args)
+            const value =
+              e.target && e.target.hasOwnProperty(valuePropName)
+                ? e.target[valuePropName]
+                : e
 
+            setValue(value)
+            handleField('onBlur', value)
+          }
+        })
+  }
   const shouldShowColon =
     shouldItemShowColon === undefined
       ? shouldFormShowColon && typeof label === 'string' && label.trim()
@@ -178,36 +209,7 @@ const FormItem = props => {
         <span className='hi-form-item__span' style={{ width: labelWidth() }} />
       )}
       <div className={'hi-form-item' + '__content'}>
-        {children && Array.isArray(children)
-          ? children
-          : React.cloneElement(children, {
-              [valuePropName]: value,
-              onChange: (e, ...args) => {
-                e.persist && e.persist()
-                children.props.onChange && children.props.onChange(e, ...args)
-                const value =
-                  e.target &&
-                  e.target.hasOwnProperty.call(e.target, valuePropName)
-                    ? e.target[valuePropName]
-                    : e
-                setValue(value)
-                setTimeout(() => {
-                  handleField('onChange', value)
-                })
-              },
-              onBlur: (e, ...args) => {
-                e.persist && e.persist()
-                children.props.onBlur && children.props.onBlur(e, ...args)
-                const value =
-                  e.target &&
-                  e.target.hasOwnProperty.call(e.target, valuePropName)
-                    ? e.target[valuePropName]
-                    : e
-
-                setValue(value)
-                handleField('onBlur', value)
-              }
-            })}
+        {renderChildren()}
         <div className='hi-form-item--msg__error'>{error}</div>
       </div>
     </div>

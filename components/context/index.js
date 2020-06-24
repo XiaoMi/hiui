@@ -10,7 +10,7 @@ let noticeTheme = ''
 export default WrappedComponent => {
   class WrapperComponent extends Component {
     static displayName = WrappedComponent.name
-    render () {
+    render() {
       const { theme, locale, innerRef, ...restProps } = this.props
       let ConsumerComponent = (
         <ThemeContext.Consumer>
@@ -47,7 +47,7 @@ export default WrappedComponent => {
   })
 }
 
-function wrapProvider (value, context) {
+function wrapProvider(value, context) {
   wrapProvider.Providers || (wrapProvider.Providers = [])
   if (value !== undefined && context) {
     wrapProvider.Providers.push({
