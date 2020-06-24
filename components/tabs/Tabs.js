@@ -32,8 +32,8 @@ const Tabs = ({
 
     React.Children.map(children, (child) => {
       if (child) {
-        const { tabTitle, tabId, tabDesc, disabled, closeable } = child.props
-        const item = { tabTitle, tabId, tabDesc, disabled, closeable }
+        const { tabTitle, tabId, tabDesc, disabled, closeable, duration } = child.props
+        const item = { tabTitle, tabId, tabDesc, disabled, closeable, duration }
 
         if ((type === 'card' || type === 'line') && placement === 'horizontal' && showTabItems.length >= max) { // 卡片式标签超过max时，其余标签的隐藏
           hiddenTabItems.push(item)
@@ -52,8 +52,17 @@ const Tabs = ({
   const [over, setOver] = useState()
   const [crossBorder, setCrossBorder] = useState(false)
   const [deletetabId, setDeletetabId] = useState()
+  const latestActiveId = useRef(activeId)
 
   useEffect(() => {
+    if (deletetabId && (latestActiveId.current === activeId)) {
+      setActiveId(children[0] && children[0].props.tabId)
+    }
+  }, [deletetabId])
+
+  useEffect(() => {
+    latestActiveId.current = activeId
+
     if (type === 'line') {
       const index = showTabItems.findIndex(item => item.tabId === activeId)
       PseudoPosition(index === -1 ? max : index)
@@ -67,16 +76,12 @@ const Tabs = ({
     judgePseudoPosition()
   }, [showTabItems])
 
-  useEffect((a, b) => {
+  useEffect(() => {
     const tabItems = getTabItems()
 
     setShowTabItems(tabItems.showTabItems)
     setHiddentab(tabItems.hiddenTabItems)
   }, [children])
-
-  useEffect(() => {
-    setActiveId(children[0] && children[0].props.tabId)
-  }, [deletetabId])
 
   const judgePseudoPosition = () => {
     if (type === 'line') {
@@ -146,36 +151,45 @@ const Tabs = ({
 
   const checkEditable = () => editable && type === 'editable'
 
-  const renderTabContent = (child) => {
-    const { tabId } = child.props
+  const renderTabContent = (child, index) => {
+    const { tabId, duration } = child.props
 
     return cloneElement(child, {
-      show: tabId === activeId
+      show: tabId === activeId,
+      latestActiveIdIndex: latestActiveId.current.split('-')[1],
+      activeIdIndex: activeId.split('-')[1],
+      index,
+      duration,
+      placement
     })
   }
 
   const dragStart = useCallback((e, item) => {
-    setDragged(e.currentTarget)
-    onDragStart(item)
+    if (type === 'card' || type === 'line' || type === 'editable') {
+      setDragged(e.currentTarget)
+      onDragStart(item)
+    }
   }, [])
 
   const dragEnd = useCallback((e, item) => {
-    if (!over) {
-      return
+    if (type === 'card' || type === 'line' || type === 'editable') {
+      if (!over) {
+        return
+      }
+
+      over.classList.remove('drag-left', 'drag-right', 'drag-up', 'drag-down')
+
+      var data = [...showTabItems]
+      var from = Number(dragged.dataset.id)
+      var to = Number(over.dataset.id)
+      onDropEnd(item, showTabItems[to])
+      data.splice(to, 0, data.splice(from, 1)[0])
+      data = data.map((doc, index) => {
+        doc.newIndex = index + 1
+        return doc
+      })
+      setShowTabItems(data)
     }
-
-    over.classList.remove('drag-left', 'drag-right', 'drag-up', 'drag-down')
-
-    var data = [...showTabItems]
-    var from = Number(dragged.dataset.id)
-    var to = Number(over.dataset.id)
-    onDropEnd(item, showTabItems[to])
-    data.splice(to, 0, data.splice(from, 1)[0])
-    data = data.map((doc, index) => {
-      doc.newIndex = index + 1
-      return doc
-    })
-    setShowTabItems(data)
   }, [over, showTabItems, dragged])
 
   const handleClick = useCallback((tab, e) => {
@@ -189,38 +203,40 @@ const Tabs = ({
   }, [showTabItems])
 
   const dragOver = useCallback((e) => {
-    e.preventDefault()
+    if (type === 'card' || type === 'line' || type === 'editable') {
+      e.preventDefault()
 
-    e.target = e.target.closest('.hi-tabs__item')
+      e.target = e.target.closest('.hi-tabs__item')
 
-    if (!e.target) {
-      return
-    }
+      if (!e.target) {
+        return
+      }
 
-    const taIndex = JSON.parse(e.target.dataset.item).newIndex
-    const dgIndex = JSON.parse(dragged.dataset.item).newIndex
-    onDrop(showTabItems[taIndex], showTabItems[dgIndex])
+      const taIndex = JSON.parse(e.target.dataset.item).newIndex
+      const dgIndex = JSON.parse(dragged.dataset.item).newIndex
+      onDrop(showTabItems[taIndex], showTabItems[dgIndex])
 
-    if (taIndex === dgIndex) {
-      if (!over) return
-      over.classList.remove('drag-left', 'drag-right', 'drag-up', 'drag-down')
-      return
-    }
-    let animateName
+      if (taIndex === dgIndex) {
+        if (!over) return
+        over.classList.remove('drag-left', 'drag-right', 'drag-up', 'drag-down')
+        return
+      }
+      let animateName
 
-    if (placement === 'horizontal') {
-      animateName = dgIndex > taIndex ? 'drag-left' : 'drag-right'
-    } else {
-      animateName = dgIndex > taIndex ? 'drag-up' : 'drag-down'
-    }
+      if (placement === 'horizontal') {
+        animateName = dgIndex > taIndex ? 'drag-left' : 'drag-right'
+      } else {
+        animateName = dgIndex > taIndex ? 'drag-up' : 'drag-down'
+      }
 
-    if (over && e.target.dataset.item !== over.dataset.item) {
-      over.classList.remove('drag-up', 'drag-down', 'drag-right', 'drag-left')
-    }
+      if (over && e.target.dataset.item !== over.dataset.item) {
+        over.classList.remove('drag-up', 'drag-down', 'drag-right', 'drag-left')
+      }
 
-    if (!e.target.classList.contains(animateName)) {
-      e.target.classList.add(animateName)
-      setOver(e.target)
+      if (!e.target.classList.contains(animateName)) {
+        e.target.classList.add(animateName)
+        setOver(e.target)
+      }
     }
   }, [over, dragged])
 
@@ -278,9 +294,7 @@ const Tabs = ({
     </div>
     <div className={`${prefixCls}__content`}>
 
-      {React.Children.map(children, item => {
-        return item && renderTabContent(item)
-      })}
+      {React.Children.map((children), (item, index) => item && renderTabContent(item, index))}
     </div>
   </div>
 }
@@ -308,6 +322,9 @@ Tabs.defaultProps = {
   editable: true,
   onTabClick: noop,
   onEdit: noop,
+  onDrop: noop,
+  onDropEnd: noop,
+  onDragStart: noop,
   draggable: false
 }
 export default Tabs

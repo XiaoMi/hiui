@@ -54,6 +54,13 @@ $prefix: 'hi-tabs' !default;
     font-size: 16px;
   }
 
+  &__content {
+    overflow: hidden;
+    display: flex;
+    position: relative;
+    flex: 1;
+  }
+
   &--card {
     & > .#{$prefix}__header {
       .#{$prefix}__nav {
@@ -335,13 +342,21 @@ $prefix: 'hi-tabs' !default;
     }
 
     .#{$prefix}__item {
-      // border-top-left-radius: 4px;
-      // border-bottom-left-radius: 4px;
       transition: background 500ms;
 
       &--active {
         background: rgba(66, 132, 245, 0.1);
       }
+    }
+  }
+
+  &-pane {
+    position: relative;
+
+    > div {
+      height: 100% !important;
+      flex: 1;
+      box-sizing: border-box;
     }
   }
 }

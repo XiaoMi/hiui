@@ -18,6 +18,45 @@
   animation-fill-mode: forwards;
 }
 
+.slide-right {
+  animation: slideRight linear 300ms 1;
+  animation-fill-mode: forwards;
+}
+
+.slide-left {
+  animation: slideLeft linear 300ms 1;
+  animation-fill-mode: forwards;
+}
+
+.slide-right-leave {
+  animation: slideRightLeave linear 300ms 1;
+  animation-fill-mode: forwards;
+}
+
+.slide-left-leave {
+  animation: slideLeftLeave linear 300ms 1;
+  animation-fill-mode: forwards;
+}
+
+.slide-top {
+  animation: slideTop linear 300ms 1;
+  animation-fill-mode: forwards;
+}
+
+.slide-bottom {
+  animation: slideBottom linear 300ms 1;
+  animation-fill-mode: forwards;
+}
+
+.slide-top-leave {
+  animation: slideTopLeave linear 300ms 1;
+  animation-fill-mode: forwards;
+}
+
+.slide-bottom-leave {
+  animation: slideBottomLeave linear 300ms 1;
+  animation-fill-mode: forwards;
+}
 @keyframes dragup {
   from {
     margin-top: 0px;
@@ -63,6 +102,8 @@
   }
 }
 
+
+
 .item-enter {
   opacity: 0;
 }
@@ -78,5 +119,99 @@
 
 .item-exit-active {
   opacity: 0;
-  transition: opacity 500ms ease-in ;
+  transition: opacity 500ms ease-in;
+}
+
+@keyframes slideRight {
+  from {
+    right: -100%
+  }
+
+  to {
+
+    right: 0;
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    left: -100%
+  }
+
+  to {
+
+    left: 0;
+  }
+}
+
+@keyframes slideRightLeave {
+  from {
+    left: 0%;
+    opacity: 1
+  }
+
+  to {
+
+    left: -100%;
+    opacity: 0
+  }
+}
+
+@keyframes slideLeftLeave {
+  from {
+    right:0;
+    opacity: 1
+  }
+
+  to {
+
+    right: -100%;
+    opacity: 0;
+  }
+}
+@keyframes slideTop {
+  from {
+    top: -100%
+  }
+
+  to {
+
+    top: 0;
+  }
+}
+
+@keyframes slideBottom {
+  from {
+    bottom: -100%;
+  }
+
+  to {
+
+    bottom: 0;
+  }
+}
+
+@keyframes slideTopLeave {
+  from {
+    bottom: 0%;
+    opacity: 1
+  }
+
+  to {
+
+    bottom: -100%;
+    opacity: 0
+  }
+}
+
+@keyframes slideBottomLeave {
+  from {
+    top:0;
+    opacity: 1
+  }
+
+  to {
+    top: -100%;
+    opacity: 0;
+  }
 }

@@ -1,31 +1,35 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
 
-class TabPane extends Component {
-  static defaultProps = {
-    prefixCls: 'hi-tabs-pane',
-    disabled: false,
-    closeable: true
+const TabPane = ({ latestActiveIdIndex, activeIdIndex, index, prefixCls = 'hi-tabs-pane', children, show, duration, placement }) => {
+  console.log(placement === 'horizontal')
+  const defineAnimation = () => {
+    if (latestActiveIdIndex === activeIdIndex) {
+      return
+    }
+    if (activeIdIndex - 1 === index) {
+      if (placement === 'horizontal') {
+        animateClass = latestActiveIdIndex > activeIdIndex ? 'slide-right' : 'slide-left'
+      } else {
+        animateClass = latestActiveIdIndex > activeIdIndex ? 'slide-bottom' : 'slide-top'
+      }
+    }
+
+    if (latestActiveIdIndex - 1 === index) {
+      if (placement === 'horizontal') {
+        animateClass = latestActiveIdIndex > activeIdIndex ? 'slide-right-leave' : 'slide-left-leave'
+      } else {
+        animateClass = latestActiveIdIndex > activeIdIndex ? 'slide-bottom-leave' : 'slide-top-leave'
+      }
+    }
+    return animateClass
   }
 
-  static propTypes = {
-    tabTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    tabDesc: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    tabId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    closeable: PropTypes.bool,
-    disabled: PropTypes.bool
-  }
+  const style = show ? { flex: 1, position: 'relative' } : { width: index === latestActiveIdIndex - 1 ? '100%' : 0, overflow: 'hidden', opacity: 0, position: 'absolute' }
 
-  render () {
-    const { prefixCls, children, show } = this.props
-    const style = show ? {} : { display: 'none' }
-
-    return (
-      <div className={`${prefixCls}`} style={style}>
-        {children}
-      </div>
-    )
-  }
+  let animateClass = duration ? defineAnimation() : ''
+  return <div className={`${prefixCls} ${animateClass}`} style={style}>
+    {children}
+  </div>
 }
 
 export default TabPane
