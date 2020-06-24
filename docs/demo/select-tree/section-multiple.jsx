@@ -8,6 +8,7 @@ const defaultStr = `constructor () {
     super()
     this.state = {
       value: '1-0-1',
+      expandIds: ['1-2-0-0-0-0', '1-0', '0-1'],
       singleList: [
         {
           title: 'Node 0',
@@ -131,8 +132,14 @@ class Demo extends React.Component {
       //0-1-0-0-0
     })
   }
+  clickEvent3() {
+    this.setState({
+      expandIds: ['0-1']
+      //0-1-0-0-0
+    })
+  }
   render () {
-    const { value, singleList } = this.state
+    const { value, singleList, expandIds } = this.state
     return (
       <div>
         <SelectTree
@@ -141,6 +148,7 @@ class Demo extends React.Component {
           data={singleList}
           searchMode='filter'  //    highlight / filter
           value={value} // done
+          expandIds={expandIds}
           // defaultExpandAll // done
           // defaultExpandIds={['1-2-0-0-0-0']} // done
           // showCheckedMode='ALL' //done
@@ -164,6 +172,7 @@ class Demo extends React.Component {
         />
         <button onClick={this.clickEvent1.bind(this)}>更改源数据</button>
         <button onClick={this.clickEvent2.bind(this)}>更改默认值</button>
+        <button onClick={this.clickEvent3.bind(this)}>更改默认展开值</button>
 
       </div>
     )

@@ -13,7 +13,8 @@ import {
   parseDefaultSelectedItems,
   parseCheckStatusData,
   parseSelectedItems,
-  treeFilterByOriginalData
+  treeFilterByOriginalData,
+  parseExpandIds
 } from './tree/util'
 import NavTree from './NavTree'
 
@@ -22,6 +23,7 @@ const SelectTree = ({
   dataSource,
   type,
   defaultExpandIds,
+  expandIds: expandIdsProps,
   defaultExpandAll,
   showCheckedMode,
   defaultValue,
@@ -50,20 +52,9 @@ const SelectTree = ({
   useEffect(() => {
     setStatus()
     if (data) {
-      const val = defaultValue.length > 0 ? defaultValue : value
       const result = flattenNodesData(data, defaultExpandIds, defaultExpandAll, (type === 'multiple' && showCheckedMode !== 'ALL'))
       setFlattenData(result.flattenData)
-      setExpandIds(result.expandIds)
       setNodeEntries(result.nodeEntries)
-      const _selectedItems = parseDefaultSelectedItems(val, result.flattenData)
-      console.log(2, _selectedItems)
-      setSelectedItems(_selectedItems)
-      if (type === 'multiple' && val.length > 0) {
-        const cstatus = parseCheckStatusData(_selectedItems, {checked: [], semiChecked: []}, flattenData)
-        if (cstatus) {
-          setCheckNodes(cstatus)
-        }
-      }
     }
   }, [data])
   useEffect(() => {
@@ -78,6 +69,15 @@ const SelectTree = ({
       }
     }
   }, [value, flattenData])
+  useEffect(() => {
+    console.log('expandIdsProps')
+    if (flattenData.length > 0) {
+      const _expandIds = parseExpandIds(expandIdsProps, defaultExpandIds, flattenData)
+      console.log('exp', flattenData)
+      setExpandIds(_expandIds)
+    }
+  }, [expandIdsProps, flattenData])
+
   useEffect(() => {
     if (selectedItemsRef.current) {
       const sref = selectedItemsRef.current
@@ -219,6 +219,7 @@ const SelectTree = ({
   */
   const _expandEvents = (bol, node, callback) => {
     const _expandIds = [...expandIds]
+    console.log(11, _expandIds, node)
     const hasIndex = _expandIds.findIndex(id => id === node.id)
     if (hasIndex !== -1) {
       _expandIds.splice(hasIndex, 1)
@@ -233,8 +234,10 @@ const SelectTree = ({
       return
     }
     loadNodes(node.id).then((res) => {
-      setExpandIds(_expandIds)
+      console.log(22, _expandIds)
+
       setFlattenData(flattenData.concat(res))
+      setExpandIds(_expandIds)
       callback()
     })
     onExpand()
@@ -376,6 +379,8 @@ SelectTree.defaultProps = {
   defaultLoadData: true,
   showCheckedMode: 'CHILD',
   defaultExpandAll: false,
+  defaultExpandIds: [],
+  expandIds: [],
   mode: 'tree',
   searchMode: null
 }

@@ -162,22 +162,33 @@ export const processSelectedIds = (checkedIds, nodeEntries, type) => {
 }
 
 /**
+ * 生成展开数据
+ * @param {*} expandIds 受控展开节点 IDS
+ * @param {*} defaultExpandIds 非受控展开节点 IDS
+ * @param {*} flattenData 拉平数据
+ */
+export const parseExpandIds = (expandIds, defaultExpandIds, flattenData) => {
+  const ids = defaultExpandIds.length > 0 ? defaultExpandIds : expandIds
+  let arr = []
+  ids.forEach(id => {
+    const node = getNode(id, flattenData)
+    arr.push(node.id)
+    if (node) {
+      node.ancestors && node.ancestors.length > 0 && (arr = arr.concat(node.ancestors))
+    }
+  })
+  return [...new Set(arr)]
+}
+/**
  * 将数据拉平为 pId 类数据
  * @param {*} data 原始数据
  * @param {*} defaultExpandIds 默认展开节点
  * @param {*} defaultExpandAll 是否默认展开全部节点
  * @param {*} isGenEntries 是否生成 map 集合（当多选且数据回显方式不等于 ALL 时）
  */
-export const flattenNodesData = (data, defaultExpandIds = [], defaultExpandAll = false, isGenEntries = false) => {
+export const flattenNodesData = (data, isGenEntries = false) => {
   let flattenData = []
-  const expandIds = new Set([])
   const nodeEntries = {}
-  let tempExpands = []
-  const addExpandIds = (node) => {
-    const ancestorsNodes = getAncestorsNodes(node, flattenData)
-    ancestorsNodes.forEach(n => expandIds.add(n.id))
-    expandIds.add(node.id)
-  }
   const fun = (datas, newArr, parent = {}) => {
     datas = _.cloneDeep(datas)
     datas.forEach(node => {
@@ -197,14 +208,6 @@ export const flattenNodesData = (data, defaultExpandIds = [], defaultExpandAll =
         parent
       })
       if (_children) {
-        if (defaultExpandAll) {
-          // 默认全展开时，所有节点加入展开集合
-          expandIds.add(node.id)
-        }
-        if (!defaultExpandAll && defaultExpandIds.includes(node.id)) {
-          // 非默认全部展开时，单独处理所有祖先元素的展开状态
-          tempExpands.push(node)
-        }
         fun(_children, newArr, node)
         delete node.children
       } else {
@@ -213,12 +216,8 @@ export const flattenNodesData = (data, defaultExpandIds = [], defaultExpandAll =
     })
   }
   fun(data, flattenData)
-  if (tempExpands.length > 0) {
-    tempExpands.forEach(te => addExpandIds(te))
-  }
   return {
     flattenData,
-    expandIds: [...expandIds],
     nodeEntries
   }
 }
