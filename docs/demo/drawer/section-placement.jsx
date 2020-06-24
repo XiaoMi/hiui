@@ -2,7 +2,9 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Drawer from '../../../components/drawer'
-const prefix = 'drawer-base'
+import Radio from '../../../components/radio'
+const desc = '设置抽屉拉出的方向'
+const prefix = 'drawer-placement'
 const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Drawer from '@hi-ui/hiui/es/drawer'\n
@@ -26,8 +28,8 @@ class Demo extends React.Component {
         <Drawer
           title="提示消息"
           visible={this.state.visible}
-          onConfirm={this.cancelEvent.bind(this)}
           onClose={this.cancelEvent.bind(this)}
+          placement="left"
         >
           <span>一些消息....</span><br/>
           <span>一些消息...</span><br/>
@@ -37,6 +39,7 @@ class Demo extends React.Component {
     )
   }
 }`
-
-const DemoBase = () => <DocViewer code={code} scope={{ Button, Drawer }} prefix={prefix} />
-export default DemoBase
+const DemoPlacement = () => (
+  <DocViewer code={code} scope={{ Button, Drawer, Radio }} prefix={prefix} desc={desc} />
+)
+export default DemoPlacement

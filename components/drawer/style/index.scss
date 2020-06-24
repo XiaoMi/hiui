@@ -1,6 +1,6 @@
-$drawer: 'hi-drawer';
-$fontColor: #383e47;
-$borderColor: #e7e7e7;
+$drawer: 'hi-drawer' !default;
+$fontColor: #383e47 !default;
+$borderColor: #e7e7e7 !default;
 
 .#{$drawer} {
   color: $fontColor;
@@ -12,9 +12,17 @@ $borderColor: #e7e7e7;
     left: 0;
     right: 0;
     bottom: 0;
-    height: 100%;
+    height: 0;
     z-index: 1000;
     background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transition: opacity 0.3s, height 0s 0.3s;
+
+    &--visible {
+      opacity: 1;
+      height: 100%;
+      transition: opacity 0.3s;
+    }
   }
 
   &__wrapper {
@@ -25,12 +33,21 @@ $borderColor: #e7e7e7;
     background: #fff;
     z-index: 1000;
     top: 0;
-    right: 0;
-    position: fixed;
+    position: absolute;
     border-radius: 2px;
     box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
     transform: translateX(100%);
     transition: transform 0.3s;
+
+    &--left {
+      left: 0;
+      transform: translateX(-100%);
+    }
+
+    &--right {
+      right: 0;
+      transform: translateX(100%);
+    }
 
     &--visible {
       transform: none;
@@ -58,12 +75,8 @@ $borderColor: #e7e7e7;
   }
 
   &__footer {
-    height: 64px;
     border-top: 1px solid $borderColor;
-    box-sizing: border-box;
-    padding: 0 24px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    padding: 12px;
+    flex-shrink: 0;
   }
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import ReactDOM from 'react-dom'
 import Button from '../button'
 import Icon from '../icon'
@@ -13,30 +13,48 @@ const getDefaultContainer = () => {
   return defaultContainer
 }
 
-const DrawerComp = ({ children, container, visible, title, onConfirm, onCancel }) => {
+const DrawerComp = ({
+  children,
+  container,
+  visible,
+  title,
+  onConfirm,
+  onClose,
+  maskClosable = true,
+  closable = true,
+  footer,
+  width,
+  showMask = true,
+  placement = 'right'
+}) => {
   const defaultContainer = useRef(false)
   if (defaultContainer.current === false) {
     defaultContainer.current = getDefaultContainer()
   }
   return ReactDOM.createPortal(
     <div className={PREFIX}>
-      <div className={`${PREFIX}__mask`} style={{ display: visible === false && 'none' }} />
+      {showMask && (
+        <div
+          className={Classnames(`${PREFIX}__mask`, { [`${PREFIX}__mask--visible`]: visible })}
+          onClick={() => {
+            if (maskClosable) {
+              onClose()
+            }
+          }}
+        />
+      )}
       <div
-        className={Classnames(`${PREFIX}__wrapper`, { [`${PREFIX}__wrapper--visible`]: visible })}
+        style={{ width: width }}
+        className={Classnames(`${PREFIX}__wrapper`, `${PREFIX}__wrapper--${placement}`, {
+          [`${PREFIX}__wrapper--visible`]: visible
+        })}
       >
         <div className={`${PREFIX}__header`}>
           {title}
-          <Icon name={'close'} style={{ cursor: 'pointer' }} onClick={onCancel} />
+          {closable && <Icon name={'close'} style={{ cursor: 'pointer' }} onClick={onClose} />}
         </div>
         <div className={`${PREFIX}__content`}>{children}</div>
-        <div className={`${PREFIX}__footer`}>
-          <Button type={'line'} onClick={onCancel}>
-            取消
-          </Button>
-          <Button type={'primary'} onClick={onConfirm}>
-            确认
-          </Button>
-        </div>
+        {footer && <div className={`${PREFIX}__footer`}>{footer}</div>}
       </div>
     </div>,
     container || defaultContainer.current
