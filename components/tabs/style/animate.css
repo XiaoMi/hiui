@@ -57,6 +57,7 @@
   animation: slideBottomLeave linear 300ms 1;
   animation-fill-mode: forwards;
 }
+
 @keyframes dragup {
   from {
     margin-top: 0px;
@@ -110,7 +111,7 @@
 
 .item-enter-active {
   opacity: 1;
-  transition: opacity 500ms ease-in;
+  transition: opacity 300ms ease-in;
 }
 
 .item-exit {
@@ -119,7 +120,7 @@
 
 .item-exit-active {
   opacity: 0;
-  transition: opacity 500ms ease-in;
+  transition: opacity 300ms ease-in;
 }
 
 @keyframes slideRight {
@@ -159,7 +160,7 @@
 
 @keyframes slideLeftLeave {
   from {
-    right:0;
+    right: 0;
     opacity: 1
   }
 
@@ -169,6 +170,7 @@
     opacity: 0;
   }
 }
+
 @keyframes slideTop {
   from {
     top: -100%
@@ -206,7 +208,7 @@
 
 @keyframes slideBottomLeave {
   from {
-    top:0;
+    top: 0;
     opacity: 1
   }
 
@@ -215,3 +217,33 @@
     opacity: 0;
   }
 }
+
+.tab-items-enter {
+  box-sizing: border-box;
+  opacity: 0;
+  width: 0;
+  padding: 0 !important;
+  transition: all 200ms ease-in-out;
+}
+
+.tab-items-enter-active {
+  opacity: 1;
+  width: 'auto';
+  padding: 0 8px;
+  transition: all 200ms ease-in-out;
+}
+
+.tab-items-exit {
+  opacity: 1;
+  width: 'auto';
+  padding: 0 8px;
+  transition: all 200ms ease-in-out;
+}
+
+.tab-items-exit-active {
+  opacity: 0;
+  width: 0;
+  padding:0 !important;
+  transition: all 200ms ease-in-out;
+}
+

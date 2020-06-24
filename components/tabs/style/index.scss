@@ -352,12 +352,6 @@ $prefix: 'hi-tabs' !default;
 
   &-pane {
     position: relative;
-
-    > div {
-      height: 100% !important;
-      flex: 1;
-      box-sizing: border-box;
-    }
   }
 }
 

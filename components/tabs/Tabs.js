@@ -5,7 +5,10 @@ import Icon from '../icon'
 import Tooltip from '../tooltip'
 import ItemDropdown from './ItemDropdown'
 import TabItem from './TabItem'
-
+import {
+  CSSTransition,
+  TransitionGroup
+} from 'react-transition-group'
 const noop = () => { }
 
 const Tabs = ({
@@ -153,11 +156,11 @@ const Tabs = ({
 
   const renderTabContent = (child, index) => {
     const { tabId, duration } = child.props
-
+    console.log(latestActiveId.current, activeId)
     return cloneElement(child, {
       show: tabId === activeId,
-      latestActiveIdIndex: latestActiveId.current.split('-')[1],
-      activeIdIndex: activeId.split('-')[1],
+      latestActiveIdIndex: latestActiveId.current ? latestActiveId.current.split('-')[1] : -1,
+      activeIdIndex: activeId ? activeId.split('-')[1] : -1,
       index,
       duration,
       placement
@@ -246,18 +249,28 @@ const Tabs = ({
 
   const editableFlag = checkEditable()
 
+  const animateDone = (tabId) => {
+    Tooltip.close(`tab-${tabId}`)
+  }
   let activeTabInHiddenItems = true
 
   return <div className={tabsClasses}>
     <div className={`${prefixCls}__header`}>
 
       <div className={`${prefixCls}__nav contain`} onDragOver={dragOver} ref={containRef}>
-
-        {showTabItems.map((item, index) => {
-          const { tabId } = item
-          activeTabInHiddenItems = activeTabInHiddenItems && tabId !== activeId
-          return <TabItem key={`${prefixCls}__item-${index}`} index={index} prefixCls={prefixCls} item={item} draggable={draggable} activeId={activeId} type={type} showTabItems={showTabItems} editable={editableFlag} crossBorder={crossBorder} handleClick={handleClick} deleteTab={deleteTab} dragStart={dragStart} dragEnd={dragEnd} />
-        })}
+        <TransitionGroup className='todo-list' component={null} >
+          {showTabItems.map((item, index) => {
+            const { tabId } = item
+            activeTabInHiddenItems = activeTabInHiddenItems && tabId !== activeId
+            return <CSSTransition
+              key={tabId}
+              timeout={200}
+              unmountOnExit
+              onExit={() => animateDone(tabId)}
+              classNames='tab-items'
+            ><TabItem key={`${prefixCls}__item-${index}`} index={index} prefixCls={prefixCls} item={item} draggable={draggable} activeId={activeId} type={type} showTabItems={showTabItems} editable={editableFlag} crossBorder={crossBorder} handleClick={handleClick} deleteTab={deleteTab} dragStart={dragStart} dragEnd={dragEnd} /></CSSTransition>
+          })}
+        </TransitionGroup>
 
         {
           hiddenTabItems.length > 0 &&
