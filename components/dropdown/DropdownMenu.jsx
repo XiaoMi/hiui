@@ -25,6 +25,7 @@ class DropdownMenu extends React.Component {
       <Popper
         className={`${prefixCls}__popper`}
         show={visible}
+        container={document.body}
         attachEle={attachEle}
         zIndex={1060}
         placement={placement}
