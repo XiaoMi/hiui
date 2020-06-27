@@ -211,17 +211,13 @@ class Counter extends React.Component {
   }
 
   getInputNumber () {
-    const { max = Infinity, min = 0 } = this.props
+    const { max, min } = this.props
     let value = this.valueTrue
     if (isNaN(value)) {
-      value = min
+      value = 0
     }
-    if (value - max >= 0) {
-      value = max
-    }
-    if (value - min <= 0) {
-      value = min
-    }
+    value = max && value - max >= 0 ? max : value
+    value = min && value - min <= 0 ? min : value
     return value
   }
 
