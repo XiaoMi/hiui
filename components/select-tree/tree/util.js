@@ -224,6 +224,7 @@ export const flattenNodesData = (data, isGenEntries = false) => {
 
 /**
  * 根据 defaultValue 解析默认选中项（自动勾选）
+ * 2020.06.28 暂停「不含在数据中」的默认值，会引起诸多副作用
  * defaultValue:
  * [id, ...]  |  [title, ...] | [{id: ..}] | [{id: ..., title: ...}]
  * 匹配原则： 如果值不符合 {id, title}，会优先从现有数据中匹配 id 或 title，如匹配成功，取 node 做为已选中，如无匹配 则跳过
@@ -241,16 +242,14 @@ export const parseDefaultSelectedItems = (defaultValue, flattenData) => {
         // [0, 'x']
         node = getNodeByIdTitle(val, flattenData)
       } else {
-        if (val.id && val.title) {
-          // [{id: '', title: ''}]
-          node = getNode(val.id, flattenData) || val
-        } else {
-          node = getNodeByIdTitle(val.id || val.title, flattenData)
-        }
+        // if (val.id && val.title) {
+        //   // [{id: '', title: ''}]
+        //   node = getNode(val.id, flattenData) || val
+        // } else {
+        node = getNodeByIdTitle(val.id || val.title, flattenData)
+        // }
       }
-      if (node) {
-        defaultNodes.push(node)
-      }
+      node && defaultNodes.push(node)
     })
   }
   return defaultNodes
@@ -260,7 +259,8 @@ export const parseDefaultSelectedItems = (defaultValue, flattenData) => {
  * 根据 defaultCheckedIds 解析全选/半选数据
  * @param {*} selectedItems 已选中选项
  */
-export const parseCheckStatusData = (selectedItems, checkedNodes, flattenData) => {
+export const parseCheckStatusData = (value, checkedNodes, flattenData) => {
+  const selectedItems = parseDefaultSelectedItems(value, flattenData)
   let semiCheckedIds = new Set(checkedNodes.semiChecked)
   const checkedIds = new Set(checkedNodes.checked)
   semiCheckedIds.clear()

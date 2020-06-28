@@ -44,7 +44,7 @@ const SelectTree = ({
   // const [selectedIds, setSelectedIds] = useState([])
   const [expandIds, setExpandIds] = useState([])
   const [nodeEntries, setNodeEntries] = useState({})
-  const [checkedNodes, setCheckNodes] = useState({
+  const [checkedNodes, setCheckedNodes] = useState({
     checked: [],
     semiChecked: []
   })
@@ -59,17 +59,22 @@ const SelectTree = ({
   }, [data])
   useEffect(() => {
     if (flattenData.length > 0) {
-      const _selectedItems = parseDefaultSelectedItems(defaultValue.length > 0 ? defaultValue : value, flattenData)
-      setSelectedItems(_selectedItems)
-      console.log('_selectedItems', _selectedItems)
       if (type === 'multiple') {
-        const cstatus = parseCheckStatusData(_selectedItems, checkedNodes, flattenData)
+        const cstatus = parseCheckStatusData(defaultValue.length > 0 ? defaultValue : value, checkedNodes, flattenData)
+        console.log(defaultValue, cstatus)
         if (cstatus) {
-          setCheckNodes(cstatus)
+          setCheckedNodes(cstatus)
         }
+      } else {
+        const _selectedItems = parseDefaultSelectedItems(defaultValue.length > 0 ? defaultValue : value, flattenData)
+        setSelectedItems(_selectedItems)
       }
     }
   }, [value, flattenData])
+  useEffect(() => {
+    const _selectedItems = parseSelectedItems(checkedNodes, nodeEntries, showCheckedMode, flattenData)
+    setSelectedItems(_selectedItems)
+  }, [checkedNodes])
   useEffect(() => {
     if (flattenData.length > 0) {
       const _expandIds = parseExpandIds(expandIdsProps, defaultExpandIds, flattenData)
@@ -143,7 +148,7 @@ const SelectTree = ({
   const handleClear = useCallback(() => {
     setSelectedItems([])
     setExpandIds([])
-    setCheckNodes({
+    setCheckedNodes({
       checked: [],
       semiChecked: []
     })
@@ -198,12 +203,12 @@ const SelectTree = ({
     } else {
       result = updateUnCheckData(node, flattenData, checkedIds, semiCheckedIds)
     }
-    setCheckNodes({
+    setCheckedNodes({
       checked: result.checked,
       semiChecked: result.semiChecked
     })
-    const _selectedItems = parseSelectedItems(result, nodeEntries, showCheckedMode, flattenData)
-    setSelectedItems(_selectedItems)
+    // const _selectedItems = parseSelectedItems(result, nodeEntries, showCheckedMode, flattenData)
+    // setSelectedItems(_selectedItems)
     let checkedArr = []
     if (result.checked.length > 0) {
       checkedArr = result.checked.map(id => {

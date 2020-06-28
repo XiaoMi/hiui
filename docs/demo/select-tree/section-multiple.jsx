@@ -165,7 +165,7 @@ class Demo extends React.Component {
           expandIds={expandIds}
           // defaultExpandAll // done
           // defaultExpandIds={['1-2-0-0-0-0']} // done
-          // showCheckedMode='ALL' //done
+          showCheckedMode='PARENT' //done
           // dataSource={key => {
           //   return {
           //     type: 'GET',
@@ -208,7 +208,8 @@ class Demo extends React.Component {
             type='multiple'
             clearable
             data={singleList}
-            defaultValue={[{id: '0-1-0-0-0'}, {id: 'xx', title: '未包含在列表中'}]} // done
+            showCheckedMode='PARENT'
+            defaultValue={[{id: '0-1-0-0-0'}]} // done
           />
         )
       }
