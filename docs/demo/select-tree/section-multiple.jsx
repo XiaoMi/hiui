@@ -138,6 +138,20 @@ class Demo extends React.Component {
       //0-1-0-0-0
     })
   }
+  clickEvent4() {
+    this.setState({
+      singleList: [{
+        id: '11',
+        title: '11',
+        children: [{
+          id: '11-0',
+          title: '1-0'
+        }]
+      }],
+      expandIds: ['11']
+      //0-1-0-0-0
+    })
+  }
   render () {
     const { value, singleList, expandIds } = this.state
     return (
@@ -173,6 +187,7 @@ class Demo extends React.Component {
         <button onClick={this.clickEvent1.bind(this)}>更改源数据</button>
         <button onClick={this.clickEvent2.bind(this)}>更改默认值</button>
         <button onClick={this.clickEvent3.bind(this)}>更改默认展开值</button>
+        <button onClick={this.clickEvent4.bind(this)}>同时更改源数据和展开项</button>
 
       </div>
     )
@@ -193,7 +208,7 @@ class Demo extends React.Component {
             type='multiple'
             clearable
             data={singleList}
-            // defaultValue={[{id: '0-1-0-0-0'}, {id: 'xx', title: '未包含在列表中'}]} // done
+            defaultValue={[{id: '0-1-0-0-0'}, {id: 'xx', title: '未包含在列表中'}]} // done
           />
         )
       }

@@ -33,7 +33,6 @@ const TreeNode = ({ data, flttenData }) => {
     onExpandEvent,
     isRemoteLoadData
   } = useContext(TreeContext)
-
   const treeNodeRef = useRef(null)
 
   const renderIndent = useCallback(() => {

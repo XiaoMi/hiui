@@ -172,8 +172,8 @@ export const parseExpandIds = (expandIds, defaultExpandIds, flattenData) => {
   let arr = []
   ids.forEach(id => {
     const node = getNode(id, flattenData)
-    arr.push(node.id)
     if (node) {
+      arr.push(node.id)
       node.ancestors && node.ancestors.length > 0 && (arr = arr.concat(node.ancestors))
     }
   })
@@ -270,7 +270,6 @@ export const parseCheckStatusData = (selectedItems, checkedNodes, flattenData) =
     isUpdate = true
     updateCheckData(node, flattenData, checkedIds, semiCheckedIds)
   })
-  console.log(checkedIds)
   if (isUpdate) {
     return {
       checked: [...checkedIds],

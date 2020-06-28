@@ -59,10 +59,11 @@ const SelectTree = ({
   }, [data])
   useEffect(() => {
     if (flattenData.length > 0) {
-      const _selectedItems = parseDefaultSelectedItems(value, flattenData)
+      const _selectedItems = parseDefaultSelectedItems(defaultValue.length > 0 ? defaultValue : value, flattenData)
       setSelectedItems(_selectedItems)
-      if (type === 'multiple' && value.length > 0) {
-        const cstatus = parseCheckStatusData(_selectedItems, {checked: [], semiChecked: []}, flattenData)
+      console.log('_selectedItems', _selectedItems)
+      if (type === 'multiple') {
+        const cstatus = parseCheckStatusData(_selectedItems, checkedNodes, flattenData)
         if (cstatus) {
           setCheckNodes(cstatus)
         }
@@ -70,11 +71,11 @@ const SelectTree = ({
     }
   }, [value, flattenData])
   useEffect(() => {
-    console.log('expandIdsProps')
     if (flattenData.length > 0) {
       const _expandIds = parseExpandIds(expandIdsProps, defaultExpandIds, flattenData)
-      console.log('exp', flattenData)
-      setExpandIds(_expandIds)
+      setExpandIds((preExpandIds) => {
+        return (_expandIds || []).concat(preExpandIds || [])
+      })
     }
   }, [expandIdsProps, flattenData])
 
@@ -219,7 +220,6 @@ const SelectTree = ({
   */
   const _expandEvents = (bol, node, callback) => {
     const _expandIds = [...expandIds]
-    console.log(11, _expandIds, node)
     const hasIndex = _expandIds.findIndex(id => id === node.id)
     if (hasIndex !== -1) {
       _expandIds.splice(hasIndex, 1)
@@ -234,10 +234,8 @@ const SelectTree = ({
       return
     }
     loadNodes(node.id).then((res) => {
-      console.log(22, _expandIds)
-
-      setFlattenData(flattenData.concat(res))
       setExpandIds(_expandIds)
+      setFlattenData(flattenData.concat(res))
       callback()
     })
     onExpand()
