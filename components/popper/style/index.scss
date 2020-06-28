@@ -62,7 +62,14 @@ $AnimationClassName :'hi-popper_transition' !default;
   }
 
   &-exit {
-    opacity: 1;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 300ms, transform 300ms;
+  }
+
+  &-exit-done {
+    opacity: 0;
+    transform: translateX(100%);
   }
 
   &-exit-active {

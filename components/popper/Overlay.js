@@ -4,6 +4,7 @@ import classNames from 'classnames'
 
 import PopperJS from './utils/popper'
 import { getOffset } from './utils/positionUtils'
+import useClickOutside from './utils/useClickOutside'
 import './style/index'
 
 const {
@@ -26,7 +27,8 @@ const Overlay = props => {
     onMouseOver,
     onMouseOut,
     onMouseEnter,
-    onMouseLeave
+    onMouseLeave,
+    onClickOutside
   } = props
   const [isAddevent, setIsAddevent] = useState(false)
   const [state, setState] = useState({
@@ -40,6 +42,12 @@ const Overlay = props => {
   let popperHeight
   let popperWidth
   const staticPopperRef = useRef()
+  let popperContainerRef
+  if (onClickOutside) {
+    popperContainerRef = useClickOutside(e => {
+      onClickOutside && onClickOutside(e)
+    }, undefined, 'click', attachEle)
+  }
 
   const scrollCallBack = useCallback(() => {
     setState(Object.assign({}, state, { offset: getOffset(props, state) }))
@@ -114,6 +122,7 @@ const Overlay = props => {
   let top = offset.top + 'px'
   return (
     <div
+      ref={popperContainerRef}
       className={classNames('hi-popper__container', {
         'hi-popper__container--hide': !show
       })}

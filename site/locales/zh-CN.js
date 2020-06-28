@@ -24,6 +24,7 @@ module.exports = {
     badge: 'Badge 红点 / 徽标',
     notification: 'Notification 通知框',
     modal: 'Modal 模态对话框',
+    drawer: 'Drawer 抽屉',
     confirm: 'confirm 方法组件',
     form: 'Form 表单',
     alert: 'Alert 警告提示',

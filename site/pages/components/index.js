@@ -1,6 +1,6 @@
 const components = {}
 const files = require.context(`../../../docs/zh-CN/components`, false, /.mdx$/)
-files.keys().forEach(key => {
+files.keys().forEach((key) => {
   let _key = key.split('/')[1].split('.')[0]
   components[_key] = files(key).default
 })
@@ -60,6 +60,7 @@ export default {
     },
     'group-tips': {
       modal: components['modal'],
+      drawer: components['drawer'],
       notification: components['notification'],
       message: components['message'],
       alert: components['alert'],
