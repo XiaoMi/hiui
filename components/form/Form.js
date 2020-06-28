@@ -1,11 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useReducer,
+  useRef
+} from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-
+import FormReducer, { FILEDS_UPDATE } from './FormReducer'
 // Form hooks
 const getClassNames = props => {
-  const { labelPlacement, labelPosition, placement, inline } = props
+  const { labelPlacement, labelPosition, placement, inline, readOnly } = props
   const _className = {}
 
   if (labelPlacement || labelPosition) {
@@ -14,49 +20,46 @@ const getClassNames = props => {
   if (placement === 'horizontal' || inline) {
     _className[`hi-form--inline`] = true
   }
+  _className[`hi-form--readOnly`] = readOnly
   return _className
 }
+
 export const FormContext = React.createContext({})
 const Form = props => {
   const { children, className, style, innerRef: formRef, initialValues } = props
-  const [fields, setFileds] = useState([])
-  // 获取子节点的所有filed
-  const initFields = childrenFiled => {
-    setFileds(preState => {
-      const isIncludes = preState.some(item => {
-        return item.field === childrenFiled.field
+  const FormInstance = useRef(parseInt(Math.random() * 1000000 + 100000)) // 私立
+  const [state, dispatch] = useReducer(FormReducer, {
+    fields: [],
+    ...props,
+    FormInstance
+  })
+  const { fields } = state
+
+  const removeField = useCallback(
+    childrenFiled => {
+      dispatch({
+        type: FILEDS_UPDATE,
+        payload: fields.filter(
+          fieldItem => fieldItem.field !== childrenFiled.field
+        )
       })
-      return preState.concat(isIncludes ? [] : childrenFiled)
-    })
-  }
-  // 更新所有子节点的
-  const updateFieldValue = childrenFiled => {
-    const _fields = _.cloneDeep(fields)
-    _fields.forEach(item => {
-      if (item.field === childrenFiled.field) {
-        Object.assign(item, childrenFiled)
-      }
-    })
-    setFileds(_fields)
-  }
-  const removeField = childrenFiled => {
-    setFileds(
-      fields.filter(fieldItem => fieldItem.field !== childrenFiled.field)
-    )
-  }
+    },
+    [fields]
+  )
   // 用户手动设置表单数据
-  const setFieldsValue = values => {
-    const _fields = _.cloneDeep(fields)
-    _fields.forEach(item => {
-      const { field } = item
-      if (values.hasOwnProperty(field)) {
-        const value = values[field]
-        item.value = value
-        item.setValue(value)
-      }
-    })
-    setFileds(_fields)
-  }
+  const setFieldsValue = useCallback(
+    values => {
+      const _fields = _.cloneDeep(fields)
+      _fields.forEach(item => {
+        const { field } = item
+        if (values.hasOwnProperty(field)) {
+          item.value = values[field]
+        }
+      })
+      dispatch({ type: FILEDS_UPDATE, payload: _fields })
+    },
+    [fields]
+  )
   // 重置校验
   const resetValidates = useCallback(
     (cb, resetNames, toDefault) => {
@@ -74,7 +77,7 @@ const Form = props => {
           toDefault ? initialValues[childrenField.field] : ''
         )
       })
-      setFileds(_fields)
+      dispatch({ type: FILEDS_UPDATE, payload: _fields })
       cb instanceof Function && cb()
     },
     [fields, initialValues]
@@ -141,9 +144,9 @@ const Form = props => {
       <FormContext.Provider
         value={{
           formProps: props,
-          updateFieldValue,
+          formState: state,
+          dispatch: dispatch,
           removeField,
-          initFields,
           fields,
           validate,
           resetValidates
@@ -155,7 +158,6 @@ const Form = props => {
   )
 }
 Form.propTypes = {
-  model: PropTypes.object,
   rules: PropTypes.object,
   labelPlacement: PropTypes.oneOf(['right', 'left', 'top']),
   labelPosition: PropTypes.oneOf(['right', 'left', 'top']),

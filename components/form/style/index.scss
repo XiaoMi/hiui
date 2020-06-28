@@ -24,6 +24,10 @@
     flex-wrap: wrap;
   }
 
+  &--readOnly {
+    pointer-events: none;
+  }
+
   &__title {
     box-sizing: border-box;
     margin-top: 0;

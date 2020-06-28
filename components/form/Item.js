@@ -1,9 +1,11 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
 import { depreactedPropsCompat } from '../_util'
 import { FormContext } from './Form'
+import { FILEDS_INIT, FILEDS_UPDATE_VALUE, FILEDS_UPDATE } from './FormReducer'
+
 /**
  * valuePropName 指定该表单的value 名称
  * rules 中 如果trigger 不传入 则 在最后点击时候时候校验规则
@@ -12,7 +14,7 @@ import { FormContext } from './Form'
  */
 
 const FormItem = props => {
-  const { updateFieldValue, formProps, removeField, initFields } = useContext(
+  const { formProps, removeField, formState, dispatch } = useContext(
     FormContext
   )
   const {
@@ -32,20 +34,29 @@ const FormItem = props => {
       form: { colon }
     }
   } = formProps || {}
+  console.log('formState', formState)
   // 初始化FormItem的内容
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
   const [validating, setValidating] = useState(false)
-  // 跟新值到父级元素
-  const updateFieldToParent = _value => {
-    updateFieldValue({
+  // 更新
+  const updateField = _value => {
+    const { fields } = formState
+    const childrenFiled = {
       field,
       value: _value,
       rules: getRules(),
       resetValidate,
       setValue,
       validate
+    }
+    const _fields = _.cloneDeep(fields)
+    _fields.forEach(item => {
+      if (item.field === childrenFiled.field) {
+        Object.assign(item, childrenFiled)
+      }
     })
+    dispatch({ type: FILEDS_UPDATE, payload: _fields })
   }
   const resetValidate = (value = '') => {
     // 清空数据
@@ -101,13 +112,16 @@ const FormItem = props => {
   }
   useEffect(() => {
     if (field) {
-      initFields({
-        field,
-        value: initialValues && initialValues[field],
-        rules: getRules(),
-        resetValidate,
-        setValue,
-        validate
+      dispatch({
+        type: FILEDS_INIT,
+        payload: {
+          field,
+          value: initialValues && initialValues[field],
+          rules: getRules(),
+          resetValidate,
+          setValue,
+          validate
+        }
       })
       valueInit()
     }
@@ -138,7 +152,7 @@ const FormItem = props => {
   // 对字段的操作
   const handleField = (triggerType, currentValue) => {
     // 更新数据给父级
-    updateFieldToParent(currentValue)
+    updateField(currentValue)
     let rules = getRules()
     const hasTriggerType = rules.some(rule => {
       const { trigger = '' } = rule
@@ -153,6 +167,7 @@ const FormItem = props => {
       ? '100%'
       : !Number.isNaN(Number(labelWidth)) && Number(labelWidth)
   }
+  // jsx渲染方式
   const renderChildren = () => {
     if (!children) {
       return null
