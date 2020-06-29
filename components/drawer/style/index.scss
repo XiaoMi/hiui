@@ -33,7 +33,7 @@ $borderColor: #e7e7e7 !default;
     background: #fff;
     z-index: 1000;
     top: 0;
-    position: absolute;
+    position: fixed;
     border-radius: 2px;
     box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
     transform: translateX(100%);
