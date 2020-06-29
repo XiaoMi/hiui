@@ -17,6 +17,7 @@ const {
 export default class Overlay extends Component {
   popperHeight = undefined
   popperWidth = undefined
+  eventName = 'click'
   static propTypes = {
     width: PropTypes.oneOfType([
       PropTypes.string,
@@ -65,6 +66,7 @@ export default class Overlay extends Component {
   }
   constructor (props) {
     super(props)
+    this.popperWraperRef = React.createRef()
     this.state = {
       offset: undefined,
       isAddevent: false,
@@ -96,6 +98,7 @@ export default class Overlay extends Component {
     }
     return null
   }
+
   componentDidMount () {
     const { container } = this.props
     this.setState({
@@ -157,6 +160,7 @@ export default class Overlay extends Component {
     let top = offset.top + 'px'
     return (
       <div
+        ref={this.popperWraperRef}
         className={classNames('hi-popper__container', {
           'hi-popper__container--hide': !show
         })}

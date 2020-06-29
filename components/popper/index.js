@@ -3,7 +3,6 @@ import { CSSTransition } from 'react-transition-group'
 import Portal from './Portal'
 import Overlay from './Overlay'
 import PopperJS from './utils/popper'
-import useClickOutside from './utils/useClickOutside'
 
 import './style/index'
 
@@ -13,14 +12,14 @@ const AnimationClassName = 'hi-popper_transition'
 export default class Popper extends Component {
   constructor (props) {
     super(props)
-    const { show, attachEle } = props
+    const { show } = props
     this.state = {
       staticShow: show,
       transitionShow: show,
       container: props.container || document.body
     }
   }
-  static getDerivedStateFromProps (nextProps, prevState) {
+  static getDerivedStateFromProps (nextProps) {
     const { attachEle, container, show } = nextProps
     const _container = attachEle ? getScrollParent(attachEle) : document.body
     return {
@@ -54,4 +53,4 @@ export default class Popper extends Component {
     )
   }
 }
-export { Portal, useClickOutside }
+export { Portal }
