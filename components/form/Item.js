@@ -4,7 +4,7 @@ import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
 import { depreactedPropsCompat } from '../_util'
 import { FormContext } from './Form'
-import { FILEDS_INIT, FILEDS_UPDATE_VALUE, FILEDS_UPDATE } from './FormReducer'
+import { FILEDS_INIT, FILEDS_UPDATE } from './FormReducer'
 import * as HIUI from '../'
 
 /**
@@ -184,26 +184,39 @@ const FormItem = props => {
       handleField(eventName, value)
     })
   }
+  const setEventBySchema = (eventName, componentProps, e, ...args) => {
+    e.persist && e.persist()
+    eventName === 'onChange' &&
+      componentProps.onChange &&
+      componentProps.onChange(e, ...args)
+    eventName === 'onBlur' &&
+      componentProps.onBlur &&
+      componentProps.onBlur(e, ...args)
+    const value =
+      e.target && e.target.hasOwnProperty(valuePropName)
+        ? e.target[valuePropName]
+        : e
+    setValue(value)
+    setTimeout(() => {
+      handleField(eventName, value)
+    })
+  }
   // jsx渲染方式
   const renderChildren = () => {
     const { component, componentProps } = props
-    console.log(component, componentProps)
-
     if (_type === 'SchemaForm' && component) {
       if (HIUI[component]) {
         const ChildTag = HIUI[component]
-        console.log('ChildTag', ChildTag)
-        return (
-          <ChildTag
-            {...componentProps}
-            onChange={(e, ...args) => {
-              setEvent('onChange', e, ...args)
-            }}
-            onBlur={(e, ...args) => {
-              setEvent('onBlur', e, ...args)
-            }}
-          />
-        )
+        return React.createElement(ChildTag, {
+          ...componentProps,
+          [valuePropName]: value,
+          onChange: (e, ...args) => {
+            setEventBySchema('onChange', componentProps, e, ...args)
+          },
+          onBlur: (e, ...args) => {
+            setEventBySchema('onBlur', componentProps, e, ...args)
+          }
+        })
       } else {
         throw new Error('not found ' + component)
       }

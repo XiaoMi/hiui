@@ -1,13 +1,5 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useReducer,
-  useRef
-} from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import _ from 'lodash'
-import classNames from 'classnames'
-import PropTypes from 'prop-types'
 import Provider from '../context'
 import Form from './Form'
 import FormItem from './Item'
@@ -20,7 +12,6 @@ const SchemaForm = props => {
   useEffect(() => {
     setSchema(schemaProps)
   }, [schemaProps])
-  // 渲染Form表单schema内容
   const renderSchemaFormItem = useCallback(() => {
     if (Array.isArray(schema)) {
       return schema.map(schemaItem => {
@@ -39,19 +30,6 @@ const SchemaForm = props => {
       })
     }
   }, [schema])
-  // const renderSchemaFormChild = useCallback(() => {
-  //   return React.Children.map(childrenProps, child => {
-  //     const {
-  //       props: { children }
-  //     } = child
-  //     return Array.isArray(children) || !React.isValidElement(children)
-  //       ? children
-  //       : React.createElement(FormItem, {
-  //           type: 'SchemaForm',
-  //           children
-  //         })
-  //   })
-  // }, [childrenProps])
   return (
     <div className={`${prefixCls}`}>
       <FormWrapper {..._.omit(props, 'schema')} _type='SchemaForm'>
