@@ -8,8 +8,6 @@ import _ from 'lodash'
 import uuidv4 from 'uuid/v4'
 import CustomTreeNode from './customTreeNode'
 import './style/index.scss'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 
 const getMatchedNodes = (data, searchValue, matchedNodes = []) => {
   data.forEach((item) => {
@@ -334,11 +332,4 @@ const Tree = (props) => {
     </React.Fragment>
   )
 }
-const WrapperTree = (props) => {
-  return (
-    <DndProvider backend={HTML5Backend}>
-      <Tree {...props} />
-    </DndProvider>
-  )
-}
-export default WrapperTree
+export default Tree

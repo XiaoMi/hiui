@@ -5,7 +5,6 @@ import Icon from '../icon'
 import Classnames from 'classnames'
 import TreeContext from './context'
 
-import useDnD from './hooks/useDnD'
 import Loading from './IconLoading'
 const switcherApperanceMap = {
   default: ['packup', 'open'],
@@ -26,13 +25,18 @@ const TreeNode = ({ node }) => {
     onExpandNode,
     draggable,
     onLoadChildren,
-    apperance = 'default'
+    apperance = 'default',
+    onDragStart,
+    onDragOver,
+    onDrop,
+    onDragEnd
   } = useContext(TreeContext)
+  const [direction, setDirection] = useState(null)
+  const [dragId, setDragId] = useState(null)
+
   const move = (a, b, c) => {
     console.log(a, b, c)
   }
-
-  const [{ isDragging, isOver, direction }, ref] = useDnD({ id: node.id, move })
 
   const treeNodeRef = useRef(null)
 
@@ -82,6 +86,7 @@ const TreeNode = ({ node }) => {
       ))
   }, [])
 
+  // 渲染复选框
   const renderCheckbox = useCallback((node, { checked, semiChecked }) => {
     return (
       <Checkbox
@@ -94,16 +99,70 @@ const TreeNode = ({ node }) => {
     )
   }, [])
 
+  // 渲染标题
   const renderTitle = useCallback(
     (node, selectedId) => {
       const { id, title } = node
       return (
         <div
-          ref={draggable ? ref : treeNodeRef}
+          ref={treeNodeRef}
+          draggable={draggable}
           className={Classnames('tree-node__title', {
-            [`tree-node__title--${direction}`]: isOver && direction,
+            [`tree-node__title--${direction}`]: direction,
             [`tree-node__title--draggable`]: draggable
           })}
+          onDragStart={(e) => {
+            e.stopPropagation()
+            e.dataTransfer.setData('treeNode', id)
+            setDragId(id)
+            if (onDragStart) {
+              onDragStart(e)
+            }
+          }}
+          onDragEnd={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            e.dataTransfer.clearData()
+            setDragId(null)
+            if (onDragEnd) {
+              onDragEnd(e)
+            }
+          }}
+          onDragLeave={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            setDirection(null)
+          }}
+          onDragOver={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            if (dragId !== id) {
+              const targetBoundingRect = treeNodeRef.current.getBoundingClientRect()
+              const hoverTargetSortY = (targetBoundingRect.bottom - targetBoundingRect.top) / 3
+              const hoverTargetInsideY = hoverTargetSortY * 2
+              // 鼠标垂直移动距离
+              const hoverClientY = e.clientY - targetBoundingRect.top
+
+              if (hoverClientY < hoverTargetSortY) {
+                setDirection('up')
+              } else if (hoverClientY >= hoverTargetSortY && hoverClientY < hoverTargetInsideY) {
+                setDirection('in')
+              } else {
+                setDirection('down')
+              }
+            }
+            if (onDragOver) {
+              onDragOver(e)
+            }
+          }}
+          onDrop={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            setDirection(null)
+            if (onDrop) {
+              onDrop(e)
+            }
+          }}
         >
           {treeNodeRender ? (
             treeNodeRender(node, { selected: selectedId === id }, treeNodeRef, onSelectNode)
@@ -122,8 +181,7 @@ const TreeNode = ({ node }) => {
         </div>
       )
     },
-    [treeNodeRef, ref, draggable, direction, isOver, treeNodeRender]
-    // [treeNodeRef, draggable, treeNodeRender]
+    [treeNodeRef, draggable, treeNodeRender, direction, dragId]
   )
   return (
     <li className='tree-node'>
@@ -131,8 +189,8 @@ const TreeNode = ({ node }) => {
         (node.children && node.children.length) || (onLoadChildren && !node.isLeaf)
           ? node.depth
           : apperance !== 'default'
-          ? node.depth
-          : (node.depth && node.depth + 1) || 1
+            ? node.depth
+            : (node.depth && node.depth + 1) || 1
       )}
       {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
       {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf)) &&
