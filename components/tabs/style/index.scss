@@ -1,5 +1,5 @@
 @import '@hi-ui/core-css/index.scss';
-@import './animate.css';
+@import './animate.scss';
 
 $prefix: 'hi-tabs' !default;
 
@@ -143,11 +143,14 @@ $prefix: 'hi-tabs' !default;
       }
 
       .#{$prefix}__nav-hidden {
-        position: fixed;
+        position: absolute;
         flex-wrap: nowrap;
-        visibility: hidden;
-        right: -500px;
-        height: -500px;
+        visibility: visible;
+        // visibility: hidden;
+        // right: -500px;
+        // bottom: -500px;
+        top: 80px;
+        left: 0;
       }
 
       .#{$prefix}__item {
@@ -279,17 +282,6 @@ $prefix: 'hi-tabs' !default;
     & > .#{$prefix}__header {
       border-bottom: 1px solid #e6e7e8;
 
-      &::after {
-        content: '';
-        width: 0;
-        display: block;
-        height: 2px;
-        background-color: #1890ff;
-        bottom: -1px;
-        transition: transform 500ms;
-        position: absolute;
-      }
-
       .#{$prefix}__nav {
         display: flex;
         flex-wrap: nowrap;
@@ -311,6 +303,17 @@ $prefix: 'hi-tabs' !default;
         }
       }
     }
+
+    &__ink {
+      content: '';
+      width: 0;
+      display: block;
+      height: 2px;
+      background-color: #1890ff;
+      bottom: -1px;
+      transition: transform 500ms;
+      position: absolute;
+    }
   }
 
   &--line.#{$prefix}--vertical {
@@ -322,18 +325,18 @@ $prefix: 'hi-tabs' !default;
       display: inline-block;
       border-right: 1px solid #e6e7e8;
       border-bottom: 1px solid transparent;
+    }
 
-      &::after {
-        content: '';
-        display: block;
-        top: 0;
-        width: 2px !important;
-        background-color: #1890ff;
-        right: -1px;
-        height: 48px;
-        transition: transform 500ms;
-        position: absolute;
-      }
+    .#{$prefix}--line__ink {
+      content: '';
+      display: block;
+      top: 0;
+      width: 2px !important;
+      background-color: #1890ff;
+      right: -1px;
+      height: 48px;
+      transition: transform 500ms;
+      position: absolute;
     }
 
     .#{$prefix}__nav {

@@ -21,7 +21,6 @@ class Demo extends React.Component {
 
   descRender (value, index) {
     const arr =['极差','差', '一般', '满意','很满意']
-    console.log(value)
     return <span style={{color:'#FF6633'}}>{arr[Math.ceil(value)-1]} </span>;
   }
   render() {

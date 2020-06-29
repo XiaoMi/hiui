@@ -33,12 +33,12 @@ class Demo extends React.Component {
   }
   render () {
     return (
-      <div id="tabs-draggable">
+     
         <Tabs defaultActiveId='tabId-2' onTabClick={(tab,e) => console.log(tab,e)} draggable={true} onDragStart={(tab)=>console.log(tab)}   onDropEnd = {(dragNode,dropNode)=> {
           console.log(dragNode,dropNode)
         }} onDrop={(dragNode,dropNode)=> {
           console.log(dragNode,dropNode)
-        }}>
+        }} type="line">
           {
             this.state.panes.map((pane, index) => {
               return (
@@ -91,7 +91,7 @@ class Demo extends React.Component {
         console.log(dragNode,dropNode)
       }} onDrop={(dragNode,dropNode)=> {
         console.log(dragNode,dropNode)
-      }}>
+      }} type="line">
       {
         this.state.panes.map((pane, index) => {
           return (

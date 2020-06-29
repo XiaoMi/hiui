@@ -68,7 +68,7 @@ class Demo extends React.Component {
               tabId={pane.tabId}
               closeable={pane.closeable}
               key={index}
-              duration={true}
+              animation={true}
             >
               <div style={{padding: '16px'}}>{pane.tabTitle}</div>
             </Tabs.Pane>
@@ -117,7 +117,7 @@ class Demo extends React.Component {
               tabId={pane.tabId}
               closeable={pane.closeable}
               key={index}
-              duration={true}
+              animation={true}
             >
               <div style={{padding: '16px'}}>{pane.tabTitle}</div>
             </Tabs.Pane>
