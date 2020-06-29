@@ -9,7 +9,8 @@ import _ from 'lodash'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import FormReducer, { FILEDS_UPDATE } from './FormReducer'
-// Form hooks
+
+export const FormContext = React.createContext({})
 const getClassNames = props => {
   const { labelPlacement, labelPosition, placement, inline, readOnly } = props
   const _className = {}
@@ -24,9 +25,15 @@ const getClassNames = props => {
   return _className
 }
 
-export const FormContext = React.createContext({})
 const Form = props => {
-  const { children, className, style, innerRef: formRef, initialValues } = props
+  const {
+    children,
+    className,
+    style,
+    innerRef: formRef,
+    initialValues,
+    _type
+  } = props
   const FormInstance = useRef(parseInt(Math.random() * 1000000 + 100000)) // 私立
   const [state, dispatch] = useReducer(FormReducer, {
     fields: [],
@@ -149,7 +156,8 @@ const Form = props => {
           removeField,
           fields,
           validate,
-          resetValidates
+          resetValidates,
+          _type
         }}
       >
         {children}

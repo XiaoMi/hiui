@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import { depreactedPropsCompat } from '../_util'
 import { FormContext } from './Form'
 import { FILEDS_INIT, FILEDS_UPDATE_VALUE, FILEDS_UPDATE } from './FormReducer'
+import * as HIUI from '../'
 
 /**
  * valuePropName 指定该表单的value 名称
@@ -14,7 +15,7 @@ import { FILEDS_INIT, FILEDS_UPDATE_VALUE, FILEDS_UPDATE } from './FormReducer'
  */
 
 const FormItem = props => {
-  const { formProps, removeField, formState, dispatch } = useContext(
+  const { formProps, removeField, formState, dispatch, _type } = useContext(
     FormContext
   )
   const {
@@ -34,7 +35,6 @@ const FormItem = props => {
       form: { colon }
     }
   } = formProps || {}
-  console.log('formState', formState)
   // 初始化FormItem的内容
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
@@ -167,8 +167,47 @@ const FormItem = props => {
       ? '100%'
       : !Number.isNaN(Number(labelWidth)) && Number(labelWidth)
   }
+  const setEvent = (eventName, e, ...args) => {
+    e.persist && e.persist()
+    eventName === 'onChange' &&
+      children.props.onChange &&
+      children.props.onChange(e, ...args)
+    eventName === 'onBlur' &&
+      children.props.onBlur &&
+      children.props.onBlur(e, ...args)
+    const value =
+      e.target && e.target.hasOwnProperty(valuePropName)
+        ? e.target[valuePropName]
+        : e
+    setValue(value)
+    setTimeout(() => {
+      handleField(eventName, value)
+    })
+  }
   // jsx渲染方式
   const renderChildren = () => {
+    const { component, componentProps } = props
+    console.log(component, componentProps)
+
+    if (_type === 'SchemaForm' && component) {
+      if (HIUI[component]) {
+        const ChildTag = HIUI[component]
+        console.log('ChildTag', ChildTag)
+        return (
+          <ChildTag
+            {...componentProps}
+            onChange={(e, ...args) => {
+              setEvent('onChange', e, ...args)
+            }}
+            onBlur={(e, ...args) => {
+              setEvent('onBlur', e, ...args)
+            }}
+          />
+        )
+      } else {
+        throw new Error('not found ' + component)
+      }
+    }
     if (!children) {
       return null
     }
@@ -177,27 +216,10 @@ const FormItem = props => {
       : React.cloneElement(children, {
           [valuePropName]: value,
           onChange: (e, ...args) => {
-            e.persist && e.persist()
-            children.props.onChange && children.props.onChange(e, ...args)
-            const value =
-              e.target && e.target.hasOwnProperty(valuePropName)
-                ? e.target[valuePropName]
-                : e
-            setValue(value)
-            setTimeout(() => {
-              handleField('onChange', value)
-            })
+            setEvent('onChange', e, ...args)
           },
           onBlur: (e, ...args) => {
-            e.persist && e.persist()
-            children.props.onBlur && children.props.onBlur(e, ...args)
-            const value =
-              e.target && e.target.hasOwnProperty(valuePropName)
-                ? e.target[valuePropName]
-                : e
-
-            setValue(value)
-            handleField('onBlur', value)
+            setEvent('onBlur', e, ...args)
           }
         })
   }

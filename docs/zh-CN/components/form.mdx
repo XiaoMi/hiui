@@ -32,6 +32,12 @@ import DemoSynthetic from '../../demo/form/section-synthetic.jsx'
 
 <DemoSynthetic />
 
+## SchemaForm
+
+import DemoSchema from '../../demo/form/section-schema.jsx'
+
+<DemoSchema />
+
 <!--  ## 双列表单
 
 import DemoTwoCol from '../../demo/form/section-two-col.jsx'
@@ -48,30 +54,44 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 
 ### Form
 
-| 参数           | 说明                                                                                  | 类型         | 可选值                     | 默认值     |
-| -------------- | ------------------------------------------------------------------------------------- | ------------ | -------------------------- | ---------- |
-| schema         | 通过 schema 渲染表单                                                                  | SchemaForm[] | -                          | -          |
-| initialValues  | 表单默认值，只有初始化以及重置时生效                                                  | object       | -                          | -          |
-| rules          | 表单验证规则，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object       | -                          | -          |
-| labelWidth     | label 宽度，可用任意 CSS 长度单位                                                     | string       |                            |
-| labelPlacement | label 放置的位置                                                                      | string       | 'right' \| 'left' \| 'top' | 'left'     |
-| placement      | 是否横向排列                                                                          | string       | 'horizontal' \| 'vertical' | 'vertical' |
-| showColon      | 是否显示冒号                                                                          | boolean      | true \| false              | true       |
-| readOnly       | 只读，不可编辑表单内容                                                                | Boolean      | true \| false              | false      |
+| 参数           | 说明                                                                                  | 类型    | 可选值                     | 默认值     |
+| -------------- | ------------------------------------------------------------------------------------- | ------- | -------------------------- | ---------- |
+| initialValues  | 表单默认值，只有初始化以及重置时生效                                                  | object  | -                          | -          |
+| rules          | 表单验证规则，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object  | -                          | -          |
+| labelWidth     | label 宽度，可用任意 CSS 长度单位                                                     | string  |                            |
+| labelPlacement | label 放置的位置                                                                      | string  | 'right' \| 'left' \| 'top' | 'left'     |
+| placement      | 是否横向排列                                                                          | string  | 'horizontal' \| 'vertical' | 'vertical' |
+| showColon      | 是否显示冒号                                                                          | boolean | true \| false              | true       |
+| readOnly       | 只读，不可编辑表单内容                                                                | Boolean | true \| false              | false      |
 
-### Form.Item && SchemaForm
+### SchemaForm
 
-| 参数           | 说明                                                                                                            | 类型    | 可选值        | 默认值  |
-| -------------- | --------------------------------------------------------------------------------------------------------------- | ------- | ------------- | ------- |
-| field          | 表单域对应 model 的字段                                                                                         | string  | -             | -       |
-| label          | 标签文本，默认自动添加冒号                                                                                      | string  | -             | -       |
-| labelWidth     | label 宽度，可用任意 CSS 长度单位，优先级高于 Form 设置的 labelWidth                                            | string  |               |
-| required       | 是否必填                                                                                                        | boolean | true \| false | false   |
-| showColon      | 是否显示冒号                                                                                                    | boolean | true \| false | -       |
-| rules          | 表单验证规则，会覆盖 Form 设置的 rules，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object  | -             | -       |
-| valuePropName  | 子节点的值的属性，如 Switch Radio Checkbox 的是 'checked'                                                       | string  | -             | 'value' |
-| component      | 用于渲染的组件                                                                                                  | string  | -             | -       |
-| componentProps | 组件的属性                                                                                                      | string  | -             | -       |
+> 继承 Form API
+
+| 参数   | 说明                 | 类型         | 可选值 | 默认值 |
+| ------ | -------------------- | ------------ | ------ | ------ |
+| schema | 通过 schema 渲染表单 | SchemaItem[] | -      | -      |
+
+### Form.Item
+
+| 参数          | 说明                                                                                                            | 类型    | 可选值        | 默认值  |
+| ------------- | --------------------------------------------------------------------------------------------------------------- | ------- | ------------- | ------- |
+| field         | 表单域对应 model 的字段                                                                                         | string  | -             | -       |
+| label         | 标签文本，默认自动添加冒号                                                                                      | string  | -             | -       |
+| labelWidth    | label 宽度，可用任意 CSS 长度单位，优先级高于 Form 设置的 labelWidth                                            | string  |               |
+| required      | 是否必填                                                                                                        | boolean | true \| false | false   |
+| showColon     | 是否显示冒号                                                                                                    | boolean | true \| false | -       |
+| rules         | 表单验证规则，会覆盖 Form 设置的 rules，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object  | -             | -       |
+| valuePropName | 子节点的值的属性，如 Switch Radio Checkbox 的是 'checked'                                                       | string  | -             | 'value' |
+
+### SchemaItem
+
+> 继承 Form.Item API
+
+| 参数           | 说明           | 类型   | 可选值 | 默认值 |
+| -------------- | -------------- | ------ | ------ | ------ |
+| component      | 用于渲染的组件 | string | -      | -      |
+| componentProps | 组件的属性     | string | -      | -      |
 
 ### Form.Submit
 
@@ -90,7 +110,7 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 | --------- | -------------------------------------------------------------- | -------- | --------- |
 | onClick   | 点击提交后触发 Function(value: Object, errors: Object) => void | Function | func.noop |
 | fields    | 自定义重置的字段                                               | Array    | -         |
-| toDefault | 返回默认值                                                     | Boolean  | -         |
+| toDefault | 返回默认值                                                     | Boolean  | true      |
 
 ## Methods
 
