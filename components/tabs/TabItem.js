@@ -10,25 +10,22 @@ const TabItem = ({
   activeId,
   type,
   editable,
-  crossBorder,
   handleClick,
   deleteTab,
   dragStart,
-  dragEnd,
-  isHide
+  dragEnd
 }) => {
   const { tabTitle, tabId, tabDesc, disabled, closeable } = item
 
   const itemClasses = classNames(`${prefixCls}__item`, {
     [`${prefixCls}__item--active`]: tabId === activeId,
-    [`${prefixCls}__item--disabled`]: disabled,
-    [`${prefixCls}__item--flex1`]: crossBorder && tabId !== activeId && !isHide
+    [`${prefixCls}__item--disabled`]: disabled
   })
 
   const toggleTooltip = (e, item) => {
     e.target = e.target.closest('.hi-tabs__item')
     if (type === 'editable') {
-      if (e.type === 'mouseenter' && crossBorder) {
+      if (e.type === 'mouseenter') {
         item.tabId !== activeId &&
           Tooltip.open(e.target, {
             title: item.tabTitle,

@@ -1,8 +1,9 @@
 import Tabs from '../../../components/tabs'
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
+
 const prefix = 'tabs-draggable'
-const desc = '实现 Tabs 拖拽功能'
+const desc = 'Tabs 拖拽功能'
 const rightOptions = ['水平方向', '垂直方向']
 
 const code = [
@@ -54,7 +55,7 @@ class Demo extends React.Component {
             })
           }
       </Tabs>
-      </div>
+     
     )
   }
 }`,

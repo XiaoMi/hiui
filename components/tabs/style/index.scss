@@ -132,25 +132,13 @@ $prefix: 'hi-tabs' !default;
     & > .#{$prefix}__header {
       border-bottom: 1px solid #e6e7e8;
 
-      .#{$prefix}__nav,
-      .#{$prefix}__nav-hidden {
+      .#{$prefix}__nav {
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         overflow: hidden;
         margin-bottom: -1px;
         margin-right: 40px;
         min-height: 40px;
-      }
-
-      .#{$prefix}__nav-hidden {
-        position: absolute;
-        flex-wrap: nowrap;
-        visibility: visible;
-        // visibility: hidden;
-        // right: -500px;
-        // bottom: -500px;
-        top: 80px;
-        left: 0;
       }
 
       .#{$prefix}__item {
@@ -355,6 +343,7 @@ $prefix: 'hi-tabs' !default;
 
   &-pane {
     position: relative;
+    width: 100%;
   }
 }
 

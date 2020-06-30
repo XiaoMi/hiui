@@ -5,6 +5,7 @@ const prefix = 'tabs-editable'
 const desc = '可以自定义标签的增加和关闭'
 
 const code = `import Tabs from '@hi-ui/hiui/es/tabs'
+import Grid from '@hi-ui/hiui/es/grid'
 import React from 'react'\n
 class Demo extends React.Component {
   constructor() {
@@ -55,22 +56,24 @@ class Demo extends React.Component {
   }
 
   render () {
-    return <Tabs type="editable" onTabClick={(tab,e)=>console.log(tab,e)} editable onEdit={this.onEdit.bind(this)}>
-    {
-      this.state.panes.map((pane, index) => {
-        return (
-          <Tabs.Pane
-            tabTitle={pane.tabTitle}
-            tabId={pane.tabId}
-            closeable
-            key={index}
-          >
-            <div style={{padding: '16px'}}>{pane.tabTitle}</div>
-          </Tabs.Pane>
-        )
-      })
-    }
-  </Tabs>
+  
+    return  <Tabs type="editable" onTabClick={(tab,e)=>console.log(tab,e)} editable onEdit={this.onEdit.bind(this)}>
+      {
+        this.state.panes.map((pane, index) => {
+          return (
+            <Tabs.Pane
+              tabTitle={pane.tabTitle}
+              tabId={pane.tabId}
+              closeable
+              key={index}
+            >
+              <div style={{padding: '16px'}}>{pane.tabTitle}</div>
+            </Tabs.Pane>
+          )
+        })
+      }
+    </Tabs>
+   
   }
 }`
 
