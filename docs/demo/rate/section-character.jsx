@@ -4,7 +4,7 @@ import Form from '../../../components/form/index'
 import FormItem from '../../../components/form/Item'
 import Icon from '../../../components/Icon'
 import Rate from '../../../components/rate'
-import logoPng from '../../../site/static/img/logo.png'
+import logoPng from '../../../site/static/img/docs/mi-logo@2x.png'
 const prefix = 'rate-character'
 const code = `import React from 'react'
 import Rate from '@hi-ui/hiui/es/rate'
@@ -20,13 +20,13 @@ class Demo extends React.Component {
     return (
       <Form labelWidth="80px" labelPosition="left">
         <FormItem label="Icon">
-          <Rate count={5} allowHalf defaultValue={2.5} character={<Icon name="check-circle-o"/>} color='#4284f5'/>
+          <Rate count={5} allowHalf defaultValue={2.5} character={<Icon name="collection"/>} color='#4284f5'/>
         </FormItem>
         <FormItem label="文字">
-          <Rate count={5} allowHalf defaultValue={2.5} character='米'/>
+          <Rate count={5} allowHalf defaultValue={2.5} character='米' style={{fontSize:22}} color='#FF6633'/>
         </FormItem>
         <FormItem label="字母">
-          <Rate count={5} allowHalf defaultValue={2.5} character='HIUI' style={{fontSize: 30}} color='#1da653'/>
+          <Rate count={5} allowHalf defaultValue={2.5} character='HIUI' style={{fontSize: 22}} color='#46BC99'/>
         </FormItem>
         <FormItem label="图片">
           <Rate count={5} allowHalf defaultValue={2.5} character={<img src={logoPng} style={{width:24,height:24}}/>}/>
