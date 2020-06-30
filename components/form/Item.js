@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
 import { depreactedPropsCompat } from '../_util'
-import { FormContext } from './Form'
+import FormContext from './FormContext'
 import { FILEDS_INIT, FILEDS_UPDATE } from './FormReducer'
 import * as HIUI from '../'
 
@@ -36,12 +36,13 @@ const FormItem = props => {
     }
   } = formProps || {}
   // 初始化FormItem的内容
+  const { fields } = formState
+
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
   const [validating, setValidating] = useState(false)
   // 更新
   const updateField = _value => {
-    const { fields } = formState
     const childrenFiled = {
       field,
       value: _value,
@@ -110,6 +111,7 @@ const FormItem = props => {
       }
     )
   }
+
   useEffect(() => {
     if (field) {
       dispatch({
@@ -129,6 +131,7 @@ const FormItem = props => {
       removeField({ field })
     }
   }, [])
+
   const valueInit = () => {
     setValue(initialValues && initialValues[field])
   }

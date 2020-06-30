@@ -11,7 +11,7 @@ import Counter from '../../../components/counter'
 const prefix = 'form-schema'
 const desc = '通过schema配置表单，现仅支持HiUI组件'
 const code = `import React from 'react'
-import { Form,Counter  } from '@hi-ui/hiui'\n
+import { Form,Counter} from '@hi-ui/hiui'\n
 class Demo extends React.Component {  
   constructor(props){
     super(props)

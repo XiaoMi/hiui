@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 
-import { FormContext } from './Form'
+import FormContext from './FormContext'
+
 import Button from '../button'
 
 const Reset = props => {

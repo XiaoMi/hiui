@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import _ from 'lodash'
-import Provider from '../context'
-import Form from './Form'
-import FormItem from './Item'
+
+import useFormInstance from './hooks/useFormInstance'
 import * as HIUI from '../'
 const prefixCls = 'hi-form-schema'
-const FormWrapper = Provider(Form)
+
 const SchemaForm = props => {
+  const [FormWrapper, FormItem] = useFormInstance(props, 'SchemaForm')
   const { schema: schemaProps, children: childrenProps } = props
   const [schema, setSchema] = useState(schemaProps)
   useEffect(() => {

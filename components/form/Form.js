@@ -1,16 +1,10 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useReducer,
-  useRef
-} from 'react'
+import React, { useEffect, useCallback, useReducer, useRef } from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import FormReducer, { FILEDS_UPDATE } from './FormReducer'
+import FormContext from './FormContext'
 
-export const FormContext = React.createContext({})
 const getClassNames = props => {
   const { labelPlacement, labelPosition, placement, inline, readOnly } = props
   const _className = {}
@@ -60,7 +54,9 @@ const Form = props => {
       _fields.forEach(item => {
         const { field } = item
         if (values.hasOwnProperty(field)) {
-          item.value = values[field]
+          const value = values[field]
+          item.value = value
+          item.setValue(value)
         }
       })
       dispatch({ type: FILEDS_UPDATE, payload: _fields })
@@ -90,47 +86,55 @@ const Form = props => {
     [fields, initialValues]
   )
   // 对整个表单进行校验
-  const validate = (cb, validateNames) => {
-    const values = {}
-    let errors = {}
+  const validate = useCallback(
+    (cb, validateNames) => {
+      const values = {}
+      let errors = {}
 
-    if (fields.length === 0 && cb) {
-      cb(values, errors)
-      return
-    }
+      if (fields.length === 0 && cb) {
+        cb(values, errors)
+        return
+      }
 
-    const _fields = fields.filter(fieldChild => {
-      const { field, value } = fieldChild
-      values[field] = value
-      return Array.isArray(validateNames) ? validateNames.includes(field) : true
-    })
-    _fields.forEach(fieldChild => {
-      const { field, value } = fieldChild
-      // 对指定的字段进行校验  其他字段直接提交
-      fieldChild.validate(
-        '',
-        error => {
-          if (error) {
-            const errorsMsg = error.map(err => {
-              return err.message
-            })
-            errors[field] = { errors: errorsMsg }
-          }
-        },
-        value
-      )
-    })
-    errors = Object.keys(errors).length === 0 ? null : errors
-    cb && cb(values, errors)
-  }
+      const _fields = fields.filter(fieldChild => {
+        const { field, value } = fieldChild
+        values[field] = value
+        return Array.isArray(validateNames)
+          ? validateNames.includes(field)
+          : true
+      })
+      _fields.forEach(fieldChild => {
+        const { field, value } = fieldChild
+        // 对指定的字段进行校验  其他字段直接提交
+        fieldChild.validate(
+          '',
+          error => {
+            if (error) {
+              const errorsMsg = error.map(err => {
+                return err.message
+              })
+              errors[field] = { errors: errorsMsg }
+            }
+          },
+          value
+        )
+      })
+      errors = Object.keys(errors).length === 0 ? null : errors
+      cb && cb(values, errors)
+    },
+    [fields]
+  )
 
-  const validateField = (key, cb) => {
-    const field = fields.filter(fieldChild => fieldChild.field === key)[0]
-    if (!field) {
-      throw new Error('must call validate Field with valid key string!')
-    }
-    field.validate('', cb)
-  }
+  const validateField = useCallback(
+    (key, cb) => {
+      const field = fields.filter(fieldChild => fieldChild.field === key)[0]
+      if (!field) {
+        throw new Error('must call validate Field with valid key string!')
+      }
+      field.validate('', cb)
+    },
+    [fields]
+  )
 
   useEffect(() => {
     if (!formRef) {
@@ -143,6 +147,7 @@ const Form = props => {
       setFieldsValue
     }
   }, [fields])
+
   return (
     <form
       className={classNames('hi-form', className, getClassNames(props))}
