@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import useFormInstance from './useFormInstance'
 
 const useForm = () => {
-  const { FormWrapper, FormInstance: formRef } = useFormInstance()
+  const { FormWrapper, FormInstance: formRef, FormItem } = useFormInstance()
   const { current } = formRef
   const validate = useCallback(
     (cb, validate) => {
@@ -31,6 +31,7 @@ const useForm = () => {
   )
   return {
     FormWrapper,
+    FormItem,
     FormInstance: { validate, setFieldsValue, resetValidates, validateField }
   }
 }

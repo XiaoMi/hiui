@@ -12,12 +12,7 @@ const desc = '通过 Form.useForm 对表单数据域进行交互'
 const code = `import React from 'react'
 import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
 (props) => {
-    const FormHooks = Form.useForm()
-    const FormWrapper = FormHooks.FormWrapper
-    const FormInstance = FormHooks.FormInstance
-    const FormItem = Form.Item
-    const FormSubmit = Form.Submit
-    const FormReset = Form.Reset
+    const {FormWrapper,FormInstance,FormItem} = Form.useForm()
 
     return (
         <>
