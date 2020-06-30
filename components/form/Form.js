@@ -28,7 +28,7 @@ const Form = props => {
     initialValues,
     _type
   } = props
-  const FormInstance = useRef(parseInt(Math.random() * 1000000 + 100000)) // 示例
+  const FormInstance = useRef(parseInt(Math.random() * 1000000 + 100000)) // 实例
   const [state, dispatch] = useReducer(FormReducer, {
     fields: [],
     ...props,

@@ -12,14 +12,7 @@ const desc = '通过 Form.useForm 对表单数据域进行交互'
 const code = `import React from 'react'
 import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
 (props) => {
-    const FormHooks = Form.useForm({
-        labelWidth:'80',
-        labelPlacement:'right', 
-        initialValues:{ 
-            phone: '',
-            select:'3'
-        }
-    })
+    const FormHooks = Form.useForm()
     const FormWrapper = FormHooks.FormWrapper
     const FormInstance = FormHooks.FormInstance
     const FormItem = Form.Item
@@ -27,11 +20,16 @@ import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
     const FormReset = Form.Reset
 
     return (
-        <FormWrapper>
-            <FormItem label='Input' field="phone"  rules={{
-                trigger:'onChange',
-                type:'number',
-                validator: (rule,value,callback) => {
+        <>
+        <FormWrapper 
+            labelWidth='80'
+            labelPlacement='right'
+            initialValues = {{ phone: '16666666666' }}
+        >
+        <FormItem label='Input' field="phone"  rules={{
+            trigger:'onChange',
+            type:'number',
+            validator: (rule,value,callback) => {
                 const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
                 if(!value){
                     callback("请输入手机号")
@@ -40,29 +38,46 @@ import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
                 } else {
                     callback()
                 }
-                },
-                }}>
-                <Input placeholder='请输入手机号' style={{ width: 200 }}
-                />
-            </FormItem>
-        <FormItem>
-         <FormSubmit type='primary' 
-          onClick={(values,errors)=>{
-            console.log('Get form value:',values,errors)}
-          }
-          >提交</FormSubmit>
-          <FormReset type='line' 
-            onClick={()=>{console.log('reset form')}}
-          >重置</FormReset>
-          <Button type="primary" appearance="link" onClick={()=>{
-              console.log('填充表单',FormInstance)
-              FormInstance.setFieldsValue({
-                phone:'15652959628',
-                select:'2'
-              })
-          }}>fill Form</Button>
+            },
+        }}>
+           <Input placeholder='请输入手机号' style={{ width: 200 }}/>
         </FormItem>
       </FormWrapper>
+      <div style={{marginLeft:'80px'}}>
+        <Button 
+            type='primary' 
+            onClick={()=>{
+                FormInstance.validate((values,errors)=>{
+                    console.log('Get form value:',values,errors)
+                })
+            }}
+        >
+            提交
+        </Button>
+
+        <Button 
+            type='line' 
+            onClick={()=>{
+                FormInstance.resetValidates(()=>{
+                    console.log('reset form')
+                })
+            }}
+        >
+            重置
+        </Button>
+
+        <Button type="primary" appearance="link" onClick={()=>{
+                console.log('填充表单',FormInstance)
+                FormInstance.setFieldsValue({
+                phone:'15652959628',
+                })
+            }}
+        >
+            fill Form
+        </Button>
+      </div>
+     
+      </>
     )
 } `
 

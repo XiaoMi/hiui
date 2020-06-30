@@ -1,11 +1,37 @@
-import { useRef, useEffect, useState } from 'react'
+import { useCallback } from 'react'
 import useFormInstance from './useFormInstance'
-const useForm = props => {
-  const [formProps, setformProps] = useState({
-    ...props
-  })
-  const [FormWrapper, FormItem, FormInstance] = useFormInstance(formProps)
-  console.log('FormInstance', FormInstance)
-  return { FormWrapper, FormInstance }
+
+const useForm = () => {
+  const { FormWrapper, FormInstance: formRef } = useFormInstance()
+  const { current } = formRef
+  const validate = useCallback(
+    (cb, validate) => {
+      const { validate: formValidate } = formRef.current
+      formValidate(cb, validate)
+    },
+    [current]
+  )
+  const resetValidates = useCallback(
+    (cb, resetNames, toDefault) => {
+      resetValidates(cb, resetNames, toDefault)
+    },
+    [current]
+  )
+  const setFieldsValue = useCallback(
+    values => {
+      formRef.current.setFieldsValue(values)
+    },
+    [current]
+  )
+  const validateField = useCallback(
+    (field, cb) => {
+      formRef.current.validateField(field, cb)
+    },
+    [current]
+  )
+  return {
+    FormWrapper,
+    FormInstance: { validate, setFieldsValue, resetValidates, validateField }
+  }
 }
 export default useForm

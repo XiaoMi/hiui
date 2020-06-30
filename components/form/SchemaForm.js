@@ -6,7 +6,7 @@ import * as HIUI from '../'
 const prefixCls = 'hi-form-schema'
 
 const SchemaForm = props => {
-  const [FormWrapper, FormItem] = useFormInstance(props, 'SchemaForm')
+  const { FormWrapper, FormItem } = useFormInstance(props, 'SchemaForm')
   const { schema: schemaProps, children: childrenProps } = props
   const [schema, setSchema] = useState(schemaProps)
   useEffect(() => {
