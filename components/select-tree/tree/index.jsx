@@ -3,7 +3,7 @@ import { Input } from '../../input'
 import Loading from '../../loading'
 import TreeNode from './TreeNode'
 import TreeContext from './context'
-import './style/index.scss'
+import './style/index'
 import {
   getRootNodes
 } from './util'
@@ -48,7 +48,8 @@ const Tree = ({
   onExpand,
   dataSource,
   nodeDataState,
-  loadDataOnExpand
+  loadDataOnExpand,
+  isRemoteLoadData
 }) => {
   // 单选逻辑
   const [selectedId, setSelectedId] = useState(null)
@@ -106,7 +107,7 @@ const Tree = ({
         expandIds,
         onExpandEvent: onExpand,
         loadDataOnExpand,
-        isRemoteLoadData: !!dataSource
+        isRemoteLoadData
       }}
     >
       <div className={`${PREFIX}`}>

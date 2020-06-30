@@ -16,7 +16,7 @@ import {
   treeFilterByOriginalData,
   parseExpandIds
 } from './tree/util'
-import NavTree from './NavTree'
+import NavTree from './tree/NavTree'
 
 const SelectTree = ({
   data,
@@ -33,7 +33,8 @@ const SelectTree = ({
   defaultLoadData,
   clearable,
   searchMode,
-  mode
+  mode,
+  autoExpand
 }) => {
   const selectedItemsRef = useRef()
   const inputRef = useRef()
@@ -61,7 +62,6 @@ const SelectTree = ({
     if (flattenData.length > 0) {
       if (type === 'multiple') {
         const cstatus = parseCheckStatusData(defaultValue.length > 0 ? defaultValue : value, checkedNodes, flattenData)
-        console.log(defaultValue, cstatus)
         if (cstatus) {
           setCheckedNodes(cstatus)
         }
@@ -180,7 +180,6 @@ const SelectTree = ({
           const nArr = _res.map(n => {
             return {
               ...n,
-              isLeaf: false,
               pId: id
             }
           })
@@ -194,7 +193,7 @@ const SelectTree = ({
   * @param {*} checked 是否被选中
   * @param {*} node 当前节点
   */
-  const _checkedEvents = useCallback((checked, node) => {
+  const checkedEvents = useCallback((checked, node) => {
     let result = {}
     let semiCheckedIds = new Set(checkedNodes.semiChecked)
     let checkedIds = new Set(checkedNodes.checked)
@@ -223,7 +222,7 @@ const SelectTree = ({
   * @param {*} bol 是否展开
   * @param {*} node 当前点击节点
   */
-  const _expandEvents = (bol, node, callback) => {
+  const _expandEvents = (bol, node, callback = () => {}) => {
     const _expandIds = [...expandIds]
     const hasIndex = _expandIds.findIndex(id => id === node.id)
     if (hasIndex !== -1) {
@@ -246,6 +245,9 @@ const SelectTree = ({
     onExpand()
   }
 
+  const selectedEvents = useCallback((node) => {
+    setSelectedItems([node])
+  }, [])
   return (
     <div className='hi-select-tree'>
       <div
@@ -256,7 +258,7 @@ const SelectTree = ({
           selectedItems.length === 0 && 'hi-select-tree__input--placeholder'
         )}
         onClick={() => {
-          if (defaultLoadData && (!data || data.length === 0 || dataSource)) {
+          if (defaultLoadData && (!data || data.length === 0 || dataSource) && !show) {
             // data 为空 且 存在 dataSource 时，默认进行首次数据加载.defaultLoadData不暴露
             setNodeDataState('loading')
             loadNodes().then((res) => {
@@ -285,6 +287,7 @@ const SelectTree = ({
                       className='hi-select__input--item__remove'
                       onClick={e => {
                         e.stopPropagation()
+                        checkedEvents(false, node)
                       }}
                     >
                       <i className='hi-icon icon-close' />
@@ -327,15 +330,21 @@ const SelectTree = ({
           show={show}
           attachEle={inputRef.current}
           className={`hi-select-tree__popper ${data.length === 0 && dataSource ? 'hi-select-tree__popper--loading' : ''}`}
-          // onClickOutside={() => this.setState({dropdownShow: false})}
+          onClickOutside={() => setShow(false)}
         >
           {
             mode === 'breadcrumb' ? <NavTree
               data={flattenData}
               originData={data}
               checkedNodes={checkedNodes}
+              selectedItems={selectedItems}
               checkable={type === 'multiple'}
-              onCheck={_checkedEvents}
+              onCheck={checkedEvents}
+              autoExpand={autoExpand}
+              nodeDataState={nodeDataState}
+              onSelected={selectedEvents}
+              isRemoteLoadData={!!dataSource}
+              onExpand={_expandEvents}
             /> : <Tree
               data={flattenData}
               originData={data}
@@ -355,11 +364,8 @@ const SelectTree = ({
                 setSelectedItems([node])
                 onChange(node.id)
               }}
-              onCheck={(checked, node) => {
-                _checkedEvents(checked, node)
-                // this.setState({ selectedItems: checkedArr })
-                // calcShowCount()
-              }}
+              isRemoteLoadData={!!dataSource}
+              onCheck={checkedEvents}
             />
           }
         </Popper>

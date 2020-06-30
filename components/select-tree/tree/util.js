@@ -199,8 +199,6 @@ export const flattenNodesData = (data, isGenEntries = false) => {
         arr.unshift(pId)
         node.ancestors = arr
       }
-      node.isLoaded = false
-      node._origin = true
       const _children = node.children
       newArr.push(node)
       isGenEntries && (nodeEntries[node.id] = {
@@ -211,7 +209,7 @@ export const flattenNodesData = (data, isGenEntries = false) => {
         fun(_children, newArr, node)
         delete node.children
       } else {
-        node.isLeaf = true
+        node.isLeaf = node.hasOwnProperty('isLeaf') ? node.isLeaf : true
       }
     })
   }
