@@ -1,6 +1,5 @@
 import React, { useRef } from 'react'
 import ReactDOM from 'react-dom'
-import Button from '../button'
 import Icon from '../icon'
 import Classnames from 'classnames'
 import './style/index.scss'
@@ -18,7 +17,6 @@ const DrawerComp = ({
   container,
   visible,
   title,
-  onConfirm,
   onClose,
   maskClosable = true,
   closable = true,
