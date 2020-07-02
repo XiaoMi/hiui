@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
 import BasePicker from './BasePicker'
 import DatePanel from './DatePanel'
 import DateRangePanel from './DateRangePanel'

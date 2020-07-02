@@ -12,8 +12,12 @@ import {
   endOfWeek,
   parse,
   compatibleToDate,
-  compatibleFormatString
+  compatibleFormatString,
+  isWithinInterval,
+  toDate,
+  subDays
 } from './dateUtil'
+import Lunar from './toLunar'
 class BasePicker extends Component {
   constructor (props) {
     super(props)
@@ -29,6 +33,8 @@ class BasePicker extends Component {
       format: this.getFormatString(props)
     }
     this.inputRoot = React.createRef()
+    this.dateCache = React.createRef()
+    this.textCache = React.createRef()
     this.input = null
     this.rInput = null
   }
@@ -171,6 +177,8 @@ class BasePicker extends Component {
       texts: [leftText, rightText],
       date
     })
+    this.dateCache.current = date
+    this.textCache.current = [leftText, rightText]
   }
   onPick (date, showPanel) {
     if (!date.startDate) {
@@ -190,6 +198,9 @@ class BasePicker extends Component {
         if (!showPanel) {
           this.callback()
         }
+
+        this.textCache.current = [...this.state.texts]
+        this.dateCache.current = {...date}
       }
     )
   }
@@ -228,25 +239,63 @@ class BasePicker extends Component {
       isFocus: false
     })
   }
+
+  judgDateRange (date) {
+    const { max, min } = this.props
+    const {MIN_YEAR, MAX_YEAR} = Lunar
+    return isWithinInterval(date, {
+      start: min
+        ? subDays(toDate(min), 1)
+        : toDate(new Date(`${MIN_YEAR}-01-01`)),
+      end: max
+        ? toDate(max)
+        : toDate(new Date(`${MAX_YEAR}-01-01`))
+    })
+  }
+
   inputChangeEvent () {
     let { texts, date, format } = this.state
     let startDate = parse(texts[0], format, new Date())
     let endDate = parse(texts[1], format, new Date())
+    console.log(endDate)
     if (startDate && isValid(startDate)) {
-      date.startDate ? (date.startDate = startDate) : (date = startDate)
-      this.setState({ date })
+      const flag = this.judgDateRange(startDate)
+      if (!flag) {
+        date.startDate = this.dateCache.current.startDate
+        this.setState({
+          date,
+          texts: [...this.textCache.current]
+        })
+      } else {
+        date.startDate ? (date.startDate = startDate) : (date = startDate)
+        this.setState({ date })
+        this.dateCache.current = {...date}
+      }
     }
     if (endDate && isValid(endDate)) {
-      date.endDate && (date.endDate = endDate)
-      this.setState({ date })
+      const flag = this.judgDateRange(endDate)
+
+      if (!flag) {
+        date.endDate = this.dateCache.current.endDate
+        this.setState({
+          date,
+          texts: [...this.textCache.current]
+        })
+      } else {
+        date.endDate && (date.endDate = endDate)
+        this.setState({ date })
+        this.dateCache.current = {...date}
+      }
     }
     if (texts[0].trim().length === 0) {
       date.startDate = null
       this.setState({ date })
+      this.dateCache.current = {...date}
     }
     if (texts[1].trim().length === 0) {
       date.endDate = null
       this.setState({ date })
+      this.dateCache.current = {...date}
     }
   }
   clickOutSide (e) {
@@ -258,6 +307,7 @@ class BasePicker extends Component {
         texts: ['', ''],
         showPanel: false
       })
+      this.textCache.current = ['', '']
       return false
     }
     if (tar !== this.input && tar !== this.rInput) {
@@ -309,6 +359,8 @@ class BasePicker extends Component {
         isFocus: false
       },
       () => {
+        this.dateCache.current = { startDate: null, endDate: null }
+        this.textCache.current = ['', '']
         this.callback()
       }
     )

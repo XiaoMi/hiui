@@ -10,6 +10,7 @@ import { dateFormat, parseISO, getStartDate, addMonths, subMonths, startOfWeek, 
 class DatePanel extends Component {
   constructor (props) {
     super(props)
+
     this.state = {
       currentView: props.type,
       yearData: [],
