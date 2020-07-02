@@ -16,6 +16,7 @@ const noop = () => {}
 
 const Tabs = ({
   onDrop,
+  onAdd,
   onDropEnd,
   onDragStart,
   defaultActiveId,
@@ -24,13 +25,15 @@ const Tabs = ({
   type,
   placement,
   max,
-  onEdit,
+  overScroll,
+  onDelete,
   editable,
   className,
   theme,
   prefixCls,
   draggable,
-  onTabClick
+  onTabClick,
+  onBeforeDelete
 }) => {
   const getTabItems = () => {
     const showTabItems = []
@@ -84,6 +87,7 @@ const Tabs = ({
   const latestActiveId = useRef(activeId)
   const containRef = useRef()
   const inkRef = useRef()
+  const childRef = useRef()
   useEffect(() => {
     if (deletetabId && latestActiveId.current === activeId) {
       setActiveId(children[0] && children[0].props.tabId)
@@ -91,47 +95,35 @@ const Tabs = ({
   }, [deletetabId])
 
   useEffect(() => {
-    latestActiveId.current = activeId
+    const index = showTabItems.findIndex((item) => item.tabId === activeId)
+    latestActiveId.current = index
 
-    if (type === 'line') {
-      const index = showTabItems.findIndex((item) => item.tabId === activeId)
-
-      pseudoPosition(index === -1 ? max : index)
-    }
-  }, [activeId])
-
-  useEffect(() => {
-    if (!activeId && showTabItems.length) {
+    if (index === -1 && type === 'editable') {
       setActiveId(showTabItems[0].tabId)
     }
-    judgepseudoPosition()
-    if (type === 'line') {
-      const index = showTabItems.findIndex((item) => item.tabId === activeId)
 
+    if (type === 'line') {
       pseudoPosition(index === -1 ? max : index)
     }
-  }, [showTabItems])
+  }, [activeId, showTabItems, type])
 
   useEffect(() => {
     const tabItems = getTabItems()
 
     setShowTabItems(tabItems.showTabItems)
     setHiddentab(tabItems.hiddenTabItems)
+    console.log(childRef.current)
+    console.log(children.length)
+    if (overScroll && (children.length > childRef.current)) {
+      const contain = containRef.current
+      console.log(contain)
+      // ???如何获取滚动条内部元素的宽度
+      setTimeout(() => {
+        contain.scrollLeft += 1000
+      }, 0)
+    }
   }, [children])
 
-  const judgepseudoPosition = () => {
-    if (type === 'line') {
-      const index = showTabItems.findIndex(
-        (item) => item.tabId === defaultActiveId
-      )
-
-      if (index !== -1) {
-        pseudoPosition(index)
-      } else {
-        pseudoPosition(max)
-      }
-    }
-  }
   // 计算激活状态下选中横线
   const pseudoPosition = useCallback((index) => {
     const parentNode = containRef.current
@@ -154,21 +146,29 @@ const Tabs = ({
 
   const addTab = useCallback(() => {
     if (editable) {
-      onEdit('add', children.length + 1)
+      onAdd(children.length + 1)
+      childRef.current = children.length
     }
   }, [children, editable])
 
   const deleteTab = useCallback(
-    (e, tabId, index) => {
+    (e, tabId, index, item) => {
       e.stopPropagation()
       setDeletetabId(tabId)
-
       if (editable) {
-        onEdit('delete', index, tabId)
-        Tooltip.close(`tab-${tabId}`)
+        if (onBeforeDelete) {
+          const result = onBeforeDelete(item)
+          if (result === true) {
+            onDelete(item, index)
+            Tooltip.close(`tab-${tabId}`)
+          }
+        } else {
+          onDelete(item, index)
+          Tooltip.close(`tab-${tabId}`)
+        }
       }
     },
-    [editable]
+    [editable, activeId]
   )
 
   const checkEditable = useCallback(() => editable && type === 'editable', [
@@ -178,23 +178,28 @@ const Tabs = ({
   const renderTabContent = useCallback(
     (child, index) => {
       const { tabId, animation } = child.props
+      const activeIndex = showTabItems.findIndex(
+        (item) => item.tabId === activeId
+      )
+
       return cloneElement(child, {
         show: tabId === activeId,
         latestActiveIdIndex: latestActiveId.current
-          ? latestActiveId.current.split('-')[1]
+          ? latestActiveId.current
           : -1,
-        activeIdIndex: activeId ? activeId.split('-')[1] : -1,
+        activeIdIndex: activeId ? activeIndex : -1,
         index,
         animation,
         placement
       })
     },
-    [activeId]
+    [activeId, showTabItems]
   )
 
   const dragStart = useCallback((e, item) => {
     if (type === 'card' || type === 'line' || type === 'editable') {
       setDragged(e.currentTarget)
+      e.currentTarget.classList.add('hi-tabs__item--disabled')
       onDragStart(item)
     }
   }, [])
@@ -214,6 +219,13 @@ const Tabs = ({
           doc.newIndex = index + 1
           return doc
         })
+        e.currentTarget.classList.remove('hi-tabs__item--disabled')
+        const items = containRef.current.getElementsByClassName(
+          'hi-tabs__item'
+        )
+        for (let i = 0; i < items.length; i++) {
+          items[i].classList.remove('hi-tabs__item--adsorbent')
+        }
         setShowTabItems(data)
       }
     },
@@ -247,10 +259,19 @@ const Tabs = ({
         const taIndex = JSON.parse(e.target.dataset.item).newIndex
         const dgIndex = JSON.parse(dragged.dataset.item).newIndex
         onDrop(showTabItems[taIndex], showTabItems[dgIndex])
+
         if (taIndex === dgIndex) {
           if (!over) return
           setOver(e.target)
           return
+        } else {
+          const items = containRef.current.getElementsByClassName(
+            'hi-tabs__item'
+          )
+          for (let i = 0; i < items.length; i++) {
+            items[i].classList.remove('hi-tabs__item--adsorbent')
+          }
+          e.target.classList.add('hi-tabs__item--adsorbent')
         }
         setOver(e.target)
       }
@@ -265,6 +286,9 @@ const Tabs = ({
     `theme__${theme}`,
     {
       [`${prefixCls}--${placement}`]: type === 'card' || type === 'line'
+    },
+    {
+      [`${prefixCls}--overScroll`]: overScroll
     }
   )
 
@@ -310,6 +334,7 @@ const Tabs = ({
                     deleteTab={deleteTab}
                     dragStart={dragStart}
                     dragEnd={dragEnd}
+                    overScroll={overScroll}
                   />
                 </CSSTransition>
               )
@@ -344,6 +369,7 @@ const Tabs = ({
           </div>
         )}
       </div>
+
       <div className={`${prefixCls}__content`}>
         {React.Children.map(
           children,
@@ -364,7 +390,11 @@ Tabs.propTypes = {
   className: PropTypes.string,
   renderTabBar: PropTypes.func,
   onTabClick: PropTypes.func,
-  onEdit: PropTypes.func,
+  onAdd: PropTypes.func,
+  onDelete: PropTypes.func,
+  onDrop: PropTypes.func,
+  onDropEnd: PropTypes.func,
+  onDragStart: PropTypes.func,
   draggable: PropTypes.bool
 }
 
@@ -376,10 +406,12 @@ Tabs.defaultProps = {
   max: 6,
   editable: true,
   onTabClick: noop,
-  onEdit: noop,
+  onBeforeDelete: noop,
   onDrop: noop,
   onDropEnd: noop,
   onDragStart: noop,
+  onAdd: noop,
+  onDelete: noop,
   draggable: false
 }
 export default Tabs
