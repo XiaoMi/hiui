@@ -258,6 +258,7 @@ export default class WeekRangePanel extends Component {
     )
     return (
       <div
+        style={this.props.style}
         className={_c}
       >
         <div className='hi-datepicker__body  hi-datepicker__body--range'>

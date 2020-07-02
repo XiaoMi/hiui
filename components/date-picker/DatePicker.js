@@ -13,7 +13,7 @@ class DatePicker extends BasePicker {
     dateMarkRender: PropTypes.func,
     altCalendarPreset: PropTypes.oneOf(['zh-CN', 'id-ID']),
     dateMarkPreset: PropTypes.oneOf(['zh-CN'])
-  }
+  };
   constructor (props) {
     super(props)
     this.altCalendarPresetData = {}
@@ -23,14 +23,15 @@ class DatePicker extends BasePicker {
   }
   // 获取预置数据
   _getLunarPresetData () {
-    const {altCalendarPreset, altCalendar} = this.props
+    const { altCalendarPreset, altCalendar } = this.props
     const allPRCDate = {}
     if (['zh-CN', 'id-ID'].includes(altCalendarPreset)) {
-      const _urlKey = altCalendarPreset === 'zh-CN' ? 'PRCLunar' : 'IndiaHoliday'
-      getPRCDate(_urlKey).then(res => {
-        Object.keys(res.data).forEach(key => {
+      const _urlKey =
+        altCalendarPreset === 'zh-CN' ? 'PRCLunar' : 'IndiaHoliday'
+      getPRCDate(_urlKey).then((res) => {
+        Object.keys(res.data).forEach((key) => {
           let oneYear = {}
-          res.data[key][_urlKey].forEach(item => {
+          res.data[key][_urlKey].forEach((item) => {
             Object.assign(oneYear, {
               [item.date.replace(/-/g, '/')]: {
                 ...item,
@@ -40,51 +41,66 @@ class DatePicker extends BasePicker {
           })
           Object.assign(allPRCDate, oneYear)
         })
-        this.altCalendarPresetData = altCalendar ? this._altCalendarData(allPRCDate) : allPRCDate
+        this.altCalendarPresetData = altCalendar
+          ? this._altCalendarData(allPRCDate)
+          : allPRCDate
       })
     } else {
-      this.altCalendarPresetData = altCalendar ? this._altCalendarData(allPRCDate) : {}
+      this.altCalendarPresetData = altCalendar
+        ? this._altCalendarData(allPRCDate)
+        : {}
     }
   }
   // 获取预置数据
   _getMarkPresetData () {
-    const {altCalendarPreset, dateMarkPreset} = this.props
+    const { altCalendarPreset, dateMarkPreset } = this.props
     if (altCalendarPreset && altCalendarPreset !== 'zh-CN') {
       return
     }
-    dateMarkPreset === 'zh-CN' && getPRCDate('PRCHoliday').then(res => {
-      const allPRCDate = {}
-      Object.keys(res.data).forEach(key => {
-        Object.keys(res.data[key].PRCHoliday).forEach(elkey => {
-          allPRCDate[elkey.replace(/-/g, '/')] = res.data[key].PRCHoliday[elkey] === '1'
-            ? <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--rest'>休</span>
-            : <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--work'>班</span>
+    dateMarkPreset === 'zh-CN' &&
+      getPRCDate('PRCHoliday').then((res) => {
+        const allPRCDate = {}
+        Object.keys(res.data).forEach((key) => {
+          Object.keys(res.data[key].PRCHoliday).forEach((elkey) => {
+            allPRCDate[elkey.replace(/-/g, '/')] =
+              res.data[key].PRCHoliday[elkey] === '1' ? (
+                <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--rest'>
+                  休
+                </span>
+              ) : (
+                <span className='hi-datepicker__text——holiday hi-datepicker__text——holiday--work'>
+                  班
+                </span>
+              )
+          })
         })
+        this.dateMarkPresetData = allPRCDate
       })
-      this.dateMarkPresetData = allPRCDate
-    })
   }
   // 合并用户自定义的日期信息作为presetData
   _altCalendarData = (allPRCDate) => {
     const allData = {}
-    this.props.altCalendar.length > 0 && this.props.altCalendar.forEach(item => {
-      const dateInfo = deconstructDate(item.date)
-      if (!Number.isNaN(dateInfo.year)) {
-        Object.assign(allData, {
-          [dateInfo.year + '/' + dateInfo.month + '/' + dateInfo.day]: item
-        })
-      }
-    })
+    this.props.altCalendar.length > 0 &&
+      this.props.altCalendar.forEach((item) => {
+        const dateInfo = deconstructDate(item.date)
+        if (!Number.isNaN(dateInfo.year)) {
+          Object.assign(allData, {
+            [dateInfo.year + '/' + dateInfo.month + '/' + dateInfo.day]: item
+          })
+        }
+      })
     return Object.assign(allPRCDate, allData)
-  }
+  };
   initPanel (state, props) {
     let component = null
     let d = state.date
+
     switch (props.type) {
       case 'month':
       case 'year':
       case 'week':
       case 'date':
+
         component = (
           <DatePanel
             {...props}
@@ -140,4 +156,4 @@ class DatePicker extends BasePicker {
   }
 }
 export default Provider(DatePicker)
-export {DatePicker}
+export { DatePicker }
