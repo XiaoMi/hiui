@@ -257,7 +257,6 @@ class BasePicker extends Component {
     let { texts, date, format } = this.state
     let startDate = parse(texts[0], format, new Date())
     let endDate = parse(texts[1], format, new Date())
-    console.log(endDate)
     if (startDate && isValid(startDate)) {
       const flag = this.judgDateRange(startDate)
       if (!flag) {
