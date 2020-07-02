@@ -17,7 +17,6 @@ const TabItem = ({
   overScroll
 }) => {
   const { tabTitle, tabId, tabDesc, disabled, closeable } = item
-
   const itemClasses = classNames(`${prefixCls}__item`, {
     [`${prefixCls}__item--active`]: tabId === activeId,
     [`${prefixCls}__item--disabled`]: disabled

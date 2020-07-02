@@ -46,7 +46,7 @@ const Tabs = ({
           tabId,
           tabDesc,
           disabled,
-          closeable,
+          closeable = true,
           animation
         } = child.props
         const item = {
