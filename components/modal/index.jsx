@@ -1,17 +1,18 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
+import Classnames from 'classnames'
 import Button from '../button'
 import Icon from '../icon'
 import './style/index.scss'
 
-const PREFIX = 'hi-editor-modal'
+const PREFIX = 'hi-modal'
 
 const getDefaultContainer = () => {
   const defaultContainer = document.createElement('div')
   document.body.appendChild(defaultContainer)
   return defaultContainer
 }
-
+// TODO:Confirm
 const ModalComp = ({
   children,
   container,
@@ -19,26 +20,49 @@ const ModalComp = ({
   title,
   onConfirm,
   onCancel,
-  hide,
-  show
+  maskClosable = true,
+  width,
+  height,
+  size = 'default',
+  showHeaderDivider = true,
+  showFooterDivider = true
 }) => {
+  // TODO: 整体可以抽成一个 hooks 供 modal 和 drawer 复用
   const defaultContainer = useRef(false)
   if (defaultContainer.current === false) {
-    defaultContainer.current = container || getDefaultContainer()
+    defaultContainer.current = getDefaultContainer()
   }
+
+  useEffect(() => {
+    const parent = (container || defaultContainer.current).parentNode
+    // 屏蔽滚动条
+    if (visible) {
+      parent.style.setProperty('overflow', 'hidden')
+    } else {
+      parent.style.removeProperty('overflow')
+    }
+  }, [visible, container])
+
   return ReactDOM.createPortal(
-    <div className={PREFIX} style={{ display: visible === false && 'none' }}>
-      <div className={`${PREFIX}__mask`} />
-      <div className={`${PREFIX}__wrapper`}>
-        <div className={`${PREFIX}__header`}>
+    <div className={PREFIX}>
+      <div
+        className={Classnames(`${PREFIX}__mask`, { [`${PREFIX}__mask--visible`]: visible })}
+        onClick={() => {
+          if (maskClosable && onCancel) {
+            onCancel()
+          }
+        }}
+      />
+      <div
+        className={Classnames(`${PREFIX}__wrapper`, `${PREFIX}__wrapper--${size}`)}
+        style={{ display: visible === false && 'none', width, height }}
+      >
+        <div className={Classnames(`${PREFIX}__header`, { [`${PREFIX}__header--divided`]: showHeaderDivider })}>
           {title}
           <Icon
             name={'close'}
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              if (hide) {
-                hide()
-              }
               if (onCancel) {
                 onCancel()
               }
@@ -46,13 +70,10 @@ const ModalComp = ({
           />
         </div>
         <div className={`${PREFIX}__content`}>{children}</div>
-        <div className={`${PREFIX}__footer`}>
+        <div className={Classnames(`${PREFIX}__footer`, { [`${PREFIX}__footer--divided`]: showFooterDivider })}>
           <Button
             type={'line'}
             onClick={() => {
-              if (hide) {
-                hide()
-              }
               if (onCancel) {
                 onCancel()
               }
@@ -66,9 +87,6 @@ const ModalComp = ({
               if (onConfirm) {
                 onConfirm()
               }
-              if (hide) {
-                hide()
-              }
             }}
           >
             确认
@@ -78,42 +96,6 @@ const ModalComp = ({
     </div>,
     defaultContainer.current
   )
-}
-
-export const useModal = () => {
-  const defaultContainer = useRef(false)
-  if (defaultContainer.current === false) {
-    defaultContainer.current = getDefaultContainer()
-  }
-  const [visible, setVisible] = useState(false)
-
-  const show = useCallback(() => setVisible(true), [])
-  const hide = useCallback(() => setVisible(false), [])
-
-  const Modal = ({ children, title, onConfirm, onCancel, container }) => (
-    <React.Fragment>
-      {
-        <ModalComp
-          title={title}
-          visible={visible}
-          onConfirm={onConfirm}
-          onCancel={onCancel}
-          closeModal={hide}
-          container={container}
-          show={show}
-          hide={hide}
-        >
-          {children}
-        </ModalComp>
-      }
-    </React.Fragment>
-  )
-
-  return {
-    show,
-    hide,
-    Modal
-  }
 }
 
 export default ModalComp
