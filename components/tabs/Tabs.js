@@ -117,7 +117,7 @@ const Tabs = ({
     if (overScroll && (children.length > childRef.current)) {
       const contain = containRef.current
       console.log(contain)
-      // ???如何获取滚动条内部元素的宽度
+      // ???
       setTimeout(() => {
         contain.scrollLeft += 1000
       }, 0)
