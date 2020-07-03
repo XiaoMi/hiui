@@ -8,6 +8,7 @@ import smile2Png from '../../../site/static/img/docs/logo-2@2x.png'
 import smile3Png from '../../../site/static/img/docs/logo-3@2x.png'
 import smile4Png from '../../../site/static/img/docs/logo-4@2x.png'
 import smile5Png from '../../../site/static/img/docs/logo-5@2x.png'
+const desc = '可以使用 renderCharacter()=>ReactNode 自定义渲染。'
 const prefix = 'rate-advanced'
 const code = `import React from 'react'
 import Rate from '@hi-ui/hiui/es/rate'
@@ -54,6 +55,7 @@ const DemoAdvanced = () => (
       smile5Png
     }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoAdvanced

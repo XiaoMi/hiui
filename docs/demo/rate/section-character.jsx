@@ -5,6 +5,7 @@ import FormItem from '../../../components/form/Item'
 import Icon from '../../../components/Icon'
 import Rate from '../../../components/rate'
 import logoPng from '../../../site/static/img/docs/mi-logo@2x.png'
+const desc = '元素可以是字体图标，文字甚至图片。'
 const prefix = 'rate-character'
 const code = `import React from 'react'
 import Rate from '@hi-ui/hiui/es/rate'
@@ -40,6 +41,7 @@ const DemoAdvanced = () => (
     code={code}
     scope={{ Form, FormItem, Rate, Icon, logoPng }}
     prefix={prefix}
+    desc={desc}
   />
 )
 export default DemoAdvanced
