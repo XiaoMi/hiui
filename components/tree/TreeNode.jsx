@@ -4,7 +4,7 @@ import Icon from '../icon'
 
 import Classnames from 'classnames'
 import TreeContext from './context'
-import useClickOutside from './hooks/useClickOutside'
+
 import useDnD from './hooks/useDnD'
 import Loading from './IconLoading'
 const switcherApperanceMap = {
@@ -32,7 +32,7 @@ const TreeNode = ({ node }) => {
     console.log(a, b, c)
   }
 
-  // const [{ isDragging, isOver, direction }, ref] = useDnD({ id: node.id, move })
+  const [{ isDragging, isOver, direction }, ref] = useDnD({ id: node.id, move })
 
   const treeNodeRef = useRef(null)
 
@@ -99,10 +99,9 @@ const TreeNode = ({ node }) => {
       const { id, title } = node
       return (
         <div
-          // ref={draggable ? ref : treeNodeRef}
-          ref={treeNodeRef}
+          ref={draggable ? ref : treeNodeRef}
           className={Classnames('tree-node__title', {
-            // [`tree-node__title--${direction}`]: isOver && direction,
+            [`tree-node__title--${direction}`]: isOver && direction,
             [`tree-node__title--draggable`]: draggable
           })}
         >
@@ -123,8 +122,8 @@ const TreeNode = ({ node }) => {
         </div>
       )
     },
-    // [treeNodeRef, ref, draggable, direction, isOver]
-    [treeNodeRef, draggable, treeNodeRender]
+    [treeNodeRef, ref, draggable, direction, isOver, treeNodeRender]
+    // [treeNodeRef, draggable, treeNodeRender]
   )
   return (
     <li className='tree-node'>
@@ -132,8 +131,8 @@ const TreeNode = ({ node }) => {
         (node.children && node.children.length) || (onLoadChildren && !node.isLeaf)
           ? node.depth
           : apperance !== 'default'
-            ? node.depth
-            : (node.depth && node.depth + 1) || 1
+          ? node.depth
+          : (node.depth && node.depth + 1) || 1
       )}
       {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
       {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf)) &&

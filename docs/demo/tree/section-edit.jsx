@@ -47,7 +47,6 @@ class Demo extends React.Component {
       <div style={{width:500}}>
         <Tree
           defaultExpandAll
-          apperance="line"
           editable={true}
           data={this.state.treeData}
           onBeforeSave={(saveNode, data, level) => {
@@ -100,7 +99,6 @@ class Demo extends React.Component {
             <Tree
               searchable
               defaultExpandAll
-              apperance="line"
               editable={true}
               data={this.state.treeData}
               onSave={(saveNode, data, level) => {

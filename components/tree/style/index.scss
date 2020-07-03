@@ -70,6 +70,7 @@ $hoverColor: rgba(66, 133, 244, 0.08) !default;
         line-height: 24px;
         font-size: 14px;
         padding: 0 4px;
+        cursor: pointer;
 
         &:hover {
           background: $hoverColor;
