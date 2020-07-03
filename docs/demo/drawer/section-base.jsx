@@ -1,11 +1,11 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
-import Modal from '../../../components/modal'
-const prefix = 'modal-base'
+import Drawer from '../../../components/drawer'
+const prefix = 'drawer-base'
 const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
-import Modal from '@hi-ui/hiui/es/modal'\n
+import Drawer from '@hi-ui/hiui/es/drawer'\n
 class Demo extends React.Component {
   constructor (props) {
     super(props)
@@ -23,22 +23,20 @@ class Demo extends React.Component {
     return(
       <div>
         <Button type="primary" onClick={() => this.setState({visible: true})}>打开</Button>
-        <Modal
+        <Drawer
           title="提示消息"
           visible={this.state.visible}
           onConfirm={this.cancelEvent.bind(this)}
-          onCancel={this.cancelEvent.bind(this)}
+          onClose={this.cancelEvent.bind(this)}
         >
           <span>一些消息....</span><br/>
           <span>一些消息...</span><br/>
           <span>一些消息...</span>
-        </Modal>
+        </Drawer>
       </div>
     )
   }
 }`
 
-const DemoBase = () => (
-  <DocViewer code={code} scope={{ Button, Modal }} prefix={prefix} />
-)
+const DemoBase = () => <DocViewer code={code} scope={{ Button, Drawer }} prefix={prefix} />
 export default DemoBase
