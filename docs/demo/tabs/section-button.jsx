@@ -47,6 +47,7 @@ class Demo extends React.Component {
                 tabId={pane.tabId}
                 closeable={pane.closeable}
                 key={index}
+               
               >
               </Tabs.Pane>
             )

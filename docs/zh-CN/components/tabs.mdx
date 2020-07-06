@@ -10,6 +10,12 @@
 
 无信息间的对比要求，即不同时查看
 
+## 默认用法
+
+import DemoDefault from '../../demo/tabs/section-default.jsx'
+
+<DemoDefault />
+
 ## 卡片样式
 
 import DemoBasic from '../../demo/tabs/section-basic.jsx'
@@ -40,21 +46,37 @@ import DemoCollapse from '../../demo/tabs/section-collapse.jsx'
 
 <DemoCollapse />
 
+## 拖拽用法
+
+import DemoDraggable from '../../demo/tabs/section-draggable.jsx'
+
+<DemoDraggable/>
+
+## Pane 切换动画
+
+import DemoDuration from '../../demo/tabs/section-duration.jsx'
+
+<DemoDuration/>
+
 ## Props
 
 ### Tabs
 
 | 参数            | 说明                                                                                                                        | 类型                            | 可选值                                     | 默认值       |
 | --------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------ | ------------ |
-| type            | 标签类型                                                                                                                    | string                          | 'desc' \| 'card' \| 'button' \| 'editable' | 'card'       |
-| placement       | 水平或竖直展示标签                                                                                                          | string                          | 'vertical' \| 'horizontal'                 | 'horizontal' |
-| defaultActiveId | 设置默认激活的标签                                                                                                          | string \| number                | -                                          | 第一个选项卡 |
-| activeId        | 设置激活的标签，设置此值后变为受控模式                                                                                      | string \| number                | -                                          | -            |
-| max             | 最多显示的选项卡数，仅在 `type='card'` 并且 `placement='horizonal'` 时生效                                                  | number                          | -                                          | 6            |
-| onTabClick      | 点击标签页时触发，回调值为点击点击标签的 key                                                                                | (tabKey, event) => void         | -                                          | -            |
+| type            | 标签类型                                                                                                                    | string                          | 'desc' \| 'card' \| 'button' \| 'editable' \| 'line' | 'card'  
+| placement       | 水平或竖直展示标签                                                                                                            | string                          | 'vertical' \| 'horizontal'                 | 'horizontal' |
+| defaultActiveId | 设置默认激活的标签                                                                                                            | string \| number                | -                                          | 第一个选项卡 |
+| activeId        | 设置激活的标签，设置此值后变为受控模式                                                                                           | string \| number               | -                                          | -            |
+| max             | 最多显示的选项卡数，仅在 `type='card'` 或 `type='line'` 并且 `placement='horizonal'` 时生效                                      | number                          | -                                          | 6            |
+| draggable       | 是否支持拖拽 , 仅在 `type = 'card'` 或 `type = 'line'` 或 `type = 'editable'` 时生效                                            | boolean                          | true \| false       |false
+| onTabClick      | 点击标签页时触发，回调值为点击点击标签的 key                                                                                     | (tabKey, event) => void         | -                                          | -            |
 | onEdit          | 标签新增删减时触发，仅对 type='editable'时触发。参数：action 为事件类型，值为 add 或者 delete；index 为操作选项卡对应的索引 | (action, index, tabKey) => void | -                                          | -            |
+| onDragStart     | 节点开始拖拽时触发 | (dragNode: TabNode) => void                                                                              | -                                          | -            |
+| onDropEnd       | 节点拖拽成功时触发 | (dragNode: TabNode, dropNode: TabNode) => void                                                           | -                                           | -            |
+| onDrop          | 节点拖拽时触发 | (dragNode: TabNode, dropNode: TabNode) => void                                                               | -                                          | -            |
 
-### Tabs.Pane
+### Tabs. Pane
 
 | 参数      | 说明                                         | 类型                | 可选值        | 默认值 |
 | --------- | -------------------------------------------- | ------------------- | ------------- | ------ |
@@ -62,3 +84,4 @@ import DemoCollapse from '../../demo/tabs/section-collapse.jsx'
 | tabDesc   | 选项卡头描述文字，仅对 type='desc'时生效     | string \| ReactNode | -             | -      |
 | tabId     | 每个标签的唯一标识                           | string \| number    | -             | -      |
 | closeable | 标签是否可以关闭，仅对 type='editable'时生效 | boolean             | true \| false | true   |
+| animation | 是否支持Pane切换动画           | boolean                          | true \| false       |false
