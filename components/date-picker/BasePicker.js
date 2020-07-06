@@ -1,13 +1,23 @@
-import React, {Component} from 'react'
-import _ from 'lodash'
+import React, { Component } from 'react'
 import Modal from './Modal'
 import classNames from 'classnames'
-import {formatterDate, FORMATS} from './constants'
-import {showLargeCalendar} from './util'
+import { formatterDate, FORMATS } from './constants'
+import { showLargeCalendar } from './util'
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
-
-import { dateFormat, isValid, startOfWeek, endOfWeek, parse, compatibleToDate, compatibleFormatString } from './dateUtil'
+import {
+  dateFormat,
+  isValid,
+  startOfWeek,
+  endOfWeek,
+  parse,
+  compatibleToDate,
+  compatibleFormatString,
+  isWithinInterval,
+  toDate,
+  subDays
+} from './dateUtil'
+import Lunar from './toLunar'
 class BasePicker extends Component {
   constructor (props) {
     super(props)
@@ -23,12 +33,13 @@ class BasePicker extends Component {
       format: this.getFormatString(props)
     }
     this.inputRoot = React.createRef()
+    this.dateCache = React.createRef()
+    this.textCache = React.createRef()
     this.input = null
     this.rInput = null
   }
-  setPlaceholder (_props) {
-    const {placeholder} = _props
-    const {localeDatas, type, showTime} = this.props
+  setPlaceholder () {
+    const { placeholder, localeDatas, type, showTime } = this.props
     const typePlaceholder = localeDatas.datePicker.placeholders[type]
     const tempPlaceholder = showTime
       ? localeDatas.datePicker.placeholderTimeperiod
@@ -39,7 +50,8 @@ class BasePicker extends Component {
 
     if (typePlaceholder instanceof Array) {
       if (showTime) {
-        const timeperiodPlaceholder = localeDatas.datePicker.placeholders.timeperiod
+        const timeperiodPlaceholder =
+          localeDatas.datePicker.placeholders.timeperiod
         leftPlaceholder = timeperiodPlaceholder[0]
         rightPlaceholder = timeperiodPlaceholder[1]
       } else {
@@ -61,17 +73,13 @@ class BasePicker extends Component {
   }
   componentDidMount () {
     this._parseProps(this.props)
-    this.setPlaceholder(this.props)
+    this.setPlaceholder()
     let rect = this.inputRoot.current.getBoundingClientRect()
     this.calcPanelPos(rect)
   }
   calcPanelPos (rect) {
-    const {showTime, type} = this.props
+    const { showTime, type } = this.props
     let _w = type.indexOf('range') !== -1 ? 578 : 288
-    if (type === 'timerange') {
-      _w = 400
-    }
-
     let _h = 298
     if (type === 'daterange' && showTime) {
       _h = 344
@@ -79,12 +87,13 @@ class BasePicker extends Component {
     if (showLargeCalendar(this.props)) {
       _h = 440
     }
-    const _cw = document.documentElement.clientWidth || document.body.clientWidth
-    const _ch = document.documentElement.clientHeight || document.body.clientHeight
+    const _cw =
+      document.documentElement.clientWidth || document.body.clientWidth
+    const _ch =
+      document.documentElement.clientHeight || document.body.clientHeight
     const _st = document.documentElement.scrollTop || document.body.scrollTop
-    let {left, width, top, height} = rect
+    let { left, width, top, height } = rect
     let _top = rect.top + rect.height + _st + 4
-
     if (left + _w > _cw) {
       left = left + width - _w
     }
@@ -103,9 +112,6 @@ class BasePicker extends Component {
     if (nextProps.value !== this.props.value) {
       this._parseProps(nextProps)
     }
-    if (!_.isEqual(nextProps.placeholder, this.props.placeholder)) {
-      this.setPlaceholder(nextProps)
-    }
   }
 
   getFormatString (props) {
@@ -118,10 +124,17 @@ class BasePicker extends Component {
   }
   callFormatterDate (date) {
     let { type, showTime, localeDatas, weekOffset } = this.props
-    return formatterDate(type, date, this.state.format, showTime, localeDatas, weekOffset)
+    return formatterDate(
+      type,
+      date,
+      this.state.format,
+      showTime,
+      localeDatas,
+      weekOffset
+    )
   }
   _parseProps (props) {
-    let {value, defaultValue, type, timeInterval = 240} = props
+    let { value, defaultValue, type, timeInterval = 240 } = props
     const { format } = this.state
     let _value = value || defaultValue
     let start
@@ -150,38 +163,52 @@ class BasePicker extends Component {
         end = new Date(startTime)
       }
     }
-
     date = {
       startDate: compatibleToDate(start, format),
       endDate: compatibleToDate(end, format)
     }
-    leftText = isValid(date.startDate) ? this.callFormatterDate(date.startDate) : ''
-    rightText = isValid(date.endDate) ? this.callFormatterDate(date.endDate) : ''
+    leftText = isValid(date.startDate)
+      ? this.callFormatterDate(date.startDate)
+      : ''
+    rightText = isValid(date.endDate)
+      ? this.callFormatterDate(date.endDate)
+      : ''
     this.setState({
       texts: [leftText, rightText],
       date
     })
+    this.dateCache.current = date
+    this.textCache.current = [leftText, rightText]
   }
   onPick (date, showPanel) {
     if (!date.startDate) {
-      date = {startDate: date, endDate: undefined}
+      date = { startDate: date, endDate: undefined }
     }
-    this.setState({
-      date,
-      texts: [this.callFormatterDate(date.startDate), this.callFormatterDate(date.endDate)],
-      showPanel,
-      isFocus: false
-    }, () => {
-      if (!showPanel) {
-        this.callback()
+    this.setState(
+      {
+        date,
+        texts: [
+          this.callFormatterDate(date.startDate),
+          this.callFormatterDate(date.endDate)
+        ],
+        showPanel,
+        isFocus: false
+      },
+      () => {
+        if (!showPanel) {
+          this.callback()
+        }
+
+        this.textCache.current = [...this.state.texts]
+        this.dateCache.current = {...date}
       }
-    })
+    )
   }
   callback () {
-    const { type, onChange, disabled } = this.props
+    const { type, onChange } = this.props
     const { date, format } = this.state
-    if (onChange && !disabled) {
-      let {startDate, endDate} = date
+    if (onChange) {
+      let { startDate, endDate } = date
       startDate = isValid(startDate) ? startDate : ''
       endDate = isValid(endDate) ? endDate : ''
       if (type === 'week' || type === 'weekrange') {
@@ -193,8 +220,14 @@ class BasePicker extends Component {
         onChange(startDate, dateFormat(startDate, format))
         return
       }
-      if (['timerange', 'timeperiod', 'daterange', 'yearrange', 'monthrange'].includes(type)) {
-        onChange({start: startDate, end: endDate}, {start: dateFormat(startDate, format), end: dateFormat(endDate, format)})
+      if (['timerange', 'timeperiod', 'daterange'].includes(type)) {
+        onChange(
+          { start: startDate, end: endDate },
+          {
+            start: dateFormat(startDate, format),
+            end: dateFormat(endDate, format)
+          }
+        )
         return
       }
       onChange(startDate, startDate ? dateFormat(startDate, format) : '')
@@ -206,25 +239,62 @@ class BasePicker extends Component {
       isFocus: false
     })
   }
+
+  judgDateRange (date) {
+    const { max, min } = this.props
+    const {MIN_YEAR, MAX_YEAR} = Lunar
+    return isWithinInterval(date, {
+      start: min
+        ? subDays(toDate(min), 1)
+        : toDate(new Date(`${MIN_YEAR}-01-01`)),
+      end: max
+        ? toDate(max)
+        : toDate(new Date(`${MAX_YEAR}-01-01`))
+    })
+  }
+
   inputChangeEvent () {
     let { texts, date, format } = this.state
     let startDate = parse(texts[0], format, new Date())
     let endDate = parse(texts[1], format, new Date())
     if (startDate && isValid(startDate)) {
-      date.startDate ? date.startDate = startDate : date = startDate
-      this.setState({date})
+      const flag = this.judgDateRange(startDate)
+      if (!flag) {
+        date.startDate = this.dateCache.current.startDate
+        this.setState({
+          date,
+          texts: [...this.textCache.current]
+        })
+      } else {
+        date.startDate ? (date.startDate = startDate) : (date = startDate)
+        this.setState({ date })
+        this.dateCache.current = {...date}
+      }
     }
     if (endDate && isValid(endDate)) {
-      date.endDate && (date.endDate = endDate)
-      this.setState({date})
+      const flag = this.judgDateRange(endDate)
+
+      if (!flag) {
+        date.endDate = this.dateCache.current.endDate
+        this.setState({
+          date,
+          texts: [...this.textCache.current]
+        })
+      } else {
+        date.endDate && (date.endDate = endDate)
+        this.setState({ date })
+        this.dateCache.current = {...date}
+      }
     }
     if (texts[0].trim().length === 0) {
       date.startDate = null
-      this.setState({date})
+      this.setState({ date })
+      this.dateCache.current = {...date}
     }
     if (texts[1].trim().length === 0) {
       date.endDate = null
-      this.setState({date})
+      this.setState({ date })
+      this.dateCache.current = {...date}
     }
   }
   clickOutSide (e) {
@@ -236,6 +306,7 @@ class BasePicker extends Component {
         texts: ['', ''],
         showPanel: false
       })
+      this.textCache.current = ['', '']
       return false
     }
     if (tar !== this.input && tar !== this.rInput) {
@@ -244,22 +315,29 @@ class BasePicker extends Component {
     }
   }
   _input (text, ref, placeholder) {
-    const {disabled} = this.props
+    const { disabled } = this.props
     const { texts } = this.state
     return (
       <input
         type='text'
-        ref={el => { this[ref] = el }}
+        ref={(el) => {
+          this[ref] = el
+        }}
         placeholder={placeholder}
         className={disabled ? 'disabled' : ''}
         disabled={disabled}
-        onChange={e => {
-          ref === 'input' ? (texts[0] = e.target.value) : (texts[1] = e.target.value)
-          this.setState({
-            texts
-          }, () => {
-            this.inputChangeEvent()
-          })
+        onChange={(e) => {
+          ref === 'input'
+            ? (texts[0] = e.target.value)
+            : (texts[1] = e.target.value)
+          this.setState(
+            {
+              texts
+            },
+            () => {
+              this.inputChangeEvent()
+            }
+          )
         }}
         onFocus={(e) => {
           this.setState({
@@ -273,37 +351,49 @@ class BasePicker extends Component {
     )
   }
   _clear () {
-    const { disabled } = this.props
-    !disabled && this.setState({date: {startDate: null, endDate: null}, texts: ['', ''], isFocus: false}, () => { this.callback() })
+    this.setState(
+      {
+        date: { startDate: null, endDate: null },
+        texts: ['', ''],
+        isFocus: false
+      },
+      () => {
+        this.dateCache.current = { startDate: null, endDate: null }
+        this.textCache.current = ['', '']
+        this.callback()
+      }
+    )
   }
   _icon () {
-    const {isFocus, texts} = this.state
-    const { clearable, type, showTime, disabled } = this.props
+    const { isFocus, texts } = this.state
+    const { clearable, type, showTime } = this.props
     const iconCls = classNames(
       'hi-datepicker__input-icon',
       'hi-icon',
-      (texts[0].length && isFocus && clearable && !disabled)
+      texts[0].length && isFocus && clearable
         ? 'icon-close-circle clear'
-        : ((type.includes('time') || showTime) ? 'icon-time' : 'icon-date')
+        : type.includes('time') || showTime
+          ? 'icon-time'
+          : 'icon-date'
     )
-    return (isFocus && clearable)
-      ? <span className={iconCls} onClick={this._clear.bind(this)} />
-      : <span className={iconCls} onClick={(e) => {
-        if (this.props.disabled) return
-        this.calcPanelPos(this.inputRoot.current.getBoundingClientRect())
-        this.setState({showPanel: true, isFocus: true})
-      }} />
+    return texts[0].length && isFocus && clearable ? (
+      <span className={iconCls} onClick={this._clear.bind(this)} />
+    ) : (
+      <span
+        className={iconCls}
+        onClick={(e) => {
+          if (this.props.disabled) return
+          setTimeout(() => {
+            this.setState({ showPanel: true, isFocus: true })
+            this.calcPanelPos(this.inputRoot.current.getBoundingClientRect())
+          }, 0)
+        }}
+      />
+    )
   }
   renderRangeInput () {
-    const {
-      localeDatas,
-      disabled,
-      showTime,
-      type,
-      width,
-      theme
-    } = this.props
-    const {isFocus} = this.state
+    const { localeDatas, disabled, showTime, type, width, theme } = this.props
+    const { isFocus } = this.state
     const _cls = classNames(
       'hi-datepicker__input',
       `theme__${theme}`,
@@ -316,7 +406,7 @@ class BasePicker extends Component {
     return (
       <div
         className={_cls}
-        style={{width: width}}
+        style={{ width: width }}
         onMouseEnter={() => {
           this.setState({ isFocus: true })
         }}
@@ -325,21 +415,21 @@ class BasePicker extends Component {
         }}
       >
         {this._input(this.state.texts[0], 'input', this.state.leftPlaceholder)}
-        <span className='hi-datepicker__input--connection'>{localeDatas.datePicker.to}</span>
-        {this._input(this.state.texts[1], 'rInput', this.state.rightPlaceholder)}
+        <span className='hi-datepicker__input--connection'>
+          {localeDatas.datePicker.to}
+        </span>
+        {this._input(
+          this.state.texts[1],
+          'rInput',
+          this.state.rightPlaceholder
+        )}
         {this._icon()}
       </div>
     )
   }
   renderNormalInput () {
-    const {
-      disabled,
-      showTime,
-      type,
-      width,
-      theme
-    } = this.props
-    const {isFocus} = this.state
+    const { disabled, showTime, type, width, theme } = this.props
+    const { isFocus } = this.state
 
     const _cls = classNames(
       'hi-datepicker__input',
@@ -352,7 +442,7 @@ class BasePicker extends Component {
     return (
       <div
         className={_cls}
-        style={{width: width}}
+        style={{ width: width }}
         onMouseEnter={() => {
           this.setState({ isFocus: true })
         }}
@@ -360,29 +450,32 @@ class BasePicker extends Component {
           this.setState({ isFocus: false })
         }}
       >
-        {this._input(
-          this.state.texts[0],
-          'input',
-          this.state.leftPlaceholder
-        )}
+        {this._input(this.state.texts[0], 'input', this.state.leftPlaceholder)}
         {this._icon()}
       </div>
     )
   }
+
   render () {
-    const {type, showTime, width} = this.props
+    const { type, showTime, width } = this.props
+
     return (
-      <span ref={this.inputRoot} className='hi-datepicker__input-root' style={{width: width}}>
-        {
-          (type.indexOf('range') !== -1 || type === 'timeperiod') ? this.renderRangeInput() : this.renderNormalInput()
-        }
-        {
-          this.state.showPanel ? (
-            <Modal clickOutSide={this.clickOutSide.bind(this)} showTime={showTime}>
-              {this.initPanel(this.state, this.props)}
-            </Modal>
-          ) : null
-        }
+      <span
+        ref={this.inputRoot}
+        className='hi-datepicker__input-root'
+        style={{ width: width }}
+      >
+        {type.indexOf('range') !== -1 || type === 'timeperiod'
+          ? this.renderRangeInput()
+          : this.renderNormalInput()}
+        {this.state.showPanel ? (
+          <Modal
+            clickOutSide={this.clickOutSide.bind(this)}
+            showTime={showTime}
+          >
+            {this.initPanel(this.state, this.props)}
+          </Modal>
+        ) : null}
       </span>
     )
   }
@@ -401,11 +494,15 @@ BasePicker.propTypes = {
       const _start = isValid(val.start)
       const _end = isValid(val.end)
       if (!_start || !_end) {
-        return new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed. start or end is an invalid date.`)
+        return new Error(
+          `Invalid prop ${propName} supplied to ${componentName}. Validation failed. start or end is an invalid date.`
+        )
       }
     } else {
       if (!isValid(val)) {
-        return new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed. value is an invalid data.`)
+        return new Error(
+          `Invalid prop ${propName} supplied to ${componentName}. Validation failed. value is an invalid data.`
+        )
       }
     }
   },
@@ -417,8 +514,15 @@ BasePicker.propTypes = {
   weekOffset: PropTypes.oneOf([0, 1]),
   timeInterval: function (props, propName, componentName) {
     const val = props[propName]
-    if (val < 5 || val > 480 || (val > 60 && val % 60 !== 0) || (val < 60 && 60 % val !== 0)) {
-      return new Error(`Invalid prop ${propName} supplied to ${componentName}. This value must be greater than 5 and less than 480 and is a multiple of 60.`)
+    if (
+      val < 5 ||
+      val > 480 ||
+      (val > 60 && val % 60 !== 0) ||
+      (val < 60 && 60 % val !== 0)
+    ) {
+      return new Error(
+        `Invalid prop ${propName} supplied to ${componentName}. This value must be greater than 5 and less than 480 and is a multiple of 60.`
+      )
     }
   },
   clearable: PropTypes.bool
