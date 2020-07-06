@@ -1,8 +1,8 @@
 import Tabs from '../../../components/tabs'
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-const prefix = 'tabs-editable'
-const desc = '可以自定义标签的增加和关闭'
+const prefix = 'tabs-overSrcoll'
+const desc = '标签数量增多展示滚动条'
 
 const code = `import Tabs from '@hi-ui/hiui/es/tabs'
 import Grid from '@hi-ui/hiui/es/grid'
@@ -19,24 +19,61 @@ class Demo extends React.Component {
         {
           tabTitle: '团购订单',
           tabId: 'tabId-2',
+          closeable: false,
           disabled:true
         },
         {
           tabTitle: '以旧换新订单',
-          tabId: 'tabId-3',
-          closeable: false,
+          tabId: 'tabId-3'
         },
         {
           tabTitle: '消息通知',
           tabId: 'tabId-4'
+        },
+        {
+          tabTitle: '新建标签5',
+          tabId: 'tabId-5'
+        },
+        {
+          tabTitle: '新建标签6',
+          tabId: 'tabId-6',
+        },
+        {
+          tabTitle: '新建标签7',
+          tabId: 'tabId-7',
+        },
+        {
+          tabTitle: '新建标签8',
+          tabId: 'tabId-8',
+        },
+        {
+          tabTitle: '新建标签9',
+          tabId: 'tabId-9',
+        },
+        {
+          tabTitle: '新建标签10',
+          tabId: 'tabId-10',
+        },
+        {
+          tabTitle: '新建标签11',
+          tabId: 'tabId-11',
+        },
+        {
+          tabTitle: '新建标签12',
+          tabId: 'tabId-12',
+        },
+        {
+          tabTitle: '新建标签13',
+          tabId: 'tabId-13',
+        },
+        {
+          tabTitle: '新建标签14',
+          tabId: 'tabId-14',
         }
       ]
     }
   }
-  // onEdit(action, index, tabId) {
-  //   console.log('----------onEdit', action, index, tabId)
-  //   this[\`\${action}Tab\`](index, tabId)
-  // }
+ 
   addTab() {
     const panes = this.state.panes;
    
@@ -63,15 +100,14 @@ class Demo extends React.Component {
   }
 
   render () {
-  
-    return  <Tabs type="editable" onTabClick={(tab,e)=>console.log(tab,e)} editable onDelete={this.deleteTab.bind(this)} onAdd={this.addTab.bind(this)} onBeforeDelete={this.beforeDelete.bind(this)}>
+    return  <Tabs type="editable" onTabClick={(tab,e)=>console.log(tab,e)} editable onDelete={this.deleteTab.bind(this)} onAdd={this.addTab.bind(this)} onBeforeDelete={this.beforeDelete.bind(this)} overScroll={true}>
       {
         this.state.panes.map((pane, index) => {
           return (
             <Tabs.Pane
               tabTitle={pane.tabTitle}
               tabId={pane.tabId}
-              closeable={pane.closeable}
+              closeable
               key={index}
               disabled={pane.disabled}
             >
@@ -81,7 +117,6 @@ class Demo extends React.Component {
         })
       }
     </Tabs>
-   
   }
 }`
 

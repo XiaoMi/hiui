@@ -13,10 +13,10 @@ const TabItem = ({
   handleClick,
   deleteTab,
   dragStart,
-  dragEnd
+  dragEnd,
+  overScroll
 }) => {
   const { tabTitle, tabId, tabDesc, disabled, closeable } = item
-
   const itemClasses = classNames(`${prefixCls}__item`, {
     [`${prefixCls}__item--active`]: tabId === activeId,
     [`${prefixCls}__item--disabled`]: disabled
@@ -24,6 +24,9 @@ const TabItem = ({
 
   const toggleTooltip = (e, item) => {
     e.target = e.target.closest('.hi-tabs__item')
+    if (overScroll) {
+      return
+    }
     if (type === 'editable') {
       if (e.type === 'mouseenter') {
         item.tabId !== activeId &&
@@ -56,7 +59,14 @@ const TabItem = ({
       )}
       {editable && closeable && (
         <span className={`${prefixCls}__item-close`}>
-          <Icon onClick={(e) => deleteTab(e, tabId, index)} name='close' />
+          <Icon
+            onClick={(e) => {
+              if (!item.disabled) {
+                deleteTab(e, tabId, index, item)
+              }
+            }}
+            name='close'
+          />
         </span>
       )}
     </div>

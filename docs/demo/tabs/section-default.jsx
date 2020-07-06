@@ -16,7 +16,8 @@ class Demo extends React.Component {
     this.state = {
       panes:  [{
         tabTitle: '我的订单',
-        tabId: 'tabId-1'
+        tabId: 'tabId-1',
+        disabled:true
       },
       {
         tabTitle: '团购订单',
@@ -68,6 +69,7 @@ class Demo extends React.Component {
               tabId={pane.tabId}
               closeable={pane.closeable}
               key={index}
+              disabled={pane.disabled}
             >
               <div style={{padding: '16px'}}>{pane.tabTitle}</div>
             </Tabs.Pane>
