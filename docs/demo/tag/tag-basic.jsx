@@ -14,21 +14,11 @@ class Demo extends React.Component {
   render () {
     return (
       <>
-      <div style={{marginBottom:28}}>
-      <span style={{marginRight:10}}>加班申请</span> <Tag type="warning" onClick={()=>{console.log('待审批')}}>待审批</Tag>
-      </div>
-      <div style={{marginBottom:28}}>
-      <span style={{marginRight:10}}>加班申请</span> <Tag>审批中</Tag>
-      </div>
-      <div style={{marginBottom:28}}>
-      <span style={{marginRight:10}}>加班申请</span><Tag type="success">已通过</Tag>
-      </div>
-      <div style={{marginBottom:28}}>
-      <span style={{marginRight:10}}>加班申请</span><Tag type="danger">未通过</Tag>
-      </div>
-      <div style={{marginBottom:28}}>
-      <span style={{marginRight:10}}>加班申请</span><Tag type="default">未通过</Tag>
-      </div>
+        <Tag type="warning" onClick={()=>{console.log('待审批')}}>待审批</Tag>
+        <Tag>审批中</Tag>
+        <Tag type="success">已通过</Tag>
+        <Tag type="danger">未通过</Tag>
+        <Tag type="default">未通过</Tag>
       </>
     )
   }

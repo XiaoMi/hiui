@@ -17,21 +17,11 @@ class Demo extends React.Component {
     const Col = Grid.Col
     return (
       <>
-      <div style={{marginBottom:28}}>
-      <span style={{marginRight:10}}>加班申请</span><Tag type="warning" appearance="line" >原创</Tag>
-      </div>
-      <div style={{marginBottom:28}}>
-      <span style={{marginRight:10}}>加班申请</span><Tag appearance="line" >活动</Tag>
-      </div>
-      <div style={{marginBottom:28}}>
-      <span style={{marginRight:10}}>加班申请</span><Tag type="success" appearance="line"  style={{marginRight:10}}>聚焦</Tag>
-      </div>
-      <div style={{marginBottom:28}}>
-      <span style={{marginRight:10}}>加班申请</span><Tag type="danger" appearance="line" >最新</Tag>
-      </div>
-      <div style={{marginBottom:28}}>
-      <span style={{marginRight:10}}>加班申请</span><Tag type="default" appearance="line" >最新</Tag>
-      </div>
+      <Tag type="warning" appearance="line" >原创</Tag>
+      <Tag appearance="line" >活动</Tag>
+      <Tag type="success" appearance="line"  style={{marginRight:10}}>聚焦</Tag>
+      <Tag type="danger" appearance="line" >最新</Tag>
+      <Tag type="default" appearance="line" >最新</Tag>
      </>
     )
   }
