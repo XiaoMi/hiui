@@ -2,7 +2,13 @@ import React from 'react'
 import classNames from 'classnames'
 import './style'
 
-const Tag = ({ type = 'primary', appearance, onClick, children }) => {
+const Tag = ({
+  type = 'primary',
+  appearance = 'default',
+  onClick,
+  children,
+  color
+}) => {
   return (
     <span
       className={classNames(
@@ -13,6 +19,11 @@ const Tag = ({ type = 'primary', appearance, onClick, children }) => {
         }
       )}
       onClick={onClick}
+      style={{
+        background: color && appearance === 'default' ? color : '',
+        borderColor: color && appearance === 'line' ? color : '',
+        color: color && appearance === 'line' ? color : ''
+      }}
     >
       {children}
     </span>
