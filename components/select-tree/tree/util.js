@@ -137,13 +137,25 @@ export const updateUnCheckData = (node, data, checkedIds, semiCheckedIds) => {
  * @param {*} nodeEntries 所有数据的Map 集合
  * @param {*} type 数据回显方式
  */
-export const processSelectedIds = (checkedIds, nodeEntries, type) => {
+export const processSelectedIds = (checkedIds, nodeEntries, type, flattenData) => {
   const keySet = new Set(checkedIds)
   if (type === 'CHILD') {
     return checkedIds.filter(id => {
       const entity = nodeEntries[id]
-      if (entity && entity.children && entity.children.every(node => keySet.has(node.id))) {
-        return false
+      if (entity) {
+        let children = []
+        if (entity.children && entity.children.length > 0) {
+          children = entity.children
+        } else {
+          // 当异步加载数据后，集合中不存在 children，根据节点取 children
+          children = getChildrenNodes(entity, flattenData)
+        }
+        if (children.length === 0) {
+          return true
+        }
+        if (children.every(node => keySet.has(node.id))) {
+          return false
+        }
       }
       return true
     })
@@ -220,6 +232,13 @@ export const flattenNodesData = (data, isGenEntries = false) => {
   }
 }
 
+export const fillNodeEntries = (parentNode, currentNodeEntries, newData) => {
+  newData.forEach(nd => {
+    nd.parent = parentNode
+    currentNodeEntries[nd.id] = nd
+  })
+  return currentNodeEntries
+}
 /**
  * 根据 defaultValue 解析默认选中项（自动勾选）
  * 2020.06.28 暂停「不含在数据中」的默认值，会引起诸多副作用
@@ -258,7 +277,8 @@ export const parseDefaultSelectedItems = (defaultValue, flattenData) => {
  * @param {*} selectedItems 已选中选项
  */
 export const parseCheckStatusData = (value, checkedNodes, flattenData) => {
-  const selectedItems = parseDefaultSelectedItems(value, flattenData)
+  value = value.concat(checkedNodes.checked)
+  const selectedItems = parseDefaultSelectedItems([...new Set(value)], flattenData)
   let semiCheckedIds = new Set(checkedNodes.semiChecked)
   const checkedIds = new Set(checkedNodes.checked)
   semiCheckedIds.clear()
@@ -282,7 +302,7 @@ export const parseCheckStatusData = (value, checkedNodes, flattenData) => {
  * @param {*} checkIds 当前选中的节点 ID 集合
  */
 export const parseSelectedItems = (checkedNodes, nodeEntries, showCheckedMode, flattenData) => {
-  const keys = processSelectedIds(checkedNodes.checked, nodeEntries, showCheckedMode)
+  const keys = processSelectedIds(checkedNodes.checked, nodeEntries, showCheckedMode, flattenData)
   return keys.map(id => getNode(id, flattenData))
 }
 
@@ -325,4 +345,21 @@ export const treeFilterByOriginalData = (data, filterVal) => {
     }
   }
   return newChildren
+}
+
+export const clearReturnData = (arg) => {
+  arg = _.cloneDeep(arg)
+  if (arg instanceof Array) {
+    arg = arg.map(node => {
+      delete node.ancestors
+      delete node.pId
+      return node
+    })
+    console.log('多选', arg)
+  } else {
+    delete arg.ancestors
+    delete arg.pId
+    console.log('单选', arg)
+  }
+  return arg
 }

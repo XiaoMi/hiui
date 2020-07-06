@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import SelectTree from '../../../components/select-tree'
 const prefix = 'tree-select-bread'
-const rightOptions = ['单选', '多选', '异步']
+const rightOptions = ['单选', '多选', '异步单选', '异步多选']
 const desc = '展示从多个收起的备选项中选出的一个选项'
 const code = [
   {
@@ -285,10 +285,9 @@ const code = [
             mode='breadcrumb'
             data={singleList}
             type='multiple'
-            defaultValue={[{id: '0-1-0-0-0'}]} // done
-            // defaultExpandAll // done
-            // defaultExpandIds={['1-2-0-0-0-0']} // done
-            // showCheckedMode='ALL' //done
+            defaultValue={[{id: '0-1-0-0-0'}]}
+            // defaultExpandAll
+            // defaultExpandIds={['1-2-0-0-0-0']}
             // dataSource={key => {
             //   return {
             //     type: 'GET',
@@ -329,11 +328,7 @@ const code = [
             clearable
             mode='breadcrumb'
             // data={singleList}
-            type='multiple'
-            defaultValue={[{id: '0-1-0-0-0'}]} // done
-            // defaultExpandAll // done
-            // defaultExpandIds={['1-2-0-0-0-0']} // done
-            // showCheckedMode='ALL' //done
+            defaultValue={[{id: '1101'}]}
             dataSource={key => {
               return {
                 type: 'GET',
@@ -355,7 +350,49 @@ const code = [
         )
       }
     }`,
-    opt: ['异步']
+    opt: ['异步单选']
+  },
+  {
+    code: `import React from 'react'
+    import SelectTree from '@hi-ui/hiui/es/select-tree'\n
+    class Demo extends React.Component {
+      constructor () {
+        super()
+        this.state = {
+        }
+      }
+
+      render () {
+        const { value, singleList } = this.state
+        return (
+          <SelectTree
+            clearable
+            mode='breadcrumb'
+            // data={singleList}
+            type='multiple'
+            defaultValue={[{id: '1101'}]}
+            dataSource={key => {
+              return {
+                type: 'GET',
+                key: 'id',
+                params: {pId: key},
+                url: 'http://localhost:3000/tree',
+                transformResponse: (res) => {
+                  return res.map(r => {
+                    return {
+                      ...r,
+                      id: r.code,
+                      title: r.name
+                    }
+                  })
+                }
+              }
+            }}
+          />
+        )
+      }
+    }`,
+    opt: ['异步多选']
   }
 ]
 const DemoType = () => (

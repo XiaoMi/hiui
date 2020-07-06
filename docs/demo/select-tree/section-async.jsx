@@ -143,7 +143,6 @@ const code = [
             defaultValue={[{id: '0-1-0-0-0'}]}
             // defaultExpandAll // done
             // defaultExpandIds={['1-2-0-0-0-0']} // done
-            // showCheckedMode='ALL' //done
             dataSource={key => {
               return {
                 type: 'GET',
@@ -305,7 +304,6 @@ const code = [
             // defaultValue={[{id: '0-1-0-0-0'}]}
             // defaultExpandAll // done
             // defaultExpandIds={['1-2-0-0-0-0']} // done
-            // showCheckedMode='ALL' //done
             dataSource={key => {
               return {
                 type: 'GET',

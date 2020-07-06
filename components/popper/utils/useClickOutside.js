@@ -11,7 +11,6 @@ const useClickOutside = (
     e => {
       const targetElement = typeof dom === 'function' ? dom() : dom
       const el = targetElement || element.current
-      console.log('targetElement', el, e.target)
       if (el) {
         if (attachEle) {
           !(attachEle.contains(e.target) || el.contains(e.target)) &&

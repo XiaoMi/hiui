@@ -13,7 +13,7 @@ const Switcher = ({expanded, node, onExpandEvent}) => {
       name={expanded ? 'open' : 'packup'}
       onClick={() => {
         !expanded && setLoading(true)
-        onExpandEvent(!expanded, node, () => setLoading(false))
+        onExpandEvent(node, !expanded, () => setLoading(false))
       }}
     />
   )
@@ -25,7 +25,7 @@ const TreeNode = ({ data, flttenData }) => {
     treeNodeRender,
     checkable,
     checkedNodes,
-    onSelectNode,
+    selectedItems,
     onClick,
     selectedId,
     onCheckboxChange,
@@ -47,7 +47,9 @@ const TreeNode = ({ data, flttenData }) => {
         onChange={e => {
           onCheckboxChange(e.target.checked, node, { checked, semiChecked })
         }}
-      />
+      >
+        {node.title}
+      </Checkbox>
     )
   }, [checkedNodes])
 
@@ -57,11 +59,10 @@ const TreeNode = ({ data, flttenData }) => {
       <div
         ref={treeNodeRef}
         className={Classnames('tree-node__title', {
-          'tree-node__title--selected': _selectedId === id
+          'tree-node__title--selected': selectedItems.filter(s => s.id === id).length > 0
         })}
         onClick={() => {
           onClick(node)
-          onSelectNode(id)
         }}
         dangerouslySetInnerHTML={{__html: treeNodeRender ? treeNodeRender(_title || title) : (_title || title)}}
       />
@@ -72,7 +73,6 @@ const TreeNode = ({ data, flttenData }) => {
       {
         data.map((node, index) => {
           const childrenNodes = getChildrenNodes(node, flttenData)
-          console.log(node)
           const expand = expandIds.includes(node.id)
           return <React.Fragment key={index}>
             <li className='tree-node'>
@@ -80,8 +80,7 @@ const TreeNode = ({ data, flttenData }) => {
                 {(childrenNodes.length || isRemoteLoadData) && !node.isLeaf
                   ? <Switcher expanded={expand} node={node} onExpandEvent={onExpandEvent} />
                   : renderIndent()}
-                {checkable && renderCheckbox(node, checkedNodes)}
-                {renderTitle(node, selectedId)}
+                {checkable ? renderCheckbox(node, checkedNodes) : renderTitle(node, selectedId)}
               </div>
             </li>
             {

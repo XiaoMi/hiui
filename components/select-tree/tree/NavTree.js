@@ -6,10 +6,10 @@ import Loading from '../../loading'
 // import './select-dropdown.scss'
 import Checkbox from '../../checkbox'
 
-const Bread = ({datas, onClick, onReturnClick}) => {
+const Bread = ({ datas, onClick, onReturnClick }) => {
   const datasArr = Object.keys(datas)
   datasArr.unshift(
-    <span style={{color: '#4284F5'}} onClick={() => {}}>返回</span>
+    <span style={{ color: '#4284F5' }} onClick={() => { }}>返回</span>
   )
   if (datasArr.length > 3) {
     datasArr.splice(1, datasArr.length - 3, '...')
@@ -54,9 +54,16 @@ const NavTree = ({
   const expandData = useRef()
   const [renderData, setRenderData] = useState([])
   const [fullBreadData, setFullBreadData] = useState({})
+  const [loadingState, setLoadingState] = useState('normal')
+  const [currentNode, setCurrentNode] = useState(null)
 
   useEffect(() => {
-    setRenderData(getRootNodes(data))
+    setLoadingState(nodeDataState)
+  }, [nodeDataState])
+
+  useEffect(() => {
+    let roots = currentNode ? getChildrenNodes(currentNode, data) : getRootNodes(data)
+    setRenderData(roots)
   }, [data])
   const onBreadClick = (title) => {
     const node = fullBreadData[title]
@@ -71,37 +78,40 @@ const NavTree = ({
     })
   }
   const onReturnClick = () => {
+    setLoadingState('normal')
     setRenderData(getRootNodes(data))
     setFullBreadData({})
   }
   const onExpand = (node, children) => {
+    expandData.current = expandData.current ? expandData.current.concat([node]) : [].concat([node])
+    setFullBreadData(preData => {
+      return {
+        ...preData,
+        [node.title]: node
+      }
+    })
+    setCurrentNode(node)
     if (children.length > 0) {
-      expandData.current = expandData.current ? expandData.current.concat([node]) : [].concat([node])
       setRenderData(children)
-      setFullBreadData(preData => {
-        return {
-          ...preData,
-          [node.title]: node
-        }
-      })
     } else {
-      expandProps(null, node)
+      setRenderData([])
+      setLoadingState('loading')
+      expandProps(node, true, (arg) => {
+        setLoadingState(arg.length > 0 ? 'normal' : 'empty')
+      })
     }
   }
   return (
     <div className='hi-breadtree__root'>
       {
-        nodeDataState === 'loading' && <Loading size='small' />
-      }
-      {
-        nodeDataState === 'empty' && <span>无结果</span>
-      }
-      {
         Object.keys(fullBreadData).length > 0 && <Bread datas={fullBreadData} onClick={onBreadClick} onReturnClick={onReturnClick} />
+      }
+      {
+        loadingState === 'loading' && <Loading size='small' />
       }
       <ul className='hi-breadtree__list'>
         {
-          renderData.map((node, index) => {
+          loadingState === 'empty' ? <li><span className='hi-select-tree--empty-text'>无结果</span></li> : renderData.map((node, index) => {
             const children = getChildrenNodes(node, data)
             const textCls = classNames(
               'hi-breadtree__text',
