@@ -4,17 +4,22 @@ $prefix: 'hi-tag' !default;
 $primary: get-color($palette-primary, 'hiui-blue') !default;
 
 .#{$prefix} {
-  padding: 0 5px;
+  padding: 0 6px;
   color: #fff;
   line-height: 20px;
   box-sizing: border-box;
   border: 1px solid $primary;
   border-color: transparent;
-  margin-right: 8px;
-  border-radius: 2px;
+  margin-right: 4px;
+  margin-left: 4px;
+  border-radius: 11px;
   background: $primary;
   font-size: 12px;
   display: inline-block;
+
+  &.#{$prefix}--default {
+    background: #999;
+  }
 
   &.#{$prefix}--line {
     border: 1px solid $primary;
@@ -28,6 +33,11 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
         border: 1px solid $status-color;
         color: $status-color;
       }
+    }
+
+    &.#{$prefix}--default {
+      border: 1px solid #999;
+      color: #999;
     }
   }
 
