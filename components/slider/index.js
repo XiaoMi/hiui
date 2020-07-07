@@ -1,105 +1,200 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react'
-import classNames from 'classnames'
-import './style'
-import { set } from 'lodash'
-const prefixCls = 'hi-slider'
-const Slider = ({ defaultValue, max = 100, min = 0, range, step = 1 }) => {
-  const [value, setValue] = useState(defaultValue)
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import classNames from "classnames";
+import "./style";
+import Tooltip from "../tooltip";
+const prefixCls = "hi-slider";
+const Slider = ({
+  defaultValue,
+  max = 100,
+  min = 0,
+  range,
+  step = 1,
+  vertical,
+  onChange,
+  value: initValue,
+  disabled = false,
+}) => {
+  const getInitValue = () => {
+
+    const value = initValue || defaultValue;
+    // 双滑块模式
+    if (range) {
+      if (!(Array.isArray(value) && value.length == 2)) {
+        throw new Error("Double slider mode value must be an array");
+      }
+    }
+    return value;
+  };
+  const [value, setValue] = useState(getInitValue());
   // 是否可拖动
-  const [canMove, setCanMove] = useState(false)
+  const [canMove, setCanMove] = useState(false);
 
-  const [downTarget, setDownTarget] = useState()
+  const [startX, setStartX] = useState();
+  const [startY, setStartY] = useState();
+  const [currentX, setCurrentX] = useState();
+  const [currentY, setCurrentY] = useState();
+  // const [showTooltip,setShowTooltip] = useState(false)
 
-  const sliderRef = useRef()
-
+  const [newPosition, setNewPosition] = useState();
+  const [startPosition, setStartPosition] = useState();
+  const sliderRef = useRef();
+  const tooltipLeftRef = useRef();
+  const tooltipRightRef = useRef();
   // 抬起
   const onMouseUp = useCallback(
     (e) => {
-      console.log('up')
-      setCanMove(false)
-      setDownTarget(null)
+      setCanMove(false);
+      setStartPosition(newPosition);
     },
-    [canMove, downTarget]
-  )
+    [newPosition]
+  );
 
   // 移动
-  const onMouseMove = useCallback(
-    (e) => {
-      const parent = sliderRef.current
-      // console.log(downTarget,e);
+  const onMouseMove = (e) => {
+    const parent = sliderRef.current;
+    const { width: sliderSize } = parent.getBoundingClientRect();
+    let diff = 0;
 
-      // setValue(e.clientX > downTarget.clientX ? value++ : value--);
+    const { left, to, right } = parent.getBoundingClientRect();
+    if (canMove) {
+      if (vertical) {
+        setCurrentY(e.clientY);
 
-      // setDownTarget(e);
-      // console.log(sliderRef.current.offsetLeft);
-      // console.log(e.clientX);
-      console.log(downTarget)
-      if (canMove && downTarget) {
-        console.log(e.clientX, downTarget.clientX)
-        // setValue(e.clientX > downTarget.clientX ? value++ : value--);
+        diff = ((startY - e.clientY) / sliderSize) * 100;
+      } else {
+        setCurrentX(e.clientX);
 
-        // setDownTarget(e);
+        diff = ((e.clientX - startX) / sliderSize) * 100;
       }
-    },
-    [canMove, downTarget]
-  )
+
+      let position = startPosition +diff;
+      if (position <= 0) {
+        position = 0;
+      } else if (position >= 100) {
+        position = 100;
+      }
+      setNewPosition(position);
+      console.log(max-min)
+      setValue(Math.ceil(((max - min) * newPosition) / 100));
+      onChange(Math.ceil(((max - min) * newPosition) / 100));
+      Tooltip.close("slider-tooltip");
+      Tooltip.open(tooltipLeftRef.current, {
+        title:value,
+        placement: "top",
+        key: "slider-tooltip",
+      });
+    }
+  };
+  // 初始化设置宽度和left
+  useEffect(() => {
+    setStartPosition(currentPosition());
+    setNewPosition(currentPosition());
+  }, []);
+
+  // useEffect(()=>{
+  //   showTooltip? Tooltip.open(tooltipLeftRef.current, { title: 'Click again to hide me.',  placement: 'top', key:'slider-tooltip'}) :
+  //   Tooltip.close('slider-tooltip')
+
+  // },[showTooltip])
+
+  // 位置改变重新计算value 值
+  useEffect(() => {
+    if (newPosition) {
+      setValue(Math.ceil(((max - min) * newPosition) / 100));
+    }
+  }, [newPosition]);
 
   useEffect(() => {
-    setHandlePosition()
-  }, [])
+    if (!disabled) {
+      window.addEventListener("mouseup", onMouseUp);
+      window.addEventListener("mousemove", onMouseMove);
+    }
 
-  useEffect(() => {
-    window.addEventListener('mouseup', onMouseUp)
-    window.addEventListener('mousemove', onMouseMove)
     return () => {
-      window.removeEventListener('mouseup', onMouseUp)
-      window.removeEventListener('mousemove', onMouseMove)
-    }
-  })
+      if (!disabled) {
+        window.removeEventListener("mouseup", onMouseUp);
+        window.removeEventListener("mousemove", onMouseMove);
+      }
+    };
+  });
 
-  // 设置 handle 位置
-  const setHandlePosition = useCallback(() => {
-    const parent = sliderRef.current
-    // const { width } = parent.getBoundingClientRect();
-    // 每一份
-    const trackWidth = (value / (max - min)) * 100
-
-    parent.getElementsByClassName(`${prefixCls}__track`)[0].style.width =
-      trackWidth + '%'
-
-    if (!range) {
-      parent.getElementsByClassName(`${prefixCls}__handle`)[0].style.left =
-        trackWidth - 1 + '%'
-    } else {
-    }
-  }, [value])
+  const currentPosition = useCallback(() => {
+    return ((value - min) / (max - min)) * 100;
+  }, [value]);
 
   // 落下
   const onMouseDown = useCallback(
     (e) => {
-      setCanMove(true)
-      setDownTarget(e)
-
+      const { clientX, clientY } = e;
+      setCanMove(true);
+      if (vertical) {
+        setStartY(clientY);
+      } else {
+        setStartX(clientX);
+      }
+      // Tooltip.close('slider-tooltip')
       if (!range) {
       }
     },
-    [canMove, downTarget]
-  )
+    [canMove]
+  );
 
+  const onMouseEnter = useCallback(
+    (e) => {
+      Tooltip.close("slider-tooltip");
+      Tooltip.open(tooltipLeftRef.current, {
+        title:value,
+        placement: "top",
+        key: "slider-tooltip",
+      });
+    },
+    [newPosition]
+  );
+
+  const onMouseLeave = useCallback((e) => {
+    // setShowTooltip(false)
+    Tooltip.close("slider-tooltip");
+  });
+
+  const onHandleClick = useCallback((e) => {
+    Tooltip.close("slider-tooltip");
+    Tooltip.open(tooltipLeftRef.current, {
+      title:value,
+      placement: "top",
+      key: "slider-tooltip",
+    });
+  });
+
+  const sliderClasses = classNames(prefixCls, {
+    [`${prefixCls}--disabled`]: disabled,
+  });
   return (
-    <div className={prefixCls} ref={sliderRef}>
+    <div className={sliderClasses} ref={sliderRef} onMouseLeave={onMouseLeave}>
       <div className={`${prefixCls}__rail`} />
-      <div className={`${prefixCls}__track`} />
+      <div
+        className={`${prefixCls}__track`}
+        style={{ width: `${newPosition}%` }}
+      />
       <div className={`${prefixCls}__step`} />
+
       <div
         className={`${prefixCls}__handle ${prefixCls}__handle-1`}
         onMouseDown={onMouseDown}
+        onMouseEnter={onMouseEnter}
+        ref={tooltipLeftRef}
+        onMouseLeave={onMouseLeave}
+        onClick={onHandleClick}
         // onMouseMove={onMouseMove}
         // onMouseUp={onMouseUp}
+        style={{ left: `${newPosition}%` }}
+        tabIndex="0"
       />
-      {/* <div className={`${prefixCls}__handle ${prefixCls}__handle-2`} ></div> */}
+    {
+      range &&<div className={`${prefixCls}__handle ${prefixCls}__handle-2`} tabIndex="1"  ref={tooltipRightRef}></div>
+    }
+    
     </div>
-  )
-}
+  );
+};
 
-export default Slider
+export default Slider;
