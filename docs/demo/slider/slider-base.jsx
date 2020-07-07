@@ -2,13 +2,13 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Slider from '../../../components/slider'
 const prefix = 'slider-base'
-const rightOptions = ['基础', '禁用','可控范围']
+const rightOptions = ['基础', '禁用', '可控范围']
 const desc =
   '滑动输入连续或离散数据的单点值或范围值'
 
-  const code = [
-    {
-      code: `import React from 'react'
+const code = [
+  {
+    code: `import React from 'react'
       import Slider from '@hi-ui/hiui/es/slider'\n
       class Demo extends React.Component {
       
@@ -25,10 +25,10 @@ const desc =
           )
         }
       }`,
-      opt: ['基础']
-    },
-    {
-      code: `import React from 'react'
+    opt: ['基础']
+  },
+  {
+    code: `import React from 'react'
       import Slider from '@hi-ui/hiui/es/slider'\n
       class Demo extends React.Component {
       
@@ -45,10 +45,10 @@ const desc =
           )
         }
       }`,
-      opt: ['禁用']
-    },
-    {
-      code: `import React from 'react'
+    opt: ['禁用']
+  },
+  {
+    code: `import React from 'react'
       import Slider from '@hi-ui/hiui/es/slider'\n
       class Demo extends React.Component {
       
@@ -65,10 +65,9 @@ const desc =
           )
         }
       }`,
-      opt: ['可控范围']
-    }
-  ]
-
+    opt: ['可控范围']
+  }
+]
 
 const DemoBase = () => (
   <DocViewer
