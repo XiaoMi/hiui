@@ -15,7 +15,7 @@ import Alert from '@hi-ui/hiui/es/alert'\n
 class Demo extends React.Component {
   constructor() {
     super()
-    this.tooltips = ['terrible', 'bad', 'normal', 'good', 'wonderful']
+    this.tooltips = ['极差','失望', '一般', '满意','很满意']
   }
 
   render() {
