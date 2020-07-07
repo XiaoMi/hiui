@@ -9,6 +9,13 @@ const Tag = ({
   children,
   color
 }) => {
+  const style = color
+    ? {
+      background: appearance === 'default' ? color : '',
+      borderColor: appearance === 'line' ? color : '',
+      color: appearance === 'line' ? color : ''
+    }
+    : {}
   return (
     <span
       className={classNames(
@@ -19,11 +26,7 @@ const Tag = ({
         }
       )}
       onClick={onClick}
-      style={{
-        background: color && appearance === 'default' ? color : '',
-        borderColor: color && appearance === 'line' ? color : '',
-        color: color && appearance === 'line' ? color : ''
-      }}
+      style={style}
     >
       {children}
     </span>
