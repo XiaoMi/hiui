@@ -112,14 +112,10 @@ const Tabs = ({
 
     setShowTabItems(tabItems.showTabItems)
     setHiddentab(tabItems.hiddenTabItems)
-    console.log(childRef.current)
-    console.log(children.length)
     if (overScroll && (children.length > childRef.current)) {
       const contain = containRef.current
-      console.log(contain)
-      // ???
       setTimeout(() => {
-        contain.scrollLeft += 1000
+        contain.scrollLeft = contain.scrollWidth - contain.clientWidth
       }, 0)
     }
   }, [children])
