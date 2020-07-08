@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect, useCallback, memo } from "react";
-import classNames from "classnames";
-import "./style";
-import Tooltip from "../tooltip";
-const prefixCls = "hi-slider";
-const noop = () => {};
+import React, { useState, useRef, useEffect, useCallback, memo } from 'react'
+import classNames from 'classnames'
+import './style'
+import Tooltip from '../tooltip'
+const prefixCls = 'hi-slider'
+const noop = () => {}
 const Slider = memo(
   ({
     defaultValue,
@@ -16,108 +16,108 @@ const Slider = memo(
     value: initValue,
     disabled = false,
     tipFormatter,
-    type = "primary",
+    type = 'primary'
   }) => {
     const getInitValue = () => {
-      const value = initValue || defaultValue;
+      const value = initValue || defaultValue
       // 双滑块模式
       if (range) {
         if (!(Array.isArray(value) && value.length == 2)) {
-          throw new Error("Double slider mode value must be an array");
+          throw new Error('Double slider mode value must be an array')
         }
       }
-      return value;
-    };
-    const [value, setValue] = useState(getInitValue());
+      return value
+    }
+    const [value, setValue] = useState(getInitValue())
 
     // 是否可拖动
-    const [canMove, setCanMove] = useState(false);
+    const [canMove, setCanMove] = useState(false)
 
-    const [startX, setStartX] = useState();
-    const [startY, setStartY] = useState();
-    const [currentX, setCurrentX] = useState();
-    const [currentY, setCurrentY] = useState();
+    const [startX, setStartX] = useState()
+    const [startY, setStartY] = useState()
+    const [currentX, setCurrentX] = useState()
+    const [currentY, setCurrentY] = useState()
     // const [showTooltip,setShowTooltip] = useState(false)
 
-    const [newRightPosition, setNewRightPosition] = useState(0);
-    const [startRightPosition, setStartRightPosition] = useState(0);
-    const [startLeftPosition, setStartLeftPosition] = useState(0);
-    const [newLeftPosition, setNewLeftPosition] = useState(0);
-    const [number,setNumber] = useState(Math.round((max-min)/step))
+    const [newRightPosition, setNewRightPosition] = useState(0)
+    const [startRightPosition, setStartRightPosition] = useState(0)
+    const [startLeftPosition, setStartLeftPosition] = useState(0)
+    const [newLeftPosition, setNewLeftPosition] = useState(0)
+    const [number, setNumber] = useState(Math.round((max - min) / step))
     console.log(number)
-    const [dragNode, setDragNode] = useState();
-    const sliderRef = useRef();
-    const tooltipLeftRef = useRef();
-    const tooltipRightRef = useRef();
-    const valueRef = useRef();
+    const [dragNode, setDragNode] = useState()
+    const sliderRef = useRef()
+    const tooltipLeftRef = useRef()
+    const tooltipRightRef = useRef()
+    const valueRef = useRef()
     // 抬起
     const onMouseUp = useCallback(
       (e) => {
-        setCanMove(false);
-        setStartRightPosition(newRightPosition);
-        setStartLeftPosition(newLeftPosition);
-        setDragNode(null);
+        setCanMove(false)
+        setStartRightPosition(newRightPosition)
+        setStartLeftPosition(newLeftPosition)
+        setDragNode(null)
       },
       [newRightPosition, newLeftPosition]
-    );
+    )
 
     useEffect(() => {
-      max = max || 100;
-      min = min || 0;
+      max = max || 100
+      min = min || 0
       if (initValue > max) {
-        setValue(max);
+        setValue(max)
       } else if (initValue < min) {
-        setValue(min);
+        setValue(min)
       } else {
-        setValue(initValue);
+        setValue(initValue)
       }
-    }, [initValue]);
+    }, [initValue])
     // 移动
     const onMouseMove = (e) => {
       if (canMove) {
-        const parent = sliderRef.current;
+        const parent = sliderRef.current
 
-        max = max || 100;
-        min = min || 0;
-        let positionStep = (step / (max - min)) * 100;
+        max = max || 100
+        min = min || 0
+        let positionStep = (step / (max - min)) * 100
 
         const {
           width: sliderSize,
-          height: sliderHeight,
-        } = parent.getBoundingClientRect();
+          height: sliderHeight
+        } = parent.getBoundingClientRect()
 
-        let diff = 0;
-        let changeValue;
-        const target = dragNode;
+        let diff = 0
+        let changeValue
+        const target = dragNode
         // (max-min)/step
         if (!range) {
           if (vertical) {
-            setCurrentY(e.clientY);
+            setCurrentY(e.clientY)
             diff =
               Math.round(
                 (((e.clientY - startY) / sliderHeight) * 100) / positionStep
-              ) * positionStep;
+              ) * positionStep
           } else {
-            setCurrentX(e.clientX);
+            setCurrentX(e.clientX)
             diff =
               Math.round(
                 (((e.clientX - startX) / sliderSize) * 100) / positionStep
-              ) * positionStep;
+              ) * positionStep
           }
 
-          let position = startRightPosition + diff;
+          let position = startRightPosition + diff
           if (position <= 0) {
-            position = 0;
+            position = 0
           } else if (position >= 100) {
-            position = 100;
+            position = 100
           }
 
-          setNewRightPosition(position);
-          changeValue =  min +Math.round(Math.round(((max - min) * position) / 100 / step)) *step;
+          setNewRightPosition(position)
+          changeValue = min + Math.round(Math.round(((max - min) * position) / 100 / step)) * step
           if (changeValue < min) {
-            changeValue = min;
+            changeValue = min
           } else if (changeValue > max) {
-            changeValue = max;
+            changeValue = max
           }
         } else {
           // if (vertical) {
@@ -151,127 +151,127 @@ const Slider = memo(
           //   }
           // }
         }
-        setValue(changeValue);
-        valueRef.current = changeValue;
-        onChange(changeValue);
-        optTooltip(target);
+        setValue(changeValue)
+        valueRef.current = changeValue
+        onChange(changeValue)
+        optTooltip(target)
       }
-    };
+    }
 
     // 获取 track left
     const getstartLeftPosition = useCallback(() => {
-      min = min || 0;
-      max = max || 100;
-      return range ? Math.round(((value[0] - min) / (max - min)) * 100) : 0;
-    }, [range, value]);
+      min = min || 0
+      max = max || 100
+      return range ? Math.round(((value[0] - min) / (max - min)) * 100) : 0
+    }, [range, value])
 
     // 初始化设置宽度和left
     useEffect(() => {
       if (valueRef.current !== value) {
         // 记录左侧上一次位置
         if (range) {
-          setStartLeftPosition(getstartLeftPosition());
-          setNewLeftPosition(getstartLeftPosition());
+          setStartLeftPosition(getstartLeftPosition())
+          setNewLeftPosition(getstartLeftPosition())
         }
-        setStartRightPosition(getTrackWidth());
-        setNewRightPosition(getTrackWidth());
+        setStartRightPosition(getTrackWidth())
+        setNewRightPosition(getTrackWidth())
       }
-    }, [value]);
+    }, [value])
 
     useEffect(() => {
       if (!disabled) {
-        window.addEventListener("mouseup", onMouseUp);
-        window.addEventListener("mousemove", onMouseMove);
+        window.addEventListener('mouseup', onMouseUp)
+        window.addEventListener('mousemove', onMouseMove)
       }
 
       return () => {
-        Tooltip.close("slider-tooltip");
+        Tooltip.close('slider-tooltip')
         if (!disabled) {
-          window.removeEventListener("mouseup", onMouseUp);
-          window.removeEventListener("mousemove", onMouseMove);
+          window.removeEventListener('mouseup', onMouseUp)
+          window.removeEventListener('mousemove', onMouseMove)
         }
-      };
-    });
+      }
+    })
 
     // 获取 track 宽度
     const getTrackWidth = useCallback(() => {
-      min = min || 0;
-      max = max || 100;
+      min = min || 0
+      max = max || 100
       if (range) {
-        return Math.round(((value[1] - min) / (max - min)) * 100);
+        return Math.round(((value[1] - min) / (max - min)) * 100)
       }
-      return Math.round(((value - min) / (max - min)) * 100);
-    }, [value]);
+      return Math.round(((value - min) / (max - min)) * 100)
+    }, [value])
 
     // 落下
     const onMouseDown = useCallback(
       (e) => {
-        const { clientX, clientY } = e;
-        setCanMove(true);
+        const { clientX, clientY } = e
+        setCanMove(true)
         if (vertical) {
-          setStartY(clientY);
+          setStartY(clientY)
         } else {
-          setStartX(clientX);
+          setStartX(clientX)
         }
-        setDragNode(e.target);
+        setDragNode(e.target)
       },
       [canMove]
-    );
+    )
 
     const optTooltip = useCallback(
       (target) => {
-        Tooltip.close("slider-tooltip");
+        Tooltip.close('slider-tooltip')
 
-        let title = "";
+        let title = ''
         if (range) {
-          title = target.classList.contains("hi-slider__handle-2")
+          title = target.classList.contains('hi-slider__handle-2')
             ? value[0]
-            : value[1];
+            : value[1]
         } else {
-          title = value;
+          title = value
         }
-        title = tipFormatter ? tipFormatter(title) : title;
-        if (title !== "") {
+        title = tipFormatter ? tipFormatter(title) : title
+        if (title !== '') {
           Tooltip.open(target, {
             title,
-            placement: vertical ? "right" : "top",
-            key: "slider-tooltip",
-          });
+            placement: vertical ? 'right' : 'top',
+            key: 'slider-tooltip'
+          })
         }
       },
       [value]
-    );
+    )
 
     const onMouseEnter = useCallback(
       (e) => {
-        const target = e.target;
-        optTooltip(target);
+        const target = e.target
+        optTooltip(target)
       },
       [value]
-    );
+    )
 
     const onMouseLeave = useCallback((e) => {
       // setShowTooltip(false)
-      Tooltip.close("slider-tooltip");
-    });
+      Tooltip.close('slider-tooltip')
+    })
 
     const onHandleClick = useCallback(
       (e) => {
-        const target = e.target;
-        optTooltip(target);
+        const target = e.target
+        optTooltip(target)
       },
       [value]
-    );
+    )
 
     const railClick = useCallback((e) => {
-      const clientX = e.clientX;
-    }, []);
+      const clientX = e.clientX
+    }, [])
 
     const sliderClasses = classNames(prefixCls, {
       [`${prefixCls}--disabled`]: disabled,
       [`${prefixCls}--vertical`]: vertical,
-      [`${prefixCls}--${type}`]: true,
-    });
+      [`${prefixCls}--${type}`]: true
+    })
 
     return (
       <div className={sliderClasses} ref={sliderRef}>
@@ -279,16 +279,16 @@ const Slider = memo(
         <div
           className={`${prefixCls}__track`}
           style={{
-            [!vertical ? "width" : "height"]: `${
+            [!vertical ? 'width' : 'height']: `${
               newRightPosition - newLeftPosition > 0
                 ? Math.round(newRightPosition - newLeftPosition)
                 : Math.round(newLeftPosition - newRightPosition)
             }%`,
-            [!vertical ? "left" : "top"]: `${
+            [!vertical ? 'left' : 'top']: `${
               newRightPosition - newLeftPosition > 0
                 ? Math.round(newLeftPosition)
                 : Math.round(newRightPosition)
-            }%`,
+            }%`
           }}
         />
 
@@ -299,19 +299,19 @@ const Slider = memo(
           ref={tooltipLeftRef}
           onClick={onHandleClick}
           style={{
-            [!vertical ? "left" : "top"]: `${Math.round(newRightPosition)}%`,
+            [!vertical ? 'left' : 'top']: `${Math.round(newRightPosition)}%`
           }}
-          tabIndex="0"
+          tabIndex='0'
         />
         {range && (
           <div
             className={`${prefixCls}__handle ${prefixCls}__handle-2`}
-            tabIndex="1"
+            tabIndex='1'
             ref={tooltipRightRef}
             onMouseDown={(e) => onMouseDown(e)}
             onMouseEnter={(e) => onMouseEnter(e)}
             style={{
-              [!vertical ? "left" : "top"]: `${Math.round(newLeftPosition)}%`,
+              [!vertical ? 'left' : 'top']: `${Math.round(newLeftPosition)}%`
             }}
           />
         )}
@@ -320,8 +320,8 @@ const Slider = memo(
           <span className={`${prefixCls}__max`}>{max}</span>
         </div>
       </div>
-    );
+    )
   }
-);
+)
 
-export default Slider;
+export default Slider

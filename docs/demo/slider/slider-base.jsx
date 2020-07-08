@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Slider from '../../../components/slider'
 const prefix = 'slider-base'
-const rightOptions = ['基础', '禁用','可控范围']
+const rightOptions = ['基础', '禁用', '可控范围']
 const desc =
   '滑动输入连续或离散数据的单点值或范围值'
 

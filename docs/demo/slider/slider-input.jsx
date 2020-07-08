@@ -1,11 +1,11 @@
-import React from "react";
-import DocViewer from "../../../libs/doc-viewer";
-import Slider from "../../../components/slider";
+import React from 'react'
+import DocViewer from '../../../libs/doc-viewer'
+import Slider from '../../../components/slider'
 import Grid from '../../../components/grid'
 import Input from '../../../components/input'
-const prefix = "slider-input";
-const rightOptions = ["垂直","水平"];
-const desc = "滑动输入连续或离散数据的单点值或范围值";
+const prefix = 'slider-input'
+const rightOptions = ['垂直', '水平']
+const desc = '滑动输入连续或离散数据的单点值或范围值'
 
 const code = [
   {
@@ -49,7 +49,7 @@ const code = [
         )
       }
     }`,
-    opt: ["水平"],
+    opt: ['水平']
   },
   {
     code: `import React from "react";
@@ -113,17 +113,17 @@ const code = [
       }
     }
     `,
-    opt: ["垂直"],
+    opt: ['垂直']
   }
-];
+]
 
 const DemoBase = () => (
   <DocViewer
     code={code}
-    scope={{ Slider,Grid,Input }}
+    scope={{ Slider, Grid, Input }}
     prefix={prefix}
     desc={desc}
     rightOptions={rightOptions}
   />
-);
-export default DemoBase;
+)
+export default DemoBase
