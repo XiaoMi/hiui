@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Slider from '../../../components/slider'
 const prefix = 'slider-base'
-const rightOptions = ['基础', '禁用', '可控范围']
+const rightOptions = ['基础', '禁用','可控范围']
 const desc =
   '滑动输入连续或离散数据的单点值或范围值'
 
@@ -21,7 +21,7 @@ const code = [
       
         render() {
           return (
-            <Slider defaultValue={10} onChange={(value)=>{console.log(value)}} value={this.state.value} max={20} min={2}/>
+            <Slider defaultValue={10} onChange={(value)=>{console.log(value)}} value={this.state.value}/>
           )
         }
       }`,
@@ -55,13 +55,13 @@ const code = [
         constructor() {
           super()
           this.state = {
-            value: [40,80]
+            value: 80
           }
         }
       
         render() {
           return (
-            <Slider value={this.state.value} range/>
+            <Slider value={this.state.value}  min={1} max={90}/>
           )
         }
       }`,
