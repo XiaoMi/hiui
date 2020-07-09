@@ -84,13 +84,12 @@ $prefix: 'hi-slider' !default;
     &-dot {
       position: absolute;
       border-radius: 50%;
-      top: -2px;
+      top: -3px;
       width: 7px;
       height: 7px;
       background: rgba(255, 255, 255, 1);
-      border: 1px solid rgba(66, 132, 245, 1)
+      border: 1px solid rgba(66, 132, 245, 1);
     }
-
   }
 
   .#{$prefix}__stepText {
@@ -130,8 +129,8 @@ $prefix: 'hi-slider' !default;
   }
 
   @each $key in 'success',
-  'danger',
-  'warning' {
+    'danger',
+    'warning' {
     &--#{$key} {
       $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
 
