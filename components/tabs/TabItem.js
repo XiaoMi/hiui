@@ -14,7 +14,7 @@ const TabItem = ({
   deleteTab,
   dragStart,
   dragEnd,
-  overScroll
+  canScroll
 }) => {
   const { tabTitle, tabId, tabDesc, disabled, closeable } = item
   const itemClasses = classNames(`${prefixCls}__item`, {
@@ -24,7 +24,7 @@ const TabItem = ({
 
   const toggleTooltip = (e, item) => {
     e.target = e.target.closest('.hi-tabs__item')
-    if (overScroll) {
+    if (canScroll) {
       return
     }
     if (type === 'editable') {

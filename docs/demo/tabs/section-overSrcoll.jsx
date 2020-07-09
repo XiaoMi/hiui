@@ -100,7 +100,7 @@ class Demo extends React.Component {
   }
 
   render () {
-    return  <Tabs type="editable" onTabClick={(tab,e)=>console.log(tab,e)} editable onDelete={this.deleteTab.bind(this)} onAdd={this.addTab.bind(this)} onBeforeDelete={this.beforeDelete.bind(this)} overScroll={true}>
+    return  <Tabs type="editable" onTabClick={(tab,e)=>console.log(tab,e)} editable onDelete={this.deleteTab.bind(this)} onAdd={this.addTab.bind(this)} onBeforeDelete={this.beforeDelete.bind(this)} canScroll={true}>
       {
         this.state.panes.map((pane, index) => {
           return (

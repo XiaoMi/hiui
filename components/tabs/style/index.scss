@@ -380,7 +380,7 @@ $prefix: 'hi-tabs' !default;
     width: 100%;
   }
 
-  &--overScroll {
+  &--canScroll {
     .#{$prefix}__nav {
       overflow: scroll !important;
     }

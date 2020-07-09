@@ -25,7 +25,7 @@ const Tabs = ({
   type,
   placement,
   max,
-  overScroll,
+  canScroll,
   onDelete,
   editable,
   className,
@@ -112,7 +112,7 @@ const Tabs = ({
 
     setShowTabItems(tabItems.showTabItems)
     setHiddentab(tabItems.hiddenTabItems)
-    if (overScroll && (children.length > childRef.current)) {
+    if (canScroll && children.length > childRef.current) {
       const contain = containRef.current
       setTimeout(() => {
         contain.scrollLeft = contain.scrollWidth - contain.clientWidth
@@ -284,7 +284,7 @@ const Tabs = ({
       [`${prefixCls}--${placement}`]: type === 'card' || type === 'line'
     },
     {
-      [`${prefixCls}--overScroll`]: overScroll
+      [`${prefixCls}--canScroll`]: canScroll
     }
   )
 
@@ -330,7 +330,7 @@ const Tabs = ({
                     deleteTab={deleteTab}
                     dragStart={dragStart}
                     dragEnd={dragEnd}
-                    overScroll={overScroll}
+                    canScroll={canScroll}
                   />
                 </CSSTransition>
               )
