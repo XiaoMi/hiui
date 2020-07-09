@@ -33,10 +33,6 @@ class Demo extends React.Component {
       ]
     }
   }
-  // onEdit(action, index, tabId) {
-  //   console.log('----------onEdit', action, index, tabId)
-  //   this[\`\${action}Tab\`](index, tabId)
-  // }
   addTab() {
     const panes = this.state.panes;
    
