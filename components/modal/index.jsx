@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import ReactDOM from 'react-dom'
+import { render, unmountComponentAtNode, createPortal } from 'react-dom'
 import Classnames from 'classnames'
 import Button from '../button'
 import Icon from '../icon'
@@ -29,7 +29,7 @@ const ModalComp = ({
 }) => {
   // TODO: 整体可以抽成一个 hooks 供 modal 和 drawer 复用
   const defaultContainer = useRef(false)
-  if (defaultContainer.current === false) {
+  if (defaultContainer.current === false && !container) {
     defaultContainer.current = getDefaultContainer()
   }
 
@@ -43,7 +43,7 @@ const ModalComp = ({
     }
   }, [visible, container])
 
-  return ReactDOM.createPortal(
+  return createPortal(
     <div className={PREFIX}>
       <div
         className={Classnames(`${PREFIX}__mask`, { [`${PREFIX}__mask--visible`]: visible })}
@@ -94,8 +94,33 @@ const ModalComp = ({
         </div>
       </div>
     </div>,
-    defaultContainer.current
+    container || defaultContainer.current
   )
 }
 
+function confirm ({ onConfirm, onCancel, title = '提示', content, type = 'default' }) {
+  const confirmContainer = document.createElement('div')
+
+  document.body.appendChild(confirmContainer)
+  const modal = React.createElement(ModalComp, {
+    container: confirmContainer,
+    title,
+    size: 'small',
+    visible: true,
+    onConfirm: () => {
+      onConfirm()
+      unmountComponentAtNode(confirmContainer)
+      confirmContainer.parentNode.removeChild(confirmContainer)
+    },
+    children: content,
+    onCancel: () => {
+      onCancel && onCancel()
+      unmountComponentAtNode(confirmContainer)
+      confirmContainer.parentNode.removeChild(confirmContainer)
+    }
+  })
+  render(modal, confirmContainer)
+}
+
+ModalComp.confirm = confirm
 export default ModalComp
