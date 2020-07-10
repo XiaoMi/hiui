@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useCallback } from 'react'
 import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
@@ -15,9 +15,14 @@ import * as HIUI from '../'
  */
 
 const FormItem = props => {
-  const { formProps, removeField, formState, dispatch, _type } = useContext(
-    FormContext
-  )
+  const {
+    formProps,
+    removeField,
+    formState,
+    dispatch,
+    onValuesChange,
+    _type
+  } = useContext(FormContext)
   const {
     children,
     label,
@@ -41,8 +46,9 @@ const FormItem = props => {
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
   const [validating, setValidating] = useState(false)
+
   // 更新
-  const updateField = _value => {
+  const updateField = (_value, triggerType) => {
     const childrenFiled = {
       field,
       value: _value,
@@ -57,6 +63,15 @@ const FormItem = props => {
         Object.assign(item, childrenFiled)
       }
     })
+    const allValues = {}
+    _fields.forEach(item => {
+      const { field, value } = item
+      allValues[field] = value
+    })
+    triggerType === 'onChange' &&
+      onValuesChange &&
+      onValuesChange({ [field]: _value }, allValues)
+
     dispatch({ type: FILEDS_UPDATE, payload: _fields })
   }
   const resetValidate = (value = '') => {
@@ -154,8 +169,8 @@ const FormItem = props => {
 
   // 对字段的操作
   const handleField = (triggerType, currentValue) => {
-    // 更新数据给父级
-    updateField(currentValue)
+    // 同步数据 reducer
+    updateField(currentValue, triggerType)
     let rules = getRules()
     const hasTriggerType = rules.some(rule => {
       const { trigger = '' } = rule
@@ -164,20 +179,18 @@ const FormItem = props => {
     hasTriggerType && validate(triggerType, '', currentValue)
   }
 
-  const labelWidth = () => {
+  const labelWidth = useCallback(() => {
     const labelWidth = props.labelWidth || formProps.labelWidth
     return formProps.labelPosition === 'top'
       ? '100%'
       : !Number.isNaN(Number(labelWidth)) && Number(labelWidth)
-  }
-  const setEvent = (eventName, e, ...args) => {
+  }, [props.labelWidth, formProps.labelWidth])
+
+  const setEvent = (eventName, componentProps, e, ...args) => {
     e.persist && e.persist()
-    eventName === 'onChange' &&
-      children.props.onChange &&
-      children.props.onChange(e, ...args)
-    eventName === 'onBlur' &&
-      children.props.onBlur &&
-      children.props.onBlur(e, ...args)
+    const _props = _type === 'SchemaForm' ? componentProps : children.props
+    eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
+    eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
     const value =
       e.target && e.target.hasOwnProperty(valuePropName)
         ? e.target[valuePropName]
@@ -187,37 +200,21 @@ const FormItem = props => {
       handleField(eventName, value)
     })
   }
-  const setEventBySchema = (eventName, componentProps, e, ...args) => {
-    e.persist && e.persist()
-    eventName === 'onChange' &&
-      componentProps.onChange &&
-      componentProps.onChange(e, ...args)
-    eventName === 'onBlur' &&
-      componentProps.onBlur &&
-      componentProps.onBlur(e, ...args)
-    const value =
-      e.target && e.target.hasOwnProperty(valuePropName)
-        ? e.target[valuePropName]
-        : e
-    setValue(value)
-    setTimeout(() => {
-      handleField(eventName, value)
-    })
-  }
+
   // jsx渲染方式
   const renderChildren = () => {
     const { component, componentProps } = props
     if (_type === 'SchemaForm' && component) {
       if (HIUI[component]) {
-        const ChildTag = HIUI[component]
-        return React.createElement(ChildTag, {
+        const HIUIComponent = HIUI[component]
+        return React.createElement(HIUIComponent, {
           ...componentProps,
           [valuePropName]: value,
           onChange: (e, ...args) => {
-            setEventBySchema('onChange', componentProps, e, ...args)
+            setEvent('onChange', componentProps, e, ...args)
           },
           onBlur: (e, ...args) => {
-            setEventBySchema('onBlur', componentProps, e, ...args)
+            setEvent('onBlur', componentProps, e, ...args)
           }
         })
       } else {
@@ -232,10 +229,10 @@ const FormItem = props => {
       : React.cloneElement(children, {
           [valuePropName]: value,
           onChange: (e, ...args) => {
-            setEvent('onChange', e, ...args)
+            setEvent('onChange', {}, e, ...args)
           },
           onBlur: (e, ...args) => {
-            setEvent('onBlur', e, ...args)
+            setEvent('onBlur', {}, e, ...args)
           }
         })
   }

@@ -44,6 +44,12 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 
 <DemoUseForm />
 
+## 表单验证常用用法
+
+import DemoRules from '../../demo/form/section-rules.jsx'
+
+<DemoRules />
+
 ## 双列表单
 
 import DemoTwoCol from '../../demo/form/section-two-col.jsx'
@@ -60,15 +66,16 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 
 ### Form
 
-| 参数           | 说明                                                                                  | 类型    | 可选值                     | 默认值     |
-| -------------- | ------------------------------------------------------------------------------------- | ------- | -------------------------- | ---------- |
-| initialValues  | 表单默认值，只有初始化以及重置时生效                                                  | object  | -                          | -          |
-| rules          | 表单验证规则，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object  | -                          | -          |
-| labelWidth     | label 宽度，可用任意 CSS 长度单位                                                     | string  |                            |
-| labelPlacement | label 放置的位置                                                                      | string  | 'right' \| 'left' \| 'top' | 'left'     |
-| placement      | 是否横向排列                                                                          | string  | 'horizontal' \| 'vertical' | 'vertical' |
-| showColon      | 是否显示冒号                                                                          | boolean | true \| false              | true       |
-| readOnly       | 只读，不可编辑表单内容                                                                | Boolean | true \| false              | false      |
+| 参数           | 说明                                                                                  | 类型                               | 可选值                     | 默认值     |
+| -------------- | ------------------------------------------------------------------------------------- | ---------------------------------- | -------------------------- | ---------- |
+| initialValues  | 表单默认值，只有初始化以及重置时生效                                                  | object                             | -                          | -          |
+| rules          | 表单验证规则，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object                             | -                          | -          |
+| labelWidth     | label 宽度，可用任意 CSS 长度单位                                                     | string                             |                            |
+| labelPlacement | label 放置的位置                                                                      | string                             | 'right' \| 'left' \| 'top' | 'left'     |
+| placement      | 是否横向排列                                                                          | string                             | 'horizontal' \| 'vertical' | 'vertical' |
+| showColon      | 是否显示冒号                                                                          | boolean                            | true \| false              | true       |
+| onValuesChange | 字段值更新时触发回调事件                                                              | Function(changedValues, allValues) | -                          | -          |
+| readOnly       | 只读，不可编辑表单内容                                                                | Boolean                            | true \| false              | false      |
 
 ### SchemaForm
 
@@ -129,17 +136,16 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 
 ## rules
 
-| 名称            | 说明                                                                                                                                | 类型                              |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| enum            | 是否匹配枚举中的值                                                                                                                  | any[]                             |
-| len             | string 类型时为字符串长度；number 类型时为确定数字； array 类型时为数组长度                                                         | number                            |
-| max             | 必须设置 `type`：string 类型为字符串最大长度；number 类型时为最大值；array 类型时为数组最大长度                                     | number                            |
-| message         | 错误信息，不设置时会通过[模板](#validateMessages)自动生成                                                                           | string                            |
-| min             | 必须设置 `type`：string 类型为字符串最小长度；number 类型时为最小值；array 类型时为数组最小长度                                     | number                            |
-| pattern         | 正则表达式匹配                                                                                                                      | RegExp                            |
-| required        | 是否为必选字段                                                                                                                      | boolean                           |
-| transform       | 将字段值转换成目标值后进行校验                                                                                                      | (value) => any                    |
-| type            | 类型，常见有 `string` \|`number` \|`boolean` \|`url` \| `email`。更多请参考[此处](https://github.com/yiminghe/async-validator#type) | string                            |
-| validator       | 自定义校验，接收 Promise 作为返回值。[示例](#components-form-demo-register)参考                                                     | ([rule](#Rule), value) => Promise |
-| whitespace      | 如果字段仅包含空格则校验不通过                                                                                                      | boolean                           |
-| validateTrigger | 设置触发验证时机，必须是 Form.Item 的 `validateTrigger` 的子集                                                                      | string \| string[]                |
+| 名称       | 说明                                                                                                                        | 类型                              |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| enum       | 是否匹配枚举中的值                                                                                                          | any[]                             |
+| len        | string 类型时为字符串长度；number 类型时为确定数字； array 类型时为数组长度                                                 | number                            |
+| max        | 必须设置 `type`：string 类型为字符串最大长度；number 类型时为最大值；array 类型时为数组最大长度                             | number                            |
+| message    | 错误信息，不设置时会通过[模板](#validateMessages)自动生成                                                                   | string                            |
+| min        | 必须设置 `type`：string 类型为字符串最小长度；number 类型时为最小值；array 类型时为数组最小长度                             | number                            |
+| pattern    | 正则表达式匹配                                                                                                              | RegExp                            |
+| required   | 是否为必选字段                                                                                                              | boolean                           |
+| transform  | 将字段值转换成目标值后进行校验                                                                                              | (value) => any                    |
+| type       | 类型，常见有 `string` \|`number` \|`boolean` \| `email`。更多请参考[此处](https://github.com/yiminghe/async-validator#type) | string                            |
+| validator  | 自定义校验，接收 Promise 作为返回值。[示例](#components-form-demo-register)参考                                             | ([rule](#Rule), value) => Promise |
+| whitespace | 如果字段仅包含空格则校验不通过                                                                                              | boolean                           |

@@ -26,13 +26,12 @@ const Form = props => {
     style,
     innerRef: formRef,
     initialValues,
-    _type
+    onValuesChange,
+    _type // SchemaForm 内部配置变量
   } = props
-  const FormInstance = useRef(parseInt(Math.random() * 1000000 + 100000)) // 实例
   const [state, dispatch] = useReducer(FormReducer, {
     fields: [],
-    ...props,
-    FormInstance
+    ...props
   })
   const { fields } = state
 
@@ -73,12 +72,12 @@ const Form = props => {
           : true
       })
       _fields.forEach(childrenField => {
-        childrenField.value = toDefault
-          ? initialValues[childrenField.field]
-          : ''
-        childrenField.resetValidate(
-          toDefault ? initialValues[childrenField.field] : ''
-        )
+        const value =
+          toDefault && initialValues && initialValues[childrenField.field]
+            ? initialValues[childrenField.field]
+            : ''
+        childrenField.value = value
+        childrenField.resetValidate(value)
       })
       dispatch({ type: FILEDS_UPDATE, payload: _fields })
       cb instanceof Function && cb()
@@ -162,6 +161,7 @@ const Form = props => {
           fields,
           validate,
           resetValidates,
+          onValuesChange,
           _type
         }}
       >

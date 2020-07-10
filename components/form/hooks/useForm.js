@@ -13,6 +13,8 @@ const useForm = () => {
   )
   const resetValidates = useCallback(
     (cb, resetNames, toDefault) => {
+      const { resetValidates } = formRef.current
+
       resetValidates(cb, resetNames, toDefault)
     },
     [current]
