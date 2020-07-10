@@ -12,7 +12,7 @@ const getDefaultContainer = () => {
   document.body.appendChild(defaultContainer)
   return defaultContainer
 }
-// TODO:Confirm
+
 const ModalComp = ({
   children,
   container,
@@ -98,7 +98,14 @@ const ModalComp = ({
   )
 }
 
-function confirm ({ onConfirm, onCancel, title = '提示', content, type = 'default' }) {
+const confirmIconMap = {
+  success: { name: 'check-circle-o', color: '#1DA653' },
+  error: { name: 'close-circle-o', color: '#EB5252' },
+  warning: { name: 'info-circle-o', color: '#e19d0b' },
+  info: { name: 'info-circle-o', color: '#4284F5' }
+}
+
+const confirm = ({ onConfirm, onCancel, title = '提示', content, type = 'default' }) => {
   const confirmContainer = document.createElement('div')
 
   document.body.appendChild(confirmContainer)
@@ -112,9 +119,28 @@ function confirm ({ onConfirm, onCancel, title = '提示', content, type = 'defa
       unmountComponentAtNode(confirmContainer)
       confirmContainer.parentNode.removeChild(confirmContainer)
     },
-    children: content,
+    showFooterDivider: false,
+    children: (
+      <div style={{ display: 'flex', flex: 1 }}>
+        {type !== 'default' && (
+          <Icon
+            name={confirmIconMap[type] && confirmIconMap[type].name}
+            style={{
+              color: confirmIconMap[type] && confirmIconMap[type].color,
+              fontSize: '36px',
+              lineHeight: '36px',
+              height: '36px',
+              display: 'inline-block',
+              marginRight: 8
+            }}
+          />
+        )}
+        {content}
+      </div>
+    ),
     onCancel: () => {
       onCancel && onCancel()
+      confirmContainer.parentNode.style.removeProperty('overflow')
       unmountComponentAtNode(confirmContainer)
       confirmContainer.parentNode.removeChild(confirmContainer)
     }
