@@ -25,7 +25,8 @@ const ModalComp = ({
   height,
   size = 'default',
   showHeaderDivider = true,
-  showFooterDivider = true
+  showFooterDivider = true,
+  footer
 }) => {
   // TODO: 整体可以抽成一个 hooks 供 modal 和 drawer 复用
   const defaultContainer = useRef(false)
@@ -71,26 +72,31 @@ const ModalComp = ({
         </div>
         <div className={`${PREFIX}__content`}>{children}</div>
         <div className={Classnames(`${PREFIX}__footer`, { [`${PREFIX}__footer--divided`]: showFooterDivider })}>
-          <Button
-            type={'line'}
-            onClick={() => {
-              if (onCancel) {
-                onCancel()
-              }
-            }}
-          >
-            取消
-          </Button>
-          <Button
-            type={'primary'}
-            onClick={() => {
-              if (onConfirm) {
-                onConfirm()
-              }
-            }}
-          >
-            确认
-          </Button>
+          {footer === undefined && (
+            <Button
+              type={'line'}
+              onClick={() => {
+                if (onCancel) {
+                  onCancel()
+                }
+              }}
+            >
+              取消
+            </Button>
+          )}
+          {footer === undefined && (
+            <Button
+              type={'primary'}
+              onClick={() => {
+                if (onConfirm) {
+                  onConfirm()
+                }
+              }}
+            >
+              确认
+            </Button>
+          )}
+          {footer}
         </div>
       </div>
     </div>,
@@ -115,7 +121,8 @@ const confirm = ({ onConfirm, onCancel, title = '提示', content, type = 'defau
     size: 'small',
     visible: true,
     onConfirm: () => {
-      onConfirm()
+      onConfirm && onConfirm()
+      confirmContainer.parentNode.style.removeProperty('overflow')
       unmountComponentAtNode(confirmContainer)
       confirmContainer.parentNode.removeChild(confirmContainer)
     },
