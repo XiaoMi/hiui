@@ -1,9 +1,9 @@
-import React from "react";
-import DocViewer from "../../../libs/doc-viewer";
-import Slider from "../../../components/slider";
-const prefix = "slider-color";
-const rightOptions = ["水平", "竖直"];
-const desc = "按定义步长输入离散型数值，可加入特殊位置";
+import React from 'react'
+import DocViewer from '../../../libs/doc-viewer'
+import Slider from '../../../components/slider'
+const prefix = 'slider-color'
+const rightOptions = ['水平', '竖直']
+const desc = '按定义步长输入离散型数值，可加入特殊位置'
 
 const code = [
   {
@@ -19,7 +19,7 @@ const code = [
             0: '0°C',
             26: '26°C',
             37: '37°C',
-            100: '100°C'
+            100: '100°C',
           }
         }
       }
@@ -27,11 +27,11 @@ const code = [
       render() {
         const {value,marks} = this.state
         return (
-          <Slider value={value} step={9} marks={marks}/>
+          <Slider value={value} marks={marks}/>
         )
       }
     }`,
-    opt: ["水平"],
+    opt: ['水平']
   },
   {
     code: `import React from 'react'
@@ -41,12 +41,18 @@ const code = [
       constructor() {
         super()
         this.state = {
-          value: 30
+          value: 30,
+          marks:{
+            0: '0°C',
+            26: '26°C',
+            37: '37°C',
+            100: '100',
+          }
         }
       }
     
       render() {
-        const {value} = this.state
+        const {value,marks} = this.state
         return (
           <div
               style={{
@@ -58,14 +64,14 @@ const code = [
                 marginLeft:50
               }}
             >
-          <Slider value={value} step={9} max={99} min={10} vertical/>
+          <Slider value={value} step={9} vertical marks={marks}/>
           </div>
         )
       }
     }`,
-    opt: ["竖直"],
-  },
-];
+    opt: ['竖直']
+  }
+]
 
 const DemoBase = () => (
   <DocViewer
@@ -75,5 +81,5 @@ const DemoBase = () => (
     desc={desc}
     rightOptions={rightOptions}
   />
-);
-export default DemoBase;
+)
+export default DemoBase

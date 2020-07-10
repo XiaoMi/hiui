@@ -42,7 +42,24 @@ $prefix: 'hi-slider' !default;
     .#{$prefix}__handle {
       margin-left: -5px;
       transform: translateY(-50%);
-      margin-top: 0;
+    }
+
+    .#{$prefix}__step {
+      position: absolute;
+      width: 4px;
+      height: 100%;
+
+      &-dot {
+        position: absolute;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        left: 2px;
+        top: auto;
+        width: 7px;
+        height: 7px;
+        background: rgba(255, 255, 255, 1);
+        border: 1px solid rgba(66, 132, 245, 1);
+      }
     }
 
     .#{$prefix}__stepText {
@@ -84,6 +101,7 @@ $prefix: 'hi-slider' !default;
     &-dot {
       position: absolute;
       border-radius: 50%;
+      transform: translateX(-50%);
       top: -3px;
       width: 7px;
       height: 7px;
@@ -101,6 +119,11 @@ $prefix: 'hi-slider' !default;
     .#{$prefix}__max {
       float: right;
     }
+
+    &-dot {
+      position: absolute;
+      border-radius: 50%;
+    }
   }
 
   .#{$prefix}__handle {
@@ -112,6 +135,7 @@ $prefix: 'hi-slider' !default;
     border: solid 2px #4284f5;
     border-radius: 50%;
     box-sizing: border-box;
+    z-index: 20;
     cursor: pointer;
     transform: translateX(-50%);
 

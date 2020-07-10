@@ -279,17 +279,27 @@ const Slider = memo(
             <span
               className={`${prefixCls}__step-dot`}
               style={{
-                left: ((item - min || 0) / (max || 100 - min || 0)) * 100
+                [!vertical ? 'left' : 'bottom']: ((item - (min || 0)) / ((max || 100) - (min || 0))) * 100 + '%'
+
               }}
-            >
-              {item}
-              {max} {min}
-            </span>
+            />
           ))}
         </div>
         <div className={`${prefixCls}__stepText`}>
           {min && <span className={`${prefixCls}__min`}>{min}</span>}
           {max && <span className={`${prefixCls}__max`}>{max}</span>}
+          {Object.entries(marks).map(([key, item], index) => (
+            <span
+              className={`${prefixCls}__stepText-dot`}
+              style={{
+                [!vertical ? 'left' : 'bottom']: ((key - (min || 0)) / ((max || 100) - (min || 0))) * 100 + '%',
+                transform: !vertical ? 'translateX(-50%)' : 'translateY(30%)'
+              }}
+            >
+              {console.log(key, item)}
+              {item}
+            </span>
+          ))}
         </div>
       </div>
     )
