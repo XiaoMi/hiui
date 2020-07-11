@@ -126,11 +126,21 @@ const Form = props => {
 
   const validateField = useCallback(
     (key, cb) => {
-      const field = fields.filter(fieldChild => fieldChild.field === key)[0]
+      let value 
+      const field = fields.filter(fieldChild => {
+        if(fieldChild.field === key){
+          value = fieldChild.value
+          return true
+        }
+      })[0]
+
       if (!field) {
         throw new Error('must call validate Field with valid key string!')
       }
-      field.validate('', cb)
+
+      field.validate('', (error)=>{
+        cb && cb(error)
+      },value)
     },
     [fields]
   )

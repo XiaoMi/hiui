@@ -17,17 +17,40 @@ class Demo extends React.Component {
     this.state = {
       initialValues: {
         phone: '',
-        select: '3'
+        select: '3',
       },
-      formData: ''
+      formData: '',
+      countDown: 60,
+
+      codeDisabled: false
     }
     this.form = React.createRef()
+
+  }
+  getCode () {
+    
+    let countDownTime
+
+    countDownTime = setInterval(()=>{
+      const {countDown} = this.state
+      if(countDown-1 <=0){
+        clearInterval(countDownTime)
+        this.setState({
+          countDown: false,
+          countDown: 60
+        })
+        return
+      }
+      this.setState({
+        countDown: countDown-1
+      })
+    },1000)
   }
   render() {
     const FormItem= Form.Item
     const FormSubmit = Form.Submit
     const FormReset = Form.Reset
-    const { initialValues, singleList } = this.state
+    const { initialValues, singleList, codeLoading, formData, codeDisabled, countDown } = this.state
     const Row = Grid.Row
     const Col = Grid.Col
 
@@ -38,7 +61,9 @@ class Demo extends React.Component {
         ref={this.form}
         initialValues={initialValues}
         onValuesChange ={(changedValues,allValues) => {
-          console.log("changedValues:",changedValues ,"allValues:",allValues)
+          this.setState({
+            formData: allValues,
+          })
         }}
       >
         <FormItem
@@ -59,7 +84,7 @@ class Demo extends React.Component {
             }
           }}
         >
-          <Input placeholder='请输入手机号' style={{ width: 200 }} />
+          <Input placeholder='请输入手机号' style={{ width: 240 }} />
         </FormItem>
         <Row>
           <Col>
@@ -68,31 +93,40 @@ class Demo extends React.Component {
               field='code'
               rules={{
                 trigger: 'onChange',
-                type: 'number',
                 validator: (rule, value, callback) => {
-                  const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
+                  const telReg = /^[0-9]{6}$/
                   if (!value) {
                     callback('请输入手机号')
                   } else if (!telReg.test(value)) {
-                    callback('请输入正确的手机号')
+                    callback('请输入正确的验证码')
                   } else {
                     callback()
                   }
                 }
               }}
             >
-              <Input placeholder='请输入验证码' style={{ width: 200 }} />
+              <Input placeholder='请输入验证码' style={{ width: 130 }} />
             </FormItem>
           </Col>
           <Col>
             <Button
               type='primary'
-              appearance='link'
+              disabled = {codeDisabled && countDown <= 60 && countDown>= 0}
               onClick={() => {
-                console.log('获取验证码')
+                const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
+                this.form.current.validateField('phone',(errors)=>{
+                  console.log('errors',errors)
+                  if(!errors) {
+                    this.setState({
+                      codeDisabled: true
+                    },()=>{
+                      this.getCode()
+                    })
+                  }
+                })
               }}
             >
-              获取验证码
+              获取验证码{countDown < 60 && countDown>= 0 && countDown}
             </Button>
           </Col>
         </Row>
@@ -103,40 +137,37 @@ class Demo extends React.Component {
             trigger: 'onChange',
             type: 'number',
             validator: (rule, value, callback) => {
-              const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
+              const telReg = /^(?![^a-zA-Z]+$)(?!\\D+$).{8,16}$/
               if (!value) {
-                callback('请输入手机号')
+                callback('请输入密码')
               } else if (!telReg.test(value)) {
-                callback('请输入正确的手机号')
+                callback('请输入包括数字和字母、长度8到16位的密码组合')
               } else {
                 callback()
               }
             }
           }}
         >
-          
-          <Input type='password' placeholder='请输入手机号' style={{ width: 200 }} />
+          <Input type='password' placeholder='请输入' style={{ width: 240 }} />
         </FormItem>
 
         <FormItem
             label='确认密码'
-            field='passWordValidate'
+            field='passWorConfirm'
             rules={{
               trigger: 'onChange',
               type: 'number',
               validator: (rule, value, callback) => {
-                const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
-                if (!value) {
-                  callback('请输入手机号')
-                } else if (!telReg.test(value)) {
-                  callback('请输入正确的手机号')
+                const {formData:{passWord}} = this.state
+                if (value !== passWord) {
+                  callback('两次密码不同')
                 } else {
                   callback()
                 }
               }
             }}
           >
-            <Input type='password' placeholder='请再次输入密码' style={{ width: 200 }} />
+            <Input type='password' placeholder='请再次输入密码' style={{ width: 240 }} />
         </FormItem>
        
         <FormItem>
@@ -156,19 +187,6 @@ class Demo extends React.Component {
           >
             重置
           </FormReset>
-          <Button
-            type='primary'
-            appearance='link'
-            onClick={() => {
-              console.log('填充表单')
-              this.form.current.setFieldsValue({
-                phone: '15652959628',
-                select: '2'
-              })
-            }}
-          >
-            fill Form
-          </Button>
         </FormItem>
       </Form>
     )
