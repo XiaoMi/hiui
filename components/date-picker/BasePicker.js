@@ -3,7 +3,7 @@ import _ from 'lodash'
 import Modal from './Modal'
 import classNames from 'classnames'
 import {formatterDate, FORMATS} from './constants'
-import {showLargeCalendar} from './util'
+import {showLargeCalendar, getInRangeDate} from './util'
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
@@ -177,27 +177,30 @@ class BasePicker extends Component {
       }
     })
   }
+
   callback () {
-    const { type, onChange, disabled } = this.props
+    const { type, onChange, disabled, max, min } = this.props
+
     const { date, format } = this.state
     if (onChange && !disabled) {
-      let {startDate, endDate} = date
+      let {startDate, endDate} = getInRangeDate(date.startDate, date.endDate, max, min)
       startDate = isValid(startDate) ? startDate : ''
       endDate = isValid(endDate) ? endDate : ''
       if (type === 'week' || type === 'weekrange') {
-        onChange(date)
+        isValid(startDate) && isValid(endDate) && onChange(date)
         return
       }
 
       if (type === 'time') {
-        onChange(startDate, dateFormat(startDate, format))
+        isValid(startDate) && onChange(startDate, dateFormat(startDate, format))
         return
       }
       if (['timerange', 'timeperiod', 'daterange', 'yearrange', 'monthrange'].includes(type)) {
-        onChange({start: startDate, end: endDate}, {start: dateFormat(startDate, format), end: dateFormat(endDate, format)})
+        isValid(startDate) && isValid(endDate) && onChange({start: startDate, end: endDate}, {start: dateFormat(startDate, format), end: dateFormat(endDate, format)})
+
         return
       }
-      onChange(startDate, startDate ? dateFormat(startDate, format) : '')
+      isValid(startDate) && isValid(endDate) && onChange(startDate, startDate ? dateFormat(startDate, format) : '')
     }
   }
   timeCancel () {
@@ -228,6 +231,7 @@ class BasePicker extends Component {
     }
   }
   clickOutSide (e) {
+    const {max, min} = this.props
     const tar = e.target
     this.inputChangeEvent()
 
@@ -239,8 +243,17 @@ class BasePicker extends Component {
       return false
     }
     if (tar !== this.input && tar !== this.rInput) {
-      this.timeCancel()
-      this.callback()
+      let { texts } = this.state
+
+      let {startDate, endDate} = getInRangeDate(texts[0], texts[1], max, min)
+
+      texts = [this.callFormatterDate(startDate), this.callFormatterDate(endDate)]
+      this.setState({
+        texts
+      }, () => {
+        this.timeCancel()
+        this.callback()
+      })
     }
   }
   _input (text, ref, placeholder) {
