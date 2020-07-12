@@ -3,10 +3,10 @@ import classNames from 'classnames'
 import './style'
 import Tooltip from '../tooltip'
 const prefixCls = 'hi-slider'
-const noop = () => {}
+const noop = () => { }
 const Slider = memo(
   ({
-    defaultValue,
+    defaultValue = 0,
     max,
     min,
     step = 1,
@@ -25,31 +25,25 @@ const Slider = memo(
 
     const [startX, setStartX] = useState()
     const [startY, setStartY] = useState()
-    const [currentX, setCurrentX] = useState()
-    const [currentY, setCurrentY] = useState()
-    // const [showTooltip,setShowTooltip] = useState(false)
+
 
     const [newRightPosition, setNewRightPosition] = useState(0)
-    const [startRightPosition, setStartRightPosition] = useState(0)
-    const [startLeftPosition, setStartLeftPosition] = useState(0)
-    const [newLeftPosition, setNewLeftPosition] = useState(0)
+    const [startPosition, setStartPosition] = useState(0)
     const [positionStep, setPositionStep] = useState(1)
-    const [number, setNumber] = useState(Math.round((max - min) / step))
-    // console.log(number)
-    const [dragNode, setDragNode] = useState()
+
     const sliderRef = useRef()
-    const tooltipLeftRef = useRef()
-    const tooltipRightRef = useRef()
+    const tooltipRef = useRef()
     const valueRef = useRef()
-    // 抬起
+
     const onMouseUp = useCallback(
       (e) => {
         setCanMove(false)
-        setStartRightPosition(newRightPosition)
-        setStartLeftPosition(newLeftPosition)
-        setDragNode(null)
+        setStartPosition(newRightPosition)
+        // if (initValue === undefined) {
+        //   setStartPosition(newRightPosition)
+        // }
       },
-      [newRightPosition, newLeftPosition]
+      [newRightPosition, initValue]
     )
     useEffect(() => {
       max = max || 100
@@ -58,18 +52,31 @@ const Slider = memo(
     }, [step, max, min])
 
     useEffect(() => {
-      max = max || 100
-      min = min || 0
-      if (initValue > max) {
-        setValue(max)
-      } else if (initValue < min) {
-        setValue(min)
-      } else {
-        setValue(initValue)
+      if (initValue !== undefined) {
+        max = max || 100
+        min = min || 0
+        let value = initValue;
+        if (initValue > max) {
+          value = max
+        } else if (initValue < min) {
+          value = min
+        }
+        setValue(value)
+        if (value !== initValue) {
+          onChange(value)
+        }
+        // console.log(((initValue - min) / (max - min)) * 100)
+        // setStartPosition(((initValue - min) / (max - min)) * 100)
       }
-    }, [initValue])
+    }, [initValue,max,min])
+    useEffect(()=>{
+      if(initValue!==undefined){
+        // setStartPosition(((initValue - min) / (max - min)) * 100)
+      }
+      
+    },[initValue])
     // 移动
-    const onMouseMove = (e) => {
+    const onMouseMove = useCallback((e) => {
       if (canMove) {
         const parent = sliderRef.current
 
@@ -85,118 +92,138 @@ const Slider = memo(
         let changeValue = 0
 
         if (vertical) {
-          setCurrentY(e.clientY)
           diff =
             Math.round(
               (((e.clientY - startY) / sliderHeight) * 100) / positionStep
             ) * positionStep
         } else {
-          setCurrentX(e.clientX)
           diff =
             Math.round(
               (((e.clientX - startX) / sliderWidth) * 100) / positionStep
             ) * positionStep
         }
 
-        let position = startRightPosition + diff
+        let position = startPosition + diff
+        console.log(startPosition)
         if (position <= 0) {
           position = 0
         } else if (position >= 100) {
           position = 100
         }
-        setNewRightPosition(position)
+
         changeValue = min + Math.round(((max - min) * position) / 100)
         if (changeValue < min) {
           changeValue = min
         } else if (changeValue > max) {
           changeValue = max
         }
-        setValue(changeValue)
-        valueRef.current = changeValue
+
+        if (initValue === undefined) {
+          setValue(changeValue)
+        }
+        setNewRightPosition(position)
         onChange(changeValue)
-        optTooltip()
+
       }
-    }
+    } , [canMove, max, min, vertical, positionStep, startPosition, initValue])
 
     // 初始化设置宽度和left
     useEffect(() => {
-      if (valueRef.current !== value) {
-        setStartRightPosition(getTrackWidth())
-        setNewRightPosition(getTrackWidth())
-        optTooltip()
-      }
-    }, [value])
+      setNewRightPosition(getTrackWidth())
+     
+    },[])
 
     useEffect(() => {
-      if (!disabled) {
-        window.addEventListener('mouseup', onMouseUp)
-        window.addEventListener('mousemove', onMouseMove)
+
+      if (initValue === undefined) {
+        console.log(getTrackWidth())
+        setStartPosition(getTrackWidth())
       }
 
-      return () => {
-        Tooltip.close('slider-tooltip')
-        if (!disabled) {
-          window.removeEventListener('mouseup', onMouseUp)
-          window.removeEventListener('mousemove', onMouseMove)
-        }
+    }, [initValue])
+
+
+    useEffect(() => {
+
+      if (disabled) {
+        return
       }
-    })
+      if (canMove) {
+        window.onmouseup = (e) => {
+          onMouseUp(e)
+        }
+        window.onmousemove = (e) => {
+          onMouseMove(e)
+        }
+      } else {
+        window.onmouseup = () => { }
+        window.onmousemove = () => { }
+
+      }
+    }, [canMove, disabled, newRightPosition, initValue, startPosition, positionStep, vertical, min, max])
+    // newRightPosition, initValue, startPosition, positionStep, vertical, min, max
 
     // 获取 track 宽度
     const getTrackWidth = useCallback(() => {
       min = min || 0
       max = max || 100
       return ((value - min) / (max - min)) * 100
-    }, [value])
+    }, [value, max, min])
 
-    // 落下
+    // 鼠标落下
     const onMouseDown = useCallback(
       (e) => {
+        if (disabled) {
+          return
+        }
         const { clientX, clientY } = e
         setCanMove(true)
+
         if (vertical) {
           setStartY(clientY)
         } else {
           setStartX(clientX)
         }
-        setDragNode(e.target)
-      },
-      [canMove]
-    )
 
+      },
+      [disabled, vertical]
+    )
+    // 展示 tooltip
     const optTooltip = useCallback(() => {
       Tooltip.close('slider-tooltip')
-      let title = tipFormatter ? tipFormatter(value) : value
-      if (title !== '') {
-        Tooltip.open(tooltipLeftRef.current, {
-          title,
-          placement: vertical ? 'right' : 'top',
-          key: 'slider-tooltip'
-        })
-      }
-    }, [value, step])
+      let title = tipFormatter ? tipFormatter(valueRef.current) : valueRef.current
+      Tooltip.open(tooltipRef.current, {
+        title,
+        placement: vertical ? 'right' : 'top',
+        key: 'slider-tooltip'
+      })
+    }, [step])
 
     const onMouseEnter = useCallback(
       (e) => {
-        optTooltip()
+        // optTooltip()
       },
       [value]
     )
 
     const onMouseLeave = useCallback((e) => {
-      Tooltip.close('slider-tooltip')
+      // Tooltip.close('slider-tooltip')
     })
 
     const onHandleClick = useCallback(
       (e) => {
         e.stopPropagation()
-        optTooltip()
+        // optTooltip()
       },
       [value]
     )
-
+    // slider 点击
     const railClick = useCallback(
       (e) => {
+        if (disabled) {
+          return
+        }
+
         min = min || 0
         max = max || 100
 
@@ -205,32 +232,46 @@ const Slider = memo(
         let position
         const {
           width: sliderWidth,
-          height: sliderHeight
+          height: sliderHeight,
+          left, top
         } = parent.getBoundingClientRect()
-        const { x, y } = tooltipLeftRef.current.getBoundingClientRect()
+        const { x, y } = tooltipRef.current.getBoundingClientRect()
 
         if (vertical) {
           diff =
             Math.round(
               (((e.clientY - y) / sliderHeight) * 100) / positionStep
             ) * positionStep
+          position = newRightPosition + diff
         } else {
+
           diff =
             Math.round((((e.clientX - x) / sliderWidth) * 100) / positionStep) *
             positionStep
+          position = e.clientX <= left ? 0 : newRightPosition + diff
         }
-        position = newRightPosition + diff
+
+        // position = newRightPosition + diff
+
         if (position <= 0) {
           position = 0
         } else if (position >= 100) {
           position = 100
         }
+        if (initValue === undefined) {
+
+         
+
+          setValue(min + Math.round(((max - min) * position) / 100))
+
+          // optTooltip()
+        }
         setNewRightPosition(position)
-        setStartRightPosition(position)
-        setValue(min + Math.round(((max - min) * position) / 100))
+        onChange(min + Math.round(((max - min) * position) / 100))
+
         // optTooltip()
       },
-      [positionStep, newRightPosition, vertical]
+      [positionStep, newRightPosition, vertical, disabled]
     )
 
     const sliderClasses = classNames(prefixCls, {
@@ -250,16 +291,8 @@ const Slider = memo(
         <div
           className={`${prefixCls}__track`}
           style={{
-            [!vertical ? 'width' : 'height']: `${
-              newRightPosition - newLeftPosition > 0
-                ? newRightPosition - newLeftPosition
-                : (newLeftPosition - newRightPosition).toFixed(4)
-            }%`,
-            [!vertical ? 'left' : 'top']: `${
-              newRightPosition - newLeftPosition > 0
-                ? newLeftPosition.toFixed(4)
-                : newRightPosition.toFixed(4)
-            }%`
+            [!vertical ? 'width' : 'height']: `${newRightPosition.toFixed(4)}%`,
+            [!vertical ? 'left' : 'top']: 0
           }}
         />
 
@@ -267,7 +300,7 @@ const Slider = memo(
           className={`${prefixCls}__handle ${prefixCls}__handle-1`}
           onMouseDown={onMouseDown}
           onMouseEnter={onMouseEnter}
-          ref={tooltipLeftRef}
+          ref={tooltipRef}
           onClick={onHandleClick}
           style={{
             [!vertical ? 'left' : 'top']: `${newRightPosition.toFixed(4)}%`
@@ -278,6 +311,7 @@ const Slider = memo(
           {Object.keys(marks).map((item, index) => (
             <span
               className={`${prefixCls}__step-dot`}
+              key={index}
               style={{
                 [!vertical ? 'left' : 'bottom']: ((item - (min || 0)) / ((max || 100) - (min || 0))) * 100 + '%'
 
@@ -286,17 +320,17 @@ const Slider = memo(
           ))}
         </div>
         <div className={`${prefixCls}__stepText`}>
-          {min && <span className={`${prefixCls}__min`}>{min}</span>}
-          {max && <span className={`${prefixCls}__max`}>{max}</span>}
+          {min && <span className={`${prefixCls}__min ${prefixCls}__stepText-dot`}>{min}</span>}
+          {max && <span className={`${prefixCls}__max ${prefixCls}__stepText-dot`}>{max}</span>}
           {Object.entries(marks).map(([key, item], index) => (
             <span
               className={`${prefixCls}__stepText-dot`}
+              key={index}
               style={{
                 [!vertical ? 'left' : 'bottom']: ((key - (min || 0)) / ((max || 100) - (min || 0))) * 100 + '%',
-                transform: !vertical ? 'translateX(-50%)' : 'translateY(30%)'
+                transform: !vertical ? 'translateX(-50%)' : 'translateY(50%)'
               }}
             >
-              {console.log(key, item)}
               {item}
             </span>
           ))}

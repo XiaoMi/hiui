@@ -10,45 +10,48 @@ const desc = '滑动输入连续或离散数据的单点值或范围值'
 const code = [
   {
     code: `import React from 'react'
-    import { Slider, Input, Grid } from '@hi-ui/hiui'
-    class Demo extends React.Component {
+import { Slider, Input, Grid } from '@hi-ui/hiui'
+class Demo extends React.Component {
+
+  constructor() {
+    super()
+    this.state = {
+      value: 9,
+      max:90,
+      min:10
+    }
+  }
+  onChange(e){
+    console.log(e.target.value)
+    this.setState({
+      value:e.target.value,
+    });
+  }
+  render() {
+    const {Row, Col} = Grid
+    const {value,max,min} = this.state
+    return (
+      <Row>
+        <Col span={22}>
+          <Slider defaultValue={10} onChange={(value)=>{
+            this.setState({
+              value,
+            });
+          }} value={this.state.value}  max={max}  min={min}/>
+        </Col>
+        <Col span={2}>
+          <Input
+            style={{ margin: '0 16px' }}
+            value={value}
+            type="number"
+            onChange={(e)=>this.onChange(e)}
+          />
+        </Col>
+      </Row>
     
-      constructor() {
-        super()
-        this.state = {
-          value: 10
-        }
-      }
-      onChange(e){
-        this.setState({
-          value:e.target.value,
-        });
-      }
-      render() {
-        const {Row, Col} = Grid
-        const {value} = this.state
-        return (
-          <Row>
-            <Col span={22}>
-              <Slider defaultValue={10} onChange={(value)=>{
-                this.setState({
-                  value,
-                });
-              }} value={this.state.value}/>
-            </Col>
-            <Col span={2}>
-              <Input
-                style={{ margin: '0 16px' }}
-                value={value}
-                type="number"
-                onChange={(v)=>this.onChange(v)}
-              />
-            </Col>
-          </Row>
-        
-        )
-      }
-    }`,
+    )
+  }
+}`,
     opt: ['水平']
   },
   {

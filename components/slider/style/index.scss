@@ -22,7 +22,11 @@ $prefix: 'hi-slider' !default;
     .#{$prefix}__handle {
       border-color: #ccc;
       cursor: not-allowed;
+      &:focus{
+        box-shadow: none;
+      }
     }
+   
   }
 
   &.#{$prefix}--vertical {
@@ -39,8 +43,9 @@ $prefix: 'hi-slider' !default;
       width: 4px;
     }
 
-    .#{$prefix}__handle {
+    .#{$prefix}__handle { 
       margin-left: -5px;
+      margin-top: 0;;
       transform: translateY(-50%);
     }
 
@@ -52,7 +57,7 @@ $prefix: 'hi-slider' !default;
       &-dot {
         position: absolute;
         border-radius: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, 50%);
         left: 2px;
         top: auto;
         width: 7px;
@@ -116,8 +121,12 @@ $prefix: 'hi-slider' !default;
     height: 4px;
     background: 0 0;
 
+    .#{$prefix}__min {
+      transform:translateX(-50%)
+     }
     .#{$prefix}__max {
-      float: right;
+      right: 0;
+      transform:translateX(50%)
     }
 
     &-dot {
@@ -138,7 +147,8 @@ $prefix: 'hi-slider' !default;
     z-index: 20;
     cursor: pointer;
     transform: translateX(-50%);
-
+    user-select:none;
+    
     &:focus {
       box-shadow: 0 0 0 5px rgba(24, 144, 255, 0.12);
       outline: none;

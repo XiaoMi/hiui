@@ -23,7 +23,7 @@ class Demo extends React.Component {
 
   render() {
     return (
-      <Slider value={this.state.value}   tipFormatter={this.formatter}/>
+      <Slider defaultValue={this.state.value}   tipFormatter={this.formatter}/>
     )
   }
 }`
