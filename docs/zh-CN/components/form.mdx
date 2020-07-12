@@ -159,5 +159,5 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 | required   | 是否为必选字段                                                                                                              | boolean                           |
 | transform  | 将字段值转换成目标值后进行校验                                                                                              | (value) => any                    |
 | type       | 类型，常见有 `string` \|`number` \|`boolean` \| `email`。更多请参考[此处](https://github.com/yiminghe/async-validator#type) | string                            |
-| validator  | 自定义校验，接收 Promise 作为返回值。[示例](#components-form-demo-register)参考                                             | ([rule](#Rule), value) => Promise |
+| validator  | 自定义校验                                                                   | (rule,value,callback) => void |
 | whitespace | 如果字段仅包含空格则校验不通过                                                                                              | boolean                           |
