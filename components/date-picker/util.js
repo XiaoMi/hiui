@@ -85,14 +85,14 @@ export const getPRCDate = (api) => {
 export const getInRangeDate = (startDate, endDate, max, min) => {
   let _startDate = isValid(startDate) ? startDate : ''
   let _endDate = isValid(endDate) ? endDate : ''
-  if (min) {
+  if (min && isValid(startDate)) {
     const minTimestamp = Date.parse(toDate(min))
     const startDateTimestamp = Date.parse(startDate)
     const endDateTimestamp = Date.parse(endDate)
     _startDate = startDateTimestamp < minTimestamp ? new Date(minTimestamp) : new Date(startDate)
     _endDate = endDateTimestamp < minTimestamp ? new Date(minTimestamp) : new Date(endDate)
   }
-  if (max) {
+  if (max && isValid(startDate)) {
     const maxTimestamp = Date.parse(toDate(max))
     const startDateTimestamp = Date.parse(_startDate)
     const endDateTimestamp = Date.parse(_endDate)

@@ -183,24 +183,39 @@ class BasePicker extends Component {
 
     const { date, format } = this.state
     if (onChange && !disabled) {
-      let {startDate, endDate} = getInRangeDate(date.startDate, date.endDate, max, min)
+      let {startDate, endDate} = getInRangeDate(_.cloneDeep(date.startDate), _.cloneDeep(date.endDate), max, min)
       startDate = isValid(startDate) ? startDate : ''
       endDate = isValid(endDate) ? endDate : ''
       if (type === 'week' || type === 'weekrange') {
-        isValid(startDate) && isValid(endDate) && onChange(date)
+        this.setState({
+          texts: [this.callFormatterDate(startDate), this.callFormatterDate(endDate)]
+        })
+        onChange(date)
         return
       }
 
       if (type === 'time') {
-        isValid(startDate) && onChange(startDate, dateFormat(startDate, format))
+        this.setState({
+          texts: [this.callFormatterDate(startDate), '']
+        })
+        onChange(startDate, dateFormat(startDate, format))
         return
       }
       if (['timerange', 'timeperiod', 'daterange', 'yearrange', 'monthrange'].includes(type)) {
-        isValid(startDate) && isValid(endDate) && onChange({start: startDate, end: endDate}, {start: dateFormat(startDate, format), end: dateFormat(endDate, format)})
+        this.setState({
+          texts: [this.callFormatterDate(startDate), this.callFormatterDate(endDate)]
+        })
+        onChange({start: startDate, end: endDate}, {start: dateFormat(startDate, format), end: dateFormat(endDate, format)})
 
         return
       }
-      isValid(startDate) && isValid(endDate) && onChange(startDate, startDate ? dateFormat(startDate, format) : '')
+
+      if (isValid(startDate) || startDate === '') {
+        this.setState({
+          texts: [this.callFormatterDate(startDate), '']
+        })
+        onChange(startDate, startDate ? dateFormat(startDate, format) : '')
+      }
     }
   }
   timeCancel () {
