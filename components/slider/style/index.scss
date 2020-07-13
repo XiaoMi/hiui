@@ -13,6 +13,7 @@ $prefix: 'hi-slider' !default;
   height: 12px;
   margin: 10px 6px;
   padding: 4px 0;
+  cursor: pointer;
 
   &.#{$prefix}--disabled {
     .#{$prefix}__track {
@@ -22,11 +23,11 @@ $prefix: 'hi-slider' !default;
     .#{$prefix}__handle {
       border-color: #ccc;
       cursor: not-allowed;
-      &:focus{
+
+      &:focus {
         box-shadow: none;
       }
     }
-   
   }
 
   &.#{$prefix}--vertical {
@@ -43,9 +44,9 @@ $prefix: 'hi-slider' !default;
       width: 4px;
     }
 
-    .#{$prefix}__handle { 
+    .#{$prefix}__handle {
       margin-left: -5px;
-      margin-top: 0;;
+      margin-top: 0;
       transform: translateY(-50%);
     }
 
@@ -69,20 +70,22 @@ $prefix: 'hi-slider' !default;
 
     .#{$prefix}__stepText {
       height: 100%;
-      width: 30px;
+      width: 40px;
       position: absolute;
       margin: 0;
       right: 15px;
 
       .#{$prefix}__min {
+        transform: translateX(0%);
         position: absolute;
-        top: -4px;
+        bottom: -5px;
         right: 0;
       }
 
       .#{$prefix}__max {
         position: absolute;
-        bottom: -5px;
+        top: -4px;
+        transform: translateX(0%);
         right: 0;
       }
     }
@@ -112,6 +115,11 @@ $prefix: 'hi-slider' !default;
       height: 7px;
       background: rgba(255, 255, 255, 1);
       border: 1px solid rgba(66, 132, 245, 1);
+
+      &.#{$prefix}__step-dotDisabled {
+        background: rgba(224, 225, 226, 1);
+        border: 1px solid rgba(224, 225, 226, 1);
+      }
     }
   }
 
@@ -122,11 +130,12 @@ $prefix: 'hi-slider' !default;
     background: 0 0;
 
     .#{$prefix}__min {
-      transform:translateX(-50%)
-     }
+      transform: translateX(-50%);
+    }
+
     .#{$prefix}__max {
       right: 0;
-      transform:translateX(50%)
+      transform: translateX(50%);
     }
 
     &-dot {
@@ -147,8 +156,8 @@ $prefix: 'hi-slider' !default;
     z-index: 20;
     cursor: pointer;
     transform: translateX(-50%);
-    user-select:none;
-    
+    user-select: none;
+
     &:focus {
       box-shadow: 0 0 0 5px rgba(24, 144, 255, 0.12);
       outline: none;

@@ -27,7 +27,7 @@ class Demo extends React.Component {
   render() {
     const {value,marks} = this.state
     return (
-      <Slider defaultValue={value} marks={marks}/>
+      <Slider defaultValue={value} marks={marks} step={10}/>
     )
   }
 }`,
@@ -46,7 +46,7 @@ class Demo extends React.Component {
         0: '0°C',
         26: '26°C',
         37: '37°C',
-        100: '100',
+        100: '100°C',
       }
     }
   }  

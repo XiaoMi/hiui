@@ -4,7 +4,7 @@ import Slider from '../../../components/slider'
 import Grid from '../../../components/grid'
 import Input from '../../../components/input'
 const prefix = 'slider-input'
-const rightOptions = ['垂直', '水平']
+const rightOptions = ['水平', '垂直']
 const desc = '滑动输入连续或离散数据的单点值或范围值'
 
 const code = [
@@ -17,34 +17,52 @@ class Demo extends React.Component {
     super()
     this.state = {
       value: 9,
+      valueCache:9,
       max:90,
       min:10
     }
   }
+
   onChange(e){
     console.log(e.target.value)
     this.setState({
-      value:e.target.value,
+      valueCache:e.target.value
+    })
+  }
+  
+  onBlur(e){
+    let value  = e.target.value
+    const {min,max} = this.state
+    if(value<min){
+      value = min
+    }
+    if(value>max){
+      value = max
+    }
+    this.setState({
+      valueCache:value,
+      value
     });
   }
   render() {
     const {Row, Col} = Grid
-    const {value,max,min} = this.state
+    const {value,max,min,valueCache} = this.state
     return (
       <Row>
         <Col span={22}>
           <Slider defaultValue={10} onChange={(value)=>{
             this.setState({
               value,
+              valueCache:value
             });
           }} value={this.state.value}  max={max}  min={min}/>
         </Col>
         <Col span={2}>
           <Input
             style={{ margin: '0 16px' }}
-            value={value}
-            type="number"
-            onChange={(e)=>this.onChange(e)}
+            value={valueCache}
+            onChange ={(e)=>this.onChange(e)}
+            onBlur={(e)=>this.onBlur(e)}
           />
         </Col>
       </Row>
@@ -59,19 +77,38 @@ class Demo extends React.Component {
 
     class Demo extends React.Component {
       constructor() {
-        super();
+        super()
         this.state = {
-          value: 10,
-        };
+          value: 9,
+          valueCache:9,
+          max:90,
+          min:10
+        }
       }
-      onChange(e) {
-        console.log( e.target.value)
+    
+      onChange(e){
+        console.log(e.target.value)
         this.setState({
-          value: e.target.value,
+          valueCache:e.target.value
+        })
+      }
+      
+      onBlur(e){
+        let value  = e.target.value
+        const {min,max} = this.state
+        if(value<min){
+          value = min
+        }
+        if(value>max){
+          value = max
+        }
+        this.setState({
+          valueCache:value,
+          value
         });
       }
       render() {
-        const { value } = this.state;
+        const { value,valueCache,max,min } = this.state;
         return (
           <div
             style={{
@@ -92,9 +129,12 @@ class Demo extends React.Component {
                 defaultValue={30}
                 vertical
                 value={value}
-                onChange={(value)=>{
+                min={min}
+                max={max}
+                onChange ={(value)=>{
                   this.setState({
                     value,
+                    valueCache:value
                   });
                 }}
               />
@@ -106,9 +146,9 @@ class Demo extends React.Component {
               }}
             >
               <Input
-                value={value}
-                onChange={(v) => this.onChange(v)}
-                type="number"
+                value={valueCache}
+                onChange={(e) => this.onChange(e)}
+                onBlur={(e)=>this.onBlur(e)}
               />
             </div>
           </div>
