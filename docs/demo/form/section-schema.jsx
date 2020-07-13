@@ -52,7 +52,6 @@ class Demo extends React.Component {
           }
       ]
     }
-    this.form = React.createRef()
   }
   render () {
     const FormItem = Form.Item
@@ -67,7 +66,6 @@ class Demo extends React.Component {
       <SchemaForm 
         labelWidth='100' 
         labelPlacement='right' 
-        ref={this.form}
         initialValues={formData}
         schema={this.state.formSchema}
         >

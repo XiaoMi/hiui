@@ -26,6 +26,7 @@ class Demo extends React.Component {
           <Form.Item
             field={'field'+i}
             label={'Field'+i}
+            key={'field'+i}
             rules={[
               {
                 required: true,

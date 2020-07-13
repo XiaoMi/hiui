@@ -133,7 +133,7 @@ const FormItem = props => {
         type: FILEDS_INIT,
         payload: {
           field,
-          value: initialValues && initialValues[field],
+          value: initialValues && initialValues[field] ? initialValues[field] : '',
           rules: getRules(),
           resetValidate,
           setValue,
@@ -148,7 +148,7 @@ const FormItem = props => {
   }, [])
 
   const valueInit = useCallback(() => {
-    setValue(initialValues && initialValues[field])
+    setValue(initialValues && initialValues[field] ? initialValues[field] : '')
   }, [initialValues])
   // 判断是否含有Rules
   const isRequired = useCallback(() => {
@@ -224,6 +224,7 @@ const FormItem = props => {
     if (!children) {
       return null
     }
+    
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {
@@ -253,16 +254,17 @@ const FormItem = props => {
       key={field}
     >
       {label || label === '' ? (
-        <label className='hi-form-item__label' style={{ width: labelWidth() }}>
+     
+      <label className='hi-form-item__label' style={{ width: labelWidth() }}  key={field+'label'} >
           {(typeof label === 'string' && label.trim()) || label}
           {shouldShowColon && colon}
         </label>
       ) : (
-        <span className='hi-form-item__span' style={{ width: labelWidth() }} />
+        <span className='hi-form-item__span' style={{ width: labelWidth() }} key={field+'label'}/>
       )}
-      <div className={'hi-form-item' + '__content'}>
+      <div className={'hi-form-item' + '__content'} key={field+'__content'}>
         {renderChildren()}
-        <div className={classNames('hi-form-item--msg__error',{["hi-form-item--msg__error__show"]:error !== ''})}>{error}</div>
+        <div className={classNames('hi-form-item--msg__error',{["hi-form-item--msg__error__show"]:error !== ''})} key={field+'error'}>{error}</div>
       </div>
     </div>
   )

@@ -80,7 +80,7 @@ export default class EditorWrapper extends React.Component {
           }}
         >
           <div style={{ flex: 1 }}>
-            {Array.isArray(desc) ? desc.map(d => <div>{d}</div>) : desc}
+            {Array.isArray(desc) ? desc.map((d,index) => <div key={index}>{d}</div>) : desc}
           </div>
           <div>
             <Tooltip

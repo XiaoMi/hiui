@@ -53,12 +53,12 @@ class Demo extends React.Component {
   }
 
   handleSubmit() {
-    this.form.current.validate(valid => {
-      if(valid) {
-        console.log(this.state.form)
+    this.form.current.validate((valid,error) => {
+      if(!error) {
+        console.log(valid)
         alert('submit')
       } else {
-        console.log('error')
+        console.log('error',error)
         return false
       }
     })
@@ -75,17 +75,6 @@ class Demo extends React.Component {
     this.form.current.resetValidates()
   }
 
-  handleChange(key, e, value, index) {
-    this.setState({
-      form: Object.assign({}, this.state.form, {[key]: value})
-    })
-
-    if(index !== undefined) {
-      this.setState({
-        checkedIndex: index
-      })
-    }
-  }
 
   render(){
     const Row = Grid.Row
@@ -98,20 +87,18 @@ class Demo extends React.Component {
         <Col span={12}>
           <Form ref={this.form} model={form} rules={this.state.rules} labelWidth='80' labelPlacement='right'>
             <FormItem label='名称' field='name'>
-              <Input value={form.name} placeholder='请输入' onChange={this.handleChange.bind(this, 'name')}/>
+              <Input placeholder='请输入'/>
             </FormItem>
             <FormItem label='数量' field='count' rules={{
               required: true,
               message: '请输入数量123',
               trigger: 'onChange'
             }}>
-              <Input value={form.count} placeholder='请输入' onChange={this.handleChange.bind(this, 'count')}/>
+              <Input placeholder='请输入'/>
             </FormItem>
             <FormItem label='地区' field='region'>
               <Radio.Group
                 data={['北京', '上海', '重庆']}
-                value={form.region}
-                onChange={this.handleChange.bind(this, 'region','')}
               />
             </FormItem>
             <FormItem>

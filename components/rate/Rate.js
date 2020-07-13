@@ -125,7 +125,7 @@ Rate.propTypes = {
   disabled: PropTypes.bool,
   style: PropTypes.object,
   tooltips: PropTypes.arrayOf(PropTypes.string),
-  value: PropTypes.number,
+  value: PropTypes.any,
   count: PropTypes.number,
   onChange: PropTypes.func
 }

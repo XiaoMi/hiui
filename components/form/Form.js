@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useReducer, useRef } from 'react'
+import React, { useEffect, useCallback, useReducer, forwardRef } from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
@@ -19,7 +19,7 @@ const getClassNames = props => {
   return _className
 }
 
-const Form = props => {
+const InternalForm = props => {
   const {
     children,
     className,
@@ -185,7 +185,7 @@ const Form = props => {
     </form>
   )
 }
-Form.propTypes = {
+InternalForm.propTypes = {
   rules: PropTypes.object,
   labelPlacement: PropTypes.oneOf(['right', 'left', 'top']),
   labelPosition: PropTypes.oneOf(['right', 'left', 'top']),
@@ -197,9 +197,12 @@ Form.propTypes = {
   className: PropTypes.string,
   style: PropTypes.object
 }
-Form.defaultProps = {
+InternalForm.defaultProps = {
   size: 'small',
   showColon: true
 }
 
+const Form = forwardRef((props, ref) => {
+  return <InternalForm {...props} innerRef={ref} />
+})
 export default Form

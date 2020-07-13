@@ -38,7 +38,10 @@ const code = [
               console.log("changedValues:",changedValues ,"allValues:",allValues)
             }}
           >
-            <FormItem label='账号' field="phone" rules={{
+            <FormItem 
+              label='账号' 
+              field="phone" 
+              rules={{
               trigger:'onChange',
               type:'number',
               required:true,
@@ -55,25 +58,33 @@ const code = [
               }}>
               <Input placeholder='请输入手机号' />
             </FormItem>
-            <FormItem label='密码' field="password" rules={{
+            <FormItem 
+              label='密码' 
+              field="password" 
+              rules={{
               trigger:'onBlur',
               type:'string',
               required:true,
               }}>
               <Input type='password' placeholder='请输入' />
             </FormItem>
-            <FormItem field="remember" valuePropName="checked">
+            <FormItem 
+              field="remember" 
+              valuePropName="checked">
               <Checkbox onChange={()=>{
                 console.log('checkbox remeber me')
               }}> 记住我 </Checkbox>
             </FormItem>
             <FormItem>
-             <FormSubmit type='primary' 
+             <FormSubmit 
+              type='primary'
+
               onClick={(values,errors)=>{
                 console.log('Get form value:',values,errors)}
               }
               >提交</FormSubmit>
-              <FormReset type='line' 
+              <FormReset 
+              type='line' 
                 onClick={()=>{console.log('reset form')}}
               >重置</FormReset>
             </FormItem>

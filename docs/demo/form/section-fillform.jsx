@@ -39,7 +39,9 @@ class Demo extends React.Component {
     const Col = Grid.Col
 
     return (
-      <Form labelWidth='80' labelPlacement='right' 
+      <Form 
+        labelWidth='80' 
+        labelPlacement='right' 
         ref={this.form}
         initialValues={formData}>
         <Row>

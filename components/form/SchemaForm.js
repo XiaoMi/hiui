@@ -14,7 +14,7 @@ const SchemaForm = props => {
   }, [schemaProps])
   const renderSchemaFormItem = useCallback(() => {
     if (Array.isArray(schema)) {
-      return schema.map(schemaItem => {
+      return schema.map((schemaItem,index) => {
         const { component, componentProps } = schemaItem
         let child = null
         if (HIUI[component]) {
@@ -25,6 +25,7 @@ const SchemaForm = props => {
         }
         return React.createElement(FormItem, {
           ..._.omit(schemaItem, 'component', 'componentProps'),
+          key: component + index,
           children: child
         })
       })

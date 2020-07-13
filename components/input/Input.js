@@ -85,7 +85,7 @@ class Input extends Component {
     let prefixId = id ? id + '_prefix' : ''
     let suffixId = id ? id + '_suffix' : ''
     const { defaultValue, ...attrs } = this.attrs
-    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'suffixicon', 'suffix', 'prepend', 'prefixicon', 'prefix', 'localeDatas', 'append', 'innerRef'])
+    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'suffixicon', 'suffix', 'prepend', 'prefixicon', 'prefix', 'localeDatas', 'append', 'innerRef','clearable'])
     return (
       <div
         className={classNames('hi-input__out', {
