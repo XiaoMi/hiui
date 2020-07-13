@@ -17,9 +17,13 @@ const Slider = memo(
     type = 'primary',
     marks = {}
   }) => {
-    const [value, setValue] = useState(initValue || defaultValue)
+    const sliderRef = useRef()
+    const tooltipRef = useRef()
+    const valueRef = useRef()
+
+    const [value, setValue] = useState()
     // 是否可拖动
-    const [canMove, setCanMove] = useState(false)
+    const [canMove, setCanMove] = useState()
 
     const [startX, setStartX] = useState()
     const [startY, setStartY] = useState()
@@ -28,36 +32,27 @@ const Slider = memo(
     const [startPosition, setStartPosition] = useState(0)
     const [positionStep, setPositionStep] = useState(1)
     const [showTooltip, setShowTooltip] = useState(false)
-    const sliderRef = useRef()
-    const tooltipRef = useRef()
-    const valueRef = useRef()
 
     useEffect(() => {
-      max = max || 100
-      min = min || 0
-
-      // 每一份步长对应在父元素的百分比
-      setPositionStep((step / (max - min)) * 100)
-      // 设置初始位置
-      setStartPosition(((value - min) / (max - min)) * 100)
-    }, [])
-
-    useEffect(() => {
-      if (initValue !== undefined) {
-        max = max || 100
-        min = min || 0
-        let value = initValue || 0
-        if (initValue > max) {
-          value = max
-        } else if (initValue < min) {
-          value = min
-        }
-        setValue(value)
-        if (value !== initValue) {
-          onChange(value)
-        }
+      let value = initValue || defaultValue
+      if (value > (max || 100)) {
+        value = max
+      } else if (value < (min || 0)) {
+        value = min
       }
+      if ((value !== initValue) && (value !== defaultValue)) {
+        onChange(value)
+      }
+      valueRef.current = value
+      setValue(value)
     }, [initValue])
+
+    useEffect(() => {
+      // 每一份步长对应在父元素的百分比
+      setPositionStep((step / ((max || 100) - (min || 0))) * 100)
+      // 设置初始位置
+      setStartPosition(((value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
+    }, [])
 
     // 移动
     const onMouseMove = useCallback(
@@ -65,8 +60,8 @@ const Slider = memo(
         if (canMove) {
           const parent = sliderRef.current
 
-          max = max || 100
-          min = min || 0
+          // max = max || 100
+          // min = min || 0
 
           const {
             width: sliderWidth,
@@ -96,22 +91,21 @@ const Slider = memo(
             position = 100
           }
 
-          changeValue = min + Math.round(((max - min) * position) / 100)
-          if (changeValue < min) {
-            changeValue = min
-          } else if (changeValue > max) {
-            changeValue = max
+          changeValue = (min || 0) + Math.round((((max || 100) - (min || 0)) * position) / 100)
+          if (changeValue < (min || 0)) {
+            changeValue = (min || 0)
+          } else if (changeValue > (max || 100)) {
+            changeValue = (max || 100)
           }
 
           if (initValue === undefined) {
             setValue(changeValue)
           }
-          console.log(position)
           setNewRightPosition(position)
           onChange(changeValue)
         }
       },
-      [canMove, max, min, vertical, positionStep, startPosition, initValue]
+      [canMove, positionStep, startPosition, initValue]
     )
 
     useEffect(() => {
@@ -148,9 +142,9 @@ const Slider = memo(
     )
     // 获取 track 宽度
     const getTrackWidth = useCallback(() => {
-      min = min || 0
-      max = max || 100
-      return ((value - min) / (max - min)) * 100
+      // min = min || 0
+      // (max||100) = (max||100) || 100
+      return ((value - (min || 0)) / ((max || 100) - (min || 0))) * 100
     }, [value])
 
     // 鼠标落下
@@ -190,8 +184,8 @@ const Slider = memo(
           return
         }
 
-        min = min || 0
-        max = max || 100
+        // min = min || 0
+        // (max||100) = (max||100) || 100
 
         const parent = sliderRef.current
         let diff = 0
@@ -222,20 +216,20 @@ const Slider = memo(
           position = 100
         }
         if (initValue === undefined) {
-          setValue(min + Math.round(((max - min) * position) / 100))
+          setValue((min || 0) + Math.round((((max || 100) - (min || 0)) * position) / 100))
         }
         setNewRightPosition(position)
         setStartPosition(position)
-        valueRef.current = min + Math.round(((max - min) * position) / 100)
-        onChange(min + Math.round(((max - min) * position) / 100))
+        valueRef.current = (min || 0) + Math.round((((max || 100) - (min || 0)) * position) / 100)
+        onChange((min || 0) + Math.round((((max || 100) - (min || 0)) * position) / 100))
       },
       [positionStep, newRightPosition, vertical, disabled]
     )
     // 点击marks上的点
     const onMarksClick = useCallback((e, value) => {
       e.stopPropagation()
-      setNewRightPosition(((value - min) / (max - min)) * 100)
-      setStartPosition(((value - min) / (max - min)) * 100)
+      setNewRightPosition(((value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
+      setStartPosition(((value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
       if (initValue === undefined) {
         setValue(value)
       }
@@ -304,7 +298,7 @@ const Slider = memo(
                       [`hi-tooltip-${vertical ? 'right' : 'top'}`]: true
                     })}
                   >
-                    {tipFormatter ? tipFormatter(value) : value}
+                    {tipFormatter ? tipFormatter(valueRef.current) : valueRef.current}
                   </div>
                 </div>
               </div>
