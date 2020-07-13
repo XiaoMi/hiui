@@ -12,6 +12,7 @@ import Switch from '../../../components/switch'
 import DatePicker from '../../../components/date-picker'
 import Rate from '../../../components/rate'
 import Upload from '../../../components/upload'
+import Grid from '../../../components/grid'
 
 const prefix = 'form-synthetic'
 const desc = '展示和表单相关的其他组件'
@@ -119,7 +120,8 @@ class Demo extends React.Component {
     const FormSubmit = Form.Submit
     const FormReset = Form.Reset
     const {formData,singleList,cascaderList,radiolist,checkboxList} = this.state
-
+    const Row = Grid.Row
+    const Col = Grid.Col
     return (
       <Form labelWidth='100' labelPlacement='right' 
         ref={this.form}
@@ -158,17 +160,64 @@ class Demo extends React.Component {
             style={{ width: 300 }}
           />
         </FormItem>
-        <FormItem label='Select' field="select" required={true}>
-            <Select
-            type='single'
-            clearable={false}
-            style={{ width: 300 }}
-            data={singleList}
-            onChange={ids => {
-                console.log('select ids',ids)
-            }}
-        />
-        </FormItem>
+          
+        <Row>
+          <Col>
+            <FormItem label='address' field="province" required={true}>
+              <Select
+                type='single'
+                clearable={false}
+                style={{ width: 95 }}
+                data={[
+                  {
+                    id:'1010',
+                    title:'北京'
+                  },
+                  {
+                    id:'1011',
+                    title:'河南'
+                  }
+                ]}
+                placeholder="省"
+                onChange={ids => {
+                    console.log('select ids',ids)
+                }}
+              />
+            </FormItem>
+          </Col>
+
+          <Col>
+            <FormItem field="city" labelWidth='0' required={true}>
+              <Select
+                type='single'
+                clearable={false}
+                style={{ width: 95 }}
+                data={[]}
+                placeholder="市"
+
+                onChange={ids => {
+                    console.log('select ids',ids)
+                }}
+              />
+            </FormItem>
+          </Col>
+
+          <Col>
+            <FormItem field="county" labelWidth='0' required={true}>
+              <Select
+                type='single'
+                clearable={false}
+                style={{ width: 95 }}
+                data={[]}
+                placeholder="区"
+                onChange={ids => {
+                    console.log('select ids',ids)
+                }}
+              />
+          </FormItem>
+          </Col>
+        </Row>
+        
         <FormItem label='Radio' field="radio">
           <Radio.Group
             data={radiolist}
@@ -271,7 +320,8 @@ const DemoRow = () => (
       Switch,
       DatePicker,
       Rate,
-      Upload
+      Upload,
+      Grid
     }}
     prefix={prefix}
     desc={desc}

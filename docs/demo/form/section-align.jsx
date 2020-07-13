@@ -60,7 +60,7 @@ const code = [
               type:'string',
               required:true,
               }}>
-              <Input placeholder='请输入' />
+              <Input type='password' placeholder='请输入' />
             </FormItem>
             <FormItem field="remember" valuePropName="checked">
               <Checkbox onChange={()=>{

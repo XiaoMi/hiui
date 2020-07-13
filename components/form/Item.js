@@ -74,15 +74,15 @@ const FormItem = props => {
 
     dispatch({ type: FILEDS_UPDATE, payload: _fields })
   }
-  const resetValidate = (value = '') => {
+  const resetValidate = useCallback((value = '') => {
     // 清空数据
     setValue(value)
     setError('')
     setValidating(false)
-  }
+  })
 
   // 获取该单元的规则
-  const getRules = () => {
+  const getRules = useCallback(() => {
     const selfRules = required
       ? Object.assign({}, props.rules, { required })
       : props.rules
@@ -90,16 +90,16 @@ const FormItem = props => {
 
     formRules = formRules ? formRules[props.field] : []
     return [].concat(selfRules || formRules || [])
-  }
+  }, [props, formProps, required])
   // 过滤含有该trigger触发方式的rules
-  const getFilteredRule = trigger => {
+  const getFilteredRule = useCallback(trigger => {
     const rules = getRules()
     return rules.filter(rule => {
       return !rule.trigger || rule.trigger.indexOf(trigger) !== -1
     })
-  }
+  })
   // 父级调用
-  const validate = (trigger, cb, currentValue) => {
+  const validate = useCallback((trigger, cb, currentValue) => {
     const triggerRules = getFilteredRule(trigger)
     if (!triggerRules || triggerRules.length === 0) {
       if (cb instanceof Function) {
@@ -125,7 +125,7 @@ const FormItem = props => {
         }
       }
     )
-  }
+  })
 
   useEffect(() => {
     if (field) {
@@ -147,11 +147,11 @@ const FormItem = props => {
     }
   }, [])
 
-  const valueInit = () => {
+  const valueInit = useCallback(() => {
     setValue(initialValues && initialValues[field])
-  }
+  }, [initialValues])
   // 判断是否含有Rules
-  const isRequired = () => {
+  const isRequired = useCallback(() => {
     let rules = getRules()
     let isRequired = false
 
@@ -165,10 +165,10 @@ const FormItem = props => {
       })
     }
     return isRequired
-  }
+  })
 
   // 对字段的操作
-  const handleField = (triggerType, currentValue) => {
+  const handleField = useCallback((triggerType, currentValue) => {
     // 同步数据 reducer
     updateField(currentValue, triggerType)
     let rules = getRules()
@@ -177,7 +177,7 @@ const FormItem = props => {
       return trigger.includes(triggerType)
     })
     hasTriggerType && validate(triggerType, '', currentValue)
-  }
+  })
 
   const labelWidth = useCallback(() => {
     const labelWidth = props.labelWidth || formProps.labelWidth
@@ -236,6 +236,7 @@ const FormItem = props => {
           }
         })
   }
+
   const shouldShowColon =
     shouldItemShowColon === undefined
       ? shouldFormShowColon && typeof label === 'string' && label.trim()
@@ -244,6 +245,7 @@ const FormItem = props => {
   obj['hi-form-item__error'] = error !== ''
   obj['hi-form-item--validating'] = validating
   obj['hi-form-item--required'] = isRequired() || required
+
   return (
     <div
       className={classNames('hi-form-item', className, obj)}
