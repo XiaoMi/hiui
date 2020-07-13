@@ -161,6 +161,11 @@ const Form = props => {
     <form
       className={classNames('hi-form', className, getClassNames(props))}
       style={style}
+      onSubmit={(e)=>{
+        // 阻止只有一个表单时候；回车会触发form的提交操作
+        e.preventDefault()
+        return false
+      }}
     >
       <FormContext.Provider
         value={{
