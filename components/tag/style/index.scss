@@ -26,7 +26,9 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     color: $primary;
     background: #fff;
 
-    @each $key in 'success', 'danger', 'warning' {
+    @each $key in 'success',
+      'danger',
+    'warning' {
       &.#{$prefix}--#{$key} {
         $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
 
@@ -41,7 +43,20 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     }
   }
 
-  @each $key in 'success', 'danger', 'warning' {
+  &.#{$prefix}--hasIcon {
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(224, 225, 226, 1);
+    color: #333;
+
+    .hi-icon {
+      margin-left: 3px;
+      cursor: pointer;
+    }
+  }
+
+  @each $key in 'success',
+    'danger',
+  'warning' {
     &--#{$key} {
       $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
 

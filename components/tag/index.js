@@ -1,13 +1,18 @@
 import React from 'react'
 import classNames from 'classnames'
 import './style'
+import Icon from '../icon'
 
+const noop = () => {}
 const Tag = ({
   type = 'primary',
   appearance = 'default',
   onClick,
   children,
-  color
+  color,
+  closable = false,
+  onClose = noop
+
 }) => {
   const style = color
     ? {
@@ -20,15 +25,18 @@ const Tag = ({
     <span
       className={classNames(
         'hi-tag',
-        { [`hi-tag--${type}`]: type },
         {
-          'hi-tag--line': appearance === 'line'
+          [`hi-tag--${type}`]: type,
+          'hi-tag--line': appearance === 'line',
+          'hi-tag--hasIcon': type === 'hasIcon'
         }
+
       )}
       onClick={onClick}
       style={style}
     >
       {children}
+      {closable && <Icon name='close' onClick={() => onClose(children)} />}
     </span>
   )
 }
