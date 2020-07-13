@@ -262,7 +262,7 @@ const FormItem = props => {
       )}
       <div className={'hi-form-item' + '__content'}>
         {renderChildren()}
-        <div className='hi-form-item--msg__error'>{error}</div>
+        <div className={classNames('hi-form-item--msg__error',{["hi-form-item--msg__error__show"]:error !== ''})}>{error}</div>
       </div>
     </div>
   )

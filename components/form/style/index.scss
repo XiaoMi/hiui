@@ -123,7 +123,15 @@
     padding: 2px 0;
     box-sizing: border-box;
     line-height: 20px;
+    transition: all 0.3s;
+    transform: translateY(-50%);
+    opacity: 0;
     color: get-color($palette-secondary, 'danger');
+
+    &__show {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
     .hi-form--inline & {
       top: 36px;
