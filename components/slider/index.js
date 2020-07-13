@@ -35,8 +35,12 @@ const Slider = memo(
     useEffect(() => {
       max = max || 100
       min = min || 0
+
+      // 每一份步长对应在父元素的百分比
       setPositionStep((step / (max - min)) * 100)
-    }, [step, max, min])
+      // 设置初始位置
+      setStartPosition(((value - min) / (max - min)) * 100)
+    }, [])
 
     useEffect(() => {
       if (initValue !== undefined) {
@@ -49,17 +53,11 @@ const Slider = memo(
           value = min
         }
         setValue(value)
-        valueRef.current = value
         if (value !== initValue) {
           onChange(value)
         }
       }
     }, [initValue])
-    useEffect(() => {
-      if (initValue !== undefined) {
-        setStartPosition(((initValue - min) / (max - min)) * 100)
-      }
-    }, [])
 
     // 移动
     const onMouseMove = useCallback(
@@ -107,21 +105,14 @@ const Slider = memo(
 
           if (initValue === undefined) {
             setValue(changeValue)
-          } else {
-            setNewRightPosition(position)
           }
-
+          console.log(position)
+          setNewRightPosition(position)
           onChange(changeValue)
         }
       },
       [canMove, max, min, vertical, positionStep, startPosition, initValue]
     )
-
-    useEffect(() => {
-      if (initValue === undefined) {
-        setStartPosition(getTrackWidth())
-      }
-    }, [initValue])
 
     useEffect(() => {
       setNewRightPosition(getTrackWidth())
@@ -142,22 +133,18 @@ const Slider = memo(
     }, [
       canMove,
       disabled,
-      newRightPosition,
       initValue,
-      startPosition,
-      positionStep,
-      vertical,
-      min,
-      max
+      newRightPosition
     ])
 
     const onMouseUp = useCallback(
       (e) => {
-        setCanMove(false)
+        console.log(newRightPosition)
         setStartPosition(newRightPosition)
         setShowTooltip(false)
+        setCanMove(false)
       },
-      [newRightPosition, initValue]
+      [newRightPosition]
     )
     // 获取 track 宽度
     const getTrackWidth = useCallback(() => {
@@ -191,14 +178,11 @@ const Slider = memo(
       [value]
     )
 
-    const onMouseLeave = useCallback((e) => {
-      // Tooltip.close("slider-tooltip");
-    })
-
     const onHandleClick = useCallback((e) => {
       e.stopPropagation()
       setShowTooltip(true)
     }, [])
+
     // slider 点击
     const railClick = useCallback(
       (e) => {
@@ -268,7 +252,6 @@ const Slider = memo(
         className={sliderClasses}
         ref={sliderRef}
         onClick={railClick}
-        onMouseLeave={onMouseLeave}
       >
         <div className={`${prefixCls}__rail`} />
         <div
