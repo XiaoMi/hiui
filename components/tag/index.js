@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import './style'
 import Icon from '../icon'
 
-const noop = () => {}
+const noop = () => { }
 const Tag = ({
   type = 'primary',
   appearance = 'default',
@@ -11,10 +11,10 @@ const Tag = ({
   children,
   color,
   closable = false,
-  onClose = noop
-
+  onClose = noop,
+  style = {}
 }) => {
-  const style = color
+  const tagStyle = color
     ? {
       background: appearance === 'default' ? color : '',
       borderColor: appearance === 'line' ? color : '',
@@ -22,21 +22,23 @@ const Tag = ({
     }
     : {}
   return (
+
     <span
       className={classNames(
         'hi-tag',
         {
           [`hi-tag--${type}`]: type,
-          'hi-tag--line': appearance === 'line',
-          'hi-tag--hasIcon': type === 'hasIcon'
+          'hi-tag--line': appearance === 'line'
         }
 
       )}
       onClick={onClick}
-      style={style}
+      style={{ ...style, ...tagStyle }}
     >
       {children}
-      {closable && <Icon name='close' onClick={() => onClose(children)} />}
+      {closable && <Icon name='close' onClick={(e) => {
+        onClose(e)
+      }} />}
     </span>
   )
 }

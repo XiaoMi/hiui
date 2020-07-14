@@ -37,7 +37,9 @@ import DemoColor from '../../demo/tag/tag-color'
 
 | 参数       | 说明             | 类型                    | 可选值                                          | 默认值    |
 | ---------- | ---------------- | ----------------------- | ----------------------------------------------- | --------- |
-| type       | 设置状态         | string                  | 'primary' \| 'success' \| 'warning' \| 'danger' | 'primary' |
+| type       | 设置状态         | string                  | 'primary' \| 'success' \| 'warning' \| 'danger'\| 'tag-group' | 'primary' 
 | appearance | 设置样式类型     | string                  | 'default' \| 'line'                             | 'default' |
 | color      | 标签色      | string                  |  -                          | - |
-| onClick    | 点击按钮时的回调 | (e: MouseEvent) => void | -                                               | -         |
+| onClick    | 点击按钮时的回调 | (e: MouseEvent) => void | -                          | -         |
+| closable | 标签是否可以关闭     | boolean                  | true \| false                        | false |
+| onClose | 关闭时的回调     | (e) => void                  | -                 | - |
