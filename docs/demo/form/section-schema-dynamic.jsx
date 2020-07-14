@@ -17,7 +17,9 @@ import Grid from '../../../components/grid'
 const prefix = 'form-schema'
 const desc = '通过schema配置表单，现仅支持HiUI组件'
 const code = `import React from 'react'
+
 import { Form,Counter} from '@hi-ui/hiui'\n
+
 class Demo extends React.Component {  
   constructor(props){
     super(props)
@@ -25,6 +27,7 @@ class Demo extends React.Component {
       initialValues : {
         inputField: 'test schema',
         selectField: "3",
+        radio:'show'
       },
       formData:{
         inputField: 'test schema',
@@ -60,12 +63,19 @@ class Demo extends React.Component {
             }
           },
           {
-            label:'显示日期',
-            field:'Switch',
-            component:'Switch',
+            label:'控制日期',
+            field:'radio',
+            component:'Radio.Group',
+            required:true,
             componentProps:{
-              content:['ON', 'OFF'],
-              onChange: (val) => console.log('change Switch',val)
+                data:[{
+                  content: '显示日期',
+                  id: 'show'
+                },{
+                  content: '隐藏日期',
+                  id: 'hide'
+                }],
+                onChange:(data) => console.log("Radio data",data)
             }
           },
           {
@@ -81,21 +91,21 @@ class Demo extends React.Component {
           }
       ]
     }
+    this.initSchemaData = this.state.formSchema
+    this.form = React.createRef()
+
   }
   render () {
-    const FormItem = Form.Item
-    const FormSubmit = Form.Submit
-    const FormReset = Form.Reset
+    const {initialValues, formData, formSchema} = this.state
     const SchemaForm = Form.SchemaForm
-    const {initialValues, formData} = this.state
 
     return (
       <SchemaForm 
         labelWidth='100' 
         labelPlacement='right' 
         initialValues={initialValues}
-        schema={this.state.formSchema}
-        schemaformValue={formData}
+        schema={formSchema}
+        ref={this.form}
         submit={{
           type:'primary',
           children:'提交',
@@ -107,10 +117,21 @@ class Demo extends React.Component {
           onClick:() => {console.log('reset form')}
         }}
         onValuesChange ={(changedValues,allValues) => {
-         console.log("formdata",changedValues,allValues)
+        //  console.log("formdata",changedValues,allValues,this.form.current.validate())
          this.setState({
           formData: allValues
          })
+         if(changedValues.radio && changedValues.radio === 'hide'){
+          this.setState({
+            formSchema: formSchema.filter((item)=>{
+              return item.field !== 'datePicker'
+            })
+           })
+         } else {
+          this.setState({
+            formSchema: this.initSchemaData
+           })
+         }
         }}
       />
     )
@@ -133,7 +154,7 @@ const DemoRow = () => (
       DatePicker,
       Rate,
       Upload,
-      Grid
+      Grid,
     }}
     prefix={prefix}
     desc={desc}

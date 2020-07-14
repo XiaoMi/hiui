@@ -164,7 +164,6 @@ const InternalForm = props => {
       validateField,
       validate,
       setFieldsValue,
-      _formState: state
     }
   }, [fields])
 

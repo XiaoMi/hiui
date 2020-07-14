@@ -9,7 +9,6 @@ const FormComponent = Provider(Form)
 const useFormInstance = () => {
   const formRef = useRef()
   let FormInstance = formRef
-
   const FormWrapper = forwardRef((props, ref) => {
     return <FormComponent {...props} ref={formRef} />
   })

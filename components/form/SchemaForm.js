@@ -1,30 +1,35 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef, forwardRef } from 'react'
 import _ from 'lodash'
-
-import useFormInstance from './hooks/useFormInstance'
 import * as HIUI from '../'
+import Provider from '../context'
+import Form from './Form'
+import FormItem from './Item'
+import FormReset from './Reset'
+import FormSubmit from './Submit'
+
 const Group = {
   ['Radio.Group']: HIUI['Radio'].Group,
   ['Checkbox.Group']: HIUI['Checkbox'].Group
 }
 const prefixCls = 'hi-form-schema'
 
-const SchemaForm = props => {
-  const { FormWrapper, FormItem, FormReset, FormSubmit } = useFormInstance(
-    props,
-    'SchemaForm'
-  )
+const FormComponent = Provider(Form)
+
+const InternalSchemaForm = props => {
   const {
     schema: schemaProps,
     children: childrenProps,
     submit,
     reset,
-    schemaformValue
+    innerRef
   } = props
   const [schema, setSchema] = useState(schemaProps)
   useEffect(() => {
     setSchema(schemaProps)
+    
   }, [schemaProps])
+  const formRef = useRef()
+
   const renderSchemaFormItem = useCallback(() => {
     if (Array.isArray(schema)) {
       return schema.map((schemaItem, index) => {
@@ -40,14 +45,13 @@ const SchemaForm = props => {
           ..._.omit(schemaItem, 'component', 'componentProps'),
           key: component + index,
           children: child,
-          schemaformValue: schemaformValue
         })
       })
     }
   }, [schema])
   return (
     <div className={`${prefixCls}`}>
-      <FormWrapper {..._.omit(props, 'schema')} _type='SchemaForm'>
+      <FormComponent {..._.omit(props, 'schema','ref')} ref={innerRef} _type='SchemaForm'>
         {renderSchemaFormItem()}
         {childrenProps}
         {(submit || reset) && (
@@ -56,8 +60,12 @@ const SchemaForm = props => {
             {reset && <FormReset {...reset} />}
           </FormItem>
         )}
-      </FormWrapper>
+      </FormComponent>
     </div>
   )
 }
+
+const SchemaForm = forwardRef((props, ref) => {
+  return <InternalSchemaForm {...props} innerRef={ref} />
+})
 export default SchemaForm

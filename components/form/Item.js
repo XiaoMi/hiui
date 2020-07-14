@@ -15,7 +15,7 @@ import * as HIUI from '../'
  */
 
 const FormItem = props => {
-  const { formProps, formState, dispatch, onValuesChange, _type } = useContext(
+  const { formProps, formState, dispatch, onValuesChange, _type} = useContext(
     FormContext
   )
   const {
@@ -26,7 +26,8 @@ const FormItem = props => {
     showColon: shouldItemShowColon,
     style,
     field,
-    valuePropName = 'value'
+    valuePropName = 'value',
+    
   } = props
   const {
     showColon: shouldFormShowColon,
@@ -37,7 +38,6 @@ const FormItem = props => {
   } = formProps || {}
   // 初始化FormItem的内容
   const { fields } = formState
-
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
   const [validating, setValidating] = useState(false)
@@ -200,7 +200,7 @@ const FormItem = props => {
 
   // jsx渲染方式
   const renderChildren = () => {
-    const { component, componentProps, schemaformValue } = props
+    const { component, componentProps } = props
     // 对ScheamaForm表单Item进行特殊处理
     if (_type === 'SchemaForm' && component) {
       if (HIUI[component]) {
@@ -222,13 +222,11 @@ const FormItem = props => {
     if (!children) {
       return null
     }
+
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {
-          [valuePropName]:
-            _type === 'SchemaForm' && schemaformValue
-              ? schemaformValue[field]
-              : value,
+          [valuePropName]: value,
           onChange: (e, ...args) => {
             setEvent('onChange', '', e, ...args)
           },
