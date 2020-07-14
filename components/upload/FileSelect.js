@@ -1,8 +1,6 @@
 import React, { useCallback, useRef } from 'react'
-import Button from '../button'
-import request from './request'
 
-const FileSelect = ({ children, onSelect }) => {
+const FileSelect = ({ children, onSelect, multiple, disabled, accept }) => {
   const inputRef = useRef(null)
   const onClick = useCallback(() => {
     if (inputRef.current) {
@@ -13,6 +11,9 @@ const FileSelect = ({ children, onSelect }) => {
     <div onClick={onClick}>
       <input
         type='file'
+        multiple={multiple && 'multiple'}
+        disabled={disabled && 'disabled'}
+        accept={accept}
         style={{ display: 'none' }}
         onChange={(e) => {
           onSelect(e.target.files)
