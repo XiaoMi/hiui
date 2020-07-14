@@ -17,6 +17,7 @@ const FileSelect = ({ children, onSelect, multiple, disabled, accept }) => {
         style={{ display: 'none' }}
         onChange={(e) => {
           onSelect(e.target.files)
+          inputRef.current.value = ''
         }}
         ref={inputRef}
       />

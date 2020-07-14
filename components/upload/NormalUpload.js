@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import classNames from 'classnames'
 import Button from '../button'
 import Icon from '../icon'
@@ -16,12 +16,15 @@ const NormalUpload = ({
   loading,
   onDownload,
   fileList,
-  defaultFileList
+  defaultFileList,
+  maxSize
 }) => {
   const [_fileList, updateFileList] = useState(fileList || defaultFileList || [])
+  useEffect(() => {
+    updateFileList(fileList)
+  }, [fileList])
   const uploadFiles = (files) => {
     updateFileList(files)
-    console.log(files)
   }
   return (
     <div className={`hi-upload`}>
