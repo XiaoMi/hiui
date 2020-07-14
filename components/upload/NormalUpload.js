@@ -3,6 +3,8 @@ import classNames from 'classnames'
 import Button from '../button'
 import Icon from '../icon'
 import FileSelect from './FileSelect'
+import { v4 as uuidV4 } from 'uuid'
+import request from './request'
 
 const NormalUpload = ({
   maxCount,
@@ -17,14 +19,36 @@ const NormalUpload = ({
   onDownload,
   fileList,
   defaultFileList,
-  maxSize
+  maxSize,
+  action,
+  name,
+  withCredentials,
+  headers,
+  data
 }) => {
   const [_fileList, updateFileList] = useState(fileList || defaultFileList || [])
   useEffect(() => {
     updateFileList(fileList)
   }, [fileList])
+
   const uploadFiles = (files) => {
-    updateFileList(files)
+    const _files = files
+      .map((file) => {
+        // TODO: beforeUpload customUpload
+        if (file.size > maxSize * 1024) {
+          // TODO: 弹窗提醒
+
+          return null
+        }
+        return Object.assign({}, file, { fileId: uuidV4(), uploadState: 'loading', fileType: 'xx' })
+      })
+      .filter((file) => {
+        if (file) {
+          request({ file, action, name, withCredentials, headers, data })
+        }
+        return file
+      })
+    updateFileList(_files.concat(fileList))
   }
   return (
     <div className={`hi-upload`}>

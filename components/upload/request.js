@@ -29,7 +29,7 @@ function getBody (xhr) {
 //  onError: (event: Error, body?: Object): void,
 //  onSuccess: (body: Object): void,
 //  data: Object,
-//  filename: String,
+//  name: String,
 //  file: File,
 //  withCredentials: Boolean,
 //  action: String,
@@ -57,7 +57,7 @@ export default function upload (option) {
     })
   }
 
-  formData.append(option.filename, option.file)
+  formData.append(option.name, option.file)
 
   xhr.onerror = function error (e) {
     option.onError(e)
