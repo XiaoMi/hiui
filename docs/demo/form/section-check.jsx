@@ -9,7 +9,7 @@ import Select from '../../../components/select'
 import Cascader from '../../../components/cascader'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'form-check'
-const desc = '表单项内容的格式、逻辑有特殊要求'
+const desc = ['表单项内容的格式、逻辑有特殊要求','可在Form中配置全部Item的rules,也可在Form.Item中使用rules校验单个表单项']
 const code = `import React from 'react'
 import { Grid, Button, Radio, Input, Form } from '@hi-ui/hiui'\n
 class Demo extends React.Component {
@@ -85,15 +85,16 @@ class Demo extends React.Component {
     return (
       <Row>
         <Col span={12}>
-          <Form ref={this.form} model={form} rules={this.state.rules} labelWidth='80' labelPlacement='right'>
+          <Form 
+            ref={this.form} 
+            model={form} 
+            rules={this.state.rules} 
+            labelWidth='80' 
+            labelPlacement='right'>
             <FormItem label='名称' field='name'>
               <Input placeholder='请输入'/>
             </FormItem>
-            <FormItem label='数量' field='count' rules={{
-              required: true,
-              message: '请输入数量123',
-              trigger: 'onChange'
-            }}>
+            <FormItem label='数量' field='count'>
               <Input placeholder='请输入'/>
             </FormItem>
             <FormItem label='地区' field='region'>

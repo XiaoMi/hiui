@@ -8,7 +8,7 @@ import Radio from '../../../components/radio'
 import Grid from '../../../components/grid'
 
 const prefix = 'form-register'
-const desc = '简单的用户注册表单'
+const desc = ['简单的用户注册表单','注意onValuesChange的用法']
 const code = `import React from 'react'
 import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'
 class Demo extends React.Component {

@@ -8,7 +8,7 @@ import Radio from '../../../components/radio'
 import Grid from '../../../components/grid'
 
 const prefix = 'form-fill'
-const desc = '对表单数据域进行交互'
+const desc = ['对表单数据域进行交互','控制表单项的值']
 const code = `import React from 'react'
 import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
 class Demo extends React.Component {  

@@ -21,7 +21,7 @@ const SchemaForm = props => {
           const ChildTag = HIUI[component]
           child = <ChildTag {...componentProps} />
         } else {
-          throw new Error('not found ' + component)
+          child = <p>{'not found ' + component}</p>
         }
         return React.createElement(FormItem, {
           ..._.omit(schemaItem, 'component', 'componentProps'),

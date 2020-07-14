@@ -47,7 +47,6 @@ class Demo extends React.Component {
                   { title:'生活周边', id:'5' },
                   { title:'办公', id:'6' }
                 ],
-
             }
           }
       ]
@@ -68,6 +67,9 @@ class Demo extends React.Component {
         labelPlacement='right' 
         initialValues={formData}
         schema={this.state.formSchema}
+        onValuesChange ={(changedValues,allValues) => {
+         console.log("formdata",changedValues,allValues)
+        }}
         >
         <FormItem 
           label='日期' 

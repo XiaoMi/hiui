@@ -4,7 +4,7 @@ import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
 import { depreactedPropsCompat } from '../_util'
 import FormContext from './FormContext'
-import { FILEDS_INIT, FILEDS_UPDATE } from './FormReducer'
+import { FILEDS_INIT, FILEDS_UPDATE, FILEDS_REMOVE} from './FormReducer'
 import * as HIUI from '../'
 
 /**
@@ -17,7 +17,6 @@ import * as HIUI from '../'
 const FormItem = props => {
   const {
     formProps,
-    removeField,
     formState,
     dispatch,
     onValuesChange,
@@ -71,9 +70,9 @@ const FormItem = props => {
     triggerType === 'onChange' &&
       onValuesChange &&
       onValuesChange({ [field]: _value }, allValues)
-
     dispatch({ type: FILEDS_UPDATE, payload: _fields })
   }
+  
   const resetValidate = useCallback((value = '') => {
     // 清空数据
     setValue(value)
@@ -143,7 +142,7 @@ const FormItem = props => {
       valueInit()
     }
     return () => {
-      removeField({ field })
+      dispatch({ type: FILEDS_REMOVE, payload: field })
     }
   }, [])
 
@@ -177,7 +176,7 @@ const FormItem = props => {
       return trigger.includes(triggerType)
     })
     hasTriggerType && validate(triggerType, '', currentValue)
-  })
+  },[fields])
 
   const labelWidth = useCallback(() => {
     const labelWidth = props.labelWidth || formProps.labelWidth
@@ -196,9 +195,7 @@ const FormItem = props => {
         ? e.target[valuePropName]
         : e
     setValue(value)
-    setTimeout(() => {
-      handleField(eventName, value)
-    })
+    handleField(eventName, value)
   }
 
   // jsx渲染方式
@@ -237,7 +234,7 @@ const FormItem = props => {
           }
         })
   }
-
+  
   const shouldShowColon =
     shouldItemShowColon === undefined
       ? shouldFormShowColon && typeof label === 'string' && label.trim()

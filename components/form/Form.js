@@ -35,18 +35,6 @@ const InternalForm = props => {
     ...props
   })
   const { fields } = state
-
-  const removeField = useCallback(
-    childrenFiled => {
-      dispatch({
-        type: FILEDS_UPDATE,
-        payload: fields.filter(
-          fieldItem => fieldItem.field !== childrenFiled.field
-        )
-      })
-    },
-    [fields]
-  )
   // 用户手动设置表单数据
   const setFieldsValue = useCallback(
     values => {
@@ -66,24 +54,39 @@ const InternalForm = props => {
   // 重置校验
   const resetValidates = useCallback(
     (cb, resetNames, toDefault) => {
+      const changeValues = {}
+      const cacheallValues = {}
       let _fields = _.cloneDeep(fields)
+      fields.forEach(item => {
+        const { field, value } = item
+        cacheallValues[field] = value
+      })
+      
       _fields = _fields.filter(childrenField => {
         return Array.isArray(resetNames)
           ? resetNames.includes(childrenField.field)
           : true
       })
+      
       _fields.forEach(childrenField => {
         const value =
           toDefault && initialValues && initialValues[childrenField.field]
             ? initialValues[childrenField.field]
             : ''
+        if(!_.isEqual(childrenField.value,value)){
+          changeValues[childrenField.field] = value
+        }
+
         childrenField.value = value
         childrenField.resetValidate(value)
       })
+
+      onValuesChange &&
+      onValuesChange({...changeValues}, Object.assign({},{...cacheallValues},{...changeValues}))
       dispatch({ type: FILEDS_UPDATE, payload: _fields })
       cb instanceof Function && cb()
     },
-    [fields, initialValues]
+    [fields, initialValues, onValuesChange]
   )
   // 对整个表单进行校验
   const validate = useCallback(
@@ -173,7 +176,6 @@ const InternalForm = props => {
           formProps: props,
           formState: state,
           dispatch: dispatch,
-          removeField,
           fields,
           validate,
           resetValidates,
