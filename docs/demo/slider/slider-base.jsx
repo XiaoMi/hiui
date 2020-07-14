@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Slider from '../../../components/slider'
 const prefix = 'slider-base'
-const rightOptions = ['基础','可控范围', '禁用']
+const rightOptions = ['基础', '可控范围', '禁用']
 const desc =
   '滑动输入连续或离散数据的单点值或范围值'
 
@@ -25,11 +25,11 @@ class Demo extends React.Component {
       value:v
     })
   }
-
+  
   render() {
     const {value} = this.state
     return (
-      <Slider value={value} onChange={(value)=>this.onChange(value)} />
+      <Slider value={value}  onChange={(value)=>this.onChange(value)}/>
     )
   }
 }`,

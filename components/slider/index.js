@@ -17,11 +17,19 @@ const Slider = memo(
     type = 'primary',
     marks = {}
   }) => {
-    const sliderRef = useRef()
-    const tooltipRef = useRef()
-    const valueRef = useRef()
+    // 获取 value 值
+    // const _getValue = (value) => {
+    //   let _value = initValue || defaultValue || 0
+    //   if (_value > (max || 100)) {
+    //     _value = max
+    //   } else if (_value < (min || 0)) {
+    //     _value = min
+    //   }
+    //   console.log(_value)
+    //   return _value
+    // }
 
-    const [value, setValue] = useState()
+    const [value, setValue] = useState(initValue || defaultValue)
     // 是否可拖动
     const [canMove, setCanMove] = useState()
 
@@ -33,19 +41,8 @@ const Slider = memo(
     const [positionStep, setPositionStep] = useState(1)
     const [showTooltip, setShowTooltip] = useState(false)
 
-    useEffect(() => {
-      let value = initValue || defaultValue
-      if (value > (max || 100)) {
-        value = max
-      } else if (value < (min || 0)) {
-        value = min
-      }
-      if ((value !== initValue) && (value !== defaultValue)) {
-        onChange(value)
-      }
-      valueRef.current = value
-      setValue(value)
-    }, [initValue])
+    const sliderRef = useRef()
+    const tooltipRef = useRef()
 
     useEffect(() => {
       // 每一份步长对应在父元素的百分比
@@ -54,14 +51,37 @@ const Slider = memo(
       setStartPosition(((value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
     }, [])
 
+    // value 改变更新长度和位置
+    useEffect(() => {
+      let _value = initValue !== undefined ? getValue(initValue) : getValue(value)
+
+      setNewRightPosition(getTrackWidth(_value))
+    }, [value, initValue])
+
+    useEffect(() => {
+      if (initValue !== undefined) {
+        let _value = getValue(initValue)
+        setValue(_value)
+      }
+    }, [initValue])
+
+    const getValue = useCallback((value) => {
+      if (value === undefined) {
+        return value
+      }
+      if (value > (max || 100)) {
+        value = max
+      } else if (value < (min || 0)) {
+        value = min
+      }
+      return value
+    }, [])
+
     // 移动
     const onMouseMove = useCallback(
       (e) => {
         if (canMove) {
           const parent = sliderRef.current
-
-          // max = max || 100
-          // min = min || 0
 
           const {
             width: sliderWidth,
@@ -82,9 +102,9 @@ const Slider = memo(
                 (((e.clientX - startX) / sliderWidth) * 100) / positionStep
               ) * positionStep
           }
-
+          // 开始位置 + 偏移位置
           let position = startPosition + diff
-
+          // 边界判断
           if (position <= 0) {
             position = 0
           } else if (position >= 100) {
@@ -101,17 +121,12 @@ const Slider = memo(
           if (initValue === undefined) {
             setValue(changeValue)
           }
-          setNewRightPosition(position)
+
           onChange(changeValue)
         }
       },
-      [canMove, positionStep, startPosition, initValue]
+      [canMove, positionStep, startPosition]
     )
-
-    useEffect(() => {
-      setNewRightPosition(getTrackWidth())
-      valueRef.current = value
-    }, [value])
 
     useEffect(() => {
       if (disabled) {
@@ -121,19 +136,17 @@ const Slider = memo(
         window.onmouseup = onMouseUp
         window.onmousemove = onMouseMove
       } else {
-        window.onmouseup = () => { }
-        window.onmousemove = () => { }
+        window.onmouseup = null
+        window.onmousemove = null
       }
     }, [
       canMove,
       disabled,
-      initValue,
       newRightPosition
     ])
 
     const onMouseUp = useCallback(
       (e) => {
-        console.log(newRightPosition)
         setStartPosition(newRightPosition)
         setShowTooltip(false)
         setCanMove(false)
@@ -141,9 +154,7 @@ const Slider = memo(
       [newRightPosition]
     )
     // 获取 track 宽度
-    const getTrackWidth = useCallback(() => {
-      // min = min || 0
-      // (max||100) = (max||100) || 100
+    const getTrackWidth = useCallback((value) => {
       return ((value - (min || 0)) / ((max || 100) - (min || 0))) * 100
     }, [value])
 
@@ -165,6 +176,7 @@ const Slider = memo(
       [disabled, vertical]
     )
 
+    // 鼠标移入展示tooltip
     const onMouseEnter = useCallback(
       (e) => {
         setShowTooltip(true)
@@ -172,6 +184,7 @@ const Slider = memo(
       [value]
     )
 
+    // 点击滑块
     const onHandleClick = useCallback((e) => {
       e.stopPropagation()
       setShowTooltip(true)
@@ -183,9 +196,6 @@ const Slider = memo(
         if (disabled) {
           return
         }
-
-        // min = min || 0
-        // (max||100) = (max||100) || 100
 
         const parent = sliderRef.current
         let diff = 0
@@ -215,21 +225,20 @@ const Slider = memo(
         } else if (position >= 100) {
           position = 100
         }
+
+        const value = (min || 0) + Math.round((((max || 100) - (min || 0)) * position) / 100)
         if (initValue === undefined) {
-          setValue((min || 0) + Math.round((((max || 100) - (min || 0)) * position) / 100))
+          setValue(value)
         }
-        setNewRightPosition(position)
+
         setStartPosition(position)
-        valueRef.current = (min || 0) + Math.round((((max || 100) - (min || 0)) * position) / 100)
-        onChange((min || 0) + Math.round((((max || 100) - (min || 0)) * position) / 100))
+        onChange(value)
       },
       [positionStep, newRightPosition, vertical, disabled]
     )
     // 点击marks上的点
     const onMarksClick = useCallback((e, value) => {
       e.stopPropagation()
-      setNewRightPosition(((value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
-      setStartPosition(((value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
       if (initValue === undefined) {
         setValue(value)
       }
@@ -298,7 +307,7 @@ const Slider = memo(
                       [`hi-tooltip-${vertical ? 'right' : 'top'}`]: true
                     })}
                   >
-                    {tipFormatter ? tipFormatter(valueRef.current) : valueRef.current}
+                    {tipFormatter ? tipFormatter(value) : value}
                   </div>
                 </div>
               </div>

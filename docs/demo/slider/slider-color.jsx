@@ -45,7 +45,8 @@ class Demo extends React.Component {
                         background: item.color, 
                         display: 'inline-block', 
                         cursor: 'pointer', 
-                        boxShadow: type === item.type ? '0px 2px 4px 0px rgba(0,0,0,0.5)' : 'none' }} onClick={() => { this.onHandleChange(item.type) }} key={item.color}></span>)}
+                        boxShadow: type === item.type ? '0px 2px 4px 0px rgba(0,0,0,0.5)' : 'none' }} 
+                        onClick={() => { this.onHandleChange(item.type) }} key={item.color}></span>)}
                 </div>
                 <Slider defaultValue={this.state.value} type={type} />
             </>

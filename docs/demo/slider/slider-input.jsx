@@ -17,7 +17,7 @@ class Demo extends React.Component {
     super()
     this.state = {
       value: 9,
-      valueCache:9,
+      valueCache:10,
       max:90,
       min:10
     }
@@ -47,6 +47,7 @@ class Demo extends React.Component {
   render() {
     const {Row, Col} = Grid
     const {value,max,min,valueCache} = this.state
+
     return (
       <Row>
         <Col span={22}>
@@ -80,7 +81,7 @@ class Demo extends React.Component {
         super()
         this.state = {
           value: 9,
-          valueCache:9,
+          valueCache:10,
           max:90,
           min:10
         }
@@ -109,6 +110,7 @@ class Demo extends React.Component {
       }
       render() {
         const { value,valueCache,max,min } = this.state;
+        console.log(valueCache)
         return (
           <div
             style={{
@@ -132,6 +134,7 @@ class Demo extends React.Component {
                 min={min}
                 max={max}
                 onChange ={(value)=>{
+                  console.log(value)
                   this.setState({
                     value,
                     valueCache:value
