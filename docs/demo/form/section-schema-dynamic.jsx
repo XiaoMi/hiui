@@ -26,6 +26,10 @@ class Demo extends React.Component {
         inputField: 'test schema',
         selectField: "3",
       },
+      formData:{
+        inputField: 'test schema',
+        selectField: "3",
+      },
       formSchema:[
           {
             label:'输入框',
@@ -56,27 +60,12 @@ class Demo extends React.Component {
             }
           },
           {
-            label:'复选框',
-            field:'Checkbox',
-            component:'Checkbox.Group',
-            required:true,
+            label:'显示日期',
+            field:'Switch',
+            component:'Switch',
             componentProps:{
-                placeholder:'schema',
-                data:[{
-                  content: '手机',
-                  id: 'Phone'
-                },{
-                  content: '电脑',
-                  id: 'Computer'
-                },{
-                  content: '智能',
-                  id: 'Intelli'
-                },{
-                  content: '出行',
-                  id: 'Transfer',
-                  disabled: true
-                }],
-                onChange:(data) => console.log("Checkbox data",data)
+              content:['ON', 'OFF'],
+              onChange: (val) => console.log('change Switch',val)
             }
           },
           {
@@ -98,7 +87,7 @@ class Demo extends React.Component {
     const FormSubmit = Form.Submit
     const FormReset = Form.Reset
     const SchemaForm = Form.SchemaForm
-    const {initialValues} = this.state
+    const {initialValues, formData} = this.state
 
     return (
       <SchemaForm 
@@ -106,6 +95,7 @@ class Demo extends React.Component {
         labelPlacement='right' 
         initialValues={initialValues}
         schema={this.state.formSchema}
+        schemaformValue={formData}
         submit={{
           type:'primary',
           children:'提交',
@@ -118,6 +108,9 @@ class Demo extends React.Component {
         }}
         onValuesChange ={(changedValues,allValues) => {
          console.log("formdata",changedValues,allValues)
+         this.setState({
+          formData: allValues
+         })
         }}
       />
     )

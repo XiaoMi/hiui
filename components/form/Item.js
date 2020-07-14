@@ -4,7 +4,7 @@ import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
 import { depreactedPropsCompat } from '../_util'
 import FormContext from './FormContext'
-import { FILEDS_INIT, FILEDS_UPDATE, FILEDS_REMOVE} from './FormReducer'
+import { FILEDS_INIT, FILEDS_UPDATE, FILEDS_REMOVE } from './FormReducer'
 import * as HIUI from '../'
 
 /**
@@ -15,13 +15,9 @@ import * as HIUI from '../'
  */
 
 const FormItem = props => {
-  const {
-    formProps,
-    formState,
-    dispatch,
-    onValuesChange,
-    _type
-  } = useContext(FormContext)
+  const { formProps, formState, dispatch, onValuesChange, _type } = useContext(
+    FormContext
+  )
   const {
     children,
     label,
@@ -72,7 +68,7 @@ const FormItem = props => {
       onValuesChange({ [field]: _value }, allValues)
     dispatch({ type: FILEDS_UPDATE, payload: _fields })
   }
-  
+
   const resetValidate = useCallback((value = '') => {
     // 清空数据
     setValue(value)
@@ -132,7 +128,8 @@ const FormItem = props => {
         type: FILEDS_INIT,
         payload: {
           field,
-          value: initialValues && initialValues[field] ? initialValues[field] : '',
+          value:
+            initialValues && initialValues[field] ? initialValues[field] : '',
           rules: getRules(),
           resetValidate,
           setValue,
@@ -167,16 +164,19 @@ const FormItem = props => {
   })
 
   // 对字段的操作
-  const handleField = useCallback((triggerType, currentValue) => {
-    // 同步数据 reducer
-    updateField(currentValue, triggerType)
-    let rules = getRules()
-    const hasTriggerType = rules.some(rule => {
-      const { trigger = '' } = rule
-      return trigger.includes(triggerType)
-    })
-    hasTriggerType && validate(triggerType, '', currentValue)
-  },[fields])
+  const handleField = useCallback(
+    (triggerType, currentValue) => {
+      // 同步数据 reducer
+      updateField(currentValue, triggerType)
+      let rules = getRules()
+      const hasTriggerType = rules.some(rule => {
+        const { trigger = '' } = rule
+        return trigger.includes(triggerType)
+      })
+      hasTriggerType && validate(triggerType, '', currentValue)
+    },
+    [fields]
+  )
 
   const labelWidth = useCallback(() => {
     const labelWidth = props.labelWidth || formProps.labelWidth
@@ -187,7 +187,7 @@ const FormItem = props => {
 
   const setEvent = (eventName, componentProps, e, ...args) => {
     e.persist && e.persist()
-    const _props = _type === 'SchemaForm' ? componentProps : children.props
+    const _props = componentProps ? componentProps : children.props
     eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
     eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
     const value =
@@ -200,7 +200,8 @@ const FormItem = props => {
 
   // jsx渲染方式
   const renderChildren = () => {
-    const { component, componentProps } = props
+    const { component, componentProps, schemaformValue } = props
+    // 对ScheamaForm表单Item进行特殊处理
     if (_type === 'SchemaForm' && component) {
       if (HIUI[component]) {
         const HIUIComponent = HIUI[component]
@@ -221,20 +222,23 @@ const FormItem = props => {
     if (!children) {
       return null
     }
-    
+    console.log('schemaformValue', schemaformValue)
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {
-          [valuePropName]: value,
+          [valuePropName]:
+            _type === 'SchemaForm' && schemaformValue
+              ? schemaformValue[field]
+              : value,
           onChange: (e, ...args) => {
-            setEvent('onChange', {}, e, ...args)
+            setEvent('onChange', '', e, ...args)
           },
           onBlur: (e, ...args) => {
-            setEvent('onBlur', {}, e, ...args)
+            setEvent('onBlur', '', e, ...args)
           }
         })
   }
-  
+
   const shouldShowColon =
     shouldItemShowColon === undefined
       ? shouldFormShowColon && typeof label === 'string' && label.trim()
@@ -251,17 +255,31 @@ const FormItem = props => {
       key={field}
     >
       {label || label === '' ? (
-     
-      <label className='hi-form-item__label' style={{ width: labelWidth() }}  key={field+'label'} >
+        <label
+          className='hi-form-item__label'
+          style={{ width: labelWidth() }}
+          key={field + 'label'}
+        >
           {(typeof label === 'string' && label.trim()) || label}
           {shouldShowColon && colon}
         </label>
       ) : (
-        <span className='hi-form-item__span' style={{ width: labelWidth() }} key={field+'label'}/>
+        <span
+          className='hi-form-item__span'
+          style={{ width: labelWidth() }}
+          key={field + 'label'}
+        />
       )}
-      <div className={'hi-form-item' + '__content'} key={field+'__content'}>
+      <div className={'hi-form-item' + '__content'} key={field + '__content'}>
         {renderChildren()}
-        <div className={classNames('hi-form-item--msg__error',{["hi-form-item--msg__error__show"]:error !== ''})} key={field+'error'}>{error}</div>
+        <div
+          className={classNames('hi-form-item--msg__error', {
+            ['hi-form-item--msg__error__show']: error !== ''
+          })}
+          key={field + 'error'}
+        >
+          {error}
+        </div>
       </div>
     </div>
   )

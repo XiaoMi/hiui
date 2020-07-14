@@ -19,7 +19,6 @@ const getClassNames = props => {
   return _className
 }
 
-
 const InternalForm = props => {
   const {
     children,
@@ -61,19 +60,19 @@ const InternalForm = props => {
         const { field, value } = item
         cacheallValues[field] = value
       })
-      
+
       _fields = _fields.filter(childrenField => {
         return Array.isArray(resetNames)
           ? resetNames.includes(childrenField.field)
           : true
       })
-      
+
       _fields.forEach(childrenField => {
         const value =
           toDefault && initialValues && initialValues[childrenField.field]
             ? initialValues[childrenField.field]
             : ''
-        if(!_.isEqual(childrenField.value,value)){
+        if (!_.isEqual(childrenField.value, value)) {
           changeValues[childrenField.field] = value
         }
 
@@ -82,7 +81,10 @@ const InternalForm = props => {
       })
 
       onValuesChange &&
-      onValuesChange({...changeValues}, Object.assign({},{...cacheallValues},{...changeValues}))
+        onValuesChange(
+          { ...changeValues },
+          Object.assign({}, { ...cacheallValues }, { ...changeValues })
+        )
       dispatch({ type: FILEDS_UPDATE, payload: _fields })
       cb instanceof Function && cb()
     },
@@ -130,9 +132,9 @@ const InternalForm = props => {
 
   const validateField = useCallback(
     (key, cb) => {
-      let value 
+      let value
       const field = fields.filter(fieldChild => {
-        if(fieldChild.field === key){
+        if (fieldChild.field === key) {
           value = fieldChild.value
           return true
         }
@@ -142,9 +144,13 @@ const InternalForm = props => {
         throw new Error('must call validate Field with valid key string!')
       }
 
-      field.validate('', (error)=>{
-        cb && cb(error)
-      },value)
+      field.validate(
+        '',
+        error => {
+          cb && cb(error)
+        },
+        value
+      )
     },
     [fields]
   )
@@ -157,7 +163,8 @@ const InternalForm = props => {
       resetValidates,
       validateField,
       validate,
-      setFieldsValue
+      setFieldsValue,
+      _formState: state
     }
   }, [fields])
 
@@ -165,7 +172,7 @@ const InternalForm = props => {
     <form
       className={classNames('hi-form', className, getClassNames(props))}
       style={style}
-      onSubmit={(e)=>{
+      onSubmit={e => {
         // 阻止只有一个表单时候；回车会触发form的提交操作
         e.preventDefault()
         return false

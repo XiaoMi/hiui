@@ -3,30 +3,45 @@ import _ from 'lodash'
 
 import useFormInstance from './hooks/useFormInstance'
 import * as HIUI from '../'
+const Group = {
+  ['Radio.Group']: HIUI['Radio'].Group,
+  ['Checkbox.Group']: HIUI['Checkbox'].Group
+}
 const prefixCls = 'hi-form-schema'
 
 const SchemaForm = props => {
-  const { FormWrapper, FormItem } = useFormInstance(props, 'SchemaForm')
-  const { schema: schemaProps, children: childrenProps } = props
+  const { FormWrapper, FormItem, FormReset, FormSubmit } = useFormInstance(
+    props,
+    'SchemaForm'
+  )
+  const {
+    schema: schemaProps,
+    children: childrenProps,
+    submit,
+    reset,
+    schemaformValue
+  } = props
   const [schema, setSchema] = useState(schemaProps)
+  console.log('schemaformValue', schemaformValue)
   useEffect(() => {
     setSchema(schemaProps)
   }, [schemaProps])
   const renderSchemaFormItem = useCallback(() => {
     if (Array.isArray(schema)) {
-      return schema.map((schemaItem,index) => {
+      return schema.map((schemaItem, index) => {
         const { component, componentProps } = schemaItem
         let child = null
-        if (HIUI[component]) {
-          const ChildTag = HIUI[component]
-          child = <ChildTag {...componentProps} />
+        if (HIUI[component] || Group[component]) {
+          const ChildComponent = HIUI[component] || Group[component]
+          child = <ChildComponent {...componentProps} />
         } else {
           child = <p>{'not found ' + component}</p>
         }
         return React.createElement(FormItem, {
           ..._.omit(schemaItem, 'component', 'componentProps'),
           key: component + index,
-          children: child
+          children: child,
+          schemaformValue: schemaformValue
         })
       })
     }
@@ -36,6 +51,12 @@ const SchemaForm = props => {
       <FormWrapper {..._.omit(props, 'schema')} _type='SchemaForm'>
         {renderSchemaFormItem()}
         {childrenProps}
+        {(submit || reset) && (
+          <FormItem>
+            {submit && <FormSubmit {...submit} />}
+            {reset && <FormReset {...reset} />}
+          </FormItem>
+        )}
       </FormWrapper>
     </div>
   )

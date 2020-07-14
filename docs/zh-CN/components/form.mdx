@@ -20,25 +20,25 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 
 <DemoCheck />
 
- ## 填充表单
+## 填充表单
 
 import DemoFillform from '../../demo/form/section-fillform.jsx'
 
 <DemoFillform />
 
- ## 表单联动
+## 表单联动
 
 import DemoRegister from '../../demo/form/section-register.jsx'
 
 <DemoRegister />
 
- ## 横向表单
+## 横向表单
 
 import DemoRow from '../../demo/form/section-row.jsx'
 
 <DemoRow />
 
- ## 表单查询
+## 表单查询
 
 import DemoQuery from '../../demo/form/section-query.jsx'
 
@@ -74,6 +74,18 @@ import DemoSchema from '../../demo/form/section-schema.jsx'
 
 <DemoSchema />
 
+## SchemaForm 动态表单
+
+import DemoSchemaDynamic from '../../demo/form/section-schema-dynamic.jsx'
+
+<DemoSchemaDynamic />
+
+## SchemaForm 与 Form.Item 的混用
+
+import DemoSchemaMix from '../../demo/form/section-schemaMix.jsx'
+
+<DemoSchemaMix />
+
 ## useForm
 
 import DemoUseForm from '../../demo/form/section-useForm.jsx'
@@ -102,6 +114,8 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 | 参数   | 说明                 | 类型         | 可选值 | 默认值 |
 | ------ | -------------------- | ------------ | ------ | ------ |
 | schema | 通过 schema 渲染表单 | SchemaItem[] | -      | -      |
+| submit | 继承 Form.Submit API | Object       | -      | -      |
+| reset  | 继承 Form.Reset API  | Object       | -      | -      |
 
 ### Form.Item
 
@@ -137,35 +151,35 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 
 > 继承 Button API
 
-| 参数      | 说明                                                           | 类型     | 默认值    |
-| --------- | -------------------------------------------------------------- | -------- | --------- |
-| onClick   | 点击提交后触发 Function(value: Object, errors: Object) => void | Function | func.noop |
-| fields    | 自定义重置的字段                                               | Array    | -         |
-| toDefault | 返回默认值                                                     | Boolean  | true      |
+| 参数      | 说明                      | 类型     | 默认值    |
+| --------- | ------------------------- | -------- | --------- |
+| onClick   | 点击提交后触发 () => void | Function | func.noop |
+| fields    | 自定义重置的字段          | Array    | -         |
+| toDefault | 返回默认值                | Boolean  | true      |
 
 ## Methods
 
-| 方法名                                                  | 说明               |
-| ------------------------------------------------------- | ------------------ |
-| validate(callback: isValid => void)                     | 对整个表单进行校验 |
+| 方法名                                                 | 说明               |
+| ------------------------------------------------------ | ------------------ |
+| validate(callback: isValid => void)                    | 对整个表单进行校验 |
 | validateField(field: string, callback: errors => void) | 对表单字段进行校验 |
-| resetValidates()                                        | 重置整个表单的验证 |
-| setFieldsValue()                                        | 设置表单的值       |
+| resetValidates()                                       | 重置整个表单的验证 |
+| setFieldsValue()                                       | 设置表单的值       |
 
-## rules 
+## rules
 
 > [更多规则](https://github.com/yiminghe/async-validator)
 
-| 名称       | 说明                                                                                                                        | 类型                              |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| enum       | 是否匹配枚举中的值                                                                                                          | any[]                             |
-| len        | string 类型时为字符串长度；number 类型时为确定数字； array 类型时为数组长度                                                 | number                            |
-| max        | 必须设置 `type`：string 类型为字符串最大长度；number 类型时为最大值；array 类型时为数组最大长度                             | number                            |
-| message    | 错误信息                                                                                                         | string                            |
-| min        | 必须设置 `type`：string 类型为字符串最小长度；number 类型时为最小值；array 类型时为数组最小长度                             | number                            |
-| pattern    | 正则表达式匹配                                                                                                              | RegExp                            |
-| required   | 是否为必选字段                                                                                                              | boolean                           |
-| transform  | 将字段值转换成目标值后进行校验                                                                                              | (value) => any                    |
-| type       | 类型，常见有 `string` \|`number` \|`boolean` \| `email`。更多请参考[此处](https://github.com/yiminghe/async-validator#type) | string                            |
-| validator  | 自定义校验                                                                   | (rule,value,callback) => void |
-| whitespace | 如果字段仅包含空格则校验不通过                                                                                              | boolean                           |
+| 名称       | 说明                                                                                                                        | 类型                          |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| enum       | 是否匹配枚举中的值                                                                                                          | any[]                         |
+| len        | string 类型时为字符串长度；number 类型时为确定数字； array 类型时为数组长度                                                 | number                        |
+| max        | 必须设置 `type`：string 类型为字符串最大长度；number 类型时为最大值；array 类型时为数组最大长度                             | number                        |
+| message    | 错误信息                                                                                                                    | string                        |
+| min        | 必须设置 `type`：string 类型为字符串最小长度；number 类型时为最小值；array 类型时为数组最小长度                             | number                        |
+| pattern    | 正则表达式匹配                                                                                                              | RegExp                        |
+| required   | 是否为必选字段                                                                                                              | boolean                       |
+| transform  | 将字段值转换成目标值后进行校验                                                                                              | (value) => any                |
+| type       | 类型，常见有 `string` \|`number` \|`boolean` \| `email`。更多请参考[此处](https://github.com/yiminghe/async-validator#type) | string                        |
+| validator  | 自定义校验                                                                                                                  | (rule,value,callback) => void |
+| whitespace | 如果字段仅包含空格则校验不通过                                                                                              | boolean                       |
