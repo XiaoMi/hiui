@@ -87,7 +87,7 @@ class Demo extends React.Component {
             required:true,
             whitespace:true,
           }}>
-          <Input placeholder="仅有空格是的输入是无效的" style={{ width: 300 }} />
+          <Input placeholder="仅有空格的输入是无效的" style={{ width: 300 }} />
         </FormItem>
       
         <FormItem>

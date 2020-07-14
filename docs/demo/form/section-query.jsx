@@ -75,7 +75,9 @@ class Demo extends React.Component {
         重置
         </Button>
         <Button type="line" appearance="link" icon={filesCount === 9 ? "up":"down"} onClick={()=>{
-          
+          this.form.current.resetValidates(()=>{
+            console.log('重置表单')
+          })
           this.setState({
             filesCount: filesCount === 9 ? 6:9
           })

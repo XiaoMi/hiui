@@ -26,7 +26,7 @@ class Demo extends React.Component {
           step='2'
           min='2'
           max='8'
-          onChange={(e, val) => {this.setState({value:val})}}
+          onChange={(val) => {this.setState({value:val})}}
         />
       </div>
     )

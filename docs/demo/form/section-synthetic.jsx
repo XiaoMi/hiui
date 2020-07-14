@@ -160,7 +160,13 @@ class Demo extends React.Component {
             style={{ width: 300 }}
           />
         </FormItem>
-          
+        <FormItem label='Checkbox' field="checkbox" rules={{
+          trigger:'onChange',
+          type: 'array',
+          required:true,
+          }}>
+           <Checkbox.Group data={checkboxList} onChange={(data) => console.log("Checkbox data",data)}/>
+        </FormItem>
         <Row>
           <Col>
             <FormItem label='address' field="province" required={true}>
@@ -224,16 +230,8 @@ class Demo extends React.Component {
             onChange={(data) => console.log("radio data",data)}
           />
         </FormItem>
-        <FormItem label='Checkbox' field="checkbox" rules={{
-          trigger:'onChange',
-          type: 'array',
-          required:true,
-          }}>
-           <Checkbox.Group data={checkboxList} onChange={(data) => console.log("Checkbox data",data)}/>
-        </FormItem>
-        <FormItem label='Switch' field="switch">
-            <Switch content={['ON', 'OFF']} onChange={(val) => console.log('change Switch',val)}/>
-        </FormItem>
+       
+       
         <FormItem label='DatePicker' field="datePicker">
           <DatePicker
             type='daterange'
@@ -241,6 +239,9 @@ class Demo extends React.Component {
             onChange={(date, dateStr) => {console.log('onChange DatePicker', date, dateStr)}}
           />
         </FormItem>
+        <FormItem label='Switch' field="switch">
+          <Switch content={['ON', 'OFF']} onChange={(val) => console.log('change Switch',val)}/>
+      </FormItem>
         <FormItem label="Rate" field='rate'>
           <Rate  />
         </FormItem>
