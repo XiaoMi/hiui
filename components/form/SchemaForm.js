@@ -22,7 +22,6 @@ const SchemaForm = props => {
     schemaformValue
   } = props
   const [schema, setSchema] = useState(schemaProps)
-  console.log('schemaformValue', schemaformValue)
   useEffect(() => {
     setSchema(schemaProps)
   }, [schemaProps])

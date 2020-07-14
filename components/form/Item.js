@@ -222,7 +222,6 @@ const FormItem = props => {
     if (!children) {
       return null
     }
-    console.log('schemaformValue', schemaformValue)
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {
