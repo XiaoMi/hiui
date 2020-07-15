@@ -13,9 +13,27 @@ import * as HIUI from '../'
  * model 删除掉这个属性
  * 通过cloneEelement对value进行受控
  */
+// 指定子元素位置
+const getItemPosition = itemPosition => {
+  let _itemPosition = 'flex-end'
+  switch (itemPosition) {
+    case 'top':
+      _itemPosition = 'flex-start'
+      break
+    case 'center':
+      _itemPosition = 'center'
+      break
+    case 'bottom':
+      _itemPosition = 'flex-end'
+      break
+    default:
+      _itemPosition = 'center'
+  }
+  return _itemPosition
+}
 
 const FormItem = props => {
-  const { formProps, formState, dispatch, onValuesChange, _type} = useContext(
+  const { formProps, formState, dispatch, onValuesChange, _type } = useContext(
     FormContext
   )
   const {
@@ -25,9 +43,9 @@ const FormItem = props => {
     className,
     showColon: shouldItemShowColon,
     style,
-    field,
+    field: propsField,
     valuePropName = 'value',
-    
+    contentPosition = 'center'
   } = props
   const {
     showColon: shouldFormShowColon,
@@ -40,8 +58,15 @@ const FormItem = props => {
   const { fields } = formState
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
+  const [field, setField] = useState(
+    Array.isArray(propsField) ? propsField[propsField.length - 1] : propsField
+  )
   const [validating, setValidating] = useState(false)
-
+  useEffect(() => {
+    setField(
+      Array.isArray(propsField) ? propsField[propsField.length - 1] : propsField
+    )
+  }, [propsField])
   // 更新
   const updateField = (_value, triggerType) => {
     const childrenFiled = {
@@ -50,7 +75,8 @@ const FormItem = props => {
       rules: getRules(),
       resetValidate,
       setValue,
-      validate
+      validate,
+      propsField
     }
     const _fields = _.cloneDeep(fields)
     _fields.forEach(item => {
@@ -83,7 +109,7 @@ const FormItem = props => {
       : props.rules
     let formRules = formProps.rules
 
-    formRules = formRules ? formRules[props.field] : []
+    formRules = formRules ? formRules[field] : []
     return [].concat(selfRules || formRules || [])
   }, [props, formProps, required])
   // 过滤含有该trigger触发方式的rules
@@ -133,7 +159,8 @@ const FormItem = props => {
           rules: getRules(),
           resetValidate,
           setValue,
-          validate
+          validate,
+          propsField
         }
       })
       valueInit()
@@ -268,7 +295,12 @@ const FormItem = props => {
         />
       )}
       <div className={'hi-form-item' + '__content'} key={field + '__content'}>
-        {renderChildren()}
+        <div
+          className={'hi-form-item' + '__children'}
+          style={{ alignItems: getItemPosition(contentPosition) }}
+        >
+          {renderChildren()}
+        </div>
         <div
           className={classNames('hi-form-item--msg__error', {
             ['hi-form-item--msg__error__show']: error !== ''
@@ -283,7 +315,11 @@ const FormItem = props => {
 }
 
 FormItem.propTypes = {
-  field: PropTypes.string,
+  field: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array,
+    PropTypes.number
+  ]),
   rules: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   required: PropTypes.bool,
   label: PropTypes.string,

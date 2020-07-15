@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef, forwardRef } from 'react'
+import React, { useState, useEffect, useCallback, forwardRef } from 'react'
 import _ from 'lodash'
 import * as HIUI from '../'
 import Provider from '../context'
@@ -26,9 +26,7 @@ const InternalSchemaForm = props => {
   const [schema, setSchema] = useState(schemaProps)
   useEffect(() => {
     setSchema(schemaProps)
-    
   }, [schemaProps])
-  const formRef = useRef()
 
   const renderSchemaFormItem = useCallback(() => {
     if (Array.isArray(schema)) {
@@ -44,14 +42,18 @@ const InternalSchemaForm = props => {
         return React.createElement(FormItem, {
           ..._.omit(schemaItem, 'component', 'componentProps'),
           key: component + index,
-          children: child,
+          children: child
         })
       })
     }
   }, [schema])
   return (
     <div className={`${prefixCls}`}>
-      <FormComponent {..._.omit(props, 'schema','ref')} ref={innerRef} _type='SchemaForm'>
+      <FormComponent
+        {..._.omit(props, 'schema', 'ref')}
+        ref={innerRef}
+        _type='SchemaForm'
+      >
         {renderSchemaFormItem()}
         {childrenProps}
         {(submit || reset) && (

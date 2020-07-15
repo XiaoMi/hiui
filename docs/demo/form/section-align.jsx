@@ -40,7 +40,7 @@ const code = [
           >
             <FormItem 
               label='账号' 
-              field="phone" 
+              field={['user','na',"phone"]} 
               rules={{
               trigger:'onChange',
               type:'number',
@@ -60,7 +60,7 @@ const code = [
             </FormItem>
             <FormItem 
               label='密码' 
-              field="password" 
+              field={['user',"password"]} 
               rules={{
               trigger:'onBlur',
               type:'string',

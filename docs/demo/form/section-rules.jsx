@@ -34,7 +34,7 @@ class Demo extends React.Component {
         ref={this.form}>
 
         <FormItem label='表单名称' >
-          <p>表单rules使用样例</p>
+          表单rules使用样例
          </FormItem>
         <FormItem label='自定义' field="useValidator" rules={{
           trigger:'onChange',

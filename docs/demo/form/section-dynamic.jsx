@@ -144,7 +144,7 @@ class Demo extends React.Component {
         }}
       >
         <FormItem label='表单名称' >
-          <p>动态表单</p>
+          动态表单
         </FormItem>
         <FormItem label='控制Counter' field="controlCounter">
           <Select

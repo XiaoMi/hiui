@@ -19,6 +19,23 @@ const getClassNames = props => {
   return _className
 }
 
+const transformFormValus = (allvalue, fields) => {
+  let newValues = {}
+  fields.forEach(filedItem => {
+    const { field, propsField } = filedItem
+    let chainKeys = {}
+
+    if (Array.isArray(propsField)) {
+      chainKeys = propsField.reduceRight((pre, next) => {
+        return { [next]: pre }
+      }, allvalue[field])
+      newValues = _.merge(newValues, chainKeys)
+    } else {
+      newValues = _.merge(newValues, { [field]: allvalue[field] })
+    }
+  })
+  return newValues
+}
 const InternalForm = props => {
   const {
     children,
@@ -125,7 +142,9 @@ const InternalForm = props => {
         )
       })
       errors = Object.keys(errors).length === 0 ? null : errors
-      cb && cb(values, errors)
+      const newValues = transformFormValus(values, _fields)
+
+      cb && cb(newValues, errors)
     },
     [fields]
   )
@@ -163,7 +182,7 @@ const InternalForm = props => {
       resetValidates,
       validateField,
       validate,
-      setFieldsValue,
+      setFieldsValue
     }
   }, [fields])
 
