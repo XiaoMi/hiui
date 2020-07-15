@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual'
 import cloneDeep from 'lodash/cloneDeep'
 import Input from '../../input'
 import Icon from '../../icon'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidV4 } from 'uuid'
 import TreeItem from './TreeItem'
 import Modal from '../../modal'
 import { collectExpandId, findNode } from './util'
@@ -66,7 +66,7 @@ export default class TreeNode extends Component {
   }
   // 高亮检索值
   highlightData = (data, highlightValue) => {
-    return data.map(item => {
+    return data.map((item) => {
       if (typeof item.title === 'string' && item.title.includes(highlightValue)) {
         const index = item.title.indexOf(highlightValue)
         const beforeStr = item.title.substr(0, index)
@@ -87,7 +87,7 @@ export default class TreeNode extends Component {
   }
   // 统计高亮项
   recordHighlight = (data, highlightValue, count) => {
-    data.forEach(item => {
+    data.forEach((item) => {
       if (typeof item.title === 'string' && item.title.includes(highlightValue)) {
         count = count + 1
       }
@@ -97,28 +97,20 @@ export default class TreeNode extends Component {
     })
     return count
   }
-  renderSwitcher = expanded => {
+  renderSwitcher = (expanded) => {
     const { prefixCls } = this.props
-    const switcherClsName = classNames(
-      `${prefixCls}-switcher`,
-      'hi-icon',
-      `icon-${expanded ? 'open' : 'packup'}`
-    )
+    const switcherClsName = classNames(`${prefixCls}-switcher`, 'hi-icon', `icon-${expanded ? 'open' : 'packup'}`)
     return <i className={switcherClsName} />
   }
 
   renderItemIcon = () => {
     const { prefixCls, itemIcon } = this.props
-    const switcherClsName = classNames(
-      `${prefixCls}-switcher`,
-      'hi-icon',
-      `icon-${itemIcon || 'document'}`
-    )
+    const switcherClsName = classNames(`${prefixCls}-switcher`, 'hi-icon', `icon-${itemIcon || 'document'}`)
     return <i className={switcherClsName} />
   }
 
   // 设置拖拽中的节点
-  setDraggingNode = itemId => {
+  setDraggingNode = (itemId) => {
     this.setState({
       draggingNode: itemId
     })
@@ -143,7 +135,7 @@ export default class TreeNode extends Component {
       }
     })
   }
-  addSiblingNode = itemId => {
+  addSiblingNode = (itemId) => {
     const { dataCache, editingNodes } = this.state
     const _dataCache = cloneDeep(dataCache)
     const _editingNodes = [...editingNodes]
@@ -163,7 +155,7 @@ export default class TreeNode extends Component {
       }
     })
   }
-  cancelAddSiblingNode = itemId => {
+  cancelAddSiblingNode = (itemId) => {
     const { dataCache } = this.state
     const _dataCache = cloneDeep(dataCache)
     this._cancelAddSiblingNode(itemId, _dataCache)
@@ -186,7 +178,7 @@ export default class TreeNode extends Component {
       }
     })
   }
-  addChildNode = item => {
+  addChildNode = (item) => {
     const { dataCache, editingNodes } = this.state
     const { expandTreeNode } = this.props
     expandTreeNode(item.id)
@@ -196,7 +188,7 @@ export default class TreeNode extends Component {
     this.setState({ dataCache: _dataCache, editingNodes: _editingNodes })
   }
   // 编辑节点
-  editNode = item => {
+  editNode = (item) => {
     const _editNodes = [...this.state.editNodes]
     const _editingNodes = [...this.state.editingNodes]
     _editNodes.push(item)
@@ -207,11 +199,15 @@ export default class TreeNode extends Component {
   onValueChange = (value, itemId) => {
     this.setState({
       editingNodes: this.state.editingNodes
-        .filter(item => item.id !== itemId)
+        .filter((item) => item.id !== itemId)
         .concat(
-          Object.assign({}, this.state.editingNodes.find(item => item.id === itemId), {
-            title: value
-          })
+          Object.assign(
+            {},
+            this.state.editingNodes.find((item) => item.id === itemId),
+            {
+              title: value
+            }
+          )
         )
     })
   }
@@ -227,15 +223,15 @@ export default class TreeNode extends Component {
       }
     })
   }
-  cancelEditNode = itemId => {
+  cancelEditNode = (itemId) => {
     const { editNodes, dataCache, editingNodes } = this.state
-    const nodeBeforeEdit = editNodes.find(node => node.id === itemId)
+    const nodeBeforeEdit = editNodes.find((node) => node.id === itemId)
     const _dataCache = cloneDeep(dataCache)
     this._cancelEditNode(itemId, _dataCache, nodeBeforeEdit)
     this.setState({
       dataCache: _dataCache,
-      editNodes: editNodes.filter(node => node.id !== itemId),
-      editingNodes: editingNodes.filter(node => node.id !== itemId)
+      editNodes: editNodes.filter((node) => node.id !== itemId),
+      editingNodes: editingNodes.filter((node) => node.id !== itemId)
     })
   }
   // 保存编辑
@@ -251,15 +247,15 @@ export default class TreeNode extends Component {
       }
     })
   }
-  saveEditNode = itemId => {
+  saveEditNode = (itemId) => {
     const { editNodes, dataCache, editingNodes } = this.state
-    const nodeEdited = editingNodes.find(node => node.id === itemId)
+    const nodeEdited = editingNodes.find((node) => node.id === itemId)
     const _dataCache = cloneDeep(dataCache)
     this._saveEditNode(itemId, _dataCache, nodeEdited)
     this.setState({
       dataCache: _dataCache,
-      editNodes: editNodes.filter(node => node.id !== itemId),
-      editingNodes: editingNodes.filter(node => node.id !== itemId)
+      editNodes: editNodes.filter((node) => node.id !== itemId),
+      editingNodes: editingNodes.filter((node) => node.id !== itemId)
     })
     const node = findNode(itemId, dataCache)
     this.props.onSave(node, _dataCache)
@@ -293,7 +289,7 @@ export default class TreeNode extends Component {
     })
   }
   // 异步加载子节点
-  loadChildren = itemId => {
+  loadChildren = (itemId) => {
     const { origin } = this.props
     const { method, url, headers, data, params, func, errorHandler } = origin
     const { dataCache } = this.state
@@ -318,7 +314,7 @@ export default class TreeNode extends Component {
           })
         }
       })
-      .catch(error => {
+      .catch((error) => {
         if (errorHandler) {
           errorHandler(error)
         } else {
@@ -334,10 +330,10 @@ export default class TreeNode extends Component {
       })
   }
   switchDropNode = (targetItemId, sourceItemId, data, allData) => {
-    data.forEach(item => {
+    data.forEach((item) => {
       if (item.children) {
-        if (item.children.some(e => e.id === targetItemId)) {
-          const index = item.children.findIndex(i => i.id === targetItemId)
+        if (item.children.some((e) => e.id === targetItemId)) {
+          const index = item.children.findIndex((i) => i.id === targetItemId)
           const sourceNode = findNode(sourceItemId, allData)
           item.children.splice(index + 1, 0, sourceNode)
         } else {
@@ -375,7 +371,7 @@ export default class TreeNode extends Component {
       }
     })
   }
-  deleteNode = itemId => {
+  deleteNode = (itemId) => {
     const { dataCache } = this.state
     const _dataCache = cloneDeep(dataCache)
     this._deleteNode(itemId, _dataCache)
@@ -384,7 +380,7 @@ export default class TreeNode extends Component {
     this.props.onDelete(node, _dataCache)
   }
   // 渲染右键菜单
-  renderRightClickMenu = item => {
+  renderRightClickMenu = (item) => {
     return (
       item.id === this.state.showRightClickMenu && (
         <ul className='right-click-menu'>
@@ -403,12 +399,12 @@ export default class TreeNode extends Component {
       )
     )
   }
-  onSetHighlight = item => {
+  onSetHighlight = (item) => {
     this.setState({
       highlight: item.id
     })
   }
-  showRightClickMenu = item => {
+  showRightClickMenu = (item) => {
     this.setState({
       showRightClickMenu: item.id,
       highlight: item.id
@@ -430,12 +426,12 @@ export default class TreeNode extends Component {
       showModal: true
     })
   }
-  setCurrentDeleteNode = nodeId => {
+  setCurrentDeleteNode = (nodeId) => {
     this.setState({
       currentDeleteNode: nodeId
     })
   }
-  renderTree = data => {
+  renderTree = (data) => {
     const {
       draggable,
       prefixCls,
@@ -468,7 +464,7 @@ export default class TreeNode extends Component {
 
     return (
       <ul>
-        {data.map(item => {
+        {data.map((item) => {
           return (
             <TreeItem
               origin={origin}
@@ -534,22 +530,18 @@ export default class TreeNode extends Component {
               value={this.state.searchValue}
               type='text'
               placeholder='关键词搜索'
-              onChange={e => {
+              onChange={(e) => {
                 this.setState({
                   searchValue: e.target.value,
                   highlightNum: this.recordHighlight(dataCache, e.target.value, 0)
                 })
 
-                this.props.setExpandTreeNodes(
-                  collectExpandId(dataCache, e.target.value, [], dataCache)
-                )
+                this.props.setExpandTreeNodes(collectExpandId(dataCache, e.target.value, [], dataCache))
               }}
               append={<Icon name='search' style={{ color: '#4284F5', fontSize: '24px' }} />}
               style={{ width: '272px' }}
             />
-            {highlightNum === 0 && searchValue !== '' && (
-              <div className='hi-tree__searcher--empty'>未找到搜索结果</div>
-            )}
+            {highlightNum === 0 && searchValue !== '' && <div className='hi-tree__searcher--empty'>未找到搜索结果</div>}
           </div>
         )}
 

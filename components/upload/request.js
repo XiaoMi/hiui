@@ -1,17 +1,12 @@
-/**
- * clone from https://github.com/react-component/upload/blob/master/src/request.js
- */
-
-function getError (option, xhr, msg) {
-  msg = msg || `cannot post ${option.action} ${xhr.status}'`
+function formatError (option, xhr, msg) {
+  msg = msg || `Upload ${option.action} error`
   const err = new Error(msg)
   err.status = xhr.status
-  err.method = option.method
   err.url = option.action
   return err
 }
 
-function getBody (xhr) {
+function formatBody (xhr) {
   const text = xhr.responseText || xhr.response
   if (!text) {
     return text
@@ -26,15 +21,14 @@ function getBody (xhr) {
 
 // option {
 //  onProgress: (event: { percent: number }): void,
-//  onError: (event: Error, body?: Object): void,
-//  onSuccess: (body: Object): void,
+//  onError: (file, event: Error, body?: Object): void,
+//  onSuccess: (file, body: Object): void,
 //  data: Object,
 //  name: String,
 //  file: File,
 //  withCredentials: Boolean,
 //  action: String,
 //  headers: Object,
-//  method: String
 //  timeout: Number
 // }
 export default function upload (option) {
@@ -59,44 +53,37 @@ export default function upload (option) {
 
   formData.append(option.name, option.file)
 
-  xhr.onerror = function error (e) {
-    option.onError(e)
+  xhr.onerror = (e) => {
+    option.onError(option.file, e, {})
   }
 
   xhr.onload = function onload () {
-    // allow success when 2xx status
-    // see https://github.com/react-component/upload/issues/34
     if (xhr.status < 200 || xhr.status >= 300) {
-      return option.onError(getError(option, xhr), getBody(xhr))
+      return option.onError(option.file, formatError(option, xhr), formatBody(xhr))
     }
 
-    option.onSuccess(getBody(xhr), xhr)
+    option.onSuccess(option.file, formatBody(xhr))
   }
 
-  option.method = option.method || 'POST'
-  xhr.open(option.method, option.action, true)
+  xhr.open('POST', option.action, true)
 
-  // In Internet Explorer, the timeout property may be set only after calling the open() method and before calling the send() method.
-  // see https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/timeout
   const { timeout } = option
 
   if (typeof timeout === 'number' && timeout > 0) {
     xhr.timeout = timeout
     xhr.ontimeout = () => {
       const msg = `Upload abort for exceeding time (timeout: ${timeout}ms)`
-      option.onError(getError(option, xhr, msg), getBody(xhr))
+      option.onError(formatError(option, xhr, msg), formatBody(xhr))
     }
   }
 
-  // Has to be after `.open()`. See https://github.com/enyo/dropzone/issues/179
   if (option.withCredentials && 'withCredentials' in xhr) {
     xhr.withCredentials = true
   }
 
   const headers = option.headers || {}
 
-  // when set headers['X-Requested-With'] = null , can close default XHR header
-  // see https://github.com/react-component/upload/issues/33
+  // 跨域等场景设置该头会报错，需要设为 null 来关闭
   if (headers['X-Requested-With'] !== null) {
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
   }
