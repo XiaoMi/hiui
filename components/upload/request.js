@@ -20,7 +20,7 @@ function formatBody (xhr) {
 }
 
 // option {
-//  onProgress: (event: { percent: number }): void,
+//  onProgress: (file, event: { percent: number }): void,
 //  onError: (file, event: Error, body?: Object): void,
 //  onSuccess: (file, body: Object): void,
 //  data: Object,
@@ -39,7 +39,7 @@ export default function upload (option) {
       if (e.total > 0) {
         e.percent = (e.loaded / e.total) * 100
       }
-      option.onProgress(e)
+      option.onProgress(option.file, e)
     }
   }
 

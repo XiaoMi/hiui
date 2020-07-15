@@ -97,6 +97,16 @@ const NormalUpload = ({
     },
     [_fileList, onChange]
   )
+  const onProgress = useCallback(
+    (file, e) => {
+      const newFileList = [..._fileList]
+      file.progressNumber = e.percent
+      const idx = _fileList.findIndex((item) => item.fileId === file.fileId)
+      newFileList.splice(idx, 1, file)
+      updateFileList(newFileList)
+    },
+    [_fileList]
+  )
   const onError = useCallback(
     (file, error, res) => {
       const newFileList = [..._fileList]
@@ -138,7 +148,17 @@ const NormalUpload = ({
         })
         .filter((file) => {
           if (file) {
-            request({ file, action: uploadAction, name, withCredentials, headers, data, onSuccess, onError })
+            request({
+              file,
+              action: uploadAction,
+              name,
+              withCredentials,
+              headers,
+              data,
+              onSuccess,
+              onError,
+              onProgress
+            })
           }
           return file
         })
