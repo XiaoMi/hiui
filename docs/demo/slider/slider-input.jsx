@@ -30,7 +30,7 @@ class Demo extends React.Component {
     })
   }
   
-  onBlur(e){
+  handleInput(e){
     let value  = e.target.value
     const {min,max} = this.state
     if(value<min){
@@ -44,6 +44,10 @@ class Demo extends React.Component {
       value
     });
   }
+  componentDidMount(){
+    this.input.focus()
+  }
+
   render() {
     const {Row, Col} = Grid
     const {value,max,min,valueCache} = this.state
@@ -59,11 +63,18 @@ class Demo extends React.Component {
           }} value={this.state.value}  max={max}  min={min}/>
         </Col>
         <Col span={2}>
-          <Input
-            style={{ margin: '0 16px' }}
+          <input
+
+            ref={node=>this.input=node}
+            style={{ margin: '0 16px',width:80,height:30,boxSizing:'border-box',border:'1px solid #d8d8d8',outline:'none' }}
             value={valueCache}
             onChange ={(e)=>this.onChange(e)}
-            onBlur={(e)=>this.onBlur(e)}
+            onBlur={(e)=>this.handleInput(e)}
+            onKeyDown={(e)=>{
+              if(e.keyCode == 13){
+                this.handleInput(e)
+              }
+            }}
           />
         </Col>
       </Row>
@@ -93,8 +104,12 @@ class Demo extends React.Component {
           valueCache:e.target.value
         })
       }
-      
-      onBlur(e){
+
+      componentDidMount(){
+        this.input.focus()
+      }
+
+      handleInput(e){
         let value  = e.target.value
         const {min,max} = this.state
         if(value<min){
@@ -148,10 +163,17 @@ class Demo extends React.Component {
                 marginTop: 20,
               }}
             >
-              <Input
+              <input
+                ref={node=>this.input=node}
+                style={{width:80,height:30,boxSizing:'border-box',border:'1px solid #d8d8d8',outline:'none'}}
                 value={valueCache}
                 onChange={(e) => this.onChange(e)}
-                onBlur={(e)=>this.onBlur(e)}
+                onBlur={(e)=>this.handleInput(e)}
+                onKeyDown={(e)=>{
+                  if(e.keyCode == 13){
+                    this.handleInput(e)
+                  }
+                }}
               />
             </div>
           </div>

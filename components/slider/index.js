@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react'
 import classNames from 'classnames'
 import './style'
+import useClickOutside from '../popper/utils/useClickOutside'
+
 const prefixCls = 'hi-slider'
 const noop = () => { }
 const Slider = memo(
@@ -17,21 +19,10 @@ const Slider = memo(
     type = 'primary',
     marks = {}
   }) => {
-    // 获取 value 值
-    // const _getValue = (value) => {
-    //   let _value = initValue || defaultValue || 0
-    //   if (_value > (max || 100)) {
-    //     _value = max
-    //   } else if (_value < (min || 0)) {
-    //     _value = min
-    //   }
-    //   console.log(_value)
-    //   return _value
-    // }
-
     const [value, setValue] = useState(initValue || defaultValue)
     // 是否可拖动
-    const [canMove, setCanMove] = useState()
+    const [canMove, setCanMove] = useState(false)
+    const [canKeyDown, setCanKeyDown] = useState(false)
 
     const [startX, setStartX] = useState()
     const [startY, setStartY] = useState()
@@ -43,6 +34,11 @@ const Slider = memo(
 
     const sliderRef = useRef()
     const tooltipRef = useRef()
+
+    useClickOutside(e => {
+      setShowTooltip(false)
+      setCanKeyDown(false)
+    }, document.querySelector(`#${prefixCls}`))
 
     useEffect(() => {
       // 每一份步长对应在父元素的百分比
@@ -57,6 +53,14 @@ const Slider = memo(
 
       setNewRightPosition(getTrackWidth(_value))
     }, [value, initValue])
+
+    useEffect(() => {
+      if (canKeyDown) {
+        window.onkeydown = onKeyDown
+      } else {
+        window.onkeydown = null
+      }
+    }, [canKeyDown, value])
 
     useEffect(() => {
       if (initValue !== undefined) {
@@ -77,6 +81,16 @@ const Slider = memo(
       return value
     }, [])
 
+    // <- -> 键盘事件
+    const onKeyDown = useCallback((e) => {
+      if (e.keyCode === 37 || e.keyCode === 39) {
+        const _value = e.keyCode === 37 ? value - step : value + step
+        if (initValue === undefined) {
+          setValue(_value)
+        }
+        onChange(_value)
+      }
+    }, [value])
     // 移动
     const onMouseMove = useCallback(
       (e) => {
@@ -188,6 +202,7 @@ const Slider = memo(
     const onHandleClick = useCallback((e) => {
       e.stopPropagation()
       setShowTooltip(true)
+      setCanKeyDown(true)
     }, [])
 
     // slider 点击
@@ -255,6 +270,7 @@ const Slider = memo(
         className={sliderClasses}
         ref={sliderRef}
         onClick={railClick}
+        id={prefixCls}
       >
         <div className={`${prefixCls}__rail`} />
         <div

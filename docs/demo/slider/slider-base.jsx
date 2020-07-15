@@ -49,7 +49,7 @@ class Demo extends React.Component {
 
   render() {
     return (
-      <Slider onChange={(value)=>{console.log(value)}} default={this.state.value} disabled/>
+      <Slider onChange={(value)=>{console.log(value)}} defaultValue={this.state.value} disabled/>
     )
   }
 }`,
