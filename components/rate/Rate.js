@@ -4,7 +4,7 @@ import * as Icons from './Icons'
 import ToolTip from '../tooltip'
 
 const Rate = ({ value: trueVal, disabled, useEmoji, allowHalf, character, renderCharacter, defaultValue, className, style, count, prefixCls, tooltips, color, vertical, onChange, clearable, descRender, readOnly }) => {
-  const [value, setValue] = useState(!trueVal ? defaultValue : trueVal)
+  const [value, setValue] = useState(trueVal === undefined ? defaultValue : trueVal)
   const [hoverValue, setHoverValue] = useState(0)
 
   const handleIconLeave = () => {
@@ -31,11 +31,16 @@ const Rate = ({ value: trueVal, disabled, useEmoji, allowHalf, character, render
     }
     if (valueIndex === value && clearable) {
       onChange && onChange(0)
-      setValue(0)
+      if (trueVal === undefined) {
+        setValue(0)
+      }
       return
     }
+
+    if (trueVal === undefined) {
+      setValue(valueIndex)
+    }
     onChange && onChange(valueIndex)
-    setValue(valueIndex)
   }
 
   const renderIcon = (idx) => {
