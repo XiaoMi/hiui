@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useCallback, memo } from 'react'
 import classNames from 'classnames'
 import './style'
 import useClickOutside from '../popper/utils/useClickOutside'
-
 const prefixCls = 'hi-slider'
 const noop = () => { }
 const Slider = memo(
