@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import NormalUpload from './NormalUpload'
 import DragUpload from './DragUpload'
-import UploadPhoto from './UploadPhoto'
+import PictureUpload from './PictureUpload'
 import UploadAvatar from './UploadAvatar'
 import PictureListUpload from './PictureListUpload'
 import './style/index'
@@ -16,7 +16,7 @@ export default class Upload extends Component {
     if (type === 'drag') {
       return <DragUpload {...this.props} />
     } else if (type === 'photo') {
-      return <UploadPhoto {...this.props} ref={this.uploadRef} />
+      return <PictureUpload {...this.props} />
     } else if (type === 'avatar') {
       return <UploadAvatar {...this.props} ref={this.uploadRef} />
     } else if (type === 'pictureCard') {
