@@ -164,7 +164,7 @@ const NormalUpload = ({
         })
       updateFileList(_files.reverse().concat(_fileList))
     },
-    [onSuccess, uploadAction, name, withCredentials, headers, data, _fileList]
+    [onSuccess, onProgress, onError, uploadAction, name, withCredentials, headers, data, _fileList]
   )
   return (
     <div className={`hi-upload`}>

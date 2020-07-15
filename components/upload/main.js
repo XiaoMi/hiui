@@ -3,7 +3,7 @@ import NormalUpload from './NormalUpload'
 import DragUpload from './DragUpload'
 import UploadPhoto from './UploadPhoto'
 import UploadAvatar from './UploadAvatar'
-import UploadPictureCard from './UploadPictureCard'
+import PictureListUpload from './PictureListUpload'
 import './style/index'
 
 export default class Upload extends Component {
@@ -20,7 +20,7 @@ export default class Upload extends Component {
     } else if (type === 'avatar') {
       return <UploadAvatar {...this.props} ref={this.uploadRef} />
     } else if (type === 'pictureCard') {
-      return <UploadPictureCard {...this.props} ref={this.uploadRef} />
+      return <PictureListUpload {...this.props} />
     } else {
       return <NormalUpload {...this.props} />
     }
