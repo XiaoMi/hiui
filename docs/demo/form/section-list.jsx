@@ -1,0 +1,160 @@
+import React from 'react'
+import DocViewer from '../../../libs/doc-viewer'
+import Form from '../../../components/form/index'
+import Input from '../../../components/input'
+import Grid from '../../../components/grid'
+import Radio from '../../../components/radio'
+import Button from '../../../components/button'
+import Select from '../../../components/select'
+import Cascader from '../../../components/cascader'
+import Icon from '../../../components/icon'
+import DatePicker from '../../../components/date-picker'
+const prefix = 'form-list'
+const desc = [
+  '表单项内容的格式、逻辑有特殊要求',
+  '可在Form中配置全部Item的rules,也可在Form.Item中使用rules校验单个表单项'
+]
+const code = `import React from 'react'
+import { Grid, Button, Radio, Input, Form } from '@hi-ui/hiui'\n
+class Demo extends React.Component {
+  constructor() {
+    super()
+    this.form = React.createRef()
+    this.state = {
+      form: {
+        name: '',
+        region: '',
+        count: ''
+      },
+      checkedIndex: -1,
+      rules: {
+        name: {
+          required: true,
+          message: <span style={{color: '#ccc'}}>请输入名称</span>,
+          trigger: 'onBlur,onChange'
+        },
+        region: {
+          required: true,
+          message: '请选择区域',
+          trigger: 'onChange'
+        },
+        count: {
+          required: true,
+          trigger: 'onChange',
+          validator: (rule, value, cb) => {
+            const count = +value
+            if(isNaN(count)) {
+              cb('请输入数字')
+            } else if(count <= 0) {
+              cb('必须是正数')
+            } else {
+              cb()
+            }
+          }
+        }
+      }
+    }
+  }
+
+  handleSubmit() {
+    this.form.current.validate((valid,error) => {
+      if(!error) {
+        console.log(valid)
+        alert('submit')
+      } else {
+        console.log('error',error)
+        return false
+      }
+    })
+  }
+
+  cancelSubmit() {
+    this.setState({
+      form: {
+        name: '',
+        region: '',
+        count: ''
+      }
+    })
+    this.form.current.resetValidates()
+  }
+
+
+  render(){
+    const Row = Grid.Row
+    const Col = Grid.Col
+    const FormItem = Form.Item
+    const FormList = Form.List
+    const FormSubmit = Form.Submit
+    const FormReset = Form.Reset
+    const { form, checkedIndex } = this.state
+
+    return (
+      <Row>
+        <Col span={12}>
+          <Form 
+            ref={this.form} 
+            model={form} 
+            rules={this.state.rules} 
+            labelWidth='80' 
+            labelPlacement='right'>
+            <FormList name="testList">
+                {(fields, { add, remove }) => {
+                    return (
+                        <div className="list">
+                            {fields.map((field, index) => (
+                                <div style={{display:'flex'}}>
+                                    <FormItem field={'name'+index}>
+                                        <Input placeholder='请输入'/>
+                                    </FormItem> 
+                                    <Icon name="close" style={{color: '#999', fontSize: '24px'}} onClick={()=>{remove(field.id)}}/>
+                                </div>
+                            ))}
+                            <Button type="primary" icon='plus' onClick={()=>{add()}}>添加</Button>
+                        </div>
+                    )}}
+            </FormList>
+           
+            <FormItem label='地区' field='region'>
+              <Radio.Group
+                data={['北京', '上海', '重庆']}
+              />
+            </FormItem>
+            <FormItem>
+                <FormSubmit 
+                type='primary'
+
+                onClick={(values,errors)=>{
+                console.log('Get form value:',values,errors)}
+                }
+                >提交</FormSubmit>
+                <FormReset 
+                type='line' 
+                onClick={()=>{console.log('reset form')}}
+                >重置</FormReset>
+            </FormItem>
+          </Form>
+        </Col>
+      </Row>
+    )
+  }
+}`
+const DemoCloseable = () => (
+  <DocViewer
+    code={code}
+    scope={{
+      Form,
+      Radio,
+      Grid,
+      Input,
+      Button,
+      Select,
+      Cascader,
+      DatePicker,
+      Icon
+    }}
+    prefix={prefix}
+    desc={desc}
+  />
+)
+export default DemoCloseable

@@ -33,9 +33,14 @@ const getItemPosition = itemPosition => {
 }
 
 const FormItem = props => {
-  const { formProps, formState, dispatch, onValuesChange, _type } = useContext(
-    FormContext
-  )
+  const {
+    formProps,
+    formState,
+    dispatch,
+    internalValuesChange,
+    listname,
+    _type
+  } = useContext(FormContext)
   const {
     children,
     label,
@@ -76,7 +81,9 @@ const FormItem = props => {
       resetValidate,
       setValue,
       validate,
-      propsField
+      propsField,
+      listname,
+      _type
     }
     const _fields = _.cloneDeep(fields)
     _fields.forEach(item => {
@@ -89,10 +96,9 @@ const FormItem = props => {
       const { field, value } = item
       allValues[field] = value
     })
-    triggerType === 'onChange' &&
-      onValuesChange &&
-      onValuesChange({ [field]: _value }, allValues)
     dispatch({ type: FILEDS_UPDATE, payload: _fields })
+    triggerType === 'onChange' &&
+      internalValuesChange({ [field]: _value }, allValues)
   }
 
   const resetValidate = useCallback((value = '') => {
@@ -160,7 +166,9 @@ const FormItem = props => {
           resetValidate,
           setValue,
           validate,
-          propsField
+          propsField,
+          listname,
+          _type
         }
       })
       valueInit()

@@ -5,6 +5,34 @@ import PropTypes from 'prop-types'
 import FormReducer, { FILEDS_UPDATE } from './FormReducer'
 import FormContext from './FormContext'
 
+// 转换输出的值
+const transformValues = (allvalue, fields) => {
+  let tranformValues = {}
+  fields.forEach(filedItem => {
+    const { field, propsField, _type, listname } = filedItem
+    console.log('filedItem', filedItem)
+    if (_type !== 'list') {
+      if (Array.isArray(propsField)) {
+        const chainKeys = propsField.reduceRight((pre, next) => {
+          return { [next]: pre }
+        }, allvalue[field])
+        tranformValues = _.merge(tranformValues, chainKeys)
+      } else {
+        tranformValues = _.merge(tranformValues, { [field]: allvalue[field] })
+      }
+    }
+
+    if (_type === 'list') {
+      if (tranformValues[listname]) {
+        tranformValues[listname].push(allvalue[field])
+      } else {
+        tranformValues[listname] = [allvalue[field]]
+      }
+    }
+  })
+  return tranformValues
+}
+
 const getClassNames = props => {
   const { labelPlacement, labelPosition, placement, inline, readOnly } = props
   const _className = {}
@@ -19,23 +47,6 @@ const getClassNames = props => {
   return _className
 }
 
-const transformFormValus = (allvalue, fields) => {
-  let newValues = {}
-  fields.forEach(filedItem => {
-    const { field, propsField } = filedItem
-    let chainKeys = {}
-
-    if (Array.isArray(propsField)) {
-      chainKeys = propsField.reduceRight((pre, next) => {
-        return { [next]: pre }
-      }, allvalue[field])
-      newValues = _.merge(newValues, chainKeys)
-    } else {
-      newValues = _.merge(newValues, { [field]: allvalue[field] })
-    }
-  })
-  return newValues
-}
 const InternalForm = props => {
   const {
     children,
@@ -67,6 +78,14 @@ const InternalForm = props => {
     },
     [fields]
   )
+  // 转换值的输出
+  const internalValuesChange = useCallback(
+    (changeValues, allValues) => {
+      const _transformValues = transformValues(allValues, fields)
+      onValuesChange && onValuesChange(changeValues, _transformValues)
+    },
+    [onValuesChange, fields]
+  )
   // 重置校验
   const resetValidates = useCallback(
     (cb, resetNames, toDefault) => {
@@ -97,13 +116,13 @@ const InternalForm = props => {
         childrenField.resetValidate(value)
       })
 
-      onValuesChange &&
-        onValuesChange(
-          { ...changeValues },
-          Object.assign({}, { ...cacheallValues }, { ...changeValues })
-        )
       dispatch({ type: FILEDS_UPDATE, payload: _fields })
       cb instanceof Function && cb()
+      // 比较耗性能
+      internalValuesChange(
+        changeValues,
+        Object.assign({}, { ...cacheallValues }, { ...changeValues })
+      )
     },
     [fields, initialValues, onValuesChange]
   )
@@ -127,7 +146,7 @@ const InternalForm = props => {
       })
       _fields.forEach(fieldChild => {
         const { field, value } = fieldChild
-        // 对指定的字段进行校验  其他字段直接提交
+        // 对指定的字段进行校验  其他字段过滤不校验
         fieldChild.validate(
           '',
           error => {
@@ -142,9 +161,8 @@ const InternalForm = props => {
         )
       })
       errors = Object.keys(errors).length === 0 ? null : errors
-      const newValues = transformFormValus(values, _fields)
 
-      cb && cb(newValues, errors)
+      cb && cb(transformValues(values, _fields), errors)
     },
     [fields]
   )
@@ -204,7 +222,7 @@ const InternalForm = props => {
           fields,
           validate,
           resetValidates,
-          onValuesChange,
+          internalValuesChange,
           _type
         }}
       >
