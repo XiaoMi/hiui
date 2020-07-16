@@ -10,7 +10,6 @@ const transformValues = (allvalue, fields) => {
   let tranformValues = {}
   fields.forEach(filedItem => {
     const { field, propsField, _type, listname } = filedItem
-    console.log('filedItem', filedItem)
     if (_type !== 'list') {
       if (Array.isArray(propsField)) {
         const chainKeys = propsField.reduceRight((pre, next) => {
@@ -82,7 +81,17 @@ const InternalForm = props => {
   const internalValuesChange = useCallback(
     (changeValues, allValues) => {
       const _transformValues = transformValues(allValues, fields)
-      onValuesChange && onValuesChange(changeValues, _transformValues)
+      const _changeValues = _.cloneDeep(changeValues)
+      Object.keys(changeValues).forEach(changeValuesKey => {
+        fields.forEach(filedItem => {
+          const { field, _type, listname } = filedItem
+          if (field === changeValuesKey && _type === 'list') {
+            _changeValues[listname] = _transformValues[listname]
+            delete _changeValues[changeValuesKey]
+          }
+        })
+      })
+      onValuesChange && onValuesChange(_changeValues, _transformValues)
     },
     [onValuesChange, fields]
   )

@@ -20,7 +20,7 @@ const FormReducer = (state, action) => {
       const _fields = state.fields.filter(item => {
         return action.payload !== item.field
       })
-      return Object.assign({}, { ...state },{ fields: _fields })
+      return Object.assign({}, { ...state }, { fields: _fields })
     default:
       return state
   }

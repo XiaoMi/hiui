@@ -174,7 +174,7 @@ const FormItem = props => {
       valueInit()
     }
     return () => {
-      dispatch({ type: FILEDS_REMOVE, payload: field })
+      _type !== 'list' && dispatch({ type: FILEDS_REMOVE, payload: field })
     }
   }, [])
 
@@ -236,13 +236,22 @@ const FormItem = props => {
   // jsx渲染方式
   const renderChildren = () => {
     const { component, componentProps } = props
+    let _value = value
+    if (_type === 'list') {
+      const _fields = _.cloneDeep(fields)
+      _fields.forEach(item => {
+        if (item.field === field) {
+          _value = item.value
+        }
+      })
+    }
     // 对ScheamaForm表单Item进行特殊处理
     if (_type === 'SchemaForm' && component) {
       if (HIUI[component]) {
         const HIUIComponent = HIUI[component]
         return React.createElement(HIUIComponent, {
           ...componentProps,
-          [valuePropName]: value,
+          [valuePropName]: _value,
           onChange: (e, ...args) => {
             setEvent('onChange', componentProps, e, ...args)
           },
@@ -261,7 +270,7 @@ const FormItem = props => {
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {
-          [valuePropName]: value,
+          [valuePropName]: _value,
           onChange: (e, ...args) => {
             setEvent('onChange', '', e, ...args)
           },

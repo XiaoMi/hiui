@@ -90,48 +90,91 @@ class Demo extends React.Component {
     const { form, checkedIndex } = this.state
 
     return (
-      <Row>
+        <Row>
         <Col span={12}>
-          <Form 
-            ref={this.form} 
-            model={form} 
-            rules={this.state.rules} 
-            labelWidth='80' 
-            labelPlacement='right'>
-            <FormList name="testList">
-                {(fields, { add, remove }) => {
-                    return (
-                        <div className="list">
-                            {fields.map((field, index) => (
-                                <div style={{display:'flex'}}>
-                                    <FormItem field={'name'+index}>
-                                        <Input placeholder='请输入'/>
-                                    </FormItem> 
-                                    <Icon name="close" style={{color: '#999', fontSize: '24px'}} onClick={()=>{remove(field.id)}}/>
-                                </div>
-                            ))}
-                            <Button type="primary" icon='plus' onClick={()=>{add()}}>添加</Button>
-                        </div>
-                    )}}
+          <Form
+            ref={this.form}
+            model={form}
+            rules={this.state.rules}
+            labelWidth='80'
+            labelPlacement='right'
+            onValuesChange={(changedValues, allValues) => {
+              console.log(
+                'changedValues:',
+                changedValues,
+                'allValues:',
+                allValues
+              )
+            }}
+          >
+            <FormList name='testList'>
+              {(fields, { add, remove }) => {
+                return (
+                  <div className='list'>
+                    {fields.map((field, index) => (
+                      <div style={{ display: 'flex' }} key={index}>
+                        <FormItem
+                          {...field}
+                          label={index === 0 ? 'testList' : ''}
+                        >
+                          <Input placeholder='请输入' style={{width:'200px'}}/>
+                        </FormItem>
+                        <Icon
+                          name='close'
+                          style={{
+                            color: '#999',
+                            fontSize: '16px',
+                            cursor: 'pointer',
+                            height:'18px',
+                            marginTop:'4px',
+                          }}
+                          onClick={() => {
+                            remove(field)
+                          }}
+                        />
+                      </div>
+                    ))}
+                    <div style={{ 
+                        marginLeft: '80px',
+                        width: "200px",
+                        textAlign: "center",
+                        border: '1px dashed #ccc',
+                        borderRadius: '2px',
+                        marginBottom: '24px',
+                    }}>
+                      <Button
+                        type='line'
+                        appearance='link'
+                        icon='plus'
+                        onClick={() => {
+                          add()
+                        }}
+                      >
+                        添加选项
+                      </Button>
+                    </div>
+                  </div>
+                )
+              }}
             </FormList>
-           
-            <FormItem label='地区' field='region'>
-              <Radio.Group
-                data={['北京', '上海', '重庆']}
-              />
-            </FormItem>
-            <FormItem>
-                <FormSubmit 
-                type='primary'
 
-                onClick={(values,errors)=>{
-                console.log('Get form value:',values,errors)}
-                }
-                >提交</FormSubmit>
-                <FormReset 
-                type='line' 
-                onClick={()=>{console.log('reset form')}}
-                >重置</FormReset>
+            <FormItem>
+              <FormSubmit
+                type='primary'
+                onClick={(values, errors) => {
+                  console.log('Get form value:', values, errors)
+                }}
+              >
+                提交
+              </FormSubmit>
+              <FormReset
+                type='line'
+                onClick={() => {
+                  console.log('reset form')
+                }}
+              >
+                重置
+              </FormReset>
             </FormItem>
           </Form>
         </Col>

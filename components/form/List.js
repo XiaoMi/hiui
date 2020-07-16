@@ -1,27 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 
 import FormContext from './FormContext'
-
+import { FILEDS_REMOVE } from './FormReducer'
 const List = props => {
-  const { formState } = useContext(FormContext)
+  const { dispatch } = useContext(FormContext)
   const { children, name } = props
 
-  // 初始化FormItem的内容
-  const { fields } = formState
   const [listCount, setListCount] = useState([])
-  useEffect(() => {
-    const _fields = fields.filter(item => {
-      return item._type === 'list'
-    })
-    setListCount(
-      _fields.map((item, index) => {
-        return {
-          fields: item,
-          id: index
-        }
-      })
-    )
-  }, [fields])
 
   if (typeof children !== 'function') {
     warning(false, 'Form.List only accepts function as children.')
@@ -29,31 +14,27 @@ const List = props => {
   }
 
   const add = () => {
+    const id = parseInt((Math.random() * 9 + 1) * 100000)
     setListCount(
       listCount.concat({
-        id: listCount.length,
-        fields: null
+        field: name + '-' + id
       })
     )
   }
-  const remove = id => {
+  const remove = fieldItem => {
     const _listCount = listCount.filter(item => {
-      return item.id !== id
-    })
-    _listCount.forEach((item, index) => {
-      item.id = index
+      return item.field !== fieldItem.field
     })
     setListCount(_listCount)
+
+    dispatch({ type: FILEDS_REMOVE, payload: fieldItem.field })
   }
   return (
     <div>
       <FormContext.Provider
         value={{ ...useContext(FormContext), _type: 'list', listname: name }}
       >
-        <div>
-          {listCount.length > 0 ? name + ':' : ''}
-          {children(listCount, { add, remove })}
-        </div>
+        {children(listCount, { add, remove })}
       </FormContext.Provider>
     </div>
   )
