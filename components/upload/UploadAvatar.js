@@ -1,63 +1,67 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import Modal from '../modal'
-import Upload from './Upload'
 import Preview from './Preview'
 import Cropper from 'react-cropper'
 import Icon from '../icon'
+import FileSelect from './FileSelect'
 import 'cropperjs/dist/cropper.css'
 
-class UploadAvatar extends Upload {
-  containerWidth = 550
-  containerHeight = 500
-  filename = ''
-  img = null
-  scale = 1
-  draging = false
-  dragBeginXy = {
-    x: 0,
-    y: 0
-  }
+const AvatarUpload = ({
+  onRemove,
+  disabled,
+  accept,
+  localeDatas,
+  theme,
+  fileList,
+  defaultFileList,
+  maxCount,
+  multiple,
+  avatarOptions = {}
+}) => {
+  const { aspectRatio = 0, dragMode = 'move', dropBoxSize = [] } = avatarOptions
+  const cropperRef = useRef(null)
+  const [_fileList, updateFileList] = useState(fileList || defaultFileList || [])
 
-  constructor (props) {
-    super(props)
+  useEffect(() => {
+    if (fileList) {
+      updateFileList(fileList)
+    }
+  }, [fileList])
 
-    this.state = Object.assign(
-      {
-        showPreviewModal: false,
-        showCropperModal: false,
-        position: {
-          top: 0,
-          left: 0
-        },
-        src: ''
-      },
-      this.state
-    )
-    this.cropperRef = React.createRef()
-  }
+  // TODO: 提取 usePreview hook
+  const [visible, setVisible] = useState(false)
+  const [previewFile, setPreviewFile] = useState({})
+  const [activeIndex, setActiveIndex] = useState(0)
 
-  uploadFiles (files) {
-    if (files.length === 0) return
-    this.setState({ uploadState: 'loading' }, () => {
-      this.filename = files[0].name
-      this.showCropperModal(files[0])
-    })
-  }
+  const closeModal = useCallback(() => {
+    setPreviewFile({})
+    setVisible(false)
+  }, [])
 
-  showCropperModal (file) {
-    const fr = new window.FileReader()
+  const previewImage = useCallback((file, index) => {
+    setPreviewFile(file)
+    setVisible(true)
+    setActiveIndex(index)
+  }, [])
+
+  const [cropperVisible, setCropperVisible] = useState(false)
+
+  const selectFile = useCallback((files) => {
+    takeCropper(files[0])
+  }, [])
+
+  const takeCropper = useCallback((file) => {
+    const fr = new FileReader()
 
     fr.onload = (e) => {
-      const src = e.target.result
-      this.setState({ src }, () => {
-        this.setState({ showCropperModal: true })
-      })
+      file.url = e.target.result
+      setCropperVisible(true)
+      updateFileList([file])
     }
     fr.readAsDataURL(file)
-  }
+  }, [])
 
-  base2blob (dataurl, filename) {
+  const base2blob = useCallback((dataurl, filename) => {
     let arr = dataurl.split(',')
     const mime = arr[0].match(/:(.*?);/)[1]
     const bstr = window.atob(arr[1])
@@ -69,177 +73,120 @@ class UploadAvatar extends Upload {
     return new window.File([u8arr], filename, {
       type: mime
     })
-  }
+  }, [])
 
-  cancel () {
-    this.setState({ showCropperModal: false })
-  }
-
-  formatFile (file) {
-    file.fileType = 'img'
-
-    return file
-  }
-
-  confirm () {
+  const confirmCropper = useCallback(() => {
     // 裁切图片
-
-    const cs = this.cropperRef.current.getCroppedCanvas()
-    if (typeof cs === 'undefined') {
-      return
-    }
-    const dataUrl = cs.toDataURL()
-    const file = this.base2blob(dataUrl, this.filename)
-    file.url = dataUrl
-
-    this.formatFile(file)
-    this.setState(
-      {
-        fileList: [file],
-        showCropperModal: false
-      },
-      () => {
-        const { beforeUpload, customUpload } = this.props
-
-        if (!beforeUpload(file, this.state.fileList)) {
-          return
-        }
-        if (customUpload) {
-          customUpload(file)
-        } else {
-          this.uploadFile(file, false)
-        }
+    if (cropperRef.current) {
+      const canvas = cropperRef.current.getCroppedCanvas()
+      if (typeof canvas === 'undefined') {
+        return
       }
-    )
-  }
+      const dataUrl = canvas.toDataURL()
+      const file = base2blob(dataUrl, this.filename)
+      file.url = dataUrl
 
-  closePreviewModal () {
-    this.setState({
-      showPreviewModal: false
-    })
-  }
+      this.formatFile(file)
+    }
 
-  previewImage () {
-    this.setState({
-      showPreviewModal: true
-    })
-  }
+    // this.setState(
+    //   {
+    //     fileList: [file],
+    //     showCropperModal: false
+    //   },
+    //   () => {
+    //     const { beforeUpload, customUpload } = this.props
 
-  render () {
-    const { disabled, accept, localeDatas, avatarOptions = {}, onRemove, theme } = this.props
-    const { fileList, showCropperModal, showPreviewModal } = this.state
-    const { aspectRatio = 0, dragMode = 'move', dropBoxSize = [] } = avatarOptions
-    const file = fileList[0]
-    return (
-      <div className={`theme__${theme} hi-upload hi-upload--avatar`}>
-        <ul className='hi-upload__list'>
-          {!!file &&
-            (file.uploadState === 'loading' ? (
-              <li className='hi-upload__item'>
-                <img src={file.url} className='hi-upload__thumb' />
-                <div className='hi-upload__precent'>
-                  <p className='hi-upload__loading-text'>
-                    {file.progressNumber
-                      ? file.progressNumber < 100
-                        ? file.progressNumber + '%'
-                        : localeDatas.upload.uploadSuccess
-                      : 0 + '%'}
-                  </p>
-                  <div className='hi-upload__loading-bar' style={{ width: file.progressNumber * 1.4 + 'px' }} />
-                </div>
-              </li>
-            ) : (
-              <li className='hi-upload__item'>
-                <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} />
-                <div className='hi-upload__item-mask' onClick={() => this.previewImage(file)}>
-                  <Icon name='eye' />
-                  <span>{localeDatas.upload.preview}</span>
-                </div>
-                {onRemove && (
-                  <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, 0)} />
-                )}
-              </li>
-            ))}
-          {!file && (
-            <li className='hi-upload__item hi-upload__item--upload'>
-              <label style={{ display: 'block' }}>
-                <input
-                  ref={(node) => {
-                    this.uploadRef = node
-                  }}
-                  type='file'
-                  accept={accept}
-                  disabled={disabled && 'disabled'}
-                  onChange={(e) => this.uploadFiles(e.target.files)}
-                  hidden
-                />
-                <Icon name='plus' />
-              </label>
+    //     if (!beforeUpload(file, this.state.fileList)) {
+    //       return
+    //     }
+    //     if (customUpload) {
+    //       customUpload(file)
+    //     } else {
+    //       this.uploadFile(file, false)
+    //     }
+    //   }
+    // )
+  }, [cropperRef.current])
+
+  const images = _fileList.map((file) => {
+    return {
+      url: file.url
+    }
+  })
+
+  const file = _fileList[0]
+  return (
+    <div className={`theme__${theme} hi-upload hi-upload--avatar`}>
+      <ul className='hi-upload__list'>
+        {!!file &&
+          (file.uploadState === 'loading' ? (
+            <li className='hi-upload__item'>
+              <img src={file.url} className='hi-upload__thumb' />
+              <div className='hi-upload__precent'>
+                <p className='hi-upload__loading-text'>
+                  {file.progressNumber
+                    ? file.progressNumber < 100
+                      ? file.progressNumber + '%'
+                      : localeDatas.upload.uploadSuccess
+                    : 0 + '%'}
+                </p>
+                <div className='hi-upload__loading-bar' style={{ width: file.progressNumber * 1.4 + 'px' }} />
+              </div>
             </li>
-          )}
-        </ul>
-        <Modal
-          visible={showCropperModal}
-          onConfirm={() => {
-            this.confirm()
-          }}
-          onCancel={() => {
-            this.cancel()
-          }}
-          backDrop={false}
-        >
-          <Cropper
-            src={this.state.src}
-            ready={(e) => {
-              if (dropBoxSize.length > 0) {
-                this.cropperRef.current.setCropBoxData({
-                  width: dropBoxSize[0],
-                  height: dropBoxSize[1] || dropBoxSize[0]
-                })
-              }
-            }}
-            aspectRatio={aspectRatio}
-            guides={false}
-            dragMode={dragMode}
-            ref={this.cropperRef}
-            crop={() => {}}
-            style={{ height: 400, width: '100%' }}
-          />
-        </Modal>
-        {showPreviewModal && file && (
-          <Preview
-            src={file.url}
-            images={[file]}
-            activeIndex={0}
-            show={showPreviewModal}
-            onClose={this.closePreviewModal.bind(this)}
-          />
+          ) : (
+            <li className='hi-upload__item'>
+              <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} />
+              <div className='hi-upload__item-mask' onClick={() => previewImage(file, 0)}>
+                <Icon name='eye' />
+                <span>{localeDatas.upload.preview}</span>
+              </div>
+              {onRemove && (
+                <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, 0)} />
+              )}
+            </li>
+          ))}
+        {!file && (
+          <FileSelect onSelect={selectFile} multiple={multiple} disabled={disabled} accept={accept}>
+            <li className='hi-upload__item hi-upload__item--upload'>
+              <Icon name='plus' />
+            </li>
+          </FileSelect>
         )}
-      </div>
-    )
-  }
+      </ul>
+      <Modal
+        visible={cropperVisible}
+        onConfirm={() => {
+          confirmCropper(_fileList[0].name)
+        }}
+        onCancel={() => {
+          setCropperVisible(false)
+        }}
+        backDrop={false}
+      >
+        <Cropper
+          src={_fileList[0].url}
+          ready={(e) => {
+            if (dropBoxSize.length > 0) {
+              cropperRef.current.setCropBoxData({
+                width: dropBoxSize[0],
+                height: dropBoxSize[1] || dropBoxSize[0]
+              })
+            }
+          }}
+          aspectRatio={aspectRatio}
+          guides={false}
+          dragMode={dragMode}
+          ref={cropperRef}
+          crop={() => {}}
+          style={{ height: 400, width: '100%' }}
+        />
+      </Modal>
+      {visible && (
+        <Preview src={previewFile.url} images={images} activeIndex={activeIndex} show={visible} onClose={closeModal} />
+      )}
+    </div>
+  )
 }
 
-UploadAvatar.propTypes = Object.assign(
-  {},
-  {
-    ...Upload.propTypes
-  },
-  {
-    width: PropTypes.number,
-    height: PropTypes.number
-  }
-)
-UploadAvatar.defaultProps = Object.assign(
-  {},
-  {
-    ...Upload.defaultProps
-  },
-  {
-    width: 200,
-    height: 200,
-    accept: 'image/jpg,image/jpeg,image/png'
-  }
-)
-
-export default UploadAvatar
+export default AvatarUpload
