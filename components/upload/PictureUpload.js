@@ -34,10 +34,10 @@ const PictureUpload = ({
     setVisible(false)
   }, [])
 
-  const previewImage = useCallback((file, activeIndex) => {
+  const previewImage = useCallback((file, index) => {
     setPreviewFile(file)
     setVisible(true)
-    setActiveIndex(activeIndex)
+    setActiveIndex(index)
   }, [])
 
   const images = _fileList.map((file) => {
@@ -55,10 +55,7 @@ const PictureUpload = ({
         {_fileList.map((file, index) => {
           if (file.uploadState === 'loading') {
             return (
-              <li
-                key={index}
-                className={classNames('hi-upload__item', `hi-upload__item--${photoSize}`)}
-              >
+              <li key={index} className={classNames('hi-upload__item', `hi-upload__item--${photoSize}`)}>
                 <img src={file.url} className='hi-upload__thumb' />
                 <div className='hi-upload__precent'>
                   <p className='hi-upload__loading-text'>
@@ -68,10 +65,7 @@ const PictureUpload = ({
                         : localeDatas.upload.uploadSuccess
                       : 0 + '%'}
                   </p>
-                  <div
-                    className='hi-upload__loading-bar'
-                    style={{ width: file.progressNumber * 1.4 + 'px' }}
-                  />
+                  <div className='hi-upload__loading-bar' style={{ width: file.progressNumber * 1.4 + 'px' }} />
                   {/* 进度条底部阴影 */}
                   <div className='hi-upload__loading-shadow' />
                 </div>
@@ -85,10 +79,7 @@ const PictureUpload = ({
                 style={{ cursor: 'pointer' }}
                 onClick={() => previewImage(file, index)}
               >
-                <img
-                  src={file.url}
-                  className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`}
-                />
+                <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} />
                 {onRemove && (
                   <Icon
                     name='close-circle'
@@ -100,9 +91,7 @@ const PictureUpload = ({
                   />
                 )}
                 {file.uploadState === 'error' && (
-                  <div className='hi-upload__item--photo-error'>
-                    {localeDatas.upload.uploadFailed}
-                  </div>
+                  <div className='hi-upload__item--photo-error'>{localeDatas.upload.uploadFailed}</div>
                 )}
               </li>
             )
@@ -115,13 +104,7 @@ const PictureUpload = ({
             disabled={disabled}
             accept={accept}
           >
-            <li
-              className={classNames(
-                'hi-upload__item',
-                'hi-upload__item--upload',
-                `hi-upload__item--${photoSize}`
-              )}
-            >
+            <li className={classNames('hi-upload__item', 'hi-upload__item--upload', `hi-upload__item--${photoSize}`)}>
               <label style={{ display: 'block' }}>
                 <Icon name='plus' />
               </label>
@@ -129,13 +112,9 @@ const PictureUpload = ({
           </FileSelect>
         )}
       </ul>
-      <Preview
-        src={previewFile.url}
-        images={images}
-        activeIndex={activeIndex}
-        show={visible}
-        onClose={closeModal}
-      />
+      {visible && (
+        <Preview src={previewFile.url} images={images} activeIndex={activeIndex} show={visible} onClose={closeModal} />
+      )}
     </div>
   )
 }
