@@ -75,43 +75,28 @@ const AvatarUpload = ({
     })
   }, [])
 
-  const confirmCropper = useCallback(() => {
-    // 裁切图片
-    if (cropperRef.current) {
-      const canvas = cropperRef.current.getCroppedCanvas()
-      if (typeof canvas === 'undefined') {
-        return
+  const confirmCropper = useCallback(
+    (filename) => {
+      // 裁切图片
+      if (cropperRef.current) {
+        const canvas = cropperRef.current.getCroppedCanvas()
+        if (typeof canvas === 'undefined') {
+          return
+        }
+        const dataUrl = canvas.toDataURL()
+        const file = base2blob(dataUrl, filename)
+        file.url = dataUrl
+        file.fileType = 'img'
+        updateFileList([file])
+        setCropperVisible(false)
       }
-      const dataUrl = canvas.toDataURL()
-      const file = base2blob(dataUrl, this.filename)
-      file.url = dataUrl
-
-      this.formatFile(file)
-    }
-
-    // this.setState(
-    //   {
-    //     fileList: [file],
-    //     showCropperModal: false
-    //   },
-    //   () => {
-    //     const { beforeUpload, customUpload } = this.props
-
-    //     if (!beforeUpload(file, this.state.fileList)) {
-    //       return
-    //     }
-    //     if (customUpload) {
-    //       customUpload(file)
-    //     } else {
-    //       this.uploadFile(file, false)
-    //     }
-    //   }
-    // )
-  }, [cropperRef.current])
+    },
+    [cropperRef.current]
+  )
 
   const images = _fileList.map((file) => {
     return {
-      url: file.url
+      url: file && file.url
     }
   })
 
@@ -165,7 +150,7 @@ const AvatarUpload = ({
         backDrop={false}
       >
         <Cropper
-          src={_fileList[0].url}
+          src={(_fileList[0] && _fileList[0].url) || ''}
           ready={(e) => {
             if (dropBoxSize.length > 0) {
               cropperRef.current.setCropBoxData({

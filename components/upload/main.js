@@ -1,28 +1,24 @@
-import React, { Component } from 'react'
+import React from 'react'
 import NormalUpload from './NormalUpload'
 import DragUpload from './DragUpload'
 import PictureUpload from './PictureUpload'
-import UploadAvatar from './UploadAvatar'
+import AvatarUpload from './AvatarUpload'
 import PictureListUpload from './PictureListUpload'
 import './style/index'
 
-export default class Upload extends Component {
-  constructor () {
-    super()
-    this.uploadRef = React.createRef()
-  }
-  render () {
-    const { type } = this.props
-    if (type === 'drag') {
-      return <DragUpload {...this.props} />
-    } else if (type === 'photo') {
-      return <PictureUpload {...this.props} />
-    } else if (type === 'avatar') {
-      return <UploadAvatar {...this.props} ref={this.uploadRef} />
-    } else if (type === 'pictureCard') {
-      return <PictureListUpload {...this.props} />
-    } else {
-      return <NormalUpload {...this.props} />
-    }
+const Upload = (props) => {
+  const { type } = props
+  if (type === 'drag') {
+    return <DragUpload {...props} />
+  } else if (type === 'photo') {
+    return <PictureUpload {...props} />
+  } else if (type === 'avatar') {
+    return <AvatarUpload {...props} />
+  } else if (type === 'pictureCard') {
+    return <PictureListUpload {...props} />
+  } else {
+    return <NormalUpload {...props} />
   }
 }
+
+export default Upload
