@@ -11,8 +11,6 @@ const PictureListUpload = ({
   disabled,
   accept,
   onRemove,
-  localeDatas,
-  theme,
   onDownload,
   fileList,
   defaultFileList,
@@ -25,7 +23,7 @@ const PictureListUpload = ({
     console.log(files)
   }
   return (
-    <div className={`hi-upload hi-upload--picture-card theme__${theme}`}>
+    <div className={`hi-upload hi-upload--picture-card`}>
       <FileSelect
         onSelect={uploadFiles}
         multiple={multiple}
