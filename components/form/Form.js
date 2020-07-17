@@ -4,13 +4,46 @@ import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import FormReducer, { FILEDS_UPDATE } from './FormReducer'
 import FormContext from './FormContext'
-
+const tranformListValues = (field, listNestValues, value, listname) => {
+  const key = field.split('#')[1]
+  const keyName = field.split('#')[0]
+  if (listNestValues[listname][keyName]) {
+    listNestValues[listname][keyName] = _.merge(
+      listNestValues[listname][keyName],
+      {
+        [key]: value
+      }
+    )
+  } else {
+    listNestValues[listname][keyName] = { [key]: value }
+  }
+}
 // 转换输出的值
 const transformValues = (allvalue, fields) => {
   let tranformValues = {}
+  let listNestValues = {}
+  // 先分类
   fields.forEach(filedItem => {
     const { field, propsField, _type, listname } = filedItem
-    if (_type !== 'list') {
+    if (_type === 'list') {
+      if (propsField !== field) {
+        listNestValues[listname] = listNestValues[listname] || {}
+        tranformListValues(field, listNestValues, allvalue[field], listname)
+        Object.keys(listNestValues).forEach(key => {
+          let arr = []
+          Object.keys(listNestValues[key]).forEach(item => {
+            arr.push(listNestValues[key][item])
+          })
+          tranformValues[key] = arr
+        })
+        return
+      }
+      if (tranformValues[listname]) {
+        tranformValues[listname].push(allvalue[field])
+      } else {
+        tranformValues[listname] = [allvalue[field]]
+      }
+    } else {
       if (Array.isArray(propsField)) {
         const chainKeys = propsField.reduceRight((pre, next) => {
           return { [next]: pre }
@@ -18,14 +51,6 @@ const transformValues = (allvalue, fields) => {
         tranformValues = _.merge(tranformValues, chainKeys)
       } else {
         tranformValues = _.merge(tranformValues, { [field]: allvalue[field] })
-      }
-    }
-
-    if (_type === 'list') {
-      if (tranformValues[listname]) {
-        tranformValues[listname].push(allvalue[field])
-      } else {
-        tranformValues[listname] = [allvalue[field]]
       }
     }
   })
@@ -82,6 +107,7 @@ const InternalForm = props => {
     (changeValues, allValues) => {
       const _transformValues = transformValues(allValues, fields)
       const _changeValues = _.cloneDeep(changeValues)
+
       Object.keys(changeValues).forEach(changeValuesKey => {
         fields.forEach(filedItem => {
           const { field, _type, listname } = filedItem
@@ -91,6 +117,7 @@ const InternalForm = props => {
           }
         })
       })
+
       onValuesChange && onValuesChange(_changeValues, _transformValues)
     },
     [onValuesChange, fields]

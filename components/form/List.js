@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 import FormContext from './FormContext'
 import { FILEDS_REMOVE } from './FormReducer'
@@ -26,7 +26,6 @@ const List = props => {
       return item.field !== fieldItem.field
     })
     setListCount(_listCount)
-
     dispatch({ type: FILEDS_REMOVE, payload: fieldItem.field })
   }
   return (

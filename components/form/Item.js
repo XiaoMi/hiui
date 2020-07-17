@@ -50,7 +50,8 @@ const FormItem = props => {
     style,
     field: propsField,
     valuePropName = 'value',
-    contentPosition = 'center'
+    contentPosition = 'center',
+    name
   } = props
   const {
     showColon: shouldFormShowColon,
@@ -63,27 +64,25 @@ const FormItem = props => {
   const { fields } = formState
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
-  const [field, setField] = useState(
-    Array.isArray(propsField) ? propsField[propsField.length - 1] : propsField
-  )
+  const getItemfield = () => {
+    let _propsField = propsField
+    if (_type === 'list' && name) {
+      _propsField = _propsField + '#' + name
+    }
+    return Array.isArray(propsField)
+      ? propsField[propsField.length - 1]
+      : _propsField
+  }
+  const [field, setField] = useState(getItemfield())
   const [validating, setValidating] = useState(false)
   useEffect(() => {
-    setField(
-      Array.isArray(propsField) ? propsField[propsField.length - 1] : propsField
-    )
+    setField(getItemfield())
   }, [propsField])
   // 更新
   const updateField = (_value, triggerType) => {
     const childrenFiled = {
-      field,
       value: _value,
-      rules: getRules(),
-      resetValidate,
-      setValue,
-      validate,
-      propsField,
-      listname,
-      _type
+      ...updateFieldInfoToReducer()
     }
     const _fields = _.cloneDeep(fields)
     _fields.forEach(item => {
@@ -153,22 +152,26 @@ const FormItem = props => {
       }
     )
   })
-
+  const updateFieldInfoToReducer = () => {
+    return {
+      field,
+      rules: getRules(),
+      resetValidate,
+      setValue,
+      validate,
+      propsField,
+      listname,
+      _type
+    }
+  }
   useEffect(() => {
     if (field) {
       dispatch({
         type: FILEDS_INIT,
         payload: {
-          field,
           value:
             initialValues && initialValues[field] ? initialValues[field] : '',
-          rules: getRules(),
-          resetValidate,
-          setValue,
-          validate,
-          propsField,
-          listname,
-          _type
+          ...updateFieldInfoToReducer()
         }
       })
       valueInit()
