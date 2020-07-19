@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import Modal from '../modal'
 import Preview from './Preview'
 import Cropper from 'react-cropper'
 import Icon from '../icon'
 import FileSelect from './FileSelect'
+import useUpload from './hooks/useUpload'
 import 'cropperjs/dist/cropper.css'
 
 const AvatarUpload = ({
@@ -16,17 +17,29 @@ const AvatarUpload = ({
   defaultFileList,
   maxCount,
   multiple,
-  avatarOptions = {}
+  avatarOptions = {},
+  onChange,
+  uploadAction,
+  maxSize,
+  name,
+  withCredentials,
+  headers,
+  data
 }) => {
   const { aspectRatio = 0, dragMode = 'move', dropBoxSize = [] } = avatarOptions
   const cropperRef = useRef(null)
-  const [_fileList, updateFileList] = useState(fileList || defaultFileList || [])
-
-  useEffect(() => {
-    if (fileList) {
-      updateFileList(fileList)
-    }
-  }, [fileList])
+  const [_fileList, uploadFiles] = useUpload({
+    fileList,
+    defaultFileList,
+    onChange,
+    uploadAction,
+    maxSize,
+    name,
+    withCredentials,
+    headers,
+    data
+  })
+  const [cropperFile, setCropperFile] = useState({})
 
   // TODO: 提取 usePreview hook
   const [visible, setVisible] = useState(false)
@@ -56,7 +69,7 @@ const AvatarUpload = ({
     fr.onload = (e) => {
       file.url = e.target.result
       setCropperVisible(true)
-      updateFileList([file])
+      setCropperFile(file)
     }
     fr.readAsDataURL(file)
   }, [])
@@ -87,7 +100,7 @@ const AvatarUpload = ({
         const file = base2blob(dataUrl, filename)
         file.url = dataUrl
         file.fileType = 'img'
-        updateFileList([file])
+        uploadFiles([file])
         setCropperVisible(false)
       }
     },
@@ -150,7 +163,7 @@ const AvatarUpload = ({
         backDrop={false}
       >
         <Cropper
-          src={(_fileList[0] && _fileList[0].url) || ''}
+          src={cropperFile.url || ''}
           ready={(e) => {
             if (dropBoxSize.length > 0) {
               cropperRef.current.setCropBoxData({

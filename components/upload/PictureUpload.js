@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import classNames from 'classnames'
 import Preview from './Preview'
 import Icon from '../icon'
 import FileSelect from './FileSelect'
+import useUpload from './hooks/useUpload'
 
 const PictureUpload = ({
   onRemove,
@@ -14,15 +15,26 @@ const PictureUpload = ({
   defaultFileList,
   photoSize = 'default',
   maxCount,
-  multiple
+  multiple,
+  onChange,
+  uploadAction,
+  maxSize,
+  name,
+  withCredentials,
+  headers,
+  data
 }) => {
-  const [_fileList, updateFileList] = useState(fileList || defaultFileList || [])
-
-  useEffect(() => {
-    if (fileList) {
-      updateFileList(fileList)
-    }
-  }, [fileList])
+  const [_fileList, uploadFiles] = useUpload({
+    fileList,
+    defaultFileList,
+    onChange,
+    uploadAction,
+    maxSize,
+    name,
+    withCredentials,
+    headers,
+    data
+  })
 
   // TODO: 提取 usePreview hook
   const [visible, setVisible] = useState(false)
@@ -98,12 +110,7 @@ const PictureUpload = ({
           }
         })}
         {maxCount < _fileList.length && (
-          <FileSelect
-            // onSelect={uploadFiles}
-            multiple={multiple}
-            disabled={disabled}
-            accept={accept}
-          >
+          <FileSelect onSelect={uploadFiles} multiple={multiple} disabled={disabled} accept={accept}>
             <li className={classNames('hi-upload__item', 'hi-upload__item--upload', `hi-upload__item--${photoSize}`)}>
               <label style={{ display: 'block' }}>
                 <Icon name='plus' />

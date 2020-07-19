@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Icon from '../icon'
 import classNames from 'classnames'
 import Button from '../button'
 import FileSelect from './FileSelect'
+import useUpload from './hooks/useUpload'
 
 const PictureListUpload = ({
   content,
-  showUploadList,
+  showUploadList = true,
   multiple,
   disabled,
   accept,
@@ -15,13 +16,26 @@ const PictureListUpload = ({
   fileList,
   defaultFileList,
   maxCount,
-  loading
+  loading,
+  onChange,
+  uploadAction,
+  maxSize,
+  name,
+  withCredentials,
+  headers,
+  data
 }) => {
-  const [_fileList, updateFileList] = useState(fileList || defaultFileList || [])
-  const uploadFiles = (files) => {
-    updateFileList(files)
-    console.log(files)
-  }
+  const [_fileList, uploadFiles] = useUpload({
+    fileList,
+    defaultFileList,
+    onChange,
+    uploadAction,
+    maxSize,
+    name,
+    withCredentials,
+    headers,
+    data
+  })
   return (
     <div className={`hi-upload hi-upload--picture-card`}>
       <FileSelect
