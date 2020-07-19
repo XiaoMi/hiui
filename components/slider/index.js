@@ -83,7 +83,15 @@ const Slider = memo(
     // <- -> 键盘事件
     const onKeyDown = useCallback((e) => {
       if (e.keyCode === 37 || e.keyCode === 39) {
-        const _value = e.keyCode === 37 ? value - step : value + step
+        let _value = e.keyCode === 37 ? value - step : value + step
+        console.log(_value)
+        if (_value < (min || 0)) {
+          _value = (min || 0)
+        
+        } else if (_value > (max || 100)) {
+          _value = (max || 100)
+        }
+        setStartPosition(((_value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
         if (initValue === undefined) {
           setValue(_value)
         }
@@ -120,13 +128,16 @@ const Slider = memo(
           // 边界判断
           if (position <= 0) {
             position = 0
+            setStartPosition(0)
           } else if (position >= 100) {
             position = 100
+            setStartPosition(100)
           }
 
           changeValue = (min || 0) + Math.round((((max || 100) - (min || 0)) * position) / 100)
           if (changeValue < (min || 0)) {
             changeValue = (min || 0)
+          
           } else if (changeValue > (max || 100)) {
             changeValue = (max || 100)
           }
@@ -255,6 +266,7 @@ const Slider = memo(
       e.stopPropagation()
       if (initValue === undefined) {
         setValue(value)
+        setStartPosition(((value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
       }
       onChange(value)
     }, [])
