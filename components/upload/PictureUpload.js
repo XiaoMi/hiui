@@ -14,7 +14,7 @@ const PictureUpload = ({
   fileList,
   defaultFileList,
   photoSize = 'default',
-  maxCount,
+  maxCount = Infinity,
   multiple,
   onChange,
   uploadAction,
@@ -108,10 +108,16 @@ const PictureUpload = ({
             )
           }
         })}
-        {maxCount < _fileList.length && (
-          <FileSelect onSelect={uploadFiles} multiple={multiple} disabled={disabled} accept={accept}>
+        {maxCount >= _fileList.length && (
+          <FileSelect
+            onSelect={uploadFiles}
+            multiple={multiple}
+            disabled={disabled}
+            accept={accept}
+            style={{ display: 'inline-block' }}
+          >
             <li className={classNames('hi-upload__item', 'hi-upload__item--upload', `hi-upload__item--${photoSize}`)}>
-              <label style={{ display: 'block' }}>
+              <label style={{ display: 'block', cursor: 'pointer' }}>
                 <Icon name='plus' />
               </label>
             </li>

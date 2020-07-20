@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react'
 
-const FileSelect = ({ children, onSelect, multiple, disabled, accept }) => {
+const FileSelect = ({ children, onSelect, multiple, disabled, accept, style }) => {
   const inputRef = useRef(null)
   const onClick = useCallback(() => {
     if (inputRef.current) {
@@ -8,7 +8,7 @@ const FileSelect = ({ children, onSelect, multiple, disabled, accept }) => {
     }
   }, [inputRef.current])
   return (
-    <div onClick={onClick}>
+    <div onClick={onClick} style={style}>
       <input
         type='file'
         multiple={multiple && 'multiple'}

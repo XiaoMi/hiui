@@ -59,7 +59,6 @@ const DragUpload = ({
     setDragging(false)
   }, [])
   const dragCls = classNames(
-    `theme__${theme}`,
     'hi-upload',
     'hi-upload--drag',
     dragging && !disabled && 'drop-over',
@@ -115,7 +114,13 @@ const DragUpload = ({
                   >
                     {file.name}
                   </a>
-                  <span className='hi-upload__operate-icon' onClick={() => deleteFile(file, index)}>
+                  <span
+                    className='hi-upload__operate-icon'
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      deleteFile(file, index)
+                    }}
+                  >
                     {file.uploadState === 'loading' ? localeDatas.upload.cancel : localeDatas.upload.delete}
                   </span>
                 </div>
