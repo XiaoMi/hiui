@@ -10,10 +10,7 @@ import Cascader from '../../../components/cascader'
 import Icon from '../../../components/icon'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'form-list'
-const desc = [
-  '表单项内容的格式、逻辑有特殊要求',
-  '可在Form中配置全部Item的rules,也可在Form.Item中使用rules校验单个表单项'
-]
+const desc = '动态更改表单项'
 const code = `import React from 'react'
 import { Grid, Button, Radio, Input, Form } from '@hi-ui/hiui'\n
 class Demo extends React.Component {
