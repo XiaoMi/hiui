@@ -25,7 +25,7 @@ const PictureListUpload = ({
   headers,
   data
 }) => {
-  const [_fileList, uploadFiles] = useUpload({
+  const [_fileList, uploadFiles, deleteFile] = useUpload({
     fileList,
     defaultFileList,
     onChange,
@@ -34,7 +34,8 @@ const PictureListUpload = ({
     name,
     withCredentials,
     headers,
-    data
+    data,
+    onRemove
   })
   return (
     <div className={`hi-upload hi-upload--picture-card`}>
@@ -77,12 +78,10 @@ const PictureListUpload = ({
                     {file.name}
                   </a>
                   <span>
-                    {onRemove && (
-                      <Icon
-                        name={file.uploadState === 'loading' ? 'close' : 'delete'}
-                        onClick={() => this.deleteFile(file, index)}
-                      />
-                    )}
+                    <Icon
+                      name={file.uploadState === 'loading' ? 'close' : 'delete'}
+                      onClick={() => deleteFile(file, index)}
+                    />
                   </span>
                   {file.uploadState === 'loading' && (
                     <div className='hi-upload__upstatus'>

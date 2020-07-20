@@ -12,7 +12,8 @@ const useUpload = ({
   name,
   withCredentials,
   headers,
-  data
+  data,
+  onRemove
 }) => {
   const [_fileList, updateFileList] = useState(fileList || defaultFileList || [])
   useEffect(() => {
@@ -21,10 +22,39 @@ const useUpload = ({
     }
   }, [fileList])
 
+  const deleteFile = useCallback(
+    (file, index) => {
+      if (file.abort) {
+        file.abort()
+      }
+      let result = true
+      if (onRemove) {
+        result = onRemove(file)
+      }
+      if (!fileList) {
+        if (result === true) {
+          const newFileList = [..._fileList]
+          newFileList.splice(index, 1)
+          updateFileList(newFileList)
+        } else if (result && typeof result.then === 'function') {
+          result.then((res) => {
+            if (res === true) {
+              const newFileList = [..._fileList]
+              newFileList.splice(index, 1)
+              updateFileList(newFileList)
+            }
+          })
+        }
+      }
+    },
+    [_fileList]
+  )
+
   const onSuccess = useCallback(
     (file, res) => {
       const newFileList = [..._fileList]
       file.uploadState = 'success'
+      delete file.abort
       const idx = _fileList.findIndex((item) => item.fileId === file.fileId)
       newFileList.splice(idx, 1, file)
       const result = onChange(file, newFileList, res)
@@ -98,7 +128,7 @@ const useUpload = ({
         })
         .filter((file) => {
           if (file) {
-            request({
+            const action = request({
               file,
               action: uploadAction,
               name,
@@ -109,6 +139,7 @@ const useUpload = ({
               onError,
               onProgress
             })
+            file.abort = action.abort
           }
           return file
         })
@@ -117,7 +148,7 @@ const useUpload = ({
     [onSuccess, onProgress, onError, uploadAction, name, withCredentials, headers, data, _fileList]
   )
 
-  return [_fileList, uploadFiles]
+  return [_fileList, uploadFiles, deleteFile]
 }
 
 export default useUpload

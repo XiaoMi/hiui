@@ -24,7 +24,7 @@ const DragUpload = ({
   headers,
   data
 }) => {
-  const [_fileList, uploadFiles] = useUpload({
+  const [_fileList, uploadFiles, deleteFile] = useUpload({
     fileList,
     defaultFileList,
     onChange,
@@ -33,7 +33,8 @@ const DragUpload = ({
     name,
     withCredentials,
     headers,
-    data
+    data,
+    onRemove
   })
 
   const [dragging, setDragging] = useState(false)
@@ -114,11 +115,9 @@ const DragUpload = ({
                   >
                     {file.name}
                   </a>
-                  {onRemove && (
-                    <span className='hi-upload__operate-icon' onClick={() => this.deleteFile(file, index)}>
-                      {file.uploadState === 'loading' ? localeDatas.upload.cancel : localeDatas.upload.delete}
-                    </span>
-                  )}
+                  <span className='hi-upload__operate-icon' onClick={() => deleteFile(file, index)}>
+                    {file.uploadState === 'loading' ? localeDatas.upload.cancel : localeDatas.upload.delete}
+                  </span>
                 </div>
                 {file.uploadState === 'loading' && (
                   <div className='hi-upload__upstatus'>

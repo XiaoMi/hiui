@@ -28,7 +28,7 @@ const AvatarUpload = ({
 }) => {
   const { aspectRatio = 0, dragMode = 'move', dropBoxSize = [] } = avatarOptions
   const cropperRef = useRef(null)
-  const [_fileList, uploadFiles] = useUpload({
+  const [_fileList, uploadFiles, deleteFile] = useUpload({
     fileList,
     defaultFileList,
     onChange,
@@ -37,7 +37,8 @@ const AvatarUpload = ({
     name,
     withCredentials,
     headers,
-    data
+    data,
+    onRemove
   })
   const [cropperFile, setCropperFile] = useState({})
 
@@ -139,9 +140,7 @@ const AvatarUpload = ({
                 <Icon name='eye' />
                 <span>{localeDatas.upload.preview}</span>
               </div>
-              {onRemove && (
-                <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, 0)} />
-              )}
+              <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => deleteFile(file, 0)} />
             </li>
           ))}
         {!file && (

@@ -24,7 +24,7 @@ const PictureUpload = ({
   headers,
   data
 }) => {
-  const [_fileList, uploadFiles] = useUpload({
+  const [_fileList, uploadFiles, deleteFile] = useUpload({
     fileList,
     defaultFileList,
     onChange,
@@ -33,7 +33,8 @@ const PictureUpload = ({
     name,
     withCredentials,
     headers,
-    data
+    data,
+    onRemove
   })
 
   // TODO: 提取 usePreview hook
@@ -92,16 +93,14 @@ const PictureUpload = ({
                 onClick={() => previewImage(file, index)}
               >
                 <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} />
-                {onRemove && (
-                  <Icon
-                    name='close-circle'
-                    className='hi-upload__photo-del'
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      this.deleteFile(file, index)
-                    }}
-                  />
-                )}
+                <Icon
+                  name='close-circle'
+                  className='hi-upload__photo-del'
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    deleteFile(file, index)
+                  }}
+                />
                 {file.uploadState === 'error' && (
                   <div className='hi-upload__item--photo-error'>{localeDatas.upload.uploadFailed}</div>
                 )}

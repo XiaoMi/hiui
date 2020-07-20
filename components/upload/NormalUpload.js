@@ -26,7 +26,7 @@ const NormalUpload = ({
   data,
   onChange
 }) => {
-  const [_fileList, uploadFiles] = useUpload({
+  const [_fileList, uploadFiles, deleteFile] = useUpload({
     fileList,
     defaultFileList,
     onChange,
@@ -35,8 +35,10 @@ const NormalUpload = ({
     name,
     withCredentials,
     headers,
-    data
+    data,
+    onRemove
   })
+
   return (
     <div className={`hi-upload`}>
       <FileSelect
@@ -75,12 +77,10 @@ const NormalUpload = ({
                     {file.name}
                   </a>
                   <span>
-                    {onRemove && (
-                      <Icon
-                        onClick={() => this.deleteFile(file, index)}
-                        name={file.uploadState === 'loading' ? 'close' : 'delete'}
-                      />
-                    )}
+                    <Icon
+                      onClick={() => deleteFile(file, index)}
+                      name={file.uploadState === 'loading' ? 'close' : 'delete'}
+                    />
                   </span>
                 </div>
                 {file.uploadState === 'loading' && (
