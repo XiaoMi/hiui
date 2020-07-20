@@ -38,3 +38,18 @@ import DemoStep from '../../demo/slider/slider-step.jsx'
 <DemoStep />
 
 
+## Props
+
+| 参数         | 说明                                                                                                     | 类型                                                  | 可选值                                       | 默认值   |
+| ------------ | -------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------- | -------- |
+| defaultValue | 设置初始取值                                                                                              | number                                               |  -                    | 0 |
+| value        | 设置当前取值                                                                                              | number                                               | -                                      | 0       |
+| min          | 最小值                                                                                                   | number                                               | -                                   | 0       |
+| max          | 最大值                                                                                                   | number                                               | -                                           | 100       |
+| disabled     | 值为 true 时，滑块为禁用状态                                                                                | boolean                                              | true \| false                                          | false      |
+| onChange     | 当 Slider 的值发生改变时，会触发 onChange 事件                                                               | (value) => void                                      | -                                | -    |
+| tipFormatter | 自定义 Tooltip 中显示文案                                                                                  | value => ReactNode                                   | -                           | - |
+| type         | 类型，可选 'primary'、'danger'、'success'、'warning'                                                       | string                                               | 'primary' \| 'danger' \| 'success' \| 'warning' \| | 'primary' |
+| marks        | 刻度标记,key 的类型必须为 number 且取值在闭区间 [min, max] 内                                                  | object                                              | -                            | {}       |
+| step         | 步长                                                                                                     | number                                               | -                               | 1     |
+| vertical     | 值为 true 时，Slider 为垂直方向                                                                               | boolean                                              | true \| false                                          | false      |
