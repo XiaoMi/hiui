@@ -398,7 +398,7 @@ class Select extends Component {
         /* eslint-disable */
         fetch(url, {
           method: type,
-          credentials: withCredentials ? 'include' : 'omit',
+          credentials: withCredentials ? 'include' : 'same-origin',
           ...options
         })
           .then(response => response.json())
