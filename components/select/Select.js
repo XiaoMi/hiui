@@ -37,6 +37,7 @@ class Select extends Component {
     ]),
     showCheckAll: PropTypes.bool,
     autoload: PropTypes.bool,
+    withCredentials: PropTypes.bool,
     searchable: PropTypes.bool,
     filterOption: PropTypes.func,
     clearable: PropTypes.bool,
@@ -60,6 +61,7 @@ class Select extends Component {
     autoload: false,
     showCheckAll: false,
     open: true,
+    withCredentials: false,
     onClick: () => {},
     onBlur: () => {},
     onFocus: () => {}
@@ -337,7 +339,7 @@ class Select extends Component {
   }
 
   remoteSearch (keyword) {
-    const { onSearch, dataSource, autoload } = this.props
+    const { onSearch, dataSource, autoload, withCredentials } = this.props
     if (onSearch && typeof onSearch === 'function') {
       this.setState({
         fetching: true
@@ -396,6 +398,7 @@ class Select extends Component {
         /* eslint-disable */
         fetch(url, {
           method: type,
+          credentials: withCredentials ? 'include' : 'omit',
           ...options
         })
           .then(response => response.json())
