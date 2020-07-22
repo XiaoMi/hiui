@@ -3,7 +3,7 @@ import BaseTree from './BaseTree'
 import Input from '../Input'
 import Button from '../button'
 import Modal from '../modal'
-import { getAncestorIds } from './util'
+import { getAncestorIds, findNode } from './util'
 import _ from 'lodash'
 import uuidv4 from 'uuid/v4'
 import CustomTreeNode from './customTreeNode'
@@ -77,6 +77,71 @@ const Tree = (props) => {
     matchedNodes.map((n) => n.id),
     filteredIds
   )
+  // 移动节点
+  const switchNode = (targetItemId, sourceItemId, data, allData, dropDividerPosition) => {
+    const sourceNode = findNode(sourceItemId, allData)
+    const _data = [...data]
+    _data.forEach((item, idx) => {
+      if (item.id === targetItemId) {
+        const position = dropDividerPosition === 'down' ? idx + 1 : idx
+        data.splice(position, 0, sourceNode)
+      } else {
+        if (item.children) {
+          if (item.children.some((e) => e.id === targetItemId)) {
+            const index = item.children.findIndex((i) => i.id === targetItemId)
+            const position = dropDividerPosition === 'down' ? index + 1 : index
+            item.children.splice(position, 0, sourceNode)
+          } else {
+            switchNode(targetItemId, sourceItemId, item.children, allData, dropDividerPosition)
+          }
+        }
+      }
+    })
+  }
+
+  const addDropNode = (targetItemId, sourceItemId, data, allData) => {
+    data.forEach((d, index) => {
+      if (d.id === targetItemId) {
+        const sourceNode = findNode(sourceItemId, allData)
+        if (!d.children) {
+          d.children = []
+        }
+        d.children.push(sourceNode)
+      } else {
+        if (d.children) {
+          addDropNode(targetItemId, sourceItemId, d.children, allData)
+        }
+      }
+    })
+  }
+  // 删除拖动的节点
+  const _delDragNode = useCallback((itemId, data) => {
+    data.forEach((d, index) => {
+      if (d.id === itemId) {
+        data.splice(index, 1)
+      } else {
+        if (d.children) {
+          _delDragNode(itemId, d.children)
+        }
+      }
+    })
+  }, [])
+
+  const moveNode = useCallback(
+    ({ targetId, sourceId, direction }) => {
+      console.log(targetId, sourceId, direction)
+      const _dataCache = _.cloneDeep(cacheData)
+      _delDragNode(sourceId, _dataCache)
+      if (direction === 'in') {
+        addDropNode(targetId, sourceId, _dataCache, cacheData)
+      } else {
+        switchNode(targetId, sourceId, _dataCache, cacheData, direction)
+      }
+      updateCacheData(_dataCache)
+    },
+    [cacheData, _delDragNode, addDropNode, switchNode]
+  )
+
   // 编辑节点
   const editNode = (node) => {
     setEditingNodes(editingNodes.concat(node))
@@ -314,6 +379,7 @@ const Tree = (props) => {
         onExpand={(expandedNode, isExpanded, ids) => {
           setExpanded(ids)
         }}
+        onDrop={moveNode}
         data={filter && searchable && searchValue !== '' ? showData : cacheData}
       />
       <Modal

@@ -34,10 +34,6 @@ const TreeNode = ({ node }) => {
   const [direction, setDirection] = useState(null)
   const [dragId, setDragId] = useState(null)
 
-  const move = (a, b, c) => {
-    console.log(a, b, c)
-  }
-
   const treeNodeRef = useRef(null)
 
   const [loading, setLoading] = useState(false)
@@ -79,10 +75,7 @@ const TreeNode = ({ node }) => {
     return Array(times)
       .fill('')
       .map((indent, index) => (
-        <span
-          key={index}
-          style={{ width: 16, display: 'inline-block', marginRight: index === times - 1 ? 3 : 0 }}
-        />
+        <span key={index} style={{ width: 16, display: 'inline-block', marginRight: index === times - 1 ? 3 : 0 }} />
       ))
   }, [])
 
@@ -160,7 +153,7 @@ const TreeNode = ({ node }) => {
             e.stopPropagation()
             setDirection(null)
             if (onDrop) {
-              onDrop(e)
+              onDrop({ targetId: id, sourceId: Number(e.dataTransfer.getData('treeNode', id)), direction })
             }
           }}
         >
