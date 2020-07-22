@@ -20,6 +20,12 @@ import DemoLine from '../../demo/tag/tag-line'
 
 <DemoLine />
 
+## 方角标签
+
+import DemoRound from '../../demo/tag/tag-round'
+
+<DemoRound />
+
 ## 标签组用法
 
 import DemoGroup from '../../demo/tag/tag-group'
@@ -35,11 +41,26 @@ import DemoColor from '../../demo/tag/tag-color'
 
 ## Props
 
+### Tag
+
 | 参数       | 说明             | 类型                    | 可选值                                          | 默认值    |
 | ---------- | ---------------- | ----------------------- | ----------------------------------------------- | --------- |
 | type       | 设置状态         | string                  | 'primary' \| 'success' \| 'warning' \| 'danger'\| 'tag-group' | 'primary' 
 | appearance | 设置样式类型     | string                  | 'default' \| 'line'                             | 'default' |
+| shape      | 设置形状     | string                  | 'round' \| 'square'                             | 'round' |
 | color      | 标签色      | string                  |  -                          | - |
 | onClick    | 点击按钮时的回调 | (e: MouseEvent) => void | -                          | -         |
 | closable | 标签是否可以关闭     | boolean                  | true \| false                        | false |
-| onClose | 关闭时的回调     | (e) => void                  | -                 | - |
+| editable | 标签是否可以修改    | boolean                  | true \| false                        | false |
+
+
+### Group
+
+| 参数       | 说明             | 类型                    | 可选值                                          | 默认值    |
+| ---------- | ---------------- | ----------------------- | ----------------------------------------------- | --------- |
+| data   | 展示数据      | DataItem[]                 | -                 | - |
+| editable   | 标签组是否可以修改、新增、删除    | boolean                  | true \| false                        | false |
+| onAdd      | 标签新增后触发      | (tagNode,index) => void                  | -                 | - |
+| onEdit     | 标签修改后触发      | (tagNode,index) => void                  | -                 | - |
+| onDelete   | 标签删除后触发      | (tagNode,index) => void                  | -                 | - |
+

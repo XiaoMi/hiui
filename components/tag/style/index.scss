@@ -1,6 +1,8 @@
 @import '@hi-ui/core-css/index.scss';
 
 $prefix: 'hi-tag' !default;
+$prefixGroup:'hi-tag-group' !default;
+
 $primary: get-color($palette-primary, 'hiui-blue') !default;
 
 .#{$prefix} {
@@ -16,6 +18,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
   background: $primary;
   font-size: 12px;
   display: inline-block;
+  user-select: none;
 
   &.#{$prefix}--default {
     background: #999;
@@ -43,14 +46,40 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     }
   }
 
-  &.#{$prefix}--tag-group {
-    background: rgba(255, 255, 255, 1);
-    border: 1px solid rgba(224, 225, 226, 1);
-    color: #333;
+  &.#{$prefix}--active {
+    border: 1px solid #4284f5 !important;
+  }
 
-    .hi-icon {
-      margin-left: 3px;
-      cursor: pointer;
+  &.#{$prefix}--square {
+    border-radius: 2px;
+  }
+
+  .#{$prefix}__btn {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 2px;
+    outline: 0;
+    font-size: $font-size-small;
+    line-height: 16px;
+    cursor: pointer;
+    opacity: 0.54;
+    background-color: transparent;
+    color: inherit;
+    transition:
+      box-shadow $speed-fast $easing,
+      opacity $speed-fast $easing;
+
+    &:focus,
+    &:hover,
+    &:active {
+      opacity: 1;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 2px use-color('primary-30');
     }
   }
 
@@ -61,6 +90,54 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
       $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
 
       background: $status-color;
+    }
+  }
+}
+
+.#{$prefixGroup} {
+  &.#{$prefixGroup}-editable {
+    display: flex;
+    align-items: center;
+
+    .#{$prefix} {
+      background: rgba(255, 255, 255, 1);
+      border: 1px solid rgba(224, 225, 226, 1);
+      color: #333;
+      cursor: pointer;
+
+      .hi-icon {
+        margin-left: 3px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .#{$prefixGroup}-editable--input {
+    margin: 0 4px;
+    border-radius: 11px;
+    border: 1px solid rgba(66, 132, 245, 1);
+    outline: none;
+    padding: 2px 8px;
+    font-size: 12px;
+    box-sizing: border-box;
+    display: inline-block;
+    height: 20px;
+  }
+
+  .#{$prefixGroup}-editable--plus {
+    width: 50px;
+    border-radius: 11px;
+    border: 1px dashed rgba(230, 231, 232, 1);
+    display: inline-block;
+    line-height: 18px;
+    text-align: center;
+    margin-left: 4px;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 12px;
+
+    &:hover {
+      border-color: #e0e1e2;
     }
   }
 }
