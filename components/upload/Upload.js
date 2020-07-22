@@ -231,6 +231,7 @@ class Upload extends Component {
     const {
       name,
       param,
+      method = 'post',
       headers,
       uploadAction
     } = this.props
@@ -292,8 +293,7 @@ class Upload extends Component {
       file.progressNumber = percentComplete
       this.setState({ fileList })
     }
-
-    xhr.open('post', uploadAction, true)
+    xhr.open(method, uploadAction, true)
     // 设置用户传入的请求头
     if (headers) {
       for (let j in headers) {
