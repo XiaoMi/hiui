@@ -17,7 +17,7 @@ class Demo extends React.Component {
         dataSource={{
           type: 'GET',
           key: 'id',
-          url: 'http://yapi.demo.qunar.com/mock/26534/hiui/select',
+          url: 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/lsit',
           transformResponse: (res) => {
             console.log('----', res)
             return res.list
@@ -47,7 +47,7 @@ class Demo extends React.Component {
       dataSource={keyword => {
         return ({
           type: 'GET',
-          url: 'http://yapi.demo.qunar.com/mock/26534/hiui/select',
+          url: 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/lsit',
           params:{id: keyword},
           transformResponse: (res) => {
             return res.list
