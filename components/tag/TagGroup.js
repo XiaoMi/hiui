@@ -74,7 +74,7 @@ const TagGroup = ({
     setInputVisible(false)
     setNewInputValue('')
     setHoverIndex(-1)
-  }, [])
+  }, [data])
 
   // 修改
   const handleEditInputConfirm = useCallback((e) => {
