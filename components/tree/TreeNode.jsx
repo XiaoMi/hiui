@@ -41,7 +41,7 @@ const TreeNode = ({ node }) => {
   // 渲染 apperance 占位
   const renderApperancePlaceholder = useCallback((apperance) => {
     if (apperance === 'folder') {
-      return <Icon name='File' style={{ marginRight: 3 }} />
+      return <Icon name='File' style={{ marginRight: 2 }} />
     }
   }, [])
   // 渲染展开收起
@@ -52,7 +52,7 @@ const TreeNode = ({ node }) => {
         <Loading />
       ) : (
         <Icon
-          style={{ cursor: 'pointer', marginRight: 3 }}
+          style={{ cursor: 'pointer', marginRight: 2 }}
           name={expanded ? switcherApperanceMap[apperance][1] : switcherApperanceMap[apperance][0]}
           onClick={() => {
             if (onLoadChildren) {

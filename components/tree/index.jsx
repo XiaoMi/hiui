@@ -9,6 +9,8 @@ import uuidv4 from 'uuid/v4'
 import CustomTreeNode from './customTreeNode'
 import './style/index.scss'
 
+const PREFIX = 'hi-tree'
+
 const getMatchedNodes = (data, searchValue, matchedNodes = []) => {
   data.forEach((item) => {
     if (searchValue !== '' && item.title.includes(searchValue)) {
@@ -32,7 +34,16 @@ const getShowData = (data, matchedIds, filtedIds) => {
   }
   return data
 }
-const PREFIX = 'hi-editor-tree'
+
+const getDefaultIds = (data, collections = []) => {
+  data.forEach((d) => {
+    if (d.children) {
+      collections.push(d.id)
+      getDefaultIds(d.children, collections)
+    }
+  })
+  return collections
+}
 
 const Tree = (props) => {
   const {
@@ -41,6 +52,7 @@ const Tree = (props) => {
     data,
     expandedIds,
     defaultExpandedIds,
+    defaultExpandAll = false,
     filter = false,
     contextMenu,
     editable,
@@ -51,7 +63,6 @@ const Tree = (props) => {
   } = props
   const { placeholder = '关键词搜索', emptyContent = '未找到搜索结果' } = searchConfig
   const [cacheData, updateCacheData] = useState(data)
-
   useEffect(() => {
     updateCacheData(data)
   }, [data])
@@ -64,7 +75,9 @@ const Tree = (props) => {
   const [searchValue, setSearchValue] = useState('')
   const [matchedNodes, setMatchedNodes] = useState([])
   const [filteredIds, setFilteredIds] = useState([])
-  const [expanded, setExpanded] = useState(expandedIds || defaultExpandedIds || [])
+  const [expanded, setExpanded] = useState(
+    expandedIds || defaultExpandedIds || (defaultExpandAll && getDefaultIds(data)) || []
+  )
 
   useEffect(() => {
     if (expandedIds) {
