@@ -2,7 +2,7 @@ import React, { Component, forwardRef } from 'react'
 import locales from '../locales'
 
 export const ThemeContext = React.createContext('hiui-blue')
-export const LocaleContext = React.createContext('zh-CN')
+export const LocaleContext = React.createContext('zh-Hans')
 /**
  * 临时解决 notice组件获取不到theme的问题
  */
