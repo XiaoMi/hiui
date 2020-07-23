@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback, memo } from 'react'
 import classNames from 'classnames'
 import './style'
 import useClickOutside from '../popper/utils/useClickOutside'
+import { setOptions } from 'marked'
 const prefixCls = 'hi-slider'
 const noop = () => { }
 const Slider = memo(
@@ -30,13 +31,15 @@ const Slider = memo(
     const [startPosition, setStartPosition] = useState(0)
     const [positionStep, setPositionStep] = useState(1)
     const [showTooltip, setShowTooltip] = useState(false)
-
+    const [isMove, setIsMove] = useState(false)
+    const [isClick, setIsClick] = useState(false)
     const sliderRef = useRef()
     const tooltipRef = useRef()
 
     useClickOutside(e => {
       setShowTooltip(false)
       setCanKeyDown(false)
+      setIsClick(false)
     }, document.querySelector(`#${prefixCls}`))
 
     useEffect(() => {
@@ -87,7 +90,6 @@ const Slider = memo(
         console.log(_value)
         if (_value < (min || 0)) {
           _value = (min || 0)
-        
         } else if (_value > (max || 100)) {
           _value = (max || 100)
         }
@@ -102,6 +104,7 @@ const Slider = memo(
     const onMouseMove = useCallback(
       (e) => {
         if (canMove) {
+          setIsMove(true)
           const parent = sliderRef.current
 
           const {
@@ -137,7 +140,6 @@ const Slider = memo(
           changeValue = (min || 0) + Math.round((((max || 100) - (min || 0)) * position) / 100)
           if (changeValue < (min || 0)) {
             changeValue = (min || 0)
-          
           } else if (changeValue > (max || 100)) {
             changeValue = (max || 100)
           }
@@ -174,6 +176,7 @@ const Slider = memo(
         setStartPosition(newRightPosition)
         setShowTooltip(false)
         setCanMove(false)
+        setIsMove(false)
       },
       [newRightPosition]
     )
@@ -190,7 +193,7 @@ const Slider = memo(
         }
         const { clientX, clientY } = e
         setCanMove(true)
-
+        setIsMove(true)
         if (vertical) {
           setStartY(clientY)
         } else {
@@ -203,6 +206,7 @@ const Slider = memo(
     // 鼠标移入展示tooltip
     const onMouseEnter = useCallback(
       (e) => {
+        // setIsMove(false)
         setShowTooltip(true)
       },
       [value]
@@ -211,6 +215,7 @@ const Slider = memo(
     // 点击滑块
     const onHandleClick = useCallback((e) => {
       e.stopPropagation()
+      setIsClick(true)
       setShowTooltip(true)
       setCanKeyDown(true)
     }, [])
@@ -295,6 +300,11 @@ const Slider = memo(
           className={`${prefixCls}__handle ${prefixCls}__handle-1`}
           onMouseDown={onMouseDown}
           onMouseEnter={onMouseEnter}
+          onMouseLeave={() => {
+            if (!isMove && !isClick) {
+              setShowTooltip(false)
+            }
+          }}
           ref={tooltipRef}
           onClick={onHandleClick}
           style={{

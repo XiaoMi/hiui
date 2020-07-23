@@ -24,14 +24,16 @@ class Demo extends React.Component {
   }
 
   onChange(e){
-    console.log(e.target.value)
+    let valueCache = e.target.value.replace(/[^0-9]/g, '')
     this.setState({
-      valueCache:e.target.value
+      valueCache
     })
   }
   
   handleInput(e){
+    
     let value  = e.target.value
+    console.log(value)
     const {min,max} = this.state
     if(value<min){
       value = min
@@ -64,7 +66,7 @@ class Demo extends React.Component {
         </Col>
         <Col span={2}>
           <input
-
+           
             ref={node=>this.input=node}
             style={{ margin: '0 16px',width:80,height:30,boxSizing:'border-box',border:'1px solid #d8d8d8',outline:'none' }}
             value={valueCache}
@@ -99,9 +101,10 @@ class Demo extends React.Component {
       }
     
       onChange(e){
-        console.log(e.target.value)
+        let valueCache = e.target.value.replace(/[^0-9]/g, '')
+      
         this.setState({
-          valueCache:e.target.value
+          valueCache
         })
       }
 
