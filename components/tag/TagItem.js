@@ -22,6 +22,7 @@ const TagItem = ({
   hoverIndex = -1,
   shape = 'round'
 }) => {
+  console.log(editable, hoverIndex, id)
   const tagStyle = color
     ? {
       background: appearance === 'default' ? color : '',

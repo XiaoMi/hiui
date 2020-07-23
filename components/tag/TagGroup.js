@@ -53,7 +53,6 @@ const TagGroup = ({
   // 关闭 tags
   const handleClose = useCallback((tagId) => {
     const index = data.map(item => item.tagId).indexOf(tagId)
-    console.log(index)
     if (index !== -1) {
       onDelete(data[index], index)
     }
@@ -96,6 +95,10 @@ const TagGroup = ({
     setEditInputValue(e.target.value)
   }, [])
 
+  const getTag = useCallback((item) => {
+    return <Tag key={item.tagId} id={item.tagId} editable={item.editable} closable={item.closable} handleClose={handleClose} onDoubleClick={onDoubleClick} isLongTag={item.isLongTag} hoverIndex={hoverIndex} onMouseEnter={(id) => setHoverIndex(id)} onMouseLeave={() => setHoverIndex(-1)}>{item.title}</Tag>
+  }, [hoverIndex, handleClose, onDoubleClick])
+
   const renderItem = useCallback((item) => {
     item.isLongTag = item.title.length > 20
     if (editInputId === item.tagId) {
@@ -118,19 +121,7 @@ const TagGroup = ({
         {getTag(item)}
       </Tooltip> : getTag(item)
     }
-  }, [editInputId, editInputValue, data, hoverIndex])
-
-  // 移入移除 样式
-  const onMouseEnter = useCallback((id) => {
-    setHoverIndex(id)
-  }, [])
-  const onMouseLeave = useCallback(() => {
-    setHoverIndex(-1)
-  }, [])
-
-  const getTag = useCallback((item) => {
-    return <Tag key={item.tagId} id={item.tagId} editable={item.editable} closable={item.closable} handleClose={handleClose} onDoubleClick={onDoubleClick} isLongTag={item.isLongTag} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} hoverIndex={hoverIndex}>{item.title}</Tag>
-  }, [data, hoverIndex])
+  }, [editInputId, editInputValue, handleEditInputChange, getTag, handleEditInputConfirm])
 
   const tagGroupClass = {
     'hi-tag-group-editable': editable
