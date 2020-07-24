@@ -31,6 +31,8 @@ const Slider = memo(
     const [startPosition, setStartPosition] = useState(0)
     const [positionStep, setPositionStep] = useState(1)
     const [showTooltip, setShowTooltip] = useState(false)
+    const [firstTime,setFirstTime] = useState(0)
+    const [lastTime,setLastTime] = useState(0)
     const [isMove, setIsMove] = useState(false)
     const [isClick, setIsClick] = useState(false)
     const sliderRef = useRef()
@@ -62,7 +64,7 @@ const Slider = memo(
       } else {
         window.onkeydown = null
       }
-    }, [canKeyDown, value])
+    }, [canKeyDown, onKeyDown])
 
     useEffect(() => {
       if (initValue !== undefined) {
@@ -70,7 +72,16 @@ const Slider = memo(
         setValue(_value)
       }
     }, [initValue])
-
+    // useEffect(()=>{
+    //   if(isMove){
+    //     setIsClick(false)
+    //   }
+    //   if(isClick){
+    //     setIsMove(false)
+    //   }
+    // },[
+    //   isMove,isClick
+    // ])
     const getValue = useCallback((value) => {
       if (value === undefined) {
         return value
@@ -87,7 +98,6 @@ const Slider = memo(
     const onKeyDown = useCallback((e) => {
       if (e.keyCode === 37 || e.keyCode === 39) {
         let _value = e.keyCode === 37 ? value - step : value + step
-        console.log(_value)
         if (_value < (min || 0)) {
           _value = (min || 0)
         } else if (_value > (max || 100)) {
@@ -153,7 +163,18 @@ const Slider = memo(
       },
       [canMove, positionStep, startPosition]
     )
-
+    const onMouseUp = useCallback(
+      (e) => {
+        e.stopPropagation()
+        console.log('MouseUp')
+        setStartPosition(newRightPosition)
+        setShowTooltip(false)
+        setCanMove(false)
+        // setIsClick(false)
+        setIsMove(false)
+      },
+      [newRightPosition]
+    )
     useEffect(() => {
       if (disabled) {
         return
@@ -168,18 +189,11 @@ const Slider = memo(
     }, [
       canMove,
       disabled,
-      newRightPosition
+      onMouseUp,
+      onMouseMove
     ])
 
-    const onMouseUp = useCallback(
-      (e) => {
-        setStartPosition(newRightPosition)
-        setShowTooltip(false)
-        setCanMove(false)
-        setIsMove(false)
-      },
-      [newRightPosition]
-    )
+
     // 获取 track 宽度
     const getTrackWidth = useCallback((value) => {
       return ((value - (min || 0)) / ((max || 100) - (min || 0))) * 100
@@ -188,12 +202,14 @@ const Slider = memo(
     // 鼠标落下
     const onMouseDown = useCallback(
       (e) => {
+        console.log('mouseDown')
         if (disabled) {
           return
         }
         const { clientX, clientY } = e
         setCanMove(true)
         setIsMove(true)
+        setIsClick(false)
         if (vertical) {
           setStartY(clientY)
         } else {
@@ -215,6 +231,7 @@ const Slider = memo(
     // 点击滑块
     const onHandleClick = useCallback((e) => {
       e.stopPropagation()
+      console.log('click')
       setIsClick(true)
       setShowTooltip(true)
       setCanKeyDown(true)
@@ -301,6 +318,7 @@ const Slider = memo(
           onMouseDown={onMouseDown}
           onMouseEnter={onMouseEnter}
           onMouseLeave={() => {
+            console.log(isMove, isClick)
             if (!isMove && !isClick) {
               setShowTooltip(false)
             }
@@ -312,7 +330,7 @@ const Slider = memo(
               !vertical
                 ? newRightPosition.toFixed(4)
                 : (100 - newRightPosition).toFixed(4)
-            }%`
+              }%`
           }}
           tabIndex='0'
         >
