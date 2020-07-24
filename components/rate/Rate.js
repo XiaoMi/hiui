@@ -129,9 +129,6 @@ function ToolTipWrapper ({ children, title }) {
 }
 
 function Icon ({ value, currentValue, disabled, useEmoji, allowHalf, character, renderCharacter, readOnly }) {
-  if (currentValue > 5) {
-    currentValue = 5
-  }
   if (renderCharacter) {
     return renderCharacter(currentValue, value)
   }
@@ -139,6 +136,9 @@ function Icon ({ value, currentValue, disabled, useEmoji, allowHalf, character, 
     return character
   }
   if (useEmoji) {
+    if (currentValue > 5) {
+      currentValue = 5
+    }
     const Emojis = [
       Icons.EmojiOne,
       Icons.EmojiTwo,
