@@ -31,8 +31,8 @@ const Slider = memo(
     const [startPosition, setStartPosition] = useState(0)
     const [positionStep, setPositionStep] = useState(1)
     const [showTooltip, setShowTooltip] = useState(false)
-    const [firstTime,setFirstTime] = useState(0)
-    const [lastTime,setLastTime] = useState(0)
+    const [firstTime, setFirstTime] = useState(0)
+    const [lastTime, setLastTime] = useState(0)
     const [isMove, setIsMove] = useState(false)
     const [isClick, setIsClick] = useState(false)
     const sliderRef = useRef()
@@ -193,7 +193,6 @@ const Slider = memo(
       onMouseMove
     ])
 
-
     // 获取 track 宽度
     const getTrackWidth = useCallback((value) => {
       return ((value - (min || 0)) / ((max || 100) - (min || 0))) * 100
@@ -330,7 +329,7 @@ const Slider = memo(
               !vertical
                 ? newRightPosition.toFixed(4)
                 : (100 - newRightPosition).toFixed(4)
-              }%`
+            }%`
           }}
           tabIndex='0'
         >
