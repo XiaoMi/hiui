@@ -201,7 +201,7 @@ const Slider = memo(
     // 鼠标落下
     const onMouseDown = useCallback(
       (e) => {
-        console.log('mouseDown')
+        setFirstTime(new Date().getTime())
         if (disabled) {
           return
         }
