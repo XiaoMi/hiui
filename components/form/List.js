@@ -1,15 +1,40 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 
 import FormContext from './FormContext'
-import { FILEDS_REMOVE } from './FormReducer'
+import { FILEDS_REMOVE, FILEDS_INIT_LIST, FILEDS_UPDATE } from './FormReducer'
 const List = props => {
-  const { dispatch } = useContext(FormContext)
+  const { dispatch, formState } = useContext(FormContext)
   const { children, name } = props
-
   const [listCount, setListCount] = useState([])
+  const { listValues } = formState
+
+  useEffect(() => {
+    // 初始话listName列表
+    dispatch({ type: FILEDS_INIT_LIST, payload: name })
+  }, [])
+  // 设置默认值的处理
+  useEffect(() => {
+    const cachelistCount = []
+    const { fields } = formState
+
+    const _fields = fields.filter(item => {
+      return item.listname !== name
+    })
+    const values = listValues[name] ? listValues[name] : []
+    values.forEach((value, index) => {
+      const id = parseInt((Math.random() * 9 + 1) * 100000)
+      cachelistCount.push({
+        field: name + '-' + id,
+        listItemValue: value,
+        sort: index
+      })
+    })
+    dispatch({ type: FILEDS_UPDATE, payload: _fields })
+    setListCount(cachelistCount)
+  }, [listValues])
 
   if (typeof children !== 'function') {
-    warning(false, 'Form.List only accepts function as children.')
+    console.warning('Form.List only accepts function as children.')
     return null
   }
 
@@ -17,7 +42,8 @@ const List = props => {
     const id = parseInt((Math.random() * 9 + 1) * 100000)
     setListCount(
       listCount.concat({
-        field: name + '-' + id
+        field: name + '-' + id,
+        sort: listCount.length
       })
     )
   }

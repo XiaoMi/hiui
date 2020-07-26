@@ -51,7 +51,9 @@ const FormItem = props => {
     field: propsField,
     valuePropName = 'value',
     contentPosition = 'center',
-    name
+    name,
+    listItemValue,
+    sort
   } = props
   const {
     showColon: shouldFormShowColon,
@@ -61,7 +63,7 @@ const FormItem = props => {
     }
   } = formProps || {}
   // 初始化FormItem的内容
-  const { fields } = formState
+  const { fields, listNames } = formState
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
   const getItemfield = () => {
@@ -75,30 +77,34 @@ const FormItem = props => {
   }
   const [field, setField] = useState(getItemfield())
   const [validating, setValidating] = useState(false)
+
   useEffect(() => {
     setField(getItemfield())
   }, [propsField])
   // 更新
-  const updateField = (_value, triggerType) => {
-    const childrenFiled = {
-      value: _value,
-      ...updateFieldInfoToReducer()
-    }
-    const _fields = _.cloneDeep(fields)
-    _fields.forEach(item => {
-      if (item.field === childrenFiled.field) {
-        Object.assign(item, childrenFiled)
+  const updateField = useCallback(
+    (_value, triggerType) => {
+      const childrenFiled = {
+        value: _value,
+        ...updateFieldInfoToReducer()
       }
-    })
-    const allValues = {}
-    _fields.forEach(item => {
-      const { field, value } = item
-      allValues[field] = value
-    })
-    dispatch({ type: FILEDS_UPDATE, payload: _fields })
-    triggerType === 'onChange' &&
-      internalValuesChange({ [field]: _value }, allValues)
-  }
+      const _fields = _.cloneDeep(fields)
+      _fields.forEach(item => {
+        if (item.field === childrenFiled.field) {
+          Object.assign(item, childrenFiled)
+        }
+      })
+      const allValues = {}
+      _fields.forEach(item => {
+        const { field, value } = item
+        allValues[field] = value
+      })
+      dispatch({ type: FILEDS_UPDATE, payload: _fields })
+      triggerType === 'onChange' &&
+        internalValuesChange({ [field]: _value }, allValues)
+    },
+    [fields]
+  )
 
   const resetValidate = useCallback((value = '') => {
     // 清空数据
@@ -161,29 +167,46 @@ const FormItem = props => {
       validate,
       propsField,
       listname,
+      sort,
       _type
     }
   }
+  // initValue
   useEffect(() => {
-    if (field) {
+    const isExist = fields.some(item => {
+      return item.field === field
+    })
+    if (field && !isExist) {
+      let value =
+        initialValues && initialValues[field] ? initialValues[field] : ''
+      if (_type === 'list' && listItemValue) {
+        value = listItemValue[name] ? listItemValue[name] : listItemValue
+      }
       dispatch({
         type: FILEDS_INIT,
         payload: {
-          value:
-            initialValues && initialValues[field] ? initialValues[field] : '',
+          value: value,
           ...updateFieldInfoToReducer()
         }
       })
-      valueInit()
+      setValue(value)
     }
     return () => {
       _type !== 'list' && dispatch({ type: FILEDS_REMOVE, payload: field })
     }
-  }, [])
+  }, [field])
 
-  const valueInit = useCallback(() => {
-    setValue(initialValues && initialValues[field] ? initialValues[field] : '')
-  }, [initialValues])
+  // 处理Item值的更新问题
+
+  // useEffect(
+  //   state => {
+  //     if (listItemValue) {
+  //       const value = listItemValue[name] ? listItemValue[name] : listItemValue
+  //       setValue(value)
+  //     }
+  //   },
+  //   [listItemValue]
+  // )
   // 判断是否含有Rules
   const isRequired = useCallback(() => {
     let rules = getRules()
@@ -239,6 +262,7 @@ const FormItem = props => {
   // jsx渲染方式
   const renderChildren = () => {
     const { component, componentProps } = props
+
     let _value = value
     if (_type === 'list') {
       const _fields = _.cloneDeep(fields)

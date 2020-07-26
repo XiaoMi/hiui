@@ -2,6 +2,8 @@ export const FILEDS_INIT = 'FILEDS_INIT'
 export const FILEDS_UPDATE = 'FILEDS_UPDATE'
 export const FILEDS_UPDATE_VALUE = 'FILEDS_UPDATE_VALUE'
 export const FILEDS_REMOVE = 'FILEDS_REMOVE'
+export const FILEDS_INIT_LIST = 'FILEDS_INIT_LIST'
+export const FILEDS_UPDATE_LIST = 'FILEDS_UPDATE_LIST'
 const FormReducer = (state, action) => {
   switch (action.type) {
     case FILEDS_INIT:
@@ -23,6 +25,13 @@ const FormReducer = (state, action) => {
         )
       })
       return Object.assign({}, { ...state }, { fields: _fields })
+    case FILEDS_INIT_LIST:
+      let { listNames } = state
+      !listNames.includes(action.payload) && listNames.push(action.payload)
+
+      return Object.assign({}, { ...state }, { listNames: listNames })
+    case FILEDS_UPDATE_LIST:
+      return Object.assign({}, { ...state }, { listValues: action.payload })
     default:
       return state
   }

@@ -2,60 +2,9 @@ import React, { useEffect, useCallback, useReducer, forwardRef } from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-import FormReducer, { FILEDS_UPDATE } from './FormReducer'
+import FormReducer, { FILEDS_UPDATE, FILEDS_UPDATE_LIST } from './FormReducer'
 import FormContext from './FormContext'
-const tranformListValues = (field, listNestValues, value, listname) => {
-  const key = field.split('#')[1]
-  const keyName = field.split('#')[0]
-  if (listNestValues[listname][keyName]) {
-    listNestValues[listname][keyName] = _.merge(
-      listNestValues[listname][keyName],
-      {
-        [key]: value
-      }
-    )
-  } else {
-    listNestValues[listname][keyName] = { [key]: value }
-  }
-}
-// 转换输出的值
-const transformValues = (allvalue, fields) => {
-  let tranformValues = {}
-  let listNestValues = {}
-  // 先分类
-  fields.forEach(filedItem => {
-    const { field, propsField, _type, listname } = filedItem
-    if (_type === 'list') {
-      if (propsField !== field) {
-        listNestValues[listname] = listNestValues[listname] || {}
-        tranformListValues(field, listNestValues, allvalue[field], listname)
-        Object.keys(listNestValues).forEach(key => {
-          let arr = []
-          Object.keys(listNestValues[key]).forEach(item => {
-            arr.push(listNestValues[key][item])
-          })
-          tranformValues[key] = arr
-        })
-        return
-      }
-      if (tranformValues[listname]) {
-        tranformValues[listname].push(allvalue[field])
-      } else {
-        tranformValues[listname] = [allvalue[field]]
-      }
-    } else {
-      if (Array.isArray(propsField)) {
-        const chainKeys = propsField.reduceRight((pre, next) => {
-          return { [next]: pre }
-        }, allvalue[field])
-        tranformValues = _.merge(tranformValues, chainKeys)
-      } else {
-        tranformValues = _.merge(tranformValues, { [field]: allvalue[field] })
-      }
-    }
-  })
-  return tranformValues
-}
+import { transformValues } from './utils'
 
 const getClassNames = props => {
   const { labelPlacement, labelPosition, placement, inline, readOnly } = props
@@ -83,9 +32,11 @@ const InternalForm = props => {
   } = props
   const [state, dispatch] = useReducer(FormReducer, {
     fields: [],
+    listNames: [],
+    listValues: {},
     ...props
   })
-  const { fields } = state
+  const { fields, listNames, listValues } = state
   // 用户手动设置表单数据
   const setFieldsValue = useCallback(
     values => {
@@ -99,9 +50,37 @@ const InternalForm = props => {
         }
       })
       dispatch({ type: FILEDS_UPDATE, payload: _fields })
+      // 处理 list value
+      Object.keys(values).forEach(key => {
+        listNames.includes(key) &&
+          dispatch({
+            type: FILEDS_UPDATE_LIST,
+            payload: Object.assign(
+              {},
+              { ...listValues },
+              { [key]: values[key] }
+            )
+          })
+      })
     },
-    [fields]
+    [fields, listValues]
   )
+  // 设置初始化的值
+  useEffect(() => {
+    // 处理 list value
+    initialValues &&
+      Object.keys(initialValues).forEach(key => {
+        listNames.includes(key) &&
+          dispatch({
+            type: FILEDS_UPDATE_LIST,
+            payload: Object.assign(
+              {},
+              { ...listValues },
+              { [key]: initialValues[key] }
+            )
+          })
+      })
+  }, [])
   // 转换值的输出
   const internalValuesChange = useCallback(
     (changeValues, allValues) => {
@@ -180,6 +159,7 @@ const InternalForm = props => {
           ? validateNames.includes(field)
           : true
       })
+
       _fields.forEach(fieldChild => {
         const { field, value } = fieldChild
         // 对指定的字段进行校验  其他字段过滤不校验

@@ -18,12 +18,9 @@ class Demo extends React.Component {
     super()
     this.form = React.createRef()
     this.state = {
-      form: {
-        name: '',
-        region: '',
-        count: ''
+      initialValues:{
+        testList:['第一项','第二项']
       },
-      checkedIndex: -1,
       rules: {
         name: {
           required: true,
@@ -84,14 +81,13 @@ class Demo extends React.Component {
     const FormList = Form.List
     const FormSubmit = Form.Submit
     const FormReset = Form.Reset
-    const { form, checkedIndex } = this.state
-
+    const {initialValues} = this.state
     return (
         <Row>
         <Col span={12}>
           <Form
+            initialValues={initialValues}
             ref={this.form}
-            model={form}
             rules={this.state.rules}
             labelWidth='80'
             labelPlacement='right'
@@ -172,6 +168,12 @@ class Demo extends React.Component {
               >
                 重置
               </FormReset>
+              <Button type="primary" appearance="link" onClick={()=>{
+                console.log('填充表单')
+                this.form.current.setFieldsValue({
+                  testList:[1,2,3]
+                })
+            }}>fill Form</Button>
             </FormItem>
           </Form>
         </Col>
