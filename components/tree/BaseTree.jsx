@@ -8,7 +8,7 @@ import useCheckable from './hooks/useCheckable'
 import useExpand from './hooks/useExpand'
 import { getAncestorIds } from './util'
 
-const PREFIX = 'hi-editor-tree'
+const PREFIX = 'hi-tree'
 
 const BaseTree = ({
   data,

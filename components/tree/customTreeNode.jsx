@@ -59,12 +59,7 @@ const CustomTreeNode = ({
       </div>
     )
   } else {
-    if (
-      searchValue !== '' &&
-      searchable &&
-      typeof node.title === 'string' &&
-      node.title.includes(searchValue)
-    ) {
+    if (searchValue !== '' && searchable && typeof node.title === 'string' && node.title.includes(searchValue)) {
       const index = node.title.indexOf(searchValue)
       const beforeStr = node.title.substr(0, index)
       const afterStr = node.title.substr(index + searchValue.length)
@@ -99,10 +94,12 @@ const CustomTreeNode = ({
             'title__text--selected': selected
           })}
           onClick={() => {
-            onSelectNode(node)
+            if (!node.disabled) {
+              onSelectNode(node)
+            }
           }}
           onContextMenu={(e) => {
-            if (editable) {
+            if (editable && !node.disabled) {
               e.preventDefault()
               setMenuVisible(node.id)
             }

@@ -45,11 +45,9 @@ class Demo extends React.Component {
       <div style={{width:500}}>
         <Tree
           defaultExpandAll
-          searchable={true}
+          searchable
+          filter
           data={this.state.treeData}
-          onChange={data => {console.log('Tree data:', data)}}
-          highlightable
-          onClick={(item) => console.log('------click node', item)}
         />
       </div>
     )

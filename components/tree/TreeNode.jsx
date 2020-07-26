@@ -85,6 +85,7 @@ const TreeNode = ({ node }) => {
       <Checkbox
         indeterminate={semiChecked.includes(node.id)}
         checked={checked.includes(node.id)}
+        disabled={node.disabled}
         onChange={(e) => {
           onCheckNode(node, e.target.checked, checked)
         }}
@@ -99,10 +100,11 @@ const TreeNode = ({ node }) => {
       return (
         <div
           ref={treeNodeRef}
-          draggable={draggable}
+          draggable={!node.disabled && draggable}
           className={Classnames('tree-node__title', {
             [`tree-node__title--${direction}`]: direction,
-            [`tree-node__title--draggable`]: draggable
+            [`tree-node__title--draggable`]: draggable,
+            [`tree-node__title--disabled`]: node.disabled
           })}
           onDragStart={(e) => {
             e.stopPropagation()
@@ -152,7 +154,7 @@ const TreeNode = ({ node }) => {
             e.preventDefault()
             e.stopPropagation()
             setDirection(null)
-            if (onDrop) {
+            if (onDrop && dragId !== id) {
               onDrop({ targetId: id, sourceId: Number(e.dataTransfer.getData('treeNode', id)), direction })
             }
           }}
@@ -182,8 +184,8 @@ const TreeNode = ({ node }) => {
         (node.children && node.children.length) || (onLoadChildren && !node.isLeaf)
           ? node.depth
           : apperance !== 'default'
-            ? node.depth
-            : (node.depth && node.depth + 1) || 1
+          ? node.depth
+          : (node.depth && node.depth + 1) || 1
       )}
       {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
       {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf)) &&
