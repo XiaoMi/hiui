@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import debounce from 'lodash/debounce'
 import cloneDeep from 'lodash/cloneDeep'
 import Popper from '../popper'
-import SelectInput from './SelectInput'
+import SelectInput from './SelectInput-new'
 import SelectDropdown from './SelectDropdown'
 import Provider from '../context'
 import fetchJsonp from 'fetch-jsonp'
@@ -75,7 +74,6 @@ class Select extends Component {
 
     const searchable = this.getSearchable()
     this.debouncedFilterItems = debounce(this.onFilterItems.bind(this), 300)
-    this.clickOutsideHandel = this.clickOutside.bind(this)
 
     this.state = {
       searchable,
@@ -104,27 +102,6 @@ class Select extends Component {
     if (this.isRemote() && this.props.autoload) {
       this.remoteSearch()
     }
-  }
-
-  componentDidMount () {
-    window.addEventListener('click', this.clickOutsideHandel)
-    this.resetFocusedIndex()
-  }
-
-  componentWillUnmount () {
-    window.removeEventListener('click', this.clickOutsideHandel)
-  }
-
-  clickOutside (e) {
-    const selectInput = ReactDOM.findDOMNode(this.selectInput)
-    if (
-      (selectInput && selectInput.contains(e.target)) ||
-      (e.target.tagName === 'INPUT' &&
-        e.target.className.includes('hi-select__dropdown__searchbar--input'))
-    ) {
-      return
-    }
-    this.hideDropdown()
   }
 
   componentWillReceiveProps (nextProps) {
@@ -199,7 +176,7 @@ class Select extends Component {
     this.onClickOption(item, focusedIndex)
   }
 
-  onChange (selectedItems, changedItems, callback, cacheSelectedItems) {
+  onChange (selectedItems, changedItems, callback) {
     const { onChange, value } = this.props
     value === undefined &&
       this.setState(
@@ -283,29 +260,31 @@ class Select extends Component {
         keyword: ''
       },
       () => {
-        this.selectInput.clearInput()
+        // 修改了方式
+        // this.selectInput.clearInput()
       }
     )
   }
 
   handleInputClick = e => {
     let { dropdownShow } = this.state
+    console.log('dropdownShow', dropdownShow)
     if (dropdownShow) {
       this.hideDropdown()
       return
     }
 
-    !this.getSearchable() && this.selectInput.focus()
     if (this.props.disabled) {
       return
     }
 
-    if (dropdownShow === false) {
+    if (!dropdownShow) {
       this.showDropdown()
     }
   }
 
   hideDropdown () {
+    console.log('关闭', 123)
     this.state.dropdownShow === true &&
       this.setState(
         { dropdownShow: false, cacheSelectedItems: this.state.selectedItems },
@@ -316,7 +295,8 @@ class Select extends Component {
   }
 
   showDropdown () {
-    this.state.dropdownShow === false && this.setState({ dropdownShow: true })
+    console.log('show')
+    !false && this.setState({ dropdownShow: true })
   }
 
   deleteItem (item) {
@@ -331,7 +311,7 @@ class Select extends Component {
       selectedItems,
       item,
       () => {
-        !this.getSearchable() && this.selectInput.focus()
+        // !this.getSearchable() && this.selectInput.focus()
       },
       selectedItems
     )
@@ -614,15 +594,15 @@ class Select extends Component {
             disabled={disabled}
             searchable={searchable}
             clearable={clearable}
-            show={dropdownShow && this.props.open}
             dropdownShow={dropdownShow}
             placeholder={placeholder}
-            selectedItems={selectedItems}
+            selectedItems={selectedItems || []}
             dropdownItems={dropdownItems}
             multipleMode={multipleWrap}
             container={this.selectInputContainer}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
             onClick={() => {
+              console.log('click', this.props.open)
               if (this.props.open) {
                 this.handleInputClick()
               }
@@ -638,7 +618,7 @@ class Select extends Component {
         </div>
         {children}
         <Popper
-          show={dropdownShow && this.props.open}
+          show={dropdownShow}
           attachEle={this.selectInputContainer}
           zIndex={1050}
           topGap={5}
@@ -646,41 +626,42 @@ class Select extends Component {
           preventOverflow={preventOverflow}
           className='hi-select__popper'
           placement={placement || 'top-bottom-start'}
+          onClickOutside={() => {
+            this.hideDropdown()
+          }}
         >
-          {dropdownShow && this.props.open && (
-            <SelectDropdown
-              noFoundTip={emptyContent}
-              localeMap={localeDatas.select || {}}
-              mode={type}
-              searchPlaceholder={searchPlaceholder}
-              theme={theme}
-              onBlur={onBlur}
-              onFocus={onFocus}
-              isOnSearch={onSearch || dataSource}
-              onSearch={this.debouncedFilterItems.bind(this)}
-              searchable={searchable}
-              showCheckAll={showCheckAll}
-              checkAll={this.checkAll.bind(this)}
-              loading={fetching}
-              focusedIndex={focusedIndex}
-              filterOption={filterOption}
-              matchFilter={this.matchFilter.bind(this)}
-              setFocusedIndex={this.setFocusedIndex.bind(this)}
-              show={dropdownShow && this.props.open}
-              optionWidth={optionWidth}
-              selectInputWidth={selectInputWidth}
-              onEnterSelect={this.onEnterSelect.bind(this)}
-              moveFocusedIndex={this.moveFocusedIndex.bind(this)}
-              dropdownItems={
-                dataSource && this.state.keyword === ''
-                  ? cacheSelectedItems
-                  : dropdownItems
-              }
-              selectedItems={selectedItems}
-              dropdownRender={render}
-              onClickOption={this.onClickOption.bind(this)}
-            />
-          )}
+          <SelectDropdown
+            emptyContent={emptyContent}
+            localeMap={localeDatas.select || {}}
+            mode={type}
+            searchPlaceholder={searchPlaceholder}
+            theme={theme}
+            onBlur={onBlur}
+            onFocus={onFocus}
+            isOnSearch={onSearch || dataSource}
+            onSearch={this.debouncedFilterItems.bind(this)}
+            searchable={searchable}
+            showCheckAll={showCheckAll}
+            checkAll={this.checkAll.bind(this)}
+            loading={fetching}
+            focusedIndex={focusedIndex}
+            filterOption={filterOption}
+            matchFilter={this.matchFilter.bind(this)}
+            setFocusedIndex={this.setFocusedIndex.bind(this)}
+            show={dropdownShow}
+            optionWidth={optionWidth}
+            selectInputWidth={selectInputWidth}
+            onEnterSelect={this.onEnterSelect.bind(this)}
+            moveFocusedIndex={this.moveFocusedIndex.bind(this)}
+            dropdownItems={
+              dataSource && this.state.keyword === ''
+                ? cacheSelectedItems
+                : dropdownItems
+            }
+            selectedItems={selectedItems}
+            dropdownRender={render}
+            onClickOption={this.onClickOption.bind(this)}
+          />
         </Popper>
       </div>
     )

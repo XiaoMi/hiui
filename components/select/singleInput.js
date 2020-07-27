@@ -1,0 +1,104 @@
+import React, { useState, useEffect } from 'react'
+import classNames from 'classnames'
+// 单选输入框
+const SingleInput = props => {
+  let {
+    placeholder,
+    dropdownShow,
+    disabled,
+    clearable,
+    onFocus,
+    theme,
+    onBlur,
+    onClick,
+    selectedItems: propsSelectItem
+  } = props
+  const [cacheselectedItems, setCacheselectedItems] = useState(
+    propsSelectItem || []
+  )
+  useEffect(() => {
+    setCacheselectedItems(propsSelectItem)
+  }, [propsSelectItem])
+
+  let icon = dropdownShow ? 'up' : 'down'
+
+  let selectedItems =
+    propsSelectItem.length > 0 ? propsSelectItem : cacheselectedItems
+
+  placeholder = selectedItems.length > 0 ? selectedItems[0].title : placeholder
+
+  const handleKeyDown = evt => {
+    if (evt.keyCode === 13) {
+      props.onEnterSelect()
+    }
+
+    if (evt.keyCode === 38) {
+      evt.preventDefault()
+      props.moveFocusedIndex('up')
+    }
+    if (evt.keyCode === 40) {
+      evt.preventDefault()
+      props.moveFocusedIndex('down')
+    }
+  }
+  const handleClear = e => {
+    e.stopPropagation()
+    setCacheselectedItems([])
+    props.onClear()
+  }
+
+  return (
+    <div
+      className={classNames(
+        'hi-select__input',
+        'single-value',
+        `theme__${theme}`,
+        { disabled }
+      )}
+      onClick={onClick}
+    >
+      <div
+        className={classNames('hi-select__input--item', {
+          'hi-select__hide': !(!dropdownShow && selectedItems.length > 0)
+        })}
+      >
+        <div className='hi-select__input--item__name'>
+          {selectedItems[0] && selectedItems[0].title}
+        </div>
+      </div>
+      {(dropdownShow || selectedItems.length === 0) && (
+        <div
+          className={classNames('hi-select__input--search', {
+            'hi-select__input--search--value': selectedItems.length > 0
+          })}
+        >
+          <input
+            type='text'
+            value={selectedItems.length > 0 ? placeholder : ''}
+            placeholder={placeholder}
+            onKeyDown={handleKeyDown}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            readOnly
+          />
+        </div>
+      )}
+      <span className='hi-select__input--icon'>
+        <i
+          className={classNames(
+            `hi-icon icon-${icon} hi-select__input--icon__expand`,
+            { clearable: clearable && selectedItems.length > 0 }
+          )}
+        />
+        {clearable && selectedItems.length > 0 && (
+          <i
+            className={`hi-icon icon-close-circle hi-select__input--icon__close`}
+            onClick={handleClear.bind(this)}
+          />
+        )}
+      </span>
+    </div>
+  )
+}
+
+export default SingleInput
