@@ -26,16 +26,12 @@ const TagGroup = ({
     if (inputVisible) {
       newInputRef.current.focus()
     }
-  }, [
-    inputVisible
-  ])
+  }, [inputVisible])
   useEffect(() => {
     if (editInputId !== -1) {
       editInputRef.current.focus()
     }
-  }, [
-    editInputId
-  ])
+  }, [editInputId])
   // 新建 tags
   const handleInputConfirm = useCallback(() => {
     if (newInputValue) {
@@ -43,11 +39,9 @@ const TagGroup = ({
         title: newInputValue,
         tagId: new Date().getTime()
       }, data.length)
-      setInputVisible(false)
       setNewInputValue('')
-    } else {
-      setInputVisible(false)
     }
+    setInputVisible(false)
   }, [newInputValue, data])
 
   // 关闭 tags
@@ -78,14 +72,10 @@ const TagGroup = ({
   // 修改
   const handleEditInputConfirm = useCallback((e) => {
     const index = data.map(item => item.tagId).indexOf(editInputId)
-    if (editInputValue === '') {
-      onEdit(null, index)
-    } else {
-      onEdit({
-        tagId: editInputId,
-        title: editInputValue
-      }, index)
-    }
+    onEdit(editInputValue === '' ? null : {
+      tagId: editInputId,
+      title: editInputValue
+    }, index)
     setEditInputId(-1)
     setEditInputValue('')
   }, [editInputValue, data])
@@ -96,17 +86,28 @@ const TagGroup = ({
   }, [])
 
   const getTag = useCallback((item) => {
-    return <Tag key={item.tagId} id={item.tagId} editable={item.editable} closable={item.closable} handleClose={handleClose} onDoubleClick={onDoubleClick} isLongTag={item.isLongTag} hoverIndex={hoverIndex} onMouseEnter={(id) => setHoverIndex(id)} onMouseLeave={() => setHoverIndex(-1)}>{item.title}</Tag>
+    return <Tag
+      key={item.tagId}
+      id={item.tagId}
+      editable={item.editable}
+      closable={item.closable}
+      handleClose={handleClose}
+      onDoubleClick={onDoubleClick}
+      isLongTag={item.isLongTag}
+      hoverIndex={hoverIndex}
+      onMouseEnter={(id) => setHoverIndex(id)}
+      onMouseLeave={() => setHoverIndex(-1)}>{item.title}</Tag>
   }, [hoverIndex, handleClose, onDoubleClick])
 
-  const renderItem = useCallback((item) => {
+  const renderItem = useCallback((data) => {
+    const item = {...data}
     item.isLongTag = item.title.length > 20
     if (editInputId === item.tagId) {
       return <input
         ref={editInputRef}
         key={item.tagId}
         value={editInputValue}
-        className={`${prefixCls}-editable--input`}
+        className={`${prefixCls}__editable--input`}
         style={{ width: editActiveRef.current }}
         onChange={handleEditInputChange}
         onBlur={handleEditInputConfirm}
@@ -124,7 +125,7 @@ const TagGroup = ({
   }, [editInputId, editInputValue, handleEditInputChange, getTag, handleEditInputConfirm])
 
   const tagGroupClass = {
-    'hi-tag-group-editable': editable
+    'hi-tag-group__editable': editable
   }
 
   return <div className={classNames(prefixCls, tagGroupClass)} ref={tagGroupRef}>
@@ -139,7 +140,7 @@ const TagGroup = ({
       })
     }
     {
-      editable && !inputVisible && <span onClick={() => showInput()} className={`${prefixCls}-editable--plus`}>
+      editable && !inputVisible && <span onClick={() => showInput()} className={`${prefixCls}__editable--plus`}>
         <Icon name='plus' />
       </span>
     }
@@ -148,7 +149,7 @@ const TagGroup = ({
         ref={newInputRef}
         type='text'
         value={newInputValue || ''}
-        className={`${prefixCls}-editable--input`}
+        className={`${prefixCls}__editable--input`}
         onChange={(e) => {
           setNewInputValue(e.target.value)
         }}

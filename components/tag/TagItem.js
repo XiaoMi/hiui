@@ -22,7 +22,6 @@ const TagItem = ({
   hoverIndex = -1,
   shape = 'round'
 }) => {
-  console.log(editable, hoverIndex, id)
   const tagStyle = color
     ? {
       background: appearance === 'default' ? color : '',
@@ -54,9 +53,11 @@ const TagItem = ({
       onMouseLeave={onMouseLeave}
     >
       {isLongTag ? children.slice(0, 20) + '...' : children}
-      {closable && <button className='hi-tag__btn' type='button'><Icon name='close' onClick={(e) => {
-        handleClose(id)
-      }} /></button>}
+      {closable && <button className='hi-tag__btn' type='button'>
+        <Icon name='close' onClick={(e) => {
+          handleClose(id)
+        }} />
+      </button>}
     </span>
   )
 }

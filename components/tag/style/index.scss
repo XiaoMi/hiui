@@ -95,7 +95,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
 }
 
 .#{$prefixGroup} {
-  &.#{$prefixGroup}-editable {
+  &__editable {
     display: flex;
     align-items: center;
 
@@ -110,34 +110,34 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
         cursor: pointer;
       }
     }
-  }
 
-  .#{$prefixGroup}-editable--input {
-    margin: 0 4px;
-    border-radius: 11px;
-    border: 1px solid rgba(66, 132, 245, 1);
-    outline: none;
-    padding: 2px 8px;
-    font-size: 12px;
-    box-sizing: border-box;
-    display: inline-block;
-    height: 20px;
-  }
+    &--input {
+      margin: 0 4px;
+      border-radius: 11px;
+      border: 1px solid rgba(66, 132, 245, 1);
+      outline: none;
+      padding: 2px 8px;
+      font-size: 12px;
+      box-sizing: border-box;
+      display: inline-block;
+      height: 20px;
+    }
 
-  .#{$prefixGroup}-editable--plus {
-    width: 50px;
-    border-radius: 11px;
-    border: 1px dashed rgba(230, 231, 232, 1);
-    display: inline-block;
-    line-height: 18px;
-    text-align: center;
-    margin-left: 4px;
-    box-sizing: border-box;
-    cursor: pointer;
-    font-size: 12px;
+    &--plus {
+      width: 50px;
+      border-radius: 11px;
+      border: 1px dashed rgba(230, 231, 232, 1);
+      display: inline-block;
+      line-height: 18px;
+      text-align: center;
+      margin-left: 4px;
+      box-sizing: border-box;
+      cursor: pointer;
+      font-size: 12px;
 
-    &:hover {
-      border-color: #e0e1e2;
+      &:hover {
+        border-color: #e0e1e2;
+      }
     }
   }
 }
