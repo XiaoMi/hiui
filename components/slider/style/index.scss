@@ -13,7 +13,6 @@ $prefix: 'hi-slider' !default;
   height: 12px;
   margin: 10px 6px;
   padding: 4px 0;
-  // cursor: pointer;
 
   &.#{$prefix}--disabled {
     cursor: not-allowed;
@@ -24,7 +23,6 @@ $prefix: 'hi-slider' !default;
 
     .#{$prefix}__handle {
       border-color: #ccc;
-
 
       &:focus {
         box-shadow: none;
@@ -166,7 +164,8 @@ $prefix: 'hi-slider' !default;
     transform: translateX(-50%);
     user-select: none;
 
-    &:focus {
+    &:focus,
+    &--focus {
       box-shadow: 0 0 0 5px rgba(24, 144, 255, 0.12);
       outline: none;
     }
@@ -177,6 +176,33 @@ $prefix: 'hi-slider' !default;
     height: 4px;
     background: rgba(66, 132, 245, 1);
     border-radius: 2px;
+  }
+
+  .#{$prefix}__tooltip {
+    opacity: 0;
+
+    &-enter {
+      opacity: 0;
+    }
+
+    &-enter-active {
+      opacity: 1;
+      transition: opacity 200ms;
+    }
+
+    &-enter-done {
+      opacity: 1;
+      transition: opacity 200ms;
+    }
+
+    &-exit {
+      opacity: 1;
+    }
+
+    &-exit-done {
+      opacity: 0;
+      transition: opacity 200ms;
+    }
   }
 
   @each $key in 'success',

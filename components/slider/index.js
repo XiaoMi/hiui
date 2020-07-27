@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback, memo } from 'react'
 import classNames from 'classnames'
 import './style'
 import useClickOutside from '../popper/utils/useClickOutside'
-import { setOptions } from 'marked'
+import { CSSTransition } from 'react-transition-group'
 const prefixCls = 'hi-slider'
 const noop = () => { }
 const Slider = memo(
@@ -37,6 +37,7 @@ const Slider = memo(
     const [isClick, setIsClick] = useState(false)
     const [max, setMax] = useState(initMax)
     const [min, setMin] = useState(initMin)
+    const [isInitPage, setIsInitPage] = useState(true)
     const sliderRef = useRef()
     const tooltipRef = useRef()
 
@@ -55,6 +56,19 @@ const Slider = memo(
       }
     }, [])
 
+    // value 改变更新长度和位置
+    useEffect(() => {
+      let _value = initValue !== undefined ? getValue(initValue) : getValue(value)
+      setNewRightPosition(getTrackWidth(_value))
+      console.log(isInitPage)
+      if (!isInitPage) {
+        setShowTooltip(true)
+      }
+    }, [value, initValue])
+
+    useEffect(() => {
+      setIsInitPage(false)
+    })
     useEffect(() => {
       // 每一份步长对应在父元素的百分比
       setPositionStep((step / ((max || 100) - (min || 0))) * 100)
@@ -62,13 +76,22 @@ const Slider = memo(
       setStartPosition(((value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
     }, [])
 
-    // value 改变更新长度和位置
-    useEffect(() => {
-      let _value = initValue !== undefined ? getValue(initValue) : getValue(value)
-
-      setNewRightPosition(getTrackWidth(_value))
-      setShowTooltip(true)
-    }, [value, initValue])
+    // <- -> 键盘事件
+    const onKeyDown = useCallback((e) => {
+      if (e.keyCode === 37 || e.keyCode === 39) {
+        let _value = e.keyCode === 37 ? value - step : value + step
+        if (_value < (min || 0)) {
+          _value = (min || 0)
+        } else if (_value > (max || 100)) {
+          _value = (max || 100)
+        }
+        setStartPosition(((_value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
+        if (initValue === undefined) {
+          setValue(_value)
+        }
+        onChange(_value)
+      }
+    }, [value])
 
     useEffect(() => {
       if (canKeyDown) {
@@ -97,22 +120,6 @@ const Slider = memo(
       return value
     }, [])
 
-    // <- -> 键盘事件
-    const onKeyDown = useCallback((e) => {
-      if (e.keyCode === 37 || e.keyCode === 39) {
-        let _value = e.keyCode === 37 ? value - step : value + step
-        if (_value < (min || 0)) {
-          _value = (min || 0)
-        } else if (_value > (max || 100)) {
-          _value = (max || 100)
-        }
-        setStartPosition(((_value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
-        if (initValue === undefined) {
-          setValue(_value)
-        }
-        onChange(_value)
-      }
-    }, [value])
     // 移动
     const onMouseMove = useCallback(
       (e) => {
@@ -239,10 +246,7 @@ const Slider = memo(
 
     // 鼠标移入展示tooltip
     const onMouseEnter = useCallback(
-      (e) => {
-        // setIsMove(false)
-        setShowTooltip(true)
-      },
+      () => { setShowTooltip(true) },
       [value]
     )
 
@@ -296,7 +300,7 @@ const Slider = memo(
         if (initValue === undefined) {
           setValue(value)
         }
-        // setShowTooltip(true)
+        setIsClick(true)
         setStartPosition(position)
         onChange(value)
       },
@@ -334,10 +338,13 @@ const Slider = memo(
           onClick={railClick}
         />
         <div
-          className={`${prefixCls}__handle ${prefixCls}__handle-1`}
+          className={classNames(`${prefixCls}__handle`, {
+            [`${prefixCls}__handle--focus`]: isClick
+          })}
           onMouseDown={onMouseDown}
           onMouseEnter={onMouseEnter}
           onMouseLeave={() => {
+            console.log(isMove, isClick)
             if (!isMove && !isClick) {
               setShowTooltip(false)
             }
@@ -353,7 +360,12 @@ const Slider = memo(
           }}
           tabIndex='0'
         >
-          {showTooltip && (
+          <CSSTransition
+            in={showTooltip}
+            timeout={300}
+            classNames={`${prefixCls}__tooltip`}
+            className={`${prefixCls}__tooltip`}
+          >
             <div
               style={{
                 position: 'absolute',
@@ -386,7 +398,8 @@ const Slider = memo(
                 </div>
               </div>
             </div>
-          )}
+          </CSSTransition>
+
         </div>
         <div className={`${prefixCls}__step`} onClick={railClick}>
           {Object.keys(marks).map((item, index) => (

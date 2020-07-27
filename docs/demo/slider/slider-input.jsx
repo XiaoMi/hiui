@@ -31,7 +31,6 @@ class Demo extends React.Component {
   }
   
   handleInput(e){
-    
     let value  = e.target.value
     const {min,max} = this.state
     if(value<min){
@@ -44,9 +43,6 @@ class Demo extends React.Component {
       valueCache:value,
       value
     });
-  }
-  componentDidMount(){
-    // this.input.focus()
   }
 
   render() {
@@ -65,7 +61,6 @@ class Demo extends React.Component {
         </Col>
         <Col span={2}>
           <Input    
-            ref={node=>this.input=node}
             style={{width:80,marginLeft:30}}
             autoFocus
             value={valueCache}
@@ -107,10 +102,6 @@ class Demo extends React.Component {
         })
       }
 
-      componentDidMount(){
-        // this.input.focus()
-      }
-
       handleInput(e){
         let value  = e.target.value
         const {min,max} = this.state
@@ -125,9 +116,9 @@ class Demo extends React.Component {
           value
         });
       }
+
       render() {
         const { value,valueCache,max,min } = this.state;
-        console.log(valueCache)
         return (
           <div
             style={{
@@ -166,10 +157,8 @@ class Demo extends React.Component {
               }}
             >
             <Input    
-              ref={node=>this.input=node}
               style={{width:80}}
               autoFocus
-              // style={{ margin: '0 16px',width:80,height:30,boxSizing:'border-box',border:'1px solid #d8d8d8',outline:'none' }}
               value={valueCache}
               onChange ={(e)=>this.onChange(e)}
               onBlur={(e)=>this.handleInput(e)}
