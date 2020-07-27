@@ -22,7 +22,19 @@ class Demo extends React.Component {
       min:10
     }
   }
-
+  componentDidMount(){
+    const {min,max,value} = this.state
+    if(value<min){
+      this.setState({
+        value:min
+      })
+    }
+    if(value>max){
+      this.setState({
+        value:max
+      })
+    }
+  }
   onChange(e){
     let valueCache = e.target.value.replace(/[^0-9]/g, '')
     this.setState({
@@ -30,8 +42,7 @@ class Demo extends React.Component {
     })
   }
   
-  handleInput(e){
-    let value  = e.target.value
+  handleInput(value){
     const {min,max} = this.state
     if(value<min){
       value = min
@@ -52,12 +63,7 @@ class Demo extends React.Component {
     return (
       <Row>
         <Col span={22}>
-          <Slider defaultValue={10} onChange={(value)=>{
-            this.setState({
-              value,
-              valueCache:value
-            });
-          }} value={this.state.value}  max={max}  min={min}/>
+          <Slider defaultValue={10} onChange={(value)=>this.handleInput(value)} value={this.state.value}  max={90}  min={10}/>
         </Col>
         <Col span={2}>
           <Input    
@@ -65,10 +71,10 @@ class Demo extends React.Component {
             autoFocus
             value={valueCache}
             onChange ={(e)=>this.onChange(e)}
-            onBlur={(e)=>this.handleInput(e)}
+            onBlur={(e)=>this.handleInput(+e.target.value)}
             onKeyDown={(e)=>{
               if(e.keyCode == 13){
-                this.handleInput(e)
+                this.handleInput(+e.target.value)
               }
             }}
           />
@@ -96,14 +102,24 @@ class Demo extends React.Component {
     
       onChange(e){
         let valueCache = e.target.value.replace(/[^0-9]/g, '')
-      
         this.setState({
           valueCache
         })
       }
-
-      handleInput(e){
-        let value  = e.target.value
+      componentDidMount(){
+        const {min,max,value} = this.state
+        if(value<min){
+          this.setState({
+            value:min
+          })
+        }
+        if(value>max){
+          this.setState({
+            value:max
+          })
+        }
+      }
+      handleInput(value){
         const {min,max} = this.state
         if(value<min){
           value = min
@@ -141,13 +157,7 @@ class Demo extends React.Component {
                 value={value}
                 min={min}
                 max={max}
-                onChange ={(value)=>{
-                  console.log(value)
-                  this.setState({
-                    value,
-                    valueCache:value
-                  });
-                }}
+                onChange ={(value)=>this.handleInput(value)}
               />
             </div>
             <div
@@ -161,10 +171,10 @@ class Demo extends React.Component {
               autoFocus
               value={valueCache}
               onChange ={(e)=>this.onChange(e)}
-              onBlur={(e)=>this.handleInput(e)}
+              onBlur={(e)=>this.handleInput(+e.target.value)}
               onKeyDown={(e)=>{
                 if(e.keyCode == 13){
-                  this.handleInput(e)
+                  this.handleInput(+e.target.value)
                 }
               }}
             />

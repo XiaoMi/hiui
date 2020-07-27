@@ -5,8 +5,8 @@ import useClickOutside from '../popper/utils/useClickOutside'
 import { CSSTransition } from 'react-transition-group'
 const prefixCls = 'hi-slider'
 const noop = () => { }
-const Slider = memo(
-  ({
+const Slider =
+  memo(({
     defaultValue = 0,
     max: initMax,
     min: initMin,
@@ -19,7 +19,18 @@ const Slider = memo(
     type = 'primary',
     marks = {}
   }) => {
-    const [value, setValue] = useState(initValue || defaultValue)
+    const getValue = useCallback((value) => {
+      if (value === undefined) {
+        return value
+      }
+      if (value > (initMax || 100)) {
+        value = initMax || 100
+      } else if (value < (initMin || 0)) {
+        value = initMin || 0
+      }
+      return value
+    }, [])
+    const [value, setValue] = useState(initValue !== undefined ? getValue(initValue) : getValue(defaultValue))
     // 是否可拖动
     const [canMove, setCanMove] = useState(false)
     const [canKeyDown, setCanKeyDown] = useState(false)
@@ -60,15 +71,17 @@ const Slider = memo(
     useEffect(() => {
       let _value = initValue !== undefined ? getValue(initValue) : getValue(value)
       setNewRightPosition(getTrackWidth(_value))
-      console.log(isInitPage)
       if (!isInitPage) {
         setShowTooltip(true)
       }
     }, [value, initValue])
-
     useEffect(() => {
       setIsInitPage(false)
     })
+    useEffect(() => {
+      setIsInitPage(true)
+    }, [])
+
     useEffect(() => {
       // 每一份步长对应在父元素的百分比
       setPositionStep((step / ((max || 100) - (min || 0))) * 100)
@@ -107,18 +120,6 @@ const Slider = memo(
         setValue(_value)
       }
     }, [initValue])
-
-    const getValue = useCallback((value) => {
-      if (value === undefined) {
-        return value
-      }
-      if (value > (max || 100)) {
-        value = max
-      } else if (value < (min || 0)) {
-        value = min
-      }
-      return value
-    }, [])
 
     // 移动
     const onMouseMove = useCallback(
@@ -194,7 +195,7 @@ const Slider = memo(
         e.stopPropagation()
         setLastTime(new Date().getTime())
         setStartPosition(newRightPosition)
-        setShowTooltip(false)
+        // setShowTooltip(false)
         setCanMove(false)
         // setIsClick(false)
         setIsMove(false)
@@ -235,13 +236,14 @@ const Slider = memo(
         setCanMove(true)
         setIsMove(true)
         setIsClick(false)
+        setStartPosition(getTrackWidth(value))
         if (vertical) {
           setStartY(clientY)
         } else {
           setStartX(clientX)
         }
       },
-      [disabled, vertical]
+      [disabled, vertical, getTrackWidth]
     )
 
     // 鼠标移入展示tooltip
@@ -344,7 +346,6 @@ const Slider = memo(
           onMouseDown={onMouseDown}
           onMouseEnter={onMouseEnter}
           onMouseLeave={() => {
-            console.log(isMove, isClick)
             if (!isMove && !isClick) {
               setShowTooltip(false)
             }
@@ -464,6 +465,5 @@ const Slider = memo(
       </div>
     )
   }
-)
-
+  )
 export default Slider
