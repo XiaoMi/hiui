@@ -17,19 +17,21 @@ $prefix: 'hi-slider' !default;
 
   &.#{$prefix}--disabled {
     cursor: not-allowed;
+
     .#{$prefix}__track {
       background: #ccc;
     }
 
     .#{$prefix}__handle {
       border-color: #ccc;
-     
+
 
       &:focus {
         box-shadow: none;
       }
     }
-    >*{
+
+    > * {
       cursor: not-allowed;
     }
   }
@@ -78,11 +80,11 @@ $prefix: 'hi-slider' !default;
       position: absolute;
       margin: 0;
       right: 15px;
-    
+
       .#{$prefix}__min {
         transform: translateX(0%);
         position: absolute;
-        bottom: -5px;
+        bottom: -10px;
         right: 0;
       }
 
@@ -110,6 +112,7 @@ $prefix: 'hi-slider' !default;
     height: 4px;
     background: 0 0;
     cursor: pointer;
+
     &-dot {
       position: absolute;
       border-radius: 50%;

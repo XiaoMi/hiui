@@ -67,7 +67,7 @@ class Demo extends React.Component {
           <Input    
             ref={node=>this.input=node}
             style={{width:80,marginLeft:30}}
-            // style={{ margin: '0 16px',width:80,height:30,boxSizing:'border-box',border:'1px solid #d8d8d8',outline:'none' }}
+            autoFocus
             value={valueCache}
             onChange ={(e)=>this.onChange(e)}
             onBlur={(e)=>this.handleInput(e)}
@@ -108,7 +108,7 @@ class Demo extends React.Component {
       }
 
       componentDidMount(){
-        this.input.focus()
+        // this.input.focus()
       }
 
       handleInput(e){
@@ -165,18 +165,20 @@ class Demo extends React.Component {
                 marginTop: 20,
               }}
             >
-              <input
-                ref={node=>this.input=node}
-                style={{width:80,height:30,boxSizing:'border-box',border:'1px solid #d8d8d8',outline:'none'}}
-                value={valueCache}
-                onChange={(e) => this.onChange(e)}
-                onBlur={(e)=>this.handleInput(e)}
-                onKeyDown={(e)=>{
-                  if(e.keyCode == 13){
-                    this.handleInput(e)
-                  }
-                }}
-              />
+            <Input    
+              ref={node=>this.input=node}
+              style={{width:80}}
+              autoFocus
+              // style={{ margin: '0 16px',width:80,height:30,boxSizing:'border-box',border:'1px solid #d8d8d8',outline:'none' }}
+              value={valueCache}
+              onChange ={(e)=>this.onChange(e)}
+              onBlur={(e)=>this.handleInput(e)}
+              onKeyDown={(e)=>{
+                if(e.keyCode == 13){
+                  this.handleInput(e)
+                }
+              }}
+            />
             </div>
           </div>
         );

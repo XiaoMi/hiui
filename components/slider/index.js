@@ -8,8 +8,8 @@ const noop = () => { }
 const Slider = memo(
   ({
     defaultValue = 0,
-    max,
-    min,
+    max: initMax,
+    min: initMin,
     step = 1,
     vertical,
     onChange = noop,
@@ -35,6 +35,8 @@ const Slider = memo(
     const [lastTime, setLastTime] = useState(0)
     const [isMove, setIsMove] = useState(false)
     const [isClick, setIsClick] = useState(false)
+    const [max, setMax] = useState(initMax)
+    const [min, setMin] = useState(initMin)
     const sliderRef = useRef()
     const tooltipRef = useRef()
 
@@ -43,6 +45,15 @@ const Slider = memo(
       setCanKeyDown(false)
       setIsClick(false)
     }, document.querySelector(`#${prefixCls}`))
+
+    useEffect(() => {
+      if (initMax !== undefined && initMin !== undefined) {
+        if (initMax < initMin) {
+          setMax(initMin)
+          setMin(initMax)
+        }
+      }
+    }, [])
 
     useEffect(() => {
       // 每一份步长对应在父元素的百分比
@@ -56,6 +67,7 @@ const Slider = memo(
       let _value = initValue !== undefined ? getValue(initValue) : getValue(value)
 
       setNewRightPosition(getTrackWidth(_value))
+      setShowTooltip(true)
     }, [value, initValue])
 
     useEffect(() => {
@@ -130,8 +142,6 @@ const Slider = memo(
               Math.round(
                 (((e.clientX - startX) / sliderWidth) * 100) / positionStep
               ) * positionStep
-
-
           }
           // 开始位置 + 偏移位置
           let position = startPosition + diff
@@ -145,7 +155,6 @@ const Slider = memo(
             }
 
             setStartPosition(position)
-
           } else if (position >= 100) {
             position = 100
             if (vertical) {
@@ -155,7 +164,6 @@ const Slider = memo(
             }
 
             setStartPosition(position)
-
           }
 
           changeValue = (min || 0) + Math.round((((max || 100) - (min || 0)) * position) / 100)
@@ -288,7 +296,7 @@ const Slider = memo(
         if (initValue === undefined) {
           setValue(value)
         }
-        setShowTooltip(true)
+        // setShowTooltip(true)
         setStartPosition(position)
         onChange(value)
       },
@@ -296,7 +304,6 @@ const Slider = memo(
     )
     // 点击marks上的点
     const onMarksClick = useCallback((e, value) => {
-      console.log(1)
       e.stopPropagation()
       if (initValue === undefined) {
         setValue(value)
@@ -314,10 +321,10 @@ const Slider = memo(
       <div
         className={sliderClasses}
         ref={sliderRef}
-      
+
         id={prefixCls}
       >
-        <div className={`${prefixCls}__rail`}   onClick={railClick}/>
+        <div className={`${prefixCls}__rail`} onClick={railClick} />
         <div
           className={`${prefixCls}__track`}
           style={{
@@ -342,7 +349,7 @@ const Slider = memo(
               !vertical
                 ? newRightPosition.toFixed(4)
                 : (100 - newRightPosition).toFixed(4)
-              }%`
+            }%`
           }}
           tabIndex='0'
         >
@@ -381,7 +388,7 @@ const Slider = memo(
             </div>
           )}
         </div>
-        <div className={`${prefixCls}__step`}   onClick={railClick}>
+        <div className={`${prefixCls}__step`} onClick={railClick}>
           {Object.keys(marks).map((item, index) => (
             <span
               className={classNames(`${prefixCls}__step-dot`, {
@@ -426,13 +433,13 @@ const Slider = memo(
                     '%',
                   transform: !vertical ? 'translateX(-50%)' : 'translateY(50%)'
                 }}
-                onClick={(e) =>{
+                onClick={(e) => {
                   onMarksClick(
                     e,
                     ((key - (min || 0)) / ((max || 100) - (min || 0))) * 100
                   )
                 }
-                 
+
                 }
               >
                 {item}
