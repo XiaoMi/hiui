@@ -13,20 +13,24 @@ $prefix: 'hi-slider' !default;
   height: 12px;
   margin: 10px 6px;
   padding: 4px 0;
-  cursor: pointer;
+  // cursor: pointer;
 
   &.#{$prefix}--disabled {
+    cursor: not-allowed;
     .#{$prefix}__track {
       background: #ccc;
     }
 
     .#{$prefix}__handle {
       border-color: #ccc;
-      cursor: not-allowed;
+     
 
       &:focus {
         box-shadow: none;
       }
+    }
+    >*{
+      cursor: not-allowed;
     }
   }
 
@@ -74,7 +78,7 @@ $prefix: 'hi-slider' !default;
       position: absolute;
       margin: 0;
       right: 15px;
-
+    
       .#{$prefix}__min {
         transform: translateX(0%);
         position: absolute;
@@ -105,7 +109,7 @@ $prefix: 'hi-slider' !default;
     width: 100%;
     height: 4px;
     background: 0 0;
-
+    cursor: pointer;
     &-dot {
       position: absolute;
       border-radius: 50%;
@@ -141,6 +145,7 @@ $prefix: 'hi-slider' !default;
     &-dot {
       position: absolute;
       border-radius: 50%;
+      cursor: pointer;
     }
   }
 

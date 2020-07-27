@@ -13,13 +13,13 @@ class Demo extends React.Component {
         this.state = {
             value: 80,
             color: [{
-                color: '#4284F5',
+                color: '#4285f4',
                 type: 'primary'
             }, {
                 color: '#E65C2F',
                 type: 'danger'
             }, {
-                color: '#0EC848',
+                color: '#1da653',
                 type: 'success'
             }, {
                 color: '#e19d0c',

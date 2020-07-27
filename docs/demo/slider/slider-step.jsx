@@ -27,7 +27,7 @@ class Demo extends React.Component {
   render() {
     const {value,marks} = this.state
     return (
-      <Slider defaultValue={value} marks={marks} step={10}/>
+      <Slider defaultValue={value} marks={marks} step={9}/>
     )
   }
 }`,

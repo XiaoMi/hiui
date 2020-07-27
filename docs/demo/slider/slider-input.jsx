@@ -33,7 +33,6 @@ class Demo extends React.Component {
   handleInput(e){
     
     let value  = e.target.value
-    console.log(value)
     const {min,max} = this.state
     if(value<min){
       value = min
@@ -47,7 +46,7 @@ class Demo extends React.Component {
     });
   }
   componentDidMount(){
-    this.input.focus()
+    // this.input.focus()
   }
 
   render() {
@@ -65,10 +64,10 @@ class Demo extends React.Component {
           }} value={this.state.value}  max={max}  min={min}/>
         </Col>
         <Col span={2}>
-          <input
-           
+          <Input    
             ref={node=>this.input=node}
-            style={{ margin: '0 16px',width:80,height:30,boxSizing:'border-box',border:'1px solid #d8d8d8',outline:'none' }}
+            style={{width:80,marginLeft:30}}
+            // style={{ margin: '0 16px',width:80,height:30,boxSizing:'border-box',border:'1px solid #d8d8d8',outline:'none' }}
             value={valueCache}
             onChange ={(e)=>this.onChange(e)}
             onBlur={(e)=>this.handleInput(e)}

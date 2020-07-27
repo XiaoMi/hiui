@@ -72,16 +72,7 @@ const Slider = memo(
         setValue(_value)
       }
     }, [initValue])
-    // useEffect(()=>{
-    //   if(isMove){
-    //     setIsClick(false)
-    //   }
-    //   if(isClick){
-    //     setIsMove(false)
-    //   }
-    // },[
-    //   isMove,isClick
-    // ])
+
     const getValue = useCallback((value) => {
       if (value === undefined) {
         return value
@@ -119,7 +110,11 @@ const Slider = memo(
 
           const {
             width: sliderWidth,
-            height: sliderHeight
+            height: sliderHeight,
+            right: sliderRight,
+            left: sliderLeft,
+            top: sliderTop,
+            bottom: sliderBottom
           } = parent.getBoundingClientRect()
 
           let diff = 0
@@ -135,16 +130,32 @@ const Slider = memo(
               Math.round(
                 (((e.clientX - startX) / sliderWidth) * 100) / positionStep
               ) * positionStep
+
+
           }
           // 开始位置 + 偏移位置
           let position = startPosition + diff
           // 边界判断
           if (position <= 0) {
             position = 0
-            setStartPosition(0)
+            if (vertical) {
+              setStartY(sliderBottom)
+            } else {
+              setStartX(sliderLeft)
+            }
+
+            setStartPosition(position)
+
           } else if (position >= 100) {
             position = 100
-            setStartPosition(100)
+            if (vertical) {
+              setStartY(sliderTop)
+            } else {
+              setStartX(sliderRight)
+            }
+
+            setStartPosition(position)
+
           }
 
           changeValue = (min || 0) + Math.round((((max || 100) - (min || 0)) * position) / 100)
@@ -166,7 +177,7 @@ const Slider = memo(
     const onMouseUp = useCallback(
       (e) => {
         e.stopPropagation()
-        console.log('MouseUp')
+        setLastTime(new Date().getTime())
         setStartPosition(newRightPosition)
         setShowTooltip(false)
         setCanMove(false)
@@ -229,12 +240,13 @@ const Slider = memo(
 
     // 点击滑块
     const onHandleClick = useCallback((e) => {
-      e.stopPropagation()
-      console.log('click')
-      setIsClick(true)
-      setShowTooltip(true)
-      setCanKeyDown(true)
-    }, [])
+      if ((lastTime - firstTime) < 200) {
+        e.stopPropagation()
+        setIsClick(true)
+        setShowTooltip(true)
+        setCanKeyDown(true)
+      }
+    }, [lastTime, firstTime])
 
     // slider 点击
     const railClick = useCallback(
@@ -276,7 +288,7 @@ const Slider = memo(
         if (initValue === undefined) {
           setValue(value)
         }
-
+        setShowTooltip(true)
         setStartPosition(position)
         onChange(value)
       },
@@ -284,6 +296,7 @@ const Slider = memo(
     )
     // 点击marks上的点
     const onMarksClick = useCallback((e, value) => {
+      console.log(1)
       e.stopPropagation()
       if (initValue === undefined) {
         setValue(value)
@@ -301,23 +314,23 @@ const Slider = memo(
       <div
         className={sliderClasses}
         ref={sliderRef}
-        onClick={railClick}
+      
         id={prefixCls}
       >
-        <div className={`${prefixCls}__rail`} />
+        <div className={`${prefixCls}__rail`}   onClick={railClick}/>
         <div
           className={`${prefixCls}__track`}
           style={{
             [!vertical ? 'width' : 'height']: `${newRightPosition.toFixed(4)}%`,
             [!vertical ? 'left' : 'bottom']: 0
           }}
+          onClick={railClick}
         />
         <div
           className={`${prefixCls}__handle ${prefixCls}__handle-1`}
           onMouseDown={onMouseDown}
           onMouseEnter={onMouseEnter}
           onMouseLeave={() => {
-            console.log(isMove, isClick)
             if (!isMove && !isClick) {
               setShowTooltip(false)
             }
@@ -329,7 +342,7 @@ const Slider = memo(
               !vertical
                 ? newRightPosition.toFixed(4)
                 : (100 - newRightPosition).toFixed(4)
-            }%`
+              }%`
           }}
           tabIndex='0'
         >
@@ -368,7 +381,7 @@ const Slider = memo(
             </div>
           )}
         </div>
-        <div className={`${prefixCls}__step`}>
+        <div className={`${prefixCls}__step`}   onClick={railClick}>
           {Object.keys(marks).map((item, index) => (
             <span
               className={classNames(`${prefixCls}__step-dot`, {
@@ -391,32 +404,43 @@ const Slider = memo(
             />
           ))}
         </div>
-        <div className={`${prefixCls}__stepText`}>
-          {min && (
-            <span className={`${prefixCls}__min ${prefixCls}__stepText-dot`}>
-              {min}
-            </span>
-          )}
-          {max && (
-            <span className={`${prefixCls}__max ${prefixCls}__stepText-dot`}>
-              {max}
-            </span>
-          )}
-          {Object.entries(marks).map(([key, item], index) => (
-            <span
-              className={`${prefixCls}__stepText-dot`}
-              key={index}
-              style={{
-                [!vertical ? 'left' : 'bottom']:
-                  ((key - (min || 0)) / ((max || 100) - (min || 0))) * 100 +
-                  '%',
-                transform: !vertical ? 'translateX(-50%)' : 'translateY(50%)'
-              }}
-            >
-              {item}
-            </span>
-          ))}
-        </div>
+        {
+          ((min && max) || Object.entries(marks).length !== 0) && <div className={`${prefixCls}__stepText`}>
+            {min && (
+              <span className={`${prefixCls}__min ${prefixCls}__stepText-dot`}>
+                {min}
+              </span>
+            )}
+            {max && (
+              <span className={`${prefixCls}__max ${prefixCls}__stepText-dot`}>
+                {max}
+              </span>
+            )}
+            {Object.entries(marks).map(([key, item], index) => (
+              <span
+                className={`${prefixCls}__stepText-dot`}
+                key={index}
+                style={{
+                  [!vertical ? 'left' : 'bottom']:
+                    ((key - (min || 0)) / ((max || 100) - (min || 0))) * 100 +
+                    '%',
+                  transform: !vertical ? 'translateX(-50%)' : 'translateY(50%)'
+                }}
+                onClick={(e) =>{
+                  onMarksClick(
+                    e,
+                    ((key - (min || 0)) / ((max || 100) - (min || 0))) * 100
+                  )
+                }
+                 
+                }
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        }
+
       </div>
     )
   }
