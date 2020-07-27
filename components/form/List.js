@@ -9,10 +9,11 @@ const List = props => {
   const { listValues } = formState
 
   useEffect(() => {
-    // 初始话listName列表
+    // init listName 
     dispatch({ type: FILEDS_INIT_LIST, payload: name })
   }, [])
-  // 设置默认值的处理
+
+  // manage default value
   useEffect(() => {
     const cachelistCount = []
     const { fields } = formState
@@ -22,9 +23,9 @@ const List = props => {
     })
     const values = listValues[name] ? listValues[name] : []
     values.forEach((value, index) => {
-      const id = parseInt((Math.random() * 9 + 1) * 100000)
+      const uuid = parseInt((Math.random() * 9 + 1) * 100000)
       cachelistCount.push({
-        field: name + '-' + id,
+        field: name + '-' + uuid,
         listItemValue: value,
         sort: index
       })
@@ -39,14 +40,15 @@ const List = props => {
   }
 
   const add = () => {
-    const id = parseInt((Math.random() * 9 + 1) * 100000)
+    const uuid = parseInt((Math.random() * 9 + 1) * 100000)
     setListCount(
       listCount.concat({
-        field: name + '-' + id,
+        field: name + '-' + uuid,
         sort: listCount.length
       })
     )
   }
+  
   const remove = fieldItem => {
     const _listCount = listCount.filter(item => {
       return item.field !== fieldItem.field

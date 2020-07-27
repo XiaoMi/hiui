@@ -20,6 +20,12 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 
 <DemoCheck />
 
+## 字段嵌套
+
+import DemoField from '../../demo/form/section-field.jsx'
+
+<DemoField />
+
 ## 填充表单
 
 import DemoFillform from '../../demo/form/section-fillform.jsx'
@@ -129,11 +135,18 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 | submit | 继承 Form.Submit API | Object       | -      | -      |
 | reset  | 继承 Form.Reset API  | Object       | -      | -      |
 
+### FormList
+
+| 参数     | 说明     | 类型                                                             | 可选值 | 默认值 |
+| -------- | -------- | ---------------------------------------------------------------- | ------ | ------ |
+| name     | 列表名称 | String                                                           | -      | -      |
+| children | 渲染函数 | (fields: Field[], operation: { add, remove }) => React.ReactNode | -      | -      |
+
 ### Form.Item
 
 | 参数            | 说明                                                                                                            | 类型    | 可选值                       | 默认值   |
 | --------------- | --------------------------------------------------------------------------------------------------------------- | ------- | ---------------------------- | -------- |
-| field           | 表单域对应 model 的字段                                                                                         | string  | -                            | -        |
+| field           | 字段名，支持数组                                                                                                | string  | (string)[]                   | -        | - |
 | label           | 标签文本，默认自动添加冒号                                                                                      | string  | -                            | -        |
 | labelWidth      | label 宽度，可用任意 CSS 长度单位，优先级高于 Form 设置的 labelWidth                                            | string  |                              |
 | required        | 是否必填                                                                                                        | boolean | true \| false                | false    |
@@ -196,3 +209,7 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 | type       | 类型，常见有 `string` \|`number` \|`boolean` \| `email`。更多请参考[此处](https://github.com/yiminghe/async-validator#type) | string                        |
 | validator  | 自定义校验                                                                                                                  | (rule,value,callback) => void |
 | whitespace | 如果字段仅包含空格则校验不通过                                                                                              | boolean                       |
+
+### NamePath
+
+string | (string)[]

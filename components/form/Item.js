@@ -7,12 +7,6 @@ import FormContext from './FormContext'
 import { FILEDS_INIT, FILEDS_UPDATE, FILEDS_REMOVE } from './FormReducer'
 import * as HIUI from '../'
 
-/**
- * valuePropName 指定该表单的value 名称
- * rules 中 如果trigger 不传入 则 在最后点击时候时候校验规则
- * model 删除掉这个属性
- * 通过cloneEelement对value进行受控
- */
 // 指定子元素位置
 const getItemPosition = itemPosition => {
   let _itemPosition = 'flex-end'
@@ -63,10 +57,11 @@ const FormItem = props => {
     }
   } = formProps || {}
   // 初始化FormItem的内容
-  const { fields, listNames } = formState
+  const { fields } = formState
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
-  const getItemfield = () => {
+
+  const getItemfield = useCallback(() => {
     let _propsField = propsField
     if (_type === 'list' && name) {
       _propsField = _propsField + '#' + name
@@ -74,7 +69,8 @@ const FormItem = props => {
     return Array.isArray(propsField)
       ? propsField[propsField.length - 1]
       : _propsField
-  }
+  },[propsField,name])
+
   const [field, setField] = useState(getItemfield())
   const [validating, setValidating] = useState(false)
 
@@ -158,6 +154,7 @@ const FormItem = props => {
       }
     )
   })
+
   const updateFieldInfoToReducer = () => {
     return {
       field,
@@ -196,17 +193,6 @@ const FormItem = props => {
     }
   }, [field])
 
-  // 处理Item值的更新问题
-
-  // useEffect(
-  //   state => {
-  //     if (listItemValue) {
-  //       const value = listItemValue[name] ? listItemValue[name] : listItemValue
-  //       setValue(value)
-  //     }
-  //   },
-  //   [listItemValue]
-  // )
   // 判断是否含有Rules
   const isRequired = useCallback(() => {
     let rules = getRules()
