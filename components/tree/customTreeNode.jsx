@@ -40,7 +40,7 @@ const CustomTreeNode = ({
             if ((editingNodes.find((n) => n.id === node.id) || {}).title === '') {
               return
             }
-            saveEdit(node.id)
+            saveEdit(node)
           }}
         >
           确定

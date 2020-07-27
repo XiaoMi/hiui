@@ -59,7 +59,8 @@ const Tree = (props) => {
     onBeforeSave,
     onSave,
     onBeforeDelete,
-    onDelete
+    onDelete,
+    onDropEnd
   } = props
   const { placeholder = '关键词搜索', emptyContent = '未找到搜索结果' } = searchConfig
   const [cacheData, updateCacheData] = useState(data)
@@ -142,7 +143,6 @@ const Tree = (props) => {
 
   const moveNode = useCallback(
     ({ targetId, sourceId, direction }) => {
-      console.log(targetId, sourceId, direction)
       const _dataCache = _.cloneDeep(cacheData)
       _delDragNode(sourceId, _dataCache)
       if (direction === 'in') {
@@ -271,12 +271,21 @@ const Tree = (props) => {
     })
   }
   const saveEdit = useCallback(
-    (nodeId) => {
-      const nodeEdited = { ...editingNodes.find((node) => node.id === nodeId) }
+    (enode) => {
+      const nodeEdited = { ...editingNodes.find((node) => node.id === enode.id) }
       const dataCache = _.cloneDeep(cacheData)
-      _saveEdit(nodeId, dataCache, nodeEdited)
-      updateCacheData(dataCache)
-      setEditingNodes(editingNodes.filter((n) => n.id !== nodeId))
+      _saveEdit(enode.id, dataCache, nodeEdited)
+      if (onBeforeSave) {
+        const result = onBeforeSave(enode, { before: cacheData, after: dataCache }, enode.depth)
+        if (result === true) {
+          updateCacheData(dataCache)
+          onSave(enode, dataCache)
+        }
+      } else {
+        updateCacheData(dataCache)
+        onSave(enode, dataCache)
+      }
+      setEditingNodes(editingNodes.filter((n) => n.id !== enode.id))
     },
     [editingNodes, cacheData, _saveEdit]
   )
@@ -298,7 +307,7 @@ const Tree = (props) => {
       const dataCache = _.cloneDeep(cacheData)
       _deleteNode(node.id, dataCache)
       if (onBeforeDelete) {
-        const result = onBeforeDelete(node, { before: dataCache, after: cacheData }, node.depth)
+        const result = onBeforeDelete(node, { before: cacheData, after: dataCache }, node.depth)
         if (result === true) {
           updateCacheData(dataCache)
           onDelete(node, dataCache)
