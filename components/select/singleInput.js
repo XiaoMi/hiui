@@ -11,7 +11,9 @@ const SingleInput = props => {
     theme,
     onBlur,
     onClick,
-    selectedItems: propsSelectItem
+    selectedItems: propsSelectItem,
+    handleKeyDown,
+    onClear
   } = props
   const [cacheselectedItems, setCacheselectedItems] = useState(
     propsSelectItem || []
@@ -20,32 +22,18 @@ const SingleInput = props => {
     setCacheselectedItems(propsSelectItem)
   }, [propsSelectItem])
 
+  const handleClear = e => {
+    e.stopPropagation()
+    setCacheselectedItems([])
+    onClear()
+  }
+
   let icon = dropdownShow ? 'up' : 'down'
 
   let selectedItems =
     propsSelectItem.length > 0 ? propsSelectItem : cacheselectedItems
 
   placeholder = selectedItems.length > 0 ? selectedItems[0].title : placeholder
-
-  const handleKeyDown = evt => {
-    if (evt.keyCode === 13) {
-      props.onEnterSelect()
-    }
-
-    if (evt.keyCode === 38) {
-      evt.preventDefault()
-      props.moveFocusedIndex('up')
-    }
-    if (evt.keyCode === 40) {
-      evt.preventDefault()
-      props.moveFocusedIndex('down')
-    }
-  }
-  const handleClear = e => {
-    e.stopPropagation()
-    setCacheselectedItems([])
-    props.onClear()
-  }
 
   return (
     <div
@@ -93,7 +81,7 @@ const SingleInput = props => {
         {clearable && selectedItems.length > 0 && (
           <i
             className={`hi-icon icon-close-circle hi-select__input--icon__close`}
-            onClick={handleClear.bind(this)}
+            onClick={handleClear}
           />
         )}
       </span>
