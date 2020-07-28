@@ -28,7 +28,9 @@ const SelectDropdown = props => {
     filterOption,
     checkAll,
     setFocusedIndex,
-    selectInputWidth
+    selectInputWidth,
+    selectedItems,
+    show
   } = props
   const [filterItems, setFilterItems] = useState(dropdownItems)
   const [searchbarValue, setSearchbarValue] = useState('')
