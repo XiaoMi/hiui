@@ -157,15 +157,9 @@ class Tabs extends Component {
     const { activeId, showTabItems, hiddenTabItems, defaultActiveId } = this.state
     const { prefixCls, type, placement, children, className, theme } = this.props
     const editable = this.checkEditable()
-    const tabsClasses = classNames(
-      prefixCls,
-      className,
-      `${prefixCls}--${type}`,
-      `theme__${theme}`,
-      {
-        [`${prefixCls}--${placement}`]: type === 'card'
-      }
-    )
+    const tabsClasses = classNames(prefixCls, className, `${prefixCls}--${type}`, `theme__${theme}`, {
+      [`${prefixCls}--${placement}`]: type === 'card'
+    })
     let activeTabInHiddenItems = true
 
     return (
@@ -186,7 +180,7 @@ class Tabs extends Component {
                   className={itemClasses}
                   key={`${prefixCls}__item-${index}`}
                   onClick={(e) => this.handleClick(item, e)}
-                  title={tabTitle}
+                  title={type === 'editable' && tabId !== activeId ? tabTitle : null}
                 >
                   <span className={`${prefixCls}__item-name`}>{tabTitle}</span>
                   {type === 'desc' && <span className={`${prefixCls}__item-desc`}>{tabDesc}</span>}
