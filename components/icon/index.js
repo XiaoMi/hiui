@@ -1,14 +1,16 @@
 import React from 'react'
-import classNames from 'classnames'
+// import classNames from 'classnames'
 import './style/index'
+import './iconfont.js'
 
 class Icon extends React.Component {
   render () {
-    const {className, name, style, ...rest} = this.props
-
-    const iconCls = classNames(`hi-icon`, `icon-${name}`, className)
-
-    return <i className={iconCls} style={style} {...rest} />
+    const { name } = this.props
+    return (
+      <svg class='icon' aria-hidden='true'>
+        <use xlinkHref={`#icon${name}`} />
+      </svg>
+    )
   }
 }
 
