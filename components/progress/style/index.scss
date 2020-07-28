@@ -27,9 +27,7 @@ $progress-text: #666 !default;
       background: #fff;
       opacity: 0;
       content: '';
-      animation:
-        hi-progress-active 2.4s cubic-bezier(0.23, 1, 0.32, 1)
-        infinite;
+      animation: hi-progress-active 2.4s cubic-bezier(0.23, 1, 0.32, 1) infinite;
     }
   }
 
@@ -63,12 +61,17 @@ $progress-text: #666 !default;
 
   &__text--inside {
     font-size: 14px;
-    color: #fff;
     position: absolute;
-    right: 5px;
+    right: -5px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translate(100%, -50%);
     line-height: 14px;
+
+    &.inside--left {
+      color: #fff;
+      right: 5px;
+      transform: translate(0, -50%);
+    }
   }
 
   &__text--success {
