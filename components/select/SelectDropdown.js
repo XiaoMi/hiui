@@ -222,7 +222,7 @@ class SelectDropdown extends Component {
                 onFocus={onFocus.bind(this)}
                 onBlur={onBlur.bind(this)}
                 clearabletrigger='always'
-                onKeyDown={this.handleKeyDown.bind(this)}
+                onKeyDown={this.props.handleKeyDown.bind(this)}
                 onInput={this.searchEvent.bind(this)}
                 onChange={this.searchEvent.bind(this)}
               />

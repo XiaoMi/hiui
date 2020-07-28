@@ -5,7 +5,7 @@ import debounce from 'lodash/debounce'
 import cloneDeep from 'lodash/cloneDeep'
 import Popper from '../popper'
 import SelectInput from './SelectInput'
-import SelectDropdown from './SelectDropdown'
+import SelectDropdown from './SelectDropdown-new'
 import Provider from '../context'
 import fetchJsonp from 'fetch-jsonp'
 import qs from 'qs'
@@ -130,7 +130,21 @@ class Select extends Component {
       }
     }
   }
+  // 按键操作
+  handleKeyDown = evt => {
+    if (evt.keyCode === 13) {
+      this.onEnterSelect()
+    }
 
+    if (evt.keyCode === 38) {
+      evt.preventDefault()
+      this.moveFocusedIndex('up')
+    }
+    if (evt.keyCode === 40) {
+      evt.preventDefault()
+      this.moveFocusedIndex('down')
+    }
+  }
   getSearchable () {
     const { searchable } = this.props
 
@@ -589,6 +603,7 @@ class Select extends Component {
             ref={node => {
               this.selectInput = node
             }}
+            handleKeyDown={this.handleKeyDown.bind(this)}
             theme={theme}
             mode={type}
             disabled={disabled}
@@ -649,6 +664,7 @@ class Select extends Component {
             matchFilter={this.matchFilter.bind(this)}
             setFocusedIndex={this.setFocusedIndex.bind(this)}
             show={dropdownShow}
+            handleKeyDown={this.handleKeyDown.bind(this)}
             optionWidth={optionWidth}
             selectInputWidth={selectInputWidth}
             onEnterSelect={this.onEnterSelect.bind(this)}
