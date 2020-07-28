@@ -19,7 +19,7 @@ const Menu = forwardRef(({
   emptyContent
 }, ref) => {
   // 配置化
-
+  console.log(value)
   const renderMenus = useCallback(() => {
     let currentOptions = options.slice()
     let deep = 0
@@ -41,9 +41,9 @@ const Menu = forwardRef(({
                 const optionValue = option[valueKey]
                 const hasChildren = Array.isArray(option[childrenKey])
                 const isExpanded = hasChildren && optionValue === currentValue
-                // const expandIcon = isExpanded ? 'icon-right' : 'icon-right'
                 const expandIcon = 'icon-right'
                 const optionValues = option.jointOption ? optionValue : getOptionValues(value, optionValue, deep) // jointOption为true代表搜索拼接出来的option，直接取value即可
+
                 if (isExpanded) {
                   currentOptions = option[childrenKey]
                 }
@@ -53,7 +53,8 @@ const Menu = forwardRef(({
                       'hi-cascader-menu__item-expanded': hasChildren,
                       'hi-cascader-menu__item-disabled': !!option.disabled,
                       'hi-cascader-menu__item-active': currentValue === optionValue,
-                      'hi-cascader-menu__item--isFiltered': isFiltered && !option['hightlight']
+                      'hi-cascader-menu__item--isFiltered': isFiltered && !option['hightlight'],
+                      'hi-cascader-menu__item--path': value.includes(option.id)
                     }
                     )}
                     onClick={(e) => {
