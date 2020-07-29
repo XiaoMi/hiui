@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react'
+import React, { useRef, useState, useCallback, useEffect } from 'react'
 
 import classNames from 'classnames'
 
@@ -19,14 +19,15 @@ const Cascader = (props) => {
     clearable = true,
     style,
     theme,
-    value = [],
+    value,
+    defaultValue,
     displayRender,
     fieldNames = {},
     filterOption,
     changeOnSelect = false,
     emptyContent,
     localeDatas,
-    onChange,
+    onChange = noop,
     expandTrigger = 'click',
     onActiveItemChange = noop
   } = props
@@ -75,18 +76,32 @@ const Cascader = (props) => {
       return labels.join(' / ')
     }
   }, [data])
-
+  // const [value, setValue] = useState(trueValue || defaultValue || [])
   const [filterOptions, setFilterOptions] = useState(false)
   // 缓存原始value，用户可能点击option但是没选中，用于恢复初始value
-  const [cacheValue, setCacheValue] = useState(value)
-  const [cascaderValue, setCascaderValue] = useState(value)
-  const [cascaderLabel, setCascaderLabel] = useState(getCascaderLabel(value))
+  const [cacheValue, setCacheValue] = useState(value || defaultValue || [])
+  const [cascaderValue, setCascaderValue] = useState(value || defaultValue || [])
+  const [cascaderLabel, setCascaderLabel] = useState(getCascaderLabel(value || defaultValue || []))
+
   const [popperShow, setPopperShow] = useState(false)
   const [keyword, setKeyword] = useState('')
 
   const hiCascader = useRef()
   const inputContainer = useRef()
   const inputRef = useRef()
+
+  // 每次值被改变重置缓存值、重置label 展示
+  useEffect(() => {
+    if (value !== undefined) {
+      setCacheValue(value)
+    }
+  }, [value])
+
+  useEffect(() => {
+    setCascaderLabel(getCascaderLabel(cacheValue))
+    setCascaderValue(cacheValue)
+  }, [cacheValue])
+  //
   const menuNode = useClickOutside(e => {
     setPopperShow(false)
   })
@@ -97,36 +112,37 @@ const Cascader = (props) => {
     'hi-cascader--clearable': clearable
   }
 
-  const clearValue = useCallback((e) => {
-    e.stopPropagation()
-    setCacheValue([])
-    onChangeValue([], false)
-  })
-
-  const onChangeValue = useCallback((value, hasChildren) => {
+  const onChangeValue = useCallback((values, hasChildren) => {
     setFilterOptions(false)
     setKeyword('')
-    setCascaderValue(value)
+    setCascaderValue(values)
     if (expandTrigger === 'click') {
       if (changeOnSelect || !hasChildren) {
-        setCacheValue(value)
-        setCascaderLabel(getCascaderLabel(value))
-        onChange(value)
+        if (value === undefined) {
+          setCacheValue(values)
+        }
+        onChange(values)
       }
       if (hasChildren) {
-        onActiveItemChange(value)
+        onActiveItemChange(values)
       } else {
         setPopperShow(false)
       }
     } else { // hover
       if (changeOnSelect || !hasChildren) {
-        setCacheValue(value)
-        setCascaderLabel(getCascaderLabel(value))
-        onChange(value)
+        if (value === undefined) {
+          setCacheValue(values)
+        }
+        onChange(values)
         setPopperShow(false)
       }
     }
   }, [changeOnSelect, expandTrigger])
+
+  const clearValue = useCallback((e) => {
+    e.stopPropagation()
+    onChangeValue([], false)
+  }, [onChangeValue])
 
   const onHover = useCallback((value, hasChildren) => {
     setFilterOptions(false)
@@ -314,7 +330,7 @@ const Cascader = (props) => {
       if (searchable && keyword) {
         onKeywordChange()
       } else {
-        setCascaderValue(cacheValue)
+        setCascaderValue(cacheValue || [])
       }
 
       inputRef.current.focus()
@@ -349,7 +365,7 @@ const Cascader = (props) => {
         <i className={classNames('hi-cascader__icon--expand', 'hi-icon', expandIcon)} />
         {
           clearable &&
-            <i className='hi-cascader__icon--clear hi-icon icon-close-circle' onClick={clearValue} />
+          <i className='hi-cascader__icon--clear hi-icon icon-close-circle' onClick={clearValue} />
         }
       </span>
     </div>

@@ -19,7 +19,6 @@ const Menu = forwardRef(({
   emptyContent
 }, ref) => {
   // 配置化
-  console.log(value)
   const renderMenus = useCallback(() => {
     let currentOptions = options.slice()
     let deep = 0
@@ -54,7 +53,7 @@ const Menu = forwardRef(({
                       'hi-cascader-menu__item-disabled': !!option.disabled,
                       'hi-cascader-menu__item-active': currentValue === optionValue,
                       'hi-cascader-menu__item--isFiltered': isFiltered && !option['hightlight'],
-                      'hi-cascader-menu__item--path': value.includes(option.id)
+                      'hi-cascader-menu__item--path': isFiltered && value.includes(option.id)
                     }
                     )}
                     onClick={(e) => {
