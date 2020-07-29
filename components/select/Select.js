@@ -269,20 +269,13 @@ class Select extends Component {
   }
 
   clearKeyword () {
-    this.setState(
-      {
-        keyword: ''
-      },
-      () => {
-        // 修改了方式
-        // this.selectInput.clearInput()
-      }
-    )
+    this.setState({
+      keyword: ''
+    })
   }
 
   handleInputClick = e => {
     let { dropdownShow } = this.state
-    console.log('dropdownShow', dropdownShow)
     if (dropdownShow) {
       this.hideDropdown()
       return
@@ -298,7 +291,6 @@ class Select extends Component {
   }
 
   hideDropdown () {
-    console.log('关闭', 123)
     this.state.dropdownShow === true &&
       this.setState(
         { dropdownShow: false, cacheSelectedItems: this.state.selectedItems },
@@ -309,8 +301,7 @@ class Select extends Component {
   }
 
   showDropdown () {
-    console.log('show')
-    !false && this.setState({ dropdownShow: true })
+    this.setState({ dropdownShow: true })
   }
 
   deleteItem (item) {
@@ -617,7 +608,6 @@ class Select extends Component {
             container={this.selectInputContainer}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
             onClick={() => {
-              console.log('click', this.props.open)
               if (this.props.open) {
                 this.handleInputClick()
               }

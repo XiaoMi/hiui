@@ -1,52 +1,68 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 import Checkbox from '../checkbox'
 import Loading from '../loading'
 import Icon from '../icon'
 
-class SelectDropdown extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      filterItems: this.props.dropdownItems,
-      searchbarValue: '',
-      cachedropdownItems: this.props.dropdownItems
-    }
-  }
-  static getDerivedStateFromProps (nextProps, prevState) {
-    const { selectedItems, mode, isOnSearch, dropdownItems, show } = nextProps
-    const { searchbarValue, cachedropdownItems } = prevState
-    const _filterItems =
+const SelectDropdown = props => {
+  const {
+    mode,
+    focusedIndex,
+    matchFilter,
+    emptyContent,
+    loading,
+    optionWidth,
+    showCheckAll,
+    dropdownRender,
+    theme,
+    searchable,
+    onFocus,
+    onBlur,
+    searchPlaceholder,
+    dropdownItems,
+    localeMap,
+    handleKeyDown,
+    onSearch,
+    isOnSearch,
+    onClickOption,
+    filterOption,
+    checkAll,
+    setFocusedIndex,
+    selectInputWidth,
+    selectedItems,
+    show
+  } = props
+  const [filterItems, setFilterItems] = useState(dropdownItems)
+  const [searchbarValue, setSearchbarValue] = useState('')
+  const [cachedropdownItems, setCachedropdownItems] = useState('')
+  const searchbar = useRef('')
+  useEffect(() => {
+    searchable &&
+      setTimeout(() => searchbar.current && searchbar.current.focus(), 0)
+  }, [])
+
+  useEffect(() => {
+    let _filterItems = dropdownItems
+    // 这个地方需要注意啊
+    if (
       selectedItems.length > 0 &&
       searchbarValue.length === 0 &&
       mode === 'single' &&
       isOnSearch
-        ? cachedropdownItems
-        : dropdownItems
-    const _searchbarValue = show ? searchbarValue : ''
-    return { filterItems: _filterItems, searchbarValue: _searchbarValue }
-  }
-  componentDidMount () {
-    this.focus()
-  }
-  focus = () => {
-    this.props.searchable && setTimeout(() => this.searchbar.focus(), 0)
-  }
-  onClickOption (e, item, index) {
-    e.stopPropagation()
-    e.preventDefault()
-    if (item.disabled) {
-      return
+    ) {
+      _filterItems = cachedropdownItems
     }
-    this.props.mode === 'single' &&
-      this.props.isOnSearch &&
-      this.setState({
-        cachedropdownItems: this.props.dropdownItems
-      })
-    this.props.onClickOption(item, index)
+    const _searchbarValue = show ? searchbarValue : ''
+    setFilterItems(_filterItems)
+    setCachedropdownItems(_searchbarValue)
+  }, [mode, isOnSearch, dropdownItems, show])
+
+  let matched = 0
+  const style = optionWidth && {
+    width: optionWidth
   }
-  filterOptions = keyword => {
-    const { dropdownItems, filterOption } = this.props
+
+  const filterOptions = keyword => {
     let filterItems = []
     if (typeof filterOption === 'function' || keyword === '') {
       filterItems = dropdownItems
@@ -55,102 +71,88 @@ class SelectDropdown extends Component {
         String(item.title).includes(keyword) && filterItems.push(item)
       })
     }
-    this.setState({
-      filterItems: filterItems,
-      searchbarValue: keyword
-    })
+    setFilterItems(filterItems)
+    setSearchbarValue(keyword)
   }
-  searchEvent (e) {
+  const searchEvent = e => {
     const filterText = e.target.value
-    this.filterOptions(filterText)
-    this.props.onSearch(filterText)
-
-    this.setState({
-      searchbarValue: filterText
-    })
-  }
-  hightlightKeyword (text, uniqueKey) {
-    const { searchbarValue } = this.state
-    let _keyword = this.state.searchbarValue
-    _keyword = searchbarValue.includes('[')
-      ? _keyword.replace(/\[/gi, '\\[')
-      : _keyword
-    _keyword = searchbarValue.includes('(')
-      ? _keyword.replace(/\(/gi, '\\(')
-      : _keyword
-    _keyword = searchbarValue.includes(')')
-      ? _keyword.replace(/\)/gi, '\\)')
-      : _keyword
-
-    let parts = text.split(new RegExp(`(${_keyword})`, 'gi'))
-    return this.state.searchbarValue.length > 0 ? (
-      <p key={uniqueKey}>
-        {parts.map((part, i) =>
-          part === searchbarValue ? (
-            <span
-              key={i}
-              className={'hi-select__dropdown--item__name-hightlight'}
-            >
-              {part}
-            </span>
-          ) : (
-            part
-          )
-        )}
-      </p>
-    ) : (
-      text
-    )
-  }
-  onMouseEnter (item, index) {
-    !item.disabled && this.props.setFocusedIndex(index)
+    filterOptions(filterText)
+    onSearch(filterText)
   }
 
-  itemSelected (item) {
-    const selectedItems = this.props.selectedItems
-
-    return selectedItems.map(item => item.id).indexOf(item.id) > -1
-  }
-  cleanSearchbarValue (e) {
+  const cleanSearchbarValue = e => {
     e.stopPropagation()
     const filterText = ''
-    this.filterOptions(filterText)
-    this.props.onSearch(filterText)
-
-    this.setState({
-      searchbarValue: filterText
-    })
+    filterOptions(filterText)
+    onSearch(filterText)
   }
-  handleKeyDown (evt) {
-    if (evt.keyCode === 13) {
-      this.props.onEnterSelect()
-    }
-
-    if (evt.keyCode === 38) {
-      evt.preventDefault()
-      this.props.moveFocusedIndex('up')
-    }
-    if (evt.keyCode === 40) {
-      evt.preventDefault()
-      this.props.moveFocusedIndex('down')
-    }
+  // 是否被选中
+  const itemSelected = item => {
+    return selectedItems.map(item => item.id).indexOf(item.id) > -1
   }
-  renderOption (mode, isSelected, item) {
+  // 点击某个选项时
+  const onClickOptionIntal = (e, item, index) => {
+    e.stopPropagation()
+    e.preventDefault()
+    if (item.disabled) {
+      return
+    }
+    mode === 'single' && isOnSearch && setCachedropdownItems(dropdownItems)
+    onClickOption(item, index)
+  }
+  // 设置选中下标
+  const onMouseEnter = (item, index) => {
+    !item.disabled && setFocusedIndex(index)
+  }
+  const renderOption = (isSelected, item) => {
     if (item.children) {
       return item.children
     }
-    if (this.props.dropdownRender) {
-      return this.props.dropdownRender(item, isSelected)
+    if (dropdownRender) {
+      return dropdownRender(item, isSelected)
     }
     const paddingNum = mode === 'multiple' ? 48 : 24
-    const style = {
-      width: this.props.optionWidth
-        ? this.props.optionWidth - paddingNum
-        : this.props.selectInputWidth
-          ? this.props.selectInputWidth - paddingNum
-          : null
+    // 提高可读性
+    let width = selectInputWidth ? selectInputWidth - paddingNum : null
+    if (optionWidth) {
+      width = optionWidth - paddingNum
     }
+    const style = {
+      width
+    }
+    // 高亮关键字
+    const hightlightKeyword = (text, uniqueKey) => {
+      let _keyword = searchbarValue
+      _keyword = searchbarValue.includes('[')
+        ? _keyword.replace(/\[/gi, '\\[')
+        : _keyword
+      _keyword = searchbarValue.includes('(')
+        ? _keyword.replace(/\(/gi, '\\(')
+        : _keyword
+      _keyword = searchbarValue.includes(')')
+        ? _keyword.replace(/\)/gi, '\\)')
+        : _keyword
 
+      let parts = text.split(new RegExp(`(${_keyword})`, 'gi'))
+      return searchbarValue.length > 0 ? (
+        <p key={uniqueKey}>
+          {parts.map((part, i) =>
+            part === searchbarValue ? (
+              <span
+                key={i}
+                className={'hi-select__dropdown--item__name-hightlight'}
+              >
+                {part}
+              </span>
+            ) : (
+              part
+            )
+          )}
+        </p>
+      ) : (
+        text
+      )
+    }
     return (
       <React.Fragment>
         {mode === 'multiple' && (
@@ -160,17 +162,13 @@ class SelectDropdown extends Component {
             disabled={item.disabled}
           >
             <div className='hi-select__dropdown--item__name' style={style}>
-              {this.props.isOnSearch
-                ? item.title
-                : this.hightlightKeyword(item.title, item.id)}
+              {isOnSearch ? item.title : hightlightKeyword(item.title, item.id)}
             </div>
           </Checkbox>
         )}
         {mode === 'single' && (
           <div className='hi-select__dropdown--item__name' style={style}>
-            {this.props.isOnSearch
-              ? item.title
-              : this.hightlightKeyword(item.title, item.id)}
+            {isOnSearch ? item.title : hightlightKeyword(item.title, item.id)}
           </div>
         )}
         {mode === 'single' && isSelected && (
@@ -181,116 +179,89 @@ class SelectDropdown extends Component {
       </React.Fragment>
     )
   }
-
-  render () {
-    const {
-      mode,
-      focusedIndex,
-      matchFilter,
-      emptyContent,
-      loading,
-      optionWidth,
-      showCheckAll,
-      dropdownRender,
-      theme,
-      searchable,
-      onFocus,
-      onBlur,
-      searchPlaceholder,
-      localeMap
-    } = this.props
-    const { filterItems, searchbarValue } = this.state
-    let matched = 0
-    const style = optionWidth && {
-      width: optionWidth
-    }
-
-    return (
-      <div className='hi-select__dropdown' style={style}>
-        {searchable && (
-          <div className='hi-select__dropdown__searchbar'>
-            <div className='hi-select__dropdown__searchbar--content'>
-              <Icon name='search' />
-              <input
-                className='hi-select__dropdown__searchbar--input'
-                placeholder={searchPlaceholder}
-                clearable='true'
-                ref={input => {
-                  this.searchbar = input
-                }}
-                value={searchbarValue}
-                onFocus={onFocus.bind(this)}
-                onBlur={onBlur.bind(this)}
-                clearabletrigger='always'
-                onKeyDown={this.props.handleKeyDown.bind(this)}
-                onInput={this.searchEvent.bind(this)}
-                onChange={this.searchEvent.bind(this)}
+  return (
+    <div className='hi-select__dropdown' style={style}>
+      {searchable && (
+        <div className='hi-select__dropdown__searchbar'>
+          <div className='hi-select__dropdown__searchbar--content'>
+            <Icon name='search' />
+            <input
+              className='hi-select__dropdown__searchbar--input'
+              placeholder={searchPlaceholder}
+              clearable='true'
+              ref={searchbar}
+              value={searchbarValue}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              clearabletrigger='always'
+              onKeyDown={handleKeyDown}
+              onInput={searchEvent}
+              onChange={searchEvent}
+            />
+            {searchbarValue.length > 0 ? (
+              <Icon
+                name='close-circle'
+                style={{ cursor: 'pointer' }}
+                onClick={cleanSearchbarValue}
               />
-              {searchbarValue.length > 0 ? (
-                <Icon
-                  name='close-circle'
-                  style={{ cursor: 'pointer' }}
-                  onClick={this.cleanSearchbarValue.bind(this)}
-                />
-              ) : null}
-            </div>
+            ) : null}
           </div>
-        )}
-        {loading && (
-          <div className='hi-select__dropdown--loading'>
-            <Loading size='small' />
-          </div>
-        )}
-        {!loading && (
-          <ul className='hi-select__dropdown--items'>
-            {filterItems.map((item, index) => {
-              if (matchFilter(item)) {
-                matched++
-                const isSelected = this.itemSelected(item)
-                const isDisabled = item.disabled
-                return (
-                  <li
-                    className={classNames(
-                      'hi-select__dropdown--item',
-                      `theme__${theme}`,
-                      {
-                        'is-active': isSelected,
-                        'is-disabled': isDisabled,
-                        'hi-select__dropdown--item-default':
-                          !item.children && !dropdownRender
-                      }
-                    )}
-                    onClick={e => this.onClickOption(e, item, index)}
-                    key={item.id}
-                    data-focused={focusedIndex === index}
-                    onMouseEnter={() => this.onMouseEnter(item, index)}
-                  >
-                    {this.renderOption(mode, isSelected, item)}
-                  </li>
-                )
-              }
-            })}
-            {matched === 0 && (
-              <li
-                className='hi-select__dropdown--item hi-select__dropdown-item--empty is-disabled'
-                onClick={e => e.stopPropagation()}
-              >
-                {emptyContent}
-              </li>
-            )}
-          </ul>
-        )}
-        {mode === 'multiple' && showCheckAll && (
-          <div
-            className={`hi-select__dropdown-check-all theme__${theme}`}
-            onClick={this.props.checkAll.bind(this, filterItems)}
-          >
-            {localeMap['checkAll']}
-          </div>
-        )}
-      </div>
-    )
-  }
+        </div>
+      )}
+      {loading && (
+        <div className='hi-select__dropdown--loading'>
+          <Loading size='small' />
+        </div>
+      )}
+      {!loading && (
+        <ul className='hi-select__dropdown--items'>
+          {filterItems.map((item, index) => {
+            if (matchFilter(item)) {
+              matched++
+              const isSelected = itemSelected(item)
+              const isDisabled = item.disabled
+              return (
+                <li
+                  className={classNames(
+                    'hi-select__dropdown--item',
+                    `theme__${theme}`,
+                    {
+                      'is-active': isSelected,
+                      'is-disabled': isDisabled,
+                      'hi-select__dropdown--item-default':
+                        !item.children && !dropdownRender
+                    }
+                  )}
+                  onClick={e => onClickOptionIntal(e, item, index)}
+                  key={item.id}
+                  data-focused={focusedIndex === index}
+                  // onMouseEnter={()=>onMouseEnter(item, index)}
+                >
+                  {renderOption(isSelected, item)}
+                </li>
+              )
+            }
+          })}
+          {matched === 0 && (
+            <li
+              className='hi-select__dropdown--item hi-select__dropdown-item--empty is-disabled'
+              onClick={e => e.stopPropagation()}
+            >
+              {emptyContent}
+            </li>
+          )}
+        </ul>
+      )}
+      {mode === 'multiple' && showCheckAll && (
+        <div
+          className={`hi-select__dropdown-check-all theme__${theme}`}
+          onClick={() => checkAll(filterItems)}
+        >
+          {localeMap['checkAll']}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default SelectDropdown

@@ -89,6 +89,10 @@
       background-color: rgba(66, 132, 245, 0.08);
     }
 
+    &:hover {
+      background-color: rgba(66, 132, 245, 0.08);
+    }
+
     &.disabled {
       opacity: 0.4;
       cursor: not-allowed;
