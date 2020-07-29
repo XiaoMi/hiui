@@ -63,10 +63,10 @@ class Demo extends React.Component {
                 const date = DatePicker.format(currentDate, 'yyyy/M/D')
                 const yesterday = DatePicker.format(today-86400000, 'yyyy/M/D')
                 const currentday = DatePicker.format(this.state.value, 'yyyy/M/D')
-                
+
                 if(date === '2020/4/8'){
                     return (
-                      <span style={{color: currentday === '2020/4/8' ? '#fff' : '#f63' }}>米</span> 
+                      <span style={{color: currentday === '2020/4/8' ? '#fff' : '#f63' }}>米</span>
                     )
                 } else if (date === yesterday){
                     return (

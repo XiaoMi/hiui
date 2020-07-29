@@ -19,7 +19,8 @@ const RangePanel = () => {
     showTime,
     format,
     timeInterval,
-    shortcuts
+    shortcuts,
+    theme
   } = useContext(DPContext)
 
   const [showRangeMask, setShowRangeMask] = useState(false)
@@ -201,6 +202,7 @@ const RangePanel = () => {
   const isDisableFooter = range.start && range.end && !range.selecting
   const panelCls = classNames(
     'hi-datepicker__panel',
+    `theme__${theme}`,
     type.includes('range') && 'hi-datepicker__panel--range',
     type === 'timeperiod' && 'hi-datepicker__panel--timeperiod',
     (showTime || type === 'timeperiod') && 'hi-datepicker__panel--noshadow'

@@ -1,3 +1,5 @@
+@import '@hi-ui/core-css/index.scss';
+$basic-color: #4284f5 !default;
 
 .hi-timepicker {
   width: 180px;
@@ -179,6 +181,16 @@
 
     span {
       flex: 1;
+    }
+  }
+}
+
+@each $key, $value in $palette-primary {
+  .theme__#{$key} {
+    .hi-timepicker {
+      &__item:hover:not(.hi-timepicker__item--current):not(.hi-timepikcer__item--empty):not(.hi-timepicker__item--disabled) {
+        background-color: rgba($value, 0.1);
+      }
     }
   }
 }

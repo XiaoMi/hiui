@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react'
 import DPContext from './context'
+import Provider from '../context/index'
 import { useDate, useFormat, useAltData } from './hooks'
-import localeDatas from '../locales'
 import _ from 'lodash'
 import classNames from 'classnames'
 import Popper from '../popper/index'
@@ -18,6 +18,7 @@ const BasePicker = ({
   showTime = false,
   format,
   disabled,
+  clearable = true,
   width = 'auto',
   weekOffset = 0,
   min = null,
@@ -28,9 +29,12 @@ const BasePicker = ({
   altCalendar,
   altCalendarPreset,
   dateMarkRender,
-  dateMarkPreset
+  dateMarkPreset,
+  localeDatas,
+  theme
 }) => {
   const cacheDate = useRef(null)
+  const [inputFocus, setInputFocus] = useState(false)
   const [outDate, changeOutDate] = useDate({
     value,
     type,
@@ -76,25 +80,33 @@ const BasePicker = ({
     onChange(returnDate, returnDateStr)
   }
   const onPick = (dates, isShowPanel) => {
-    console.log(dates)
     changeOutDate([].concat(dates))
     setTimeout(() => {
       setShowPanel(isShowPanel)
     }, 0)
     if (!isShowPanel) {
+      setInputFocus(false)
       callback(dates)
     }
   }
 
   const clickOutsideEvent = useCallback(() => {
     changeOutDate(outDate)
-    setShowPanel(false)
+    resetStatus()
     outDate.forEach((od, index) => {
       if (od && !od.isSame(cacheDate.current[index])) {
         callback(outDate)
       }
     })
   }, [outDate])
+  const onClear = () => {
+    resetStatus()
+    changeOutDate([])
+  }
+  const resetStatus = useCallback(() => {
+    setShowPanel(false)
+    setInputFocus(false)
+  }, [])
   const popperCls = classNames(
     'hi-datepicker__popper',
     type === 'date' && showTime && 'hi-datepicker__popper--time',
@@ -109,7 +121,7 @@ const BasePicker = ({
       value={{
         type,
         outDate,
-        localeDatas: localeDatas['zh-CN'],
+        localeDatas,
         weekOffset,
         onPick,
         min,
@@ -125,12 +137,20 @@ const BasePicker = ({
         dateMarkRender,
         dateMarkPreset,
         altCalendarPresetData,
-        dateMarkPresetData
+        dateMarkPresetData,
+        clearable,
+        theme
       }}
     >
       <Root
         inputChangeEvent={inputChangeEvent}
-        onTrigger={() => setShowPanel(true)}
+        onClear={onClear}
+        showPanel={showPanel}
+        inputFocus={inputFocus}
+        onTrigger={() => {
+          setShowPanel(true)
+          setInputFocus(true)
+        }}
       >
         <Popper
           show={showPanel}
@@ -152,4 +172,4 @@ const BasePicker = ({
     </DPContext.Provider>
   )
 }
-export default BasePicker
+export default Provider(BasePicker)

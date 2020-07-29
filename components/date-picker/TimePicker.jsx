@@ -3,7 +3,6 @@ import DPContext from './context'
 import Root from './components/Root'
 import { useDate } from './hooks'
 import Popper from '../popper/index'
-import localeDatas from '../locales'
 import TimePanel from './components/TimePanel'
 import _ from 'lodash'
 import classNames from 'classnames'
@@ -14,7 +13,9 @@ const TimePicker = ({
   defaultValue,
   format = 'HH:mm:ss',
   disabled,
-  placeholder
+  placeholder,
+  localeDatas,
+  theme
 }) => {
   const cacheDate = useRef(null)
   const [showPanel, setShowPanel] = useState(false)
@@ -46,9 +47,10 @@ const TimePicker = ({
   return <DPContext.Provider
     value={{
       type,
-      localeDatas: localeDatas['zh-CN'],
+      localeDatas,
       outDate,
-      format
+      format,
+      theme
     }}
   >
     <Root

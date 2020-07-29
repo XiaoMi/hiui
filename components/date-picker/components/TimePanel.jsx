@@ -11,10 +11,12 @@ const TimePanel = ({
   dates = []
 }) => {
   const {
-    type
+    type,
+    theme
   } = useContext(DPContext)
   const panelCls = classNames(
     'hi-timepicker__panel',
+    `theme__${theme}`,
     type.includes('range') && 'hi-timepicker__panel--range'
   )
   return <div className={panelCls} style={style}>

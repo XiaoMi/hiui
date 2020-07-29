@@ -44,7 +44,7 @@ $basic-color: #4284f5 !default;
     display: inline-flex;
   }
 
-  &__input {
+  &__picker {
     background: #fff;
     border: 1px solid #d8d8d8;
     border-radius: 2px;
@@ -55,7 +55,7 @@ $basic-color: #4284f5 !default;
     justify-content: space-around;
     box-sizing: border-box;
 
-    &:hover:not(.hi-datepicker__input--disabled) {
+    &:hover:not(.hi-datepicker__picker--disabled) {
       border: 1px solid $basic-color;
     }
 
@@ -63,12 +63,8 @@ $basic-color: #4284f5 !default;
       border: 1px solid $basic-color;
     }
 
-    .icon-close-circle {
-      color: #bbb;
-    }
-
-    .icon-close-circle:hover {
-      color: #333;
+    &--disabled {
+      cursor: not-allowed;
     }
 
     &--range {
@@ -79,24 +75,41 @@ $basic-color: #4284f5 !default;
       }
 
       input {
-        flex: 0 1 40%;
         text-align: center;
       }
+    }
+
+    .hi-icon {
+      margin-top: 2px;
+      margin-right: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .icon-close-circle {
+      color: #bbb;
+    }
+
+    .icon-close-circle:hover {
+      color: #333;
     }
 
     input {
       outline: none;
       border: 0;
-      min-width: 0;
-      min-height: 0;
       height: 28px;
       padding-left: 10px;
-      flex: 1;
+      width: 100%;
 
       &::-webkit-input-placeholder {
         color: #ccc;
       }
     }
+  }
+
+  &__input {
+    display: inline-flex;
+    align-items: center;
   }
 
   &__panel {
@@ -119,17 +132,6 @@ $basic-color: #4284f5 !default;
     &--noshadow {
       box-shadow: none;
     }
-
-    &--range {
-      // width: 596px;
-      // &>div {
-      //   flex: 1;
-      // }
-    }
-
-    &--timeperiod {
-      // width: 432px;
-    }
   }
 
   &__header {
@@ -149,12 +151,10 @@ $basic-color: #4284f5 !default;
       .hi-icon {
         cursor: pointer;
         flex: 1;
-      }
 
-      .hi-icon:hover {
-        cursor: pointer;
-        flex: 1;
-        color: #4284f5;
+        &:hover {
+          color: $basic-color;
+        }
       }
     }
 
@@ -232,10 +232,6 @@ $basic-color: #4284f5 !default;
       box-sizing: border-box;
       margin-left: 50%;
       transform: translateX(-50%);
-
-      &:hover {
-        background: rgba(66, 132, 245, 0.1);
-      }
     }
 
     &--out {
@@ -244,7 +240,7 @@ $basic-color: #4284f5 !default;
 
     &--today {
       .hi-datepicker__cell-text {
-        border: 1px solid #4284f5;
+        border: 1px solid $basic-color;
       }
     }
 
@@ -299,7 +295,7 @@ $basic-color: #4284f5 !default;
 
     &--selected {
       .hi-datepicker__cell-text {
-        background: #4284f5;
+        background: $basic-color;
         color: #fff;
       }
 
@@ -481,6 +477,71 @@ $basic-color: #4284f5 !default;
       display: none;
       opacity: 0;
       transition: all 0.3s ease-in;
+    }
+  }
+}
+
+@each $key, $value in $palette-primary {
+  .theme__#{$key} {
+    &.hi-datepicker__picker {
+      &:hover:not(.hi-datepicker__picker--disabled),
+      &--focus {
+        border: 1px solid $value;
+      }
+    }
+
+    .hi-datepicker {
+      &__row {
+        &--currentweek {
+          .hi-datepicker__cell {
+            &::before {
+              background: rgba($value, 0.1);
+            }
+          }
+        }
+      }
+
+      &__cell {
+        &-text {
+          &:hover {
+            background-color: rgba($value, 0.1);
+          }
+        }
+
+        &--today {
+          .hi-datepicker__cell-text {
+            border: 1px solid $value;
+          }
+        }
+
+        &--selected {
+          .hi-datepicker__cell-text {
+            background: $value;
+          }
+        }
+
+        &--range:not(.hi-datepicker__cell--out) {
+          &::before {
+            background: rgba($value, 0.1);
+          }
+        }
+      }
+
+      &__header-btns {
+        .hi-icon {
+          &:hover {
+            color: $value;
+          }
+        }
+      }
+
+      &__shortcuts {
+        &-item {
+          &:hover {
+            color: $value;
+          }
+        }
+      }
     }
   }
 }

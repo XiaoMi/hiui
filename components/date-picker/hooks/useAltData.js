@@ -35,17 +35,19 @@ const useFormat = ({ altCalendarPreset, altCalendar, dateMarkPreset, dateMarkRen
     if (altCalendarPreset && altCalendarPreset !== 'zh-CN') {
       return
     }
-    dateMarkPreset === 'zh-CN' && getPRCDate('PRCHoliday').then(res => {
-      const allPRCDate = {}
-      Object.keys(res.data).forEach(key => {
-        Object.keys(res.data[key].PRCHoliday).forEach(elkey => {
-          allPRCDate[elkey.replace(/-/g, '/')] = res.data[key].PRCHoliday[elkey] === '1'
-            ? <span className='hi-datepicker__mark hi-datepicker__mark--rest'>休</span>
-            : <span className='hi-datepicker__mark hi-datepicker__mark--work'>班</span>
+    if (dateMarkPreset === 'zh-CN') {
+      getPRCDate('PRCHoliday').then(res => {
+        const allPRCDate = {}
+        Object.keys(res.data).forEach(key => {
+          Object.keys(res.data[key].PRCHoliday).forEach(elkey => {
+            allPRCDate[elkey.replace(/-/g, '/')] = res.data[key].PRCHoliday[elkey] === '1'
+              ? <span className='hi-datepicker__mark hi-datepicker__mark--rest'>休</span>
+              : <span className='hi-datepicker__mark hi-datepicker__mark--work'>班</span>
+          })
         })
+        setDateMarkPresetData(allPRCDate)
       })
-      setDateMarkPresetData(allPRCDate)
-    })
+    }
   }
   // 合并用户自定义的日期信息作为presetData
   const getAltCalendarData = (allPRCDate) => {

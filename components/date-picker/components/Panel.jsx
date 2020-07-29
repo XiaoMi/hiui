@@ -8,7 +8,7 @@ import TimePanel from './TimePanel'
 import { getView, genNewDates } from '../utils'
 
 const Panel = () => {
-  const { outDate, type, onPick, localeDatas, showTime } = useContext(DPContext)
+  const { outDate, type, onPick, localeDatas, showTime, theme } = useContext(DPContext)
 
   const [view, setView] = useState(getView(type))
 
@@ -43,6 +43,7 @@ const Panel = () => {
 
   const panelCls = classNames(
     'hi-datepicker__panel',
+    `theme__${theme}`,
     showTime && 'hi-datepicker__panel--time hi-datepicker__panel--noshadow'
   )
   const onTimeChange = (date) => {
