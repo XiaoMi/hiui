@@ -1,0 +1,486 @@
+@import '@hi-ui/core-css/index.scss';
+
+$basic-color: #4284f5 !default;
+
+.hi-datepicker {
+  position: relative;
+  // display: flex;
+  background: #fff;
+  z-index: 1060;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+
+  &__popper {
+    width: 288px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    display: flex;
+    flex-wrap: wrap;
+
+    &--range {
+      width: 576px;
+
+      &.hi-datepicker__popper--large {
+        width: 866px;
+      }
+    }
+
+    &--timeperiod,
+    &--large {
+      width: 432px;
+    }
+
+    &--time {
+      width: 468px;
+    }
+
+    &--shortcuts {
+      width: 681px;
+    }
+  }
+
+  &__root {
+    display: inline-flex;
+  }
+
+  &__input {
+    background: #fff;
+    border: 1px solid #d8d8d8;
+    border-radius: 2px;
+    height: 32px;
+    width: 180px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-around;
+    box-sizing: border-box;
+
+    &:hover:not(.hi-datepicker__input--disabled) {
+      border: 1px solid $basic-color;
+    }
+
+    &--focus {
+      border: 1px solid $basic-color;
+    }
+
+    .icon-close-circle {
+      color: #bbb;
+    }
+
+    .icon-close-circle:hover {
+      color: #333;
+    }
+
+    &--range {
+      width: 320px;
+
+      &-time {
+        width: 400px;
+      }
+
+      input {
+        flex: 0 1 40%;
+        text-align: center;
+      }
+    }
+
+    input {
+      outline: none;
+      border: 0;
+      min-width: 0;
+      min-height: 0;
+      height: 28px;
+      padding-left: 10px;
+      flex: 1;
+
+      &::-webkit-input-placeholder {
+        color: #ccc;
+      }
+    }
+  }
+
+  &__panel {
+    // width: 288px;
+    width: 100%;
+    // height: 296px;
+    background: #fff;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+    display: flex;
+
+    .hi-datepicker__panel--left {
+      min-width: 288px;
+      flex: 1;
+    }
+
+    .hi-datepicker__panel--right {
+      flex: 1;
+    }
+
+    &--noshadow {
+      box-shadow: none;
+    }
+
+    &--range {
+      // width: 596px;
+      // &>div {
+      //   flex: 1;
+      // }
+    }
+
+    &--timeperiod {
+      // width: 432px;
+    }
+  }
+
+  &__header {
+    border-bottom: 1px solid #f2f2f2;
+    display: flex;
+    justify-content: space-between;
+    height: 48px;
+    box-sizing: border-box;
+    align-items: center;
+    padding: 0 12px;
+
+    &-btns {
+      width: 50px;
+      display: flex;
+      justify-content: space-around;
+
+      .hi-icon {
+        cursor: pointer;
+        flex: 1;
+      }
+
+      .hi-icon:hover {
+        cursor: pointer;
+        flex: 1;
+        color: #4284f5;
+      }
+    }
+
+    &-text {
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
+
+  &__calender-wrap {
+    padding: 16px;
+    height: 216px;
+
+    &--large {
+      height: 382px;
+    }
+  }
+
+  &__calender {
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    border-collapse: collapse;
+    border-spacing: 0;
+
+    thead th {
+      padding: 2px;
+    }
+
+    &--year,
+    &--month {
+      .hi-datepicker__row {
+        height: 52px;
+      }
+
+      .hi-datepicker__cell {
+        &-text {
+          width: 48px;
+        }
+      }
+    }
+  }
+
+  &__row {
+    &--currentweek {
+      .hi-datepicker__cell {
+        &::before {
+          content: '';
+          background: rgba(66, 132, 245, 0.1);
+          display: block;
+          height: 24px;
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+      }
+    }
+  }
+
+  &__cell {
+    text-align: center;
+    padding: 4px 0;
+    cursor: pointer;
+    color: rgb(51, 51, 51);
+    position: relative;
+
+    &-text {
+      width: 24px;
+      display: inline-block;
+      height: 24px;
+      line-height: 24px;
+      border-radius: 2px;
+      box-sizing: border-box;
+      margin-left: 50%;
+      transform: translateX(-50%);
+
+      &:hover {
+        background: rgba(66, 132, 245, 0.1);
+      }
+    }
+
+    &--out {
+      color: rgba(44, 48, 78, 0.2);
+    }
+
+    &--today {
+      .hi-datepicker__cell-text {
+        border: 1px solid #4284f5;
+      }
+    }
+
+    &--range:not(.hi-datepicker__cell--out) {
+      &::before {
+        content: '';
+        background: rgba(66, 132, 245, 0.1);
+        display: block;
+        height: 24px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+
+    &--disabled {
+      color: rgba(44, 48, 78, 0.2);
+      cursor: not-allowed;
+
+      &::before {
+        content: '';
+        display: block;
+        height: 24px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(140, 140, 140, 0.1);
+      }
+    }
+
+    &--large {
+      .hi-datepicker__cell-text {
+        width: 48px;
+        height: 48px;
+        line-height: normal;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: 16px;
+      }
+
+      &.hi-datepicker__cell--range:not(.hi-datepicker__cell--out) {
+        &::before {
+          height: 48px;
+        }
+      }
+    }
+
+    &--selected {
+      .hi-datepicker__cell-text {
+        background: #4284f5;
+        color: #fff;
+      }
+
+      .hi-datepicker__cell--lunar {
+        color: #fff;
+      }
+    }
+  }
+
+  &__lunar {
+    font-size: 12px;
+    color: rgba(204, 204, 204, 1);
+
+    &--highlight {
+      color: $basic-color;
+    }
+  }
+
+  &__footer {
+    height: 48px;
+    border-top: 1px solid #f2f2f2;
+    box-sizing: border-box;
+    line-height: 48px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    font-size: 14px;
+    flex: 1 1 100%;
+
+    &:not(.hi-datepicker__footer--disable):hover {
+      color: $basic-color;
+    }
+
+    &--disable {
+      cursor: not-allowed;
+      color: #ccc;
+    }
+  }
+
+  &__mask {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &__timetext {
+    position: absolute;
+    width: 148px;
+    height: 32px;
+    border-radius: 2px;
+    left: 50%;
+    top: 8px;
+    transform: translateX(-50%);
+    background: #fff;
+    z-index: 2;
+    line-height: 32px;
+  }
+
+  &__time-period {
+    width: 144px;
+    border-left: 1px solid #f2f2f2;
+    text-align: center;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+
+  &__period-header {
+    line-height: 48px;
+    height: 48px;
+    font-weight: 600;
+    border-bottom: 1px solid #f2f2f2;
+    box-sizing: border-box;
+  }
+
+  &__period-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-top: 8px;
+    overflow: auto;
+    height: 241px;
+  }
+
+  &__period-item {
+    padding: 8px;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(240, 246, 255, 1);
+    }
+
+    &--active {
+      color: $basic-color;
+    }
+  }
+
+  &__shortcuts {
+    background: #fff;
+    border-right: 1px solid #f2f2f2;
+    width: 105px;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    &-list {
+      width: 120px;
+      padding: 0;
+      height: 100%;
+      margin: 0;
+      overflow: auto;
+    }
+
+    &-item {
+      cursor: pointer;
+      // text-align: center;
+      padding-left: 30px;
+      margin: 21px 0;
+      list-style: none;
+
+      &:hover {
+        color: $basic-color;
+      }
+    }
+  }
+
+  &__mark {
+    position: absolute;
+    font-size: 12px;
+    right: 0;
+    top: -4px;
+
+    &--rest {
+      color: rgba(29, 166, 83, 1);
+    }
+
+    &--work {
+      color: rgba(244, 65, 65, 1);
+    }
+  }
+
+  &__indiaHoli {
+    display: none;
+    position: absolute;
+    top: 36px;
+    left: 0;
+    width: 430px;
+    text-align: center;
+
+    &-text {
+      display: inline-block;
+      max-width: 410px;
+      word-break: break-all;
+      background: #edf2fc;
+      border: 1px solid #d8e5ff;
+      padding: 7px 12px;
+      border-radius: 2px;
+    }
+
+    &-enter {
+      display: none;
+      opacity: 0;
+      transition: all 0.3s ease-in;
+    }
+
+    &-enter-done {
+      display: block;
+      opacity: 1;
+      transition: all 0.3s ease-in;
+    }
+
+    &-exit {
+      display: block;
+      opacity: 1;
+    }
+
+    &-exit-done {
+      display: none;
+      opacity: 0;
+      transition: all 0.3s ease-in;
+    }
+  }
+}
