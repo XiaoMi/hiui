@@ -42,7 +42,7 @@ const ModalComp = ({
   useEffect(() => {
     const parent = (container || defaultContainer.current).parentNode
     // 屏蔽滚动条
-    if (visible) {
+    if (vi) {
       parent.style.setProperty('overflow', 'hidden')
     } else {
       parent.style.removeProperty('overflow')
