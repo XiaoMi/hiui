@@ -16,11 +16,11 @@ class Demo extends React.Component {
     this.state = {
       value: 3
     }
-    this.tooltips = ['terrible', 'bad', 'normal', 'good', 'wonderful']
+    this.tooltips = ['极差','失望', '一般', '满意','很满意']
   }
 
   descRender (value, index) {
-    const arr =['极差','差', '一般', '满意','很满意']
+    const arr =['极差','失望', '一般', '满意','很满意']
     return <span style={{color:'#FF6633'}}>{arr[Math.ceil(value)-1]} </span>;
   }
   render() {
