@@ -1,7 +1,7 @@
 @import '@hi-ui/core-css/index.scss';
 
 $prefix: 'hi-tag' !default;
-$prefixGroup:'hi-tag-group' !default;
+$prefixGroup: 'hi-tag-group' !default;
 
 $primary: get-color($palette-primary, 'hiui-blue') !default;
 
@@ -19,6 +19,11 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
   font-size: 12px;
   display: inline-block;
   user-select: none;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 0.65;
+  }
 
   &.#{$prefix}--default {
     background: #999;
@@ -29,9 +34,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     color: $primary;
     background: #fff;
 
-    @each $key in 'success',
-      'danger',
-      'warning' {
+    @each $key in 'success', 'danger', 'warning' {
       &.#{$prefix}--#{$key} {
         $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
 
@@ -48,6 +51,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
 
   &.#{$prefix}--active {
     border: 1px solid #4284f5 !important;
+    opacity: 1;
   }
 
   &.#{$prefix}--square {
@@ -68,9 +72,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     opacity: 0.54;
     background-color: transparent;
     color: inherit;
-    transition:
-      box-shadow $speed-fast $easing,
-      opacity $speed-fast $easing;
+    transition: box-shadow $speed-fast $easing, opacity $speed-fast $easing;
 
     &:focus,
     &:hover,
@@ -83,9 +85,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     }
   }
 
-  @each $key in 'success',
-    'danger',
-    'warning' {
+  @each $key in 'success', 'danger', 'warning' {
     &--#{$key} {
       $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
 
@@ -104,6 +104,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
       border: 1px solid rgba(224, 225, 226, 1);
       color: #333;
       cursor: pointer;
+      transition: border-color 0.3s;
 
       .hi-icon {
         margin-left: 3px;
@@ -120,7 +121,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
       font-size: 12px;
       box-sizing: border-box;
       display: inline-block;
-      height: 20px;
+      line-height: 16px;
     }
 
     &--plus {
@@ -128,15 +129,16 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
       border-radius: 11px;
       border: 1px dashed rgba(230, 231, 232, 1);
       display: inline-block;
-      line-height: 18px;
+      line-height: 20px;
       text-align: center;
       margin-left: 4px;
       box-sizing: border-box;
       cursor: pointer;
       font-size: 12px;
+      transition: border-color 0.3s;
 
       &:hover {
-        border-color: #e0e1e2;
+        border-color: $primary;
       }
     }
   }
