@@ -1,0 +1,223 @@
+@import '@hi-ui/core-css/index.scss';
+
+$prefix: 'hi-slider' !default;
+
+.#{$prefix} {
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5715;
+  list-style: none;
+  position: relative;
+  height: 12px;
+  margin: 10px 6px;
+  padding: 4px 0;
+
+  &.#{$prefix}--disabled {
+    cursor: not-allowed;
+
+    .#{$prefix}__track {
+      background: #ccc;
+    }
+
+    .#{$prefix}__handle {
+      border-color: #ccc;
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    > * {
+      cursor: not-allowed !important;
+    }
+  }
+
+  &.#{$prefix}--vertical {
+    height: 100%;
+    margin: 0;
+    padding: 0 4px;
+
+    .#{$prefix}__rail {
+      height: 100%;
+      width: 4px;
+    }
+
+    .#{$prefix}__track {
+      width: 4px;
+    }
+
+    .#{$prefix}__handle {
+      margin-left: -5px;
+      margin-top: 0;
+      transform: translateY(-50%);
+    }
+
+    .#{$prefix}__step {
+      position: absolute;
+      width: 4px;
+      height: 100%;
+
+      &-dot {
+        position: absolute;
+        border-radius: 50%;
+        transform: translate(-50%, 50%);
+        left: 2px;
+        top: auto;
+        width: 7px;
+        height: 7px;
+        background: rgba(255, 255, 255, 1);
+        border: 1px solid rgba(66, 132, 245, 1);
+      }
+    }
+
+    .#{$prefix}__stepText {
+      height: 100%;
+      width: 40px;
+      position: absolute;
+      margin: 0;
+      right: 15px;
+
+      .#{$prefix}__min {
+        transform: translateX(0%);
+        position: absolute;
+        bottom: -10px;
+        right: 0;
+      }
+
+      .#{$prefix}__max {
+        position: absolute;
+        top: -4px;
+        transform: translateX(0%);
+        right: 0;
+      }
+    }
+  }
+
+  .#{$prefix}__rail {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background-color: #f5f5f5;
+    border-radius: 2px;
+    transition: background-color 0.3s;
+  }
+
+  .#{$prefix}__step {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background: 0 0;
+    cursor: pointer;
+
+    &-dot {
+      position: absolute;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      top: -3px;
+      width: 7px;
+      height: 7px;
+      background: rgba(255, 255, 255, 1);
+      border: 1px solid rgba(66, 132, 245, 1);
+
+      &.#{$prefix}__step-dotDisabled {
+        background: rgba(224, 225, 226, 1);
+        border: 1px solid rgba(224, 225, 226, 1);
+      }
+    }
+  }
+
+  .#{$prefix}__stepText {
+    margin-top: 10px;
+    width: 100%;
+    height: 4px;
+    background: 0 0;
+
+    .#{$prefix}__min {
+      transform: translateX(-50%);
+    }
+
+    .#{$prefix}__max {
+      right: 0;
+      transform: translateX(50%);
+    }
+
+    &-dot {
+      position: absolute;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+
+  .#{$prefix}__handle {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    margin-top: -5px;
+    background-color: #fff;
+    border: solid 2px #4284f5;
+    border-radius: 50%;
+    box-sizing: border-box;
+    z-index: 20;
+    cursor: pointer;
+    transform: translateX(-50%);
+    user-select: none;
+
+    &:focus,
+    &--focus {
+      box-shadow: 0 0 0 5px rgba(24, 144, 255, 0.12);
+      outline: none;
+    }
+  }
+
+  .#{$prefix}__track {
+    position: absolute;
+    height: 4px;
+    background: rgba(66, 132, 245, 1);
+    border-radius: 2px;
+  }
+
+  .#{$prefix}__tooltip {
+    opacity: 0;
+
+    &-enter {
+      opacity: 0;
+    }
+
+    &-enter-active {
+      opacity: 1;
+      transition: opacity 200ms;
+    }
+
+    &-enter-done {
+      opacity: 1;
+      transition: opacity 200ms;
+    }
+
+    &-exit {
+      opacity: 1;
+    }
+
+    &-exit-done {
+      opacity: 0;
+      transition: opacity 200ms;
+    }
+  }
+
+  @each $key in 'success',
+    'danger',
+    'warning' {
+    &--#{$key} {
+      $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
+
+      .#{$prefix}__track {
+        background: $status-color;
+      }
+
+      .#{$prefix}__handle {
+        border-color: $status-color;
+      }
+    }
+  }
+}
