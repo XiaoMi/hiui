@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Calender from './Calender'
-import { deconstructDate, nextMonth, showLargeCalendar, colDisabled } from './util'
+import { deconstructDate, nextMonth, showLargeCalendar, colDisabled, getInRangeDate } from './util'
+
 import { DAY_MILLISECONDS } from './constants'
 import Icon from '../icon'
 import classNames from 'classnames'
@@ -170,7 +171,7 @@ class DateRangePanel extends Component {
     })
   }
   shortcutsClickEvent (e) {
-    const { localeDatas } = this.props
+    const { localeDatas, max, min } = this.props
     const {range} = this.state
     const _date = new Date()
     const val = e.target.innerText
@@ -193,8 +194,9 @@ class DateRangePanel extends Component {
         break
     }
     const nDate = new Date((endOfDay(_date).getTime() + 1) - days * DAY_MILLISECONDS)
-    range.startDate = nDate
-    range.endDate = _date
+    const {startDate, endDate} = getInRangeDate(nDate, _date, max, min)
+    range.startDate = startDate
+    range.endDate = endDate
     this.props.onPick(range)
   }
   renderShortcut (shortcuts) {
