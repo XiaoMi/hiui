@@ -47,7 +47,7 @@ const ModalComp = ({
     } else {
       parent.style.removeProperty('overflow')
     }
-  }, [visible, container])
+  }, [vi, container])
 
   return createPortal(
     <div className={PREFIX}>
@@ -59,60 +59,59 @@ const ModalComp = ({
           }
         }}
       />
-      <CSSTransition
-        in={visible}
-        timeout={150}
-        classNames={'modal-transition'}
-        onExited={() => {
-          setTimeout(() => setVi(false), 300)
-        }}
-      >
-        <div
-          className={Classnames(`${PREFIX}__wrapper`, `${PREFIX}__wrapper--${size}`)}
-          style={{ display: vi === false && 'none', width, height }}
+      <div className={`${PREFIX}__container`} style={{ display: vi === false && 'none' }}>
+        <CSSTransition
+          in={visible}
+          timeout={0}
+          classNames={'modal-transition'}
+          onExited={() => {
+            setTimeout(() => setVi(false), 300)
+          }}
         >
-          <div className={Classnames(`${PREFIX}__header`, { [`${PREFIX}__header--divided`]: showHeaderDivider })}>
-            {title}
-            <Icon
-              name={'close'}
-              style={{ cursor: 'pointer' }}
-              onClick={() => {
-                if (onCancel) {
-                  onCancel()
-                }
-              }}
-            />
-          </div>
-          <div className={`${PREFIX}__content`}>{children}</div>
-          <div className={Classnames(`${PREFIX}__footer`, { [`${PREFIX}__footer--divided`]: showFooterDivider })}>
-            {footer === undefined && (
-              <Button
-                type={'line'}
+          <div className={Classnames(`${PREFIX}__wrapper`, `${PREFIX}__wrapper--${size}`)} style={{ width, height }}>
+            <div className={Classnames(`${PREFIX}__header`, { [`${PREFIX}__header--divided`]: showHeaderDivider })}>
+              {title}
+              <Icon
+                name={'close'}
+                style={{ cursor: 'pointer' }}
                 onClick={() => {
                   if (onCancel) {
                     onCancel()
                   }
                 }}
-              >
-                取消
-              </Button>
-            )}
-            {footer === undefined && (
-              <Button
-                type={'primary'}
-                onClick={() => {
-                  if (onConfirm) {
-                    onConfirm()
-                  }
-                }}
-              >
-                确认
-              </Button>
-            )}
-            {footer}
+              />
+            </div>
+            <div className={`${PREFIX}__content`}>{children}</div>
+            <div className={Classnames(`${PREFIX}__footer`, { [`${PREFIX}__footer--divided`]: showFooterDivider })}>
+              {footer === undefined && (
+                <Button
+                  type={'line'}
+                  onClick={() => {
+                    if (onCancel) {
+                      onCancel()
+                    }
+                  }}
+                >
+                  取消
+                </Button>
+              )}
+              {footer === undefined && (
+                <Button
+                  type={'primary'}
+                  onClick={() => {
+                    if (onConfirm) {
+                      onConfirm()
+                    }
+                  }}
+                >
+                  确认
+                </Button>
+              )}
+              {footer}
+            </div>
           </div>
-        </div>
-      </CSSTransition>
+        </CSSTransition>
+      </div>
     </div>,
     container || defaultContainer.current
   )

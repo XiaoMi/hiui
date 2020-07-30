@@ -25,15 +25,18 @@ $borderColor: #e7e7e7 !default;
     }
   }
 
-  &__wrapper {
-    display: flex;
-    flex-direction: column;
-    background: #fff;
+  &__container {
     z-index: 1000;
     top: 100px;
     left: 50%;
     transform: translateX(-50%);
     position: fixed;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
     border-radius: 2px;
     box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
 
