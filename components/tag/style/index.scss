@@ -5,6 +5,26 @@ $prefixGroup: 'hi-tag-group' !default;
 
 $primary: get-color($palette-primary, 'hiui-blue') !default;
 
+.tag-transition {
+  &-enter {
+    opacity: 0;
+  }
+
+  &-enter-done {
+    opacity: 1;
+    transition: opacity 0.3s !important;
+  }
+
+  &-exit {
+    opacity: 1;
+  }
+
+  &-exit-done {
+    opacity: 0;
+    transition: opacity 3s;
+  }
+}
+
 .#{$prefix} {
   padding: 0 6px;
   color: #fff;
@@ -49,10 +69,10 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     }
   }
 
-  &.#{$prefix}--active {
-    border: 1px solid #4284f5 !important;
-    opacity: 1;
-  }
+  // &.#{$prefix}--active {
+  //   border: 1px solid #4284f5 !important;
+  //   opacity: 1;
+  // }
 
   &.#{$prefix}--square {
     border-radius: 2px;
@@ -105,6 +125,11 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
       color: #333;
       cursor: pointer;
       transition: border-color 0.3s;
+
+      &:hover {
+        border: 1px solid #4284f5 !important;
+        opacity: 1;
+      }
 
       .hi-icon {
         margin-left: 3px;

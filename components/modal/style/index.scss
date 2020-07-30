@@ -98,24 +98,20 @@ $borderColor: #e7e7e7 !default;
   .modal-transition {
     &-enter {
       opacity: 0;
-      transform: scale(0.4);
     }
 
     &-enter-done {
       opacity: 1;
-      transform: scale(1);
-      transition: opacity 0.3s, transform 0.3s;
+      transition: opacity 0.3s;
     }
 
     &-exit {
       opacity: 1;
-      transform: scale(1);
     }
 
     &-exit-done {
       opacity: 0;
-      transform: scale(0.4);
-      transition: opacity 0.3s, transform 0.3s;
+      transition: opacity 0.3s;
     }
   }
 }
