@@ -364,8 +364,7 @@ const Cascader = (props) => {
       <span className='hi-cascader__icon'>
         <i className={classNames('hi-cascader__icon--expand', 'hi-icon', expandIcon)} />
         {
-          clearable &&
-          <i className='hi-cascader__icon--clear hi-icon icon-close-circle' onClick={clearValue} />
+          clearable && ((searchable && (keyword !== '')) || (!popperShow && (cascaderLabel !== ''))) && <i className='hi-cascader__icon--clear hi-icon icon-close-circle' onClick={clearValue} />
         }
       </span>
     </div>
@@ -377,7 +376,6 @@ const Cascader = (props) => {
       width={'auto'}
       className='hi-cascader__popper'
       placement='top-bottom-start'
-
     >
       <Menu
         ref={menuNode}
