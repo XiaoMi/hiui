@@ -7,7 +7,7 @@ import Icon from '../icon'
 const SelectDropdown = props => {
   const {
     mode,
-    focusedIndex,
+    focusedIndex: propsFocusedIndex,
     matchFilter,
     emptyContent,
     loading,
@@ -27,20 +27,51 @@ const SelectDropdown = props => {
     onClickOption,
     filterOption,
     checkAll,
-    setFocusedIndex,
     selectInputWidth,
     selectedItems,
     show
   } = props
   const [filterItems, setFilterItems] = useState(dropdownItems)
+  const [focusedIndex, setFocuseIndex] = useState(propsFocusedIndex)
   const [searchbarValue, setSearchbarValue] = useState('')
   const [cachedropdownItems, setCachedropdownItems] = useState('')
+  const [ischeckAll, setIscheckAll] = useState(false)
+  // const [isjustChecked, setIsjustChecked] = useState(false)
   const searchbar = useRef('')
+  useEffect(() => {
+    setFilterItems(dropdownItems)
+  }, [dropdownItems])
+
+  // 监控全选功能
+  useEffect(() => {
+    setIscheckAll(
+      selectedItems.length > 0 && selectedItems.length === filterItems.length
+    )
+  }, [selectedItems, filterItems])
+  // 设置选中下标
+  useEffect(() => {
+    setFocuseIndex(propsFocusedIndex)
+  }, [propsFocusedIndex])
+  // 让搜索框获取焦点
   useEffect(() => {
     searchable &&
       setTimeout(() => searchbar.current && searchbar.current.focus(), 0)
   }, [])
-
+  // 仅看已选
+  const showSelected = check => {
+    if (check) {
+      const values = selectedItems.map(item => {
+        return item.id
+      })
+      setFilterItems(
+        dropdownItems.filter(item => {
+          return values.includes(item.id)
+        })
+      )
+    } else {
+      setFilterItems(dropdownItems)
+    }
+  }
   useEffect(() => {
     let _filterItems = dropdownItems
     // 这个地方需要注意啊
@@ -100,11 +131,8 @@ const SelectDropdown = props => {
     mode === 'single' && isOnSearch && setCachedropdownItems(dropdownItems)
     onClickOption(item, index)
   }
-  // 设置选中下标
-  const onMouseEnter = (item, index) => {
-    !item.disabled && setFocusedIndex(index)
-  }
-  const renderOption = (isSelected, item) => {
+  // 渲染单个选项
+  const renderOption = (isSelected, item, index) => {
     if (item.children) {
       return item.children
     }
@@ -155,6 +183,8 @@ const SelectDropdown = props => {
     }
     return (
       <React.Fragment>
+        {index}
+
         {mode === 'multiple' && (
           <Checkbox
             className='hi-select__dropdown--item__checkbox'
@@ -179,6 +209,7 @@ const SelectDropdown = props => {
       </React.Fragment>
     )
   }
+  console.log('最后渲染的', filterItems, focusedIndex)
   return (
     <div className='hi-select__dropdown' style={style}>
       {searchable && (
@@ -195,7 +226,6 @@ const SelectDropdown = props => {
               onBlur={onBlur}
               clearabletrigger='always'
               onKeyDown={handleKeyDown}
-              onInput={searchEvent}
               onChange={searchEvent}
             />
             {searchbarValue.length > 0 ? (
@@ -215,33 +245,34 @@ const SelectDropdown = props => {
       )}
       {!loading && (
         <ul className='hi-select__dropdown--items'>
-          {filterItems.map((item, index) => {
-            if (matchFilter(item)) {
-              matched++
-              const isSelected = itemSelected(item)
-              const isDisabled = item.disabled
-              return (
-                <li
-                  className={classNames(
-                    'hi-select__dropdown--item',
-                    `theme__${theme}`,
-                    {
-                      'is-active': isSelected,
-                      'is-disabled': isDisabled,
-                      'hi-select__dropdown--item-default':
-                        !item.children && !dropdownRender
-                    }
-                  )}
-                  onClick={e => onClickOptionIntal(e, item, index)}
-                  key={item.id}
-                  data-focused={focusedIndex === index}
-                  // onMouseEnter={()=>onMouseEnter(item, index)}
-                >
-                  {renderOption(isSelected, item)}
-                </li>
-              )
-            }
-          })}
+          {filterItems &&
+            filterItems.map((item, index) => {
+              if (matchFilter(item)) {
+                matched++
+                const isSelected = itemSelected(item)
+                const isDisabled = item.disabled
+                return (
+                  <li
+                    className={classNames(
+                      'hi-select__dropdown--item',
+                      `theme__${theme}`,
+                      {
+                        'is-active': isSelected,
+                        'is-disabled': isDisabled,
+                        'hi-select__dropdown--item-default':
+                          !item.children && !dropdownRender
+                      }
+                    )}
+                    onClick={e => onClickOptionIntal(e, item, index)}
+                    key={item.id}
+                    data-focused={focusedIndex === index}
+                    // onMouseEnter={()=>onMouseEnter(item, index)}
+                  >
+                    {renderOption(isSelected, item, index)}
+                  </li>
+                )
+              }
+            })}
           {matched === 0 && (
             <li
               className='hi-select__dropdown--item hi-select__dropdown-item--empty is-disabled'
@@ -252,12 +283,31 @@ const SelectDropdown = props => {
           )}
         </ul>
       )}
-      {mode === 'multiple' && showCheckAll && (
-        <div
-          className={`hi-select__dropdown-check-all theme__${theme}`}
-          onClick={() => checkAll(filterItems)}
-        >
-          {localeMap['checkAll']}
+      {mode === 'multiple' && (
+        <div className={`hi-select__dropdown-check-all theme__${theme}`}>
+          <div>
+            {showCheckAll && (
+              <Checkbox
+                checked={ischeckAll}
+                onChange={e => {
+                  checkAll(e, filterItems, e.target.checked)
+                }}
+              >
+                {localeMap['checkAll']}
+              </Checkbox>
+            )}
+          </div>
+          <div>
+            <Checkbox
+              onChange={e => {
+                // setIsjustChecked(e.target.checked)
+                // checkAll(e, filterItems, e.target.checked)
+                showSelected(e.target.checked)
+              }}
+            >
+              {localeMap['justSelected']}
+            </Checkbox>
+          </div>
         </div>
       )}
     </div>

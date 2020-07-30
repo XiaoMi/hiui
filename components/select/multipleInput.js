@@ -119,6 +119,7 @@ const MultipleInput = ({
           </div>
         )}
         {searchable && !disabled && (
+          // 要删除掉
           <div className='hi-select__input--search'>
             <input
               type='text'

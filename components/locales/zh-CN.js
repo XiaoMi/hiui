@@ -14,8 +14,34 @@ export default {
     lastMonth: '近一月',
     lastThreeMonth: '近三月',
     lastYear: '近一年',
-    month: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-    monthShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+    month: [
+      '一月',
+      '二月',
+      '三月',
+      '四月',
+      '五月',
+      '六月',
+      '七月',
+      '八月',
+      '九月',
+      '十月',
+      '十一月',
+      '十二月'
+    ],
+    monthShort: [
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月'
+    ],
     week: ['日', '一', '二', '三', '四', '五', '六'],
     placeholders: {
       date: '请选择日期',
@@ -52,7 +78,8 @@ export default {
     placeholder: '请选择',
     emptyContent: '无匹配数据',
     searchPlaceholder: '搜索',
-    checkAll: '全选'
+    checkAll: '全选',
+    justSelected: '仅看已选'
   },
   transfer: {
     checkAll: '全选',

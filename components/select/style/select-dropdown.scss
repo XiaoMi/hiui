@@ -27,11 +27,17 @@
   }
 
   &-check-all {
+    display: flex;
+    justify-content: space-between;
     padding: 8px 12px;
     font-size: 12px;
     color: #4284f5;
     cursor: pointer;
     border-top: 1px solid #e6e7e8;
+
+    .hi-checkbox__text {
+      padding: 0;
+    }
   }
 
   &--item {
