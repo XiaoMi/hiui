@@ -136,7 +136,7 @@ Rate.defaultProps = {
   count: 5,
   prefixCls: 'hi-rate',
   tooltips: [],
-  onChange: () => {}
+  onChange: () => { }
 }
 
 function ToolTipWrapper ({ children, title }) {
@@ -145,6 +145,7 @@ function ToolTipWrapper ({ children, title }) {
 
 function Icon ({ value, currentValue, disabled, useEmoji, allowHalf }) {
   if (useEmoji) {
+    const emojiValue = currentValue > 5 ? 5 : currentValue
     const Emojis = [
       Icons.EmojiOne,
       Icons.EmojiTwo,
@@ -152,8 +153,8 @@ function Icon ({ value, currentValue, disabled, useEmoji, allowHalf }) {
       Icons.EmojiFour,
       Icons.EmojiFive
     ]
-    if (value <= currentValue) {
-      return React.createElement(Emojis[currentValue - 1])
+    if (value <= emojiValue) {
+      return React.createElement(Emojis[emojiValue - 1])
     } else {
       return <Icons.EmojiDefault />
     }
