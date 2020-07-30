@@ -314,7 +314,7 @@ class BasePicker extends Component {
         ? 'icon-close-circle clear'
         : ((type.includes('time') || showTime) ? 'icon-time' : 'icon-date')
     )
-    return (isFocus && clearable)
+    return (texts[0].length && isFocus && clearable)
       ? <span className={iconCls} onClick={this._clear.bind(this)} />
       : <span className={iconCls} onClick={(e) => {
         if (this.props.disabled) return
