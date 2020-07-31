@@ -2,7 +2,7 @@ import Tag from '../../../components/tag/'
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 const prefix = 'tag-basic'
-const desc = '标签的信息重要级别高，识别度较高'
+const desc = '标签的信息重要级别高，识别度较高,建议使用HIUI主题色'
 
 const code = `import Tag from '@hi-ui/hiui/es/tag'
 import React from 'react'\n
@@ -14,12 +14,12 @@ class Demo extends React.Component {
   render () {
     return (
       <>
-        <Tag type="warning" onClick={()=>{console.log('待审批')}}>待审批</Tag>
-        <Tag>审批中</Tag>
-        <Tag type="success">已通过</Tag>
-        <Tag type="danger">未通过</Tag>
-        <Tag type="default">未通过</Tag>
-      </>
+        <Tag color="#4285F4">#4285F4</Tag>
+        <Tag color="#46BC99">#46BC99</Tag>
+        <Tag color="#FF5975">#FF5975</Tag>
+        <Tag color="#B450DE">#B450DE</Tag>
+        <Tag color="#3DA8F5">#3DA8F5</Tag>
+     </>
     )
   }
 }`

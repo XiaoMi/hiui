@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { render, unmountComponentAtNode, createPortal } from 'react-dom'
+import { CSSTransition } from 'react-transition-group'
 import Classnames from 'classnames'
 import Button from '../button'
 import Icon from '../icon'
@@ -33,16 +34,20 @@ const ModalComp = ({
   if (defaultContainer.current === false && !container) {
     defaultContainer.current = getDefaultContainer()
   }
+  const [vi, setVi] = useState(false)
+  useEffect(() => {
+    visible && setVi(true)
+  }, [visible])
 
   useEffect(() => {
     const parent = (container || defaultContainer.current).parentNode
     // 屏蔽滚动条
-    if (visible) {
+    if (vi) {
       parent.style.setProperty('overflow', 'hidden')
     } else {
       parent.style.removeProperty('overflow')
     }
-  }, [visible, container])
+  }, [vi, container])
 
   return createPortal(
     <div className={PREFIX}>
@@ -54,50 +59,58 @@ const ModalComp = ({
           }
         }}
       />
-      <div
-        className={Classnames(`${PREFIX}__wrapper`, `${PREFIX}__wrapper--${size}`)}
-        style={{ display: visible === false && 'none', width, height }}
-      >
-        <div className={Classnames(`${PREFIX}__header`, { [`${PREFIX}__header--divided`]: showHeaderDivider })}>
-          {title}
-          <Icon
-            name={'close'}
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              if (onCancel) {
-                onCancel()
-              }
-            }}
-          />
-        </div>
-        <div className={`${PREFIX}__content`}>{children}</div>
-        <div className={Classnames(`${PREFIX}__footer`, { [`${PREFIX}__footer--divided`]: showFooterDivider })}>
-          {footer === undefined && (
-            <Button
-              type={'line'}
-              onClick={() => {
-                if (onCancel) {
-                  onCancel()
-                }
-              }}
-            >
-              取消
-            </Button>
-          )}
-          {footer === undefined && (
-            <Button
-              type={'primary'}
-              onClick={() => {
-                if (onConfirm) {
-                  onConfirm()
-                }
-              }}
-            >
-              确认
-            </Button>
-          )}
-          {footer}
-        </div>
+      <div className={`${PREFIX}__container`} style={{ display: vi === false && 'none' }}>
+        <CSSTransition
+          in={visible}
+          timeout={0}
+          classNames={'modal-transition'}
+          onExited={() => {
+            setTimeout(() => setVi(false), 300)
+          }}
+        >
+          <div className={Classnames(`${PREFIX}__wrapper`, `${PREFIX}__wrapper--${size}`)} style={{ width, height }}>
+            <div className={Classnames(`${PREFIX}__header`, { [`${PREFIX}__header--divided`]: showHeaderDivider })}>
+              {title}
+              <Icon
+                name={'close'}
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  if (onCancel) {
+                    onCancel()
+                  }
+                }}
+              />
+            </div>
+            <div className={`${PREFIX}__content`}>{children}</div>
+            <div className={Classnames(`${PREFIX}__footer`, { [`${PREFIX}__footer--divided`]: showFooterDivider })}>
+              {footer === undefined && (
+                <Button
+                  type={'line'}
+                  onClick={() => {
+                    if (onCancel) {
+                      onCancel()
+                    }
+                  }}
+                >
+                  取消
+                </Button>
+              )}
+              {footer === undefined && (
+                <Button
+                  type={'primary'}
+                  onClick={() => {
+                    if (onConfirm) {
+                      onConfirm()
+                    }
+                  }}
+                >
+                  确认
+                </Button>
+              )}
+              {footer}
+            </div>
+          </div>
+        </CSSTransition>
       </div>
     </div>,
     container || defaultContainer.current

@@ -38,7 +38,6 @@ const NormalUpload = ({
     data,
     onRemove
   })
-
   return (
     <div className={`hi-upload`}>
       <FileSelect

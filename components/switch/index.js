@@ -25,12 +25,12 @@ const Switch = ({ content = [], disabled = false, checked, defaultChecked, onCha
         }
       }
     },
-    [disabled, onChange, onClick]
+    [disabled, onChange, onClick, checked, value]
   )
 
   return (
     <span
-      className={classNames('hi-switch', !checked && 'hi-switch--closed', disabled && 'hi-switch--disabled')}
+      className={classNames('hi-switch', !value && 'hi-switch--closed', disabled && 'hi-switch--disabled')}
       onClick={clickSwitch}
     >
       <span className='hi-switch__text'>{content.length > 0 && (value ? content[0] : content[1])}</span>
