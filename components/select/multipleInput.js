@@ -22,12 +22,7 @@ const MultipleInput = ({
   const [value, setValue] = useState('')
   const tagWrapperRef = useRef('')
   const calShowCountFlag = useRef(true) // 在渲染完成进行测试是否展示 +1
-  const [cacheselectedItems, setCacheselectedItems] = useState(
-    propsSelectItem || []
-  )
-  useEffect(() => {
-    setCacheselectedItems(propsSelectItem)
-  }, [])
+
   useEffect(() => {
     if (
       multipleMode === 'nowrap' &&
@@ -58,7 +53,6 @@ const MultipleInput = ({
 
   const handleClear = e => {
     e.stopPropagation()
-    setCacheselectedItems([])
     onClear()
   }
   const currentCount = showCount === 0 ? propsSelectItem.length : showCount

@@ -17,7 +17,7 @@ class Demo extends React.Component {
         dataSource={{
           method: 'GET',
           key: 'id',
-          url: 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/lsit',
+          url: 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/list',
           transformResponse: (res) => {
             if(res.status === 200){
               return res.data.list
@@ -49,7 +49,7 @@ class Demo extends React.Component {
       dataSource={keyword => {
         return ({
           type: 'GET',
-          url: 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/lsit',
+          url: 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/list',
           params:{id: keyword},
           transformResponse: (res) => {
             if(res.status === 200){

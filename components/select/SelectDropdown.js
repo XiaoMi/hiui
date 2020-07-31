@@ -25,7 +25,6 @@ const SelectDropdown = props => {
     onSearch,
     isOnSearch,
     onClickOption,
-    filterOption,
     checkAll,
     selectInputWidth,
     selectedItems,
@@ -34,8 +33,8 @@ const SelectDropdown = props => {
   const [filterItems, setFilterItems] = useState(dropdownItems)
   const [focusedIndex, setFocuseIndex] = useState(propsFocusedIndex)
   const [searchbarValue, setSearchbarValue] = useState('')
-  const [cachedropdownItems, setCachedropdownItems] = useState('')
   const [ischeckAll, setIscheckAll] = useState(false)
+  // 对于异步的需要有对缓存文件的处理
   // const [isjustChecked, setIsjustChecked] = useState(false)
   const searchbar = useRef('')
   useEffect(() => {
@@ -75,17 +74,17 @@ const SelectDropdown = props => {
   useEffect(() => {
     let _filterItems = dropdownItems
     // 这个地方需要注意啊
-    if (
-      selectedItems.length > 0 &&
-      searchbarValue.length === 0 &&
-      mode === 'single' &&
-      isOnSearch
-    ) {
-      _filterItems = cachedropdownItems
-    }
+    // if (
+    //   selectedItems.length > 0 &&
+    //   searchbarValue.length === 0 &&
+    //   mode === 'single' &&
+    //   isOnSearch
+    // ) {
+    //   _filterItems = cachedropdownItems
+    // }
     const _searchbarValue = show ? searchbarValue : ''
     setFilterItems(_filterItems)
-    setCachedropdownItems(_searchbarValue)
+    // setCachedropdownItems(_searchbarValue)
   }, [mode, isOnSearch, dropdownItems, show])
 
   let matched = 0
@@ -95,13 +94,7 @@ const SelectDropdown = props => {
 
   const filterOptions = keyword => {
     let filterItems = []
-    // if (typeof filterOption === 'function' || keyword === '') {
     filterItems = dropdownItems
-    // } else {
-    //   dropdownItems.map(item => {
-    //     String(item.title).includes(keyword) && filterItems.push(item)
-    //   })
-    // }
     setFilterItems(filterItems)
     setSearchbarValue(keyword)
   }
@@ -128,7 +121,6 @@ const SelectDropdown = props => {
     if (item.disabled) {
       return
     }
-    mode === 'single' && isOnSearch && setCachedropdownItems(dropdownItems)
     onClickOption(item, index)
   }
   // 渲染单个选项

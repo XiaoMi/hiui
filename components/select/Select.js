@@ -68,13 +68,6 @@ const Select = props => {
       cloneDeep(data)
     )
   )
-  // 缓存存在的SelectedItems
-  const [cacheSelectedItems, setCacheSelectedItems] = useState(
-    resetSelectedItems(
-      value === undefined ? defaultValue : value,
-      cloneDeep(data)
-    )
-  )
 
   const [dropdownShow, setDropdownShow] = useState(false)
   // 搜索关键字
@@ -95,7 +88,6 @@ const Select = props => {
       _data
     )
     setSelectedItems(selectedItems)
-    setCacheSelectedItems(selectedItems)
     setDropdownItems(_data)
   }, [data])
 
@@ -104,7 +96,6 @@ const Select = props => {
       const _data = cloneDeep(data)
       const selectedItems = resetSelectedItems(value, _data) // 异步获取时会从内部改变dropdownItems，所以不能从list取
       setSelectedItems(selectedItems)
-      setCacheSelectedItems(selectedItems)
     }
   }, [value, data])
 
@@ -135,12 +126,10 @@ const Select = props => {
       }
     } else {
       _selectedItems = [item]
-      setCacheSelectedItems([item])
     }
 
     onChange(_selectedItems, item, () => {
       setFocusedIndex(index)
-      setCacheSelectedItems(type === 'multiple' ? _cacheSelectedItems : [item])
     })
 
     type !== 'multiple' && hideDropdown()
@@ -149,7 +138,6 @@ const Select = props => {
   // 收起下拉框
   const hideDropdown = () => {
     if (dropdownShow) {
-      setCacheSelectedItems(selectedItems)
       setKeyword('')
       setDropdownShow(false)
     }
@@ -231,13 +219,6 @@ const Select = props => {
   })
   // 远程搜索需要重写
   const remoteSearch = () => {
-    console.log('remoteSearch')
-    /**
-     * 需要对dataSource 进行一些特殊处理
-     * 对象 || Function  - 正常的异步请求
-     * Array - 和data参数功能想同
-     */
-
     if (Array.isArray(dataSource)) {
       setDropdownItems(dataSource)
       return
@@ -249,12 +230,10 @@ const Select = props => {
       method = 'GET',
       transformResponse,
       headers,
-      withCredentials = false,
       data = {},
       params = {},
       key,
       transformkeyword,
-      jsonpCallback = 'callback',
       error,
       ...options
     } = _dataSource
@@ -449,9 +428,7 @@ const Select = props => {
           handleKeyDown={handleKeyDown}
           optionWidth={optionWidth}
           selectInputWidth={selectInputWidth}
-          dropdownItems={
-            dataSource && keyword === '' ? cacheSelectedItems : dropdownItems
-          }
+          dropdownItems={dropdownItems}
           selectedItems={selectedItems}
           dropdownRender={render}
           onClickOption={onClickOption}
