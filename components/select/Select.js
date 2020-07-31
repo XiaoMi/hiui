@@ -3,13 +3,12 @@ import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import debounce from 'lodash/debounce'
 import cloneDeep from 'lodash/cloneDeep'
+
 import Popper from '../popper'
 import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
 import Provider from '../context'
-import fetchJsonp from 'fetch-jsonp'
-import qs from 'qs'
-import _ from 'lodash'
+import HiRequest from '../_util/hi-request'
 // 格式化value
 const parseValue = value => {
   if (Array.isArray(value)) {
@@ -185,7 +184,7 @@ const Select = props => {
       moveFocusedIndex('down')
     }
   }
-  // 对关键字的校验
+  // 对关键字的校验 对数据的过滤
   const matchFilter = item => {
     const shouldMatch = dataSource || !searchable || !keyword
 
@@ -225,9 +224,76 @@ const Select = props => {
 
     setFocusedIndex(_focusedIndex)
   }
+  useEffect(() => {
+    if (dataSource && autoload) {
+      remoteSearch()
+    }
+  })
   // 远程搜索需要重写
   const remoteSearch = () => {
     console.log('remoteSearch')
+    /**
+     * 需要对dataSource 进行一些特殊处理
+     * 对象 || Function  - 正常的异步请求
+     * Array - 和data参数功能想同
+     */
+
+    if (Array.isArray(dataSource)) {
+      setDropdownItems(dataSource)
+      return
+    }
+    const _dataSource =
+      typeof dataSource === 'function' ? dataSource(keyword) : dataSource
+    let {
+      url,
+      method = 'GET',
+      transformResponse,
+      headers,
+      withCredentials = false,
+      data = {},
+      params = {},
+      key,
+      transformkeyword,
+      jsonpCallback = 'callback',
+      error,
+      ...options
+    } = _dataSource
+    // 处理Key
+    if (key) {
+      options.params = Object.assign(
+        {},
+        { [key]: transformkeyword ? transformkeyword(keyword) : keyword },
+        { ...params }
+      )
+    }
+
+    HiRequest({
+      url,
+      method,
+      data: data,
+      beforeRequest: config => {
+        setLoading(true)
+        return config
+      },
+      errorCallback: err => {
+        setLoading(false)
+        error && error(err)
+      },
+      ...options
+    }).then(
+      response => {
+        setLoading(false)
+        const dataItems = transformResponse && transformResponse(response)
+        if (Array.isArray(dataItems)) {
+          setDropdownItems(dataItems)
+        } else {
+          console.error('transformResponse return data is not array')
+        }
+      },
+      error => {
+        throw error
+      }
+    )
   }
   useEffect(() => {
     resetFocusedIndex()

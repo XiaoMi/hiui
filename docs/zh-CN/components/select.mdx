@@ -30,9 +30,9 @@ import DemoCustom from '../../demo/select/section-custom'
 
 <DemoCustom />
 
-<!-- ## 异步用法
+## 异步用法
 
-import DemoAsync from '../../demo/select/section-async' -->
+import DemoAsync from '../../demo/select/section-async'
 
 <DemoAsync />
 
@@ -71,12 +71,16 @@ import DemoAsync from '../../demo/select/section-async' -->
 
 ### DataSource
 
-| 参数              | 说明                               | 类型                             | 可选值                                             | 默认值        |
-| ----------------- | ---------------------------------- | -------------------------------- | -------------------------------------------------- | ------------- |
-| url               | 请求的 url                         | string                           | -                                                  | -             |
-| type              | 请求方法                           | string                           | get \| post                                        | get           |
-| data              | post 请求时请求体参数              | object                           | -                                                  | -             |
-| params            | url 查询参数                       | object                           | -                                                  | -             |
-| headers           | 请求头                             | object                           | -                                                  | -             |
-| mode              | 请求模式                           | string                           | 'same-origin' \| 'cors' \| 'no-cors' \| 'navigate' | 'same-origin' |
-| transformResponse | 成功时的回调，用于对数据进行预处理 | (response: object) => DataItem[] | -                                                  | -             |
+> 继承 [Axios](https://www.kancloud.cn/yunye/axios/234845) 的 api
+
+| 参数              | 说明                               | 类型                             | 可选值        | 默认值 |
+| ----------------- | ---------------------------------- | -------------------------------- | ------------- | ------ |
+| url               | 请求的 url                         | string                           | -             | -      |
+| method            | 请求方法                           | string                           | get \| post   | get    |
+| data              | post 请求时请求体参数              | object                           | -             | -      |
+| params            | url 查询参数                       | object                           | -             | -      |
+| headers           | 请求头                             | object                           | -             | -      |
+| withCredentials   | 上传请求时是否携带 cookie          | boolean                          | true \| false | false  |
+| transformkeyword  | 转换搜索关键字                     | (keyword) => string              | -             | -      |
+| transformResponse | 成功时的回调，用于对数据进行预处理 | (response: object) => DataItem[] | -             | -      |
+| error             | 请求发生异常的回调方法             | (error: object) => void          | -             | -      |

@@ -15,12 +15,14 @@ class Demo extends React.Component {
       <Select
         type='single'
         dataSource={{
-          type: 'GET',
+          method: 'GET',
           key: 'id',
           url: 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/lsit',
           transformResponse: (res) => {
-            console.log('----', res)
-            return res.list
+            if(res.status === 200){
+              return res.data.list
+            }
+            return []
           }
         }}
         placeholder='请选择'
@@ -50,7 +52,10 @@ class Demo extends React.Component {
           url: 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/lsit',
           params:{id: keyword},
           transformResponse: (res) => {
-            return res.list
+            if(res.status === 200){
+              return res.data.list
+            }
+            return []
           }
         })
 

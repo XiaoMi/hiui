@@ -95,13 +95,13 @@ const SelectDropdown = props => {
 
   const filterOptions = keyword => {
     let filterItems = []
-    if (typeof filterOption === 'function' || keyword === '') {
-      filterItems = dropdownItems
-    } else {
-      dropdownItems.map(item => {
-        String(item.title).includes(keyword) && filterItems.push(item)
-      })
-    }
+    // if (typeof filterOption === 'function' || keyword === '') {
+    filterItems = dropdownItems
+    // } else {
+    //   dropdownItems.map(item => {
+    //     String(item.title).includes(keyword) && filterItems.push(item)
+    //   })
+    // }
     setFilterItems(filterItems)
     setSearchbarValue(keyword)
   }
@@ -183,8 +183,6 @@ const SelectDropdown = props => {
     }
     return (
       <React.Fragment>
-        {index}
-
         {mode === 'multiple' && (
           <Checkbox
             className='hi-select__dropdown--item__checkbox'
@@ -209,7 +207,6 @@ const SelectDropdown = props => {
       </React.Fragment>
     )
   }
-  console.log('最后渲染的', filterItems, focusedIndex)
   return (
     <div className='hi-select__dropdown' style={style}>
       {searchable && (
@@ -265,6 +262,7 @@ const SelectDropdown = props => {
                     )}
                     onClick={e => onClickOptionIntal(e, item, index)}
                     key={item.id}
+                    index={index}
                     data-focused={focusedIndex === index}
                     // onMouseEnter={()=>onMouseEnter(item, index)}
                   >
