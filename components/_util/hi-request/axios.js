@@ -3,7 +3,8 @@ import qs from 'qs'
 
 const axiosInstance = axios.create({
   type: 'basics',
-  url: ''
+  url: '',
+  responseType: 'json'
 })
 const axiosIns = (options) => {
   const {
@@ -20,7 +21,7 @@ const axiosIns = (options) => {
     options.headers['content-type'].toLocaleLowerCase() === 'application/x-www-form-urlencoded' &&
     options.data
   ) {
-    ;({ options, data: qs.stringify(data) })
+    Object.assign(options, { data: qs.stringify(data) })
   }
 
   axiosInstance.interceptors.request.use(

@@ -8,7 +8,7 @@ const download = (options, host) => {
   axiosIns({ ...options, url }).then(
     res => {
       const { downloadSuccess } = options
-      const blob = new Blob([res.data])
+      const blob = new window.Blob([res.data])
       const downloadElement = document.createElement('a')
       const href = window.URL.createObjectURL(blob) // 创建下载的链接
       downloadElement.href = href
