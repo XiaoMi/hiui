@@ -73,18 +73,7 @@ const SelectDropdown = props => {
   }
   useEffect(() => {
     let _filterItems = dropdownItems
-    // 这个地方需要注意啊
-    // if (
-    //   selectedItems.length > 0 &&
-    //   searchbarValue.length === 0 &&
-    //   mode === 'single' &&
-    //   isOnSearch
-    // ) {
-    //   _filterItems = cachedropdownItems
-    // }
-    const _searchbarValue = show ? searchbarValue : ''
     setFilterItems(_filterItems)
-    // setCachedropdownItems(_searchbarValue)
   }, [mode, isOnSearch, dropdownItems, show])
 
   let matched = 0
@@ -256,7 +245,6 @@ const SelectDropdown = props => {
                     key={item.id}
                     index={index}
                     data-focused={focusedIndex === index}
-                    // onMouseEnter={()=>onMouseEnter(item, index)}
                   >
                     {renderOption(isSelected, item, index)}
                   </li>

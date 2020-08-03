@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, forwardRef } from 'react'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import debounce from 'lodash/debounce'
@@ -20,7 +20,7 @@ const parseValue = value => {
   }
 }
 
-const Select = props => {
+const InternalSelect = props => {
   const {
     data,
     type,
@@ -49,11 +49,11 @@ const Select = props => {
   } = props
 
   const selectInputContainer = useRef()
-  const [dropdownItems, setDropdownItems] = useState(cloneDeep(data))
+  const [dropdownItems, setDropdownItems] = useState(data)
   const [focusedIndex, setFocusedIndex] = useState(0)
 
   // 整理Select数据结构 获取选中的Items id
-  const resetSelectedItems = (value = value, dropdownItems = []) => {
+  const resetSelectedItems = (value, dropdownItems = []) => {
     const values = parseValue(value)
     const selectedItems = dropdownItems.filter(item => {
       return values.includes(item.id)
@@ -79,25 +79,26 @@ const Select = props => {
 
   useEffect(() => {
     setSearchable(dataSource ? true : propsSearchable)
-  }, [dataSource, propsSearchable])
+  }, [propsSearchable])
 
   useEffect(() => {
-    const _data = cloneDeep(data)
-    const selectedItems = resetSelectedItems(
-      value === undefined ? defaultValue : value,
-      _data
-    )
-    setSelectedItems(selectedItems)
-    setDropdownItems(_data)
+    if (!dataSource) {
+      const _data = cloneDeep(data)
+      const selectedItems = resetSelectedItems(
+        value === undefined ? defaultValue : value,
+        _data
+      )
+      setSelectedItems(selectedItems)
+      setDropdownItems(_data)
+    }
   }, [data])
 
   useEffect(() => {
     if (value !== undefined) {
-      const _data = cloneDeep(data)
-      const selectedItems = resetSelectedItems(value, _data) // 异步获取时会从内部改变dropdownItems，所以不能从list取
+      const selectedItems = resetSelectedItems(value, dropdownItems) // 异步获取时会从内部改变dropdownItems，所以不能从list取
       setSelectedItems(selectedItems)
     }
-  }, [value, data])
+  }, [value])
 
   const localeDatasProps = key => {
     if (props[key]) {
@@ -111,23 +112,20 @@ const Select = props => {
   const onClickOption = (item, index) => {
     if (!item || item.disabled) return
 
-    let _selectedItems = selectedItems.concat()
-    let _cacheSelectedItems = selectedItems.concat()
+    let _selectedItems = cloneDeep(selectedItems)
     if (type === 'multiple') {
       // 获取元素索引
-      const itemIndex = selectedItems.findIndex(sItem => {
+      const itemIndex = _selectedItems.findIndex(sItem => {
         return sItem.id === item.id
       })
       if (itemIndex === -1) {
         _selectedItems.push(item)
-        _cacheSelectedItems.push(item)
       } else {
         _selectedItems.splice(itemIndex, 1)
       }
     } else {
       _selectedItems = [item]
     }
-
     onChange(_selectedItems, item, () => {
       setFocusedIndex(index)
     })
@@ -219,12 +217,12 @@ const Select = props => {
   })
   // 远程搜索需要重写
   const remoteSearch = () => {
-    if (Array.isArray(dataSource)) {
-      setDropdownItems(dataSource)
-      return
-    }
     const _dataSource =
       typeof dataSource === 'function' ? dataSource(keyword) : dataSource
+    if (Array.isArray(_dataSource)) {
+      setDropdownItems(_dataSource)
+      return
+    }
     let {
       url,
       method = 'GET',
@@ -438,7 +436,7 @@ const Select = props => {
   )
 }
 
-Select.propTypes = {
+InternalSelect.propTypes = {
   type: PropTypes.oneOf(['single', 'multiple']),
   multipleWrap: PropTypes.oneOf(['wrap', 'nowrap']),
   data: PropTypes.array,
@@ -470,7 +468,7 @@ Select.propTypes = {
   open: PropTypes.bool
 }
 
-Select.defaultProps = {
+InternalSelect.defaultProps = {
   data: [],
   type: 'single',
   multipleWrap: 'nowrap',
@@ -484,5 +482,7 @@ Select.defaultProps = {
   onBlur: () => {},
   onFocus: () => {}
 }
-
+const Select = forwardRef((props, ref) => {
+  return <InternalSelect {...props} innerRef={ref} />
+})
 export default Provider(Select)
