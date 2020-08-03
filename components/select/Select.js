@@ -216,11 +216,28 @@ const InternalSelect = props => {
     }
   })
   // 远程搜索需要重写
-  const remoteSearch = () => {
+  const remoteSearch = keyword => {
     const _dataSource =
       typeof dataSource === 'function' ? dataSource(keyword) : dataSource
     if (Array.isArray(_dataSource)) {
       setDropdownItems(_dataSource)
+      return
+    }
+    // 处理promise函数
+    console.log('keyword', keyword)
+    if (_dataSource.then) {
+      setLoading(true)
+      _dataSource.then(
+        res => {
+          console.log('res', res)
+          setLoading(false)
+          setDropdownItems(Array.isArray(res) ? res : [])
+        },
+        () => {
+          setLoading(false)
+          setDropdownItems([])
+        }
+      )
       return
     }
     let {
