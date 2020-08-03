@@ -224,12 +224,10 @@ const InternalSelect = props => {
       return
     }
     // 处理promise函数
-    console.log('keyword', keyword)
-    if (_dataSource.then) {
+    if (_dataSource.toString() === '[object Promise]') {
       setLoading(true)
       _dataSource.then(
         res => {
-          console.log('res', res)
           setLoading(false)
           setDropdownItems(Array.isArray(res) ? res : [])
         },
@@ -240,6 +238,10 @@ const InternalSelect = props => {
       )
       return
     }
+    // 远程搜索
+    HiRequestSearch(_dataSource)
+  }
+  const HiRequestSearch = _dataSource => {
     let {
       url,
       method = 'GET',
