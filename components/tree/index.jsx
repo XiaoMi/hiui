@@ -5,7 +5,7 @@ import Button from '../button'
 import Modal from '../modal'
 import { getAncestorIds } from './util'
 import _ from 'lodash'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 import CustomTreeNode from './customTreeNode'
 import './style/index.scss'
 import { DndProvider } from 'react-dnd'
@@ -46,8 +46,8 @@ const Tree = (props) => {
     filter = false,
     contextMenu,
     editable,
-    onBeforeSave,
-    onSave,
+    // onBeforeSave,
+    // onSave,
     onBeforeDelete,
     onDelete
   } = props

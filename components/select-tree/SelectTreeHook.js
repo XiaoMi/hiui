@@ -45,7 +45,6 @@ const SelectTree = ({
   const [show, setShow] = useState(false)
   const [nodeDataState, setNodeDataState] = useState('normal')
   const [selectedItems, setSelectedItems] = useState([])
-  // const [selectedIds, setSelectedIds] = useState([])
   const [expandIds, setExpandIds] = useState([])
   const [nodeEntries, setNodeEntries] = useState({})
   const [checkedNodes, setCheckedNodes] = useState({
@@ -174,7 +173,7 @@ const SelectTree = ({
     } else {
       setNodeDataState('normal')
     }
-  })
+  }, [data])
   const loadNodes = (id) => {
     return new Promise((resolve, reject) => {
       const _dataSource = typeof dataSource === 'function' ? dataSource(id || '') : dataSource
