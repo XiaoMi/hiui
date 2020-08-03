@@ -1,10 +1,12 @@
-import React, { useCallback, useRef, useState } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useEffect, useRef, useState } from 'react'
+import { render, unmountComponentAtNode, createPortal } from 'react-dom'
+import { CSSTransition } from 'react-transition-group'
+import Classnames from 'classnames'
 import Button from '../button'
 import Icon from '../icon'
 import './style/index.scss'
 
-const PREFIX = 'hi-editor-modal'
+const PREFIX = 'hi-modal'
 
 const getDefaultContainer = () => {
   const defaultContainer = document.createElement('div')
@@ -19,101 +21,152 @@ const ModalComp = ({
   title,
   onConfirm,
   onCancel,
-  hide,
-  show
+  maskClosable = true,
+  width,
+  height,
+  size = 'default',
+  showHeaderDivider = true,
+  showFooterDivider = true,
+  footer
 }) => {
+  // TODO: 整体可以抽成一个 hooks 供 modal 和 drawer 复用
   const defaultContainer = useRef(false)
-  if (defaultContainer.current === false) {
-    defaultContainer.current = container || getDefaultContainer()
-  }
-  return ReactDOM.createPortal(
-    <div className={PREFIX} style={{ display: visible === false && 'none' }}>
-      <div className={`${PREFIX}__mask`} />
-      <div className={`${PREFIX}__wrapper`}>
-        <div className={`${PREFIX}__header`}>
-          {title}
-          <Icon
-            name={'close'}
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              if (hide) {
-                hide()
-              }
-              if (onCancel) {
-                onCancel()
-              }
-            }}
-          />
-        </div>
-        <div className={`${PREFIX}__content`}>{children}</div>
-        <div className={`${PREFIX}__footer`}>
-          <Button
-            type={'line'}
-            onClick={() => {
-              if (hide) {
-                hide()
-              }
-              if (onCancel) {
-                onCancel()
-              }
-            }}
-          >
-            取消
-          </Button>
-          <Button
-            type={'primary'}
-            onClick={() => {
-              if (onConfirm) {
-                onConfirm()
-              }
-              if (hide) {
-                hide()
-              }
-            }}
-          >
-            确认
-          </Button>
-        </div>
-      </div>
-    </div>,
-    defaultContainer.current
-  )
-}
-
-export const useModal = () => {
-  const defaultContainer = useRef(false)
-  if (defaultContainer.current === false) {
+  if (defaultContainer.current === false && !container) {
     defaultContainer.current = getDefaultContainer()
   }
-  const [visible, setVisible] = useState(false)
+  const [vi, setVi] = useState(false)
+  useEffect(() => {
+    visible && setVi(true)
+  }, [visible])
 
-  const show = useCallback(() => setVisible(true), [])
-  const hide = useCallback(() => setVisible(false), [])
+  useEffect(() => {
+    const parent = (container || defaultContainer.current).parentNode
+    // 屏蔽滚动条
+    if (vi) {
+      parent.style.setProperty('overflow', 'hidden')
+    } else {
+      parent.style.removeProperty('overflow')
+    }
+  }, [vi, container])
 
-  const Modal = ({ children, title, onConfirm, onCancel, container }) => (
-    <React.Fragment>
-      {
-        <ModalComp
-          title={title}
-          visible={visible}
-          onConfirm={onConfirm}
-          onCancel={onCancel}
-          closeModal={hide}
-          container={container}
-          show={show}
-          hide={hide}
+  return createPortal(
+    <div className={PREFIX}>
+      <div
+        className={Classnames(`${PREFIX}__mask`, { [`${PREFIX}__mask--visible`]: visible })}
+        onClick={() => {
+          if (maskClosable && onCancel) {
+            onCancel()
+          }
+        }}
+      />
+      <div className={`${PREFIX}__container`} style={{ display: vi === false && 'none' }}>
+        <CSSTransition
+          in={visible}
+          timeout={0}
+          classNames={'modal-transition'}
+          onExited={() => {
+            setTimeout(() => setVi(false), 300)
+          }}
         >
-          {children}
-        </ModalComp>
-      }
-    </React.Fragment>
+          <div className={Classnames(`${PREFIX}__wrapper`, `${PREFIX}__wrapper--${size}`)} style={{ width, height }}>
+            <div className={Classnames(`${PREFIX}__header`, { [`${PREFIX}__header--divided`]: showHeaderDivider })}>
+              {title}
+              <Icon
+                name={'close'}
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  if (onCancel) {
+                    onCancel()
+                  }
+                }}
+              />
+            </div>
+            <div className={`${PREFIX}__content`}>{children}</div>
+            <div className={Classnames(`${PREFIX}__footer`, { [`${PREFIX}__footer--divided`]: showFooterDivider })}>
+              {footer === undefined && (
+                <Button
+                  type={'line'}
+                  onClick={() => {
+                    if (onCancel) {
+                      onCancel()
+                    }
+                  }}
+                >
+                  取消
+                </Button>
+              )}
+              {footer === undefined && (
+                <Button
+                  type={'primary'}
+                  onClick={() => {
+                    if (onConfirm) {
+                      onConfirm()
+                    }
+                  }}
+                >
+                  确认
+                </Button>
+              )}
+              {footer}
+            </div>
+          </div>
+        </CSSTransition>
+      </div>
+    </div>,
+    container || defaultContainer.current
   )
-
-  return {
-    show,
-    hide,
-    Modal
-  }
 }
 
+const confirmIconMap = {
+  success: { name: 'check-circle-o', color: '#1DA653' },
+  error: { name: 'close-circle-o', color: '#EB5252' },
+  warning: { name: 'info-circle-o', color: '#e19d0b' },
+  info: { name: 'info-circle-o', color: '#4284F5' }
+}
+
+const confirm = ({ onConfirm, onCancel, title = '提示', content, type = 'default' }) => {
+  const confirmContainer = document.createElement('div')
+
+  document.body.appendChild(confirmContainer)
+  const modal = React.createElement(ModalComp, {
+    container: confirmContainer,
+    title,
+    size: 'small',
+    visible: true,
+    onConfirm: () => {
+      onConfirm && onConfirm()
+      confirmContainer.parentNode.style.removeProperty('overflow')
+      unmountComponentAtNode(confirmContainer)
+      confirmContainer.parentNode.removeChild(confirmContainer)
+    },
+    showFooterDivider: false,
+    children: (
+      <div style={{ display: 'flex', flex: 1 }}>
+        {type !== 'default' && (
+          <Icon
+            name={confirmIconMap[type] && confirmIconMap[type].name}
+            style={{
+              color: confirmIconMap[type] && confirmIconMap[type].color,
+              fontSize: '36px',
+              lineHeight: '36px',
+              height: '36px',
+              display: 'inline-block',
+              marginRight: 8
+            }}
+          />
+        )}
+        {content}
+      </div>
+    ),
+    onCancel: () => {
+      onCancel && onCancel()
+      confirmContainer.parentNode.style.removeProperty('overflow')
+      unmountComponentAtNode(confirmContainer)
+      confirmContainer.parentNode.removeChild(confirmContainer)
+    }
+  })
+  render(modal, confirmContainer)
+}
+
+ModalComp.confirm = confirm
 export default ModalComp

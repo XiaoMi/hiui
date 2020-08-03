@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import Icon from '../icon'
 import Classnames from 'classnames'
@@ -25,10 +25,22 @@ const DrawerComp = ({
   showMask = true,
   placement = 'right'
 }) => {
+  // TODO: 整体可以抽成一个 hooks 供 modal 和 drawer 复用
   const defaultContainer = useRef(false)
   if (defaultContainer.current === false) {
     defaultContainer.current = getDefaultContainer()
   }
+
+  useEffect(() => {
+    const parent = (container || defaultContainer.current).parentNode
+    // 屏蔽滚动条
+    if (visible) {
+      parent.style.setProperty('overflow', 'hidden')
+    } else {
+      parent.style.removeProperty('overflow')
+    }
+  }, [visible, container])
+
   return ReactDOM.createPortal(
     <div className={PREFIX}>
       {showMask && (

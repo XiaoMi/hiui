@@ -143,13 +143,15 @@ const code = [
             defaultValue={[{id: '0-1-0-0-0'}]}
             // defaultExpandAll // done
             // defaultExpandIds={['1-2-0-0-0-0']} // done
+
             dataSource={key => {
               return {
-                type: 'GET',
+                method: 'GET',
                 key: 'id',
                 params: {pId: key},
-                url: 'http://localhost:3000/tree',
+                url: 'http://localhost:8001/tree',
                 transformResponse: (res) => {
+                  console.log(2, res)
                   return res.map(r => {
                     return {
                       ...r,

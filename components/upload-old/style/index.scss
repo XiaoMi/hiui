@@ -1,0 +1,580 @@
+@import '@hi-ui/core-css/index.scss';
+
+.hi-upload {
+  &--disabled {
+    cursor: not-allowed;
+  }
+
+  &__tips {
+    font-size: 12px;
+    color: rgb(153, 153, 153);
+    line-height: 20px;
+
+    &--single-line {
+      display: block;
+      padding: 7px 0 8px;
+    }
+
+    &--exist {
+      padding-left: 3px;
+      line-height: 22px;
+    }
+  }
+
+  &__list {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  &__item {
+    height: 36px;
+    cursor: default;
+    color: #666;
+    display: flex;
+    align-items: center;
+    padding: 6px 0;
+    overflow: hidden;
+    position: relative;
+
+    a.hi-upload__filename {
+      flex: 1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      font-size: 14px;
+      cursor: pointer;
+      color: #666;
+
+      &--error {
+        color: rgb(255, 0, 0);
+
+        &:not([href]) {
+          color: rgb(255, 0, 0);
+        }
+      }
+    }
+
+    &-tips {
+      color: #428ef5;
+      background: #edf2fc;
+      border-radius: 2px;
+      font-size: 14px;
+      padding: 8px 12px;
+      height: auto !important;
+      border: 1px solid #d8e5ff;
+    }
+
+    .hi-icon {
+      cursor: pointer;
+      font-size: 16px;
+      color: #ccc;
+    }
+
+    .icon-plus {
+      font-size: 24px;
+    }
+  }
+
+  &__right-content {
+    position: relative;
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 8px;
+    overflow: hidden;
+  }
+
+  &__upstatus {
+    width: calc(100% - 30px);
+    margin-left: 30px;
+    height: 2px;
+    background: #f2f2f2;
+    border-radius: 9px;
+    position: absolute;
+    bottom: 0;
+
+    &-line {
+      display: inline-block;
+      height: 2px;
+      width: 0;
+      background: #4284f5;
+      border-radius: 4px 0 0 4px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      transition: width 0.1s linear;
+    }
+
+    &-num {
+      position: absolute;
+      right: 60px;
+      top: -32px;
+      font-style: normal;
+      font-size: 12px;
+      color: #999;
+    }
+  }
+
+  // 拖拽样式
+  &--drag {
+    position: relative;
+    width: 100%;
+    min-height: 172px;
+    box-sizing: border-box;
+    border: 1px dashed #dbdbdb;
+    border-radius: 2px;
+    cursor: pointer;
+    padding: 12px;
+
+    &:hover:not(.hi-upload--nohover) {
+      border-color: #4284f5;
+    }
+
+    .hi-upload__operate-icon {
+      color: #4284f5;
+      cursor: pointer;
+    }
+
+    .icon-tishi {
+      color: #4284f5;
+      margin-right: 5px;
+    }
+
+    &.hi-upload--disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+
+      &,
+      &:hover {
+        border-color: #d9d9d9;
+      }
+
+      .drop-click {
+        cursor: not-allowed;
+      }
+    }
+
+    .hi-upload__item {
+      &:not(:first-child) {
+        border-bottom: 1px solid rgba(230, 230, 230, 1);
+      }
+    }
+
+    .drop-content {
+      display: none;
+    }
+
+    .show-drop-content {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      display: inline-block;
+      height: 60px;
+      text-align: center;
+      font-size: 14px;
+      color: #333;
+      letter-spacing: 0;
+      line-height: 22px;
+      cursor: inherit;
+
+      .hi-upload__tips--single-line {
+        padding: 0;
+        margin-top: 4px;
+      }
+
+      .icon {
+        display: block;
+        cursor: inherit;
+        margin-bottom: 6px;
+
+        &::before {
+          font-size: 40px;
+          color: #4284f5;
+        }
+      }
+    }
+
+    .drop-over {
+      border: 1px dashed #0099fb;
+    }
+  }
+
+  &--avatar,
+  &--photo {
+    &.hi-upload--disabled {
+      .photo-upload {
+        cursor: not-allowed;
+
+        &,
+        &:hover {
+          border-color: #d9d9d9;
+        }
+      }
+    }
+
+    .hi-upload__list {
+      overflow: visible;
+    }
+
+    .hi-upload__item {
+      width: 140px;
+      height: 140px;
+      display: inline-block;
+      position: relative;
+      text-align: center;
+      padding: 0;
+      margin: 8px;
+      overflow: visible;
+      vertical-align: middle;
+      background: #fff;
+      border-radius: 2px;
+
+      &--photo-error {
+        height: 28px;
+        background: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        width: 100%;
+        color: #fff;
+        bottom: 0;
+        line-height: 28px;
+        font-size: 16px;
+        border-radius: 0 0 2px 2px;
+      }
+
+      &:not(:last-child) {
+        background: #e7e7e7;
+      }
+
+      img {
+        margin-top: 50%;
+        transform: translateY(-50%);
+      }
+
+      &--upload {
+        text-align: center;
+        font-size: 28px;
+        color: #e7e7e7;
+        border: 1px dashed rgba(216, 216, 216, 1);
+        line-height: 140px;
+
+        &:hover {
+          border-color: #0099fb;
+        }
+      }
+
+      &-mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.4);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        opacity: 0;
+        transition: 0.3s ease;
+        z-index: 2;
+        border-radius: 4px;
+        cursor: pointer;
+
+        i {
+          line-height: 32px;
+          font-size: 32px;
+        }
+
+        span {
+          font-size: 16px;
+        }
+      }
+
+      &:hover {
+        .hi-upload__photo-del {
+          display: block;
+          color: #000;
+          z-index: 4;
+        }
+
+        .hi-upload__item-mask {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  &--photo {
+    .hi-upload__item--small {
+      width: 80px;
+      height: 80px;
+      line-height: 80px;
+
+      .hi-upload__thumb {
+        max-width: 80px;
+        max-height: 80px;
+      }
+    }
+
+    .hi-upload__item--large {
+      width: 200px;
+      height: 200px;
+      line-height: 200px;
+
+      .hi-upload__thumb {
+        max-width: 200px;
+        max-height: 200px;
+      }
+    }
+  }
+
+  &__thumb {
+    max-width: 140px;
+    max-height: 140px;
+  }
+
+  &--avatar {
+    .hi-upload__item--upload {
+      width: 80px;
+      height: 80px;
+      line-height: 80px;
+      box-sizing: border-box;
+    }
+  }
+
+  &__photo-del {
+    position: absolute;
+    right: -8px;
+    top: -10px;
+    font-size: 20px;
+    line-height: 20px;
+    display: none;
+    z-index: 3;
+  }
+
+  &__precent {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2px;
+  }
+
+  &__loading-bar {
+    width: 0;
+    height: 4px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: #4284f5;
+    z-index: 3;
+  }
+
+  &__loading-shadow {
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: #000;
+    opacity: 0.34;
+    z-index: 2;
+  }
+
+
+
+  &--picture-card {
+    .hi-upload__upstatus {
+      width: 100%;
+      margin-left: 0;
+    }
+
+    .hi-upload__right-content {
+      padding-left: 0;
+    }
+
+    .upload--disabled {
+      cursor: not-allowed;
+    }
+
+    .hi-upload__list {
+      margin-top: 15px;
+      overflow: auto;
+
+      .hi-upload__item {
+        height: 64px;
+        box-sizing: border-box;
+        border: 1px solid #d8d8d8;
+        border-radius: 2px;
+        padding: 8px 18px 8px 6px;
+        margin-bottom: 12px;
+        font-size: 12px;
+        color: #333;
+
+        &--error {
+          border: 1px solid rgba(244, 65, 65, 1);
+        }
+
+        &:hover {
+          background: rgba(247, 247, 247, 1);
+        }
+
+        &.loading {
+          color: #999;
+        }
+
+        .img-wrap {
+          float: left;
+          width: 50px;
+          height: 50px;
+          margin-right: 12px;
+          position: relative;
+
+          img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            max-width: 50px;
+            max-height: 50px;
+          }
+
+          .img-mask {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: rgba(0, 0, 0, 0.3);
+          }
+        }
+      }
+    }
+  }
+
+  .hi-modal__content {
+    padding: 16px 24px;
+  }
+
+  &__modal-tips {
+    display: flex;
+  }
+
+  &__error {
+    &—content {
+      margin: 12px;
+    }
+
+    &-title {
+      width: 300px;
+      line-height: 24px;
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    &-info {
+      font-size: 14px;
+      color: #666;
+    }
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    list-style: none;
+  }
+}
+
+.hi-modal {
+  .content {
+    font-size: 0;
+  }
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key}.hi-upload {
+    &--drag {
+      &:hover:not(.hi-upload--nohover) {
+        border-color: $value;
+      }
+
+      .hi-upload__operate-icon {
+        color: $value;
+      }
+
+      .drop-over {
+        border: 1px dashed $value;
+      }
+
+      .show-drop-content {
+        .icon {
+          &::before {
+            color: $value;
+          }
+        }
+      }
+    }
+
+    .hi-upload__item {
+      &-tips {
+        color: $value;
+
+        .hi-upload__operate-icon {
+          color: $value;
+        }
+
+        .icon-tishi {
+          color: $value;
+        }
+      }
+    }
+
+    &--avatar,
+    &--photo {
+      .hi-upload__item {
+        &--upload {
+          &:hover {
+            border-color: $value;
+          }
+        }
+      }
+    }
+
+    .hi-upload__upstatus {
+      &-line {
+        background-color: $value;
+      }
+
+      &-num {
+        color: $value;
+      }
+    }
+
+    .hi-upload__loading-bar {
+      background: $value;
+    }
+  }
+}

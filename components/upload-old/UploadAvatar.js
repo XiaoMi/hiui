@@ -48,7 +48,7 @@ class UploadAvatar extends Upload {
   showCropperModal (file) {
     const fr = new window.FileReader()
 
-    fr.onload = e => {
+    fr.onload = (e) => {
       const src = e.target.result
       this.setState({ src }, () => {
         this.setState({ showCropperModal: true })
@@ -134,8 +134,8 @@ class UploadAvatar extends Upload {
       <div className={`theme__${theme} hi-upload hi-upload--avatar`}>
         <ul className='hi-upload__list'>
           {!!file &&
-            (file.uploadState === 'loading'
-              ? <li className='hi-upload__item'>
+            (file.uploadState === 'loading' ? (
+              <li className='hi-upload__item'>
                 <img src={file.url} className='hi-upload__thumb' />
                 <div className='hi-upload__precent'>
                   <p className='hi-upload__loading-text'>
@@ -145,49 +145,41 @@ class UploadAvatar extends Upload {
                         : localeDatas.upload.uploadSuccess
                       : 0 + '%'}
                   </p>
-                  <div
-                    className='hi-upload__loading-bar'
-                    style={{ width: file.progressNumber * 1.4 + 'px' }}
-                  />
+                  <div className='hi-upload__loading-bar' style={{ width: file.progressNumber * 1.4 + 'px' }} />
                 </div>
               </li>
-              : <li className='hi-upload__item'>
-                <img
-                  src={file.url}
-                  className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`}
-                />
+            ) : (
+              <li className='hi-upload__item'>
+                <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} />
                 <div className='hi-upload__item-mask' onClick={() => this.previewImage(file)}>
                   <Icon name='eye' />
-                  <span>
-                    {localeDatas.upload.preview}
-                  </span>
+                  <span>{localeDatas.upload.preview}</span>
                 </div>
-                {onRemove &&
-                <Icon
-                  name='close-circle'
-                  className='hi-upload__photo-del'
-                  onClick={() => this.deleteFile(file, 0)}
-                />}
-              </li>)}
-          {!file &&
+                {onRemove && (
+                  <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => this.deleteFile(file, 0)} />
+                )}
+              </li>
+            ))}
+          {!file && (
             <li className='hi-upload__item hi-upload__item--upload'>
               <label style={{ display: 'block' }}>
                 <input
-                  ref={node => {
+                  ref={(node) => {
                     this.uploadRef = node
                   }}
                   type='file'
                   accept={accept}
                   disabled={disabled && 'disabled'}
-                  onChange={e => this.uploadFiles(e.target.files)}
+                  onChange={(e) => this.uploadFiles(e.target.files)}
                   hidden
                 />
                 <Icon name='plus' />
               </label>
-            </li>}
+            </li>
+          )}
         </ul>
         <Modal
-          show={showCropperModal}
+          visible={showCropperModal}
           onConfirm={() => {
             this.confirm()
           }}
@@ -198,7 +190,7 @@ class UploadAvatar extends Upload {
         >
           <Cropper
             src={this.state.src}
-            ready={e => {
+            ready={(e) => {
               if (dropBoxSize.length > 0) {
                 this.cropperRef.current.setCropBoxData({
                   width: dropBoxSize[0],
@@ -214,15 +206,15 @@ class UploadAvatar extends Upload {
             style={{ height: 400, width: '100%' }}
           />
         </Modal>
-        {showPreviewModal &&
-          file &&
+        {showPreviewModal && file && (
           <Preview
             src={file.url}
             images={[file]}
             activeIndex={0}
             show={showPreviewModal}
             onClose={this.closePreviewModal.bind(this)}
-          />}
+          />
+        )}
       </div>
     )
   }

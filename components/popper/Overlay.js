@@ -43,6 +43,7 @@ const Overlay = props => {
   let popperWidth
   const staticPopperRef = useRef()
   let popperContainerRef
+
   if (onClickOutside) {
     popperContainerRef = useClickOutside(e => {
       onClickOutside && onClickOutside(e)

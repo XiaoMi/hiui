@@ -44,6 +44,7 @@ export default {
       transfer: components['transfer'],
       tree: components['tree'],
       upload: components['upload'],
+      slider: components['slider'],
       rate: components['rate']
     },
     'group-data': {

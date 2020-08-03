@@ -32,6 +32,7 @@ module.exports = {
     panel: 'Panel 面板',
     collapse: 'Collapse 折叠面板',
     upload: 'Upload 上传',
+    slider: 'Slider 滑块',
     tree: 'Tree 树形控件',
     input: 'Input 输入框',
     'date-picker': 'DatePicker 日期选择器',

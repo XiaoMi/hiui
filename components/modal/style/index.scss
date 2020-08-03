@@ -1,6 +1,6 @@
-$modal: 'hi-editor-modal';
-$fontColor: #383e47;
-$borderColor: #e7e7e7;
+$modal: 'hi-modal' !default;
+$fontColor: #383e47 !default;
+$borderColor: #e7e7e7 !default;
 
 .#{$modal} {
   color: $fontColor;
@@ -12,21 +12,51 @@ $borderColor: #e7e7e7;
     left: 0;
     right: 0;
     bottom: 0;
-    height: 100%;
+    height: 0;
     z-index: 1000;
     background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transition: opacity 0.3s, height 0s 0.3s;
+
+    &--visible {
+      opacity: 1;
+      height: 100%;
+      transition: opacity 0.3s;
+    }
   }
 
-  &__wrapper {
-    width: 600px;
-    background: #fff;
+  &__container {
     z-index: 1000;
     top: 100px;
     left: 50%;
     transform: translateX(-50%);
     position: fixed;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
     border-radius: 2px;
     box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
+
+    &--default {
+      width: 600px;
+      max-height: 600px;
+      min-height: 240px;
+    }
+
+    &--large {
+      width: 800px;
+      max-height: 600px;
+      min-height: 240px;
+    }
+
+    &--small {
+      width: 360px;
+      max-height: 600px;
+      min-height: 240px;
+    }
   }
 
   &__header {
@@ -34,27 +64,58 @@ $borderColor: #e7e7e7;
     color: #383e47;
     font-weight: 500;
     height: 54px;
-    border-bottom: 1px solid $borderColor;
     box-sizing: border-box;
     padding: 0 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    &--divided {
+      border-bottom: 1px solid $borderColor;
+    }
   }
 
   &__content {
+    flex: 1;
     box-sizing: border-box;
     overflow: auto;
     padding: 24px;
   }
 
   &__footer {
-    height: 64px;
-    border-top: 1px solid $borderColor;
+    height: 54px;
     box-sizing: border-box;
     padding: 0 24px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+
+    &--divided {
+      border-top: 1px solid $borderColor;
+    }
+  }
+
+  .modal-transition {
+    &-enter {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+
+    &-enter-done {
+      opacity: 1;
+      transform: scale(1);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    &-exit {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    &-exit-done {
+      opacity: 0;
+      transform: scale(0.4);
+      transition: opacity 0.3s, transform 0.3s;
+    }
   }
 }

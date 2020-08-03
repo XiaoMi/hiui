@@ -28,7 +28,7 @@ class Demo extends React.Component {
       },{
         tabTitle: '购买资格',
         tabId: 'tabId-5'
-      },]
+      }]
     }
   }
   render () {
