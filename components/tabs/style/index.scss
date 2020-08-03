@@ -335,6 +335,10 @@ $prefix: 'hi-tabs' !default;
       bottom: -1px;
       transition: transform 500ms;
       position: absolute;
+
+      &-disabled {
+        background-color: #ccc;
+      }
     }
   }
 

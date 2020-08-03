@@ -55,12 +55,19 @@ class Demo extends React.Component {
       {
         tabTitle: '订单详情',
         tabId: 'tabId-10'
-      }]
+      }],
+      activeId:'tabId-10'
     }
   }
   render () {
+    const {activeId} = this.state
     return (
-      <Tabs defaultActiveId='tabId-2' onTabClick={(tab,e) => console.log(tab,e)} type="line">
+      <Tabs activeId={activeId} onTabClick={(tab,e) =>{
+        console.log(tab)
+        this.setState({
+          activeId:tab
+        })
+      }} type="line">
       {
         this.state.panes.map((pane, index) => {
           return (

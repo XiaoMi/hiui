@@ -12,7 +12,7 @@ import Tooltip from '../tooltip'
 import ItemDropdown from './ItemDropdown'
 import TabItem from './TabItem'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-const noop = () => {}
+const noop = () => { }
 
 const Tabs = ({
   onDrop,
@@ -75,11 +75,12 @@ const Tabs = ({
   const tabItems = getTabItems()
   const [showTabItems, setShowTabItems] = useState(tabItems.showTabItems)
   const [hiddenTabItems, setHiddentab] = useState(tabItems.hiddenTabItems)
+
   const [activeId, setActiveId] = useState(
     activeIdProps !== undefined
       ? activeIdProps
       : defaultActiveId ||
-          (showTabItems && showTabItems[0] && showTabItems[0].tabId)
+      (showTabItems && showTabItems[0] && showTabItems[0].tabId)
   )
   const [dragged, setDragged] = useState()
   const [over, setOver] = useState()
@@ -88,6 +89,7 @@ const Tabs = ({
   const containRef = useRef()
   const inkRef = useRef()
   const childRef = useRef()
+
   useEffect(() => {
     if (deletetabId && latestActiveId.current === activeId) {
       setActiveId(children[0] && children[0].props.tabId)
@@ -95,7 +97,14 @@ const Tabs = ({
   }, [deletetabId])
 
   useEffect(() => {
+    if (activeIdProps !== undefined) {
+      setActiveId(activeIdProps)
+    }
+  }, [activeIdProps])
+
+  useEffect(() => {
     const index = showTabItems.findIndex((item) => item.tabId === activeId)
+    const hideIndex = hiddenTabItems.findIndex(item => item.tabId === activeId)
     latestActiveId.current = index
 
     if (index === -1 && type === 'editable') {
@@ -103,7 +112,13 @@ const Tabs = ({
     }
 
     if (type === 'line') {
-      pseudoPosition(index === -1 ? max : index)
+      if (index !== -1) {
+        pseudoPosition(index)
+      } else {
+        if (hideIndex !== -1) {
+          pseudoPosition(max)
+        }
+      }
     }
   }, [activeId, showTabItems, type])
 
@@ -233,10 +248,10 @@ const Tabs = ({
       if (tab.disabled) {
         return false
       }
-
+      if (activeIdProps === undefined) {
+        setActiveId(tab.tabId)
+      }
       onTabClick(tab.tabId, e)
-
-      setActiveId(tab.tabId)
     },
     [showTabItems]
   )
@@ -293,8 +308,12 @@ const Tabs = ({
   const animateDone = (tabId) => {
     Tooltip.close(`tab-${tabId}`)
   }
-  let activeTabInHiddenItems = true
-
+  // 判断选中的元素是否为disabled 状态
+  let isActiveEffective = false
+  const arr = showTabItems.filter(item => item.tabId === activeId)
+  if (arr.length) {
+    isActiveEffective = arr[0].disabled
+  }
   return (
     <div className={tabsClasses}>
       <div className={`${prefixCls}__header`}>
@@ -306,8 +325,8 @@ const Tabs = ({
           <TransitionGroup component={null}>
             {showTabItems.map((item, index) => {
               const { tabId } = item
-              activeTabInHiddenItems =
-                activeTabInHiddenItems && tabId !== activeId
+              // activeTabInHiddenItems =
+              //   activeTabInHiddenItems && tabId !== activeId
               return (
                 <CSSTransition
                   key={tabId}
@@ -340,11 +359,11 @@ const Tabs = ({
           {hiddenTabItems.length > 0 && (
             <div
               className={classNames(`${prefixCls}__item`, {
-                [`${prefixCls}__item--active`]: activeTabInHiddenItems
+                [`${prefixCls}__item--active`]: hiddenTabItems.map(item => item.tabId).includes(activeId)
               })}
             >
               <ItemDropdown
-                active={activeTabInHiddenItems}
+                active={hiddenTabItems.map(item => item.tabId).includes(activeId)}
                 activeId={activeId}
                 theme={theme}
                 defaultActiveId={defaultActiveId}
@@ -356,7 +375,9 @@ const Tabs = ({
             </div>
           )}
           {type === 'line' && (
-            <div className={`${prefixCls}--line__ink`} ref={inkRef} />
+            <div className={classNames(`${prefixCls}--line__ink`, {
+              [`${prefixCls}--line__ink-disabled`]: isActiveEffective
+            })} ref={inkRef} />
           )}
         </div>
         {editableFlag && (
