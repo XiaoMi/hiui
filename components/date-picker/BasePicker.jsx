@@ -66,12 +66,12 @@ const BasePicker = ({
     const _dates = _.cloneDeep(dates)
     let returnDate = {}
     let returnDateStr = ''
-    if (type.includes('range') || type === 'timeperiod') {
+    if (type.includes('range') || type === 'timeperiod' || type === 'week') {
       returnDate = {
         start: _dates[0].toDate(),
         end: _dates[1].toDate()
       }
-      returnDateStr = { start: _dates[0].format(iFormat), end: _dates[1].format(iFormat) }
+      returnDateStr = type === 'week' ? _dates[0].format(iFormat) : { start: _dates[0].format(iFormat), end: _dates[1].format(iFormat) }
     } else {
       returnDate = _dates[0].toDate()
       returnDateStr = _dates[0].format(iFormat)
@@ -102,6 +102,7 @@ const BasePicker = ({
   const onClear = () => {
     resetStatus()
     changeOutDate([])
+    onChange(null, '')
   }
   const resetStatus = useCallback(() => {
     setShowPanel(false)
@@ -168,7 +169,6 @@ const BasePicker = ({
           }
         </Popper>
       </Root>
-      <hr />
     </DPContext.Provider>
   )
 }

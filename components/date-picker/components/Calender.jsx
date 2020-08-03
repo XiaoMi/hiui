@@ -96,9 +96,7 @@ const Calender = ({
     if (!['SPAN', 'DIV'].includes(td.nodeName) || td.getAttribute('type') === 'disabled') {
       return false
     }
-    // if (getClassName(td).indexOf('disabled') !== -1) return false
     const clickVal = parseInt(value)
-
     const _date = moment(renderDate)
     _date[view](clickVal)
     const cellType = td.getAttribute('type')
@@ -148,7 +146,9 @@ const Calender = ({
     if (view.includes('year') || view.includes('month')) return
     if (
       Object.keys(altCalendarPresetData).length > 0 ||
-      Object.keys(dateMarkPresetData).length > 0
+      Object.keys(dateMarkPresetData).length > 0 ||
+      dateMarkRender ||
+      altCalendar
     ) {
       const fullTimeInfo = getFullTime({
         cell,
@@ -237,7 +237,11 @@ const Calender = ({
                         value={cell.value}
                         type={cell.type}
                       >
-                        <span value={cell.value}>
+                        <span
+                          value={cell.value}
+                          type={cell.type}
+                          className='hi-datepicker__cellnum'
+                        >
                           {parseInt(cell.text || cell.value) < 10
                             ? '0' + (cell.text || cell.value)
                             : cell.text || cell.value}

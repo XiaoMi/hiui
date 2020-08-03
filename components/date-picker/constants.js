@@ -7,8 +7,8 @@ export const FORMATS = {
   time: 'HH:mm:ss',
   timerange: 'HH:mm:ss',
   daterange: 'YYYY-MM-DD',
-  week: 'YYYY',
-  weekrange: 'YYYY',
+  week: 'YYYY-ww',
+  weekrange: 'YYYY-ww',
   timeperiod: 'YYYY-MM-DD HH:mm:ss',
   monthrange: 'YYYY-MM',
   yearrange: 'YYYY'

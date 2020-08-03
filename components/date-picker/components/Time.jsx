@@ -59,11 +59,11 @@ const Time = ({ date, onChange }) => {
       minute:
         Object.prototype.toString.call(disabledMinutes) === '[object Array]'
           ? disabledMinutes
-          : disabledMinutes(currentDate['hours']) || [],
+          : disabledMinutes(currentDate['hour']) || [],
       second:
         Object.prototype.toString.call(disabledSeconds) === '[object Array]'
           ? disabledSeconds
-          : disabledSeconds(currentDate['hours'], currentDate['minutes']) || []
+          : disabledSeconds(currentDate['hour'], currentDate['minute']) || []
     }
   }
   const whenDisableChange = (list, val, arrowVal) => {

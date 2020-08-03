@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { getPRCDate, deconstructDate } from '../utils'
 
-const useFormat = ({ altCalendarPreset, altCalendar, dateMarkPreset, dateMarkRender }) => {
+const useAltData = ({ altCalendarPreset, altCalendar, dateMarkPreset, dateMarkRender }) => {
   const [altCalendarPresetData, setAltCalendarPresetData] = useState({})
   const [dateMarkPresetData, setDateMarkPresetData] = useState({})
 
@@ -70,4 +70,4 @@ const useFormat = ({ altCalendarPreset, altCalendar, dateMarkPreset, dateMarkRen
   return [altCalendarPresetData, dateMarkPresetData]
 }
 
-export default useFormat
+export default useAltData

@@ -5,8 +5,8 @@ export default {
   datePicker: {
     ok: 'OK',
     to: 'to',
-    placeholder: 'Select Date',
-    placeholderTimeperiod: 'Select Date Time',
+    placeholder: ['Select Date'],
+    placeholderTimeperiod: ['Select Time'],
     dateChoose: 'Select Date',
     timeChoose: 'Select Time',
     undefinedType: 'undefined type',
@@ -44,14 +44,14 @@ export default {
     ],
     week: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     placeholders: {
-      date: 'Select Date',
-      month: 'Select Month',
-      year: 'Select Year',
-      time: 'Select Time',
+      date: ['Select Date'],
+      month: ['Select Month'],
+      year: ['Select Year'],
+      time: ['Select Time'],
       daterange: ['Select Start Date', 'Select End Date'],
-      week: 'Select Week',
+      week: ['Select Week'],
       weekrange: ['Select Start Week', 'Select End Week'],
-      timeperiod: ['Select Start Date Time', 'Select Start End Time']
+      timeperiod: ['Select Start Time', 'Select Start Time']
 
     },
     timePeriod: 'Period',

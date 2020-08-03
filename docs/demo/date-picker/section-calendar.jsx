@@ -17,19 +17,17 @@ class Demo extends React.Component {
   }
   render () {
     return (
-      <div style={{display:'flex', flexWrap: 'wrap'}}>
-        <DatePicker
-          value={this.state.value}
-          altCalendarPreset='zh-CN'
-          dateMarkPreset='zh-CN'
-          onChange={(date, dateStr) => {
-            console.log('onChange', date, dateStr)
-            this.setState({
-              value: date
-            })
-          }}
-        />
-      </div>
+      <DatePicker
+        value={new Date()}
+        altCalendarPreset='zh-CN'
+        dateMarkPreset='zh-CN'
+        onChange={(date, dateStr) => {
+          console.log('onChange', date, dateStr)
+          this.setState({
+            value: date
+          })
+        }}
+      />
     )
   }
 }`,

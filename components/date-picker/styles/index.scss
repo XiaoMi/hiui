@@ -64,19 +64,35 @@ $basic-color: #4284f5 !default;
     }
 
     &--disabled {
-      cursor: not-allowed;
+      background: rgba(242, 242, 242, 1);
     }
 
-    &--range {
+    &--daterange,
+    &--weekrange,
+    &--yearrange,
+    &--timerange,
+    &--monthrange {
       width: 320px;
-
-      &-time {
-        width: 400px;
-      }
 
       input {
         text-align: center;
       }
+
+      &.hi-datepicker__picker--hastime {
+        width: 400px;
+      }
+    }
+
+    &--timeperiod {
+      width: 400px;
+
+      input {
+        text-align: center;
+      }
+    }
+
+    &--hastime {
+      width: 240px;
     }
 
     .hi-icon {
@@ -84,6 +100,11 @@ $basic-color: #4284f5 !default;
       margin-right: 8px;
       font-size: 14px;
       cursor: pointer;
+
+      &--disabled {
+        cursor: not-allowed;
+        color: rgba(204, 204, 204, 1);
+      }
     }
 
     .icon-close-circle {
@@ -104,12 +125,19 @@ $basic-color: #4284f5 !default;
       &::-webkit-input-placeholder {
         color: #ccc;
       }
+
+      &.disabled {
+        cursor: not-allowed;
+        background: rgba(242, 242, 242, 1);
+      }
     }
   }
 
   &__input {
     display: inline-flex;
+    justify-content: space-between;
     align-items: center;
+    width: 100%;
   }
 
   &__panel {
@@ -234,6 +262,14 @@ $basic-color: #4284f5 !default;
       transform: translateX(-50%);
     }
 
+    &__cell:not(.hi-datepicker__cell--range) {
+      &-text {
+        &:hover {
+          background-color: rgba($basic-color, 0.1);
+        }
+      }
+    }
+
     &--out {
       color: rgba(44, 48, 78, 0.2);
     }
@@ -302,6 +338,15 @@ $basic-color: #4284f5 !default;
       .hi-datepicker__cell--lunar {
         color: #fff;
       }
+    }
+  }
+
+  &__cellnum {
+    display: inline-block;
+    transition: all 100ms;
+
+    &:hover {
+      transform: scale(1.1);
     }
   }
 
@@ -450,7 +495,7 @@ $basic-color: #4284f5 !default;
       display: inline-block;
       max-width: 410px;
       word-break: break-all;
-      background: #edf2fc;
+      background: map-get(get-palette($basic-color), '10');
       border: 1px solid #d8e5ff;
       padding: 7px 12px;
       border-radius: 2px;
@@ -502,12 +547,6 @@ $basic-color: #4284f5 !default;
       }
 
       &__cell {
-        &-text {
-          &:hover {
-            background-color: rgba($value, 0.1);
-          }
-        }
-
         &--today {
           .hi-datepicker__cell-text {
             border: 1px solid $value;
@@ -527,6 +566,14 @@ $basic-color: #4284f5 !default;
         }
       }
 
+      &__cell:not(.hi-datepicker__cell--range) {
+        &-text {
+          &:hover {
+            background-color: rgba($value, 0.1);
+          }
+        }
+      }
+
       &__header-btns {
         .hi-icon {
           &:hover {
@@ -540,6 +587,18 @@ $basic-color: #4284f5 !default;
           &:hover {
             color: $value;
           }
+        }
+      }
+
+      &__lunar {
+        &--highlight {
+          color: $value;
+        }
+      }
+
+      &__indiaHoli {
+        &-text {
+          background: map-get(get-palette($value), '10');
         }
       }
     }

@@ -94,19 +94,22 @@ const RangePanel = () => {
     }
     if (type.includes(views[uIndex]) || type === 'weekrange') {
       setRanges(date)
-    }
-    const _views = _.cloneDeep(views)
-    if (views[uIndex] === 'year' && !type.includes('year')) {
-      _views[uIndex] = 'month'
-    }
-    if (views[uIndex] === 'month' && !type.includes('month')) {
-      _views[uIndex] = 'date'
-    }
-    setViews(_views)
-    if (type === 'daterange' || type === 'weekrange' || type === 'timeperiod') {
+    } else {
       const _innerDates = genNewDates(calRenderDates, date, uIndex)
       setCalRenderDates(_innerDates)
     }
+    const _views = _.cloneDeep(views)
+    if (views[uIndex] === 'month' && !type.includes('month')) {
+      _views[uIndex] = 'date'
+    }
+    if (views[uIndex] === 'year' && !type.includes('year')) {
+      _views[uIndex] = 'month'
+    }
+    setViews(_views)
+    // if (type === 'daterange' || type === 'weekrange' || type === 'timeperiod') {
+    //   const _innerDates = genNewDates(calRenderDates, date, uIndex)
+    //   setCalRenderDates(_innerDates)
+    // }
   }
 
   const onMouseMove = (date) => {

@@ -118,7 +118,7 @@ const altCalendarText = (datainfo, lunarcellinfo, altCalendarPresetData) => {
 }
 const getMarkNode = (node) => {
   return (
-    <span className='hi-datepicker__holiday'>
+    <span className='hi-datepicker__lunar hi-datepicker__holiday'>
       {node}
     </span>
   )

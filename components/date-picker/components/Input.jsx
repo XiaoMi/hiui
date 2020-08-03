@@ -6,14 +6,14 @@ const Input = ({
   date,
   onChange,
   onFocus,
-  dir
+  dir,
+  placeholder
 }) => {
   const {
     type,
     format,
     disabled,
-    showTime,
-    placeholder
+    showTime
   } = useContext(DPContext)
   const [iFormat] = useFormat({
     type,

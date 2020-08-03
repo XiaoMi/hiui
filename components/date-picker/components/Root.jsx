@@ -11,7 +11,6 @@ const Root = ({
   children,
   inputChangeEvent,
   onClear,
-  showPanel,
   inputFocus
 }) => {
   const {
@@ -31,6 +30,7 @@ const Root = ({
     placeholder,
     localeDatas
   })
+
   const onPickerClickEvent = () => {
     onTrigger()
   }
@@ -48,9 +48,7 @@ const Root = ({
     `hi-datepicker__picker--${type}`,
     inputFocus && 'hi-datepicker__picker--focus',
     disabled && 'hi-datepicker__picker--disabled',
-    showTime && 'hi-datepicker__picker--middle',
-    (type.includes('range') || type === 'timeperiod') &&
-      'hi-datepicker__picker--range'
+    showTime && 'hi-datepicker__picker--hastime'
   )
 
   const renderRange = type.includes('range') || type === 'timeperiod'
@@ -85,7 +83,7 @@ const Root = ({
             </React.Fragment>
           )
         }
-        <PickerIcon focus={inputFocus} type={type} showTime={showTime} clearable={clearable} onClick={pickerIconClick} />
+        <PickerIcon focus={inputFocus} type={type} showTime={showTime} disabled={disabled} clearable={clearable} onClick={pickerIconClick} />
         {React.cloneElement(children, { attachEle: inputRef.current })}
       </div>
     </div>

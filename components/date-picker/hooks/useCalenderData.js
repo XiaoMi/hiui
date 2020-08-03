@@ -90,7 +90,7 @@ const getDateRows = ({originDate, range, type, weekOffset, min, max, renderDate,
         }
       }
 
-      if (isDisabled && !isPN) {
+      if (isDisabled) {
         col.type = 'disabled'
       }
       if (!isPN && currentTime.isSame(today, 'day')) {

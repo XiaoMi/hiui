@@ -8,7 +8,7 @@ import TimePanel from './TimePanel'
 import { getView, genNewDates } from '../utils'
 
 const Panel = () => {
-  const { outDate, type, onPick, localeDatas, showTime, theme } = useContext(DPContext)
+  const { outDate, type, onPick, localeDatas, showTime, theme, weekOffset } = useContext(DPContext)
 
   const [view, setView] = useState(getView(type))
 
@@ -21,7 +21,15 @@ const Panel = () => {
 
   const onCalenderPick = (date) => {
     if (type === 'year' || (type === 'month' && view === 'month')) {
-      onPick(date)
+      // year || month picker
+      onPick([type === 'year' ? moment(date.year().toString()) : moment(`${date.year().toString()}-${date.month() + 1}`)], false)
+      return
+    }
+    if (type === 'week' && view === 'date') {
+      // week picker
+      const weekMethod = weekOffset ? 'isoWeek' : 'week'
+      const weekNum = date[weekMethod]()
+      onPick([moment(date).startOf(weekMethod), moment(date).endOf(weekMethod)], false, weekNum)
       return
     }
     let _view = view
@@ -37,7 +45,6 @@ const Panel = () => {
       onPick(_innerDates, showTime)
       return
     }
-
     setCalRenderDates(_innerDates)
   }
 

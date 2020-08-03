@@ -5,7 +5,7 @@ const parsePlaceholder = ({ type, placeholder: _placeholder, showTime, localeDat
   const tempPlaceholder = showTime ? localeDatas.datePicker.placeholderTimeperiod : typePlaceholder || [localeDatas.datePicker.placeholder]
 
   let leftPlaceholder = tempPlaceholder[0]
-  let rightPlaceholder = tempPlaceholder[1]
+  let rightPlaceholder = tempPlaceholder[1] || leftPlaceholder
 
   if (_placeholder instanceof Array) {
     leftPlaceholder = _placeholder[0]
