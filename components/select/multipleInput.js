@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
+import { transKeys } from './utils'
 
 const MultipleInput = ({
   placeholder,
@@ -15,11 +16,11 @@ const MultipleInput = ({
   onClick,
   onDelete,
   onClear,
-  handleKeyDown
+  handleKeyDown,
+  fieldNames
 }) => {
   let icon = dropdownShow ? 'up' : 'down'
   const [showCount, setShowCount] = useState(0)
-  const [value, setValue] = useState('')
   const tagWrapperRef = useRef('')
   const calShowCountFlag = useRef(true) // 在渲染完成进行测试是否展示 +1
 
@@ -70,7 +71,7 @@ const MultipleInput = ({
       ref={tagWrapperRef}
       onClick={onClick}
     >
-      {propsSelectItem.length === 0 && !value && (
+      {propsSelectItem.length === 0 && (
         <div className='hi-select__input--placeholder'>{placeholder}</div>
       )}
       <div
@@ -90,7 +91,9 @@ const MultipleInput = ({
                   : '80%'
               }}
             >
-              <div className='hi-select__input--item__name'>{item.title}</div>
+              <div className='hi-select__input--item__name'>
+                {item[transKeys(fieldNames, 'title')]}
+              </div>
               <span
                 className='hi-select__input--item__remove'
                 onClick={e => {

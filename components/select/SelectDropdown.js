@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import Checkbox from '../checkbox'
 import Loading from '../loading'
 import Icon from '../icon'
+import { transKeys } from './utils'
 
 const SelectDropdown = props => {
   const {
@@ -28,14 +29,13 @@ const SelectDropdown = props => {
     checkAll,
     selectInputWidth,
     selectedItems,
-    show
+    show,
+    fieldNames
   } = props
   const [filterItems, setFilterItems] = useState(dropdownItems)
   const [focusedIndex, setFocuseIndex] = useState(propsFocusedIndex)
   const [searchbarValue, setSearchbarValue] = useState('')
   const [ischeckAll, setIscheckAll] = useState(false)
-  // 对于异步的需要有对缓存文件的处理
-  // const [isjustChecked, setIsjustChecked] = useState(false)
   const searchbar = useRef('')
   useEffect(() => {
     setFilterItems(dropdownItems)
@@ -60,11 +60,11 @@ const SelectDropdown = props => {
   const showSelected = check => {
     if (check) {
       const values = selectedItems.map(item => {
-        return item.id
+        return item[transKeys(fieldNames, 'id')]
       })
       setFilterItems(
         dropdownItems.filter(item => {
-          return values.includes(item.id)
+          return values.includes(item[transKeys(fieldNames, 'id')])
         })
       )
     } else {
@@ -101,23 +101,23 @@ const SelectDropdown = props => {
   }
   // 是否被选中
   const itemSelected = item => {
-    return selectedItems.map(item => item.id).indexOf(item.id) > -1
+    return (
+      selectedItems
+        .map(item => item[transKeys(fieldNames, 'id')])
+        .indexOf(item[transKeys(fieldNames, 'id')]) > -1
+    )
   }
   // 点击某个选项时
   const onClickOptionIntal = (e, item, index) => {
     e.stopPropagation()
     e.preventDefault()
-    if (item.disabled) {
+    if (item[transKeys(fieldNames, 'disabled')]) {
       return
     }
     onClickOption(item, index)
   }
   // 渲染单个选项
   const renderOption = (isSelected, item, index) => {
-    console.log('item', item)
-    if (item.children) {
-      // return item.children
-    }
     if (dropdownRender) {
       return dropdownRender(item, isSelected)
     }
@@ -169,16 +169,26 @@ const SelectDropdown = props => {
           <Checkbox
             className='hi-select__dropdown--item__checkbox'
             checked={isSelected}
-            disabled={item.disabled}
+            disabled={item[transKeys(fieldNames, 'disabled')]}
           >
             <div className='hi-select__dropdown--item__name' style={style}>
-              {isOnSearch ? item.title : hightlightKeyword(item.title, item.id)}
+              {isOnSearch
+                ? item[transKeys(fieldNames, 'title')]
+                : hightlightKeyword(
+                  item[transKeys(fieldNames, 'title')],
+                  item[transKeys(fieldNames, 'id')]
+                )}
             </div>
           </Checkbox>
         )}
         {mode === 'single' && (
           <div className='hi-select__dropdown--item__name' style={style}>
-            {isOnSearch ? item.title : hightlightKeyword(item.title, item.id)}
+            {isOnSearch
+              ? item[transKeys(fieldNames, 'title')]
+              : hightlightKeyword(
+                item[transKeys(fieldNames, 'title')],
+                item[transKeys(fieldNames, 'id')]
+              )}
           </div>
         )}
         {mode === 'single' && isSelected && (
@@ -190,31 +200,37 @@ const SelectDropdown = props => {
     )
   }
   const groupItem = (filterGroupItem, filterItemsIndex) => {
-    const renderArr = []
+    const renderGroup = []
     const label = (
-      <li className='hi-select__dropdown--label' key={filterGroupItem.id}>
-        {filterGroupItem.title}
+      <li
+        className='hi-select__dropdown--label'
+        key={filterGroupItem[transKeys(fieldNames, 'id')]}
+      >
+        {filterGroupItem[transKeys(fieldNames, 'title')]}
       </li>
     )
-    renderArr.push(label)
-    filterGroupItem.children.forEach((item, index) => {
-      renderArr.push(normalItem(item, filterItemsIndex + 1 + '-' + index))
-    })
-    return renderArr
+    renderGroup.push(label)
+    filterGroupItem[transKeys(fieldNames, 'children')].forEach(
+      (item, index) => {
+        renderGroup.push(normalItem(item, filterItemsIndex + 1 + '-' + index))
+      }
+    )
+    return renderGroup
   }
   const normalItem = (item, filterItemsIndex) => {
     matched++
     const isSelected = itemSelected(item)
-    const isDisabled = item.disabled
+    const isDisabled = item[transKeys(fieldNames, 'disabled')]
     return (
       <li
         className={classNames('hi-select__dropdown--item', `theme__${theme}`, {
           'is-active': isSelected,
           'is-disabled': isDisabled,
-          'hi-select__dropdown--item-default': !item.children && !dropdownRender
+          'hi-select__dropdown--item-default':
+            !item[transKeys(fieldNames, 'children')] && !dropdownRender
         })}
         onClick={e => onClickOptionIntal(e, item, filterItemsIndex)}
-        key={item.id}
+        key={item[transKeys(fieldNames, 'id')]}
         index={filterItemsIndex}
         data-focused={focusedIndex === filterItemsIndex}
       >
@@ -228,7 +244,7 @@ const SelectDropdown = props => {
         {filterItems &&
           filterItems.map((item, filterItemsIndex) => {
             if (matchFilter(item)) {
-              return item.children
+              return item[transKeys(fieldNames, 'children')]
                 ? groupItem(item, filterItemsIndex)
                 : normalItem(item, filterItemsIndex)
             }
@@ -297,8 +313,6 @@ const SelectDropdown = props => {
           <div>
             <Checkbox
               onChange={e => {
-                // setIsjustChecked(e.target.checked)
-                // checkAll(e, filterItems, e.target.checked)
                 showSelected(e.target.checked)
               }}
             >

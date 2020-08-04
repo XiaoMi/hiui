@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, forwardRef } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  forwardRef,
+  useCallback
+} from 'react'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 import debounce from 'lodash/debounce'
@@ -9,16 +15,7 @@ import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
 import Provider from '../context'
 import HiRequest from '../_util/hi-request'
-// 格式化value
-const parseValue = value => {
-  if (Array.isArray(value)) {
-    return value.map(v => {
-      return typeof v === 'object' ? v.id : v
-    })
-  } else {
-    return [value]
-  }
-}
+import { resetSelectedItems, transKeys } from './utils'
 
 const InternalSelect = props => {
   const {
@@ -45,34 +42,26 @@ const InternalSelect = props => {
     value,
     defaultValue,
     autoload,
-    searchable: propsSearchable
+    searchable: propsSearchable,
+    fieldNames
   } = props
-
   const selectInputContainer = useRef()
   const [dropdownItems, setDropdownItems] = useState(data)
   const [focusedIndex, setFocusedIndex] = useState(0)
-
-  // 整理Select数据结构 获取选中的Items id
-  const resetSelectedItems = (value, dropdownItems = []) => {
-    const values = parseValue(value)
-    const selectedItems = dropdownItems.filter(item => {
-      return values.includes(item.id)
-    })
-    return selectedItems
-  }
 
   // value 有可能是0的情况
   const [selectedItems, setSelectedItems] = useState(
     resetSelectedItems(
       value === undefined ? defaultValue : value,
-      cloneDeep(data)
+      cloneDeep(data),
+      transKeys(fieldNames, 'id')
     )
   )
 
   const [dropdownShow, setDropdownShow] = useState(false)
   // 搜索关键字
   const [keyword, setKeyword] = useState('')
-  const [loading, setLoading] = useState(false) // 请求数据的loading状态
+  const [loading, setLoading] = useState(false)
   const [searchable, setSearchable] = useState(
     dataSource ? true : propsSearchable
   )
@@ -86,7 +75,8 @@ const InternalSelect = props => {
       const _data = cloneDeep(data)
       const selectedItems = resetSelectedItems(
         value === undefined ? defaultValue : value,
-        _data
+        _data,
+        transKeys(fieldNames, 'id')
       )
       setSelectedItems(selectedItems)
       setDropdownItems(_data)
@@ -95,95 +85,77 @@ const InternalSelect = props => {
 
   useEffect(() => {
     if (value !== undefined) {
-      const selectedItems = resetSelectedItems(value, dropdownItems) // 异步获取时会从内部改变dropdownItems，所以不能从list取
+      const selectedItems = resetSelectedItems(
+        value,
+        dropdownItems,
+        transKeys(fieldNames, 'id')
+      ) // 异步获取时会从内部改变dropdownItems，所以不能从list取
       setSelectedItems(selectedItems)
     }
   }, [value])
 
-  const localeDatasProps = key => {
-    if (props[key]) {
-      return props[key]
-    } else {
-      return localeDatas.select[key]
-    }
-  }
-
-  // 选中某一项
-  const onClickOption = (item, index) => {
-    if (!item || item.disabled) return
-
-    let _selectedItems = cloneDeep(selectedItems)
-    if (type === 'multiple') {
-      // 获取元素索引
-      const itemIndex = _selectedItems.findIndex(sItem => {
-        return sItem.id === item.id
-      })
-      if (itemIndex === -1) {
-        _selectedItems.push(item)
+  const localeDatasProps = useCallback(
+    key => {
+      if (props[key]) {
+        return props[key]
       } else {
-        _selectedItems.splice(itemIndex, 1)
+        return localeDatas.select[key]
       }
-    } else {
-      _selectedItems = [item]
-    }
-    onChange(_selectedItems, item, () => {
-      setFocusedIndex(index)
-    })
+    },
+    [props]
+  )
+  // 改变的回调
+  const onChange = useCallback(
+    (selectedItems, changedItems, callback) => {
+      if (value === undefined) {
+        setSelectedItems(selectedItems)
+        callback()
+      }
+      // 调用用户的select
+      const selectedIds = selectedItems.map(
+        item => item[transKeys(fieldNames, 'id')]
+      )
+      propsonChange && propsonChange(selectedIds, changedItems)
+    },
+    [propsonChange]
+  )
+  // 选中某一项
+  const onClickOption = useCallback(
+    (item, index) => {
+      if (!item || item[transKeys(fieldNames, 'disabled')]) return
 
-    type !== 'multiple' && hideDropdown()
-  }
+      let _selectedItems = cloneDeep(selectedItems)
+      if (type === 'multiple') {
+        // 获取元素索引
+        const itemIndex = _selectedItems.findIndex(sItem => {
+          return (
+            sItem[transKeys(fieldNames, 'id')] ===
+            item[transKeys(fieldNames, 'id')]
+          )
+        })
+        if (itemIndex === -1) {
+          _selectedItems.push(item)
+        } else {
+          _selectedItems.splice(itemIndex, 1)
+        }
+      } else {
+        _selectedItems = [item]
+      }
+      onChange(_selectedItems, item, () => {
+        setFocusedIndex(index)
+      })
+      type !== 'multiple' && hideDropdown()
+    },
+    [type, selectedItems, onChange, dropdownShow]
+  )
 
   // 收起下拉框
-  const hideDropdown = () => {
+  const hideDropdown = useCallback(() => {
     if (dropdownShow) {
       setKeyword('')
       setDropdownShow(false)
     }
-  }
-  // 改变的回调
-  const onChange = (selectedItems, changedItems, callback) => {
-    if (value === undefined) {
-      setSelectedItems(selectedItems)
-      callback()
-    }
-    // 调用用户的select
-    const selectedIds = selectedItems.map(({ id }) => id)
-    propsonChange && propsonChange(selectedIds, changedItems)
-  }
-  // 点击回车选中
-  const onEnterSelect = () => {
-    const item = dropdownItems[focusedIndex]
-    onClickOption(item, focusedIndex)
-  }
-  // 按键操作
-  const handleKeyDown = evt => {
-    if (evt.keyCode === 13) {
-      onEnterSelect()
-    }
-
-    if (evt.keyCode === 38) {
-      evt.preventDefault()
-      moveFocusedIndex('up')
-    }
-    if (evt.keyCode === 40) {
-      evt.preventDefault()
-      moveFocusedIndex('down')
-    }
-  }
-  // 对关键字的校验 对数据的过滤
-  const matchFilter = item => {
-    const shouldMatch = dataSource || !searchable || !keyword
-
-    if (typeof filterOption === 'function') {
-      return shouldMatch || filterOption(keyword, item)
-    }
-
-    return (
-      shouldMatch ||
-      String(item.id || '').includes(keyword) ||
-      String(item.title || '').includes(keyword)
-    )
-  }
+  }, [dropdownShow])
   // 方向键的回调
   const moveFocusedIndex = direction => {
     let _focusedIndex = focusedIndex
@@ -193,7 +165,7 @@ const InternalSelect = props => {
         .reverse()
         .every(item => {
           _focusedIndex--
-          if (!item.disabled && matchFilter(item)) {
+          if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
             return false
           }
           return true
@@ -201,7 +173,7 @@ const InternalSelect = props => {
     } else {
       dropdownItems.slice(_focusedIndex + 1).every(item => {
         _focusedIndex++
-        if (!item.disabled && matchFilter(item)) {
+        if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
           return false
         }
         return true
@@ -210,12 +182,53 @@ const InternalSelect = props => {
 
     setFocusedIndex(_focusedIndex)
   }
+  // 点击回车选中
+  const onEnterSelect = useCallback(() => {
+    const item = dropdownItems[focusedIndex]
+    onClickOption(item, focusedIndex)
+  }, [dropdownItems, focusedIndex, onClickOption])
+  // 按键操作
+  const handleKeyDown = useCallback(
+    evt => {
+      if (evt.keyCode === 13) {
+        onEnterSelect()
+      }
+
+      if (evt.keyCode === 38) {
+        evt.preventDefault()
+        moveFocusedIndex('up')
+      }
+      if (evt.keyCode === 40) {
+        evt.preventDefault()
+        moveFocusedIndex('down')
+      }
+    },
+    [onEnterSelect, moveFocusedIndex, moveFocusedIndex]
+  )
+  // 对关键字的校验 对数据的过滤
+  const matchFilter = useCallback(
+    item => {
+      const shouldMatch = dataSource || !searchable || !keyword
+
+      if (typeof filterOption === 'function') {
+        return shouldMatch || filterOption(keyword, item)
+      }
+
+      return (
+        shouldMatch ||
+        String(item[transKeys(fieldNames, 'id')] || '').includes(keyword) ||
+        String(item[transKeys(fieldNames, 'title')] || '').includes(keyword)
+      )
+    },
+    [dataSource, searchable, keyword, filterOption]
+  )
+
   useEffect(() => {
     if (dataSource && autoload) {
       remoteSearch()
     }
   })
-  // 远程搜索需要重写
+
   const remoteSearch = keyword => {
     const _dataSource =
       typeof dataSource === 'function' ? dataSource(keyword) : dataSource
@@ -238,7 +251,7 @@ const InternalSelect = props => {
       )
       return
     }
-    // 远程搜索
+    // 调用接口
     HiRequestSearch(_dataSource)
   }
   const HiRequestSearch = _dataSource => {
@@ -307,7 +320,7 @@ const InternalSelect = props => {
     let _focusedIndex = -1
     dropdownItems.every(item => {
       _focusedIndex++
-      if (!item.disabled && matchFilter(item)) {
+      if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
         return false
       }
       return true
@@ -317,10 +330,13 @@ const InternalSelect = props => {
   }
   // 删除某一项
   const deleteItem = item => {
-    if (item.disabled) return
+    if (item[transKeys(fieldNames, 'disabled')]) return
     let _selectedItems = selectedItems.concat()
     const sIndex = _selectedItems.findIndex(selectedItem => {
-      return selectedItem.id === item.id
+      return (
+        selectedItem[transKeys(fieldNames, 'id')] ===
+        item[transKeys(fieldNames, 'id')]
+      )
     })
     _selectedItems.splice(sIndex, 1)
     onChange(_selectedItems, item, () => {})
@@ -350,9 +366,11 @@ const InternalSelect = props => {
     let _selectedItems = [...selectedItems]
     let changedItems = []
     filterItems.forEach(item => {
-      if (!item.disabled && matchFilter(item)) {
+      if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
         if (
-          !_selectedItems.map(selectItem => selectItem.id).includes(item.id)
+          !_selectedItems
+            .map(selectItem => selectItem[transKeys(fieldNames, 'id')])
+            .includes(item[transKeys(fieldNames, 'id')])
         ) {
           _selectedItems.push(item)
           changedItems.push(item)
@@ -403,6 +421,7 @@ const InternalSelect = props => {
           onFocus={onFocus}
           onDelete={deleteItem}
           onClear={deleteAllItems}
+          fieldNames={fieldNames}
           onClick={() => {
             handleInputClick()
           }}
@@ -426,6 +445,7 @@ const InternalSelect = props => {
       >
         <SelectDropdown
           emptyContent={emptyContent}
+          fieldNames={fieldNames}
           localeMap={localeDatas.select || {}}
           mode={type}
           searchPlaceholder={searchPlaceholder}
@@ -490,6 +510,12 @@ InternalSelect.propTypes = {
 InternalSelect.defaultProps = {
   data: [],
   type: 'single',
+  fieldNames: {
+    title: 'title',
+    id: 'id',
+    disabled: 'disabled',
+    children: 'children'
+  },
   multipleWrap: 'nowrap',
   disabled: false,
   clearable: true,

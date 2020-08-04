@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import classNames from 'classnames'
+import { transKeys } from './utils'
+
 // 单选输入框
 const SingleInput = props => {
   let {
@@ -13,7 +15,8 @@ const SingleInput = props => {
     onClick,
     selectedItems: propsSelectItem,
     handleKeyDown,
-    onClear
+    onClear,
+    fieldNames
   } = props
   const [cacheselectedItems, setCacheselectedItems] = useState(
     propsSelectItem || []
@@ -33,7 +36,10 @@ const SingleInput = props => {
   let selectedItems =
     propsSelectItem.length > 0 ? propsSelectItem : cacheselectedItems
 
-  placeholder = selectedItems.length > 0 ? selectedItems[0].title : placeholder
+  placeholder =
+    selectedItems.length > 0
+      ? selectedItems[0][transKeys(fieldNames, 'title')]
+      : placeholder
 
   return (
     <div
@@ -51,7 +57,7 @@ const SingleInput = props => {
         })}
       >
         <div className='hi-select__input--item__name'>
-          {selectedItems[0] && selectedItems[0].title}
+          {selectedItems[0] && selectedItems[0][transKeys(fieldNames, 'title')]}
         </div>
       </div>
       {(dropdownShow || selectedItems.length === 0) && (
