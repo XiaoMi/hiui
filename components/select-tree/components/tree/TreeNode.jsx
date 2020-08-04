@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useCallback, useState } from 'react'
-import Checkbox from '../../checkbox'
-import Icon from '../../icon'
+import Checkbox from '../../../checkbox'
+import Icon from '../../../icon'
 import Classnames from 'classnames'
 import TreeContext from './context'
 import IconLoading from './LoadingIcon'

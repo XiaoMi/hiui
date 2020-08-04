@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react'
-import Icon from '../../icon'
+import Icon from '../../../icon'
 import { getRootNodes, getChildrenNodes } from './util'
 import classNames from 'classnames'
-import Loading from '../../loading'
+import Loading from '../../../loading'
 // import './select-dropdown.scss'
-import Checkbox from '../../checkbox'
+import Checkbox from '../../../checkbox'
 
 const Bread = ({ datas, onClick, onReturnClick }) => {
   const datasArr = Object.keys(datas)
@@ -24,7 +24,6 @@ const Bread = ({ datas, onClick, onReturnClick }) => {
         return <React.Fragment key={index}>
           <span
             className={cls}
-
             onClick={() => {
               index === 0 ? onReturnClick() : (((datasArr.length === 4 && index !== 1) || datasArr.length < 4) && onClick(item))
             }}
@@ -132,7 +131,8 @@ const NavTree = ({
                     : <span
                       className={textCls}
                       onClick={() => {
-                        !checkable && onSelected(node)
+                        console.log(111, node.isLeaf, autoExpand)
+                        node.isLeaf && onSelected(node)
                         autoExpand && onExpand(node, children)
                       }}
                     >

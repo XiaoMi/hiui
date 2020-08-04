@@ -1,10 +1,9 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
-import Tree from './tree'
-import qs from 'qs'
+import Tree from './components/tree'
 import _ from 'lodash'
 import Popper from '../popper'
+import HiRequest from '../_util/hi-request'
 import Icon from '../icon'
-import classNames from 'classnames'
 import {
   flattenNodesData,
   getNode,
@@ -18,8 +17,9 @@ import {
   parseExpandIds,
   fillNodeEntries,
   clearReturnData
-} from './tree/util'
-import NavTree from './tree/NavTree'
+} from './components/tree/util'
+import NavTree from './components/tree/NavTree'
+import Trigger from './components/Trigger'
 
 const SelectTree = ({
   data,
@@ -41,28 +41,40 @@ const SelectTree = ({
 }) => {
   const selectedItemsRef = useRef()
   const inputRef = useRef()
+  // select 中显示的数量
   const [showCount, setShowCount] = useState(1)
+  // panel show
   const [show, setShow] = useState(false)
+  // panel status  :  empty normal loading
   const [nodeDataState, setNodeDataState] = useState('normal')
+  // selected items
   const [selectedItems, setSelectedItems] = useState([])
+  // expand ids
   const [expandIds, setExpandIds] = useState([])
+  // 改造过后的数据
   const [nodeEntries, setNodeEntries] = useState({})
+  // 选中的节点数据（checkable）
   const [checkedNodes, setCheckedNodes] = useState({
     checked: [],
     semiChecked: []
   })
+  // 拉平的数据
   const [flattenData, setFlattenData] = useState([])
+  // 关键字搜索值
   const [searchValue, setSearchValue] = useState('')
+  // 清空搜索值事件
   const clearSearchEvent = useCallback(() => {
     setSearchValue('')
     searchTreeNode('')
   }, [])
 
+  // 搜索框的值改变时的事件
   const changeEvents = useCallback((e) => {
     const val = e.target.value
     setSearchValue(val)
     searchTreeNode(val)
   }, [])
+  // 根据传入的原始数据解析为拉平数据及改装数据
   useEffect(() => {
     setStatus()
     if (data) {
@@ -71,10 +83,10 @@ const SelectTree = ({
       setNodeEntries(result.nodeEntries)
     }
   }, [data])
+  // 依赖 flattenData & value  解析生成 checkedNodes 或 selectedItems
   useEffect(() => {
     if (flattenData.length > 0) {
       if (type === 'multiple') {
-        console.log('check', checkedNodes, flattenData)
         const cstatus = parseCheckStatusData(defaultValue.length > 0 ? defaultValue : value, checkedNodes, flattenData)
         if (cstatus) {
           setCheckedNodes(cstatus)
@@ -85,10 +97,13 @@ const SelectTree = ({
       }
     }
   }, [value, flattenData])
+  // 当选中项发生改变时，更改选中项
   useEffect(() => {
     const _selectedItems = parseSelectedItems(checkedNodes, nodeEntries, showCheckedMode, flattenData)
     setSelectedItems(_selectedItems)
   }, [checkedNodes])
+
+  // 依赖展开项生成展开节点数据
   useEffect(() => {
     if (flattenData.length > 0) {
       const _expandIds = parseExpandIds(expandIdsProps, defaultExpandIds, flattenData)
@@ -175,30 +190,17 @@ const SelectTree = ({
     }
   }, [data])
   const loadNodes = (id) => {
-    return new Promise((resolve, reject) => {
-      const _dataSource = typeof dataSource === 'function' ? dataSource(id || '') : dataSource
-      let {
-        url,
-        transformResponse,
-        params,
-        type = 'GET'
-      } = _dataSource
-      url = url.includes('?') ? `${url}&${qs.stringify(params)}` : `${url}?${qs.stringify(params)}`
-      window.fetch(url, {
-        method: type
+    const _dataSource = typeof dataSource === 'function' ? dataSource(id || '') : dataSource
+    return HiRequest({
+      ..._dataSource
+    }).then(res => {
+      const nArr = res.data.map(n => {
+        return {
+          ...n,
+          pId: id
+        }
       })
-        .then(response => response.json())
-        .then(res => {
-          const _res = transformResponse(res)
-          const nArr = _res.map(n => {
-            return {
-              ...n,
-              pId: id
-            }
-          })
-          resolve(nArr)
-        })
-        .catch(err => reject(err))
+      return nArr
     })
   }
   /**
@@ -264,91 +266,55 @@ const SelectTree = ({
   }
 
   const selectedEvents = useCallback((node) => {
+    console.log('selectedEvents')
     setSelectedItems([node])
     onChange(clearReturnData(node))
     setShow(false)
   }, [])
 
+  const onTrigger = () => {
+    console.log(1, flattenData, defaultLoadData, data, dataSource, show)
+    if (
+      flattenData.length === 0 &&
+      defaultLoadData &&
+      (!data || data.length === 0 || dataSource) &&
+      !show
+    ) {
+      // data 为空 且 存在 dataSource 时，默认进行首次数据加载.defaultLoadData不暴露
+      setNodeDataState('loading')
+      loadNodes()
+        .then((res) => {
+          console.log(3, res)
+          if (res.length === 0) {
+            setNodeDataState('empty')
+            return
+          }
+          setNodeDataState('normal')
+          setFlattenData(res)
+          fillNodeEntries(null, nodeEntries, res)
+        })
+        .catch(() => {
+          setNodeDataState('empty')
+        })
+    }
+    setShow(!show)
+  }
   const searchable = searchMode === 'filter' || searchMode === 'highlight'
   return (
     <div className='hi-select-tree'>
-      <div
-        ref={inputRef}
-        className={classNames(
-          'hi-select-tree__input',
-          type === 'multiple' ? 'multiple-values' : 'single-values',
-          selectedItems.length === 0 && 'hi-select-tree__input--placeholder'
-        )}
-        onClick={() => {
-          if (flattenData.length === 0 && defaultLoadData && (!data || data.length === 0 || dataSource) && !show) {
-            // data 为空 且 存在 dataSource 时，默认进行首次数据加载.defaultLoadData不暴露
-            setNodeDataState('loading')
-            loadNodes().then((res) => {
-              if (res.length === 0) {
-                setNodeDataState('empty')
-                return
-              }
-              setNodeDataState('normal')
-              setFlattenData(res)
-              fillNodeEntries(null, nodeEntries, res)
-            }).catch(() => {
-              setNodeDataState('empty')
-            })
-          }
-          setShow(!show)
-        }}
-      >
-        <div className='hi-select-tree__selected' ref={selectedItemsRef}>
-          {selectedItems.length > 0 &&
-            selectedItems.slice(0, showCount).map((node, index) => {
-              return (
-                <div key={index} className='hi-select__input--item'>
-                  <div className='hi-select__input--item__name'>
-                    {node ? node.title : ''}
-                  </div>
-                  {
-                    type === 'multiple' && <span
-                      className='hi-select__input--item__remove'
-                      onClick={e => {
-                        e.stopPropagation()
-                        checkedEvents(false, node)
-                      }}
-                    >
-                      <i className='hi-icon icon-close' />
-                    </span>
-                  }
-                </div>
-              )
-            })}
-          {
-            showCount < selectedItems.length && (
-              <div className='hi-select__input-items--left'>
-                +
-                <span className='hi-select__input-items--left-count'>
-                  {selectedItems.length - showCount}
-                </span>
-              </div>
-            )
-          }
-        </div>
-
-        <span className='hi-select__input--icon'>
-          <i
-            className={classNames(
-              `hi-icon icon-${show
-                ? 'up'
-                : 'down'} hi-select-tree__input--expand`,
-              { clearable: clearable && selectedItems.length > 0 }
-            )}
-          />
-          {clearable &&
-            selectedItems.length > 0 &&
-            <i
-              className={`hi-icon icon-close-circle hi-select-tree__icon-close`}
-              onClick={handleClear}
-            />}
-        </span>
-      </div>
+      <Trigger
+        inputRef={inputRef}
+        selectedItemsRef={selectedItemsRef}
+        type={type}
+        showCount={showCount}
+        flattenData={flattenData}
+        selectedItems={selectedItems}
+        clearable={clearable}
+        show={show}
+        checkedEvents={checkedEvents}
+        onTrigger={onTrigger}
+        onClear={handleClear}
+      />
       {
         <Popper
           show={show}

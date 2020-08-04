@@ -331,10 +331,10 @@ const code = [
             defaultValue={[{id: '1101'}]}
             dataSource={key => {
               return {
-                type: 'GET',
+                method: 'GET',
                 key: 'id',
                 params: {pId: key},
-                url: 'http://localhost:3000/tree',
+                url: 'http://localhost:8001/tree',
                 transformResponse: (res) => {
                   return res.map(r => {
                     return {
@@ -373,10 +373,10 @@ const code = [
             defaultValue={[{id: '1101'}]}
             dataSource={key => {
               return {
-                type: 'GET',
+                method: 'GET',
                 key: 'id',
                 params: {pId: key},
-                url: 'http://localhost:3000/tree',
+                url: 'http://localhost:8001/tree',
                 transformResponse: (res) => {
                   return res.map(r => {
                     return {
