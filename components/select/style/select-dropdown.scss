@@ -40,6 +40,13 @@
     }
   }
 
+  &--label {
+    padding: 0 12px;
+    font-size: 12px;
+    line-height: 30px;
+    color: #a9abaf;
+  }
+
   &--item {
     flex: none;
     display: block;

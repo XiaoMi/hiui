@@ -114,8 +114,9 @@ const SelectDropdown = props => {
   }
   // 渲染单个选项
   const renderOption = (isSelected, item, index) => {
+    console.log('item', item)
     if (item.children) {
-      return item.children
+      // return item.children
     }
     if (dropdownRender) {
       return dropdownRender(item, isSelected)
@@ -188,6 +189,61 @@ const SelectDropdown = props => {
       </React.Fragment>
     )
   }
+  const groupItem = (filterGroupItem, filterItemsIndex) => {
+    const renderArr = []
+    const label = (
+      <li className='hi-select__dropdown--label' key={filterGroupItem.id}>
+        {filterGroupItem.title}
+      </li>
+    )
+    renderArr.push(label)
+    filterGroupItem.children.forEach((item, index) => {
+      renderArr.push(normalItem(item, filterItemsIndex + 1 + '-' + index))
+    })
+    return renderArr
+  }
+  const normalItem = (item, filterItemsIndex) => {
+    matched++
+    const isSelected = itemSelected(item)
+    const isDisabled = item.disabled
+    return (
+      <li
+        className={classNames('hi-select__dropdown--item', `theme__${theme}`, {
+          'is-active': isSelected,
+          'is-disabled': isDisabled,
+          'hi-select__dropdown--item-default': !item.children && !dropdownRender
+        })}
+        onClick={e => onClickOptionIntal(e, item, filterItemsIndex)}
+        key={item.id}
+        index={filterItemsIndex}
+        data-focused={focusedIndex === filterItemsIndex}
+      >
+        {renderOption(isSelected, item, filterItemsIndex)} + {filterItemsIndex}
+      </li>
+    )
+  }
+  const renderItems = () => {
+    return (
+      <ul className='hi-select__dropdown--items'>
+        {filterItems &&
+          filterItems.map((item, filterItemsIndex) => {
+            if (matchFilter(item)) {
+              return item.children
+                ? groupItem(item, filterItemsIndex)
+                : normalItem(item, filterItemsIndex)
+            }
+          })}
+        {matched === 0 && (
+          <li
+            className='hi-select__dropdown--item hi-select__dropdown-item--empty is-disabled'
+            onClick={e => e.stopPropagation()}
+          >
+            {emptyContent}
+          </li>
+        )}
+      </ul>
+    )
+  }
   return (
     <div className='hi-select__dropdown' style={style}>
       {searchable && (
@@ -221,46 +277,9 @@ const SelectDropdown = props => {
           <Loading size='small' />
         </div>
       )}
-      {!loading && (
-        <ul className='hi-select__dropdown--items'>
-          {filterItems &&
-            filterItems.map((item, index) => {
-              if (matchFilter(item)) {
-                matched++
-                const isSelected = itemSelected(item)
-                const isDisabled = item.disabled
-                return (
-                  <li
-                    className={classNames(
-                      'hi-select__dropdown--item',
-                      `theme__${theme}`,
-                      {
-                        'is-active': isSelected,
-                        'is-disabled': isDisabled,
-                        'hi-select__dropdown--item-default':
-                          !item.children && !dropdownRender
-                      }
-                    )}
-                    onClick={e => onClickOptionIntal(e, item, index)}
-                    key={item.id}
-                    index={index}
-                    data-focused={focusedIndex === index}
-                  >
-                    {renderOption(isSelected, item, index)}
-                  </li>
-                )
-              }
-            })}
-          {matched === 0 && (
-            <li
-              className='hi-select__dropdown--item hi-select__dropdown-item--empty is-disabled'
-              onClick={e => e.stopPropagation()}
-            >
-              {emptyContent}
-            </li>
-          )}
-        </ul>
-      )}
+
+      {!loading && renderItems()}
+
       {mode === 'multiple' && (
         <div className={`hi-select__dropdown-check-all theme__${theme}`}>
           <div>
