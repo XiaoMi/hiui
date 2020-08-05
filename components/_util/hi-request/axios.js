@@ -1,13 +1,13 @@
 import axios from 'axios'
 import qs from 'qs'
 
+const callBackInter = new Map()
+
 const axiosInstance = axios.create({
   type: 'basics',
   url: '',
   responseType: 'json'
 })
-
-const callBackInter = new Map()
 
 axiosInstance.interceptors.request.use(
   config => {
