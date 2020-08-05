@@ -4,29 +4,41 @@ import Select from '../../../components/select'
 const prefix = 'select-async'
 const desc =
   '备选项数量较大时，通过搜索选项关键词调取存储于服务端数据备选项的一个或多个'
-const rightOptions = ['单选', '多选']
+const rightOptions = ['单选', '多选', '受控']
 const code = [
   {
     code: `import React from 'react'
 import Select from '@hi-ui/hiui/es/select'\n
 class Demo extends React.Component {
+  constructor () {
+    super()
+    this.state = {
+      value:['1']
+    }
+  }
   render () {
+    const {value} = this.state
     return (
       <Select
         type='single'
         dataSource={{
-          type: 'GET',
+          method: 'GET',
           key: 'id',
-          url: 'http://yapi.demo.qunar.com/mock/26534/hiui/select',
+          url: 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/list',
           transformResponse: (res) => {
-            console.log('----', res)
-            return res.list
+            if(res.status === 200){
+              return res.data.list
+            }
+            return []
           }
         }}
         placeholder='请选择'
         style={{ width: 200 }}
         onChange={(item) => {
           console.log('异步单选结果', item)
+          this.setState({
+            value:item
+          })
         }}
       />
     )
@@ -38,7 +50,14 @@ class Demo extends React.Component {
     code: `import React from 'react'
 import { Select } from '@hi-ui/hiui'\n
 class Demo extends React.Component {
+  constructor () {
+    super()
+    this.state = {
+      value:['1','2']
+    }
+  }
   render () {
+    const {value} = this.state
     return (
       <Select
       type='multiple'
@@ -47,22 +66,83 @@ class Demo extends React.Component {
       dataSource={keyword => {
         return ({
           type: 'GET',
-          url: 'http://yapi.demo.qunar.com/mock/26534/hiui/select',
+          url: 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/list',
           params:{id: keyword},
           transformResponse: (res) => {
-            return res.list
+            if(res.status === 200){
+              return res.data.list
+            }
+            return []
           }
         })
 
       }}
       onChange={(item) => {
         console.log('多选结果', item)
+        this.setState({
+          value:item
+        })
       }}
       />
     )
   }
 }`,
     opt: ['多选']
+  },
+  {
+    code: `import React from 'react'
+import { Select } from '@hi-ui/hiui'\n
+class Demo extends React.Component {
+  constructor () {
+    super()
+    this.state = {
+      value:['1','2'],
+      data: [
+        {
+          id:'1',
+          title:'固定值1'
+        },
+        {
+          id:'2',
+          title:'固定值2'
+        }
+      ]
+    }
+  }
+  render () {
+    const {value, data} = this.state
+    return (
+      <Select
+      type='multiple'
+      style={{width: '300px'}}
+      placeholder='请选择'
+      value={value}
+      data={data}
+      dataSource={keyword => {
+        return ({
+          type: 'GET',
+          url: 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/list',
+          params:{id: keyword},
+          transformResponse: (res) => {
+            if(res.status === 200){
+              return res.data.list
+            }
+            return []
+          }
+        })
+
+      }}
+      onChange={(item) => {
+        console.log('多选结果', item)
+        this.setState({
+          value:item
+        })
+      }}
+      />
+    )
+  }
+}`,
+    opt: ['受控']
   }
 ]
 const DemoAsync = () => (
