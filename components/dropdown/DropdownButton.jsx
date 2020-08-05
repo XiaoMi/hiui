@@ -2,34 +2,23 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Button from '../button'
+import Icon from '../icon'
 import { prefixCls } from '.'
 
 const ButtonGroup = Button.Group
 
 export default class DropdownButton extends React.Component {
   render () {
-    const {
-      children,
-      type,
-      onIconClick,
-      visible,
-      onButtonClick,
-      ...restProps
-    } = this.props
+    const { children, type, onIconClick, visible, onButtonClick, ...restProps } = this.props
     const isButton = ['button', 'group'].includes(type)
     const isGroup = type === 'group'
-    const buttonCls = classNames(
-      `${prefixCls}__button`,
-      isButton || `${prefixCls}__button--text`
-    )
+    const buttonCls = classNames(`${prefixCls}__button`, isButton || `${prefixCls}__button--text`)
     const iconGroupCls = classNames(
       `${prefixCls}__icon`,
       isButton || `${prefixCls}__icon--text`,
       isButton && `${prefixCls}__icon-btnwrap`
     )
-    const iconCls = classNames('hi-icon', 'icon-down', `${prefixCls}__icon`, {
-      'not-group': isButton && !isGroup
-    })
+
     isButton || (restProps.appearance = 'link')
     const iconProps = {}
     // move button events to icon
@@ -49,15 +38,11 @@ export default class DropdownButton extends React.Component {
       <ButtonGroup>
         <Button {...restProps} className={buttonCls}>
           {children}
-          {isGroup || <i className={iconCls} />}
+          {isGroup || <Icon name='down' />}
         </Button>
         {isGroup && (
-          <Button
-            appearance={isButton ? 'button' : 'link'}
-            className={iconGroupCls}
-            {...iconProps}
-          >
-            <i className={iconCls} />
+          <Button appearance={isButton ? 'button' : 'link'} className={iconGroupCls} {...iconProps}>
+            <Icon name='down' />
           </Button>
         )}
       </ButtonGroup>
