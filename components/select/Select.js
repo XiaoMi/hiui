@@ -20,6 +20,7 @@ const InternalSelect = props => {
     data,
     type,
     showCheckAll,
+    showJustSelected,
     className,
     disabled,
     clearable,
@@ -273,11 +274,11 @@ const InternalSelect = props => {
         return
       }
       // 调用接口
-      HiRequestSearch(_dataSource)
+      HiRequestSearch(_dataSource, keyword)
     },
     [dataSource, keyword]
   )
-  const HiRequestSearch = useCallback(_dataSource => {
+  const HiRequestSearch = useCallback((_dataSource, keyword) => {
     let {
       url,
       method = 'GET',
@@ -286,17 +287,13 @@ const InternalSelect = props => {
       data = {},
       params = {},
       key,
-      transformkeyword,
       error,
       ...options
     } = _dataSource
     // 处理Key
+
     if (key) {
-      options.params = Object.assign(
-        {},
-        { [key]: transformkeyword ? transformkeyword(keyword) : keyword },
-        { ...params }
-      )
+      options.params = Object.assign({}, { ...params }, { [key]: keyword })
     }
 
     HiRequest({
@@ -467,6 +464,7 @@ const InternalSelect = props => {
           checkAll={checkAll}
           loading={loading}
           focusedIndex={focusedIndex}
+          showJustSelected={showJustSelected}
           filterOption={filterOption}
           matchFilter={matchFilter}
           show={dropdownShow}
@@ -498,6 +496,7 @@ InternalSelect.defaultProps = {
   defaultValue: '',
   autoload: false,
   showCheckAll: false,
+  showJustSelected: false,
   open: true,
   onClick: () => {},
   onBlur: () => {},
