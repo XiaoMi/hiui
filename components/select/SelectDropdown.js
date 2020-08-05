@@ -14,6 +14,7 @@ const SelectDropdown = props => {
     loading,
     optionWidth,
     showCheckAll,
+    showJustSelected,
     dropdownRender,
     theme,
     searchable,
@@ -30,6 +31,7 @@ const SelectDropdown = props => {
     selectInputWidth,
     selectedItems,
     show,
+
     fieldNames
   } = props
   const [filterItems, setFilterItems] = useState(dropdownItems)
@@ -281,7 +283,9 @@ const SelectDropdown = props => {
       {searchable && (
         <div className='hi-select__dropdown__searchbar'>
           <div className='hi-select__dropdown__searchbar--content'>
-            <Icon name='search' />
+            <span style={{ cursor: 'pointer' }}>
+              <Icon name='search' />
+            </span>
             <input
               className='hi-select__dropdown__searchbar--input'
               placeholder={searchPlaceholder}
@@ -295,11 +299,9 @@ const SelectDropdown = props => {
               onChange={searchEvent}
             />
             {searchbarValue.length > 0 ? (
-              <Icon
-                name='close-circle'
-                style={{ cursor: 'pointer' }}
-                onClick={cleanSearchbarValue}
-              />
+              <span style={{ cursor: 'pointer' }} onClick={cleanSearchbarValue}>
+                <Icon name='close-circle' />
+              </span>
             ) : null}
           </div>
         </div>
@@ -312,7 +314,7 @@ const SelectDropdown = props => {
 
       {!loading && renderItems()}
 
-      {mode === 'multiple' && (
+      {mode === 'multiple' && (showCheckAll || showJustSelected) && (
         <div className={`hi-select__dropdown-check-all theme__${theme}`}>
           <div>
             {showCheckAll && (
@@ -327,13 +329,15 @@ const SelectDropdown = props => {
             )}
           </div>
           <div>
-            <Checkbox
-              onChange={e => {
-                showSelected(e.target.checked)
-              }}
-            >
-              {localeMap['justSelected']}
-            </Checkbox>
+            {showJustSelected && (
+              <Checkbox
+                onChange={e => {
+                  showSelected(e.target.checked)
+                }}
+              >
+                {localeMap['justSelected']}
+              </Checkbox>
+            )}
           </div>
         </div>
       )}

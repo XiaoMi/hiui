@@ -13,25 +13,24 @@ class Demo extends React.Component {
       value:['1'],
       data:[
           {
-              id:'label1',
-              title:'电视',
+              id:'redmi',
+              title:'红米手机',
               children:[
-                { title:'电视1', id:'3'},
-                { title:'手机2', id:'2' },
-                { title:'笔记本3', id:'4'},
-                { title:'生活周边4', id:'5' },
-                { title:'办公56', id:'6' },
+                { title:'红米 5A', id:'3'},
+                { title:'红米 6A', id:'2' },
+                { title:'红米 note', id:'4'},
+                { title:'红米 note8', id:'5' },
               ]
           },
           {
-            id:'label2',
-            title:'电视2',
+            id:'mi',
+            title:'小米电视',
             children:[
-              { title:'电视', id:'10'},
-              { title:'手机', id:'11' },
-              { title:'笔记本', id:'12'},
-              { title:'生活周边', id:'13' },
-              { title:'办公', id:'14' },
+              { title:'小米电视4A 60寸', id:'10'},
+              { title:'小米电视E55A', id:'11' },
+              { title:'小米电视E65A', id:'12'},
+              { title:'小米电视4S', id:'13' },
+              { title:'小米电视4C', id:'14' },
             ]
         }
       ]

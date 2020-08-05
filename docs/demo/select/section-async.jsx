@@ -4,7 +4,7 @@ import Select from '../../../components/select'
 const prefix = 'select-async'
 const desc =
   '备选项数量较大时，通过搜索选项关键词调取存储于服务端数据备选项的一个或多个'
-const rightOptions = ['单选', '多选', '受控']
+const rightOptions = ['异步简易用法', '异步函数用法', '异步受控']
 const code = [
   {
     code: `import React from 'react'
@@ -44,7 +44,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['单选']
+    opt: ['异步简易用法']
   },
   {
     code: `import React from 'react'
@@ -87,7 +87,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['多选']
+    opt: ['异步函数用法']
   },
   {
     code: `import React from 'react'
@@ -142,7 +142,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['受控']
+    opt: ['异步受控']
   }
 ]
 const DemoAsync = () => (

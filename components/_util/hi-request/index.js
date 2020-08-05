@@ -10,25 +10,29 @@ import axiosIns, { axios } from './axios'
  * @param host
  */
 
-const HiRequest = (options, host) => {
+const InternalRequest = (options, host) => {
   const { type = 'basics' } = options
   const url = host ? host + options.url : options.url
   if (type === 'jsonp' || type === 'download') {
     return type === 'jsonp' ? jsonp : download
   }
-  return type === 'basics'
-    ? axiosIns({
+  return axiosIns(
+    type === 'basics'
+      ? {
         url,
         type: 'basics',
         ...options
-      })
-    : axiosIns({
+      }
+      : {
         url,
         method: 'post',
         ...upload(options).options
-      })
+      }
+  )
 }
-
+const HiRequest = (options, host) => {
+  return InternalRequest(options, host)
+}
 // 请求语法糖： reguest.get HiRequest.post ……
 const METHODS = ['get', 'post', 'delete', 'put', 'patch', 'head', 'options']
 METHODS.forEach(method => {
