@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import classNames from 'classnames'
 import Checkbox from '../checkbox'
 import Loading from '../loading'
@@ -57,20 +57,23 @@ const SelectDropdown = props => {
       setTimeout(() => searchbar.current && searchbar.current.focus(), 0)
   }, [])
   // 仅看已选
-  const showSelected = check => {
-    if (check) {
-      const values = selectedItems.map(item => {
-        return item[transKeys(fieldNames, 'id')]
-      })
-      setFilterItems(
-        dropdownItems.filter(item => {
-          return values.includes(item[transKeys(fieldNames, 'id')])
+  const showSelected = useCallback(
+    check => {
+      if (check) {
+        const values = selectedItems.map(item => {
+          return item[transKeys(fieldNames, 'id')]
         })
-      )
-    } else {
-      setFilterItems(dropdownItems)
-    }
-  }
+        setFilterItems(
+          dropdownItems.filter(item => {
+            return values.includes(item[transKeys(fieldNames, 'id')])
+          })
+        )
+      } else {
+        setFilterItems(dropdownItems)
+      }
+    },
+    [selectedItems, fieldNames, dropdownItems]
+  )
   useEffect(() => {
     let _filterItems = dropdownItems
     setFilterItems(_filterItems)
@@ -81,41 +84,54 @@ const SelectDropdown = props => {
     width: optionWidth
   }
 
-  const filterOptions = keyword => {
-    let filterItems = []
-    filterItems = dropdownItems
-    setFilterItems(filterItems)
-    setSearchbarValue(keyword)
-  }
-  const searchEvent = e => {
-    const filterText = e.target.value
-    filterOptions(filterText)
-    onSearch(filterText)
-  }
+  const filterOptions = useCallback(
+    keyword => {
+      setFilterItems(dropdownItems)
+      setSearchbarValue(keyword)
+    },
+    [dropdownItems]
+  )
+  const searchEvent = useCallback(
+    e => {
+      const filterText = e.target.value
+      filterOptions(filterText)
+      onSearch(filterText)
+    },
+    [onSearch]
+  )
 
-  const cleanSearchbarValue = e => {
-    e.stopPropagation()
-    const filterText = ''
-    filterOptions(filterText)
-    onSearch(filterText)
-  }
+  const cleanSearchbarValue = useCallback(
+    e => {
+      e.stopPropagation()
+      const filterText = ''
+      filterOptions(filterText)
+      onSearch(filterText)
+    },
+    [onSearch]
+  )
   // 是否被选中
-  const itemSelected = item => {
-    return (
-      selectedItems
-        .map(item => item[transKeys(fieldNames, 'id')])
-        .indexOf(item[transKeys(fieldNames, 'id')]) > -1
-    )
-  }
+  const itemSelected = useCallback(
+    item => {
+      return (
+        selectedItems
+          .map(item => item[transKeys(fieldNames, 'id')])
+          .indexOf(item[transKeys(fieldNames, 'id')]) > -1
+      )
+    },
+    [selectedItems, fieldNames]
+  )
   // 点击某个选项时
-  const onClickOptionIntal = (e, item, index) => {
-    e.stopPropagation()
-    e.preventDefault()
-    if (item[transKeys(fieldNames, 'disabled')]) {
-      return
-    }
-    onClickOption(item, index)
-  }
+  const onClickOptionIntal = useCallback(
+    (e, item, index) => {
+      e.stopPropagation()
+      e.preventDefault()
+      if (item[transKeys(fieldNames, 'disabled')]) {
+        return
+      }
+      onClickOption(item, index)
+    },
+    [onClickOption, fieldNames]
+  )
   // 渲染单个选项
   const renderOption = (isSelected, item, index) => {
     if (dropdownRender) {
@@ -234,7 +250,7 @@ const SelectDropdown = props => {
         index={filterItemsIndex}
         data-focused={focusedIndex === filterItemsIndex}
       >
-        {renderOption(isSelected, item, filterItemsIndex)} + {filterItemsIndex}
+        {renderOption(isSelected, item, filterItemsIndex)}
       </li>
     )
   }

@@ -6,9 +6,7 @@ import React, {
   useCallback
 } from 'react'
 import classNames from 'classnames'
-import PropTypes from 'prop-types'
-import debounce from 'lodash/debounce'
-import cloneDeep from 'lodash/cloneDeep'
+import _ from 'lodash'
 
 import Popper from '../popper'
 import SelectInput from './SelectInput'
@@ -48,12 +46,14 @@ const InternalSelect = props => {
   const selectInputContainer = useRef()
   const [dropdownItems, setDropdownItems] = useState(data)
   const [focusedIndex, setFocusedIndex] = useState(0)
+  // 存储问题
+  const [cacheSelectItem, setCacheSelectItem] = useState([])
 
   // value 有可能是0的情况
   const [selectedItems, setSelectedItems] = useState(
     resetSelectedItems(
       value === undefined ? defaultValue : value,
-      cloneDeep(data),
+      _.cloneDeep(data),
       transKeys(fieldNames, 'id')
     )
   )
@@ -65,14 +65,17 @@ const InternalSelect = props => {
   const [searchable, setSearchable] = useState(
     dataSource ? true : propsSearchable
   )
-
+  useEffect(() => {
+    // 在异步多选的时候时候才需要进行值的记录
+    dataSource && type === 'multiple' && setCacheSelectItem(data)
+  }, [])
   useEffect(() => {
     setSearchable(dataSource ? true : propsSearchable)
   }, [propsSearchable])
 
   useEffect(() => {
     if (!dataSource) {
-      const _data = cloneDeep(data)
+      const _data = _.cloneDeep(data)
       const selectedItems = resetSelectedItems(
         value === undefined ? defaultValue : value,
         _data,
@@ -81,15 +84,20 @@ const InternalSelect = props => {
       setSelectedItems(selectedItems)
       setDropdownItems(_data)
     }
+    dataSource && type === 'multiple' && setCacheSelectItem(data)
   }, [data])
 
   useEffect(() => {
     if (value !== undefined) {
+      // 处理默认值的问题
       const selectedItems = resetSelectedItems(
         value,
-        dropdownItems,
+        _.uniqBy(
+          cacheSelectItem.concat(dropdownItems),
+          transKeys(fieldNames, 'id')
+        ),
         transKeys(fieldNames, 'id')
-      ) // 异步获取时会从内部改变dropdownItems，所以不能从list取
+      )
       setSelectedItems(selectedItems)
     }
   }, [value])
@@ -124,7 +132,7 @@ const InternalSelect = props => {
     (item, index) => {
       if (!item || item[transKeys(fieldNames, 'disabled')]) return
 
-      let _selectedItems = cloneDeep(selectedItems)
+      let _selectedItems = _.cloneDeep(selectedItems)
       if (type === 'multiple') {
         // 获取元素索引
         const itemIndex = _selectedItems.findIndex(sItem => {
@@ -138,6 +146,10 @@ const InternalSelect = props => {
         } else {
           _selectedItems.splice(itemIndex, 1)
         }
+        // 在受控情况下
+        if (_.isEqual(cacheSelectItem, selectedItems) && dataSource) {
+          setCacheSelectItem(_selectedItems)
+        }
       } else {
         _selectedItems = [item]
       }
@@ -146,7 +158,7 @@ const InternalSelect = props => {
       })
       type !== 'multiple' && hideDropdown()
     },
-    [type, selectedItems, onChange, dropdownShow]
+    [type, selectedItems, onChange, dropdownShow, cacheSelectItem]
   )
 
   // 收起下拉框
@@ -155,33 +167,41 @@ const InternalSelect = props => {
       setKeyword('')
       setDropdownShow(false)
     }
-  }, [dropdownShow])
+    // 多选具有默认值的话打开的话应该显示选中的值
+    if (dataSource && type === 'multiple') {
+      setCacheSelectItem(selectedItems)
+      setDropdownItems(selectedItems)
+    }
+  }, [dropdownShow, selectedItems, dataSource, type])
   // 方向键的回调
-  const moveFocusedIndex = direction => {
-    let _focusedIndex = focusedIndex
-    if (direction === 'up') {
-      dropdownItems
-        .slice(0, _focusedIndex)
-        .reverse()
-        .every(item => {
-          _focusedIndex--
+  const moveFocusedIndex = useCallback(
+    direction => {
+      let _focusedIndex = focusedIndex
+      if (direction === 'up') {
+        dropdownItems
+          .slice(0, _focusedIndex)
+          .reverse()
+          .every(item => {
+            _focusedIndex--
+            if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
+              return false
+            }
+            return true
+          })
+      } else {
+        dropdownItems.slice(_focusedIndex + 1).every(item => {
+          _focusedIndex++
           if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
             return false
           }
           return true
         })
-    } else {
-      dropdownItems.slice(_focusedIndex + 1).every(item => {
-        _focusedIndex++
-        if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
-          return false
-        }
-        return true
-      })
-    }
+      }
 
-    setFocusedIndex(_focusedIndex)
-  }
+      setFocusedIndex(_focusedIndex)
+    },
+    [focusedIndex, dropdownItems, fieldNames]
+  )
   // 点击回车选中
   const onEnterSelect = useCallback(() => {
     const item = dropdownItems[focusedIndex]
@@ -229,32 +249,35 @@ const InternalSelect = props => {
     }
   })
 
-  const remoteSearch = keyword => {
-    const _dataSource =
-      typeof dataSource === 'function' ? dataSource(keyword) : dataSource
-    if (Array.isArray(_dataSource)) {
-      setDropdownItems(_dataSource)
-      return
-    }
-    // 处理promise函数
-    if (_dataSource.toString() === '[object Promise]') {
-      setLoading(true)
-      _dataSource.then(
-        res => {
-          setLoading(false)
-          setDropdownItems(Array.isArray(res) ? res : [])
-        },
-        () => {
-          setLoading(false)
-          setDropdownItems([])
-        }
-      )
-      return
-    }
-    // 调用接口
-    HiRequestSearch(_dataSource)
-  }
-  const HiRequestSearch = _dataSource => {
+  const remoteSearch = useCallback(
+    keyword => {
+      const _dataSource =
+        typeof dataSource === 'function' ? dataSource(keyword) : dataSource
+      if (Array.isArray(_dataSource)) {
+        setDropdownItems(_dataSource)
+        return
+      }
+      // 处理promise函数
+      if (_dataSource.toString() === '[object Promise]') {
+        setLoading(true)
+        _dataSource.then(
+          res => {
+            setLoading(false)
+            setDropdownItems(Array.isArray(res) ? res : [])
+          },
+          () => {
+            setLoading(false)
+            setDropdownItems([])
+          }
+        )
+        return
+      }
+      // 调用接口
+      HiRequestSearch(_dataSource)
+    },
+    [dataSource, keyword]
+  )
+  const HiRequestSearch = useCallback(_dataSource => {
     let {
       url,
       method = 'GET',
@@ -303,7 +326,7 @@ const InternalSelect = props => {
         throw error
       }
     )
-  }
+  }, [])
   useEffect(() => {
     resetFocusedIndex()
   }, [keyword])
@@ -328,33 +351,17 @@ const InternalSelect = props => {
     setFocusedIndex(_focusedIndex)
     return _focusedIndex
   }
-  // 删除某一项
-  const deleteItem = item => {
-    if (item[transKeys(fieldNames, 'disabled')]) return
-    let _selectedItems = selectedItems.concat()
-    const sIndex = _selectedItems.findIndex(selectedItem => {
-      return (
-        selectedItem[transKeys(fieldNames, 'id')] ===
-        item[transKeys(fieldNames, 'id')]
-      )
-    })
-    _selectedItems.splice(sIndex, 1)
-    onChange(_selectedItems, item, () => {})
-  }
+
   // 全部删除
   const deleteAllItems = () => {
-    onChange(
-      [],
-      type === 'multiple' ? selectedItems : selectedItems[0],
-      () => {
-        onFilterItems('')
-        resetFocusedIndex()
-      },
-      []
-    )
+    onChange([], type === 'multiple' ? selectedItems : selectedItems[0], () => {
+      onFilterItems('')
+      resetFocusedIndex()
+    })
+    setCacheSelectItem([])
   }
   // 防抖
-  const debouncedFilterItems = debounce(onFilterItems, 300)
+  const debouncedFilterItems = _.debounce(onFilterItems, 300)
   // 全选
   const checkAll = (e, filterItems, isCheck) => {
     // 全选
@@ -380,7 +387,7 @@ const InternalSelect = props => {
     onChange(_selectedItems, changedItems, () => {})
   }
   // input点击事件
-  const handleInputClick = e => {
+  const handleInputClick = () => {
     if (dropdownShow) {
       hideDropdown()
       return
@@ -417,9 +424,10 @@ const InternalSelect = props => {
           placeholder={placeholder}
           selectedItems={selectedItems || []}
           multipleMode={multipleWrap}
+          cacheSelectItem={cacheSelectItem}
           onBlur={onBlur}
           onFocus={onFocus}
-          onDelete={deleteItem}
+          onClickOption={onClickOption}
           onClear={deleteAllItems}
           fieldNames={fieldNames}
           onClick={() => {
@@ -473,38 +481,6 @@ const InternalSelect = props => {
       </Popper>
     </div>
   )
-}
-
-InternalSelect.propTypes = {
-  type: PropTypes.oneOf(['single', 'multiple']),
-  multipleWrap: PropTypes.oneOf(['wrap', 'nowrap']),
-  data: PropTypes.array,
-  dataSource: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-  defaultValue: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.array,
-    PropTypes.bool,
-    PropTypes.number
-  ]),
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.array,
-    PropTypes.bool,
-    PropTypes.number
-  ]),
-  showCheckAll: PropTypes.bool,
-  autoload: PropTypes.bool,
-  searchable: PropTypes.bool,
-  filterOption: PropTypes.func,
-  clearable: PropTypes.bool,
-  disabled: PropTypes.bool,
-  placeholder: PropTypes.string,
-  emptyContent: PropTypes.string,
-  optionWidth: PropTypes.number,
-  style: PropTypes.object,
-  onChange: PropTypes.func,
-  render: PropTypes.func,
-  open: PropTypes.bool
 }
 
 InternalSelect.defaultProps = {

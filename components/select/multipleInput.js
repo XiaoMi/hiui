@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
+import _ from 'lodash'
+
 import { transKeys } from './utils'
 
 const MultipleInput = ({
   placeholder,
   selectedItems: propsSelectItem,
   dropdownShow,
+  cacheSelectItem,
   disabled,
   searchable,
   clearable,
@@ -14,7 +17,7 @@ const MultipleInput = ({
   theme,
   onBlur,
   onClick,
-  onDelete,
+  onClickOption,
   onClear,
   handleKeyDown,
   fieldNames
@@ -56,8 +59,11 @@ const MultipleInput = ({
     e.stopPropagation()
     onClear()
   }
-  const currentCount = showCount === 0 ? propsSelectItem.length : showCount
-
+  const selectedItems = _.uniqBy(
+    cacheSelectItem.concat(propsSelectItem),
+    transKeys(fieldNames, 'id')
+  )
+  const currentCount = showCount === 0 ? selectedItems.length : showCount
   return (
     <div
       className={classNames(
@@ -71,7 +77,7 @@ const MultipleInput = ({
       ref={tagWrapperRef}
       onClick={onClick}
     >
-      {propsSelectItem.length === 0 && (
+      {selectedItems.length === 0 && (
         <div className='hi-select__input--placeholder'>{placeholder}</div>
       )}
       <div
@@ -79,7 +85,7 @@ const MultipleInput = ({
           'hi-select__input-items--all': multipleMode === 'wrap'
         })}
       >
-        {propsSelectItem.slice(0, currentCount).map((item, index) => {
+        {selectedItems.slice(0, currentCount).map((item, index) => {
           const _item = (
             <div
               key={index}
@@ -98,7 +104,7 @@ const MultipleInput = ({
                 className='hi-select__input--item__remove'
                 onClick={e => {
                   e.stopPropagation()
-                  onDelete(item)
+                  onClickOption(item, 0)
                 }}
               >
                 <i className='hi-icon icon-close' />
@@ -107,16 +113,15 @@ const MultipleInput = ({
           )
           return _item
         })}
-        {currentCount < propsSelectItem.length && (
+        {currentCount < selectedItems.length && (
           <div className='hi-select__input-items--left'>
             +
             <span className='hi-select__input-items--left-count'>
-              {propsSelectItem.length - currentCount}
+              {selectedItems.length - currentCount}
             </span>
           </div>
         )}
         {searchable && !disabled && (
-          // 要删除掉
           <div className='hi-select__input--search'>
             <input
               type='text'
@@ -132,10 +137,10 @@ const MultipleInput = ({
         <i
           className={classNames(
             `hi-icon icon-${icon} hi-select__input--icon__expand`,
-            { clearable: clearable && propsSelectItem.length > 0 }
+            { clearable: clearable && selectedItems.length > 0 }
           )}
         />
-        {clearable && propsSelectItem.length > 0 && (
+        {clearable && selectedItems.length > 0 && (
           <i
             className={`hi-icon icon-close-circle hi-select__input--icon__close`}
             onClick={handleClear}

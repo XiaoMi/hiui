@@ -27,8 +27,9 @@ const SingleInput = props => {
 
   const handleClear = e => {
     e.stopPropagation()
-    setCacheselectedItems([])
+
     onClear()
+    setCacheselectedItems([])
   }
 
   let icon = dropdownShow ? 'up' : 'down'
