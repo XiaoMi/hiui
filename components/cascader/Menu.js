@@ -5,7 +5,7 @@ import Loading from '../loading'
 
 class Menu extends Component {
   static propTypes = {
-    value: PropTypes.array,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     options: PropTypes.array,
     onSelect: PropTypes.func
   }

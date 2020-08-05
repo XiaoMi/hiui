@@ -6,6 +6,7 @@ import Provider from '../context'
 const prefixCls = 'hi-checkbox'
 
 class Checkbox extends Component {
+  static displayName = 'Checkbox'
   constructor (props) {
     super(props)
     this.state = getChecked(props)
@@ -16,7 +17,7 @@ class Checkbox extends Component {
     }
     return null
   }
-  handleChange = (event) => {
+  handleChange = event => {
     const { onChange } = this.props
     onChange && onChange(event)
     hasChecked(this.props) ||
@@ -60,14 +61,16 @@ class Checkbox extends Component {
           value={value}
         />
         <span className={inputCls} />
-        {children !== undefined && <span className={`${prefixCls}__text`}>{children}</span>}
+        {children !== undefined && (
+          <span className={`${prefixCls}__text`}>{children}</span>
+        )}
       </label>
     )
   }
 }
 
 Checkbox.propTypes = {
-  checked: PropTypes.bool,
+  checked: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   className: PropTypes.string,
   style: PropTypes.object,
   defaultChecked: PropTypes.bool,
@@ -82,8 +85,10 @@ Checkbox.defaultProps = {
   defaultChecked: false
 }
 
+Checkbox._displayName = 'Checkbox'
+
 function hasChecked (props) {
-  const has = (key) => Object.prototype.hasOwnProperty.call(props, key)
+  const has = key => Object.prototype.hasOwnProperty.call(props, key)
   return has('checked')
 }
 

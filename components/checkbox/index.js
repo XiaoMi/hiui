@@ -8,5 +8,6 @@ const VGroup = SwitchVersion(Group, undefined)
 const VCheckbox = SwitchVersion(Checkbox, CheckboxLegacy)
 
 VCheckbox.Group = VGroup
+VCheckbox.displayName = 'Checkbox'
 
 export default VCheckbox
