@@ -300,6 +300,7 @@ const InternalSelect = props => {
       url,
       method,
       data: data,
+      error,
       beforeRequest: config => {
         setLoading(true)
         return config
