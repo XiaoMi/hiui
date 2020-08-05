@@ -23,7 +23,7 @@ class Demo extends React.Component {
       },
       {
         title: '信息登记',
-        icon: <Icon name='list' />
+        icon: <Icon name='bars' />
       },
     ]
 
@@ -54,7 +54,7 @@ class Demo extends React.Component {
       },
       {
         title: '信息登记',
-        icon: <Icon name='list' />
+        icon: <Icon name='bars' />
       },
     ]
 
@@ -71,12 +71,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoIcon = () => (
-  <DocViewer
-    code={code}
-    scope={{ Stepper, Icon }}
-    rightOptions={rightOptions}
-    prefix={prefix}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ Stepper, Icon }} rightOptions={rightOptions} prefix={prefix} desc={desc} />
 )
 export default DemoIcon
