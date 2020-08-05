@@ -9,7 +9,7 @@ import Select from '../../../components/select'
 import Cascader from '../../../components/cascader'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'form-check'
-const desc = '表单项内容的格式、逻辑有特殊要求'
+const desc = ['表单项内容的格式、逻辑有特殊要求', '可在Form中配置全部Item的rules,也可在Form.Item中使用rules校验单个表单项']
 const code = `import React from 'react'
 import { Grid, Button, Radio, Input, Form } from '@hi-ui/hiui'\n
 class Demo extends React.Component {
@@ -53,12 +53,12 @@ class Demo extends React.Component {
   }
 
   handleSubmit() {
-    this.form.current.validate(valid => {
-      if(valid) {
-        console.log(this.state.form)
+    this.form.current.validate((valid,error) => {
+      if(!error) {
+        console.log(valid)
         alert('submit')
       } else {
-        console.log('error')
+        console.log('error',error)
         return false
       }
     })
@@ -75,17 +75,6 @@ class Demo extends React.Component {
     this.form.current.resetValidates()
   }
 
-  handleChange(key, e, value, index) {
-    this.setState({
-      form: Object.assign({}, this.state.form, {[key]: value})
-    })
-
-    if(index !== undefined) {
-      this.setState({
-        checkedIndex: index
-      })
-    }
-  }
 
   render(){
     const Row = Grid.Row
@@ -96,18 +85,21 @@ class Demo extends React.Component {
     return (
       <Row>
         <Col span={12}>
-          <Form ref={this.form} model={form} rules={this.state.rules} labelWidth='80' labelPlacement='right'>
+          <Form 
+            ref={this.form} 
+            model={form} 
+            rules={this.state.rules} 
+            labelWidth='80' 
+            labelPlacement='right'>
             <FormItem label='名称' field='name'>
-              <Input value={form.name} placeholder='请输入' onChange={this.handleChange.bind(this, 'name')}/>
+              <Input placeholder='请输入'/>
             </FormItem>
             <FormItem label='数量' field='count'>
-              <Input value={form.count} placeholder='请输入' onChange={this.handleChange.bind(this, 'count')}/>
+              <Input placeholder='请输入'/>
             </FormItem>
             <FormItem label='地区' field='region'>
               <Radio.Group
                 data={['北京', '上海', '重庆']}
-                value={form.region}
-                onChange={this.handleChange.bind(this, 'region','')}
               />
             </FormItem>
             <FormItem>

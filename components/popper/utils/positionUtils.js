@@ -1,7 +1,7 @@
 import PopperJS from './popper'
 
 const { isBody, isFixed, getOffsetRectRelativeToCustomParent } = new PopperJS()
-// 上下防止溢出
+// 上下防止溢出 就会定位到划出的边缘位置
 const overflowOffset = (
   placement,
   scrollTop,

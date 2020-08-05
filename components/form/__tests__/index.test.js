@@ -24,7 +24,7 @@ class Demo extends React.Component {
         name: [
           {
             required: true,
-            message: <span style={{color: '#ccc'}}>请输入名称</span>,
+            message: <span style={{ color: '#ccc' }}>请输入名称</span>,
             trigger: 'onBlur,onChange'
           }
         ],
@@ -44,9 +44,9 @@ class Demo extends React.Component {
           {
             validator: (rule, value, cb) => {
               const count = parseInt(value)
-              if(isNaN(count)) {
+              if (isNaN(count)) {
                 cb('请输入数字')
-              } else if(count <= 0) {
+              } else if (count <= 0) {
                 cb('必须是正数')
               } else {
                 cb()
@@ -61,7 +61,7 @@ class Demo extends React.Component {
 
   handleSubmit() {
     this.form.current.validate(valid => {
-      if(valid) {
+      if (valid) {
         console.log(this.state.form)
         alert('submit')
       } else {
@@ -84,35 +84,44 @@ class Demo extends React.Component {
 
   handleChange(key, e, value, index) {
     this.setState({
-      form: Object.assign({}, this.state.form, {[key]: value})
+      form: Object.assign({}, this.state.form, { [key]: value })
     })
 
-    if(index !== undefined) {
+    if (index !== undefined) {
       this.setState({
         checkedIndex: index
       })
     }
   }
 
-  render(){
+  render() {
     const Row = Grid.Row
     const Col = Grid.Col
-    const {form, checkedIndex} = this.state
+    const { form, checkedIndex } = this.state
 
     return (
       <div>
-        <Form ref={this.form} model={form} rules={this.state.rules} labelWidth='80'>
+        <Form
+          ref={this.form}
+          model={form}
+          rules={this.state.rules}
+          labelWidth='80'
+        >
           <Row>
             <Col span={12}>
-
               <Form.Item label='名称' prop='name'>
-                <Input value={form.name} placeholder={'name'} onChange={this.handleChange.bind(this, 'name')}/>
+                <Input
+                  value={form.name}
+                  placeholder={'name'}
+                  onChange={this.handleChange.bind(this, 'name')}
+                />
               </Form.Item>
               <Form.Item>
-                <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
+                <Button type='primary' onClick={this.handleSubmit.bind(this)}>
+                  提交
+                </Button>
                 <Button onClick={this.cancelSubmit.bind(this)}>重置</Button>
               </Form.Item>
-
             </Col>
           </Row>
         </Form>
@@ -137,7 +146,7 @@ class Demo2 extends React.Component {
         name: [
           {
             required: true,
-            message: <span style={{color: '#ccc'}}>请输入名称</span>,
+            message: <span style={{ color: '#ccc' }}>请输入名称</span>,
             trigger: 'onBlur,onChange'
           }
         ],
@@ -157,9 +166,9 @@ class Demo2 extends React.Component {
           {
             validator: (rule, value, cb) => {
               const count = parseInt(value)
-              if(isNaN(count)) {
+              if (isNaN(count)) {
                 cb('请输入数字')
-              } else if(count <= 0) {
+              } else if (count <= 0) {
                 cb('必须是正数')
               } else {
                 cb()
@@ -174,7 +183,7 @@ class Demo2 extends React.Component {
 
   handleSubmit() {
     this.form.current.validate(valid => {
-      if(valid) {
+      if (valid) {
         console.log(this.state.form)
         alert('submit')
       } else {
@@ -184,21 +193,26 @@ class Demo2 extends React.Component {
     })
   }
 
-
-  render(){
+  render() {
     const Row = Grid.Row
     const Col = Grid.Col
-    const {form} = this.state
+    const { form } = this.state
 
     return (
       <div>
-        <Form ref={this.form} model={form} rules={this.state.rules} labelWidth='80'>
+        <Form
+          ref={this.form}
+          model={form}
+          rules={this.state.rules}
+          labelWidth='80'
+        >
           <Row>
             <Col span={12}>
               <Form.Item>
-                <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
+                <Button type='primary' onClick={this.handleSubmit.bind(this)}>
+                  提交
+                </Button>
               </Form.Item>
-
             </Col>
           </Row>
         </Form>
@@ -218,13 +232,13 @@ class Demo3 extends React.Component {
         region: '',
         count: ''
       },
-      checkedIndex: -1,
+      checkedIndex: -1
     }
   }
 
   handleSubmit() {
     this.form.current.validate(valid => {
-      if(valid) {
+      if (valid) {
         console.log(this.state.form)
         alert('submit')
       } else {
@@ -234,22 +248,23 @@ class Demo3 extends React.Component {
     })
   }
 
-  render(){
+  render() {
     const Row = Grid.Row
     const Col = Grid.Col
-    const {form} = this.state
+    const { form } = this.state
     return (
       <div>
-        <Form ref={this.form} model={form}  labelWidth='80'>
+        <Form ref={this.form} model={form} labelWidth='80'>
           <Row>
             <Col span={12}>
-            <Form.Item label='名称' prop='name'>
+              <Form.Item label='名称' prop='name'>
                 <Input value={form.name} placeholder={'name'} />
               </Form.Item>
               <Form.Item>
-                <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
+                <Button type='primary' onClick={this.handleSubmit.bind(this)}>
+                  提交
+                </Button>
               </Form.Item>
-
             </Col>
           </Row>
         </Form>
@@ -261,11 +276,11 @@ describe('Form', () => {
   it('should have the correct placement', () => {
     const wrapper = mount(
       <Form>
-        <Form.Item label="账号" labelWidth="50">
+        <Form.Item label='账号' labelWidth='50'>
           <Input placeholder={'账号'} />
         </Form.Item>
-        <Form.Item label="密码" labelWidth="50">
-          <Input type="password" placeholder={'密码'} />
+        <Form.Item label='密码' labelWidth='50'>
+          <Input type='password' placeholder={'密码'} />
         </Form.Item>
       </Form>
     )
@@ -281,22 +296,22 @@ describe('Form', () => {
     ;['left', 'right', 'top'].forEach(labelPlacement => {
       const wrapper = mount(
         <Form labelPlacement={labelPlacement}>
-          <Form.Item label="账号" labelWidth="50">
+          <Form.Item label='账号' labelWidth='50'>
             <Input placeholder={'账号'} />
           </Form.Item>
-          <Form.Item label="密码" labelWidth="50">
-            <Input type="password" placeholder={'密码'} />
+          <Form.Item label='密码' labelWidth='50'>
+            <Input type='password' placeholder={'密码'} />
           </Form.Item>
         </Form>
       )
       expect(wrapper.find(`.hi-form--label--${labelPlacement}`)).toHaveLength(1)
       const wrapperLegacy = mount(
         <Form labelPositon={labelPlacement}>
-          <Form.Item label="账号" labelWidth="50">
+          <Form.Item label='账号' labelWidth='50'>
             <Input placeholder={'账号'} />
           </Form.Item>
-          <Form.Item label="密码" labelWidth="50">
-            <Input type="password" placeholder={'密码'} />
+          <Form.Item label='密码' labelWidth='50'>
+            <Input type='password' placeholder={'密码'} />
           </Form.Item>
         </Form>
       )
@@ -309,16 +324,18 @@ describe('Form', () => {
   it('should have the label width', () => {
     const wrapper = mount(
       <Form>
-        <Form.Item label="账号" labelWidth="50">
+        <Form.Item label='账号' labelWidth='50'>
           <Input placeholder={'账号'} />
         </Form.Item>
-        <Form.Item label="密码" labelWidth="50">
-          <Input type="password" placeholder={'密码'} />
+        <Form.Item label='密码' labelWidth='50'>
+          <Input type='password' placeholder={'密码'} />
         </Form.Item>
       </Form>
     )
     expect(
-      wrapper.find('label.hi-form-item__label').map(label => label.prop('style').width)
+      wrapper
+        .find('label.hi-form-item__label')
+        .map(label => label.prop('style').width)
     ).toEqual([50, 50])
     wrapper.unmount()
   })
@@ -326,41 +343,38 @@ describe('Form', () => {
   it('should show colon', () => {
     const wrapper = mount(
       <Form>
-        <Form.Item label="账号" labelWidth="50">
+        <Form.Item label='账号' labelWidth='50'>
           <Input placeholder={'账号'} />
         </Form.Item>
-        <Form.Item label="密码" labelWidth="50">
-          <Input type="password" placeholder={'密码'} />
+        <Form.Item label='密码' labelWidth='50'>
+          <Input type='password' placeholder={'密码'} />
         </Form.Item>
       </Form>
     )
-    expect(wrapper.find('label.hi-form-item__label').map(label => label.text())).toEqual([
-      '账号：',
-      '密码：'
-    ])
+    expect(
+      wrapper.find('label.hi-form-item__label').map(label => label.text())
+    ).toEqual(['账号：', '密码：'])
     wrapper.setProps({ showColon: false })
-    expect(wrapper.find('label.hi-form-item__label').map(label => label.text())).toEqual([
-      '账号',
-      '密码'
-    ])
+    expect(
+      wrapper.find('label.hi-form-item__label').map(label => label.text())
+    ).toEqual(['账号', '密码'])
     wrapper.unmount()
   })
 
   it('should field has colon when field showColon is true and form showColon is false', () => {
     const wrapper = mount(
       <Form showColon={false}>
-        <Form.Item label="账号" labelWidth="50" showColon>
+        <Form.Item label='账号' labelWidth='50' showColon>
           <Input placeholder={'账号'} />
         </Form.Item>
-        <Form.Item label="密码" labelWidth="50">
-          <Input type="password" placeholder={'密码'} />
+        <Form.Item label='密码' labelWidth='50'>
+          <Input type='password' placeholder={'密码'} />
         </Form.Item>
       </Form>
     )
-    expect(wrapper.find('label.hi-form-item__label').map(label => label.text())).toEqual([
-      '账号：',
-      '密码'
-    ])
+    expect(
+      wrapper.find('label.hi-form-item__label').map(label => label.text())
+    ).toEqual(['账号：', '密码'])
     wrapper.unmount()
   })
 
@@ -386,9 +400,9 @@ describe('Form', () => {
           name: ''
         }}
       >
-        <FormItem label="名称" field="name">
+        <FormItem label='名称' field='name'>
           <Input
-            placeholder="name"
+            placeholder='name'
             onChange={e => {
               wrapper.setProps({ model: { name: e.target.value } })
             }}
@@ -399,7 +413,9 @@ describe('Form', () => {
     )
     const cb = jest.fn()
     wrapper.instance().validate(cb)
-    expect(wrapper.find('.hi-form-item--msg__error').text()).toEqual('请输入名称')
+    expect(wrapper.find('.hi-form-item--msg__error').text()).toEqual(
+      '请输入名称'
+    )
     wrapper.find('input').simulate('change', { target: { value: 'hiui' } })
     jest.runAllTimers()
     wrapper.instance().validate(cb)
@@ -409,7 +425,9 @@ describe('Form', () => {
     wrapper.find('input').simulate('blur')
     jest.runAllTimers()
     expect(blurCb).toHaveBeenCalled()
-    expect(wrapper.find('.hi-form-item--msg__error').text()).toEqual('请输入名称')
+    expect(wrapper.find('.hi-form-item--msg__error').text()).toEqual(
+      '请输入名称'
+    )
     wrapper.unmount()
 
     jest.useRealTimers()
@@ -436,9 +454,9 @@ describe('Form', () => {
           name: ''
         }}
       >
-        <FormItem label="名称" field="name">
+        <FormItem label='名称' field='name'>
           <Input
-            placeholder="name"
+            placeholder='name'
             onChange={e => {
               wrapper.setProps({ model: { name: e.target.value } })
             }}
@@ -449,7 +467,9 @@ describe('Form', () => {
     )
     const cb = jest.fn()
     wrapper.instance().validateField('name', cb)
-    expect(wrapper.find('.hi-form-item--msg__error').text()).toEqual('请输入名称')
+    expect(wrapper.find('.hi-form-item--msg__error').text()).toEqual(
+      '请输入名称'
+    )
     wrapper.find('input').simulate('change', { target: { value: 'hiui' } })
     jest.runAllTimers()
     wrapper.instance().validate(cb)
@@ -459,33 +479,47 @@ describe('Form', () => {
 
     jest.useRealTimers()
   })
-  it('cancelSubmit resetValidates',()=>{
-      const wrapper = mount (
-        <Demo/>
-      )
-      expect(wrapper.find('.hi-form')).toHaveLength(1)
-      wrapper.find('button').at(0).simulate('click')
-      expect(wrapper.find('.hi-form-item--msg__error').find('span')).toHaveLength(1)
-      wrapper.find('button').at(1).simulate('click')
-      expect(wrapper.find('.hi-form-item--msg__error').find('span')).toHaveLength(0)
-      wrapper.unmount()
+  it('cancelSubmit resetValidates', () => {
+    const wrapper = mount(<Demo />)
+    expect(wrapper.find('.hi-form')).toHaveLength(1)
+    wrapper
+      .find('button')
+      .at(0)
+      .simulate('click')
+    expect(wrapper.find('.hi-form-item--msg__error').find('span')).toHaveLength(
+      1
+    )
+    wrapper
+      .find('button')
+      .at(1)
+      .simulate('click')
+    expect(wrapper.find('.hi-form-item--msg__error').find('span')).toHaveLength(
+      0
+    )
+    wrapper.unmount()
   })
-  it('validate When No item',()=>{
-      const wrapper = mount (
-       <Demo2/>
-      )
-      expect(wrapper.find('.hi-form')).toHaveLength(1)
-      wrapper.find('button').at(0).simulate('click')
-      expect(wrapper.find('.hi-form-item--msg__error').find('span')).toHaveLength(0)
-      wrapper.unmount()
+  it('validate When No item', () => {
+    const wrapper = mount(<Demo2 />)
+    expect(wrapper.find('.hi-form')).toHaveLength(1)
+    wrapper
+      .find('button')
+      .at(0)
+      .simulate('click')
+    expect(wrapper.find('.hi-form-item--msg__error').find('span')).toHaveLength(
+      0
+    )
+    wrapper.unmount()
   })
-  it('validate When No rules',()=>{
-      const wrapper = mount (
-       <Demo3/>
-      )
-      expect(wrapper.find('.hi-form')).toHaveLength(1)
-      wrapper.find('button').at(0).simulate('click')
-      expect(wrapper.find('.hi-form-item--msg__error').find('span')).toHaveLength(0)
-      wrapper.unmount()
+  it('validate When No rules', () => {
+    const wrapper = mount(<Demo3 />)
+    expect(wrapper.find('.hi-form')).toHaveLength(1)
+    wrapper
+      .find('button')
+      .at(0)
+      .simulate('click')
+    expect(wrapper.find('.hi-form-item--msg__error').find('span')).toHaveLength(
+      0
+    )
+    wrapper.unmount()
   })
 })

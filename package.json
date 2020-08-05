@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@hi-ui/core-css": "^2.0.1",
-    "async-validator": "^1.11.2",
+    "async-validator": "^3.3.0",
     "axios": "^0.18.0",
     "classnames": "^2.2.5",
     "date-fns": "^2.2.1",

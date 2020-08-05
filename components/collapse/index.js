@@ -1,6 +1,7 @@
 import React, { Component, Children } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import Icon from '../icon'
 import './style/index'
 
 const noop = () => {}
@@ -103,13 +104,12 @@ class CollapsePanel extends Component {
       'collapse-item--show': isActive,
       'collapse-item--disabled': disabled
     })
-    const collapseIcon = classNames('collapse-item__icon', 'hi-icon', 'icon-down')
     return (
       <div className={classnames}>
         <div className='collapse-item__head' onClick={() => onClickPanel(key)}>
-          {showArrow && arrow === 'left' && <i className={collapseIcon} />}
+          {showArrow && arrow === 'left' && <Icon name='down' />}
           <div className='collapse-item__title'>{header}</div>
-          {showArrow && arrow === 'right' && <i className={collapseIcon} />}
+          {showArrow && arrow === 'right' && <Icon name='down' />}
         </div>
         <div className='collapse-item__content'>{children}</div>
       </div>

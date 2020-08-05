@@ -13,7 +13,8 @@ class Cascader extends Component {
   static propTypes = {
     data: PropTypes.array,
     value: PropTypes.oneOfType([
-      PropTypes.array
+      PropTypes.array,
+      PropTypes.string
     ]),
     fieldNames: PropTypes.object,
     searchable: PropTypes.bool,
