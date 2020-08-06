@@ -1,8 +1,8 @@
 @import '@hi-ui/core-css/index.scss';
+$AnimationClassName :'hi-cascader_transition' !default;
 
 .hi-cascader__popper {
   display: flex;
-  background-color: #fff;
   font-size: 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
@@ -114,4 +114,22 @@
       background-color: rgba($value, 0.15);
     }
   }
+}
+
+@keyframes transitionStyle {
+  from {
+    transform: scale(0.9);
+    transform: translate(-4%, -1%);
+    opacity: 0;
+    background-color: none;
+  }
+
+  to {
+    opacity: 1;
+    background-color: #fff;
+  }
+}
+
+.#{$AnimationClassName} {
+  animation: transitionStyle 0.3s 1 forwards;
 }

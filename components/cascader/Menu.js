@@ -1,5 +1,6 @@
 import React, {useCallback, forwardRef } from 'react'
 import classNames from 'classnames'
+
 import Loading from '../loading'
 import EmptyPng from './img/empty.png'
 
@@ -30,7 +31,7 @@ const Menu = forwardRef(({
       currentOptions = false
       if ((isFiltered && value.length > deep) || !isFiltered) {
         menus.push(
-          <ul id='hi-cascader-menu' className={`hi-cascader-menu theme__${theme}`} key={deep} style={{ width: 'auto' }} >
+          <ul id='hi-cascader-menu' className={`hi-cascader-menu theme__${theme} hi-cascader_transition`} key={deep} style={{ width: 'auto' }} >
             {
               _currentOptions.length === 0 &&
               <Loading size='small' />
