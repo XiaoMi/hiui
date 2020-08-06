@@ -225,7 +225,7 @@ export const outlined = [
   },
   {
     name: 'picture',
-    text: '电话'
+    text: '图片'
   },
   {
     name: 'pin',
