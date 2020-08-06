@@ -31,6 +31,7 @@ class Demo extends React.Component {
         style={{ width: 360 }}
         placeholder='搜索关键字'
         prepend={prepend}
+        
         onSearch = {(title) => {
           console.log('Input Value', title)
         }}
@@ -41,7 +42,7 @@ class Demo extends React.Component {
 const DemoClassic = () => (
   <DocViewer
     code={code}
-    scope={{Search, Select}}
+    scope={{ Search, Select }}
     prefix={prefix}
     desc={desc}
   />

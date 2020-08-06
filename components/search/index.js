@@ -16,11 +16,9 @@ const Search = props => {
     placeholder,
     prepend,
     disabled,
-    historyData,
     data,
     value,
     loading,
-    onDelete,
     localeDatas,
     append = true // 是否显示后置按钮
   } = props
@@ -32,8 +30,8 @@ const Search = props => {
   useEffect(() => {
     setInputVal(value)
   }, [value])
+
   const closeDropdown = () => {
-    console.log('关闭')
     setDropdownShow(false)
   }
 
@@ -55,7 +53,7 @@ const Search = props => {
           clearable='true'
           prepend={prepend}
           onFocus={() => {
-            setDropdownShow(true)
+            data && data.length > 0 && setDropdownShow(true)
           }}
           onChange={e => {
             const { value } = e.target
@@ -72,13 +70,13 @@ const Search = props => {
             disabled={disabled}
             onClick={e => {
               e.preventDefault()
-
+              setDropdownShow(true)
               onSearch && onSearch(inputVal)
             }}
           />
         )}
       </div>
-      {(historyData || data) && (
+      {data && (
         <SearchDropdown
           prefixCls={prefixCls}
           inputVal={inputVal}
@@ -87,9 +85,7 @@ const Search = props => {
             closeDropdown()
           }}
           data={data}
-          historyData={historyData}
           loading={loading}
-          onDelete={onDelete}
           dropdownShow={dropdownShow}
           localeDatas={localeDatas}
           searchInputContainer={searchInputContainer}

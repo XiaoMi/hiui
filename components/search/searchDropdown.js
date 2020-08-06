@@ -1,6 +1,5 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import classNames from 'classnames'
-import Icon from '../icon'
 import Popper from '../popper'
 import Loading from '../loading'
 
@@ -9,9 +8,7 @@ const SearchDropdown = props => {
     data,
     prefixCls,
     optionsClick,
-    historyData,
     inputVal = '',
-    onDelete,
     dropdownShow,
     searchInputContainer,
     localeDatas,
@@ -19,6 +16,12 @@ const SearchDropdown = props => {
     loading
   } = props
   const popperDropdown = useRef(null)
+  const [dropdownData, setDropdownData] = useState(data)
+
+  useEffect(() => {
+    setDropdownData(data)
+  }, [data])
+
   const highlightKeyword = (title, uniqueKey) => {
     const searchbarValue = String(inputVal)
     let keyword = inputVal
@@ -107,34 +110,6 @@ const SearchDropdown = props => {
     )
   }
 
-  const HistoryRender = () => {
-    const { searchRecord, searchEmptyRecord } = localeDatas.search
-    const HistoryTitle =
-      inputVal.length === 0 && historyData && historyData.length > 0 ? (
-        <li
-          className={`${prefixCls}_dropdown--item ${prefixCls}_dropdown--item-history`}
-        >
-          <span>{searchRecord}</span>
-          <span
-            onClick={() => {
-              onDelete && onDelete()
-            }}
-          >
-            <Icon name='delete' />
-          </span>
-        </li>
-      ) : null
-    const HistoryNoData = (
-      <li className={`${prefixCls}_dropdown--item-nodata`}>
-        {searchEmptyRecord}
-      </li>
-    )
-    const showHistoryNode =
-      inputVal.length === 0 && historyData && historyData.length === 0
-    return showHistoryNode ? HistoryNoData : HistoryTitle
-  }
-
-  const dataRender = inputVal.length ? data : historyData
   const { searchEmptyResult } = localeDatas.search
   return (
     <Popper
@@ -150,12 +125,11 @@ const SearchDropdown = props => {
       <Loading visible={loading}>
         <div className={`${prefixCls}_dropdown`} ref={popperDropdown}>
           <ul className={`${prefixCls}_dropdown--items`}>
-            {HistoryRender()}
-            {dataRender &&
-              dataRender.map(item => {
+            {dropdownData && dropdownData.length > 0 ? (
+              dropdownData.map(item => {
                 return DataSourceRender(item)
-              })}
-            {(!data || data.length === 0) && (
+              })
+            ) : (
               <li className={`${prefixCls}_dropdown--item-nodata`}>
                 {searchEmptyResult}
               </li>
