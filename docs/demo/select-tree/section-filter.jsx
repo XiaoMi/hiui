@@ -1,9 +1,9 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import SelectTree from '../../../components/select-tree'
-const prefix = 'tree-select-multiple'
-const rightOptions = ['基础', '默认值', '数据回显', '默认展开']
-const desc = '展示从多个收起的备选项中选出的一个选项'
+const prefix = 'tree-select-filter'
+const rightOptions = ['高亮显示', '实时过滤']
+const desc = '通过搜索框定位目标数据'
 const defaultStr = `constructor () {
   super()
   this.state = {
@@ -81,13 +81,14 @@ class Demo extends React.Component {
   render () {
     return (
       <SelectTree
+        searchMode='highlight'
         type='multiple'
         data={this.state.singleList}
       />
     )
   }
 }`,
-    opt: ['基础']
+    opt: ['高亮显示']
   },
   {
     code: `import React from 'react'
@@ -99,55 +100,14 @@ class Demo extends React.Component {
         const { singleList } = this.state
         return (
           <SelectTree
+            searchMode='filter'
             type='multiple'
-            clearable
-            data={singleList}
-            defaultValue={[{id: '1-0'}]}
-          />
-        )
-      }
-    }`,
-    opt: ['默认值']
-  },
-  {
-    code: `import React from 'react'
-    import SelectTree from '@hi-ui/hiui/es/select-tree'\n
-    class Demo extends React.Component {
-      ${defaultStr}
-
-      render () {
-        const { value, singleList } = this.state
-        return (
-          <SelectTree
-            clearable
-            type='multiple'
-            showCheckedMode='PARENT'
             data={singleList}
           />
         )
       }
     }`,
-    opt: ['数据回显']
-  },
-  {
-    code: `import React from 'react'
-    import SelectTree from '@hi-ui/hiui/es/select-tree'\n
-    class Demo extends React.Component {
-      ${defaultStr}
-
-      render () {
-        const { singleList } = this.state
-        return (
-          <SelectTree
-            clearable
-            type='multiple'
-            data={singleList}
-            defaultExpandIds={['1-0']}
-          />
-        )
-      }
-    }`,
-    opt: ['默认展开']
+    opt: ['实时过滤']
   }
 ]
 const DemoType = () => (

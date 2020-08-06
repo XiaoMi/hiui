@@ -23,6 +23,11 @@ import DemoMultiple from '../../demo/select-tree/section-multiple'
 
 <DemoMultiple />
 
+## 数据过滤
+import DemoFilter from '../../demo/select-tree/section-filter'
+
+<DemoFilter />
+
 ## 异步节点
 import DemoAsync from '../../demo/select-tree/section-async'
 
@@ -39,24 +44,15 @@ import DemoBread from '../../demo/select-tree/section-bread'
 | 参数               | 说明                                                                    | 类型                                                                     | 可选值                          | 默认值    |
 | ------------------ | ----------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------- | --------- |
 | data               | 展示数据                                                                | DataItem []                                                              | -                               | -         |
+| showCheckedMode    | 数据回显模式                                                            | string                                                                   | ALL: 所有被选中节点，不区分父子节点 <br/>PARENT: 当所有子节点被选中时将只保留父节点<br/>CHILD:仅显示子节点                 | CHILD         |
+| mode               | 数据展示形式                                                            | string                                                                   | normal \| breadcrumb                   | false     |
 | type               | 数据选择类型                                                            | string                                                                   | single \| multiple                   | false     |
-| mode               | 数据展示形式          | string                                                                  | normal \| breadcrumb                   | false     |
-| searchable         | 节点可搜索                                                              | boolean                                                                  | true \| false                   | false     |
 | defaultExpandAll   | 是否默认展开所有树节点                                                  | boolean                                                                  | true \| false                   | false     |
-| defaultExpandIds | 默认高亮的节点                                                          | boolean                                                                  | true \| false                   | false     |
-| defaultValue         | 默认值                                                         | DataItem[] \| string[]                                                                 | -                               | -         |
-| showCheckedMode           | 数据回显模式                                                          | string                                                                   | ALL \| PARENT \| CHILD                  | -         |
-| closeIcon          | 表示闭合的图标                                                          | string                                                                   | Icon 图标名称                   | -         |
-| apperance          | 树形控件的展现形态                                                      | string                                                                   | 'default' \| 'line' \| 'folder' | 'default' |
-| contextMenu        | 自定义右键菜单,参考 _示例_ 及 _页面底部自定义右键菜单使用说明_          | ContextMenuOption[] \| (item: DataItem,level: number) => ContextMenuOption[]           |                                 | []        |
+| defaultExpandIds   | 默认高亮的节点（非受控）                                                | string[]                                                                 | -                   | -     |
+| expandIds          | 默认高亮的节点（受控）                                                  | string[]                                                                 | -                   | -     |
+| defaultValue       | 默认选中项 （非受控）                                                   | DataItem[] \| string[]                                                   | -                               | -         |
+| value              | 默认选中项  （受控）                                                    | DataItem[] \| string[]                                                   | -                               | -         |
 | onChange           | 树组件改变时触发                                                        | (data: TreeNode[]) => void                                               | -                               | -         |
-| onExpand           | 节点被点击(展开/收起)时触发                                             | (expanded: boolean, expandIds: string[], expandedNode: TreeNode) => void | -                               | -         |
-| onCheck            | 点击节点多选框触发                                                      | (checked: boolean, checkedIds: string[], checkedNode: TreeNode) => void  | -                               | -         |
-| onClick            | 点击节点文字时触发                                                      | (clickNode: TreeNode) => void                                            | -                               | -         |
-| onDragStart        | 节点开始拖拽时触发                                                      | (dragNode: TreeNode) => void                                             | -                               | -         |
-| onDrop             | 节点拖拽时触发                                                          | (dragNode: TreeNode, dropNode: TreeNode, data: DataStatus, level: Level) => boolean                      | -                               | -         |
-| onDropEnd          | 节点拖拽成功时触发                                                      | (dragNode: TreeNode, dropNode: TreeNode) => void                         | -                               | -         |
-| onBeforeDelete     | 节点删除前触发,返回 false 则节点删除失败，不会触发 onDelete                  | (deletedNode: TreeNode, data: DataStatus, level: number) => boolean                       | -                               | -         |
-| onDelete           | 节点删除后触发                                                          | (deletedNode: TreeNode, data: TreeNode[]) => void                        | -                               | -         |
-| onBeforeSave       | 节点保存新增、编辑状态时触发, 返回 false 则保存新增、编辑失败，不会触发 onSave                  | (savedNode: TreeNode, data: DataStatus, level: number) => boolean                          | -                               | -         |
-| onSave             | 节点保存新增、编辑状态后触发                  | (savedNode: TreeNode, data: TreeNode[]) => void                          | -                               | -         |
+| searchMode         | 节点搜索模式，仅在*mode=normal*模式下生效                               | string                                                                   | highlight \| filter                   | -     |
+| dataSource         | 异步加载数据                                                            | (key: string) => DataSource \| DataSource \| Promise                     | -                               |-        |
+

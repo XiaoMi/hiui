@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import Icon from '../../../icon'
 import { getRootNodes, getChildrenNodes } from './util'
 import classNames from 'classnames'
@@ -47,7 +47,6 @@ const NavTree = ({
   selectedItems,
   autoExpand = true,
   nodeDataState,
-  isRemoteLoadData,
   onExpand: expandProps
 }) => {
   const expandData = useRef()
@@ -76,12 +75,16 @@ const NavTree = ({
       return preData
     })
   }
-  const onReturnClick = () => {
+  const onReturnClick = useCallback(() => {
     setLoadingState('normal')
     setRenderData(getRootNodes(data))
     setFullBreadData({})
-  }
-  const onExpand = (node, children) => {
+  })
+  const onNodeClick = (node, children) => {
+    if (node.isLeaf) {
+      onSelected(node)
+      return
+    }
     expandData.current = expandData.current ? expandData.current.concat([node]) : [].concat([node])
     setFullBreadData(preData => {
       return {
@@ -110,7 +113,7 @@ const NavTree = ({
       }
       <ul className='hi-breadtree__list'>
         {
-          loadingState === 'empty' ? <li><span className='hi-select-tree--empty-text'>无结果</span></li> : renderData.map((node, index) => {
+          loadingState === 'empty' ? <li><span className='hi-select-tree--empty'>empty</span></li> : renderData.map((node, index) => {
             const children = getChildrenNodes(node, data)
             const textCls = classNames(
               'hi-breadtree__text',
@@ -131,16 +134,14 @@ const NavTree = ({
                     : <span
                       className={textCls}
                       onClick={() => {
-                        console.log(111, node.isLeaf, autoExpand)
-                        node.isLeaf && onSelected(node)
-                        autoExpand && onExpand(node, children)
+                        onNodeClick(node, children)
                       }}
                     >
                       {node.title}
                     </span>
                 }
                 {
-                  (children.length > 0 || !node.isLeaf) && <Icon name={'right'} onClick={() => onExpand(node, children)} />
+                  (children.length > 0 || !node.isLeaf) && <Icon name={'right'} onClick={() => onNodeClick(node, children)} />
                 }
               </li>
             )

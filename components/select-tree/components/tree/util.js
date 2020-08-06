@@ -355,11 +355,9 @@ export const clearReturnData = (arg) => {
       delete node.pId
       return node
     })
-    console.log('多选', arg)
   } else {
     delete arg.ancestors
     delete arg.pId
-    console.log('单选', arg)
   }
   return arg
 }

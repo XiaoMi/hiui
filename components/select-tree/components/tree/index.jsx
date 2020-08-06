@@ -7,7 +7,7 @@ import {
   getRootNodes
 } from './util'
 
-const PREFIX = 'select-tree'
+const PREFIX = 'hi-select-tree'
 
 const Tree = ({
   data,
@@ -48,7 +48,7 @@ const Tree = ({
           nodeDataState === 'loading' && <Loading size='small' />
         }
         {
-          nodeDataState === 'empty' && <span className='hi-select-tree--empty-text'>empty</span>
+          nodeDataState === 'empty' && <span className='hi-select-tree--empty'>empty</span>
         }
         {nodeDataState === 'normal' && <TreeNode data={getRootNodes(data)} flttenData={data} />}
       </div>

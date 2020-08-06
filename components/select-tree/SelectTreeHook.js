@@ -66,14 +66,14 @@ const SelectTree = ({
   const clearSearchEvent = useCallback(() => {
     setSearchValue('')
     searchTreeNode('')
-  }, [])
+  }, [flattenData])
 
   // 搜索框的值改变时的事件
   const changeEvents = useCallback((e) => {
     const val = e.target.value
     setSearchValue(val)
     searchTreeNode(val)
-  }, [])
+  }, [flattenData])
   // 根据传入的原始数据解析为拉平数据及改装数据
   useEffect(() => {
     setStatus()
@@ -117,32 +117,29 @@ const SelectTree = ({
     if (selectedItemsRef.current) {
       const sref = selectedItemsRef.current
       // 多选超过一行时以数字显示
-      const itemsRect = sref.getBoundingClientRect()
-      let width = 0
+      const referenceEls = sref.querySelectorAll('.hi-selecttree__selected--hidden span')
+      const wrapperWidth = sref.getBoundingClientRect()
+      let _width = 0
       let num = 0
-      const items = sref.querySelectorAll('.hi-select__input--item')
-      for (const item of items) {
-        const itemRect = item.getBoundingClientRect()
-        width += itemRect.width
-        if (width + 16 > itemsRect.width) {
+      for (const el of referenceEls) {
+        const elRect = el.getBoundingClientRect()
+        _width += elRect.width
+        // 16 -- '+1' width
+        if (_width + 16 > wrapperWidth.width) {
           break
-        } else {
-          num++
         }
+        num++
       }
       setShowCount(num)
     }
-  }, [showCount])
-
-  useEffect(() => {
-    setShowCount(selectedItems.length)
   }, [selectedItems])
 
   // 过滤方法
-  const searchTreeNode = useCallback((val) => {
+  const searchTreeNode = (val) => {
     let matchNodes = []
+    const _data = _.cloneDeep(flattenData)
     if (searchMode === 'highlight') {
-      const filterArr = flattenData.map(node => {
+      const filterArr = _data.map(node => {
         const reg = new RegExp(val, 'gi')
         const str = `<span style="color: #428ef5">${val}</span>`
         if (reg.test(node.title)) {
@@ -171,8 +168,11 @@ const SelectTree = ({
       setExpandIds(matchNodesSet)
       setFlattenData(filterData)
     }
-  })
+  }
 
+  /**
+   * Clear button Event
+   */
   const handleClear = useCallback(() => {
     setSelectedItems([])
     setExpandIds([])
@@ -182,6 +182,9 @@ const SelectTree = ({
     })
   }, [])
 
+  /**
+   * set Pull Data status
+   */
   const setStatus = useCallback(() => {
     if (data.length === 0) {
       setNodeDataState(dataSource ? 'loading' : 'empty')
@@ -189,7 +192,11 @@ const SelectTree = ({
       setNodeDataState('normal')
     }
   }, [data])
-  const loadNodes = (id) => {
+  /**
+   * Remote load Data
+   * @param {*} id click node's id
+   */
+  const loadNodes = useCallback((id) => {
     const _dataSource = typeof dataSource === 'function' ? dataSource(id || '') : dataSource
     return HiRequest({
       ..._dataSource
@@ -202,7 +209,7 @@ const SelectTree = ({
       })
       return nArr
     })
-  }
+  }, [])
   /**
   * 多选模式下复选框事件
   * @param {*} checked 是否被选中
@@ -221,9 +228,6 @@ const SelectTree = ({
       checked: result.checked,
       semiChecked: result.semiChecked
     })
-    console.log('flattenData', flattenData)
-    // const _selectedItems = parseSelectedItems(result, nodeEntries, showCheckedMode, flattenData)
-    // setSelectedItems(_selectedItems)
     let checkedArr = []
     if (result.checked.length > 0) {
       checkedArr = result.checked.map(id => {
@@ -254,6 +258,7 @@ const SelectTree = ({
       return
     }
     if (state) {
+      console.log('remote load')
       loadNodes(node.id).then((res) => {
         if (res.length > 0) {
           setFlattenData(flattenData.concat(res))
@@ -265,15 +270,19 @@ const SelectTree = ({
     }
   }
 
+  /**
+   * Node selected Event
+   */
   const selectedEvents = useCallback((node) => {
-    console.log('selectedEvents')
     setSelectedItems([node])
     onChange(clearReturnData(node))
     setShow(false)
   }, [])
 
+  /**
+   * Input 点击事件
+   */
   const onTrigger = () => {
-    console.log(1, flattenData, defaultLoadData, data, dataSource, show)
     if (
       flattenData.length === 0 &&
       defaultLoadData &&
@@ -281,10 +290,10 @@ const SelectTree = ({
       !show
     ) {
       // data 为空 且 存在 dataSource 时，默认进行首次数据加载.defaultLoadData不暴露
+      console.log('remote loading')
       setNodeDataState('loading')
       loadNodes()
         .then((res) => {
-          console.log(3, res)
           if (res.length === 0) {
             setNodeDataState('empty')
             return
@@ -301,13 +310,12 @@ const SelectTree = ({
   }
   const searchable = searchMode === 'filter' || searchMode === 'highlight'
   return (
-    <div className='hi-select-tree'>
+    <div>
       <Trigger
         inputRef={inputRef}
         selectedItemsRef={selectedItemsRef}
         type={type}
         showCount={showCount}
-        flattenData={flattenData}
         selectedItems={selectedItems}
         clearable={clearable}
         show={show}
@@ -319,17 +327,18 @@ const SelectTree = ({
         <Popper
           show={show}
           attachEle={inputRef.current}
-          className={`hi-select-tree__popper ${data.length === 0 && dataSource ? 'hi-select-tree__popper--loading' : ''}`}
+          width={false}
+          className={`hi-selecttree__popper ${data.length === 0 && dataSource ? 'hi-selecttree__popper--loading' : ''}`}
           onClickOutside={() => setShow(false)}
         >
-          <div className={`hi-select-tree ${searchable ? 'hi-select-tree--hassearch' : ''}`}>
+          <div className={`hi-selecttree__root ${searchable ? 'hi-selecttree--hassearch' : ''}`}>
             {
-              searchable && (
-                <div className='hi-select-tree__searchbar-wrapper'>
-                  <div className='hi-select-tree__searchbar-inner'>
+              searchable && mode !== 'breadcrumb' && (
+                <div className='hi-selecttree__searchbar-wrapper'>
+                  <div className='hi-selecttree__searchbar-inner'>
                     <Icon name='search' />
                     <input
-                      className='hi-select-tree__searchinput'
+                      className='hi-selecttree__searchinput'
                       placeholder={'搜索'}
                       clearable='true'
                       value={searchValue}

@@ -48,18 +48,21 @@ const TreeNode = ({ data, flttenData }) => {
           onCheckboxChange(e.target.checked, node, { checked, semiChecked })
         }}
       >
-        {node.title}
+        <span
+          dangerouslySetInnerHTML={{__html: node._title || node.title}}
+        />
       </Checkbox>
     )
   }, [checkedNodes])
 
   const renderTitle = useCallback((node, _selectedId) => {
     const { id, title, _title } = node
+    console.log(node)
     return (
       <div
         ref={treeNodeRef}
-        className={Classnames('tree-node__title', {
-          'tree-node__title--selected': selectedItems.filter(s => s.id === id).length > 0
+        className={Classnames('hi-select-tree__title', {
+          'hi-select-tree__title--selected': selectedItems.filter(s => s.id === id).length > 0
         })}
         onClick={() => {
           onClick(node)
@@ -69,14 +72,14 @@ const TreeNode = ({ data, flttenData }) => {
     )
   }, [])
   return (
-    <ul >
+    <ul className='hi-select-tree__nodes'>
       {
         data.map((node, index) => {
           const childrenNodes = getChildrenNodes(node, flttenData)
           const expand = expandIds.includes(node.id)
           return <React.Fragment key={index}>
-            <li className='tree-node'>
-              <div className='tree-node__self'>
+            <li className='hi-select-tree__node'>
+              <div className='hi-select-tree__node--self'>
                 {(childrenNodes.length || isRemoteLoadData) && !node.isLeaf
                   ? <Switcher expanded={expand} node={node} onExpandEvent={onExpandEvent} />
                   : renderIndent()}
@@ -84,7 +87,7 @@ const TreeNode = ({ data, flttenData }) => {
               </div>
             </li>
             {
-              childrenNodes.length > 0 && expand && <li className='tree-node'><TreeNode data={childrenNodes} flttenData={flttenData} /></li>
+              childrenNodes.length > 0 && expand && <li className='hi-select-tree__node'><TreeNode data={childrenNodes} flttenData={flttenData} /></li>
             }
           </React.Fragment>
         })
