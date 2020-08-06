@@ -72,7 +72,8 @@ export default {
   },
   cascader: {
     placeholder: '请选择',
-    noFoundTip: '无匹配数据'
+    noFoundTip: '无匹配数据',
+    emptyContent: '暂无数据'
   },
   select: {
     placeholder: '请选择',
