@@ -31,9 +31,9 @@ export default {
     'group-form': {
       form: components['form'],
       input: components['input'],
+      search: components['search'],
       counter: components['counter'],
       select: components['select'],
-      search: components['search'],
       cascader: components['cascader'],
       radio: components['radio'],
       filter: components['filter'],
