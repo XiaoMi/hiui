@@ -362,6 +362,54 @@ export const outlined = [
   {
     name: 'woman',
     text: '女性'
+  },
+  {
+    name: 'file-excel',
+    text: 'Excel'
+  },
+  {
+    name: 'file-exe',
+    text: 'Exe'
+  },
+  {
+    name: 'file-jpg',
+    text: 'JPG'
+  },
+  {
+    name: 'file-keynote',
+    text: 'Keynote'
+  },
+  {
+    name: 'file-music',
+    text: '音乐文件'
+  },
+  {
+    name: 'file-pdf',
+    text: 'PDF'
+  },
+  {
+    name: 'file-ppt',
+    text: 'PPT'
+  },
+  {
+    name: 'file-question',
+    text: '未知文件'
+  },
+  {
+    name: 'file-txt',
+    text: 'Txt'
+  },
+  {
+    name: 'file-video',
+    text: '视频文件'
+  },
+  {
+    name: 'file-word',
+    text: 'Word'
+  },
+  {
+    name: 'file-zip',
+    text: 'Zip'
   }
 ]
 
