@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import Input from '../input'
 import Button from '../button'
 import SearchDropdown from './searchDropdown'
@@ -35,11 +35,14 @@ const Search = props => {
     setDropdownShow(false)
   }
 
-  const optionsClick = (value, item) => {
-    setInputVal(value)
-    setDropdownShow(false)
-    onSearch && onSearch(value, item)
-  }
+  const optionsClick = useCallback(
+    (value, item) => {
+      setInputVal(value)
+      setDropdownShow(false)
+      onSearch && onSearch(value, item)
+    },
+    [onSearch]
+  )
 
   return (
     <div className={prefixCls} style={style}>

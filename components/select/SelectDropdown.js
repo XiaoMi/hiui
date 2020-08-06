@@ -134,22 +134,9 @@ const SelectDropdown = props => {
     },
     [onClickOption, fieldNames]
   )
-  // 渲染单个选项
-  const renderOption = (isSelected, item, index) => {
-    if (dropdownRender) {
-      return dropdownRender(item, isSelected)
-    }
-    const paddingNum = mode === 'multiple' ? 48 : 24
-    // 提高可读性
-    let width = selectInputWidth ? selectInputWidth - paddingNum : null
-    if (optionWidth) {
-      width = optionWidth - paddingNum
-    }
-    const style = {
-      width
-    }
-    // 高亮关键字
-    const hightlightKeyword = (text, uniqueKey) => {
+  // 高亮关键字
+  const hightlightKeyword = useCallback(
+    (text, uniqueKey) => {
       let _keyword = searchbarValue
       _keyword = searchbarValue.includes('[')
         ? _keyword.replace(/\[/gi, '\\[')
@@ -180,7 +167,24 @@ const SelectDropdown = props => {
       ) : (
         text
       )
+    },
+    [searchbarValue]
+  )
+  // 渲染单个选项
+  const renderOption = (isSelected, item) => {
+    if (dropdownRender) {
+      return dropdownRender(item, isSelected)
     }
+    const paddingNum = mode === 'multiple' ? 48 : 24
+    // 提高可读性
+    let width = selectInputWidth ? selectInputWidth - paddingNum : null
+    if (optionWidth) {
+      width = optionWidth - paddingNum
+    }
+    const style = {
+      width
+    }
+
     return (
       <React.Fragment>
         {mode === 'multiple' && (
