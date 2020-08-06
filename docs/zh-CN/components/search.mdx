@@ -1,0 +1,54 @@
+# Search 搜索
+
+可以通过关键字从海量数据条目中检索到匹配数据，较大提升数据检索能力
+
+## 何时使用
+
+- 全栈信息检索
+- 表格数据、信息列表
+
+## 基础用法
+
+import DemoState from '../../demo/search/section-base.jsx'
+
+<DemoState />
+
+## 关键词联想法
+
+import DemoRelation from '../../demo/search/section-relation.jsx'
+
+<DemoRelation />
+
+## 类别用法
+
+import DemoClassic from '../../demo/search/section-classic.jsx'
+
+<DemoClassic />
+
+## Props
+
+| 参数        | 说明                                 | 类型                                        | 可选值        | 默认值 |
+| ----------- | ------------------------------------ | ------------------------------------------- | ------------- | ------ |
+| prepend     | 输入框前置内容                       | string \| ReactNode                         | -             | -      |
+| disabled    | 是否禁用                             | boolean                                     | true \| false | false  |
+| loading     | 加载中                               | boolean                                     | true \| false | false  |
+| placeholder | 输入框占位符                         | string \| ReactNode                         | -             | -      |
+| data        | 搜索结果的数据                       | `Array<DataItem>`                           | -             | -      |
+| append      | 是否显示后置按钮                     | boolean                                     | true\|false   | true   |
+| onChange    | 值改变时的回调                       | (e: Event) => void                          | -             | -      |
+| onSearch    | 当点击搜索按钮时候或者点击下拉选项时 | (inputVal: string, item ?:DataItem) => void | -             | -      |
+
+## DataItem
+
+| 参数     | 说明                                               | 类型                | 可选值 | 默认值 |
+| -------- | -------------------------------------------------- | ------------------- | ------ | ------ |
+| id       | 主键                                               | string \| number    | -      | -      |
+| title    | 显示的内容；如果存在 children;就是这个类别的 title | string \| ReactNode | -      | -      |
+| children | 分组内容                                           | `Array<Item>`       | -      | -      |
+
+## Item
+
+| 参数  | 说明              | 类型                | 可选值 | 默认值 |
+| ----- | ----------------- | ------------------- | ------ | ------ |
+| id    | 主键              | string \| number    | -      | -      |
+| title | 类别的 title 内容 | string \| ReactNode | -      | -      |

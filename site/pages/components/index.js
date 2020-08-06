@@ -1,6 +1,6 @@
 const components = {}
 const files = require.context(`../../../docs/zh-CN/components`, false, /.mdx$/)
-files.keys().forEach((key) => {
+files.keys().forEach(key => {
   let _key = key.split('/')[1].split('.')[0]
   components[_key] = files(key).default
 })
@@ -31,6 +31,7 @@ export default {
     'group-form': {
       form: components['form'],
       input: components['input'],
+      search: components['search'],
       counter: components['counter'],
       select: components['select'],
       cascader: components['cascader'],
