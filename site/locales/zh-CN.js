@@ -7,6 +7,7 @@ module.exports = {
     palette: '配色主题',
     changelog: '更新日志',
     'group-basic': '通用',
+    new: '重点更新',
     'group-navgation': '导航',
     'group-form': '数据录入',
     'group-data': '数据展示',

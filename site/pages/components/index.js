@@ -1,6 +1,6 @@
 const components = {}
 const files = require.context(`../../../docs/zh-CN/components`, false, /.mdx$/)
-files.keys().forEach(key => {
+files.keys().forEach((key) => {
   let _key = key.split('/')[1].split('.')[0]
   components[_key] = files(key).default
 })
@@ -14,6 +14,12 @@ export default {
     changelog: components['changelog']
   },
   components: {
+    new: {
+      slider: components['slider'],
+      list: components['list'],
+      filter: components['filter'],
+      table: components['table']
+    },
     'group-basic': {
       grid: components['grid'],
       typography: components['typography'],
