@@ -71,10 +71,6 @@ export const outlined = [
 
 export const filled = [
   {
-    name: 'check',
-    text: '通过'
-  },
-  {
     name: 'check-circle',
     text: '通过-圆形'
   },
@@ -83,52 +79,24 @@ export const filled = [
     text: '通过-方形'
   },
   {
-    name: 'close',
-    text: '关闭'
-  },
-  {
     name: 'close-circle',
     text: '关闭-圆形'
-  },
-  {
-    name: 'exclamation',
-    text: '感叹'
   },
   {
     name: 'exclamation-circle',
     text: '感叹-圆形'
   },
   {
-    name: 'info',
-    text: '信息'
-  },
-  {
     name: 'info-circle',
     text: '信息-圆形'
-  },
-  {
-    name: 'minus',
-    text: '减号'
   },
   {
     name: 'minus-square',
     text: '减号-方形'
   },
   {
-    name: 'plus',
-    text: '加号'
-  },
-  {
     name: 'plus-square',
     text: '加号-方形'
-  },
-  {
-    name: 'question',
-    text: '问号'
-  },
-  {
-    name: 'question-circle',
-    text: '问号-圆形'
   },
   {
     name: 'warning',

@@ -5,7 +5,7 @@ import './iconfont.js'
 const Icon = ({ name, filled = false, style = {}, onClick }) => {
   return (
     <svg
-      class='hi-icon'
+      className='hi-icon'
       aria-hidden='true'
       onClick={(e) => {
         onClick && onClick(e)

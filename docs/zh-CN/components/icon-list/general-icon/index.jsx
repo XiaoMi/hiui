@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Icon from '../../../../../components/icon'
 import { outlined, filled } from './config'
 import Radio from '../../../../../components/radio'
 
 const General = () => {
+  const [currentType, setCurrentType] = useState(0)
+  const list = currentType === 0 ? outlined : filled
   return (
     <div className='hi-icon-list'>
       <h3>通用</h3>
@@ -20,14 +22,14 @@ const General = () => {
             }
           ]}
           type='button'
-          defaultValue={0}
-          onChange={(data) => console.log(data)}
+          value={currentType}
+          onChange={(v) => setCurrentType(v)}
         />
       </div>
       <ul className='hi-icon-list'>
-        {outlined.map((icon, idx) => (
+        {list.map((icon, idx) => (
           <li key={idx}>
-            <Icon name={icon.name} />
+            <Icon name={icon.name} filled={currentType === 1} />
             <span className='hi-icon-name'>{icon.name}</span>
             <span className='hi-icon-cname'>{icon.text}</span>
           </li>
