@@ -81,6 +81,11 @@ export default {
     checkAll: '全选',
     justSelected: '仅看已选'
   },
+  search: {
+    searchEmptyResult: '未找到搜索结果',
+    searchEmptyRecord: '无搜索记录',
+    searchRecord: '搜索历史'
+  },
   transfer: {
     checkAll: '全选',
     items: '项',

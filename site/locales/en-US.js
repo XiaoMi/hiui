@@ -36,6 +36,7 @@ module.exports = {
     navMenu: 'NavMenu',
     menu: 'Menu',
     select: 'Select',
+    search: 'Search',
     cascader: 'Cascader',
     radio: 'Radio',
     checkbox: 'Checkbox',

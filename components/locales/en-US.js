@@ -80,6 +80,11 @@ export default {
     checkAll: 'Check all',
     justSelected: 'Just Selected'
   },
+  search: {
+    searchEmptyResult: 'No serach results',
+    searchEmptyRecord: 'No serach record',
+    searchRecord: 'Serach record'
+  },
   transfer: {
     checkAll: 'Check all',
     items: 'items',
