@@ -1,1 +1,229 @@
-@import './Table.scss';
+@import './table.scss';
+@import './reset.scss';
+
+.#{$table}__col-menu {
+  width: 124px;
+  font-size: 14px;
+  background: #fff;
+  box-shadow: 0px 2px 8px 0px rgba(56, 62, 71, 0.1);
+  border-radius: 4px;
+  border: 1px solid rgba(231, 231, 231, 1);
+  padding: 7px 0;
+
+  &__item {
+    cursor: pointer;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 12px;
+    &:hover {
+      color: #4284f5;
+    }
+    &.col-menu__item--highlight {
+      color: #4284f5;
+    }
+    .hi-icon {
+      font-size: 16px;
+    }
+  }
+}
+.#{$table} {
+  .hi-checkbox__input:not(.hi-checkbox__input--checked) {
+    background: #fff;
+  }
+  .hi-checkbox {
+    height: auto;
+  }
+  th {
+    font-weight: 500;
+    white-space: normal;
+  }
+  td {
+    white-space: normal;
+  }
+  &__pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    &--left {
+      justify-content: flex-start;
+    }
+    &--middle {
+      justify-content: center;
+    }
+  }
+  &--small {
+    table {
+      tr {
+        font-size: $smallFontSize !important;
+        & > td {
+          padding: $smallPadding !important;
+        }
+      }
+      thead {
+        & > tr > th {
+          padding: $smallPadding !important;
+        }
+      }
+    }
+  }
+  &--mini {
+    table {
+      tr {
+        font-size: $miniFontSize !important;
+        & > td {
+          padding: $miniPadding !important;
+        }
+      }
+      thead {
+        & > tr > th {
+          padding: $miniPadding !important;
+        }
+      }
+    }
+  }
+  &--large {
+    table {
+      tr {
+        font-size: $miniFontSize !important;
+        & > td {
+          padding: $largePadding !important;
+        }
+      }
+      thead {
+        & > tr > th {
+          padding: $largePadding !important;
+        }
+      }
+    }
+  }
+  &--striped {
+    table {
+      tr:nth-child(2n) {
+        background: $secondaryColor;
+      }
+    }
+  }
+  &--bordered {
+    table {
+      thead {
+        & > tr > th {
+          border-right: 1px solid#e6e7e8;
+        }
+      }
+      td {
+        border-right: 1px solid#e7e7e7;
+      }
+    }
+    .#{$table}_header {
+      > table {
+        border-top: 1px solid#e6e7e8;
+        border-left: 1px solid#e6e7e8;
+      }
+    }
+  }
+  &__container--fixed-left {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    border-right: 2px solid #e6e7e8;
+    overflow: hidden;
+  }
+  &__container--fixed-right {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    border-left: 2px solid #e6e7e8;
+    overflow: hidden;
+  }
+  &__header {
+    overflow-x: scroll;
+    position: relative;
+
+    > table {
+      position: relative;
+    }
+  }
+  &__header--sticky {
+    position: fixed;
+    top: 0;
+    overflow-x: hidden;
+  }
+  table {
+    table-layout: fixed;
+    thead {
+      & > tr > th {
+        background: #fbfbfb;
+        color: #999999;
+        padding: 15px;
+        border-bottom: 1px solid#e6e7e8;
+        box-sizing: border-box;
+      }
+    }
+
+    tr {
+      min-height: 52px;
+
+      &:hover {
+        background: #eef5ff;
+      }
+      & > td {
+        color: #333333;
+        padding: 15px;
+        border-bottom: 1px solid #e7e7e7;
+        box-sizing: border-box;
+      }
+    }
+
+    .#{$table}__row {
+      .#{$table}__indent {
+        display: inline-block;
+        width: 14px;
+        height: 100%;
+      }
+      &--expanded {
+        background: #fbfbfb;
+        & > td {
+          color: #666666;
+        }
+      }
+      &.#{$table}__row--error {
+        & > td {
+          color: #f44141;
+        }
+      }
+      &.#{$table}__row--highlight {
+        & > td {
+          background: #eef5ff;
+        }
+      }
+      &.#{$table}__row--total {
+        & > td {
+          background-color: rgba(251, 251, 251, 1);
+        }
+      }
+      &.#{$table}__row--avg {
+        & > td {
+          background-color: rgba(251, 251, 251, 1);
+        }
+      }
+      & > .#{$table}__col--highlight {
+        background: #eef5ff;
+      }
+    }
+  }
+}
+.react-resizable {
+  position: relative;
+  background-clip: padding-box;
+}
+
+.react-resizable-handle {
+  position: absolute;
+  width: 10px;
+  height: 100%;
+  bottom: 0;
+  right: -5px;
+  cursor: col-resize;
+  z-index: 1;
+}
