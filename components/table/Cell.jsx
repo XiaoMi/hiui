@@ -44,7 +44,7 @@ const Cell = ({
         (rowData.children ? (
           <Icon
             style={{ marginRight: 4, cursor: 'pointer' }}
-            name={expandedTree ? 'open' : 'packup'}
+            name={expandedTree ? 'caret-down' : 'caret-right'}
             onClick={() => {
               const _expandedTreeRows = [...expandedTreeRows]
               if (_expandedTreeRows.includes(rowData.key)) {
@@ -58,7 +58,7 @@ const Cell = ({
             }}
           />
         ) : (
-          isTree && <span style={{ width: 18, display: 'inline-block' }} key={Math.random()} />
+          isTree && <span style={{ width: 14, display: 'inline-block' }} key={Math.random()} />
         ))}
 
       {(isMergeCell && cellContent.children) || cellContent}
