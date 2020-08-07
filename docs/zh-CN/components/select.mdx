@@ -85,9 +85,9 @@ import DemoSelectsearchbypinyin from '../../demo/select/section-searchbypinyin'
 | onChange            | 改变选项时触发函数，回调值为当前所有选中项的 id 和变更项                                                 | (selectedIds:stirng[], changedItem: DataItem) => void | -                                                        | 无内容                                                                |
 | render              | 自定义下拉菜单渲染函数，回调值为选项数据和是否被选中                                                     | (item: DataItem, selected: boolean) => ReactNode      | -                                                        | 无内容                                                                |
 | overlayClassName    | 下拉根元素的类名称                                                                                       | string                                                | -                                                        | -                                                                     |
-| getOverlayContainer | 菜单渲染父节点。默认渲染到 body 上，如果你遇到菜单滚动定位问题，试试修改为滚动的区域，并相对其定位       | function(triggerNode)                                 | -                                                        | () => document.body                                                   |
+| setOverlayContainer | 菜单渲染父节点。默认渲染到 body 上，如果你遇到菜单滚动定位问题，试试修改为滚动的区域，并相对其定位       | function(triggerNode)                                 | -                                                        | () => document.body                                                   |
 
-> 注意，如果发现下拉菜单跟随页面滚动，或者需要在其他弹层中触发 Select，请尝试使用 getOverlayContainer={triggerNode => triggerNode.parentElement} 将下拉弹层渲染节点固定在触发器的父元素中。
+> 注意，如果发现下拉菜单跟随页面滚动，或者需要在其他弹层中触发 Select，请尝试使用 setOverlayContainer={triggerNode => triggerNode.parentElement} 将下拉弹层渲染节点固定在触发器的父元素中。
 
 ## Type
 

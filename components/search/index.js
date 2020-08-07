@@ -12,7 +12,7 @@ const Search = props => {
   const {
     onChange,
     onSearch,
-    style = { width: 200 },
+    style,
     placeholder,
     prepend,
     disabled,
@@ -21,7 +21,7 @@ const Search = props => {
     loading,
     localeDatas,
     overlayClassName,
-    append = true // 是否显示后置按钮
+    append
   } = props
 
   const [dropdownShow, setDropdownShow] = useState(false)
@@ -56,6 +56,12 @@ const Search = props => {
           placeholder={placeholder}
           clearable='true'
           prepend={prepend}
+          onKeyUp={e => {
+            const evt = window.event || e
+            if (evt.keyCode === 13) {
+              onSearch && onSearch(inputVal)
+            }
+          }}
           onFocus={() => {
             data && data.length > 0 && setDropdownShow(true)
           }}
@@ -66,7 +72,18 @@ const Search = props => {
             onChange && onChange(value)
           }}
         />
-        {append && (
+        {append ? (
+          <span
+            className={disabled ? 'disabled' : ''}
+            onClick={e => {
+              e.preventDefault()
+              setDropdownShow(true)
+              onSearch && onSearch(inputVal)
+            }}
+          >
+            {append}
+          </span>
+        ) : (
           <Button
             type='default'
             icon='search'
@@ -102,7 +119,6 @@ const Search = props => {
 
 Search.defaultProps = {
   style: { width: 200 },
-  append: true,
   loading: false
 }
 export default Provider(Search)

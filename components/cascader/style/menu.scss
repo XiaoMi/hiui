@@ -1,5 +1,5 @@
 @import '@hi-ui/core-css/index.scss';
-$AnimationClassName :'hi-cascader_transition' !default;
+$AnimationClassName: 'hi-cascader_transition' !default;
 
 .hi-cascader__popper {
   display: flex;
@@ -120,7 +120,7 @@ $AnimationClassName :'hi-cascader_transition' !default;
 @keyframes transitionStyle {
   from {
     transform: scale(0.9);
-    transform: translate(-4%, -1%);
+    transform: translate(-6%);
     opacity: 0;
     background-color: none;
   }

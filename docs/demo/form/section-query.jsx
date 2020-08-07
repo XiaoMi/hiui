@@ -49,13 +49,17 @@ class Demo extends React.Component {
     const Row = Grid.Row
     const Col = Grid.Col
     return (
-      <div style={{width:'860px'}}>
-        <Form placement='horizontal' labelPlacement='right' ref={this.form}>
+      <div style={{width:'880px'}}>
+        <Form 
+          labelWidth='80'
+          placement='horizontal' 
+          labelPlacement='right' 
+          ref={this.form}>
           {
             this.renderField()
           }
         </Form>
-        <div style = {{textAlign: 'right', paddingRight: '34px'}}>
+        <div style = {{textAlign: 'right', paddingRight: '10px'}}>
           <Button type="primary"  onClick={()=>{
             console.log('填充表单')
             this.form.current.validate((values,errors)=>{

@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import { format, formatValue, getAttrs, formatAmount, filterObjProps } from './util'
+import {
+  format,
+  formatValue,
+  getAttrs,
+  formatAmount,
+  filterObjProps
+} from './util'
 
 /**
  * 自定义属性全小写；原声属性驼峰法
@@ -34,7 +40,9 @@ class Input extends Component {
     const appendNode = typeof append !== 'string' && append
     this.state = {
       value:
-        type === 'string' || type === 'number' ? format(valueSource, this.props.type) : '',
+        type === 'string' || type === 'number'
+          ? format(valueSource, this.props.type)
+          : '',
       valueTrue: prefix + valueSource + suffix,
       hover: false,
       active: false,
@@ -54,7 +62,10 @@ class Input extends Component {
         })
       }
     }
-    if (nextProps.prepend !== this.state.prepend || nextProps.append !== this.state.append) {
+    if (
+      nextProps.prepend !== this.state.prepend ||
+      nextProps.append !== this.state.append
+    ) {
       const { prepend, append } = nextProps
       const prefix = typeof prepend === 'string' ? prepend : ''
       const suffix = typeof append === 'string' ? append : ''
@@ -79,13 +90,32 @@ class Input extends Component {
   renderText () {
     let { hover, active, value } = this.state
     // clearableTrigger 为内部预留，主要表示清除按钮的触发形态，类型分为 'hover' 和 ‘always’
-    let { disabled, type, id, placeholder, clearable, clearableTrigger = 'hover' } = this.props
+    let {
+      disabled,
+      type,
+      id,
+      placeholder,
+      clearable,
+      clearableTrigger = 'hover'
+    } = this.props
     let { prefix, suffix, prepend, append } = this.state
     const noClear = ['textarea']
     let prefixId = id ? id + '_prefix' : ''
     let suffixId = id ? id + '_suffix' : ''
     const { defaultValue, ...attrs } = this.attrs
-    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'suffixicon', 'suffix', 'prepend', 'prefixicon', 'prefix', 'localeDatas', 'append', 'innerRef', 'clearable'])
+    const filterAttrs = filterObjProps(attrs, [
+      'locale',
+      'theme',
+      'suffixicon',
+      'suffix',
+      'prepend',
+      'prefixicon',
+      'prefix',
+      'localeDatas',
+      'append',
+      'innerRef',
+      'clearable'
+    ])
     return (
       <div
         className={classNames('hi-input__out', {
@@ -95,10 +125,18 @@ class Input extends Component {
       >
         {// 前置元素
           prepend && <span className='hi-input__prepend'>{prepend}</span>}
-        <div className={`hi-input__inner${active ? ' active' : ''}${disabled ? ' disabled' : ''}`}>
+        <div
+          className={`hi-input__inner${active ? ' active' : ''}${
+            disabled ? ' disabled' : ''
+          }`}
+        >
           {// 前缀
             prefix && (
-              <span id={prefixId} className='hi-input__prefix' data-value={prefix}>
+              <span
+                id={prefixId}
+                className='hi-input__prefix'
+                data-value={prefix}
+              >
                 {prefix}
               </span>
             )}
@@ -128,7 +166,8 @@ class Input extends Component {
 
               this.props.onChange && this.props.onChange(e, valueTrue)
 
-              this.props.value === undefined && this.setState({ value, valueTrue })
+              this.props.value === undefined &&
+                this.setState({ value, valueTrue })
             }}
             onBlur={e => {
               e.persist()
@@ -177,14 +216,25 @@ class Input extends Component {
             noClear.indexOf(type) === -1 &&
             prefix === '' &&
             suffix === '' &&
-            (value !== '' && clearable) && (
+            value !== '' &&
+            clearable && (
               <span
-                className={`hi-input__fix-box ${(hover || clearableTrigger === 'always') && !disabled ? '' : 'invisible'}`}
+                className={`hi-input__fix-box ${
+                  (hover || clearableTrigger === 'always') && !disabled
+                    ? ''
+                    : 'invisible'
+                }`}
                 onClick={() => {
                   this._Input.focus()
 
-                  const prefix = typeof this.props.prefix === 'undefined' ? '' : this.props.prefix
-                  const suffix = typeof this.props.suffix === 'undefined' ? '' : this.props.suffix
+                  const prefix =
+                    typeof this.props.prefix === 'undefined'
+                      ? ''
+                      : this.props.prefix
+                  const suffix =
+                    typeof this.props.suffix === 'undefined'
+                      ? ''
+                      : this.props.suffix
                   const valueTrue = prefix + '' + suffix
 
                   this.setState({ value: '', valueTrue: valueTrue }, () => {
@@ -195,12 +245,18 @@ class Input extends Component {
                   })
                 }}
               >
-                <i className={`hi-input__clear hi-input__suffix__icon hi-icon icon-close-circle`} />
+                <i
+                  className={`hi-input__clear hi-input__suffix__icon hi-icon icon-close-circle`}
+                />
               </span>
             )}
           {// 后缀
             suffix && (
-              <span id={suffixId} className='hi-input__suffix' data-value={suffix}>
+              <span
+                id={suffixId}
+                className='hi-input__suffix'
+                data-value={suffix}
+              >
                 {suffix}
               </span>
             )}
@@ -218,11 +274,25 @@ class Input extends Component {
     let { active } = this.state
     let { disabled, theme } = this.props
     const { defaultValue, ...attrs } = this.attrs
-    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'suffixicon', 'suffix', 'prepend', 'prefixicon', 'prefix', 'localeDatas', 'append', 'innerRef'])
+    const filterAttrs = filterObjProps(attrs, [
+      'locale',
+      'theme',
+      'suffixicon',
+      'suffix',
+      'prepend',
+      'prefixicon',
+      'prefix',
+      'localeDatas',
+      'append',
+      'innerRef',
+      'clearable'
+    ])
 
     return (
       <textarea
-        className={`hi-input theme__${theme} ${active ? 'active' : ''} ${disabled ? 'disabled' : ''}`}
+        className={`hi-input theme__${theme} ${active ? 'active' : ''} ${
+          disabled ? 'disabled' : ''
+        }`}
         style={this.props.style}
         autoComplete='off'
         value={this.state.value}
@@ -232,7 +302,8 @@ class Input extends Component {
           e.persist()
           let valueTrue = e.target.value
           this.props.onChange && this.props.onChange(e, valueTrue)
-          this.props.value === undefined && this.setState({ value: valueTrue, valueTrue })
+          this.props.value === undefined &&
+            this.setState({ value: valueTrue, valueTrue })
         }}
         onBlur={e => {
           e.persist()
@@ -288,12 +359,14 @@ class Input extends Component {
     const { type } = this.attrs
 
     const { size, id, className, required, theme } = this.props
-    return type === 'textarea' ? this.renderTextarea() : (
+    return type === 'textarea' ? (
+      this.renderTextarea()
+    ) : (
       <div
         id={id}
-        className={`hi-input theme__${theme} ${className || ''} ${type}${size ? ' hi-input_' + size : ''}${
-          required ? ' required' : ''
-        }`}
+        className={`hi-input theme__${theme} ${className || ''} ${type}${
+          size ? ' hi-input_' + size : ''
+        }${required ? ' required' : ''}`}
         style={this.props.style}
         data-value={this.state.valueTrue}
         onClick={e => {
@@ -311,7 +384,8 @@ class Input extends Component {
         }}
       >
         {this.renderText()}
-      </div>)
+      </div>
+    )
   }
 }
 

@@ -112,19 +112,20 @@ class Demo extends React.Component {
                         >
                           <Input placeholder='请输入' style={{width:'200px'}}/>
                         </FormItem>
-                        <Icon
-                          name='close'
-                          style={{
-                            color: '#999',
-                            fontSize: '16px',
-                            cursor: 'pointer',
-                            height:'18px',
-                            marginTop:'4px',
-                          }}
-                          onClick={() => {
-                            remove(field)
-                          }}
-                        />
+                        <span style={{paddingTop:'6px'}}>
+                          <Icon
+                            name='close'
+                            style={{
+                              color: '#999',
+                              fontSize: '16px',
+                              cursor: 'pointer',
+                            }}
+                            onClick={() => {
+                              remove(field)
+                            }}
+                         />
+                        </span>
+                       
                       </div>
                     ))}
                     <div style={{ 

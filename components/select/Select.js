@@ -44,7 +44,7 @@ const InternalSelect = props => {
     searchable: propsSearchable,
     fieldNames,
     overlayClassName,
-    getPopupContainer
+    setOverlayContainer
   } = props
   const selectInputContainer = useRef()
   const [dropdownItems, setDropdownItems] = useState(data)
@@ -442,8 +442,8 @@ const InternalSelect = props => {
         zIndex={1050}
         topGap={5}
         leftGap={0}
-        getPopupContainer={getPopupContainer}
         overlayClassName={overlayClassName}
+        setOverlayContainer={setOverlayContainer}
         // 是否防止溢出功能   暂时不开放
         preventOverflow={preventOverflow}
         // 自定义options的方向

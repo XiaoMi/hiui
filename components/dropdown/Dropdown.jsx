@@ -159,7 +159,6 @@ class Dropdown extends React.Component {
 }
 
 Dropdown.propTypes = {
-  placement: PropTypes.oneOf(['top-start', 'bottom-start', 'top', 'bottom']),
   trigger: PropTypes.oneOfType([
     PropTypes.oneOf(['contextmenu', 'click', 'hover']),
     PropTypes.arrayOf(PropTypes.oneOf(['contextmenu', 'click', 'hover']))
