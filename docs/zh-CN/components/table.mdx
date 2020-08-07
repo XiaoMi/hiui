@@ -10,128 +10,27 @@
 
 ## 基础用法
 
-Table 表格代码说明
-
-1. 右键菜单
-   1. 高亮
-   2. 列冻结 （需要配置 scrollX）
-   3. 隐藏列
-2. 表格 menu 菜单（控制列的显示与隐藏）
-3. 操作记忆 需要给每个表格添加 name 属性来为索引。非常重要
-
-data 属性的所有字段要加 key,columns 的每条数据需要添加加 key 属性
-
 import DemoBase from '../../demo/table/section-base.jsx'
 
 <DemoBase />
 
-## 紧凑表格
+## 列操作
 
-import DemoCompact from '../../demo/table/section-compact.jsx'
+import DemoColumn from '../../demo/table/section-column.jsx'
 
-<DemoCompact />
+<DemoColumn />
 
-## 宽松表格
-
-import DemoLoose from '../../demo/table/section-loose.jsx'
-
-<DemoLoose />
-
-## 带边框的表格
-
-import DemoBorder from '../../demo/table/section-border.jsx'
-
-<DemoBorder />
-
-## 斑马纹
-
-import DemoZebra from '../../demo/table/section-zebra.jsx'
-
-<DemoZebra />
-
-## 前端排序
-
-import DemoSort from '../../demo/table/section-sort.jsx'
-
-<DemoSort />
-
-## 多选
-
-import DemoMultiple from '../../demo/table/section-multiple.jsx'
-
-<DemoMultiple />
-
-## 表头吸顶
-
-**fixTop : 表头窗口的高度**
-
-import DemoHeader from '../../demo/table/section-header.jsx'
-
-<DemoHeader />
-
-## 表头冻结
-
-**fixTop : 表头窗口的高度**
-
-import DemoHeight from '../../demo/table/section-height.jsx'
-
-<DemoHeight />
-
-## 列冻结
-
-**被冻结的列建议传入 width 属性**
+## 行操作
 
 import DemoRow from '../../demo/table/section-row.jsx'
 
 <DemoRow />
 
-## 右键列冻结
+## 特殊表格
 
-import DemoRightHandRow from '../../demo/table/section-right-hand-row.jsx'
+import DemoSpecial from '../../demo/table/section-special.jsx'
 
-<DemoRightHandRow />
-
-## 合并单元格
-
-import DemoMerge from '../../demo/table/section-merge.jsx'
-
-<DemoMerge />
-
-## 表头分组
-
-import DemoGroup from '../../demo/table/section-group.jsx'
-
-<DemoGroup />
-
-## 扩展一行
-
-import DemoExtend from '../../demo/table/section-extend.jsx'
-
-<DemoExtend />
-
-## 前端分页
-
-import DemoPaging from '../../demo/table/section-paging.jsx'
-
-<DemoPaging />
-
-## 服务端表格
-
-import DemoServer from '../../demo/table/section-server.jsx'
-
-<DemoServer />
-
-## 操作记忆
-
-import DemoMemory from '../../demo/table/section-memory.jsx'
-
-<DemoMemory />
-
-## 高级功能
-
-import DemoAdvance from '../../demo/table/section-advance.jsx'
-
-<DemoAdvance />
+<DemoSpecial />
 
 ## Props
 
@@ -177,7 +76,7 @@ import DemoAdvance from '../../demo/table/section-advance.jsx'
 | success         | 响应解析函数                     | (res: object) => object | -               | -         |
 | error           | 请求错误回调函数                 | (err: object) => void   | -               | -         |
 | type            | 请求方法                         | string                  | 'GET' \| 'POST' | 'GET'     | - |
-| withCredentials | 跨域请求时是否携带 cookie        | boolean                 | true \| false      | false |
+| withCredentials | 跨域请求时是否携带 cookie        | boolean                 | true \| false   | false     |
 
 ## RowSelection
 
