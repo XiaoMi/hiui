@@ -116,7 +116,8 @@ class Dropdown extends React.Component {
       disabled,
       width,
       onButtonClick,
-      theme
+      theme,
+      overlayClassName
     } = this.props
     const { visible } = this.state
     const dropdownCls = classNames(
@@ -145,6 +146,7 @@ class Dropdown extends React.Component {
           data={data}
           placement={placement}
           onMouseEnter={this.handleMenuMouseEnter}
+          overlayClassName={overlayClassName}
           onMouseLeave={this.handleMenuMouseLeave}
           onChildMenuMouseEnter={this.handleChildMenuMouseEnter}
           onChildMenuMouseLeave={this.handleChildMenuMouseLeave}

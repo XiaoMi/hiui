@@ -13,7 +13,8 @@ const SearchDropdown = props => {
     searchInputContainer,
     localeDatas,
     onClickOutside,
-    loading
+    loading,
+    overlayClassName
   } = props
   const popperDropdown = useRef(null)
   const [dropdownData, setDropdownData] = useState(data)
@@ -125,6 +126,7 @@ const SearchDropdown = props => {
       show={dropdownShow}
       attachEle={searchInputContainer.current}
       onClickOutside={onClickOutside}
+      overlayClassName={overlayClassName}
       zIndex={1050}
       topGap={5}
       leftGap={0}

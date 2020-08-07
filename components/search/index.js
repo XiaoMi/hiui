@@ -20,6 +20,7 @@ const Search = props => {
     value,
     loading,
     localeDatas,
+    overlayClassName,
     append = true // 是否显示后置按钮
   } = props
 
@@ -83,6 +84,7 @@ const Search = props => {
         <SearchDropdown
           prefixCls={prefixCls}
           inputVal={inputVal}
+          overlayClassName={overlayClassName}
           optionsClick={optionsClick}
           onClickOutside={() => {
             closeDropdown()
