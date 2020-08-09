@@ -332,7 +332,7 @@ const Tabs = ({
   const getHeader = useCallback(() => {
     return <>'     '{
       canScroll && <Icon name='left' className={`${prefixCls}__scrollIcon`} onClick={() => translateLeft()} />
-    }'     '<div className={`${prefixCls}__header`}>
+    }<div className={`${prefixCls}__header`}>
 
       <div
         className={`${prefixCls}__nav contain`}
