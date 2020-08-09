@@ -29,7 +29,12 @@ class Counter extends React.Component {
 
     this.attrs = this.getAttrs(oldProps)
 
-    const { value, defaultValue, min = -1 * Infinity, max = Infinity } = this.props
+    const {
+      value,
+      defaultValue,
+      min = -1 * Infinity,
+      max = Infinity
+    } = this.props
     const finalValue = Math.min(
       Math.max(Number(value === undefined ? defaultValue : value), Number(min)),
       Number(max)
@@ -55,7 +60,16 @@ class Counter extends React.Component {
    */
   getAttrs (oldProps) {
     const attrs = {}
-    const noNeed = ['value', 'className', 'class', 'id', 'style', 'type', 'placeholder', 'disabled']
+    const noNeed = [
+      'value',
+      'className',
+      'class',
+      'id',
+      'style',
+      'type',
+      'placeholder',
+      'disabled'
+    ]
 
     for (let i in oldProps) {
       if (!(oldProps[i] instanceof Function)) {
@@ -73,7 +87,9 @@ class Counter extends React.Component {
    * @param {string} val 值
    */
   formatValue (value) {
-    return isNaN(Number(value)) ? value.toString().replace(/[^-\d]/g, '') : value
+    return isNaN(Number(value))
+      ? value.toString().replace(/[^-\d]/g, '')
+      : value
   }
 
   /**
@@ -90,7 +106,13 @@ class Counter extends React.Component {
     const { min = -1 * Infinity, max = Infinity, step, theme } = this.props
     let { valueTrue } = this.state
     const { defaultValue, ...attrs } = this.attrs
-    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'localeDatas', 'localedatas', 'innerRef'])
+    const filterAttrs = filterObjProps(attrs, [
+      'locale',
+      'theme',
+      'localeDatas',
+      'localedatas',
+      'innerRef'
+    ])
 
     let isAddDisabled = false
     let isMinusDisabled = false
@@ -106,9 +128,13 @@ class Counter extends React.Component {
       <div className={`hi-counter theme__${theme} ${className || ''}`} id={id}>
         <div className={`hi-counter-outer`}>
           <span
-            className={`hi-counter-minus hi-counter-sign ${isMinusDisabled ? 'disabled' : ''}`}
+            className={`hi-counter-minus hi-counter-sign ${
+              isMinusDisabled ? 'disabled' : ''
+            }`}
             onClick={e => {
-              let value = new Decimal(this.getInputNumber()).minus(step).valueOf()
+              let value = new Decimal(this.getInputNumber())
+                .minus(step)
+                .valueOf()
               if (isMinusDisabled) {
                 return
               }
@@ -150,7 +176,9 @@ class Counter extends React.Component {
             }}
           />
           <span
-            className={`hi-counter-plus hi-counter-sign ${isAddDisabled ? 'disabled' : ''}`}
+            className={`hi-counter-plus hi-counter-sign ${
+              isAddDisabled ? 'disabled' : ''
+            }`}
             onClick={e => {
               let value = new Decimal(valueTrue).plus(step).valueOf()
               if (isAddDisabled) {
@@ -193,7 +221,12 @@ class Counter extends React.Component {
     }
     setTimeout(() => {
       onChange &&
-        onChange(value)
+        onChange(
+          {
+            target: this._Input
+          },
+          value
+        )
     }, 0)
   }
 
@@ -206,34 +239,34 @@ class Counter extends React.Component {
   }
 
   getInputNumber () {
-    const { max = Infinity, min = 0 } = this.props
+    const { max, min } = this.props
     let value = this.valueTrue
     if (isNaN(value)) {
-      value = min
+      value = 0
     }
-    if (value - max >= 0) {
-      value = max
-    }
-    if (value - min <= 0) {
-      value = min
-    }
+    value = max && value - max >= 0 ? max : value
+    value = min && value - min <= 0 ? min : value
     return value
   }
 
   get valueTrue () {
-    return parseFloat(this.state.value.toString().replace(/[^0-9|.|\-(e+)]+/, ''))
+    return parseFloat(
+      this.state.value.toString().replace(/[^0-9|.|\-(e+)]+/, '')
+    )
   }
 
   get willReachMax () {
     const { max = Infinity, step } = this.props
 
-    let num = new Decimal(this.valueTrue).plus(step > 0 ? step : -step).valueOf() * 1
+    let num =
+      new Decimal(this.valueTrue).plus(step > 0 ? step : -step).valueOf() * 1
     return max <= num
   }
 
   get willReachMin () {
     const { min = -1 * Infinity, step } = this.props
-    let num = new Decimal(this.valueTrue).minus(step > 0 ? step : -step).valueOf() * 1
+    let num =
+      new Decimal(this.valueTrue).minus(step > 0 ? step : -step).valueOf() * 1
     return min >= num
   }
 

@@ -13,9 +13,11 @@ class Demo extends React.Component {
     const content = (
       <div>
         <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</p>
+        <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</p>
+        
       </div>
     )
-
+    
     return (
       <div>
         <Popover title={title} content={content} style={{margin: '10px 10px'}}>
