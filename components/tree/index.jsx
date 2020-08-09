@@ -3,13 +3,13 @@ import BaseTree from './BaseTree'
 import Input from '../Input'
 import Button from '../button'
 import Modal from '../modal'
-import { getAncestorIds } from './util'
+import { getAncestorIds, findNode } from './util'
 import _ from 'lodash'
 import { v4 as uuidV4 } from 'uuid'
 import CustomTreeNode from './customTreeNode'
 import './style/index.scss'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
+
+const PREFIX = 'hi-tree'
 
 const getMatchedNodes = (data, searchValue, matchedNodes = []) => {
   data.forEach((item) => {
@@ -34,7 +34,16 @@ const getShowData = (data, matchedIds, filtedIds) => {
   }
   return data
 }
-const PREFIX = 'hi-editor-tree'
+
+const getDefaultIds = (data, collections = []) => {
+  data.forEach((d) => {
+    if (d.children) {
+      collections.push(d.id)
+      getDefaultIds(d.children, collections)
+    }
+  })
+  return collections
+}
 
 const Tree = (props) => {
   const {
@@ -43,17 +52,18 @@ const Tree = (props) => {
     data,
     expandedIds,
     defaultExpandedIds,
+    defaultExpandAll = false,
     filter = false,
     contextMenu,
     editable,
     onBeforeSave,
     onSave,
     onBeforeDelete,
-    onDelete
+    onDelete,
+    onDropEnd
   } = props
   const { placeholder = '关键词搜索', emptyContent = '未找到搜索结果' } = searchConfig
   const [cacheData, updateCacheData] = useState(data)
-
   useEffect(() => {
     updateCacheData(data)
   }, [data])
@@ -66,7 +76,9 @@ const Tree = (props) => {
   const [searchValue, setSearchValue] = useState('')
   const [matchedNodes, setMatchedNodes] = useState([])
   const [filteredIds, setFilteredIds] = useState([])
-  const [expanded, setExpanded] = useState(expandedIds || defaultExpandedIds || [])
+  const [expanded, setExpanded] = useState(
+    expandedIds || defaultExpandedIds || (defaultExpandAll && getDefaultIds(data)) || []
+  )
 
   useEffect(() => {
     if (expandedIds) {
@@ -79,33 +91,103 @@ const Tree = (props) => {
     matchedNodes.map((n) => n.id),
     filteredIds
   )
+  // 移动节点
+  const switchNode = useCallback((targetItemId, sourceItemId, data, allData, dropDividerPosition) => {
+    const sourceNode = findNode(sourceItemId, allData)
+    const _data = [...data]
+    _data.forEach((item, idx) => {
+      if (item.id === targetItemId) {
+        const position = dropDividerPosition === 'down' ? idx + 1 : idx
+        data.splice(position, 0, sourceNode)
+      } else {
+        if (item.children) {
+          if (item.children.some((e) => e.id === targetItemId)) {
+            const index = item.children.findIndex((i) => i.id === targetItemId)
+            const position = dropDividerPosition === 'down' ? index + 1 : index
+            item.children.splice(position, 0, sourceNode)
+          } else {
+            switchNode(targetItemId, sourceItemId, item.children, allData, dropDividerPosition)
+          }
+        }
+      }
+    })
+  }, [])
+
+  const addDropNode = useCallback((targetItemId, sourceItemId, data, allData) => {
+    data.forEach((d, index) => {
+      if (d.id === targetItemId) {
+        const sourceNode = findNode(sourceItemId, allData)
+        if (!d.children) {
+          d.children = []
+        }
+        d.children.push(sourceNode)
+      } else {
+        if (d.children) {
+          addDropNode(targetItemId, sourceItemId, d.children, allData)
+        }
+      }
+    })
+  }, [])
+  // 删除拖动的节点
+  const _delDragNode = useCallback((itemId, data) => {
+    data.forEach((d, index) => {
+      if (d.id === itemId) {
+        data.splice(index, 1)
+      } else {
+        if (d.children) {
+          _delDragNode(itemId, d.children)
+        }
+      }
+    })
+  }, [])
+
+  const moveNode = useCallback(
+    ({ targetId, sourceId, direction }) => {
+      const _dataCache = _.cloneDeep(cacheData)
+      _delDragNode(sourceId, _dataCache)
+      if (direction === 'in') {
+        addDropNode(targetId, sourceId, _dataCache, cacheData)
+      } else {
+        switchNode(targetId, sourceId, _dataCache, cacheData, direction)
+      }
+      updateCacheData(_dataCache)
+    },
+    [cacheData, _delDragNode, addDropNode, switchNode]
+  )
+
   // 编辑节点
   const editNode = (node) => {
     setEditingNodes(editingNodes.concat(node))
   }
   // 同步编辑值
-  const onValueChange = (value, nodeId) => {
-    setEditingNodes(
-      editingNodes
-        .filter((n) => n.id !== nodeId)
-        .concat(
-          Object.assign(
-            {},
-            editingNodes.find((n) => n.id === nodeId),
-            {
-              title: value
-            }
+  const onValueChange = useCallback(
+    (value, nodeId) => {
+      setEditingNodes(
+        editingNodes
+          .filter((n) => n.id !== nodeId)
+          .concat(
+            Object.assign(
+              {},
+              editingNodes.find((n) => n.id === nodeId),
+              {
+                title: value
+              }
+            )
           )
-        )
-    )
-  }
+      )
+    },
+    [editingNodes]
+  )
   // 取消编辑
-  const cancelEdit = (nodeId) => {
-    setEditingNodes(editingNodes.filter((n) => n.id !== nodeId))
-  }
+  const cancelEdit = useCallback(
+    (nodeId) => {
+      setEditingNodes(editingNodes.filter((n) => n.id !== nodeId))
+    },
+    [editingNodes]
+  )
 
   // 添加兄弟节点
-  const _addSibNode = (node, data, addNode) => {
+  const _addSibNode = useCallback((node, data, addNode) => {
     data.forEach((d, index) => {
       if (d.id === node.id) {
         data.splice(index + 1, 0, addNode)
@@ -115,18 +197,21 @@ const Tree = (props) => {
         }
       }
     })
-  }
+  }, [])
 
-  const addSiblingNode = (node) => {
-    const dataCache = _.cloneDeep(cacheData)
-    const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add' }
-    _addSibNode(node, dataCache, addNode)
-    setEditingNodes(editingNodes.concat(addNode))
-    updateCacheData(dataCache)
-  }
+  const addSiblingNode = useCallback(
+    (node) => {
+      const dataCache = _.cloneDeep(cacheData)
+      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add' }
+      _addSibNode(node, dataCache, addNode)
+      setEditingNodes(editingNodes.concat(addNode))
+      updateCacheData(dataCache)
+    },
+    [cacheData, editingNodes, _addSibNode]
+  )
 
   // 添加子节点
-  const _addChildNode = (node, data, addNode) => {
+  const _addChildNode = useCallback((node, data, addNode) => {
     data.forEach((d, index) => {
       if (d.id === node.id) {
         if (!d.children) {
@@ -139,15 +224,18 @@ const Tree = (props) => {
         }
       }
     })
-  }
-  const addChildNode = (node) => {
-    const dataCache = _.cloneDeep(cacheData)
-    const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add' }
-    _addChildNode(node, dataCache, addNode)
-    setEditingNodes(editingNodes.concat(addNode))
-    updateCacheData(dataCache)
-    setExpanded(expanded.concat(node.id))
-  }
+  }, [])
+  const addChildNode = useCallback(
+    (node) => {
+      const dataCache = _.cloneDeep(cacheData)
+      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add' }
+      _addChildNode(node, dataCache, addNode)
+      setEditingNodes(editingNodes.concat(addNode))
+      updateCacheData(dataCache)
+      setExpanded(expanded.concat(node.id))
+    },
+    [editingNodes, cacheData, _addChildNode, expanded]
+  )
 
   // 取消添加节点
   const _cancelAddNode = (node, data) => {
@@ -161,11 +249,14 @@ const Tree = (props) => {
       }
     })
   }
-  const cancelAddNode = (node) => {
-    const dataCache = _.cloneDeep(cacheData)
-    _cancelAddNode(node, dataCache)
-    updateCacheData(dataCache)
-  }
+  const cancelAddNode = useCallback(
+    (node) => {
+      const dataCache = _.cloneDeep(cacheData)
+      _cancelAddNode(node, dataCache)
+      updateCacheData(dataCache)
+    },
+    [cacheData, _cancelAddNode]
+  )
   // 保存
   const _saveEdit = (itemId, data, nodeEdited) => {
     data.forEach((d, index) => {
@@ -179,13 +270,25 @@ const Tree = (props) => {
       }
     })
   }
-  const saveEdit = (nodeId) => {
-    const nodeEdited = { ...editingNodes.find((node) => node.id === nodeId) }
-    const dataCache = _.cloneDeep(cacheData)
-    _saveEdit(nodeId, dataCache, nodeEdited)
-    updateCacheData(dataCache)
-    setEditingNodes(editingNodes.filter((n) => n.id !== nodeId))
-  }
+  const saveEdit = useCallback(
+    (enode) => {
+      const nodeEdited = { ...editingNodes.find((node) => node.id === enode.id) }
+      const dataCache = _.cloneDeep(cacheData)
+      _saveEdit(enode.id, dataCache, nodeEdited)
+      if (onBeforeSave) {
+        const result = onBeforeSave(enode, { before: cacheData, after: dataCache }, enode.depth)
+        if (result === true) {
+          updateCacheData(dataCache)
+          onSave(enode, dataCache)
+        }
+      } else {
+        updateCacheData(dataCache)
+        onSave(enode, dataCache)
+      }
+      setEditingNodes(editingNodes.filter((n) => n.id !== enode.id))
+    },
+    [editingNodes, cacheData, _saveEdit]
+  )
 
   // 删除节点
   const _deleteNode = (itemId, data) => {
@@ -199,64 +302,70 @@ const Tree = (props) => {
       }
     })
   }
-  const deleteNode = (node) => {
-    const dataCache = _.cloneDeep(cacheData)
-    _deleteNode(node.id, dataCache)
-    if (onBeforeDelete) {
-      const result = onBeforeDelete(node, { before: dataCache, after: cacheData }, node.depth)
-      if (result === true) {
+  const deleteNode = useCallback(
+    (node) => {
+      const dataCache = _.cloneDeep(cacheData)
+      _deleteNode(node.id, dataCache)
+      if (onBeforeDelete) {
+        const result = onBeforeDelete(node, { before: cacheData, after: dataCache }, node.depth)
+        if (result === true) {
+          updateCacheData(dataCache)
+          onDelete(node, dataCache)
+        }
+      } else {
         updateCacheData(dataCache)
         onDelete(node, dataCache)
       }
-    } else {
-      updateCacheData(dataCache)
-      onDelete(node, dataCache)
-    }
-  }
+    },
+    [cacheData, _deleteNode]
+  )
 
-  const menuRender = useCallback((node) => {
-    let menu = [
-      { title: '编辑节点', type: 'editNode' },
-      { title: '添加子节点', type: 'addChildNode' },
-      { title: '添加节点', type: 'addSiblingNode' },
-      { title: '删除', type: 'deleteNode' }
-    ]
-    if (contextMenu) {
-      menu = contextMenu(node)
-    }
-    return (
-      <ul className={`${PREFIX}__menu`}>
-        {menu.map((m, index) => (
-          <li
-            className={`menu-item`}
-            key={index}
-            onClick={(e) => {
-              e.stopPropagation()
-              if (m.onClick) {
-                m.onClick(node)
-              } else {
-                if (m.type === 'editNode') {
-                  editNode(node)
+  const menuRender = useCallback(
+    (node) => {
+      let menu = [
+        { title: '编辑节点', type: 'editNode' },
+        { title: '添加子节点', type: 'addChildNode' },
+        { title: '添加节点', type: 'addSiblingNode' },
+        { title: '删除', type: 'deleteNode' }
+      ]
+      if (contextMenu) {
+        menu = contextMenu(node)
+      }
+      return (
+        <ul className={`${PREFIX}__menu`}>
+          {menu.map((m, index) => (
+            <li
+              className={`menu-item`}
+              key={index}
+              onClick={(e) => {
+                e.stopPropagation()
+                if (m.onClick) {
+                  m.onClick(node)
+                } else {
+                  if (m.type === 'editNode') {
+                    editNode(node)
+                  }
+                  if (m.type === 'addSiblingNode') {
+                    addSiblingNode(node)
+                  }
+                  if (m.type === 'addChildNode') {
+                    addChildNode(node)
+                  }
+                  if (m.type === 'deleteNode') {
+                    setModalVisible(node)
+                  }
                 }
-                if (m.type === 'addSiblingNode') {
-                  addSiblingNode(node)
-                }
-                if (m.type === 'addChildNode') {
-                  addChildNode(node)
-                }
-                if (m.type === 'deleteNode') {
-                  setModalVisible(node)
-                }
-              }
-              setMenuVisible(null)
-            }}
-          >
-            {m.title}
-          </li>
-        ))}
-      </ul>
-    )
-  }, [])
+                setMenuVisible(null)
+              }}
+            >
+              {m.title}
+            </li>
+          ))}
+        </ul>
+      )
+    },
+    [editNode, addChildNode, addSiblingNode]
+  )
 
   const treeNodeRender = useCallback(
     (node, { selected }, treeNodeRef, onSelectNode) => {
@@ -303,7 +412,6 @@ const Tree = (props) => {
             append={<Button icon='search' />}
             style={{ width: '250px', marginBottom: '24px' }}
           />
-          <div />
           {matchedNodes.length === 0 && searchValue !== '' && (
             <div className='searcher__result--empty'>{emptyContent}</div>
           )}
@@ -312,10 +420,11 @@ const Tree = (props) => {
       <BaseTree
         {...props}
         treeNodeRender={treeNodeRender}
-        expandedIds={filteredIds.length ? filteredIds : expanded}
+        expandedIds={searchable && searchValue !== '' ? filteredIds : expanded}
         onExpand={(expandedNode, isExpanded, ids) => {
           setExpanded(ids)
         }}
+        onDrop={moveNode}
         data={filter && searchable && searchValue !== '' ? showData : cacheData}
       />
       <Modal
@@ -334,11 +443,4 @@ const Tree = (props) => {
     </React.Fragment>
   )
 }
-const WrapperTree = (props) => {
-  return (
-    <DndProvider backend={HTML5Backend}>
-      <Tree {...props} />
-    </DndProvider>
-  )
-}
-export default WrapperTree
+export default Tree
