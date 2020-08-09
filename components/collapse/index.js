@@ -99,7 +99,16 @@ class CollapsePanel extends Component {
   }
 
   render () {
-    const { key, arrow, header, disabled, isActive, children, onClickPanel, showArrow } = this.props
+    const {
+      key,
+      arrow,
+      header,
+      disabled,
+      isActive,
+      children,
+      onClickPanel,
+      showArrow
+    } = this.props
     let classnames = classNames('collapse-item', {
       'collapse-item--show': isActive,
       'collapse-item--disabled': disabled
@@ -107,9 +116,13 @@ class CollapsePanel extends Component {
     return (
       <div className={classnames}>
         <div className='collapse-item__head' onClick={() => onClickPanel(key)}>
-          {showArrow && arrow === 'left' && <Icon name='down' />}
+          {showArrow && arrow === 'left' && (
+            <Icon name='down' className='collapse-item__icon' />
+          )}
           <div className='collapse-item__title'>{header}</div>
-          {showArrow && arrow === 'right' && <Icon name='down' />}
+          {showArrow && arrow === 'right' && (
+            <Icon name='down' className='collapse-item__icon' />
+          )}
         </div>
         <div className='collapse-item__content'>{children}</div>
       </div>

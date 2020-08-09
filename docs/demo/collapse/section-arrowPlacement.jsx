@@ -2,8 +2,8 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Collapse from '../../../components/collapse'
 const prefix = 'section-basic'
-const rightOptions = ['基础用法', '受控']
-const desc = '可以同时展开多个面板，对垂直空间没有特别限制'
+const rightOptions = ['居右', '居左']
+const desc = '指定箭头放置方式'
 const code = [
   {
     code: `import React from 'react'
@@ -13,7 +13,7 @@ class Demo extends React.Component {
     return(
       <Collapse
         onChange={()=>{console.log('切换了！');}}
-        arrowPlacement="right"
+        arrowPlacement="left"
       >
         <Collapse.Panel
           disabled={true}
@@ -41,7 +41,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['基础用法']
+    opt: ['居右']
   },
   {
     code: `import React from 'react'
@@ -82,7 +82,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['受控']
+    opt: ['居左']
   }
 ]
 
