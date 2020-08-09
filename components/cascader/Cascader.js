@@ -315,11 +315,6 @@ const Cascader = (props) => {
     )
   }, [])
   const handleClick = useCallback((e) => {
-    // if (popperShow) {
-    //   setPopperShow(!popperShow)
-    //   return
-    // }
-
     if (!disabled) {
       if (!searchable) {
         setKeyword('')
