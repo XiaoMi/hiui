@@ -330,7 +330,7 @@ const Tabs = ({
     container.style.transform = 'translateX(' + transX + 'px)'
   }, [])
   const getHeader = useCallback(() => {
-    return <>'     '{
+    return <>{
       canScroll && <Icon name='left' className={`${prefixCls}__scrollIcon`} onClick={() => translateLeft()} />
     }<div className={`${prefixCls}__header`}>
 
@@ -401,9 +401,9 @@ const Tabs = ({
           <Icon onClick={addTab} name='plus' />
         </div>
       )}
-    </div>'     '{
+    </div>{
       canScroll && <Icon name='right' className={`${prefixCls}__scrollIcon`} onClick={() => translateRight()} />
-    }'   '</>
+    }</>
   })
 
   const tabsClasses = classNames(
