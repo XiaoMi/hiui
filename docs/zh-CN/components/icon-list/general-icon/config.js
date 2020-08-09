@@ -500,6 +500,10 @@ export const filled = [
     text: '旗帜'
   },
   {
+    name: 'folder',
+    text: '文件夹'
+  },
+  {
     name: 'folder-add',
     text: '文件夹-打开'
   },

@@ -7,9 +7,9 @@ import TreeContext from './context'
 
 import Loading from './IconLoading'
 const switcherApperanceMap = {
-  default: ['packup', 'open'],
-  folder: ['folder', 'Folder-open'],
-  line: ['TreePlus', 'TreeMinus']
+  default: ['caret-right', 'caret-down'],
+  folder: ['folder', 'folder-open'],
+  line: ['plus-square', 'minus-square']
 }
 
 const TreeNode = ({ node }) => {
@@ -41,7 +41,7 @@ const TreeNode = ({ node }) => {
   // 渲染 apperance 占位
   const renderApperancePlaceholder = useCallback((apperance) => {
     if (apperance === 'folder') {
-      return <Icon name='File' style={{ marginRight: 2 }} />
+      return <Icon name='file' style={{ marginRight: 2 }} />
     }
   }, [])
   // 渲染展开收起
@@ -184,8 +184,8 @@ const TreeNode = ({ node }) => {
         (node.children && node.children.length) || (onLoadChildren && !node.isLeaf)
           ? node.depth
           : apperance !== 'default'
-          ? node.depth
-          : (node.depth && node.depth + 1) || 1
+            ? node.depth
+            : (node.depth && node.depth + 1) || 1
       )}
       {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
       {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf)) &&
