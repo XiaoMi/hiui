@@ -69,45 +69,51 @@ class Demo extends React.Component {
         {
           tabTitle: '新建标签14',
           tabId: 'tabId-14',
+        },
+        {
+          tabTitle: '新建标签15',
+          tabId: 'tabId-15',
+        },
+        {
+          tabTitle: '新建标签16',
+          tabId: 'tabId-16',
+        },
+        {
+          tabTitle: '新建标签17',
+          tabId: 'tabId-17',
+        },
+        {
+          tabTitle: '新建标签18',
+          tabId: 'tabId-18',
+        },
+        {
+          tabTitle: '新建标签19',
+          tabId: 'tabId-19',
+        },
+        {
+          tabTitle: '新建标签20',
+          tabId: 'tabId-20',
+        },
+        {
+          tabTitle: '新建标签21',
+          tabId: 'tabId-21',
+        },
+        {
+          tabTitle: '新建标签22',
+          tabId: 'tabId-22',
         }
       ]
     }
   }
- 
-  addTab() {
-    const panes = this.state.panes;
-   
-    this.setState({
-      panes: panes.concat([{
-        tabTitle: \`新增标签\${panes.length + 1}\`,
-      tabId: \`tabId-\${panes.length + 1}\`
-      }])
-    })
-  }
-
-  deleteTab(item,index) {
-    const panes = this.state.panes.slice()
-    panes.splice(index, 1)
-
-    this.setState({
-      panes
-    })
-  }
-
-  beforeDelete(item){
-    console.log(item)
-    return true
-  }
 
   render () {
-    return  <Tabs type="editable" onTabClick={(tab,e)=>console.log(tab,e)} editable onDelete={this.deleteTab.bind(this)} onAdd={this.addTab.bind(this)} onBeforeDelete={this.beforeDelete.bind(this)} canScroll={true}>
+    return  <Tabs  onTabClick={(tab,e)=>console.log(tab,e)}  canScroll={true} type="line">
       {
         this.state.panes.map((pane, index) => {
           return (
             <Tabs.Pane
               tabTitle={pane.tabTitle}
               tabId={pane.tabId}
-              closeable
               key={index}
               disabled={pane.disabled}
             >

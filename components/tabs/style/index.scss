@@ -64,30 +64,6 @@ $prefix: 'hi-tabs' !default;
     font-size: 16px;
   }
 
-  .#{$prefix}__nav {
-    &::-webkit-scrollbar {
-      width: 0;
-      height: 5px;
-    }
-
-    /* 滚动槽 */
-    &::-webkit-scrollbar-track {
-      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-    }
-
-    /* 滚动条滑块 */
-    &::-webkit-scrollbar-thumb {
-      border-radius: 5px;
-      background: rgba(0, 0, 0, 0.1);
-      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-    }
-
-    &::-webkit-scrollbar-thumb:window-inactive {
-      background: rgba(0, 0, 0, 0.1);
-    }
-  }
-
   &__content {
     overflow: hidden;
     display: flex;
@@ -96,7 +72,7 @@ $prefix: 'hi-tabs' !default;
   }
 
   &--card {
-    & > .#{$prefix}__header {
+    .#{$prefix}__header {
       .#{$prefix}__nav {
         display: flex;
         flex-wrap: nowrap;
@@ -163,7 +139,7 @@ $prefix: 'hi-tabs' !default;
   }
 
   &--editable {
-    & > .#{$prefix}__header {
+    .#{$prefix}__header {
       border-bottom: 1px solid #e6e7e8;
 
       .#{$prefix}__nav {
@@ -219,7 +195,7 @@ $prefix: 'hi-tabs' !default;
   }
 
   &--desc {
-    & > .#{$prefix}__header {
+    .#{$prefix}__header {
       .#{$prefix}__nav {
         display: flex;
         flex-wrap: nowrap;
@@ -270,7 +246,7 @@ $prefix: 'hi-tabs' !default;
   }
 
   &--button {
-    & > .#{$prefix}__header {
+    .#{$prefix}__header {
       .#{$prefix}__nav {
         display: flex;
         flex-wrap: wrap;
@@ -301,7 +277,7 @@ $prefix: 'hi-tabs' !default;
   }
 
   &--line {
-    & > .#{$prefix}__header {
+    .#{$prefix}__header {
       border-bottom: 1px solid #e6e7e8;
 
       .#{$prefix}__nav {
@@ -385,12 +361,30 @@ $prefix: 'hi-tabs' !default;
   }
 
   &--canScroll {
-    .#{$prefix}__nav {
-      overflow: scroll !important;
+    .contain {
+      position: relative;
+      transition: all 300ms;
+      transform: translateX(0);
     }
 
     .#{$prefix}__item {
       overflow: initial !important;
+    }
+
+    .#{$prefix}__header {
+      overflow: hidden;
+    }
+  }
+
+  &__scrollOutter {
+    display: flex;
+
+    .#{$prefix}__scrollIcon {
+      cursor: pointer;
+      display: flex;
+      font-size: 20px;
+      justify-content: center;
+      align-items: center;
     }
   }
 }
@@ -435,7 +429,7 @@ $prefix: 'hi-tabs' !default;
   $value in $theme-colors {
   .theme__#{$key}.#{$prefix} {
     &--card {
-      & > .#{$prefix}__header {
+      .#{$prefix}__header {
         .#{$prefix}__item {
           &:hover {
             color: $value;
@@ -449,7 +443,7 @@ $prefix: 'hi-tabs' !default;
     }
 
     &--editable {
-      & > .#{$prefix}__header {
+      .#{$prefix}__header {
         .#{$prefix}__item {
           &--active {
             color: $value;
