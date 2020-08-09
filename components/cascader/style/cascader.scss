@@ -1,4 +1,5 @@
 @import '@hi-ui/core-css/index.scss';
+
 $cascader: 'hi-cascader' !default;
 
 .#{$cascader} {
@@ -21,13 +22,13 @@ $cascader: 'hi-cascader' !default;
 
   &:not(.hi-cascader--disabled) {
     &.hi-cascader--clearable:hover {
-      .hi-cascader__icon--expand {
+      .hi-cascader__icon--expand.has-value {
         display: none;
       }
 
       .hi-cascader__icon--clear {
         display: block;
-        color: #999;
+        color: #666;
       }
     }
   }
@@ -43,12 +44,16 @@ $cascader: 'hi-cascader' !default;
     flex: auto;
     font-size: 14px;
     cursor: pointer;
-    overflow: hidden;
+    overflow: hidden !important;
     text-overflow: ellipsis;
     white-space: nowrap;
     border: none;
     outline: none;
     box-sizing: border-box;
+
+    &::-webkit-input-placeholder {
+      color: #ccc;
+    }
   }
 
   &__icon {

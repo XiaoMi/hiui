@@ -362,7 +362,9 @@ const Cascader = (props) => {
         }}
       />
       <span className='hi-cascader__icon'>
-        <i className={classNames('hi-cascader__icon--expand', 'hi-icon', expandIcon)} />
+        <i className={classNames('hi-cascader__icon--expand', 'hi-icon', expandIcon, {
+          'has-value': clearable && ((searchable && (keyword !== '')) || (!popperShow && (cascaderLabel !== '')))
+        })} />
         {
           clearable && ((searchable && (keyword !== '')) || (!popperShow && (cascaderLabel !== ''))) && <i className='hi-cascader__icon--clear hi-icon icon-close-circle' onClick={clearValue} />
         }
