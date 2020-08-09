@@ -38,7 +38,7 @@ const Table = (props) => {
     pagination,
     dataSource,
     showColMenu,
-    prefix = 'power-table',
+    prefix = 'hi-table',
     fixedToColumn,
     sticky: _ceiling,
     stickyTop = 0,
@@ -292,12 +292,12 @@ const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
 
   const standardPreset = standard
     ? {
-      showColMenu: true,
-      sticky: true,
-      bordered: true,
-      setting: true,
-      striped: true
-    }
+        showColMenu: true,
+        sticky: true,
+        bordered: true,
+        setting: true,
+        striped: true
+      }
     : {}
 
   // ***************
