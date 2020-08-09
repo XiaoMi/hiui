@@ -14,7 +14,7 @@ import Rate from '../../../components/rate'
 import Upload from '../../../components/upload'
 import Grid from '../../../components/grid'
 
-const prefix = 'form-synthetic'
+const prefix = 'form-dynamic'
 const desc = ['根据数据控制某个表单的显示隐藏']
 const leftOptions = ['表单联动', '表单查询']
 
