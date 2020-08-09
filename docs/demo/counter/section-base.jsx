@@ -17,11 +17,7 @@ const code = [
       render() {
         return (
           <div>
-            <Counter
-              defaultValue='4'
-              min='-10'
-              max='10'
-            />
+            <Counter/>
           </div>
         )
       }
