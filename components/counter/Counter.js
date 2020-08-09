@@ -220,13 +220,7 @@ class Counter extends React.Component {
       })
     }
     setTimeout(() => {
-      onChange &&
-        onChange(
-          {
-            target: this._Input
-          },
-          value
-        )
+      onChange && onChange(value)
     }, 0)
   }
 
