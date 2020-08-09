@@ -103,7 +103,9 @@ const Cascader = (props) => {
   }, [cacheValue])
   //
   const menuNode = useClickOutside(e => {
-    setPopperShow(false)
+    if (!e.target.classList.contains('hi-cascader__input-keyword')) {
+      setPopperShow(false)
+    }
   })
 
   const extraClass = {
@@ -313,10 +315,10 @@ const Cascader = (props) => {
     )
   }, [])
   const handleClick = useCallback((e) => {
-    if (popperShow) {
-      setPopperShow(!popperShow)
-      return
-    }
+    // if (popperShow) {
+    //   setPopperShow(!popperShow)
+    //   return
+    // }
 
     if (!disabled) {
       if (!searchable) {
