@@ -1,6 +1,7 @@
 import React, { Component, Children } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import _ from 'lodash'
 import Icon from '../icon'
 import './style/index'
 
@@ -10,6 +11,7 @@ class Collapse extends Component {
     accordion: PropTypes.bool, // 手风琴模式
     activeKey: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     activeId: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    defaultActiveId: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     onChange: PropTypes.func,
     icon: PropTypes.string,
     type: PropTypes.string, // TODO:废弃
@@ -27,18 +29,29 @@ class Collapse extends Component {
   }
   constructor (props) {
     super(props)
-    const { activeId, activeKey } = this.props
-    const _activeId = activeId || activeKey
+    const { activeId, activeKey, defaultActiveId } = this.props
+    const _activeId = activeId || activeKey || defaultActiveId || []
     this.state = {
       activeId: Array.isArray(_activeId) ? _activeId : [_activeId]
     }
+  }
+  static getDerivedStateFromProps (nextProps, prevState) {
+    if (
+      !_.isEqual(nextProps.activeId !== prevState.activeId) &&
+      nextProps.activeId !== undefined
+    ) {
+      return {
+        activeId: nextProps.activeId
+      }
+    }
+    return null
   }
   onClickPanel (key) {
     let activeKey = this.state.activeId
     if (this.props.accordion) {
       activeKey = activeKey[0] === key ? [] : [key]
     } else {
-      activeKey = [...activeKey]
+      activeKey = activeKey !== 'undefined' ? [...activeKey] : []
       const index = activeKey.indexOf(key)
       const isActive = index > -1
       if (isActive) {

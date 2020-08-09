@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Collapse from '../../../components/collapse'
-const prefix = 'section-basic'
+const prefix = 'section-arrowPlacement'
 const rightOptions = ['居右', '居左']
 const desc = '指定箭头放置方式'
 const code = [
