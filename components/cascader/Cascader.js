@@ -76,7 +76,6 @@ const Cascader = (props) => {
       return labels.join(' / ')
     }
   }, [data])
-  // const [value, setValue] = useState(trueValue || defaultValue || [])
   const [filterOptions, setFilterOptions] = useState(false)
   // 缓存原始value，用户可能点击option但是没选中，用于恢复初始value
   const [cacheValue, setCacheValue] = useState(value || defaultValue || [])
@@ -315,6 +314,10 @@ const Cascader = (props) => {
     )
   }, [])
   const handleClick = useCallback((e) => {
+    if (popperShow) {
+      setPopperShow(!popperShow)
+      return
+    }
     if (!disabled) {
       if (!searchable) {
         setKeyword('')
