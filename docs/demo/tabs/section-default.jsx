@@ -16,7 +16,8 @@ class Demo extends React.Component {
     this.state = {
       panes:  [{
         tabTitle: '我的订单',
-        tabId: 'tabId-1'
+        tabId: 'tabId-1',
+        disabled:true
       },
       {
         tabTitle: '团购订单',
@@ -54,12 +55,19 @@ class Demo extends React.Component {
       {
         tabTitle: '订单详情',
         tabId: 'tabId-10'
-      }]
+      }],
+      activeId:'tabId-10'
     }
   }
   render () {
+    const {activeId} = this.state
     return (
-      <Tabs defaultActiveId='tabId-2' onTabClick={(tab,e) => console.log(tab,e)} type="line">
+      <Tabs activeId={activeId} onTabClick={(tab,e) =>{
+        console.log(tab)
+        this.setState({
+          activeId:tab
+        })
+      }} type="line">
       {
         this.state.panes.map((pane, index) => {
           return (
@@ -68,6 +76,7 @@ class Demo extends React.Component {
               tabId={pane.tabId}
               closeable={pane.closeable}
               key={index}
+              disabled={pane.disabled}
             >
               <div style={{padding: '16px'}}>{pane.tabTitle}</div>
             </Tabs.Pane>
