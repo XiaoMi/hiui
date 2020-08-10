@@ -38,13 +38,12 @@ class Demo extends React.Component {
     return (
       <div style={{width:500}}>
         <Tree
-          loadTreeNode={id=>{
+          onLoadChildren={node=>{
             const obj = {
               method:'get',
-              headers:{'Content-Type': 'application/x-www-form-urlencoded'},
               data:{},
-              params:{id:id},
-              url:'http://yapi.demo.qunar.com/mock/26534/hiui/async-tree',
+              params:{id:node.id},
+              url:'http://my-json-server.typicode.com/hiui-group/db/conditiondata',
               transformResponse:(res)=>{return res.data}
             }
             return obj

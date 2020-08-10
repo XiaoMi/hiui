@@ -56,10 +56,10 @@ const Tree = (props) => {
     filter = false,
     contextMenu,
     editable,
-    onBeforeSave = () => {},
-    onSave = () => {},
-    onBeforeDelete = () => {},
-    onDelete = () => {}
+    onBeforeSave,
+    onSave,
+    onBeforeDelete,
+    onDelete
     // onDropEnd
   } = props
   const { placeholder = '关键词搜索', emptyContent = '未找到搜索结果' } = searchConfig

@@ -1,6 +1,7 @@
 import React, { useContext, useState, useRef, useCallback } from 'react'
 import Checkbox from '../checkbox'
 import Icon from '../icon'
+import axios from 'axios'
 
 import Classnames from 'classnames'
 import TreeContext from './context'
@@ -57,10 +58,15 @@ const TreeNode = ({ node }) => {
           onClick={() => {
             if (onLoadChildren) {
               setLoading(true)
-              onLoadChildren(node).then(() => {
-                setLoading(false)
-                onExpandNode(node, !expanded, expandedIds)
-              })
+              axios(onLoadChildren(node)).then(
+                (res) => {
+                  setLoading(false)
+                  onExpandNode(node, !expanded, expandedIds)
+                },
+                () => {
+                  setLoading(false)
+                }
+              )
             } else {
               onExpandNode(node, !expanded, expandedIds)
             }
