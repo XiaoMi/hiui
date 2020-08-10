@@ -23,7 +23,9 @@ const PictureListUpload = ({
   name,
   withCredentials,
   headers,
-  data
+  data,
+  beforeUpload,
+  customUpload
 }) => {
   const [_fileList, uploadFiles, deleteFile] = useUpload({
     fileList,
@@ -35,7 +37,9 @@ const PictureListUpload = ({
     withCredentials,
     headers,
     data,
-    onRemove
+    onRemove,
+    beforeUpload,
+    customUpload
   })
   return (
     <div className={`hi-upload hi-upload--picture-card`}>
