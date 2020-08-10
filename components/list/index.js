@@ -54,6 +54,7 @@ const List = ({
   action,
   actionPosition = '',
   renderItem,
+  split = true,
   ...others
 }) => {
   const [datas, setData] = useState(data)
@@ -69,7 +70,8 @@ const List = ({
         className={classNames(`${prefixCls}-item`, {
           [`${prefixCls}-item__card`]: type === 'card',
           [`${prefixCls}-item__colume`]: layout === 'vertical',
-          [`${prefixCls}-item__hoverable`]: type === 'card' && hoverable
+          [`${prefixCls}-item__hoverable`]: type === 'card' && hoverable,
+          [`${prefixCls}-item__split`]: split
         })}
         key={index}
       >
