@@ -382,9 +382,10 @@ $prefix: 'hi-tabs' !default;
     .#{$prefix}__scrollIcon {
       cursor: pointer;
       display: flex;
-      font-size: 20px;
+      font-size: 37px;
       justify-content: center;
       align-items: center;
+      color: #666;
     }
   }
 }
