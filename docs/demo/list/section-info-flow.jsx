@@ -129,7 +129,7 @@ const code = [
           <Radio.Group
             data={list}
             type='button'
-            defaultValue={'bottom'}
+            defaultValue={'right'}
             onChange={(data) => {
               this.setState({
                 position:data
