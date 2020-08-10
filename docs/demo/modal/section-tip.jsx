@@ -43,7 +43,7 @@ class Demo extends React.Component {
           ]}
         >
           <div style={{display: 'flex'}}>
-            <Icon name="close-circle-o" style={{color: '#EB5252', fontSize: '30px'}} />
+            <Icon name="close-circle" style={{color: '#EB5252', fontSize: '30px'}} />
             <div style={{marginLeft: '18px'}}>
                 <span>错误标题</span><br/>
                 <span style={{fontSize: '12px'}}>错误原因错误原因错误原因错误原因错误原因</span>
@@ -59,7 +59,7 @@ class Demo extends React.Component {
           ]}
         >
           <div style={{display: 'flex'}}>
-            <Icon name="info-circle-o" style={{color: '#4284F5', fontSize: '30px'}} />
+            <Icon name="info-circle" style={{color: '#4284F5', fontSize: '30px'}} />
             <div style={{marginLeft: '18px'}}>
               <span>警告标题</span><br/>
               <span style={{fontSize: '12px'}}>警告具体内容警告具体内容警告具体内容警告具体内容警告具体内容警告具体内容警告具体内容</span>
@@ -71,5 +71,12 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoTip = () => <DocViewer code={code} scope={{ Button, Modal, Icon }} prefix={prefix} desc={desc} />
+const DemoTip = () => (
+  <DocViewer
+    code={code}
+    scope={{ Button, Modal, Icon }}
+    prefix={prefix}
+    desc={desc}
+  />
+)
 export default DemoTip
