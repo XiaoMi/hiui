@@ -32,10 +32,6 @@ class Demo extends React.Component {
       <div>
         <Upload
           type="normal"
-          beforeUpload={(files, fileList) => {
-            console.log('---------beforeUpload', files, fileList)
-            return true
-          }}
           customUpload={files => {
             const _fileList = fileList.concat({
               name: files[0].name,
