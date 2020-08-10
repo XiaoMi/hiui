@@ -161,7 +161,9 @@
       "/dist/",
       "/libs/markdown/code.js",
       "/components/**/index.test.js",
-      "yarn.lock"
+      "/components/icon/",
+      "yarn.lock",
+      "/docs/"
     ]
   },
   "lint-staged": {

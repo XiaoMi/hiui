@@ -2,6 +2,7 @@
 
 .#{$table} {
   position: relative;
+
   &__container {
     position: relative;
   }
@@ -30,7 +31,7 @@
 
     th {
       background-color: #fbfbfb;
-      color: #999999;
+      color: #999;
       position: relative;
 
       i:hover {
@@ -39,7 +40,7 @@
     }
 
     td {
-      color: #333333;
+      color: #333;
       word-break: break-word;
     }
 

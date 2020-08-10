@@ -14,7 +14,7 @@ import Provider from '../context'
 import CModal from '../date-picker/Modal'
 
 class TreeNode extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       highlight: null,
@@ -102,7 +102,7 @@ class TreeNode extends Component {
       }
     }
   }
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps (props, state) {
     if (!isEqual(props.data, state.prevData)) {
       return {
         ...state,
@@ -494,18 +494,18 @@ class TreeNode extends Component {
       >
         {_cm.length > 0
           ? _cm.map((cm, index) => {
-              if (cm.type && this.defaultEditNodeMenu[cm.type]) {
-                return this.defaultEditNodeMenu[cm.type](item, cm, index, level)
-              } else {
-                return this.defaultEditNodeMenu['customer'](item, cm, index, level)
-              }
-            })
+            if (cm.type && this.defaultEditNodeMenu[cm.type]) {
+              return this.defaultEditNodeMenu[cm.type](item, cm, index, level)
+            } else {
+              return this.defaultEditNodeMenu['customer'](item, cm, index, level)
+            }
+          })
           : Object.keys(this.defaultEditNodeMenu).map((key, index) => {
-              if (key === 'customer') {
-                return null
-              }
-              return this.defaultEditNodeMenu[key](item, {}, index, level)
-            })}
+            if (key === 'customer') {
+              return null
+            }
+            return this.defaultEditNodeMenu[key](item, {}, index, level)
+          })}
       </ul>
     )
 
@@ -601,7 +601,7 @@ class TreeNode extends Component {
       </ul>
     )
   }
-  render() {
+  render () {
     const { dataCache, searchValue, highlightNum } = this.state
     const { searchable, localeDatas } = this.props
     const { searchPlaceholder, searchEmptyResult, modalTitle, delTips } = localeDatas.tree

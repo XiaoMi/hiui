@@ -1,0 +1,144 @@
+$tree: 'hi-select-tree' !default;
+$fontColor: #383e47 !default;
+$mainColor: #4284f5 !default;
+$hoverColor: rgba(66, 133, 244, 0.08) !default;
+
+.#{$tree} {
+  color: $fontColor;
+  padding: 12px 12px 0 12px;
+  box-sizing: border-box;
+  // max-height: 256px;
+  height: 100%;
+  overflow: auto;
+
+  &--empty {
+    margin-left: 50%;
+    margin-top: 45%;
+    display: inline-block;
+    transform: translate(-50%, 0);
+  }
+
+  &__nodes {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__node {
+    .hi-btn--loading--icon {
+      margin-top: -8px;
+    }
+
+    ul {
+      padding: 0 16px;
+    }
+
+    &--self {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      margin-bottom: 12px;
+
+      .hi-checkbox {
+        white-space: nowrap;
+      }
+
+      .icon-check {
+        color: $mainColor;
+      }
+    }
+
+    .hi-icon {
+      cursor: pointer;
+      font-size: 16px;
+      margin-right: 8px;
+    }
+  }
+
+  &__title {
+    height: 24px;
+    line-height: 24px;
+    text-align: left;
+    white-space: nowrap;
+
+    &:hover {
+      color: #383e47;
+    }
+
+    &--selected {
+      color: $mainColor;
+
+      &:hover {
+        color: $mainColor;
+      }
+    }
+  }
+}
+
+.hi-breadtree {
+  &__root {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0 12px;
+  }
+
+  &__item {
+    list-style: none;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  &__text {
+    flex: 1;
+
+    &--selected {
+      color: #4284f5;
+    }
+  }
+
+  &__bread {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    height: 36px;
+    align-items: center;
+    padding: 0 12px;
+    background: rgba(247, 247, 247, 1);
+    font-size: 14px;
+    flex: none;
+  }
+
+  &__separator {
+    margin: 2px 4px 0;
+  }
+
+  &__bread-content {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0 4px;
+
+    &:first-child {
+      cursor: pointer;
+      margin-left: 0;
+      flex: 0 0 auto;
+    }
+
+    &:hover:not(:last-child) {
+      color: #428ef5;
+      cursor: pointer;
+    }
+
+    &--normal {
+      flex: 0 0 auto;
+    }
+  }
+}

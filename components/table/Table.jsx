@@ -292,12 +292,12 @@ const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
 
   const standardPreset = standard
     ? {
-        showColMenu: true,
-        sticky: true,
-        bordered: true,
-        setting: true,
-        striped: true
-      }
+      showColMenu: true,
+      sticky: true,
+      bordered: true,
+      setting: true,
+      striped: true
+    }
     : {}
 
   // ***************

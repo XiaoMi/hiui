@@ -36,7 +36,7 @@ const BaseTree = ({
   onDrop,
   onDragEnd
 }) => {
-  const [flatData, updateFlatData] = useFlatData(data)
+  const [flatData] = useFlatData(data)
   const [selectNodeId, onSelectNode] = useSelect({
     selectedId,
     selectable,

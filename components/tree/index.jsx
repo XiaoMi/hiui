@@ -5,7 +5,7 @@ import Button from '../button'
 import Modal from '../modal'
 import { getAncestorIds, findNode } from './util'
 import _ from 'lodash'
-import { v4 as uuidV4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 import CustomTreeNode from './customTreeNode'
 import './style/index.scss'
 
@@ -56,11 +56,11 @@ const Tree = (props) => {
     filter = false,
     contextMenu,
     editable,
-    onBeforeSave,
-    onSave,
-    onBeforeDelete,
-    onDelete,
-    onDropEnd
+    onBeforeSave = () => {},
+    onSave = () => {},
+    onBeforeDelete = () => {},
+    onDelete = () => {}
+    // onDropEnd
   } = props
   const { placeholder = '关键词搜索', emptyContent = '未找到搜索结果' } = searchConfig
   const [cacheData, updateCacheData] = useState(data)
