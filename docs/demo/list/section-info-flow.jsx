@@ -31,13 +31,13 @@ const code = [
           ],
           list:[{
             id: 'top',
-            content: '居上'
+            content: '操作居上'
           }, {
             id: 'center',
-            content: '居中',
+            content: '操作居中',
           }, {
             id: 'bottom',
-            content: '居下'
+            content: '操作居下'
           }]
         }
 
@@ -46,7 +46,6 @@ const code = [
         const {data,actionPosition,list} = this.state
         return (
           <div>
-          <span>操作位置: </span>
           <Radio.Group
             data={list}
             type='button'
@@ -111,13 +110,13 @@ const code = [
           ],
           list:[{
             id: 'left',
-            content: '居左'
+            content: '分页居左'
           }, {
             id: 'middle',
-            content: '居中',
+            content: '分页居中',
           }, {
             id: 'right',
-            content: '居右'
+            content: '分页居右'
           }]
         }
       }
@@ -125,7 +124,6 @@ const code = [
         const {data,list,position} = this.state
         return (
           <div>
-          <span>分页位置: </span>
           <Radio.Group
             data={list}
             type='button'
