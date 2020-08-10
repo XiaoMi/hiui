@@ -24,7 +24,6 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     justify-content: space-between;
     align-items: center;
     padding: 20px 24px 16px 0;
-    border-bottom: 1px solid $borderColor;
 
     &__row {
       display: flex;
@@ -85,6 +84,10 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
       line-height: 20px;
       text-align: center;
       cursor: pointer;
+    }
+
+    &__split {
+      border-bottom: 1px solid $borderColor;
     }
   }
 
