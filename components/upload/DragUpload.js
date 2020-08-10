@@ -22,7 +22,9 @@ const DragUpload = ({
   name,
   withCredentials,
   headers,
-  data
+  data,
+  beforeUpload,
+  customUpload
 }) => {
   const [_fileList, uploadFiles, deleteFile] = useUpload({
     fileList,
@@ -34,7 +36,9 @@ const DragUpload = ({
     withCredentials,
     headers,
     data,
-    onRemove
+    onRemove,
+    beforeUpload,
+    customUpload
   })
 
   const [dragging, setDragging] = useState(false)

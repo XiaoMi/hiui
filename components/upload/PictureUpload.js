@@ -22,7 +22,9 @@ const PictureUpload = ({
   name,
   withCredentials,
   headers,
-  data
+  data,
+  beforeUpload,
+  customUpload
 }) => {
   const [_fileList, uploadFiles, deleteFile] = useUpload({
     fileList,
@@ -34,7 +36,9 @@ const PictureUpload = ({
     withCredentials,
     headers,
     data,
-    onRemove
+    onRemove,
+    beforeUpload,
+    customUpload
   })
 
   // TODO: 提取 usePreview hook

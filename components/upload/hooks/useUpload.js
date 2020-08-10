@@ -114,6 +114,7 @@ const useUpload = ({
       if (customUpload) {
         customUpload(files)
       } else {
+        console.log(111)
         const _files = Object.keys(files)
           .map((idx) => {
             let file = files[idx]
