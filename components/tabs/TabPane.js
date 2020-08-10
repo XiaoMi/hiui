@@ -14,7 +14,7 @@ const TabPane = ({
     if (latestActiveIdIndex === activeIdIndex) {
       return
     }
-    if (activeIdIndex - 1 === index) {
+    if (activeIdIndex === index) {
       if (placement === 'horizontal') {
         animateClass =
           `${prefixCls}__` +
@@ -29,7 +29,7 @@ const TabPane = ({
             : 'slide-top')
       }
     }
-    if (latestActiveIdIndex - 1 === index) {
+    if (latestActiveIdIndex === index) {
       if (placement === 'horizontal') {
         animateClass =
           `${prefixCls}__` +
