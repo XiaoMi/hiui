@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import request from '../request'
 import { getFileType } from '../util'
 import { v4 as uuidV4 } from 'uuid'
+import Modal from '../../modal'
 
 const useUpload = ({
   fileList,
@@ -13,7 +14,9 @@ const useUpload = ({
   withCredentials,
   headers,
   data,
-  onRemove
+  onRemove,
+  beforeUpload,
+  customUpload
 }) => {
   const [_fileList, updateFileList] = useState(fileList || defaultFileList || [])
   const fileListRef = useRef(fileList || defaultFileList || [])
@@ -108,41 +111,55 @@ const useUpload = ({
 
   const uploadFiles = useCallback(
     (files) => {
-      const _files = Object.keys(files)
-        .map((idx) => {
-          let file = files[idx]
-          // TODO: beforeUpload customUpload
-          if (file.size > maxSize * 1024) {
-            // TODO: 弹窗提醒
+      if (customUpload) {
+        customUpload(files)
+      } else {
+        const _files = Object.keys(files)
+          .map((idx) => {
+            let file = files[idx]
+            // TODO: customUpload
+            if (beforeUpload) {
+              const result = beforeUpload(file, fileListRef.current)
+              if (result === false) {
+                return null
+              }
+            }
+            if (file.size > maxSize * 1024) {
+              Modal.confirm({
+                content: '上传文件超过最大限制',
+                cancelText: null,
+                confirmText: '我知道了'
+              })
 
-            return null
-          }
-          file.fileId = uuidV4()
-          file.uploadState = 'loading'
-          file.fileType = getFileType(file)
-          return file
-        })
-        .filter((file) => {
-          if (file) {
-            const action = request({
-              file,
-              action: uploadAction,
-              name,
-              withCredentials,
-              headers,
-              data,
-              onSuccess,
-              onError,
-              onProgress
-            })
-            file.abort = action.abort
-          }
-          return file
-        })
-      fileListRef.current = _files.reverse().concat(fileListRef.current)
-      updateFileList(fileListRef.current)
+              return null
+            }
+            file.fileId = uuidV4()
+            file.uploadState = 'loading'
+            file.fileType = getFileType(file)
+            return file
+          })
+          .filter((file) => {
+            if (file) {
+              const action = request({
+                file,
+                action: uploadAction,
+                name,
+                withCredentials,
+                headers,
+                data,
+                onSuccess,
+                onError,
+                onProgress
+              })
+              file.abort = action.abort
+            }
+            return file
+          })
+        fileListRef.current = _files.reverse().concat(fileListRef.current)
+        updateFileList(fileListRef.current)
+      }
     },
-    [onSuccess, onProgress, onError, uploadAction, name, withCredentials, headers, data]
+    [onSuccess, onProgress, onError, uploadAction, name, withCredentials, headers, data, beforeUpload, customUpload]
   )
 
   return [_fileList, uploadFiles, deleteFile]
