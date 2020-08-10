@@ -100,9 +100,11 @@ const Cascader = (props) => {
     setCascaderLabel(getCascaderLabel(cacheValue))
     setCascaderValue(cacheValue)
   }, [cacheValue])
-  //
+
   const menuNode = useClickOutside(e => {
-    if (!e.target.classList.contains('hi-cascader__input-keyword')) {
+    const container = e.target.closest('.hi-cascader__input-container')
+
+    if (container !== inputContainer.current) {
       setPopperShow(false)
     }
   })
