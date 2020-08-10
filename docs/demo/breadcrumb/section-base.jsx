@@ -19,11 +19,15 @@ class Demo extends React.Component {
     }]
     return (
       <div>
-        <Breadcrumb data={data}/>
+        <Breadcrumb data={data} onClick={(path)=>{
+          console.log('go path: ',path)
+        }}/>
       </div>
     )
   }
 }`
 
-const DemoBase = () => <DocViewer code={code} scope={{ Breadcrumb }} prefix={prefix} desc={desc} />
+const DemoBase = () => (
+  <DocViewer code={code} scope={{ Breadcrumb }} prefix={prefix} desc={desc} />
+)
 export default DemoBase

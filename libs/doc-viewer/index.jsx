@@ -26,8 +26,14 @@ export default class DocViewer extends React.Component {
   render () {
     const { code, scope, desc, leftOptions, rightOptions, prefix } = this.props
     const { leftOption, rightOption, innerHeight, descBarHeight } = this.state
+
     const codeToShow = Array.isArray(code)
-      ? code.find(c => isEqual(c.opt, [leftOption, rightOption].filter(item => !!item))).code
+      ? code.find((c) =>
+        isEqual(
+          c.opt,
+          [leftOption, rightOption].filter((item) => !!item)
+        )
+      ).code
       : code
     return (
       <div className='doc-viewer'>
@@ -80,7 +86,7 @@ export default class DocViewer extends React.Component {
           code={codeToShow}
           scope={scope}
           theme={theme}
-          transformCode={code => {
+          transformCode={(code) => {
             return code.replace(importRegx, '')
           }}
         >
@@ -95,7 +101,7 @@ export default class DocViewer extends React.Component {
               <LiveError />
             </div>
             <EditorWithLive
-              ref={node => (this.editorLive = node)}
+              ref={(node) => (this.editorLive = node)}
               desc={desc}
               prefix={prefix}
               innerHeight={innerHeight}

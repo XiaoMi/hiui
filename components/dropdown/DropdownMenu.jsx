@@ -18,7 +18,8 @@ class DropdownMenu extends React.Component {
       onChildMenuMouseLeave,
       onMenuItemClick,
       width,
-      theme
+      theme,
+      overlayClassName
     } = this.props
     const menuCls = classNames(`${prefixCls}__menu`, `theme__${theme}`)
     return (
@@ -32,6 +33,7 @@ class DropdownMenu extends React.Component {
         width={width}
         onMouseEnter={onMouseEnter}
         leftGap={0}
+        overlayClassName={overlayClassName}
         onMouseLeave={onMouseLeave}
       >
         <ul className={menuCls}>

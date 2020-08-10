@@ -28,7 +28,8 @@ const Overlay = props => {
     onMouseOut,
     onMouseEnter,
     onMouseLeave,
-    onClickOutside
+    onClickOutside,
+    overlayClassName
   } = props
   const [isAddevent, setIsAddevent] = useState(false)
   const [state, setState] = useState({
@@ -124,7 +125,7 @@ const Overlay = props => {
   return (
     <div
       ref={popperContainerRef}
-      className={classNames('hi-popper__container', {
+      className={classNames(overlayClassName, 'hi-popper__container', {
         'hi-popper__container--hide': !show
       })}
       style={{ left, top, zIndex }}

@@ -150,9 +150,13 @@ textarea.#{$input} {
     .hi-input__clear {
       display: block;
       border-radius: 50%;
-      color: #666;
-      font-size: 14px;
+      color: #bbb;
+      font-size: 22px;
       text-align: center;
+
+      &:hover {
+        color: #333;
+      }
     }
 
     .hi-input__suffix__icon {

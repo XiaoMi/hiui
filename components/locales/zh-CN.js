@@ -14,8 +14,34 @@ export default {
     lastMonth: '近一月',
     lastThreeMonth: '近三月',
     lastYear: '近一年',
-    month: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-    monthShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+    month: [
+      '一月',
+      '二月',
+      '三月',
+      '四月',
+      '五月',
+      '六月',
+      '七月',
+      '八月',
+      '九月',
+      '十月',
+      '十一月',
+      '十二月'
+    ],
+    monthShort: [
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月'
+    ],
     week: ['日', '一', '二', '三', '四', '五', '六'],
     placeholders: {
       date: '请选择日期',
@@ -46,13 +72,20 @@ export default {
   },
   cascader: {
     placeholder: '请选择',
-    noFoundTip: '无匹配数据'
+    noFoundTip: '无匹配数据',
+    emptyContent: '暂无数据'
   },
   select: {
     placeholder: '请选择',
     emptyContent: '无匹配数据',
     searchPlaceholder: '搜索',
-    checkAll: '全选'
+    checkAll: '全选',
+    justSelected: '仅看已选'
+  },
+  search: {
+    searchEmptyResult: '未找到搜索结果',
+    searchEmptyRecord: '无搜索记录',
+    searchRecord: '搜索历史'
   },
   transfer: {
     checkAll: '全选',

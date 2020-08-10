@@ -80,7 +80,9 @@ export default class EditorWrapper extends React.Component {
           }}
         >
           <div style={{ flex: 1 }}>
-            {Array.isArray(desc) ? desc.map(d => <div>{d}</div>) : desc}
+            {Array.isArray(desc)
+              ? desc.map((d, index) => <div key={index}>{d}</div>)
+              : desc}
           </div>
           <div>
             <Tooltip
@@ -95,9 +97,9 @@ export default class EditorWrapper extends React.Component {
                 }}
               >
                 {this.state.collapse ? (
-                  <Icon name='api' />
+                  <Icon name='show-code' />
                 ) : (
-                  <Icon name='noapi' />
+                  <Icon name='close-code' />
                 )}
               </span>
             </Tooltip>
@@ -132,7 +134,7 @@ export default class EditorWrapper extends React.Component {
                   this.editor.updateContent(code)
                 }}
               >
-                <Icon name='reset' />
+                <Icon name='reload' />
               </span>
             </Tooltip>
           </div>

@@ -23,6 +23,7 @@ const useClickOutside = (
     [onClickOutside, dom, element]
   )
   useEffect(() => {
+    // 使用事件捕获
     document.addEventListener(eventName, handleOutside, true)
     return () => {
       document.removeEventListener(eventName, handleOutside, true)

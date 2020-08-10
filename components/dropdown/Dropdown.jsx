@@ -116,7 +116,8 @@ class Dropdown extends React.Component {
       disabled,
       width,
       onButtonClick,
-      theme
+      theme,
+      overlayClassName
     } = this.props
     const { visible } = this.state
     const dropdownCls = classNames(
@@ -145,6 +146,7 @@ class Dropdown extends React.Component {
           data={data}
           placement={placement}
           onMouseEnter={this.handleMenuMouseEnter}
+          overlayClassName={overlayClassName}
           onMouseLeave={this.handleMenuMouseLeave}
           onChildMenuMouseEnter={this.handleChildMenuMouseEnter}
           onChildMenuMouseLeave={this.handleChildMenuMouseLeave}
@@ -157,7 +159,6 @@ class Dropdown extends React.Component {
 }
 
 Dropdown.propTypes = {
-  placement: PropTypes.oneOf(['top-start', 'bottom-start', 'top', 'bottom']),
   trigger: PropTypes.oneOfType([
     PropTypes.oneOf(['contextmenu', 'click', 'hover']),
     PropTypes.arrayOf(PropTypes.oneOf(['contextmenu', 'click', 'hover']))

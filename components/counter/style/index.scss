@@ -28,6 +28,8 @@ $counter: 'hi-counter' !default;
   &-sign {
     @include justify-center();
 
+    align-items: center;
+    justify-content: center;
     flex: 0 0 auto;
     width: $m-width-ceil;
     height: $m-width-ceil;

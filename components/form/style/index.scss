@@ -24,6 +24,10 @@
     flex-wrap: wrap;
   }
 
+  &--readOnly {
+    pointer-events: none;
+  }
+
   &__title {
     box-sizing: border-box;
     margin-top: 0;
@@ -92,6 +96,16 @@
     position: relative;
     vertical-align: top;
     min-height: 32px;
+
+    p {
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  &__children {
+    display: flex;
+    min-height: 30px;
   }
 
   &__error {
@@ -113,7 +127,15 @@
     padding: 2px 0;
     box-sizing: border-box;
     line-height: 20px;
+    transition: all 0.3s;
+    transform: translateY(-10%);
+    opacity: 0;
     color: get-color($palette-secondary, 'danger');
+
+    &__show {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
     .hi-form--inline & {
       top: 36px;
@@ -134,5 +156,9 @@
     position: absolute;
     top: 0;
     right: 0;
+  }
+
+  .hi-checkbox-group {
+    line-height: 32px;
   }
 }

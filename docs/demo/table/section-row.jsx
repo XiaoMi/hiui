@@ -2,62 +2,200 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
 const prefix = 'table-row'
-const code = `import React from 'react'
-import Table from '@hi-ui/hiui/es/table'\n
-class Demo extends React.Component {
-  constructor(props){
-    super(props)
+const desc = ['行高亮：突出某行数据且方便阅读']
+const rightOptions = ['行高亮', '批量选择']
+const code = [
+  {
+    code: `import React from 'react'
+    import Table from '@hi-ui/hiui/es/table'\n
+    class Demo extends React.Component {
+      constructor(props){
+        super(props)
+        this.columns = [
+          {
+            title: '商品名',
+            dataKey: 'name'
+          },
+          {
+            title: '品类',
+            dataKey: 'type'
+          },
+          {
+            title: '规格',
+            dataKey: 'size'
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            align: 'right'
+          },
+          {
+            title: '门店',
+            dataKey: 'address'
+          },
+          {
+            title: '库存',
+            dataKey: 'stock',
+            align: 'right'
+          }
+        ]
 
-    this.columns = [
+        this.data = [
+          {
+            name: '小米9',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '3299.00',
+            address: '华润五彩城店',
+            stock: '29,000',
+            key: 1
+          },
+          {
+            name: '小米9 SE',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '1999.00',
+            address: '清河店',
+            stock: '10,000',
+            key: 2
+          },
+          {
+            name: '小米8',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '2599.00',
+            address: '双安店',
+            stock: '12,000',
+            key: 3
+          },
+          {
+            name: 'Redmi Note7',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '999.00',
+            address: '华润五彩城店',
+            stock: '140,000',
+            key: 4
+          },
+          {
+            name: '小米8 SE',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '699.00',
+            address: '双安店',
+            stock: '12,000',
+            key: 5
+          }
+        ]
+      }
+      render() {
+        return <Table columns={this.columns} data={this.data} highlightedRowKeys={[1]}/>
+      }
+    }`,
+    opt: ['行高亮']
+  },
+  {
+    code: `import React from 'react'
+    import Table from '@hi-ui/hiui/es/table'\n
+    class Demo extends React.Component {
+      constructor(props){
+        super(props)
+        this.state={selectedRowKeys:[]}
+        this.columns = [
+          {
+            title: '商品名',
+            dataKey: 'name'
+          },
+          {
+            title: '品类',
+            dataKey: 'type'
+          },
+          {
+            title: '规格',
+            dataKey: 'size'
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            align: 'right'
+          },
+          {
+            title: '门店',
+            dataKey: 'address'
+          },
+          {
+            title: '库存',
+            dataKey: 'stock',
+            align: 'right'
+          }
+        ]
 
-      { title: 'Column 1', dataIndex: 'address', key: 'a',fixed:'left' },
-      { title: 'Column 2', dataIndex: 'address', key: 'b',  },
-      { title: 'Column 3', dataIndex: 'address', key: 'c', },
-      { title: 'Column 4', dataIndex: 'address', key: 'd', },
-        { title: 'Column 1', dataIndex: 'address', key: 'e', },
-        { title: 'Column 2', dataIndex: 'address', key: 'f',  },
-         { title: 'Column 1', dataIndex: 'address', key: 'g', },
-        { title: 'Column 2', dataIndex: 'address', key: 'h',  },
-      {
-        title: 'Action',
-        key: 'operation',
-        width: 100,
-        render: () => <a href="javascript:;">action</a>,
-      },
-    ]
-
-
-
-    this.data = []
-    for (let i = 0; i < 10; i++) {
-      this.data.push({
-        key: i+1,
-        name: \`Don Diablo \${i}\`,
-        age: \`\${i}\${i}\`,
-        address: \`EDC Las Vegas no. \${i}\`,
-      });
-    }
+        this.data = [
+          {
+            name: '小米9',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '3299.00',
+            address: '华润五彩城店',
+            stock: '29,000',
+            key: 1
+          },
+          {
+            name: '小米9 SE',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '1999.00',
+            address: '清河店',
+            stock: '10,000',
+            key: 2
+          },
+          {
+            name: '小米8',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '2599.00',
+            address: '双安店',
+            stock: '12,000',
+            key: 3
+          },
+          {
+            name: 'Redmi Note7',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '999.00',
+            address: '华润五彩城店',
+            stock: '140,000',
+            key: 4
+          },
+          {
+            name: '小米8 SE',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '699.00',
+            address: '双安店',
+            stock: '12,000',
+            key: 5
+          }
+        ]
+      }
+      render() {
+        return (<Table
+          columns={this.columns}
+          data={this.data}
+          rowSelection={{
+            selectedRowKeys: this.state.selectedRowKeys,
+            onChange: selectedRowKeys => {
+              this.setState({selectedRowKeys})
+            }
+          }}
+        />)
+      }
+    }`,
+    opt: ['批量选择']
   }
-  render() {
-    return (
-      <div style={{maxWidth: '1080px'}}>
-         <Table
-           columns={this.columns}
-           data={this.data}
-           scrollX
-           fixTop={64}
-           height="300px"
-         />
-      </div>
+]
 
-    )
-  }
-}`
-const DemoRow = () => (
-  <DocViewer
-    code={code}
-    scope={{ Table }}
-    prefix={prefix}
-  />
+const DemoBase = () => (
+  <DocViewer code={code} scope={{ Table }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
 )
-export default DemoRow
+export default DemoBase

@@ -52,7 +52,6 @@ export default {
       week: 'Select Week',
       weekrange: ['Select Start Week', 'Select End Week'],
       timeperiod: ['Select Start Date Time', 'Select Start End Time']
-
     },
     timePeriod: 'Period',
     hours: 'H',
@@ -78,7 +77,13 @@ export default {
     placeholder: 'Please select',
     emptyContent: 'Not found',
     searchPlaceholder: 'Please search',
-    checkAll: 'Check all'
+    checkAll: 'Check all',
+    justSelected: 'Just Selected'
+  },
+  search: {
+    searchEmptyResult: 'No serach results',
+    searchEmptyRecord: 'No serach record',
+    searchRecord: 'Serach record'
   },
   transfer: {
     checkAll: 'Check all',
@@ -127,6 +132,7 @@ export default {
     searchPlaceholder: 'Keyword search',
     searchEmptyResult: 'No serach results',
     modalTitle: 'Warning',
-    delTips: 'Deleting a node will delete all child nodes, are you sure to delete this node?'
+    delTips:
+      'Deleting a node will delete all child nodes, are you sure to delete this node?'
   }
 }
