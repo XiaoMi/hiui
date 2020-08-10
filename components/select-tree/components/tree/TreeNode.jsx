@@ -57,7 +57,6 @@ const TreeNode = ({ data, flttenData }) => {
 
   const renderTitle = useCallback((node, _selectedId) => {
     const { id, title, _title } = node
-    console.log(node)
     return (
       <div
         ref={treeNodeRef}
