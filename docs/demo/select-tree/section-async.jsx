@@ -149,7 +149,7 @@ const code = [
                 method: 'GET',
                 key: 'id',
                 params: {pId: key},
-                url: 'http://localhost:8001/tree',
+                url: 'http://my-json-server.typicode.com/hiui-group/db/fulldata',
                 transformResponse: (res) => {
                   console.log(2, res)
                   return res.map(r => {
@@ -311,7 +311,7 @@ const code = [
                 type: 'GET',
                 key: 'id',
                 params: {pId: key},
-                url: 'http://localhost:3000/tree',
+                url: 'http://my-json-server.typicode.com/hiui-group/db/fulldata',
                 transformResponse: (res) => {
                   return res.map(r => {
                     return {

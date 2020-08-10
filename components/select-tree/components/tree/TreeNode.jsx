@@ -10,7 +10,7 @@ const Switcher = ({expanded, node, onExpandEvent}) => {
   const [loading, setLoading] = useState(false)
   return (
     loading ? <IconLoading /> : <Icon
-      name={expanded ? 'open' : 'packup'}
+      name={expanded ? 'caret-down' : 'caret-right'}
       onClick={() => {
         !expanded && setLoading(true)
         onExpandEvent(node, !expanded, () => setLoading(false))

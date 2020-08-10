@@ -8,7 +8,7 @@ import _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 import CustomTreeNode from './customTreeNode'
 import axios from 'axios'
-import './style/index.scss'
+import './style/index'
 
 const PREFIX = 'hi-tree'
 
