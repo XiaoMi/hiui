@@ -16,6 +16,7 @@ export default {
   components: {
     new: {
       slider: components['slider'],
+      'select-tree': components['select-tree'],
       list: components['list'],
       filter: components['filter'],
       table: components['table'],

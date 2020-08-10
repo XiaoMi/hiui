@@ -59,6 +59,10 @@ $hoverColor: rgba(66, 133, 244, 0.08) !default;
     align-items: center;
     padding-bottom: 4px;
 
+    .hi-btn--loading--icon {
+      margin-top: -6px;
+    }
+
     &__title {
       display: flex;
       flex: 1;

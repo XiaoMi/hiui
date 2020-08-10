@@ -7,6 +7,7 @@ import { getAncestorIds, findNode } from './util'
 import _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 import CustomTreeNode from './customTreeNode'
+import axios from 'axios'
 import './style/index'
 
 const PREFIX = 'hi-tree'
@@ -56,10 +57,11 @@ const Tree = (props) => {
     filter = false,
     contextMenu,
     editable,
-    onBeforeSave = () => {},
-    onSave = () => {},
-    onBeforeDelete = () => {},
-    onDelete = () => {}
+    onBeforeSave,
+    onSave,
+    onBeforeDelete,
+    onDelete,
+    onLoadChildren
     // onDropEnd
   } = props
   const { placeholder = '关键词搜索', emptyContent = '未找到搜索结果' } = searchConfig
@@ -90,6 +92,25 @@ const Tree = (props) => {
     _.cloneDeep(cacheData),
     matchedNodes.map((n) => n.id),
     filteredIds
+  )
+  // 加载节点
+  const loadChildren = useCallback(
+    (node) => {
+      if (onLoadChildren) {
+        return axios(onLoadChildren(node)).then(
+          (res) => {
+            const dataCache = _.cloneDeep(cacheData)
+            const loadNode = findNode(node.id, dataCache)
+            loadNode.children = res
+            updateCacheData(dataCache)
+          },
+          (error) => {
+            return error
+          }
+        )
+      }
+    },
+    [onLoadChildren, cacheData]
   )
   // 移动节点
   const switchNode = useCallback((targetItemId, sourceItemId, data, allData, dropDividerPosition) => {
@@ -419,6 +440,7 @@ const Tree = (props) => {
       )}
       <BaseTree
         {...props}
+        onLoadChildren={loadChildren}
         treeNodeRender={treeNodeRender}
         expandedIds={searchable && searchValue !== '' ? filteredIds : expanded}
         onExpand={(expandedNode, isExpanded, ids) => {
