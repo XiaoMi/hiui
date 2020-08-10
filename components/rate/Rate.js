@@ -1,11 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import classnames from 'classnames'
 import * as Icons from './Icons'
 import ToolTip from '../tooltip'
 
 const Rate = ({ value: trueVal, disabled, useEmoji, allowHalf, character, renderCharacter, defaultValue, className, style, count, prefixCls, tooltips, color, vertical, onChange, clearable, descRender, readOnly }) => {
   const [value, setValue] = useState(trueVal === undefined ? defaultValue : trueVal)
+
   const [hoverValue, setHoverValue] = useState(0)
+
+  useEffect(() => {
+    if (trueVal !== undefined) {
+      setValue(trueVal)
+    }
+  }, [trueVal])
 
   const handleIconLeave = () => {
     if (disabled) {
@@ -44,11 +51,12 @@ const Rate = ({ value: trueVal, disabled, useEmoji, allowHalf, character, render
   }
 
   const renderIcon = (idx) => {
+    console.log(value)
     let currentValue = hoverValue || value
     if (!allowHalf) {
       currentValue = Math.ceil(currentValue)
     }
-
+    console.log(currentValue)
     return (
       <Icon {...{ value: idx, currentValue, disabled, useEmoji, allowHalf, character, style, renderCharacter, readOnly }} />
     )
