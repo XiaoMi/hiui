@@ -4,13 +4,11 @@ import Popper from '../popper'
 import Switch from '../switch'
 import Icon from '../icon'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import useClickOutside from './hooks/useClickOutside'
 
 const StandardTable = () => {
   const colMenuRef = useRef(null)
   const [showPopper, setShowPopper] = useState(false)
   const popperMenu = useRef(null)
-  useClickOutside(popperMenu, () => setShowPopper(false), colMenuRef)
 
   const { sortCol, setSortCol, visibleCols, setVisibleCols, setCacheVisibleCols, columns } = useContext(TableContext)
 
@@ -35,9 +33,6 @@ const StandardTable = () => {
   return (
     <div
       ref={colMenuRef}
-      onClick={() => {
-        setShowPopper(!showPopper)
-      }}
       style={{
         position: 'absolute',
         height: '100%',
@@ -54,8 +49,23 @@ const StandardTable = () => {
         background: 'rgb(251, 251, 251)'
       }}
     >
-      <Icon name='set' />
-      <Popper show={showPopper} attachEle={colMenuRef.current} zIndex={1040} placement='bottom-end' width='250'>
+      <Icon
+        name='setting'
+        onClick={() => {
+          setShowPopper(!showPopper)
+        }}
+      />
+      <Popper
+        show={showPopper}
+        attachEle={colMenuRef.current}
+        zIndex={1040}
+        placement='bottom-end'
+        width='250'
+        setOverlayContainer={() => document.body}
+        onClickOutside={() => {
+          setShowPopper(false)
+        }}
+      >
         <div ref={popperMenu}>
           <DragDropContext
             onDragEnd={(result) => {

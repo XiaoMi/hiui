@@ -32,7 +32,7 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
       }}
     >
       <Icon name='down' style={{ marginLeft: 4, cursor: 'pointer' }} />
-      <Popper show={_showPopper} attachEle={menuRef.current} zIndex={1040}>
+      <Popper show={_showPopper} attachEle={menuRef.current} zIndex={1040} setOverlayContainer={() => document.body}>
         <div className={[`${prefix}__col-menu`]} ref={popperMenu}>
           {canSort && (
             <div
