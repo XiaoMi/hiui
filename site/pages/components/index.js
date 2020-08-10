@@ -18,7 +18,9 @@ export default {
       slider: components['slider'],
       list: components['list'],
       filter: components['filter'],
-      table: components['table']
+      table: components['table'],
+      search: components['search'],
+      drawer: components['drawer']
     },
     'group-basic': {
       grid: components['grid'],

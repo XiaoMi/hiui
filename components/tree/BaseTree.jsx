@@ -8,7 +8,7 @@ import useCheckable from './hooks/useCheckable'
 import useExpand from './hooks/useExpand'
 import { getAncestorIds } from './util'
 
-const PREFIX = 'hi-editor-tree'
+const PREFIX = 'hi-tree'
 
 const BaseTree = ({
   data,
@@ -30,7 +30,11 @@ const BaseTree = ({
   onClick,
   draggable,
   onLoadChildren,
-  apperance
+  apperance,
+  onDragStart,
+  onDragOver,
+  onDrop,
+  onDragEnd
 }) => {
   const [flatData, updateFlatData] = useFlatData(data)
   const [selectNodeId, onSelectNode] = useSelect({
@@ -68,7 +72,11 @@ const BaseTree = ({
         onCheckNode,
         draggable,
         onLoadChildren,
-        apperance
+        apperance,
+        onDragStart,
+        onDragOver,
+        onDrop,
+        onDragEnd
       }}
     >
       <div className={PREFIX}>

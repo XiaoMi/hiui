@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from 'react'
 
 const useSelect = ({ defaultSelectedId, selectedId, onSelect, selectable }) => {
-  const [_selectedId, setSelectedId] = useState(selectedId || defaultSelectedId || null)
+  const [_selectedId, setSelectedId] = useState((selectable && selectedId) || (selectable && defaultSelectedId) || null)
 
   useEffect(() => {
-    if (selectable) {
+    if (selectable && selectedId) {
       setSelectedId(selectedId)
     }
-  }, [selectedId])
+  }, [selectedId, selectable])
 
   const onSelectNode = useCallback(
     (selectedNode) => {

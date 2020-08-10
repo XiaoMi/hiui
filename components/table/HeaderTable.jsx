@@ -85,7 +85,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   useEffect(() => {
     if (headerInner.current && headerInner.current.childNodes && headerInner.current.childNodes[1].childNodes[0]) {
       const _minColWidth = Array.from(headerInner.current.childNodes[1].childNodes[0].childNodes).map((th) => {
-        return th.childNodes[0].className === 'power-table__header__title' ? th.childNodes[0].offsetWidth : 0
+        return th.childNodes[0].className === 'hi-table__header__title' ? th.childNodes[0].offsetWidth : 0
       })
       setMinColWidth(_minColWidth)
     }
@@ -164,7 +164,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                       : '#fbfbfb'
                 }}
               >
-                <span className='power-table__header__title'>
+                <span className='hi-table__header__title'>
                   {typeof c.title === 'function' ? c.title() : c.title}
                   {showColMenu && c.isLast && (
                     <ColumnMenu

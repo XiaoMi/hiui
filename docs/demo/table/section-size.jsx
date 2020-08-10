@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
-const prefix = 'table-row'
+const prefix = 'table-size'
 const desc = ['紧凑：展示空间有限的场景']
 const rightOptions = ['紧凑', '宽松']
 const code = [
@@ -185,7 +185,7 @@ const code = [
   }
 ]
 
-const DemoBase = () => (
+const DemoSize = () => (
   <DocViewer code={code} scope={{ Table }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
 )
-export default DemoBase
+export default DemoSize

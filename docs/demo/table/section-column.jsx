@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
 const prefix = 'table-column'
 const desc = ['列对齐：根据数据形式调整对齐方式']
-const rightOptions = ['列对齐', '列高亮']
+const rightOptions = ['列对齐', '列高亮', '列操作']
 const code = [
   {
     code: `import React from 'react'
@@ -182,6 +182,96 @@ const code = [
       }
     }`,
     opt: ['列高亮']
+  },
+  {
+    code: `import React from 'react'
+    import Table from '@hi-ui/hiui/es/table'\n
+    class Demo extends React.Component {
+      constructor(props){
+        super(props)
+        this.columns = [
+          {
+            title: 'Name',
+            dataKey: 'name',
+            key: 1
+          },
+          {
+            title: 'Age',
+            dataKey: 'age',
+            key: 2,
+            sorter (pre, next) {
+              return pre.age - next.age
+            }
+          },
+          {
+            title: 'Home phone',
+            colSpan: 2,
+            dataKey: 'tel',
+            key: 3
+          },
+          {
+            title: 'Phone',
+            dataKey: 'phone',
+            key: 4,
+            sorter (pre, next) {
+              return pre.phone - next.phone
+            }
+          },
+          {
+            title: 'Address',
+            dataKey: 'address',
+            key: 5
+          }
+        ]
+
+        this.data = [
+          {
+            key: '1',
+            name: 'John Brown',
+            age: 32,
+            tel: '0571-22098909',
+            phone: 18889898989,
+            address: 'New York No. 1 Lake Park'
+          },
+          {
+            key: '2',
+            name: 'Jim Green',
+            tel: '0571-22098333',
+            phone: 18889898888,
+            age: 42,
+            address: 'London No. 1 Lake Park'
+          },
+          {
+            key: '3',
+            name: 'Joe Black',
+            age: 32,
+            tel: '0575-22098909',
+            phone: 18900010002,
+            address: 'Sidney No. 1 Lake Park'
+          },
+          {
+            key: '4',
+            name: 'Jim Red',
+            age: 18,
+            tel: '0575-22098909',
+            phone: 18900010002,
+            address: 'London No. 2 Lake Park'
+          },
+          {
+            key: '5',
+            name: 'Jake White',
+            age: 18,
+            tel: '0575-22098909',
+            phone: 18900010002,
+            address: 'Dublin No. 2 Lake Park'
+          }
+        ]
+      }
+      render() {
+        return <Table columns={this.columns} data={this.data} showColMenu />
+      }
+    }`,
+    opt: ['列操作']
   }
 ]
 

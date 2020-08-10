@@ -7,7 +7,7 @@ const desc = [
   '树形表格：首列是树形结构，每个树杈都可共用表头',
   '内嵌式：表格每行隐藏部分数据，递进呈现'
 ]
-const rightOptions = ['全边框', '树形表格', '内嵌式', '表头分组']
+const rightOptions = ['全边框', '树形表格', '内嵌式', '表头分组', '表头吸顶', '固定表头', '合并单元格']
 const code = [
   {
     code: `import React from 'react'
@@ -330,6 +330,281 @@ const code = [
       }
     }`,
     opt: ['表头分组']
+  },
+  {
+    code: `import React from 'react'
+    import Table from '@hi-ui/hiui/es/table'\n
+    class Demo extends React.Component {
+      constructor(props){
+        super(props)
+        this.columns = [
+          {
+            title: '商品名',
+            dataKey: 'name'
+          },
+          {
+            title: '品类',
+            dataKey: 'type'
+          },
+          {
+            title: '规格',
+            dataKey: 'size'
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            align: 'right'
+          },
+          {
+            title: '门店',
+            dataKey: 'address'
+          },
+          {
+            title: '库存',
+            dataKey: 'stock',
+            align: 'right'
+          }
+        ]
+
+        this.data = [
+          {
+            name: '小米9',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '3299.00',
+            address: '华润五彩城店',
+            stock: '29,000',
+            key: 1
+          },
+          {
+            name: '小米9 SE',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '1999.00',
+            address: '清河店',
+            stock: '10,000',
+            key: 2
+          },
+          {
+            name: '小米8',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '2599.00',
+            address: '双安店',
+            stock: '12,000',
+            key: 3
+          },
+          {
+            name: 'Redmi Note7',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '999.00',
+            address: '华润五彩城店',
+            stock: '140,000',
+            key: 4
+          },
+          {
+            name: '小米8 SE',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '699.00',
+            address: '双安店',
+            stock: '12,000',
+            key: 5
+          }
+        ]
+      }
+      render() {
+        return <Table columns={this.columns} data={this.data} sticky stickyTop={63}/>
+      }
+    }`,
+    opt: ['表头吸顶']
+  },
+  {
+    code: `import React from 'react'
+    import Table from '@hi-ui/hiui/es/table'\n
+    class Demo extends React.Component {
+      constructor(props){
+        super(props)
+        this.columns = [
+          {
+            title: '商品名',
+            dataKey: 'name'
+          },
+          {
+            title: '品类',
+            dataKey: 'type'
+          },
+          {
+            title: '规格',
+            dataKey: 'size'
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            align: 'right'
+          },
+          {
+            title: '门店',
+            dataKey: 'address'
+          },
+          {
+            title: '库存',
+            dataKey: 'stock',
+            align: 'right'
+          }
+        ]
+
+        this.data = [
+          {
+            name: '小米9',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '3299.00',
+            address: '华润五彩城店',
+            stock: '29,000',
+            key: 1
+          },
+          {
+            name: '小米9 SE',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '1999.00',
+            address: '清河店',
+            stock: '10,000',
+            key: 2
+          },
+          {
+            name: '小米8',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '2599.00',
+            address: '双安店',
+            stock: '12,000',
+            key: 3
+          },
+          {
+            name: 'Redmi Note7',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '999.00',
+            address: '华润五彩城店',
+            stock: '140,000',
+            key: 4
+          },
+          {
+            name: '小米8 SE',
+            type: '手机',
+            size: '6G+64G 全息幻彩蓝',
+            price: '699.00',
+            address: '双安店',
+            stock: '12,000',
+            key: 5
+          }
+        ]
+      }
+      render() {
+        return <Table columns={this.columns} data={this.data} maxHeight={200}/>
+      }
+    }`,
+    opt: ['固定表头']
+  },
+  {
+    code: `import React from 'react'
+    import Table from '@hi-ui/hiui/es/table'\n
+    class Demo extends React.Component {
+      constructor(props){
+        super(props)
+        this.renderContent = (value, row, index) => {
+          const obj = {
+            children: value,
+            props: {}
+          }
+          if (index === 4) {
+            obj.props.colSpan = 0
+          }
+          return obj
+        }
+        this.columns = [
+          {
+            title: 'Name',
+            dataKey: 'name',
+            render: (text, row, index) => {
+              if (index < 4) {
+                return <span>{text}</span>
+              }
+              return {
+                children: <span>{text}</span>,
+                props: {
+                  colSpan: 4
+                }
+              }
+            },
+            key: 1
+          },
+          {
+            title: 'Age',
+            dataKey: 'age',
+            key: 2,
+            render: this.renderContent
+          },
+          {
+            title: 'Home phone',
+            dataKey: 'tel',
+            key: 3,
+            render: this.renderContent
+          },
+          {
+            title: 'Address',
+            dataKey: 'address',
+            render: this.renderContent,
+            key: 4
+          }
+        ]
+
+        this.data = [
+          {
+            key: '1',
+            name: 'John Brown',
+            age: 32,
+            tel: '0571-22098909',
+            address: 'New York No. 1 Lake Park'
+          },
+          {
+            key: '2',
+            name: 'Jim Green',
+            tel: '0571-22098333',
+            age: 42,
+            address: 'London No. 1 Lake Park'
+          },
+          {
+            key: '3',
+            name: 'Joe Black',
+            age: 32,
+            tel: '0575-22098909',
+            address: 'Sidney No. 1 Lake Park'
+          },
+          {
+            key: '4',
+            name: 'Jim Red',
+            age: 18,
+            tel: '0575-22098909',
+            address: 'London No. 2 Lake Park'
+          },
+          {
+            key: '5',
+            name: 'Jake White',
+            age: 18,
+            tel: '0575-22098909',
+            address: 'Dublin No. 2 Lake Park'
+          }
+        ]
+      }
+      render() {
+        return <Table columns={this.columns} data={this.data} />
+      }
+    }`,
+    opt: ['合并单元格']
   }
 ]
 
