@@ -7,7 +7,7 @@ import useUpload from './hooks/useUpload'
 
 const NormalUpload = ({
   maxCount,
-  content,
+  content = '本地上传',
   disabled,
   multiple,
   tips,

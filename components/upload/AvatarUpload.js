@@ -15,7 +15,6 @@ const AvatarUpload = ({
   theme,
   fileList,
   defaultFileList,
-  maxCount,
   multiple,
   avatarOptions = {},
   onChange,
