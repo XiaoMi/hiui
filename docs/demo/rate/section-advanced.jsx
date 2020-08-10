@@ -26,7 +26,7 @@ class Demo extends React.Component {
   render() {
     const { value } = this.state
     return (
-      <Form labelWidth="120px" labelPosition="left">
+      <Form labelWidth={120} labelPosition="left">
         <FormItem label="任意数量">
           <Rate count={10} allowHalf defaultValue={9.5} />
         </FormItem>

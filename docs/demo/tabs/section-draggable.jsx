@@ -3,7 +3,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 
 const prefix = 'tabs-draggable'
-const desc = 'Tabs 拖拽功能'
+const desc = 'Tabs 排序功能'
 const rightOptions = ['水平方向', '垂直方向']
 
 const code = [
