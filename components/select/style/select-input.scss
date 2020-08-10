@@ -56,6 +56,11 @@
       display: block;
       color: #bbb;
     }
+
+    .hi-select__input--icon__close:hover {
+      display: block;
+      color: #333;
+    }
   }
 
   .hi-select__input--icon {
@@ -117,7 +122,7 @@
     display: inline-block;
     padding-right: 8px;
     cursor: pointer;
-    font-size: 24px;
+    font-size: 22px;
     color: #434343;
     background-color: #fff;
     transform: scale(0.66666667) rotate(0deg);

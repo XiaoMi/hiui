@@ -14,6 +14,14 @@ export default {
     changelog: components['changelog']
   },
   components: {
+    new: {
+      slider: components['slider'],
+      list: components['list'],
+      filter: components['filter'],
+      table: components['table'],
+      search: components['search'],
+      drawer: components['drawer']
+    },
     'group-basic': {
       grid: components['grid'],
       typography: components['typography'],
@@ -31,8 +39,10 @@ export default {
     'group-form': {
       form: components['form'],
       input: components['input'],
+      search: components['search'],
       counter: components['counter'],
       select: components['select'],
+      'select-tree': components['select-tree'],
       cascader: components['cascader'],
       radio: components['radio'],
       filter: components['filter'],
@@ -43,6 +53,7 @@ export default {
       transfer: components['transfer'],
       tree: components['tree'],
       upload: components['upload'],
+      slider: components['slider'],
       rate: components['rate']
     },
     'group-data': {

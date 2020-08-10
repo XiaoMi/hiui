@@ -12,6 +12,7 @@ class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
+      value:['手机','小米'],
       options: [
         {
           id: '手机',
@@ -65,11 +66,17 @@ class Demo extends React.Component {
     }
   }
   render(){
+    const {value} = this.state
     return(
       <Cascader
         onChange={(id)=>{
-          console.log('on change', id)
+          console.log('change')
+          this.setState({
+            value:id
+          })
         }}
+     
+        value={value}
         data={this.state.options}
         style={{ width: 240 }}
       />
@@ -77,7 +84,8 @@ class Demo extends React.Component {
   }
 }`,
     opt: ['基础']
-  }, {
+  },
+  {
     code: `import React from 'react'
 import Cascader from '@hi-ui/hiui/es/cascader'\n
 class Demo extends React.Component {
@@ -142,7 +150,7 @@ class Demo extends React.Component {
         onChange={(id)=>{
           console.log('on change', id)
         }}
-        value={['电视','小米电视4C']}
+        defaultValue={['电视','小米电视4C']}
         data={this.state.options}
         style={{ width: 240 }}
       />
@@ -150,7 +158,8 @@ class Demo extends React.Component {
   }
 }`,
     opt: ['带默认值']
-  }, {
+  },
+  {
     code: `import React from 'react'
 import Cascader from '@hi-ui/hiui/es/cascader'\n
 class Demo extends React.Component {
@@ -223,7 +232,8 @@ class Demo extends React.Component {
   }
 }`,
     opt: ['可清空']
-  }, {
+  },
+  {
     code: `import React from 'react'
 import Cascader from '@hi-ui/hiui/es/cascader'\n
 class Demo extends React.Component {

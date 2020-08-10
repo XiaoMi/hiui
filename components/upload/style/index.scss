@@ -123,6 +123,7 @@
     min-height: 172px;
     box-sizing: border-box;
     border: 1px dashed #dbdbdb;
+    transition: border-color 0.3s;
     border-radius: 2px;
     cursor: pointer;
     padding: 12px;
@@ -198,7 +199,7 @@
       }
     }
 
-    .drop-over {
+    &.drop-over {
       border: 1px dashed #0099fb;
     }
   }
@@ -259,6 +260,7 @@
         font-size: 28px;
         color: #e7e7e7;
         border: 1px dashed rgba(216, 216, 216, 1);
+        transition: border-color 0.3s;
         line-height: 140px;
 
         &:hover {
@@ -343,6 +345,7 @@
       height: 80px;
       line-height: 80px;
       box-sizing: border-box;
+      cursor: pointer;
     }
   }
 
@@ -391,8 +394,6 @@
     opacity: 0.34;
     z-index: 2;
   }
-
-
 
   &--picture-card {
     .hi-upload__upstatus {

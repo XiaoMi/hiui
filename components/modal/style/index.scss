@@ -25,15 +25,18 @@ $borderColor: #e7e7e7 !default;
     }
   }
 
-  &__wrapper {
-    display: flex;
-    flex-direction: column;
-    background: #fff;
+  &__container {
     z-index: 1000;
     top: 100px;
     left: 50%;
     transform: translateX(-50%);
     position: fixed;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
     border-radius: 2px;
     box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
 
@@ -89,6 +92,30 @@ $borderColor: #e7e7e7 !default;
 
     &--divided {
       border-top: 1px solid $borderColor;
+    }
+  }
+
+  .modal-transition {
+    &-enter {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+
+    &-enter-done {
+      opacity: 1;
+      transform: scale(1);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    &-exit {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    &-exit-done {
+      opacity: 0;
+      transform: scale(0.4);
+      transition: opacity 0.3s, transform 0.3s;
     }
   }
 }

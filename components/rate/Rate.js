@@ -1,11 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import classnames from 'classnames'
 import * as Icons from './Icons'
 import ToolTip from '../tooltip'
 
 const Rate = ({ value: trueVal, disabled, useEmoji, allowHalf, character, renderCharacter, defaultValue, className, style, count, prefixCls, tooltips, color, vertical, onChange, clearable, descRender, readOnly }) => {
-  const [value, setValue] = useState(!trueVal ? defaultValue : trueVal)
+  const [value, setValue] = useState(trueVal === undefined ? defaultValue : trueVal)
+
   const [hoverValue, setHoverValue] = useState(0)
+
+  useEffect(() => {
+    if (trueVal !== undefined) {
+      setValue(trueVal)
+    }
+  }, [trueVal])
 
   const handleIconLeave = () => {
     if (disabled) {
@@ -31,19 +38,25 @@ const Rate = ({ value: trueVal, disabled, useEmoji, allowHalf, character, render
     }
     if (valueIndex === value && clearable) {
       onChange && onChange(0)
-      setValue(0)
+      if (trueVal === undefined) {
+        setValue(0)
+      }
       return
     }
+
+    if (trueVal === undefined) {
+      setValue(valueIndex)
+    }
     onChange && onChange(valueIndex)
-    setValue(valueIndex)
   }
 
   const renderIcon = (idx) => {
+    console.log(value)
     let currentValue = hoverValue || value
     if (!allowHalf) {
       currentValue = Math.ceil(currentValue)
     }
-
+    console.log(currentValue)
     return (
       <Icon {...{ value: idx, currentValue, disabled, useEmoji, allowHalf, character, style, renderCharacter, readOnly }} />
     )
@@ -131,6 +144,7 @@ function Icon ({ value, currentValue, disabled, useEmoji, allowHalf, character, 
     return character
   }
   if (useEmoji) {
+    const emojiValue = currentValue > 5 ? 5 : currentValue
     const Emojis = [
       Icons.EmojiOne,
       Icons.EmojiTwo,
@@ -138,8 +152,8 @@ function Icon ({ value, currentValue, disabled, useEmoji, allowHalf, character, 
       Icons.EmojiFour,
       Icons.EmojiFive
     ]
-    if (value <= currentValue) {
-      return React.createElement(Emojis[currentValue - 1])
+    if (value <= emojiValue) {
+      return React.createElement(Emojis[emojiValue - 1])
     } else {
       return <Icons.EmojiDefault />
     }

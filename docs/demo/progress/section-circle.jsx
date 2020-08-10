@@ -66,7 +66,7 @@ class Demo extends React.Component {
         </Col>
       </Row>
       <Row gutter>                                          
-        <Col span={12}>
+        <Col span={24}>
           <div style={{display:'inline-block'}}>
             <Progress percent={this.state.percent} apperance='circle' radius={radius}/>
           </div>

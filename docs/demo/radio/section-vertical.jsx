@@ -31,11 +31,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoVertical = () => (
-  <DocViewer
-    code={code}
-    scope={{ Radio }}
-    prefix={prefix}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ Radio }} prefix={prefix} desc={desc} />
 )
 export default DemoVertical

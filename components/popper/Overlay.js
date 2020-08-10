@@ -28,7 +28,8 @@ const Overlay = props => {
     onMouseOut,
     onMouseEnter,
     onMouseLeave,
-    onClickOutside
+    onClickOutside,
+    overlayClassName
   } = props
   const [isAddevent, setIsAddevent] = useState(false)
   const [state, setState] = useState({
@@ -43,6 +44,7 @@ const Overlay = props => {
   let popperWidth
   const staticPopperRef = useRef()
   let popperContainerRef
+
   if (onClickOutside) {
     popperContainerRef = useClickOutside(e => {
       onClickOutside && onClickOutside(e)
@@ -123,7 +125,7 @@ const Overlay = props => {
   return (
     <div
       ref={popperContainerRef}
-      className={classNames('hi-popper__container', {
+      className={classNames(overlayClassName, 'hi-popper__container', {
         'hi-popper__container--hide': !show
       })}
       style={{ left, top, zIndex }}
@@ -153,8 +155,8 @@ const Overlay = props => {
 }
 Overlay.defaultProps = {
   show: false,
-  topGap: 2,
-  leftGap: 2,
+  topGap: 0,
+  leftGap: 0,
   zIndex: 1060,
   placement: 'bottom-start'
 }

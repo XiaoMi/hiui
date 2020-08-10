@@ -1,4 +1,3 @@
-
 # Rate 评分
 
 评分是通过离散型数据来设置某一个指标优劣的组件
@@ -37,24 +36,21 @@ import DemoRenderCharacter from '../../demo/rate/section-renderCharacter.jsx'
 
 <DemoRenderCharacter />
 
-import { Badge } from '@libs'
-
-
 ## Props
 
-| 参数         | 说明                      | 类型                    | 可选值        | 默认值 |
-| ------------ | ------------------------- | ----------------------- | ------------- | ------ |
-| clearable    | 是否允许再次点击后清除    | boolean                 | true \| false | true   |
-| allowHalf    | 是否允许半选              | boolean                 | true \| false | true   |
-| useEmoji     | 是否使用表情              | boolean                 | true \| false | false  |
-| count        | star 数量，Emoji 时不可用 | number                  | -             | 5      |
-| defaultValue | 默认值                    | number                  | -             | 0      |
-| disabled     | 禁用，无法进行交互,鼠标禁用交互效果       | boolean                 | true \| false | false  |
-| readOnly     | 只读，无法进行交互        | boolean                 | true \| false | false  |
-| tooltips     | 自定义每项的提示信息      | string[]                | -             | -      |
-| descRender   | 自定义辅助文字函数     | (value: number,index: number) => ReactNode | -             | -      |
-| value        | 当前数，受控值            | number                  | -             | -      |
-| character    | 自定义字符            | ReactNode \|string                 | -             | -      |
-| color        | 自定义颜色（只对icon、字体有效）        | string                 | -             | -      |
-| onChange     | 选择时的回调              | (value: number) => void | -             | -      |
-| characterRender| 自定义渲染 character 函数  | 	(value: number,index: number) => ReactNode | -             | -      |
+| 参数            | 说明                                | 类型                                       | 可选值        | 默认值 |
+| --------------- | ----------------------------------- | ------------------------------------------ | ------------- | ------ |
+| clearable       | 是否允许再次点击后清除              | boolean                                    | true \| false | true   |
+| allowHalf       | 是否允许半选                        | boolean                                    | true \| false | true   |
+| useEmoji        | 是否使用表情                        | boolean                                    | true \| false | false  |
+| count           | star 数量，Emoji 时不可用           | number                                     | -             | 5      |
+| defaultValue    | 默认值                              | number                                     | -             | 0      |
+| disabled        | 禁用，无法进行交互,鼠标禁用交互效果 | boolean                                    | true \| false | false  |
+| readOnly        | 只读，无法进行交互                  | boolean                                    | true \| false | false  |
+| tooltips        | 自定义每项的提示信息                | string[]                                   | -             | -      |
+| descRender      | 自定义辅助文字函数                  | (value: number,index: number) => ReactNode | -             | -      |
+| value           | 当前数，受控值                      | number                                     | -             | -      |
+| character       | 自定义字符                          | ReactNode \|string                         | -             | -      |
+| color           | 自定义颜色（只对 icon、字体有效）   | string                                     | -             | -      |
+| onChange        | 选择时的回调                        | (value: number) => void                    | -             | -      |
+| characterRender | 自定义渲染 character 函数           | (value: number,index: number) => ReactNode | -             | -      |

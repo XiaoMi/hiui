@@ -2,19 +2,19 @@ import notice from '../notice'
 import './style/index'
 import React from 'react'
 import Button from '../button'
-import classNames from 'classnames'
+import Icon from '../icon'
 import _handleNotificate from './HandleNotification'
 const iconMap = {
-  success: 'chenggong',
-  error: 'shibai',
-  warning: 'jinggao',
-  info: 'tishi'
+  success: 'check-circle',
+  error: 'close-circle',
+  warning: 'exclamation-circle',
+  info: 'info-circle'
 }
 
 export const handleNotificate = _handleNotificate
 
 const notification = {
-  close: key => {
+  close: (key) => {
     notice.close('notification', key)
   },
   handleNotificate,
@@ -34,7 +34,7 @@ const notification = {
       <React.Fragment>
         <div className={`hi-${prefix}__title--wrapper`}>
           <span className={`hi-${prefix}__icon`}>
-            <i className={classNames('hi-icon', `icon-${iconMap[type]}`)} />
+            <Icon name={iconMap[type]} filled style={{ fontSize: '18px' }} />
           </span>
           {title && <div className={`hi-${prefix}__title`}>{title}</div>}
         </div>

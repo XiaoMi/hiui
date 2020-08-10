@@ -1,15 +1,26 @@
 import React from 'react'
 import classNames from 'classnames'
+
 import './style/index'
+import './iconfont.js'
 
-class Icon extends React.Component {
-  render () {
-    const {className, name, style, ...rest} = this.props
-
-    const iconCls = classNames(`hi-icon`, `icon-${name}`, className)
-
-    return <i className={iconCls} style={style} {...rest} />
-  }
+const Icon = ({ name, filled = false, className, style = {}, onClick }) => {
+  return (
+    <svg
+      className={classNames(className, 'hi-icon')}
+      aria-hidden='true'
+      onClick={e => {
+        onClick && onClick(e)
+      }}
+      style={{
+        fill: style.color,
+        height: style.fontSize,
+        width: style.fontSize,
+        cursor: style.cursor
+      }}
+    >
+      <use xlinkHref={`#icon${name}-${filled ? 'filled' : 'outlined'}`} />
+    </svg>
+  )
 }
-
 export default Icon
