@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import Icon from '../icon'
 import Classnames from 'classnames'
-import './style/index.scss'
+import './style/index'
 
 const PREFIX = 'hi-drawer'
 

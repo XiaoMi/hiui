@@ -7,7 +7,7 @@ import { getAncestorIds, findNode } from './util'
 import _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 import CustomTreeNode from './customTreeNode'
-import './style/index.scss'
+import './style/index'
 
 const PREFIX = 'hi-tree'
 

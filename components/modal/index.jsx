@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group'
 import Classnames from 'classnames'
 import Button from '../button'
 import Icon from '../icon'
-import './style/index.scss'
+import './style/index'
 
 const PREFIX = 'hi-modal'
 

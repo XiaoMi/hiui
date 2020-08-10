@@ -7,7 +7,7 @@ import TimePanel from './components/TimePanel'
 import Provider from '../context/index'
 import _ from 'lodash'
 import classNames from 'classnames'
-import './styles/timepicker.scss'
+import './style/timepicker'
 const TimePicker = ({
   type = 'time',
   value,
