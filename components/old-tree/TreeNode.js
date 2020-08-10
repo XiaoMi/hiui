@@ -14,7 +14,7 @@ import Provider from '../context'
 import CModal from '../date-picker/Modal'
 
 class TreeNode extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       highlight: null,
@@ -102,7 +102,7 @@ class TreeNode extends Component {
       }
     }
   }
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps (props, state) {
     if (!isEqual(props.data, state.prevData)) {
       return {
         ...state,
@@ -173,7 +173,7 @@ class TreeNode extends Component {
   _addSibNode = (itemId, data, editingNodes) => {
     data.forEach((d, index) => {
       if (d.id === itemId) {
-        const addNode = { id: uuidv4(), title: '', status: 'editable' }
+        const addNode = { id: uuidV4(), title: '', status: 'editable' }
         data.splice(index + 1, 0, addNode)
         editingNodes.push(addNode)
       } else {
@@ -216,7 +216,7 @@ class TreeNode extends Component {
         if (!d.children) {
           d.children = []
         }
-        const addNode = { id: uuidv4(), title: '', status: 'editable' }
+        const addNode = { id: uuidV4(), title: '', status: 'editable' }
         d.children.push(addNode)
         editingNodes.push(addNode)
       } else {
@@ -494,18 +494,18 @@ class TreeNode extends Component {
       >
         {_cm.length > 0
           ? _cm.map((cm, index) => {
-              if (cm.type && this.defaultEditNodeMenu[cm.type]) {
-                return this.defaultEditNodeMenu[cm.type](item, cm, index, level)
-              } else {
-                return this.defaultEditNodeMenu['customer'](item, cm, index, level)
-              }
-            })
+            if (cm.type && this.defaultEditNodeMenu[cm.type]) {
+              return this.defaultEditNodeMenu[cm.type](item, cm, index, level)
+            } else {
+              return this.defaultEditNodeMenu['customer'](item, cm, index, level)
+            }
+          })
           : Object.keys(this.defaultEditNodeMenu).map((key, index) => {
-              if (key === 'customer') {
-                return null
-              }
-              return this.defaultEditNodeMenu[key](item, {}, index, level)
-            })}
+            if (key === 'customer') {
+              return null
+            }
+            return this.defaultEditNodeMenu[key](item, {}, index, level)
+          })}
       </ul>
     )
 
@@ -601,7 +601,7 @@ class TreeNode extends Component {
       </ul>
     )
   }
-  render() {
+  render () {
     const { dataCache, searchValue, highlightNum } = this.state
     const { searchable, localeDatas } = this.props
     const { searchPlaceholder, searchEmptyResult, modalTitle, delTips } = localeDatas.tree

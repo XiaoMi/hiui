@@ -125,7 +125,7 @@ export default class TreeNode extends Component {
   _addSibNode = (itemId, data, editingNodes) => {
     data.forEach((d, index) => {
       if (d.id === itemId) {
-        const addNode = { id: uuidv4(), title: '', status: 'editable' }
+        const addNode = { id: uuidV4(), title: '', status: 'editable' }
         data.splice(index + 1, 0, addNode)
         editingNodes.push(addNode)
       } else {
@@ -168,7 +168,7 @@ export default class TreeNode extends Component {
         if (!d.children) {
           d.children = []
         }
-        const addNode = { id: uuidv4(), title: '', status: 'editable' }
+        const addNode = { id: uuidV4(), title: '', status: 'editable' }
         d.children.push(addNode)
         editingNodes.push(addNode)
       } else {

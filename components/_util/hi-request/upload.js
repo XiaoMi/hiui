@@ -1,6 +1,6 @@
 const upload = options => {
   const { file, name = 'file', params = {}, headers, data } = options
-  const formFile = new FormData()
+  const formFile = new window.FormData()
   if (file) {
     formFile.append(name, file)
   }

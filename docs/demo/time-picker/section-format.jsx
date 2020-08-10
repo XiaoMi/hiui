@@ -12,7 +12,7 @@ class Demo extends React.Component {
   render() {
     return (
       <TimePicker
-          value={new Date()}
+          defaultValue={new Date()}
           format="HH:mm:ss"
           onChange={(date, dateString) => console.log(date, dateString)}
         />
@@ -28,7 +28,7 @@ class Demo extends React.Component {
   render() {
     return (
       <TimePicker
-          value={new Date()}
+          defaultValue={new Date()}
           format="HH:mm"
           onChange={(date, dateString) => console.log(date, dateString)}
         />
@@ -44,7 +44,7 @@ class Demo extends React.Component {
   render() {
     return (
       <TimePicker
-          value={new Date()}
+          defaultValue={new Date()}
           format="HH"
           onChange={(date, dateString) => console.log(date, dateString)}
         />

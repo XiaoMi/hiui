@@ -1,7 +1,7 @@
 import React from 'react'
 import TreeNode from './TreeNode'
 import TreeContext from './context'
-import './style/index.scss'
+import './style/index'
 import useFlatData from './hooks/useFlatData'
 import useSelect from './hooks/useSelect'
 import useCheckable from './hooks/useCheckable'
@@ -36,7 +36,7 @@ const BaseTree = ({
   onDrop,
   onDragEnd
 }) => {
-  const [flatData, updateFlatData] = useFlatData(data)
+  const [flatData] = useFlatData(data)
   const [selectNodeId, onSelectNode] = useSelect({
     selectedId,
     selectable,

@@ -57,10 +57,15 @@ const TreeNode = ({ node }) => {
           onClick={() => {
             if (onLoadChildren) {
               setLoading(true)
-              onLoadChildren(node).then(() => {
-                setLoading(false)
-                onExpandNode(node, !expanded, expandedIds)
-              })
+              onLoadChildren(node).then(
+                (res) => {
+                  setLoading(false)
+                  onExpandNode(node, !expanded, expandedIds)
+                },
+                () => {
+                  setLoading(false)
+                }
+              )
             } else {
               onExpandNode(node, !expanded, expandedIds)
             }

@@ -32,7 +32,7 @@ function formatBody (xhr) {
 //  timeout: Number
 // }
 export default function upload (option) {
-  const xhr = new XMLHttpRequest()
+  const xhr = new window.XMLHttpRequest()
 
   if (option.onProgress && xhr.upload) {
     xhr.upload.onprogress = function progress (e) {
@@ -43,7 +43,7 @@ export default function upload (option) {
     }
   }
 
-  const formData = new FormData()
+  const formData = new window.FormData()
 
   if (option.data) {
     Object.keys(option.data).forEach((key) => {

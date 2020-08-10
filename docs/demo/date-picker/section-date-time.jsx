@@ -11,7 +11,7 @@ class Demo extends React.Component {
       <DatePicker
         value={new Date()}
         showTime={true}
-        format='yyyy-MM-dd HH:mm:ss'
+        format='YYYY-MM-DD HH:mm:ss'
         onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
       />
     )

@@ -58,7 +58,10 @@ $hoverColor: rgba(66, 133, 244, 0.08) !default;
     display: flex;
     align-items: center;
     padding-bottom: 4px;
-    align-items: center;
+
+    .hi-btn--loading--icon {
+      margin-top: -6px;
+    }
 
     &__title {
       display: flex;
@@ -102,9 +105,11 @@ $hoverColor: rgba(66, 133, 244, 0.08) !default;
         border-top: 2px solid transparent;
         border-bottom: 2px solid transparent;
       }
+
       &--disabled {
         cursor: not-allowed;
         color: #ccc;
+
         .title__text {
           cursor: not-allowed;
 

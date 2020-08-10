@@ -59,17 +59,14 @@ class Demo extends React.Component {
   },
   {
     code: `import React from 'react'
-import Grid from '@hi-ui/hiui/es/grid'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   render () {
-    const Row = Grid.Row
-    const Col = Grid.Col
     return (
       <DatePicker
-          type='year'
-          onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
-        />
+        type='year'
+        onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
+      />
     )
   }
 }`,

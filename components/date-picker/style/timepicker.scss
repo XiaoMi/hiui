@@ -1,40 +1,196 @@
+@import '@hi-ui/core-css/index.scss';
+$basic-color: #4284f5 !default;
+
 .hi-timepicker {
   width: 180px;
   background: #fff;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+  z-index: 1060;
 
-  &__timebody {
-    display: flex;
-    justify-content: space-around;
-    height: 195px;
-    border-bottom: 1px solid #f2f2f2;
-  }
+  &__popper {
+    width: 180px;
+    height: 296px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
 
-  &__time-list {
-    overflow: auto;
-    flex: 1;
-
-    &-el {
-      text-align: center;
-      font-size: 14px;
-      color: rgba(0, 0, 0, 0.65);
-      line-height: 22px;
-      padding: 8px;
-      border-right: 1px solid #f2f2f2;
-      cursor: pointer;
-
-      &_current {
-        background: #f7f7f7;
-        font-weight: bold;
-      }
+    &--range {
+      width: 400px;
     }
   }
 
-  &__time-footer {
+  &__panel {
+    background: #fff;
+
+    &--range {
+      width: 400px;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  &__body {
+    width: 180px;
+  }
+
+  &__split {
+    flex: 1;
+    height: 248px;
+    margin-top: 47px;
+    align-self: flex-end;
+    border: 1px solid #f2f2f2;
+    border-bottom: none;
+  }
+
+  &__timeheader {
+    display: flex;
+    justify-content: space-around;
+    height: 48px;
+    text-align: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(51, 51, 51, 1);
+    border-bottom: 1px solid rgba(242, 242, 242, 1);
+    box-sizing: border-box;
+  }
+
+  &__mark {
+    // flex: 1;
+  }
+
+  &__timebody {
+    display: flex;
+    height: 248px;
+    // border-bottom: 1px solid #f2f2f2;
+    position: relative;
+    justify-content: space-around;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__page-turn {
+    position: absolute;
+    z-index: 2;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    font-size: 16px;
+    left: 22px;
+    top: 0;
+    cursor: pointer;
+
+    &:last-child {
+      top: auto;
+      bottom: 0;
+    }
+  }
+
+  &__list-container {
+    width: 60px;
+    overflow: hidden;
+    position: relative;
+    padding: 12px 0;
+  }
+
+  &__list {
+    // position: absolute;
+    // z-index: 2;
+    width: 80px;
+    height: 224px;
+    margin: 0;
+    list-style-type: none;
+    // overflow-x: hidden;
+    overflow-y: auto;
+    padding: 0;
+    user-select: none;
+
+    &:nth-child(2) {
+      left: 60px;
+      z-index: 3;
+    }
+
+    &:nth-child(3) {
+      left: 120px;
+      z-index: 4;
+    }
+  }
+
+  &__item {
+    text-align: center;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.65);
+    line-height: 32px;
+    height: 32px;
+    width: 60px;
+    cursor: pointer;
+    box-sizing: border-box;
+    // border-right: 1px solid rgba(242, 242, 242, 1);
+    background-color: #fff;
+
+    &--empty {
+      cursor: default;
+    }
+
+    &--current {
+      font-weight: bold;
+    }
+
+    &--disabled {
+      color: rgba(44, 48, 78, 0.2);
+      cursor: not-allowed;
+    }
+
+    &:hover:not(.hi-timepicker__item--current):not(.hi-timepikcer__item--empty):not(.hi-timepicker__item--disabled) {
+      background-color: #eff5fe;
+    }
+  }
+
+  &__footer {
     padding: 2px 0;
     text-align: right;
 
     button {
       margin-right: 4px;
+    }
+  }
+
+  &__current-line {
+    height: 32px;
+    box-sizing: border-box;
+    border-top: 1px solid rgba(242, 242, 242, 1);
+    border-bottom: 1px solid rgba(242, 242, 242, 1);
+
+    // background: rgba(247, 247, 247, 1);
+    position: absolute;
+    top: 108px;
+    left: 0;
+    width: 156px;
+    z-index: 4;
+    pointer-events: none;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    margin: 0 12px;
+
+    span {
+      flex: 1;
+    }
+  }
+}
+
+@each $key, $value in $palette-primary {
+  .theme__#{$key} {
+    .hi-timepicker {
+      &__item:hover:not(.hi-timepicker__item--current):not(.hi-timepikcer__item--empty):not(.hi-timepicker__item--disabled) {
+        background-color: rgba($value, 0.1);
+      }
     }
   }
 }
