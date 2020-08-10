@@ -231,7 +231,9 @@ const FormItem = props => {
     const labelWidth = props.labelWidth || formProps.labelWidth
     return formProps.labelPosition === 'top'
       ? '100%'
-      : !Number.isNaN(Number(labelWidth)) && Number(labelWidth)
+      : !Number.isNaN(Number(labelWidth))
+        ? Number(labelWidth)
+        : labelWidth
   }, [props.labelWidth, formProps.labelWidth])
 
   const setEvent = (eventName, componentProps, e, ...args) => {
