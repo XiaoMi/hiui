@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import Icon from '../../../../../components/icon'
 import { outlined, filled } from './config'
 import Radio from '../../../../../components/radio'
+import CopyIcon from '../copyIcon'
 
 const General = () => {
   const [currentType, setCurrentType] = useState(0)
@@ -28,11 +28,7 @@ const General = () => {
       </div>
       <ul className='hi-icon-list'>
         {list.map((icon, idx) => (
-          <li key={idx}>
-            <Icon name={icon.name} filled={currentType === 1} />
-            <span className='hi-icon-name'>{icon.name}</span>
-            <span className='hi-icon-cname'>{icon.text}</span>
-          </li>
+          <CopyIcon icon={icon} key={idx} />
         ))}
       </ul>
     </div>
