@@ -13,9 +13,9 @@ class Home extends React.Component {
         <div className='section section--intro'>
           <div className='section__container'>
             <div className='section__content'>
-              <h1 className='section__title'>HIUI，设计原则的布道者</h1>
+              <h1 className='section__title'>HiUI，设计原则的布道者</h1>
               <div className='section__desc'>
-                <p>HIUI 是一套适用于中后台系统的设计规范及前端组件化解决方案。</p>
+                <p>HiUI 是一套适用于中后台系统的设计规范及前端组件化解决方案。</p>
               </div>
               <Button type='primary' href={`<BASE_URL>/zh-CN/docs/quick-start`}>
                 开始使用
@@ -32,34 +32,24 @@ class Home extends React.Component {
         <div className='section section--design'>
           <div className='section__container'>
             <div className='section__content' ref={this.designContent}>
-              <h2
-                className={`section__title section__title--fade ${
-                  designContent ? 'section__title--show' : ''
-                }`}
-              >
+              <h2 className={`section__title section__title--fade ${designContent ? 'section__title--show' : ''}`}>
                 好用的设计
               </h2>
               <ul className={`flat-list flat-list--fade ${designContent ? 'flat-list--show' : ''}`}>
                 <li className='flat-list__item'>
                   <div className='flat-list__figure' />
                   <h3 className='flat-list__name'>交互一致性</h3>
-                  <p className='flat-list__desc'>
-                    最大限度减少用户对交互的认知成本，提高交互的可预期性
-                  </p>
+                  <p className='flat-list__desc'>最大限度减少用户对交互的认知成本，提高交互的可预期性</p>
                 </li>
                 <li className='flat-list__item'>
                   <div className='flat-list__figure' />
                   <h3 className='flat-list__name'>视觉统一</h3>
-                  <p className='flat-list__desc'>
-                    制定视觉风格，产出典型场景的视觉设计方案和界面规范
-                  </p>
+                  <p className='flat-list__desc'>制定视觉风格，产出典型场景的视觉设计方案和界面规范</p>
                 </li>
                 <li className='flat-list__item'>
                   <div className='flat-list__figure' />
                   <h3 className='flat-list__name'>从业务中来</h3>
-                  <p className='flat-list__desc'>
-                    高度提炼企业中台、仓储物流、BI、OA 等系统的设计经验累积
-                  </p>
+                  <p className='flat-list__desc'>高度提炼企业中台、仓储物流、BI、OA 等系统的设计经验累积</p>
                 </li>
               </ul>
             </div>
@@ -69,27 +59,18 @@ class Home extends React.Component {
         <div className='section section--efficiency'>
           <div className='section__container'>
             <div className='section__content' ref={this.efficiencyContent}>
-              <h2
-                className={`section__title section__title--fade ${
-                  efficiencyContent ? 'section__title--show' : ''
-                }`}
-              >
+              <h2 className={`section__title section__title--fade ${efficiencyContent ? 'section__title--show' : ''}`}>
                 一切优势, 最终都是效率优势
               </h2>
-              <div
-                className={`section__desc section__desc--fade ${
-                  efficiencyContent ? 'section__desc--show' : ''
-                }`}
-              >
+              <div className={`section__desc section__desc--fade ${efficiencyContent ? 'section__desc--show' : ''}`}>
                 <p>
-                  基于组件化开发，无论前端工程师、PHP 工程师还是 JAVA 工程师，都不必为日新月异的前端技术所困扰。统一规范所有 API 接口，方便调用，学习成本低。
+                  基于组件化开发，无论前端工程师、PHP 工程师还是 JAVA
+                  工程师，都不必为日新月异的前端技术所困扰。统一规范所有 API 接口，方便调用，学习成本低。
                 </p>
               </div>
             </div>
             <div
-              className={`section__figure section__figure--fade ${
-                efficiencyContent ? ' section__figure--show' : ''
-              }`}
+              className={`section__figure section__figure--fade ${efficiencyContent ? ' section__figure--show' : ''}`}
             />
           </div>
         </div>
@@ -97,16 +78,10 @@ class Home extends React.Component {
         <div className='section section--feature'>
           <div className='section__container'>
             <div className='section__content' ref={this.featureContent}>
-              <h2
-                className={`section__title section__title--fade ${
-                  featureContent ? 'section__title--show' : ''
-                }`}
-              >
+              <h2 className={`section__title section__title--fade ${featureContent ? 'section__title--show' : ''}`}>
                 优秀到不能被忽视
               </h2>
-              <ul
-                className={`flat-list flat-list--fade ${featureContent ? 'flat-list--show' : ''}`}
-              >
+              <ul className={`flat-list flat-list--fade ${featureContent ? 'flat-list--show' : ''}`}>
                 <li className='flat-list__item'>
                   <div className='flat-list__figure' />
                   <h3 className='flat-list__name'>实践出真知</h3>
@@ -117,16 +92,12 @@ class Home extends React.Component {
                   <h3 className='flat-list__name'>
                     多终端支持<sup>*</sup>
                   </h3>
-                  <div className='flat-list__desc'>
-                    广泛适用于 PC、H5、APP 以及小程序等各个终端（敬请期待）
-                  </div>
+                  <div className='flat-list__desc'>广泛适用于 PC、H5、APP 以及小程序等各个终端（敬请期待）</div>
                 </li>
                 <li className='flat-list__item'>
                   <div className='flat-list__figure' />
                   <h3 className='flat-list__name'>国际化</h3>
-                  <div className='flat-list__desc'>
-                    充分预留项目多语言需求，无论在 API 接口还是设计要求
-                  </div>
+                  <div className='flat-list__desc'>充分预留项目多语言需求，无论在 API 接口还是设计要求</div>
                 </li>
                 <li className='flat-list__item'>
                   <div className='flat-list__figure' />
@@ -146,17 +117,25 @@ class Home extends React.Component {
                 <li className='flat-list__item'>
                   <div className='flat-list__figure' />
                   <h3 className='flat-list__name'>
-                    HIUI Template<sup>*</sup>
+                    HiUI Template<sup>*</sup>
                   </h3>
-                  <div className='flat-list__desc'>
-                    无需掌握前端框架即可进行单模板开发（敬请期待）
-                  </div>
+                  <div className='flat-list__desc'>无需掌握前端框架即可进行单模板开发（敬请期待）</div>
                 </li>
                 <li className='flat-list__item'>
                   <div className='flat-list__figure' />
-                  <h3 className='flat-list__name'>HIUI Library <sup>20190719</sup></h3>
+                  <h3 className='flat-list__name'>
+                    HiUI Library <sup>20200811</sup>
+                  </h3>
                   <div className='flat-list__desc'>
-                    点击下载集成所有 HIUI 组件的 <Badge type='dot' style={{ display: 'inline', paddingRight: 4 }}><a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/resources/HIUI_2_0_0_beta(20190719).rplib.zip'>Axure</a></Badge> / <a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/resources/HIUI_2_0_0_beta(20190709).sketch.zip'>Sketch</a> 部件库
+                    点击下载集成所有 HIUI 组件的{' '}
+                    <a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/resources/HIUI_2_0_0_beta(20190719).rplib.zip'>
+                      Axure
+                    </a>
+                    /{' '}
+                    <a href='https://raw.githubusercontent.com/XiaoMi/hiui/master/site/resources/HIUI_2_0_0_beta(20190709).sketch.zip'>
+                      Sketch
+                    </a>{' '}
+                    部件库
                   </div>
                 </li>
               </ul>

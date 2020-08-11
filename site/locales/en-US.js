@@ -52,7 +52,7 @@ module.exports = {
   },
   designs: {
     'design-patterns': '设计模式',
-    'about-hiui': '关于 HIUI',
+    'about-hiui': '关于 HiUI',
     'visual-framework': '视觉框架',
     start: '快速上手',
     principles: '设计原则',

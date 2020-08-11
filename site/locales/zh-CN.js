@@ -67,7 +67,7 @@ module.exports = {
     'design-values': '设计价值观',
     'design-patterns': '设计模式',
     'design-principles': '设计原则',
-    'about-hiui': '关于 HIUI',
+    'about-hiui': '关于 HiUI',
     'visual-framework': '视觉框架',
     start: '快速上手',
     overview: '概览',
