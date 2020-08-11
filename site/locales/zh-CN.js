@@ -60,7 +60,7 @@ module.exports = {
     carousel: 'Carousel 走马灯',
     watermark: 'Watermark 水印',
     list: 'List 列表',
-    filter: 'Fiter 筛选'
+    filter: 'Filter 筛选'
   },
   designs: {
     summarize: '概述',
