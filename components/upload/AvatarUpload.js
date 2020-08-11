@@ -15,7 +15,6 @@ const AvatarUpload = ({
   theme,
   fileList,
   defaultFileList,
-  maxCount,
   multiple,
   avatarOptions = {},
   onChange,
@@ -24,7 +23,9 @@ const AvatarUpload = ({
   name,
   withCredentials,
   headers,
-  data
+  data,
+  beforeUpload,
+  customUpload
 }) => {
   const { aspectRatio = 0, dragMode = 'move', dropBoxSize = [] } = avatarOptions
   const cropperRef = useRef(null)
@@ -38,7 +39,9 @@ const AvatarUpload = ({
     withCredentials,
     headers,
     data,
-    onRemove
+    onRemove,
+    beforeUpload,
+    customUpload
   })
   const [cropperFile, setCropperFile] = useState({})
 

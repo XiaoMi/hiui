@@ -6,7 +6,7 @@ import Popper from '../popper'
 
 import Menu from './Menu'
 import Provider from '../context'
-import useClickOutside from '../../components/popper/utils/useClickOutside'
+import useClickOutside from '../popper/utils/useClickOutside'
 
 const noop = () => { }
 

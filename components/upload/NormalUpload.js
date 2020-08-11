@@ -7,7 +7,7 @@ import useUpload from './hooks/useUpload'
 
 const NormalUpload = ({
   maxCount,
-  content,
+  content = '本地上传',
   disabled,
   multiple,
   tips,
@@ -24,7 +24,9 @@ const NormalUpload = ({
   withCredentials,
   headers,
   data,
-  onChange
+  onChange,
+  beforeUpload,
+  customUpload
 }) => {
   const [_fileList, uploadFiles, deleteFile] = useUpload({
     fileList,
@@ -36,7 +38,9 @@ const NormalUpload = ({
     withCredentials,
     headers,
     data,
-    onRemove
+    onRemove,
+    beforeUpload,
+    customUpload
   })
   return (
     <div className={`hi-upload`}>
