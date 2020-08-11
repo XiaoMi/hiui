@@ -258,13 +258,12 @@ const SelectTree = ({
       return
     }
     if (state) {
-      console.log('remote load')
       loadNodes(node.id).then((res) => {
         if (res.length > 0) {
-          setFlattenData(flattenData.concat(res))
+          setFlattenData(flattenData.concat(flattenNodesData(res).flattenData))
           fillNodeEntries(node, nodeEntries, res)
         }
-        callback(res)
+        // callback(res)
       })
       onExpand()
     }
@@ -290,7 +289,6 @@ const SelectTree = ({
       !show
     ) {
       // data 为空 且 存在 dataSource 时，默认进行首次数据加载.defaultLoadData不暴露
-      console.log('remote loading')
       setNodeDataState('loading')
       loadNodes()
         .then((res) => {
@@ -299,7 +297,7 @@ const SelectTree = ({
             return
           }
           setNodeDataState('normal')
-          setFlattenData(res)
+          setFlattenData(flattenNodesData(res).flattenData)
           fillNodeEntries(null, nodeEntries, res)
         })
         .catch(() => {
