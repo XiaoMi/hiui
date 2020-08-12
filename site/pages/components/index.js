@@ -67,7 +67,8 @@ export default {
       card: components['card'],
       timeline: components['timeline'],
       carousel: components['carousel'],
-      list: components['list']
+      list: components['list'],
+      charts: components['charts']
     },
     'group-tips': {
       modal: components['modal'],

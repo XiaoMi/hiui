@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import BaseTree from './BaseTree'
-import Input from '../Input'
+import Input from '../input'
 import Button from '../button'
 import Modal from '../modal'
 import { getAncestorIds, findNode } from './util'

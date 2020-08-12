@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react'
-import SingleInput from './singleInput'
+import SingleInput from './SingleInput'
 import MultipleInput from './MultipleInput'
 
 const InternalSelectInput = props => {

@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "3.0.0-alpha",
+  "version": "3.0.0-beta.1",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
@@ -48,6 +48,8 @@
     "axios": "^0.18.0",
     "classnames": "^2.2.5",
     "decimal.js": "^10.2.0",
+    "echarts": "^4.7.0",
+    "echarts-for-react": "^2.0.16",
     "fetch-jsonp": "^1.1.3",
     "lodash": "^4.17.11",
     "moment": "^2.27.0",

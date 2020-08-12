@@ -60,14 +60,15 @@ module.exports = {
     carousel: 'Carousel 走马灯',
     watermark: 'Watermark 水印',
     list: 'List 列表',
-    filter: 'Fiter 筛选'
+    filter: 'Fiter 筛选',
+    charts: 'Charts 图表'
   },
   designs: {
     summarize: '概述',
     'design-values': '设计价值观',
     'design-patterns': '设计模式',
     'design-principles': '设计原则',
-    'about-hiui': '关于 HIUI',
+    'about-hiui': '关于 HiUI',
     'visual-framework': '视觉框架',
     start: '快速上手',
     overview: '概览',
