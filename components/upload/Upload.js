@@ -191,7 +191,10 @@ class Upload extends Component {
         if (fileList[index].fileId === file.fileId) {
           const _fileList = [...fileList]
           _fileList.splice(index, 1)
-          this.setState({ fileList: _fileList })
+          this.setState({
+            fileList: _fileList,
+            fileCountLimted: _fileList.length >= this.props.maxCount
+          })
           break
         }
       }
