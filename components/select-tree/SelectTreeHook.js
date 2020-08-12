@@ -16,7 +16,8 @@ import {
   treeFilterByOriginalData,
   parseExpandIds,
   fillNodeEntries,
-  clearReturnData
+  clearReturnData,
+  processSelectedIds
 } from './components/tree/util'
 import NavTree from './components/tree/NavTree'
 import Trigger from './components/Trigger'
@@ -97,7 +98,7 @@ const SelectTree = ({
       }
     }
   }, [value, flattenData])
-  // 当选中项发生改变时，更改选中项
+  // 当选中项发生改变时(以及首次解析完成默认值后)，更改选中项
   useEffect(() => {
     const _selectedItems = parseSelectedItems(checkedNodes, nodeEntries, showCheckedMode, flattenData)
     setSelectedItems(_selectedItems)
@@ -215,7 +216,7 @@ const SelectTree = ({
   * @param {*} checked 是否被选中
   * @param {*} node 当前节点
   */
-  const checkedEvents = useCallback((checked, node) => {
+  const checkedEvents = (checked, node) => {
     let result = {}
     let semiCheckedIds = new Set(checkedNodes.semiChecked)
     let checkedIds = new Set(checkedNodes.checked)
@@ -234,8 +235,8 @@ const SelectTree = ({
         return getNode(id, flattenData)
       })
     }
-    onChange(result, clearReturnData(checkedArr), node)
-  })
+    onChange(processSelectedIds(result.checked, nodeEntries, showCheckedMode, flattenData), clearReturnData(checkedArr), clearReturnData(node))
+  }
 
   /**
   * 节点展开关闭事件
@@ -274,7 +275,8 @@ const SelectTree = ({
    */
   const selectedEvents = useCallback((node) => {
     setSelectedItems([node])
-    onChange(clearReturnData(node))
+    const n = clearReturnData(node)
+    onChange(node.id, n, n)
     setShow(false)
   }, [])
 

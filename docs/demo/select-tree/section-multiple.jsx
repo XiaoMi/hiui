@@ -123,6 +123,7 @@ class Demo extends React.Component {
             type='multiple'
             showCheckedMode='PARENT'
             data={singleList}
+            onChange={(a, b , c) => console.log(a, b , c)}
           />
         )
       }
