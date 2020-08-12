@@ -52,7 +52,7 @@ import DemoBread from '../../demo/select-tree/section-bread'
 | expandIds          | 默认高亮的节点（受控）                                                  | string[]                                                                 | -                   | -     |
 | defaultValue       | 默认选中项 （非受控）                                                   | DataItem[] \| string[]                                                   | -                               | -         |
 | value              | 默认选中项  （受控）                                                    | DataItem[] \| string[]                                                   | -                               | -         |
-| onChange           | 树组件改变时触发                                                        | (data: TreeNode[]) => void                                               | -                               | -         |
+| onChange           | 选中时触发                                                              | (checkedIds \| checkedId, checkedNodes \| checkedNode, currentNode) => void                                               | -                               | -         |
 | searchMode         | 节点搜索模式，仅在*mode=normal*模式下生效                               | string                                                                   | highlight \| filter                   | -     |
 | dataSource         | 异步加载数据                                                            | (key: string) => DataSource \| DataSource \| Promise                     | -                               |-        |
 
