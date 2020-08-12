@@ -51,12 +51,10 @@ const Rate = ({ value: trueVal, disabled, useEmoji, allowHalf, character, render
   }
 
   const renderIcon = (idx) => {
-    console.log(value)
     let currentValue = hoverValue || value
     if (!allowHalf) {
       currentValue = Math.ceil(currentValue)
     }
-    console.log(currentValue)
     return (
       <Icon {...{ value: idx, currentValue, disabled, useEmoji, allowHalf, character, style, renderCharacter, readOnly }} />
     )
