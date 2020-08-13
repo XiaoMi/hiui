@@ -41,10 +41,16 @@ class Dropdown extends React.Component {
       this.setState({ visible: false })
     }, 100)
   }
+
+  toggleVisible = () => {
+    const { visible } = this.state
+    const toggleVisible = visible ? this.setPopperHide : this.setPopperShow
+    return toggleVisible
+  }
+
   getPopperShowHandler = () => {
     const { disabled } = this.props
     if (disabled) return {}
-    const { visible } = this.state
     const triggers = trimTriggers(this.props)
     const getHandler = props => {
       if (getIsTriggerEqualHover(props)) {
@@ -52,14 +58,13 @@ class Dropdown extends React.Component {
           onMouseEnter: this.setPopperShow
         }
       }
-      const toggleVisible = visible ? this.setPopperHide : this.setPopperShow
       if (getIsTriggerEqualContextmenu(props)) {
         return {
-          onContextMenu: toggleVisible
+          onContextMenu: this.toggleVisible()
         }
       }
       return {
-        onClick: toggleVisible
+        onClick: this.toggleVisible()
       }
     }
     return triggers.reduce(
@@ -96,15 +101,11 @@ class Dropdown extends React.Component {
 
     onClick && onClick(data)
   }
-  handleDocumentClick = () => {
+
+  handleDocumentClick = e => {
     this.setState({ visible: false })
   }
-  componentWillUnmount () {
-    document.removeEventListener('click', this.handleDocumentClick)
-  }
-  componentDidMount () {
-    document.addEventListener('click', this.handleDocumentClick)
-  }
+
   render () {
     const {
       className,
@@ -144,6 +145,7 @@ class Dropdown extends React.Component {
           visible={visible}
           attachEle={this.refDropdown.current}
           data={data}
+          handleDocumentClick={this.handleDocumentClick}
           placement={placement}
           onMouseEnter={this.handleMenuMouseEnter}
           overlayClassName={overlayClassName}

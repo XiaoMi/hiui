@@ -17,6 +17,7 @@ class DropdownMenu extends React.Component {
       onChildMenuMouseEnter,
       onChildMenuMouseLeave,
       onMenuItemClick,
+      handleDocumentClick,
       width,
       theme,
       overlayClassName
@@ -35,6 +36,9 @@ class DropdownMenu extends React.Component {
         leftGap={0}
         overlayClassName={overlayClassName}
         onMouseLeave={onMouseLeave}
+        onClickOutside={() => {
+          handleDocumentClick()
+        }}
       >
         <ul className={menuCls}>
           {data.map((item, index) => (

@@ -1,8 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Dropdown from '../../../components/dropdown'
-const desc =
-  '将一组同类的动作收起成为菜单，由一个操作入口展示使用'
+const desc = '将一组同类的动作收起成为菜单，由一个操作入口展示使用'
 const prefix = 'dropdown-base'
 const rightOptions = ['基础', '禁用']
 
@@ -17,6 +16,7 @@ class Demo extends React.Component {
       list: [{
         id: 0,
         title: '菜单一',
+        href: 'https://www.mi.com',
       }, {
         id: 1,
         title: '菜单二'
