@@ -41,7 +41,7 @@ const Popper = props => {
         timeout={300}
         classNames={AnimationClassName}
         onExited={() => {
-          !staticShow && setStaticShow(false)
+          setStaticShow(false)
         }}
       >
         <Portal container={container}>
