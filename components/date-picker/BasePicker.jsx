@@ -84,7 +84,7 @@ const BasePicker = ({
     onChange(returnDate, returnDateStr)
   }
   const onPick = (dates, isShowPanel) => {
-    changeOutDate([].concat(dates))
+    !value && changeOutDate([].concat(dates))
     setTimeout(() => {
       setShowPanel(isShowPanel)
     }, 0)

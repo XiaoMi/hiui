@@ -5,8 +5,7 @@ const prefix = 'date-picker-calendar'
 const rightOptions = ['预置农历', '自定义日期信息']
 const code = [
   {
-    code:
-  `import React from 'react'
+    code: `import React from 'react'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   constructor() {
@@ -16,9 +15,10 @@ class Demo extends React.Component {
     }
   }
   render () {
+    const {value} = this.state
     return (
       <DatePicker
-        value={new Date()}
+        value={value}
         altCalendarPreset='zh-CN'
         dateMarkPreset='zh-CN'
         onChange={(date, dateStr) => {
@@ -34,8 +34,7 @@ class Demo extends React.Component {
     opt: ['预置农历']
   },
   {
-    code:
-  `import React from 'react'
+    code: `import React from 'react'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   constructor() {
@@ -88,7 +87,13 @@ class Demo extends React.Component {
 }`,
     opt: ['自定义日期信息']
   }
-
 ]
-const DemoCalendar = () => <DocViewer code={code} rightOptions={rightOptions} scope={{ DatePicker }} prefix={prefix} />
+const DemoCalendar = () => (
+  <DocViewer
+    code={code}
+    rightOptions={rightOptions}
+    scope={{ DatePicker }}
+    prefix={prefix}
+  />
+)
 export default DemoCalendar
