@@ -135,7 +135,11 @@
     }
 
     .icon-close-circle {
-      color: #999;
+      color: #ccc;
+    }
+
+    .hi-select__dropdown--icon__close:hover {
+      color: #333;
     }
 
     &--content {

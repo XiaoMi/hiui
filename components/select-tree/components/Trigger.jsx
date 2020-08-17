@@ -1,7 +1,18 @@
 import React from 'react'
 import classNames from 'classnames'
 
-const Trigger = ({inputRef, type, selectedItems, onTrigger, checkedEvents, onClear, showCount, clearable, show, selectedItemsRef}) => {
+const Trigger = ({
+  inputRef,
+  type,
+  selectedItems,
+  onTrigger,
+  checkedEvents,
+  onClear,
+  showCount,
+  clearable,
+  show,
+  selectedItemsRef
+}) => {
   return (
     <div
       ref={inputRef}
@@ -14,52 +25,42 @@ const Trigger = ({inputRef, type, selectedItems, onTrigger, checkedEvents, onCle
     >
       <div className='hi-selecttree__selected-wrapper' ref={selectedItemsRef}>
         <div className='hi-selecttree__selected--hidden'>
-          {
-            selectedItems.map((node, index) => <span key={index}>{node.title || ''}</span>)
-          }
+          {selectedItems.map((node, index) => (
+            <span key={index}>{node.title || ''}</span>
+          ))}
         </div>
-        {
-          selectedItems.length > 0 && selectedItems.slice(0, showCount || 1).map((node, index) => {
+        {selectedItems.length > 0 &&
+          selectedItems.slice(0, showCount || 1).map((node, index) => {
             return (
               <div key={index} className='hi-selecttree__selecteditem'>
                 <div className='hi-selecttree__selecteditem-name'>
                   {node ? node.title : ''}
                 </div>
-                {
-                  type === 'multiple' && (
-                    <span
-                      className='hi-selecttree__selecteditem-remove'
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        checkedEvents(false, node)
-                      }}
-                    >
-                      <i className='hi-icon icon-close' />
-                    </span>
-                  )
-                }
+                {type === 'multiple' && (
+                  <span
+                    className='hi-selecttree__selecteditem-remove'
+                    onClick={e => {
+                      e.stopPropagation()
+                      checkedEvents(false, node)
+                    }}
+                  >
+                    <i className='hi-icon icon-close' />
+                  </span>
+                )}
               </div>
             )
-          })
-        }
-        {
-          !!showCount && showCount < selectedItems.length && (
-            <div>
-              +
-              <span>
-                {selectedItems.length - showCount}
-              </span>
-            </div>
-          )
-        }
+          })}
+        {!!showCount && showCount < selectedItems.length && (
+          <div>
+            +<span>{selectedItems.length - showCount}</span>
+          </div>
+        )}
       </div>
 
       <span className='hi-selecttree__input-icon'>
         <i
           className={classNames(
-            `hi-icon icon-${
-              show ? 'up' : 'down'
-            } hi-selecttree__input--expand`,
+            `hi-icon icon-${show ? 'up' : 'down'} hi-selecttree__input--expand`,
             { clearable: clearable && selectedItems.length > 0 }
           )}
         />

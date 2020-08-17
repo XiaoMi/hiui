@@ -70,16 +70,24 @@ const SelectTree = ({
   }, [flattenData])
 
   // 搜索框的值改变时的事件
-  const changeEvents = useCallback((e) => {
-    const val = e.target.value
-    setSearchValue(val)
-    searchTreeNode(val)
-  }, [flattenData])
+  const changeEvents = useCallback(
+    e => {
+      const val = e.target.value
+      setSearchValue(val)
+      searchTreeNode(val)
+    },
+    [flattenData]
+  )
   // 根据传入的原始数据解析为拉平数据及改装数据
   useEffect(() => {
     setStatus()
     if (data) {
-      const result = flattenNodesData(data, defaultExpandIds, defaultExpandAll, (type === 'multiple' && showCheckedMode !== 'ALL'))
+      const result = flattenNodesData(
+        data,
+        defaultExpandIds,
+        defaultExpandAll,
+        type === 'multiple' && showCheckedMode !== 'ALL'
+      )
       setFlattenData(result.flattenData)
       setNodeEntries(result.nodeEntries)
     }
@@ -88,27 +96,43 @@ const SelectTree = ({
   useEffect(() => {
     if (flattenData.length > 0) {
       if (type === 'multiple') {
-        const cstatus = parseCheckStatusData(defaultValue.length > 0 ? defaultValue : value, checkedNodes, flattenData)
+        const cstatus = parseCheckStatusData(
+          defaultValue.length > 0 ? defaultValue : value,
+          checkedNodes,
+          flattenData
+        )
         if (cstatus) {
           setCheckedNodes(cstatus)
         }
       } else {
-        const _selectedItems = parseDefaultSelectedItems(defaultValue.length > 0 ? defaultValue : value, flattenData)
+        const _selectedItems = parseDefaultSelectedItems(
+          defaultValue.length > 0 ? defaultValue : value,
+          flattenData
+        )
         setSelectedItems(_selectedItems)
       }
     }
   }, [value, flattenData])
   // 当选中项发生改变时(以及首次解析完成默认值后)，更改选中项
   useEffect(() => {
-    const _selectedItems = parseSelectedItems(checkedNodes, nodeEntries, showCheckedMode, flattenData)
+    const _selectedItems = parseSelectedItems(
+      checkedNodes,
+      nodeEntries,
+      showCheckedMode,
+      flattenData
+    )
     setSelectedItems(_selectedItems)
   }, [checkedNodes])
 
   // 依赖展开项生成展开节点数据
   useEffect(() => {
     if (flattenData.length > 0) {
-      const _expandIds = parseExpandIds(expandIdsProps, defaultExpandIds, flattenData)
-      setExpandIds((preExpandIds) => {
+      const _expandIds = parseExpandIds(
+        expandIdsProps,
+        defaultExpandIds,
+        flattenData
+      )
+      setExpandIds(preExpandIds => {
         return (_expandIds || []).concat(preExpandIds || [])
       })
     }
@@ -118,7 +142,9 @@ const SelectTree = ({
     if (selectedItemsRef.current) {
       const sref = selectedItemsRef.current
       // 多选超过一行时以数字显示
-      const referenceEls = sref.querySelectorAll('.hi-selecttree__selected--hidden span')
+      const referenceEls = sref.querySelectorAll(
+        '.hi-selecttree__selected--hidden span'
+      )
       const wrapperWidth = sref.getBoundingClientRect()
       let _width = 0
       let num = 0
@@ -136,7 +162,7 @@ const SelectTree = ({
   }, [selectedItems])
 
   // 过滤方法
-  const searchTreeNode = (val) => {
+  const searchTreeNode = val => {
     let matchNodes = []
     const _data = _.cloneDeep(flattenData)
     if (searchMode === 'highlight') {
@@ -197,8 +223,9 @@ const SelectTree = ({
    * Remote load Data
    * @param {*} id click node's id
    */
-  const loadNodes = useCallback((id) => {
-    const _dataSource = typeof dataSource === 'function' ? dataSource(id || '') : dataSource
+  const loadNodes = useCallback(id => {
+    const _dataSource =
+      typeof dataSource === 'function' ? dataSource(id || '') : dataSource
     return HiRequest({
       ..._dataSource
     }).then(res => {
@@ -212,10 +239,10 @@ const SelectTree = ({
     })
   }, [])
   /**
-  * 多选模式下复选框事件
-  * @param {*} checked 是否被选中
-  * @param {*} node 当前节点
-  */
+   * 多选模式下复选框事件
+   * @param {*} checked 是否被选中
+   * @param {*} node 当前节点
+   */
   const checkedEvents = (checked, node) => {
     let result = {}
     let semiCheckedIds = new Set(checkedNodes.semiChecked)
@@ -235,15 +262,24 @@ const SelectTree = ({
         return getNode(id, flattenData)
       })
     }
-    onChange(processSelectedIds(result.checked, nodeEntries, showCheckedMode, flattenData), clearReturnData(checkedArr), clearReturnData(node))
+    onChange(
+      processSelectedIds(
+        result.checked,
+        nodeEntries,
+        showCheckedMode,
+        flattenData
+      ),
+      clearReturnData(checkedArr),
+      clearReturnData(node)
+    )
   }
 
   /**
-  * 节点展开关闭事件
-  * @param {*} bol 是否展开
-  * @param {*} node 当前点击节点
-  */
-  const expandEvents = (node, state, callback = () => { }) => {
+   * 节点展开关闭事件
+   * @param {*} bol 是否展开
+   * @param {*} node 当前点击节点
+   */
+  const expandEvents = (node, state, callback = () => {}) => {
     const _expandIds = [...expandIds]
     const hasIndex = _expandIds.findIndex(id => id === node.id)
     if (hasIndex !== -1) {
@@ -259,7 +295,7 @@ const SelectTree = ({
       return
     }
     if (state) {
-      loadNodes(node.id).then((res) => {
+      loadNodes(node.id).then(res => {
         if (res.length > 0) {
           setFlattenData(flattenData.concat(flattenNodesData(res).flattenData))
           fillNodeEntries(node, nodeEntries, res)
@@ -273,7 +309,7 @@ const SelectTree = ({
   /**
    * Node selected Event
    */
-  const selectedEvents = useCallback((node) => {
+  const selectedEvents = useCallback(node => {
     setSelectedItems([node])
     const n = clearReturnData(node)
     onChange(node.id, n, n)
@@ -293,7 +329,7 @@ const SelectTree = ({
       // data 为空 且 存在 dataSource 时，默认进行首次数据加载.defaultLoadData不暴露
       setNodeDataState('loading')
       loadNodes()
-        .then((res) => {
+        .then(res => {
           if (res.length === 0) {
             setNodeDataState('empty')
             return
@@ -328,34 +364,46 @@ const SelectTree = ({
           show={show}
           attachEle={inputRef.current}
           width={false}
-          className={`hi-selecttree__popper ${data.length === 0 && dataSource ? 'hi-selecttree__popper--loading' : ''}`}
+          className={`hi-selecttree__popper ${
+            data.length === 0 && dataSource
+              ? 'hi-selecttree__popper--loading'
+              : ''
+          }`}
           onClickOutside={() => setShow(false)}
         >
-          <div className={`hi-selecttree__root ${searchable ? 'hi-selecttree--hassearch' : ''}`}>
-            {
-              searchable && mode !== 'breadcrumb' && (
-                <div className='hi-selecttree__searchbar-wrapper'>
-                  <div className='hi-selecttree__searchbar-inner'>
-                    <Icon name='search' />
-                    <input
-                      className='hi-selecttree__searchinput'
-                      placeholder={'搜索'}
-                      clearable='true'
-                      value={searchValue}
-                      clearabletrigger='always'
-                      onKeyDown={e => {
-                        if (e.keyCode === '13') {
-                          searchTreeNode(e.target.value)
-                        }
-                      }}
-                      onChange={changeEvents}
+          <div
+            className={`hi-selecttree__root ${
+              searchable ? 'hi-selecttree--hassearch' : ''
+            }`}
+          >
+            {searchable && mode !== 'breadcrumb' && (
+              <div className='hi-selecttree__searchbar-wrapper'>
+                <div className='hi-selecttree__searchbar-inner'>
+                  <Icon name='search' />
+                  <input
+                    className='hi-selecttree__searchinput'
+                    placeholder={'搜索'}
+                    clearable='true'
+                    value={searchValue}
+                    clearabletrigger='always'
+                    onKeyDown={e => {
+                      if (e.keyCode === '13') {
+                        searchTreeNode(e.target.value)
+                      }
+                    }}
+                    onChange={changeEvents}
+                  />
+                  {searchValue.length > 0 ? (
+                    <i
+                      className={`hi-icon icon-close-circle hi-selecttree_searchbar__icon-close`}
+                      onClick={clearSearchEvent}
                     />
-                    {searchValue.length > 0 ? <Icon name='close-circle' style={{ cursor: 'pointer' }} onClick={clearSearchEvent} /> : null}
-                  </div>
+                  ) : null}
                 </div>
-              )}
-            {
-              mode === 'breadcrumb' ? <NavTree
+              </div>
+            )}
+            {mode === 'breadcrumb' ? (
+              <NavTree
                 data={flattenData}
                 originData={data}
                 checkedNodes={checkedNodes}
@@ -367,7 +415,9 @@ const SelectTree = ({
                 onSelected={selectedEvents}
                 isRemoteLoadData={!!dataSource}
                 onExpand={expandEvents}
-              /> : <Tree
+              />
+            ) : (
+              <Tree
                 data={flattenData}
                 originData={data}
                 expandIds={expandIds}
@@ -386,7 +436,7 @@ const SelectTree = ({
                 isRemoteLoadData={!!dataSource}
                 onCheck={checkedEvents}
               />
-            }
+            )}
           </div>
         </Popper>
       }
@@ -402,8 +452,8 @@ SelectTree.defaultProps = {
   value: [],
   data: [],
   clearable: true,
-  onChange: () => { },
-  onExpand: () => { },
+  onChange: () => {},
+  onExpand: () => {},
   checkable: false,
   defaultLoadData: true,
   showCheckedMode: 'PARENT',

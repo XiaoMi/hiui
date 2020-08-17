@@ -15,7 +15,7 @@ class Demo extends React.Component {
     this.state = {
       list: [{
         id: 0,
-        title: '菜单一',
+        title: '小米商城',
         href: 'https://www.mi.com',
       }, {
         id: 1,

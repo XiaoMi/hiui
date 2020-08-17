@@ -304,7 +304,9 @@ const SelectDropdown = props => {
             />
             {searchbarValue.length > 0 ? (
               <span style={{ cursor: 'pointer' }} onClick={cleanSearchbarValue}>
-                <Icon name='close-circle' />
+                <i
+                  className={`hi-icon icon-close-circle hi-select__dropdown--icon__close`}
+                />
               </span>
             ) : null}
           </div>
