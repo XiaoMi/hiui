@@ -23,7 +23,7 @@ const BasePicker = ({
   weekOffset = 0,
   min = null,
   max = null,
-  onChange = () => { },
+  onChange = () => {},
   timeInterval = 240,
   shortcuts,
   altCalendar,
@@ -46,7 +46,8 @@ const BasePicker = ({
     showTime,
     format
   })
-  const isLarge = altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset
+  const isLarge =
+    altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset
   const [altCalendarPresetData, dateMarkPresetData] = useAltData({
     altCalendar,
     altCalendarPreset,
@@ -62,7 +63,7 @@ const BasePicker = ({
     }
   }
 
-  const callback = (dates) => {
+  const callback = dates => {
     const _dates = _.cloneDeep(dates)
     let returnDate = {}
     let returnDateStr = ''
@@ -71,7 +72,10 @@ const BasePicker = ({
         start: _dates[0].toDate(),
         end: _dates[1].toDate()
       }
-      returnDateStr = type === 'week' ? _dates[0].format(iFormat) : { start: _dates[0].format(iFormat), end: _dates[1].format(iFormat) }
+      returnDateStr =
+        type === 'week'
+          ? _dates[0].format(iFormat)
+          : { start: _dates[0].format(iFormat), end: _dates[1].format(iFormat) }
     } else {
       returnDate = _dates[0].toDate()
       returnDateStr = _dates[0].format(iFormat)
@@ -159,14 +163,15 @@ const BasePicker = ({
           topGap={0}
           leftGap={0}
           width={false}
-          preventOverflow
           className={popperCls}
           placement={'top-bottom-start'}
           onClickOutside={clickOutsideEvent}
         >
-          {
-            (type.includes('range') || type === 'timeperiod') ? <RangePanel /> : <Panel />
-          }
+          {type.includes('range') || type === 'timeperiod' ? (
+            <RangePanel />
+          ) : (
+            <Panel />
+          )}
         </Popper>
       </Root>
     </DPContext.Provider>
