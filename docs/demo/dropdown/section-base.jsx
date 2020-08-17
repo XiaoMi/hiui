@@ -38,7 +38,7 @@ class Demo extends React.Component {
       }, {
         title: '-',
       }, {
-        title: '链接一',
+        title: '小米商城',
         href: 'https://www.mi.com',
         disabled: true
       }]
