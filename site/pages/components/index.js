@@ -1,6 +1,6 @@
 const components = {}
 const files = require.context(`../../../docs/zh-CN/components`, false, /.mdx$/)
-files.keys().forEach((key) => {
+files.keys().forEach(key => {
   let _key = key.split('/')[1].split('.')[0]
   components[_key] = files(key).default
 })
@@ -55,7 +55,8 @@ export default {
       tree: components['tree'],
       upload: components['upload'],
       slider: components['slider'],
-      rate: components['rate']
+      rate: components['rate'],
+      'rich-text-editor': components['rich-text-editor']
     },
     'group-data': {
       tabs: components['tabs'],
