@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Clipboard from 'clipboard'
 import Icon from '../../../../components/icon'
 
-const CopyIcon = ({ icon }) => {
+const CopyIcon = ({ icon, filled }) => {
+  console.log(icon)
   const [copyed, setCopyed] = useState(false)
   useEffect(() => {
     const clipboard = new Clipboard(`#icon-copy-btn-${icon.name}`)
@@ -20,7 +21,7 @@ const CopyIcon = ({ icon }) => {
       id={'icon-copy-btn-' + icon.name}
       data-clipboard-target={`#icon-copy-${icon.name}`}
     >
-      <Icon name={icon.name} />
+      <Icon name={icon.name} filled={filled} />
       <span className='hi-icon-name'>{icon.name}</span>
       <span className='hi-icon-cname'>{icon.text}</span>
       <input id={'icon-copy-' + icon.name} style={{ opacity: 0, cursor: 'pointer' }} value={icon.name} readOnly />
