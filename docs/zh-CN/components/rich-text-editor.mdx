@@ -4,14 +4,30 @@
 
 - 基于开源组件[quill](http://doc.quilljs.cn/)做的二次封装
 
-
-## 基础
+## 基础用法
 
 import DemoBase from '../../demo/rich-text-editor/section-base.jsx'
 
+<DemoBase />
 
-## Props
+## 工具栏提醒功能
 
-| 参数            | 说明                                | 类型                                       | 可选值        | 默认值 |
-| --------------- | ----------------------------------- | ------------------------------------------ | ------------- | ------ |
-| showTooltip       | 是否展示**文字提醒**             | boolean                                    | true \| false | true   |
+import DemoTooltip from '../../demo/rich-text-editor/section-tooltip.jsx'
+
+<DemoTooltip />
+
+## RichTextEditor
+
+### Props
+
+| 参数  | 说明                                   | 类型   | 可选值 | 默认值             |
+| ----- | -------------------------------------- | ------ | ------ | ------------------ |
+| theme | 根据 HiUI 相关规范，进行了定制**主题** | string |        | 'snow' \| 'bubble' | - |
+
+## QuillBarTooltip
+
+### props
+
+| 参数        | 说明                 | 类型    | 可选值        | 默认值 |
+| ----------- | -------------------- | ------- | ------------- | ------ |
+| showTooltip | 是否展示**文字提醒** | boolean | true \| false | true   |

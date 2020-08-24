@@ -1,100 +1,50 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Charts from '../../../components/charts'
-const prefix = 'charts-base'
+import RichTextEditor from '../../../components/rich-text-editor'
+import ReactQuill from 'react-quill'
+const prefix = 'RichTextEditor-base'
 const desc = ''
 const code = `import React from 'react'
-import Charts from '@hi-ui/hiui/es/charts'\n
+import RichTextEditor from '@hi-ui/hiui/es/charts'\n
 class Demo extends React.Component {
-  constructor() {
-    super()
-    this.options = {
-      tooltip: {
-          trigger: 'axis',
-          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-              type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-          }
-      },
-      legend: {
-          data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-      },
-      grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-      },
-      xAxis: {
-          type: 'value'
-      },
-      yAxis: {
-          type: 'category',
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-      },
-      series: [
-          {
-              name: '直接访问',
-              type: 'bar',
-              stack: '总量',
-              label: {
-                  show: true,
-                  position: 'insideRight'
-              },
-              data: [320, 302, 301, 334, 390, 330, 320]
-          },
-          {
-              name: '邮件营销',
-              type: 'bar',
-              stack: '总量',
-              label: {
-                  show: true,
-                  position: 'insideRight'
-              },
-              data: [120, 132, 101, 134, 90, 230, 210]
-          },
-          {
-              name: '联盟广告',
-              type: 'bar',
-              stack: '总量',
-              label: {
-                  show: true,
-                  position: 'insideRight'
-              },
-              data: [220, 182, 191, 234, 290, 330, 310]
-          },
-          {
-              name: '视频广告',
-              type: 'bar',
-              stack: '总量',
-              label: {
-                  show: true,
-                  position: 'insideRight'
-              },
-              data: [150, 212, 201, 154, 190, 330, 410]
-          },
-          {
-              name: '搜索引擎',
-              type: 'bar',
-              stack: '总量',
-              label: {
-                  show: true,
-                  position: 'insideRight'
-              },
-              data: [820, 832, 901, 934, 1290, 1330, 1320]
-          }
+  constructor(props) {
+    super(props)
+    this.modules = {
+      toolbar: [
+        ['bold', 'italic', 'underline', 'strike'],
+        [('blockquote', 'code-block')], // toggled buttons
+        ['link', 'image'],
+
+        [{ header: 1 }, { header: 2 }], // custom button values
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+        [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
+        [{ direction: 'rtl' }], // text direction
+        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
+
+        [{ font: [] }],
+        [{ align: [] }],
+
+        ['clean'] // remove formatting button
       ]
     }
   }
   render () {
     return (
-      <div>
-        <Charts option={this.options}/>
-      </div>
+        <RichTextEditor modules={this.modules}/>
     )
   }
 }`
 
 const DemoBase = () => (
-  <DocViewer desc={desc} code={code} scope={{ Charts }} prefix={prefix} />
+  <DocViewer
+    desc={desc}
+    code={code}
+    scope={{ RichTextEditor, ReactQuill }}
+    prefix={prefix}
+  />
 )
 export default DemoBase
