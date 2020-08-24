@@ -28,7 +28,7 @@ const Edit = () => {
       </div>
       <ul className='hi-icon-list'>
         {list.map((icon, idx) => (
-          <CopyIcon icon={icon} key={idx} />
+          <CopyIcon icon={icon} key={idx} filled={currentType === 1} />
         ))}
       </ul>
     </div>
