@@ -5,7 +5,7 @@ import ReactQuill from 'react-quill'
 const prefix = 'RichTextEditor-base'
 const desc = ''
 const code = `import React from 'react'
-import RichTextEditor from '@hi-ui/hiui/es/charts'\n
+import RichTextEditor from '@hi-ui/hiui/es/rich-text-editor'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)

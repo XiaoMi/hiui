@@ -7,7 +7,9 @@ import ReactQuill from 'react-quill'
 const prefix = 'RichTextEditor-tooltip'
 const desc = '结合Tooltip, 方便理解使用工具栏中选项'
 const code = `import React from 'react'
-import Charts from '@hi-ui/hiui/es/charts'\n
+import RichTextEditor, {
+  QuillBarTooltip
+} from '@hi-ui/hiui/es/rich-text-editor'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)

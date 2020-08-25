@@ -5,26 +5,40 @@ import RichTextEditor, {
 } from '../../../components/rich-text-editor'
 import Upload from '../../../components/upload'
 import Message from '../../../components/message'
+import Icon from '../../../components/icon'
 import * as Quill from 'quill'
 const Delta = Quill.import('delta')
 import ReactQuill from 'react-quill'
-const prefix = 'RichTextEditor-upload'
-const desc = '结合Uplaod组件, 方便进行图片数据的处理'
+const prefix = 'RichTextEditor-customToolbar'
+const desc = '自定义工具栏，方便快捷操作'
 const code = `import React from 'react'
+import * as Quill from 'quill'
 
 import RichTextEditor, {
   QuillBarTooltip
 } from '@hi-ui/hiui/es/rich-text-editor'\n
 import Upload from '@hi-ui/hiui/es/upload'
 import Message from '@hi-ui/hiui/es/message'
+import Icon from '@hi-ui/hiui/es/icon'
 
-import * as Quill from 'quill'
 class Demo extends React.Component {
   constructor(props) {
     super(props)
     this.modules = {
       toolbar: {
-        container: '#hiui-quill-toolbar_upload',
+        container: '#hiui-quill-toolbar_custom',
+        handlers:{
+          redo: value => {
+            this.quillRef.history.redo()
+          },
+          undo: value => {
+            this.quillRef.history.undo()
+          },
+          scissor: value => {
+            const { index, length } = this.quillRef.getSelection()
+            this.quillRef.deleteText(index, length, 'user')
+          }
+        }
       }
     }
     this.state = {
@@ -78,42 +92,18 @@ class Demo extends React.Component {
     const { value } = this.state
     return (
       <div>
-        
-        <div id='hiui-quill-toolbar_upload' style={{borderBottom:'none',marginTop:'10px'}}>
+        <div id='hiui-quill-toolbar_custom' style={{borderBottom:'none',marginTop:'10px'}}>
           <QuillBarTooltip tooltipTitle='加粗' toolbarsName='bold' />
           <QuillBarTooltip tooltipTitle='斜体' toolbarsName='italic' />
           <QuillBarTooltip tooltipTitle='下划线' toolbarsName='underline' />
-          <QuillBarTooltip tooltipTitle='图片' toolbarsName='image'>
-            <Upload
-              className='richEditor-upload' 
-              type='normal'
-              uploadAction='https://jsonplaceholder.typicode.com/posts/'
-              headers={{ name: 'mi' }}
-              content={'插入图片'}
-              showUploadList={false}
-              beforeUpload={() => {
-                this.setState({
-                  loading: true
-                })
-                return true
-              }}
-              loading={this.state.loading}
-              name={'files[]'}
-              onChange={(file, fileList, response) => {
-                console.log('upload callback', file, fileList, response)
-                this.setState(
-                  {
-                    loading: false
-                  },
-                  () => {
-                    this.insertImg(response.data || 'https://cdn.cnbj0.fds.api.mi-img.com/b2c-shopapi-pms/pms_1560238127.40319869.png')
-                  }
-                )
-                Message.open({
-                  title: '上传成功'
-                })
-              }}
-          />
+          <QuillBarTooltip  tooltipTitle='撤销' toolbarsName='undo'>
+           <button class='ql-undo' style={{lineHeight: '22px'}}><Icon name="caret-left" style={{ fontSize: '14px'}} /></button>
+          </QuillBarTooltip>
+          <QuillBarTooltip tooltipTitle='重做' toolbarsName='redo'>
+            <button class='ql-redo' style={{lineHeight: '22px'}}><Icon name="caret-right" style={{ fontSize: '14px'}} /> </button>
+          </QuillBarTooltip>
+          <QuillBarTooltip tooltipTitle='切除' toolbarsName='scissor'>
+            <button class='ql-scissor' style={{lineHeight: '22px'}}><Icon name="scissor" style={{ fontSize: '14px'}} /> </button>
           </QuillBarTooltip>
       </div>
         <RichTextEditor 
@@ -137,7 +127,8 @@ const DemoBase = () => (
       Upload,
       Message,
       Quill,
-      Delta
+      Delta,
+      Icon
     }}
     prefix={prefix}
   />

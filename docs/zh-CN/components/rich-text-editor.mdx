@@ -3,7 +3,7 @@
 一种可内嵌于浏览器，所见即所得的文本编辑器
 
 - 基于开源库[quill](http://doc.quilljs.cn/)做的二次封装
-- 完全具备开源库quill的全功能，请放心大胆的使用
+- 完全具备开源库 quill 的全功能，请放心大胆的使用
 
 ## 基础用法
 
@@ -17,31 +17,36 @@ import DemoTooltip from '../../demo/rich-text-editor/section-tooltip.jsx'
 
 <DemoTooltip />
 
+## 上传图片
+
+import DemoUpload from '../../demo/rich-text-editor/section-upload.jsx'
+
+<DemoUpload />
+
+## 自定义功能按钮
+
+import DemoCustomToolbar from '../../demo/rich-text-editor/section-customToolbar.jsx'
+
+<DemoCustomToolbar />
+
 ## RichTextEditor
 
 ### Props
 
->  详细信息请参考 [react-quill](https://github.com/zenoamaro/react-quill)
-
-
-| 参数  | 说明                                   | 类型   | 可选值 | 默认值             |
-| ----- | -------------------------------------- | ------ | ------ | ------------------ |
-| theme | 根据 HiUI 相关规范，进行了定制**主题** | string | 'snow' \| 'bubble' | - |
+> 详细信息请参考 [react-quill](https://github.com/zenoamaro/react-quill)
 
 ## QuillBarTooltip
 
 ### props
 
-| 参数        | 说明                 | 类型    | 可选值        | 默认值 |
-| ----------- | -------------------- | ------- | ------------- | ------ |
-| showTooltip | 是否展示**文字提醒** | boolean | true \| false | true   |
-| tooltipTitle |  文字提醒内容 | string | - | -   |
-| toolbarsName |  对应[Quill](http://doc.quilljs.cn/1409378)工具栏名称 | string | - | -   |
+| 参数         | 说明                                                 | 类型    | 可选值        | 默认值 |
+| ------------ | ---------------------------------------------------- | ------- | ------------- | ------ |
+| showTooltip  | 是否展示**文字提醒**                                 | boolean | true \| false | true   |
+| tooltipTitle | 文字提醒内容                                         | string  | -             | -      |
+| toolbarsName | 对应[Quill](http://doc.quilljs.cn/1409378)工具栏名称 | string  | -             | -      |
 
 ### 推荐文档
 
-- [看云-quill中文文档](http://doc.quilljs.cn/)
-- [gitbook-quill中文文档](http://kang-bing-kui.gitbook.io/quill/)
-- [react-quill](https://github.com/zenoamaro/react-quill)
 - [quill](https://github.com/quilljs/quill)
-- [富文本编辑-braft](https://braft.margox.cn/)
+- [react-quill](https://github.com/zenoamaro/react-quill)
+- [看云-quill 中文文档](http://doc.quilljs.cn/)

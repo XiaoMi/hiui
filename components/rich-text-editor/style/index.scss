@@ -80,4 +80,19 @@
       }
     }
   }
+
+  .hi-upload {
+    button {
+      width: auto;
+      background-color: #4285f4;
+      color: #fff;
+      padding: 4px 15px;
+      line-height: 22px;
+
+      &:hover {
+        background-color: #3b78dc;
+        color: #fff;
+      }
+    }
+  }
 }
