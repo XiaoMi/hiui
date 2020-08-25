@@ -1,6 +1,8 @@
 .hi-quill-content {
   .ql-toolbar,
   .hi-quill-toolbar {
+    display: inline-block;
+
     button,
     .ql-color-picker {
       width: 32px;
@@ -82,6 +84,8 @@
   }
 
   .hi-upload {
+    display: inline-block;
+
     button {
       width: auto;
       background-color: #4285f4;

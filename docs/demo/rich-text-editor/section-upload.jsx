@@ -83,7 +83,7 @@ class Demo extends React.Component {
           <QuillBarTooltip tooltipTitle='加粗' toolbarsName='bold' />
           <QuillBarTooltip tooltipTitle='斜体' toolbarsName='italic' />
           <QuillBarTooltip tooltipTitle='下划线' toolbarsName='underline' />
-          <QuillBarTooltip tooltipTitle='图片' toolbarsName='image'>
+          <QuillBarTooltip tooltipTitle='图片' toolbarsName='image' showTooltip={false}>
             <Upload
               className='richEditor-upload' 
               type='normal'

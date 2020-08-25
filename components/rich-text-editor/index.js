@@ -18,7 +18,9 @@ const QuillBarTooltip = props => {
           {children || <button className={`ql-${toolbarsName}`} />}
         </Tooltip>
       ) : (
-        children || <button className={`ql-${toolbarsName}`} />
+        <div className='hi-quill-toolbar'>
+          {children || <button className={`ql-${toolbarsName}`} />}
+        </div>
       )}
     </span>
   )
