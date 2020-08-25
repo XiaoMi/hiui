@@ -7,12 +7,19 @@ import Tooltip from '../tooltip'
 import './style/index'
 
 const QuillBarTooltip = props => {
-  const { toolbarsName, title, children } = props
+  const { toolbarsName, tooltipTitle, children, showTooltip = true } = props
   return (
     <span className='hi-quill-content'>
-      <Tooltip className='hi-quill-toolbar' title={title || toolbarsName}>
-        {children || <button className={`ql-${toolbarsName}`} />}
-      </Tooltip>
+      {showTooltip ? (
+        <Tooltip
+          className='hi-quill-toolbar'
+          title={tooltipTitle || toolbarsName}
+        >
+          {children || <button className={`ql-${toolbarsName}`} />}
+        </Tooltip>
+      ) : (
+        children || <button className={`ql-${toolbarsName}`} />
+      )}
     </span>
   )
 }
