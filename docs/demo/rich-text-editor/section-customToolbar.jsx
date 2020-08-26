@@ -93,18 +93,21 @@ class Demo extends React.Component {
     return (
       <div>
         <div id='hiui-quill-toolbar_custom' style={{borderBottom:'none',marginTop:'10px'}}>
+          <QuillBarTooltip  tooltipTitle='撤销' toolbarsName='undo'>
+           <button class='ql-undo' style={{lineHeight: '22px'}}><Icon name="caret-left" style={{ fontSize: '16px'}} /></button>
+          </QuillBarTooltip>
+          <QuillBarTooltip tooltipTitle='重做' toolbarsName='redo'>
+            <button class='ql-redo' style={{lineHeight: '22px'}}><Icon name="caret-right" style={{ fontSize: '16px'}} /> </button>
+          </QuillBarTooltip>
+
+          <QuillBarTooltip tooltipTitle='切除' toolbarsName='scissor'>
+            <button class='ql-scissor' style={{lineHeight: '22px'}}><Icon name="scissor" style={{ fontSize: '16px'}} /> </button>
+          </QuillBarTooltip>
           <QuillBarTooltip tooltipTitle='加粗' toolbarsName='bold' />
           <QuillBarTooltip tooltipTitle='斜体' toolbarsName='italic' />
           <QuillBarTooltip tooltipTitle='下划线' toolbarsName='underline' />
-          <QuillBarTooltip  tooltipTitle='撤销' toolbarsName='undo'>
-           <button class='ql-undo' style={{lineHeight: '22px'}}><Icon name="caret-left" style={{ fontSize: '14px'}} /></button>
-          </QuillBarTooltip>
-          <QuillBarTooltip tooltipTitle='重做' toolbarsName='redo'>
-            <button class='ql-redo' style={{lineHeight: '22px'}}><Icon name="caret-right" style={{ fontSize: '14px'}} /> </button>
-          </QuillBarTooltip>
-          <QuillBarTooltip tooltipTitle='切除' toolbarsName='scissor'>
-            <button class='ql-scissor' style={{lineHeight: '22px'}}><Icon name="scissor" style={{ fontSize: '14px'}} /> </button>
-          </QuillBarTooltip>
+          
+         
       </div>
         <RichTextEditor 
           ref={this.reactQuillRef}
