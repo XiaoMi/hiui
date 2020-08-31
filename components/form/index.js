@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react'
 
-import FormWrapperLegacy, { Item as ItemLegacy } from './form-legacy/form-v2'
+import FormWrapperV2, { Item as ItemV2 } from './form-legacy/form-v2'
 
 import Form from './Form'
 import Item from './Item'
@@ -13,17 +13,17 @@ import useForm from './hooks/useForm'
 import Provider from '../context'
 import './style/index'
 
-const VForm = Provider(Form)
+const FormV3 = Provider(Form)
 
 const FormWrapper = forwardRef((props, ref) => {
-  const { legacy } = props
-  const WrapperComponent = legacy ? FormWrapperLegacy : VForm
+  const { legacyV2 } = props
+  const WrapperComponent = legacyV2 ? FormWrapperV2 : FormV3
   return <WrapperComponent {...props} ref={ref} />
 })
 
 const VItem = forwardRef((props, ref) => {
-  const { legacy } = props
-  const WrapperComponent = legacy ? ItemLegacy : Item
+  const { legacyV2 } = props
+  const WrapperComponent = legacyV2 ? ItemV2 : Item
   return <WrapperComponent {...props} ref={ref} />
 })
 
