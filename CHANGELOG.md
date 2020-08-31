@@ -1,5 +1,14 @@
 # 更新日志
 
+## 2.14.0
+
+- 新增 `<Transfer />` 拖拽事件函数 [#1162](https://github.com/XiaoMi/hiui/issues/1162)
+- 修复 `<Upload />` maxCount 在设置为 1 导致上传交互异常问题 [#1158](https://github.com/XiaoMi/hiui/issues/1158)
+- 修复 `<Input />` type 为 amount 类型时的问题 [#1150](https://github.com/XiaoMi/hiui/issues/1150)
+- 修复 `<Select />` disabled 形态下可删除输入框选项问题 [#1148](https://github.com/XiaoMi/hiui/issues/1148)
+- 修复 `<Select />` 支持 withCredentials 跨域携带 cookie 属性 [#1128](https://github.com/XiaoMi/hiui/issues/1128)
+- 优化国际化中简体中文 [#1125](https://github.com/XiaoMi/hiui/issues/1125)
+
 ## 2.13.0
 
 - 修复 `<Checkbox />` 行高不正确问题 [#1061](https://github.com/XiaoMi/hiui/issues/1061)
