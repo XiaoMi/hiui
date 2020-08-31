@@ -41,7 +41,7 @@ const code = [
               value={this.state.value}
               min='2'
               max='8'
-              onChange={(val) => {this.setState({value:val})}}
+              onChange={(e,val) => {this.setState({value:val})}}
             />
           </div>
         )
@@ -60,7 +60,7 @@ const code = [
               step='2'
               min='2'
               max='8'
-              onChange={(val) => {console.log('val:',val)}}
+              onChange={(e,val) => {console.log('val:',val)}}
             />
           </div>
         )
