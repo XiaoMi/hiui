@@ -21,6 +21,7 @@ const TimePicker = ({
   disabledHours,
   disabledMinutes,
   disabledSeconds,
+  overlayClassName,
   onChange = () => {}
 }) => {
   const cacheDate = useRef(null)
@@ -66,7 +67,7 @@ const TimePicker = ({
     setShowPanel(false)
     setInputFocus(false)
   }, [])
-  const callback = (dates) => {
+  const callback = dates => {
     const _dates = _.cloneDeep(dates)
     let returnDate = {}
     let returnDateStr = ''
@@ -75,7 +76,10 @@ const TimePicker = ({
         start: _dates[0].toDate(),
         end: _dates[1].toDate()
       }
-      returnDateStr = { start: _dates[0].format(iFormat), end: _dates[1].format(iFormat) }
+      returnDateStr = {
+        start: _dates[0].format(iFormat),
+        end: _dates[1].format(iFormat)
+      }
     } else {
       returnDate = _dates[0].toDate()
       returnDateStr = _dates[0].format(iFormat)
@@ -119,6 +123,7 @@ const TimePicker = ({
           zIndex={1050}
           topGap={0}
           leftGap={0}
+          overlayClassName={overlayClassName}
           width={false}
           preventOverflow
           className={timePopperCls}

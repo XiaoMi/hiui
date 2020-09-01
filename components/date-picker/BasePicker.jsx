@@ -31,6 +31,7 @@ const BasePicker = ({
   dateMarkRender,
   dateMarkPreset,
   localeDatas,
+  overlayClassName,
   theme
 }) => {
   const cacheDate = useRef(null)
@@ -160,6 +161,7 @@ const BasePicker = ({
         <Popper
           show={showPanel}
           zIndex={1050}
+          overlayClassName={overlayClassName}
           topGap={0}
           leftGap={0}
           width={false}

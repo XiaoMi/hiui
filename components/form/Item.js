@@ -245,6 +245,12 @@ const FormItem = props => {
       e.target && e.target.hasOwnProperty(valuePropName)
         ? e.target[valuePropName]
         : e
+    console.log(
+      'e.target.hasOwnProperty',
+      e.target.hasOwnProperty(valuePropName),
+      valuePropName,
+      e.target[valuePropName]
+    )
     setValue(value)
     handleField(eventName, value)
   }

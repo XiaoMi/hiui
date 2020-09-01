@@ -2,7 +2,14 @@ import React, { useState, useCallback, useEffect } from 'react'
 import classNames from 'classnames'
 import './style/index'
 
-const Switch = ({ content = [], disabled = false, checked, defaultChecked, onChange, onClick }) => {
+const Switch = ({
+  content = [],
+  disabled = false,
+  checked,
+  defaultChecked,
+  onChange,
+  onClick
+}) => {
   const [value, setValue] = useState(checked || defaultChecked || false)
 
   useEffect(() => {
@@ -12,7 +19,7 @@ const Switch = ({ content = [], disabled = false, checked, defaultChecked, onCha
   }, [checked])
 
   const clickSwitch = useCallback(
-    (e) => {
+    e => {
       if (!disabled) {
         if (onClick) {
           onClick(!value, e)
@@ -30,10 +37,16 @@ const Switch = ({ content = [], disabled = false, checked, defaultChecked, onCha
 
   return (
     <span
-      className={classNames('hi-switch', !value && 'hi-switch--closed', disabled && 'hi-switch--disabled')}
+      className={classNames(
+        'hi-switch',
+        !value && 'hi-switch--closed',
+        disabled && 'hi-switch--disabled'
+      )}
       onClick={clickSwitch}
     >
-      <span className='hi-switch__text'>{content.length > 0 && (value ? content[0] : content[1])}</span>
+      <span className='hi-switch__text'>
+        {content.length > 0 && (value ? content[0] : content[1])}
+      </span>
     </span>
   )
 }

@@ -4,9 +4,7 @@ import classNames from 'classnames'
 import Provider from '../context'
 
 function defaultItemRender (page, element) {
-  return (
-    <span>{element}</span>
-  )
+  return <span>{element}</span>
 }
 
 const Pager = props => {
@@ -23,10 +21,7 @@ const Pager = props => {
 
   return (
     <div className={cls} onClick={handClick}>
-      {props.itemRender(
-        props.page,
-        props.children || props.page
-      )}
+      {props.itemRender(props.page, props.children || props.page)}
     </div>
   )
 }

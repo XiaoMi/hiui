@@ -1,14 +1,11 @@
-# Select 选择器
+# SelectTree 树形选择
 
-选择器是一种接收数据的容器，为用户提供选择一部分数据的能力。
+一种接收树形数据结构的选择器，为用户提供复杂数据展示的能力
 
 ## 何时使用
 
-需要从大量的离散型数据中选择一部分时使用
-
-备选项数量 5 个以上时
-
-不需要将全部备选项都展示给用户时
+- 选择部门的组织结构、部门等
+- 选择商品目录等
 
 ## 类型
 
@@ -19,43 +16,46 @@ import DemoSingle from '../../demo/select-tree/section-single'
 <DemoSingle />
 
 ## 基础多选
+
 import DemoMultiple from '../../demo/select-tree/section-multiple'
 
 <DemoMultiple />
 
 ## 数据过滤
+
 import DemoFilter from '../../demo/select-tree/section-filter'
 
 <DemoFilter />
 
 ## 异步节点
+
 import DemoAsync from '../../demo/select-tree/section-async'
 
 <DemoAsync />
 
 ## 面包屑节点
+
 import DemoBread from '../../demo/select-tree/section-bread'
 
 <DemoBread />
 
-
 ## Props
 
-| 参数               | 说明                                                                    | 类型                                                                     | 可选值                          | 默认值    |
-| ------------------ | ----------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------- | --------- |
-| data               | 展示数据                                                                | DataItem []                                                              | -                               | -         |
-| showCheckedMode    | 数据回显模式                                                            | string                                                                   | ALL: 所有被选中节点，不区分父子节点 <br/>PARENT: 当所有子节点被选中时将只保留父节点<br/>CHILD:仅显示子节点                 | CHILD         |
-| mode               | 数据展示形式                                                            | string                                                                   | normal \| breadcrumb                   | false     |
-| type               | 数据选择类型                                                            | string                                                                   | single \| multiple                   | false     |
-| defaultExpandAll   | 是否默认展开所有树节点                                                  | boolean                                                                  | true \| false                   | false     |
-| defaultExpandIds   | 默认高亮的节点（非受控）                                                | string[]                                                                 | -                   | -     |
-| expandIds          | 默认高亮的节点（受控）                                                  | string[]                                                                 | -                   | -     |
-| defaultValue       | 默认选中项 （非受控）                                                   | DataItem[] \| string[]                                                   | -                               | -         |
-| value              | 默认选中项  （受控）                                                    | DataItem[] \| string[]                                                   | -                               | -         |
-| onChange           | 选中时触发                                                              | (checkedIds \| checkedId, checkedNodes \| checkedNode, currentNode) => void                                               | -                               | -         |
-| searchMode         | 节点搜索模式，仅在*mode=normal*模式下生效                               | string                                                                   | highlight \| filter                   | -     |
-| dataSource         | 异步加载数据                                                            | (key: string) => DataSource \| DataSource \| Promise                     | -                               |-        |
-
+| 参数             | 说明                                      | 类型                                                                        | 可选值                                                                                                     | 默认值 |
+| ---------------- | ----------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------ |
+| data             | 展示数据                                  | DataItem []                                                                 | -                                                                                                          | -      |
+| showCheckedMode  | 数据回显模式                              | string                                                                      | ALL: 所有被选中节点，不区分父子节点 <br/>PARENT: 当所有子节点被选中时将只保留父节点<br/>CHILD:仅显示子节点 | CHILD  |
+| mode             | 数据展示形式                              | string                                                                      | normal \| breadcrumb                                                                                       | false  |
+| type             | 数据选择类型                              | string                                                                      | single \| multiple                                                                                         | false  |
+| defaultExpandAll | 是否默认展开所有树节点                    | boolean                                                                     | true \| false                                                                                              | false  |
+| defaultExpandIds | 默认高亮的节点（非受控）                  | string[]                                                                    | -                                                                                                          | -      |
+| expandIds        | 默认高亮的节点（受控）                    | string[]                                                                    | -                                                                                                          | -      |
+| defaultValue     | 默认选中项 （非受控）                     | DataItem[] \| string[]                                                      | -                                                                                                          | -      |
+| value            | 默认选中项 （受控）                       | DataItem[] \| string[]                                                      | -                                                                                                          | -      |
+| onChange         | 选中时触发                                | (checkedIds \| checkedId, checkedNodes \| checkedNode, currentNode) => void | -                                                                                                          | -      |
+| searchMode       | 节点搜索模式，仅在*mode=normal*模式下生效 | string                                                                      | highlight \| filter                                                                                        | -      |
+| dataSource       | 异步加载数据                              | (key: string) => DataSource \| DataSource \| Promise                        | -                                                                                                          | -      |
+| overlayClassName | 下拉根元素的类名称 (3.0 新增)             | string                                                                      | -                                                                                                          | -      |
 
 ### DataItem
 

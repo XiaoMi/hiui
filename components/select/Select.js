@@ -49,6 +49,7 @@ const InternalSelect = props => {
   const selectInputContainer = useRef()
   const [dropdownItems, setDropdownItems] = useState(data)
   const [focusedIndex, setFocusedIndex] = useState(0)
+  const [isFocus, setIsFouces] = useState(false)
   // 存储问题
   const [cacheSelectItem, setCacheSelectItem] = useState([])
 
@@ -76,6 +77,9 @@ const InternalSelect = props => {
     setSearchable(dataSource ? true : propsSearchable)
   }, [propsSearchable])
 
+  useEffect(() => {
+    setIsFouces(dropdownShow)
+  }, [dropdownShow])
   useEffect(() => {
     if (!dataSource) {
       const _data = _.cloneDeep(data)
@@ -430,6 +434,7 @@ const InternalSelect = props => {
           onClickOption={onClickOption}
           onClear={deleteAllItems}
           fieldNames={fieldNames}
+          isFocus={isFocus}
           onClick={() => {
             handleInputClick()
           }}

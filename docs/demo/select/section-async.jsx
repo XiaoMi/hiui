@@ -24,10 +24,10 @@ class Demo extends React.Component {
         dataSource={{
           method: 'GET',
           key: 'id',
-          url: 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/list',
+          url: 'https://mife-gallery.test.mi.com/hiui/stores',
           transformResponse: (res) => {
             if(res.status === 200){
-              return res.data.list
+              return res.data.data
             }
             return []
           }
@@ -66,11 +66,11 @@ class Demo extends React.Component {
       dataSource={keyword => {
         return ({
           type: 'GET',
-          url: 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/list',
+          url: 'https://mife-gallery.test.mi.com/hiui/stores',
           params:{id: keyword},
           transformResponse: (res) => {
             if(res.status === 200){
-              return res.data.list
+              return res.data.data
             }
             return []
           }
@@ -121,11 +121,11 @@ class Demo extends React.Component {
       dataSource={keyword => {
         return ({
           type: 'GET',
-          url: 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/list',
+          url: 'https://mife-gallery.test.mi.com/hiui/stores',
           params:{id: keyword},
           transformResponse: (res) => {
             if(res.status === 200){
-              return res.data.list
+              return res.data.data
             }
             return []
           }

@@ -41,7 +41,7 @@ class Input extends Component {
     this.state = {
       value:
         type === 'string' || type === 'number'
-          ? format(valueSource, this.props.type)
+          ? format(valueSource.toString(), this.props.type)
           : '',
       valueTrue: prefix + valueSource + suffix,
       hover: false,
@@ -57,7 +57,7 @@ class Input extends Component {
     if (nextProps.value !== undefined) {
       if (nextProps.value !== this.state.value) {
         this.setState({
-          value: format(nextProps.value, this.props.type),
+          value: format(nextProps.value.toString(), this.props.type),
           valueTrue: nextProps.value
         })
       }

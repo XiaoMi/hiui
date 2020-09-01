@@ -16,7 +16,8 @@ const SingleInput = props => {
     selectedItems: propsSelectItem,
     handleKeyDown,
     onClear,
-    fieldNames
+    fieldNames,
+    isFocus
   } = props
   const [cacheselectedItems, setCacheselectedItems] = useState(
     propsSelectItem || []
@@ -48,7 +49,10 @@ const SingleInput = props => {
         'hi-select__input',
         'single-value',
         `theme__${theme}`,
-        { disabled }
+        { disabled },
+        {
+          'hi-select__input__focus': isFocus
+        }
       )}
       onClick={onClick}
     >
