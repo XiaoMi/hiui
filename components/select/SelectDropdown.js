@@ -30,7 +30,6 @@ const SelectDropdown = props => {
     selectInputWidth,
     selectedItems,
     show,
-
     fieldNames
   } = props
   const [filterItems, setFilterItems] = useState(dropdownItems)
