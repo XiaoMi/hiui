@@ -74,7 +74,11 @@ class Stepper extends React.Component {
       className,
       theme && 'theme__' + theme
     )
-    return <div style={style} className={_className}>{this.renderStepperBar()}</div>
+    return (
+      <div style={style} className={_className}>
+        {this.renderStepperBar()}
+      </div>
+    )
   }
 }
 
@@ -82,11 +86,13 @@ Stepper.propTypes = {
   className: PropTypes.string,
   placement: PropTypes.oneOf(['vertical', 'horizontal']),
   itemLayout: PropTypes.oneOf(['vertical', 'horizontal']),
-  data: PropTypes.arrayOf(PropTypes.shape({
-    title: PropTypes.any,
-    content: PropTypes.any,
-    icon: PropTypes.any
-  })),
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.any,
+      content: PropTypes.any,
+      icon: PropTypes.any
+    })
+  ),
   current: PropTypes.number,
   style: PropTypes.object
 }
