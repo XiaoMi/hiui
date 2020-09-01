@@ -20,7 +20,8 @@ const MultipleInput = ({
   onClickOption,
   onClear,
   handleKeyDown,
-  fieldNames
+  fieldNames,
+  isFocus
 }) => {
   let icon = dropdownShow ? 'up' : 'down'
   const [showCount, setShowCount] = useState(0)
@@ -72,6 +73,9 @@ const MultipleInput = ({
         `theme__${theme}`,
         {
           disabled
+        },
+        {
+          'hi-select__input__focus': isFocus
         }
       )}
       ref={tagWrapperRef}

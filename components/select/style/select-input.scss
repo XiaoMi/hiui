@@ -47,6 +47,10 @@
     border-color: #4284f5;
   }
 
+  &__focus:not(.disabled) {
+    border-color: #4284f5;
+  }
+
   &:not(.disabled):hover {
     .hi-select__input--icon__expand.clearable {
       display: none;
@@ -260,6 +264,10 @@
     &.active,
     &:not(.disabled):hover {
       @include input-theme($value);
+    }
+
+    &__focus:not(.disabled) {
+      border-color: $value;
     }
   }
 }

@@ -40,7 +40,7 @@ class Counter extends React.Component {
       Number(max)
     )
     this.state = {
-      value: this.format(finalValue),
+      value: this.formatValue(finalValue),
       valueTrue: this.formatValue(finalValue)
     }
   }
@@ -48,7 +48,7 @@ class Counter extends React.Component {
   componentWillReceiveProps (nextProps) {
     if (this.props.hasOwnProperty('value')) {
       this.setState({
-        value: this.format(nextProps.value),
+        value: this.formatValue(nextProps.value),
         valueTrue: this.formatValue(nextProps.value)
       })
     }
@@ -83,22 +83,16 @@ class Counter extends React.Component {
   }
 
   /**
-   * 净化数据
-   * @param {string} val 值
-   */
-  formatValue (value) {
-    return isNaN(Number(value))
-      ? value.toString().replace(/[^-\d]/g, '')
-      : value
-  }
-
-  /**
    * 格式化数据
-   * 88,888
    * @param {string} val 值
    */
-  format (val) {
-    return val
+  formatValue (val) {
+    const { min } = this.props
+    let _val = Number(val)
+    if (Number.isNaN(Number(_val))) {
+      _val = min && min > 0 ? min : 0
+    }
+    return _val
   }
 
   render () {
@@ -165,7 +159,7 @@ class Counter extends React.Component {
               e.persist()
               let value = e.target.value
               this.setState({
-                value: this.format(value),
+                value: this.formatValue(value),
                 valueTrue: this.formatValue(value)
               })
             }}
@@ -205,22 +199,27 @@ class Counter extends React.Component {
 
   update (value) {
     const { onChange } = this.props
-
-    if (this.isControlledComponent) {
+    let _value = value
+    if (this.props.hasOwnProperty('value')) {
+      _value = this.props.value
+      this.setState(
+        {
+          value: this.formatValue(_value),
+          valueTrue: this.formatValue(_value)
+        },
+        () => {
+          console.log('value', this.state.value)
+        }
+      )
+    } else {
       this.setState({
-        value: this.format(this.props.value),
-        valueTrue: this.formatValue(this.props.value)
-      })
-    }
-
-    if (this.isUncontrolledComponent) {
-      this.setState({
-        value: this.format(value),
+        value: this.formatValue(value),
         valueTrue: this.formatValue(value)
       })
     }
+
     setTimeout(() => {
-      this._Input.value = value
+      this._Input.value = this.formatValue(_value)
 
       onChange &&
         onChange(
@@ -230,14 +229,6 @@ class Counter extends React.Component {
           value
         )
     }, 0)
-  }
-
-  get isControlledComponent () {
-    return this.props.hasOwnProperty('value')
-  }
-
-  get isUncontrolledComponent () {
-    return !this.isControlledComponent
   }
 
   getInputNumber () {

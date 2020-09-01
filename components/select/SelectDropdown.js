@@ -8,7 +8,6 @@ import { transKeys } from './utils'
 const SelectDropdown = props => {
   const {
     mode,
-    // focusedIndex: propsFocusedIndex,
     matchFilter,
     emptyContent,
     loading,
@@ -35,7 +34,6 @@ const SelectDropdown = props => {
     fieldNames
   } = props
   const [filterItems, setFilterItems] = useState(dropdownItems)
-  // const [focusedIndex, setFocuseIndex] = useState(propsFocusedIndex)
   const [searchbarValue, setSearchbarValue] = useState('')
   const [ischeckAll, setIscheckAll] = useState(false)
   const searchbar = useRef('')
@@ -49,10 +47,6 @@ const SelectDropdown = props => {
       selectedItems.length > 0 && selectedItems.length === filterItems.length
     )
   }, [selectedItems, filterItems])
-  // // 设置选中下标
-  // useEffect(() => {
-  //   setFocuseIndex(propsFocusedIndex)
-  // }, [propsFocusedIndex])
   // 让搜索框获取焦点
   useEffect(() => {
     searchable &&
@@ -213,11 +207,6 @@ const SelectDropdown = props => {
               )}
           </div>
         )}
-        {/* {mode === 'single' && isSelected && (
-          <div className='hi-select__dropdown--item__check-icon'>
-            <i className='hi-icon icon-check' />
-          </div>
-        )} */}
       </React.Fragment>
     )
   }
@@ -254,7 +243,6 @@ const SelectDropdown = props => {
         onClick={e => onClickOptionIntal(e, item, filterItemsIndex)}
         key={item[transKeys(fieldNames, 'id')]}
         index={filterItemsIndex}
-        // data-focused={focusedIndex === filterItemsIndex}
       >
         {renderOption(isSelected, item, filterItemsIndex)}
       </li>
