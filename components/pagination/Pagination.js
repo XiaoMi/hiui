@@ -7,7 +7,9 @@ import Provider from '../context'
 import Icon from '../icon'
 
 function isInteger (value) {
-  return typeof value === 'number' && isFinite(value) && Math.floor(value) === value
+  return (
+    typeof value === 'number' && isFinite(value) && Math.floor(value) === value
+  )
 }
 
 function breakItemRender (page, element) {
@@ -45,7 +47,10 @@ class Pagination extends Component {
     }
     let current
     if (props.current !== undefined && this.state.current !== props.current) {
-      current = this.getCurrent(props.current, this.calculatePage(props.total, props.pageSize))
+      current = this.getCurrent(
+        props.current,
+        this.calculatePage(props.total, props.pageSize)
+      )
     }
     if (current) {
       states.current = current
@@ -103,7 +108,10 @@ class Pagination extends Component {
 
   onPageSizeChange (pageSize) {
     const { total, onPageSizeChange } = this.props
-    const current = this.getCurrent(this.state.current, this.calculatePage(total, pageSize)) // pageSize改动需要重新计算当前页，避免超过最大页情况
+    const current = this.getCurrent(
+      this.state.current,
+      this.calculatePage(total, pageSize)
+    ) // pageSize改动需要重新计算当前页，避免超过最大页情况
 
     this.setState(
       {
@@ -137,13 +145,13 @@ class Pagination extends Component {
             type='single'
             clearable={false}
             style={{ width: 104 }}
-            data={pageSizeOptions.map((n) => ({
+            data={pageSizeOptions.map(n => ({
               // 这里的类型判断是考虑对过去的兼容写法
               id: typeof n === 'object' ? n.value : n,
               title: `${n} ${i18nItem}/${i18nItemPerPage}`
             }))}
             value={pageSize}
-            onChange={(ids) => {
+            onChange={ids => {
               this.onPageSizeChange(ids[0])
             }}
           />
@@ -204,9 +212,9 @@ class Pagination extends Component {
     )
   }
 
-  gotoPage = (e) => {
+  gotoPage = e => {
     const pageNum = parseInt(e.target.value)
-    const setPageNum = (page) => {
+    const setPageNum = page => {
       this.handleChange(page)
       this.props.onJump && this.props.onJump(Number(page))
     }
@@ -249,13 +257,23 @@ class Pagination extends Component {
       pagers.push(this.renderPager(1, { active: current === 1 }))
     }
     if (leftBuffer > 2) {
-      pagers.push(this.renderPager('...', { className: `${prefixCls}__item-break`, itemRender: breakItemRender }))
+      pagers.push(
+        this.renderPager('...', {
+          className: `${prefixCls}__item-break`,
+          itemRender: breakItemRender
+        })
+      )
     }
     for (let index = leftBuffer; index <= rightBuffer; index++) {
       pagers.push(this.renderPager(index, { active: current === index }))
     }
     if (rightBuffer < maxPage - 1) {
-      pagers.push(this.renderPager('...', { className: `${prefixCls}__item-break`, itemRender: breakItemRender }))
+      pagers.push(
+        this.renderPager('...', {
+          className: `${prefixCls}__item-break`,
+          itemRender: breakItemRender
+        })
+      )
     }
     if (rightBuffer !== maxPage) {
       pagers.push(this.renderPager(maxPage, { active: current === maxPage }))
@@ -370,7 +388,8 @@ class Pagination extends Component {
         {prevPager}
         {showJumper && (
           <div className={`${prefixCls}__text`}>
-            {this.renderJumperInput()}/<span style={{ margin: '0 20px 0px 8px' }}>{maxPage}</span>
+            {this.renderJumperInput()}/
+            <span style={{ margin: '0 20px 0px 8px' }}>{maxPage}</span>
           </div>
         )}
         {nextPager}
@@ -400,7 +419,10 @@ class Pagination extends Component {
     }
 
     return (
-      <div ref={this.tempRef} className={`${prefixCls} ${prefixCls}--${type} ${className} theme__${theme}`}>
+      <div
+        ref={this.tempRef}
+        className={`${prefixCls} ${prefixCls}--${type} ${className} theme__${theme}`}
+      >
         {children}
       </div>
     )
