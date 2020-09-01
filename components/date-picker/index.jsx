@@ -5,6 +5,4 @@ BasePicker.format = (date, format) => {
   return moment(date).format(format)
 }
 export default BasePicker
-export {
-  TimePicker
-}
+export { TimePicker }

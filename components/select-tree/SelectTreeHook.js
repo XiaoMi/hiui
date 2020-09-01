@@ -38,7 +38,8 @@ const SelectTree = ({
   clearable,
   searchMode,
   mode,
-  autoExpand
+  autoExpand,
+  overlayClassName
 }) => {
   const selectedItemsRef = useRef()
   const inputRef = useRef()
@@ -364,6 +365,7 @@ const SelectTree = ({
           show={show}
           attachEle={inputRef.current}
           width={false}
+          overlayClassName={overlayClassName}
           className={`hi-selecttree__popper ${
             data.length === 0 && dataSource
               ? 'hi-selecttree__popper--loading'
