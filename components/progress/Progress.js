@@ -9,6 +9,7 @@ class Progress extends Component {
   static propTypes = {
     apperance: PropTypes.string,
     type: PropTypes.oneOf(['success', 'warn', 'error', 'primary']),
+    percent: PropTypes.number,
     width: PropTypes.number,
     height: PropTypes.number,
     tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
@@ -39,8 +40,8 @@ class Progress extends Component {
 
   render () {
     let prefix = 'hi-progress'
-    const { className = '', apperance, theme } = this.props
-
+    const { className = '', theme } = this.props
+    const apperance = this.props.apperance || this.props.type // api 兼容 1.x 为 type 2.x 改为 apperance
     return (
       <div className={`${prefix}__container ${className} theme__${theme}`}>
         {this.getRenderType(apperance)}

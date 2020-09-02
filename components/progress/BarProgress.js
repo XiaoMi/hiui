@@ -18,15 +18,14 @@ export const BarProgress = props => {
   }
 
   let prefix = 'hi-progress'
-  const {
-    percent: percentNum,
-    content,
-    type,
-    showInfo,
-    placement,
-    tooltip = null,
-    active
-  } = props
+  const { percent: percentNum, placement, tooltip = null, active } = props
+
+  const content =
+    typeof props.content === 'undefined' ? props.content : props.text // // api 兼容 1.x 为 text 2.x 改为 content
+  const showInfo =
+    typeof props.showInfo === 'undefined' ? props.showInfo : props.withOutText // // api 兼容 1.x 为 withOutText 2.x 改为 showInfo
+  const type = props.type || props.status
+
   const percent = percentNum > 0 ? percentNum : 0
   return (
     <div>
@@ -41,13 +40,17 @@ export const BarProgress = props => {
           style={{ width: `${percent}%` }}
         >
           {showInfo && placement === 'inside' && getHeight() >= 14 && (
-            <div className={`${prefix}__text--inside`}>{content || `${percent}%`}</div>
+            <div className={`${prefix}__text--inside`}>
+              {content || `${percent}%`}
+            </div>
           )}
           {tooltip}
         </div>
       </div>
       {showInfo && placement === 'outside' && (
-        <div className={`${prefix}__text ${prefix}__text--${type}`}>{content || `${percent}%`}</div>
+        <div className={`${prefix}__text ${prefix}__text--${type}`}>
+          {content || `${percent}%`}
+        </div>
       )}
     </div>
   )
