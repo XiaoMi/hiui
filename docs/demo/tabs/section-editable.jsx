@@ -59,25 +59,32 @@ class Demo extends React.Component {
   }
 
   render () {
-  
-    return  <Tabs type="editable" onTabClick={(tab,e)=>console.log(tab,e)} editable onDelete={this.deleteTab.bind(this)} onAdd={this.addTab.bind(this)} onBeforeDelete={this.beforeDelete.bind(this)}>
-      {
-        this.state.panes.map((pane, index) => {
-          return (
-            <Tabs.Pane
-              tabTitle={pane.tabTitle}
-              tabId={pane.tabId}
-              closeable={pane.closeable}
-              key={index}
-              disabled={pane.disabled}
-            >
-              <div style={{padding: '16px'}}>{pane.tabTitle}</div>
-            </Tabs.Pane>
-          )
-        })
-      }
-    </Tabs>
-   
+    return  (
+        <Tabs 
+          type="editable" 
+          editable
+          onTabClick={(tab,e)=>console.log(tab,e)}
+          onDelete={this.deleteTab.bind(this)} 
+          onAdd={this.addTab.bind(this)} 
+          onBeforeDelete={this.beforeDelete.bind(this)}
+        >
+        {
+          this.state.panes.map((pane, index) => {
+            return (
+              <Tabs.Pane
+                tabTitle={pane.tabTitle}
+                tabId={pane.tabId}
+                closeable={pane.closeable}
+                key={index}
+                disabled={pane.disabled}
+              >
+                <div style={{padding: '16px'}}>{pane.tabTitle}</div>
+              </Tabs.Pane>
+            )
+          })
+        }
+      </Tabs>
+    )
   }
 }`
 

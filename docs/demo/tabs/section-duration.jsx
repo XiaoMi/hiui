@@ -59,7 +59,11 @@ class Demo extends React.Component {
   }
   render () {
     return (
-      <Tabs defaultActiveId='tabId-2' onTabClick={(tab,e) => console.log(tab,e)} type="line" >
+      <Tabs 
+        type="line" 
+        defaultActiveId='tabId-2' 
+        onTabClick={(tab,e) => console.log(tab)} 
+      >
       {
         this.state.panes.map((pane, index) => {
           return (
@@ -108,7 +112,12 @@ class Demo extends React.Component {
   }
   render () {
     return (
-      <Tabs defaultActiveId='tabId-2' onTabClick={(tab,e) => console.log(tab,e)} placement='vertical' type="line">
+      <Tabs 
+        type="line"
+        defaultActiveId='tabId-2' 
+        onTabClick={(tab,e) => console.log(tab)} 
+        placement='vertical'
+      >
       {
         this.state.panes.map((pane, index) => {
           return (

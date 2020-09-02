@@ -1,5 +1,5 @@
-import Tabs from '../../../components/tabs'
 import React from 'react'
+import Tabs from '../../../components/tabs'
 import DocViewer from '../../../libs/doc-viewer'
 const prefix = 'tabs-basic'
 const rightOptions = ['水平方向', '垂直方向']
@@ -33,17 +33,19 @@ class Demo extends React.Component {
   }
   render () {
     return (
-      <Tabs defaultActiveId='tabId-2' onTabClick={(tab,e) => console.log(tab,e)}>
+      <Tabs defaultActiveId='tabId-2' onTabClick={(tab) => console.log(tab)}>
         {
-          this.state.panes.map((pane, index) => {
+          this.state.panes.map((paneItem, index) => {
+            const {tabTitle, tabId, closeable} = paneItem
+
             return (
               <Tabs.Pane
-                tabTitle={pane.tabTitle}
-                tabId={pane.tabId}
-                closeable={pane.closeable}
+                tabTitle={tabTitle}
+                tabId={tabId}
+                closeable={closeable}
                 key={index}
               >
-                <div style={{padding: '16px'}}>{pane.tabTitle}</div>
+                <div style={{padding: '16px'}}>{tabTitle}</div>
               </Tabs.Pane>
             )
           })
@@ -81,14 +83,19 @@ class Demo extends React.Component {
   }
   render () {
     return (
-      <Tabs defaultActiveId='tabId-2' onTabClick={(tab,e) => console.log(tab,e)} placement='vertical'>
+      <Tabs 
+        defaultActiveId='tabId-2' 
+        onTabClick={(tab) => console.log(tab)} 
+        placement='vertical'
+      >
         {
-          this.state.panes.map((pane, index) => {
+          this.state.panes.map((paneItem, index) => {
+            const {tabTitle, tabId, closeable} = paneItem
             return (
               <Tabs.Pane
-                tabTitle={pane.tabTitle}
-                tabId={pane.tabId}
-                closeable={pane.closeable}
+                tabTitle={tabTitle}
+                tabId={tabId}
+                closeable={closeable}
                 key={index}
               >
                 <div style={{padding: '16px'}}>{pane.tabTitle}</div>

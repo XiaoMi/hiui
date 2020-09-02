@@ -107,22 +107,28 @@ class Demo extends React.Component {
   }
 
   render () {
-    return  <Tabs  onTabClick={(tab,e)=>console.log(tab,e)}  canScroll={true} type="line">
-      {
-        this.state.panes.map((pane, index) => {
-          return (
-            <Tabs.Pane
-              tabTitle={pane.tabTitle}
-              tabId={pane.tabId}
-              key={index}
-              disabled={pane.disabled}
-            >
-              <div style={{padding: '16px'}}>{pane.tabTitle}</div>
-            </Tabs.Pane>
-          )
-        })
-      }
-    </Tabs>
+    return (
+      <Tabs 
+        type="line"
+        canScroll={true} 
+        onTabClick={(tab,e)=>console.log(tab)} 
+      >
+        {
+          this.state.panes.map((pane, index) => {
+            return (
+              <Tabs.Pane
+                tabTitle={pane.tabTitle}
+                tabId={pane.tabId}
+                key={index}
+                disabled={pane.disabled}
+              >
+                <div style={{padding: '16px'}}>{pane.tabTitle}</div>
+              </Tabs.Pane>
+            )
+          })
+        }
+      </Tabs>
+    )  
   }
 }`
 

@@ -32,14 +32,20 @@ class Demo extends React.Component {
       },]
     }
   }
+  dragHandle(dragNode,dropNode) {
+    console.log(dragNode,dropNode)
+  }
   render () {
     return (
-     
-        <Tabs defaultActiveId='tabId-2' onTabClick={(tab,e) => console.log(tab,e)} draggable={true} onDragStart={(tab)=>console.log(tab)}   onDropEnd = {(dragNode,dropNode)=> {
-          console.log(dragNode,dropNode)
-        }} onDrop={(dragNode,dropNode)=> {
-          console.log(dragNode,dropNode)
-        }} type="line">
+        <Tabs 
+          type="line"
+          defaultActiveId='tabId-2' 
+          draggable={true} 
+          onTabClick={(tab,e) => console.log(tab)} 
+          onDragStart={(tab)=>console.log(tab)}   
+          onDropEnd = {this.dragHandle.bind(this)} 
+          onDrop={this.dragHandle.bind(this)} 
+        >
           {
             this.state.panes.map((pane, index) => {
               return (
@@ -86,13 +92,22 @@ class Demo extends React.Component {
       },]
     }
   }
+  
+  dragHandle(dragNode,dropNode) {
+    console.log(dragNode,dropNode)
+  }
   render () {
     return (
-      <Tabs defaultActiveId='tabId-2' onTabClick={(tab,e) => console.log(tab,e)} placement='vertical' draggable={true} onDragStart={(tab)=>console.log(tab)}   onDropEnd = {(dragNode,dropNode)=> {
-        console.log(dragNode,dropNode)
-      }} onDrop={(dragNode,dropNode)=> {
-        console.log(dragNode,dropNode)
-      }} type="line">
+      <Tabs 
+        type="line"
+        draggable={true} 
+        placement='vertical' 
+        defaultActiveId='tabId-2' 
+        onTabClick={(tab,e) => console.log(tab)} 
+        onDragStart={(tab)=>console.log(tab)}   
+        onDropEnd = {this.dragHandle.bind(this)} 
+        onDrop={this.dragHandle.bind(this)} 
+      >
       {
         this.state.panes.map((pane, index) => {
           return (

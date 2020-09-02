@@ -18,16 +18,15 @@ import DemoDefault from '../../demo/tabs/section-default.jsx'
 
 ## 卡片样式
 
-import DemoBasic from '../../demo/tabs/section-basic.jsx'
+import DemoCard from '../../demo/tabs/section-card.jsx'
 
-<DemoBasic />
+<DemoCard />
 
 ## 可编辑用法
 
 import DemoEditable from '../../demo/tabs/section-editable.jsx'
 
 <DemoEditable />
-
 
 ## 胶囊样式
 
@@ -57,28 +56,28 @@ import DemoOverSrcoll from '../../demo/tabs/section-overSrcoll.jsx'
 
 import DemoDraggable from '../../demo/tabs/section-draggable.jsx'
 
-<DemoDraggable/>
+<DemoDraggable />
 
 ## Props
 
 ### Tabs
 
-| 参数            | 说明                                                                                                                        | 类型                            | 可选值                                     | 默认值       |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------ | ------------ |
-| type            | 标签类型                                                                                                                    | string                          | 'desc' \| 'card' \| 'button' \| 'editable' \| 'line' | 'card'  
-| placement       | 水平或竖直展示标签                                                                                                            | string                          | 'vertical' \| 'horizontal'                 | 'horizontal' |
-| defaultActiveId | 设置默认激活的标签                                                                                                            | string \| number                | -                                          | 第一个选项卡 |
-| activeId        | 设置激活的标签，设置此值后变为受控模式                                                                                           | string \| number               | -                                          | -            |
-| max             | 最多显示的选项卡数，仅在 `type='card'` 或 `type='line'` 并且 `placement='horizonal'` 时生效                                      | number                          | -                                          | 6            |
-| canScroll      | 选项卡数达到临界展示滚动条                                                                                                      |  boolean                        | true \| false       | false |
-| draggable       | 是否支持拖拽 , 仅在 `type = 'card'` 或 `type = 'line'` 或 `type = 'editable'` 时生效                                           | boolean                          | true \| false       | false |
-| onTabClick      | 点击标签页时触发，回调值为点击点击标签的 key                                                                                     | (tabKey, event) => void         | -                                          | -            |
-| onDragStart     | 节点开始拖拽时触发                                                                                                           | (dragNode: TabNode) => void | - | -            |
-| onDropEnd       | 节点拖拽成功时触发                                                                                                           | (dragNode: TabNode, dropNode: TabNode) => void| -| -|
-| onDrop          | 节点拖拽时触发                                                                                                              | (dragNode: TabNode, dropNode: TabNode) => void| -| -            |
-| onAdd          | 节点增加时触发                                                                                                              | () => void| -| -            |
-| onDelete        | 节点删除时触发                                                                                                              | (deletedNode: TabNode,index) => void| -| -            |
-| onBeforeDelete   | 节点删除前触发,返回 false 则节点删除失败，不会触发 onDelete                                                                     | (deletedNode: TabNode) => boolean | -| -            |
+| 参数            | 说明                                                                                        | 类型                                           | 可选值                                               | 默认值       |
+| --------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------------- | ------------ |
+| type            | 标签类型                                                                                    | string                                         | 'desc' \| 'card' \| 'button' \| 'editable' \| 'line' | 'card'       |
+| placement       | 水平或竖直展示标签                                                                          | string                                         | 'vertical' \| 'horizontal'                           | 'horizontal' |
+| defaultActiveId | 设置默认激活的标签                                                                          | string \| number                               | -                                                    | 第一个选项卡 |
+| activeId        | 设置激活的标签，设置此值后变为受控模式                                                      | string \| number                               | -                                                    | -            |
+| max             | 最多显示的选项卡数，仅在 `type='card'` 或 `type='line'` 并且 `placement='horizonal'` 时生效 | number                                         | -                                                    | 6            |
+| canScroll       | 选项卡数达到临界展示滚动条                                                                  | boolean                                        | true \| false                                        | false        |
+| draggable       | 是否支持拖拽 , 仅在 `type = 'card'` 或 `type = 'line'` 或 `type = 'editable'` 时生效        | boolean                                        | true \| false                                        | false        |
+| onTabClick      | 点击标签页时触发，回调值为点击点击标签的 key                                                | (tabKey, event) => void                        | -                                                    | -            |
+| onDragStart     | 节点开始拖拽时触发                                                                          | (dragNode: TabNode) => void                    | -                                                    | -            |
+| onDropEnd       | 节点拖拽成功时触发                                                                          | (dragNode: TabNode, dropNode: TabNode) => void | -                                                    | -            |
+| onDrop          | 节点拖拽时触发                                                                              | (dragNode: TabNode, dropNode: TabNode) => void | -                                                    | -            |
+| onAdd           | 节点增加时触发                                                                              | () => void                                     | -                                                    | -            |
+| onDelete        | 节点删除时触发                                                                              | (deletedNode: TabNode,index) => void           | -                                                    | -            |
+| onBeforeDelete  | 节点删除前触发,返回 false 则节点删除失败，不会触发 onDelete                                 | (deletedNode: TabNode) => boolean              | -                                                    | -            |
 
 ### Tabs. Pane
 
@@ -88,5 +87,5 @@ import DemoDraggable from '../../demo/tabs/section-draggable.jsx'
 | tabDesc   | 选项卡头描述文字，仅对 type='desc'时生效     | string \| ReactNode | -             | -      |
 | tabId     | 每个标签的唯一标识                           | string \| number    | -             | -      |
 | closeable | 标签是否可以关闭，仅对 type='editable'时生效 | boolean             | true \| false | true   |
-| disabled | 标签是否禁用 | boolean             | true \| false | false   |
-| animation | 是否支持Pane切换动画           | boolean                          | true \| false       |false
+| disabled  | 标签是否禁用                                 | boolean             | true \| false | false  |
+| animation | 是否支持 Pane 切换动画 (3.0 新增)            | boolean             | true \| false | false  |
