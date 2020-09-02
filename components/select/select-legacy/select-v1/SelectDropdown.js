@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import Checkbox from '../../checkbox'
-import Loading from '../../loading'
+import Checkbox from '../../../checkbox'
+import Loading from '../../../loading'
 
 export default class SelectDropdown extends Component {
   onClickOption (e, item, index) {
@@ -67,7 +67,11 @@ export default class SelectDropdown extends Component {
     }
 
     return (
-      <div className='hi-select__dropdown' onClick={this.props.onClick} style={style}>
+      <div
+        className='hi-select__dropdown'
+        onClick={this.props.onClick}
+        style={style}
+      >
         {loading && (
           <div className='hi-select__dropdown--loading'>
             <Loading size='small' />
@@ -86,7 +90,8 @@ export default class SelectDropdown extends Component {
                     className={classNames('hi-select__dropdown--item', {
                       'is-active': isSelected,
                       'is-disabled': isDisabled,
-                      'hi-select__dropdown--item-default': !item.children && !dropdownRender
+                      'hi-select__dropdown--item-default':
+                        !item.children && !dropdownRender
                     })}
                     onClick={e => this.onClickOption(e, item, index)}
                     key={item.id}

@@ -129,7 +129,7 @@ const SelectDropdown = props => {
   )
   // 高亮关键字
   const hightlightKeyword = useCallback(
-    (text, uniqueKey) => {
+    (text = '', uniqueKey) => {
       let _keyword = searchbarValue
       _keyword = searchbarValue.includes('[')
         ? _keyword.replace(/\[/gi, '\\[')
