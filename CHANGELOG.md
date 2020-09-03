@@ -2,7 +2,9 @@
 
 ## 2.14.0
 
+- 修复 `<Progress />` 环形边框颜色问题 [#1065](https://github.com/XiaoMi/hiui/issues/1165)
 - 新增 `<Transfer />` onDragStart/onDragEnd/onDrop 回调函数 [#1061](https://github.com/XiaoMi/hiui/issues/1162)
+
 ## 2.13.0
 
 - 修复 `<Checkbox />` 行高不正确问题 [#1061](https://github.com/XiaoMi/hiui/issues/1061)
