@@ -202,15 +202,10 @@ class Counter extends React.Component {
     let _value = value
     if (this.props.hasOwnProperty('value')) {
       _value = this.props.value
-      this.setState(
-        {
-          value: this.formatValue(_value),
-          valueTrue: this.formatValue(_value)
-        },
-        () => {
-          console.log('value', this.state.value)
-        }
-      )
+      this.setState({
+        value: this.formatValue(_value),
+        valueTrue: this.formatValue(_value)
+      })
     } else {
       this.setState({
         value: this.formatValue(value),
@@ -219,14 +214,13 @@ class Counter extends React.Component {
     }
 
     setTimeout(() => {
-      this._Input.value = this.formatValue(_value)
-
+      this._Input.value = _value
       onChange &&
         onChange(
           {
             target: this._Input
           },
-          value
+          this.formatValue(value)
         )
     }, 0)
   }
