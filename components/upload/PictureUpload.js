@@ -78,7 +78,7 @@ const PictureUpload = ({
                   <p className='hi-upload__loading-text'>
                     {file.progressNumber
                       ? file.progressNumber < 100
-                        ? file.progressNumber + '%'
+                        ? file.progressNumber && file.progressNumber.toFixed(2) + '%'
                         : localeDatas.upload.uploadSuccess
                       : 0 + '%'}
                   </p>
