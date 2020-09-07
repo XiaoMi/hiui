@@ -338,6 +338,14 @@ $basic-color: #4284f5 !default;
       .hi-datepicker__cell--lunar {
         color: #fff;
       }
+
+      .hi-datepicker__lunar {
+        color: #fff;
+      }
+
+      .hi-datepicker__mark--rest {
+        color: #fff;
+      }
     }
   }
 
@@ -472,7 +480,7 @@ $basic-color: #4284f5 !default;
     position: absolute;
     font-size: 12px;
     right: 0;
-    top: -4px;
+    top: -2px;
 
     &--rest {
       color: rgba(29, 166, 83, 1);

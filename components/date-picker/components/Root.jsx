@@ -35,7 +35,7 @@ const Root = ({
     onTrigger()
   }
 
-  const pickerIconClick = (isClear) => {
+  const pickerIconClick = isClear => {
     if (isClear) {
       onClear()
       return
@@ -67,23 +67,28 @@ const Root = ({
           onFocus={onPickerClickEvent}
           dir={0}
         />
-        {
-          renderRange && (
-            <React.Fragment>
-              <span className='hi-datepicker__input--connection'>
-                {localeDatas.datePicker.to}
-              </span>
-              <Input
-                date={outDate[1]}
-                placeholder={placeholders[1]}
-                onChange={inputChangeEvent}
-                onFocus={onPickerClickEvent}
-                dir={1}
-              />
-            </React.Fragment>
-          )
-        }
-        <PickerIcon focus={inputFocus} type={type} showTime={showTime} disabled={disabled} clearable={clearable} onClick={pickerIconClick} />
+        {renderRange && (
+          <React.Fragment>
+            <span className='hi-datepicker__input--connection'>
+              {localeDatas.datePicker.to}
+            </span>
+            <Input
+              date={outDate[1]}
+              placeholder={placeholders[1]}
+              onChange={inputChangeEvent}
+              onFocus={onPickerClickEvent}
+              dir={1}
+            />
+          </React.Fragment>
+        )}
+        <PickerIcon
+          focus={inputFocus}
+          type={type}
+          showTime={showTime}
+          disabled={disabled}
+          clearable={clearable}
+          onClick={pickerIconClick}
+        />
         {React.cloneElement(children, { attachEle: inputRef.current })}
       </div>
     </div>

@@ -8,7 +8,7 @@ const holiday = {
   PRCLunar: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCLunar.json?',
   IndiaHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/IndiaHoliday.json?'
 }
-export const deconstructDate = (date) => {
+export const deconstructDate = date => {
   return {
     year: date.year(),
     month: date.month(),
@@ -22,8 +22,10 @@ export const deconstructDate = (date) => {
  * 获取 yearrange monthrange 类型
  * @param {String} type
  */
-export const getView = (type) => {
-  return (type.includes('year') || type.includes('month')) ? type.split('range')[0] : 'date'
+export const getView = type => {
+  return type.includes('year') || type.includes('month')
+    ? type.split('range')[0]
+    : 'date'
 }
 
 /**
@@ -55,7 +57,10 @@ export const parseRenderDates = (dates, type) => {
         return moment(leftDate).add(12, 'year')
       }
       const rYear = rightDate.year()
-      const nRightDate = moment(rightDate).year(rYear + (12 - diff % 12), 'year')
+      const nRightDate = moment(rightDate).year(
+        rYear + (12 - (diff % 12)),
+        'year'
+      )
       return nRightDate
     }
     if (type === 'monthrange') {
@@ -72,17 +77,18 @@ export const parseRenderDates = (dates, type) => {
   return [leftDate, rightDate]
 }
 
-export const getTimePeriodData = (timeInterval) => {
-  const segment = 24 * 60 / timeInterval
+export const getTimePeriodData = timeInterval => {
+  const segment = (24 * 60) / timeInterval
   let pre = 0
   let next = 0
   let periodData = []
-  const func = (val) => (val < 10 ? '0' + val : val)
+  const func = val => (val < 10 ? '0' + val : val)
   for (let i = 0; i < segment; i++) {
     next += timeInterval
     const timeStart = func(parseInt(pre / 60))
     const timeEnd = func(parseInt(next / 60))
-    const timeStr = timeStart + ':' + func(pre % 60) + ' ~ ' + timeEnd + ':' + func(next % 60)
+    const timeStr =
+      timeStart + ':' + func(pre % 60) + ' ~ ' + timeEnd + ':' + func(next % 60)
     periodData.push({
       timeStr,
       timeStart,
@@ -97,11 +103,16 @@ export const getTimePeriodData = (timeInterval) => {
  * 是否展示历法次要信息
  * @param {Object} props
  */
-export const showLargeCalendar = (props) => {
-  return props.altCalendar || props.altCalendarPreset || props.dateMarkRender || props.dateMarkPreset
+export const showLargeCalendar = props => {
+  return (
+    props.altCalendar ||
+    props.altCalendarPreset ||
+    props.dateMarkRender ||
+    props.dateMarkPreset
+  )
 }
 
-export const getPRCDate = (api) => {
+export const getPRCDate = api => {
   const url = holiday[api]
   let options = {
     url,
@@ -112,20 +123,22 @@ export const getPRCDate = (api) => {
 
 const altCalendarText = (datainfo, lunarcellinfo, altCalendarPresetData) => {
   if (altCalendarPresetData && altCalendarPresetData[datainfo]) {
-    return altCalendarPresetData[datainfo].text || altCalendarPresetData[datainfo]
+    return (
+      altCalendarPresetData[datainfo].text || altCalendarPresetData[datainfo]
+    )
   }
   return lunarcellinfo.text
 }
-const getMarkNode = (node) => {
+const getMarkNode = node => {
   return (
-    <span className='hi-datepicker__lunar hi-datepicker__holiday'>
-      {node}
-    </span>
+    <span className='hi-datepicker__lunar hi-datepicker__holiday'>{node}</span>
   )
 }
 const markRender = (datainfo, dateMarkRender, dateMarkPresetData) => {
   // 存在传入自定就优先使用自定义
-  const markRenderNode = dateMarkRender ? dateMarkRender(new Date(datainfo).getTime(), new Date().getTime()) : false
+  const markRenderNode = dateMarkRender
+    ? dateMarkRender(new Date(datainfo).getTime(), new Date().getTime())
+    : false
   if (markRenderNode) {
     return getMarkNode(markRenderNode)
   }
@@ -139,7 +152,15 @@ const markRender = (datainfo, dateMarkRender, dateMarkPresetData) => {
  * @param {*} value 日
  * @param {*} cls className
  */
-export const getFullTime = ({cell, renderDate, altCalendarPreset, altCalendar, dateMarkRender, altCalendarPresetData, dateMarkPresetData}) => {
+export const getFullTime = ({
+  cell,
+  renderDate,
+  altCalendarPreset,
+  altCalendar,
+  dateMarkRender,
+  altCalendarPresetData,
+  dateMarkPresetData
+}) => {
   if (cell.type === 'disabled') return false
   let newDate = moment(renderDate)
   newDate.date(cell.value)
@@ -161,16 +182,73 @@ export const getFullTime = ({cell, renderDate, altCalendarPreset, altCalendar, d
   if (altCalendar || dateMarkRender) {
     lunarcellinfo = {
       text: altCalendarText(datainfo, lunarcellinfo, altCalendarPresetData),
-      highlight: altCalendarPresetData && altCalendarPresetData[datainfo] && altCalendarPresetData[datainfo].highlight,
+      highlight:
+        altCalendarPresetData &&
+        altCalendarPresetData[datainfo] &&
+        altCalendarPresetData[datainfo].highlight,
       nodeMark: markRender(datainfo, dateMarkRender, dateMarkPresetData)
     }
   }
-  if ((dateMarkPresetData && dateMarkPresetData[datainfo]) || (altCalendarPresetData && altCalendarPresetData[datainfo])) {
+  if (
+    (dateMarkPresetData && dateMarkPresetData[datainfo]) ||
+    (altCalendarPresetData && altCalendarPresetData[datainfo])
+  ) {
     lunarcellinfo = {
       text: altCalendarText(datainfo, lunarcellinfo, altCalendarPresetData),
-      highlight: altCalendarPresetData && altCalendarPresetData[datainfo] && altCalendarPresetData[datainfo].highlight,
+      highlight:
+        altCalendarPresetData &&
+        altCalendarPresetData[datainfo] &&
+        altCalendarPresetData[datainfo].highlight,
       nodeMark: markRender(datainfo, dateMarkRender, dateMarkPresetData)
     }
   }
   return { ...altCalendarPresetData[datainfo], ...lunarcellinfo }
+}
+
+/**
+ * 处理输入不在该范围内的处理
+ * @param {String} startDate 开始日期
+ * @param {String} endDate 结束日期
+ * @param {String} max 最大日期
+ * @param {String} min 最小日期
+ */
+export const getInRangeDate = (momentstartDate, momentendDate, max, min) => {
+  const startDate = momentstartDate && momentstartDate.format()
+  const endDate = momentendDate && momentendDate.format()
+
+  const isValid = value => {
+    return moment(value).isValid()
+  }
+  const toDate = value => {
+    return moment(value).format()
+  }
+  let _startDate = isValid(startDate) ? startDate : ''
+  let _endDate = isValid(endDate) ? endDate : ''
+  if (min && isValid(startDate)) {
+    const minTimestamp = Date.parse(toDate(min))
+    const startDateTimestamp = Date.parse(startDate)
+    const endDateTimestamp = Date.parse(endDate)
+    _startDate =
+      startDateTimestamp < minTimestamp
+        ? new Date(minTimestamp)
+        : new Date(startDate)
+    _endDate =
+      endDateTimestamp < minTimestamp
+        ? new Date(minTimestamp)
+        : new Date(endDate)
+  }
+  if (max && isValid(startDate)) {
+    const maxTimestamp = Date.parse(toDate(max))
+    const startDateTimestamp = Date.parse(_startDate)
+    const endDateTimestamp = Date.parse(_endDate)
+    _startDate =
+      startDateTimestamp > maxTimestamp
+        ? new Date(maxTimestamp)
+        : new Date(_startDate)
+    _endDate =
+      endDateTimestamp > maxTimestamp
+        ? new Date(maxTimestamp)
+        : new Date(_endDate)
+  }
+  return { startDate: _startDate, endDate: _endDate }
 }
