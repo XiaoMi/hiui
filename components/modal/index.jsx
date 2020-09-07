@@ -54,14 +54,19 @@ const ModalComp = ({
   return createPortal(
     <div className={PREFIX}>
       <div
-        className={Classnames(`${PREFIX}__mask`, { [`${PREFIX}__mask--visible`]: visible })}
+        className={Classnames(`${PREFIX}__mask`, {
+          [`${PREFIX}__mask--visible`]: visible
+        })}
         onClick={() => {
           if (maskClosable && onCancel) {
             onCancel()
           }
         }}
       />
-      <div className={`${PREFIX}__container`} style={{ display: vi === false && 'none' }}>
+      <div
+        className={`${PREFIX}__container`}
+        style={{ display: vi === false && 'none' }}
+      >
         <CSSTransition
           in={visible}
           timeout={0}
@@ -70,8 +75,18 @@ const ModalComp = ({
             setTimeout(() => setVi(false), 300)
           }}
         >
-          <div className={Classnames(`${PREFIX}__wrapper`, `${PREFIX}__wrapper--${size}`)} style={{ width, height }}>
-            <div className={Classnames(`${PREFIX}__header`, { [`${PREFIX}__header--divided`]: showHeaderDivider })}>
+          <div
+            className={Classnames(
+              `${PREFIX}__wrapper`,
+              `${PREFIX}__wrapper--${size}`
+            )}
+            style={{ width, height }}
+          >
+            <div
+              className={Classnames(`${PREFIX}__header`, {
+                [`${PREFIX}__header--divided`]: showHeaderDivider
+              })}
+            >
               {title}
               <Icon
                 name={'close'}
@@ -84,7 +99,11 @@ const ModalComp = ({
               />
             </div>
             <div className={`${PREFIX}__content`}>{children}</div>
-            <div className={Classnames(`${PREFIX}__footer`, { [`${PREFIX}__footer--divided`]: showFooterDivider })}>
+            <div
+              className={Classnames(`${PREFIX}__footer`, {
+                [`${PREFIX}__footer--divided`]: showFooterDivider
+              })}
+            >
               {footer === undefined && cancelText !== null && (
                 <Button
                   type={'line'}
@@ -126,7 +145,15 @@ const confirmIconMap = {
   info: { name: 'info-circle-o', color: '#4284F5' }
 }
 
-const confirm = ({ onConfirm, onCancel, title = '提示', content, type = 'default', confirmText, cancelText }) => {
+const confirm = ({
+  onConfirm,
+  onCancel,
+  title = '提示',
+  content,
+  type = 'default',
+  confirmText,
+  cancelText
+}) => {
   const confirmContainer = document.createElement('div')
 
   document.body.appendChild(confirmContainer)
