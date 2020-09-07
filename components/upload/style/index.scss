@@ -150,10 +150,6 @@
       &:hover {
         border-color: #d9d9d9;
       }
-
-      .drop-click {
-        cursor: not-allowed;
-      }
     }
 
     .hi-upload__item {
@@ -162,25 +158,14 @@
       }
     }
 
-    .drop-content {
-      display: none;
-    }
-
-    .show-drop-content {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      margin: auto;
-      display: inline-block;
-      height: 60px;
-      text-align: center;
+    .drag-upload__desc {
+      display: flex;
+      flex-direction: column;
+      height: 172px;
+      align-items: center;
+      justify-content: center;
       font-size: 14px;
       color: #333;
-      letter-spacing: 0;
-      line-height: 22px;
-      cursor: inherit;
 
       .hi-upload__tips--single-line {
         padding: 0;
@@ -188,14 +173,10 @@
       }
 
       .icon {
-        display: block;
-        cursor: inherit;
         margin-bottom: 6px;
-
-        &::before {
-          font-size: 40px;
-          color: #4284f5;
-        }
+        fill: #4284f5;
+        height: 40px;
+        width: 40px;
       }
     }
 
@@ -530,11 +511,9 @@
         border: 1px dashed $value;
       }
 
-      .show-drop-content {
+      .drag-upload__desc {
         .icon {
-          &::before {
-            color: $value;
-          }
+          fill: $value;
         }
       }
     }
