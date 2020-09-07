@@ -90,15 +90,17 @@ const Calender = ({
     return week.slice(weekOffset).concat(week.slice(0, weekOffset))
   }
 
-  const onTableClick = (e) => {
+  const onTableClick = e => {
     const td = e.target
     const value = td.getAttribute('value')
-    if (!['SPAN', 'DIV'].includes(td.nodeName) || td.getAttribute('type') === 'disabled') {
+    if (
+      !['SPAN', 'DIV'].includes(td.nodeName) ||
+      td.getAttribute('type') === 'disabled'
+    ) {
       return false
     }
     const clickVal = parseInt(value)
     const _date = moment(renderDate)
-    _date[view](clickVal)
     const cellType = td.getAttribute('type')
     if (cellType === 'prev') {
       _date.subtract(1, 'months')
@@ -106,10 +108,13 @@ const Calender = ({
     if (cellType === 'next') {
       _date.add(1, 'months')
     }
+    // 需要放在修改月后，再设置日期
+    _date[view](clickVal)
+
     onPick(_date)
   }
 
-  const onTableMouseMove = (e) => {
+  const onTableMouseMove = e => {
     let ele = e.target
     // let {year, month} = deconstructDate(date)
     const panelDate = _.cloneDeep(renderDate)
@@ -129,12 +134,12 @@ const Calender = ({
     }
   }
 
-  const onTrMouseOver = useCallback((num) => {
+  const onTrMouseOver = useCallback(num => {
     if (num && (type === 'week' || type === 'weekrange') && weekNum !== num) {
       setWeekNum(num)
     }
   }, [])
-  const showHolidayDetail = (fullTimeInfo) => {
+  const showHolidayDetail = fullTimeInfo => {
     clearTimeout(holidayTime.current)
     setHolidayFullName(fullTimeInfo.FullText || fullTimeInfo.text)
     setHolidayFullNameShow(true)
@@ -142,7 +147,7 @@ const Calender = ({
       setHolidayFullNameShow(false)
     }, 2000)
   }
-  const renderAltCalendar = (cell) => {
+  const renderAltCalendar = cell => {
     if (view.includes('year') || view.includes('month')) return
     if (
       Object.keys(altCalendarPresetData).length > 0 ||

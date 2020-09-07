@@ -1,7 +1,9 @@
 import React, { useState, useRef, useCallback } from 'react'
+import moment from 'moment'
 import DPContext from './context'
 import Provider from '../context/index'
 import { useDate, useFormat, useAltData } from './hooks'
+import { getInRangeDate } from './utils'
 import _ from 'lodash'
 import classNames from 'classnames'
 import Popper from '../popper/index'
@@ -96,11 +98,19 @@ const BasePicker = ({
   }
 
   const clickOutsideEvent = useCallback(() => {
-    changeOutDate(outDate)
+    const { startDate, endDate } = getInRangeDate(
+      outDate[0],
+      outDate[1],
+      max,
+      min
+    )
+    const _outDate = [moment(startDate), moment(endDate)]
+
+    changeOutDate(_outDate)
     resetStatus()
-    outDate.forEach((od, index) => {
+    _outDate.forEach((od, index) => {
       if (od && !od.isSame(cacheDate.current[index])) {
-        callback(outDate)
+        callback(_outDate)
       }
     })
   }, [outDate])
