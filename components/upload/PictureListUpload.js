@@ -44,6 +44,7 @@ const PictureListUpload = ({
   return (
     <div className={`hi-upload hi-upload--picture-card`}>
       <FileSelect
+        style={{ display: 'inline-block' }}
         onSelect={uploadFiles}
         multiple={multiple}
         disabled={disabled || _fileList.length >= maxCount}

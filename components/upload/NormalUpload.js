@@ -45,6 +45,7 @@ const NormalUpload = ({
   return (
     <div className={`hi-upload`}>
       <FileSelect
+        style={{ display: 'inline-block' }}
         onSelect={uploadFiles}
         multiple={multiple}
         disabled={disabled || _fileList.length >= maxCount}
@@ -54,7 +55,7 @@ const NormalUpload = ({
           {content}
         </Button>
       </FileSelect>
-      {tips && <span className='hi-upload__tips'>{tips}</span>}
+      {tips && <div className='hi-upload__tips'>{tips}</div>}
       {showUploadList && _fileList.length > 0 && (
         <ul className='hi-upload__list'>
           {_fileList.map((file, index) => {
