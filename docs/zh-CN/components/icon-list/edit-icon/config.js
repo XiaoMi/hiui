@@ -16,6 +16,10 @@ export const outlined = [
     text: '拷贝'
   },
   {
+    name: 'equal-proportion',
+    text: '等比例'
+  },
+  {
     name: 'delete',
     text: '删除'
   },

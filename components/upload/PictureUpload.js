@@ -98,6 +98,7 @@ const PictureUpload = ({
               >
                 <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} />
                 <Icon
+                  filled
                   name='close-circle'
                   className='hi-upload__photo-del'
                   onClick={(e) => {
@@ -122,7 +123,7 @@ const PictureUpload = ({
           >
             <li className={classNames('hi-upload__item', 'hi-upload__item--upload', `hi-upload__item--${photoSize}`)}>
               <label style={{ display: 'block', cursor: 'pointer' }}>
-                <Icon name='plus' />
+                <Icon name='plus' style={{ fontSize: 24 }} />
               </label>
             </li>
           </FileSelect>

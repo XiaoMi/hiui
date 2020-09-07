@@ -149,7 +149,7 @@ const AvatarUpload = ({
         {!file && (
           <FileSelect onSelect={selectFile} multiple={multiple} disabled={disabled} accept={accept}>
             <li className='hi-upload__item hi-upload__item--upload'>
-              <Icon name='plus' />
+              <Icon name='plus' style={{ fontSize: 24 }} />
             </li>
           </FileSelect>
         )}
