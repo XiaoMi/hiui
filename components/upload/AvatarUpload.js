@@ -129,7 +129,7 @@ const AvatarUpload = ({
                 <p className='hi-upload__loading-text'>
                   {file.progressNumber
                     ? file.progressNumber < 100
-                      ? file.progressNumber + '%'
+                      ? file.progressNumber && file.progressNumber.toFixed(2) + '%'
                       : localeDatas.upload.uploadSuccess
                     : 0 + '%'}
                 </p>
@@ -147,9 +147,15 @@ const AvatarUpload = ({
             </li>
           ))}
         {!file && (
-          <FileSelect onSelect={selectFile} multiple={multiple} disabled={disabled} accept={accept}>
+          <FileSelect
+            onSelect={selectFile}
+            multiple={multiple}
+            disabled={disabled}
+            accept={accept}
+            style={{ display: 'inline-block' }}
+          >
             <li className='hi-upload__item hi-upload__item--upload'>
-              <Icon name='plus' />
+              <Icon name='plus' style={{ fontSize: 24 }} />
             </li>
           </FileSelect>
         )}

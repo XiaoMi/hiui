@@ -131,7 +131,9 @@ const DragUpload = ({
                   {file.uploadState === 'loading' && (
                     <div className='hi-upload__upstatus'>
                       <i className='hi-upload__upstatus-line' style={{ width: file.progressNumber + '%' }} />
-                      <i className='hi-upload__upstatus-num'>{file.progressNumber || 0}%</i>
+                      <i className='hi-upload__upstatus-num'>
+                        {(file.progressNumber && file.progressNumber.toFixed(2)) || 0}%
+                      </i>
                     </div>
                   )}
                 </li>
