@@ -1,9 +1,5 @@
-import React from 'react'
-import TableLagecy from './table-legacy/table-v2'
-import Table from './Table'
+import Table from './table-legacy/table-v2'
+import HiTable from './Table'
 
-const TableWrapper = ({ legacyV2, ...props }) => {
-  const WrapperComponent = legacyV2 ? TableLagecy : Table
-  return <WrapperComponent {...props} />
-}
-export default TableWrapper
+export default HiTable
+export { Table }

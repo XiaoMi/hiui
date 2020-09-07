@@ -3,8 +3,8 @@
 $progress-bg: #f2f2f2 !default;
 $progress-primary: #3b76dc !default;
 $progress-success: #1da653 !default;
-$progress-warn: #eb5252 !default;
-$progress-error: #e19d0c !default;
+$progress-warn: #e19d0c !default;
+$progress-error: #eb5252 !default;
 $progress-text: #666 !default;
 
 .hi-progress {
@@ -27,9 +27,7 @@ $progress-text: #666 !default;
       background: #fff;
       opacity: 0;
       content: '';
-      animation:
-        hi-progress-active 2.4s cubic-bezier(0.23, 1, 0.32, 1)
-        infinite;
+      animation: hi-progress-active 2.4s cubic-bezier(0.23, 1, 0.32, 1) infinite;
     }
   }
 
@@ -117,18 +115,16 @@ $progress-text: #666 !default;
     transition: stroke-dashoffset 0.4s cubic-bezier(0.3, 0, 0.7, 1);
   }
 
-  .theme__hiui-blue {
-    &__circle--success {
-      stroke: $progress-success;
-    }
+  &__circle--success {
+    stroke: $progress-success;
+  }
 
-    &__circle--warn {
-      stroke: $progress-warn;
-    }
+  &__circle--warn {
+    stroke: $progress-warn;
+  }
 
-    &__circle--error {
-      stroke: $progress-error;
-    }
+  &__circle--error {
+    stroke: $progress-error;
   }
 
   &__dashboard {
