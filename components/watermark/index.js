@@ -15,9 +15,14 @@ class Watermark extends React.Component {
 
     WaterMarker(container, options)
   }
+
   render () {
+    const { allowCopy } = this.props
     return (
-      <div ref={this.rootRef} style={{ overflow: 'hidden' }}>
+      <div
+        ref={this.rootRef}
+        style={{ overflow: 'hidden', userSelect: allowCopy ? 'text' : 'none' }}
+      >
         {this.props.children}
       </div>
     )
@@ -52,7 +57,8 @@ Watermark.defaultProps = {
   logo: null,
   grayLogo: true,
   isAutoWrap: false,
-  textOverflowEffect: 'zoom'
+  textOverflowEffect: 'zoom',
+  allowCopy: false
 }
 Watermark.generate = WaterMarker
 export default Watermark
