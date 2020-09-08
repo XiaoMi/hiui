@@ -1,8 +1,10 @@
 .hi-quill-content {
+  .hi-quill-custom {
+    display: inline-block;
+  }
+
   .ql-toolbar,
   .hi-quill-toolbar {
-    display: inline-block;
-
     button,
     .ql-color-picker {
       width: 32px;
@@ -99,4 +101,8 @@
       }
     }
   }
+}
+
+.ql-container {
+  min-height: 120px;
 }

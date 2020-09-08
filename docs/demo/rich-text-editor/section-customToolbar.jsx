@@ -42,7 +42,7 @@ class Demo extends React.Component {
       }
     }
     this.state = {
-      value:''
+      value:'小米的使命是，始终坚持做“感动人心，价格厚道”的好产品，让全球每个人都能享受科技带来的美好生活'
     }
     this.reactQuillRef = React.createRef()
   }
@@ -106,12 +106,10 @@ class Demo extends React.Component {
           <QuillBarTooltip tooltipTitle='加粗' toolbarsName='bold' />
           <QuillBarTooltip tooltipTitle='斜体' toolbarsName='italic' />
           <QuillBarTooltip tooltipTitle='下划线' toolbarsName='underline' />
-          
-         
       </div>
         <RichTextEditor 
-          ref={this.reactQuillRef}
           value={value}
+          ref={this.reactQuillRef}
           modules={this.modules}
         />
       </div>
