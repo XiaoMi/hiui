@@ -9,7 +9,7 @@ import Icon from '../icon'
  * 加减器
  */
 class Counter extends React.Component {
-  static _Input = ''
+  static _Input = React.createRef()
   static propTypes = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     step: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -47,6 +47,7 @@ class Counter extends React.Component {
 
   componentWillReceiveProps (nextProps) {
     if (this.props.hasOwnProperty('value')) {
+      this._Input.value = nextProps.value
       this.setState({
         value: this.formatValue(nextProps.value),
         valueTrue: this.formatValue(nextProps.value)
@@ -202,27 +203,23 @@ class Counter extends React.Component {
     let _value = value
     if (this.props.hasOwnProperty('value')) {
       _value = this.props.value
-      this.setState({
-        value: this.formatValue(_value),
-        valueTrue: this.formatValue(_value)
-      })
-    } else {
-      this.setState({
-        value: this.formatValue(value),
-        valueTrue: this.formatValue(value)
-      })
     }
 
-    setTimeout(() => {
-      this._Input.value = value
-      onChange &&
-        onChange(
-          {
-            target: this._Input
-          },
-          this.formatValue(value)
-        )
-    }, 0)
+    this.setState(
+      {
+        value: this.formatValue(_value),
+        valueTrue: this.formatValue(_value)
+      },
+      () => {
+        onChange &&
+          onChange(
+            {
+              target: this._Input
+            },
+            this.formatValue(value)
+          )
+      }
+    )
   }
 
   getInputNumber () {

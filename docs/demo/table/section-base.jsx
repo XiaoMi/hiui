@@ -1,6 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
+import Watermark from '../../../components/Watermark'
 const prefix = 'table-base'
 const desc = ['基础：展示二维数据', '斑马行：优化以行为主的阅读体验']
 const rightOptions = ['基础', '斑马行']
@@ -182,6 +183,12 @@ const code = [
 ]
 
 const DemoBase = () => (
-  <DocViewer code={code} scope={{ Table }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
+  <DocViewer
+    code={code}
+    scope={{ Table, Watermark }}
+    prefix={prefix}
+    rightOptions={rightOptions}
+    desc={desc}
+  />
 )
 export default DemoBase

@@ -236,15 +236,21 @@ const FormItem = props => {
         : labelWidth
   }, [props.labelWidth, formProps.labelWidth])
 
-  const setEvent = (eventName, componentProps, e, ...args) => {
+  const setEvent = (eventName, component, componentProps, e, ...args) => {
     e.persist && e.persist()
+    const displayName =
+      component && component.type && component.type.displayName
+
     const _props = componentProps || children.props
     eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
     eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
-    const value =
+    let value =
       e.target && e.target.hasOwnProperty(valuePropName)
         ? e.target[valuePropName]
         : e
+    if (displayName === 'Counter') {
+      value = args[0]
+    }
     setValue(value)
     handleField(eventName, value)
   }
@@ -270,7 +276,7 @@ const FormItem = props => {
           ...componentProps,
           [valuePropName]: _value,
           onChange: (e, ...args) => {
-            setEvent('onChange', componentProps, e, ...args)
+            setEvent('onChange', HIUIComponent, componentProps, e, ...args)
           },
           onBlur: (e, ...args) => {
             setEvent('onBlur', componentProps, e, ...args)
@@ -289,7 +295,7 @@ const FormItem = props => {
       : React.cloneElement(children, {
         [valuePropName]: _value,
         onChange: (e, ...args) => {
-          setEvent('onChange', '', e, ...args)
+          setEvent('onChange', children, '', e, ...args)
         },
         onBlur: (e, ...args) => {
           setEvent('onBlur', '', e, ...args)

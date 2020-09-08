@@ -122,6 +122,7 @@ const toImage = (canvas, key, container, options) => {
   visibility:visible !important;
   display: block !important;
   opacity: ${opacity} !important;
+  user-select:none !important;
   background-image:url('${base64Url}');
   ${
   options.grayLogo
