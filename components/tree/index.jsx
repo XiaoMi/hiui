@@ -440,7 +440,7 @@ const Tree = (props) => {
       )}
       <BaseTree
         {...props}
-        onLoadChildren={loadChildren}
+        onLoadChildren={onLoadChildren ? loadChildren : null}
         treeNodeRender={treeNodeRender}
         expandedIds={searchable && searchValue !== '' ? filteredIds : expanded}
         onExpand={(expandedNode, isExpanded, ids) => {

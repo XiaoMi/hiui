@@ -10,7 +10,7 @@
 
   .hi-message {
     position: relative;
-    padding: 7px 12px;
+    padding: 9px 12px;
     margin-bottom: 10px;
     border-radius: 2px;
     transition: 0.3s ease;
@@ -20,7 +20,9 @@
     box-sizing: border-box;
   }
 
-  .hi-message__title--wrapper {
+  .hi-message__header {
+    height: 22px;
+    line-height: 22px;
     display: flex;
     align-items: center;
 
@@ -31,8 +33,9 @@
   }
 
   .hi-message__icon {
-    font-size: 16px;
-    margin-right: 12px;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
   }
 
   .hi-message--info {
@@ -111,15 +114,8 @@
 @each $key, $value in $theme-colors {
   .hi-message__container {
     .theme__#{$key}.hi-message.hi-message--info {
-      background-color:
-        rgba(
-          map-get(get-palette(get-color($palette-primary, $key)), '50'),
-          0.1
-        );
-      border:
-        1px
-        solid
-        map-get(get-palette(get-color($palette-primary, $key)), '20');
+      background-color: rgba(map-get(get-palette(get-color($palette-primary, $key)), '50'), 0.1);
+      border: 1px solid map-get(get-palette(get-color($palette-primary, $key)), '20');
 
       .hi-icon {
         color: $value;

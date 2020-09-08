@@ -14,10 +14,8 @@ const message = {
   open: ({ title, prefix = 'message', key = Math.random(), duration, closeable = false, type = 'info' }) => {
     const NoticeContent = (
       <React.Fragment>
-        <div className={`hi-${prefix}__title--wrapper`}>
-          <span className={`hi-${prefix}__icon`}>
-            <Icon name={iconMap[type]} filled style={{ fontSize: '18px' }} />
-          </span>
+        <div className={`hi-${prefix}__header`}>
+          <Icon name={iconMap[type]} filled className={`hi-${prefix}__icon`} />
           {title && <div className={`hi-${prefix}__title`}>{title}</div>}
         </div>
       </React.Fragment>
