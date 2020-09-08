@@ -10,7 +10,7 @@ const desc = ['左对齐：表单项较少，对应标题字数易对齐工整']
 const code = [
   {
     code: `import React from 'react'
-    import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
+  import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
     class Demo extends React.Component {  
       constructor(props){
         super(props)
@@ -73,20 +73,27 @@ const code = [
               valuePropName="checked">
               <Checkbox onChange={()=>{
                 console.log('checkbox remeber me')
-              }}> 记住我 </Checkbox>
+              }}> 
+                记住我 
+              </Checkbox>
+
             </FormItem>
             <FormItem>
              <FormSubmit 
               type='primary'
-
               onClick={(values,errors)=>{
                 console.log('Get form value:',values,errors)}
               }
-              >提交</FormSubmit>
+              >
+                提交
+              </FormSubmit>
+
               <FormReset 
-              type='line' 
-                onClick={()=>{console.log('reset form')}}
-              >重置</FormReset>
+                type='line' 
+                  onClick={()=>{console.log('reset form')}}
+                >
+                重置
+              </FormReset>
             </FormItem>
           </Form>
         )

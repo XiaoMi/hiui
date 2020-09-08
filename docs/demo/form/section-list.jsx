@@ -111,6 +111,7 @@ const code = [
                         {fields.map((field, index) => (
                           <div style={{ display: 'flex' }} key={index}>
                             <FormItem
+                              // 关于{...field}必写，Formlist需要依据里面的变量进行处理 
                               {...field}
                               label={index === 0 ? 'testList' : ''}
                             >

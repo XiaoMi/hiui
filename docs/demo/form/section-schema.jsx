@@ -99,9 +99,6 @@ const code = [
         }
       }
       render () {
-        const FormItem = Form.Item
-        const FormSubmit = Form.Submit
-        const FormReset = Form.Reset
         const SchemaForm = Form.SchemaForm
         const {initialValues} = this.state
     
@@ -208,8 +205,8 @@ const code = [
         }
         this.initSchemaData = this.state.formSchema
         this.form = React.createRef()
-    
       }
+
       render () {
         const {initialValues, formData, formSchema} = this.state
         const SchemaForm = Form.SchemaForm
@@ -315,7 +312,7 @@ const code = [
             onValuesChange ={(changedValues,allValues) => {
              console.log("formdata",changedValues,allValues)
             }}
-            >
+          >
             <FormItem 
               label='日期' 
               field="date" 
