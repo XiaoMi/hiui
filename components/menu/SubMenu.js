@@ -16,7 +16,7 @@ class SubMenu extends Component {
   }
 
   checkExpand (activeIndex, expandIndex, index) {
-    return expandIndex.some(item => {
+    return expandIndex.some((item) => {
       const indexArr = index.split('-')
       const expandIndexArr = item.split('-')
       return expandIndexArr.slice(0, indexArr.length).join('-') === index
@@ -24,16 +24,7 @@ class SubMenu extends Component {
   }
 
   renderPopperMenu (deepSubmenu, isExpand) {
-    const {
-      mini,
-      datas,
-      index,
-      renderMenu,
-      fatMenu,
-      clickInside,
-      theme,
-      overlayClassName
-    } = this.props
+    const { mini, datas, index, renderMenu, fatMenu, clickInside, theme, overlayClassName } = this.props
     let leftGap
     let topGap
     let placement
@@ -88,33 +79,15 @@ class SubMenu extends Component {
   }
 
   render () {
-    const {
-      content,
-      icon,
-      mode,
-      mini,
-      level,
-      index,
-      activeIndex,
-      expandIndex,
-      disabled,
-      fatMenu,
-      theme
-    } = this.props
+    const { content, icon, mode, mini, level, index, activeIndex, expandIndex, disabled, fatMenu, theme } = this.props
     const isExpand = this.checkExpand(activeIndex, expandIndex, index)
     const isActive = this.checkActive(activeIndex, index)
     const deepSubmenu = index.split('-').length > 1
-    const cls = classNames(
-      'hi-menu-item',
-      `theme__${theme}`,
-      'hi-submenu',
-      `hi-menu--${level}`,
-      {
-        'hi-menu-item--disabled': disabled,
-        'hi-menu-item--active': isActive,
-        'hi-submenu--fat': fatMenu
-      }
-    )
+    const cls = classNames('hi-menu-item', `theme__${theme}`, 'hi-submenu', `hi-menu--${level}`, {
+      'hi-menu-item--disabled': disabled,
+      'hi-menu-item--active': isActive,
+      'hi-submenu--fat': fatMenu
+    })
     let toggleIcon
     if (mode === 'horizontal' && !deepSubmenu) {
       toggleIcon = 'down'
@@ -127,7 +100,7 @@ class SubMenu extends Component {
     return (
       <li
         className={cls}
-        ref={node => {
+        ref={(node) => {
           this.submenuTrigger = node
         }}
         key={index}
@@ -138,7 +111,7 @@ class SubMenu extends Component {
             !disabled && this.onClick(index)
           }}
         >
-          <Title icon={icon} content={content} />
+          <Title icon={icon} content={content} mini={mini} level={level} placement={mode} />
           <div className='hi-menu__title-toggle-icon'>
             <Icon name={toggleIcon} />
           </div>

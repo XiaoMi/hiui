@@ -44,7 +44,14 @@ class Demo extends React.Component {
               data:{},
               params:{id:node.id},
               url:'http://my-json-server.typicode.com/hiui-group/db/conditiondata',
-              transformResponse:(res)=>{return res.data}
+              transformResponse:(res)=>{
+                let data = JSON.parse(res)
+                if(data[0]) {
+                  data[0].id = Math.random()
+                }
+
+                return data
+              }
             }
             return obj
           }}

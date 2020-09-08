@@ -52,10 +52,10 @@ const TreeNode = ({ node }) => {
         <Loading />
       ) : (
         <Icon
-          style={{ cursor: 'pointer', marginRight: 2 }}
+          style={{ cursor: 'pointer', marginRight: 2, fontSize: 16 }}
           name={expanded ? switcherApperanceMap[apperance][1] : switcherApperanceMap[apperance][0]}
           onClick={() => {
-            if (onLoadChildren) {
+            if (onLoadChildren && !node.children) {
               setLoading(true)
               onLoadChildren(node).then(
                 (res) => {
@@ -186,14 +186,14 @@ const TreeNode = ({ node }) => {
   return (
     <li className='tree-node'>
       {renderIndent(
-        (node.children && node.children.length) || (onLoadChildren && !node.isLeaf)
+        (node.children && node.children.length) || (onLoadChildren && !node.isLeaf && !node.children)
           ? node.depth
           : apperance !== 'default'
             ? node.depth
             : (node.depth && node.depth + 1) || 1
       )}
       {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
-      {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf)) &&
+      {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf && !node.children)) &&
         renderSwitcher(expandedNodeIds, node, onExpandNode, onLoadChildren)}
       {checkable && renderCheckbox(node, { checked: checkedNodes, semiChecked: semiCheckedIds })}
       {renderTitle(node, selectedId)}
