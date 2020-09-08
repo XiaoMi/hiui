@@ -32,16 +32,14 @@ const notification = {
   }) => {
     const NoticeContent = (
       <React.Fragment>
-        <div className={`hi-${prefix}__title--wrapper`}>
-          <span className={`hi-${prefix}__icon`}>
-            <Icon name={iconMap[type]} filled style={{ fontSize: '18px' }} />
-          </span>
+        <div className={`hi-${prefix}__header`}>
+          <Icon name={iconMap[type]} className={`hi-${prefix}__icon`} filled />
           {title && <div className={`hi-${prefix}__title`}>{title}</div>}
         </div>
 
         {content && <div className={`hi-${prefix}__content`}>{content}</div>}
         {onConfirm && (
-          <div className={`hi-${prefix}__button--wrapper`}>
+          <div className={`hi-${prefix}__footer`}>
             <Button
               size='small'
               className={`hi-${prefix}__button`}
