@@ -101,8 +101,9 @@ const Tree = (props) => {
           (res) => {
             const dataCache = _.cloneDeep(cacheData)
             const loadNode = findNode(node.id, dataCache)
-            loadNode.children = res
+            loadNode.children = res.data
             updateCacheData(dataCache)
+            return res
           },
           (error) => {
             return error
