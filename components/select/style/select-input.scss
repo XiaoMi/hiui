@@ -47,6 +47,10 @@
     border-color: #4284f5;
   }
 
+  &__focus:not(.disabled) {
+    border-color: #4284f5;
+  }
+
   &:not(.disabled):hover {
     .hi-select__input--icon__expand.clearable {
       display: none;
@@ -55,6 +59,11 @@
     .hi-select__input--icon__close {
       display: block;
       color: #bbb;
+    }
+
+    .hi-select__input--icon__close:hover {
+      display: block;
+      color: #333;
     }
   }
 
@@ -117,7 +126,7 @@
     display: inline-block;
     padding-right: 8px;
     cursor: pointer;
-    font-size: 24px;
+    font-size: 22px;
     color: #434343;
     background-color: #fff;
     transform: scale(0.66666667) rotate(0deg);
@@ -255,6 +264,10 @@
     &.active,
     &:not(.disabled):hover {
       @include input-theme($value);
+    }
+
+    &__focus:not(.disabled) {
+      border-color: $value;
     }
   }
 }

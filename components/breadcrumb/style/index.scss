@@ -1,15 +1,22 @@
 @import '@hi-ui/core-css/index.scss';
 
 .hi-breadcrumb {
-  color: #666;
   font-size: 12px;
+
+  ul {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    font-size: 0;
+  }
+
+  li {
+    margin: 0;
+    list-style: none;
+  }
 
   &__content {
     cursor: pointer;
-
-    &:hover {
-      color: #4284f5;
-    }
 
     .hi-icon {
       margin: 0 4px;
@@ -21,13 +28,21 @@
     color: #ccc;
   }
 
+  &__item {
+    display: inline-block;
+
+    a {
+      color: #666;
+    }
+
+    .hi-breadcrumb__content:hover {
+      color: #4284f5;
+    }
+  }
+
   &__item:last-child {
     .hi-breadcrumb__content {
       cursor: text;
-
-      &:hover {
-        color: #666;
-      }
     }
 
     .hi-breadcrumb__separator {
@@ -41,6 +56,17 @@
     .hi-breadcrumb__content {
       &:hover {
         color: $value;
+      }
+    }
+
+    .hi-breadcrumb__item:last-child {
+      .hi-breadcrumb__content {
+        cursor: text;
+        color: #666;
+
+        &:hover {
+          color: #666;
+        }
       }
     }
   }

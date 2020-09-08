@@ -55,9 +55,13 @@ export default class Popover extends Component {
   isInPopover () {
     const popper = this.popperRef.current
     const referenceRef = ReactDOM.findDOMNode(this.referenceRef)
-    const bool = !this.element || this.element.contains(this.eventTarget) ||
-            !referenceRef || referenceRef.contains(this.eventTarget) ||
-            !popper || popper.contains(this.eventTarget)
+    const bool =
+      !this.element ||
+      this.element.contains(this.eventTarget) ||
+      !referenceRef ||
+      referenceRef.contains(this.eventTarget) ||
+      !popper ||
+      popper.contains(this.eventTarget)
     this.eventTarget = null
     return bool
   }
@@ -94,7 +98,7 @@ export default class Popover extends Component {
         }
       })
 
-      document.addEventListener('click', (e) => {
+      document.addEventListener('click', e => {
         this.eventTarget = e.target
         if (this.isInPopover()) return
 
@@ -116,13 +120,31 @@ export default class Popover extends Component {
   }
 
   render () {
-    const { style, className, title, content, placement, width, visible } = this.props
     const {
-      showPopper
-    } = this.state
+      style,
+      className,
+      title,
+      content,
+      placement,
+      width,
+      visible,
+      overlayClassName
+    } = this.props
+    const { showPopper } = this.state
     return (
-      <div className={classNames(className, 'hi-popover')} style={style} ref={node => { this.popoverContainer = node }}>
-        { React.cloneElement(React.Children.only(this.props.children), { ref: (el) => { this.referenceRef = el }, tabIndex: '0' }) }
+      <div
+        className={classNames(className, 'hi-popover')}
+        style={style}
+        ref={node => {
+          this.popoverContainer = node
+        }}
+      >
+        {React.cloneElement(React.Children.only(this.props.children), {
+          ref: el => {
+            this.referenceRef = el
+          },
+          tabIndex: '0'
+        })}
 
         <Popper
           className='hi-popover__popper'
@@ -131,14 +153,16 @@ export default class Popover extends Component {
           placement={placement}
           zIndex={1040}
           width={width}
+          overlayClassName={overlayClassName}
           onMouseOver={this.handlePopperMouseOver}
           onMouseOut={this.handlePopperMouseOut}
         >
-          <div ref={this.popperRef} className={classNames('hi-popover-base', `hi-popover-${placement}`)}>
-            { title && <div className='hi-popover__title'>{title}</div> }
-            <div className='hi-popover__content'>
-              { content }
-            </div>
+          <div
+            ref={this.popperRef}
+            className={classNames('hi-popover-base', `hi-popover-${placement}`)}
+          >
+            {title && <div className='hi-popover__title'>{title}</div>}
+            <div className='hi-popover__content'>{content}</div>
           </div>
         </Popper>
       </div>

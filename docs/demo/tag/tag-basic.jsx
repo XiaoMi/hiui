@@ -13,15 +13,18 @@ class Demo extends React.Component {
   }
   render () {
     return (
-      <div>
+      <>
         <Tag type="warning" onClick={()=>{console.log('待审批')}}>待审批</Tag>
         <Tag>审批中</Tag>
         <Tag type="success">已通过</Tag>
         <Tag type="danger">未通过</Tag>
-      </div>
+        <Tag type="default">未通过</Tag>
+      </>
     )
   }
 }`
 
-const Demo = () => <DocViewer code={code} scope={{ Tag }} desc={desc} prefix={prefix} />
+const Demo = () => (
+  <DocViewer code={code} scope={{ Tag }} desc={desc} prefix={prefix} />
+)
 export default Demo

@@ -35,14 +35,21 @@ class Card extends Component {
       size && `hi-card--${size === 'default' ? 'middle' : size}`,
       disabled && 'hi-card--disabled',
       !cover && !coverUrl && type !== 'simple' && 'hi-card--padding',
-      type === 'simple' && `hi-card--simple-${size === 'default' ? 'middle' : size}`
+      type === 'simple' &&
+        `hi-card--simple-${size === 'default' ? 'middle' : size}`
     )
-    const headerCls = classNames('hi-card__header', !title && extra && 'hi-card__header--onlyextra')
+    const headerCls = classNames(
+      'hi-card__header',
+      !title && extra && 'hi-card__header--onlyextra'
+    )
     const coverCls = classNames(
       'hi-card__content',
       (cover || coverUrl) && 'hi-card__content--cover'
     )
-    const extraCls = classNames('hi-card__extra', !this.state.extraShow && 'hi-card__extra--hide')
+    const extraCls = classNames(
+      'hi-card__extra',
+      !this.state.extraShow && 'hi-card__extra--hide'
+    )
     const header = (title || extra) && (
       <div className={headerCls}>
         <div className='hi-card__title'>{title}</div>
@@ -70,7 +77,11 @@ class Card extends Component {
       )
     }
     if (type === 'simple') {
-      body = <div className='hi-card__content hi-card__content--simple'>{children}</div>
+      body = (
+        <div className='hi-card__content hi-card__content--simple'>
+          {children}
+        </div>
+      )
       coverDom = null
     }
     return (
@@ -78,13 +89,13 @@ class Card extends Component {
         className={cls}
         style={style}
         onMouseEnter={() => {
-          (extraShow === 'hover' || extraType === 'hover') &&
+          ;(extraShow === 'hover' || extraType === 'hover') &&
             this.setState({
               extraShow: true
             })
         }}
         onMouseLeave={() => {
-          (extraShow === 'hover' || extraType === 'hover') &&
+          ;(extraShow === 'hover' || extraType === 'hover') &&
             this.setState({
               extraShow: false
             })
@@ -113,7 +124,11 @@ Card.propTypes = {
   // 卡片标题
   title: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   // 扩展工具（出现在卡片右上角）
-  extra: PropTypes.oneOfType([PropTypes.element, PropTypes.string, PropTypes.array]),
+  extra: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.string,
+    PropTypes.array
+  ]),
   // 封面图（图片卡片） 含有 cover 属性时，title 将会做为图片下文的 title，而不会出现在卡片左上角
   cover: PropTypes.element,
   // 用于图片卡片，做为描述
@@ -125,4 +140,4 @@ Card.propTypes = {
   extraType: PropTypes.oneOf(['default', 'hover'])
 }
 export default Provider(Card)
-export {Card}
+export { Card }

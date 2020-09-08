@@ -9,21 +9,20 @@ import pages from '../pages/components'
 import templates from '../pages/templates'
 import utils from '../utils'
 import { version } from '../../package.json'
-import {
-  setDesignNavs,
-  setComponentsNavs,
-  setComponents,
-  setTemplatesNavs
-} from '../redux/action/global'
+import { setDesignNavs, setComponentsNavs, setComponents, setTemplatesNavs } from '../redux/action/global'
 History.createBrowserHistory()
 
 const logo = (
   <Logo
     url='<BASE_URL>/'
     logoUrl='<BASE_URL>/static/img/logo.png'
-    text={<React.Fragment>HIUI<span className='version'>{`v${version}`}</span></React.Fragment>}
-    title='HIUI'
-    alt='HIUI'
+    text={
+      <React.Fragment>
+        HiUI<span className='version'>{`v${version}`}</span>
+      </React.Fragment>
+    }
+    title='HiUI'
+    alt='HiUI'
   />
 )
 class Index extends React.Component {
@@ -176,6 +175,6 @@ class Index extends React.Component {
   }
 }
 
-export default connect(state => ({
+export default connect((state) => ({
   locale: state.global.locale
 }))(Index)

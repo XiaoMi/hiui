@@ -40,10 +40,12 @@ class Progress extends Component {
 
   render () {
     let prefix = 'hi-progress'
-    const {className = '', apperance, theme} = this.props
-
+    const { className = '', theme } = this.props
+    const apperance = this.props.apperance || this.props.type // api 兼容 1.x 为 type 2.x 改为 apperance
     return (
-      <div className={`${prefix}__container ${className} theme__${theme}`}>{this.getRenderType(apperance)}</div>
+      <div className={`${prefix}__container ${className} theme__${theme}`}>
+        {this.getRenderType(apperance)}
+      </div>
     )
   }
 }

@@ -7,12 +7,12 @@ const desc = '一次仅展开一个面板，有效减少垂直空间的占用'
 const code = [
   {
     code: `import React from 'react'
-import Checkbox from '@hi-ui/hiui/es/checkbox'\n
+import Collapse from '@hi-ui/hiui/es/collapse'\n
 class Demo extends React.Component {
   render(){
     return(
       <Collapse
-        onChange={()=>{console.log('切换了！');}}
+        onChange={(id)=>{console.log('切换了！',id);}}
         accordion={true}
         arrowPlacement="right"
       >
@@ -47,6 +47,12 @@ class Demo extends React.Component {
 ]
 
 const DemoBasic = () => (
-  <DocViewer code={code} scope={{ Collapse }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
+  <DocViewer
+    code={code}
+    scope={{ Collapse }}
+    prefix={prefix}
+    rightOptions={rightOptions}
+    desc={desc}
+  />
 )
 export default DemoBasic

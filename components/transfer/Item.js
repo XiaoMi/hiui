@@ -28,14 +28,18 @@ class Item extends Component {
           color: 'rgba(204,204,204,1)'
         }
         : {}
-    const itemCls = classNames('hi-transfer__item', `theme__${theme}`, item.disabled && 'hi-transfer__item--disabled')
+    const itemCls = classNames(
+      'hi-transfer__item',
+      `theme__${theme}`,
+      item.disabled && 'hi-transfer__item--disabled'
+    )
     const el = (
       <li style={sourceStyle} className={itemCls} onClick={onClick.bind(this)}>
-        {targetNode === item.id &&
-          isDragging &&
-          <div className={`hi-transfer__divider--${dividerPosition}`} />}
-        {mode !== 'basic'
-          ? <Checkbox
+        {targetNode === item.id && isDragging && (
+          <div className={`hi-transfer__divider--${dividerPosition}`} />
+        )}
+        {mode !== 'basic' ? (
+          <Checkbox
             legacy
             text={item.content}
             value={item.id}
@@ -43,10 +47,14 @@ class Item extends Component {
             disabled={item.disabled}
             onChange={checkboxOnChange.bind(this)}
           />
-          : item.content}
+        ) : (
+          item.content
+        )}
       </li>
     )
-    return dir === 'right' && draggable ? connectDropTarget(connectDragSource(el)) : el
+    return dir === 'right' && draggable
+      ? connectDropTarget(connectDragSource(el))
+      : el
   }
 }
 
@@ -77,13 +85,21 @@ const target = {
   },
   hover (props, monitor, component) {
     if (monitor.isOver({ shallow: true })) {
-      const { item: targetItem, setTargetNode, positionX, positionY, setPosition } = props
+      const {
+        item: targetItem,
+        setTargetNode,
+        positionX,
+        positionY,
+        setPosition
+      } = props
       const sourcePosition = monitor.getClientOffset()
       const targetComponent = findDOMNode(component).getBoundingClientRect()
       if (!(sourcePosition.x === positionX && sourcePosition.y === positionY)) {
         setPosition(sourcePosition.x, sourcePosition.y)
         const dividerPosition =
-          sourcePosition.y <= targetComponent.y + targetComponent.height / 2 ? 'up' : 'down'
+          sourcePosition.y <= targetComponent.y + targetComponent.height / 2
+            ? 'up'
+            : 'down'
         setTargetNode(targetItem.id, dividerPosition)
       }
     }
@@ -103,9 +119,11 @@ const HOCItem = ItemComponent => {
     render () {
       const { dir, draggable } = this.props
 
-      return draggable && dir === 'right'
-        ? <DragItem {...this.props} />
-        : <ItemComponent {...this.props} />
+      return draggable && dir === 'right' ? (
+        <DragItem {...this.props} />
+      ) : (
+        <ItemComponent {...this.props} />
+      )
     }
   }
 }

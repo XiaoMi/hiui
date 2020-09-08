@@ -15,9 +15,14 @@ class Watermark extends React.Component {
 
     WaterMarker(container, options)
   }
+
   render () {
+    const { allowCopy } = this.props
     return (
-      <div ref={this.rootRef} style={{ overflow: 'hidden' }}>
+      <div
+        ref={this.rootRef}
+        style={{ overflow: 'hidden', userSelect: allowCopy ? 'text' : 'none' }}
+      >
         {this.props.children}
       </div>
     )
@@ -29,7 +34,7 @@ Watermark.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   textAlign: PropTypes.string,
-  font: PropTypes.string,
+  font: PropTypes.number,
   color: PropTypes.string,
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   rotate: PropTypes.number,
@@ -37,22 +42,23 @@ Watermark.propTypes = {
   logo: PropTypes.string,
   grayLogo: PropTypes.bool,
   isAutoWrap: PropTypes.bool,
-  textOverflowEffect: PropTypes.oneOfType(['zoom', 'cut'])
+  textOverflowEffect: PropTypes.oneOf(['zoom', 'cut'])
 }
 
 Watermark.defaultProps = {
   id: null,
   density: 'default',
   textAlign: 'left',
-  font: '16px microsoft yahei',
-  color: 'rgba(128, 128, 128, 0.2)',
+  font: 14,
+  color: 'rgba(148, 148, 148, 0.2)',
   content: '请勿外传',
   rotate: -30,
   zIndex: 1000,
   logo: null,
   grayLogo: true,
   isAutoWrap: false,
-  textOverflowEffect: 'zoom'
+  textOverflowEffect: 'zoom',
+  allowCopy: false
 }
 Watermark.generate = WaterMarker
 export default Watermark

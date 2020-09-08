@@ -32,14 +32,10 @@ class Demo extends React.Component {
       <div>
         <Upload
           type="normal"
-          beforeUpload={(files, fileList) => {
-            console.log('---------beforeUpload', files, fileList)
-            return true
-          }}
           customUpload={files => {
             const _fileList = fileList.concat({
               name: files[0].name,
-              fileType: 'img',
+              fileType: files[0].name.slice(files[0].name.lastIndexOf('.') + 1).toLowerCase(),
               uploadState: 'success'
             })
             this.setState({

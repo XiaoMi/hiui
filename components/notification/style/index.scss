@@ -20,14 +20,18 @@
 
     &__closer {
       position: absolute;
-      top: 10px;
+      height: 16px;
+      width: 16px;
+      top: 12px;
       right: 12px;
     }
   }
 
-  .hi-notification__title--wrapper {
-    display: flex;
+  .hi-notification__header {
+    height: 22px;
     line-height: 22px;
+    display: flex;
+    align-items: center;
 
     .hi-notification__title {
       font-size: 14px;
@@ -35,12 +39,14 @@
   }
 
   .hi-notification__icon {
-    font-size: 16px;
-    margin-right: 12px;
+    height: 16px;
+    width: 16px;
+    margin-right: 8px;
   }
 
   .hi-notification__content {
-    padding-left: 28px;
+    padding: 0 24px;
+    margin-top: 4px;
     font-size: 12px;
     line-height: 20px;
     color: #666;
@@ -48,15 +54,13 @@
 
   .hi-notification__content--wrapper {
     width: 100%;
-    padding-right: 14px;
   }
 
-  .hi-notification__button--wrapper {
+  .hi-notification__footer {
     text-align: right;
     margin-top: 9px;
 
     .hi-notification__button {
-      margin-right: -14px;
       color: #fff;
     }
   }
@@ -138,15 +142,8 @@
 @each $key, $value in $theme-colors {
   .hi-notification__container {
     .theme__#{$key}.hi-notification.hi-notification--info {
-      background-color:
-        rgba(
-          map-get(get-palette(get-color($palette-primary, $key)), '50'),
-          0.1
-        );
-      border:
-        1px
-        solid
-        map-get(get-palette(get-color($palette-primary, $key)), '20');
+      background-color: rgba(map-get(get-palette(get-color($palette-primary, $key)), '50'), 0.1);
+      border: 1px solid map-get(get-palette(get-color($palette-primary, $key)), '20');
 
       .hi-icon {
         color: $value;

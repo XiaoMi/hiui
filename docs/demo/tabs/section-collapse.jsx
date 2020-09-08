@@ -55,7 +55,7 @@ class Demo extends React.Component {
   }
   render () {
     return (
-      <Tabs onTabClick={(tab,e)=>console.log(tab,e)}>
+      <Tabs onTabClick={(tab,e)=>console.log(tab)}>
         {
           this.state.panes.map((pane, index) => {
             return (

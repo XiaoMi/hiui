@@ -1,11 +1,13 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Timeline from '../../../components/timeline'
+import Progress from '../../../components/progress'
 import Grid from '../../../components/grid'
 import Form from '../../../components/form'
 import Input from '../../../components/input'
 import Radio from '../../../components/radio'
 import Button from '../../../components/button'
+import Icon from '../../../components/icon'
 const prefix = 'timeline-basic'
 const desc = '以时间为第一维度，展示该时间点的事务、日程、任务或记录'
 const code = `import React from 'react'
@@ -41,7 +43,7 @@ class Demo extends React.Component {
       data = [{
         groupTitle: '上午',
         children: [{
-          title: '管理层例会',
+          title: <div style={{display:'flex'}}><div style={{marginRight:8}}>管理层例会</div><Progress percent={10} /></div>,
           content: '毕加索会议室 B2层 可提前预定预…',
           timestamp: '10:00',
         }, {
@@ -108,8 +110,8 @@ class Demo extends React.Component {
             extraTime: '03-10'
           }]
         }]
-      
-    }  
+
+    }
 
     return (
       <div>
@@ -140,6 +142,11 @@ class Demo extends React.Component {
 }`
 
 const DemoBasic = () => (
-  <DocViewer code={code} scope={{ Timeline, Form, Radio, Grid, Input, Button }} prefix={prefix} desc={desc} />
+  <DocViewer
+    code={code}
+    scope={{ Timeline, Form, Radio, Grid, Input, Button, Icon, Progress }}
+    prefix={prefix}
+    desc={desc}
+  />
 )
 export default DemoBasic

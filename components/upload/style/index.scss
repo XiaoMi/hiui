@@ -9,6 +9,7 @@
     font-size: 12px;
     color: rgb(153, 153, 153);
     line-height: 20px;
+    margin-top: 8px;
 
     &--single-line {
       display: block;
@@ -123,6 +124,7 @@
     min-height: 172px;
     box-sizing: border-box;
     border: 1px dashed #dbdbdb;
+    transition: border-color 0.3s;
     border-radius: 2px;
     cursor: pointer;
     padding: 12px;
@@ -149,10 +151,6 @@
       &:hover {
         border-color: #d9d9d9;
       }
-
-      .drop-click {
-        cursor: not-allowed;
-      }
     }
 
     .hi-upload__item {
@@ -161,25 +159,14 @@
       }
     }
 
-    .drop-content {
-      display: none;
-    }
-
-    .show-drop-content {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      margin: auto;
-      display: inline-block;
-      height: 60px;
-      text-align: center;
+    .drag-upload__desc {
+      display: flex;
+      flex-direction: column;
+      height: 172px;
+      align-items: center;
+      justify-content: center;
       font-size: 14px;
       color: #333;
-      letter-spacing: 0;
-      line-height: 22px;
-      cursor: inherit;
 
       .hi-upload__tips--single-line {
         padding: 0;
@@ -187,18 +174,14 @@
       }
 
       .icon {
-        display: block;
-        cursor: inherit;
         margin-bottom: 6px;
-
-        &::before {
-          font-size: 40px;
-          color: #4284f5;
-        }
+        fill: #4284f5;
+        height: 40px;
+        width: 40px;
       }
     }
 
-    .drop-over {
+    &.drop-over {
       border: 1px dashed #0099fb;
     }
   }
@@ -259,6 +242,7 @@
         font-size: 28px;
         color: #e7e7e7;
         border: 1px dashed rgba(216, 216, 216, 1);
+        transition: border-color 0.3s;
         line-height: 140px;
 
         &:hover {
@@ -308,21 +292,50 @@
     }
   }
 
+  &--photo {
+    .hi-upload__item--small {
+      width: 80px;
+      height: 80px;
+      line-height: 80px;
+
+      .hi-upload__thumb {
+        max-width: 80px;
+        max-height: 80px;
+      }
+    }
+
+    .hi-upload__item--large {
+      width: 200px;
+      height: 200px;
+      line-height: 200px;
+
+      .hi-upload__thumb {
+        max-width: 200px;
+        max-height: 200px;
+      }
+    }
+  }
+
+  &__thumb {
+    max-width: 140px;
+    max-height: 140px;
+  }
+
   &--avatar {
     .hi-upload__item--upload {
       width: 80px;
       height: 80px;
       line-height: 80px;
       box-sizing: border-box;
+      cursor: pointer;
     }
   }
 
   &__photo-del {
     position: absolute;
     right: -8px;
-    top: -10px;
+    top: -8px;
     font-size: 20px;
-    line-height: 20px;
     display: none;
     z-index: 3;
   }
@@ -361,11 +374,6 @@
     background: #000;
     opacity: 0.34;
     z-index: 2;
-  }
-
-  &__thumb {
-    max-width: 140px;
-    max-height: 140px;
   }
 
   &--picture-card {
@@ -503,11 +511,9 @@
         border: 1px dashed $value;
       }
 
-      .show-drop-content {
+      .drag-upload__desc {
         .icon {
-          &::before {
-            color: $value;
-          }
+          fill: $value;
         }
       }
     }

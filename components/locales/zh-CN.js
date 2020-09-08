@@ -5,8 +5,8 @@ export default {
   datePicker: {
     ok: '确认',
     to: '至',
-    placeholder: '请选择日期',
-    placeholderTimeperiod: '请选择日期时间',
+    placeholder: ['请选择日期'],
+    placeholderTimeperiod: ['请选择时间'],
     dateChoose: '日期选择',
     timeChoose: '时间选择',
     undefinedType: '类型未定义',
@@ -14,18 +14,45 @@ export default {
     lastMonth: '近一月',
     lastThreeMonth: '近三月',
     lastYear: '近一年',
-    month: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-    monthShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+    month: [
+      '一月',
+      '二月',
+      '三月',
+      '四月',
+      '五月',
+      '六月',
+      '七月',
+      '八月',
+      '九月',
+      '十月',
+      '十一月',
+      '十二月'
+    ],
+    monthShort: [
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月'
+    ],
     week: ['日', '一', '二', '三', '四', '五', '六'],
     placeholders: {
-      date: '请选择日期',
-      month: '请选择月',
-      year: '请选择年',
-      time: '请选择时间',
+      date: ['请选择日期'],
+      month: ['请选择月'],
+      year: ['请选择年'],
+      time: ['请选择时间'],
       daterange: ['开始日期', '结束日期'],
-      week: '请选择周',
+      week: ['请选择周'],
       weekrange: ['开始周', '结束周'],
-      timeperiod: ['开始日期时间', '结束日期时间']
+      timeperiod: ['开始时间', '结束时间'],
+      timerange: ['请选择开始时间', '请选择结束时间']
     },
     year: '年',
     timePeriod: '时间段',
@@ -46,13 +73,20 @@ export default {
   },
   cascader: {
     placeholder: '请选择',
-    noFoundTip: '无匹配数据'
+    noFoundTip: '无匹配数据',
+    emptyContent: '暂无数据'
   },
   select: {
     placeholder: '请选择',
     emptyContent: '无匹配数据',
     searchPlaceholder: '搜索',
-    checkAll: '全选'
+    checkAll: '全选',
+    justSelected: '仅看已选'
+  },
+  search: {
+    searchEmptyResult: '未找到搜索结果',
+    searchEmptyRecord: '无搜索记录',
+    searchRecord: '搜索历史'
   },
   transfer: {
     checkAll: '全选',

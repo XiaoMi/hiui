@@ -4,6 +4,7 @@ import Pager from './Pager'
 import Select from '../select'
 import Input from '../input'
 import Provider from '../context'
+import Icon from '../icon'
 
 function isInteger (value) {
   return (
@@ -21,13 +22,11 @@ class Pagination extends Component {
   constructor (props) {
     super(props)
 
-    const {
-      defaultCurrent,
-      current: propsCurrent,
-      pageSize,
-      total
-    } = props
-    const current = this.getCurrent(propsCurrent !== undefined ? propsCurrent : defaultCurrent, this.calculatePage(total, pageSize))
+    const { defaultCurrent, current: propsCurrent, pageSize, total } = props
+    const current = this.getCurrent(
+      propsCurrent !== undefined ? propsCurrent : defaultCurrent,
+      this.calculatePage(total, pageSize)
+    )
     this.jumper = React.createRef()
     this.tempRef = React.createRef()
     this.state = {
@@ -48,14 +47,17 @@ class Pagination extends Component {
     }
     let current
     if (props.current !== undefined && this.state.current !== props.current) {
-      current = this.getCurrent(props.current, this.calculatePage(props.total, props.pageSize))
+      current = this.getCurrent(
+        props.current,
+        this.calculatePage(props.total, props.pageSize)
+      )
     }
     if (current) {
       states.current = current
       states.jumpTo = current
     }
 
-    this.setState({...states})
+    this.setState({ ...states })
   }
 
   getCurrent (current, maxPage) {
@@ -82,10 +84,11 @@ class Pagination extends Component {
     if (isInteger(page) && page !== prevPage && page >= 1 && page <= maxPage) {
       const pageSize = this.state.pageSize
       this.props.onChange(page, prevPage, pageSize)
-      this.props.current !== undefined || this.setState({
-        current: page,
-        jumpTo: page
-      })
+      this.props.current !== undefined ||
+        this.setState({
+          current: page,
+          jumpTo: page
+        })
     }
   }
 
@@ -104,24 +107,32 @@ class Pagination extends Component {
   }
 
   onPageSizeChange (pageSize) {
-    const {
-      total,
-      onPageSizeChange
-    } = this.props
-    const current = this.getCurrent(this.state.current, this.calculatePage(total, pageSize)) // pageSize改动需要重新计算当前页，避免超过最大页情况
+    const { total, onPageSizeChange } = this.props
+    const current = this.getCurrent(
+      this.state.current,
+      this.calculatePage(total, pageSize)
+    ) // pageSize改动需要重新计算当前页，避免超过最大页情况
 
-    this.setState({
-      pageSize
-    }, () => {
-      onPageSizeChange && onPageSizeChange(pageSize, current)
-      this.handleChange(current)
-    })
+    this.setState(
+      {
+        pageSize
+      },
+      () => {
+        onPageSizeChange && onPageSizeChange(pageSize, current)
+        this.handleChange(current)
+      }
+    )
   }
 
   renderPageSizes () {
-    const { pageSize, pageSizeOptions, prefixCls, localeDatas: {
-      pagination: { itemPerPage: i18nItemPerPage, item: i18nItem }
-    } } = this.props
+    const {
+      pageSize,
+      pageSizeOptions,
+      prefixCls,
+      localeDatas: {
+        pagination: { itemPerPage: i18nItemPerPage, item: i18nItem }
+      }
+    } = this.props
 
     if (pageSizeOptions.length === 0) {
       return null
@@ -142,7 +153,8 @@ class Pagination extends Component {
             value={pageSize}
             onChange={ids => {
               this.onPageSizeChange(ids[0])
-            }} />
+            }}
+          />
         </div>
       </div>
     )
@@ -169,34 +181,40 @@ class Pagination extends Component {
 
     return (
       <div className={`${prefixCls}__jumper-input`}>
-        <Input innerRef={this.jumper} onKeyPress={this.gotoPage.bind(this)} onBlur={this.gotoPage.bind(this)} value={this.state.jumpTo} onChange={(e, tVal) => {
-          const val = e.target.value
-          if (!val) {
-            this.setState({
-              jumpTo: val
-            })
-            return
-          }
-          if (/^\d+$/.test(val)) {
-            const maxPage = this.calculatePage(total)
-            const jumpTo = val < 1 ? 1 : (val > maxPage ? maxPage : val)
+        <Input
+          innerRef={this.jumper}
+          onKeyPress={this.gotoPage.bind(this)}
+          onBlur={this.gotoPage.bind(this)}
+          value={this.state.jumpTo}
+          onChange={(e, tVal) => {
+            const val = e.target.value
+            if (!val) {
+              this.setState({
+                jumpTo: val
+              })
+              return
+            }
+            if (/^\d+$/.test(val)) {
+              const maxPage = this.calculatePage(total)
+              const jumpTo = val < 1 ? 1 : val > maxPage ? maxPage : val
 
-            this.setState({
-              jumpTo
-            })
-          } else {
-            this.setState({
-              jumpTo: this.state.jumpTo
-            })
-          }
-        }} />
+              this.setState({
+                jumpTo
+              })
+            } else {
+              this.setState({
+                jumpTo: this.state.jumpTo
+              })
+            }
+          }}
+        />
       </div>
     )
   }
 
   gotoPage = e => {
     const pageNum = parseInt(e.target.value)
-    const setPageNum = (page) => {
+    const setPageNum = page => {
       this.handleChange(page)
       this.props.onJump && this.props.onJump(Number(page))
     }
@@ -213,9 +231,7 @@ class Pagination extends Component {
 
   renderPagers () {
     const { max, total, prefixCls } = this.props
-    const {
-      current
-    } = this.state
+    const { current } = this.state
     const maxPage = this.calculatePage(total)
     const prevPager = this.renderPrevPager() // 上一页
     const nextPager = this.renderNextPager() // 下一页
@@ -224,11 +240,11 @@ class Pagination extends Component {
     if (max * 2 + 1 + 2 >= maxPage) {
       leftBuffer = 1
       rightBuffer = maxPage
-    } else if ((maxPage - current) <= max) {
+    } else if (maxPage - current <= max) {
       rightBuffer = maxPage
       leftBuffer = maxPage - 2 * max - 1
       leftBuffer = leftBuffer <= 1 ? 1 : leftBuffer
-    } else if ((current - max) <= 1) {
+    } else if (current - max <= 1) {
       leftBuffer = 1
       rightBuffer = 2 * max + leftBuffer + 1
       rightBuffer = rightBuffer >= maxPage ? maxPage : rightBuffer
@@ -238,19 +254,29 @@ class Pagination extends Component {
     }
 
     if (leftBuffer !== 1) {
-      pagers.push(this.renderPager(1, {active: current === 1}))
+      pagers.push(this.renderPager(1, { active: current === 1 }))
     }
     if (leftBuffer > 2) {
-      pagers.push(this.renderPager('...', {className: `${prefixCls}__item-break`, itemRender: breakItemRender}))
+      pagers.push(
+        this.renderPager('...', {
+          className: `${prefixCls}__item-break`,
+          itemRender: breakItemRender
+        })
+      )
     }
     for (let index = leftBuffer; index <= rightBuffer; index++) {
-      pagers.push(this.renderPager(index, {active: current === index}))
+      pagers.push(this.renderPager(index, { active: current === index }))
     }
     if (rightBuffer < maxPage - 1) {
-      pagers.push(this.renderPager('...', {className: `${prefixCls}__item-break`, itemRender: breakItemRender}))
+      pagers.push(
+        this.renderPager('...', {
+          className: `${prefixCls}__item-break`,
+          itemRender: breakItemRender
+        })
+      )
     }
     if (rightBuffer !== maxPage) {
-      pagers.push(this.renderPager(maxPage, {active: current === maxPage}))
+      pagers.push(this.renderPager(maxPage, { active: current === maxPage }))
     }
     pagers.push(nextPager)
 
@@ -260,13 +286,21 @@ class Pagination extends Component {
   renderPrevPager () {
     const { prefixCls } = this.props
     const prevPage = this.prev()
-    return this.renderPager(prevPage, {className: `${prefixCls}__item-prev`, disabled: prevPage < 1}, <i className='hi-icon icon-left' />)
+    return this.renderPager(
+      prevPage,
+      { className: `${prefixCls}__item-prev`, disabled: prevPage < 1 },
+      <Icon name='left' />
+    )
   }
 
   renderNextPager () {
     const { prefixCls } = this.props
     const nextPage = this.next()
-    return this.renderPager(nextPage, {className: `${prefixCls}__item-next`, disabled: nextPage < 1}, <i className='hi-icon icon-right' />)
+    return this.renderPager(
+      nextPage,
+      { className: `${prefixCls}__item-next`, disabled: nextPage < 1 },
+      <Icon name='right' />
+    )
   }
 
   pagerIndex = 0
@@ -289,17 +323,26 @@ class Pagination extends Component {
     )
   }
 
-  renderNormal () { // 标准分页
-    const { prefixCls, showTotal, total, localeDatas: { pagination: { total: i18nTotal } } } = this.props
+  renderNormal () {
+    // 标准分页
+    const {
+      prefixCls,
+      showTotal,
+      total,
+      localeDatas: {
+        pagination: { total: i18nTotal }
+      }
+    } = this.props
 
     return (
       <React.Fragment>
-        {
-          showTotal &&
+        {showTotal && (
           <div className={`${prefixCls}__total ${prefixCls}__text`}>
-            {i18nTotal[0]}<span className={`${prefixCls}__span`}>{total}</span>{i18nTotal[1]}
+            {i18nTotal[0]}
+            <span className={`${prefixCls}__span`}>{total}</span>
+            {i18nTotal[1]}
           </div>
-        }
+        )}
         {this.renderPageSizes()}
         {this.renderPagers()}
         {this.renderJumper()}
@@ -307,7 +350,8 @@ class Pagination extends Component {
     )
   }
 
-  renderSimple () { // 简单分页
+  renderSimple () {
+    // 简单分页
     const {
       total,
       prefixCls,
@@ -322,18 +366,19 @@ class Pagination extends Component {
         {this.renderJumperInput()}
         <span>{i18nSimple[1]}</span>
         <span className={`${prefixCls}__span`}>/</span>
-        {i18nSimple[2]}<span className={`${prefixCls}__span`}>{maxPage}</span>{i18nSimple[3]},
-        <span className={`${prefixCls}__span`}>{total} {i18nSimple[4]}</span>
+        {i18nSimple[2]}
+        <span className={`${prefixCls}__span`}>{maxPage}</span>
+        {i18nSimple[3]},
+        <span className={`${prefixCls}__span`}>
+          {total} {i18nSimple[4]}
+        </span>
       </div>
     )
   }
 
-  renderPn () { // 上一页下一页
-    const {
-      prefixCls,
-      total,
-      showJumper
-    } = this.props
+  renderPn () {
+    // 上一页下一页
+    const { prefixCls, total, showJumper } = this.props
     const maxPage = this.calculatePage(total)
     const prevPager = this.renderPrevPager()
     const nextPager = this.renderNextPager()
@@ -341,30 +386,21 @@ class Pagination extends Component {
     return (
       <React.Fragment>
         {prevPager}
-        {
-          showJumper &&
+        {showJumper && (
           <div className={`${prefixCls}__text`}>
-            {this.renderJumperInput()}
-            /
-            <span style={{margin: '0 20px 0px 8px'}}>{maxPage}</span>
+            {this.renderJumperInput()}/
+            <span style={{ margin: '0 20px 0px 8px' }}>{maxPage}</span>
           </div>
-        }
+        )}
         {nextPager}
       </React.Fragment>
     )
   }
 
   render () {
-    const {
-      autoHide,
-      total,
-      type,
-      prefixCls,
-      className,
-      theme
-    } = this.props
+    const { autoHide, total, type, prefixCls, className, theme } = this.props
     const maxPage = this.calculatePage(total)
-    if (maxPage === 0 || (autoHide && (maxPage === 1))) {
+    if (maxPage === 0 || (autoHide && maxPage === 1)) {
       return null
     }
     let children
@@ -383,7 +419,10 @@ class Pagination extends Component {
     }
 
     return (
-      <div ref={this.tempRef} className={`${prefixCls} ${prefixCls}--${type} ${className} theme__${theme}`}>
+      <div
+        ref={this.tempRef}
+        className={`${prefixCls} ${prefixCls}--${type} ${className} theme__${theme}`}
+      >
         {children}
       </div>
     )
@@ -420,4 +459,4 @@ Pagination.defaultProps = {
 }
 
 export default Provider(Pagination)
-export {Pagination}
+export { Pagination }

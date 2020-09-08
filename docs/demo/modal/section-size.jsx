@@ -3,7 +3,8 @@ import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Modal from '../../../components/modal'
 import Radio from '../../../components/radio'
-const desc = '通过 size 自定义尺寸，可使用 large、default、small，默认为 default'
+const desc =
+  '通过 size 自定义尺寸，可使用 large、default、small，默认为 default'
 const prefix = 'modal-size'
 const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
@@ -56,7 +57,7 @@ class Demo extends React.Component {
         <Modal
           title="窗口大小演示"
           size={this.state.size}
-          show={this.state.show}
+          visible={this.state.show}
           onCancel={this.cancelEvent.bind(this)}
         >
           <span>一些消息</span>
@@ -68,6 +69,11 @@ class Demo extends React.Component {
   }
 }`
 const DemoSize = () => (
-  <DocViewer code={code} scope={{ Button, Modal, Radio }} prefix={prefix} desc={desc} />
+  <DocViewer
+    code={code}
+    scope={{ Button, Modal, Radio }}
+    prefix={prefix}
+    desc={desc}
+  />
 )
 export default DemoSize

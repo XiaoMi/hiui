@@ -4,6 +4,7 @@ import Form from '../../../components/form/index'
 import FormItem from '../../../components/form/Item'
 import Rate from '../../../components/rate'
 import Alert from '../../../components/alert'
+
 const prefix = 'rate-face'
 const desc = '运用图标直观表达评级结果的优劣'
 const code = `import React from 'react'
@@ -14,7 +15,7 @@ import Alert from '@hi-ui/hiui/es/alert'\n
 class Demo extends React.Component {
   constructor() {
     super()
-    this.tooltips = ['terrible', 'bad', 'normal', 'good', 'wonderful']
+    this.tooltips = ['极差','失望', '一般', '满意','很满意']
   }
 
   render() {
@@ -30,6 +31,9 @@ class Demo extends React.Component {
         </FormItem>
         <FormItem label="禁用">
           <Rate defaultValue={3} useEmoji disabled />
+        </FormItem>
+        <FormItem label="只读">
+          <Rate defaultValue={3} useEmoji readOnly />
         </FormItem>
         <FormItem label="禁止清除">
           <Rate defaultValue={3} useEmoji clearable={false} />

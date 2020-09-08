@@ -39,8 +39,19 @@ class Tooltip extends Component {
     }
   }
   render () {
-    const { placement, style, className, onClick, title, children, visible } = this.props
-    const eleClass = classNames(`${prefixCls}-base`, placement && `${prefixCls}-${placement}`)
+    const {
+      placement,
+      style,
+      className,
+      onClick,
+      title,
+      children,
+      visible
+    } = this.props
+    const eleClass = classNames(
+      `${prefixCls}-base`,
+      placement && `${prefixCls}-${placement}`
+    )
     const { tooltipShow } = this.state
     return (
       <div
@@ -77,7 +88,10 @@ class Tooltip extends Component {
 
 function deprecatedOpen ({ target, placement = 'top', title }) {
   let mountNode = document.createElement('div')
-  const eleClass = classNames(`${prefixCls}-base`, placement && `${prefixCls}-${placement}`)
+  const eleClass = classNames(
+    `${prefixCls}-base`,
+    placement && `${prefixCls}-${placement}`
+  )
   render(
     <Popper
       className={`${prefixCls}__popper`}
@@ -100,7 +114,10 @@ function deprecatedOpen ({ target, placement = 'top', title }) {
 
 function open (target, { placement = 'top', title, key }) {
   let mountNode = document.createElement('div')
-  const eleClass = classNames(`${prefixCls}-base`, placement && `${prefixCls}-${placement}`)
+  const eleClass = classNames(
+    `${prefixCls}-base`,
+    placement && `${prefixCls}-${placement}`
+  )
   render(
     <Popper
       className={`${prefixCls}__popper`}
@@ -125,7 +142,10 @@ function close (key) {
 }
 
 function openWrapper (target, options) {
-  if (target['nodeName'] || (typeof target === 'object' && target['$$typeof'])) {
+  if (
+    target['nodeName'] ||
+    (typeof target === 'object' && target['$$typeof'])
+  ) {
     open(target, options)
   } else {
     return deprecatedOpen(target)

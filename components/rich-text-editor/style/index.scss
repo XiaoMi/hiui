@@ -1,0 +1,102 @@
+.hi-quill-content {
+  .ql-toolbar,
+  .hi-quill-toolbar {
+    display: inline-block;
+
+    button,
+    .ql-color-picker {
+      width: 32px;
+      height: 32px;
+      border-radius: 2px;
+      text-align: center;
+      transition: all 0.3s;
+      line-height: 32px;
+
+      &:hover {
+        background-color: rgba(66, 132, 245, 0.1);
+      }
+
+      svg {
+        float: none;
+        height: 16px;
+      }
+    }
+
+    .ql-picker {
+      height: 32px;
+      line-height: 30px;
+      border-radius: 2px;
+      border: 1px solid transparent;
+
+      &:focus {
+        outline: none;
+      }
+
+      &-label:focus {
+        border-color: transparent;
+        outline: none;
+      }
+
+      &.ql-expanded .ql-picker-label {
+        border-color: transparent;
+      }
+
+      &:hover {
+        border: 1px solid #4284f5;
+      }
+
+      &-options {
+        padding: 4px 0;
+
+        .ql-picker-item {
+          &:hover {
+            background-color: rgba(66, 132, 245, 0.1);
+          }
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+    }
+
+    .ql-font,
+    .ql-size,
+    .ql-header {
+      .ql-picker-options {
+        .ql-picker-item {
+          padding-left: 8px;
+          padding-right: 8px;
+        }
+      }
+    }
+
+    .ql-formats {
+      &::after {
+        content: '|';
+        float: right;
+        margin-left: 15px;
+        color: #ccc;
+        clear: none;
+        line-height: 32px;
+      }
+    }
+  }
+
+  .hi-upload {
+    display: inline-block;
+
+    button {
+      width: auto;
+      background-color: #4285f4;
+      color: #fff;
+      padding: 4px 15px;
+      line-height: 22px;
+
+      &:hover {
+        background-color: #3b78dc;
+        color: #fff;
+      }
+    }
+  }
+}

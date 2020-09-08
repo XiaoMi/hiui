@@ -14,6 +14,15 @@ export default {
     changelog: components['changelog']
   },
   components: {
+    new: {
+      slider: components['slider'],
+      'select-tree': components['select-tree'],
+      list: components['list'],
+      filter: components['filter'],
+      table: components['table'],
+      search: components['search'],
+      drawer: components['drawer']
+    },
     'group-basic': {
       grid: components['grid'],
       typography: components['typography'],
@@ -31,10 +40,13 @@ export default {
     'group-form': {
       form: components['form'],
       input: components['input'],
+      search: components['search'],
       counter: components['counter'],
       select: components['select'],
+      'select-tree': components['select-tree'],
       cascader: components['cascader'],
       radio: components['radio'],
+      filter: components['filter'],
       checkbox: components['checkbox'],
       switch: components['switch'],
       'date-picker': components['date-picker'],
@@ -42,7 +54,9 @@ export default {
       transfer: components['transfer'],
       tree: components['tree'],
       upload: components['upload'],
-      rate: components['rate']
+      slider: components['slider'],
+      rate: components['rate'],
+      'rich-text-editor': components['rich-text-editor']
     },
     'group-data': {
       tabs: components['tabs'],
@@ -53,10 +67,13 @@ export default {
       progress: components['progress'],
       card: components['card'],
       timeline: components['timeline'],
-      carousel: components['carousel']
+      carousel: components['carousel'],
+      list: components['list'],
+      charts: components['charts']
     },
     'group-tips': {
       modal: components['modal'],
+      drawer: components['drawer'],
       notification: components['notification'],
       message: components['message'],
       alert: components['alert'],

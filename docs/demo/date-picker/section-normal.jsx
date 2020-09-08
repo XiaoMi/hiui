@@ -11,11 +11,9 @@ import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   render () {
     return (
-      <div style={{display:'flex', flexWrap: 'wrap'}}>
-        <DatePicker
-          onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
-        />
-      </div>
+      <DatePicker
+        onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
+      />
     )
   }
 }`,
@@ -25,20 +23,12 @@ class Demo extends React.Component {
     code: `import React from 'react'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      date: new Date(),
-    }
-  }
   render () {
     return (
-      <div style={{display:'flex', flexWrap: 'wrap'}}>
-        <DatePicker
-          value={this.state.date}
-          onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
-        />
-      </div>
+      <DatePicker
+        value={new Date()}
+        onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
+      />
     )
   }
 }`,
@@ -50,12 +40,10 @@ import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   render () {
     return (
-      <div style={{display:'flex', flexWrap: 'wrap'}}>
-        <DatePicker
-          disabled
-          onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
-        />
-      </div>
+      <DatePicker
+        disabled
+        onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
+      />
     )
   }
 }`,
@@ -67,13 +55,11 @@ import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   render () {
     return (
-      <div style={{display:'flex', flexWrap: 'wrap'}}>
-        <DatePicker
-          min={new Date()}
-          max={new Date().getTime() + 30 * 24 * 60 * 60 * 1000}
-          onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
-        />
-      </div>
+      <DatePicker
+        min={new Date()}
+        max={new Date().getTime() + 30 * 24 * 60 * 60 * 1000}
+        onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
+      />
     )
   }
 }`,

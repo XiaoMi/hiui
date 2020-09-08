@@ -2,19 +2,19 @@ import notice from '../notice'
 import './style/index'
 import React from 'react'
 import Button from '../button'
-import classNames from 'classnames'
+import Icon from '../icon'
 import _handleNotificate from './HandleNotification'
 const iconMap = {
-  success: 'chenggong',
-  error: 'shibai',
-  warning: 'jinggao',
-  info: 'tishi'
+  success: 'check-circle',
+  error: 'close-circle',
+  warning: 'exclamation-circle',
+  info: 'info-circle'
 }
 
 export const handleNotificate = _handleNotificate
 
 const notification = {
-  close: key => {
+  close: (key) => {
     notice.close('notification', key)
   },
   handleNotificate,
@@ -32,16 +32,14 @@ const notification = {
   }) => {
     const NoticeContent = (
       <React.Fragment>
-        <div className={`hi-${prefix}__title--wrapper`}>
-          <span className={`hi-${prefix}__icon`}>
-            <i className={classNames('hi-icon', `icon-${iconMap[type]}`)} />
-          </span>
+        <div className={`hi-${prefix}__header`}>
+          <Icon name={iconMap[type]} className={`hi-${prefix}__icon`} filled />
           {title && <div className={`hi-${prefix}__title`}>{title}</div>}
         </div>
 
         {content && <div className={`hi-${prefix}__content`}>{content}</div>}
         {onConfirm && (
-          <div className={`hi-${prefix}__button--wrapper`}>
+          <div className={`hi-${prefix}__footer`}>
             <Button
               size='small'
               className={`hi-${prefix}__button`}

@@ -5,4 +5,4 @@ import SwitchVersion from '../_util/SwitchVersion'
 import Provider from '../context'
 
 export default SwitchVersion(Provider(Input), InputLegacy)
-export {Input}
+export { Input }

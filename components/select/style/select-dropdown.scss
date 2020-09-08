@@ -27,11 +27,24 @@
   }
 
   &-check-all {
+    display: flex;
+    justify-content: space-between;
     padding: 8px 12px;
     font-size: 12px;
     color: #4284f5;
     cursor: pointer;
     border-top: 1px solid #e6e7e8;
+
+    .hi-checkbox__text {
+      padding: 0;
+    }
+  }
+
+  &--label {
+    padding: 0 12px;
+    font-size: 12px;
+    line-height: 30px;
+    color: #a9abaf;
   }
 
   &--item {
@@ -89,6 +102,10 @@
       background-color: rgba(66, 132, 245, 0.08);
     }
 
+    &:hover {
+      background-color: rgba(66, 132, 245, 0.08);
+    }
+
     &.disabled {
       opacity: 0.4;
       cursor: not-allowed;
@@ -118,7 +135,11 @@
     }
 
     .icon-close-circle {
-      color: #999;
+      color: #ccc;
+    }
+
+    .hi-select__dropdown--icon__close:hover {
+      color: #333;
     }
 
     &--content {
