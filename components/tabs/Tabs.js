@@ -359,92 +359,96 @@ const Tabs = ({
   }, [])
   const getHeader = useCallback(() => {
     return (
-      <>'       '{canScroll && (
-        <Icon
-          name='left'
-          className={`${prefixCls}__scroll__icon`}
-          onClick={() => translateLeft()}
-        />
-      )}'       '<div className={`${prefixCls}__header`}>
-        <div
-          className={`${prefixCls}__nav contain`}
-          onDragOver={dragOver}
-          ref={containRef}
-        >
-          <TransitionGroup component={null}>
-            {showTabItems.map((item, index) => {
-              const { tabId } = item
-              return (
-                <CSSTransition
-                  key={tabId}
-                  timeout={200}
-                  unmountOnExit
-                  onExit={() => animateDone(tabId)}
-                  classNames={`${prefixCls}__tab-items`}
-                >
-                  <TabItem
-                    key={`${prefixCls}__item-${index}`}
-                    index={index}
-                    prefixCls={prefixCls}
-                    item={item}
-                    draggable={draggable}
-                    activeId={activeId}
-                    type={type}
-                    showTabItems={showTabItems}
-                    editable={editableFlag}
-                    handleClick={handleClick}
-                    deleteTab={deleteTab}
-                    dragStart={dragStart}
-                    dragEnd={dragEnd}
-                    canScroll={canScroll}
-                  />
-                </CSSTransition>
-              )
-            })}
-          </TransitionGroup>
-          {hiddenTabItems.length > 0 && (
-            <div
-              className={classNames(`${prefixCls}__item`, {
-                [`${prefixCls}__item--active`]: hiddenTabItems
-                  .map(item => item.tabId)
-                  .includes(activeId)
+      <>
+        {canScroll && (
+          <Icon
+            name='left'
+            className={`${prefixCls}__scroll__icon`}
+            onClick={() => translateLeft()}
+          />
+        )}
+        <div className={`${prefixCls}__header`}>
+          <div
+            className={`${prefixCls}__nav contain`}
+            onDragOver={dragOver}
+            ref={containRef}
+          >
+            <TransitionGroup component={null}>
+              {showTabItems.map((item, index) => {
+                const { tabId } = item
+                return (
+                  <CSSTransition
+                    key={tabId}
+                    timeout={200}
+                    unmountOnExit
+                    onExit={() => animateDone(tabId)}
+                    classNames={`${prefixCls}__tab-items`}
+                  >
+                    <TabItem
+                      key={`${prefixCls}__item-${index}`}
+                      index={index}
+                      prefixCls={prefixCls}
+                      item={item}
+                      draggable={draggable}
+                      activeId={activeId}
+                      type={type}
+                      showTabItems={showTabItems}
+                      editable={editableFlag}
+                      handleClick={handleClick}
+                      deleteTab={deleteTab}
+                      dragStart={dragStart}
+                      dragEnd={dragEnd}
+                      canScroll={canScroll}
+                    />
+                  </CSSTransition>
+                )
               })}
-            >
-              <ItemDropdown
-                active={hiddenTabItems
-                  .map(item => item.tabId)
-                  .includes(activeId)}
-                activeId={activeId}
-                theme={theme}
-                defaultActiveId={defaultActiveId}
-                items={hiddenTabItems}
-                onChoose={(item, e) => {
-                  handleClick(item, e)
-                }}
+            </TransitionGroup>
+            {hiddenTabItems.length > 0 && (
+              <div
+                className={classNames(`${prefixCls}__item`, {
+                  [`${prefixCls}__item--active`]: hiddenTabItems
+                    .map(item => item.tabId)
+                    .includes(activeId)
+                })}
+              >
+                <ItemDropdown
+                  active={hiddenTabItems
+                    .map(item => item.tabId)
+                    .includes(activeId)}
+                  activeId={activeId}
+                  theme={theme}
+                  defaultActiveId={defaultActiveId}
+                  items={hiddenTabItems}
+                  onChoose={(item, e) => {
+                    handleClick(item, e)
+                  }}
+                />
+              </div>
+            )}
+            {type === 'line' && (
+              <div
+                className={classNames(`${prefixCls}--line__ink`, {
+                  [`${prefixCls}--line__ink-disabled`]: isActiveEffective
+                })}
+                ref={inkRef}
               />
+            )}
+          </div>
+          {editableFlag && !canScroll && (
+            <div className={`${prefixCls}__add`}>
+              <Icon onClick={addTab} name='plus' />
             </div>
           )}
-          {type === 'line' && (
-            <div
-              className={classNames(`${prefixCls}--line__ink`, {
-                [`${prefixCls}--line__ink-disabled`]: isActiveEffective
-              })}
-              ref={inkRef}
-            />
-          )}
         </div>
-        {editableFlag && !canScroll && (
-          <div className={`${prefixCls}__add`}>
-            <Icon onClick={addTab} name='plus' />
-          </div>
+        {canScroll && (
+          <Icon
+            name='right'
+            className={`${prefixCls}__scroll__icon`}
+            onClick={() => translateRight()}
+          />
         )}
-      </div>'       '{canScroll && (
-        <Icon
-          name='right'
-          className={`${prefixCls}__scroll__icon`}
-          onClick={() => translateRight()}
-        />
-      )}'     '</>
+      </>
     )
   })
 
