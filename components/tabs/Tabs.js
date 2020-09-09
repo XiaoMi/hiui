@@ -123,9 +123,12 @@ const Tabs = ({
       }
     }
   }, [activeId, showTabItems, type])
-  const omitItem = data => {
-    return _.omit(data, ['animation', 'closeable', 'disabled', 'tabDesc'])
-  }
+
+  // 过滤自定义属性
+  const omitItem = useCallback(data => {
+    return _.omit(data, ['animation', 'disabled', 'tabDesc'])
+  }, [])
+
   useEffect(() => {
     const tabItems = getTabItems()
 
