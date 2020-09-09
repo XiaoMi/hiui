@@ -1,4 +1,4 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
 .hi-breadcrumb {
   font-size: 12px;
@@ -36,38 +36,18 @@
     }
 
     .hi-breadcrumb__content:hover {
-      color: #4284f5;
+      color: use-color('primary');
     }
   }
 
   &__item:last-child {
     .hi-breadcrumb__content {
       cursor: text;
+      color: #666;
     }
 
     .hi-breadcrumb__separator {
       display: none;
-    }
-  }
-}
-
-@each $key, $value in $palette-primary {
-  .hi-breadcrumb.theme__#{$key} {
-    .hi-breadcrumb__content {
-      &:hover {
-        color: $value;
-      }
-    }
-
-    .hi-breadcrumb__item:last-child {
-      .hi-breadcrumb__content {
-        cursor: text;
-        color: #666;
-
-        &:hover {
-          color: #666;
-        }
-      }
     }
   }
 }
