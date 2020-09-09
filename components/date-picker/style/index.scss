@@ -1,6 +1,6 @@
 @import '@hi-ui/core-css/index.scss';
 
-$basic-color: #4284f5 !default;
+$basic-color: get-color($palette-primary, 'hiui-blue') !default;
 
 .hi-datepicker {
   position: relative;

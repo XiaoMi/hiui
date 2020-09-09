@@ -133,7 +133,11 @@
   white-space: nowrap;
   touch-action: manipulation;
   cursor: pointer;
-  transition: background-color $speed-normal $easing, border-color $speed-normal $easing, box-shadow $speed-fast $easing, color $speed-normal $easing;
+  transition:
+    background-color $speed-normal $easing,
+    border-color $speed-normal $easing,
+ box-shadow $speed-fast $easing,
+    color $speed-normal $easing;
 
   &.hi-btn--appearance--link {
     background-color: transparent !important;
@@ -244,7 +248,10 @@
 
   @each $key in 'success', 'danger', 'warning' {
     &--type--#{$key} {
-      $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
+      $status-color: map-get(
+        get-palette(get-color($palette-secondary, $key)),
+        '50'
+      );
 
       @include render-line-button($status-color);
     }

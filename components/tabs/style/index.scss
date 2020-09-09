@@ -2,6 +2,7 @@
 @import './animate.scss';
 
 $prefix: 'hi-tabs' !default;
+$basic-color: get-color($palette-primary, 'hiui-blue') !default;
 
 .#{$prefix} {
   .#{$prefix}__header {
@@ -85,13 +86,13 @@ $prefix: 'hi-tabs' !default;
         box-sizing: border-box;
 
         &:hover {
-          color: #4284f5;
+          color: $basic-color;
         }
 
         &--active {
           border: 1px solid #e6e7e8;
           border-radius: 2px;
-          color: #4284f5;
+          color: $basic-color;
         }
       }
     }
@@ -182,7 +183,7 @@ $prefix: 'hi-tabs' !default;
         &--active {
           background-color: #fff;
           border-bottom-color: #fff;
-          color: #4284f5;
+          color: $basic-color;
           flex: none;
         }
       }
@@ -216,20 +217,20 @@ $prefix: 'hi-tabs' !default;
         }
 
         &:hover {
-          color: #4284f5;
+          color: $basic-color;
 
           .#{$prefix}__item-desc {
-            color: #4284f5;
+            color: $basic-color;
           }
         }
 
         &--active {
-          color: #4284f5;
-          border-color: #4284f5;
+          color: $basic-color;
+          border-color: $basic-color;
           z-index: 1;
 
           .#{$prefix}__item-desc {
-            color: #4284f5;
+            color: $basic-color;
           }
         }
 
@@ -263,14 +264,14 @@ $prefix: 'hi-tabs' !default;
         border-radius: 18px;
 
         &:hover:not(.hi-tabs__item--active) {
-          color: #4284f5;
-          border: 1px solid #4284f5;
+          color: $basic-color;
+          border: 1px solid $basic-color;
         }
 
         &--active {
           color: #fff;
-          background-color: #4284f5;
-          border: 1px solid #4284f5;
+          background-color: $basic-color;
+          border: 1px solid $basic-color;
         }
       }
     }
@@ -292,12 +293,12 @@ $prefix: 'hi-tabs' !default;
         box-sizing: border-box;
 
         &:hover {
-          color: #4284f5;
+          color: $basic-color;
         }
 
         &--active {
           border-radius: 2px;
-          color: #4284f5;
+          color: $basic-color;
         }
       }
     }
@@ -307,9 +308,9 @@ $prefix: 'hi-tabs' !default;
       width: 0;
       display: block;
       height: 2px;
-      background-color: #1890ff;
+      background-color: $basic-color;
       bottom: -1px;
-      transition: transform 500ms;
+      transition: transform 300ms;
       position: absolute;
 
       &-disabled {
@@ -334,10 +335,10 @@ $prefix: 'hi-tabs' !default;
       display: block;
       top: 0;
       width: 2px !important;
-      background-color: #1890ff;
+      background-color: $basic-color;
       right: -1px;
       height: 40px;
-      transition: transform 500ms;
+      transition: transform 300ms;
       position: absolute;
     }
 
@@ -347,10 +348,10 @@ $prefix: 'hi-tabs' !default;
     }
 
     .#{$prefix}__item {
-      transition: background 500ms;
+      transition: background 300ms;
 
       &--active {
-        background: rgba(66, 132, 245, 0.1);
+        background: rgba($basic-color, 0.1);
       }
     }
   }
@@ -360,26 +361,26 @@ $prefix: 'hi-tabs' !default;
     width: 100%;
   }
 
-  &--canScroll {
+  &--scroll {
     .contain {
       position: relative;
       transition: all 300ms;
       transform: translateX(0);
     }
 
-    .#{$prefix}__item {
-      overflow: initial !important;
-    }
-
     .#{$prefix}__header {
       overflow: hidden;
     }
+
+    .#{$prefix}__item {
+      overflow: initial !important;
+    }
   }
 
-  &__scrollOutter {
+  &__scroll--outter {
     display: flex;
 
-    .#{$prefix}__scrollIcon {
+    .#{$prefix}__scroll__icon {
       cursor: pointer;
       display: flex;
       font-size: 37px;
@@ -417,17 +418,16 @@ $prefix: 'hi-tabs' !default;
     box-sizing: border-box;
 
     &:hover {
-      background-color: rgba(66, 133, 244, 0.08);
+      background-color: rgba($basic-color, 0.08);
     }
 
     &--active {
-      background-color: rgba(66, 133, 244, 0.08);
+      background-color: rgba($basic-color, 0.08);
     }
   }
 }
 
-@each $key,
-  $value in $theme-colors {
+@each $key, $value in $theme-colors {
   .theme__#{$key}.#{$prefix} {
     &--card {
       .#{$prefix}__header {
