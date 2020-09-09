@@ -19,6 +19,11 @@ type ContextMenuOption = {
 }
 const LoadTreeNodeFun: (id: stsring) => TreeNode
 const ContextMenuOptionFun: (item: TreeNode) => ContextMenuOption[]
+
+type DataStatus = {
+  before: TreeNode[]
+  after: TreeNode[]
+}
 interface Props {
   data: TreeNode[]
   checkable?: boolean
@@ -41,7 +46,9 @@ interface Props {
   onDragStart?: (dragNode: TreeNode) => void
   onDrop?: (dragNode: TreeNode, dropNode: TreeNode) => boolean
   onDropEnd?: (dragNode: TreeNode, dropNode: TreeNode) => void
+  onBeforeDelete?: (deletedNode: TreeNode, data: DataStatus, level: number) => boolean
   onDelete?: (deletedNode: TreeNode, data: TreeNode[]) => void
+  onBeforeSave?: (savedNode: TreeNode, data: DataStatus, level: number) => boolean
   onSave?: (savedNode: TreeNode, data: TreeNode[]) => void
 }
 declare const Tree: React.ComponentType<Props>

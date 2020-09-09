@@ -21,6 +21,7 @@ interface Props {
   style?: CSSProperties
   onClick?: (id: string | number) => void
   onButtonClick?: (event: MouseEvent) => void
+  overlayClassName?: string
 }
 declare const Dropdown: React.ComponentType<Props>
 export default Dropdown

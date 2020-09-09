@@ -3,10 +3,9 @@ import { CSSProperties } from "react"
 type DataItem = {
   id: string | number
   title: string
-  disabled?: boolean
   children?: DataItem[]
 }
-export type DataSource = {
+type DataSource = {
   url: string
   type?: 'get' | 'post'
   data?: object
@@ -26,26 +25,17 @@ const FilterOptionFun: (keyword: string, item: DataItem) => boolean
 interface Props {
   type?: 'single' | 'multiple'
   data?: DataItem[]
-  fieldNames?: FieldNames
+  showCheckedMode?: 'ALL' | 'PARENT' | 'CHILD'
+  mode?: 'normal' | 'breadcrumb'
+  defaultExpandAll?: boolean
+  defaultExpandIds?: string[] | number[]
+  expandIds?: string[] | number[]
   dataSource?: DataSource | DataSourFun
-  value?: string | string[]
-  defaultValue?: string | string[]
-  showCheckAll?: boolean
-  showJustSelected?: boolean
-  multipleWrap?: 'wrap' | 'nowrap'
-  searchable?: boolean
-  filterOption?: FilterOptionFun
-  clearable?: boolean
-  autoload?: boolean
-  disabled?: boolean
-  placeholder?: string
-  emptyContent?: string | JSX.Element
-  style?: CSSProperties
-  optionWidth?: number
+  value?: DataItem[] | string[] | number[]
+  defaultValue?: DataItem[] | string[] | number[]
+  searchMode?: 'highlight' | 'filter'
   onChange?: (selectedIds: string[], changedItem: DataItem) => void
-  render?: (item: DataItem, selected: boolean) => JSX.Element
   overlayClassName?: string
-  setOverlayContainer?: (triggerNode: any) => any
 }
-declare const Select: React.ComponentType<Props>
-export default Select
+declare const SelectTree: React.ComponentType<Props>
+export default SelectTree

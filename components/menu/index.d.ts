@@ -16,6 +16,7 @@ interface Props {
   onClick?: (activeId: string | number, prevActiveId: string | number) => void
   onClickSubMenu?: (subMenuIndexs: number) => void
   onCollapse?: (collapsed: boolean) => void
+  overlayClassName?: string
 }
 declare const Menu: React.ComponentType<Props>
 export default Menu

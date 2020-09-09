@@ -6,13 +6,15 @@ type FileItem = {
   url: string
 }
 interface Props {
-  type?: default | drag | pictureCard | avatar | photo
+  type?: 'default' | 'drag' | 'pictureCard' | 'avatar' | 'photo'
   accept?: MimeType
   content?: string | JSX.Element
   maxSize?: number
   maxCount?: number
   uploadAction: string
-  params?: object
+  data?: {
+    [prop: string]: any
+  }
   name?: string
   disabled?: boolean
   headers?: object
@@ -27,6 +29,7 @@ interface Props {
   onChange?: (file: FileItem, fileList: FileItem[], response: object) => boolean
   onRemove?: (file: FileItem, fileList: FileItem[], index: number) => boolean
   onDownload?: (file: FileItem) => void
+  photoSize?: 'small' | 'default' | 'large'
 }
 declare const Upload: React.ComponentType<Props>
 export default Upload

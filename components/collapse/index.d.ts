@@ -1,6 +1,7 @@
 interface Props {
   accordion?: boolean
-  activeId?: string | string[]
+  defaultActiveId?: string | string[]
+  activeId?: string | string[] | number | number[]
   arrowPlacement?: 'left' | 'right'
   showArrow?: boolean
   onChange?: () => void
