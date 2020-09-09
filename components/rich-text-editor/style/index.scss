@@ -1,3 +1,7 @@
+@import '@hi-ui/core-css/index.scss';
+
+$basic-color: get-color($palette-primary, 'hiui-blue') !default;
+
 .hi-quill-content,
 .hi-quill-toolbar-tooltip {
   .hi-quill-custom {
@@ -16,7 +20,7 @@
       line-height: 32px;
 
       &:hover {
-        background-color: rgba(66, 132, 245, 0.1);
+        background-color: rgba($basic-color, 0.1);
       }
 
       svg {
@@ -45,7 +49,7 @@
       }
 
       &:hover {
-        border: 1px solid #4284f5;
+        border: 1px solid $basic-color;
       }
 
       &-options {
@@ -53,7 +57,7 @@
 
         .ql-picker-item {
           &:hover {
-            background-color: rgba(66, 132, 245, 0.1);
+            background-color: rgba($basic-color, 0.1);
           }
 
           &:focus {
@@ -91,13 +95,13 @@
 
     button {
       width: auto;
-      background-color: #4285f4;
+      background-color: $basic-color;
       color: #fff;
       padding: 4px 15px;
       line-height: 22px;
 
       &:hover {
-        background-color: #3b78dc;
+        background-color: map-get(get-palette($basic-color), '70');
         color: #fff;
       }
     }

@@ -1,15 +1,15 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Form from '../../../components/form/index'
-import FormItem from '../../../components/form/Item'
+import { Form } from '../../../components/form'
 import Rate from '../../../components/rate'
 import Icon from '../../../components/Icon'
 const prefix = 'rate-advanced'
 const code = `import React from 'react'
 import Rate from '@hi-ui/hiui/es/rate'
-import Form from '@hi-ui/hiui/es/form/index'
+import Form from '@hi-ui/hiui/es/form'
 import Icon from '@hi-ui/hiui/es/icon'
 import FormItem from '@hi-ui/hiui/es/form/item'\n
+
 class Demo extends React.Component {
   constructor() {
     super()
@@ -25,6 +25,7 @@ class Demo extends React.Component {
   }
   render() {
     const { value } = this.state
+    const FormItem = Form.Item
     return (
       <Form labelWidth={120} labelPosition="left">
         <FormItem label="任意数量">
@@ -52,10 +53,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoAdvanced = () => (
-  <DocViewer
-    code={code}
-    scope={{ Form, FormItem, Rate, Icon }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} scope={{ Form, Rate, Icon }} prefix={prefix} />
 )
 export default DemoAdvanced

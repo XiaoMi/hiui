@@ -56,14 +56,12 @@ const List = props => {
     setListCount(_listCount)
     dispatch({ type: FILEDS_REMOVE, payload: fieldItem.field })
   }
-  const childrenList = children(listCount, { add, remove })
-  console.log('childrenList', childrenList)
   return (
     <div>
       <FormContext.Provider
         value={{ ...useContext(FormContext), _type: 'list', listname: name }}
       >
-        {childrenList}
+        {children(listCount, { add, remove })}
       </FormContext.Provider>
     </div>
   )

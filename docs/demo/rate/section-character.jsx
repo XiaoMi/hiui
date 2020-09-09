@@ -1,7 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Form from '../../../components/form/index'
-import FormItem from '../../../components/form/Item'
+import { Form } from '../../../components/form'
 import Icon from '../../../components/Icon'
 import Rate from '../../../components/rate'
 import logoPng from '../../../site/static/img/docs/mi-logo@2x.png'
@@ -9,15 +8,15 @@ const desc = '元素可以是字体图标，文字甚至图片。'
 const prefix = 'rate-character'
 const code = `import React from 'react'
 import Rate from '@hi-ui/hiui/es/rate'
-import Form from '@hi-ui/hiui/es/form/index'
+import Form from '@hi-ui/hiui/es/form'
 import Icon from '@hi-ui/hiui/es/icon'
 
-import FormItem from '@hi-ui/hiui/es/form/item'\n
 class Demo extends React.Component {
   constructor() {
     super()
   }
   render() {
+    const FormItem = Form.Item
     return (
       <Form labelWidth="80px" labelPosition="left">
         <FormItem label="Icon">
@@ -39,7 +38,7 @@ class Demo extends React.Component {
 const DemoAdvanced = () => (
   <DocViewer
     code={code}
-    scope={{ Form, FormItem, Rate, Icon, logoPng }}
+    scope={{ Form, Rate, Icon, logoPng }}
     prefix={prefix}
     desc={desc}
   />
