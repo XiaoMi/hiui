@@ -1,0 +1,74 @@
+// Author: Sivan[sunxingfan@xiaomi.com]
+// Description: define common functions, colors etc.
+
+/// Slightly lighten a color
+/// @access private
+/// @param {Color} $color - color to tint
+/// @param {Number} $percentage - percentage of `$color` in returned color
+/// @return {Color}
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+/// Slightly darken a color
+/// @access private
+/// @param {Color} $color - color to shade
+/// @param {Number} $percentage - percentage of `$color` in returned color
+/// @return {Color}
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+/// Get color from palette
+/// @access public
+/// @param {Map} $palette - palette name
+/// @param {String} $name - color name from this palette
+/// @param {Number} $i - index
+/// @return {Color}
+/// @example
+/// color: get-color($palettePrimary, grayLight);
+/// // color: #eee;
+/// color: get-color($paletteSecondary, purple, 2);
+/// // color: #773686;
+@function get-color($palette, $name, $i: 1) {
+  @return if(type-of(map-get($palette, $name)) == 'list', nth(map-get($palette, $name), $i), map-get($palette, $name));
+}
+
+/// Main theme colors for different palettes
+/// @type Map
+$_theme-colors: (
+  'orange': hsl(15, 100%, 60%),
+  'cyan': hsl(162, 47%, 51%),
+  'magenta': hsl(350, 100%, 67%),
+  'lavender': hsl(282, 68%, 59%),
+  'blue': hsl(205, 90%, 60%),
+  'purple': hsl(240, 38%, 67%),
+  'ocher': hsl(28, 35%, 38%)
+) !default;
+
+/// Main theme colors extend hiui-blue
+/// @type Map
+$palette-primary: map-merge(('hiui-blue': hsl(217, 89%, 61%)), $_theme-colors) !default;
+
+/// Palette for status colors
+/// @type Map
+$palette-secondary: (
+  'success': hsl(144, 70%, 38%),
+  'warning': hsl(40, 100%, 55%),
+  'danger': hsl(0, 89%, 61%)
+) !default;
+
+/// Palette for grayscale colors
+/// @type Map
+/// @todo should update
+$palette-tertiary: (
+  'black': hsl(0, 0%, 20%),
+  'gray-80': hsl(0, 0%, 40%),
+  'gray-70': hsl(0, 0%, 60%),
+  'gray-50': hsl(0, 0%, 80%),
+  'gray-30': hsl(0, 0%, 85%),
+  'gray-20': hsl(0, 0%, 90%),
+  'gray-10': hsl(0, 0%, 95%),
+  'white': hsl(0, 0%, 100%),
+  'blue-lighter': hsl(220, 90%, 96%), /// @deperated
+) !default;

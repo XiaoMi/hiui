@@ -26,7 +26,7 @@ class Demo extends React.Component {
   }
   openError() {
     Message.open({
-      type:'error',
+      type:'danger',
       title:'网络错误，清重新连接'
     })
   }
@@ -38,12 +38,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoType = () => (
-  <DocViewer
-    code={code}
-    scope={{ Button, Message }}
-    prefix={prefix}
-    desc={desc}
-  />
-)
+const DemoType = () => <DocViewer code={code} scope={{ Button, Message }} prefix={prefix} desc={desc} />
 export default DemoType

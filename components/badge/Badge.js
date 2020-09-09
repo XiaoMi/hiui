@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import classNames from 'classnames'
 import './style/index'
 
 class Badge extends Component {
@@ -23,17 +22,18 @@ class Badge extends Component {
 
   render () {
     const { content, prefixCls, max, type, visible, style } = this.props
-    const eleClass = classNames(`${prefixCls}-base`)
+    const badage =
+      type === 'dot' ? (
+        <span className={`${prefixCls}-dot`} />
+      ) : (
+        <span className={`${prefixCls}-value`}>
+          {typeof content === 'number' ? (content > max ? max + '+' : content) : content}
+        </span>
+      )
     return (
-      <div className={eleClass} style={style}>
+      <div className={prefixCls} style={style}>
         {this.props.children}
-        {type === 'dot' ? (
-          <span className={`${prefixCls}-dot${!visible ? ' hi-hide' : ''}`} />
-        ) : (
-          <span className={`${prefixCls}-value${!visible ? ' hi-hide' : ''}`}>
-            {typeof content === 'number' ? (content > max ? max + '+' : content) : content}
-          </span>
-        )}
+        {visible && badage}
       </div>
     )
   }
