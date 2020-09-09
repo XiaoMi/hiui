@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Table from '../../../components/table'
+import HiTable from '../../../components/table'
 import Watermark from '../../../components/Watermark'
 const prefix = 'table-base'
 const desc = ['基础：展示二维数据', '斑马行：优化以行为主的阅读体验']
@@ -8,7 +8,7 @@ const rightOptions = ['基础', '斑马行']
 const code = [
   {
     code: `import React from 'react'
-    import Table from '@hi-ui/hiui/es/table'\n
+    import HiTable from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -88,14 +88,14 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data}/>
+        return <HiTable columns={this.columns} data={this.data}/>
       }
     }`,
     opt: ['基础']
   },
   {
     code: `import React from 'react'
-    import Table from '@hi-ui/hiui/es/table'\n
+    import HiTable from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -175,7 +175,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} striped/>
+        return <HiTable columns={this.columns} data={this.data} striped/>
       }
     }`,
     opt: ['斑马行']
@@ -185,7 +185,7 @@ const code = [
 const DemoBase = () => (
   <DocViewer
     code={code}
-    scope={{ Table, Watermark }}
+    scope={{ HiTable, Watermark }}
     prefix={prefix}
     rightOptions={rightOptions}
     desc={desc}
