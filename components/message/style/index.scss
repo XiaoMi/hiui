@@ -5,7 +5,7 @@ $color-map: (
   'warning': get-color($palette-secondary, 'warning'),
   'success': get-color($palette-secondary, 'success'),
   'danger': get-color($palette-secondary, 'danger')
-);
+) !default;
 
 .hi-message__container {
   position: fixed;
