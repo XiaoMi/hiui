@@ -1,7 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Form from '../../../components/form/index'
-import FormItem from '../../../components/form/Item'
+import { Form } from '../../../components/form'
 import Rate from '../../../components/rate'
 const prefix = 'rate-base'
 const desc = '评定业务指标、信用等级、满意度等'
@@ -18,6 +17,7 @@ class Demo extends React.Component {
   }
   render() {
     const {value} = this.state
+    const FormItem = Form.Item
     return (
       <Form labelWidth="80px" labelPosition="left">
         <FormItem label="基础">
@@ -39,11 +39,6 @@ class Demo extends React.Component {
 }`
 
 const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ Form, FormItem, Rate }}
-    prefix={prefix}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ Form, Rate }} prefix={prefix} desc={desc} />
 )
 export default DemoBase
