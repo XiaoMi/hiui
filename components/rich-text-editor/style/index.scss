@@ -1,4 +1,5 @@
-.hi-quill-content {
+.hi-quill-content,
+.hi-quill-toolbar-tooltip {
   .hi-quill-custom {
     display: inline-block;
   }
@@ -101,6 +102,11 @@
       }
     }
   }
+}
+
+.hi-quill-toolbar-tooltip {
+  display: inline-block;
+  height: 32px;
 }
 
 .ql-container {

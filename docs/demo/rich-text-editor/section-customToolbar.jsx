@@ -92,7 +92,7 @@ class Demo extends React.Component {
     const { value } = this.state
     return (
       <div>
-        <div id='hiui-quill-toolbar_custom' style={{borderBottom:'none',marginTop:'10px'}}>
+        <div id='hiui-quill-toolbar_custom' style={{borderBottom:'none',lineHeight:'100%'}}>
           <QuillBarTooltip  tooltipTitle='撤销' toolbarsName='undo'>
            <button class='ql-undo' style={{lineHeight: '22px'}}><Icon name="caret-left" style={{ fontSize: '16px'}} /></button>
           </QuillBarTooltip>
