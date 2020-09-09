@@ -49,13 +49,14 @@ import DemoBread from '../../demo/select-tree/section-bread'
 | type             | 数据选择类型                              | string                                                                      | single \| multiple                                                                                         | false  |
 | defaultExpandAll | 是否默认展开所有树节点                    | boolean                                                                     | true \| false                                                                                              | false  |
 | defaultExpandIds | 默认高亮的节点（非受控）                  | string[]                                                                    | -                                                                                                          | -      |
-| expandIds        | 默认高亮的节点（受控）                    | string[]                                                                    | -                                                                                                          | -      |
 | defaultValue     | 默认选中项 （非受控）                     | DataItem[] \| string[]                                                      | -                                                                                                          | -      |
 | value            | 默认选中项 （受控）                       | DataItem[] \| string[]                                                      | -                                                                                                          | -      |
 | onChange         | 选中时触发                                | (checkedIds \| checkedId, checkedNodes \| checkedNode, currentNode) => void | -                                                                                                          | -      |
 | searchMode       | 节点搜索模式，仅在*mode=normal*模式下生效 | string                                                                      | highlight \| filter                                                                                        | -      |
 | dataSource       | 异步加载数据                              | (key: string) => DataSource \| DataSource \| Promise                        | -                                                                                                          | -      |
 | overlayClassName | 下拉根元素的类名称 (3.0 新增)             | string                                                                      | -                                                                                                          | -      |
+
+<!-- | expandIds        | 默认高亮的节点（受控）                    | string[]                                                                    | -                                                                                                          | -      | -->
 
 ### DataItem
 
