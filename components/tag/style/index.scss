@@ -1,4 +1,12 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
+
+$color-map: (
+  'primary': use-color('primary'),
+  'warning': get-color($palette-secondary, 'warning'),
+  'success': get-color($palette-secondary, 'success'),
+  'danger': get-color($palette-secondary, 'danger'),
+  'default': #999
+) !default;
 
 $prefix: 'hi-tag' !default;
 $prefixGroup: 'hi-tag-group' !default;
@@ -30,12 +38,10 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
   color: #fff;
   line-height: 20px;
   box-sizing: border-box;
-  border: 1px solid $primary;
   border-color: transparent;
   margin-right: 4px;
   margin-left: 4px;
   border-radius: 11px;
-  background: $primary;
   font-size: 12px;
   display: inline-block;
   user-select: none;
@@ -45,34 +51,23 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     opacity: 0.65;
   }
 
-  &.#{$prefix}--default {
-    background: #999;
+  @each $key, $value in $color-map {
+    &--#{$key} {
+      background-color: $value;
+      border: 1px solid $value;
+    }
   }
 
-  &.#{$prefix}--line {
-    border: 1px solid $primary;
-    color: $primary;
+  &--line {
     background: #fff;
 
-    @each $key in 'success', 'danger', 'warning' {
+    @each $key, $value in $color-map {
       &.#{$prefix}--#{$key} {
-        $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
-
-        border: 1px solid $status-color;
-        color: $status-color;
+        border: 1px solid $value;
+        color: $value;
       }
     }
-
-    &.#{$prefix}--default {
-      border: 1px solid #999;
-      color: #999;
-    }
   }
-
-  // &.#{$prefix}--active {
-  //   border: 1px solid #4284f5 !important;
-  //   opacity: 1;
-  // }
 
   &.#{$prefix}--square {
     border-radius: 2px;
@@ -99,18 +94,6 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     &:active {
       opacity: 1;
     }
-
-    &:focus {
-      box-shadow: 0 0 0 2px use-color('primary-30');
-    }
-  }
-
-  @each $key in 'success', 'danger', 'warning' {
-    &--#{$key} {
-      $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
-
-      background: $status-color;
-    }
   }
 }
 
@@ -120,14 +103,14 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     align-items: center;
 
     .#{$prefix} {
-      background: rgba(255, 255, 255, 1);
+      background: #fff;
       border: 1px solid rgba(224, 225, 226, 1);
       color: #333;
       cursor: pointer;
       transition: border-color 0.3s;
 
       &:hover {
-        border: 1px solid #4284f5 !important;
+        border: 1px solid use-color('primary') !important;
         opacity: 1;
       }
 
@@ -140,7 +123,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     &--input {
       margin: 0 4px;
       border-radius: 11px;
-      border: 1px solid rgba(66, 132, 245, 1);
+      border: 1px solid use-color('primary');
       outline: none;
       padding: 2px 8px;
       font-size: 12px;
@@ -163,7 +146,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
       transition: border-color 0.3s;
 
       &:hover {
-        border-color: $primary;
+        border-color: use-color('primary');
       }
     }
   }
