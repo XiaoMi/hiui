@@ -402,7 +402,6 @@ const Tabs = ({
               )
             })}
           </TransitionGroup>
-
           {hiddenTabItems.length > 0 && (
             <div
               className={classNames(`${prefixCls}__item`, {
@@ -434,7 +433,6 @@ const Tabs = ({
             />
           )}
         </div>
-
         {editableFlag && !canScroll && (
           <div className={`${prefixCls}__add`}>
             <Icon onClick={addTab} name='plus' />
