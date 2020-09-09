@@ -36,7 +36,8 @@
   "module": "es/index.js",
   "file": [
     "dist",
-    "es"
+    "es",
+    "types/*.d.ts"
   ],
   "peerDependencies": {
     "react": ">=16.13.0",
