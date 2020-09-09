@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Form from '../../../components/form/index'
+import HiForm from '../../../components/form'
 import Input from '../../../components/input'
 import Checkbox from '../../../components/checkbox'
 import Button from '../../../components/button'
@@ -10,7 +10,7 @@ const desc = ['左对齐：表单项较少，对应标题字数易对齐工整']
 const code = [
   {
     code: `import React from 'react'
-    import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
+  import { HiForm, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
     class Demo extends React.Component {  
       constructor(props){
         super(props)
@@ -24,13 +24,13 @@ const code = [
         this.form = React.createRef()
       }
       render (){
-        const FormItem = Form.Item
-        const FormSubmit = Form.Submit
-        const FormReset = Form.Reset
+        const FormItem = HiForm.Item
+        const FormSubmit = HiForm.Submit
+        const FormReset = HiForm.Reset
         const {formData} = this.state
     
         return (
-          <Form 
+          <HiForm 
             labelWidth='80' 
             labelPlacement='left' 
             initialValues={formData}
@@ -73,22 +73,29 @@ const code = [
               valuePropName="checked">
               <Checkbox onChange={()=>{
                 console.log('checkbox remeber me')
-              }}> 记住我 </Checkbox>
+              }}> 
+                记住我 
+              </Checkbox>
+
             </FormItem>
             <FormItem>
              <FormSubmit 
               type='primary'
-
               onClick={(values,errors)=>{
                 console.log('Get form value:',values,errors)}
               }
-              >提交</FormSubmit>
+              >
+                提交
+              </FormSubmit>
+
               <FormReset 
-              type='line' 
-                onClick={()=>{console.log('reset form')}}
-              >重置</FormReset>
+                type='line' 
+                  onClick={()=>{console.log('reset form')}}
+                >
+                重置
+              </FormReset>
             </FormItem>
-          </Form>
+          </HiForm>
         )
       }
     }`,
@@ -96,7 +103,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
+    import { HiForm, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
     class Demo extends React.Component {  
       constructor(props){
         super(props)
@@ -110,13 +117,13 @@ const code = [
         this.form = React.createRef()
       }
       render (){
-        const FormItem = Form.Item
-        const FormSubmit = Form.Submit
-        const FormReset = Form.Reset
+        const FormItem = HiForm.Item
+        const FormSubmit = HiForm.Submit
+        const FormReset = HiForm.Reset
         const {formData} = this.state
     
         return (
-          <Form labelWidth='80' labelPlacement='right' 
+          <HiForm labelWidth='80' labelPlacement='right' 
             initialValues={formData}>
             <FormItem label='邮箱' field="email" rules={
               [
@@ -152,7 +159,7 @@ const code = [
                 onClick={()=>{console.log('reset form')}}
               >重置</FormReset>
             </FormItem>
-          </Form>
+          </HiForm>
         )
       }
     }`,
@@ -160,7 +167,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
+    import { HiForm, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
     class Demo extends React.Component {  
       constructor(props){
         super(props)
@@ -196,12 +203,12 @@ const code = [
         this.form = React.createRef()
       }
       render (){
-        const FormItem = Form.Item
-        const FormSubmit = Form.Submit
-        const FormReset = Form.Reset
+        const FormItem = HiForm.Item
+        const FormSubmit = HiForm.Submit
+        const FormReset = HiForm.Reset
         const {formData,rules} = this.state
         return (
-          <Form labelWidth='80' labelPlacement='top' 
+          <HiForm labelWidth='80' labelPlacement='top' 
             initialValues={formData}
             rules={rules}
             >
@@ -226,7 +233,7 @@ const code = [
                 onClick={()=>{console.log('reset form')}}
               >重置</FormReset>
             </FormItem>
-          </Form>
+          </HiForm>
         )
       }
     }`,
@@ -236,7 +243,7 @@ const code = [
 const DemoAlign = () => (
   <DocViewer
     code={code}
-    scope={{ Form, Input, Button, Checkbox }}
+    scope={{ HiForm, Input, Button, Checkbox }}
     prefix={prefix}
     desc={desc}
     rightOptions={rightOptions}

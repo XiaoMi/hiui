@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Form from '../../../components/form/index'
+import HiForm from '../../../components/form/index'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
 import Select from '../../../components/select'
@@ -17,7 +17,7 @@ import Grid from '../../../components/grid'
 const prefix = 'form-synthetic'
 const desc = '展示和表单相关的其他组件'
 const code = `import React from 'react'
-import { Form, Grid, Button, Input, Select, Counter, Cascader, Radio, Checkbox, Switch, DatePicker, Rate, Upload  } from '@hi-ui/hiui'\n
+import { HiForm, Grid, Button, Input, Select, Counter, Cascader, Radio, Checkbox, Switch, DatePicker, Rate, Upload  } from '@hi-ui/hiui'\n
 class Demo extends React.Component {  
   constructor(props){
     super(props)
@@ -116,14 +116,14 @@ class Demo extends React.Component {
     this.form = React.createRef()
   }
   render (){
-    const FormItem = Form.Item
-    const FormSubmit = Form.Submit
-    const FormReset = Form.Reset
+    const FormItem = HiForm.Item
+    const FormSubmit = HiForm.Submit
+    const FormReset = HiForm.Reset
     const {formData,singleList,cascaderList,radiolist,checkboxList} = this.state
     const Row = Grid.Row
     const Col = Grid.Col
     return (
-      <Form labelWidth='100' labelPlacement='right' 
+      <HiForm labelWidth='100' labelPlacement='right' 
         ref={this.form}
         initialValues={formData}>
         <FormItem label='表单名称' >
@@ -298,10 +298,10 @@ class Demo extends React.Component {
                 cascader:["电视", "小米电视4C"]
               })
           }}>
-            fill Form
+            fill HiForm
           </Button>
         </FormItem>
-      </Form>
+      </HiForm>
     )
   }
 }`
@@ -310,7 +310,7 @@ const DemoRow = () => (
   <DocViewer
     code={code}
     scope={{
-      Form,
+      HiForm,
       Button,
       Input,
       Select,

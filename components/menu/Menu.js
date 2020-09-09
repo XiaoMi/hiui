@@ -15,12 +15,7 @@ class Menu extends Component {
     this.clickOutsideHandel = this.clickOutside.bind(this)
     if (this.isNoMiniVertaicalMenu(collapsed)) {
       // 垂直非mini菜单默认打开激活项
-      expandIndex = [
-        activeIndex
-          .split('-')
-          .slice(0, -1)
-          .join('-')
-      ]
+      expandIndex = [activeIndex.split('-').slice(0, -1).join('-')]
     }
     this.state = {
       activeId: this.props.activeId,
@@ -42,12 +37,7 @@ class Menu extends Component {
       })
       this.isNoMiniVertaicalMenu(collapsed) &&
         this.setState({
-          expandIndex: [
-            activeIndex
-              .split('-')
-              .slice(0, -1)
-              .join('-')
-          ]
+          expandIndex: [activeIndex.split('-').slice(0, -1).join('-')]
         })
     }
 
@@ -89,7 +79,7 @@ class Menu extends Component {
     let _clickedIndex = clickedIndex
     let subInExpandIndex = false
 
-    let _expandIndex = expandIndex.filter(item => {
+    let _expandIndex = expandIndex.filter((item) => {
       // 点击父菜单时，需要把已展开的子菜单过滤掉，因为父菜单关闭时所有子菜单也要关闭
       const flag = item.startsWith(_clickedIndex)
       if (flag) {
@@ -103,17 +93,12 @@ class Menu extends Component {
 
     if (index > -1) {
       // 点击同一个submenu，如果已展开则关闭
-      _clickedIndex = clickedIndex
-        .split('-')
-        .slice(0, -1)
-        .join('-')
+      _clickedIndex = clickedIndex.split('-').slice(0, -1).join('-')
     }
 
     if (!accordion && this.isNoMiniVertaicalMenu()) {
       // 非手风琴模式只有在垂直非mini状态下才生效
-      index > -1
-        ? _expandIndex.splice(index, 1, _clickedIndex)
-        : _expandIndex.push(_clickedIndex)
+      index > -1 ? _expandIndex.splice(index, 1, _clickedIndex) : _expandIndex.push(_clickedIndex)
 
       return _expandIndex
     } else {
@@ -135,11 +120,7 @@ class Menu extends Component {
         result = _activeMenus
       } else if (menus[index].children) {
         _activeMenus.push(index)
-        result = this.getActiveMenus(
-          menus[index].children,
-          activeId,
-          _activeMenus
-        )
+        result = this.getActiveMenus(menus[index].children, activeId, _activeMenus)
       }
       if (result) {
         break
@@ -179,9 +160,7 @@ class Menu extends Component {
   }
 
   onClick (indexs, id, data) {
-    const expandIndex = this.isNoMiniVertaicalMenu()
-      ? this.state.expandIndex
-      : this.getExpandIndex('') // 非mini垂直菜单选中时不需要收起子菜单
+    const expandIndex = this.isNoMiniVertaicalMenu() ? this.state.expandIndex : this.getExpandIndex('') // 非mini垂直菜单选中时不需要收起子菜单
     const oldId = this.state.activeId
 
     this.setState(
@@ -205,9 +184,7 @@ class Menu extends Component {
         expandIndex
       },
       () => {
-        index &&
-          this.props.onClickSubMenu &&
-          this.props.onClickSubMenu(index.split('-'))
+        index && this.props.onClickSubMenu && this.props.onClickSubMenu(index.split('-'))
       }
     )
   }
@@ -245,11 +222,7 @@ class Menu extends Component {
           {dataItem.children && (
             <ul className='hi-menu-fat__content'>
               {dataItem.children.map((child, index) => {
-                return this.renderItem(
-                  child,
-                  parentIndex + '-' + groupIndex + '-' + index,
-                  { level: 2 }
-                )
+                return this.renderItem(child, parentIndex + '-' + groupIndex + '-' + index, { level: 2 })
               })}
             </ul>
           )}
@@ -263,12 +236,9 @@ class Menu extends Component {
     const { showAllSubMenus, placement, theme, overlayClassName } = this.props
     const { activeIndex, expandIndex, collapsed } = this.state
     let items = []
-    const renderMenu = showAllSubMenus
-      ? this.renderFatSubMenu.bind(this)
-      : this.renderMenu.bind(this)
+    const renderMenu = showAllSubMenus ? this.renderFatSubMenu.bind(this) : this.renderMenu.bind(this)
     data.forEach((item, index) => {
-      const indexStr =
-        parentIndex !== '' ? parentIndex + '-' + index : '' + index
+      const indexStr = parentIndex !== '' ? parentIndex + '-' + index : '' + index
       const level = indexStr.split('-').length
 
       if (item.children) {
@@ -294,7 +264,7 @@ class Menu extends Component {
           />
         )
       } else {
-        items.push(this.renderItem(item, indexStr, { level }))
+        items.push(this.renderItem(item, indexStr, { level, placement, mini: collapsed }))
       }
     })
 
@@ -304,26 +274,16 @@ class Menu extends Component {
   render () {
     const { data, placement, showCollapse, theme } = this.props
     const { collapsed } = this.state
-    const cls = classNames(
-      'hi-menu',
-      `theme__${theme}`,
-      `hi-menu--${placement}`,
-      {
-        'hi-menu--mini': collapsed
-      }
-    )
-    const miniIcon = (
-      <i className={`hi-icon icon-${collapsed ? 'Expand' : 'Collapse'}`} />
-    )
+    const cls = classNames('hi-menu', `theme__${theme}`, `hi-menu--${placement}`, {
+      'hi-menu--mini': collapsed
+    })
+    const miniIcon = <i className={`hi-icon icon-${collapsed ? 'Expand' : 'Collapse'}`} />
 
     return (
       <div className={cls}>
         <ul className='hi-menu-items'>{this.renderMenu(data)}</ul>
         {placement === 'vertical' && showCollapse && (
-          <div
-            className='hi-menu--mini__toggle'
-            onClick={this.toggleMini.bind(this)}
-          >
+          <div className='hi-menu--mini__toggle' onClick={this.toggleMini.bind(this)}>
             {miniIcon}
           </div>
         )}

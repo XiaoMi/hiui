@@ -6,9 +6,9 @@ import Icon from '../icon'
 import _handleNotificate from './HandleNotification'
 const iconMap = {
   success: 'check-circle',
-  error: 'close-circle',
+  danger: 'close-circle',
   warning: 'exclamation-circle',
-  info: 'info-circle'
+  primary: 'info-circle'
 }
 
 export const handleNotificate = _handleNotificate
@@ -25,7 +25,7 @@ const notification = {
     key = Math.random(),
     duration,
     closeable = true,
-    type = 'info',
+    type = 'primary',
     confirmText,
     onConfirm,
     onClose
@@ -42,7 +42,7 @@ const notification = {
           <div className={`hi-${prefix}__footer`}>
             <Button
               size='small'
-              className={`hi-${prefix}__button`}
+              type='primary'
               onClick={() => {
                 onConfirm()
               }}

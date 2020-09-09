@@ -9,7 +9,7 @@ import './style/index'
 const QuillBarTooltip = props => {
   const { toolbarsName, tooltipTitle, children, showTooltip = true } = props
   return (
-    <span className='hi-quill-content'>
+    <span className='hi-quill-toolbar-tooltip'>
       {showTooltip ? (
         <Tooltip
           className='hi-quill-toolbar'
@@ -18,7 +18,7 @@ const QuillBarTooltip = props => {
           {children || <button className={`ql-${toolbarsName}`} />}
         </Tooltip>
       ) : (
-        <div className='hi-quill-toolbar'>
+        <div className='hi-quill-toolbar hi-quill-custom'>
           {children || <button className={`ql-${toolbarsName}`} />}
         </div>
       )}

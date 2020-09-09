@@ -1,0 +1,180 @@
+// Author: Sivan[sunxingfan@xiaomi.com]
+// Description: define mix-ins, functions etc.
+
+@import 'common';
+
+/// Slightly lighten a color
+/// @access private
+/// @param {Color} $color - color to tint
+/// @param {Number} $percentage - percentage of `$color` in returned color
+/// @return {Color}
+@function use-color($color-name: '') {
+  @return var(--color#{if($color-name != '', '-' + $color-name, null)});
+}
+
+/// Deprecated: Convert hex color to hsl format
+/// @deprecated
+/// @access public
+@function hex-to-hsl($color) {
+  @return hue($color), saturation($color), lightness($color);
+}
+
+/// Helper to clear inner floats
+/// @access public
+@mixin clearfix() {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+/// Text ellipsis
+/// @access public
+@mixin ellipsis() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/// Image Replacement
+/// @access public
+@mixin hide-text() {
+  overflow: hidden;
+  text-indent: 100%;
+  white-space: nowrap;
+}
+
+/// Get CSS variables, generate css variables snippet by given color
+/// @access public
+@mixin get-vars($color: get-color($palette_primary, 'hiui-blue')) {
+  --color-primary: #{$color};  // primary color
+  --color-primary-h: #{hue($color)};
+  --color-primary-s: #{saturation($color)};
+  --color-primary-l: #{lightness($color)};
+  //--color-primary-hsl: #{var(--color-primary-h), var(--color-primary-s), var(--color-primary-l)};
+  --color-primary-10: #{tint($color, 96%)};
+  --color-primary-20: #{tint($color, 92%)}; // background hover color
+  --color-primary-30: #{tint($color, 76%)};
+  --color-primary-40: #{tint($color, 60%)};
+  --color-primary-50: #{tint($color, 30%)}; // base color hover
+  --color-primary-60: #{shade($color, 10%)}; // base color active
+  --color-primary-70: #{shade($color, 30%)};
+  --color-primary-80: #{shade($color, 40%)};
+  --color-primary-90: #{shade($color, 50%)};
+  --color-success: #{get-color($palette-secondary, 'success')};
+  --color-success-20: #{tint(get-color($palette-secondary, 'success'), 92%)}; // background color
+  --color-success-30: #{tint(get-color($palette-secondary, 'success'), 76%)}; // box-shadow color
+  --color-success-40: #{tint(get-color($palette-secondary, 'success'), 60%)}; // border color
+  --color-success-50: #{tint(get-color($palette-secondary, 'success'), 30%)}; // hover color
+  --color-success-60: #{shade(get-color($palette-secondary, 'success'), 10%)}; // active color
+  --color-warning: #{get-color($palette-secondary, 'warning')};
+  --color-warning-20: #{tint(get-color($palette-secondary, 'warning'), 92%)};
+  --color-warning-30: #{tint(get-color($palette-secondary, 'warning'), 76%)};
+  --color-warning-40: #{tint(get-color($palette-secondary, 'warning'), 60%)};
+  --color-warning-50: #{tint(get-color($palette-secondary, 'warning'), 30%)};
+  --color-warning-60: #{shade(get-color($palette-secondary, 'warning'), 10%)};
+  --color-danger: #{get-color($palette-secondary, 'danger')};
+  --color-danger-20: #{tint(get-color($palette-secondary, 'danger'), 92%)};
+  --color-danger-30: #{tint(get-color($palette-secondary, 'danger'), 76%)};
+  --color-danger-40: #{tint(get-color($palette-secondary, 'danger'), 60%)};
+  --color-danger-50: #{tint(get-color($palette-secondary, 'danger'), 30%)};
+  --color-danger-60: #{shade(get-color($palette-secondary, 'danger'), 10%)};
+  --color-black: #{get-color($palette-tertiary, 'black')}; // title
+  --color-gray-80: #{get-color($palette-tertiary, 'gray-80')}; // text
+  --color-gray-70: #{get-color($palette-tertiary, 'gray-70')}; // text alter
+  --color-gray-50: #{get-color($palette-tertiary, 'gray-50')}; // text disabled
+  --color-gray-30: #{get-color($palette-tertiary, 'gray-30')}; // border
+  --color-gray-20: #{get-color($palette-tertiary, 'gray-20')}; // line
+  --color-gray-10: #{get-color($palette-tertiary, 'gray-10')}; // background alter
+  --color-white: #{get-color($palette-tertiary, 'white')}; // white
+}
+
+/// Use CSS variable
+/// @access public
+/// @Todo: switch to postcss
+/// @example:
+/// :root {
+///   --color-brand: #ff6700;
+/// }
+/// .modern {
+///   @include use-var(background-color, color-brand);
+/// }
+/// .modern-with-fallback {
+///   @include use-var(background-color, color-brand, #000);
+/// }
+/// .legacy {
+///   @include use-var(background-color, color-brand, #000, true);
+/// }
+/// .legacy-with-test {
+///   @include use-var(background-color, color-brand, #000, '.no-custom-properties');
+/// }
+@mixin use-var($property, $value, $fallback: false, $compatible-mode: false) {
+  // if fallback value given
+  @if $fallback {
+    // if need compatible selector
+    @if $compatible-mode {
+      @if type-of($compatible-mode) == string {
+        #{$property}: var(--#{$value}, #{$fallback});
+
+        #{$compatible-mode} & {
+          #{$property}: $fallback;
+        }
+      }
+
+      @else {
+        #{$property}: $fallback;
+        #{$property}: var(--#{$value}, #{$fallback});
+      }
+    }
+
+    @else {
+      #{$property}: var(--#{$value}, #{$fallback});
+    }
+  }
+
+  @else {
+    #{$property}: var(--#{$value});
+  }
+}
+
+/// Isolate component style
+/// @access public
+/// block elements reset: margin, padding, text style, <ul>, <ol>
+/// inline-block elements reset: margin, padding, text style
+/// inline elements reset: TBD.
+/// @example:
+/// .hi-btn {
+///   @include isolation('inline', 'flow-root');
+///   ...
+/// }
+@mixin isolation($display-outside: 'block', $display-inside: 'flow-root', $is-root: true) {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  // equal to `display: inline`
+  @if not ($display-outside == 'inline' and $display-inside == 'flow') {
+    font: normal $font-weight-normal #{$font-size-normal}/#{$line-height-size-normal} $font-family-sans;
+    text-align: left;
+    text-decoration: none;
+    text-indent: 0;
+    text-shadow: none;
+    text-transform: none;
+    letter-spacing: 0;
+    word-spacing: normal;
+    white-space: normal;
+    color: use-color('black');
+  }
+
+  // equal to `display: block`
+  @if ($display-outside == 'block' and $display-inside == 'flow-root') {
+    ul,
+    ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+  }
+}

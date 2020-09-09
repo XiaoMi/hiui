@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useRef
 } from 'react'
+import _ from 'lodash'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Icon from '../icon'
@@ -12,7 +13,7 @@ import Tooltip from '../tooltip'
 import ItemDropdown from './ItemDropdown'
 import TabItem from './TabItem'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-const noop = () => { }
+const noop = () => {}
 
 const Tabs = ({
   onDrop,
@@ -39,7 +40,7 @@ const Tabs = ({
     const showTabItems = []
     const hiddenTabItems = []
 
-    React.Children.map(children, (child) => {
+    React.Children.map(children, child => {
       if (child) {
         const {
           tabTitle,
@@ -81,7 +82,7 @@ const Tabs = ({
     activeIdProps !== undefined
       ? activeIdProps
       : defaultActiveId ||
-      (showTabItems && showTabItems[0] && showTabItems[0].tabId)
+          (showTabItems && showTabItems[0] && showTabItems[0].tabId)
   )
   const [dragged, setDragged] = useState()
   const [over, setOver] = useState()
@@ -104,7 +105,7 @@ const Tabs = ({
   }, [activeIdProps])
 
   useEffect(() => {
-    const index = showTabItems.findIndex((item) => item.tabId === activeId)
+    const index = showTabItems.findIndex(item => item.tabId === activeId)
     const hideIndex = hiddenTabItems.findIndex(item => item.tabId === activeId)
     latestActiveId.current = index
 
@@ -123,6 +124,11 @@ const Tabs = ({
     }
   }, [activeId, showTabItems, type])
 
+  // 过滤自定义属性
+  const omitItem = useCallback(data => {
+    return _.omit(data, ['animation', 'disabled', 'tabDesc'])
+  }, [])
+
   useEffect(() => {
     const tabItems = getTabItems()
 
@@ -137,13 +143,12 @@ const Tabs = ({
   }, [children])
 
   // 计算激活状态下选中横线
-  const pseudoPosition = useCallback((index) => {
+  const pseudoPosition = useCallback(index => {
     const parentNode = containRef.current
     if (!parentNode.childNodes.length) {
       return
     }
     const child = parentNode.childNodes[index]
-
     const { width } = child.getBoundingClientRect()
     const ink = inkRef.current
     if (placement === 'horizontal') {
@@ -154,6 +159,17 @@ const Tabs = ({
       const offsetTop = child.offsetTop
       ink.style.transform = `translateY(${offsetTop}px)`
     }
+    setTimeout(() => {
+      const { width } = child.getBoundingClientRect()
+      const ink = inkRef.current
+      if (placement === 'horizontal') {
+        const offsetLeft = child.offsetLeft
+        if (ink) {
+          ink.style.width = `${width - 34}px`
+          ink.style.transform = `translateX(${offsetLeft + 17}px)`
+        }
+      }
+    }, 300)
   }, [])
 
   const addTab = useCallback(() => {
@@ -191,7 +207,7 @@ const Tabs = ({
     (child, index) => {
       const { tabId, animation } = child.props
       const activeIndex = showTabItems.findIndex(
-        (item) => item.tabId === activeId
+        item => item.tabId === activeId
       )
 
       return cloneElement(child, {
@@ -212,20 +228,30 @@ const Tabs = ({
     if (type === 'card' || type === 'line' || type === 'editable') {
       setDragged(e.currentTarget)
       e.currentTarget.classList.add('hi-tabs__item--disabled')
-      onDragStart(item)
+      onDragStart(omitItem(item))
     }
   }, [])
 
   const dragEnd = useCallback(
     (e, item) => {
-      const items = containRef.current.getElementsByClassName(
-        'hi-tabs__item'
-      )
+      const items = containRef.current.getElementsByClassName('hi-tabs__item')
       const clientX = e.clientX
       const clientY = e.clientY
-      const { left, right, top, bottom } = containRef.current.getBoundingClientRect()
+      const {
+        left,
+        right,
+        top,
+        bottom
+      } = containRef.current.getBoundingClientRect()
 
-      if (!((clientX >= left) && (clientX <= right) && (clientY <= bottom) && (clientY >= top))) {
+      if (
+        !(
+          clientX >= left &&
+          clientX <= right &&
+          clientY <= bottom &&
+          clientY >= top
+        )
+      ) {
         for (let i = 0; i < items.length; i++) {
           items[i].classList.remove('hi-tabs__item--disabled')
         }
@@ -239,7 +265,7 @@ const Tabs = ({
         var data = [...showTabItems]
         var from = Number(dragged.dataset.id)
         var to = Number(over.dataset.id)
-        onDropEnd(item, showTabItems[to])
+        onDropEnd(omitItem(item), omitItem(showTabItems[to]))
         data.splice(to, 0, data.splice(from, 1)[0])
         data = data.map((doc, index) => {
           doc.newIndex = index + 1
@@ -267,7 +293,7 @@ const Tabs = ({
   )
 
   const dragOver = useCallback(
-    (e) => {
+    e => {
       if (type === 'card' || type === 'line' || type === 'editable') {
         e.preventDefault()
 
@@ -279,18 +305,12 @@ const Tabs = ({
 
         const taIndex = JSON.parse(e.target.dataset.item).newIndex
         const dgIndex = JSON.parse(dragged.dataset.item).newIndex
-        onDrop(showTabItems[taIndex], showTabItems[dgIndex])
+        onDrop(omitItem(showTabItems[taIndex]), omitItem(showTabItems[dgIndex]))
 
         if (taIndex === dgIndex) {
           if (!over) return
           setOver(e.target)
           return
-        } else {
-
-          // for (let i = 0; i < items.length; i++) {
-          //   items[i].classList.remove('hi-tabs__item--adsorbent')
-          // }
-          // e.target.classList.add('hi-tabs__item--adsorbent')
         }
         setOver(e.target)
       }
@@ -301,16 +321,20 @@ const Tabs = ({
     const container = containRef.current
     const width = container.scrollWidth
     const clientWidth = container.clientWidth
-    let transX = Number(document.defaultView.getComputedStyle(container, null).transform.split(',')[4])
+    let transX = Number(
+      document.defaultView
+        .getComputedStyle(container, null)
+        .transform.split(',')[4]
+    )
 
     let srcollWidth
-    if ((width / 3) > (width - clientWidth)) {
+    if (width / 3 > width - clientWidth) {
       srcollWidth = width - clientWidth
     } else {
       srcollWidth = width / 3
     }
     if (Math.abs(transX) + clientWidth + srcollWidth > width) {
-      transX = (width - clientWidth - Math.abs(transX)) + Math.abs(transX)
+      transX = width - clientWidth - Math.abs(transX) + Math.abs(transX)
     } else {
       transX = Math.abs(transX - srcollWidth)
     }
@@ -321,7 +345,11 @@ const Tabs = ({
   const translateRight = useCallback(() => {
     const container = containRef.current
     const width = container.scrollWidth
-    let transX = Number(document.defaultView.getComputedStyle(container, null).transform.split(',')[4])
+    let transX = Number(
+      document.defaultView
+        .getComputedStyle(container, null)
+        .transform.split(',')[4]
+    )
     if (Math.abs(transX) > width / 3) {
       transX += width / 3
     } else {
@@ -330,80 +358,98 @@ const Tabs = ({
     container.style.transform = 'translateX(' + transX + 'px)'
   }, [])
   const getHeader = useCallback(() => {
-    return <>{
-      canScroll && <Icon name='left' className={`${prefixCls}__scrollIcon`} onClick={() => translateLeft()} />
-    }<div className={`${prefixCls}__header`}>
-
-      <div
-        className={`${prefixCls}__nav contain`}
-        onDragOver={dragOver}
-        ref={containRef}
-      >
-        <TransitionGroup component={null}>
-          {showTabItems.map((item, index) => {
-            const { tabId } = item
-            return (
-              <CSSTransition
-                key={tabId}
-                timeout={200}
-                unmountOnExit
-                onExit={() => animateDone(tabId)}
-                classNames={`${prefixCls}__tab-items`}
-              >
-                <TabItem
-                  key={`${prefixCls}__item-${index}`}
-                  index={index}
-                  prefixCls={prefixCls}
-                  item={item}
-                  draggable={draggable}
-                  activeId={activeId}
-                  type={type}
-                  showTabItems={showTabItems}
-                  editable={editableFlag}
-                  handleClick={handleClick}
-                  deleteTab={deleteTab}
-                  dragStart={dragStart}
-                  dragEnd={dragEnd}
-                  canScroll={canScroll}
-                />
-              </CSSTransition>
-            )
-          })}
-        </TransitionGroup>
-
-        {hiddenTabItems.length > 0 && (
+    return (
+      <>
+        {canScroll && (
+          <Icon
+            name='left'
+            className={`${prefixCls}__scroll__icon`}
+            onClick={() => translateLeft()}
+          />
+        )}
+        <div className={`${prefixCls}__header`}>
           <div
-            className={classNames(`${prefixCls}__item`, {
-              [`${prefixCls}__item--active`]: hiddenTabItems.map(item => item.tabId).includes(activeId)
-            })}
+            className={`${prefixCls}__nav contain`}
+            onDragOver={dragOver}
+            ref={containRef}
           >
-            <ItemDropdown
-              active={hiddenTabItems.map(item => item.tabId).includes(activeId)}
-              activeId={activeId}
-              theme={theme}
-              defaultActiveId={defaultActiveId}
-              items={hiddenTabItems}
-              onChoose={(item, e) => {
-                handleClick(item, e)
-              }}
-            />
+            <TransitionGroup component={null}>
+              {showTabItems.map((item, index) => {
+                const { tabId } = item
+                return (
+                  <CSSTransition
+                    key={tabId}
+                    timeout={200}
+                    unmountOnExit
+                    onExit={() => animateDone(tabId)}
+                    classNames={`${prefixCls}__tab-items`}
+                  >
+                    <TabItem
+                      key={`${prefixCls}__item-${index}`}
+                      index={index}
+                      prefixCls={prefixCls}
+                      item={item}
+                      draggable={draggable}
+                      activeId={activeId}
+                      type={type}
+                      showTabItems={showTabItems}
+                      editable={editableFlag}
+                      handleClick={handleClick}
+                      deleteTab={deleteTab}
+                      dragStart={dragStart}
+                      dragEnd={dragEnd}
+                      canScroll={canScroll}
+                    />
+                  </CSSTransition>
+                )
+              })}
+            </TransitionGroup>
+            {hiddenTabItems.length > 0 && (
+              <div
+                className={classNames(`${prefixCls}__item`, {
+                  [`${prefixCls}__item--active`]: hiddenTabItems
+                    .map(item => item.tabId)
+                    .includes(activeId)
+                })}
+              >
+                <ItemDropdown
+                  active={hiddenTabItems
+                    .map(item => item.tabId)
+                    .includes(activeId)}
+                  activeId={activeId}
+                  theme={theme}
+                  defaultActiveId={defaultActiveId}
+                  items={hiddenTabItems}
+                  onChoose={(item, e) => {
+                    handleClick(item, e)
+                  }}
+                />
+              </div>
+            )}
+            {type === 'line' && (
+              <div
+                className={classNames(`${prefixCls}--line__ink`, {
+                  [`${prefixCls}--line__ink-disabled`]: isActiveEffective
+                })}
+                ref={inkRef}
+              />
+            )}
           </div>
-        )}
-        {type === 'line' && (
-          <div className={classNames(`${prefixCls}--line__ink`, {
-            [`${prefixCls}--line__ink-disabled`]: isActiveEffective
-          })} ref={inkRef} />
-        )}
-      </div>
-
-      {editableFlag && !canScroll && (
-        <div className={`${prefixCls}__add`}>
-          <Icon onClick={addTab} name='plus' />
+          {editableFlag && !canScroll && (
+            <div className={`${prefixCls}__add`}>
+              <Icon onClick={addTab} name='plus' />
+            </div>
+          )}
         </div>
-      )}
-    </div>{
-      canScroll && <Icon name='right' className={`${prefixCls}__scrollIcon`} onClick={() => translateRight()} />
-    }</>
+        {canScroll && (
+          <Icon
+            name='right'
+            className={`${prefixCls}__scroll__icon`}
+            onClick={() => translateRight()}
+          />
+        )}
+      </>
+    )
   })
 
   const tabsClasses = classNames(
@@ -415,13 +461,13 @@ const Tabs = ({
       [`${prefixCls}--${placement}`]: type === 'card' || type === 'line'
     },
     {
-      [`${prefixCls}--canScroll`]: canScroll
+      [`${prefixCls}--scroll`]: canScroll
     }
   )
 
   const editableFlag = checkEditable()
 
-  const animateDone = (tabId) => {
+  const animateDone = tabId => {
     Tooltip.close(`tab-${tabId}`)
   }
   // 判断选中的元素是否为disabled 状态
@@ -433,11 +479,11 @@ const Tabs = ({
 
   return (
     <div className={tabsClasses}>
-      {
-        canScroll ? <div className={`${prefixCls}__scrollOutter`}>
-          {getHeader()}
-        </div> : getHeader()
-      }
+      {canScroll ? (
+        <div className={`${prefixCls}__scroll--outter`}>{getHeader()}</div>
+      ) : (
+        getHeader()
+      )}
       <div className={`${prefixCls}__content`}>
         {React.Children.map(
           children,

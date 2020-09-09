@@ -1,5 +1,7 @@
+@import '@hi-ui/core-css/index.scss';
+
+$basic-color: get-color($palette-primary, 'hiui-blue') !default;
 $search: 'hi-search' !default;
-$themeColor: #4284f5 !default;
 
 .#{$search} {
   display: inline-block;
@@ -24,7 +26,7 @@ $themeColor: #4284f5 !default;
       border-bottom-left-radius: 0;
 
       &:hover:not(.disabled) {
-        border-color: $themeColor;
+        border-color: $basic-color;
       }
 
       &:focus {
@@ -34,7 +36,7 @@ $themeColor: #4284f5 !default;
   }
 
   .hi-icon.icon-search {
-    color: $themeColor;
+    color: $basic-color;
   }
 
   &_dropdown {
@@ -84,7 +86,7 @@ $themeColor: #4284f5 !default;
         padding: 0 12px;
 
         &:hover:not(.hi-search_dropdown--item-title) {
-          background-color: rgba(66, 132, 245, 0.08);
+          background-color: rgba($basic-color, 0.08);
         }
       }
 
@@ -111,7 +113,7 @@ $themeColor: #4284f5 !default;
       }
 
       &__name-hightlight {
-        color: $themeColor;
+        color: $basic-color;
       }
     }
 

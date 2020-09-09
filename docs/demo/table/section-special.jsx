@@ -1,17 +1,25 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Table from '../../../components/table'
+import HiTable from '../../../components/table'
 const prefix = 'table-special'
 const desc = [
   '全边框：运用分割线让行列关系更清晰明确',
   '树形表格：首列是树形结构，每个树杈都可共用表头',
   '内嵌式：表格每行隐藏部分数据，递进呈现'
 ]
-const rightOptions = ['全边框', '树形表格', '内嵌式', '表头分组', '表头吸顶', '固定表头', '合并单元格']
+const rightOptions = [
+  '全边框',
+  '树形表格',
+  '内嵌式',
+  '表头分组',
+  '表头吸顶',
+  '固定表头',
+  '合并单元格'
+]
 const code = [
   {
     code: `import React from 'react'
-    import Table from '@hi-ui/hiui/es/table'\n
+    import HiTable from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -93,17 +101,17 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} bordered/>
+        return <HiTable columns={this.columns} data={this.data} bordered/>
       }
     }`,
     opt: ['全边框']
   },
   {
     code: `import React from 'react'
-    import Table from '@hi-ui/hiui/es/table'\n
+    import HiTable from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       render() {
-        return <Table
+        return <HiTable
         data={[
           {
             a: 'a-1',
@@ -143,7 +151,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import Table from '@hi-ui/hiui/es/table'\n
+    import HiTable from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -225,7 +233,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} expandedRender={() => {
+        return <HiTable columns={this.columns} data={this.data} expandedRender={() => {
           return <div style={{paddingLeft:50}}><div>供应商：小米科技有限公司</div><div>供货日期：2020-08-11</div></div>
         }} />
       }
@@ -234,7 +242,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import Table from '@hi-ui/hiui/es/table'\n
+    import HiTable from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -321,7 +329,7 @@ const code = [
         this.data = data
       }
       render() {
-        return <Table columns={this.columns} data={this.data} rowSelection={{
+        return <HiTable columns={this.columns} data={this.data} rowSelection={{
           selectedRowKeys: this.state.selectedRowKeys,
           onChange: selectedRowKeys => {
             this.setState({selectedRowKeys})
@@ -333,7 +341,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import Table from '@hi-ui/hiui/es/table'\n
+    import HiTable from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -415,14 +423,14 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} sticky stickyTop={63}/>
+        return <HiTable columns={this.columns} data={this.data} sticky stickyTop={63}/>
       }
     }`,
     opt: ['表头吸顶']
   },
   {
     code: `import React from 'react'
-    import Table from '@hi-ui/hiui/es/table'\n
+    import HiTable from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -504,14 +512,14 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} maxHeight={200}/>
+        return <HiTable columns={this.columns} data={this.data} maxHeight={200}/>
       }
     }`,
     opt: ['固定表头']
   },
   {
     code: `import React from 'react'
-    import Table from '@hi-ui/hiui/es/table'\n
+    import HiTable from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -601,7 +609,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} />
+        return <HiTable columns={this.columns} data={this.data} />
       }
     }`,
     opt: ['合并单元格']
@@ -609,6 +617,12 @@ const code = [
 ]
 
 const DemoBase = () => (
-  <DocViewer code={code} scope={{ Table }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
+  <DocViewer
+    code={code}
+    scope={{ HiTable }}
+    prefix={prefix}
+    rightOptions={rightOptions}
+    desc={desc}
+  />
 )
 export default DemoBase

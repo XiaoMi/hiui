@@ -1,13 +1,13 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Table from '../../../components/table'
+import HiTable from '../../../components/table'
 const prefix = 'table-column'
 const desc = ['列对齐：根据数据形式调整对齐方式']
 const rightOptions = ['列对齐', '列高亮', '列操作', '列冻结', '列调整']
 const code = [
   {
     code: `import React from 'react'
-    import Table from '@hi-ui/hiui/es/table'\n
+    import HiTable from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -89,14 +89,14 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data}/>
+        return <HiTable columns={this.columns} data={this.data}/>
       }
     }`,
     opt: ['列对齐']
   },
   {
     code: `import React from 'react'
-    import Table from '@hi-ui/hiui/es/table'\n
+    import HiTable from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -178,14 +178,14 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} highlightedColKeys={['name']}/>
+        return <HiTable columns={this.columns} data={this.data} highlightedColKeys={['name']}/>
       }
     }`,
     opt: ['列高亮']
   },
   {
     code: `import React from 'react'
-    import Table from '@hi-ui/hiui/es/table'\n
+    import HiTable from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -268,14 +268,14 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} showColMenu />
+        return <HiTable columns={this.columns} data={this.data} showColMenu />
       }
     }`,
     opt: ['列操作']
   },
   {
     code: `import React from 'react'
-    import Table from '@hi-ui/hiui/es/table'\n
+    import HiTable from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -528,14 +528,14 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} scrollWidth={1500} fixedToColumn={'storeName'} />
+        return <HiTable columns={this.columns} data={this.data} scrollWidth={1500} fixedToColumn={'storeName'} />
       }
     }`,
     opt: ['列冻结']
   },
   {
     code: `import React from 'react'
-    import Table from '@hi-ui/hiui/es/table'\n
+    import HiTable from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -618,14 +618,14 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} resizable bordered />
+        return <HiTable columns={this.columns} data={this.data} resizable bordered />
       }
     }`,
     opt: ['列伸缩']
   },
   {
     code: `import React from 'react'
-    import Table from '@hi-ui/hiui/es/table'\n
+    import HiTable from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -708,7 +708,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} setting />
+        return <HiTable columns={this.columns} data={this.data} setting />
       }
     }`,
     opt: ['列调整']
@@ -716,6 +716,12 @@ const code = [
 ]
 
 const DemoBase = () => (
-  <DocViewer code={code} scope={{ Table }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
+  <DocViewer
+    code={code}
+    scope={{ HiTable }}
+    prefix={prefix}
+    rightOptions={rightOptions}
+    desc={desc}
+  />
 )
 export default DemoBase

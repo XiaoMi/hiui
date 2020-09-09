@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Form from '../../../components/form/index'
+import HiForm from '../../../components/form/index'
 import Input from '../../../components/input'
 import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
@@ -16,7 +16,7 @@ const code = [
   {
     opt: ['单表单项'],
     code: `import React from 'react'
-    import { Grid, Button, Radio, Input, Form } from '@hi-ui/hiui'\n
+    import { Grid, Button, Radio, Input, HiForm } from '@hi-ui/hiui'\n
     class Demo extends React.Component {
       constructor() {
         super()
@@ -81,15 +81,15 @@ const code = [
       render(){
         const Row = Grid.Row
         const Col = Grid.Col
-        const FormItem = Form.Item
-        const FormList = Form.List
-        const FormSubmit = Form.Submit
-        const FormReset = Form.Reset
+        const FormItem = HiForm.Item
+        const FormList = HiForm.List
+        const FormSubmit = HiForm.Submit
+        const FormReset = HiForm.Reset
         const {initialValues} = this.state
         return (
             <Row>
             <Col span={12}>
-              <Form
+              <HiForm
                 initialValues={initialValues}
                 ref={this.form}
                 rules={this.state.rules}
@@ -111,6 +111,7 @@ const code = [
                         {fields.map((field, index) => (
                           <div style={{ display: 'flex' }} key={index}>
                             <FormItem
+                              // 关于{...field}必写，Formlist需要依据里面的变量进行处理 
                               {...field}
                               label={index === 0 ? 'testList' : ''}
                             >
@@ -178,9 +179,9 @@ const code = [
                     this.form.current.setFieldsValue({
                       testList:[1,2,3]
                     })
-                }}>fill Form</Button>
+                }}>fill HiForm</Button>
                 </FormItem>
-              </Form>
+              </HiForm>
             </Col>
           </Row>
         )
@@ -190,7 +191,7 @@ const code = [
   {
     opt: ['嵌套表单项'],
     code: `import React from 'react'
-    import { Grid, Button, Radio, Input, Form } from '@hi-ui/hiui'\n
+    import { Grid, Button, Radio, Input, HiForm } from '@hi-ui/hiui'\n
     class Demo extends React.Component {
       constructor() {
         super()
@@ -252,15 +253,15 @@ const code = [
       render(){
         const Row = Grid.Row
         const Col = Grid.Col
-        const FormItem = Form.Item
-        const FormList = Form.List
-        const FormSubmit = Form.Submit
-        const FormReset = Form.Reset
+        const FormItem = HiForm.Item
+        const FormList = HiForm.List
+        const FormSubmit = HiForm.Submit
+        const FormReset = HiForm.Reset
     
         return (
             <Row>
             <Col span={12}>
-              <Form
+              <HiForm
                 ref={this.form}
                 rules={this.state.rules}
                 labelWidth='80'
@@ -358,9 +359,9 @@ const code = [
                           last: "rrr"
                         }]
                     })
-                }}>fill Form</Button>
+                }}>fill HiForm</Button>
                 </FormItem>
-              </Form>
+              </HiForm>
             </Col>
           </Row>
         )
@@ -372,7 +373,7 @@ const DemoCloseable = () => (
   <DocViewer
     code={code}
     scope={{
-      Form,
+      HiForm,
       Radio,
       Grid,
       Input,

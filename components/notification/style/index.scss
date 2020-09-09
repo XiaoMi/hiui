@@ -1,5 +1,11 @@
-@import '@hi-ui/core-css/index.scss';
-@import '../../style/icon/index.scss';
+@import '../../core-css/index.scss';
+
+$color-map: (
+  'primary': use-color('primary'),
+  'warning': get-color($palette-secondary, 'warning'),
+  'success': get-color($palette-secondary, 'success'),
+  'danger': get-color($palette-secondary, 'danger')
+) !default;
 
 .hi-notification__container {
   position: fixed;
@@ -17,6 +23,21 @@
     align-items: flex-start;
     width: 340px;
     box-sizing: border-box;
+
+    @each $key, $value in $color-map {
+      &--#{$key} {
+        background-color: use-color(#{$key}-20);
+        border: 1px solid use-color(#{$key}-40);
+
+        .hi-notification__title {
+          color: $value;
+        }
+
+        .hi-notification__icon {
+          fill: $value;
+        }
+      }
+    }
 
     &__closer {
       position: absolute;
@@ -59,67 +80,6 @@
   .hi-notification__footer {
     text-align: right;
     margin-top: 9px;
-
-    .hi-notification__button {
-      color: #fff;
-    }
-  }
-
-  .hi-notification--info {
-    background: #edf2fc;
-    border: 1px solid #d8e5ff;
-
-    .hi-notification__title,
-    .hi-notification__icon {
-      color: #4284f5;
-    }
-
-    .hi-notification__button {
-      background-color: #4284f5;
-      border: 1px solid #4284f5;
-    }
-  }
-
-  .hi-notification--error {
-    background: #feeff0;
-    border: 1px solid #ffe0e3;
-
-    .hi-notification__title,
-    .hi-notification__icon {
-      color: #eb5252;
-    }
-
-    .hi-notification__button {
-      background-color: #eb5252;
-    }
-  }
-
-  .hi-notification--success {
-    background: #e8f6ee;
-    border: 1px solid #cae9d7;
-
-    .hi-notification__title,
-    .hi-notification__icon {
-      color: #1da653;
-    }
-
-    .hi-notification__button {
-      background-color: #1da653;
-    }
-  }
-
-  .hi-notification--warning {
-    background: #fbf5e6;
-    border: 1px solid #fcf0d4;
-
-    .hi-notification__title,
-    .hi-notification__icon {
-      color: #e19d0c;
-    }
-
-    .hi-notification__button {
-      background-color: #e19d0c;
-    }
   }
 
   .hi-notification-enter {
@@ -136,27 +96,5 @@
 
   .hi-notification-exit-done {
     transform: translateX(100%);
-  }
-}
-
-@each $key, $value in $theme-colors {
-  .hi-notification__container {
-    .theme__#{$key}.hi-notification.hi-notification--info {
-      background-color: rgba(map-get(get-palette(get-color($palette-primary, $key)), '50'), 0.1);
-      border: 1px solid map-get(get-palette(get-color($palette-primary, $key)), '20');
-
-      .hi-icon {
-        color: $value;
-      }
-
-      .hi-notification__title {
-        color: $value;
-      }
-
-      .hi-notification__button {
-        background-color: $value;
-        border: 1px solid $value;
-      }
-    }
   }
 }

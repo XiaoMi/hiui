@@ -168,7 +168,17 @@ const SelectTree = ({
     const _data = _.cloneDeep(flattenData)
     if (searchMode === 'highlight') {
       const filterArr = _data.map(node => {
-        const reg = new RegExp(val, 'gi')
+        let _keyword = val
+        _keyword = val.includes('[')
+          ? _keyword.replace(/\[/gi, '\\[')
+          : _keyword
+        _keyword = val.includes('(')
+          ? _keyword.replace(/\(/gi, '\\(')
+          : _keyword
+        _keyword = val.includes(')')
+          ? _keyword.replace(/\)/gi, '\\)')
+          : _keyword
+        const reg = new RegExp(_keyword, 'gi')
         const str = `<span style="color: #428ef5">${val}</span>`
         if (reg.test(node.title)) {
           node._title = node.title.replace(reg, str)

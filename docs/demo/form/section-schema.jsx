@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Form from '../../../components/form/index'
+import HiForm from '../../../components/form/index'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
 import Select from '../../../components/select'
@@ -22,7 +22,7 @@ const code = [
   {
     opt: ['基础用法'],
     code: `import React from 'react'
-    import { Form,Counter} from '@hi-ui/hiui'\n
+    import { HiForm,Counter} from '@hi-ui/hiui'\n
     class Demo extends React.Component {  
       constructor(props){
         super(props)
@@ -99,10 +99,7 @@ const code = [
         }
       }
       render () {
-        const FormItem = Form.Item
-        const FormSubmit = Form.Submit
-        const FormReset = Form.Reset
-        const SchemaForm = Form.SchemaForm
+        const SchemaForm = HiForm.SchemaForm
         const {initialValues} = this.state
     
         return (
@@ -133,7 +130,7 @@ const code = [
     opt: ['动态表单'],
     code: `import React from 'react'
 
-    import { Form,Counter} from '@hi-ui/hiui'\n
+    import { HiForm,Counter} from '@hi-ui/hiui'\n
     
     class Demo extends React.Component {  
       constructor(props){
@@ -208,11 +205,11 @@ const code = [
         }
         this.initSchemaData = this.state.formSchema
         this.form = React.createRef()
-    
       }
+
       render () {
         const {initialValues, formData, formSchema} = this.state
-        const SchemaForm = Form.SchemaForm
+        const SchemaForm = HiForm.SchemaForm
     
         return (
           <SchemaForm 
@@ -256,7 +253,7 @@ const code = [
   {
     opt: ['与FormItem混用'],
     code: `import React from 'react'
-    import { Form,Counter} from '@hi-ui/hiui'\n
+    import { HiForm,Counter} from '@hi-ui/hiui'\n
     class Demo extends React.Component {  
       constructor(props){
         super(props)
@@ -298,10 +295,10 @@ const code = [
         }
       }
       render () {
-        const FormItem = Form.Item
-        const FormSubmit = Form.Submit
-        const FormReset = Form.Reset
-        const SchemaForm = Form.SchemaForm
+        const FormItem = HiForm.Item
+        const FormSubmit = HiForm.Submit
+        const FormReset = HiForm.Reset
+        const SchemaForm = HiForm.SchemaForm
     
         const {formData} = this.state
         const Row = Grid.Row
@@ -315,7 +312,7 @@ const code = [
             onValuesChange ={(changedValues,allValues) => {
              console.log("formdata",changedValues,allValues)
             }}
-            >
+          >
             <FormItem 
               label='日期' 
               field="date" 
@@ -351,7 +348,7 @@ const DemoRow = () => (
   <DocViewer
     code={code}
     scope={{
-      Form,
+      HiForm,
       Button,
       Input,
       Select,

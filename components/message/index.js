@@ -5,13 +5,13 @@ import Icon from '../icon'
 
 const iconMap = {
   success: 'check-circle',
-  error: 'close-circle',
+  danger: 'close-circle',
   warning: 'exclamation-circle',
-  info: 'info-circle'
+  primary: 'info-circle'
 }
 
 const message = {
-  open: ({ title, prefix = 'message', key = Math.random(), duration, closeable = false, type = 'info' }) => {
+  open: ({ title, prefix = 'message', key = Math.random(), duration, closeable = false, type = 'primary' }) => {
     const NoticeContent = (
       <React.Fragment>
         <div className={`hi-${prefix}__header`}>

@@ -22,7 +22,7 @@ class Demo extends React.Component {
   render () {
     return (
       <div>
-        <div id='hiui-quill-toolbar' style={{borderBottom:'none'}}>
+        <div id='hiui-quill-toolbar' style={{borderBottom:'none',lineHeight:'100%'}}>
           <QuillBarTooltip tooltipTitle='加粗' toolbarsName='bold' />
           <QuillBarTooltip tooltipTitle='斜体' toolbarsName='italic' />
           <QuillBarTooltip tooltipTitle='下划线' toolbarsName='underline' />

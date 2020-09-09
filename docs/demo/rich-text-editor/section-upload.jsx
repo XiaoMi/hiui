@@ -79,7 +79,7 @@ class Demo extends React.Component {
     return (
       <div>
         
-        <div id='hiui-quill-toolbar_upload' style={{borderBottom:'none',marginTop:'10px'}}>
+        <div id='hiui-quill-toolbar_upload' style={{borderBottom:'none',lineHeight:'100%'}}>
           <QuillBarTooltip tooltipTitle='加粗' toolbarsName='bold' />
           <QuillBarTooltip tooltipTitle='斜体' toolbarsName='italic' />
           <QuillBarTooltip tooltipTitle='下划线' toolbarsName='underline' />
