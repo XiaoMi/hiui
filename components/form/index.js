@@ -10,9 +10,9 @@ import useForm from './hooks/useForm'
 import Provider from '../context'
 import './style/index'
 
-const HiForm = Provider(FormV3)
-
 Form.Item = ItemV2
+
+const HiForm = Provider(FormV3)
 
 HiForm.Item = Item
 HiForm.Submit = Submit
