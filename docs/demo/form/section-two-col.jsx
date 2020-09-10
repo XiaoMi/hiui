@@ -3,6 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Form from '../../../components/form/index'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
+import Select from '../../../components/Select'
 import Grid from '../../../components/grid'
 const prefix = 'form-two-col'
 const rightOptions = ['上下结构', '左右结构']
@@ -21,7 +22,7 @@ class Demo extends React.Component {
     const FormItem = Form.Item
     return (
       <div style={{width: 500}}>
-        <Form labelWidth='70' labelPlacement='top'>
+        <Form labelWidth='70' labelPlacement='left'>
           <Row>
             <Col span={12}>
               <FormItem label='姓名' >
@@ -30,7 +31,7 @@ class Demo extends React.Component {
             </Col>
             <Col span={12}>
               <FormItem label='密码' >
-                <Input type='password' placeholder={'请输入'} style={{width: '200'}} />
+                <Select type='password' placeholder={'请输入'} style={{width: '200'}} />
               </FormItem>
             </Col>
           </Row>
@@ -108,7 +109,7 @@ class Demo extends React.Component {
 const DemoRow = () => (
   <DocViewer
     code={code}
-    scope={{ Form, Button, Input, Grid }}
+    scope={{ Form, Button, Input, Grid, Select }}
     prefix={prefix}
     desc={desc}
     rightOptions={rightOptions}

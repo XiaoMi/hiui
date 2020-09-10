@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { getTextWidth } from './common.js'
 
 class SelectInput extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -14,17 +14,23 @@ class SelectInput extends Component {
       },
       cacheselectedItems: []
     }
+    this.wrapperRect = this.itemsRef && this.itemsRef.getBoundingClientRect()
   }
 
   calShowCountFlag = true
-  componentDidUpdate () {
+
+  componentDidMount() {
+    this.wrapperRect = this.itemsRef && this.itemsRef.getBoundingClientRect()
+  }
+
+  componentDidUpdate() {
     if (
       this.props.multipleMode === 'nowrap' &&
       this.calShowCountFlag &&
       this.itemsRef
     ) {
       // 多选超过一行时以数字显示
-      const itemsRect = this.itemsRef.getBoundingClientRect()
+      const itemsRect = this.wrapperRect
       let width = 0
       let showCount = 0
       const items = this.itemsRef.querySelectorAll('.hi-select__input--item')
@@ -51,15 +57,23 @@ class SelectInput extends Component {
     }
   }
 
-  static getDerivedStateFromProps (nextProps, nextState) {
+  static getDerivedStateFromProps(nextProps, nextState) {
     return nextProps.dropdownShow
-      ? { cacheselectedItems: nextProps.selectedItems.length > 0 ? nextProps.selectedItems : nextState.cacheselectedItems } : { cacheselectedItems: nextProps.selectedItems }
+      ? {
+          cacheselectedItems:
+            nextProps.selectedItems.length > 0
+              ? nextProps.selectedItems
+              : nextState.cacheselectedItems
+        }
+      : { cacheselectedItems: nextProps.selectedItems }
   }
-  focus () {
+
+  focus() {
+    this.wrapperRect = this.itemsRef && this.itemsRef.getBoundingClientRect()
     setTimeout(() => this.searchInput && this.searchInput.focus(), 0)
   }
 
-  handleKeywordChange (evt) {
+  handleKeywordChange(evt) {
     var val = evt.target.value
     this.setState({
       value: val,
@@ -70,14 +84,14 @@ class SelectInput extends Component {
     this.props.onSearch(evt.target.value)
   }
 
-  clearInput () {
+  clearInput() {
     this.searchInput && (this.searchInput.value = '')
     this.setState({
       value: ''
     })
   }
 
-  handleKeyDown (evt) {
+  handleKeyDown(evt) {
     if (evt.keyCode === 13) {
       this.props.onEnterSelect()
     }
@@ -92,7 +106,7 @@ class SelectInput extends Component {
     }
   }
 
-  handleClear () {
+  handleClear() {
     this.setState({
       cacheselectedItems: []
     })
@@ -100,7 +114,7 @@ class SelectInput extends Component {
     this.clearInput()
   }
 
-  renderMultiple () {
+  renderMultiple() {
     let {
       placeholder,
       selectedItems,
@@ -125,9 +139,14 @@ class SelectInput extends Component {
     }
     return (
       <div
-        className={classNames('hi-select__input', 'multiple-values', `theme__${theme}`, {
-          disabled
-        })}
+        className={classNames(
+          'hi-select__input',
+          'multiple-values',
+          `theme__${theme}`,
+          {
+            disabled
+          }
+        )}
         onClick={this.props.onClick}
       >
         {selectedItems.length === 0 && !value && (
@@ -137,19 +156,27 @@ class SelectInput extends Component {
           className={classNames('hi-select__input-items', {
             'hi-select__input-items--all': multipleMode === 'wrap'
           })}
-          ref={(node) => {
+          ref={node => {
             this.itemsRef = node
           }}
         >
           {selectedItems.slice(0, showCount).map((item, index) => {
             const _item = (
-              <div key={index} className='hi-select__input--item' style={{ maxWidth: this.itemsRef ? (this.itemsRef.getBoundingClientRect().width - 50) * 0.8 : '80%' }}>
+              <div
+                key={index}
+                className='hi-select__input--item'
+                style={{
+                  maxWidth: this.itemsRef
+                    ? (this.itemsRef.getBoundingClientRect().width - 50) * 0.8
+                    : '80%'
+                }}
+              >
                 <div className='hi-select__input--item__name'>{item.title}</div>
                 <span
                   className={classNames('hi-select__input--item__remove', {
                     disabled
                   })}
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation()
                     !disabled && this.props.onDelete(item)
                   }}
@@ -161,9 +188,11 @@ class SelectInput extends Component {
             return _item
           })}
           {showCount < selectedItems.length && (
-            <div className={classNames('hi-select__input-items--left', {
-              disabled
-            })}>
+            <div
+              className={classNames('hi-select__input-items--left', {
+                disabled
+              })}
+            >
               +
               <span className='hi-select__input-items--left-count'>
                 {selectedItems.length - showCount}
@@ -175,7 +204,7 @@ class SelectInput extends Component {
               <input
                 type='text'
                 style={inputStyle}
-                ref={(input) => {
+                ref={input => {
                   this.searchInput = input
                 }}
                 onChange={this.handleKeywordChange.bind(this)}
@@ -205,7 +234,7 @@ class SelectInput extends Component {
     )
   }
 
-  renderSingle () {
+  renderSingle() {
     let {
       placeholder,
       selectedItems,
@@ -217,14 +246,20 @@ class SelectInput extends Component {
       onBlur
     } = this.props
 
-    selectedItems = selectedItems.length > 0 ? selectedItems : this.state.cacheselectedItems
+    selectedItems =
+      selectedItems.length > 0 ? selectedItems : this.state.cacheselectedItems
     placeholder =
       selectedItems.length > 0 ? selectedItems[0].title : placeholder
     let icon = dropdownShow ? 'up' : 'down'
 
     return (
       <div
-        className={classNames('hi-select__input', 'single-value', `theme__${theme}`, { disabled })}
+        className={classNames(
+          'hi-select__input',
+          'single-value',
+          `theme__${theme}`,
+          { disabled }
+        )}
         onClick={this.props.onClick}
       >
         <div
@@ -237,10 +272,14 @@ class SelectInput extends Component {
           </div>
         </div>
         {(dropdownShow || selectedItems.length === 0) && (
-          <div className={classNames('hi-select__input--search', {'hi-select__input--search--value': selectedItems.length > 0})}>
+          <div
+            className={classNames('hi-select__input--search', {
+              'hi-select__input--search--value': selectedItems.length > 0
+            })}
+          >
             <input
               type='text'
-              ref={(input) => {
+              ref={input => {
                 this.searchInput = input
               }}
               value={selectedItems.length > 0 ? placeholder : ''}
@@ -271,7 +310,7 @@ class SelectInput extends Component {
     )
   }
 
-  render () {
+  render() {
     let { mode } = this.props
 
     if (mode === 'multiple') {
