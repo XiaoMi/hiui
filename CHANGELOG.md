@@ -6,7 +6,7 @@
 - 优化 `<Modal />` 国际化适配 [#1142](https://github.com/XiaoMi/hiui/issues/1142)
 - 修复 `<Progress />` 环形边框颜色问题 [#1165](https://github.com/XiaoMi/hiui/issues/1165)
 - 新增 `<Transfer />` onDragStart/onDragEnd/onDrop 回调函数 [#1162](https://github.com/XiaoMi/hiui/issues/1162)
-- 修复 `<Upload />` maxCount 在设置为 1 导致上传交互异常问题 [#1158](https://github.com/XiaoMi/hiui/issues/1158)
+- 修复 `<Upload />` 设置 maxCount 后导致上传交互异常问题 [#1158](https://github.com/XiaoMi/hiui/issues/1158)
 - 修复 `<Input />` 设置 clearable 属性控制台警告问题 [#1143](https://github.com/XiaoMi/hiui/issues/1143)
 - 修复 `<Input />` type 为 amount 类型时的问题 [#1150](https://github.com/XiaoMi/hiui/issues/1150)
 - 修复 `<Progress />` placement 为 inside 内容显示折断问题 [#1146](https://github.com/XiaoMi/hiui/issues/1146)
