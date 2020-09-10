@@ -14,7 +14,7 @@ const desc = [
 const code = [
   {
     code: `import React from 'react'
-import { Form, Input, Grid } from '@hi-ui/hiui'
+import { Form, Input, Grid, Select } from '@hi-ui/hiui'
 class Demo extends React.Component {
   render (){
     const Row = Grid.Row
