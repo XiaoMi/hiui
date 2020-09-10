@@ -1,4 +1,6 @@
 # 更新日志
+## 2.14.1
+- 修复 `<Select />` Select 宽度随内容自动撑宽问题 [#1172](https://github.com/XiaoMi/hiui/issues/1172)
 
 ## 2.14.0
 

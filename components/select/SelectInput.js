@@ -14,9 +14,13 @@ class SelectInput extends Component {
       },
       cacheselectedItems: []
     }
+    this.wrapperRect = this.itemsRef && this.itemsRef.getBoundingClientRect()
   }
 
   calShowCountFlag = true
+  componentDidMount() {
+    this.wrapperRect = this.itemsRef && this.itemsRef.getBoundingClientRect()
+  }
   componentDidUpdate () {
     if (
       this.props.multipleMode === 'nowrap' &&
@@ -24,7 +28,7 @@ class SelectInput extends Component {
       this.itemsRef
     ) {
       // 多选超过一行时以数字显示
-      const itemsRect = this.itemsRef.getBoundingClientRect()
+      const itemsRect = this.wrapperRect
       let width = 0
       let showCount = 0
       const items = this.itemsRef.querySelectorAll('.hi-select__input--item')
@@ -56,6 +60,7 @@ class SelectInput extends Component {
       ? { cacheselectedItems: nextProps.selectedItems.length > 0 ? nextProps.selectedItems : nextState.cacheselectedItems } : { cacheselectedItems: nextProps.selectedItems }
   }
   focus () {
+    this.wrapperRect = this.itemsRef && this.itemsRef.getBoundingClientRect()
     setTimeout(() => this.searchInput && this.searchInput.focus(), 0)
   }
 
