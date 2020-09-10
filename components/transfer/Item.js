@@ -54,9 +54,12 @@ const TYPE = 'CARD'
 const source = {
   beginDrag (props) {
     props.setSourceNode(props.item.id)
-    return {
-      sourceItem: props.item
+    if (props.onDragStart(props.item)) {
+      return {
+        sourceItem: props.item
+      }
     }
+    return false
   },
 
   isDragging (props, monitor) {
@@ -71,9 +74,11 @@ const target = {
 
   drop (props, monitor, component) {
     const { sourceItem } = monitor.getItem()
-    const { item: targetItem, removeTargetNode, move } = props
-    move(sourceItem, targetItem)
-    removeTargetNode()
+    const { item: targetItem, removeTargetNode, move, onDrop } = props
+    if (onDrop(sourceItem, targetItem)) {
+      move(sourceItem, targetItem)
+      removeTargetNode()
+    }
   },
   hover (props, monitor, component) {
     if (monitor.isOver({ shallow: true })) {

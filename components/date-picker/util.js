@@ -1,5 +1,5 @@
 import request from 'axios'
-import { addMonths, getDay, subDays, differenceInDays, startOfWeek, endOfWeek, getYear, getMonth } from './dateUtil'
+import { addMonths, getDay, subDays, differenceInDays, startOfWeek, endOfWeek, getYear, getMonth, toDate, isValid } from './dateUtil'
 const holiday = {
   PRCHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCHoliday.json?',
   PRCLunar: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCLunar.json?',
@@ -79,4 +79,25 @@ export const getPRCDate = (api) => {
     method: 'GET'
   }
   return url ? request.create().request(options) : null
+}
+
+// 处理输入不在该范围内的处理
+export const getInRangeDate = (startDate, endDate, max, min) => {
+  let _startDate = isValid(startDate) ? startDate : ''
+  let _endDate = isValid(endDate) ? endDate : ''
+  if (min && isValid(startDate)) {
+    const minTimestamp = Date.parse(toDate(min))
+    const startDateTimestamp = Date.parse(startDate)
+    const endDateTimestamp = Date.parse(endDate)
+    _startDate = startDateTimestamp < minTimestamp ? new Date(minTimestamp) : new Date(startDate)
+    _endDate = endDateTimestamp < minTimestamp ? new Date(minTimestamp) : new Date(endDate)
+  }
+  if (max && isValid(startDate)) {
+    const maxTimestamp = Date.parse(toDate(max))
+    const startDateTimestamp = Date.parse(_startDate)
+    const endDateTimestamp = Date.parse(_endDate)
+    _startDate = startDateTimestamp > maxTimestamp ? new Date(maxTimestamp) : new Date(_startDate)
+    _endDate = endDateTimestamp > maxTimestamp ? new Date(maxTimestamp) : new Date(_endDate)
+  }
+  return {startDate: _startDate, endDate: _endDate}
 }

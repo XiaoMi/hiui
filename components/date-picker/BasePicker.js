@@ -3,7 +3,7 @@ import _ from 'lodash'
 import Modal from './Modal'
 import classNames from 'classnames'
 import {formatterDate, FORMATS} from './constants'
-import {showLargeCalendar} from './util'
+import {showLargeCalendar, getInRangeDate} from './util'
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
@@ -68,6 +68,10 @@ class BasePicker extends Component {
   calcPanelPos (rect) {
     const {showTime, type} = this.props
     let _w = type.indexOf('range') !== -1 ? 578 : 288
+    if (type === 'timerange') {
+      _w = 400
+    }
+
     let _h = 298
     if (type === 'daterange' && showTime) {
       _h = 344
@@ -80,6 +84,7 @@ class BasePicker extends Component {
     const _st = document.documentElement.scrollTop || document.body.scrollTop
     let {left, width, top, height} = rect
     let _top = rect.top + rect.height + _st + 4
+
     if (left + _w > _cw) {
       left = left + width - _w
     }
@@ -172,27 +177,45 @@ class BasePicker extends Component {
       }
     })
   }
+
   callback () {
-    const { type, onChange } = this.props
+    const { type, onChange, disabled, max, min } = this.props
+
     const { date, format } = this.state
-    if (onChange) {
-      let {startDate, endDate} = date
+    if (onChange && !disabled) {
+      let {startDate, endDate} = getInRangeDate(_.cloneDeep(date.startDate), _.cloneDeep(date.endDate), max, min)
       startDate = isValid(startDate) ? startDate : ''
       endDate = isValid(endDate) ? endDate : ''
       if (type === 'week' || type === 'weekrange') {
+        this.setState({
+          texts: [this.callFormatterDate(startDate), this.callFormatterDate(endDate)]
+        })
         onChange(date)
         return
       }
 
       if (type === 'time') {
+        this.setState({
+          texts: [this.callFormatterDate(startDate), '']
+        })
         onChange(startDate, dateFormat(startDate, format))
         return
       }
       if (['timerange', 'timeperiod', 'daterange', 'yearrange', 'monthrange'].includes(type)) {
+        this.setState({
+          texts: [this.callFormatterDate(startDate), this.callFormatterDate(endDate)]
+        })
         onChange({start: startDate, end: endDate}, {start: dateFormat(startDate, format), end: dateFormat(endDate, format)})
+
         return
       }
-      onChange(startDate, startDate ? dateFormat(startDate, format) : '')
+
+      if (isValid(startDate) || startDate === '') {
+        this.setState({
+          texts: [this.callFormatterDate(startDate), '']
+        })
+        onChange(startDate, startDate ? dateFormat(startDate, format) : '')
+      }
     }
   }
   timeCancel () {
@@ -223,6 +246,7 @@ class BasePicker extends Component {
     }
   }
   clickOutSide (e) {
+    const {max, min} = this.props
     const tar = e.target
     this.inputChangeEvent()
 
@@ -234,8 +258,17 @@ class BasePicker extends Component {
       return false
     }
     if (tar !== this.input && tar !== this.rInput) {
-      this.timeCancel()
-      this.callback()
+      let { texts } = this.state
+
+      let {startDate, endDate} = getInRangeDate(texts[0], texts[1], max, min)
+
+      texts = [this.callFormatterDate(startDate), this.callFormatterDate(endDate)]
+      this.setState({
+        texts
+      }, () => {
+        this.timeCancel()
+        this.callback()
+      })
     }
   }
   _input (text, ref, placeholder) {
@@ -268,19 +301,20 @@ class BasePicker extends Component {
     )
   }
   _clear () {
-    this.setState({date: {startDate: null, endDate: null}, texts: ['', ''], isFocus: false}, () => { this.callback() })
+    const { disabled } = this.props
+    !disabled && this.setState({date: {startDate: null, endDate: null}, texts: ['', ''], isFocus: false}, () => { this.callback() })
   }
   _icon () {
     const {isFocus, texts} = this.state
-    const { clearable, type, showTime } = this.props
+    const { clearable, type, showTime, disabled } = this.props
     const iconCls = classNames(
       'hi-datepicker__input-icon',
       'hi-icon',
-      (texts[0].length && isFocus && clearable)
+      (texts[0].length && isFocus && clearable && !disabled)
         ? 'icon-close-circle clear'
         : ((type.includes('time') || showTime) ? 'icon-time' : 'icon-date')
     )
-    return (isFocus && clearable)
+    return (texts[0].length && isFocus && clearable)
       ? <span className={iconCls} onClick={this._clear.bind(this)} />
       : <span className={iconCls} onClick={(e) => {
         if (this.props.disabled) return

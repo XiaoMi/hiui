@@ -33,8 +33,7 @@ class Input extends Component {
     const prependNode = typeof prepend !== 'string' && prepend
     const appendNode = typeof append !== 'string' && append
     this.state = {
-      value:
-        type === 'string' || type === 'number' ? format(valueSource, this.props.type) : '',
+      value: type === 'string' || type === 'number' ? format(valueSource.toString(), this.props.type) : '',
       valueTrue: prefix + valueSource + suffix,
       hover: false,
       active: false,
@@ -49,7 +48,7 @@ class Input extends Component {
     if (nextProps.value !== undefined) {
       if (nextProps.value !== this.state.value) {
         this.setState({
-          value: format(nextProps.value, this.props.type),
+          value: format(nextProps.value.toString(), this.props.type),
           valueTrue: nextProps.value
         })
       }
@@ -85,7 +84,19 @@ class Input extends Component {
     let prefixId = id ? id + '_prefix' : ''
     let suffixId = id ? id + '_suffix' : ''
     const { defaultValue, ...attrs } = this.attrs
-    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'suffixicon', 'suffix', 'prepend', 'prefixicon', 'prefix', 'localeDatas', 'append', 'innerRef'])
+    const filterAttrs = filterObjProps(attrs, [
+      'locale',
+      'theme',
+      'suffixicon',
+      'suffix',
+      'prepend',
+      'prefixicon',
+      'prefix',
+      'localeDatas',
+      'append',
+      'innerRef',
+      'clearable'
+    ])
     return (
       <div
         className={classNames('hi-input__out', {
@@ -93,17 +104,21 @@ class Input extends Component {
           'hi-input--append': append
         })}
       >
-        {// 前置元素
-          prepend && <span className='hi-input__prepend'>{prepend}</span>}
+        {
+          // 前置元素
+          prepend && <span className='hi-input__prepend'>{prepend}</span>
+        }
         <div className={`hi-input__inner${active ? ' active' : ''}${disabled ? ' disabled' : ''}`}>
-          {// 前缀
+          {
+            // 前缀
             prefix && (
               <span id={prefixId} className='hi-input__prefix' data-value={prefix}>
                 {prefix}
               </span>
-            )}
+            )
+          }
           <input
-            ref={arg => {
+            ref={(arg) => {
               this._Input = arg
             }}
             className={`hi-input__text ${disabled ? 'disabled' : ''}`}
@@ -112,7 +127,7 @@ class Input extends Component {
             disabled={disabled}
             {...filterAttrs}
             placeholder={placeholder}
-            onChange={e => {
+            onChange={(e) => {
               e.persist()
               let value = e.target.value
               let valueTrue = formatValue(value, type)
@@ -130,7 +145,7 @@ class Input extends Component {
 
               this.props.value === undefined && this.setState({ value, valueTrue })
             }}
-            onBlur={e => {
+            onBlur={(e) => {
               e.persist()
               let value = e.target.value
               const valueTrue = this.state.valueTrue
@@ -144,7 +159,7 @@ class Input extends Component {
                 this.props.onBlur && this.props.onBlur(e, valueTrue)
               })
             }}
-            onFocus={e => {
+            onFocus={(e) => {
               e.persist()
               const valueTrue = this.state.valueTrue
 
@@ -152,34 +167,34 @@ class Input extends Component {
                 this.props.onFocus && this.props.onFocus(e, valueTrue)
               })
             }}
-            onKeyDown={e => {
+            onKeyDown={(e) => {
               const valueTrue = this.state.valueTrue
 
               this.props.onKeyDown && this.props.onKeyDown(e, valueTrue)
             }}
-            onKeyUp={e => {
+            onKeyUp={(e) => {
               const valueTrue = this.state.valueTrue
 
               this.props.onKeyUp && this.props.onKeyUp(e, valueTrue)
             }}
-            onKeyPress={e => {
+            onKeyPress={(e) => {
               const valueTrue = this.state.valueTrue
 
               this.props.onKeyPress && this.props.onKeyPress(e, valueTrue)
             }}
-            onInput={e => {
+            onInput={(e) => {
               const valueTrue = this.state.valueTrue
 
               this.props.onInput && this.props.onInput(e, valueTrue)
             }}
           />
-          {// 清除
-            noClear.indexOf(type) === -1 &&
-            prefix === '' &&
-            suffix === '' &&
-            (value !== '' && clearable) && (
+          {
+            // 清除
+            noClear.indexOf(type) === -1 && prefix === '' && suffix === '' && value !== '' && clearable && (
               <span
-                className={`hi-input__fix-box ${(hover || clearableTrigger === 'always') && !disabled ? '' : 'invisible'}`}
+                className={`hi-input__fix-box ${
+                  (hover || clearableTrigger === 'always') && !disabled ? '' : 'invisible'
+                }`}
                 onClick={() => {
                   this._Input.focus()
 
@@ -197,16 +212,21 @@ class Input extends Component {
               >
                 <i className={`hi-input__clear hi-input__suffix__icon hi-icon icon-close-circle`} />
               </span>
-            )}
-          {// 后缀
+            )
+          }
+          {
+            // 后缀
             suffix && (
               <span id={suffixId} className='hi-input__suffix' data-value={suffix}>
                 {suffix}
               </span>
-            )}
+            )
+          }
         </div>
-        {// 后置元素
-          append && <span className='hi-input__append'>{append}</span>}
+        {
+          // 后置元素
+          append && <span className='hi-input__append'>{append}</span>
+        }
       </div>
     )
   }
@@ -218,7 +238,19 @@ class Input extends Component {
     let { active } = this.state
     let { disabled, theme } = this.props
     const { defaultValue, ...attrs } = this.attrs
-    const filterAttrs = filterObjProps(attrs, ['locale', 'theme', 'suffixicon', 'suffix', 'prepend', 'prefixicon', 'prefix', 'localeDatas', 'append', 'innerRef'])
+    const filterAttrs = filterObjProps(attrs, [
+      'locale',
+      'theme',
+      'suffixicon',
+      'suffix',
+      'prepend',
+      'prefixicon',
+      'prefix',
+      'localeDatas',
+      'append',
+      'innerRef',
+      'clearable'
+    ])
 
     return (
       <textarea
@@ -228,13 +260,13 @@ class Input extends Component {
         value={this.state.value}
         disabled={disabled}
         {...filterAttrs}
-        onChange={e => {
+        onChange={(e) => {
           e.persist()
           let valueTrue = e.target.value
           this.props.onChange && this.props.onChange(e, valueTrue)
           this.props.value === undefined && this.setState({ value: valueTrue, valueTrue })
         }}
-        onBlur={e => {
+        onBlur={(e) => {
           e.persist()
           let valueTrue = e.target.value
 
@@ -242,7 +274,7 @@ class Input extends Component {
             this.props.onBlur && this.props.onBlur(e, valueTrue)
           })
         }}
-        onFocus={e => {
+        onFocus={(e) => {
           e.persist()
           const valueTrue = e.target.value
 
@@ -250,32 +282,32 @@ class Input extends Component {
             this.props.onFocus && this.props.onFocus(e, valueTrue)
           })
         }}
-        onKeyDown={e => {
+        onKeyDown={(e) => {
           const valueTrue = e.target.value
 
           this.props.onKeyDown && this.props.onKeyDown(e, valueTrue)
         }}
-        onKeyUp={e => {
+        onKeyUp={(e) => {
           const valueTrue = e.target.value
 
           this.props.onKeyUp && this.props.onKeyUp(e, valueTrue)
         }}
-        onKeyPress={e => {
+        onKeyPress={(e) => {
           const valueTrue = e.target.value
 
           this.props.onKeyPress && this.props.onKeyPress(e, valueTrue)
         }}
-        onInput={e => {
+        onInput={(e) => {
           const valueTrue = e.target.value
 
           this.props.onInput && this.props.onInput(e, valueTrue)
         }}
-        onMouseOver={e => {
+        onMouseOver={(e) => {
           this.setState({
             hover: true
           })
         }}
-        onMouseLeave={e => {
+        onMouseLeave={(e) => {
           this.setState({
             hover: false
           })
@@ -288,7 +320,9 @@ class Input extends Component {
     const { type } = this.attrs
 
     const { size, id, className, required, theme } = this.props
-    return type === 'textarea' ? this.renderTextarea() : (
+    return type === 'textarea' ? (
+      this.renderTextarea()
+    ) : (
       <div
         id={id}
         className={`hi-input theme__${theme} ${className || ''} ${type}${size ? ' hi-input_' + size : ''}${
@@ -296,22 +330,23 @@ class Input extends Component {
         }`}
         style={this.props.style}
         data-value={this.state.valueTrue}
-        onClick={e => {
+        onClick={(e) => {
           this._Input.focus()
         }}
-        onMouseOver={e => {
+        onMouseOver={(e) => {
           this.setState({
             hover: true
           })
         }}
-        onMouseLeave={e => {
+        onMouseLeave={(e) => {
           this.setState({
             hover: false
           })
         }}
       >
         {this.renderText()}
-      </div>)
+      </div>
+    )
   }
 }
 
