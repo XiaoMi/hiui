@@ -17,7 +17,7 @@
 - 修复 `<Counter />` 在不设置 min 属性时，只可选中到 -1 问题 [#1108](https://github.com/XiaoMi/hiui/issues/1108)
 - 修复 `<DatePicker />` 手动输入日期相关问题 [#1106](https://github.com/XiaoMi/hiui/issues/1106)
 - 修复 `<DatePicker />` 在禁用状态下，可清空问题 [#1099](https://github.com/XiaoMi/hiui/issues/1099)
-- 修复 `<DatePicker />` DatePicker 在浏览器右侧时，弹出位置显示异常 [#1098](https://github.com/XiaoMi/hiui/issues/1098)
+- 修复 `<DatePicker />` DatePicker 在浏览器右侧时，弹出位置显示异常问题 [#1098](https://github.com/XiaoMi/hiui/issues/1098)
 - 优化国际化中简体中文 [#1125](https://github.com/XiaoMi/hiui/issues/1125)
 
 ## 2.13.0
