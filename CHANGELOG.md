@@ -12,7 +12,7 @@
 - 修复 `<Progress />` placement 为 inside 内容显示折断问题 [#1146](https://github.com/XiaoMi/hiui/issues/1146)
 - 修复 `<Icon />` 部分图标字号问题 [#1145](https://github.com/XiaoMi/hiui/issues/1145)
 - 修复 `<Tabs />` type 非 editable 时，title 属性控制台警告问题 [#1144](https://github.com/XiaoMi/hiui/issues/1144)
-- 修复 `<Rate />` useEmoji 为 true 报错 value > 5 报错问题 [#1137](https://github.com/XiaoMi/hiui/issues/1137)
+- 修复 `<Rate />` useEmoji 为 true 时，设置 value > 5 报错问题 [#1137](https://github.com/XiaoMi/hiui/issues/1137)
 - 修复 `<Select />` 支持 withCredentials 跨域携带 cookie 属性 [#1128](https://github.com/XiaoMi/hiui/issues/1128)
 - 修复 `<Counter />` 在不设置 min 属性时，只可选中到 -1 问题 [#1108](https://github.com/XiaoMi/hiui/issues/1108)
 - 修复 `<DatePicker />` 手动输入日期相关问题 [#1106](https://github.com/XiaoMi/hiui/issues/1106)
