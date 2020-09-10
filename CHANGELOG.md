@@ -4,6 +4,7 @@
 
 ## 2.14.0
 
+- 优化 `<Menu />` 垂直模式收起后没有配置 icon 的展示效果 [#1167](https://github.com/XiaoMi/hiui/issues/1167)
 - 修复 `<Progress />` 环形边框颜色问题 [#1165](https://github.com/XiaoMi/hiui/issues/1165)
 - 新增 `<Transfer />` onDragStart/onDragEnd/onDrop 回调函数 [#1162](https://github.com/XiaoMi/hiui/issues/1162)
 
