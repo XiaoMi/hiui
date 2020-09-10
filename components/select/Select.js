@@ -339,7 +339,7 @@ class Select extends Component {
   }
 
   remoteSearch (keyword) {
-    const { onSearch, dataSource, autoload, withCredentials } = this.props
+    const { onSearch, dataSource, autoload, withCredentials: propsWithCredentials } = this.props
     if (onSearch && typeof onSearch === 'function') {
       this.setState({
         fetching: true
@@ -359,6 +359,7 @@ class Select extends Component {
         data = {},
         type = 'GET',
         key,
+        withCredentials = propsWithCredentials,
         jsonpCallback = 'callback',
         ...options
       } = _dataSource
