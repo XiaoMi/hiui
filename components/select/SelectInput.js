@@ -18,10 +18,8 @@ class SelectInput extends Component {
   }
 
   calShowCountFlag = true
-
   componentDidMount() {
     this.wrapperRect = this.itemsRef && this.itemsRef.getBoundingClientRect()
-
   }
   componentDidUpdate () {
     if (
@@ -153,10 +151,12 @@ class SelectInput extends Component {
               <div key={index} className='hi-select__input--item' style={{ maxWidth: this.itemsRef ? (this.itemsRef.getBoundingClientRect().width - 50) * 0.8 : '80%' }}>
                 <div className='hi-select__input--item__name'>{item.title}</div>
                 <span
-                  className='hi-select__input--item__remove'
+                  className={classNames('hi-select__input--item__remove', {
+                    disabled
+                  })}
                   onClick={(e) => {
                     e.stopPropagation()
-                    this.props.onDelete(item)
+                    !disabled && this.props.onDelete(item)
                   }}
                 >
                   <i className='hi-icon icon-close' />
@@ -166,7 +166,9 @@ class SelectInput extends Component {
             return _item
           })}
           {showCount < selectedItems.length && (
-            <div className='hi-select__input-items--left'>
+            <div className={classNames('hi-select__input-items--left', {
+              disabled
+            })}>
               +
               <span className='hi-select__input-items--left-count'>
                 {selectedItems.length - showCount}
