@@ -5,7 +5,7 @@ import DropdownMenu from './DropdownMenu'
 import { prefixCls } from '.'
 
 const MenuItemWrapper = forwardRef(
-  ({ href, children, disabled, ...props }, ref) => {
+  ({ href, target, children, disabled, ...props }, ref) => {
     const shouldUseLink = href && !disabled
     if (disabled) {
       Reflect.deleteProperty(props, 'onMouseEnter')
@@ -14,7 +14,13 @@ const MenuItemWrapper = forwardRef(
     }
     return (
       <li ref={ref} {...props}>
-        {shouldUseLink ? <a href={href}>{children}</a> : children}
+        {shouldUseLink ? (
+          <a href={href} target={target}>
+            {children}
+          </a>
+        ) : (
+          children
+        )}
       </li>
     )
   }
@@ -60,7 +66,7 @@ export default class DropdownMenuItem extends React.Component {
     const { onMenuItemClick, id, children, href } = this.props
     onMenuItemClick(id, href || !children)
   }
-  render () {
+  render() {
     const {
       title,
       children,

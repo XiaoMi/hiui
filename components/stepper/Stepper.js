@@ -1,5 +1,6 @@
 import React from 'react'
 import Provider from '../context'
+import Icon from '../icon'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
 
@@ -20,7 +21,7 @@ import PropTypes from 'prop-types'
  * @prop  itemLayout         {string}            sign显示位置
  */
 class Stepper extends React.Component {
-  renderNode (arg, info) {
+  renderNode(arg, info) {
     const { itemLayout, current } = this.props
     const _c = classnames(
       'hi-stepper__item',
@@ -33,7 +34,11 @@ class Stepper extends React.Component {
         <div className='hi-stepper__item-content'>
           <span className='hi-stepper__icon'>
             {info.icon ? (
-              info.icon
+              typeof info.icon === 'string' ? (
+                <Icon name={info.icon} />
+              ) : (
+                info.icon
+              )
             ) : (
               <span className='hi-stepper__num'>{info.key + 1}</span>
             )}
@@ -47,7 +52,7 @@ class Stepper extends React.Component {
       </li>
     )
   }
-  renderStepperBar () {
+  renderStepperBar() {
     const { current, data, vertical } = this.props
     const len = data.length
 
@@ -64,7 +69,7 @@ class Stepper extends React.Component {
       </ul>
     )
   }
-  render () {
+  render() {
     let { className, placement, theme, style } = this.props
     const _className = classnames(
       'hi-stepper',
