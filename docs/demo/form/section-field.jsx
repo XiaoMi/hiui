@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import HiForm from '../../../components/form'
+import Form from '../../../components/form'
 import Input from '../../../components/input'
 import Checkbox from '../../../components/checkbox'
 import Button from '../../../components/button'
@@ -8,7 +8,7 @@ const prefix = 'form-field'
 const rightOptions = '字段嵌套输出'
 const desc = ['根据field设置Form输出数据的内容格式']
 const code = `import React from 'react'
-    import { HiForm, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
+    import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
     class Demo extends React.Component {  
       constructor(props){
         super(props)
@@ -22,13 +22,13 @@ const code = `import React from 'react'
         this.form = React.createRef()
       }
       render (){
-        const FormItem = HiForm.Item
-        const FormSubmit = HiForm.Submit
-        const FormReset = HiForm.Reset
+        const FormItem = Form.Item
+        const FormSubmit = Form.Submit
+        const FormReset = Form.Reset
         const {formData} = this.state
     
         return (
-          <HiForm 
+          <Form 
             labelWidth='80' 
             labelPlacement='left' 
             initialValues={formData}
@@ -86,14 +86,14 @@ const code = `import React from 'react'
                 onClick={()=>{console.log('reset form')}}
               >重置</FormReset>
             </FormItem>
-          </HiForm>
+          </Form>
         )
       }
     }`
 const DemoAlign = () => (
   <DocViewer
     code={code}
-    scope={{ HiForm, Input, Button, Checkbox }}
+    scope={{ Form, Input, Button, Checkbox }}
     prefix={prefix}
     desc={desc}
   />

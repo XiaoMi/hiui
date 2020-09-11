@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import HiForm from '../../../components/form/index'
+import Form from '../../../components/form/index'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
 import Grid from '../../../components/grid'
@@ -13,15 +13,15 @@ const desc = [
 const code = [
   {
     code: `import React from 'react'
-import { HiForm, Input, Grid } from '@hi-ui/hiui'
+import { Form, Input, Grid } from '@hi-ui/hiui'
 class Demo extends React.Component {
   render (){
     const Row = Grid.Row
     const Col = Grid.Col
-    const FormItem = HiForm.Item
+    const FormItem = Form.Item
     return (
       <div style={{width: 500}}>
-        <HiForm labelWidth='70' labelPlacement='top'>
+        <Form labelWidth='70' labelPlacement='top'>
           <Row>
             <Col span={12}>
               <FormItem label='姓名' >
@@ -50,7 +50,7 @@ class Demo extends React.Component {
             <Button type='primary' onClick={()=>{}}>提交</Button>
             <Button type='line' onClick={()=>{}}>重置</Button>
           </FormItem>
-        </HiForm>
+        </Form>
       </div>
     )
   }
@@ -59,15 +59,15 @@ class Demo extends React.Component {
   },
   {
     code: `import React from 'react'
-import { HiForm, Input, Grid } from '@hi-ui/hiui'
+import { Form, Input, Grid } from '@hi-ui/hiui'
 class Demo extends React.Component {
   render (){
     const Row = Grid.Row
     const Col = Grid.Col
-    const FormItem = HiForm.Item
+    const FormItem = Form.Item
     return (
       <div style={{width: 500}}>
-        <HiForm labelWidth='70' labelPlacement='left'>
+        <Form labelWidth='70' labelPlacement='left'>
           <Row>
             <Col span={12}>
               <FormItem label='姓名' >
@@ -96,7 +96,7 @@ class Demo extends React.Component {
             <Button type='primary' onClick={()=>{}}>提交</Button>
             <Button type='line' onClick={()=>{}}>重置</Button>
           </FormItem>
-        </HiForm>
+        </Form>
       </div>
     )
   }
@@ -108,7 +108,7 @@ class Demo extends React.Component {
 const DemoRow = () => (
   <DocViewer
     code={code}
-    scope={{ HiForm, Button, Input, Grid }}
+    scope={{ Form, Button, Input, Grid }}
     prefix={prefix}
     desc={desc}
     rightOptions={rightOptions}

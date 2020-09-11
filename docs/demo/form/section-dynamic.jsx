@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import HiForm from '../../../components/form'
+import Form from '../../../components/form'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
 import Select from '../../../components/select'
@@ -22,7 +22,7 @@ const code = [
   {
     opt: ['表单联动'],
     code: `import React from 'react'
-    import { HiForm, Grid, Button, Input, Select, Counter, Cascader, Radio, Checkbox, Switch, DatePicker, Rate, Upload  } from '@hi-ui/hiui'\n
+    import { Form, Grid, Button, Input, Select, Counter, Cascader, Radio, Checkbox, Switch, DatePicker, Rate, Upload  } from '@hi-ui/hiui'\n
     class Demo extends React.Component {  
       constructor(props){
         super(props)
@@ -126,9 +126,9 @@ const code = [
         this.form = React.createRef()
       }
       render () {
-        const FormItem = HiForm.Item
-        const FormSubmit = HiForm.Submit
-        const FormReset = HiForm.Reset
+        const FormItem = Form.Item
+        const FormSubmit = Form.Submit
+        const FormReset = Form.Reset
         const {initialValues, singleList, radiolist, checkboxList, cascaderList, formData} = this.state
     
         const {controlCounter=[],checkbox} = formData
@@ -136,7 +136,7 @@ const code = [
         const Row = Grid.Row
         const Col = Grid.Col
         return (
-          <HiForm 
+          <Form 
             labelWidth='140' 
             labelPlacement='right' 
             ref={this.form}
@@ -280,10 +280,10 @@ const code = [
                     cascader:["电视", "小米电视4C"]
                   })
               }}>
-                fill HiForm
+                fill Form
               </Button>
             </FormItem>
-          </HiForm>
+          </Form>
         )
       }
     }`
@@ -291,7 +291,7 @@ const code = [
   {
     opt: ['表单查询'],
     code: `import React from 'react'
-    import { HiForm, Input, Grid } from '@hi-ui/hiui'
+    import { Form, Input, Grid } from '@hi-ui/hiui'
     class Demo extends React.Component {
       constructor () {
         super()
@@ -306,7 +306,7 @@ const code = [
         const formItems = [];
         for (let i = 0; i < filesCount; i++) {
           formItems.push(
-              <HiForm.Item
+              <Form.Item
                 field={'field'+i}
                 label={'Field'+i}
                 key={'field'+i}
@@ -318,7 +318,7 @@ const code = [
                 ]}
               >
                 <Input placeholder="placeholder" style={{ width: 200 }}/>
-              </HiForm.Item>
+              </Form.Item>
           );
         }
     
@@ -326,14 +326,14 @@ const code = [
       }
       
       render (){
-        const FormItem = HiForm.Item
-        const FormSubmit = HiForm.Submit
+        const FormItem = Form.Item
+        const FormSubmit = Form.Submit
         const {filesCount} = this.state
         const Row = Grid.Row
         const Col = Grid.Col
         return (
           <div style={{width:'880px'}}>
-            <HiForm 
+            <Form 
               labelWidth='80'
               placement='horizontal' 
               labelPlacement='right' 
@@ -341,7 +341,7 @@ const code = [
               {
                 this.renderField()
               }
-            </HiForm>
+            </Form>
             <div style = {{textAlign: 'right', paddingRight: '10px'}}>
               <Button type="primary"  onClick={()=>{
                 console.log('填充表单')
@@ -381,7 +381,7 @@ const DemoRow = () => (
   <DocViewer
     code={code}
     scope={{
-      HiForm,
+      Form,
       Button,
       Input,
       Select,

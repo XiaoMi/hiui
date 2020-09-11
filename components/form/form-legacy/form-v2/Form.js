@@ -23,10 +23,10 @@ class Form extends Component {
     const obj = {}
 
     if (labelPlacement || labelPosition) {
-      obj[`hi-form--label--${labelPlacement || labelPosition}`] = true
+      obj[`hi-form--legacy--label--${labelPlacement || labelPosition}`] = true
     }
     if (placement === 'horizontal' || inline) {
-      obj[`hi-form--inline`] = true
+      obj[`hi-form--legacy--inline`] = true
     }
 
     return obj
@@ -84,7 +84,7 @@ class Form extends Component {
     const { children, className, style } = this.props
 
     return (
-      <form className={classNames('hi-form', className, this.getClassNames())} style={style}>
+      <form className={classNames('hi-form--legacy', className, this.getClassNames())} style={style}>
         {children}
       </form>
     )

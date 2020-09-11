@@ -2,6 +2,7 @@ module.exports = {
   components: {
     'quick-start': '快速上手',
     'upgrade-from-1x': '从 v1.x 升级至 v2.x',
+    'upgrade-from-2x': '从 v2.x 升级至 v3.x',
     i18n: 'i18n',
     theme: '布局主题',
     palette: '配色主题',

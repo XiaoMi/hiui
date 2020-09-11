@@ -1,13 +1,13 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import HiTable from '../../../components/table'
+import Table from '../../../components/table'
 const prefix = 'table-row'
 const desc = ['行高亮：突出某行数据且方便阅读']
 const rightOptions = ['行高亮', '批量选择']
 const code = [
   {
     code: `import React from 'react'
-    import HiTable from '@hi-ui/hiui/es/table'\n
+    import Table from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -89,14 +89,14 @@ const code = [
         ]
       }
       render() {
-        return <HiTable columns={this.columns} data={this.data} highlightedRowKeys={[1]}/>
+        return <Table columns={this.columns} data={this.data} highlightedRowKeys={[1]}/>
       }
     }`,
     opt: ['行高亮']
   },
   {
     code: `import React from 'react'
-    import HiTable from '@hi-ui/hiui/es/table'\n
+    import Table from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -179,7 +179,7 @@ const code = [
         ]
       }
       render() {
-        return (<HiTable
+        return (<Table
           columns={this.columns}
           data={this.data}
           rowSelection={{
@@ -198,7 +198,7 @@ const code = [
 const DemoBase = () => (
   <DocViewer
     code={code}
-    scope={{ HiTable }}
+    scope={{ Table }}
     prefix={prefix}
     rightOptions={rightOptions}
     desc={desc}

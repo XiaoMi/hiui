@@ -8,6 +8,7 @@ export default {
   documents: {
     'quick-start': components['quick-start'],
     'upgrade-from-1x': components['upgrade-from-1x'],
+    'upgrade-from-2x': components['upgrade-from-2x'],
     theme: components['theme'],
     palette: components['palette'],
     i18n: components['i18n'],

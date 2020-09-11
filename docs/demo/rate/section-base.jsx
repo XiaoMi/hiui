@@ -1,12 +1,12 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import { Form } from '../../../components/form'
+import { LegacyForm } from '../../../components/form'
 import Rate from '../../../components/rate'
 const prefix = 'rate-base'
 const desc = '评定业务指标、信用等级、满意度等'
 const code = `import React from 'react'
 import Rate from '@hi-ui/hiui/es/rate'
-import Form from '@hi-ui/hiui/es/form/index'
+import LegacyForm from '@hi-ui/hiui/es/form/index'
 import FormItem from '@hi-ui/hiui/es/form/item'\n
 class Demo extends React.Component {
   constructor(props){
@@ -17,9 +17,9 @@ class Demo extends React.Component {
   }
   render() {
     const {value} = this.state
-    const FormItem = Form.Item
+    const FormItem = LegacyForm.Item
     return (
-      <Form labelWidth="80px" labelPosition="left">
+      <LegacyForm labelWidth="80px" labelPosition="left">
         <FormItem label="基础">
           <Rate  defaultValue={3}/>
         </FormItem>
@@ -33,12 +33,12 @@ class Demo extends React.Component {
         <FormItem label="半星">
           <Rate allowHalf defaultValue={2.5} />
         </FormItem>
-      </Form>
+      </LegacyForm>
     )
   }
 }`
 
 const DemoBase = () => (
-  <DocViewer code={code} scope={{ Form, Rate }} prefix={prefix} desc={desc} />
+  <DocViewer code={code} scope={{ LegacyForm, Rate }} prefix={prefix} desc={desc} />
 )
 export default DemoBase

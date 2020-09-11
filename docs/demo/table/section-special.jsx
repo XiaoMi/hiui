@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import HiTable from '../../../components/table'
+import Table from '../../../components/table'
 const prefix = 'table-special'
 const desc = [
   '全边框：运用分割线让行列关系更清晰明确',
@@ -19,7 +19,7 @@ const rightOptions = [
 const code = [
   {
     code: `import React from 'react'
-    import HiTable from '@hi-ui/hiui/es/table'\n
+    import Table from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -101,17 +101,17 @@ const code = [
         ]
       }
       render() {
-        return <HiTable columns={this.columns} data={this.data} bordered/>
+        return <Table columns={this.columns} data={this.data} bordered/>
       }
     }`,
     opt: ['全边框']
   },
   {
     code: `import React from 'react'
-    import HiTable from '@hi-ui/hiui/es/table'\n
+    import Table from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       render() {
-        return <HiTable
+        return <Table
         data={[
           {
             a: 'a-1',
@@ -151,7 +151,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import HiTable from '@hi-ui/hiui/es/table'\n
+    import Table from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -233,7 +233,7 @@ const code = [
         ]
       }
       render() {
-        return <HiTable columns={this.columns} data={this.data} expandedRender={() => {
+        return <Table columns={this.columns} data={this.data} expandedRender={() => {
           return <div style={{paddingLeft:50}}><div>供应商：小米科技有限公司</div><div>供货日期：2020-08-11</div></div>
         }} />
       }
@@ -242,7 +242,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import HiTable from '@hi-ui/hiui/es/table'\n
+    import Table from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -329,7 +329,7 @@ const code = [
         this.data = data
       }
       render() {
-        return <HiTable columns={this.columns} data={this.data} rowSelection={{
+        return <Table columns={this.columns} data={this.data} rowSelection={{
           selectedRowKeys: this.state.selectedRowKeys,
           onChange: selectedRowKeys => {
             this.setState({selectedRowKeys})
@@ -341,7 +341,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import HiTable from '@hi-ui/hiui/es/table'\n
+    import Table from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -423,14 +423,14 @@ const code = [
         ]
       }
       render() {
-        return <HiTable columns={this.columns} data={this.data} sticky stickyTop={63}/>
+        return <Table columns={this.columns} data={this.data} sticky stickyTop={63}/>
       }
     }`,
     opt: ['表头吸顶']
   },
   {
     code: `import React from 'react'
-    import HiTable from '@hi-ui/hiui/es/table'\n
+    import Table from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -512,14 +512,14 @@ const code = [
         ]
       }
       render() {
-        return <HiTable columns={this.columns} data={this.data} maxHeight={200}/>
+        return <Table columns={this.columns} data={this.data} maxHeight={200}/>
       }
     }`,
     opt: ['固定表头']
   },
   {
     code: `import React from 'react'
-    import HiTable from '@hi-ui/hiui/es/table'\n
+    import Table from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -609,7 +609,7 @@ const code = [
         ]
       }
       render() {
-        return <HiTable columns={this.columns} data={this.data} />
+        return <Table columns={this.columns} data={this.data} />
       }
     }`,
     opt: ['合并单元格']
@@ -619,7 +619,7 @@ const code = [
 const DemoBase = () => (
   <DocViewer
     code={code}
-    scope={{ HiTable }}
+    scope={{ Table }}
     prefix={prefix}
     rightOptions={rightOptions}
     desc={desc}

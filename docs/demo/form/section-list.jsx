@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import HiForm from '../../../components/form/index'
+import Form from '../../../components/form/index'
 import Input from '../../../components/input'
 import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
@@ -16,7 +16,7 @@ const code = [
   {
     opt: ['单表单项'],
     code: `import React from 'react'
-    import { Grid, Button, Radio, Input, HiForm } from '@hi-ui/hiui'\n
+    import { Grid, Button, Radio, Input, Form } from '@hi-ui/hiui'\n
     class Demo extends React.Component {
       constructor() {
         super()
@@ -81,15 +81,15 @@ const code = [
       render(){
         const Row = Grid.Row
         const Col = Grid.Col
-        const FormItem = HiForm.Item
-        const FormList = HiForm.List
-        const FormSubmit = HiForm.Submit
-        const FormReset = HiForm.Reset
+        const FormItem = Form.Item
+        const FormList = Form.List
+        const FormSubmit = Form.Submit
+        const FormReset = Form.Reset
         const {initialValues} = this.state
         return (
             <Row>
             <Col span={12}>
-              <HiForm
+              <Form
                 initialValues={initialValues}
                 ref={this.form}
                 rules={this.state.rules}
@@ -179,9 +179,9 @@ const code = [
                     this.form.current.setFieldsValue({
                       testList:[1,2,3]
                     })
-                }}>fill HiForm</Button>
+                }}>fill Form</Button>
                 </FormItem>
-              </HiForm>
+              </Form>
             </Col>
           </Row>
         )
@@ -191,7 +191,7 @@ const code = [
   {
     opt: ['嵌套表单项'],
     code: `import React from 'react'
-    import { Grid, Button, Radio, Input, HiForm } from '@hi-ui/hiui'\n
+    import { Grid, Button, Radio, Input, Form } from '@hi-ui/hiui'\n
     class Demo extends React.Component {
       constructor() {
         super()
@@ -253,15 +253,15 @@ const code = [
       render(){
         const Row = Grid.Row
         const Col = Grid.Col
-        const FormItem = HiForm.Item
-        const FormList = HiForm.List
-        const FormSubmit = HiForm.Submit
-        const FormReset = HiForm.Reset
+        const FormItem = Form.Item
+        const FormList = Form.List
+        const FormSubmit = Form.Submit
+        const FormReset = Form.Reset
     
         return (
             <Row>
             <Col span={12}>
-              <HiForm
+              <Form
                 ref={this.form}
                 rules={this.state.rules}
                 labelWidth='80'
@@ -359,9 +359,9 @@ const code = [
                           last: "rrr"
                         }]
                     })
-                }}>fill HiForm</Button>
+                }}>fill Form</Button>
                 </FormItem>
-              </HiForm>
+              </Form>
             </Col>
           </Row>
         )
@@ -373,7 +373,7 @@ const DemoCloseable = () => (
   <DocViewer
     code={code}
     scope={{
-      HiForm,
+      Form,
       Radio,
       Grid,
       Input,

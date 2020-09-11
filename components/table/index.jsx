@@ -1,5 +1,5 @@
-import Table from './table-legacy/table-v2'
-import HiTable from './Table'
+import LegacyTable from './table-legacy/table-v2'
+import Table from './Table'
 
-export default HiTable
-export { Table }
+export default Table
+export { LegacyTable }

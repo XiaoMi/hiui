@@ -32,7 +32,7 @@ $borderColor: #e6e7e8 !default;
   }
 }
 
-.#{$table} {
+.#{$table}--legacy.#{$table} {
   td,
   th {
     box-sizing: border-box;

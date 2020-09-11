@@ -1,16 +1,18 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import HiForm from '../../../components/form'
+import Form,{ LegacyForm } from '../../../components/form'
 import Input from '../../../components/input'
 import Checkbox from '../../../components/checkbox'
 import Button from '../../../components/button'
+import Grid from '../../../components/grid'
+import Radio from '../../../components/radio'
 const prefix = 'form-align'
-const rightOptions = ['左对齐', '右对齐', '顶对齐']
+const rightOptions = ['左对齐', '右对齐', '顶对齐','v2']
 const desc = ['左对齐：表单项较少，对应标题字数易对齐工整']
 const code = [
   {
     code: `import React from 'react'
-  import { HiForm, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
+  import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
     class Demo extends React.Component {  
       constructor(props){
         super(props)
@@ -24,13 +26,13 @@ const code = [
         this.form = React.createRef()
       }
       render (){
-        const FormItem = HiForm.Item
-        const FormSubmit = HiForm.Submit
-        const FormReset = HiForm.Reset
+        const FormItem = Form.Item
+        const FormSubmit = Form.Submit
+        const FormReset = Form.Reset
         const {formData} = this.state
     
         return (
-          <HiForm 
+          <Form 
             labelWidth='80' 
             labelPlacement='left' 
             initialValues={formData}
@@ -95,7 +97,7 @@ const code = [
                 重置
               </FormReset>
             </FormItem>
-          </HiForm>
+          </Form>
         )
       }
     }`,
@@ -103,7 +105,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import { HiForm, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
+    import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
     class Demo extends React.Component {  
       constructor(props){
         super(props)
@@ -117,13 +119,13 @@ const code = [
         this.form = React.createRef()
       }
       render (){
-        const FormItem = HiForm.Item
-        const FormSubmit = HiForm.Submit
-        const FormReset = HiForm.Reset
+        const FormItem = Form.Item
+        const FormSubmit = Form.Submit
+        const FormReset = Form.Reset
         const {formData} = this.state
     
         return (
-          <HiForm labelWidth='80' labelPlacement='right' 
+          <Form labelWidth='80' labelPlacement='right' 
             initialValues={formData}>
             <FormItem label='邮箱' field="email" rules={
               [
@@ -159,7 +161,7 @@ const code = [
                 onClick={()=>{console.log('reset form')}}
               >重置</FormReset>
             </FormItem>
-          </HiForm>
+          </Form>
         )
       }
     }`,
@@ -167,7 +169,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import { HiForm, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
+    import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
     class Demo extends React.Component {  
       constructor(props){
         super(props)
@@ -203,12 +205,12 @@ const code = [
         this.form = React.createRef()
       }
       render (){
-        const FormItem = HiForm.Item
-        const FormSubmit = HiForm.Submit
-        const FormReset = HiForm.Reset
+        const FormItem = Form.Item
+        const FormSubmit = Form.Submit
+        const FormReset = Form.Reset
         const {formData,rules} = this.state
         return (
-          <HiForm labelWidth='80' labelPlacement='top' 
+          <Form labelWidth='80' labelPlacement='top' 
             initialValues={formData}
             rules={rules}
             >
@@ -233,17 +235,131 @@ const code = [
                 onClick={()=>{console.log('reset form')}}
               >重置</FormReset>
             </FormItem>
-          </HiForm>
+          </Form>
         )
       }
     }`,
     opt: ['顶对齐']
+  },
+  {
+    code: `import React from 'react'
+    import { Grid, Button, Radio, Input, LegacyForm } from '@hi-ui/hiui'
+    
+    class Demo extends React.Component {
+      constructor() {
+        super()
+        this.form = React.createRef()
+        this.state = {
+          form: {
+            name: '',
+            region: '',
+            count: ''
+          },
+          checkedIndex: -1,
+          rules: {
+            name: {
+              required: true,
+              message: <span style={{color: '#ccc'}}>请输入名称</span>,
+              trigger: 'onBlur,onChange'
+            },
+            region: {
+              required: true,
+              message: '请选择区域',
+              trigger: 'onChange'
+            },
+            count: {
+              required: true,
+              trigger: 'onChange',
+              validator: (rule, value, cb) => {
+                const count = +value
+                if(isNaN(count)) {
+                  cb('请输入数字')
+                } else if(count <= 0) {
+                  cb('必须是正数')
+                } else {
+                  cb()
+                }
+              }
+            }
+          }
+        }
+      }
+    
+      handleSubmit() {
+        this.form.current.validate(valid => {
+          if(valid) {
+            console.log(this.state.form)
+            alert('submit')
+          } else {
+            console.log('error')
+            return false
+          }
+        })
+      }
+    
+      cancelSubmit() {
+        this.setState({
+          form: {
+            name: '',
+            region: '',
+            count: ''
+          }
+        })
+        this.form.current.resetValidates()
+      }
+    
+      handleChange(key, e, value, index) {
+        this.setState({
+          form: Object.assign({}, this.state.form, {[key]: value})
+        })
+    
+        if(index !== undefined) {
+          this.setState({
+            checkedIndex: index
+          })
+        }
+      }
+    
+      render(){
+        const Row = Grid.Row
+        const Col = Grid.Col
+        const FormItem = LegacyForm.Item
+        const { form, checkedIndex } = this.state
+    
+        return (
+          <Row>
+            <Col span={12}>
+              <LegacyForm ref={this.form} model={form} rules={this.state.rules} labelWidth='80' labelPlacement='right'>
+                <FormItem label='名称' field='name'>
+                  <Input value={form.name} placeholder='请输入' onChange={this.handleChange.bind(this, 'name')}/>
+                </FormItem>
+                <FormItem label='数量' field='count'>
+                  <Input value={form.count} placeholder='请输入' onChange={this.handleChange.bind(this, 'count')}/>
+                </FormItem>
+                <FormItem label='地区' field='region'>
+                  <Radio.Group
+                    data={['北京', '上海', '重庆']}
+                    value={form.region}
+                    onChange={this.handleChange.bind(this, 'region','')}
+                  />
+                </FormItem>
+                <FormItem>
+                  <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
+                  <Button type='line' onClick={this.cancelSubmit.bind(this)}>重置</Button>
+                </FormItem>
+              </LegacyForm>
+            </Col>
+          </Row>
+        )
+      }
+    }`,
+    opt: ['v2']
   }
 ]
 const DemoAlign = () => (
   <DocViewer
     code={code}
-    scope={{ HiForm, Input, Button, Checkbox }}
+    scope={{ Form, Input, Button, Checkbox , LegacyForm, Grid, Radio}}
     prefix={prefix}
     desc={desc}
     rightOptions={rightOptions}

@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import HiForm from '../../../components/form'
+import Form from '../../../components/form'
 import Input from '../../../components/input'
 import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
@@ -26,7 +26,7 @@ const code = [
   {
     opt: ['表单验证'],
     code: `import React from 'react'
-    import { Grid, Button, Radio, Input, HiForm } from '@hi-ui/hiui'\n
+    import { Grid, Button, Radio, Input, Form } from '@hi-ui/hiui'\n
     class Demo extends React.Component {
       constructor() {
         super()
@@ -94,13 +94,13 @@ const code = [
       render(){
         const Row = Grid.Row
         const Col = Grid.Col
-        const FormItem = HiForm.Item
+        const FormItem = Form.Item
         const { form, checkedIndex } = this.state
     
         return (
           <Row>
             <Col span={12}>
-              <HiForm 
+              <Form 
                 ref={this.form} 
                 model={form} 
                 rules={this.state.rules} 
@@ -121,7 +121,7 @@ const code = [
                   <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
                   <Button type='line' onClick={this.cancelSubmit.bind(this)}>重置</Button>
                 </FormItem>
-              </HiForm>
+              </Form>
             </Col>
           </Row>
         )
@@ -131,7 +131,7 @@ const code = [
   {
     opt: ['校验指定表单项'],
     code: `import React from 'react'
-    import { HiForm, Grid, Radio, Button, Input } from '@hi-ui/hiui'
+    import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'
     class Demo extends React.Component {
       constructor(props) {
         super(props)
@@ -168,15 +168,15 @@ const code = [
         },1000)
       }
       render() {
-        const FormItem= HiForm.Item
-        const FormSubmit = HiForm.Submit
-        const FormReset = HiForm.Reset
+        const FormItem= Form.Item
+        const FormSubmit = Form.Submit
+        const FormReset = Form.Reset
         const { initialValues, singleList, codeLoading, formData, codeDisabled, countDown } = this.state
         const Row = Grid.Row
         const Col = Grid.Col
     
         return (
-          <HiForm
+          <Form
             labelWidth='80'
             labelPlacement='right'
             ref={this.form}
@@ -309,7 +309,7 @@ const code = [
                 重置
               </FormReset>
             </FormItem>
-          </HiForm>
+          </Form>
         )
       }
     }`
@@ -317,7 +317,7 @@ const code = [
   {
     opt: ['填充表单'],
     code: `import React from 'react'
-    import { HiForm, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
+    import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
     class Demo extends React.Component {  
       constructor(props){
         super(props)
@@ -338,15 +338,15 @@ const code = [
         this.form = React.createRef()
       }
       render (){
-        const FormItem = HiForm.Item
-        const FormSubmit = HiForm.Submit
-        const FormReset = HiForm.Reset
+        const FormItem = Form.Item
+        const FormSubmit = Form.Submit
+        const FormReset = Form.Reset
         const {formData,singleList} = this.state
         const Row = Grid.Row
         const Col = Grid.Col
     
         return (
-          <HiForm 
+          <Form 
             labelWidth='80' 
             labelPlacement='right' 
             ref={this.form}
@@ -403,9 +403,9 @@ const code = [
                     phone:'15652959628',
                     select:'2'
                   })
-              }}>fill HiForm</Button>
+              }}>fill Form</Button>
             </FormItem>
-          </HiForm>
+          </Form>
         )
       }
     }`
@@ -413,19 +413,19 @@ const code = [
   {
     opt: ['表单验证快捷用法'],
     code: `import React from 'react'
-    import { HiForm, Grid, Button, Input, Select, Counter, Cascader, Radio, Checkbox, Switch, DatePicker, Rate, Upload  } from '@hi-ui/hiui'\n
+    import { Form, Grid, Button, Input, Select, Counter, Cascader, Radio, Checkbox, Switch, DatePicker, Rate, Upload  } from '@hi-ui/hiui'\n
     class Demo extends React.Component {  
       constructor(props){
         super(props)
         this.form = React.createRef()
       }
       render (){
-        const FormItem = HiForm.Item
-        const FormSubmit = HiForm.Submit
-        const FormReset = HiForm.Reset
+        const FormItem = Form.Item
+        const FormSubmit = Form.Submit
+        const FormReset = Form.Reset
     
         return (
-          <HiForm 
+          <Form 
             labelWidth='100' 
             labelPlacement='right' 
             ref={this.form}>
@@ -500,7 +500,7 @@ const code = [
                 重置
               </FormReset>
             </FormItem>
-          </HiForm>
+          </Form>
         )
       }
     }`
@@ -511,7 +511,7 @@ const DemoCloseable = () => (
   <DocViewer
     code={code}
     leftOptions={leftOptions}
-    scope={{ HiForm, Radio, Grid, Input, Button, Select, Cascader, DatePicker }}
+    scope={{ Form, Radio, Grid, Input, Button, Select, Cascader, DatePicker }}
     prefix={prefix}
     desc={desc}
   />

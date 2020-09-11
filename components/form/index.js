@@ -1,4 +1,4 @@
-import Form, { Item as ItemV2 } from './form-legacy/form-v2'
+import LegacyForm, { Item as ItemV2 } from './form-legacy/form-v2'
 import FormV3 from './Form'
 import Item from './Item'
 import Submit from './Submit'
@@ -10,16 +10,16 @@ import useForm from './hooks/useForm'
 import Provider from '../context'
 import './style/index'
 
-Form.Item = ItemV2
+LegacyForm.Item = ItemV2
 
-const HiForm = Provider(FormV3)
+const Form = Provider(FormV3)
 
-HiForm.Item = Item
-HiForm.Submit = Submit
-HiForm.Reset = Reset
-HiForm.List = List
-HiForm.SchemaForm = SchemaForm
-HiForm.useForm = useForm
+Form.Item = Item
+Form.Submit = Submit
+Form.Reset = Reset
+Form.List = List
+Form.SchemaForm = SchemaForm
+Form.useForm = useForm
 
-export default HiForm
-export { Form }
+export default Form
+export { LegacyForm }

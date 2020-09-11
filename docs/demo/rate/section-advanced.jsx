@@ -1,12 +1,12 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import { Form } from '../../../components/form'
+import { LegacyForm } from '../../../components/form'
 import Rate from '../../../components/rate'
 import Icon from '../../../components/Icon'
 const prefix = 'rate-advanced'
 const code = `import React from 'react'
 import Rate from '@hi-ui/hiui/es/rate'
-import Form from '@hi-ui/hiui/es/form'
+import LegacyForm from '@hi-ui/hiui/es/form'
 import Icon from '@hi-ui/hiui/es/icon'
 import FormItem from '@hi-ui/hiui/es/form/item'\n
 
@@ -25,9 +25,9 @@ class Demo extends React.Component {
   }
   render() {
     const { value } = this.state
-    const FormItem = Form.Item
+    const FormItem = LegacyForm.Item
     return (
-      <Form labelWidth={120} labelPosition="left">
+      <LegacyForm labelWidth={120} labelPosition="left">
         <FormItem label="任意数量">
           <Rate count={10} allowHalf defaultValue={9.5} />
         </FormItem>
@@ -48,11 +48,11 @@ class Demo extends React.Component {
         <FormItem label="辅助文字">
           <Rate allowHalf descRender={this.descRender} defaultValue={0.5}/>
         </FormItem>
-      </Form>
+      </LegacyForm>
     )
   }
 }`
 const DemoAdvanced = () => (
-  <DocViewer code={code} scope={{ Form, Rate, Icon }} prefix={prefix} />
+  <DocViewer code={code} scope={{ LegacyForm, Rate, Icon }} prefix={prefix} />
 )
 export default DemoAdvanced

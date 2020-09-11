@@ -1,14 +1,14 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import HiTable from '../../../components/table'
+import Table,{LegacyTable} from '../../../components/table'
 import Watermark from '../../../components/Watermark'
 const prefix = 'table-base'
 const desc = ['基础：展示二维数据', '斑马行：优化以行为主的阅读体验']
-const rightOptions = ['基础', '斑马行']
+const rightOptions = ['基础', '斑马行','v2']
 const code = [
   {
     code: `import React from 'react'
-    import HiTable from '@hi-ui/hiui/es/table'\n
+    import Table from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -88,14 +88,14 @@ const code = [
         ]
       }
       render() {
-        return <HiTable columns={this.columns} data={this.data}/>
+        return <Table columns={this.columns} data={this.data}/>
       }
     }`,
     opt: ['基础']
   },
   {
     code: `import React from 'react'
-    import HiTable from '@hi-ui/hiui/es/table'\n
+    import Table from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -175,17 +175,64 @@ const code = [
         ]
       }
       render() {
-        return <HiTable columns={this.columns} data={this.data} striped/>
+        return <Table columns={this.columns} data={this.data} striped/>
       }
     }`,
     opt: ['斑马行']
+  },
+  {
+    code: `import React from 'react'
+    import Table from '@hi-ui/hiui/es/table'\n
+    class Demo extends React.Component {
+      constructor(props){
+        super(props)
+    
+        this.columns = [
+    
+          { title: 'Column 1', dataIndex: 'name', key: '1'},
+          { title: 'Column 1', dataIndex: 'age', key: '2'},
+          { title: 'Column 1', dataIndex: 'address', key: '3'},
+          {
+            title: ()=><div>自定义标题</div>,
+            dataIndex: 'address', key: '4',
+            width: '500px',
+            render(text,record,index){
+            return (
+              <div>
+                  {text} --- {index} --- 自定义渲染
+              </div>
+            )
+          }},
+          {
+            title: 'Action',
+            key: 'operation',
+            width: 100,
+            render: () => <a href="javascript:;">action</a>,
+          },
+        ]
+    
+        this.data = []
+        for (let i = 0; i < 10; i++) {
+          this.data.push({
+            // key: i,
+            name: \`Don Diablo \${i}\`,
+            age: \`\${i}\${i}\`,
+            address: \`EDC Las Vegas no. \${i}\`,
+          });
+        }
+      }
+      render() {
+        return <LegacyTable columns={this.columns} data={this.data}/>
+      }
+    }`,
+    opt: ['v2']
   }
 ]
 
 const DemoBase = () => (
   <DocViewer
     code={code}
-    scope={{ HiTable, Watermark }}
+    scope={{ Table, Watermark, LegacyTable }}
     prefix={prefix}
     rightOptions={rightOptions}
     desc={desc}

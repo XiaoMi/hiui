@@ -178,15 +178,15 @@ class FormItem extends Component {
         ? shouldFormShowColon && typeof label === 'string' && label.trim()
         : shouldItemShowColon
     const obj = {}
-    obj['hi-form-item__error'] = error !== ''
-    obj['hi-form-item--validating'] = validating
-    obj['hi-form-item--required'] = this.isRequired() || required
+    obj['hi-form-item--legacy__error'] = error !== ''
+    obj['hi-form-item--legacy--validating'] = validating
+    obj['hi-form-item--legacy--required'] = this.isRequired() || required
 
     return (
-      <div className={classNames('hi-form-item', className, obj)} style={style}>
+      <div className={classNames('hi-form-item--legacy', className, obj)} style={style}>
         {label || label === '' ? (
           <label
-            className='hi-form-item__label'
+            className='hi-form-item--legacy__label'
             style={{ width: this.labelWidth }}
           >
             {(typeof label === 'string' && label.trim()) || label}
@@ -194,11 +194,11 @@ class FormItem extends Component {
           </label>
         ) : (
           <span
-            className='hi-form-item__span'
+            className='hi-form-item--legacy__span'
             style={{ width: this.labelWidth }}
           />
         )}
-        <div className={'hi-form-item' + '__content'}>
+        <div className={'hi-form-item--legacy' + '__content'}>
           {Array.isArray(children) || !children
             ? children
             : React.cloneElement(children, {
@@ -215,7 +215,7 @@ class FormItem extends Component {
                 })
               }
             })}
-          <div className='hi-form-item--msg__error'>{error}</div>
+          <div className='hi-form-item--legacy--msg__error'>{error}</div>
         </div>
       </div>
     )

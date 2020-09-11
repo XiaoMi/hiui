@@ -1,13 +1,13 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import HiTable from '../../../components/table'
+import Table from '../../../components/table'
 const prefix = 'table-size'
 const desc = ['紧凑：展示空间有限的场景']
 const rightOptions = ['紧凑', '宽松']
 const code = [
   {
     code: `import React from 'react'
-    import HiTable from '@hi-ui/hiui/es/table'\n
+    import Table from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -89,14 +89,14 @@ const code = [
         ]
       }
       render() {
-        return <HiTable columns={this.columns} data={this.data} size='small'/>
+        return <Table columns={this.columns} data={this.data} size='small'/>
       }
     }`,
     opt: ['紧凑']
   },
   {
     code: `import React from 'react'
-    import HiTable from '@hi-ui/hiui/es/table'\n
+    import Table from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -178,7 +178,7 @@ const code = [
         ]
       }
       render() {
-        return <HiTable columns={this.columns} data={this.data} size='large'/>
+        return <Table columns={this.columns} data={this.data} size='large'/>
       }
     }`,
     opt: ['宽松']
@@ -188,7 +188,7 @@ const code = [
 const DemoSize = () => (
   <DocViewer
     code={code}
-    scope={{ HiTable }}
+    scope={{ Table }}
     prefix={prefix}
     rightOptions={rightOptions}
     desc={desc}

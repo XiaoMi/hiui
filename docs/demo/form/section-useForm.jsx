@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import HiForm from '../../../components/form/index'
+import Form from '../../../components/form/index'
 import Input from '../../../components/input'
 import Button from '../../../components/button'
 import Select from '../../../components/select'
@@ -8,11 +8,11 @@ import Radio from '../../../components/radio'
 import Grid from '../../../components/grid'
 
 const prefix = 'form-hooks'
-const desc = '通过 HiForm.useForm 对表单数据域进行交互'
+const desc = '通过 Form.useForm 对表单数据域进行交互'
 const code = `import React from 'react'
-import { HiForm, Grid, Radio, Button, Input } from '@hi-ui/hiui'
+import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'
 props => {
-  const { FormWrapper, FormInstance, FormItem } = HiForm.useForm()
+  const { FormWrapper, FormInstance, FormItem } = Form.useForm()
 
   return (
     <>
@@ -75,7 +75,7 @@ props => {
             })
           }}
         >
-          fill HiForm
+          fill Form
         </Button>
       </div>
     </>
@@ -85,7 +85,7 @@ props => {
 const DemoRow = () => (
   <DocViewer
     code={code}
-    scope={{ HiForm, Button, Input, Select, Radio, Grid }}
+    scope={{ Form, Button, Input, Select, Radio, Grid }}
     prefix={prefix}
     desc={desc}
   />

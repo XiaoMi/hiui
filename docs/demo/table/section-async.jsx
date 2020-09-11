@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import HiTable from '../../../components/table'
+import Table from '../../../components/table'
 import Watermark from '../../../components/Watermark'
 const prefix = 'table-async'
 const desc = ['异步动态获取表格数据']
@@ -8,7 +8,7 @@ const rightOptions = ['异步请求', '斑马行']
 const code = [
   {
     code: `import React from 'react'
-    import HiTable from '@hi-ui/hiui/es/table'\n
+    import Table from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
         constructor(props) {
             super(props)
@@ -42,7 +42,7 @@ const code = [
 
         render() {
             return (
-            <HiTable
+            <Table
                 columns={this.columns}
                 dataSource={()=>{
                 return {
@@ -73,7 +73,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import HiTable from '@hi-ui/hiui/es/table'\n
+    import Table from '@hi-ui/hiui/es/table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -153,7 +153,7 @@ const code = [
         ]
       }
       render() {
-        return <HiTable columns={this.columns} data={this.data} striped/>
+        return <Table columns={this.columns} data={this.data} striped/>
       }
     }`,
     opt: ['斑马行']
@@ -163,7 +163,7 @@ const code = [
 const DemoBase = () => (
   <DocViewer
     code={code}
-    scope={{ HiTable, Watermark }}
+    scope={{ Table, Watermark }}
     prefix={prefix}
     rightOptions={rightOptions}
     desc={desc}
