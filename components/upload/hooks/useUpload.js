@@ -116,7 +116,7 @@ const useUpload = ({
       } else {
         const _files = Object.keys(files)
           .map((idx) => {
-            let file = files[idx]å
+            let file = files[idx]
             if (beforeUpload) {
               const result = beforeUpload(file, fileListRef.current)
               if (result === false) {
