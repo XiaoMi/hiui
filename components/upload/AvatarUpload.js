@@ -137,13 +137,20 @@ const AvatarUpload = ({
               </div>
             </li>
           ) : (
-            <li className='hi-upload__item'>
+            <li className='hi-upload__item' onClick={() => previewImage(file, 0)} style={{ cursor: 'pointer' }}>
               <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} />
-              <div className='hi-upload__item-mask' onClick={() => previewImage(file, 0)}>
-                <Icon name='eye' />
-                <span>{localeDatas.upload.preview}</span>
-              </div>
-              <Icon name='close-circle' className='hi-upload__photo-del' onClick={() => deleteFile(file, 0)} />
+              <Icon
+                name='close-circle'
+                filled
+                className='hi-upload__photo-del'
+                onClick={(e) => {
+                  e.stopPropagation()
+                  deleteFile(file, 0)
+                }}
+              />
+              {file.uploadState === 'error' && (
+                <div className='hi-upload__item--photo-error'>{localeDatas.upload.uploadFailed}</div>
+              )}
             </li>
           ))}
         {!file && (
@@ -163,7 +170,7 @@ const AvatarUpload = ({
       <Modal
         visible={cropperVisible}
         onConfirm={() => {
-          confirmCropper(_fileList[0].name)
+          confirmCropper(cropperFile.name)
         }}
         onCancel={() => {
           setCropperVisible(false)

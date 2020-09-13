@@ -116,8 +116,7 @@ const useUpload = ({
       } else {
         const _files = Object.keys(files)
           .map((idx) => {
-            let file = files[idx]
-            // TODO: customUpload
+            let file = files[idx]å
             if (beforeUpload) {
               const result = beforeUpload(file, fileListRef.current)
               if (result === false) {
@@ -140,6 +139,16 @@ const useUpload = ({
           })
           .filter((file) => {
             if (file) {
+              if (file.fileType === 'img') {
+                // 用来图片预览
+                const fr = new FileReader()
+                fr.onload = (e) => {
+                  const url = e.target.result
+                  file.url = url
+                }
+                fr.readAsDataURL(file)
+              }
+
               const action = request({
                 file,
                 action: uploadAction,
