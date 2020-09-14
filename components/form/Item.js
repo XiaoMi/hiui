@@ -279,7 +279,7 @@ const FormItem = props => {
             setEvent('onChange', HIUIComponent, componentProps, e, ...args)
           },
           onBlur: (e, ...args) => {
-            setEvent('onBlur', componentProps, e, ...args)
+            setEvent('onBlur',HIUIComponent, componentProps, e, ...args)
           }
         })
       } else {
@@ -298,7 +298,7 @@ const FormItem = props => {
           setEvent('onChange', children, '', e, ...args)
         },
         onBlur: (e, ...args) => {
-          setEvent('onBlur', '', e, ...args)
+          setEvent('onBlur', children, '', e, ...args)
         }
       })
   }

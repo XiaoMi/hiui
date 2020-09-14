@@ -64,7 +64,7 @@ const compile = modules => {
   const json = gulp
     .src(['components/**/*.@(json)'])
     .pipe(gulp.dest(modules === false ? esDir : libDir))
-
+    
   const ts = gulp
     .src(['components/**/*.@(d.ts)'])
     .pipe(gulp.dest(modules === false ? esDir : libDir))
