@@ -1,4 +1,7 @@
 # 更新日志
+## 2.14.1
+- 优化 `<Tree />` onBeforeSave 、 onDragStart 支持返回 Promise [#1167](https://github.com/XiaoMi/hiui/issues/1167)
+
 
 ## 2.14.0
 
