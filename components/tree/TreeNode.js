@@ -268,21 +268,14 @@ class TreeNode extends Component {
       }
     })
   }
-  saveEditNode = async(itemId, level) => {
+  saveEditNode = (itemId, level) => {
     const { editNodes, dataCache, editingNodes } = this.state
     const nodeEdited = editingNodes.find(node => node.id === itemId)
     const _dataCache = cloneDeep(dataCache)
     this._saveEditNode(itemId, _dataCache, nodeEdited)
     if (this.props.onBeforeSave) {
-      let result = this.props.onBeforeSave(nodeEdited, {before: dataCache, after: _dataCache}, level)
-      if(result.toString() === '[object Promise]') {
-        await result.then((res)=>{
-         result = res
-        }).catch(()=>{
-         result = false
-        })
-      }
-      
+      const result = this.props.onBeforeSave(nodeEdited, {before: dataCache, after: _dataCache}, level)
+
       if (result === true) {
         this.setState({
           dataCache: _dataCache,
@@ -290,7 +283,24 @@ class TreeNode extends Component {
           editingNodes: editingNodes.filter(node => node.id !== itemId)
         })
         this.props.onSave(nodeEdited, _dataCache)
+        return
       }
+
+      if(result.toString() === '[object Promise]') {
+        result.then((res)=>{
+          if(res){
+            this.setState({
+              dataCache: _dataCache,
+              editNodes: editNodes.filter(node => node.id !== itemId),
+              editingNodes: editingNodes.filter(node => node.id !== itemId)
+            })
+            this.props.onSave(nodeEdited, _dataCache)
+          }
+        }).catch((error)=>{
+         throw(error)
+        })
+      }
+     
     } else {
       this.setState({
         dataCache: _dataCache,
@@ -423,25 +433,31 @@ class TreeNode extends Component {
       }
     })
   }
-  _deleteNode = async(delNode) => {
+  _deleteNode = (delNode) => {
     const { dataCache } = this.state
     const _dataCache = cloneDeep(dataCache)
     const node = findNode(delNode.id, dataCache)
     this.__deleteNode(delNode.id, _dataCache)
     if (this.props.onBeforeDelete) {
-      let result = this.props.onBeforeDelete(node, {before: dataCache, after: _dataCache}, delNode.level)
+      const result = this.props.onBeforeDelete(node, {before: dataCache, after: _dataCache}, delNode.level)
+
+      if (result === true) {
+        this.setState({ dataCache: _dataCache })
+        this.props.onDelete(node, _dataCache)
+        return
+      }
+
       if(result.toString() === '[object Promise]') {
-        await result.then((res)=>{
-         result = res
+        result.then((res)=>{
+         if(res){
+          this.setState({ dataCache: _dataCache })
+          this.props.onDelete(node, _dataCache)
+         }
         }).catch(()=>{
          result = false
         })
       }
       
-      if (result === true) {
-        this.setState({ dataCache: _dataCache })
-        this.props.onDelete(node, _dataCache)
-      }
     } else {
       this.setState({ dataCache: _dataCache })
       this.props.onDelete(node, _dataCache)
