@@ -77,9 +77,9 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | onDragStart        | 节点开始拖拽时触发                                                      | (dragNode: TreeNode) => void                                             | -                               | -         |
 | onDrop             | 节点拖拽时触发                                                          | (dragNode: TreeNode, dropNode: TreeNode, data: DataStatus, level: Level) => boolean                      | -                               | -         |
 | onDropEnd          | 节点拖拽成功时触发                                                      | (dragNode: TreeNode, dropNode: TreeNode) => void                         | -                               | -         |
-| onBeforeDelete     | 节点删除前触发,返回 false 则节点删除失败，不会触发 onDelete                  | (deletedNode: TreeNode, data: DataStatus, level: number) => boolean                       | -                               | -         |
+| onBeforeDelete     | 节点删除前触发,返回 false 或者 返回一个 Promise 对象，Promise 对象 reject 时 则节点删除失败，不会触发 onDelete                  | (deletedNode: TreeNode, data: DataStatus, level: number) => boolean                       | -                               | -         |
 | onDelete           | 节点删除后触发                                                          | (deletedNode: TreeNode, data: TreeNode[]) => void                        | -                               | -         |
-| onBeforeSave       | 节点保存新增、编辑状态时触发, 返回 false 则保存新增、编辑失败，不会触发 onSave                  | (savedNode: TreeNode, data: DataStatus, level: number) => boolean                          | -                               | -         |
+| onBeforeSave       | 节点保存新增、编辑状态时触发, 返回 false 或者 返回一个 Promise 对象，Promise 对象 reject 时则保存新增、编辑失败，不会触发 onSave                  | (savedNode: TreeNode, data: DataStatus, level: number) => boolean                          | -                               | -         |
 | onSave             | 节点保存新增、编辑状态后触发                  | (savedNode: TreeNode, data: TreeNode[]) => void                          | -                               | -         |
 
 ## Type
