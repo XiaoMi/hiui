@@ -226,23 +226,26 @@ class SelectInput extends Component {
     placeholder =
       selectedItems.length > 0 ? selectedItems[0].title : placeholder
     let icon = dropdownShow ? 'up' : 'down'
-
     return (
       <div
         className={classNames('hi-select__input', 'single-value', `theme__${theme}`, { disabled })}
         onClick={this.props.onClick}
-      >
+        ref={(node) => {
+          this.itemsRef = node
+        }}
+        >
         <div
           className={classNames('hi-select__input--item', {
             'hi-select__hide': !(!dropdownShow && selectedItems.length > 0)
           })}
+          style={{width: this.wrapperRect && this.wrapperRect.width-46}}
         >
           <div className='hi-select__input--item__name'>
             {selectedItems[0] && selectedItems[0].title}
           </div>
         </div>
         {(dropdownShow || selectedItems.length === 0) && (
-          <div className={classNames('hi-select__input--search', {'hi-select__input--search--value': selectedItems.length > 0})}>
+          <div className={classNames('hi-select__input--search', {'hi-select__input--search--value': selectedItems.length > 0})}  style={{width:this.wrapperRect && this.wrapperRect.width-46}}>
             <input
               type='text'
               ref={(input) => {
