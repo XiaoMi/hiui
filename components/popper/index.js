@@ -7,7 +7,7 @@ import useClickOutside from './utils/useClickOutside'
 
 import './style/index'
 
-const { getScrollParent } = new PopperJS()
+// const { getScrollParent } = new PopperJS()
 const AnimationClassName = 'hi-popper_transition'
 /**
  * @param {Function} onClickOutside 点击该元素外的回调方法
@@ -25,11 +25,11 @@ const Popper = props => {
   )
 
   useEffect(() => {
-    const _container = attachEle ? getScrollParent(attachEle) : document.body
+    // const _container = attachEle ? getScrollParent(attachEle) : document.body
     setContainer(
       setOverlayContainer
         ? setOverlayContainer(attachEle)
-        : props.container || _container
+        : props.container || document.body
     )
     setTransitionShow(show)
     show && setStaticShow(true)
