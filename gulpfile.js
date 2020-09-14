@@ -39,6 +39,7 @@ const compile = modules => {
   const assets = gulp
     .src(['components/**/*.@(png|svg|eot|ttf|woff|woff2|otf)'])
     .pipe(gulp.dest(modules === false ? esDir : libDir))
+
   const js = gulp
     .src(['components/**/*.@(js|jsx)'])
     .pipe(
@@ -59,10 +60,15 @@ const compile = modules => {
       }
     }))
     .pipe(gulp.dest(modules === false ? esDir : libDir))
+  
+  const json = gulp
+    .src(['components/**/*.@(json)'])
+    .pipe(gulp.dest(modules === false ? esDir : libDir))
+
   const ts = gulp
     .src(['components/**/*.@(d.ts)'])
     .pipe(gulp.dest(modules === false ? esDir : libDir))
-  return merge2([sass, assets, js, ts])
+  return merge2([sass, assets, js, json, ts])
 }
 
 gulp.task('compile', () => compile(false))
