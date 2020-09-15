@@ -297,7 +297,7 @@ class TreeNode extends Component {
             this.props.onSave(nodeEdited, _dataCache)
           }
         }).catch((error)=>{
-         throw(error)
+          throw new Error(error)
         })
       }
      
@@ -453,8 +453,8 @@ class TreeNode extends Component {
           this.setState({ dataCache: _dataCache })
           this.props.onDelete(node, _dataCache)
          }
-        }).catch(()=>{
-         result = false
+        }).catch((error)=>{
+          throw new Error(error)
         })
       }
       
