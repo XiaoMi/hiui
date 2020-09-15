@@ -371,6 +371,16 @@
     border-radius: 2px;
   }
 
+  &__precent--small {
+    width: 80px;
+    height: 80px;
+  }
+
+  &__precent--large {
+    width: 200px;
+    height: 200px;
+  }
+
   &__loading-bar {
     width: 0;
     height: 4px;
