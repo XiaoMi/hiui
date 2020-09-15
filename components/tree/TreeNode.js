@@ -424,7 +424,7 @@ class TreeNode extends Component {
       }
     })
   }
-  _deleteNode = (delNode) => {
+  _deleteNode = async(delNode) => {
     const { dataCache } = this.state
     const _dataCache = cloneDeep(dataCache)
     const node = findNode(delNode.id, dataCache)
