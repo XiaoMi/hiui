@@ -291,6 +291,7 @@ class TreeNode extends Component {
         })
         this.props.onSave(nodeEdited, _dataCache)
       }
+     
     } else {
       this.setState({
         dataCache: _dataCache,
@@ -442,6 +443,7 @@ class TreeNode extends Component {
         this.setState({ dataCache: _dataCache })
         this.props.onDelete(node, _dataCache)
       }
+      
     } else {
       this.setState({ dataCache: _dataCache })
       this.props.onDelete(node, _dataCache)
