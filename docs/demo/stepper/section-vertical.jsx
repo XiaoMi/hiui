@@ -35,6 +35,7 @@ class Demo extends React.Component {
           data={list}
           current={1}
           placement='vertical'
+          vertical='vertical'
         />
       </div>
     )
@@ -65,7 +66,7 @@ class Demo extends React.Component {
             icon: <Icon name='list' />,
           },
         ]
-    
+
         return (
           <div
             style={{ height: 500 }}
@@ -74,6 +75,7 @@ class Demo extends React.Component {
               data={list}
               current={1}
               placement='vertical'
+              itemLayout='horizontal'
             />
           </div>
         )
