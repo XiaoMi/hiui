@@ -70,6 +70,16 @@
   },
   "devDependencies": {
     "pinyin-match": "^1.1.1",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-standard": "^4.0.1",
+    "prettier": "^2.1.1",
     "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/polyfill": "^7.4.4",
@@ -79,7 +89,6 @@
     "@bougiel/puppeteer-prerenderer": "^0.0.3",
     "@mdx-js/loader": "^1.1.0",
     "autoprefixer": "^8.5.0",
-    "babel-eslint": "^8.2.6",
     "babel-jest": "^22.4.3",
     "babel-loader": "^8.0.6",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
@@ -127,7 +136,6 @@
     "sass-loader": "^7.0.1",
     "simulant": "^0.2.2",
     "sinon": "^7.3.2",
-    "standard": "^11.0.1",
     "style-loader": "^0.21.0",
     "stylelint": "^9.10.1",
     "stylelint-config-recommended-scss": "^3.3.0",
@@ -150,25 +158,9 @@
     "github-markdown-css": "^3.0.1",
     "hoist-non-react-statics": "^2.5.0"
   },
-  "standard": {
-    "env": [
-      "jest"
-    ],
-    "parser": "babel-eslint",
-    "ignore": [
-      "/es/",
-      "/lib/",
-      "/dist/",
-      "/libs/markdown/code.js",
-      "/components/**/index.test.js",
-      "/components/icon/",
-      "yarn.lock",
-      "/docs/"
-    ]
-  },
   "lint-staged": {
     "*.{js,jsx}": [
-      "node_modules/.bin/standard --fix",
+      "eslint --fix",
       "git add"
     ],
     "*.scss": [
