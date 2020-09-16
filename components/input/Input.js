@@ -33,7 +33,7 @@ class Input extends Component {
     const prependNode = typeof prepend !== 'string' && prepend
     const appendNode = typeof append !== 'string' && append
     this.state = {
-      value: type === 'string' || type === 'number' ? format(valueSource, this.props.type) : '',
+      value: type === 'string' || type === 'number' ? format(valueSource.toString(), this.props.type) : '',
       valueTrue: prefix + valueSource + suffix,
       hover: false,
       active: false,
@@ -48,7 +48,7 @@ class Input extends Component {
     if (nextProps.value !== undefined) {
       if (nextProps.value !== this.state.value) {
         this.setState({
-          value: format(nextProps.value, this.props.type),
+          value: format(nextProps.value.toString(), this.props.type),
           valueTrue: nextProps.value
         })
       }

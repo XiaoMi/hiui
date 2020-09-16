@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "2.13.0",
+  "version": "2.14.1",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
@@ -69,12 +69,14 @@
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "shallowequal": "^1.0.2",
+    "uuid": "^3.4.0",
     "warning": "^3.0.0",
     "whatwg-fetch": "^2.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.11.5",
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",

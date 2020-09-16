@@ -34,7 +34,22 @@ class UploadPhoto extends Upload {
       activeIndex
     })
   }
-
+  precentNum () {
+    const {photoSize} = this.props
+    let num = 1.4
+    switch (photoSize) {
+      case 'small':
+        num = 0.8
+        break;
+      case 'large':
+        num = 2
+        break;
+      default:
+        num = 1.4
+        break;
+    }
+    return num
+  }
   render () {
     const {
       fileList,
@@ -76,9 +91,12 @@ class UploadPhoto extends Upload {
                     `hi-upload__item--${photoSize}`
                   )}>
                   <img src={file.url} className='hi-upload__thumb' />
-                  <div className='hi-upload__precent'>
+                  <div className={classNames(
+                    'hi-upload__precent',
+                    `hi-upload__precent--${photoSize}`
+                  )}>
                     <p className='hi-upload__loading-text'>{file.progressNumber ? (file.progressNumber < 100 ? (file.progressNumber + '%') : localeDatas.upload.uploadSuccess) : (0 + '%')}</p>
-                    <div className='hi-upload__loading-bar' style={{ width: (file.progressNumber * 1.4) + 'px' }} />
+                    <div className='hi-upload__loading-bar' style={{ width: (file.progressNumber * this.precentNum()) + 'px' }} />
                     {/* 进度条底部阴影 */}
                     <div className='hi-upload__loading-shadow' />
                   </div>
