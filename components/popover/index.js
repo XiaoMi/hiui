@@ -18,7 +18,7 @@ export default class Popover extends Component {
     content: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     width: PropTypes.string
   }
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       showPopper: false
@@ -29,30 +29,30 @@ export default class Popover extends Component {
     this.delayHidePopperTimer = null
   }
 
-  showPopper () {
+  showPopper() {
     this.setState({
       showPopper: true
     })
   }
-  hidePopper () {
+  hidePopper() {
     this.setState({
       showPopper: false
     })
   }
-  delayHidePopper (e) {
+  delayHidePopper(e) {
     this.delayHidePopperTimer = setTimeout(() => {
       if (this.eventTarget !== e.target && this.isInPopover()) return
       this.hidePopper()
     }, 200)
   }
 
-  delayShowPopper (e) {
+  delayShowPopper(e) {
     this.delayShowPopperTimer = setTimeout(() => {
       this.showPopper()
     }, 200)
   }
 
-  isInPopover () {
+  isInPopover() {
     const popper = this.popperRef.current
     const referenceRef = ReactDOM.findDOMNode(this.referenceRef)
     const bool =
@@ -81,7 +81,7 @@ export default class Popover extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { trigger } = this.props
 
     this.element = ReactDOM.findDOMNode(this)
@@ -119,7 +119,7 @@ export default class Popover extends Component {
     }
   }
 
-  render () {
+  render() {
     const {
       style,
       className,

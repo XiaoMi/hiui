@@ -98,13 +98,11 @@ const BasePicker = ({
   }
 
   const clickOutsideEvent = useCallback(() => {
-    const { startDate, endDate } = getInRangeDate(
-      outDate[0],
-      outDate[1],
-      max,
-      min
-    )
-    const _outDate = [moment(startDate), moment(endDate)]
+    const outDateValue = outDate[0]
+    const isValid = moment(outDateValue).isValid()
+    const { startDate, endDate } =
+      isValid && getInRangeDate(outDate[0], outDate[1], max, min)
+    const _outDate = isValid ? [moment(startDate), moment(endDate)] : [null]
 
     changeOutDate(_outDate)
     resetStatus()

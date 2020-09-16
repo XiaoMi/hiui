@@ -329,8 +329,6 @@ const code = [
         const FormItem = Form.Item
         const FormSubmit = Form.Submit
         const {filesCount} = this.state
-        const Row = Grid.Row
-        const Col = Grid.Col
         return (
           <div style={{width:'880px'}}>
             <Form 
