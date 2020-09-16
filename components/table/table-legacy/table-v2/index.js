@@ -45,8 +45,8 @@ class Table extends Component {
     useFixedHeader: false,
     rowKey: 'key',
     rowClassName: () => '',
-    onRow () {},
-    onHeaderRow () {},
+    onRow() {},
+    onHeaderRow() {},
     bodyStyle: {},
     style: {},
     showHeader: true,
@@ -54,7 +54,7 @@ class Table extends Component {
     rowRef: () => null,
     emptyText: () => 'No Data'
   }
-  constructor (props) {
+  constructor(props) {
     super(props)
     // 只有dataSource,columns重造
     let { data = [], scroll } = props
@@ -79,7 +79,7 @@ class Table extends Component {
     }
   }
 
-  runMemory () {
+  runMemory() {
     let { name } = this.props
     if (!name) {
       return
@@ -234,7 +234,7 @@ class Table extends Component {
     }
   }
 
-  getScrollXContent () {
+  getScrollXContent() {
     let scrollTable
     let {
       dataSource,
@@ -369,7 +369,7 @@ class Table extends Component {
 
   showColumsPanel = e => {}
 
-  getScrollYContent () {
+  getScrollYContent() {
     let {
       dataSource,
       highlightCols,
@@ -428,7 +428,7 @@ class Table extends Component {
     )
   }
 
-  getBaseContent () {
+  getBaseContent() {
     let {
       dataSource,
       highlightCols,
@@ -457,7 +457,7 @@ class Table extends Component {
       </div>
     )
   }
-  get isEmpty () {
+  get isEmpty() {
     let dataLen = this.state.dataSource.length
     if (dataLen > 0) {
       return false
@@ -482,13 +482,13 @@ class Table extends Component {
     return true
   }
 
-  getEmptyContent () {
+  getEmptyContent() {
     let { emptyText } = this.props
     let text = typeof emptyText === 'string' ? emptyText : emptyText()
-    return <div className='hi-table-placeholder'>{text}</div>
+    return <div className={prifix('table-placeholder')}>{text}</div>
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     const { fixTop, height, rowSelection } = this.props
     let leftFixTable = this.dom.current.querySelectorAll(
       '.hi-table-fixed-left table tr'
@@ -542,7 +542,7 @@ class Table extends Component {
     }
   }
 
-  render () {
+  render() {
     // 多选配置
     // noinspection JSAnnotator
 
@@ -646,7 +646,7 @@ class Table extends Component {
                     {columns.map(item => (
                       <div key={item.key}>
                         <div>
-                          {(function () {
+                          {(function() {
                             if (item.type === 'select') {
                               return '多选'
                             }
@@ -719,7 +719,7 @@ class Table extends Component {
     )
   }
 
-  xscroll () {
+  xscroll() {
     let { fixTop = false, name } = this.props
     if (typeof fixTop === 'boolean') {
       fixTop = 0
@@ -761,7 +761,7 @@ class Table extends Component {
       }
     }
   }
-  getColumns (columns) {
+  getColumns(columns) {
     let select = columns.find(({ type }) => type === 'select')
     let leftFiexColumns = columns.filter(
       ({ fixed }) => !!fixed && fixed === 'left'
@@ -791,7 +791,7 @@ class Table extends Component {
     }
   }
 
-  getHeaderGroup (columns, rowSelection) {
+  getHeaderGroup(columns, rowSelection) {
     columns = columns.map(item => {
       item.title = item.title || item.dataIndex
       item.key = item.key || item.dataIndex || item.title || item.id
@@ -941,7 +941,7 @@ class Table extends Component {
     return [headerColumns, bodyColumns]
   }
 
-  setColumnsDetail (bool, prop, c) {
+  setColumnsDetail(bool, prop, c) {
     let props = prop || this.props
     let leftFiexColumns = []
     let rightFixColumns = []
@@ -1030,7 +1030,7 @@ class Table extends Component {
       })
   }
 
-  reset (props) {
+  reset(props) {
     // noinspection JSAnnotator
     const {
       origin: {
@@ -1100,7 +1100,7 @@ class Table extends Component {
       })
   }
 
-  componentDidMount () {
+  componentDidMount() {
     let { fixTop, scroll, name, origin } = this.props
     let dom = this.dom.current
 
@@ -1150,11 +1150,11 @@ class Table extends Component {
     }, 0)
   }
 
-  shouldComponentUpdate (nextProps, nextState, nextContext) {
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
     return true
   }
 
-  componentWillReceiveProps ({ data, columns, width, scroll, ...props }) {
+  componentWillReceiveProps({ data, columns, width, scroll, ...props }) {
     // 服务端表格
     if (props.origin) {
       let oldOrigin = this.props.origin
