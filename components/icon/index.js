@@ -61,7 +61,7 @@ const Icon = ({ name, filled = false, className, style = {}, onClick }) => {
         cursor: style.cursor
       }}
     >
-      <use xlinkHref={`#icon${legacyMap(name) || name}-${filled ? 'filled' : 'outlined'}`} />
+      <use xlinkHref={`#icon${legacyMap[name] || name}-${filled ? 'filled' : 'outlined'}`} />
     </svg>
   )
 }

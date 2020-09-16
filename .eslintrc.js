@@ -14,6 +14,7 @@ module.exports = {
   plugins: ['react', 'prettier'],
   rules: {
     'prettier/prettier': ['error', { singleQuote: true, semi: false, printWidth: 120, trailingComma: 'none' }],
-    'react/prop-types': 0
+    'react/prop-types': 0,
+    'react/no-children-prop': 0
   }
 }

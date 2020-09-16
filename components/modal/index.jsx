@@ -29,7 +29,9 @@ const ModalComp = ({
   showFooterDivider = true,
   footer,
   confirmText,
-  cancelText
+  cancelText,
+  style,
+  className
 }) => {
   // TODO: 整体可以抽成一个 hooks 供 modal 和 drawer 复用
   const defaultContainer = useRef(false)
@@ -52,7 +54,11 @@ const ModalComp = ({
   }, [vi, container])
 
   return createPortal(
-    <div className={PREFIX}>
+    <div
+      className={Classnames(PREFIX, {
+        [className]: className
+      })}
+    >
       <div
         className={Classnames(`${PREFIX}__mask`, {
           [`${PREFIX}__mask--visible`]: visible
@@ -63,10 +69,7 @@ const ModalComp = ({
           }
         }}
       />
-      <div
-        className={`${PREFIX}__container`}
-        style={{ display: vi === false && 'none' }}
-      >
+      <div className={`${PREFIX}__container`} style={{ display: vi === false && 'none' }}>
         <CSSTransition
           in={visible}
           timeout={0}
@@ -76,11 +79,8 @@ const ModalComp = ({
           }}
         >
           <div
-            className={Classnames(
-              `${PREFIX}__wrapper`,
-              `${PREFIX}__wrapper--${size}`
-            )}
-            style={{ width, height }}
+            className={Classnames(`${PREFIX}__wrapper`, `${PREFIX}__wrapper--${size}`)}
+            style={{ ...style, width, height }}
           >
             <div
               className={Classnames(`${PREFIX}__header`, {
@@ -145,15 +145,7 @@ const confirmIconMap = {
   info: { name: 'info-circle-o', color: '#4284F5' }
 }
 
-const confirm = ({
-  onConfirm,
-  onCancel,
-  title = '提示',
-  content,
-  type = 'default',
-  confirmText,
-  cancelText
-}) => {
+const confirm = ({ onConfirm, onCancel, title = '提示', content, type = 'default', confirmText, cancelText }) => {
   const confirmContainer = document.createElement('div')
 
   document.body.appendChild(confirmContainer)
