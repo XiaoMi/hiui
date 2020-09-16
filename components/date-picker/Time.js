@@ -66,13 +66,14 @@ class Time extends Component {
   setDisableTime (type,i,disabledTime) {
     const { timeRangePanelType, endDate, startDate } = this.props
     let isDisabled = disabledTime.includes(i)
+    if(this.props.isCheckTime){
+      if(timeRangePanelType ===  'left') {
+        isDisabled = deconstructDate(endDate)[type] < i
+      }
 
-    if(timeRangePanelType ===  'left') {
-      isDisabled = deconstructDate(endDate)[type] < i
-    }
-
-    if(timeRangePanelType ===  'right'){
-      isDisabled = deconstructDate(startDate)[type] > i
+      if(timeRangePanelType ===  'right'){
+        isDisabled = deconstructDate(startDate)[type] > i
+      }
     }
 
     return isDisabled
