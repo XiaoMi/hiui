@@ -1,10 +1,10 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Table,{LegacyTable} from '../../../components/table'
+import Table, { LegacyTable } from '../../../components/table'
 import Watermark from '../../../components/Watermark'
 const prefix = 'table-base'
 const desc = ['基础：展示二维数据', '斑马行：优化以行为主的阅读体验']
-const rightOptions = ['基础', '斑马行']
+const rightOptions = ['基础', '斑马行', 'v2']
 const code = [
   {
     code: `import React from 'react'
