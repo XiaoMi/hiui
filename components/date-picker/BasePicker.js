@@ -7,7 +7,7 @@ import {showLargeCalendar, getInRangeDate} from './util'
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
-import { dateFormat, isValid, startOfWeek, endOfWeek, parse, compatibleToDate, compatibleFormatString } from './dateUtil'
+import { dateFormat, isValid, startOfWeek, endOfWeek, parse, compatibleToDate, compatibleFormatString, toDate } from './dateUtil'
 class BasePicker extends Component {
   constructor (props) {
     super(props)
@@ -202,6 +202,9 @@ class BasePicker extends Component {
         return
       }
       if (['timerange', 'timeperiod', 'daterange', 'yearrange', 'monthrange'].includes(type)) {
+        if(Date.parse(toDate(startDate)) > Date.parse(toDate(endDate))){
+          endDate = startDate
+        }
         this.setState({
           texts: [this.callFormatterDate(startDate), this.callFormatterDate(endDate)]
         })
@@ -245,6 +248,14 @@ class BasePicker extends Component {
       this.setState({date})
     }
   }
+  getTempTime (time) {
+    let hour = time.split(':')[0];
+    let min = time.split(':')[1];
+    let sec = time.split(':')[2];
+
+    return Number(hour*3600) + Number(min*60) + Number(sec);
+
+  }
   clickOutSide (e) {
     const {max, min} = this.props
     const tar = e.target
@@ -259,9 +270,7 @@ class BasePicker extends Component {
     }
     if (tar !== this.input && tar !== this.rInput) {
       let { texts } = this.state
-
       let {startDate, endDate} = getInRangeDate(texts[0], texts[1], max, min)
-
       texts = [this.callFormatterDate(startDate), this.callFormatterDate(endDate)]
       this.setState({
         texts

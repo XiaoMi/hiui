@@ -62,7 +62,23 @@ class Time extends Component {
       seconds: format.indexOf('s') > -1
     }
   }
+  // 设置Date的选中状态
+  setDisableTime (type,i,disabledTime) {
+    const { timeRangePanelType, endDate, startDate } = this.props
+    let isDisabled = disabledTime.includes(i)
+
+    if(timeRangePanelType ===  'left') {
+      isDisabled = deconstructDate(endDate)[type] < i
+    }
+
+    if(timeRangePanelType ===  'right'){
+      isDisabled = deconstructDate(startDate)[type] > i
+    }
+
+    return isDisabled
+  }
   generateDatas (type) {
+
     let count
     let datas = []
     const currentDate = deconstructDate(this.state.date)
@@ -79,12 +95,13 @@ class Time extends Component {
       datas.push({
         value: i,
         text: i < 10 ? '0' + i : i.toString(),
-        disabled: disabledTime.includes(i),
+        disabled: this.setDisableTime(type,i,disabledTime),
         current: i === currentDate[type]
       })
     }
     return datas
   }
+  
   _getDsiabledList () {
     const { disabledHours, disabledMinutes, disabledSeconds } = this.props
     const currentDate = deconstructDate(this.state.date)
@@ -106,6 +123,7 @@ class Time extends Component {
       onlyTime={this.props.onlyTime}
       datas={this.generateDatas(type)}
       disabledList={disabledList[type]}
+      timeRangePanelType={this.props.timeRangePanelType}
       hourStep={hourStep}
       minuteStep={minuteStep}
       secondStep={secondStep}
