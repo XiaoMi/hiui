@@ -248,14 +248,6 @@ class BasePicker extends Component {
       this.setState({date})
     }
   }
-  getTempTime (time) {
-    let hour = time.split(':')[0];
-    let min = time.split(':')[1];
-    let sec = time.split(':')[2];
-
-    return Number(hour*3600) + Number(min*60) + Number(sec);
-
-  }
   clickOutSide (e) {
     const {max, min} = this.props
     const tar = e.target
