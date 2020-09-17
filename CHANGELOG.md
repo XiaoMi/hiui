@@ -1,6 +1,9 @@
 # 更新日志
 ## 2.14.1
 - 优化 `<Tree />` onBeforeSave 、 onDragStart 支持返回 Promise [#1179](https://github.com/XiaoMi/hiui/issues/1179)
+- 优化 `<DatePicker />` 新增 readOnly 展示形态 [#1196](https://github.com/XiaoMi/hiui/issues/1196)
+- 优化 `<TimePicker />` 新增hourStep、minuteStep、secondStep等时分秒间隔选项 [#1194](https://github.com/XiaoMi/hiui/issues/1195)
+- 优化 `<TimePicker />` 新增 readOnly 展示形态 [#1195](https://github.com/XiaoMi/hiui/issues/1194)
 - 修复 `<TimePicker />` type 为 timerange 时，时间范围选择问题 [#1188](https://github.com/XiaoMi/hiui/issues/1188)
 - 修复 `<Upload />` type 为 photo 时，上传时样式问题 [#1186](https://github.com/XiaoMi/hiui/issues/1186)
 - 修复 `<Select />` Select 宽度随内容自动撑宽问题 [#1172](https://github.com/XiaoMi/hiui/issues/1172)
