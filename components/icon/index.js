@@ -55,6 +55,7 @@ const Icon = ({ name, filled = false, className, style = {}, onClick }) => {
         onClick && onClick(e)
       }}
       style={{
+        ...style,
         fill: style.color,
         height: style.fontSize,
         width: style.fontSize,
