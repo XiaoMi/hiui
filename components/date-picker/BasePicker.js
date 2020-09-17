@@ -273,7 +273,7 @@ class BasePicker extends Component {
     }
   }
   _input (text, ref, placeholder) {
-    const {disabled, inputReadOnly} = this.props
+    const {disabled, hourStep, minuteStep, secondStep} = this.props
     const { texts } = this.state
     return (
       <input
@@ -282,7 +282,7 @@ class BasePicker extends Component {
         placeholder={placeholder}
         className={disabled ? 'disabled' : ''}
         disabled={disabled}
-        readonly={inputReadOnly ? 'readOnly' : inputReadOnly}
+        readOnly={(hourStep || minuteStep || secondStep) ? 'readOnly' : false}
         onChange={e => {
           ref === 'input' ? (texts[0] = e.target.value) : (texts[1] = e.target.value)
           this.setState({

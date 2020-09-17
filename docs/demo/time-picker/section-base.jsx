@@ -44,7 +44,6 @@ const code = [
       render() {
         return (
           <TimePicker
-            inputReadOnly
             hourStep={5}
             minuteStep={6}
             secondStep={10}
