@@ -7,11 +7,11 @@ import { format, formatValue, getAttrs, formatAmount, filterObjProps } from './u
  * @prop type 输入框类型
  */
 class Input extends Component {
-  static _Input = ''
 
   constructor (props) {
     super(props)
 
+    this._Input = React.createRef()
     // 传入属性
     const commonAttrs = {
       type: 'text',
@@ -67,9 +67,11 @@ class Input extends Component {
       })
     }
   }
-
+  focus = () => {
+    this._Input.current.focus()
+  }
   blur = () => {
-    this._Input.blur()
+    this._Input.current.blur()
   }
 
   /**
@@ -118,9 +120,7 @@ class Input extends Component {
             )
           }
           <input
-            ref={(arg) => {
-              this._Input = arg
-            }}
+            ref={this._Input}
             className={`hi-input__text ${disabled ? 'disabled' : ''}`}
             value={this.state.value}
             autoComplete='off'
@@ -196,7 +196,7 @@ class Input extends Component {
                   (hover || clearableTrigger === 'always') && !disabled ? '' : 'invisible'
                 }`}
                 onClick={() => {
-                  this._Input.focus()
+                  this._Input.current.focus()
 
                   const prefix = typeof this.props.prefix === 'undefined' ? '' : this.props.prefix
                   const suffix = typeof this.props.suffix === 'undefined' ? '' : this.props.suffix
@@ -204,7 +204,7 @@ class Input extends Component {
 
                   this.setState({ value: '', valueTrue: valueTrue }, () => {
                     const e = {
-                      target: this._Input
+                      target: this._Input.current
                     }
                     this.props.onChange && this.props.onChange(e, '')
                   })
@@ -331,7 +331,7 @@ class Input extends Component {
         style={this.props.style}
         data-value={this.state.valueTrue}
         onClick={(e) => {
-          this._Input.focus()
+          this._Input.current.focus()
         }}
         onMouseOver={(e) => {
           this.setState({
