@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  forwardRef,
-  useCallback
-} from 'react'
+import React, { useState, useEffect, useRef, forwardRef, useCallback } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 
@@ -15,7 +9,7 @@ import Provider from '../context'
 import HiRequest from '../_util/hi-request'
 import { resetSelectedItems, transKeys } from './utils'
 
-const InternalSelect = props => {
+const InternalSelect = (props) => {
   const {
     data,
     type,
@@ -55,20 +49,14 @@ const InternalSelect = props => {
 
   // value 有可能是0的情况
   const [selectedItems, setSelectedItems] = useState(
-    resetSelectedItems(
-      value === undefined ? defaultValue : value,
-      _.cloneDeep(data),
-      transKeys(fieldNames, 'id')
-    )
+    resetSelectedItems(value === undefined ? defaultValue : value, _.cloneDeep(data), transKeys(fieldNames, 'id'))
   )
 
   const [dropdownShow, setDropdownShow] = useState(false)
   // 搜索关键字
   const [keyword, setKeyword] = useState('')
   const [loading, setLoading] = useState(false)
-  const [searchable, setSearchable] = useState(
-    dataSource ? true : propsSearchable
-  )
+  const [searchable, setSearchable] = useState(dataSource ? true : propsSearchable)
   useEffect(() => {
     // 在异步多选的时候时候才需要进行值的记录
     dataSource && type === 'multiple' && setCacheSelectItem(data)
@@ -99,10 +87,7 @@ const InternalSelect = props => {
       // 处理默认值的问题
       const selectedItems = resetSelectedItems(
         value,
-        _.uniqBy(
-          cacheSelectItem.concat(dropdownItems),
-          transKeys(fieldNames, 'id')
-        ),
+        _.uniqBy(cacheSelectItem.concat(dropdownItems), transKeys(fieldNames, 'id')),
         transKeys(fieldNames, 'id')
       )
       setSelectedItems(selectedItems)
@@ -110,7 +95,7 @@ const InternalSelect = props => {
   }, [value])
 
   const localeDatasProps = useCallback(
-    key => {
+    (key) => {
       if (props[key]) {
         return props[key]
       } else {
@@ -127,9 +112,7 @@ const InternalSelect = props => {
         callback()
       }
       // 调用用户的select
-      const selectedIds = selectedItems.map(
-        item => item[transKeys(fieldNames, 'id')]
-      )
+      const selectedIds = selectedItems.map((item) => item[transKeys(fieldNames, 'id')])
       propsonChange && propsonChange(selectedIds, changedItems)
     },
     [propsonChange]
@@ -142,11 +125,8 @@ const InternalSelect = props => {
       let _selectedItems = _.cloneDeep(selectedItems)
       if (type === 'multiple') {
         // 获取元素索引
-        const itemIndex = _selectedItems.findIndex(sItem => {
-          return (
-            sItem[transKeys(fieldNames, 'id')] ===
-            item[transKeys(fieldNames, 'id')]
-          )
+        const itemIndex = _selectedItems.findIndex((sItem) => {
+          return sItem[transKeys(fieldNames, 'id')] === item[transKeys(fieldNames, 'id')]
         })
         if (itemIndex === -1) {
           _selectedItems.push(item)
@@ -182,13 +162,13 @@ const InternalSelect = props => {
   }, [dropdownShow, selectedItems, dataSource, type])
   // 方向键的回调
   const moveFocusedIndex = useCallback(
-    direction => {
+    (direction) => {
       let _focusedIndex = focusedIndex
       if (direction === 'up') {
         dropdownItems
           .slice(0, _focusedIndex)
           .reverse()
-          .every(item => {
+          .every((item) => {
             _focusedIndex--
             if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
               return false
@@ -196,7 +176,7 @@ const InternalSelect = props => {
             return true
           })
       } else {
-        dropdownItems.slice(_focusedIndex + 1).every(item => {
+        dropdownItems.slice(_focusedIndex + 1).every((item) => {
           _focusedIndex++
           if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
             return false
@@ -216,7 +196,7 @@ const InternalSelect = props => {
   }, [dropdownItems, focusedIndex, onClickOption])
   // 按键操作
   const handleKeyDown = useCallback(
-    evt => {
+    (evt) => {
       if (evt.keyCode === 13) {
         onEnterSelect()
       }
@@ -234,7 +214,7 @@ const InternalSelect = props => {
   )
   // 对关键字的校验 对数据的过滤
   const matchFilter = useCallback(
-    item => {
+    (item) => {
       const shouldMatch = dataSource || !searchable || !keyword
 
       if (typeof filterOption === 'function') {
@@ -257,9 +237,8 @@ const InternalSelect = props => {
   })
 
   const remoteSearch = useCallback(
-    keyword => {
-      const _dataSource =
-        typeof dataSource === 'function' ? dataSource(keyword) : dataSource
+    (keyword) => {
+      const _dataSource = typeof dataSource === 'function' ? dataSource(keyword) : dataSource
       if (Array.isArray(_dataSource)) {
         setDropdownItems(_dataSource)
         return
@@ -268,7 +247,7 @@ const InternalSelect = props => {
       if (_dataSource.toString() === '[object Promise]') {
         setLoading(true)
         _dataSource.then(
-          res => {
+          (res) => {
             setLoading(false)
             setDropdownItems(Array.isArray(res) ? res : [])
           },
@@ -285,7 +264,7 @@ const InternalSelect = props => {
     [dataSource, keyword]
   )
   const HiRequestSearch = useCallback((_dataSource, keyword) => {
-    let {
+    const {
       url,
       method = 'GET',
       transformResponse,
@@ -298,26 +277,24 @@ const InternalSelect = props => {
     } = _dataSource
     // 处理Key
 
-    if (key) {
-      options.params = Object.assign({}, { ...params }, { [key]: keyword })
-    }
+    options.params = key ? { [key]: keyword, ...params } : params
 
     HiRequest({
       url,
       method,
       data: data,
       error,
-      beforeRequest: config => {
+      beforeRequest: (config) => {
         setLoading(true)
         return config
       },
-      errorCallback: err => {
+      errorCallback: (err) => {
         setLoading(false)
         error && error(err)
       },
       ...options
     }).then(
-      response => {
+      (response) => {
         setLoading(false)
         const dataItems = transformResponse && transformResponse(response)
         if (Array.isArray(dataItems)) {
@@ -326,7 +303,7 @@ const InternalSelect = props => {
           console.error('transformResponse return data is not array')
         }
       },
-      error => {
+      (error) => {
         throw error
       }
     )
@@ -335,7 +312,7 @@ const InternalSelect = props => {
     resetFocusedIndex()
   }, [keyword])
   // 过滤筛选项
-  const onFilterItems = keyword => {
+  const onFilterItems = (keyword) => {
     setKeyword(keyword)
 
     if (dataSource && (autoload || keyword)) {
@@ -345,7 +322,7 @@ const InternalSelect = props => {
   // 重置下标
   const resetFocusedIndex = () => {
     let _focusedIndex = -1
-    dropdownItems.every(item => {
+    dropdownItems.every((item) => {
       _focusedIndex++
       if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
         return false
@@ -376,11 +353,11 @@ const InternalSelect = props => {
     }
     let _selectedItems = [...selectedItems]
     let changedItems = []
-    filterItems.forEach(item => {
+    filterItems.forEach((item) => {
       if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
         if (
           !_selectedItems
-            .map(selectItem => selectItem[transKeys(fieldNames, 'id')])
+            .map((selectItem) => selectItem[transKeys(fieldNames, 'id')])
             .includes(item[transKeys(fieldNames, 'id')])
         ) {
           _selectedItems.push(item)
@@ -412,10 +389,7 @@ const InternalSelect = props => {
     ? selectInputContainer.current.getBoundingClientRect().width
     : null
   return (
-    <div
-      className={classNames('hi-select', className, extraClass)}
-      style={style}
-    >
+    <div className={classNames('hi-select', className, extraClass)} style={style}>
       <div className='hi-select__input-container' ref={selectInputContainer}>
         <SelectInput
           handleKeyDown={handleKeyDown}
