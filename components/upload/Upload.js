@@ -226,8 +226,8 @@ class Upload extends Component {
     if(_uploadAction.toString() === '[object Promise]'){
       await _uploadAction(file).then(res=>{
         _uploadAction = res
-      }).catch(()=>{
-        _uploadAction = false
+      }).catch((error)=>{
+        throw new Error(error)
        })
     }
 
