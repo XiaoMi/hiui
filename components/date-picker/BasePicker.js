@@ -7,7 +7,7 @@ import {showLargeCalendar, getInRangeDate} from './util'
 import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
-import { dateFormat, isValid, startOfWeek, endOfWeek, parse, compatibleToDate, compatibleFormatString } from './dateUtil'
+import { dateFormat, isValid, startOfWeek, endOfWeek, parse, compatibleToDate, compatibleFormatString, toDate } from './dateUtil'
 class BasePicker extends Component {
   constructor (props) {
     super(props)
@@ -202,6 +202,9 @@ class BasePicker extends Component {
         return
       }
       if (['timerange', 'timeperiod', 'daterange', 'yearrange', 'monthrange'].includes(type)) {
+        if(Date.parse(toDate(startDate)) > Date.parse(toDate(endDate))){
+          endDate = startDate
+        }
         this.setState({
           texts: [this.callFormatterDate(startDate), this.callFormatterDate(endDate)]
         })
@@ -259,9 +262,7 @@ class BasePicker extends Component {
     }
     if (tar !== this.input && tar !== this.rInput) {
       let { texts } = this.state
-
       let {startDate, endDate} = getInRangeDate(texts[0], texts[1], max, min)
-
       texts = [this.callFormatterDate(startDate), this.callFormatterDate(endDate)]
       this.setState({
         texts
@@ -272,7 +273,7 @@ class BasePicker extends Component {
     }
   }
   _input (text, ref, placeholder) {
-    const {disabled} = this.props
+    const {disabled, hourStep, minuteStep, secondStep} = this.props
     const { texts } = this.state
     return (
       <input
@@ -281,6 +282,7 @@ class BasePicker extends Component {
         placeholder={placeholder}
         className={disabled ? 'disabled' : ''}
         disabled={disabled}
+        readOnly={(hourStep || minuteStep || secondStep) ? 'readOnly' : false}
         onChange={e => {
           ref === 'input' ? (texts[0] = e.target.value) : (texts[1] = e.target.value)
           this.setState({

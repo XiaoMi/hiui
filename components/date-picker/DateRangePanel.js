@@ -395,6 +395,7 @@ class DateRangePanel extends Component {
         {
           showMask && (
             <TimeRangePanel
+              isCheckTime={false}
               {...this.props}
               style={{
                 position: 'absolute',
