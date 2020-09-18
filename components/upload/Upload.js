@@ -215,12 +215,21 @@ class Upload extends Component {
     }
   }
 
-  uploadFile (file, dataUrl = '') {
+  uploadFile = async(file, dataUrl = '') => {
     const FileReader = window.FileReader
     const XMLHttpRequest = window.XMLHttpRequest
     const FormData = window.FormData
     const { fileList } = this.state
     const { name, params, headers, uploadAction, withCredentials, maxCount } = this.props
+
+    let _uploadAction = uploadAction
+    if(_uploadAction.toString() === '[object Promise]'){
+      await _uploadAction(file).then(res=>{
+        _uploadAction = res
+      }).catch(()=>{
+        _uploadAction = false
+       })
+    }
 
     this.setState({ fileCountLimted: fileList.length >= maxCount })
     const onerror = err => {
@@ -298,7 +307,7 @@ class Upload extends Component {
       this.setState({ fileList: _fileList })
     }
 
-    xhr.open('post', uploadAction, true)
+    xhr.open('post', _uploadAction, true)
     // 设置用户传入的请求头
     if (headers) {
       for (let j in headers) {
