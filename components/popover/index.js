@@ -5,7 +5,6 @@ import classNames from 'classnames'
 import Popper from '../popper'
 import './style/index'
 export default class Popover extends Component {
-  unbindHover = true
   static defaultProps = {
     trigger: 'click',
     placement: 'top',
@@ -98,18 +97,18 @@ export default class Popover extends Component {
         }
       })
 
-      document.addEventListener('click', e => {
+      document.addEventListener('click', (e) => {
         this.eventTarget = e.target
         if (this.isInPopover()) return
 
         this.hidePopper()
       })
     } else if (trigger === 'hover') {
-      referenceRef.addEventListener('mouseenter', e => {
+      referenceRef.addEventListener('mouseenter', (e) => {
         this.eventTarget = e.target
         this.delayShowPopper(e)
       })
-      referenceRef.addEventListener('mouseleave', e => {
+      referenceRef.addEventListener('mouseleave', (e) => {
         this.delayHidePopper(e)
         clearTimeout(this.delayShowPopperTimer)
       })
@@ -120,27 +119,18 @@ export default class Popover extends Component {
   }
 
   render() {
-    const {
-      style,
-      className,
-      title,
-      content,
-      placement,
-      width,
-      visible,
-      overlayClassName
-    } = this.props
+    const { style, className, title, content, placement, width, visible, overlayClassName } = this.props
     const { showPopper } = this.state
     return (
       <div
         className={classNames(className, 'hi-popover')}
         style={style}
-        ref={node => {
+        ref={(node) => {
           this.popoverContainer = node
         }}
       >
         {React.cloneElement(React.Children.only(this.props.children), {
-          ref: el => {
+          ref: (el) => {
             this.referenceRef = el
           },
           tabIndex: '0'
@@ -157,10 +147,7 @@ export default class Popover extends Component {
           onMouseOver={this.handlePopperMouseOver}
           onMouseOut={this.handlePopperMouseOut}
         >
-          <div
-            ref={this.popperRef}
-            className={classNames('hi-popover-base', `hi-popover-${placement}`)}
-          >
+          <div ref={this.popperRef} className={classNames('hi-popover-base', `hi-popover-${placement}`)}>
             {title && <div className='hi-popover__title'>{title}</div>}
             <div className='hi-popover__content'>{content}</div>
           </div>

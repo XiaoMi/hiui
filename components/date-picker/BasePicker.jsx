@@ -49,8 +49,7 @@ const BasePicker = ({
     showTime,
     format
   })
-  const isLarge =
-    altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset
+  const isLarge = altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset
   const [altCalendarPresetData, dateMarkPresetData] = useAltData({
     altCalendar,
     altCalendarPreset,
@@ -66,7 +65,7 @@ const BasePicker = ({
     }
   }
 
-  const callback = dates => {
+  const callback = (dates) => {
     const _dates = _.cloneDeep(dates)
     let returnDate = {}
     let returnDateStr = ''
@@ -100,8 +99,7 @@ const BasePicker = ({
   const clickOutsideEvent = useCallback(() => {
     const outDateValue = outDate[0]
     const isValid = moment(outDateValue).isValid()
-    const { startDate, endDate } =
-      isValid && getInRangeDate(outDate[0], outDate[1], max, min)
+    const { startDate, endDate } = isValid && getInRangeDate(outDate[0], outDate[1], max, min)
     const _outDate = isValid ? [moment(startDate), moment(endDate)] : [null]
 
     changeOutDate(_outDate)
@@ -177,11 +175,7 @@ const BasePicker = ({
           placement={'top-bottom-start'}
           onClickOutside={clickOutsideEvent}
         >
-          {type.includes('range') || type === 'timeperiod' ? (
-            <RangePanel />
-          ) : (
-            <Panel />
-          )}
+          {type.includes('range') || type === 'timeperiod' ? <RangePanel /> : <Panel />}
         </Popper>
       </Root>
     </DPContext.Provider>

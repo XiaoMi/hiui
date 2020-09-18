@@ -54,10 +54,7 @@ const TimePicker = ({
       }
     })
   }, [outDate])
-  const timePopperCls = classNames(
-    'hi-timepicker__popper',
-    type.includes('range') && 'hi-timepicker__popper--range'
-  )
+  const timePopperCls = classNames('hi-timepicker__popper', type.includes('range') && 'hi-timepicker__popper--range')
   const onClear = () => {
     resetStatus()
     changeOutDate([])
@@ -67,7 +64,7 @@ const TimePicker = ({
     setShowPanel(false)
     setInputFocus(false)
   }, [])
-  const callback = dates => {
+  const callback = (dates) => {
     const _dates = _.cloneDeep(dates)
     let returnDate = {}
     let returnDateStr = ''
