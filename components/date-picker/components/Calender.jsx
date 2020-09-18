@@ -1,10 +1,4 @@
-import React, {
-  useContext,
-  useCallback,
-  useState,
-  useEffect,
-  useRef
-} from 'react'
+import React, { useContext, useCallback, useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 import DPContext from '../context'
 import moment from 'moment'
@@ -14,7 +8,7 @@ import { getFullTime } from '../utils'
 import { CSSTransition } from 'react-transition-group'
 
 const getTDClass = (td, largeCell) => {
-  let _class = ['hi-datepicker__cell']
+  const _class = ['hi-datepicker__cell']
   if (largeCell) {
     _class.push('hi-datepicker__cell--large')
     // _index === 6 && _class.push('hi-datepicker__cell--large--laster')
@@ -37,15 +31,7 @@ const getTDClass = (td, largeCell) => {
   return _class.join(' ')
 }
 
-const Calender = ({
-  view = 'date',
-  originDate,
-  onPick,
-  range,
-  mouseMove,
-  panelPosition,
-  renderDate
-}) => {
+const Calender = ({ view = 'date', originDate, onPick, range, mouseMove, panelPosition, renderDate }) => {
   const {
     weekOffset,
     localeDatas,
@@ -59,8 +45,8 @@ const Calender = ({
     altCalendarPresetData,
     dateMarkPresetData
   } = useContext(DPContext)
-  const largeCell =
-    altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset
+
+  const largeCell = altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset
 
   const [holidayFullName, setHolidayFullName] = useState('')
   const [holidayFullNameShow, setHolidayFullNameShow] = useState(false)
@@ -81,22 +67,17 @@ const Calender = ({
 
   const [weekNum, setWeekNum] = useState(0)
   useEffect(() => {
-    setCalenderCls(
-      classNames('hi-datepicker__calender', `hi-datepicker__calender--${view}`)
-    )
+    setCalenderCls(classNames('hi-datepicker__calender', `hi-datepicker__calender--${view}`))
   }, [rows, view])
   const getWeeks = () => {
     const week = localeDatas.datePicker.week
     return week.slice(weekOffset).concat(week.slice(0, weekOffset))
   }
 
-  const onTableClick = e => {
+  const onTableClick = (e) => {
     const td = e.target
     const value = td.getAttribute('value')
-    if (
-      !['SPAN', 'DIV'].includes(td.nodeName) ||
-      td.getAttribute('type') === 'disabled'
-    ) {
+    if (!['SPAN', 'DIV'].includes(td.nodeName) || td.getAttribute('type') === 'disabled') {
       return false
     }
     const clickVal = parseInt(value)
@@ -114,8 +95,8 @@ const Calender = ({
     onPick(_date)
   }
 
-  const onTableMouseMove = e => {
-    let ele = e.target
+  const onTableMouseMove = (e) => {
+    const ele = e.target
     // let {year, month} = deconstructDate(date)
     const panelDate = _.cloneDeep(renderDate)
     if (type.includes('range')) {
@@ -134,12 +115,12 @@ const Calender = ({
     }
   }
 
-  const onTrMouseOver = useCallback(num => {
+  const onTrMouseOver = useCallback((num) => {
     if (num && (type === 'week' || type === 'weekrange') && weekNum !== num) {
       setWeekNum(num)
     }
   }, [])
-  const showHolidayDetail = fullTimeInfo => {
+  const showHolidayDetail = (fullTimeInfo) => {
     clearTimeout(holidayTime.current)
     setHolidayFullName(fullTimeInfo.FullText || fullTimeInfo.text)
     setHolidayFullNameShow(true)
@@ -147,7 +128,7 @@ const Calender = ({
       setHolidayFullNameShow(false)
     }, 2000)
   }
-  const renderAltCalendar = cell => {
+  const renderAltCalendar = (cell) => {
     if (view.includes('year') || view.includes('month')) return
     if (
       Object.keys(altCalendarPresetData).length > 0 ||
@@ -174,9 +155,7 @@ const Calender = ({
                 altCalendarPreset === 'id-ID' && showHolidayDetail(fullTimeInfo)
               }}
               value={cell.value}
-              className={`hi-datepicker__lunar ${
-                fullTimeInfo.highlight ? 'hi-datepicker__lunar--highlight' : ''
-              }`}
+              className={`hi-datepicker__lunar ${fullTimeInfo.highlight ? 'hi-datepicker__lunar--highlight' : ''}`}
             >
               {fullTimeInfo.text}
             </span>
@@ -188,25 +167,13 @@ const Calender = ({
     }
   }
   return (
-    <div
-      className={`hi-datepicker__calender-wrap ${
-        largeCell ? 'hi-datepicker__calender-wrap--large' : ''
-      }`}
-    >
-      <CSSTransition
-        in={holidayFullNameShow}
-        timeout={300}
-        classNames='hi-datepicker__indiaHoli'
-      >
-        <div className='hi-datepicker__indiaHoli'>
-          <div className='hi-datepicker__indiaHoli-text'>{holidayFullName}</div>
+    <div className={`hi-datepicker__calender-wrap ${largeCell ? 'hi-datepicker__calender-wrap--large' : ''}`}>
+      <CSSTransition in={holidayFullNameShow} timeout={300} classNames="hi-datepicker__indiaHoli">
+        <div className="hi-datepicker__indiaHoli">
+          <div className="hi-datepicker__indiaHoli-text">{holidayFullName}</div>
         </div>
       </CSSTransition>
-      <table
-        className={calenderCls}
-        onClick={onTableClick}
-        onMouseMove={onTableMouseMove}
-      >
+      <table className={calenderCls} onClick={onTableClick} onMouseMove={onTableMouseMove}>
         {(view.includes('date') || view.includes('week')) && (
           <thead>
             <tr>
@@ -221,11 +188,7 @@ const Calender = ({
             return (
               <tr
                 key={index}
-                className={`hi-datepicker__row ${
-                  row.weekNum === weekNum
-                    ? 'hi-datepicker__row--currentweek'
-                    : ''
-                }`}
+                className={`hi-datepicker__row ${row.weekNum === weekNum ? 'hi-datepicker__row--currentweek' : ''}`}
                 onMouseEnter={() => onTrMouseOver(row.weekNum)}
               >
                 {row.map((cell, _index) => {
@@ -237,16 +200,8 @@ const Calender = ({
                       // className='hi-datepicker__cell'
                       className={getTDClass(cell, largeCell)}
                     >
-                      <div
-                        className='hi-datepicker__cell-text'
-                        value={cell.value}
-                        type={cell.type}
-                      >
-                        <span
-                          value={cell.value}
-                          type={cell.type}
-                          className='hi-datepicker__cellnum'
-                        >
+                      <div className="hi-datepicker__cell-text" value={cell.value} type={cell.type}>
+                        <span value={cell.value} type={cell.type} className="hi-datepicker__cellnum">
                           {parseInt(cell.text || cell.value) < 10
                             ? '0' + (cell.text || cell.value)
                             : cell.text || cell.value}

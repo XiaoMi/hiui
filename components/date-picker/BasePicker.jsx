@@ -12,6 +12,7 @@ import RangePanel from './components/RangePanel'
 import Root from './components/Root'
 
 import './style/index'
+
 const BasePicker = ({
   type = 'date',
   value,

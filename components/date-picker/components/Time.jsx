@@ -19,16 +19,12 @@ const Time = ({ date, onChange }) => {
       second: format.indexOf('s') > -1
     }
   }
-  const {
-    hours: lHours,
-    minutes: lMinutes,
-    seconds: lSeconds
-  } = localeDatas.datePicker
+  const { hours: lHours, minutes: lMinutes, seconds: lSeconds } = localeDatas.datePicker
   const { hour: showHour, minute: showMinute, second: showSecond } = isShowHMS()
 
   const generateDatas = (type) => {
     let count
-    let datas = []
+    const datas = []
     const currentDate = deconstructDate(date)
     const disabledList = _getDsiabledList()
     const disabledTime = disabledList[type]
@@ -52,18 +48,15 @@ const Time = ({ date, onChange }) => {
   const _getDsiabledList = () => {
     const currentDate = deconstructDate(date)
     return {
-      hour:
-        Object.prototype.toString.call(disabledHours) === '[object Array]'
-          ? disabledHours
-          : disabledHours() || [],
+      hour: Object.prototype.toString.call(disabledHours) === '[object Array]' ? disabledHours : disabledHours() || [],
       minute:
         Object.prototype.toString.call(disabledMinutes) === '[object Array]'
           ? disabledMinutes
-          : disabledMinutes(currentDate['hour']) || [],
+          : disabledMinutes(currentDate.hour) || [],
       second:
         Object.prototype.toString.call(disabledSeconds) === '[object Array]'
           ? disabledSeconds
-          : disabledSeconds(currentDate['hour'], currentDate['minute']) || []
+          : disabledSeconds(currentDate.hour, currentDate.minute) || []
     }
   }
   const whenDisableChange = (list, val, arrowVal) => {
@@ -105,17 +98,17 @@ const Time = ({ date, onChange }) => {
     )
   }
   return (
-    <div className='hi-timepicker__body'>
-      <div className='hi-timepicker__timeheader'>
-        {showHour && <span className='hi-timepicker__mark'>{lHours}</span>}
-        {showMinute && <span className='hi-timepicker__mark'>{lMinutes}</span>}
-        {showSecond && <span className='hi-timepicker__mark'>{lSeconds}</span>}
+    <div className="hi-timepicker__body">
+      <div className="hi-timepicker__timeheader">
+        {showHour && <span className="hi-timepicker__mark">{lHours}</span>}
+        {showMinute && <span className="hi-timepicker__mark">{lMinutes}</span>}
+        {showSecond && <span className="hi-timepicker__mark">{lSeconds}</span>}
       </div>
-      <div className='hi-timepicker__timebody'>
+      <div className="hi-timepicker__timebody">
         {renderTimeList('hour')}
         {renderTimeList('minute')}
         {renderTimeList('second')}
-        <div className='hi-timepicker__current-line' style={{ top: 108 }} />
+        <div className="hi-timepicker__current-line" style={{ top: 108 }} />
       </div>
     </div>
   )

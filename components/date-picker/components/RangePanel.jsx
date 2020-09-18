@@ -11,17 +11,7 @@ import _ from 'lodash'
 import { getView, parseRenderDates, genNewDates } from '../utils'
 
 const RangePanel = () => {
-  const {
-    outDate,
-    type,
-    onPick,
-    localeDatas,
-    showTime,
-    format,
-    timeInterval,
-    shortcuts,
-    theme
-  } = useContext(DPContext)
+  const { outDate, type, onPick, localeDatas, showTime, format, timeInterval, shortcuts, theme } = useContext(DPContext)
 
   const [showRangeMask, setShowRangeMask] = useState(false)
   const [views, setViews] = useState([getView(type), getView(type)])
@@ -68,10 +58,7 @@ const RangePanel = () => {
         newRange.start = date
       }
       if (type === 'weekrange') {
-        onPick(
-          [newRange.start.startOf('week'), newRange.end.endOf('week')],
-          showTime
-        )
+        onPick([newRange.start.startOf('week'), newRange.end.endOf('week')], showTime)
       } else {
         onPick([newRange.start, newRange.end], showTime)
       }
@@ -164,7 +151,7 @@ const RangePanel = () => {
     } else {
       // 旧版
       let days
-      let currentDate = moment()
+      const currentDate = moment()
       switch (item) {
         case localeDatas.datePicker.lastWeek:
           days = 7
@@ -179,21 +166,17 @@ const RangePanel = () => {
           days = 365
           break
       }
-      let startDate = moment().subtract(days, 'days')
+      const startDate = moment().subtract(days, 'days')
       onPick([startDate, currentDate])
     }
   }
   const renderShortcut = () => {
     return (
-      <div className='hi-datepicker__shortcuts'>
-        <ul className='hi-datepicker__shortcuts-list'>
+      <div className="hi-datepicker__shortcuts">
+        <ul className="hi-datepicker__shortcuts-list">
           {shortcuts.map((m, n) => {
             return (
-              <li
-                className='hi-datepicker__shortcuts-item'
-                key={n}
-                onClick={() => shortcutsClickEvent(m)}
-              >
+              <li className="hi-datepicker__shortcuts-item" key={n} onClick={() => shortcutsClickEvent(m)}>
                 {m.title || m}
               </li>
             )
@@ -214,7 +197,7 @@ const RangePanel = () => {
     <React.Fragment>
       <div className={panelCls}>
         {shortcuts && renderShortcut()}
-        <div className='hi-datepicker__panel--left'>
+        <div className="hi-datepicker__panel--left">
           {calRenderDates[0] && (
             <React.Fragment>
               <Header
@@ -234,18 +217,15 @@ const RangePanel = () => {
                 view={views[0]}
                 range={range}
                 mouseMove={onMouseMove}
-                panelPosition='left'
+                panelPosition="left"
               />
             </React.Fragment>
           )}
         </div>
-        <div className='hi-datepicker__panel--right'>
+        <div className="hi-datepicker__panel--right">
           {calRenderDates[1] &&
             (type === 'timeperiod' ? (
-              <TimePeriodPanel
-                date={calRenderDates[0]}
-                onTimePeriodPick={onTimePeriodPick}
-              />
+              <TimePeriodPanel date={calRenderDates[0]} onTimePeriodPick={onTimePeriodPick} />
             ) : (
               <React.Fragment>
                 <Header
@@ -266,7 +246,7 @@ const RangePanel = () => {
                   onPick={(date) => onCalenderPick(date, 1)}
                   mouseMove={onMouseMove}
                   leftDate={calRenderDates[0]}
-                  panelPosition='right'
+                  panelPosition="right"
                 />
               </React.Fragment>
             ))}
@@ -274,9 +254,7 @@ const RangePanel = () => {
       </div>
       {type === 'daterange' && showTime && (
         <div
-          className={`hi-datepicker__footer ${
-            !isDisableFooter ? 'hi-datepicker__footer--disable' : ''
-          }`}
+          className={`hi-datepicker__footer ${!isDisableFooter ? 'hi-datepicker__footer--disable' : ''}`}
           onClick={() => {
             isDisableFooter && setShowRangeMask(true)
           }}
@@ -286,10 +264,7 @@ const RangePanel = () => {
       )}
       {showRangeMask && (
         <React.Fragment>
-          <div
-            className='hi-datepicker__mask'
-            onClick={() => setShowRangeMask(false)}
-          />
+          <div className="hi-datepicker__mask" onClick={() => setShowRangeMask(false)} />
           <TimePanel
             dates={calRenderDates}
             onTimeChange={onTimeChange}

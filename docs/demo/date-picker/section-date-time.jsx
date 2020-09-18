@@ -18,7 +18,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoDateTime = () => (
-  <DocViewer code={code} scope={{ DatePicker }} prefix={prefix} desc={desc} />
-)
+const DemoDateTime = () => <DocViewer code={code} scope={{ DatePicker }} prefix={prefix} desc={desc} />
 export default DemoDateTime

@@ -38,6 +38,7 @@ const TimePicker = ({
     defaultValue,
     cacheDate
   })
+
   const inputChangeEvent = (val, dir) => {
     if (val.isValid()) {
       const oData = _.cloneDeep(outDate)

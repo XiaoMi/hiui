@@ -1,22 +1,11 @@
 import React from 'react'
 import classNames from 'classnames'
 
-const PickerIcon = ({
-  focus,
-  type,
-  clearable,
-  showTime,
-  disabled,
-  onClick
-}) => {
+const PickerIcon = ({ focus, type, clearable, showTime, disabled, onClick }) => {
   const cls = classNames(
     'hi-icon',
     disabled && 'hi-icon--disabled',
-    focus && clearable
-      ? 'icon-close-circle clear'
-      : type.includes('time') || showTime
-        ? 'icon-time'
-        : 'icon-date'
+    focus && clearable ? 'icon-close-circle clear' : type.includes('time') || showTime ? 'icon-time' : 'icon-date'
   )
   return (
     <span

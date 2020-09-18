@@ -3,7 +3,7 @@ import { useEffect, useCallback, useRef } from 'react'
 const useClickOutside = (onClickOutside, dom, eventName = 'click', attachEle) => {
   const element = useRef('')
   const handleOutside = useCallback(
-    e => {
+    (e) => {
       const targetElement = typeof dom === 'function' ? dom() : dom
       const el = targetElement || element.current
       if (el) {
