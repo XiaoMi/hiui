@@ -16,7 +16,7 @@ const {
   getStyleComputedProperty
 } = new PopperJS()
 
-const Overlay = props => {
+const Overlay = (props) => {
   const {
     show,
     attachEle,
@@ -46,9 +46,14 @@ const Overlay = props => {
   let popperContainerRef
 
   if (onClickOutside) {
-    popperContainerRef = useClickOutside(e => {
-      onClickOutside && onClickOutside(e)
-    }, undefined, 'click', attachEle)
+    popperContainerRef = useClickOutside(
+      (e) => {
+        onClickOutside && onClickOutside(e)
+      },
+      undefined,
+      'click',
+      attachEle
+    )
   }
 
   const scrollCallBack = useCallback(() => {
@@ -63,9 +68,7 @@ const Overlay = props => {
       // 判断该元素中是否含有popper如果有popper在显示  就不要删除定位
       setTimeout(() => {
         if (container.querySelectorAll('.hi-popper__container').length === 0) {
-          container &&
-            isAddevent &&
-            setStyle(container, { position: cacheContainerPosition })
+          container && isAddevent && setStyle(container, { position: cacheContainerPosition })
         }
       }, 0)
       setIsAddevent(false)
@@ -75,7 +78,7 @@ const Overlay = props => {
 
   // update
   useEffect(() => {
-    let { attachEle, children, container, show } = props
+    const { attachEle, children, container, show } = props
     if (!(attachEle && show && children)) return
 
     const { cacheContainerPosition, popperRef } = state
@@ -85,8 +88,7 @@ const Overlay = props => {
     }
     // 如果在一个固定定位的元素里面的话；更改计算方式
     if (isFixed(attachEle) || !isBody(container)) {
-      cacheContainerPosition === 'static' &&
-        setStyle(container, { position: 'relative' })
+      cacheContainerPosition === 'static' && setStyle(container, { position: 'relative' })
     }
     if (!popperRef) {
       setState(
@@ -108,9 +110,7 @@ const Overlay = props => {
     const { container } = props
     setState(
       Object.assign({}, state, {
-        cacheContainerPosition: container
-          ? getStyleComputedProperty(container, 'position')
-          : 'static'
+        cacheContainerPosition: container ? getStyleComputedProperty(container, 'position') : 'static'
       })
     )
   }, [])
@@ -119,9 +119,9 @@ const Overlay = props => {
 
   const { offset = getOffset(props, state) } = state
 
-  let width = offset.width
-  let left = offset.left + 'px'
-  let top = offset.top + 'px'
+  const width = offset.width
+  const left = offset.left + 'px'
+  const top = offset.top + 'px'
   return (
     <div
       ref={popperContainerRef}
@@ -131,17 +131,12 @@ const Overlay = props => {
       style={{ left, top, zIndex }}
     >
       <div
-        ref={node => {
+        ref={(node) => {
           staticPopperRef.current = node
         }}
-        className={classNames(
-          className,
-          'hi-popper__content',
-          `hi-popper__content--${offset.placement}`,
-          {
-            'hi-popper__content--hide': popperHeight === 0 || popperWidth === 0
-          }
-        )}
+        className={classNames(className, 'hi-popper__content', `hi-popper__content--${offset.placement}`, {
+          'hi-popper__content--hide': popperHeight === 0 || popperWidth === 0
+        })}
         style={{ width, height }}
         onMouseOut={onMouseOut}
         onMouseOver={onMouseOver}
@@ -162,11 +157,7 @@ Overlay.defaultProps = {
 }
 
 Overlay.propTypes = {
-  width: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool,
-    PropTypes.number
-  ]), // 为false时不设置
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number]), // 为false时不设置
   height: PropTypes.number,
   className: PropTypes.string,
   show: PropTypes.bool,

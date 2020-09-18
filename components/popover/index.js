@@ -73,7 +73,7 @@ export default class Popover extends Component {
     }
   }
 
-  handlePopperMouseOut = () => {
+  handlePopperMouseLeave = () => {
     const { trigger } = this.props
     if (trigger === 'hover') {
       this.hidePopper()
@@ -145,7 +145,7 @@ export default class Popover extends Component {
           width={width}
           overlayClassName={overlayClassName}
           onMouseOver={this.handlePopperMouseOver}
-          onMouseOut={this.handlePopperMouseOut}
+          onMouseLeave={this.handlePopperMouseLeave}
         >
           <div ref={this.popperRef} className={classNames('hi-popover-base', `hi-popover-${placement}`)}>
             {title && <div className='hi-popover__title'>{title}</div>}
