@@ -284,7 +284,7 @@ const Tree = (props) => {
     data.forEach((d, index) => {
       if (d.id === itemId) {
         d.title = nodeEdited.title
-        delete d['TREE_NODE_TYPE']
+        delete d.TREE_NODE_TYPE
       } else {
         if (d.children) {
           _saveEdit(itemId, d.children, nodeEdited)
@@ -298,10 +298,10 @@ const Tree = (props) => {
       const dataCache = _.cloneDeep(cacheData)
       _saveEdit(enode.id, dataCache, nodeEdited)
       if (onBeforeSave) {
-        const result = onBeforeSave(enode, { before: cacheData, after: dataCache }, enode.depth)
+        const result = onBeforeSave(nodeEdited, { before: cacheData, after: dataCache }, enode.depth)
         if (result === true) {
           updateCacheData(dataCache)
-          onSave(enode, dataCache)
+          onSave(nodeEdited, dataCache)
         }
       } else {
         updateCacheData(dataCache)
@@ -418,7 +418,7 @@ const Tree = (props) => {
         <div className={`${PREFIX}__searcher`}>
           <Input
             value={searchValue}
-            type='text'
+            type="text"
             placeholder={placeholder}
             onChange={(e) => {
               const matchedNodes = getMatchedNodes(cacheData, e.target.value)
@@ -431,11 +431,11 @@ const Tree = (props) => {
               setMatchedNodes(matchedNodes)
               setFilteredIds(_.uniq(filteredNodes))
             }}
-            append={<Button icon='search' />}
+            append={<Button icon="search" />}
             style={{ width: '250px', marginBottom: '24px' }}
           />
           {matchedNodes.length === 0 && searchValue !== '' && (
-            <div className='searcher__result--empty'>{emptyContent}</div>
+            <div className="searcher__result--empty">{emptyContent}</div>
           )}
         </div>
       )}
