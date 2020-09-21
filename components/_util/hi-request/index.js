@@ -17,17 +17,17 @@ const InternalRequest = (options, host) => {
     return type === 'jsonp' ? jsonp : download
   }
   return axiosIns(
-    type === 'basics'
+    type === 'upload'
       ? {
-        url,
-        type: 'basics',
-        ...options
-      }
+          url,
+          method: 'post',
+          ...upload(options).options
+        }
       : {
-        url,
-        method: 'post',
-        ...upload(options).options
-      }
+          url,
+          type: 'basics',
+          ...options
+        }
   )
 }
 const HiRequest = (options, host) => {
@@ -35,7 +35,7 @@ const HiRequest = (options, host) => {
 }
 // 请求语法糖： reguest.get HiRequest.post ……
 const METHODS = ['get', 'post', 'delete', 'put', 'patch', 'head', 'options']
-METHODS.forEach(method => {
+METHODS.forEach((method) => {
   HiRequest[method] = (url, options) => HiRequest({ ...options, method, url })
 })
 // 取消请求
@@ -46,7 +46,7 @@ HiRequest.CancelToken = () => {
  * 获取cookies中的值作为参数使用
  * @param key
  */
-HiRequest.getCookiesParam = key => {
+HiRequest.getCookiesParam = (key) => {
   return Cookies.get(key)
 }
 // add jsonp

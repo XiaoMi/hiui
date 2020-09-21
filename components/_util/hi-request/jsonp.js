@@ -6,7 +6,7 @@ const defaultJsonpOptions = {
 const generateCallbackFunction = () => {
   return `jsonp_${Date.now()}_${Math.ceil(Math.random() * 100000)}`
 }
-const clearFunction = functionName => {
+const clearFunction = (functionName) => {
   try {
     delete window[functionName]
   } catch (e) {
@@ -14,7 +14,7 @@ const clearFunction = functionName => {
   }
 }
 
-const removeScript = scriptId => {
+const removeScript = (scriptId) => {
   const script = document.getElementById(scriptId)
   if (script) {
     document.getElementsByTagName('head')[0].removeChild(script)
@@ -26,13 +26,11 @@ const jsonp = (_url, options = defaultJsonpOptions) => {
   let timeoutId
   return new Promise((resolve, reject) => {
     const callbackFunction =
-      options && options.jsonpCallbackFunction
-        ? options.jsonpCallbackFunction
-        : generateCallbackFunction()
+      options && options.jsonpCallbackFunction ? options.jsonpCallbackFunction : generateCallbackFunction()
 
     const scriptId = `${jsonpCallback}_${callbackFunction}`
 
-    window[callbackFunction] = response => {
+    window[callbackFunction] = (response) => {
       resolve({
         ok: true,
         // keep consistent with fetch API
@@ -49,10 +47,7 @@ const jsonp = (_url, options = defaultJsonpOptions) => {
     url += url.indexOf('?') === -1 ? '?' : '&'
 
     const jsonpScript = document.createElement('script')
-    jsonpScript.setAttribute(
-      'src',
-      `${url}${jsonpCallback}=${callbackFunction}`
-    )
+    jsonpScript.setAttribute('src', `${url}${jsonpCallback}=${callbackFunction}`)
     if (options && options.charset) {
       jsonpScript.setAttribute('charset', options.charset)
     }

@@ -6,7 +6,7 @@ const download = (options, host) => {
 
   Object.assign(options, { responseType: 'blob' })
   axiosIns({ ...options, url }).then(
-    res => {
+    (res) => {
       const { downloadSuccess } = options
       const blob = new window.Blob([res.data])
       const downloadElement = document.createElement('a')
@@ -19,7 +19,7 @@ const download = (options, host) => {
       window.URL.revokeObjectURL(href) // 释放blob对象
       downloadSuccess && downloadSuccess(res)
     },
-    error => {
+    (error) => {
       const { downloadFail } = options
       downloadFail && downloadFail(error)
     }

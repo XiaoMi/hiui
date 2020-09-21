@@ -40,6 +40,7 @@ const InternalSelect = (props) => {
     overlayClassName,
     setOverlayContainer
   } = props
+
   const selectInputContainer = useRef()
   const [dropdownItems, setDropdownItems] = useState(data)
   const [focusedIndex, setFocusedIndex] = useState(0)
@@ -278,16 +279,21 @@ const InternalSelect = (props) => {
       params = {},
       key,
       error,
+      credentials,
+      withCredentials = false,
       ...options
     } = _dataSource
     // 处理Key
 
     options.params = key ? { [key]: keyword, ...params } : params
 
+    const _withCredentials = withCredentials || credentials === 'include'
+
     HiRequest({
       url,
       method,
       data: data,
+      withCredentials: _withCredentials,
       error,
       beforeRequest: (config) => {
         setLoading(true)

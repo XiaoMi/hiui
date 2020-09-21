@@ -10,53 +10,43 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use(
-  config => {
+  (config) => {
     if (callBackInter.has('beforeRequest')) {
       return callBackInter.get('beforeRequest')(config)
     }
     return config
   },
-  error => {
+  (error) => {
     if (callBackInter.has('errorRequest')) {
       return callBackInter.get('errorRequest')(error)
     }
-    callBackInter.has('errorCallback') &&
-      callBackInter.get('errorCallback')(error)
+    callBackInter.has('errorCallback') && callBackInter.get('errorCallback')(error)
     return error
   }
 )
 
 axiosInstance.interceptors.response.use(
-  response => {
+  (response) => {
     if (callBackInter.has('beforeResponse')) {
       return callBackInter.get('beforeResponse')(response)
     }
     return response
   },
-  error => {
+  (error) => {
     if (callBackInter.has('errorResponse')) {
       return callBackInter.get('errorResponse')(error)
     }
-    callBackInter.has('errorCallback') &&
-      callBackInter.get('errorCallback')(error)
+    callBackInter.has('errorCallback') && callBackInter.get('errorCallback')(error)
     return error
   }
 )
 
-const axiosIns = options => {
-  const {
-    beforeResponse,
-    errorResponse,
-    beforeRequest,
-    errorRequest,
-    data,
-    errorCallback
-  } = options
+const axiosIns = (options) => {
+  const { beforeResponse, errorResponse, beforeRequest, errorRequest, data, errorCallback } = options
   if (
     options.headers &&
     options.headers['content-type'] &&
-    options.headers['content-type'].toLocaleLowerCase() ===
-      'application/x-www-form-urlencoded' &&
+    options.headers['content-type'].toLocaleLowerCase() === 'application/x-www-form-urlencoded' &&
     options.data
   ) {
     Object.assign(options, { data: qs.stringify(data) })
