@@ -58,8 +58,14 @@ const InternalSelect = (props) => {
   const [loading, setLoading] = useState(false)
   const [searchable, setSearchable] = useState(dataSource ? true : propsSearchable)
   useEffect(() => {
+    // 处理默认值的问题
+    const selectedItems = resetSelectedItems(
+      value === undefined ? defaultValue : value,
+      _.uniqBy(cacheSelectItem.concat(dropdownItems), transKeys(fieldNames, 'id')),
+      transKeys(fieldNames, 'id')
+    )
     // 在异步多选的时候时候才需要进行值的记录
-    dataSource && type === 'multiple' && setCacheSelectItem(data)
+    dataSource && type === 'multiple' && setCacheSelectItem(selectedItems)
   }, [])
   useEffect(() => {
     setSearchable(dataSource ? true : propsSearchable)
@@ -82,17 +88,17 @@ const InternalSelect = (props) => {
   }, [value])
 
   useEffect(() => {
+    const _data = _.cloneDeep(data)
+    const selectedItems = resetSelectedItems(
+      value === undefined ? defaultValue : value,
+      _data,
+      transKeys(fieldNames, 'id')
+    )
     if (!dataSource || type !== 'multiple') {
-      const _data = _.cloneDeep(data)
-      const selectedItems = resetSelectedItems(
-        value === undefined ? defaultValue : value,
-        _data,
-        transKeys(fieldNames, 'id')
-      )
       setSelectedItems(selectedItems)
       setDropdownItems(_data)
     }
-    dataSource && type === 'multiple' && setCacheSelectItem(data)
+    dataSource && type === 'multiple' && setCacheSelectItem(selectedItems)
   }, [data])
 
   const localeDatasProps = useCallback(
@@ -410,6 +416,7 @@ const InternalSelect = (props) => {
           onClear={deleteAllItems}
           fieldNames={fieldNames}
           isFocus={isFocus}
+          value={value}
           onClick={() => {
             handleInputClick()
           }}

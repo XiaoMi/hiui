@@ -14,6 +14,8 @@ export const resetSelectedItems = (value, dropdownItems = [], key) => {
   const selectedItems = dropdownItems.filter((item) => {
     return values.includes(item[key])
   })
+  console.log('selectedItems', value, values, selectedItems)
+
   // 处理子节点
   dropdownItems.forEach((item) => {
     if (item.children) {

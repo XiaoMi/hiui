@@ -99,7 +99,7 @@ class Demo extends React.Component {
       data: []
     }
     setTimeout(()=>{this.setState({
-      value:['1','2'],
+      value:['1'],
       data:[
         {
           id:'1',
@@ -116,7 +116,7 @@ class Demo extends React.Component {
     const {value, data} = this.state
     return (
       <Select
-      // type='multiple'
+      type='multiple'
       style={{width: '300px'}}
       placeholder='请选择'
       value={value}
