@@ -222,15 +222,15 @@ class Upload extends Component {
     const { fileList } = this.state
     const { name, params, headers, uploadAction, withCredentials, maxCount } = this.props
 
-    let _uploadAction = uploadAction
+    let _uploadAction = typeof uploadAction === 'string' ? uploadAction : uploadAction(file)
+
     if(_uploadAction.toString() === '[object Promise]'){
-      await _uploadAction(file).then(res=>{
+      await _uploadAction.then(res=>{
         _uploadAction = res
       }).catch((error)=>{
         throw new Error(error)
        })
     }
-
     this.setState({ fileCountLimted: fileList.length >= maxCount })
     const onerror = err => {
       const { fileList } = this.state
@@ -337,7 +337,6 @@ Upload.propTypes = {
   limit: PropTypes.number,
   buttonText: PropTypes.string,
   buttonIcon: PropTypes.string,
-  uploadAction: PropTypes.string,
   param: PropTypes.object,
   name: PropTypes.string,
   disabled: PropTypes.bool,
@@ -360,7 +359,6 @@ Upload.defaultProps = {
   accept: '',
   limit: null,
   buttonIcon: 'upload',
-  uploadAction: '',
   param: null,
   name: 'file',
   disabled: false,
