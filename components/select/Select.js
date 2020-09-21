@@ -94,10 +94,8 @@ const InternalSelect = (props) => {
       _data,
       transKeys(fieldNames, 'id')
     )
-    if (!dataSource || type !== 'multiple') {
-      setSelectedItems(selectedItems)
-      setDropdownItems(_data)
-    }
+    setSelectedItems(selectedItems)
+    setDropdownItems(_data)
     dataSource && type === 'multiple' && setCacheSelectItem(selectedItems)
   }, [data])
 

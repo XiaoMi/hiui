@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 
-import { transKeys, resetSelectedItems } from './utils'
+import { transKeys } from './utils'
 
 const MultipleInput = ({
   placeholder,
@@ -21,8 +21,7 @@ const MultipleInput = ({
   onClear,
   handleKeyDown,
   fieldNames,
-  isFocus,
-  value
+  isFocus
 }) => {
   const icon = dropdownShow ? 'up' : 'down'
   const [showCount, setShowCount] = useState(0)
@@ -57,7 +56,6 @@ const MultipleInput = ({
   }
   const selectedItems = _.uniqBy(cacheSelectItem.concat(propsSelectItem), transKeys(fieldNames, 'id'))
   const currentCount = showCount === 0 ? selectedItems.length : showCount
-  console.log('selectedItems', selectedItems, propsSelectItem, cacheSelectItem)
   return (
     <div
       className={classNames(
