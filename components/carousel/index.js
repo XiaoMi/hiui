@@ -94,6 +94,7 @@ class Carousel extends Component {
               key: index,
               style: {
                 position: 'relative',
+                zIndex:active === index ? 2 : 1,
                 opacity: active === index ? 1 : 0,
                 transition: 'opacity 300ms ease 0s',
                 left: -(rootWidth * index),
@@ -107,17 +108,17 @@ class Carousel extends Component {
         }
       </div>
       {
-        showArrows && <ul className={arrowCls}>
-          <li className='hi-carousel__arrow' onClick={this.preNextEvent.bind(this, -1)}>
+        showArrows && <ul className={arrowCls} style={{zIndex:100}}>
+          <li className='hi-carousel__arrow' style={{zIndex:10}} onClick={this.preNextEvent.bind(this, -1)}>
             <Icon name='left' />
           </li>
-          <li className='hi-carousel__arrow' onClick={this.preNextEvent.bind(this, 1)}>
+          <li className='hi-carousel__arrow' style={{zIndex:10}} onClick={this.preNextEvent.bind(this, 1)}>
             <Icon name='right' />
           </li>
         </ul>
       }
       {
-        showDots && <ul className='hi-carousel__dots'>
+        showDots && <ul className='hi-carousel__dots' style={{zIndex:'10'}}>
           {
             children.map((_, index) => {
               const cls = classNames('hi-carousel__dot', active === index && 'hi-carousel__dot--active')
@@ -131,7 +132,7 @@ class Carousel extends Component {
         </ul>
       }
       {
-        showPages && <div className='hi-carousel__pages'>
+        showPages && <div className='hi-carousel__pages' style={{zIndex:'10'}}>
           <span>{active} / {len}</span>
         </div>
       }
