@@ -68,19 +68,6 @@ const InternalSelect = (props) => {
   useEffect(() => {
     setIsFouces(dropdownShow)
   }, [dropdownShow])
-  useEffect(() => {
-    if (!dataSource) {
-      const _data = _.cloneDeep(data)
-      const selectedItems = resetSelectedItems(
-        value === undefined ? defaultValue : value,
-        _data,
-        transKeys(fieldNames, 'id')
-      )
-      setSelectedItems(selectedItems)
-      setDropdownItems(_data)
-    }
-    dataSource && type === 'multiple' && setCacheSelectItem(data)
-  }, [data])
 
   useEffect(() => {
     if (value !== undefined) {
@@ -93,6 +80,20 @@ const InternalSelect = (props) => {
       setSelectedItems(selectedItems)
     }
   }, [value])
+
+  useEffect(() => {
+    if (!dataSource || type !== 'multiple') {
+      const _data = _.cloneDeep(data)
+      const selectedItems = resetSelectedItems(
+        value === undefined ? defaultValue : value,
+        _data,
+        transKeys(fieldNames, 'id')
+      )
+      setSelectedItems(selectedItems)
+      setDropdownItems(_data)
+    }
+    dataSource && type === 'multiple' && setCacheSelectItem(data)
+  }, [data])
 
   const localeDatasProps = useCallback(
     (key) => {
@@ -351,8 +352,8 @@ const InternalSelect = (props) => {
       onChange([], [], () => {})
       return
     }
-    let _selectedItems = [...selectedItems]
-    let changedItems = []
+    const _selectedItems = [...selectedItems]
+    const changedItems = []
     filterItems.forEach((item) => {
       if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
         if (
@@ -390,7 +391,7 @@ const InternalSelect = (props) => {
     : null
   return (
     <div className={classNames('hi-select', className, extraClass)} style={style}>
-      <div className='hi-select__input-container' ref={selectInputContainer}>
+      <div className="hi-select__input-container" ref={selectInputContainer}>
         <SelectInput
           handleKeyDown={handleKeyDown}
           theme={theme}
@@ -427,7 +428,7 @@ const InternalSelect = (props) => {
         preventOverflow={preventOverflow}
         // 自定义options的方向
         placement={placement || 'top-bottom-start'}
-        className='hi-select__popper'
+        className="hi-select__popper"
         onClickOutside={() => {
           hideDropdown()
         }}

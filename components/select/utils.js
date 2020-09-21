@@ -1,7 +1,7 @@
 // 格式化value
-const parseValue = value => {
+const parseValue = (value) => {
   if (Array.isArray(value)) {
-    return value.map(v => {
+    return value.map((v) => {
       return typeof v === 'object' ? v.id : v
     })
   } else {
@@ -11,13 +11,13 @@ const parseValue = value => {
 // 整理Select数据结构 获取选中的Items id
 export const resetSelectedItems = (value, dropdownItems = [], key) => {
   const values = parseValue(value)
-  const selectedItems = dropdownItems.filter(item => {
+  const selectedItems = dropdownItems.filter((item) => {
     return values.includes(item[key])
   })
   // 处理子节点
-  dropdownItems.forEach(item => {
+  dropdownItems.forEach((item) => {
     if (item.children) {
-      item.children.forEach(childItem => {
+      item.children.forEach((childItem) => {
         values.includes(childItem[key]) && selectedItems.push(childItem)
       })
     }

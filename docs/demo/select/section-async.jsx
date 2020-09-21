@@ -2,8 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Select from '../../../components/select'
 const prefix = 'select-async'
-const desc =
-  '备选项数量较大时，通过搜索选项关键词调取存储于服务端数据备选项的一个或多个'
+const desc = '备选项数量较大时，通过搜索选项关键词调取存储于服务端数据备选项的一个或多个'
 const rightOptions = ['异步简易用法', '异步函数用法', '异步受控']
 const code = [
   {
@@ -96,8 +95,12 @@ class Demo extends React.Component {
   constructor () {
     super()
     this.state = {
+      value:[],
+      data: []
+    }
+    setTimeout(()=>{this.setState({
       value:['1','2'],
-      data: [
+      data:[
         {
           id:'1',
           title:'固定值1'
@@ -107,13 +110,13 @@ class Demo extends React.Component {
           title:'固定值2'
         }
       ]
-    }
+    })},200)
   }
   render () {
     const {value, data} = this.state
     return (
       <Select
-      type='multiple'
+      // type='multiple'
       style={{width: '300px'}}
       placeholder='请选择'
       value={value}
@@ -146,12 +149,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoAsync = () => (
-  <DocViewer
-    code={code}
-    scope={{ Select }}
-    prefix={prefix}
-    desc={desc}
-    rightOptions={rightOptions}
-  />
+  <DocViewer code={code} scope={{ Select }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
 )
 export default DemoAsync
