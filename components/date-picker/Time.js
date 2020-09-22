@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {deconstructDate} from './util'
 import TimeList from './TimeList'
-import { isSameDay, getValidDate } from './dateUtil'
+import _ from 'lodash'
+import { isSameDay, getValidDate, set } from './dateUtil'
 
 class Time extends Component {
   constructor (props) {
@@ -14,6 +15,7 @@ class Time extends Component {
         seconds: 0
       }
     }
+    this.cacheStateDate = set(getValidDate(props.date),{hours:0,minutes:0,seconds:0})
   }
   callback (date) {
     this.setState({
@@ -27,6 +29,7 @@ class Time extends Component {
         date: getValidDate(props.date)
       })
     }
+    this.cacheStateDate = set(getValidDate(props.date),{hours:0,minutes:0,seconds:0})
   }
   whenDisableChange (list, val, arrowVal) {
     let _value = val + arrowVal
@@ -64,15 +67,20 @@ class Time extends Component {
   }
   // 设置Date的选中状态
   setDisableTime (type,i,disabledTime) {
-    const { timeRangePanelType, endDate, startDate } = this.props
+    const { timeRangePanelType, endDate, startDate,value,date } = this.props
     let isDisabled = disabledTime.includes(i)
+  
     if(this.props.isCheckTime){
-      if(timeRangePanelType ===  'left') {
-        isDisabled = deconstructDate(endDate)[type] < i
-      }
+      // if(timeRangePanelType ===  'left') {
+      //   isDisabled = deconstructDate(endDate)[type] < i
+      // }
 
       if(timeRangePanelType ===  'right'){
-        isDisabled = deconstructDate(startDate)[type] > i
+       isDisabled = Date.parse(set(_.cloneDeep(this.cacheStateDate),{[type]:i})) < Date.parse(startDate)
+       if(isDisabled){
+        this.cacheStateDate = set(_.cloneDeep(this.cacheStateDate),{[type]:i})
+        console.log('this.cacheStateDate',this.cacheStateDate,{[type]:i})
+       }
       }
     }
 
@@ -116,6 +124,7 @@ class Time extends Component {
       count = 60
     }
     for (let i = 0; i < count; i += 1) {
+
       if(i%step === 0 || i === 0){
         datas.push({
           value: i,
@@ -164,6 +173,8 @@ class Time extends Component {
       minutes: showMinute,
       seconds: showSecond
     } = this.isShowHMS()
+    
+
     return (
       <div className='hi-timepicker__body'>
         <div className='hi-timepicker__timeheader'>
