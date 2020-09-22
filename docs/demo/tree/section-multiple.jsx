@@ -57,7 +57,7 @@ class Demo extends React.Component {
             console.log('>>>>>',a,b,c)
             }}
           highlightable
-          onClick={data=>{console.log('tree node click',data)}}
+          onSelect={(item) => console.log('select node', item)}
         />
       </div>
     )
