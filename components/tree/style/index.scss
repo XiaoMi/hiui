@@ -63,6 +63,54 @@ $fontColor: #383e47 !default;
       margin-top: -6px;
     }
 
+    &__indent {
+      width: 16px;
+      height: 100%;
+      display: inline-block;
+    }
+
+    &--line {
+      position: relative;
+
+      span:last-of-type {
+        .tree-node__indent {
+          &::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background-color: #999;
+            left: 50%;
+            top: 50%;
+          }
+        }
+      }
+
+      .tree-node__indent {
+        position: relative;
+
+        &::before {
+          content: '';
+          position: absolute;
+          width: 1px;
+          height: calc(100% + 4px);
+          background-color: #999;
+          left: 8px;
+        }
+
+        // &:after {
+        //   content:'';
+        //   position:absolute;
+        //   width: 100%;
+        //   height: 1px;
+        //   background-color: #999;
+        //   left: 50%;
+        //   top: 50%
+
+        // }
+      }
+    }
+
     &__title {
       display: flex;
       flex: 1;

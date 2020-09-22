@@ -41,7 +41,7 @@ const TreeNode = ({ node }) => {
   // 渲染 apperance 占位
   const renderApperancePlaceholder = useCallback((apperance) => {
     if (apperance === 'folder') {
-      return <Icon name='file' style={{ marginRight: 2 }} />
+      return <Icon name="file" style={{ marginRight: 2 }} />
     }
   }, [])
   // 渲染展开收起
@@ -80,7 +80,9 @@ const TreeNode = ({ node }) => {
     return Array(times)
       .fill('')
       .map((indent, index) => (
-        <span key={index} style={{ width: 16, display: 'inline-block', marginRight: index === times - 1 ? 3 : 0 }} />
+        <span key={index} style={{ alignSelf: 'stretch' }}>
+          <span className="tree-node__indent" style={{ marginRight: index === times - 1 ? 3 : 0 }} />
+        </span>
       ))
   }, [])
 
@@ -184,13 +186,13 @@ const TreeNode = ({ node }) => {
     [treeNodeRef, draggable, treeNodeRender, direction, dragId]
   )
   return (
-    <li className='tree-node'>
+    <li className={Classnames('tree-node', { 'tree-node--line': apperance === 'line' })}>
       {renderIndent(
         (node.children && node.children.length) || (onLoadChildren && !node.isLeaf && !node.children)
           ? node.depth
           : apperance !== 'default'
-            ? node.depth
-            : (node.depth && node.depth + 1) || 1
+          ? node.depth
+          : (node.depth && node.depth + 1) || 1
       )}
       {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
       {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf && !node.children)) &&
