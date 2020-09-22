@@ -43,7 +43,8 @@ const legacyMap = {
   internet: 'global',
   info: 'document-exclamation',
   'info-circle-o': 'info-circle',
-  hide: 'eye-invisible'
+  hide: 'eye-invisible',
+  component: 'relation'
 }
 
 const Icon = ({ name, filled = false, className, style = {}, onClick }) => {

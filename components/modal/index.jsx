@@ -90,7 +90,7 @@ const ModalComp = ({
         >
           <div
             className={Classnames(`${PREFIX}__wrapper`, `${PREFIX}__wrapper--${size}`)}
-            style={{ ...style, width, height }}
+            style={{ width, height, ...style }}
           >
             <div
               className={Classnames(`${PREFIX}__header`, {
