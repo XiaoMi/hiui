@@ -174,12 +174,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoType = () => (
-  <DocViewer
-    code={code}
-    scope={{ Select }}
-    prefix={prefix}
-    rightOptions={rightOptions}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ Select }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
 )
 export default DemoType

@@ -307,7 +307,7 @@ const InternalSelect = (props) => {
     }).then(
       (response) => {
         setLoading(false)
-        const dataItems = transformResponse && transformResponse(response)
+        const dataItems = transformResponse && transformResponse(response.data, response)
         if (Array.isArray(dataItems)) {
           setDropdownItems(dataItems)
         } else {

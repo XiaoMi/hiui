@@ -7,7 +7,7 @@ import CoverCard from './CoverCard'
 const Card = ({
   style,
   className,
-  size = 'default',
+  size,
   hoverable,
   title,
   extra,

@@ -25,8 +25,8 @@ class Demo extends React.Component {
           key: 'id',
           url: 'https://mife-gallery.test.mi.com/hiui/stores',
           transformResponse: (res) => {
-            if(res.status === 200){
-              return res.data.data
+            if(res.code === 200){
+              return res.data
             }
             return []
           }
@@ -68,8 +68,8 @@ class Demo extends React.Component {
           url: 'https://mife-gallery.test.mi.com/hiui/stores',
           params:{id: keyword},
           transformResponse: (res) => {
-            if(res.status === 200){
-              return res.data.data
+            if(res.code === 200){
+              return res.data
             }
             return []
           }
@@ -127,8 +127,8 @@ class Demo extends React.Component {
           url: 'https://mife-gallery.test.mi.com/hiui/stores',
           params:{id: keyword},
           transformResponse: (res) => {
-            if(res.status === 200){
-              return res.data.data
+            if(res.code === 200){
+              return res.data
             }
             return []
           }
