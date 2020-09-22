@@ -62,14 +62,18 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | draggable          | 节点可拖拽                                                              | boolean                                                                  | true \| false                   | false     |
 | searchable         | 节点可搜索                                                              | boolean                                                                  | true \| false                   | false     |
 | selectable         | 节点是否可选中                                                                | boolean                                                                  | true \| false                   | true     |
-| loadTreeNode       | 点击异步加载子项                                                        | LoadTreeNode \| (id: string) => LoadTreeNode                             | -                               | -         |
+| onLoadChildren       | 点击异步加载子项                                                        | (treeNode: TreeNode) => LoadChildren                             | -                               | -         |
 | defaultExpandAll   | 是否默认展开所有树节点                                                  | boolean                                                                  | true \| false                   | false     |
 | defaultSelectedId | 默认选中的节点                                                          | string                                                                  | -                  | -     |
+| selectedId         | 选中的节点                                                         | string                                                                | -                               | -         |
+| defaultCheckedIds        | 默认选中的复选框的节点                                                         | string[]                                                                 | -                               | -         |
 | checkedIds         | 选中的复选框的节点                                                         | string[]                                                                 | -                               | -         |
+| defaultExpandedIds        | 默认展开的节点                                                         | string[]                                                                 | -                               | -         |
+| expandedIds         | 展开的节点                                                         | string[]                                                                 | -                               | -         |
 | openIcon           | 表示展开的图标                                                          | string                                                                   | Icon 图标名称                   | -         |
 | closeIcon          | 表示闭合的图标                                                          | string                                                                   | Icon 图标名称                   | -         |
 | apperance          | 树形控件的展现形态                                                      | string                                                                   | 'default' \| 'line' \| 'folder' | 'default' |
-| contextMenu        | 自定义右键菜单,参考 _示例_ 及 _页面底部自定义右键菜单使用说明_          | ContextMenuOption[] \| (item: DataItem,level: number) => ContextMenuOption[]           |                                 | []        |
+| contextMenu        | 自定义右键菜单,参考 _示例_ 及 _页面底部自定义右键菜单使用说明_          | ContextMenuOption[] \| (item: DataItem, level: number) => ContextMenuOption[]           |                                 | []        |
 | onExpand           | 节点被点击(展开/收起)时触发                                             | (expanded: boolean, expandIds: string[], expandedNode: TreeNode) => void | -                               | -         |
 | onCheck            | 点击节点多选框触发                                                      | (checked: boolean, checkedIds: string[], checkedNode: TreeNode) => void  | -                               | -         |
 | onSelect            | 点击节点时触发                                                      | (selectedNode: TreeNode) => void                                            | -                               | -         |
@@ -83,7 +87,7 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 
 ## Type
 
-### LoadTreeNode
+### LoadChildren
 
 | 参数              | 说明                                                       | 类型                             | 可选值          | 默认值 |
 | ----------------- | ---------------------------------------------------------- | -------------------------------- | --------------- | ------ |
@@ -102,6 +106,7 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | title    | 树节点标题     | string \| ReactNode | -             | -      |
 | disabled | 是否禁用节点   | boolean             | true \| false | false  |
 | children | 该节点的子节点 | TreeNode[]          | -             | -      |
+| isLeaf | 是否为叶子节点 | boolean          |  true \| false            | -      |
 
 ### Level
 
