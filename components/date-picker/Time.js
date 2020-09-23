@@ -29,7 +29,9 @@ class Time extends Component {
         date: getValidDate(props.date)
       })
     }
-    this.cacheStateDate = set(getValidDate(props.date),{hours:0,minutes:0,seconds:0})
+  }
+  componentDidUpdate(){
+    this.cacheStateDate = set(getValidDate(this.props.date),{hours:0,minutes:0,seconds:0})
   }
   whenDisableChange (list, val, arrowVal) {
     let _value = val + arrowVal
@@ -67,20 +69,34 @@ class Time extends Component {
   }
   // 设置Date的选中状态
   setDisableTime (type,i,disabledTime) {
-    const { timeRangePanelType, endDate, startDate,value,date } = this.props
+    const { timeRangePanelType, startDate, date } = this.props
     let isDisabled = disabledTime.includes(i)
   
     if(this.props.isCheckTime){
-      // if(timeRangePanelType ===  'left') {
-      //   isDisabled = deconstructDate(endDate)[type] < i
-      // }
 
       if(timeRangePanelType ===  'right'){
-       isDisabled = Date.parse(set(_.cloneDeep(this.cacheStateDate),{[type]:i})) < Date.parse(startDate)
-       if(isDisabled){
-        this.cacheStateDate = set(_.cloneDeep(this.cacheStateDate),{[type]:i})
-        console.log('this.cacheStateDate',this.cacheStateDate,{[type]:i})
-       }
+        const {hours,minutes,seconds} = deconstructDate(startDate)
+        const {hours:endHours,minutes:endMinutes } = deconstructDate(date)
+        isDisabled = type === 'hours' && hours > i
+        if(type === 'minutes') {
+          isDisabled = endHours === hours && minutes > i
+          if(endHours < hours) {
+            isDisabled = true
+          }
+        }
+
+        if(type === 'seconds') {
+          if(endHours === hours){
+            isDisabled = endMinutes === minutes && seconds > i
+            if(endMinutes < minutes) {
+              isDisabled = true
+            }
+          }
+          if(endHours < hours) {
+            isDisabled = true
+          }
+        }
+
       }
     }
 
