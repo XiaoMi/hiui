@@ -59,15 +59,9 @@ class Preview extends Component {
       })
     }
   }
-  // static getDerivedStateFromProps (props, state) {
-  //   console.log(state)
-  //   if (props.activeIndex !== state.activeIndex) {
-  //     return {
-  //       activeIndex: props.activeIndex
-  //     }
-  //   }
-  //   return null
-  // }
+  /**
+   * 自动滚动函数，目前 API 未暴露
+   */
   addAutoPlayEvent () {
     const { duration } = this.props
     if (duration && duration > 0) {
@@ -127,6 +121,12 @@ class Preview extends Component {
       })
     }
   }
+  /**
+   * 缩放事件
+   * @param {*} x 鼠标位置 x
+   * @param {*} y 鼠标位置 y
+   * @param {*} direct 方向
+   */
   handleZoom (x, y, direct) {
     const speed = 0.05
     let imgCenterXY = this.getImageCenterXY()
@@ -160,6 +160,10 @@ class Preview extends Component {
       y: top + height / 2
     }
   }
+  /**
+   * 修改图片样式
+   * @param {*} args 计算后的部分样式
+   */
   changeImageState (args) {
     const { style } = this.state
     const _style = Object.assign({}, style, { ...args })
@@ -180,6 +184,10 @@ class Preview extends Component {
     )
   }
 
+  /**
+   * 加载图片 加载完成后生成计算样式
+   * @param {*} imageIndex 加载的图片索引
+   */
   loadImg (imageIndex) {
     const { images, simpleData } = this.props
     if (!images || images.length === 0) {
