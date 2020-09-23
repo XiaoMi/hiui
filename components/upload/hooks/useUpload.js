@@ -10,7 +10,7 @@ const useUpload = ({
   onChange,
   uploadAction,
   maxSize,
-  name = 'name',
+  name = 'file',
   withCredentials,
   headers,
   data,
