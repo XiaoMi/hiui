@@ -10,7 +10,7 @@ import { FILEDS_INIT, FILEDS_UPDATE, FILEDS_REMOVE } from './FormReducer'
 import * as HIUI from '../'
 
 // 指定子元素位置
-const getItemPosition = itemPosition => {
+const getItemPosition = (itemPosition) => {
   let _itemPosition = 'flex-end'
   switch (itemPosition) {
     case 'top':
@@ -28,15 +28,8 @@ const getItemPosition = itemPosition => {
   return _itemPosition
 }
 
-const FormItem = props => {
-  const {
-    formProps,
-    formState,
-    dispatch,
-    internalValuesChange,
-    listname,
-    _type
-  } = useContext(FormContext)
+const FormItem = (props) => {
+  const { formProps, formState, dispatch, internalValuesChange, listname, _type } = useContext(FormContext)
   const {
     children,
     label,
@@ -68,9 +61,7 @@ const FormItem = props => {
     if (_type === 'list' && name) {
       _propsField = _propsField + '#' + name
     }
-    return Array.isArray(propsField)
-      ? propsField[propsField.length - 1]
-      : _propsField
+    return Array.isArray(propsField) ? propsField[propsField.length - 1] : _propsField
   }, [propsField, name])
 
   const [field, setField] = useState(getItemfield())
@@ -86,20 +77,21 @@ const FormItem = props => {
         value: _value,
         ...updateFieldInfoToReducer()
       }
-      const _fields = _.cloneDeep(fields)
-      _fields.forEach(item => {
-        if (item.field === childrenFiled.field) {
-          Object.assign(item, childrenFiled)
-        }
-      })
-      const allValues = {}
-      _fields.forEach(item => {
-        const { field, value } = item
-        allValues[field] = value
-      })
-      dispatch({ type: FILEDS_UPDATE, payload: _fields })
-      triggerType === 'onChange' &&
-        internalValuesChange({ [field]: _value }, allValues)
+      if (childrenFiled.field) {
+        const _fields = _.cloneDeep(fields)
+        _fields.forEach((item) => {
+          if (item.field === childrenFiled.field) {
+            Object.assign(item, childrenFiled)
+          }
+        })
+        const allValues = {}
+        _fields.forEach((item) => {
+          const { field, value } = item
+          allValues[field] = value
+        })
+        dispatch({ type: FILEDS_UPDATE, payload: _fields })
+        triggerType === 'onChange' && internalValuesChange({ [field]: _value }, allValues)
+      }
     },
     [fields]
   )
@@ -113,18 +105,16 @@ const FormItem = props => {
 
   // 获取该单元的规则
   const getRules = useCallback(() => {
-    const selfRules = required
-      ? Object.assign({}, props.rules, { required })
-      : props.rules
+    const selfRules = required ? Object.assign({}, props.rules, { required }) : props.rules
     let formRules = formProps.rules
 
     formRules = formRules ? formRules[field] : []
     return [].concat(selfRules || formRules || [])
   }, [props, formProps, required])
   // 过滤含有该trigger触发方式的rules
-  const getFilteredRule = useCallback(trigger => {
+  const getFilteredRule = useCallback((trigger) => {
     const rules = getRules()
-    return rules.filter(rule => {
+    return rules.filter((rule) => {
       return !rule.trigger || rule.trigger.indexOf(trigger) !== -1
     })
   })
@@ -137,7 +127,7 @@ const FormItem = props => {
       }
       return true
     }
-    let rules = getRules()
+    const rules = getRules()
     const validator = new AsyncValidator({
       [field]: rules
     })
@@ -147,7 +137,7 @@ const FormItem = props => {
       {
         firstFields: true
       },
-      errors => {
+      (errors) => {
         setError(errors ? errors[0].message : '')
         setValidating(false)
         if (cb instanceof Function) {
@@ -172,12 +162,11 @@ const FormItem = props => {
   }
   // initValue
   useEffect(() => {
-    const isExist = fields.some(item => {
+    const isExist = fields.some((item) => {
       return item.field === field
     })
     if (field && !isExist) {
-      let value =
-        initialValues && initialValues[field] ? initialValues[field] : ''
+      let value = initialValues && initialValues[field] ? initialValues[field] : ''
       if (_type === 'list' && listItemValue) {
         value = listItemValue[name] ? listItemValue[name] : listItemValue
       }
@@ -197,11 +186,11 @@ const FormItem = props => {
 
   // 判断是否含有Rules
   const isRequired = useCallback(() => {
-    let rules = getRules()
+    const rules = getRules()
     let isRequired = false
 
     if (rules && rules.length) {
-      rules.every(rule => {
+      rules.every((rule) => {
         if (rule.required) {
           isRequired = true
           return false
@@ -217,8 +206,8 @@ const FormItem = props => {
     (triggerType, currentValue) => {
       // 同步数据 reducer
       updateField(currentValue, triggerType)
-      let rules = getRules()
-      const hasTriggerType = rules.some(rule => {
+      const rules = getRules()
+      const hasTriggerType = rules.some((rule) => {
         const { trigger = '' } = rule
         return trigger.includes(triggerType)
       })
@@ -232,22 +221,18 @@ const FormItem = props => {
     return formProps.labelPosition === 'top'
       ? '100%'
       : !Number.isNaN(Number(labelWidth))
-        ? Number(labelWidth)
-        : labelWidth
+      ? Number(labelWidth)
+      : labelWidth
   }, [props.labelWidth, formProps.labelWidth])
 
   const setEvent = (eventName, component, componentProps, e, ...args) => {
     e.persist && e.persist()
-    const displayName =
-      component && component.type && component.type.displayName
+    const displayName = component && component.type && component.type.displayName
 
     const _props = componentProps || children.props
     eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
     eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
-    let value =
-      e.target && e.target.hasOwnProperty(valuePropName)
-        ? e.target[valuePropName]
-        : e
+    let value = e.target && e.target.hasOwnProperty(valuePropName) ? e.target[valuePropName] : e
     if (displayName === 'Counter') {
       value = args[0]
     }
@@ -262,7 +247,7 @@ const FormItem = props => {
     let _value = value
     if (_type === 'list') {
       const _fields = _.cloneDeep(fields)
-      _fields.forEach(item => {
+      _fields.forEach((item) => {
         if (item.field === field) {
           _value = item.value
         }
@@ -279,7 +264,7 @@ const FormItem = props => {
             setEvent('onChange', HIUIComponent, componentProps, e, ...args)
           },
           onBlur: (e, ...args) => {
-            setEvent('onBlur',HIUIComponent, componentProps, e, ...args)
+            setEvent('onBlur', HIUIComponent, componentProps, e, ...args)
           }
         })
       } else {
@@ -293,14 +278,14 @@ const FormItem = props => {
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {
-        [valuePropName]: _value,
-        onChange: (e, ...args) => {
-          setEvent('onChange', children, '', e, ...args)
-        },
-        onBlur: (e, ...args) => {
-          setEvent('onBlur', children, '', e, ...args)
-        }
-      })
+          [valuePropName]: _value,
+          onChange: (e, ...args) => {
+            setEvent('onChange', children, '', e, ...args)
+          },
+          onBlur: (e, ...args) => {
+            setEvent('onBlur', children, '', e, ...args)
+          }
+        })
   }
 
   const shouldShowColon =
@@ -313,32 +298,17 @@ const FormItem = props => {
   obj['hi-form-item--required'] = isRequired() || required
 
   return (
-    <div
-      className={classNames('hi-form-item', className, obj)}
-      style={style}
-      key={field}
-    >
+    <div className={classNames('hi-form-item', className, obj)} style={style} key={field}>
       {label || label === '' ? (
-        <label
-          className='hi-form-item__label'
-          style={{ width: labelWidth() }}
-          key={field + 'label'}
-        >
+        <label className="hi-form-item__label" style={{ width: labelWidth() }} key={field + 'label'}>
           {(typeof label === 'string' && label.trim()) || label}
           {shouldShowColon && colon}
         </label>
       ) : (
-        <span
-          className='hi-form-item__span'
-          style={{ width: labelWidth() }}
-          key={field + 'label'}
-        />
+        <span className="hi-form-item__span" style={{ width: labelWidth() }} key={field + 'label'} />
       )}
       <div className={'hi-form-item' + '__content'} key={field + '__content'}>
-        <div
-          className={'hi-form-item' + '__children'}
-          style={{ alignItems: getItemPosition(contentPosition) }}
-        >
+        <div className={'hi-form-item' + '__children'} style={{ alignItems: getItemPosition(contentPosition) }}>
           {renderChildren()}
         </div>
         <div
@@ -355,11 +325,7 @@ const FormItem = props => {
 }
 
 FormItem.propTypes = {
-  field: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.array,
-    PropTypes.number
-  ]),
+  field: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.number]),
   rules: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   required: PropTypes.bool,
   label: PropTypes.string,

@@ -6,7 +6,7 @@ import FormReducer, { FILEDS_UPDATE, FILEDS_UPDATE_LIST } from './FormReducer'
 import FormContext from './FormContext'
 import { transformValues } from './utils'
 
-const getClassNames = props => {
+const getClassNames = (props) => {
   const { labelPlacement, labelPosition, placement, inline, readOnly } = props
   const _className = {}
 
@@ -20,7 +20,7 @@ const getClassNames = props => {
   return _className
 }
 
-const InternalForm = props => {
+const InternalForm = (props) => {
   const {
     children,
     className,
@@ -39,9 +39,9 @@ const InternalForm = props => {
   const { fields, listNames, listValues } = state
   // 用户手动设置表单数据
   const setFieldsValue = useCallback(
-    values => {
+    (values) => {
       const _fields = _.cloneDeep(fields)
-      _fields.forEach(item => {
+      _fields.forEach((item) => {
         const { field } = item
         if (values.hasOwnProperty(field)) {
           const value = values[field]
@@ -51,15 +51,11 @@ const InternalForm = props => {
       })
       dispatch({ type: FILEDS_UPDATE, payload: _fields })
       // 处理 list value
-      Object.keys(values).forEach(key => {
+      Object.keys(values).forEach((key) => {
         listNames.includes(key) &&
           dispatch({
             type: FILEDS_UPDATE_LIST,
-            payload: Object.assign(
-              {},
-              { ...listValues },
-              { [key]: values[key] }
-            )
+            payload: Object.assign({}, { ...listValues }, { [key]: values[key] })
           })
       })
     },
@@ -69,15 +65,11 @@ const InternalForm = props => {
   useEffect(() => {
     // 处理 list value
     initialValues &&
-      Object.keys(initialValues).forEach(key => {
+      Object.keys(initialValues).forEach((key) => {
         listNames.includes(key) &&
           dispatch({
             type: FILEDS_UPDATE_LIST,
-            payload: Object.assign(
-              {},
-              { ...listValues },
-              { [key]: initialValues[key] }
-            )
+            payload: Object.assign({}, { ...listValues }, { [key]: initialValues[key] })
           })
       })
   }, [])
@@ -87,8 +79,8 @@ const InternalForm = props => {
       const _transformValues = transformValues(allValues, fields)
       const _changeValues = _.cloneDeep(changeValues)
 
-      Object.keys(changeValues).forEach(changeValuesKey => {
-        fields.forEach(filedItem => {
+      Object.keys(changeValues).forEach((changeValuesKey) => {
+        fields.forEach((filedItem) => {
           const { field, _type, listname } = filedItem
           if (field === changeValuesKey && _type === 'list') {
             _changeValues[listname] = _transformValues[listname]
@@ -107,22 +99,18 @@ const InternalForm = props => {
       const changeValues = {}
       const cacheallValues = {}
       let _fields = _.cloneDeep(fields)
-      fields.forEach(item => {
+      fields.forEach((item) => {
         const { field, value } = item
         cacheallValues[field] = value
       })
 
-      _fields = _fields.filter(childrenField => {
-        return Array.isArray(resetNames)
-          ? resetNames.includes(childrenField.field)
-          : true
+      _fields = _fields.filter((childrenField) => {
+        return Array.isArray(resetNames) ? resetNames.includes(childrenField.field) : true
       })
 
-      _fields.forEach(childrenField => {
+      _fields.forEach((childrenField) => {
         const value =
-          toDefault && initialValues && initialValues[childrenField.field]
-            ? initialValues[childrenField.field]
-            : ''
+          toDefault && initialValues && initialValues[childrenField.field] ? initialValues[childrenField.field] : ''
         if (!_.isEqual(childrenField.value, value)) {
           changeValues[childrenField.field] = value
         }
@@ -134,10 +122,7 @@ const InternalForm = props => {
       dispatch({ type: FILEDS_UPDATE, payload: _fields })
       cb instanceof Function && cb()
       // 比较耗性能
-      internalValuesChange(
-        changeValues,
-        Object.assign({}, { ...cacheallValues }, { ...changeValues })
-      )
+      internalValuesChange(changeValues, Object.assign({}, { ...cacheallValues }, { ...changeValues }))
     },
     [fields, initialValues, onValuesChange]
   )
@@ -152,22 +137,20 @@ const InternalForm = props => {
         return
       }
 
-      const _fields = fields.filter(fieldChild => {
+      const _fields = fields.filter((fieldChild) => {
         const { field, value } = fieldChild
         values[field] = value
-        return Array.isArray(validateNames)
-          ? validateNames.includes(field)
-          : true
+        return Array.isArray(validateNames) ? validateNames.includes(field) : true
       })
 
-      _fields.forEach(fieldChild => {
+      _fields.forEach((fieldChild) => {
         const { field, value } = fieldChild
         // 对指定的字段进行校验  其他字段过滤不校验
         fieldChild.validate(
           '',
-          error => {
+          (error) => {
             if (error) {
-              const errorsMsg = error.map(err => {
+              const errorsMsg = error.map((err) => {
                 return err.message
               })
               errors[field] = { errors: errorsMsg }
@@ -186,7 +169,7 @@ const InternalForm = props => {
   const validateField = useCallback(
     (key, cb) => {
       let value
-      const field = fields.filter(fieldChild => {
+      const field = fields.filter((fieldChild) => {
         if (fieldChild.field === key) {
           value = fieldChild.value
           return true
@@ -199,7 +182,7 @@ const InternalForm = props => {
 
       field.validate(
         '',
-        error => {
+        (error) => {
           cb && cb(error)
         },
         value
@@ -224,7 +207,7 @@ const InternalForm = props => {
     <form
       className={classNames('hi-form', className, getClassNames(props))}
       style={style}
-      onSubmit={e => {
+      onSubmit={(e) => {
         // 阻止只有一个表单时候；回车会触发form的提交操作
         e.preventDefault()
         return false
