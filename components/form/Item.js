@@ -79,6 +79,7 @@ const FormItem = (props) => {
       }
       if (childrenFiled.field) {
         const _fields = _.cloneDeep(fields)
+
         _fields.forEach((item) => {
           if (item.field === childrenFiled.field) {
             Object.assign(item, childrenFiled)

@@ -19,6 +19,7 @@ const FormReducer = (state, action) => {
         return action.payload !== item.field && action.payload !== item.propsField
       })
       return Object.assign({}, { ...state }, { fields: _fields })
+
     case FILEDS_INIT_LIST:
       const { listNames } = state
       !listNames.includes(action.payload) && listNames.push(action.payload)
