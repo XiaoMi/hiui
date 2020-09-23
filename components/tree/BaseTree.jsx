@@ -52,7 +52,6 @@ const BaseTree = ({
     data,
     flatData
   })
-
   return (
     <TreeContext.Provider
       value={{
@@ -80,15 +79,15 @@ const BaseTree = ({
       }}
     >
       <div className={PREFIX}>
-        <ul className='root-list'>
+        <ul className="root-list">
           {flatData
             .filter((node) => {
               const ancestors = getAncestorIds(node.id, data)
               return ancestors.every((ancestor) => expandedNodeIds.includes(ancestor))
             })
-            .map((node) => (
-              <TreeNode key={node.id} node={node} />
-            ))}
+            .map((node) => {
+              return <TreeNode key={node.id} node={node} />
+            })}
         </ul>
       </div>
     </TreeContext.Provider>

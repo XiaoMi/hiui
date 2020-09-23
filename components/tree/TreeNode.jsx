@@ -76,12 +76,18 @@ const TreeNode = ({ node }) => {
     [loading, setLoading, apperance]
   )
   // 渲染空白占位
-  const renderIndent = useCallback((times) => {
+  const renderIndent = useCallback((times, isSiblingLast, isParentSiblingLast) => {
     return Array(times)
       .fill('')
       .map((indent, index) => (
         <span key={index} style={{ alignSelf: 'stretch' }}>
-          <span className="tree-node__indent" style={{ marginRight: index === times - 1 ? 3 : 0 }} />
+          <span
+            className={Classnames('tree-node__indent', {
+              'tree-node__indent--parent-tail': isParentSiblingLast && times - 2 === index,
+              'tree-node__indent--tail': isSiblingLast && times - 1 === index
+            })}
+            style={{ marginRight: index === times - 1 ? 3 : 0 }}
+          />
         </span>
       ))
   }, [])
@@ -192,7 +198,9 @@ const TreeNode = ({ node }) => {
           ? node.depth
           : apperance !== 'default'
           ? node.depth
-          : (node.depth && node.depth + 1) || 1
+          : (node.depth && node.depth + 1) || 1,
+        node.id === (node.sibling && node.sibling[node.sibling.length - 1].id),
+        node.parentId === (node.parent && node.parent.sibling && node.parent.sibling[node.parent.sibling.length - 1].id)
       )}
       {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
       {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf && !node.children)) &&

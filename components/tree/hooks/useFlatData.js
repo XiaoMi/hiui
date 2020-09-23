@@ -9,6 +9,8 @@ const transformData = (_data) => {
       const _children = _data[i].children.map((child) => {
         child.depth = _data[i].depth + 1
         child.parentId = _data[i].id
+        child.sibling = _data[i].children
+        child.parent = _data[i]
         return child
       })
       _data.splice(i + 1, 0, ..._children)
@@ -18,7 +20,7 @@ const transformData = (_data) => {
 const useFlatData = (data) => {
   const [flatData, setFlatData] = useState(data)
   useEffect(() => {
-    let _data = _.cloneDeep(data)
+    const _data = _.cloneDeep(data)
     transformData(_data)
     setFlatData(_data)
   }, [data])
