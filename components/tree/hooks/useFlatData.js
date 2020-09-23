@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import _ from 'lodash'
+import { getAncestors } from '../util'
 const transformData = (_data) => {
   for (let i = 0; i < _data.length; i++) {
     if (!_data[i].depth) {
@@ -11,6 +12,7 @@ const transformData = (_data) => {
         child.parentId = _data[i].id
         child.sibling = _data[i].children
         child.parent = _data[i]
+        child.ancestors = getAncestors(child.id, _data)
         return child
       })
       _data.splice(i + 1, 0, ..._children)

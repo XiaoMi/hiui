@@ -13,11 +13,33 @@ export const getParentId = (id, data) => {
   return parentId
 }
 
+export const getParent = (id, data) => {
+  let parent
+  data.forEach((item) => {
+    if (item.children) {
+      if (item.children.some((item) => item.id === id)) {
+        parent = item
+      } else if (getParent(id, item.children)) {
+        parent = getParent(id, item.children)
+      }
+    }
+  })
+  return parent
+}
+
 // 寻找某一节点的所有祖先节点
 export const getAncestorIds = (id, data, arr = []) => {
   if (getParentId(id, data)) {
     arr.push(getParentId(id, data))
     getAncestorIds(getParentId(id, data), data, arr)
+  }
+  return arr
+}
+
+export const getAncestors = (id, data, arr = []) => {
+  if (getParent(id, data)) {
+    arr.push(getParent(id, data))
+    getAncestors(getParent(id, data).id, data, arr)
   }
   return arr
 }

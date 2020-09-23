@@ -107,6 +107,7 @@ $fontColor: #383e47 !default;
         &--tail {
           &::before {
             height: calc(50%);
+            content: '' !important;
           }
         }
       }
