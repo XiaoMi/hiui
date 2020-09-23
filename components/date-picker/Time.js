@@ -64,15 +64,34 @@ class Time extends Component {
   }
   // 设置Date的选中状态
   setDisableTime (type,i,disabledTime) {
-    const { timeRangePanelType, endDate, startDate } = this.props
+    const { timeRangePanelType, startDate, date } = this.props
     let isDisabled = disabledTime.includes(i)
+  
     if(this.props.isCheckTime){
-      if(timeRangePanelType ===  'left') {
-        isDisabled = deconstructDate(endDate)[type] < i
-      }
 
       if(timeRangePanelType ===  'right'){
-        isDisabled = deconstructDate(startDate)[type] > i
+        const {hours,minutes,seconds} = deconstructDate(startDate)
+        const {hours:endHours,minutes:endMinutes } = deconstructDate(date)
+        isDisabled = type === 'hours' && hours > i
+        if(type === 'minutes') {
+          isDisabled = endHours === hours && minutes > i
+          if(endHours < hours) {
+            isDisabled = true
+          }
+        }
+
+        if(type === 'seconds') {
+          if(endHours === hours){
+            isDisabled = endMinutes === minutes && seconds > i
+            if(endMinutes < minutes) {
+              isDisabled = true
+            }
+          }
+          if(endHours < hours) {
+            isDisabled = true
+          }
+        }
+
       }
     }
 
@@ -116,6 +135,7 @@ class Time extends Component {
       count = 60
     }
     for (let i = 0; i < count; i += 1) {
+
       if(i%step === 0 || i === 0){
         datas.push({
           value: i,
@@ -164,6 +184,8 @@ class Time extends Component {
       minutes: showMinute,
       seconds: showSecond
     } = this.isShowHMS()
+    
+
     return (
       <div className='hi-timepicker__body'>
         <div className='hi-timepicker__timeheader'>
