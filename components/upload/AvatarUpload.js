@@ -20,7 +20,7 @@ const AvatarUpload = ({
   onChange,
   uploadAction,
   maxSize,
-  name,
+  name = 'file',
   withCredentials,
   headers,
   data,
@@ -79,11 +79,11 @@ const AvatarUpload = ({
   }, [])
 
   const base2blob = useCallback((dataurl, filename) => {
-    let arr = dataurl.split(',')
+    const arr = dataurl.split(',')
     const mime = arr[0].match(/:(.*?);/)[1]
     const bstr = window.atob(arr[1])
     let n = bstr.length
-    let u8arr = new Uint8Array(n)
+    const u8arr = new Uint8Array(n)
     while (n--) {
       u8arr[n] = bstr.charCodeAt(n)
     }
@@ -120,36 +120,36 @@ const AvatarUpload = ({
   const file = _fileList[0]
   return (
     <div className={`theme__${theme} hi-upload hi-upload--avatar`}>
-      <ul className='hi-upload__list'>
+      <ul className="hi-upload__list">
         {!!file &&
           (file.uploadState === 'loading' ? (
-            <li className='hi-upload__item'>
-              <img src={file.url} className='hi-upload__thumb' />
-              <div className='hi-upload__precent'>
-                <p className='hi-upload__loading-text'>
+            <li className="hi-upload__item">
+              <img src={file.url} className="hi-upload__thumb" />
+              <div className="hi-upload__precent">
+                <p className="hi-upload__loading-text">
                   {file.progressNumber
                     ? file.progressNumber < 100
                       ? file.progressNumber && file.progressNumber.toFixed(2) + '%'
                       : localeDatas.upload.uploadSuccess
                     : 0 + '%'}
                 </p>
-                <div className='hi-upload__loading-bar' style={{ width: file.progressNumber * 1.4 + 'px' }} />
+                <div className="hi-upload__loading-bar" style={{ width: file.progressNumber * 1.4 + 'px' }} />
               </div>
             </li>
           ) : (
-            <li className='hi-upload__item' onClick={() => previewImage(file, 0)} style={{ cursor: 'pointer' }}>
+            <li className="hi-upload__item" onClick={() => previewImage(file, 0)} style={{ cursor: 'pointer' }}>
               <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} />
               <Icon
-                name='close-circle'
+                name="close-circle"
                 filled
-                className='hi-upload__photo-del'
+                className="hi-upload__photo-del"
                 onClick={(e) => {
                   e.stopPropagation()
                   deleteFile(file, 0)
                 }}
               />
               {file.uploadState === 'error' && (
-                <div className='hi-upload__item--photo-error'>{localeDatas.upload.uploadFailed}</div>
+                <div className="hi-upload__item--photo-error">{localeDatas.upload.uploadFailed}</div>
               )}
             </li>
           ))}
@@ -161,8 +161,8 @@ const AvatarUpload = ({
             accept={accept}
             style={{ display: 'inline-block' }}
           >
-            <li className='hi-upload__item hi-upload__item--upload'>
-              <Icon name='plus' style={{ fontSize: 24 }} />
+            <li className="hi-upload__item hi-upload__item--upload">
+              <Icon name="plus" style={{ fontSize: 24 }} />
             </li>
           </FileSelect>
         )}

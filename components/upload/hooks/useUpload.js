@@ -10,7 +10,7 @@ const useUpload = ({
   onChange,
   uploadAction,
   maxSize,
-  name,
+  name = 'file',
   withCredentials,
   headers,
   data,
@@ -53,7 +53,7 @@ const useUpload = ({
     }
   }, [])
 
-  const onSuccess = useCallback((file, res) => {
+  const onSuccess = (file, res) => {
     const newFileList = [...fileListRef.current]
     file.uploadState = 'success'
     delete file.abort
@@ -75,18 +75,21 @@ const useUpload = ({
       fileListRef.current = newFileList
       updateFileList(fileListRef.current)
     }
-  }, [])
+  }
 
-  const onProgress = useCallback((file, e) => {
-    const newFileList = [...fileListRef.current]
-    file.progressNumber = e.percent
-    const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
-    newFileList.splice(idx, 1, file)
-    fileListRef.current = newFileList
-    updateFileList(fileListRef.current)
-  }, [])
+  const onProgress = useCallback(
+    (file, e) => {
+      const newFileList = [...fileListRef.current]
+      file.progressNumber = e.percent
+      const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
+      newFileList.splice(idx, 1, file)
+      fileListRef.current = newFileList
+      updateFileList(fileListRef.current)
+    },
+    [onChange]
+  )
 
-  const onError = useCallback((file, error, res) => {
+  const onError = (file, error, res) => {
     const newFileList = [...fileListRef.current]
     file.uploadState = 'error'
     const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
@@ -107,7 +110,7 @@ const useUpload = ({
       fileListRef.current = newFileList
       updateFileList(fileListRef.current)
     }
-  }, [])
+  }
 
   const uploadFiles = useCallback(
     (files) => {
@@ -116,7 +119,7 @@ const useUpload = ({
       } else {
         const _files = Object.keys(files)
           .map((idx) => {
-            let file = files[idx]
+            const file = files[idx]
             if (beforeUpload) {
               const result = beforeUpload(file, fileListRef.current)
               if (result === false) {
