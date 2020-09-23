@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {deconstructDate} from './util'
 import TimeList from './TimeList'
 import _ from 'lodash'
-import { isSameDay, getValidDate, set } from './dateUtil'
+import { isSameDay, getValidDate } from './dateUtil'
 
 class Time extends Component {
   constructor (props) {
@@ -15,7 +15,6 @@ class Time extends Component {
         seconds: 0
       }
     }
-    this.cacheStateDate = set(getValidDate(props.date),{hours:0,minutes:0,seconds:0})
   }
   callback (date) {
     this.setState({
@@ -29,9 +28,6 @@ class Time extends Component {
         date: getValidDate(props.date)
       })
     }
-  }
-  componentDidUpdate(){
-    this.cacheStateDate = set(getValidDate(this.props.date),{hours:0,minutes:0,seconds:0})
   }
   whenDisableChange (list, val, arrowVal) {
     let _value = val + arrowVal
