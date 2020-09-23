@@ -1,4 +1,6 @@
 # 更新日志
+## 2.14.2
+- 增加`<Preview />` 组件 [#1190](https://github.com/XiaoMi/hiui/issues/1190)
 ## 2.14.1
 - 优化 `<Tree />` onBeforeSave 、 onDragStart 支持返回 Promise [#1179](https://github.com/XiaoMi/hiui/issues/1179)
 - 修复 `<Upload />` type 为 photo 时，上传时样式问题 [#1186](https://github.com/XiaoMi/hiui/issues/1186)

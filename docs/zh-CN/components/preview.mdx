@@ -1,0 +1,22 @@
+# Preview 图片预览
+
+预览当前图片
+
+
+## 基础
+
+import DemoBase from '../../demo/preview/section-base.jsx'
+
+<DemoBase />
+
+## Props
+
+| 参数      | 说明                                               | 类型                | 可选值                                 | 默认值  |
+| --------- | -------------------------------------------------- | ------------------- | -------------------------------------- | ------- |
+| show      |  是否显示预览窗体                                  |  boolean              | -                                      | false      |
+| showBar   |    是否显示预览窗体下方工具条                       | boolean | true \| false                                          | true     |
+| showArrow | 是否显示预览窗体两侧切换按钮                        | boolean              | true \| false       | false   |
+| showCount | 是否显示预览窗体上方图片数量                        | boolean              | true \| false            | false |
+| images    | 图片列表                                            | String[] \| Object[]             | -                         | []     |
+| simpleData| 是否为简单数据:                                      | boolean             | true \| false                          | false      |
+| activeIndex|  激活图片索引，从0开始                                          |  number             | true \| false                          | 0      |

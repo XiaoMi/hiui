@@ -36,17 +36,17 @@ class UploadPhoto extends Upload {
   }
   precentNum () {
     const {photoSize} = this.props
-    let num = 1.4
+    let num
     switch (photoSize) {
       case 'small':
         num = 0.8
-        break;
+        break
       case 'large':
         num = 2
-        break;
+        break
       default:
         num = 1.4
-        break;
+        break
     }
     return num
   }
