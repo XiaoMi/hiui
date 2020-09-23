@@ -10,7 +10,7 @@ const useUpload = ({
   onChange,
   uploadAction,
   maxSize,
-  name,
+  name = 'name',
   withCredentials,
   headers,
   data,
@@ -116,7 +116,7 @@ const useUpload = ({
       } else {
         const _files = Object.keys(files)
           .map((idx) => {
-            let file = files[idx]
+            const file = files[idx]
             if (beforeUpload) {
               const result = beforeUpload(file, fileListRef.current)
               if (result === false) {

@@ -19,7 +19,7 @@ const DragUpload = ({
   onChange,
   maxSize,
   uploadAction,
-  name,
+  name = 'file',
   withCredentials,
   headers,
   data,
@@ -80,16 +80,16 @@ const DragUpload = ({
       <div className={dragCls} onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}>
         {_fileList.length === 0 ? (
           <div className={'drag-upload__desc'}>
-            <Icon name='cloud-upload' className='icon' />
+            <Icon name="cloud-upload" className="icon" />
             <span>{localeDatas.upload.drag}</span>
-            {tips && <span className='hi-upload__tips hi-upload__tips--single-line'>{tips}</span>}
+            {tips && <span className="hi-upload__tips hi-upload__tips--single-line">{tips}</span>}
           </div>
         ) : (
           <ul className={'hi-upload__list'}>
             {_fileList.length > 0 && (
-              <li className='hi-upload__item hi-upload__item-tips'>
-                <Icon name='tishi' />
-                <span className='hi-upload__tips--exist'>
+              <li className="hi-upload__item hi-upload__item-tips">
+                <Icon name="tishi" />
+                <span className="hi-upload__tips--exist">
                   {_fileList.length >= maxCount ? localeDatas.upload.dragTipsLimited : localeDatas.upload.dragTips}
                   {tips && '，' + tips}
                 </span>
@@ -97,11 +97,11 @@ const DragUpload = ({
             )}
             {_fileList.map((file, index) => {
               return (
-                <li key={index} title={file.name} className='hi-upload__item'>
+                <li key={index} title={file.name} className="hi-upload__item">
                   <span className={`Ficon-${file.fileType}`} />
-                  <div className='hi-upload__right-content'>
+                  <div className="hi-upload__right-content">
                     <a
-                      target='_blank'
+                      target="_blank"
                       href={file.url || null}
                       className={classNames(
                         'hi-upload__filename',
@@ -119,7 +119,7 @@ const DragUpload = ({
                       {file.name}
                     </a>
                     <span
-                      className='hi-upload__operate-icon'
+                      className="hi-upload__operate-icon"
                       onClick={(e) => {
                         e.stopPropagation()
                         deleteFile(file, index)
@@ -129,9 +129,9 @@ const DragUpload = ({
                     </span>
                   </div>
                   {file.uploadState === 'loading' && (
-                    <div className='hi-upload__upstatus'>
-                      <i className='hi-upload__upstatus-line' style={{ width: file.progressNumber + '%' }} />
-                      <i className='hi-upload__upstatus-num'>
+                    <div className="hi-upload__upstatus">
+                      <i className="hi-upload__upstatus-line" style={{ width: file.progressNumber + '%' }} />
+                      <i className="hi-upload__upstatus-num">
                         {(file.progressNumber && file.progressNumber.toFixed(2)) || 0}%
                       </i>
                     </div>
