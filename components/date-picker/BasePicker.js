@@ -229,7 +229,6 @@ class BasePicker extends Component {
   }
   timeCancel () {
     this.setState({
-      // showPanel: false,
       isFocus: false
     })
   }
