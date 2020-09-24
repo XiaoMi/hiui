@@ -50,7 +50,7 @@ const legacyMap = {
 const Icon = ({ name, filled = false, className, style = {}, onClick }) => {
   return (
     <svg
-      className={classNames(className, 'hi-icon')}
+      className={classNames(className, 'hi-icon', `icon-${name}`)}
       aria-hidden="true"
       onClick={(e) => {
         onClick && onClick(e)
