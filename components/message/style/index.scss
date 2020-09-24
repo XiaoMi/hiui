@@ -38,7 +38,6 @@ $color-map: (
   }
 
   .hi-message__header {
-    height: 22px;
     line-height: 22px;
     display: flex;
     align-items: center;
@@ -53,6 +52,7 @@ $color-map: (
     width: 16px;
     height: 16px;
     margin-right: 8px;
+    flex-shrink: 0;
   }
 
   .hi-message-enter {
