@@ -1,10 +1,10 @@
 @import '../../core-css/index.scss';
 
 $color-map: (
-  'info': use-color('primary'),
+  'primary': use-color('primary'),
   'warning': get-color($palette-secondary, 'warning'),
   'success': get-color($palette-secondary, 'success'),
-  'error': get-color($palette-secondary, 'danger')
+  'danger': get-color($palette-secondary, 'danger')
 ) !default;
 
 .hi-message__container {
