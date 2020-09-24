@@ -24,12 +24,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoDealy = () => (
-  <DocViewer
-    code={code}
-    scope={{ Button, Message }}
-    prefix={prefix}
-    desc={desc}
-  />
-)
+const DemoDealy = () => <DocViewer code={code} scope={{ Button, Message }} prefix={prefix} desc={desc} />
 export default DemoDealy

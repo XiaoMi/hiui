@@ -26,7 +26,7 @@ class Demo extends React.Component {
   }
   openError() {
     Message.open({
-      type:'danger',
+      type:'error',
       title:'网络错误，清重新连接'
     })
   }
