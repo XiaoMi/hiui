@@ -51,20 +51,20 @@ const NormalUpload = ({
         disabled={disabled || _fileList.length >= maxCount}
         accept={accept}
       >
-        <Button type='primary' disabled={disabled || _fileList.length >= maxCount} loading={loading}>
+        <Button type="primary" disabled={disabled || _fileList.length >= maxCount} loading={loading}>
           {content}
         </Button>
       </FileSelect>
-      {tips && <div className='hi-upload__tips'>{tips}</div>}
+      {tips && <div className="hi-upload__tips">{tips}</div>}
       {showUploadList && _fileList.length > 0 && (
-        <ul className='hi-upload__list'>
+        <ul className="hi-upload__list">
           {_fileList.map((file, index) => {
             return (
-              <li key={index} className='hi-upload__item' title={file.name}>
+              <li key={index} className="hi-upload__item" title={file.name}>
                 <span className={classNames(`Ficon-${file.fileType}`)} />
-                <div className='hi-upload__right-content'>
+                <div className="hi-upload__right-content">
                   <a
-                    target='_blank'
+                    target="_blank"
                     href={file.url || null}
                     className={classNames(
                       'hi-upload__filename',
@@ -88,8 +88,8 @@ const NormalUpload = ({
                   </span>
                 </div>
                 {file.uploadState === 'loading' && (
-                  <div className='hi-upload__upstatus'>
-                    <i className='hi-upload__upstatus-line' style={{ width: file.progressNumber + '%' }} />
+                  <div className="hi-upload__upstatus">
+                    <i className="hi-upload__upstatus-line" style={{ width: file.progressNumber + '%' }} />
                   </div>
                 )}
               </li>

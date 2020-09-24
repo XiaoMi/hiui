@@ -11,7 +11,7 @@ const iconMap = {
 }
 
 const message = {
-  open: ({ title, prefix = 'message', key = Math.random(), duration, closeable = false, type = 'primary' }) => {
+  open: ({ title, prefix = 'message', key = Math.random(), duration, closeable = false, type = 'info' }) => {
     const NoticeContent = (
       <React.Fragment>
         <div className={`hi-${prefix}__header`}>

@@ -50,12 +50,12 @@ const PictureListUpload = ({
         disabled={disabled || _fileList.length >= maxCount}
         accept={accept}
       >
-        <Button type='primary' disabled={disabled || _fileList.length >= maxCount} loading={loading}>
+        <Button type="primary" disabled={disabled || _fileList.length >= maxCount} loading={loading}>
           {content}
         </Button>
       </FileSelect>
       {showUploadList && _fileList.length > 0 && (
-        <ul className='hi-upload__list'>
+        <ul className="hi-upload__list">
           {_fileList.map((file, index) => {
             const fileNameCls = classNames(
               'hi-upload__filename',
@@ -64,12 +64,12 @@ const PictureListUpload = ({
             const itemCls = classNames('hi-upload__item', file.uploadState === 'error' && 'hi-upload__item--error')
             return (
               <li key={index} title={file.name} className={itemCls}>
-                <div className='img-wrap'>
+                <div className="img-wrap">
                   <img src={file.url} />
                 </div>
-                <div className='hi-upload__right-content'>
+                <div className="hi-upload__right-content">
                   <a
-                    target='_blank'
+                    target="_blank"
                     href={file.url || null}
                     className={fileNameCls}
                     title={file.name}
@@ -89,8 +89,8 @@ const PictureListUpload = ({
                     />
                   </span>
                   {file.uploadState === 'loading' && (
-                    <div className='hi-upload__upstatus'>
-                      <i className='hi-upload__upstatus-line' style={{ width: file.progressNumber + '%' }} />
+                    <div className="hi-upload__upstatus">
+                      <i className="hi-upload__upstatus-line" style={{ width: file.progressNumber + '%' }} />
                     </div>
                   )}
                 </div>

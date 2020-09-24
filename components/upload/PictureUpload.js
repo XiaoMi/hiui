@@ -68,23 +68,23 @@ const PictureUpload = ({
         'hi-upload--disabled': disabled
       })}
     >
-      <ul className='hi-upload__list'>
+      <ul className="hi-upload__list">
         {_fileList.map((file, index) => {
           if (file.uploadState === 'loading') {
             return (
               <li key={index} className={classNames('hi-upload__item', `hi-upload__item--${photoSize}`)}>
-                <img src={file.url} className='hi-upload__thumb' />
-                <div className='hi-upload__precent'>
-                  <p className='hi-upload__loading-text'>
+                <img src={file.url} className="hi-upload__thumb" />
+                <div className="hi-upload__precent">
+                  <p className="hi-upload__loading-text">
                     {file.progressNumber
                       ? file.progressNumber < 100
                         ? file.progressNumber && file.progressNumber.toFixed(2) + '%'
                         : localeDatas.upload.uploadSuccess
                       : 0 + '%'}
                   </p>
-                  <div className='hi-upload__loading-bar' style={{ width: file.progressNumber * 1.4 + 'px' }} />
+                  <div className="hi-upload__loading-bar" style={{ width: file.progressNumber * 1.4 + 'px' }} />
                   {/* 进度条底部阴影 */}
-                  <div className='hi-upload__loading-shadow' />
+                  <div className="hi-upload__loading-shadow" />
                 </div>
               </li>
             )
@@ -99,21 +99,21 @@ const PictureUpload = ({
                 <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} />
                 <Icon
                   filled
-                  name='close-circle'
-                  className='hi-upload__photo-del'
+                  name="close-circle"
+                  className="hi-upload__photo-del"
                   onClick={(e) => {
                     e.stopPropagation()
                     deleteFile(file, index)
                   }}
                 />
                 {file.uploadState === 'error' && (
-                  <div className='hi-upload__item--photo-error'>{localeDatas.upload.uploadFailed}</div>
+                  <div className="hi-upload__item--photo-error">{localeDatas.upload.uploadFailed}</div>
                 )}
               </li>
             )
           }
         })}
-        {maxCount >= _fileList.length && (
+        {maxCount > _fileList.length && (
           <FileSelect
             onSelect={uploadFiles}
             multiple={multiple}
@@ -123,7 +123,7 @@ const PictureUpload = ({
           >
             <li className={classNames('hi-upload__item', 'hi-upload__item--upload', `hi-upload__item--${photoSize}`)}>
               <label style={{ display: 'block', cursor: 'pointer' }}>
-                <Icon name='plus' style={{ fontSize: 24 }} />
+                <Icon name="plus" style={{ fontSize: 24 }} />
               </label>
             </li>
           </FileSelect>
