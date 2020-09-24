@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "3.0.0-rc.4",
+  "version": "3.0.0-rc.5",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
@@ -16,7 +16,10 @@
     "dev": "npm start",
     "start": "node build/start.js",
     "prerender:gh-pages": "cross-env DOC_ENV=github npm run build && cross-env DOC_ENV=github node build/prerenderSite.js",
-    "prerender": "npm run build && node build/prerenderSite.js"
+    "prerender": "npm run build && node build/prerenderSite.js",
+    "pub-future": "npm publish --access public --tag future",
+    "pub": "npm publish --access public --tag latest",
+    "pub-next": "npm publish --access public --tag next"
   },
   "repository": {
     "type": "git",
