@@ -76,7 +76,7 @@ const TreeNode = ({ node }) => {
     [loading, setLoading, apperance]
   )
   // 渲染空白占位
-  const renderIndent = useCallback((times, isSiblingLast, ancestors) => {
+  const renderIndent = useCallback((times, isSiblingLast, ancestors, node) => {
     const isAncestorSiblingLast = []
     if (ancestors) {
       ancestors.forEach((a, idx) => {
@@ -85,6 +85,7 @@ const TreeNode = ({ node }) => {
         }
       })
     }
+    const _isAncestorSiblingLast = isAncestorSiblingLast.reverse()
     return Array(times)
       .fill('')
       .map((indent, index) => {
@@ -92,7 +93,7 @@ const TreeNode = ({ node }) => {
           <span key={index} style={{ alignSelf: 'stretch' }} id={index}>
             <span
               className={Classnames('tree-node__indent', {
-                'tree-node__indent--parent-tail': isAncestorSiblingLast.reverse()[index] && index !== times - 1,
+                'tree-node__indent--parent-tail': _isAncestorSiblingLast[index] && index !== times - 1,
                 'tree-node__indent--tail': isSiblingLast && times - 1 === index
               })}
               style={{ marginRight: index === times - 1 ? 3 : 0 }}
@@ -210,7 +211,8 @@ const TreeNode = ({ node }) => {
           ? node.depth
           : (node.depth && node.depth + 1) || 1,
         node.id === (node.sibling && node.sibling[node.sibling.length - 1].id),
-        node.ancestors
+        node.ancestors,
+        node
       )}
       {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
       {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf && !node.children)) &&

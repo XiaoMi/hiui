@@ -77,7 +77,7 @@ $fontColor: #383e47 !default;
           &::after {
             content: '';
             position: absolute;
-            width: 100%;
+            width: 50%;
             height: 1px;
             background-color: #999;
             left: 50%;
