@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react'
+import React, { useContext, useState, useEffect, useCallback, useRef } from 'react'
 import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
@@ -44,6 +44,9 @@ const FormItem = (props) => {
     listItemValue,
     sort
   } = props
+
+  const FormItemContent = useRef()
+
   const {
     showColon: shouldFormShowColon,
     initialValues = {},
@@ -66,7 +69,6 @@ const FormItem = (props) => {
 
   const [field, setField] = useState(getItemfield())
   const [validating, setValidating] = useState(false)
-
   useEffect(() => {
     setField(getItemfield())
   }, [propsField])
@@ -97,6 +99,11 @@ const FormItem = (props) => {
     [fields]
   )
 
+  let rectCont = FormItemContent.current && FormItemContent.current.getBoundingClientRect()
+
+  useEffect(() => {
+    rectCont = FormItemContent.current && FormItemContent.current.getBoundingClientRect()
+  }, [])
   const resetValidate = useCallback((value = '') => {
     // 清空数据
     setValue(value)
@@ -297,18 +304,24 @@ const FormItem = (props) => {
   obj['hi-form-item__error'] = error !== ''
   obj['hi-form-item--validating'] = validating
   obj['hi-form-item--required'] = isRequired() || required
-
+  const _labelWidth = labelWidth()
+  const contentWidth =
+    formProps.labelPosition !== 'top' && rectCont && rectCont.width ? rectCont.width - _labelWidth : '100%'
   return (
-    <div className={classNames('hi-form-item', className, obj)} style={style} key={field}>
+    <div className={classNames('hi-form-item', className, obj)} style={style} key={field} ref={FormItemContent}>
       {label || label === '' ? (
-        <label className="hi-form-item__label" style={{ width: labelWidth() }} key={field + 'label'}>
+        <label className="hi-form-item__label" style={{ width: _labelWidth }} key={field + 'label'}>
           {(typeof label === 'string' && label.trim()) || label}
           {shouldShowColon && colon}
         </label>
       ) : (
-        <span className="hi-form-item__span" style={{ width: labelWidth() }} key={field + 'label'} />
+        <span className="hi-form-item__span" style={{ width: _labelWidth }} key={field + 'label'} />
       )}
-      <div className={'hi-form-item' + '__content'} key={field + '__content'}>
+      <div
+        className={'hi-form-item' + '__content'}
+        key={field + '__content'}
+        style={{ width: isNaN(contentWidth) ? '100%' : contentWidth }}
+      >
         <div className={'hi-form-item' + '__children'} style={{ alignItems: getItemPosition(contentPosition) }}>
           {renderChildren()}
         </div>

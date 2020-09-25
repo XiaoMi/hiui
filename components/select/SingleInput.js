@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { transKeys } from './utils'
 
 // 单选输入框
-const SingleInput = props => {
+const SingleInput = (props) => {
   let {
     placeholder,
     dropdownShow,
@@ -19,29 +19,23 @@ const SingleInput = props => {
     fieldNames,
     isFocus
   } = props
-  const [cacheselectedItems, setCacheselectedItems] = useState(
-    propsSelectItem || []
-  )
+  const [cacheselectedItems, setCacheselectedItems] = useState(propsSelectItem || [])
   useEffect(() => {
     setCacheselectedItems(propsSelectItem)
   }, [propsSelectItem])
 
-  const handleClear = e => {
+  const handleClear = (e) => {
     e.stopPropagation()
 
     onClear()
     setCacheselectedItems([])
   }
 
-  let icon = dropdownShow ? 'up' : 'down'
+  const icon = dropdownShow ? 'up' : 'down'
 
-  let selectedItems =
-    propsSelectItem.length > 0 ? propsSelectItem : cacheselectedItems
+  const selectedItems = propsSelectItem.length > 0 ? propsSelectItem : cacheselectedItems
 
-  placeholder =
-    selectedItems.length > 0
-      ? selectedItems[0][transKeys(fieldNames, 'title')]
-      : placeholder
+  placeholder = selectedItems.length > 0 ? selectedItems[0][transKeys(fieldNames, 'title')] : placeholder
 
   return (
     <div
@@ -61,7 +55,7 @@ const SingleInput = props => {
           'hi-select__hide': !(!dropdownShow && selectedItems.length > 0)
         })}
       >
-        <div className='hi-select__input--item__name'>
+        <div className="hi-select__input--item__name">
           {selectedItems[0] && selectedItems[0][transKeys(fieldNames, 'title')]}
         </div>
       </div>
@@ -72,7 +66,7 @@ const SingleInput = props => {
           })}
         >
           <input
-            type='text'
+            type="text"
             value={selectedItems.length > 0 ? placeholder : ''}
             placeholder={placeholder}
             onKeyDown={handleKeyDown}
@@ -82,18 +76,14 @@ const SingleInput = props => {
           />
         </div>
       )}
-      <span className='hi-select__input--icon'>
+      <span className="hi-select__input--icon">
         <i
-          className={classNames(
-            `hi-icon icon-${icon} hi-select__input--icon__expand`,
-            { clearable: clearable && selectedItems.length > 0 }
-          )}
+          className={classNames(`hi-icon icon-${icon} hi-select__input--icon__expand`, {
+            clearable: clearable && selectedItems.length > 0
+          })}
         />
         {clearable && selectedItems.length > 0 && (
-          <i
-            className={`hi-icon icon-close-circle hi-select__input--icon__close`}
-            onClick={handleClear}
-          />
+          <i className={`hi-icon icon-close-circle hi-select__input--icon__close`} onClick={handleClear} />
         )}
       </span>
     </div>

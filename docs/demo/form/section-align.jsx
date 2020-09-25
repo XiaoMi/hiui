@@ -1,11 +1,12 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import Form,{ LegacyForm } from '../../../components/form'
+import Form, { LegacyForm } from '../../../components/form'
 import Input from '../../../components/input'
 import Checkbox from '../../../components/checkbox'
 import Button from '../../../components/button'
 import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
+import Select from '../../../components/select'
 const prefix = 'form-align'
 const rightOptions = ['左对齐', '右对齐', '顶对齐']
 const desc = ['左对齐：表单项较少，对应标题字数易对齐工整']
@@ -30,74 +31,65 @@ const code = [
         const FormSubmit = Form.Submit
         const FormReset = Form.Reset
         const {formData} = this.state
-    
+        const Row = Grid.Row
+  const Col = Grid.Col
         return (
-          <Form 
-            labelWidth='80' 
-            labelPlacement='left' 
-            initialValues={formData}
-            onValuesChange ={(changedValues,allValues) => {
-              console.log("changedValues:",changedValues ,"allValues:",allValues)
-            }}
-          >
-            <FormItem 
-              label='账号' 
-              field="phone"
-              rules={{
-              trigger:'onChange',
-              type:'number',
-              required:true,
-              validator: (rule,value,callback) => {
-                const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
-                if(!value){
-                  callback("请输入手机号")
-                } else if (!telReg.test(value)){
-                  callback("请输入正确的手机号")
-                } else {
-                  callback()
-                }
-              },
-              }}>
-              <Input placeholder='请输入手机号' />
+          <Form labelWidth='70' labelPlacement='left'>
+        <Row>
+          <Col span={6}>
+            <FormItem label='手机号' field='phone'>
+              <Input
+                placeholder={'请输入'}
+                style={{ width: '200' }}
+                onChange={(e, val) => {
+                  setForm({
+                    phone: val
+                  })
+                }}
+              />
             </FormItem>
-            <FormItem 
-              label='密码' 
-              field="password"
-              rules={{
-              trigger:'onBlur',
-              type:'string',
-              required:true,
-              }}>
-              <Input type='password' placeholder='请输入' />
+          </Col>
+          <Col span={6}>
+            <FormItem label='手机号'>
+              <Select
+                data={[
+                  {
+                    title:
+                      '手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机',
+                    id: '2'
+                  },
+                  { title: '小米2', id: '2-1' },
+                  { title: '小米3', id: '2-2' },
+                  { title: '小米4', id: '2-3' },
+                  { title: '小米5', id: '2-4' },
+                  { title: '电脑', id: '3' },
+                  { title: '笔记本', id: '4' },
+                  { title: '生活周边', id: '5' },
+                  { title: '其它', id: '6' }
+                ]}
+                dataSource={{
+                  method: 'GET',
+                  key: 'id',
+                  url: 'https://mife-gallery.test.mi.com/hiui/stores',
+                  transformResponse: res => {
+                    if (res.code === 200) {
+                      return res.data
+                    }
+                    return []
+                  }
+                }}
+                searchable
+                showCheckAll
+                placeholder='请选择'
+                emptyContent='无匹配数据'
+                onChange={item => {
+                  console.log('多选结果', item)
+                }}
+              />
             </FormItem>
-            <FormItem 
-              field="remember" 
-              valuePropName="checked">
-              <Checkbox onChange={()=>{
-                console.log('checkbox remeber me')
-              }}> 
-                记住我 
-              </Checkbox>
-
-            </FormItem>
-            <FormItem>
-             <FormSubmit 
-              type='primary'
-              onClick={(values,errors)=>{
-                console.log('Get form value:',values,errors)}
-              }
-              >
-                提交
-              </FormSubmit>
-
-              <FormReset 
-                type='line' 
-                  onClick={()=>{console.log('reset form')}}
-                >
-                重置
-              </FormReset>
-            </FormItem>
-          </Form>
+          </Col>
+        </Row>
+      </Form>
         )
       }
     }`,
@@ -359,7 +351,7 @@ const code = [
 const DemoAlign = () => (
   <DocViewer
     code={code}
-    scope={{ Form, Input, Button, Checkbox , LegacyForm, Grid, Radio}}
+    scope={{ Form, Input, Button, Checkbox, LegacyForm, Grid, Radio, Select }}
     prefix={prefix}
     desc={desc}
     rightOptions={rightOptions}

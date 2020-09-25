@@ -96,6 +96,7 @@
     position: relative;
     vertical-align: top;
     min-height: 32px;
+    flex-shrink: 0;
 
     p {
       margin: 0;

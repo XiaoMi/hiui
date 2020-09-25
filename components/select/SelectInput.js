@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react'
 import SingleInput from './SingleInput'
 import MultipleInput from './MultipleInput'
 
-const InternalSelectInput = props => {
+const InternalSelectInput = (props) => {
   const { mode, handleKeyDown } = props
 
   return mode === 'multiple' ? (
