@@ -7,14 +7,7 @@ import { getOffset } from './utils/positionUtils'
 import useClickOutside from './utils/useClickOutside'
 import './style/index'
 
-const {
-  isBody,
-  isFixed,
-  setupEventListeners,
-  removeEventListeners,
-  setStyle,
-  getStyleComputedProperty
-} = new PopperJS()
+const { isFixed, setupEventListeners, removeEventListeners, setStyle, getStyleComputedProperty } = new PopperJS()
 
 const Overlay = (props) => {
   const {
