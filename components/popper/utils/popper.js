@@ -342,6 +342,7 @@ export default class Popper {
    */
   removeEventListeners = element => {
     const { getScrollParent } = this
+
     // 注：这里会访问 DOM
     // 移除 resize 事件监听
     root.removeEventListener('resize', this.scrollCallback)

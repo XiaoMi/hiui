@@ -30,10 +30,12 @@ const notification = {
     onConfirm,
     onClose
   }) => {
+    let _type = type === 'info' ? 'primary' : type
+    _type = type === 'error' ? 'danger' : _type
     const NoticeContent = (
       <React.Fragment>
         <div className={`hi-${prefix}__header`}>
-          <Icon name={iconMap[type]} className={`hi-${prefix}__icon`} filled />
+          <Icon name={iconMap[_type]} className={`hi-${prefix}__icon`} filled />
           {title && <div className={`hi-${prefix}__title`}>{title}</div>}
         </div>
 
@@ -41,8 +43,8 @@ const notification = {
         {onConfirm && (
           <div className={`hi-${prefix}__footer`}>
             <Button
-              size='small'
-              type='primary'
+              size="small"
+              type="primary"
               onClick={() => {
                 onConfirm()
               }}
@@ -59,7 +61,7 @@ const notification = {
       key,
       closeable,
       duration,
-      type,
+      type: _type,
       onClose
     })
   }
