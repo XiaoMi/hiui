@@ -94,6 +94,7 @@ class Carousel extends Component {
               key: index,
               style: {
                 position: 'relative',
+                zIndex:active === index ? 2 : 1,
                 opacity: active === index ? 1 : 0,
                 transition: 'opacity 300ms ease 0s',
                 left: -(rootWidth * index),
