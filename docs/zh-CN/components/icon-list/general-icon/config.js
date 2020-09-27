@@ -132,6 +132,10 @@ export const outlined = [
     text: '旗帜'
   },
   {
+    name: 'folder',
+    text: '文件夹'
+  },
+  {
     name: 'folder-open',
     text: '文件夹-打开'
   },
@@ -250,6 +254,14 @@ export const outlined = [
   {
     name: 'relation',
     text: '关系'
+  },
+  {
+    name: 'rmb',
+    text: '人民币'
+  },
+  {
+    name: 'scan',
+    text: '扫描'
   },
   {
     name: 'search',
@@ -500,10 +512,6 @@ export const filled = [
     text: '旗帜'
   },
   {
-    name: 'folder',
-    text: '文件夹'
-  },
-  {
     name: 'folder-add',
     text: '文件夹-打开'
   },
@@ -570,6 +578,10 @@ export const filled = [
   {
     name: 'qr-code',
     text: '二维码'
+  },
+  {
+    name: 'rmb',
+    text: '人民币'
   },
 
   {

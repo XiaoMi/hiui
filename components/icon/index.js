@@ -44,7 +44,9 @@ const legacyMap = {
   info: 'document-exclamation',
   'info-circle-o': 'info-circle',
   hide: 'eye-invisible',
-  component: 'relation'
+  component: 'relation',
+  data: 'data-monitor',
+  'money-circle-o': 'rmb'
 }
 
 const Icon = ({ name, filled = false, className, style = {}, onClick }) => {
