@@ -109,37 +109,39 @@ const ModalComp = ({
               />
             </div>
             <div className={`${PREFIX}__content`}>{children}</div>
-            <div
-              className={Classnames(`${PREFIX}__footer`, {
-                [`${PREFIX}__footer--divided`]: showFooterDivider
-              })}
-            >
-              {footer === undefined && cancelText !== null && (
-                <Button
-                  type={'line'}
-                  onClick={() => {
-                    if (onCancel) {
-                      onCancel()
-                    }
-                  }}
-                >
-                  {cancelText || '取消'}
-                </Button>
-              )}
-              {footer === undefined && confirmText !== null && (
-                <Button
-                  type={'primary'}
-                  onClick={() => {
-                    if (onConfirm) {
-                      onConfirm()
-                    }
-                  }}
-                >
-                  {confirmText || '确认'}
-                </Button>
-              )}
-              {footer}
-            </div>
+            {footer !== null && (
+              <div
+                className={Classnames(`${PREFIX}__footer`, {
+                  [`${PREFIX}__footer--divided`]: showFooterDivider
+                })}
+              >
+                {footer === undefined && cancelText !== null && (
+                  <Button
+                    type={'line'}
+                    onClick={() => {
+                      if (onCancel) {
+                        onCancel()
+                      }
+                    }}
+                  >
+                    {cancelText || '取消'}
+                  </Button>
+                )}
+                {footer === undefined && confirmText !== null && (
+                  <Button
+                    type={'primary'}
+                    onClick={() => {
+                      if (onConfirm) {
+                        onConfirm()
+                      }
+                    }}
+                  >
+                    {confirmText || '确认'}
+                  </Button>
+                )}
+                {footer}
+              </div>
+            )}
           </div>
         </CSSTransition>
       </div>

@@ -64,7 +64,7 @@ $fontColor: #383e47 !default;
     }
 
     &__indent {
-      width: 16px;
+      width: 24px;
       height: 100%;
       display: inline-block;
     }
@@ -80,7 +80,7 @@ $fontColor: #383e47 !default;
             width: 50%;
             height: 1px;
             background-color: #999;
-            left: 50%;
+            left: calc(50% - 4px);
             top: 50%;
           }
         }

@@ -41,7 +41,7 @@ const TreeNode = ({ node }) => {
   // 渲染 apperance 占位
   const renderApperancePlaceholder = useCallback((apperance) => {
     if (apperance === 'folder') {
-      return <Icon name="file" style={{ marginRight: 2 }} />
+      return <Icon name="file" style={{ marginRight: 8 }} />
     }
   }, [])
   // 渲染展开收起
@@ -52,7 +52,7 @@ const TreeNode = ({ node }) => {
         <Loading />
       ) : (
         <Icon
-          style={{ cursor: 'pointer', marginRight: 2, fontSize: 16 }}
+          style={{ cursor: 'pointer', marginRight: 8, fontSize: 16 }}
           name={expanded ? switcherApperanceMap[apperance][1] : switcherApperanceMap[apperance][0]}
           onClick={() => {
             if (onLoadChildren && !node.children) {
@@ -76,7 +76,7 @@ const TreeNode = ({ node }) => {
     [loading, setLoading, apperance]
   )
   // 渲染空白占位
-  const renderIndent = useCallback((times, isSiblingLast, ancestors, node) => {
+  const renderIndent = useCallback((times, isSiblingLast, ancestors) => {
     const isAncestorSiblingLast = []
     if (ancestors) {
       ancestors.forEach((a, idx) => {
@@ -96,7 +96,6 @@ const TreeNode = ({ node }) => {
                 'tree-node__indent--parent-tail': _isAncestorSiblingLast[index] && index !== times - 1,
                 'tree-node__indent--tail': isSiblingLast && times - 1 === index
               })}
-              style={{ marginRight: index === times - 1 ? 3 : 0 }}
             />
           </span>
         )
@@ -211,8 +210,7 @@ const TreeNode = ({ node }) => {
           ? node.depth
           : (node.depth && node.depth + 1) || 1,
         node.id === (node.sibling && node.sibling[node.sibling.length - 1].id),
-        node.ancestors,
-        node
+        node.ancestors
       )}
       {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
       {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf && !node.children)) &&
