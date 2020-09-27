@@ -69,6 +69,7 @@ $borderColor: #e7e7e7 !default;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-shrink: 0;
 
     &--divided {
       border-bottom: 1px solid $borderColor;
@@ -89,6 +90,7 @@ $borderColor: #e7e7e7 !default;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    flex-shrink: 0;
 
     &--divided {
       border-top: 1px solid $borderColor;
