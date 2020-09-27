@@ -84,7 +84,15 @@ class Form extends Component {
     const { children, className, style } = this.props
 
     return (
-      <form className={classNames('hi-form', className, this.getClassNames())} style={style}>
+      <form 
+        className={classNames('hi-form', className, this.getClassNames())} 
+        style={style}
+        onSubmit={(e) => {
+          // 阻止只有一个表单时候；回车会触发form的提交操作
+          e.preventDefault()
+          return false
+        }}
+        >
         {children}
       </form>
     )

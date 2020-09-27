@@ -4,6 +4,7 @@
 - 优化 `<DatePicker />` 新增属性 inputReadOnly 设置输入框为只读形态 [#1203](https://github.com/XiaoMi/hiui/issues/1203)
 - 优化 `<TimePicker />` 新增属性 inputReadOnly 设置输入框为只读形态 [#1203](https://github.com/XiaoMi/hiui/issues/1203)
 - 优化 `<TimePicker />` 新增hourStep、minuteStep、secondStep等时分秒间隔选项 [#1194](https://github.com/XiaoMi/hiui/issues/1195)
+- 优化 `<Form />` 当只有一个输入框时，阻止在该输入框中按下回车提交该表单行为 [#1205](https://github.com/XiaoMi/hiui/issues/1205)
 - 修复 `<Carousel />`  Children 节点添加点击事件后，点击回调 index 异常问题 [#1201](https://github.com/XiaoMi/hiui/issues/1201)
 - 修复 `<Input />` ref 属性无效问题 [#1192](https://github.com/XiaoMi/hiui/issues/1192)
 - 修复 `<TimePicker />` type 为 timerange 时，时间范围选择问题 [#1188](https://github.com/XiaoMi/hiui/issues/1188)
