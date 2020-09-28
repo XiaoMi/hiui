@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {deconstructDate} from './util'
 import TimeList from './TimeList'
-import { isSameDay, getValidDate,set } from './dateUtil'
+import { isSameDay, getValidDate } from './dateUtil'
 
 class Time extends Component {
   constructor (props) {
