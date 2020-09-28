@@ -26,10 +26,18 @@ export default class TimeList extends Component {
     const arrow = this.getStep()
     const { value } = this.props
     const dVal = 32/arrow
+
     this.listRef.current && (this.listRef.current.scrollTop = value * dVal)
   }
   componentDidUpdate () {
     this.scrollTo()
+  }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.timeRangePanelType === 'right') {
+      setTimeout(() => {
+        this.scrollTo()
+      }, 0)
+    }
   }
   componentDidMount () {
     // this.listRef.current.addEventListener('scroll', this.scrollEvent)
@@ -50,20 +58,20 @@ export default class TimeList extends Component {
 
     switch (type) {
       case 'hours':
-        step = hourStep || directionStep
+        step = hourStep 
         break;
       case 'minutes':
-        step = minuteStep || directionStep
+        step = minuteStep
         break;
       case 'seconds':
-        step = secondStep || directionStep
+        step = secondStep
         break;
       default:
         step = directionStep
         break;
     }
-
-    return step
+    Number.isNaN(step) || step ===-1 &&  (step = 1)
+    return step*directionStep
   }
   renderArrow (type) {
     return (
@@ -96,8 +104,9 @@ export default class TimeList extends Component {
   arrowEvent (direction) {
     const arrow = this.getStep(direction)
     const st = this.listRef.current.scrollTop
-    const val = Math.round(st * arrow / 32)
-    !this.getdisabledType(val) && this.props.onSelect(this.props.type, val + arrow, arrow)
+    const val = Math.round(st * Math.abs(arrow) / 32)
+
+    this.props.onSelect(this.props.type, val + arrow, arrow)
   }
 
   isScrollStop (val, el) {

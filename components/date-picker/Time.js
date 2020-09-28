@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
 import {deconstructDate} from './util'
 import TimeList from './TimeList'
-import { isSameDay, getValidDate } from './dateUtil'
+import { isSameDay, getValidDate,set } from './dateUtil'
 
 class Time extends Component {
   constructor (props) {
     super(props)
     this.state = {
       date: getValidDate(props.date),
+      endDate: '',
       prefix: {
         hours: 0,
         minutes: 0,
@@ -22,6 +23,7 @@ class Time extends Component {
     this.props.onPick(date, true)
   }
   componentWillReceiveProps (props) {
+
     if (!isSameDay(props.date, this.state.date)) {
       this.setState({
         date: getValidDate(props.date)
@@ -52,6 +54,7 @@ class Time extends Component {
     if (cDate.getTime() !== date.getTime()) {
       this.callback(cDate)
     }
+    
   }
 
   isShowHMS () {
@@ -91,7 +94,7 @@ class Time extends Component {
             isDisabled = true
           }
         }
-
+       
       }
     }
 
