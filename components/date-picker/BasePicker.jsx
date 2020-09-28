@@ -152,7 +152,8 @@ const BasePicker = ({
         altCalendarPresetData,
         dateMarkPresetData,
         clearable,
-        theme
+        theme,
+        width
       }}
     >
       <Root
