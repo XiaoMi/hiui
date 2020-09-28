@@ -67,7 +67,7 @@ const getPlacement = (attachEleRect, container, props, state) => {
   if (!attachEle) return
   let containerHeight = document.documentElement.clientHeight || document.body.clientHeight
 
-  if (isFixed(attachEle) || !isBody(container)) {
+  if (isFixed(attachEle) && !isBody(container)) {
     containerHeight = container.clientHeight
   }
   if (isBody(container)) {
@@ -123,7 +123,7 @@ export const getOffset = (props, state, status) => {
   const { popperHeight, popperWidth } = state
   let rect = attachEle.getBoundingClientRect()
 
-  if (isFixed(attachEle) || !isBody(container)) {
+  if (isFixed(attachEle) && !isBody(container)) {
     rect = getOffsetRectRelativeToCustomParent(attachEle, container, isFixed(attachEle))
   }
 
