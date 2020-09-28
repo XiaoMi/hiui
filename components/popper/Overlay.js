@@ -7,7 +7,14 @@ import { getOffset } from './utils/positionUtils'
 import useClickOutside from './utils/useClickOutside'
 import './style/index'
 
-const { isFixed, setupEventListeners, removeEventListeners, setStyle, getStyleComputedProperty } = new PopperJS()
+const {
+  isFixed,
+  setupEventListeners,
+  removeEventListeners,
+  setStyle,
+  getStyleComputedProperty,
+  isBody
+} = new PopperJS()
 
 const Overlay = (props) => {
   const {
@@ -71,7 +78,7 @@ const Overlay = (props) => {
       // 判断该元素中是否含有popper如果有popper在显示  就不要删除定位
       setTimeout(() => {
         if (container.querySelectorAll('.hi-popper__container').length === 0) {
-          container && isAddevent && setStyle(container, { position: cacheContainerPosition })
+          container && !isBody(container) && isAddevent && setStyle(container, { position: cacheContainerPosition })
         }
       }, 0)
       setIsAddevent(false)
@@ -90,7 +97,7 @@ const Overlay = (props) => {
       setIsAddevent(true)
     }
     // 如果在一个固定定位的元素里面的话；更改计算方式
-    if (isFixed(attachEle)) {
+    if (isFixed(attachEle) && !isBody(container)) {
       cacheContainerPosition === 'static' && setStyle(container, { position: 'relative' })
     }
     if (!popperRef) {
