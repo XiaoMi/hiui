@@ -35,7 +35,6 @@ const Root = ({ onTrigger, onMouseEnter, onMouseLeave, children, inputChangeEven
   )
 
   const renderRange = type.includes('range') || type === 'timeperiod'
-  console.log('width', width)
   return (
     <div
       className={_cls}
