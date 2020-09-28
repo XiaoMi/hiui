@@ -32,13 +32,6 @@ export default class TimeList extends Component {
   componentDidUpdate () {
     this.scrollTo()
   }
-  componentWillReceiveProps(nextProps){
-    if(nextProps.timeRangePanelType === 'right') {
-      setTimeout(() => {
-        this.scrollTo()
-      }, 0)
-    }
-  }
   componentDidMount () {
     // this.listRef.current.addEventListener('scroll', this.scrollEvent)
     setTimeout(() => {
