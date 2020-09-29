@@ -1,4 +1,4 @@
-# HiRequest
+# HiRequest 【hi-got】
 
 为了方便以及统一大家对于数据请求的方式，HiUI特封装请求工具HiRequest
 
@@ -389,6 +389,7 @@ HiRequest.getCookiesParam(key)
   // `timeout` 超时
   // 超时后，请求将被禁止
   timeout: 1000, // default is `0` (no timeout)
+
 
   // `withCredentials` indicates whether or not cross-site Access-Control requests
   // should be made using credentials
