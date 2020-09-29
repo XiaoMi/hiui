@@ -63,8 +63,10 @@ export default class TimeList extends Component {
         step = directionStep
         break;
     }
-    Number.isNaN(step) || step ===-1 &&  (step = 1)
-    return step*directionStep
+    if(Number.isNaN(step) || step === -1) {
+      step = 1
+    }
+    return step * directionStep
   }
   renderArrow (type) {
     return (
