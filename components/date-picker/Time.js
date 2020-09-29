@@ -8,6 +8,7 @@ class Time extends Component {
     super(props)
     this.state = {
       date: getValidDate(props.date),
+      endDate: '',
       prefix: {
         hours: 0,
         minutes: 0,
@@ -22,6 +23,7 @@ class Time extends Component {
     this.props.onPick(date, true)
   }
   componentWillReceiveProps (props) {
+
     if (!isSameDay(props.date, this.state.date)) {
       this.setState({
         date: getValidDate(props.date)
@@ -52,6 +54,7 @@ class Time extends Component {
     if (cDate.getTime() !== date.getTime()) {
       this.callback(cDate)
     }
+    
   }
 
   isShowHMS () {
@@ -91,7 +94,7 @@ class Time extends Component {
             isDisabled = true
           }
         }
-
+       
       }
     }
 

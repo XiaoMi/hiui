@@ -9,6 +9,7 @@
 - 修复 `<Carousel />`  Children 节点添加点击事件后，点击回调 index 异常问题 [#1201](https://github.com/XiaoMi/hiui/issues/1201)
 - 修复 `<Input />` ref 属性无效问题 [#1192](https://github.com/XiaoMi/hiui/issues/1192)
 - 修复 `<TimePicker />` type 为 timerange 时，时间范围选择问题 [#1188](https://github.com/XiaoMi/hiui/issues/1188)
+- 修复 `<TimePicker />` 切换按键无效问题 [#1210](https://github.com/XiaoMi/hiui/issues/1210)
 - 修复 `<Upload />` type 为 photo 时，上传时样式问题 [#1186](https://github.com/XiaoMi/hiui/issues/1186)
 - 修复 `<Select />` Select 宽度随内容自动撑宽问题 [#1172](https://github.com/XiaoMi/hiui/issues/1172)
 
