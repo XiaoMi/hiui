@@ -58,7 +58,7 @@ const Overlay = (props) => {
   }
 
   const scrollCallBack = useCallback(() => {
-    const offset = getOffset(props, state, 3)
+    const offset = getOffset(props, state)
     offsetData.current = offset
     if (staticPopperRef) {
       setState(
@@ -72,6 +72,15 @@ const Overlay = (props) => {
   useEffect(() => {
     const { attachEle, container, show } = props
     const { cacheContainerPosition } = state
+    const offset = getOffset(props, state)
+    offsetData.current = offset
+    if (staticPopperRef) {
+      setState(
+        Object.assign({}, state, {
+          popperRef: staticPopperRef.current
+        })
+      )
+    }
     if (!show) {
       // 删除滚动
       attachEle && isAddevent && removeEventListeners(attachEle)
@@ -112,7 +121,7 @@ const Overlay = (props) => {
   })
 
   useEffect(() => {
-    const offset = getOffset(props, state, 2)
+    const offset = getOffset(props, state)
     offsetData.current = offset
 
     state.popperRef &&
@@ -134,10 +143,11 @@ const Overlay = (props) => {
 
   if (!(attachEle && show && children)) return null
 
-  const { offset = getOffset(props, state, 1) } = state
+  const { offset = getOffset(props, state) } = state
   const width = offset.width
   const left = offset.left + 'px'
   const top = offset.top + 'px'
+
   return (
     <div
       ref={popperContainerRef}

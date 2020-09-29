@@ -67,7 +67,7 @@ const getPlacement = (attachEleRect, container, props, state) => {
   if (!attachEle) return
   let containerHeight = document.documentElement.clientHeight || document.body.clientHeight
 
-  if (isFixed(attachEle) && !isBody(container)) {
+  if (isFixed(attachEle)) {
     containerHeight = container.clientHeight
   }
   if (isBody(container)) {
