@@ -1,16 +1,17 @@
 # HiRequest
 
-## Example
+为了方便以及统一大家对于数据请求的方式，HiUI特封装请求工具HiRequest
 
-```js
-const HiRequest = require('HiRequest')
+### 快速使用
+```javascript
+import HiRequest from '@hi-ui/hiui/es/hi-request'
 
-// HiRequest.<method> will now provide autocomplete and parameter typings
 ```
 
-Performing a `GET` request
+### Get 请求
 
-```js
+```javascript
+// 简单的 Get 请求示例
 // Make a request for a user with a given ID
 HiRequest.get('/user?ID=12345')
   .then(function(response) {
@@ -25,7 +26,7 @@ HiRequest.get('/user?ID=12345')
     // always executed
   })
 
-// Optionally the request above could also be done as
+// 上面的请求也可以这样做
 HiRequest.get('/user', {
   params: {
     ID: 12345
@@ -41,7 +42,7 @@ HiRequest.get('/user', {
     // always executed
   })
 
-// Want to use async/await? Add the `async` keyword to your outer function/method.
+// 想要使用 async/await ? 将' async '关键字添加到外部函数/方法中。
 async function getUser() {
   try {
     const response = await HiRequest.get('/user?ID=12345')
@@ -52,12 +53,9 @@ async function getUser() {
 }
 ```
 
-> **NOTE:** `async/await` is part of ECMAScript 2017 and is not supported in Internet
-> Explorer and older browsers, so use with caution.
+### POST 请求
 
-Performing a `POST` request
-
-```js
+```javascript
 HiRequest.post('/user', {
   firstName: 'Fred',
   lastName: 'Flintstone'
@@ -69,8 +67,7 @@ HiRequest.post('/user', {
     console.log(error)
   })
 ```
-
-Performing multiple concurrent requests
+### 执行多个并发请求
 
 ```js
 function getUserAccount() {
@@ -88,37 +85,62 @@ HiRequest.all([getUserAccount(), getUserPermissions()]).then(
 )
 ```
 
-Performing a `upload` request
+
+### Upload 请求方法
 
 ```js
 HiRequest.upload(({
-      url: 'https://upload', // 上传地址
-      name: 'filename', // 文件参数
-      file: '', // 文件
-      params: {
-        id:1
-      }, // 其他参数
-      withCredentials:true,
-      headers: {
-        token:'token'
-      },
-      onUploadProgress: (event) => {
-       // 上传进度
-      }
-    }).then((res) => {
-      if (res.status === 200) {
-       // 返回结果
-      } else {
-        onerror(res.response)
-      }
-    }).catch(error => {
-      onerror(error.response)
-    });
+  url: 'https://upload', // 上传地址
+  name: 'filename', // 文件参数
+  file: '', // 文件
+  params: {
+    id:1
+  }, // 其他参数
+  withCredentials:true,
+  headers: {
+    token:'token'
+  },
+  onUploadProgress: (event) => {
+    // 上传进度
+  }
+}).then((res) => {
+  if (res.status === 200) {
+    // 返回结果
+  } else {
+    onerror(res.response)
+  }
+}).catch(error => {
+  onerror(error.response)
+});
+```
+### Download 下载方法
+
+
+```js
+HiRequest.download({
+  url: 'https://download', // 上传地址
+  filename: '下载文件名', // 文件
+  params: {
+    id: 1
+  }, // 其他参数
+  withCredentials: true,
+  headers: {
+    token: 'token'
+  },
+  // `onDownloadProgress` 允许为下载处理进度事件
+  onDownloadProgress: progressEvent => {
+    // 对原生进度事件的处理
+  },
+  downloadSuccess: res => {
+    // 下载成功
+  },
+  downloadFail: res => {
+    // 下载失败
+  }
+})
 ```
 
-## HiRequest jsonp
-
-Performing a `jsonp` request
+### JSONP 请求
 
 ```js
 HiRequest.jsonp('/users.jsonp')
@@ -132,8 +154,7 @@ HiRequest.jsonp('/users.jsonp')
     console.log('parsing failed', ex)
   })
 ```
-
-### 设置 JSONP 回调参数名称，默认为'callback'
+#### 设置 JSONP 回调参数名称，默认为'callback'
 
 ```js
 HiRequest.jsonp('/users.jsonp', {
@@ -150,7 +171,7 @@ HiRequest.jsonp('/users.jsonp', {
   })
 ```
 
-### 设置 JSONP 回调函数名称，默认为带 json\_前缀的随机数
+#### 设置 JSONP 回调函数名称，默认为带 json\_前缀的随机数
 
 ```javascript
 HiRequest.jsonp('/users.jsonp', {
@@ -167,7 +188,7 @@ HiRequest.jsonp('/users.jsonp', {
   })
 ```
 
-### 设置 JSONP 请求超时，默认为 5000ms
+#### 设置 JSONP 请求超时，默认为 5000ms
 
 ```javascript
 HiRequest.jsonp('/users.jsonp', {
@@ -184,7 +205,7 @@ HiRequest.jsonp('/users.jsonp', {
   })
 ```
 
-### `jsonpCallback`和之间的区别`jsonCallbackFunction`
+#### `jsonpCallback`和之间的区别`jsonCallbackFunction`
 
 这两个功能可以很容易地相互混淆，但是有一个明显的区别。
 
@@ -225,40 +246,13 @@ search_results(
 )
 ```
 
-Performing a `download` request
-
-```js
-HiRequest.download({
-  url: 'https://download', // 上传地址
-  filename: '下载文件名', // 文件
-  params: {
-    id: 1
-  }, // 其他参数
-  withCredentials: true,
-  headers: {
-    token: 'token'
-  },
-  // `onDownloadProgress` 允许为下载处理进度事件
-  onDownloadProgress: progressEvent => {
-    // 对原生进度事件的处理
-  },
-  downloadSuccess: res => {
-    // 下载成功
-  },
-  downloadFail: res => {
-    // 下载失败
-  }
-})
-```
 
 ## HiRequest API
-
-Requests can be made by passing the relevant config to `HiRequest`.
 
 ##### HiRequest(config)
 
 ```js
-// Send a POST request
+// 一个简单的post请求
 HiRequest({
   method: 'post',
   url: '/user/12345',
@@ -270,7 +264,7 @@ HiRequest({
 ```
 
 ```js
-// GET request for remote image
+// 获取远程图片
 HiRequest({
   method: 'get',
   url: 'http://bit.ly/2mTM3nY',
@@ -287,9 +281,7 @@ HiRequest({
 HiRequest('/user/12345')
 ```
 
-### Request method aliases
-
-For convenience aliases have been provided for all supported request methods.
+### 为了方便起见，为所有支持的请求方法提供了别名。
 
 ##### HiRequest(config)
 
@@ -322,7 +314,7 @@ HiRequest.getCookiesParam(key)
 
 ```js
 {
-  // `url` is the server URL that will be used for the request
+  // `url` 上传地址必填项
   url: '/user',
 
   // `method` is the request method to be used when making the request
@@ -358,51 +350,33 @@ HiRequest.getCookiesParam(key)
       // 对config进行自定义处理
       console.log(err,error.request || error.response)
   }],
-  // `baseURL` will be prepended to `url` unless `url` is absolute.
-  // It can be convenient to set `baseURL` for an instance of HiRequest to pass relative URLs
-  // to methods of that instance.
+  // 如果url不是绝对地址，' baseURL '将被加在' url '前面。
+  // 为HiRequest的一个实例设置' baseURL '可以方便地将相对url传递给该实例的方法。
   baseURL: 'https://some-domain.com/api/',
-
-  // `transformRequest` allows changes to the request data before it is sent to the server
-  // This is only applicable for request methods 'PUT', 'POST', 'PATCH' and 'DELETE'
-  // The last function in the array must return a string or an instance of Buffer, ArrayBuffer,
-  // FormData or Stream
-  // You may modify the headers object.
+  // 允许在请求数据被发送到服务器之前对其进行更改
+  // 只适用于请求方法 'PUT'， 'POST'， 'PATCH'和'DELETE'
   transformRequest: [function (data, headers) {
     // Do whatever you want to transform the data
 
     return data;
   }],
 
-  // `transformResponse` allows changes to the response data to be made before
-  // it is passed to then/catch
+  // 允许之前对响应数据进行更改
   transformResponse: [function (data) {
     // Do whatever you want to transform the data
 
     return data;
   }],
 
-  // `headers` are custom headers to be sent
+  // 自定义headers
   headers: {'X-Requested-With': 'XMLHttpRequest'},
 
-  // `params` are the URL parameters to be sent with the request
+  // `params` 与请求一起发送的URL参数
   // Must be a plain object or a URLSearchParams object
   params: {
     ID: 12345
   },
 
-  // `paramsSerializer` is an optional function in charge of serializing `params`
-  // (e.g. https://www.npmjs.com/package/qs, http://api.jquery.com/jquery.param/)
-  paramsSerializer: function (params) {
-    return Qs.stringify(params, {arrayFormat: 'brackets'})
-  },
-
-  // `data` is the data to be sent as the request body
-  // Only applicable for request methods 'PUT', 'POST', and 'PATCH'
-  // When no `transformRequest` is set, must be of one of the following types:
-  // - string, plain object, ArrayBuffer, ArrayBufferView, URLSearchParams
-  // - Browser only: FormData, File, Blob
-  // - Node only: Stream, Buffer
   data: {
     firstName: 'Fred'
   },
@@ -412,8 +386,8 @@ HiRequest.getCookiesParam(key)
   // only the value is sent, not the key
   data: 'Country=Brasil&City=Belo Horizonte',
 
-  // `timeout` specifies the number of milliseconds before the request times out.
-  // If the request takes longer than `timeout`, the request will be aborted.
+  // `timeout` 超时
+  // 超时后，请求将被禁止
   timeout: 1000, // default is `0` (no timeout)
 
   // `withCredentials` indicates whether or not cross-site Access-Control requests
