@@ -4,6 +4,7 @@ const download = (options, host) => {
   const { filename = '未命名' } = options
   const url = host ? host + options.url : options.url
 
+  // 设置类型，防止出现乱码
   Object.assign(options, { responseType: 'blob' })
   axiosIns({ ...options, url }).then(
     (res) => {
