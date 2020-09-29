@@ -28,6 +28,7 @@
     // 解决 img 底部空白问题
     > img {
       display: block;
+      width: 100%;
       border-radius: 2px 2px 0 0;
     }
 
