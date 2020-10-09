@@ -35,7 +35,8 @@ const BasePicker = ({
   dateMarkPreset,
   localeDatas,
   overlayClassName,
-  theme
+  theme,
+  placement = 'top-bottom-start'
 }) => {
   const cacheDate = useRef(null)
   const [inputFocus, setInputFocus] = useState(false)
@@ -174,7 +175,7 @@ const BasePicker = ({
           leftGap={0}
           width={false}
           className={popperCls}
-          placement={'top-bottom-start'}
+          placement={placement}
           onClickOutside={clickOutsideEvent}
         >
           {type.includes('range') || type === 'timeperiod' ? <RangePanel /> : <Panel />}
