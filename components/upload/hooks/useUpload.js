@@ -58,8 +58,14 @@ const useUpload = ({
     file.uploadState = 'success'
     delete file.abort
     const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
-    newFileList.splice(idx, 1, file)
     const result = onChange(file, newFileList, res)
+    // 处理如果onChange return false 的时候需要删除该文件
+    if (typeof result === 'boolean' && !result) {
+      deleteFile(file, idx)
+      return
+    }
+    newFileList.splice(idx, 1, file)
+
     if (fileList) {
       return false
     } else if (result && typeof result.then === 'function') {
@@ -93,8 +99,16 @@ const useUpload = ({
     const newFileList = [...fileListRef.current]
     file.uploadState = 'error'
     const idx = fileListRef.current.findIndex((item) => item.fileId === file.fileId)
-    newFileList.splice(idx, 1, file)
     const result = onChange(file, newFileList, res)
+
+    // 处理如果onChange return false 的时候需要删除该文件
+    if (typeof result === 'boolean' && !result) {
+      deleteFile(file, idx)
+      return
+    }
+
+    newFileList.splice(idx, 1, file)
+
     if (fileList) {
       return false
     } else if (result && typeof result.then === 'function') {
@@ -140,7 +154,7 @@ const useUpload = ({
             file.fileType = getFileType(file)
             return file
           })
-          .filter((file) => {
+          .filter(async (file) => {
             if (file) {
               if (file.fileType === 'img') {
                 // 用来图片预览
@@ -151,10 +165,20 @@ const useUpload = ({
                 }
                 fr.readAsDataURL(file)
               }
+              let _uploadAction = typeof uploadAction === 'string' ? uploadAction : uploadAction(file)
 
+              if (_uploadAction.toString() === '[object Promise]') {
+                await _uploadAction
+                  .then((res) => {
+                    _uploadAction = res
+                  })
+                  .catch((error) => {
+                    throw new Error(error)
+                  })
+              }
               const action = request({
                 file,
-                action: uploadAction,
+                action: _uploadAction,
                 name,
                 withCredentials,
                 headers,
@@ -168,6 +192,7 @@ const useUpload = ({
             return file
           })
         fileListRef.current = _files.reverse().concat(fileListRef.current)
+        console.log('_files', _files)
         updateFileList(fileListRef.current)
       }
     },

@@ -38,7 +38,8 @@ const PictureUpload = ({
     data,
     onRemove,
     beforeUpload,
-    customUpload
+    customUpload,
+    photoSize
   })
 
   // TODO: 提取 usePreview hook
@@ -62,6 +63,22 @@ const PictureUpload = ({
       url: file.url
     }
   })
+
+  const precentNum = () => {
+    let num = 1.4
+    switch (photoSize) {
+      case 'small':
+        num = 0.8
+        break
+      case 'large':
+        num = 2
+        break
+      default:
+        num = 1.4
+        break
+    }
+    return num
+  }
   return (
     <div
       className={classNames('hi-upload hi-upload--photo', `theme__${theme}`, {
@@ -74,7 +91,7 @@ const PictureUpload = ({
             return (
               <li key={index} className={classNames('hi-upload__item', `hi-upload__item--${photoSize}`)}>
                 <img src={file.url} className="hi-upload__thumb" />
-                <div className="hi-upload__precent">
+                <div className={`hi-upload__precent hi-upload__precent--${photoSize}`}>
                   <p className="hi-upload__loading-text">
                     {file.progressNumber
                       ? file.progressNumber < 100
@@ -82,7 +99,10 @@ const PictureUpload = ({
                         : localeDatas.upload.uploadSuccess
                       : 0 + '%'}
                   </p>
-                  <div className="hi-upload__loading-bar" style={{ width: file.progressNumber * 1.4 + 'px' }} />
+                  <div
+                    className="hi-upload__loading-bar"
+                    style={{ width: file.progressNumber * precentNum() + 'px' }}
+                  />
                   {/* 进度条底部阴影 */}
                   <div className="hi-upload__loading-shadow" />
                 </div>
