@@ -74,10 +74,12 @@ class Time extends Component {
 
       if(timeRangePanelType ===  'right'){
         const {hours,minutes,seconds} = deconstructDate(startDate)
-        const {hours:endHours,minutes:endMinutes } = deconstructDate(date)
+        const {hours:endHours,minutes:endMinutes } = date ? deconstructDate(date) : deconstructDate(new Date())
         isDisabled = type === 'hours' && hours > i
         if(type === 'minutes') {
-          isDisabled = endHours === hours && minutes > i
+          if(endHours === hours){
+            isDisabled = minutes > i
+          }
           if(endHours < hours) {
             isDisabled = true
           }

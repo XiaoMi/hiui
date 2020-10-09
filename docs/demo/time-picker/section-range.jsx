@@ -9,9 +9,10 @@ class Demo extends React.Component {
   render() {
     return (
       <TimePicker
-        value={{start: new Date(), end: new Date()}}
+        // value={{start: new Date(), end: new Date()}}
         type="timerange"
-        format="HH:mm:ss"
+        minuteStep="30"
+        format="HH:mm"
         onChange={date => console.log('时间范围', date)}
       />
     )
