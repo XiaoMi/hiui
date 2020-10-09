@@ -1,0 +1,10 @@
+@import '@hi-ui/core-css/index.scss';
+
+$prefixCls: '.hi-select-tree-dialog' !default;
+$primary: get-color($palette-primary, 'hiui-blue') !default;
+
+#{$prefixCls} {
+  &__display-part {
+    display: flex;
+  }
+}

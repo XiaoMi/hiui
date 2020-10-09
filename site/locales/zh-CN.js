@@ -43,6 +43,7 @@ module.exports = {
     menu: 'Menu 菜单',
     select: 'Select 选择器',
     'select-tree': 'SelectTree 树形选择器',
+    'select-tree-dialog': 'SelectTreeDialog 树形弹窗选择器',
     search: 'Search 搜索框',
     cascader: 'Cascader 级联选择器',
     radio: 'Radio 单选',
