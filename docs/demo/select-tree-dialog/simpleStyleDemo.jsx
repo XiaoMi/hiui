@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import SelectTreeDialog from '../../../components/select-tree-dialog'
-const prefix = 'select-tree-dialog-test-demo'
+const prefix = 'select-tree-dialog-simple-style-demo'
 const desc = ''
 const code = `import React from 'react'
 import SelectTreeDialog from '@hi-ui/hiui/es/select-tree-dialog'
@@ -10,18 +10,19 @@ class Demo extends React.Component {
   constructor(props) {
     super(props)
     this.options = {
-        desTitle: '选择员工'
+        desTitle: '员工名称',
+        // 在此处设置需要的组件风格样式，现只支持 'simple' or 'with-border'
+        styleType: 'simple'
       }
   }
   render () {
     return (
       <SelectTreeDialog
         {...this.options}
-      >
-      </SelectTreeDialog>
+      />
     )
   }
 }`
 
-const TestDemo = () => <DocViewer desc={desc} code={code} scope={{ SelectTreeDialog }} prefix={prefix} />
-export default TestDemo
+const Demo = () => <DocViewer desc={desc} code={code} scope={{ SelectTreeDialog }} prefix={prefix} />
+export default Demo

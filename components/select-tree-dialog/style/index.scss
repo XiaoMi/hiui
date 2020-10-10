@@ -4,42 +4,120 @@ $prefixCls: '.hi-select-tree-dialog' !default;
 $pureDisplayPrefixCls: $prefixCls + '__pureDisplay' !default;
 $primary: get-color($palette-primary, 'hiui-blue') !default;
 
+$pureDisplayHeight: 32px !default;
+
 #{$pureDisplayPrefixCls} {
   display: flex;
 
   &__descTitle {
     margin-right: 12px;
-    line-height: 32px;
+    line-height: $pureDisplayHeight;
   }
 
   &__itemsContainer {
-    &__item {
-      line-height: 24px;
-      margin: 4px 0;
-      background: #f2f2f2;
-      border-radius: 2px;
-      padding-left: 8px;
-      padding-right: 4px;
-      display: flex;
-      align-items: center;
-
-      &__desc {
-        margin-right: 4px;
-      }
-
-      &__button {
-        color: #999;
-        font-size: 16px;
-        cursor: pointer;
-      }
-    }
-
     &--simple {
+      flex: 1;
       display: flex;
       flex-wrap: wrap;
 
-      #{$pureDisplayPrefixCls}__itemsContainer__item {
+      #{$pureDisplayPrefixCls}__item {
         margin-right: 16px;
+      }
+    }
+
+    &--withBorder {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      border-radius: 2px;
+      border: 1px solid #d8d8d8;
+      padding-left: 12px;
+      padding-right: $pureDisplayHeight;
+      align-items: center;
+      box-sizing: border-box;
+      position: relative;
+
+      #{$pureDisplayPrefixCls}__item {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  &__placeholder {
+    font-size: 14px;
+    color: #ccc;
+  }
+
+  &__addButton {
+    &--simple {
+      color: $primary;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      opacity: 0.6;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      &__addIcon {
+        margin-right: 4px;
+        font-size: 16px;
+      }
+    }
+
+    &--withBorder {
+      width: $pureDisplayHeight;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      display: flex;
+      border-left: 1px solid #d8d8d8;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+
+      &__addIcon {
+        cursor: pointer;
+        padding: 6px;
+        font-size: 18px;
+
+        &:hover {
+          color: #333;
+        }
+      }
+    }
+  }
+
+  &__item {
+    line-height: 24px;
+    margin: 4px 0;
+    background: #f2f2f2;
+    border-radius: 2px;
+    padding-left: 8px;
+    padding-right: 4px;
+    display: flex;
+    align-items: center;
+    cursor: default;
+
+    &:hover {
+      box-shadow: 2px 2px 5px rgba($color: #333, $alpha: 0.4);
+    }
+
+    &__desc {
+      margin-right: 4px;
+      font-size: 12px;
+    }
+
+    &__button {
+      color: #999;
+      font-size: 14px;
+      cursor: pointer;
+
+      &:hover {
+        color: #333;
       }
     }
   }

@@ -1,6 +1,7 @@
 import React from 'react'
-import './style/index'
+import Cls from 'classnames'
 import { SelectedDisplay } from './components/selectedDisplay'
+import './style/index'
 
 const prefixCls = 'hi-select-tree-dialog'
 
@@ -19,7 +20,9 @@ const SelectTreeDialog = (props) => {
     // onCancel = () => {},
     // maskCloseable = false,
     // visible = false,
-    styleType = SelectTreeDialogStyle.SIMPLE
+    styleType = SelectTreeDialogStyle.SIMPLE,
+    style = {},
+    className = ''
   } = props
 
   // 参数校验
@@ -29,7 +32,7 @@ const SelectTreeDialog = (props) => {
   }
 
   return (
-    <div className={prefixCls}>
+    <div className={Cls(prefixCls, className)} style={style}>
       <SelectedDisplay desString={desTitle} styleType={styleType} prefixCls={prefixCls} />
     </div>
   )
