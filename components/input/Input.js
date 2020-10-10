@@ -1,23 +1,16 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import {
-  format,
-  formatValue,
-  getAttrs,
-  formatAmount,
-  filterObjProps
-} from './util'
+import { format, formatValue, getAttrs, formatAmount, filterObjProps } from './util'
 
 /**
  * 自定义属性全小写；原声属性驼峰法
  * @prop type 输入框类型
  */
 class Input extends Component {
-  static _Input = ''
-
-  constructor (props) {
+  constructor(props) {
     super(props)
 
+    this._Input = React.createRef()
     // 传入属性
     const commonAttrs = {
       type: 'text',
@@ -39,10 +32,7 @@ class Input extends Component {
     const prependNode = typeof prepend !== 'string' && prepend
     const appendNode = typeof append !== 'string' && append
     this.state = {
-      value:
-        type === 'string' || type === 'number'
-          ? format(valueSource.toString(), this.props.type)
-          : '',
+      value: type === 'string' || type === 'number' ? format(valueSource.toString(), this.props.type) : '',
       valueTrue: prefix + valueSource + suffix,
       hover: false,
       active: false,
@@ -53,20 +43,16 @@ class Input extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.value !== undefined) {
       if (nextProps.value !== this.state.value) {
-        const type = typeof nextProps.value
         this.setState({
-          value: type === 'string' || type === 'number' ? format(nextProps.value.toString(), this.props.type) : '',
+          value: format(nextProps.value.toString(), this.props.type),
           valueTrue: nextProps.value
         })
       }
     }
-    if (
-      nextProps.prepend !== this.state.prepend ||
-      nextProps.append !== this.state.append
-    ) {
+    if (nextProps.prepend !== this.state.prepend || nextProps.append !== this.state.append) {
       const { prepend, append } = nextProps
       const prefix = typeof prepend === 'string' ? prepend : ''
       const suffix = typeof append === 'string' ? append : ''
@@ -81,24 +67,21 @@ class Input extends Component {
     }
   }
 
+  focus = () => {
+    this._Input.current.focus()
+  }
+
   blur = () => {
-    this._Input.blur()
+    this._Input.current.blur()
   }
 
   /**
    * 渲染 text 输入框
    */
-  renderText () {
+  renderText() {
     let { hover, active, value } = this.state
     // clearableTrigger 为内部预留，主要表示清除按钮的触发形态，类型分为 'hover' 和 ‘always’
-    let {
-      disabled,
-      type,
-      id,
-      placeholder,
-      clearable,
-      clearableTrigger = 'hover'
-    } = this.props
+    let { disabled, type, id, placeholder, clearable, clearableTrigger = 'hover' } = this.props
     let { prefix, suffix, prepend, append } = this.state
     const noClear = ['textarea']
     let prefixId = id ? id + '_prefix' : ''
@@ -124,34 +107,28 @@ class Input extends Component {
           'hi-input--append': append
         })}
       >
-        {// 前置元素
-          prepend && <span className='hi-input__prepend'>{prepend}</span>}
-        <div
-          className={`hi-input__inner${active ? ' active' : ''}${
-            disabled ? ' disabled' : ''
-          }`}
-        >
-          {// 前缀
+        {
+          // 前置元素
+          prepend && <span className='hi-input__prepend'>{prepend}</span>
+        }
+        <div className={`hi-input__inner${active ? ' active' : ''}${disabled ? ' disabled' : ''}`}>
+          {
+            // 前缀
             prefix && (
-              <span
-                id={prefixId}
-                className='hi-input__prefix'
-                data-value={prefix}
-              >
+              <span id={prefixId} className='hi-input__prefix' data-value={prefix}>
                 {prefix}
               </span>
-            )}
+            )
+          }
           <input
-            ref={arg => {
-              this._Input = arg
-            }}
+            ref={this._Input}
             className={`hi-input__text ${disabled ? 'disabled' : ''}`}
             value={this.state.value}
             autoComplete='off'
             disabled={disabled}
             {...filterAttrs}
             placeholder={placeholder}
-            onChange={e => {
+            onChange={(e) => {
               e.persist()
               let value = e.target.value
               let valueTrue = formatValue(value, type)
@@ -167,10 +144,9 @@ class Input extends Component {
 
               this.props.onChange && this.props.onChange(e, valueTrue)
 
-              this.props.value === undefined &&
-                this.setState({ value, valueTrue })
+              this.props.value === undefined && this.setState({ value, valueTrue })
             }}
-            onBlur={e => {
+            onBlur={(e) => {
               e.persist()
               let value = e.target.value
               const valueTrue = this.state.valueTrue
@@ -184,7 +160,7 @@ class Input extends Component {
                 this.props.onBlur && this.props.onBlur(e, valueTrue)
               })
             }}
-            onFocus={e => {
+            onFocus={(e) => {
               e.persist()
               const valueTrue = this.state.valueTrue
 
@@ -192,78 +168,66 @@ class Input extends Component {
                 this.props.onFocus && this.props.onFocus(e, valueTrue)
               })
             }}
-            onKeyDown={e => {
+            onKeyDown={(e) => {
               const valueTrue = this.state.valueTrue
 
               this.props.onKeyDown && this.props.onKeyDown(e, valueTrue)
             }}
-            onKeyUp={e => {
+            onKeyUp={(e) => {
               const valueTrue = this.state.valueTrue
 
               this.props.onKeyUp && this.props.onKeyUp(e, valueTrue)
             }}
-            onKeyPress={e => {
+            onKeyPress={(e) => {
               const valueTrue = this.state.valueTrue
 
               this.props.onKeyPress && this.props.onKeyPress(e, valueTrue)
             }}
-            onInput={e => {
+            onInput={(e) => {
               const valueTrue = this.state.valueTrue
 
               this.props.onInput && this.props.onInput(e, valueTrue)
             }}
           />
-          {// 清除
-            noClear.indexOf(type) === -1 &&
-            prefix === '' &&
-            suffix === '' &&
-            value !== '' &&
-            clearable && (
+          {
+            // 清除
+            noClear.indexOf(type) === -1 && prefix === '' && suffix === '' && value !== '' && clearable && (
               <span
                 className={`hi-input__fix-box ${
-                  (hover || clearableTrigger === 'always') && !disabled
-                    ? ''
-                    : 'invisible'
+                  (hover || clearableTrigger === 'always') && !disabled ? '' : 'invisible'
                 }`}
                 onClick={() => {
-                  this._Input.focus()
+                  this._Input.current.focus()
 
-                  const prefix =
-                    typeof this.props.prefix === 'undefined'
-                      ? ''
-                      : this.props.prefix
-                  const suffix =
-                    typeof this.props.suffix === 'undefined'
-                      ? ''
-                      : this.props.suffix
+                  const prefix = typeof this.props.prefix === 'undefined' ? '' : this.props.prefix
+                  const suffix = typeof this.props.suffix === 'undefined' ? '' : this.props.suffix
                   const valueTrue = prefix + '' + suffix
 
                   this.setState({ value: '', valueTrue: valueTrue }, () => {
                     const e = {
-                      target: this._Input
+                      target: this._Input.current
                     }
                     this.props.onChange && this.props.onChange(e, '')
                   })
                 }}
               >
-                <i
-                  className={`hi-input__clear hi-input__suffix__icon hi-icon icon-close-circle`}
-                />
+                <i className={`hi-input__clear hi-input__suffix__icon hi-icon icon-close-circle`} />
               </span>
-            )}
-          {// 后缀
+            )
+          }
+          {
+            // 后缀
             suffix && (
-              <span
-                id={suffixId}
-                className='hi-input__suffix'
-                data-value={suffix}
-              >
+              <span id={suffixId} className='hi-input__suffix' data-value={suffix}>
                 {suffix}
               </span>
-            )}
+            )
+          }
         </div>
-        {// 后置元素
-          append && <span className='hi-input__append'>{append}</span>}
+        {
+          // 后置元素
+          append && <span className='hi-input__append'>{append}</span>
+        }
       </div>
     )
   }
@@ -271,7 +235,7 @@ class Input extends Component {
   /**
    * 渲染 textarea
    */
-  renderTextarea () {
+  renderTextarea() {
     let { active } = this.state
     let { disabled, theme } = this.props
     const { defaultValue, ...attrs } = this.attrs
@@ -291,22 +255,19 @@ class Input extends Component {
 
     return (
       <textarea
-        className={`hi-input theme__${theme} ${active ? 'active' : ''} ${
-          disabled ? 'disabled' : ''
-        }`}
+        className={`hi-input theme__${theme} ${active ? 'active' : ''} ${disabled ? 'disabled' : ''}`}
         style={this.props.style}
         autoComplete='off'
         value={this.state.value}
         disabled={disabled}
         {...filterAttrs}
-        onChange={e => {
+        onChange={(e) => {
           e.persist()
           let valueTrue = e.target.value
           this.props.onChange && this.props.onChange(e, valueTrue)
-          this.props.value === undefined &&
-            this.setState({ value: valueTrue, valueTrue })
+          this.props.value === undefined && this.setState({ value: valueTrue, valueTrue })
         }}
-        onBlur={e => {
+        onBlur={(e) => {
           e.persist()
           let valueTrue = e.target.value
 
@@ -314,7 +275,7 @@ class Input extends Component {
             this.props.onBlur && this.props.onBlur(e, valueTrue)
           })
         }}
-        onFocus={e => {
+        onFocus={(e) => {
           e.persist()
           const valueTrue = e.target.value
 
@@ -322,32 +283,32 @@ class Input extends Component {
             this.props.onFocus && this.props.onFocus(e, valueTrue)
           })
         }}
-        onKeyDown={e => {
+        onKeyDown={(e) => {
           const valueTrue = e.target.value
 
           this.props.onKeyDown && this.props.onKeyDown(e, valueTrue)
         }}
-        onKeyUp={e => {
+        onKeyUp={(e) => {
           const valueTrue = e.target.value
 
           this.props.onKeyUp && this.props.onKeyUp(e, valueTrue)
         }}
-        onKeyPress={e => {
+        onKeyPress={(e) => {
           const valueTrue = e.target.value
 
           this.props.onKeyPress && this.props.onKeyPress(e, valueTrue)
         }}
-        onInput={e => {
+        onInput={(e) => {
           const valueTrue = e.target.value
 
           this.props.onInput && this.props.onInput(e, valueTrue)
         }}
-        onMouseOver={e => {
+        onMouseOver={(e) => {
           this.setState({
             hover: true
           })
         }}
-        onMouseLeave={e => {
+        onMouseLeave={(e) => {
           this.setState({
             hover: false
           })
@@ -356,7 +317,7 @@ class Input extends Component {
     )
   }
 
-  render () {
+  render() {
     const { type } = this.attrs
 
     const { size, id, className, required, theme } = this.props
@@ -365,20 +326,20 @@ class Input extends Component {
     ) : (
       <div
         id={id}
-        className={`hi-input theme__${theme} ${className || ''} ${type}${
-          size ? ' hi-input_' + size : ''
-        }${required ? ' required' : ''}`}
+        className={`hi-input theme__${theme} ${className || ''} ${type}${size ? ' hi-input_' + size : ''}${
+          required ? ' required' : ''
+        }`}
         style={this.props.style}
         data-value={this.state.valueTrue}
-        onClick={e => {
-          this._Input.focus()
+        onClick={(e) => {
+          this._Input.current.focus()
         }}
-        onMouseOver={e => {
+        onMouseOver={(e) => {
           this.setState({
             hover: true
           })
         }}
-        onMouseLeave={e => {
+        onMouseLeave={(e) => {
           this.setState({
             hover: false
           })
