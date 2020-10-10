@@ -1,10 +1,46 @@
 @import '@hi-ui/core-css/index.scss';
 
 $prefixCls: '.hi-select-tree-dialog' !default;
+$pureDisplayPrefixCls: $prefixCls + '__pureDisplay' !default;
 $primary: get-color($palette-primary, 'hiui-blue') !default;
 
-#{$prefixCls} {
-  &__display-part {
-    display: flex;
+#{$pureDisplayPrefixCls} {
+  display: flex;
+
+  &__descTitle {
+    margin-right: 12px;
+    line-height: 32px;
+  }
+
+  &__itemsContainer {
+    &__item {
+      line-height: 24px;
+      margin: 4px 0;
+      background: #f2f2f2;
+      border-radius: 2px;
+      padding-left: 8px;
+      padding-right: 4px;
+      display: flex;
+      align-items: center;
+
+      &__desc {
+        margin-right: 4px;
+      }
+
+      &__button {
+        color: #999;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    }
+
+    &--simple {
+      display: flex;
+      flex-wrap: wrap;
+
+      #{$pureDisplayPrefixCls}__itemsContainer__item {
+        margin-right: 16px;
+      }
+    }
   }
 }

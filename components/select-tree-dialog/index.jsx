@@ -4,7 +4,7 @@ import { SelectedDisplay } from './components/selectedDisplay'
 
 const prefixCls = 'hi-select-tree-dialog'
 
-export const MultiSelectTreeDialogStyle = {
+export const SelectTreeDialogStyle = {
   SIMPLE: 'simple',
   WITH_BORDER: 'with-border'
 }
@@ -19,12 +19,12 @@ const SelectTreeDialog = (props) => {
     // onCancel = () => {},
     // maskCloseable = false,
     // visible = false,
-    styleType = MultiSelectTreeDialogStyle.SIMPLE
+    styleType = SelectTreeDialogStyle.SIMPLE
   } = props
 
   // 参数校验
-  if (!Object.values(MultiSelectTreeDialogStyle).includes(styleType)) {
-    const validValue = Object.values(MultiSelectTreeDialogStyle).toString()
+  if (!Object.values(SelectTreeDialogStyle).includes(styleType)) {
+    const validValue = Object.values(SelectTreeDialogStyle).toString()
     throw new Error(`styleType 应该为 ${validValue} 中的一个`)
   }
 
