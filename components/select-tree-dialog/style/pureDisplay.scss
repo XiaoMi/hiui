@@ -1,0 +1,93 @@
+@import '@hi-ui/core-css/index.scss';
+
+$prefixCls: '.hi-select-tree-dialog' !default;
+$pureDisplayPrefixCls: $prefixCls + '__pure-display' !default;
+$primary: get-color($palette-primary, 'hiui-blue') !default;
+
+$pureDisplayHeight: 32px !default;
+
+#{$pureDisplayPrefixCls} {
+  display: flex;
+
+  &__desc-title {
+    margin-right: 12px;
+    line-height: $pureDisplayHeight;
+  }
+
+  &__items-container {
+    &--simple {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+
+      #{$prefixCls}__selected-item {
+        margin-right: 16px;
+      }
+    }
+
+    &--with-border {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      border-radius: 2px;
+      border: 1px solid #d8d8d8;
+      padding-left: 12px;
+      padding-right: $pureDisplayHeight;
+      align-items: center;
+      box-sizing: border-box;
+      position: relative;
+
+      #{$prefixCls}__selected-item {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  &__placeholder {
+    font-size: 14px;
+    color: #ccc;
+  }
+
+  &__add-button {
+    &--simple {
+      color: $primary;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      opacity: 0.6;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      &__add-icon {
+        margin-right: 4px;
+        font-size: 16px;
+      }
+    }
+
+    &--with-border {
+      width: $pureDisplayHeight;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      display: flex;
+      border-left: 1px solid #d8d8d8;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+
+      &__add-icon {
+        cursor: pointer;
+        padding: 6px;
+        font-size: 18px;
+
+        &:hover {
+          color: #333;
+        }
+      }
+    }
+  }
+}

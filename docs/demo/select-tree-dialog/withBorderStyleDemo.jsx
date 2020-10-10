@@ -12,7 +12,8 @@ class Demo extends React.Component {
     this.options = {
         desTitle: '员工名称',
         // 在此处设置需要的组件风格样式，现只支持 'simple' or 'with-border'
-        styleType: 'with-border'
+        styleType: 'with-border',
+        dialogTitle: '选择员工'
       }
   }
   render () {

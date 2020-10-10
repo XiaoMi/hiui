@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Cls from 'classnames'
-import { SelectedDisplay } from './components/selectedDisplay'
+import Modal from '../modal'
+import { PureDisplay } from './components/pureDisplay'
+import { DialogContent } from './components/dialogContent'
 import './style/index'
 
 const prefixCls = 'hi-select-tree-dialog'
@@ -11,15 +13,19 @@ export const SelectTreeDialogStyle = {
 }
 
 const SelectTreeDialog = (props) => {
+  const [isShowDialog, setIsShowDialog] = useState(false)
+  // 已选择项信息{id: number,desc: string}[]
+  const [selectedItemInfos] = useState([])
+
   const {
     desTitle = '',
-    // data,
+    data,
     // lazyLoadNodeDel = () => {},
     // checkedIds = [],
     // onConfirm = () => {},
     // onCancel = () => {},
     // maskCloseable = false,
-    // visible = false,
+    dialogTitle = '',
     styleType = SelectTreeDialogStyle.SIMPLE,
     style = {},
     className = ''
@@ -33,7 +39,22 @@ const SelectTreeDialog = (props) => {
 
   return (
     <div className={Cls(prefixCls, className)} style={style}>
-      <SelectedDisplay desString={desTitle} styleType={styleType} prefixCls={prefixCls} />
+      <PureDisplay
+        selectedItems={selectedItemInfos}
+        desString={desTitle}
+        styleType={styleType}
+        prefixCls={prefixCls}
+        onAddClick={() => setIsShowDialog(true)}
+      />
+      <Modal
+        title={dialogTitle}
+        visible={isShowDialog}
+        size="large"
+        onConfirm={() => {}}
+        onCancel={() => setIsShowDialog(false)}
+      >
+        {isShowDialog && <DialogContent prefixCls={prefixCls} data={data} />}
+      </Modal>
     </div>
   )
 }

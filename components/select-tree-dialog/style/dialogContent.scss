@@ -1,0 +1,39 @@
+/**
+* @warning 此处对 tree 组件的样式进行了覆盖，后续如需要升级tree组件，请检查此处样式
+*/
+$prefixCls: '.hi-select-tree-dialog' !default;
+$pureDisplayPrefixCls: $prefixCls + '__dialog-content' !default;
+
+$borderRadius: 2px !default;
+$padding: 16px !default;
+// 树选择部分和右侧部分的高度
+$height: 320px !default;
+
+#{$pureDisplayPrefixCls} {
+  display: flex;
+
+  &__tree-container {
+    flex: 3;
+  }
+
+  // 此处为还原设计稿，顶部添加搜索框高度的margin
+  &__selected-container {
+    flex: 2;
+    margin-top: 56px;
+    border-radius: 0 $borderRadius $borderRadius 0;
+    border: 1px solid #d8d8d8;
+    border-left: none;
+    padding: $padding;
+    height: $height;
+    overflow-y: auto;
+  }
+
+  // 对树组件样式进行覆盖，以符合设计图
+  .hi-tree {
+    border-radius: $borderRadius 0 0 $borderRadius;
+    border: 1px solid #d8d8d8;
+    padding: $padding;
+    height: $height;
+    overflow: auto;
+  }
+}
