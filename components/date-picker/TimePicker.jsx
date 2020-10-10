@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react'
+
 import DPContext from './context'
 import Root from './components/Root'
 import { useDate, useFormat } from './hooks'
@@ -7,6 +8,7 @@ import TimePanel from './components/TimePanel'
 import Provider from '../context/index'
 import _ from 'lodash'
 import classNames from 'classnames'
+
 import './style/timepicker'
 const TimePicker = ({
   type = 'time',
@@ -22,9 +24,16 @@ const TimePicker = ({
   disabledMinutes,
   disabledSeconds,
   overlayClassName,
-  onChange = () => {}
+  hourStep,
+  minuteStep,
+  secondStep,
+  onChange = () => {},
+  placement = 'top-bottom-start',
+  inputReadOnly
 }) => {
   const cacheDate = useRef(null)
+  const [rangeInputIsError, setRangeInputIsError] = useState(false)
+
   const [inputFocus, setInputFocus] = useState(false)
   const [showPanel, setShowPanel] = useState(false)
   const [iFormat] = useFormat({
@@ -47,13 +56,16 @@ const TimePicker = ({
     }
   }
   const clickOutsideEvent = useCallback(() => {
-    setShowPanel(false)
-    resetStatus()
-    outDate.forEach((od, index) => {
-      if (od && !od.isSame(cacheDate.current[index])) {
-        callback(outDate)
-      }
-    })
+    const isError = type.includes('range') && Date.parse(outDate[0]) > Date.parse(outDate[1])
+    !isError && resetStatus()
+    setRangeInputIsError(isError)
+
+    !isError &&
+      outDate.forEach((od, index) => {
+        if (od && !od.isSame(cacheDate.current[index])) {
+          callback(outDate)
+        }
+      })
   }, [outDate])
   const timePopperCls = classNames('hi-timepicker__popper', type.includes('range') && 'hi-timepicker__popper--range')
   const onClear = () => {
@@ -103,7 +115,11 @@ const TimePicker = ({
         disabledHours,
         disabledMinutes,
         disabledSeconds,
-        clearable
+        clearable,
+        hourStep,
+        minuteStep,
+        secondStep,
+        inputReadOnly
       }}
     >
       <Root
@@ -111,6 +127,7 @@ const TimePicker = ({
         onClear={onClear}
         showPanel={showPanel}
         inputFocus={inputFocus}
+        rangeInputIsError={rangeInputIsError}
         onTrigger={() => {
           setShowPanel(true)
           setInputFocus(true)
@@ -125,7 +142,7 @@ const TimePicker = ({
           width={false}
           preventOverflow
           className={timePopperCls}
-          placement={'top-bottom-start'}
+          placement={placement}
           onClickOutside={clickOutsideEvent}
         >
           <TimePanel onTimeChange={onTimeChange} dates={outDate} />

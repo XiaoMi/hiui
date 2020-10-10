@@ -4,7 +4,16 @@ import PickerIcon from './PickerIcon'
 import DPContext from '../context'
 import { usePlaceholder } from '../hooks'
 import classNames from 'classnames'
-const Root = ({ onTrigger, onMouseEnter, onMouseLeave, children, inputChangeEvent, onClear, inputFocus }) => {
+const Root = ({
+  onTrigger,
+  onMouseEnter,
+  onMouseLeave,
+  children,
+  inputChangeEvent,
+  onClear,
+  inputFocus,
+  rangeInputIsError
+}) => {
   const { localeDatas, type, outDate, placeholder, showTime, disabled, clearable, theme, width } = useContext(DPContext)
   const inputRef = useRef(null)
   const [placeholders] = usePlaceholder({
@@ -31,7 +40,8 @@ const Root = ({ onTrigger, onMouseEnter, onMouseLeave, children, inputChangeEven
     `hi-datepicker__picker--${type}`,
     inputFocus && 'hi-datepicker__picker--focus',
     disabled && 'hi-datepicker__picker--disabled',
-    showTime && 'hi-datepicker__picker--hastime'
+    showTime && 'hi-datepicker__picker--hastime',
+    rangeInputIsError && 'hi-datepicker__picker--error'
   )
 
   const renderRange = type.includes('range') || type === 'timeperiod'
