@@ -1,7 +1,4 @@
-.hi-codeEditor {
-  .CodeMirror {
-    pre {
-      padding: 0 4px !important;
-    }
-  }
+.CodeMirror pre.CodeMirror-line,
+.CodeMirror pre.CodeMirror-line-like {
+  padding: 0 4px !important;
 }

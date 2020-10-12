@@ -105,9 +105,6 @@ const code = `import React from 'react'
             }}
             onChange={(editor, data, value) => {
               console.log('value',value,editor)
-              // 自动补全的时候，也会触发change事件，所有坐下判断，以免死循环，正则是为了不让空格，换行之类的也提示
-              // 通过change对象你可以自定义一些规则去判断是否提示
-             
             }}
           />
           </div>
