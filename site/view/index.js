@@ -28,7 +28,7 @@ const logo = (
 class Index extends React.Component {
   componentNavs = []
   designNavs = []
-  constructor (props) {
+  constructor(props) {
     super(props)
     const _h = History.getHistory()
     let locale = props.locale
@@ -69,7 +69,7 @@ class Index extends React.Component {
     setComponents(components)
   }
 
-  getSiderName (key) {
+  getSiderName(key) {
     const map = locales[this.state.locale] || {}
     return key.split('.').reduce((a, b) => {
       const parent = map[a]
@@ -80,7 +80,7 @@ class Index extends React.Component {
       return parent
     })
   }
-  getSiderItems (items) {
+  getSiderItems(items) {
     const { locale } = this.props
     let components = []
     let navs = {}
@@ -120,12 +120,12 @@ class Index extends React.Component {
       }
     ])
   }
-  componentDidUpdate () {
+  componentDidUpdate() {
     setComponentsNavs(this.componentNavs)
     setDesignNavs(this.designNavs)
     setDesignNavs(this.templatesNavs)
   }
-  getDesignTemplatesItems (items, path, callback) {
+  getDesignTemplatesItems(items, path, callback) {
     let components = []
     let siderDocuments = []
     let navs = {}
@@ -161,7 +161,7 @@ class Index extends React.Component {
     }
     return [].concat(siderDocuments, components)
   }
-  render () {
+  render() {
     const siders = this.getSiderItems(pages)
     const _designs = this.getDesignTemplatesItems(designs, 'designs', setDesignNavs)
     const _templates = this.getDesignTemplatesItems(templates, 'templates', setTemplatesNavs)

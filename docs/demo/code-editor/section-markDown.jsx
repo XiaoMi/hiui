@@ -27,7 +27,7 @@ import 'codemirror/addon/hint/show-hint.js'
 // 上边两个是定义提示的前提，下边定义自动提示是哪种模式，此处为sql
 import 'codemirror/addon/hint/anyword-hint.js'
 
-const prefix = 'CodeEditor-otherConfig'
+const prefix = 'CodeEditor-base'
 const desc = ''
 const rightOptions = ['高亮行+自动补全', '可折叠+自动提醒']
 
