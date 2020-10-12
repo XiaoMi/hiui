@@ -25,7 +25,25 @@ $height: 320px !default;
     border-left: none;
     padding: $padding;
     height: $height;
+    position: relative;
     overflow-y: auto;
+  }
+
+  &__selected-items {
+    margin-top: 32px;
+    display: flex;
+    flex-wrap: wrap;
+
+    #{$prefixCls}__selected-item {
+      margin-right: 8px;
+    }
+  }
+
+  &__selected-num {
+    color: #999;
+    position: absolute;
+    top: $padding;
+    left: $padding;
   }
 
   // 对树组件样式进行覆盖，以符合设计图

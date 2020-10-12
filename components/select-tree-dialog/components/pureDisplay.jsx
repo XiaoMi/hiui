@@ -9,13 +9,7 @@ import Icon from '../../icon'
 import { SelectedItem } from './selectedItem'
 
 export const PureDisplay = (props) => {
-  const {
-    desString,
-    selectedItems,
-    prefixCls,
-    styleType,
-    onAddClick = () => {} /*, onItemRemoveClick = () => {} */
-  } = props
+  const { desString, selectedItems, prefixCls, styleType, onAddClick = () => {}, onRemoveItem = () => {} } = props
   const minePrefix = useMemo(() => `${prefixCls}__pure-display`, [prefixCls])
   const selectedContainerClass = useMemo(
     () =>
@@ -34,9 +28,9 @@ export const PureDisplay = (props) => {
   const selectedItemsCom = useMemo(
     () =>
       selectedItems.map(({ id, desc }) => {
-        return <SelectedItem id={id} desc={desc} prefixCls={prefixCls} key={id} />
+        return <SelectedItem onRemoveClick={onRemoveItem} id={id} desc={desc} prefixCls={prefixCls} key={id} />
       }),
-    []
+    [selectedItems]
   )
   return (
     <div className={minePrefix}>

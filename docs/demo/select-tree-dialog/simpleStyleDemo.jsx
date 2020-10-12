@@ -7,15 +7,12 @@ const code = `import React from 'react'
 import SelectTreeDialog from '@hi-ui/hiui/es/select-tree-dialog'
 
 class Demo extends React.Component {
-  constructor(props) {
+  constructor(props){
     super(props)
-    this.options = {
-        desTitle: '员工名称',
-        // 在此处设置需要的组件风格样式，现只支持 'simple' or 'with-border'
-        styleType: 'simple',
-        dialogTitle: '选择员工'
-      }
-    
+    this.state = {
+      checkedIds: []
+    }
+
     this.treeData = [
       {
         id: 1,
@@ -23,23 +20,22 @@ class Demo extends React.Component {
         children: [
           {
             id: 2,
-            title: '物流平台'
+            title: '李梅',
+            isLeaf: true
           },
           {
             id: 3,
-            title: '运输管理平台'
+            title: 'Lily',
+            isLeaf: true
           },
           {
             id: 4,
             title: '海外业务部',
             children: [
               {
-                id: 6,
-                title: '售后部'
-              },
-              {
                 id: 7,
-                title: '研发一部'
+                title: '阿姆斯特朗.托马斯',
+                isLeaf: true
               },
               {
                 id: 8,
@@ -58,20 +54,22 @@ class Demo extends React.Component {
                 ]
               }
             ]
-          },
-          {
-            id: 5,
-            title: '物流平台'
           }
         ]
       }
     ]
   }
+
   render () {
     return (
       <SelectTreeDialog
-        {...this.options}
+        desTitle='员工名称'
+        // 在此处设置需要的组件风格样式，现只支持 'simple' or 'with-border'
+        styleType='simple'
+        dialogTitle='选择员工'
         data={this.treeData}
+        checkedIds={this.state.checkedIds}
+        onChange={newCheckedIds => this.setState({checkedIds: newCheckedIds})}
       />
     )
   }
