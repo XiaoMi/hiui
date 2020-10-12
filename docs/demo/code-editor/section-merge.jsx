@@ -17,11 +17,11 @@ import 'codemirror/addon/fold/xml-fold' // 折叠xml和html
 import 'codemirror/addon/fold/markdown-fold' // 折叠md
 import 'codemirror/addon/fold/comment-fold' // 折叠注释，但是测试一下只能折叠html的注释；
 import './diff_match_patch.js'
-const prefix = 'CodeEditor-preview'
+const prefix = 'CodeEditor-merge'
 const desc = ''
 
 const code = `import React from 'react'
-    import CodeEditor from '@hi-ui/hiui/es/code-editor'
+    import { CodeMirror } from '@hi-ui/hiui/es/code-editor'
 
     // 正常使用的时候需要将注释代码解开
     // import 'codemirror/theme/material.css'
