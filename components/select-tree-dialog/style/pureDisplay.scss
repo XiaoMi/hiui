@@ -12,6 +12,7 @@ $pureDisplayHeight: 32px !default;
   &__desc-title {
     margin-right: 12px;
     line-height: $pureDisplayHeight;
+    font-weight: bold;
   }
 
   &__items-container {

@@ -59,6 +59,11 @@ class Demo extends React.Component {
       }
     ]
   }
+  onChangeDel(newCheckedIds){
+    console.log('>>> checked leaf ids >>>')
+    console.log(newCheckedIds)
+    this.setState({checkedIds: newCheckedIds})
+  }
 
   render () {
     return (
@@ -69,7 +74,7 @@ class Demo extends React.Component {
         dialogTitle='选择员工'
         data={this.treeData}
         checkedIds={this.state.checkedIds}
-        onChange={newCheckedIds => this.setState({checkedIds: newCheckedIds})}
+        onChange={this.onChangeDel.bind(this)}
       />
     )
   }
