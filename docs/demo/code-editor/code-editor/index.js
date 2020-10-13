@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 
-import { UnControlled, Controlled } from 'react-codemirror2'
+import { UnControlled } from 'react-codemirror2'
 import CodeMirror from 'codemirror'
 import 'codemirror/lib/codemirror.css'
 import './style/index.js'

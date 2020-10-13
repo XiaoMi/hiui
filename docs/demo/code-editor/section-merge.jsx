@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import CodeEditor, { CodeMirror } from '../../../components/code-editor'
+import CodeMirror from 'codemirror'
 import Select from '../../../components/Select'
 import 'codemirror/theme/material.css'
 import 'codemirror/mode/xml/xml'
@@ -21,8 +21,7 @@ const prefix = 'CodeEditor-merge'
 const desc = ''
 
 const code = `import React from 'react'
-    import { CodeMirror } from '@hi-ui/hiui/es/code-editor'
-
+      import CodeMirror from 'codemirror'
     // 正常使用的时候需要将注释代码解开
     // import 'codemirror/theme/material.css'
     // import 'codemirror/mode/xml/xml'
@@ -146,5 +145,5 @@ const code = `import React from 'react'
       }
     }`
 
-const DemoBase = () => <DocViewer desc={desc} code={code} scope={{ CodeEditor, Select, CodeMirror }} prefix={prefix} />
+const DemoBase = () => <DocViewer desc={desc} code={code} scope={{ Select, CodeMirror }} prefix={prefix} />
 export default DemoBase

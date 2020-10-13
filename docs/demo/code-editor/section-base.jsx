@@ -1,6 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import CodeEditor from '../../../components/code-editor'
+import CodeEditor from './code-editor'
+
 import Select from '../../../components/Select'
 import 'codemirror/theme/material.css'
 import 'codemirror/mode/xml/xml'
@@ -23,7 +24,7 @@ const code = [
     // 正常使用的时候需要将注释代码解开
     // import 'codemirror/theme/material.css' // 主题
     // import 'codemirror/mode/xml/xml' // 高亮代码
-    import CodeEditor from '@hi-ui/hiui/es/code-editor'
+    import { UnControlled as CodeEditor } from 'react-codemirror2'
     
     class Demo extends React.Component {
       constructor(props) {
@@ -49,7 +50,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import CodeEditor from '@hi-ui/hiui/es/code-editor'
+        import { UnControlled as CodeEditor } from 'react-codemirror2'
     // 使用某个语言的时候 需要 import 'codemirror/mode/{语言}/{语言}'
     // eg: import 'codemirror/mode/xml/xml'
     
@@ -153,7 +154,7 @@ func main() { fmt.Println("Hello, World!") } \`
     code: `import React from 'react'
     // 使用某个语言的时候 需要 import 'codemirror/mode/{语言}/{语言}'
 
-    import CodeEditor from '@hi-ui/hiui/es/code-editor'
+        import { UnControlled as CodeEditor } from 'react-codemirror2'
 
     // 正常使用的时候需要将注释代码解开
     // import 'codemirror/theme/material.css'

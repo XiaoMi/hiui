@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import CodeEditor from '../../../components/code-editor'
+import CodeEditor from './code-editor'
 import Select from '../../../components/Select'
 import 'codemirror/theme/material.css'
 import 'codemirror/mode/xml/xml'
@@ -12,8 +12,7 @@ const prefix = 'CodeEditor-preview'
 const desc = ''
 
 const code = `import React from 'react'
-    import CodeEditor from '@hi-ui/hiui/es/code-editor'
-
+  import { UnControlled as CodeEditor } from 'react-codemirror2'
     // 正常使用的时候需要将注释代码解开
     // import 'codemirror/theme/material.css'
     // import 'codemirror/mode/xml/xml'

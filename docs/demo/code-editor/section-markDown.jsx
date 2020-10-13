@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import CodeEditor from '../../../components/code-editor'
+import CodeEditor from './code-editor'
 import Select from '../../../components/Select'
 import 'codemirror/theme/material.css'
 import 'codemirror/mode/xml/xml'
@@ -37,7 +37,7 @@ const code = [
 
     import * as material from 'codemirror/theme/material.css'
     import * as xml from 'codemirror/mode/xml/xml'
-    import CodeEditor from '@hi-ui/hiui/es/code-editor'
+        import { UnControlled as CodeEditor } from 'react-codemirror2'
 
     // 使用时， 需要将注释的代码解开
     // 高亮行插件
@@ -75,7 +75,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import CodeEditor from '@hi-ui/hiui/es/code-editor'
+        import { UnControlled as CodeEditor } from 'react-codemirror2'
     
      // 使用某个语言的时候 需要 import 'codemirror/mode/{语言}/{语言}'
      // eg: import 'codemirror/mode/xml/xml'
