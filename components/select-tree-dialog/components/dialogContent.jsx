@@ -7,30 +7,31 @@ import React, { useMemo, useCallback } from 'react'
 import Tree from '../../tree'
 import { SelectedItem } from './selectedItem'
 import { useSelectedItemInfos } from '../hooks/useSelectedItemInfos'
+// import { SelectTreeDialogCheckedType } from '..'
 
 export const DialogContent = (props) => {
   const {
     prefixCls,
     data = [],
-    leafNodeInfos = [],
+    usefulNodeInfos = [],
     checkedIdsCache = [],
     onChange = () => {},
     onRemoveItem = () => {}
   } = props
   const minePrefixCls = useMemo(() => `${prefixCls}__dialog-content`, [prefixCls])
 
-  // 由于只有叶节点点击才会被视作选择，故而，需要去除掉无用的节点
+  // 由于只有可用节点才能够被点击有效
   const onCheckDel = useCallback(
     ({ checkedIds: newCheckedIds }) => {
-      const leafNodeIds = leafNodeInfos.map((item) => item.id)
+      const leafNodeIds = usefulNodeInfos.map((item) => item.id)
       const checkedLeafIds = newCheckedIds.filter((item) => leafNodeIds.includes(item))
       onChange(checkedLeafIds)
     },
-    [leafNodeInfos, onChange]
+    [usefulNodeInfos, onChange]
   )
 
   // 已选择项信息{id: number,desc: string}[]
-  const selectedItemInfos = useSelectedItemInfos(checkedIdsCache, leafNodeInfos)
+  const selectedItemInfos = useSelectedItemInfos(checkedIdsCache, usefulNodeInfos)
 
   return (
     <div className={minePrefixCls}>

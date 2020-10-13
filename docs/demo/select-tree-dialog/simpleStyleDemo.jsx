@@ -48,8 +48,7 @@ class Demo extends React.Component {
                   },
                   {
                     id: 10,
-                    title: '王祚',
-                    isLeaf: true
+                    title: '王祚'
                   }
                 ]
               }
