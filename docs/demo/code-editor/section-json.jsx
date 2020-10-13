@@ -1,6 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import CodeEditor from '../../../components/code-editor'
+import CodeEditor from './code-editor'
 import Select from '../../../components/Select'
 import 'codemirror/theme/material.css'
 import 'codemirror/mode/xml/xml'
@@ -40,7 +40,7 @@ const prefix = 'CodeEditor-json'
 const desc = '该示例中添加了jsonlint，示例中有个错误，已经被很明显的标识出来了。'
 
 const code = `import React from 'react'
-    import CodeEditor from '@hi-ui/hiui/es/code-editor'
+        import { UnControlled as CodeEditor } from 'react-codemirror2'
 
      // 使用某个语言的时候 需要 import 'codemirror/mode/{语言}/{语言}'
      // eg: import 'codemirror/mode/xml/xml'
