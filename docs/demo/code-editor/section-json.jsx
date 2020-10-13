@@ -37,7 +37,7 @@ const jsonlint = require('jsonlint-mod')
 window.jsonlint = jsonlint
 
 const prefix = 'CodeEditor-json'
-const desc = ''
+const desc = '该示例中添加了jsonlint，示例中有个错误，已经被很明显的标识出来了。'
 
 const code = `import React from 'react'
     import CodeEditor from '@hi-ui/hiui/es/code-editor'
