@@ -22,8 +22,46 @@ import WithBorderStyleDemo from '../../demo/select-tree-dialog/WithBorderStyleDe
 
 <WithBorderStyleDemo />
 
+
+
+## Props
+
+| 参数          | 说明                             | 类型                           | 可选值                       | 默认值   |
+| ------------- | -------------------------------- | ------------------------------ | ---------------------------- | -------- |
+| data          | 展示数据                         | ITreeNode []                   | -                            | -        |
+| checkedIds    | 选中的复选框的节点               | string[]                       | -                            | -        |
+| onChange      | 选中节点改变事件                 | (checkedIds: string[]) => void | -                            | -        |
+| maskCloseable | 组件弹窗是否可以点击遮罩关闭     | boolean                        | true \| false                | alse     |
+| styleType     | 组件样式风格                     | string                         | 'simple' \| 'with-border'    | 'simple' |
+| checkedType   | 勾选项类型                       | string                         | 'all' \| 'child' \| 'parent' | 'all'    |
+| dialogTitle   | 弹窗标题                         | string                         | -                            | -        |
+| desTitle      | 组件描述标题（用作普通状态左侧） | string                         | -                            | -        |
+| className     | 类名                             | string                         | -                            | -        |
+| style         | 样式对象                         | React.CSSProperties            | -                            | -        |
+
+---
+
+`checkedType` 类型说明
+
+- `all` : **所有节点**都被视作可勾选项，`checkedIds`需要包含所有勾选的**节点**，`onChange`会通知所有勾选的节点
+- `child` : **只有叶节点**才被视作可勾选项，`checkedIds`只需要包含勾选的**叶节点**，`onChange`也只会通知被勾选的叶节点，对于**父节点的勾选**操作将被视作对其**子节点的全选**
+- `parent` :  `all`的**裁剪模式**，当一个节点的**所有子节点**被勾选了之后，将**只会**通知、显示这个节点，忽略其子节点，`checkedIds`也可以只传递**节点id**，组件将会**自动将其子节点视作全选**
+
+
+
+### ITreeNode
+
+| 参数     | 说明                                   | 类型        | 可选值        | 默认值 |
+| -------- | -------------------------------------- | ----------- | ------------- | ------ |
+| id       | 唯一id（注意，必须要在data中全局唯一） | string      | -             | -      |
+| title    | 树节点描述                             | string      | -             | -      |
+| children | 子节点数组                             | ITreeNode[] | -             | -      |
+| isLeaf   | 是否为叶节点                           | boolean     | true \| false | false  |
+
+> 一个节点**是否为叶节点**的判定方法：如果该节点没有`children`值（空数组也会被视作非叶节点）**或者** `isLeaf = true`，在开发中，我们**建议**给每一个节点都标明其`isLeaf`值，当然这**只是个建议**，也可以全都不标明，凭借`children`去判断
+
+
+
 ## 注意点
 
 - 组件处于功能设计考虑，**不支持懒加载**节点数据，故而使用的时候，需要一次性传递所有数据
-- 组件最终只会告知外部哪些**叶节点被勾选**（不会传输被勾选的父节点）
-- 勾选父节点相当于**全选**其子节点
