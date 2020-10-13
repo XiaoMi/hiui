@@ -60,7 +60,7 @@ const code = `import React from 'react'
     // import 'codemirror/addon/lint/lint.css'
     // import 'codemirror/addon/lint/json-lint.js'
     // import 'codemirror/addon/lint/css-lint.js'
-    // lint
+    // lint 需要安装 npm install jsonlint-mod --save
     // const jsonlint = require('jsonlint-mod')
     // window.jsonlint = jsonlint
 

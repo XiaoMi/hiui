@@ -21,8 +21,8 @@ const code = [
   {
     code: `import React from 'react'
     // 正常使用的时候需要将注释代码解开
-    // import 'codemirror/theme/material.css'
-    // import 'codemirror/mode/xml/xml'
+    // import 'codemirror/theme/material.css' // 主题
+    // import 'codemirror/mode/xml/xml' // 高亮代码
     import CodeEditor from '@hi-ui/hiui/es/code-editor'
     
     class Demo extends React.Component {
@@ -58,12 +58,12 @@ const code = [
 
     // 正常使用的时候需要将注释代码解开
     // import 'codemirror/theme/material.css'
-    // import 'codemirror/mode/xml/xml'
-    // import 'codemirror/mode/javascript/javascript'
-    // import 'codemirror/mode/go/go'
-    // import 'codemirror/mode/css/css'
-    // import 'codemirror/mode/sql/sql'
-    // import 'codemirror/mode/shell/shell'
+    // import 'codemirror/mode/xml/xml' // 代码关键词高亮 --> xml、html
+    // import 'codemirror/mode/javascript/javascript' // 代码关键词高亮 --> js
+    // import 'codemirror/mode/go/go'  // 代码关键词高亮 --> Go
+    // import 'codemirror/mode/css/css' // 代码关键词高亮 --> css
+    // import 'codemirror/mode/sql/sql' // 代码关键词高亮 --> sql
+    // import 'codemirror/mode/shell/shell' // 代码关键词高亮 --> shell
 
     class Demo extends React.Component {
       constructor(props) {

@@ -38,6 +38,7 @@ const code = `import React from 'react'
     // import 'codemirror/addon/fold/xml-fold' // 折叠xml和html
     // import 'codemirror/addon/fold/markdown-fold' // 折叠md
     // import 'codemirror/addon/fold/comment-fold' // 折叠注释，但是测试一下只能折叠html的注释；
+    // https://cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js  可以将 diff_match_patch.js 下载到本地  或者放到自己的CDN上面
     // import './diff_match_patch.js'
 
     class Demo extends React.Component {
