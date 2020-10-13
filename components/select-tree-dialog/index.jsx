@@ -93,15 +93,28 @@ const SelectTreeDialog = (props) => {
 
   const onRemoveCheckedIds = useRemoveItemCallback(checkedIds, onChange)
   const onRemoveCheckedIdsCache = useRemoveItemCallback(checkedIdsCache, setCheckedIdsCache)
+
   // 由于用户给予的信息有可能仅仅只是被勾选的叶节点，所以需要 后续遍历 树，恢复非叶节点勾选状态
   // 当用户 处于 parent 状态的时候，需要恢复其子节点的勾选状态
   const recoveredCheckedIdsCache = useMemo(() => {
     // 先将所有已勾选叶节点id作为初始值
-    const result = [...checkedIdsCache]
-    const recoverId = (rootNode) => {
+    let result = [...checkedIdsCache]
+    // 恢复子节点勾选状态
+    const recoverChildId = (rootNode) => {
+      if (rootNode.children && rootNode.children.length) {
+        if (result.includes(rootNode.id)) {
+          const childrenIds = rootNode.children.map((item) => item.id)
+          result = [...result, ...childrenIds]
+        }
+
+        rootNode.children.forEach(recoverChildId)
+      }
+    }
+    // 恢复父节点的勾选状态
+    const recoverParentId = (rootNode) => {
       // 存在children值，但为空数组，则永远不会被判定为勾选
       if (!result.includes(rootNode.id) && rootNode.children && rootNode.children.length) {
-        rootNode.children.forEach(recoverId)
+        rootNode.children.forEach(recoverParentId)
         const childrenIds = rootNode.children.map((item) => item.id)
         const isAllChildrenChecked = childrenIds.every((item) => result.includes(item))
         if (isAllChildrenChecked) {
@@ -109,11 +122,46 @@ const SelectTreeDialog = (props) => {
         }
       }
     }
-    data.forEach(recoverId)
+
+    if (checkedType === SelectTreeDialogCheckedType.PARENT) {
+      data.forEach(recoverChildId)
+    } else {
+      data.forEach(recoverParentId)
+    }
 
     return result
-  }, [checkedIdsCache, data])
+  }, [checkedIdsCache, data, checkedType])
 
+  const onDialogChangeDel = useCallback(
+    (newCheckedIds) => {
+      if (checkedType === SelectTreeDialogCheckedType.PARENT) {
+        const disposedCheckedIds = [...newCheckedIds]
+        // 如果某个节点的子节点全部被勾选了，那么，只返回其父节点
+
+        const removeOneId = (id) => {
+          const index = disposedCheckedIds.indexOf(id)
+          if (index > -1) {
+            disposedCheckedIds.splice(index, 1)
+          }
+        }
+
+        const tailor = (id) => {
+          const info = usefulNodeInfos.find((item) => item.id === id)
+          // 已被勾选，并且存在后代，将后代从勾选列表中直接删除
+          if (info && info.children && info.children.length) {
+            const needTailorChildIds = info.children.map((item) => item.id)
+            needTailorChildIds.forEach(removeOneId)
+          }
+        }
+        // 由于 disposedCheckedIds 在轮询时会变化其长度，故而使用原始数据轮询
+        newCheckedIds.forEach(tailor)
+        setCheckedIdsCache(disposedCheckedIds)
+      } else {
+        setCheckedIdsCache(newCheckedIds)
+      }
+    },
+    [checkedType, usefulNodeInfos]
+  )
   return (
     <div className={Cls(prefixCls, className)} style={style}>
       <PureDisplay
@@ -136,10 +184,11 @@ const SelectTreeDialog = (props) => {
         {isShowDialog && (
           <DialogContent
             prefixCls={prefixCls}
-            onChange={setCheckedIdsCache}
+            onChange={onDialogChangeDel}
             data={data}
             checkedType={checkedType}
-            checkedIdsCache={recoveredCheckedIdsCache}
+            checkedIdsCache={checkedIdsCache}
+            recoveredCheckedIdsCache={recoveredCheckedIdsCache}
             usefulNodeInfos={usefulNodeInfos}
             onRemoveItem={onRemoveCheckedIdsCache}
           />

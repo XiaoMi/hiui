@@ -15,6 +15,7 @@ export const DialogContent = (props) => {
     data = [],
     usefulNodeInfos = [],
     checkedIdsCache = [],
+    recoveredCheckedIdsCache = [],
     onChange = () => {},
     onRemoveItem = () => {}
   } = props
@@ -37,7 +38,7 @@ export const DialogContent = (props) => {
     <div className={minePrefixCls}>
       <div className={`${minePrefixCls}__tree-container`}>
         <Tree
-          checkedIds={checkedIdsCache}
+          checkedIds={recoveredCheckedIdsCache}
           checkable
           editable={false}
           data={data}

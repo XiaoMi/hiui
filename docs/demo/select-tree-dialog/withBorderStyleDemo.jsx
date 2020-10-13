@@ -72,6 +72,7 @@ class Demo extends React.Component {
         desTitle='员工名称'
         // 在此处设置需要的组件风格样式，现只支持 'simple' or 'with-border'
         styleType='with-border'
+        checkedType='parent'
         dialogTitle='选择员工'
         data={this.treeData}
         checkedIds={this.state.checkedIds}
