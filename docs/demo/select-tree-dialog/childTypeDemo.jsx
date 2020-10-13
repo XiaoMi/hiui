@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import SelectTreeDialog from '../../../components/select-tree-dialog'
-const prefix = 'select-tree-dialog-with-border-style-demo'
+const prefix = 'select-tree-dialog-child-type-demo'
 const desc = ''
 const code = `import React from 'react'
 import SelectTreeDialog from '@hi-ui/hiui/es/select-tree-dialog'
@@ -20,13 +20,11 @@ class Demo extends React.Component {
         children: [
           {
             id: 2,
-            title: '李梅',
-            isLeaf: true
+            title: '李梅'
           },
           {
             id: 3,
-            title: 'Lily',
-            isLeaf: true
+            title: 'Lily'
           },
           {
             id: 4,
@@ -34,8 +32,7 @@ class Demo extends React.Component {
             children: [
               {
                 id: 7,
-                title: '阿姆斯特朗.托马斯',
-                isLeaf: true
+                title: '阿姆斯特朗.托马斯'
               },
               {
                 id: 8,
@@ -43,13 +40,11 @@ class Demo extends React.Component {
                 children: [
                   {
                     id: 9,
-                    title: '徐辉煌',
-                    isLeaf: true
+                    title: '徐辉煌'
                   },
                   {
                     id: 10,
-                    title: '王祚',
-                    isLeaf: true
+                    title: '王祚'
                   }
                 ]
               }
@@ -72,7 +67,7 @@ class Demo extends React.Component {
         desTitle='员工名称'
         // 在此处设置需要的组件风格样式，现只支持 'simple' or 'with-border'
         styleType='with-border'
-        checkedType='parent'
+        checkedType='child'
         dialogTitle='选择员工'
         data={this.treeData}
         checkedIds={this.state.checkedIds}

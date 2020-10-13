@@ -91,8 +91,8 @@ const SelectTreeDialog = (props) => {
     setIsShowDialog(false)
   }, [onChange, checkedIdsCache])
 
-  const onRemoveCheckedIds = useRemoveItemCallback(checkedIds, onChange)
-  const onRemoveCheckedIdsCache = useRemoveItemCallback(checkedIdsCache, setCheckedIdsCache)
+  const onRemoveCheckedIds = useRemoveItemCallback(checkedIds, onChange, usefulNodeInfos)
+  const onRemoveCheckedIdsCache = useRemoveItemCallback(checkedIdsCache, setCheckedIdsCache, usefulNodeInfos)
 
   // 由于用户给予的信息有可能仅仅只是被勾选的叶节点，所以需要 后续遍历 树，恢复非叶节点勾选状态
   // 当用户 处于 parent 状态的时候，需要恢复其子节点的勾选状态
