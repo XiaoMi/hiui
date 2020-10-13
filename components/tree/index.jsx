@@ -430,6 +430,7 @@ const Tree = (props) => {
               setSearchValue(e.target.value)
               setMatchedNodes(matchedNodes)
               setFilteredIds(_.uniq(filteredNodes))
+              setExpanded(_.uniq(filteredNodes))
             }}
             append={<Button icon="search" />}
             style={{ width: '250px', marginBottom: '24px' }}
@@ -443,7 +444,7 @@ const Tree = (props) => {
         {...props}
         onLoadChildren={onLoadChildren ? loadChildren : null}
         treeNodeRender={treeNodeRender}
-        expandedIds={searchable && searchValue !== '' ? filteredIds : expanded}
+        expandedIds={expanded}
         onExpand={(expandedNode, isExpanded, ids) => {
           setExpanded(ids)
         }}
