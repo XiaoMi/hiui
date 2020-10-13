@@ -7,7 +7,6 @@ import React, { useMemo, useCallback } from 'react'
 import Tree from '../../tree'
 import { SelectedItem } from './selectedItem'
 import { useSelectedItemInfos } from '../hooks/useSelectedItemInfos'
-// import { SelectTreeDialogCheckedType } from '..'
 
 export const DialogContent = (props) => {
   const {
