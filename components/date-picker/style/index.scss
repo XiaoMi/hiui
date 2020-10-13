@@ -1,6 +1,7 @@
 @import '@hi-ui/core-css/index.scss';
 
 $basic-color: get-color($palette-primary, 'hiui-blue') !default;
+$error-color: get-color($palette-secondary, 'danger') !default;
 
 .hi-datepicker {
   position: relative;
@@ -55,12 +56,16 @@ $basic-color: get-color($palette-primary, 'hiui-blue') !default;
     justify-content: space-around;
     box-sizing: border-box;
 
-    &:hover:not(.hi-datepicker__picker--disabled) {
+    &:hover:not(.hi-datepicker__picker--disabled):not(.hi-datepicker__picker--error) {
       border: 1px solid $basic-color;
     }
 
     &--focus {
       border: 1px solid $basic-color;
+    }
+
+    &--error {
+      border: 1px solid $error-color;
     }
 
     &--disabled {
@@ -537,9 +542,16 @@ $basic-color: get-color($palette-primary, 'hiui-blue') !default;
 @each $key, $value in $palette-primary {
   .theme__#{$key} {
     &.hi-datepicker__picker {
-      &:hover:not(.hi-datepicker__picker--disabled),
+      &:hover:not(.hi-datepicker__picker--disabled):not(.hi-datepicker__picker--error) {
+        border: 1px solid $value;
+      }
+
       &--focus {
         border: 1px solid $value;
+      }
+
+      &--error {
+        border: 1px solid $error-color;
       }
     }
 

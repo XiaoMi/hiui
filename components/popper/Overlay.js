@@ -7,7 +7,14 @@ import { getOffset } from './utils/positionUtils'
 import useClickOutside from './utils/useClickOutside'
 import './style/index'
 
-const { isFixed, setupEventListeners, removeEventListeners, setStyle, getStyleComputedProperty } = new PopperJS()
+const {
+  isFixed,
+  setupEventListeners,
+  removeEventListeners,
+  setStyle,
+  getStyleComputedProperty,
+  isBody
+} = new PopperJS()
 
 const Overlay = (props) => {
   const {
@@ -51,7 +58,7 @@ const Overlay = (props) => {
   }
 
   const scrollCallBack = useCallback(() => {
-    const offset = getOffset(props, state, 3)
+    const offset = getOffset(props, state)
     offsetData.current = offset
     if (staticPopperRef) {
       setState(
@@ -65,13 +72,22 @@ const Overlay = (props) => {
   useEffect(() => {
     const { attachEle, container, show } = props
     const { cacheContainerPosition } = state
+    const offset = getOffset(props, state)
+    offsetData.current = offset
+    if (staticPopperRef) {
+      setState(
+        Object.assign({}, state, {
+          popperRef: staticPopperRef.current
+        })
+      )
+    }
     if (!show) {
       // 删除滚动
       attachEle && isAddevent && removeEventListeners(attachEle)
       // 判断该元素中是否含有popper如果有popper在显示  就不要删除定位
       setTimeout(() => {
         if (container.querySelectorAll('.hi-popper__container').length === 0) {
-          container && isAddevent && setStyle(container, { position: cacheContainerPosition })
+          container && !isBody(container) && isAddevent && setStyle(container, { position: cacheContainerPosition })
         }
       }, 0)
       setIsAddevent(false)
@@ -90,7 +106,7 @@ const Overlay = (props) => {
       setIsAddevent(true)
     }
     // 如果在一个固定定位的元素里面的话；更改计算方式
-    if (isFixed(attachEle)) {
+    if (isFixed(attachEle) && !isBody(container)) {
       cacheContainerPosition === 'static' && setStyle(container, { position: 'relative' })
     }
     if (!popperRef) {
@@ -105,7 +121,7 @@ const Overlay = (props) => {
   })
 
   useEffect(() => {
-    const offset = getOffset(props, state, 2)
+    const offset = getOffset(props, state)
     offsetData.current = offset
 
     state.popperRef &&
@@ -127,10 +143,11 @@ const Overlay = (props) => {
 
   if (!(attachEle && show && children)) return null
 
-  const { offset = getOffset(props, state, 1) } = state
+  const { offset = getOffset(props, state) } = state
   const width = offset.width
   const left = offset.left + 'px'
   const top = offset.top + 'px'
+
   return (
     <div
       ref={popperContainerRef}

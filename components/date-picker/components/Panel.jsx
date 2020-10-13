@@ -8,15 +8,7 @@ import TimePanel from './TimePanel'
 import { getView, genNewDates } from '../utils'
 
 const Panel = () => {
-  const {
-    outDate,
-    type,
-    onPick,
-    localeDatas,
-    showTime,
-    theme,
-    weekOffset
-  } = useContext(DPContext)
+  const { outDate, type, onPick, localeDatas, showTime, theme, weekOffset } = useContext(DPContext)
 
   const [view, setView] = useState(getView(type))
 
@@ -27,15 +19,11 @@ const Panel = () => {
     setCalRenderDates([rDate])
   }, [outDate])
 
-  const onCalenderPick = date => {
+  const onCalenderPick = (date) => {
     if (type === 'year' || (type === 'month' && view === 'month')) {
       // year || month picker
       onPick(
-        [
-          type === 'year'
-            ? moment(date.year().toString())
-            : moment(`${date.year().toString()}-${date.month() + 1}`)
-        ],
+        [type === 'year' ? moment(date.year().toString()) : moment(`${date.year().toString()}-${date.month() + 1}`)],
         false
       )
       return
@@ -44,11 +32,7 @@ const Panel = () => {
       // week picker
       const weekMethod = weekOffset ? 'isoWeek' : 'week'
       const weekNum = date[weekMethod]()
-      onPick(
-        [moment(date).startOf(weekMethod), moment(date).endOf(weekMethod)],
-        false,
-        weekNum
-      )
+      onPick([moment(date).startOf(weekMethod), moment(date).endOf(weekMethod)], false, weekNum)
       return
     }
     let _view = view
@@ -72,13 +56,13 @@ const Panel = () => {
     `theme__${theme}`,
     showTime && 'hi-datepicker__panel--time hi-datepicker__panel--noshadow'
   )
-  const onTimeChange = date => {
+  const onTimeChange = (date) => {
     const d = genNewDates(calRenderDates, date)
     setCalRenderDates(d)
     onPick(d, true)
   }
 
-  const onArrowEvent = date => {
+  const onArrowEvent = (date) => {
     const _innerDates = genNewDates(calRenderDates, date)
     if (type.includes('range') && _innerDates[0] >= _innerDates[1]) return
     setCalRenderDates(_innerDates)
@@ -86,7 +70,7 @@ const Panel = () => {
 
   return (
     <div className={panelCls}>
-      <div className='hi-datepicker__panel--left'>
+      <div className="hi-datepicker__panel--left">
         {calRenderDates[0] && (
           <React.Fragment>
             <Header
@@ -104,13 +88,13 @@ const Panel = () => {
               originDate={outDate[0]}
               onPick={onCalenderPick}
               view={view}
-              panelPosition='left'
+              panelPosition="left"
             />
           </React.Fragment>
         )}
       </div>
       {type === 'date' && showTime && (
-        <div className='hi-datepicker__panel--right'>
+        <div className="hi-datepicker__panel--right">
           <TimePanel onTimeChange={onTimeChange} dates={calRenderDates} />
         </div>
       )}

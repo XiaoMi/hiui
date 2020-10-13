@@ -32,6 +32,10 @@ import DemoFormat from '../../demo/time-picker/section-format.jsx'
 | type            | 选择器类型         | string                                                                 | 'default' \| 'timerange' | 'default' |
 | value           | 显示的日期         | Date \| string \| number \| object \| -                                | -                        | -         |
 | format          | 格式化时间         | string                                                                 | -                        | -         |
+| inputReadOnly          | 设置输入框为只读                           | boolean                                                          | true \| false                                                                                                                                                                                        | false       |
+| hourStep        | 小时选项间隔       | number                                                                 | -                        | 1         |
+| minuteStep      | 分钟选项间隔       | number                                                                 | -                        | 1         |
+| secondStep      | 秒选项间隔         | number                                                                 | -                        | 1         |
 | disabled        | 是否禁用           | boolean                                                                | true \| false            | false     |
 | placeholder     | 设置输入框占位     | string \| string[]                                                     | -                        | -         |
 | disabledHours   | 禁止选择的小时     | () => number[] \| number[]                                             | -                        | -         |

@@ -440,7 +440,7 @@ const InternalSelect = (props) => {
         // 自定义options的方向
         placement={placement || 'top-bottom-start'}
         className="hi-select__popper"
-        width={optionWidth || false}
+        width={optionWidth}
         onClickOutside={() => {
           hideDropdown()
         }}

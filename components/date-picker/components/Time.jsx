@@ -4,13 +4,16 @@ import DPContext from '../context'
 import moment from 'moment'
 import { deconstructDate } from '../utils'
 
-const Time = ({ date, onChange }) => {
+const Time = ({ date, onChange, timeRangePanelType, startDate }) => {
   const {
     localeDatas,
     format = 'HH:mm:ss',
     disabledHours = () => [],
     disabledMinutes = () => [],
-    disabledSeconds = () => []
+    disabledSeconds = () => [],
+    hourStep = 1,
+    minuteStep = 1,
+    secondStep = 1
   } = useContext(DPContext)
   const isShowHMS = () => {
     return {
@@ -21,11 +24,62 @@ const Time = ({ date, onChange }) => {
   }
   const { hours: lHours, minutes: lMinutes, seconds: lSeconds } = localeDatas.datePicker
   const { hour: showHour, minute: showMinute, second: showSecond } = isShowHMS()
+  // 设置Date的选中状态
+  const setDisableTime = (type, i, disabledTime = []) => {
+    let isDisabled = disabledTime.includes(i)
 
+    if (timeRangePanelType === 'right') {
+      const { hour, minute, second } = deconstructDate(startDate)
+      const { hour: endHour, minute: endMinute } = date ? deconstructDate(date) : deconstructDate(new Date())
+
+      isDisabled = type === 'hour' && hour > i
+      if (type === 'minute') {
+        if (endHour === hour) {
+          isDisabled = minute > i
+        }
+        if (endHour < hour) {
+          isDisabled = true
+        }
+      }
+
+      if (type === 'second') {
+        if (endHour === hour) {
+          isDisabled = endMinute === minute && second > i
+          if (endMinute < minute) {
+            isDisabled = true
+          }
+        }
+        if (endHour < hour) {
+          isDisabled = true
+        }
+      }
+    }
+    return isDisabled
+  }
+  const getStep = (type) => {
+    let step = 1
+    const directionStep = 1
+    switch (type) {
+      case 'hour':
+        step = hourStep || directionStep
+        break
+      case 'minute':
+        step = minuteStep || directionStep
+        break
+      case 'second':
+        step = secondStep || directionStep
+        break
+      default:
+        step = 1
+        break
+    }
+    return step
+  }
   const generateDatas = (type) => {
     let count
     const datas = []
     const currentDate = deconstructDate(date)
+    const step = getStep(type)
     const disabledList = _getDsiabledList()
     const disabledTime = disabledList[type]
     if (type === 'hour') {
@@ -36,15 +90,18 @@ const Time = ({ date, onChange }) => {
       count = 60
     }
     for (let i = 0; i < count; i += 1) {
-      datas.push({
-        value: i,
-        text: i < 10 ? '0' + i : i.toString(),
-        disabled: disabledTime.includes(i),
-        current: i === currentDate[type]
-      })
+      if (i % step === 0 || i === 0) {
+        datas.push({
+          value: i,
+          text: i < 10 ? '0' + i : i.toString(),
+          disabled: setDisableTime(type, i, disabledTime),
+          current: i === currentDate[type]
+        })
+      }
     }
     return datas
   }
+
   const _getDsiabledList = () => {
     const currentDate = deconstructDate(date)
     return {
@@ -94,6 +151,10 @@ const Time = ({ date, onChange }) => {
         datas={generateDatas(type)}
         disabledList={disabledList}
         onSelect={selectedEvent}
+        hourStep={hourStep}
+        minuteStep={minuteStep}
+        secondStep={secondStep}
+        timeRangePanelType={timeRangePanelType}
       />
     )
   }

@@ -11,18 +11,10 @@ const Root = ({
   children,
   inputChangeEvent,
   onClear,
-  inputFocus
+  inputFocus,
+  rangeInputIsError
 }) => {
-  const {
-    localeDatas,
-    type,
-    outDate,
-    placeholder,
-    showTime,
-    disabled,
-    clearable,
-    theme
-  } = useContext(DPContext)
+  const { localeDatas, type, outDate, placeholder, showTime, disabled, clearable, theme, width } = useContext(DPContext)
   const inputRef = useRef(null)
   const [placeholders] = usePlaceholder({
     type,
@@ -35,7 +27,7 @@ const Root = ({
     onTrigger()
   }
 
-  const pickerIconClick = isClear => {
+  const pickerIconClick = (isClear) => {
     if (isClear) {
       onClear()
       return
@@ -48,7 +40,8 @@ const Root = ({
     `hi-datepicker__picker--${type}`,
     inputFocus && 'hi-datepicker__picker--focus',
     disabled && 'hi-datepicker__picker--disabled',
-    showTime && 'hi-datepicker__picker--hastime'
+    showTime && 'hi-datepicker__picker--hastime',
+    rangeInputIsError && 'hi-datepicker__picker--error'
   )
 
   const renderRange = type.includes('range') || type === 'timeperiod'
@@ -58,8 +51,9 @@ const Root = ({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       ref={inputRef}
+      style={{ width: width }}
     >
-      <div className='hi-datepicker__input'>
+      <div className="hi-datepicker__input" style={{ width: width }}>
         <Input
           date={outDate[0]}
           placeholder={placeholders[0]}
@@ -69,9 +63,7 @@ const Root = ({
         />
         {renderRange && (
           <React.Fragment>
-            <span className='hi-datepicker__input--connection'>
-              {localeDatas.datePicker.to}
-            </span>
+            <span className="hi-datepicker__input--connection">{localeDatas.datePicker.to}</span>
             <Input
               date={outDate[1]}
               placeholder={placeholders[1]}
