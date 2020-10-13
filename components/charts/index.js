@@ -8,12 +8,7 @@ const Charts = (props) => {
   useEffect(() => {
     echarts.registerTheme('default', DefaultTheme)
   }, [])
-  return (
-    <ReactEcharts
-      {...props}
-      theme={DefaultTheme}
-    />
-  )
+  return <ReactEcharts {...props} theme={DefaultTheme} />
 }
 
 export default Charts
