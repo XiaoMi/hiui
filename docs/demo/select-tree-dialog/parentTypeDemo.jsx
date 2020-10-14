@@ -64,7 +64,7 @@ class Demo extends React.Component {
   render () {
     return (
       <SelectTreeDialog
-        desTitle='员工名称'
+        title='员工名称'
         checkedType='parent'
         dialogTitle='选择员工'
         data={this.treeData}

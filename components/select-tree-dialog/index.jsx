@@ -29,7 +29,7 @@ const paramValidCheck = (value, belongMap, desc) => {
 
 const SelectTreeDialog = (props) => {
   const {
-    desTitle = '',
+    title = '',
     data = [],
     checkedIds = [],
     onChange = () => {},
@@ -171,7 +171,7 @@ const SelectTreeDialog = (props) => {
     <div className={Cls(prefixCls, className)} style={style}>
       <PureDisplay
         selectedItems={selectedItemInfos}
-        desString={desTitle}
+        title={title}
         styleType={styleType}
         prefixCls={prefixCls}
         onAddClick={onAddClickDel}

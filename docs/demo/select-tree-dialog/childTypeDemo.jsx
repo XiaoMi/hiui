@@ -64,7 +64,7 @@ class Demo extends React.Component {
   render () {
     return (
       <SelectTreeDialog
-        desTitle='员工名称'
+        title='员工名称'
         // 在此处设置需要的组件风格样式，现只支持 'simple' or 'with-border'
         styleType='with-border'
         checkedType='child'

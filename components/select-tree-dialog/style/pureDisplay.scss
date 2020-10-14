@@ -9,7 +9,7 @@ $pureDisplayHeight: 32px !default;
 #{$pureDisplayPrefixCls} {
   display: flex;
 
-  &__desc-title {
+  &__title {
     margin-right: 12px;
     line-height: $pureDisplayHeight;
     font-weight: bold;

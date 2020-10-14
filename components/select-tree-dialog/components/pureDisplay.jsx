@@ -9,7 +9,7 @@ import Icon from '../../icon'
 import { SelectedItem } from './selectedItem'
 
 export const PureDisplay = (props) => {
-  const { desString, selectedItems, prefixCls, styleType, onAddClick = () => {}, onRemoveItem = () => {} } = props
+  const { title, selectedItems, prefixCls, styleType, onAddClick = () => {}, onRemoveItem = () => {} } = props
   const minePrefix = useMemo(() => `${prefixCls}__pure-display`, [prefixCls])
   const selectedContainerClass = useMemo(
     () =>
@@ -34,7 +34,7 @@ export const PureDisplay = (props) => {
   )
   return (
     <div className={minePrefix}>
-      <p className={`${minePrefix}__desc-title`}>{desString}</p>
+      <p className={`${minePrefix}__title`}>{title}</p>
       <div className={selectedContainerClass}>
         {isShowNoSelectedPlaceholder && <span className={`${minePrefix}__placeholder`}>请选择</span>}
         {selectedItemsCom}
