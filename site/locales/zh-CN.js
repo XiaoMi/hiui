@@ -6,6 +6,7 @@ module.exports = {
     theme: '布局主题',
     palette: '配色主题',
     changelog: '更新日志',
+    'hi-request': 'HiRequest 请求工具',
     'group-basic': '通用',
     new: '重点更新',
     'group-navgation': '导航',
