@@ -6,7 +6,7 @@
 
 当数据为**树状结构**，并且需要勾选多个其子项
 
-场景举例：手机型号勾选（树形结构，叶节点为具体机型）
+场景举例：手机型号勾选、部门勾选
 
 适用数据大小：**小中**数量级（考虑到大数量级的性能问题，本组件不适用）
 
@@ -16,11 +16,19 @@ import SimpleStyleDemo from '../../demo/select-tree-dialog/simpleStyleDemo.jsx'
 
 <SimpleStyleDemo />
 
-## 只勾选叶节点
+## 仅勾选子代
 
 import ChildCheckTypeDemo from '../../demo/select-tree-dialog/childTypeDemo.jsx'
 
 <ChildCheckTypeDemo />
+
+
+
+## 裁剪型（父代）
+
+import ParentCheckTypeDemo from '../../demo/select-tree-dialog/parentTypeDemo.jsx'
+
+<ParentCheckTypeDemo />
 
 
 
@@ -65,3 +73,6 @@ import ChildCheckTypeDemo from '../../demo/select-tree-dialog/childTypeDemo.jsx'
 ## 注意点
 
 - 组件处于功能设计考虑，**不支持懒加载**节点数据，故而使用的时候，需要一次性传递所有数据
+- 当**删除某一项**的时候，其**所有子代**也会被删除掉，并且会随着影响其父节点的勾选状态（删除操作相当于在树状态下面点击已勾选节点）
+- 传输给组件的`checkedIds`请**一定要**与设置的`checkedType`类型**保持一致**，否则会出现意料之内的"bug"
+

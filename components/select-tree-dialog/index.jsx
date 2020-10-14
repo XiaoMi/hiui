@@ -91,8 +91,13 @@ const SelectTreeDialog = (props) => {
     setIsShowDialog(false)
   }, [onChange, checkedIdsCache])
 
-  const onRemoveCheckedIds = useRemoveItemCallback(checkedIds, onChange, usefulNodeInfos)
-  const onRemoveCheckedIdsCache = useRemoveItemCallback(checkedIdsCache, setCheckedIdsCache, usefulNodeInfos)
+  const onRemoveCheckedIds = useRemoveItemCallback(checkedIds, onChange, usefulNodeInfos, checkedType)
+  const onRemoveCheckedIdsCache = useRemoveItemCallback(
+    checkedIdsCache,
+    setCheckedIdsCache,
+    usefulNodeInfos,
+    checkedType
+  )
 
   // 由于用户给予的信息有可能仅仅只是被勾选的叶节点，所以需要 后续遍历 树，恢复非叶节点勾选状态
   // 当用户 处于 parent 状态的时候，需要恢复其子节点的勾选状态
@@ -137,14 +142,14 @@ const SelectTreeDialog = (props) => {
       if (checkedType === SelectTreeDialogCheckedType.PARENT) {
         const disposedCheckedIds = [...newCheckedIds]
         // 如果某个节点的子节点全部被勾选了，那么，只返回其父节点
-
+        // 从 disposedCheckedIds 中移除一个id
         const removeOneId = (id) => {
           const index = disposedCheckedIds.indexOf(id)
           if (index > -1) {
             disposedCheckedIds.splice(index, 1)
           }
         }
-
+        // 裁剪勾选项
         const tailor = (id) => {
           const info = usefulNodeInfos.find((item) => item.id === id)
           // 已被勾选，并且存在后代，将后代从勾选列表中直接删除

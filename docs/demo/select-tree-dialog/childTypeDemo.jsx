@@ -12,7 +12,7 @@ class Demo extends React.Component {
     this.state = {
       checkedIds: []
     }
-
+    // 数据结构节点都未标明 isLeaf 值，凭借 children 来标明叶节点
     this.treeData = [
       {
         id: 1,
@@ -31,19 +31,19 @@ class Demo extends React.Component {
             title: '海外业务部',
             children: [
               {
-                id: 7,
+                id: 5,
                 title: '阿姆斯特朗.托马斯'
               },
               {
-                id: 8,
+                id: 6,
                 title: '研发二部',
                 children: [
                   {
-                    id: 9,
+                    id: 7,
                     title: '徐辉煌'
                   },
                   {
-                    id: 10,
+                    id: 8,
                     title: '王祚'
                   }
                 ]
