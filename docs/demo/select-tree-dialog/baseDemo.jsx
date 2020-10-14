@@ -1,9 +1,17 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
-import SelectTreeDialog from '../../../components/select-tree-dialog'
-const prefix = 'select-tree-dialog-child-type-demo'
+import SelectTreeDialog, { SelectTreeDialogStyle } from '../../../components/select-tree-dialog'
+
+const prefix = 'select-tree-dialog-base-demo'
 const desc = ''
-const code = `import React from 'react'
+
+const rightOptionsMap = {
+  SIMPLE: '简单风格',
+  WITH_BORDER: '线框风格'
+}
+
+const codeGenerate = (styleType) => `
+import React from 'react'
 import SelectTreeDialog from '@hi-ui/hiui/es/select-tree-dialog'
 
 class Demo extends React.Component {
@@ -12,7 +20,7 @@ class Demo extends React.Component {
     this.state = {
       checkedIds: []
     }
-    // 数据结构节点都未标明 isLeaf 值，凭借 children 来标明叶节点
+
     this.treeData = [
       {
         id: 1,
@@ -20,11 +28,13 @@ class Demo extends React.Component {
         children: [
           {
             id: 2,
-            title: '李梅'
+            title: '李梅',
+            isLeaf: true
           },
           {
             id: 3,
-            title: 'Lily'
+            title: 'Lily',
+            isLeaf: true
           },
           {
             id: 4,
@@ -32,7 +42,8 @@ class Demo extends React.Component {
             children: [
               {
                 id: 5,
-                title: '阿姆斯特朗.托马斯'
+                title: '阿姆斯特朗.托马斯',
+                isLeaf: true
               },
               {
                 id: 6,
@@ -40,7 +51,8 @@ class Demo extends React.Component {
                 children: [
                   {
                     id: 7,
-                    title: '徐辉煌'
+                    title: '徐辉煌',
+                    isLeaf: true
                   },
                   {
                     id: 8,
@@ -54,7 +66,6 @@ class Demo extends React.Component {
       }
     ]
   }
-
   onChangeDel(newCheckedIds){
     console.log('>>> checked leaf ids >>>')
     console.log(newCheckedIds)
@@ -66,19 +77,34 @@ class Demo extends React.Component {
       <SelectTreeDialog
         title='员工名称'
         // 在此处设置需要的组件风格样式，现只支持 'simple' or 'with-border'
-        styleType='with-border'
-        checkedType='child'
+        styleType='${styleType}'
         dialogTitle='选择员工'
         data={this.treeData}
         checkedIds={this.state.checkedIds}
         onChange={this.onChangeDel.bind(this)}
-        style={{
-          width: '480px'
-        }}
       />
     )
   }
 }`
 
-const Demo = () => <DocViewer desc={desc} code={code} scope={{ SelectTreeDialog }} prefix={prefix} />
+const code = [
+  {
+    code: codeGenerate(SelectTreeDialogStyle.SIMPLE),
+    opt: [rightOptionsMap.SIMPLE]
+  },
+  {
+    code: codeGenerate(SelectTreeDialogStyle.WITH_BORDER),
+    opt: [rightOptionsMap.WITH_BORDER]
+  }
+]
+
+const Demo = () => (
+  <DocViewer
+    desc={desc}
+    code={code}
+    scope={{ SelectTreeDialog }}
+    prefix={prefix}
+    rightOptions={Object.values(rightOptionsMap)}
+  />
+)
 export default Demo
