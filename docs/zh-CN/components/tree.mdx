@@ -74,7 +74,7 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | closeIcon          | 表示闭合的图标                                                          | string                                                                   | Icon 图标名称                   | -         |
 | apperance          | 树形控件的展现形态                                                      | string                                                                   | 'default' \| 'line' \| 'folder' | 'default' |
 | contextMenu        | 自定义右键菜单,参考 _示例_ 及 _页面底部自定义右键菜单使用说明_          | ContextMenuOption[] \| (item: DataItem, level: number) => ContextMenuOption[]           |                                 | []        |
-| onExpand           | 节点被点击(展开/收起)时触发                                             | (expanded: boolean, expandIds: string[], expandedNode: TreeNode) => void | -                               | -         |
+| onExpand           | 节点被点击(展开/收起)时触发                                             | (expandedNode: TreeNode, expandIds: string[], expanded: boolean ) => void | -                               | -         |
 | onCheck            | 点击节点多选框触发                                                      | (checked: boolean, checkedIds: string[], checkedNode: TreeNode) => void  | -                               | -         |
 | onSelect            | 点击节点时触发                                                      | (selectedNode: TreeNode) => void                                            | -                               | -         |
 | onDragStart        | 节点开始拖拽时触发                                                      | (dragNode: TreeNode) => void                                             | -                               | -         |

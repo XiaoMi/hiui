@@ -66,7 +66,6 @@ class Demo extends React.Component {
             console.log(deleteNode, data)
           }}
           onChange={data => {console.log('Tree data:', data)}}
-          highlightable
         />
       </div>
     )
@@ -150,7 +149,6 @@ class Demo extends React.Component {
                 }]
               }}
               onChange={data => {console.log('Tree data:', data)}}
-              highlightable
             />
           </div>
         )

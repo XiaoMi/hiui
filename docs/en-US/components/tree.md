@@ -59,7 +59,6 @@
             })
             console.log(checkedKeys, title, bool, semi)
           }}
-          highlightable
           onClick={data => { console.log('tree node click', data) }}
         />
       </div>
@@ -69,8 +68,8 @@
   componentDidMount () {
   }
 ```
-:::
 
+:::
 
 ### Checkbox
 
@@ -133,7 +132,6 @@ checkbox
             })
             console.log(checkedKeys, title, bool, semi)
           }}
-          highlightable
           onClick={data => { console.log('tree node click', data) }}
         />
       </div>
@@ -143,8 +141,8 @@ checkbox
   componentDidMount () {
   }
 ```
-:::
 
+:::
 
 ### Attribute
 
@@ -155,7 +153,6 @@ checkbox
 | options | options | object | - | - |
 | defaultExpandAll | whether to expand all tree nodes | boolean | - | false |
 | checkedKeys | selected checkboxes | array | - | - |
-
 
 ### Attribute-data
 
