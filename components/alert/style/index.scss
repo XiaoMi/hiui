@@ -15,22 +15,22 @@ $color-map: (
   'warning': get-color($palette-secondary, 'warning'),
   'success': get-color($palette-secondary, 'success'),
   'danger': get-color($palette-secondary, 'danger')
-);
+) !default;
 
 .hi-alert {
   position: relative;
   padding: 9px 11px;
   border-radius: 2px;
-  font-size: 14px;
+  font-size: $font-size-normal;
   min-width: 280px;
   display: block;
   align-items: flex-start;
 
   &__title {
     display: flex;
-    font-size: 14px;
+    font-size: $font-size-normal;
     align-items: center;
-    line-height: 22px;
+    line-height: $line-height-size-normal;
 
     .hi-icon {
       height: 16px;
@@ -42,9 +42,9 @@ $color-map: (
   &__content {
     margin: 2px 24px 0 24px;
     font-weight: 400;
-    font-size: 12px;
-    line-height: 20px;
-    color: #666;
+    font-size: $font-size-small;
+    line-height: $line-height-size-small;
+    color: use-color('gray-80');
   }
 
   &__close-btn {
@@ -52,10 +52,7 @@ $color-map: (
     top: 12px;
     right: 12px;
     cursor: pointer;
-    line-height: 22px;
-    height: 16px;
-    width: 16px;
-    color: #999;
+    color: use-color('gray-70');
   }
 
   @each $key, $value in $color-map {
