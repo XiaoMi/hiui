@@ -552,11 +552,10 @@ import HiRequest from '@hi-ui/hiui/es/hi-request'
 // 另外同时也会由 response 的状态码，做一些统一的处理，我们对此提供了一个简单的示例。
 
 const HttpClient = (url, options = {}, host = 'api') => {
-  const { method, headers, ...restOptions } = options
+  const { headers, ...restOptions } = options
   return HiRequest(
     {
       url,
-      method: 'post',
       headers: {
         token: 'user.token',
         ...headers

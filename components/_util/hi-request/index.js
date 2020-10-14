@@ -54,5 +54,4 @@ HiRequest.jsonp = jsonp
 // download
 HiRequest.download = download
 
-HiRequest.init = (baseUrl, options) => {}
 export default HiRequest
