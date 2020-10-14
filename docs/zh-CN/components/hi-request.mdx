@@ -168,6 +168,36 @@ HiRequest({
 })
 ```
 
+##### HiRequest(url[, config],[host])
+
+```js
+HiRequest('/user/12345', { method: 'get' }, 'api')
+```
+
+## 更多快捷使用方式
+
+##### HiRequest(config)
+
+##### HiRequest.get(url[, config])
+
+##### HiRequest.delete(url[, config])
+
+##### HiRequest.head(url[, config])
+
+##### HiRequest.options(url[, config])
+
+##### HiRequest.post(url[, data[, config]])
+
+##### HiRequest.put(url[, data[, config]])
+
+##### HiRequest.patch(url[, data[, config]])
+
+##### HiRequest.getCookiesParam(url[, data[, config]])
+
+##### HiRequest.upload(url[, data[, config]])
+
+##### HiRequest.jsonp(url[, data[, config]])
+
 ## JSONP 请求
 
 ```js
@@ -274,37 +304,6 @@ search_results(
   { ...data here... }
 )
 ```
-
-##### HiRequest(url[, config])
-
-```js
-// Send a GET request (default method)
-HiRequest('/user/12345')
-```
-
-## 更多快捷使用方式
-
-##### HiRequest(config)
-
-##### HiRequest.get(url[, config])
-
-##### HiRequest.delete(url[, config])
-
-##### HiRequest.head(url[, config])
-
-##### HiRequest.options(url[, config])
-
-##### HiRequest.post(url[, data[, config]])
-
-##### HiRequest.put(url[, data[, config]])
-
-##### HiRequest.patch(url[, data[, config]])
-
-##### HiRequest.getCookiesParam(url[, data[, config]])
-
-##### HiRequest.upload(url[, data[, config]])
-
-##### HiRequest.jsonp(url[, data[, config]])
 
 ## HiRequestAPI
 
