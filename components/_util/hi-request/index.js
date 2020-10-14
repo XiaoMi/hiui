@@ -7,7 +7,7 @@ import axiosIns, { axios } from './axios'
 /**
  * 请求方法
  * @param options
- * @param host
+ * @param baseUrl
  */
 
 const InternalRequest = (options, host) => {
@@ -54,4 +54,5 @@ HiRequest.jsonp = jsonp
 // download
 HiRequest.download = download
 
+HiRequest.init = (baseUrl, options) => {}
 export default HiRequest

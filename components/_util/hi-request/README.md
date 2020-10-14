@@ -1,11 +1,63 @@
 # HiRequest 【hi-got】
 
-为了方便以及统一大家对于数据请求的方式，HiUI特封装请求工具HiRequest
+为了方便以及统一大家对于数据请求的方式，HiUI 特封装请求工具 HiRequest
 
 ### 快速使用
+
 ```javascript
 import HiRequest from '@hi-ui/hiui/es/hi-request'
 
+const HttpClient = (url, options = {}, host = 'api') => {
+  const { method, headers, ...restOptions } = options
+  return HiRequest(
+    {
+      url,
+      method: 'post',
+      headers: {
+        token: 'user.token',
+        ...headers
+      },
+      // 发送接口时request拦截器
+      beforeRequest: [
+        function (config) {
+          // 对config进行自定义处理
+          return config
+        }
+      ],
+      // 获取结果时；返回页面层面数据时候 拦截器
+      beforeResponse: [
+        function (res) {
+          // 对返回结果进行自定义处理
+          return res
+        }
+      ],
+      // 返回数据异常结果
+      errorResponse: [
+        function (error) {
+          // 对error进行自定义处理
+          console.log(error.response)
+        }
+      ],
+      // 请求异常结果
+      errorRequest: [
+        function (error) {
+          // 对config进行自定义处理
+          console.log(error.request)
+        }
+      ],
+      // 异常结果 返回或者其他异常都会走这个
+      errorCallback: [
+        function (error) {
+          // 对config进行自定义处理
+          console.log(err, error.request || error.response)
+        }
+      ],
+      ...restOptions
+    },
+    host
+  )
+}
+export default HttpClient
 ```
 
 ### Get 请求
@@ -14,15 +66,15 @@ import HiRequest from '@hi-ui/hiui/es/hi-request'
 // 简单的 Get 请求示例
 // Make a request for a user with a given ID
 HiRequest.get('/user?ID=12345')
-  .then(function(response) {
+  .then(function (response) {
     // handle success
     console.log(response)
   })
-  .catch(function(error) {
+  .catch(function (error) {
     // handle error
     console.log(error)
   })
-  .then(function() {
+  .then(function () {
     // always executed
   })
 
@@ -32,13 +84,13 @@ HiRequest.get('/user', {
     ID: 12345
   }
 })
-  .then(function(response) {
+  .then(function (response) {
     console.log(response)
   })
-  .catch(function(error) {
+  .catch(function (error) {
     console.log(error)
   })
-  .then(function() {
+  .then(function () {
     // always executed
   })
 
@@ -60,13 +112,14 @@ HiRequest.post('/user', {
   firstName: 'Fred',
   lastName: 'Flintstone'
 })
-  .then(function(response) {
+  .then(function (response) {
     console.log(response)
   })
-  .catch(function(error) {
+  .catch(function (error) {
     console.log(error)
   })
 ```
+
 ### 执行多个并发请求
 
 ```js
@@ -79,12 +132,11 @@ function getUserPermissions() {
 }
 
 HiRequest.all([getUserAccount(), getUserPermissions()]).then(
-  HiRequest.spread(function(acct, perms) {
+  HiRequest.spread(function (acct, perms) {
     // Both requests are now complete
   })
 )
 ```
-
 
 ### Upload 请求方法
 
@@ -113,8 +165,8 @@ HiRequest.upload(({
   onerror(error.response)
 });
 ```
-### Download 下载方法
 
+### Download 下载方法
 
 ```js
 HiRequest.download({
@@ -128,13 +180,13 @@ HiRequest.download({
     token: 'token'
   },
   // `onDownloadProgress` 允许为下载处理进度事件
-  onDownloadProgress: progressEvent => {
+  onDownloadProgress: (progressEvent) => {
     // 对原生进度事件的处理
   },
-  downloadSuccess: res => {
+  downloadSuccess: (res) => {
     // 下载成功
   },
-  downloadFail: res => {
+  downloadFail: (res) => {
     // 下载失败
   }
 })
@@ -144,29 +196,30 @@ HiRequest.download({
 
 ```js
 HiRequest.jsonp('/users.jsonp')
-  .then(function(response) {
+  .then(function (response) {
     return response.json()
   })
-  .then(function(json) {
+  .then(function (json) {
     console.log('parsed json', json)
   })
-  .catch(function(ex) {
+  .catch(function (ex) {
     console.log('parsing failed', ex)
   })
 ```
+
 #### 设置 JSONP 回调参数名称，默认为'callback'
 
 ```js
 HiRequest.jsonp('/users.jsonp', {
   jsonpCallback: 'custom_callback'
 })
-  .then(function(response) {
+  .then(function (response) {
     return response.json()
   })
-  .then(function(json) {
+  .then(function (json) {
     console.log('parsed json', json)
   })
-  .catch(function(ex) {
+  .catch(function (ex) {
     console.log('parsing failed', ex)
   })
 ```
@@ -177,13 +230,13 @@ HiRequest.jsonp('/users.jsonp', {
 HiRequest.jsonp('/users.jsonp', {
   jsonpCallbackFunction: 'function_name_of_jsonp_response'
 })
-  .then(function(response) {
+  .then(function (response) {
     return response.json()
   })
-  .then(function(json) {
+  .then(function (json) {
     console.log('parsed json', json)
   })
-  .catch(function(ex) {
+  .catch(function (ex) {
     console.log('parsing failed', ex)
   })
 ```
@@ -194,13 +247,13 @@ HiRequest.jsonp('/users.jsonp', {
 HiRequest.jsonp('/users.jsonp', {
   timeout: 3000
 })
-  .then(function(response) {
+  .then(function (response) {
     return response.json()
   })
-  .then(function(json) {
+  .then(function (json) {
     console.log('parsed json', json)
   })
-  .catch(function(ex) {
+  .catch(function (ex) {
     console.log('parsing failed', ex)
   })
 ```
@@ -246,7 +299,6 @@ search_results(
 )
 ```
 
-
 ## HiRequest API
 
 ##### HiRequest(config)
@@ -269,7 +321,7 @@ HiRequest({
   method: 'get',
   url: 'http://bit.ly/2mTM3nY',
   responseType: 'stream'
-}).then(function(response) {
+}).then(function (response) {
   response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
 })
 ```
@@ -523,7 +575,7 @@ The response for a request contains the following information.
 When using `then`, you will receive the response as follows:
 
 ```js
-HiRequest.get('/user/12345').then(function(response) {
+HiRequest.get('/user/12345').then(function (response) {
   console.log(response.data)
   console.log(response.status)
   console.log(response.statusText)
@@ -535,7 +587,7 @@ HiRequest.get('/user/12345').then(function(response) {
 ## Handling Errors
 
 ```js
-HiRequest.get('/user/12345').catch(function(error) {
+HiRequest.get('/user/12345').catch(function (error) {
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
@@ -559,7 +611,7 @@ Using the `validateStatus` config option, you can define HTTP code(s) that shoul
 
 ```js
 HiRequest.get('/user/12345', {
-  validateStatus: function(status) {
+  validateStatus: function (status) {
     return status < 500 // Reject only if the status code is greater than or equal to 500
   }
 })
@@ -568,7 +620,7 @@ HiRequest.get('/user/12345', {
 Using `toJSON` you get an object with more information about the HTTP error.
 
 ```js
-HiRequest.get('/user/12345').catch(function(error) {
+HiRequest.get('/user/12345').catch(function (error) {
   console.log(error.toJSON())
 })
 ```
@@ -587,7 +639,7 @@ const source = CancelToken.source()
 
 HiRequest.get('/user/12345', {
   cancelToken: source.token
-}).catch(function(thrown) {
+}).catch(function (thrown) {
   if (HiRequest.isCancel(thrown)) {
     console.log('Request canceled', thrown.message)
   } else {
