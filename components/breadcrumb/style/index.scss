@@ -25,14 +25,14 @@
 
   &__separator {
     margin: 0 8px;
-    color: #ccc;
+    color: use-color('gray-30');
   }
 
   &__item {
     display: inline-block;
 
     a {
-      color: #666;
+      color: use-color('gray-80');
     }
 
     .hi-breadcrumb__content:hover {
@@ -43,7 +43,7 @@
   &__item:last-child {
     .hi-breadcrumb__content {
       cursor: text;
-      color: #666;
+      color: use-color('gray-80');
     }
 
     .hi-breadcrumb__separator {
