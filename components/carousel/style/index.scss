@@ -1,6 +1,8 @@
+@import '../../core-css/index.scss';
+
 .hi-carousel {
   width: 100%;
-  color: #fff;
+  color: use-color('white');
   overflow: hidden;
   position: relative;
 
@@ -31,7 +33,7 @@
     transition: all 1s;
 
     &--active:not(.hi-carousel__dot--sign) {
-      background: rgba(255, 255, 255, 1);
+      background: use-color('white');
       width: 48px;
     }
 
@@ -64,7 +66,7 @@
     border-radius: 50%;
     text-align: center;
     line-height: 56px;
-    color: #fff;
+    color: use-color('white');
     font-size: 32px;
     margin-left: 24px;
     cursor: pointer;
@@ -80,14 +82,13 @@
 
   &__pages {
     width: 46px;
-    height: 22px;
     border-radius: 16px;
     position: absolute;
     bottom: 24px;
     right: 24px;
     background: rgba(0, 0, 0, 0.5);
-    line-height: 22px;
-    font-size: 14px;
+    line-height: $line-height-size-normal;
+    font-size: $font-size-normal;
     text-align: center;
     user-select: none;
     opacity: 0.5;

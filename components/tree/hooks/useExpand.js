@@ -13,9 +13,7 @@ const useSelect = ({ defaultExpandedIds, expandedIds, onExpand }) => {
     (expandedNode, isExpanded, epdIds) => {
       const ids = [...epdIds]
       if (expandedNode !== undefined && !expandedIds) {
-        setExpandedId(
-          isExpanded ? ids.concat(expandedNode.id) : ids.filter((id) => id !== expandedNode.id)
-        )
+        setExpandedId(isExpanded ? ids.concat(expandedNode.id) : ids.filter((id) => id !== expandedNode.id))
       }
       if (onExpand) {
         onExpand(

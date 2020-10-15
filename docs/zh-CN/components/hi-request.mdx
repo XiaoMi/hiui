@@ -1,8 +1,8 @@
-# HiRequest 【hi-got】
+# HiRequest
 
 为了方便以及统一大家对于数据请求的方式，HiUI 特封装请求工具 HiRequest
 
-### 快速使用
+## 快速使用
 
 ```javascript
 import HiRequest from '@hi-ui/hiui/es/hi-request'
@@ -13,7 +13,7 @@ HiRequest.get('/user?ID=12345').then((response) => {
 })
 ```
 
-### Get 请求
+## Get 请求
 
 ```javascript
 // 简单的 Get 请求示例
@@ -58,7 +58,19 @@ async function getUser() {
 }
 ```
 
-### POST 请求
+## POST 请求
+
+```js
+// 一个简单的post请求
+HiRequest({
+  method: 'post',
+  url: '/user/12345',
+  data: {
+    firstName: 'Fred',
+    lastName: 'Flintstone'
+  }
+})
+```
 
 ```javascript
 HiRequest.post('/user', {
@@ -73,7 +85,7 @@ HiRequest.post('/user', {
   })
 ```
 
-### 执行多个并发请求
+## 执行多个并发请求
 
 ```js
 function getUserAccount() {
@@ -91,7 +103,7 @@ HiRequest.all([getUserAccount(), getUserPermissions()]).then(
 )
 ```
 
-### Upload 请求方法
+## Upload 上传文件 请求方法
 
 ```js
 HiRequest.upload(({
@@ -119,7 +131,7 @@ HiRequest.upload(({
 });
 ```
 
-### Download 下载方法
+## Download 下载文件 请求方法
 
 ```js
 HiRequest.download({
@@ -145,7 +157,48 @@ HiRequest.download({
 })
 ```
 
-### JSONP 请求
+```js
+// 获取远程图片
+HiRequest({
+  method: 'get',
+  url: 'http://bit.ly/2mTM3nY',
+  responseType: 'stream'
+}).then(function (response) {
+  response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
+})
+```
+
+## HiRequest(url[, config],[host])
+
+```js
+HiRequest('/user/12345', { method: 'get' }, 'api')
+```
+
+## 更多快捷使用方式
+
+##### HiRequest(config)
+
+##### HiRequest.get(url[, config])
+
+##### HiRequest.delete(url[, config])
+
+##### HiRequest.head(url[, config])
+
+##### HiRequest.options(url[, config])
+
+##### HiRequest.post(url[, data[, config]])
+
+##### HiRequest.put(url[, data[, config]])
+
+##### HiRequest.patch(url[, data[, config]])
+
+##### HiRequest.getCookiesParam(url[, data[, config]])
+
+##### HiRequest.upload(url[, data[, config]])
+
+##### HiRequest.jsonp(url[, data[, config]])
+
+## JSONP 请求
 
 ```js
 HiRequest.jsonp('/users.jsonp')
@@ -160,7 +213,7 @@ HiRequest.jsonp('/users.jsonp')
   })
 ```
 
-#### 设置 JSONP 回调参数名称，默认为'callback'
+## 设置 JSONP 回调参数名称，默认为'callback'
 
 ```js
 HiRequest.jsonp('/users.jsonp', {
@@ -177,7 +230,7 @@ HiRequest.jsonp('/users.jsonp', {
   })
 ```
 
-#### 设置 JSONP 回调函数名称，默认为带 json\_前缀的随机数
+## 设置 JSONP 回调函数名称，默认为带 json\_前缀的随机数
 
 ```javascript
 HiRequest.jsonp('/users.jsonp', {
@@ -194,7 +247,7 @@ HiRequest.jsonp('/users.jsonp', {
   })
 ```
 
-#### 设置 JSONP 请求超时，默认为 5000ms
+## 设置 JSONP 请求超时，默认为 5000ms
 
 ```javascript
 HiRequest.jsonp('/users.jsonp', {
@@ -211,7 +264,7 @@ HiRequest.jsonp('/users.jsonp', {
   })
 ```
 
-#### `jsonpCallback`和之间的区别`jsonCallbackFunction`
+### `jsonpCallback`和之间的区别`jsonCallbackFunction`
 
 这两个功能可以很容易地相互混淆，但是有一个明显的区别。
 
@@ -252,70 +305,7 @@ search_results(
 )
 ```
 
-## HiRequest API
-
-##### HiRequest(config)
-
-```js
-// 一个简单的post请求
-HiRequest({
-  method: 'post',
-  url: '/user/12345',
-  data: {
-    firstName: 'Fred',
-    lastName: 'Flintstone'
-  }
-})
-```
-
-```js
-// 获取远程图片
-HiRequest({
-  method: 'get',
-  url: 'http://bit.ly/2mTM3nY',
-  responseType: 'stream'
-}).then(function (response) {
-  response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
-})
-```
-
-##### HiRequest(url[, config])
-
-```js
-// Send a GET request (default method)
-HiRequest('/user/12345')
-```
-
-### 为了方便起见，为所有支持的请求方法提供了别名。
-
-##### HiRequest(config)
-
-##### HiRequest.get(url[, config])
-
-##### HiRequest.delete(url[, config])
-
-##### HiRequest.head(url[, config])
-
-##### HiRequest.options(url[, config])
-
-##### HiRequest.post(url[, data[, config]])
-
-##### HiRequest.put(url[, data[, config]])
-
-##### HiRequest.patch(url[, data[, config]])
-
-##### HiRequest.getCookiesParam(url[, data[, config]])
-
-##### HiRequest.upload(url[, data[, config]])
-
-##### HiRequest.jsonp(url[, data[, config]])
-
-## Request Config
-
-```js
-//获取cookies中的指定项
-HiRequest.getCookiesParam(key)
-```
+## HiRequestAPI
 
 ```js
 {
@@ -330,31 +320,31 @@ HiRequest.getCookiesParam(key)
   // 当type: 'upload'的时候；需要指定下面的参数
     file?: any, // 需要上传的文件
     name?: string, // 文件参数名称
-  // 发送接口时request拦截器
+  // 发送接口时request拦截器  可以是一个函数 也可以是数组，每个数组项都是函数
   beforeRequest: [function (config){
       // 对config进行自定义处理
       return config
   }],
-  // 获取结果时；返回页面层面数据时候 拦截器
+  // 获取结果时；返回页面层面数据时候 拦截器 可以是一个函数 也可以是数组，每个数组项都是函数
   beforeResponse: [function (res){
       // 对返回结果进行自定义处理
       return res
   }],
-  // 返回数据异常结果
+  // 返回数据异常结果 可以是一个函数 也可以是数组，每个数组项都是函数
   errorResponse: [function (error){
       // 对error进行自定义处理
       console.log(error.response)
   }],
-  // 请求异常结果
+  // 请求异常结果  可以是一个函数 也可以是数组，每个数组项都是函数
   errorRequest: [function (error){
       // 对config进行自定义处理
       console.log(error.request)
   }],
   // 异常结果 返回或者其他异常都会走这个
-  errorCallback: [function (error){
+  errorCallback: function (error){
       // 对config进行自定义处理
       console.log(err,error.request || error.response)
-  }],
+  },
   // 如果url不是绝对地址，' baseURL '将被加在' url '前面。
   // 为HiRequest的一个实例设置' baseURL '可以方便地将相对url传递给该实例的方法。
   baseURL: 'https://some-domain.com/api/',
@@ -386,9 +376,7 @@ HiRequest.getCookiesParam(key)
     firstName: 'Fred'
   },
 
-  // syntax alternative to send data into the body
-  // method post
-  // only the value is sent, not the key
+  // 只有值没有key
   data: 'Country=Brasil&City=Belo Horizonte',
 
   // `timeout` 超时
@@ -396,73 +384,43 @@ HiRequest.getCookiesParam(key)
   timeout: 1000, // default is `0` (no timeout)
 
 
-  // `withCredentials` indicates whether or not cross-site Access-Control requests
-  // should be made using credentials
+  // 非同源下携带 cookie
   withCredentials: false, // default
 
-  // `adapter` allows custom handling of requests which makes testing easier.
-  // Return a promise and supply a valid response (see lib/adapters/README.md).
-  adapter: function (config) {
-    /* ... */
-  },
-
-  // `auth` indicates that HTTP Basic auth should be used, and supplies credentials.
-  // This will set an `Authorization` header, overwriting any existing
-  // `Authorization` custom headers you have set using `headers`.
-  // Please note that only HTTP Basic auth is configurable through this parameter.
-  // For Bearer tokens and such, use `Authorization` custom headers instead.
-  auth: {
-    username: 'janedoe',
-    password: 's00pers3cret'
-  },
-
-    // 使用HiRequest.download的时候；下载的时候；需要指定 filename;下载后的文件名称；
-    filename: '未命名',// browser only
-  // `responseType` indicates the type of data that the server will respond with
+  // 使用HiRequest.download的时候；下载的时候；需要指定 filename;下载后的文件名称；
+  filename: '未命名',// browser only
+  // `responseType` 表示服务器将响应的数据类型
   // options are: 'arraybuffer', 'document', 'json', 'text', 'stream'
-  //   browser only: 'blob'
+  // 浏览器端 只有 : 'blob' 类型
   responseType: 'json', // default
 
-  // `responseEncoding` indicates encoding to use for decoding responses
+  // `responseEncoding` 指示用于解码响应的编码
   // Note: Ignored for `responseType` of 'stream' or client-side requests
   responseEncoding: 'utf8', // default
 
-  // `xsrfCookieName` is the name of the cookie to use as a value for xsrf token
+  // `xsrfCookieName` 是否使用cookie的名称作为xsrf令牌的值
   xsrfCookieName: 'XSRF-TOKEN', // default
 
-  // `xsrfHeaderName` is the name of the http header that carries the xsrf token value
+  // ' xsrfHeaderName '是携带xsrf令牌值的http头的名称
   xsrfHeaderName: 'X-XSRF-TOKEN', // default
 
-  // `onUploadProgress` allows handling of progress events for uploads
+  // `onUploadProgress` 上传进度
   onUploadProgress: function (progressEvent) {
     // Do whatever you want with the native progress event
   },
 
-  // `onDownloadProgress` allows handling of progress events for downloads
+  // `onDownloadProgress` 下载进度
   onDownloadProgress: function (progressEvent) {
     // Do whatever you want with the native progress event
   },
 
-  // `maxContentLength` defines the max size of the http response content in bytes allowed
+  // `maxContentLength` 定义http响应内容的最大大小(以字节为单位)
   maxContentLength: 2000,
 
-  // `validateStatus` defines whether to resolve or reject the promise for a given
-  // HTTP response status code. If `validateStatus` returns `true` (or is set to `null`
-  // or `undefined`), the promise will be resolved; otherwise, the promise will be
-  // rejected.
+  // ' validateStatus '定义了是否解析或拒绝给定HTTP响应状态代码。如果“validateStatus”返回“true”(或者设置为“null”或“undefined”)，响应将被解析;否则，响应就会落空拒绝。
   validateStatus: function (status) {
     return status >= 200 && status < 300; // default
   },
-
-  // `maxRedirects` defines the maximum number of redirects to follow in node.js.
-  // If set to 0, no redirects will be followed.
-  maxRedirects: 5, // default
-
-  // `socketPath` defines a UNIX Socket to be used in node.js.
-  // e.g. '/var/run/docker.sock' to send requests to the docker daemon.
-  // Only either `socketPath` or `proxy` can be specified.
-  // If both are specified, `socketPath` is used.
-  socketPath: null, // default
 
   // `httpAgent` and `httpsAgent` define a custom agent to be used when performing http
   // and https requests, respectively, in node.js. This allows options to be added like
@@ -470,16 +428,7 @@ HiRequest.getCookiesParam(key)
   httpAgent: new http.Agent({ keepAlive: true }),
   httpsAgent: new https.Agent({ keepAlive: true }),
 
-  // 'proxy' defines the hostname and port of the proxy server.
-  // You can also define your proxy using the conventional `http_proxy` and
-  // `https_proxy` environment variables. If you are using environment variables
-  // for your proxy configuration, you can also define a `no_proxy` environment
-  // variable as a comma-separated list of domains that should not be proxied.
-  // Use `false` to disable proxies, ignoring environment variables.
-  // `auth` indicates that HTTP Basic auth should be used to connect to the proxy, and
-  // supplies credentials.
-  // This will set an `Proxy-Authorization` header, overwriting any existing
-  // `Proxy-Authorization` custom headers you have set using `headers`.
+  // 'proxy' 定义代理服务器的主机名和端口
   proxy: {
     host: '127.0.0.1',
     port: 9000,
@@ -489,68 +438,24 @@ HiRequest.getCookiesParam(key)
     }
   },
 
-  // `cancelToken` specifies a cancel token that can be used to cancel the request
-  // (see Cancellation section below for details)
+  // `cancelToken` 指定可用于取消请求的取消 token
   cancelToken: new CancelToken(function (cancel) {
   })
 }
 ```
 
-## Response Schema
-
-The response for a request contains the following information.
-
-```js
-{
-  // `data` is the response that was provided by the server
-  data: {},
-
-  // `status` is the HTTP status code from the server response
-  status: 200,
-
-  // `statusText` is the HTTP status message from the server response
-  statusText: 'OK',
-
-  // `headers` the headers that the server responded with
-  // All header names are lower cased
-  headers: {},
-
-  // `config` is the config that was provided to `HiRequest` for the request
-  config: {},
-
-  // `request` is the request that generated this response
-  // It is the last ClientRequest instance in node.js (in redirects)
-  // and an XMLHttpRequest instance in the browser
-  request: {}
-}
-```
-
-When using `then`, you will receive the response as follows:
-
-```js
-HiRequest.get('/user/12345').then(function (response) {
-  console.log(response.data)
-  console.log(response.status)
-  console.log(response.statusText)
-  console.log(response.headers)
-  console.log(response.config)
-})
-```
-
-## Handling Errors
+## Errors 异常处理
 
 ```js
 HiRequest.get('/user/12345').catch(function (error) {
   if (error.response) {
-    // The request was made and the server responded with a status code
-    // that falls out of the range of 2xx
+    // 请求发出后，服务器使用状态码进行响应，该状态码超出了2xx的范围
     console.log(error.response.data)
     console.log(error.response.status)
     console.log(error.response.headers)
   } else if (error.request) {
     // The request was made but no response was received
     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-    // http.ClientRequest in node.js
     console.log(error.request)
   } else {
     // Something happened in setting up the request that triggered an Error
@@ -560,17 +465,17 @@ HiRequest.get('/user/12345').catch(function (error) {
 })
 ```
 
-Using the `validateStatus` config option, you can define HTTP code(s) that should throw an error.
+使用' validateStatus '配置选项，您可以定义应该抛出错误的 HTTP 代码。
 
 ```js
 HiRequest.get('/user/12345', {
   validateStatus: function (status) {
-    return status < 500 // Reject only if the status code is greater than or equal to 500
+    return status < 500 // 状态码大于或等于500时，不再进行处理
   }
 })
 ```
 
-Using `toJSON` you get an object with more information about the HTTP error.
+使用' toJSON '你得到一个对象更多的信息，关于 HTTP 错误。
 
 ```js
 HiRequest.get('/user/12345').catch(function (error) {
@@ -578,13 +483,11 @@ HiRequest.get('/user/12345').catch(function (error) {
 })
 ```
 
-## Cancellation
+## 取消请求
 
-You can cancel a request using a _cancel token_.
+> [cancelable promises proposal](https://github.com/tc39/proposal-cancelable-promises).
 
-> The HiRequest cancel token API is based on the withdrawn [cancelable promises proposal](https://github.com/tc39/proposal-cancelable-promises).
-
-You can create a cancel token using the `CancelToken.source` factory as shown below:
+通过使用 `CancelToken.source` 生成一个标记，用作取消使用
 
 ```js
 const CancelToken = HiRequest.CancelToken
@@ -610,11 +513,12 @@ HiRequest.post(
   }
 )
 
-// cancel the request (the message parameter is optional)
+// 取消这次请求
+
 source.cancel('Operation canceled by the user.')
 ```
 
-You can also create a cancel token by passing an executor function to the `CancelToken` constructor:
+你也可以通过传递一个 `executor` 函数给 `CancelToken` 构造函数来创建一个取消令牌:
 
 ```js
 const CancelToken = HiRequest.CancelToken
@@ -631,34 +535,81 @@ HiRequest.get('/user/12345', {
 cancel()
 ```
 
-> Note that `URLSearchParams` is not supported by all browsers (see [caniuse.com](http://www.caniuse.com/#feat=urlsearchparams)), but there is a [polyfill](https://github.com/WebReflection/url-search-params) available (make sure to polyfill the global environment).
-
-Alternatively, you can encode data using the [`qs`](https://github.com/ljharb/qs) library:
+## Cookie
 
 ```js
-const qs = require('qs')
-HiRequest.post('/foo', qs.stringify({ bar: 123 }))
+//获取cookies中的指定项
+HiRequest.getCookiesParam(key)
 ```
 
-Or in another way (ES6),
+## 使用建议
 
 ```js
-import qs from 'qs'
-const data = { bar: 123 }
-const options = {
-  method: 'POST',
-  headers: { 'content-type': 'application/x-www-form-urlencoded' },
-  data: qs.stringify(data),
-  url
+import HiRequest from '@hi-ui/hiui/es/hi-request'
+
+// 如需在自己项目中使用，一般大家会设置 统一 loading，或者公用的 header 等配置；
+// 另外同时也会由 response 的状态码，做一些统一的处理，我们对此提供了一个简单的示例。
+
+const HttpClient = (url, options = {}, host = 'api') => {
+  const { headers, ...restOptions } = options
+  return HiRequest(
+    {
+      url,
+      headers: {
+        token: 'user.token',
+        ...headers
+      },
+      // 发送接口时request拦截器
+      beforeRequest: (config) => {
+        // 对config进行自定义处理
+        return config
+      },
+      // 获取结果时；返回页面层面数据时候 拦截器
+      beforeResponse: (res) => {
+        // 对返回结果进行自定义处理
+        return res
+      },
+      // 返回数据异常结果
+      errorResponse: (error) => {
+        // 对error进行自定义处理
+        console.log(error.response)
+      },
+      // 请求异常结果
+      errorRequest: (error) => {
+        // 对config进行自定义处理
+        console.log(error.request)
+      },
+      // 异常结果 返回或者其他异常都会走这个
+      errorCallback: [
+        function (error) {
+          // 对config进行自定义处理
+          console.log(err, error.request || error.response)
+        }
+      ],
+      ...restOptions
+    },
+    host
+  ).then(
+    (response) => {
+      // if (loading) {
+      //   closeLoading()
+      // }
+      const res = response.data
+
+      if (res.code === 401) {
+        // 未登录，处理未登录的一些提醒
+        return
+      }
+
+      return res
+    },
+    (error) => {
+      // if (loading) {
+      //   closeLoading()
+      // }
+      throw error
+    }
+  )
 }
-HiRequest(options)
-```
-
-### Node.js
-
-In node.js, you can use the [`querystring`](https://nodejs.org/api/querystring.html) module as follows:
-
-```js
-const querystring = require('querystring')
-HiRequest.post('http://something.com/', querystring.stringify({ foo: 'bar' }))
+export default HttpClient
 ```

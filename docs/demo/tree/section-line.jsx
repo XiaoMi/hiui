@@ -50,7 +50,6 @@ class Demo extends React.Component {
           defaultExpandAll
           data={this.state.treeData}
           onChange={data => {console.log('Tree data:', data)}}
-          highlightable
           onSelect={(item) => console.log('select node', item)}
         />
       </div>
@@ -104,7 +103,6 @@ class Demo extends React.Component {
           defaultExpandAll
           data={this.state.treeData}
           onChange={data => {console.log('Tree data:', data)}}
-          highlightable
           onClick={(item) => console.log('------click node', item)}
         />
       </div>

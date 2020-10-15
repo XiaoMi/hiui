@@ -1,5 +1,5 @@
+@import '../../core-css/index.scss';
 $filter: 'hi-filter' !default;
-$Color: #4284f5 !default;
 
 .#{$filter} {
   &-content {
@@ -16,8 +16,8 @@ $Color: #4284f5 !default;
     &-item {
       position: relative;
       height: 40px;
-      font-size: 14px;
-      color: #333;
+      font-size: $font-size-normal;
+      color: use-color('black');
       line-height: 40px;
       margin-right: 40px;
       cursor: pointer;
@@ -26,7 +26,7 @@ $Color: #4284f5 !default;
     }
 
     &-item__active {
-      color: $Color;
+      color: use-color('primary');
     }
 
     &-item__disabled {
@@ -39,7 +39,7 @@ $Color: #4284f5 !default;
       width: 24px;
       height: 2px;
       display: inline-block;
-      background-color: $Color;
+      background-color: use-color('primary');
       bottom: 0;
       left: 50%;
       right: 50%;
@@ -55,8 +55,8 @@ $Color: #4284f5 !default;
       &__title {
         display: inline-block;
         width: 76px;
-        font-size: 14px;
-        color: #999;
+        font-size: $font-size-normal;
+        color: use-color('gray-70');
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

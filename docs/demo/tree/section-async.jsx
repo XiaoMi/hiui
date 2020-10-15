@@ -59,7 +59,6 @@ class Demo extends React.Component {
           editable={true}
           data={this.state.treeData}
           onChange={data => {console.log('Tree data:', data)}}
-          highlightable
           onSelect={(item) => console.log('select node', item)}
         />
       </div>

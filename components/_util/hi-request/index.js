@@ -7,7 +7,7 @@ import axiosIns, { axios } from './axios'
 /**
  * 请求方法
  * @param options
- * @param host
+ * @param baseUrl
  */
 
 const InternalRequest = (options, host) => {

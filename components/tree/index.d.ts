@@ -30,7 +30,7 @@ interface Props {
   editable?: boolean
   draggable?: boolean
   searchable?: boolean
-  highlightable?: boolean
+  selectable?: boolean
   defaultExpandAll?: boolean
   defaultHighlightId?: boolean
   loadTreeNode?: LoadTreeNode | LoadTreeNodeFun
