@@ -1,4 +1,4 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
 .hi-form {
   max-width: 100%;
@@ -16,7 +16,7 @@
 
   legend {
     margin: 0 0 16px;
-    color: $gray-darker;
+    color: use-color('gray-80');
   }
 
   &--inline {
@@ -32,8 +32,8 @@
     box-sizing: border-box;
     margin-top: 0;
     margin-bottom: 24px;
-    font-size: 16px;
-    font-weight: 400;
+    font-size: $font-size-large;
+    font-weight: $font-weight-normal;
   }
 
   &--label--left {
@@ -81,7 +81,7 @@
     flex-shrink: 0;
     box-sizing: border-box;
     vertical-align: top;
-    color: $gray-darker;
+    color: use-color('gray-80');
     overflow-wrap: break-word;
   }
 
