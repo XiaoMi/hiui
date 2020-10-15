@@ -60,6 +60,20 @@ import DemoAllRow from '../../demo/checkbox/section-row.jsx'
 | style        | 自定义样式                                                   | CSSProperties                               | -                          | -            |
 | value        | 指定选中的项                                                 | string[] \| number[]                        | -                          | -            |
 
+## Events
+
+### Checkbox
+
+| 名称     | 说明         | 类型                              | 参数                  | 返回值 |
+| -------- | ------------ | --------------------------------- | --------------------- | ------ |
+| onChange | 变化时的回调 | (event: HTMLInputElement) => void | event: input 事件对象 | -      |
+
+### Checkbox.Group
+
+| 名称     | 说明         | 类型                                        | 参数                        | 返回值 |
+| -------- | ------------ | ------------------------------------------- | --------------------------- | ------ |
+| onChange | 变化时的回调 | (checkedList: string[] \| number[]) => void | checkedList: 选中项 ID 集合 | -      |
+
 ## Type
 
 ### _DataItem_
