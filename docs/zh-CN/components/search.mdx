@@ -27,17 +27,22 @@ import DemoClassic from '../../demo/search/section-classic.jsx'
 
 ## Props
 
-| 参数             | 说明                                                   | 类型                                        | 可选值        | 默认值 |
-| ---------------- | ------------------------------------------------------ | ------------------------------------------- | ------------- | ------ |
-| prepend          | 输入框前置内容                                         | string \| ReactNode                         | -             | -      |
-| disabled         | 是否禁用                                               | boolean                                     | true \| false | false  |
-| loading          | 加载中                                                 | boolean                                     | true \| false | false  |
-| placeholder      | 输入框占位符                                           | string \| ReactNode                         | -             | -      |
-| data             | 搜索结果的数据                                         | `Array<DataItem>`                           | -             | -      |
-| append           | 搜索按钮                                               | ReactNode                                   | -             | -      |
-| onChange         | 值改变时的回调                                         | (e: Event) => void                          | -             | -      |
-| onSearch         | 当点击搜索按钮时候、输入框内点击回车或者点击下拉选项时 | (inputVal: string, item ?:DataItem) => void | -             | -      |
-| overlayClassName | 下拉根元素的类名称                                     | string                                      | -             | -      |
+| 参数             | 说明               | 类型                | 可选值        | 默认值 |
+| ---------------- | ------------------ | ------------------- | ------------- | ------ |
+| prepend          | 输入框前置内容     | string \| ReactNode | -             | -      |
+| disabled         | 是否禁用           | boolean             | true \| false | false  |
+| loading          | 加载中             | boolean             | true \| false | false  |
+| placeholder      | 输入框占位符       | string \| ReactNode | -             | -      |
+| data             | 搜索结果的数据     | `Array<DataItem>`   | -             | -      |
+| append           | 搜索按钮           | ReactNode           | -             | -      |
+| overlayClassName | 下拉根元素的类名称 | string              | -             | -      |
+
+## Events
+
+| 名称     | 说明                                                   | 类型                                        | 参数                                                    | 返回值 |
+| -------- | ------------------------------------------------------ | ------------------------------------------- | ------------------------------------------------------- | ------ |
+| onChange | 值改变时的回调                                         | (event: HTMLInputEvent) => void             | event: input 事件对象                                   | -      |
+| onSearch | 当点击搜索按钮时候、输入框内点击回车或者点击下拉选项时 | (inputVal: string, item ?:DataItem) => void | inputVal: 输入的搜索关键字 <br/> item: 选中的搜索关键项 | -      |
 
 ## DataItem
 
