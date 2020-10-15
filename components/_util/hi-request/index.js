@@ -53,5 +53,9 @@ HiRequest.getCookiesParam = (key) => {
 HiRequest.jsonp = jsonp
 // download
 HiRequest.download = download
-
+// upload
+HiRequest.upload = (options, host) => {
+  options.type = 'upload'
+  return HiRequest(options, host)
+}
 export default HiRequest
