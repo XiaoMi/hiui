@@ -72,15 +72,20 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 
 ### Form
 
-| 参数           | 说明                                                                                  | 类型                               | 可选值                     | 默认值     |
-| -------------- | ------------------------------------------------------------------------------------- | ---------------------------------- | -------------------------- | ---------- |
-| initialValues  | 表单默认值，只有初始化以及重置时生效                                                  | object                             | -                          | -          |
-| rules          | 表单验证规则，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object                             | -                          | -          |
-| labelWidth     | label 宽度，可用任意 CSS 长度单位                                                     | string                             |                            |
-| labelPlacement | label 放置的位置                                                                      | string                             | 'right' \| 'left' \| 'top' | 'left'     |
-| placement      | 是否横向排列                                                                          | string                             | 'horizontal' \| 'vertical' | 'vertical' |
-| showColon      | 是否显示冒号                                                                          | boolean                            | true \| false              | true       |
-| onValuesChange | 字段值更新时触发回调事件                                                              | Function(changedValues, allValues) | -                          | -          |
+| 参数           | 说明                                                                                  | 类型    | 可选值                     | 默认值     |
+| -------------- | ------------------------------------------------------------------------------------- | ------- | -------------------------- | ---------- |
+| initialValues  | 表单默认值，只有初始化以及重置时生效                                                  | object  | -                          | -          |
+| rules          | 表单验证规则，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object  | -                          | -          |
+| labelWidth     | label 宽度，可用任意 CSS 长度单位                                                     | string  |                            |
+| labelPlacement | label 放置的位置                                                                      | string  | 'right' \| 'left' \| 'top' | 'left'     |
+| placement      | 是否横向排列                                                                          | string  | 'horizontal' \| 'vertical' | 'vertical' |
+| showColon      | 是否显示冒号                                                                          | boolean | true \| false              | true       |
+
+## Events
+
+| 名称           | 说明                     | 类型                                               | 参数                                                          | 返回值 |
+| -------------- | ------------------------ | -------------------------------------------------- | ------------------------------------------------------------- | ------ |
+| onValuesChange | 字段值更新时触发回调事件 | (changedValues: object, allValues: object) => void | changedValues: 改变的表单对象 <br/> allValues: 所有表单项对象 | -      |
 
 ### SchemaForm
 

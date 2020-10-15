@@ -20,15 +20,20 @@ import DemoCascader from '../../demo/filter/section-cascader.jsx'
 
 ## Props
 
-| 参数          | 说明                                     | 类型                    | 可选值        | 默认值 |
-| ------------- | ---------------------------------------- | ----------------------- | ------------- | ------ |
-| label         | 筛选标题                                 | string[]                | -             | -      |
-| labelWidth    | 筛选标题宽度                             | Number                  | -             | 80     |
-| showUnderline | 是否显示下划线                           | boolean                 | true \| false | false  |
-| data          | 筛选选项数据                             | DataItem[]              | -             | -      |
-| defaultValue  | 默认选中项的值                           | string[]                | -             | -      |
-| value         | 被选中项的值                             | string[]                | -             | -      |
-| onChange      | 选中项改变时的回调，回调值为新选中项的值 | (value: string) => void | -             | -      |
+| 参数          | 说明           | 类型       | 可选值        | 默认值 |
+| ------------- | -------------- | ---------- | ------------- | ------ |
+| label         | 筛选标题       | string[]   | -             | -      |
+| labelWidth    | 筛选标题宽度   | Number     | -             | 80     |
+| showUnderline | 是否显示下划线 | boolean    | true \| false | false  |
+| data          | 筛选选项数据   | DataItem[] | -             | -      |
+| defaultValue  | 默认选中项的值 | string[]   | -             | -      |
+| value         | 被选中项的值   | string[]   | -             | -      |
+
+## Events
+
+| 名称     | 说明             | 类型                                   | 参数                     | 返回值 |
+| -------- | ---------------- | -------------------------------------- | ------------------------ | ------ |
+| onChange | 选择时的回调函数 | (values: string[] \| number[]) => void | values: 选中项的 ID 集合 | -      |
 
 ## DataItem
 

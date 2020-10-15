@@ -52,5 +52,10 @@ import DemoRenderCharacter from '../../demo/rate/section-renderCharacter.jsx'
 | value           | 当前数，受控值                      | number                                     | -             | -      |
 | character       | 自定义字符                          | ReactNode \|string                         | -             | -      |
 | color           | 自定义颜色（只对 icon、字体有效）   | string                                     | -             | -      |
-| onChange        | 选择时的回调                        | (value: number) => void                    | -             | -      |
 | characterRender | 自定义渲染 character 函数           | (value: number,index: number) => ReactNode | -             | -      |
+
+## Events
+
+| 名称     | 说明         | 类型                    | 参数            | 返回值 |
+| -------- | ------------ | ----------------------- | --------------- | ------ |
+| onChange | 选择时的回调 | (value: number) => void | value: 当前分值 | -      |

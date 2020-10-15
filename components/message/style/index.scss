@@ -38,14 +38,14 @@ $color-map: (
   }
 
   .hi-message__header {
-    line-height: 22px;
+    line-height: $line-height-size-normal;
     display: flex;
     align-items: center;
   }
 
   .hi-message__title {
-    color: #333 !important;
-    font-size: 14px;
+    color: use-color('black') !important;
+    font-size: $font-size-normal;
   }
 
   .hi-message__icon {

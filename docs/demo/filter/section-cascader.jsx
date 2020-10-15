@@ -9,29 +9,29 @@ class Demo extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      value:['米家有品', '五彩城店', '小米MIXS'],
+      value:[2, 21, '小米MIXS'],
       data:  [
         {
-          id: '小米商城',
+          id: 1,
           content: '小米商城',
           children: [
             {
-              id: 1,
+              id: 11,
               content: '小米商城'
             },
             {
-              id: 2,
+              id: 12,
               content: '米家优品',
               disabled: true
             }
           ]
         },
         {
-          id: '米家有品',
+          id: 2,
           content: '米家有品',
           children: [
             {
-              id: '五彩城店',
+              id: 21,
               content: '五彩城店',
               children: [
                 {
@@ -49,22 +49,22 @@ class Demo extends React.Component {
               ]
             },
             {
-              id: '清河店',
+              id: 22,
               content: '清河店'
             },
             {
-              id: '西三旗店',
+              id: 23,
               content: '西三旗店'
             }
           ]
         },
-        
+
         {
-          id: '京东商城',
+          id: 3,
           content: '京东商城',
           children: [
             {
-              id: '小米直营',
+              id: 31,
               content: '小米直营',
               children: [
                 {
@@ -100,7 +100,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBase = () => (
-  <DocViewer desc={desc} code={code} scope={{ Filter }} prefix={prefix} />
-)
+const DemoBase = () => <DocViewer desc={desc} code={code} scope={{ Filter }} prefix={prefix} />
 export default DemoBase
