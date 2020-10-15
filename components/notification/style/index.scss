@@ -49,13 +49,13 @@ $color-map: (
   }
 
   .hi-notification__header {
-    height: 22px;
-    line-height: 22px;
+    height: $line-height-size-normal;
+    line-height: $line-height-size-normal;
     display: flex;
     align-items: center;
 
     .hi-notification__title {
-      font-size: 14px;
+      font-size: $font-size-normal;
     }
   }
 
@@ -68,9 +68,9 @@ $color-map: (
   .hi-notification__content {
     padding: 0 24px;
     margin-top: 4px;
-    font-size: 12px;
+    font-size: $font-size-small;
     line-height: 20px;
-    color: #666;
+    color: use-color('gray-80');
   }
 
   .hi-notification__content--wrapper {
