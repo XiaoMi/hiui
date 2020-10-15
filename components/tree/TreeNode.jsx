@@ -119,7 +119,7 @@ const TreeNode = ({ node }) => {
   // 渲染标题
   const renderTitle = useCallback(
     (node, selectedId) => {
-      const { id, title } = node
+      const { id, title, depth } = node
       return (
         <div
           ref={treeNodeRef}
@@ -131,10 +131,10 @@ const TreeNode = ({ node }) => {
           })}
           onDragStart={(e) => {
             e.stopPropagation()
-            e.dataTransfer.setData('treeNode', id)
+            e.dataTransfer.setData('treeNode', JSON.stringify({ id, depth }))
             setDragId(id)
             if (onDragStart) {
-              onDragStart(e)
+              onDragStart(node)
             }
           }}
           onDragEnd={(e) => {
@@ -178,7 +178,13 @@ const TreeNode = ({ node }) => {
             e.stopPropagation()
             setDirection(null)
             if (onDrop && dragId !== id) {
-              onDrop({ targetId: id, sourceId: Number(e.dataTransfer.getData('treeNode', id)), direction })
+              const passedData = JSON.parse(e.dataTransfer.getData('treeNode'))
+              onDrop({
+                targetId: id,
+                sourceId: Number(passedData.id),
+                depth: { source: passedData.depth, target: depth },
+                direction
+              })
             }
           }}
         >

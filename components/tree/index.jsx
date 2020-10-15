@@ -61,8 +61,11 @@ const Tree = (props) => {
     onSave,
     onBeforeDelete,
     onDelete,
-    onLoadChildren
-    // onDropEnd
+    onLoadChildren,
+    onExpand,
+    onDragStart,
+    onDrop,
+    onDropEnd
   } = props
   const { placeholder = '关键词搜索', emptyContent = '未找到搜索结果' } = searchConfig
   const [cacheData, updateCacheData] = useState(data)
@@ -164,7 +167,7 @@ const Tree = (props) => {
   }, [])
 
   const moveNode = useCallback(
-    ({ targetId, sourceId, direction }) => {
+    ({ targetId, sourceId, direction, depth }) => {
       const _dataCache = _.cloneDeep(cacheData)
       _delDragNode(sourceId, _dataCache)
       if (direction === 'in') {
@@ -172,9 +175,33 @@ const Tree = (props) => {
       } else {
         switchNode(targetId, sourceId, _dataCache, cacheData, direction)
       }
-      updateCacheData(_dataCache)
+      if (onDrop) {
+        const sourceNode = findNode(sourceId, cacheData)
+        const dragNode = findNode(targetId, cacheData)
+        const result = onDrop(
+          sourceNode,
+          dragNode,
+          { before: cacheData, after: _dataCache },
+          { before: depth.source, after: direction === 'in' ? depth.target + 1 : depth.target }
+        )
+        if (result === true) {
+          updateCacheData(_dataCache)
+          if (onDropEnd) {
+            onDropEnd(sourceNode, dragNode)
+          }
+        } else if (result && typeof result.then === 'function') {
+          result.then((res) => {
+            updateCacheData(_dataCache)
+            if (onDropEnd) {
+              onDropEnd(sourceNode, dragNode)
+            }
+          })
+        }
+      } else {
+        updateCacheData(_dataCache)
+      }
     },
-    [cacheData, _delDragNode, addDropNode, switchNode]
+    [cacheData, _delDragNode, addDropNode, switchNode, onDrop, onDropEnd]
   )
 
   // 编辑节点
@@ -447,8 +474,12 @@ const Tree = (props) => {
         expandedIds={expanded}
         onExpand={(expandedNode, isExpanded, ids) => {
           setExpanded(ids)
+          if (onExpand) {
+            onExpand(expandedNode, isExpanded, ids)
+          }
         }}
         onDrop={moveNode}
+        onDragStart={onDragStart}
         data={filter && searchable && searchValue !== '' ? showData : cacheData}
       />
       <Modal

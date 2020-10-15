@@ -12,12 +12,12 @@
     height: 16px;
     padding: 0 4px;
     min-width: 8px;
-    border: 2px solid #fff;
+    border: 2px solid use-color('white');
     border-radius: 10px;
     line-height: 16px;
     background: get-color($palette-secondary, 'danger');
-    font-size: 12px;
-    color: #fff;
+    font-size: $font-size-small;
+    color: use-color('white');
     letter-spacing: 0;
     text-align: center;
 
@@ -33,7 +33,7 @@
     top: -5px;
     right: -5px;
     background: get-color($palette-secondary, 'danger');
-    border: 1px solid #fff;
+    border: 1px solid use-color('white');
     border-radius: 50%;
 
     &.hi-hide {

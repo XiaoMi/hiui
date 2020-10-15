@@ -1,8 +1,10 @@
+@import '../../core-css/index.scss';
+
 .hi-card {
   border-radius: 2px;
-  border: 1px solid rgba(231, 231, 231, 1);
+  border: 1px solid use-color('gray-20');
   box-sizing: border-box;
-  background: #fff;
+  background: use-color('white');
 
   &--simple {
     height: 40px;
@@ -34,8 +36,8 @@
 
     .hi-card__title {
       margin-bottom: 4px;
-      font-size: 16px;
-      font-weight: 500;
+      font-size: $font-size-large;
+      font-weight: $font-weight-bold;
     }
 
     .hi-card__content {
@@ -66,9 +68,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #e6e7e8;
-      font-size: 16px;
-      font-weight: 500;
+      border-bottom: 1px solid use-color('gray-20');
+      font-size: $font-size-large;
+      font-weight: $font-weight-bold;
     }
 
     &.hi-card--small {
@@ -91,8 +93,8 @@
     padding: 24px;
 
     .hi-card__title {
-      font-size: 16px;
-      font-weight: 500;
+      font-size: $font-size-large;
+      font-weight: $font-weight-bold;
       margin-bottom: 12px;
       display: flex;
       align-items: center;
@@ -119,7 +121,7 @@
     transition: box-shadow 0.3s;
 
     &:hover {
-      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 8px 0 use-color('gray-10');
     }
   }
 }

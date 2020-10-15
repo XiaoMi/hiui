@@ -13,7 +13,7 @@ const useCheckable = ({ defaultCheckedIds, checkedIds, onCheck, data, flatData }
   }, [checkedIds])
 
   const getSemiChecked = (checkedId, flatData, data) => {
-    let semiChecked = []
+    const semiChecked = []
     flatData.forEach((node) => {
       if (node.parentId && !checkedId.includes(node.parentId) && checkedId.includes(node.id)) {
         semiChecked.push(node.parentId)
@@ -93,15 +93,12 @@ const useCheckable = ({ defaultCheckedIds, checkedIds, onCheck, data, flatData }
         setCheckedIds(checkedNodes)
       }
       if (onCheck) {
-        onCheck({ checkedIds: checkedNodes, semiCheckedIds }, { checked, ...checkedNode })
+        onCheck(checked, { checkedIds: checkedNodes, semiCheckedIds }, checkedNode)
       }
     },
     [checkedIds, flatData, data]
   )
-  return [
-    { checkedNodes: _checkedIds, semiCheckedIds: getSemiChecked(_checkedIds, flatData, data) },
-    onCheckNode
-  ]
+  return [{ checkedNodes: _checkedIds, semiCheckedIds: getSemiChecked(_checkedIds, flatData, data) }, onCheckNode]
 }
 
 export default useCheckable

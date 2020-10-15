@@ -56,7 +56,6 @@ class Demo extends React.Component {
           onCheck={(a,b,c)=>{
             console.log('>>>>>',a,b,c)
             }}
-          highlightable
           onSelect={(item) => console.log('select node', item)}
         />
       </div>
