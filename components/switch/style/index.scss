@@ -1,15 +1,4 @@
-@import '@hi-ui/core-css/index.scss';
 @import '../../core-css/index.scss';
-
-@mixin hi-switch-style($color: get-color($palette-primary, 'hiui-blue')) {
-  & {
-    &--disabled {
-      &::after {
-        background: map-get(get-palette($color), 'g50');
-      }
-    }
-  }
-}
 
 .hi-switch {
   display: inline-block;
