@@ -1,4 +1,5 @@
 @import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
 $prefixCls: 'hi-dropdown' !default;
 
@@ -22,7 +23,7 @@ $prefixCls: 'hi-dropdown' !default;
 
   &--disabled {
     .#{$prefixCls}__button {
-      color: #ccc;
+      color: use-color('gray-50');
       cursor: not-allowed;
     }
   }
@@ -70,7 +71,7 @@ $prefixCls: 'hi-dropdown' !default;
   }
 
   &__popper {
-    background: rgba(255, 255, 255, 1);
+    background: use-color('white');
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
     border-radius: 2px;
   }
@@ -100,12 +101,12 @@ $prefixCls: 'hi-dropdown' !default;
       transition: 0.3s ease;
 
       &--disabled {
-        color: #ccc;
+        color: use-color('gray-50');
         cursor: not-allowed;
       }
 
       a {
-        color: #333;
+        color: use-color('black');
         width: 100%;
       }
 
