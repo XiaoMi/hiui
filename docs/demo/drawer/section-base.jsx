@@ -26,7 +26,6 @@ class Demo extends React.Component {
         <Drawer
           title="提示消息"
           visible={this.state.visible}
-          onConfirm={this.cancelEvent.bind(this)}
           onClose={this.cancelEvent.bind(this)}
         >
           <span>一些消息....</span><br/>

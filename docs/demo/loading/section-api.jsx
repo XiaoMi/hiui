@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
-import Panel from '../../../components/panel'
+import Card from '../../../components/card'
 import Loading from '../../../components/loading'
 const prefix = 'loading-api'
 const code = `import React from 'react'
@@ -33,7 +33,7 @@ class Demo extends React.Component {
       <Button type="primary" onClick={this.demoEvent1.bind(this)}>整页，3秒后关闭</Button>
       <Button type="primary" onClick={this.demoEvent2.bind(this)}>指定目标，3秒后关闭</Button>
       <div ref={(el) => {this.el = el}} style={{margin: 20}}>
-        <Panel
+        <Card
           title={
             <div>
               <i className="hi-icon icon-user" style={{marginRight: '5px'}}></i>
@@ -42,10 +42,10 @@ class Demo extends React.Component {
           }
         >
           <p>Panel content</p>
-        </Panel>
+        </Card>
       </div>
     </div>
   }
 }`
-const DemoApi = () => <DocViewer code={code} scope={{ Button, Panel, Loading }} prefix={prefix} />
+const DemoApi = () => <DocViewer code={code} scope={{ Button, Card, Loading }} prefix={prefix} />
 export default DemoApi

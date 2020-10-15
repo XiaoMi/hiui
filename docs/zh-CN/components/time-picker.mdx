@@ -41,4 +41,9 @@ import DemoFormat from '../../demo/time-picker/section-format.jsx'
 | disabledHours   | 禁止选择的小时     | () => number[] \| number[]                                             | -                        | -         |
 | disabledMinutes | 禁止选择的分钟     | (selectedHour: number) => number[] \| number[]                         | -                        | -         |
 | disabledSeconds | 禁止选择的秒数     | (selectedHour: number, selectedMinute: number) => number[] \| number[] | -                        | -         |
-| onChange        | 值变化时的回调函数 | (date: Date \| DateRange, dateStr: string \| DateRange ) => void       | -                        | -         |
+
+## Events
+
+| 名称     | 说明         | 类型                                                             | 参数                                                                                                                               | 返回值 |
+| -------- | ------------ | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| onChange | 选择后的回调 | (date: Date \| DateRange, dateStr: string \| DateRange ) => void | date: 选中的日期(普通选择) \| 选中的日期范围{start: Date, end: Date}(范围选择) <br/> dateStr: 选中的日期字符串(普通选择) \| 选中的日期字符串对象{start: string, end: string}(范围选择) | -      |
