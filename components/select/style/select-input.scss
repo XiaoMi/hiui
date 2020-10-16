@@ -1,20 +1,15 @@
-@import '@hi-ui/core-css/index.scss';
-
-/* stylelint-disable */
-@mixin input-theme($themeColor) {
-  border-color: $themeColor;
-}
+@import '../../core-css/index.scss';
 
 .hi-select__input {
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
-  background-color: #fff;
-  color: #333;
+  background-color: use-color('white');
+  color: use-color('black');
   line-height: 1;
   border-radius: 2px;
-  border: 1px solid #d8d8d8;
+  border: 1px solid use-color('gray-30');
   cursor: pointer;
   outline: none;
   user-select: none;
@@ -23,12 +18,12 @@
 
   &.disabled {
     cursor: not-allowed;
-    background-color: #f2f2f2;
-    color: #ccc;
+    background-color: use-color('gray-10');
+    color: use-color('gray-50');
 
     .hi-select__input--icon {
-      background-color: #f2f2f2;
-      color: #ccc;
+      background-color: use-color('gray-10');
+      color: use-color('gray-50');
       margin-left: 0 !important;
     }
 
@@ -44,11 +39,11 @@
 
   &.active,
   &:not(.disabled):hover {
-    border-color: #4284f5;
+    border-color: use-color('primary');
   }
 
   &__focus:not(.disabled) {
-    border-color: #4284f5;
+    border-color: use-color('primary');
   }
 
   &:not(.disabled):hover {
@@ -58,12 +53,12 @@
 
     .hi-select__input--icon__close {
       display: block;
-      color: #bbb;
+      color: use-color('gray-50');
     }
 
     .hi-select__input--icon__close:hover {
       display: block;
-      color: #333;
+      color: use-color('black');
     }
   }
 
@@ -80,7 +75,7 @@
       padding: 0;
       line-height: 1;
       border-radius: 2px;
-      font-size: 14px;
+      font-size: $font-size-normal;
       cursor: pointer;
       background: transparent;
       border-width: 0;
@@ -94,29 +89,29 @@
 
     input::-webkit-input-placeholder {
       font-weight: 300;
-      color: #ccc;
+      color: use-color('gray-50');
     }
 
     input::-moz-placeholder {
       /* Mozilla Firefox 19+ */
       font-weight: 300;
-      color: #ccc;
+      color: use-color('gray-50');
     }
 
     input:-moz-placeholder {
       /* Mozilla Firefox 4 to 18 */
       font-weight: 300;
-      color: #ccc;
+      color: use-color('gray-50');
     }
 
     input:-ms-input-placeholder {
       /* Internet Explorer 10-11 */
       font-weight: 300;
-      color: #ccc;
+      color: use-color('gray-50');
     }
 
     &--value input {
-      color: #333;
+      color: use-color('black');
     }
   }
 
@@ -128,11 +123,11 @@
     cursor: pointer;
     font-size: 22px;
     color: #434343;
-    background-color: #fff;
+    background-color: use-color('white');
     transform: scale(0.66666667) rotate(0deg);
     transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
     zoom: 1;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=1, M12=0, M21=0, M22=1)";
+    filter: "progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=1, M12=0, M21=0, M22=1)";
 
     .hi-select__input--icon__close {
       display: none;
@@ -175,10 +170,6 @@
       margin-right: -4px;
     }
 
-    .hi-select__input--search {
-      padding-left: 3px;
-    }
-
     .hi-select__input--placeholder {
       position: absolute;
       top: 3px;
@@ -186,7 +177,7 @@
       right: 30px;
       height: 24px;
       line-height: 24px;
-      color: #ccc;
+      color: use-color('gray-50');
       z-index: 1;
 
       & ~ .hi-select__input-items .hi-select__input--search {
@@ -210,8 +201,8 @@
         height: 22px;
         line-height: 22px;
         font-size: 12px;
-        color: #333;
-        background-color: #f2f2f2;
+        color: use-color('black');
+        background-color: use-color('gray-10');
         border-radius: 2px;
         box-sizing: border-box;
       }
@@ -227,7 +218,7 @@
       margin: 0 4px 4px 0;
       overflow: hidden;
       vertical-align: middle;
-      background-color: #f2f2f2;
+      background-color: use-color('gray-10');
       border-radius: 2px;
       text-align: left;
 
@@ -255,19 +246,7 @@
       height: 22px;
       line-height: 22px;
       margin-bottom: 4px;
-    }
-  }
-}
-
-@each $key, $value in $theme-colors {
-  .theme__#{$key}.hi-select__input {
-    &.active,
-    &:not(.disabled):hover {
-      @include input-theme($value);
-    }
-
-    &__focus:not(.disabled) {
-      border-color: $value;
+      padding-left: 3px;
     }
   }
 }
