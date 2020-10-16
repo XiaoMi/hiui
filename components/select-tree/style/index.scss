@@ -1,19 +1,21 @@
+@import '../../core-css/index.scss';
+
 .hi-selecttree {
   &__input {
     width: 320px;
     height: 32px;
     line-height: 32px;
-    border: 1px solid #d8d8d8;
+    border: 1px solid use-color('gray-30');
     box-sizing: border-box;
     border-radius: 2px;
     text-align: left;
     padding: 0 0 0 12px;
-    color: #000;
+    color: use-color('black');
     display: inline-flex;
     justify-content: space-between;
 
     &:hover {
-      border: 1px solid #4284f5;
+      border: 1px solid use-color('primary');
 
       .hi-selecttree__input--expand.clearable {
         display: none;
@@ -24,7 +26,7 @@
       }
 
       .hi-selecttree__icon-close:hover {
-        color: #333;
+        color: use-color('black');
       }
     }
 
@@ -35,7 +37,7 @@
     }
 
     &--placeholder {
-      color: #ccc;
+      color: use-color('gray-50');
     }
 
     &-icon {
@@ -54,7 +56,7 @@
   }
 
   &__icon-close {
-    color: #bbb;
+    color: use-color('gray-50');
     display: none;
   }
 
@@ -73,15 +75,13 @@
   &__selecteditem {
     flex: 0 0 auto;
     position: relative;
-    // max-width: 60%;
-    // width: 100%;
     height: 22px;
     line-height: 22px;
     padding: 0 20px 0 10px;
     margin: 0 2px;
     overflow: hidden;
     vertical-align: middle;
-    background-color: #f2f2f2;
+    background-color: use-color('gray-10');
     border-radius: 2px;
     text-align: left;
     box-sizing: border-box;
@@ -107,7 +107,7 @@
   }
 
   &__popper {
-    background: #fff;
+    background: use-color('white');
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
     border-radius: 2px;
     max-height: 300px;
@@ -132,7 +132,7 @@
   }
 
   &__searchbar-wrapper {
-    background-color: #fff;
+    background-color: use-color('white');
     width: 100%;
     padding: 0 12px;
     box-sizing: border-box;
@@ -140,19 +140,19 @@
 
   &__searchbar-inner {
     height: 36px;
-    border-bottom: 1px solid #e6e7e8;
+    border-bottom: 1px solid use-color('gray-30');
     box-sizing: border-box;
     display: flex;
     align-items: center;
     padding: 0 2px;
 
     .hi-selecttree_searchbar__icon-close {
-      color: #ccc;
+      color: use-color('gray-50');
       cursor: pointer;
     }
 
     .hi-selecttree_searchbar__icon-close:hover {
-      color: #333;
+      color: use-color('black');
     }
   }
 
