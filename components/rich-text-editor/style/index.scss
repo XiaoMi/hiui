@@ -1,6 +1,4 @@
-@import '@hi-ui/core-css/index.scss';
-
-$basic-color: get-color($palette-primary, 'hiui-blue') !default;
+@import '../../core-css/index.scss';
 
 .hi-quill-content,
 .hi-quill-toolbar-tooltip {
@@ -20,7 +18,7 @@ $basic-color: get-color($palette-primary, 'hiui-blue') !default;
       line-height: 32px;
 
       &:hover {
-        background-color: rgba($basic-color, 0.1);
+        background-color: rgba(use-color('primary'), 0.1);
       }
 
       svg {
@@ -49,7 +47,7 @@ $basic-color: get-color($palette-primary, 'hiui-blue') !default;
       }
 
       &:hover {
-        border: 1px solid $basic-color;
+        border: 1px solid use-color('primary');
       }
 
       &-options {
@@ -57,7 +55,7 @@ $basic-color: get-color($palette-primary, 'hiui-blue') !default;
 
         .ql-picker-item {
           &:hover {
-            background-color: rgba($basic-color, 0.1);
+            background-color: rgba(use-color('primary'), 0.1);
           }
 
           &:focus {
@@ -83,7 +81,7 @@ $basic-color: get-color($palette-primary, 'hiui-blue') !default;
         content: '|';
         float: right;
         margin-left: 15px;
-        color: #ccc;
+        color: use-color('gray-50');
         clear: none;
         line-height: 32px;
       }
@@ -95,14 +93,14 @@ $basic-color: get-color($palette-primary, 'hiui-blue') !default;
 
     button {
       width: auto;
-      background-color: $basic-color;
-      color: #fff;
+      background-color: use-color('primary');
+      color: use-color('white');
       padding: 4px 15px;
       line-height: 22px;
 
       &:hover {
-        background-color: map-get(get-palette($basic-color), '70');
-        color: #fff;
+        background-color: use-color('primary-60');
+        color: use-color('white');
       }
     }
   }
