@@ -1,7 +1,7 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
 // Define component colors
-@mixin hi-pagination-style($color: get-color($palette-primary, 'hiui-blue')) {
+@mixin hi-pagination-style($color: use-color('primary')) {
   .hi-pagination {
     &__item {
       &:not(.hi-pagination__item--disabled) {
@@ -35,11 +35,9 @@
   align-items: center;
   user-select: none;
 
-  @include component-reset();
-
   &__text {
     line-height: 32px;
-    color: $gray-darker;
+    color: use-color('gray-80');
   }
 
   &__total {
@@ -59,20 +57,20 @@
     margin: 0 $spacer-1;
 
     .hi-select__input {
-      border: 1px solid $gray-light;
+      border: 1px solid use-color('gray-20');
     }
   }
 
   &__jumper-input {
     display: inline-block;
     margin: 0 $spacer-5 0 $spacer-2;
-    color: $gray-darker;
+    color: use-color('gray-80');
 
     .hi-input {
       width: 64px;
 
       &__inner {
-        border: 1px solid $gray-light;
+        border: 1px solid use-color('gray-20');
       }
 
       &__text {
@@ -103,13 +101,13 @@
       min-width: 32px;
       padding: 0 4px;
       height: 32px;
-      border: 1px solid $gray-light;
+      border: 1px solid use-color('gray-20');
       border-radius: 2px;
       font-size: $font-size-normal;
       line-height: 30px;
       text-decoration: none;
       text-align: center;
-      color: $gray-darker;
+      color: use-color('gray-80');
       cursor: pointer;
 
       &:hover {
@@ -126,12 +124,12 @@
 
     &--disabled {
       > span {
-        border: 1px solid $gray-light;
-        color: $gray-light;
+        border: 1px solid use-color('gray-20');
+        color: use-color('gray-20');
         cursor: default;
 
         &:hover {
-          border: 1px solid $gray-light;
+          border: 1px solid use-color('gray-20');
         }
       }
     }
@@ -145,9 +143,3 @@
 
 // Component colors
 @include hi-pagination-style();
-
-@each $key, $value in $theme-colors {
-  .theme__#{$key} {
-    @include hi-pagination-style($value);
-  }
-}
