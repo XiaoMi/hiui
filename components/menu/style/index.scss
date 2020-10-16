@@ -1,4 +1,5 @@
 @import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
 @mixin ellipsis($max-width: initial, $width: auto) {
   width: $width;
@@ -26,8 +27,6 @@
 
 .hi-menu,
 .hi-submenu__popper {
-  @include component-reset();
-
   ul {
     margin-top: 0;
     margin-bottom: 0;
@@ -48,17 +47,17 @@
     &--active {
       > .hi-menu__title .hi-menu__title-content,
       > .hi-menu__title-content {
-        color: #4284f5;
+        color: use-color('primary');
       }
 
       > .hi-menu__title .hi-menu__title-icon,
       > .hi-menu__title-icon {
-        color: #4284f5;
+        color: use-color('primary');
       }
 
       > .hi-submenu__title {
         & > .hi-menu__title-toggle-icon {
-          color: #4284f5;
+          color: use-color('primary');
         }
       }
     }
@@ -66,7 +65,7 @@
     &--disabled {
       .hi-menu__title {
         cursor: not-allowed;
-        color: #d8d8d8;
+        color: use-color('gray-30');
       }
     }
   }
@@ -75,7 +74,7 @@
     display: flex;
     line-height: 22px;
     font-size: 14px;
-    color: #333;
+    color: use-color('black');
     cursor: pointer;
     align-items: center;
 
@@ -103,7 +102,7 @@
 
 .hi-menu {
   &--horizontal {
-    border-bottom: 1px solid #e6e7e8;
+    border-bottom: 1px solid use-color('gray-20');
 
     .hi-menu-item {
       position: relative;
@@ -117,7 +116,7 @@
         transform: translateX(-50%);
         width: 32px;
         height: 2px;
-        background-color: #4284f5;
+        background-color: use-color('primary');
       }
 
       &:last-child {
@@ -138,7 +137,7 @@
     display: inline-block;
     width: 216px;
     padding: 12px 0;
-    background: #fff;
+    background: use-color('white');
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
     box-sizing: border-box;
 
@@ -151,14 +150,14 @@
       position: relative;
 
       &--active:not(.hi-submenu) {
-        background-color: rgba(66, 133, 244, 0.08);
+        background-color: use-color('primary-20');
 
         &::after {
           content: '';
           position: absolute;
           width: 2px;
           height: 100%;
-          background-color: #4284f5;
+          background-color: use-color('primary');
           left: 0;
         }
       }
@@ -169,7 +168,7 @@
       height: 48px;
 
       &:hover {
-        background-color: rgba(66, 133, 244, 0.08);
+        background-color: use-color('primary-20');
       }
     }
 
@@ -188,7 +187,7 @@
     overflow: hidden;
 
     .hi-menu--1.hi-menu-item--active {
-      background-color: rgba(66, 133, 244, 0.08);
+      background-color: use-color('primary-20');
     }
 
     .hi-menu__title {
@@ -199,14 +198,14 @@
       position: relative;
 
       &--active {
-        background-color: rgba(66, 133, 244, 0.08);
+        background-color: use-color('primary-20');
 
         &::after {
           content: '';
           position: absolute;
           width: 2px;
           height: 100%;
-          background-color: #4284f5;
+          background-color: use-color('primary');
           left: 0;
         }
       }
@@ -239,9 +238,9 @@
   &__popper {
     width: 200px;
     padding: 8px 0;
-    background-color: #fff;
+    background-color: use-color('white');
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(230, 231, 232, 1);
+    border: 1px solid use-color('gray-20');
     box-sizing: border-box;
 
     .hi-submenu__items {
@@ -250,7 +249,7 @@
 
       .hi-menu-item--disabled {
         cursor: not-allowed;
-        color: #d8d8d8;
+        color: use-color('gray-30');
       }
     }
 
@@ -271,150 +270,15 @@
       width: 120px;
 
       &__title {
-        color: #999;
+        color: use-color('gray-70');
       }
 
       &__content {
         font-size: 14px;
-        color: #999;
+        color: use-color('gray-70');
         box-sizing: border-box;
 
         @include ellipsis();
-      }
-    }
-  }
-}
-
-@each $key, $value in $palette-primary {
-  .theme__#{$key}.hi-menu {
-    .hi-menu-item {
-      &--active {
-        > .hi-menu__title .hi-menu__title-content,
-        > .hi-menu__title-content {
-          color: $value;
-        }
-
-        > .hi-menu__title .hi-menu__title-icon,
-        > .hi-menu__title-icon {
-          color: $value;
-        }
-
-        > .hi-submenu__title {
-          & > .hi-menu__title-toggle-icon {
-            color: $value;
-          }
-        }
-      }
-
-      &--disabled {
-        .hi-menu__title {
-          cursor: not-allowed;
-          color: #d8d8d8;
-        }
-      }
-
-      &--active::after {
-        background-color: $value;
-      }
-    }
-
-    &.active {
-      border-color: $value;
-    }
-
-    &--mini {
-      .hi-menu-item {
-        &--active {
-          background-color: rgba($value, 0.1);
-
-          &::after {
-            background-color: $value;
-          }
-        }
-      }
-    }
-
-    &--vertical {
-      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
-
-      .hi-menu-item {
-        &--active:not(.hi-submenu) {
-          background-color: rgba($value, 0.1);
-
-          &::after {
-            background-color: $value;
-          }
-        }
-      }
-
-      .hi-menu__title {
-        &:hover {
-          background-color: rgba($value, 0.1);
-        }
-      }
-    }
-  }
-
-  .theme__#{$key}.hi-menu-item {
-    &--active {
-      > .hi-menu__title .hi-menu__title-content,
-      > .hi-menu__title-content {
-        color: $value;
-      }
-
-      > .hi-menu__title .hi-menu__title-icon,
-      > .hi-menu__title-icon {
-        color: $value;
-      }
-
-      > .hi-submenu__title {
-        & > .hi-menu__title-toggle-icon {
-          color: $value;
-        }
-      }
-    }
-
-    &--disabled {
-      .hi-menu__title {
-        cursor: not-allowed;
-        color: #d8d8d8;
-      }
-    }
-
-    &--active::after {
-      background-color: $value;
-    }
-  }
-
-  .theme__#{$key}.hi-submenu__popper {
-    .hi-menu-item {
-      &--active {
-        > .hi-menu__title .hi-menu__title-content,
-        > .hi-menu__title-content {
-          color: $value;
-        }
-
-        > .hi-menu__title .hi-menu__title-icon,
-        > .hi-menu__title-icon {
-          color: $value;
-        }
-
-        > .hi-submenu__title {
-          & > .hi-menu__title-toggle-icon {
-            color: $value;
-          }
-        }
-      }
-
-      &--disabled {
-        .hi-menu__title {
-          cursor: not-allowed;
-          color: #d8d8d8;
-        }
-      }
-
-      &--active::after {
-        background-color: $value;
       }
     }
   }
