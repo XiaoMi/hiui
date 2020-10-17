@@ -10,6 +10,7 @@
     border-radius: 2px;
     text-align: left;
     padding: 0 0 0 12px;
+    background-color: use-color('white');
     color: use-color('black');
     display: inline-flex;
     justify-content: space-between;
@@ -33,6 +34,7 @@
     &--single {
       .hi-selecttree__selecteditem {
         background: none;
+        padding-left: 0;
       }
     }
 
