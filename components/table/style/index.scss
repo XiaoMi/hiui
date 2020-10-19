@@ -1,10 +1,11 @@
 @import './table.scss';
 @import './reset.scss';
+@import '../../core-css/index.scss';
 
 .#{$table}__col-menu {
   width: 124px;
   font-size: 14px;
-  background: #fff;
+  background: use-color('white');
   box-shadow: 0 2px 8px 0 rgba(56, 62, 71, 0.1);
   border-radius: 4px;
   border: 1px solid rgba(231, 231, 231, 1);
@@ -12,17 +13,17 @@
 
   &__item {
     cursor: pointer;
-    color: #333;
+    color: use-color('black');
     display: flex;
     justify-content: space-between;
     padding: 4px 12px;
 
     &:hover {
-      color: #4284f5;
+      color: use-color('primary');
     }
 
     &.col-menu__item--highlight {
-      color: #4284f5;
+      color: use-color('primary');
     }
 
     .hi-icon {
@@ -33,7 +34,7 @@
 
 .#{$table} {
   .hi-checkbox__input:not(.hi-checkbox__input--checked) {
-    background: #fff;
+    background: use-color('white');
   }
 
   .hi-checkbox {
@@ -198,7 +199,7 @@
       }
 
       & > td {
-        color: #333;
+        color: use-color('black');
         padding: 15px;
         border-bottom: 1px solid #e7e7e7;
         box-sizing: border-box;
@@ -216,7 +217,7 @@
         background: #fbfbfb;
 
         & > td {
-          color: #666;
+          color: use-color('gray-80');
         }
       }
 
