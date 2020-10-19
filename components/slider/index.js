@@ -3,10 +3,12 @@ import classNames from 'classnames'
 import './style'
 import useClickOutside from '../popper/utils/useClickOutside'
 import { CSSTransition } from 'react-transition-group'
+import Provider from '../context'
+
 const prefixCls = 'hi-slider'
-const noop = () => { }
-const Slider =
-  memo(({
+const noop = () => {}
+const Slider = memo(
+  ({
     defaultValue = 0,
     max: initMax,
     min: initMin,
@@ -17,7 +19,8 @@ const Slider =
     disabled = false,
     tipFormatter,
     type = 'primary',
-    marks = {}
+    marks = {},
+    theme
   }) => {
     const getValue = useCallback((value) => {
       if (value === undefined) {
@@ -52,7 +55,7 @@ const Slider =
     const sliderRef = useRef()
     const tooltipRef = useRef()
 
-    useClickOutside(e => {
+    useClickOutside((e) => {
       setShowTooltip(false)
       setCanKeyDown(false)
       setIsClick(false)
@@ -69,7 +72,7 @@ const Slider =
 
     // value 改变更新长度和位置
     useEffect(() => {
-      let _value = initValue !== undefined ? getValue(initValue) : getValue(value)
+      const _value = initValue !== undefined ? getValue(initValue) : getValue(value)
       setNewRightPosition(getTrackWidth(_value))
       if (!isInitPage) {
         setShowTooltip(true)
@@ -90,21 +93,24 @@ const Slider =
     }, [])
 
     // <- -> 键盘事件
-    const onKeyDown = useCallback((e) => {
-      if (e.keyCode === 37 || e.keyCode === 39) {
-        let _value = e.keyCode === 37 ? value - step : value + step
-        if (_value < (min || 0)) {
-          _value = (min || 0)
-        } else if (_value > (max || 100)) {
-          _value = (max || 100)
+    const onKeyDown = useCallback(
+      (e) => {
+        if (e.keyCode === 37 || e.keyCode === 39) {
+          let _value = e.keyCode === 37 ? value - step : value + step
+          if (_value < (min || 0)) {
+            _value = min || 0
+          } else if (_value > (max || 100)) {
+            _value = max || 100
+          }
+          setStartPosition(((_value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
+          if (initValue === undefined) {
+            setValue(_value)
+          }
+          onChange(_value)
         }
-        setStartPosition(((_value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
-        if (initValue === undefined) {
-          setValue(_value)
-        }
-        onChange(_value)
-      }
-    }, [value])
+      },
+      [value]
+    )
 
     useEffect(() => {
       if (canKeyDown) {
@@ -116,7 +122,7 @@ const Slider =
 
     useEffect(() => {
       if (initValue !== undefined) {
-        let _value = getValue(initValue)
+        const _value = getValue(initValue)
         setValue(_value)
       }
     }, [initValue])
@@ -141,15 +147,9 @@ const Slider =
           let changeValue = 0
 
           if (vertical) {
-            diff =
-              -Math.round(
-                (((e.clientY - startY) / sliderHeight) * 100) / positionStep
-              ) * positionStep
+            diff = -Math.round((((e.clientY - startY) / sliderHeight) * 100) / positionStep) * positionStep
           } else {
-            diff =
-              Math.round(
-                (((e.clientX - startX) / sliderWidth) * 100) / positionStep
-              ) * positionStep
+            diff = Math.round((((e.clientX - startX) / sliderWidth) * 100) / positionStep) * positionStep
           }
           // 开始位置 + 偏移位置
           let position = startPosition + diff
@@ -176,9 +176,9 @@ const Slider =
 
           changeValue = (min || 0) + Math.round((((max || 100) - (min || 0)) * position) / 100)
           if (changeValue < (min || 0)) {
-            changeValue = (min || 0)
+            changeValue = min || 0
           } else if (changeValue > (max || 100)) {
-            changeValue = (max || 100)
+            changeValue = max || 100
           }
 
           if (initValue === undefined) {
@@ -213,17 +213,15 @@ const Slider =
         window.onmouseup = null
         window.onmousemove = null
       }
-    }, [
-      canMove,
-      disabled,
-      onMouseUp,
-      onMouseMove
-    ])
+    }, [canMove, disabled, onMouseUp, onMouseMove])
 
     // 获取 track 宽度
-    const getTrackWidth = useCallback((value) => {
-      return ((value - (min || 0)) / ((max || 100) - (min || 0))) * 100
-    }, [value])
+    const getTrackWidth = useCallback(
+      (value) => {
+        return ((value - (min || 0)) / ((max || 100) - (min || 0))) * 100
+      },
+      [value]
+    )
 
     // 鼠标落下
     const onMouseDown = useCallback(
@@ -247,20 +245,22 @@ const Slider =
     )
 
     // 鼠标移入展示tooltip
-    const onMouseEnter = useCallback(
-      () => { setShowTooltip(true) },
-      [value]
-    )
+    const onMouseEnter = useCallback(() => {
+      setShowTooltip(true)
+    }, [value])
 
     // 点击滑块
-    const onHandleClick = useCallback((e) => {
-      if ((lastTime - firstTime) < 200) {
-        e.stopPropagation()
-        setIsClick(true)
-        setShowTooltip(true)
-        setCanKeyDown(true)
-      }
-    }, [lastTime, firstTime])
+    const onHandleClick = useCallback(
+      (e) => {
+        if (lastTime - firstTime < 200) {
+          e.stopPropagation()
+          setIsClick(true)
+          setShowTooltip(true)
+          setCanKeyDown(true)
+        }
+      },
+      [lastTime, firstTime]
+    )
 
     // slider 点击
     const railClick = useCallback(
@@ -272,23 +272,14 @@ const Slider =
         const parent = sliderRef.current
         let diff = 0
         let position
-        const {
-          width: sliderWidth,
-          height: sliderHeight,
-          left
-        } = parent.getBoundingClientRect()
+        const { width: sliderWidth, height: sliderHeight, left } = parent.getBoundingClientRect()
         const { x, y } = tooltipRef.current.getBoundingClientRect()
 
         if (vertical) {
-          diff =
-            -Math.round(
-              (((e.clientY - y) / sliderHeight) * 100) / positionStep
-            ) * positionStep
+          diff = -Math.round((((e.clientY - y) / sliderHeight) * 100) / positionStep) * positionStep
           position = newRightPosition + diff
         } else {
-          diff =
-            Math.round((((e.clientX - x) / sliderWidth) * 100) / positionStep) *
-            positionStep
+          diff = Math.round((((e.clientX - x) / sliderWidth) * 100) / positionStep) * positionStep
           position = e.clientX <= left ? 0 : newRightPosition + diff
         }
 
@@ -317,19 +308,14 @@ const Slider =
       }
       onChange(value)
     }, [])
-    const sliderClasses = classNames(prefixCls, {
+    const sliderClasses = classNames(prefixCls, `theme__${theme}`, {
       [`${prefixCls}--disabled`]: disabled,
       [`${prefixCls}--vertical`]: vertical,
       [`${prefixCls}--${type}`]: true
     })
 
     return (
-      <div
-        className={sliderClasses}
-        ref={sliderRef}
-
-        id={prefixCls}
-      >
+      <div className={sliderClasses} ref={sliderRef} id={prefixCls}>
         <div className={`${prefixCls}__rail`} onClick={railClick} />
         <div
           className={`${prefixCls}__track`}
@@ -354,12 +340,10 @@ const Slider =
           onClick={onHandleClick}
           style={{
             [!vertical ? 'left' : 'top']: `${
-              !vertical
-                ? newRightPosition.toFixed(4)
-                : (100 - newRightPosition).toFixed(4)
+              !vertical ? newRightPosition.toFixed(4) : (100 - newRightPosition).toFixed(4)
             }%`
           }}
-          tabIndex='0'
+          tabIndex="0"
         >
           <CSSTransition
             in={showTooltip}
@@ -375,18 +359,11 @@ const Slider =
                 width: '100%'
               }}
             >
-              <div
-                className='hi-popper__container'
-                style={{ left: 0, top: 0, zIndex: 1070 }}
-              >
+              <div className="hi-popper__container" style={{ left: 0, top: 0, zIndex: 1070 }}>
                 <div
-                  className={classNames(
-                    'hi-tooltip__popper',
-                    'hi-popper__content',
-                    {
-                      [`hi-popper__content--${vertical ? 'right' : 'top'}`]: true
-                    }
-                  )}
+                  className={classNames('hi-tooltip__popper', 'hi-popper__content', {
+                    [`hi-popper__content--${vertical ? 'right' : 'top'}`]: true
+                  })}
                   style={{ width: 'auto' }}
                 >
                   <div
@@ -400,70 +377,44 @@ const Slider =
               </div>
             </div>
           </CSSTransition>
-
         </div>
         <div className={`${prefixCls}__step`} onClick={railClick}>
           {Object.keys(marks).map((item, index) => (
             <span
               className={classNames(`${prefixCls}__step-dot`, {
-                [`${prefixCls}__step-dotDisabled`]:
-                  value <=
-                  ((item - (min || 0)) / ((max || 100) - (min || 0))) * 100
+                [`${prefixCls}__step-dotDisabled`]: value <= ((item - (min || 0)) / ((max || 100) - (min || 0))) * 100
               })}
               key={index}
               style={{
-                [!vertical ? 'left' : 'bottom']:
-                  ((item - (min || 0)) / ((max || 100) - (min || 0))) * 100 +
-                  '%'
+                [!vertical ? 'left' : 'bottom']: ((item - (min || 0)) / ((max || 100) - (min || 0))) * 100 + '%'
               }}
-              onClick={(e) =>
-                onMarksClick(
-                  e,
-                  ((item - (min || 0)) / ((max || 100) - (min || 0))) * 100
-                )
-              }
+              onClick={(e) => onMarksClick(e, ((item - (min || 0)) / ((max || 100) - (min || 0))) * 100)}
             />
           ))}
         </div>
-        {
-          ((min && max) || Object.entries(marks).length !== 0) && <div className={`${prefixCls}__stepText`}>
-            {min && (
-              <span className={`${prefixCls}__min ${prefixCls}__stepText-dot`}>
-                {min}
-              </span>
-            )}
-            {max && (
-              <span className={`${prefixCls}__max ${prefixCls}__stepText-dot`}>
-                {max}
-              </span>
-            )}
+        {((min && max) || Object.entries(marks).length !== 0) && (
+          <div className={`${prefixCls}__stepText`}>
+            {min && <span className={`${prefixCls}__min ${prefixCls}__stepText-dot`}>{min}</span>}
+            {max && <span className={`${prefixCls}__max ${prefixCls}__stepText-dot`}>{max}</span>}
             {Object.entries(marks).map(([key, item], index) => (
               <span
                 className={`${prefixCls}__stepText-dot`}
                 key={index}
                 style={{
-                  [!vertical ? 'left' : 'bottom']:
-                    ((key - (min || 0)) / ((max || 100) - (min || 0))) * 100 +
-                    '%',
+                  [!vertical ? 'left' : 'bottom']: ((key - (min || 0)) / ((max || 100) - (min || 0))) * 100 + '%',
                   transform: !vertical ? 'translateX(-50%)' : 'translateY(50%)'
                 }}
                 onClick={(e) => {
-                  onMarksClick(
-                    e,
-                    ((key - (min || 0)) / ((max || 100) - (min || 0))) * 100
-                  )
-                }
-
-                }
+                  onMarksClick(e, ((key - (min || 0)) / ((max || 100) - (min || 0))) * 100)
+                }}
               >
                 {item}
               </span>
             ))}
           </div>
-        }
-
+        )}
       </div>
     )
   }
-  )
-export default Slider
+)
+export default Provider(Slider)
