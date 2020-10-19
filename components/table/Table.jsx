@@ -3,17 +3,42 @@ import HeaderTable from './HeaderTable'
 import BodyTable from './BodyTable'
 import TableContext from './context'
 import classnames from 'classnames'
-import {
-  getFixedDataByFixedColumn,
-  getScrollBarSize,
-  flatTreeData
-} from './util'
+import { getFixedDataByFixedColumn, getScrollBarSize, flatTreeData } from './util'
 import Pagination from '../pagination'
 import axios from 'axios'
 import FixedBodyTable from './FixedBodyTable'
 import './style'
 
-const Table = props => {
+const Table = ({
+  striped,
+  bordered,
+  resizable,
+  size,
+  errorRowKeys = [],
+  rowSelection,
+  data = [],
+  highlightedRowKeys = [],
+  highlightedColKeys = [],
+  columns = [],
+  expandedRender,
+  maxHeight,
+  pagination,
+  dataSource,
+  showColMenu,
+  prefix = 'hi-table',
+  fixedToColumn,
+  sticky: _ceiling,
+  stickyTop = 0,
+  setting,
+  // *********
+  sortCol,
+  setSortCol,
+  visibleCols,
+  setVisibleCols,
+  setCacheVisibleCols,
+  scrollWidth,
+  emptyContent = '暂无数据'
+}) => {
   const hiTable = useRef(null)
   const [ceiling, setCeiling] = useState(false)
   const [activeSorterColumn, setActiveSorterColumn] = useState(null)
@@ -22,58 +47,27 @@ const Table = props => {
   const [highlightRows, setHighlightRows] = useState([])
   const [freezeColumn, setFreezeColumn] = useState(null)
   const [hoverRow, setHoverRow] = useState(null)
-  const [serverTableConfig, setServerTableConfig] = useState({})
+  const [serverTableConfig, setServerTableConfig] = useState({ data: [], columns: [] })
   const [eachRowHeight, setEachRowHeight] = useState([])
   const [eachHeaderHeight, setEachHeaderHeight] = useState(null)
 
-  const {
-    striped,
-    bordered,
-    resizable,
-    size,
-    errorRowKeys = [],
-    rowSelection,
-    data = [],
-    highlightedRowKeys = [],
-    highlightedColKeys = [],
-    columns = [],
-    expandedRender,
-    maxHeight,
-    pagination,
-    dataSource,
-    showColMenu,
-    prefix = 'hi-table',
-    fixedToColumn,
-    sticky: _ceiling,
-    stickyTop = 0,
-    setting,
-    // *********
-    sortCol,
-    setSortCol,
-    visibleCols,
-    setVisibleCols,
-    setCacheVisibleCols,
-    scrollWidth,
-    emptyContent = '暂无数据'
-  } = props
-
-  const [realColumnsWidth, setRealColumnsWidth] = useState(
-    columns.map(c => c.width || 'auto')
-  )
+  const [realColumnsWidth, setRealColumnsWidth] = useState(columns.map((c) => c.width || 'auto'))
 
   const firstRowRef = useRef(null)
-
   useEffect(() => {
-    setRealColumnsWidth(columns.map(c => c.width || 'auto'))
-    setTimeout(() => {
-      if (firstRowRef.current) {
-        const _realColumnsWidth = Array.from(
-          firstRowRef.current.childNodes
-        ).map(node => node.clientWidth)
-        setRealColumnsWidth(_realColumnsWidth)
+    if (!dataSource) {
+      setRealColumnsWidth(columns.map((c) => c.width || 'auto'))
+      const timer = setTimeout(() => {
+        if (firstRowRef.current) {
+          const _realColumnsWidth = Array.from(firstRowRef.current.childNodes).map((node) => node.clientWidth)
+          setRealColumnsWidth(_realColumnsWidth)
+        }
+      })
+      return () => {
+        clearTimeout(timer)
       }
-    })
-  }, [columns])
+    }
+  }, [columns, dataSource, data])
 
   const flattedColumns = flatTreeData(columns)
   // 有表头分组那么也要 bordered
@@ -81,15 +75,13 @@ const Table = props => {
   // ******************* 列冻结 ********************
   // 左侧冻结
   const leftFixedColumn =
-    freezeColumn ||
-    (typeof fixedToColumn === 'string'
-      ? fixedToColumn
-      : fixedToColumn && fixedToColumn.left)
+    freezeColumn || (typeof fixedToColumn === 'string' ? fixedToColumn : fixedToColumn && fixedToColumn.left)
   // 右侧冻结
   const rightFixedColumn = fixedToColumn && fixedToColumn.right
 
   let leftFixedIndex, rightFixedIndex
-  columns.forEach((c, index) => {
+  // TODO: 这里是考虑了多级表头的冻结，待优化
+  flattedColumns.forEach((c, index) => {
     if (leftFixedColumn === c.dataKey) {
       leftFixedIndex = index
     }
@@ -97,9 +89,9 @@ const Table = props => {
       rightFixedIndex = index
     }
   })
-  const realLeftFixedColumns = [...columns].splice(0, leftFixedIndex + 1)
+  const realLeftFixedColumns = [...flattedColumns].splice(0, leftFixedIndex + 1)
   const leftFixedData = getFixedDataByFixedColumn(realLeftFixedColumns, data)
-  const realRightFixedColumns = [...columns].splice(rightFixedIndex)
+  const realRightFixedColumns = [...flattedColumns].splice(rightFixedIndex)
 
   const rightFixedData = getFixedDataByFixedColumn(realRightFixedColumns, data)
   // 同步滚动条
@@ -121,13 +113,9 @@ const Table = props => {
 
   const _pagination = (dataSource && serverTableConfig.pagination) || pagination
   // 高亮行
-  const _highlightRows = highlightedRowKeys.concat(
-    highlightRows.filter(row => !highlightedRowKeys.includes(row.key))
-  )
+  const _highlightRows = highlightedRowKeys.concat(highlightRows.filter((row) => !highlightedRowKeys.includes(row.key)))
   // 需要右对齐的列
-  const alignRightColumns = columns
-    .filter(c => c.align === 'right')
-    .map(col => col.dataKey)
+  const alignRightColumns = columns.filter((c) => c.align === 'right').map((col) => col.dataKey)
   // baseTable
   const baseTable = useRef(null)
   const [baseTableWidth, setBaseTableWidth] = useState('100%')
@@ -148,10 +136,7 @@ const Table = props => {
             hiTable.current.getBoundingClientRect().bottom >= stickyTop + 35
           ) {
             setCeiling(true)
-            syncScrollLeft(
-              bodyTableRef.current.scrollLeft,
-              stickyHeaderRef.current
-            )
+            syncScrollLeft(bodyTableRef.current.scrollLeft, stickyHeaderRef.current)
           } else {
             setCeiling(false)
           }
@@ -164,7 +149,7 @@ const Table = props => {
   useEffect(() => {
     if (dataSource) {
       const fetchConfig = dataSource()
-      axios(fetchConfig).then(res => {
+      axios(fetchConfig).then((res) => {
         setServerTableConfig(res.data)
       })
     }
@@ -182,8 +167,8 @@ const Table = props => {
         highlightedRowKeys: _highlightRows,
         setHighlightRows,
         highlightedColKeys,
-        data: (dataSource && (serverTableConfig.data || [])) || data,
-        columns: (dataSource && (serverTableConfig.columns || [])) || columns,
+        data: dataSource ? serverTableConfig.data : data,
+        columns: dataSource ? serverTableConfig.columns : columns,
         expandedRender,
         leftFixedColumns: realLeftFixedColumns,
         rightFixedColumns: realRightFixedColumns,
@@ -250,27 +235,16 @@ const Table = props => {
         </div>
         {/* Left fixed table 左侧固定列表格 */}
         {leftFixedColumn && realLeftFixedColumns.length > 0 && (
-          <div
-            className={classnames(
-              `${prefix}__container`,
-              `${prefix}__container--fixed-left`
-            )}
-          >
-            <HeaderTable isFixed='left' />
-            <FixedBodyTable isFixed='left' />
+          <div className={classnames(`${prefix}__container`, `${prefix}__container--fixed-left`)}>
+            <HeaderTable isFixed="left" />
+            <FixedBodyTable isFixed="left" />
           </div>
         )}
         {/* Right fixed table 右侧固定列表格 */}
         {rightFixedColumn && realRightFixedColumns.length > 0 && (
-          <div
-            className={classnames(
-              `${prefix}__container`,
-              `${prefix}__container--fixed-right`
-            )}
-            style={{ right: 0 }}
-          >
-            <HeaderTable isFixed='right' rightFixedIndex={rightFixedIndex} />
-            <FixedBodyTable isFixed='right' rightFixedIndex={rightFixedIndex} />
+          <div className={classnames(`${prefix}__container`, `${prefix}__container--fixed-right`)} style={{ right: 0 }}>
+            <HeaderTable isFixed="right" rightFixedIndex={rightFixedIndex} />
+            <FixedBodyTable isFixed="right" rightFixedIndex={rightFixedIndex} />
           </div>
         )}
         {/* Pagination 分页组件 */}
@@ -309,18 +283,9 @@ const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
   const [cacheVisibleCols, setCacheVisibleCols] = useState(_cacheVisibleCols)
   useEffect(() => {
     if (uniqueId) {
-      window.localStorage.setItem(
-        `${uniqueId}_sortCol`,
-        JSON.stringify(sortCol)
-      )
-      window.localStorage.setItem(
-        `${uniqueId}_visibleCols`,
-        JSON.stringify(visibleCols)
-      )
-      window.localStorage.setItem(
-        `${uniqueId}_cacheVisibleCols`,
-        JSON.stringify(cacheVisibleCols)
-      )
+      window.localStorage.setItem(`${uniqueId}_sortCol`, JSON.stringify(sortCol))
+      window.localStorage.setItem(`${uniqueId}_visibleCols`, JSON.stringify(visibleCols))
+      window.localStorage.setItem(`${uniqueId}_cacheVisibleCols`, JSON.stringify(cacheVisibleCols))
     }
   }, [sortCol, visibleCols, cacheVisibleCols, uniqueId])
 
@@ -330,12 +295,12 @@ const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
 
   const standardPreset = standard
     ? {
-      showColMenu: true,
-      sticky: true,
-      bordered: true,
-      setting: true,
-      striped: true
-    }
+        showColMenu: true,
+        sticky: true,
+        bordered: true,
+        setting: true,
+        striped: true
+      }
     : {}
 
   // ***************
