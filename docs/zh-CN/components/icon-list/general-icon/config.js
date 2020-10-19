@@ -88,8 +88,16 @@ export const outlined = [
     text: '收藏集'
   },
   {
+    name: 'date',
+    text: '日期'
+  },
+  {
     name: 'data-monitor',
     text: '监视器-数据'
+  },
+  {
+    name: 'dislike',
+    text: '不喜欢'
   },
   {
     name: 'diagram',
@@ -422,6 +430,18 @@ export const outlined = [
   {
     name: 'file-zip',
     text: 'Zip'
+  },
+  {
+    name: 'reset',
+    text: '重置'
+  },
+  {
+    name: 'synchronize',
+    text: '同步'
+  },
+  {
+    name: 'upload',
+    text: '上传'
   }
 ]
 
