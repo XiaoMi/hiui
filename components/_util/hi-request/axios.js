@@ -1,5 +1,4 @@
 import axios from 'axios'
-import qs from 'qs'
 
 const callBackInter = new Map()
 
@@ -43,14 +42,6 @@ axiosInstance.interceptors.response.use(
 
 const axiosIns = (options) => {
   const { beforeResponse, errorResponse, beforeRequest, errorRequest, data, errorCallback } = options
-  if (
-    options.headers &&
-    options.headers['content-type'] &&
-    options.headers['content-type'].toLocaleLowerCase() === 'application/x-www-form-urlencoded' &&
-    options.data
-  ) {
-    Object.assign(options, { data: qs.stringify(data) })
-  }
   beforeRequest && callBackInter.set('beforeRequest', beforeRequest)
   errorResponse && callBackInter.set('errorResponse', errorResponse)
   beforeResponse && callBackInter.set('beforeResponse', beforeResponse)
