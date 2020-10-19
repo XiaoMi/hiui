@@ -58,4 +58,15 @@ HiRequest.upload = (options, host) => {
   options.type = 'upload'
   return HiRequest(options, host)
 }
+
+// Expose all/spread
+HiRequest.all = (promises) => {
+  return Promise.all(promises);
+}
+HiRequest.spread = (callback) => {
+  return (arr) => {
+    return callback.apply(null, arr);
+  };
+};
+
 export default HiRequest
