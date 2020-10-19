@@ -1,16 +1,16 @@
 @import '@hi-ui/core-css/index.scss';
-$basic-color: #4284f5 !default;
+@import '../../core-css/index.scss';
 
 .hi-timepicker {
   width: 180px;
-  background: #fff;
+  background: use-color('white');
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
   z-index: 1060;
 
   &__popper {
     width: 180px;
     height: 296px;
-    background: rgba(255, 255, 255, 1);
+    background: use-color('white');
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
     border-radius: 4px;
 
@@ -20,7 +20,7 @@ $basic-color: #4284f5 !default;
   }
 
   &__panel {
-    background: #fff;
+    background: use-color('white');
 
     &--range {
       width: 400px;
@@ -38,7 +38,7 @@ $basic-color: #4284f5 !default;
     height: 248px;
     margin-top: 47px;
     align-self: flex-end;
-    border: 1px solid #f2f2f2;
+    border: 1px solid use-color('gray-10');
     border-bottom: none;
   }
 
@@ -49,20 +49,15 @@ $basic-color: #4284f5 !default;
     text-align: center;
     align-items: center;
     font-size: 14px;
-    font-weight: 600;
-    color: rgba(51, 51, 51, 1);
-    border-bottom: 1px solid rgba(242, 242, 242, 1);
+    font-weight: $font-weight-bold;
+    color: use-color('black');
+    border-bottom: 1px solid use-color('gray-10');
     box-sizing: border-box;
-  }
-
-  &__mark {
-    // flex: 1;
   }
 
   &__timebody {
     display: flex;
     height: 248px;
-    // border-bottom: 1px solid #f2f2f2;
     position: relative;
     justify-content: space-around;
     box-sizing: border-box;
@@ -100,13 +95,10 @@ $basic-color: #4284f5 !default;
   }
 
   &__list {
-    // position: absolute;
-    // z-index: 2;
     width: 80px;
     height: 224px;
     margin: 0;
     list-style-type: none;
-    // overflow-x: hidden;
     overflow-y: auto;
     padding: 0;
     user-select: none;
@@ -125,14 +117,13 @@ $basic-color: #4284f5 !default;
   &__item {
     text-align: center;
     font-size: 14px;
-    color: rgba(0, 0, 0, 0.65);
+    color: use-color('gray-80');
     line-height: 32px;
     height: 32px;
     width: 60px;
     cursor: pointer;
     box-sizing: border-box;
-    // border-right: 1px solid rgba(242, 242, 242, 1);
-    background-color: #fff;
+    background-color: use-color('white');
 
     &--empty {
       cursor: default;
@@ -148,7 +139,7 @@ $basic-color: #4284f5 !default;
     }
 
     &:hover:not(.hi-timepicker__item--current):not(.hi-timepikcer__item--empty):not(.hi-timepicker__item--disabled) {
-      background-color: #eff5fe;
+      background-color: use-color('primary-10');
     }
   }
 
@@ -164,10 +155,8 @@ $basic-color: #4284f5 !default;
   &__current-line {
     height: 32px;
     box-sizing: border-box;
-    border-top: 1px solid rgba(242, 242, 242, 1);
-    border-bottom: 1px solid rgba(242, 242, 242, 1);
-
-    // background: rgba(247, 247, 247, 1);
+    border-top: 1px solid use-color('gray-10');
+    border-bottom: 1px solid use-color('gray-10');
     position: absolute;
     top: 108px;
     left: 0;
@@ -181,16 +170,6 @@ $basic-color: #4284f5 !default;
 
     span {
       flex: 1;
-    }
-  }
-}
-
-@each $key, $value in $palette-primary {
-  .theme__#{$key} {
-    .hi-timepicker {
-      &__item:hover:not(.hi-timepicker__item--current):not(.hi-timepikcer__item--empty):not(.hi-timepicker__item--disabled) {
-        background-color: rgba($value, 0.1);
-      }
     }
   }
 }

@@ -5,7 +5,7 @@ $color-map: (
   'warning': get-color($palette-secondary, 'warning'),
   'success': get-color($palette-secondary, 'success'),
   'danger': get-color($palette-secondary, 'danger'),
-  'default': #999
+  'default': use-color('gray-70')
 ) !default;
 
 $prefix: 'hi-tag' !default;
@@ -35,7 +35,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
 
 .#{$prefix} {
   padding: 0 6px;
-  color: #fff;
+  color: use-color('white');
   line-height: 20px;
   box-sizing: border-box;
   border-color: transparent;
@@ -59,7 +59,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
   }
 
   &--line {
-    background: #fff;
+    background: use-color('white');
 
     @each $key, $value in $color-map {
       &.#{$prefix}--#{$key} {
@@ -103,9 +103,9 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     align-items: center;
 
     .#{$prefix} {
-      background: #fff;
-      border: 1px solid rgba(224, 225, 226, 1);
-      color: #333;
+      background: use-color('white');
+      border: 1px solid use-color('gray-30');
+      color: use-color('black');
       cursor: pointer;
       transition: border-color 0.3s;
 
@@ -135,7 +135,7 @@ $primary: get-color($palette-primary, 'hiui-blue') !default;
     &--plus {
       width: 50px;
       border-radius: 11px;
-      border: 1px dashed rgba(230, 231, 232, 1);
+      border: 1px dashed use-color('gray-30');
       display: inline-block;
       line-height: 20px;
       text-align: center;

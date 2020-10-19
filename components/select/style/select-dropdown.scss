@@ -1,12 +1,12 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
 .hi-select__dropdown {
   width: 100%;
   font-size: 12px;
-  color: #333;
+  color: use-color('black');
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: #fff;
+  background-color: use-color('white');
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
   border-radius: 2px;
   box-sizing: border-box;
@@ -31,9 +31,9 @@
     justify-content: space-between;
     padding: 8px 12px;
     font-size: 12px;
-    color: #4284f5;
+    color: use-color('primary');
     cursor: pointer;
-    border-top: 1px solid #e6e7e8;
+    border-top: 1px solid use-color('gray-30');
 
     .hi-checkbox__text {
       padding: 0;
@@ -44,7 +44,7 @@
     padding: 0 12px;
     font-size: 12px;
     line-height: 30px;
-    color: #a9abaf;
+    color: use-color('gray-80');
   }
 
   &--item {
@@ -90,7 +90,7 @@
     }
 
     &.is-active {
-      color: #4284f5;
+      color: use-color('primary');
     }
 
     &.is-disabled {
@@ -99,11 +99,11 @@
     }
 
     &[data-focused='true'] {
-      background-color: rgba(66, 132, 245, 0.08);
+      background-color: rgba(use-color('primary'), 0.08);
     }
 
     &:hover {
-      background-color: rgba(66, 132, 245, 0.08);
+      background-color: rgba(use-color('primary'), 0.08);
     }
 
     &.disabled {
@@ -121,7 +121,7 @@
   }
 
   &__searchbar {
-    background-color: #fff;
+    background-color: use-color('white');
     width: 100%;
     padding: 0 12px;
     box-sizing: border-box;
@@ -135,40 +135,22 @@
     }
 
     .icon-close-circle {
-      color: #ccc;
+      color: use-color('gray-50');
     }
 
     .hi-select__dropdown--icon__close:hover {
-      color: #333;
+      color: use-color('black');
     }
 
     &--content {
       height: 36px;
-      border-bottom: 1px solid #e6e7e8;
+      border-bottom: 1px solid use-color('gray-30');
       box-sizing: border-box;
       display: flex;
       align-items: center;
 
       .hi-input__inner {
         border: none;
-      }
-    }
-  }
-}
-
-@each $key, $value in $theme-colors {
-  .theme__#{$key}.hi-select__dropdown {
-    &-check-all {
-      color: $value;
-    }
-
-    &--item {
-      &.is-active {
-        color: $value;
-      }
-
-      &[data-focused='true'] {
-        background-color: rgba($value, 0.08);
       }
     }
   }

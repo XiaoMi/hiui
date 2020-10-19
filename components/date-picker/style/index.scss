@@ -1,19 +1,17 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
-$basic-color: get-color($palette-primary, 'hiui-blue') !default;
 $error-color: get-color($palette-secondary, 'danger') !default;
 
 .hi-datepicker {
   position: relative;
-  // display: flex;
-  background: #fff;
+  background: use-color('white');
   z-index: 1060;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
 
   &__popper {
     width: 288px;
     font-size: 14px;
-    background: rgba(255, 255, 255, 1);
+    background: use-color('white');
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
     border-radius: 4px;
     display: flex;
@@ -46,8 +44,8 @@ $error-color: get-color($palette-secondary, 'danger') !default;
   }
 
   &__picker {
-    background: #fff;
-    border: 1px solid #d8d8d8;
+    background: use-color('white');
+    border: 1px solid use-color('gray-30');
     border-radius: 2px;
     height: 32px;
     width: 180px;
@@ -57,11 +55,11 @@ $error-color: get-color($palette-secondary, 'danger') !default;
     box-sizing: border-box;
 
     &:hover:not(.hi-datepicker__picker--disabled):not(.hi-datepicker__picker--error) {
-      border: 1px solid $basic-color;
+      border: 1px solid use-color('primary');
     }
 
     &--focus {
-      border: 1px solid $basic-color;
+      border: 1px solid use-color('primary');
     }
 
     &--error {
@@ -113,11 +111,11 @@ $error-color: get-color($palette-secondary, 'danger') !default;
     }
 
     .icon-close-circle {
-      color: #bbb;
+      color: use-color('gray-50');
     }
 
     .icon-close-circle:hover {
-      color: #333;
+      color: use-color('black');
     }
 
     input {
@@ -128,7 +126,7 @@ $error-color: get-color($palette-secondary, 'danger') !default;
       width: 100%;
 
       &::-webkit-input-placeholder {
-        color: #ccc;
+        color: use-color('gray-50');
       }
 
       &.disabled {
@@ -149,7 +147,7 @@ $error-color: get-color($palette-secondary, 'danger') !default;
     // width: 288px;
     width: 100%;
     // height: 296px;
-    background: #fff;
+    background: use-color('white');
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
     display: flex;
 
@@ -168,7 +166,7 @@ $error-color: get-color($palette-secondary, 'danger') !default;
   }
 
   &__header {
-    border-bottom: 1px solid #f2f2f2;
+    border-bottom: 1px solid use-color('gray-30');
     display: flex;
     justify-content: space-between;
     height: 48px;
@@ -186,7 +184,7 @@ $error-color: get-color($palette-secondary, 'danger') !default;
         flex: 1;
 
         &:hover {
-          color: $basic-color;
+          color: use-color('primary');
         }
       }
     }
@@ -236,7 +234,7 @@ $error-color: get-color($palette-secondary, 'danger') !default;
       .hi-datepicker__cell {
         &::before {
           content: '';
-          background: rgba(66, 132, 245, 0.1);
+          background: rgba(use-color('primary'), 0.1);
           display: block;
           height: 24px;
           position: absolute;
@@ -270,7 +268,7 @@ $error-color: get-color($palette-secondary, 'danger') !default;
     &__cell:not(.hi-datepicker__cell--range) {
       &-text {
         &:hover {
-          background-color: rgba($basic-color, 0.1);
+          background-color: rgba(use-color('primary'), 0.1);
         }
       }
     }
@@ -281,14 +279,14 @@ $error-color: get-color($palette-secondary, 'danger') !default;
 
     &--today {
       .hi-datepicker__cell-text {
-        border: 1px solid $basic-color;
+        border: 1px solid use-color('primary');
       }
     }
 
     &--range:not(.hi-datepicker__cell--out) {
       &::before {
         content: '';
-        background: rgba(66, 132, 245, 0.1);
+        background: rgba(use-color('primary'), 0.1);
         display: block;
         height: 24px;
         position: absolute;
@@ -336,20 +334,20 @@ $error-color: get-color($palette-secondary, 'danger') !default;
 
     &--selected {
       .hi-datepicker__cell-text {
-        background: $basic-color;
-        color: #fff;
+        background: use-color('primary');
+        color: use-color('white');
       }
 
       .hi-datepicker__cell--lunar {
-        color: #fff;
+        color: use-color('white');
       }
 
       .hi-datepicker__lunar {
-        color: #fff;
+        color: use-color('white');
       }
 
       .hi-datepicker__mark--rest {
-        color: #fff;
+        color: use-color('white');
       }
     }
   }
@@ -368,13 +366,13 @@ $error-color: get-color($palette-secondary, 'danger') !default;
     color: rgba(204, 204, 204, 1);
 
     &--highlight {
-      color: $basic-color;
+      color: use-color('primary');
     }
   }
 
   &__footer {
     height: 48px;
-    border-top: 1px solid #f2f2f2;
+    border-top: 1px solid use-color('gray-10');
     box-sizing: border-box;
     line-height: 48px;
     text-align: center;
@@ -384,12 +382,12 @@ $error-color: get-color($palette-secondary, 'danger') !default;
     flex: 1 1 100%;
 
     &:not(.hi-datepicker__footer--disable):hover {
-      color: $basic-color;
+      color: use-color('primary');
     }
 
     &--disable {
       cursor: not-allowed;
-      color: #ccc;
+      color: use-color('gray-50');
     }
   }
 
@@ -410,14 +408,14 @@ $error-color: get-color($palette-secondary, 'danger') !default;
     left: 50%;
     top: 8px;
     transform: translateX(-50%);
-    background: #fff;
+    background: use-color('white');
     z-index: 2;
     line-height: 32px;
   }
 
   &__time-period {
     width: 144px;
-    border-left: 1px solid #f2f2f2;
+    border-left: 1px solid use-color('gray-10');
     text-align: center;
     box-sizing: border-box;
     font-size: 14px;
@@ -427,7 +425,7 @@ $error-color: get-color($palette-secondary, 'danger') !default;
     line-height: 48px;
     height: 48px;
     font-weight: 600;
-    border-bottom: 1px solid #f2f2f2;
+    border-bottom: 1px solid use-color('gray-10');
     box-sizing: border-box;
   }
 
@@ -449,13 +447,13 @@ $error-color: get-color($palette-secondary, 'danger') !default;
     }
 
     &--active {
-      color: $basic-color;
+      color: use-color('primary');
     }
   }
 
   &__shortcuts {
-    background: #fff;
-    border-right: 1px solid #f2f2f2;
+    background: use-color('white');
+    border-right: 1px solid use-color('gray-10');
     width: 105px;
     box-sizing: border-box;
     overflow: hidden;
@@ -470,13 +468,12 @@ $error-color: get-color($palette-secondary, 'danger') !default;
 
     &-item {
       cursor: pointer;
-      // text-align: center;
       padding-left: 30px;
       margin: 21px 0;
       list-style: none;
 
       &:hover {
-        color: $basic-color;
+        color: use-color('primary');
       }
     }
   }
@@ -508,7 +505,7 @@ $error-color: get-color($palette-secondary, 'danger') !default;
       display: inline-block;
       max-width: 410px;
       word-break: break-all;
-      background: map-get(get-palette($basic-color), '10');
+      background: use-color('primary-10');
       border: 1px solid #d8e5ff;
       padding: 7px 12px;
       border-radius: 2px;
@@ -535,92 +532,6 @@ $error-color: get-color($palette-secondary, 'danger') !default;
       display: none;
       opacity: 0;
       transition: all 0.3s ease-in;
-    }
-  }
-}
-
-@each $key, $value in $palette-primary {
-  .theme__#{$key} {
-    &.hi-datepicker__picker {
-      &:hover:not(.hi-datepicker__picker--disabled):not(.hi-datepicker__picker--error) {
-        border: 1px solid $value;
-      }
-
-      &--focus {
-        border: 1px solid $value;
-      }
-
-      &--error {
-        border: 1px solid $error-color;
-      }
-    }
-
-    .hi-datepicker {
-      &__row {
-        &--currentweek {
-          .hi-datepicker__cell {
-            &::before {
-              background: rgba($value, 0.1);
-            }
-          }
-        }
-      }
-
-      &__cell {
-        &--today {
-          .hi-datepicker__cell-text {
-            border: 1px solid $value;
-          }
-        }
-
-        &--selected {
-          .hi-datepicker__cell-text {
-            background: $value;
-          }
-        }
-
-        &--range:not(.hi-datepicker__cell--out) {
-          &::before {
-            background: rgba($value, 0.1);
-          }
-        }
-      }
-
-      &__cell:not(.hi-datepicker__cell--range) {
-        &-text {
-          &:hover {
-            background-color: rgba($value, 0.1);
-          }
-        }
-      }
-
-      &__header-btns {
-        .hi-icon {
-          &:hover {
-            color: $value;
-          }
-        }
-      }
-
-      &__shortcuts {
-        &-item {
-          &:hover {
-            color: $value;
-          }
-        }
-      }
-
-      &__lunar {
-        &--highlight {
-          color: $value;
-        }
-      }
-
-      &__indiaHoli {
-        &-text {
-          background: map-get(get-palette($value), '10');
-        }
-      }
     }
   }
 }

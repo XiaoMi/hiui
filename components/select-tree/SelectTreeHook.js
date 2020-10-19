@@ -72,7 +72,7 @@ const SelectTree = ({
 
   // 搜索框的值改变时的事件
   const changeEvents = useCallback(
-    e => {
+    (e) => {
       const val = e.target.value
       setSearchValue(val)
       searchTreeNode(val)
@@ -97,43 +97,27 @@ const SelectTree = ({
   useEffect(() => {
     if (flattenData.length > 0) {
       if (type === 'multiple') {
-        const cstatus = parseCheckStatusData(
-          defaultValue.length > 0 ? defaultValue : value,
-          checkedNodes,
-          flattenData
-        )
+        const cstatus = parseCheckStatusData(defaultValue.length > 0 ? defaultValue : value, checkedNodes, flattenData)
         if (cstatus) {
           setCheckedNodes(cstatus)
         }
       } else {
-        const _selectedItems = parseDefaultSelectedItems(
-          defaultValue.length > 0 ? defaultValue : value,
-          flattenData
-        )
+        const _selectedItems = parseDefaultSelectedItems(defaultValue.length > 0 ? defaultValue : value, flattenData)
         setSelectedItems(_selectedItems)
       }
     }
   }, [value, flattenData])
   // 当选中项发生改变时(以及首次解析完成默认值后)，更改选中项
   useEffect(() => {
-    const _selectedItems = parseSelectedItems(
-      checkedNodes,
-      nodeEntries,
-      showCheckedMode,
-      flattenData
-    )
+    const _selectedItems = parseSelectedItems(checkedNodes, nodeEntries, showCheckedMode, flattenData)
     setSelectedItems(_selectedItems)
   }, [checkedNodes])
 
   // 依赖展开项生成展开节点数据
   useEffect(() => {
     if (flattenData.length > 0) {
-      const _expandIds = parseExpandIds(
-        expandIdsProps,
-        defaultExpandIds,
-        flattenData
-      )
-      setExpandIds(preExpandIds => {
+      const _expandIds = parseExpandIds(expandIdsProps, defaultExpandIds, flattenData)
+      setExpandIds((preExpandIds) => {
         return (_expandIds || []).concat(preExpandIds || [])
       })
     }
@@ -143,9 +127,7 @@ const SelectTree = ({
     if (selectedItemsRef.current) {
       const sref = selectedItemsRef.current
       // 多选超过一行时以数字显示
-      const referenceEls = sref.querySelectorAll(
-        '.hi-selecttree__selected--hidden span'
-      )
+      const referenceEls = sref.querySelectorAll('.hi-selecttree__selected--hidden span')
       const wrapperWidth = sref.getBoundingClientRect()
       let _width = 0
       let num = 0
@@ -163,21 +145,15 @@ const SelectTree = ({
   }, [selectedItems])
 
   // 过滤方法
-  const searchTreeNode = val => {
-    let matchNodes = []
+  const searchTreeNode = (val) => {
+    const matchNodes = []
     const _data = _.cloneDeep(flattenData)
     if (searchMode === 'highlight') {
-      const filterArr = _data.map(node => {
+      const filterArr = _data.map((node) => {
         let _keyword = val
-        _keyword = val.includes('[')
-          ? _keyword.replace(/\[/gi, '\\[')
-          : _keyword
-        _keyword = val.includes('(')
-          ? _keyword.replace(/\(/gi, '\\(')
-          : _keyword
-        _keyword = val.includes(')')
-          ? _keyword.replace(/\)/gi, '\\)')
-          : _keyword
+        _keyword = val.includes('[') ? _keyword.replace(/\[/gi, '\\[') : _keyword
+        _keyword = val.includes('(') ? _keyword.replace(/\(/gi, '\\(') : _keyword
+        _keyword = val.includes(')') ? _keyword.replace(/\)/gi, '\\)') : _keyword
         const reg = new RegExp(_keyword, 'gi')
         const str = `<span style="color: #428ef5">${val}</span>`
         if (reg.test(node.title)) {
@@ -188,7 +164,7 @@ const SelectTree = ({
       })
       setFlattenData(filterArr)
       let matchNodesSet = []
-      matchNodes.forEach(mn => {
+      matchNodes.forEach((mn) => {
         matchNodesSet.push(mn.id)
         matchNodesSet = matchNodesSet.concat(mn.ancestors || [])
       })
@@ -198,7 +174,7 @@ const SelectTree = ({
       const filterArr = treeFilterByOriginalData(data, val)
       const filterData = flattenNodesData(filterArr).flattenData
       let matchNodesSet = []
-      filterData.forEach(mn => {
+      filterData.forEach((mn) => {
         matchNodesSet.push(mn.id)
         matchNodesSet = matchNodesSet.concat(mn.ancestors || [])
       })
@@ -234,13 +210,12 @@ const SelectTree = ({
    * Remote load Data
    * @param {*} id click node's id
    */
-  const loadNodes = useCallback(id => {
-    const _dataSource =
-      typeof dataSource === 'function' ? dataSource(id || '') : dataSource
+  const loadNodes = useCallback((id) => {
+    const _dataSource = typeof dataSource === 'function' ? dataSource(id || '') : dataSource
     return HiRequest({
       ..._dataSource
-    }).then(res => {
-      const nArr = res.data.map(n => {
+    }).then((res) => {
+      const nArr = res.data.map((n) => {
         return {
           ...n,
           pId: id
@@ -256,8 +231,8 @@ const SelectTree = ({
    */
   const checkedEvents = (checked, node) => {
     let result = {}
-    let semiCheckedIds = new Set(checkedNodes.semiChecked)
-    let checkedIds = new Set(checkedNodes.checked)
+    const semiCheckedIds = new Set(checkedNodes.semiChecked)
+    const checkedIds = new Set(checkedNodes.checked)
     if (checked) {
       result = updateCheckData(node, flattenData, checkedIds, semiCheckedIds)
     } else {
@@ -269,17 +244,12 @@ const SelectTree = ({
     })
     let checkedArr = []
     if (result.checked.length > 0) {
-      checkedArr = result.checked.map(id => {
+      checkedArr = result.checked.map((id) => {
         return getNode(id, flattenData)
       })
     }
     onChange(
-      processSelectedIds(
-        result.checked,
-        nodeEntries,
-        showCheckedMode,
-        flattenData
-      ),
+      processSelectedIds(result.checked, nodeEntries, showCheckedMode, flattenData),
       clearReturnData(checkedArr),
       clearReturnData(node)
     )
@@ -292,7 +262,7 @@ const SelectTree = ({
    */
   const expandEvents = (node, state, callback = () => {}) => {
     const _expandIds = [...expandIds]
-    const hasIndex = _expandIds.findIndex(id => id === node.id)
+    const hasIndex = _expandIds.findIndex((id) => id === node.id)
     if (hasIndex !== -1) {
       _expandIds.splice(hasIndex, 1)
     } else {
@@ -306,7 +276,7 @@ const SelectTree = ({
       return
     }
     if (state) {
-      loadNodes(node.id).then(res => {
+      loadNodes(node.id).then((res) => {
         if (res.length > 0) {
           setFlattenData(flattenData.concat(flattenNodesData(res).flattenData))
           fillNodeEntries(node, nodeEntries, res)
@@ -320,7 +290,7 @@ const SelectTree = ({
   /**
    * Node selected Event
    */
-  const selectedEvents = useCallback(node => {
+  const selectedEvents = useCallback((node) => {
     setSelectedItems([node])
     const n = clearReturnData(node)
     onChange(node.id, n, n)
@@ -331,16 +301,11 @@ const SelectTree = ({
    * Input 点击事件
    */
   const onTrigger = () => {
-    if (
-      flattenData.length === 0 &&
-      defaultLoadData &&
-      (!data || data.length === 0 || dataSource) &&
-      !show
-    ) {
+    if (flattenData.length === 0 && defaultLoadData && (!data || data.length === 0 || dataSource) && !show) {
       // data 为空 且 存在 dataSource 时，默认进行首次数据加载.defaultLoadData不暴露
       setNodeDataState('loading')
       loadNodes()
-        .then(res => {
+        .then((res) => {
           if (res.length === 0) {
             setNodeDataState('empty')
             return
@@ -375,30 +340,23 @@ const SelectTree = ({
           show={show}
           attachEle={inputRef.current}
           width={false}
+          topGap={5}
           overlayClassName={overlayClassName}
-          className={`hi-selecttree__popper ${
-            data.length === 0 && dataSource
-              ? 'hi-selecttree__popper--loading'
-              : ''
-          }`}
+          className={`hi-selecttree__popper ${data.length === 0 && dataSource ? 'hi-selecttree__popper--loading' : ''}`}
           onClickOutside={() => setShow(false)}
         >
-          <div
-            className={`hi-selecttree__root ${
-              searchable ? 'hi-selecttree--hassearch' : ''
-            }`}
-          >
+          <div className={`hi-selecttree__root ${searchable ? 'hi-selecttree--hassearch' : ''}`}>
             {searchable && mode !== 'breadcrumb' && (
-              <div className='hi-selecttree__searchbar-wrapper'>
-                <div className='hi-selecttree__searchbar-inner'>
-                  <Icon name='search' />
+              <div className="hi-selecttree__searchbar-wrapper">
+                <div className="hi-selecttree__searchbar-inner">
+                  <Icon name="search" />
                   <input
-                    className='hi-selecttree__searchinput'
+                    className="hi-selecttree__searchinput"
                     placeholder={'搜索'}
-                    clearable='true'
+                    clearable="true"
                     value={searchValue}
-                    clearabletrigger='always'
-                    onKeyDown={e => {
+                    clearabletrigger="always"
+                    onKeyDown={(e) => {
                       if (e.keyCode === '13') {
                         searchTreeNode(e.target.value)
                       }
