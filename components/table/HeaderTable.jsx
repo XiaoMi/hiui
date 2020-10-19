@@ -170,7 +170,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                       : '#fbfbfb'
                 }}
               >
-                <span className="power-table__header__title">
+                <span className="hi-table__header__title">
                   {typeof c.title === 'function' ? c.title() : c.title}
                   {showColMenu && c.isLast && (
                     <ColumnMenu
