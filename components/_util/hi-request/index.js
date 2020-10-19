@@ -39,9 +39,11 @@ METHODS.forEach((method) => {
   HiRequest[method] = (url, options) => HiRequest({ ...options, method, url })
 })
 // 取消请求
-HiRequest.CancelToken = () => {
-  return axios.CancelToken
-}
+const CANCEL = ['CancelToken', 'Cancel', 'isCancel']
+CANCEL.forEach((type) => {
+  HiRequest[type] = axios[type]
+})
+
 /**
  * 获取cookies中的值作为参数使用
  * @param key
@@ -58,4 +60,15 @@ HiRequest.upload = (options, host) => {
   options.type = 'upload'
   return HiRequest(options, host)
 }
+
+// Expose all/spread
+HiRequest.all = (promises) => {
+  return Promise.all(promises)
+}
+HiRequest.spread = (callback) => {
+  return (arr) => {
+    return callback.apply(null, arr)
+  }
+}
+
 export default HiRequest

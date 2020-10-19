@@ -85,11 +85,11 @@ export const outlined = [
   },
   {
     name: 'sort-ascending',
-    text: '排列-降序'
+    text: '排列-升序序'
   },
   {
     name: 'sort-descending',
-    text: '排列-升序'
+    text: '排列-降序'
   },
   {
     name: 'summation',

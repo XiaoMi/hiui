@@ -1,8 +1,8 @@
-# HiRequest
+# HiRequest 【hi-got】
 
 为了方便以及统一大家对于数据请求的方式，HiUI 特封装请求工具 HiRequest
 
-## 快速使用
+### 快速使用
 
 ```javascript
 import HiRequest from '@hi-ui/hiui/es/hi-request'
@@ -11,6 +11,26 @@ HiRequest.get('/user?ID=12345').then((response) => {
   // handle success
   console.log(response)
 })
+```
+
+### 支持 AMD/CJS/ESM 模块引入
+
+```js
+
+// ESM
+import HiRequest Tool from 'hi-request';
+
+//cjs
+const HiRequest = require('hi-request');
+
+// AMD
+require(['hi-request'],function(){
+  ...
+})
+
+// script 脚本
+<script src="https://xxx.com/hi-request.min.js"></script>
+
 ```
 
 ## Get 请求
@@ -379,56 +399,75 @@ search_results(
   // 只有值没有key
   data: 'Country=Brasil&City=Belo Horizonte',
 
-  // `timeout` 超时
-  // 超时后，请求将被禁止
-  timeout: 1000, // default is `0` (no timeout)
+  // `timeout` 指定请求超时的毫秒数(0 表示无超时时间)
+  // 如果请求话费了超过 `timeout` 的时间，请求将被中断
+  timeout: 1000,
 
-
-  // 非同源下携带 cookie
+   // `withCredentials` 表示跨域请求时是否需要使用凭证
   withCredentials: false, // default
 
-  // 使用HiRequest.download的时候；下载的时候；需要指定 filename;下载后的文件名称；
-  filename: '未命名',// browser only
-  // `responseType` 表示服务器将响应的数据类型
-  // options are: 'arraybuffer', 'document', 'json', 'text', 'stream'
-  // 浏览器端 只有 : 'blob' 类型
+  // `adapter` 允许自定义处理请求，以使测试更轻松
+  // 返回一个 promise 并应用一个有效的响应 (查阅 [response docs](#response-api)).
+  adapter: function (config) {
+    /* ... */
+  },
+
+ // `auth` 表示应该使用 HTTP 基础验证，并提供凭据
+  // 这将设置一个 `Authorization` 头，覆写掉现有的任意使用 `headers` 设置的自定义 `Authorization`头
+  auth: {
+    username: 'janedoe',
+    password: 's00pers3cret'
+  },
+
+   // `responseType` 表示服务器响应的数据类型，可以是 'arraybuffer', 'blob', 'document', 'json', 'text', 'stream'
   responseType: 'json', // default
 
-  // `responseEncoding` 指示用于解码响应的编码
+  // `responseEncoding` indicates encoding to use for decoding responses
   // Note: Ignored for `responseType` of 'stream' or client-side requests
   responseEncoding: 'utf8', // default
 
-  // `xsrfCookieName` 是否使用cookie的名称作为xsrf令牌的值
+   // `xsrfCookieName` 是用作 xsrf token 的值的cookie的名称
   xsrfCookieName: 'XSRF-TOKEN', // default
 
-  // ' xsrfHeaderName '是携带xsrf令牌值的http头的名称
+  // `xsrfHeaderName` is the name of the http header that carries the xsrf token value
   xsrfHeaderName: 'X-XSRF-TOKEN', // default
 
-  // `onUploadProgress` 上传进度
+   // `onUploadProgress` 允许为上传处理进度事件
   onUploadProgress: function (progressEvent) {
     // Do whatever you want with the native progress event
   },
 
-  // `onDownloadProgress` 下载进度
+  // `onDownloadProgress` 允许为下载处理进度事件
   onDownloadProgress: function (progressEvent) {
-    // Do whatever you want with the native progress event
+    // 对原生进度事件的处理
   },
 
-  // `maxContentLength` 定义http响应内容的最大大小(以字节为单位)
+   // `maxContentLength` 定义允许的响应内容的最大尺寸
   maxContentLength: 2000,
 
-  // ' validateStatus '定义了是否解析或拒绝给定HTTP响应状态代码。如果“validateStatus”返回“true”(或者设置为“null”或“undefined”)，响应将被解析;否则，响应就会落空拒绝。
+  // `validateStatus` 定义对于给定的HTTP 响应状态码是 resolve 或 reject  promise 。如果 `validateStatus` 返回 `true` (或者设置为 `null` 或 `undefined`)，promise 将被 resolve; 否则，promise 将被 rejecte
   validateStatus: function (status) {
     return status >= 200 && status < 300; // default
   },
 
-  // `httpAgent` and `httpsAgent` define a custom agent to be used when performing http
-  // and https requests, respectively, in node.js. This allows options to be added like
-  // `keepAlive` that are not enabled by default.
+  // `maxRedirects` 定义在 node.js 中 follow 的最大重定向数目
+  // 如果设置为0，将不会 follow 任何重定向
+  maxRedirects: 5, // default
+
+  // `socketPath` defines a UNIX Socket to be used in node.js.
+  // e.g. '/var/run/docker.sock' to send requests to the docker daemon.
+  // Only either `socketPath` or `proxy` can be specified.
+  // If both are specified, `socketPath` is used.
+  socketPath: null, // default
+
+  // `httpAgent` 和 `httpsAgent` 分别在 node.js 中用于定义在执行 http 和 https 时使用的自定义代理。允许像这样配置选项：
+  // `keepAlive` 默认没有启用
   httpAgent: new http.Agent({ keepAlive: true }),
   httpsAgent: new https.Agent({ keepAlive: true }),
 
-  // 'proxy' 定义代理服务器的主机名和端口
+  // 'proxy' 定义代理服务器的主机名称和端口
+  // `auth` 表示 HTTP 基础验证应当用于连接代理，并提供凭据
+  // 这将会设置一个 `Proxy-Authorization` 头，覆写掉已有的通过使用 `header` 设置的自定义 `Proxy-Authorization` 头。
   proxy: {
     host: '127.0.0.1',
     port: 9000,
@@ -438,7 +477,8 @@ search_results(
     }
   },
 
-  // `cancelToken` 指定可用于取消请求的取消 token
+  // `cancelToken` 指定用于取消请求的 cancel token
+  // （查看后面的 Cancellation 这节了解更多）
   cancelToken: new CancelToken(function (cancel) {
   })
 }
@@ -503,17 +543,12 @@ HiRequest.get('/user/12345', {
   }
 })
 
-HiRequest.post(
-  '/user/12345',
-  {
-    name: 'new name'
-  },
-  {
-    cancelToken: source.token
-  }
-)
+HiRequest.post('/user/12345', {
+  name: 'new name',
+  cancelToken: source.token
+})
 
-// 取消这次请求
+// 取消这两次请求
 
 source.cancel('Operation canceled by the user.')
 ```

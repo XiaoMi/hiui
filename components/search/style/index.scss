@@ -1,6 +1,4 @@
-@import '@hi-ui/core-css/index.scss';
-
-$basic-color: get-color($palette-primary, 'hiui-blue') !default;
+@import '../../core-css/index.scss';
 $search: 'hi-search' !default;
 
 .#{$search} {
@@ -26,7 +24,7 @@ $search: 'hi-search' !default;
       border-bottom-left-radius: 0;
 
       &:hover:not(.disabled) {
-        border-color: $basic-color;
+        border-color: use-color('primary');
       }
 
       &:focus {
@@ -36,7 +34,7 @@ $search: 'hi-search' !default;
   }
 
   .hi-icon.icon-search {
-    color: $basic-color;
+    color: use-color('primary');
   }
 
   &_dropdown {
@@ -58,10 +56,10 @@ $search: 'hi-search' !default;
     width: 100%;
     height: 252px;
     font-size: 12px;
-    color: #333;
+    color: use-color('black');
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: #fff;
+    background-color: use-color('white');
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
     border-radius: 2px;
     box-sizing: border-box;
@@ -86,12 +84,12 @@ $search: 'hi-search' !default;
         padding: 0 12px;
 
         &:hover:not(.hi-search_dropdown--item-title) {
-          background-color: rgba($basic-color, 0.08);
+          background-color: rgba(use-color('primary'), 0.08);
         }
       }
 
       &-title {
-        color: rgba(0, 0, 0, 0.25);
+        color: use-color('gray-50');
         font-size: 14px;
       }
 
@@ -100,7 +98,7 @@ $search: 'hi-search' !default;
         justify-content: space-between;
         align-items: center;
         padding: 0 12px;
-        color: rgba(0, 0, 0, 0.25);
+        color: use-color('gray-50');
         font-size: 14px;
       }
 
@@ -108,12 +106,12 @@ $search: 'hi-search' !default;
         height: 260px;
         line-height: 260px;
         text-align: center;
-        color: rgba(0, 0, 0, 0.25);
+        color: use-color('gray-50');
         font-size: 14px;
       }
 
       &__name-hightlight {
-        color: $basic-color;
+        color: use-color('primary');
       }
     }
 

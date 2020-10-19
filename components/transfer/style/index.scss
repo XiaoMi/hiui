@@ -1,4 +1,4 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
 .hi-transfer {
   display: flex;
@@ -6,19 +6,19 @@
   &__container {
     width: 240px;
     box-sizing: border-box;
-    background: rgba(255, 255, 255, 1);
+    background: use-color('white');
     border-radius: 2px;
-    border: 1px solid rgba(231, 231, 231, 1);
+    border: 1px solid use-color('gray-20');
     position: relative;
   }
 
   &__title {
     height: 40px;
-    background: rgba(246, 246, 246, 1);
+    background: use-color('gray-10');
     line-height: 40px;
     padding-left: 15px;
     box-sizing: border-box;
-    border-bottom: 1px solid #e6e7e8;
+    border-bottom: 1px solid use-color('gray-20');
   }
 
   &__operation {
@@ -48,14 +48,12 @@
   &__body {
     height: 222px;
     overflow: auto;
-    // border-top: 1px solid rgb(231, 231, 231);
-    // border-bottom: 1px solid rgb(231, 231, 231);
     box-sizing: border-box;
 
     &--empty {
       text-align: center;
       line-height: 222px;
-      color: rgba(153, 153, 153, 1);
+      color: use-color('gray-70');
     }
   }
 
@@ -76,11 +74,11 @@
     text-align: left;
 
     .hi-checkbox-legacy--checked .hi-checkbox-legacy__input {
-      border: 1px solid #4284f5;
+      border: 1px solid use-color('primary');
     }
 
     &:hover {
-      background: rgba(66, 132, 245, 0.1);
+      background: rgba(use-color('primary'), 0.1);
     }
 
     &--disabled {
@@ -94,8 +92,8 @@
 
     &--limit {
       height: 40px;
-      color: #999;
-      font-size: 14px;
+      color: use-color('gray-70');
+      font-size: $font-size-normal;
       display: flex;
       align-items: center;
     }
@@ -108,7 +106,6 @@
     background: url('../img/warning.png');
     background-repeat: no-repeat;
     background-position: left center;
-    // margin-right: 15px;
   }
 
   &__footer {
@@ -117,18 +114,18 @@
     justify-content: space-between;
     padding: 0 15px;
     height: 40px;
-    border-top: 1px solid #e7e7e7;
+    border-top: 1px solid use-color('gray-20');
     box-sizing: border-box;
 
     &--checkbox-part {
       .hi-checkbox__input {
-        background: #4284f5;
+        background: use-color('primary');
 
         &::after {
           content: '';
           position: absolute;
           display: block;
-          border: 1px solid #fff;
+          border: 1px solid use-color('white');
           margin-top: -1px;
           left: 3px;
           right: 3px;
@@ -143,7 +140,7 @@
     height: 40px;
     width: 208px;
     margin: 0 auto;
-    border-bottom: 1px solid #e6e7e8;
+    border-bottom: 1px solid use-color('gray-20');
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -156,7 +153,7 @@
   &__limit-tips {
     position: absolute;
     background: #4a4a4a;
-    color: #fff;
+    color: use-color('white');
     font-size: 12px;
     padding: 2px 5px;
     left: 50%;
@@ -171,7 +168,7 @@
     position: absolute;
     width: 100%;
     height: 1px;
-    background-color: rgba(66, 132, 245, 1);
+    background-color: use-color('primary');
     top: 0;
     left: 0;
   }
@@ -180,7 +177,7 @@
     position: absolute;
     width: 100%;
     height: 1px;
-    background-color: rgba(66, 132, 245, 1);
+    background-color: use-color('primary');
     bottom: 0;
     left: 0;
   }
@@ -196,29 +193,5 @@
 
   .hi-checkbox__input {
     box-sizing: border-box;
-  }
-}
-
-@each $key, $value in $theme-colors {
-  .hi-transfer {
-    &.theme__#{$key} {
-      .hi-transfer__divider--up {
-        background-color: $value;
-      }
-
-      .hi-transfer__divider--down {
-        background-color: $value;
-      }
-    }
-
-    &__item.theme__#{$key} {
-      .hi-checkbox-legacy--checked .hi-checkbox-legacy__input {
-        border: 1px solid $value;
-      }
-
-      &:hover {
-        background-color: rgba($value, 0.15);
-      }
-    }
   }
 }

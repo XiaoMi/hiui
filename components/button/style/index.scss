@@ -1,102 +1,110 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
 // Render flat style button
 @mixin render-flat-button($themeColor) {
-  $themePalette: get-palette($themeColor) !default;
+  $statusColor:  use-color($themeColor);
 
-  background-color: $themeColor;
-  color: $white;
+  @if not ($themeColor = 'primary') {
+    $statusColor:  get-color($palette-secondary, $themeColor);
+  }
+
+  background-color: $statusColor;
+  color: use-color('white');
 
   &:not(.hi-btn--disabled):focus {
-    box-shadow: 0 0 0 2px rgba($themeColor, 0.25);
+    box-shadow: 0 0 0 2px use-color(#{$themeColor}-30);
   }
 
   &:not(.hi-btn--disabled):hover {
-    background-color: map-get($themePalette, '60');
-    color: $white;
+    background-color: use-color(#{$themeColor}-60);
+    color: use-color('white');
   }
 
   &:not(.hi-btn--disabled):active {
-    background-color: map-get($themePalette, '80');
-    color: $white;
+    background-color: use-color(#{$themeColor}-70);
+    color: use-color('white');
   }
 
   // Status: disabled
   &.hi-btn--disabled,
   &[disabled] {
     &:not(.hi-btn--loading) {
-      background-color: rgba($themeColor, 0.2);
-      color: $white;
+      background-color: use-color(#{$themeColor}-30);
+      color: use-color('white');
     }
   }
 
   // Make a button look and behave like a link
   &.hi-btn--appearance--link {
-    color: $themeColor;
+    color: $statusColor;
 
     &:not(.hi-btn--disabled):hover {
-      color: map-get($themePalette, '70');
+      color: use-color(#{$themeColor}-70);
     }
     // Status: disabled
     &.hi-btn--disabled,
     &[disabled] {
-      color: $themeColor;
+      color: $statusColor;
       opacity: 0.54;
     }
   }
 }
 
 // Render line style button
-@mixin render-line-button($themeColor) {
-  $themePalette: get-palette($themeColor) !default;
+@mixin render-line-button($themeColor: 'primary') {
+  $statusColor:  use-color($themeColor);
 
-  background-color: rgba($themeColor, 0.1);
-  border-color: rgba($themeColor, 0.4);
-  color: $themeColor;
+  @if not ($themeColor = 'primary') {
+    $statusColor:  get-color($palette-secondary, $themeColor);
+  }
+
+  background-color: use-color(#{$themeColor}-20);
+  border-color: use-color(#{$themeColor}-40);
+  color: $statusColor;
 
   &:not(.hi-btn--disabled):focus {
-    box-shadow: 0 0 0 2px rgba($themeColor, 0.25);
+    box-shadow: 0 0 0 2px use-color(#{$themeColor}-30);
   }
 
   &:not(.hi-btn--disabled):hover {
-    border-color: rgba($themeColor, 0.8);
-    color: $themeColor;
+    border-color: rgba($statusColor, 0.8);
+    color: $statusColor;
   }
 
   &:not(.hi-btn--disabled):active {
-    background-color: rgba($themeColor, 0.15);
-    color: $themeColor;
+    background-color: rgba($statusColor, 0.15);
+    color: $statusColor;
   }
 
   // Status: disabled
   &.hi-btn--disabled,
   &[disabled] {
     &:not(.hi-btn--loading) {
-      border-color: rgba($themeColor, 0.2);
-      color: rgba($themeColor, 0.3);
+      border-color: use-color(#{$themeColor}-30);
+      color: use-color(#{$themeColor}-40);
     }
   }
 
   // Make a button look and behave like a link
   &.hi-btn--appearance--link {
-    color: $themeColor;
+    color: $statusColor;
 
     &:not(.hi-btn--disabled):hover {
-      color: map-get(get-palette($themeColor), '70');
+      color: use-color(#{$themeColor}-50);
     }
     // Status: disabled
     &.hi-btn--disabled,
     &[disabled] {
       background-color: transparent;
       border-color: transparent;
-      color: $themeColor;
+      color: $statusColor;
       opacity: 0.54;
     }
   }
 }
 
 // Define component colors
-@mixin btn-theme-styles($themeColor: get-color($palette-primary, 'hiui-blue')) {
+@mixin btn-theme-styles($themeColor: 'primary') {
   & {
     // Types
     &--type--primary {
@@ -109,7 +117,7 @@
 
     &--type--default {
       &:not(.hi-btn--disabled):focus {
-        box-shadow: 0 0 0 2px rgba($themeColor, 0.25);
+        box-shadow: 0 0 0 2px use-color(#{$themeColor}-30);
       }
     }
   }
@@ -133,11 +141,7 @@
   white-space: nowrap;
   touch-action: manipulation;
   cursor: pointer;
-  transition:
-    background-color $speed-normal $easing,
-    border-color $speed-normal $easing,
- box-shadow $speed-fast $easing,
-    color $speed-normal $easing;
+  transition: background-color $speed-normal $easing, border-color $speed-normal $easing, box-shadow $speed-fast $easing, color $speed-normal $easing;
 
   &.hi-btn--appearance--link {
     background-color: transparent !important;
@@ -205,42 +209,42 @@
   // Common Styles
   &--type--default,
   &--type--info {
-    background-color: $white;
-    border-color: $gray;
-    color: $black;
+    background-color: use-color('white');
+    border-color: use-color('gray-30');
+    color: use-color('black');
 
     &:not(.hi-btn--disabled):hover {
-      border-color: $gray-dark;
-      color: $black;
+      border-color: use-color('gray-50');
+      color: use-color('black');
     }
 
     &:not(.hi-btn--disabled):active {
-      background-color: $gray-lighter;
-      color: $black;
+      background-color: use-color('gray-20');
+      color: use-color('black');
     }
 
     // Status: disabled
     &.hi-btn--disabled,
     &[disabled] {
-      background-color: $gray-lighter;
-      border-color: rgba($black, 0.1);
-      color: $gray;
+      background-color: use-color('gray-20');
+      border-color: use-color('gray-30');
+      color: use-color('gray-50');
     }
 
     // Make a button look and behave like a link
     &.hi-btn--appearance--link {
       &:not(.hi-btn--disabled):hover {
-        color: map-get(get-palette($black), '70');
+        color: use-color('gray-70');
       }
 
       &:not(.hi-btn--disabled):active {
-        color: $black;
+        color: use-color('black');
       }
 
       // Status: disabled
       &.hi-btn--disabled,
       &[disabled] {
-        color: $black;
+        color: use-color('black');
         opacity: 0.54;
       }
     }
@@ -248,12 +252,7 @@
 
   @each $key in 'success', 'danger', 'warning' {
     &--type--#{$key} {
-      $status-color: map-get(
-        get-palette(get-color($palette-secondary, $key)),
-        '50'
-      );
-
-      @include render-line-button($status-color);
+      @include render-line-button($key);
     }
   }
 
@@ -268,7 +267,7 @@
       left: -1px;
       right: -1px;
       content: '';
-      background-color: $white;
+      background-color: use-color('white');
       cursor: default;
       opacity: 0.4;
     }
@@ -304,12 +303,6 @@
     & + & {
       margin-top: 4px;
     }
-  }
-}
-
-@each $key, $value in $theme-colors {
-  .theme__#{$key}.hi-btn {
-    @include btn-theme-styles($value);
   }
 }
 

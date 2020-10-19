@@ -12,6 +12,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
     rightFixedData,
     leftFixedColumns,
     rightFixedColumns,
+    columns,
     maxHeight,
     scrollBarSize,
     syncScrollTop,
@@ -31,9 +32,16 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   if (isFixed === 'right') {
     _columns = _.cloneDeep(rightFixedColumns)
   }
-  let depthArray = []
+  const depthArray = []
   setDepth(_columns, 0, depthArray)
   const columnsgroup = flatTreeData(_columns).filter((col) => col.isLast)
+  // TODO: 这里是考虑了多级表头的冻结，待优化
+  // *********全量 col group
+  const allColumns = _.cloneDeep(columns)
+  const _depthArray = []
+  setDepth(allColumns, 0, _depthArray)
+  const allColumnsgroup = flatTreeData(allColumns).filter((col) => col.isLast)
+  // ***********
   const bodyInner = useRef(null)
   const renderRow = (row, level, index, allRowData) => {
     return (
@@ -72,22 +80,18 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
         return total + cur
       }, 0)
   }
-  const fixedBodyTableRef =
-    isFixed === 'left' ? leftFixedBodyTableRef : rightFixedBodyTableRef
+  const fixedBodyTableRef = isFixed === 'left' ? leftFixedBodyTableRef : rightFixedBodyTableRef
   // **************** 根据排序列处理数据
   let _fixedData = isFixed === 'left' ? leftFixedData : rightFixedData
-  let fixedColumns = isFixed === 'left' ? leftFixedColumns : rightFixedColumns
+  const fixedColumns = isFixed === 'left' ? leftFixedColumns : rightFixedColumns
 
   if (activeSorterColumn) {
-    let sorter =
+    const sorter =
       fixedColumns.filter((d) => d.dataKey === activeSorterColumn)[0] &&
       fixedColumns.filter((d) => d.dataKey === activeSorterColumn)[0].sorter
 
     if (sorter) {
-      _fixedData =
-        activeSorterType === 'ascend'
-          ? [..._fixedData].sort(sorter)
-          : [..._fixedData].sort(sorter).reverse()
+      _fixedData = activeSorterType === 'ascend' ? [..._fixedData].sort(sorter) : [..._fixedData].sort(sorter).reverse()
     }
   }
   return (
@@ -96,8 +100,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
         marginBottom: -scrollBarSize,
         overflow: 'hidden',
         width:
-          bodyTableRef.current &&
-          fixedColumnsWidth > bodyTableRef.current.clientWidth
+          bodyTableRef.current && fixedColumnsWidth > bodyTableRef.current.clientWidth
             ? bodyTableRef.current.clientWidth
             : fixedColumnsWidth + 1
       }}
@@ -106,8 +109,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
         style={{
           maxHeight: maxHeight || 'auto',
           width:
-            bodyTableRef.current &&
-            fixedColumnsWidth > bodyTableRef.current.clientWidth
+            bodyTableRef.current && fixedColumnsWidth > bodyTableRef.current.clientWidth
               ? bodyTableRef.current.clientWidth
               : fixedColumnsWidth + 20,
 
@@ -117,20 +119,11 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
         }}
         ref={fixedBodyTableRef}
         onScroll={(e) => {
-          syncScrollTop(
-            fixedBodyTableRef.current.scrollTop,
-            bodyTableRef.current
-          )
+          syncScrollTop(fixedBodyTableRef.current.scrollTop, bodyTableRef.current)
           if (isFixed === 'left') {
-            syncScrollTop(
-              fixedBodyTableRef.current.scrollTop,
-              rightFixedBodyTableRef.current
-            )
+            syncScrollTop(fixedBodyTableRef.current.scrollTop, rightFixedBodyTableRef.current)
           } else {
-            syncScrollTop(
-              fixedBodyTableRef.current.scrollTop,
-              leftFixedBodyTableRef.current
-            )
+            syncScrollTop(fixedBodyTableRef.current.scrollTop, leftFixedBodyTableRef.current)
           }
         }}
       >
@@ -143,28 +136,33 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
         >
           <colgroup>
             {columnsgroup.map((c, idx) => {
+              // TODO: 这里是考虑了多级表头的冻结，待优化
+              let width
+              allColumnsgroup.forEach((col, index) => {
+                if (col.dataKey === c.dataKey) {
+                  width = realColumnsWidth[index]
+                }
+              })
               return (
                 <col
                   key={idx}
                   style={{
-                    width:
-                      isFixed === 'left'
-                        ? realColumnsWidth[idx]
-                        : realColumnsWidth[idx + rightFixedIndex],
-                    minWidth:
-                      isFixed === 'left'
-                        ? realColumnsWidth[idx]
-                        : realColumnsWidth[idx + rightFixedIndex]
+                    width: width,
+                    minWidth: width
+                    // width:
+                    //   isFixed === 'left'
+                    //     ? realColumnsWidth[idx]
+                    //     : realColumnsWidth[idx + rightFixedIndex],
+                    // minWidth:
+                    //   isFixed === 'left'
+                    //     ? realColumnsWidth[idx]
+                    //     : realColumnsWidth[idx + rightFixedIndex]
                   }}
                 />
               )
             })}
           </colgroup>
-          <tbody>
-            {_fixedData.map((row, index) =>
-              renderRow(row, 1, index, data[index])
-            )}
-          </tbody>
+          <tbody>{_fixedData.map((row, index) => renderRow(row, 1, index, data[index]))}</tbody>
         </table>
       </div>
     </div>
