@@ -18,10 +18,10 @@ const Cell = ({
 }) => {
   const { highlightedColKeys, highlightColumns, alignRightColumns, prefix } = useContext(TableContext)
   // 处理自定义 render 或者合并单元格情况
-  let cellContent = column.render
+  const cellContent = column.render
     ? column.render(allRowData[column.dataKey], allRowData, rowIndex)
     : allRowData[column.dataKey]
-  const isMergeCell = cellContent && typeof cellContent === 'object' && !cellContent['$$typeof']
+  const isMergeCell = cellContent && typeof cellContent === 'object' && !cellContent.$$typeof
 
   if (isMergeCell && (cellContent.props.colSpan === 0 || cellContent.props.rowSpan === 0)) {
     return null
@@ -58,7 +58,7 @@ const Cell = ({
             }}
           />
         ) : (
-          isTree && <span style={{ width: 14, display: 'inline-block' }} key={Math.random()} />
+          isTree && <span style={{ width: 18, display: 'inline-block' }} key={Math.random()} />
         ))}
 
       {(isMergeCell && cellContent.children) || cellContent}

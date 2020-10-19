@@ -27,8 +27,8 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     setEachRowHeight
   } = useContext(TableContext)
   // **************** 获取colgroup
-  let _columns = _.cloneDeep(columns)
-  let depthArray = []
+  const _columns = _.cloneDeep(columns)
+  const depthArray = []
   setDepth(_columns, 0, depthArray)
   const columnsgroup = flatTreeData(_columns).filter((col) => col.isLast)
   // ****************
@@ -40,13 +40,12 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
   let _data = data
 
   if (activeSorterColumn) {
-    let sorter =
+    const sorter =
       columns.filter((d) => d.dataKey === activeSorterColumn)[0] &&
       columns.filter((d) => d.dataKey === activeSorterColumn)[0].sorter
 
     if (sorter) {
-      _data =
-        activeSorterType === 'ascend' ? [...data].sort(sorter) : [...data].sort(sorter).reverse()
+      _data = activeSorterType === 'ascend' ? [...data].sort(sorter) : [...data].sort(sorter).reverse()
     }
   }
   // ************* 处理求和、平均数
@@ -54,7 +53,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     columns.filter((item) => {
       return item.total
     }).length > 0
-  let sumRow = { key: 'sum' }
+  const sumRow = { key: 'sum' }
   columns.forEach((c, index) => {
     if (index === 0) {
       sumRow[c.dataKey] = '合计'
@@ -67,7 +66,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     columns.filter((item) => {
       return item.avg
     }).length > 0
-  let avgRow = { key: 'avg' }
+  const avgRow = { key: 'avg' }
   columns.forEach((c, index) => {
     if (index === 0) {
       avgRow[c.dataKey] = '平均值'
@@ -78,12 +77,10 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
   })
   useEffect(() => {
     if (tableRef.current && tableRef.current.children[1].children) {
-      let rowHeightArray = Array.from(tableRef.current.children[1].children).map(
-        (tr) => tr.clientHeight
-      )
+      const rowHeightArray = Array.from(tableRef.current.children[1].children).map((tr) => tr.clientHeight)
       setEachRowHeight(rowHeightArray)
     }
-  }, [data])
+  }, [data, setEachRowHeight])
 
   let hasTree = false
   if (_data && _data.length) {
@@ -137,7 +134,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
         </td>
       </tr>
     )
-  }, [columnsgroup])
+  }, [columnsgroup.length, emptyContent])
   return (
     <div
       style={{

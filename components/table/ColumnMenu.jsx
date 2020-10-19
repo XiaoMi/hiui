@@ -31,7 +31,7 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
         setShowPopper(!showPopper)
       }}
     >
-      <Icon name='down' style={{ marginLeft: 4, cursor: 'pointer' }} />
+      <Icon name="down" style={{ marginLeft: 4, cursor: 'pointer' }} />
       <Popper show={_showPopper} attachEle={menuRef.current} zIndex={1040} setOverlayContainer={() => document.body}>
         <div className={[`${prefix}__col-menu`]} ref={popperMenu}>
           {canSort && (
@@ -51,7 +51,7 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
               }}
             >
               升序
-              <Icon name='asc' />
+              <Icon name="asc" />
             </div>
           )}
           {canSort && (
@@ -71,7 +71,7 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
               }}
             >
               降序
-              <Icon name='desc' />
+              <Icon name="desc" />
             </div>
           )}
           <div
@@ -88,7 +88,7 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
             }}
           >
             高亮
-            <Icon name='mark' />
+            <Icon name="mark" />
           </div>
 
           <div
@@ -105,7 +105,7 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
             }}
           >
             冻结
-            <Icon name='lock' />
+            <Icon name="lock" />
           </div>
         </div>
       </Popper>

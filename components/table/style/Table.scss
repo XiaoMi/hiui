@@ -1,4 +1,5 @@
 @import './variable.scss';
+@import '../../core-css/index.scss';
 
 .#{$table} {
   position: relative;
@@ -10,7 +11,7 @@
   &__container table {
     width: 100%;
     border-collapse: separate;
-    background: #fff;
+    background: use-color('white');
     margin: 0;
     box-sizing: border-box;
     display: table;
@@ -24,28 +25,28 @@
     th {
       padding-left: 8px;
       padding-right: 16px;
-      border-bottom: 1px solid $borderColor;
+      border-bottom: 1px solid rgba(231, 231, 231, 1);
       text-align: left;
       box-sizing: border-box;
     }
 
     th {
       background-color: #fbfbfb;
-      color: #999;
+      color: use-color('gray-70');
       position: relative;
 
       i:hover {
-        color: $activeColor;
+        color: use-color('primary');
       }
     }
 
     td {
-      color: #333;
+      color: use-color('black');
       word-break: break-word;
     }
 
     tr {
-      font-size: $nornamFontSize;
+      font-size: $font-size-normal;
       padding: 0;
       box-sizing: border-box;
     }

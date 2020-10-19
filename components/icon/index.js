@@ -46,7 +46,8 @@ const legacyMap = {
   hide: 'eye-invisible',
   component: 'relation',
   data: 'data-monitor',
-  'money-circle-o': 'rmb'
+  'money-circle-o': 'rmb',
+  refer: 'document-search'
 }
 
 const Icon = ({ name, filled = false, className, style = {}, onClick }) => {

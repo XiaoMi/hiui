@@ -23,7 +23,7 @@ const Row = ({
   isTree
 }) => {
   const [expanded, setExpanded] = useState(false)
-  let {
+  const {
     errorRowKeys,
     rowSelection,
     highlightedRowKeys,
@@ -37,8 +37,8 @@ const Row = ({
     prefix
   } = useContext(TableContext)
 
-  let _columns = _.cloneDeep(columns)
-  let depthArray = []
+  const _columns = _.cloneDeep(columns)
+  const depthArray = []
   setDepth(_columns, 0, depthArray)
 
   let rowColumns = flatTreeData(_columns).filter((col) => col.isLast)
@@ -58,7 +58,7 @@ const Row = ({
         [`${prefix}__row--total`]: isSumRow,
         [`${prefix}__row--avg`]: isAvgRow
       })}
-      key='row'
+      key="row"
       onDoubleClick={(e) => {
         if (highlightedRowKeys.includes(rowData.key)) {
           setHighlightRows(highlightedRowKeys.filter((r) => r !== rowData.key))
@@ -75,7 +75,7 @@ const Row = ({
             checked={rowSelection.selectedRowKeys.includes(rowData.key)}
             onChange={(e) => {
               const { selectedRowKeys = [], onChange } = rowSelection
-              let _selectedRowKeys = [...selectedRowKeys]
+              const _selectedRowKeys = [...selectedRowKeys]
               if (_selectedRowKeys.includes(rowData.key)) {
                 onChange(_selectedRowKeys.filter((key) => key !== rowData.key))
               } else {
@@ -116,7 +116,7 @@ const Row = ({
     </tr>,
     // 可展开的内嵌部分
     expandedRender && expanded && (
-      <tr key='expanded-row' className={`${prefix}--expanded`} style={{ background: 'rgba(251,251,251,1)' }}>
+      <tr key="expanded-row" className={`${prefix}--expanded`} style={{ background: 'rgba(251,251,251,1)' }}>
         {/* 多选占位 */}
         {rowSelection && <td />}
         {/* 可展开内嵌显示 */}
