@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  cloneElement,
-  useState,
-  useEffect,
-  useRef
-} from 'react'
+import React, { useCallback, cloneElement, useState, useEffect, useRef } from 'react'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
@@ -13,6 +7,7 @@ import Tooltip from '../tooltip'
 import ItemDropdown from './ItemDropdown'
 import TabItem from './TabItem'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import Provider from '../context'
 const noop = () => {}
 
 const Tabs = ({
@@ -40,16 +35,9 @@ const Tabs = ({
     const showTabItems = []
     const hiddenTabItems = []
 
-    React.Children.map(children, child => {
+    React.Children.map(children, (child) => {
       if (child) {
-        const {
-          tabTitle,
-          tabId,
-          tabDesc,
-          disabled,
-          closeable = true,
-          animation
-        } = child.props
+        const { tabTitle, tabId, tabDesc, disabled, closeable = true, animation } = child.props
         const item = {
           tabTitle,
           tabId,
@@ -81,8 +69,7 @@ const Tabs = ({
   const [activeId, setActiveId] = useState(
     activeIdProps !== undefined
       ? activeIdProps
-      : defaultActiveId ||
-          (showTabItems && showTabItems[0] && showTabItems[0].tabId)
+      : defaultActiveId || (showTabItems && showTabItems[0] && showTabItems[0].tabId)
   )
   const [dragged, setDragged] = useState()
   const [over, setOver] = useState()
@@ -105,8 +92,8 @@ const Tabs = ({
   }, [activeIdProps])
 
   useEffect(() => {
-    const index = showTabItems.findIndex(item => item.tabId === activeId)
-    const hideIndex = hiddenTabItems.findIndex(item => item.tabId === activeId)
+    const index = showTabItems.findIndex((item) => item.tabId === activeId)
+    const hideIndex = hiddenTabItems.findIndex((item) => item.tabId === activeId)
     latestActiveId.current = index
 
     if (index === -1 && type === 'editable') {
@@ -125,7 +112,7 @@ const Tabs = ({
   }, [activeId, showTabItems, type])
 
   // 过滤自定义属性
-  const omitItem = useCallback(data => {
+  const omitItem = useCallback((data) => {
     return _.omit(data, ['animation', 'disabled', 'tabDesc'])
   }, [])
 
@@ -143,7 +130,7 @@ const Tabs = ({
   }, [children])
 
   // 计算激活状态下选中横线
-  const pseudoPosition = useCallback(index => {
+  const pseudoPosition = useCallback((index) => {
     const parentNode = containRef.current
     if (!parentNode.childNodes.length) {
       return
@@ -199,22 +186,16 @@ const Tabs = ({
     [editable, activeId]
   )
 
-  const checkEditable = useCallback(() => editable && type === 'editable', [
-    editable
-  ])
+  const checkEditable = useCallback(() => editable && type === 'editable', [editable])
 
   const renderTabContent = useCallback(
     (child, index) => {
       const { tabId, animation } = child.props
-      const activeIndex = showTabItems.findIndex(
-        item => item.tabId === activeId
-      )
+      const activeIndex = showTabItems.findIndex((item) => item.tabId === activeId)
 
       return cloneElement(child, {
         show: tabId === activeId,
-        latestActiveIdIndex: latestActiveId.current
-          ? latestActiveId.current
-          : -1,
+        latestActiveIdIndex: latestActiveId.current ? latestActiveId.current : -1,
         activeIdIndex: activeId ? activeIndex : -1,
         index,
         animation,
@@ -237,21 +218,9 @@ const Tabs = ({
       const items = containRef.current.getElementsByClassName('hi-tabs__item')
       const clientX = e.clientX
       const clientY = e.clientY
-      const {
-        left,
-        right,
-        top,
-        bottom
-      } = containRef.current.getBoundingClientRect()
+      const { left, right, top, bottom } = containRef.current.getBoundingClientRect()
 
-      if (
-        !(
-          clientX >= left &&
-          clientX <= right &&
-          clientY <= bottom &&
-          clientY >= top
-        )
-      ) {
+      if (!(clientX >= left && clientX <= right && clientY <= bottom && clientY >= top)) {
         for (let i = 0; i < items.length; i++) {
           items[i].classList.remove('hi-tabs__item--disabled')
         }
@@ -293,7 +262,7 @@ const Tabs = ({
   )
 
   const dragOver = useCallback(
-    e => {
+    (e) => {
       if (type === 'card' || type === 'line' || type === 'editable') {
         e.preventDefault()
 
@@ -321,11 +290,7 @@ const Tabs = ({
     const container = containRef.current
     const width = container.scrollWidth
     const clientWidth = container.clientWidth
-    let transX = Number(
-      document.defaultView
-        .getComputedStyle(container, null)
-        .transform.split(',')[4]
-    )
+    let transX = Number(document.defaultView.getComputedStyle(container, null).transform.split(',')[4])
 
     let srcollWidth
     if (width / 3 > width - clientWidth) {
@@ -345,11 +310,7 @@ const Tabs = ({
   const translateRight = useCallback(() => {
     const container = containRef.current
     const width = container.scrollWidth
-    let transX = Number(
-      document.defaultView
-        .getComputedStyle(container, null)
-        .transform.split(',')[4]
-    )
+    let transX = Number(document.defaultView.getComputedStyle(container, null).transform.split(',')[4])
     if (Math.abs(transX) > width / 3) {
       transX += width / 3
     } else {
@@ -360,19 +321,9 @@ const Tabs = ({
   const getHeader = useCallback(() => {
     return (
       <>
-        {canScroll && (
-          <Icon
-            name='left'
-            className={`${prefixCls}__scroll__icon`}
-            onClick={() => translateLeft()}
-          />
-        )}
+        {canScroll && <Icon name="left" className={`${prefixCls}__scroll__icon`} onClick={() => translateLeft()} />}
         <div className={`${prefixCls}__header`}>
-          <div
-            className={`${prefixCls}__nav contain`}
-            onDragOver={dragOver}
-            ref={containRef}
-          >
+          <div className={`${prefixCls}__nav contain`} onDragOver={dragOver} ref={containRef}>
             <TransitionGroup component={null}>
               {showTabItems.map((item, index) => {
                 const { tabId } = item
@@ -407,15 +358,11 @@ const Tabs = ({
             {hiddenTabItems.length > 0 && (
               <div
                 className={classNames(`${prefixCls}__item`, {
-                  [`${prefixCls}__item--active`]: hiddenTabItems
-                    .map(item => item.tabId)
-                    .includes(activeId)
+                  [`${prefixCls}__item--active`]: hiddenTabItems.map((item) => item.tabId).includes(activeId)
                 })}
               >
                 <ItemDropdown
-                  active={hiddenTabItems
-                    .map(item => item.tabId)
-                    .includes(activeId)}
+                  active={hiddenTabItems.map((item) => item.tabId).includes(activeId)}
                   activeId={activeId}
                   theme={theme}
                   defaultActiveId={defaultActiveId}
@@ -437,17 +384,11 @@ const Tabs = ({
           </div>
           {editableFlag && !canScroll && (
             <div className={`${prefixCls}__add`}>
-              <Icon onClick={addTab} name='plus' />
+              <Icon onClick={addTab} name="plus" />
             </div>
           )}
         </div>
-        {canScroll && (
-          <Icon
-            name='right'
-            className={`${prefixCls}__scroll__icon`}
-            onClick={() => translateRight()}
-          />
-        )}
+        {canScroll && <Icon name="right" className={`${prefixCls}__scroll__icon`} onClick={() => translateRight()} />}
       </>
     )
   })
@@ -467,28 +408,21 @@ const Tabs = ({
 
   const editableFlag = checkEditable()
 
-  const animateDone = tabId => {
+  const animateDone = (tabId) => {
     Tooltip.close(`tab-${tabId}`)
   }
   // 判断选中的元素是否为disabled 状态
   let isActiveEffective = false
-  const arr = showTabItems.filter(item => item.tabId === activeId)
+  const arr = showTabItems.filter((item) => item.tabId === activeId)
   if (arr.length) {
     isActiveEffective = arr[0].disabled
   }
 
   return (
     <div className={tabsClasses}>
-      {canScroll ? (
-        <div className={`${prefixCls}__scroll--outter`}>{getHeader()}</div>
-      ) : (
-        getHeader()
-      )}
+      {canScroll ? <div className={`${prefixCls}__scroll--outter`}>{getHeader()}</div> : getHeader()}
       <div className={`${prefixCls}__content`}>
-        {React.Children.map(
-          children,
-          (item, index) => item && renderTabContent(item, index)
-        )}
+        {React.Children.map(children, (item, index) => item && renderTabContent(item, index))}
       </div>
     </div>
   )
@@ -528,4 +462,4 @@ Tabs.defaultProps = {
   onDelete: noop,
   draggable: false
 }
-export default Tabs
+export default Provider(Tabs)

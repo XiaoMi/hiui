@@ -172,7 +172,7 @@ $color-map: (
 
     &:focus,
     &--focus {
-      box-shadow: 0 0 0 5px rgba(24, 144, 255, 0.12);
+      box-shadow: 0 0 0 5px use-color('primary-20');
       outline: none;
     }
   }

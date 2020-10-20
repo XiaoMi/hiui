@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
+import Provider from '../context'
 
 import './style'
 
 const prefixCls = 'hi-filter'
 
-const Filter = props => {
-  const {
-    data = [],
-    onChange,
-    onClick,
-    value,
-    defaultValue = [],
-    label = [],
-    labelWith,
-    showUnderline
-  } = props
+const Filter = (props) => {
+  const { data = [], onChange, onClick, value, defaultValue = [], label = [], labelWith, showUnderline, theme } = props
   const [options, setOptions] = useState(data || [])
   const [selectId, setSelectId] = useState(value || defaultValue || [])
   useEffect(() => {
@@ -40,7 +32,7 @@ const Filter = props => {
           if (disabled) {
             return
           }
-          let _activeId = selectId || []
+          const _activeId = selectId || []
           _activeId.splice(level - 1)
           _activeId[level - 1] = id
           if (!value) {
@@ -51,9 +43,7 @@ const Filter = props => {
         }}
       >
         <span>{content}</span>
-        {active && showUnderline && (
-          <span className={`${prefixCls}-content-item__active--underline`} />
-        )}
+        {active && showUnderline && <span className={`${prefixCls}-content-item__active--underline`} />}
       </li>
     )
   }
@@ -72,16 +62,13 @@ const Filter = props => {
       content.push(
         <div className={`${prefixCls}-content`} key={_label}>
           <div className={`${prefixCls}-content-label`}>
-            <span
-              className={`${prefixCls}-content-label__title`}
-              style={{ width: labelWith || 80 }}
-            >
+            <span className={`${prefixCls}-content-label__title`} style={{ width: labelWith || 80 }}>
               {_label}
             </span>
           </div>
           <ul className={`${prefixCls}-content-items`}>
             {_currentOptions &&
-              _currentOptions.map(item => {
+              _currentOptions.map((item) => {
                 if (item.children && item.id === levelActiveId) {
                   currentOptions = item.children
                 }
@@ -94,6 +81,6 @@ const Filter = props => {
     return content
   }
 
-  return <div className={`${prefixCls}`}>{renderCascadeContent()}</div>
+  return <div className={`${prefixCls} theme__${theme}`}>{renderCascadeContent()}</div>
 }
-export default Filter
+export default Provider(Filter)

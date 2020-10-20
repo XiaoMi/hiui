@@ -78,7 +78,7 @@
     }
 
     &:hover {
-      background: rgba(use-color('primary'), 0.1);
+      background: use-color('primary-20');
     }
 
     &--disabled {

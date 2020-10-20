@@ -7,6 +7,7 @@ import useSelect from './hooks/useSelect'
 import useCheckable from './hooks/useCheckable'
 import useExpand from './hooks/useExpand'
 import { getAncestorIds } from './util'
+import classnames from 'classnames'
 
 const PREFIX = 'hi-tree'
 
@@ -34,7 +35,8 @@ const BaseTree = ({
   onDragStart,
   onDragOver,
   onDrop,
-  onDragEnd
+  onDragEnd,
+  className
 }) => {
   const [flatData] = useFlatData(data)
   const [selectNodeId, onSelectNode] = useSelect({
@@ -78,7 +80,7 @@ const BaseTree = ({
         onDragEnd
       }}
     >
-      <div className={PREFIX}>
+      <div className={classnames(PREFIX, className)}>
         <ul className="root-list">
           {flatData
             .filter((node) => {
