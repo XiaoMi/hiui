@@ -14,34 +14,8 @@ export default {
     lastMonth: 'Nearly month',
     lastThreeMonth: 'Nearly three months',
     lastYear: 'Nearly year',
-    month: [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ],
-    monthShort: [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ],
+    month: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    monthShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     week: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     placeholders: {
       date: ['Select Date'],
@@ -132,7 +106,6 @@ export default {
     searchPlaceholder: 'Keyword search',
     searchEmptyResult: 'No serach results',
     modalTitle: 'Warning',
-    delTips:
-      'Deleting a node will delete all child nodes, are you sure to delete this node?'
+    delTips: 'Deleting a node will delete all child nodes, are you sure to delete this node?'
   }
 }

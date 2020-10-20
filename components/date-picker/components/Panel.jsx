@@ -8,8 +8,7 @@ import TimePanel from './TimePanel'
 import { getView, genNewDates } from '../utils'
 
 const Panel = () => {
-  const { outDate, type, onPick, localeDatas, showTime, theme, weekOffset } = useContext(DPContext)
-
+  const { outDate, type, onPick, localeDatas, showTime, theme, weekOffset, locale } = useContext(DPContext)
   const [view, setView] = useState(getView(type))
 
   const [calRenderDates, setCalRenderDates] = useState([])
@@ -82,6 +81,7 @@ const Panel = () => {
               view={view}
               panelPosition={0}
               type={type}
+              locale={locale}
             />
             <Calender
               renderDate={calRenderDates[0]}

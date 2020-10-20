@@ -19,7 +19,7 @@ const getHeaderCenterContent = (localeDatas, view, renderDate, locale = 'zh-CN')
   }
   return arr
 }
-const Header = ({ view, type, changeView, onArrowEvent, localeDatas, panelPosition, renderDate }) => {
+const Header = ({ view, type, changeView, onArrowEvent, localeDatas, panelPosition, renderDate, locale }) => {
   const headerChangeDateEvent = (flag, val) => {
     const panelDate = moment(renderDate)
     panelDate.add(val, flag)
@@ -45,7 +45,7 @@ const Header = ({ view, type, changeView, onArrowEvent, localeDatas, panelPositi
           changeView()
         }}
       >
-        {getHeaderCenterContent(localeDatas, view, renderDate)}
+        {getHeaderCenterContent(localeDatas, view, renderDate, locale)}
       </span>
       {
         <div className="hi-datepicker__header-btns">

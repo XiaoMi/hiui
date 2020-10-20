@@ -9,10 +9,10 @@ class Demo extends React.Component {
   render () {
     return (
       <DatePicker
-        value={new Date()}
+        defaultValue={new Date()}
         showTime={true}
         format='YYYY-MM-DD HH:mm:ss'
-        onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
+        onChange={(date, dateStr) => { console.log('onChange', date, dateStr) }}
       />
     )
   }
