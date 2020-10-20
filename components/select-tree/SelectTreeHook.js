@@ -21,6 +21,7 @@ import {
 } from './components/tree/util'
 import NavTree from './components/tree/NavTree'
 import Trigger from './components/Trigger'
+import Provider from '../context'
 
 const SelectTree = ({
   data,
@@ -39,7 +40,8 @@ const SelectTree = ({
   searchMode,
   mode,
   autoExpand,
-  overlayClassName
+  overlayClassName,
+  theme
 }) => {
   const selectedItemsRef = useRef()
   const inputRef = useRef()
@@ -155,7 +157,7 @@ const SelectTree = ({
         _keyword = val.includes('(') ? _keyword.replace(/\(/gi, '\\(') : _keyword
         _keyword = val.includes(')') ? _keyword.replace(/\)/gi, '\\)') : _keyword
         const reg = new RegExp(_keyword, 'gi')
-        const str = `<span style="color: #428ef5">${val}</span>`
+        const str = `<span style="color: var(--color-primary)">${val}</span>`
         if (reg.test(node.title)) {
           node._title = node.title.replace(reg, str)
           matchNodes.push(node)
@@ -322,7 +324,7 @@ const SelectTree = ({
   }
   const searchable = searchMode === 'filter' || searchMode === 'highlight'
   return (
-    <div>
+    <div className={`theme__${theme}`}>
       <Trigger
         inputRef={inputRef}
         selectedItemsRef={selectedItemsRef}
@@ -345,7 +347,7 @@ const SelectTree = ({
           className={`hi-selecttree__popper ${data.length === 0 && dataSource ? 'hi-selecttree__popper--loading' : ''}`}
           onClickOutside={() => setShow(false)}
         >
-          <div className={`hi-selecttree__root ${searchable ? 'hi-selecttree--hassearch' : ''}`}>
+          <div className={`hi-selecttree__root theme__${theme} ${searchable ? 'hi-selecttree--hassearch' : ''}`}>
             {searchable && mode !== 'breadcrumb' && (
               <div className="hi-selecttree__searchbar-wrapper">
                 <div className="hi-selecttree__searchbar-inner">
@@ -433,4 +435,4 @@ SelectTree.defaultProps = {
   mode: 'tree',
   searchMode: null
 }
-export default SelectTree
+export default Provider(SelectTree)

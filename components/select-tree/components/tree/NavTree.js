@@ -8,35 +8,35 @@ import Checkbox from '../../../checkbox'
 
 const Bread = ({ datas, onClick, onReturnClick }) => {
   const datasArr = Object.keys(datas)
-  datasArr.unshift(
-    <span style={{ color: '#4284F5' }} onClick={() => { }}>返回</span>
-  )
+  datasArr.unshift('返回')
   if (datasArr.length > 3) {
     datasArr.splice(1, datasArr.length - 3, '...')
   }
-  return <div className='hi-breadtree__bread'>
-    {
-      datasArr.map((item, index) => {
+  return (
+    <div className="hi-breadtree__bread">
+      {datasArr.map((item, index) => {
         const cls = classNames(
           'hi-breadtree__bread-content',
           datasArr.length > 3 && index === 1 && 'hi-breadtree__bread-content--normal'
         )
-        return <React.Fragment key={index}>
-          <span
-            className={cls}
-            onClick={() => {
-              index === 0 ? onReturnClick() : (((datasArr.length === 4 && index !== 1) || datasArr.length < 4) && onClick(item))
-            }}
-          >
-            {item}
-          </span>
-          {
-            index < datasArr.length - 1 && <Icon name='right' className='hi-breadtree__separator' />
-          }
-        </React.Fragment>
-      })
-    }
-  </div>
+        return (
+          <React.Fragment key={index}>
+            <span
+              className={cls}
+              onClick={() => {
+                index === 0
+                  ? onReturnClick()
+                  : ((datasArr.length === 4 && index !== 1) || datasArr.length < 4) && onClick(item)
+              }}
+            >
+              {item}
+            </span>
+            {index < datasArr.length - 1 && <Icon name="right" className="hi-breadtree__separator" />}
+          </React.Fragment>
+        )
+      })}
+    </div>
+  )
 }
 const NavTree = ({
   data,
@@ -60,16 +60,16 @@ const NavTree = ({
   }, [nodeDataState])
 
   useEffect(() => {
-    let roots = currentNode ? getChildrenNodes(currentNode, data) : getRootNodes(data)
+    const roots = currentNode ? getChildrenNodes(currentNode, data) : getRootNodes(data)
     setRenderData(roots)
   }, [data])
   const onBreadClick = (title) => {
     const node = fullBreadData[title]
     setRenderData(getChildrenNodes(node, data))
-    setFullBreadData(preData => {
+    setFullBreadData((preData) => {
       const keysArr = Object.keys(preData)
       const delArr = keysArr.filter((_, index) => index > keysArr.indexOf(title))
-      delArr.forEach(key => {
+      delArr.forEach((key) => {
         delete preData[key]
       })
       return preData
@@ -86,7 +86,7 @@ const NavTree = ({
       return
     }
     expandData.current = expandData.current ? expandData.current.concat([node]) : [].concat([node])
-    setFullBreadData(preData => {
+    setFullBreadData((preData) => {
       return {
         ...preData,
         [node.title]: node
@@ -104,49 +104,50 @@ const NavTree = ({
     }
   }
   return (
-    <div className='hi-breadtree__root'>
-      {
-        Object.keys(fullBreadData).length > 0 && <Bread datas={fullBreadData} onClick={onBreadClick} onReturnClick={onReturnClick} />
-      }
-      {
-        loadingState === 'loading' && <Loading size='small' />
-      }
-      <ul className='hi-breadtree__list'>
-        {
-          loadingState === 'empty' ? <li><span className='hi-select-tree--empty'>empty</span></li> : renderData.map((node, index) => {
+    <div className="hi-breadtree__root">
+      {Object.keys(fullBreadData).length > 0 && (
+        <Bread datas={fullBreadData} onClick={onBreadClick} onReturnClick={onReturnClick} />
+      )}
+      {loadingState === 'loading' && <Loading size="small" />}
+      <ul className="hi-breadtree__list">
+        {loadingState === 'empty' ? (
+          <li>
+            <span className="hi-select-tree--empty">empty</span>
+          </li>
+        ) : (
+          renderData.map((node, index) => {
             const children = getChildrenNodes(node, data)
             const textCls = classNames(
               'hi-breadtree__text',
-              selectedItems.find(n => n.id === node.id) && 'hi-breadtree__text--selected'
+              selectedItems.find((n) => n.id === node.id) && 'hi-breadtree__text--selected'
             )
             return (
-              <li key={index} className='hi-breadtree__item'>
-                {
-                  (checkable && node.isLeaf) ? <Checkbox
+              <li key={index} className="hi-breadtree__item">
+                {checkable && node.isLeaf ? (
+                  <Checkbox
                     indeterminate={checkedNodes.semiChecked.includes(node.id)}
                     checked={checkedNodes.checked.includes(node.id)}
-                    onChange={e => onCheck(e.target.checked, node)}
+                    onChange={(e) => onCheck(e.target.checked, node)}
                   >
-                    <span className={textCls}>
-                      {node.title}
-                    </span>
+                    <span className={textCls}>{node.title}</span>
                   </Checkbox>
-                    : <span
-                      className={textCls}
-                      onClick={() => {
-                        onNodeClick(node, children)
-                      }}
-                    >
-                      {node.title}
-                    </span>
-                }
-                {
-                  (children.length > 0 || !node.isLeaf) && <Icon name={'right'} onClick={() => onNodeClick(node, children)} />
-                }
+                ) : (
+                  <span
+                    className={textCls}
+                    onClick={() => {
+                      onNodeClick(node, children)
+                    }}
+                  >
+                    {node.title}
+                  </span>
+                )}
+                {(children.length > 0 || !node.isLeaf) && (
+                  <Icon name={'right'} onClick={() => onNodeClick(node, children)} />
+                )}
               </li>
             )
           })
-        }
+        )}
       </ul>
     </div>
   )

@@ -1,13 +1,10 @@
+@import '../../../../core-css/index.scss';
 $tree: 'hi-select-tree' !default;
-$fontColor: #383e47 !default;
-$mainColor: #4284f5 !default;
-$hoverColor: rgba(66, 133, 244, 0.08) !default;
 
 .#{$tree} {
-  color: $fontColor;
+  color: use-color('black');
   padding: 12px 12px 0 12px;
   box-sizing: border-box;
-  // max-height: 256px;
   height: 100%;
   overflow: auto;
 
@@ -44,7 +41,7 @@ $hoverColor: rgba(66, 133, 244, 0.08) !default;
       }
 
       .icon-check {
-        color: $mainColor;
+        color: use-color('primary');
       }
     }
 
@@ -65,14 +62,14 @@ $hoverColor: rgba(66, 133, 244, 0.08) !default;
 
     &:hover {
       color: #383e47;
-      background-color: rgba($mainColor, 0.1);
+      background-color: use-color('primary-10');
     }
 
     &--selected {
-      color: $mainColor;
+      color: use-color('primary');
 
       &:hover {
-        color: $mainColor;
+        color: use-color('primary');
       }
     }
   }
@@ -103,7 +100,7 @@ $hoverColor: rgba(66, 133, 244, 0.08) !default;
     flex: 1;
 
     &--selected {
-      color: #4284f5;
+      color: use-color('primary');
     }
   }
 
@@ -136,7 +133,7 @@ $hoverColor: rgba(66, 133, 244, 0.08) !default;
     }
 
     &:hover:not(:last-child) {
-      color: #428ef5;
+      color: use-color('primary');
       cursor: pointer;
     }
 
