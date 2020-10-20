@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { render, unmountComponentAtNode, createPortal } from 'react-dom'
 import { CSSTransition } from 'react-transition-group'
 import Classnames from 'classnames'
+import Provider from '../context/index'
 import Button from '../button'
 import Icon from '../icon'
 import './style/index'
@@ -14,7 +15,7 @@ const getDefaultContainer = () => {
   return defaultContainer
 }
 
-const ModalComp = ({
+const InternalModalComp = ({
   children,
   container,
   visible,
@@ -32,13 +33,15 @@ const ModalComp = ({
   cancelText,
   style,
   className,
-  destroyOnClose
+  destroyOnClose,
+  localeDatas
 }) => {
   // TODO: 整体可以抽成一个 hooks 供 modal 和 drawer 复用
   const defaultContainer = useRef(false)
   if (defaultContainer.current === false && !container) {
     defaultContainer.current = getDefaultContainer()
   }
+
   const [vi, setVi] = useState(false)
   useEffect(() => {
     visible && setVi(true)
@@ -124,7 +127,7 @@ const ModalComp = ({
                       }
                     }}
                   >
-                    {cancelText || '取消'}
+                    {cancelText || localeDatas.modal.cancelText}
                   </Button>
                 )}
                 {footer === undefined && confirmText !== null && (
@@ -136,7 +139,7 @@ const ModalComp = ({
                       }
                     }}
                   >
-                    {confirmText || '确认'}
+                    {confirmText || localeDatas.modal.confirmText}
                   </Button>
                 )}
                 {footer}
@@ -201,5 +204,6 @@ const confirm = ({ onConfirm, onCancel, title = '提示', content, type = 'defau
   render(modal, confirmContainer)
 }
 
+const ModalComp = Provider(InternalModalComp)
 ModalComp.confirm = confirm
 export default ModalComp

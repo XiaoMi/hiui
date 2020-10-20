@@ -8,21 +8,15 @@ import FormReset from './Reset'
 import FormSubmit from './Submit'
 
 const Group = {
-  'Radio.Group': HIUI['Radio'].Group,
-  'Checkbox.Group': HIUI['Checkbox'].Group
+  'Radio.Group': HIUI.Radio.Group,
+  'Checkbox.Group': HIUI.Checkbox.Group
 }
 const prefixCls = 'hi-form-schema'
 
 const FormComponent = Provider(Form)
 
-const InternalSchemaForm = props => {
-  const {
-    schema: schemaProps,
-    children: childrenProps,
-    submit,
-    reset,
-    innerRef
-  } = props
+const InternalSchemaForm = (props) => {
+  const { schema: schemaProps, children: childrenProps, submit, reset, innerRef } = props
   const [schema, setSchema] = useState(schemaProps)
   useEffect(() => {
     setSchema(schemaProps)
@@ -49,11 +43,7 @@ const InternalSchemaForm = props => {
   }, [schema])
   return (
     <div className={`${prefixCls}`}>
-      <FormComponent
-        {..._.omit(props, 'schema', 'ref')}
-        ref={innerRef}
-        _type='SchemaForm'
-      >
+      <FormComponent {..._.omit(props, 'schema', 'ref')} ref={innerRef} _type="SchemaForm">
         {renderSchemaFormItem()}
         {childrenProps}
         {(submit || reset) && (

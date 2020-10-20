@@ -81,7 +81,7 @@ class Input extends Component {
   renderText() {
     let { hover, active, value } = this.state
     // clearableTrigger 为内部预留，主要表示清除按钮的触发形态，类型分为 'hover' 和 ‘always’
-    let { disabled, type, id, placeholder, clearable, clearableTrigger = 'hover' } = this.props
+    let { disabled, type, id, placeholder, clearable, clearableTrigger = 'hover',localeDatas } = this.props
     let { prefix, suffix, prepend, append } = this.state
     const noClear = ['textarea']
     let prefixId = id ? id + '_prefix' : ''

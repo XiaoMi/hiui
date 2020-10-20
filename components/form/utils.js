@@ -5,12 +5,9 @@ const tranformListValues = (field, listNestValues, value, listname) => {
   const key = field.split('#')[1]
   const keyName = field.split('#')[0]
   if (listNestValues[listname][keyName]) {
-    listNestValues[listname][keyName] = _.merge(
-      listNestValues[listname][keyName],
-      {
-        [key]: value
-      }
-    )
+    listNestValues[listname][keyName] = _.merge(listNestValues[listname][keyName], {
+      [key]: value
+    })
   } else {
     listNestValues[listname][keyName] = { [key]: value }
   }
@@ -18,18 +15,18 @@ const tranformListValues = (field, listNestValues, value, listname) => {
 // 转换输出的值
 export const transformValues = (allvalue, fields) => {
   let tranformValues = {}
-  let listNestValues = {}
+  const listNestValues = {}
   // 根据sort进行数据排列
   const sortfields = _.sortBy(fields, ['sort'])
-  sortfields.forEach(filedItem => {
+  sortfields.forEach((filedItem) => {
     const { field, propsField, _type, listname } = filedItem
     if (_type === 'list') {
       if (propsField !== field) {
         listNestValues[listname] = listNestValues[listname] || {}
         tranformListValues(field, listNestValues, allvalue[field], listname)
-        Object.keys(listNestValues).forEach(key => {
-          let arr = []
-          Object.keys(listNestValues[key]).forEach(item => {
+        Object.keys(listNestValues).forEach((key) => {
+          const arr = []
+          Object.keys(listNestValues[key]).forEach((item) => {
             arr.push(listNestValues[key][item])
           })
           tranformValues[key] = arr

@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react'
 
 import FormContext from './FormContext'
 import { FILEDS_REMOVE, FILEDS_INIT_LIST, FILEDS_UPDATE } from './FormReducer'
-const List = props => {
+const List = (props) => {
   const { dispatch, formState } = useContext(FormContext)
   const { children, name } = props
   const [listCount, setListCount] = useState([])
@@ -18,7 +18,7 @@ const List = props => {
     const cachelistCount = []
     const { fields } = formState
 
-    const _fields = fields.filter(item => {
+    const _fields = fields.filter((item) => {
       return item.listname !== name
     })
     const values = listValues[name] ? listValues[name] : []
@@ -49,8 +49,8 @@ const List = props => {
     )
   }
 
-  const remove = fieldItem => {
-    const _listCount = listCount.filter(item => {
+  const remove = (fieldItem) => {
+    const _listCount = listCount.filter((item) => {
       return item.field !== fieldItem.field
     })
     setListCount(_listCount)
@@ -58,9 +58,7 @@ const List = props => {
   }
   return (
     <div>
-      <FormContext.Provider
-        value={{ ...useContext(FormContext), _type: 'list', listname: name }}
-      >
+      <FormContext.Provider value={{ ...useContext(FormContext), _type: 'list', listname: name }}>
         {children(listCount, { add, remove })}
       </FormContext.Provider>
     </div>
