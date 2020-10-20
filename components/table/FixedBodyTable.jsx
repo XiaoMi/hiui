@@ -149,14 +149,6 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
                   style={{
                     width: width,
                     minWidth: width
-                    // width:
-                    //   isFixed === 'left'
-                    //     ? realColumnsWidth[idx]
-                    //     : realColumnsWidth[idx + rightFixedIndex],
-                    // minWidth:
-                    //   isFixed === 'left'
-                    //     ? realColumnsWidth[idx]
-                    //     : realColumnsWidth[idx + rightFixedIndex]
                   }}
                 />
               )

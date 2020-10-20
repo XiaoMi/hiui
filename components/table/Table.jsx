@@ -7,6 +7,7 @@ import { getFixedDataByFixedColumn, getScrollBarSize, flatTreeData } from './uti
 import Pagination from '../pagination'
 import axios from 'axios'
 import FixedBodyTable from './FixedBodyTable'
+import Provider from '../context'
 import './style'
 
 const Table = ({
@@ -37,7 +38,8 @@ const Table = ({
   setVisibleCols,
   setCacheVisibleCols,
   scrollWidth,
-  emptyContent = '暂无数据'
+  emptyContent = '暂无数据',
+  theme
 }) => {
   const hiTable = useRef(null)
   const [ceiling, setCeiling] = useState(false)
@@ -217,11 +219,12 @@ const Table = ({
         setEachRowHeight,
         // 同步表头高度
         eachHeaderHeight,
-        setEachHeaderHeight
+        setEachHeaderHeight,
+        theme
       }}
     >
       <div
-        className={classnames(prefix, {
+        className={classnames(prefix, `theme__${theme}`, {
           [`${prefix}--striped`]: striped,
           [`${prefix}--bordered`]: _bordered,
           [`${prefix}--${size}`]: size
@@ -318,4 +321,4 @@ const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
   )
 }
 
-export default TableWrapper
+export default Provider(TableWrapper)
