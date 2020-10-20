@@ -21,6 +21,7 @@ const PictureListUpload = ({
   uploadAction,
   maxSize,
   name,
+  theme,
   withCredentials,
   headers,
   data,
@@ -42,7 +43,7 @@ const PictureListUpload = ({
     customUpload
   })
   return (
-    <div className={`hi-upload hi-upload--picture-card`}>
+    <div className={`hi-upload hi-upload--picture-card theme__${theme}`}>
       <FileSelect
         style={{ display: 'inline-block' }}
         onSelect={uploadFiles}
@@ -70,6 +71,7 @@ const PictureListUpload = ({
                 <div className="hi-upload__right-content">
                   <a
                     target="_blank"
+                    rel="noreferrer"
                     href={file.url || null}
                     className={fileNameCls}
                     title={file.name}

@@ -26,7 +26,8 @@ const NormalUpload = ({
   data,
   onChange,
   beforeUpload,
-  customUpload
+  customUpload,
+  theme
 }) => {
   const [_fileList, uploadFiles, deleteFile] = useUpload({
     fileList,
@@ -43,7 +44,7 @@ const NormalUpload = ({
     customUpload
   })
   return (
-    <div className={`hi-upload`}>
+    <div className={`hi-upload theme__${theme}`}>
       <FileSelect
         style={{ display: 'inline-block' }}
         onSelect={uploadFiles}
@@ -65,6 +66,7 @@ const NormalUpload = ({
                 <div className="hi-upload__right-content">
                   <a
                     target="_blank"
+                    rel="noreferrer"
                     href={file.url || null}
                     className={classNames(
                       'hi-upload__filename',

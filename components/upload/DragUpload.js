@@ -74,6 +74,7 @@ const DragUpload = ({
     <FileSelect
       onSelect={uploadFiles}
       multiple={multiple}
+      className={`theme__${theme}`}
       disabled={disabled || _fileList.length >= maxCount}
       accept={accept}
     >
@@ -102,6 +103,7 @@ const DragUpload = ({
                   <div className="hi-upload__right-content">
                     <a
                       target="_blank"
+                      rel="noreferrer"
                       href={file.url || null}
                       className={classNames(
                         'hi-upload__filename',
