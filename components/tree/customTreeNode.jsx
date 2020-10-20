@@ -22,7 +22,7 @@ const CustomTreeNode = ({
   const ref = useRef(null)
   if (editingNodes.map((n) => n.id).includes(node.id)) {
     return (
-      <div className='tree-node__title--editing'>
+      <div className="tree-node__title--editing">
         <Input
           style={{ width: 240, marginRight: 20 }}
           value={(editingNodes.find((n) => n.id === node.id) || {}).title}
@@ -31,11 +31,9 @@ const CustomTreeNode = ({
           }}
         />
         <span
-          style={
-            (editingNodes.find((n) => n.id === node.id) || {}).title === ''
-              ? { marginRight: 12, color: '#999', cursor: 'not-allowed' }
-              : { cursor: 'pointer', marginRight: 12, color: '#4284f5' }
-          }
+          className={Classnames('save-btn', {
+            'save-btn-disabled': (editingNodes.find((n) => n.id === node.id) || {}).title === ''
+          })}
           onClick={() => {
             if ((editingNodes.find((n) => n.id === node.id) || {}).title === '') {
               return
@@ -49,7 +47,7 @@ const CustomTreeNode = ({
           style={{ cursor: 'pointer', color: '#999' }}
           onClick={() => {
             cancelEdit(node.id)
-            if (node['TREE_NODE_TYPE'] === 'add') {
+            if (node.TREE_NODE_TYPE === 'add') {
               cancelAddNode(node)
             }
           }}
@@ -81,7 +79,7 @@ const CustomTreeNode = ({
         >
           <span>
             {beforeStr}
-            <span style={{ color: '#4284f5' }}>{searchValue}</span>
+            <span className="title__text--matched">{searchValue}</span>
             {afterStr}
           </span>
         </div>
@@ -112,7 +110,7 @@ const CustomTreeNode = ({
               attachEle={ref.current}
               width={false}
               zIndex={1040}
-              placement='right-start'
+              placement="right-start"
               onClickOutside={() => {
                 setMenuVisible(null)
               }}

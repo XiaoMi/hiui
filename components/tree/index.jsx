@@ -8,6 +8,7 @@ import _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 import CustomTreeNode from './customTreeNode'
 import axios from 'axios'
+import Provider from '../context'
 import './style/index'
 
 const PREFIX = 'hi-tree'
@@ -65,7 +66,8 @@ const Tree = (props) => {
     onExpand,
     onDragStart,
     onDrop,
-    onDropEnd
+    onDropEnd,
+    theme
   } = props
   const { placeholder = '关键词搜索', emptyContent = '未找到搜索结果' } = searchConfig
   const [cacheData, updateCacheData] = useState(data)
@@ -381,7 +383,7 @@ const Tree = (props) => {
         menu = contextMenu(node)
       }
       return (
-        <ul className={`${PREFIX}__menu`}>
+        <ul className={`${PREFIX}__menu theme__${theme}`}>
           {menu.map((m, index) => (
             <li
               className={`menu-item`}
@@ -442,7 +444,7 @@ const Tree = (props) => {
   return (
     <React.Fragment>
       {searchable && (
-        <div className={`${PREFIX}__searcher`}>
+        <div className={`${PREFIX}__searcher theme__${theme}`}>
           <Input
             value={searchValue}
             type="text"
@@ -469,6 +471,7 @@ const Tree = (props) => {
       )}
       <BaseTree
         {...props}
+        className={`theme__${theme}`}
         onLoadChildren={onLoadChildren ? loadChildren : null}
         treeNodeRender={treeNodeRender}
         expandedIds={expanded}
@@ -498,4 +501,4 @@ const Tree = (props) => {
     </React.Fragment>
   )
 }
-export default Tree
+export default Provider(Tree)

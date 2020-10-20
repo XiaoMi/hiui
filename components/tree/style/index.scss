@@ -60,6 +60,10 @@ $tree: 'hi-tree' !default;
 
     .hi-btn--loading--icon {
       margin-top: -6px;
+
+      svg {
+        fill: use-color('primary');
+      }
     }
 
     &__indent {
@@ -129,6 +133,10 @@ $tree: 'hi-tree' !default;
           color: use-color('gray-80');
         }
 
+        &--matched {
+          color: use-color('primary');
+        }
+
         &--selected {
           background: use-color('primary-40');
 
@@ -142,6 +150,17 @@ $tree: 'hi-tree' !default;
         display: flex;
         flex: 1;
         align-items: center;
+
+        .save-btn {
+          cursor: pointer;
+          margin-right: 12px;
+          color: use-color('primary');
+
+          & + &--disabled {
+            cursor: not-allowed;
+            color: use-color('gray-70');
+          }
+        }
 
         span {
           display: inline-block;
