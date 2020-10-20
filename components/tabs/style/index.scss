@@ -345,7 +345,7 @@ $prefix: 'hi-tabs' !default;
       transition: background 300ms;
 
       &--active {
-        background: rgba(use-color('primary'), 0.1);
+        background: use-color('primary-20');
       }
     }
   }
@@ -412,11 +412,11 @@ $prefix: 'hi-tabs' !default;
     box-sizing: border-box;
 
     &:hover {
-      background-color: rgba(use-color('primary'), 0.08);
+      background-color: use-color('primary-20');
     }
 
     &--active {
-      background-color: rgba(use-color('primary'), 0.08);
+      background-color: use-color('primary-20');
     }
   }
 }

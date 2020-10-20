@@ -18,7 +18,7 @@
       line-height: 32px;
 
       &:hover {
-        background-color: rgba(use-color('primary'), 0.1);
+        background-color: use-color('primary-20');
       }
 
       svg {
@@ -55,7 +55,7 @@
 
         .ql-picker-item {
           &:hover {
-            background-color: rgba(use-color('primary'), 0.1);
+            background-color: use-color('primary-20');
           }
 
           &:focus {

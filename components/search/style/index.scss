@@ -84,7 +84,7 @@ $search: 'hi-search' !default;
         padding: 0 12px;
 
         &:hover:not(.hi-search_dropdown--item-title) {
-          background-color: rgba(use-color('primary'), 0.08);
+          background-color: use-color('primary-20');
         }
       }
 

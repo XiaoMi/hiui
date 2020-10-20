@@ -99,11 +99,11 @@
     }
 
     &[data-focused='true'] {
-      background-color: rgba(use-color('primary'), 0.08);
+      background-color: use-color('primary-20');
     }
 
     &:hover {
-      background-color: rgba(use-color('primary'), 0.08);
+      background-color: use-color('primary-20');
     }
 
     &.disabled {

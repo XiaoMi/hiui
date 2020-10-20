@@ -8,7 +8,7 @@ import './style'
 
 const prefixCls = 'hi-search'
 
-const Search = props => {
+const Search = (props) => {
   const {
     onChange,
     onSearch,
@@ -21,7 +21,8 @@ const Search = props => {
     loading,
     localeDatas,
     overlayClassName,
-    append
+    append,
+    theme
   } = props
 
   const [dropdownShow, setDropdownShow] = useState(false)
@@ -49,14 +50,14 @@ const Search = props => {
     <div className={prefixCls} style={style}>
       <div className={`${prefixCls}_input`} ref={searchInputContainer}>
         <Input
-          type='text'
+          type="text"
           value={inputVal}
           style={style}
           disabled={disabled}
           placeholder={placeholder}
-          clearable='true'
+          clearable="true"
           prepend={prepend}
-          onKeyUp={e => {
+          onKeyUp={(e) => {
             const evt = window.event || e
             if (evt.keyCode === 13) {
               onSearch && onSearch(inputVal)
@@ -65,7 +66,7 @@ const Search = props => {
           onFocus={() => {
             data && data.length > 0 && setDropdownShow(true)
           }}
-          onChange={e => {
+          onChange={(e) => {
             const { value } = e.target
             setInputVal(value)
             data && value.length > 0 && setDropdownShow(true)
@@ -75,7 +76,7 @@ const Search = props => {
         {append ? (
           <span
             className={disabled ? 'disabled' : ''}
-            onClick={e => {
+            onClick={(e) => {
               e.preventDefault()
               setDropdownShow(true)
               onSearch && onSearch(inputVal)
@@ -85,11 +86,11 @@ const Search = props => {
           </span>
         ) : (
           <Button
-            type='default'
-            icon='search'
+            type="default"
+            icon="search"
             className={disabled ? 'disabled' : ''}
             disabled={disabled}
-            onClick={e => {
+            onClick={(e) => {
               e.preventDefault()
               setDropdownShow(true)
               onSearch && onSearch(inputVal)
@@ -110,6 +111,7 @@ const Search = props => {
           loading={loading}
           dropdownShow={dropdownShow}
           localeDatas={localeDatas}
+          theme={theme}
           searchInputContainer={searchInputContainer}
         />
       )}
