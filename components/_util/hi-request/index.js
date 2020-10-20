@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie'
 import jsonp from './jsonp'
 import download from './download'
 import upload from './upload'
@@ -43,14 +42,6 @@ const CANCEL = ['CancelToken', 'Cancel', 'isCancel']
 CANCEL.forEach((type) => {
   HiRequest[type] = axios[type]
 })
-
-/**
- * 获取cookies中的值作为参数使用
- * @param key
- */
-HiRequest.getCookiesParam = (key) => {
-  return Cookies.get(key)
-}
 // add jsonp
 HiRequest.jsonp = jsonp
 // download
