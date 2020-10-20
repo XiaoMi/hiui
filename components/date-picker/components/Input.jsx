@@ -3,11 +3,14 @@ import moment from 'moment'
 import DPContext from '../context'
 import { useFormat } from '../hooks'
 const Input = ({ date, onChange, onFocus, dir, placeholder }) => {
-  const { type, format, disabled, showTime, hourStep, minuteStep, secondStep, inputReadOnly } = useContext(DPContext)
+  const { type, format, disabled, showTime, hourStep, minuteStep, secondStep, inputReadOnly, locale } = useContext(
+    DPContext
+  )
   const [iFormat] = useFormat({
     type,
     showTime,
-    format
+    format,
+    locale
   })
 
   const cacheValues = useRef(null)

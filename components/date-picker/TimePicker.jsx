@@ -29,7 +29,8 @@ const TimePicker = ({
   secondStep,
   onChange = () => {},
   placement = 'top-bottom-start',
-  inputReadOnly
+  inputReadOnly,
+  locale
 }) => {
   const cacheDate = useRef(null)
   const [rangeInputIsError, setRangeInputIsError] = useState(false)
@@ -39,7 +40,8 @@ const TimePicker = ({
   const [iFormat] = useFormat({
     type,
     showTime: false,
-    format
+    format,
+    locale
   })
   const [outDate, changeOutDate] = useDate({
     value,

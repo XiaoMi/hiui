@@ -40,7 +40,9 @@ const BasePicker = ({
   overlayClassName,
   theme,
   placement = 'top-bottom-start',
-  inputReadOnly
+  inputReadOnly,
+  locale,
+  ...otherPorps
 }) => {
   const cacheDate = useRef(null)
   const [inputFocus, setInputFocus] = useState(false)
@@ -53,7 +55,8 @@ const BasePicker = ({
   const [iFormat] = useFormat({
     type,
     showTime,
-    format
+    format,
+    locale
   })
   const isLarge = altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset
   const [altCalendarPresetData, dateMarkPresetData] = useAltData({
@@ -136,6 +139,8 @@ const BasePicker = ({
   return (
     <DPContext.Provider
       value={{
+        ...otherPorps,
+        locale,
         type,
         outDate,
         localeDatas,

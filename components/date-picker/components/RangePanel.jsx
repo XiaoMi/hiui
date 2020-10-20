@@ -11,14 +11,17 @@ import _ from 'lodash'
 import { getView, parseRenderDates, genNewDates } from '../utils'
 
 const RangePanel = () => {
-  const { outDate, type, onPick, localeDatas, showTime, format, timeInterval, shortcuts, theme } = useContext(DPContext)
+  const { outDate, type, onPick, localeDatas, showTime, format, timeInterval, shortcuts, theme, locale } = useContext(
+    DPContext
+  )
 
   const [showRangeMask, setShowRangeMask] = useState(false)
   const [views, setViews] = useState([getView(type), getView(type)])
   const [iFormat] = useFormat({
     format,
     type,
-    showTime
+    showTime,
+    locale
   })
   const [calRenderDates, setCalRenderDates] = useState([])
   const [range, setRange] = useState({
@@ -209,6 +212,7 @@ const RangePanel = () => {
                 view={views[0]}
                 panelPosition={0}
                 type={type}
+                locale={locale}
               />
               <Calender
                 renderDate={calRenderDates[0]}
@@ -237,6 +241,7 @@ const RangePanel = () => {
                   leftDate={calRenderDates[0]}
                   panelPosition={1}
                   type={type}
+                  locale={locale}
                 />
                 <Calender
                   originDate={outDate[1]}
