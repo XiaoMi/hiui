@@ -6,13 +6,15 @@ import Icon from '../icon'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import useClickOutside from './hooks/useClickOutside'
 
-const StandardTable = () => {
+const SettingMenu = () => {
   const colMenuRef = useRef(null)
   const [showPopper, setShowPopper] = useState(false)
   const popperMenu = useRef(null)
   useClickOutside(popperMenu, () => setShowPopper(false), colMenuRef)
 
-  const { sortCol, setSortCol, visibleCols, setVisibleCols, setCacheVisibleCols, columns } = useContext(TableContext)
+  const { sortCol, setSortCol, visibleCols, setVisibleCols, setCacheVisibleCols, columns, theme } = useContext(
+    TableContext
+  )
 
   const grid = 8
   const getItemStyle = (isDragging, draggableStyle) => ({
@@ -21,7 +23,7 @@ const StandardTable = () => {
     padding: grid * 2,
     margin: `0 0 ${grid}px 0`,
     background: '#fff',
-    border: isDragging ? '1px dashed #4285f4' : 'none',
+    border: isDragging ? '1px dashed var(--color-primary)' : 'none',
 
     // styles we need to apply on draggables
     ...draggableStyle
@@ -38,25 +40,11 @@ const StandardTable = () => {
       onClick={() => {
         setShowPopper(!showPopper)
       }}
-      style={{
-        position: 'absolute',
-        height: '100%',
-        zIndex: 3,
-        right: 0,
-        display: 'flex',
-        alignItems: 'center',
-        borderLeft: '1px solid #E0E1E2',
-        borderBottom: '1px solid #E0E1E2',
-        color: '#999999',
-        cursor: 'pointer',
-        fontSize: '14px',
-        width: 16,
-        background: 'rgb(251, 251, 251)'
-      }}
+      className={'hi-table__setting-btn'}
     >
       <Icon name="set" />
       <Popper show={showPopper} attachEle={colMenuRef.current} zIndex={1040} placement="bottom-end" width="250">
-        <div ref={popperMenu}>
+        <div ref={popperMenu} className={`theme__${theme} hi-table__setting-menu`}>
           <DragDropContext
             onDragEnd={(result) => {
               if (result.destination) {
@@ -132,21 +120,9 @@ const StandardTable = () => {
                     ))}
                   </div>
                   {provided.placeholder}
-                  <div
-                    style={{
-                      display: 'flex',
-                      borderTop: '1px solid rgba(231,231,231,1)',
-                      height: 48,
-                      alignItems: 'center'
-                    }}
-                  >
+                  <div className="btn-group">
                     <div
-                      style={{
-                        width: '50%',
-                        textAlign: 'center',
-                        borderRight: '1px solid rgba(231,231,231,1)',
-                        cursor: 'pointer'
-                      }}
+                      className={`btn btn--left`}
                       onClick={(e) => {
                         setShowPopper(false)
                         setCacheVisibleCols(
@@ -157,7 +133,7 @@ const StandardTable = () => {
                       确定
                     </div>
                     <div
-                      style={{ width: '50%', textAlign: 'center', cursor: 'pointer' }}
+                      className={`btn`}
                       onClick={(e) => {
                         setVisibleCols(columns)
                         setCacheVisibleCols(columns)
@@ -176,4 +152,4 @@ const StandardTable = () => {
   )
 }
 
-export default StandardTable
+export default SettingMenu

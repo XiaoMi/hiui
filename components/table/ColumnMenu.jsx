@@ -19,7 +19,8 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
     freezeColumn,
     setFreezeColumn,
     prefix,
-    ceiling
+    ceiling,
+    theme
   } = useContext(TableContext)
   const [showPopper, setShowPopper] = useState(false)
   const _showPopper = ceiling ? isSticky && showPopper : showPopper
@@ -33,7 +34,7 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
     >
       <Icon name="down" style={{ marginLeft: 4, cursor: 'pointer' }} />
       <Popper show={_showPopper} attachEle={menuRef.current} zIndex={1040} setOverlayContainer={() => document.body}>
-        <div className={[`${prefix}__col-menu`]} ref={popperMenu}>
+        <div className={[`${prefix}__col-menu theme__${theme}`]} ref={popperMenu}>
           {canSort && (
             <div
               className={classNames(`${prefix}__col-menu__item`, {

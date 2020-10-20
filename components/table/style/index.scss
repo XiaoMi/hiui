@@ -32,6 +32,25 @@
   }
 }
 
+.#{$table}__setting-menu {
+  .btn-group {
+    display: flex;
+    border-top: 1px solid rgba(231, 231, 231, 1);
+    height: 48px;
+    align-items: center;
+
+    .btn {
+      width: 50%;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .btn--left {
+      border-right: 1px solid rgba(231, 231, 231, 1);
+    }
+  }
+}
+
 .#{$table} {
   .hi-checkbox__input:not(.hi-checkbox__input--checked) {
     background: use-color('white');
@@ -48,6 +67,22 @@
 
   td {
     white-space: normal;
+  }
+
+  &__setting-btn {
+    position: absolute;
+    height: 100%;
+    z-index: 3;
+    right: 0;
+    display: flex;
+    align-items: center;
+    border-left: 1px solid #e0e1e2;
+    border-bottom: 1px solid #e0e1e2;
+    color: #999;
+    cursor: pointer;
+    font-size: 14px;
+    width: 16px;
+    background: rgb(251, 251, 251);
   }
 
   &__pagination {
@@ -67,7 +102,7 @@
   &--small {
     table {
       tr {
-        font-size: $smallFontSize !important;
+        font-size: $font-size-normal !important;
 
         & > td {
           padding: $smallPadding !important;
@@ -85,7 +120,7 @@
   &--mini {
     table {
       tr {
-        font-size: $miniFontSize !important;
+        font-size: $font-size-normal !important;
 
         & > td {
           padding: $miniPadding !important;
@@ -103,7 +138,7 @@
   &--large {
     table {
       tr {
-        font-size: $miniFontSize !important;
+        font-size: $font-size-normal !important;
 
         & > td {
           padding: $largePadding !important;
@@ -135,7 +170,7 @@
       }
 
       td {
-        border-right: 1px solid#e7e7e7;
+        border-right: 1px solid use-color('gray-20');
       }
     }
 
@@ -184,7 +219,7 @@
     thead {
       & > tr > th {
         background: #fbfbfb;
-        color: #999;
+        color: use-color('gray-70');
         padding: 15px;
         border-bottom: 1px solid#e6e7e8;
         box-sizing: border-box;
@@ -195,13 +230,13 @@
       min-height: 52px;
 
       &:hover {
-        background: #eef5ff;
+        background: use-color('primary-20');
       }
 
       & > td {
         color: use-color('black');
         padding: 15px;
-        border-bottom: 1px solid #e7e7e7;
+        border-bottom: 1px solid  use-color('gray-20');
         box-sizing: border-box;
       }
     }
@@ -223,13 +258,13 @@
 
       &.#{$table}__row--error {
         & > td {
-          color: #f44141;
+          color: get-color($palette-secondary, 'danger');
         }
       }
 
       &.#{$table}__row--highlight {
         & > td {
-          background: #eef5ff;
+          background: use-color('primary-20');
         }
       }
 
@@ -246,7 +281,7 @@
       }
 
       & > .#{$table}__col--highlight {
-        background: #eef5ff;
+        background: use-color('primary-20');
       }
     }
   }
