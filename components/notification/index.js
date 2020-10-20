@@ -1,7 +1,7 @@
 import notice from '../notice'
 import './style/index'
 import React from 'react'
-import Button from '../button'
+import { Button } from '../button/Button'
 import Icon from '../icon'
 import _handleNotificate from './HandleNotification'
 const iconMap = {
