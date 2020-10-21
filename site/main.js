@@ -3,13 +3,14 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import App from './view'
 import store from './redux/store'
+import { ThemeContext } from '../components/context'
 import './style/index.scss'
-import { LocaleContext } from '../components/context'
+
 render(
   <Provider store={store}>
-    <LocaleContext.Provider value="en-US">
+    <ThemeContext.Provider value="lavender">
       <App />
-    </LocaleContext.Provider>
+    </ThemeContext.Provider>
   </Provider>,
   document.getElementById('app')
 )
