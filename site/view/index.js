@@ -6,10 +6,11 @@ import { Classic as Page, Logo, History } from '@hi-ui/classic-theme'
 import locales from '../locales'
 import designs from '../pages/designs'
 import pages from '../pages/components'
+import docs from '../pages/docs'
 import templates from '../pages/templates'
 import utils from '../utils'
 import { version } from '../../package.json'
-import { setDesignNavs, setComponentsNavs, setComponents, setTemplatesNavs } from '../redux/action/global'
+import { setDesignNavs, setComponentsNavs, setComponents, setTemplatesNavs, setDocsNavs } from '../redux/action/global'
 History.createBrowserHistory()
 
 const logo = (
@@ -43,11 +44,16 @@ class Index extends React.Component {
 
     const components = Object.assign(
       {
-        docs: {
+        components: {
           ...Object.values(pages.components).reduce((a, b) => {
             return Object.assign(a, b)
           }, {}),
           ...pages.documents
+        }
+      },
+      {
+        docs: {
+          ...docs.documents
         }
       },
       {
@@ -80,6 +86,13 @@ class Index extends React.Component {
       return parent
     })
   }
+
+  componentDidUpdate() {
+    setComponentsNavs(this.componentNavs)
+    setDesignNavs(this.designNavs)
+    setDesignNavs(this.templatesNavs)
+    setDesignNavs(this.docsNavs)
+  }
   getSiderItems(items) {
     const { locale } = this.props
     let components = []
@@ -89,9 +102,8 @@ class Index extends React.Component {
       const _title = locales[locale]['components'][title]
       siderDocuments.push({
         title: <span className='components-title'>{_title}</span>,
-        to: `<BASE_URL>/${locale}/docs/${title}`,
+        to: `<BASE_URL>/${locale}/components/${title}`,
         name: title
-        // icon: icons[i]
       })
       navs[title] = _title
     })
@@ -105,7 +117,7 @@ class Index extends React.Component {
         navs[page] = _title
         components.push({
           title: <span className='components-page'>{_title}</span>,
-          to: `<BASE_URL>/${locale}/docs/${page}`,
+          to: `<BASE_URL>/${locale}/components/${page}`,
           name: title
         })
       })
@@ -115,16 +127,11 @@ class Index extends React.Component {
     return [].concat(siderDocuments, [
       {
         title: <span className='components-page'>{locales[locale]['misc']['components']}</span>,
-        // icon: icons[icons.length - 1],
         children: components
       }
     ])
   }
-  componentDidUpdate() {
-    setComponentsNavs(this.componentNavs)
-    setDesignNavs(this.designNavs)
-    setDesignNavs(this.templatesNavs)
-  }
+
   getDesignTemplatesItems(items, path, callback) {
     let components = []
     let siderDocuments = []
@@ -163,13 +170,16 @@ class Index extends React.Component {
   }
   render() {
     const siders = this.getSiderItems(pages)
+
+    const _docs = this.getDesignTemplatesItems(docs, 'docs', setDocsNavs)
     const _designs = this.getDesignTemplatesItems(designs, 'designs', setDesignNavs)
     const _templates = this.getDesignTemplatesItems(templates, 'templates', setTemplatesNavs)
+    console.log(6666, siders, _docs)
     return (
       <Page
         header={<Header locale={this.props.locale} />}
         logo={logo}
-        routes={routes(this.props.locale, siders, _designs, _templates)}
+        routes={routes(this.props.locale, siders, _designs, _templates, _docs)}
       />
     )
   }

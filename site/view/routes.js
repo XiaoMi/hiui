@@ -6,7 +6,7 @@ import { SiderLayout } from '@hi-ui/classic-theme'
 import Component from './Component'
 
 const loop = (locale, items, targets, component) => {
-  items.forEach(item => {
+  items.forEach((item) => {
     if (item.to) {
       targets.push({
         path: item.to,
@@ -19,12 +19,14 @@ const loop = (locale, items, targets, component) => {
   })
   return targets
 }
-function getRoutes (locale, siders, designs, templates) {
+function getRoutes(locale, siders, designs, templates, docs) {
   let sideArr = []
   let desArr = []
   let templateArr = []
+  let docArr = []
   sideArr = loop(locale, siders, sideArr, Component)
   desArr = loop(locale, designs, desArr, Component)
+  docArr = loop(locale, docs, docArr, Component)
   templateArr = loop(locale, templates, templateArr, Component)
   return [
     {
@@ -39,19 +41,25 @@ function getRoutes (locale, siders, designs, templates) {
     },
     {
       path: `<BASE_URL>/${locale}/designs`,
-      render: props => {
+      render: (props) => {
         return <SiderLayout deepClone={false} sider={designs} routes={desArr} {...props} />
       }
     },
     {
       path: `<BASE_URL>/${locale}/templates`,
-      render: props => {
+      render: (props) => {
         return <SiderLayout deepClone={false} sider={templates} routes={templateArr} {...props} />
       }
     },
     {
       path: `<BASE_URL>/${locale}/docs`,
-      render: props => {
+      render: (props) => {
+        return <SiderLayout deepClone={false} sider={docs} routes={docArr} {...props} />
+      }
+    },
+    {
+      path: `<BASE_URL>/${locale}/components`,
+      render: (props) => {
         return <SiderLayout deepClone={false} sider={siders} routes={sideArr} {...props} />
       }
     }

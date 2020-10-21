@@ -5,15 +5,7 @@ files.keys().forEach((key) => {
   components[_key] = files(key).default
 })
 export default {
-  documents: {
-    'quick-start': components['quick-start'],
-    'upgrade-from-2x': components['upgrade-from-2x'],
-    theme: components.theme,
-    palette: components.palette,
-    i18n: components.i18n,
-    changelog: components.changelog
-    // 'hi-request': components['hi-request']
-  },
+  documents: {},
   components: {
     new: {
       slider: components.slider,
