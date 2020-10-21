@@ -13,3 +13,4 @@ VCheckbox.Group = Group
 VCheckbox.displayName = 'Checkbox'
 
 export default VCheckbox
+export { CheckboxLegacy }
