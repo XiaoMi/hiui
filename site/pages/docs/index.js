@@ -4,7 +4,6 @@ files.keys().forEach((key) => {
   const _key = key.split('/')[1].split('.')[0]
   docs[_key] = files(key).default
 })
-console.log(docs)
 export default {
   components: {},
   documents: {
