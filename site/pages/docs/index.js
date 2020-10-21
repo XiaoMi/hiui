@@ -12,7 +12,7 @@ export default {
     theme: docs.theme,
     palette: docs.palette,
     i18n: docs.i18n,
-    changelog: docs.changelog,
-    'hi-request': docs['hi-request']
+    changelog: docs.changelog
+    // 'hi-request': docs['hi-request']
   }
 }
