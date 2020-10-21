@@ -1,5 +1,5 @@
 export const getFileType = (file) => {
-  let ext = file.name.slice(file.name.lastIndexOf('.') + 1).toLowerCase()
+  const ext = file.name.slice(file.name.lastIndexOf('.') + 1).toLowerCase()
   let fileType = 'other'
   if (['jpg', 'jpeg', 'gif', 'png', 'bmp'].includes(ext)) {
     fileType = 'img'

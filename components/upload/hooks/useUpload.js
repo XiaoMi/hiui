@@ -16,8 +16,10 @@ const useUpload = ({
   data,
   onRemove,
   beforeUpload,
-  customUpload
+  customUpload,
+  localeDatas
 }) => {
+  const localMap = localeDatas.upload || {}
   const [_fileList, updateFileList] = useState(fileList || defaultFileList || [])
   const fileListRef = useRef(fileList || defaultFileList || [])
   useEffect(() => {
@@ -142,9 +144,10 @@ const useUpload = ({
             }
             if (file.size > maxSize * 1024) {
               Modal.confirm({
-                content: '上传文件超过最大限制',
+                title: localMap.modalTitle,
+                content: localMap.modalTiptxt,
                 cancelText: null,
-                confirmText: '我知道了'
+                confirmText: localMap.modalBtn
               })
 
               return null

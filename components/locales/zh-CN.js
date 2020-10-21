@@ -114,5 +114,8 @@ export default {
     searchEmptyResult: '未找到搜索结果',
     modalTitle: '提示',
     delTips: '删除节点将删除所有子节点，确定删除吗？'
+  },
+  watermark: {
+    content: '请勿外传'
   }
 }

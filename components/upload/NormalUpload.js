@@ -7,7 +7,7 @@ import useUpload from './hooks/useUpload'
 
 const NormalUpload = ({
   maxCount,
-  content = '本地上传',
+  content,
   disabled,
   multiple,
   tips,
@@ -27,7 +27,8 @@ const NormalUpload = ({
   onChange,
   beforeUpload,
   customUpload,
-  theme
+  theme,
+  localeDatas
 }) => {
   const [_fileList, uploadFiles, deleteFile] = useUpload({
     fileList,
@@ -41,7 +42,8 @@ const NormalUpload = ({
     data,
     onRemove,
     beforeUpload,
-    customUpload
+    customUpload,
+    localeDatas
   })
   return (
     <div className={`hi-upload theme__${theme}`}>
@@ -53,7 +55,7 @@ const NormalUpload = ({
         accept={accept}
       >
         <Button type="primary" disabled={disabled || _fileList.length >= maxCount} loading={loading}>
-          {content}
+          {content || localeDatas.upload.buttonText}
         </Button>
       </FileSelect>
       {tips && <div className="hi-upload__tips">{tips}</div>}

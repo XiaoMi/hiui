@@ -17,9 +17,12 @@ const CustomTreeNode = ({
   cancelAddNode,
   setMenuVisible,
   editable,
-  menuRender
+  menuRender,
+  localeDatas
 }) => {
   const ref = useRef(null)
+  const localMap = localeDatas.tree || {}
+
   if (editingNodes.map((n) => n.id).includes(node.id)) {
     return (
       <div className="tree-node__title--editing">
@@ -41,7 +44,7 @@ const CustomTreeNode = ({
             saveEdit(node)
           }}
         >
-          确定
+          {localMap.confirm}
         </span>
         <span
           style={{ cursor: 'pointer', color: '#999' }}
@@ -52,7 +55,7 @@ const CustomTreeNode = ({
             }
           }}
         >
-          取消
+          {localMap.cancel}
         </span>
       </div>
     )

@@ -38,7 +38,8 @@ const DragUpload = ({
     data,
     onRemove,
     beforeUpload,
-    customUpload
+    customUpload,
+    localeDatas
   })
 
   const [dragging, setDragging] = useState(false)

@@ -41,7 +41,8 @@ const AvatarUpload = ({
     data,
     onRemove,
     beforeUpload,
-    customUpload
+    customUpload,
+    localeDatas
   })
   const [cropperFile, setCropperFile] = useState({})
 
