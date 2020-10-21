@@ -3,12 +3,11 @@ import Icon from '../../../icon'
 import { getRootNodes, getChildrenNodes } from './util'
 import classNames from 'classnames'
 import Loading from '../../../loading'
-// import './select-dropdown.scss'
 import Checkbox from '../../../checkbox'
 
-const Bread = ({ datas, onClick, onReturnClick }) => {
+const Bread = ({ datas, onClick, onReturnClick, localeDatas }) => {
   const datasArr = Object.keys(datas)
-  datasArr.unshift('返回')
+  datasArr.unshift(localeDatas.selectTree.back)
   if (datasArr.length > 3) {
     datasArr.splice(1, datasArr.length - 3, '...')
   }
@@ -47,7 +46,8 @@ const NavTree = ({
   selectedItems,
   autoExpand = true,
   nodeDataState,
-  onExpand: expandProps
+  onExpand: expandProps,
+  localeDatas
 }) => {
   const expandData = useRef()
   const [renderData, setRenderData] = useState([])
@@ -106,7 +106,7 @@ const NavTree = ({
   return (
     <div className="hi-breadtree__root">
       {Object.keys(fullBreadData).length > 0 && (
-        <Bread datas={fullBreadData} onClick={onBreadClick} onReturnClick={onReturnClick} />
+        <Bread datas={fullBreadData} localeDatas={localeDatas} onClick={onBreadClick} onReturnClick={onReturnClick} />
       )}
       {loadingState === 'loading' && <Loading size="small" />}
       <ul className="hi-breadtree__list">

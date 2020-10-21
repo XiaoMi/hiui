@@ -8,23 +8,21 @@ import './style'
 
 const prefixCls = 'hi-search'
 
-const Search = (props) => {
-  const {
-    onChange,
-    onSearch,
-    style,
-    placeholder,
-    prepend,
-    disabled,
-    data,
-    value,
-    loading,
-    localeDatas,
-    overlayClassName,
-    append,
-    theme
-  } = props
-
+const Search = ({
+  onChange,
+  onSearch,
+  style,
+  placeholder,
+  prepend,
+  disabled,
+  data,
+  value,
+  loading,
+  localeDatas,
+  overlayClassName,
+  append,
+  theme
+}) => {
   const [dropdownShow, setDropdownShow] = useState(false)
   const searchInputContainer = useRef(null)
   const [inputVal, setInputVal] = useState(value || '')

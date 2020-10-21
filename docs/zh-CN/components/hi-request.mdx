@@ -212,8 +212,6 @@ HiRequest('/user/12345', { method: 'get' }, 'api')
 
 ##### HiRequest.patch(url[, data[, config]])
 
-##### HiRequest.getCookiesParam(url[, data[, config]])
-
 ##### HiRequest.upload(url[, data[, config]])
 
 ##### HiRequest.jsonp(url[, data[, config]])
@@ -570,13 +568,6 @@ HiRequest.get('/user/12345', {
 cancel()
 ```
 
-## Cookie
-
-```js
-//获取cookies中的指定项
-HiRequest.getCookiesParam(key)
-```
-
 ## 使用建议
 
 ```js
@@ -615,12 +606,10 @@ const HttpClient = (url, options = {}, host = 'api') => {
         console.log(error.request)
       },
       // 异常结果 返回或者其他异常都会走这个
-      errorCallback: [
-        function (error) {
-          // 对config进行自定义处理
-          console.log(err, error.request || error.response)
-        }
-      ],
+      errorCallback: (error) => {
+        // 对config进行自定义处理
+        console.log(err, error.request || error.response)
+      },
       ...restOptions
     },
     host

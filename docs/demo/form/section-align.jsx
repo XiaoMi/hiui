@@ -31,12 +31,8 @@ const code = [
         const FormSubmit = Form.Submit
         const FormReset = Form.Reset
         const {formData} = this.state
-        const Row = Grid.Row
-  const Col = Grid.Col
         return (
           <Form labelWidth='70' labelPlacement='left'>
-        <Row>
-          <Col span={6}>
             <FormItem label='手机号' field='phone'>
               <Input
                 placeholder={'请输入'}
@@ -48,16 +44,9 @@ const code = [
                 }}
               />
             </FormItem>
-          </Col>
-          <Col span={6}>
             <FormItem label='手机号'>
               <Select
                 data={[
-                  {
-                    title:
-                      '手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机手机',
-                    id: '2'
-                  },
                   { title: '小米2', id: '2-1' },
                   { title: '小米3', id: '2-2' },
                   { title: '小米4', id: '2-3' },
@@ -87,8 +76,6 @@ const code = [
                 }}
               />
             </FormItem>
-          </Col>
-        </Row>
       </Form>
         )
       }

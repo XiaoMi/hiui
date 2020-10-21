@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import FormContext from './FormContext'
 import Button from '../button'
 
-const Submit = props => {
+const Submit = (props) => {
   const { children = 'submit', onClick, validate } = props
   const { validate: formValidate } = useContext(FormContext)
   const submit = () => {

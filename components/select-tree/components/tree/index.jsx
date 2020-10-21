@@ -3,9 +3,7 @@ import Loading from '../../../loading'
 import TreeNode from './TreeNode'
 import TreeContext from './context'
 import './style/index'
-import {
-  getRootNodes
-} from './util'
+import { getRootNodes } from './util'
 
 const PREFIX = 'hi-select-tree'
 
@@ -44,12 +42,8 @@ const Tree = ({
       }}
     >
       <div className={`${PREFIX}`}>
-        {
-          nodeDataState === 'loading' && <Loading size='small' />
-        }
-        {
-          nodeDataState === 'empty' && <span className='hi-select-tree--empty'>empty</span>
-        }
+        {nodeDataState === 'loading' && <Loading size="small" />}
+        {nodeDataState === 'empty' && <span className="hi-select-tree--empty">empty</span>}
         {nodeDataState === 'normal' && <TreeNode data={getRootNodes(data)} flttenData={data} />}
       </div>
     </TreeContext.Provider>

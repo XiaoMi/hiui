@@ -5,33 +5,32 @@ import Loading from '../loading'
 import Icon from '../icon'
 import { transKeys } from './utils'
 
-const SelectDropdown = props => {
-  const {
-    mode,
-    matchFilter,
-    emptyContent,
-    loading,
-    optionWidth,
-    showCheckAll,
-    showJustSelected,
-    dropdownRender,
-    theme,
-    searchable,
-    onFocus,
-    onBlur,
-    searchPlaceholder,
-    dropdownItems,
-    localeMap,
-    handleKeyDown,
-    onSearch,
-    isOnSearch,
-    onClickOption,
-    checkAll,
-    selectInputWidth,
-    selectedItems,
-    show,
-    fieldNames
-  } = props
+const SelectDropdown = ({
+  mode,
+  matchFilter,
+  emptyContent,
+  loading,
+  optionWidth,
+  showCheckAll,
+  showJustSelected,
+  dropdownRender,
+  theme,
+  searchable,
+  onFocus,
+  onBlur,
+  searchPlaceholder,
+  dropdownItems,
+  localeMap,
+  handleKeyDown,
+  onSearch,
+  isOnSearch,
+  onClickOption,
+  checkAll,
+  selectInputWidth,
+  selectedItems,
+  show,
+  fieldNames
+}) => {
   const [filterItems, setFilterItems] = useState(dropdownItems)
   const [searchbarValue, setSearchbarValue] = useState('')
   const [ischeckAll, setIscheckAll] = useState(false)
@@ -42,24 +41,21 @@ const SelectDropdown = props => {
 
   // 监控全选功能
   useEffect(() => {
-    setIscheckAll(
-      selectedItems.length > 0 && selectedItems.length === filterItems.length
-    )
+    setIscheckAll(selectedItems.length > 0 && selectedItems.length === filterItems.length)
   }, [selectedItems, filterItems])
   // 让搜索框获取焦点
   useEffect(() => {
-    searchable &&
-      setTimeout(() => searchbar.current && searchbar.current.focus(), 0)
+    searchable && setTimeout(() => searchbar.current && searchbar.current.focus(), 0)
   }, [])
   // 仅看已选
   const showSelected = useCallback(
-    check => {
+    (check) => {
       if (check) {
-        const values = selectedItems.map(item => {
+        const values = selectedItems.map((item) => {
           return item[transKeys(fieldNames, 'id')]
         })
         setFilterItems(
-          dropdownItems.filter(item => {
+          dropdownItems.filter((item) => {
             return values.includes(item[transKeys(fieldNames, 'id')])
           })
         )
@@ -70,7 +66,7 @@ const SelectDropdown = props => {
     [selectedItems, fieldNames, dropdownItems]
   )
   useEffect(() => {
-    let _filterItems = dropdownItems
+    const _filterItems = dropdownItems
     setFilterItems(_filterItems)
   }, [mode, isOnSearch, dropdownItems, show])
 
@@ -80,14 +76,14 @@ const SelectDropdown = props => {
   }
 
   const filterOptions = useCallback(
-    keyword => {
+    (keyword) => {
       setFilterItems(dropdownItems)
       setSearchbarValue(keyword)
     },
     [dropdownItems]
   )
   const searchEvent = useCallback(
-    e => {
+    (e) => {
       const filterText = e.target.value
       filterOptions(filterText)
       onSearch(filterText)
@@ -96,7 +92,7 @@ const SelectDropdown = props => {
   )
 
   const cleanSearchbarValue = useCallback(
-    e => {
+    (e) => {
       e.stopPropagation()
       const filterText = ''
       filterOptions(filterText)
@@ -106,11 +102,9 @@ const SelectDropdown = props => {
   )
   // 是否被选中
   const itemSelected = useCallback(
-    item => {
+    (item) => {
       return (
-        selectedItems
-          .map(item => item[transKeys(fieldNames, 'id')])
-          .indexOf(item[transKeys(fieldNames, 'id')]) > -1
+        selectedItems.map((item) => item[transKeys(fieldNames, 'id')]).indexOf(item[transKeys(fieldNames, 'id')]) > -1
       )
     },
     [selectedItems, fieldNames]
@@ -131,25 +125,16 @@ const SelectDropdown = props => {
   const hightlightKeyword = useCallback(
     (text = '', uniqueKey) => {
       let _keyword = searchbarValue
-      _keyword = searchbarValue.includes('[')
-        ? _keyword.replace(/\[/gi, '\\[')
-        : _keyword
-      _keyword = searchbarValue.includes('(')
-        ? _keyword.replace(/\(/gi, '\\(')
-        : _keyword
-      _keyword = searchbarValue.includes(')')
-        ? _keyword.replace(/\)/gi, '\\)')
-        : _keyword
+      _keyword = searchbarValue.includes('[') ? _keyword.replace(/\[/gi, '\\[') : _keyword
+      _keyword = searchbarValue.includes('(') ? _keyword.replace(/\(/gi, '\\(') : _keyword
+      _keyword = searchbarValue.includes(')') ? _keyword.replace(/\)/gi, '\\)') : _keyword
 
-      let parts = text.split(new RegExp(`(${_keyword})`, 'gi'))
+      const parts = text.split(new RegExp(`(${_keyword})`, 'gi'))
       return searchbarValue.length > 0 ? (
         <p key={uniqueKey}>
           {parts.map((part, i) =>
             part === searchbarValue ? (
-              <span
-                key={i}
-                className={'hi-select__dropdown--item__name-hightlight'}
-              >
+              <span key={i} className={'hi-select__dropdown--item__name-hightlight'}>
                 {part}
               </span>
             ) : (
@@ -182,28 +167,22 @@ const SelectDropdown = props => {
       <React.Fragment>
         {mode === 'multiple' && (
           <Checkbox
-            className='hi-select__dropdown--item__checkbox'
+            className="hi-select__dropdown--item__checkbox"
             checked={isSelected}
             disabled={item[transKeys(fieldNames, 'disabled')]}
           >
-            <div className='hi-select__dropdown--item__name' style={style}>
+            <div className="hi-select__dropdown--item__name" style={style}>
               {isOnSearch
                 ? item[transKeys(fieldNames, 'title')]
-                : hightlightKeyword(
-                  item[transKeys(fieldNames, 'title')],
-                  item[transKeys(fieldNames, 'id')]
-                )}
+                : hightlightKeyword(item[transKeys(fieldNames, 'title')], item[transKeys(fieldNames, 'id')])}
             </div>
           </Checkbox>
         )}
         {mode === 'single' && (
-          <div className='hi-select__dropdown--item__name' style={style}>
+          <div className="hi-select__dropdown--item__name" style={style}>
             {isOnSearch
               ? item[transKeys(fieldNames, 'title')]
-              : hightlightKeyword(
-                item[transKeys(fieldNames, 'title')],
-                item[transKeys(fieldNames, 'id')]
-              )}
+              : hightlightKeyword(item[transKeys(fieldNames, 'title')], item[transKeys(fieldNames, 'id')])}
           </div>
         )}
       </React.Fragment>
@@ -212,19 +191,14 @@ const SelectDropdown = props => {
   const groupItem = (filterGroupItem, filterItemsIndex) => {
     const renderGroup = []
     const label = (
-      <li
-        className='hi-select__dropdown--label'
-        key={filterGroupItem[transKeys(fieldNames, 'id')]}
-      >
+      <li className="hi-select__dropdown--label" key={filterGroupItem[transKeys(fieldNames, 'id')]}>
         {filterGroupItem[transKeys(fieldNames, 'title')]}
       </li>
     )
     renderGroup.push(label)
-    filterGroupItem[transKeys(fieldNames, 'children')].forEach(
-      (item, index) => {
-        renderGroup.push(normalItem(item, filterItemsIndex + 1 + '-' + index))
-      }
-    )
+    filterGroupItem[transKeys(fieldNames, 'children')].forEach((item, index) => {
+      renderGroup.push(normalItem(item, filterItemsIndex + 1 + '-' + index))
+    })
     return renderGroup
   }
   const normalItem = (item, filterItemsIndex) => {
@@ -236,10 +210,9 @@ const SelectDropdown = props => {
         className={classNames('hi-select__dropdown--item', `theme__${theme}`, {
           'is-active': isSelected,
           'is-disabled': isDisabled,
-          'hi-select__dropdown--item-default':
-            !item[transKeys(fieldNames, 'children')] && !dropdownRender
+          'hi-select__dropdown--item-default': !item[transKeys(fieldNames, 'children')] && !dropdownRender
         })}
-        onClick={e => onClickOptionIntal(e, item, filterItemsIndex)}
+        onClick={(e) => onClickOptionIntal(e, item, filterItemsIndex)}
         key={item[transKeys(fieldNames, 'id')]}
         index={filterItemsIndex}
       >
@@ -249,7 +222,7 @@ const SelectDropdown = props => {
   }
   const renderItems = () => {
     return (
-      <ul className='hi-select__dropdown--items'>
+      <ul className="hi-select__dropdown--items">
         {filterItems &&
           filterItems.map((item, filterItemsIndex) => {
             if (matchFilter(item)) {
@@ -260,8 +233,8 @@ const SelectDropdown = props => {
           })}
         {matched === 0 && (
           <li
-            className='hi-select__dropdown--item hi-select__dropdown-item--empty is-disabled'
-            onClick={e => e.stopPropagation()}
+            className="hi-select__dropdown--item hi-select__dropdown-item--empty is-disabled"
+            onClick={(e) => e.stopPropagation()}
           >
             {emptyContent}
           </li>
@@ -270,38 +243,36 @@ const SelectDropdown = props => {
     )
   }
   return (
-    <div className='hi-select__dropdown' style={style}>
+    <div className="hi-select__dropdown" style={style}>
       {searchable && (
-        <div className='hi-select__dropdown__searchbar'>
-          <div className='hi-select__dropdown__searchbar--content'>
+        <div className="hi-select__dropdown__searchbar">
+          <div className="hi-select__dropdown__searchbar--content">
             <span style={{ cursor: 'pointer' }}>
-              <Icon name='search' />
+              <Icon name="search" />
             </span>
             <input
-              className='hi-select__dropdown__searchbar--input'
+              className="hi-select__dropdown__searchbar--input"
               placeholder={searchPlaceholder}
-              clearable='true'
+              clearable="true"
               ref={searchbar}
               value={searchbarValue}
               onFocus={onFocus}
               onBlur={onBlur}
-              clearabletrigger='always'
+              clearabletrigger="always"
               onKeyDown={handleKeyDown}
               onChange={searchEvent}
             />
             {searchbarValue.length > 0 ? (
               <span style={{ cursor: 'pointer' }} onClick={cleanSearchbarValue}>
-                <i
-                  className={`hi-icon icon-close-circle hi-select__dropdown--icon__close`}
-                />
+                <i className={`hi-icon icon-close-circle hi-select__dropdown--icon__close`} />
               </span>
             ) : null}
           </div>
         </div>
       )}
       {loading && (
-        <div className='hi-select__dropdown--loading'>
-          <Loading size='small' />
+        <div className="hi-select__dropdown--loading">
+          <Loading size="small" />
         </div>
       )}
 
@@ -313,22 +284,22 @@ const SelectDropdown = props => {
             {showCheckAll && (
               <Checkbox
                 checked={ischeckAll}
-                onChange={e => {
+                onChange={(e) => {
                   checkAll(e, filterItems, e.target.checked)
                 }}
               >
-                {localeMap['checkAll']}
+                {localeMap.checkAll}
               </Checkbox>
             )}
           </div>
           <div>
             {showJustSelected && (
               <Checkbox
-                onChange={e => {
+                onChange={(e) => {
                   showSelected(e.target.checked)
                 }}
               >
-                {localeMap['justSelected']}
+                {localeMap.justSelected}
               </Checkbox>
             )}
           </div>

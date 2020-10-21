@@ -3,20 +3,19 @@ import classNames from 'classnames'
 import Popper from '../popper'
 import Loading from '../loading'
 
-const SearchDropdown = (props) => {
-  const {
-    data,
-    prefixCls,
-    optionsClick,
-    inputVal = '',
-    dropdownShow,
-    searchInputContainer,
-    localeDatas,
-    theme,
-    onClickOutside,
-    loading,
-    overlayClassName
-  } = props
+const SearchDropdown = ({
+  data,
+  prefixCls,
+  optionsClick,
+  inputVal = '',
+  dropdownShow,
+  searchInputContainer,
+  localeDatas,
+  theme,
+  onClickOutside,
+  loading,
+  overlayClassName
+}) => {
   const popperDropdown = useRef(null)
   const [dropdownData, setDropdownData] = useState(data)
 
