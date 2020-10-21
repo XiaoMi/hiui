@@ -1,0 +1,79 @@
+@import '@hi-ui/core-css/index.scss';
+
+$basic-color: #4284f5 !default;
+
+@mixin hi-switch-style($color: get-color($palette-primary, 'hiui-blue')) {
+  & {
+    background: map-get(get-palette($color), '50');
+
+    &--closed,
+    &--disabled {
+      background: map-get(get-palette($color), 'g60');
+    }
+
+    &--disabled {
+      &::after {
+        background: map-get(get-palette($color), 'g50');
+      }
+    }
+  }
+}
+
+.hi-switch {
+  display: inline-block;
+  min-width: 48px;
+  height: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  vertical-align: middle;
+
+  @include hi-switch-style();
+
+  &::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background: rgba(255, 255, 255, 1);
+    position: absolute;
+    border-radius: 50%;
+    top: 2px;
+    left: 100%;
+    transform: translateX(-100%);
+    margin-left: -2px;
+    transition: all 200ms linear;
+  }
+
+  &__text {
+    color: #fff;
+    font-size: 12px;
+    position: absolute;
+    top: 0;
+    line-height: 20px;
+    left: 6px;
+    transition: all 200ms linear;
+    user-select: none;
+  }
+
+  &--closed {
+    &::after {
+      left: 2px;
+      transform: translateX(2px);
+    }
+
+    .hi-switch__text {
+      left: auto;
+      right: 6px;
+    }
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+  }
+}
+
+@each $key, $value in $palette-primary {
+  .theme__#{$key}.hi-switch {
+    @include hi-switch-style($value);
+  }
+}
