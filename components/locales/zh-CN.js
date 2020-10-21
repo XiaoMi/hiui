@@ -57,6 +57,10 @@ export default {
     checkAll: '全选',
     justSelected: '仅看已选'
   },
+  selectTree: {
+    back: '返回',
+    search: '搜索'
+  },
   search: {
     searchEmptyResult: '未找到搜索结果',
     searchEmptyRecord: '无搜索记录',

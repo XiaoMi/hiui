@@ -54,6 +54,10 @@ export default {
     checkAll: 'Check all',
     justSelected: 'Just Selected'
   },
+  selectTree: {
+    back: 'Back',
+    search: 'search'
+  },
   search: {
     searchEmptyResult: 'No serach results',
     searchEmptyRecord: 'No serach record',

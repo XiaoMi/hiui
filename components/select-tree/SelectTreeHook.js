@@ -4,6 +4,7 @@ import _ from 'lodash'
 import Popper from '../popper'
 import HiRequest from '../_util/hi-request'
 import Icon from '../icon'
+
 import {
   flattenNodesData,
   getNode,
@@ -41,7 +42,8 @@ const SelectTree = ({
   mode,
   autoExpand,
   overlayClassName,
-  theme
+  theme,
+  localeDatas
 }) => {
   const selectedItemsRef = useRef()
   const inputRef = useRef()
@@ -354,7 +356,7 @@ const SelectTree = ({
                   <Icon name="search" />
                   <input
                     className="hi-selecttree__searchinput"
-                    placeholder={'搜索'}
+                    placeholder={localeDatas.selectTree.search}
                     clearable="true"
                     value={searchValue}
                     clearabletrigger="always"
@@ -387,6 +389,7 @@ const SelectTree = ({
                 onSelected={selectedEvents}
                 isRemoteLoadData={!!dataSource}
                 onExpand={expandEvents}
+                localeDatas={localeDatas}
               />
             ) : (
               <Tree

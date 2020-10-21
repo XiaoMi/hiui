@@ -23,8 +23,8 @@ const Trigger = ({
       )}
       onClick={onTrigger}
     >
-      <div className='hi-selecttree__selected-wrapper' ref={selectedItemsRef}>
-        <div className='hi-selecttree__selected--hidden'>
+      <div className="hi-selecttree__selected-wrapper" ref={selectedItemsRef}>
+        <div className="hi-selecttree__selected--hidden">
           {selectedItems.map((node, index) => (
             <span key={index}>{node.title || ''}</span>
           ))}
@@ -32,19 +32,17 @@ const Trigger = ({
         {selectedItems.length > 0 &&
           selectedItems.slice(0, showCount || 1).map((node, index) => {
             return (
-              <div key={index} className='hi-selecttree__selecteditem'>
-                <div className='hi-selecttree__selecteditem-name'>
-                  {node ? node.title : ''}
-                </div>
+              <div key={index} className="hi-selecttree__selecteditem">
+                <div className="hi-selecttree__selecteditem-name">{node ? node.title : ''}</div>
                 {type === 'multiple' && (
                   <span
-                    className='hi-selecttree__selecteditem-remove'
-                    onClick={e => {
+                    className="hi-selecttree__selecteditem-remove"
+                    onClick={(e) => {
                       e.stopPropagation()
                       checkedEvents(false, node)
                     }}
                   >
-                    <i className='hi-icon icon-close' />
+                    <i className="hi-icon icon-close" />
                   </span>
                 )}
               </div>
@@ -57,18 +55,14 @@ const Trigger = ({
         )}
       </div>
 
-      <span className='hi-selecttree__input-icon'>
+      <span className="hi-selecttree__input-icon">
         <i
-          className={classNames(
-            `hi-icon icon-${show ? 'up' : 'down'} hi-selecttree__input--expand`,
-            { clearable: clearable && selectedItems.length > 0 }
-          )}
+          className={classNames(`hi-icon icon-${show ? 'up' : 'down'} hi-selecttree__input--expand`, {
+            clearable: clearable && selectedItems.length > 0
+          })}
         />
         {clearable && selectedItems.length > 0 && (
-          <i
-            className={`hi-icon icon-close-circle hi-selecttree__icon-close`}
-            onClick={onClear}
-          />
+          <i className={`hi-icon icon-close-circle hi-selecttree__icon-close`} onClick={onClear} />
         )}
       </span>
     </div>
