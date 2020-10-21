@@ -9,12 +9,16 @@
 - 新增：`Search` 搜索组件 [#1228](https://github.com/XiaoMi/hiui/issues/1228)
 - 新增：`Drawer` 抽屉组件 [#1229](https://github.com/XiaoMi/hiui/issues/1229)
 - 新增常见图表样式支持（基于 echarts 封装）[#388](https://github.com/XiaoMi/hiui/issues/388)
-- 全新的 `TimePicker` 组件
-  - TODO
 - 全新的 `Form` 组件
-  - TODO
+  - 新增 SchemaForm，可通过 Schema 配置使用 Form。
+  - 新增 useForm，通过 Form.useForm 对表单数据域进行交互。
+  - 新增 Form.List，方便对表单项进行增加删除
+  - 新增 Submit、Reset 等快捷组件，方便用户重置和提交数据
+  - 优化表单中的表单项值的管理，不再由用户进行 setState
+  - 优化 Form 输出数据的内容格式，用户可通过设置 field 进行相关格式的设置
+  - 优化表单的校验
 - 全新的 `DatePicker` 组件
-  - TODO
+  - 优化快捷选项功能，允许用户自定义快捷选项
 - 全新的 `Icon` 组件 [#1224](https://github.com/XiaoMi/hiui/issues/1224)
   - 内部改为 svg 实现方式
   - 重新调整视觉效果
@@ -52,7 +56,7 @@
   - 样式调整
   - 废弃 extraType 属性
   - 新增 showHeaderDivider 属性展示卡片头部的分割线
-- `Modal` 组件升级  [#1221](https://github.com/XiaoMi/hiui/issues/1221)
+- `Modal` 组件升级 [#1221](https://github.com/XiaoMi/hiui/issues/1221)
   - 进行了样式调整，重点优化了 Modal.confirm 的视觉效果
 - `Tag` 组件升级 [#1233](https://github.com/XiaoMi/hiui/issues/1233)
   - 新增圆角形态
@@ -60,8 +64,8 @@
 - 主题配色调整，并使用 css variable 实现主题配色的切换 [#256](https://github.com/XiaoMi/hiui/issues/256)
 - 增加 Typescript 类型定义文件 [#181](https://github.com/XiaoMi/hiui/issues/181)
 
-
 ## 2.x
+
 [更新日志汇总](https://github.com/XiaoMi/hiui/blob/master/CHANGELOG.md)
 
 ## 1.x
