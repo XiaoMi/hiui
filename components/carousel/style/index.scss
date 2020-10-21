@@ -1,8 +1,6 @@
-@import '../../core-css/index.scss';
-
 .hi-carousel {
   width: 100%;
-  color: use-color('white');
+  color: #fff;
   overflow: hidden;
   position: relative;
 
@@ -20,6 +18,7 @@
     transform: translateX(-50%);
     max-width: 50%;
     display: flex;
+    z-index: 2;
   }
 
   &__dot {
@@ -33,7 +32,7 @@
     transition: all 1s;
 
     &--active:not(.hi-carousel__dot--sign) {
-      background: use-color('white');
+      background: rgba(255, 255, 255, 1);
       width: 48px;
     }
 
@@ -53,7 +52,8 @@
     display: flex;
     justify-content: space-between;
     visibility: hidden;
-
+    height: 0;
+    z-index: 2;
     &--show {
       visibility: visible;
     }
@@ -66,7 +66,7 @@
     border-radius: 50%;
     text-align: center;
     line-height: 56px;
-    color: use-color('white');
+    color: #fff;
     font-size: 32px;
     margin-left: 24px;
     cursor: pointer;
@@ -82,15 +82,17 @@
 
   &__pages {
     width: 46px;
+    height: 22px;
     border-radius: 16px;
     position: absolute;
     bottom: 24px;
     right: 24px;
     background: rgba(0, 0, 0, 0.5);
-    line-height: $line-height-size-normal;
-    font-size: $font-size-normal;
+    line-height: 22px;
+    font-size: 14px;
     text-align: center;
     user-select: none;
     opacity: 0.5;
+    z-index: 2;
   }
 }
