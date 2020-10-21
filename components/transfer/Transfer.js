@@ -296,7 +296,7 @@ class Transfer extends Component {
           <div className='hi-transfer__searchbar'>
             <Icon name='search' />
             <Input
-              placeholder='搜索'
+              placeholder={localeMap.searchPlaceholder}
               clearable='true'
               clearableTrigger='always'
               onInput={this.searchEvent.bind(this, dir)}
