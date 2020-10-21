@@ -1,4 +1,4 @@
-function formatError (option, xhr, msg) {
+function formatError(option, xhr, msg) {
   msg = msg || `Upload ${option.action} error`
   const err = new Error(msg)
   err.status = xhr.status
@@ -6,7 +6,7 @@ function formatError (option, xhr, msg) {
   return err
 }
 
-function formatBody (xhr) {
+function formatBody(xhr) {
   const text = xhr.responseText || xhr.response
   if (!text) {
     return text
@@ -31,11 +31,11 @@ function formatBody (xhr) {
 //  headers: Object,
 //  timeout: Number
 // }
-export default function upload (option) {
+export default function upload(option) {
   const xhr = new window.XMLHttpRequest()
 
   if (option.onProgress && xhr.upload) {
-    xhr.upload.onprogress = function progress (e) {
+    xhr.upload.onprogress = function progress(e) {
       if (e.total > 0) {
         e.percent = (e.loaded / e.total) * 100
       }
@@ -57,7 +57,7 @@ export default function upload (option) {
     option.onError(option.file, e, {})
   }
 
-  xhr.onload = function onload () {
+  xhr.onload = function onload() {
     if (xhr.status < 200 || xhr.status >= 300) {
       return option.onError(option.file, formatError(option, xhr), formatBody(xhr))
     }
@@ -96,7 +96,7 @@ export default function upload (option) {
   xhr.send(formData)
 
   return {
-    abort () {
+    abort() {
       xhr.abort()
     }
   }

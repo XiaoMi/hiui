@@ -26,7 +26,8 @@ const PictureListUpload = ({
   headers,
   data,
   beforeUpload,
-  customUpload
+  customUpload,
+  localeDatas
 }) => {
   const [_fileList, uploadFiles, deleteFile] = useUpload({
     fileList,
@@ -40,7 +41,8 @@ const PictureListUpload = ({
     data,
     onRemove,
     beforeUpload,
-    customUpload
+    customUpload,
+    localeDatas
   })
   return (
     <div className={`hi-upload hi-upload--picture-card theme__${theme}`}>
@@ -52,7 +54,7 @@ const PictureListUpload = ({
         accept={accept}
       >
         <Button type="primary" disabled={disabled || _fileList.length >= maxCount} loading={loading}>
-          {content}
+          {content || localeDatas.upload.buttonText}
         </Button>
       </FileSelect>
       {showUploadList && _fileList.length > 0 && (

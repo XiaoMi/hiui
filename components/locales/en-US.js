@@ -111,5 +111,8 @@ export default {
     searchEmptyResult: 'No serach results',
     modalTitle: 'Warning',
     delTips: 'Deleting a node will delete all child nodes, are you sure to delete this node?'
+  },
+  watermark: {
+    content: 'Please do not gaiden'
   }
 }

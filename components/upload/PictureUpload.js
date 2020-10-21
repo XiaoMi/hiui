@@ -39,7 +39,8 @@ const PictureUpload = ({
     onRemove,
     beforeUpload,
     customUpload,
-    photoSize
+    photoSize,
+    localeDatas
   })
 
   // TODO: 提取 usePreview hook
