@@ -67,9 +67,11 @@ const Tree = (props) => {
     onDragStart,
     onDrop,
     onDropEnd,
-    theme
+    theme,
+    localeDatas
   } = props
-  const { placeholder = '关键词搜索', emptyContent = '未找到搜索结果' } = searchConfig
+  const localMap = localeDatas.tree || {}
+  const { placeholder = localMap.searchPlaceholder, emptyContent = localMap.searchEmptyResult } = searchConfig
   const [cacheData, updateCacheData] = useState(data)
   useEffect(() => {
     updateCacheData(data)
@@ -374,10 +376,10 @@ const Tree = (props) => {
   const menuRender = useCallback(
     (node) => {
       let menu = [
-        { title: '编辑节点', type: 'editNode' },
-        { title: '添加子节点', type: 'addChildNode' },
-        { title: '添加节点', type: 'addSiblingNode' },
-        { title: '删除', type: 'deleteNode' }
+        { title: localMap.edit, type: 'editNode' },
+        { title: localMap.addChildNode, type: 'addChildNode' },
+        { title: localMap.addNode, type: 'addSiblingNode' },
+        { title: localMap.del, type: 'deleteNode' }
       ]
       if (contextMenu) {
         menu = contextMenu(node)
@@ -436,6 +438,7 @@ const Tree = (props) => {
           setMenuVisible={setMenuVisible}
           editable={editable}
           menuRender={menuRender}
+          localeDatas={localeDatas}
         />
       )
     },
@@ -486,7 +489,7 @@ const Tree = (props) => {
         data={filter && searchable && searchValue !== '' ? showData : cacheData}
       />
       <Modal
-        title={'提示'}
+        title={localMap.modalTitle}
         visible={modalVisible !== null}
         onConfirm={() => {
           deleteNode(modalVisible)
@@ -496,7 +499,7 @@ const Tree = (props) => {
           setModalVisible(null)
         }}
       >
-        删除节点将删除所有子节点，确定删除吗？
+        {localMap.delTips}
       </Modal>
     </React.Fragment>
   )
