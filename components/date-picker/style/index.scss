@@ -1,6 +1,7 @@
 @import '@hi-ui/core-css/index.scss';
 
 $basic-color: #4284f5 !default;
+$error-color: #f44141 !default;
 
 .hi-datepicker {
   position: relative;
@@ -67,7 +68,11 @@ $basic-color: #4284f5 !default;
     justify-content: space-around;
     box-sizing: border-box;
 
-    &:hover:not(.hi-datepicker__input--disabled) {
+    &--error {
+      border: 1px solid $error-color;
+    }
+
+    &:hover:not(.hi-datepicker__input--disabled,.hi-datepicker__input--error) {
       border: 1px solid $basic-color;
     }
 

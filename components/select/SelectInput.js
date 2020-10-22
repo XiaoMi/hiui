@@ -14,9 +14,13 @@ class SelectInput extends Component {
       },
       cacheselectedItems: []
     }
+    this.wrapperRect = this.itemsRef && this.itemsRef.getBoundingClientRect()
   }
 
   calShowCountFlag = true
+  componentDidMount() {
+    this.wrapperRect = this.itemsRef && this.itemsRef.getBoundingClientRect()
+  }
   componentDidUpdate () {
     if (
       this.props.multipleMode === 'nowrap' &&
@@ -24,7 +28,7 @@ class SelectInput extends Component {
       this.itemsRef
     ) {
       // 多选超过一行时以数字显示
-      const itemsRect = this.itemsRef.getBoundingClientRect()
+      const itemsRect = this.wrapperRect
       let width = 0
       let showCount = 0
       const items = this.itemsRef.querySelectorAll('.hi-select__input--item')
@@ -56,6 +60,7 @@ class SelectInput extends Component {
       ? { cacheselectedItems: nextProps.selectedItems.length > 0 ? nextProps.selectedItems : nextState.cacheselectedItems } : { cacheselectedItems: nextProps.selectedItems }
   }
   focus () {
+    this.wrapperRect = this.itemsRef && this.itemsRef.getBoundingClientRect()
     setTimeout(() => this.searchInput && this.searchInput.focus(), 0)
   }
 
@@ -221,23 +226,26 @@ class SelectInput extends Component {
     placeholder =
       selectedItems.length > 0 ? selectedItems[0].title : placeholder
     let icon = dropdownShow ? 'up' : 'down'
-
     return (
       <div
         className={classNames('hi-select__input', 'single-value', `theme__${theme}`, { disabled })}
         onClick={this.props.onClick}
-      >
+        ref={(node) => {
+          this.itemsRef = node
+        }}
+        >
         <div
           className={classNames('hi-select__input--item', {
             'hi-select__hide': !(!dropdownShow && selectedItems.length > 0)
           })}
+          style={{width: this.wrapperRect && this.wrapperRect.width-46}}
         >
           <div className='hi-select__input--item__name'>
             {selectedItems[0] && selectedItems[0].title}
           </div>
         </div>
         {(dropdownShow || selectedItems.length === 0) && (
-          <div className={classNames('hi-select__input--search', {'hi-select__input--search--value': selectedItems.length > 0})}>
+          <div className={classNames('hi-select__input--search', {'hi-select__input--search--value': selectedItems.length > 0})}  style={{width:this.wrapperRect && this.wrapperRect.width-46}}>
             <input
               type='text'
               ref={(input) => {

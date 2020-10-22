@@ -8,6 +8,7 @@ class Time extends Component {
     super(props)
     this.state = {
       date: getValidDate(props.date),
+      endDate: '',
       prefix: {
         hours: 0,
         minutes: 0,
@@ -22,6 +23,7 @@ class Time extends Component {
     this.props.onPick(date, true)
   }
   componentWillReceiveProps (props) {
+
     if (!isSameDay(props.date, this.state.date)) {
       this.setState({
         date: getValidDate(props.date)
@@ -52,6 +54,7 @@ class Time extends Component {
     if (cDate.getTime() !== date.getTime()) {
       this.callback(cDate)
     }
+    
   }
 
   isShowHMS () {
@@ -62,10 +65,69 @@ class Time extends Component {
       seconds: format.indexOf('s') > -1
     }
   }
+  // 设置Date的选中状态
+  setDisableTime (type,i,disabledTime) {
+    const { timeRangePanelType, startDate, date } = this.props
+    let isDisabled = disabledTime.includes(i)
+
+    if (this.props.isCheckTime) {
+      if (timeRangePanelType === 'right') {
+        const { hours, minutes, seconds } = deconstructDate(startDate)
+        const { hours: endHours, minutes: endMinutes } = date ? deconstructDate(date) : deconstructDate(new Date())
+        isDisabled = type === 'hours' && hours > i
+        if (type === 'minutes') {
+          if (endHours === hours) {
+            isDisabled = minutes > i
+          }
+          if (endHours < hours) {
+            isDisabled = true
+          }
+        }
+
+        if (type === 'seconds') {
+          if (endHours === hours) {
+            isDisabled = endMinutes === minutes && seconds > i
+            if (endMinutes < minutes) {
+              isDisabled = true
+            }
+          }
+          if (endHours < hours) {
+            isDisabled = true
+          }
+        }
+      }
+    }
+
+    return isDisabled
+  }
+  
+  getStep(type){
+    const {hourStep,minuteStep,secondStep} = this.props
+    let step = 1
+    const directionStep = 1
+    switch (type) {
+      case 'hours':
+        step = hourStep || directionStep
+        break;
+      case 'minutes':
+        step = minuteStep || directionStep
+        break;
+      case 'seconds':
+        step = secondStep || directionStep
+        break;
+      default:
+        step = 1
+        break;
+    }
+    return step
+  }
+
   generateDatas (type) {
+
     let count
     let datas = []
     const currentDate = deconstructDate(this.state.date)
+    const step = this.getStep(type)
     const disabledList = this._getDsiabledList()
     const disabledTime = disabledList[type]
     if (type === 'hours') {
@@ -76,15 +138,19 @@ class Time extends Component {
       count = 60
     }
     for (let i = 0; i < count; i += 1) {
-      datas.push({
-        value: i,
-        text: i < 10 ? '0' + i : i.toString(),
-        disabled: disabledTime.includes(i),
-        current: i === currentDate[type]
-      })
+
+      if(i%step === 0 || i === 0){
+        datas.push({
+          value: i,
+          text: i < 10 ? '0' + i : i.toString(),
+          disabled: this.setDisableTime(type,i,disabledTime),
+          current: i === currentDate[type]
+        })
+      }
     }
     return datas
   }
+  
   _getDsiabledList () {
     const { disabledHours, disabledMinutes, disabledSeconds } = this.props
     const currentDate = deconstructDate(this.state.date)
@@ -106,6 +172,7 @@ class Time extends Component {
       onlyTime={this.props.onlyTime}
       datas={this.generateDatas(type)}
       disabledList={disabledList[type]}
+      timeRangePanelType={this.props.timeRangePanelType}
       hourStep={hourStep}
       minuteStep={minuteStep}
       secondStep={secondStep}
@@ -120,6 +187,8 @@ class Time extends Component {
       minutes: showMinute,
       seconds: showSecond
     } = this.isShowHMS()
+    
+
     return (
       <div className='hi-timepicker__body'>
         <div className='hi-timepicker__timeheader'>
