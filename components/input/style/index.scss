@@ -1,5 +1,4 @@
-@import './variables.scss';
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
 $input: 'hi-input' !default;
 
@@ -7,47 +6,47 @@ textarea.#{$input} {
   display: block;
   box-shadow: none;
   outline: none;
-  color: $normal-color;
-  font-size: $font-size;
+  color: use-color('black');
+  font-size: $font-size-normal;
   min-height: 32px;
   height: auto;
-  line-height: $line-height;
+  line-height: $line-height-size-normal;
   resize: vertical;
   overflow: auto;
   padding: 4px 12px;
-  border: 1px solid $border-color-normal;
+  border: 1px solid use-color('gray-30');
   box-sizing: border-box;
-  border-radius: $border-radius;
-  background-color: #fff;
+  border-radius: 2px;
+  background-color: use-color('white');
   transition: border-color 0.3s;
 
   &:not(.disabled):hover {
-    border-color: $border-color-active;
+    border-color: use-color('primary');
   }
 
   &.active {
-    border-color: $border-color-active;
+    border-color: use-color('primary');
   }
 
   &.disabled {
-    color: $disabled-color;
-    background-color: $disabled-bg-color;
+    color: use-color('gray-50');
+    background-color: use-color('gray-10');
   }
 
   &::-webkit-input-placeholder {
-    color: $placeholder-color;
+    color: use-color('gray-50');
   }
 
   &:-moz-placeholder {
-    color: $placeholder-color;
+    color: use-color('gray-50');
   }
 
   &::-moz-placeholder {
-    color: $placeholder-color;
+    color: use-color('gray-50');
   }
 
   &:-ms-input-placeholder {
-    color: $placeholder-color;
+    color: use-color('gray-50');
   }
 }
 
@@ -60,19 +59,19 @@ textarea.#{$input} {
   box-sizing: border-box;
 
   ::-webkit-input-placeholder {
-    color: $placeholder-color;
+    color: use-color('gray-50');
   }
 
   :-moz-placeholder {
-    color: $placeholder-color;
+    color: use-color('gray-50');
   }
 
   ::-moz-placeholder {
-    color: $placeholder-color;
+    color: use-color('gray-50');
   }
 
   :-ms-input-placeholder {
-    color: $placeholder-color;
+    color: use-color('gray-50');
   }
 
   input {
@@ -81,14 +80,14 @@ textarea.#{$input} {
     outline: none;
     min-height: 30px;
     box-sizing: border-box;
-    color: $normal-color;
-    font-size: $font-size;
-    line-height: $line-height;
+    color: use-color('black');
+    font-size: $font-size-normal;
+    line-height: $line-height-size-normal;
     box-shadow: none;
 
     &.disabled {
-      color: $disabled-color;
-      background-color: $disabled-bg-color;
+      color: use-color('gray-50');
+      background-color: use-color('gray-10');
     }
   }
 
@@ -112,23 +111,23 @@ textarea.#{$input} {
     position: relative;
     display: flex;
     width: 100%;
-    border: 1px solid $border-color-normal;
+    border: 1px solid use-color('gray-30');
     box-sizing: border-box;
-    border-radius: $border-radius;
-    background-color: #fff;
+    border-radius: 2px;
+    background-color: use-color('white');
     transition: border-color 0.3s;
 
     &:not(.disabled):hover {
-      border-color: $border-color-active;
+      border-color: use-color('primary');
     }
 
     &.active {
-      border-color: $border-color-active;
+      border-color: use-color('primary');
     }
 
     &.disabled {
-      color: $disabled-color;
-      background-color: $disabled-bg-color;
+      color: use-color('gray-50');
+      background-color: use-color('gray-10');
     }
   }
 
@@ -150,9 +149,13 @@ textarea.#{$input} {
     .hi-input__clear {
       display: block;
       border-radius: 50%;
-      color: #666;
-      font-size: 14px;
+      color: use-color('gray-50');
+      font-size: 22px;
       text-align: center;
+
+      &:hover {
+        color: use-color('black');
+      }
     }
 
     .hi-input__suffix__icon {
@@ -177,8 +180,8 @@ textarea.#{$input} {
     flex-direction: column;
     justify-content: space-around;
     flex: 1 0 auto;
-    color: $normal-color;
-    font-size: $font-size;
+    color: use-color('black');
+    font-size: $font-size-normal;
     line-height: 30px;
   }
 
@@ -216,7 +219,7 @@ textarea.#{$input} {
   }
 
   &__append {
-    color: $border-color-active;
+    color: use-color('primary');
 
     .hi-btn,
     .hi-select__input {
@@ -239,35 +242,7 @@ textarea.#{$input} {
       display: flex;
       justify-content: space-around;
       align-items: center;
-      color: #f00;
-    }
-  }
-}
-
-@each $key, $value in $palette-primary {
-  .theme__#{$key}.#{$input} {
-    .hi-input__inner:not(.disabled):hover {
-      border-color: $value;
-    }
-
-    .hi-input__inner.active {
-      border-color: $value;
-    }
-
-    .hi-input--append {
-      .hi-input__append {
-        color: $value;
-      }
-    }
-  }
-
-  textarea.#{$input}.theme__#{$key} {
-    &:not(.disabled):hover {
-      border-color: $value;
-    }
-
-    &.active {
-      border-color: $value;
+      color: get-color($palette-secondary, 'danger');
     }
   }
 }

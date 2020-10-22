@@ -11,7 +11,7 @@ class Demo extends React.Component {
       {
         content: '电视',
         id: 1,
-        icon: 'internet'
+        icon: 'global'
       },
       {
         content: '小米MIX',
@@ -106,11 +106,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoRow = () => (
-  <DocViewer
-    code={code}
-    desc={desc}
-    scope={{ Menu }}
-    prefix={prefix}
-  />
+  <DocViewer code={code} desc={desc} scope={{ Menu }} prefix={prefix} />
 )
 export default DemoRow

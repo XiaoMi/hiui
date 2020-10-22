@@ -16,15 +16,15 @@ class Demo extends React.Component {
       typeList:[
         {
           id:'large',
-          content:'大号' 
+          content:'大号'
         },
         {
           id:'default',
-          content:'中号' 
+          content:'中号'
         },
         {
           id:'small',
-          content:'小号' 
+          content:'小号'
         }
       ],
       position:'large',
@@ -65,36 +65,28 @@ class Demo extends React.Component {
         />
         </Col>
       </Row>
-      <Row gutter>                                          
-        <Col span={12}>
+      <Row gutter>
+        <Col span={24}>
           <div style={{display:'inline-block'}}>
             <Progress percent={this.state.percent} apperance='circle' radius={radius}/>
           </div>
           <div style={{display:'inline-block',marginLeft: '50px'}}>
-            <Progress percent={this.state.percent} apperance='circle' type='success' radius={radius} content={<i className='hi-icon icon-check' style={{fontSize: '18px'}}/>} />
-          </div>
-          <div style={{display:'inline-block',marginLeft: '50px'}}>
-          <Progress percent={this.state.percent} apperance='circle' type='warn' radius={radius} content={<i className='hi-icon icon-alarm' style={{fontSize: '18px'}}/>}/>
-        </div>
-          <div style={{display:'inline-block',marginLeft: '50px'}}>
             <Progress percent={this.state.percent} apperance='circle' type='error' radius={radius} content={<i className='hi-icon icon-close' style={{fontSize: '18px'}}/>}/>
           </div>
-          
+          <div style={{display:'inline-block',marginLeft: '50px'}}>
+            <Progress percent={this.state.percent} apperance='circle' type='warn' radius={radius} content={<i className='hi-icon icon-alarm' style={{fontSize: '18px'}}/>}/>
+          </div>
+          <div style={{display:'inline-block',marginLeft: '50px'}}>
+            <Progress percent={this.state.percent} apperance='circle' type='success' radius={radius} content={<i className='hi-icon icon-check' style={{fontSize: '18px'}}/>} />
+          </div>
         </Col>
       </Row>
 
-      
-        
+
+
       </div>
     )
   }
 }`
-const DemoCircle = () => (
-  <DocViewer
-    code={code}
-    scope={{ Progress, Grid, Radio, Button }}
-    prefix={prefix}
-    desc={desc}
-  />
-)
+const DemoCircle = () => <DocViewer code={code} scope={{ Progress, Grid, Radio, Button }} prefix={prefix} desc={desc} />
 export default DemoCircle

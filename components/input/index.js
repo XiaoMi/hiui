@@ -5,7 +5,8 @@ import './style/index'
 import InputLegacy from './input-legacy'
 import Provider from '../context'
 
-function SwitchVersion (component = {}, componentLegacy = {}) {
+function SwitchVersion(component = {}, componentLegacy = {}) {
+  // eslint-disable-next-line react/display-name
   return forwardRef((props, ref) => {
     const InnerComponent = props.legacy === true ? componentLegacy : component
     return <InnerComponent {...props} ref={ref} />
@@ -14,4 +15,4 @@ function SwitchVersion (component = {}, componentLegacy = {}) {
 
 export default SwitchVersion(Provider(Input), InputLegacy)
 
-export {Input}
+export { Input }

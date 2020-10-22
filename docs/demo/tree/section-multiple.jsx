@@ -46,15 +46,17 @@ class Demo extends React.Component {
           checkable
           editable={true}
           data={this.treeData}
-          checkedIds={this.state.checkedKeys}
+          // checkedIds={this.state.checkedKeys}
           onChange={(checkedKeys, title, bool, semi) => {
             console.log('Tree data:', checkedKeys, title, bool ,semi)
             this.setState({
               checkedKeys
             })
           }}
-          highlightable
-          onClick={data=>{console.log('tree node click',data)}}
+          onCheck={(a,b,c)=>{
+            console.log('>>>>>',a,b,c)
+            }}
+          onSelect={(item) => console.log('select node', item)}
         />
       </div>
     )

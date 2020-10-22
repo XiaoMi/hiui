@@ -2,42 +2,44 @@ import React, { Component, forwardRef } from 'react'
 import locales from '../locales'
 
 export const ThemeContext = React.createContext('hiui-blue')
-export const LocaleContext = React.createContext('zh-Hans')
+export const LocaleContext = React.createContext('zh-CN')
 /**
  * 临时解决 notice组件获取不到theme的问题
  */
 let noticeTheme = ''
-let confirmLocale = ''
-export default (WrappedComponent) => {
+export default WrappedComponent => {
   class WrapperComponent extends Component {
     static displayName = WrappedComponent.name
     render () {
       const { theme, locale, innerRef, ...restProps } = this.props
       let ConsumerComponent = (
         <ThemeContext.Consumer>
-          {(contextTheme) => {
+          {contextTheme => {
             noticeTheme = noticeTheme || contextTheme
             return (
               <LocaleContext.Consumer>
-                {(contextLocale) => {
-                  confirmLocale = confirmLocale || contextLocale
-                  return (
-                    <WrappedComponent
-                      theme={WrappedComponent.IS_HIUI_NOTICE ? noticeTheme : contextTheme}
-                      locale={WrappedComponent.IS_HIUI_CONFIRM ? confirmLocale : contextLocale}
-                      localeDatas={WrappedComponent.IS_HIUI_CONFIRM ? locales[confirmLocale] : locales[contextLocale]}
-                      ref={innerRef}
-                      innerRef={innerRef}
-                      {...restProps}
-                    />
-                  )
-                }}
+                {contextLocale => (
+                  <WrappedComponent
+                    theme={
+                      WrappedComponent.IS_HIUI_NOTICE
+                        ? noticeTheme
+                        : contextTheme
+                    }
+                    locale={contextLocale}
+                    localeDatas={locales[contextLocale]}
+                    ref={innerRef}
+                    innerRef={innerRef}
+                    {...restProps}
+                  />
+                )}
               </LocaleContext.Consumer>
             )
           }}
         </ThemeContext.Consumer>
       )
-      return wrapProvider(theme, ThemeContext)(locale, LocaleContext)(ConsumerComponent)
+      return wrapProvider(theme, ThemeContext)(locale, LocaleContext)(
+        ConsumerComponent
+      )
     }
   }
   return forwardRef((props, ref) => {
@@ -55,8 +57,12 @@ function wrapProvider (value, context) {
   }
   if (!context) {
     let component = value
-    wrapProvider.Providers.reverse().map((obj) => {
-      component = <obj.context.Provider value={obj.value}>{component}</obj.context.Provider>
+    wrapProvider.Providers.reverse().map(obj => {
+      component = (
+        <obj.context.Provider value={obj.value}>
+          {component}
+        </obj.context.Provider>
+      )
     })
     wrapProvider.Providers = []
     return component

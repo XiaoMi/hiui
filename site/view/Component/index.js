@@ -184,6 +184,6 @@ export default connect((state) => ({
   locale: state.global.locale,
   designs: state.global.designNavs,
   templates: state.global.templatesNavs,
-  docs: state.global.componentsNavs,
+  docs: state.global.docsNavs,
   allComponents: state.global.components
 }))(Component)

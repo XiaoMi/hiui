@@ -108,7 +108,7 @@ Group.propTypes = {
   name: PropTypes.string,
   onChange: PropTypes.func,
   style: PropTypes.object,
-  value: PropTypes.arrayOf(PropTypesArrayOfStringOrNumber)
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypesArrayOfStringOrNumber)])
 }
 
 Group.defaultProps = {

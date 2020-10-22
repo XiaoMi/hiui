@@ -6,45 +6,48 @@ import './style/index'
 
 // const url = 'http://i1.mifile.cn/f/i/hiui/docs/'
 class Carousel extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.rootRef = React.createRef()
     const defaultActive = props.defaultActive
     this.state = {
       rootWidth: 0,
       showArrow: false,
-      active: (defaultActive >= props.children.length || defaultActive < 0) ? 0 : defaultActive
+      active: defaultActive >= props.children.length || defaultActive < 0 ? 0 : defaultActive
     }
     this.timer = null
   }
 
-  componentDidMount () {
-    this.setState({
-      rootWidth: this.rootRef.current.clientWidth
-    }, () => {
-      if (this.props.duration) {
-        this.autoPage()
+  componentDidMount() {
+    this.setState(
+      {
+        rootWidth: this.rootRef.current.clientWidth
+      },
+      () => {
+        if (this.props.duration) {
+          this.autoPage()
+        }
       }
-    })
+    )
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.timer && window.clearInterval(this.timer)
   }
 
-  autoPage () {
+  autoPage() {
     this.timer = window.setInterval(() => {
       this.preNextEvent(1)
     }, this.props.duration)
   }
 
-  pageEvent (active) {
+  pageEvent(active) {
     this.setState({
       active
     })
   }
 
-  preNextEvent (val) {
+  preNextEvent(val) {
     let active = this.state.active + val
     if (active >= this.props.children.length) {
       active = 0
@@ -57,7 +60,7 @@ class Carousel extends Component {
     })
   }
 
-  mouseEvent (type) {
+  mouseEvent(type) {
     let showArrow = true
     if (type === 'over') {
       this.timer && window.clearInterval(this.timer)
@@ -65,36 +68,34 @@ class Carousel extends Component {
       showArrow = false
       this.props.duration && this.autoPage()
     }
-    this.setState({showArrow})
+    this.setState({ showArrow })
   }
 
-  render () {
+  render() {
     const { rootWidth, active, showArrow } = this.state
     const { showDots, showArrows, showPages } = this.props
     const children = React.Children.toArray(this.props.children)
     const len = children.length || 0
-    const arrowCls = classNames(
-      'hi-carousel__arrows',
-      showArrow && 'hi-carousel__arrows--show'
-    )
-    return <div
-      className='hi-carousel'
-      ref={this.rootRef}
-      onMouseOver={this.mouseEvent.bind(this, 'over')}
-      onMouseOut={this.mouseEvent.bind(this, 'out')}>
+    const arrowCls = classNames('hi-carousel__arrows', showArrow && 'hi-carousel__arrows--show')
+    return (
       <div
-        className='hi-carousel__container'
-        style={{
-          width: rootWidth * children.length
-        }}
+        className="hi-carousel"
+        ref={this.rootRef}
+        onMouseOver={this.mouseEvent.bind(this, 'over')}
+        onMouseOut={this.mouseEvent.bind(this, 'out')}
       >
-        {
-          children.map((child, index) => {
+        <div
+          className="hi-carousel__container"
+          style={{
+            width: rootWidth * children.length
+          }}
+        >
+          {children.map((child, index) => {
             return React.cloneElement(child, {
               key: index,
               style: {
                 position: 'relative',
-                zIndex:active === index ? 2 : 1,
+                zIndex: active === index ? 2 : 1,
                 opacity: active === index ? 1 : 0,
                 transition: 'opacity 300ms ease 0s',
                 left: -(rootWidth * index),
@@ -104,39 +105,35 @@ class Carousel extends Component {
                 ...child.props.style
               }
             })
-          })
-        }
-      </div>
-      {
-        showArrows && <ul className={arrowCls}>
-          <li className='hi-carousel__arrow' onClick={this.preNextEvent.bind(this, -1)}>
-            <Icon name='left' />
-          </li>
-          <li className='hi-carousel__arrow' onClick={this.preNextEvent.bind(this, 1)}>
-            <Icon name='right' />
-          </li>
-        </ul>
-      }
-      {
-        showDots && <ul className='hi-carousel__dots'>
-          {
-            children.map((_, index) => {
-              const cls = classNames('hi-carousel__dot', active === index && 'hi-carousel__dot--active')
-              return <li
-                className={cls}
-                key={index}
-                onClick={this.pageEvent.bind(this, index)}
-              />
-            })
-          }
-        </ul>
-      }
-      {
-        showPages && <div className='hi-carousel__pages'>
-          <span>{active} / {len}</span>
+          })}
         </div>
-      }
-    </div>
+        {showArrows && (
+          <ul className={arrowCls}>
+            <li className="hi-carousel__arrow" onClick={this.preNextEvent.bind(this, -1)}>
+              <Icon name="left" />
+            </li>
+            <li className="hi-carousel__arrow" onClick={this.preNextEvent.bind(this, 1)}>
+              <Icon name="right" />
+            </li>
+          </ul>
+        )}
+        {showDots && (
+          <ul className="hi-carousel__dots">
+            {children.map((_, index) => {
+              const cls = classNames('hi-carousel__dot', active === index && 'hi-carousel__dot--active')
+              return <li className={cls} key={index} onClick={this.pageEvent.bind(this, index)} />
+            })}
+          </ul>
+        )}
+        {showPages && (
+          <div className="hi-carousel__pages">
+            <span>
+              {active} / {len}
+            </span>
+          </div>
+        )}
+      </div>
+    )
   }
 }
 

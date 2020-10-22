@@ -22,13 +22,24 @@ import DemoIcon from '../../demo/breadcrumb/section-icon.jsx'
 
 <DemoIcon />
 
+<!-- ## 带下拉
+
+import DemoDropdown from '../../demo/breadcrumb/section-dropdown.jsx'
+
+<DemoDropdown /> -->
+
 ## Props
 
-| 参数      | 说明         | 类型                    | 可选值 | 默认值 |
-| --------- | ------------ | ----------------------- | ------ | ------ |
-| data      | 面包屑数据   | DataItem []             | -      | -      |
-| separator | 自定义分隔符 | string                  | -      | '      | ' |
-| onClick   | 点击回调函数 | （path: string）=> void | -      | -      |
+| 参数      | 说明         | 类型        | 可选值 | 默认值 |
+| --------- | ------------ | ----------- | ------ | ------ |
+| data      | 面包屑数据   | DataItem [] | -      | -      |
+| separator | 自定义分隔符 | string      | -      | '/'    |
+
+## Events
+
+| 名称    | 说明         | 类型                    | 参数                   | 返回值 |
+| ------- | ------------ | ----------------------- | ---------------------- | ------ |
+| onClick | 点击回调函数 | （path: string）=> void | path: 点击的 path 路径 | -      |
 
 ## Type
 

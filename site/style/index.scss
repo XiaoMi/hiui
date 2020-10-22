@@ -6,6 +6,7 @@
   .layout__body {
     position: relative;
     z-index: 1;
+    display: block;
   }
 
   .layout__main--lr {
@@ -40,7 +41,7 @@
       }
 
       & > li:first-child {
-        margin-top: 24px;
+        margin-top: 4px;
       }
 
       & > li:last-child {

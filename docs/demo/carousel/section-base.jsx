@@ -19,13 +19,7 @@ class Demo extends React.Component {
         >
           {
             data.map((item,index) => {
-              return <div 
-                style={{height: 300, textAlign: 'center', lineHeight: '300px', background: '#428ef5', color: '#fff'}} 
-                key={index}
-                onClick={()=>{
-                  console.log(index)
-                }}
-                >{item}</div>
+              return <div style={{height: 300, textAlign: 'center', lineHeight: '300px', background: '#428ef5', color: '#fff'}} key={index}>{item}</div>
             })
           }
         </Carousel>

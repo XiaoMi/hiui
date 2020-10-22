@@ -1,78 +1,153 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
+
+$color-map: (
+  'primary': use-color('primary'),
+  'warning': get-color($palette-secondary, 'warning'),
+  'success': get-color($palette-secondary, 'success'),
+  'danger': get-color($palette-secondary, 'danger'),
+  'default': use-color('gray-70')
+) !default;
 
 $prefix: 'hi-tag' !default;
+$prefixGroup: 'hi-tag-group' !default;
+
 $primary: get-color($palette-primary, 'hiui-blue') !default;
-$normal: #999 !default;
+
+.tag-transition {
+  &-enter {
+    opacity: 0;
+  }
+
+  &-enter-done {
+    opacity: 1;
+    transition: opacity 0.3s !important;
+  }
+
+  &-exit {
+    opacity: 1;
+  }
+
+  &-exit-done {
+    opacity: 0;
+    transition: opacity 3s;
+  }
+}
 
 .#{$prefix} {
-  &__container {
-    height: $line-height-size-normal;
-    display: inline-block;
-    vertical-align: middle;
-    padding: 0 6px;
-    font-size: $font-size-small;
-    box-sizing: border-box;
-    text-align: center;
-    line-height: $line-height-size-normal;
-    -webkit-font-smoothing: antialiased;
+  padding: 0 6px;
+  color: use-color('white');
+  line-height: 20px;
+  box-sizing: border-box;
+  border-color: transparent;
+  margin-right: 4px;
+  margin-left: 4px;
+  border-radius: 11px;
+  font-size: 12px;
+  display: inline-block;
+  user-select: none;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 0.65;
+  }
+
+  @each $key, $value in $color-map {
+    &--#{$key} {
+      background-color: $value;
+      border: 1px solid $value;
+    }
+  }
+
+  &--line {
+    background: use-color('white');
+
+    @each $key, $value in $color-map {
+      &.#{$prefix}--#{$key} {
+        border: 1px solid $value;
+        color: $value;
+      }
+    }
+  }
+
+  &.#{$prefix}--square {
     border-radius: 2px;
+  }
 
-    & + & {
-      margin-left: 10px;
-    }
+  .#{$prefix}__btn {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 2px;
+    outline: 0;
+    font-size: $font-size-small;
+    line-height: 16px;
+    cursor: pointer;
+    opacity: 0.54;
+    background-color: transparent;
+    color: inherit;
+    transition: box-shadow $speed-fast $easing, opacity $speed-fast $easing;
 
-    &--default {
-      background: $primary;
-      color: $white;
-
-      &.#{$prefix}__container--normal {
-        background: $normal;
-      }
-
-      @each $key in 'success', 'danger', 'warning' {
-        &.#{$prefix}__container--#{$key} {
-          $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
-
-          background: $status-color;
-        }
-      }
-    }
-
-    &--line {
-      background: transparent;
-      border: 1px solid $primary;
-      color: $primary;
-      padding: 0 5px;
-      line-height: $line-height-size-normal - 2;
-
-      &.#{$prefix}__container--normal {
-        border: 1px solid $normal;
-        color: $normal;
-      }
-
-      @each $key in 'success', 'danger', 'warning' {
-        &.#{$prefix}__container--#{$key} {
-          $status-color: map-get(get-palette(get-color($palette-secondary, $key)), '50');
-
-          border: 1px solid $status-color;
-          color: $status-color;
-        }
-      }
-    }
-
-    &--click {
-      cursor: pointer;
+    &:focus,
+    &:hover,
+    &:active {
+      opacity: 1;
     }
   }
 }
 
-@each $key, $value in $theme-colors {
-  .theme__#{$key}.hi-tag__container--primary.hi-tag__container--default {
-    background: $value;
-  }
+.#{$prefixGroup} {
+  &__editable {
+    display: flex;
+    align-items: center;
 
-  .theme__#{$key}.hi-tag__container--primary.hi-tag__container--line {
-    border: 1px solid $value;
-    color: $value;
+    .#{$prefix} {
+      background: use-color('white');
+      border: 1px solid use-color('gray-30');
+      color: use-color('black');
+      cursor: pointer;
+      transition: border-color 0.3s;
+
+      &:hover {
+        border: 1px solid use-color('primary') !important;
+        opacity: 1;
+      }
+
+      .hi-icon {
+        margin-left: 3px;
+        cursor: pointer;
+      }
+    }
+
+    &--input {
+      margin: 0 4px;
+      border-radius: 11px;
+      border: 1px solid use-color('primary');
+      outline: none;
+      padding: 2px 8px;
+      font-size: 12px;
+      box-sizing: border-box;
+      display: inline-block;
+      line-height: 16px;
+    }
+
+    &--plus {
+      width: 50px;
+      border-radius: 11px;
+      border: 1px dashed use-color('gray-30');
+      display: inline-block;
+      line-height: 20px;
+      text-align: center;
+      margin-left: 4px;
+      box-sizing: border-box;
+      cursor: pointer;
+      font-size: 12px;
+      transition: border-color 0.3s;
+
+      &:hover {
+        border-color: use-color('primary');
+      }
+    }
   }
 }

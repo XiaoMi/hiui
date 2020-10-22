@@ -1,0 +1,19 @@
+$hoverColor: #ecf6fd !default;
+$selectColor: #f7f7f7 !default;
+
+.hi-select {
+  display: inline-block;
+  width: 100%;
+  font-size: 14px;
+  overflow: hidden;
+  vertical-align: middle;
+
+  &.is-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &__hide {
+    display: none;
+  }
+}

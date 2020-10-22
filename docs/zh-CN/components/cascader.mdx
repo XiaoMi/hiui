@@ -16,32 +16,43 @@ import DemoBasic from '../../demo/cascader/section-basic.jsx'
 
 <DemoBasic />
 
+## 可搜索用法
+
+import DemoSearch from '../../demo/cascader/section-search.jsx'
+
+<DemoSearch />
+
 ## 特殊用法
 
 import DemoAdvanced from '../../demo/cascader/section-advanced.jsx'
 
 <DemoAdvanced />
 
-import { Badge } from '@libs'
-
 ## Props
 
-| 参数           | 说明                                                                                                     | 类型                                         | 可选值        | 默认值                                                  |
-| -------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ------------- | ------------------------------------------------------- |
-| fieldNames     | 设置 options 中 label, value, children 对应的 key                                                        | object                                       | -             | { label: 'label', value: 'value', children: 'children'} |
-| data           | 设置选择项数据源                                                                                         | DataItem[]                                   | -             | -                                                       |
-| value          | 设置当前选中值                                                                                           | string[]                                     | -             | []                                                      |
-| searchable     | 是否可搜索                                                                                               | boolean                                      | true \| false | false                                                   |
-| filterOption   | 第一个参数为输入的关键字，第二个为数据项，返回值为 true 时将出现在结果项。仅在 searchable 为 true 时有效 | (keyword: string, item: DataItem) => boolean | -             | -                                                       |
-| clearable      | 是否可清空                                                                                               | boolean                                      | true \| false | true                                                    |
-| disabled       | 是否禁止使用                                                                                             | boolean                                      | true \| false | false                                                   |
-| changeOnSelect | 是否启用选择即改变功能                                                                                   | boolean                                      | true \| false | false                                                   |
-| placeholder    | 输入框占位                                                                                               | string                                       | -             | '请选择'                                                |
-| emptyContent   | 设置选项为空时展示的内容                                                                                 | string \| ReactNode                          | -             | '无匹配数据'                                            |
-| displayRender  | 自定义选择后展示的内容                                                                                   | (value: string[]) => string                  | -             | -                                                       |
-| style          | 自定义样式                                                                                               | object                                       | -             | -                                                       |
-| onChange       | 选择后的回调                                                                                             | (value: string[]) => void                    | -             | -                                                       |
-| trigger       | 展开下一级的触发方式                                                                                             | string                   | 'hover' \| 'click'            | 'click'                                                       |
+| 参数             | 说明                                                                                                     | 类型                                         | 可选值             | 默认值                                                  |
+| ---------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ------------------ | ------------------------------------------------------- |
+| fieldNames       | 设置 options 中 label, value, children 对应的 key                                                        | object                                       | -                  | { label: 'label', value: 'value', children: 'children'} |
+| data             | 设置选择项数据源                                                                                         | DataItem[]                                   | -                  | -                                                       |
+| value            | 设置当前选中值                                                                                           | string[]                                     | -                  | []                                                      |
+| defaultValue     | 设置当前选中值默认值 (3.0 新增)                                                                          | string[]                                     | -                  | []                                                      |
+| expandTrigger    | 次级菜单的展开方式，可选 'click' 和 'hover'                                                              | string                                       | 'click' \| 'hover' | 'click'                                                 |
+| searchable       | 是否可搜索                                                                                               | boolean                                      | true \| false      | false                                                   |
+| filterOption     | 第一个参数为输入的关键字，第二个为数据项，返回值为 true 时将出现在结果项。仅在 searchable 为 true 时有效 | (keyword: string, item: DataItem) => boolean | -                  | -                                                       |
+| clearable        | 是否可清空                                                                                               | boolean                                      | true \| false      | true                                                    |
+| disabled         | 是否禁止使用                                                                                             | boolean                                      | true \| false      | false                                                   |
+| changeOnSelect   | 是否启用选择即改变功能                                                                                   | boolean                                      | true \| false      | false                                                   |
+| placeholder      | 输入框占位                                                                                               | string                                       | -                  | '请选择'                                                |
+| emptyContent     | 设置选项为空时展示的内容                                                                                 | string \| ReactNode                          | -                  | '无匹配数据'                                            |
+| displayRender    | 自定义选择后展示的内容                                                                                   | (value: string[]) => string                  | -                  | -                                                       |
+| style            | 自定义样式                                                                                               | object                                       | -                  | -                                                       |
+| overlayClassName | 下拉根元素的类名称                                                                                       | string                                       | -                  | -                                                       |
+
+## Events
+
+| 名称     | 说明         | 类型                       | 参数               | 返回值 |
+| -------- | ------------ | -------------------------- | ------------------ | ------ |
+| onChange | 选择后的回调 | (values: string[]) => void | values: 选中项集合 | -      |
 
 ## Type
 

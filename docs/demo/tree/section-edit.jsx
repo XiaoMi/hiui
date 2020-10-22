@@ -47,15 +47,15 @@ class Demo extends React.Component {
       <div style={{width:500}}>
         <Tree
           defaultExpandAll
-          apperance="line"
           editable={true}
+          apperance={'line'}
           data={this.state.treeData}
           onBeforeSave={(saveNode, data, level) => {
             console.log(saveNode, data,level)
             return true
           }}
           onSave={(saveNode, data) => {
-            
+
             console.log(saveNode, data)
           }}
           onBeforeDelete={(deleteNode, data, level) => {
@@ -66,7 +66,6 @@ class Demo extends React.Component {
             console.log(deleteNode, data)
           }}
           onChange={data => {console.log('Tree data:', data)}}
-          highlightable
         />
       </div>
     )
@@ -100,7 +99,6 @@ class Demo extends React.Component {
             <Tree
               searchable
               defaultExpandAll
-              apperance="line"
               editable={true}
               data={this.state.treeData}
               onSave={(saveNode, data, level) => {
@@ -114,9 +112,9 @@ class Demo extends React.Component {
                   return true
                 }
                 console.log(saveNode, data,level)
-                
+
               }}
-              
+
               onDelete={(deleteNode, data) => {
                 console.log(deleteNode, data)
               }}
@@ -151,7 +149,6 @@ class Demo extends React.Component {
                 }]
               }}
               onChange={data => {console.log('Tree data:', data)}}
-              highlightable
             />
           </div>
         )
@@ -161,12 +158,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoEdit = () => (
-  <DocViewer
-    code={code}
-    scope={{ Tree, Notification }}
-    prefix={prefix}
-    desc={desc}
-    rightOptions={rightOptions}
-  />
+  <DocViewer code={code} scope={{ Tree, Notification }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
 )
 export default DemoEdit

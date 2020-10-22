@@ -5,17 +5,17 @@ import Popper from '../popper'
 import Icon from '../icon'
 import Title from './Title'
 class SubMenu extends Component {
-  onClick (index) {
+  onClick(index) {
     this.props.onClick(index)
   }
 
-  checkActive (activeIndex, index) {
+  checkActive(activeIndex, index) {
     const indexArr = index.split('-')
     const activeIndexArr = activeIndex.split('-')
     return activeIndexArr.slice(0, indexArr.length).join('-') === index
   }
 
-  checkExpand (activeIndex, expandIndex, index) {
+  checkExpand(activeIndex, expandIndex, index) {
     return expandIndex.some((item) => {
       const indexArr = index.split('-')
       const expandIndexArr = item.split('-')
@@ -23,8 +23,8 @@ class SubMenu extends Component {
     })
   }
 
-  renderPopperMenu (deepSubmenu, isExpand) {
-    const { mini, datas, index, renderMenu, fatMenu, clickInside, theme } = this.props
+  renderPopperMenu(deepSubmenu, isExpand) {
+    const { mini, datas, index, renderMenu, fatMenu, clickInside, theme, overlayClassName } = this.props
     let leftGap
     let topGap
     let placement
@@ -46,6 +46,7 @@ class SubMenu extends Component {
         zIndex={1050}
         topGap={topGap}
         leftGap={leftGap}
+        overlayClassName={overlayClassName}
         className={classNames('hi-submenu__popper', `theme__${theme}`, {
           'hi-submenu__popper--fat': fatMenu
         })}
@@ -62,7 +63,7 @@ class SubMenu extends Component {
     )
   }
 
-  renderVerticalMenu (isActive, isExpand) {
+  renderVerticalMenu(isActive, isExpand) {
     const { datas, index, renderMenu, clickInside, theme } = this.props
     return (
       <ul
@@ -77,7 +78,7 @@ class SubMenu extends Component {
     )
   }
 
-  render () {
+  render() {
     const { content, icon, mode, mini, level, index, activeIndex, expandIndex, disabled, fatMenu, theme } = this.props
     const isExpand = this.checkExpand(activeIndex, expandIndex, index)
     const isActive = this.checkActive(activeIndex, index)
@@ -111,7 +112,7 @@ class SubMenu extends Component {
           }}
         >
           <Title icon={icon} content={content} mini={mini} level={level} placement={mode} />
-          <div className='hi-menu__title-toggle-icon'>
+          <div className="hi-menu__title-toggle-icon">
             <Icon name={toggleIcon} />
           </div>
         </div>

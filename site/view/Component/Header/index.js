@@ -5,42 +5,38 @@ import { NavGroup } from '@hi-ui/classic-theme'
 import locales from '../../../locales'
 
 export default class NavHeader extends Component {
-  render () {
+  render() {
     const { locale } = this.props
-    // const { locale, onLocaleChange } = this.props
-    const { home, components, template, design } = locales[locale].headers
+    const { home, components, template, design, docs } = locales[locale].headers
     return (
       <React.Fragment>
-        <NavGroup position='right'>
+        <NavGroup position="right">
           <NavGroup.Item>
-            <NavLink to={`<BASE_URL>/${locale}`} exact activeClassName='header__nav-link--active'>
+            <NavLink to={`<BASE_URL>/${locale}`} exact activeClassName="header__nav-link--active">
               {home}
             </NavLink>
           </NavGroup.Item>
 
           <NavGroup.Item>
-            <NavLink
-              to={`<BASE_URL>/${locale}/designs/summarize`}
-              activeClassName='header__nav-link--active'
-            >
+            <NavLink to={`<BASE_URL>/${locale}/designs/summarize`} activeClassName="header__nav-link--active">
               {design}
             </NavLink>
           </NavGroup.Item>
 
           <NavGroup.Item>
-            <NavLink
-              to={`<BASE_URL>/${locale}/docs/quick-start`}
-              activeClassName='header__nav-link--active'
-            >
+            <NavLink to={`<BASE_URL>/${locale}/docs/quick-start`} activeClassName="header__nav-link--active">
+              {docs}
+            </NavLink>
+          </NavGroup.Item>
+
+          <NavGroup.Item>
+            <NavLink to={`<BASE_URL>/${locale}/components/grid`} activeClassName="header__nav-link--active">
               {components}
             </NavLink>
           </NavGroup.Item>
 
           <NavGroup.Item>
-            <NavLink
-              to={`<BASE_URL>/${locale}/templates/portal`}
-              activeClassName='header__nav-link--active'
-            >
+            <NavLink to={`<BASE_URL>/${locale}/templates/portal`} activeClassName="header__nav-link--active">
               {template}
             </NavLink>
           </NavGroup.Item>
@@ -50,8 +46,8 @@ export default class NavHeader extends Component {
           </NavGroup.Item> */}
 
           <NavGroup.Item>
-            <a href='https://github.com/XiaoMi/hiui'>
-              <i className='hi-fa fa-github' />
+            <a href="https://github.com/XiaoMi/hiui">
+              <i className="hi-fa fa-github" />
             </a>
           </NavGroup.Item>
         </NavGroup>

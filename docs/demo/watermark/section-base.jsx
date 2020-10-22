@@ -6,7 +6,8 @@ const prefix = 'watermark-base'
 const desc = ''
 const code = `import React from 'react'
 import logo from '本地图片路径或者base64'
-import Watermark from '@hi-ui/hiui/es/watermark'\n
+import Watermark from '@hi-ui/hiui/es/watermark'
+
 class Demo extends React.Component {
   constructor(props) {
     super(props)
@@ -28,7 +29,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBase = () => (
-  <DocViewer desc={desc} code={code} scope={{ Watermark, logo }} prefix={prefix} />
-)
+const DemoBase = () => <DocViewer desc={desc} code={code} scope={{ Watermark, logo }} prefix={prefix} />
 export default DemoBase

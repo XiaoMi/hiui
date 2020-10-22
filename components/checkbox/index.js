@@ -1,12 +1,16 @@
+import React from 'react'
 import Checkbox from './Checkbox'
 import CheckboxLegacy from './checkbox-legacy/index'
 import Group from './Group'
-import SwitchVersion from '../_util/SwitchVersion'
 import './style/index'
 
-const VGroup = SwitchVersion(Group, undefined)
-const VCheckbox = SwitchVersion(Checkbox, CheckboxLegacy)
+const VCheckbox = ({ legacy, ...props }) => {
+  const WrapperComponent = legacy ? CheckboxLegacy : Checkbox
+  return <WrapperComponent {...props} />
+}
 
-VCheckbox.Group = VGroup
+VCheckbox.Group = Group
+VCheckbox.displayName = 'Checkbox'
 
 export default VCheckbox
+export { CheckboxLegacy }

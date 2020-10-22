@@ -2,10 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Select from '../../../components/select'
 const prefix = 'select-custom'
-const desc = [
-  '选项结构：可自定义选项的信息结构或样式',
-  '搜索条件：可自定义搜索条件的算法'
-]
+const desc = ['选项结构：可自定义选项的信息结构或样式', '搜索条件：可自定义搜索条件的算法']
 const rightOptions = ['选项结构', '搜索条件']
 
 const code = [
@@ -95,12 +92,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoCustom = () => (
-  <DocViewer
-    code={code}
-    scope={{ Select }}
-    prefix={prefix}
-    desc={desc}
-    rightOptions={rightOptions}
-  />
+  <DocViewer code={code} scope={{ Select }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
 )
 export default DemoCustom

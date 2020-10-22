@@ -1,17 +1,25 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
+@import './animate.scss';
+
 $prefix: 'hi-tabs' !default;
 
 .#{$prefix} {
   .#{$prefix}__header {
     position: relative;
-    font-size: 14px;
-    color: #333;
+    font-size: $font-size-normal;
+    color: use-color('black');
   }
 
   .#{$prefix}__item {
     flex: 0 1 auto;
     cursor: pointer;
     border: 1px solid transparent;
+    transition: all 300ms;
+
+    &--disabled {
+      color: use-color('gray-50') !important;
+      cursor: not-allowed;
+    }
 
     &:not(&--active) {
       overflow: hidden;
@@ -21,6 +29,10 @@ $prefix: 'hi-tabs' !default;
 
     &--active {
       flex: none;
+    }
+
+    &--flex1 {
+      flex: 1;
     }
 
     .hi-icon:not(.icon-close) {
@@ -35,65 +47,27 @@ $prefix: 'hi-tabs' !default;
     justify-content: center;
     width: 24px;
     height: 24px;
-    color: #979797;
+    color: use-color('gray-70');
     border-radius: 2px;
     cursor: pointer;
     box-sizing: border-box;
-    font-size: 16px;
+    font-size: $font-size-large;
   }
 
   .#{$prefix}__item-close {
     margin-left: 8px;
-    font-size: 16px;
+    font-size: $font-size-large;
   }
 
-  &--line {
-    & > .#{$prefix}__header {
-      .#{$prefix}__nav {
-        display: flex;
-        flex-wrap: nowrap;
-        border-bottom: 1px solid #e6e7e8;
-      }
-
-      .#{$prefix}__item {
-        position: relative;
-        height: 40px;
-        line-height: 40px;
-        margin-right: 32px;
-        box-sizing: border-box;
-        border: none;
-        transition: color 0.5s linear;
-
-        &::after {
-          display: inline-block;
-          position: absolute;
-          content: '';
-          height: 2px;
-          width: 100%;
-          background: #4284f5;
-          bottom: 0;
-          left: 0;
-          opacity: 0;
-          transition: opacity 0.5s linear;
-        }
-
-        &:hover {
-          color: #4284f5;
-        }
-
-        &--active {
-          &::after {
-            opacity: 1;
-          }
-
-          color: #4284f5;
-        }
-      }
-    }
+  &__content {
+    overflow: hidden;
+    display: flex;
+    position: relative;
+    flex: 1;
   }
 
   &--card {
-    & > .#{$prefix}__header {
+    .#{$prefix}__header {
       .#{$prefix}__nav {
         display: flex;
         flex-wrap: nowrap;
@@ -106,13 +80,13 @@ $prefix: 'hi-tabs' !default;
         box-sizing: border-box;
 
         &:hover {
-          color: #4284f5;
+          color: use-color('primary');
         }
 
         &--active {
-          border: 1px solid #e6e7e8;
+          border: 1px solid use-color('gray-20');
           border-radius: 2px;
-          color: #4284f5;
+          color: use-color('primary');
         }
       }
     }
@@ -124,12 +98,12 @@ $prefix: 'hi-tabs' !default;
     }
 
     .#{$prefix}__header {
-      border-bottom: 1px solid #e6e7e8;
+      border-bottom: 1px solid use-color('gray-20');
     }
 
     .#{$prefix}__item {
       &--active {
-        border-bottom-color: #fff;
+        border-bottom-color: use-color('white');
       }
     }
   }
@@ -141,7 +115,7 @@ $prefix: 'hi-tabs' !default;
     .#{$prefix}__header {
       flex: none;
       display: inline-block;
-      border-right: 1px solid #e6e7e8;
+      border-right: 1px solid use-color('gray-20');
     }
 
     .#{$prefix}__nav {
@@ -154,14 +128,14 @@ $prefix: 'hi-tabs' !default;
       border-bottom-left-radius: 4px;
 
       &--active {
-        border-right-color: #fff;
+        border-right-color: use-color('white');
       }
     }
   }
 
   &--editable {
-    & > .#{$prefix}__header {
-      border-bottom: 1px solid #e6e7e8;
+    .#{$prefix}__header {
+      border-bottom: 1px solid use-color('gray-20');
 
       .#{$prefix}__nav {
         display: flex;
@@ -174,28 +148,37 @@ $prefix: 'hi-tabs' !default;
 
       .#{$prefix}__item {
         height: 40px;
-        min-width: 48px;
         line-height: 40px;
         margin-right: 4px;
         padding: 0 8px;
-        background: #fafafa;
+        background: use-color('gray-10');
         border-radius: 2px 2px 0 0;
-        border: 1px solid #e6e7e8;
+        border: 1px solid use-color('gray-20');
         text-align: center;
         box-sizing: border-box;
+        display: flex;
+        transition: all 200ms;
+
+        &-name {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          display: block;
+        }
 
         &:last-child {
           margin-right: 0;
         }
 
         &:hover:not(.#{$prefix}__item--active) {
-          background-color: #f0f0f0;
+          background-color: use-color('gray-20');
         }
 
         &--active {
-          background-color: #fff;
-          border-bottom-color: #fff;
-          color: #4284f5;
+          background-color: use-color('white');
+          border-bottom-color: use-color('white');
+          color: use-color('primary');
+          flex: none;
         }
       }
 
@@ -207,7 +190,7 @@ $prefix: 'hi-tabs' !default;
   }
 
   &--desc {
-    & > .#{$prefix}__header {
+    .#{$prefix}__header {
       .#{$prefix}__nav {
         display: flex;
         flex-wrap: nowrap;
@@ -215,33 +198,33 @@ $prefix: 'hi-tabs' !default;
       }
 
       .#{$prefix}__item {
-        flex: none;
         display: flex;
         flex-direction: column;
         padding: 16px 20px;
         text-align: center;
-        border: 1px solid #e6e7e8;
+        border: 1px solid use-color('gray-20');
         box-sizing: border-box;
+        background-color: use-color('white');
 
         &:not(:first-child) {
           margin-left: -1px;
         }
 
         &:hover {
-          color: #4284f5;
+          color: use-color('primary');
 
           .#{$prefix}__item-desc {
-            color: #4284f5;
+            color: use-color('primary');
           }
         }
 
         &--active {
-          color: #4284f5;
-          border-color: #4284f5;
+          color: use-color('primary');
+          border-color: use-color('primary');
           z-index: 1;
 
           .#{$prefix}__item-desc {
-            color: #4284f5;
+            color: use-color('primary');
           }
         }
 
@@ -251,14 +234,14 @@ $prefix: 'hi-tabs' !default;
 
         &-desc {
           font-size: 12px;
-          color: #999;
+          color: use-color('gray-70');
         }
       }
     }
   }
 
   &--button {
-    & > .#{$prefix}__header {
+    .#{$prefix}__header {
       .#{$prefix}__nav {
         display: flex;
         flex-wrap: wrap;
@@ -271,20 +254,133 @@ $prefix: 'hi-tabs' !default;
         padding: 0 23px;
         box-sizing: border-box;
         margin-right: 24px;
-        border: 1px solid #d8d8d8;
+        border: 1px solid use-color('gray-30');
         border-radius: 18px;
 
         &:hover:not(.hi-tabs__item--active) {
-          color: #4284f5;
-          border: 1px solid #4284f5;
+          color: use-color('primary');
+          border: 1px solid use-color('primary');
         }
 
         &--active {
-          color: #fff;
-          background-color: #4284f5;
-          border: 1px solid #4284f5;
+          color: use-color('white');
+          background-color: use-color('primary');
+          border: 1px solid use-color('primary');
         }
       }
+    }
+  }
+
+  &--line {
+    .#{$prefix}__header {
+      border-bottom: 1px solid use-color('gray-20');
+
+      .#{$prefix}__nav {
+        display: flex;
+        flex-wrap: nowrap;
+      }
+
+      .#{$prefix}__item {
+        height: 40px;
+        line-height: 40px;
+        padding: 0 16px;
+        box-sizing: border-box;
+
+        &:hover {
+          color: use-color('primary');
+        }
+
+        &--active {
+          border-radius: 2px;
+          color: use-color('primary');
+        }
+      }
+    }
+
+    &__ink {
+      content: '';
+      width: 0;
+      display: block;
+      height: 2px;
+      background-color: use-color('primary');
+      bottom: -1px;
+      transition: transform 300ms;
+      position: absolute;
+
+      &-disabled {
+        background-color: use-color('gray-50');
+      }
+    }
+  }
+
+  &--line.#{$prefix}--vertical {
+    display: flex;
+    flex-wrap: nowrap;
+
+    .#{$prefix}__header {
+      flex: none;
+      display: inline-block;
+      border-right: 1px solid use-color('gray-20');
+      border-bottom: 1px solid transparent;
+    }
+
+    .#{$prefix}--line__ink {
+      content: '';
+      display: block;
+      top: 0;
+      width: 2px !important;
+      background-color: use-color('primary');
+      right: -1px;
+      height: 40px;
+      transition: transform 300ms;
+      position: absolute;
+    }
+
+    .#{$prefix}__nav {
+      flex-direction: column;
+      margin-right: -1px;
+    }
+
+    .#{$prefix}__item {
+      transition: background 300ms;
+
+      &--active {
+        background: use-color('primary-20');
+      }
+    }
+  }
+
+  &-pane {
+    position: relative;
+    width: 100%;
+  }
+
+  &--scroll {
+    .contain {
+      position: relative;
+      transition: all 300ms;
+      transform: translateX(0);
+    }
+
+    .#{$prefix}__header {
+      overflow: hidden;
+    }
+
+    .#{$prefix}__item {
+      overflow: initial !important;
+    }
+  }
+
+  &__scroll--outter {
+    display: flex;
+
+    .#{$prefix}__scroll__icon {
+      cursor: pointer;
+      display: flex;
+      font-size: 37px;
+      justify-content: center;
+      align-items: center;
+      color: use-color('gray-80');
     }
   }
 }
@@ -298,9 +394,9 @@ $prefix: 'hi-tabs' !default;
     max-height: 160px;
     padding: 4px 0;
     overflow: auto;
-    background-color: #fff;
+    background-color: use-color('white');
     border-radius: 2px;
-    border: 1px solid rgba(230, 231, 232, 1);
+    border: 1px solid use-color('gray-20');
     box-shadow: 0 2px 8px 0 rgba(56, 62, 71, 0.1);
   }
 
@@ -309,95 +405,18 @@ $prefix: 'hi-tabs' !default;
     min-width: 140px;
     line-height: 36px;
     padding: 0 16px;
-    font-size: 14px;
-    color: #383e47;
+    font-size: $font-size-normal;
+    color: use-color('black');
     white-space: nowrap;
     cursor: pointer;
     box-sizing: border-box;
 
     &:hover {
-      background-color: rgba(66, 133, 244, 0.08);
+      background-color: use-color('primary-20');
     }
 
     &--active {
-      background-color: rgba(66, 133, 244, 0.08);
-    }
-  }
-}
-
-@each $key, $value in $theme-colors {
-  .theme__#{$key}.#{$prefix} {
-    &--card {
-      & > .#{$prefix}__header {
-        .#{$prefix}__item {
-          &:hover {
-            color: $value;
-          }
-
-          &--active {
-            color: $value;
-          }
-        }
-      }
-    }
-
-    &--editable {
-      & > .#{$prefix}__header {
-        .#{$prefix}__item {
-          &--active {
-            color: $value;
-          }
-        }
-      }
-    }
-
-    &--desc {
-      & > .#{$prefix}__header {
-        .#{$prefix}__item {
-          &:hover {
-            color: $value;
-
-            .#{$prefix}__item-desc {
-              color: $value;
-            }
-          }
-
-          &--active {
-            color: $value;
-            border-color: $value;
-
-            .#{$prefix}__item-desc {
-              color: $value;
-            }
-          }
-        }
-      }
-    }
-
-    &--button {
-      & > .#{$prefix}__header {
-        .#{$prefix}__item {
-          &:hover:not(.hi-tabs__item--active) {
-            color: $value;
-            border: 1px solid $value;
-          }
-
-          &--active {
-            background-color: $value;
-            border: 1px solid $value;
-          }
-        }
-      }
-    }
-  }
-
-  .theme__#{$key}.hi-tabs-dropdown__items {
-    .hi-tabs-dropdown__item:hover {
-      background-color: rgba($value, 0.1);
-    }
-
-    .hi-tabs-dropdown__item.hi-tabs-dropdown__item--active {
-      background-color: rgba($value, 0.1);
+      background-color: use-color('primary-20');
     }
   }
 }

@@ -18,17 +18,10 @@ class Demo extends React.Component {
 
   open() {
     Message.open({
-      title:'网络错误，清重新连接'
+      title:'正在加载，请耐心等待'
     })
   }
 }`
 
-const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ Button, Message }}
-    prefix={prefix}
-    desc={desc}
-  />
-)
+const DemoBase = () => <DocViewer code={code} scope={{ Button, Message }} prefix={prefix} desc={desc} />
 export default DemoBase

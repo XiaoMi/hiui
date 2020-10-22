@@ -1,0 +1,116 @@
+@import '../../core-css/index.scss';
+
+.hi-quill-content,
+.hi-quill-toolbar-tooltip {
+  .hi-quill-custom {
+    display: inline-block;
+  }
+
+  .ql-toolbar,
+  .hi-quill-toolbar {
+    button,
+    .ql-color-picker {
+      width: 32px;
+      height: 32px;
+      border-radius: 2px;
+      text-align: center;
+      transition: all 0.3s;
+      line-height: 32px;
+
+      &:hover {
+        background-color: use-color('primary-20');
+      }
+
+      svg {
+        float: none;
+        height: 16px;
+      }
+    }
+
+    .ql-picker {
+      height: 32px;
+      line-height: 30px;
+      border-radius: 2px;
+      border: 1px solid transparent;
+
+      &:focus {
+        outline: none;
+      }
+
+      &-label:focus {
+        border-color: transparent;
+        outline: none;
+      }
+
+      &.ql-expanded .ql-picker-label {
+        border-color: transparent;
+      }
+
+      &:hover {
+        border: 1px solid use-color('primary');
+      }
+
+      &-options {
+        padding: 4px 0;
+
+        .ql-picker-item {
+          &:hover {
+            background-color: use-color('primary-20');
+          }
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+    }
+
+    .ql-font,
+    .ql-size,
+    .ql-header {
+      .ql-picker-options {
+        .ql-picker-item {
+          padding-left: 8px;
+          padding-right: 8px;
+        }
+      }
+    }
+
+    .ql-formats {
+      &::after {
+        content: '|';
+        float: right;
+        margin-left: 15px;
+        color: use-color('gray-50');
+        clear: none;
+        line-height: 32px;
+      }
+    }
+  }
+
+  .hi-upload {
+    display: inline-block;
+
+    button {
+      width: auto;
+      background-color: use-color('primary');
+      color: use-color('white');
+      padding: 4px 15px;
+      line-height: 22px;
+
+      &:hover {
+        background-color: use-color('primary-60');
+        color: use-color('white');
+      }
+    }
+  }
+}
+
+.hi-quill-toolbar-tooltip {
+  display: inline-block;
+  height: 32px;
+}
+
+.ql-container {
+  min-height: 120px;
+}

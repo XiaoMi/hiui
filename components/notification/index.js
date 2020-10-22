@@ -1,20 +1,20 @@
 import notice from '../notice'
 import './style/index'
 import React from 'react'
-import Button from '../button'
-import classNames from 'classnames'
+import { Button } from '../button/Button'
+import Icon from '../icon'
 import _handleNotificate from './HandleNotification'
 const iconMap = {
-  success: 'chenggong',
-  error: 'shibai',
-  warning: 'jinggao',
-  info: 'tishi'
+  success: 'check-circle',
+  danger: 'close-circle',
+  warning: 'exclamation-circle',
+  primary: 'info-circle'
 }
 
 export const handleNotificate = _handleNotificate
 
 const notification = {
-  close: key => {
+  close: (key) => {
     notice.close('notification', key)
   },
   handleNotificate,
@@ -25,26 +25,26 @@ const notification = {
     key = Math.random(),
     duration,
     closeable = true,
-    type = 'info',
+    type = 'primary',
     confirmText,
     onConfirm,
     onClose
   }) => {
+    let _type = type === 'info' ? 'primary' : type
+    _type = type === 'error' ? 'danger' : _type
     const NoticeContent = (
       <React.Fragment>
-        <div className={`hi-${prefix}__title--wrapper`}>
-          <span className={`hi-${prefix}__icon`}>
-            <i className={classNames('hi-icon', `icon-${iconMap[type]}`)} />
-          </span>
+        <div className={`hi-${prefix}__header`}>
+          <Icon name={iconMap[_type]} className={`hi-${prefix}__icon`} filled />
           {title && <div className={`hi-${prefix}__title`}>{title}</div>}
         </div>
 
         {content && <div className={`hi-${prefix}__content`}>{content}</div>}
         {onConfirm && (
-          <div className={`hi-${prefix}__button--wrapper`}>
+          <div className={`hi-${prefix}__footer`}>
             <Button
-              size='small'
-              className={`hi-${prefix}__button`}
+              size="small"
+              type="primary"
               onClick={() => {
                 onConfirm()
               }}
@@ -61,7 +61,7 @@ const notification = {
       key,
       closeable,
       duration,
-      type,
+      type: _type,
       onClose
     })
   }

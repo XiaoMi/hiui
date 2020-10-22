@@ -230,7 +230,7 @@ class Demo extends React.Component {
       },
       {
         content: '小米MIX',
-        icon: 'internet',
+        icon: 'global',
         id: 2
       },
       {

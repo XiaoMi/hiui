@@ -56,8 +56,7 @@ class Demo extends React.Component {
             console.log(dragNode,dropNode)
           }}
           onChange={data => {console.log('Tree data:', data)}}
-          highlightable
-          onClick={(item) => console.log('------click node', item)}
+          onSelect={(item) => console.log('select node', item)}
         />
       </div>
     )

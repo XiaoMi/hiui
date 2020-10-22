@@ -1,4 +1,4 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
 .hi-timeline {
   position: relative;
@@ -38,8 +38,8 @@
         .item__dot {
           width: 8px;
           height: 8px;
-          border: 2px solid #4284f5;
-          background: #fff;
+          border: 2px solid use-color('primary');
+          background: use-color('white');
           border-radius: 50%;
           box-sizing: border-box;
           position: absolute;
@@ -51,7 +51,7 @@
 
         .item__icon {
           position: absolute;
-          background: #fff;
+          background: use-color('white');
           top: 7px;
           right: -20px;
           transform: translateX(50%);
@@ -62,7 +62,7 @@
           position: absolute;
           right: -20px;
           width: 2px;
-          background: rgb(242, 242, 242);
+          background: use-color('gray-20');
           height: calc(100% + 20px);
           transform: translateX(50%);
         }
@@ -73,15 +73,15 @@
           margin-left: 20px;
 
           .item__time {
-            color: rgb(51, 51, 51);
-            font-size: 14px;
-            line-height: 22px;
+            color: use-color('black');
+            font-size: $font-size-normal;
+            line-height: $line-height-size-normal;
             margin-bottom: 2px;
           }
 
           .item__extra {
-            color: rgb(158, 158, 158);
-            font-size: 12px;
+            color: use-color('gray-80');
+            font-size: $font-size-small;
             line-height: 20px;
           }
         }
@@ -91,15 +91,15 @@
           width: 70%;
 
           .item__title {
-            color: rgb(51, 51, 51);
-            font-size: 14px;
-            line-height: 22px;
+            color: use-color('black');
+            font-size: $font-size-normal;
+            line-height: $line-height-size-normal;
             margin-bottom: 2px;
           }
 
           .item__content {
-            color: rgb(158, 158, 158);
-            font-size: 12px;
+            color: use-color('gray-80');
+            font-size: $font-size-small;
             line-height: 20px;
           }
         }
@@ -112,8 +112,8 @@
         .item__dot {
           width: 8px;
           height: 8px;
-          border: 2px solid #4284f5;
-          background: #fff;
+          border: 2px solid use-color('primary');
+          background: use-color('white');
           border-radius: 50%;
           box-sizing: border-box;
           position: absolute;
@@ -127,7 +127,7 @@
           position: absolute;
           left: -20px;
           width: 2px;
-          background: rgb(242, 242, 242);
+          background: use-color('gray-20');
           height: calc(100% + 20px);
           transform: translateX(-50%);
         }
@@ -137,15 +137,15 @@
           margin-right: 20px;
 
           .item__time {
-            color: rgb(51, 51, 51);
-            font-size: 14px;
-            line-height: 22px;
+            color: use-color('black');
+            font-size: $font-size-normal;
+            line-height: $line-height-size-normal;
             margin-bottom: 2px;
           }
 
           .item__extra {
-            color: rgb(158, 158, 158);
-            font-size: 12px;
+            color: use-color('gray-80');
+            font-size: $font-size-small;
             line-height: 20px;
           }
         }
@@ -154,15 +154,15 @@
           width: 70%;
 
           .item__title {
-            color: rgb(51, 51, 51);
-            font-size: 14px;
-            line-height: 22px;
+            color: use-color('black');
+            font-size: $font-size-normal;
+            line-height: $line-height-size-normal;
             margin-bottom: 2px;
           }
 
           .item__content {
-            color: rgb(158, 158, 158);
-            font-size: 12px;
+            color: use-color('gray-80');
+            font-size: $font-size-small;
             line-height: 20px;
           }
         }
@@ -177,22 +177,22 @@
       margin-left: 24px;
 
       .item__title {
-        color: rgb(51, 51, 51);
-        font-size: 14px;
-        line-height: 22px;
+        color: use-color('black');
+        font-size: $font-size-normal;
+        line-height: $line-height-size-normal;
         margin-bottom: 2px;
       }
 
       .item__content {
-        color: #666;
-        font-size: 12px;
+        color: use-color('gray-80');
+        font-size: $font-size-small;
         line-height: 20px;
         margin-bottom: 6px;
       }
 
       .item__time {
-        color: #999;
-        font-size: 12px;
+        color: use-color('gray-70');
+        font-size: $font-size-small;
         line-height: 20px;
       }
 
@@ -218,8 +218,8 @@
       .item__dot {
         width: 8px;
         height: 8px;
-        border: 2px solid #4284f5;
-        background: #fff;
+        border: 2px solid use-color('primary');
+        background: use-color('white');
         border-radius: 50%;
         box-sizing: border-box;
         position: absolute;
@@ -231,7 +231,7 @@
 
       .item__icon {
         position: absolute;
-        background: #fff;
+        background: use-color('white');
         top: 7px;
         left: -20px;
         transform: translateX(-50%);
@@ -243,7 +243,7 @@
         left: -22px;
         top: 0;
         width: 2px;
-        background: rgb(242, 242, 242);
+        background: use-color('gray-20');
         height: calc(100% + 20px);
         transform: translateX(50%);
       }
@@ -255,7 +255,7 @@
       margin-bottom: 24px;
 
       .collapse-opt {
-        font-size: 12px;
+        font-size: $font-size-small;
         margin-left: calc(30% + 20px);
         cursor: pointer;
         position: relative;
@@ -266,7 +266,7 @@
         top: 0;
         left: -20px;
         width: 2px;
-        background: #f2f2f2;
+        background: use-color('gray-20');
         height: calc(100% + 24px);
         transform: translateX(-50%);
       }
@@ -274,7 +274,7 @@
       .item__dot {
         width: 4px !important;
         height: 4px !important;
-        background: #4284f5 !important;
+        background: use-color('primary') !important;
         border-radius: 50%;
         top: 9px !important;
       }
@@ -285,8 +285,8 @@
       width: calc(30% - 20px);
       margin-right: 20px;
       margin-bottom: 10px;
-      color: rgb(0, 0, 0);
-      font-weight: bolder;
+      color: use-color('black');
+      font-weight: $font-weight-bold;
       position: relative;
 
       .item__line {
@@ -295,7 +295,7 @@
         left: calc(100% + 20px);
         right: 0;
         width: 2px;
-        background: #f2f2f2;
+        background: use-color('gray-20');
         height: calc(100% + 10px);
         transform: translateX(-50%);
       }
@@ -312,15 +312,15 @@
         margin-right: 20px;
 
         .item__time {
-          color: rgb(51, 51, 51);
-          font-size: 14px;
-          line-height: 22px;
+          color: use-color('black');
+          font-size: $font-size-normal;
+          line-height: $line-height-size-normal;
           margin-bottom: 2px;
         }
 
         .item__extra {
-          color: rgb(158, 158, 158);
-          font-size: 12px;
+          color: use-color('gray-80');
+          font-size: $font-size-small;
           line-height: 20px;
         }
       }
@@ -328,8 +328,8 @@
       .item__dot {
         width: 8px;
         height: 8px;
-        border: 2px solid #4284f5;
-        background: #fff;
+        border: 2px solid use-color('primary');
+        background: use-color('white');
         border-radius: 50%;
         box-sizing: border-box;
         position: absolute;
@@ -341,7 +341,7 @@
 
       .item__icon {
         position: absolute;
-        background: #fff;
+        background: use-color('white');
         top: 7px;
         left: 30%;
         transform: translateX(-50%);
@@ -352,8 +352,8 @@
         position: absolute;
         left: 30%;
         width: 2px;
-        background: rgb(242, 242, 242);
-        height: calc(100% + 20px);
+        background: use-color('gray-20');
+        height: 100%;
         transform: translateX(-50%);
       }
 
@@ -362,15 +362,15 @@
         margin-left: 20px;
 
         .item__title {
-          color: rgb(51, 51, 51);
-          font-size: 14px;
-          line-height: 22px;
+          color: use-color('black');
+          font-size: $font-size-normal;
+          line-height: $line-height-size-normal;
           margin-bottom: 2px;
         }
 
         .item__content {
-          color: rgb(158, 158, 158);
-          font-size: 12px;
+          color: use-color('gray-80');
+          font-size: $font-size-small;
           line-height: 20px;
         }
       }
@@ -394,19 +394,3 @@
     }
   }
 }
-
-// @each $key, $value in $theme-colors {
-//   .theme__#{$key}.hi-timeline {
-//     .hi-timeline__dot {
-//       border: 2px solid $value;
-
-//       &.hi-timeline__dot--custom {
-//         border: none;
-//       }
-
-//       &--sub {
-//         background: $value;
-//       }
-//     }
-//   }
-// }

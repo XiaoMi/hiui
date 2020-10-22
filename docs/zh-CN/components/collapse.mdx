@@ -14,6 +14,12 @@ import DemoBasic from '../../demo/collapse/section-basic.jsx'
 
 <DemoBasic />
 
+## 箭头位置
+
+import DemoArrowPlacement from '../../demo/collapse/section-arrowPlacement.jsx'
+
+<DemoArrowPlacement />
+
 ## 手风琴模式
 
 import DemoAccordion from '../../demo/collapse/section-accordion.jsx'
@@ -24,13 +30,13 @@ import DemoAccordion from '../../demo/collapse/section-accordion.jsx'
 
 ### Collapse
 
-| 参数           | 说明                                           | 类型               | 可选值            | 默认值 |
-| -------------- | ---------------------------------------------- | ------------------ | ----------------- | ------ |
-| accordion      | 是否启用手风琴模式，手风琴模式下最多只展开一项 | boolean            | true \| false     | false  |
-| onChange       | 切换时的回调                                   | () => void         | -                 | -      |
-| activeId       | 默认展开的面板                                 | string \| string[] | -                 | -      |
-| arrowPlacement | 箭头所在位置                                   | string             | 'left' \| 'right' | 'left' |
-| showArrow      | 是否显示展开箭头                               | boolean            | true \| false     | true   |
+| 参数            | 说明                                           | 类型               | 可选值            | 默认值 |
+| --------------- | ---------------------------------------------- | ------------------ | ----------------- | ------ |
+| accordion       | 是否启用手风琴模式，手风琴模式下最多只展开一项 | boolean            | true \| false     | false  |
+| defaultActiveId | 默认展开的面板                                 | string \| string[] | -                 | -      |
+| activeId        | 指定展开的面板                                 | string \| string[] | -                 | -      |
+| arrowPlacement  | 箭头所在位置                                   | string             | 'left' \| 'right' | 'left' |
+| showArrow       | 是否显示展开箭头                               | boolean            | true \| false     | true   |
 
 ### Collapse.Panel
 
@@ -39,3 +45,9 @@ import DemoAccordion from '../../demo/collapse/section-accordion.jsx'
 | id       | 面板唯一标识 | string              | -             | -      |
 | title    | 面板标题     | string \| ReactNode | -             | -      |
 | disabled | 是否禁用面板 | boolean             | true \| false | false  |
+
+## Events
+
+| 名称     | 说明         | 类型                       | 参数                                                       | 返回值 |
+| -------- | ------------ | -------------------------- | ---------------------------------------------------------- | ------ |
+| onChange | 切换时的回调 | (indexs: string[]) => void | indexs: 当前展开的节点 ID 集合，如果 ID 不存在则为索引集合 | -      |

@@ -13,7 +13,7 @@ class Demo extends React.Component {
       <Card
           hoverable
           size='default'
-          extra={[<Icon name='edit' key={1}/>, <Icon name='delete' key={2}/>]}
+          extra={<span style={{color:'#4387f4'}}><Icon name='edit' key={1}/><Icon name='delete' key={2}/></span>}
           title='这里是标题这里是标题这里是标题'
         >
         <p>包含额外扩展按钮</p>
@@ -22,7 +22,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoButton = () => (
-  <DocViewer desc={desc} code={code} scope={{ Card, Icon }} prefix={prefix} />
-)
+const DemoButton = () => <DocViewer desc={desc} code={code} scope={{ Card, Icon }} prefix={prefix} />
 export default DemoButton

@@ -1,0 +1,83 @@
+# 从 v2.x 升级至 v3.x
+
+HIUI v3.0.0 是一次大版本更新，在此次迭代中，我们主要对 HIUI 进行了如下升级：
+
+- 新增动画效果
+- 新增 SelectTree 、List 、Filter、Search、Drawer 等组件
+- 对一些组件进行了视觉美化和升级
+
+**_ 为了保证大家关心的 API 稳定性问题，后续 HIUI 的升级将严格遵循 [Semver](https://semver.org/lang/zh-CN/) 语义化版本规范 _**
+
+即便大版本升级有诸多 API 变动，我们依旧为 2.x 的用户提供了最大程度的向前支持。如果你的项目正在从 2.x 升级，请参考下面的升级指南。
+
+## 升级准备
+
+- 升级项目 React 16.12.0 以上。
+  - 如果你仍在使用 React 15，请参考 [React 16](https://reactjs.org/blog/2017/09/26/react-v16.0.html#breaking-changes) 升级文档。
+  - 其余 React 16 废弃生命周期 API 请参考 [迁移导引](https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html#gradual-migration-path)。
+
+## 从 2.15.x 升级至 3.0.0 注意事项
+
+3.0.0 是基于 2.14.0 进行开发的，最大限度的对组件已有 API 进行了的兼容，但是有些组件进行的功能升级，带来一些破坏性，需要做一些调整
+
+### Dropdown 下拉菜单
+
+- 对 DataItem 配置 href 属性后做了优化，渲染为 a 标签，同时也支持 target 属性设置打开方式
+
+### Cascader 级联选择
+
+- value 由原来的非受控改为了受控
+- trigger 更名为 expandTrigger
+
+### Form 表单
+
+** Form 在 3.0 以后升级改动较大，使用时请[参考示例](https://infra.mioffice.cn/hiui/next/zh-CN/docs/form) **
+
+- 通过 `import Form, { LegacyForm } from '@hi-ui/hiui/es/form'`，其中`Form`为 3.x 组件，`LegacyForm` 为 2.x 组件
+
+### Table 表格
+
+** Table 在 3.0 以后升级改动较大，使用时请[参考示例](https://infra.mioffice.cn/hiui/next/zh-CN/docs/table) **
+
+- 通过 `import Table, { LegacyTable } from '@hi-ui/hiui/es/table'`，其中`Table`为 3.x 组件，`LegacyTable` 为 2.x 组件
+- 原引用 hi-table 的使用请 HiUI 中的 Table，即将 `import Table from '@hi-ui/hi-table'` 更换为 `import Table from '@hi-ui/hiui/es/table'` 即可
+
+### Tree 表格
+
+** Tree 在 3.0 以后升级改动较大，使用时请[参考示例](https://infra.mioffice.cn/hiui/next/zh-CN/docs/tree) **
+
+- 通过 `import Tree, { LegacyTree } from '@hi-ui/hiui/es/tree'`，其中`Tree`为 3.x 组件，`LegacyTree` 为 2.x 组件
+
+### Switch 表格
+
+** Switch 在 3.0 修正了受控功能，使用时请[参考示例](https://infra.mioffice.cn/hiui/next/zh-CN/docs/switch) **
+
+- 通过 `import Switch, { LegacySwitch } from '@hi-ui/hiui/es/table'`，其中`Switch`为 3.x 组件，`LegacySwitch` 为 2.x 组件
+
+### Progress 进度条
+
+- type 中 warning 和 error 颜色做了调整，请注意修改
+
+除上述组件以外的其余组件，我们均提供了向前兼容，但是我们建议您使用新的 API 来完成后续的开发。
+
+### Modal 模态框
+
+- footer 属性 不再对 1.x 进行兼容，原使用 `footers` 的请替换为 `footer`
+- 样式方面，对内边距进行了调整，由原来`padding: 16px` 更改为 `padding: 24px` 请大家注意查看
+
+除上述组件以外的其余组件，我们均提供了向前兼容，但是我们建议您使用新的 API 来完成后续的开发。
+
+#### 组件重构
+
+- `<DatePicker/> 、<TimePicker/>、<Tree/> 、<Tabs/>`
+  - Dom 结构变化，如有覆盖样式需要仔细检查。
+
+# 主题 从 v2.x 升级至 v3.x
+
+[classic-theme](https://github.com/hiui-group/classic-theme) v3.x 升级重点解决了侧边的显示问题，优化了交互以及展示等方面，如果你的项目正在从 2.x 升级，请参考下面的升级指南。
+
+- 由设计规范方面，主题 v3.x 默认设置了内边距 `24px` 和页面背景颜色 `#f6f6f6` ，为了完美兼容旧版本视觉效果，设置 `apperance={{ contentBackground: '#fff', contentPadding: 0 }}` 即可。
+
+## 遇到问题
+
+v3 做了非常多的细节改进和重构，我们尽可能收集了已知的所有不兼容变化和相关影响，但是有可能还是有一些场景我们没有考虑到。如果你在升级过程中遇到了问题，请到 [GitHub issues](https://github.com/XiaoMi/hiui/issues/new/choose) 进行反馈。我们会尽快响应和相应改进这篇文档。

@@ -1,4 +1,4 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
 $prefixCls: 'hi-dropdown' !default;
 
@@ -15,14 +15,12 @@ $prefixCls: 'hi-dropdown' !default;
 }
 
 .#{$prefixCls} {
-  @include component-reset();
-
   user-select: none;
   display: inline-block;
 
   &--disabled {
     .#{$prefixCls}__button {
-      color: #ccc;
+      color: use-color('gray-50');
       cursor: not-allowed;
     }
   }
@@ -70,13 +68,13 @@ $prefixCls: 'hi-dropdown' !default;
   }
 
   &__popper {
-    background: rgba(255, 255, 255, 1);
+    background: use-color('white');
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
     border-radius: 2px;
   }
 
   &__divider {
-    background-color: #e8e8e8;
+    background-color: use-color('gray-20');
     width: 100%;
     height: 1px;
     margin: 4px 0;
@@ -100,26 +98,18 @@ $prefixCls: 'hi-dropdown' !default;
       transition: 0.3s ease;
 
       &--disabled {
-        color: #ccc;
+        color: use-color('gray-50');
         cursor: not-allowed;
       }
 
       a {
-        color: #333;
+        color: use-color('black');
         width: 100%;
       }
 
       &:not(.hi-dropdown__menu-item--disabled):hover {
-        background-color: #ecf2fe;
+        background-color: use-color('primary-20');
       }
-    }
-  }
-}
-
-@each $key, $value in $palette-primary {
-  .theme__#{$key}.#{$prefixCls}__menu {
-    .#{$prefixCls}__menu-item:not(.hi-dropdown__menu-item--disabled):hover {
-      background-color: rgba($value, 0.15);
     }
   }
 }

@@ -29,6 +29,7 @@ class Demo extends React.Component {
           <Card
             hoverable
             type='simple'
+            size='large'
           >
             简易卡片
           </Card>

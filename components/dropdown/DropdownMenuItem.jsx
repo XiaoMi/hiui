@@ -4,19 +4,27 @@ import Icon from '../icon'
 import DropdownMenu from './DropdownMenu'
 import { prefixCls } from '.'
 
-const MenuItemWrapper = forwardRef(({ href, children, disabled, ...props }, ref) => {
-  const shouldUseLink = href && !disabled
-  if (disabled) {
-    Reflect.deleteProperty(props, 'onMouseEnter')
-    Reflect.deleteProperty(props, 'onMouseLeave')
-    Reflect.deleteProperty(props, 'onClick')
+const MenuItemWrapper = forwardRef(
+  ({ href, target, children, disabled, ...props }, ref) => {
+    const shouldUseLink = href && !disabled
+    if (disabled) {
+      Reflect.deleteProperty(props, 'onMouseEnter')
+      Reflect.deleteProperty(props, 'onMouseLeave')
+      Reflect.deleteProperty(props, 'onClick')
+    }
+    return (
+      <li ref={ref} {...props}>
+        {shouldUseLink ? (
+          <a href={href} target={target}>
+            {children}
+          </a>
+        ) : (
+          children
+        )}
+      </li>
+    )
   }
-  return (
-    <li ref={ref} {...props} >
-      {shouldUseLink ? <a href={href}>{children}</a> : children}
-    </li>
-  )
-})
+)
 
 export default class DropdownMenuItem extends React.Component {
   refItem = React.createRef()
@@ -51,18 +59,14 @@ export default class DropdownMenuItem extends React.Component {
     this.setMenuHide()
   }
 
-  handleMenuItemClick = (event) => {
+  handleMenuItemClick = event => {
     if (event) {
       event.stopPropagation()
-      event.preventDefault()
-      if (event.nativeEvent && event.nativeEvent.stopImmediatePropagation) {
-        event.nativeEvent.stopImmediatePropagation()
-      }
     }
     const { onMenuItemClick, id, children, href } = this.props
-    onMenuItemClick(id, (href || !children))
+    onMenuItemClick(id, href || !children)
   }
-  render () {
+  render() {
     const {
       title,
       children,

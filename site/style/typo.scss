@@ -1,4 +1,15 @@
+@import '../../components/core-css/index.scss';
 @import '@hi-ui/core-css/index.scss';
+
+:root {
+  @include get-vars();
+}
+
+@each $color in map-keys($palette-primary) {
+  .theme__#{$color} {
+    @include get-vars(get-color($palette-primary, #{$color}));
+  }
+}
 
 .article {
   @include typoBase;
@@ -6,6 +17,10 @@
   @include typoHeadings;
   @include typoImages;
   @include typoLists;
+
+  & > ul ul {
+    margin-left: 16px;
+  }
 
   // 设计语言图片描述
   figure {
