@@ -358,7 +358,7 @@ const InternalSelect = (props) => {
     // 全选
     e && e.stopPropagation()
     if (!isCheck) {
-      onChange([], [], () => { })
+      onChange([], [], () => {})
       return
     }
     const _selectedItems = [...selectedItems]
@@ -375,7 +375,7 @@ const InternalSelect = (props) => {
         }
       }
     })
-    onChange(_selectedItems, changedItems, () => { })
+    onChange(_selectedItems, changedItems, () => {})
   }
   // input点击事件
   const handleInputClick = () => {
@@ -494,9 +494,9 @@ InternalSelect.defaultProps = {
   showCheckAll: false,
   showJustSelected: false,
   open: true,
-  onClick: () => { },
-  onBlur: () => { },
-  onFocus: () => { }
+  onClick: () => {},
+  onBlur: () => {},
+  onFocus: () => {}
 }
 const Select = forwardRef((props, ref) => {
   return <InternalSelect {...props} innerRef={ref} />

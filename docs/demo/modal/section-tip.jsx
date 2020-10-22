@@ -38,7 +38,7 @@ class Demo extends React.Component {
           title="提示"
           visible={this.state.visibleError}
           onCancel={this.cancelEventError.bind(this)}
-          footers={[
+          footer={[
             <Button type="primary" onClick={this.cancelEventError.bind(this)} >我知道了</Button>
           ]}
         >
@@ -54,7 +54,7 @@ class Demo extends React.Component {
           title="提示"
           visible={this.state.visibleWarning}
           onCancel={this.cancelEventWarning.bind(this)}
-          footers={[
+          footer={[
             <Button type="primary" onClick={this.cancelEventWarning.bind(this)} >我知道了</Button>
           ]}
         >
@@ -71,12 +71,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoTip = () => (
-  <DocViewer
-    code={code}
-    scope={{ Button, Modal, Icon }}
-    prefix={prefix}
-    desc={desc}
-  />
-)
+const DemoTip = () => <DocViewer code={code} scope={{ Button, Modal, Icon }} prefix={prefix} desc={desc} />
 export default DemoTip

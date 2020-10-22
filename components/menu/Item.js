@@ -5,48 +5,24 @@ import Title from './Title'
 
 class Item extends Component {
   render() {
-    const {
-      children,
-      disabled,
-      onClick,
-      level,
-      placement,
-      activeIndex,
-      id,
-      icon,
-      index,
-      data,
-      mini
-    } = this.props
+    const { children, disabled, onClick, level, placement, activeIndex, id, icon, index, data, mini } = this.props
     const isActive = activeIndex === index
-    const cls = classNames(
-      'hi-menu-item',
-      'hi-menu-item__title',
-      'hi-menu__title',
-      `hi-menu--${level}`,
-      {
-        'hi-menu-item--disabled': disabled,
-        'hi-menu-item--active': isActive
-      }
-    )
+    const cls = classNames('hi-menu-item', 'hi-menu-item__title', 'hi-menu__title', `hi-menu--${level}`, {
+      'hi-menu-item--disabled': disabled,
+      'hi-menu-item--active': isActive
+    })
     return (
       <li
         className={cls}
         key={index}
-        onClick={e => {
+        onClick={(e) => {
           e.stopPropagation()
           if (!disabled) {
             onClick(index, id, data)
           }
         }}
       >
-        <Title
-          icon={icon}
-          content={children}
-          placement={placement}
-          level={level}
-          mini={mini}
-        />
+        <Title icon={icon} content={children} placement={placement} level={level} mini={mini} />
       </li>
     )
   }

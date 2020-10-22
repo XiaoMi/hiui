@@ -115,12 +115,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoScopeBan = () => (
-  <DocViewer
-    code={code}
-    scope={{ DatePicker }}
-    prefix={prefix}
-    desc={desc}
-    rightOptions={rightOptions}
-  />
+  <DocViewer code={code} scope={{ DatePicker }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
 )
 export default DemoScopeBan

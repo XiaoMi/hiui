@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import * as Icons from './Icons'
 import ToolTip from '../tooltip'
 
-const Rate = props => {
+const Rate = (props) => {
   const {
     value: trueVal,
     disabled,
@@ -24,9 +24,7 @@ const Rate = props => {
     readOnly
   } = props
   const clearable = props.clearable || props.allowClear // 兼容API 2.x 改为clearable
-  const [value, setValue] = useState(
-    trueVal === undefined ? defaultValue : trueVal
-  )
+  const [value, setValue] = useState(trueVal === undefined ? defaultValue : trueVal)
 
   const [hoverValue, setHoverValue] = useState(0)
 
@@ -43,7 +41,7 @@ const Rate = props => {
     setHoverValue(0)
   }
 
-  const handleIconEnter = hoverValue => {
+  const handleIconEnter = (hoverValue) => {
     if (disabled || readOnly) {
       return
     }
@@ -51,7 +49,7 @@ const Rate = props => {
     setHoverValue(hoverValue)
   }
 
-  const handleIconClick = valueIndex => {
+  const handleIconClick = (valueIndex) => {
     if (disabled || readOnly) {
       return
     }
@@ -72,7 +70,7 @@ const Rate = props => {
     onChange && onChange(valueIndex)
   }
 
-  const renderIcon = idx => {
+  const renderIcon = (idx) => {
     let currentValue = hoverValue || value
     if (!allowHalf) {
       currentValue = Math.ceil(currentValue)
@@ -94,7 +92,7 @@ const Rate = props => {
     )
   }
 
-  let currentValue = hoverValue || value
+  const currentValue = hoverValue || value
   const iconCount = Math.ceil(useEmoji ? 5 : count)
   const iconHalfCls = `${prefixCls}__star__half`
   const starCls = classnames(`${prefixCls}__star`, {
@@ -105,12 +103,8 @@ const Rate = props => {
   const descCls = classnames(`${prefixCls}__desc`)
 
   return (
-    <div className='hi-rate__outter'>
-      <ul
-        className={classnames(prefixCls, className)}
-        style={{ ...style, color }}
-        onMouseLeave={handleIconLeave}
-      >
+    <div className="hi-rate__outter">
+      <ul className={classnames(prefixCls, className)} style={{ ...style, color }} onMouseLeave={handleIconLeave}>
         {Array(iconCount)
           .fill()
           .map((_, idx) => {
@@ -120,47 +114,23 @@ const Rate = props => {
               <ToolTipWrapper title={tooltips[idx]} key={idx}>
                 <li className={starCls}>
                   <div
-                    className={classnames(
-                      iconHalfCls,
-                      `${iconHalfCls}--${vertical ? 'top' : 'left'}`,
-                      {
-                        grayscale: vertical
-                          ? indexValue > currentValue
-                          : currentValue < halfValue
-                      }
-                    )}
-                    onMouseEnter={() =>
-                      handleIconEnter(vertical ? indexValue : halfValue)
-                    }
-                    onMouseMove={() =>
-                      handleIconEnter(vertical ? indexValue : halfValue)
-                    }
-                    onClick={() =>
-                      handleIconClick(vertical ? indexValue : halfValue)
-                    }
+                    className={classnames(iconHalfCls, `${iconHalfCls}--${vertical ? 'top' : 'left'}`, {
+                      grayscale: vertical ? indexValue > currentValue : currentValue < halfValue
+                    })}
+                    onMouseEnter={() => handleIconEnter(vertical ? indexValue : halfValue)}
+                    onMouseMove={() => handleIconEnter(vertical ? indexValue : halfValue)}
+                    onClick={() => handleIconClick(vertical ? indexValue : halfValue)}
                   >
                     {renderIcon(indexValue)}
                   </div>
 
                   <div
-                    className={classnames(
-                      iconHalfCls,
-                      `${iconHalfCls}--${vertical ? 'bottom' : 'right'}`,
-                      {
-                        grayscale: vertical
-                          ? currentValue < halfValue
-                          : indexValue > currentValue
-                      }
-                    )}
-                    onMouseEnter={() =>
-                      handleIconEnter(vertical ? halfValue : indexValue)
-                    }
-                    onMouseMove={() =>
-                      handleIconEnter(vertical ? halfValue : indexValue)
-                    }
-                    onClick={() =>
-                      handleIconClick(vertical ? halfValue : indexValue)
-                    }
+                    className={classnames(iconHalfCls, `${iconHalfCls}--${vertical ? 'bottom' : 'right'}`, {
+                      grayscale: vertical ? currentValue < halfValue : indexValue > currentValue
+                    })}
+                    onMouseEnter={() => handleIconEnter(vertical ? halfValue : indexValue)}
+                    onMouseMove={() => handleIconEnter(vertical ? halfValue : indexValue)}
+                    onClick={() => handleIconClick(vertical ? halfValue : indexValue)}
                   >
                     {renderIcon(indexValue)}
                   </div>
@@ -169,9 +139,7 @@ const Rate = props => {
             )
           })}
       </ul>
-      {descRender && (
-        <span className={descCls}>{descRender(hoverValue || value)}</span>
-      )}
+      {descRender && <span className={descCls}>{descRender(hoverValue || value)}</span>}
     </div>
   )
 }
@@ -191,20 +159,11 @@ Rate.defaultProps = {
   vertical: false
 }
 
-function ToolTipWrapper ({ children, title }) {
+function ToolTipWrapper({ children, title }) {
   return title ? <ToolTip title={title}>{children}</ToolTip> : children
 }
 
-function Icon ({
-  value,
-  currentValue,
-  disabled,
-  useEmoji,
-  allowHalf,
-  character,
-  renderCharacter,
-  readOnly
-}) {
+function Icon({ value, currentValue, disabled, useEmoji, allowHalf, character, renderCharacter, readOnly }) {
   if (renderCharacter) {
     return renderCharacter(currentValue, value)
   }
@@ -213,13 +172,7 @@ function Icon ({
   }
   if (useEmoji) {
     const emojiValue = currentValue > 5 ? 5 : currentValue
-    const Emojis = [
-      Icons.EmojiOne,
-      Icons.EmojiTwo,
-      Icons.EmojiThree,
-      Icons.EmojiFour,
-      Icons.EmojiFive
-    ]
+    const Emojis = [Icons.EmojiOne, Icons.EmojiTwo, Icons.EmojiThree, Icons.EmojiFour, Icons.EmojiFive]
     if (value <= emojiValue) {
       return React.createElement(Emojis[emojiValue - 1])
     } else {
@@ -230,11 +183,7 @@ function Icon ({
   if (value <= currentValue) {
     return <Icons.StarActive />
   } else if (value === currentValue + 0.5 && allowHalf) {
-    return disabled || readOnly ? (
-      <Icons.StarHalfReadonly />
-    ) : (
-      <Icons.StarHalfActive />
-    )
+    return disabled || readOnly ? <Icons.StarHalfReadonly /> : <Icons.StarHalfActive />
   } else {
     return disabled || readOnly ? <Icons.StarDisable /> : <Icons.StarDefault />
   }

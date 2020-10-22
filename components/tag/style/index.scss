@@ -12,6 +12,7 @@ $prefix: 'hi-tag' !default;
 $prefixGroup: 'hi-tag-group' !default;
 
 $primary: get-color($palette-primary, 'hiui-blue') !default;
+$normal: #999 !default;
 
 .tag-transition {
   &-enter {

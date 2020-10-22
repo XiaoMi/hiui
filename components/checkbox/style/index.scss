@@ -41,7 +41,7 @@ $prefixCls: '.hi-checkbox' !default;
   height: 16px;
   vertical-align: middle;
 
-  @include component-reset();
+  // @include component-reset();
 
   input {
     position: absolute;
@@ -100,8 +100,8 @@ $prefixCls: '.hi-checkbox' !default;
   }
 
   &__text {
-    padding: 0 32px 0 0;
-    line-height: unset;
+    padding: 0 32px 0 8px;
+    line-height: 32px;
   }
 
   &--disabled {

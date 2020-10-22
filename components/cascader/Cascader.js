@@ -9,7 +9,7 @@ import Provider from '../context'
 
 const noop = () => {}
 
-const Cascader = props => {
+const Cascader = (props) => {
   const {
     className,
     disabled = false,
@@ -52,21 +52,17 @@ const Cascader = props => {
       if (!values || values.length === 0) {
         return ''
       } else {
-        let labels = []
+        const labels = []
         let index = 0
         let _options = dataList || data
         const labelKey = getLabelKey()
         const valueKey = getValueKey()
         const childrenKey = getChildrenKey()
 
-        while (
-          _options &&
-          _options.length > 0 &&
-          labels.length <= values.length
-        ) {
-          let value = values[index]
+        while (_options && _options.length > 0 && labels.length <= values.length) {
+          const value = values[index]
           index++
-          _options.every(option => {
+          _options.every((option) => {
             if (option[valueKey] === value) {
               labels.push(option[labelKey])
               _options = option[childrenKey]
@@ -85,12 +81,8 @@ const Cascader = props => {
   const [filterOptions, setFilterOptions] = useState(false)
   // 缓存原始value，用户可能点击option但是没选中，用于恢复初始value
   const [cacheValue, setCacheValue] = useState(value || defaultValue || [])
-  const [cascaderValue, setCascaderValue] = useState(
-    value || defaultValue || []
-  )
-  const [cascaderLabel, setCascaderLabel] = useState(
-    getCascaderLabel(value || defaultValue || [])
-  )
+  const [cascaderValue, setCascaderValue] = useState(value || defaultValue || [])
+  const [cascaderLabel, setCascaderLabel] = useState(getCascaderLabel(value || defaultValue || []))
 
   const [popperShow, setPopperShow] = useState(false)
   const [keyword, setKeyword] = useState('')
@@ -149,7 +141,7 @@ const Cascader = props => {
   )
 
   const clearValue = useCallback(
-    e => {
+    (e) => {
       e.stopPropagation()
       onChangeValue([], false)
     },
@@ -173,18 +165,15 @@ const Cascader = props => {
     }
     let filterOptions = []
     const initMatchOptions = { options: [], matchCount: 0 }
-    let labelKey = getLabelKey()
-    let valueKey = getValueKey()
-    let childrenKey = getChildrenKey()
+    const labelKey = getLabelKey()
+    const valueKey = getValueKey()
+    const childrenKey = getChildrenKey()
     const _checkOptions = (options, match) => {
-      options.map(option => {
-        let label = option[labelKey]
+      options.map((option) => {
+        const label = option[labelKey]
         const value = option[valueKey]
         const children = option[childrenKey]
-        if (
-          label.toString().includes(keyword) ||
-          value.toString().includes(keyword)
-        ) {
+        if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount++
         }
 
@@ -201,10 +190,7 @@ const Cascader = props => {
             filterOptions.push(match.options.slice())
           }
         }
-        if (
-          label.toString().includes(keyword) ||
-          value.toString().includes(keyword)
-        ) {
+        if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
           match.matchCount--
         }
 
@@ -226,19 +212,19 @@ const Cascader = props => {
     const levelItems = []
     const levelItemsObj = {}
 
-    let labelKey = getLabelKey()
-    let valueKey = getValueKey()
+    const labelKey = getLabelKey()
+    const valueKey = getValueKey()
     if (filterOptions.length === 0) {
       return []
     } else {
-      filterOptions.map(options => {
-        let jointOption = {
+      filterOptions.map((options) => {
+        const jointOption = {
           jointOption: true,
           [labelKey]: [],
           [valueKey]: []
         }
         options.map((option, index) => {
-          let levelItem = {
+          const levelItem = {
             [valueKey]: ''
           }
 
@@ -253,11 +239,14 @@ const Cascader = props => {
             if (filterFunc) {
               if (
                 filterFunc(keyword, option) &&
-                (levelItem[valueKey].toString().includes(keyword) ||
-                  option[labelKey].toString().includes(keyword))
-              ) { levelItems.push(levelItem) }
+                (levelItem[valueKey].toString().includes(keyword) || option[labelKey].toString().includes(keyword))
+              ) {
+                levelItems.push(levelItem)
+              }
             } else {
-              if (option[labelKey].toString().includes(keyword)) { levelItems.push(levelItem) }
+              if (option[labelKey].toString().includes(keyword)) {
+                levelItems.push(levelItem)
+              }
             }
           }
         })
@@ -267,7 +256,7 @@ const Cascader = props => {
       return []
     }
 
-    let ids = levelItems.map(item => item.id)
+    const ids = levelItems.map((item) => item.id)
     let targetId = ids[0].join(',')
     for (let i = 1; i < ids.length; i++) {
       if (ids[i].join(',').includes(targetId)) {
@@ -275,33 +264,30 @@ const Cascader = props => {
       }
     }
 
-    return targetId.split(',').map(item => Number(item))
+    return targetId.split(',').map((item) => Number(item))
   }, [])
 
   // 配置化
-  const localeDatasProps = useCallback(key => {
+  const localeDatasProps = useCallback((key) => {
     return props[key] ? props[key] : localeDatas.cascader[key]
   }, [])
 
   const formatFilterOptions = useCallback((data, keyword) => {
     const labelKey = getLabelKey()
     const valueKey = getValueKey()
-    let childrenKey = getChildrenKey()
+    const childrenKey = getChildrenKey()
 
     if (data.length === 0) {
       return []
     } else {
-      const _changeOptions = options => {
-        return options.map(option => {
-          let label = option[labelKey]
+      const _changeOptions = (options) => {
+        return options.map((option) => {
+          const label = option[labelKey]
           const value = option[valueKey]
           const children = option[childrenKey]
 
-          if (
-            label.toString().includes(keyword) ||
-            value.toString().includes(keyword)
-          ) {
-            let hightlight = []
+          if (label.toString().includes(keyword) || value.toString().includes(keyword)) {
+            const hightlight = []
             hightlight.push(hightlightKeyword(label, keyword))
             option.hightlight = hightlight
           } else {
@@ -321,17 +307,11 @@ const Cascader = props => {
   })
   const hightlightKeyword = useCallback((text, keyword, uniqueKey) => {
     let _keyword = keyword
-    _keyword = keyword.includes('[')
-      ? _keyword.replace(/\[/gi, '\\[')
-      : _keyword
-    _keyword = keyword.includes('(')
-      ? _keyword.replace(/\(/gi, '\\(')
-      : _keyword
-    _keyword = keyword.includes(')')
-      ? _keyword.replace(/\)/gi, '\\)')
-      : _keyword
+    _keyword = keyword.includes('[') ? _keyword.replace(/\[/gi, '\\[') : _keyword
+    _keyword = keyword.includes('(') ? _keyword.replace(/\(/gi, '\\(') : _keyword
+    _keyword = keyword.includes(')') ? _keyword.replace(/\)/gi, '\\)') : _keyword
 
-    let parts = text.split(new RegExp(`(${_keyword})`, 'gi'))
+    const parts = text.split(new RegExp(`(${_keyword})`, 'gi'))
     return (
       <span key={uniqueKey}>
         {parts.map((part, i) => (
@@ -350,7 +330,7 @@ const Cascader = props => {
     )
   }, [])
   const handleClick = useCallback(
-    e => {
+    (e) => {
       if (popperShow) {
         return
       }
@@ -379,64 +359,36 @@ const Cascader = props => {
   const placeholder = cascaderLabel || localeDatasProps('placeholder')
 
   return (
-    <div
-      className={classNames(
-        'hi-cascader',
-        `theme__${theme}`,
-        className,
-        extraClass
-      )}
-      style={style}
-      ref={hiCascader}
-    >
-      <div
-        className='hi-cascader__input-container'
-        ref={inputContainer}
-        onClick={handleClick}
-      >
+    <div className={classNames('hi-cascader', `theme__${theme}`, className, extraClass)} style={style} ref={hiCascader}>
+      <div className="hi-cascader__input-container" ref={inputContainer} onClick={handleClick}>
         <input
           ref={inputRef}
-          className='hi-cascader__input-keyword'
-          value={
-            (searchable && keyword) || (!popperShow && cascaderLabel) || ''
-          }
+          className="hi-cascader__input-keyword"
+          value={(searchable && keyword) || (!popperShow && cascaderLabel) || ''}
           readOnly={!searchable}
           disabled={disabled}
           placeholder={placeholder}
-          onChange={e => {
+          onChange={(e) => {
             if (!e.target.value) {
               clearValue(e)
             }
             setKeyword(e.target.value)
           }}
-          onKeyDown={e => {
+          onKeyDown={(e) => {
             if (e.keyCode === 13) {
               onKeywordChange()
             }
           }}
         />
-        <span className='hi-cascader__icon'>
+        <span className="hi-cascader__icon">
           <i
-            className={classNames(
-              'hi-cascader__icon--expand',
-              'hi-icon',
-              expandIcon,
-              {
-                'has-value':
-                  clearable &&
-                  ((searchable && keyword !== '') ||
-                    (!popperShow && cascaderLabel !== ''))
-              }
-            )}
+            className={classNames('hi-cascader__icon--expand', 'hi-icon', expandIcon, {
+              'has-value': clearable && ((searchable && keyword !== '') || (!popperShow && cascaderLabel !== ''))
+            })}
           />
-          {clearable &&
-            ((searchable && keyword !== '') ||
-              (!popperShow && cascaderLabel !== '')) && (
-              <i
-                className='hi-cascader__icon--clear hi-icon icon-close-circle'
-                onClick={clearValue}
-              />
-            )}
+          {clearable && ((searchable && keyword !== '') || (!popperShow && cascaderLabel !== '')) && (
+            <i className="hi-cascader__icon--clear hi-icon icon-close-circle" onClick={clearValue} />
+          )}
         </span>
       </div>
       <Popper
@@ -445,8 +397,8 @@ const Cascader = props => {
         zIndex={1050}
         topGap={5}
         width={'auto'}
-        className='hi-cascader__popper'
-        placement='top-bottom-start'
+        className="hi-cascader__popper"
+        placement="top-bottom-start"
         onClickOutside={() => {
           setPopperShow(false)
         }}
@@ -456,9 +408,7 @@ const Cascader = props => {
           options={filterOptions || data}
           theme={theme}
           isFiltered={filterOptions}
-          filterOptionWidth={
-            hiCascader.current && hiCascader.current.clientWidth
-          }
+          filterOptionWidth={hiCascader.current && hiCascader.current.clientWidth}
           valueKey={getValueKey()}
           labelKey={getLabelKey()}
           childrenKey={getChildrenKey()}

@@ -236,6 +236,7 @@ class Transfer extends Component {
     } else {
       _targetList.splice(sIdx + 1, 1)
     }
+    this.props.onDragEnd(_targetList)
     this.setState({ targetList: _targetList })
   }
   setTargetNode (id, dividerPosition) {
@@ -262,7 +263,9 @@ class Transfer extends Component {
       title,
       disabled,
       theme,
-      localeDatas
+      localeDatas,
+      onDragStart,
+      onDrop
     } = this.props
     const {
       sourceSelectedKeys,
@@ -341,6 +344,8 @@ class Transfer extends Component {
                     setPosition={this.setPosition}
                     positionX={positionX}
                     positionY={positionY}
+                    onDragStart={onDragStart}
+                    onDrop={onDrop}
                   />
                 )
               })}
@@ -421,7 +426,11 @@ Transfer.defaultProps = {
   searchable: false,
   draggable: false,
   title: ['', ''],
-  disabled: false
+  disabled: false,
+  onDragStart: () => true,
+  onDragEnd: () => {},
+  onDrop: () => true,
+  onChange: () => {}
 }
 Transfer.propTypes = {
   mode: PropTypes.oneOf(['basic', 'multiple']), // TODO: 废弃，使用 type
@@ -431,5 +440,9 @@ Transfer.propTypes = {
   searchable: PropTypes.bool,
   draggable: PropTypes.bool,
   disabled: PropTypes.bool,
-  targetLimit: PropTypes.number
+  targetLimit: PropTypes.number,
+  onDragStart: PropTypes.func,
+  onDragEnd: PropTypes.func,
+  onDrop: PropTypes.func,
+  onChange: PropTypes.func
 }

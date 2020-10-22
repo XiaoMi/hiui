@@ -4,6 +4,8 @@ import Icon from '../icon'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
 
+import Provider from '../context'
+import Icon from '../icon'
 /**
  * Props
  * @prop  id         {string}            id

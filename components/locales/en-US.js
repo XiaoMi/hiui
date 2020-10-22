@@ -13,6 +13,7 @@ export default {
     lastWeek: 'Nearly week',
     lastMonth: 'Nearly month',
     lastThreeMonth: 'Nearly three months',
+    lastSixMonth: 'Nearly six months',
     lastYear: 'Nearly year',
     month: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     monthShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],

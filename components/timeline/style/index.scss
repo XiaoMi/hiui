@@ -304,6 +304,7 @@
     .timeline__item {
       display: flex;
       position: relative;
+      margin-bottom: 20px;
 
       .item--left {
         text-align: right;
@@ -359,7 +360,6 @@
       .item--right {
         width: calc(70% - 20px);
         margin-left: 20px;
-        margin-bottom: 20px;
 
         .item__title {
           color: use-color('black');
@@ -388,7 +388,7 @@
       &--first {
         .item__line {
           top: 7px;
-          height: calc(100% - 7px);
+          height: calc(100% + 20px - 7px);
         }
       }
     }

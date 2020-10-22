@@ -29,12 +29,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBase = () => (
-  <DocViewer
-    desc={desc}
-    code={code}
-    scope={{ Watermark, logo }}
-    prefix={prefix}
-  />
-)
+const DemoBase = () => <DocViewer desc={desc} code={code} scope={{ Watermark, logo }} prefix={prefix} />
 export default DemoBase

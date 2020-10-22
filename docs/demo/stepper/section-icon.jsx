@@ -15,11 +15,11 @@ class Demo extends React.Component {
     const list = [
       {
         title: '账号信息',
-        icon: <Icon name='user' />,
+        icon: 'user',
       },
       {
         title: '邮箱激活',
-        icon: <Icon name='time' />
+        icon: 'time'
       },
       {
         title: '信息登记',
@@ -46,11 +46,11 @@ class Demo extends React.Component {
     const list = [
       {
         title: '账号信息',
-        icon: <Icon name='user' />,
+        icon: 'user',
       },
       {
         title: '邮箱激活',
-        icon: <Icon name='time' />
+        icon: 'time'
       },
       {
         title: '信息登记',

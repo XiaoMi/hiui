@@ -1,16 +1,31 @@
 import React from 'react'
 import Classnames from 'classnames'
 
-export const BarProgress = props => {
-  function getWidth () {
-    if (!props.width || props.width <= 0) {
-      return props.size === 'large' ? 480 : 160
-    }
-    return props.width
-  }
+export default class BarProgress extends React.Component {
+  textRef = React.createRef()
+  state = { insidePlacement: 'right' }
 
-  function getHeight () {
-    const { size, height } = props
+  componentDidMount () {
+    if (this.props.placement === 'inside') {
+      if (
+        this.textRef.current &&
+        this.textRef.current.clientWidth >= this.getWidth() - ((this.getWidth() * this.props.percent) / 100 + 5)
+      ) {
+        this.setState({ insidePlacement: 'left' })
+      } else {
+        this.setState({ insidePlacement: 'right' })
+      }
+    }
+  }
+  getWidth = () => {
+    const { width, size } = this.props
+    if (!width || width <= 0) {
+      return size === 'large' ? 480 : 160
+    }
+    return width
+  }
+  getHeight = () => {
+    const { size, height } = this.props
     if (!height || height <= 0) {
       return size === 'large' ? 8 : size === 'default' ? 6 : 2
     }
@@ -45,6 +60,9 @@ export const BarProgress = props => {
           )}
           {tooltip}
         </div>
+        {showInfo && placement === 'outside' && (
+          <div className={`${prefix}__text ${prefix}__text--${type}`}>{content || `${percent}%`}</div>
+        )}
       </div>
       {showInfo && placement === 'outside' && (
         <div className={`${prefix}__text ${prefix}__text--${type}`}>

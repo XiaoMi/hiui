@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import './style'
-import { BarProgress } from './BarProgress.js'
+import BarProgress from './BarProgress.js'
 import { CircleProgress } from './CircleProgress.js'
 import { DashboardProgress } from './DashboardProgress'
 import Provider from '../context'

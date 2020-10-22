@@ -4,8 +4,9 @@ import DatePicker from '../../../components/date-picker'
 const prefix = 'date-picker-fast-check'
 const rightOptions = ['内置', '自定义选择范围']
 const desc = '将常用的日期或时间提炼成快捷项，节省操作成本'
-const code = [{
-  code: `import React from 'react'
+const code = [
+  {
+    code: `import React from 'react'
   import DatePicker from '@hi-ui/hiui/es/date-picker'\n
   class Demo extends React.Component {
     render () {
@@ -18,9 +19,10 @@ const code = [{
       )
     }
   }`,
-  opt: ['内置']
-}, {
-  code: `import React from 'react'
+    opt: ['内置']
+  },
+  {
+    code: `import React from 'react'
   import DatePicker from '@hi-ui/hiui/es/date-picker'\n
   class Demo extends React.Component {
     render () {
@@ -42,16 +44,11 @@ const code = [{
       )
     }
   }`,
-  opt: ['自定义选择范围']
-}]
+    opt: ['自定义选择范围']
+  }
+]
 
 const DemoFastCheck = () => (
-  <DocViewer
-    code={code}
-    scope={{ DatePicker }}
-    prefix={prefix}
-    desc={desc}
-    rightOptions={rightOptions}
-  />
+  <DocViewer code={code} scope={{ DatePicker }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
 )
 export default DemoFastCheck
