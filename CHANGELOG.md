@@ -2,23 +2,27 @@
 
 ## 3.0.0
 
-- 新增： `Slider` 滑块组件 [#1225](https://github.com/XiaoMi/hiui/issues/1225)
-- 新增： `SelectTree` 树形选择器组件 [#1231](https://github.com/XiaoMi/hiui/issues/1231)
-- 新增： `List` 列表组件 [#1226](https://github.com/XiaoMi/hiui/issues/1226)
+- 新增：`Slider` 滑块组件 [#1225](https://github.com/XiaoMi/hiui/issues/1225)
+- 新增：`SelectTree` 树形选择器组件 [#1231](https://github.com/XiaoMi/hiui/issues/1231)
+- 新增：`List` 列表组件 [#1226](https://github.com/XiaoMi/hiui/issues/1226)
 - 新增：`Filter` 筛选组件 [#1227](https://github.com/XiaoMi/hiui/issues/1227)
 - 新增：`Search` 搜索组件 [#1228](https://github.com/XiaoMi/hiui/issues/1228)
 - 新增：`Drawer` 抽屉组件 [#1229](https://github.com/XiaoMi/hiui/issues/1229)
+- 新增：`RichTextEditor` 富文本编辑器 [#1236](https://github.com/XiaoMi/hiui/issues/1236)
+- 新增：`CodeEditor` 代码编辑器使用示例
 - 新增常见图表样式支持（基于 echarts 封装）[#388](https://github.com/XiaoMi/hiui/issues/388)
-- 全新的 `TimePicker` 组件
-  - TODO
-- 全新的 `Form` 组件
-  - 新增 SchemaForm，可通过 Schema 配置使用 Form。
-  - 新增 useForm，通过 Form.useForm 对表单数据域进行交互。
-  - 新增 Form.List，方便对表单项进行增加删除
-  - 新增 Submit、Reset 等快捷组件
-  - 优化表单的校验
-- 全新的 `DatePicker` 组件
-  - TODO
+- 全新的 `Form` 组件 [#1234](https://github.com/XiaoMi/hiui/issues/1234)
+  - 新增 `SchemaForm`，可通过 Schema 配置使用 `Form`。
+  - 新增 `useForm`，通过 `Form.useForm` 对表单数据域进行交互。
+  - 新增 `Form.List`，方便对表单项进行增加删除
+  - 新增 `Submit`、`Reset` 等快捷组件，方便用户重置和提交数据
+  - 优化表单中的表单项值的管理，不再由用户进行 `setState`
+  - 优化 `Form` 输出数据的内容格式，用户可通过设置 `field` 进行相关格式的设置
+  - 优化表单的校验相关功能
+- 全新的 `DatePicker` 组件 [#1235](https://github.com/XiaoMi/hiui/issues/1234)
+  - 优化快捷选项功能，允许用户自定义快捷选项
+  - 优化选择日期相关交互
+  - 优化日期面板相关样式
 - 全新的 `Icon` 组件 [#1224](https://github.com/XiaoMi/hiui/issues/1224)
   - 内部改为 svg 实现方式
   - 重新调整视觉效果
@@ -39,10 +43,23 @@
   - 优化了列冻结
   - 优化了表头吸顶
   - 优化了列调整，支持调整列的顺序
+- 全新的 `Rate` 组件 [#1237](https://github.com/XiaoMi/hiui/issues/1237)
+  - 支持自定义字体图标，文字甚至图片以及评分选中颜色
+  - 支持根据评分自定义渲染图标
+  - 优化辅助文字显示位置
+  - 新增只读形态。
 - `Breadcrumb` 组件升级 [#1230](https://github.com/XiaoMi/hiui/issues/1230)
   - 修正最后一级的 hover 时的高亮效果
 - `Cascader` 组件升级
   - 修正了受控、非受控模式
+- `Dropdown` 组件升级 [#1238](https://github.com/XiaoMi/hiui/issues/1238)
+  - 修正选项具有 `href` 属性时点击可跳转
+- `Select` 组件升级
+  - 新增 `fieldNames` API，方便根据返回数据显示下拉框的内容
+  - 新增 `showJustSelected` API，方便快速对下拉选项进行操作
+  - 新增下拉数据的**分组**展示形式
+  - 优化 `dataSource`，请求数据方式以及支持返回多种类型
+  - 修正多选异步数据回显问题
 - `Switch` 组件升级
   - 修正了 onChange 的触发时机 [#1223](https://github.com/XiaoMi/hiui/issues/1223)
   - 修正了受控、非受控模式 [#633](https://github.com/XiaoMi/hiui/issues/633)

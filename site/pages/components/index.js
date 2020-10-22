@@ -7,15 +7,6 @@ files.keys().forEach((key) => {
 export default {
   documents: {},
   components: {
-    new: {
-      slider: components.slider,
-      'select-tree': components['select-tree'],
-      list: components.list,
-      filter: components.filter,
-      table: components.table,
-      search: components.search,
-      drawer: components.drawer
-    },
     'group-basic': {
       grid: components.grid,
       typography: components.typography,

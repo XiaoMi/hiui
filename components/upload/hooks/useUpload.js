@@ -191,11 +191,17 @@ const useUpload = ({
                 onProgress
               })
               file.abort = action.abort
+              return file
             }
+            return false
+          })
+
+        fileListRef.current = _files
+          .filter((file) => {
             return file
           })
-        fileListRef.current = _files.reverse().concat(fileListRef.current)
-        console.log('_files', _files)
+          .reverse()
+          .concat(fileListRef.current)
         updateFileList(fileListRef.current)
       }
     },

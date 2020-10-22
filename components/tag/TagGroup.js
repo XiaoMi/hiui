@@ -79,9 +79,9 @@ const TagGroup = ({ editable, prefixCls = 'hi-tag-group', data, onAdd = noop, on
         editInputValue === ''
           ? null
           : {
-            tagId: editInputId,
-            title: editInputValue
-          },
+              tagId: editInputId,
+              title: editInputValue
+            },
         index
       )
       setEditInputId(-1)
@@ -168,13 +168,13 @@ const TagGroup = ({ editable, prefixCls = 'hi-tag-group', data, onAdd = noop, on
       })}
       {editable && !inputVisible && (
         <span onClick={() => showInput()} className={`${prefixCls}__editable--plus`}>
-          <Icon name='plus' />
+          <Icon name="plus" />
         </span>
       )}
       {editable && inputVisible && (
         <input
           ref={newInputRef}
-          type='text'
+          type="text"
           value={newInputValue || ''}
           className={`${prefixCls}__editable--input`}
           onChange={(e) => {
