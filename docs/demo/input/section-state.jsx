@@ -4,10 +4,12 @@ import Grid from '../../../components/grid'
 import Input from '../../../components/input'
 import Radio from '../../../components/radio'
 import Button from '../../../components/button'
-const leftOptions = ['基础', '默认值', '禁用', '可清除','自动聚焦','手动聚焦']
+const leftOptions = ['基础', '默认值', '禁用', '可清除', '自动聚焦', '手动聚焦']
 const prefix = 'input-state'
 const desc = '可获取有限长度的字符串，不折行显示'
-const code = [{code: `import React from 'react'
+const code = [
+  {
+    code: `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Radio from '@hi-ui/hiui/es/radio'
 import Input from '@hi-ui/hiui/es/input'\n
@@ -21,8 +23,10 @@ class Demo extends React.Component {
     )
   }
 }`,
-opt: ['基础']},
-{code: `import React from 'react'
+    opt: ['基础']
+  },
+  {
+    code: `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Radio from '@hi-ui/hiui/es/radio'
 import Input from '@hi-ui/hiui/es/input'\n
@@ -37,9 +41,10 @@ class Demo extends React.Component {
     )
   }
 }`,
-opt: ['禁用']},
-{
-  code: `import React from 'react'
+    opt: ['禁用']
+  },
+  {
+    code: `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Radio from '@hi-ui/hiui/es/radio'
 import Input from '@hi-ui/hiui/es/input'\n
@@ -54,10 +59,10 @@ class Demo extends React.Component {
     )
   }
 }`,
-opt: ['默认值']
-},
-{
-  code: `import React from 'react'
+    opt: ['默认值']
+  },
+  {
+    code: `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Radio from '@hi-ui/hiui/es/radio'
 import Input from '@hi-ui/hiui/es/input'\n
@@ -73,10 +78,10 @@ class Demo extends React.Component {
     )
   }
 }`,
-opt: ['自动聚焦']
-},
-{
-  code: `import React from 'react'
+    opt: ['自动聚焦']
+  },
+  {
+    code: `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Radio from '@hi-ui/hiui/es/radio'
 import Input from '@hi-ui/hiui/es/input'\n
@@ -101,13 +106,14 @@ class Demo extends React.Component {
           defaultValue='默认值'
         />
       </div>
-     
+
     )
   }
 }`,
-opt: ['手动聚焦']
-},
-{code: `import React from 'react'
+    opt: ['手动聚焦']
+  },
+  {
+    code: `import React from 'react'
 import Grid from '@hi-ui/hiui/es/grid'
 import Radio from '@hi-ui/hiui/es/radio'
 import Input from '@hi-ui/hiui/es/input'\n
@@ -122,14 +128,10 @@ class Demo extends React.Component {
     )
   }
 }`,
-opt: ['可清除']}]
+    opt: ['可清除']
+  }
+]
 const DemoState = () => (
-  <DocViewer
-    desc={desc}
-    leftOptions={leftOptions}
-    code={code}
-    scope={{ Grid, Input, Radio, Button }}
-    prefix={prefix}
-  />
+  <DocViewer desc={desc} leftOptions={leftOptions} code={code} scope={{ Grid, Input, Radio, Button }} prefix={prefix} />
 )
 export default DemoState

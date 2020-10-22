@@ -7,16 +7,7 @@ const initState = {
 }
 
 export default (state = initState, action = '') => {
-  const {
-    type,
-    sider,
-    theme,
-    locale,
-    designNavs,
-    componentsNavs,
-    templatesNavs,
-    components
-  } = action
+  const { type, sider, theme, locale, designNavs, componentsNavs, templatesNavs, docsNavs, components } = action
   switch (type) {
     case 'GLOBAL_SIDER':
       return Object.assign({}, state, { sider })
@@ -30,6 +21,8 @@ export default (state = initState, action = '') => {
       return Object.assign({}, state, { componentsNavs })
     case 'SET_TEMPLATESNAVS':
       return Object.assign({}, state, { templatesNavs })
+    case 'SET_DOCSNAVS':
+      return Object.assign({}, state, { docsNavs })
     case 'SET_COMPONENTS':
       return Object.assign({}, state, { components })
     default:

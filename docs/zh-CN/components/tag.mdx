@@ -14,16 +14,71 @@ import DemoBasic from '../../demo/tag/tag-basic'
 
 <DemoBasic />
 
-## 线型标签
+## 线型圆角标签
 
 import DemoLine from '../../demo/tag/tag-line'
 
 <DemoLine />
 
+## 方角标签
+
+import DemoRound from '../../demo/tag/tag-round'
+
+<DemoRound />
+
+## 标签组用法
+
+import DemoGroup from '../../demo/tag/tag-group'
+
+<DemoGroup />
+
+## 自定义颜色
+
+import DemoColor from '../../demo/tag/tag-color'
+
+<DemoColor />
+
 ## Props
 
-| 参数       | 说明             | 类型                    | 可选值                                          | 默认值    |
-| ---------- | ---------------- | ----------------------- | ----------------------------------------------- | --------- |
-| type       | 设置状态         | string                  | 'primary' \| 'success' \| 'warning' \| 'danger' | 'primary' |
-| appearance | 设置样式类型     | string                  | 'default' \| 'line'                             | 'default' |
-| onClick    | 点击按钮时的回调 | (e: MouseEvent) => void | -                                               | -         |
+### Tag
+
+| 参数       | 说明         | 类型   | 可选值                                          | 默认值    |
+| ---------- | ------------ | ------ | ----------------------------------------------- | --------- |
+| type       | 设置状态     | string | 'primary' \| 'success' \| 'warning' \| 'danger' | 'primary' |
+| appearance | 设置样式类型 | string | 'default' \| 'line'                             | 'default' |
+| shape      | 设置形状     | string | 'round' \| 'square'                             | 'round'   |
+| color      | 标签色       | string | -                                               | -         |
+
+### Tag.Group
+
+| 参数     | 说明                           | 类型      | 可选值        | 默认值 |
+| -------- | ------------------------------ | --------- | ------------- | ------ |
+| data     | 展示数据                       | TagNode[] | -             | -      |
+| editable | 标签组是否可以修改、新增、删除 | boolean   | true \| false | false  |
+
+## Events
+
+### Tag
+
+| 名称    | 说明             | 类型                        | 参数                | 返回值 |
+| ------- | ---------------- | --------------------------- | ------------------- | ------ |
+| onClick | 点击按钮时的回调 | (event: MouseEvent) => void | event: 鼠标事件对象 | -      |
+
+### Tag.Group
+
+| 名称     | 说明           | 类型                                       | 参数                                                                                                                          | 返回值 |
+| -------- | -------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ------ |
+| onAdd    | 标签新增后触发 | (addNode:TagNode, index:number) => void    | addNode: 新增的 Tag 对象 `TagNode` <br/> index: 新增 Tag 的索引    | -      |
+| onEdit   | 标签修改后触发 | (editNode:TagNode, index:number) => void   | editNode: 编辑的 Tag 对象 `TagNode` <br/> index: 编辑 Tag 的索引   | -      |
+| onDelete | 标签删除后触发 | (deleteNode:TagNode, index:number) => void | deleteNode: 删除的 Tag 对象 `TagNode` <br/> index: 删除 Tag 的索引 | -      |
+
+## Type
+
+### TagNode
+
+| 参数     | 说明             | 类型             | 可选值        | 默认值 |
+| -------- | ---------------- | ---------------- | ------------- | ------ |
+| title    | 标题             | string           | -             | -      |
+| tagId    | 标签唯一 id      | string \| number | -             | -      |
+| closable | 标签是否可以关闭 | boolean          | true \| false | false  |
+| editable | 标签是否可以修改 | boolean          | true \| false | false  |

@@ -26,7 +26,7 @@ class Demo extends React.Component {
       {
         title: '信息登记',
         content: '请输入个人信息',
-        icon: <Icon name='list' />
+        icon: <Icon name='bars' />
       },
     ]
 
@@ -63,7 +63,7 @@ class Demo extends React.Component {
             content: '请输入个人信息',
           },
         ]
-    
+
         return (
           <Stepper
             data={list}
@@ -77,12 +77,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoUpDownIcon = () => (
-  <DocViewer
-    code={code}
-    scope={{ Stepper, Icon }}
-    rightOptions={rightOptions}
-    prefix={prefix}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ Stepper, Icon }} rightOptions={rightOptions} prefix={prefix} desc={desc} />
 )
 export default DemoUpDownIcon

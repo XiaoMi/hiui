@@ -1,18 +1,18 @@
-@import '@hi-ui/core-css/index.scss';
 @import '../../style/icon/index.scss';
+@import '../../core-css/index.scss';
 
 .hi-notice__container {
   position: absolute;
   top: 20px;
   right: 20px;
   z-index: 1020;
-  background-color: #fff;
+  background-color: use-color('white');
 
   .hi-notice {
     padding: 10px 12px;
     margin-bottom: 10px;
-    border: 1px solid #e7e7e7;
-    background: #fff;
+    border: 1px solid use-color('gray-30');
+    background: use-color('white');
     transition: 0.3s ease;
     display: flex;
     align-items: flex-start;
@@ -35,7 +35,7 @@
 
   .hi-notice__content {
     font-size: 12px;
-    color: #666;
+    color: use-color('gray-80');
   }
 
   .hi-notice-enter {

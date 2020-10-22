@@ -37,7 +37,7 @@ class Demo extends React.Component {
   }
   render () {
     return (
-      <Tabs type="button" onTabClick={(tab,e)=>console.log(tab,e)}>
+      <Tabs type="button" onTabClick={(tab,e)=>console.log(tab)}>
         {
           this.state.panes.map((pane, index) => {
             return (
@@ -57,5 +57,7 @@ class Demo extends React.Component {
   }
 }`
 
-const Demo = () => <DocViewer code={code} scope={{ Tabs }} desc={desc} prefix={prefix} />
+const Demo = () => (
+  <DocViewer code={code} scope={{ Tabs }} desc={desc} prefix={prefix} />
+)
 export default Demo

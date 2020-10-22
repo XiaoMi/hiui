@@ -19,6 +19,7 @@ class Demo extends React.Component {
   }
   onChange (status) {
     console.log(status)
+    this.setState({checked: status})
   }
   render () {
     return (

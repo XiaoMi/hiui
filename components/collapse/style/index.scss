@@ -1,17 +1,17 @@
+@import '../../core-css/index.scss';
 
 .hi-collapse {
   text-align: left;
   border-bottom: 0;
-  border-radius: 3px;
-  font-size: 14px;
+  font-size: $font-size-normal;
 
   .collapse-item {
-    border-bottom: 1px solid #d8d8d8;
+    border-bottom: 1px solid use-color('gray-30');
 
     &__head {
       display: flex;
       align-items: center;
-      background-color: #fff;
+      background-color: use-color('white');
       padding: 12px 0 12px 16px;
       color: rgba(0, 0, 0, 0.85);
       cursor: pointer;
@@ -38,7 +38,7 @@
       color: rgba(0, 0, 0, 0.65);
       overflow: hidden;
       box-sizing: border-box;
-      background-color: #fbfbfb;
+      background-color: use-color('gray-10');
     }
 
     &--show {
@@ -58,7 +58,7 @@
     &--disabled {
       .collapse-item__head {
         cursor: not-allowed;
-        color: #ccc;
+        color: use-color('gray-50');
       }
     }
   }
@@ -66,7 +66,7 @@
   &__simple {
     .collapse-item {
       .head {
-        background-color: #fff;
+        background-color: use-color('white');
       }
     }
   }

@@ -93,7 +93,6 @@ class Demo extends React.Component {
     return (
       <Select
         type='single'
-        clearable={false}
         style={{ width: 200 }}
         data={singleList}
         clearable
@@ -159,13 +158,12 @@ class Demo extends React.Component {
     return (
       <Select
         type='single'
-        clearable={false}
         style={{ width: 200 }}
         data={singleList}
         value={value}
         onChange={ids => {
           this.setState({
-            value: ids[0]
+            value: ids
           })
         }}
       />
@@ -176,12 +174,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoType = () => (
-  <DocViewer
-    code={code}
-    scope={{ Select }}
-    prefix={prefix}
-    rightOptions={rightOptions}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ Select }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
 )
 export default DemoType

@@ -6,11 +6,18 @@ import DemoBase from '../../demo/time-picker/section-base.jsx'
 
 <DemoBase />
 
+## 自定义禁选值
+
+import DemoDisable from '../../demo/time-picker/section-disable.jsx'
+
+<DemoDisable />
+
 ## 时间范围
 
 import DemoRange from '../../demo/time-picker/section-range.jsx'
 
 <DemoRange />
+
 
 ## 不同粒度
 
@@ -25,6 +32,7 @@ import DemoFormat from '../../demo/time-picker/section-format.jsx'
 | type            | 选择器类型         | string                                                                 | 'default' \| 'timerange' | 'default' |
 | value           | 显示的日期         | Date \| string \| number \| object \| -                                | -                        | -         |
 | format          | 格式化时间         | string                                                                 | -                        | -         |
+| inputReadOnly          | 设置输入框为只读                           | boolean                                                          | true \| false                                                                                                                                                                                        | false       |
 | hourStep        | 小时选项间隔       | number                                                                 | -                        | 1         |
 | minuteStep      | 分钟选项间隔       | number                                                                 | -                        | 1         |
 | secondStep      | 秒选项间隔         | number                                                                 | -                        | 1         |
@@ -34,4 +42,9 @@ import DemoFormat from '../../demo/time-picker/section-format.jsx'
 | disabledHours   | 禁止选择的小时     | () => number[] \| number[]                                             | -                        | -         |
 | disabledMinutes | 禁止选择的分钟     | (selectedHour: number) => number[] \| number[]                         | -                        | -         |
 | disabledSeconds | 禁止选择的秒数     | (selectedHour: number, selectedMinute: number) => number[] \| number[] | -                        | -         |
-| onChange        | 值变化时的回调函数 | (date: Date \| DateRange, dateStr: string \| DateRange ) => void       | -                        | -         |
+
+## Events
+
+| 名称     | 说明         | 类型                                                             | 参数                                                                                                                               | 返回值 |
+| -------- | ------------ | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| onChange | 选择后的回调 | (date: Date \| DateRange, dateStr: string \| DateRange ) => void | date: 选中的日期(普通选择) \| 选中的日期范围{start: Date, end: Date}(范围选择) <br/> dateStr: 选中的日期字符串(普通选择) \| 选中的日期字符串对象{start: string, end: string}(范围选择) | -      |

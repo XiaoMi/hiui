@@ -6,7 +6,7 @@ import { prefixCls } from '.'
 import DropdownMenuItem from './DropdownMenuItem'
 
 class DropdownMenu extends React.Component {
-  render () {
+  render() {
     const {
       data,
       attachEle,
@@ -17,8 +17,10 @@ class DropdownMenu extends React.Component {
       onChildMenuMouseEnter,
       onChildMenuMouseLeave,
       onMenuItemClick,
+      handleDocumentClick,
       width,
-      theme
+      theme,
+      overlayClassName
     } = this.props
     const menuCls = classNames(`${prefixCls}__menu`, `theme__${theme}`)
     return (
@@ -26,12 +28,17 @@ class DropdownMenu extends React.Component {
         className={`${prefixCls}__popper`}
         show={visible}
         attachEle={attachEle}
+        // container={document.body}
         zIndex={1060}
         placement={placement}
         width={width}
         onMouseEnter={onMouseEnter}
         leftGap={0}
+        overlayClassName={overlayClassName}
         onMouseLeave={onMouseLeave}
+        onClickOutside={() => {
+          handleDocumentClick && handleDocumentClick()
+        }}
       >
         <ul className={menuCls}>
           {data.map((item, index) => (

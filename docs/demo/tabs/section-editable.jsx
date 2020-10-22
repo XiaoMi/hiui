@@ -5,6 +5,7 @@ const prefix = 'tabs-editable'
 const desc = '可以自定义标签的增加和关闭'
 
 const code = `import Tabs from '@hi-ui/hiui/es/tabs'
+import Grid from '@hi-ui/hiui/es/grid'
 import React from 'react'\n
 class Demo extends React.Component {
   constructor() {
@@ -18,11 +19,12 @@ class Demo extends React.Component {
         {
           tabTitle: '团购订单',
           tabId: 'tabId-2',
-          closeable: false
+          disabled:true
         },
         {
           tabTitle: '以旧换新订单',
-          tabId: 'tabId-3'
+          tabId: 'tabId-3',
+          closeable: false,
         },
         {
           tabTitle: '消息通知',
@@ -31,12 +33,9 @@ class Demo extends React.Component {
       ]
     }
   }
-  onEdit(action, index, tabId) {
-    console.log('----------onEdit', action, index, tabId)
-    this[\`\${action}Tab\`](index, tabId)
-  }
   addTab() {
     const panes = this.state.panes;
+   
     this.setState({
       panes: panes.concat([{
         tabTitle: \`新增标签\${panes.length + 1}\`,
@@ -45,7 +44,7 @@ class Demo extends React.Component {
     })
   }
 
-  deleteTab(index, tabId) {
+  deleteTab(item,index) {
     const panes = this.state.panes.slice()
     panes.splice(index, 1)
 
@@ -54,17 +53,30 @@ class Demo extends React.Component {
     })
   }
 
+  beforeDelete(item){
+    console.log(item)
+    return true
+  }
+
   render () {
-    return (
-      <Tabs type="editable" onTabClick={(tab,e)=>console.log(tab,e)} editable onEdit={this.onEdit.bind(this)}>
+    return  (
+        <Tabs 
+          type="editable" 
+          editable
+          onTabClick={(tab,e)=>console.log(tab,e)}
+          onDelete={this.deleteTab.bind(this)} 
+          onAdd={this.addTab.bind(this)} 
+          onBeforeDelete={this.beforeDelete.bind(this)}
+        >
         {
           this.state.panes.map((pane, index) => {
             return (
               <Tabs.Pane
                 tabTitle={pane.tabTitle}
                 tabId={pane.tabId}
-                closeable
+                closeable={pane.closeable}
                 key={index}
+                disabled={pane.disabled}
               >
                 <div style={{padding: '16px'}}>{pane.tabTitle}</div>
               </Tabs.Pane>

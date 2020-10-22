@@ -54,37 +54,45 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 
 ## Props
 
-| 参数               | 说明                                                                    | 类型                                                                     | 可选值                          | 默认值    |
-| ------------------ | ----------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------- | --------- |
-| data               | 展示数据                                                                | DataItem []                                                              | -                               | -         |
-| checkable          | 节点前添加 Checkbox 复选框（暂不支持与 draggable 和 editable 同时使用） | boolean                                                                  | true \| false                   | false     |
-| editable           | 节点右键可编辑（添加同级节点、添加子节点、编辑节点、删除节点）          | boolean                                                                  | true \| false                   | false     |
-| draggable          | 节点可拖拽                                                              | boolean                                                                  | true \| false                   | false     |
-| searchable         | 节点可搜索                                                              | boolean                                                                  | true \| false                   | false     |
-| highlightable      | 节点高亮                                                                | boolean                                                                  | true \| false                   | false     |
-| loadTreeNode       | 点击异步加载子项                                                        | LoadTreeNode \| (id: string) => LoadTreeNode                             | -                               | -         |
-| defaultExpandAll   | 是否默认展开所有树节点                                                  | boolean                                                                  | true \| false                   | false     |
-| defaultHighlightId | 默认高亮的节点                                                          | string                                                                  | -                  | -     |
-| checkedIds         | 选中的 checkbox                                                         | string[]                                                                 | -                               | -         |
-| openIcon           | 表示展开的图标                                                          | string                                                                   | Icon 图标名称                   | -         |
-| closeIcon          | 表示闭合的图标                                                          | string                                                                   | Icon 图标名称                   | -         |
-| apperance          | 树形控件的展现形态                                                      | string                                                                   | 'default' \| 'line' \| 'folder' | 'default' |
-| contextMenu        | 自定义右键菜单,参考 _示例_ 及 _页面底部自定义右键菜单使用说明_          | ContextMenuOption[] \| (item: DataItem,level: number) => ContextMenuOption[]           |                                 | []        |
-| onChange           | 树组件改变时触发                                                        | (data: TreeNode[]) => void                                               | -                               | -         |
-| onExpand           | 节点被点击(展开/收起)时触发                                             | (expanded: boolean, expandIds: string[], expandedNode: TreeNode) => void | -                               | -         |
-| onCheck            | 点击节点多选框触发                                                      | (checked: boolean, checkedIds: string[], checkedNode: TreeNode) => void  | -                               | -         |
-| onClick            | 点击节点文字时触发                                                      | (clickNode: TreeNode) => void                                            | -                               | -         |
-| onDragStart        | 节点开始拖拽时触发                                                      | (dragNode: TreeNode) => void                                             | -                               | -         |
-| onDrop             | 节点拖拽时触发                                                          | (dragNode: TreeNode, dropNode: TreeNode, data: DataStatus, level: Level) => boolean                      | -                               | -         |
-| onDropEnd          | 节点拖拽成功时触发                                                      | (dragNode: TreeNode, dropNode: TreeNode) => void                         | -                               | -         |
-| onBeforeDelete     | 节点删除前触发,返回 false 或者 返回一个 Promise 对象，Promise 对象 reject 时 则节点删除失败，不会触发 onDelete                  | (deletedNode: TreeNode, data: DataStatus, level: number) => boolean                       | -                               | -         |
-| onDelete           | 节点删除后触发                                                          | (deletedNode: TreeNode, data: TreeNode[]) => void                        | -                               | -         |
-| onBeforeSave       | 节点保存新增、编辑状态时触发, 返回 false 或者 返回一个 Promise 对象，Promise 对象 reject 时则保存新增、编辑失败，不会触发 onSave                  | (savedNode: TreeNode, data: DataStatus, level: number) => boolean                          | -                               | -         |
-| onSave             | 节点保存新增、编辑状态后触发                  | (savedNode: TreeNode, data: TreeNode[]) => void                          | -                               | -         |
+| 参数               | 说明                                                                    | 类型                                                                          | 可选值                          | 默认值    |
+| ------------------ | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ------------------------------- | --------- |
+| data               | 展示数据                                                                | DataItem []                                                                   | -                               | -         |
+| checkable          | 节点前添加 Checkbox 复选框（暂不支持与 draggable 和 editable 同时使用） | boolean                                                                       | true \| false                   | false     |
+| editable           | 节点右键可编辑（添加同级节点、添加子节点、编辑节点、删除节点）          | boolean                                                                       | true \| false                   | false     |
+| draggable          | 节点可拖拽                                                              | boolean                                                                       | true \| false                   | false     |
+| searchable         | 节点可搜索                                                              | boolean                                                                       | true \| false                   | false     |
+| selectable         | 节点是否可选中                                                          | boolean                                                                       | true \| false                   | true      |
+| onLoadChildren     | 点击异步加载子项                                                        | (treeNode: TreeNode) => LoadChildren                                          | -                               | -         |
+| defaultExpandAll   | 是否默认展开所有树节点                                                  | boolean                                                                       | true \| false                   | false     |
+| defaultSelectedId  | 默认选中的节点                                                          | string                                                                        | -                               | -         |
+| selectedId         | 选中的节点                                                              | string                                                                        | -                               | -         |
+| defaultCheckedIds  | 默认选中的复选框的节点                                                  | string[]                                                                      | -                               | -         |
+| checkedIds         | 选中的复选框的节点                                                      | string[]                                                                      | -                               | -         |
+| defaultExpandedIds | 默认展开的节点                                                          | string[]                                                                      | -                               | -         |
+| expandedIds        | 展开的节点                                                              | string[]                                                                      | -                               | -         |
+| openIcon           | 表示展开的图标                                                          | string                                                                        | Icon 图标名称                   | -         |
+| closeIcon          | 表示闭合的图标                                                          | string                                                                        | Icon 图标名称                   | -         |
+| apperance          | 树形控件的展现形态                                                      | string                                                                        | 'default' \| 'line' \| 'folder' | 'default' |
+| contextMenu        | 自定义右键菜单,参考 _示例_ 及 _页面底部自定义右键菜单使用说明_          | ContextMenuOption[] \| (item: DataItem, level: number) => ContextMenuOption[] |                                 | []        |
+
+## Events
+
+| 名称           | 说明                                                        | 类型                                                                                | 参数                                                                                                                                         | 返回值                                                    |
+| -------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| onExpand       | 节点被点击(展开/收起)时触发                                 | (expandedNode: TreeNode, expanded: boolean, expandIds: string[] ) => void           | expandedNode: 点击的树节点 <br/>expanded: 点击的节点展开状态<br/> expandIds: 当前展开的树节点 ID 集合                                        | -                                                         |
+| onCheck        | 点击节点多选框触发                                          | (checked: boolean, checkedIds: string[], checkedNode: TreeNode) => void             | checked: 点击节点是否被勾选<br/>checkedIds: 选中/半选节点数据；`{checkedIds: array, semiCheckedIds: array}` <br/>checkedNode: 操作的节点对象 | -                                                         |
+| onSelect       | 点击节点时触发                                              | (selectedNode: TreeNode) => void                                                    | selectedNode: 选中的树节点                                                                                                                   | -                                                         |
+| onDragStart    | 节点开始拖拽时触发                                          | (dragNode: TreeNode) => void                                                        | dragNode: 拖拽的节点对象                                                                                                                     | -                                                         |
+| onDrop         | 节点放开时触发                                              | (dragNode: TreeNode, dropNode: TreeNode, data: DataStatus, level: Level) => boolean | dragNode: 拖拽的节点对象 <br/>dropNode: 目标节点对象<br/>data:当前结构数据 `DataStatus` <br/>level:当前级别数据                              | -                                                         |
+| onDropEnd      | 节点拖拽成功时触发                                          | (dragNode: TreeNode, dropNode: TreeNode) => void                                    | dragNode: 拖拽的节点对象 <br/>dropNode: 目标节点对象                                                                                         | -                                                         |
+| onBeforeDelete | 节点删除前触发,返回 false 则节点删除失败，不会触发 onDelete | (deletedNode: TreeNode, data: DataStatus, level: number) => boolean                 | deletedNode: 要删除的节点对象 <br/> data:当前结构数据 `DataStatus` <br/>level:当前级别数据                                                   | boolean: 返回 false 将阻止删除                            |
+| onDelete       | 节点删除后触发                                              | (deletedNode: TreeNode, data: TreeNode[]) => void                                   | deletedNode: 删除的节点对象 <br/> data: 删除后的节点数据集合                                                                                 | -                                                         |
+| onBeforeSave   | 节点保存新增、编辑状态时触发                                | (savedNode: TreeNode, data: DataStatus, level: number) => boolean                   | savedNode: 要保存的数据对象 <br/> data:当前结构数据 `DataStatus` <br/>level:当前级别数据                                                     | boolean: 返回 false 则保存新增、编辑失败，不会触发 onSave |
+| onSave         | 节点保存新增、编辑状态后触发                                | (savedNode: TreeNode, data: TreeNode[]) => void                                     | savedNode: 保存的数据对象 <br/> data: 保存后的节点数据集合                                                                                   | -                                                         |
 
 ## Type
 
-### LoadTreeNode
+### LoadChildren
 
 | 参数              | 说明                                                       | 类型                             | 可选值          | 默认值 |
 | ----------------- | ---------------------------------------------------------- | -------------------------------- | --------------- | ------ |
@@ -103,21 +111,21 @@ import DemoLine from '../../demo/tree/section-line.jsx'
 | title    | 树节点标题     | string \| ReactNode | -             | -      |
 | disabled | 是否禁用节点   | boolean             | true \| false | false  |
 | children | 该节点的子节点 | TreeNode[]          | -             | -      |
+| isLeaf   | 是否为叶子节点 | boolean             | true \| false | -      |
 
 ### Level
 
-| 参数     | 说明           | 类型                | 可选值        | 默认值 |
-| -------- | -------------- | ------------------- | ------------- | ------ |
-| before   | 拖拽前在树中的层级  | number              | -             | -      |
-| after   | 拖拽后在树中的层级  | number              | -             | -      |
+| 参数   | 说明               | 类型   | 可选值 | 默认值 |
+| ------ | ------------------ | ------ | ------ | ------ |
+| before | 拖拽前在树中的层级 | number | -      | -      |
+| after  | 拖拽后在树中的层级 | number | -      | -      |
 
 ### DataStatus
 
-| 参数     | 说明           | 类型                | 可选值        | 默认值 |
-| -------- | -------------- | ------------------- | ------------- | ------ |
-| before   | 更新前整个树的数据结构  | []TreeNode              | -             | -      |
-| after   | 更新后整个树的数据结构  | []TreeNode              | -             | -      |
-
+| 参数   | 说明                   | 类型       | 可选值 | 默认值 |
+| ------ | ---------------------- | ---------- | ------ | ------ |
+| before | 更新前整个树的数据结构 | []TreeNode | -      | -      |
+| after  | 更新后整个树的数据结构 | []TreeNode | -      | -      |
 
 ### ContextMenuOption
 

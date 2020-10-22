@@ -259,7 +259,7 @@ class Transfer extends Component {
       showAllSelect,
       searchable,
       draggable,
-      emptyContent,
+      emptyContent: propsEmptyContent,
       title,
       disabled,
       theme,
@@ -282,6 +282,7 @@ class Transfer extends Component {
       dividerPosition
     } = this.state
     const localeMap = localeDatas.transfer || {}
+    const emptyContent = propsEmptyContent ? propsEmptyContent : [localeMap.emptyContent, localeMap.emptyContent]
     const selectedKeys = dir === 'left' ? sourceSelectedKeys : targetSelectedKeys
     const filterText = dir === 'left' ? leftFilter : rightFilter
     const filterResult = datas.filter(item => item.content.includes(filterText))
@@ -299,7 +300,7 @@ class Transfer extends Component {
           <div className='hi-transfer__searchbar'>
             <Icon name='search' />
             <Input
-              placeholder='搜索'
+              placeholder={localeMap.searchPlaceholder}
               clearable='true'
               clearableTrigger='always'
               onInput={this.searchEvent.bind(this, dir)}
@@ -424,7 +425,6 @@ Transfer.defaultProps = {
   showCheckAll: false,
   searchable: false,
   draggable: false,
-  emptyContent: ['暂无数据', '暂无数据'],
   title: ['', ''],
   disabled: false,
   onDragStart: () => true,

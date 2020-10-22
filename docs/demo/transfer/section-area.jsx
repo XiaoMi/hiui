@@ -4,8 +4,9 @@ import Transfer from '../../../components/transfer'
 const prefix = 'transfer-area'
 const desc = '可通过拖拽的形式对目标区域内进行排序'
 const rightOptions = ['基础用法', '高级用法']
-const code = [{
-  code: `import React from 'react'
+const code = [
+  {
+    code: `import React from 'react'
   import Transfer from '@hi-ui/hiui/es/transfer'\n
   class Demo extends React.Component {
     constructor () {
@@ -44,9 +45,10 @@ const code = [{
       )
     }
   }`,
-  opt: ['基础用法']
-}, {
-  code: `import React from 'react'
+    opt: ['基础用法']
+  },
+  {
+    code: `import React from 'react'
   import Transfer from '@hi-ui/hiui/es/transfer'\n
   class Demo extends React.Component {
     constructor () {
@@ -94,8 +96,9 @@ const code = [{
       )
     }
   }`,
-  opt: ['高级用法']
-}]
+    opt: ['高级用法']
+  }
+]
 const DemoArea = () => (
   <DocViewer code={code} scope={{ Transfer }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
 )

@@ -1,0 +1,100 @@
+// Author: Sivan[sunxingfan@xiaomi.com]
+// Description: define variables, alias etc.
+
+@import 'common';
+
+// Fonts
+/// Font Stack
+$_font-stack-sans: ('Helvetica Neue', Helvetica, Arial) !default;
+$_font-stack-serif: ('Times New Roman', Times) !default;
+$_font-stack-mono: ('SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier) !default;
+$_font-stack-symbol: ('Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol') !default;
+
+/// Font Family
+$font-family-sans: ($_font-stack-sans, sans-serif, $_font-stack-symbol) !default;
+$font-family-serif: ($_font-stack-serif, serif, $_font-stack-symbol) !default;
+$font-family-mono: ($_font-stack-mono, monospace, $_font-stack-symbol) !default;
+
+/// Font Weight
+$font-weight-normal: 400 !default;
+$font-weight-light: 200 !default;
+$font-weight-bold: 600 !default;
+$font-weight-black: 800 !default;
+
+/// Font Size
+$font-size-normal: 14px !default;
+$font-size-x-small: 11px !default;
+$font-size-small: 12px !default;
+$font-size-large: 16px !default;
+$font-size-x-large: 18px !default;
+$font-size-h1: 32px !default;
+$font-size-h2: 24px !default;
+$font-size-h3: 20px !default;
+$font-size-h4: 16px !default;
+$font-size-h5: 14px !default;
+$font-size-h6: 12px !default;
+
+/// Line Heights
+$line-height-size-normal: 22px !default;
+$line-height-size-x-small: 18px !default;
+$line-height-size-small: 18px !default;
+$line-height-size-large: 24px !default;
+$line-height-size-x-large: 26px !default;
+$line-height-size-h1: 40px !default;
+$line-height-size-h2: 32px !default;
+$line-height-size-h3: 28px !default;
+$line-height-size-h4: 24px !default;
+$line-height-size-h5: 22px !default;
+$line-height-size-h6: 20px !default;
+
+$line-height-normal: 1.5 !default;
+$line-height-condensed: 1.25 !default;
+$line-height-condensed-ultra: 1 !default;
+
+// Layouts
+$min-page-width: 1260px !default;
+
+// Spacer
+/// Spacer base
+$_spacer: 4px !default;
+$_spacers: (
+  $_spacer,
+  $_spacer * 2,
+  $_spacer * 3,
+  $_spacer * 4,
+  $_spacer * 5,
+  $_spacer * 6,
+  $_spacer * 7,
+  $_spacer * 8,
+  $_spacer * 9,
+  $_spacer * 10,
+) !default;
+
+/// Spacer Aliases
+$spacer-0: 0 !default; // 0
+$spacer-1: nth($_spacers, 1) !default; // 4px
+$spacer-2: nth($_spacers, 2) !default; // 8px
+$spacer-3: nth($_spacers, 3) !default; // 12px
+$spacer-4: nth($_spacers, 4) !default; // 16px
+$spacer-5: nth($_spacers, 5) !default; // 20px
+$spacer-6: nth($_spacers, 6) !default; // 24px
+$spacer-7: nth($_spacers, 7) !default; // 28px
+$spacer-8: nth($_spacers, 8) !default; // 32px
+$spacer-9: nth($_spacers, 9) !default; // 36px
+$spacer-10: nth($_spacers, 10) !default; // 40px
+
+// Colors
+/// Color shortcuts
+$black: get-color($palette-tertiary, 'black') !default;
+$gray-darker: get-color($palette-tertiary, 'gray-darker') !default;
+$gray-dark: get-color($palette-tertiary, 'gray-dark') !default;
+$gray: get-color($palette-tertiary, 'gray') !default;
+$gray-light: get-color($palette-tertiary, 'gray-light') !default;
+$gray-lighter: get-color($palette-tertiary, 'gray-lighter') !default;
+$white: get-color($palette-tertiary, 'white') !default;
+
+// Animation
+$speed-fast: 0.15s !default;
+$speed-normal: 0.3s !default;
+$speed-slow: 0.5s !default;
+$easing: ease-in !default;

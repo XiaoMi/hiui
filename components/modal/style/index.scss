@@ -1,103 +1,122 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
+$modal: 'hi-modal' !default;
 
-.hi-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1000;
-
-  &--hide {
-    display: none !important;
-  }
+.#{$modal} {
+  color: use-color('black');
+  font-size: $font-size-normal;
 
   &__mask {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1000; // @Todo: should be larger
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.54);
-    transition: all $speed-fast $easing;
+    height: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transition: opacity 0.3s, height 0s 0.3s;
+
+    &--visible {
+      opacity: 1;
+      height: 100%;
+      transition: opacity 0.3s;
+    }
   }
 
-  &__dialog {
-    position: relative;
-    top: 10%;
-    z-index: 1001;
-    box-sizing: border-box;
-    width: 600px;
-    max-height: 80%;
-    margin: 0 auto;
-    border-radius: 2px;
+  &__container {
+    z-index: 1000;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    position: fixed;
+  }
+
+  &__wrapper {
     display: flex;
     flex-direction: column;
-    font-size: $font-size-normal;
-    background-color: $white;
-    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
-    transition: all $speed-fast $easing;
+    background: use-color('white');
+    border-radius: 2px;
+    box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
+
+    &--default {
+      width: 600px;
+      max-height: 600px;
+      min-height: 240px;
+    }
 
     &--large {
       width: 800px;
+      max-height: 600px;
+      min-height: 240px;
     }
 
     &--small {
       width: 360px;
+      max-height: 600px;
+      min-height: 240px;
     }
   }
 
   &__header {
-    flex: none;
+    font-size: $font-size-large;
+    color: use-color('black');
+    font-weight: $font-weight-bold;
+    height: 54px;
+    box-sizing: border-box;
+    padding: 0 24px;
     display: flex;
     align-items: center;
-    height: 56px;
-    border-bottom: 1px solid $gray-light;
-  }
+    justify-content: space-between;
+    flex-shrink: 0;
 
-  &__title {
-    flex: 1;
-    margin: 0;
-    padding: 0 $spacer-4;
-    font-size: $font-size-large;
-    font-weight: $font-weight-semibold;
-    text-align: left;
-    color: $black;
-  }
-
-  &__close {
-    width: 56px;
-    height: 56px;
-    font-size: $font-size-large;
-    line-height: 56px;
-    text-align: center;
-    color: $gray-darker;
-    cursor: pointer;
-    transition: color $speed-fast $easing;
-
-    &:hover,
-    &:active {
-      color: $black;
+    &--divided {
+      border-bottom: 1px solid use-color('gray-20');
     }
   }
 
   &__content {
-    flex: auto;
+    flex: 1;
     box-sizing: border-box;
-    min-height: 54px;
-    padding: $spacer-4;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: auto;
+    padding: 24px;
   }
 
   &__footer {
-    flex: none;
+    height: 54px;
+    box-sizing: border-box;
+    padding: 0 24px;
     display: flex;
-    border-top: 1px solid $gray-light;
-    padding: $spacer-3 $spacer-4;
+    align-items: center;
     justify-content: flex-end;
+    flex-shrink: 0;
+
+    &--divided {
+      border-top: 1px solid use-color('gray-20');
+    }
+  }
+
+  .modal-transition {
+    &-enter {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+
+    &-enter-done {
+      opacity: 1;
+      transform: scale(1);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    &-exit {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    &-exit-done {
+      opacity: 0;
+      transform: scale(0.4);
+      transition: opacity 0.3s, transform 0.3s;
+    }
   }
 }

@@ -29,8 +29,8 @@ class Demo extends React.Component {
     return (
       <div>
         <Button type="line" onClick={this.toggleTooltip}>{this.state.showTooltip ? 'Hide' : 'Show'} tooltip</Button>
-        <p />
-        <span ref={node => this.node = node}>
+        <br/>
+        <span ref={node => this.node = node} style={{marginTop:'10px',display:'inline-block'}}>
           <Button disabled>Show tooltip on me</Button>
         </span>
       </div>
@@ -38,5 +38,7 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoApi = () => <DocViewer code={code} scope={{ Button, Tooltip }} prefix={prefix} />
+const DemoApi = () => (
+  <DocViewer code={code} scope={{ Button, Tooltip }} prefix={prefix} />
+)
 export default DemoApi

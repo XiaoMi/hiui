@@ -4,7 +4,9 @@ import Tree from '../../../components/tree'
 const prefix = 'tree-line'
 const desc = '定义不同样式的树节点，满足多样性的业务场景'
 const leftOptions = ['线型', '文件夹型']
-const code = [{code: `import React from 'react'
+const code = [
+  {
+    code: `import React from 'react'
 import Tree from '@hi-ui/hiui/es/tree'\n
 class Demo extends React.Component {
   constructor(props) {
@@ -48,14 +50,16 @@ class Demo extends React.Component {
           defaultExpandAll
           data={this.state.treeData}
           onChange={data => {console.log('Tree data:', data)}}
-          highlightable
-          onClick={(item) => console.log('------click node', item)}
+          onSelect={(item) => console.log('select node', item)}
         />
       </div>
     )
   }
 }`,
-opt: ['线型']}, {code: `import React from 'react'
+    opt: ['线型']
+  },
+  {
+    code: `import React from 'react'
 import Tree from '@hi-ui/hiui/es/tree'\n
 class Demo extends React.Component {
   constructor(props) {
@@ -99,13 +103,14 @@ class Demo extends React.Component {
           defaultExpandAll
           data={this.state.treeData}
           onChange={data => {console.log('Tree data:', data)}}
-          highlightable
           onClick={(item) => console.log('------click node', item)}
         />
       </div>
     )
   }
 }`,
-opt: ['文件夹型']}]
+    opt: ['文件夹型']
+  }
+]
 const DemoLine = () => <DocViewer desc={desc} code={code} scope={{ Tree }} prefix={prefix} leftOptions={leftOptions} />
 export default DemoLine

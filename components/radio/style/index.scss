@@ -1,8 +1,8 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
 $prefixCls: '.hi-radio' !default;
 
-@mixin hi-radio-style($active-color: get-color($palette-primary, 'hiui-blue')) {
+@mixin hi-radio-style($active-color: use-color('primary')) {
   &:not(#{$prefixCls}--disabled):hover {
     #{$prefixCls}__input {
       border-color: $active-color;
@@ -53,8 +53,6 @@ $prefixCls: '.hi-radio' !default;
   height: 32px;
   vertical-align: middle;
 
-  @include component-reset();
-
   input {
     cursor: pointer;
     position: absolute;
@@ -93,7 +91,7 @@ $prefixCls: '.hi-radio' !default;
     vertical-align: middle;
     width: 16px;
     height: 16px;
-    border: 1px solid #d8d8d8;
+    border: 1px solid use-color('gray-30');
     transition: 0.3s ease-out;
     line-height: 1;
     border-radius: 50%;
@@ -127,16 +125,16 @@ $prefixCls: '.hi-radio' !default;
     cursor: not-allowed;
 
     #{$prefixCls}__input {
-      border-color: #d8d8d8;
-      background: #f2f2f2;
+      border-color: use-color('gray-30');
+      background: use-color('gray-10');
 
       &::after {
-        background: #d8d8d8;
+        background: use-color('gray-30');
       }
     }
 
     #{$prefixCls}__text {
-      color: rgba(#000, 0.65);
+      color: use-color('gray-80');
     }
   }
 
@@ -171,40 +169,4 @@ $prefixCls: '.hi-radio' !default;
   }
 
   @include hi-radio-style();
-}
-
-@each $key, $value in $theme-colors {
-  .theme__#{$key$prefixCls} {
-    @include hi-radio-style($value);
-  }
-
-  .theme__#{$key}#{$prefixCls}:not(#{$prefixCls}--disabled):hover {
-    #{$prefixCls}__input {
-      border-color: $value;
-    }
-  }
-
-  .theme__#{$key}#{$prefixCls} {
-    input {
-      &:focus + #{$prefixCls}__input {
-        border-color: $value;
-      }
-    }
-
-    &__button.hi-btn {
-      &#{$prefixCls}__button--checked {
-        border-color: $value;
-        color: $value;
-        background-color: rgba($value, 0.1);
-
-        #{$prefixCls} {
-          color: $value;
-        }
-      }
-
-      &:not(.hi-btn--disabled):hover {
-        border-color: $value;
-      }
-    }
-  }
 }

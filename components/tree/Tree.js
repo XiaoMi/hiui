@@ -1,246 +1,507 @@
-import React, { Component } from 'react'
-import classNames from 'classnames'
-import TreeNode from './TreeNode'
-import isEqual from 'lodash/isEqual'
-import { getAll, dealData } from './util'
-import withDragDropContext from '../lib/withDragDropContext'
+import React, { useState, useCallback, useEffect } from 'react'
+import BaseTree from './BaseTree'
+import Input from '../input'
+import Button from '../button'
+import Modal from '../modal'
+import { getAncestorIds, findNode } from './util'
+import _ from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
+import CustomTreeNode from './customTreeNode'
+import axios from 'axios'
+import Provider from '../context'
 import './style/index'
 
-export class Tree extends Component {
-  constructor (props) {
-    super(props)
+const PREFIX = 'hi-tree'
 
-    this.state = {
-      hasExpanded: [],
-      dataMap: {},
-      data: [],
-      semiChecked: [],
-      disabledKeys: [],
-      all: [],
-      checkedIds: [],
-      semiCheckedIds: []
+const getMatchedNodes = (data, searchValue, matchedNodes = []) => {
+  data.forEach((item) => {
+    if (searchValue !== '' && item.title.includes(searchValue)) {
+      matchedNodes.push(item)
+    }
+    if (item.children) {
+      getMatchedNodes(item.children, searchValue, matchedNodes)
+    }
+  })
+  return matchedNodes
+}
+const getShowData = (data, matchedIds, filtedIds) => {
+  for (let i = 0; i < data.length; i++) {
+    if (matchedIds.includes(data[i].id)) {
+    } else if (filtedIds.includes(data[i].id)) {
+      getShowData(data[i].children, matchedIds, filtedIds)
+    } else {
+      data.splice(i, 1)
+      i = i - 1
     }
   }
+  return data
+}
 
-  static defaultProps = {
-    prefixCls: 'hi-tree',
-    defaultCheckedKeys: [],
-    data: [],
-    apperance: 'default',
-    contextMenu: []
-  }
+const getDefaultIds = (data, collections = []) => {
+  data.forEach((d) => {
+    if (d.children) {
+      collections.push(d.id)
+      getDefaultIds(d.children, collections)
+    }
+  })
+  return collections
+}
 
-  static getDerivedStateFromProps (props, state) {
-    let data = {}
-    if (!isEqual(props.data, state.data)) {
-      const dataMap = {}
-      dealData(props.data, dataMap)
-      data.dataMap = dataMap
-      data.data = props.data
+const Tree = (props) => {
+  const {
+    searchable,
+    searchConfig = {},
+    data,
+    expandedIds,
+    defaultExpandedIds,
+    defaultExpandAll = false,
+    filter = false,
+    contextMenu,
+    editable,
+    onBeforeSave,
+    onSave,
+    onBeforeDelete,
+    onDelete,
+    onLoadChildren,
+    onExpand,
+    onDragStart,
+    onDrop,
+    onDropEnd,
+    theme,
+    localeDatas
+  } = props
+  const localMap = localeDatas.tree || {}
+  const { placeholder = localMap.searchPlaceholder, emptyContent = localMap.searchEmptyResult } = searchConfig
+  const [cacheData, updateCacheData] = useState(data)
+  useEffect(() => {
+    updateCacheData(data)
+  }, [data])
 
-      if (state.data.length === 0) {
-        let defaultExpandedArr = []
+  const [menuVisible, setMenuVisible] = useState(null)
+  const [modalVisible, setModalVisible] = useState(null)
 
-        for (let key in dataMap) {
-          const item = dataMap[key]
-          const itemHasChildren = item.children && item.children.length > 0
-          const itemShouldExpand =
-            (props.defaultExpandAll && item.expanded !== false) || item.expanded === true
-          if (itemHasChildren && itemShouldExpand) {
-            defaultExpandedArr.push(item.id)
+  const [editingNodes, setEditingNodes] = useState([])
+
+  const [searchValue, setSearchValue] = useState('')
+  const [matchedNodes, setMatchedNodes] = useState([])
+  const [filteredIds, setFilteredIds] = useState([])
+  const [expanded, setExpanded] = useState(
+    expandedIds || defaultExpandedIds || (defaultExpandAll && getDefaultIds(data)) || []
+  )
+
+  useEffect(() => {
+    if (expandedIds) {
+      setExpanded(expandedIds)
+    }
+  }, [expandedIds])
+
+  const showData = getShowData(
+    _.cloneDeep(cacheData),
+    matchedNodes.map((n) => n.id),
+    filteredIds
+  )
+  // 加载节点
+  const loadChildren = useCallback(
+    (node) => {
+      if (onLoadChildren) {
+        return axios(onLoadChildren(node)).then(
+          (res) => {
+            const dataCache = _.cloneDeep(cacheData)
+            const loadNode = findNode(node.id, dataCache)
+            loadNode.children = res.data
+            updateCacheData(dataCache)
+            return res
+          },
+          (error) => {
+            return error
+          }
+        )
+      }
+    },
+    [onLoadChildren, cacheData]
+  )
+  // 移动节点
+  const switchNode = useCallback((targetItemId, sourceItemId, data, allData, dropDividerPosition) => {
+    const sourceNode = findNode(sourceItemId, allData)
+    const _data = [...data]
+    _data.forEach((item, idx) => {
+      if (item.id === targetItemId) {
+        const position = dropDividerPosition === 'down' ? idx + 1 : idx
+        data.splice(position, 0, sourceNode)
+      } else {
+        if (item.children) {
+          if (item.children.some((e) => e.id === targetItemId)) {
+            const index = item.children.findIndex((i) => i.id === targetItemId)
+            const position = dropDividerPosition === 'down' ? index + 1 : index
+            item.children.splice(position, 0, sourceNode)
+          } else {
+            switchNode(targetItemId, sourceItemId, item.children, allData, dropDividerPosition)
           }
         }
-        data.hasExpanded = defaultExpandedArr
       }
-    }
+    })
+  }, [])
 
-    if (props.data && props.checkedIds) {
-      data.all = getAll(props.data, props.checkedIds)
-    }
-
-    return data
-  }
-
-  onCheckChange = (checked, item) => {
-    const { onChange, checkedIds, onCheckChange, onCheck } = this.props
-    let checkedArr = checkedIds
-
-    let { all } = this.state
-    let semiChecked = all.filter(item => item.semi).map(item => item.id)
-    let disabledKeys = all.filter(item => item.disabled).map(item => item.id)
-    let myself = all.find(a => a.id === item.id)
-    let children = myself.child
-    let parent = myself.parent
-    if (semiChecked.includes(item.id)) {
-      children.forEach(child => {
-        checkedArr = checkedArr.filter(c => c !== child)
-      })
-      checkedArr = checkedArr.filter(c => c !== item.id)
-    } else {
-      if (checked) {
-        checkedArr = checkedArr.filter(c => c !== item.id)
-        children.forEach(child => {
-          checkedArr = checkedArr.filter(c => c !== child)
-        })
-        parent.forEach(p => {
-          checkedArr = checkedArr.filter(c => c !== p)
-        })
+  const addDropNode = useCallback((targetItemId, sourceItemId, data, allData) => {
+    data.forEach((d, index) => {
+      if (d.id === targetItemId) {
+        const sourceNode = findNode(sourceItemId, allData)
+        if (!d.children) {
+          d.children = []
+        }
+        d.children.push(sourceNode)
       } else {
-        checkedArr = checkedArr.concat(children)
-        checkedArr.push(item.id)
-        parent.forEach(p => {
-          let par = all.find(a => a.id === p).child
-          let bool = true
-          par.forEach(p => {
-            if (!checkedArr.includes(p)) {
-              bool = false
+        if (d.children) {
+          addDropNode(targetItemId, sourceItemId, d.children, allData)
+        }
+      }
+    })
+  }, [])
+  // 删除拖动的节点
+  const _delDragNode = useCallback((itemId, data) => {
+    data.forEach((d, index) => {
+      if (d.id === itemId) {
+        data.splice(index, 1)
+      } else {
+        if (d.children) {
+          _delDragNode(itemId, d.children)
+        }
+      }
+    })
+  }, [])
+
+  const moveNode = useCallback(
+    ({ targetId, sourceId, direction, depth }) => {
+      const _dataCache = _.cloneDeep(cacheData)
+      _delDragNode(sourceId, _dataCache)
+      if (direction === 'in') {
+        addDropNode(targetId, sourceId, _dataCache, cacheData)
+      } else {
+        switchNode(targetId, sourceId, _dataCache, cacheData, direction)
+      }
+      if (onDrop) {
+        const sourceNode = findNode(sourceId, cacheData)
+        const dragNode = findNode(targetId, cacheData)
+        const result = onDrop(
+          sourceNode,
+          dragNode,
+          { before: cacheData, after: _dataCache },
+          { before: depth.source, after: direction === 'in' ? depth.target + 1 : depth.target }
+        )
+        if (result === true) {
+          updateCacheData(_dataCache)
+          if (onDropEnd) {
+            onDropEnd(sourceNode, dragNode)
+          }
+        } else if (result && typeof result.then === 'function') {
+          result.then((res) => {
+            updateCacheData(_dataCache)
+            if (onDropEnd) {
+              onDropEnd(sourceNode, dragNode)
             }
           })
-          bool && checkedArr.push(p)
-        })
-      }
-    }
-
-    disabledKeys.forEach(d => {
-      checkedArr = checkedArr.filter(c => c !== d.id)
-    })
-
-    parent.forEach(p => {
-      let child = all.find(item => item.id === p).child
-      let semi = false
-      let num = 0
-      checkedArr.forEach(c => {
-        if (child.includes(c)) {
-          num = num + 1
-        }
-      })
-
-      semi = num !== 0 && num !== child.length
-
-      if (semi) {
-        if (!semiChecked.includes(p)) {
-          semiChecked.push(p)
         }
       } else {
-        semiChecked = semiChecked.filter(s => s !== p)
+        updateCacheData(_dataCache)
+      }
+    },
+    [cacheData, _delDragNode, addDropNode, switchNode, onDrop, onDropEnd]
+  )
+
+  // 编辑节点
+  const editNode = (node) => {
+    setEditingNodes(editingNodes.concat(node))
+  }
+  // 同步编辑值
+  const onValueChange = useCallback(
+    (value, nodeId) => {
+      setEditingNodes(
+        editingNodes
+          .filter((n) => n.id !== nodeId)
+          .concat(
+            Object.assign(
+              {},
+              editingNodes.find((n) => n.id === nodeId),
+              {
+                title: value
+              }
+            )
+          )
+      )
+    },
+    [editingNodes]
+  )
+  // 取消编辑
+  const cancelEdit = useCallback(
+    (nodeId) => {
+      setEditingNodes(editingNodes.filter((n) => n.id !== nodeId))
+    },
+    [editingNodes]
+  )
+
+  // 添加兄弟节点
+  const _addSibNode = useCallback((node, data, addNode) => {
+    data.forEach((d, index) => {
+      if (d.id === node.id) {
+        data.splice(index + 1, 0, addNode)
+      } else {
+        if (d.children) {
+          _addSibNode(node, d.children, addNode)
+        }
       }
     })
+  }, [])
 
-    onChange && onChange(checkedArr, item.title, !checked, semiChecked)
-    onCheckChange && onCheckChange(checkedArr, item.title, !checked, semiChecked)
-    onCheck && onCheck(checkedArr, item, !checked, semiChecked)
-  }
+  const addSiblingNode = useCallback(
+    (node) => {
+      const dataCache = _.cloneDeep(cacheData)
+      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add' }
+      _addSibNode(node, dataCache, addNode)
+      setEditingNodes(editingNodes.concat(addNode))
+      updateCacheData(dataCache)
+    },
+    [cacheData, editingNodes, _addSibNode]
+  )
 
-  // 展开、收起节点
-  onExpanded = (expanded, item) => {
-    let expandedArr = [...this.state.hasExpanded]
+  // 添加子节点
+  const _addChildNode = useCallback((node, data, addNode) => {
+    data.forEach((d, index) => {
+      if (d.id === node.id) {
+        if (!d.children) {
+          d.children = []
+        }
+        d.children.push(addNode)
+      } else {
+        if (d.children) {
+          _addChildNode(node, d.children, addNode)
+        }
+      }
+    })
+  }, [])
+  const addChildNode = useCallback(
+    (node) => {
+      const dataCache = _.cloneDeep(cacheData)
+      const addNode = { id: uuidv4(), title: '', TREE_NODE_TYPE: 'add' }
+      _addChildNode(node, dataCache, addNode)
+      setEditingNodes(editingNodes.concat(addNode))
+      updateCacheData(dataCache)
+      setExpanded(expanded.concat(node.id))
+    },
+    [editingNodes, cacheData, _addChildNode, expanded]
+  )
 
-    if (expandedArr.includes(item.id)) {
-      expandedArr.splice(expandedArr.indexOf(item.id), 1)
-    } else {
-      expandedArr.push(item.id)
-    }
-    this.setState({
-      hasExpanded: expandedArr
-    })
-    this.props.onExpand && this.props.onExpand(expanded, expandedArr, item)
-  }
-  // 展开节点
-  expandTreeNode = id => {
-    const _hasExpanded = [...this.state.hasExpanded]
-    if (!_hasExpanded.includes(id)) {
-      _hasExpanded.push(id)
-      this.setState({
-        hasExpanded: _hasExpanded
-      })
-    }
-  }
-  setExpandTreeNodes = ids => {
-    this.setState({
-      hasExpanded: ids
+  // 取消添加节点
+  const _cancelAddNode = (node, data) => {
+    data.forEach((d, index) => {
+      if (d.id === node.id) {
+        data.splice(index, 1)
+      } else {
+        if (d.children) {
+          _cancelAddNode(node, d.children)
+        }
+      }
     })
   }
-  closeExpandedTreeNode = id => {
-    this.setState({
-      hasExpanded: this.state.hasExpanded.filter(expandId => expandId !== id)
+  const cancelAddNode = useCallback(
+    (node) => {
+      const dataCache = _.cloneDeep(cacheData)
+      _cancelAddNode(node, dataCache)
+      updateCacheData(dataCache)
+    },
+    [cacheData, _cancelAddNode]
+  )
+  // 保存
+  const _saveEdit = (itemId, data, nodeEdited) => {
+    data.forEach((d, index) => {
+      if (d.id === itemId) {
+        d.title = nodeEdited.title
+        delete d.TREE_NODE_TYPE
+      } else {
+        if (d.children) {
+          _saveEdit(itemId, d.children, nodeEdited)
+        }
+      }
     })
   }
-  render () {
-    const {
-      prefixCls,
-      checkable,
-      closeIcon,
-      openIcon,
-      highlightable,
-      editable,
-      searchable,
-      draggable,
-      style,
-      loadTreeNode,
-      onDragStart,
-      onDrop,
-      onDropEnd,
-      onDelete,
-      onBeforeDelete,
-      onSave,
-      onBeforeSave,
-      onClick,
-      apperance,
-      contextMenu,
-      defaultHighlightId,
-      theme
-    } = this.props
-    const { data } = this.state
-    return (
-      <div
-        className={classNames(`${prefixCls}`, `theme__${theme}`, { 'hi-tree--show-line': apperance === 'line' })}
-        style={style}
-      >
-        <TreeNode
-          origin={loadTreeNode}
-          showLine={apperance === 'line'}
-          apperance={apperance}
-          checked={this.props.checkedIds || []}
-          onClick={onClick}
-          semiChecked={this.state.all.filter(item => item.semi).map(item => item.id)}
-          expanded={this.state.hasExpanded}
-          closeExpandedTreeNode={this.closeExpandedTreeNode}
-          expandTreeNode={this.expandTreeNode}
-          setExpandTreeNodes={this.setExpandTreeNodes}
-          onCheckChange={this.onCheckChange}
-          onExpanded={this.onExpanded}
-          data={data}
-          theme={theme}
-          prefixCls={prefixCls}
-          checkable={checkable}
-          highlightable={highlightable}
-          defaultHighlightId={defaultHighlightId}
-          editable={editable}
+  const saveEdit = useCallback(
+    (enode) => {
+      const nodeEdited = { ...editingNodes.find((node) => node.id === enode.id) }
+      const dataCache = _.cloneDeep(cacheData)
+      _saveEdit(enode.id, dataCache, nodeEdited)
+      if (onBeforeSave) {
+        const result = onBeforeSave(nodeEdited, { before: cacheData, after: dataCache }, enode.depth)
+        if (result === true) {
+          updateCacheData(dataCache)
+          onSave(nodeEdited, dataCache)
+        }
+      } else {
+        updateCacheData(dataCache)
+        onSave(enode, dataCache)
+      }
+      setEditingNodes(editingNodes.filter((n) => n.id !== enode.id))
+    },
+    [editingNodes, cacheData, _saveEdit]
+  )
+
+  // 删除节点
+  const _deleteNode = (itemId, data) => {
+    data.forEach((d, index) => {
+      if (d.id === itemId) {
+        data.splice(index, 1)
+      } else {
+        if (d.children) {
+          _deleteNode(itemId, d.children)
+        }
+      }
+    })
+  }
+  const deleteNode = useCallback(
+    (node) => {
+      const dataCache = _.cloneDeep(cacheData)
+      _deleteNode(node.id, dataCache)
+      if (onBeforeDelete) {
+        const result = onBeforeDelete(node, { before: cacheData, after: dataCache }, node.depth)
+        if (result === true) {
+          updateCacheData(dataCache)
+          onDelete(node, dataCache)
+        }
+      } else {
+        updateCacheData(dataCache)
+        onDelete(node, dataCache)
+      }
+    },
+    [cacheData, _deleteNode]
+  )
+
+  const menuRender = useCallback(
+    (node) => {
+      let menu = [
+        { title: localMap.edit, type: 'editNode' },
+        { title: localMap.addChildNode, type: 'addChildNode' },
+        { title: localMap.addNode, type: 'addSiblingNode' },
+        { title: localMap.del, type: 'deleteNode' }
+      ]
+      if (contextMenu) {
+        menu = contextMenu(node)
+      }
+      return (
+        <ul className={`${PREFIX}__menu theme__${theme}`}>
+          {menu.map((m, index) => (
+            <li
+              className={`menu-item`}
+              key={index}
+              onClick={(e) => {
+                e.stopPropagation()
+                if (m.onClick) {
+                  m.onClick(node)
+                } else {
+                  if (m.type === 'editNode') {
+                    editNode(node)
+                  }
+                  if (m.type === 'addSiblingNode') {
+                    addSiblingNode(node)
+                  }
+                  if (m.type === 'addChildNode') {
+                    addChildNode(node)
+                  }
+                  if (m.type === 'deleteNode') {
+                    setModalVisible(node)
+                  }
+                }
+                setMenuVisible(null)
+              }}
+            >
+              {m.title}
+            </li>
+          ))}
+        </ul>
+      )
+    },
+    [editNode, addChildNode, addSiblingNode]
+  )
+
+  const treeNodeRender = useCallback(
+    (node, { selected }, treeNodeRef, onSelectNode) => {
+      return (
+        <CustomTreeNode
+          node={node}
+          status={{ selected }}
+          onSelectNode={onSelectNode}
+          searchValue={searchValue}
+          editingNodes={editingNodes}
+          menuVisible={menuVisible}
           searchable={searchable}
-          openIcon={openIcon}
-          closeIcon={closeIcon}
-          draggable={draggable}
-          onDragStart={onDragStart}
-          onDrop={onDrop}
-          onDropEnd={onDropEnd}
-          onDelete={onDelete}
-          onBeforeDelete={onBeforeDelete}
-          onSave={onSave}
-          onBeforeSave={onBeforeSave}
-          contextMenu={contextMenu}
+          onValueChange={onValueChange}
+          saveEdit={saveEdit}
+          cancelEdit={cancelEdit}
+          cancelAddNode={cancelAddNode}
+          setMenuVisible={setMenuVisible}
+          editable={editable}
+          menuRender={menuRender}
+          localeDatas={localeDatas}
         />
-      </div>
-    )
-  }
+      )
+    },
+    [searchValue, editingNodes, menuVisible, searchable]
+  )
+  return (
+    <React.Fragment>
+      {searchable && (
+        <div className={`${PREFIX}__searcher theme__${theme}`}>
+          <Input
+            value={searchValue}
+            type="text"
+            placeholder={placeholder}
+            onChange={(e) => {
+              const matchedNodes = getMatchedNodes(cacheData, e.target.value)
+              let filteredNodes = []
+              matchedNodes.forEach((node) => {
+                const ancestors = getAncestorIds(node.id, cacheData, [])
+                filteredNodes = filteredNodes.concat(ancestors)
+              })
+              setSearchValue(e.target.value)
+              setMatchedNodes(matchedNodes)
+              setFilteredIds(_.uniq(filteredNodes))
+              setExpanded(_.uniq(filteredNodes))
+            }}
+            append={<Button icon="search" />}
+            style={{ width: '250px', marginBottom: '24px' }}
+          />
+          {matchedNodes.length === 0 && searchValue !== '' && (
+            <div className="searcher__result--empty">{emptyContent}</div>
+          )}
+        </div>
+      )}
+      <BaseTree
+        {...props}
+        className={`theme__${theme}`}
+        onLoadChildren={onLoadChildren ? loadChildren : null}
+        treeNodeRender={treeNodeRender}
+        expandedIds={expanded}
+        onExpand={(expandedNode, isExpanded, ids) => {
+          setExpanded(ids)
+          if (onExpand) {
+            onExpand(expandedNode, isExpanded, ids)
+          }
+        }}
+        onDrop={moveNode}
+        onDragStart={onDragStart}
+        data={filter && searchable && searchValue !== '' ? showData : cacheData}
+      />
+      <Modal
+        title={localMap.modalTitle}
+        visible={modalVisible !== null}
+        onConfirm={() => {
+          deleteNode(modalVisible)
+          setModalVisible(null)
+        }}
+        onCancel={() => {
+          setModalVisible(null)
+        }}
+      >
+        {localMap.delTips}
+      </Modal>
+    </React.Fragment>
+  )
 }
-
-const HOCTree = TreeComponent => {
-  return class WrapperTree extends Component {
-    render () {
-      const { draggable } = this.props
-      const DraggableTree = withDragDropContext(Tree)
-      return draggable ? <DraggableTree {...this.props} /> : <TreeComponent {...this.props} />
-    }
-  }
-}
-export default HOCTree(Tree)
+export default Provider(Tree)

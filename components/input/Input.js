@@ -7,8 +7,7 @@ import { format, formatValue, getAttrs, formatAmount, filterObjProps } from './u
  * @prop type 输入框类型
  */
 class Input extends Component {
-
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this._Input = React.createRef()
@@ -44,7 +43,7 @@ class Input extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.value !== undefined) {
       if (nextProps.value !== this.state.value) {
         this.setState({
@@ -67,9 +66,11 @@ class Input extends Component {
       })
     }
   }
+
   focus = () => {
     this._Input.current.focus()
   }
+
   blur = () => {
     this._Input.current.blur()
   }
@@ -77,10 +78,10 @@ class Input extends Component {
   /**
    * 渲染 text 输入框
    */
-  renderText () {
+  renderText() {
     let { hover, active, value } = this.state
     // clearableTrigger 为内部预留，主要表示清除按钮的触发形态，类型分为 'hover' 和 ‘always’
-    let { disabled, type, id, placeholder, clearable, clearableTrigger = 'hover' } = this.props
+    let { disabled, type, id, placeholder, clearable, clearableTrigger = 'hover',localeDatas } = this.props
     let { prefix, suffix, prepend, append } = this.state
     const noClear = ['textarea']
     let prefixId = id ? id + '_prefix' : ''
@@ -234,7 +235,7 @@ class Input extends Component {
   /**
    * 渲染 textarea
    */
-  renderTextarea () {
+  renderTextarea() {
     let { active } = this.state
     let { disabled, theme } = this.props
     const { defaultValue, ...attrs } = this.attrs
@@ -316,7 +317,7 @@ class Input extends Component {
     )
   }
 
-  render () {
+  render() {
     const { type } = this.attrs
 
     const { size, id, className, required, theme } = this.props

@@ -1,6 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Timeline from '../../../components/timeline'
+import Progress from '../../../components/progress'
 import Grid from '../../../components/grid'
 import Form from '../../../components/form'
 import Input from '../../../components/input'
@@ -42,7 +43,7 @@ class Demo extends React.Component {
       data = [{
         groupTitle: '上午',
         children: [{
-          title: '管理层例会',
+          title: <div style={{display:'flex'}}><div style={{marginRight:8}}>管理层例会</div><Progress percent={10} /></div>,
           content: '毕加索会议室 B2层 可提前预定预…',
           timestamp: '10:00',
         }, {
@@ -143,7 +144,7 @@ class Demo extends React.Component {
 const DemoBasic = () => (
   <DocViewer
     code={code}
-    scope={{ Timeline, Form, Radio, Grid, Input, Button, Icon }}
+    scope={{ Timeline, Form, Radio, Grid, Input, Button, Icon, Progress }}
     prefix={prefix}
     desc={desc}
   />

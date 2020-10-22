@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import Title from './Title'
 
 class Item extends Component {
-  render () {
+  render() {
     const { children, disabled, onClick, level, placement, activeIndex, id, icon, index, data, mini } = this.props
     const isActive = activeIndex === index
     const cls = classNames('hi-menu-item', 'hi-menu-item__title', 'hi-menu__title', `hi-menu--${level}`, {

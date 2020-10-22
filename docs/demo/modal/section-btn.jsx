@@ -46,7 +46,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoBtn = () => (
-  <DocViewer code={code} scope={{ Button, Modal }} prefix={prefix} desc={desc} />
-)
+const DemoBtn = () => <DocViewer code={code} scope={{ Button, Modal }} prefix={prefix} desc={desc} />
 export default DemoBtn

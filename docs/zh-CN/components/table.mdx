@@ -2,6 +2,7 @@
 
 > 现 Table 不再 **进行维护** ，我们将 Table 就行了重写并已发布，暂命名为[hi-table](https://github.com/hiui-group/hi-table)，已在 HiUI 3.x 进行了集成
 
+
 可容纳多种数据类型的大型数据容器，并可支持多种数据相关和表格属性设置相关的操作，具有强大的统计功能
 
 ## 何时使用
@@ -12,189 +13,114 @@
 
 ## 基础用法
 
-Table 表格代码说明
-
-1. 右键菜单
-   1. 高亮
-   2. 列冻结 （需要配置 scrollX）
-   3. 隐藏列
-2. 表格 menu 菜单（控制列的显示与隐藏）
-3. 操作记忆 需要给每个表格添加 name 属性来为索引。非常重要
-
-data 属性的所有字段要加 key,columns 的每条数据需要添加加 key 属性
-
 import DemoBase from '../../demo/table/section-base.jsx'
 
 <DemoBase />
 
-## 紧凑表格
+## 列操作
 
-import DemoCompact from '../../demo/table/section-compact.jsx'
+import DemoColumn from '../../demo/table/section-column.jsx'
 
-<DemoCompact />
+<DemoColumn />
 
-## 宽松表格
-
-import DemoLoose from '../../demo/table/section-loose.jsx'
-
-<DemoLoose />
-
-## 带边框的表格
-
-import DemoBorder from '../../demo/table/section-border.jsx'
-
-<DemoBorder />
-
-## 斑马纹
-
-import DemoZebra from '../../demo/table/section-zebra.jsx'
-
-<DemoZebra />
-
-## 前端排序
-
-import DemoSort from '../../demo/table/section-sort.jsx'
-
-<DemoSort />
-
-## 多选
-
-import DemoMultiple from '../../demo/table/section-multiple.jsx'
-
-<DemoMultiple />
-
-## 表头吸顶
-
-**fixTop : 表头窗口的高度**
-
-import DemoHeader from '../../demo/table/section-header.jsx'
-
-<DemoHeader />
-
-## 表头冻结
-
-**fixTop : 表头窗口的高度**
-
-import DemoHeight from '../../demo/table/section-height.jsx'
-
-<DemoHeight />
-
-## 列冻结
-
-**被冻结的列建议传入 width 属性**
+## 行操作
 
 import DemoRow from '../../demo/table/section-row.jsx'
 
 <DemoRow />
 
-## 右键列冻结
+## 不同尺寸
 
-import DemoRightHandRow from '../../demo/table/section-right-hand-row.jsx'
+import DemoSize from '../../demo/table/section-size.jsx'
 
-<DemoRightHandRow />
+<DemoSize />
 
-## 合并单元格
+## 特殊表格
 
-import DemoMerge from '../../demo/table/section-merge.jsx'
+import DemoSpecial from '../../demo/table/section-special.jsx'
 
-<DemoMerge />
+<DemoSpecial />
 
-## 表头分组
+<!-- ## 异步获取
 
-import DemoGroup from '../../demo/table/section-group.jsx'
+import DemoAsync from '../../demo/table/section-async.jsx'
 
-<DemoGroup />
-
-## 扩展一行
-
-import DemoExtend from '../../demo/table/section-extend.jsx'
-
-<DemoExtend />
-
-## 前端分页
-
-import DemoPaging from '../../demo/table/section-paging.jsx'
-
-<DemoPaging />
-
-## 服务端表格
-
-import DemoServer from '../../demo/table/section-server.jsx'
-
-<DemoServer />
-
-## 操作记忆
-
-import DemoMemory from '../../demo/table/section-memory.jsx'
-
-<DemoMemory />
-
-## 高级功能
-
-import DemoAdvance from '../../demo/table/section-advance.jsx'
-
-<DemoAdvance />
+<DemoAsync /> -->
 
 ## Props
 
-| 参数       | 说明                         | 类型         | 可选值                          | 默认值    |
-| ---------- | ---------------------------- | ------------ | ------------------------------- | --------- |
-| size       | 表格尺寸                     | string       | 'small' \| 'large' \| 'default' | 'default' |
-| bordered   | 是否显示边框                 | boolean      | true \| false                   | false     |
-| striped    | 斑马纹                       | boolean      | true \| false                   | false     |
-| columns    | 表格数据列对应信息           | ColumnItem[] | -                               | -         |
-| data       | 表格数据                     | object[]     | -                               | -         |
-| emptyText  | 数据为空时展示的文案         | string       | -                               | 'No Data' |
-| scrollX    | 设置列冻结                   | boolean      | true \| false                   | false     |
-| fixTop     | 吸顶                         | number       | -                               | 0         |
-| height     | 表格最大高度（用于冻结表头） | string       | -                               | -         |
-| pagination | 查看分页组件配置             | Advance      | -                               | -         |
-| advance    | 高级功能                     | Origin       | -                               | -         |
-| origin     | 服务端功能                   | object       | -                               | -         |
+| 属性名             | 描述                                                                                                    | 类型                                           | 可选值                                    | 默认值     |
+| ------------------ | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------- | ---------- |
+| data               | 表格数据                                                                                                | object[]                                       | -                                         | -          |
+| columns            | 表格列配置信息                                                                                          | ColumnItem[]                                   | -                                         | -          |
+| bordered           | 是否显示边框（表头分组模式下，表格自带边框）                                                            | boolean                                        | true \| false                             | false      |
+| sticky             | 是否支持表头吸顶                                                                                        | boolean                                        | true \| false                             | false      |
+| stickyTop          | 表头吸顶距离视口顶部距离                                                                                | number                                         | -                                         | 0          |
+| highlightedColKeys | 高亮列（受控）                                                                                          | string[]                                       | -                                         | []         |
+| expandedRender     | 表格展开项                                                                                              | (record: dataItem, index: number) => ReactNode | -                                         | -          |
+| maxHeight          | 表格最大高度，当穿过该高度时，展示滚动条且表头固定                                                      | number                                         | -                                         | -          |
+| fixedToColumn      | 表格列冻结设置，为 string 时仅支持从左侧冻结至某一列                                                    | string \| FixedOption                          | -                                         | null       |
+| size               | 配置表格尺寸                                                                                            | string                                         | 'large' \| 'default' \| 'small' \| 'mini' | 'default'  |
+| pagination         | 表格分页配置项                                                                                          | Pagination                                     | -                                         | null       |
+| errorRowKeys       | 错误列（受控）                                                                                          | string[]                                       | -                                         | []         |
+| highlightedRowKeys | 高亮行（受控）                                                                                          | string[]                                       | -                                         | []         |
+| rowSelection       | 行可选（受控）                                                                                          | RowSelection                                   | -                                         | null       |
+| dataSource         | 异步数据源                                                                                              | (current: number) => DataSource                | -                                         | null       |
+| showColMenu        | 是否支持列操作                                                                                          | boolean                                        | -                                         | false      |
+| striped            | 是否展示为斑马纹效果                                                                                    | boolean                                        | -                                         | false      |
+| setting            | 是否集成控制面板功能                                                                                    | boolean                                        | -                                         | false      |
+| emptyContent       | 数据为空时的展示内容                                                                                    | string \| () => ReactNode                      | -                                         | '暂无数据' |
+| resizable          | 是否能够动态控制列宽                                                                                    | boolean                                        | true \| false                             | false      |
+| standard           | 标准模式，默认集成 `showColMenu = true, sticky = true, bordered = true, setting = true, striped = true` | boolean                                        | true \| false                             | false      |
 
-## Type
+### Type
 
 ### ColumnItem
 
-| 参数      | 说明         | 类型                                                    | 可选值               | 默认值 |
-| --------- | ------------ | ------------------------------------------------------- | -------------------- | ------ |
-| title     | 标题         | string                                                  | -                    | -      |
-| dataIndex | 数据源索引   | string                                                  | -                    | -      |
-| key       | 唯一 key     | string                                                  | -                    | -      |
-| fixed     | 列冻结       | string                                                  | 'left' \| 'right'    | -      |
-| width     | 列宽         | number                                                  | -                    | -      |
-| render    | 自定义渲染   | (text: string,record: object,index: number)=> ReactNode | \_                   | -      |
-| type      | 高级功能配置 | string                                                  | 'number' \| 'expand' | -      | - |
+| 参数     | 说明                   | 类型                                                                             | 可选值            | 默认值 |
+| -------- | ---------------------- | -------------------------------------------------------------------------------- | ----------------- | ------ |
+| title    | 列标题                 | string                                                                           | -                 | -      |
+| dataKey  | 列对应数据项的唯一标识 | string \| number                                                                 | -                 | -      |
+| align    | 列对齐方式             | string                                                                           | 'left' \| 'right' | 'left' |
+| sorter   | 列排序函数             | () => boolean                                                                    | -                 | null   |
+| avg      | 该列是否支持平均值     | boolean                                                                          | -                 | false  |
+| total    | 该列是否支持合计       | boolean                                                                          | -                 | false  |
+| width    | 该列宽度               | number                                                                           | -                 | -      |
+| children | 多级表头               | ColumnItem[]                                                                     | -                 | -      |
+| render   | 控制单元格自定义渲染   | (text: DataItem[ColumnItem[dataKey]], row: DataItem, index: number) => ReactNode | -                 | -      |
 
-## Origin
+### DataSource
 
-| 参数            | 说明                             | 类型                    | 可选值          | 默认值    |
-| --------------- | -------------------------------- | ----------------------- | --------------- | --------- |
-| url             | 请求地址                         | string                  | -               | -         |
-| currentPageName | 请求参数，分页字段名             | string                  | -               | 'current' |
-| auto            | 当 data 变化时是不是自动发送请求 | boolean                 | true \| false   | false     |
-| autoDelayTime   | 当自动发送请求时，延迟时间       | number                  | -               | 300       |
-| headers         | 请求头                           | object                  | -               | -         |
-| data            | 请求参数                         | object                  | -               | -         | - |
-| success         | 响应解析函数                     | (res: object) => object | -               | -         |
-| error           | 请求错误回调函数                 | (err: object) => void   | -               | -         |
-| type            | 请求方法                         | string                  | 'GET' \| 'POST' | 'GET'     | - |
-| withCredentials | 跨域请求时是否携带 cookie        | boolean                 | true \| false   | false     |
+| 参数              | 说明                                      | 类型                              | 可选值                                             | 默认值        |
+| ----------------- | ----------------------------------------- | --------------------------------- | -------------------------------------------------- | ------------- |
+| url               | 请求的 url                                | string                            | -                                                  | -             |
+| type              | 请求方法                                  | string                            | get \| post                                        | get           |
+| data              | post 请求时请求体参数                     | object                            | -                                                  | -             |
+| params            | url 查询参数                              | object                            | -                                                  | -             |
+| headers           | 请求头                                    | object                            | -                                                  | -             |
+| mode              | 请求模式                                  | string                            | 'same-origin' \| 'cors' \| 'no-cors' \| 'navigate' | 'same-origin' |
+| transformResponse | 成功时的回调，需要返回注入 table 的配置项 | (response: object) => TableConfig | -                                                  | -             |
 
-## RowSelection
+### Pagination
 
-| 参数             | 说明                     | 类型                                                       | 可选值 | 默认值 |
-| ---------------- | ------------------------ | ---------------------------------------------------------- | ------ | ------ |
-| onChange         | 列表项被选中时触发的回调 | (selectedRowKeys: number[],selectedRows: object[]）=> void | -      | -      |
-| getCheckboxProps | 选择框的默认属性配置     | (record) => void                                           | -      | -      |
+| 参数             | 说明                                                       | 类型                                                      | 可选值                            | 默认值    |
+| ---------------- | ---------------------------------------------------------- | --------------------------------------------------------- | --------------------------------- | --------- |
+| type             | 分页的类型                                                 | string                                                    | 'default' \| 'simple' \| 'shrink' | 'default' |
+| defaultCurrent   | 默认的当前页数                                             | number                                                    | -                                 | 1         |
+| current          | 当前页数                                                   | number                                                    | -                                 | -         |
+| max              | 最大显示的页数                                             | number                                                    | -                                 | 2         |
+| pageSize         | 每页条数                                                   | number                                                    | -                                 | 10        |
+| pageSizeOptions  | 指定每页可以显示多少条                                     | number[]                                                  | -                                 | []        |
+| total            | 数据总数                                                   | number                                                    | -                                 | -         |
+| autoHide         | 只有一页时是否隐藏分页器                                   | boolean                                                   | true \| false                     | false     |
+| showJumper       | 是否显示跳转                                               | boolean                                                   | true \| false                     | false     |
+| onJump           | 快速跳转时触发，回调值为当前页数                           | (current: number) => void                                 | -                                 | -         |
+| onChange         | 页码改变时的回调，回调值为当前页数、之前的页数和每页条数   | (current: number, prev: number, pageSize: number) => void | -                                 | -         | - |
+| onPageSizeChange | 每页显示条数改变的回调函数，返回改变后的每页条数及当前页数 | (current: number, pageSize: number) => void               | -                                 | -         | - |
 
-## Advance
+### FixedOption
 
-| 参数   | 说明             | 类型      | 可选值        | 默认值 |
-| ------ | ---------------- | --------- | ------------- | ------ |
-| sum    | 是否前端求合     | boolean   | true \| false | false  |
-| ave    | 是否前端求均值   | boolean   | true \| false | false  |
-| header | 表格头部         | ReactNode | -             | -      |
-| footer | 表格底部         | ReactNode | -             | -      |
-| prefix | 表格头部插入多行 | object[]  | -             | -      |
-| suffix | 表格底部插入多行 | object[]  | -             | -      |
+| 参数  | 说明                 | 类型   | 可选值 | 默认值 |
+| ----- | -------------------- | ------ | ------ | ------ |
+| left  | 表格从左侧冻结至某列 | string | -      | -      |
+| right | 表格从右侧冻结至某列 | string | -      | -      |

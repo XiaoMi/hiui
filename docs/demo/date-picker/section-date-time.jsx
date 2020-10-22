@@ -9,16 +9,14 @@ class Demo extends React.Component {
   render () {
     return (
       <DatePicker
-        value={new Date()}
+        defaultValue={new Date()}
         showTime={true}
-        format='yyyy-MM-dd HH:mm:ss'
-        onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
+        format='YYYY-MM-DD HH:mm:ss'
+        onChange={(date, dateStr) => { console.log('onChange', date, dateStr) }}
       />
     )
   }
 }`
 
-const DemoDateTime = () => (
-  <DocViewer code={code} scope={{ DatePicker }} prefix={prefix} desc={desc} />
-)
+const DemoDateTime = () => <DocViewer code={code} scope={{ DatePicker }} prefix={prefix} desc={desc} />
 export default DemoDateTime
