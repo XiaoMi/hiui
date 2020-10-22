@@ -7,15 +7,6 @@ $color-map: (
   'danger': get-color($palette-secondary, 'danger')
 ) !default;
 
-$theme-colors-notice: (
-  'orange': #ffefea,
-  'cyan': #ecf8f4 ,
-  'magenta': #ffeef1,
-  'lavender': #f7edfb,
-  'blue': #ebf6fe,
-  'purple': #8a8acb
-) !default;
-
 .hi-message__container {
   position: fixed;
   top: 20px;

@@ -4,8 +4,6 @@ import Icon from '../icon'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
 
-import Provider from '../context'
-import Icon from '../icon'
 /**
  * Props
  * @prop  id         {string}            id
@@ -33,8 +31,8 @@ class Stepper extends React.Component {
     )
     return (
       <li className={_c} key={info.key}>
-        <div className='hi-stepper__item-content'>
-          <span className='hi-stepper__icon'>
+        <div className="hi-stepper__item-content">
+          <span className="hi-stepper__icon">
             {info.icon ? (
               typeof info.icon === 'string' ? (
                 <Icon name={info.icon} />
@@ -42,26 +40,25 @@ class Stepper extends React.Component {
                 info.icon
               )
             ) : (
-              <span className='hi-stepper__num'>{info.key + 1}</span>
+              <span className="hi-stepper__num">{info.key + 1}</span>
             )}
           </span>
 
-          <span className='hi-stepper__title'> {info.title}</span>
-          {(arg === 'v' || itemLayout) && (
-            <span className='hi-stepper__text'>{info.content}</span>
-          )}
+          <span className="hi-stepper__title"> {info.title}</span>
+          {(arg === 'v' || itemLayout) && <span className="hi-stepper__text">{info.content}</span>}
         </div>
       </li>
     )
   }
+
   renderStepperBar() {
     const { current, data, vertical } = this.props
     const len = data.length
 
     return (
-      <ul className='hi-stepper__list'>
+      <ul className="hi-stepper__list">
         {data.map((v, i) => {
-          let info = Object.assign({ key: i, current }, v)
+          const info = Object.assign({ key: i, current }, v)
           if (i === len - 1) {
             info.last = true
           }
@@ -71,13 +68,12 @@ class Stepper extends React.Component {
       </ul>
     )
   }
+
   render() {
-    let { className, placement, theme, style } = this.props
+    const { className, placement, theme, style } = this.props
     const _className = classnames(
       'hi-stepper',
-      placement === 'vertical'
-        ? 'hi-stepper--vertical'
-        : 'hi-stepper--horizontal',
+      placement === 'vertical' ? 'hi-stepper--vertical' : 'hi-stepper--horizontal',
       className,
       theme && 'theme__' + theme
     )

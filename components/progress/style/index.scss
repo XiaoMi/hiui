@@ -70,16 +70,10 @@ $color-map: (
     font-size: 14px;
     color: use-color('white');
     position: absolute;
-    right: -5px;
+    right: 5px;
     top: 50%;
-    transform: translate(100%, -50%);
+    transform: translateY(-50%);
     line-height: 14px;
-
-    &.inside--left {
-      color: #fff;
-      right: 5px;
-      transform: translate(0, -50%);
-    }
   }
 
   &__svg {

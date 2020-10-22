@@ -41,11 +41,13 @@ class Dropdown extends React.Component {
       this.setState({ visible: false })
     }, 100)
   }
+
   toggleVisible = () => {
     const { visible } = this.state
     const toggleVisible = visible ? this.setPopperHide : this.setPopperShow
     return toggleVisible
   }
+
   getPopperShowHandler = () => {
     const { disabled } = this.props
     if (disabled) return {}

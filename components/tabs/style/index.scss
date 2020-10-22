@@ -66,51 +66,6 @@ $prefix: 'hi-tabs' !default;
     flex: 1;
   }
 
-  &--line {
-    & > .#{$prefix}__header {
-      .#{$prefix}__nav {
-        display: flex;
-        flex-wrap: nowrap;
-        border-bottom: 1px solid #e6e7e8;
-      }
-
-      .#{$prefix}__item {
-        position: relative;
-        height: 40px;
-        line-height: 40px;
-        margin-right: 32px;
-        box-sizing: border-box;
-        border: none;
-        transition: color 0.5s linear;
-
-        &::after {
-          display: inline-block;
-          position: absolute;
-          content: '';
-          height: 2px;
-          width: 100%;
-          background: #4284f5;
-          bottom: 0;
-          left: 0;
-          opacity: 0;
-          transition: opacity 0.5s linear;
-        }
-
-        &:hover {
-          color: #4284f5;
-        }
-
-        &--active {
-          &::after {
-            opacity: 1;
-          }
-
-          color: #4284f5;
-        }
-      }
-    }
-  }
-
   &--card {
     .#{$prefix}__header {
       .#{$prefix}__nav {
