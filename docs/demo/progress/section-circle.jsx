@@ -77,9 +77,8 @@ class Demo extends React.Component {
             <Progress percent={this.state.percent} apperance='circle' type='warn' radius={radius} content={<i className='hi-icon icon-alarm' style={{fontSize: '18px'}}/>}/>
           </div>
           <div style={{display:'inline-block',marginLeft: '50px'}}>
-            <Progress percent={this.state.percent} apperance='circle' type='error' radius={radius} content={<i className='hi-icon icon-close' style={{fontSize: '18px'}}/>}/>
+            <Progress percent={this.state.percent} apperance='circle' type='success' radius={radius} content={<i className='hi-icon icon-check' style={{fontSize: '18px'}}/>} />
           </div>
-
         </Col>
       </Row>
 
