@@ -1,14 +1,4 @@
 @import '../../core-css/index.scss';
-// TODO：完全迁移后再删除
-:root {
-  @include get-vars();
-}
-
-@each $color in map-keys($palette-primary) {
-  .theme__#{$color} {
-    @include get-vars(get-color($palette-primary, #{$color}));
-  }
-}
 
 $color-map: (
   'primary': use-color('primary'),
