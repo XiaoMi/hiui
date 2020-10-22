@@ -4,7 +4,6 @@ files.keys().forEach((key) => {
   const _key = key.split('/')[1].split('.')[0]
   docs[_key] = files(key).default
 })
-console.log(docs)
 export default {
   components: {},
   documents: {
@@ -13,7 +12,7 @@ export default {
     theme: docs.theme,
     palette: docs.palette,
     i18n: docs.i18n,
-    changelog: docs.changelog,
-    'hi-request': docs['hi-request']
+    changelog: docs.changelog
+    // 'hi-request': docs['hi-request']
   }
 }

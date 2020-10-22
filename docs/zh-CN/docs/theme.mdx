@@ -5,14 +5,7 @@
 ## 安装与使用
 
 ```bash
-npm i @hi-ui/classic-theme@next --save
-```
-
-```diff
-// package.json
-"dependencies": {
-+   "@hi-ui/classic-theme": "^2.0.0-rc"
-  },
+npm i @hi-ui/classic-theme --save
 ```
 
 ```jsx
@@ -77,6 +70,8 @@ const loginConfig = {
     </div>
   ] // 登录项菜单
 }
+// 工具栏
+const toolbar = [<Input key='1' />, <Icon key='2' name='prompt' />]
 
 class App extends Component {
   render() {
@@ -87,7 +82,7 @@ class App extends Component {
 export default App
 ```
 
-- 当属性设置为 `type='classic' apperance={{color:'dark'}}` 时，呈上下布局，顶部导航栏为深色
+<!-- - 当属性设置为 `type='classic' apperance={{color:'dark'}}` 时，呈上下布局，顶部导航栏为深色
 
 <p><img src="<BASE_URL>/static/img/themes/classic/classic-theme-demo.png" width="80%" /></p>
 
@@ -101,40 +96,53 @@ export default App
 
 - 当属性设置为 `type = 'genuine' apperance={{color:'light'}}` 时，呈左右布局，侧边导航栏为浅色
 
-<p><img src="<BASE_URL>/static/img/themes/genuine/genuine-theme-demo-light.png" width="80%" /></p>
+<p><img src="<BASE_URL>/static/img/themes/genuine/genuine-theme-demo-light.png" width="80%" /></p> -->
 
-## Props
+## API
 
-| 属性名      | 描述                       | 类型                              | 默认值                      |
-| ----------- | -------------------------- | --------------------------------- | --------------------------- |
-| type        | 主题类型                   | 'classic' \| 'genuine'            | 'classic'                   |
-| routes      | 路由配置项                 | Route[]                           | -                           |
-| historyType | 路由跳转类型               | 'hashHistory' \| 'browserHistory' | 'browserHistory'            |
-| header      | genuine 类型下的顶部功能栏 | ReactNode \| null                 | 不传时默认为主题自带 header |
-| apperance   | 主题外观配置项             | Apperance                         | {color:'dark'}              |
-| logo        | 主题 logo 配置项           | Logo                              | -                           |
-| login       | 主题登录信息配置项         | Login                             | -                           |
+### Theme
 
-## Type
+| 属性名            | 描述                                     | 类型                              | 默认值                      |
+| ----------------- | ---------------------------------------- | --------------------------------- | --------------------------- |
+| type              | 主题类型                                 | 'classic' \| 'genuine'            | 'classic'                   |
+| routes            | 路由配置项                               | Route[]                           | -                           |
+| logo              | 系统 logo                                | ReactNode                         | -                           |
+| login             | 系统登录配置项                           | ReactNode                         | -                           |
+| historyType       | 路由跳转类型                             | 'hashHistory' \| 'browserHistory' | 'browserHistory'            |
+| header            | genuine 类型下的顶部功能栏               | ReactNode \| null                 | 不传时默认为主题自带 header |
+| apperance         | 主题外观配置项                           | Apperance                         | {color:'dark'}              |
+| logo              | 主题 logo 配置项                         | Logo                              | -                           |
+| login             | 主题登录信息配置项                       | Login                             | -                           |
+| toolbar           | 顶部工具栏，一般用于放置通知、全局搜索等 | ReactNode                         | -                           |
+| siderTopRender    | 侧边栏自定义顶部渲染区域                 | toggle: boolean => ReactNode      | -                           |
+| siderBottomRender | 侧边栏自定义底部渲染区域                 | toggle: boolean => ReactNode      | -                           |
+| accordion         | 左侧菜单是否采用手风琴模式               | boolean                           | true                        |
+| basename          | 路由基础路径                             | string                            | '/'                         |
+| fallback          | 路由无法匹配时的候补跳转                             | string                            | -                         |
+| onToggle          | 侧边栏展开收起触发的回调                             | mini: boolean => void                           | -                         |
 
-### Route
+### type: Route
 
-| 属性名    | 描述                                     | 类型      | 默认值 |
-| --------- | ---------------------------------------- | --------- | ------ |
-| name      | 菜单名称                                 | string    | -      |
-| icon      | 菜单 icon                                | string    | -      |
-| children  | 子菜单配置项                             | Route[]   | -      |
-| path      | 菜单跳转路径                             | string    | -      |
-| exact     | 菜单跳转路径是否严格匹配对应的 component | boolean   | true   |
-| component | 菜单对应页面组件                         | ReactNode | -      |
+| 属性名        | 描述                                     | 类型      | 默认值 |
+| ------------- | ---------------------------------------- | --------- | ------ |
+| name          | 菜单名称                                 | string    | -      |
+| icon          | 菜单 icon                                | string    | -      |
+| children      | 子菜单配置项                             | Route[]   | -      |
+| path          | 菜单跳转路径                             | string    | -      |
+| exact         | 菜单跳转路径是否严格匹配对应的 component | boolean   | true   |
+| component     | 菜单对应页面组件                         | ReactNode | -      |
+| withoutLayout | 页面组件渲染时，不显示顶部导航栏和侧边栏 | boolean   | false  |
+| extraData     | 向路由匹配的页面组件注入额外的数据       | object    | -      |
 
-### Apperance
+### type: Apperance
 
-| 属性名 | 描述     | 类型              | 默认值 |
-| ------ | -------- | ----------------- | ------ |
-| color  | 主题颜色 | 'dark' \| 'light' | 'dark' |
+| 属性名            | 描述           | 类型              | 默认值    |
+| ----------------- | -------------- | ----------------- | --------- |
+| color             | 主题颜色       | 'dark' \| 'light' | 'dark'    |
+| contentBackground | 内容区域背景色 | string            | '#f6f6f6' |
+| contentPadding    | 内容区域内边距 | number            | 0         |
 
-### Logo
+### tye: Logo
 
 | 属性名  | 描述               | 类型   | 默认值 |
 | ------- | ------------------ | ------ | ------ |
@@ -142,7 +150,7 @@ export default App
 | logoUrl | logo 图片地址      | string | -      |
 | url     | 点击 logo 跳转地址 | string | -      |
 
-### Login
+### type: Login
 
 | 属性名   | 描述          | 类型        | 默认值 |
 | -------- | ------------- | ----------- | ------ |

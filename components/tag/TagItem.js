@@ -29,10 +29,10 @@ const TagItem = ({
   }, [])
   const tagStyle = color
     ? {
-      background: appearance === 'default' ? color : '',
-      borderColor: appearance === 'line' ? color : '',
-      color: appearance === 'line' ? color : ''
-    }
+        background: appearance === 'default' ? color : '',
+        borderColor: color,
+        color: appearance === 'line' ? color : ''
+      }
     : {}
   return (
     <CSSTransition
@@ -63,9 +63,9 @@ const TagItem = ({
       >
         {isLongTag ? children.slice(0, 20) + '...' : children}
         {closable && (
-          <button className='hi-tag__btn' type='button'>
+          <button className="hi-tag__btn" type="button">
             <Icon
-              name='close'
+              name="close"
               onClick={(e) => {
                 setVi(false)
               }}
