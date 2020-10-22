@@ -5,7 +5,11 @@ files.keys().forEach((key) => {
   docs[_key] = files(key).default
 })
 export default {
-  components: {},
+  components: {
+    'community-recommended': {
+      'code-editor': docs['code-editor']
+    }
+  },
   documents: {
     'quick-start': docs['quick-start'],
     'upgrade-from-2x': docs['upgrade-from-2x'],
@@ -13,6 +17,7 @@ export default {
     palette: docs.palette,
     i18n: docs.i18n,
     changelog: docs.changelog
-    // 'hi-request': docs['hi-request']
+    // 'hi-request': docs['hi-request'],
+    // 'code-editor': docs['code-editor']
   }
 }

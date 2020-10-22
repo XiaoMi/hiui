@@ -40,8 +40,7 @@ export default {
       upload: components.upload,
       slider: components.slider,
       rate: components.rate,
-      'rich-text-editor': components['rich-text-editor'],
-      'code-editor': components['code-editor']
+      'rich-text-editor': components['rich-text-editor']
     },
     'group-data': {
       tabs: components.tabs,

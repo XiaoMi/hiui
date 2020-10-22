@@ -8,6 +8,8 @@ module.exports = {
     changelog: '更新日志',
     'hi-request': 'HiRequest 请求工具',
     'group-basic': '通用',
+    'community-recommended': '社区推荐',
+    'code-editor': 'CodeEditor 代码编辑器',
     new: '重点更新',
     'group-navgation': '导航',
     'group-form': '数据录入',
@@ -62,13 +64,12 @@ module.exports = {
     watermark: 'Watermark 水印',
     list: 'List 列表',
     filter: 'Filter 筛选',
-    charts: 'Charts 图表',
-    'rich-text-editor': 'RichTextEditor 富文本编辑',
-    'code-editor': 'CodeEditor 代码编辑器'
+    charts: 'Charts 图表'
   },
   components: {
     'quick-start': '快速上手',
     'upgrade-from-2x': '从 v2.x 升级至 v3.x',
+    'community-recommended': '社区推荐',
     i18n: '国际化',
     theme: '布局主题',
     palette: '配色主题',
@@ -130,8 +131,7 @@ module.exports = {
     list: 'List 列表',
     filter: 'Filter 筛选',
     charts: 'Charts 图表',
-    'rich-text-editor': 'RichTextEditor 富文本编辑',
-    'code-editor': 'CodeEditor 代码编辑器'
+    'rich-text-editor': 'RichTextEditor 富文本编辑'
   },
   designs: {
     summarize: '概述',

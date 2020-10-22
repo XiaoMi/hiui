@@ -27,6 +27,7 @@ const logo = (
   />
 )
 class Index extends React.Component {
+  docsNavs = []
   componentNavs = []
   designNavs = []
   constructor(props) {
@@ -53,6 +54,9 @@ class Index extends React.Component {
       },
       {
         docs: {
+          ...Object.values(docs.components).reduce((a, b) => {
+            return Object.assign(a, b)
+          }, {}),
           ...docs.documents
         }
       },
@@ -88,10 +92,10 @@ class Index extends React.Component {
   }
 
   componentDidUpdate() {
+    setDocsNavs(this.docsNavs)
     setComponentsNavs(this.componentNavs)
     setDesignNavs(this.designNavs)
     setDesignNavs(this.templatesNavs)
-    setDesignNavs(this.docsNavs)
   }
   getSiderItems(items) {
     const { locale } = this.props
@@ -165,7 +169,6 @@ class Index extends React.Component {
   }
   render() {
     const siders = this.getSiderItems(pages)
-
     const _docs = this.getDesignTemplatesItems(docs, 'docs', setDocsNavs)
     const _designs = this.getDesignTemplatesItems(designs, 'designs', setDesignNavs)
     const _templates = this.getDesignTemplatesItems(templates, 'templates', setTemplatesNavs)

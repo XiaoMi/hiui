@@ -26,7 +26,7 @@ class Demo extends React.Component {
   render () {
     return (
       <DatePicker
-        value={new Date()}
+        defaultValue={new Date()}
         onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
       />
     )
@@ -67,12 +67,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoNormal = () => (
-  <DocViewer
-    code={code}
-    scope={{ DatePicker }}
-    prefix={prefix}
-    desc={desc}
-    rightOptions={rightOptions}
-  />
+  <DocViewer code={code} scope={{ DatePicker }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
 )
 export default DemoNormal

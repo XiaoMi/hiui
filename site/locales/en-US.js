@@ -6,6 +6,7 @@ module.exports = {
     theme: 'Layout Theme',
     changelog: 'Changelog',
     'group-basic': 'General',
+    'community-recommended': 'Community recommended',
     'group-navgation': 'Navigation',
     'group-form': 'Form',
     'group-data': 'Data',
