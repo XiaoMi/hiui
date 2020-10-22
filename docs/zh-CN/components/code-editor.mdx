@@ -4,6 +4,14 @@
 
 - 基于开源库[codemirror](https://codemirror.net/index.html#description) 写的一些示例
 
+## 使用方法
+
+1. 安装 codemirror && react-codemirror2
+
+```shell
+npm install react-codemirror2 codemirror --save
+```
+
 ## 基础用法
 
 import DemoBase from '../../demo/code-editor/section-base.jsx'
@@ -34,59 +42,12 @@ import DemoMerge from '../../demo/code-editor/section-merge.jsx'
 
 <DemoMerge />
 
-## CodeEditor
-
-### props
-
-| 参数      | 说明                                                             | 类型    | 可选值        | 默认值 |
-| --------- | ---------------------------------------------------------------- | ------- | ------------- | ------ |
-| options   | [codemirror 配置](https://codemirror.net/doc/manual.html#config) | boolean | true \| false | false  |
-| className | 自定义类名                                                       | string  | -             | -      |
-| value     | 代码编辑器中的值，非受控                                         | boolean | true \| false | false  |
-
-### event 事件
-
-| 参数               | 说明                 | 类型                                | 可选值 | 默认值 |
-| ------------------ | -------------------- | ----------------------------------- | ------ | ------ |
-| editorDidConfigure | 设置完成后的回调     | (editor) => void                    | -      | -      |
-| editorDidConfigure | 设置完成后的回调     | (editor) => void                    | -      | -      |
-| onBeforeChange     | 值发生变化之前的回调 | (editor, data, value, next) => void | -      | -      |
-| onChange           | 值发生变化时的回调   | (editor, data, value) => void       | -      | -      |
-
-## events cont.
-
-[wrapped codemirror events](https://codemirror.net/doc/manual.html#events)
-
-- `onBlur(editor, event)` - _[blur](https://codemirror.net/doc/manual.html#event_blur)_
-- `onContextMenu(editor, event)` - _[contextmenu](https://codemirror.net/doc/manual.html#event_dom)_
-- `onCopy(editor)` - _[copy](https://codemirror.net/doc/manual.html#event_dom)_
-- `onCursor(editor, data)`- _[cursorActivity](https://codemirror.net/doc/manual.html#event_doc_cursorActivity)_
-- `onCursorActivity(editor)` - _[cursorActivity](https://codemirror.net/doc/manual.html#event_cursorActivity)_
-- `onCut(editor)` - _[cut](https://codemirror.net/doc/manual.html#event_dom)_
-- `onDblClick(editor, event)` - _[dblclick](https://codemirror.net/doc/manual.html#event_dom)_
-- `onDragEnter(editor, event)` - _[dragenter](https://codemirror.net/doc/manual.html#event_dom)_
-- `onDragOver(editor, event)` - _[dragover](https://codemirror.net/doc/manual.html#event_dom)_
-- `onDragLeave(editor, event)` - _[dragleave](https://codemirror.net/doc/manual.html#event_dom)_
-- `onDragStart(editor, event)` - _[dragstart](https://codemirror.net/doc/manual.html#event_dom)_
-- `onDrop(editor, event)` - _[drop](https://codemirror.net/doc/manual.html#event_dom)_
-- `onFocus(editor, event)` - _[focus](https://codemirror.net/doc/manual.html#event_focus)_
-- `onGutterClick(editor, lineNumber, gutter, event)` - _[gutterClick](https://codemirror.net/doc/manual.html#event_gutterClick)_
-- `onInputRead(editor, changeObj)` - _[gutterClick](https://codemirror.net/doc/manual.html#events)_
-- `onKeyDown(editor, event)` - _[keydown](https://codemirror.net/doc/manual.html#event_dom)_
-- `onKeyHandled(editor, key, event)` - _[keyhandled](https://codemirror.net/doc/manual.html#events)_
-- `onKeyPress(editor, event)` - _[keypress](https://codemirror.net/doc/manual.html#event_dom)_
-- `onKeyUp(editor, event)` - _[keyup](https://codemirror.net/doc/manual.html#event_dom)_
-- `onMouseDown(editor, event)` - _[mousedown](https://codemirror.net/doc/manual.html#event_dom)_
-- `onPaste(editor)` - _[paste](https://codemirror.net/doc/manual.html#event_dom)_
-- `onScroll(editor, data)` - _[scroll](https://codemirror.net/doc/manual.html#event_scroll)_
-- `onSelection(editor, data)` - _[beforeSelectionChange](https://codemirror.net/doc/manual.html#event_doc_beforeSelectionChange)_
-- `onTouchStart(editor, event)` - _[touchstart](https://codemirror.net/doc/manual.html#event_dom)_
-- `onUpdate(editor, event)` - _[update](https://codemirror.net/doc/manual.html#event_update)_
-- `onViewportChange(editor, from, to)` - _[viewportChange](https://codemirror.net/doc/manual.html#event_viewportChange)_
+## CodeEditor Prop
 
 > 详细信息请参考 [CodeMirror](https://codemirror.net/doc/manual.html#config)
 
+- API [react-codemirror2](https://github.com/scniro/react-codemirror2)
+
 ### 推荐文档
 
-[react-codemirror2](https://github.com/scniro/react-codemirror2)
-[CodeMirror-Demo](https://codemirror.net/demo/)
+- [CodeMirror-Demo](https://codemirror.net/demo/)
