@@ -58,6 +58,7 @@
     "qs": "^6.8.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-beautiful-dnd": "^13.0.0",
+    "react-click-outside": "^3.0.1",
     "react-cropper": "1.2.0",
     "react-dnd": "^7.7.0",
     "react-dnd-html5-backend": "^7.4.4",
