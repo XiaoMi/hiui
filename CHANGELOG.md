@@ -1,5 +1,9 @@
 # 更新日志
 
+## 3.0.1
+
+- 优化 `<Timepicker/>` 时间范围选择器，支持字符串格式的 value [#1245](https://github.com/XiaoMi/hiui/issues/1245)
+
 ## 3.0.0
 
 - 新增：`Slider` 滑块组件 [#1225](https://github.com/XiaoMi/hiui/issues/1225)

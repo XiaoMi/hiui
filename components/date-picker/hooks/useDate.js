@@ -5,10 +5,9 @@ import _ from 'lodash'
 const parseValue = (value, type, format) => {
   if (!value) return [null]
   const _value = moment(value)
-  console.log('format', format)
-  const isValid = moment(value, format).isValid()
+  const isValid = moment(value).isValid()
   if (value && typeof value === 'object' && type.includes('range')) {
-    return [value.start ? moment(value.start) : null, value.end ? moment(value.end) : null]
+    return [value.start ? moment(value.start, format) : null, value.end ? moment(value.end, format) : null]
   }
   return [isValid ? _value : null]
 }

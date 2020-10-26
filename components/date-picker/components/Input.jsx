@@ -16,8 +16,7 @@ const Input = ({ date, onChange, onFocus, dir, placeholder }) => {
   const cacheValues = useRef(null)
   const [value, setValue] = useState('')
   useEffect(() => {
-    console.log('date',date,iFormat,format, moment('11:20',"HH:mm").format('HH:mm'))
-    const vals = date && moment(date,format).format(format)
+    const vals = date && moment(date).format(iFormat)
     setValue(vals)
     cacheValues.current = vals
   }, [date])
