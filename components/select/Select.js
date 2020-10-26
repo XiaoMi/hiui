@@ -66,6 +66,9 @@ const InternalSelect = (props) => {
     )
     // 在异步多选的时候时候才需要进行值的记录
     dataSource && type === 'multiple' && setCacheSelectItem(selectedItems)
+    if (dataSource && autoload) {
+      remoteSearch()
+    }
   }, [])
   useEffect(() => {
     setSearchable(dataSource ? true : propsSearchable)
@@ -234,12 +237,6 @@ const InternalSelect = (props) => {
     },
     [dataSource, searchable, keyword, filterOption]
   )
-
-  useEffect(() => {
-    if (dataSource && autoload) {
-      remoteSearch()
-    }
-  })
 
   const remoteSearch = useCallback(
     (keyword) => {
