@@ -9,7 +9,9 @@ class Demo extends React.Component {
   render() {
     return (
       <TimePicker
-        defaultValue={{start: new Date(), end: new Date()}}
+        defaultValue={{start:'11:20', end: '11:30'}}
+        type="timerange"
+        format={'HH:mm'}
         type="timerange"
         onChange={(date, dateString) => console.log(date, dateString)}
       />
