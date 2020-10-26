@@ -64,10 +64,10 @@ const InternalSelect = (props) => {
       _.uniqBy(cacheSelectItem.concat(dropdownItems), transKeys(fieldNames, 'id')),
       transKeys(fieldNames, 'id')
     )
-    // 在异步多选的时候时候才需要进行值的记录
-    dataSource && type === 'multiple' && setCacheSelectItem(selectedItems)
-    if (dataSource && autoload) {
-      remoteSearch()
+    if (dataSource) {
+      // 在异步多选的时候时候才需要进行值的记录
+      type === 'multiple' && setCacheSelectItem(selectedItems)
+      autoload && remoteSearch()
     }
   }, [])
   useEffect(() => {
