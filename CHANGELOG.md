@@ -1,5 +1,9 @@
 # 更新日志
 
+## 3.0.1
+
+- 修复 `Input` 在受控状态下，设置 value 为 null 时报错问题 [#1246](https://github.com/XiaoMi/hiui/issues/1246)
+
 ## 3.0.0
 
 - 新增：`Slider` 滑块组件 [#1225](https://github.com/XiaoMi/hiui/issues/1225)

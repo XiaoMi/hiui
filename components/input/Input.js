@@ -46,9 +46,10 @@ class Input extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.value !== undefined) {
       if (nextProps.value !== this.state.value) {
+        const _value = nextProps.value || ''
         this.setState({
-          value: format(nextProps.value.toString(), this.props.type),
-          valueTrue: nextProps.value
+          value: format(_value.toString(), this.props.type),
+          valueTrue: _value
         })
       }
     }
