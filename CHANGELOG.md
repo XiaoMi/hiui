@@ -6,6 +6,7 @@
 - 修复 `Select` 设置 autoload 为 true 时无限的调用接口问题 [#1249](https://github.com/XiaoMi/hiui/issues/1249)
 - 修复 `<Timepicker/>` 弹出层在页面底部未翻转到上方问题 [#1253](https://github.com/XiaoMi/hiui/issues/1253)
 - 优化 `<Timepicker/>` 支持字符串格式的 value [#1245](https://github.com/XiaoMi/hiui/issues/1245)
+- 修复 `SelectTree` 弹出层在页面底部不能翻转问题 [#1254](https://github.com/XiaoMi/hiui/issues/1254)
 
 ## 3.0.0
 
