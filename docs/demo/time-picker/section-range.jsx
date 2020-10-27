@@ -16,12 +16,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ TimePicker }}
-    prefix={prefix}
-    desc={desc}
-  />
-)
+const DemoBase = () => <DocViewer code={code} scope={{ TimePicker }} prefix={prefix} desc={desc} />
 export default DemoBase
