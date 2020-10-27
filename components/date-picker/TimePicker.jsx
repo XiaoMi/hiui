@@ -143,7 +143,6 @@ const TimePicker = ({
           leftGap={0}
           overlayClassName={overlayClassName}
           width={false}
-          preventOverflow
           className={timePopperCls}
           placement={placement}
           onClickOutside={clickOutsideEvent}
