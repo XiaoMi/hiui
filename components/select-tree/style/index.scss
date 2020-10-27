@@ -112,12 +112,12 @@
     background: use-color('white');
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
     border-radius: 2px;
-    max-height: 300px;
+    max-height: 320px;
     overflow: auto;
     width: 320px;
 
     &--loading {
-      height: 300px;
+      height: 320px;
     }
   }
 
