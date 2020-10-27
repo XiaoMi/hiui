@@ -3,6 +3,7 @@
 ## 3.0.1
 
 - 优化 `<Timepicker/>` 时间范围选择器，支持字符串格式的 value [#1245](https://github.com/XiaoMi/hiui/issues/1245)
+- 修复 `Select` 设置 autoload 为 true 时无限的调用接口问题 [#1249](https://github.com/XiaoMi/hiui/issues/1249)
 
 ## 3.0.0
 
