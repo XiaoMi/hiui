@@ -1,5 +1,9 @@
 # 更新日志
 
+## 2.15.1
+
+- 修复 `<Input />` type 不受控问题 [#1251](https://github.com/XiaoMi/hiui/issues/1251)
+
 ## 2.15.0
 
 - 优化 `<Tree />` onBeforeSave 、 onDragStart 支持返回 Promise [#1179](https://github.com/XiaoMi/hiui/issues/1179)
