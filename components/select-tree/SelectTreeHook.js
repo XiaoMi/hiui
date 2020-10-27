@@ -43,7 +43,8 @@ const SelectTree = ({
   autoExpand,
   overlayClassName,
   theme,
-  localeDatas
+  localeDatas,
+  placement = 'top-bottom-start'
 }) => {
   const selectedItemsRef = useRef()
   const inputRef = useRef()
@@ -345,6 +346,7 @@ const SelectTree = ({
           attachEle={inputRef.current}
           width={false}
           topGap={5}
+          placement={placement}
           overlayClassName={overlayClassName}
           className={`hi-selecttree__popper ${data.length === 0 && dataSource ? 'hi-selecttree__popper--loading' : ''}`}
           onClickOutside={() => setShow(false)}
