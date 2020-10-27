@@ -23,36 +23,45 @@ class Input extends Component {
     }
     const oldProps = Object.assign({}, commonAttrs, this.props)
     const newProps = getAttrs(oldProps)
-    const { prepend, append, value, defaultValue } = props
+    const { prepend, append, value, defaultValue, type } = props
     // 分离有效属性和事件
     this.attrs = newProps.attrs
     const valueSource = value === undefined ? defaultValue : value
-    const type = typeof valueSource
+    const valueType = typeof valueSource
     const prefix = typeof prepend === 'string' ? prepend : ''
     const suffix = typeof append === 'string' ? append : ''
     const prependNode = typeof prepend !== 'string' && prepend
     const appendNode = typeof append !== 'string' && append
     this.state = {
-      value: type === 'string' || type === 'number' ? format(valueSource.toString(), this.props.type) : '',
+      value: valueType === 'string' || valueType === 'number' ? format(valueSource.toString(), type) : '',
       valueTrue: prefix + valueSource + suffix,
       hover: false,
       active: false,
       prefix,
       suffix,
       prepend: prependNode,
-      append: appendNode
+      append: appendNode,
+      type
     }
   }
 
   componentWillReceiveProps (nextProps) {
+    if (nextProps.type !== this.state.type) {
+      this.setState({
+        type: nextProps.type
+      })
+    }
     if (nextProps.value !== undefined) {
-      if (nextProps.value !== this.state.value) {
+      if (nextProps.value !== this.state.value || nextProps.type !== this.state.type) {
+        console.log('nextProps.type',nextProps.type)
         this.setState({
-          value: format(nextProps.value.toString(), this.props.type),
-          valueTrue: nextProps.value
+          value: format(nextProps.value.toString(), nextProps.type),
+          valueTrue: nextProps.value,
+          type: nextProps.type
         })
       }
     }
+    
     if (nextProps.prepend !== this.state.prepend || nextProps.append !== this.state.append) {
       const { prepend, append } = nextProps
       const prefix = typeof prepend === 'string' ? prepend : ''
@@ -78,9 +87,9 @@ class Input extends Component {
    * 渲染 text 输入框
    */
   renderText () {
-    let { hover, active, value } = this.state
+    let { hover, active, value, type } = this.state
     // clearableTrigger 为内部预留，主要表示清除按钮的触发形态，类型分为 'hover' 和 ‘always’
-    let { disabled, type, id, placeholder, clearable, clearableTrigger = 'hover' } = this.props
+    let { disabled, id, placeholder, clearable, clearableTrigger = 'hover' } = this.props
     let { prefix, suffix, prepend, append } = this.state
     const noClear = ['textarea']
     let prefixId = id ? id + '_prefix' : ''
@@ -126,6 +135,7 @@ class Input extends Component {
             autoComplete='off'
             disabled={disabled}
             {...filterAttrs}
+            type={type}
             placeholder={placeholder}
             onChange={(e) => {
               e.persist()
@@ -151,7 +161,7 @@ class Input extends Component {
               const valueTrue = this.state.valueTrue
 
               // amount 自动添加小数
-              if (this.props.type === 'amount' && value !== '') {
+              if (type === 'amount' && value !== '') {
                 value = formatAmount(value)
               }
 
