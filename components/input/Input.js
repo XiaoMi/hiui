@@ -46,8 +46,9 @@ class Input extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.value !== undefined) {
       if (nextProps.value !== this.state.value) {
+        const type = typeof nextProps.value
         this.setState({
-          value: format(nextProps.value.toString(), this.props.type),
+          value: type === 'string' || type === 'number' ? format(nextProps.value.toString(), this.props.type):'',
           valueTrue: nextProps.value
         })
       }
