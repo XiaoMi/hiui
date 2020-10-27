@@ -52,12 +52,10 @@ class Input extends Component {
       })
     }
     if (nextProps.value !== undefined) {
-      if (nextProps.value !== this.state.value || nextProps.type !== this.state.type) {
-        console.log('nextProps.type',nextProps.type)
+      if (nextProps.value !== this.state.value) {
         this.setState({
           value: format(nextProps.value.toString(), nextProps.type),
           valueTrue: nextProps.value,
-          type: nextProps.type
         })
       }
     }
