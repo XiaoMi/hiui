@@ -1,5 +1,9 @@
 # 更新日志
 
+## 3.0.1
+
+- 修复 `Select` 设置 autoload 为 true 时无限的调用接口问题 [#1249](https://github.com/XiaoMi/hiui/issues/1249)
+
 ## 3.0.0
 
 - 新增：`Slider` 滑块组件 [#1225](https://github.com/XiaoMi/hiui/issues/1225)
