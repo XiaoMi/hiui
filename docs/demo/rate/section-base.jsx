@@ -38,7 +38,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBase = () => (
-  <DocViewer code={code} scope={{ LegacyForm, Rate }} prefix={prefix} desc={desc} />
-)
+const DemoBase = () => <DocViewer code={code} scope={{ LegacyForm, Rate }} prefix={prefix} desc={desc} />
 export default DemoBase

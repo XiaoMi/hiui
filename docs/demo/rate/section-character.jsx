@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import { LegacyForm } from '../../../components/form'
-import Icon from '../../../components/Icon'
+import Icon from '../../../components/icon'
 import Rate from '../../../components/rate'
 import logoPng from '../../../site/static/img/docs/mi-logo@2x.png'
 const desc = '元素可以是字体图标，文字甚至图片。'
@@ -36,11 +36,6 @@ class Demo extends React.Component {
   }
 }`
 const DemoAdvanced = () => (
-  <DocViewer
-    code={code}
-    scope={{ LegacyForm, Rate, Icon, logoPng }}
-    prefix={prefix}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ LegacyForm, Rate, Icon, logoPng }} prefix={prefix} desc={desc} />
 )
 export default DemoAdvanced
