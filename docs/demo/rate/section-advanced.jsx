@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import { LegacyForm } from '../../../components/form'
 import Rate from '../../../components/rate'
-import Icon from '../../../components/Icon'
+import Icon from '../../../components/icon'
 const prefix = 'rate-advanced'
 const code = `import React from 'react'
 import Rate from '@hi-ui/hiui/es/rate'
@@ -52,7 +52,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoAdvanced = () => (
-  <DocViewer code={code} scope={{ LegacyForm, Rate, Icon }} prefix={prefix} />
-)
+const DemoAdvanced = () => <DocViewer code={code} scope={{ LegacyForm, Rate, Icon }} prefix={prefix} />
 export default DemoAdvanced
