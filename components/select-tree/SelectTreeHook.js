@@ -220,7 +220,8 @@ const SelectTree = ({
     return HiRequest({
       ..._dataSource
     }).then((res) => {
-      const nArr = res.data.map((n) => {
+      const { data = [] } = res
+      const nArr = data.map((n) => {
         return {
           ...n,
           pId: id
