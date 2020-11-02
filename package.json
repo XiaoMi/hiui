@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "2.15.0",
+  "version": "2.15.1",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
@@ -33,7 +33,7 @@
   "author": "HIUI <mi-hiui@xiaomi.com>",
   "license": "MIT",
   "main": "index.js",
-  "module": "es/index.js", 
+  "module": "es/index.js",
   "file": [
     "dist",
     "es"
