@@ -3,6 +3,7 @@
 ## 2.15.1
 
 - 修复 `<Input />` type 不受控问题 [#1251](https://github.com/XiaoMi/hiui/issues/1251)
+- 修复 `<Form />` 使用 Upload 组件 onChange 方法 return false 无效 [#1259](https://github.com/XiaoMi/hiui/issues/1259)
 
 ## 2.15.0
 
