@@ -8,6 +8,7 @@
 - 优化 `<Timepicker/>` 支持字符串格式的 value [#1245](https://github.com/XiaoMi/hiui/issues/1245)
 - 修复 `SelectTree` 弹出层在页面底部不能翻转问题 [#1254](https://github.com/XiaoMi/hiui/issues/1254)
 - 修复 `Tag` 使用 ref 无效问题 [#1262](https://github.com/XiaoMi/hiui/issues/1262)
+- 修复 `Table` data 为 undefined 时的报错问题 [#1265](https://github.com/XiaoMi/hiui/issues/1265)
 
 ## 3.0.0
 
