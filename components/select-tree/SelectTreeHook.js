@@ -221,12 +221,14 @@ const SelectTree = ({
       ..._dataSource
     }).then((res) => {
       const { data = [] } = res
-      const nArr = data.map((n) => {
-        return {
-          ...n,
-          pId: id
-        }
-      })
+      const nArr =
+        data &&
+        data.map((n) => {
+          return {
+            ...n,
+            pId: id
+          }
+        })
       return nArr
     })
   }, [])
