@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, forwardRef } from 'react'
 import classNames from 'classnames'
 import './style'
 import Icon from '../icon'
 import { CSSTransition } from 'react-transition-group'
 
 const noop = () => {}
-const TagItem = ({
+const InternalTagItem = ({
   type = 'primary',
   appearance = 'default',
   onClick,
@@ -21,7 +21,8 @@ const TagItem = ({
   onMouseEnter = noop,
   onMouseLeave = noop,
   hoverIndex = -1,
-  shape = 'round'
+  shape = 'round',
+  innerRef
 }) => {
   const [vi, setVi] = useState(false)
   useEffect(() => {
@@ -49,6 +50,7 @@ const TagItem = ({
           'hi-tag--line': appearance === 'line',
           'hi-tag--square': shape === 'square'
         })}
+        ref={innerRef}
         onClick={onClick}
         style={{ ...style, ...tagStyle }}
         onDoubleClick={() => {
@@ -77,4 +79,7 @@ const TagItem = ({
   )
 }
 
+const TagItem = forwardRef((props, ref) => {
+  return <InternalTagItem {...props} innerRef={ref} />
+})
 export default TagItem
