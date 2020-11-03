@@ -7,6 +7,7 @@
 - 修复 `<Timepicker/>` 弹出层在页面底部未翻转到上方问题 [#1253](https://github.com/XiaoMi/hiui/issues/1253)
 - 优化 `<Timepicker/>` 支持字符串格式的 value [#1245](https://github.com/XiaoMi/hiui/issues/1245)
 - 修复 `SelectTree` 弹出层在页面底部不能翻转问题 [#1254](https://github.com/XiaoMi/hiui/issues/1254)
+- 修复 `SelectTree` data 数据中 Children 为空数组报错问题 [#1261](https://github.com/XiaoMi/hiui/issues/1261)
 - 修复 `Tag` 使用 ref 无效问题 [#1262](https://github.com/XiaoMi/hiui/issues/1262)
 - 修复 `Table` data 为 undefined 时的报错问题 [#1265](https://github.com/XiaoMi/hiui/issues/1265)
 

@@ -218,7 +218,7 @@ export const flattenNodesData = (data, isGenEntries = false) => {
           ...node,
           parent
         })
-      if (_children) {
+      if (_children && _children.length > 0) {
         fun(_children, newArr, node)
         delete node.children
       } else {
