@@ -11,7 +11,8 @@ const Trigger = ({
   showCount,
   clearable,
   show,
-  selectedItemsRef
+  selectedItemsRef,
+  placeholder
 }) => {
   return (
     <div
@@ -29,6 +30,7 @@ const Trigger = ({
             <span key={index}>{node.title || ''}</span>
           ))}
         </div>
+        {selectedItems.length === 0 && <span>{placeholder}</span>}
         {selectedItems.length > 0 &&
           selectedItems.slice(0, showCount || 1).map((node, index) => {
             return (

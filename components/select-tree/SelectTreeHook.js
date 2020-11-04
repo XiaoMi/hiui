@@ -44,8 +44,12 @@ const SelectTree = ({
   overlayClassName,
   theme,
   localeDatas,
+  placeholder: propsPlaceholder,
+  style,
+  optionWidth,
   placement = 'top-bottom-start'
 }) => {
+  const placeholder = propsPlaceholder || localeDatas.selectTree.placeholder
   const selectedItemsRef = useRef()
   const inputRef = useRef()
   // select 中显示的数量
@@ -330,7 +334,7 @@ const SelectTree = ({
   }
   const searchable = searchMode === 'filter' || searchMode === 'highlight'
   return (
-    <div className={`theme__${theme}`}>
+    <div className={`theme__${theme}`} style={style}>
       <Trigger
         inputRef={inputRef}
         selectedItemsRef={selectedItemsRef}
@@ -339,6 +343,7 @@ const SelectTree = ({
         selectedItems={selectedItems}
         clearable={clearable}
         show={show}
+        placeholder={placeholder}
         checkedEvents={checkedEvents}
         onTrigger={onTrigger}
         onClear={handleClear}
@@ -347,8 +352,8 @@ const SelectTree = ({
         <Popper
           show={show}
           attachEle={inputRef.current}
-          width={false}
           topGap={5}
+          width={optionWidth}
           placement={placement}
           overlayClassName={overlayClassName}
           className={`hi-selecttree__popper ${data.length === 0 && dataSource ? 'hi-selecttree__popper--loading' : ''}`}
@@ -436,7 +441,7 @@ SelectTree.defaultProps = {
   onExpand: () => {},
   checkable: false,
   defaultLoadData: true,
-  showCheckedMode: 'PARENT',
+  showCheckedMode: 'ALL',
   defaultExpandAll: false,
   defaultExpandIds: [],
   expandIds: [],
