@@ -12,6 +12,8 @@
 - 修复 `Table` data 为 undefined 时的报错问题 [#1273](https://github.com/XiaoMi/hiui/issues/1265)
 - 修复 `Loading` 显示不正确的问题 [#1268](https://github.com/XiaoMi/hiui/issues/1268)
 - 修复 `Tag` 闪烁问题 [#1273](https://github.com/XiaoMi/hiui/issues/1273)
+- 修复 `Timeline` 折断样式问题 [#1276](https://github.com/XiaoMi/hiui/issues/1276)
+- 修复 `Timeline` 只有一条数据时的样式问题 [#1277](https://github.com/XiaoMi/hiui/issues/1277)
 
 ## 3.0.0
 
