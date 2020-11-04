@@ -14,6 +14,7 @@ const TagGroup = ({ editable, prefixCls = 'hi-tag-group', data, onAdd = noop, on
   const [editInputId, setEditInputId] = useState(-1)
   const [editInputValue, setEditInputValue] = useState('')
   const [hoverIndex, setHoverIndex] = useState(-1)
+  const [renderedItem] = useState(data.map((d) => d.tagId))
 
   useEffect(() => {
     if (inputVisible) {
@@ -107,7 +108,7 @@ const TagGroup = ({ editable, prefixCls = 'hi-tag-group', data, onAdd = noop, on
           onDoubleClick={onDoubleClick}
           isLongTag={item.isLongTag}
           hoverIndex={hoverIndex}
-          transition
+          transition={!renderedItem.includes(item.tagId)}
           onMouseEnter={(id) => setHoverIndex(id)}
           onMouseLeave={() => setHoverIndex(-1)}
         >
@@ -115,7 +116,7 @@ const TagGroup = ({ editable, prefixCls = 'hi-tag-group', data, onAdd = noop, on
         </Tag>
       )
     },
-    [hoverIndex, handleClose, onDoubleClick]
+    [hoverIndex, handleClose, onDoubleClick, renderedItem]
   )
 
   const renderItem = useCallback(
