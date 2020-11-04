@@ -2,7 +2,6 @@
 
 .hi-selecttree {
   &__input {
-    width: 320px;
     height: 32px;
     line-height: 32px;
     border: 1px solid use-color('gray-30');
@@ -12,7 +11,7 @@
     padding: 0 0 0 12px;
     background-color: use-color('white');
     color: use-color('black');
-    display: inline-flex;
+    display: flex;
     justify-content: space-between;
 
     &:hover {
@@ -114,7 +113,6 @@
     border-radius: 2px;
     max-height: 320px;
     overflow: auto;
-    width: 320px;
 
     &--loading {
       height: 320px;
