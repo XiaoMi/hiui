@@ -44,8 +44,10 @@ const SelectTree = ({
   overlayClassName,
   theme,
   localeDatas,
+  placeholder: propsPlaceholder,
   placement = 'top-bottom-start'
 }) => {
+  const placeholder = propsPlaceholder || localeDatas.selectTree.placeholder
   const selectedItemsRef = useRef()
   const inputRef = useRef()
   // select 中显示的数量
@@ -339,6 +341,7 @@ const SelectTree = ({
         selectedItems={selectedItems}
         clearable={clearable}
         show={show}
+        placeholder={placeholder}
         checkedEvents={checkedEvents}
         onTrigger={onTrigger}
         onClear={handleClear}
