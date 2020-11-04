@@ -11,6 +11,7 @@
 - 修复 `Tag` 使用 ref 无效问题 [#1262](https://github.com/XiaoMi/hiui/issues/1262)
 - 修复 `Table` data 为 undefined 时的报错问题 [#1265](https://github.com/XiaoMi/hiui/issues/1265)
 - 修复 `Loading` 显示不正确的问题 [#1265](https://github.com/XiaoMi/hiui/issues/1268)
+- 优化 `SelectTree` 文档以及样式相关方面 [#1272](https://github.com/XiaoMi/hiui/issues/1272)
 
 ## 3.0.0
 
