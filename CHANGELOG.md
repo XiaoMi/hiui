@@ -7,7 +7,7 @@
 - 修复 `Timepicker` 弹出层在页面底部未翻转到上方问题 [#1253](https://github.com/XiaoMi/hiui/issues/1253)
 - 优化 `Timepicker` 支持字符串格式的 value [#1245](https://github.com/XiaoMi/hiui/issues/1245)
 - 修复 `SelectTree` 弹出层在页面底部不能翻转问题 [#1254](https://github.com/XiaoMi/hiui/issues/1254)
-- 修复 `DataPicker` 周范围显示异常问题 [#1267](https://github.com/XiaoMi/hiui/issues/1267)
+- 修复 `DatePicker` 周范围显示异常问题 [#1267](https://github.com/XiaoMi/hiui/issues/1267)
 
 ## 3.0.0
 
