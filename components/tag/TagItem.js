@@ -22,12 +22,13 @@ const InternalTagItem = ({
   onMouseLeave = noop,
   hoverIndex = -1,
   shape = 'round',
-  innerRef
+  innerRef,
+  transition
 }) => {
   const [vi, setVi] = useState(false)
   useEffect(() => {
-    setVi(true)
-  }, [])
+    setVi(transition)
+  }, [transition])
   const tagStyle = color
     ? {
         background: appearance === 'default' ? color : '',
@@ -36,14 +37,7 @@ const InternalTagItem = ({
       }
     : {}
   return (
-    <CSSTransition
-      in={vi}
-      timeout={300}
-      classNames={'tag-transition'}
-      onExited={() => {
-        setTimeout(() => handleClose(id), 300)
-      }}
-    >
+    <CSSTransition in={vi} timeout={300} classNames={'tag-transition'}>
       <span
         className={classNames('hi-tag', {
           [`hi-tag--${type}`]: type,
@@ -69,7 +63,7 @@ const InternalTagItem = ({
             <Icon
               name="close"
               onClick={(e) => {
-                setVi(false)
+                handleClose(id)
               }}
             />
           </button>

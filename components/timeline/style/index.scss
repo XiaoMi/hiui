@@ -21,6 +21,12 @@
         .item__line {
           height: 7px !important;
         }
+
+        &.timeline__item--first {
+          .item__line {
+            height: 0 !important;
+          }
+        }
       }
 
       &--first {
@@ -204,6 +210,12 @@
             height: 7px;
           }
         }
+
+        &.timeline__item--first {
+          .item__line {
+            height: 0 !important;
+          }
+        }
       }
 
       &--first {
@@ -304,7 +316,6 @@
     .timeline__item {
       display: flex;
       position: relative;
-      margin-bottom: 20px;
 
       .item--left {
         text-align: right;
@@ -360,6 +371,7 @@
       .item--right {
         width: calc(70% - 20px);
         margin-left: 20px;
+        margin-bottom: 20px;
 
         .item__title {
           color: use-color('black');
@@ -382,6 +394,12 @@
 
         .item__line {
           height: 7px;
+        }
+
+        &.timeline__item--first {
+          .item__line {
+            height: 0 !important;
+          }
         }
       }
 
