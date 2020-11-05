@@ -203,6 +203,7 @@ const SelectTree = ({
       checked: [],
       semiChecked: []
     })
+    onChange && onChange()
   }, [])
 
   /**
