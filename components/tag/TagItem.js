@@ -23,7 +23,8 @@ const InternalTagItem = ({
   hoverIndex = -1,
   shape = 'round',
   innerRef,
-  transition
+  transition,
+  className
 }) => {
   const [vi, setVi] = useState(false)
   useEffect(() => {
@@ -39,11 +40,15 @@ const InternalTagItem = ({
   return (
     <CSSTransition in={vi} timeout={300} classNames={'tag-transition'}>
       <span
-        className={classNames('hi-tag', {
-          [`hi-tag--${type}`]: type,
-          'hi-tag--line': appearance === 'line',
-          'hi-tag--square': shape === 'square'
-        })}
+        className={classNames(
+          'hi-tag',
+          {
+            [`hi-tag--${type}`]: type,
+            'hi-tag--line': appearance === 'line',
+            'hi-tag--square': shape === 'square'
+          },
+          className
+        )}
         ref={innerRef}
         onClick={onClick}
         style={{ ...style, ...tagStyle }}
