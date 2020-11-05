@@ -64,7 +64,13 @@ const Trigger = ({
           })}
         />
         {clearable && selectedItems.length > 0 && (
-          <i className={`hi-icon icon-close-circle hi-selecttree__icon-close`} onClick={onClear} />
+          <i
+            className={`hi-icon icon-close-circle hi-selecttree__icon-close`}
+            onClick={(e) => {
+              e.stopPropagation()
+              onClear && onClear()
+            }}
+          />
         )}
       </span>
     </div>
