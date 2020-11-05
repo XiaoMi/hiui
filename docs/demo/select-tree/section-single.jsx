@@ -1,13 +1,14 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import SelectTree from '../../../components/select-tree'
+import Button from '../../../components/button'
 const prefix = 'tree-select-single'
 const rightOptions = ['基础', '默认值', '默认展开']
 const desc = '展示从多个收起的备选项中选出的一个选项'
 const defaultJson = `constructor () {
     super()
     this.state = {
-      value: '3',
+      value: ['1-0'],
       singleList: [
         {
           title: '手机类',
@@ -71,23 +72,35 @@ const defaultJson = `constructor () {
       ]
     }
   }`
-const code = [{
-  code: `import React from 'react'
+const code = [
+  {
+    code: `import React from 'react'
   import SelectTree from '@hi-ui/hiui/es/select-tree'\n
   class Demo extends React.Component {
     ${defaultJson}
     render () {
       const { value, singleList } = this.state
       return (
+        <div>
+        <Button onClick={() => {
+          this.setState({ value:[] })
+        }}>按钮</Button>
         <SelectTree
+          type={'multiple'}
           data={singleList}
+          value={this.state.value}
+          onChange={(...args)=>{
+            console.log('selectTree',...args)
+          }}
         />
+        </div>
       )
     }
   }`,
-  opt: ['基础']
-}, {
-  code: `import React from 'react'
+    opt: ['基础']
+  },
+  {
+    code: `import React from 'react'
   import SelectTree from '@hi-ui/hiui/es/select-tree'\n
   class Demo extends React.Component {
     ${defaultJson}
@@ -101,9 +114,10 @@ const code = [{
       )
     }
   }`,
-  opt: ['默认值']
-}, {
-  code: `import React from 'react'
+    opt: ['默认值']
+  },
+  {
+    code: `import React from 'react'
   import SelectTree from '@hi-ui/hiui/es/select-tree'\n
   class Demo extends React.Component {
     ${defaultJson}
@@ -118,15 +132,10 @@ const code = [{
       )
     }
   }`,
-  opt: ['默认展开']
-}]
+    opt: ['默认展开']
+  }
+]
 const DemoType = () => (
-  <DocViewer
-    code={code}
-    scope={{ SelectTree }}
-    prefix={prefix}
-    rightOptions={rightOptions}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ SelectTree, Button }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
 )
 export default DemoType

@@ -102,16 +102,45 @@ const SelectTree = ({
       setNodeEntries(result.nodeEntries)
     }
   }, [data])
+  useEffect(() => {
+    if (data) {
+      const { flattenData = [], nodeEntries } = flattenNodesData(
+        data,
+        defaultExpandIds,
+        defaultExpandAll,
+        type === 'multiple' && showCheckedMode !== 'ALL'
+      )
+      setFlattenData(flattenData)
+      setNodeEntries(nodeEntries)
+      if (flattenData.length > 0) {
+        if (type === 'multiple') {
+          const cstatus = parseCheckStatusData(
+            defaultValue.length > 0 ? defaultValue : value,
+            checkedNodes,
+            flattenData
+          )
+          if (cstatus) {
+            setCheckedNodes(cstatus)
+          }
+        } else {
+          const _selectedItems = parseDefaultSelectedItems(defaultValue.length > 0 ? defaultValue : value, flattenData)
+          setSelectedItems(_selectedItems)
+        }
+      }
+    }
+  }, [])
   // 依赖 flattenData & value  解析生成 checkedNodes 或 selectedItems
   useEffect(() => {
     if (flattenData.length > 0) {
       if (type === 'multiple') {
-        const cstatus = parseCheckStatusData(defaultValue.length > 0 ? defaultValue : value, checkedNodes, flattenData)
-        if (cstatus) {
-          setCheckedNodes(cstatus)
-        }
+        const cstatus = parseCheckStatusData(
+          value,
+          value === undefined ? checkedNodes : { checked: value },
+          flattenData
+        )
+        setCheckedNodes(cstatus || { checked: [], semiChecked: [] })
       } else {
-        const _selectedItems = parseDefaultSelectedItems(defaultValue.length > 0 ? defaultValue : value, flattenData)
+        const _selectedItems = parseDefaultSelectedItems(value, flattenData)
         setSelectedItems(_selectedItems)
       }
     }
