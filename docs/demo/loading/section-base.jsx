@@ -7,7 +7,7 @@ const code = `import React from 'react'
 import Loading from '@hi-ui/hiui/es/loading'\n
 class Demo extends React.Component {
   render () {
-    return <div style={{display:'flex', height: 100}}>
+    return <div style={{display:'flex', height: 100, alignItems:'center', justifyContent:'space-around' }}>
       <Loading size="small"  duration={3000} />
       <Loading />
       <Loading size="large"/>

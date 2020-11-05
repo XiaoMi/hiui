@@ -8,6 +8,16 @@
 - 优化 `Timepicker` 支持字符串格式的 value [#1245](https://github.com/XiaoMi/hiui/issues/1245)
 - 修复 `SelectTree` 弹出层在页面底部不能翻转问题 [#1254](https://github.com/XiaoMi/hiui/issues/1254)
 - 修复 `DatePicker` 周范围显示异常问题 [#1267](https://github.com/XiaoMi/hiui/issues/1267)
+- 修复 `SelectTree` data 数据中 Children 为空数组报错问题 [#1261](https://github.com/XiaoMi/hiui/issues/1261)
+- 修复 `Tag` 使用 ref 无效问题 [#1262](https://github.com/XiaoMi/hiui/issues/1262)
+- 修复 `Table` data 为 undefined 时的报错问题 [#1265](https://github.com/XiaoMi/hiui/issues/1265)
+- 修复 `Loading` 显示不正确的问题 [#1265](https://github.com/XiaoMi/hiui/issues/1268)
+- 优化 `SelectTree` 样式问题 [#1272](https://github.com/XiaoMi/hiui/issues/1272)
+- 修复 `Table` data 为 undefined 时的报错问题 [#1273](https://github.com/XiaoMi/hiui/issues/1265)
+- 修复 `Loading` 显示不正确的问题 [#1268](https://github.com/XiaoMi/hiui/issues/1268)
+- 修复 `Tag` 闪烁问题 [#1273](https://github.com/XiaoMi/hiui/issues/1273)
+- 修复 `Timeline` 折断样式问题 [#1276](https://github.com/XiaoMi/hiui/issues/1276)
+- 修复 `Timeline` 只有一条数据时的样式问题 [#1277](https://github.com/XiaoMi/hiui/issues/1277)
 
 ## 3.0.0
 

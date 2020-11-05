@@ -71,12 +71,6 @@ const code = [
   }
 ]
 const DemoType = () => (
-  <DocViewer
-    code={code}
-    scope={{ SelectTree }}
-    prefix={prefix}
-    rightOptions={rightOptions}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ SelectTree }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
 )
 export default DemoType

@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import List, { IconText } from '../../../components/list'
 import Button from '../../../components/button'
-import Icon from '../../../components/Icon'
+import Icon from '../../../components/icon'
 const prefix = 'list-img'
 const desc = '常用在功能、模块、话题、实体信息等使用'
 const code = `import React from 'react'
@@ -53,12 +53,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBase = () => (
-  <DocViewer
-    desc={desc}
-    code={code}
-    scope={{ List, IconText, Button, Icon }}
-    prefix={prefix}
-  />
-)
+const DemoBase = () => <DocViewer desc={desc} code={code} scope={{ List, IconText, Button, Icon }} prefix={prefix} />
 export default DemoBase

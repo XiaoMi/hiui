@@ -56,7 +56,8 @@ export default {
   },
   selectTree: {
     back: 'Back',
-    search: 'search'
+    search: 'search',
+    placeholder: 'Please select'
   },
   search: {
     searchEmptyResult: 'No serach results',

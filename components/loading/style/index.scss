@@ -27,8 +27,6 @@
 
   &__wrapper {
     position: relative;
-    height: 100%;
-    width: 100%;
   }
 
   &__outter {
@@ -40,21 +38,35 @@
   }
 
   &__icon {
-    transform: translate(-50%);
-
-    &--small div {
-      height: 8px;
-      width: 8px;
-    }
-
-    &--default div {
+    position: relative;
+    &--small {
+      width: 24px;
       height: 12px;
-      width: 12px;
+
+      div {
+        height: 8px;
+        width: 8px;
+      }
     }
 
-    &--large div {
-      height: 16px;
-      width: 16px;
+    &--default {
+      width: 36px;
+      height: 18px;
+
+      div{
+        height: 12px;
+        width: 12px;
+      }
+    }
+
+    &--large {
+      width: 48px;
+      height: 24px;
+
+      div {
+        height: 16px;
+        width: 16px;
+      }
     }
 
     div {
@@ -64,67 +76,69 @@
 
       @keyframes animDotF {
         0% {
-          transform: translateX(-100%);
+          transform: translateX(0);
           z-index: 1;
         }
 
         25% {
-          transform: translateX(0) scale(1.5);
+          transform: translateX(100%) scale(1.5);
           z-index: 1;
         }
 
         50% {
-          transform: translateX(100%);
+          transform: translateX(200%);
           z-index: 0;
         }
 
         75% {
-          transform: scale(0.5);
+          transform: translateX(100%) scale(0.5);
           z-index: 0;
         }
 
         100% {
-          transform: translateX(-100%);
+          transform: translateX(0);
           z-index: 1;
         }
       }
 
       @keyframes animDotL {
         0% {
-          transform: translateX(100%);
+          transform: translateX(0);
           z-index: 0;
         }
 
         25% {
-          transform: translateX(0) scale(0.5);
+          transform: translateX(-100%) scale(0.5);
           z-index: 0;
         }
 
         50% {
-          transform: translateX(-100%);
+          transform: translateX(-200%);
           z-index: 1;
         }
 
         75% {
-          transform: scale(1.5);
+          transform: translateX(-100%) scale(1.5);
           z-index: 1;
         }
 
         100% {
-          transform: translateX(100%);
+          transform: translateX(0%);
           z-index: 0;
         }
       }
 
       &:first-child {
         background: #f63;
-        transform: translateX(-100%);
+        left: 0;
+        transform: translateX(0);
         animation: animDotF 1.5s linear infinite;
       }
 
       &:last-child {
         background: #4284f5;
-        transform: translateX(100%);
+        right: 0;
+        transform: translateX(0);
         animation: animDotL 1.5s linear infinite;
       }
     }

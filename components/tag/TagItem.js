@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, forwardRef } from 'react'
 import classNames from 'classnames'
 import './style'
 import Icon from '../icon'
 import { CSSTransition } from 'react-transition-group'
 
 const noop = () => {}
-const TagItem = ({
+const InternalTagItem = ({
   type = 'primary',
   appearance = 'default',
   onClick,
@@ -21,12 +21,15 @@ const TagItem = ({
   onMouseEnter = noop,
   onMouseLeave = noop,
   hoverIndex = -1,
-  shape = 'round'
+  shape = 'round',
+  innerRef,
+  transition,
+  className
 }) => {
   const [vi, setVi] = useState(false)
   useEffect(() => {
-    setVi(true)
-  }, [])
+    setVi(transition)
+  }, [transition])
   const tagStyle = color
     ? {
         background: appearance === 'default' ? color : '',
@@ -35,20 +38,18 @@ const TagItem = ({
       }
     : {}
   return (
-    <CSSTransition
-      in={vi}
-      timeout={300}
-      classNames={'tag-transition'}
-      onExited={() => {
-        setTimeout(() => handleClose(id), 300)
-      }}
-    >
+    <CSSTransition in={vi} timeout={300} classNames={'tag-transition'}>
       <span
-        className={classNames('hi-tag', {
-          [`hi-tag--${type}`]: type,
-          'hi-tag--line': appearance === 'line',
-          'hi-tag--square': shape === 'square'
-        })}
+        className={classNames(
+          'hi-tag',
+          {
+            [`hi-tag--${type}`]: type,
+            'hi-tag--line': appearance === 'line',
+            'hi-tag--square': shape === 'square'
+          },
+          className
+        )}
+        ref={innerRef}
         onClick={onClick}
         style={{ ...style, ...tagStyle }}
         onDoubleClick={() => {
@@ -67,7 +68,7 @@ const TagItem = ({
             <Icon
               name="close"
               onClick={(e) => {
-                setVi(false)
+                handleClose(id)
               }}
             />
           </button>
@@ -77,4 +78,7 @@ const TagItem = ({
   )
 }
 
+const TagItem = forwardRef((props, ref) => {
+  return <InternalTagItem {...props} innerRef={ref} />
+})
 export default TagItem
