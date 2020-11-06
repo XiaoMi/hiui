@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React from 'react'
 import classNames from 'classnames'
 
 import './style/index'
@@ -50,7 +50,7 @@ const legacyMap = {
   refer: 'document-search'
 }
 
-const InternalIcon = ({ name, filled = false, className, style = {}, onClick, innerRef }) => {
+const Icon = ({ name, filled = false, className, style = {}, onClick, innerRef }) => {
   return (
     <svg
       className={classNames(className, 'hi-icon', `icon-${name}`)}
@@ -72,7 +72,4 @@ const InternalIcon = ({ name, filled = false, className, style = {}, onClick, in
   )
 }
 
-// const Icon = forwardRef((props, ref) => {
-//   return <InternalIcon {...props} innerRef={ref} />
-// })
-export default InternalIcon
+export default Icon
