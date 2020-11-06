@@ -2,6 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Popover from '../../../components/popover'
 import Button from '../../../components/button'
+import Icon from '../../../components/icon'
 const prefix = 'Popover-base'
 const desc = '用于信息描述、辅助信息等'
 const code = `import React from 'react'
@@ -24,6 +25,9 @@ class Demo extends React.Component {
           <Button type="line">Top & click触发</Button>
         </Popover>
         <Popover title={title} content={content} style={{margin: '10px 10px'}} placement="right" trigger="hover">
+          <Icon name="info-circle" style={{color: '#4284F5', fontSize: '24px'}} />
+        </Popover>
+        <Popover title={title} content={content} style={{margin: '10px 10px'}} placement="right" trigger="hover">
           <Button type="success">Right & hover触发</Button>
         </Popover>
         <Popover title={title} content={content} style={{margin: '10px 10px'}} placement="bottom" trigger="focus">
@@ -37,12 +41,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ Popover, Button }}
-    prefix={prefix}
-    desc={desc}
-  />
-)
+const DemoBase = () => <DocViewer code={code} scope={{ Popover, Button, Icon }} prefix={prefix} desc={desc} />
 export default DemoBase

@@ -88,13 +88,13 @@ export default class Popover extends Component {
 
     if (referenceRef === null) return
 
-    if (trigger === 'click') {
+    if (trigger === 'click' || trigger === 'focus') {
       referenceRef.addEventListener('click', () => {
-        if (this.state.showPopper) {
-          this.hidePopper()
+        if(trigger === 'focus'){
+          referenceRef.contains(document.activeElement) ? this.showPopper() : this.hidePopper()
         } else {
-          this.showPopper()
-        }
+          this.state.showPopper ? this.hidePopper() : this.showPopper()
+        } 
       })
 
       document.addEventListener('click', (e) => {
@@ -112,30 +112,23 @@ export default class Popover extends Component {
         this.delayHidePopper(e)
         clearTimeout(this.delayShowPopperTimer)
       })
-    } else {
-      referenceRef.addEventListener('focus', this.showPopper.bind(this))
-      referenceRef.addEventListener('blur', this.hidePopper.bind(this))
-    }
+    } 
   }
-
   render() {
-    const { style, className, title, content, placement, width, visible, overlayClassName } = this.props
+    const { style, className, title, content, placement, width, visible, overlayClassName, children } = this.props
     const { showPopper } = this.state
+    
     return (
       <div
         className={classNames(className, 'hi-popover')}
         style={style}
+        tabIndex='0'
         ref={(node) => {
           this.popoverContainer = node
+          this.referenceRef = node
         }}
       >
-        {React.cloneElement(React.Children.only(this.props.children), {
-          ref: (el) => {
-            this.referenceRef = el
-          },
-          tabIndex: '0'
-        })}
-
+        {children}
         <Popper
           className='hi-popover__popper'
           show={[true, false].includes(visible) ? visible : showPopper}
