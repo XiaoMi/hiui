@@ -280,7 +280,6 @@ export const parseDefaultSelectedItems = (defaultValue, flattenData) => {
  */
 export const parseCheckStatusData = (value = [], checkedNodes, flattenData) => {
   value = value.concat(checkedNodes.checked || [])
-  console.log('value++++', _.cloneDeep(value), _.cloneDeep(checkedNodes))
   const selectedItems = parseDefaultSelectedItems([...new Set(value)], flattenData)
   const semiCheckedIds = new Set(checkedNodes.semiChecked)
   const checkedIds = new Set(checkedNodes.checked)

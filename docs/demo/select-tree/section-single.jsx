@@ -8,7 +8,7 @@ const desc = '展示从多个收起的备选项中选出的一个选项'
 const defaultJson = `constructor () {
     super()
     this.state = {
-      value: ['1-0'],
+      value:['0'],
       singleList: [
         {
           title: '手机类',
@@ -81,19 +81,12 @@ const code = [
     render () {
       const { value, singleList } = this.state
       return (
-        <div>
-        <Button onClick={() => {
-          this.setState({ value:[] })
-        }}>按钮</Button>
         <SelectTree
-          type={'multiple'}
           data={singleList}
-          value={this.state.value}
           onChange={(...args)=>{
             console.log('selectTree',...args)
           }}
         />
-        </div>
       )
     }
   }`,
