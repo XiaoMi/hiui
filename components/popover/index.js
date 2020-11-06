@@ -122,7 +122,6 @@ export default class Popover extends Component {
       <div
         className={classNames(className, 'hi-popover')}
         style={style}
-        tabIndex='0'
         ref={(node) => {
           this.popoverContainer = node
           this.referenceRef = node

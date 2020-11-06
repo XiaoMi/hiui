@@ -50,7 +50,7 @@ const legacyMap = {
   refer: 'document-search'
 }
 
-const Icon = ({ name, filled = false, className, style = {}, onClick, innerRef }) => {
+const Icon = ({ name, filled = false, className, style = {}, onClick }) => {
   return (
     <svg
       className={classNames(className, 'hi-icon', `icon-${name}`)}
@@ -58,7 +58,6 @@ const Icon = ({ name, filled = false, className, style = {}, onClick, innerRef }
       onClick={(e) => {
         onClick && onClick(e)
       }}
-      ref={innerRef}
       style={{
         ...style,
         fill: style.color,
