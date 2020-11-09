@@ -18,6 +18,7 @@
 - 修复 `Tag` 闪烁问题 [#1273](https://github.com/XiaoMi/hiui/issues/1273)
 - 修复 `Timeline` 折断样式问题 [#1276](https://github.com/XiaoMi/hiui/issues/1276)
 - 修复 `Timeline` 只有一条数据时的样式问题 [#1277](https://github.com/XiaoMi/hiui/issues/1277)
+- 优化 `Filter` 文档以及返回值问题 [#1288](https://github.com/XiaoMi/hiui/issues/1288)
 
 ## 3.0.0
 

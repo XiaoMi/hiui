@@ -35,6 +35,7 @@ export { LegacyForm } from './form'
 
 export { default as Menu } from './menu'
 export { default as FormItem } from './form/Item'
+export { default as Filter } from './filter'
 export { default as Ficon } from './ficon'
 export { default as Icon } from './icon'
 export { default as Progress } from './progress'
