@@ -23,6 +23,7 @@ class Demo extends React.Component {
           // uploadAction="https://mife-gallery.test.mi.com/hiui/upload"
           uploadAction="https://jsonplaceholder.typicode.com/posts/"
           tips='仅支持 jpg/png 文件，且不超过 500kb'
+          accept="image/png,image/jpg"
           headers={{name: 'mi'}}
           content='上传文件'
           param={param}
