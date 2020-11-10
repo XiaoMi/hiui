@@ -102,25 +102,28 @@ const SelectTree = ({
       setNodeEntries(result.nodeEntries)
     }
   }, [data])
-  // 依赖 flattenData & value  解析生成 checkedNodes 或 selectedItems
-  useEffect(() => {
-    if (flattenData.length > 0) {
-      if (type === 'multiple') {
-        const cstatus = parseCheckStatusData(defaultValue.length > 0 ? defaultValue : value, checkedNodes, flattenData)
-        if (cstatus) {
-          setCheckedNodes(cstatus)
-        }
-      } else {
-        const _selectedItems = parseDefaultSelectedItems(defaultValue.length > 0 ? defaultValue : value, flattenData)
-        setSelectedItems(_selectedItems)
-      }
-    }
-  }, [value, flattenData])
   // 当选中项发生改变时(以及首次解析完成默认值后)，更改选中项
   useEffect(() => {
     const _selectedItems = parseSelectedItems(checkedNodes, nodeEntries, showCheckedMode, flattenData)
     setSelectedItems(_selectedItems)
   }, [checkedNodes])
+
+  // 依赖 flattenData & value  解析生成 checkedNodes 或 selectedItems
+  useEffect(() => {
+    if (flattenData.length > 0) {
+      if (type === 'multiple') {
+        const cstatus = parseCheckStatusData(
+          value,
+          value === undefined ? checkedNodes : { checked: value },
+          flattenData
+        )
+        setCheckedNodes(cstatus || { checked: [], semiChecked: [] })
+      } else {
+        const _selectedItems = parseDefaultSelectedItems(value, flattenData)
+        setSelectedItems(_selectedItems)
+      }
+    }
+  }, [value])
 
   // 依赖展开项生成展开节点数据
   useEffect(() => {
@@ -153,6 +156,31 @@ const SelectTree = ({
     }
   }, [selectedItems])
 
+  useEffect(() => {
+    if (data) {
+      const { flattenData = [], nodeEntries } = flattenNodesData(
+        data,
+        defaultExpandIds,
+        defaultExpandAll,
+        type === 'multiple' && showCheckedMode !== 'ALL'
+      )
+      setFlattenData(flattenData)
+      setNodeEntries(nodeEntries)
+      if (flattenData.length > 0) {
+        if (type === 'multiple') {
+          const cstatus = parseCheckStatusData(
+            defaultValue.length > 0 ? defaultValue : value,
+            checkedNodes,
+            flattenData
+          )
+          setCheckedNodes(cstatus || { checked: [], semiChecked: [] })
+        } else {
+          const _selectedItems = parseDefaultSelectedItems(defaultValue.length > 0 ? defaultValue : value, flattenData)
+          setSelectedItems(_selectedItems)
+        }
+      }
+    }
+  }, [])
   // 过滤方法
   const searchTreeNode = (val) => {
     const matchNodes = []
@@ -244,6 +272,7 @@ const SelectTree = ({
    */
   const checkedEvents = (checked, node) => {
     let result = {}
+
     const semiCheckedIds = new Set(checkedNodes.semiChecked)
     const checkedIds = new Set(checkedNodes.checked)
     if (checked) {
@@ -251,10 +280,7 @@ const SelectTree = ({
     } else {
       result = updateUnCheckData(node, flattenData, checkedIds, semiCheckedIds)
     }
-    setCheckedNodes({
-      checked: result.checked,
-      semiChecked: result.semiChecked
-    })
+
     let checkedArr = []
     if (result.checked.length > 0) {
       checkedArr = result.checked.map((id) => {
@@ -266,6 +292,11 @@ const SelectTree = ({
       clearReturnData(checkedArr),
       clearReturnData(node)
     )
+    !value &&
+      setCheckedNodes({
+        checked: result.checked,
+        semiChecked: result.semiChecked
+      })
   }
 
   /**

@@ -222,6 +222,7 @@ export const flattenNodesData = (data, isGenEntries = false) => {
         fun(_children, newArr, node)
         delete node.children
       } else {
+        // eslint-disable-next-line no-prototype-builtins
         node.isLeaf = node.hasOwnProperty('isLeaf') ? node.isLeaf : true
       }
     })
@@ -277,8 +278,8 @@ export const parseDefaultSelectedItems = (defaultValue, flattenData) => {
  * 根据 defaultCheckedIds 解析全选/半选数据
  * @param {*} selectedItems 已选中选项
  */
-export const parseCheckStatusData = (value, checkedNodes, flattenData) => {
-  value = value.concat(checkedNodes.checked)
+export const parseCheckStatusData = (value = [], checkedNodes, flattenData) => {
+  value = value.concat(checkedNodes.checked || [])
   const selectedItems = parseDefaultSelectedItems([...new Set(value)], flattenData)
   const semiCheckedIds = new Set(checkedNodes.semiChecked)
   const checkedIds = new Set(checkedNodes.checked)
