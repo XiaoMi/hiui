@@ -19,6 +19,10 @@
 - 修复 `Timeline` 折断样式问题 [#1276](https://github.com/XiaoMi/hiui/issues/1276)
 - 修复 `Timeline` 只有一条数据时的样式问题 [#1277](https://github.com/XiaoMi/hiui/issues/1277)
 - 修复 `SelectTree` 受控问题 [#1283](https://github.com/XiaoMi/hiui/issues/1283)
+- 修复 `Popover` 包裹函数组件无法触发问题 [#1282](https://github.com/XiaoMi/hiui/issues/1282)
+- 优化 `Upload` 不同 type 文件类型默认值 [#1286](https://github.com/XiaoMi/hiui/issues/1286)
+- 优化 `Filter` 返回值问题 [#1288](https://github.com/XiaoMi/hiui/issues/1288)
+- 优化 `Tabs` 线型模式样式 [#1291](https://github.com/XiaoMi/hiui/issues/1291)
 
 ## 3.0.0
 

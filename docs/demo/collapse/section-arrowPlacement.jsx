@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Collapse from '../../../components/collapse'
 const prefix = 'section-arrowPlacement'
-const rightOptions = ['居右', '居左']
+const rightOptions = ['居左', '居右']
 const desc = '指定箭头放置方式'
 const code = [
   {
@@ -41,7 +41,7 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['居右']
+    opt: ['居左']
   },
   {
     code: `import React from 'react'
@@ -82,17 +82,11 @@ class Demo extends React.Component {
     )
   }
 }`,
-    opt: ['居左']
+    opt: ['居右']
   }
 ]
 
 const DemoBasic = () => (
-  <DocViewer
-    code={code}
-    scope={{ Collapse }}
-    prefix={prefix}
-    rightOptions={rightOptions}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ Collapse }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
 )
 export default DemoBasic

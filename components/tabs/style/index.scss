@@ -286,6 +286,10 @@ $prefix: 'hi-tabs' !default;
         padding: 0 16px;
         box-sizing: border-box;
 
+        &:first-of-type {
+          padding-left: 0;
+        }
+
         &:hover {
           color: use-color('primary');
         }

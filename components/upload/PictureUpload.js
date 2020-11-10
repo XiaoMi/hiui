@@ -8,7 +8,7 @@ import useUpload from './hooks/useUpload'
 const PictureUpload = ({
   onRemove,
   disabled,
-  accept,
+  accept = 'image/*',
   localeDatas,
   theme,
   fileList,

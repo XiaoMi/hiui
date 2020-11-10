@@ -70,4 +70,5 @@ const Icon = ({ name, filled = false, className, style = {}, onClick }) => {
     </svg>
   )
 }
+
 export default Icon
