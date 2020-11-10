@@ -4,7 +4,7 @@ import Filter from '../../../components/filter'
 const prefix = 'filter-cascader'
 const desc = '一般作为筛选场景，作为筛选项组合,每个级别之间有联动'
 const code = `import React from 'react'
-import Filter from '@hi-ui/hiui/es/filer'\n
+import Filter from '@hi-ui/hiui/es/filter'\n
 class Demo extends React.Component {
   constructor(props) {
     super(props)

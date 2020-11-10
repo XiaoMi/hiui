@@ -10,7 +10,7 @@ const PictureListUpload = ({
   showUploadList = true,
   multiple,
   disabled,
-  accept,
+  accept = 'image/*',
   onRemove,
   onDownload,
   fileList,
