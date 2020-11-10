@@ -39,7 +39,7 @@ const Filter = (props) => {
             setSelectId(_.cloneDeep(_activeId))
           }
           onClick && onClick(item)
-          onChange && !active && onChange(_activeId)
+          onChange && !active && onChange(_.cloneDeep(_activeId))
         }}
       >
         <span>{content}</span>

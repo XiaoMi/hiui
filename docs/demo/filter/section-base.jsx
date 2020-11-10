@@ -8,7 +8,7 @@ const rightOptions = ['基础', '禁用', '受控']
 const code = [
   {
     code: `import React from 'react'
-    import Filter from '@hi-ui/hiui/es/filer'\n
+    import Filter from '@hi-ui/hiui/es/filter'\n
     class Demo extends React.Component {
       constructor(props) {
         super(props)
@@ -103,7 +103,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import Filter from '@hi-ui/hiui/es/filer'\n
+    import Filter from '@hi-ui/hiui/es/filter'\n
     class Demo extends React.Component {
       constructor(props) {
         super(props)
@@ -199,7 +199,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import Filter from '@hi-ui/hiui/es/filer'\n
+    import Filter from '@hi-ui/hiui/es/filter'\n
     class Demo extends React.Component {
       constructor(props) {
         super(props)
@@ -304,12 +304,6 @@ const code = [
 ]
 
 const DemoBase = () => (
-  <DocViewer
-    desc={desc}
-    code={code}
-    scope={{ Filter }}
-    prefix={prefix}
-    rightOptions={rightOptions}
-  />
+  <DocViewer desc={desc} code={code} scope={{ Filter }} prefix={prefix} rightOptions={rightOptions} />
 )
 export default DemoBase
