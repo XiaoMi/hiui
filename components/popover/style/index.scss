@@ -5,6 +5,10 @@ $popper-arrow-gap: -5px !default;
 .hi-popover {
   position: relative;
   display: inline-block;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .hi-popover-base {
