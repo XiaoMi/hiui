@@ -1,7 +1,8 @@
 # 更新日志
 
-## 3.0.1
+## 3.1.0
 
+- 新增 `Card` bordered 属性配置是否显示边框 [#1296](https://github.com/XiaoMi/hiui/issues/1296)
 - 修复 `Input` 在受控状态下，设置 value 为 null 时报错问题 [#1246](https://github.com/XiaoMi/hiui/issues/1246)
 - 修复 `Select` 设置 autoload 为 true 时无限的调用接口问题 [#1249](https://github.com/XiaoMi/hiui/issues/1249)
 - 修复 `Timepicker` 弹出层在页面底部未翻转到上方问题 [#1253](https://github.com/XiaoMi/hiui/issues/1253)

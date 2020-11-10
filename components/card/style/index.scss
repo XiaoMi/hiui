@@ -2,9 +2,12 @@
 
 .hi-card {
   border-radius: 2px;
-  border: 1px solid use-color('gray-20');
   box-sizing: border-box;
   background: use-color('white');
+
+  &--bordered {
+    border: 1px solid use-color('gray-20');
+  }
 
   &--simple {
     height: 40px;
