@@ -7,17 +7,18 @@ import Provider from '../context'
 
 import './style/index'
 
-const Breadcrumb = props => {
+const Breadcrumb = (props) => {
   const { separator, data, onClick, theme } = props
 
   return (
     <ul className={`hi-breadcrumb theme__${theme}`}>
       {data.map((item, index) => {
         return (
-          <li key={index} className='hi-breadcrumb__item'>
-            {item.path && index !== data.length - 1 ? (
+          <li key={index} className="hi-breadcrumb__item">
+            {item.href && index !== data.length - 1 ? (
               <a
-                href={item.path}
+                href={item.href}
+                target={item.target}
                 onClick={() => {
                   onClick(item, index)
                 }}
@@ -42,7 +43,7 @@ const Breadcrumb = props => {
               </span>
             )}
 
-            <span className='hi-breadcrumb__separator'>{separator}</span>
+            <span className="hi-breadcrumb__separator">{separator}</span>
           </li>
         )
       })}

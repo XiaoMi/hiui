@@ -45,8 +45,10 @@ import DemoDropdown from '../../demo/breadcrumb/section-dropdown.jsx'
 
 ### DataItem
 
-| 参数    | 说明         | 类型                | 可选值                                         | 默认值 |
-| ------- | ------------ | ------------------- | ---------------------------------------------- | ------ |
-| content | 面包屑的内容 | string \| ReactNode | -                                              | -      |
-| path    | 要跳转的路径 | string              | -                                              | -      |
-| icon    | 自定义图标   | string              | 详见 [`<Icon/>`](/hiui/zh-CN/docs/icon) 组件 ︎ | -      |
+| 参数    | 说明                                          | 类型                | 可选值                                          | 默认值 |
+| ------- | --------------------------------------------- | ------------------- | ----------------------------------------------- | ------ |
+| content | 面包屑的内容                                  | string \| ReactNode | -                                               | -      |
+| path    | 要跳转的路径                                  | string              | -                                               | -      |
+| href    | 设置按钮链接，设置后将用 a 标签渲染按钮       | string              | ︎                                               | -      |
+| target  | 同 a 标签的 target 属性，仅在设置 href 后有效 | string              | ︎'\_self' \| '\_blank' \| '\_parent' \| '\_top' | -      |
+| icon    | 自定义图标                                    | string              | 详见 [`<Icon/>`](/hiui/zh-CN/docs/icon) 组件 ︎  | -      |
