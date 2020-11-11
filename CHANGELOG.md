@@ -27,6 +27,8 @@
 - 优化 `Filter` 返回值问题 [#1288](https://github.com/XiaoMi/hiui/issues/1288)
 - 优化 `Tabs` 线型模式样式 [#1291](https://github.com/XiaoMi/hiui/issues/1291)
 - 优化 `Breadcrumb` 渲染方式 [#1303](https://github.com/XiaoMi/hiui/issues/1303)
+- 优化 `Form` 组件 Form.Item 宽度设置问题 [#1295](https://github.com/XiaoMi/hiui/issues/1295)
+
 
 ## 3.0.0
 
