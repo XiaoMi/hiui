@@ -21,8 +21,7 @@ const MultipleInput = ({
   onClear,
   handleKeyDown,
   fieldNames,
-  isFocus,
-  selectInputWidth
+  isFocus
 }) => {
   const icon = dropdownShow ? 'up' : 'down'
   const [showCount, setShowCount] = useState(0)
@@ -40,7 +39,7 @@ const MultipleInput = ({
       tags.forEach((tag, index) => {
         const tagRect = tag.getBoundingClientRect()
         width += tagRect.width
-        if (width + 90 > tagWrapperRect.width && calShowCountFlag.current) {
+        if (width + 50 > tagWrapperRect.width && calShowCountFlag.current) {
           // 50是留给显示剩余选项的空间
           calShowCountFlag.current = false
           showCountIndex = index
@@ -74,7 +73,6 @@ const MultipleInput = ({
       )}
       ref={tagWrapperRef}
       onClick={onClick}
-      style={{ width: selectInputWidth || '100%' }}
     >
       {selectedItems.length === 0 && <div className="hi-select__input--placeholder">{placeholder}</div>}
       <div
