@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCallback, useRef } from 'react'
+import React, { useContext, useState, useEffect, useCallback } from 'react'
 import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
@@ -44,8 +44,6 @@ const FormItem = (props) => {
     listItemValue,
     sort
   } = props
-
-  const FormItemContent = useRef()
 
   const {
     showColon: shouldFormShowColon,
@@ -302,7 +300,7 @@ const FormItem = (props) => {
   const _labelWidth = labelWidth()
   const contentWidth = formProps.labelPlacement === 'top' ? '100%' : `calc(100% - ${_labelWidth}px)`
   return (
-    <div className={classNames('hi-form-item', className, obj)} style={style} key={field} ref={FormItemContent}>
+    <div className={classNames('hi-form-item', className, obj)} style={style} key={field}>
       {label || label === '' ? (
         <label className="hi-form-item__label" style={{ width: _labelWidth }} key={field + 'label'}>
           {(typeof label === 'string' && label.trim()) || label}
