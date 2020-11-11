@@ -99,11 +99,6 @@ const FormItem = (props) => {
     [fields]
   )
 
-  let rectCont = FormItemContent.current && FormItemContent.current.getBoundingClientRect()
-
-  useEffect(() => {
-    rectCont = FormItemContent.current && FormItemContent.current.getBoundingClientRect()
-  }, [])
   const resetValidate = useCallback((value = '') => {
     // 清空数据
     setValue(value)
@@ -226,7 +221,7 @@ const FormItem = (props) => {
 
   const labelWidth = useCallback(() => {
     const labelWidth = props.labelWidth || formProps.labelWidth
-    return formProps.labelPosition === 'top'
+    return formProps.labelPlacement === 'top'
       ? '100%'
       : !Number.isNaN(Number(labelWidth))
       ? Number(labelWidth)
@@ -240,6 +235,7 @@ const FormItem = (props) => {
     const _props = componentProps || children.props
     eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
     eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
+    // eslint-disable-next-line no-prototype-builtins
     let value = e.target && e.target.hasOwnProperty(valuePropName) ? e.target[valuePropName] : e
     if (displayName === 'Counter') {
       value = args[0]
@@ -305,6 +301,7 @@ const FormItem = (props) => {
   obj['hi-form-item--validating'] = validating
   obj['hi-form-item--required'] = isRequired() || required
   const _labelWidth = labelWidth()
+  const contentWidth = formProps.labelPlacement === 'top' ? '100%' : `calc(100% - ${_labelWidth}px)`
   return (
     <div className={classNames('hi-form-item', className, obj)} style={style} key={field} ref={FormItemContent}>
       {label || label === '' ? (
@@ -315,7 +312,7 @@ const FormItem = (props) => {
       ) : (
         <span className="hi-form-item__span" style={{ width: _labelWidth }} key={field + 'label'} />
       )}
-      <div className={'hi-form-item' + '__content'} key={field + '__content'}>
+      <div className={'hi-form-item' + '__content'} key={field + '__content'} style={{ width: contentWidth }}>
         <div className={'hi-form-item' + '__children'} style={{ alignItems: getItemPosition(contentPosition) }}>
           {renderChildren()}
         </div>
