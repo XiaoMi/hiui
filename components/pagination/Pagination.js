@@ -182,9 +182,9 @@ class Pagination extends Component {
     return (
       <div className={`${prefixCls}__jumper-input`}>
         <Input
-          innerRef={this.jumper}
+          ref={this.jumper}
           onKeyPress={this.gotoPage.bind(this)}
-          onBlur={this.gotoPage.bind(this)}
+          onBlur={this.gotoPage}
           value={this.state.jumpTo}
           onChange={(e, tVal) => {
             const val = e.target.value
