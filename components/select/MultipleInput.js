@@ -21,12 +21,14 @@ const MultipleInput = ({
   onClear,
   handleKeyDown,
   fieldNames,
-  isFocus
+  isFocus,
+  selectInputWidth
 }) => {
   const icon = dropdownShow ? 'up' : 'down'
   const [showCount, setShowCount] = useState(0)
   const tagWrapperRef = useRef('')
   const calShowCountFlag = useRef(true) // 在渲染完成进行测试是否展示 +1
+  const selectedItems = _.uniqBy(cacheSelectItem.concat(propsSelectItem), transKeys(fieldNames, 'id'))
 
   useEffect(() => {
     if (multipleMode === 'nowrap' && calShowCountFlag.current && tagWrapperRef.current) {
@@ -38,7 +40,7 @@ const MultipleInput = ({
       tags.forEach((tag, index) => {
         const tagRect = tag.getBoundingClientRect()
         width += tagRect.width
-        if (width + 90 > tagWrapperRect.width) {
+        if (width + 90 > tagWrapperRect.width && calShowCountFlag.current) {
           // 50是留给显示剩余选项的空间
           calShowCountFlag.current = false
           showCountIndex = index
@@ -48,14 +50,15 @@ const MultipleInput = ({
     } else {
       calShowCountFlag.current = true
     }
-  })
+  }, [propsSelectItem])
 
   const handleClear = (e) => {
     e.stopPropagation()
     onClear()
   }
-  const selectedItems = _.uniqBy(cacheSelectItem.concat(propsSelectItem), transKeys(fieldNames, 'id'))
+
   const currentCount = showCount === 0 ? selectedItems.length : showCount
+
   return (
     <div
       className={classNames(
@@ -71,6 +74,7 @@ const MultipleInput = ({
       )}
       ref={tagWrapperRef}
       onClick={onClick}
+      style={{ width: selectInputWidth || '100%' }}
     >
       {selectedItems.length === 0 && <div className="hi-select__input--placeholder">{placeholder}</div>}
       <div
@@ -80,15 +84,7 @@ const MultipleInput = ({
       >
         {selectedItems.slice(0, currentCount).map((item, index) => {
           const _item = (
-            <div
-              key={index}
-              className="hi-select__input--item"
-              style={{
-                maxWidth: tagWrapperRef.current
-                  ? (tagWrapperRef.current.getBoundingClientRect().width - 90) * 0.8
-                  : '80%'
-              }}
-            >
+            <div key={index} className="hi-select__input--item">
               <div className="hi-select__input--item__name">{item[transKeys(fieldNames, 'title')]}</div>
               <span
                 className="hi-select__input--item__remove"

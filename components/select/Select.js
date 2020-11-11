@@ -347,7 +347,7 @@ const InternalSelect = (props) => {
       resetFocusedIndex()
     })
     setCacheSelectItem([])
-    setDropdownItems([])
+    setDropdownItems(_.cloneDeep(data) || [])
   }
   // 防抖
   const debouncedFilterItems = _.debounce(onFilterItems, 300)
@@ -403,6 +403,7 @@ const InternalSelect = (props) => {
           handleKeyDown={handleKeyDown}
           theme={theme}
           mode={type}
+          selectInputWidth={selectInputWidth}
           disabled={disabled}
           searchable={searchable} // 要删除掉
           clearable={clearable}
