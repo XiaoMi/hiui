@@ -84,7 +84,15 @@ const MultipleInput = ({
       >
         {selectedItems.slice(0, currentCount).map((item, index) => {
           const _item = (
-            <div key={index} className="hi-select__input--item">
+            <div
+              key={index}
+              className="hi-select__input--item"
+              style={{
+                maxWidth: tagWrapperRef.current
+                  ? (tagWrapperRef.current.getBoundingClientRect().width - 90) * 0.8
+                  : '80%'
+              }}
+            >
               <div className="hi-select__input--item__name">{item[transKeys(fieldNames, 'title')]}</div>
               <span
                 className="hi-select__input--item__remove"
