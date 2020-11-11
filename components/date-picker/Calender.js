@@ -47,9 +47,12 @@ class Calender extends Component {
     // *  lastMonthDayCount: 上月总天数
     // *  firstDayWeek: 当月第一天是周几
     let firstDayWeek = getDay(startOfMonth(_date)) - weekOffset
-    if (firstDayWeek <= 0) { // 如果为0 代表该月第一天是周日，在日历上需要第二行开始显示
-      firstDayWeek = 7
+    if (firstDayWeek === 0) { // 如果为0 代表该月第一天是周日，在日历上需要第二行开始显示
+      firstDayWeek = 7 
+    } else if (!type.includes('range')) {
+      firstDayWeek = 6
     }
+    
     const startTimeByCurrentPanel = this._getTime(firstDayWeek, year, month)// 当前日期面板中第一个日期的具体毫秒数(指向上一个月)
     const dayCount = getDaysInMonth(_date)
 
