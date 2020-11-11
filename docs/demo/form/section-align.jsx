@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Form, { LegacyForm } from '../../../components/form'
@@ -34,15 +35,7 @@ const code = [
         return (
           <Form labelWidth='70' labelPlacement='left'>
             <FormItem label='手机号' field='phone'>
-              <Input
-                placeholder={'请输入'}
-                style={{ width: '200' }}
-                onChange={(e, val) => {
-                  setForm({
-                    phone: val
-                  })
-                }}
-              />
+              <Input placeholder={'请输入'} />
             </FormItem>
             <FormItem label='门店'>
               <Select

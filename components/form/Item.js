@@ -235,8 +235,7 @@ const FormItem = (props) => {
     const _props = componentProps || children.props
     eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
     eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
-    // eslint-disable-next-line no-prototype-builtins
-    let value = e.target && e.target.hasOwnProperty(valuePropName) ? e.target[valuePropName] : e
+    let value = e.target && Object.prototype.hasOwnProperty.call(e.target, valuePropName) ? e.target[valuePropName] : e
     if (displayName === 'Counter') {
       value = args[0]
     }
