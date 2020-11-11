@@ -1,6 +1,12 @@
 @import '../../core-css/index.scss';
 
 .hi-switch {
+  &:focus {
+    outline: 0;
+    z-index: 1;
+    box-shadow: 0 0 0 2px use-color('primary-30');
+  }
+
   display: inline-block;
   min-width: 48px;
   height: 20px;
