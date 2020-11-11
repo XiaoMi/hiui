@@ -317,7 +317,11 @@ const FormItem = (props) => {
       ) : (
         <span className="hi-form-item__span" style={{ width: _labelWidth }} key={field + 'label'} />
       )}
-      <div className={'hi-form-item' + '__content'} key={field + '__content'}>
+      <div
+        className={'hi-form-item' + '__content'}
+        key={field + '__content'}
+        style={{ width: isNaN(contentWidth) ? '100%' : contentWidth }}
+      >
         <div className={'hi-form-item' + '__children'} style={{ alignItems: getItemPosition(contentPosition) }}>
           {renderChildren()}
         </div>
