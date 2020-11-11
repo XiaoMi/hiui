@@ -41,13 +41,13 @@ const legacyMap = {
   linechart: 'bar-chart',
   label: 'tag',
   internet: 'global',
-  info: 'document-exclamation',
   'info-circle-o': 'info-circle',
   hide: 'eye-invisible',
   component: 'relation',
   data: 'data-monitor',
   'money-circle-o': 'rmb',
-  refer: 'document-search'
+  refer: 'document-search',
+  'square-selected': 'check-square'
 }
 
 const Icon = ({ name, filled = false, className, style = {}, onClick }) => {
