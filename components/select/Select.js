@@ -347,6 +347,7 @@ const InternalSelect = (props) => {
       resetFocusedIndex()
     })
     setCacheSelectItem([])
+    setDropdownItems([])
   }
   // 防抖
   const debouncedFilterItems = _.debounce(onFilterItems, 300)
