@@ -44,18 +44,8 @@ const code = [
                 }}
               />
             </FormItem>
-            <FormItem label='手机号'>
+            <FormItem label='门店'>
               <Select
-                data={[
-                  { title: '小米2', id: '2-1' },
-                  { title: '小米3', id: '2-2' },
-                  { title: '小米4', id: '2-3' },
-                  { title: '小米5', id: '2-4' },
-                  { title: '电脑', id: '3' },
-                  { title: '笔记本', id: '4' },
-                  { title: '生活周边', id: '5' },
-                  { title: '其它', id: '6' }
-                ]}
                 dataSource={{
                   method: 'GET',
                   key: 'id',

@@ -305,8 +305,6 @@ const FormItem = (props) => {
   obj['hi-form-item--validating'] = validating
   obj['hi-form-item--required'] = isRequired() || required
   const _labelWidth = labelWidth()
-  const contentWidth =
-    formProps.labelPosition !== 'top' && rectCont && rectCont.width ? rectCont.width - _labelWidth : '100%'
   return (
     <div className={classNames('hi-form-item', className, obj)} style={style} key={field} ref={FormItemContent}>
       {label || label === '' ? (
@@ -317,11 +315,7 @@ const FormItem = (props) => {
       ) : (
         <span className="hi-form-item__span" style={{ width: _labelWidth }} key={field + 'label'} />
       )}
-      <div
-        className={'hi-form-item' + '__content'}
-        key={field + '__content'}
-        style={{ width: isNaN(contentWidth) ? '100%' : contentWidth }}
-      >
+      <div className={'hi-form-item' + '__content'} key={field + '__content'}>
         <div className={'hi-form-item' + '__children'} style={{ alignItems: getItemPosition(contentPosition) }}>
           {renderChildren()}
         </div>
