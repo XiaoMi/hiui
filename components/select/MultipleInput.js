@@ -50,7 +50,7 @@ const MultipleInput = ({
     } else {
       calShowCountFlag.current = true
     }
-  }, [propsSelectItem])
+  })
 
   const handleClear = (e) => {
     e.stopPropagation()
