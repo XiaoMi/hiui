@@ -325,6 +325,9 @@ const InternalSelect = (props) => {
     if (dataSource && (autoload || keyword)) {
       remoteSearch(keyword)
     }
+    if (dataSource && keyword === '' && selectedItems.length > 0) {
+      setDropdownItems(cacheSelectItem)
+    }
   }
   // 重置下标
   const resetFocusedIndex = () => {
