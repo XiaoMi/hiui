@@ -30,6 +30,7 @@ $modal: 'hi-modal' !default;
     left: 50%;
     transform: translateX(-50%);
     position: fixed;
+    outline: 0;
   }
 
   &__wrapper {

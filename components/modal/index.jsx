@@ -42,9 +42,15 @@ const InternalModalComp = ({
     defaultContainer.current = getDefaultContainer()
   }
 
+  const focusedElementBeforeOpenModal = useRef(null)
+  const modalRef = useRef(null)
+
   const [vi, setVi] = useState(false)
   useEffect(() => {
-    visible && setVi(true)
+    if (visible === true) {
+      setVi(true)
+      focusedElementBeforeOpenModal.current = document.activeElement
+    }
   }, [visible])
 
   const destroy = useCallback(() => {
@@ -64,6 +70,7 @@ const InternalModalComp = ({
         destroy()
       }
     }
+    modalRef.current.focus()
   }, [vi])
 
   return createPortal(
@@ -82,13 +89,22 @@ const InternalModalComp = ({
           }
         }}
       />
-      <div className={`${PREFIX}__container`} style={{ display: vi === false && 'none' }}>
+      <div
+        className={`${PREFIX}__container`}
+        style={{ display: vi === false && 'none' }}
+        tabIndex={-1}
+        ref={modalRef}
+        onKeyDown={(e) => {}}
+      >
         <CSSTransition
           in={visible}
           timeout={0}
           classNames={'modal-transition'}
           onExited={() => {
-            setTimeout(() => setVi(false), 300)
+            setTimeout(() => {
+              setVi(false)
+              focusedElementBeforeOpenModal.current.focus()
+            }, 300)
           }}
         >
           <div

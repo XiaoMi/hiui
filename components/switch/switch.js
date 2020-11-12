@@ -42,6 +42,7 @@ const Switch = ({ content = [], disabled = false, checked, defaultChecked, onCha
       onKeyDown={(e) => {
         if ([13, 32].includes(e.keyCode)) {
           e.stopPropagation()
+          e.preventDefault()
           clickSwitch(e)
         }
       }}
