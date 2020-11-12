@@ -11,6 +11,7 @@
 - 修复 `SelectTree` 弹出层在页面底部不能翻转问题 [#1254](https://github.com/XiaoMi/hiui/issues/1254)
 - 修复 `DatePicker` 周范围显示异常问题 [#1267](https://github.com/XiaoMi/hiui/issues/1267)
 - 修复 `SelectTree` data 数据中 Children 为空数组报错问题 [#1261](https://github.com/XiaoMi/hiui/issues/1261)
+- 修复 `SelectTree` 在 Form 包裹下样式显示异常 [#1310](https://github.com/XiaoMi/hiui/issues/1310)
 - 修复 `Tag` 使用 ref 无效问题 [#1262](https://github.com/XiaoMi/hiui/issues/1262)
 - 修复 `Table` data 为 undefined 时的报错问题 [#1265](https://github.com/XiaoMi/hiui/issues/1265)
 - 修复 `Loading` 显示不正确的问题 [#1265](https://github.com/XiaoMi/hiui/issues/1268)
@@ -28,7 +29,6 @@
 - 优化 `Tabs` 线型模式样式 [#1291](https://github.com/XiaoMi/hiui/issues/1291)
 - 优化 `Breadcrumb` 渲染方式 [#1303](https://github.com/XiaoMi/hiui/issues/1303)
 - 优化 `Form` 组件 Form.Item 宽度设置问题 [#1295](https://github.com/XiaoMi/hiui/issues/1295)
-
 
 ## 3.0.0
 
