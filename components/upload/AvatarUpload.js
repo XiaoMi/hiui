@@ -10,7 +10,7 @@ import 'cropperjs/dist/cropper.css'
 const AvatarUpload = ({
   onRemove,
   disabled,
-  accept,
+  accept = 'image/*',
   localeDatas,
   theme,
   fileList,

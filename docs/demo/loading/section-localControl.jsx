@@ -79,7 +79,7 @@ class Demo extends React.Component {
   }
   render () {
     return (
-      <div style={{width: 500, height:260, border: '1px solid gray', position: 'reletive'}}>
+      <div style={{width: 500, border: '1px solid gray'}}>
         <Loading visible={this.state.showLoading}>
           <Table
             columns={this.columns}
@@ -93,7 +93,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoLocalControl = () => (
-  <DocViewer code={code} scope={{ Button, Table, Loading }} prefix={prefix} />
-)
+const DemoLocalControl = () => <DocViewer code={code} scope={{ Button, Table, Loading }} prefix={prefix} />
 export default DemoLocalControl

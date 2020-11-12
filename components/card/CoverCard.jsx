@@ -1,12 +1,13 @@
 import React from 'react'
 import classNames from 'classnames'
 
-const CoverCard = ({ cover, coverUrl, content, size, title, style, className, hoverable }) => {
+const CoverCard = ({ cover, coverUrl, content, size, title, style, className, hoverable, bordered }) => {
   return (
     <div
       className={classNames('hi-card', 'hi-card--cover', className, {
         [`hi-card--${size}`]: size,
-        'hi-card--hoverable': hoverable
+        'hi-card--hoverable': hoverable,
+        'hi-card--bordered': bordered
       })}
       style={style}
     >

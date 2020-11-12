@@ -64,8 +64,11 @@ const InternalSelect = (props) => {
       _.uniqBy(cacheSelectItem.concat(dropdownItems), transKeys(fieldNames, 'id')),
       transKeys(fieldNames, 'id')
     )
-    // 在异步多选的时候时候才需要进行值的记录
-    dataSource && type === 'multiple' && setCacheSelectItem(selectedItems)
+    if (dataSource) {
+      // 在异步多选的时候时候才需要进行值的记录
+      type === 'multiple' && setCacheSelectItem(selectedItems)
+      autoload && remoteSearch()
+    }
   }, [])
   useEffect(() => {
     setSearchable(dataSource ? true : propsSearchable)
@@ -235,12 +238,6 @@ const InternalSelect = (props) => {
     [dataSource, searchable, keyword, filterOption]
   )
 
-  useEffect(() => {
-    if (dataSource && autoload) {
-      remoteSearch()
-    }
-  })
-
   const remoteSearch = useCallback(
     (keyword) => {
       const _dataSource = typeof dataSource === 'function' ? dataSource(keyword) : dataSource
@@ -328,6 +325,9 @@ const InternalSelect = (props) => {
     if (dataSource && (autoload || keyword)) {
       remoteSearch(keyword)
     }
+    if (dataSource && keyword === '' && selectedItems.length > 0) {
+      setDropdownItems(cacheSelectItem)
+    }
   }
   // 重置下标
   const resetFocusedIndex = () => {
@@ -350,6 +350,7 @@ const InternalSelect = (props) => {
       resetFocusedIndex()
     })
     setCacheSelectItem([])
+    dataSource && setDropdownItems([])
   }
   // 防抖
   const debouncedFilterItems = _.debounce(onFilterItems, 300)
@@ -405,6 +406,7 @@ const InternalSelect = (props) => {
           handleKeyDown={handleKeyDown}
           theme={theme}
           mode={type}
+          selectInputWidth={selectInputWidth}
           disabled={disabled}
           searchable={searchable} // 要删除掉
           clearable={clearable}

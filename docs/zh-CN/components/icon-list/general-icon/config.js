@@ -104,6 +104,10 @@ export const outlined = [
     text: '图例'
   },
   {
+    name: 'document',
+    text: '文档'
+  },
+  {
     name: 'document-exclamation',
     text: '文档-感叹'
   },
@@ -118,6 +122,10 @@ export const outlined = [
   {
     name: 'expression',
     text: '表情'
+  },
+  {
+    name: 'export',
+    text: '导出'
   },
   {
     name: 'eye-invisible',

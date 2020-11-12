@@ -65,10 +65,17 @@ import DemoTip from '../../demo/modal/section-tip.jsx'
 | onConfirm | 确认事件触发时的回调 | () => void | -    | -      |
 | onCancel  | 取消事件触发时的回调 | () => void | -    | -      |
 
-## FAQ
+## Methods
 
-> 在由 2.14.x 升级到 HiUI 3.x 之后，对于升级问题我们做了一些问题和答复，在提问之前建议找找有没有类似的问题。
+`Modal.confirm({onConfirm, onCancel, title, content, type, confirmText, cancelText})`
 
-#### 输入框中出现日期显示异常
+| 参数      | 说明                                  | 类型        | 可选值                                 | 默认值 |
+| --------- | ------------------------------------- | ----------- | -------------------------------------- | ------ |
+| onConfirm    | 确认事件触发时的回调               | () => void | -                                      | -      |
+| onCancel     | 取消事件触发时的回调                          | () => void      | -                                      | -      |
+| title | confirm 的标题                    | string      | -  | string |
+| content       | confirm 的内容 | string      | -                                      | -      |
+| type       | confirm 的类型 | string      | 'default' \| 'success' \| 'error' \| 'warning' \| 'info'                                      | 'default'      |
+| cancelText    | 取消按钮文案               | string              | -                    | '取消'    |
+| confirmText   | 确认按钮文案               | string              | -                    | '确定'    |
 
-如出现选择日期后，在输入框中出现日期显示异常，或者日期格式和原来不同的话，请确认 format 属性的格式是否正确

@@ -16,7 +16,8 @@ const Card = ({
   content,
   children,
   showHeaderDivider,
-  type
+  type,
+  bordered = true
 }) => {
   if (cover || coverUrl) {
     return (
@@ -28,6 +29,7 @@ const Card = ({
         style={style}
         content={content}
         hoverable={hoverable}
+        bordered={bordered}
       >
         {children}
       </CoverCard>
@@ -35,7 +37,7 @@ const Card = ({
   }
   if (type === 'simple') {
     return (
-      <SimpleCard size={size} style={style} className={className} hoverable={hoverable}>
+      <SimpleCard bordered={bordered} size={size} style={style} className={className} hoverable={hoverable}>
         {children}
       </SimpleCard>
     )
@@ -49,6 +51,7 @@ const Card = ({
         className={className}
         showHeaderDivider={showHeaderDivider}
         hoverable={hoverable}
+        bordered={bordered}
       >
         {children}
       </NormalCard>

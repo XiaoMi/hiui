@@ -17,7 +17,7 @@ const Table = ({
   size,
   errorRowKeys = [],
   rowSelection,
-  data = [],
+  data,
   highlightedRowKeys = [],
   highlightedColKeys = [],
   columns = [],
@@ -265,7 +265,7 @@ const Table = ({
   )
 }
 
-const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
+const TableWrapper = ({ columns, uniqueId, standard, data, ...settingProps }) => {
   const _sortCol =
     uniqueId && window.localStorage.getItem(`${uniqueId}_sortCol`)
       ? JSON.parse(window.localStorage.getItem(`${uniqueId}_sortCol`))
@@ -310,6 +310,7 @@ const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
   return (
     <Table
       columns={cacheVisibleCols}
+      data={data || []}
       {...settingProps}
       {...standardPreset}
       sortCol={sortCol}

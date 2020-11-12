@@ -5,7 +5,7 @@ $tree: 'hi-select-tree' !default;
   color: use-color('black');
   padding: 12px 12px 0 12px;
   box-sizing: border-box;
-  height: 100%;
+  max-height: 282px;
   overflow: auto;
 
   &--empty {
@@ -86,6 +86,8 @@ $tree: 'hi-select-tree' !default;
   &__list {
     margin: 0;
     padding: 0 12px;
+    max-height: 282px;
+    overflow: auto;
   }
 
   &__item {

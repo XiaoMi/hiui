@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import CodeEditor from './code-editor'
 
-import Select from '../../../components/Select'
+import Select from '../../../components/select'
 import 'codemirror/theme/material.css'
 import 'codemirror/mode/xml/xml'
 import 'codemirror/mode/javascript/javascript'

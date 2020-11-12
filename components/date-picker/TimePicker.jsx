@@ -47,7 +47,8 @@ const TimePicker = ({
     value,
     type,
     defaultValue,
-    cacheDate
+    cacheDate,
+    format
   })
 
   const inputChangeEvent = (val, dir) => {
@@ -142,7 +143,6 @@ const TimePicker = ({
           leftGap={0}
           overlayClassName={overlayClassName}
           width={false}
-          preventOverflow
           className={timePopperCls}
           placement={placement}
           onClickOutside={clickOutsideEvent}

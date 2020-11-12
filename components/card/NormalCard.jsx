@@ -1,12 +1,13 @@
 import React from 'react'
 import classNames from 'classnames'
 
-const NormalCard = ({ children, size, title, extra, showHeaderDivider, style, className, hoverable }) => {
+const NormalCard = ({ children, size, title, extra, showHeaderDivider, style, className, hoverable, bordered }) => {
   return (
     <div
       className={classNames('hi-card', className, showHeaderDivider ? 'hi-card--standard' : 'hi-card--normal', {
         [`hi-card--${size}`]: size,
-        'hi-card--hoverable': hoverable
+        'hi-card--hoverable': hoverable,
+        'hi-card--bordered': bordered
       })}
       style={style}
     >

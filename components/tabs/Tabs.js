@@ -140,8 +140,13 @@ const Tabs = ({
     const ink = inkRef.current
     if (placement === 'horizontal') {
       const offsetLeft = child.offsetLeft
-      ink.style.width = `${width - 34}px`
-      ink.style.transform = `translateX(${offsetLeft + 17}px)`
+      if (index === 0) {
+        ink.style.width = `${width - 17}px`
+        ink.style.transform = `translateX(${offsetLeft}px)`
+      } else {
+        ink.style.width = `${width - 34}px`
+        ink.style.transform = `translateX(${offsetLeft + 17}px)`
+      }
     } else {
       const offsetTop = child.offsetTop
       ink.style.transform = `translateY(${offsetTop}px)`
@@ -151,7 +156,10 @@ const Tabs = ({
       const ink = inkRef.current
       if (placement === 'horizontal') {
         const offsetLeft = child.offsetLeft
-        if (ink) {
+        if (index === 0) {
+          ink.style.width = `${width - 17}px`
+          ink.style.transform = `translateX(${offsetLeft}px)`
+        } else {
           ink.style.width = `${width - 34}px`
           ink.style.transform = `translateX(${offsetLeft + 17}px)`
         }

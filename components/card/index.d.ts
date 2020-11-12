@@ -1,5 +1,6 @@
 interface Props {
   title?: string | JSX.Element
+  bordered?: boolean
   size?: 'small' | 'default' | 'large'
   type?: 'simple' | 'default'
   hoverable?: boolean

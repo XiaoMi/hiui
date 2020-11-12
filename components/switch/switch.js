@@ -37,7 +37,14 @@ const Switch = ({ content = [], disabled = false, checked, defaultChecked, onCha
         !value && 'hi-switch--closed',
         disabled && 'hi-switch--disabled'
       )}
+      tabIndex={disabled ? -1 : 0}
       onClick={clickSwitch}
+      onKeyDown={(e) => {
+        if ([13, 32].includes(e.keyCode)) {
+          e.stopPropagation()
+          clickSwitch(e)
+        }
+      }}
     >
       <span className="hi-switch__text">{content.length > 0 && (value ? content[0] : content[1])}</span>
     </span>
