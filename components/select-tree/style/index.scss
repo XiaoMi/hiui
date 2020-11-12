@@ -1,6 +1,7 @@
 @import '../../core-css/index.scss';
 
 .hi-selecttree {
+  width: 100%;
   &__input {
     height: 32px;
     line-height: 32px;
@@ -44,6 +45,7 @@
     &-icon {
       margin: 0 12px;
       cursor: pointer;
+      color: #434343;
     }
   }
 
