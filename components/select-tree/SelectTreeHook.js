@@ -366,7 +366,7 @@ const SelectTree = ({
   }
   const searchable = searchMode === 'filter' || searchMode === 'highlight'
   return (
-    <div className={`theme__${theme}`} style={style}>
+    <div className={`theme__${theme} hi-selecttree`} style={style}>
       <Trigger
         inputRef={inputRef}
         selectedItemsRef={selectedItemsRef}
