@@ -17,8 +17,7 @@ const SingleInput = (props) => {
     handleKeyDown,
     onClear,
     fieldNames,
-    isFocus,
-    selectInputWidth
+    isFocus
   } = props
   const [cacheselectedItems, setCacheselectedItems] = useState(propsSelectItem || [])
   useEffect(() => {
@@ -50,7 +49,6 @@ const SingleInput = (props) => {
         }
       )}
       onClick={onClick}
-      style={{ width: selectInputWidth || '100%' }}
     >
       <div
         className={classNames('hi-select__input--item', {
