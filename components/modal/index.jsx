@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { render, unmountComponentAtNode, createPortal } from 'react-dom'
+import { unmountComponentAtNode, createPortal } from 'react-dom'
 import { CSSTransition } from 'react-transition-group'
 import Classnames from 'classnames'
 import Provider from '../context/index'
@@ -8,6 +8,8 @@ import Icon from '../icon'
 import './style/index'
 
 const PREFIX = 'hi-modal'
+const focusableElementsString =
+  'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]'
 
 const getDefaultContainer = () => {
   const defaultContainer = document.createElement('div')
@@ -42,9 +44,44 @@ const InternalModalComp = ({
     defaultContainer.current = getDefaultContainer()
   }
 
+  const focusedElementBeforeOpenModal = useRef(null)
+  const modalRef = useRef(null)
+
+  const trapTabKey = useCallback((e) => {
+    // Find all focusable children
+    let focusableElements = modalRef.current.querySelectorAll(focusableElementsString)
+    // Convert NodeList to Array
+    focusableElements = Array.prototype.slice.call(focusableElements)
+    const firstTabStop = focusableElements[0]
+    const lastTabStop = focusableElements[focusableElements.length - 1]
+    // Check for TAB key press
+    if (e.keyCode === 9) {
+      // SHIFT + TAB
+      if (e.shiftKey) {
+        if (document.activeElement === firstTabStop) {
+          e.preventDefault()
+          lastTabStop.focus()
+        }
+        // TAB
+      } else {
+        if (document.activeElement === lastTabStop) {
+          e.preventDefault()
+          firstTabStop.focus()
+        }
+      }
+    }
+    // ESCAPE
+    if (e.keyCode === 27) {
+      onCancel()
+    }
+  }, [])
+
   const [vi, setVi] = useState(false)
   useEffect(() => {
-    visible && setVi(true)
+    if (visible === true) {
+      setVi(true)
+      focusedElementBeforeOpenModal.current = document.activeElement
+    }
   }, [visible])
 
   const destroy = useCallback(() => {
@@ -64,6 +101,7 @@ const InternalModalComp = ({
         destroy()
       }
     }
+    modalRef.current.focus()
   }, [vi])
 
   return createPortal(
@@ -82,13 +120,22 @@ const InternalModalComp = ({
           }
         }}
       />
-      <div className={`${PREFIX}__container`} style={{ display: vi === false && 'none' }}>
+      <div
+        className={`${PREFIX}__container`}
+        style={{ display: vi === false && 'none' }}
+        tabIndex={-1}
+        ref={modalRef}
+        onKeyDown={trapTabKey}
+      >
         <CSSTransition
           in={visible}
           timeout={0}
           classNames={'modal-transition'}
           onExited={() => {
-            setTimeout(() => setVi(false), 300)
+            setTimeout(() => {
+              setVi(false)
+              focusedElementBeforeOpenModal.current.focus()
+            }, 300)
           }}
         >
           <div
@@ -151,57 +198,6 @@ const InternalModalComp = ({
     </div>,
     container || defaultContainer.current
   )
-}
-
-const confirmIconMap = {
-  success: { name: 'check-circle', color: '#1DA653' },
-  error: { name: 'close-circle', color: '#EB5252' },
-  warning: { name: 'exclamation-circle', color: '#e19d0b' },
-  info: { name: 'info-circle', color: '#4284F5' }
-}
-
-const confirm = ({ onConfirm, onCancel, title = '提示', content, type = 'default', confirmText, cancelText }) => {
-  const confirmContainer = document.createElement('div')
-
-  document.body.appendChild(confirmContainer)
-  const modal = React.createElement(ModalComp, {
-    container: confirmContainer,
-    title,
-    width: 480,
-    height: 240,
-    visible: true,
-    confirmText,
-    cancelText,
-    onConfirm: () => {
-      onConfirm && onConfirm()
-      confirmContainer.parentNode.style.removeProperty('overflow')
-      unmountComponentAtNode(confirmContainer)
-      confirmContainer.parentNode.removeChild(confirmContainer)
-    },
-    showFooterDivider: false,
-    children: (
-      <div style={{ display: 'flex', flex: 1 }}>
-        {type !== 'default' && (
-          <Icon
-            name={confirmIconMap[type] && confirmIconMap[type].name}
-            style={{
-              color: confirmIconMap[type] && confirmIconMap[type].color,
-              fontSize: '48px',
-              marginRight: 12
-            }}
-          />
-        )}
-        {content}
-      </div>
-    ),
-    onCancel: () => {
-      onCancel && onCancel()
-      confirmContainer.parentNode.style.removeProperty('overflow')
-      unmountComponentAtNode(confirmContainer)
-      confirmContainer.parentNode.removeChild(confirmContainer)
-    }
-  })
-  render(modal, confirmContainer)
 }
 
 const ModalComp = Provider(InternalModalComp)

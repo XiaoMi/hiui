@@ -1,10 +1,12 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useCallback } from 'react'
 import ReactDOM from 'react-dom'
 import Icon from '../icon'
 import Classnames from 'classnames'
 import './style/index'
 
 const PREFIX = 'hi-drawer'
+const focusableElementsString =
+  'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]'
 
 const getDefaultContainer = () => {
   const defaultContainer = document.createElement('div')
@@ -31,13 +33,48 @@ const DrawerComp = ({
     defaultContainer.current = getDefaultContainer()
   }
 
+  const focusedElementBeforeOpenModal = useRef(null)
+  const drawerRef = useRef(null)
+
+  const trapTabKey = useCallback((e) => {
+    // Find all focusable children
+    let focusableElements = drawerRef.current.querySelectorAll(focusableElementsString)
+    // Convert NodeList to Array
+    focusableElements = Array.prototype.slice.call(focusableElements)
+    const firstTabStop = focusableElements[0]
+    const lastTabStop = focusableElements[focusableElements.length - 1]
+    // Check for TAB key press
+    if (e.keyCode === 9) {
+      // SHIFT + TAB
+      if (e.shiftKey) {
+        if (document.activeElement === firstTabStop) {
+          e.preventDefault()
+          lastTabStop.focus()
+        }
+        // TAB
+      } else {
+        if (document.activeElement === lastTabStop) {
+          e.preventDefault()
+          firstTabStop.focus()
+        }
+      }
+    }
+    // ESCAPE
+    if (e.keyCode === 27) {
+      onClose()
+    }
+  }, [])
+
   useEffect(() => {
     const parent = (container || defaultContainer.current).parentNode
     // 屏蔽滚动条
     if (visible) {
       parent.style.setProperty('overflow', 'hidden')
+      focusedElementBeforeOpenModal.current = document.activeElement
+      drawerRef.current.focus()
     } else {
       parent.style.removeProperty('overflow')
+      focusedElementBeforeOpenModal.current && focusedElementBeforeOpenModal.current.focus()
     }
   }, [visible, container])
 
@@ -54,6 +91,9 @@ const DrawerComp = ({
         />
       )}
       <div
+        tabIndex={-1}
+        ref={drawerRef}
+        onKeyDown={trapTabKey}
         style={{ width: width }}
         className={Classnames(`${PREFIX}__wrapper`, `${PREFIX}__wrapper--${placement}`, {
           [`${PREFIX}__wrapper--visible`]: visible
