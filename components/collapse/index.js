@@ -34,7 +34,10 @@ class Collapse extends Component {
     this.state = {
       activeId: Array.isArray(_activeId) ? _activeId : [_activeId]
     }
+    this.panelKeys = []
   }
+
+
   static getDerivedStateFromProps (nextProps, prevState) {
     if (
       !_.isEqual(nextProps.activeId !== prevState.activeId) &&
@@ -76,6 +79,10 @@ class Collapse extends Component {
       if (!child) return
       const key = child.props.id || child.key || String(index)
       const { header, disabled, title } = child.props
+      if(!this.panelKeys.map(p => p.key).includes(key)) {
+        this.panelKeys.push({key, disabled})
+      }
+
       let isActive = accordion ? activeKey[0] === key : activeKey.includes(key)
       const props = {
         key,
@@ -85,7 +92,8 @@ class Collapse extends Component {
         arrow: arrowPlacement !== 'left' ? arrowPlacement : arrow,
         showArrow,
         children: child.props.children,
-        onClickPanel: disabled ? noop : () => this.onClickPanel(key)
+        onClickPanel: disabled ? noop : () => this.onClickPanel(key),
+        panelKeys: this.panelKeys
       }
       newChildren.push(React.cloneElement(child, props))
     })
