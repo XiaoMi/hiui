@@ -1,5 +1,9 @@
 # 更新日志
 
+## 3.1.1
+
+- 修复 `List` 组件导出问题 [#1314](https://github.com/XiaoMi/hiui/issues/1314)
+
 ## 3.1.0
 
 - 新增 `Card` bordered 属性配置是否显示边框 [#1296](https://github.com/XiaoMi/hiui/issues/1296)
@@ -28,7 +32,6 @@
 - 优化 `Tabs` 线型模式样式 [#1291](https://github.com/XiaoMi/hiui/issues/1291)
 - 优化 `Breadcrumb` 渲染方式 [#1303](https://github.com/XiaoMi/hiui/issues/1303)
 - 优化 `Form` 组件 Form.Item 宽度设置问题 [#1295](https://github.com/XiaoMi/hiui/issues/1295)
-
 
 ## 3.0.0
 
