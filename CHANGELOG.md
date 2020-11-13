@@ -1,5 +1,9 @@
 # 更新日志
 
+## 3.1.1
+
+- 修复 `List` 组件导出问题 [#1314](https://github.com/XiaoMi/hiui/issues/1314)
+
 ## 3.1.0
 
 - 新增 `Card` bordered 属性配置是否显示边框 [#1296](https://github.com/XiaoMi/hiui/issues/1296)
