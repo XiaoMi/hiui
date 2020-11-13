@@ -2,7 +2,7 @@ import React, { Component, Children } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import _ from 'lodash'
-import Icon from '../icon'
+import Panel from './Panel'
 import './style/index'
 
 const noop = () => {}
@@ -98,50 +98,7 @@ class Collapse extends Component {
   }
 }
 
-class CollapsePanel extends Component {
-  static propTypes = {
-    header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    disabled: PropTypes.bool,
-    isActive: PropTypes.bool,
-    arrow: PropTypes.string,
-    showArrow: PropTypes.bool,
-    onClickPanel: PropTypes.func
-  }
-  static defaultProps = {
-    disabled: false
-  }
 
-  render () {
-    const {
-      key,
-      arrow,
-      header,
-      disabled,
-      isActive,
-      children,
-      onClickPanel,
-      showArrow
-    } = this.props
-    let classnames = classNames('collapse-item', {
-      'collapse-item--show': isActive,
-      'collapse-item--disabled': disabled
-    })
-    return (
-      <div className={classnames}>
-        <div className='collapse-item__head' onClick={() => onClickPanel(key)}>
-          {showArrow && arrow === 'left' && (
-            <Icon name='down' className='collapse-item__icon' />
-          )}
-          <div className='collapse-item__title'>{header}</div>
-          {showArrow && arrow === 'right' && (
-            <Icon name='down' className='collapse-item__icon' />
-          )}
-        </div>
-        <div className='collapse-item__content'>{children}</div>
-      </div>
-    )
-  }
-}
-Collapse.Panel = CollapsePanel
+Collapse.Panel = Panel
 
 export default Collapse
