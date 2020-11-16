@@ -3,6 +3,7 @@
 ## 3.1.1
 
 - 修复 `List` 组件导出问题 [#1314](https://github.com/XiaoMi/hiui/issues/1314)
+- 修复 `Tabs` Tabs.Pane 组件中 tabTitle 属性传入 ReactNode 报错问题 [#1320](https://github.com/XiaoMi/hiui/issues/1320)
 - 修复 `Upload` onRemove 的问题 [#1322](https://github.com/XiaoMi/hiui/issues/1322)
 
 ## 3.1.0

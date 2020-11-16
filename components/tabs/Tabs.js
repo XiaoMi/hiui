@@ -117,10 +117,10 @@ const Tabs = ({
   }, [])
 
   useEffect(() => {
-    const tabItems = getTabItems()
+    const { showTabItems, hiddenTabItems } = getTabItems()
 
-    setShowTabItems(tabItems.showTabItems)
-    setHiddentab(tabItems.hiddenTabItems)
+    setShowTabItems(showTabItems)
+    setHiddentab(hiddenTabItems)
     if (canScroll && children.length > childRef.current) {
       const contain = containRef.current
       setTimeout(() => {
@@ -154,7 +154,7 @@ const Tabs = ({
     setTimeout(() => {
       const { width } = child.getBoundingClientRect()
       const ink = inkRef.current
-      if (placement === 'horizontal') {
+      if (placement === 'horizontal' && ink) {
         const offsetLeft = child.offsetLeft
         if (index === 0) {
           ink.style.width = `${width - 17}px`

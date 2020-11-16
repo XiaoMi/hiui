@@ -17,31 +17,21 @@ const TabPane = ({
     if (activeIdIndex === index) {
       if (placement === 'horizontal') {
         animateClass =
-          `${prefixCls}__` +
-          (Number(latestActiveIdIndex) > Number(activeIdIndex)
-            ? 'slide-right'
-            : 'slide-left')
+          `${prefixCls}__` + (Number(latestActiveIdIndex) > Number(activeIdIndex) ? 'slide-right' : 'slide-left')
       } else {
         animateClass =
-          `${prefixCls}__` +
-          (Number(latestActiveIdIndex) > Number(activeIdIndex)
-            ? 'slide-bottom'
-            : 'slide-top')
+          `${prefixCls}__` + (Number(latestActiveIdIndex) > Number(activeIdIndex) ? 'slide-bottom' : 'slide-top')
       }
     }
     if (latestActiveIdIndex === index) {
       if (placement === 'horizontal') {
         animateClass =
           `${prefixCls}__` +
-          (Number(latestActiveIdIndex) > Number(activeIdIndex)
-            ? 'slide-right-leave'
-            : 'slide-left-leave')
+          (Number(latestActiveIdIndex) > Number(activeIdIndex) ? 'slide-right-leave' : 'slide-left-leave')
       } else {
         animateClass =
           `${prefixCls}__` +
-          (Number(latestActiveIdIndex) > Number(activeIdIndex)
-            ? 'slide-bottom-leave'
-            : 'slide-top-leave')
+          (Number(latestActiveIdIndex) > Number(activeIdIndex) ? 'slide-bottom-leave' : 'slide-top-leave')
       }
     }
     return animateClass
