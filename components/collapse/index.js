@@ -34,7 +34,7 @@ class Collapse extends Component {
     this.state = {
       activeId: Array.isArray(_activeId) ? _activeId : [_activeId]
     }
-    this.panelKeys = []
+    this.panelContainer = React.createRef(null)
   }
 
 
@@ -79,9 +79,6 @@ class Collapse extends Component {
       if (!child) return
       const key = child.props.id || child.key || String(index)
       const { header, disabled, title } = child.props
-      if(!this.panelKeys.map(p => p.key).includes(key)) {
-        this.panelKeys.push({key, disabled})
-      }
 
       let isActive = accordion ? activeKey[0] === key : activeKey.includes(key)
       const props = {
@@ -93,7 +90,9 @@ class Collapse extends Component {
         showArrow,
         children: child.props.children,
         onClickPanel: disabled ? noop : () => this.onClickPanel(key),
-        panelKeys: this.panelKeys
+        panels: children,
+        panelContainer: this.panelContainer,
+        idx
       }
       newChildren.push(React.cloneElement(child, props))
     })
@@ -102,7 +101,7 @@ class Collapse extends Component {
   render () {
     const { prefixCls, type } = this.props
     let classnames = classNames(prefixCls, type && `${prefixCls}__${type}`)
-    return <div className={classnames}>{this.renderPanels()}</div>
+    return <div className={classnames} ref={this.panelContainer}>{this.renderPanels()}</div>
   }
 }
 
