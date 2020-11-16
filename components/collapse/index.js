@@ -92,7 +92,7 @@ class Collapse extends Component {
         onClickPanel: disabled ? noop : () => this.onClickPanel(key),
         panels: children,
         panelContainer: this.panelContainer,
-        idx
+        idx: index
       }
       newChildren.push(React.cloneElement(child, props))
     })

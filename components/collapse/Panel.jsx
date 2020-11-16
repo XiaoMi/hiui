@@ -46,20 +46,40 @@ const Panel = ({
       // 方向键
       if ([38, 40].includes(e.keyCode)) {
         e.preventDefault()
-        const enablePanels = _panels.filter((p) => !p.props.disabled)
         const prevArr = []
         const nextArr = []
-        enablePanels.forEach((p, idx) => {
-          if (idx < panelIndex) {
-            prevArr.push(idx)
-          }
-          if (idx > panelIndex) {
-            nextArr.push(idx)
+        _panels.forEach((p, idx) => {
+          if (!p.props.disabled) {
+            if (idx < panelIndex) {
+              prevArr.push(idx)
+            }
+            if (idx > panelIndex) {
+              nextArr.push(idx)
+            }
           }
         })
+
+        let prev
+        let next
+        if (prevArr.length > 0) {
+          prev = prevArr[prevArr.length - 1]
+        } else if (prevArr.length === 0 && nextArr.length > 0) {
+          prev = nextArr[nextArr.length - 1]
+        }
+        if (nextArr.length > 0) {
+          next = nextArr[0]
+        } else if (nextArr.length === 0 && prevArr.length > 0) {
+          next = prevArr[0]
+        }
+        if (e.keyCode === 38 && prev !== undefined) {
+          panelContainer.current && panelContainer.current.querySelectorAll('.collapse-item__head')[prev].focus()
+        }
+        if (e.keyCode === 40 && next !== undefined) {
+          panelContainer.current && panelContainer.current.querySelectorAll('.collapse-item__head')[next].focus()
+        }
       }
     },
-    [panels, panelContainer]
+    [panels, panelContainer, panelIndex]
   )
   return (
     <div className={classnames}>
