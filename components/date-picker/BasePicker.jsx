@@ -1,9 +1,9 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 import moment from 'moment'
 import DPContext from './context'
 import Provider from '../context/index'
 import { useDate, useFormat, useAltData } from './hooks'
-import { getInRangeDate, parseValue } from './utils'
+import { getInRangeDate } from './utils'
 import _ from 'lodash'
 import classNames from 'classnames'
 import Popper from '../popper/index'
@@ -128,12 +128,6 @@ const BasePicker = ({
     setShowPanel(false)
     setInputFocus(false)
   }, [])
-  useEffect(() => {
-    if (!showPanel && value) {
-      const d = parseValue(value, type, format)
-      changeOutDate(d)
-    }
-  }, [showPanel, value])
   const popperCls = classNames(
     'hi-datepicker__popper',
     type === 'date' && showTime && 'hi-datepicker__popper--time',
