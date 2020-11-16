@@ -172,6 +172,7 @@ const InternalSelect = (props) => {
   const moveFocusedIndex = useCallback(
     (direction) => {
       let _focusedIndex = focusedIndex
+      console.log('focusedIndex', focusedIndex)
       if (direction === 'up') {
         dropdownItems
           .slice(0, _focusedIndex)
@@ -205,6 +206,7 @@ const InternalSelect = (props) => {
   // 按键操作
   const handleKeyDown = useCallback(
     (evt) => {
+      console.log(evt.keyCode)
       if (evt.keyCode === 13) {
         onEnterSelect()
       }
@@ -216,6 +218,10 @@ const InternalSelect = (props) => {
       if (evt.keyCode === 40) {
         evt.preventDefault()
         moveFocusedIndex('down')
+      }
+      if (evt.keyCode === 32) {
+        evt.preventDefault()
+        setDropdownShow(!dropdownShow)
       }
     },
     [onEnterSelect, moveFocusedIndex, moveFocusedIndex]
