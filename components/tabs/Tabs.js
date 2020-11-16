@@ -38,7 +38,6 @@ const Tabs = ({
     React.Children.map(children, (child) => {
       if (child) {
         const { tabTitle, tabId, tabDesc, disabled, closeable = true, animation } = child.props
-        // console.log(child.props)
         const item = {
           tabTitle,
           tabId,
