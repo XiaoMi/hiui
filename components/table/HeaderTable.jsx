@@ -68,7 +68,9 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   setDepth(_columns, 0, depthArray)
 
   const maxDepth = depthArray.length > 0 ? Math.max.apply(null, depthArray) : 0
-  const columnsgroup = flatTreeData(_columns).filter((col) => col.isLast)
+  const columnsgroup = [rowSelection && 'checkbox', expandedRender && 'expandedButton']
+    .concat(flatTreeData(_columns).filter((col) => col.isLast))
+    .filter((column) => !!column)
   // TODO: 这里是考虑了多级表头的冻结，待优化
   // *********全量 col group
   const allColumns = _.cloneDeep(columns)
