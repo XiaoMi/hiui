@@ -3,6 +3,7 @@
 ## 3.1.1
 
 - 修复 `List` 组件导出问题 [#1314](https://github.com/XiaoMi/hiui/issues/1314)
+- 修复 `Upload` onRemove 的问题 [#1322](https://github.com/XiaoMi/hiui/issues/1322)
 
 ## 3.1.0
 

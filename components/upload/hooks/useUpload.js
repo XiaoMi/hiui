@@ -25,6 +25,7 @@ const useUpload = ({
   useEffect(() => {
     if (fileList) {
       updateFileList(fileList)
+      fileListRef.current = fileList
     }
   }, [fileList])
 
@@ -34,19 +35,17 @@ const useUpload = ({
     }
     let result = true
     if (onRemove) {
-      result = onRemove(file)
+      result = onRemove(file, [...fileListRef.current], index)
     }
     if (!fileList) {
+      const newFileList = [...fileListRef.current]
+      newFileList.splice(index, 1)
       if (result === true) {
-        const newFileList = [...fileListRef.current]
-        newFileList.splice(index, 1)
         fileListRef.current = newFileList
         updateFileList(fileListRef.current)
       } else if (result && typeof result.then === 'function') {
         result.then((res) => {
           if (res === true) {
-            const newFileList = [...fileListRef.current]
-            newFileList.splice(index, 1)
             fileListRef.current = newFileList
             updateFileList(fileListRef.current)
           }
