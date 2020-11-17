@@ -26,6 +26,7 @@ class Radio extends React.Component {
         checked: event.target.checked
       })
   }
+
   render () {
     const {
       autoFocus,
@@ -36,7 +37,14 @@ class Radio extends React.Component {
       theme,
       type,
       value,
-      tabIdx
+      tabIdx,
+      index,
+      onKeyDown = (inputRef) => (e) => {
+        if (e.keyCode === 32) {
+          e.preventDefault()
+          inputRef && inputRef.current.click()
+        }
+      }
     } = this.props
     const shouldUseButton = type === 'button'
     const { checked } = this.state
@@ -57,9 +65,7 @@ class Radio extends React.Component {
     )
     return (
       <RadioWrapper type={type} className={buttonCls} disabled={disabled}>
-        <label className={radioCls} style={style} tabIndex={tabIdx} onFocus={e=> {
-          this.inputRef.current.focus()
-        }}>
+        <label className={radioCls} style={style} tabIndex={tabIdx === undefined && !disabled ? 0 : tabIdx} onKeyDown={onKeyDown(this.inputRef, index)}>
           <input
             ref={this.inputRef}
             type='radio'
