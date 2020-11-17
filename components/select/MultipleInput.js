@@ -111,7 +111,7 @@ const MultipleInput = ({
         )}
         {searchable && !disabled && (
           <div className="hi-select__input--search">
-            <input type="text" onFocus={onFocus} onBlur={onBlur} readOnly />
+            <input type="text" onFocus={onFocus} onBlur={onBlur} readOnly className="hi-select__input-readOnly" />
           </div>
         )}
       </div>

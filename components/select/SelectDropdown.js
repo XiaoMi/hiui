@@ -28,16 +28,20 @@ const SelectDropdown = ({
   selectInputWidth,
   selectedItems,
   show,
-  fieldNames
+  fieldNames,
+  focusedIndex
 }) => {
   const [filterItems, setFilterItems] = useState(dropdownItems)
   const [searchbarValue, setSearchbarValue] = useState('')
   const [ischeckAll, setIscheckAll] = useState(false)
   const searchbar = useRef('')
+  const dropdownWrapper = useRef('')
   useEffect(() => {
     setFilterItems(dropdownItems)
   }, [dropdownItems])
-
+  useEffect(() => {
+    dropdownWrapper.current.scrollTop = (focusedIndex - 6) * 36
+  }, [focusedIndex])
   // 监控全选功能
   useEffect(() => {
     setIscheckAll(selectedItems.length > 0 && selectedItems.length === filterItems.length)
@@ -45,6 +49,9 @@ const SelectDropdown = ({
   // 让搜索框获取焦点
   useEffect(() => {
     searchable && setTimeout(() => searchbar.current && searchbar.current.focus(), 0)
+    return () => {
+      searchbar.current && searchbar.current.blur()
+    }
   }, [])
   // 仅看已选
   const showSelected = useCallback(
@@ -209,6 +216,7 @@ const SelectDropdown = ({
         className={classNames('hi-select__dropdown--item', `theme__${theme}`, {
           'is-active': isSelected,
           'is-disabled': isDisabled,
+          'is-focus': filterItemsIndex === focusedIndex,
           'hi-select__dropdown--item-default': !item[transKeys(fieldNames, 'children')] && !dropdownRender
         })}
         onClick={(e) => onClickOptionIntal(e, item, filterItemsIndex)}
@@ -221,7 +229,7 @@ const SelectDropdown = ({
   }
   const renderItems = () => {
     return (
-      <ul className="hi-select__dropdown--items">
+      <ul className="hi-select__dropdown--items" ref={dropdownWrapper}>
         {filterItems &&
           filterItems.map((item, filterItemsIndex) => {
             if (matchFilter(item)) {

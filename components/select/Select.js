@@ -44,6 +44,7 @@ const InternalSelect = (props) => {
   const [dropdownItems, setDropdownItems] = useState(data)
   const [focusedIndex, setFocusedIndex] = useState(0)
   const [isFocus, setIsFouces] = useState(false)
+  const SelectWrapper = useRef()
   // 存储问题
   const [cacheSelectItem, setCacheSelectItem] = useState([])
 
@@ -76,6 +77,10 @@ const InternalSelect = (props) => {
 
   useEffect(() => {
     setIsFouces(dropdownShow)
+    !dropdownShow &&
+      setTimeout(() => {
+        SelectWrapper.current.focus()
+      }, 0)
   }, [dropdownShow])
 
   useEffect(() => {
@@ -172,7 +177,6 @@ const InternalSelect = (props) => {
   const moveFocusedIndex = useCallback(
     (direction) => {
       let _focusedIndex = focusedIndex
-      console.log('focusedIndex', focusedIndex)
       if (direction === 'up') {
         dropdownItems
           .slice(0, _focusedIndex)
@@ -206,7 +210,7 @@ const InternalSelect = (props) => {
   // 按键操作
   const handleKeyDown = useCallback(
     (evt) => {
-      console.log(_.cloneDeep(evt), document.activeElement)
+      evt.stopPropagation()
       if (evt.keyCode === 13) {
         onEnterSelect()
       }
@@ -219,12 +223,15 @@ const InternalSelect = (props) => {
         evt.preventDefault()
         moveFocusedIndex('down')
       }
-      if (evt.keyCode === 32) {
+      if (
+        evt.keyCode === 32 &&
+        !document.activeElement.classList.value.includes('hi-select__dropdown__searchbar--input')
+      ) {
         evt.preventDefault()
         setDropdownShow(!dropdownShow)
       }
     },
-    [onEnterSelect, moveFocusedIndex, moveFocusedIndex]
+    [onEnterSelect, moveFocusedIndex]
   )
   // 对关键字的校验 对数据的过滤
   const matchFilter = useCallback(
@@ -409,8 +416,9 @@ const InternalSelect = (props) => {
     <div
       className={classNames('hi-select', className, extraClass)}
       style={style}
+      tabIndex="0"
       onKeyDown={handleKeyDown}
-      tabIndex="-1"
+      ref={SelectWrapper}
     >
       <div className="hi-select__input-container" ref={selectInputContainer}>
         <SelectInput
