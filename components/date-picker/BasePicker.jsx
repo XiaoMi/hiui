@@ -60,13 +60,14 @@ const BasePicker = ({
     locale
   })
   const isLarge = altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset
+  const [showPanel, setShowPanel] = useState(false)
   const [altCalendarPresetData, dateMarkPresetData] = useAltData({
     altCalendar,
     altCalendarPreset,
     dateMarkRender,
-    dateMarkPreset
+    dateMarkPreset,
+    showPanel
   })
-  const [showPanel, setShowPanel] = useState(false)
   const inputChangeEvent = (val, dir) => {
     if (val.isValid()) {
       const oData = _.cloneDeep(outDate)
