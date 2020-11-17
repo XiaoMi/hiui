@@ -50,6 +50,7 @@ class Group extends React.Component {
           <Radio
             key={idx}
             value={value}
+            tabIdx={checked ? 0 : -1}
             type={type}
             checked={checked}
             onChange={this.handleCheckboxChange}
