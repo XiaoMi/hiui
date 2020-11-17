@@ -310,7 +310,7 @@ class Pagination extends Component {
 
     return (
       <Pager
-        key={this.pagerIndex}
+        // key={this.pagerIndex}
         rootPrefixCls={prefixCls}
         onClick={this.handleChange.bind(this)}
         page={page}
