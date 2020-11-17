@@ -14,7 +14,6 @@ const SingleInput = (props) => {
     onBlur,
     onClick,
     selectedItems: propsSelectItem,
-    handleKeyDown,
     onClear,
     fieldNames,
     isFocus
@@ -69,7 +68,6 @@ const SingleInput = (props) => {
             type="text"
             value={selectedItems.length > 0 ? placeholder : ''}
             placeholder={placeholder}
-            onKeyDown={handleKeyDown}
             onFocus={onFocus}
             onBlur={onBlur}
             readOnly

@@ -21,7 +21,6 @@ const SelectDropdown = ({
   searchPlaceholder,
   dropdownItems,
   localeMap,
-  handleKeyDown,
   onSearch,
   isOnSearch,
   onClickOption,
@@ -259,7 +258,6 @@ const SelectDropdown = ({
               onFocus={onFocus}
               onBlur={onBlur}
               clearabletrigger="always"
-              onKeyDown={handleKeyDown}
               onChange={searchEvent}
             />
             {searchbarValue.length > 0 ? (

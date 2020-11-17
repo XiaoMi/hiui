@@ -206,7 +206,7 @@ const InternalSelect = (props) => {
   // 按键操作
   const handleKeyDown = useCallback(
     (evt) => {
-      console.log(evt.keyCode)
+      console.log(_.cloneDeep(evt), document.activeElement)
       if (evt.keyCode === 13) {
         onEnterSelect()
       }
@@ -406,10 +406,14 @@ const InternalSelect = (props) => {
     ? selectInputContainer.current.getBoundingClientRect().width
     : null
   return (
-    <div className={classNames('hi-select', className, extraClass)} style={style}>
+    <div
+      className={classNames('hi-select', className, extraClass)}
+      style={style}
+      onKeyDown={handleKeyDown}
+      tabIndex="-1"
+    >
       <div className="hi-select__input-container" ref={selectInputContainer}>
         <SelectInput
-          handleKeyDown={handleKeyDown}
           theme={theme}
           mode={type}
           selectInputWidth={selectInputWidth}
@@ -447,6 +451,8 @@ const InternalSelect = (props) => {
         // 自定义options的方向
         placement={placement || 'top-bottom-start'}
         className="hi-select__popper"
+        onKeyDown={handleKeyDown}
+        tabIndex="-1"
         width={optionWidth}
         onClickOutside={() => {
           hideDropdown()
@@ -472,7 +478,6 @@ const InternalSelect = (props) => {
           filterOption={filterOption}
           matchFilter={matchFilter}
           show={dropdownShow}
-          handleKeyDown={handleKeyDown}
           optionWidth={optionWidth}
           selectInputWidth={selectInputWidth}
           dropdownItems={dropdownItems}

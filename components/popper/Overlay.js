@@ -29,7 +29,8 @@ const Overlay = (props) => {
     onMouseEnter,
     onMouseLeave,
     onClickOutside,
-    overlayClassName
+    overlayClassName,
+    onKeyDown
   } = props
   const [isAddevent, setIsAddevent] = useState(false)
   const [state, setState] = useState({
@@ -154,6 +155,8 @@ const Overlay = (props) => {
       className={classNames(overlayClassName, 'hi-popper__container', {
         'hi-popper__container--hide': !show
       })}
+      tabIndex="-1"
+      onKeyDown={onKeyDown}
       style={{ left, top, zIndex }}
     >
       <div
