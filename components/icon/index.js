@@ -50,7 +50,9 @@ const legacyMap = {
   'square-selected': 'check-square',
   'chat-group': 'chat',
   polyline: 'line-chart',
-  list: 'bars'
+  list: 'bars',
+  asc: 'sort-ascending',
+  des: 'sort-descending'
 }
 
 const Icon = ({ name, filled = false, className, style = {}, onClick }) => {
