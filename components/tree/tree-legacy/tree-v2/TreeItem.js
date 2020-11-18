@@ -109,7 +109,7 @@ class TreeItem extends Component {
             >
               {(item.children && item.children.length > 0) || (origin && !expanded)
                 ? renderSwitcher(expanded)
-                : ((showLine && <span className='hi-tree__dot' />) || (apperance === 'folder' && <i className='hi-icon icon-File' />))}
+                : ((showLine && <span className='hi-tree-legacy__dot' />) || (apperance === 'folder' && <i className='hi-icon icon-File' />))}
               {this.state.loading && <IconLoading theme={theme} />}
             </span>
           }
