@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import Provider from '../context'
 
 function defaultItemRender(page, element) {
   return <span>{element}</span>
@@ -47,4 +46,4 @@ Pager.defaultProps = {
   itemRender: defaultItemRender
 }
 
-export default Provider(Pager)
+export default Pager

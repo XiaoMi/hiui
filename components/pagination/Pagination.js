@@ -254,7 +254,7 @@ class Pagination extends Component {
     }
 
     if (leftBuffer !== 1) {
-      pagers.push(this.renderPager(1, { active: current === 1 }))
+      pagers.push(this.renderPager(1, { active: current === 1, id: 1 }))
     }
     if (leftBuffer > 2) {
       pagers.push(
@@ -265,7 +265,7 @@ class Pagination extends Component {
       )
     }
     for (let index = leftBuffer; index <= rightBuffer; index++) {
-      pagers.push(this.renderPager(index, { active: current === index }))
+      pagers.push(this.renderPager(index, { active: current === index, id: index}))
     }
     if (rightBuffer < maxPage - 1) {
       pagers.push(
@@ -276,7 +276,7 @@ class Pagination extends Component {
       )
     }
     if (rightBuffer !== maxPage) {
-      pagers.push(this.renderPager(maxPage, { active: current === maxPage }))
+      pagers.push(this.renderPager(maxPage, { active: current === maxPage, id: maxPage}))
     }
     pagers.push(nextPager)
 
@@ -288,7 +288,7 @@ class Pagination extends Component {
     const prevPage = this.prev()
     return this.renderPager(
       prevPage,
-      { className: `${prefixCls}__item-prev`, disabled: prevPage < 1 },
+      { className: `${prefixCls}__item-prev`, disabled: prevPage < 1, id: 'PREV' },
       <Icon name='left' />
     )
   }
@@ -298,7 +298,7 @@ class Pagination extends Component {
     const nextPage = this.next()
     return this.renderPager(
       nextPage,
-      { className: `${prefixCls}__item-next`, disabled: nextPage < 1 },
+      { className: `${prefixCls}__item-next`, disabled: nextPage < 1, id: 'NEXT'},
       <Icon name='right' />
     )
   }
@@ -306,11 +306,10 @@ class Pagination extends Component {
   pagerIndex = 0
   renderPager (page, props, children) {
     const { prefixCls, itemRender, pageLink } = this.props
-    this.pagerIndex++
 
     return (
       <Pager
-        // key={this.pagerIndex}
+        key={props.id || Math.random()}
         rootPrefixCls={prefixCls}
         onClick={this.handleChange.bind(this)}
         page={page}
