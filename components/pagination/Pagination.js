@@ -265,7 +265,7 @@ class Pagination extends Component {
       )
     }
     for (let index = leftBuffer; index <= rightBuffer; index++) {
-      pagers.push(this.renderPager(index, { active: current === index, id: index}))
+      pagers.push(this.renderPager(index, { active: current === index, id: index }))
     }
     if (rightBuffer < maxPage - 1) {
       pagers.push(
@@ -276,7 +276,7 @@ class Pagination extends Component {
       )
     }
     if (rightBuffer !== maxPage) {
-      pagers.push(this.renderPager(maxPage, { active: current === maxPage, id: maxPage}))
+      pagers.push(this.renderPager(maxPage, { active: current === maxPage, id: maxPage }))
     }
     pagers.push(nextPager)
 

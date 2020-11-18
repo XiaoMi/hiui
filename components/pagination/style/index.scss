@@ -10,15 +10,12 @@
             border-color: rgba($color, 0.8);
             color: $color;
           }
-          // &:focus {
-          //   outline: none;
-          //   border-color: rgba($color, 0.8);
-          //   color: $color;
-          // }
         }
       }
+
       &:focus {
         outline: none;
+
         &:not(.hi-pagination__item--disabled) {
           & > span {
             border-color: rgba($color, 0.8);
@@ -128,7 +125,7 @@
         border: 1px solid transparent;
         transition: border-color $speed-fast $easing, color $speed-fast $easing;
       }
-      
+
     }
 
     &--active {
