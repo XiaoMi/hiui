@@ -69,5 +69,9 @@ $counter: 'hi-counter' !default;
     color: use-color('gray-80');
     outline: none;
     box-sizing: border-box;
+
+    &:focus {
+      border: 1px solid use-color('primary');
+    }
   }
 }
