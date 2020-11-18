@@ -84,31 +84,33 @@ class Group extends React.Component {
     }
   }
 
-  // getDefaultFocus = data => {
-  //   let idx, checkedIdx
-  //   const _data = data.map((d, index)=> {
-  //     // if ()
-  //     return d.checked })
+  getDefaultFocus = data => {
+    let checkedIdx, disabledIdx
 
-  //   if(_data.length === 0) {
-  //     idx = data.findIndex(d => !d.disabled)
-  //   }
-  //   // if (_data.length === 1 && )
-  //   return idx
-  // }
+    data.forEach((d, index) => {
+      if (d.checked) {
+        checkedIdx = index
+      }
+      if (d.disabled) {
+        disabledIdx = index
+      }
+    })
+    if ((disabledIdx !== undefined && checkedIdx !== undefined && checkedIdx === disabledIdx) || (checkedIdx === undefined)) {
+      return data.findIndex(d => !d.disabled)
+    }
+  }
   render () {
     const { className, style, disabled, type, placement } = this.props
     const { data } = this.state
     const groupCls = classNames(className, prefixCls, { vertical: placement === 'vertical' })
-    // const defaultFocus = originValue === undefined && !disabled && data.findIndex(d=> !d.disabled)
-    // 如果单选组没有选中项或选中项刚好也是禁用项，需要提供一个默认的可以获取焦点的项
+    // 如果单选组没有选中项或选中项刚好也是禁用项，需要提供一个默认的可以获取焦点的项 getDefaultFocus
     return (
       <GroupWrapper className={groupCls} style={style} type={type} ref={this.groupRef}>
         {data.map(({ label, value, checked, disabled: itemDisabled }, idx) => (
           <Radio
             key={idx}
             value={value}
-            tabIdx={(checked && !disabled && !itemDisabled) ? 0 : -1}
+            tabIdx={(checked && !disabled && !itemDisabled) || this.getDefaultFocus(data) === idx ? 0 : -1}
             type={type}
             checked={checked}
             onChange={this.handleCheckboxChange}
