@@ -120,7 +120,7 @@ class Select extends Component {
     if (
       (selectInput && selectInput.contains(e.target)) ||
       (e.target.tagName === 'INPUT' &&
-        e.target.className.includes('hi-select__dropdown__searchbar--input'))
+        e.target.className.includes('hi-select-legacy__dropdown__searchbar--input'))
     ) {
       return
     }
@@ -596,11 +596,11 @@ class Select extends Component {
       : null
     return (
       <div
-        className={classNames('hi-select', className, extraClass)}
+        className={classNames('hi-select-legacy', className, extraClass)}
         style={style}
       >
         <div
-          className='hi-select__input-container'
+          className='hi-select-legacy__input-container'
           ref={node => {
             this.selectInputContainer = node
           }}
@@ -644,7 +644,7 @@ class Select extends Component {
           topGap={5}
           leftGap={0}
           preventOverflow={preventOverflow}
-          className='hi-select__popper'
+          className='hi-select-legacy__popper'
           placement={placement || 'top-bottom-start'}
         >
           {dropdownShow && this.props.open && (

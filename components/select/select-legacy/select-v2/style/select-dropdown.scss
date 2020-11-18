@@ -1,6 +1,6 @@
 @import '@hi-ui/core-css/index.scss';
 
-.hi-select__dropdown {
+.hi-select-legacy__dropdown {
   width: 100%;
   font-size: 12px;
   color: #333;
@@ -49,12 +49,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    &.hi-select__dropdown--item-default {
+    &.hi-select-legacy__dropdown--item-default {
       display: flex;
       align-items: center;
     }
 
-    .hi-select__dropdown--item__name {
+    .hi-select-legacy__dropdown--item__name {
       padding-right: 5px;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -66,7 +66,7 @@
       }
     }
 
-    .hi-select__dropdown--item__checkbox {
+    .hi-select-legacy__dropdown--item__checkbox {
       flex: none;
       position: relative;
     }
@@ -136,7 +136,7 @@
 }
 
 @each $key, $value in $theme-colors {
-  .theme__#{$key}.hi-select__dropdown {
+  .theme__#{$key}.hi-select-legacy__dropdown {
     &-check-all {
       color: $value;
     }
