@@ -6,6 +6,7 @@
 - 修复 `Tabs` Tabs.Pane 组件中 tabTitle 属性传入 ReactNode 报错问题 [#1320](https://github.com/XiaoMi/hiui/issues/1320)
 - 修复 `Upload` onRemove 的问题 [#1322](https://github.com/XiaoMi/hiui/issues/1322)
 - 修复 `DatePicker` 受控无法选中值问题 [#1326](https://github.com/XiaoMi/hiui/issues/1326)
+- 修复 `Table`  列操作 icon 丢失问题 [#1336](https://github.com/XiaoMi/hiui/issues/1336)
 
 ## 3.1.0
 
