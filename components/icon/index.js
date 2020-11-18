@@ -47,7 +47,10 @@ const legacyMap = {
   data: 'data-monitor',
   'money-circle-o': 'rmb',
   refer: 'document-search',
-  'square-selected': 'check-square'
+  'square-selected': 'check-square',
+  'chat-group': 'chat',
+  polyline: 'line-chart',
+  list: 'bars'
 }
 
 const Icon = ({ name, filled = false, className, style = {}, onClick }) => {

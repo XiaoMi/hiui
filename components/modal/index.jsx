@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { unmountComponentAtNode, createPortal } from 'react-dom'
+import { unmountComponentAtNode, createPortal, render } from 'react-dom'
 import { CSSTransition } from 'react-transition-group'
 import Classnames from 'classnames'
 import Provider from '../context/index'
@@ -198,6 +198,57 @@ const InternalModalComp = ({
     </div>,
     container || defaultContainer.current
   )
+}
+
+const confirmIconMap = {
+  success: { name: 'check-circle', color: '#1DA653' },
+  error: { name: 'close-circle', color: '#EB5252' },
+  warning: { name: 'exclamation-circle', color: '#e19d0b' },
+  info: { name: 'info-circle', color: '#4284F5' }
+}
+
+const confirm = ({ onConfirm, onCancel, title = '提示', content, type = 'default', confirmText, cancelText }) => {
+  const confirmContainer = document.createElement('div')
+
+  document.body.appendChild(confirmContainer)
+  const modal = React.createElement(ModalComp, {
+    container: confirmContainer,
+    title,
+    width: 480,
+    height: 240,
+    visible: true,
+    confirmText,
+    cancelText,
+    onConfirm: () => {
+      onConfirm && onConfirm()
+      confirmContainer.parentNode.style.removeProperty('overflow')
+      unmountComponentAtNode(confirmContainer)
+      confirmContainer.parentNode.removeChild(confirmContainer)
+    },
+    showFooterDivider: false,
+    children: (
+      <div style={{ display: 'flex', flex: 1 }}>
+        {type !== 'default' && (
+          <Icon
+            name={confirmIconMap[type] && confirmIconMap[type].name}
+            style={{
+              color: confirmIconMap[type] && confirmIconMap[type].color,
+              fontSize: '48px',
+              marginRight: 12
+            }}
+          />
+        )}
+        {content}
+      </div>
+    ),
+    onCancel: () => {
+      onCancel && onCancel()
+      confirmContainer.parentNode.style.removeProperty('overflow')
+      unmountComponentAtNode(confirmContainer)
+      confirmContainer.parentNode.removeChild(confirmContainer)
+    }
+  })
+  render(modal, confirmContainer)
 }
 
 const ModalComp = Provider(InternalModalComp)
