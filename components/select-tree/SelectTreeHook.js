@@ -466,7 +466,6 @@ SelectTree.defaultProps = {
   type: 'single',
   defaultCheckedIds: [],
   defaultValue: [],
-  value: [],
   data: [],
   clearable: true,
   onChange: () => {},
