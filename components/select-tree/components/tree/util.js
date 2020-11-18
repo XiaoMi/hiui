@@ -363,3 +363,8 @@ export const clearReturnData = (arg) => {
   }
   return arg
 }
+
+// 获取被选中的节点的 兄弟节点
+export const getSiblingsWidthActiveId = (data, activeId) => {
+  return data
+}

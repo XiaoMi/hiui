@@ -49,9 +49,11 @@ const SelectTree = ({
   optionWidth,
   placement = 'top-bottom-start'
 }) => {
+  const [isFocus, setIsFocus] = useState(false)
   const placeholder = propsPlaceholder || localeDatas.selectTree.placeholder
   const selectedItemsRef = useRef()
   const inputRef = useRef()
+  const selectTreeWrapper = useRef()
   // select 中显示的数量
   const [showCount, setShowCount] = useState(1)
   // panel show
@@ -155,7 +157,7 @@ const SelectTree = ({
       setShowCount(num)
     }
   }, [selectedItems])
-
+  useEffect(() => {}, [show])
   useEffect(() => {
     if (data) {
       const { flattenData = [], nodeEntries } = flattenNodesData(
@@ -365,12 +367,43 @@ const SelectTree = ({
     setShow(!show)
   }
   const searchable = searchMode === 'filter' || searchMode === 'highlight'
+  // 按键操作
+  const handleKeyDown = (evt) => {
+    console.log('ss', evt)
+    evt.stopPropagation()
+    if (evt.keyCode === 13) {
+      console.log('回车')
+    }
+
+    if (evt.keyCode === 38) {
+      evt.preventDefault()
+      console.log('up')
+    }
+    if (evt.keyCode === 40) {
+      evt.preventDefault()
+      console.log('down')
+    }
+    if (evt.keyCode === 32 && !document.activeElement.classList.value.includes('hi-selecttree__searchinput')) {
+      evt.preventDefault()
+      setShow(!show)
+    }
+  }
   return (
-    <div className={`theme__${theme} hi-selecttree`} style={style}>
+    <div
+      className={`theme__${theme} hi-selecttree`}
+      onClick={() => {
+        setIsFocus(true)
+      }}
+      style={style}
+      tabIndex="0"
+      onKeyDown={handleKeyDown}
+      ref={selectTreeWrapper}
+    >
       <Trigger
         inputRef={inputRef}
         selectedItemsRef={selectedItemsRef}
         type={type}
+        isFocus={isFocus}
         showCount={showCount}
         selectedItems={selectedItems}
         clearable={clearable}
@@ -386,10 +419,14 @@ const SelectTree = ({
           attachEle={inputRef.current}
           topGap={5}
           width={optionWidth}
+          onKeyDown={handleKeyDown}
           placement={placement}
           overlayClassName={overlayClassName}
           className={`hi-selecttree__popper ${data.length === 0 && dataSource ? 'hi-selecttree__popper--loading' : ''}`}
-          onClickOutside={() => setShow(false)}
+          onClickOutside={() => {
+            setIsFocus(false)
+            setShow(false)
+          }}
         >
           <div className={`hi-selecttree__root theme__${theme} ${searchable ? 'hi-selecttree--hassearch' : ''}`}>
             {searchable && mode !== 'breadcrumb' && (
@@ -466,7 +503,6 @@ SelectTree.defaultProps = {
   type: 'single',
   defaultCheckedIds: [],
   defaultValue: [],
-  value: [],
   data: [],
   clearable: true,
   onChange: () => {},
