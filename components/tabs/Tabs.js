@@ -28,12 +28,15 @@ const Tabs = ({
   editable,
   className,
   theme,
+  localeDatas,
   prefixCls,
   draggable,
   onTabClick,
   onBeforeDelete
 }) => {
   const containRef = useRef(null)
+  const hiddenRef = useRef(null)
+  const dropdownRef = useRef(null)
   const { leftBtn, rightBtn } = useTranslate({ elementRef: containRef, canScroll, prefixCls })
   const { showTabItems, hiddenTabItems, setShowTabItems } = useTabItems({ children, max, type, placement, canScroll })
   const [activeId, setActiveId] = useState(
@@ -262,14 +265,20 @@ const Tabs = ({
   )
 
   const handleKeyDown = useCallback(
-    (e, tabIdx, tabRef) => {
-      if (e.keyCode === 32) {
+    (e, tabIdx, tabRef, isDropdown) => {
+      console.log(isDropdown)
+      if (e.keyCode === 32 || e.keyCode === 13) {
         e.preventDefault()
-        tabRef.current.click()
+        if (isDropdown) {
+          dropdownRef.current.toggle()
+        } else {
+          tabRef.current.click()
+        }
       }
       const prevArr = []
       const nextArr = []
-      showTabItems.forEach((item, idx) => {
+      // concat 的空对象为 “更多” tab
+      showTabItems.concat({}).forEach((item, idx) => {
         if (!item.disabled) {
           if (idx < tabIdx) {
             prevArr.push(idx)
@@ -301,7 +310,7 @@ const Tabs = ({
         containRef.current && containRef.current.querySelectorAll('.hi-tabs__item')[next].focus()
       }
     },
-    [showTabItems, containRef.current]
+    [showTabItems, containRef.current, dropdownRef.current]
   )
 
   const getHeader = useCallback(() => {
@@ -347,13 +356,20 @@ const Tabs = ({
                 className={classNames(`${prefixCls}__item`, {
                   [`${prefixCls}__item--active`]: hiddenTabItems.map((item) => item.tabId).includes(activeId)
                 })}
+                tabIndex={hiddenTabItems.map((item) => item.tabId).includes(activeId) ? 0 : -1}
+                ref={hiddenRef}
+                onKeyDown={(e) => {
+                  handleKeyDown(e, showTabItems.length, hiddenRef, true)
+                }}
               >
                 <ItemDropdown
                   active={hiddenTabItems.map((item) => item.tabId).includes(activeId)}
                   activeId={activeId}
                   theme={theme}
+                  localeDatas={localeDatas}
                   defaultActiveId={defaultActiveId}
                   items={hiddenTabItems}
+                  ref={dropdownRef}
                   onChoose={(item, e) => {
                     handleClick(item, e)
                   }}
