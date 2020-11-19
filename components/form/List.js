@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 
 import FormContext from './FormContext'
-import { FILEDS_REMOVE, FILEDS_INIT_LIST, FILEDS_UPDATE, FILEDS_UPDATE_LIST } from './FormReducer'
+import { FILEDS_REMOVE, FILEDS_INIT_LIST, FILEDS_UPDATE_LIST } from './FormReducer'
 const List = (props) => {
   const { dispatch, formState, initialValues } = useContext(FormContext)
   const { children, name } = props
@@ -13,8 +13,6 @@ const List = (props) => {
     dispatch({ type: FILEDS_INIT_LIST, payload: name })
     initialValues &&
       Object.keys(initialValues).forEach((key) => {
-        console.log('key === name', key === name)
-
         key === name &&
           dispatch({
             type: FILEDS_UPDATE_LIST,
@@ -37,14 +35,6 @@ const List = (props) => {
     })
     setListCount(cachelistCount)
   }, [listValues])
-
-  useEffect(() => {
-    const { fields } = formState
-    const _fields = fields.filter((item) => {
-      return item.listname !== name
-    })
-    dispatch({ type: FILEDS_UPDATE, payload: [..._fields] })
-  }, [])
 
   if (typeof children !== 'function') {
     console.warning('Form.List only accepts function as children.')

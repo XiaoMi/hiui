@@ -36,6 +36,7 @@ const InternalForm = (props) => {
     listValues: {},
     ...props
   })
+
   const { fields, listNames, listValues } = state
   // 用户手动设置表单数据
   const setFieldsValue = useCallback(
@@ -43,6 +44,7 @@ const InternalForm = (props) => {
       const _fields = _.cloneDeep(fields)
       _fields.forEach((item) => {
         const { field } = item
+        // eslint-disable-next-line no-prototype-builtins
         if (values.hasOwnProperty(field)) {
           const value = values[field]
           item.value = value
