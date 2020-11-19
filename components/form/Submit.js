@@ -7,6 +7,7 @@ const Submit = (props) => {
   const { children = 'submit', onClick, validate } = props
   const { validate: formValidate } = useContext(FormContext)
   const submit = () => {
+    console.log('validate', validate)
     onClick && formValidate(onClick, validate)
   }
   return (

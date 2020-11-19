@@ -1,17 +1,13 @@
+/* eslint-disable no-case-declarations */
 export const FILEDS_INIT = 'FILEDS_INIT'
 export const FILEDS_UPDATE = 'FILEDS_UPDATE'
 export const FILEDS_UPDATE_VALUE = 'FILEDS_UPDATE_VALUE'
 export const FILEDS_REMOVE = 'FILEDS_REMOVE'
 export const FILEDS_INIT_LIST = 'FILEDS_INIT_LIST'
 export const FILEDS_UPDATE_LIST = 'FILEDS_UPDATE_LIST'
+let cacheList = []
 const FormReducer = (state, action) => {
   switch (action.type) {
-    case FILEDS_INIT:
-      const { fields } = state
-      const initfields = fields.filter((item) => {
-        return action.payload.field !== item.field
-      })
-      return Object.assign({}, { ...state }, { fields: initfields.concat(action.payload) })
     case FILEDS_UPDATE:
       return Object.assign({}, { ...state }, { fields: action.payload })
     case FILEDS_REMOVE:
@@ -21,12 +17,18 @@ const FormReducer = (state, action) => {
       return Object.assign({}, { ...state }, { fields: _fields })
 
     case FILEDS_INIT_LIST:
-      const { listNames } = state
+      const { listNames, fields: _fieldsList } = state
       !listNames.includes(action.payload) && listNames.push(action.payload)
-
-      return Object.assign({}, { ...state }, { listNames: listNames })
+      return Object.assign({}, { ...state }, { listNames: listNames, fields: [..._fieldsList].concat(cacheList) })
     case FILEDS_UPDATE_LIST:
       return Object.assign({}, { ...state }, { listValues: action.payload })
+    case FILEDS_INIT:
+      const { fields } = state
+      const initfields = [...fields].filter((item) => {
+        return action.payload.field !== item.field
+      })
+      cacheList = [...fields]
+      return Object.assign({}, { ...state }, { fields: initfields.concat(action.payload) })
     default:
       return state
   }

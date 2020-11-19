@@ -61,18 +61,6 @@ const InternalForm = (props) => {
     },
     [fields, listValues]
   )
-  // 设置初始化的值
-  useEffect(() => {
-    // 处理 list value
-    initialValues &&
-      Object.keys(initialValues).forEach((key) => {
-        listNames.includes(key) &&
-          dispatch({
-            type: FILEDS_UPDATE_LIST,
-            payload: Object.assign({}, { ...listValues }, { [key]: initialValues[key] })
-          })
-      })
-  }, [])
   // 转换值的输出
   const internalValuesChange = useCallback(
     (changeValues, allValues) => {
@@ -222,6 +210,7 @@ const InternalForm = (props) => {
           validate,
           resetValidates,
           internalValuesChange,
+          initialValues,
           _type
         }}
       >
