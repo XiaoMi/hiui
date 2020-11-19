@@ -52,7 +52,7 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
               }}
             >
               升序
-              <Icon name="asc" />
+              <Icon name="sort-ascending" />
             </div>
           )}
           {canSort && (
@@ -72,7 +72,7 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
               }}
             >
               降序
-              <Icon name="desc" />
+              <Icon name="sort-descending" />
             </div>
           )}
           <div
