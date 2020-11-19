@@ -22,9 +22,9 @@ const FormReducer = (state, action) => {
       return Object.assign({}, { ...state }, { fields: _fields })
 
     case FILEDS_INIT_LIST:
-      const { listNames, fields: _fieldsList } = state
+      const { listNames } = state
       !listNames.includes(action.payload) && listNames.push(action.payload)
-      return Object.assign({}, { ...state }, { listNames: listNames, fields: [..._fieldsList] })
+      return Object.assign({}, { ...state }, { listNames: listNames })
     case FILEDS_UPDATE_LIST:
       return Object.assign({}, { ...state }, { listValues: action.payload })
     default:
