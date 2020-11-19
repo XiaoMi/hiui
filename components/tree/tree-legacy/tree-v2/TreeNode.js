@@ -594,7 +594,7 @@ class TreeNode extends Component {
     return (
       <div>
         {searchable && (
-          <div className='hi-tree__searcher'>
+          <div className='hi-tree-legacy__searcher'>
             <Input
               value={this.state.searchValue}
               type='text'
@@ -613,7 +613,7 @@ class TreeNode extends Component {
               style={{ width: '272px' }}
             />
             {highlightNum === 0 && searchValue !== '' && (
-              <div className='hi-tree__searcher--empty'>{searchEmptyResult}</div>
+              <div className='hi-tree-legacy__searcher--empty'>{searchEmptyResult}</div>
             )}
           </div>
         )}
