@@ -90,7 +90,6 @@ const FormItem = (props) => {
           const { field, value } = item
           allValues[field] = value
         })
-        console.log('1', _fields)
         dispatch({ type: FILEDS_UPDATE, payload: _fields })
         triggerType === 'onChange' && internalValuesChange({ [field]: _value }, allValues)
       }
@@ -281,9 +280,11 @@ const FormItem = (props) => {
       : React.cloneElement(children, {
           [valuePropName]: _value,
           onChange: (e, ...args) => {
+            console.log('change')
             setEvent('onChange', children, '', e, ...args)
           },
           onBlur: (e, ...args) => {
+            console.log('onBlur')
             setEvent('onBlur', children, '', e, ...args)
           }
         })

@@ -11,6 +11,7 @@ const SingleInput = (props) => {
     clearable,
     onFocus,
     theme,
+    onBlur,
     onClick,
     selectedItems: propsSelectItem,
     handleKeyDown,
@@ -70,6 +71,7 @@ const SingleInput = (props) => {
             placeholder={placeholder}
             onKeyDown={handleKeyDown}
             onFocus={onFocus}
+            onBlur={onBlur}
             readOnly
           />
         </div>

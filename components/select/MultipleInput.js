@@ -15,6 +15,7 @@ const MultipleInput = ({
   multipleMode = 'nowrap',
   onFocus,
   theme,
+  onBlur,
   onClick,
   onClickOption,
   onClear,
@@ -111,7 +112,7 @@ const MultipleInput = ({
         )}
         {searchable && !disabled && (
           <div className="hi-select__input--search">
-            <input type="text" onKeyDown={handleKeyDown} onFocus={onFocus} readOnly />
+            <input type="text" onKeyDown={handleKeyDown} onFocus={onFocus} onBlur={onBlur} readOnly />
           </div>
         )}
       </div>

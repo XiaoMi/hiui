@@ -23,6 +23,7 @@ const InternalSelect = (props) => {
     optionWidth,
     render,
     multipleWrap,
+    onBlur,
     onFocus,
     dataSource,
     filterOption,
@@ -414,6 +415,7 @@ const InternalSelect = (props) => {
           selectedItems={selectedItems || []}
           multipleMode={multipleWrap}
           cacheSelectItem={cacheSelectItem}
+          onBlur={onBlur}
           onFocus={onFocus}
           onClickOption={onClickOption}
           onClear={deleteAllItems}
@@ -451,6 +453,7 @@ const InternalSelect = (props) => {
           mode={type}
           searchPlaceholder={searchPlaceholder}
           theme={theme}
+          onBlur={onBlur}
           onFocus={onFocus}
           isOnSearch={dataSource}
           onSearch={debouncedFilterItems}
