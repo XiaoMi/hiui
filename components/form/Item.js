@@ -280,11 +280,9 @@ const FormItem = (props) => {
       : React.cloneElement(children, {
           [valuePropName]: _value,
           onChange: (e, ...args) => {
-            console.log('change')
             setEvent('onChange', children, '', e, ...args)
           },
           onBlur: (e, ...args) => {
-            console.log('onBlur')
             setEvent('onBlur', children, '', e, ...args)
           }
         })
