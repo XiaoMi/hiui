@@ -1,3 +1,5 @@
+/* eslint-disable no-case-declarations */
+import _ from 'lodash'
 export const FILEDS_INIT = 'FILEDS_INIT'
 export const FILEDS_UPDATE = 'FILEDS_UPDATE'
 export const FILEDS_UPDATE_VALUE = 'FILEDS_UPDATE_VALUE'
@@ -8,12 +10,12 @@ const FormReducer = (state, action) => {
   switch (action.type) {
     case FILEDS_INIT:
       const { fields } = state
-      const initfields = fields.filter((item) => {
+      const initfields = [...fields].filter((item) => {
         return action.payload.field !== item.field
       })
       return Object.assign({}, { ...state }, { fields: initfields.concat(action.payload) })
     case FILEDS_UPDATE:
-      return Object.assign({}, { ...state }, { fields: action.payload })
+      return Object.assign({}, { ...state }, { fields: _.cloneDeep(action.payload) })
     case FILEDS_REMOVE:
       const _fields = state.fields.filter((item) => {
         return action.payload !== item.field && action.payload !== item.propsField
@@ -23,7 +25,6 @@ const FormReducer = (state, action) => {
     case FILEDS_INIT_LIST:
       const { listNames } = state
       !listNames.includes(action.payload) && listNames.push(action.payload)
-
       return Object.assign({}, { ...state }, { listNames: listNames })
     case FILEDS_UPDATE_LIST:
       return Object.assign({}, { ...state }, { listValues: action.payload })

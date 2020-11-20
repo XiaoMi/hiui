@@ -90,11 +90,12 @@ const FormItem = (props) => {
           const { field, value } = item
           allValues[field] = value
         })
+        console.log('1', _fields)
         dispatch({ type: FILEDS_UPDATE, payload: _fields })
         triggerType === 'onChange' && internalValuesChange({ [field]: _value }, allValues)
       }
     },
-    [fields]
+    [fields, formState]
   )
 
   const resetValidate = useCallback((value = '') => {
@@ -214,7 +215,7 @@ const FormItem = (props) => {
       })
       hasTriggerType && validate(triggerType, '', currentValue)
     },
-    [fields]
+    [fields, formState]
   )
 
   const labelWidth = useCallback(() => {
@@ -275,7 +276,6 @@ const FormItem = (props) => {
     if (!children) {
       return null
     }
-
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {
