@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 import Icon from '../icon'
@@ -16,8 +16,10 @@ const TabItem = ({
   deleteTab,
   dragStart,
   dragEnd,
-  canScroll
+  canScroll,
+  handleKeyDown
 }) => {
+  const tabItemRef = useRef(null)
   const { tabTitle, tabId, tabDesc, disabled, closeable } = item
   const itemClasses = classNames(`${prefixCls}__item`, {
     [`${prefixCls}__item--active`]: tabId === activeId,
@@ -46,9 +48,14 @@ const TabItem = ({
   return (
     <div
       data-id={index}
+      ref={tabItemRef}
       onClick={(e) => handleClick(item, e)}
       className={itemClasses}
       draggable={draggable}
+      tabIndex={tabId === activeId && !disabled ? 0 : -1}
+      onKeyDown={(e) => {
+        handleKeyDown(e, index, tabItemRef)
+      }}
       data-item={JSON.stringify({ ..._.omit(item, 'tabTitle'), newIndex: index })}
       onDragEnd={(e) => dragEnd(e, item)}
       onDragStart={(e) => dragStart(e, item)}
