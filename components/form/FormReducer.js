@@ -14,8 +14,7 @@ const FormReducer = (state, action) => {
       })
       return Object.assign({}, { ...state }, { fields: initfields.concat(action.payload) })
     case FILEDS_UPDATE:
-      console.log('FILEDS_UPDATE', action.payload)
-      return Object.assign({}, { ...state }, { fields: action.payload })
+      return Object.assign({}, { ...state }, { fields: [...action.payload] })
     case FILEDS_REMOVE:
       const _fields = state.fields.filter((item) => {
         return action.payload !== item.field && action.payload !== item.propsField

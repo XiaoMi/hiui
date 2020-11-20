@@ -51,7 +51,12 @@ const InternalForm = (props) => {
           item.setValue(value)
         }
       })
-      dispatch({ type: FILEDS_UPDATE, payload: _fields })
+      dispatch({
+        type: FILEDS_UPDATE,
+        payload: _fields.filter((item) => {
+          return item._type !== 'list'
+        })
+      })
       // 处理 list value
       Object.keys(values).forEach((key) => {
         listNames.includes(key) &&
