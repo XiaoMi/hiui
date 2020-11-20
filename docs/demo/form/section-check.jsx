@@ -9,12 +9,7 @@ import Select from '../../../components/select'
 import Cascader from '../../../components/cascader'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'form-check'
-const leftOptions = [
-  '表单验证',
-  '校验指定表单项',
-  '填充表单',
-  '表单验证快捷用法'
-]
+const leftOptions = ['表单验证', '校验指定表单项', '填充表单', '表单验证快捷用法']
 
 const desc = [
   '对表单数据域进行交互',
@@ -35,7 +30,8 @@ const code = [
           form: {
             name: '',
             region: '',
-            count: ''
+            count: '',
+            store:''
           },
           checkedIndex: -1,
           rules: {
@@ -69,6 +65,7 @@ const code = [
     
       handleSubmit() {
         this.form.current.validate((valid,error) => {
+          console.log(valid,error)
           if(!error) {
             console.log(valid)
             alert('submit')
@@ -112,6 +109,25 @@ const code = [
                 <FormItem label='数量' field='count'>
                   <Input placeholder='请输入'/>
                 </FormItem>
+                <FormItem label='门店' field='store'>
+                <Select
+                  data={[
+                    { title:'电视', id:'3' },
+                    { title:'手机', id:'2' },
+                    { title:'笔记本', id:'4'},
+                    { title:'生活周边', id:'5' },
+                    { title:'办公', id:'6' },
+                  ]}
+                  type="multiple"
+                  searchable
+                  showCheckAll
+                  placeholder='请选择'
+                  emptyContent='无匹配数据'
+                  onChange={item => {
+                    console.log('多选结果', item)
+                  }}
+                />
+              </FormItem>
                 <FormItem label='地区' field='region'>
                   <Radio.Group
                     data={['北京', '上海', '重庆']}
