@@ -90,7 +90,6 @@ const FormItem = (props) => {
           const { field, value } = item
           allValues[field] = value
         })
-        console.log('1', _fields)
         dispatch({ type: FILEDS_UPDATE, payload: _fields })
         triggerType === 'onChange' && internalValuesChange({ [field]: _value }, allValues)
       }
