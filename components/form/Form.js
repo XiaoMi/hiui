@@ -108,7 +108,6 @@ const InternalForm = (props) => {
         childrenField.value = value
         childrenField.resetValidate(value)
       })
-
       dispatch({ type: FILEDS_UPDATE, payload: _fields })
       cb instanceof Function && cb()
       // 比较耗性能
