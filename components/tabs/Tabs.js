@@ -69,7 +69,7 @@ const Tabs = ({
     const hideIndex = hiddenTabItems.findIndex((item) => item.tabId === activeId)
     latestActiveId.current = index
 
-    if (index === -1 && type === 'editable' && showTabItems.length > 0) {
+    if (index === -1 && showTabItems.length > 0) {
       setActiveId(showTabItems[0].tabId)
     }
 
