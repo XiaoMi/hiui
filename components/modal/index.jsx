@@ -114,86 +114,88 @@ const InternalModalComp = ({
         className={Classnames(`${PREFIX}__mask`, {
           [`${PREFIX}__mask--visible`]: visible
         })}
+      />
+      <div
+        className={`${PREFIX}__outter`}
+        style={{ display: vi === false && 'none' }}
         onClick={() => {
           if (maskClosable && onCancel) {
             onCancel()
           }
         }}
-      />
-      <div
-        className={`${PREFIX}__container`}
-        style={{ display: vi === false && 'none' }}
-        tabIndex={-1}
-        ref={modalRef}
-        onKeyDown={trapTabKey}
       >
-        <CSSTransition
-          in={visible}
-          timeout={0}
-          classNames={'modal-transition'}
-          onExited={() => {
-            setTimeout(() => {
-              setVi(false)
-              focusedElementBeforeOpenModal.current.focus()
-            }, 300)
-          }}
-        >
-          <div
-            className={Classnames(`${PREFIX}__wrapper`, `${PREFIX}__wrapper--${size}`)}
-            style={{ width, height, ...style }}
+        <div className={`${PREFIX}__container`} tabIndex={-1} ref={modalRef} onKeyDown={trapTabKey}>
+          <CSSTransition
+            in={visible}
+            timeout={0}
+            classNames={'modal-transition'}
+            onExited={() => {
+              setTimeout(() => {
+                setVi(false)
+                focusedElementBeforeOpenModal.current.focus()
+              }, 300)
+            }}
           >
             <div
-              className={Classnames(`${PREFIX}__header`, {
-                [`${PREFIX}__header--divided`]: showHeaderDivider
-              })}
+              className={Classnames(`${PREFIX}__wrapper`, `${PREFIX}__wrapper--${size}`)}
+              style={{ width, height, ...style }}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
             >
-              {title}
-              <Icon
-                name={'close'}
-                style={{ cursor: 'pointer' }}
-                onClick={() => {
-                  if (onCancel) {
-                    onCancel()
-                  }
-                }}
-              />
-            </div>
-            <div className={`${PREFIX}__content`}>{children}</div>
-            {footer !== null && (
               <div
-                className={Classnames(`${PREFIX}__footer`, {
-                  [`${PREFIX}__footer--divided`]: showFooterDivider
+                className={Classnames(`${PREFIX}__header`, {
+                  [`${PREFIX}__header--divided`]: showHeaderDivider
                 })}
               >
-                {footer === undefined && cancelText !== null && (
-                  <Button
-                    type={'line'}
-                    onClick={() => {
-                      if (onCancel) {
-                        onCancel()
-                      }
-                    }}
-                  >
-                    {cancelText || localeDatas.modal.cancelText}
-                  </Button>
-                )}
-                {footer === undefined && confirmText !== null && (
-                  <Button
-                    type={'primary'}
-                    onClick={() => {
-                      if (onConfirm) {
-                        onConfirm()
-                      }
-                    }}
-                  >
-                    {confirmText || localeDatas.modal.confirmText}
-                  </Button>
-                )}
-                {footer}
+                {title}
+                <Icon
+                  name={'close'}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    if (onCancel) {
+                      onCancel()
+                    }
+                  }}
+                />
               </div>
-            )}
-          </div>
-        </CSSTransition>
+              <div className={`${PREFIX}__content`}>{children}</div>
+              {footer !== null && (
+                <div
+                  className={Classnames(`${PREFIX}__footer`, {
+                    [`${PREFIX}__footer--divided`]: showFooterDivider
+                  })}
+                >
+                  {footer === undefined && cancelText !== null && (
+                    <Button
+                      type={'line'}
+                      onClick={() => {
+                        if (onCancel) {
+                          onCancel()
+                        }
+                      }}
+                    >
+                      {cancelText || localeDatas.modal.cancelText}
+                    </Button>
+                  )}
+                  {footer === undefined && confirmText !== null && (
+                    <Button
+                      type={'primary'}
+                      onClick={() => {
+                        if (onConfirm) {
+                          onConfirm()
+                        }
+                      }}
+                    >
+                      {confirmText || localeDatas.modal.confirmText}
+                    </Button>
+                  )}
+                  {footer}
+                </div>
+              )}
+            </div>
+          </CSSTransition>
+        </div>
       </div>
     </div>,
     container || defaultContainer.current
