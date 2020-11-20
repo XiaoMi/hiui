@@ -9,6 +9,7 @@
 - 修复 `Table` 列操作 icon 丢失问题 [#1336](https://github.com/XiaoMi/hiui/issues/1336)
 - 修复 `Table` 表头吸顶层级显示问题 [#1318](https://github.com/XiaoMi/hiui/issues/1318)
 - 修复 `Table` 内嵌式设置列宽不正确的问题 [#1325](https://github.com/XiaoMi/hiui/issues/1325)
+- 修复 `DatePicker` weekOffset 为 1 时 周与日对照显示异常 [#1352](https://github.com/XiaoMi/hiui/issues/1352)
 - 新增 HiUI 基础样式 css 文件 [#1388](https://github.com/XiaoMi/hiui/issues/1388)
 
 ## 3.1.0
