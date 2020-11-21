@@ -107,12 +107,12 @@ class Select extends Component {
   }
 
   componentDidMount () {
-    window.addEventListener('click', this.clickOutsideHandel)
+    window.addEventListener('click', this.clickOutsideHandel, true)
     this.resetFocusedIndex()
   }
 
   componentWillUnmount () {
-    window.removeEventListener('click', this.clickOutsideHandel)
+    window.removeEventListener('click', this.clickOutsideHandel, true)
   }
 
   clickOutside (e) {
