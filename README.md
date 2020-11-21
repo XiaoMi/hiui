@@ -12,12 +12,12 @@
 
 ---
 
-HIUI is a solution that is adequate for the fomulation and implementation of interaction and UI design standard for front, middle and backend .
+HIUI is a solution that is adequate for the formulation and implementation of interaction and UI design standard for front, middle and backend .
 
 ## Features
 
 - Highly minimize user perception of interaction costs and predictability of interactions
-- Build outstanding vitual style and get vitual design and interface specification for typical scenario
+- Build outstanding virtual style and get virtual design and interface specification for typical scenario
 - Highly refined design experience in OA, warehousing and after-sales systems, BI systems, and corporate mid-station projects
 
 ## Install
