@@ -13,6 +13,7 @@
 - 修复 `Form` Form.List 和 Form.Item 同一级混用显示异常问题 [#1343](https://github.com/XiaoMi/hiui/issues/1343)
 - 修复 `DatePicker` weekOffset 为 1 时 周与日对照显示异常 [#1352](https://github.com/XiaoMi/hiui/issues/1352)
 - 优化 `Select` 弹层触发方式 [#1358](https://github.com/XiaoMi/hiui/issues/1358)
+- 优化 `Search` 后置元素应该收起下来选项 [#1341](https://github.com/XiaoMi/hiui/issues/1341)
 - 新增 HiUI 基础样式 css 文件 [#1388](https://github.com/XiaoMi/hiui/issues/1388)
 
 ## 3.1.0
