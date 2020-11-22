@@ -17,8 +17,6 @@ class Demo extends React.Component {
   render() {
     return (
       <Input
-      value={100}
-      type={'amount'}
         style={{ width: 250 }}
         placeholder='请输入'
       />
