@@ -343,9 +343,6 @@ class Input extends Component {
         }`}
         style={this.props.style}
         data-value={this.state.valueTrue}
-        onClick={(e) => {
-          this._Input.current.focus()
-        }}
         onMouseOver={(e) => {
           this.setState({
             hover: true
