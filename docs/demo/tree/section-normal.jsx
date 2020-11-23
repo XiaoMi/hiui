@@ -1,7 +1,6 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Tree, { LegacyTree } from '../../../components/tree'
-import _data from './bg.json'
 const prefix = 'tree-normal'
 const desc = '二叉树或多叉树的展现形式，常见于组织架构、文件管理、索引目录等应用场景'
 const rightOptions = ['基础单选V3', '基础单选V2']
@@ -50,7 +49,7 @@ const code = [
           <div style={{width:500}}>
             <Tree
               defaultExpandAll
-              data={_data}
+              data={this.state.treeData}
               onChange={data => {console.log('Tree data:', data)}}
               defaultSelectedId={1}
               onSelect={(item) => console.log('select node', item)}
@@ -117,6 +116,6 @@ const code = [
   }
 ]
 const DemoNormal = () => (
-  <DocViewer code={code} scope={{ Tree, LegacyTree, _data }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
+  <DocViewer code={code} scope={{ Tree, LegacyTree }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
 )
 export default DemoNormal
