@@ -21,10 +21,12 @@ textarea.#{$input} {
   transition: border-color 0.3s;
 
   &:not(.disabled):hover {
+    z-index: 1;
     border-color: use-color('primary');
   }
 
   &.active {
+    z-index: 1;
     border-color: use-color('primary');
   }
 
@@ -118,10 +120,12 @@ textarea.#{$input} {
     transition: border-color 0.3s;
 
     &:not(.disabled):hover {
+      z-index: 1;
       border-color: use-color('primary');
     }
 
     &.active {
+      z-index: 1;
       border-color: use-color('primary');
     }
 
@@ -201,9 +205,11 @@ textarea.#{$input} {
   }
 
   &__prepend {
+    margin-right: -1px;
+    z-index: 1;
+
     .hi-btn,
     .hi-select__input {
-      border-right-color: transparent;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
       border-top-left-radius: 2px;
@@ -220,10 +226,10 @@ textarea.#{$input} {
 
   &__append {
     color: use-color('primary');
+    margin-left: -1px;
 
     .hi-btn,
     .hi-select__input {
-      border-left-color: transparent;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
       border-top-right-radius: 2px;
