@@ -76,7 +76,7 @@ const Search = ({
             className={disabled ? 'disabled' : ''}
             onClick={(e) => {
               e.preventDefault()
-              setDropdownShow(true)
+              setDropdownShow(false)
               onSearch && onSearch(inputVal)
             }}
           >
@@ -90,7 +90,7 @@ const Search = ({
             disabled={disabled}
             onClick={(e) => {
               e.preventDefault()
-              setDropdownShow(true)
+              setDropdownShow(false)
               onSearch && onSearch(inputVal)
             }}
           />

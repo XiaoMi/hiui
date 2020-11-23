@@ -98,7 +98,10 @@ const InternalSelect = (props) => {
     )
     setSelectedItems(selectedItems)
     setDropdownItems(_data)
-    dataSource && type === 'multiple' && setCacheSelectItem(selectedItems)
+    if (dataSource && type === 'multiple') {
+      setCacheSelectItem(selectedItems)
+      setDropdownItems(selectedItems)
+    }
   }, [data])
 
   const localeDatasProps = useCallback(
