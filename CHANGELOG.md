@@ -10,7 +10,7 @@
 - 修复 `Table` 表头吸顶层级显示问题 [#1318](https://github.com/XiaoMi/hiui/issues/1318)
 - 修复 `Table` 内嵌式设置列宽不正确的问题 [#1325](https://github.com/XiaoMi/hiui/issues/1325)
 - 修复 `LegacyTable` 列冻结样式显示异常 [#1325](https://github.com/XiaoMi/hiui/issues/1325)
-- 修复 `SelectTree` 下拉选择上滑动显示异常 [#1344](https://github.com/XiaoMi/hiui/issues/1344)
+- 修复 `SelectTree` 下拉选择上滑动显示异常 [#1351](https://github.com/XiaoMi/hiui/issues/1351)
 - 修复 `Form` Form.List 和 Form.Item 同一级混用显示异常问题 [#1343](https://github.com/XiaoMi/hiui/issues/1343)
 - 修复 `DatePicker` weekOffset 为 1 时 周与日对照显示异常 [#1352](https://github.com/XiaoMi/hiui/issues/1352)
 - 优化 `Select` 弹层触发方式 [#1358](https://github.com/XiaoMi/hiui/issues/1358)
