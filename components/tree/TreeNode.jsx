@@ -6,8 +6,9 @@ import Classnames from 'classnames'
 import TreeContext from './context'
 
 import Switcher from './Switcher'
+import _ from 'lodash'
 
-const TreeNode = ({ node }) => {
+const TreeNode = ({ node, expanded }) => {
   const {
     treeNodeRender,
     checkable,
@@ -16,7 +17,6 @@ const TreeNode = ({ node }) => {
     onSelectNode,
     selectedId,
     onCheckNode,
-    expandedNodeIds,
     onExpandNode,
     draggable,
     onLoadChildren,
@@ -49,20 +49,18 @@ const TreeNode = ({ node }) => {
       })
     }
     const _isAncestorSiblingLast = isAncestorSiblingLast.reverse()
-    return Array(times)
-      .fill('')
-      .map((indent, index) => {
-        return (
-          <span key={index} style={{ alignSelf: 'stretch' }} id={index}>
-            <span
-              className={Classnames('tree-node__indent', {
-                'tree-node__indent--parent-tail': _isAncestorSiblingLast[index] && index !== times - 1,
-                'tree-node__indent--tail': isSiblingLast && times - 1 === index
-              })}
-            />
-          </span>
-        )
-      })
+    return _.times(times, (index) => {
+      return (
+        <span key={index} style={{ alignSelf: 'stretch' }} id={index}>
+          <span
+            className={Classnames('tree-node__indent', {
+              'tree-node__indent--parent-tail': _isAncestorSiblingLast[index] && index !== times - 1,
+              'tree-node__indent--tail': isSiblingLast && times - 1 === index
+            })}
+          />
+        </span>
+      )
+    })
   }, [])
 
   // 渲染复选框
@@ -184,7 +182,7 @@ const TreeNode = ({ node }) => {
       {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
       {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf && !node.children)) && (
         <Switcher
-          expandedIds={expandedNodeIds}
+          expanded={expanded}
           node={node}
           apperance={apperance}
           onExpandNode={onExpandNode}

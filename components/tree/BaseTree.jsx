@@ -63,7 +63,6 @@ const BaseTree = ({
         semiCheckedIds,
         selectedId: selectNodeId,
         onSelectNode,
-        expandedNodeIds,
         onExpandNode,
         editable,
         editMenu,
@@ -87,7 +86,7 @@ const BaseTree = ({
               return ancestors.every((ancestor) => expandedNodeIds.includes(ancestor.id))
             })
             .map((node) => {
-              return <TreeNode key={node.id} node={node} />
+              return <TreeNode key={node.id} node={node} expanded={expandedNodeIds.includes(node.id)} />
             })}
         </ul>
       </div>

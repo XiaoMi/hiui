@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useMemo, memo } from 'react'
 import Loading from './IconLoading'
 import Icon from '../icon'
 
@@ -8,9 +8,13 @@ const switcherApperanceMap = {
   line: ['plus-square', 'minus-square']
 }
 
-const Switcher = ({ apperance, onLoadChildren, node, onExpandNode, expandedIds }) => {
-  const expanded = expandedIds.includes(node.id)
+const Switcher = memo(({ apperance, onLoadChildren, node, onExpandNode, expanded }) => {
   const [loading, setLoading] = useState(false)
+
+  const iconStyle = useMemo(() => {
+    return { cursor: 'pointer', marginRight: 8, fontSize: 16 }
+  }, [])
+
   const handleClick = useCallback(
     (e) => {
       e.stopPropagation()
@@ -19,28 +23,28 @@ const Switcher = ({ apperance, onLoadChildren, node, onExpandNode, expandedIds }
         onLoadChildren(node).then(
           (res) => {
             setLoading(false)
-            onExpandNode(node, !expanded, expandedIds)
+            onExpandNode(node, !expanded)
           },
           () => {
             setLoading(false)
           }
         )
       } else {
-        onExpandNode(node, !expanded, expandedIds)
+        onExpandNode(node, !expanded)
       }
     },
-    [node, expanded, onLoadChildren, onExpandNode, expandedIds]
+    [node, expanded, onLoadChildren, onExpandNode]
   )
 
   return loading ? (
     <Loading />
   ) : (
     <Icon
-      style={{ cursor: 'pointer', marginRight: 8, fontSize: 16 }}
+      style={iconStyle}
       name={expanded ? switcherApperanceMap[apperance][1] : switcherApperanceMap[apperance][0]}
       onClick={handleClick}
     />
   )
-}
+})
 
 export default Switcher

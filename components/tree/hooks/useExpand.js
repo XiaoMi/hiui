@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 
-const useSelect = ({ defaultExpandedIds, expandedIds, onExpand }) => {
+const useExpand = ({ defaultExpandedIds, expandedIds, onExpand }) => {
   const [_expandedIds, setExpandedId] = useState(expandedIds || defaultExpandedIds || [])
 
   useEffect(() => {
@@ -10,22 +10,23 @@ const useSelect = ({ defaultExpandedIds, expandedIds, onExpand }) => {
   }, [expandedIds])
 
   const onExpandNode = useCallback(
-    (expandedNode, isExpanded, epdIds) => {
-      const ids = [...epdIds]
+    (expandedNode, isExpanded) => {
       if (expandedNode !== undefined && !expandedIds) {
-        setExpandedId(isExpanded ? ids.concat(expandedNode.id) : ids.filter((id) => id !== expandedNode.id))
+        setExpandedId(
+          isExpanded ? _expandedIds.concat(expandedNode.id) : _expandedIds.filter((id) => id !== expandedNode.id)
+        )
       }
       if (onExpand) {
         onExpand(
           expandedNode,
           isExpanded,
-          isExpanded ? ids.concat(expandedNode.id) : ids.filter((id) => id !== expandedNode.id)
+          isExpanded ? _expandedIds.concat(expandedNode.id) : _expandedIds.filter((id) => id !== expandedNode.id)
         )
       }
     },
-    [expandedIds]
+    [_expandedIds]
   )
   return [_expandedIds, onExpandNode]
 }
 
-export default useSelect
+export default useExpand
