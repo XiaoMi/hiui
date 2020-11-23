@@ -5,7 +5,7 @@ import Classnames from 'classnames'
 
 const CustomTreeNode = ({
   node,
-  status: { selected },
+  selected,
   onSelectNode,
   searchValue,
   editingNodes,

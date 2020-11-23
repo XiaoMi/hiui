@@ -5,12 +5,7 @@ import Icon from '../icon'
 import Classnames from 'classnames'
 import TreeContext from './context'
 
-import Loading from './IconLoading'
-const switcherApperanceMap = {
-  default: ['caret-right', 'caret-down'],
-  folder: ['folder', 'folder-open'],
-  line: ['plus-square', 'minus-square']
-}
+import Switcher from './Switcher'
 
 const TreeNode = ({ node }) => {
   const {
@@ -36,45 +31,13 @@ const TreeNode = ({ node }) => {
 
   const treeNodeRef = useRef(null)
 
-  const [loading, setLoading] = useState(false)
-
   // 渲染 apperance 占位
   const renderApperancePlaceholder = useCallback((apperance) => {
     if (apperance === 'folder') {
       return <Icon name="file" style={{ marginRight: 8 }} />
     }
   }, [])
-  // 渲染展开收起
-  const renderSwitcher = useCallback(
-    (expandedIds, node, onExpandNode, onLoadChildren) => {
-      const expanded = expandedIds.includes(node.id)
-      return loading ? (
-        <Loading />
-      ) : (
-        <Icon
-          style={{ cursor: 'pointer', marginRight: 8, fontSize: 16 }}
-          name={expanded ? switcherApperanceMap[apperance][1] : switcherApperanceMap[apperance][0]}
-          onClick={() => {
-            if (onLoadChildren && !node.children) {
-              setLoading(true)
-              onLoadChildren(node).then(
-                (res) => {
-                  setLoading(false)
-                  onExpandNode(node, !expanded, expandedIds)
-                },
-                () => {
-                  setLoading(false)
-                }
-              )
-            } else {
-              onExpandNode(node, !expanded, expandedIds)
-            }
-          }}
-        />
-      )
-    },
-    [loading, setLoading, apperance]
-  )
+
   // 渲染空白占位
   const renderIndent = useCallback((times, isSiblingLast, ancestors) => {
     const isAncestorSiblingLast = []
@@ -189,7 +152,7 @@ const TreeNode = ({ node }) => {
           }}
         >
           {treeNodeRender ? (
-            treeNodeRender(node, { selected: selectedId === id }, treeNodeRef, onSelectNode)
+            treeNodeRender(node, selectedId === id, treeNodeRef, onSelectNode)
           ) : (
             <div
               className={Classnames('title__text', {
@@ -219,8 +182,15 @@ const TreeNode = ({ node }) => {
         node.ancestors
       )}
       {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
-      {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf && !node.children)) &&
-        renderSwitcher(expandedNodeIds, node, onExpandNode, onLoadChildren)}
+      {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf && !node.children)) && (
+        <Switcher
+          expandedIds={expandedNodeIds}
+          node={node}
+          apperance={apperance}
+          onExpandNode={onExpandNode}
+          onLoadChildren={onLoadChildren}
+        />
+      )}
       {checkable && renderCheckbox(node, { checked: checkedNodes, semiChecked: semiCheckedIds })}
       {renderTitle(node, selectedId)}
     </li>
