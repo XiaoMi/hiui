@@ -68,7 +68,7 @@ const Tabs = ({
     const index = showTabItems.findIndex((item) => item.tabId === activeId)
     const hideIndex = hiddenTabItems.findIndex((item) => item.tabId === activeId)
     latestActiveId.current = index
-    if (index === -1 && showTabItems.length > 0) {
+    if (index === -1 && hideIndex === -1 && showTabItems.length > 0) {
       setActiveId(showTabItems[0].tabId)
     }
 
