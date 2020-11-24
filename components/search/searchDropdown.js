@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react'
+import React, { useRef, useCallback } from 'react'
 import classNames from 'classnames'
 import Popper from '../popper'
 import Loading from '../loading'
@@ -14,14 +14,11 @@ const SearchDropdown = ({
   theme,
   onClickOutside,
   loading,
-  overlayClassName
+  overlayClassName,
+  focusIndex,
+  subFocusIndex
 }) => {
   const popperDropdown = useRef(null)
-  const [dropdownData, setDropdownData] = useState(data)
-
-  useEffect(() => {
-    setDropdownData(data)
-  }, [data])
 
   const highlightKeyword = useCallback(
     (title, uniqueKey) => {
@@ -51,15 +48,17 @@ const SearchDropdown = ({
     [inputVal]
   )
   const ItemChildren = useCallback(
-    (item) => {
+    (item, isParentFocus) => {
       return (
         <ul>
           {item.children &&
-            item.children.map((ele) => {
+            item.children.map((ele, idx) => {
               return (
                 <li className={`${prefixCls}_dropdown--item`} style={{ padding: 0 }} key={ele.id}>
                   <span
-                    className={`${prefixCls}_dropdown--item_normal`}
+                    className={classNames(`${prefixCls}_dropdown--item_normal`, {
+                      [`${prefixCls}_dropdown--item--focus`]: isParentFocus && subFocusIndex === idx
+                    })}
                     onClick={() => {
                       optionsClick(typeof ele.title === 'string' ? ele.title : ele.id, ele)
                     }}
@@ -76,9 +75,10 @@ const SearchDropdown = ({
   )
 
   const DataSourceRender = useCallback(
-    (item) => {
+    (item, idx) => {
       const className = classNames(`${prefixCls}_dropdown--item_normal`, {
-        [`${prefixCls}_dropdown--item-title`]: item.children
+        [`${prefixCls}_dropdown--item-title`]: item.children,
+        [`${prefixCls}_dropdown--item--focus`]: focusIndex === idx && !item.children
       })
       return (
         <li className={`${prefixCls}_dropdown--item`} key={item.id}>
@@ -90,7 +90,7 @@ const SearchDropdown = ({
           >
             {typeof item.title === 'string' ? highlightKeyword(item.title, item.id) : item.title}
           </span>
-          {item.children && ItemChildren(item)}
+          {item.children && ItemChildren(item, focusIndex === idx)}
         </li>
       )
     },
@@ -113,9 +113,9 @@ const SearchDropdown = ({
       <Loading visible={loading}>
         <div className={`${prefixCls}_dropdown theme__${theme}`} ref={popperDropdown}>
           <ul className={`${prefixCls}_dropdown--items`}>
-            {dropdownData && dropdownData.length > 0 ? (
-              dropdownData.map((item) => {
-                return DataSourceRender(item)
+            {data && data.length > 0 ? (
+              data.map((item, idx) => {
+                return DataSourceRender(item, idx)
               })
             ) : (
               <li className={`${prefixCls}_dropdown--item-nodata`}>{searchEmptyResult}</li>
