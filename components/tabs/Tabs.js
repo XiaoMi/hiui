@@ -68,7 +68,6 @@ const Tabs = ({
     const index = showTabItems.findIndex((item) => item.tabId === activeId)
     const hideIndex = hiddenTabItems.findIndex((item) => item.tabId === activeId)
     latestActiveId.current = index
-
     if (index === -1 && showTabItems.length > 0) {
       setActiveId(showTabItems[0].tabId)
     }
@@ -105,25 +104,10 @@ const Tabs = ({
       return
     }
     const child = parentNode.childNodes[index]
-    const { width } = child.getBoundingClientRect()
-    const ink = inkRef.current
-    if (placement === 'horizontal') {
-      const offsetLeft = child.offsetLeft
-      if (index === 0) {
-        ink.style.width = `${width - 17}px`
-        ink.style.transform = `translateX(${offsetLeft}px)`
-      } else {
-        ink.style.width = `${width - 34}px`
-        ink.style.transform = `translateX(${offsetLeft + 17}px)`
-      }
-    } else {
-      const offsetTop = child.offsetTop
-      ink.style.transform = `translateY(${offsetTop}px)`
-    }
-    setTimeout(() => {
+    if (child) {
       const { width } = child.getBoundingClientRect()
       const ink = inkRef.current
-      if (placement === 'horizontal' && ink) {
+      if (placement === 'horizontal') {
         const offsetLeft = child.offsetLeft
         if (index === 0) {
           ink.style.width = `${width - 17}px`
@@ -132,8 +116,25 @@ const Tabs = ({
           ink.style.width = `${width - 34}px`
           ink.style.transform = `translateX(${offsetLeft + 17}px)`
         }
+      } else {
+        const offsetTop = child.offsetTop
+        ink.style.transform = `translateY(${offsetTop}px)`
       }
-    }, 300)
+      setTimeout(() => {
+        const { width } = child.getBoundingClientRect()
+        const ink = inkRef.current
+        if (placement === 'horizontal' && ink) {
+          const offsetLeft = child.offsetLeft
+          if (index === 0) {
+            ink.style.width = `${width - 17}px`
+            ink.style.transform = `translateX(${offsetLeft}px)`
+          } else {
+            ink.style.width = `${width - 34}px`
+            ink.style.transform = `translateX(${offsetLeft + 17}px)`
+          }
+        }
+      }, 300)
+    }
   }, [])
 
   const addTab = useCallback(() => {
