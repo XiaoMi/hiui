@@ -107,7 +107,7 @@ const Tabs = ({
     if (child) {
       const { width } = child.getBoundingClientRect()
       const ink = inkRef.current
-      if (placement === 'horizontal') {
+      if (placement === 'horizontal' && ink) {
         const offsetLeft = child.offsetLeft
         if (index === 0) {
           ink.style.width = `${width - 17}px`
