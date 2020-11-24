@@ -41,7 +41,7 @@ const Cell = ({
     >
       {level > 1 && columnIndex === 0 && <Indent times={level - 1} />}
       {columnIndex === 0 &&
-        (rowData.children ? (
+        (rowData.children && rowData.children.length > 0 ? (
           <Icon
             style={{ marginRight: 4, cursor: 'pointer' }}
             name={expandedTree ? 'caret-down' : 'caret-right'}

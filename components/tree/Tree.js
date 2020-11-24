@@ -421,11 +421,11 @@ const Tree = (props) => {
   )
 
   const treeNodeRender = useCallback(
-    (node, { selected }, treeNodeRef, onSelectNode) => {
+    (node, selected, treeNodeRef, onSelectNode) => {
       return (
         <CustomTreeNode
           node={node}
-          status={{ selected }}
+          selected={selected}
           onSelectNode={onSelectNode}
           searchValue={searchValue}
           editingNodes={editingNodes}
@@ -443,6 +443,16 @@ const Tree = (props) => {
       )
     },
     [searchValue, editingNodes, menuVisible, searchable]
+  )
+
+  const handleExpand = useCallback(
+    (expandedNode, isExpanded, ids) => {
+      setExpanded(ids)
+      if (onExpand) {
+        onExpand(expandedNode, isExpanded, ids)
+      }
+    },
+    [onExpand]
   )
   return (
     <React.Fragment>
@@ -478,29 +488,26 @@ const Tree = (props) => {
         onLoadChildren={onLoadChildren ? loadChildren : null}
         treeNodeRender={treeNodeRender}
         expandedIds={expanded}
-        onExpand={(expandedNode, isExpanded, ids) => {
-          setExpanded(ids)
-          if (onExpand) {
-            onExpand(expandedNode, isExpanded, ids)
-          }
-        }}
+        onExpand={handleExpand}
         onDrop={moveNode}
         onDragStart={onDragStart}
         data={filter && searchable && searchValue !== '' ? showData : cacheData}
       />
-      <Modal
-        title={localMap.modalTitle}
-        visible={modalVisible !== null}
-        onConfirm={() => {
-          deleteNode(modalVisible)
-          setModalVisible(null)
-        }}
-        onCancel={() => {
-          setModalVisible(null)
-        }}
-      >
-        {localMap.delTips}
-      </Modal>
+      {editable && (
+        <Modal
+          title={localMap.modalTitle}
+          visible={modalVisible !== null}
+          onConfirm={() => {
+            deleteNode(modalVisible)
+            setModalVisible(null)
+          }}
+          onCancel={() => {
+            setModalVisible(null)
+          }}
+        >
+          {localMap.delTips}
+        </Modal>
+      )}
     </React.Fragment>
   )
 }
