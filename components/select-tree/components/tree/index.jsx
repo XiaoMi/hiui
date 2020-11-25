@@ -42,7 +42,7 @@ const Tree = ({
       }}
     >
       <div className={`${PREFIX}`}>
-        {nodeDataState === 'loading' && <Loading size="small" />}
+        {nodeDataState === 'loading' || <Loading size="small" />}
         {nodeDataState === 'empty' && <span className="hi-select-tree--empty">empty</span>}
         {nodeDataState === 'normal' && <TreeNode data={getRootNodes(data)} flttenData={data} />}
       </div>
