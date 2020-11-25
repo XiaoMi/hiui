@@ -13,11 +13,22 @@
         }
       }
 
+      &:focus {
+        outline: none;
+
+        &:not(.hi-pagination__item--disabled) {
+          & > span {
+            border-color: rgba($color, 0.8);
+            color: $color;
+          }
+        }
+      }
+
       &--active:not(.hi-pagination__item--disabled) {
         > span {
-          border-color: $color;
+          border-color: $color !important;
           background-color: $color;
-          color: $white;
+          color: $white !important;
           cursor: default;
 
           &:hover {
@@ -114,6 +125,7 @@
         border: 1px solid transparent;
         transition: border-color $speed-fast $easing, color $speed-fast $easing;
       }
+
     }
 
     &--active {

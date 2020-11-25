@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { getPRCDate, deconstructDate } from '../utils'
 
-const useAltData = ({
-  altCalendarPreset,
-  altCalendar,
-  dateMarkPreset,
-  dateMarkRender
-}) => {
+const useAltData = ({ altCalendarPreset, altCalendar, dateMarkPreset, showPanel }) => {
   const [altCalendarPresetData, setAltCalendarPresetData] = useState({})
   const [dateMarkPresetData, setDateMarkPresetData] = useState({})
 
@@ -14,12 +9,11 @@ const useAltData = ({
   const getLunarPresetData = () => {
     const allPRCDate = {}
     if (['zh-CN', 'id-ID'].includes(altCalendarPreset)) {
-      const _urlKey =
-        altCalendarPreset === 'zh-CN' ? 'PRCLunar' : 'IndiaHoliday'
-      getPRCDate(_urlKey).then(res => {
-        Object.keys(res.data).forEach(key => {
-          let oneYear = {}
-          res.data[key][_urlKey].forEach(item => {
+      const _urlKey = altCalendarPreset === 'zh-CN' ? 'PRCLunar' : 'IndiaHoliday'
+      getPRCDate(_urlKey).then((res) => {
+        Object.keys(res.data).forEach((key) => {
+          const oneYear = {}
+          res.data[key][_urlKey].forEach((item) => {
             Object.assign(oneYear, {
               [item.date.replace(/-/g, '/')]: {
                 ...item,
@@ -29,14 +23,10 @@ const useAltData = ({
           })
           Object.assign(allPRCDate, oneYear)
         })
-        setAltCalendarPresetData(
-          altCalendar ? getAltCalendarData(allPRCDate) : allPRCDate
-        )
+        setAltCalendarPresetData(altCalendar ? getAltCalendarData(allPRCDate) : allPRCDate)
       })
     } else {
-      setAltCalendarPresetData(
-        altCalendar ? getAltCalendarData(allPRCDate) : {}
-      )
+      setAltCalendarPresetData(altCalendar ? getAltCalendarData(allPRCDate) : {})
     }
   }
   // 获取预置数据
@@ -45,19 +35,15 @@ const useAltData = ({
       return
     }
     if (dateMarkPreset === 'zh-CN') {
-      getPRCDate('PRCHoliday').then(res => {
+      getPRCDate('PRCHoliday').then((res) => {
         const allPRCDate = {}
-        Object.keys(res.data).forEach(key => {
-          Object.keys(res.data[key].PRCHoliday).forEach(elkey => {
+        Object.keys(res.data).forEach((key) => {
+          Object.keys(res.data[key].PRCHoliday).forEach((elkey) => {
             allPRCDate[elkey.replace(/-/g, '/')] =
               res.data[key].PRCHoliday[elkey] === '1' ? (
-                <span className='hi-datepicker__mark hi-datepicker__mark--rest'>
-                  休
-                </span>
+                <span className="hi-datepicker__mark hi-datepicker__mark--rest">休</span>
               ) : (
-                <span className='hi-datepicker__mark hi-datepicker__mark--work'>
-                  班
-                </span>
+                <span className="hi-datepicker__mark hi-datepicker__mark--work">班</span>
               )
           })
         })
@@ -66,10 +52,10 @@ const useAltData = ({
     }
   }
   // 合并用户自定义的日期信息作为presetData
-  const getAltCalendarData = allPRCDate => {
+  const getAltCalendarData = (allPRCDate) => {
     const allData = {}
     altCalendar.length > 0 &&
-      altCalendar.forEach(item => {
+      altCalendar.forEach((item) => {
         const dateInfo = deconstructDate(item.date)
         if (!Number.isNaN(dateInfo.year)) {
           Object.assign(allData, {
@@ -81,9 +67,11 @@ const useAltData = ({
   }
 
   useEffect(() => {
-    altCalendarPreset && getLunarPresetData()
-    dateMarkPreset && getMarkPresetData()
-  }, [])
+    if (showPanel) {
+      altCalendarPreset && getLunarPresetData()
+      dateMarkPreset && getMarkPresetData()
+    }
+  }, [showPanel])
   return [altCalendarPresetData, dateMarkPresetData]
 }
 

@@ -39,17 +39,14 @@ const code = [
             </FormItem>
             <FormItem label='门店'>
               <Select
-                dataSource={{
-                  method: 'GET',
-                  key: 'id',
-                  url: 'https://mife-gallery.test.mi.com/hiui/stores',
-                  transformResponse: res => {
-                    if (res.code === 200) {
-                      return res.data
-                    }
-                    return []
-                  }
-                }}
+                data={[
+                  { title:'电视', id:'3' },
+                  { title:'手机', id:'2' },
+                  { title:'笔记本', id:'4'},
+                  { title:'生活周边', id:'5' },
+                  { title:'办公', id:'6' },
+                ]}
+                type="multiple"
                 searchable
                 showCheckAll
                 placeholder='请选择'

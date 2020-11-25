@@ -1,0 +1,11 @@
+@import '../../core-css/index.scss';
+
+:root {
+  @include get-vars();
+}
+
+@each $color in map-keys($palette-primary) {
+  .theme__#{$color} {
+    @include get-vars(get-color($palette-primary, #{$color}));
+  }
+}

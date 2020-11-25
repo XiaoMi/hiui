@@ -1,47 +1,67 @@
 import React from 'react'
 import Classnames from 'classnames'
 
-export const BarProgress = (props) => {
-  function getWidth() {
-    if (!props.width || props.width <= 0) {
-      return props.size === 'large' ? 480 : 160
-    }
-    return props.width
-  }
+export default class BarProgress extends React.Component {
+  textRef = React.createRef()
+  state = { insidePlacement: 'right' }
 
-  function getHeight() {
-    const { size, height } = props
+  componentDidMount () {
+    if (this.props.placement === 'inside') {
+      if (
+        this.textRef.current &&
+        this.textRef.current.clientWidth >= this.getWidth() - ((this.getWidth() * this.props.percent) / 100 + 5)
+      ) {
+        this.setState({ insidePlacement: 'left' })
+      } else {
+        this.setState({ insidePlacement: 'right' })
+      }
+    }
+  }
+  getWidth = () => {
+    const { width, size } = this.props
+    if (!width || width <= 0) {
+      return size === 'large' ? 480 : 160
+    }
+    return width
+  }
+  getHeight = () => {
+    const { size, height } = this.props
     if (!height || height <= 0) {
       return size === 'large' ? 8 : size === 'default' ? 6 : 2
     }
     return height
   }
 
-  const prefix = 'hi-progress'
-  const { percent: percentNum, placement, tooltip = null, active } = props
-  const content = typeof props.content !== 'undefined' ? props.content : props.text // // api 兼容 1.x 为 text 2.x 改为 content
-  const showInfo = typeof props.showInfo !== 'undefined' ? props.showInfo : props.withOutText // // api 兼容 1.x 为 withOutText 2.x 改为 showInfo
-  const type = props.type || props.status
+  render () {
+    let prefix = 'hi-progress'
+    const { percent: percentNum, content, type, showInfo, placement, tooltip = null, active, text, withOutText, status  } = this.props
 
-  const percent = percentNum > 0 ? percentNum : 0
-  return (
-    <div>
-      <div className={`${prefix}__inner`} style={{ width: getWidth() + 'px', height: getHeight() + 'px' }}>
-        <div
-          className={Classnames(`${prefix}__bar ${prefix}__bar--${type}`, {
-            [`${prefix}__bar--active`]: active
-          })}
-          style={{ width: `${percent}%` }}
-        >
-          {showInfo && placement === 'inside' && getHeight() >= 14 && (
-            <div className={`${prefix}__text--inside`}>{content || `${percent}%`}</div>
-          )}
-          {tooltip}
+    const _content = typeof content !== 'undefined' ? content : text // // api 兼容 1.x 为 text 2.x 改为 content
+    const _showInfo = typeof showInfo !== 'undefined' ? showInfo : withOutText // // api 兼容 1.x 为 withOutText 2.x 改为 showInfo
+    const _type = type || status
+
+    const percent = percentNum > 0 ? percentNum : 0
+    return (
+      <div>
+        <div className={`${prefix}__inner`} style={{ width: this.getWidth() + 'px', height: this.getHeight() + 'px' }}>
+          <div
+            className={Classnames(`${prefix}__bar ${prefix}__bar--${_type}`, {
+              [`${prefix}__bar--active`]: active
+            })}
+            style={{ width: `${percent}%` }}
+          >
+            {_showInfo && placement === 'inside' && this.getHeight() >= 14 && (
+              <div ref={this.textRef} className={`${prefix}__text--inside inside--${this.state.insidePlacement}`}>
+                {_content || `${percent}%`}
+              </div>
+            )}
+            {tooltip}
+          </div>
         </div>
+        {_showInfo && placement === 'outside' && (
+          <div className={`${prefix}__text ${prefix}__text--${_type}`}>{_content || `${percent}%`}</div>
+        )}
       </div>
-      {showInfo && placement === 'outside' && (
-        <div className={`${prefix}__text ${prefix}__text--${type}`}>{content || `${percent}%`}</div>
-      )}
-    </div>
-  )
+    )
+  }
 }

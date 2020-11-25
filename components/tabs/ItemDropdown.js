@@ -40,7 +40,7 @@ class ItemDropdown extends Component {
     this.toggle(true)
   }
 
-  toggle (visible = this.state.visible) {
+  toggle = (visible = this.state.visible) => {
     this.setState({
       visible: !visible
     })
@@ -104,4 +104,4 @@ class ItemDropdown extends Component {
   }
 }
 
-export default Provider(ItemDropdown)
+export default ItemDropdown

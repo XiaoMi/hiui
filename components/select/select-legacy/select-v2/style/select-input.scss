@@ -5,7 +5,7 @@
   border-color: $themeColor;
 }
 
-.hi-select__input {
+.hi-select-legacy__input {
   position: relative;
   display: flex;
   align-items: center;
@@ -26,13 +26,13 @@
     background-color: #f2f2f2;
     color: #ccc;
 
-    .hi-select__input--icon {
+    .hi-select-legacy__input--icon {
       background-color: #f2f2f2;
       color: #ccc;
       margin-left: 0 !important;
     }
 
-    .hi-select__input--icon,
+    .hi-select-legacy__input--icon,
     input {
       cursor: not-allowed;
     }
@@ -48,17 +48,17 @@
   }
 
   &:not(.disabled):hover {
-    .hi-select__input--icon__expand.clearable {
+    .hi-select-legacy__input--icon__expand.clearable {
       display: none;
     }
 
-    .hi-select__input--icon__close {
+    .hi-select-legacy__input--icon__close {
       display: block;
       color: #bbb;
     }
   }
 
-  .hi-select__input--icon {
+  .hi-select-legacy__input--icon {
     flex: none;
   }
 
@@ -125,7 +125,7 @@
     zoom: 1;
     -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=1, M12=0, M21=0, M22=1)";
 
-    .hi-select__input--icon__close {
+    .hi-select-legacy__input--icon__close {
       display: none;
     }
   }
@@ -134,13 +134,13 @@
     height: 32px;
     line-height: 32px;
 
-    .hi-select__input--item,
-    .hi-select__input--search {
+    .hi-select-legacy__input--item,
+    .hi-select-legacy__input--search {
       flex: auto;
       padding: 0 0 0 12px;
     }
 
-    .hi-select__input--item {
+    .hi-select-legacy__input--item {
       height: 32px;
       line-height: 32px;
       overflow: hidden;
@@ -161,16 +161,16 @@
   &.multiple-values {
     padding: 4px 4px 0 4px;
 
-    .hi-select__input--icon {
+    .hi-select-legacy__input--icon {
       margin-top: -4px;
       margin-right: -4px;
     }
 
-    .hi-select__input--search {
+    .hi-select-legacy__input--search {
       padding-left: 3px;
     }
 
-    .hi-select__input--placeholder {
+    .hi-select-legacy__input--placeholder {
       position: absolute;
       top: 3px;
       left: 13px;
@@ -180,17 +180,17 @@
       color: #ccc;
       z-index: 1;
 
-      & ~ .hi-select__input-items .hi-select__input--search {
+      & ~ .hi-select-legacy__input-items .hi-select-legacy__input--search {
         padding: 0 20px 0 11px;
       }
     }
 
-    .hi-select__input-items {
+    .hi-select-legacy__input-items {
       display: flex;
       flex: auto;
       overflow: hidden;
 
-      &.hi-select__input-items--all {
+      &.hi-select-legacy__input-items--all {
         flex-wrap: wrap;
       }
 
@@ -208,7 +208,7 @@
       }
     }
 
-    .hi-select__input--item {
+    .hi-select-legacy__input--item {
       flex: none;
       position: relative;
       max-width: 60%;
@@ -242,7 +242,7 @@
       }
     }
 
-    .hi-select__input--search {
+    .hi-select-legacy__input--search {
       height: 22px;
       line-height: 22px;
       margin-bottom: 4px;
@@ -251,7 +251,7 @@
 }
 
 @each $key, $value in $theme-colors {
-  .theme__#{$key}.hi-select__input {
+  .theme__#{$key}.hi-select-legacy__input {
     &.active,
     &:not(.disabled):hover {
       @include input-theme($value);

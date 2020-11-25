@@ -35,14 +35,16 @@ const SettingMenu = () => {
   })
 
   return (
-    <div
-      ref={colMenuRef}
-      onClick={() => {
-        setShowPopper(!showPopper)
-      }}
-      className={'hi-table__setting-btn'}
-    >
-      <Icon name="set" />
+    <React.Fragment>
+      <div
+        ref={colMenuRef}
+        className={'hi-table__setting-btn'}
+        onClick={() => {
+          setShowPopper(!showPopper)
+        }}
+      >
+        <Icon name="set" />
+      </div>
       <Popper show={showPopper} attachEle={colMenuRef.current} zIndex={1040} placement="bottom-end" width="250">
         <div ref={popperMenu} className={`theme__${theme} hi-table__setting-menu`}>
           <DragDropContext
@@ -148,7 +150,7 @@ const SettingMenu = () => {
           </DragDropContext>
         </div>
       </Popper>
-    </div>
+    </React.Fragment>
   )
 }
 

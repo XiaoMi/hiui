@@ -170,8 +170,7 @@ $color-map: (
     transform: translateX(-50%);
     user-select: none;
 
-    &:focus,
-    &--focus {
+    &:focus {
       box-shadow: 0 0 0 5px use-color('primary-20');
       outline: none;
     }

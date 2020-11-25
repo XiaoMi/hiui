@@ -23,7 +23,6 @@ const InternalSelect = (props) => {
     optionWidth,
     render,
     multipleWrap,
-    onBlur,
     onFocus,
     dataSource,
     filterOption,
@@ -77,10 +76,6 @@ const InternalSelect = (props) => {
 
   useEffect(() => {
     setIsFouces(dropdownShow)
-    !dropdownShow &&
-      setTimeout(() => {
-        SelectWrapper.current.focus()
-      }, 0)
   }, [dropdownShow])
 
   useEffect(() => {
@@ -104,7 +99,10 @@ const InternalSelect = (props) => {
     )
     setSelectedItems(selectedItems)
     setDropdownItems(_data)
-    dataSource && type === 'multiple' && setCacheSelectItem(selectedItems)
+    if (dataSource && type === 'multiple') {
+      setCacheSelectItem(selectedItems)
+      setDropdownItems(selectedItems)
+    }
   }, [data])
 
   const localeDatasProps = useCallback(
@@ -433,7 +431,6 @@ const InternalSelect = (props) => {
           selectedItems={selectedItems || []}
           multipleMode={multipleWrap}
           cacheSelectItem={cacheSelectItem}
-          onBlur={onBlur}
           onFocus={onFocus}
           onClickOption={onClickOption}
           onClear={deleteAllItems}
@@ -473,7 +470,6 @@ const InternalSelect = (props) => {
           mode={type}
           searchPlaceholder={searchPlaceholder}
           theme={theme}
-          onBlur={onBlur}
           onFocus={onFocus}
           isOnSearch={dataSource}
           onSearch={debouncedFilterItems}

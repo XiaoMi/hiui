@@ -60,13 +60,14 @@ const BasePicker = ({
     locale
   })
   const isLarge = altCalendar || altCalendarPreset || dateMarkRender || dateMarkPreset
+  const [showPanel, setShowPanel] = useState(false)
   const [altCalendarPresetData, dateMarkPresetData] = useAltData({
     altCalendar,
     altCalendarPreset,
     dateMarkRender,
-    dateMarkPreset
+    dateMarkPreset,
+    showPanel
   })
-  const [showPanel, setShowPanel] = useState(false)
   const inputChangeEvent = (val, dir) => {
     if (val.isValid()) {
       const oData = _.cloneDeep(outDate)
@@ -96,7 +97,6 @@ const BasePicker = ({
     onChange(returnDate, returnDateStr)
   }
   const onPick = (dates, isShowPanel) => {
-    !value && changeOutDate([].concat(dates))
     setTimeout(() => {
       setShowPanel(isShowPanel)
     }, 0)
@@ -104,6 +104,7 @@ const BasePicker = ({
       setInputFocus(false)
       callback(dates)
     }
+    changeOutDate([].concat(dates))
   }
 
   const clickOutsideEvent = useCallback(() => {
@@ -111,13 +112,13 @@ const BasePicker = ({
     const isValid = moment(outDateValue).isValid()
     const { startDate, endDate } = isValid && getInRangeDate(outDate[0], outDate[1], max, min)
     const _outDate = isValid ? [moment(startDate), moment(endDate)] : [null]
-    changeOutDate(_outDate)
     resetStatus()
     _outDate.forEach((od, index) => {
       if (od && !od.isSame(cacheDate.current[index])) {
         callback(_outDate)
       }
     })
+    changeOutDate(_outDate)
   }, [outDate])
   const onClear = () => {
     resetStatus()
@@ -167,7 +168,8 @@ const BasePicker = ({
         hourStep,
         minuteStep,
         secondStep,
-        inputReadOnly
+        inputReadOnly,
+        value
       }}
     >
       <Root

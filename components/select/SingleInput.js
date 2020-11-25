@@ -11,7 +11,6 @@ const SingleInput = (props) => {
     clearable,
     onFocus,
     theme,
-    onBlur,
     onClick,
     selectedItems: propsSelectItem,
     onClear,
@@ -70,7 +69,6 @@ const SingleInput = (props) => {
             value={selectedItems.length > 0 ? placeholder : ''}
             placeholder={placeholder}
             onFocus={onFocus}
-            onBlur={onBlur}
             readOnly
           />
         </div>

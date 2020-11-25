@@ -217,3 +217,25 @@ export const getInRangeDate = (momentstartDate, momentendDate, max, min) => {
   }
   return { startDate: _startDate, endDate: _endDate }
 }
+
+/**
+ * 格式化value
+ * @param {Any} value 格式化的值
+ * @param {String} type 类型
+ * @param {String} format 日期格式
+ */
+export const parseValue = (value, type, format) => {
+  if (!value) return [null]
+  const _value = moment(value)
+  const isValid = moment(value).isValid()
+  if (value && typeof value === 'object' && type.includes('range')) {
+    if (type === 'weekrange') {
+      return [
+        value.start ? moment(value.start).startOf('week') : null,
+        value.end ? moment(value.end).endOf('week') : null
+      ]
+    }
+    return [value.start ? moment(value.start, format) : null, value.end ? moment(value.end, format) : null]
+  }
+  return [isValid ? _value : null]
+}

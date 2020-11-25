@@ -17,7 +17,6 @@ const SelectDropdown = ({
   theme,
   searchable,
   onFocus,
-  onBlur,
   searchPlaceholder,
   dropdownItems,
   localeMap,
@@ -264,7 +263,6 @@ const SelectDropdown = ({
               ref={searchbar}
               value={searchbarValue}
               onFocus={onFocus}
-              onBlur={onBlur}
               clearabletrigger="always"
               onChange={searchEvent}
             />

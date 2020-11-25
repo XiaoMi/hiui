@@ -8,6 +8,8 @@ import ItemDropdown from './ItemDropdown'
 import TabItem from './TabItem'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import Provider from '../context'
+import useTabItems from './hooks/useTabItems'
+import useTranslate from './hooks/useTranslate'
 const noop = () => {}
 
 const Tabs = ({
@@ -26,46 +28,17 @@ const Tabs = ({
   editable,
   className,
   theme,
+  localeDatas,
   prefixCls,
   draggable,
   onTabClick,
   onBeforeDelete
 }) => {
-  const getTabItems = () => {
-    const showTabItems = []
-    const hiddenTabItems = []
-
-    React.Children.map(children, (child) => {
-      if (child) {
-        const { tabTitle, tabId, tabDesc, disabled, closeable = true, animation } = child.props
-        const item = {
-          tabTitle,
-          tabId,
-          tabDesc,
-          disabled,
-          closeable,
-          animation
-        }
-
-        if (
-          (type === 'card' || type === 'line') &&
-          placement === 'horizontal' &&
-          showTabItems.length >= max &&
-          !canScroll
-        ) {
-          // 卡片式标签超过max时，其余标签的隐藏
-          hiddenTabItems.push(item)
-        } else {
-          showTabItems.push(item)
-        }
-      }
-    })
-    return { showTabItems, hiddenTabItems }
-  }
-  const tabItems = getTabItems()
-  const [showTabItems, setShowTabItems] = useState(tabItems.showTabItems)
-  const [hiddenTabItems, setHiddentab] = useState(tabItems.hiddenTabItems)
-
+  const containRef = useRef(null)
+  const hiddenRef = useRef(null)
+  const dropdownRef = useRef(null)
+  const { leftBtn, rightBtn } = useTranslate({ elementRef: containRef, canScroll, prefixCls })
+  const { showTabItems, hiddenTabItems, setShowTabItems } = useTabItems({ children, max, type, placement, canScroll })
   const [activeId, setActiveId] = useState(
     activeIdProps !== undefined
       ? activeIdProps
@@ -75,7 +48,7 @@ const Tabs = ({
   const [over, setOver] = useState()
   const [deletetabId, setDeletetabId] = useState()
   const latestActiveId = useRef(activeId)
-  const containRef = useRef()
+
   const inkRef = useRef()
   const childRef = useRef()
 
@@ -96,7 +69,7 @@ const Tabs = ({
     const hideIndex = hiddenTabItems.findIndex((item) => item.tabId === activeId)
     latestActiveId.current = index
 
-    if (index === -1 && type === 'editable') {
+    if (index === -1 && showTabItems.length > 0) {
       setActiveId(showTabItems[0].tabId)
     }
 
@@ -117,10 +90,6 @@ const Tabs = ({
   }, [])
 
   useEffect(() => {
-    const { showTabItems, hiddenTabItems } = getTabItems()
-
-    setShowTabItems(showTabItems)
-    setHiddentab(hiddenTabItems)
     if (canScroll && children.length > childRef.current) {
       const contain = containRef.current
       setTimeout(() => {
@@ -294,42 +263,60 @@ const Tabs = ({
     },
     [over, dragged]
   )
-  const translateLeft = useCallback(() => {
-    const container = containRef.current
-    const width = container.scrollWidth
-    const clientWidth = container.clientWidth
-    let transX = Number(document.defaultView.getComputedStyle(container, null).transform.split(',')[4])
 
-    let srcollWidth
-    if (width / 3 > width - clientWidth) {
-      srcollWidth = width - clientWidth
-    } else {
-      srcollWidth = width / 3
-    }
-    if (Math.abs(transX) + clientWidth + srcollWidth > width) {
-      transX = width - clientWidth - Math.abs(transX) + Math.abs(transX)
-    } else {
-      transX = Math.abs(transX - srcollWidth)
-    }
+  const handleKeyDown = useCallback(
+    (e, tabIdx, tabRef, isDropdown) => {
+      console.log(isDropdown)
+      if (e.keyCode === 32 || e.keyCode === 13) {
+        e.preventDefault()
+        if (isDropdown) {
+          dropdownRef.current.toggle()
+        } else {
+          tabRef.current.click()
+        }
+      }
+      const prevArr = []
+      const nextArr = []
+      // concat 的空对象为 “更多” tab
+      showTabItems.concat({}).forEach((item, idx) => {
+        if (!item.disabled) {
+          if (idx < tabIdx) {
+            prevArr.push(idx)
+          }
+          if (idx > tabIdx) {
+            nextArr.push(idx)
+          }
+        }
+      })
 
-    container.style.transform = 'translateX(-' + transX + 'px)'
-  }, [])
+      let prev
+      let next
+      if (prevArr.length > 0) {
+        prev = prevArr[prevArr.length - 1]
+      } else if (prevArr.length === 0 && nextArr.length > 0) {
+        prev = nextArr[nextArr.length - 1]
+      }
+      if (nextArr.length > 0) {
+        next = nextArr[0]
+      } else if (nextArr.length === 0 && prevArr.length > 0) {
+        next = prevArr[0]
+      }
+      if ([37, 38].includes(e.keyCode)) {
+        e.preventDefault()
+        containRef.current && containRef.current.querySelectorAll('.hi-tabs__item')[prev].focus()
+      }
+      if ([39, 40].includes(e.keyCode)) {
+        e.preventDefault()
+        containRef.current && containRef.current.querySelectorAll('.hi-tabs__item')[next].focus()
+      }
+    },
+    [showTabItems, containRef.current, dropdownRef.current]
+  )
 
-  const translateRight = useCallback(() => {
-    const container = containRef.current
-    const width = container.scrollWidth
-    let transX = Number(document.defaultView.getComputedStyle(container, null).transform.split(',')[4])
-    if (Math.abs(transX) > width / 3) {
-      transX += width / 3
-    } else {
-      transX += Math.abs(transX)
-    }
-    container.style.transform = 'translateX(' + transX + 'px)'
-  }, [])
   const getHeader = useCallback(() => {
     return (
       <>
-        {canScroll && <Icon name="left" className={`${prefixCls}__scroll__icon`} onClick={() => translateLeft()} />}
+        {leftBtn}
         <div className={`${prefixCls}__header`}>
           <div className={`${prefixCls}__nav contain`} onDragOver={dragOver} ref={containRef}>
             <TransitionGroup component={null}>
@@ -345,6 +332,7 @@ const Tabs = ({
                   >
                     <TabItem
                       key={`${prefixCls}__item-${index}`}
+                      handleKeyDown={handleKeyDown}
                       index={index}
                       prefixCls={prefixCls}
                       item={item}
@@ -368,13 +356,20 @@ const Tabs = ({
                 className={classNames(`${prefixCls}__item`, {
                   [`${prefixCls}__item--active`]: hiddenTabItems.map((item) => item.tabId).includes(activeId)
                 })}
+                tabIndex={hiddenTabItems.map((item) => item.tabId).includes(activeId) ? 0 : -1}
+                ref={hiddenRef}
+                onKeyDown={(e) => {
+                  handleKeyDown(e, showTabItems.length, hiddenRef, true)
+                }}
               >
                 <ItemDropdown
                   active={hiddenTabItems.map((item) => item.tabId).includes(activeId)}
                   activeId={activeId}
                   theme={theme}
+                  localeDatas={localeDatas}
                   defaultActiveId={defaultActiveId}
                   items={hiddenTabItems}
+                  ref={dropdownRef}
                   onChoose={(item, e) => {
                     handleClick(item, e)
                   }}
@@ -396,7 +391,7 @@ const Tabs = ({
             </div>
           )}
         </div>
-        {canScroll && <Icon name="right" className={`${prefixCls}__scroll__icon`} onClick={() => translateRight()} />}
+        {rightBtn}
       </>
     )
   })

@@ -24,13 +24,17 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     realColumnsWidth,
     resizable,
     scrollWidth,
-    setEachRowHeight
+    setEachRowHeight,
+    expandedRender,
+    rowSelection
   } = useContext(TableContext)
   // **************** 获取colgroup
   const _columns = _.cloneDeep(columns)
   const depthArray = []
   setDepth(_columns, 0, depthArray)
-  const columnsgroup = flatTreeData(_columns).filter((col) => col.isLast)
+  const columnsgroup = [rowSelection && 'checkbox', expandedRender && 'expandedButton']
+    .concat(flatTreeData(_columns).filter((col) => col.isLast))
+    .filter((column) => !!column)
   // ****************
 
   // **************** 同步滚动位置

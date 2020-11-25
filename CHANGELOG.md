@@ -5,6 +5,18 @@
 - 修复 `List` 组件导出问题 [#1314](https://github.com/XiaoMi/hiui/issues/1314)
 - 修复 `Tabs` Tabs.Pane 组件中 tabTitle 属性传入 ReactNode 报错问题 [#1320](https://github.com/XiaoMi/hiui/issues/1320)
 - 修复 `Upload` onRemove 的问题 [#1322](https://github.com/XiaoMi/hiui/issues/1322)
+- 修复 `DatePicker` 受控无法选中值问题 [#1326](https://github.com/XiaoMi/hiui/issues/1326)
+- 修复 `Table` 列操作 icon 丢失问题 [#1336](https://github.com/XiaoMi/hiui/issues/1336)
+- 修复 `Table` 表头吸顶层级显示问题 [#1318](https://github.com/XiaoMi/hiui/issues/1318)
+- 修复 `Table` 内嵌式设置列宽不正确的问题 [#1325](https://github.com/XiaoMi/hiui/issues/1325)
+- 修复 `SelectTree` 下拉选择上滑动显示异常 [#1351](https://github.com/XiaoMi/hiui/issues/1351)
+- 修复 `Form` Form.List 和 Form.Item 同一级混用显示异常问题 [#1343](https://github.com/XiaoMi/hiui/issues/1343)
+- 修复 `DatePicker` weekOffset 为 1 时 周与日对照显示异常 [#1352](https://github.com/XiaoMi/hiui/issues/1352)
+- 修复 `Input` type等于amount时，数据初始化展示问题以及添加前后置节点聚焦问题 [#1362](https://github.com/XiaoMi/hiui/pull/1362)
+- 修复 `Select` 异步多选下拉数据显示问题 [#1364](https://github.com/XiaoMi/hiui/issues/1364)
+- 优化 `Select` 弹层触发方式 [#1358](https://github.com/XiaoMi/hiui/issues/1358)
+- 优化 `Search` 后置元素应该收起下来选项 [#1341](https://github.com/XiaoMi/hiui/issues/1341)
+- 新增 HiUI 基础样式 css 文件 [#1388](https://github.com/XiaoMi/hiui/issues/1388)
 
 ## 3.1.0
 
@@ -22,8 +34,6 @@
 - 修复 `Table` data 为 undefined 时的报错问题 [#1265](https://github.com/XiaoMi/hiui/issues/1265)
 - 修复 `Loading` 显示不正确的问题 [#1265](https://github.com/XiaoMi/hiui/issues/1268)
 - 优化 `SelectTree` 样式问题 [#1272](https://github.com/XiaoMi/hiui/issues/1272)
-- 修复 `Table` data 为 undefined 时的报错问题 [#1273](https://github.com/XiaoMi/hiui/issues/1265)
-- 修复 `Loading` 显示不正确的问题 [#1268](https://github.com/XiaoMi/hiui/issues/1268)
 - 修复 `Tag` 闪烁问题 [#1273](https://github.com/XiaoMi/hiui/issues/1273)
 - 修复 `Timeline` 折断样式问题 [#1276](https://github.com/XiaoMi/hiui/issues/1276)
 - 修复 `Timeline` 只有一条数据时的样式问题 [#1277](https://github.com/XiaoMi/hiui/issues/1277)

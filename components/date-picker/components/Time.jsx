@@ -13,7 +13,8 @@ const Time = ({ date, onChange, timeRangePanelType, startDate }) => {
     disabledSeconds = () => [],
     hourStep = 1,
     minuteStep = 1,
-    secondStep = 1
+    secondStep = 1,
+    type: PropsType
   } = useContext(DPContext)
   const isShowHMS = () => {
     return {
@@ -27,34 +28,36 @@ const Time = ({ date, onChange, timeRangePanelType, startDate }) => {
   // 设置Date的选中状态
   const setDisableTime = (type, i, disabledTime = []) => {
     let isDisabled = disabledTime.includes(i)
+    if (PropsType === 'timerange' || PropsType === 'time' || PropsType === 'default') {
+      if (timeRangePanelType === 'right') {
+        const { hour, minute, second } = deconstructDate(startDate)
+        const { hour: endHour, minute: endMinute } = date ? deconstructDate(date) : deconstructDate(new Date())
 
-    if (timeRangePanelType === 'right') {
-      const { hour, minute, second } = deconstructDate(startDate)
-      const { hour: endHour, minute: endMinute } = date ? deconstructDate(date) : deconstructDate(new Date())
-
-      isDisabled = type === 'hour' && hour > i
-      if (type === 'minute') {
-        if (endHour === hour) {
-          isDisabled = minute > i
-        }
-        if (endHour < hour) {
-          isDisabled = true
-        }
-      }
-
-      if (type === 'second') {
-        if (endHour === hour) {
-          isDisabled = endMinute === minute && second > i
-          if (endMinute < minute) {
+        isDisabled = type === 'hour' && hour > i
+        if (type === 'minute') {
+          if (endHour === hour) {
+            isDisabled = minute > i
+          }
+          if (endHour < hour) {
             isDisabled = true
           }
         }
-        if (endHour < hour) {
-          isDisabled = true
+
+        if (type === 'second') {
+          if (endHour === hour) {
+            isDisabled = endMinute === minute && second > i
+            if (endMinute < minute) {
+              isDisabled = true
+            }
+          }
+          if (endHour < hour) {
+            isDisabled = true
+          }
         }
       }
+
+      return isDisabled
     }
-    return isDisabled
   }
   const getStep = (type) => {
     let step = 1
