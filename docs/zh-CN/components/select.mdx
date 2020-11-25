@@ -65,7 +65,7 @@ import DemoSelectsearchbypinyin from '../../demo/select/section-searchbypinyin'
 | 参数                | 说明                                                                                                     | 类型                                                                | 可选值                                       | 默认值                                                                |
 | ------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | -------------------------------------------- | --------------------------------------------------------------------- |
 | type                | 下拉框类型                                                                                               | string                                                              | 'single' \| 'multiple'                       | 'single'                                                              |
-| data                | 下拉框选项数据源                                                                                         | DataItem[]                                                          | -                                            | -                                                                     |
+| data                | 下拉框选项数据源                                                                                         | DataItem[] \| groupData[]                                           | -                                            | -                                                                     |
 | fieldNames          | 设置 data 中 id, title, disabled, children 对应的 key (3.0 新增)                                         | object                                                              | -                                            | { title: 'title', id: 'id',disabled:'disabled', children: 'children'} |
 | dataSource          | 异步下拉框选项数据源                                                                                     | DataSource (keyword: string) => (DataSource \| DataItem \| Promise) | -                                            | -                                                                     |
 | value               | 被选中项的值                                                                                             | string \| string[]                                                  | -                                            | -                                                                     |
@@ -96,13 +96,20 @@ import DemoSelectsearchbypinyin from '../../demo/select/section-searchbypinyin'
 
 ## Type
 
+### groupData
+
+| 参数       | 说明            | 类型             | 可选值 | 默认值 |
+| ---------- | --------------- | ---------------- | ------ | ------ |
+| groupTitle | 下拉选项标题    | string           | -      | -      |
+| groupId    | 下拉选项唯一 id | string \| number | -      | -      |
+| children   | 分组的时候使用  | DataItem[]       | -      | -      |
+
 ### DataItem
 
-| 参数     | 说明                       | 类型             | 可选值 | 默认值 |
-| -------- | -------------------------- | ---------------- | ------ | ------ |
-| title    | 下拉选项标题               | string           | -      | -      |
-| id       | 下拉选项唯一 id            | string \| number | -      | -      |
-| children | 分组的时候使用，只支持一级 | DataItem[]       | -      | -      |
+| 参数  | 说明            | 类型             | 可选值 | 默认值 |
+| ----- | --------------- | ---------------- | ------ | ------ |
+| title | 下拉选项标题    | string           | -      | -      |
+| id    | 下拉选项唯一 id | string \| number | -      | -      |
 
 ### DataSource
 
