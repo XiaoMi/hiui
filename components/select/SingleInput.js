@@ -13,7 +13,6 @@ const SingleInput = (props) => {
     theme,
     onClick,
     selectedItems: propsSelectItem,
-    handleKeyDown,
     onClear,
     fieldNames,
     isFocus
@@ -66,9 +65,9 @@ const SingleInput = (props) => {
         >
           <input
             type="text"
+            className="hi-select__input-readOnly"
             value={selectedItems.length > 0 ? placeholder : ''}
             placeholder={placeholder}
-            onKeyDown={handleKeyDown}
             onFocus={onFocus}
             readOnly
           />

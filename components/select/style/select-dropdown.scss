@@ -106,6 +106,10 @@
       background-color: use-color('primary-20');
     }
 
+    &.is-focus {
+      background-color: use-color('primary-20');
+    }
+
     &.disabled {
       opacity: 0.4;
       cursor: not-allowed;
