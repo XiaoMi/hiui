@@ -1,7 +1,7 @@
 @import '@hi-ui/core-css/index.scss';
-$tree: 'hi-tree' !default;
+$tree: 'hi-tree-legacy' !default;
 
-.hi-tree {
+.hi-tree-legacy {
   font-size: 14px;
 
   @include component-reset();
@@ -9,7 +9,7 @@ $tree: 'hi-tree' !default;
   color: #383e47;
 
   /* TODO: The following style does not fully restore ui, so commented =========== */
-  // &:not(.hi-tree--show-line) {
+  // &:not(.hi-tree-legacy--show-line) {
   //   li:not(.is-root):not(.no-expanded) {
   //     margin-top: 10px;
   //   }
@@ -32,12 +32,12 @@ $tree: 'hi-tree' !default;
     border: 1px solid #4284f5;
   }
 
-  .hi-tree__searcher {
+  .hi-tree-legacy__searcher {
     position: relative;
     padding-left: 15px;
     margin-bottom: 24px;
 
-    .hi-tree__searcher--empty {
+    .hi-tree-legacy__searcher--empty {
       position: absolute;
       top: 34px;
       color: #999;
@@ -63,7 +63,7 @@ $tree: 'hi-tree' !default;
     }
   }
 
-  .hi-tree__divider {
+  .hi-tree-legacy__divider {
     position: absolute;
     display: flex;
     width: 100%;
@@ -96,7 +96,7 @@ $tree: 'hi-tree' !default;
     }
   }
 
-  &.hi-tree--show-line {
+  &.hi-tree-legacy--show-line {
     li {
       & > ul {
         position: relative;
@@ -234,7 +234,7 @@ $tree: 'hi-tree' !default;
 
       &--expanded {
         &.can-expand {
-          > .hi-tree_item-text {
+          > .hi-tree-legacy_item-text {
             padding-left: 8px;
 
             &::before {
@@ -360,7 +360,7 @@ $tree: 'hi-tree' !default;
       cursor: not-allowed;
     }
 
-    &:hover:not(.hi-tree_item-text--disabled) {
+    &:hover:not(.hi-tree-legacy_item-text--disabled) {
       background-color: rgba(66, 133, 244, 0.08);
       color: rgba(56, 62, 71, 1);
     }
@@ -381,12 +381,12 @@ $tree: 'hi-tree' !default;
     width: 18px;
     cursor: pointer;
 
-    .hi-tree-switcher {
+    .hi-tree-legacy-switcher {
       color: #666;
       font-size: 16px;
     }
 
-    .hi-tree__dot {
+    .hi-tree-legacy__dot {
       position: absolute;
       width: 7px;
       height: 7px;
@@ -547,7 +547,7 @@ $tree: 'hi-tree' !default;
     }
 
     .#{$tree}_item-text {
-      &:hover:not(.hi-tree_item-text--disabled) {
+      &:hover:not(.hi-tree-legacy_item-text--disabled) {
         background-color: rgba($value, 0.08);
         color: rgba(56, 62, 71, 1);
       }
@@ -575,7 +575,7 @@ $tree: 'hi-tree' !default;
       }
     }
 
-    .hi-tree__divider {
+    .hi-tree-legacy__divider {
       .divider-line {
         background-color: $value;
       }

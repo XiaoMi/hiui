@@ -5,14 +5,10 @@ import Icon from '../icon'
 import Classnames from 'classnames'
 import TreeContext from './context'
 
-import Loading from './IconLoading'
-const switcherApperanceMap = {
-  default: ['caret-right', 'caret-down'],
-  folder: ['folder', 'folder-open'],
-  line: ['plus-square', 'minus-square']
-}
+import Switcher from './Switcher'
+import _ from 'lodash'
 
-const TreeNode = ({ node }) => {
+const TreeNode = ({ node, expanded }) => {
   const {
     treeNodeRender,
     checkable,
@@ -21,7 +17,6 @@ const TreeNode = ({ node }) => {
     onSelectNode,
     selectedId,
     onCheckNode,
-    expandedNodeIds,
     onExpandNode,
     draggable,
     onLoadChildren,
@@ -36,45 +31,13 @@ const TreeNode = ({ node }) => {
 
   const treeNodeRef = useRef(null)
 
-  const [loading, setLoading] = useState(false)
-
   // 渲染 apperance 占位
   const renderApperancePlaceholder = useCallback((apperance) => {
     if (apperance === 'folder') {
       return <Icon name="file" style={{ marginRight: 8 }} />
     }
   }, [])
-  // 渲染展开收起
-  const renderSwitcher = useCallback(
-    (expandedIds, node, onExpandNode, onLoadChildren) => {
-      const expanded = expandedIds.includes(node.id)
-      return loading ? (
-        <Loading />
-      ) : (
-        <Icon
-          style={{ cursor: 'pointer', marginRight: 8, fontSize: 16 }}
-          name={expanded ? switcherApperanceMap[apperance][1] : switcherApperanceMap[apperance][0]}
-          onClick={() => {
-            if (onLoadChildren && !node.children) {
-              setLoading(true)
-              onLoadChildren(node).then(
-                (res) => {
-                  setLoading(false)
-                  onExpandNode(node, !expanded, expandedIds)
-                },
-                () => {
-                  setLoading(false)
-                }
-              )
-            } else {
-              onExpandNode(node, !expanded, expandedIds)
-            }
-          }}
-        />
-      )
-    },
-    [loading, setLoading, apperance]
-  )
+
   // 渲染空白占位
   const renderIndent = useCallback((times, isSiblingLast, ancestors) => {
     const isAncestorSiblingLast = []
@@ -86,20 +49,18 @@ const TreeNode = ({ node }) => {
       })
     }
     const _isAncestorSiblingLast = isAncestorSiblingLast.reverse()
-    return Array(times)
-      .fill('')
-      .map((indent, index) => {
-        return (
-          <span key={index} style={{ alignSelf: 'stretch' }} id={index}>
-            <span
-              className={Classnames('tree-node__indent', {
-                'tree-node__indent--parent-tail': _isAncestorSiblingLast[index] && index !== times - 1,
-                'tree-node__indent--tail': isSiblingLast && times - 1 === index
-              })}
-            />
-          </span>
-        )
-      })
+    return _.times(times, (index) => {
+      return (
+        <span key={index} style={{ alignSelf: 'stretch' }} id={index}>
+          <span
+            className={Classnames('tree-node__indent', {
+              'tree-node__indent--parent-tail': _isAncestorSiblingLast[index] && index !== times - 1,
+              'tree-node__indent--tail': isSiblingLast && times - 1 === index
+            })}
+          />
+        </span>
+      )
+    })
   }, [])
 
   // 渲染复选框
@@ -189,7 +150,7 @@ const TreeNode = ({ node }) => {
           }}
         >
           {treeNodeRender ? (
-            treeNodeRender(node, { selected: selectedId === id }, treeNodeRef, onSelectNode)
+            treeNodeRender(node, selectedId === id, treeNodeRef, onSelectNode)
           ) : (
             <div
               className={Classnames('title__text', {
@@ -219,8 +180,15 @@ const TreeNode = ({ node }) => {
         node.ancestors
       )}
       {(!node.children || (onLoadChildren && node.isLeaf)) && renderApperancePlaceholder(apperance)}
-      {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf && !node.children)) &&
-        renderSwitcher(expandedNodeIds, node, onExpandNode, onLoadChildren)}
+      {((node.children && node.children.length) || (onLoadChildren && !node.isLeaf && !node.children)) && (
+        <Switcher
+          expanded={expanded}
+          node={node}
+          apperance={apperance}
+          onExpandNode={onExpandNode}
+          onLoadChildren={onLoadChildren}
+        />
+      )}
       {checkable && renderCheckbox(node, { checked: checkedNodes, semiChecked: semiCheckedIds })}
       {renderTitle(node, selectedId)}
     </li>

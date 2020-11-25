@@ -5,7 +5,7 @@ import Select from '../../../components/select'
 const prefix = 'search-classic'
 const desc = '按不同的类别划分搜索范围；可减少搜索成本'
 const code = `import React from 'react'
-import Search from '@hi-ui/hiui/es/Search'
+import Search from '@hi-ui/hiui/es/search'
 
 class Demo extends React.Component {
   constructor () {
@@ -39,12 +39,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoClassic = () => (
-  <DocViewer
-    code={code}
-    scope={{ Search, Select }}
-    prefix={prefix}
-    desc={desc}
-  />
-)
+const DemoClassic = () => <DocViewer code={code} scope={{ Search, Select }} prefix={prefix} desc={desc} />
 export default DemoClassic

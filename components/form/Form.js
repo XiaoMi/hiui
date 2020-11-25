@@ -36,6 +36,7 @@ const InternalForm = (props) => {
     listValues: {},
     ...props
   })
+
   const { fields, listNames, listValues } = state
   // 用户手动设置表单数据
   const setFieldsValue = useCallback(
@@ -43,13 +44,19 @@ const InternalForm = (props) => {
       const _fields = _.cloneDeep(fields)
       _fields.forEach((item) => {
         const { field } = item
+        // eslint-disable-next-line no-prototype-builtins
         if (values.hasOwnProperty(field)) {
           const value = values[field]
           item.value = value
           item.setValue(value)
         }
       })
-      dispatch({ type: FILEDS_UPDATE, payload: _fields })
+      dispatch({
+        type: FILEDS_UPDATE,
+        payload: _fields.filter((item) => {
+          return item._type !== 'list'
+        })
+      })
       // 处理 list value
       Object.keys(values).forEach((key) => {
         listNames.includes(key) &&
@@ -61,18 +68,6 @@ const InternalForm = (props) => {
     },
     [fields, listValues]
   )
-  // 设置初始化的值
-  useEffect(() => {
-    // 处理 list value
-    initialValues &&
-      Object.keys(initialValues).forEach((key) => {
-        listNames.includes(key) &&
-          dispatch({
-            type: FILEDS_UPDATE_LIST,
-            payload: Object.assign({}, { ...listValues }, { [key]: initialValues[key] })
-          })
-      })
-  }, [])
   // 转换值的输出
   const internalValuesChange = useCallback(
     (changeValues, allValues) => {
@@ -118,7 +113,6 @@ const InternalForm = (props) => {
         childrenField.value = value
         childrenField.resetValidate(value)
       })
-
       dispatch({ type: FILEDS_UPDATE, payload: _fields })
       cb instanceof Function && cb()
       // 比较耗性能
@@ -222,6 +216,7 @@ const InternalForm = (props) => {
           validate,
           resetValidates,
           internalValuesChange,
+          initialValues,
           _type
         }}
       >

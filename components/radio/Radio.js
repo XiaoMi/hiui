@@ -10,6 +10,7 @@ class Radio extends React.Component {
   constructor (props) {
     super(props)
     this.state = getChecked(props)
+    this.inputRef = React.createRef(null)
   }
   static getDerivedStateFromProps (nextProps) {
     if (hasChecked(nextProps)) {
@@ -25,6 +26,7 @@ class Radio extends React.Component {
         checked: event.target.checked
       })
   }
+
   render () {
     const {
       autoFocus,
@@ -34,7 +36,15 @@ class Radio extends React.Component {
       style,
       theme,
       type,
-      value
+      value,
+      tabIdx,
+      index,
+      onKeyDown = (inputRef) => (e) => {
+        if (e.keyCode === 32) {
+          e.preventDefault()
+          inputRef && inputRef.current.click()
+        }
+      }
     } = this.props
     const shouldUseButton = type === 'button'
     const { checked } = this.state
@@ -55,14 +65,16 @@ class Radio extends React.Component {
     )
     return (
       <RadioWrapper type={type} className={buttonCls} disabled={disabled}>
-        <label className={radioCls} style={style}>
+        <label className={radioCls} style={style} tabIndex={tabIdx === undefined && !disabled ? 0 : tabIdx} onKeyDown={onKeyDown(this.inputRef, index)}>
           <input
+            ref={this.inputRef}
             type='radio'
             checked={checked}
             autoFocus={autoFocus}
             disabled={disabled}
             value={value}
             onChange={this.handleChange}
+            tabIndex={-1}
           />
           <span className={inputCls} />
           <span className={`${prefixCls}__text`}>{children}</span>

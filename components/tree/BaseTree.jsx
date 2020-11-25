@@ -6,7 +6,6 @@ import useFlatData from './hooks/useFlatData'
 import useSelect from './hooks/useSelect'
 import useCheckable from './hooks/useCheckable'
 import useExpand from './hooks/useExpand'
-import { getAncestorIds } from './util'
 import classnames from 'classnames'
 
 const PREFIX = 'hi-tree'
@@ -64,7 +63,6 @@ const BaseTree = ({
         semiCheckedIds,
         selectedId: selectNodeId,
         onSelectNode,
-        expandedNodeIds,
         onExpandNode,
         editable,
         editMenu,
@@ -84,11 +82,11 @@ const BaseTree = ({
         <ul className="root-list">
           {flatData
             .filter((node) => {
-              const ancestors = getAncestorIds(node.id, data)
-              return ancestors.every((ancestor) => expandedNodeIds.includes(ancestor))
+              const ancestors = node.ancestors || []
+              return ancestors.every((ancestor) => expandedNodeIds.includes(ancestor.id))
             })
             .map((node) => {
-              return <TreeNode key={node.id} node={node} />
+              return <TreeNode key={node.id} node={node} expanded={expandedNodeIds.includes(node.id)} />
             })}
         </ul>
       </div>
