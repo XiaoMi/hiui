@@ -196,17 +196,20 @@ const SelectDropdown = ({
   const groupItem = (filterGroupItem, filterItemsIndex) => {
     const renderGroup = []
     const label = (
-      <li className="hi-select__dropdown--label" key={filterGroupItem[transKeys(fieldNames, 'id')]}>
-        {filterGroupItem[transKeys(fieldNames, 'title')]}
+      <li
+        className="hi-select__dropdown--label hi-select__dropdown--item"
+        key={filterGroupItem[transKeys(fieldNames, 'id')] || filterGroupItem[transKeys(fieldNames, 'groupId')]}
+      >
+        {filterGroupItem[transKeys(fieldNames, 'title')] || filterGroupItem[transKeys(fieldNames, 'groupTitle')]}
       </li>
     )
     renderGroup.push(label)
     filterGroupItem[transKeys(fieldNames, 'children')].forEach((item, index) => {
-      renderGroup.push(normalItem(item, filterItemsIndex + 1 + '-' + index))
+      renderGroup.push(normalItem(item, filterItemsIndex + 1 + '-' + index, true))
     })
     return renderGroup
   }
-  const normalItem = (item, filterItemsIndex) => {
+  const normalItem = (item, filterItemsIndex, isChildItem) => {
     matched++
     const isSelected = itemSelected(item)
     const isDisabled = item[transKeys(fieldNames, 'disabled')]
@@ -215,6 +218,7 @@ const SelectDropdown = ({
         className={classNames('hi-select__dropdown--item', `theme__${theme}`, {
           'is-active': isSelected,
           'is-disabled': isDisabled,
+          'hi-select__dropdown--item--child': isChildItem,
           'is-focus': filterItemsIndex === focusedIndex,
           'hi-select__dropdown--item-default': !item[transKeys(fieldNames, 'children')] && !dropdownRender
         })}
