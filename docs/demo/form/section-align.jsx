@@ -9,7 +9,7 @@ import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
 import Select from '../../../components/select'
 const prefix = 'form-align'
-const rightOptions = ['左对齐', '右对齐', '顶对齐','v2']
+const rightOptions = ['左对齐', '右对齐', '顶对齐']
 const desc = ['左对齐：表单项较少，对应标题字数易对齐工整']
 const code = [
   {
