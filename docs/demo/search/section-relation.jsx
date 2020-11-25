@@ -9,7 +9,7 @@ const desc = '输入搜索关键词时，可以自动联想匹配的关键字，
 const code = [
   {
     code: `import React from 'react'
-    import Search from '@hi-ui/hiui/es/Search'
+    import Search from '@hi-ui/hiui/es/search'
     
     class Demo extends React.Component {
       constructor () {
@@ -96,7 +96,7 @@ const code = [
   {
     code: `import React from 'react'
 import Search from '@hi-ui/hiui/es/search'
-import Button from '@hi-ui/hiui/es/Button'
+import Button from '@hi-ui/hiui/es/button'
 
 class Demo extends React.Component {
   constructor () {
@@ -181,12 +181,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoRelation = () => (
-  <DocViewer
-    code={code}
-    leftOptions={leftOptions}
-    scope={{ Search, Icon, Button }}
-    prefix={prefix}
-    desc={desc}
-  />
+  <DocViewer code={code} leftOptions={leftOptions} scope={{ Search, Icon, Button }} prefix={prefix} desc={desc} />
 )
 export default DemoRelation

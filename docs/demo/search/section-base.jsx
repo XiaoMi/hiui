@@ -8,7 +8,7 @@ const desc = '按搜索关键字直接请求结果'
 const code = [
   {
     code: `import React from 'react'
-import Search from '@hi-ui/hiui/es/Search'
+import Search from '@hi-ui/hiui/es/search'
 
 class Demo extends React.Component {
   render() {
@@ -31,7 +31,7 @@ class Demo extends React.Component {
   },
   {
     code: `import React from 'react'
-import Search from '@hi-ui/hiui/es/Search'
+import Search from '@hi-ui/hiui/es/search'
 
 class Demo extends React.Component {
   render() {
@@ -56,7 +56,7 @@ class Demo extends React.Component {
 
   {
     code: `import React from 'react'
-import Search from '@hi-ui/hiui/es/Search'
+import Search from '@hi-ui/hiui/es/search'
 class Demo extends React.Component {
   render() {
     return (
@@ -75,12 +75,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoBase = () => (
-  <DocViewer
-    code={code}
-    leftOptions={leftOptions}
-    scope={{ Search, Button }}
-    prefix={prefix}
-    desc={desc}
-  />
+  <DocViewer code={code} leftOptions={leftOptions} scope={{ Search, Button }} prefix={prefix} desc={desc} />
 )
 export default DemoBase

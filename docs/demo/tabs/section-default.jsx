@@ -147,13 +147,5 @@ class Demo extends React.Component {
   }
 ]
 
-const Demo = () => (
-  <DocViewer
-    code={code}
-    scope={{ Tabs }}
-    desc={desc}
-    prefix={prefix}
-    rightOptions={rightOptions}
-  />
-)
+const Demo = () => <DocViewer code={code} scope={{ Tabs }} desc={desc} prefix={prefix} rightOptions={rightOptions} />
 export default Demo
