@@ -153,8 +153,9 @@ const Search = ({
 
   return (
     <div className={prefixCls} style={style}>
-      <div className={`${prefixCls}_input`} ref={searchInputContainer}>
+      <div className={`${prefixCls}_input`}>
         <Input
+          ref={searchInputContainer}
           type="text"
           value={inputVal}
           style={style}

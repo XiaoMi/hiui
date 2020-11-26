@@ -101,7 +101,7 @@ const SearchDropdown = ({
   return (
     <Popper
       show={dropdownShow}
-      attachEle={searchInputContainer.current}
+      attachEle={searchInputContainer.current && searchInputContainer.current._Input.current}
       onClickOutside={onClickOutside}
       overlayClassName={overlayClassName}
       zIndex={1050}
