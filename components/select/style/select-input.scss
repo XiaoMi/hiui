@@ -15,7 +15,7 @@
   box-sizing: border-box;
   height: 32px;
 
-  &__read-only {
+  &--readonly {
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
