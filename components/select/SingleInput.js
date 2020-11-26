@@ -66,7 +66,7 @@ const SingleInput = (props) => {
         >
           <input
             type="text"
-            className="hi-select__input-readOnly"
+            className="hi-select__input__read-only"
             value={selectedItems.length > 0 ? placeholder : ''}
             placeholder={placeholder}
             onFocus={onFocus}
