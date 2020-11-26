@@ -39,7 +39,7 @@ export default {
     total: ['Total', 'items'],
     simple: ['The', 'page', '', 'pages', 'items'],
     item: '',
-    itemPerPage: 'Items per page',
+    itemPerPage: 'page',
     goto: 'Goto',
     page: ''
   },
