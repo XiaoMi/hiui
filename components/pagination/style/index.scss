@@ -55,12 +55,8 @@
     margin-right: $spacer-4;
   }
 
-  &__sizes {
-    margin-right: $spacer-4;
-  }
-
   &__jumper {
-    margin-left: $spacer-4;
+    margin-left: $spacer-6;
   }
 
   &__span {
@@ -125,7 +121,6 @@
         border: 1px solid transparent;
         transition: border-color $speed-fast $easing, color $speed-fast $easing;
       }
-
     }
 
     &--active {
