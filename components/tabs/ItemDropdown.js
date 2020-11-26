@@ -46,7 +46,7 @@ class ItemDropdown extends Component {
   }
 
   render() {
-    const { items, onChoose, localeDatas, activeId, theme } = this.props
+    const { items, onChoose, localeDatas, activeId, theme, focusIndex } = this.props
     const { visible } = this.state
     let activeIndex = -1
     items.map((item, index) => {
@@ -87,7 +87,8 @@ class ItemDropdown extends Component {
               return (
                 <div
                   className={classNames('hi-tabs-dropdown__item', {
-                    'hi-tabs-dropdown__item--active': index === activeIndex
+                    'hi-tabs-dropdown__item--active': index === activeIndex,
+                    'hi-tabs-dropdown__item--focus': index === focusIndex
                   })}
                   onClick={(e) => {
                     this.toggle()
