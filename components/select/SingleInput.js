@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import classNames from 'classnames'
+import Icon from '../icon'
 import { transKeys } from './utils'
 
 // 单选输入框
@@ -65,7 +66,7 @@ const SingleInput = (props) => {
         >
           <input
             type="text"
-            className="hi-select__input-readOnly"
+            className="hi-select__input--readonly"
             value={selectedItems.length > 0 ? placeholder : ''}
             placeholder={placeholder}
             onFocus={onFocus}
@@ -74,11 +75,7 @@ const SingleInput = (props) => {
         </div>
       )}
       <span className="hi-select__input--icon">
-        <i
-          className={classNames(`hi-icon icon-${icon} hi-select__input--icon__expand`, {
-            clearable: clearable && selectedItems.length > 0
-          })}
-        />
+        <Icon name={icon} className={classNames({ clearable: clearable && selectedItems.length > 0 })} />
         {clearable && selectedItems.length > 0 && (
           <i className={`hi-icon icon-close-circle hi-select__input--icon__close`} onClick={handleClear} />
         )}
