@@ -71,7 +71,7 @@ const SearchDropdown = ({
         </ul>
       )
     },
-    [highlightKeyword]
+    [highlightKeyword, focusIndex, subFocusIndex]
   )
 
   const DataSourceRender = useCallback(

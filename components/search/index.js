@@ -35,6 +35,8 @@ const Search = ({
 
   const closeDropdown = useCallback(() => {
     setDropdownShow(false)
+    setFocusIndex(null)
+    setSubFocusIndex(null)
   }, [])
 
   const optionsClick = useCallback(
@@ -54,23 +56,23 @@ const Search = ({
         if (focusIndex === null) {
           newFocusIndex = data.length - 1
           if (data[newFocusIndex].children && data[newFocusIndex].children.length > 0) {
-            newSubFocusIndex = 0
+            newSubFocusIndex = data[newFocusIndex].children.length - 1
           }
         } else {
           if (!(data[focusIndex].children && data[focusIndex].children.length > 0)) {
             newFocusIndex = focusIndex === 0 ? data.length - 1 : focusIndex - 1
             if (data[newFocusIndex].children && data[newFocusIndex].children.length > 0) {
-              newSubFocusIndex = 0
+              newSubFocusIndex = data[newFocusIndex].children.length - 1
             }
           } else {
             if (subFocusIndex === 0) {
               newFocusIndex = focusIndex === 0 ? data.length - 1 : focusIndex - 1
               if (data[newFocusIndex].children && data[newFocusIndex].children.length > 0) {
-                newSubFocusIndex = 0
+                newSubFocusIndex = data[newFocusIndex].children.length - 1
               }
             } else {
               newFocusIndex = focusIndex
-              newSubFocusIndex = subFocusIndex + 1
+              newSubFocusIndex = subFocusIndex - 1
             }
           }
         }
@@ -107,23 +109,46 @@ const Search = ({
 
   const onKeyDown = useCallback(
     (e) => {
+      // ESC
       if (e.keyCode === 27) {
         e.preventDefault()
         closeDropdown()
       }
+      // TAB
       if (e.keyCode === 9) {
         closeDropdown()
       }
+      // UP
       if (e.keyCode === 38) {
         e.preventDefault()
         moveFocus('up')
       }
+      // DOWN
       if (e.keyCode === 40) {
         e.preventDefault()
         moveFocus('down')
       }
+      // ENTER
+      if (e.keyCode === 13) {
+        e.preventDefault()
+        let _inputValue
+        if (focusIndex !== null) {
+          if (subFocusIndex !== null) {
+            _inputValue = data[focusIndex].children[subFocusIndex].title
+          } else {
+            _inputValue = data[focusIndex].title
+          }
+        } else {
+          _inputValue = inputVal
+        }
+        if (onSearch) {
+          onSearch(_inputValue)
+        }
+        setInputVal(_inputValue)
+        closeDropdown()
+      }
     },
-    [closeDropdown, moveFocus]
+    [closeDropdown, moveFocus, onSearch, inputVal, focusIndex, subFocusIndex, data]
   )
 
   return (
@@ -137,13 +162,6 @@ const Search = ({
           placeholder={placeholder}
           clearable="true"
           prepend={prepend}
-          onKeyUp={(e) => {
-            const evt = window.event || e
-            if (evt.keyCode === 13) {
-              onSearch && onSearch(inputVal)
-              closeDropdown()
-            }
-          }}
           onKeyDown={onKeyDown}
           onFocus={() => {
             data && data.length > 0 && setDropdownShow(true)
@@ -196,8 +214,6 @@ const Search = ({
           optionsClick={optionsClick}
           onClickOutside={() => {
             closeDropdown()
-            setFocusIndex(null)
-            setSubFocusIndex(null)
           }}
           data={data}
           loading={loading}
