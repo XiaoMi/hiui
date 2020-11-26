@@ -18,6 +18,7 @@
 - 优化 `Search` 后置元素应该收起下来选项 [#1341](https://github.com/XiaoMi/hiui/issues/1341)
 - 优化 `From` 组件 label 内容显示折行行高以及间距 [#1341](https://github.com/XiaoMi/hiui/issues/1341)
 - 新增 HiUI 基础样式 css 文件 [#1388](https://github.com/XiaoMi/hiui/issues/1388)
+- 新增 `Table` expandedRowKeys，onExpand 扩展内嵌式表格的展开操作 [#1378](https://github.com/XiaoMi/hiui/issues/1378)
 
 ## 3.1.0
 

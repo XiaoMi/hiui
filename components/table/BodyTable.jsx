@@ -26,6 +26,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     scrollWidth,
     setEachRowHeight,
     expandedRender,
+    expandedRowKeys,
     rowSelection
   } = useContext(TableContext)
   // **************** 获取colgroup
@@ -107,6 +108,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
           allRowData={row}
           level={level}
           index={index}
+          expanded={Array.isArray(expandedRowKeys) ? expandedRowKeys.includes(row.key) : undefined}
           expandedTree={expandedTreeRows.includes(row.key)}
           expandedTreeRows={expandedTreeRows}
           setExpandedTreeRows={setExpandedTreeRows}
