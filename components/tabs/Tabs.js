@@ -267,7 +267,6 @@ const Tabs = ({
 
   const handleKeyDown = useCallback(
     (e, tabIdx, tabRef, isDropdown) => {
-      console.log(isDropdown)
       if (e.keyCode === 32 || e.keyCode === 13) {
         e.preventDefault()
         if (isDropdown) {
@@ -279,7 +278,11 @@ const Tabs = ({
       const prevArr = []
       const nextArr = []
       // concat 的空对象为 “更多” tab
-      showTabItems.concat({}).forEach((item, idx) => {
+      let items = [...showTabItems]
+      if (hiddenTabItems && hiddenTabItems.length > 0) {
+        items = showTabItems.concat({})
+      }
+      items.forEach((item, idx) => {
         if (!item.disabled) {
           if (idx < tabIdx) {
             prevArr.push(idx)
@@ -311,7 +314,7 @@ const Tabs = ({
         containRef.current && containRef.current.querySelectorAll('.hi-tabs__item')[next].focus()
       }
     },
-    [showTabItems, containRef.current, dropdownRef.current]
+    [showTabItems, containRef.current, dropdownRef.current, hiddenTabItems]
   )
 
   const getHeader = useCallback(() => {

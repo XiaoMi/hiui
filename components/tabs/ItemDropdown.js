@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import Provider from '../context'
 import Popper from '../popper'
 
 class ItemDropdown extends Component {
@@ -11,7 +10,7 @@ class ItemDropdown extends Component {
     active: PropTypes.bool
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       visible: false,
@@ -20,7 +19,7 @@ class ItemDropdown extends Component {
     this.clickOutsideHandle = this.clickOutside.bind(this)
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (!nextProps.active) {
       this.setState({
         activeIndex: -1
@@ -28,15 +27,15 @@ class ItemDropdown extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     window.addEventListener('click', this.clickOutsideHandle)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('click', this.clickOutsideHandle)
   }
 
-  clickOutside (e) {
+  clickOutside(e) {
     this.toggle(true)
   }
 
@@ -46,57 +45,60 @@ class ItemDropdown extends Component {
     })
   }
 
-  render () {
-    const {
-      items,
-      onChoose,
-      localeDatas,
-      activeId,
-      theme
-    } = this.props
-    const {
-      visible
-    } = this.state
+  render() {
+    const { items, onChoose, localeDatas, activeId, theme } = this.props
+    const { visible } = this.state
     let activeIndex = -1
     items.map((item, index) => {
       if (item.tabId === activeId) activeIndex = index
     })
     return (
-      <div className={classNames('hi-tabs-dropdown', `theme__${theme}`, {'hi-tabs-dropdown--active': !!items[activeIndex]})}>
-        <div className='hi-tabs-dropdown__toggle' ref={node => { this.toggleRef = node }} onClick={e => {
-          e.stopPropagation()
-          this.toggle()
-        }}>
-          <span className='hi-tabs-dropdown__toggle-title'>
-            { (items[activeIndex] && items[activeIndex].tabTitle) || localeDatas.tabs.more }
+      <div
+        className={classNames('hi-tabs-dropdown', `theme__${theme}`, {
+          'hi-tabs-dropdown--active': !!items[activeIndex]
+        })}
+      >
+        <div
+          className="hi-tabs-dropdown__toggle"
+          ref={(node) => {
+            this.toggleRef = node
+          }}
+          onClick={(e) => {
+            e.stopPropagation()
+            this.toggle()
+          }}
+        >
+          <span className="hi-tabs-dropdown__toggle-title">
+            {(items[activeIndex] && items[activeIndex].tabTitle) || localeDatas.tabs.more}
           </span>
-          <i className='hi-icon icon-down' />
+          <i className="hi-icon icon-down" />
         </div>
         <Popper
-          className='hi-tabs-dropdown__popper'
+          className="hi-tabs-dropdown__popper"
           show={visible}
           attachEle={this.toggleRef}
           zIndex={1010}
-          width='auto'
+          width="auto"
           leftGap={-18}
           topGap={3}
         >
           <div className={classNames('hi-tabs-dropdown__items', `theme__${theme}`)}>
-            {
-              items.map((item, index) => {
-                return (
-                  <div className={classNames('hi-tabs-dropdown__item', {'hi-tabs-dropdown__item--active': index === activeIndex})}
-                    onClick={e => {
-                      this.toggle()
-                      onChoose(item, e)
-                    }}
-                    key={index}
-                  >
-                    {item.tabTitle}
-                  </div>
-                )
-              })
-            }
+            {items.map((item, index) => {
+              return (
+                <div
+                  className={classNames('hi-tabs-dropdown__item', {
+                    'hi-tabs-dropdown__item--active': index === activeIndex
+                  })}
+                  onClick={(e) => {
+                    this.toggle()
+                    onChoose(item, e)
+                  }}
+                  key={index}
+                >
+                  {item.tabTitle}
+                </div>
+              )
+            })}
           </div>
         </Popper>
       </div>
