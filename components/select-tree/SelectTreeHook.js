@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react'
 import Tree from './components/tree'
 import _ from 'lodash'
 import Popper from '../popper'
+import Loading from '../loading'
 import HiRequest from '../_util/hi-request'
 import Icon from '../icon'
 
@@ -415,70 +416,73 @@ const SelectTree = ({
             setShow(false)
           }}
         >
-          <div className={`hi-selecttree__root theme__${theme} ${searchable ? 'hi-selecttree--hassearch' : ''}`}>
-            {searchable && mode !== 'breadcrumb' && (
-              <div className="hi-selecttree__searchbar-wrapper">
-                <div className="hi-selecttree__searchbar-inner">
-                  <Icon name="search" />
-                  <input
-                    className="hi-selecttree__searchinput"
-                    placeholder={localeDatas.selectTree.search}
-                    clearable="true"
-                    value={searchValue}
-                    clearabletrigger="always"
-                    onKeyDown={(e) => {
-                      if (e.keyCode === '13') {
-                        searchTreeNode(e.target.value)
-                      }
-                    }}
-                    onChange={changeEvents}
-                  />
-                  {searchValue.length > 0 ? (
-                    <i
-                      className={`hi-icon icon-close-circle hi-selecttree_searchbar__icon-close`}
-                      onClick={clearSearchEvent}
+          <Loading size="small" visible={nodeDataState === 'loading'}>
+            <div className={`hi-selecttree__root theme__${theme} ${searchable ? 'hi-selecttree--hassearch' : ''}`}>
+              {searchable && mode !== 'breadcrumb' && (
+                <div className="hi-selecttree__searchbar-wrapper">
+                  <div className="hi-selecttree__searchbar-inner">
+                    <Icon name="search" />
+                    <input
+                      className="hi-selecttree__searchinput"
+                      placeholder={localeDatas.selectTree.search}
+                      clearable="true"
+                      value={searchValue}
+                      clearabletrigger="always"
+                      onKeyDown={(e) => {
+                        if (e.keyCode === '13') {
+                          searchTreeNode(e.target.value)
+                        }
+                      }}
+                      onChange={changeEvents}
                     />
-                  ) : null}
+                    {searchValue.length > 0 ? (
+                      <i
+                        className={`hi-icon icon-close-circle hi-selecttree_searchbar__icon-close`}
+                        onClick={clearSearchEvent}
+                      />
+                    ) : null}
+                  </div>
                 </div>
-              </div>
-            )}
-            {mode === 'breadcrumb' ? (
-              <NavTree
-                data={flattenData}
-                originData={data}
-                checkedNodes={checkedNodes}
-                selectedItems={selectedItems}
-                checkable={type === 'multiple'}
-                onCheck={checkedEvents}
-                autoExpand={autoExpand}
-                nodeDataState={nodeDataState}
-                onSelected={selectedEvents}
-                isRemoteLoadData={!!dataSource}
-                onExpand={expandEvents}
-                localeDatas={localeDatas}
-              />
-            ) : (
-              <Tree
-                data={flattenData}
-                originData={data}
-                expandIds={expandIds}
-                dataSource={dataSource}
-                loadDataOnExpand={false}
-                checkable={type === 'multiple'}
-                checkedNodes={checkedNodes}
-                selectedItems={selectedItems}
-                nodeDataState={nodeDataState}
-                onSearch={searchTreeNode}
-                // searchMode='highlight'
-                // defaultExpandIds={[]}
-                // defaultExpandAll
-                onExpand={expandEvents}
-                onClick={selectedEvents}
-                isRemoteLoadData={!!dataSource}
-                onCheck={checkedEvents}
-              />
-            )}
-          </div>
+              )}
+              {mode === 'breadcrumb' ? (
+                <NavTree
+                  data={flattenData}
+                  originData={data}
+                  checkedNodes={checkedNodes}
+                  selectedItems={selectedItems}
+                  checkable={type === 'multiple'}
+                  onCheck={checkedEvents}
+                  autoExpand={autoExpand}
+                  nodeDataState={nodeDataState}
+                  onSelected={selectedEvents}
+                  isRemoteLoadData={!!dataSource}
+                  onExpand={expandEvents}
+                  localeDatas={localeDatas}
+                />
+              ) : (
+                <Tree
+                  data={flattenData}
+                  originData={data}
+                  expandIds={expandIds}
+                  dataSource={dataSource}
+                  loadDataOnExpand={false}
+                  checkable={type === 'multiple'}
+                  checkedNodes={checkedNodes}
+                  selectedItems={selectedItems}
+                  nodeDataState={nodeDataState}
+                  onSearch={searchTreeNode}
+                  localeDatas={localeDatas}
+                  // searchMode='highlight'
+                  // defaultExpandIds={[]}
+                  // defaultExpandAll
+                  onExpand={expandEvents}
+                  onClick={selectedEvents}
+                  isRemoteLoadData={!!dataSource}
+                  onCheck={checkedEvents}
+                />
+              )}
+            </div>
+          </Loading>
         </Popper>
       }
       {/* <NavTree data={data} /> */}

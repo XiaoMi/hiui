@@ -8,10 +8,8 @@ $tree: 'hi-select-tree' !default;
   overflow: auto;
 
   &--empty {
-    margin-left: 50%;
-    margin-top: 45%;
     display: inline-block;
-    transform: translate(-50%, 0);
+    margin-bottom: 12px;
   }
 
   &__nodes {

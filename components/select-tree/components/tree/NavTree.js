@@ -108,47 +108,48 @@ const NavTree = ({
       {Object.keys(fullBreadData).length > 0 && (
         <Bread datas={fullBreadData} localeDatas={localeDatas} onClick={onBreadClick} onReturnClick={onReturnClick} />
       )}
-      {loadingState === 'loading' && <Loading size="small" />}
-      <ul className="hi-breadtree__list">
-        {loadingState === 'empty' ? (
-          <li>
-            <span className="hi-select-tree--empty">empty</span>
-          </li>
-        ) : (
-          renderData.map((node, index) => {
-            const children = getChildrenNodes(node, data)
-            const textCls = classNames(
-              'hi-breadtree__text',
-              selectedItems.find((n) => n.id === node.id) && 'hi-breadtree__text--selected'
-            )
-            return (
-              <li key={index} className="hi-breadtree__item">
-                {checkable && node.isLeaf ? (
-                  <Checkbox
-                    indeterminate={checkedNodes.semiChecked.includes(node.id)}
-                    checked={checkedNodes.checked.includes(node.id)}
-                    onChange={(e) => onCheck(e.target.checked, node)}
-                  >
-                    <span className={textCls}>{node.title}</span>
-                  </Checkbox>
-                ) : (
-                  <span
-                    className={textCls}
-                    onClick={() => {
-                      onNodeClick(node, children)
-                    }}
-                  >
-                    {node.title}
-                  </span>
-                )}
-                {(children.length > 0 || !node.isLeaf) && (
-                  <Icon name={'right'} onClick={() => onNodeClick(node, children)} />
-                )}
-              </li>
-            )
-          })
-        )}
-      </ul>
+      <Loading size="small" visible={loadingState === 'loading'}>
+        <ul className="hi-breadtree__list">
+          {loadingState === 'empty' ? (
+            <li>
+              <span className="hi-select-tree--empty">{localeDatas.selectTree.emptyContent}</span>
+            </li>
+          ) : (
+            renderData.map((node, index) => {
+              const children = getChildrenNodes(node, data)
+              const textCls = classNames(
+                'hi-breadtree__text',
+                selectedItems.find((n) => n.id === node.id) && 'hi-breadtree__text--selected'
+              )
+              return (
+                <li key={index} className="hi-breadtree__item">
+                  {checkable && node.isLeaf ? (
+                    <Checkbox
+                      indeterminate={checkedNodes.semiChecked.includes(node.id)}
+                      checked={checkedNodes.checked.includes(node.id)}
+                      onChange={(e) => onCheck(e.target.checked, node)}
+                    >
+                      <span className={textCls}>{node.title}</span>
+                    </Checkbox>
+                  ) : (
+                    <span
+                      className={textCls}
+                      onClick={() => {
+                        onNodeClick(node, children)
+                      }}
+                    >
+                      {node.title}
+                    </span>
+                  )}
+                  {(children.length > 0 || !node.isLeaf) && (
+                    <Icon name={'right'} onClick={() => onNodeClick(node, children)} />
+                  )}
+                </li>
+              )
+            })
+          )}
+        </ul>
+      </Loading>
     </div>
   )
 }

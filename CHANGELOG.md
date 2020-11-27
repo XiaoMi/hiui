@@ -14,6 +14,7 @@
 - 修复 `DatePicker` weekOffset 为 1 时 周与日对照显示异常 [#1352](https://github.com/XiaoMi/hiui/issues/1352)
 - 修复 `Input` type 等于 amount 时，数据初始化展示问题以及添加前后置节点聚焦问题 [#1362](https://github.com/XiaoMi/hiui/pull/1362)
 - 修复 `Select` 异步多选下拉数据显示问题 [#1364](https://github.com/XiaoMi/hiui/issues/1364)
+- 修复 `SelectTree` 异步加载子节点数据显示位置错误以及国际化适配等问题 [#1386](https://github.com/XiaoMi/hiui/issues/1386)
 - 优化 `Select` 弹层触发方式 [#1358](https://github.com/XiaoMi/hiui/issues/1358)
 - 优化 `Select` 下拉框展开收起，输入框内容存在显示差异[#1380](https://github.com/XiaoMi/hiui/issues/1380)
 - 优化 `Search` 后置元素应该收起下来选项 [#1341](https://github.com/XiaoMi/hiui/issues/1341)
