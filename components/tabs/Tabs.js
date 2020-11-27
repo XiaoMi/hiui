@@ -1,5 +1,5 @@
 import React, { useCallback, cloneElement, useState, useEffect, useRef } from 'react'
-import _, { findLastKey } from 'lodash'
+import _ from 'lodash'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Icon from '../icon'
@@ -283,7 +283,7 @@ const Tabs = ({
         dropdownRef.current.toggle(true)
       }
 
-      if (dropdownRef.current.state.visible !== true) {
+      if (!dropdownRef.current || dropdownRef.current.state.visible !== true) {
         const prevArr = []
         const nextArr = []
         // concat 的空对象为 “更多” tab
@@ -316,12 +316,12 @@ const Tabs = ({
         }
         if ([37, 38].includes(e.keyCode)) {
           e.preventDefault()
-          dropdownRef.current.toggle(true)
+          dropdownRef.current && dropdownRef.current.toggle(true)
           containRef.current && containRef.current.querySelectorAll('.hi-tabs__item')[prev].focus()
         }
         if ([39, 40].includes(e.keyCode)) {
           e.preventDefault()
-          dropdownRef.current.toggle(true)
+          dropdownRef.current && dropdownRef.current.toggle(true)
           containRef.current && containRef.current.querySelectorAll('.hi-tabs__item')[next].focus()
         }
       }
@@ -358,7 +358,7 @@ const Tabs = ({
         dropdownRef.current.toggle(true)
         setFocusIndex(null)
       }
-      if (dropdownRef.current.state.visible === true) {
+      if (dropdownRef.current && dropdownRef.current.state.visible === true) {
         // UP
         if (e.keyCode === 38) {
           e.preventDefault()
