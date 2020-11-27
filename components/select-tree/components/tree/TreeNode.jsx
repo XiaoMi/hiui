@@ -4,7 +4,7 @@ import Icon from '../../../icon'
 import Classnames from 'classnames'
 import TreeContext from './context'
 import IconLoading from './LoadingIcon'
-import { getChildrenNodes, getBrothersWidthActiveId } from './util'
+import { getChildrenNodes } from './util'
 
 const Switcher = ({ expanded, node, onExpandEvent }) => {
   const [loading, setLoading] = useState(false)
@@ -23,8 +23,6 @@ const Switcher = ({ expanded, node, onExpandEvent }) => {
 
 const TreeNode = ({ data, flttenData }) => {
   // 接受原始拉平数据，用于快速查找子元素
-  console.log('data', data, flttenData)
-
   const {
     treeNodeRender,
     checkable,
@@ -87,7 +85,6 @@ const TreeNode = ({ data, flttenData }) => {
       {data.map((node, index) => {
         const childrenNodes = getChildrenNodes(node, flttenData)
         const expand = expandIds.includes(node.id)
-        console.log('childrenNodes', childrenNodes)
         return (
           <React.Fragment key={index}>
             <li className="hi-select-tree__node">

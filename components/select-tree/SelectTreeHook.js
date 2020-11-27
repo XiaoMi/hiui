@@ -327,7 +327,7 @@ const SelectTree = ({
           setFlattenData(flattenData.concat(flattenNodesData(res).flattenData))
           fillNodeEntries(node, nodeEntries, res)
         }
-        // callback(res)
+        callback(res)
       })
       onExpand()
     }
@@ -369,20 +369,7 @@ const SelectTree = ({
   const searchable = searchMode === 'filter' || searchMode === 'highlight'
   // 按键操作
   const handleKeyDown = (evt) => {
-    console.log('ss', evt)
     evt.stopPropagation()
-    if (evt.keyCode === 13) {
-      console.log('回车')
-    }
-
-    if (evt.keyCode === 38) {
-      evt.preventDefault()
-      console.log('up')
-    }
-    if (evt.keyCode === 40) {
-      evt.preventDefault()
-      console.log('down')
-    }
     if (evt.keyCode === 32 && !document.activeElement.classList.value.includes('hi-selecttree__searchinput')) {
       evt.preventDefault()
       setShow(!show)
