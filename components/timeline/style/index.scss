@@ -271,6 +271,15 @@
         margin-left: calc(30% + 20px);
         cursor: pointer;
         position: relative;
+
+        &:hover {
+          color: use-color('primary');
+        }
+
+        &:focus {
+          color: use-color('primary');
+          outline: 0;
+        }
       }
 
       .item__line {
