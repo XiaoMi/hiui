@@ -13,8 +13,8 @@ class Demo extends React.Component {
       value:['1'],
       data:[
           {
-              id:'redmi',
-              title:'红米手机',
+              groupId:'redmi',
+              groupTitle:'红米手机',
               children:[
                 { title:'红米 5A', id:'3'},
                 { title:'红米 6A', id:'2' },
@@ -23,8 +23,8 @@ class Demo extends React.Component {
               ]
           },
           {
-            id:'mi',
-            title:'小米电视',
+            groupId:'mi',
+            groupTitle:'小米电视',
             children:[
               { title:'小米电视4A 60寸', id:'10'},
               { title:'小米电视E55A', id:'11' },
@@ -54,12 +54,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoAsync = () => (
-  <DocViewer
-    code={code}
-    scope={{ Select, HiRequest }}
-    prefix={prefix}
-    desc={desc}
-  />
-)
+const DemoAsync = () => <DocViewer code={code} scope={{ Select, HiRequest }} prefix={prefix} desc={desc} />
 export default DemoAsync

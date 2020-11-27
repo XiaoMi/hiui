@@ -1,7 +1,8 @@
-$AnimationClassName :'hi-popper_transition' !default;
+$AnimationClassName: 'hi-popper_transition' !default;
 
 .hi-popper__container {
   position: absolute;
+  outline: none;
 
   &--hide {
     display: none !important;

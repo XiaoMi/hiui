@@ -56,7 +56,9 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | stickyTop          | 表头吸顶距离视口顶部距离                                                                                | number                                         | -                                         | 0          |
 | highlightedColKeys | 高亮列（受控）                                                                                          | string[]                                       | -                                         | []         |
 | expandedRender     | 表格展开项                                                                                              | (record: dataItem, index: number) => ReactNode | -                                         | -          |
-| maxHeight          | 表格最大高度，当穿过该高度时，展示滚动条且表头固定                                                      | number                                         | -                                         | -          |
+| onExpand     | 表格展开时的回调函数                                                                                             | (expanded, row: object) => void | -                                         | -          |
+| expandRowKeys     | 表格展开的行（受控）                                                                                          | number[] | -                                         | -          |
+| maxHeight          | 表格最大高度，当穿过该高度时，展示滚动条且表头固定                                                      | number                                        | -                                         | -          |
 | fixedToColumn      | 表格列冻结设置，为 string 时仅支持从左侧冻结至某一列                                                    | string \| FixedOption                          | -                                         | null       |
 | size               | 配置表格尺寸                                                                                            | string                                         | 'large' \| 'default' \| 'small' \| 'mini' | 'default'  |
 | pagination         | 表格分页配置项                                                                                          | Pagination                                     | -                                         | null       |
@@ -70,6 +72,7 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | emptyContent       | 数据为空时的展示内容                                                                                    | string \| () => ReactNode                      | -                                         | '暂无数据' |
 | resizable          | 是否能够动态控制列宽                                                                                    | boolean                                        | true \| false                             | false      |
 | standard           | 标准模式，默认集成 `showColMenu = true, sticky = true, bordered = true, setting = true, striped = true` | boolean                                        | true \| false                             | false      |
+| scrollWidth           | 表格滚动的宽度（当表格总设置宽度（含自适应列）大于表格父级容器宽度时需要设置） |  number                                        | -                            | -      |
 
 ### Type
 
