@@ -2,6 +2,8 @@
 
 .hi-selecttree {
   width: 100%;
+  outline: none;
+
   &__input {
     height: 32px;
     line-height: 32px;
@@ -29,6 +31,10 @@
       .hi-selecttree__icon-close:hover {
         color: use-color('black');
       }
+    }
+
+    &--focus {
+      border: 1px solid use-color('primary');
     }
 
     &--single {

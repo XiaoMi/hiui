@@ -42,9 +42,10 @@ const Tree = ({
       }}
     >
       <div className={`${PREFIX}`}>
-        {nodeDataState === 'loading' && <Loading size="small" />}
-        {nodeDataState === 'empty' && <span className="hi-select-tree--empty">empty</span>}
-        {nodeDataState === 'normal' && <TreeNode data={getRootNodes(data)} flttenData={data} />}
+        <Loading size="small" visible={nodeDataState === 'loading'}>
+          {nodeDataState === 'empty' && <span className="hi-select-tree--empty">empty</span>}
+          {nodeDataState === 'normal' && <TreeNode data={getRootNodes(data)} flttenData={data} />}
+        </Loading>
       </div>
     </TreeContext.Provider>
   )

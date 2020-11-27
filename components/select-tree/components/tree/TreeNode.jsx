@@ -33,7 +33,8 @@ const TreeNode = ({ data, flttenData }) => {
     onCheckboxChange,
     expandIds,
     onExpandEvent,
-    isRemoteLoadData
+    isRemoteLoadData,
+    activeId
   } = useContext(TreeContext)
   const treeNodeRef = useRef(null)
 
@@ -63,9 +64,15 @@ const TreeNode = ({ data, flttenData }) => {
     return (
       <div
         ref={treeNodeRef}
-        className={Classnames('hi-select-tree__title', {
-          'hi-select-tree__title--selected': selectedItems.filter((s) => s.id === id).length > 0
-        })}
+        className={Classnames(
+          'hi-select-tree__title',
+          {
+            'hi-select-tree__title--focus': node.id === activeId
+          },
+          {
+            'hi-select-tree__title--selected': selectedItems.filter((s) => s.id === id).length > 0
+          }
+        )}
         onClick={() => {
           onClick(node)
         }}
