@@ -108,14 +108,11 @@ const NavTree = ({
       {Object.keys(fullBreadData).length > 0 && (
         <Bread datas={fullBreadData} localeDatas={localeDatas} onClick={onBreadClick} onReturnClick={onReturnClick} />
       )}
-      {loadingState === 'loading' && <Loading size="small" />}
-      <ul className="hi-breadtree__list">
-        {loadingState === 'empty' ? (
-          <li>
-            <span className="hi-select-tree--empty">empty</span>
-          </li>
-        ) : (
-          renderData.map((node, index) => {
+      {loadingState === 'empty' ? (
+        <span className="hi-select-tree--empty">{localeDatas.selectTree.emptyContent}</span>
+      ) : (
+        <ul className="hi-breadtree__list">
+          {renderData.map((node, index) => {
             const children = getChildrenNodes(node, data)
             const textCls = classNames(
               'hi-breadtree__text',
@@ -146,9 +143,9 @@ const NavTree = ({
                 )}
               </li>
             )
-          })
-        )}
-      </ul>
+          })}
+        </ul>
+      )}
     </div>
   )
 }

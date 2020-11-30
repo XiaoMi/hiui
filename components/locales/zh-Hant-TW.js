@@ -60,7 +60,8 @@ export default {
   selectTree: {
     back: '返回',
     search: '搜索',
-    placeholder: '請選擇'
+    placeholder: '請選擇',
+    emptyContent: '無匹配數據'
   },
   search: {
     searchEmptyResult: '未找到搜索結果',

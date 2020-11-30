@@ -83,8 +83,8 @@ const code = [
       return (
         <SelectTree
           data={singleList}
-          onChange={(...args)=>{
-            console.log('selectTree',...args)
+          onChange={(checkedIds, checkedNodes , currentNode)=>{
+            console.log('selectTree',checkedIds, checkedNodes , currentNode)
           }}
         />
       )

@@ -286,25 +286,6 @@ const code = [
             data={singleList}
             type='multiple'
             defaultValue={[{id: '0-1-0-0-0'}]}
-            // defaultExpandAll
-            // defaultExpandIds={['1-2-0-0-0-0']}
-            // dataSource={key => {
-            //   return {
-            //     type: 'GET',
-            //     key: 'id',
-            //     params: {pId: key},
-            //     url: 'http://localhost:3000/tree',
-            //     transformResponse: (res) => {
-            //       return res.map(r => {
-            //         return {
-            //           ...r,
-            //           id: r.code,
-            //           title: r.name
-            //         }
-            //       })
-            //     }
-            //   }
-            // }}
           />
         )
       }
@@ -339,8 +320,8 @@ const code = [
                   return res.map(r => {
                     return {
                       ...r,
-                      id: r.code,
-                      title: r.name
+                      id: r.id,
+                      title: r.title
                     }
                   })
                 }
@@ -376,16 +357,7 @@ const code = [
                 method: 'GET',
                 key: 'id',
                 params: {pId: key},
-                url: 'http://localhost:8001/tree',
-                transformResponse: (res) => {
-                  return res.map(r => {
-                    return {
-                      ...r,
-                      id: r.code,
-                      title: r.name
-                    }
-                  })
-                }
+                url: 'http://my-json-server.typicode.com/hiui-group/db/fulldata',
               }
             }}
           />
