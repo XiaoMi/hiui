@@ -5,7 +5,7 @@ export default class BarProgress extends React.Component {
   textRef = React.createRef()
   state = { insidePlacement: 'right' }
 
-  componentDidMount () {
+  componentDidMount() {
     if (this.props.placement === 'inside') {
       if (
         this.textRef.current &&
@@ -17,6 +17,7 @@ export default class BarProgress extends React.Component {
       }
     }
   }
+
   getWidth = () => {
     const { width, size } = this.props
     if (!width || width <= 0) {
@@ -24,6 +25,7 @@ export default class BarProgress extends React.Component {
     }
     return width
   }
+
   getHeight = () => {
     const { size, height } = this.props
     if (!height || height <= 0) {
@@ -32,9 +34,20 @@ export default class BarProgress extends React.Component {
     return height
   }
 
-  render () {
-    let prefix = 'hi-progress'
-    const { percent: percentNum, content, type, showInfo, placement, tooltip = null, active, text, withOutText, status  } = this.props
+  render() {
+    const prefix = 'hi-progress'
+    const {
+      percent: percentNum,
+      content,
+      type,
+      showInfo,
+      placement,
+      tooltip = null,
+      active,
+      text,
+      withOutText,
+      status
+    } = this.props
 
     const _content = typeof content !== 'undefined' ? content : text // // api 兼容 1.x 为 text 2.x 改为 content
     const _showInfo = typeof showInfo !== 'undefined' ? showInfo : withOutText // // api 兼容 1.x 为 withOutText 2.x 改为 showInfo
