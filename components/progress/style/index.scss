@@ -73,6 +73,7 @@ $color-map: (
     top: 50%;
     transform: translate(100%, -50%);
     line-height: 14px;
+    word-break: keep-all;
 
     &.inside--left {
       color: use-color('white');
