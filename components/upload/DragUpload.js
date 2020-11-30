@@ -83,6 +83,22 @@ const DragUpload = ({
     [dragRef.current]
   )
 
+  const handleItemKeydown = useCallback(
+    (e, file, index) => {
+      // ENTER
+      if (e.keyCode === 13) {
+        e.preventDefault()
+        e.stopPropagation()
+        e.target.querySelector('a').click()
+      }
+      // DEL
+      if (e.keyCode === 46) {
+        e.preventDefault()
+        deleteFile(file, index)
+      }
+    },
+    [deleteFile]
+  )
   return (
     <FileSelect
       onSelect={uploadFiles}
@@ -110,7 +126,7 @@ const DragUpload = ({
           <ul className={'hi-upload__list'}>
             {_fileList.length > 0 && (
               <li className="hi-upload__item hi-upload__item-tips">
-                <Icon name="tishi" />
+                <Icon name="info-circle" filled />
                 <span className="hi-upload__tips--exist">
                   {_fileList.length >= maxCount ? localeDatas.upload.dragTipsLimited : localeDatas.upload.dragTips}
                   {tips && '，' + tips}
@@ -119,10 +135,22 @@ const DragUpload = ({
             )}
             {_fileList.map((file, index) => {
               return (
-                <li key={index} title={file.name} className="hi-upload__item">
+                <li
+                  key={index}
+                  title={file.name}
+                  className="hi-upload__item"
+                  tabIndex={0}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                  }}
+                  onKeyDown={(e) => {
+                    handleItemKeydown(e, file, index)
+                  }}
+                >
                   <span className={`Ficon-${file.fileType}`} />
                   <div className="hi-upload__right-content">
                     <a
+                      tabIndex={-1}
                       target="_blank"
                       rel="noreferrer"
                       href={file.url || null}

@@ -33,9 +33,22 @@
     color: use-color('gray-80');
     display: flex;
     align-items: center;
-    padding: 6px 0;
+    padding: 6px;
     overflow: hidden;
     position: relative;
+
+    &:hover {
+      background: use-color('primary-10');
+    }
+
+    a:focus {
+      outline: 0;
+    }
+
+    &:focus {
+      background: use-color('primary-10');
+      outline: 0;
+    }
 
     a.hi-upload__filename {
       flex: 1;
@@ -143,9 +156,10 @@
       cursor: pointer;
     }
 
-    .icon-tishi {
-      color: use-color('primary');
-      margin-right: 5px;
+    .hi-upload__item-tips {
+      .hi-icon {
+        color: use-color('primary');
+      }
     }
 
     &.hi-upload--disabled {

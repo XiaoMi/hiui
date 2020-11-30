@@ -7,9 +7,6 @@ export const getFileType = (file) => {
   if (['rar', 'zip'].includes(ext)) {
     fileType = 'zip'
   }
-  if (['rar', 'zip'].includes(ext)) {
-    fileType = 'zip'
-  }
   if (['doc', 'docx'].includes(ext)) {
     fileType = 'word'
   }
