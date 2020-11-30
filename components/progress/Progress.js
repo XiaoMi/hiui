@@ -17,7 +17,6 @@ class Progress extends Component {
     size: PropTypes.oneOf(['large', 'default', 'small']),
     placement: PropTypes.oneOf(['inside', 'outside'])
   }
-
   static defaultProps = {
     apperance: 'bar',
     size: 'default',
@@ -28,7 +27,7 @@ class Progress extends Component {
     placement: 'outside'
   }
 
-  getRenderType(apperance) {
+  getRenderType (apperance) {
     switch (apperance) {
       case 'circle':
         return <CircleProgress {...this.props} />
@@ -39,9 +38,9 @@ class Progress extends Component {
     }
   }
 
-  render() {
-    const prefix = 'hi-progress'
-    const { className = '', apperance, theme, type } = this.props
+  render () {
+    let prefix = 'hi-progress'
+    const { className = '', apperance, theme, type} = this.props
     const _apperance = apperance || type // api 兼容 1.x 为 type 2.x 改为 apperance
 
     return <div className={`${prefix}__container ${className} theme__${theme}`}>{this.getRenderType(_apperance)}</div>
