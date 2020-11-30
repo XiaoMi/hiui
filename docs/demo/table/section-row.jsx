@@ -182,6 +182,7 @@ class Demo extends React.Component {
         return (<Table
           columns={this.columns}
           data={this.data}
+          fixedToColumn={'name'}
           rowSelection={{
             selectedRowKeys: this.state.selectedRowKeys,
             onChange: selectedRowKeys => {
