@@ -20,12 +20,11 @@ const code = [
                 params: {pId: key},
                 url: 'http://my-json-server.typicode.com/hiui-group/db/fulldata',
                 transformResponse: (res) => {
-                  console.log(2, res)
                   return res.map(r => {
                     return {
                       ...r,
-                      id: r.code,
-                      title: r.name
+                      id: r.code || r.id,
+                      title: r.name || r.title
                     }
                   })
                 }
@@ -56,8 +55,8 @@ const code = [
                   return res.map(r => {
                     return {
                       ...r,
-                      id: r.code,
-                      title: r.name
+                      id: r.code || r.id,
+                      title: r.name || r.title
                     }
                   })
                 }
@@ -85,7 +84,6 @@ const code = [
                 params: {pId: key ? key : -1},
                 url: 'https://mife-gallery.test.mi.com/hiui/tree',
                 transformResponse: (res) => {
-                  console.log(2, res)
                   return res.data.map(r => {
                     return {
                       ...r,

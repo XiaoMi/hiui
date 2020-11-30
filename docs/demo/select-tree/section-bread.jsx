@@ -286,25 +286,6 @@ const code = [
             data={singleList}
             type='multiple'
             defaultValue={[{id: '0-1-0-0-0'}]}
-            // defaultExpandAll
-            // defaultExpandIds={['1-2-0-0-0-0']}
-            // dataSource={key => {
-            //   return {
-            //     type: 'GET',
-            //     key: 'id',
-            //     params: {pId: key},
-            //     url: 'http://localhost:3000/tree',
-            //     transformResponse: (res) => {
-            //       return res.map(r => {
-            //         return {
-            //           ...r,
-            //           id: r.code,
-            //           title: r.name
-            //         }
-            //       })
-            //     }
-            //   }
-            // }}
           />
         )
       }

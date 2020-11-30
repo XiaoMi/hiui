@@ -7,7 +7,7 @@ const desc = '展示从多个收起的备选项中选出的一个选项'
 const defaultStr = `constructor () {
   super()
   this.state = {
-    value: '3',
+    value: ['0-0'],
     singleList: [
       {
         title: '手机类',
@@ -123,7 +123,12 @@ class Demo extends React.Component {
             type='multiple'
             showCheckedMode='PARENT'
             data={singleList}
-            onChange={(a, b , c) => console.log(a, b , c)}
+            value={value}
+            onChange={(checkedIds, checkedNodes , currentNode) => {
+              this.setState({
+                value:checkedIds
+              })
+            }}
           />
         )
       }
@@ -152,12 +157,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoType = () => (
-  <DocViewer
-    code={code}
-    scope={{ SelectTree }}
-    prefix={prefix}
-    rightOptions={rightOptions}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ SelectTree }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
 )
 export default DemoType
