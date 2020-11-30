@@ -39,7 +39,9 @@ const SelectDropdown = ({
     setFilterItems(dropdownItems)
   }, [dropdownItems])
   useEffect(() => {
-    dropdownWrapper.current.scrollTop = (focusedIndex - 6) * 36
+    if (dropdownWrapper.current) {
+      dropdownWrapper.current.scrollTop = (focusedIndex - 6) * 36
+    }
   }, [focusedIndex])
   // 监控全选功能
   useEffect(() => {
