@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import classNames from 'classnames'
 import Icon from '../icon'
 import FileSelect from './FileSelect'
@@ -26,6 +26,7 @@ const DragUpload = ({
   beforeUpload,
   customUpload
 }) => {
+  const dragRef = useRef(null)
   const [_fileList, uploadFiles, deleteFile] = useUpload({
     fileList,
     defaultFileList,
@@ -71,6 +72,17 @@ const DragUpload = ({
     _fileList.length > 0 && 'hi-upload--nohover'
   )
 
+  const handleContainerKeyDown = useCallback(
+    (e) => {
+      // ENTER OR SPACE
+      if (e.keyCode === 32 || e.keyCode === 13) {
+        e.preventDefault()
+        dragRef.current.parentNode.click()
+      }
+    },
+    [dragRef.current]
+  )
+
   return (
     <FileSelect
       onSelect={uploadFiles}
@@ -79,7 +91,15 @@ const DragUpload = ({
       disabled={disabled || _fileList.length >= maxCount}
       accept={accept}
     >
-      <div className={dragCls} onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}>
+      <div
+        className={dragCls}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onDrop={onDrop}
+        tabIndex={0}
+        ref={dragRef}
+        onKeyDown={handleContainerKeyDown}
+      >
         {_fileList.length === 0 ? (
           <div className={'drag-upload__desc'}>
             <Icon name="cloud-upload" className="icon" />

@@ -34,6 +34,7 @@ class DropdownMenu extends React.Component {
         width={width}
         onMouseEnter={onMouseEnter}
         leftGap={0}
+        topGap={5}
         overlayClassName={overlayClassName}
         onMouseLeave={onMouseLeave}
         onClickOutside={() => {

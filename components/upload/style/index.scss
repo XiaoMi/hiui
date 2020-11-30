@@ -133,6 +133,11 @@
       border-color: use-color('primary');
     }
 
+    &:focus {
+      border-color: use-color('primary');
+      outline: 0;
+    }
+
     .hi-upload__operate-icon {
       color: use-color('primary');
       cursor: pointer;
