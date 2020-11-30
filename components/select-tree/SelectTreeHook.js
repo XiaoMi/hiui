@@ -251,7 +251,7 @@ const SelectTree = ({
    * Remote load Data
    * @param {*} id click node's id
    */
-  const loadNodes = (id) => {
+  const loadNodes = useCallback((id) => {
     const _dataSource = typeof dataSource === 'function' ? dataSource(id || '') : dataSource
     return HiRequest({
       ..._dataSource
@@ -267,7 +267,7 @@ const SelectTree = ({
         })
       return nArr
     })
-  }
+  }, [])
   /**
    * 多选模式下复选框事件
    * @param {*} checked 是否被选中
