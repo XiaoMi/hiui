@@ -355,6 +355,10 @@
       line-height: 80px;
       box-sizing: border-box;
       cursor: pointer;
+
+      &:focus {
+        border-color: use-color('primary');
+      }
     }
   }
 
