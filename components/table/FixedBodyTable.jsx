@@ -37,7 +37,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   const depthArray = []
   setDepth(_columns, 0, depthArray)
   // const columnsgroup = flatTreeData(_columns).filter((col) => col.isLast)
-  const columnsgroup = [rowSelection && 'checkbox', expandedRender && 'expandedButton']
+  const columnsgroup = [rowSelection && isFixed !== 'right' && 'checkbox', expandedRender && 'expandedButton']
     .concat(flatTreeData(_columns).filter((col) => col.isLast))
     .filter((column) => !!column)
   // TODO: 这里是考虑了多级表头的冻结，待优化
@@ -48,6 +48,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   const allColumnsgroup = flatTreeData(allColumns).filter((col) => col.isLast)
   // ***********
   const bodyInner = useRef(null)
+
   const renderRow = (row, level, index, allRowData) => {
     return (
       <React.Fragment key={row.key}>
@@ -101,7 +102,6 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
       _fixedData = activeSorterType === 'ascend' ? [..._fixedData].sort(sorter) : [..._fixedData].sort(sorter).reverse()
     }
   }
-  console.log('>>>>>>', _fixedData)
   return (
     <div
       style={{
