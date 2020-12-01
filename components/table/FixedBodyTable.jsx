@@ -40,6 +40,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   const columnsgroup = [rowSelection && isFixed !== 'right' && 'checkbox', expandedRender && 'expandedButton']
     .concat(flatTreeData(_columns).filter((col) => col.isLast))
     .filter((column) => !!column)
+
   // TODO: 这里是考虑了多级表头的冻结，待优化
   // *********全量 col group
   const allColumns = _.cloneDeep(columns)
@@ -83,7 +84,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   }
   if (isFixed === 'right') {
     fixedColumnsWidth = rightFixedColumns
-      .map((c, idx) => realColumnsWidth[idx + rightFixedIndex])
+      .map((c, idx) => realColumnsWidth[rowSelection ? idx + 1 + rightFixedIndex : idx + rightFixedIndex])
       .reduce((total, cur) => {
         return total + cur
       }, 0)
@@ -149,7 +150,8 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
               if (isFixed === 'right') {
                 allColumnsgroup.forEach((col, idx) => {
                   if (col.dataKey === c.dataKey) {
-                    width = realColumnsWidth[idx]
+                    // 有 rowSelection 需要往后移动一个
+                    width = realColumnsWidth[rowSelection ? idx + 1 : idx]
                   }
                 })
               } else if (isFixed === 'left') {

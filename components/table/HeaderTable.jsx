@@ -260,7 +260,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
               if (isFixed === 'right') {
                 allColumnsgroup.forEach((col, idx) => {
                   if (col.dataKey === c.dataKey) {
-                    width = realColumnsWidth[idx]
+                    width = realColumnsWidth[rowSelection ? idx + 1 : idx]
                   }
                 })
               } else if (isFixed === 'left' || resizable) {
