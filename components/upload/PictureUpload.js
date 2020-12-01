@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import classNames from 'classnames'
 import Preview from './Preview'
 import Icon from '../icon'
@@ -42,6 +42,7 @@ const PictureUpload = ({
     photoSize,
     localeDatas
   })
+  const uploadRef = useRef(null)
 
   // TODO: 提取 usePreview hook
   const [visible, setVisible] = useState(false)
@@ -65,7 +66,7 @@ const PictureUpload = ({
     }
   })
 
-  const precentNum = () => {
+  const precentNum = useCallback(() => {
     let num = 1.4
     switch (photoSize) {
       case 'small':
@@ -79,7 +80,37 @@ const PictureUpload = ({
         break
     }
     return num
-  }
+  }, [])
+
+  const handleItemKeydown = useCallback(
+    (e, file, index) => {
+      // ENTER
+      if (e.keyCode === 13) {
+        e.preventDefault()
+        e.stopPropagation()
+        previewImage(file, index)
+      }
+      // DEL
+      if (e.keyCode === 46) {
+        e.preventDefault()
+        deleteFile(file, index)
+      }
+    },
+    [deleteFile, previewImage]
+  )
+
+  const handleUploadKeydown = useCallback(
+    (e) => {
+      // ENTER OR SPACE
+      if (e.keyCode === 32 || e.keyCode === 13) {
+        e.preventDefault()
+        uploadRef.current.parentNode.click()
+      }
+    },
+
+    [uploadRef.current]
+  )
+
   return (
     <div
       className={classNames('hi-upload hi-upload--photo', `theme__${theme}`, {
@@ -90,7 +121,7 @@ const PictureUpload = ({
         {_fileList.map((file, index) => {
           if (file.uploadState === 'loading') {
             return (
-              <li key={index} className={classNames('hi-upload__item', `hi-upload__item--${photoSize}`)}>
+              <li key={index} className={classNames('hi-upload__item', `hi-upload__item--${photoSize}`)} tabIndex={0}>
                 <img src={file.url} className="hi-upload__thumb" />
                 <div className={`hi-upload__precent hi-upload__precent--${photoSize}`}>
                   <p className="hi-upload__loading-text">
@@ -112,10 +143,12 @@ const PictureUpload = ({
           } else {
             return (
               <li
+                tabIndex={0}
                 key={index}
                 className={classNames('hi-upload__item', `hi-upload__item--${photoSize}`)}
                 style={{ cursor: 'pointer' }}
                 onClick={() => previewImage(file, index)}
+                onKeyDown={(e) => handleItemKeydown(e, file, index)}
               >
                 <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} />
                 <Icon
@@ -142,7 +175,12 @@ const PictureUpload = ({
             accept={accept}
             style={{ display: 'inline-block' }}
           >
-            <li className={classNames('hi-upload__item', 'hi-upload__item--upload', `hi-upload__item--${photoSize}`)}>
+            <li
+              className={classNames('hi-upload__item', 'hi-upload__item--upload', `hi-upload__item--${photoSize}`)}
+              tabIndex={0}
+              onKeyDown={handleUploadKeydown}
+              ref={uploadRef}
+            >
               <label style={{ display: 'block', cursor: 'pointer' }}>
                 <Icon name="plus" style={{ fontSize: 24 }} />
               </label>

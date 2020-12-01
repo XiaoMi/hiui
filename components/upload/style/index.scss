@@ -235,6 +235,10 @@
       background: use-color('white');
       border-radius: 2px;
 
+      &:focus:not(.hi-upload__item--upload) {
+        box-shadow: 0 0 0 1px use-color('primary');
+      }
+
       &--photo-error {
         height: 28px;
         background: rgba(0, 0, 0, 0.5);
@@ -265,6 +269,10 @@
         line-height: 140px;
 
         &:hover {
+          border-color: use-color('primary');
+        }
+
+        &:focus {
           border-color: use-color('primary');
         }
       }
