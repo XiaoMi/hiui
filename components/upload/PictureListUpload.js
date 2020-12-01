@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Icon from '../icon'
 import classNames from 'classnames'
 import Button from '../button'
@@ -44,6 +44,22 @@ const PictureListUpload = ({
     customUpload,
     localeDatas
   })
+
+  const handleItemKeydown = useCallback(
+    (e, file, index) => {
+      // ENTER
+      if (e.keyCode === 13) {
+        e.preventDefault()
+        e.target.querySelector('a').click()
+      }
+      // DEL
+      if (e.keyCode === 46) {
+        e.preventDefault()
+        deleteFile(file, index)
+      }
+    },
+    [deleteFile]
+  )
   return (
     <div className={`hi-upload hi-upload--picture-card theme__${theme}`}>
       <FileSelect
@@ -66,7 +82,15 @@ const PictureListUpload = ({
             )
             const itemCls = classNames('hi-upload__item', file.uploadState === 'error' && 'hi-upload__item--error')
             return (
-              <li key={index} title={file.name} className={itemCls}>
+              <li
+                key={index}
+                title={file.name}
+                className={itemCls}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  handleItemKeydown(e, file, index)
+                }}
+              >
                 <div className="img-wrap">
                   <img src={file.url} />
                 </div>

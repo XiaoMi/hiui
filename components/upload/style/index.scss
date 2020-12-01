@@ -453,6 +453,11 @@
           background: use-color('gray-10');
         }
 
+        &:focus {
+          background: use-color('gray-10');
+          outline: 0;
+        }
+
         &.loading {
           color: use-color('gray-70');
         }
