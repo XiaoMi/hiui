@@ -286,14 +286,12 @@ const code = [
             key: 'storeType',
             dataKey: 'storeType',
             title: '店铺类型',
-            fixed: 'left',
             width: 150
           },
           {
             key: 'storeName',
             dataKey: 'storeName',
             title: '店铺名称',
-            fixed: 'left',
             width: 150
           },
           { key: 'priceSegment', dataKey: 'priceSegment', title: '价格段', width: 150 },
@@ -716,12 +714,6 @@ const code = [
 ]
 
 const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ Table }}
-    prefix={prefix}
-    rightOptions={rightOptions}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ Table }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
 )
 export default DemoBase
