@@ -212,7 +212,9 @@ const InternalSelect = (props) => {
       if (evt.keyCode === 13) {
         onEnterSelect()
       }
-
+      if (evt.keyCode === 27) {
+        setDropdownShow(false)
+      }
       if (evt.keyCode === 38) {
         evt.preventDefault()
         moveFocusedIndex('up')
@@ -221,6 +223,7 @@ const InternalSelect = (props) => {
         evt.preventDefault()
         moveFocusedIndex('down')
       }
+
       if (
         evt.keyCode === 32 &&
         !document.activeElement.classList.value.includes('hi-select__dropdown__searchbar--input')

@@ -153,7 +153,6 @@ class Input extends Component {
               }
 
               value = format(value, type)
-
               this.props.onChange && this.props.onChange(e, valueTrue)
 
               this.props.value === undefined && this.setState({ value, valueTrue })
