@@ -40,8 +40,9 @@ const Table = ({
   setVisibleCols,
   setCacheVisibleCols,
   scrollWidth,
-  emptyContent = '暂无数据',
-  theme
+  theme,
+  localeDatas,
+  emptyContent = localeDatas.table.emptyContent
 }) => {
   const hiTable = useRef(null)
   const [ceiling, setCeiling] = useState(false)
@@ -224,7 +225,8 @@ const Table = ({
         // 同步表头高度
         eachHeaderHeight,
         setEachHeaderHeight,
-        theme
+        theme,
+        localeDatas
       }}
     >
       <div

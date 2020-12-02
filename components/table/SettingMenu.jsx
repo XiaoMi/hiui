@@ -12,9 +12,16 @@ const SettingMenu = () => {
   const popperMenu = useRef(null)
   useClickOutside(popperMenu, () => setShowPopper(false), colMenuRef)
 
-  const { sortCol, setSortCol, visibleCols, setVisibleCols, setCacheVisibleCols, columns, theme } = useContext(
-    TableContext
-  )
+  const {
+    sortCol,
+    setSortCol,
+    visibleCols,
+    setVisibleCols,
+    setCacheVisibleCols,
+    columns,
+    theme,
+    localeDatas
+  } = useContext(TableContext)
 
   const grid = 8
   const getItemStyle = (isDragging, draggableStyle) => ({
@@ -132,7 +139,7 @@ const SettingMenu = () => {
                         )
                       }}
                     >
-                      确定
+                      {localeDatas.table.confirm}
                     </div>
                     <div
                       className={`btn`}
@@ -141,7 +148,7 @@ const SettingMenu = () => {
                         setCacheVisibleCols(columns)
                       }}
                     >
-                      重置
+                      {localeDatas.table.reset}
                     </div>
                   </div>
                 </div>
