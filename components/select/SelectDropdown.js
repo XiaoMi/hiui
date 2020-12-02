@@ -43,6 +43,8 @@ const SelectDropdown = ({
       dropdownWrapper.current.scrollTop = (focusedIndex - 6) * 36
     }
   }, [focusedIndex])
+
+  console.log('focusedIndex-dropdown', focusedIndex)
   // 监控全选功能
   useEffect(() => {
     setIscheckAll(selectedItems.length > 0 && selectedItems.length === filterItems.length)
@@ -207,7 +209,7 @@ const SelectDropdown = ({
     )
     renderGroup.push(label)
     filterGroupItem[transKeys(fieldNames, 'children')].forEach((item, index) => {
-      renderGroup.push(normalItem(item, filterItemsIndex + 1 + '-' + index, true))
+      renderGroup.push(normalItem(item, filterItemsIndex + '-' + index, true))
     })
     return renderGroup
   }

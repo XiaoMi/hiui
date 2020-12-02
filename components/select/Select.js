@@ -41,6 +41,7 @@ const InternalSelect = (props) => {
   } = props
   const selectInputContainer = useRef()
   const [dropdownItems, setDropdownItems] = useState(data)
+  const [isGroup, setIsGroup] = useState(false)
   const [focusedIndex, setFocusedIndex] = useState(0)
   const [isFocus, setIsFouces] = useState(false)
   const SelectWrapper = useRef()
@@ -57,6 +58,7 @@ const InternalSelect = (props) => {
   const [keyword, setKeyword] = useState('')
   const [loading, setLoading] = useState(false)
   const [searchable, setSearchable] = useState(dataSource ? true : propsSearchable)
+
   useEffect(() => {
     // 处理默认值的问题
     const selectedItems = resetSelectedItems(
@@ -69,7 +71,23 @@ const InternalSelect = (props) => {
       type === 'multiple' && setCacheSelectItem(selectedItems)
       autoload && remoteSearch()
     }
+    setFocusedIndex(isGroup ? '0-0' : 0)
   }, [])
+
+  useEffect(() => {
+    if (dropdownItems && dropdownItems.length) {
+      setIsGroup(
+        dropdownItems.every((item) => {
+          return item.children && item.children.length > 0
+        })
+      )
+    }
+  }, [dropdownItems])
+
+  useEffect(() => {
+    resetFocusedIndex()
+  }, [keyword, isGroup])
+
   useEffect(() => {
     setSearchable(dataSource ? true : propsSearchable)
   }, [propsSearchable])
@@ -171,32 +189,45 @@ const InternalSelect = (props) => {
       setDropdownItems(selectedItems)
     }
   }, [dropdownShow, selectedItems, dataSource, type])
+
   // 方向键的回调
   const moveFocusedIndex = useCallback(
     (direction) => {
       let _focusedIndex = focusedIndex
-      if (direction === 'up') {
-        dropdownItems
-          .slice(0, _focusedIndex)
-          .reverse()
-          .every((item) => {
-            _focusedIndex--
-            if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
-              return false
-            }
-            return true
-          })
-      } else {
-        dropdownItems.slice(_focusedIndex + 1).every((item) => {
-          _focusedIndex++
-          if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
-            return false
-          }
-          return true
-        })
+      let _dropdownItems = dropdownItems
+      let focusedGruop = [0, 0]
+      if (isGroup) {
+        !isNaN(Number(_focusedIndex)) && (_focusedIndex = '0-0')
+        focusedGruop = _focusedIndex.split('-')
+        console.log('focusedGruop', focusedGruop)
+        _dropdownItems = dropdownItems[focusedGruop[0]][transKeys(fieldNames, 'children')] || []
+        _focusedIndex = focusedGruop[1]
       }
 
-      setFocusedIndex(_focusedIndex)
+      const everyIsDisabled = _dropdownItems.every((item) => {
+        return item[transKeys(fieldNames, 'disabled')]
+      })
+
+      // 防止出现所有的选项都为 disabled
+      if (!everyIsDisabled) {
+        if (direction === 'up') {
+          _focusedIndex === 0 && (_focusedIndex = _dropdownItems.length)
+          _focusedIndex--
+          while (_dropdownItems[_focusedIndex] && _dropdownItems[_focusedIndex].disabled) {
+            _focusedIndex === 0 && (_focusedIndex = _dropdownItems.length)
+            _focusedIndex--
+          }
+        } else {
+          _focusedIndex === _dropdownItems.length - 1 && (_focusedIndex = -1)
+          _focusedIndex++
+          while (_dropdownItems[_focusedIndex] && _dropdownItems[_focusedIndex].disabled) {
+            _focusedIndex === _dropdownItems.length - 1 && (_focusedIndex = -1)
+            _focusedIndex++
+          }
+        }
+      } else {
+      }
+      setFocusedIndex(isGroup ? focusedGruop[0] + '-' + _focusedIndex : _focusedIndex)
     },
     [focusedIndex, dropdownItems, fieldNames]
   )
@@ -209,19 +240,23 @@ const InternalSelect = (props) => {
   const handleKeyDown = useCallback(
     (evt) => {
       evt.stopPropagation()
-      if (evt.keyCode === 13) {
-        onEnterSelect()
+      if (dropdownShow) {
+        if (evt.keyCode === 38) {
+          evt.preventDefault()
+          moveFocusedIndex('up')
+        }
+        if (evt.keyCode === 40) {
+          evt.preventDefault()
+          moveFocusedIndex('down')
+        }
+        if (evt.keyCode === 13) {
+          // enter
+          onEnterSelect()
+        }
       }
+      // esc
       if (evt.keyCode === 27) {
         setDropdownShow(false)
-      }
-      if (evt.keyCode === 38) {
-        evt.preventDefault()
-        moveFocusedIndex('up')
-      }
-      if (evt.keyCode === 40) {
-        evt.preventDefault()
-        moveFocusedIndex('down')
       }
 
       if (
@@ -329,9 +364,7 @@ const InternalSelect = (props) => {
       }
     )
   }, [])
-  useEffect(() => {
-    resetFocusedIndex()
-  }, [keyword])
+
   // 过滤筛选项
   const onFilterItems = (keyword) => {
     setKeyword(keyword)
@@ -345,16 +378,21 @@ const InternalSelect = (props) => {
   }
   // 重置下标
   const resetFocusedIndex = () => {
-    let _focusedIndex = -1
-    dropdownItems.every((item) => {
+    let _dropdownItems = dropdownItems || []
+    let _focusedIndex = 0
+    console.log('isGroup', isGroup, _.cloneDeep(_dropdownItems))
+    if (isGroup) {
+      _dropdownItems = dropdownItems[0][transKeys(fieldNames, 'children')]
+      _focusedIndex = 0
+    }
+    while (_dropdownItems[_focusedIndex] && _dropdownItems[_focusedIndex].disabled) {
       _focusedIndex++
-      if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
-        return false
-      }
-      return true
-    })
-    setFocusedIndex(_focusedIndex)
-    return _focusedIndex
+      console.log('_focusedIndex++++', _focusedIndex)
+    }
+    console.log('_focusedIndex+======', _focusedIndex)
+
+    setFocusedIndex(isGroup ? 0 + '-' + _focusedIndex : _focusedIndex)
+    return isGroup ? 0 + '-' + _focusedIndex : _focusedIndex
   }
 
   // 全部删除

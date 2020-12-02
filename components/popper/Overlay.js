@@ -156,8 +156,8 @@ const Overlay = (props) => {
         'hi-popper__container--hide': !show
       })}
       tabIndex="-1"
-      onKeyDown={() => {
-        show && onKeyDown && onKeyDown()
+      onKeyDown={(e) => {
+        show && onKeyDown && onKeyDown(e)
       }}
       style={{ left, top, zIndex }}
     >
