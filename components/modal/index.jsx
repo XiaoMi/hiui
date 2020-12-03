@@ -36,7 +36,8 @@ const InternalModalComp = ({
   style,
   className,
   destroyOnClose,
-  localeDatas
+  localeDatas,
+  foucsElementOnClose = null
 }) => {
   // TODO: 整体可以抽成一个 hooks 供 modal 和 drawer 复用
   const defaultContainer = useRef(false)
@@ -132,7 +133,11 @@ const InternalModalComp = ({
             onExited={() => {
               setTimeout(() => {
                 setVi(false)
-                focusedElementBeforeOpenModal.current.focus()
+                if (foucsElementOnClose) {
+                  foucsElementOnClose.focus()
+                } else {
+                  focusedElementBeforeOpenModal.current.focus()
+                }
               }, 300)
             }}
           >

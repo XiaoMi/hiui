@@ -45,6 +45,10 @@ export default {
     goto: '前往',
     page: '页'
   },
+  timeline: {
+    expand: '展开',
+    collapse: '收起'
+  },
   cascader: {
     placeholder: '请选择',
     noFoundTip: '无匹配数据',
@@ -96,10 +100,6 @@ export default {
   },
   tabs: {
     more: '更多'
-  },
-  timeline: {
-    expand: '展开',
-    collapse: '收起'
   },
   form: {
     colon: '：'

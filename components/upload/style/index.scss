@@ -33,9 +33,22 @@
     color: use-color('gray-80');
     display: flex;
     align-items: center;
-    padding: 6px 0;
+    padding: 6px;
     overflow: hidden;
     position: relative;
+
+    &:hover {
+      background: use-color('primary-10');
+    }
+
+    a:focus {
+      outline: 0;
+    }
+
+    &:focus {
+      background: use-color('primary-10');
+      outline: 0;
+    }
 
     a.hi-upload__filename {
       flex: 1;
@@ -133,14 +146,20 @@
       border-color: use-color('primary');
     }
 
+    &:focus {
+      border-color: use-color('primary');
+      outline: 0;
+    }
+
     .hi-upload__operate-icon {
       color: use-color('primary');
       cursor: pointer;
     }
 
-    .icon-tishi {
-      color: use-color('primary');
-      margin-right: 5px;
+    .hi-upload__item-tips {
+      .hi-icon {
+        color: use-color('primary');
+      }
     }
 
     &.hi-upload--disabled {
@@ -216,6 +235,10 @@
       background: use-color('white');
       border-radius: 2px;
 
+      &:focus:not(.hi-upload__item--upload) {
+        box-shadow: 0 0 0 1px use-color('primary');
+      }
+
       &--photo-error {
         height: 28px;
         background: rgba(0, 0, 0, 0.5);
@@ -246,6 +269,10 @@
         line-height: 140px;
 
         &:hover {
+          border-color: use-color('primary');
+        }
+
+        &:focus {
           border-color: use-color('primary');
         }
       }
@@ -328,6 +355,10 @@
       line-height: 80px;
       box-sizing: border-box;
       cursor: pointer;
+
+      &:focus {
+        border-color: use-color('primary');
+      }
     }
   }
 
@@ -420,6 +451,11 @@
 
         &:hover {
           background: use-color('gray-10');
+        }
+
+        &:focus {
+          background: use-color('gray-10');
+          outline: 0;
         }
 
         &.loading {

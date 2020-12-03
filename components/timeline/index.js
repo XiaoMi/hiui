@@ -15,7 +15,7 @@ class Timeline extends Component {
           })}
         >
           {item.groupTitle}
-          {index !== 0 && <div className='item__line' />}
+          {index !== 0 && <div className="item__line" />}
         </div>
         <div>
           {item.children.map((i, idx) => {
@@ -49,39 +49,47 @@ class Timeline extends Component {
           'timeline__item--first': isFirst
         })}
       >
-        <div className='item__title'>{item.title}</div>
-        <div className='item__content'>{item.content}</div>
-        <div className='item__time'>
+        <div className="item__title">{item.title}</div>
+        <div className="item__content">{item.content}</div>
+        <div className="item__time">
           {item.timestamp} {item.extraTime}
         </div>
 
-        {(item.icon && <div className='item__icon'>{item.icon}</div>) || (
-          <div className='item__dot' />
-        )}
-        <div className='item__line' />
+        {(item.icon && <div className="item__icon">{item.icon}</div>) || <div className="item__dot" />}
+        <div className="item__line" />
       </div>
     )
   }
+
   renderCollapse = (subItems) => {
+    const { localeDatas } = this.props
     return (
-      <div className='timeline__collapse' key={'collapse'}>
+      <div className="timeline__collapse" key={'collapse'}>
         {this.state.expanded === true &&
           subItems.map((c, idx) => {
             return this.renderSub(c, idx)
           })}
         <div
-          className='collapse-opt'
+          className="collapse-opt"
           onClick={() => {
             this.setState({ expanded: !this.state.expanded })
           }}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.keyCode === 13 || e.keyCode === 32) {
+              e.preventDefault()
+              this.setState({ expanded: !this.state.expanded })
+            }
+          }}
         >
-          {this.state.expanded === true ? '收起' : '展开'}
+          {this.state.expanded === true ? localeDatas.timeline.collapse : localeDatas.timeline.expand}
           <Icon name={this.state.expanded === true ? 'up' : 'down'} />
-          <div className='item__line' />
+          <div className="item__line" />
         </div>
       </div>
     )
   }
+
   renderSub = (item, index, isLast, isFirst) => {
     return (
       <div
@@ -91,19 +99,20 @@ class Timeline extends Component {
           'timeline__item--first': isFirst
         })}
       >
-        <div className='item--left'>
-          <div className='item__time'>{item.timestamp}</div>
-          <div className='item__extra'>{item.extraTime}</div>
+        <div className="item--left">
+          <div className="item__time">{item.timestamp}</div>
+          <div className="item__extra">{item.extraTime}</div>
         </div>
-        {item.icon || <div className='item__dot' />}
-        <div className='item__line' />
-        <div className='item--right'>
-          <div className='item__title'>{item.title}</div>
-          <div className='item__content'>{item.content}</div>
+        {item.icon || <div className="item__dot" />}
+        <div className="item__line" />
+        <div className="item--right">
+          <div className="item__title">{item.title}</div>
+          <div className="item__content">{item.content}</div>
         </div>
       </div>
     )
   }
+
   renderCross = (item, index, isLast, isFirst) => {
     return (
       <div
@@ -115,17 +124,15 @@ class Timeline extends Component {
           'timeline__item--right': index % 2 === 0
         })}
       >
-        <div className='item--left'>
-          <div className='item__time'>{item.timestamp}</div>
-          <div className='item__extra'>{item.extraTime}</div>
+        <div className="item--left">
+          <div className="item__time">{item.timestamp}</div>
+          <div className="item__extra">{item.extraTime}</div>
         </div>
-        {(item.icon && <div className='item__icon'>{item.icon}</div>) || (
-          <div className='item__dot' />
-        )}
-        <div className='item__line' />
-        <div className='item--right'>
-          <div className='item__title'>{item.title}</div>
-          <div className='item__content'>{item.content}</div>
+        {(item.icon && <div className="item__icon">{item.icon}</div>) || <div className="item__dot" />}
+        <div className="item__line" />
+        <div className="item--right">
+          <div className="item__title">{item.title}</div>
+          <div className="item__content">{item.content}</div>
         </div>
       </div>
     )
@@ -140,23 +147,22 @@ class Timeline extends Component {
           'timeline__item--first': isFirst
         })}
       >
-        <div className='item--left'>
-          <div className='item__time'>{item.timestamp}</div>
-          <div className='item__extra'>{item.extraTime}</div>
+        <div className="item--left">
+          <div className="item__time">{item.timestamp}</div>
+          <div className="item__extra">{item.extraTime}</div>
         </div>
-        {(item.icon && <div className='item__icon'>{item.icon}</div>) || (
-          <div className='item__dot' />
-        )}
-        <div className='item__line' />
-        <div className='item--right'>
-          <div className='item__title'>{item.title}</div>
-          <div className='item__content'>{item.content}</div>
+        {(item.icon && <div className="item__icon">{item.icon}</div>) || <div className="item__dot" />}
+        <div className="item__line" />
+        <div className="item--right">
+          <div className="item__title">{item.title}</div>
+          <div className="item__content">{item.content}</div>
         </div>
       </div>,
       item.children && this.renderCollapse(item.children)
     ]
   }
-  render () {
+
+  render() {
     const { layout, type, list, data, theme } = this.props
     const _layout = type === 'default' ? layout : type
     const rootCls = classNames(

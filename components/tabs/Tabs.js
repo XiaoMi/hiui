@@ -39,6 +39,7 @@ const Tabs = ({
   const dropdownRef = useRef(null)
   const { leftBtn, rightBtn } = useTranslate({ elementRef: containRef, canScroll, prefixCls })
   const { showTabItems, hiddenTabItems, setShowTabItems } = useTabItems({ children, max, type, placement, canScroll })
+  const [focusIndex, setFocusIndex] = useState(null)
   const [activeId, setActiveId] = useState(
     activeIdProps !== undefined
       ? activeIdProps
@@ -267,51 +268,117 @@ const Tabs = ({
 
   const handleKeyDown = useCallback(
     (e, tabIdx, tabRef, isDropdown) => {
-      console.log(isDropdown)
+      // ENTER OR SPACE
       if (e.keyCode === 32 || e.keyCode === 13) {
         e.preventDefault()
         if (isDropdown) {
-          dropdownRef.current.toggle()
+          if (dropdownRef.current.state.visible !== true) {
+            dropdownRef.current.toggle(false)
+          }
         } else {
           tabRef.current.click()
         }
       }
-      const prevArr = []
-      const nextArr = []
-      // concat 的空对象为 “更多” tab
-      showTabItems.concat({}).forEach((item, idx) => {
-        if (!item.disabled) {
-          if (idx < tabIdx) {
-            prevArr.push(idx)
-          }
-          if (idx > tabIdx) {
-            nextArr.push(idx)
-          }
-        }
-      })
+      if (e.keyCode === 9) {
+        dropdownRef.current.toggle(true)
+      }
 
-      let prev
-      let next
-      if (prevArr.length > 0) {
-        prev = prevArr[prevArr.length - 1]
-      } else if (prevArr.length === 0 && nextArr.length > 0) {
-        prev = nextArr[nextArr.length - 1]
-      }
-      if (nextArr.length > 0) {
-        next = nextArr[0]
-      } else if (nextArr.length === 0 && prevArr.length > 0) {
-        next = prevArr[0]
-      }
-      if ([37, 38].includes(e.keyCode)) {
-        e.preventDefault()
-        containRef.current && containRef.current.querySelectorAll('.hi-tabs__item')[prev].focus()
-      }
-      if ([39, 40].includes(e.keyCode)) {
-        e.preventDefault()
-        containRef.current && containRef.current.querySelectorAll('.hi-tabs__item')[next].focus()
+      if (!dropdownRef.current || dropdownRef.current.state.visible !== true) {
+        const prevArr = []
+        const nextArr = []
+        // concat 的空对象为 “更多” tab
+        let items = [...showTabItems]
+        if (hiddenTabItems && hiddenTabItems.length > 0) {
+          items = showTabItems.concat({})
+        }
+        items.forEach((item, idx) => {
+          if (!item.disabled) {
+            if (idx < tabIdx) {
+              prevArr.push(idx)
+            }
+            if (idx > tabIdx) {
+              nextArr.push(idx)
+            }
+          }
+        })
+
+        let prev
+        let next
+        if (prevArr.length > 0) {
+          prev = prevArr[prevArr.length - 1]
+        } else if (prevArr.length === 0 && nextArr.length > 0) {
+          prev = nextArr[nextArr.length - 1]
+        }
+        if (nextArr.length > 0) {
+          next = nextArr[0]
+        } else if (nextArr.length === 0 && prevArr.length > 0) {
+          next = prevArr[0]
+        }
+        if ([37, 38].includes(e.keyCode)) {
+          e.preventDefault()
+          dropdownRef.current && dropdownRef.current.toggle(true)
+          containRef.current && containRef.current.querySelectorAll('.hi-tabs__item')[prev].focus()
+        }
+        if ([39, 40].includes(e.keyCode)) {
+          e.preventDefault()
+          dropdownRef.current && dropdownRef.current.toggle(true)
+          containRef.current && containRef.current.querySelectorAll('.hi-tabs__item')[next].focus()
+        }
       }
     },
-    [showTabItems, containRef.current, dropdownRef.current]
+    [showTabItems, containRef.current, dropdownRef.current, hiddenTabItems]
+  )
+
+  const moveFocus = useCallback(
+    (direction) => {
+      let newFocusIndex = null
+      if (direction === 'up') {
+        if (focusIndex === null) {
+          newFocusIndex = hiddenTabItems.length - 1
+        } else {
+          newFocusIndex = focusIndex === 0 ? hiddenTabItems.length - 1 : focusIndex - 1
+        }
+      } else {
+        if (focusIndex === null) {
+          newFocusIndex = 0
+        } else {
+          newFocusIndex = focusIndex === hiddenTabItems.length - 1 ? 0 : focusIndex + 1
+        }
+      }
+      setFocusIndex(newFocusIndex)
+    },
+    [focusIndex, hiddenTabItems]
+  )
+
+  const handleDropdownKeyDown = useCallback(
+    (e) => {
+      // ESC
+      if (e.keyCode === 27) {
+        e.preventDefault()
+        dropdownRef.current.toggle(true)
+        setFocusIndex(null)
+      }
+      if (dropdownRef.current && dropdownRef.current.state.visible === true) {
+        // UP
+        if (e.keyCode === 38) {
+          e.preventDefault()
+          moveFocus('up')
+        }
+        // DOWN
+        if (e.keyCode === 40) {
+          e.preventDefault()
+          moveFocus('down')
+        }
+        // ENTER
+        if (e.keyCode === 13) {
+          e.preventDefault()
+          handleClick(hiddenTabItems[focusIndex], e)
+          dropdownRef.current.toggle(true)
+          setFocusIndex(null)
+        }
+      }
+    },
+    [dropdownRef.current, focusIndex, moveFocus, handleClick, hiddenTabItems]
   )
 
   const getHeader = useCallback(() => {
@@ -361,6 +428,7 @@ const Tabs = ({
                 ref={hiddenRef}
                 onKeyDown={(e) => {
                   handleKeyDown(e, showTabItems.length, hiddenRef, true)
+                  handleDropdownKeyDown(e)
                 }}
               >
                 <ItemDropdown
@@ -369,6 +437,7 @@ const Tabs = ({
                   theme={theme}
                   localeDatas={localeDatas}
                   defaultActiveId={defaultActiveId}
+                  focusIndex={focusIndex}
                   items={hiddenTabItems}
                   ref={dropdownRef}
                   onChoose={(item, e) => {
