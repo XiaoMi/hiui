@@ -526,7 +526,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} scrollWidth={1500} fixedToColumn={'storeName'} />
+        return <Table columns={this.columns} data={this.data} scrollWidth={1700} fixedToColumn={{left: 'storeName', right: 'receptionPrice'}} />
       }
     }`,
     opt: ['列冻结']
