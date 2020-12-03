@@ -30,17 +30,29 @@ class Item extends Component {
         : {}
     const itemCls = classNames('hi-transfer__item', `theme__${theme}`, item.disabled && 'hi-transfer__item--disabled')
     const el = (
-      <li style={sourceStyle} className={itemCls} onClick={onClick.bind(this)}>
+      <li
+        style={sourceStyle}
+        className={itemCls}
+        onClick={onClick}
+        onKeyDown={(e) => {
+          if (e.keyCode === 13) {
+            e.preventDefault()
+            onClick()
+          }
+        }}
+        tabIndex={!item.disabled && mode === 'basic' ? 0 : -1}
+      >
         {targetNode === item.id && isDragging && <div className={`hi-transfer__divider--${dividerPosition}`} />}
         {mode !== 'basic' ? (
           <Checkbox
-            legacy
-            text={item.content}
-            value={item.id}
             checked={checked}
             disabled={item.disabled}
-            onChange={checkboxOnChange.bind(this)}
-          />
+            onChange={(e) => {
+              checkboxOnChange(item.id, e.checked)
+            }}
+          >
+            {item.content}
+          </Checkbox>
         ) : (
           item.content
         )}

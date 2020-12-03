@@ -73,6 +73,11 @@
     position: relative;
     text-align: left;
 
+    &:focus {
+      outline: 0;
+      background: use-color('primary-20');
+    }
+
     .hi-checkbox-legacy--checked .hi-checkbox-legacy__input {
       border: 1px solid use-color('primary');
     }
