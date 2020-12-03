@@ -9,6 +9,9 @@
 
 当需要对一部分全部数据进行编辑、筛选过滤时
 
+## 特别说明
+按照 React 的规范，所有的数组组件必须绑定 key。Table 组件的 data 属性的每一列也需要指定一个 key 值来表明每一行数据的唯一性。同时基于综合考虑（性能、维护性、功能间的组合性等），当没有 key 传入的时候，组件内部并不会帮您生成 key。当 key 不存在时可能会引起一系列的问题，还请注意。
+
 ## 基础用法
 
 import DemoBase from '../../demo/table/section-base.jsx'
@@ -59,7 +62,7 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | onExpand     | 表格展开时的回调函数                                                                                             | (expanded, row: object) => void | -                                         | -          |
 | expandRowKeys     | 表格展开的行（受控）                                                                                          | number[] | -                                         | -          |
 | maxHeight          | 表格最大高度，当穿过该高度时，展示滚动条且表头固定                                                      | number                                        | -                                         | -          |
-| fixedToColumn      | 表格列冻结设置，为 string 时仅支持从左侧冻结至某一列                                                    | string \| FixedOption                          | -                                         | null       |
+| fixedToColumn      | 表格列冻结设置，为 string 时仅支持从左侧冻结至某一列                                                    | string \| FixedOption                          | columns 中对应的 dataKey                                          | null       |
 | size               | 配置表格尺寸                                                                                            | string                                         | 'large' \| 'default' \| 'small' \| 'mini' | 'default'  |
 | pagination         | 表格分页配置项                                                                                          | Pagination                                     | -                                         | null       |
 | errorRowKeys       | 错误列（受控）                                                                                          | string[]                                       | -                                         | []         |
@@ -123,5 +126,5 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 
 | 参数  | 说明                 | 类型   | 可选值 | 默认值 |
 | ----- | -------------------- | ------ | ------ | ------ |
-| left  | 表格从左侧冻结至某列 | string | -      | -      |
-| right | 表格从右侧冻结至某列 | string | -      | -      |
+| left  | 表格从左侧冻结至某列 | string | columns 中对应的 dataKey      | -      |
+| right | 表格从右侧冻结至某列 | string | columns 中对应的 dataKey       | -      |

@@ -117,6 +117,17 @@ export default {
     modalTitle: '提示',
     delTips: '删除节点将删除所有子节点，确定删除吗？'
   },
+  table: {
+    emptyContent: '暂无数据',
+    confirm: '确定',
+    reset: '重置',
+    ascend: '升序',
+    descend: '降序',
+    highlight: '高亮',
+    freeze: '冻结',
+    total: '合计',
+    average: '平均值'
+  },
   watermark: {
     content: '请勿外传'
   }

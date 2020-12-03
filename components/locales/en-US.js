@@ -114,6 +114,19 @@ export default {
     modalTitle: 'Warning',
     delTips: 'Deleting a node will delete all child nodes, are you sure to delete this node?'
   },
+  table: {
+    emptyContent: 'No data',
+    confirm: 'Confirm',
+    reset: 'Reset',
+    ascend: 'Ascend',
+    descend: 'Descend',
+    highlight: 'Highlight',
+    freeze: 'Freeze',
+
+    total: 'Total',
+    average: 'Average'
+  },
+
   watermark: {
     content: 'Please do not gaiden'
   }

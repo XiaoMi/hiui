@@ -117,6 +117,18 @@ export default {
     modalTitle: '提示',
     delTips: '刪除節點將刪除所有子節點，確定刪除嗎？'
   },
+  table: {
+    emptyContent: '暫無數據',
+    confirm: '確定',
+    reset: '重置',
+    ascend: '升序',
+    descend: '降序',
+    highlight: '高亮',
+    freeze: '凍結',
+
+    total: '合計',
+    average: '平均值'
+  },
   watermark: {
     content: '請勿外傳'
   }

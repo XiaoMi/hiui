@@ -27,7 +27,8 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     setEachRowHeight,
     expandedRender,
     expandedRowKeys,
-    rowSelection
+    rowSelection,
+    localeDatas
   } = useContext(TableContext)
   // **************** 获取colgroup
   const _columns = _.cloneDeep(columns)
@@ -61,7 +62,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
   const sumRow = { key: 'sum' }
   columns.forEach((c, index) => {
     if (index === 0) {
-      sumRow[c.dataKey] = '合计'
+      sumRow[c.dataKey] = localeDatas.table.total
     }
     if (c.total) {
       sumRow[c.dataKey] = _.sumBy(_data, (d) => d[c.dataKey])
@@ -74,7 +75,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
   const avgRow = { key: 'avg' }
   columns.forEach((c, index) => {
     if (index === 0) {
-      avgRow[c.dataKey] = '平均值'
+      avgRow[c.dataKey] = localeDatas.table.average
     }
     if (c.sum) {
       avgRow[c.dataKey] = _.sumBy(_data, (d) => d[c.dataKey]) / _data.length

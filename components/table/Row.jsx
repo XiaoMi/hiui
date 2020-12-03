@@ -74,7 +74,7 @@ const Row = ({
       onMouseEnter={(e) => setHoverRow(rowData.key)}
       onMouseLeave={(e) => setHoverRow(null)}
     >
-      {rowSelection && (
+      {rowSelection && isFixed !== 'right' && (
         <td style={{ width: 50 }}>
           <Checkbox
             checked={rowSelection.selectedRowKeys.includes(rowData.key)}
