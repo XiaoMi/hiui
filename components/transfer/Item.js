@@ -34,13 +34,14 @@ class Item extends Component {
         {targetNode === item.id && isDragging && <div className={`hi-transfer__divider--${dividerPosition}`} />}
         {mode !== 'basic' ? (
           <Checkbox
-            legacy
-            text={item.content}
-            value={item.id}
             checked={checked}
             disabled={item.disabled}
-            onChange={checkboxOnChange.bind(this)}
-          />
+            onChange={(e) => {
+              checkboxOnChange(item.id, e.checked)
+            }}
+          >
+            {item.content}
+          </Checkbox>
         ) : (
           item.content
         )}
