@@ -28,7 +28,8 @@ const SelectDropdown = ({
   selectedItems,
   show,
   fieldNames,
-  focusedIndex
+  focusedIndex,
+  isGroup
 }) => {
   const [filterItems, setFilterItems] = useState(dropdownItems)
   const [searchbarValue, setSearchbarValue] = useState('')
@@ -40,9 +41,20 @@ const SelectDropdown = ({
   }, [dropdownItems])
   useEffect(() => {
     if (dropdownWrapper.current) {
-      dropdownWrapper.current.scrollTop = (focusedIndex - 6) * 36
+      let _focusedIndex = focusedIndex
+      if (isGroup) {
+        const focusedGroup = _focusedIndex.split('-')
+        let group = focusedGroup[0] - 1
+        while (dropdownItems[group] && dropdownItems[group][transKeys(fieldNames, 'children')]) {
+          _focusedIndex =
+            dropdownItems[group][transKeys(fieldNames, 'children')].length + group / 1 + 2 + focusedGroup[1] / 1
+          group--
+        }
+      }
+      dropdownWrapper.current.scrollTop = (_focusedIndex - 6) * 36
     }
   }, [focusedIndex])
+
   // 监控全选功能
   useEffect(() => {
     setIscheckAll(selectedItems.length > 0 && selectedItems.length === filterItems.length)
@@ -207,7 +219,7 @@ const SelectDropdown = ({
     )
     renderGroup.push(label)
     filterGroupItem[transKeys(fieldNames, 'children')].forEach((item, index) => {
-      renderGroup.push(normalItem(item, filterItemsIndex + 1 + '-' + index, true))
+      renderGroup.push(normalItem(item, filterItemsIndex + '-' + index, true))
     })
     return renderGroup
   }
