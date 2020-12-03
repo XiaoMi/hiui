@@ -1,7 +1,9 @@
 # 更新日志
 
-## 3.1.1
+## 3.2.0
 
+- 新增 HiUI 基础样式 css 文件 [#1388](https://github.com/XiaoMi/hiui/issues/1388)
+- 新增 `Table` expandedRowKeys，onExpand 扩展内嵌式表格的展开操作 [#1378](https://github.com/XiaoMi/hiui/issues/1378)
 - 修复 `List` 组件导出问题 [#1314](https://github.com/XiaoMi/hiui/issues/1314)
 - 修复 `Tabs` Tabs.Pane 组件中 tabTitle 属性传入 ReactNode 报错问题 [#1320](https://github.com/XiaoMi/hiui/issues/1320)
 - 修复 `Upload` onRemove 的问题 [#1322](https://github.com/XiaoMi/hiui/issues/1322)
@@ -17,10 +19,10 @@
 - 优化 `Select` 弹层触发方式 [#1358](https://github.com/XiaoMi/hiui/issues/1358)
 - 优化 `Select` 下拉框展开收起，输入框内容存在显示差异[#1380](https://github.com/XiaoMi/hiui/issues/1380)
 - 优化 `Search` 后置元素应该收起下来选项 [#1341](https://github.com/XiaoMi/hiui/issues/1341)
-- 优化 `From` 组件 label 内容显示折行行高以及间距 [#1341](https://github.com/XiaoMi/hiui/issues/1341)
+- 优化 `Form` 组件 label 内容显示折行行高以及间距 [#1341](https://github.com/XiaoMi/hiui/issues/1341)
 - 优化 `Pagination` 国际化翻译 [#1381](https://github.com/XiaoMi/hiui/issues/1381)
-- 新增 HiUI 基础样式 css 文件 [#1388](https://github.com/XiaoMi/hiui/issues/1388)
-- 新增 `Table` expandedRowKeys，onExpand 扩展内嵌式表格的展开操作 [#1378](https://github.com/XiaoMi/hiui/issues/1378)
+- 修复 `Table` rowSelection 存在时的列冻结异常 [#1393](https://github.com/XiaoMi/hiui/issues/1393)
+- 修复 `Table` 国际化问题 [#1397](https://github.com/XiaoMi/hiui/issues/1397)
 
 ## 3.1.0
 
