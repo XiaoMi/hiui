@@ -24,12 +24,22 @@ $modal: 'hi-modal' !default;
     }
   }
 
-  &__container {
+  &__outter {
     z-index: 1000;
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     position: fixed;
+    outline: 0;
+    overflow: auto;
+  }
+
+  &__container {
+    position: relative;
+    top: 100px;
+    outline: 0;
+    padding-bottom: 20px;
   }
 
   &__wrapper {
@@ -37,6 +47,7 @@ $modal: 'hi-modal' !default;
     flex-direction: column;
     background: use-color('white');
     border-radius: 2px;
+    margin: 0 auto;
     box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
 
     &--default {

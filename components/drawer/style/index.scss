@@ -26,6 +26,10 @@ $drawer: 'hi-drawer' !default;
   }
 
   &__wrapper {
+    &:focus {
+      outline: 0;
+    }
+
     width: 360px;
     height: 100%;
     display: flex;

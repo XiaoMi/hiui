@@ -36,7 +36,6 @@ const Slider = memo(
     const [value, setValue] = useState(initValue !== undefined ? getValue(initValue) : getValue(defaultValue))
     // 是否可拖动
     const [canMove, setCanMove] = useState(false)
-    const [canKeyDown, setCanKeyDown] = useState(false)
 
     const [startX, setStartX] = useState()
     const [startY, setStartY] = useState()
@@ -48,7 +47,6 @@ const Slider = memo(
     const [firstTime, setFirstTime] = useState(0)
     const [lastTime, setLastTime] = useState(0)
     const [isMove, setIsMove] = useState(false)
-    const [isClick, setIsClick] = useState(false)
     const [max, setMax] = useState(initMax)
     const [min, setMin] = useState(initMin)
     const [isInitPage, setIsInitPage] = useState(true)
@@ -57,8 +55,6 @@ const Slider = memo(
 
     useClickOutside((e) => {
       setShowTooltip(false)
-      setCanKeyDown(false)
-      setIsClick(false)
     }, document.querySelector(`#${prefixCls}`))
 
     useEffect(() => {
@@ -95,8 +91,23 @@ const Slider = memo(
     // <- -> 键盘事件
     const onKeyDown = useCallback(
       (e) => {
-        if (e.keyCode === 37 || e.keyCode === 39) {
-          let _value = e.keyCode === 37 ? value - step : value + step
+        // home: 36 end: 35
+        if (e.keyCode === 36) {
+          e.preventDefault()
+          setStartPosition(0)
+          setValue(min || 0)
+          onChange(min || 0)
+        }
+        if (e.keyCode === 35) {
+          e.preventDefault()
+          setStartPosition(100)
+          setValue(max || 100)
+          onChange(max || 100)
+        }
+        // 方向键
+        if ([37, 38, 39, 40].includes(e.keyCode)) {
+          e.preventDefault()
+          let _value = e.keyCode === 37 || e.keyCode === 38 ? value - step : value + step
           if (_value < (min || 0)) {
             _value = min || 0
           } else if (_value > (max || 100)) {
@@ -111,14 +122,6 @@ const Slider = memo(
       },
       [value]
     )
-
-    useEffect(() => {
-      if (canKeyDown) {
-        window.onkeydown = onKeyDown
-      } else {
-        window.onkeydown = null
-      }
-    }, [canKeyDown, onKeyDown])
 
     useEffect(() => {
       if (initValue !== undefined) {
@@ -195,9 +198,7 @@ const Slider = memo(
         e.stopPropagation()
         setLastTime(new Date().getTime())
         setStartPosition(newRightPosition)
-        // setShowTooltip(false)
         setCanMove(false)
-        // setIsClick(false)
         setIsMove(false)
       },
       [newRightPosition]
@@ -233,7 +234,6 @@ const Slider = memo(
         const { clientX, clientY } = e
         setCanMove(true)
         setIsMove(true)
-        setIsClick(false)
         setStartPosition(getTrackWidth(value))
         if (vertical) {
           setStartY(clientY)
@@ -254,9 +254,7 @@ const Slider = memo(
       (e) => {
         if (lastTime - firstTime < 200) {
           e.stopPropagation()
-          setIsClick(true)
           setShowTooltip(true)
-          setCanKeyDown(true)
         }
       },
       [lastTime, firstTime]
@@ -293,7 +291,6 @@ const Slider = memo(
         if (initValue === undefined) {
           setValue(value)
         }
-        setIsClick(true)
         setStartPosition(position)
         onChange(value)
       },
@@ -326,13 +323,11 @@ const Slider = memo(
           onClick={railClick}
         />
         <div
-          className={classNames(`${prefixCls}__handle`, {
-            [`${prefixCls}__handle--focus`]: isClick
-          })}
+          className={classNames(`${prefixCls}__handle`)}
           onMouseDown={onMouseDown}
           onMouseEnter={onMouseEnter}
           onMouseLeave={() => {
-            if (!isMove && !isClick) {
+            if (!isMove) {
               setShowTooltip(false)
             }
           }}
@@ -344,6 +339,10 @@ const Slider = memo(
             }%`
           }}
           tabIndex="0"
+          onKeyDown={onKeyDown}
+          onBlur={(e) => {
+            setShowTooltip(false)
+          }}
         >
           <CSSTransition
             in={showTooltip}

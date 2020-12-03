@@ -45,6 +45,10 @@ export default {
     goto: '前往',
     page: '页'
   },
+  timeline: {
+    expand: '展开',
+    collapse: '收起'
+  },
   cascader: {
     placeholder: '请选择',
     noFoundTip: '无匹配数据',
@@ -60,7 +64,8 @@ export default {
   selectTree: {
     back: '返回',
     search: '搜索',
-    placeholder: '请选择'
+    placeholder: '请选择',
+    emptyContent: '无匹配数据'
   },
   search: {
     searchEmptyResult: '未找到搜索结果',
@@ -96,10 +101,6 @@ export default {
   tabs: {
     more: '更多'
   },
-  timeline: {
-    expand: '展开',
-    collapse: '收起'
-  },
   form: {
     colon: '：'
   },
@@ -115,6 +116,17 @@ export default {
     searchEmptyResult: '未找到搜索结果',
     modalTitle: '提示',
     delTips: '删除节点将删除所有子节点，确定删除吗？'
+  },
+  table: {
+    emptyContent: '暂无数据',
+    confirm: '确定',
+    reset: '重置',
+    ascend: '升序',
+    descend: '降序',
+    highlight: '高亮',
+    freeze: '冻结',
+    total: '合计',
+    average: '平均值'
   },
   watermark: {
     content: '请勿外传'

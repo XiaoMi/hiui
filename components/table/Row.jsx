@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Cell from './Cell'
 import TableContext from './context'
 import classNames from 'classnames'
@@ -20,9 +20,13 @@ const Row = ({
   index,
   innerRef,
   rowHeight,
-  isTree
+  isTree,
+  expanded: _expanded
 }) => {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(_expanded || false)
+  useEffect(() => {
+    setExpanded(_expanded)
+  }, [_expanded])
   const {
     errorRowKeys,
     rowSelection,
@@ -34,7 +38,8 @@ const Row = ({
     rightFixedColumns,
     hoverRow,
     setHoverRow,
-    prefix
+    prefix,
+    onExpand
   } = useContext(TableContext)
 
   const _columns = _.cloneDeep(columns)
@@ -69,7 +74,7 @@ const Row = ({
       onMouseEnter={(e) => setHoverRow(rowData.key)}
       onMouseLeave={(e) => setHoverRow(null)}
     >
-      {rowSelection && (
+      {rowSelection && isFixed !== 'right' && (
         <td style={{ width: 50 }}>
           <Checkbox
             checked={rowSelection.selectedRowKeys.includes(rowData.key)}
@@ -92,7 +97,12 @@ const Row = ({
             style={{ cursor: 'pointer' }}
             name={expanded ? 'down' : 'right'}
             onClick={() => {
-              setExpanded(!expanded)
+              if (_expanded === undefined) {
+                setExpanded(!expanded)
+              }
+              if (onExpand) {
+                onExpand(!expanded, rowData)
+              }
             }}
           />
         </td>

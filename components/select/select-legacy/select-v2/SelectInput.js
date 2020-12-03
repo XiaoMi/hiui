@@ -27,7 +27,7 @@ class SelectInput extends Component {
       const itemsRect = this.itemsRef.getBoundingClientRect()
       let width = 0
       let showCount = 0
-      const items = this.itemsRef.querySelectorAll('.hi-select__input--item')
+      const items = this.itemsRef.querySelectorAll('.hi-select-legacy__input--item')
 
       for (const item of items) {
         const itemRect = item.getBoundingClientRect()
@@ -132,7 +132,7 @@ class SelectInput extends Component {
     return (
       <div
         className={classNames(
-          'hi-select__input',
+          'hi-select-legacy__input',
           'multiple-values',
           `theme__${theme}`,
           {
@@ -142,11 +142,11 @@ class SelectInput extends Component {
         onClick={this.props.onClick}
       >
         {selectedItems.length === 0 && !value && (
-          <div className='hi-select__input--placeholder'>{placeholder}</div>
+          <div className='hi-select-legacy__input--placeholder'>{placeholder}</div>
         )}
         <div
-          className={classNames('hi-select__input-items', {
-            'hi-select__input-items--all': multipleMode === 'wrap'
+          className={classNames('hi-select-legacy__input-items', {
+            'hi-select-legacy__input-items--all': multipleMode === 'wrap'
           })}
           ref={node => {
             this.itemsRef = node
@@ -156,16 +156,16 @@ class SelectInput extends Component {
             const _item = (
               <div
                 key={index}
-                className='hi-select__input--item'
+                className='hi-select-legacy__input--item'
                 style={{
                   maxWidth: this.itemsRef
                     ? (this.itemsRef.getBoundingClientRect().width - 50) * 0.8
                     : '80%'
                 }}
               >
-                <div className='hi-select__input--item__name'>{item.title}</div>
+                <div className='hi-select-legacy__input--item__name'>{item.title}</div>
                 <span
-                  className='hi-select__input--item__remove'
+                  className='hi-select-legacy__input--item__remove'
                   onClick={e => {
                     e.stopPropagation()
                     this.props.onDelete(item)
@@ -178,15 +178,15 @@ class SelectInput extends Component {
             return _item
           })}
           {showCount < selectedItems.length && (
-            <div className='hi-select__input-items--left'>
+            <div className='hi-select-legacy__input-items--left'>
               +
-              <span className='hi-select__input-items--left-count'>
+              <span className='hi-select-legacy__input-items--left-count'>
                 {selectedItems.length - showCount}
               </span>
             </div>
           )}
           {searchable && !disabled && (
-            <div className='hi-select__input--search'>
+            <div className='hi-select-legacy__input--search'>
               <input
                 type='text'
                 style={inputStyle}
@@ -202,16 +202,16 @@ class SelectInput extends Component {
             </div>
           )}
         </div>
-        <span className='hi-select__input--icon'>
+        <span className='hi-select-legacy__input--icon'>
           <i
             className={classNames(
-              `hi-icon icon-${icon} hi-select__input--icon__expand`,
+              `hi-icon icon-${icon} hi-select-legacy__input--icon__expand`,
               { clearable: clearable && selectedItems.length > 0 }
             )}
           />
           {clearable && selectedItems.length > 0 && (
             <i
-              className={`hi-icon icon-close-circle hi-select__input--icon__close`}
+              className={`hi-icon icon-close-circle hi-select-legacy__input--icon__close`}
               onClick={this.handleClear.bind(this)}
             />
           )}
@@ -241,7 +241,7 @@ class SelectInput extends Component {
     return (
       <div
         className={classNames(
-          'hi-select__input',
+          'hi-select-legacy__input',
           'single-value',
           `theme__${theme}`,
           { disabled }
@@ -249,18 +249,18 @@ class SelectInput extends Component {
         onClick={this.props.onClick}
       >
         <div
-          className={classNames('hi-select__input--item', {
-            'hi-select__hide': !(!dropdownShow && selectedItems.length > 0)
+          className={classNames('hi-select-legacy__input--item', {
+            'hi-select-legacy__hide': !(!dropdownShow && selectedItems.length > 0)
           })}
         >
-          <div className='hi-select__input--item__name'>
+          <div className='hi-select-legacy__input--item__name'>
             {selectedItems[0] && selectedItems[0].title}
           </div>
         </div>
         {(dropdownShow || selectedItems.length === 0) && (
           <div
-            className={classNames('hi-select__input--search', {
-              'hi-select__input--search--value': selectedItems.length > 0
+            className={classNames('hi-select-legacy__input--search', {
+              'hi-select-legacy__input--search--value': selectedItems.length > 0
             })}
           >
             <input
@@ -278,16 +278,16 @@ class SelectInput extends Component {
             />
           </div>
         )}
-        <span className='hi-select__input--icon'>
+        <span className='hi-select-legacy__input--icon'>
           <i
             className={classNames(
-              `hi-icon icon-${icon} hi-select__input--icon__expand`,
+              `hi-icon icon-${icon} hi-select-legacy__input--icon__expand`,
               { clearable: clearable && selectedItems.length > 0 }
             )}
           />
           {clearable && selectedItems.length > 0 && (
             <i
-              className={`hi-icon icon-close-circle hi-select__input--icon__close`}
+              className={`hi-icon icon-close-circle hi-select-legacy__input--icon__close`}
               onClick={this.handleClear.bind(this)}
             />
           )}

@@ -1,8 +1,10 @@
-import React, { useRef, useContext } from 'react'
+import React, { useRef, useContext, useEffect, useState } from 'react'
 import Input from './Input'
 import PickerIcon from './PickerIcon'
 import DPContext from '../context'
 import { usePlaceholder } from '../hooks'
+import { parseValue } from '../utils'
+
 import classNames from 'classnames'
 const Root = ({
   onTrigger,
@@ -14,7 +16,20 @@ const Root = ({
   inputFocus,
   rangeInputIsError
 }) => {
-  const { localeDatas, type, outDate, placeholder, showTime, disabled, clearable, theme, width } = useContext(DPContext)
+  const {
+    localeDatas,
+    type,
+    outDate,
+    placeholder,
+    showTime,
+    disabled,
+    clearable,
+    theme,
+    width,
+    value,
+    format
+  } = useContext(DPContext)
+  const [inputData, setInputData] = useState(outDate)
   const inputRef = useRef(null)
   const [placeholders] = usePlaceholder({
     type,
@@ -22,7 +37,9 @@ const Root = ({
     placeholder,
     localeDatas
   })
-
+  useEffect(() => {
+    setInputData(value ? parseValue(value, type, format) : outDate)
+  }, [outDate, value])
   const onPickerClickEvent = () => {
     onTrigger()
   }
@@ -55,7 +72,7 @@ const Root = ({
     >
       <div className="hi-datepicker__input" style={{ width: width }}>
         <Input
-          date={outDate[0]}
+          date={inputData[0]}
           placeholder={placeholders[0]}
           onChange={inputChangeEvent}
           onFocus={onPickerClickEvent}
@@ -65,7 +82,7 @@ const Root = ({
           <React.Fragment>
             <span className="hi-datepicker__input--connection">{localeDatas.datePicker.to}</span>
             <Input
-              date={outDate[1]}
+              date={inputData[1]}
               placeholder={placeholders[1]}
               onChange={inputChangeEvent}
               onFocus={onPickerClickEvent}

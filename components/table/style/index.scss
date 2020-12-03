@@ -16,6 +16,7 @@
     color: use-color('black');
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 4px 12px;
 
     &:hover {
@@ -209,6 +210,7 @@
 
   &__header--sticky {
     position: fixed;
+    z-index: 10;
     top: 0;
     overflow-x: hidden;
   }

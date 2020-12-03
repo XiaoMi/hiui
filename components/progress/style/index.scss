@@ -68,12 +68,18 @@ $color-map: (
 
   &__text--inside {
     font-size: 14px;
-    color: use-color('white');
     position: absolute;
-    right: 5px;
+    right: -5px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translate(100%, -50%);
     line-height: 14px;
+    word-break: keep-all;
+
+    &.inside--left {
+      color: use-color('white');
+      right: 5px;
+      transform: translate(0, -50%);
+    }
   }
 
   &__svg {

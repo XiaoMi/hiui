@@ -27,20 +27,18 @@ const Popper = (props) => {
     show && setStaticShow(true)
   }, [show, attachEle])
   return (
-    <div>
-      <CSSTransition
-        in={transitionShow}
-        timeout={300}
-        classNames={AnimationClassName}
-        onExited={() => {
-          setStaticShow(false)
-        }}
-      >
-        <Portal container={container}>
-          <Overlay {...Object.assign({}, props, { show: staticShow })} container={container} />
-        </Portal>
-      </CSSTransition>
-    </div>
+    <CSSTransition
+      in={transitionShow}
+      timeout={300}
+      classNames={AnimationClassName}
+      onExited={() => {
+        setStaticShow(false)
+      }}
+    >
+      <Portal container={container}>
+        <Overlay {...Object.assign({}, props, { show: staticShow })} container={container} />
+      </Portal>
+    </CSSTransition>
   )
 }
 export { Portal, useClickOutside }

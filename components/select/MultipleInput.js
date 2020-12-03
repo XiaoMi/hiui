@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
+import Icon from '../icon'
 
 import { transKeys } from './utils'
 
@@ -15,11 +16,9 @@ const MultipleInput = ({
   multipleMode = 'nowrap',
   onFocus,
   theme,
-  onBlur,
   onClick,
   onClickOption,
   onClear,
-  handleKeyDown,
   fieldNames,
   isFocus
 }) => {
@@ -112,16 +111,12 @@ const MultipleInput = ({
         )}
         {searchable && !disabled && (
           <div className="hi-select__input--search">
-            <input type="text" onKeyDown={handleKeyDown} onFocus={onFocus} onBlur={onBlur} readOnly />
+            <input type="text" onFocus={onFocus} readOnly className="hi-select__input--readonly" />
           </div>
         )}
       </div>
       <span className="hi-select__input--icon">
-        <i
-          className={classNames(`hi-icon icon-${icon} hi-select__input--icon__expand`, {
-            clearable: clearable && selectedItems.length > 0
-          })}
-        />
+        <Icon name={icon} className={classNames({ clearable: clearable && selectedItems.length > 0 })} />
         {clearable && selectedItems.length > 0 && (
           <i className={`hi-icon icon-close-circle hi-select__input--icon__close`} onClick={handleClear} />
         )}

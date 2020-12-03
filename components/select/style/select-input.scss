@@ -4,7 +4,6 @@
   position: relative;
   display: flex;
   align-items: center;
-  width: 100%;
   background-color: use-color('white');
   color: use-color('black');
   line-height: 1;
@@ -15,6 +14,15 @@
   user-select: none;
   box-sizing: border-box;
   height: 32px;
+
+  &--readonly {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    transition: margin 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
 
   &.disabled {
     cursor: not-allowed;
@@ -47,7 +55,7 @@
   }
 
   &:not(.disabled):hover {
-    .hi-select__input--icon__expand.clearable {
+    .clearable {
       display: none;
     }
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import Loading from '../../../loading'
 import TreeNode from './TreeNode'
 import TreeContext from './context'
 import './style/index'
@@ -21,7 +20,8 @@ const Tree = ({
   onExpand,
   nodeDataState,
   loadDataOnExpand,
-  isRemoteLoadData
+  isRemoteLoadData,
+  localeDatas
 }) => {
   return (
     <TreeContext.Provider
@@ -42,8 +42,9 @@ const Tree = ({
       }}
     >
       <div className={`${PREFIX}`}>
-        {nodeDataState === 'loading' && <Loading size="small" />}
-        {nodeDataState === 'empty' && <span className="hi-select-tree--empty">empty</span>}
+        {nodeDataState === 'empty' && (
+          <span className="hi-select-tree--empty">{localeDatas.selectTree.emptyContent}</span>
+        )}
         {nodeDataState === 'normal' && <TreeNode data={getRootNodes(data)} flttenData={data} />}
       </div>
     </TreeContext.Provider>

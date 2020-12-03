@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import classNames from 'classnames'
 import Button from '../button'
 import Icon from '../icon'
@@ -45,6 +45,22 @@ const NormalUpload = ({
     customUpload,
     localeDatas
   })
+
+  const handleItemKeydown = useCallback(
+    (e, file, index) => {
+      // ENTER
+      if (e.keyCode === 13) {
+        e.preventDefault()
+        e.target.querySelector('a').click()
+      }
+      // DEL
+      if (e.keyCode === 46) {
+        e.preventDefault()
+        deleteFile(file, index)
+      }
+    },
+    [deleteFile]
+  )
   return (
     <div className={`hi-upload theme__${theme}`}>
       <FileSelect
@@ -63,10 +79,19 @@ const NormalUpload = ({
         <ul className="hi-upload__list">
           {_fileList.map((file, index) => {
             return (
-              <li key={index} className="hi-upload__item" title={file.name}>
+              <li
+                key={index}
+                className="hi-upload__item"
+                title={file.name}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  handleItemKeydown(e, file, index)
+                }}
+              >
                 <span className={classNames(`Ficon-${file.fileType}`)} />
                 <div className="hi-upload__right-content">
                   <a
+                    tabIndex={-1}
                     target="_blank"
                     rel="noreferrer"
                     href={file.url || null}

@@ -23,7 +23,9 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
     activeSorterType,
     realColumnsWidth,
     bordered,
-    eachRowHeight
+    eachRowHeight,
+    rowSelection,
+    expandedRender
   } = useContext(TableContext)
   let _columns
   if (isFixed === 'left') {
@@ -34,7 +36,11 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   }
   const depthArray = []
   setDepth(_columns, 0, depthArray)
-  const columnsgroup = flatTreeData(_columns).filter((col) => col.isLast)
+  // const columnsgroup = flatTreeData(_columns).filter((col) => col.isLast)
+  const columnsgroup = [rowSelection && isFixed !== 'right' && 'checkbox', expandedRender && 'expandedButton']
+    .concat(flatTreeData(_columns).filter((col) => col.isLast))
+    .filter((column) => !!column)
+
   // TODO: 这里是考虑了多级表头的冻结，待优化
   // *********全量 col group
   const allColumns = _.cloneDeep(columns)
@@ -43,6 +49,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   const allColumnsgroup = flatTreeData(allColumns).filter((col) => col.isLast)
   // ***********
   const bodyInner = useRef(null)
+
   const renderRow = (row, level, index, allRowData) => {
     return (
       <React.Fragment key={row.key}>
@@ -67,7 +74,9 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   }
   let fixedColumnsWidth
   if (isFixed === 'left') {
-    fixedColumnsWidth = leftFixedColumns
+    fixedColumnsWidth = [rowSelection && 'checkbox']
+      .concat(leftFixedColumns)
+      .filter((column) => !!column)
       .map((c, idx) => realColumnsWidth[idx])
       .reduce((total, cur) => {
         return total + cur
@@ -75,7 +84,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   }
   if (isFixed === 'right') {
     fixedColumnsWidth = rightFixedColumns
-      .map((c, idx) => realColumnsWidth[idx + rightFixedIndex])
+      .map((c, idx) => realColumnsWidth[rowSelection ? idx + 1 + rightFixedIndex : idx + rightFixedIndex])
       .reduce((total, cur) => {
         return total + cur
       }, 0)
@@ -135,17 +144,27 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
           ref={bodyInner}
         >
           <colgroup>
-            {columnsgroup.map((c, idx) => {
+            {columnsgroup.map((c, index) => {
               // TODO: 这里是考虑了多级表头的冻结，待优化
               let width
-              allColumnsgroup.forEach((col, index) => {
-                if (col.dataKey === c.dataKey) {
-                  width = realColumnsWidth[index]
-                }
-              })
+              if (isFixed === 'right') {
+                allColumnsgroup.forEach((col, idx) => {
+                  if (col.dataKey === c.dataKey) {
+                    // 有 rowSelection 需要往后移动一个
+                    width = realColumnsWidth[rowSelection ? idx + 1 : idx]
+                  }
+                })
+              } else if (isFixed === 'left') {
+                width = realColumnsWidth[index]
+              }
+              // allColumnsgroup.forEach((col, index) => {
+              //   if (col.dataKey === c.dataKey) {
+              //     width = realColumnsWidth[index]
+              //   }
+              // })
               return (
                 <col
-                  key={idx}
+                  key={index}
                   style={{
                     width: width,
                     minWidth: width

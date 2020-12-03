@@ -51,7 +51,6 @@
   &--label--top {
     padding-right: 0;
     text-align: left;
-
     &.hi-form--inline {
       // 上下布局只在水平表单中自动填充高度
       .hi-form-item__span {
@@ -61,6 +60,7 @@
 
     .hi-form-item {
       flex-direction: column;
+      margin-bottom: 20px;
 
       .hi-form-item__label {
         height: 22px;
@@ -75,6 +75,7 @@
   display: flex;
   font-size: $font-size-normal;
   margin-right: $spacer-2;
+  margin-bottom: 24px;
 
   &__label,
   &__span {
@@ -86,9 +87,10 @@
   }
 
   &__label {
-    min-height: 32px;
+    margin-top: 5px;
+    min-height: 22px;
     padding-right: $spacer-2;
-    line-height: 32px;
+    line-height: 22px;
   }
 
   &__content {
@@ -123,6 +125,7 @@
   }
 
   &--msg__error {
+    position: absolute;
     font-size: $font-size-small;
     min-height: 24px;
     padding: 2px 0;

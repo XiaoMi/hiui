@@ -6,18 +6,15 @@ import DropdownMenu, { propTypesOfMenuData } from './DropdownMenu'
 import Provider from '../context'
 
 import { prefixCls } from '.'
-import {
-  getIsTriggerEqualHover,
-  getIsTriggerEqualContextmenu,
-  trimTriggers
-} from './utils'
+import { getIsTriggerEqualHover, getIsTriggerEqualContextmenu, trimTriggers } from './utils'
 class Dropdown extends React.Component {
   refDropdown = React.createRef()
   timerHideMenu = null
   state = {
     visible: false
   }
-  eventHandler (event) {
+
+  eventHandler(event) {
     if (event) {
       event.stopPropagation()
       event.preventDefault()
@@ -26,16 +23,19 @@ class Dropdown extends React.Component {
       }
     }
   }
-  setPopperShow = event => {
+
+  setPopperShow = (event) => {
     this.eventHandler(event)
     clearTimeout(this.timerHideMenu)
     this.setState({ visible: true })
   }
-  setPopperHide = event => {
+
+  setPopperHide = (event) => {
     this.eventHandler(event)
     this.setState({ visible: false })
   }
-  setPopperDelayHide = event => {
+
+  setPopperDelayHide = (event) => {
     this.eventHandler(event)
     this.timerHideMenu = setTimeout(() => {
       this.setState({ visible: false })
@@ -52,7 +52,7 @@ class Dropdown extends React.Component {
     const { disabled } = this.props
     if (disabled) return {}
     const triggers = trimTriggers(this.props)
-    const getHandler = props => {
+    const getHandler = (props) => {
       if (getIsTriggerEqualHover(props)) {
         return {
           onMouseEnter: this.setPopperShow
@@ -67,32 +67,35 @@ class Dropdown extends React.Component {
         onClick: this.toggleVisible()
       }
     }
-    return triggers.reduce(
-      (prev, cur) => Object.assign(prev, getHandler(cur)),
-      {}
-    )
+    return triggers.reduce((prev, cur) => Object.assign(prev, getHandler(cur)), {})
   }
+
   getPopperHideHandler = () => {
     const { disabled } = this.props
     if (disabled) return {}
     return getIsTriggerEqualHover(this.props)
       ? {
-        onMouseLeave: this.setPopperDelayHide
-      }
+          onMouseLeave: this.setPopperDelayHide
+        }
       : {}
   }
+
   handleMenuMouseLeave = () => {
     getIsTriggerEqualHover(this.props) && this.setPopperDelayHide()
   }
+
   handleMenuMouseEnter = () => {
     clearTimeout(this.timerHideMenu)
   }
+
   handleChildMenuMouseEnter = () => {
     clearTimeout(this.timerHideMenu)
   }
+
   handleChildMenuMouseLeave = () => {
     getIsTriggerEqualHover(this.props) && this.setPopperDelayHide()
   }
+
   handleMenuItemClick = (data, isLinkOrNoChildren) => {
     const { onClick } = this.props
     if (isLinkOrNoChildren || onClick) {
@@ -102,11 +105,11 @@ class Dropdown extends React.Component {
     onClick && onClick(data)
   }
 
-  handleDocumentClick = e => {
+  handleDocumentClick = (e) => {
     this.setState({ visible: false })
   }
 
-  render () {
+  render() {
     const {
       className,
       style,
@@ -121,14 +124,9 @@ class Dropdown extends React.Component {
       overlayClassName
     } = this.props
     const { visible } = this.state
-    const dropdownCls = classNames(
-      prefixCls,
-      prefixCls + '--' + type,
-      className,
-      disabled && `${prefixCls}--disabled`
-    )
+    const dropdownCls = classNames(prefixCls, prefixCls + '--' + type, className, disabled && `${prefixCls}--disabled`)
     return (
-      <div className={dropdownCls} style={style} ref={this.refDropdown}>
+      <div className={dropdownCls} style={style} ref={this.refDropdown} tabIndex={0}>
         <DropdownButton
           {...this.getPopperShowHandler()}
           {...this.getPopperHideHandler()}

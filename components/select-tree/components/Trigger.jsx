@@ -12,13 +12,17 @@ const Trigger = ({
   clearable,
   show,
   selectedItemsRef,
-  placeholder
+  placeholder,
+  isFocus
 }) => {
   return (
     <div
       ref={inputRef}
       className={classNames(
         'hi-selecttree__input',
+        {
+          'hi-selecttree__input--focus': isFocus
+        },
         type !== 'multiple' && 'hi-selecttree__input--single',
         selectedItems.length === 0 && 'hi-selecttree__input--placeholder'
       )}

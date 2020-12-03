@@ -29,7 +29,8 @@ const Overlay = (props) => {
     onMouseEnter,
     onMouseLeave,
     onClickOutside,
-    overlayClassName
+    overlayClassName,
+    onKeyDown
   } = props
   const [isAddevent, setIsAddevent] = useState(false)
   const [state, setState] = useState({
@@ -93,7 +94,7 @@ const Overlay = (props) => {
       setIsAddevent(false)
       setState(Object.assign({}, state, { offset: undefined }))
     }
-  }, [props.show])
+  }, [show])
 
   // update
   useEffect(() => {
@@ -154,6 +155,10 @@ const Overlay = (props) => {
       className={classNames(overlayClassName, 'hi-popper__container', {
         'hi-popper__container--hide': !show
       })}
+      tabIndex="-1"
+      onKeyDown={(e) => {
+        show && onKeyDown && onKeyDown(e)
+      }}
       style={{ left, top, zIndex }}
     >
       <div

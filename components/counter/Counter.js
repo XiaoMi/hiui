@@ -169,6 +169,44 @@ class Counter extends React.Component {
 
               this.update(value)
             }}
+            onKeyDown={e=> {
+              if(e.keyCode === 38) {
+                e.preventDefault()
+                let value = new Decimal(valueTrue).plus(step).valueOf()
+                if (isAddDisabled) {
+                  return
+                }
+                if (step > 0) {
+                  if (this.willReachMax) {
+                    value = max
+                  }
+                } else {
+                  if (this.willReachMin) {
+                    value = min
+                  }
+                }
+                this.update(value)
+              }
+              if(e.keyCode === 40) {
+                e.preventDefault()
+                let value = new Decimal(this.getInputNumber())
+                .minus(step)
+                .valueOf()
+                if (isMinusDisabled) {
+                  return
+                }
+                if (step > 0) {
+                  if (this.willReachMin) {
+                    value = min
+                  }
+                } else {
+                  if (this.willReachMax) {
+                    value = max
+                  }
+                }
+                this.update(value)
+              }
+            }}
           />
           <span
             className={`hi-counter-plus hi-counter-sign ${

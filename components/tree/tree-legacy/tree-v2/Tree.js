@@ -23,7 +23,7 @@ export class Tree extends Component {
   }
 
   static defaultProps = {
-    prefixCls: 'hi-tree',
+    prefixCls: 'hi-tree-legacy',
     defaultCheckedKeys: [],
     data: [],
     apperance: 'default',
@@ -193,7 +193,7 @@ export class Tree extends Component {
     const { data } = this.state
     return (
       <div
-        className={classNames(`${prefixCls}`, `theme__${theme}`, { 'hi-tree--show-line': apperance === 'line' })}
+        className={classNames(`${prefixCls}`, `theme__${theme}`, { 'hi-tree-legacy--show-line': apperance === 'line' })}
         style={style}
       >
         <TreeNode

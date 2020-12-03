@@ -2,7 +2,7 @@ import React, { Component, Children } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import _ from 'lodash'
-import Icon from '../icon'
+import Panel from './Panel'
 import './style/index'
 
 const noop = () => {}
@@ -34,7 +34,10 @@ class Collapse extends Component {
     this.state = {
       activeId: Array.isArray(_activeId) ? _activeId : [_activeId]
     }
+    this.panelContainer = React.createRef(null)
   }
+
+
   static getDerivedStateFromProps (nextProps, prevState) {
     if (
       !_.isEqual(nextProps.activeId !== prevState.activeId) &&
@@ -76,6 +79,7 @@ class Collapse extends Component {
       if (!child) return
       const key = child.props.id || child.key || String(index)
       const { header, disabled, title } = child.props
+
       let isActive = accordion ? activeKey[0] === key : activeKey.includes(key)
       const props = {
         key,
@@ -85,7 +89,10 @@ class Collapse extends Component {
         arrow: arrowPlacement !== 'left' ? arrowPlacement : arrow,
         showArrow,
         children: child.props.children,
-        onClickPanel: disabled ? noop : () => this.onClickPanel(key)
+        onClickPanel: disabled ? noop : () => this.onClickPanel(key),
+        panels: children,
+        panelContainer: this.panelContainer,
+        idx: index
       }
       newChildren.push(React.cloneElement(child, props))
     })
@@ -94,54 +101,11 @@ class Collapse extends Component {
   render () {
     const { prefixCls, type } = this.props
     let classnames = classNames(prefixCls, type && `${prefixCls}__${type}`)
-    return <div className={classnames}>{this.renderPanels()}</div>
+    return <div className={classnames} ref={this.panelContainer}>{this.renderPanels()}</div>
   }
 }
 
-class CollapsePanel extends Component {
-  static propTypes = {
-    header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    disabled: PropTypes.bool,
-    isActive: PropTypes.bool,
-    arrow: PropTypes.string,
-    showArrow: PropTypes.bool,
-    onClickPanel: PropTypes.func
-  }
-  static defaultProps = {
-    disabled: false
-  }
 
-  render () {
-    const {
-      key,
-      arrow,
-      header,
-      disabled,
-      isActive,
-      children,
-      onClickPanel,
-      showArrow
-    } = this.props
-    let classnames = classNames('collapse-item', {
-      'collapse-item--show': isActive,
-      'collapse-item--disabled': disabled
-    })
-    return (
-      <div className={classnames}>
-        <div className='collapse-item__head' onClick={() => onClickPanel(key)}>
-          {showArrow && arrow === 'left' && (
-            <Icon name='down' className='collapse-item__icon' />
-          )}
-          <div className='collapse-item__title'>{header}</div>
-          {showArrow && arrow === 'right' && (
-            <Icon name='down' className='collapse-item__icon' />
-          )}
-        </div>
-        <div className='collapse-item__content'>{children}</div>
-      </div>
-    )
-  }
-}
-Collapse.Panel = CollapsePanel
+Collapse.Panel = Panel
 
 export default Collapse

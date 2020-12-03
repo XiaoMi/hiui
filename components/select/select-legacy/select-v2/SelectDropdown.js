@@ -89,7 +89,7 @@ class SelectDropdown extends Component {
           part === searchbarValue ? (
             <span
               key={i}
-              className={'hi-select__dropdown--item__name-hightlight'}
+              className={'hi-select-legacy__dropdown--item__name-hightlight'}
             >
               {part}
             </span>
@@ -155,11 +155,11 @@ class SelectDropdown extends Component {
       <React.Fragment>
         {mode === 'multiple' && (
           <Checkbox
-            className='hi-select__dropdown--item__checkbox'
+            className='hi-select-legacy__dropdown--item__checkbox'
             checked={isSelected}
             disabled={item.disabled}
           >
-            <div className='hi-select__dropdown--item__name' style={style}>
+            <div className='hi-select-legacy__dropdown--item__name' style={style}>
               {this.props.isOnSearch
                 ? item.title
                 : this.hightlightKeyword(item.title, item.id)}
@@ -167,14 +167,14 @@ class SelectDropdown extends Component {
           </Checkbox>
         )}
         {mode === 'single' && (
-          <div className='hi-select__dropdown--item__name' style={style}>
+          <div className='hi-select-legacy__dropdown--item__name' style={style}>
             {this.props.isOnSearch
               ? item.title
               : this.hightlightKeyword(item.title, item.id)}
           </div>
         )}
         {mode === 'single' && isSelected && (
-          <div className='hi-select__dropdown--item__check-icon'>
+          <div className='hi-select-legacy__dropdown--item__check-icon'>
             <i className='hi-icon icon-check' />
           </div>
         )}
@@ -206,13 +206,13 @@ class SelectDropdown extends Component {
     }
 
     return (
-      <div className='hi-select__dropdown' style={style}>
+      <div className='hi-select-legacy__dropdown' style={style}>
         {searchable && (
-          <div className='hi-select__dropdown__searchbar'>
-            <div className='hi-select__dropdown__searchbar--content'>
+          <div className='hi-select-legacy__dropdown__searchbar'>
+            <div className='hi-select-legacy__dropdown__searchbar--content'>
               <Icon name='search' />
               <input
-                className='hi-select__dropdown__searchbar--input'
+                className='hi-select-legacy__dropdown__searchbar--input'
                 placeholder={searchPlaceholder}
                 clearable='true'
                 ref={input => {
@@ -237,12 +237,12 @@ class SelectDropdown extends Component {
           </div>
         )}
         {loading && (
-          <div className='hi-select__dropdown--loading'>
+          <div className='hi-select-legacy__dropdown--loading'>
             <Loading size='small' />
           </div>
         )}
         {!loading && (
-          <ul className='hi-select__dropdown--items'>
+          <ul className='hi-select-legacy__dropdown--items'>
             {filterItems.map((item, index) => {
               if (matchFilter(item)) {
                 matched++
@@ -251,12 +251,12 @@ class SelectDropdown extends Component {
                 return (
                   <li
                     className={classNames(
-                      'hi-select__dropdown--item',
+                      'hi-select-legacy__dropdown--item',
                       `theme__${theme}`,
                       {
                         'is-active': isSelected,
                         'is-disabled': isDisabled,
-                        'hi-select__dropdown--item-default':
+                        'hi-select-legacy__dropdown--item-default':
                           !item.children && !dropdownRender
                       }
                     )}
@@ -272,7 +272,7 @@ class SelectDropdown extends Component {
             })}
             {matched === 0 && (
               <li
-                className='hi-select__dropdown--item hi-select__dropdown-item--empty is-disabled'
+                className='hi-select-legacy__dropdown--item hi-select-legacy__dropdown-item--empty is-disabled'
                 onClick={e => e.stopPropagation()}
               >
                 {noFoundTip}
@@ -282,7 +282,7 @@ class SelectDropdown extends Component {
         )}
         {mode === 'multiple' && showCheckAll && (
           <div
-            className={`hi-select__dropdown-check-all theme__${theme}`}
+            className={`hi-select-legacy__dropdown-check-all theme__${theme}`}
             onClick={this.props.checkAll.bind(this, filterItems)}
           >
             {localeMap['checkAll']}

@@ -27,6 +27,10 @@ $search: 'hi-search' !default;
         border-color: use-color('primary');
       }
 
+      &:focus:not(.disabled) {
+        border-color: use-color('primary');
+      }
+
       &:focus {
         box-shadow: none;
       }
@@ -86,6 +90,10 @@ $search: 'hi-search' !default;
         &:hover:not(.hi-search_dropdown--item-title) {
           background-color: use-color('primary-20');
         }
+      }
+
+      &--focus {
+        background-color: use-color('primary-20');
       }
 
       &-title {

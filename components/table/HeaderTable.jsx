@@ -68,7 +68,9 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   setDepth(_columns, 0, depthArray)
 
   const maxDepth = depthArray.length > 0 ? Math.max.apply(null, depthArray) : 0
-  const columnsgroup = flatTreeData(_columns).filter((col) => col.isLast)
+  const columnsgroup = [rowSelection && isFixed !== 'right' && 'checkbox', expandedRender && 'expandedButton']
+    .concat(flatTreeData(_columns).filter((col) => col.isLast))
+    .filter((column) => !!column)
   // TODO: 这里是考虑了多级表头的冻结，待优化
   // *********全量 col group
   const allColumns = _.cloneDeep(columns)
@@ -111,7 +113,10 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
 
   // ******************** 行渲染 ***********************
   const renderBaseRow = (cols, index, isSticky) => {
-    const _colums = [rowSelection && index === 0 && 'checkbox', expandedRender && index === 0 && 'expandedButton']
+    const _colums = [
+      rowSelection && isFixed !== 'right' && index === 0 && 'checkbox',
+      expandedRender && index === 0 && 'expandedButton'
+    ]
       .concat(cols)
       .filter((column) => !!column)
     return (
@@ -255,7 +260,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
               if (isFixed === 'right') {
                 allColumnsgroup.forEach((col, idx) => {
                   if (col.dataKey === c.dataKey) {
-                    width = realColumnsWidth[idx]
+                    width = realColumnsWidth[rowSelection ? idx + 1 : idx]
                   }
                 })
               } else if (isFixed === 'left' || resizable) {

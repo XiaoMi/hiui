@@ -204,7 +204,7 @@ export const flattenNodesData = (data, isGenEntries = false) => {
   const fun = (datas, newArr, parent = {}) => {
     datas = _.cloneDeep(datas)
     datas.forEach((node) => {
-      const pId = parent.id
+      const pId = node.pId !== undefined ? node.pId : parent.id
       node.pId = pId
       if (pId) {
         const arr = parent.ancestors ? [...parent.ancestors] : []
@@ -362,4 +362,9 @@ export const clearReturnData = (arg) => {
     delete arg.pId
   }
   return arg
+}
+
+// 获取被选中的节点的 兄弟节点
+export const getSiblingsWidthActiveId = (data, activeId) => {
+  return data
 }

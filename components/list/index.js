@@ -8,7 +8,7 @@ import './style'
 
 const prefixCls = 'hi-list'
 
-const getPagePosition = pagination => {
+const getPagePosition = (pagination) => {
   let pagePosition = 'flex-end'
   switch (pagination.position) {
     case 'left':
@@ -26,7 +26,7 @@ const getPagePosition = pagination => {
   }
   return pagePosition
 }
-const getActionPosition = actionPosition => {
+const getActionPosition = (actionPosition) => {
   let _actionPosition = 'flex-end'
   switch (actionPosition) {
     case 'top':
@@ -75,9 +75,9 @@ const List = ({
         })}
         key={index}
       >
-        <div className={`${prefixCls}-item__row`} key='row'>
+        <div className={`${prefixCls}-item__row`} key="row">
           {avatar && (
-            <div className={`${prefixCls}-item__avatar`} key='avatar'>
+            <div className={`${prefixCls}-item__avatar`} key="avatar">
               <img src={avatar} />
             </div>
           )}
@@ -87,7 +87,7 @@ const List = ({
         {action && (
           <div
             className={`${prefixCls}-item__action`}
-            key='action'
+            key="action"
             style={{ alignSelf: getActionPosition(actionPosition) }}
           >
             {action(item)}

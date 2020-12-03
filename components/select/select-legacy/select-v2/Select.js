@@ -75,7 +75,6 @@ class Select extends Component {
 
     const searchable = this.getSearchable()
     this.debouncedFilterItems = debounce(this.onFilterItems.bind(this), 300)
-    this.clickOutsideHandel = this.clickOutside.bind(this)
 
     this.state = {
       searchable,
@@ -107,24 +106,7 @@ class Select extends Component {
   }
 
   componentDidMount () {
-    window.addEventListener('click', this.clickOutsideHandel)
     this.resetFocusedIndex()
-  }
-
-  componentWillUnmount () {
-    window.removeEventListener('click', this.clickOutsideHandel)
-  }
-
-  clickOutside (e) {
-    const selectInput = ReactDOM.findDOMNode(this.selectInput)
-    if (
-      (selectInput && selectInput.contains(e.target)) ||
-      (e.target.tagName === 'INPUT' &&
-        e.target.className.includes('hi-select__dropdown__searchbar--input'))
-    ) {
-      return
-    }
-    this.hideDropdown()
   }
 
   componentWillReceiveProps (nextProps) {
@@ -305,7 +287,7 @@ class Select extends Component {
     }
   }
 
-  hideDropdown () {
+  hideDropdown = ()=> {
     this.state.dropdownShow === true &&
       this.setState(
         { dropdownShow: false, cacheSelectedItems: this.state.selectedItems },
@@ -596,11 +578,11 @@ class Select extends Component {
       : null
     return (
       <div
-        className={classNames('hi-select', className, extraClass)}
+        className={classNames('hi-select-legacy', className, extraClass)}
         style={style}
       >
         <div
-          className='hi-select__input-container'
+          className='hi-select-legacy__input-container'
           ref={node => {
             this.selectInputContainer = node
           }}
@@ -644,7 +626,10 @@ class Select extends Component {
           topGap={5}
           leftGap={0}
           preventOverflow={preventOverflow}
-          className='hi-select__popper'
+          onClickOutside={() => {
+            this.hideDropdown()
+          }}
+          className='hi-select-legacy__popper'
           placement={placement || 'top-bottom-start'}
         >
           {dropdownShow && this.props.open && (

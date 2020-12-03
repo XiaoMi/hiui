@@ -18,7 +18,7 @@ const code = [
               children: [
                 { id: 2, title: '技术', disabled: true,
                   children: [
-                    { id: 3, title: '后端', onClick: data => {console.log('后端：', data)} , disabled: true},
+                    { id: 3, title: '后端', disabled: true },
                     { id: 4, title: '运维' },
                     { id: 5, title: '前端' }
                   ]
@@ -41,9 +41,9 @@ const code = [
           ]
         }
       }
-    
-    
-    
+
+
+
       render() {
         return (
           <div style={{width:500}}>
@@ -94,9 +94,9 @@ const code = [
             },
           ]
         }
-    
+
       }
-    
+
       render() {
         return (
           <div style={{width:500}}>

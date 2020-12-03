@@ -37,7 +37,7 @@ $borderColor: #e6e7e8 !default;
   th {
     box-sizing: border-box;
   }
-  //width: 100%;
+
   &-container {
     position: relative;
   }
@@ -276,7 +276,7 @@ $borderColor: #e6e7e8 !default;
   }
 
   &-container table {
-    width: 100%;
+    min-width: 100%;
     border-collapse: separate;
     background: #fff;
     margin: 0;

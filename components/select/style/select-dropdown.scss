@@ -40,13 +40,6 @@
     }
   }
 
-  &--label {
-    padding: 0 12px;
-    font-size: 12px;
-    line-height: 30px;
-    color: use-color('gray-80');
-  }
-
   &--item {
     flex: none;
     display: block;
@@ -61,6 +54,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    &--child {
+      padding-left: 24px;
+    }
 
     &.hi-select__dropdown--item-default {
       display: flex;
@@ -106,6 +103,10 @@
       background-color: use-color('primary-20');
     }
 
+    &.is-focus {
+      background-color: use-color('primary-20');
+    }
+
     &.disabled {
       opacity: 0.4;
       cursor: not-allowed;
@@ -117,6 +118,16 @@
 
     &__check-icon {
       flex: none;
+    }
+  }
+
+  &--label {
+    color: var(--color-gray-50);
+    font-size: 14px;
+    cursor: auto;
+
+    &:hover {
+      background-color: use-color('white');
     }
   }
 

@@ -13,11 +13,22 @@
         }
       }
 
+      &:focus {
+        outline: none;
+
+        &:not(.hi-pagination__item--disabled) {
+          & > span {
+            border-color: rgba($color, 0.8);
+            color: $color;
+          }
+        }
+      }
+
       &--active:not(.hi-pagination__item--disabled) {
         > span {
-          border-color: $color;
+          border-color: $color !important;
           background-color: $color;
-          color: $white;
+          color: $white !important;
           cursor: default;
 
           &:hover {
@@ -44,12 +55,8 @@
     margin-right: $spacer-4;
   }
 
-  &__sizes {
-    margin-right: $spacer-4;
-  }
-
   &__jumper {
-    margin-left: $spacer-4;
+    margin-left: $spacer-6;
   }
 
   &__span {

@@ -60,7 +60,8 @@ export default {
   selectTree: {
     back: '返回',
     search: '搜索',
-    placeholder: '請選擇'
+    placeholder: '請選擇',
+    emptyContent: '無匹配數據'
   },
   search: {
     searchEmptyResult: '未找到搜索結果',
@@ -115,6 +116,18 @@ export default {
     searchEmptyResult: '未找到搜索結果',
     modalTitle: '提示',
     delTips: '刪除節點將刪除所有子節點，確定刪除嗎？'
+  },
+  table: {
+    emptyContent: '暫無數據',
+    confirm: '確定',
+    reset: '重置',
+    ascend: '升序',
+    descend: '降序',
+    highlight: '高亮',
+    freeze: '凍結',
+
+    total: '合計',
+    average: '平均值'
   },
   watermark: {
     content: '請勿外傳'

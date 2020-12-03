@@ -62,7 +62,7 @@ const getDateRows = ({ originDate, range, type, weekOffset, min, max, renderDate
   if (firstDayWeek === 0) {
     // 如果为0 代表该月第一天是周日，在日历上需要第二行开始显示
     firstDayWeek = 7
-  } else if (!type.includes('range')) {
+  } else if (firstDayWeek < 0) {
     firstDayWeek = 6
   }
   const startTimeByCurrentPanel = getTime(firstDayWeek, _date.year(), _date.month() + 1)

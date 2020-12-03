@@ -3,13 +3,9 @@ import SingleInput from './SingleInput'
 import MultipleInput from './MultipleInput'
 
 const InternalSelectInput = (props) => {
-  const { mode, handleKeyDown } = props
+  const { mode } = props
 
-  return mode === 'multiple' ? (
-    <MultipleInput {...props} handleKeyDown={handleKeyDown} />
-  ) : (
-    <SingleInput {...props} handleKeyDown={handleKeyDown} />
-  )
+  return mode === 'multiple' ? <MultipleInput {...props} /> : <SingleInput {...props} />
 }
 const SelectInput = forwardRef((props, ref) => {
   return <InternalSelectInput {...props} innerRef={ref} />

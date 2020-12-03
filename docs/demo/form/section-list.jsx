@@ -23,6 +23,7 @@ const code = [
         this.form = React.createRef()
         this.state = {
           initialValues:{
+            phone:'123',
             testList:['第一项','第二项']
           },
           rules: {
@@ -104,6 +105,26 @@ const code = [
                   )
                 }}
               >
+              <FormItem 
+              label='账号' 
+              field={"phone"} 
+              rules={{
+              trigger:'onChange',
+              type:'number',
+              required:true,
+              validator: (rule,value,callback) => {
+                const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
+                if(!value){
+                  callback("请输入手机号")
+                } else if (!telReg.test(value)){
+                  callback("请输入正确的手机号")
+                } else {
+                  callback()
+                }
+              },
+              }}>
+              <Input placeholder='请输入手机号' />
+            </FormItem>
                 <FormList name='testList'>
                   {(fields, { add, remove }) => {
                     return (
@@ -197,6 +218,10 @@ const code = [
         super()
         this.form = React.createRef()
         this.state = {
+          initialValues:{
+            phone:'123',
+            testList:[{first: "123",last: "rrr"}]
+          },
           rules: {
             name: {
               required: true,
@@ -263,6 +288,7 @@ const code = [
             <Col span={12}>
               <Form
                 ref={this.form}
+                initialValues={this.state.initialValues}
                 rules={this.state.rules}
                 labelWidth='80'
                 labelPlacement='right'
@@ -275,6 +301,26 @@ const code = [
                   )
                 }}
               >
+              <FormItem 
+              label='账号' 
+              field={"phone"} 
+              rules={{
+              trigger:'onChange',
+              type:'number',
+              required:true,
+              validator: (rule,value,callback) => {
+                const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
+                if(!value){
+                  callback("请输入手机号")
+                } else if (!telReg.test(value)){
+                  callback("请输入正确的手机号")
+                } else {
+                  callback()
+                }
+              },
+              }}>
+              <Input placeholder='请输入手机号' />
+            </FormItem>
                 <FormList name='testList'>
                   {(fields, { add, remove }) => {
                     return (

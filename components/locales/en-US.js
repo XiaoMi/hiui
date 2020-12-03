@@ -39,7 +39,7 @@ export default {
     total: ['Total', 'items'],
     simple: ['The', 'page', '', 'pages', 'items'],
     item: '',
-    itemPerPage: 'Items per page',
+    itemPerPage: 'page',
     goto: 'Goto',
     page: ''
   },
@@ -57,7 +57,8 @@ export default {
   selectTree: {
     back: 'Back',
     search: 'search',
-    placeholder: 'Please select'
+    placeholder: 'Please select',
+    emptyContent: 'Not found'
   },
   search: {
     searchEmptyResult: 'No serach results',
@@ -113,6 +114,19 @@ export default {
     modalTitle: 'Warning',
     delTips: 'Deleting a node will delete all child nodes, are you sure to delete this node?'
   },
+  table: {
+    emptyContent: 'No data',
+    confirm: 'Confirm',
+    reset: 'Reset',
+    ascend: 'Ascend',
+    descend: 'Descend',
+    highlight: 'Highlight',
+    freeze: 'Freeze',
+
+    total: 'Total',
+    average: 'Average'
+  },
+
   watermark: {
     content: 'Please do not gaiden'
   }

@@ -5,20 +5,18 @@ $tree: 'hi-select-tree' !default;
   color: use-color('black');
   padding: 12px 12px 0 12px;
   box-sizing: border-box;
-  max-height: 282px;
   overflow: auto;
 
   &--empty {
-    margin-left: 50%;
-    margin-top: 45%;
     display: inline-block;
-    transform: translate(-50%, 0);
+    margin-bottom: 12px;
   }
 
   &__nodes {
     list-style-type: none;
     padding: 0;
     margin: 0;
+    height: 100%;
   }
 
   &__node {
@@ -62,7 +60,7 @@ $tree: 'hi-select-tree' !default;
 
     &:hover {
       color: #383e47;
-      background-color: use-color('primary-10');
+      background-color: use-color('primary-20');
     }
 
     &--selected {
@@ -81,6 +79,10 @@ $tree: 'hi-select-tree' !default;
     width: 100%;
     display: flex;
     flex-direction: column;
+
+    .hi-select-tree--empty {
+      padding: 12px 0 0 12px;
+    }
   }
 
   &__list {

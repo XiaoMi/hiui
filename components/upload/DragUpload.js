@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import classNames from 'classnames'
 import Icon from '../icon'
 import FileSelect from './FileSelect'
@@ -26,6 +26,7 @@ const DragUpload = ({
   beforeUpload,
   customUpload
 }) => {
+  const dragRef = useRef(null)
   const [_fileList, uploadFiles, deleteFile] = useUpload({
     fileList,
     defaultFileList,
@@ -71,6 +72,33 @@ const DragUpload = ({
     _fileList.length > 0 && 'hi-upload--nohover'
   )
 
+  const handleContainerKeyDown = useCallback(
+    (e) => {
+      // ENTER OR SPACE
+      if (e.keyCode === 32 || e.keyCode === 13) {
+        e.preventDefault()
+        dragRef.current.parentNode.click()
+      }
+    },
+    [dragRef.current]
+  )
+
+  const handleItemKeydown = useCallback(
+    (e, file, index) => {
+      // ENTER
+      if (e.keyCode === 13) {
+        e.preventDefault()
+        e.stopPropagation()
+        e.target.querySelector('a').click()
+      }
+      // DEL
+      if (e.keyCode === 46) {
+        e.preventDefault()
+        deleteFile(file, index)
+      }
+    },
+    [deleteFile]
+  )
   return (
     <FileSelect
       onSelect={uploadFiles}
@@ -79,7 +107,15 @@ const DragUpload = ({
       disabled={disabled || _fileList.length >= maxCount}
       accept={accept}
     >
-      <div className={dragCls} onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}>
+      <div
+        className={dragCls}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onDrop={onDrop}
+        tabIndex={0}
+        ref={dragRef}
+        onKeyDown={handleContainerKeyDown}
+      >
         {_fileList.length === 0 ? (
           <div className={'drag-upload__desc'}>
             <Icon name="cloud-upload" className="icon" />
@@ -90,7 +126,7 @@ const DragUpload = ({
           <ul className={'hi-upload__list'}>
             {_fileList.length > 0 && (
               <li className="hi-upload__item hi-upload__item-tips">
-                <Icon name="tishi" />
+                <Icon name="info-circle" filled />
                 <span className="hi-upload__tips--exist">
                   {_fileList.length >= maxCount ? localeDatas.upload.dragTipsLimited : localeDatas.upload.dragTips}
                   {tips && '，' + tips}
@@ -99,10 +135,22 @@ const DragUpload = ({
             )}
             {_fileList.map((file, index) => {
               return (
-                <li key={index} title={file.name} className="hi-upload__item">
+                <li
+                  key={index}
+                  title={file.name}
+                  className="hi-upload__item"
+                  tabIndex={0}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                  }}
+                  onKeyDown={(e) => {
+                    handleItemKeydown(e, file, index)
+                  }}
+                >
                   <span className={`Ficon-${file.fileType}`} />
                   <div className="hi-upload__right-content">
                     <a
+                      tabIndex={-1}
                       target="_blank"
                       rel="noreferrer"
                       href={file.url || null}

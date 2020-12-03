@@ -73,7 +73,7 @@ import DemoCustom from '../../demo/upload/section-custom.jsx'
 | 名称       | 说明                     | 类型                                                        | 参数                                                                                 | 返回值                                                                           |
 | ---------- | ------------------------ | ----------------------------------------------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
 | onChange   | 上传回调                 | (file: File, fileList: File[], response: object) => boolean | file: 上传的文件对象 <br/> fileList: 当前已上传文件列表集合 <br/> response: 响应对象 | boolean \| `Promise<boolean>`: 返回 false 则已上传文件列表不展示该文件           |
-| onRemove   | 删除上传的文件           | (file: File) => boolean                                     | file: 移除的文件对象                                                                 | boolean \| `Promise<boolean>`: 返回 false 则不可删除，返回 true 时在前端删除文件 |
+| onRemove   | 删除上传的文件           | (file: File, fileList: File[], index: number) => boolean                                     | file: 移除的文件对象, fileList: 当前已上传文件列表集合, index 索引                                                                 | boolean \| `Promise<boolean>`: 返回 false 则不可删除，返回 true 时在前端删除文件 |
 | onDownload | 点击已上传的文件时的回调 | (file: File) => void                                        | file: 点击的文件对象                                                                 | -                                                                                |
 
 ## Type

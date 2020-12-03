@@ -15,6 +15,10 @@ $prefix: 'hi-tabs' !default;
     cursor: pointer;
     border: 1px solid transparent;
     transition: all 300ms;
+    &:not(&--disabled):focus {
+      outline: none;
+      color: use-color('primary');
+    }
 
     &--disabled {
       color: use-color('gray-50') !important;
@@ -419,8 +423,12 @@ $prefix: 'hi-tabs' !default;
       background-color: use-color('primary-20');
     }
 
-    &--active {
+    &--focus {
       background-color: use-color('primary-20');
+    }
+
+    &--active {
+      color: use-color('primary');
     }
   }
 }

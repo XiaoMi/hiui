@@ -27,6 +27,7 @@ const AvatarUpload = ({
   beforeUpload,
   customUpload
 }) => {
+  const uploadRef = useRef(null)
   const { aspectRatio = 0, dragMode = 'move', dropBoxSize = [] } = avatarOptions
   const cropperRef = useRef(null)
   const [_fileList, uploadFiles, deleteFile] = useUpload({
@@ -118,6 +119,35 @@ const AvatarUpload = ({
     }
   })
 
+  const handleUploadKeydown = useCallback(
+    (e) => {
+      // ENTER OR SPACE
+      if (e.keyCode === 32 || e.keyCode === 13) {
+        e.preventDefault()
+        uploadRef.current.parentNode.click()
+      }
+    },
+
+    [uploadRef.current]
+  )
+
+  const handleItemKeydown = useCallback(
+    (e, file) => {
+      // ENTER
+      if (e.keyCode === 13) {
+        e.preventDefault()
+        e.stopPropagation()
+        previewImage(file, 0)
+      }
+      // DEL
+      if (e.keyCode === 46) {
+        e.preventDefault()
+        deleteFile(file, 0)
+      }
+    },
+    [deleteFile, previewImage]
+  )
+
   const file = _fileList[0]
   return (
     <div className={`theme__${theme} hi-upload hi-upload--avatar`}>
@@ -138,7 +168,15 @@ const AvatarUpload = ({
               </div>
             </li>
           ) : (
-            <li className="hi-upload__item" onClick={() => previewImage(file, 0)} style={{ cursor: 'pointer' }}>
+            <li
+              className="hi-upload__item"
+              tabIndex={0}
+              onClick={() => previewImage(file, 0)}
+              onKeyDown={(e) => {
+                handleItemKeydown(e, file)
+              }}
+              style={{ cursor: 'pointer' }}
+            >
               <img src={file.url} className={`hi-upload__thumb ${file.uploadState === 'error' && 'error'}`} />
               <Icon
                 name="close-circle"
@@ -162,7 +200,12 @@ const AvatarUpload = ({
             accept={accept}
             style={{ display: 'inline-block' }}
           >
-            <li className="hi-upload__item hi-upload__item--upload">
+            <li
+              className="hi-upload__item hi-upload__item--upload"
+              ref={uploadRef}
+              tabIndex={0}
+              onKeyDown={handleUploadKeydown}
+            >
               <Icon name="plus" style={{ fontSize: 24 }} />
             </li>
           </FileSelect>

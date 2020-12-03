@@ -34,6 +34,7 @@ class Preview extends Component {
     document.body.appendChild(this.node)
     this.imgRef = React.createRef()
     this.previewRef = React.createRef()
+    this.focusedElementBeforeOpenPreview = null
     this.handleMouseDown = this.handleMouseDown.bind(this)
     this.handleMouseMove = this.handleMouseMove.bind(this)
     this.handleMouseUp = this.handleMouseUp.bind(this)
@@ -43,6 +44,8 @@ class Preview extends Component {
   componentDidMount() {
     this.loadImg(this.state.activeIndex)
     this.previewRef.current.addEventListener('DOMMouseScroll', this.handleMouseWheel, false)
+    this.focusedElementBeforeOpenPreview = document.activeElement
+    this.previewRef.current.focus()
   }
 
   componentWillUnmount() {
@@ -56,6 +59,7 @@ class Preview extends Component {
       imgLoaded: false
     })
     this.props.onClose && this.props.onClose()
+    this.focusedElementBeforeOpenPreview.focus()
   }
 
   handleMouseWheel(e) {
@@ -213,6 +217,12 @@ class Preview extends Component {
     this.changeImageState(style)
   }
 
+  handleKeyDown = (e) => {
+    if (e.keyCode === 27) {
+      this.onClose()
+    }
+  }
+
   clickEvent(type, event) {
     event.stopPropagation()
     const { activeIndex } = this.state
@@ -259,7 +269,9 @@ class Preview extends Component {
       >
         <div
           key={1}
+          tabIndex={-1}
           ref={this.previewRef}
+          onKeyDown={this.handleKeyDown}
           className={classNames('hi-preview', extraClass, { 'hi-preview--hide': !show })}
           onMouseMove={this.handleMouseMove}
           onWheel={this.handleMouseWheel}

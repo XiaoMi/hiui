@@ -23,7 +23,6 @@ const InternalSelect = (props) => {
     optionWidth,
     render,
     multipleWrap,
-    onBlur,
     onFocus,
     dataSource,
     filterOption,
@@ -42,8 +41,10 @@ const InternalSelect = (props) => {
   } = props
   const selectInputContainer = useRef()
   const [dropdownItems, setDropdownItems] = useState(data)
+  const [isGroup, setIsGroup] = useState(false)
   const [focusedIndex, setFocusedIndex] = useState(0)
   const [isFocus, setIsFouces] = useState(false)
+  const SelectWrapper = useRef()
   // 存储问题
   const [cacheSelectItem, setCacheSelectItem] = useState([])
 
@@ -57,6 +58,7 @@ const InternalSelect = (props) => {
   const [keyword, setKeyword] = useState('')
   const [loading, setLoading] = useState(false)
   const [searchable, setSearchable] = useState(dataSource ? true : propsSearchable)
+
   useEffect(() => {
     // 处理默认值的问题
     const selectedItems = resetSelectedItems(
@@ -69,7 +71,23 @@ const InternalSelect = (props) => {
       type === 'multiple' && setCacheSelectItem(selectedItems)
       autoload && remoteSearch()
     }
+    setFocusedIndex(isGroup ? '0-0' : 0)
   }, [])
+
+  useEffect(() => {
+    if (dropdownItems && dropdownItems.length) {
+      setIsGroup(
+        dropdownItems.every((item) => {
+          return item.children && item.children.length > 0
+        })
+      )
+    }
+  }, [dropdownItems])
+
+  useEffect(() => {
+    resetFocusedIndex()
+  }, [keyword, isGroup])
+
   useEffect(() => {
     setSearchable(dataSource ? true : propsSearchable)
   }, [propsSearchable])
@@ -99,7 +117,10 @@ const InternalSelect = (props) => {
     )
     setSelectedItems(selectedItems)
     setDropdownItems(_data)
-    dataSource && type === 'multiple' && setCacheSelectItem(selectedItems)
+    if (dataSource && type === 'multiple') {
+      setCacheSelectItem(selectedItems)
+      setDropdownItems(selectedItems)
+    }
   }, [data])
 
   const localeDatasProps = useCallback(
@@ -168,57 +189,146 @@ const InternalSelect = (props) => {
       setDropdownItems(selectedItems)
     }
   }, [dropdownShow, selectedItems, dataSource, type])
+  // 获取分组的数据 以及下标
+  const getGroupDropdownItems = useCallback(
+    (focusedIndex, group, direction) => {
+      let _focusedIndex = focusedIndex
+      let _group = group
+      !isNaN(Number(_focusedIndex)) && (_focusedIndex = '0-0')
+      const focusedGroup = _focusedIndex.split('-')
+      const l = dropdownItems.length
+      let _dropdownItems = []
+      if (focusedGroup[1] / 1 === 0 && group !== undefined) {
+        if (!dropdownItems[group]) {
+          _group = l - 1
+        }
+        _dropdownItems = dropdownItems[group]
+          ? dropdownItems[group][transKeys(fieldNames, 'children')]
+          : dropdownItems[direction === 'down' ? 0 : l - 1][transKeys(fieldNames, 'children')]
+        focusedGroup[1] = direction === 'down' ? -1 : _dropdownItems.length
+      } else {
+        _dropdownItems = dropdownItems[focusedGroup[0]][transKeys(fieldNames, 'children')] || []
+        _group = focusedGroup[0]
+      }
+      return { _dropdownItems, _focusedIndex: focusedGroup[1], group: _group }
+    },
+    [focusedIndex, dropdownItems, fieldNames]
+  )
   // 方向键的回调
   const moveFocusedIndex = useCallback(
     (direction) => {
       let _focusedIndex = focusedIndex
-      if (direction === 'up') {
-        dropdownItems
-          .slice(0, _focusedIndex)
-          .reverse()
-          .every((item) => {
-            _focusedIndex--
-            if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
-              return false
-            }
-            return true
-          })
-      } else {
-        dropdownItems.slice(_focusedIndex + 1).every((item) => {
-          _focusedIndex++
-          if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
-            return false
-          }
-          return true
-        })
+      let _dropdownItems = dropdownItems
+      let group = 0
+      if (isGroup) {
+        const groupDropdownItems = getGroupDropdownItems(_focusedIndex)
+        _dropdownItems = groupDropdownItems._dropdownItems
+        _focusedIndex = groupDropdownItems._focusedIndex
+        group = groupDropdownItems.group
       }
 
-      setFocusedIndex(_focusedIndex)
+      const everyIsDisabled = _dropdownItems.every((item) => {
+        return item[transKeys(fieldNames, 'disabled')]
+      })
+
+      // 防止出现所有的选项都为 disabled
+      if (!everyIsDisabled) {
+        if (direction === 'up') {
+          if (isGroup) {
+            if (_focusedIndex / 1 === 0) {
+              const groupDropdownItems = getGroupDropdownItems(_focusedIndex, --group)
+              _dropdownItems = groupDropdownItems._dropdownItems
+              _focusedIndex = groupDropdownItems._focusedIndex
+              group = groupDropdownItems.group
+              // 二次校验分组后的是否都是不可点击
+              if (
+                _dropdownItems.every((item) => {
+                  return item[transKeys(fieldNames, 'disabled')]
+                })
+              ) {
+                return
+              }
+            }
+          } else {
+            _focusedIndex === 0 && (_focusedIndex = _dropdownItems.length)
+          }
+          _focusedIndex--
+          while (_dropdownItems[_focusedIndex] && _dropdownItems[_focusedIndex].disabled) {
+            _focusedIndex === 0 && (_focusedIndex = _dropdownItems.length)
+            _focusedIndex--
+          }
+        } else {
+          if (isGroup) {
+            if (_focusedIndex / 1 === _dropdownItems.length - 1) {
+              group++
+              const groupDropdownItems = getGroupDropdownItems(group + '-0', group, direction)
+              _dropdownItems = groupDropdownItems._dropdownItems
+              _focusedIndex = groupDropdownItems._focusedIndex
+              group = groupDropdownItems.group
+              // 二次校验分组后的是否都是不可点击
+              if (
+                _dropdownItems.every((item) => {
+                  return item[transKeys(fieldNames, 'disabled')]
+                })
+              ) {
+                return
+              }
+            }
+          } else {
+            _focusedIndex === _dropdownItems.length - 1 && (_focusedIndex = -1)
+          }
+          _focusedIndex++
+          while (_dropdownItems[_focusedIndex] && _dropdownItems[_focusedIndex].disabled) {
+            _focusedIndex === _dropdownItems.length - 1 && (_focusedIndex = -1)
+            _focusedIndex++
+          }
+        }
+      }
+      setFocusedIndex(isGroup ? group + '-' + _focusedIndex : _focusedIndex)
     },
     [focusedIndex, dropdownItems, fieldNames]
   )
   // 点击回车选中
   const onEnterSelect = useCallback(() => {
-    const item = dropdownItems[focusedIndex]
+    const focusedGroup = isGroup && focusedIndex.split('-')
+    const item = isGroup
+      ? dropdownItems[focusedGroup[0]][transKeys(fieldNames, 'children')][focusedGroup[1]]
+      : dropdownItems[focusedIndex]
     onClickOption(item, focusedIndex)
   }, [dropdownItems, focusedIndex, onClickOption])
+
   // 按键操作
   const handleKeyDown = useCallback(
     (evt) => {
-      if (evt.keyCode === 13) {
-        onEnterSelect()
+      evt.stopPropagation()
+      if (dropdownShow && !disabled) {
+        if (evt.keyCode === 38) {
+          evt.preventDefault()
+          moveFocusedIndex('up')
+        }
+        if (evt.keyCode === 40) {
+          evt.preventDefault()
+          moveFocusedIndex('down')
+        }
+        if (evt.keyCode === 13) {
+          // enter
+          onEnterSelect()
+        }
+      }
+      // esc
+      if (evt.keyCode === 27) {
+        setDropdownShow(false)
       }
 
-      if (evt.keyCode === 38) {
+      if (
+        evt.keyCode === 32 &&
+        !document.activeElement.classList.value.includes('hi-select__dropdown__searchbar--input')
+      ) {
         evt.preventDefault()
-        moveFocusedIndex('up')
-      }
-      if (evt.keyCode === 40) {
-        evt.preventDefault()
-        moveFocusedIndex('down')
+        setDropdownShow(!dropdownShow)
       }
     },
-    [onEnterSelect, moveFocusedIndex, moveFocusedIndex]
+    [onEnterSelect, moveFocusedIndex]
   )
   // 对关键字的校验 对数据的过滤
   const matchFilter = useCallback(
@@ -315,9 +425,7 @@ const InternalSelect = (props) => {
       }
     )
   }, [])
-  useEffect(() => {
-    resetFocusedIndex()
-  }, [keyword])
+
   // 过滤筛选项
   const onFilterItems = (keyword) => {
     setKeyword(keyword)
@@ -331,16 +439,17 @@ const InternalSelect = (props) => {
   }
   // 重置下标
   const resetFocusedIndex = () => {
-    let _focusedIndex = -1
-    dropdownItems.every((item) => {
+    let _dropdownItems = dropdownItems || []
+    let _focusedIndex = 0
+    if (isGroup) {
+      _dropdownItems = dropdownItems[0][transKeys(fieldNames, 'children')]
+      _focusedIndex = 0
+    }
+    while (_dropdownItems[_focusedIndex] && _dropdownItems[_focusedIndex].disabled) {
       _focusedIndex++
-      if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
-        return false
-      }
-      return true
-    })
-    setFocusedIndex(_focusedIndex)
-    return _focusedIndex
+    }
+    setFocusedIndex(isGroup ? 0 + '-' + _focusedIndex : _focusedIndex)
+    return isGroup ? 0 + '-' + _focusedIndex : _focusedIndex
   }
 
   // 全部删除
@@ -400,10 +509,15 @@ const InternalSelect = (props) => {
     ? selectInputContainer.current.getBoundingClientRect().width
     : null
   return (
-    <div className={classNames('hi-select', className, extraClass)} style={style}>
+    <div
+      className={classNames('hi-select', className, extraClass)}
+      style={style}
+      tabIndex="0"
+      onKeyDown={handleKeyDown}
+      ref={SelectWrapper}
+    >
       <div className="hi-select__input-container" ref={selectInputContainer}>
         <SelectInput
-          handleKeyDown={handleKeyDown}
           theme={theme}
           mode={type}
           selectInputWidth={selectInputWidth}
@@ -415,7 +529,6 @@ const InternalSelect = (props) => {
           selectedItems={selectedItems || []}
           multipleMode={multipleWrap}
           cacheSelectItem={cacheSelectItem}
-          onBlur={onBlur}
           onFocus={onFocus}
           onClickOption={onClickOption}
           onClear={deleteAllItems}
@@ -441,6 +554,8 @@ const InternalSelect = (props) => {
         // 自定义options的方向
         placement={placement || 'top-bottom-start'}
         className="hi-select__popper"
+        onKeyDown={handleKeyDown}
+        tabIndex="-1"
         width={optionWidth}
         onClickOutside={() => {
           hideDropdown()
@@ -453,7 +568,6 @@ const InternalSelect = (props) => {
           mode={type}
           searchPlaceholder={searchPlaceholder}
           theme={theme}
-          onBlur={onBlur}
           onFocus={onFocus}
           isOnSearch={dataSource}
           onSearch={debouncedFilterItems}
@@ -465,8 +579,8 @@ const InternalSelect = (props) => {
           showJustSelected={showJustSelected}
           filterOption={filterOption}
           matchFilter={matchFilter}
+          isGroup={isGroup}
           show={dropdownShow}
-          handleKeyDown={handleKeyDown}
           optionWidth={optionWidth}
           selectInputWidth={selectInputWidth}
           dropdownItems={dropdownItems}

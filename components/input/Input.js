@@ -31,8 +31,9 @@ class Input extends Component {
     const suffix = typeof append === 'string' ? append : ''
     const prependNode = typeof prepend !== 'string' && prepend
     const appendNode = typeof append !== 'string' && append
+
     this.state = {
-      value: type === 'string' || type === 'number' ? format(valueSource.toString(), this.props.type) : '',
+      value: this.formatValueInit(type, valueSource),
       valueTrue: prefix + valueSource + suffix,
       hover: false,
       active: false,
@@ -43,12 +44,22 @@ class Input extends Component {
     }
   }
 
+  formatValueInit(type, valueSource) {
+    const { type: propsType } = this.props
+    let val = type === 'string' || type === 'number' ? format(valueSource.toString(), propsType) : ''
+    if (propsType === 'amount' && val !== '') {
+      val = formatAmount(val)
+    }
+    return val
+  }
+
+  // eslint-disable-next-line react/no-deprecated
   componentWillReceiveProps(nextProps) {
     if (nextProps.value !== undefined) {
       if (nextProps.value !== this.state.value) {
         const type = typeof nextProps.value
         this.setState({
-          value: type === 'string' || type === 'number' ? format(nextProps.value.toString(), this.props.type):'',
+          value: type === 'string' || type === 'number' ? format(nextProps.value.toString(), this.props.type) : '',
           valueTrue: nextProps.value
         })
       }
@@ -68,11 +79,11 @@ class Input extends Component {
     }
   }
 
-  focus = () => {
+  focus() {
     this._Input.current.focus()
   }
 
-  blur = () => {
+  blur() {
     this._Input.current.blur()
   }
 
@@ -80,13 +91,13 @@ class Input extends Component {
    * 渲染 text 输入框
    */
   renderText() {
-    let { hover, active, value } = this.state
+    const { hover, active, value } = this.state
     // clearableTrigger 为内部预留，主要表示清除按钮的触发形态，类型分为 'hover' 和 ‘always’
-    let { disabled, type, id, placeholder, clearable, clearableTrigger = 'hover',localeDatas } = this.props
-    let { prefix, suffix, prepend, append } = this.state
+    const { disabled, type, id, placeholder, clearable, clearableTrigger = 'hover' } = this.props
+    const { prefix, suffix, prepend, append } = this.state
     const noClear = ['textarea']
-    let prefixId = id ? id + '_prefix' : ''
-    let suffixId = id ? id + '_suffix' : ''
+    const prefixId = id ? id + '_prefix' : ''
+    const suffixId = id ? id + '_suffix' : ''
     const { defaultValue, ...attrs } = this.attrs
     const filterAttrs = filterObjProps(attrs, [
       'locale',
@@ -110,13 +121,13 @@ class Input extends Component {
       >
         {
           // 前置元素
-          prepend && <span className='hi-input__prepend'>{prepend}</span>
+          prepend && <span className="hi-input__prepend">{prepend}</span>
         }
         <div className={`hi-input__inner${active ? ' active' : ''}${disabled ? ' disabled' : ''}`}>
           {
             // 前缀
             prefix && (
-              <span id={prefixId} className='hi-input__prefix' data-value={prefix}>
+              <span id={prefixId} className="hi-input__prefix" data-value={prefix}>
                 {prefix}
               </span>
             )
@@ -125,7 +136,7 @@ class Input extends Component {
             ref={this._Input}
             className={`hi-input__text ${disabled ? 'disabled' : ''}`}
             value={this.state.value}
-            autoComplete='off'
+            autoComplete="off"
             disabled={disabled}
             {...filterAttrs}
             placeholder={placeholder}
@@ -142,7 +153,6 @@ class Input extends Component {
               }
 
               value = format(value, type)
-
               this.props.onChange && this.props.onChange(e, valueTrue)
 
               this.props.value === undefined && this.setState({ value, valueTrue })
@@ -219,7 +229,7 @@ class Input extends Component {
           {
             // 后缀
             suffix && (
-              <span id={suffixId} className='hi-input__suffix' data-value={suffix}>
+              <span id={suffixId} className="hi-input__suffix" data-value={suffix}>
                 {suffix}
               </span>
             )
@@ -227,7 +237,7 @@ class Input extends Component {
         </div>
         {
           // 后置元素
-          append && <span className='hi-input__append'>{append}</span>
+          append && <span className="hi-input__append">{append}</span>
         }
       </div>
     )
@@ -237,8 +247,8 @@ class Input extends Component {
    * 渲染 textarea
    */
   renderTextarea() {
-    let { active } = this.state
-    let { disabled, theme } = this.props
+    const { active } = this.state
+    const { disabled, theme } = this.props
     const { defaultValue, ...attrs } = this.attrs
     const filterAttrs = filterObjProps(attrs, [
       'locale',
@@ -258,19 +268,19 @@ class Input extends Component {
       <textarea
         className={`hi-input theme__${theme} ${active ? 'active' : ''} ${disabled ? 'disabled' : ''}`}
         style={this.props.style}
-        autoComplete='off'
+        autoComplete="off"
         value={this.state.value}
         disabled={disabled}
         {...filterAttrs}
         onChange={(e) => {
           e.persist()
-          let valueTrue = e.target.value
+          const valueTrue = e.target.value
           this.props.onChange && this.props.onChange(e, valueTrue)
           this.props.value === undefined && this.setState({ value: valueTrue, valueTrue })
         }}
         onBlur={(e) => {
           e.persist()
-          let valueTrue = e.target.value
+          const valueTrue = e.target.value
 
           this.setState({ active: false }, () => {
             this.props.onBlur && this.props.onBlur(e, valueTrue)
@@ -332,9 +342,6 @@ class Input extends Component {
         }`}
         style={this.props.style}
         data-value={this.state.valueTrue}
-        onClick={(e) => {
-          this._Input.current.focus()
-        }}
         onMouseOver={(e) => {
           this.setState({
             hover: true

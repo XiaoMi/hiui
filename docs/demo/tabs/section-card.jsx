@@ -98,7 +98,7 @@ class Demo extends React.Component {
                 closeable={closeable}
                 key={index}
               >
-                <div style={{padding: '16px'}}>{pane.tabTitle}</div>
+                <div style={{padding: '16px'}}>{paneItem.tabTitle}</div>
               </Tabs.Pane>
             )
           })
@@ -111,13 +111,5 @@ class Demo extends React.Component {
   }
 ]
 
-const Demo = () => (
-  <DocViewer
-    code={code}
-    scope={{ Tabs }}
-    desc={desc}
-    prefix={prefix}
-    rightOptions={rightOptions}
-  />
-)
+const Demo = () => <DocViewer code={code} scope={{ Tabs }} desc={desc} prefix={prefix} rightOptions={rightOptions} />
 export default Demo

@@ -17,11 +17,9 @@ const SelectDropdown = ({
   theme,
   searchable,
   onFocus,
-  onBlur,
   searchPlaceholder,
   dropdownItems,
   localeMap,
-  handleKeyDown,
   onSearch,
   isOnSearch,
   onClickOption,
@@ -29,15 +27,33 @@ const SelectDropdown = ({
   selectInputWidth,
   selectedItems,
   show,
-  fieldNames
+  fieldNames,
+  focusedIndex,
+  isGroup
 }) => {
   const [filterItems, setFilterItems] = useState(dropdownItems)
   const [searchbarValue, setSearchbarValue] = useState('')
   const [ischeckAll, setIscheckAll] = useState(false)
   const searchbar = useRef('')
+  const dropdownWrapper = useRef('')
   useEffect(() => {
     setFilterItems(dropdownItems)
   }, [dropdownItems])
+  useEffect(() => {
+    if (dropdownWrapper.current) {
+      let _focusedIndex = focusedIndex
+      if (isGroup) {
+        const focusedGroup = _focusedIndex.split('-')
+        let group = focusedGroup[0] - 1
+        while (dropdownItems[group] && dropdownItems[group][transKeys(fieldNames, 'children')]) {
+          _focusedIndex =
+            dropdownItems[group][transKeys(fieldNames, 'children')].length + group / 1 + 2 + focusedGroup[1] / 1
+          group--
+        }
+      }
+      dropdownWrapper.current.scrollTop = (_focusedIndex - 6) * 36
+    }
+  }, [focusedIndex])
 
   // 监控全选功能
   useEffect(() => {
@@ -46,6 +62,9 @@ const SelectDropdown = ({
   // 让搜索框获取焦点
   useEffect(() => {
     searchable && setTimeout(() => searchbar.current && searchbar.current.focus(), 0)
+    return () => {
+      searchbar.current && searchbar.current.blur()
+    }
   }, [])
   // 仅看已选
   const showSelected = useCallback(
@@ -191,17 +210,20 @@ const SelectDropdown = ({
   const groupItem = (filterGroupItem, filterItemsIndex) => {
     const renderGroup = []
     const label = (
-      <li className="hi-select__dropdown--label" key={filterGroupItem[transKeys(fieldNames, 'id')]}>
-        {filterGroupItem[transKeys(fieldNames, 'title')]}
+      <li
+        className="hi-select__dropdown--label hi-select__dropdown--item"
+        key={filterGroupItem[transKeys(fieldNames, 'id')] || filterGroupItem[transKeys(fieldNames, 'groupId')]}
+      >
+        {filterGroupItem[transKeys(fieldNames, 'title')] || filterGroupItem[transKeys(fieldNames, 'groupTitle')]}
       </li>
     )
     renderGroup.push(label)
     filterGroupItem[transKeys(fieldNames, 'children')].forEach((item, index) => {
-      renderGroup.push(normalItem(item, filterItemsIndex + 1 + '-' + index))
+      renderGroup.push(normalItem(item, filterItemsIndex + '-' + index, true))
     })
     return renderGroup
   }
-  const normalItem = (item, filterItemsIndex) => {
+  const normalItem = (item, filterItemsIndex, isChildItem) => {
     matched++
     const isSelected = itemSelected(item)
     const isDisabled = item[transKeys(fieldNames, 'disabled')]
@@ -210,6 +232,8 @@ const SelectDropdown = ({
         className={classNames('hi-select__dropdown--item', `theme__${theme}`, {
           'is-active': isSelected,
           'is-disabled': isDisabled,
+          'hi-select__dropdown--item--child': isChildItem,
+          'is-focus': filterItemsIndex === focusedIndex,
           'hi-select__dropdown--item-default': !item[transKeys(fieldNames, 'children')] && !dropdownRender
         })}
         onClick={(e) => onClickOptionIntal(e, item, filterItemsIndex)}
@@ -222,7 +246,7 @@ const SelectDropdown = ({
   }
   const renderItems = () => {
     return (
-      <ul className="hi-select__dropdown--items">
+      <ul className="hi-select__dropdown--items" ref={dropdownWrapper}>
         {filterItems &&
           filterItems.map((item, filterItemsIndex) => {
             if (matchFilter(item)) {
@@ -257,9 +281,7 @@ const SelectDropdown = ({
               ref={searchbar}
               value={searchbarValue}
               onFocus={onFocus}
-              onBlur={onBlur}
               clearabletrigger="always"
-              onKeyDown={handleKeyDown}
               onChange={searchEvent}
             />
             {searchbarValue.length > 0 ? (

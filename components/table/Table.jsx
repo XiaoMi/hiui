@@ -20,6 +20,8 @@ const Table = ({
   data,
   highlightedRowKeys = [],
   highlightedColKeys = [],
+  expandedRowKeys,
+  onExpand,
   columns = [],
   expandedRender,
   maxHeight,
@@ -38,8 +40,9 @@ const Table = ({
   setVisibleCols,
   setCacheVisibleCols,
   scrollWidth,
-  emptyContent = '暂无数据',
-  theme
+  theme,
+  localeDatas,
+  emptyContent = localeDatas.table.emptyContent
 }) => {
   const hiTable = useRef(null)
   const [ceiling, setCeiling] = useState(false)
@@ -172,6 +175,8 @@ const Table = ({
         data: dataSource ? serverTableConfig.data : data,
         columns: dataSource ? serverTableConfig.columns : columns,
         expandedRender,
+        expandedRowKeys,
+        onExpand,
         leftFixedColumns: realLeftFixedColumns,
         rightFixedColumns: realRightFixedColumns,
         realColumnsWidth,
@@ -220,7 +225,8 @@ const Table = ({
         // 同步表头高度
         eachHeaderHeight,
         setEachHeaderHeight,
-        theme
+        theme,
+        localeDatas
       }}
     >
       <div

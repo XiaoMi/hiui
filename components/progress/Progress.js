@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import './style'
-import { BarProgress } from './BarProgress.js'
+import BarProgress from './BarProgress.js'
 import { CircleProgress } from './CircleProgress.js'
 import { DashboardProgress } from './DashboardProgress'
 import Provider from '../context'
@@ -40,13 +40,10 @@ class Progress extends Component {
 
   render () {
     let prefix = 'hi-progress'
-    const { className = '', theme } = this.props
-    const apperance = this.props.apperance || this.props.type // api 兼容 1.x 为 type 2.x 改为 apperance
-    return (
-      <div className={`${prefix}__container ${className} theme__${theme}`}>
-        {this.getRenderType(apperance)}
-      </div>
-    )
+    const { className = '', apperance, theme, type} = this.props
+    const _apperance = apperance || type // api 兼容 1.x 为 type 2.x 改为 apperance
+
+    return <div className={`${prefix}__container ${className} theme__${theme}`}>{this.getRenderType(_apperance)}</div>
   }
 }
 export default Provider(Progress)
