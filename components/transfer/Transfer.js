@@ -75,7 +75,7 @@ class Transfer extends Component {
     return dir === 'left' ? 'sourceSelectedKeys' : 'targetSelectedKeys'
   }
 
-  clickItemEvent(item, index, dir) {
+  clickItemEvent = (item, index, dir) => {
     const { mode, type } = this.props
     const { limited } = this.state
     if (item.disabled) {
@@ -334,7 +334,7 @@ class Transfer extends Component {
                     draggable={draggable}
                     key={index}
                     theme={theme}
-                    onClick={this.clickItemEvent.bind(this, item, index, dir)}
+                    onClick={(e) => this.clickItemEvent(item, index, dir)}
                     mode={mode === 'basic' && type === 'default' ? 'basic' : 'multiple'}
                     item={item}
                     checked={selectedKeys.includes(item.id)}
