@@ -21,7 +21,6 @@
 - 修复 `Progress` placement 为 inside 时，字显示折行问题 [#1385](https://github.com/XiaoMi/hiui/issues/1385)
 - 优化 `Select` 弹层触发方式 [#1358](https://github.com/XiaoMi/hiui/issues/1358)
 - 优化 `Select` 下拉框展开收起，输入框内容存在显示差异[#1380](https://github.com/XiaoMi/hiui/issues/1380)
-- 优化 `Select` 快捷键相关功能 [#1324](https://github.com/XiaoMi/hiui/issues/1324)
 - 修复 `Select` 滚动报错问题[#1390](https://github.com/XiaoMi/hiui/issues/1390)
 - 优化 `Search` 后置元素应该收起下来选项 [#1341](https://github.com/XiaoMi/hiui/issues/1341)
 - 优化 `Form` 组件 label 内容显示折行行高以及间距 [#1376](https://github.com/XiaoMi/hiui/issues/1376)
