@@ -47,6 +47,7 @@ const SelectTree = ({
   localeDatas,
   placeholder: propsPlaceholder,
   style,
+  renderInputContent,
   optionWidth,
   placement = 'top-bottom-start'
 }) => {
@@ -396,6 +397,7 @@ const SelectTree = ({
         selectedItems={selectedItems}
         clearable={clearable}
         show={show}
+        renderInputContent={renderInputContent}
         placeholder={placeholder}
         checkedEvents={checkedEvents}
         onTrigger={onTrigger}

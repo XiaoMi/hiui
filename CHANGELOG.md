@@ -1,5 +1,9 @@
 # 更新日志
 
+## 3.2.1
+
+- 新增 `SelectTree` renderInputContent 自定义渲染 Input 中展示内容 [#1407](https://github.com/XiaoMi/hiui/issues/1407)
+
 ## 3.2.0
 
 - 新增 HiUI 基础样式 css 文件 [#1338](https://github.com/XiaoMi/hiui/issues/1338)
