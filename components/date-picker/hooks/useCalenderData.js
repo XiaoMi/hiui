@@ -177,7 +177,7 @@ const useDate = ({ view, date, originDate, weekOffset, localeDatas, range, type,
             view
           })
     setRows(_rows)
-  }, [renderDate, view, range])
+  }, [renderDate, view, range, type])
 
   return [rows]
 }
