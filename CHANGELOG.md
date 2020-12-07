@@ -1,5 +1,9 @@
 # 更新日志
 
+## 3.2.1
+
+- 修复 `DatePicker` type 不受控问题 [#1401](https://github.com/XiaoMi/hiui/issues/1401)
+
 ## 3.2.0
 
 - 新增 HiUI 基础样式 css 文件 [#1338](https://github.com/XiaoMi/hiui/issues/1338)
