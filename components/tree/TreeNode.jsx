@@ -8,7 +8,7 @@ import TreeContext from './context'
 import Switcher from './Switcher'
 import _ from 'lodash'
 
-const TreeNode = ({ node, expanded }) => {
+const TreeNode = ({ node, expanded, idx }) => {
   const {
     treeNodeRender,
     checkable,
@@ -24,12 +24,85 @@ const TreeNode = ({ node, expanded }) => {
     onDragStart,
     onDragOver,
     onDrop,
-    onDragEnd
+    onDragEnd,
+    moveFocus
   } = useContext(TreeContext)
   const [direction, setDirection] = useState(null)
   const [dragId, setDragId] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const treeNodeRef = useRef(null)
+
+  // 处理 Switch 点击
+  const handleSwitcherClick = useCallback(
+    (e) => {
+      e.stopPropagation()
+      if (onLoadChildren && !node.children) {
+        setLoading(true)
+        onLoadChildren(node).then(
+          (res) => {
+            setLoading(false)
+            onExpandNode(node, !expanded)
+          },
+          () => {
+            setLoading(false)
+          }
+        )
+      } else {
+        onExpandNode(node, !expanded)
+      }
+    },
+    [node, expanded, onLoadChildren, onExpandNode]
+  )
+
+  // 处理键盘事件
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (!node.disabled) {
+        // Right
+        if (e.keyCode === 39) {
+          e.preventDefault()
+          if (expanded === false) {
+            handleSwitcherClick(e)
+          } else {
+            // move to children
+          }
+        }
+
+        // Left
+        if (e.keyCode === 37) {
+          e.preventDefault()
+          if (expanded === true) {
+            handleSwitcherClick(e)
+          } else {
+            // move to parent
+          }
+        }
+
+        // Up
+        if (e.keyCode === 38) {
+          e.preventDefault()
+          // move to previous
+          moveFocus(idx, 'UP')
+        }
+
+        // Down
+        if (e.keyCode === 40) {
+          e.preventDefault()
+          // move to next
+          moveFocus(idx, 'DOWN')
+        }
+
+        // Enter
+        if (e.keyCode === 13) {
+          e.preventDefault()
+          // select node
+          onSelectNode(node)
+        }
+      }
+    },
+    [expanded, node, onSelectNode, idx, moveFocus]
+  )
 
   // 渲染 apperance 占位
   const renderApperancePlaceholder = useCallback((apperance) => {
@@ -169,7 +242,11 @@ const TreeNode = ({ node, expanded }) => {
     [treeNodeRef, draggable, treeNodeRender, direction, dragId]
   )
   return (
-    <li className={Classnames('tree-node', { 'tree-node--line': apperance === 'line' })}>
+    <li
+      className={Classnames('tree-node', { 'tree-node--line': apperance === 'line' })}
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+    >
       {renderIndent(
         (node.children && node.children.length) || (onLoadChildren && !node.isLeaf && !node.children)
           ? node.depth
@@ -187,6 +264,8 @@ const TreeNode = ({ node, expanded }) => {
           apperance={apperance}
           onExpandNode={onExpandNode}
           onLoadChildren={onLoadChildren}
+          onClick={handleSwitcherClick}
+          loading={loading}
         />
       )}
       {checkable && renderCheckbox(node, { checked: checkedNodes, semiChecked: semiCheckedIds })}

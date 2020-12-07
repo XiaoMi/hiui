@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useRef } from 'react'
 import TreeNode from './TreeNode'
 import TreeContext from './context'
 import './style/index'
@@ -7,6 +7,7 @@ import useSelect from './hooks/useSelect'
 import useCheckable from './hooks/useCheckable'
 import useExpand from './hooks/useExpand'
 import classnames from 'classnames'
+import _ from 'lodash'
 
 const PREFIX = 'hi-tree'
 
@@ -53,6 +54,34 @@ const BaseTree = ({
     data,
     flatData
   })
+
+  const treeRef = useRef(null)
+  const moveFocus = useCallback(
+    (index, direction) => {
+      if (treeRef.current) {
+        let focusIndex
+        if (direction === 'UP') {
+          focusIndex = _.findLastIndex(flatData, (item, dIndex) => {
+            return !item.disabled && dIndex < index
+          })
+
+          if (focusIndex > -1) {
+            treeRef.current.querySelectorAll('.tree-node')[focusIndex].focus()
+          }
+        }
+        if (direction === 'DOWN') {
+          focusIndex = _.findIndex(flatData, (item, dIndex) => {
+            return !item.disabled && dIndex > index
+          })
+          if (focusIndex > -1) {
+            treeRef.current.querySelectorAll('.tree-node')[focusIndex].focus()
+          }
+        }
+      }
+    },
+    [treeRef, flatData]
+  )
+
   return (
     <TreeContext.Provider
       value={{
@@ -75,18 +104,19 @@ const BaseTree = ({
         onDragStart,
         onDragOver,
         onDrop,
-        onDragEnd
+        onDragEnd,
+        moveFocus
       }}
     >
       <div className={classnames(PREFIX, className)}>
-        <ul className="root-list">
+        <ul className="root-list" ref={treeRef}>
           {flatData
             .filter((node) => {
               const ancestors = node.ancestors || []
               return ancestors.every((ancestor) => expandedNodeIds.includes(ancestor.id))
             })
-            .map((node) => {
-              return <TreeNode key={node.id} node={node} expanded={expandedNodeIds.includes(node.id)} />
+            .map((node, index) => {
+              return <TreeNode key={node.id} node={node} idx={index} expanded={expandedNodeIds.includes(node.id)} />
             })}
         </ul>
       </div>
