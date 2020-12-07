@@ -5,7 +5,7 @@ const parseValue = (value) => {
       return typeof v === 'object' ? v.id : v
     })
   } else {
-    return [value]
+    return value === undefined ? [] : [value]
   }
 }
 // 整理Select数据结构 获取选中的Items id
