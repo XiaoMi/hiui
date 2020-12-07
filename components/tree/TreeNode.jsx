@@ -62,10 +62,17 @@ const TreeNode = ({ node, expanded, idx }) => {
         // Right
         if (e.keyCode === 39) {
           e.preventDefault()
-          if (expanded === false) {
+          if (expanded === false && node.children && node.children.length) {
             handleSwitcherClick(e)
           } else {
             // move to children
+            let child
+            if (node.children && node.children.length > 0) {
+              child = node.children.filter((c) => !c.disabled)[0]
+            }
+            if (child) {
+              moveFocus({ cid: child.id }, 'CHILD')
+            }
           }
         }
 
@@ -76,6 +83,7 @@ const TreeNode = ({ node, expanded, idx }) => {
             handleSwitcherClick(e)
           } else {
             // move to parent
+            moveFocus({ pid: node.parentId }, 'PARENT')
           }
         }
 
@@ -83,14 +91,14 @@ const TreeNode = ({ node, expanded, idx }) => {
         if (e.keyCode === 38) {
           e.preventDefault()
           // move to previous
-          moveFocus(idx, 'UP')
+          moveFocus({ index: idx }, 'UP')
         }
 
         // Down
         if (e.keyCode === 40) {
           e.preventDefault()
           // move to next
-          moveFocus(idx, 'DOWN')
+          moveFocus({ index: idx }, 'DOWN')
         }
 
         // Enter

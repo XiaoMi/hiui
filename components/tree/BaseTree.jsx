@@ -57,25 +57,31 @@ const BaseTree = ({
 
   const treeRef = useRef(null)
   const moveFocus = useCallback(
-    (index, direction) => {
+    (info, direction) => {
       if (treeRef.current) {
         let focusIndex
         if (direction === 'UP') {
           focusIndex = _.findLastIndex(flatData, (item, dIndex) => {
-            return !item.disabled && dIndex < index
+            return !item.disabled && dIndex < info.index
           })
-
-          if (focusIndex > -1) {
-            treeRef.current.querySelectorAll('.tree-node')[focusIndex].focus()
-          }
         }
         if (direction === 'DOWN') {
           focusIndex = _.findIndex(flatData, (item, dIndex) => {
-            return !item.disabled && dIndex > index
+            return !item.disabled && dIndex > info.index
           })
-          if (focusIndex > -1) {
-            treeRef.current.querySelectorAll('.tree-node')[focusIndex].focus()
-          }
+        }
+        if (direction === 'PARENT') {
+          focusIndex = _.findIndex(flatData, (item) => {
+            return !item.disabled && item.id === info.pid
+          })
+        }
+        if (direction === 'CHILD') {
+          focusIndex = _.findIndex(flatData, (item) => {
+            return item.id === info.cid
+          })
+        }
+        if (focusIndex > -1) {
+          treeRef.current.querySelectorAll('.tree-node')[focusIndex].focus()
         }
       }
     },
