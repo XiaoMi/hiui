@@ -94,6 +94,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoNormal = () => (
-  <DocViewer code={code} scope={{ DatePicker, Radio }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
+  <DocViewer code={code} scope={{ DatePicker }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
 )
 export default DemoNormal
