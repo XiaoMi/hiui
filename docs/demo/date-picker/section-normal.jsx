@@ -1,6 +1,8 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import DatePicker from '../../../components/date-picker'
+import Radio from '../../../components/radio'
+import Button from '../../../components/button'
 const prefix = 'date-picker-normal'
 const desc = '以天为粒度，展示“YYYY-MM-DD”'
 const rightOptions = ['基础', '带默认值', '受控', '禁用', '限制范围']
@@ -11,9 +13,31 @@ import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   render () {
     return (
+      <div>
+      <Radio.Group
+        data={[{
+          id: 0,
+          content: '手机类'
+        }, {
+          id: 1,
+          content: '电脑类',
+          disabled: true
+        }, {
+          id: 2,
+          content: '生活类'
+        }, {
+          id: 3,
+          content: '其它'
+        }]}
+        type='button'
+        defaultValue={0}
+      />
+      <Button>pppp</Button>
       <DatePicker
         onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
       />
+      </div>
+      
     )
   }
 }`,
@@ -91,6 +115,12 @@ class Demo extends React.Component {
   }
 ]
 const DemoNormal = () => (
-  <DocViewer code={code} scope={{ DatePicker }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
+  <DocViewer
+    code={code}
+    scope={{ DatePicker, Radio, Button }}
+    prefix={prefix}
+    desc={desc}
+    rightOptions={rightOptions}
+  />
 )
 export default DemoNormal
