@@ -12,24 +12,6 @@ class Demo extends React.Component {
   render () {
     return (
       <div>
-      <Radio.Group
-        data={[{
-          id: 0,
-          content: '手机类'
-        }, {
-          id: 1,
-          content: '电脑类',
-          disabled: true
-        }, {
-          id: 2,
-          content: '生活类'
-        }, {
-          id: 3,
-          content: '其它'
-        }]}
-        type='button'
-        defaultValue={0}
-      />
       <DatePicker
         onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
       />
