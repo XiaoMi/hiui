@@ -32,6 +32,7 @@ import DemoClassic from '../../demo/search/section-classic.jsx'
 | prepend          | 输入框前置内容     | string \| ReactNode | -             | -      |
 | disabled         | 是否禁用           | boolean             | true \| false | false  |
 | loading          | 加载中             | boolean             | true \| false | false  |
+| open             | 是否展开下拉菜单, 使用该属性后，下拉框的显示由用户控制             | boolean             | true \| false | -  |
 | placeholder      | 输入框占位符       | string \| ReactNode | -             | -      |
 | data             | 搜索结果的数据     | `Array<DataItem>`   | -             | -      |
 | append           | 搜索按钮           | ReactNode           | -             | -      |
@@ -43,6 +44,7 @@ import DemoClassic from '../../demo/search/section-classic.jsx'
 | -------- | ------------------------------------------------------ | ------------------------------------------- | ------------------------------------------------------- | ------ |
 | onChange | 值改变时的回调                                         | (event: HTMLInputEvent) => void             | event: input 事件对象                                   | -      |
 | onSearch | 当点击搜索按钮时候、输入框内点击回车或者点击下拉选项时 | (inputVal: string, item ?:DataItem) => void | inputVal: 输入的搜索关键字 <br/> item: 选中的搜索关键项 | -      |
+| onClickOutside | 当下拉数据弹出时，点击组件以外区域时，会触发该函数；方便使用open属性 | () => void | - | -      |
 
 ## DataItem
 

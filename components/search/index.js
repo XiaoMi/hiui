@@ -21,9 +21,11 @@ const Search = ({
   localeDatas,
   overlayClassName,
   append,
-  theme
+  theme,
+  onClickOutside,
+  open
 }) => {
-  const [dropdownShow, setDropdownShow] = useState(false)
+  const [dropdownShow, setDropdownShow] = useState(open || false)
   const searchInputContainer = useRef(null)
   const [inputVal, setInputVal] = useState(value || '')
   const [focusIndex, setFocusIndex] = useState(null)
@@ -32,17 +34,25 @@ const Search = ({
   useEffect(() => {
     setInputVal(value)
   }, [value])
-
+  const setDropdownShowfn = (bool) => {
+    if (typeof open === 'undefined') {
+      setDropdownShow(bool)
+    }
+  }
   const closeDropdown = useCallback(() => {
-    setDropdownShow(false)
+    setDropdownShowfn(false)
     setFocusIndex(null)
     setSubFocusIndex(null)
   }, [])
-
+  useEffect(() => {
+    if (typeof open !== 'undefined') {
+      setDropdownShow(open)
+    }
+  }, [open])
   const optionsClick = useCallback(
     (value, item) => {
       setInputVal(value)
-      setDropdownShow(false)
+      setDropdownShowfn(false)
       onSearch && onSearch(value, item)
     },
     [onSearch]
@@ -165,12 +175,12 @@ const Search = ({
           prepend={prepend}
           onKeyDown={onKeyDown}
           onFocus={() => {
-            data && data.length > 0 && setDropdownShow(true)
+            data && data.length > 0 && setDropdownShowfn(true)
           }}
           onChange={(e) => {
             const { value } = e.target
             setInputVal(value)
-            data && value.length > 0 && setDropdownShow(true)
+            data && value.length > 0 && setDropdownShowfn(true)
             onChange && onChange(value)
             setFocusIndex(null)
             setSubFocusIndex(null)
@@ -181,7 +191,7 @@ const Search = ({
             className={disabled ? 'disabled' : ''}
             onClick={(e) => {
               e.preventDefault()
-              setDropdownShow(false)
+              setDropdownShowfn(false)
               onSearch && onSearch(inputVal)
               setFocusIndex(null)
               setSubFocusIndex(null)
@@ -197,7 +207,7 @@ const Search = ({
             disabled={disabled}
             onClick={(e) => {
               e.preventDefault()
-              setDropdownShow(false)
+              setDropdownShowfn(false)
               onSearch && onSearch(inputVal)
               setFocusIndex(null)
               setSubFocusIndex(null)
@@ -215,6 +225,7 @@ const Search = ({
           optionsClick={optionsClick}
           onClickOutside={() => {
             closeDropdown()
+            onClickOutside && onClickOutside()
           }}
           data={data}
           loading={loading}

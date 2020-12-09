@@ -1,5 +1,8 @@
 # 更新日志
 
+## 3.2.1
+- 优化 `Search` 新增open属性 [#1341](https://github.com/XiaoMi/hiui/issues/1341)
+
 ## 3.2.0
 
 - 新增 HiUI 基础样式 css 文件 [#1338](https://github.com/XiaoMi/hiui/issues/1338)
@@ -22,7 +25,7 @@
 - 修复 `Progress` placement 为 inside 时，字显示折行问题 [#1385](https://github.com/XiaoMi/hiui/issues/1385)
 - 优化 `Select` 下拉框展开收起，输入框内容存在显示差异[#1380](https://github.com/XiaoMi/hiui/issues/1380)
 - 修复 `Select` 滚动报错问题[#1390](https://github.com/XiaoMi/hiui/issues/1390)
-- 优化 `Search` 后置元素应该收起下拉选项 [#1341](https://github.com/XiaoMi/hiui/issues/1341)
+- 优化 `Search` 点击后置元素应该收起下拉选项 [#1341](https://github.com/XiaoMi/hiui/issues/1341)
 - 优化 `Form` 组件 label 内容显示折行行高以及间距 [#1376](https://github.com/XiaoMi/hiui/issues/1376)
 - 优化 `Pagination` 国际化翻译 [#1381](https://github.com/XiaoMi/hiui/issues/1381)
 - 修复 `Table` rowSelection 存在时的列冻结异常 [#1393](https://github.com/XiaoMi/hiui/issues/1393)

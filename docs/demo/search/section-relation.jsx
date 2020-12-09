@@ -41,10 +41,6 @@ const code = [
                   title: '冰箱'
                 },
               ]
-            },
-            {
-              id:'more',
-              title:<a style={{textAlign: 'center', display: 'block'}} href="https://www.mi.com/" target="_blank">查看更多</a>,
             }
           ],
           loading:false
@@ -149,10 +145,6 @@ class Demo extends React.Component {
                 title: '小米 小爱音响'
               },
             ]
-          },
-          {
-            id:'more',
-            title:<a style={{textAlign: 'center', display: 'block'}} href="https://www.mi.com/" target="_blank">查看更多</a>,
           }
         ]
       })
