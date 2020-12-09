@@ -107,9 +107,15 @@ const TreeNode = ({ node, expanded, idx }) => {
           // select node
           onSelectNode(node)
         }
+        // Space
+        if (e.keyCode === 32) {
+          e.preventDefault()
+          // select checkbox
+          onCheckNode(node, !checkedNodes.includes(node.id), checkedNodes)
+        }
       }
     },
-    [expanded, node, onSelectNode, idx, moveFocus]
+    [expanded, node, onSelectNode, idx, moveFocus, checkable, onCheckNode, checkedNodes]
   )
 
   // 渲染 apperance 占位
@@ -151,6 +157,7 @@ const TreeNode = ({ node, expanded, idx }) => {
         indeterminate={semiChecked.includes(node.id)}
         checked={checked.includes(node.id)}
         disabled={node.disabled}
+        focusable={false}
         onChange={(e) => {
           onCheckNode(node, e.target.checked, checked)
         }}
