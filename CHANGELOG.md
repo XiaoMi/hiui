@@ -2,7 +2,7 @@
 
 ## 3.2.1
 
-- 新增 `SelectTree` renderInputContent 自定义渲染 Input 中展示内容 [#1407](https://github.com/XiaoMi/hiui/issues/1407)
+- 新增 `SelectTree` valueRender 自定义渲染 Input 中展示内容 [#1407](https://github.com/XiaoMi/hiui/issues/1407)
 
 ## 3.2.0
 
