@@ -47,7 +47,7 @@ const SelectTree = ({
   localeDatas,
   placeholder: propsPlaceholder,
   style,
-  renderInputContent,
+  valueRender,
   optionWidth,
   placement = 'top-bottom-start'
 }) => {
@@ -236,7 +236,7 @@ const SelectTree = ({
       semiChecked: []
     })
     onChange && onChange()
-  }, [])
+  }, [onChange])
 
   /**
    * set Pull Data status
@@ -338,12 +338,15 @@ const SelectTree = ({
   /**
    * Node selected Event
    */
-  const selectedEvents = useCallback((node) => {
-    setSelectedItems([node])
-    const n = clearReturnData(node)
-    onChange(node.id, n, n)
-    setShow(false)
-  }, [])
+  const selectedEvents = useCallback(
+    (node) => {
+      setSelectedItems([node])
+      const n = clearReturnData(node)
+      onChange(node.id, n, n)
+      setShow(false)
+    },
+    [onChange, show, selectedItems]
+  )
 
   /**
    * Input 点击事件
@@ -397,7 +400,7 @@ const SelectTree = ({
         selectedItems={selectedItems}
         clearable={clearable}
         show={show}
-        renderInputContent={renderInputContent}
+        valueRender={valueRender}
         placeholder={placeholder}
         checkedEvents={checkedEvents}
         onTrigger={onTrigger}
