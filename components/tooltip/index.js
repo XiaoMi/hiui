@@ -44,18 +44,14 @@ class Tooltip extends Component {
     const { placement, style, className, onClick, title, children, visible } = this.props
     const eleClass = classNames(`${prefixCls}-base`, placement && `${prefixCls}-${placement}`)
     const { tooltipShow } = this.state
-    let timeId = null
     return (
       <div
         className={classNames(prefixCls, className)}
         style={style}
         onMouseEnter={() => {
-          timeId = setTimeout(() => {
-            this.setState({ tooltipShow: true })
-          }, 20)
+          this.setState({ tooltipShow: true })
         }}
         onMouseLeave={() => {
-          clearTimeout(timeId)
           this.setState({ tooltipShow: false })
         }}
         onClick={() => {

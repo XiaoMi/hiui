@@ -9,6 +9,12 @@
   margin: 0 !important;
   height: 100%;
 
+  &_mask {
+    position: absolute;
+    opacity: 0;
+    z-index: 19;
+  }
+
   &__star {
     cursor: pointer;
     position: relative;
@@ -105,5 +111,6 @@
     height: 32px;
     padding: 2px 0;
     box-sizing: border-box;
+    position: relative;
   }
 }
