@@ -58,6 +58,17 @@ $tree: 'hi-tree' !default;
     align-items: center;
     padding-bottom: 4px;
 
+    &:focus {
+      outline: 0;
+
+      .tree-node__title {
+        .title__text {
+          background: use-color('primary-20');
+          color: use-color('gray-80');
+        }
+      }
+    }
+
     .hi-btn--loading--icon {
       margin-top: -6px;
 
@@ -138,10 +149,10 @@ $tree: 'hi-tree' !default;
         }
 
         &--selected {
-          background: use-color('primary-40');
+          background: use-color('primary-40') !important;
 
           &:hover {
-            background: use-color('primary-40');
+            background: use-color('primary-40') important;
           }
         }
       }

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback, useRef, useMemo } from 'react'
 import TreeNode from './TreeNode'
 import TreeContext from './context'
 import './style/index'
@@ -60,23 +60,27 @@ const BaseTree = ({
     (info, direction) => {
       if (treeRef.current) {
         let focusIndex
+        const showData = flatData.filter((node) => {
+          const ancestors = node.ancestors || []
+          return ancestors.every((ancestor) => expandedNodeIds.includes(ancestor.id))
+        })
         if (direction === 'UP') {
-          focusIndex = _.findLastIndex(flatData, (item, dIndex) => {
+          focusIndex = _.findLastIndex(showData, (item, dIndex) => {
             return !item.disabled && dIndex < info.index
           })
         }
         if (direction === 'DOWN') {
-          focusIndex = _.findIndex(flatData, (item, dIndex) => {
+          focusIndex = _.findIndex(showData, (item, dIndex) => {
             return !item.disabled && dIndex > info.index
           })
         }
         if (direction === 'PARENT') {
-          focusIndex = _.findIndex(flatData, (item) => {
+          focusIndex = _.findIndex(showData, (item) => {
             return !item.disabled && item.id === info.pid
           })
         }
         if (direction === 'CHILD') {
-          focusIndex = _.findIndex(flatData, (item) => {
+          focusIndex = _.findIndex(showData, (item) => {
             return item.id === info.cid
           })
         }
@@ -85,9 +89,34 @@ const BaseTree = ({
         }
       }
     },
-    [treeRef, flatData]
+    [treeRef, flatData, expandedNodeIds]
   )
 
+  const defaultFocus = useMemo(() => {
+    if (!checkable) {
+      if (selectNodeId === null) {
+        return flatData.findIndex((node) => {
+          return !node.disabled
+        })
+      } else {
+        return flatData.findIndex((node) => {
+          return node.id === selectNodeId
+        })
+      }
+    } else {
+      if (checkedNodes.length === 0 && semiCheckedIds.length === 0) {
+        return flatData.findIndex((node) => {
+          return !node.disabled
+        })
+      } else {
+        return flatData.findIndex((node) => {
+          return (
+            expandedNodeIds.includes(node.id) && (checkedNodes.includes(node.id) || semiCheckedIds.includes(node.id))
+          )
+        })
+      }
+    }
+  }, [selectNodeId, checkable, flatData, expandedNodeIds, checkedNodes, semiCheckedIds])
   return (
     <TreeContext.Provider
       value={{
@@ -122,7 +151,15 @@ const BaseTree = ({
               return ancestors.every((ancestor) => expandedNodeIds.includes(ancestor.id))
             })
             .map((node, index) => {
-              return <TreeNode key={node.id} node={node} idx={index} expanded={expandedNodeIds.includes(node.id)} />
+              return (
+                <TreeNode
+                  key={node.id}
+                  node={node}
+                  idx={index}
+                  tabIndex={index === defaultFocus ? 0 : -1}
+                  expanded={expandedNodeIds.includes(node.id)}
+                />
+              )
             })}
         </ul>
       </div>

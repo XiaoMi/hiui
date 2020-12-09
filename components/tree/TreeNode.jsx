@@ -8,7 +8,7 @@ import TreeContext from './context'
 import Switcher from './Switcher'
 import _ from 'lodash'
 
-const TreeNode = ({ node, expanded, idx }) => {
+const TreeNode = ({ node, expanded, idx, tabIndex }) => {
   const {
     treeNodeRender,
     checkable,
@@ -259,7 +259,7 @@ const TreeNode = ({ node, expanded, idx }) => {
   return (
     <li
       className={Classnames('tree-node', { 'tree-node--line': apperance === 'line' })}
-      tabIndex={0}
+      tabIndex={tabIndex}
       onKeyDown={handleKeyDown}
     >
       {renderIndent(
