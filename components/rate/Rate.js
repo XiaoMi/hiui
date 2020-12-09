@@ -101,7 +101,8 @@ const Rate = (props) => {
   })
 
   const descCls = classnames(`${prefixCls}__desc`)
-
+  let lefttimeId = null
+  let righttimeId = null
   return (
     <div className="hi-rate__outter">
       <ul className={classnames(prefixCls, className)} style={{ ...style, color }} onMouseLeave={handleIconLeave}>
@@ -111,14 +112,20 @@ const Rate = (props) => {
             const indexValue = idx + 1
             const halfValue = allowHalf ? idx + 0.5 : indexValue
             return (
-              <ToolTipWrapper title={tooltips[idx]} key={idx}>
-                <li className={starCls}>
+              <li className={starCls} key={idx}>
+                <ToolTipWrapper title={tooltips[idx]}>
                   <div
                     className={classnames(iconHalfCls, `${iconHalfCls}--${vertical ? 'top' : 'left'}`, {
                       grayscale: vertical ? indexValue > currentValue : currentValue < halfValue
                     })}
-                    onMouseEnter={() => handleIconEnter(vertical ? indexValue : halfValue)}
-                    onMouseMove={() => handleIconEnter(vertical ? indexValue : halfValue)}
+                    onMouseEnter={() => {
+                      lefttimeId = setTimeout(() => {
+                        handleIconEnter(vertical ? indexValue : halfValue)
+                      }, 20)
+                    }}
+                    onMouseLeave={() => {
+                      clearTimeout(lefttimeId)
+                    }}
                     onClick={() => handleIconClick(vertical ? indexValue : halfValue)}
                   >
                     {renderIcon(indexValue)}
@@ -128,14 +135,20 @@ const Rate = (props) => {
                     className={classnames(iconHalfCls, `${iconHalfCls}--${vertical ? 'bottom' : 'right'}`, {
                       grayscale: vertical ? currentValue < halfValue : indexValue > currentValue
                     })}
-                    onMouseEnter={() => handleIconEnter(vertical ? halfValue : indexValue)}
-                    onMouseMove={() => handleIconEnter(vertical ? halfValue : indexValue)}
+                    onMouseEnter={() => {
+                      righttimeId = setTimeout(() => {
+                        handleIconEnter(vertical ? halfValue : indexValue)
+                      }, 20)
+                    }}
+                    onMouseLeave={() => {
+                      clearTimeout(righttimeId)
+                    }}
                     onClick={() => handleIconClick(vertical ? halfValue : indexValue)}
                   >
                     {renderIcon(indexValue)}
                   </div>
-                </li>
-              </ToolTipWrapper>
+                </ToolTipWrapper>
+              </li>
             )
           })}
       </ul>
