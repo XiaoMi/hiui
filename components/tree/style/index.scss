@@ -152,7 +152,7 @@ $tree: 'hi-tree' !default;
           background: use-color('primary-40') !important;
 
           &:hover {
-            background: use-color('primary-40') important;
+            background: use-color('primary-40') !important;
           }
         }
       }
