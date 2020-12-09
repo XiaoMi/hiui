@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useReducer, forwardRef } from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-import FormReducer, { FILEDS_UPDATE, FILEDS_UPDATE_LIST } from './FormReducer'
+import Immutable, { FILEDS_UPDATE, FILEDS_UPDATE_LIST } from './FormReducer'
 import FormContext from './FormContext'
 import { transformValues } from './utils'
 
@@ -19,7 +19,6 @@ const getClassNames = (props) => {
   _className[`hi-form--readOnly`] = readOnly
   return _className
 }
-
 const InternalForm = (props) => {
   const {
     children,
@@ -30,7 +29,7 @@ const InternalForm = (props) => {
     onValuesChange,
     _type // SchemaForm 内部配置变量
   } = props
-  const [state, dispatch] = useReducer(FormReducer, {
+  const [state, dispatch] = useReducer(Immutable.FormReducer, {
     fields: [],
     listNames: [],
     listValues: {},
@@ -41,7 +40,7 @@ const InternalForm = (props) => {
   // 用户手动设置表单数据
   const setFieldsValue = useCallback(
     (values) => {
-      const _fields = _.cloneDeep(fields)
+      const _fields = Immutable.currentStateFields()
       _fields.forEach((item) => {
         const { field } = item
         // eslint-disable-next-line no-prototype-builtins
