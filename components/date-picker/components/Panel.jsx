@@ -12,6 +12,9 @@ const Panel = () => {
   const [view, setView] = useState(getView(type))
 
   const [calRenderDates, setCalRenderDates] = useState([])
+  useState(() => {
+    setView(getView(type))
+  }, [type])
 
   useEffect(() => {
     const rDate = outDate[0] ? moment(outDate[0]) : moment()

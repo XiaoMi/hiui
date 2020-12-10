@@ -120,7 +120,7 @@ export const getOffset = (props, state, status) => {
   let { attachEle, topGap, leftGap, width, container, preventOverflow } = props
   if (!attachEle) return
 
-  const { popperHeight, popperWidth } = state
+  const { popperHeight } = state
   let rect = attachEle.getBoundingClientRect()
 
   if (isFixed(attachEle) && !isBody(container)) {
@@ -138,7 +138,7 @@ export const getOffset = (props, state, status) => {
   let top = rect.top + _scrollTop
   let left = rect.left + _scrollLeft
 
-  width = width === false ? popperWidth : width === undefined ? rect.width : width
+  width = width === false ? '' : width === undefined ? rect.width : width
 
   let placement = getPlacement(rect, container, props, state) || 'bottom-start'
   const rectHeight = rect.height

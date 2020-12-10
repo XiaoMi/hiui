@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState, useRef, useCallback, useEffect } from 'react'
 import moment from 'moment'
 import DPContext from './context'
 import Provider from '../context/index'
@@ -14,7 +14,7 @@ import Root from './components/Root'
 import './style/index'
 
 const BasePicker = ({
-  type = 'date',
+  type: propType = 'date',
   value,
   defaultValue,
   placeholder,
@@ -46,6 +46,10 @@ const BasePicker = ({
 }) => {
   const cacheDate = useRef(null)
   const [inputFocus, setInputFocus] = useState(false)
+  const [type, setType] = useState(propType)
+  useEffect(() => {
+    setType(propType)
+  }, [propType])
   const [outDate, changeOutDate] = useDate({
     value,
     type,
