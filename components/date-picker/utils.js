@@ -235,7 +235,10 @@ export const parseValue = (value, type, format) => {
         value.end ? moment(value.end).endOf('week') : null
       ]
     }
-    return [value.start ? moment(value.start, format) : null, value.end ? moment(value.end, format) : null]
+    return [
+      value.start && moment(value.start).isValid() ? moment(value.start, format) : null,
+      value.end && moment(value.end).isValid() ? moment(value.end, format) : null
+    ]
   }
   return [isValid ? _value : null]
 }
