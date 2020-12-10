@@ -11,7 +11,7 @@ const useDate = ({ value, defaultValue, cacheDate, type, format }) => {
     const d = parseValue(value || defaultValue, type, format)
     setOutDate(d)
     cacheDate.current = d
-  }, [value])
+  }, [value, type])
   return [outDate, changeOutDate]
 }
 

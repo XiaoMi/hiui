@@ -13,6 +13,7 @@ const Trigger = ({
   show,
   selectedItemsRef,
   placeholder,
+  valueRender,
   isFocus
 }) => {
   return (
@@ -31,7 +32,7 @@ const Trigger = ({
       <div className="hi-selecttree__selected-wrapper" ref={selectedItemsRef}>
         <div className="hi-selecttree__selected--hidden">
           {selectedItems.map((node, index) => (
-            <span key={index}>{node.title || ''}</span>
+            <span key={index}>{valueRender ? valueRender(node) : node.title || ''}</span>
           ))}
         </div>
         {selectedItems.length === 0 && <span>{placeholder}</span>}
@@ -39,7 +40,9 @@ const Trigger = ({
           selectedItems.slice(0, showCount || 1).map((node, index) => {
             return (
               <div key={index} className="hi-selecttree__selecteditem">
-                <div className="hi-selecttree__selecteditem-name">{node ? node.title : ''}</div>
+                <div className="hi-selecttree__selecteditem-name">
+                  {valueRender ? valueRender(node) : node.title || ''}
+                </div>
                 {type === 'multiple' && (
                   <span
                     className="hi-selecttree__selecteditem-remove"

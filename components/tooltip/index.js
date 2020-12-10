@@ -25,8 +25,9 @@ class Tooltip extends Component {
   state = {
     tooltipShow: this.props.defaultVisible
   }
+
   // 兼容处理 button disabled tooltip 不消失的问题
-  compatDisabledBtn = el => {
+  compatDisabledBtn = (el) => {
     if (el && el.type && el.type.IS_HI_COMPONENT && el.props.disabled) {
       return React.cloneElement(el, {
         style: {
@@ -38,20 +39,10 @@ class Tooltip extends Component {
       return el
     }
   }
-  render () {
-    const {
-      placement,
-      style,
-      className,
-      onClick,
-      title,
-      children,
-      visible
-    } = this.props
-    const eleClass = classNames(
-      `${prefixCls}-base`,
-      placement && `${prefixCls}-${placement}`
-    )
+
+  render() {
+    const { placement, style, className, onClick, title, children, visible } = this.props
+    const eleClass = classNames(`${prefixCls}-base`, placement && `${prefixCls}-${placement}`)
     const { tooltipShow } = this.state
     return (
       <div
@@ -66,7 +57,7 @@ class Tooltip extends Component {
         onClick={() => {
           onClick && onClick()
         }}
-        ref={node => {
+        ref={(node) => {
           this.tooltipContainer = node
         }}
       >
@@ -76,7 +67,7 @@ class Tooltip extends Component {
           attachEle={this.tooltipContainer}
           placement={placement}
           zIndex={1070}
-          width='auto'
+          width="auto"
         >
           <div className={eleClass}>{title}</div>
         </Popper>
@@ -86,66 +77,42 @@ class Tooltip extends Component {
   }
 }
 
-function deprecatedOpen ({ target, placement = 'top', title }) {
+function deprecatedOpen({ target, placement = 'top', title }) {
   let mountNode = document.createElement('div')
-  const eleClass = classNames(
-    `${prefixCls}-base`,
-    placement && `${prefixCls}-${placement}`
-  )
+  const eleClass = classNames(`${prefixCls}-base`, placement && `${prefixCls}-${placement}`)
   render(
-    <Popper
-      className={`${prefixCls}__popper`}
-      show
-      attachEle={target}
-      placement={placement}
-      zIndex={1070}
-      width='auto'
-    >
+    <Popper className={`${prefixCls}__popper`} show attachEle={target} placement={placement} zIndex={1070} width="auto">
       <div className={eleClass}>{title}</div>
     </Popper>,
     mountNode
   )
-  function deprecatedClose () {
+  function deprecatedClose() {
     mountNode && unmountComponentAtNode(mountNode)
     mountNode = undefined
   }
   return { close: deprecatedClose }
 }
 
-function open (target, { placement = 'top', title, key }) {
-  let mountNode = document.createElement('div')
-  const eleClass = classNames(
-    `${prefixCls}-base`,
-    placement && `${prefixCls}-${placement}`
-  )
+function open(target, { placement = 'top', title, key }) {
+  const mountNode = document.createElement('div')
+  const eleClass = classNames(`${prefixCls}-base`, placement && `${prefixCls}-${placement}`)
   render(
-    <Popper
-      className={`${prefixCls}__popper`}
-      show
-      attachEle={target}
-      placement={placement}
-      zIndex={1070}
-      width='auto'
-    >
+    <Popper className={`${prefixCls}__popper`} show attachEle={target} placement={placement} zIndex={1070} width="auto">
       <div className={eleClass}>{title}</div>
     </Popper>,
     mountNode
   )
   tooltipInstance[key] = mountNode
 }
-function close (key) {
+function close(key) {
   if (tooltipInstance[key]) {
     unmountComponentAtNode(tooltipInstance[key])
-    tooltipInstance[key].parentNode &&
-      tooltipInstance[key].parentNode.removeChild(tooltipInstance[key])
+    tooltipInstance[key].parentNode && tooltipInstance[key].parentNode.removeChild(tooltipInstance[key])
   }
 }
 
-function openWrapper (target, options) {
-  if (
-    target['nodeName'] ||
-    (typeof target === 'object' && target['$$typeof'])
-  ) {
+function openWrapper(target, options) {
+  if (target.nodeName || (typeof target === 'object' && target.$$typeof)) {
     open(target, options)
   } else {
     return deprecatedOpen(target)

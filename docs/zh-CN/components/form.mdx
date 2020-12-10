@@ -72,14 +72,14 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 
 ### Form
 
-| 参数           | 说明                                                                                  | 类型    | 可选值                     | 默认值     |
-| -------------- | ------------------------------------------------------------------------------------- | ------- | -------------------------- | ---------- |
-| initialValues  | 表单默认值，只有初始化以及重置时生效                                                  | object  | -                          | -          |
-| rules          | 表单验证规则，用法参考 [async-validator](https://github.com/yiminghe/async-validator) | object  | -                          | -          |
-| labelWidth     | label 宽度，可用任意 CSS 长度单位                                                     | string  |                            |
-| labelPlacement | label 放置的位置                                                                      | string  | 'right' \| 'left' \| 'top' | 'left'     |
-| placement      | 是否横向排列                                                                          | string  | 'horizontal' \| 'vertical' | 'vertical' |
-| showColon      | 是否显示冒号                                                                          | boolean | true \| false              | true       |
+| 参数           | 说明                                                                                     | 类型    | 可选值                     | 默认值     |
+| -------------- | ---------------------------------------------------------------------------------------- | ------- | -------------------------- | ---------- |
+| initialValues  | 表单默认值，只有初始化以及重置时生效；该值是不受控的，和表单中的 defaultValue 的作用相同 | object  | -                          | -          |
+| rules          | 表单验证规则，用法参考 [async-validator](https://github.com/yiminghe/async-validator)    | object  | -                          | -          |
+| labelWidth     | label 宽度，可用任意 CSS 长度单位                                                        | string  |                            |
+| labelPlacement | label 放置的位置                                                                         | string  | 'right' \| 'left' \| 'top' | 'left'     |
+| placement      | 是否横向排列                                                                             | string  | 'horizontal' \| 'vertical' | 'vertical' |
+| showColon      | 是否显示冒号                                                                             | boolean | true \| false              | true       |
 
 ## Events
 
@@ -87,7 +87,7 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 | -------------- | ------------------------ | -------------------------------------------------- | ------------------------------------------------------------- | ------ |
 | onValuesChange | 字段值更新时触发回调事件 | (changedValues: object, allValues: object) => void | changedValues: 改变的表单对象 <br/> allValues: 所有表单项对象 | -      |
 
-### SchemaForm
+## SchemaForm
 
 > 继承 Form API
 
@@ -97,14 +97,14 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 | submit | 继承 Form.Submit API | Object       | -      | -      |
 | reset  | 继承 Form.Reset API  | Object       | -      | -      |
 
-### FormList
+## FormList
 
 | 参数     | 说明     | 类型                                                             | 可选值 | 默认值 |
 | -------- | -------- | ---------------------------------------------------------------- | ------ | ------ |
 | name     | 列表名称 | String                                                           | -      | -      |
 | children | 渲染函数 | (fields: Field[], operation: { add, remove }) => React.ReactNode | -      | -      |
 
-### Form.Item
+## Form.Item
 
 | 参数            | 说明                                                                                                            | 类型    | 可选值                       | 默认值   |
 | --------------- | --------------------------------------------------------------------------------------------------------------- | ------- | ---------------------------- | -------- |
@@ -117,7 +117,7 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 | valuePropName   | 子节点的值的属性，如 Switch Radio Checkbox 的是 'checked'                                                       | string  | -                            | 'value'  |
 | contentPosition | 指定显示内容的位置的位置，对一些非 HiUI 表单组件进行设置                                                        | string  | 'top' \| 'center' \|'bottom' | 'center' |
 
-### SchemaItem
+## SchemaItem
 
 > 继承 Form.Item API
 
@@ -126,33 +126,33 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 | component      | 用于渲染的组件名称，(现在组件名称，只限于 HiUI 中的组件名） | string | -      | -      |
 | componentProps | 组件的属性                                                  | string | -      | -      |
 
-### Form.Submit
+## Form.Submit
 
 > 继承 Button API
 
-| 参数     | 说明                                                           | 类型     | 可选值 | 默认值    |
-| -------- | -------------------------------------------------------------- | -------- | ------ | --------- |
-| onClick  | 点击提交后触发 Function(value: Object, errors: Object) => void | Function | -      | func.noop |
-| validate | 需要校验的 field 数组                                          | Array    | -      | -         |
+| 参数    | 说明                                                           | 类型     | 可选值 | 默认值    |
+| ------- | -------------------------------------------------------------- | -------- | ------ | --------- |
+| onClick | 点击提交后触发 Function(value: Object, errors: Object) => void | Function | -      | func.noop |
+| fields  | 需要校验的 field 字段，不传入的话就是默认全部校验              | Array    | -      | -         |
 
-### Form.Reset
+## Form.Reset
 
 > 继承 Button API
 
-| 参数      | 说明                      | 类型     | 默认值    |
-| --------- | ------------------------- | -------- | --------- |
-| onClick   | 点击提交后触发 () => void | Function | func.noop |
-| fields    | 自定义重置的字段          | Array    | -         |
-| toDefault | 返回默认值                | Boolean  | true      |
+| 参数      | 说明                                              | 类型     | 默认值    |
+| --------- | ------------------------------------------------- | -------- | --------- |
+| onClick   | 点击提交后触发 () => void                         | Function | func.noop |
+| fields    | 需要重置的 field 字段，不传入的话就是默认全部重置 | Array    | -         |
+| toDefault | 返回默认值                                        | Boolean  | true      |
 
 ## Methods
 
-| 方法名                                                 | 说明               |
-| ------------------------------------------------------ | ------------------ |
-| validate(callback: isValid => void)                    | 对整个表单进行校验 |
-| validateField(field: string, callback: errors => void) | 对表单字段进行校验 |
-| resetValidates()                                       | 重置整个表单的验证 |
-| setFieldsValue()                                       | 设置表单的值       |
+| 方法名                                                                     | 说明                                                         |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| validate(callback: (fields: Object, errors: Object) => void, fields:Array) | 对整个表单进行校验, 对应 [Form.Submit](#Form.Submit)中的 API |
+| validateField(fields: string, callback: errors => void)                    | 对指定表单字段进行校验                                       |
+| resetValidates(callback:() => void, fields:Array, toDefault:boolean)       | 重置整个表单的验证,对应 [Form.Reset](#Form.Reset)中的 API    |
+| setFieldsValue(field: Object)                                              | 设置表单的值，在异步获取的数据回显的时候，使用该方法         |
 
 ## rules
 
