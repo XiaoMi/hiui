@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, forwardRef, useCallback } from 'react'
 import classNames from 'classnames'
-import _ from 'lodash'
+import _, { isArray } from 'lodash'
 
 import Popper from '../popper'
 import SelectInput from './SelectInput'
@@ -71,7 +71,7 @@ const InternalSelect = (props) => {
       type === 'multiple' && setCacheSelectItem(selectedItems)
       autoload && remoteSearch()
     }
-    setFocusedIndex(isGroup ? '0-0' : 0)
+    resetFocusedIndex()
   }, [])
 
   useEffect(() => {
@@ -105,6 +105,7 @@ const InternalSelect = (props) => {
         transKeys(fieldNames, 'id')
       )
       setSelectedItems(selectedItems)
+      resetFocusedIndex()
     }
   }, [value])
 
@@ -300,8 +301,8 @@ const InternalSelect = (props) => {
   // 按键操作
   const handleKeyDown = useCallback(
     (evt) => {
-      evt.stopPropagation()
       if (dropdownShow && !disabled) {
+        evt.stopPropagation()
         if (evt.keyCode === 38) {
           evt.preventDefault()
           moveFocusedIndex('up')
@@ -314,18 +315,17 @@ const InternalSelect = (props) => {
           // enter
           onEnterSelect()
         }
-      }
-      // esc
-      if (evt.keyCode === 27) {
-        setDropdownShow(false)
-      }
-
-      if (
-        evt.keyCode === 32 &&
-        !document.activeElement.classList.value.includes('hi-select__dropdown__searchbar--input')
-      ) {
-        evt.preventDefault()
-        setDropdownShow(!dropdownShow)
+        // esc
+        if (evt.keyCode === 27) {
+          setDropdownShow(false)
+        }
+        if (
+          evt.keyCode === 32 &&
+          !document.activeElement.classList.value.includes('hi-select__dropdown__searchbar--input')
+        ) {
+          evt.preventDefault()
+          setDropdownShow(!dropdownShow)
+        }
       }
     },
     [onEnterSelect, moveFocusedIndex]
@@ -441,15 +441,58 @@ const InternalSelect = (props) => {
   const resetFocusedIndex = () => {
     let _dropdownItems = dropdownItems || []
     let _focusedIndex = 0
+    let groupIndex = 0
     if (isGroup) {
-      _dropdownItems = dropdownItems[0][transKeys(fieldNames, 'children')]
+      _dropdownItems = dropdownItems[groupIndex][transKeys(fieldNames, 'children')]
       _focusedIndex = 0
     }
-    while (_dropdownItems[_focusedIndex] && _dropdownItems[_focusedIndex].disabled) {
+    while (
+      _dropdownItems[_focusedIndex] &&
+      _dropdownItems[_focusedIndex].disabled &&
+      _focusedIndex < _dropdownItems.length
+    ) {
       _focusedIndex++
     }
-    setFocusedIndex(isGroup ? 0 + '-' + _focusedIndex : _focusedIndex)
-    return isGroup ? 0 + '-' + _focusedIndex : _focusedIndex
+    if (typeof value !== 'undefined' || typeof defaultValue !== 'undefined') {
+      let _value = value || defaultValue
+      if (!isArray(_value)) {
+        _value = [_value]
+      }
+      _focusedIndex = 0
+
+      if (isGroup) {
+        let _isValid = false
+        while (groupIndex < dropdownItems.length && !_isValid) {
+          _dropdownItems = dropdownItems[groupIndex][transKeys(fieldNames, 'children')]
+          _isValid =
+            _dropdownItems &&
+            _dropdownItems.some((item, index) => {
+              if (type === 'single') {
+                return item[transKeys(fieldNames, 'id')] === _value[0] && (_focusedIndex = index)
+              } else {
+                return _value.includes(item[transKeys(fieldNames, 'id')]) && (_focusedIndex = index)
+              }
+            })
+          !_isValid && groupIndex++
+        }
+      } else {
+        let _isValid = false
+
+        _dropdownItems.forEach((item, index) => {
+          if (!_isValid) {
+            if (type === 'single') {
+              item[transKeys(fieldNames, 'id')] === _value && (_focusedIndex = index)
+            } else {
+              if (_value.includes(item[transKeys(fieldNames, 'id')])) {
+                _focusedIndex = index
+                _isValid = true
+              }
+            }
+          }
+        })
+      }
+    }
+    setFocusedIndex(isGroup ? groupIndex + '-' + _focusedIndex : _focusedIndex)
   }
 
   // 全部删除
@@ -605,7 +648,6 @@ InternalSelect.defaultProps = {
   multipleWrap: 'nowrap',
   disabled: false,
   clearable: true,
-  defaultValue: '',
   autoload: false,
   showCheckAll: false,
   showJustSelected: false,
