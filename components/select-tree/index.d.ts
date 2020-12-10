@@ -31,11 +31,13 @@ interface Props {
   defaultExpandIds?: string[] | number[]
   expandIds?: string[] | number[]
   dataSource?: DataSource | DataSourFun
-  value?: DataItem[] | string[] | number[]
-  defaultValue?: DataItem[] | string[] | number[]
   searchMode?: 'highlight' | 'filter'
-  onChange?: (selectedIds: string[], changedItem: DataItem) => void
   overlayClassName?: string
+  defaultValue?: DataItem[] | string[] | number[] | string
+  onChange?: (selectedIds: string[] | string, changedItem: DataItem | DataItem[], currentNode: DataItem) => void
+  valueRender?: (item: DataItem) => JSX.Element
+  style?: CSSProperties
+  value?: DataItem[] | string[] | number[] | string
 }
 declare const SelectTree: React.ComponentType<Props>
 export default SelectTree
