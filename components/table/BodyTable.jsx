@@ -81,12 +81,13 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
       avgRow[c.dataKey] = _.sumBy(_data, (d) => d[c.dataKey]) / _data.length
     }
   })
+
   useEffect(() => {
     if (tableRef.current && tableRef.current.children[1].children) {
       const rowHeightArray = Array.from(tableRef.current.children[1].children).map((tr) => tr.clientHeight)
       setEachRowHeight(rowHeightArray)
     }
-  }, [data, setEachRowHeight])
+  }, [data, setEachRowHeight, columns])
 
   let hasTree = false
   if (_data && _data.length) {

@@ -12,7 +12,8 @@ interface Props {
   disabled?: boolean
   indeterminate?: boolean
   className?: string
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void,
+  focusable?: boolean
 }
 interface GroupProps {
   className?: string
