@@ -1,8 +1,10 @@
 # 更新日志
+## 2.15.3
+
+- 修复 `DatePicker` weekOffset 设置无效问题 [#1421](https://github.com/XiaoMi/hiui/issues/1421)
 
 ## 2.15.2
 
-- 修复 `DatePicker` weekOffset 设置无效问题 [#1421](https://github.com/XiaoMi/hiui/issues/1421)
 - 修复 `DatePicker` 周范围显示异常问题 [#1267](https://github.com/XiaoMi/hiui/issues/1267)
 - 修复 `Pagination` 输入页码后回车键报错的问题 [#1299](https://github.com/XiaoMi/hiui/issues/1299)
 
