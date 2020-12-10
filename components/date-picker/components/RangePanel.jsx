@@ -40,17 +40,20 @@ const RangePanel = () => {
 
   useEffect(() => {
     setCalRenderDates(parseRenderDates(outDate, type))
-  }, [outDate])
+  }, [outDate, type])
   /**
    * Header 部分点击事件
    */
-  const changeViewEvent = useCallback((uIndex) => {
-    setViews((pre) => {
-      const p = [...pre]
-      p[uIndex] = 'year'
-      return p
-    })
-  }, [])
+  const changeViewEvent = useCallback(
+    (uIndex) => {
+      setViews((pre) => {
+        const p = [...pre]
+        p[uIndex] = 'year'
+        return p
+      })
+    },
+    [type]
+  )
 
   const setRanges = (date) => {
     const newRange = { ...range }
