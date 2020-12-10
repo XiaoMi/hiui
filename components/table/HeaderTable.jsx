@@ -104,7 +104,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
     if (headerInner.current && !isFixed) {
       setEachHeaderHeight(headerInner.current.clientHeight)
     }
-  }, [headerInner, isFixed, setEachHeaderHeight])
+  }, [headerInner, isFixed, setEachHeaderHeight, columns])
 
   // ********************处理排序逻辑
   // 可以排序的必须的是最后一级列

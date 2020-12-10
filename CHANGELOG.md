@@ -2,7 +2,10 @@
 
 ## 3.2.1
 
+
 - 修复 `DatePicker` type 不受控问题 [#1401](https://github.com/XiaoMi/hiui/issues/1401)
+- 修复 `Select` 下拉框默认选中行显示错误 [#1405](https://github.com/XiaoMi/hiui/issues/1405)
+
 
 ## 3.2.0
 

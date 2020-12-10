@@ -56,7 +56,6 @@ const MultipleInput = ({
   }
 
   const currentCount = showCount === 0 ? selectedItems.length : showCount
-
   return (
     <div
       className={classNames(
