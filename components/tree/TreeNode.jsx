@@ -8,7 +8,7 @@ import TreeContext from './context'
 import Switcher from './Switcher'
 import _ from 'lodash'
 
-const TreeNode = ({ node, expanded }) => {
+const TreeNode = ({ node, expanded, idx, tabIndex }) => {
   const {
     treeNodeRender,
     checkable,
@@ -24,12 +24,99 @@ const TreeNode = ({ node, expanded }) => {
     onDragStart,
     onDragOver,
     onDrop,
-    onDragEnd
+    onDragEnd,
+    moveFocus
   } = useContext(TreeContext)
   const [direction, setDirection] = useState(null)
   const [dragId, setDragId] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const treeNodeRef = useRef(null)
+
+  // 处理 Switch 点击
+  const handleSwitcherClick = useCallback(
+    (e) => {
+      e.stopPropagation()
+      if (onLoadChildren && !node.children) {
+        setLoading(true)
+        onLoadChildren(node).then(
+          (res) => {
+            setLoading(false)
+            onExpandNode(node, !expanded)
+          },
+          () => {
+            setLoading(false)
+          }
+        )
+      } else {
+        onExpandNode(node, !expanded)
+      }
+    },
+    [node, expanded, onLoadChildren, onExpandNode]
+  )
+
+  // 处理键盘事件
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (!node.disabled) {
+        // Right
+        if (e.keyCode === 39) {
+          e.preventDefault()
+          if (expanded === false && node.children && node.children.length) {
+            handleSwitcherClick(e)
+          } else {
+            // move to children
+            let child
+            if (node.children && node.children.length > 0) {
+              child = node.children.filter((c) => !c.disabled)[0]
+            }
+            if (child) {
+              moveFocus({ cid: child.id }, 'CHILD')
+            }
+          }
+        }
+
+        // Left
+        if (e.keyCode === 37) {
+          e.preventDefault()
+          if (expanded === true) {
+            handleSwitcherClick(e)
+          } else {
+            // move to parent
+            moveFocus({ pid: node.parentId }, 'PARENT')
+          }
+        }
+
+        // Up
+        if (e.keyCode === 38) {
+          e.preventDefault()
+          // move to previous
+          moveFocus({ index: idx }, 'UP')
+        }
+
+        // Down
+        if (e.keyCode === 40) {
+          e.preventDefault()
+          // move to next
+          moveFocus({ index: idx }, 'DOWN')
+        }
+
+        // Enter
+        if (e.keyCode === 13) {
+          e.preventDefault()
+          // select node
+          onSelectNode(node)
+        }
+        // Space
+        if (e.keyCode === 32) {
+          e.preventDefault()
+          // select checkbox
+          onCheckNode(node, !checkedNodes.includes(node.id), checkedNodes)
+        }
+      }
+    },
+    [expanded, node, onSelectNode, idx, moveFocus, checkable, onCheckNode, checkedNodes]
+  )
 
   // 渲染 apperance 占位
   const renderApperancePlaceholder = useCallback((apperance) => {
@@ -70,6 +157,7 @@ const TreeNode = ({ node, expanded }) => {
         indeterminate={semiChecked.includes(node.id)}
         checked={checked.includes(node.id)}
         disabled={node.disabled}
+        focusable={false}
         onChange={(e) => {
           onCheckNode(node, e.target.checked, checked)
         }}
@@ -169,7 +257,11 @@ const TreeNode = ({ node, expanded }) => {
     [treeNodeRef, draggable, treeNodeRender, direction, dragId]
   )
   return (
-    <li className={Classnames('tree-node', { 'tree-node--line': apperance === 'line' })}>
+    <li
+      className={Classnames('tree-node', { 'tree-node--line': apperance === 'line' })}
+      tabIndex={tabIndex}
+      onKeyDown={handleKeyDown}
+    >
       {renderIndent(
         (node.children && node.children.length) || (onLoadChildren && !node.isLeaf && !node.children)
           ? node.depth
@@ -187,6 +279,8 @@ const TreeNode = ({ node, expanded }) => {
           apperance={apperance}
           onExpandNode={onExpandNode}
           onLoadChildren={onLoadChildren}
+          onClick={handleSwitcherClick}
+          loading={loading}
         />
       )}
       {checkable && renderCheckbox(node, { checked: checkedNodes, semiChecked: semiCheckedIds })}

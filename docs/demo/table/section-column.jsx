@@ -281,7 +281,7 @@ const code = [
         super(props)
         this.columns = [
           // {dataKey: 'goodsCategory', title: '品类'},
-          { key: 'source', dataKey: 'source', title: '平台', fixed: 'left', width: 80 },
+          { key: 'source', dataKey: 'source', title: '平台', width: 80 },
           {
             key: 'storeType',
             dataKey: 'storeType',
