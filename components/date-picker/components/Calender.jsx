@@ -115,11 +115,14 @@ const Calender = ({ view = 'date', originDate, onPick, range, mouseMove, panelPo
     }
   }
 
-  const onTrMouseOver = useCallback((num) => {
-    if (num && (type === 'week' || type === 'weekrange') && weekNum !== num) {
-      setWeekNum(num)
-    }
-  }, [])
+  const onTrMouseOver = useCallback(
+    (num) => {
+      if (num && (type === 'week' || type === 'weekrange') && weekNum !== num) {
+        setWeekNum(num)
+      }
+    },
+    [type]
+  )
   const showHolidayDetail = (fullTimeInfo) => {
     clearTimeout(holidayTime.current)
     setHolidayFullName(fullTimeInfo.FullText || fullTimeInfo.text)

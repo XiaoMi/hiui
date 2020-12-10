@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 
 const parsePlaceholder = ({ type, placeholder: _placeholder, showTime, localeDatas }) => {
   const typePlaceholder = localeDatas.datePicker.placeholders[type]
-  const tempPlaceholder = showTime ? localeDatas.datePicker.placeholderTimeperiod : typePlaceholder || [localeDatas.datePicker.placeholder]
+  const tempPlaceholder = showTime
+    ? localeDatas.datePicker.placeholderTimeperiod
+    : typePlaceholder || [localeDatas.datePicker.placeholder]
 
   let leftPlaceholder = tempPlaceholder[0]
   let rightPlaceholder = tempPlaceholder[1] || leftPlaceholder
@@ -17,11 +19,12 @@ const parsePlaceholder = ({ type, placeholder: _placeholder, showTime, localeDat
   return [leftPlaceholder, rightPlaceholder]
 }
 const usePlaceholder = (args) => {
+  const { type } = args
   const [placeholders, setPlaceholders] = useState([])
 
   useEffect(() => {
     setPlaceholders(parsePlaceholder(args))
-  }, [])
+  }, [type])
 
   return [placeholders]
 }
