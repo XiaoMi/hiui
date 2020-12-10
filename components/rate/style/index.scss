@@ -7,6 +7,13 @@
   width: fit-content;
   padding-left: 0 !important;
   margin: 0 !important;
+  height: 100%;
+
+  &_mask {
+    position: absolute;
+    opacity: 0;
+    z-index: 19;
+  }
 
   &__star {
     cursor: pointer;
@@ -14,6 +21,7 @@
     display: inline-block;
     transition: 0.3s ease;
     margin: 0 6px !important;
+    height: 100%;
 
     &:active,
     &:hover {
@@ -40,6 +48,7 @@
       width: 50%;
       display: inline-block;
       z-index: 1;
+      height: 100%;
 
       &.grayscale {
         filter: grayscale(100%);
@@ -99,5 +108,9 @@
   &__outter {
     display: flex;
     flex-direction: row;
+    height: 32px;
+    padding: 2px 0;
+    box-sizing: border-box;
+    position: relative;
   }
 }
