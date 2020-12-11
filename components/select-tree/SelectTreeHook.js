@@ -159,7 +159,6 @@ const SelectTree = ({
       setShowCount(num)
     }
   }, [selectedItems])
-  useEffect(() => {}, [show])
   useEffect(() => {
     if (data) {
       const { flattenData = [], nodeEntries } = flattenNodesData(
