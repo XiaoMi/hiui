@@ -379,7 +379,6 @@ const SelectTree = ({
       setShow(!show)
     }
   }
-  console.log('ddd')
   return (
     <div
       className={`theme__${theme} hi-selecttree`}
