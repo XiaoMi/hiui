@@ -1,6 +1,6 @@
 # 更新日志
 
-## 3.2.1
+## 3.3.0
 
 - 新增 `SelectTree` valueRender 自定义渲染 Input 中展示内容 [#1407](https://github.com/XiaoMi/hiui/issues/1407)
 - 修复 `Form` 在页面渲染完成后 调用中 setFieldsValue 无效问题 [#1408](https://github.com/XiaoMi/hiui/issues/1408)
