@@ -159,7 +159,6 @@ const SelectTree = ({
       setShowCount(num)
     }
   }, [selectedItems])
-  useEffect(() => {}, [show])
   useEffect(() => {
     if (data) {
       const { flattenData = [], nodeEntries } = flattenNodesData(
@@ -380,6 +379,7 @@ const SelectTree = ({
       setShow(!show)
     }
   }
+  console.log('ddd')
   return (
     <div
       className={`theme__${theme} hi-selecttree`}
