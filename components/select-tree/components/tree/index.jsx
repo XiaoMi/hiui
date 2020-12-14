@@ -21,8 +21,10 @@ const Tree = ({
   nodeDataState,
   loadDataOnExpand,
   isRemoteLoadData,
-  localeDatas
+  localeDatas,
+  activeId
 }) => {
+  console.log('Tree--activeId', activeId)
   return (
     <TreeContext.Provider
       value={{
@@ -38,7 +40,8 @@ const Tree = ({
         expandIds,
         onExpandEvent: onExpand,
         loadDataOnExpand,
-        isRemoteLoadData
+        isRemoteLoadData,
+        activeId
       }}
     >
       <div className={`${PREFIX}`}>

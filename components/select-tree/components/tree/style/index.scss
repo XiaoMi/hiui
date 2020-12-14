@@ -63,6 +63,11 @@ $tree: 'hi-select-tree' !default;
       background-color: use-color('primary-20');
     }
 
+    &--focus {
+      color: #383e47;
+      background-color: use-color('primary-20');
+    }
+
     &--selected {
       color: use-color('primary');
 

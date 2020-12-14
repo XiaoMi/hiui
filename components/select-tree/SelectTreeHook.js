@@ -1,12 +1,12 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
-import Tree from './components/tree'
 import _ from 'lodash'
+
 import Popper from '../popper'
 import Loading from '../loading'
-import HiRequest from '../_util/hi-request'
 import Icon from '../icon'
-
+import Tree from './components/tree'
 import {
+  getNodeByIdTitle,
   flattenNodesData,
   getNode,
   updateCheckData,
@@ -21,6 +21,9 @@ import {
   clearReturnData,
   processSelectedIds
 } from './components/tree/util'
+import HiRequest from '../_util/hi-request'
+import { moveFocusedIndex } from './keyEvents'
+
 import NavTree from './components/tree/NavTree'
 import Trigger from './components/Trigger'
 import Provider from '../context'
@@ -56,6 +59,8 @@ const SelectTree = ({
   const selectedItemsRef = useRef()
   const inputRef = useRef()
   const selectTreeWrapper = useRef()
+  // activeId 当前活动下标
+  const [activeId, setActiveId] = useState('')
   // select 中显示的数量
   const [showCount, setShowCount] = useState(1)
   // panel show
@@ -157,6 +162,13 @@ const SelectTree = ({
         num++
       }
       setShowCount(num)
+    }
+    if (Array.isArray(selectedItems) && selectedItems.length > 0) {
+      console.log('selectedItems', selectedItems, selectedItems[0].id)
+      setActiveId(selectedItems[0].id)
+    } else if (Array.isArray(data) && data.length > 0) {
+      console.log('data', data, data[0].id)
+      setActiveId(data[0].id)
     }
   }, [selectedItems])
   useEffect(() => {
@@ -374,9 +386,30 @@ const SelectTree = ({
   // 按键操作
   const handleKeyDown = (evt) => {
     evt.stopPropagation()
+    // space
     if (evt.keyCode === 32 && !document.activeElement.classList.value.includes('hi-selecttree__searchinput')) {
       evt.preventDefault()
       setShow(!show)
+    }
+    // esc
+    if (evt.keyCode === 27) {
+      setShow(false)
+    }
+    if (show) {
+      // down
+      if (evt.keyCode === 40) {
+        evt.preventDefault()
+        setActiveId(moveFocusedIndex('down', activeId))
+      }
+      // up
+      if (evt.keyCode === 38) {
+        evt.preventDefault()
+        setActiveId(moveFocusedIndex('up', activeId))
+      }
+      // enter
+      if (evt.keyCode === 13) {
+        selectedEvents(getNodeByIdTitle(activeId, flattenData))
+      }
     }
   }
   return (
@@ -468,6 +501,7 @@ const SelectTree = ({
                   data={flattenData}
                   originData={data}
                   expandIds={expandIds}
+                  activeId={activeId}
                   dataSource={dataSource}
                   loadDataOnExpand={false}
                   checkable={type === 'multiple'}
