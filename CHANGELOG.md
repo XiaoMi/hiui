@@ -1,12 +1,13 @@
 # 更新日志
 
-## 3.2.1
+## 3.3.0
 
 - 新增 `SelectTree` valueRender 自定义渲染 Input 中展示内容 [#1407](https://github.com/XiaoMi/hiui/issues/1407)
 - 修复 `Form` 在页面渲染完成后 调用中 setFieldsValue 无效问题 [#1408](https://github.com/XiaoMi/hiui/issues/1408)
 - 修复 `Rate` 组件在快速移动显示异常问题 [#1410](https://github.com/XiaoMi/hiui/issues/1410)
 - 修复 `DatePicker` type 不受控问题 [#1401](https://github.com/XiaoMi/hiui/issues/1401)
 - 修复 `Select` 下拉框默认选中行显示错误 [#1405](https://github.com/XiaoMi/hiui/issues/1405)
+- 修复 `DatePicker` 在 type 为 daterange 时候，传入不合法日期，面板显示异常 [#1418](https://github.com/XiaoMi/hiui/issues/1418)
 
 ## 3.2.0
 

@@ -11,12 +11,9 @@ import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   render () {
     return (
-      <div>
       <DatePicker
         onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
       />
-      </div>
-      
     )
   }
 }`,
