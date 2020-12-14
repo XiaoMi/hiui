@@ -56,6 +56,7 @@ const TreeNode = ({ data, flttenData }) => {
         >
           <span
             className={Classnames({
+              'hi-select-tree__title--multiple': checkable,
               'hi-select-tree__title--focus': id === activeId
             })}
             dangerouslySetInnerHTML={{ __html: node._title || node.title }}
@@ -63,7 +64,7 @@ const TreeNode = ({ data, flttenData }) => {
         </Checkbox>
       )
     },
-    [checkedNodes, activeId]
+    [checkedNodes, activeId, checkable]
   )
 
   const renderTitle = useCallback(

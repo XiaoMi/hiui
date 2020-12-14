@@ -24,7 +24,6 @@ const Tree = ({
   localeDatas,
   activeId
 }) => {
-  console.log('Tree--activeId', activeId)
   return (
     <TreeContext.Provider
       value={{
