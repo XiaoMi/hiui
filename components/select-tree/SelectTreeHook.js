@@ -163,13 +163,6 @@ const SelectTree = ({
       }
       setShowCount(num)
     }
-    if (Array.isArray(selectedItems) && selectedItems.length > 0) {
-      console.log('selectedItems', selectedItems, selectedItems[0].id)
-      setActiveId(selectedItems[0].id)
-    } else if (Array.isArray(data) && data.length > 0) {
-      console.log('data', data, data[0].id)
-      setActiveId(data[0].id)
-    }
   }, [selectedItems])
   useEffect(() => {
     if (data) {
@@ -194,6 +187,11 @@ const SelectTree = ({
           setSelectedItems(_selectedItems)
         }
       }
+    }
+    if (Array.isArray(selectedItems) && selectedItems.length > 0) {
+      setActiveId(selectedItems[0].id)
+    } else if (Array.isArray(data) && data.length > 0) {
+      setActiveId(data[0].id)
     }
   }, [])
   // 过滤方法
@@ -408,7 +406,15 @@ const SelectTree = ({
       }
       // enter
       if (evt.keyCode === 13) {
-        selectedEvents(getNodeByIdTitle(activeId, flattenData))
+        type === 'multiple'
+          ? checkedEvents(
+              !selectedItems.some((item) => {
+                return activeId === item.id
+              }),
+              getNodeByIdTitle(activeId, flattenData),
+              checkedNodes
+            )
+          : selectedEvents(getNodeByIdTitle(activeId, flattenData))
       }
     }
   }
