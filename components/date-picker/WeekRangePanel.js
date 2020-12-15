@@ -194,7 +194,7 @@ export default class WeekRangePanel extends Component {
   }
   _getNormalComponent (date, flag) {
     let { range, layout } = this.state
-    const { altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData, max: maxDate, min: minDate } = this.props
+    const { altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData, max: maxDate, min: minDate, weekOffset } = this.props
 
     let component = null
     const { year, month } = deconstructDate(date)
@@ -210,6 +210,7 @@ export default class WeekRangePanel extends Component {
             dateMarkRender={dateMarkRender}
             dateMarkPreset={dateMarkPreset}
             date={date}
+            weekOffset={weekOffset}
             data={yearData}
             type={layout[flag]}
             onPick={this.yearPick.bind(this, flag)}
@@ -223,6 +224,7 @@ export default class WeekRangePanel extends Component {
             altCalendarPresetData={altCalendarPresetData}
             dateMarkPresetData={dateMarkPresetData}
             altCalendar={altCalendar}
+            weekOffset={weekOffset}
             altCalendarPreset={altCalendarPreset}
             dateMarkRender={dateMarkRender}
             dateMarkPreset={dateMarkPreset}
@@ -239,6 +241,7 @@ export default class WeekRangePanel extends Component {
             date={date}
             range={range}
             type='weekrange'
+            weekOffset={weekOffset}
             minDate={minDate}
             maxDate={maxDate}
             onPick={this.pick.bind(this)}
