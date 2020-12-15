@@ -120,7 +120,7 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | showJumper       | 是否显示跳转                                               | boolean                                                   | true \| false                     | false     |
 | onJump           | 快速跳转时触发，回调值为当前页数                           | (current: number) => void                                 | -                                 | -         |
 | onChange         | 页码改变时的回调，回调值为当前页数、之前的页数和每页条数   | (current: number, prev: number, pageSize: number) => void | -                                 | -         | - |
-| onPageSizeChange | 每页显示条数改变的回调函数，返回改变后的每页条数及当前页数 | (current: number, pageSize: number) => void               | -                                 | -         | - |
+| onPageSizeChange | 每页显示条数改变的回调函数，返回改变后的每页条数及当前页数 | (pageSize: number, current: number) => void               | -                                 | -         | - |
 
 ### FixedOption
 
