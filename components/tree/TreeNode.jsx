@@ -230,7 +230,7 @@ const TreeNode = ({ node, expanded, idx, tabIndex }) => {
               const passedData = JSON.parse(e.dataTransfer.getData('treeNode'))
               onDrop({
                 targetId: id,
-                sourceId: Number(passedData.id),
+                sourceId: passedData.id,
                 depth: { source: passedData.depth, target: depth },
                 direction
               })
