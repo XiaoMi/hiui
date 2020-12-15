@@ -57,6 +57,7 @@ const Table = ({
   const [eachHeaderHeight, setEachHeaderHeight] = useState(null)
 
   const [realColumnsWidth, setRealColumnsWidth] = useState(columns.map((c) => c.width || 'auto'))
+  const [expandedTreeRows, setExpandedTreeRows] = useState([])
 
   const firstRowRef = useRef(null)
   useEffect(() => {
@@ -226,7 +227,9 @@ const Table = ({
         eachHeaderHeight,
         setEachHeaderHeight,
         theme,
-        localeDatas
+        localeDatas,
+        expandedTreeRows,
+        setExpandedTreeRows
       }}
     >
       <div

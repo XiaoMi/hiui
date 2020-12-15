@@ -104,6 +104,8 @@ const code = [
     class Demo extends React.Component {
       render() {
         return <Table
+        scrollWidth={1700}
+        fixedToColumn={'a'}
         data={[
           {
             a: 'a-1',
