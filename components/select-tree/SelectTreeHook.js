@@ -60,6 +60,7 @@ const SelectTree = ({
   const placeholder = propsPlaceholder || localeDatas.selectTree.placeholder
   const selectedItemsRef = useRef()
   const inputRef = useRef()
+  const selectTreeRoot = useRef()
   const selectTreeWrapper = useRef()
   // activeId 当前活动下标
   const [activeId, setActiveId] = useState('')
@@ -399,12 +400,12 @@ const SelectTree = ({
       // down
       if (evt.keyCode === 40) {
         evt.preventDefault()
-        setActiveId(moveFocusedIndex('down', activeId))
+        setActiveId(moveFocusedIndex('down', activeId, selectTreeRoot))
       }
       // up
       if (evt.keyCode === 38) {
         evt.preventDefault()
-        setActiveId(moveFocusedIndex('up', activeId))
+        setActiveId(moveFocusedIndex('up', activeId, selectTreeRoot))
       }
       // right
       if (evt.keyCode === 39) {
@@ -488,7 +489,10 @@ const SelectTree = ({
           }}
         >
           <Loading size="small" visible={nodeDataState === 'loading'}>
-            <div className={`hi-selecttree__root theme__${theme} ${searchable ? 'hi-selecttree--hassearch' : ''}`}>
+            <div
+              className={`hi-selecttree__root theme__${theme} ${searchable ? 'hi-selecttree--hassearch' : ''}`}
+              ref={selectTreeRoot}
+            >
               {searchable && mode !== 'breadcrumb' && (
                 <div className="hi-selecttree__searchbar-wrapper">
                   <div className="hi-selecttree__searchbar-inner">

@@ -120,7 +120,7 @@
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
     border-radius: 2px;
     max-height: 320px;
-    overflow: auto;
+    overflow: hidden;
 
     &--loading {
       height: 320px;
@@ -138,8 +138,8 @@
   &__root {
     font-size: 14px;
     width: 100%;
-    height: 100%;
-    overflow: hidden;
+    max-height: 320px;
+    overflow: auto;
     position: relative;
   }
 

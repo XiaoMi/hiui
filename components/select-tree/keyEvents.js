@@ -1,5 +1,5 @@
 // 键盘事件处理函数
-export const moveFocusedIndex = (direction, activeId) => {
+export const moveFocusedIndex = (direction, activeId, selectTreeRoot) => {
   const allSelectTreeNodes = document.querySelectorAll('*[data-selecttree-id]')
   let focusedIndex = 0
   let _activeId = activeId
@@ -20,6 +20,8 @@ export const moveFocusedIndex = (direction, activeId) => {
       ? allSelectTreeNodes[focusedIndex].getAttribute('data-selecttree-id')
       : allSelectTreeNodes[allSelectTreeNodes.length - 1].getAttribute('data-selecttree-id')
   }
-
+  if (selectTreeRoot.current) {
+    selectTreeRoot.current.scrollTop = (focusedIndex - 5) * 36
+  }
   return _activeId
 }

@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useCallback } from 'react'
 import Icon from '../../../icon'
 import { getRootNodes, getChildrenNodes } from './util'
 import classNames from 'classnames'
-import Loading from '../../../loading'
 import Checkbox from '../../../checkbox'
 
 const Bread = ({ datas, onClick, onReturnClick, localeDatas }) => {
@@ -119,7 +118,7 @@ const NavTree = ({
               selectedItems.find((n) => n.id === node.id) && 'hi-breadtree__text--selected'
             )
             return (
-              <li key={index} className="hi-breadtree__item">
+              <li key={index} className="hi-breadtree__item" data-selecttree-id={node.id}>
                 {checkable && node.isLeaf ? (
                   <Checkbox
                     indeterminate={checkedNodes.semiChecked.includes(node.id)}
