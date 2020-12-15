@@ -19,7 +19,9 @@ import {
   parseExpandIds,
   fillNodeEntries,
   clearReturnData,
-  processSelectedIds
+  processSelectedIds,
+  getChildrenNodes,
+  getParentNode
 } from './components/tree/util'
 import HiRequest from '../_util/hi-request'
 import { moveFocusedIndex } from './keyEvents'
@@ -403,6 +405,32 @@ const SelectTree = ({
       if (evt.keyCode === 38) {
         evt.preventDefault()
         setActiveId(moveFocusedIndex('up', activeId))
+      }
+      // right
+      if (evt.keyCode === 39) {
+        evt.preventDefault()
+        const node = getNodeByIdTitle(activeId, flattenData)
+        const isExpand = expandIds.includes(node.id)
+        const childNodes = getChildrenNodes(node, flattenData)
+        if (!isExpand) {
+          expandEvents(node, !isExpand)
+        } else {
+          // 跳到第一个子节点
+          childNodes && childNodes.length > 0 && setActiveId(childNodes[0].id)
+        }
+      }
+      // left
+      if (evt.keyCode === 37) {
+        evt.preventDefault()
+        const node = getNodeByIdTitle(activeId, flattenData)
+        const isExpand = expandIds.includes(node.id)
+        const parentNodes = getParentNode(node, flattenData)
+        if (isExpand) {
+          expandEvents(node, !isExpand)
+        } else {
+          // 跳到第一个子节点
+          parentNodes && parentNodes.id && setActiveId(parentNodes.id)
+        }
       }
       // enter
       if (evt.keyCode === 13) {
