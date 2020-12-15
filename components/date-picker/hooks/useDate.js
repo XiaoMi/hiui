@@ -5,7 +5,7 @@ import { parseValue } from '../utils'
 const useDate = ({ value, defaultValue, cacheDate, type, format }) => {
   const [outDate, setOutDate] = useState([])
   const changeOutDate = (dates) => {
-    setOutDate(_.cloneDeep(dates))
+    setOutDate(_.cloneDeep(parseValue(dates, type, format)))
   }
   useEffect(() => {
     const d = parseValue(value || defaultValue, type, format)
