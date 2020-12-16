@@ -40,6 +40,7 @@ const InternalSelect = (props) => {
     setOverlayContainer
   } = props
   const selectInputContainer = useRef()
+  const historyData = useRef([])
   const [dropdownItems, setDropdownItems] = useState(data)
   const [isGroup, setIsGroup] = useState(false)
   const [focusedIndex, setFocusedIndex] = useState(0)
@@ -82,7 +83,8 @@ const InternalSelect = (props) => {
         })
       )
     }
-  }, [dropdownItems])
+    historyData.current = _.uniqBy(data.concat(dropdownItems).concat(historyData.current), transKeys(fieldNames, 'id'))
+  }, [dropdownItems, data])
 
   useEffect(() => {
     resetFocusedIndex()
@@ -107,22 +109,23 @@ const InternalSelect = (props) => {
       setSelectedItems(selectedItems)
       resetFocusedIndex()
     }
-  }, [value])
+  }, [value, cacheSelectItem])
 
   useEffect(() => {
     const _data = _.cloneDeep(data)
     const selectedItems = resetSelectedItems(
       value === undefined ? defaultValue : value,
-      _data,
+      historyData.current,
       transKeys(fieldNames, 'id')
     )
     setSelectedItems(selectedItems)
-    setDropdownItems(_data)
     if (dataSource && type === 'multiple') {
       setCacheSelectItem(selectedItems)
-      setDropdownItems(selectedItems)
+      !dropdownShow && setDropdownItems(selectedItems)
+    } else {
+      setDropdownItems(_data)
     }
-  }, [data])
+  }, [data, value])
 
   const localeDatasProps = useCallback(
     (key) => {
