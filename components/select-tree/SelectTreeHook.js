@@ -145,6 +145,11 @@ const SelectTree = ({
         return (_expandIds || []).concat(preExpandIds || [])
       })
     }
+    if (Array.isArray(selectedItems) && selectedItems.length > 0) {
+      setActiveId(selectedItems[0].id)
+    } else if (Array.isArray(flattenData) && flattenData.length > 0) {
+      setActiveId(flattenData[0].id)
+    }
   }, [expandIdsProps, flattenData])
 
   useEffect(() => {
@@ -303,6 +308,7 @@ const SelectTree = ({
         return getNode(id, flattenData)
       })
     }
+    setActiveId(node.id)
     onChange(
       processSelectedIds(result.checked, nodeEntries, showCheckedMode, flattenData),
       clearReturnData(checkedArr),
@@ -356,6 +362,7 @@ const SelectTree = ({
       const n = clearReturnData(node)
       onChange(node.id, n, n)
       setShow(false)
+      setActiveId(node.id)
     },
     [onChange, show, selectedItems]
   )
