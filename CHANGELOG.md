@@ -9,6 +9,7 @@
 - 修复 `Select` 下拉框默认选中行显示错误 [#1405](https://github.com/XiaoMi/hiui/issues/1405)
 - 修复 `DatePicker` 在 type 为 daterange 时候，传入不合法日期，面板显示异常 [#1418](https://github.com/XiaoMi/hiui/issues/1418)
 - 修复 `Table` 对其他组件造成的样式污染问题 [#1428](https://github.com/XiaoMi/hiui/issues/1428)
+- 新增 `Table` 列冻结结合树形使用 [#1424](https://github.com/XiaoMi/hiui/issues/1424)
 - 修复 `Tree` onDrop 回调函数参数不正确的问题 [#1425](https://github.com/XiaoMi/hiui/issues/1425)
 
 ## 3.2.0
