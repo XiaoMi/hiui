@@ -23,30 +23,9 @@ const code = [
             phone: '',
             password:'',
             remember:true,
-          },
-          value:[],
-          data:[]
+          }
         }
         this.form = React.createRef()
-        setTimeout(()=>{
-          
-          this.setState({
-          data:[
-            {
-              id:'1',
-              title:'固定值1'
-            },
-            {
-              id:'2',
-              title:'固定值2'
-            }
-          ]
-        })
-        this.form.current.setFieldsValue({
-          value: ['1'],
-          phone:'123'
-        })
-      },2000)
       }
       render (){
         const FormItem = Form.Item
@@ -54,37 +33,28 @@ const code = [
         const FormReset = Form.Reset
         const {formData} = this.state
         return (
-          <Form labelWidth='70' labelPlacement='left' ref={this.form} >
+          <Form labelWidth='70' labelPlacement='left'>
             <FormItem label='手机号' field='phone'>
               <Input placeholder={'请输入'} />
             </FormItem>
-            <FormItem label='门店' field='value'>
-            <Select
-              type='multiple'
-              style={{width: '300px'}}
-              placeholder='请选择'
-              data={this.state.data}
-              dataSource={keyword => {
-                return ({
-                  type: 'GET',
-                  url: 'https://mife-gallery.test.mi.com/hiui/stores',
-                  params:{id: keyword},
-                  transformResponse: (res) => {
-                    if(res.code === 200){
-                      return res.data
-                    }
-                    return []
-                  }
-                })
-        
-              }}
-              onChange={(item) => {
-                console.log('多选结果', item)
-                this.setState({
-                  value:item
-                })
-              }}
-            />
+            <FormItem label='门店'>
+              <Select
+                data={[
+                  { title:'电视', id:'3' },
+                  { title:'手机', id:'2' },
+                  { title:'笔记本', id:'4'},
+                  { title:'生活周边', id:'5' },
+                  { title:'办公', id:'6' },
+                ]}
+                type="multiple"
+                searchable
+                showCheckAll
+                placeholder='请选择'
+                emptyContent='无匹配数据'
+                onChange={item => {
+                  console.log('多选结果', item)
+                }}
+              />
             </FormItem>
       </Form>
         )
