@@ -112,6 +112,8 @@ $tree: 'hi-select-tree' !default;
 
   &__text {
     flex: 1;
+    padding: 4px 8px;
+    border-radius: 2px;
 
     &--selected {
       color: use-color('primary');

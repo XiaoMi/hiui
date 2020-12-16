@@ -46,7 +46,8 @@ const NavTree = ({
   autoExpand = true,
   nodeDataState,
   onExpand: expandProps,
-  localeDatas
+  localeDatas,
+  activeId
 }) => {
   const expandData = useRef()
   const [renderData, setRenderData] = useState([])
@@ -125,11 +126,13 @@ const NavTree = ({
                     checked={checkedNodes.checked.includes(node.id)}
                     onChange={(e) => onCheck(e.target.checked, node)}
                   >
-                    <span className={textCls}>{node.title}</span>
+                    <span className={classNames(textCls, { 'hi-select-tree__title--focus': node.id === activeId })}>
+                      {node.title}
+                    </span>
                   </Checkbox>
                 ) : (
                   <span
-                    className={textCls}
+                    className={classNames(textCls, { 'hi-select-tree__title--focus': node.id === activeId })}
                     onClick={() => {
                       onNodeClick(node, children)
                     }}

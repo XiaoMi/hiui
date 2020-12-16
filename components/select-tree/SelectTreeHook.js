@@ -19,12 +19,10 @@ import {
   parseExpandIds,
   fillNodeEntries,
   clearReturnData,
-  processSelectedIds,
-  getChildrenNodes,
-  getParentNode
+  processSelectedIds
 } from './components/tree/util'
 import HiRequest from '../_util/hi-request'
-import { moveFocusedIndex } from './keyEvents'
+import { moveFocusedIndex, rightHandle, leftHandle } from './keyEvents'
 
 import NavTree from './components/tree/NavTree'
 import Trigger from './components/Trigger'
@@ -163,6 +161,7 @@ const SelectTree = ({
       const wrapperWidth = sref.getBoundingClientRect()
       let _width = 0
       let num = 0
+      // eslint-disable-next-line no-unused-vars
       for (const el of referenceEls) {
         const elRect = el.getBoundingClientRect()
         _width += elRect.width
@@ -420,28 +419,12 @@ const SelectTree = ({
       // right
       if (evt.keyCode === 39) {
         evt.preventDefault()
-        const node = getNodeByIdTitle(activeId, flattenData)
-        const isExpand = expandIds.includes(node.id)
-        const childNodes = getChildrenNodes(node, flattenData)
-        if (!isExpand) {
-          expandEvents(node, !isExpand)
-        } else {
-          // 跳到第一个子节点
-          childNodes && childNodes.length > 0 && setActiveId(childNodes[0].id)
-        }
+        rightHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
       }
       // left
       if (evt.keyCode === 37) {
         evt.preventDefault()
-        const node = getNodeByIdTitle(activeId, flattenData)
-        const isExpand = expandIds.includes(node.id)
-        const parentNodes = getParentNode(node, flattenData)
-        if (isExpand) {
-          expandEvents(node, !isExpand)
-        } else {
-          // 跳到第一个子节点
-          parentNodes && parentNodes.id && setActiveId(parentNodes.id)
-        }
+        leftHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
       }
       // enter
       if (evt.keyCode === 13) {
@@ -542,6 +525,7 @@ const SelectTree = ({
                   onSelected={selectedEvents}
                   isRemoteLoadData={!!dataSource}
                   onExpand={expandEvents}
+                  activeId={activeId}
                   localeDatas={localeDatas}
                 />
               ) : (
