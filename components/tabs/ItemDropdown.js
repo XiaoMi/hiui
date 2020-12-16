@@ -79,27 +79,28 @@ class ItemDropdown extends Component {
           attachEle={this.toggleRef}
           zIndex={1010}
           width="auto"
-          leftGap={-18}
           topGap={3}
         >
-          <div className={classNames('hi-tabs-dropdown__items', `theme__${theme}`)}>
-            {items.map((item, index) => {
-              return (
-                <div
-                  className={classNames('hi-tabs-dropdown__item', {
-                    'hi-tabs-dropdown__item--active': index === activeIndex,
-                    'hi-tabs-dropdown__item--focus': index === focusIndex
-                  })}
-                  onClick={(e) => {
-                    this.toggle()
-                    onChoose(item, e)
-                  }}
-                  key={index}
-                >
-                  {item.tabTitle}
-                </div>
-              )
-            })}
+          <div className={classNames('hi-tabs-dropdown__wrapper', `theme__${theme}`)}>
+            <ul className={classNames('hi-tabs-dropdown__items', `theme__${theme}`)}>
+              {items.map((item, index) => {
+                return (
+                  <li
+                    className={classNames('hi-tabs-dropdown__item', {
+                      'hi-tabs-dropdown__item--active': index === activeIndex,
+                      'hi-tabs-dropdown__item--focus': index === focusIndex
+                    })}
+                    onClick={(e) => {
+                      this.toggle()
+                      onChoose(item, e)
+                    }}
+                    key={index}
+                  >
+                    {item.tabTitle}
+                  </li>
+                )
+              })}
+            </ul>
           </div>
         </Popper>
       </div>
