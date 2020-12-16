@@ -1,11 +1,10 @@
-import React, { useState, useContext, useRef, useEffect, useCallback } from 'react'
+import React, { useContext, useRef, useEffect, useCallback } from 'react'
 import Row from './Row'
 import TableContext from './context'
 import _ from 'lodash'
 import { flatTreeData, setDepth } from './util'
 
 const BodyTable = ({ fatherRef, emptyContent }) => {
-  const [expandedTreeRows, setExpandedTreeRows] = useState([])
   const {
     bordered,
     data,
@@ -28,7 +27,9 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     expandedRender,
     expandedRowKeys,
     rowSelection,
-    localeDatas
+    localeDatas,
+    expandedTreeRows,
+    setExpandedTreeRows
   } = useContext(TableContext)
   // **************** 获取colgroup
   const _columns = _.cloneDeep(columns)
