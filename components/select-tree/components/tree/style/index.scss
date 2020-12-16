@@ -51,11 +51,9 @@ $tree: 'hi-select-tree' !default;
   }
 
   &__title {
-    height: 24px;
-    line-height: 24px;
     text-align: left;
     white-space: nowrap;
-    padding: 0 4px;
+    padding: 4px 8px;
     border-radius: 2px;
 
     &:hover {

@@ -133,6 +133,9 @@ const SelectTree = ({
       } else {
         const _selectedItems = parseDefaultSelectedItems(value, flattenData)
         setSelectedItems(_selectedItems)
+        if (_selectedItems.length > 0) {
+          setActiveId(_selectedItems[0].id)
+        }
       }
     }
   }, [value])
