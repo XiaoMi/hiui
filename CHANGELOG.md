@@ -1,4 +1,9 @@
 # 更新日志
+
+## 2.15.4
+
+- 修复 `DatePicker` type 为 weekrange 时 weekOffset 设置无效 [#1434](https://github.com/XiaoMi/hiui/issues/1434)
+
 ## 2.15.3
 
 - 修复 `DatePicker` weekOffset 设置无效问题 [#1421](https://github.com/XiaoMi/hiui/issues/1421)
