@@ -83,7 +83,7 @@ const InternalSelect = (props) => {
         })
       )
     }
-    historyData.current = _.uniqBy(data.concat(dropdownItems).concat(historyData.current), transKeys(fieldNames, 'id'))
+    historyData.current = _.uniqBy(data.concat(dropdownItems, historyData.current), transKeys(fieldNames, 'id'))
   }, [dropdownItems, data])
 
   useEffect(() => {
