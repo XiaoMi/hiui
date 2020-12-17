@@ -424,7 +424,7 @@ const SelectTree = ({
       // left
       if (evt.keyCode === 37) {
         evt.preventDefault()
-        leftHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
+        mode !== 'breadcrumb' && leftHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
       }
       // enter
       if (evt.keyCode === 13) {

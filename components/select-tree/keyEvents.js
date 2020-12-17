@@ -43,7 +43,7 @@ export const moveFocusedIndex = (direction, activeId, selectTreeRoot) => {
  * @property {String} mode normal | breadcrumb
  */
 /**
- * 右键处理函数
+ * 右方向键处理函数
  * @param {RightOrLeftHandleParam} RightOrLeftHandleParam RightOrLeftHandleParam
  */
 export const rightHandle = ({ activeId, flattenData, expandIds, expandEvents, setActiveId }) => {
@@ -58,7 +58,7 @@ export const rightHandle = ({ activeId, flattenData, expandIds, expandEvents, se
   }
 }
 /**
- * 左键处理函数
+ * 左方向键处理函数
  * @param {RightOrLeftHandleParam} RightOrLeftHandleParam RightOrLeftHandleParam
  */
 export const leftHandle = ({ activeId, flattenData, expandIds, expandEvents, setActiveId }) => {
