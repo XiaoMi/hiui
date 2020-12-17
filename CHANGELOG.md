@@ -11,6 +11,7 @@
 - 修复 `Table` 对其他组件造成的样式污染问题 [#1428](https://github.com/XiaoMi/hiui/issues/1428)
 - 新增 `Table` 列冻结结合树形使用 [#1424](https://github.com/XiaoMi/hiui/issues/1424)
 - 修复 `Tree` onDrop 回调函数参数不正确的问题 [#1425](https://github.com/XiaoMi/hiui/issues/1425)
+- 修复 `Select` 异步多选值返显问题 [#1425](https://github.com/XiaoMi/hiui/issues/1425)
 - 优化 `Tabs` 组件弹出层样式[#1437](https://github.com/XiaoMi/hiui/issues/1437)
 
 ## 3.2.0

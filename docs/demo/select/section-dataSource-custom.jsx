@@ -17,7 +17,6 @@ class Demo extends React.Component {
     return (
       <Select
         type='single'
-        value={value}
         dataSource={(keyword)=>{
         console.log('HiRequest',keyword)
         const url = 'https://www.fastmock.site/mock/eef9b373d82560f30585521549c4b6cb/hiui/api/list?keyword='+keyword
@@ -40,7 +39,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoAsync = () => (
-  <DocViewer code={code} scope={{ Select }} prefix={prefix} desc={desc} />
-)
+const DemoAsync = () => <DocViewer code={code} scope={{ Select }} prefix={prefix} desc={desc} />
 export default DemoAsync
