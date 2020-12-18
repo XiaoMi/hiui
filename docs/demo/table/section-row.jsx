@@ -184,6 +184,9 @@ class Demo extends React.Component {
           data={this.data}
           rowSelection={{
             selectedRowKeys: this.state.selectedRowKeys,
+            getCheckboxConfig: record => {
+              return {disabled: record.name === '小米9'}
+            },
             onChange: selectedRowKeys => {
               this.setState({selectedRowKeys})
             }

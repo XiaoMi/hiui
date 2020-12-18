@@ -128,3 +128,12 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | ----- | -------------------- | ------ | ------ | ------ |
 | left  | 表格从左侧冻结至某列 | string | columns 中对应的 dataKey      | -      |
 | right | 表格从右侧冻结至某列 | string | columns 中对应的 dataKey       | -      |
+
+
+### RowSelection
+
+| 参数  | 说明                 | 类型   | 可选值 | 默认值 |
+| ----- | -------------------- | ------ | ------ | ------ |
+| selectedRowKeys  | 选中的行（受控） | string[] | row 中对应的 key      | -      |
+| getCheckboxConfig | 行选择的配置项 | rowData => object | -      | -      |
+| onChange| 选中项发生变化时的回调 | (selectedRowKeys: string[])  => void | -       | -      |
