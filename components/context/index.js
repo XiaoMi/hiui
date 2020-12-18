@@ -6,25 +6,21 @@ export const LocaleContext = React.createContext('zh-CN')
 /**
  * 临时解决 notice组件获取不到theme的问题
  */
-let noticeTheme = ''
-export default WrappedComponent => {
+let fromTheme = ''
+export default (WrappedComponent) => {
   class WrapperComponent extends Component {
     static displayName = WrappedComponent.name
-    render () {
+    render() {
       const { theme, locale, innerRef, ...restProps } = this.props
-      let ConsumerComponent = (
+      const ConsumerComponent = (
         <ThemeContext.Consumer>
-          {contextTheme => {
-            noticeTheme = noticeTheme || contextTheme
+          {(contextTheme) => {
+            fromTheme = fromTheme || contextTheme
             return (
               <LocaleContext.Consumer>
-                {contextLocale => (
+                {(contextLocale) => (
                   <WrappedComponent
-                    theme={
-                      WrappedComponent.IS_HIUI_NOTICE
-                        ? noticeTheme
-                        : contextTheme
-                    }
+                    theme={WrappedComponent.IS_FROM_HIUI ? fromTheme : contextTheme}
                     locale={contextLocale}
                     localeDatas={locales[contextLocale]}
                     ref={innerRef}
@@ -37,9 +33,7 @@ export default WrappedComponent => {
           }}
         </ThemeContext.Consumer>
       )
-      return wrapProvider(theme, ThemeContext)(locale, LocaleContext)(
-        ConsumerComponent
-      )
+      return wrapProvider(theme, ThemeContext)(locale, LocaleContext)(ConsumerComponent)
     }
   }
   return forwardRef((props, ref) => {
@@ -47,7 +41,7 @@ export default WrappedComponent => {
   })
 }
 
-function wrapProvider (value, context) {
+function wrapProvider(value, context) {
   wrapProvider.Providers || (wrapProvider.Providers = [])
   if (value !== undefined && context) {
     wrapProvider.Providers.push({
@@ -57,12 +51,8 @@ function wrapProvider (value, context) {
   }
   if (!context) {
     let component = value
-    wrapProvider.Providers.reverse().map(obj => {
-      component = (
-        <obj.context.Provider value={obj.value}>
-          {component}
-        </obj.context.Provider>
-      )
+    wrapProvider.Providers.reverse().map((obj) => {
+      component = <obj.context.Provider value={obj.value}>{component}</obj.context.Provider>
     })
     wrapProvider.Providers = []
     return component

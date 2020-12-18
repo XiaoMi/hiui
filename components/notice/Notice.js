@@ -7,7 +7,7 @@ class Notice extends Component {
   state = { open: false }
   openTimer = null
   closeTimer = null
-  componentDidMount () {
+  componentDidMount() {
     this.setState({
       open: true
     })
@@ -17,18 +17,20 @@ class Notice extends Component {
       }, this.props.duration || 3000)
     }
   }
-  componentWillUnmount () {
+
+  componentWillUnmount() {
     clearTimeout(this.openTimer)
     clearTimeout(this.closeTimer)
   }
-  closeNotice = e => {
+
+  closeNotice = (e) => {
     if (e) {
       e.stopPropagation()
     }
     this.props.onClose(this.props.id)
   }
 
-  render () {
+  render() {
     const { closeable, children, prefix, type, theme } = this.props
     const { open } = this.state
     return (
@@ -52,7 +54,7 @@ class Notice extends Component {
                 this.setState({ open: false })
               }}
             >
-              <Icon className={`hi-${prefix}__closer`} name='close' />
+              <Icon className={`hi-${prefix}__closer`} name="close" />
             </span>
           )}
         </div>
@@ -60,6 +62,6 @@ class Notice extends Component {
     )
   }
 }
-Notice.IS_HIUI_NOTICE = true
+Notice.IS_FROM_HIUI = true
 export default Provider(Notice)
 export { Notice }

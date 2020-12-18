@@ -13,6 +13,7 @@
 - 新增 `Table` rowSelection getCheckboxConfig 方法配置行选择 [#1444](https://github.com/XiaoMi/hiui/issues/1444)
 - 修复 `Tree` onDrop 回调函数参数不正确的问题 [#1425](https://github.com/XiaoMi/hiui/issues/1425)
 - 修复 `Select` 异步多选值返显问题 [#1425](https://github.com/XiaoMi/hiui/issues/1425)
+- 修复 `Modal` confirm 方法为适配主题色的问题 [#1446](https://github.com/XiaoMi/hiui/issues/1446)
 - 优化 `Tabs` 组件弹出层样式[#1437](https://github.com/XiaoMi/hiui/issues/1437)
 
 ## 3.2.0
