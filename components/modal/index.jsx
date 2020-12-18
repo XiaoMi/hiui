@@ -3,7 +3,7 @@ import { unmountComponentAtNode, createPortal, render } from 'react-dom'
 import { CSSTransition } from 'react-transition-group'
 import Classnames from 'classnames'
 import Provider from '../context/index'
-import Button from '../button'
+import { Button } from '../button/Button'
 import Icon from '../icon'
 import './style/index'
 
@@ -37,7 +37,8 @@ const InternalModalComp = ({
   className,
   destroyOnClose,
   localeDatas,
-  foucsElementOnClose = null
+  foucsElementOnClose = null,
+  theme
 }) => {
   // TODO: 整体可以抽成一个 hooks 供 modal 和 drawer 复用
   const defaultContainer = useRef(false)
@@ -174,6 +175,7 @@ const InternalModalComp = ({
                   {footer === undefined && cancelText !== null && (
                     <Button
                       type={'line'}
+                      theme={theme}
                       onClick={() => {
                         if (onCancel) {
                           onCancel()
@@ -186,6 +188,7 @@ const InternalModalComp = ({
                   {footer === undefined && confirmText !== null && (
                     <Button
                       type={'primary'}
+                      theme={theme}
                       onClick={() => {
                         if (onConfirm) {
                           onConfirm()
@@ -257,7 +260,7 @@ const confirm = ({ onConfirm, onCancel, title = '提示', content, type = 'defau
   })
   render(modal, confirmContainer)
 }
-
+InternalModalComp.IS_FROM_HIUI = true
 const ModalComp = Provider(InternalModalComp)
 ModalComp.confirm = confirm
 export default ModalComp
