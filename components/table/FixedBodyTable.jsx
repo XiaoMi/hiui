@@ -71,7 +71,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
           isFixed={isFixed}
           level={level}
           index={index}
-          rowHeight={eachRowHeight[index]}
+          rowHeight={eachRowHeight[row.key]}
           expandedTree={expandedTreeRows.includes(row.key)}
           expandedTreeRows={expandedTreeRows}
           setExpandedTreeRows={setExpandedTreeRows}

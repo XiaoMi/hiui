@@ -53,7 +53,7 @@ const Table = ({
   const [freezeColumn, setFreezeColumn] = useState(null)
   const [hoverRow, setHoverRow] = useState(null)
   const [serverTableConfig, setServerTableConfig] = useState({ data: [], columns: [] })
-  const [eachRowHeight, setEachRowHeight] = useState([])
+  const [eachRowHeight, setEachRowHeight] = useState({})
   const [eachHeaderHeight, setEachHeaderHeight] = useState(null)
 
   const [realColumnsWidth, setRealColumnsWidth] = useState(columns.map((c) => c.width || 'auto'))
