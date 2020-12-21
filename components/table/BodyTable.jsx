@@ -85,10 +85,13 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
 
   useEffect(() => {
     if (tableRef.current && tableRef.current.children[1].children) {
-      const rowHeightArray = Array.from(tableRef.current.children[1].children).map((tr) => tr.clientHeight)
-      setEachRowHeight(rowHeightArray)
+      const rowHeightMap = {}
+      Array.from(tableRef.current.children[1].children).forEach((tr) => {
+        rowHeightMap[tr.id] = tr.clientHeight
+      })
+      setEachRowHeight(rowHeightMap)
     }
-  }, [data, setEachRowHeight, columns])
+  }, [data, setEachRowHeight, columns, expandedTreeRows])
 
   let hasTree = false
   if (_data && _data.length) {
