@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
+
+import EventEmitter from '../../../_util/EventEmitter'
 import Icon from '../../../icon'
 import { getRootNodes, getChildrenNodes } from './util'
 import classNames from 'classnames'
@@ -103,6 +105,9 @@ const NavTree = ({
       })
     }
   }
+  useEffect(() => {
+    EventEmitter.on('$onNodeClick', onNodeClick)
+  }, [])
   return (
     <div className="hi-breadtree__root">
       {Object.keys(fullBreadData).length > 0 && (

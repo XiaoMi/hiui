@@ -1,4 +1,5 @@
 import { getNodeByIdTitle, getChildrenNodes, getParentNode } from './components/tree/util'
+import EventEmitter from '../_util/EventEmitter'
 
 /**
  * 移动节点函数
@@ -46,15 +47,18 @@ export const moveFocusedIndex = (direction, activeId, selectTreeRoot) => {
  * 右方向键处理函数
  * @param {RightOrLeftHandleParam} RightOrLeftHandleParam RightOrLeftHandleParam
  */
-export const rightHandle = ({ activeId, flattenData, expandIds, expandEvents, setActiveId }) => {
+export const rightHandle = ({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode }) => {
   const node = getNodeByIdTitle(activeId, flattenData)
   const isExpand = expandIds.includes(node.id)
   const childNodes = getChildrenNodes(node, flattenData)
-  if (!isExpand) {
-    expandEvents(node, !isExpand)
-  } else {
-    // 跳到第一个子节点
-    childNodes && childNodes.length > 0 && setActiveId(childNodes[0].id)
+  console.log('mode', mode)
+  if (mode === '') {
+    if (!isExpand) {
+      expandEvents(node, !isExpand)
+    } else {
+      // 跳到第一个子节点
+      childNodes && childNodes.length > 0 && setActiveId(childNodes[0].id)
+    }
   }
 }
 /**

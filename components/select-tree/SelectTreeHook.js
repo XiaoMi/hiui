@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import _ from 'lodash'
-
+import EventEmitter from '../_util/EventEmitter'
 import Popper from '../popper'
 import Loading from '../loading'
 import Icon from '../icon'
@@ -397,9 +397,9 @@ const SelectTree = ({
   const handleKeyDown = (evt) => {
     evt.stopPropagation()
     // space
-    if (evt.keyCode === 32 && !document.activeElement.classList.value.includes('hi-selecttree__searchinput')) {
+    if (evt.keyCode === 32 && !document.activeElement.classList.value.includes('hi-selecttree__searchinput') && !show) {
       evt.preventDefault()
-      setShow(!show)
+      setShow(true)
     }
     // esc
     if (evt.keyCode === 27) {
@@ -426,8 +426,10 @@ const SelectTree = ({
         evt.preventDefault()
         mode !== 'breadcrumb' && leftHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
       }
-      // enter
-      if (evt.keyCode === 13) {
+      // space 选中
+      if (evt.keyCode === 32 && !document.activeElement.classList.value.includes('hi-selecttree__searchinput')) {
+        evt.preventDefault()
+
         type === 'multiple'
           ? checkedEvents(
               !selectedItems.some((item) => {
