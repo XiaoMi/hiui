@@ -7,7 +7,7 @@ export const FILEDS_UPDATE_VALUE = 'FILEDS_UPDATE_VALUE'
 export const FILEDS_REMOVE = 'FILEDS_REMOVE'
 export const FILEDS_INIT_LIST = 'FILEDS_INIT_LIST'
 export const FILEDS_UPDATE_LIST = 'FILEDS_UPDATE_LIST'
-class Immutable {
+export default class Immutable {
   constructor() {
     this.state = {}
   }
@@ -48,4 +48,3 @@ class Immutable {
     return _.cloneDeep(this.state.fields)
   }
 }
-export default new Immutable()

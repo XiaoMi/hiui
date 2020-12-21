@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useReducer, forwardRef } from 'react'
+import React, { useEffect, useCallback, useReducer, forwardRef, useRef } from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
@@ -29,7 +29,8 @@ const InternalForm = (props) => {
     onValuesChange,
     _type // SchemaForm 内部配置变量
   } = props
-  const [state, dispatch] = useReducer(Immutable.FormReducer, {
+  const _Immutable = useRef(new Immutable())
+  const [state, dispatch] = useReducer(_Immutable.current.FormReducer, {
     fields: [],
     listNames: [],
     listValues: {},
@@ -40,7 +41,7 @@ const InternalForm = (props) => {
   // 用户手动设置表单数据
   const setFieldsValue = useCallback(
     (values) => {
-      const _fields = Immutable.currentStateFields()
+      const _fields = _Immutable.current.currentStateFields()
       _fields.forEach((item) => {
         const { field } = item
         // eslint-disable-next-line no-prototype-builtins
