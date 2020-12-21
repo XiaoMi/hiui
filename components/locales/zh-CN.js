@@ -105,5 +105,10 @@ export default {
     searchEmptyResult: '未找到搜索结果',
     modalTitle: '提示',
     delTips: '删除节点将删除所有子节点，确定删除吗？'
+  },
+  table: {
+    highlight: '高亮',
+    freeze:'冻结',
+    hide:'隐藏'
   }
 }
