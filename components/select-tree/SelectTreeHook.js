@@ -161,7 +161,6 @@ const SelectTree = ({
       const wrapperWidth = sref.getBoundingClientRect()
       let _width = 0
       let num = 0
-      // eslint-disable-next-line no-unused-vars
       for (const el of referenceEls) {
         const elRect = el.getBoundingClientRect()
         _width += elRect.width
