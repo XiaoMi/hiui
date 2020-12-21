@@ -1,6 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import _ from 'lodash'
-import EventEmitter from '../_util/EventEmitter'
 import Popper from '../popper'
 import Loading from '../loading'
 import Icon from '../icon'
@@ -19,7 +18,8 @@ import {
   parseExpandIds,
   fillNodeEntries,
   clearReturnData,
-  processSelectedIds
+  processSelectedIds,
+  getFirstSiblingWidthSelectItems
 } from './components/tree/util'
 import HiRequest from '../_util/hi-request'
 import { moveFocusedIndex, rightHandle, leftHandle } from './keyEvents'
@@ -147,7 +147,7 @@ const SelectTree = ({
       })
     }
     if (Array.isArray(selectedItems) && selectedItems.length > 0) {
-      setActiveId(selectedItems[0].id)
+      setActiveId(getFirstSiblingWidthSelectItems(flattenData, selectedItems))
     } else if (Array.isArray(flattenData) && flattenData.length > 0) {
       setActiveId(flattenData[0].id)
     }
@@ -424,21 +424,22 @@ const SelectTree = ({
       // left
       if (evt.keyCode === 37) {
         evt.preventDefault()
-        mode !== 'breadcrumb' && leftHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
+        leftHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
       }
       // space 选中
       if (evt.keyCode === 32 && !document.activeElement.classList.value.includes('hi-selecttree__searchinput')) {
         evt.preventDefault()
-
-        type === 'multiple'
-          ? checkedEvents(
-              !selectedItems.some((item) => {
-                return activeId === item.id
-              }),
-              getNodeByIdTitle(activeId, flattenData),
-              checkedNodes
-            )
-          : selectedEvents(getNodeByIdTitle(activeId, flattenData))
+        if (mode !== 'breadcrumb') {
+          type === 'multiple'
+            ? checkedEvents(
+                !selectedItems.some((item) => {
+                  return activeId === item.id
+                }),
+                getNodeByIdTitle(activeId, flattenData),
+                checkedNodes
+              )
+            : selectedEvents(getNodeByIdTitle(activeId, flattenData))
+        }
       }
     }
   }
@@ -527,7 +528,9 @@ const SelectTree = ({
                   onSelected={selectedEvents}
                   isRemoteLoadData={!!dataSource}
                   onExpand={expandEvents}
+                  flattenData={flattenData}
                   activeId={activeId}
+                  setActiveId={setActiveId}
                   localeDatas={localeDatas}
                 />
               ) : (

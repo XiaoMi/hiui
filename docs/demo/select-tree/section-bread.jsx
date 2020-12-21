@@ -141,7 +141,6 @@ const code = [
             clearable
             mode='breadcrumb'
             data={singleList}
-            defaultValue={[{id: '0-1-0-0-0'}]}
           />
         )
       }

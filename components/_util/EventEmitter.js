@@ -9,8 +9,9 @@ class EventEmitter {
   }
 
   // 触发事件
-  emit(type) {
-    this.event[type] && this.event[type]()
+  emit(type, ...arg) {
+    console.log(this.event)
+    this.event[type] && this.event[type](...arg)
   }
 
   removeListener(type) {
@@ -23,4 +24,4 @@ class EventEmitter {
     this.event = {}
   }
 }
-export default EventEmitter
+export default new EventEmitter()

@@ -51,8 +51,9 @@ export const rightHandle = ({ activeId, flattenData, expandIds, expandEvents, se
   const node = getNodeByIdTitle(activeId, flattenData)
   const isExpand = expandIds.includes(node.id)
   const childNodes = getChildrenNodes(node, flattenData)
-  console.log('mode', mode)
-  if (mode === '') {
+  if (mode === 'breadcrumb') {
+    EventEmitter.emit('$onNodeClick', node, childNodes)
+  } else {
     if (!isExpand) {
       expandEvents(node, !isExpand)
     } else {
@@ -65,10 +66,14 @@ export const rightHandle = ({ activeId, flattenData, expandIds, expandEvents, se
  * 左方向键处理函数
  * @param {RightOrLeftHandleParam} RightOrLeftHandleParam RightOrLeftHandleParam
  */
-export const leftHandle = ({ activeId, flattenData, expandIds, expandEvents, setActiveId }) => {
+export const leftHandle = ({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode }) => {
   const node = getNodeByIdTitle(activeId, flattenData)
   const isExpand = expandIds.includes(node.id)
   const parentNodes = getParentNode(node, flattenData)
+  if (mode === 'breadcrumb') {
+    EventEmitter.emit('$onBreadClick')
+    return
+  }
   if (isExpand) {
     expandEvents(node, !isExpand)
   } else {

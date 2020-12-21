@@ -53,7 +53,7 @@ $tree: 'hi-select-tree' !default;
   &__title {
     text-align: left;
     white-space: nowrap;
-    padding: 4px 8px;
+    padding: 2px 4px;
     border-radius: 2px;
 
     &:hover {
@@ -65,7 +65,7 @@ $tree: 'hi-select-tree' !default;
       display: inline-block;
       height: 24px;
       line-height: 24px;
-      padding: 0 4px;
+      padding: 2px 4px;
     }
 
     &--focus {
