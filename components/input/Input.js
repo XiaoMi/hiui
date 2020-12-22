@@ -248,7 +248,7 @@ class Input extends Component {
    */
   renderTextarea() {
     const { active } = this.state
-    const { disabled, theme } = this.props
+    const { disabled, theme, className } = this.props
     const { defaultValue, ...attrs } = this.attrs
     const filterAttrs = filterObjProps(attrs, [
       'locale',
@@ -266,7 +266,9 @@ class Input extends Component {
 
     return (
       <textarea
-        className={`hi-input theme__${theme} ${active ? 'active' : ''} ${disabled ? 'disabled' : ''}`}
+        className={`hi-input theme__${theme} ${active ? 'active' : ''} ${disabled ? 'disabled' : ''} ${
+          className || ''
+        }`}
         style={this.props.style}
         autoComplete="off"
         value={this.state.value}
