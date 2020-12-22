@@ -35,6 +35,7 @@ interface Props {
   size?: 'small' | 'large' | 'default' | 'mini'
   bordered?: boolean
   striped?: boolean
+  loading?: boolean
   sticky?: boolean
   stickyTop?: number
   highlightedColKeys?: string[] | number[]

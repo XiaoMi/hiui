@@ -8,6 +8,7 @@ import Pagination from '../pagination'
 import axios from 'axios'
 import FixedBodyTable from './FixedBodyTable'
 import Provider from '../context'
+import Loading from '../Loading'
 import './style'
 
 const Table = ({
@@ -274,7 +275,7 @@ const Table = ({
   )
 }
 
-const TableWrapper = ({ columns, uniqueId, standard, data, ...settingProps }) => {
+const TableWrapper = ({ columns, uniqueId, standard, data, loading = false, ...settingProps }) => {
   const _sortCol =
     uniqueId && window.localStorage.getItem(`${uniqueId}_sortCol`)
       ? JSON.parse(window.localStorage.getItem(`${uniqueId}_sortCol`))
@@ -316,7 +317,21 @@ const TableWrapper = ({ columns, uniqueId, standard, data, ...settingProps }) =>
     : {}
 
   // ***************
-  return (
+  return loading === true ? (
+    <Loading>
+      <Table
+        columns={cacheVisibleCols}
+        data={data || []}
+        {...settingProps}
+        {...standardPreset}
+        sortCol={sortCol}
+        setSortCol={setSortCol}
+        visibleCols={visibleCols}
+        setVisibleCols={setVisibleCols}
+        setCacheVisibleCols={setCacheVisibleCols}
+      />
+    </Loading>
+  ) : (
     <Table
       columns={cacheVisibleCols}
       data={data || []}
