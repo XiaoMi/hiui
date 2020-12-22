@@ -1,12 +1,11 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
-import Tree from './components/tree'
 import _ from 'lodash'
 import Popper from '../popper'
 import Loading from '../loading'
-import HiRequest from '../_util/hi-request'
 import Icon from '../icon'
-
+import Tree from './components/tree'
 import {
+  getNodeByIdTitle,
   flattenNodesData,
   getNode,
   updateCheckData,
@@ -19,8 +18,12 @@ import {
   parseExpandIds,
   fillNodeEntries,
   clearReturnData,
-  processSelectedIds
+  processSelectedIds,
+  getFirstSiblingWidthSelectItems
 } from './components/tree/util'
+import HiRequest from '../_util/hi-request'
+import { moveFocusedIndex, rightHandle, leftHandle } from './keyEvents'
+
 import NavTree from './components/tree/NavTree'
 import Trigger from './components/Trigger'
 import Provider from '../context'
@@ -55,7 +58,10 @@ const SelectTree = ({
   const placeholder = propsPlaceholder || localeDatas.selectTree.placeholder
   const selectedItemsRef = useRef()
   const inputRef = useRef()
+  const selectTreeRoot = useRef()
   const selectTreeWrapper = useRef()
+  // activeId 当前活动下标
+  const [activeId, setActiveId] = useState('')
   // select 中显示的数量
   const [showCount, setShowCount] = useState(1)
   // panel show
@@ -125,6 +131,9 @@ const SelectTree = ({
       } else {
         const _selectedItems = parseDefaultSelectedItems(value, flattenData)
         setSelectedItems(_selectedItems)
+        if (_selectedItems.length > 0) {
+          setActiveId(_selectedItems[0].id)
+        }
       }
     }
   }, [value])
@@ -136,6 +145,11 @@ const SelectTree = ({
       setExpandIds((preExpandIds) => {
         return (_expandIds || []).concat(preExpandIds || [])
       })
+    }
+    if (Array.isArray(selectedItems) && selectedItems.length > 0) {
+      setActiveId(getFirstSiblingWidthSelectItems(flattenData, selectedItems))
+    } else if (Array.isArray(flattenData) && flattenData.length > 0) {
+      setActiveId(flattenData[0].id)
     }
   }, [expandIdsProps, flattenData])
 
@@ -182,6 +196,11 @@ const SelectTree = ({
           setSelectedItems(_selectedItems)
         }
       }
+    }
+    if (Array.isArray(selectedItems) && selectedItems.length > 0) {
+      setActiveId(selectedItems[0].id)
+    } else if (Array.isArray(data) && data.length > 0) {
+      setActiveId(data[0].id)
     }
   }, [])
   // 过滤方法
@@ -290,6 +309,7 @@ const SelectTree = ({
         return getNode(id, flattenData)
       })
     }
+    setActiveId(node.id)
     onChange(
       processSelectedIds(result.checked, nodeEntries, showCheckedMode, flattenData),
       clearReturnData(checkedArr),
@@ -343,6 +363,7 @@ const SelectTree = ({
       const n = clearReturnData(node)
       onChange(node.id, n, n)
       setShow(false)
+      setActiveId(node.id)
     },
     [onChange, show, selectedItems]
   )
@@ -374,9 +395,51 @@ const SelectTree = ({
   // 按键操作
   const handleKeyDown = (evt) => {
     evt.stopPropagation()
-    if (evt.keyCode === 32 && !document.activeElement.classList.value.includes('hi-selecttree__searchinput')) {
+    // space
+    if (evt.keyCode === 32 && !document.activeElement.classList.value.includes('hi-selecttree__searchinput') && !show) {
       evt.preventDefault()
-      setShow(!show)
+      setShow(true)
+    }
+    // esc
+    if (evt.keyCode === 27) {
+      setShow(false)
+    }
+    if (show) {
+      // down
+      if (evt.keyCode === 40) {
+        evt.preventDefault()
+        setActiveId(moveFocusedIndex('down', activeId, selectTreeRoot))
+      }
+      // up
+      if (evt.keyCode === 38) {
+        evt.preventDefault()
+        setActiveId(moveFocusedIndex('up', activeId, selectTreeRoot))
+      }
+      // right
+      if (evt.keyCode === 39) {
+        evt.preventDefault()
+        rightHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
+      }
+      // left
+      if (evt.keyCode === 37) {
+        evt.preventDefault()
+        leftHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
+      }
+      // space 选中
+      if (evt.keyCode === 32 && !document.activeElement.classList.value.includes('hi-selecttree__searchinput')) {
+        evt.preventDefault()
+        if (mode !== 'breadcrumb') {
+          type === 'multiple'
+            ? checkedEvents(
+                !selectedItems.some((item) => {
+                  return activeId === item.id
+                }),
+                getNodeByIdTitle(activeId, flattenData),
+                checkedNodes
+              )
+            : selectedEvents(getNodeByIdTitle(activeId, flattenData))
+        }
+      }
     }
   }
   return (
@@ -421,7 +484,10 @@ const SelectTree = ({
           }}
         >
           <Loading size="small" visible={nodeDataState === 'loading'}>
-            <div className={`hi-selecttree__root theme__${theme} ${searchable ? 'hi-selecttree--hassearch' : ''}`}>
+            <div
+              className={`hi-selecttree__root theme__${theme} ${searchable ? 'hi-selecttree--hassearch' : ''}`}
+              ref={selectTreeRoot}
+            >
               {searchable && mode !== 'breadcrumb' && (
                 <div className="hi-selecttree__searchbar-wrapper">
                   <div className="hi-selecttree__searchbar-inner">
@@ -461,6 +527,9 @@ const SelectTree = ({
                   onSelected={selectedEvents}
                   isRemoteLoadData={!!dataSource}
                   onExpand={expandEvents}
+                  flattenData={flattenData}
+                  activeId={activeId}
+                  setActiveId={setActiveId}
                   localeDatas={localeDatas}
                 />
               ) : (
@@ -468,6 +537,7 @@ const SelectTree = ({
                   data={flattenData}
                   originData={data}
                   expandIds={expandIds}
+                  activeId={activeId}
                   dataSource={dataSource}
                   loadDataOnExpand={false}
                   checkable={type === 'multiple'}

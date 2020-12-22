@@ -364,7 +364,21 @@ export const clearReturnData = (arg) => {
   return arg
 }
 
-// 获取被选中的节点的 兄弟节点
-export const getSiblingsWidthActiveId = (data, activeId) => {
-  return data
+/**
+ * 获取被选中的节点的 兄弟节点
+ * @param {*} data 拉平的数据
+ * @param {*} selectedItems 选中的数据
+ */
+export const getFirstSiblingWidthSelectItems = (flattenData, selectedItems) => {
+  const ids = selectedItems.map((item) => {
+    return item.id
+  })
+  let id
+  for (let index = 0; index < flattenData.length; index++) {
+    if (ids.includes(flattenData[index].id)) {
+      id = flattenData[index].id
+      break
+    }
+  }
+  return id
 }

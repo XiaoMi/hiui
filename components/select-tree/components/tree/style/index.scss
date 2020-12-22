@@ -51,14 +51,24 @@ $tree: 'hi-select-tree' !default;
   }
 
   &__title {
-    height: 24px;
-    line-height: 24px;
     text-align: left;
     white-space: nowrap;
-    padding: 0 4px;
+    padding: 2px 4px;
     border-radius: 2px;
 
     &:hover {
+      color: #383e47;
+      background-color: use-color('primary-20');
+    }
+
+    &--multiple {
+      display: inline-block;
+      height: 24px;
+      line-height: 24px;
+      padding: 2px 4px;
+    }
+
+    &--focus {
       color: #383e47;
       background-color: use-color('primary-20');
     }
@@ -102,6 +112,8 @@ $tree: 'hi-select-tree' !default;
 
   &__text {
     flex: 1;
+    padding: 4px 8px;
+    border-radius: 2px;
 
     &--selected {
       color: use-color('primary');

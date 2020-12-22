@@ -21,7 +21,8 @@ const Tree = ({
   nodeDataState,
   loadDataOnExpand,
   isRemoteLoadData,
-  localeDatas
+  localeDatas,
+  activeId
 }) => {
   return (
     <TreeContext.Provider
@@ -38,7 +39,8 @@ const Tree = ({
         expandIds,
         onExpandEvent: onExpand,
         loadDataOnExpand,
-        isRemoteLoadData
+        isRemoteLoadData,
+        activeId
       }}
     >
       <div className={`${PREFIX}`}>
