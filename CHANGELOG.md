@@ -11,6 +11,7 @@
 - 修复 `Table` 对其他组件造成的样式污染问题 [#1428](https://github.com/XiaoMi/hiui/issues/1428)
 - 新增 `Table` 列冻结结合树形使用 [#1424](https://github.com/XiaoMi/hiui/issues/1424)
 - 新增 `Table` rowSelection getCheckboxConfig 方法配置行选择 [#1444](https://github.com/XiaoMi/hiui/issues/1444)
+- 新增 `Table` loading 加载中状态 [#1454](https://github.com/XiaoMi/hiui/issues/1454)
 - 修复 `Tree` onDrop 回调函数参数不正确的问题 [#1425](https://github.com/XiaoMi/hiui/issues/1425)
 - 修复 `Select` 异步多选值返显问题 [#1425](https://github.com/XiaoMi/hiui/issues/1425)
 - 修复 `Modal` confirm 方法为适配主题色的问题 [#1446](https://github.com/XiaoMi/hiui/issues/1446)
