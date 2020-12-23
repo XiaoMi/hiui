@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import classnames from 'classnames'
 import * as Icons from './Icons'
 import ToolTip from '../tooltip'
@@ -41,7 +41,7 @@ const Rate = (props) => {
     if (disabled) {
       return
     }
-    setHoverValue(0)
+    setHoverValue(value)
   }
 
   const handleIconEnter = (hoverValue) => {
@@ -94,7 +94,30 @@ const Rate = (props) => {
       />
     )
   }
-
+  const handleKeyDown = useCallback(
+    (evt) => {
+      evt.stopPropagation()
+      // right
+      if (evt.keyCode === 39) {
+        evt.preventDefault()
+        const len = countArray.length
+        const step = allowHalf ? 1 : 0.5
+        handleIconEnter(hoverValue === len ? len : hoverValue + step)
+      }
+      // left
+      if (evt.keyCode === 37) {
+        evt.preventDefault()
+        const step = allowHalf ? 1 : 0.5
+        handleIconEnter(hoverValue <= 1 ? 1 : hoverValue - step)
+      }
+      // enter
+      if (evt.keyCode === 13) {
+        evt.preventDefault()
+        handleIconClick(hoverValue)
+      }
+    },
+    [hoverValue, countArray, handleIconClick, handleIconEnter]
+  )
   const currentValue = hoverValue || value
   const iconHalfCls = `${prefixCls}__star__half`
   const starCls = classnames(`${prefixCls}__star`, {
@@ -134,6 +157,9 @@ const Rate = (props) => {
         className={classnames(prefixCls, className, prefixCls + '_mask')}
         style={{ ...style, color }}
         onMouseLeave={handleIconLeave}
+        tabIndex="0"
+        onKeyDown={handleKeyDown}
+        onBlur={handleIconLeave}
       >
         {countArray.map((_, idx) => {
           const indexValue = idx + 1
@@ -150,7 +176,7 @@ const Rate = (props) => {
                   }}
                   onClick={() => handleIconClick(vertical ? indexValue : halfValue)}
                 >
-                  {MakIcon(indexValue)}
+                  {MaskIcon(indexValue)}
                 </div>
 
                 <div
@@ -162,7 +188,7 @@ const Rate = (props) => {
                   }}
                   onClick={() => handleIconClick(vertical ? halfValue : indexValue)}
                 >
-                  {MakIcon(indexValue)}
+                  {MaskIcon(indexValue)}
                 </div>
               </ToolTipWrapper>
             </li>
@@ -218,7 +244,7 @@ function Icon({ value, currentValue, disabled, useEmoji, allowHalf, character, r
     return disabled || readOnly ? <Icons.StarDisable /> : <Icons.StarDefault />
   }
 }
-function MakIcon({ value, currentValue, useEmoji, character, renderCharacter }) {
+function MaskIcon({ value, currentValue, useEmoji, character, renderCharacter }) {
   if (renderCharacter) {
     return renderCharacter(currentValue, value)
   }
