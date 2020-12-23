@@ -22,6 +22,7 @@ export default class Immutable {
         this.state = Object.assign({}, { ...state }, { fields: initfields.concat(action.payload) })
         return this.state
       case FILEDS_UPDATE:
+        this.state.fields = [...action.payload]
         return Object.assign({}, { ...state }, { fields: [...action.payload] })
       case FILEDS_REMOVE:
         const _fields = state.fields.filter((item) => {

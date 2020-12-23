@@ -313,7 +313,136 @@ const code = [
       }
     }`,
     opt: ['v2']
-  }
+  },
+  {
+    code: `import React from 'react'
+  import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
+    class Demo extends React.Component {  
+      constructor(props) {
+        super(props)
+        this.state = {
+          formData: {
+            phone: '',
+            Select: ''
+          },
+          initialValues: {
+            phone: '初始值',
+            Select: ['3']
+          }
+        }
+        this.form1 = React.createRef()
+        this.form2 = React.createRef()
+      }
+    
+      static getDerivedStateFromProps(props, state) {
+        // 更新 state 使下一次渲染可以显降级 UI
+        console.log('initialValues', props.initialValues)
+        return {
+          formData: {
+            ...props.initialValues
+          }
+        }
+      }
+    
+      render() {
+        const FormItem = Form.Item
+        const { formData, initialValues } = this.state
+        console.log('formData', formData)
+    
+        return (
+          <div>
+            <Form labelWidth="70" labelPlacement="left" ref={this.form1}>
+              <FormItem
+                label="手机号"
+                field="phone"
+                rules={{
+                  trigger: 'onChange',
+                  type: 'number',
+                  validator: (rule, value, callback) => {
+                    const telReg = /^[1][3|4|5|6|7|8|9][0-9]{9}$/
+                    if (!value) {
+                      callback('请输入手机号')
+                    } else if (!telReg.test(value)) {
+                      callback('请输入正确的手机号')
+                    } else {
+                      callback()
+                    }
+                  }
+                }}
+              >
+                <Input placeholder={'请输入'} />
+              </FormItem>
+              <FormItem label="门店" field="Select" required={true}>
+                <Select
+                  data={[
+                    { title: '电视', id: '3' },
+                    { title: '手机', id: '2' },
+                    { title: '笔记本', id: '4' },
+                    { title: '生活周边', id: '5' },
+                    { title: '办公', id: '6' }
+                  ]}
+                  type="multiple"
+                  searchable
+                  showCheckAll
+                  placeholder="请选择"
+                  emptyContent="无匹配数据"
+                  onChange={(item) => {
+                    this.form1.current.setFieldsValue({
+                      Select2: ['6']
+                    })
+                    console.log('多选结果', item)
+                  }}
+                />
+              </FormItem>
+              <FormItem label="门店2" field="Select2" required={true}>
+                <Select
+                  data={[
+                    { title: '电视', id: '3' },
+                    { title: '手机', id: '2' },
+                    { title: '笔记本', id: '4' },
+                    { title: '生活周边', id: '5' },
+                    { title: '办公', id: '6' }
+                  ]}
+                  type="multiple"
+                  searchable
+                  showCheckAll
+                  placeholder="请选择"
+                  emptyContent="无匹配数据"
+                  onChange={(item) => {
+                    console.log('多选结果', item)
+                  }}
+                />
+              </FormItem>
+            </Form>
+    
+            <Button
+              type="primary"
+              onClick={() => {
+                this.form1.current.validate((value, error) => {
+                  console.log(value, error)
+                })
+              }}
+            >
+              提交
+            </Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                this.form1.current.setFieldsValue({
+                  phone: '15652959628',
+                  Select2: ['6'],
+                  Select: ['3']
+                })
+              }}
+            >
+              fill
+            </Button>
+          </div>
+        )
+      }
+    }`,
+    opt: ['值联动']
+  },
 ]
 const DemoAlign = () => (
   <DocViewer

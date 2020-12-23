@@ -29,7 +29,7 @@ const getItemPosition = (itemPosition) => {
 }
 
 const FormItem = (props) => {
-  const { formProps, formState, dispatch, internalValuesChange, listname, _type } = useContext(FormContext)
+  const { formProps, formState, dispatch, internalValuesChange, listname, _type, _Immutable } = useContext(FormContext)
   const {
     children,
     label,
@@ -77,8 +77,9 @@ const FormItem = (props) => {
         value: _value,
         ...updateFieldInfoToReducer()
       }
+
       if (childrenFiled.field) {
-        const _fields = _.cloneDeep(fields)
+        const _fields = _.cloneDeep(_Immutable.current.currentStateFields())
 
         _fields.forEach((item) => {
           if (item.field === childrenFiled.field) {

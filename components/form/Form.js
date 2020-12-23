@@ -130,7 +130,6 @@ const InternalForm = (props) => {
         cb(values, errors)
         return
       }
-
       const _fields = fields.filter((fieldChild) => {
         const { field, value } = fieldChild
         values[field] = value
@@ -217,6 +216,7 @@ const InternalForm = (props) => {
           resetValidates,
           internalValuesChange,
           initialValues,
+          _Immutable,
           _type
         }}
       >
