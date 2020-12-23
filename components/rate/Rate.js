@@ -101,13 +101,13 @@ const Rate = (props) => {
       if (evt.keyCode === 39) {
         evt.preventDefault()
         const len = countArray.length
-        const step = allowHalf ? 1 : 0.5
+        const step = allowHalf ? 0.5 : 1
         handleIconEnter(hoverValue === len ? len : hoverValue + step)
       }
       // left
       if (evt.keyCode === 37) {
         evt.preventDefault()
-        const step = allowHalf ? 1 : 0.5
+        const step = allowHalf ? 0.5 : 1
         handleIconEnter(hoverValue <= 1 ? 1 : hoverValue - step)
       }
       // enter
@@ -126,35 +126,38 @@ const Rate = (props) => {
   })
 
   const descCls = classnames(`${prefixCls}__desc`)
+  const isCustom = renderCharacter || character
   return (
     <div className="hi-rate__outter">
-      <ul className={classnames(prefixCls, className)} style={{ ...style, color }}>
-        {countArray.map((_, idx) => {
-          const indexValue = idx + 1
-          const halfValue = allowHalf ? idx + 0.5 : indexValue
-          return (
-            <li className={starCls} key={idx}>
-              <div
-                className={classnames(iconHalfCls, `${iconHalfCls}--${vertical ? 'top' : 'left'}`, {
-                  grayscale: vertical ? indexValue > currentValue : currentValue < halfValue
-                })}
-              >
-                {renderIcon(indexValue)}
-              </div>
+      {!isCustom && (
+        <ul className={classnames(prefixCls, className)} style={{ ...style, color }}>
+          {countArray.map((_, idx) => {
+            const indexValue = idx + 1
+            const halfValue = allowHalf ? idx + 0.5 : indexValue
+            return (
+              <li className={starCls} key={idx}>
+                <div
+                  className={classnames(iconHalfCls, `${iconHalfCls}--${vertical ? 'top' : 'left'}`, {
+                    grayscale: vertical ? indexValue > currentValue : currentValue < halfValue
+                  })}
+                >
+                  {renderIcon(indexValue)}
+                </div>
 
-              <div
-                className={classnames(iconHalfCls, `${iconHalfCls}--${vertical ? 'bottom' : 'right'}`, {
-                  grayscale: vertical ? currentValue < halfValue : indexValue > currentValue
-                })}
-              >
-                {renderIcon(indexValue)}
-              </div>
-            </li>
-          )
-        })}
-      </ul>
+                <div
+                  className={classnames(iconHalfCls, `${iconHalfCls}--${vertical ? 'bottom' : 'right'}`, {
+                    grayscale: vertical ? currentValue < halfValue : indexValue > currentValue
+                  })}
+                >
+                  {renderIcon(indexValue)}
+                </div>
+              </li>
+            )
+          })}
+        </ul>
+      )}
       <ul
-        className={classnames(prefixCls, className, prefixCls + '_mask')}
+        className={classnames(prefixCls, className, { [`${prefixCls}_mask`]: !isCustom })}
         style={{ ...style, color }}
         onMouseLeave={handleIconLeave}
         tabIndex="0"
@@ -176,7 +179,7 @@ const Rate = (props) => {
                   }}
                   onClick={() => handleIconClick(vertical ? indexValue : halfValue)}
                 >
-                  {MaskIcon(indexValue)}
+                  {isCustom ? renderIcon(indexValue) : MaskIcon(indexValue)}
                 </div>
 
                 <div
@@ -188,7 +191,7 @@ const Rate = (props) => {
                   }}
                   onClick={() => handleIconClick(vertical ? halfValue : indexValue)}
                 >
-                  {MaskIcon(indexValue)}
+                  {isCustom ? renderIcon(indexValue) : MaskIcon(indexValue)}
                 </div>
               </ToolTipWrapper>
             </li>
