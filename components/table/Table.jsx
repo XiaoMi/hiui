@@ -275,7 +275,7 @@ const Table = ({
   )
 }
 
-const TableWrapper = ({ columns, uniqueId, standard, data, loading = false, ...settingProps }) => {
+const TableWrapper = ({ columns, uniqueId, standard, data, loading, ...settingProps }) => {
   const _sortCol =
     uniqueId && window.localStorage.getItem(`${uniqueId}_sortCol`)
       ? JSON.parse(window.localStorage.getItem(`${uniqueId}_sortCol`))
@@ -317,8 +317,8 @@ const TableWrapper = ({ columns, uniqueId, standard, data, loading = false, ...s
     : {}
 
   // ***************
-  return loading === true ? (
-    <Loading>
+  return loading !== undefined ? (
+    <Loading visible={loading}>
       <Table
         columns={cacheVisibleCols}
         data={data || []}
