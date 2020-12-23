@@ -18,6 +18,7 @@
 - 修复 `Select` 异步多选值返显问题 [#1425](https://github.com/XiaoMi/hiui/issues/1425)
 - 修复 `Modal` confirm 方法为适配主题色的问题 [#1446](https://github.com/XiaoMi/hiui/issues/1446)
 - 优化 `Tabs` 组件弹出层样式[#1437](https://github.com/XiaoMi/hiui/issues/1437)
+- 修复 `Loading` children 不存在时，设置 visible 为 false 无效的问题 [#1461](https://github.com/XiaoMi/hiui/issues/1461)
 
 ## 3.2.0
 
