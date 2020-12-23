@@ -17,7 +17,8 @@ const Card = ({
   children,
   showHeaderDivider,
   type,
-  bordered = true
+  bordered = true,
+  loading
 }) => {
   if (cover || coverUrl) {
     return (
@@ -52,6 +53,7 @@ const Card = ({
         showHeaderDivider={showHeaderDivider}
         hoverable={hoverable}
         bordered={bordered}
+        loading={loading}
       >
         {children}
       </NormalCard>
