@@ -30,13 +30,15 @@ class Loading extends Component {
             </div>
           </div>
         ) : (
-          <div className={`${prefixCls}__outter`}>
-            <div className={iconCls}>
-              <div />
-              <div />
+          visible !== false && (
+            <div className={`${prefixCls}__outter`}>
+              <div className={iconCls}>
+                <div />
+                <div />
+              </div>
+              <div className={`${prefixCls}__text`}>{content}</div>
             </div>
-            <div className={`${prefixCls}__text`}>{content}</div>
-          </div>
+          )
         )}
       </PortalWrapper>
     )
@@ -57,9 +59,13 @@ Loading.defaultProps = {
 }
 
 function PortalWrapper({ mountNode, children, visible }) {
-  return mountNode
-    ? ReactDOM.createPortal(children, mountNode)
-    : visible !== false && <div className={`${prefixCls}__wrapper`}>{children}</div>
+  return mountNode ? (
+    ReactDOM.createPortal(children, mountNode)
+  ) : visible ? (
+    <div className={`${prefixCls}__wrapper`}>{children}</div>
+  ) : (
+    children
+  )
 }
 
 function open(target, { content, key, duration, size } = {}) {
