@@ -8,7 +8,7 @@ import Pagination from '../pagination'
 import axios from 'axios'
 import FixedBodyTable from './FixedBodyTable'
 import Provider from '../context'
-import Loading from '../Loading'
+import Loading from '../loading'
 import './style'
 
 const Table = ({
