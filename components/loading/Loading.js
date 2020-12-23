@@ -17,7 +17,7 @@ class Loading extends Component {
       [`${prefixCls}__mask--hide`]: visible === false
     })
     return (
-      <PortalWrapper mountNode={mountNode} visible={visible}>
+      <PortalWrapper mountNode={mountNode} needWrapper={!!children}>
         {children}
         {children || mountNode ? (
           <div className={maskCls}>
@@ -58,10 +58,10 @@ Loading.defaultProps = {
   size: 'default'
 }
 
-function PortalWrapper({ mountNode, children, visible }) {
+function PortalWrapper({ mountNode, children, needWrapper }) {
   return mountNode ? (
     ReactDOM.createPortal(children, mountNode)
-  ) : visible ? (
+  ) : needWrapper ? (
     <div className={`${prefixCls}__wrapper`}>{children}</div>
   ) : (
     children
