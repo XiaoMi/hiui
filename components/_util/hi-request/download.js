@@ -27,6 +27,7 @@ const download = (options, host) => {
       document.body.removeChild(downloadElement) // 下载完成移除元素
       window.URL.revokeObjectURL(href) // 释放blob对象
       downloadSuccess && downloadSuccess(res)
+      return res
     },
     (error) => {
       const { downloadFail } = options
