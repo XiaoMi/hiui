@@ -11,7 +11,8 @@ const download = (options, host) => {
       const { downloadSuccess, fileType } = options
       const blob = new window.Blob([res.data])
       const downloadElement = document.createElement('a')
-      const serverFilename = decodeURI(res.headers['content-disposition'].split(';')[1].split('filename=')[1])
+      const contentdisposition = res && res.headers && res.headers['content-disposition']
+      const serverFilename = contentdisposition && decodeURI(contentdisposition.split(';')[1].split('filename=')[1])
       const href = window.URL.createObjectURL(blob, {
         type: fileType
       }) // 创建下载的链接
