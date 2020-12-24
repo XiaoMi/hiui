@@ -61,17 +61,12 @@ const Table = ({
   const [expandedTreeRows, setExpandedTreeRows] = useState([])
 
   const firstRowRef = useRef(null)
+
   useEffect(() => {
     if (!dataSource) {
-      setRealColumnsWidth(columns.map((c) => c.width || 'auto'))
-      const timer = setTimeout(() => {
-        if (firstRowRef.current) {
-          const _realColumnsWidth = Array.from(firstRowRef.current.childNodes).map((node) => node.clientWidth)
-          setRealColumnsWidth(_realColumnsWidth)
-        }
-      })
-      return () => {
-        clearTimeout(timer)
+      if (firstRowRef.current) {
+        const _realColumnsWidth = Array.from(firstRowRef.current.childNodes).map((node) => node.clientWidth)
+        setRealColumnsWidth(_realColumnsWidth)
       }
     }
   }, [columns, dataSource, data])
