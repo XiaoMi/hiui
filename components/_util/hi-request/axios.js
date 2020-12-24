@@ -4,8 +4,7 @@ const callBackInter = new Map()
 
 const axiosInstance = axios.create({
   type: 'basics',
-  url: '',
-  responseType: 'json'
+  url: ''
 })
 
 axiosInstance.interceptors.request.use(
