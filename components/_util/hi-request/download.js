@@ -11,13 +11,17 @@ const download = (options, host) => {
       const { downloadSuccess, fileType } = options
       const blob = new window.Blob([res.data])
       const downloadElement = document.createElement('a')
-      const contentdisposition = res && res.headers && res.headers['content-disposition']
-      const serverFilename = contentdisposition && decodeURI(contentdisposition.split(';')[1].split('filename=')[1])
+      let serverFilename = filename
+      if (!filename) {
+        const contentdisposition = res && res.headers && res.headers['content-disposition']
+        serverFilename = contentdisposition && decodeURI(contentdisposition.split(';')[1].split('filename=')[1])
+      }
+
       const href = window.URL.createObjectURL(blob, {
         type: fileType
       }) // 创建下载的链接
       downloadElement.href = href
-      downloadElement.download = filename || serverFilename || '未命名' // 下载后文件名
+      downloadElement.download = serverFilename || '未命名' // 下载后文件名
       document.body.appendChild(downloadElement)
       downloadElement.click() // 点击下载
       document.body.removeChild(downloadElement) // 下载完成移除元素
