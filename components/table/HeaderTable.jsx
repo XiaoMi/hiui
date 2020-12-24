@@ -93,7 +93,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   useEffect(() => {
     if (headerInner.current && headerInner.current.childNodes && headerInner.current.childNodes[1].childNodes[0]) {
       const _minColWidth = Array.from(headerInner.current.childNodes[1].childNodes[0].childNodes).map((th) => {
-        return th.childNodes[0].className === 'power-table__header__title' ? th.childNodes[0].offsetWidth : 0
+        return th.childNodes[0].className === 'hi-table__header__title' ? th.childNodes[0].offsetWidth : 0
       })
       setMinColWidth(_minColWidth)
     }
@@ -103,8 +103,18 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   useEffect(() => {
     if (headerInner.current && !isFixed) {
       setEachHeaderHeight(headerInner.current.clientHeight)
+      if (!data || data.length === 0) {
+        if (headerInner.current.childNodes && headerInner.current.childNodes[1].childNodes[0]) {
+          const _realColumnsWidth = Array.from(headerInner.current.childNodes[1].childNodes[0].childNodes).map(
+            (node) => {
+              return node.clientWidth
+            }
+          )
+          setRealColumnsWidth(_realColumnsWidth)
+        }
+      }
     }
-  }, [headerInner, isFixed, setEachHeaderHeight, columns])
+  }, [headerInner, isFixed, setEachHeaderHeight, columns, data])
 
   // ********************处理排序逻辑
   // 可以排序的必须的是最后一级列

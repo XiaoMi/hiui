@@ -11,6 +11,7 @@
 - 修复 `Select` 下拉框默认选中行显示错误 [#1405](https://github.com/XiaoMi/hiui/issues/1405)
 - 修复 `DatePicker` 在 type 为 daterange 时候，传入不合法日期，面板显示异常 [#1418](https://github.com/XiaoMi/hiui/issues/1418)
 - 修复 `Table` 对其他组件造成的样式污染问题 [#1428](https://github.com/XiaoMi/hiui/issues/1428)
+- 修复 `Table` 数据为空时右侧冻结展示不正确的问题 [#1473](https://github.com/XiaoMi/hiui/issues/1473)
 - 新增 `Table` 列冻结结合树形使用 [#1424](https://github.com/XiaoMi/hiui/issues/1424)
 - 新增 `Table` rowSelection getCheckboxConfig 方法配置行选择 [#1444](https://github.com/XiaoMi/hiui/issues/1444)
 - 新增 `Table` loading 加载中状态 [#1466](https://github.com/XiaoMi/hiui/issues/1466)
