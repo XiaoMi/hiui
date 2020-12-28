@@ -29,6 +29,7 @@ class Demo extends React.Component {
             <p>周日起始</p>
             <DatePicker
               type='week'
+              defaultValue = {new Date()}
               onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
             />
           </Col>
@@ -74,12 +75,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoWeek = () => (
-  <DocViewer
-    code={code}
-    scope={{ DatePicker, Grid }}
-    prefix={prefix}
-    desc={desc}
-    rightOptions={rightOptions}
-  />
+  <DocViewer code={code} scope={{ DatePicker, Grid }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
 )
 export default DemoWeek

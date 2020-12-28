@@ -70,7 +70,7 @@ const Root = ({
       ref={inputRef}
       style={{ width: width }}
     >
-      <div className="hi-datepicker__input" style={{ width: width }}>
+      <div className='hi-datepicker__input' style={{ width: width }}>
         <Input
           date={inputData[0]}
           placeholder={placeholders[0]}
@@ -80,7 +80,7 @@ const Root = ({
         />
         {renderRange && (
           <React.Fragment>
-            <span className="hi-datepicker__input--connection">{localeDatas.datePicker.to}</span>
+            <span className='hi-datepicker__input--connection'>{localeDatas.datePicker.to}</span>
             <Input
               date={inputData[1]}
               placeholder={placeholders[1]}

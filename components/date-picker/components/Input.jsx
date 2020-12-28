@@ -34,7 +34,7 @@ const Input = ({ date, onChange, onFocus, dir, placeholder }) => {
   }
   return (
     <input
-      type="text"
+      type='text'
       placeholder={placeholder}
       readOnly={hourStep || minuteStep || secondStep || inputReadOnly ? 'readOnly' : false}
       className={disabled ? 'disabled' : ''}

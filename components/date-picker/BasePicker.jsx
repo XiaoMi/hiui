@@ -80,7 +80,7 @@ const BasePicker = ({
     }
   }
 
-  const callback = (dates) => {
+  const callback = (dates, emitOnChange = true) => {
     const _dates = _.cloneDeep(dates)
     let returnDate = {}
     let returnDateStr = ''
@@ -98,7 +98,7 @@ const BasePicker = ({
       returnDateStr = _dates[0].format(iFormat)
     }
     cacheDate.current = _dates
-    onChange(returnDate, returnDateStr)
+    emitOnChange && onChange(returnDate, returnDateStr)
   }
   const onPick = (dates, isShowPanel) => {
     setTimeout(() => {
@@ -117,11 +117,11 @@ const BasePicker = ({
     const { startDate, endDate } = isValid && getInRangeDate(outDate[0], outDate[1], max, min)
     const _outDate = isValid ? [moment(startDate), moment(endDate)] : [null]
     resetStatus()
-    _outDate.forEach((od, index) => {
-      if (od && !od.isSame(cacheDate.current[index])) {
-        callback(_outDate)
-      }
+    const isChange = _outDate.some((od, index) => {
+      return od && !od.isSame(cacheDate.current[index])
     })
+    isChange && callback(_outDate, showTime || type === 'daterange')
+
     changeOutDate(_outDate)
   }, [outDate])
   const onClear = () => {
