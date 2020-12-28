@@ -135,6 +135,7 @@ const getDateRows = ({ originDate, range, type, weekOffset, min, max, renderDate
       if (type === 'week') {
         const weekNum = weekOffset ? currentTime.isoWeek() : currentTime.week()
         row.weekNum = weekNum
+        col.weekType = col.type
         if (originDate) {
           const _d = _.cloneDeep(originDate)
           const wFirst = moment(_d).startOf('week').add(weekOffset, 'days')

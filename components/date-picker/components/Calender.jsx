@@ -83,15 +83,15 @@ const Calender = ({ view = 'date', originDate, onPick, range, mouseMove, panelPo
     const clickVal = parseInt(value)
     const _date = moment(renderDate)
     const cellType = td.getAttribute('type')
-    if (cellType === 'prev') {
+    const cellWeekType = td.getAttribute('weektype')
+    if (cellType === 'prev' || cellWeekType === 'prev') {
       _date.subtract(1, 'months')
     }
-    if (cellType === 'next') {
+    if (cellType === 'next' || cellWeekType === 'next') {
       _date.add(1, 'months')
     }
     // 需要放在修改月后，再设置日期
     _date[view](clickVal)
-
     onPick(_date)
   }
 
@@ -171,9 +171,9 @@ const Calender = ({ view = 'date', originDate, onPick, range, mouseMove, panelPo
   }
   return (
     <div className={`hi-datepicker__calender-wrap ${largeCell ? 'hi-datepicker__calender-wrap--large' : ''}`}>
-      <CSSTransition in={holidayFullNameShow} timeout={300} classNames="hi-datepicker__indiaHoli">
-        <div className="hi-datepicker__indiaHoli">
-          <div className="hi-datepicker__indiaHoli-text">{holidayFullName}</div>
+      <CSSTransition in={holidayFullNameShow} timeout={300} classNames='hi-datepicker__indiaHoli'>
+        <div className='hi-datepicker__indiaHoli'>
+          <div className='hi-datepicker__indiaHoli-text'>{holidayFullName}</div>
         </div>
       </CSSTransition>
       <table className={calenderCls} onClick={onTableClick} onMouseMove={onTableMouseMove}>
@@ -203,8 +203,13 @@ const Calender = ({ view = 'date', originDate, onPick, range, mouseMove, panelPo
                       // className='hi-datepicker__cell'
                       className={getTDClass(cell, largeCell)}
                     >
-                      <div className="hi-datepicker__cell-text" value={cell.value} type={cell.type}>
-                        <span value={cell.value} type={cell.type} className="hi-datepicker__cellnum">
+                      <div className='hi-datepicker__cell-text' value={cell.value} type={cell.type}>
+                        <span
+                          value={cell.value}
+                          type={cell.type}
+                          weektype={cell.weekType}
+                          className='hi-datepicker__cellnum'
+                        >
                           {parseInt(cell.text || cell.value) < 10
                             ? '0' + (cell.text || cell.value)
                             : cell.text || cell.value}
