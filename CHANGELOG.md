@@ -3,6 +3,7 @@
 ## 3.3.0
 
 - 新增 `SelectTree` valueRender 自定义渲染 Input 中展示内容 [#1407](https://github.com/XiaoMi/hiui/issues/1407)
+- 新增 `SelectTree` 通过关键字异步搜索功能 [#1479](https://github.com/XiaoMi/hiui/issues/1479)
 - 修复 `Input` type = textarea 的时候，className 设置无效 [#1458](https://github.com/XiaoMi/hiui/issues/1458)
 - 修复 `Form` 在页面渲染完成后 调用中 setFieldsValue 无效问题 [#1408](https://github.com/XiaoMi/hiui/issues/1408)
 - 修复 `Form` 在 Form.Item 中调用 setFieldsValue 数据获取错误 [#1456](https://github.com/XiaoMi/hiui/issues/1456)

@@ -51,7 +51,8 @@ const NavTree = ({
   localeDatas,
   activeId,
   setActiveId,
-  flattenData
+  flattenData,
+  emptyContent
 }) => {
   const expandData = useRef()
   const [renderData, setRenderData] = useState([])
@@ -132,7 +133,7 @@ const NavTree = ({
         <Bread datas={fullBreadData} localeDatas={localeDatas} onClick={onBreadClick} onReturnClick={onReturnClick} />
       )}
       {loadingState === 'empty' ? (
-        <span className="hi-select-tree--empty">{localeDatas.selectTree.emptyContent}</span>
+        <span className="hi-select-tree--empty">{emptyContent || localeDatas.selectTree.emptyContent}</span>
       ) : (
         <ul className="hi-breadtree__list">
           {renderData.map((node, index) => {
