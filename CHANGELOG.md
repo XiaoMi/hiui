@@ -28,6 +28,7 @@
 
 - 新增 HiUI 基础样式 css 文件 [#1338](https://github.com/XiaoMi/hiui/issues/1338)
 - 新增 `Table` expandedRowKeys，onExpand 扩展内嵌式表格的展开操作 [#1378](https://github.com/XiaoMi/hiui/issues/1378)
+- 新增 `Progress` width、height 属性扩展支持百分比单位 [#1479](https://github.com/XiaoMi/hiui/issues/1480)
 - 修复 `List` 组件导出问题 [#1314](https://github.com/XiaoMi/hiui/issues/1314)
 - 修复 `Tabs` Tabs.Pane 组件中 tabTitle 属性传入 ReactNode 报错问题 [#1320](https://github.com/XiaoMi/hiui/issues/1320)
 - 修复 `Upload` onRemove 的问题 [#1322](https://github.com/XiaoMi/hiui/issues/1322)
