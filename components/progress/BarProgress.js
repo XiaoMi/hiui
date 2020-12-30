@@ -15,8 +15,9 @@ export default class BarProgress extends React.Component {
       const { barClientWidth } = this
       const { current: textElm } = this.textRef
 
-      const restWidth = barClientWidth - ((barClientWidth * this.props.percent) / 100 + 5)
-      const insidePlacement = textElm && textElm.clientWidth >= restWidth ? 'left' : 'right'
+      const isOver =
+        textElm && textElm.clientWidth >= barClientWidth - ((barClientWidth * this.props.percent) / 100 + 5)
+      const insidePlacement = isOver ? 'left' : 'right'
 
       this.setState({
         insidePlacement
