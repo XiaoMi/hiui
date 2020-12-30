@@ -397,7 +397,10 @@ const SelectTree = ({
    * Input 点击事件
    */
   const onTrigger = (keyword) => {
-    if ((autoload && dataSource && !show) || (keyword && keyword.length)) {
+    if (
+      (flattenData.length === 0 && autoload && (!data || data.length === 0 || dataSource) && !show) ||
+      (keyword && keyword.length)
+    ) {
       setNodeDataState('loading')
       const _loadNodes = loadNodes('', keyword)
       _loadNodes.then &&
@@ -485,7 +488,7 @@ const SelectTree = ({
         }
       }
     },
-    [activeId, selectedItems, checkedNodes, flattenData, expandIds, mode]
+    [activeId, selectedItems, checkedNodes, flattenData, expandIds, mode, show]
   )
 
   return (
