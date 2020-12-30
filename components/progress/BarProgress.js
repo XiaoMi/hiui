@@ -2,7 +2,7 @@ import React from 'react'
 import Classnames from 'classnames'
 
 const defaultUnit = 'px'
-const isNumeric = (n) =>  !isNaN(parseFloat(n)) && isFinite(n)
+const isNumeric = (n) => !isNaN(parseFloat(n)) && isFinite(n)
 
 export default class BarProgress extends React.Component {
   textRef = React.createRef()
@@ -10,33 +10,31 @@ export default class BarProgress extends React.Component {
 
   state = { insidePlacement: 'right' }
 
-  componentDidMount () {
+  componentDidMount() {
     if (this.props.placement === 'inside') {
       const { barClientWidth } = this
       const { current: textElm } = this.textRef
 
-      if (textElm) {
-        const restWidth = barClientWidth - ((barClientWidth * this.props.percent) / 100 + 5)
-        const insidePlacement = textElm.clientWidth >= restWidth ? 'left' : 'right'
+      const restWidth = barClientWidth - ((barClientWidth * this.props.percent) / 100 + 5)
+      const insidePlacement = textElm && textElm.clientWidth >= restWidth ? 'left' : 'right'
 
-        this.setState({
-          insidePlacement
-        })
-      }
+      this.setState({
+        insidePlacement
+      })
     }
   }
 
-  get barClientWidth () {
+  get barClientWidth() {
     const { current: barElm } = this.barRef
     return barElm ? barElm.clientWidth : 0
   }
 
-  get barClientHeight () {
+  get barClientHeight() {
     const { current: barElm } = this.barRef
     return barElm ? barElm.clientHeight : 0
   }
 
-  get width () {
+  get width() {
     const { width, size } = this.props
     const num = parseInt(width) || 0
 
@@ -48,7 +46,7 @@ export default class BarProgress extends React.Component {
     return isNumeric(width) ? width + defaultUnit : width
   }
 
-  get height () {
+  get height() {
     const { height, size } = this.props
     const num = parseInt(height) || 0
 
@@ -60,9 +58,20 @@ export default class BarProgress extends React.Component {
     return isNumeric(height) ? height + defaultUnit : height
   }
 
-  render () {
-    let prefix = 'hi-progress'
-    const { percent: percentNum, content, type, showInfo, placement, tooltip = null, active, text, withOutText, status  } = this.props
+  render() {
+    const prefix = 'hi-progress'
+    const {
+      percent: percentNum,
+      content,
+      type,
+      showInfo,
+      placement,
+      tooltip = null,
+      active,
+      text,
+      withOutText,
+      status
+    } = this.props
     const { width, height } = this
 
     const _content = typeof content !== 'undefined' ? content : text // // api 兼容 1.x 为 text 2.x 改为 content

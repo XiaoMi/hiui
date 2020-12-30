@@ -3,6 +3,7 @@
 ## 3.3.0
 
 - 新增 `SelectTree` valueRender 自定义渲染 Input 中展示内容 [#1407](https://github.com/XiaoMi/hiui/issues/1407)
+- 新增 `Progress` width、height 属性扩展支持百分比单位 [#1480](https://github.com/XiaoMi/hiui/issues/1480)
 - 修复 `Input` type = textarea 的时候，className 设置无效 [#1458](https://github.com/XiaoMi/hiui/issues/1458)
 - 修复 `Form` 在页面渲染完成后 调用中 setFieldsValue 无效问题 [#1408](https://github.com/XiaoMi/hiui/issues/1408)
 - 修复 `Form` 在 Form.Item 中调用 setFieldsValue 数据获取错误 [#1456](https://github.com/XiaoMi/hiui/issues/1456)
@@ -28,7 +29,6 @@
 
 - 新增 HiUI 基础样式 css 文件 [#1338](https://github.com/XiaoMi/hiui/issues/1338)
 - 新增 `Table` expandedRowKeys，onExpand 扩展内嵌式表格的展开操作 [#1378](https://github.com/XiaoMi/hiui/issues/1378)
-- 新增 `Progress` width、height 属性扩展支持百分比单位 [#1479](https://github.com/XiaoMi/hiui/issues/1480)
 - 修复 `List` 组件导出问题 [#1314](https://github.com/XiaoMi/hiui/issues/1314)
 - 修复 `Tabs` Tabs.Pane 组件中 tabTitle 属性传入 ReactNode 报错问题 [#1320](https://github.com/XiaoMi/hiui/issues/1320)
 - 修复 `Upload` onRemove 的问题 [#1322](https://github.com/XiaoMi/hiui/issues/1322)
