@@ -3,9 +3,10 @@ $tree: 'hi-select-tree' !default;
 
 .#{$tree} {
   color: use-color('black');
-  padding: 12px 12px 0 12px;
+  padding: 12px 12px 12px 12px;
   box-sizing: border-box;
   overflow: auto;
+  max-height: 284px;
 
   &--empty {
     display: inline-block;
@@ -48,6 +49,13 @@ $tree: 'hi-select-tree' !default;
       font-size: 16px;
       margin-right: 4px;
     }
+
+    .hi-checkbox input {
+      position: static;
+      width: 0;
+      height: 0;
+      opacity: 0;
+    }
   }
 
   &__title {
@@ -65,7 +73,7 @@ $tree: 'hi-select-tree' !default;
       display: inline-block;
       height: 24px;
       line-height: 24px;
-      padding: 2px 4px;
+      padding: 0 4px;
     }
 
     &--focus {

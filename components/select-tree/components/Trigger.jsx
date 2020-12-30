@@ -27,7 +27,9 @@ const Trigger = ({
         type !== 'multiple' && 'hi-selecttree__input--single',
         selectedItems.length === 0 && 'hi-selecttree__input--placeholder'
       )}
-      onClick={onTrigger}
+      onClick={() => {
+        onTrigger()
+      }}
     >
       <div className="hi-selecttree__selected-wrapper" ref={selectedItemsRef}>
         {valueRender ? (
