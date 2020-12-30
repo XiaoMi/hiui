@@ -23,7 +23,7 @@ const BasePicker = ({
   disabled,
   clearable = true,
   width = 'auto',
-  weekOffset = 0,
+  weekOffset,
   min = null,
   max = null,
   hourStep,
@@ -47,6 +47,12 @@ const BasePicker = ({
   const cacheDate = useRef(null)
   const [inputFocus, setInputFocus] = useState(false)
   const [type, setType] = useState(propType)
+  useEffect(() => {
+    moment.locale(locale === 'en-US' ? 'en' : 'zh-CN')
+    if (weekOffset !== undefined) {
+      moment.locale(weekOffset === 0 ? 'en' : 'zh-CN')
+    }
+  }, [locale, weekOffset])
   useEffect(() => {
     setType(propType)
   }, [propType])
@@ -141,7 +147,7 @@ const BasePicker = ({
     shortcuts && 'hi-datepicker__popper--shortcuts',
     isLarge && 'hi-datepicker__popper--large'
   )
-
+  const _weekOffset = weekOffset !== undefined ? weekOffset : locale === 'en-US' ? 0 : 1
   return (
     <DPContext.Provider
       value={{
@@ -150,7 +156,7 @@ const BasePicker = ({
         type,
         outDate,
         localeDatas,
-        weekOffset,
+        weekOffset: _weekOffset,
         onPick,
         min,
         max,
