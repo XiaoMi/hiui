@@ -12,8 +12,9 @@ export default class BarProgress extends React.Component {
 
   componentDidMount() {
     if (this.props.placement === 'inside') {
-      const { barClientWidth } = this
+      const { current: barElm } = this.barRef
       const { current: textElm } = this.textRef
+      const barClientWidth = barElm ? barElm.clientWidth : 0
 
       const isOver =
         textElm && textElm.clientWidth >= barClientWidth - ((barClientWidth * this.props.percent) / 100 + 5)
@@ -23,16 +24,6 @@ export default class BarProgress extends React.Component {
         insidePlacement
       })
     }
-  }
-
-  get barClientWidth() {
-    const { current: barElm } = this.barRef
-    return barElm ? barElm.clientWidth : 0
-  }
-
-  get barClientHeight() {
-    const { current: barElm } = this.barRef
-    return barElm ? barElm.clientHeight : 0
   }
 
   get width() {
@@ -78,6 +69,7 @@ export default class BarProgress extends React.Component {
     const _content = typeof content !== 'undefined' ? content : text // // api 兼容 1.x 为 text 2.x 改为 content
     const _showInfo = typeof showInfo !== 'undefined' ? showInfo : withOutText // // api 兼容 1.x 为 withOutText 2.x 改为 showInfo
     const _type = type || status
+    const { current: barElm } = this.barRef
 
     const percent = percentNum > 0 ? percentNum : 0
     return (
@@ -89,7 +81,7 @@ export default class BarProgress extends React.Component {
             })}
             style={{ width: `${percent}%` }}
           >
-            {_showInfo && placement === 'inside' && this.barClientHeight >= 14 && (
+            {_showInfo && placement === 'inside' && (!barElm || barElm.clientHeight >= 14) && (
               <div ref={this.textRef} className={`${prefix}__text--inside inside--${this.state.insidePlacement}`}>
                 {_content || `${percent}%`}
               </div>
