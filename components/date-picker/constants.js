@@ -9,8 +9,8 @@ export const FORMATS = (locale) => {
         time: 'HH:mm:ss',
         timerange: 'HH:mm:ss',
         daterange: 'YYYY-MM-DD',
-        week: 'YYYY-ww',
-        weekrange: 'YYYY-ww',
+        week: 'YYYY-WW',
+        weekrange: 'YYYY-WW',
         timeperiod: 'YYYY-MM-DD HH:mm:ss',
         monthrange: 'YYYY-MM',
         yearrange: 'YYYY'
@@ -22,8 +22,8 @@ export const FORMATS = (locale) => {
         time: 'HH:mm:ss',
         timerange: 'HH:mm:ss',
         daterange: 'MM/DD/YYYY',
-        week: 'ww/YYYY',
-        weekrange: 'ww/YYYY',
+        week: 'wo/YYYY',
+        weekrange: 'wo/YYYY',
         timeperiod: 'MM/DD/YYYY HH:mm:ss',
         monthrange: 'MM/YYYY',
         yearrange: 'YYYY'

@@ -121,22 +121,13 @@
     border-radius: 2px;
     max-height: 320px;
     overflow: hidden;
-
-    &--loading {
-      height: 320px;
-
-      .hi-selecttree__root {
-        height: 320px;
-      }
-    }
   }
 
   &__root {
     font-size: 14px;
     width: 100%;
     max-height: 320px;
-    overflow: auto;
-    position: relative;
+    overflow: hidden;
   }
 
   &--hassearch {

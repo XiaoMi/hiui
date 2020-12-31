@@ -8,7 +8,8 @@ type FileItem = {
 interface Props {
   type?: 'default' | 'drag' | 'pictureCard' | 'avatar' | 'photo'
   accept?: MimeType
-  content?: string | JSX.Element
+  content?: string | JSX.Element,
+  tips?: string | JSX.Element,
   maxSize?: number
   maxCount?: number
   uploadAction: string
