@@ -137,7 +137,7 @@ const Cascader = (props) => {
         }
       }
     },
-    [changeOnSelect, expandTrigger]
+    [changeOnSelect, expandTrigger, onChange, cascaderValue, popperShow]
   )
 
   const clearValue = useCallback(

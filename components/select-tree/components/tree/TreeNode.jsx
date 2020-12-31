@@ -1,4 +1,5 @@
 import React, { useContext, useRef, useCallback, useState } from 'react'
+import _ from 'lodash'
 import Checkbox from '../../../checkbox'
 import Icon from '../../../icon'
 import Classnames from 'classnames'
@@ -44,42 +45,52 @@ const TreeNode = ({ data, flttenData }) => {
 
   const renderCheckbox = useCallback(
     (node, { checked, semiChecked }) => {
+      const { id } = node
       return (
         <Checkbox
-          indeterminate={semiChecked.includes(node.id)}
-          checked={checked.includes(node.id)}
+          indeterminate={semiChecked.includes(id)}
+          checked={checked.includes(id)}
           onChange={(e) => {
             onCheckboxChange(e.target.checked, node, { checked, semiChecked })
           }}
         >
-          <span dangerouslySetInnerHTML={{ __html: node._title || node.title }} />
+          <span
+            className={Classnames({
+              'hi-select-tree__title--multiple': checkable,
+              'hi-select-tree__title--focus': id === activeId
+            })}
+            dangerouslySetInnerHTML={{ __html: node._title || node.title }}
+          />
         </Checkbox>
       )
     },
-    [checkedNodes]
+    [checkedNodes, activeId, checkable]
   )
 
-  const renderTitle = useCallback((node, _selectedId) => {
-    const { id, title, _title } = node
-    return (
-      <div
-        ref={treeNodeRef}
-        className={Classnames(
-          'hi-select-tree__title',
-          {
-            'hi-select-tree__title--focus': node.id === activeId
-          },
-          {
-            'hi-select-tree__title--selected': selectedItems.filter((s) => s.id === id).length > 0
-          }
-        )}
-        onClick={() => {
-          onClick(node)
-        }}
-        dangerouslySetInnerHTML={{ __html: treeNodeRender ? treeNodeRender(_title || title) : _title || title }}
-      />
-    )
-  }, [])
+  const renderTitle = useCallback(
+    (node, _selectedId) => {
+      const { id, title, _title } = node
+      return (
+        <div
+          ref={treeNodeRef}
+          className={Classnames(
+            'hi-select-tree__title',
+            {
+              'hi-select-tree__title--focus': id === activeId
+            },
+            {
+              'hi-select-tree__title--selected': selectedItems.filter((s) => s.id === id).length > 0
+            }
+          )}
+          onClick={() => {
+            onClick(_.omit(node, ['pId']))
+          }}
+          dangerouslySetInnerHTML={{ __html: treeNodeRender ? treeNodeRender(_title || title) : _title || title }}
+        />
+      )
+    },
+    [selectedItems, activeId]
+  )
   return (
     <ul className="hi-select-tree__nodes">
       {data.map((node, index) => {
@@ -87,7 +98,7 @@ const TreeNode = ({ data, flttenData }) => {
         const expand = expandIds.includes(node.id)
         return (
           <React.Fragment key={index}>
-            <li className="hi-select-tree__node">
+            <li className="hi-select-tree__node" data-selecttree-id={node.id}>
               <div className="hi-select-tree__node--self">
                 {(childrenNodes.length || isRemoteLoadData) && !node.isLeaf ? (
                   <Switcher expanded={expand} node={node} onExpandEvent={onExpandEvent} />

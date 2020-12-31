@@ -133,12 +133,13 @@ const getDateRows = ({ originDate, range, type, weekOffset, min, max, renderDate
       }
 
       if (type === 'week') {
-        const weekNum = weekOffset ? currentTime.isoWeek() : currentTime.week()
+        const weekNum = currentTime.week()
         row.weekNum = weekNum
+        col.weekType = col.type
         if (originDate) {
           const _d = _.cloneDeep(originDate)
-          const wFirst = moment(_d).startOf('week').add(weekOffset, 'days')
-          const wLast = moment(_d).endOf('week').add(weekOffset, 'days')
+          const wFirst = moment(_d).startOf('week')
+          const wLast = moment(_d).endOf('week')
           if (currentTime.isSame(wFirst, 'day') || currentTime.isSame(wLast, 'day')) {
             col.type = 'selected'
             continue
@@ -177,7 +178,7 @@ const useDate = ({ view, date, originDate, weekOffset, localeDatas, range, type,
             view
           })
     setRows(_rows)
-  }, [renderDate, view, range])
+  }, [renderDate, view, range, type])
 
   return [rows]
 }

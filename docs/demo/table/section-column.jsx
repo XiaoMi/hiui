@@ -279,9 +279,31 @@ const code = [
     class Demo extends React.Component {
       constructor(props){
         super(props)
+        this.state={
+          columns: [
+            { key: 'source', dataKey: 'source', title: '平台', width: 200 },
+            {
+              key: 'storeName',
+              dataKey: 'storeName',
+              title: '店铺名称',
+              width: 150
+            },
+            { key: 'priceSegment', dataKey: 'priceSegment', title: '价格段', width: 150 },
+            { key: 'stBrand', dataKey: 'stBrand', title: '品牌', width: 150 },
+            { key: 'stModel', dataKey: 'stModel', title: '机型', width: 150 },
+            { key: 'stMemory', dataKey: 'stMemory', title: '配置', width: 350 },
+
+            {
+              key: 'receptionPrice',
+              dataKey: 'receptionPrice',
+              title: '到手价'
+            }
+          ],
+          data:[]
+        }
         this.columns = [
           // {dataKey: 'goodsCategory', title: '品类'},
-          { key: 'source', dataKey: 'source', title: '平台', fixed: 'left', width: 80 },
+          { key: 'source', dataKey: 'source', title: '平台', width: 80 },
           {
             key: 'storeType',
             dataKey: 'storeType',
@@ -525,8 +547,17 @@ const code = [
           }
         ]
       }
+      componentDidMount(){
+        setTimeout(() => {
+          this.setState({
+            columns: this.columns,
+            data: this.data
+          })
+        },3000)
+
+      }
       render() {
-        return <Table columns={this.columns} data={this.data} scrollWidth={1700} fixedToColumn={{left: 'storeName', right: 'receptionPrice'}} />
+        return <Table columns={this.state.columns} data={this.state.data} scrollWidth={1700} fixedToColumn={{left: 'storeName', right: 'receptionPrice'}} />
       }
     }`,
     opt: ['列冻结']

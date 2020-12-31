@@ -41,18 +41,18 @@ const Cell = ({
     >
       {level > 1 && columnIndex === 0 && <Indent times={level - 1} />}
       {columnIndex === 0 &&
-        (rowData.children && rowData.children.length > 0 ? (
+        (allRowData.children && allRowData.children.length > 0 ? (
           <Icon
             style={{ marginRight: 4, cursor: 'pointer' }}
             name={expandedTree ? 'caret-down' : 'caret-right'}
             onClick={() => {
               const _expandedTreeRows = [...expandedTreeRows]
-              if (_expandedTreeRows.includes(rowData.key)) {
-                const idx = _expandedTreeRows.findIndex((row) => row === rowData.key)
+              if (_expandedTreeRows.includes(allRowData.key)) {
+                const idx = _expandedTreeRows.findIndex((row) => row === allRowData.key)
                 _expandedTreeRows.splice(idx, 1)
                 setExpandedTreeRows(_expandedTreeRows)
               } else {
-                _expandedTreeRows.push(rowData.key)
+                _expandedTreeRows.push(allRowData.key)
                 setExpandedTreeRows(_expandedTreeRows)
               }
             }}

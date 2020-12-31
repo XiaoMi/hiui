@@ -1,12 +1,11 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
-import Tree from './components/tree'
 import _ from 'lodash'
 import Popper from '../popper'
 import Loading from '../loading'
-import HiRequest from '../_util/hi-request'
 import Icon from '../icon'
-
+import Tree from './components/tree'
 import {
+  getNodeByIdTitle,
   flattenNodesData,
   getNode,
   updateCheckData,
@@ -19,8 +18,12 @@ import {
   parseExpandIds,
   fillNodeEntries,
   clearReturnData,
-  processSelectedIds
+  processSelectedIds,
+  getFirstSiblingWidthSelectItems
 } from './components/tree/util'
+import HiRequest from '../_util/hi-request'
+import { moveFocusedIndex, rightHandle, leftHandle } from './keyEvents'
+
 import NavTree from './components/tree/NavTree'
 import Trigger from './components/Trigger'
 import Provider from '../context'
@@ -47,14 +50,21 @@ const SelectTree = ({
   localeDatas,
   placeholder: propsPlaceholder,
   style,
+  valueRender,
   optionWidth,
-  placement = 'top-bottom-start'
+  autoload: propsAutoload,
+  placement = 'top-bottom-start',
+  emptyContent
 }) => {
   const [isFocus, setIsFocus] = useState(false)
   const placeholder = propsPlaceholder || localeDatas.selectTree.placeholder
   const selectedItemsRef = useRef()
   const inputRef = useRef()
+  const selectTreeRoot = useRef()
   const selectTreeWrapper = useRef()
+  const [autoload, setAutoload] = useState(propsAutoload)
+  // activeId 当前活动下标
+  const [activeId, setActiveId] = useState('')
   // select 中显示的数量
   const [showCount, setShowCount] = useState(1)
   // panel show
@@ -82,15 +92,6 @@ const SelectTree = ({
     searchTreeNode('')
   }, [flattenData])
 
-  // 搜索框的值改变时的事件
-  const changeEvents = useCallback(
-    (e) => {
-      const val = e.target.value
-      setSearchValue(val)
-      searchTreeNode(val)
-    },
-    [flattenData]
-  )
   // 根据传入的原始数据解析为拉平数据及改装数据
   useEffect(() => {
     setStatus()
@@ -124,6 +125,9 @@ const SelectTree = ({
       } else {
         const _selectedItems = parseDefaultSelectedItems(value, flattenData)
         setSelectedItems(_selectedItems)
+        if (_selectedItems.length > 0) {
+          setActiveId(_selectedItems[0].id)
+        }
       }
     }
   }, [value])
@@ -135,6 +139,11 @@ const SelectTree = ({
       setExpandIds((preExpandIds) => {
         return (_expandIds || []).concat(preExpandIds || [])
       })
+    }
+    if (Array.isArray(selectedItems) && selectedItems.length > 0) {
+      setActiveId(getFirstSiblingWidthSelectItems(flattenData, selectedItems))
+    } else if (Array.isArray(flattenData) && flattenData.length > 0) {
+      setActiveId(flattenData[0].id)
     }
   }, [expandIdsProps, flattenData])
 
@@ -158,7 +167,6 @@ const SelectTree = ({
       setShowCount(num)
     }
   }, [selectedItems])
-  useEffect(() => {}, [show])
   useEffect(() => {
     if (data) {
       const { flattenData = [], nodeEntries } = flattenNodesData(
@@ -182,6 +190,11 @@ const SelectTree = ({
           setSelectedItems(_selectedItems)
         }
       }
+    }
+    if (Array.isArray(selectedItems) && selectedItems.length > 0) {
+      setActiveId(selectedItems[0].id)
+    } else if (Array.isArray(data) && data.length > 0) {
+      setActiveId(data[0].id)
     }
   }, [])
   // 过滤方法
@@ -235,14 +248,14 @@ const SelectTree = ({
       semiChecked: []
     })
     onChange && onChange()
-  }, [])
+  }, [onChange])
 
   /**
    * set Pull Data status
    */
   const setStatus = useCallback(() => {
     if (data.length === 0) {
-      setNodeDataState(dataSource ? 'loading' : 'empty')
+      setNodeDataState('empty')
     } else {
       setNodeDataState('normal')
     }
@@ -251,23 +264,52 @@ const SelectTree = ({
    * Remote load Data
    * @param {*} id click node's id
    */
-  const loadNodes = useCallback((id) => {
-    const _dataSource = typeof dataSource === 'function' ? dataSource(id || '') : dataSource
-    return HiRequest({
-      ..._dataSource
-    }).then((res) => {
-      const { data = [] } = res
-      const nArr =
-        data &&
-        data.map((n) => {
-          return {
-            ...n,
-            pId: id
+  const loadNodes = useCallback(
+    (id, keyword) => {
+      const _dataSource = typeof dataSource === 'function' ? dataSource(id || keyword || '') : dataSource
+      if (Array.isArray(_dataSource)) {
+        if (_dataSource.length === 0) {
+          setNodeDataState('empty')
+          return
+        }
+        setNodeDataState('normal')
+        setFlattenData(flattenNodesData(_dataSource).flattenData)
+        fillNodeEntries(null, nodeEntries, _dataSource)
+        return
+      }
+      // 处理promise函数
+      if (_dataSource.toString() === '[object Promise]') {
+        setNodeDataState('loading')
+        _dataSource.then(
+          (res) => {
+            setNodeDataState('normal')
+            setFlattenData(flattenNodesData(Array.isArray(res) ? res : []).flattenData)
+            fillNodeEntries(null, nodeEntries, _dataSource)
+          },
+          () => {
+            setNodeDataState('normal')
+            setFlattenData([])
           }
-        })
-      return nArr
-    })
-  }, [])
+        )
+        return
+      }
+      return HiRequest({
+        ..._dataSource
+      }).then((res) => {
+        const { data = [] } = res
+        const nArr =
+          data &&
+          data.map((n) => {
+            return {
+              ...n,
+              pId: id
+            }
+          })
+        return nArr
+      })
+    },
+    [dataSource, autoload, nodeEntries]
+  )
   /**
    * 多选模式下复选框事件
    * @param {*} checked 是否被选中
@@ -290,6 +332,7 @@ const SelectTree = ({
         return getNode(id, flattenData)
       })
     }
+    setActiveId(node.id)
     onChange(
       processSelectedIds(result.checked, nodeEntries, showCheckedMode, flattenData),
       clearReturnData(checkedArr),
@@ -323,13 +366,15 @@ const SelectTree = ({
       return
     }
     if (state) {
-      loadNodes(node.id).then((res) => {
-        if (res.length > 0) {
-          setFlattenData(flattenData.concat(flattenNodesData(res).flattenData))
-          fillNodeEntries(node, nodeEntries, res)
-        }
-        callback(res)
-      })
+      const _loadNodes = loadNodes(node.id)
+      _loadNodes.then &&
+        _loadNodes.then((res) => {
+          if (res.length > 0) {
+            setFlattenData(flattenData.concat(flattenNodesData(res).flattenData))
+            fillNodeEntries(node, nodeEntries, res)
+          }
+          callback(res)
+        })
       onExpand()
     }
   }
@@ -337,45 +382,115 @@ const SelectTree = ({
   /**
    * Node selected Event
    */
-  const selectedEvents = useCallback((node) => {
-    setSelectedItems([node])
-    const n = clearReturnData(node)
-    onChange(node.id, n, n)
-    setShow(false)
-  }, [])
+  const selectedEvents = useCallback(
+    (node) => {
+      setSelectedItems([node])
+      const n = clearReturnData(node)
+      onChange(node.id, n, n)
+      setShow(false)
+      setActiveId(node.id)
+    },
+    [onChange, show, selectedItems]
+  )
 
   /**
    * Input 点击事件
    */
-  const onTrigger = () => {
-    if (flattenData.length === 0 && defaultLoadData && (!data || data.length === 0 || dataSource) && !show) {
-      // data 为空 且 存在 dataSource 时，默认进行首次数据加载.defaultLoadData不暴露
+  const onTrigger = (keyword) => {
+    if (
+      (flattenData.length === 0 && autoload && (!data || data.length === 0 || dataSource) && !show) ||
+      (keyword && keyword.length)
+    ) {
       setNodeDataState('loading')
-      loadNodes()
-        .then((res) => {
-          if (res.length === 0) {
+      const _loadNodes = loadNodes('', keyword)
+      _loadNodes.then &&
+        _loadNodes
+          .then((res) => {
+            if (res.length === 0) {
+              setNodeDataState('empty')
+              return
+            }
+            setNodeDataState('normal')
+            setFlattenData(flattenNodesData(res).flattenData)
+            fillNodeEntries(null, nodeEntries, res)
+          })
+          .catch(() => {
             setNodeDataState('empty')
-            return
-          }
-          setNodeDataState('normal')
-          setFlattenData(flattenNodesData(res).flattenData)
-          fillNodeEntries(null, nodeEntries, res)
-        })
-        .catch(() => {
-          setNodeDataState('empty')
-        })
+          })
     }
-    setShow(!show)
+    !(keyword && keyword.length) && setShow(!show)
   }
+  // 搜索框的值改变时的事件
+  const changeEvents = (val) => {
+    setSearchValue(val)
+    if (dataSource && val.length) {
+      setAutoload(true)
+      onTrigger(val)
+    } else {
+      searchTreeNode(val)
+    }
+  }
+  const debouncedFilterItems = _.debounce(changeEvents, 100)
+
   const searchable = searchMode === 'filter' || searchMode === 'highlight'
   // 按键操作
-  const handleKeyDown = (evt) => {
-    evt.stopPropagation()
-    if (evt.keyCode === 32 && !document.activeElement.classList.value.includes('hi-selecttree__searchinput')) {
-      evt.preventDefault()
-      setShow(!show)
-    }
-  }
+  const handleKeyDown = useCallback(
+    (evt) => {
+      evt.stopPropagation()
+      // space
+      if (
+        evt.keyCode === 32 &&
+        !document.activeElement.classList.value.includes('hi-selecttree__searchinput') &&
+        !show
+      ) {
+        evt.preventDefault()
+        setShow(true)
+      }
+      // esc
+      if (evt.keyCode === 27) {
+        setShow(false)
+      }
+      if (show) {
+        // down
+        if (evt.keyCode === 40) {
+          evt.preventDefault()
+          setActiveId(moveFocusedIndex('down', activeId, selectTreeRoot))
+        }
+        // up
+        if (evt.keyCode === 38) {
+          evt.preventDefault()
+          setActiveId(moveFocusedIndex('up', activeId, selectTreeRoot))
+        }
+        // right
+        if (evt.keyCode === 39) {
+          evt.preventDefault()
+          rightHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
+        }
+        // left
+        if (evt.keyCode === 37) {
+          evt.preventDefault()
+          leftHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
+        }
+        // space 选中
+        if (evt.keyCode === 32 && !document.activeElement.classList.value.includes('hi-selecttree__searchinput')) {
+          evt.preventDefault()
+          if (mode !== 'breadcrumb') {
+            type === 'multiple'
+              ? checkedEvents(
+                  !selectedItems.some((item) => {
+                    return activeId === item.id
+                  }),
+                  getNodeByIdTitle(activeId, flattenData),
+                  checkedNodes
+                )
+              : selectedEvents(getNodeByIdTitle(activeId, flattenData))
+          }
+        }
+      }
+    },
+    [activeId, selectedItems, checkedNodes, flattenData, expandIds, mode, show]
+  )
+
   return (
     <div
       className={`theme__${theme} hi-selecttree`}
@@ -396,6 +511,7 @@ const SelectTree = ({
         selectedItems={selectedItems}
         clearable={clearable}
         show={show}
+        valueRender={valueRender}
         placeholder={placeholder}
         checkedEvents={checkedEvents}
         onTrigger={onTrigger}
@@ -417,8 +533,11 @@ const SelectTree = ({
           }}
         >
           <Loading size="small" visible={nodeDataState === 'loading'}>
-            <div className={`hi-selecttree__root theme__${theme} ${searchable ? 'hi-selecttree--hassearch' : ''}`}>
-              {searchable && mode !== 'breadcrumb' && (
+            <div
+              className={`hi-selecttree__root theme__${theme} ${searchable ? 'hi-selecttree--hassearch' : ''}`}
+              ref={selectTreeRoot}
+            >
+              {((searchable && mode !== 'breadcrumb') || dataSource) && (
                 <div className="hi-selecttree__searchbar-wrapper">
                   <div className="hi-selecttree__searchbar-inner">
                     <Icon name="search" />
@@ -433,7 +552,9 @@ const SelectTree = ({
                           searchTreeNode(e.target.value)
                         }
                       }}
-                      onChange={changeEvents}
+                      onChange={(e) => {
+                        debouncedFilterItems(e.target.value)
+                      }}
                     />
                     {searchValue.length > 0 ? (
                       <i
@@ -457,13 +578,18 @@ const SelectTree = ({
                   onSelected={selectedEvents}
                   isRemoteLoadData={!!dataSource}
                   onExpand={expandEvents}
+                  flattenData={flattenData}
+                  activeId={activeId}
+                  setActiveId={setActiveId}
                   localeDatas={localeDatas}
+                  emptyContent={emptyContent}
                 />
               ) : (
                 <Tree
                   data={flattenData}
                   originData={data}
                   expandIds={expandIds}
+                  activeId={activeId}
                   dataSource={dataSource}
                   loadDataOnExpand={false}
                   checkable={type === 'multiple'}
@@ -477,6 +603,7 @@ const SelectTree = ({
                   // defaultExpandAll
                   onExpand={expandEvents}
                   onClick={selectedEvents}
+                  emptyContent={emptyContent}
                   isRemoteLoadData={!!dataSource}
                   onCheck={checkedEvents}
                 />

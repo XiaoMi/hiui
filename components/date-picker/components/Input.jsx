@@ -16,7 +16,12 @@ const Input = ({ date, onChange, onFocus, dir, placeholder }) => {
   const cacheValues = useRef(null)
   const [value, setValue] = useState('')
   useEffect(() => {
-    const vals = date && moment(date).format(iFormat)
+    let vals = date && moment(date).format(iFormat)
+    if (type.includes('week') && date) {
+      const y = moment(date).weekYear()
+      const _date = moment(date).year(y)
+      vals = moment(_date).format(iFormat)
+    }
     setValue(vals)
     cacheValues.current = vals
   }, [date])

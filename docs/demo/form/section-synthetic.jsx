@@ -28,6 +28,7 @@ class Demo extends React.Component {
         counter:3,
         radio:0,
         rate:3,
+        datePicker: {start: new Date(), end: new Date()},
         checkbox:[],
         switch:false
       },

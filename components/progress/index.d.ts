@@ -7,8 +7,8 @@ interface Props {
   type?: 	'primary' | 'success' | 'warning' | 'error'
   radius?: number
   placement?: 'inside' | 'outside'
-  width?: number
-  height?: number
+  width?: string | number
+  height?: string | number
 }
 declare const Progress: React.ComponentType<Props>
 export default Progress

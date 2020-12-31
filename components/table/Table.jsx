@@ -8,6 +8,7 @@ import Pagination from '../pagination'
 import axios from 'axios'
 import FixedBodyTable from './FixedBodyTable'
 import Provider from '../context'
+import Loading from '../loading'
 import './style'
 
 const Table = ({
@@ -53,23 +54,19 @@ const Table = ({
   const [freezeColumn, setFreezeColumn] = useState(null)
   const [hoverRow, setHoverRow] = useState(null)
   const [serverTableConfig, setServerTableConfig] = useState({ data: [], columns: [] })
-  const [eachRowHeight, setEachRowHeight] = useState([])
+  const [eachRowHeight, setEachRowHeight] = useState({})
   const [eachHeaderHeight, setEachHeaderHeight] = useState(null)
 
   const [realColumnsWidth, setRealColumnsWidth] = useState(columns.map((c) => c.width || 'auto'))
+  const [expandedTreeRows, setExpandedTreeRows] = useState([])
 
   const firstRowRef = useRef(null)
+
   useEffect(() => {
     if (!dataSource) {
-      setRealColumnsWidth(columns.map((c) => c.width || 'auto'))
-      const timer = setTimeout(() => {
-        if (firstRowRef.current) {
-          const _realColumnsWidth = Array.from(firstRowRef.current.childNodes).map((node) => node.clientWidth)
-          setRealColumnsWidth(_realColumnsWidth)
-        }
-      })
-      return () => {
-        clearTimeout(timer)
+      if (firstRowRef.current) {
+        const _realColumnsWidth = Array.from(firstRowRef.current.childNodes).map((node) => node.clientWidth)
+        setRealColumnsWidth(_realColumnsWidth)
       }
     }
   }, [columns, dataSource, data])
@@ -226,7 +223,9 @@ const Table = ({
         eachHeaderHeight,
         setEachHeaderHeight,
         theme,
-        localeDatas
+        localeDatas,
+        expandedTreeRows,
+        setExpandedTreeRows
       }}
     >
       <div
@@ -271,7 +270,7 @@ const Table = ({
   )
 }
 
-const TableWrapper = ({ columns, uniqueId, standard, data, ...settingProps }) => {
+const TableWrapper = ({ columns, uniqueId, standard, data, loading, ...settingProps }) => {
   const _sortCol =
     uniqueId && window.localStorage.getItem(`${uniqueId}_sortCol`)
       ? JSON.parse(window.localStorage.getItem(`${uniqueId}_sortCol`))
@@ -313,7 +312,21 @@ const TableWrapper = ({ columns, uniqueId, standard, data, ...settingProps }) =>
     : {}
 
   // ***************
-  return (
+  return loading !== undefined ? (
+    <Loading visible={loading}>
+      <Table
+        columns={cacheVisibleCols}
+        data={data || []}
+        {...settingProps}
+        {...standardPreset}
+        sortCol={sortCol}
+        setSortCol={setSortCol}
+        visibleCols={visibleCols}
+        setVisibleCols={setVisibleCols}
+        setCacheVisibleCols={setCacheVisibleCols}
+      />
+    </Loading>
+  ) : (
     <Table
       columns={cacheVisibleCols}
       data={data || []}

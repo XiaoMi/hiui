@@ -1,5 +1,31 @@
 # 更新日志
 
+## 3.3.0
+- 新增 `Card` 模式模式下 loading 加载中状态 [#1454](https://github.com/XiaoMi/hiui/issues/1454)
+- 新增 `Table` loading 加载中状态 [#1466](https://github.com/XiaoMi/hiui/issues/1466)
+- 新增 `Table` 列冻结结合树形使用 [#1424](https://github.com/XiaoMi/hiui/issues/1424)
+- 新增 `Table` rowSelection getCheckboxConfig 方法配置行选择 [#1444](https://github.com/XiaoMi/hiui/issues/1444)
+- 新增 `SelectTree` valueRender 自定义渲染 Input 中展示内容 [#1407](https://github.com/XiaoMi/hiui/issues/1407)
+- 新增 `SelectTree` 通过关键字异步搜索功能 [#1479](https://github.com/XiaoMi/hiui/issues/1479)
+- 修复 `Input` type = textarea 的时候，className 设置无效 [#1458](https://github.com/XiaoMi/hiui/issues/1458)
+- 修复 `Form` 在页面渲染完成后 调用中 setFieldsValue 无效问题 [#1408](https://github.com/XiaoMi/hiui/issues/1408)
+- 修复 `Form` 在 Form.Item 中调用 setFieldsValue 数据获取错误 [#1456](https://github.com/XiaoMi/hiui/issues/1456)
+- 修复 `Rate` 组件在快速移动显示异常问题 [#1410](https://github.com/XiaoMi/hiui/issues/1410)
+- 修复 `DatePicker` type 不受控问题 [#1401](https://github.com/XiaoMi/hiui/issues/1401)
+- 修复 `DatePicker` 点击空白区域触发 onChange 问题 [#1477](https://github.com/XiaoMi/hiui/issues/1477)
+- 修复 `DatePicker` 跨年或跨月选择周，数据显示错误 [#1476](https://github.com/XiaoMi/hiui/issues/1476)
+- 修复 `Select` 下拉框默认选中行显示错误 [#1405](https://github.com/XiaoMi/hiui/issues/1405)
+- 修复 `DatePicker` 在 type 为 daterange 时候，传入不合法日期，面板显示异常 [#1418](https://github.com/XiaoMi/hiui/issues/1418)
+- 修复 `Table` 对其他组件造成的样式污染问题 [#1428](https://github.com/XiaoMi/hiui/issues/1428)
+- 修复 `Table` 数据为空时右侧冻结展示不正确的问题 [#1473](https://github.com/XiaoMi/hiui/issues/1473)
+- 修复 `Tree` onDrop 回调函数参数不正确的问题 [#1425](https://github.com/XiaoMi/hiui/issues/1425)
+- 修复 `Select` 异步多选值返显问题 [#1425](https://github.com/XiaoMi/hiui/issues/1425)
+- 修复 `Modal` confirm 方法为适配主题色的问题 [#1446](https://github.com/XiaoMi/hiui/issues/1446)
+- 修复 `Loading` children 不存在时，设置 visible 为 false 无效的问题 [#1461](https://github.com/XiaoMi/hiui/issues/1461)
+- 优化 `Tabs` 组件弹出层样式[#1437](https://github.com/XiaoMi/hiui/issues/1437)
+- 优化 `DatePicker` 类型为 week 时输入框显示内容以及周起始方式 [#1475](https://github.com/XiaoMi/hiui/issues/1475)
+- 优化 `Progress` width、height 属性支持传入String类型 [#1480](https://github.com/XiaoMi/hiui/issues/1480)
+
 ## 3.2.0
 
 - 新增 HiUI 基础样式 css 文件 [#1338](https://github.com/XiaoMi/hiui/issues/1338)

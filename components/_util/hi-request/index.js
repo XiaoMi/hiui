@@ -10,21 +10,23 @@ import axiosIns, { axios } from './axios'
  */
 
 const InternalRequest = (options, host) => {
-  const { type = 'basics' } = options
+  const { type = 'basics', responseType = 'json' } = options
   const url = host ? host + options.url : options.url
   if (type === 'jsonp' || type === 'download') {
-    return type === 'jsonp' ? jsonp : download
+    return type === 'jsonp' ? jsonp(options, host) : download(options, host)
   }
   return axiosIns(
     type === 'upload'
       ? {
           url,
           method: 'post',
+          responseType,
           ...upload(options).options
         }
       : {
           url,
           type: 'basics',
+          responseType,
           ...options
         }
   )

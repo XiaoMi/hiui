@@ -45,7 +45,6 @@ class Demo extends React.Component {
         placeholder='请选择'
         style={{ width: 200 }}
         onChange={(item) => {
-          console.log('异步单选结果', item)
           this.setState({
             value:item
           })

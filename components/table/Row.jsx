@@ -53,10 +53,13 @@ const Row = ({
   if (isFixed === 'right') {
     rowColumns = rightFixedColumns
   }
+  const checkboxConfig = rowSelection && rowSelection.getCheckboxConfig && rowSelection.getCheckboxConfig(allRowData)
+  const checkboxDisabled = (checkboxConfig && checkboxConfig.disabled) || false
   return [
     <tr
       style={isFixed && rowHeight ? { height: rowHeight } : {}}
       ref={innerRef}
+      id={allRowData.key}
       className={classNames(`${prefix}__row`, {
         [`${prefix}__row--error`]: errorRowKeys.includes(rowData.key),
         [`${prefix}__row--highlight`]: hoverRow === rowData.key || highlightedRowKeys.includes(rowData.key),
@@ -78,6 +81,7 @@ const Row = ({
         <td style={{ width: 50 }}>
           <Checkbox
             checked={rowSelection.selectedRowKeys.includes(rowData.key)}
+            disabled={checkboxDisabled}
             onChange={(e) => {
               const { selectedRowKeys = [], onChange } = rowSelection
               const _selectedRowKeys = [...selectedRowKeys]

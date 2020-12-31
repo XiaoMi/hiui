@@ -1,11 +1,10 @@
-import React, { useState, useContext, useRef } from 'react'
+import React, { useContext, useRef } from 'react'
 import Row from './Row'
 import TableContext from './context'
 import _ from 'lodash'
 import { flatTreeData, setDepth } from './util'
 
 const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
-  const [expandedTreeRows, setExpandedTreeRows] = useState([])
   const {
     data,
     leftFixedData,
@@ -25,7 +24,9 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
     bordered,
     eachRowHeight,
     rowSelection,
-    expandedRender
+    expandedRender,
+    expandedTreeRows,
+    setExpandedTreeRows
   } = useContext(TableContext)
   let _columns
   if (isFixed === 'left') {
@@ -50,7 +51,18 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   // ***********
   const bodyInner = useRef(null)
 
-  const renderRow = (row, level, index, allRowData) => {
+  let hasTree = false
+  if (data && data.length) {
+    hasTree = data.some((row) => {
+      return row.children && row.children.length
+    })
+  }
+
+  const renderRow = (row, level, index, allRowData, isTree) => {
+    let childrenHasTree = false
+    if (allRowData.children && allRowData.children.length) {
+      childrenHasTree = allRowData.children.some((child) => child.children && child.children.length)
+    }
     return (
       <React.Fragment key={row.key}>
         <Row
@@ -59,15 +71,16 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
           isFixed={isFixed}
           level={level}
           index={index}
-          rowHeight={eachRowHeight[index]}
+          rowHeight={eachRowHeight[row.key]}
           expandedTree={expandedTreeRows.includes(row.key)}
           expandedTreeRows={expandedTreeRows}
           setExpandedTreeRows={setExpandedTreeRows}
+          isTree={isTree}
         />
-        {row.children &&
-          expandedTreeRows.includes(row.key) &&
-          row.children.map((child) => {
-            return renderRow(child, level + 1)
+        {allRowData.children &&
+          expandedTreeRows.includes(allRowData.key) &&
+          allRowData.children.map((child, idx) => {
+            return renderRow(child, level + 1, index, allRowData.children[idx], childrenHasTree || isTree)
           })}
       </React.Fragment>
     )
@@ -104,79 +117,83 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
     }
   }
   return (
-    <div
-      style={{
-        marginBottom: -scrollBarSize,
-        overflow: 'hidden',
-        width:
-          bodyTableRef.current && fixedColumnsWidth > bodyTableRef.current.clientWidth
-            ? bodyTableRef.current.clientWidth
-            : fixedColumnsWidth + 1
-      }}
-    >
+    _fixedData &&
+    _fixedData.length > 0 && (
       <div
         style={{
-          maxHeight: maxHeight || 'auto',
-          width:
-            bodyTableRef.current && fixedColumnsWidth > bodyTableRef.current.clientWidth
+          marginBottom: -scrollBarSize,
+          overflow: 'hidden',
+          width: Number.isNaN(fixedColumnsWidth)
+            ? 'auto'
+            : bodyTableRef.current && fixedColumnsWidth > bodyTableRef.current.clientWidth
+            ? bodyTableRef.current.clientWidth
+            : fixedColumnsWidth + 1
+        }}
+      >
+        <div
+          style={{
+            maxHeight: maxHeight || 'auto',
+            width: Number.isNaN(fixedColumnsWidth)
+              ? 'auto'
+              : bodyTableRef.current && fixedColumnsWidth > bodyTableRef.current.clientWidth
               ? bodyTableRef.current.clientWidth
               : fixedColumnsWidth + 20,
 
-          overflow: 'scroll',
-          paddingRight: 0,
-          marginRight: -scrollBarSize // 利用负 margin 隐藏滚动条
-        }}
-        ref={fixedBodyTableRef}
-        onScroll={(e) => {
-          syncScrollTop(fixedBodyTableRef.current.scrollTop, bodyTableRef.current)
-          if (isFixed === 'left') {
-            syncScrollTop(fixedBodyTableRef.current.scrollTop, rightFixedBodyTableRef.current)
-          } else {
-            syncScrollTop(fixedBodyTableRef.current.scrollTop, leftFixedBodyTableRef.current)
-          }
-        }}
-      >
-        <table
-          style={{
-            width: 'auto',
-            borderLeft: bordered ? '1px solid #e7e7e7' : 'none'
+            overflow: 'scroll',
+            paddingRight: 0,
+            marginRight: -scrollBarSize // 利用负 margin 隐藏滚动条
           }}
-          ref={bodyInner}
+          ref={fixedBodyTableRef}
+          onScroll={(e) => {
+            syncScrollTop(fixedBodyTableRef.current.scrollTop, bodyTableRef.current)
+            if (isFixed === 'left') {
+              syncScrollTop(fixedBodyTableRef.current.scrollTop, rightFixedBodyTableRef.current)
+            } else {
+              syncScrollTop(fixedBodyTableRef.current.scrollTop, leftFixedBodyTableRef.current)
+            }
+          }}
         >
-          <colgroup>
-            {columnsgroup.map((c, index) => {
-              // TODO: 这里是考虑了多级表头的冻结，待优化
-              let width
-              if (isFixed === 'right') {
-                allColumnsgroup.forEach((col, idx) => {
-                  if (col.dataKey === c.dataKey) {
-                    // 有 rowSelection 需要往后移动一个
-                    width = realColumnsWidth[rowSelection ? idx + 1 : idx]
-                  }
-                })
-              } else if (isFixed === 'left') {
-                width = realColumnsWidth[index]
-              }
-              // allColumnsgroup.forEach((col, index) => {
-              //   if (col.dataKey === c.dataKey) {
-              //     width = realColumnsWidth[index]
-              //   }
-              // })
-              return (
-                <col
-                  key={index}
-                  style={{
-                    width: width,
-                    minWidth: width
-                  }}
-                />
-              )
-            })}
-          </colgroup>
-          <tbody>{_fixedData.map((row, index) => renderRow(row, 1, index, data[index]))}</tbody>
-        </table>
+          <table
+            style={{
+              width: 'auto',
+              borderLeft: bordered ? '1px solid #e7e7e7' : 'none'
+            }}
+            ref={bodyInner}
+          >
+            <colgroup>
+              {columnsgroup.map((c, index) => {
+                // TODO: 这里是考虑了多级表头的冻结，待优化
+                let width
+                if (isFixed === 'right') {
+                  allColumnsgroup.forEach((col, idx) => {
+                    if (col.dataKey === c.dataKey) {
+                      // 有 rowSelection 需要往后移动一个
+                      width = realColumnsWidth[rowSelection ? idx + 1 : idx]
+                    }
+                  })
+                } else if (isFixed === 'left') {
+                  width = realColumnsWidth[index]
+                }
+                return (
+                  <col
+                    key={index}
+                    style={{
+                      width: width,
+                      minWidth: width
+                    }}
+                  />
+                )
+              })}
+            </colgroup>
+            <tbody>
+              {_fixedData.map((row, index) => {
+                return renderRow(row, 1, index, data[index], hasTree)
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    )
   )
 }
 

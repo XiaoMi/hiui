@@ -624,7 +624,7 @@ class TreeNode extends Component {
 
         <Modal
           title={modalTitle}
-          show={this.state.showModal}
+          visible={this.state.showModal}
           onConfirm={() => {
             this._deleteNode(this.state.currentDeleteNode)
             this.setState({

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState, useRef, useCallback, useEffect } from 'react'
 import moment from 'moment'
 import DPContext from './context'
 import Provider from '../context/index'
@@ -14,7 +14,7 @@ import Root from './components/Root'
 import './style/index'
 
 const BasePicker = ({
-  type = 'date',
+  type: propType = 'date',
   value,
   defaultValue,
   placeholder,
@@ -23,7 +23,7 @@ const BasePicker = ({
   disabled,
   clearable = true,
   width = 'auto',
-  weekOffset = 0,
+  weekOffset,
   min = null,
   max = null,
   hourStep,
@@ -46,6 +46,16 @@ const BasePicker = ({
 }) => {
   const cacheDate = useRef(null)
   const [inputFocus, setInputFocus] = useState(false)
+  const [type, setType] = useState(propType)
+  useEffect(() => {
+    moment.locale(locale === 'en-US' ? 'en' : 'zh-CN')
+    if (weekOffset !== undefined) {
+      moment.locale(weekOffset === 0 ? 'en' : 'zh-CN')
+    }
+  }, [locale, weekOffset])
+  useEffect(() => {
+    setType(propType)
+  }, [propType])
   const [outDate, changeOutDate] = useDate({
     value,
     type,
@@ -76,7 +86,7 @@ const BasePicker = ({
     }
   }
 
-  const callback = (dates) => {
+  const callback = (dates, emitOnChange = true) => {
     const _dates = _.cloneDeep(dates)
     let returnDate = {}
     let returnDateStr = ''
@@ -94,7 +104,7 @@ const BasePicker = ({
       returnDateStr = _dates[0].format(iFormat)
     }
     cacheDate.current = _dates
-    onChange(returnDate, returnDateStr)
+    emitOnChange && onChange(returnDate, returnDateStr)
   }
   const onPick = (dates, isShowPanel) => {
     setTimeout(() => {
@@ -113,11 +123,11 @@ const BasePicker = ({
     const { startDate, endDate } = isValid && getInRangeDate(outDate[0], outDate[1], max, min)
     const _outDate = isValid ? [moment(startDate), moment(endDate)] : [null]
     resetStatus()
-    _outDate.forEach((od, index) => {
-      if (od && !od.isSame(cacheDate.current[index])) {
-        callback(_outDate)
-      }
+    const isChange = _outDate.some((od, index) => {
+      return od && !od.isSame(cacheDate.current[index])
     })
+    isChange && callback(_outDate, showTime || type === 'daterange')
+
     changeOutDate(_outDate)
   }, [outDate])
   const onClear = () => {
@@ -137,7 +147,7 @@ const BasePicker = ({
     shortcuts && 'hi-datepicker__popper--shortcuts',
     isLarge && 'hi-datepicker__popper--large'
   )
-
+  const _weekOffset = weekOffset !== undefined ? weekOffset : locale === 'en-US' ? 0 : 1
   return (
     <DPContext.Provider
       value={{
@@ -146,7 +156,7 @@ const BasePicker = ({
         type,
         outDate,
         localeDatas,
-        weekOffset,
+        weekOffset: _weekOffset,
         onPick,
         min,
         max,

@@ -75,6 +75,7 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | emptyContent       | 数据为空时的展示内容                                                                                    | string \| () => ReactNode                      | -                                         | '暂无数据' |
 | resizable          | 是否能够动态控制列宽                                                                                    | boolean                                        | true \| false                             | false      |
 | standard           | 标准模式，默认集成 `showColMenu = true, sticky = true, bordered = true, setting = true, striped = true` | boolean                                        | true \| false                             | false      |
+| loading           | 加载中状态 | boolean                                        | true \| false                             | false      |
 | scrollWidth           | 表格滚动的宽度（当表格总设置宽度（含自适应列）大于表格父级容器宽度时需要设置） |  number                                        | -                            | -      |
 
 ### Type
@@ -120,7 +121,7 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | showJumper       | 是否显示跳转                                               | boolean                                                   | true \| false                     | false     |
 | onJump           | 快速跳转时触发，回调值为当前页数                           | (current: number) => void                                 | -                                 | -         |
 | onChange         | 页码改变时的回调，回调值为当前页数、之前的页数和每页条数   | (current: number, prev: number, pageSize: number) => void | -                                 | -         | - |
-| onPageSizeChange | 每页显示条数改变的回调函数，返回改变后的每页条数及当前页数 | (current: number, pageSize: number) => void               | -                                 | -         | - |
+| onPageSizeChange | 每页显示条数改变的回调函数，返回改变后的每页条数及当前页数 | (pageSize: number, current: number) => void               | -                                 | -         | - |
 
 ### FixedOption
 
@@ -128,3 +129,12 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | ----- | -------------------- | ------ | ------ | ------ |
 | left  | 表格从左侧冻结至某列 | string | columns 中对应的 dataKey      | -      |
 | right | 表格从右侧冻结至某列 | string | columns 中对应的 dataKey       | -      |
+
+
+### RowSelection
+
+| 参数  | 说明                 | 类型   | 可选值 | 默认值 |
+| ----- | -------------------- | ------ | ------ | ------ |
+| selectedRowKeys  | 选中的行（受控） | string[] | row 中对应的 key      | -      |
+| getCheckboxConfig | 行选择的配置项 | rowData => object | -      | -      |
+| onChange| 选中项发生变化时的回调 | (selectedRowKeys: string[])  => void | -       | -      |

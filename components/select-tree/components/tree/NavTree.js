@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
+import _ from 'lodash'
+import EventEmitter from '../../../_util/EventEmitter'
 import Icon from '../../../icon'
-import { getRootNodes, getChildrenNodes } from './util'
+import { getRootNodes, getChildrenNodes, getNodeByIdTitle } from './util'
 import classNames from 'classnames'
-import Loading from '../../../loading'
 import Checkbox from '../../../checkbox'
 
 const Bread = ({ datas, onClick, onReturnClick, localeDatas }) => {
@@ -47,7 +48,11 @@ const NavTree = ({
   autoExpand = true,
   nodeDataState,
   onExpand: expandProps,
-  localeDatas
+  localeDatas,
+  activeId,
+  setActiveId,
+  flattenData,
+  emptyContent
 }) => {
   const expandData = useRef()
   const [renderData, setRenderData] = useState([])
@@ -64,11 +69,25 @@ const NavTree = ({
     setRenderData(roots)
   }, [data])
   const onBreadClick = (title) => {
-    const node = fullBreadData[title]
+    let node = fullBreadData[title]
+    if (title === undefined) {
+      const fullBreadDataKeys = Object.keys(fullBreadData)
+      const len = fullBreadDataKeys.length
+      if (len > 1) {
+        node = _.cloneDeep(fullBreadData[fullBreadDataKeys[len - 2]])
+        console.log(node)
+      } else {
+        const node = getNodeByIdTitle(activeId, flattenData)
+        const childNodes = getChildrenNodes(node, flattenData)
+        onReturnClick(node, childNodes)
+        return
+      }
+    }
+    const _title = node.title
     setRenderData(getChildrenNodes(node, data))
     setFullBreadData((preData) => {
       const keysArr = Object.keys(preData)
-      const delArr = keysArr.filter((_, index) => index > keysArr.indexOf(title))
+      const delArr = keysArr.filter((_, index) => index > keysArr.indexOf(_title))
       delArr.forEach((key) => {
         delete preData[key]
       })
@@ -95,6 +114,7 @@ const NavTree = ({
     setCurrentNode(node)
     if (children.length > 0) {
       setRenderData(children)
+      setActiveId(children[0].id)
     } else {
       setRenderData([])
       setLoadingState('loading')
@@ -103,13 +123,17 @@ const NavTree = ({
       })
     }
   }
+  useEffect(() => {
+    EventEmitter.on('$onNodeClick', onNodeClick)
+    EventEmitter.on('$onBreadClick', onBreadClick)
+  }, [fullBreadData])
   return (
     <div className="hi-breadtree__root">
       {Object.keys(fullBreadData).length > 0 && (
         <Bread datas={fullBreadData} localeDatas={localeDatas} onClick={onBreadClick} onReturnClick={onReturnClick} />
       )}
       {loadingState === 'empty' ? (
-        <span className="hi-select-tree--empty">{localeDatas.selectTree.emptyContent}</span>
+        <span className="hi-select-tree--empty">{emptyContent || localeDatas.selectTree.emptyContent}</span>
       ) : (
         <ul className="hi-breadtree__list">
           {renderData.map((node, index) => {
@@ -119,18 +143,20 @@ const NavTree = ({
               selectedItems.find((n) => n.id === node.id) && 'hi-breadtree__text--selected'
             )
             return (
-              <li key={index} className="hi-breadtree__item">
+              <li key={index} className="hi-breadtree__item" data-selecttree-id={node.id}>
                 {checkable && node.isLeaf ? (
                   <Checkbox
                     indeterminate={checkedNodes.semiChecked.includes(node.id)}
                     checked={checkedNodes.checked.includes(node.id)}
                     onChange={(e) => onCheck(e.target.checked, node)}
                   >
-                    <span className={textCls}>{node.title}</span>
+                    <span className={classNames(textCls, { 'hi-select-tree__title--focus': node.id === activeId })}>
+                      {node.title}
+                    </span>
                   </Checkbox>
                 ) : (
                   <span
-                    className={textCls}
+                    className={classNames(textCls, { 'hi-select-tree__title--focus': node.id === activeId })}
                     onClick={() => {
                       onNodeClick(node, children)
                     }}

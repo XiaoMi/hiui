@@ -7,6 +7,8 @@ interface Props {
   disabled?: boolean
   clearable?: boolean
   placeholder?: string
+  style?: CSSProperties
+  ref?: string | ((instance: HTMLInputElement | null) => void) | React.RefObject<HTMLInputElement> | null | undefined
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void

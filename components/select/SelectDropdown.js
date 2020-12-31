@@ -225,6 +225,7 @@ const SelectDropdown = ({
   }
   const normalItem = (item, filterItemsIndex, isChildItem) => {
     matched++
+    const _filterItemsIndex = filterItemsIndex
     const isSelected = itemSelected(item)
     const isDisabled = item[transKeys(fieldNames, 'disabled')]
     return (
@@ -236,7 +237,7 @@ const SelectDropdown = ({
           'is-focus': filterItemsIndex === focusedIndex,
           'hi-select__dropdown--item-default': !item[transKeys(fieldNames, 'children')] && !dropdownRender
         })}
-        onClick={(e) => onClickOptionIntal(e, item, filterItemsIndex)}
+        onClick={(e) => onClickOptionIntal(e, item, _filterItemsIndex)}
         key={item[transKeys(fieldNames, 'id')]}
         index={filterItemsIndex}
       >
