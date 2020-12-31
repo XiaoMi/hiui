@@ -24,6 +24,7 @@
 - 修复 `Loading` children 不存在时，设置 visible 为 false 无效的问题 [#1461](https://github.com/XiaoMi/hiui/issues/1461)
 - 优化 `Tabs` 组件弹出层样式[#1437](https://github.com/XiaoMi/hiui/issues/1437)
 - 优化 `DatePicker` 类型为 week 时输入框显示内容以及周起始方式 [#1475](https://github.com/XiaoMi/hiui/issues/1475)
+- 优化 `Progress` width、height 属性支持传入String类型 [#1480](https://github.com/XiaoMi/hiui/issues/1480)
 
 ## 3.2.0
 
