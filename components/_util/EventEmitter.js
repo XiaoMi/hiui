@@ -10,7 +10,6 @@ class EventEmitter {
 
   // 触发事件
   emit(type, ...arg) {
-    console.log(this.event)
     this.event[type] && this.event[type](...arg)
   }
 
