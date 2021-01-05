@@ -219,7 +219,7 @@ const SelectDropdown = ({
     )
     renderGroup.push(label)
     filterGroupItem[transKeys(fieldNames, 'children')].forEach((item, index) => {
-      renderGroup.push(normalItem(item, filterItemsIndex + '-' + index, true))
+      matchFilter(item) && renderGroup.push(normalItem(item, filterItemsIndex + '-' + index, true))
     })
     return renderGroup
   }

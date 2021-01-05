@@ -3,6 +3,7 @@
 ## 3.3.1
 
 - 修复 `SelectTree` 搜索输入框在输入值时失焦问题 [#1491](https://github.com/XiaoMi/hiui/issues/1491)
+- 修复 `Select` 组件分组形态 filterOption 函数无法使用 [#1497](https://github.com/XiaoMi/hiui/issues/1497)
 ## 3.3.0
 - 新增 `Card` 模式模式下 loading 加载中状态 [#1454](https://github.com/XiaoMi/hiui/issues/1454)
 - 新增 `Table` loading 加载中状态 [#1466](https://github.com/XiaoMi/hiui/issues/1466)
