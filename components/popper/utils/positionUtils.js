@@ -60,57 +60,90 @@ const positionAuto = (attachEleRect, popperHeight, popperRef, height, containerH
   }
   return placement
 }
-const getPlacement = (attachEleRect, container, props, state) => {
-  let { popperHeight, popperRef } = state
+const caclLeftOrRightPlacement = (leftPlacement, RightPlacement, popperRef, widthConstant) => {
+  let { width, popperWidth, poperLeft, containerWidth } = widthConstant
+  // 计算popper在元素上面或下面
+  let placement = RightPlacement
+  popperWidth === undefined && (popperWidth = 0) // 自动探测边界，第一次时需设置为不可见，否则会闪跳,用来设置class hi-popper__content--hide
+  if (popperRef || width) {
+    // 元素已挂载到dom且当前popper处于显示状态
+    if (width) {
+      popperWidth = width
+    } else if (popperRef.clientWidth && popperWidth !== popperRef.clientWidth) {
+      popperWidth = popperRef.clientWidth
+    }
+    poperLeft += popperWidth
+    if (poperLeft >= containerWidth) {
+      placement = leftPlacement
+    }
+  }
+  return placement
+}
+const caclBottomOrTopPlacement = (bottomPlacement, topPlacement, popperRef, heightConstant, widthConstant) => {
+  let { popperHeight, height, poperTop, containerHeight } = heightConstant
+  // 计算popper在元素上面或下面
+  let placement = bottomPlacement
+  popperHeight === undefined && (popperHeight = 0) // 自动探测边界，第一次时需设置为不可见，否则会闪跳,用来设置class hi-popper__content--hide
+  if (popperRef || height) {
+    // 元素已挂载到dom且当前popper处于显示状态
+    if (height) {
+      popperHeight = height
+    } else if (popperRef.clientHeight && popperHeight !== popperRef.clientHeight) {
+      popperHeight = popperRef.clientHeight
+    }
+    poperTop += popperHeight
+    if (poperTop >= containerHeight) {
+      placement = topPlacement
+    }
+  }
+  const topOrbottom = placement === 'top-start' ? 'top' : 'bottom'
+  placement = topOrbottom + '-' + caclLeftOrRightPlacement('end', 'start', popperRef, widthConstant)
+  return placement
+}
+const getPlacement = (attachEleRect, container, props, state, attachEleWidth) => {
+  const { popperHeight, popperRef, popperWidth } = state
   let { attachEle, placement, height, width = 0, leftGap = 0 } = props
 
   if (!attachEle) return
   let containerHeight = document.documentElement.clientHeight || document.body.clientHeight
+  let containerWidth = document.documentElement.clientWidth || document.body.clientWidth
 
   if (isFixed(attachEle)) {
     containerHeight = container.clientHeight
+    containerWidth = container.clientWidth
   }
   if (isBody(container)) {
     containerHeight = document.documentElement.clientHeight || document.body.clientHeight
+    containerWidth = document.documentElement.clientWidth || document.body.clientWidth
   }
 
-  let poperTop = attachEleRect.top + attachEleRect.height
-  const caclBottomOrTopPlacement = (bottomPlacement, topPlacement) => {
-    // 计算popper在元素上面或下面
-    placement = bottomPlacement
-    popperHeight === undefined && (popperHeight = 0) // 自动探测边界，第一次时需设置为不可见，否则会闪跳,用来设置class hi-popper__content--hide
-    if (popperRef || height) {
-      // 元素已挂载到dom且当前popper处于显示状态
-      if (height) {
-        popperHeight = height
-      } else if (popperRef.clientHeight && popperHeight !== popperRef.clientHeight) {
-        popperHeight = popperRef.clientHeight
-      }
-      poperTop += popperHeight
-      if (poperTop >= containerHeight) {
-        placement = topPlacement
-      }
-    }
+  const poperTop = attachEleRect.top + attachEleRect.height
+  const poperLeft = attachEleRect.left + attachEleRect.width
+
+  const widthConstant = {
+    width,
+    popperWidth,
+    poperLeft,
+    containerWidth,
+    attachEleWidth,
+    leftGap
   }
-  const caclLeftOrRightPlacement = (leftPlacement, RightPlacement) => {
-    // 计算popper在元素上面或下面
-    placement = leftPlacement
-    const _width = popperRef ? popperRef.clientWidth : width
-    if (attachEleRect.right > _width + leftGap) {
-      placement = RightPlacement
-    }
-    if (attachEleRect.left > _width + leftGap) {
-      placement = leftPlacement
-    }
+  const heightConstant = {
+    popperHeight,
+    height,
+    poperTop,
+    containerHeight,
+    leftGap
   }
+
   if (placement === 'top-bottom-start') {
-    caclBottomOrTopPlacement('bottom-start', 'top-start')
+    placement = caclBottomOrTopPlacement('bottom-start', 'top-start', popperRef, heightConstant, widthConstant)
   } else if (placement === 'top-bottom') {
-    caclBottomOrTopPlacement('bottom', 'top')
+    placement = caclBottomOrTopPlacement('bottom', 'top', popperRef, heightConstant, widthConstant)
   } else if (placement === 'left-right-start') {
-    caclLeftOrRightPlacement('left-start', 'right-start')
+    placement = caclLeftOrRightPlacement('left-start', 'right-start', popperRef, widthConstant)
   } else if (placement === 'left-right') {
-    caclLeftOrRightPlacement('left', 'right')
+    placement = caclLeftOrRightPlacement('left', 'right', popperRef, width, widthConstant)
   } else if (placement === 'auto') {
     positionAuto(attachEleRect, popperHeight, popperRef, height, containerHeight)
   }
@@ -120,7 +153,7 @@ export const getOffset = (props, state, status) => {
   let { attachEle, topGap, leftGap, width, container, preventOverflow } = props
   if (!attachEle) return
 
-  const { popperHeight } = state
+  const { popperHeight, popperWidth } = state
   let rect = attachEle.getBoundingClientRect()
 
   if (isFixed(attachEle) && !isBody(container)) {
@@ -138,9 +171,9 @@ export const getOffset = (props, state, status) => {
   let top = rect.top + _scrollTop
   let left = rect.left + _scrollLeft
 
-  width = width === false ? '' : width === undefined ? rect.width : width
-
-  let placement = getPlacement(rect, container, props, state) || 'bottom-start'
+  width = width === false ? popperWidth : width === undefined ? rect.width : width
+  const _width = width
+  let placement = getPlacement(rect, container, props, state, width) || 'bottom-start'
   const rectHeight = rect.height
   switch (placement) {
     case 'bottom':
@@ -173,11 +206,11 @@ export const getOffset = (props, state, status) => {
       break
     case 'left-start':
       top = top + topGap
-      left = left - rect.width
+      left = left - width
       break
     case 'left-end':
       top = top + rect.height - topGap - popperHeight
-      left = left - rect.width
+      left = left - width
       break
 
     case 'right':
@@ -190,7 +223,7 @@ export const getOffset = (props, state, status) => {
       break
     case 'right-end':
       top = top + rect.height - topGap - popperHeight
-      left = left + rect.width + leftGap
+      left = left + width + leftGap
       break
   }
 
@@ -199,7 +232,7 @@ export const getOffset = (props, state, status) => {
   }
 
   return {
-    width,
+    width: _width,
     top,
     left,
     placement: placement

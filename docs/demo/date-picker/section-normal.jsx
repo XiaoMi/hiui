@@ -12,6 +12,7 @@ class Demo extends React.Component {
   render () {
     return (
       <DatePicker
+       placement={'left-right-start'}
         onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
       />
     )
