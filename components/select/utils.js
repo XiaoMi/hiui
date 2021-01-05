@@ -14,7 +14,6 @@ export const resetSelectedItems = (value, dropdownItems = [], key) => {
   const selectedItems = dropdownItems.filter((item) => {
     return values.includes(item[key])
   })
-
   // 处理子节点
   dropdownItems.forEach((item) => {
     if (item.children) {
@@ -28,4 +27,14 @@ export const resetSelectedItems = (value, dropdownItems = [], key) => {
 
 export const transKeys = (fieldNames, key) => {
   return fieldNames[key] || key
+}
+export const uniqBy = (array, key) => {
+  const haseMap = {}
+  array.forEach((item) => {
+    const _key = typeof item.groupId !== 'undefined' ? item.groupId : item[key]
+    haseMap[_key] = item
+  })
+  return Object.keys(haseMap).map((key) => {
+    return haseMap[key]
+  })
 }

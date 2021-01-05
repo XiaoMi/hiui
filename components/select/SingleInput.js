@@ -35,7 +35,6 @@ const SingleInput = (props) => {
   const selectedItems = propsSelectItem.length > 0 ? propsSelectItem : cacheselectedItems
 
   placeholder = selectedItems.length > 0 ? selectedItems[0][transKeys(fieldNames, 'title')] : placeholder
-
   return (
     <div
       className={classNames(
