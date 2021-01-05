@@ -3,6 +3,7 @@
 ## 3.3.1
 
 - 修复 `SelectTree` 搜索输入框在输入值时失焦问题 [#1491](https://github.com/XiaoMi/hiui/issues/1491)
+- 优化组件弹出层自动计算合适的左右位置 [#1494](https://github.com/XiaoMi/hiui/issues/1494)
 ## 3.3.0
 - 新增 `Card` 模式模式下 loading 加载中状态 [#1454](https://github.com/XiaoMi/hiui/issues/1454)
 - 新增 `Table` loading 加载中状态 [#1466](https://github.com/XiaoMi/hiui/issues/1466)
