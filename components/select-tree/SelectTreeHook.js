@@ -422,7 +422,6 @@ const SelectTree = ({
   }
   // 搜索框的值改变时的事件
   const changeEvents = (val) => {
-    setSearchValue(val)
     if (dataSource && val.length) {
       setAutoload(true)
       onTrigger(val)
@@ -557,13 +556,14 @@ const SelectTree = ({
                       placeholder={localeDatas.selectTree.search}
                       clearable="true"
                       clearabletrigger="always"
-                      defaultValue={searchValue}
+                      value={searchValue}
                       onKeyDown={(e) => {
                         if (e.keyCode === '13') {
                           searchTreeNode(e.target.value)
                         }
                       }}
                       onChange={(e) => {
+                        setSearchValue(e.target.value)
                         debouncedFilterItems(e.target.value)
                       }}
                     />
