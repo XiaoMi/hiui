@@ -3,6 +3,7 @@
 ## 3.3.1
 
 - 修复 `SelectTree` 搜索输入框在输入值时失焦问题 [#1491](https://github.com/XiaoMi/hiui/issues/1491)
+- 优化组件弹出层自动计算合适的左右位置 [#1494](https://github.com/XiaoMi/hiui/issues/1494)
 - 修复 `Select` 组件分组形态 filterOption 函数无法使用问题 [#1497](https://github.com/XiaoMi/hiui/issues/1497)
 - 修复 `Tabs` 组件垂直方向样式显示异常问题 [#1493](https://github.com/XiaoMi/hiui/issues/1493)
 ## 3.3.0
