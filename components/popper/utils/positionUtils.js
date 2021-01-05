@@ -173,9 +173,8 @@ export const getOffset = (props, state, status) => {
 
   let top = rect.top + _scrollTop
   let left = rect.left + _scrollLeft
-
+  const _width = width === false ? '' : width === undefined ? rect.width : width
   width = width === false ? popperWidth : width === undefined ? rect.width : width
-  const _width = width
   let placement = getPlacement(rect, container, props, state, rect.width) || 'bottom-start'
   const rectHeight = rect.height
   switch (placement) {
