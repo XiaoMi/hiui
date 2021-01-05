@@ -15,6 +15,7 @@ $prefix: 'hi-tabs' !default;
     cursor: pointer;
     border: 1px solid transparent;
     transition: all 300ms;
+
     &:not(&--disabled):focus {
       outline: none;
       color: use-color('primary');
@@ -109,6 +110,12 @@ $prefix: 'hi-tabs' !default;
       &--active {
         border-bottom-color: use-color('white');
       }
+    }
+  }
+
+  &.hi-tabs--line:not(.hi-tabs--vertical) {
+    .hi-tabs__item:first-of-type {
+      padding-left: 0;
     }
   }
 
@@ -289,10 +296,6 @@ $prefix: 'hi-tabs' !default;
         line-height: 40px;
         padding: 0 16px;
         box-sizing: border-box;
-
-        &:first-of-type {
-          padding-left: 0;
-        }
 
         &:hover {
           color: use-color('primary');
