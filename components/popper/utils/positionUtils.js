@@ -64,7 +64,10 @@ const caclLeftOrRightPlacement = (leftPlacement, RightPlacement, popperRef, widt
   let { width, popperWidth, poperLeft, containerWidth, attachEleWidth } = widthConstant
   // 计算popper在元素上面或下面
   let placement = RightPlacement
-  popperWidth === undefined && (popperWidth = 0) // 自动探测边界，第一次时需设置为不可见，否则会闪跳,用来设置class hi-popper__content--hide
+  if (popperWidth === undefined) {
+    const clientWidth = popperRef || {}
+    popperWidth = clientWidth || 0
+  } // 自动探测边界，第一次时需设置为不可见，否则会闪跳,用来设置class hi-popper__content--hide
   if (popperRef || width) {
     // 元素已挂载到dom且当前popper处于显示状态
     if (width) {
