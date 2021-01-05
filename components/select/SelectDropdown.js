@@ -33,7 +33,7 @@ const SelectDropdown = ({
 }) => {
   const [filterItems, setFilterItems] = useState(dropdownItems)
   const [searchbarValue, setSearchbarValue] = useState('')
-  const [ischeckAll, setIscheckAll] = useState(false)
+  const [isCheckAll, setIsCheckAll] = useState(false)
   const searchbar = useRef('')
   const dropdownWrapper = useRef('')
   useEffect(() => {
@@ -51,13 +51,26 @@ const SelectDropdown = ({
           group--
         }
       }
-      dropdownWrapper.current.scrollTop = (_focusedIndex - 6) * 36
+      const _scrollTop = dropdownWrapper.current.scrollTop
+      const focusedIndexTop = (_focusedIndex - 6) * 36
+      // 防止点击上下滚动问题
+      dropdownWrapper.current.scrollTop =
+        _scrollTop >= focusedIndexTop && focusedIndexTop > 0 ? _scrollTop : focusedIndexTop
     }
   }, [focusedIndex])
 
   // 监控全选功能
   useEffect(() => {
-    setIscheckAll(selectedItems.length > 0 && selectedItems.length === filterItems.length)
+    const selectedItemIds = selectedItems.map((item) => {
+      return item[transKeys(fieldNames, 'id')]
+    })
+    const _isCheckAll = filterItems.every((filterItem) => {
+      const filterItemOrGroupChilds = Array.isArray(filterItem.children) ? filterItem.children : [filterItem]
+      return filterItemOrGroupChilds.every((item) => {
+        return selectedItemIds.includes(item[transKeys(fieldNames, 'id')])
+      })
+    })
+    setIsCheckAll(_isCheckAll)
   }, [selectedItems, filterItems])
   // 让搜索框获取焦点
   useEffect(() => {
@@ -306,7 +319,7 @@ const SelectDropdown = ({
           <div>
             {showCheckAll && (
               <Checkbox
-                checked={ischeckAll}
+                checked={isCheckAll}
                 onChange={(e) => {
                   checkAll(e, filterItems, e.target.checked)
                 }}

@@ -7,7 +7,7 @@ import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
 import Provider from '../context'
 import HiRequest from '../_util/hi-request'
-import { resetSelectedItems, transKeys } from './utils'
+import { resetSelectedItems, transKeys, uniqBy } from './utils'
 
 const InternalSelect = (props) => {
   const {
@@ -83,7 +83,7 @@ const InternalSelect = (props) => {
         })
       )
     }
-    historyData.current = _.uniqBy(data.concat(dropdownItems, historyData.current), transKeys(fieldNames, 'id'))
+    historyData.current = uniqBy(data.concat(dropdownItems, historyData.current), transKeys(fieldNames, 'id'))
   }, [dropdownItems, data])
 
   useEffect(() => {
@@ -103,7 +103,7 @@ const InternalSelect = (props) => {
       // 处理默认值的问题
       const selectedItems = resetSelectedItems(
         value,
-        _.uniqBy(cacheSelectItem.concat(dropdownItems), transKeys(fieldNames, 'id')),
+        uniqBy(cacheSelectItem.concat(dropdownItems), transKeys(fieldNames, 'id')),
         transKeys(fieldNames, 'id')
       )
       setSelectedItems(selectedItems)
@@ -211,7 +211,8 @@ const InternalSelect = (props) => {
           : dropdownItems[direction === 'down' ? 0 : l - 1][transKeys(fieldNames, 'children')]
         focusedGroup[1] = direction === 'down' ? -1 : _dropdownItems.length
       } else {
-        _dropdownItems = dropdownItems[focusedGroup[0]][transKeys(fieldNames, 'children')] || []
+        _dropdownItems =
+          (dropdownItems[focusedGroup[0]] && dropdownItems[focusedGroup[0]][transKeys(fieldNames, 'children')]) || []
         _group = focusedGroup[0]
       }
       return { _dropdownItems, _focusedIndex: focusedGroup[1], group: _group }
@@ -519,17 +520,20 @@ const InternalSelect = (props) => {
     }
     const _selectedItems = [...selectedItems]
     const changedItems = []
-    filterItems.forEach((item) => {
-      if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
-        if (
-          !_selectedItems
-            .map((selectItem) => selectItem[transKeys(fieldNames, 'id')])
-            .includes(item[transKeys(fieldNames, 'id')])
-        ) {
-          _selectedItems.push(item)
-          changedItems.push(item)
+    filterItems.forEach((filterItem) => {
+      const filterItemOrGroupChilds = isArray(filterItem.children) ? filterItem.children : [filterItem]
+      filterItemOrGroupChilds.forEach((item) => {
+        if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
+          if (
+            !_selectedItems
+              .map((selectItem) => selectItem[transKeys(fieldNames, 'id')])
+              .includes(item[transKeys(fieldNames, 'id')])
+          ) {
+            _selectedItems.push(item)
+            changedItems.push(item)
+          }
         }
-      }
+      })
     })
     onChange(_selectedItems, changedItems, () => {})
   }

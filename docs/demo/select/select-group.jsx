@@ -40,9 +40,11 @@ class Demo extends React.Component {
     const {value,data} = this.state
     return (
       <Select
-        type='single'
+        type='multiple'
         data={data}
+        value={this.state.value}
         placeholder='请选择'
+        showCheckAll
         style={{ width: 200 }}
         onChange={(item) => {
           this.setState({
