@@ -61,7 +61,7 @@ const positionAuto = (attachEleRect, popperHeight, popperRef, height, containerH
   return placement
 }
 const caclLeftOrRightPlacement = (leftPlacement, RightPlacement, popperRef, widthConstant) => {
-  let { width, popperWidth, poperLeft, containerWidth } = widthConstant
+  let { width, popperWidth, poperLeft, containerWidth, attachEleWidth } = widthConstant
   // 计算popper在元素上面或下面
   let placement = RightPlacement
   popperWidth === undefined && (popperWidth = 0) // 自动探测边界，第一次时需设置为不可见，否则会闪跳,用来设置class hi-popper__content--hide
@@ -72,7 +72,7 @@ const caclLeftOrRightPlacement = (leftPlacement, RightPlacement, popperRef, widt
     } else if (popperRef.clientWidth && popperWidth !== popperRef.clientWidth) {
       popperWidth = popperRef.clientWidth
     }
-    poperLeft += popperWidth
+    poperLeft = poperLeft + (popperWidth - (attachEleWidth || 0))
     if (poperLeft >= containerWidth) {
       placement = leftPlacement
     }
@@ -173,7 +173,7 @@ export const getOffset = (props, state, status) => {
 
   width = width === false ? popperWidth : width === undefined ? rect.width : width
   const _width = width
-  let placement = getPlacement(rect, container, props, state, width) || 'bottom-start'
+  let placement = getPlacement(rect, container, props, state, rect.width) || 'bottom-start'
   const rectHeight = rect.height
   switch (placement) {
     case 'bottom':
