@@ -28,6 +28,11 @@ export const resetSelectedItems = (value, dropdownItems = [], key) => {
 export const transKeys = (fieldNames, key) => {
   return fieldNames[key] || key
 }
+/**
+ * 数组去重
+ * @param {Array} array 需要去重的数组
+ * @param {String} key 判断重复的属性
+ */
 export const uniqBy = (array, key) => {
   const haseMap = {}
   array.forEach((item) => {
