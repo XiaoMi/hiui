@@ -42,6 +42,7 @@ class Demo extends React.Component {
       <Select
         type='multiple'
         data={data}
+        value={this.state.value}
         placeholder='请选择'
         showCheckAll
         style={{ width: 200 }}
