@@ -353,10 +353,12 @@ export const clearReturnData = (arg) => {
   arg = _.cloneDeep(arg)
   if (arg instanceof Array) {
     arg = arg.map((node) => {
-      delete node.ancestors
-      delete node.pId
+      if (node) {
+        delete node.ancestors
+        delete node.pId
+      }
       return node
-    })
+    }).filter(Boolean)
   } else {
     delete arg.ancestors
     delete arg.pId
