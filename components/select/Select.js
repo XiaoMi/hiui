@@ -525,9 +525,10 @@ const InternalSelect = (props) => {
       filterItemOrGroupChilds.forEach((item) => {
         if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
           if (
-            !_selectedItems
-              .map((selectItem) => selectItem[transKeys(fieldNames, 'id')])
-              .includes(item[transKeys(fieldNames, 'id')])
+            !_selectedItems.some((selectItem) => {
+              const key = transKeys(fieldNames, 'id')
+              return selectItem[key] === item[key]
+            })
           ) {
             _selectedItems.push(item)
             changedItems.push(item)
