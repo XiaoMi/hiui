@@ -19,7 +19,9 @@ const Menu = forwardRef(
       onHover,
       expandTrigger,
       localeDatasProps,
-      emptyContent
+      emptyContent,
+      focusOptionIndex,
+      currentDeep
     },
     ref
   ) => {
@@ -28,11 +30,13 @@ const Menu = forwardRef(
       let currentOptions = options.slice()
       let deep = 0
       const menus = []
+      const _focusOptionIndex = String(focusOptionIndex).split('-')
       while (currentOptions) {
         const currentValue = value[deep]
-
         const _currentOptions = currentOptions.slice()
         currentOptions = false
+        console.log('focusOptionIndex', focusOptionIndex, deep)
+        currentDeep.current = deep
         if ((isFiltered && value.length > deep) || !isFiltered) {
           menus.push(
             <ul
@@ -58,9 +62,12 @@ const Menu = forwardRef(
                       'hi-cascader-menu__item-expanded': hasChildren,
                       'hi-cascader-menu__item-disabled': !!option.disabled,
                       'hi-cascader-menu__item-active': currentValue === optionValue,
+                      'hi-cascader-menu__item-focus': String(index) === _focusOptionIndex[deep],
                       'hi-cascader-menu__item--isFiltered': isFiltered && !option.hightlight,
                       'hi-cascader-menu__item--path': isFiltered && value.includes(option.id)
                     })}
+                    data-casacder-id={option.id}
+                    data-casacder-deep={deep}
                     onClick={(e) => {
                       e.stopPropagation()
                       !option.disabled && onSelect(optionValues, hasChildren)
@@ -86,7 +93,7 @@ const Menu = forwardRef(
         }
       }
       return menus
-    }, [options, value, valueKey])
+    }, [options, value, valueKey, focusOptionIndex])
 
     const getOptionValues = useCallback((values, optionValue, index) => {
       if (index === 0) {
@@ -109,7 +116,7 @@ const Menu = forwardRef(
         {value.length === 0 && isFiltered && (
           <>
             <img src={EmptyPng} />
-            <p className="hi-cascader-menuOutter--emptyText">{emptyContent || localeDatasProps('emptyContent')}</p>' '
+            <p className="hi-cascader-menuOutter--emptyText">{emptyContent || localeDatasProps('emptyContent')}</p>
           </>
         )}
       </div>

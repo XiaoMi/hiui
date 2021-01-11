@@ -67,6 +67,10 @@ $AnimationClassName: 'hi-cascader_transition' !default;
       background-color: #f5f5f5;
     }
 
+    &-focus {
+      background-color: rgba(0, 0, 0, 0.1) !important;
+    }
+
     &--icon {
       position: absolute;
       right: 12px;

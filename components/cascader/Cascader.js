@@ -83,7 +83,8 @@ const Cascader = (props) => {
   const [cacheValue, setCacheValue] = useState(value || defaultValue || [])
   const [cascaderValue, setCascaderValue] = useState(value || defaultValue || [])
   const [cascaderLabel, setCascaderLabel] = useState(getCascaderLabel(value || defaultValue || []))
-
+  const [focusOptionIndex, setFocusOptionIndex] = useState(-1)
+  const currentDeep = useRef(0)
   const [popperShow, setPopperShow] = useState(false)
   const [keyword, setKeyword] = useState('')
 
@@ -97,7 +98,10 @@ const Cascader = (props) => {
       setCacheValue(value)
     }
   }, [value])
-
+  // 重置按键操作
+  useEffect(() => {
+    !popperShow && setFocusOptionIndex(-1)
+  }, [popperShow])
   useEffect(() => {
     setCascaderLabel(getCascaderLabel(cacheValue))
     setCascaderValue(cacheValue)
@@ -355,11 +359,115 @@ const Cascader = (props) => {
     [popperShow, cacheValue, cascaderValue, keyword]
   )
 
+  const parseFocusOptionIndex = (deep = currentDeep.current) => {
+    const optionIndexs = focusOptionIndex < 0 ? [focusOptionIndex] : String(focusOptionIndex).split('-')
+    return {
+      optionIndexs,
+      focusOptionIndex: optionIndexs[deep]
+    }
+  }
+  // 获取不同深度的数据
+  const getDeepData = (deep = currentDeep.current) => {
+    const { optionIndexs } = parseFocusOptionIndex(deep)
+    let _data = data
+    if (optionIndexs.length <= 1) {
+      return _data
+    }
+    _data = optionIndexs.reduce((deepData, current) => {
+      return deepData[current].children
+    }, data)
+    return _data
+  }
+  // 上下按键
+  const moveFocusedIndex = (direction) => {
+    const _data = currentDeep === 0 ? data : getDeepData()
+    const { focusOptionIndex } = parseFocusOptionIndex()
+    const isAllDisabled = _data.every((item) => {
+      return item.disabled
+    })
+    let index = direction === 'down' ? focusOptionIndex / 1 + 1 : focusOptionIndex / 1 - 1
+    if (index < 0) {
+      index = _data.length - 1
+    } else if (index > _data.length) {
+      index = 0
+    }
+    if (!isAllDisabled) {
+      while (data[index] && data[index].disabled) {
+        index++
+      }
+      if (currentDeep.current > 0) {
+        const _focusOptionIndex = String(focusOptionIndex).split('-')
+        _focusOptionIndex[currentDeep.current] = index
+        index = _focusOptionIndex.join('-')
+      }
+      setFocusOptionIndex(index)
+    } else {
+      setFocusOptionIndex(-1)
+    }
+  }
+  // 右按键
+  const rightHandle = () => {
+    // onChangeValue
+    const { optionIndexs } = parseFocusOptionIndex()
+    const optionValues = []
+    const l = optionIndexs.length
+    optionIndexs.map((item, index) => {
+      optionValues.push(getDeepData(index)[item].id)
+    })
+    const _data = getDeepData(l - 1)[optionIndexs[l - 1]]
+    onChangeValue(optionValues, !!_data.children)
+  }
+  // 按键操作
+  const handleKeyDown = (evt) => {
+    // space
+    if (evt.keyCode === 32) {
+      evt.preventDefault()
+      evt.stopPropagation()
+      setPopperShow(true)
+    }
+    // esc
+    if (evt.keyCode === 27) {
+      evt.stopPropagation()
+      setPopperShow(false)
+    }
+    if (popperShow) {
+      // down
+      if (evt.keyCode === 40) {
+        evt.stopPropagation()
+        evt.preventDefault()
+        moveFocusedIndex('down')
+      }
+      // up
+      if (evt.keyCode === 38) {
+        evt.preventDefault()
+        evt.stopPropagation()
+        moveFocusedIndex('up')
+      }
+      // right
+      if (evt.keyCode === 39) {
+        evt.preventDefault()
+        evt.stopPropagation()
+        rightHandle()
+      }
+      // left
+      if (evt.keyCode === 37) {
+        evt.preventDefault()
+        evt.stopPropagation()
+      }
+    }
+  }
+
   const expandIcon = popperShow ? 'icon-up' : 'icon-down'
   const placeholder = cascaderLabel || localeDatasProps('placeholder')
 
   return (
-    <div className={classNames('hi-cascader', `theme__${theme}`, className, extraClass)} style={style} ref={hiCascader}>
+    <div
+      className={classNames('hi-cascader', `theme__${theme}`, className, extraClass)}
+      style={style}
+      ref={hiCascader}
+      tabIndex="0"
+      onKeyDown={handleKeyDown}
+    >
       <div className="hi-cascader__input-container" ref={inputContainer} onClick={handleClick}>
         <input
           ref={inputRef}
@@ -414,7 +522,9 @@ const Cascader = (props) => {
           childrenKey={getChildrenKey()}
           onSelect={onChangeValue}
           onHover={onHover}
+          currentDeep={currentDeep}
           expandTrigger={expandTrigger}
+          focusOptionIndex={focusOptionIndex}
           emptyContent={emptyContent}
           localeDatasProps={localeDatasProps}
         />

@@ -76,7 +76,6 @@ class Demo extends React.Component {
           })
         }}
      
-        value={value}
         data={this.state.options}
         style={{ width: 240 }}
       />
@@ -310,12 +309,6 @@ class Demo extends React.Component {
 ]
 
 const DemoBasic = () => (
-  <DocViewer
-    code={code}
-    scope={{ Cascader }}
-    prefix={prefix}
-    desc={desc}
-    rightOptions={rightOptions}
-  />
+  <DocViewer code={code} scope={{ Cascader }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
 )
 export default DemoBasic

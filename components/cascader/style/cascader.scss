@@ -3,6 +3,8 @@
 $cascader: 'hi-cascader' !default;
 
 .#{$cascader} {
+  outline: none;
+
   &.hi-cascader--focused {
     .hi-cascader {
       &__input-container {
