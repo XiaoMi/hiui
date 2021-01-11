@@ -414,8 +414,14 @@ const Cascader = (props) => {
     optionIndexs.map((item, index) => {
       optionValues.push(getDeepData(index)[item].id)
     })
-    const _data = getDeepData(l - 1)[optionIndexs[l - 1]]
-    onChangeValue(optionValues, !!_data.children)
+    const { children } = getDeepData(l - 1)[optionIndexs[l - 1]]
+    onChangeValue(optionValues, !!children)
+    console.log('children', children)
+    let index = 0
+    while (children[index] && children[index].disabled) {
+      index++
+    }
+    setFocusOptionIndex(focusOptionIndex + '-' + index)
   }
   // 按键操作
   const handleKeyDown = (evt) => {
