@@ -98,10 +98,11 @@ const Cascader = (props) => {
       setCacheValue(value)
     }
   }, [value])
-  // 重置按键操作
-  useEffect(() => {
-    !popperShow && setFocusOptionIndex(-1)
-  }, [popperShow])
+  // useEffect(() => {
+  //   setFocusOptionIndex(-1)
+  //   currentDeep.current = 0
+  // }, [popperShow])
+
   useEffect(() => {
     setCascaderLabel(getCascaderLabel(cacheValue))
     setCascaderValue(cacheValue)
@@ -362,33 +363,34 @@ const Cascader = (props) => {
   const parseFocusOptionIndex = (deep = currentDeep.current) => {
     const optionIndexs = focusOptionIndex < 0 ? [focusOptionIndex] : String(focusOptionIndex).split('-')
     return {
-      optionIndexs,
+      optionIndexs: optionIndexs.slice(0, deep + 1),
       focusOptionIndex: optionIndexs[deep]
     }
   }
-  // 获取不同深度的数据
+  // 获取不同深度的数据, 该深度的全部数据而不是单条数据
   const getDeepData = (deep = currentDeep.current) => {
     const { optionIndexs } = parseFocusOptionIndex(deep)
     let _data = data
     if (optionIndexs.length <= 1) {
       return _data
     }
-    _data = optionIndexs.reduce((deepData, current) => {
+    _data = optionIndexs.reduce((deepData, current, index) => {
+      if (index === 0) return deepData
       return deepData[current].children
     }, data)
     return _data
   }
   // 上下按键
   const moveFocusedIndex = (direction) => {
-    const _data = currentDeep === 0 ? data : getDeepData()
-    const { focusOptionIndex } = parseFocusOptionIndex()
+    const _data = currentDeep.current === 0 ? data : getDeepData()
+    const { focusOptionIndex: _focusOptionIndex } = parseFocusOptionIndex()
     const isAllDisabled = _data.every((item) => {
       return item.disabled
     })
-    let index = direction === 'down' ? focusOptionIndex / 1 + 1 : focusOptionIndex / 1 - 1
+    let index = direction === 'down' ? _focusOptionIndex / 1 + 1 : _focusOptionIndex / 1 - 1
     if (index < 0) {
       index = _data.length - 1
-    } else if (index > _data.length) {
+    } else if (index >= _data.length) {
       index = 0
     }
     if (!isAllDisabled) {
@@ -405,23 +407,32 @@ const Cascader = (props) => {
       setFocusOptionIndex(-1)
     }
   }
-  // 右按键
+  // 右方向按键
   const rightHandle = () => {
     // onChangeValue
     const { optionIndexs } = parseFocusOptionIndex()
     const optionValues = []
     const l = optionIndexs.length
     optionIndexs.map((item, index) => {
-      optionValues.push(getDeepData(index)[item].id)
+      const _data = getDeepData(index)
+      optionValues.push(_data[item].id)
     })
-    const { children } = getDeepData(l - 1)[optionIndexs[l - 1]]
-    onChangeValue(optionValues, !!children)
-    console.log('children', children)
+    const { children = [] } = getDeepData(l - 1)[optionIndexs[l - 1]]
+    const hasChildren = !!children.length
+    onChangeValue(optionValues, hasChildren)
     let index = 0
     while (children[index] && children[index].disabled) {
       index++
     }
-    setFocusOptionIndex(focusOptionIndex + '-' + index)
+    index = hasChildren ? focusOptionIndex + '-' + index : focusOptionIndex
+    setFocusOptionIndex(index)
+  }
+  // 左方向按键
+  const leftHandle = () => {
+    const optionsIndex = focusOptionIndex.split('-')
+    if (cascaderValue.length === 0) return
+    setFocusOptionIndex(optionsIndex.splice(0, optionsIndex.length - 1).join('-'))
+    onChangeValue(cascaderValue.splice(0, cascaderValue.length - 1), true)
   }
   // 按键操作
   const handleKeyDown = (evt) => {
@@ -459,13 +470,14 @@ const Cascader = (props) => {
       if (evt.keyCode === 37) {
         evt.preventDefault()
         evt.stopPropagation()
+        leftHandle()
       }
     }
   }
 
   const expandIcon = popperShow ? 'icon-up' : 'icon-down'
   const placeholder = cascaderLabel || localeDatasProps('placeholder')
-
+  console.log('now focusOptionIndex:', focusOptionIndex)
   return (
     <div
       className={classNames('hi-cascader', `theme__${theme}`, className, extraClass)}

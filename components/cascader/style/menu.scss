@@ -54,7 +54,7 @@ $AnimationClassName: 'hi-cascader_transition' !default;
       padding-right: 25px;
     }
 
-    &.hi-cascader-menu__item-active {
+    &.hi-cascader-menu__item-active:not(.hi-cascader-menu__item-focus) {
       color: #4284f5;
       background-color: transparent !important;
 

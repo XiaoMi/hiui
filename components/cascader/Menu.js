@@ -30,7 +30,7 @@ const Menu = forwardRef(
       let currentOptions = options.slice()
       let deep = 0
       const menus = []
-      const _focusOptionIndex = String(focusOptionIndex).split('-')
+      const _focusOptionIndex = focusOptionIndex < 0 ? [focusOptionIndex] : String(focusOptionIndex).split('-')
       while (currentOptions) {
         const currentValue = value[deep]
         const _currentOptions = currentOptions.slice()
@@ -62,7 +62,8 @@ const Menu = forwardRef(
                       'hi-cascader-menu__item-expanded': hasChildren,
                       'hi-cascader-menu__item-disabled': !!option.disabled,
                       'hi-cascader-menu__item-active': currentValue === optionValue,
-                      'hi-cascader-menu__item-focus': String(index) === _focusOptionIndex[deep],
+                      'hi-cascader-menu__item-focus':
+                        String(index) === _focusOptionIndex[deep] && deep === _focusOptionIndex.length - 1,
                       'hi-cascader-menu__item--isFiltered': isFiltered && !option.hightlight,
                       'hi-cascader-menu__item--path': isFiltered && value.includes(option.id)
                     })}
@@ -70,6 +71,7 @@ const Menu = forwardRef(
                     data-casacder-deep={deep}
                     onClick={(e) => {
                       e.stopPropagation()
+                      console.log('optionValues', optionValues)
                       !option.disabled && onSelect(optionValues, hasChildren)
                     }}
                     onMouseEnter={(e) => {
