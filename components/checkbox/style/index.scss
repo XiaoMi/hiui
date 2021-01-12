@@ -44,9 +44,8 @@ $prefixCls: '.hi-checkbox' !default;
   @include component-reset();
 
   input {
-    position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 0;
+    height: 0;
     opacity: 0;
   }
 
