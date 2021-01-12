@@ -391,7 +391,8 @@ const Cascader = (props) => {
     }
     _data = optionIndexs.reduce((deepData, current, index) => {
       if (index === 0) return deepData
-      return deepData[current][getChildrenKey()]
+      const _index = optionIndexs[index - 1]
+      return deepData[_index][getChildrenKey()]
     }, data)
     return _data || []
   }
@@ -440,7 +441,6 @@ const Cascader = (props) => {
     const currentItem = getDeepData(l - 1)[optionIndexs[l - 1]] || {}
     const children = currentItem[getChildrenKey()] || []
     const hasChildren = !!children.length
-    console.log('optionValues', optionValues, hasChildren)
     onChangeValue(optionValues, hasChildren)
     let index = 0
     while (children[index] && children[index].disabled) {
