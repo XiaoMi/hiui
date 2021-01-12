@@ -21,7 +21,9 @@ const Menu = forwardRef(
       localeDatasProps,
       emptyContent,
       focusOptionIndex,
-      currentDeep
+      currentDeep,
+      targetByKeyDown,
+      setFocusOptionIndex
     },
     ref
   ) => {
@@ -30,13 +32,11 @@ const Menu = forwardRef(
       let currentOptions = options.slice()
       let deep = 0
       const menus = []
-      const _focusOptionIndex = focusOptionIndex < 0 ? [focusOptionIndex] : String(focusOptionIndex).split('-')
       while (currentOptions) {
         const currentValue = value[deep]
         const _currentOptions = currentOptions.slice()
         currentOptions = false
-        console.log('focusOptionIndex', focusOptionIndex, deep)
-        currentDeep.current = deep
+        // currentDeep.current = deep
         if ((isFiltered && value.length > deep) || !isFiltered) {
           menus.push(
             <ul
@@ -51,8 +51,9 @@ const Menu = forwardRef(
                 const hasChildren = Array.isArray(option[childrenKey])
                 const isExpanded = hasChildren && optionValue === currentValue
                 const expandIcon = 'icon-right'
+                const { _path } = option
+                const _deep = deep
                 const optionValues = option.jointOption ? optionValue : getOptionValues(value, optionValue, deep) // jointOption为true代表搜索拼接出来的option，直接取value即可
-
                 if (isExpanded) {
                   currentOptions = option[childrenKey]
                 }
@@ -62,8 +63,7 @@ const Menu = forwardRef(
                       'hi-cascader-menu__item-expanded': hasChildren,
                       'hi-cascader-menu__item-disabled': !!option.disabled,
                       'hi-cascader-menu__item-active': currentValue === optionValue,
-                      'hi-cascader-menu__item-focus':
-                        String(index) === _focusOptionIndex[deep] && deep === _focusOptionIndex.length - 1,
+                      'hi-cascader-menu__item-focus': String(_path) === focusOptionIndex && targetByKeyDown.current,
                       'hi-cascader-menu__item--isFiltered': isFiltered && !option.hightlight,
                       'hi-cascader-menu__item--path': isFiltered && value.includes(option.id)
                     })}
@@ -71,12 +71,22 @@ const Menu = forwardRef(
                     data-casacder-deep={deep}
                     onClick={(e) => {
                       e.stopPropagation()
-                      console.log('optionValues', optionValues)
-                      !option.disabled && onSelect(optionValues, hasChildren)
+                      if (!option.disabled) {
+                        console.log('optionValues', optionValues, hasChildren)
+                        onSelect(optionValues, hasChildren)
+                        targetByKeyDown.current = false
+                        setFocusOptionIndex(_path)
+                        currentDeep.current = _deep
+                      }
                     }}
                     onMouseEnter={(e) => {
                       e.stopPropagation()
-                      !option.disabled && expandTrigger === 'hover' && onHover(optionValues, hasChildren)
+                      if (!option.disabled && expandTrigger === 'hover') {
+                        onHover(optionValues, hasChildren)
+                        targetByKeyDown.current = false
+                        setFocusOptionIndex(_path)
+                        currentDeep.current = _deep
+                      }
                     }}
                     key={optionValue + index}
                   >

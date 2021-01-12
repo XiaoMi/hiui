@@ -1,7 +1,7 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react'
 
 import classNames from 'classnames'
-
+import _ from 'lodash'
 import Popper from '../popper'
 
 import Menu from './Menu'
@@ -27,10 +27,6 @@ const Cascader = (props) => {
     onChange = noop,
     onActiveItemChange = noop
   } = props
-  const data = props.data || props.options // 兼容1.x API 2.x 改为data
-  const emptyContent = props.emptyContent || props.noFoundTip // 兼容1.x API 2.x改为 emptyContent
-  const expandTrigger = props.expandTrigger || props.trigger || 'click' // 兼容2.x API 1.x改为 expandTrigger
-
   const getLabelKey = useCallback(() => {
     return fieldNames.label || 'content'
   }, [])
@@ -42,7 +38,25 @@ const Cascader = (props) => {
   const getChildrenKey = useCallback(() => {
     return fieldNames.children || 'children'
   }, [])
-
+  const parseData = useCallback(
+    (data) => {
+      const _data = _.cloneDeep(data)
+      const setDataItemPath = (data = [], parent) => {
+        data.forEach((item, index) => {
+          item._path = parent ? parent._path + '-' + index : index
+          if (item[getChildrenKey()]) {
+            setDataItemPath(item[getChildrenKey()], item)
+          }
+        })
+      }
+      setDataItemPath(_data)
+      return _data
+    },
+    [props.data, props.options]
+  )
+  const data = parseData(props.data || props.options) // 兼容1.x API 2.x 改为data
+  const emptyContent = props.emptyContent || props.noFoundTip // 兼容1.x API 2.x改为 emptyContent
+  const expandTrigger = props.expandTrigger || props.trigger || 'click' // 兼容2.x API 1.x改为 expandTrigger
   const getCascaderLabel = useCallback(
     (values, dataList) => {
       if (displayRender) {
@@ -84,6 +98,7 @@ const Cascader = (props) => {
   const [cascaderValue, setCascaderValue] = useState(value || defaultValue || [])
   const [cascaderLabel, setCascaderLabel] = useState(getCascaderLabel(value || defaultValue || []))
   const [focusOptionIndex, setFocusOptionIndex] = useState(-1)
+  const targetByKeyDown = useRef(false)
   const currentDeep = useRef(0)
   const [popperShow, setPopperShow] = useState(false)
   const [keyword, setKeyword] = useState('')
@@ -98,10 +113,10 @@ const Cascader = (props) => {
       setCacheValue(value)
     }
   }, [value])
-  // useEffect(() => {
-  //   setFocusOptionIndex(-1)
-  //   currentDeep.current = 0
-  // }, [popperShow])
+  useEffect(() => {
+    setFocusOptionIndex(-1)
+    currentDeep.current = 0
+  }, [popperShow])
 
   useEffect(() => {
     setCascaderLabel(getCascaderLabel(cacheValue))
@@ -364,7 +379,7 @@ const Cascader = (props) => {
     const optionIndexs = focusOptionIndex < 0 ? [focusOptionIndex] : String(focusOptionIndex).split('-')
     return {
       optionIndexs: optionIndexs.slice(0, deep + 1),
-      focusOptionIndex: optionIndexs[deep]
+      focusOptionIndex: optionIndexs[deep] || -1
     }
   }
   // 获取不同深度的数据, 该深度的全部数据而不是单条数据
@@ -376,12 +391,13 @@ const Cascader = (props) => {
     }
     _data = optionIndexs.reduce((deepData, current, index) => {
       if (index === 0) return deepData
-      return deepData[current].children
+      return deepData[current][getChildrenKey()]
     }, data)
-    return _data
+    return _data || []
   }
   // 上下按键
   const moveFocusedIndex = (direction) => {
+    targetByKeyDown.current = true
     const _data = currentDeep.current === 0 ? data : getDeepData()
     const { focusOptionIndex: _focusOptionIndex } = parseFocusOptionIndex()
     const isAllDisabled = _data.every((item) => {
@@ -401,6 +417,8 @@ const Cascader = (props) => {
         const _focusOptionIndex = String(focusOptionIndex).split('-')
         _focusOptionIndex[currentDeep.current] = index
         index = _focusOptionIndex.join('-')
+      } else {
+        index = String(index)
       }
       setFocusOptionIndex(index)
     } else {
@@ -410,6 +428,8 @@ const Cascader = (props) => {
   // 右方向按键
   const rightHandle = () => {
     // onChangeValue
+    targetByKeyDown.current = true
+    currentDeep.current++
     const { optionIndexs } = parseFocusOptionIndex()
     const optionValues = []
     const l = optionIndexs.length
@@ -417,8 +437,10 @@ const Cascader = (props) => {
       const _data = getDeepData(index)
       optionValues.push(_data[item].id)
     })
-    const { children = [] } = getDeepData(l - 1)[optionIndexs[l - 1]]
+    const currentItem = getDeepData(l - 1)[optionIndexs[l - 1]] || {}
+    const children = currentItem[getChildrenKey()] || []
     const hasChildren = !!children.length
+    console.log('optionValues', optionValues, hasChildren)
     onChangeValue(optionValues, hasChildren)
     let index = 0
     while (children[index] && children[index].disabled) {
@@ -429,8 +451,14 @@ const Cascader = (props) => {
   }
   // 左方向按键
   const leftHandle = () => {
+    targetByKeyDown.current = true
+
     const optionsIndex = focusOptionIndex.split('-')
-    if (cascaderValue.length === 0) return
+    if (cascaderValue.length === 0) {
+      currentDeep.current = 0
+      return
+    }
+    currentDeep.current--
     setFocusOptionIndex(optionsIndex.splice(0, optionsIndex.length - 1).join('-'))
     onChangeValue(cascaderValue.splice(0, cascaderValue.length - 1), true)
   }
@@ -461,7 +489,7 @@ const Cascader = (props) => {
         moveFocusedIndex('up')
       }
       // right
-      if (evt.keyCode === 39) {
+      if (evt.keyCode === 39 || evt.keyCode === 13) {
         evt.preventDefault()
         evt.stopPropagation()
         rightHandle()
@@ -477,7 +505,6 @@ const Cascader = (props) => {
 
   const expandIcon = popperShow ? 'icon-up' : 'icon-down'
   const placeholder = cascaderLabel || localeDatasProps('placeholder')
-  console.log('now focusOptionIndex:', focusOptionIndex)
   return (
     <div
       className={classNames('hi-cascader', `theme__${theme}`, className, extraClass)}
@@ -543,6 +570,8 @@ const Cascader = (props) => {
           currentDeep={currentDeep}
           expandTrigger={expandTrigger}
           focusOptionIndex={focusOptionIndex}
+          setFocusOptionIndex={setFocusOptionIndex}
+          targetByKeyDown={targetByKeyDown}
           emptyContent={emptyContent}
           localeDatasProps={localeDatasProps}
         />
