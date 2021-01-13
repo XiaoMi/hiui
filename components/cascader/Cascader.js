@@ -477,7 +477,7 @@ const Cascader = (props) => {
       if (evt.keyCode === 32 && !searchable) {
         evt.preventDefault()
         evt.stopPropagation()
-        setPopperShow(true)
+        setPopperShow(!popperShow)
       }
       // esc
       if (evt.keyCode === 27) {
