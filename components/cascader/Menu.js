@@ -70,7 +70,6 @@ const Menu = forwardRef(
                     onClick={(e) => {
                       e.stopPropagation()
                       if (!option.disabled) {
-                        console.log('optionValues', optionValues, hasChildren)
                         onSelect(optionValues, hasChildren)
                         targetByKeyDown.current = false
                         setFocusOptionIndex(_path)
