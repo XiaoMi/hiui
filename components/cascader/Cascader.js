@@ -437,7 +437,6 @@ const Cascader = (props) => {
   )
   // 右方向按键
   const rightHandle = useCallback(() => {
-    // onChangeValue
     targetByKeyDown.current = true
     currentDeep.current++
     const { optionIndexs } = parseFocusOptionIndex()
@@ -475,7 +474,7 @@ const Cascader = (props) => {
   const handleKeyDown = useCallback(
     (evt) => {
       // space
-      if (evt.keyCode === 32) {
+      if (evt.keyCode === 32 && !searchable) {
         evt.preventDefault()
         evt.stopPropagation()
         setPopperShow(true)

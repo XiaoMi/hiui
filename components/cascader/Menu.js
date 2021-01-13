@@ -67,8 +67,6 @@ const Menu = forwardRef(
                       'hi-cascader-menu__item--isFiltered': isFiltered && !option.hightlight,
                       'hi-cascader-menu__item--path': isFiltered && value.includes(option.id)
                     })}
-                    data-casacder-id={option.id}
-                    data-casacder-deep={deep}
                     onClick={(e) => {
                       e.stopPropagation()
                       if (!option.disabled) {
