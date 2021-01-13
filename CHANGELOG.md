@@ -8,6 +8,7 @@
 - 修复 `Select` 组件分组形态全选以及受控问题 [#1501](https://github.com/XiaoMi/hiui/issues/1501)
 - 修复 `Tabs` 组件垂直方向样式显示异常问题 [#1493](https://github.com/XiaoMi/hiui/issues/1493)
 - 优化 `Checkbox` 样式相关内容 [#1482](https://github.com/XiaoMi/hiui/issues/1482)
+- 优化 `SelectTree` 异步受控数据返显问题 [#1510](https://github.com/XiaoMi/hiui/issues/1510)
 ## 3.3.0
 - 新增 `Card` 模式模式下 loading 加载中状态 [#1454](https://github.com/XiaoMi/hiui/issues/1454)
 - 新增 `Table` loading 加载中状态 [#1466](https://github.com/XiaoMi/hiui/issues/1466)

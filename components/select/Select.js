@@ -627,6 +627,7 @@ const InternalSelect = (props) => {
           checkAll={checkAll}
           loading={loading}
           focusedIndex={focusedIndex}
+          setFocusedIndex={setFocusedIndex}
           showJustSelected={showJustSelected}
           filterOption={filterOption}
           matchFilter={matchFilter}
