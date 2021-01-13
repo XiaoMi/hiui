@@ -375,59 +375,68 @@ const Cascader = (props) => {
     [popperShow, cacheValue, cascaderValue, keyword]
   )
 
-  const parseFocusOptionIndex = (deep = currentDeep.current) => {
-    const optionIndexs = focusOptionIndex < 0 ? [focusOptionIndex] : String(focusOptionIndex).split('-')
-    return {
-      optionIndexs: optionIndexs.slice(0, deep + 1),
-      focusOptionIndex: optionIndexs[deep] || -1
-    }
-  }
+  const parseFocusOptionIndex = useCallback(
+    (deep = currentDeep.current) => {
+      const optionIndexs = focusOptionIndex < 0 ? [focusOptionIndex] : String(focusOptionIndex).split('-')
+      return {
+        optionIndexs: optionIndexs.slice(0, deep + 1),
+        focusOptionIndex: optionIndexs[deep] || -1
+      }
+    },
+    [focusOptionIndex, currentDeep.current]
+  )
   // 获取不同深度的数据, 该深度的全部数据而不是单条数据
-  const getDeepData = (deep = currentDeep.current) => {
-    const { optionIndexs } = parseFocusOptionIndex(deep)
-    let _data = data
-    if (optionIndexs.length <= 1) {
-      return _data
-    }
-    _data = optionIndexs.reduce((deepData, current, index) => {
-      if (index === 0) return deepData
-      const _index = optionIndexs[index - 1]
-      return deepData[_index][getChildrenKey()]
-    }, data)
-    return _data || []
-  }
+  const getDeepData = useCallback(
+    (deep = currentDeep.current) => {
+      const { optionIndexs } = parseFocusOptionIndex(deep)
+      let _data = data
+      if (optionIndexs.length <= 1) {
+        return _data
+      }
+      _data = optionIndexs.reduce((deepData, current, index) => {
+        if (index === 0) return deepData
+        const _index = optionIndexs[index - 1]
+        return deepData[_index][getChildrenKey()]
+      }, data)
+      return _data || []
+    },
+    [parseFocusOptionIndex, data, currentDeep.current]
+  )
   // 上下按键
-  const moveFocusedIndex = (direction) => {
-    targetByKeyDown.current = true
-    const _data = currentDeep.current === 0 ? data : getDeepData()
-    const { focusOptionIndex: _focusOptionIndex } = parseFocusOptionIndex()
-    const isAllDisabled = _data.every((item) => {
-      return item.disabled
-    })
-    let index = direction === 'down' ? _focusOptionIndex / 1 + 1 : _focusOptionIndex / 1 - 1
-    if (index < 0) {
-      index = _data.length - 1
-    } else if (index >= _data.length) {
-      index = 0
-    }
-    if (!isAllDisabled) {
-      while (data[index] && data[index].disabled) {
-        index++
+  const moveFocusedIndex = useCallback(
+    (direction) => {
+      targetByKeyDown.current = true
+      const _data = currentDeep.current === 0 ? data : getDeepData()
+      const { focusOptionIndex: _focusOptionIndex } = parseFocusOptionIndex()
+      const isAllDisabled = _data.every((item) => {
+        return item.disabled
+      })
+      let index = direction === 'down' ? _focusOptionIndex / 1 + 1 : _focusOptionIndex / 1 - 1
+      if (index < 0) {
+        index = _data.length - 1
+      } else if (index >= _data.length) {
+        index = 0
       }
-      if (currentDeep.current > 0) {
-        const _focusOptionIndex = String(focusOptionIndex).split('-')
-        _focusOptionIndex[currentDeep.current] = index
-        index = _focusOptionIndex.join('-')
+      if (!isAllDisabled) {
+        while (data[index] && data[index].disabled) {
+          index++
+        }
+        if (currentDeep.current > 0) {
+          const _focusOptionIndex = String(focusOptionIndex).split('-')
+          _focusOptionIndex[currentDeep.current] = index
+          index = _focusOptionIndex.join('-')
+        } else {
+          index = String(index)
+        }
+        setFocusOptionIndex(index)
       } else {
-        index = String(index)
+        setFocusOptionIndex(-1)
       }
-      setFocusOptionIndex(index)
-    } else {
-      setFocusOptionIndex(-1)
-    }
-  }
+    },
+    [targetByKeyDown.current, currentDeep.current, data, getDeepData, parseFocusOptionIndex, focusOptionIndex]
+  )
   // 右方向按键
-  const rightHandle = () => {
+  const rightHandle = useCallback(() => {
     // onChangeValue
     targetByKeyDown.current = true
     currentDeep.current++
@@ -448,9 +457,9 @@ const Cascader = (props) => {
     }
     index = hasChildren ? focusOptionIndex + '-' + index : focusOptionIndex
     setFocusOptionIndex(index)
-  }
+  }, [targetByKeyDown.current, parseFocusOptionIndex, focusOptionIndex, onChangeValue, currentDeep.current])
   // 左方向按键
-  const leftHandle = () => {
+  const leftHandle = useCallback(() => {
     targetByKeyDown.current = true
 
     const optionsIndex = focusOptionIndex.split('-')
@@ -461,47 +470,50 @@ const Cascader = (props) => {
     currentDeep.current--
     setFocusOptionIndex(optionsIndex.splice(0, optionsIndex.length - 1).join('-'))
     onChangeValue(cascaderValue.splice(0, cascaderValue.length - 1), true)
-  }
+  }, [focusOptionIndex, targetByKeyDown.current, onChangeValue, currentDeep.current, cascaderValue])
   // 按键操作
-  const handleKeyDown = (evt) => {
-    // space
-    if (evt.keyCode === 32) {
-      evt.preventDefault()
-      evt.stopPropagation()
-      setPopperShow(true)
-    }
-    // esc
-    if (evt.keyCode === 27) {
-      evt.stopPropagation()
-      setPopperShow(false)
-    }
-    if (popperShow) {
-      // down
-      if (evt.keyCode === 40) {
-        evt.stopPropagation()
-        evt.preventDefault()
-        moveFocusedIndex('down')
-      }
-      // up
-      if (evt.keyCode === 38) {
+  const handleKeyDown = useCallback(
+    (evt) => {
+      // space
+      if (evt.keyCode === 32) {
         evt.preventDefault()
         evt.stopPropagation()
-        moveFocusedIndex('up')
+        setPopperShow(true)
       }
-      // right
-      if (evt.keyCode === 39 || evt.keyCode === 13) {
-        evt.preventDefault()
+      // esc
+      if (evt.keyCode === 27) {
         evt.stopPropagation()
-        rightHandle()
+        setPopperShow(false)
       }
-      // left
-      if (evt.keyCode === 37) {
-        evt.preventDefault()
-        evt.stopPropagation()
-        leftHandle()
+      if (popperShow) {
+        // down
+        if (evt.keyCode === 40) {
+          evt.stopPropagation()
+          evt.preventDefault()
+          moveFocusedIndex('down')
+        }
+        // up
+        if (evt.keyCode === 38) {
+          evt.preventDefault()
+          evt.stopPropagation()
+          moveFocusedIndex('up')
+        }
+        // right
+        if (evt.keyCode === 39 || evt.keyCode === 13) {
+          evt.preventDefault()
+          evt.stopPropagation()
+          rightHandle()
+        }
+        // left
+        if (evt.keyCode === 37) {
+          evt.preventDefault()
+          evt.stopPropagation()
+          leftHandle()
+        }
       }
-    }
-  }
+    },
+    [moveFocusedIndex, rightHandle, leftHandle]
+  )
 
   const expandIcon = popperShow ? 'icon-up' : 'icon-down'
   const placeholder = cascaderLabel || localeDatasProps('placeholder')
