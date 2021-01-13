@@ -30,7 +30,6 @@ const SelectDropdown = ({
   fieldNames,
   focusedIndex,
   isGroup,
-  tragetByKeyDown,
   setFocusedIndex
 }) => {
   const [filterItems, setFilterItems] = useState(dropdownItems)
