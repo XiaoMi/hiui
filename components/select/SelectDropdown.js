@@ -29,7 +29,9 @@ const SelectDropdown = ({
   show,
   fieldNames,
   focusedIndex,
-  isGroup
+  isGroup,
+  tragetByKeyDown,
+  setFocusedIndex
 }) => {
   const [filterItems, setFilterItems] = useState(dropdownItems)
   const [searchbarValue, setSearchbarValue] = useState('')
@@ -253,6 +255,9 @@ const SelectDropdown = ({
         onClick={(e) => onClickOptionIntal(e, item, _filterItemsIndex)}
         key={item[transKeys(fieldNames, 'id')]}
         index={filterItemsIndex}
+        onMouseEnter={() => {
+          setFocusedIndex(_filterItemsIndex)
+        }}
       >
         {renderOption(isSelected, item, filterItemsIndex)}
       </li>
