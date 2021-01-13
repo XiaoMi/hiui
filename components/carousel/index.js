@@ -72,17 +72,11 @@ class Carousel extends Component {
   }
 
   handleKeyDown = (evt) => {
-    // right
-    if (evt.keyCode === 39) {
+    const { keyCode } = evt
+    if ([39, 37].includes(keyCode)) {
       evt.preventDefault()
       evt.stopPropagation()
-      this.preNextEvent(1)
-    }
-    // left
-    if (evt.keyCode === 37) {
-      evt.preventDefault()
-      evt.stopPropagation()
-      this.preNextEvent(-1)
+      this.preNextEvent(keyCode === 37 ? -1 : 1)
     }
   }
 
