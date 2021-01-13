@@ -114,7 +114,7 @@ const SelectTree = ({
 
   // 依赖 flattenData & value  解析生成 checkedNodes 或 selectedItems
   useEffect(() => {
-    if (flattenData.length > 0) {
+    if (flattenData.length > 0 && value) {
       if (type === 'multiple') {
         const cstatus = parseCheckStatusData(
           value,
@@ -130,7 +130,7 @@ const SelectTree = ({
         }
       }
     }
-  }, [value])
+  }, [value, flattenData])
 
   // 依赖展开项生成展开节点数据
   useEffect(() => {
@@ -478,6 +478,22 @@ const SelectTree = ({
           evt.stopPropagation()
 
           leftHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
+        }
+        // enter
+        if (evt.keyCode === 13) {
+          evt.preventDefault()
+          evt.stopPropagation()
+          if (mode !== 'breadcrumb') {
+            type === 'multiple'
+              ? checkedEvents(
+                  !selectedItems.some((item) => {
+                    return activeId === item.id
+                  }),
+                  getNodeByIdTitle(activeId, flattenData),
+                  checkedNodes
+                )
+              : selectedEvents(getNodeByIdTitle(activeId, flattenData))
+          }
         }
         // space 选中
         if (evt.keyCode === 32 && !document.activeElement.classList.value.includes('hi-selecttree__searchinput')) {
