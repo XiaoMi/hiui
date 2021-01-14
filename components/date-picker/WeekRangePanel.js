@@ -154,7 +154,7 @@ export default class WeekRangePanel extends Component {
   }
   pick (startDate, endDate) {
     const {range} = this.state
-    const {onPick} = this.props
+    const { onPick, weekOffset } = this.props
     range.startDate = startDate
     range.endDate = endDate
     this.setState({
@@ -163,9 +163,10 @@ export default class WeekRangePanel extends Component {
       rightDate: endDate || this.state.rightDate
     })
     if (endDate) {
+      const weekOptions = { weekStartsOn: weekOffset }
       onPick({
-        startDate: startOfWeek(range.startDate),
-        endDate: endOfWeek(range.endDate)
+        startDate: startOfWeek(range.startDate, weekOptions),
+        endDate: endOfWeek(range.endDate, weekOptions)
       })
     }
   }
