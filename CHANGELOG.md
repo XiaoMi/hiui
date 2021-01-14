@@ -1,5 +1,9 @@
 # 更新日志
 
+## 2.15.5
+
+- 修复 `Table` 国际化问题 [#1449](https://github.com/XiaoMi/hiui/issues/1449)
+
 ## 2.15.4
 
 - 修复 `DatePicker` type 为 weekrange 时 weekOffset 设置无效 [#1434](https://github.com/XiaoMi/hiui/issues/1434)

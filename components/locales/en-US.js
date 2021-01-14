@@ -130,5 +130,12 @@ export default {
     searchEmptyResult: 'No serach results',
     modalTitle: 'Warning',
     delTips: 'Deleting a node will delete all child nodes, are you sure to delete this node?'
+  },
+  table: {
+    highlight: 'highlight',
+    freeze:'freeze',
+    hide:'hide',
+    meanValue:'mean value',
+    emptyText:'No Data'
   }
 }

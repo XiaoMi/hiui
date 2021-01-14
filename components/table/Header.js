@@ -97,7 +97,6 @@ export default class Header extends Component {
     // 表头可以传组件，如果是文本就渲染文本
     let nodes = []
     // 固定表头分组，这里好难。。
-
     if (headerColumns && headerColumns.length > 1) {
       nodes = headerColumns.map((columns, k) => {
         let tr = []
@@ -126,11 +125,11 @@ export default class Header extends Component {
 
   contextMenu = (e, key) => {
     e.preventDefault()
-    let {cbs, scrollWidth, scrollX = false, scroll = false, size, origin} = this.props
+    let {cbs, scrollWidth, scrollX = false, scroll = false, size, origin, localeDatas} = this.props
     let sc = scrollWidth || scrollX || (scroll && scroll.x)
     if (origin && origin.url) {
       sc = false
     }
-    Menu.show(e, cbs, key, !!sc, size, this.props.headerColumns.length === 1)
+    Menu.show(e, cbs, key, !!sc, size, this.props.headerColumns.length === 1, localeDatas)
   }
 }
