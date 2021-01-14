@@ -7,7 +7,7 @@ import './style/index.scss'
 import { ThemeContext } from '../components'
 render(
   <Provider store={store}>
-    <ThemeContext.Provider value="hiui-blue">
+    <ThemeContext.Provider value="orange">
       <App />
     </ThemeContext.Provider>
   </Provider>,
