@@ -30,18 +30,21 @@ const SelectDropdown = ({
   fieldNames,
   focusedIndex,
   isGroup,
-  setFocusedIndex
+  onOverlayScroll,
+  setFocusedIndex,
+  targetByKeyDown
 }) => {
   const [filterItems, setFilterItems] = useState(dropdownItems)
   const [searchbarValue, setSearchbarValue] = useState('')
   const [isCheckAll, setIsCheckAll] = useState(false)
   const searchbar = useRef('')
   const dropdownWrapper = useRef('')
+
   useEffect(() => {
     setFilterItems(dropdownItems)
   }, [dropdownItems])
   useEffect(() => {
-    if (dropdownWrapper.current) {
+    if (dropdownWrapper.current && targetByKeyDown.current) {
       let _focusedIndex = focusedIndex
       if (isGroup) {
         const focusedGroup = _focusedIndex.split('-')
@@ -58,7 +61,7 @@ const SelectDropdown = ({
       dropdownWrapper.current.scrollTop =
         _scrollTop >= focusedIndexTop && focusedIndexTop > 0 ? _scrollTop : focusedIndexTop
     }
-  }, [focusedIndex])
+  }, [focusedIndex, targetByKeyDown.current])
 
   // 监控全选功能
   useEffect(() => {
@@ -255,7 +258,7 @@ const SelectDropdown = ({
         key={item[transKeys(fieldNames, 'id')]}
         index={filterItemsIndex}
         onMouseEnter={() => {
-          setFocusedIndex(_filterItemsIndex)
+          !targetByKeyDown.current && setFocusedIndex(_filterItemsIndex)
         }}
       >
         {renderOption(isSelected, item, filterItemsIndex)}
@@ -264,7 +267,16 @@ const SelectDropdown = ({
   }
   const renderItems = () => {
     return (
-      <ul className="hi-select__dropdown--items" ref={dropdownWrapper}>
+      <ul
+        className="hi-select__dropdown--items"
+        ref={dropdownWrapper}
+        onMouseMove={() => {
+          targetByKeyDown.current = false
+        }}
+        onScroll={(e) => {
+          onOverlayScroll && onOverlayScroll(e)
+        }}
+      >
         {filterItems &&
           filterItems.map((item, filterItemsIndex) => {
             if (matchFilter(item)) {

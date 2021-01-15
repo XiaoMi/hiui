@@ -43,6 +43,8 @@ interface Props {
   style?: CSSProperties
   optionWidth?: number
   onChange?: (selectedIds: string[], changedItem: DataItem) => void
+  onSearch?: (keyword: string) => void
+  onOverlayScroll?: (e: Event<HTMLDivElement>) => void
   render?: (item: DataItem, selected: boolean) => JSX.Element
   overlayClassName?: string
   setOverlayContainer?: (triggerNode: any) => any
