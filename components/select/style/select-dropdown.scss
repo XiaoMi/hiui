@@ -100,6 +100,10 @@
     }
 
     &.is-focus {
+      background-color: use-color('primary-10');
+    }
+
+    &:hover {
       background-color: use-color('primary-20');
     }
 
