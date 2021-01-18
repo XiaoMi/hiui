@@ -630,7 +630,8 @@ const InternalSelect = (props) => {
           searchPlaceholder={searchPlaceholder}
           theme={theme}
           onFocus={onFocus}
-          isOnSearch={dataSource}
+          isByRemoteSearch={dataSource}
+          isByCustomSearch={onSearch}
           onSearch={debouncedFilterItems}
           searchable={searchable}
           showCheckAll={showCheckAll}
