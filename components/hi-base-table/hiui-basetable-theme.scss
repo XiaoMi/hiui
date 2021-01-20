@@ -8,6 +8,8 @@ $row-hovered-background-color: var(--color-primary-20) !default;
 @import "~react-base-table/es/_BaseTable.scss";
 
 .#{$table-prefix} {
+  box-shadow: none;
+
   &__table-main {
     outline: none;
   }
@@ -28,6 +30,17 @@ $row-hovered-background-color: var(--color-primary-20) !default;
       cursor: text;
     }
   }
+
+  &.autoResize {
+    .#{$table-prefix}__header-cell {
+      flex: 1 1 !important;
+    }
+
+    .#{$table-prefix}__row-cell {
+      flex: 1 1 !important;
+    }
+  }
+
 }
 
 .wrapper {

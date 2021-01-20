@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import HiBaseTable, { AutoResizer } from '../../../components/hi-base-table'
 import Watermark from '../../../components/watermark'
 const prefix = 'table-base'
-const rightOptions = ['基础', '10000条 宽度自适应']
+const rightOptions = ['基础', '10000条数据']
 const code = [
   {
     code: `import React from 'react'
@@ -129,24 +129,10 @@ const code = [
     }
       
       render() {
-        return <div style={{ width: '100%', height: '300px' }}>
-          <AutoResizer>
-            {(size) => {
-              const { width, height } = size
-              return (
-                <HiBaseTable
-                  columns={this.columns}
-                  data={this.data}
-                  width={width}
-                  height={height}
-                />
-              )
-            }}
-          </AutoResizer>
-        </div>
+        return <HiBaseTable columns={this.columns} data={this.data} height={500} />
       }
     }`,
-    opt: ['10000条 宽度自适应']
+    opt: ['10000条数据']
   }
 ]
 
