@@ -7,7 +7,7 @@ const rightOptions = ['基础', '10000条数据']
 const code = [
   {
     code: `import React from 'react'
-    import HiBaseTable from '@hi-ui/hiui/es/table'\n
+    import HiBaseTable from '@hi-ui/hiui/es/hi-base-table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -94,7 +94,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import HiBaseTable from '@hi-ui/hiui/es/table'\n
+    import HiBaseTable from '@hi-ui/hiui/es/hi-base-table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)

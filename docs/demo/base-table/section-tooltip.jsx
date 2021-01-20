@@ -3,14 +3,13 @@ import DocViewer from '../../../libs/doc-viewer'
 import HiBaseTable, { AutoResizer } from '../../../components/hi-base-table'
 import Watermark from '../../../components/watermark'
 import Tooltip from '../../../components/tooltip'
-import Text from 'react-texty'
 const prefix = 'table-bigdata'
 const rightOptions = ['结合Tooltip', '树形表格', '列冻结']
 // 格式化 Columns
 const code = [
   {
     code: `import React from 'react'
-    import HiBaseTable from '@hi-ui/hiui/es/table'\n
+    import HiBaseTable from '@hi-ui/hiui/es/hi-base-table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -110,7 +109,7 @@ const code = [
   },
   {
     code: `import React from 'react'
-    import HiBaseTable from '@hi-ui/hiui/es/table'\n
+    import HiBaseTable from '@hi-ui/hiui/es/hi-base-table'\n
     class Demo extends React.Component {
       constructor(props){
         super(props)
@@ -155,7 +154,7 @@ const code = [
 const DemoBase = () => (
   <DocViewer
     code={code}
-    scope={{ HiBaseTable, Watermark, AutoResizer, Tooltip, Text }}
+    scope={{ HiBaseTable, Watermark, AutoResizer, Tooltip }}
     prefix={prefix}
     rightOptions={rightOptions}
   />

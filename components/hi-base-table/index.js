@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import BaseTable, { Column, AutoResizer } from 'react-base-table'
 import classNames from 'classnames'
 import _ from 'lodash'
-import './hiui-basetable-theme.scss'
+import './style/index'
 const classPrefix = 'hiui-basetable'
 // 格式化 Columns
 // 冻结处理
