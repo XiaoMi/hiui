@@ -7,7 +7,8 @@ files.keys().forEach((key) => {
 export default {
   components: {
     'community-recommended': {
-      'code-editor': docs['code-editor']
+      'code-editor': docs['code-editor'],
+      'hi-basetable': docs['hi-basetable']
     }
   },
   documents: {
