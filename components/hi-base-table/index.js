@@ -16,14 +16,12 @@ const fixedColumns = (columns, fixedToColumn) => {
   } else {
     const { left, right } = fixedToColumn
     leftIndex = columns.findIndex((item) => {
-      console.log('left', item, left)
       return item.dataKey === left
     })
     rightIndex = columns.findIndex((item) => {
       return item.dataKey === right
     })
   }
-  console.log(leftIndex, rightIndex)
   return columns.map((column, columnIndex) => {
     let frozen
     if (columnIndex <= leftIndex) frozen = Column.FrozenDirection.LEFT
@@ -38,8 +36,7 @@ const generateColumns = (columns) => {
       key: column.dataKey,
       dataKey: column.dataKey,
       title: column.title,
-      width: column.width || 100,
-      maxWidth: column.width || 100
+      width: column.width || 100
     }
   })
 }

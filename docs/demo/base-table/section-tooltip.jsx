@@ -97,7 +97,7 @@ const code = [
                     { a: 'a-4', b: 'b-4', c: 'c-4', d: 'd-4', key: 4 }
                   ]}
                   columns={[
-                    { title: 'A', dataKey: 'a' , width: 100},
+                    { title: 'A', dataKey: 'a' },
                     { title: 'B', dataKey: 'b' },
                     { title: 'C', dataKey: 'c' },
                     { title: 'D', dataKey: 'd' }
