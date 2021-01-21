@@ -30,7 +30,9 @@ const InternalSelect = (props) => {
     localeDatas,
     preventOverflow,
     placement,
+    onSearch,
     onChange: propsonChange,
+    onOverlayScroll,
     value,
     defaultValue,
     autoload,
@@ -46,6 +48,8 @@ const InternalSelect = (props) => {
   const [focusedIndex, setFocusedIndex] = useState(0)
   const [isFocus, setIsFouces] = useState(false)
   const SelectWrapper = useRef()
+  const targetByKeyDown = useRef(false)
+
   // 存储问题
   const [cacheSelectItem, setCacheSelectItem] = useState([])
 
@@ -222,6 +226,7 @@ const InternalSelect = (props) => {
   // 方向键的回调
   const moveFocusedIndex = useCallback(
     (direction) => {
+      targetByKeyDown.current = true
       let _focusedIndex = focusedIndex
       let _dropdownItems = dropdownItems
       let group = 0
@@ -291,7 +296,7 @@ const InternalSelect = (props) => {
       }
       setFocusedIndex(isGroup ? group + '-' + _focusedIndex : _focusedIndex)
     },
-    [focusedIndex, dropdownItems, fieldNames]
+    [focusedIndex, dropdownItems, fieldNames, targetByKeyDown.current]
   )
   // 点击回车选中
   const onEnterSelect = useCallback(() => {
@@ -332,7 +337,7 @@ const InternalSelect = (props) => {
         }
       }
     },
-    [onEnterSelect, moveFocusedIndex]
+    [onEnterSelect, moveFocusedIndex, targetByKeyDown.current]
   )
   // 对关键字的校验 对数据的过滤
   const matchFilter = useCallback(
@@ -433,7 +438,10 @@ const InternalSelect = (props) => {
   // 过滤筛选项
   const onFilterItems = (keyword) => {
     setKeyword(keyword)
-
+    if (typeof onSearch === 'function') {
+      onSearch(keyword)
+      return
+    }
     if (dataSource && (autoload || keyword)) {
       remoteSearch(keyword)
     }
@@ -617,10 +625,13 @@ const InternalSelect = (props) => {
           fieldNames={fieldNames}
           localeMap={localeDatas.select || {}}
           mode={type}
+          onOverlayScroll={onOverlayScroll}
+          targetByKeyDown={targetByKeyDown}
           searchPlaceholder={searchPlaceholder}
           theme={theme}
           onFocus={onFocus}
-          isOnSearch={dataSource}
+          isByRemoteSearch={dataSource}
+          isByCustomSearch={onSearch}
           onSearch={debouncedFilterItems}
           searchable={searchable}
           showCheckAll={showCheckAll}

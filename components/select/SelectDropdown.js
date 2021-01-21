@@ -21,7 +21,8 @@ const SelectDropdown = ({
   dropdownItems,
   localeMap,
   onSearch,
-  isOnSearch,
+  isByRemoteSearch,
+  isByCustomSearch,
   onClickOption,
   checkAll,
   selectInputWidth,
@@ -30,18 +31,21 @@ const SelectDropdown = ({
   fieldNames,
   focusedIndex,
   isGroup,
-  setFocusedIndex
+  onOverlayScroll,
+  setFocusedIndex,
+  targetByKeyDown
 }) => {
   const [filterItems, setFilterItems] = useState(dropdownItems)
   const [searchbarValue, setSearchbarValue] = useState('')
   const [isCheckAll, setIsCheckAll] = useState(false)
   const searchbar = useRef('')
   const dropdownWrapper = useRef('')
+
   useEffect(() => {
     setFilterItems(dropdownItems)
   }, [dropdownItems])
   useEffect(() => {
-    if (dropdownWrapper.current) {
+    if (dropdownWrapper.current && targetByKeyDown.current) {
       let _focusedIndex = focusedIndex
       if (isGroup) {
         const focusedGroup = _focusedIndex.split('-')
@@ -58,7 +62,7 @@ const SelectDropdown = ({
       dropdownWrapper.current.scrollTop =
         _scrollTop >= focusedIndexTop && focusedIndexTop > 0 ? _scrollTop : focusedIndexTop
     }
-  }, [focusedIndex])
+  }, [focusedIndex, targetByKeyDown.current])
 
   // 监控全选功能
   useEffect(() => {
@@ -101,7 +105,7 @@ const SelectDropdown = ({
   useEffect(() => {
     const _filterItems = dropdownItems
     setFilterItems(_filterItems)
-  }, [mode, isOnSearch, dropdownItems, show])
+  }, [mode, isByRemoteSearch, dropdownItems, show])
 
   let matched = 0
   const style = optionWidth && {
@@ -147,6 +151,7 @@ const SelectDropdown = ({
     (e, item, index) => {
       e.stopPropagation()
       e.preventDefault()
+      setFocusedIndex(index)
       if (item[transKeys(fieldNames, 'disabled')]) {
         return
       }
@@ -205,7 +210,7 @@ const SelectDropdown = ({
             disabled={item[transKeys(fieldNames, 'disabled')]}
           >
             <div className="hi-select__dropdown--item__name" style={style}>
-              {isOnSearch
+              {isByRemoteSearch
                 ? item[transKeys(fieldNames, 'title')]
                 : hightlightKeyword(item[transKeys(fieldNames, 'title')], item[transKeys(fieldNames, 'id')])}
             </div>
@@ -213,7 +218,7 @@ const SelectDropdown = ({
         )}
         {mode === 'single' && (
           <div className="hi-select__dropdown--item__name" style={style}>
-            {isOnSearch
+            {isByRemoteSearch
               ? item[transKeys(fieldNames, 'title')]
               : hightlightKeyword(item[transKeys(fieldNames, 'title')], item[transKeys(fieldNames, 'id')])}
           </div>
@@ -248,14 +253,14 @@ const SelectDropdown = ({
           'is-active': isSelected,
           'is-disabled': isDisabled,
           'hi-select__dropdown--item--child': isChildItem,
-          'is-focus': filterItemsIndex === focusedIndex,
+          'is-focus': targetByKeyDown.current && filterItemsIndex === focusedIndex,
           'hi-select__dropdown--item-default': !item[transKeys(fieldNames, 'children')] && !dropdownRender
         })}
         onClick={(e) => onClickOptionIntal(e, item, _filterItemsIndex)}
         key={item[transKeys(fieldNames, 'id')]}
         index={filterItemsIndex}
         onMouseEnter={() => {
-          setFocusedIndex(_filterItemsIndex)
+          !targetByKeyDown.current && setFocusedIndex(_filterItemsIndex)
         }}
       >
         {renderOption(isSelected, item, filterItemsIndex)}
@@ -264,7 +269,16 @@ const SelectDropdown = ({
   }
   const renderItems = () => {
     return (
-      <ul className="hi-select__dropdown--items" ref={dropdownWrapper}>
+      <ul
+        className="hi-select__dropdown--items"
+        ref={dropdownWrapper}
+        onMouseMove={() => {
+          targetByKeyDown.current = false
+        }}
+        onScroll={(e) => {
+          onOverlayScroll && onOverlayScroll(e)
+        }}
+      >
         {filterItems &&
           filterItems.map((item, filterItemsIndex) => {
             if (matchFilter(item)) {
@@ -286,7 +300,7 @@ const SelectDropdown = ({
   }
   return (
     <div className="hi-select__dropdown" style={style}>
-      {searchable && (
+      {(searchable || isByCustomSearch) && (
         <div className="hi-select__dropdown__searchbar">
           <div className="hi-select__dropdown__searchbar--content">
             <span style={{ cursor: 'pointer' }}>

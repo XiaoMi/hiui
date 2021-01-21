@@ -384,13 +384,13 @@ const SelectTree = ({
    */
   const selectedEvents = useCallback(
     (node) => {
-      setSelectedItems([node])
+      typeof value === 'undefined' && setSelectedItems([node])
       const n = clearReturnData(node)
       onChange(node.id, n, n)
       setShow(false)
       setActiveId(node.id)
     },
-    [onChange, show, selectedItems]
+    [onChange, show, selectedItems, value]
   )
 
   /**

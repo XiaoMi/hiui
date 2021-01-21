@@ -3,7 +3,9 @@
 ## 3.3.1
 
 - 优化组件弹出层自动计算合适的左右位置 [#1494](https://github.com/XiaoMi/hiui/issues/1494)
+- 新增 `Select` 组件 onSearch、onOverlayScroll 方法 [#1522](https://github.com/XiaoMi/hiui/issues/1522)
 - 修复 `SelectTree` 搜索输入框在输入值时失焦问题 [#1491](https://github.com/XiaoMi/hiui/issues/1491)
+- 修复 `SelectTree` 单选形态下受控问题 [#1519](https://github.com/XiaoMi/hiui/issues/1519)
 - 修复 `Select` 组件分组形态 filterOption 函数无法使用问题 [#1497](https://github.com/XiaoMi/hiui/issues/1497)
 - 修复 `Select` 组件分组形态全选以及受控问题 [#1501](https://github.com/XiaoMi/hiui/issues/1501)
 - 修复 `Tabs` 组件垂直方向样式显示异常问题 [#1493](https://github.com/XiaoMi/hiui/issues/1493)
