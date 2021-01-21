@@ -9,6 +9,7 @@
 - 修复 `Select` 组件分组形态 filterOption 函数无法使用问题 [#1497](https://github.com/XiaoMi/hiui/issues/1497)
 - 修复 `Select` 组件分组形态全选以及受控问题 [#1501](https://github.com/XiaoMi/hiui/issues/1501)
 - 修复 `Tabs` 组件垂直方向样式显示异常问题 [#1493](https://github.com/XiaoMi/hiui/issues/1493)
+- 修复 `Form` DatePicker、SelectTree 在 Form.Item 中点击清空Icon 无效问题 [#1524](https://github.com/XiaoMi/hiui/issues/1524)
 - 优化 `Checkbox` 样式相关内容 [#1482](https://github.com/XiaoMi/hiui/issues/1482)
 - 优化 `SelectTree` 异步受控数据返显问题 [#1510](https://github.com/XiaoMi/hiui/issues/1510)
 ## 3.3.0

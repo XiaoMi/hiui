@@ -12,6 +12,7 @@ import Switch from '../../../components/switch'
 import DatePicker from '../../../components/date-picker'
 import Rate from '../../../components/rate'
 import Upload from '../../../components/upload'
+import SelectTree from '../../../components/select-tree'
 import Grid from '../../../components/grid'
 
 const prefix = 'form-dynamic'
@@ -175,7 +176,7 @@ const code = [
     
             { controlCounter[0] === 'show' && 
               <FormItem label='Counter' field="counter" required={true}>
-                  <Counter step='1'  min='-10' max='10' />
+                <Counter step='1'  min='-10' max='10' />  
               </FormItem>
             }
             
@@ -195,7 +196,6 @@ const code = [
                 <DatePicker
                   required={true}
                   type='daterange'
-                  format='yyyy-MM-dd'
                   onChange={(date, dateStr) => {console.log('onChange DatePicker', date, dateStr)}}
                 />
               </FormItem>
@@ -391,7 +391,8 @@ const DemoRow = () => (
       DatePicker,
       Rate,
       Upload,
-      Grid
+      Grid,
+      SelectTree
     }}
     prefix={prefix}
     leftOptions={leftOptions}
