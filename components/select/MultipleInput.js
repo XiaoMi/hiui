@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 import Icon from '../icon'
@@ -27,6 +27,20 @@ const MultipleInput = ({
   const tagWrapperRef = useRef('')
   const calShowCountFlag = useRef(true) // 在渲染完成进行测试是否展示 +1
   const selectedItems = _.uniqBy(cacheSelectItem.concat(propsSelectItem), transKeys(fieldNames, 'id'))
+  const resizeTimeId = useRef()
+  const resize = useCallback(() => {
+    clearTimeout(resizeTimeId.current)
+    resizeTimeId.current = setTimeout(() => {
+      setShowCount(0)
+    }, [60])
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener('resize', resize)
+    return () => {
+      window.removeEventListener('resize', resize)
+    }
+  }, [])
 
   useEffect(() => {
     if (multipleMode === 'nowrap' && calShowCountFlag.current && tagWrapperRef.current) {
@@ -48,7 +62,7 @@ const MultipleInput = ({
     } else {
       calShowCountFlag.current = true
     }
-  })
+  }, [selectedItems])
 
   const handleClear = (e) => {
     e.stopPropagation()
