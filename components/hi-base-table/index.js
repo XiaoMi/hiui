@@ -45,7 +45,6 @@ const generateData = (data) => {
   const setDataId = (data, parentId) => {
     data.forEach((item, itemIndex) => {
       const id = typeof parentId !== 'undefined' ? parentId + '-' + itemIndex : itemIndex
-      console.log()
       item.id = id
       item.parentId = parentId
       if (item.children) {
@@ -101,9 +100,17 @@ const HiBaseTable = React.forwardRef((props, ref) => {
             if (top <= stickyTop) {
               element.classList.add('header__sticky-row')
               element.style.top = stickyTop + 'px'
+              let _w = element.getAttribute('cacheWidth') || parseInt(element.style.width)
+              element.setAttribute('cacheWidth', _w)
+              _w = _w - 20
+              element.style.width = _w + 'px'
             } else {
               element.style.top = 0
               element.classList.remove('header__sticky-row')
+              let _w = element.getAttribute('cacheWidth') || parseInt(element.style.width)
+              element.setAttribute('cacheWidth', _w)
+              _w = _w + 20
+              element.style.width = _w + 'px'
             }
           } else {
             element.style.position = 'sticky'
@@ -118,6 +125,8 @@ const HiBaseTable = React.forwardRef((props, ref) => {
             ) {
               element.style.top = 0
               element.classList.remove('header__sticky-row')
+            } else {
+              element.style.position = 'static'
             }
           })
         }

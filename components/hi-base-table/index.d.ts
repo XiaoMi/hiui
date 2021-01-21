@@ -160,6 +160,8 @@ declare module 'react-base-table' {
     right?: string
   }
   export interface BaseTableProps<T = unknown> {
+    sticky?: boolean
+    stickyTop?: number
     bordered?: boolean,
     autoResize?: boolean,
     bordered?: boolean,
