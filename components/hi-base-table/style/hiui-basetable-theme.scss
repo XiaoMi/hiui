@@ -41,3 +41,7 @@ $row-hovered-background-color: var(--color-primary-20) !default;
     }
   }
 }
+
+.header__sticky-row {
+  position: fixed !important;
+}
