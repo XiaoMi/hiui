@@ -28,12 +28,36 @@ const MultipleInput = ({
   const calShowCountFlag = useRef(true) // 在渲染完成进行测试是否展示 +1
   const selectedItems = _.uniqBy(cacheSelectItem.concat(propsSelectItem), transKeys(fieldNames, 'id'))
   const resizeTimeId = useRef()
+  const getShowCount = useCallback(() => {
+    if (multipleMode === 'nowrap' && calShowCountFlag.current && tagWrapperRef.current) {
+      // 多选超过一行时以数字显示
+      const tagWrapperRect = tagWrapperRef.current.getBoundingClientRect()
+
+      let width = 0
+      let showCountIndex = 0 // 在第几个开始显示折行
+      const tags = tagWrapperRef.current.querySelectorAll('.hi-select__input--item')
+      tags.forEach((tag, index) => {
+        const tagRect = tag.getBoundingClientRect()
+        width += tagRect.width
+        if (width + 110 > tagWrapperRect.width && calShowCountFlag.current) {
+          // 110是留给显示剩余选项的空间
+          calShowCountFlag.current = false
+          showCountIndex = index
+        }
+      })
+      !calShowCountFlag.current && setShowCount(showCountIndex)
+    } else {
+      calShowCountFlag.current = true
+    }
+  }, [showCount, selectedItems])
   const resize = useCallback(() => {
     clearTimeout(resizeTimeId.current)
     resizeTimeId.current = setTimeout(() => {
+      calShowCountFlag.current = true
       setShowCount(0)
+      getShowCount()
     }, [60])
-  }, [])
+  }, [getShowCount, showCount])
 
   useEffect(() => {
     window.addEventListener('resize', resize)
@@ -43,25 +67,8 @@ const MultipleInput = ({
   }, [])
 
   useEffect(() => {
-    if (multipleMode === 'nowrap' && calShowCountFlag.current && tagWrapperRef.current) {
-      // 多选超过一行时以数字显示
-      const tagWrapperRect = tagWrapperRef.current.getBoundingClientRect()
-      let width = 0
-      let showCountIndex = 0 // 在第几个开始显示折行
-      const tags = tagWrapperRef.current.querySelectorAll('.hi-select__input--item')
-      tags.forEach((tag, index) => {
-        const tagRect = tag.getBoundingClientRect()
-        width += tagRect.width
-        if (width + 50 > tagWrapperRect.width && calShowCountFlag.current) {
-          // 50是留给显示剩余选项的空间
-          calShowCountFlag.current = false
-          showCountIndex = index
-        }
-      })
-      !calShowCountFlag.current && setShowCount(showCountIndex)
-    } else {
-      calShowCountFlag.current = true
-    }
+    calShowCountFlag.current = true
+    getShowCount()
   }, [selectedItems])
 
   const handleClear = (e) => {
