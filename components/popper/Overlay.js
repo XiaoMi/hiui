@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import _ from 'lodash'
 import PopperJS from './utils/popper'
 import { getOffset } from './utils/positionUtils'
 import useClickOutside from './utils/useClickOutside'
@@ -59,19 +58,22 @@ const Overlay = (props) => {
   }
 
   const scrollCallBack = useCallback(() => {
-    const offset = getOffset(props, state)
-    offsetData.current = offset
-    if (staticPopperRef) {
-      setState(
-        Object.assign({}, state, {
-          popperRef: staticPopperRef.current
-        })
-      )
+    if (props.attachEle) {
+      const offset = getOffset(props, state)
+      offsetData.current = offset
+      if (staticPopperRef) {
+        setState(
+          Object.assign({}, state, {
+            popperRef: staticPopperRef.current
+          })
+        )
+      }
     }
   }, [props, state])
 
   useEffect(() => {
     const { attachEle, container, show } = props
+    if (attachEle) return
     const { cacheContainerPosition } = state
     const offset = getOffset(props, state)
     offsetData.current = offset
@@ -142,13 +144,16 @@ const Overlay = (props) => {
     )
   }, [])
 
-  if (!(attachEle && show && children)) return null
-
-  const { offset = getOffset(props, state) } = state
-  const width = offset.width
-  const left = offset.left + 'px'
-  const top = offset.top + 'px'
-
+  if (!(show && children)) return null
+  let { width, left = 0, top = 0 } = props
+  let { offset } = state
+  if (attachEle) {
+    offset = state.offset || getOffset(props, state)
+    width = offset.width
+    left = offset.left + 'px'
+    top = offset.top + 'px'
+  }
+  const placementClassName = offset ? `hi-popper__content--${offset.placement}` : ''
   return (
     <div
       ref={popperContainerRef}
@@ -165,7 +170,7 @@ const Overlay = (props) => {
         ref={(node) => {
           staticPopperRef.current = node
         }}
-        className={classNames(className, 'hi-popper__content', `hi-popper__content--${offset.placement}`, {
+        className={classNames(className, placementClassName, 'hi-popper__content', {
           'hi-popper__content--hide': popperHeight === 0 || popperWidth === 0
         })}
         style={{ width, height }}
