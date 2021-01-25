@@ -12,7 +12,8 @@
 - 修复 `Form` DatePicker、SelectTree 在 Form.Item 中点击清空Icon 无效问题 [#1524](https://github.com/XiaoMi/hiui/issues/1524)
 - 优化 `Checkbox` 样式相关内容 [#1482](https://github.com/XiaoMi/hiui/issues/1482)
 - 优化 `SelectTree` 异步受控数据返显问题 [#1510](https://github.com/XiaoMi/hiui/issues/1510)
-
+- 优化 `Select SelectTree` 计数根据窗口自动调整 [#1527](https://github.com/XiaoMi/hiui/issues/1527)
+- 优化 `Drawer` 组件支持className属性 [#1510](https://github.com/XiaoMi/hiui/issues/1510)
 ## 3.3.0
 - 新增 `Card` 模式模式下 loading 加载中状态 [#1454](https://github.com/XiaoMi/hiui/issues/1454)
 - 新增 `Table` loading 加载中状态 [#1466](https://github.com/XiaoMi/hiui/issues/1466)

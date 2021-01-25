@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import BaseTable, { Column, AutoResizer } from 'react-base-table'
+import BaseTable, { Column, AutoResizer, SortOrder } from 'react-base-table'
 import classNames from 'classnames'
 import _ from 'lodash'
 import './style/index'
@@ -42,12 +42,11 @@ const generateColumns = (columns) => {
 }
 const generateData = (data) => {
   const _data = _.cloneDeep(data)
-  const setDataId = (data, parentId = 0) => {
+  const setDataId = (data, parentId) => {
     data.forEach((item, itemIndex) => {
-      const id = item.key || itemIndex
-      const { parentId: _parentId } = item
+      const id = typeof parentId !== 'undefined' ? parentId + '-' + itemIndex : itemIndex
       item.id = id
-      item.parentId = typeof _parentId !== 'undefined' ? _parentId : parentId
+      item.parentId = parentId
       if (item.children) {
         setDataId(item.children, id)
       }
@@ -60,7 +59,18 @@ const generateData = (data) => {
 const HiBaseTable = React.forwardRef((props, ref) => {
   const wrapperRef = useRef()
   const timeId = useRef()
-  let { data, columns, bordered, className, height, width, autoResize = true, fixedToColumn } = props
+  let {
+    data,
+    columns,
+    bordered,
+    className,
+    height,
+    width,
+    autoResize = true,
+    fixedToColumn,
+    sticky,
+    stickyTop = 0
+  } = props
   columns = generateColumns(columns || [])
   const _defaultWidth = columns.reduce((pre, now) => {
     return pre + now.width
@@ -76,11 +86,60 @@ const HiBaseTable = React.forwardRef((props, ref) => {
       setDefaultWidth(getDefaultWidth())
     }, [60])
   }, [])
+  const scroll = useCallback(() => {
+    if (wrapperRef.current) {
+      if (sticky) {
+        const { height: headerH } = wrapperRef.current.querySelector('.hiui-basetable__header').getBoundingClientRect()
+        const { top, height } = wrapperRef.current.getBoundingClientRect()
+        const header = wrapperRef.current.querySelectorAll('.hiui-basetable__header')
+        header.forEach((element) => {
+          if (
+            element.parentNode.classList.contains('hiui-basetable__table-frozen-right') ||
+            element.parentNode.classList.contains('hiui-basetable__table-frozen-left')
+          ) {
+            if (top <= stickyTop) {
+              element.classList.add('header__sticky-row')
+              element.style.top = stickyTop + 'px'
+              let _w = element.getAttribute('cacheWidth') || parseInt(element.style.width)
+              element.setAttribute('cacheWidth', _w)
+              _w = _w - 20
+              element.style.width = _w + 'px'
+            } else {
+              element.style.top = 0
+              element.classList.remove('header__sticky-row')
+              let _w = element.getAttribute('cacheWidth') || parseInt(element.style.width)
+              element.setAttribute('cacheWidth', _w)
+              _w = _w + 20
+              element.style.width = _w + 'px'
+            }
+          } else {
+            element.style.position = 'sticky'
+            element.style.top = stickyTop + 'px'
+          }
+        })
+        if (top + height - headerH < stickyTop) {
+          header.forEach((element) => {
+            if (
+              element.parentNode.classList.contains('hiui-basetable__table-frozen-right') ||
+              element.parentNode.classList.contains('hiui-basetable__table-frozen-left')
+            ) {
+              element.style.top = 0
+              element.classList.remove('header__sticky-row')
+            } else {
+              element.style.position = 'static'
+            }
+          })
+        }
+      }
+    }
+  }, [stickyTop, wrapperRef, sticky])
   useEffect(() => {
     window.addEventListener('resize', resize)
+    window.addEventListener('scroll', scroll)
     setDefaultWidth(getDefaultWidth())
     return () => {
       window.removeEventListener('resize', resize)
+      window.removeEventListener('scroll', scroll)
     }
   }, [])
   return (
@@ -95,7 +154,10 @@ const HiBaseTable = React.forwardRef((props, ref) => {
         ref={ref}
         columns={fixedToColumn ? fixedColumns(columns, fixedToColumn) : columns}
         data={generateData(data)}
-        className={classNames({ bordered: bordered, autoResize: autoResize }, className)}
+        className={classNames(
+          { bordered: bordered, autoResize: autoResize, 'hiui-basetable__ticky-row': sticky },
+          className
+        )}
         classPrefix={classPrefix}
       />
     </div>
@@ -105,4 +167,4 @@ HiBaseTable.Column = Column
 HiBaseTable.PlaceholderKey = BaseTable.PlaceholderKey
 
 export default HiBaseTable
-export { AutoResizer }
+export { AutoResizer, SortOrder }

@@ -82,6 +82,7 @@ const SelectTree = ({
     checked: [],
     semiChecked: []
   })
+  const resizeTimeId = useRef()
   // 拉平的数据
   const [flattenData, setFlattenData] = useState([])
   // 关键字搜索值
@@ -146,8 +147,7 @@ const SelectTree = ({
       setActiveId(flattenData[0].id)
     }
   }, [expandIdsProps, flattenData])
-
-  useEffect(() => {
+  const getShowCount = useCallback(() => {
     if (selectedItemsRef.current) {
       const sref = selectedItemsRef.current
       // 多选超过一行时以数字显示
@@ -166,8 +166,21 @@ const SelectTree = ({
       }
       setShowCount(num)
     }
-  }, [selectedItems])
+  }, [showCount, selectedItems])
+
   useEffect(() => {
+    getShowCount()
+  }, [selectedItems])
+
+  const resize = useCallback(() => {
+    clearTimeout(resizeTimeId.current)
+    resizeTimeId.current = setTimeout(() => {
+      getShowCount()
+    }, [60])
+  }, [getShowCount])
+
+  useEffect(() => {
+    window.addEventListener('resize', resize)
     if (data) {
       const { flattenData = [], nodeEntries } = flattenNodesData(
         data,
@@ -195,6 +208,9 @@ const SelectTree = ({
       setActiveId(selectedItems[0].id)
     } else if (Array.isArray(data) && data.length > 0) {
       setActiveId(data[0].id)
+    }
+    return () => {
+      window.removeEventListener('resize', resize)
     }
   }, [])
   // 过滤方法
