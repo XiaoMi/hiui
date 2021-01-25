@@ -25,7 +25,8 @@ const DrawerComp = ({
   footer,
   width,
   showMask = true,
-  placement = 'right'
+  placement = 'right',
+  className
 }) => {
   // TODO: 整体可以抽成一个 hooks 供 modal 和 drawer 复用
   const defaultContainer = useRef(false)
@@ -79,7 +80,7 @@ const DrawerComp = ({
   }, [visible, container])
 
   return ReactDOM.createPortal(
-    <div className={PREFIX}>
+    <div className={Classnames(PREFIX, className)}>
       {showMask && (
         <div
           className={Classnames(`${PREFIX}__mask`, { [`${PREFIX}__mask--visible`]: visible })}
