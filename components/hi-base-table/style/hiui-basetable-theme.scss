@@ -5,7 +5,7 @@ $header-font-weight: 500 !default;
 $border: 1px solid #e6e7e8 !default;
 $row-hovered-background-color: var(--color-primary-20) !default;
 
-@import '~react-base-table/es/_BaseTable.scss';
+@import '../../../node_modules/react-base-table/es/_BaseTable.scss';
 
 .#{$table-prefix} {
   box-shadow: none;
