@@ -49,7 +49,8 @@ const InternalSelect = (props) => {
   const [isFocus, setIsFouces] = useState(false)
   const SelectWrapper = useRef()
   const targetByKeyDown = useRef(false)
-
+  const CancelToken = HiRequest.CancelToken
+  let cancel
   // 存储问题
   const [cacheSelectItem, setCacheSelectItem] = useState([])
 
@@ -403,11 +404,16 @@ const InternalSelect = (props) => {
     options.params = key ? { [key]: keyword, ...params } : params
 
     const _withCredentials = withCredentials || credentials === 'include'
-
+    // 取消上一次的请求
+    const CANCEL_STATE = 'Cancel'
+    typeof cancel === 'function' && cancel(CANCEL_STATE)
     HiRequest({
       url,
       method,
       data: data,
+      cancelToken: new CancelToken((c) => {
+        cancel = c
+      }),
       withCredentials: _withCredentials,
       error,
       beforeRequest: (config) => {
@@ -415,18 +421,22 @@ const InternalSelect = (props) => {
         return config
       },
       errorCallback: (err) => {
-        setLoading(false)
+        const { message = 'normal' } = err
+        setLoading(message === CANCEL_STATE)
         error && error(err)
       },
       ...options
     }).then(
       (response) => {
-        setLoading(false)
-        const dataItems = transformResponse && transformResponse(response.data, response)
-        if (Array.isArray(dataItems)) {
-          setDropdownItems(dataItems)
-        } else {
-          console.error('transformResponse return data is not array')
+        const { message = 'normal' } = response
+        if (message !== CANCEL_STATE) {
+          setLoading(false)
+          const dataItems = transformResponse && transformResponse(response.data, response)
+          if (Array.isArray(dataItems)) {
+            setDropdownItems(dataItems)
+          } else {
+            console.error('transformResponse return data is not array')
+          }
         }
       },
       (error) => {
