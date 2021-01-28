@@ -124,8 +124,10 @@ class Input extends Component {
           prepend && <span className="hi-input__prepend">{prepend}</span>
         }
         <div
-          className={classNames(`hi-input__inner ${active ? ' active' : ''}${disabled ? ' disabled' : ''}`, {
-            bordered
+          className={classNames(`hi-input__inner`, {
+            bordered,
+            disabled,
+            active
           })}
         >
           {
