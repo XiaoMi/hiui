@@ -12,6 +12,7 @@
 - 修复 `Select` 异步数据请求返回结果顺序异常 [#1543](https://github.com/XiaoMi/hiui/issues/1543)
 - 修复 `Tabs` 组件垂直方向样式显示异常问题 [#1493](https://github.com/XiaoMi/hiui/issues/1493)
 - 修复 `Form` DatePicker、SelectTree 在 Form.Item 中点击清空Icon 无效问题 [#1524](https://github.com/XiaoMi/hiui/issues/1524)
+- 修复 `DatePicker` minDate、maxDate、disabledDate 在非 date 类型下不生效问题 [#1547](https://github.com/XiaoMi/hiui/issues/1547)
 - 优化 `Checkbox` 样式相关内容 [#1482](https://github.com/XiaoMi/hiui/issues/1482)
 - 优化 `SelectTree` 异步受控数据返显问题 [#1510](https://github.com/XiaoMi/hiui/issues/1510)
 - 优化 `Select SelectTree` 计数根据窗口自动调整 [#1527](https://github.com/XiaoMi/hiui/issues/1527)
