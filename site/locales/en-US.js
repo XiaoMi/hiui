@@ -49,7 +49,8 @@ module.exports = {
     timeline: 'Timeline',
     transfer: 'Transfer',
     switch: 'Switch',
-    rate: 'Rate'
+    rate: 'Rate',
+    preview: 'preview'
   },
   designs: {
     'design-patterns': '设计模式',
