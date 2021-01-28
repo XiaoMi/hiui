@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import classNames from 'classnames'
-import _ from 'lodash'
 import Icon from '../icon'
 import Loading from '../loading'
 import './style/index.js'
@@ -57,19 +56,17 @@ const Preview = ({
    */
   const changeImageState = useCallback(
     (args) => {
-      const _style = { ...Object.assign({}, style, { ...args }) }
-      setStyle(_style)
+      setStyle({ ...Object.assign({}, style, { ...args }) })
     },
     [style]
   )
 
   useEffect(() => {
     if (isLoaded) {
-      const _style = _.cloneDeep(style)
       const compileStyle = {
-        width: _style.width,
-        height: _style.height,
-        transform: `translateX(${_style.left}px) translateY(${_style.top}px) rotate(${_style.rotate}deg) scaleX(${_style.scaleX}) scaleY(${_style.scaleY})`
+        width: style.width,
+        height: style.height,
+        transform: `translateX(${style.left}px) translateY(${style.top}px) rotate(${style.rotate}deg) scaleX(${style.scaleX}) scaleY(${style.scaleY})`
       }
       setCompileStyle({
         ...compileStyle
@@ -294,7 +291,6 @@ const Preview = ({
       component="div"
     >
       <div
-        key={1}
         ref={previewRef}
         className={classNames('hi-preview', className, { 'hi-preview--hide': !visible })}
         onMouseMove={handleMouseMove}
