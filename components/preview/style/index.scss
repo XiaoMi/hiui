@@ -1,0 +1,77 @@
+.hi-preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.54);
+  z-index: 9999;
+  user-select: none;
+
+  &__image {
+    transform: all 0.3s;
+
+    &:hover {
+      cursor: move;
+    }
+  }
+
+  &-toolbar {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 0 32px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    border-radius: 28px;
+
+    .hi-icon {
+      margin: 0 12px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 36px;
+    height: 36px;
+    line-height: 1;
+    border-radius: 50%;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  &__wrapper-arrow {
+    position: absolute;
+    font-size: 72px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    width: 100%;
+    z-index: -1;
+
+    .hi-icon {
+      cursor: pointer;
+    }
+  }
+
+  &__count {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 4px 12px;
+    border-radius: 16px;
+    min-width: 48px;
+    text-align: center;
+  }
+}

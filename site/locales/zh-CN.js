@@ -132,7 +132,8 @@ module.exports = {
     list: 'List 列表',
     filter: 'Filter 筛选',
     charts: 'Charts 图表',
-    'rich-text-editor': 'RichTextEditor 富文本编辑'
+    'rich-text-editor': 'RichTextEditor 富文本编辑',
+    preview: 'preview 预览'
   },
   designs: {
     summarize: '概述',
