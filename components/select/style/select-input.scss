@@ -8,7 +8,6 @@
   color: use-color('black');
   line-height: 1;
   border-radius: 2px;
-  border: 1px solid use-color('gray-30');
   cursor: pointer;
   outline: none;
   user-select: none;
@@ -22,6 +21,10 @@
     text-overflow: ellipsis;
     max-width: 100%;
     transition: margin 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
+  &.bordered {
+    border: 1px solid use-color('gray-30');
   }
 
   &.disabled {

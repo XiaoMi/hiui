@@ -40,6 +40,7 @@ const BasePicker = ({
   placement = 'top-bottom-start',
   inputReadOnly,
   locale,
+  bordered = true,
   disabledDate,
   ...otherPorps
 }) => {
@@ -191,6 +192,7 @@ const BasePicker = ({
         secondStep,
         inputReadOnly,
         value,
+        bordered
         disabledDate
       }}
     >
@@ -198,6 +200,7 @@ const BasePicker = ({
         inputChangeEvent={inputChangeEvent}
         onClear={onClear}
         showPanel={showPanel}
+        bordered={bordered}
         inputFocus={inputFocus}
         onTrigger={() => {
           setShowPanel(true)

@@ -54,7 +54,8 @@ const SelectTree = ({
   optionWidth,
   autoload: propsAutoload,
   placement = 'top-bottom-start',
-  emptyContent
+  emptyContent,
+  bordered = true
 }) => {
   const [isFocus, setIsFocus] = useState(false)
   const placeholder = propsPlaceholder || localeDatas.selectTree.placeholder
@@ -557,6 +558,7 @@ const SelectTree = ({
         placeholder={placeholder}
         checkedEvents={checkedEvents}
         onTrigger={onTrigger}
+        bordered={bordered}
         onClear={handleClear}
       />
       {

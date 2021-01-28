@@ -39,7 +39,8 @@ const InternalSelect = (props) => {
     searchable: propsSearchable,
     fieldNames,
     overlayClassName,
-    setOverlayContainer
+    setOverlayContainer,
+    bordered = true
   } = props
   const selectInputContainer = useRef()
   const historyData = useRef([])
@@ -604,6 +605,7 @@ const InternalSelect = (props) => {
           fieldNames={fieldNames}
           isFocus={isFocus}
           value={value}
+          bordered={bordered}
           onClick={() => {
             handleInputClick()
           }}

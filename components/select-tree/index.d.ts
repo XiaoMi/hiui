@@ -28,6 +28,7 @@ interface Props {
   showCheckedMode?: 'ALL' | 'PARENT' | 'CHILD'
   mode?: 'normal' | 'breadcrumb'
   defaultExpandAll?: boolean
+  bordered?: boolean
   defaultExpandIds?: string[] | number[]
   expandIds?: string[] | number[]
   dataSource?: DataSource | DataSourFun

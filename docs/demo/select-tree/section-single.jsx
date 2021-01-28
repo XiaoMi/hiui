@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import SelectTree from '../../../components/select-tree'
 import Button from '../../../components/button'
 const prefix = 'tree-select-single'
-const rightOptions = ['基础', '默认值', '默认展开']
+const rightOptions = ['基础', '默认值', '无边框', '默认展开']
 const desc = '展示从多个收起的备选项中选出的一个选项'
 const defaultJson = `constructor () {
     super()
@@ -126,6 +126,26 @@ const code = [
     }
   }`,
     opt: ['默认展开']
+  },
+  {
+    code: `import React from 'react'
+  import SelectTree from '@hi-ui/hiui/es/select-tree'\n
+  class Demo extends React.Component {
+    ${defaultJson}
+    render () {
+      const { value, singleList } = this.state
+      return (
+        <SelectTree
+          data={singleList}
+          defaultExpandIds={['0-0']}
+          style={{width: '200px'}}
+          bordered={false}
+          defaultValue={['1-2']} // or defaultValue={[{id: '1-2'}]}
+        />
+      )
+    }
+  }`,
+    opt: ['无边框']
   }
 ]
 const DemoType = () => (

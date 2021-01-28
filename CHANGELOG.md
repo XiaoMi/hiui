@@ -3,6 +3,7 @@
 ## 3.4.0
 
 - 优化组件弹出层自动计算合适的左右位置 [#1494](https://github.com/XiaoMi/hiui/issues/1494)
+- 新增 `Select SelectTree Cascader DatePicker Input` 等组件无边框形态 [#1553](https://github.com/XiaoMi/hiui/issues/1553)
 - 新增 `Preview` 预览组件 [#1546](https://github.com/XiaoMi/hiui/issues/1546)
 - 新增 `Select` 组件 onSearch、onOverlayScroll 方法 [#1522](https://github.com/XiaoMi/hiui/issues/1522)
 - 修复 `SelectTree` 搜索输入框在输入值时失焦问题 [#1491](https://github.com/XiaoMi/hiui/issues/1491)
@@ -17,7 +18,9 @@
 - 优化 `SelectTree` 异步受控数据返显问题 [#1510](https://github.com/XiaoMi/hiui/issues/1510)
 - 优化 `Select SelectTree` 计数根据窗口自动调整 [#1527](https://github.com/XiaoMi/hiui/issues/1527)
 - 优化 `Drawer` 组件支持className属性 [#1510](https://github.com/XiaoMi/hiui/issues/1510)
+
 ## 3.3.0
+
 - 新增 `Card` 模式模式下 loading 加载中状态 [#1454](https://github.com/XiaoMi/hiui/issues/1454)
 - 新增 `Table` loading 加载中状态 [#1466](https://github.com/XiaoMi/hiui/issues/1466)
 - 新增 `Table` 列冻结结合树形使用 [#1424](https://github.com/XiaoMi/hiui/issues/1424)
