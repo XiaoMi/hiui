@@ -192,7 +192,7 @@ const BasePicker = ({
         secondStep,
         inputReadOnly,
         value,
-        bordered
+        bordered,
         disabledDate
       }}
     >
