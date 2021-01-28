@@ -15,6 +15,7 @@ interface Props {
   defaultValue: string[] | number[]
   expandTrigger?: 'click' | 'hover'
   searchable?: boolean
+  bordered?: boolean
   filterOption?: (keyword: string, item: DataItem) => boolean
   clearable?: boolean
   disabled?: boolean

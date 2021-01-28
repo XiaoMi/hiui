@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'date-picker-normal'
 const desc = '以天为粒度，展示“YYYY-MM-DD”'
-const rightOptions = ['基础', '带默认值', '受控', '禁用', '限制范围']
+const rightOptions = ['基础', '带默认值', '受控', '禁用', '限制范围', '无边框']
 const code = [
   {
     code: `import React from 'react'
@@ -88,6 +88,21 @@ class Demo extends React.Component {
   }
 }`,
     opt: ['限制范围']
+  },
+  {
+    code: `import React from 'react'
+import DatePicker from '@hi-ui/hiui/es/date-picker'\n
+class Demo extends React.Component {
+  render () {
+    return (
+      <DatePicker
+        bordered={false}
+        onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
+      />
+    )
+  }
+}`,
+    opt: ['无边框']
   }
 ]
 const DemoNormal = () => (

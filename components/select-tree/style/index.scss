@@ -7,7 +7,6 @@
   &__input {
     height: 32px;
     line-height: 32px;
-    border: 1px solid use-color('gray-30');
     box-sizing: border-box;
     border-radius: 2px;
     text-align: left;
@@ -16,6 +15,14 @@
     color: use-color('black');
     display: flex;
     justify-content: space-between;
+
+    &.bordered {
+      border: 1px solid use-color('gray-30');
+    }
+
+    .hi-icon + .hi-selecttree__icon-close {
+      margin-left: 0;
+    }
 
     &-items--left {
       display: flex;
@@ -31,7 +38,7 @@
     }
 
     &:hover {
-      border: 1px solid use-color('primary');
+      border-color: use-color('primary');
 
       .hi-selecttree__input--expand.clearable {
         display: none;
@@ -47,7 +54,7 @@
     }
 
     &--focus {
-      border: 1px solid use-color('primary');
+      border-color: use-color('primary');
     }
 
     &--single {

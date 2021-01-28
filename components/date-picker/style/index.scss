@@ -45,7 +45,6 @@ $error-color: get-color($palette-secondary, 'danger') !default;
 
   &__picker {
     background: use-color('white');
-    border: 1px solid use-color('gray-30');
     border-radius: 2px;
     height: 32px;
     width: 180px;
@@ -55,15 +54,19 @@ $error-color: get-color($palette-secondary, 'danger') !default;
     justify-content: space-around;
     box-sizing: border-box;
 
-    &:hover:not(.hi-datepicker__picker--disabled):not(.hi-datepicker__picker--error) {
+    &.bordered {
+      border: 1px solid use-color('gray-30');
+    }
+
+    &:hover:not(.hi-datepicker__picker--disabled):not(.hi-datepicker__picker--error).bordered {
       border: 1px solid use-color('primary');
     }
 
-    &--focus {
+    &--focus.bordered {
       border: 1px solid use-color('primary');
     }
 
-    &--error {
+    &--error.bordered {
       border: 1px solid $error-color;
     }
 

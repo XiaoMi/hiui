@@ -20,7 +20,8 @@ const MultipleInput = ({
   onClickOption,
   onClear,
   fieldNames,
-  isFocus
+  isFocus,
+  bordered
 }) => {
   const icon = dropdownShow ? 'up' : 'down'
   const [showCount, setShowCount] = useState(0)
@@ -84,6 +85,7 @@ const MultipleInput = ({
         'multiple-values',
         `theme__${theme}`,
         {
+          bordered,
           disabled
         },
         {

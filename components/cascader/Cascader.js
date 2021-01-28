@@ -25,7 +25,8 @@ const Cascader = (props) => {
     changeOnSelect = false,
     localeDatas,
     onChange = noop,
-    onActiveItemChange = noop
+    onActiveItemChange = noop,
+    bordered = true
   } = props
   const getLabelKey = useCallback(() => {
     return fieldNames.label || 'content'
@@ -524,7 +525,11 @@ const Cascader = (props) => {
       tabIndex="0"
       onKeyDown={handleKeyDown}
     >
-      <div className="hi-cascader__input-container" ref={inputContainer} onClick={handleClick}>
+      <div
+        className={classNames('hi-cascader__input-container', { bordered })}
+        ref={inputContainer}
+        onClick={handleClick}
+      >
         <input
           ref={inputRef}
           className="hi-cascader__input-keyword"

@@ -14,7 +14,8 @@ const Trigger = ({
   selectedItemsRef,
   placeholder,
   valueRender,
-  isFocus
+  isFocus,
+  bordered
 }) => {
   return (
     <div
@@ -22,7 +23,8 @@ const Trigger = ({
       className={classNames(
         'hi-selecttree__input',
         {
-          'hi-selecttree__input--focus': isFocus
+          'hi-selecttree__input--focus': isFocus,
+          bordered
         },
         type !== 'multiple' && 'hi-selecttree__input--single',
         selectedItems.length === 0 && 'hi-selecttree__input--placeholder'

@@ -42,6 +42,7 @@ const BasePicker = ({
   placement = 'top-bottom-start',
   inputReadOnly,
   locale,
+  bordered = true,
   ...otherPorps
 }) => {
   const cacheDate = useRef(null)
@@ -179,13 +180,15 @@ const BasePicker = ({
         minuteStep,
         secondStep,
         inputReadOnly,
-        value
+        value,
+        bordered
       }}
     >
       <Root
         inputChangeEvent={inputChangeEvent}
         onClear={onClear}
         showPanel={showPanel}
+        bordered={bordered}
         inputFocus={inputFocus}
         onTrigger={() => {
           setShowPanel(true)
