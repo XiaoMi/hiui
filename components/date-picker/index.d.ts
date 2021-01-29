@@ -42,6 +42,8 @@ interface DateProps extends CommonProps {
   dateMarkRender?: (currentDate: Date, today: Date) => JSX.Element
   dateMarkPreset?: 'zh-CN'
   overlayClassName?: string
+  style?: CSSProperties
+  className?: string
 }
 
 declare const DatePicker: React.ComponentType<DateProps>

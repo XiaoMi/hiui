@@ -10,6 +10,8 @@ interface Props {
   footer?: JSX.Element
   placement?: 'left' | 'right'
   onClose?: (e: MouseEvent) => void
+  style?: CSSProperties
+  className?: string
 }
 declare const Drawer: React.ComponentType<Props>
 export default Drawer

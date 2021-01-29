@@ -4,6 +4,8 @@ interface Props {
   value?: number
   min?: number
   max?: number
+  style?: CSSProperties
+  className?: string
   disabled?: boolean
   tipFormatter?: (value: number) => JSX.Element
   marks?: {

@@ -13,6 +13,8 @@ interface Props {
   color?: string
   characterRender?: (value: number, index: number) => JSX.Element
   onChange?: (value: number) => void
+  style?: CSSProperties
+  className?: string
 }
 declare const Rate: React.ComponentType<Props>
 export default Rate

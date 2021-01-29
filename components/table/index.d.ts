@@ -55,6 +55,8 @@ interface Props {
   emptyContent?: string | JSX.Element
   columns: ColumnItem[]
   data: object[]
+  style?: CSSProperties
+  className?: string
 }
 declare const Table: React.ComponentType<Props>
 export default Table
