@@ -1,5 +1,7 @@
 interface Props {
   type?: 'primary' | 'success' | 'warning' | 'danger'
+  style?: CSSProperties
+  className?: string
   appearance?: 'default' | 'line'
   onClick?: (e: MouseEvent) => void
 }

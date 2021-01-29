@@ -24,8 +24,6 @@ const BasePicker = ({
   clearable = true,
   width = 'auto',
   weekOffset,
-  min = null,
-  max = null,
   hourStep,
   minuteStep,
   secondStep,
@@ -42,8 +40,22 @@ const BasePicker = ({
   placement = 'top-bottom-start',
   inputReadOnly,
   locale,
+  bordered = true,
+  disabledDate,
   ...otherPorps
 }) => {
+  // 兼容2.x api -> max，min
+  const [max, setMax] = useState(otherPorps.max || otherPorps.maxDate || null)
+  const [min, setMin] = useState(otherPorps.min || otherPorps.minDate || null)
+
+  useEffect(() => {
+    setMax(otherPorps.max || otherPorps.maxDate || null)
+  }, [otherPorps.max, otherPorps.maxDate])
+
+  useEffect(() => {
+    setMin(otherPorps.min || otherPorps.minDate || null)
+  }, [otherPorps.min, otherPorps.minDate])
+
   const cacheDate = useRef(null)
   const [inputFocus, setInputFocus] = useState(false)
   const [type, setType] = useState(propType)
@@ -179,13 +191,16 @@ const BasePicker = ({
         minuteStep,
         secondStep,
         inputReadOnly,
-        value
+        value,
+        bordered,
+        disabledDate
       }}
     >
       <Root
         inputChangeEvent={inputChangeEvent}
         onClear={onClear}
         showPanel={showPanel}
+        bordered={bordered}
         inputFocus={inputFocus}
         onTrigger={() => {
           setShowPanel(true)

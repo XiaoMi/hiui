@@ -32,6 +32,7 @@ interface DateProps extends CommonProps {
   minDate?: Date
   max?: Date
   maxDate?: Date
+  bordered?: boolean
   disabledDate?: (currentDate: Date) => boolean
   showTime?: boolean
   shortcuts?: string[] | Shortcuts[]
@@ -41,6 +42,8 @@ interface DateProps extends CommonProps {
   dateMarkRender?: (currentDate: Date, today: Date) => JSX.Element
   dateMarkPreset?: 'zh-CN'
   overlayClassName?: string
+  style?: CSSProperties
+  className?: string
 }
 
 declare const DatePicker: React.ComponentType<DateProps>

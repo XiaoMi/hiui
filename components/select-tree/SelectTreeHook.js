@@ -54,7 +54,8 @@ const SelectTree = ({
   optionWidth,
   autoload: propsAutoload,
   placement = 'top-bottom-start',
-  emptyContent
+  emptyContent,
+  bordered = true
 }) => {
   const [isFocus, setIsFocus] = useState(false)
   const placeholder = propsPlaceholder || localeDatas.selectTree.placeholder
@@ -82,6 +83,7 @@ const SelectTree = ({
     checked: [],
     semiChecked: []
   })
+  const resizeTimeId = useRef()
   // 拉平的数据
   const [flattenData, setFlattenData] = useState([])
   // 关键字搜索值
@@ -114,7 +116,7 @@ const SelectTree = ({
 
   // 依赖 flattenData & value  解析生成 checkedNodes 或 selectedItems
   useEffect(() => {
-    if (flattenData.length > 0) {
+    if (flattenData.length > 0 && value) {
       if (type === 'multiple') {
         const cstatus = parseCheckStatusData(
           value,
@@ -130,7 +132,7 @@ const SelectTree = ({
         }
       }
     }
-  }, [value])
+  }, [value, flattenData])
 
   // 依赖展开项生成展开节点数据
   useEffect(() => {
@@ -146,8 +148,7 @@ const SelectTree = ({
       setActiveId(flattenData[0].id)
     }
   }, [expandIdsProps, flattenData])
-
-  useEffect(() => {
+  const getShowCount = useCallback(() => {
     if (selectedItemsRef.current) {
       const sref = selectedItemsRef.current
       // 多选超过一行时以数字显示
@@ -166,8 +167,21 @@ const SelectTree = ({
       }
       setShowCount(num)
     }
-  }, [selectedItems])
+  }, [showCount, selectedItems])
+
   useEffect(() => {
+    getShowCount()
+  }, [selectedItems])
+
+  const resize = useCallback(() => {
+    clearTimeout(resizeTimeId.current)
+    resizeTimeId.current = setTimeout(() => {
+      getShowCount()
+    }, [60])
+  }, [getShowCount])
+
+  useEffect(() => {
+    window.addEventListener('resize', resize)
     if (data) {
       const { flattenData = [], nodeEntries } = flattenNodesData(
         data,
@@ -195,6 +209,9 @@ const SelectTree = ({
       setActiveId(selectedItems[0].id)
     } else if (Array.isArray(data) && data.length > 0) {
       setActiveId(data[0].id)
+    }
+    return () => {
+      window.removeEventListener('resize', resize)
     }
   }, [])
   // 过滤方法
@@ -384,13 +401,13 @@ const SelectTree = ({
    */
   const selectedEvents = useCallback(
     (node) => {
-      setSelectedItems([node])
+      typeof value === 'undefined' && setSelectedItems([node])
       const n = clearReturnData(node)
       onChange(node.id, n, n)
       setShow(false)
       setActiveId(node.id)
     },
-    [onChange, show, selectedItems]
+    [onChange, show, selectedItems, value]
   )
 
   /**
@@ -422,7 +439,6 @@ const SelectTree = ({
   }
   // 搜索框的值改变时的事件
   const changeEvents = (val) => {
-    setSearchValue(val)
     if (dataSource && val.length) {
       setAutoload(true)
       onTrigger(val)
@@ -430,13 +446,12 @@ const SelectTree = ({
       searchTreeNode(val)
     }
   }
-  const debouncedFilterItems = _.debounce(changeEvents, 100)
+  const debouncedFilterItems = _.debounce(changeEvents, 300)
 
   const searchable = searchMode === 'filter' || searchMode === 'highlight'
   // 按键操作
   const handleKeyDown = useCallback(
     (evt) => {
-      evt.stopPropagation()
       // space
       if (
         evt.keyCode === 32 &&
@@ -444,36 +459,64 @@ const SelectTree = ({
         !show
       ) {
         evt.preventDefault()
+        evt.stopPropagation()
         setShow(true)
       }
       // esc
       if (evt.keyCode === 27) {
+        evt.stopPropagation()
+
         setShow(false)
       }
       if (show) {
         // down
         if (evt.keyCode === 40) {
+          evt.stopPropagation()
           evt.preventDefault()
           setActiveId(moveFocusedIndex('down', activeId, selectTreeRoot))
         }
         // up
         if (evt.keyCode === 38) {
           evt.preventDefault()
+          evt.stopPropagation()
+
           setActiveId(moveFocusedIndex('up', activeId, selectTreeRoot))
         }
         // right
         if (evt.keyCode === 39) {
           evt.preventDefault()
+          evt.stopPropagation()
+
           rightHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
         }
         // left
         if (evt.keyCode === 37) {
           evt.preventDefault()
+          evt.stopPropagation()
+
           leftHandle({ activeId, flattenData, expandIds, expandEvents, setActiveId, mode })
+        }
+        // enter
+        if (evt.keyCode === 13) {
+          evt.preventDefault()
+          evt.stopPropagation()
+          if (mode !== 'breadcrumb') {
+            type === 'multiple'
+              ? checkedEvents(
+                  !selectedItems.some((item) => {
+                    return activeId === item.id
+                  }),
+                  getNodeByIdTitle(activeId, flattenData),
+                  checkedNodes
+                )
+              : selectedEvents(getNodeByIdTitle(activeId, flattenData))
+          }
         }
         // space 选中
         if (evt.keyCode === 32 && !document.activeElement.classList.value.includes('hi-selecttree__searchinput')) {
           evt.preventDefault()
+          evt.stopPropagation()
+
           if (mode !== 'breadcrumb') {
             type === 'multiple'
               ? checkedEvents(
@@ -515,6 +558,7 @@ const SelectTree = ({
         placeholder={placeholder}
         checkedEvents={checkedEvents}
         onTrigger={onTrigger}
+        bordered={bordered}
         onClear={handleClear}
       />
       {
@@ -545,14 +589,15 @@ const SelectTree = ({
                       className="hi-selecttree__searchinput"
                       placeholder={localeDatas.selectTree.search}
                       clearable="true"
-                      value={searchValue}
                       clearabletrigger="always"
+                      value={searchValue}
                       onKeyDown={(e) => {
                         if (e.keyCode === '13') {
                           searchTreeNode(e.target.value)
                         }
                       }}
                       onChange={(e) => {
+                        setSearchValue(e.target.value)
                         debouncedFilterItems(e.target.value)
                       }}
                     />

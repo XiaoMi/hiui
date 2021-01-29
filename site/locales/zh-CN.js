@@ -7,6 +7,7 @@ module.exports = {
     palette: '配色主题',
     changelog: '更新日志',
     'hi-request': 'HiRequest 请求工具',
+    'hi-basetable': 'BaseTable 表格',
     'group-basic': '通用',
     'community-recommended': '社区推荐',
     'code-editor': 'CodeEditor 代码编辑器',
@@ -131,7 +132,8 @@ module.exports = {
     list: 'List 列表',
     filter: 'Filter 筛选',
     charts: 'Charts 图表',
-    'rich-text-editor': 'RichTextEditor 富文本编辑'
+    'rich-text-editor': 'RichTextEditor 富文本编辑',
+    preview: 'preview 预览'
   },
   designs: {
     summarize: '概述',

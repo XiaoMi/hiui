@@ -3,6 +3,8 @@ interface Props {
   content?: string | JSX.Element
   visible?: boolean
   full?: boolean
+  style?: CSSProperties
+  className?: string
 }
 
 type Options = {

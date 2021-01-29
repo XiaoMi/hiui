@@ -11,6 +11,8 @@ interface Props {
   footer?: JSX.Element | null
   onCancel?: (e: MouseEvent) => void
   onConfirm?: (e: MouseEvent) => void
+  style?: CSSProperties
+  className?: string
 }
 declare const Modal: React.ComponentType<Props>
 export default Modal

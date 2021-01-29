@@ -8,6 +8,8 @@ interface Props {
   clearable?: boolean
   placeholder?: string
   style?: CSSProperties
+  className?: string
+  bordered?: boolean
   ref?: string | ((instance: HTMLInputElement | null) => void) | React.RefObject<HTMLInputElement> | null | undefined
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void

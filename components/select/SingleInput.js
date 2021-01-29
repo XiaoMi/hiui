@@ -16,7 +16,8 @@ const SingleInput = (props) => {
     selectedItems: propsSelectItem,
     onClear,
     fieldNames,
-    isFocus
+    isFocus,
+    bordered
   } = props
   const [cacheselectedItems, setCacheselectedItems] = useState(propsSelectItem || [])
   useEffect(() => {
@@ -35,14 +36,13 @@ const SingleInput = (props) => {
   const selectedItems = propsSelectItem.length > 0 ? propsSelectItem : cacheselectedItems
 
   placeholder = selectedItems.length > 0 ? selectedItems[0][transKeys(fieldNames, 'title')] : placeholder
-
   return (
     <div
       className={classNames(
         'hi-select__input',
         'single-value',
         `theme__${theme}`,
-        { disabled },
+        { disabled, bordered },
         {
           'hi-select__input__focus': isFocus
         }

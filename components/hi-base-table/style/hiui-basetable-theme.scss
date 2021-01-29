@@ -1,0 +1,47 @@
+$table-prefix: hiui-basetable !default;
+$table-font-size: 14px !default;
+$header-background-color: #fbfbfb !default;
+$header-font-weight: 500 !default;
+$border: 1px solid #e6e7e8 !default;
+$row-hovered-background-color: var(--color-primary-20) !default;
+
+@import '../../../node_modules/react-base-table/es/_BaseTable.scss';
+
+.#{$table-prefix} {
+  box-shadow: none;
+
+  &__table-main {
+    outline: none;
+  }
+
+  &.bordered {
+    border: 1px solid var(--color-gray-20);
+    border-right: none;
+
+    .hiui-basetable__row-cell {
+      border-right: 1px solid var(--color-gray-20);
+    }
+  }
+
+  &__header-cell {
+    color: var(--color-gray-70);
+
+    &-text {
+      cursor: text;
+    }
+  }
+
+  &.autoResize {
+    .#{$table-prefix}__header-cell {
+      flex: 1 1 !important;
+    }
+
+    .#{$table-prefix}__row-cell {
+      flex: 1 1 !important;
+    }
+  }
+}
+
+.header__sticky-row {
+  position: fixed !important;
+}

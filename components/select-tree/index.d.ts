@@ -28,6 +28,7 @@ interface Props {
   showCheckedMode?: 'ALL' | 'PARENT' | 'CHILD'
   mode?: 'normal' | 'breadcrumb'
   defaultExpandAll?: boolean
+  bordered?: boolean
   defaultExpandIds?: string[] | number[]
   expandIds?: string[] | number[]
   dataSource?: DataSource | DataSourFun
@@ -38,6 +39,7 @@ interface Props {
   valueRender?: (item: DataItem) => JSX.Element
   style?: CSSProperties
   value?: DataItem[] | string[] | number[] | string
+  className?: string
 }
 declare const SelectTree: React.ComponentType<Props>
 export default SelectTree

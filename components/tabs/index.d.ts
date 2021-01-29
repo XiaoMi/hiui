@@ -22,6 +22,8 @@ interface Props {
   max?: number
   canScroll?: boolean
   draggable?: boolean
+  style?: CSSProperties
+  className?: string
   onTabClick?: (tabKey: string | number, event: MouseEvent) => void
   onEdit?: (action: 'add' | 'delete', index: number, tabKey: string | number) => void
   onDragStart?: (dragNode: NodeData) => void
@@ -38,6 +40,8 @@ interface PaneProps {
   closeable?: boolean
   disabled?: boolean
   animation?: boolean
+  style?: CSSProperties
+  className?: string
 }
 declare class Pane extends React.Component<PaneProps, any> {
 }

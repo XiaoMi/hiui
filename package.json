@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hiui",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "description": "HIUI for React",
   "scripts": {
     "test": "node_modules/.bin/standard && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss'",
@@ -136,6 +136,7 @@
     "prismjs": "^1.16.0",
     "raw-loader": "^0.5.1",
     "react": "^16.9.0",
+    "react-base-table": "^1.12.0",
     "react-codemirror2": "^7.2.1",
     "react-custom-scrollbars": "^4.2.1",
     "react-dnd-test-backend": "^7.7.0",

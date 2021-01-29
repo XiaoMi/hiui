@@ -113,11 +113,14 @@ textarea.#{$input} {
     position: relative;
     display: flex;
     width: 100%;
-    border: 1px solid use-color('gray-30');
     box-sizing: border-box;
     border-radius: 2px;
     background-color: use-color('white');
     transition: border-color 0.3s;
+
+    &.bordered {
+      border: 1px solid use-color('gray-30');
+    }
 
     &:not(.disabled):hover {
       z-index: 1;

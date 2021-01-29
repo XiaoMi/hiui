@@ -27,7 +27,8 @@ const Root = ({
     theme,
     width,
     value,
-    format
+    format,
+    bordered
   } = useContext(DPContext)
   const [inputData, setInputData] = useState(outDate)
   const inputRef = useRef(null)
@@ -58,7 +59,8 @@ const Root = ({
     inputFocus && 'hi-datepicker__picker--focus',
     disabled && 'hi-datepicker__picker--disabled',
     showTime && 'hi-datepicker__picker--hastime',
-    rangeInputIsError && 'hi-datepicker__picker--error'
+    rangeInputIsError && 'hi-datepicker__picker--error',
+    { bordered }
   )
 
   const renderRange = type.includes('range') || type === 'timeperiod'

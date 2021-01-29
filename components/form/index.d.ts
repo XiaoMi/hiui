@@ -11,6 +11,8 @@ interface FormProps {
   placement?: 'horizontal' | 'vertical'
   showColon?: boolean
   children: Form.Item
+  style?: CSSProperties
+  className?: string
 }
 
 interface ItemProps {

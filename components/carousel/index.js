@@ -71,6 +71,15 @@ class Carousel extends Component {
     this.setState({ showArrow })
   }
 
+  handleKeyDown = (evt) => {
+    const { keyCode } = evt
+    if ([39, 37].includes(keyCode)) {
+      evt.preventDefault()
+      evt.stopPropagation()
+      this.preNextEvent(keyCode === 37 ? -1 : 1)
+    }
+  }
+
   render() {
     const { rootWidth, active, showArrow } = this.state
     const { showDots, showArrows, showPages } = this.props
@@ -81,6 +90,8 @@ class Carousel extends Component {
       <div
         className="hi-carousel"
         ref={this.rootRef}
+        tabIndex="0"
+        onKeyDown={this.handleKeyDown}
         onMouseOver={this.mouseEvent.bind(this, 'over')}
         onMouseOut={this.mouseEvent.bind(this, 'out')}
       >

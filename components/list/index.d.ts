@@ -5,6 +5,8 @@ type DataItem = {
   description?: string | JSX.Element
   extra?: string | string[]
   avatar?: string
+  style?: CSSProperties
+  className?: string
 }
 interface Props {
   type?: 'default' | 'card'
@@ -18,6 +20,8 @@ interface Props {
   hoverable?: boolean
   layout?: 'vertical' | 'horizontal'
   emptyText?: string | JSX.Element
+  style?: CSSProperties
+  className?: string
 }
 declare const List: React.ComponentType<Props>
 export default List

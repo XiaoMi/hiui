@@ -54,7 +54,7 @@ $AnimationClassName: 'hi-cascader_transition' !default;
       padding-right: 25px;
     }
 
-    &.hi-cascader-menu__item-active {
+    &.hi-cascader-menu__item-active:not(.hi-cascader-menu__item-focus) {
       color: #4284f5;
       background-color: transparent !important;
 
@@ -65,6 +65,10 @@ $AnimationClassName: 'hi-cascader_transition' !default;
 
     &:hover {
       background-color: #f5f5f5;
+    }
+
+    &-focus {
+      background-color: rgba(0, 0, 0, 0.1);
     }
 
     &--icon {

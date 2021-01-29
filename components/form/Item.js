@@ -228,13 +228,17 @@ const FormItem = (props) => {
   }, [props.labelWidth, formProps.labelWidth])
 
   const setEvent = (eventName, component, componentProps, e, ...args) => {
-    e.persist && e.persist()
+    const beObject = Object.prototype.toString.call(e) === '[object Object]'
+    beObject && Object.prototype.toString.call(e.persist) === '[object Function]' && e.persist()
     const displayName = component && component.type && component.type.displayName
 
     const _props = componentProps || children.props
     eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
     eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
-    let value = e.target && Object.prototype.hasOwnProperty.call(e.target, valuePropName) ? e.target[valuePropName] : e
+    let value =
+      beObject && e.target && Object.prototype.hasOwnProperty.call(e.target, valuePropName)
+        ? e.target[valuePropName]
+        : e
     if (displayName === 'Counter') {
       value = args[0]
     }

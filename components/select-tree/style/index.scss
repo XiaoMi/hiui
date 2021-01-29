@@ -7,7 +7,6 @@
   &__input {
     height: 32px;
     line-height: 32px;
-    border: 1px solid use-color('gray-30');
     box-sizing: border-box;
     border-radius: 2px;
     text-align: left;
@@ -17,8 +16,29 @@
     display: flex;
     justify-content: space-between;
 
+    &.bordered {
+      border: 1px solid use-color('gray-30');
+    }
+
+    .hi-icon + .hi-selecttree__icon-close {
+      margin-left: 0;
+    }
+
+    &-items--left {
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      height: 22px;
+      line-height: 22px;
+      font-size: 12px;
+      color: var(--color-black);
+      background-color: var(--color-gray-10);
+      border-radius: 2px;
+      box-sizing: border-box;
+    }
+
     &:hover {
-      border: 1px solid use-color('primary');
+      border-color: use-color('primary');
 
       .hi-selecttree__input--expand.clearable {
         display: none;
@@ -34,7 +54,7 @@
     }
 
     &--focus {
-      border: 1px solid use-color('primary');
+      border-color: use-color('primary');
     }
 
     &--single {

@@ -3,6 +3,7 @@
   color: #fff;
   overflow: hidden;
   position: relative;
+  outline: none;
 
   &__container {
     height: 100%;
@@ -54,6 +55,7 @@
     visibility: hidden;
     height: 0;
     z-index: 2;
+
     &--show {
       visibility: visible;
     }

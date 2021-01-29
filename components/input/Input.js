@@ -93,7 +93,7 @@ class Input extends Component {
   renderText() {
     const { hover, active, value } = this.state
     // clearableTrigger 为内部预留，主要表示清除按钮的触发形态，类型分为 'hover' 和 ‘always’
-    const { disabled, type, id, placeholder, clearable, clearableTrigger = 'hover' } = this.props
+    const { disabled, type, id, placeholder, clearable, clearableTrigger = 'hover', bordered = true } = this.props
     const { prefix, suffix, prepend, append } = this.state
     const noClear = ['textarea']
     const prefixId = id ? id + '_prefix' : ''
@@ -123,7 +123,13 @@ class Input extends Component {
           // 前置元素
           prepend && <span className="hi-input__prepend">{prepend}</span>
         }
-        <div className={`hi-input__inner${active ? ' active' : ''}${disabled ? ' disabled' : ''}`}>
+        <div
+          className={classNames(`hi-input__inner`, {
+            bordered,
+            disabled,
+            active
+          })}
+        >
           {
             // 前缀
             prefix && (

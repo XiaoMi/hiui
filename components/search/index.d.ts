@@ -13,8 +13,10 @@ interface Props {
   placeholder?: string
   data?: DataItem
   onSearch?: (inputVal: string, item?: DataItem) => void
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange?: (e: string) => void
   overlayClassName?: string
+  style?: CSSProperties
+  className?: string
 }
 declare const Search: React.ComponentType<Props>
 export default Search

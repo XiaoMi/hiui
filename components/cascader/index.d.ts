@@ -15,6 +15,7 @@ interface Props {
   defaultValue: string[] | number[]
   expandTrigger?: 'click' | 'hover'
   searchable?: boolean
+  bordered?: boolean
   filterOption?: (keyword: string, item: DataItem) => boolean
   clearable?: boolean
   disabled?: boolean
@@ -25,6 +26,8 @@ interface Props {
   style?: object
   onChange?: (value: string[] | number[]) => void
   overlayClassName?: string
+  style?: CSSProperties
+  className?: string
 }
 declare const Card: React.ComponentType<Props>
 export default Card

@@ -6,6 +6,8 @@ interface Props {
   showArrow?: boolean
   onChange?: () => void
   children: Collapse.Panel
+  style?: CSSProperties
+  className?: string
 }
 interface PanelProps {
   id?: string

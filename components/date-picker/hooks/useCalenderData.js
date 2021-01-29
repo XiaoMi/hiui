@@ -3,7 +3,7 @@ import moment from 'moment'
 import { DAY_MILLISECONDS } from '../constants'
 import _ from 'lodash'
 
-const getYearOrMonthRows = ({ originDate, renderDate, type, view, range, localeDatas }) => {
+const getYearOrMonthRows = ({ originDate, renderDate, type, view, range, localeDatas, min, max, disabledDate }) => {
   const _date = renderDate ? moment(renderDate) : moment()
   const start = view === 'year' ? _date.year() - 4 : 0
   const trs = [[], [], [], []]
@@ -42,6 +42,44 @@ const getYearOrMonthRows = ({ originDate, renderDate, type, view, range, localeD
       if (originDate && (y === originDate.year() || y === originDate.month())) {
         col.type = 'selected'
       }
+      // 判断年月可选状态
+      const _y = currentYM.year()
+      const _m = currentYM.month()
+
+      if (disabledDate && view.includes('year')) {
+        col.type = disabledDate(_y) ? 'disabled' : col.type
+      }
+      if (disabledDate && view.includes('mouth')) {
+        col.type = disabledDate(_y + '-' + _m) ? 'disabled' : col.type
+      }
+      // 年的状态
+      if (view.includes('year') && (min || max)) {
+        if (min) {
+          const minYear = moment(min).year()
+          col.type = _y < minYear ? 'disabled' : col.type
+        }
+        if (max) {
+          const maxYear = moment(max).year()
+          col.type = _y > maxYear ? 'disabled' : col.type
+        }
+      }
+
+      if (view.includes('month') && (min || max)) {
+        if (min) {
+          const minMoment = moment(min)
+          const minYear = minMoment.year()
+          const minMonth = minMoment.month()
+          col.type = _y < minYear ? 'disabled' : col.type
+          col.type = _y === minYear && _m < minMonth ? 'disabled' : col.type
+        }
+        if (max) {
+          const maxMoment = moment(max)
+          const maxYear = maxMoment.year()
+          const maxMonth = maxMoment.month()
+          col.type = _y < maxYear ? 'disabled' : col.type
+          col.type = _y === maxYear && _m > maxMonth ? 'disabled' : col.type
+        }
+      }
     }
   }
   return trs
@@ -51,7 +89,7 @@ const getTime = (week, y, m) => {
   const t = r.getTime() - week * DAY_MILLISECONDS
   return t
 }
-const getDateRows = ({ originDate, range, type, weekOffset, min, max, renderDate, view }) => {
+const getDateRows = ({ originDate, range, type, weekOffset, min, max, renderDate, view, disabledDate }) => {
   const rows = [[], [], [], [], [], []]
   const today = moment()
   const _date = moment(renderDate)
@@ -82,7 +120,10 @@ const getDateRows = ({ originDate, range, type, weekOffset, min, max, renderDate
         })
       const currentTime = moment(startTimeByCurrentPanel + DAY_MILLISECONDS * (i * 7 + j))
       let isPN = false // is Prev Or Next Month
-      const isDisabled = currentTime.isBefore(moment(min)) || currentTime.isAfter(moment(max)) // isDisabled cell
+      const isDisabled =
+        currentTime.isBefore(moment(min)) ||
+        currentTime.isAfter(moment(max)) ||
+        (disabledDate && disabledDate(currentTime)) // isDisabled cell
       if (i === 0) {
         // 处理第一行的日期数据
         if (j >= firstDayWeek) {
@@ -110,7 +151,7 @@ const getDateRows = ({ originDate, range, type, weekOffset, min, max, renderDate
       if (isDisabled) {
         col.type = 'disabled'
       }
-      if (!isPN && currentTime.isSame(today, 'day')) {
+      if (!isPN && currentTime.isSame(today, 'day') && col.type !== 'disabled') {
         col.type = 'today'
       }
       if (type.includes('range') && !isPN) {
@@ -154,7 +195,19 @@ const getDateRows = ({ originDate, range, type, weekOffset, min, max, renderDate
   }
   return rows
 }
-const useDate = ({ view, date, originDate, weekOffset, localeDatas, range, type, min, max, renderDate }) => {
+const useDate = ({
+  view,
+  date,
+  originDate,
+  weekOffset,
+  localeDatas,
+  range,
+  type,
+  min,
+  max,
+  renderDate,
+  disabledDate
+}) => {
   const [rows, setRows] = useState([])
   useEffect(() => {
     const _rows =
@@ -165,7 +218,10 @@ const useDate = ({ view, date, originDate, weekOffset, localeDatas, range, type,
             type,
             view,
             localeDatas,
-            range
+            range,
+            min,
+            max,
+            disabledDate
           })
         : getDateRows({
             originDate,
@@ -175,10 +231,11 @@ const useDate = ({ view, date, originDate, weekOffset, localeDatas, range, type,
             min,
             max,
             renderDate,
-            view
+            view,
+            disabledDate
           })
     setRows(_rows)
-  }, [renderDate, view, range, type])
+  }, [renderDate, view, range, type, disabledDate])
 
   return [rows]
 }
