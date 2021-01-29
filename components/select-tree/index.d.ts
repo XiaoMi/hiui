@@ -39,6 +39,7 @@ interface Props {
   valueRender?: (item: DataItem) => JSX.Element
   style?: CSSProperties
   value?: DataItem[] | string[] | number[] | string
+  className?: string
 }
 declare const SelectTree: React.ComponentType<Props>
 export default SelectTree

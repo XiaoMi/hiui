@@ -3,6 +3,8 @@ interface Props {
   checked?: boolean
   defaultChecked?: boolean
   disabled?: boolean
+  style?: CSSProperties
+  className?: string
   onChange?: (checked: boolean) => void
 }
 declare const Switch: React.ComponentType<Props>

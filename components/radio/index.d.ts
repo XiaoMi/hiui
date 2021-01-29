@@ -8,6 +8,8 @@ interface Props {
   autoFocus?: boolean
   checked?: boolean
   disabled?: boolean
+  style?: CSSProperties
+  className?: string
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
 }
 interface GroupProps {

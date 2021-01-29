@@ -25,6 +25,8 @@ interface Props {
   defaultFileList?: FileItem[]
   fileList?: FileItem[]
   loading?: boolean
+  style?: CSSProperties
+  className?: string
   beforeUpload?: (files: FileItem[], fileList: FileItem[]) => boolean
   customUpload?: (files: FileItem[]) => void
   onChange?: (file: FileItem, fileList: FileItem[], response: object) => boolean

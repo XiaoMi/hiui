@@ -11,5 +11,14 @@ interface ButtonProps {
   icon?: string
   onClick?: () => void
 }
-declare const Button: React.ComponentType<Props>
+interface ButtonGroupProps {
+  className?: string
+  style?: object
+  prefixCls?: string
+}
+declare class ButtonGroup extends React.Component<ButtonGroupProps, any> {
+}
+declare class Button extends React.Component<ButtonProps, any> {
+  static Group = ButtonGroup
+}
 export default Button

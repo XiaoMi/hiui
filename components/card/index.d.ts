@@ -8,6 +8,8 @@ interface Props {
   extraType?: 'default' | 'hover'
   coverUrl?: string
   content?: string | JSX.Element
+  style?: CSSProperties
+  className?: string
 }
 declare class Card extends React.Component<Props, any> {
 }

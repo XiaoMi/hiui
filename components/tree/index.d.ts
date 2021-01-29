@@ -38,6 +38,8 @@ interface Props {
   openIcon?: string
   closeIcon?: string
   apperance?: 'default' | 'line' | 'folder'
+  style?: CSSProperties
+  className?: string
   contextMenu?: ContextMenuOption[] | ContextMenuOptionFun
   onChange?: (data: TreeNode[]) => void
   onExpand?: (expanded: boolean, expandIds: string[], expandedNode: TreeNode) => void

@@ -5,6 +5,8 @@ interface Props {
   defaultActive?: number
   showPages?: boolean
   children: JSX.Element[]
+  style?: CSSProperties
+  className?: string
 }
 declare const Carousel: React.ComponentType<Props>
 export default Carousel

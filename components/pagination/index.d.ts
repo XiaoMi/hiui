@@ -8,6 +8,8 @@ export interface PaginationProps {
   pageSizeOptions?: number[]
   autoHide?: boolean
   showJumper?: boolean
+  style?: CSSProperties
+  className?: string
   onJump?: (current: number) => void
   onChange?: (currentPage: number, prevPage: number, pageSize: number) => void
   onPageSizeChange?: (changeSize: number, currentPage: number) => void

@@ -43,6 +43,8 @@ interface Props {
   style?: CSSProperties
   optionWidth?: number
   bordered?: boolean
+  style?: CSSProperties
+  className?: string
   onChange?: (selectedIds: string[], changedItem: DataItem) => void
   onSearch?: (keyword: string) => void
   onOverlayScroll?: (e: Event<HTMLDivElement>) => void
