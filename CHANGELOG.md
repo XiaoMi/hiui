@@ -1,5 +1,8 @@
 # 更新日志
 
+## 2.15.6
+- 修复 `Switch` 在受控时，通过setState会触发 onChange 回调方法问题 [#1566](https://github.com/XiaoMi/hiui/issues/1566)
+
 ## 2.15.5
 
 - 修复 `Table` 国际化问题 [#1449](https://github.com/XiaoMi/hiui/issues/1449)

@@ -14,9 +14,7 @@ class Switch extends Component {
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.checked !== this.props.checked) {
-      this.setState({ checked: nextProps.checked }, () => {
-        this.props.onChange(nextProps.checked)
-      })
+      this.setState({ checked: nextProps.checked })
     }
   }
 
@@ -28,7 +26,7 @@ class Switch extends Component {
         return
       }
       this.setState({ checked: !this.state.checked }, () => {
-        onChange(this.state.checked)
+        onChange && onChange(this.state.checked)
       })
     }
   }
