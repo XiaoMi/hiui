@@ -4,7 +4,7 @@ import DPContext from '../context'
 import moment from 'moment'
 import { deconstructDate } from '../utils'
 
-const Time = ({ date, onChange, timeRangePanelType, startDate }) => {
+const Time = ({ date, onChange, timeRangePanelType, startDate, currentDate }) => {
   const {
     localeDatas,
     format = 'HH:mm:ss',
@@ -127,18 +127,18 @@ const Time = ({ date, onChange, timeRangePanelType, startDate }) => {
     return _value
   }
   const selectedEvent = useCallback(
-    (type, value, arrow) => {
+    (type, value, arrow, target) => {
       const cDate = moment(date)
       const disabledList = _getDsiabledList()[type]
       if (disabledList.includes(value) && arrow) {
         value = whenDisableChange(disabledList, value, arrow)
       }
       cDate[type](value)
-      if (!cDate.isSame(date)) {
+      if (!cDate.isSame(date) || (target !== 'scroll' && !cDate.isSame(currentDate))) {
         onChange(cDate)
       }
     },
-    [date]
+    [date, onChange, whenDisableChange]
   )
   const renderTimeList = (type) => {
     const disabledList = _getDsiabledList()[type]
