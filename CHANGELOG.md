@@ -3,7 +3,7 @@
 ## 2.15.6
 
 - 修复 `Select` autoload 设置后，自动获取数据未显示下拉数据问题 [#1542](https://github.com/XiaoMi/hiui/issues/1542)
-- 修复 `Select` data 属性 传入错误的数据（不包含 title) 会引起死循环 [#1542](https://github.com/XiaoMi/hiui/issues/1542)
+- 修复 `Select` data 属性 传入错误的数据会引起死循环 [#1568](https://github.com/XiaoMi/hiui/issues/1568)
 
 ## 2.15.5
 
