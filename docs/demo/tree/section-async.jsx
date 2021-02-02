@@ -43,7 +43,7 @@ class Demo extends React.Component {
               method:'get',
               data:{},
               params:{id:node.id},
-              url:'http://my-json-server.typicode.com/hiui-group/db/conditiondata',
+              url:'https://my-json-server.typicode.com/hiui-group/db/conditiondata',
               transformResponse:(res)=>{
                 let data = JSON.parse(res)
                 if(data[0]) {
