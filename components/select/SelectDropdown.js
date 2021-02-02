@@ -14,10 +14,11 @@ class SelectDropdown extends Component {
     }
   }
   static getDerivedStateFromProps (nextProps, prevState) {
-    const {selectedItems, mode, isOnSearch, dropdownItems, show} = nextProps
+    const {selectedItems, mode, isOnSearch, dropdownItems, show, setStateAutolaod} = nextProps
     const {searchbarValue, cachedropdownItems} = prevState
     const _filterItems = selectedItems.length > 0 && searchbarValue.length === 0 && mode === 'single' && isOnSearch ? cachedropdownItems : dropdownItems
     const _searchbarValue = show ? searchbarValue : ''
+    _filterItems.length && !show && setStateAutolaod()
     return {filterItems: _filterItems, searchbarValue: _searchbarValue}
   }
   componentDidMount () {
@@ -137,13 +138,13 @@ class SelectDropdown extends Component {
             disabled={item.disabled}
           >
             <div className='hi-select__dropdown--item__name' style={style}>{
-              this.props.isOnSearch ? item.title : this.hightlightKeyword(item.title, item.id)
+              this.props.isOnSearch ? item.title : this.hightlightKeyword(item.title || '', item.id)
             }</div>
           </Checkbox>
         )}
         {mode === 'single' && (
           <div className='hi-select__dropdown--item__name' style={style}>{
-            this.props.isOnSearch ? item.title : this.hightlightKeyword(item.title, item.id)
+            this.props.isOnSearch ? item.title : this.hightlightKeyword(item.title || '', item.id)
           }</div>
         )}
         {mode === 'single' && isSelected && (
