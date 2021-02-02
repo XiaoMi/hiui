@@ -16,6 +16,7 @@ const TimePanel = ({ hasShadow, onTimeChange, style, dates = [] }) => {
       {
         <Time
           date={dates[0] || moment()}
+          currentDate={dates[0]}
           hourStep={hourStep}
           minuteStep={minuteStep}
           secondStep={secondStep}
@@ -28,6 +29,7 @@ const TimePanel = ({ hasShadow, onTimeChange, style, dates = [] }) => {
           <div className="hi-timepicker__split" />
           <Time
             date={dates[1] || moment()}
+            currentDate={dates[1]}
             hourStep={hourStep}
             minuteStep={minuteStep}
             secondStep={secondStep}

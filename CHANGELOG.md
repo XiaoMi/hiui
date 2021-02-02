@@ -1,5 +1,7 @@
 # 更新日志
+## 3.4.1
 
+- 修复 `TimePicker` 时间范围选择，为空时无法选择打开弹窗时的当前值 [#1530](https://github.com/XiaoMi/hiui/issues/1530)
 ## 3.4.0
 
 - 优化组件弹出层自动计算合适的左右位置 [#1494](https://github.com/XiaoMi/hiui/issues/1494)
