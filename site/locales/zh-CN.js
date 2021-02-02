@@ -133,7 +133,7 @@ module.exports = {
     filter: 'Filter 筛选',
     charts: 'Charts 图表',
     'rich-text-editor': 'RichTextEditor 富文本编辑',
-    preview: 'preview 预览'
+    preview: 'Preview 预览'
   },
   designs: {
     summarize: '概述',
