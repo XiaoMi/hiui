@@ -14,13 +14,14 @@ class Demo extends React.Component {
     return (
       <Select
         type='single'
+        autoload
         dataSource={{
           type: 'GET',
           key: 'id',
-          url: 'http://yapi.demo.qunar.com/mock/26534/hiui/select',
+          url: 'https://mife-gallery.test.mi.com/hiui/stores',
           transformResponse: (res) => {
             console.log('----', res)
-            return res.list
+            return res.data
           }
         }}
         placeholder='请选择'
@@ -47,10 +48,10 @@ class Demo extends React.Component {
       dataSource={keyword => {
         return ({
           type: 'GET',
-          url: 'http://yapi.demo.qunar.com/mock/26534/hiui/select',
+          url: 'https://mife-gallery.test.mi.com/hiui/stores',
           params:{id: keyword},
           transformResponse: (res) => {
-            return res.list
+            return res.data
           }
         })
 
