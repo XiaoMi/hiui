@@ -1,7 +1,7 @@
 # 更新日志
 
 ## 2.15.6
-
+- 修复 `Switch` 在受控时，通过setState会触发 onChange 回调方法问题 [#1566](https://github.com/XiaoMi/hiui/issues/1566)
 - 修复 `Select` autoload 设置后，自动获取数据未显示下拉数据问题 [#1542](https://github.com/XiaoMi/hiui/issues/1542)
 - 修复 `Select` data 属性 传入错误的数据会引起死循环 [#1568](https://github.com/XiaoMi/hiui/issues/1568)
 - 修复 `Stepper` 垂直状态下显示异常 [#1155](https://github.com/XiaoMi/hiui/issues/1155)
