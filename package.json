@@ -49,7 +49,7 @@
   "dependencies": {
     "@hi-ui/core-css": "^2.0.1",
     "async-validator": "^3.3.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "classnames": "^2.2.5",
     "decimal.js": "^10.2.0",
     "fetch-jsonp": "^1.1.3",

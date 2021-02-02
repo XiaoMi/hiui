@@ -28,7 +28,7 @@ const TimeList = ({ type, datas, value, disabledList, onSelect, hourStep, minute
       el.scrollTop = val * 32
       if (!disabledList.includes(val)) {
         const arrow = getStep()
-        !getdisabledType(val) && onSelect(type, val * arrow)
+        !getdisabledType(val) && onSelect(type, val * arrow, undefined, 'scroll')
       }
     }
   }
