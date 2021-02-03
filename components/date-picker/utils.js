@@ -3,6 +3,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import request from 'axios'
 import Lunar from './toLunar'
+import { FORMATS } from './constants'
 const holiday = {
   PRCHoliday: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCHoliday.json?',
   PRCLunar: 'https://cdn.cnbj1.fds.api.mi-img.com/hiui/PRCLunar.json?',
@@ -224,15 +225,16 @@ export const getInRangeDate = (momentstartDate, momentendDate, max, min) => {
  * @param {String} type 类型
  * @param {String} format 日期格式
  */
-export const parseValue = (value, type, format) => {
+export const parseValue = (value, type, format, locale = 'zh-CN') => {
   if (!value) return [null]
-  const _value = moment(value)
+  const _format = FORMATS(locale)[type]
+  const _value = moment(value, _format)
   const isValid = moment(value).isValid()
   if (value && typeof value === 'object' && type.includes('range')) {
     if (type === 'weekrange') {
       return [
-        value.start ? moment(value.start).startOf('week') : null,
-        value.end ? moment(value.end).endOf('week') : null
+        value.start ? moment(value.start, _format).startOf('week') : null,
+        value.end ? moment(value.end, _format).endOf('week') : null
       ]
     }
     return [
