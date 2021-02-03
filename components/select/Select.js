@@ -43,6 +43,7 @@ const InternalSelect = (props) => {
     bordered = true
   } = props
   const selectInputContainer = useRef()
+  const autoloadFlag = useRef(autoload) // 多选情况下，需要记录是否进行了筛选
   const historyData = useRef([])
   const [dropdownItems, setDropdownItems] = useState(data)
   const [isGroup, setIsGroup] = useState(false)
@@ -97,7 +98,8 @@ const InternalSelect = (props) => {
   }, [keyword, isGroup])
 
   useEffect(() => {
-    setSearchable(dataSource ? true : propsSearchable)
+    const dataSourcePropsSearchable = typeof propsSearchable !== 'undefined' ? propsSearchable : true // 在存在dataSource的时候，默认searchable为true
+    setSearchable(dataSource ? dataSourcePropsSearchable : propsSearchable)
   }, [propsSearchable])
 
   useEffect(() => {
@@ -194,7 +196,7 @@ const InternalSelect = (props) => {
       setDropdownShow(false)
     }
     // 多选具有默认值的话打开的话应该显示选中的值
-    if (dataSource && type === 'multiple') {
+    if (dataSource && type === 'multiple' && !autoloadFlag.current) {
       setCacheSelectItem(selectedItems)
       setDropdownItems(selectedItems)
     }
@@ -649,6 +651,7 @@ const InternalSelect = (props) => {
           showCheckAll={showCheckAll}
           checkAll={checkAll}
           loading={loading}
+          autoloadFlag={autoloadFlag}
           focusedIndex={focusedIndex}
           setFocusedIndex={setFocusedIndex}
           showJustSelected={showJustSelected}

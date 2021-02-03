@@ -33,7 +33,8 @@ const SelectDropdown = ({
   isGroup,
   onOverlayScroll,
   setFocusedIndex,
-  targetByKeyDown
+  targetByKeyDown,
+  autoloadFlag
 }) => {
   const [filterItems, setFilterItems] = useState(dropdownItems)
   const [searchbarValue, setSearchbarValue] = useState('')
@@ -124,6 +125,7 @@ const SelectDropdown = ({
       const filterText = e.target.value
       filterOptions(filterText)
       onSearch(filterText)
+      autoloadFlag.current = false
     },
     [onSearch]
   )
