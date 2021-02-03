@@ -1,5 +1,9 @@
 # 更新日志
 
+## 2.15.7
+
+- 新增 `Transfer` 组件 render 自定义菜单渲染函数 [#1575](https://github.com/XiaoMi/hiui/issues/1575)
+- 修复 `Transfer` 当框内文字内容过长时显示异常 [#1576](https://github.com/XiaoMi/hiui/issues/1576)
 ## 2.15.6
 
 - 修复 `Switch` 在受控时，通过setState会触发 onChange 回调方法问题 [#1566](https://github.com/XiaoMi/hiui/issues/1566)

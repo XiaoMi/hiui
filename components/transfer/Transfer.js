@@ -265,7 +265,8 @@ class Transfer extends Component {
       theme,
       localeDatas,
       onDragStart,
-      onDrop
+      onDrop,
+      render
     } = this.props
     const {
       sourceSelectedKeys,
@@ -328,6 +329,7 @@ class Transfer extends Component {
                     draggable={draggable}
                     key={index}
                     theme={theme}
+                    render={render}
                     onClick={this.clickItemEvent.bind(this, item, index, dir)}
                     mode={mode === 'basic' && type === 'default' ? 'basic' : 'multiple'}
                     item={item}
