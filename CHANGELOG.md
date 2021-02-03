@@ -4,6 +4,8 @@
 - 修复 `DatePicker` type 为 week 或者 weekrange 时 输入相应格式日期解析错误问题  [#1579](https://github.com/XiaoMi/hiui/issues/1579)
 - 修复 `Preview` 图片预览组件，滚轮放大缩小错误 [#1573](https://github.com/XiaoMi/hiui/issues/1573)
 - 修复 `TimePicker` 时间范围选择，为空时无法选择打开弹窗时的当前值 [#1530](https://github.com/XiaoMi/hiui/issues/1530)
+- 修复 `TimePicker` 时间范围选择，为空时无法选择打开弹窗时的当前值 [#1530](https://github.com/XiaoMi/hiui/issues/1530)
+- 修复 `Collapse`  onChange 属性未传入控制台报错问题 [#1580](https://github.com/XiaoMi/hiui/issues/1580)
 
 ## 3.4.0
 
