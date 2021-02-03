@@ -48,7 +48,8 @@ const TimePicker = ({
     type,
     defaultValue,
     cacheDate,
-    format
+    format,
+    locale
   })
 
   const inputChangeEvent = (val, dir) => {

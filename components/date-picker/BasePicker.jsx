@@ -73,7 +73,8 @@ const BasePicker = ({
     type,
     defaultValue,
     cacheDate,
-    format
+    format,
+    locale
   })
   const [iFormat] = useFormat({
     type,

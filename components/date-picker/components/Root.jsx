@@ -28,7 +28,8 @@ const Root = ({
     width,
     value,
     format,
-    bordered
+    bordered,
+    locale
   } = useContext(DPContext)
   const [inputData, setInputData] = useState(outDate)
   const inputRef = useRef(null)
@@ -39,7 +40,7 @@ const Root = ({
     localeDatas
   })
   useEffect(() => {
-    setInputData(value ? parseValue(value, type, format) : outDate)
+    setInputData(value ? parseValue(value, type, format, locale) : outDate)
   }, [outDate, value])
   const onPickerClickEvent = () => {
     onTrigger()
