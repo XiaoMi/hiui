@@ -6,13 +6,12 @@ import prifix from '../prefix'
 
 class HeaderMenu extends Component {
   render () {
-    let {highlighCol, freezeCol, hideCol, index, freeze, canHideCol} = this.props
-
+    let {highlighCol, freezeCol, hideCol, index, freeze, canHideCol, localeDatas} = this.props
     return (
       <div className={prifix('table-header-menu')}>
-        <p onClick={(e) => highlighCol(index)} >高亮</p>
-        {freeze && <p onClick={(e) => freezeCol(index)} >冻结</p>}
-        {canHideCol && <p onClick={(e) => hideCol(index)}>隐藏</p>}
+        <p onClick={(e) => highlighCol(index)} >{localeDatas.table.highlight}</p>
+        {freeze && <p onClick={(e) => freezeCol(index)} >{localeDatas.table.freeze}</p>}
+        {canHideCol && <p onClick={(e) => hideCol(index)}>{localeDatas.table.hide}</p>}
       </div>
     )
   }
@@ -32,12 +31,12 @@ document.addEventListener('click', () => {
   setTimeout(hide, 0)
 })
 export default {
-  show (e, cbs, key, freeze, size = 'normal', canHideCol) {
+  show (e, cbs, key, freeze, size = 'normal', canHideCol, localeDatas) {
     div && hide()
     div = document.createElement('div')
     div.className = 'hi-table-header-menu-' + size
     div.style.zIndex = '99999'
-    ReactDOM.render(<HeaderMenu {...cbs} canHideCol={canHideCol} index={key} freeze={freeze} />, div)
+    ReactDOM.render(<HeaderMenu {...cbs} canHideCol={canHideCol} index={key} freeze={freeze} localeDatas={localeDatas} />, div)
     div.style.position = 'absolute'
     div.style.left = e.pageX + 'px'
     div.style.top = e.pageY + 'px'

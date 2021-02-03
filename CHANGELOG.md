@@ -1,10 +1,49 @@
 # 更新日志
-## 2.14.2
-- 增加`<Preview />` 组件 [#1190](https://github.com/XiaoMi/hiui/issues/1190)
-## 2.14.1
+
+## 2.15.6
+
+- 修复 `Switch` 在受控时，通过setState会触发 onChange 回调方法问题 [#1566](https://github.com/XiaoMi/hiui/issues/1566)
+- 修复 `Select` autoload 设置后，自动获取数据未显示下拉数据问题 [#1542](https://github.com/XiaoMi/hiui/issues/1542)
+- 修复 `Select` data 属性 传入错误的数据会引起死循环 [#1568](https://github.com/XiaoMi/hiui/issues/1568)
+- 修复 `Stepper` 垂直状态下显示异常 [#1155](https://github.com/XiaoMi/hiui/issues/1155)
+
+## 2.15.5
+
+- 修复 `Table` 国际化问题 [#1449](https://github.com/XiaoMi/hiui/issues/1449)
+
+## 2.15.4
+
+- 修复 `DatePicker` type 为 weekrange 时 weekOffset 设置无效 [#1434](https://github.com/XiaoMi/hiui/issues/1434)
+
+## 2.15.3
+
+- 修复 `DatePicker` weekOffset 设置无效问题 [#1421](https://github.com/XiaoMi/hiui/issues/1421)
+
+## 2.15.2
+
+- 修复 `DatePicker` 周范围显示异常问题 [#1267](https://github.com/XiaoMi/hiui/issues/1267)
+- 修复 `Pagination` 输入页码后回车键报错的问题 [#1299](https://github.com/XiaoMi/hiui/issues/1299)
+
+## 2.15.1
+
+- 修复 `<Input />` type 不受控问题 [#1251](https://github.com/XiaoMi/hiui/issues/1251)
+- 修复 `<Form />` 使用 Upload 组件 onChange 方法 return false 无效 [#1259](https://github.com/XiaoMi/hiui/issues/1259)
+
+## 2.15.0
+
 - 优化 `<Tree />` onBeforeSave 、 onDragStart 支持返回 Promise [#1179](https://github.com/XiaoMi/hiui/issues/1179)
+- 优化 `<DatePicker />` 新增属性 inputReadOnly 设置输入框为只读形态 [#1203](https://github.com/XiaoMi/hiui/issues/1203)
+- 优化 `<TimePicker />` 新增属性 inputReadOnly 设置输入框为只读形态 [#1203](https://github.com/XiaoMi/hiui/issues/1203)
+- 优化 `<TimePicker />` 新增 hourStep、minuteStep、secondStep 等时分秒间隔选项 [#1194](https://github.com/XiaoMi/hiui/issues/1195)
+- 优化 `<Form />` 当只有一个输入框时，阻止在该输入框中按下回车提交该表单行为 [#1205](https://github.com/XiaoMi/hiui/issues/1205)
+- 优化 `<Upload />` uploadAction 支持返回 Promise [#1198](https://github.com/XiaoMi/hiui/issues/1198)
+- 修复 `<Carousel />` Children 节点添加点击事件后，点击回调 index 异常问题 [#1201](https://github.com/XiaoMi/hiui/issues/1201)
+- 修复 `<Cascader />` value 为 null 时导致功能使用异常问题 [#1218](https://github.com/XiaoMi/hiui/issues/1218)
+- 修复 `<Input />` ref 属性无效问题 [#1192](https://github.com/XiaoMi/hiui/issues/1192)
+- 修复 `<TimePicker />` type 为 timerange 时，时间范围选择问题 [#1188](https://github.com/XiaoMi/hiui/issues/1188)
+- 修复 `<TimePicker />` 切换按键无效问题 [#1210](https://github.com/XiaoMi/hiui/issues/1210)
 - 修复 `<Upload />` type 为 photo 时，上传时样式问题 [#1186](https://github.com/XiaoMi/hiui/issues/1186)
-- 修复 `<Select />` Select 宽度随内容自动撑宽问题 [#1172](https://github.com/XiaoMi/hiui/issues/1172)
+- 修复 `<Select />` 输入框宽度随内容自动撑宽问题 [#1172](https://github.com/XiaoMi/hiui/issues/1172)
 
 ## 2.14.0
 

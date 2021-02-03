@@ -64,6 +64,7 @@ class Footer extends Component {
   }
 
   getAveNodes () {
+    const {localeDatas} = this.props
     const {
       columns
     } = this.props
@@ -78,7 +79,7 @@ class Footer extends Component {
       }
       if (index === 0) {
         return (
-          <td className={prifix('table-col')} key={key}>均值</td>
+          <td className={prifix('table-col')} key={key}>{localeDatas.table.meanValue}</td>
         )
       }
       return <td className={prifix('table-col')} key={key} />

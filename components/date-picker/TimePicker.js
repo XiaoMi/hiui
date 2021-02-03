@@ -18,6 +18,7 @@ class TimePicker extends BasePicker {
         />
         : <TimeRangePanel
           {...props}
+          isCheckTime
           onPick={this.onPick.bind(this)}
           style={state.style}
           date={state.date}
@@ -40,9 +41,6 @@ TimePicker.defaultProps = {
   type: 'time',
   format: 'HH:mm:ss',
   disabled: false,
-  hourStep: 1,
-  minuteStep: 1,
-  secondStep: 1,
   clearable: true,
   disabledHours: () => [],
   disabledMinutes: () => [],

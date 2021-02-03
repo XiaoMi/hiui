@@ -29,7 +29,8 @@ class Preview extends Component {
       mouseY: 0,
       zoomValue: 100,
       rotateValue: 0,
-      activeIndex: props.activeIndex || 0
+      activeIndex: props.activeIndex || 0,
+      visible: props.visible
     }
     this.node = document.createElement('div')
     document.body.appendChild(this.node)
@@ -53,9 +54,12 @@ class Preview extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.activeIndex !== this.state.activeIndex) {
+    if (nextProps.activeIndex !== this.state.activeIndex || nextProps.visible !== this.state.visible) {
+      this.loadImg(nextProps.activeIndex)
+      this.addAutoPlayEvent()
       this.setState({
-        activeIndex: nextProps.activeIndex
+        activeIndex: nextProps.activeIndex,
+        visible: nextProps.activeIndex
       })
     }
   }
@@ -266,12 +270,12 @@ class Preview extends Component {
   }
 
   render () {
-    const { show, images, showArrow, showCount, showBar, simpleData } = this.props
+    const { visible, images, showArrow, showCount, showBar, simpleData } = this.props
     const { extraClass, compileStyle, isLoaded, activeIndex } = this.state
     if (images.length === 0) {
       return null
     }
-    if (!show) {
+    if (!visible) {
       return null
     }
     return createPortal(
@@ -284,9 +288,8 @@ class Preview extends Component {
         <div
           key={1}
           ref={this.previewRef}
-          className={classNames('hi-preview', extraClass, { 'hi-preview--hide': !show })}
+          className={classNames('hi-preview', extraClass, { 'hi-preview--hide': !visible })}
           onMouseMove={this.handleMouseMove}
-          onWheel={this.handleMouseWheel}
         >
           {
             isLoaded ? (
@@ -309,8 +312,8 @@ class Preview extends Component {
                 e.stopPropagation()
               }}
             >
-              <Icon name='zoom-out' onClick={this.clickEvent.bind(this, 'zoomIn')} />
-              <Icon name='zoom-in' onClick={this.clickEvent.bind(this, 'zoomOut')} />
+              <Icon name='zoom-out' onClick={this.clickEvent.bind(this, 'zoomOut')} />
+              <Icon name='zoom-in' onClick={this.clickEvent.bind(this, 'zoomIn')} />
               <Icon name='left' onClick={this.clickEvent.bind(this, 'prev')} />
               <Icon name='ratio' onClick={this.clickEvent.bind(this, 'reset')} />
               <Icon name='right' onClick={this.clickEvent.bind(this, 'next')} />
@@ -342,7 +345,7 @@ class Preview extends Component {
   }
 }
 Preview.propTypes = {
-  show: PropTypes.bool,
+  visible: PropTypes.bool,
   onClose: PropTypes.func,
   showArrow: PropTypes.bool,
   showCount: PropTypes.bool,
@@ -353,7 +356,7 @@ Preview.propTypes = {
 
 Preview.defaultProps = {
   showArrow: false,
-  show: false,
+  visible: false,
   showCount: false,
   showBar: true,
   duration: false,

@@ -369,8 +369,13 @@ class Table extends Component {
   }
 
   getEmptyContent () {
-    let {emptyText} = this.props
-    let text = typeof emptyText === 'string' ? emptyText : emptyText()
+    let { emptyText, localeDatas } = this.props
+    let text = emptyText
+    if (emptyText) {
+      text = typeof emptyText === 'string' ? emptyText : emptyText()
+    } else {
+      text = localeDatas.table.emptyText
+    }
     return <div className='hi-table-placeholder'>{text}</div>
   }
 

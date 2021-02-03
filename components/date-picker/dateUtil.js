@@ -33,6 +33,7 @@ import startOfYear from 'date-fns/startOfYear'
 import endOfYear from 'date-fns/endOfYear'
 import isSameYear from 'date-fns/isSameYear'
 import endOfMonth from 'date-fns/endOfMonth'
+import set from 'date-fns/set'
 
 const isValid = (date) => {
   if (typeof date === 'string') {
@@ -133,5 +134,6 @@ export {
   startOfYear,
   endOfYear,
   isSameYear,
-  endOfMonth
+  endOfMonth,
+  set
 }

@@ -18,6 +18,7 @@
     transform: translateX(-50%);
     max-width: 50%;
     display: flex;
+    z-index: 2;
   }
 
   &__dot {
@@ -51,6 +52,8 @@
     display: flex;
     justify-content: space-between;
     visibility: hidden;
+    height: 0;
+    z-index: 2;
 
     &--show {
       visibility: visible;
@@ -91,5 +94,6 @@
     text-align: center;
     user-select: none;
     opacity: 0.5;
+    z-index: 2;
   }
 }

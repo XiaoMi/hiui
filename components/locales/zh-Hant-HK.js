@@ -103,5 +103,12 @@ export default {
     searchEmptyResult: '未找到搜索結果',
     modalTitle: '提示',
     delTips: '刪除節點將刪除所有子節點，確定刪除嗎？'
+  },
+  table: {
+    highlight: '高亮',
+    freeze: '凍結',
+    hide: '隱藏',
+    meanValue: '均值',
+    emptyText: '暫無數據'
   }
 }

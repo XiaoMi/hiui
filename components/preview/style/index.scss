@@ -8,6 +8,10 @@
   z-index: 9999;
   user-select: none;
 
+  * {
+    touch-action: pan-y;
+  }
+
   &__image {
     &:hover {
       cursor: move;

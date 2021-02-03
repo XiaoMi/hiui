@@ -24,6 +24,8 @@ export default {
       year: '請選擇年',
       time: '請選擇時間',
       daterange: ['開始日期', '結束日期'],
+      yearrange: ['開始年', '結束年'],
+      monthrange: ['開始月', '結束月'],
       week: '請選擇周',
       weekrange: ['開始周', '結束周'],
       timeperiod: ['開始日期時間', '結束日期時間']
@@ -103,5 +105,12 @@ export default {
     searchEmptyResult: '未找到搜索結果',
     modalTitle: '提示',
     delTips: '刪除節點將刪除所有子節點，確定刪除嗎？'
+  },
+  table: {
+    highlight: '高亮',
+    freeze: '凍結',
+    hide: '隱藏',
+    meanValue: '均值',
+    emptyText: '暫無數據'
   }
 }

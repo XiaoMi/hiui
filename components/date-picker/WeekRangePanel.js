@@ -154,7 +154,7 @@ export default class WeekRangePanel extends Component {
   }
   pick (startDate, endDate) {
     const {range} = this.state
-    const {onPick} = this.props
+    const { onPick, weekOffset } = this.props
     range.startDate = startDate
     range.endDate = endDate
     this.setState({
@@ -163,9 +163,10 @@ export default class WeekRangePanel extends Component {
       rightDate: endDate || this.state.rightDate
     })
     if (endDate) {
+      const weekOptions = { weekStartsOn: weekOffset }
       onPick({
-        startDate: startOfWeek(range.startDate),
-        endDate: endOfWeek(range.endDate)
+        startDate: startOfWeek(range.startDate, weekOptions),
+        endDate: endOfWeek(range.endDate, weekOptions)
       })
     }
   }
@@ -194,7 +195,7 @@ export default class WeekRangePanel extends Component {
   }
   _getNormalComponent (date, flag) {
     let { range, layout } = this.state
-    const { altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData, max: maxDate, min: minDate } = this.props
+    const { altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData, max: maxDate, min: minDate, weekOffset } = this.props
 
     let component = null
     const { year, month } = deconstructDate(date)
@@ -209,6 +210,7 @@ export default class WeekRangePanel extends Component {
             altCalendarPreset={altCalendarPreset}
             dateMarkRender={dateMarkRender}
             dateMarkPreset={dateMarkPreset}
+            weekOffset={weekOffset}
             date={date}
             data={yearData}
             type={layout[flag]}
@@ -226,6 +228,7 @@ export default class WeekRangePanel extends Component {
             altCalendarPreset={altCalendarPreset}
             dateMarkRender={dateMarkRender}
             dateMarkPreset={dateMarkPreset}
+            weekOffset={weekOffset}
             date={date}
             data={monthData}
             type={layout[flag]}
@@ -241,6 +244,7 @@ export default class WeekRangePanel extends Component {
             type='weekrange'
             minDate={minDate}
             maxDate={maxDate}
+            weekOffset={weekOffset}
             onPick={this.pick.bind(this)}
             mouseMove={this.onMouseMoveHandler.bind(this)}
           />

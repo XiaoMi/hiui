@@ -64,7 +64,7 @@ $ npm start
 
 Open http://localhost:4200
 
-### Unit Testing 
+### Unit Testing
 
 ```sh
 # require node version >= 10

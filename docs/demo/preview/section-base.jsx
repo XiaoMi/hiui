@@ -35,7 +35,7 @@ class Demo extends React.Component {
           {
             this.state.images.slice(0, 4).map((url, index) => {
               return <Col span={4} key={index}>
-                <img src={url} style={{width: '100%', cursor: 'pointer'}} onClick={() => this.setState({previewShow: true})}/>
+                <img src={url} style={{width: '100%', cursor: 'pointer'}} onClick={() => this.setState({previewShow: true, activeIndex: index})}/>
               </Col>
             })
           }
@@ -43,7 +43,8 @@ class Demo extends React.Component {
         <Preview
           images={images}
           simpleData={true}
-          show={previewShow}
+          visible={previewShow}
+          activeIndex={activeIndex}
           showArrow={true}
           showCount={true}
           onClose={() => this.setState({previewShow: false})}

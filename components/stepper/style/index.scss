@@ -70,7 +70,6 @@
     padding: 0 8px;
     background-color: #fff;
     box-sizing: border-box;
-    z-index: 1;
   }
 
   &__item {
@@ -155,6 +154,7 @@
           width: 1px;
           height: 100%;
           background-color: #d8d8d8;
+          z-index: 1;
         }
       }
 
@@ -172,7 +172,7 @@
         display: inline-block;
         padding: 4px 0;
         background-color: #fff;
-        z-index: 1;
+        z-index: 2;
       }
 
       &__text {

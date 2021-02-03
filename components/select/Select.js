@@ -14,6 +14,7 @@ import _ from 'lodash'
 
 class Select extends Component {
   autoloadFlag = true // 第一次自动加载数据标识
+  stateAutolaod = false // 第一次自动加载数据标识
 
   static propTypes = {
     type: PropTypes.oneOf(['single', 'multiple']),
@@ -70,7 +71,7 @@ class Select extends Component {
   constructor (props) {
     super(props)
 
-    const { data, value, defaultValue } = props
+    const { data, value, defaultValue, autoload } = props
     const dropdownItems = cloneDeep(data)
     const initialValue = value === undefined ? defaultValue : value
     const selectedItems = this.resetSelectedItems(
@@ -78,7 +79,7 @@ class Select extends Component {
       dropdownItems,
       []
     )
-
+    this.stateAutolaod = autoload
     const searchable = this.getSearchable()
     this.debouncedFilterItems = debounce(this.onFilterItems.bind(this), 300)
     this.clickOutsideHandel = this.clickOutside.bind(this)
@@ -99,7 +100,9 @@ class Select extends Component {
       }
     }
   }
-
+  setStateAutolaod = () => {
+    this.stateAutolaod = false
+  }
   getChildContext () {
     return {
       component: this
@@ -450,7 +453,7 @@ class Select extends Component {
     )
 
     if (dataSource) { 
-      if (autoload ||(keyword && keyword.length >= this.state.queryLength)) {
+      if (autoload || (keyword && keyword.length >= this.state.queryLength)) {
         this.remoteSearch(keyword)
       }
     } else if(onSearch) {
@@ -623,33 +626,34 @@ class Select extends Component {
           className="hi-select__popper"
           placement="top-bottom-start"
         >
-          { dropdownShow && this.props.open && <SelectDropdown
-                  noFoundTip={emptyContent}
-                  localeMap={localeDatas.select || {} }
-                  mode={type}
-                  searchPlaceholder={searchPlaceholder}
-                  theme={theme}
-                  onBlur={onBlur}
-                  onFocus={onFocus}
-                  isOnSearch = {onSearch || dataSource}
-                  onSearch={this.debouncedFilterItems.bind(this)}
-                  searchable={searchable}
-                  showCheckAll={showCheckAll}
-                  checkAll={this.checkAll.bind(this)}
-                  loading={fetching}
-                  focusedIndex={focusedIndex}
-                  filterOption={filterOption}
-                  matchFilter={this.matchFilter.bind(this)}
-                  setFocusedIndex={this.setFocusedIndex.bind(this)}
-                  show={dropdownShow && this.props.open}
-                  optionWidth={optionWidth}
-                  selectInputWidth={selectInputWidth}
-                  onEnterSelect={this.onEnterSelect.bind(this)}
-                  moveFocusedIndex={this.moveFocusedIndex.bind(this)}
-                  dropdownItems={ dataSource && this.state.keyword === '' ? cacheSelectedItems : dropdownItems}
-                  selectedItems={selectedItems}
-                  dropdownRender={render}
-                  onClickOption={this.onClickOption.bind(this)}
+          {<SelectDropdown
+            noFoundTip={emptyContent}
+            localeMap={localeDatas.select || {} }
+            mode={type}
+            searchPlaceholder={searchPlaceholder}
+            theme={theme}
+            onBlur={onBlur}
+            onFocus={onFocus}
+            isOnSearch = {onSearch || dataSource}
+            onSearch={this.debouncedFilterItems.bind(this)}
+            searchable={searchable}
+            showCheckAll={showCheckAll}
+            checkAll={this.checkAll.bind(this)}
+            loading={fetching}
+            focusedIndex={focusedIndex}
+            setStateAutolaod={this.setStateAutolaod}
+            filterOption={filterOption}
+            matchFilter={this.matchFilter.bind(this)}
+            setFocusedIndex={this.setFocusedIndex.bind(this)}
+            show={dropdownShow && this.props.open}
+            optionWidth={optionWidth}
+            selectInputWidth={selectInputWidth}
+            onEnterSelect={this.onEnterSelect.bind(this)}
+            moveFocusedIndex={this.moveFocusedIndex.bind(this)}
+            dropdownItems={ dataSource && this.state.keyword === '' && !this.stateAutolaod ? cacheSelectedItems : dropdownItems}
+            selectedItems={selectedItems}
+            dropdownRender={render}
+            onClickOption={this.onClickOption.bind(this)}
             /> 
           }
         </Popper>
