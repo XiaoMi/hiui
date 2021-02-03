@@ -19,6 +19,7 @@ class Collapse extends Component {
     arrowPlacement: PropTypes.oneOf(['left', 'right']),
     showArrow: PropTypes.bool
   }
+
   static defaultProps = {
     prefixCls: 'hi-collapse',
     accordion: false,
@@ -27,7 +28,8 @@ class Collapse extends Component {
     type: 'default',
     showArrow: true
   }
-  constructor (props) {
+
+  constructor(props) {
     super(props)
     const { activeId, activeKey, defaultActiveId } = this.props
     const _activeId = activeId || activeKey || defaultActiveId || []
@@ -37,19 +39,16 @@ class Collapse extends Component {
     this.panelContainer = React.createRef(null)
   }
 
-
-  static getDerivedStateFromProps (nextProps, prevState) {
-    if (
-      !_.isEqual(nextProps.activeId !== prevState.activeId) &&
-      nextProps.activeId !== undefined
-    ) {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (!_.isEqual(nextProps.activeId !== prevState.activeId) && nextProps.activeId !== undefined) {
       return {
         activeId: nextProps.activeId
       }
     }
     return null
   }
-  onClickPanel (key) {
+
+  onClickPanel(key) {
     let activeKey = this.state.activeId
     if (this.props.accordion) {
       activeKey = activeKey[0] === key ? [] : [key]
@@ -65,12 +64,14 @@ class Collapse extends Component {
     }
     this.setActiveKey(activeKey)
   }
-  setActiveKey (activeKey) {
+
+  setActiveKey(activeKey) {
+    const { onChange, accordion } = this.props
     this.setState({ activeId: activeKey })
-    this.props.onChange(this.props.accordion ? activeKey[0] : activeKey)
+    onChange && onChange(accordion ? activeKey[0] : activeKey)
   }
 
-  renderPanels () {
+  renderPanels() {
     const activeKey = this.state.activeId
     const { children, accordion, arrow, arrowPlacement, showArrow } = this.props
 
@@ -80,7 +81,7 @@ class Collapse extends Component {
       const key = child.props.id || child.key || String(index)
       const { header, disabled, title } = child.props
 
-      let isActive = accordion ? activeKey[0] === key : activeKey.includes(key)
+      const isActive = accordion ? activeKey[0] === key : activeKey.includes(key)
       const props = {
         key,
         header: title || header,
@@ -98,13 +99,17 @@ class Collapse extends Component {
     })
     return newChildren
   }
-  render () {
+
+  render() {
     const { prefixCls, type } = this.props
-    let classnames = classNames(prefixCls, type && `${prefixCls}__${type}`)
-    return <div className={classnames} ref={this.panelContainer}>{this.renderPanels()}</div>
+    const classnames = classNames(prefixCls, type && `${prefixCls}__${type}`)
+    return (
+      <div className={classnames} ref={this.panelContainer}>
+        {this.renderPanels()}
+      </div>
+    )
   }
 }
-
 
 Collapse.Panel = Panel
 
