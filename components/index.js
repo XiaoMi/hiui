@@ -52,5 +52,7 @@ export { default as Carousel } from './carousel'
 export { default as Watermark } from './watermark'
 export { default as Slider } from './slider'
 export { default as Search } from './search'
+export { default as Preview } from './preview'
+
 export { ThemeContext, LocaleContext } from './context'
 export { default as HiRequest } from './_util/hi-request'
