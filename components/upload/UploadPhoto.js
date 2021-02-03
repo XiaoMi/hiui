@@ -158,7 +158,7 @@ class UploadPhoto extends Upload {
             // src={previewFile.url}
             images={images}
             activeIndex={activeIndex}
-            show={showModal}
+            visible={showModal}
             onClose={this.closeModal.bind(this)}
           />
         }

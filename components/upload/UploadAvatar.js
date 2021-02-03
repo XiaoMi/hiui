@@ -220,7 +220,7 @@ class UploadAvatar extends Upload {
             src={file.url}
             images={[file]}
             activeIndex={0}
-            show={showPreviewModal}
+            visible={showPreviewModal}
             onClose={this.closePreviewModal.bind(this)}
           />}
       </div>
