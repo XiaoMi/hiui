@@ -66,9 +66,9 @@ class Collapse extends Component {
   }
 
   setActiveKey(activeKey) {
-    const { onChange } = this.props
+    const { onChange, accordion } = this.props
     this.setState({ activeId: activeKey })
-    onChange && onChange(this.props.accordion ? activeKey[0] : activeKey)
+    onChange && onChange(accordion ? activeKey[0] : activeKey)
   }
 
   renderPanels() {
