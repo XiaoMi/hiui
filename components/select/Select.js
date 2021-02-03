@@ -65,7 +65,6 @@ const InternalSelect = (props) => {
   // 搜索关键字
   const [keyword, setKeyword] = useState('')
   const [loading, setLoading] = useState(false)
-  // const dataSourcePropsSearchable = typeof propsSearchable !== 'undefined' ? propsSearchable : true // 在存在dataSource的时候，默认searchable为true
   const [searchable, setSearchable] = useState(dataSource ? true : propsSearchable)
 
   useEffect(() => {
