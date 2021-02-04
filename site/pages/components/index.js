@@ -53,12 +53,12 @@ export default {
       timeline: components.timeline,
       carousel: components.carousel,
       list: components.list,
+      preview: components.preview,
       charts: components.charts
     },
     'group-tips': {
       modal: components.modal,
       drawer: components.drawer,
-      preview: components.preview,
       notification: components.notification,
       message: components.message,
       alert: components.alert,
