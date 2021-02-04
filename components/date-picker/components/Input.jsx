@@ -21,6 +21,10 @@ const Input = ({ date, onChange, onFocus, dir, placeholder }) => {
       const y = moment(date).weekYear()
       const _date = moment(date).year(y)
       vals = moment(_date).format(iFormat)
+      console.log('locale', locale, typeof format === 'undefined')
+      if (locale === 'zh-CN' && typeof format === 'undefined') {
+        vals = y + '-W' + moment(_date).week()
+      }
     }
     setValue(vals)
     cacheValues.current = vals
