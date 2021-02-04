@@ -79,6 +79,15 @@
       border: 1px solid #4284f5;
     }
 
+    .hi-checkbox-legacy {
+      width: 100%;
+      height: 36px;
+      line-height: 36px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     &:hover {
       background: rgba(66, 132, 245, 0.1);
     }
@@ -98,6 +107,15 @@
       font-size: 14px;
       display: flex;
       align-items: center;
+    }
+
+    &-content {
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 14px;
     }
   }
 

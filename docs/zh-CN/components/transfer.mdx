@@ -53,7 +53,7 @@ import DemoArea from '../../demo/transfer/section-area.jsx'
 | onDragEnd      | 拖拽结束时的回调函数(完成拖拽)                                             | (newData: DataItem[]) => void                                                                  | -                       | -         |
 | onDrop         | 放开拖拽元素时的回调函数，可用于条件判断，阻止拖拽到对应位置               | (targetItem: DataItem, sourceItem: DataItem) => boolean                                        | -                       | -         |
 | onChange       | 选中元素被移动到目标框内后的回调，回调值为目标框的值                       | (targetKey: number[] \| string[], direction: 'left' \| 'right', moveDatas: DataItem[]) => void | -                       | -         |
-
+| render         | 自定义菜单渲染函数                                                    | (item: DataItem) => ReactNode      | -                                            | 无内容   |
 ## Type
 
 ### DataItem
@@ -61,5 +61,5 @@ import DemoArea from '../../demo/transfer/section-area.jsx'
 | 参数     | 说明     | 类型                | 可选值        | 默认值 |
 | -------- | -------- | ------------------- | ------------- | ------ |
 | id       | 唯一 id  | string              | number        | -      |
-| content  | 显示内容 | string \| ReactNode | -             | -      |
+| content  | 显示内容 | string              | -             | -      |
 | disabled | 是否禁用 | boolean             | true \| false | false  |

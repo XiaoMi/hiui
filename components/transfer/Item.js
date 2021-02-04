@@ -19,7 +19,8 @@ class Item extends Component {
       dir,
       draggable,
       dividerPosition,
-      theme
+      theme,
+      render
     } = this.props
     const sourceStyle =
       sourceNode === item.id && isDragging
@@ -36,14 +37,14 @@ class Item extends Component {
           <div className={`hi-transfer__divider--${dividerPosition}`} />}
         {mode !== 'basic'
           ? <Checkbox
-            legacy
-            text={item.content}
-            value={item.id}
-            checked={checked}
-            disabled={item.disabled}
-            onChange={checkboxOnChange.bind(this)}
+              legacy
+              text={render ? render(item) : item.content}
+              value={item.id}
+              checked={checked}
+              disabled={item.disabled}
+              onChange={checkboxOnChange.bind(this)}
           />
-          : item.content}
+          : render ? render(item) : <span className='hi-transfer__item-content'>{item.content}</span>}
       </li>
     )
     return dir === 'right' && draggable ? connectDropTarget(connectDragSource(el)) : el
