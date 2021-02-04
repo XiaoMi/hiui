@@ -339,7 +339,7 @@ class BasePicker extends Component {
       width,
       theme
     } = this.props
-    const {isFocus,rangeInputIsError} = this.state
+    const {isFocus, rangeInputIsError} = this.state
     const _cls = classNames(
       'hi-datepicker__input',
       `theme__${theme}`,

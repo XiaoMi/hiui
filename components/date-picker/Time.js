@@ -23,7 +23,6 @@ class Time extends Component {
     this.props.onPick(date, true)
   }
   componentWillReceiveProps (props) {
-
     if (!isSameDay(props.date, this.state.date)) {
       this.setState({
         date: getValidDate(props.date)
@@ -54,7 +53,6 @@ class Time extends Component {
     if (cDate.getTime() !== date.getTime()) {
       this.callback(cDate)
     }
-    
   }
 
   isShowHMS () {
@@ -66,7 +64,7 @@ class Time extends Component {
     }
   }
   // 设置Date的选中状态
-  setDisableTime (type,i,disabledTime) {
+  setDisableTime (type, i, disabledTime) {
     const { timeRangePanelType, startDate, date } = this.props
     let isDisabled = disabledTime.includes(i)
 
@@ -100,30 +98,29 @@ class Time extends Component {
 
     return isDisabled
   }
-  
-  getStep(type){
-    const {hourStep,minuteStep,secondStep} = this.props
+
+  getStep (type) {
+    const {hourStep, minuteStep, secondStep} = this.props
     let step = 1
     const directionStep = 1
     switch (type) {
       case 'hours':
         step = hourStep || directionStep
-        break;
+        break
       case 'minutes':
         step = minuteStep || directionStep
-        break;
+        break
       case 'seconds':
         step = secondStep || directionStep
-        break;
+        break
       default:
         step = 1
-        break;
+        break
     }
     return step
   }
 
   generateDatas (type) {
-
     let count
     let datas = []
     const currentDate = deconstructDate(this.state.date)
@@ -138,19 +135,18 @@ class Time extends Component {
       count = 60
     }
     for (let i = 0; i < count; i += 1) {
-
-      if(i%step === 0 || i === 0){
+      if (i % step === 0 || i === 0) {
         datas.push({
           value: i,
           text: i < 10 ? '0' + i : i.toString(),
-          disabled: this.setDisableTime(type,i,disabledTime),
+          disabled: this.setDisableTime(type, i, disabledTime),
           current: i === currentDate[type]
         })
       }
     }
     return datas
   }
-  
+
   _getDsiabledList () {
     const { disabledHours, disabledMinutes, disabledSeconds } = this.props
     const currentDate = deconstructDate(this.state.date)
@@ -187,7 +183,6 @@ class Time extends Component {
       minutes: showMinute,
       seconds: showSecond
     } = this.isShowHMS()
-    
 
     return (
       <div className='hi-timepicker__body'>

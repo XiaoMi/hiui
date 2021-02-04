@@ -371,7 +371,7 @@ class Table extends Component {
   getEmptyContent () {
     let { emptyText, localeDatas } = this.props
     let text = emptyText
-    if(emptyText){
+    if (emptyText) {
       text = typeof emptyText === 'string' ? emptyText : emptyText()
     } else {
       text = localeDatas.table.emptyText

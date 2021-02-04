@@ -108,9 +108,9 @@ export default {
   },
   table: {
     highlight: '高亮',
-    freeze:'凍結',
-    hide:'隱藏',
-    meanValue:'均值',
-    emptyText:'暫無數據'
+    freeze: '凍結',
+    hide: '隱藏',
+    meanValue: '均值',
+    emptyText: '暫無數據'
   }
 }

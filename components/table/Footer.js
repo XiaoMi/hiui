@@ -79,7 +79,7 @@ class Footer extends Component {
       }
       if (index === 0) {
         return (
-        <td className={prifix('table-col')} key={key}>{localeDatas.table.meanValue}</td>
+          <td className={prifix('table-col')} key={key}>{localeDatas.table.meanValue}</td>
         )
       }
       return <td className={prifix('table-col')} key={key} />

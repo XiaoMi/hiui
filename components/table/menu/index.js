@@ -36,7 +36,7 @@ export default {
     div = document.createElement('div')
     div.className = 'hi-table-header-menu-' + size
     div.style.zIndex = '99999'
-    ReactDOM.render(<HeaderMenu {...cbs} canHideCol={canHideCol} index={key} freeze={freeze} localeDatas={localeDatas}/>, div)
+    ReactDOM.render(<HeaderMenu {...cbs} canHideCol={canHideCol} index={key} freeze={freeze} localeDatas={localeDatas} />, div)
     div.style.position = 'absolute'
     div.style.left = e.pageX + 'px'
     div.style.top = e.pageY + 'px'

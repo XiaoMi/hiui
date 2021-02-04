@@ -6,6 +6,7 @@
   bottom: 0;
   background: rgba(0, 0, 0, 0.54);
   z-index: 9999;
+  user-select: none;
 
   &__image {
     &:hover {
@@ -47,5 +48,33 @@
       height: 100%;
       cursor: pointer;
     }
+  }
+
+  &__wrapper-arrow {
+    position: absolute;
+    font-size: 72px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    width: 100%;
+    z-index: -1;
+
+    .hi-icon {
+      cursor: pointer;
+    }
+  }
+
+  &__count {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 4px 12px;
+    border-radius: 16px;
+    min-width: 48px;
+    text-align: center;
   }
 }

@@ -7,7 +7,6 @@ import { format, formatValue, getAttrs, formatAmount, filterObjProps } from './u
  * @prop type 输入框类型
  */
 class Input extends Component {
-
   constructor (props) {
     super(props)
 
@@ -56,11 +55,11 @@ class Input extends Component {
         const valueType = typeof nextProps.value
         this.setState({
           value: valueType === 'string' || valueType === 'number' ? format(nextProps.value.toString(), nextProps.type) : '',
-          valueTrue: nextProps.value,
+          valueTrue: nextProps.value
         })
       }
     }
-    
+
     if (nextProps.prepend !== this.state.prepend || nextProps.append !== this.state.append) {
       const { prepend, append } = nextProps
       const prefix = typeof prepend === 'string' ? prepend : ''

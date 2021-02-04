@@ -53,7 +53,8 @@ export default {
       progress: components['progress'],
       card: components['card'],
       timeline: components['timeline'],
-      carousel: components['carousel']
+      carousel: components['carousel'],
+      preview: components['preview']
     },
     'group-tips': {
       modal: components['modal'],

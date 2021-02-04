@@ -133,9 +133,9 @@ export default {
   },
   table: {
     highlight: 'highlight',
-    freeze:'freeze',
-    hide:'hide',
-    meanValue:'mean value',
-    emptyText:'No Data'
+    freeze: 'freeze',
+    hide: 'hide',
+    meanValue: 'mean value',
+    emptyText: 'No Data'
   }
 }

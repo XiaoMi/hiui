@@ -215,7 +215,7 @@ class Upload extends Component {
     }
   }
 
-  uploadFile = async(file, dataUrl = '') => {
+  uploadFile = async (file, dataUrl = '') => {
     const FileReader = window.FileReader
     const XMLHttpRequest = window.XMLHttpRequest
     const FormData = window.FormData
@@ -224,12 +224,12 @@ class Upload extends Component {
 
     let _uploadAction = typeof uploadAction === 'string' ? uploadAction : uploadAction(file)
 
-    if(_uploadAction.toString() === '[object Promise]'){
-      await _uploadAction.then(res=>{
+    if (_uploadAction.toString() === '[object Promise]') {
+      await _uploadAction.then(res => {
         _uploadAction = res
-      }).catch((error)=>{
+      }).catch((error) => {
         throw new Error(error)
-       })
+      })
     }
     this.setState({ fileCountLimted: fileList.length >= maxCount })
     const onerror = err => {

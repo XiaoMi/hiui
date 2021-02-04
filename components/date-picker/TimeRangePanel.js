@@ -23,7 +23,7 @@ class TimeRangePanel extends Component {
       <div className='hi-timepicker hi-timepicker--timerange' style={style}>
         <Time {...this.props} date={startDate} endDate={endDate} timeRangePanelType='left' onPick={this.onTimePick.bind(this, 'left')} onlyTime />
         <div className='hi-timepicker__split' />
-        <Time {...this.props} date={endDate} startDate={startDate} timeRangePanelType='right'  onPick={this.onTimePick.bind(this, 'right')} onlyTime />
+        <Time {...this.props} date={endDate} startDate={startDate} timeRangePanelType='right' onPick={this.onTimePick.bind(this, 'right')} onlyTime />
       </div>
     )
   }

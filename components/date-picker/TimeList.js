@@ -25,7 +25,7 @@ export default class TimeList extends Component {
   scrollTo () {
     const arrow = this.getStep()
     const { value } = this.props
-    const dVal = 32/arrow
+    const dVal = 32 / arrow
 
     this.listRef.current && (this.listRef.current.scrollTop = value * dVal)
   }
@@ -44,26 +44,26 @@ export default class TimeList extends Component {
     // this.listRef.current.removeEventListener('scroll', this.scrollEvent)
   }
 
-  getStep(direction){
-    const {hourStep,minuteStep,secondStep,type} = this.props
+  getStep (direction) {
+    const {hourStep, minuteStep, secondStep, type} = this.props
     const directionStep = direction && direction === 'up' ? -1 : 1
     let step = directionStep
 
     switch (type) {
       case 'hours':
-        step = hourStep 
-        break;
+        step = hourStep
+        break
       case 'minutes':
         step = minuteStep
-        break;
+        break
       case 'seconds':
         step = secondStep
-        break;
+        break
       default:
         step = directionStep
-        break;
+        break
     }
-    if(Number.isNaN(step) || step === -1) {
+    if (Number.isNaN(step) || step === -1) {
       step = 1
     }
     return step * directionStep
@@ -89,8 +89,8 @@ export default class TimeList extends Component {
   getdisabledType (val) {
     const { datas } = this.props
     let isDisabled = false
-    datas.forEach(data=>{
-      if(data.value === val){
+    datas.forEach(data => {
+      if (data.value === val) {
         isDisabled = data.disabled
       }
     })
@@ -106,12 +106,12 @@ export default class TimeList extends Component {
 
   isScrollStop (val, el) {
     const { disabledList } = this.props
-    this.topValue_2 = el.scrollTop 
+    this.topValue_2 = el.scrollTop
     if (this.topValue_1 === this.topValue_2) {
       el.scrollTop = val * 32
       if (!disabledList.includes(val)) {
         const arrow = this.getStep()
-        !this.getdisabledType(val)  && this.props.onSelect(this.props.type, val * arrow)
+        !this.getdisabledType(val) && this.props.onSelect(this.props.type, val * arrow)
       }
     }
   }

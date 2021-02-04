@@ -18,7 +18,7 @@ class TimePicker extends BasePicker {
         />
         : <TimeRangePanel
           {...props}
-          isCheckTime={true}
+          isCheckTime
           onPick={this.onPick.bind(this)}
           style={state.style}
           date={state.date}

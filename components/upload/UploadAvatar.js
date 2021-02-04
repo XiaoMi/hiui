@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Modal from '../modal'
 import Upload from './Upload'
-import Preview from './Preview'
+import Preview from '../preview'
 import Cropper from 'react-cropper'
 import Icon from '../icon'
 import 'cropperjs/dist/cropper.css'
@@ -220,7 +220,7 @@ class UploadAvatar extends Upload {
             src={file.url}
             images={[file]}
             activeIndex={0}
-            show={showPreviewModal}
+            visible={showPreviewModal}
             onClose={this.closePreviewModal.bind(this)}
           />}
       </div>

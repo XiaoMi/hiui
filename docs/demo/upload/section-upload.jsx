@@ -2,7 +2,7 @@ import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Upload from '../../../components/upload'
 const prefix = 'upload-upload'
-const leftOptions = ['基础','动态上传地址', '禁用', '默认']
+const leftOptions = ['基础', '动态上传地址', '禁用', '默认']
 const desc = '突出上传附件的操作入口，节省页面空间'
 const code = [
   {code: `import React from 'react'
@@ -36,7 +36,7 @@ const code = [
       }
     }`,
   opt: ['基础']
-  }, 
+  },
   {code: `import React from 'react'
     import Upload from '@hi-ui/hiui/es/upload'\n
     import Icon from '@hi-ui/hiui/es/icon'\n
@@ -76,7 +76,7 @@ const code = [
       }
     }`,
   opt: ['动态上传地址']
-  }, 
+  },
   {code: `import React from 'react'
   import Upload from '@hi-ui/hiui/es/upload'\n
   class Demo extends React.Component {

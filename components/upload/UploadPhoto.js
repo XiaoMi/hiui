@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import Upload from './Upload'
-import Preview from './Preview'
+import Preview from '../preview'
 import Icon from '../icon'
 
 class UploadPhoto extends Upload {
@@ -36,17 +36,17 @@ class UploadPhoto extends Upload {
   }
   precentNum () {
     const {photoSize} = this.props
-    let num = 1.4
+    let num
     switch (photoSize) {
       case 'small':
         num = 0.8
-        break;
+        break
       case 'large':
         num = 2
-        break;
+        break
       default:
         num = 1.4
-        break;
+        break
     }
     return num
   }
@@ -54,7 +54,6 @@ class UploadPhoto extends Upload {
     const {
       fileList,
       showModal,
-      previewFile,
       activeIndex,
       fileCountLimted
     } = this.state
@@ -156,10 +155,10 @@ class UploadPhoto extends Upload {
         </ul>
         {
           showModal && <Preview
-            src={previewFile.url}
+            // src={previewFile.url}
             images={images}
             activeIndex={activeIndex}
-            show={showModal}
+            visible={showModal}
             onClose={this.closeModal.bind(this)}
           />
         }
