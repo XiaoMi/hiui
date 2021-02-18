@@ -229,7 +229,7 @@ export const parseValue = (value, type, format, locale = 'zh-CN') => {
   if (!value) return [null]
   const _format = FORMATS(locale)[type]
   const _value = moment(value, _format)
-  const isValid = moment(value).isValid()
+  const isValid = moment(_value).isValid()
   if (value && typeof value === 'object' && type.includes('range')) {
     if (type === 'weekrange') {
       return [
