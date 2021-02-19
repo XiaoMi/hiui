@@ -14,7 +14,7 @@ import _ from 'lodash'
 
 class Select extends Component {
   autoloadFlag = true // 第一次自动加载数据标识
-  stateAutolaod = false // 第一次自动加载数据标识
+  stateAutoload = false // 第一次自动加载数据标识
 
   static propTypes = {
     type: PropTypes.oneOf(['single', 'multiple']),
@@ -63,6 +63,7 @@ class Select extends Component {
     showCheckAll: false,
     open: true,
     withCredentials: false,
+    stateAutoload: false,
     onClick: () => {},
     onBlur: () => {},
     onFocus: () => {}
@@ -79,7 +80,6 @@ class Select extends Component {
       dropdownItems,
       []
     )
-    this.stateAutolaod = autoload
     const searchable = this.getSearchable()
     this.debouncedFilterItems = debounce(this.onFilterItems.bind(this), 300)
     this.clickOutsideHandel = this.clickOutside.bind(this)
@@ -88,6 +88,7 @@ class Select extends Component {
       searchable,
       queryLength: 1,
       focusedIndex: 0,
+      stateAutoload: autoload,
       selectedItems,
       cacheSelectedItems: selectedItems,
       dropdownItems,
@@ -101,7 +102,9 @@ class Select extends Component {
     }
   }
   setStateAutolaod = () => {
-    this.stateAutolaod = false
+    this.setState({
+      stateAutoload: false
+    })
   }
   getChildContext () {
     return {
@@ -145,15 +148,23 @@ class Select extends Component {
         dropdownItems: cloneDeep(nextProps.data)
       })
     } else {
-      if (!_.isEqual(nextProps.value, this.props.value)) {
-        const selectedItems = this.resetSelectedItems(
-          nextProps.value,
-          this.state.dropdownItems,
-          []
-        ) // 异步获取时会从内部改变dropdownItems，所以不能从list取
+      const { type, value, dataSource } = nextProps
+      const {value: oldValue} = this.props
+      if (!_.isEqual(value, oldValue)) {
+        const { dropdownItems = [], selectedItems: stateSelectedItems, cacheSelectedItems } = this.state
+        let selectedItems = this.resetSelectedItems(
+          value,
+          dataSource && this.state.keyword === '' && !this.state.stateAutoload ? cacheSelectedItems : dropdownItems,
+          type === 'multiple' ? _.cloneDeep(stateSelectedItems) : []
+        )
+        if (Array.isArray(value)) {
+          selectedItems = selectedItems.filter((item) => {
+            return value.includes(item.id)
+          })
+        }
+        // 异步获取时会从内部改变dropdownItems，所以不能从list取
         this.setState({
-          selectedItems,
-          cacheSelectedItems: selectedItems
+          selectedItems: _.cloneDeep(selectedItems)
         })
       }
     }
@@ -204,7 +215,7 @@ class Select extends Component {
     this.onClickOption(item, focusedIndex)
   }
 
-  onChange (selectedItems, changedItems, callback, cacheSelectedItems) {
+  onChange (selectedItems, changedItems, callback) {
     const { onChange, value } = this.props
     value === undefined &&
       this.setState(
@@ -241,7 +252,6 @@ class Select extends Component {
     if (!item || item.disabled) return
 
     let selectedItems = this.state.selectedItems.concat()
-    let cacheSelectedItems = this.state.selectedItems.concat()
     let focusedIndex = index
 
     if (this.props.type === 'multiple') {
@@ -250,25 +260,23 @@ class Select extends Component {
       })
       if (itemIndex === -1) {
         selectedItems.push(item)
-        if (!cacheSelectedItems.map(cacheItem => cacheItem.id).includes(item.id)) {
-          cacheSelectedItems.push(item)
-        }
       } else {
         selectedItems.splice(itemIndex, 1)
       }
     } else {
       selectedItems = [item]
-      this.setState({
-        cacheSelectedItems: [item]
-      })
     }
 
-    this.onChange(selectedItems, item, () => {
+    this.onChange(_.cloneDeep(selectedItems), item, () => {
       this.setState({
-        focusedIndex,
-        cacheSelectedItems: this.props.type === 'multiple' ? cacheSelectedItems : [item]
+        focusedIndex
       })
-    }, this.props.type === 'multiple' ? cacheSelectedItems : [item])
+      if (this.props.type !== 'multiple') {
+        this.setState({
+          cacheSelectedItems: selectedItems
+        })
+      }
+    })
     if (this.props.type !== 'multiple') {
       this.hideDropdown()
     }
@@ -304,7 +312,10 @@ class Select extends Component {
 
   hideDropdown () {
     this.state.dropdownShow === true &&
-      this.setState({ dropdownShow: false, cacheSelectedItems: this.state.selectedItems }, () => {
+      this.setState({ dropdownShow: false }, () => {
+        this.setState({
+          cacheSelectedItems: this.state.selectedItems
+        })
         this.clearKeyword()
       })
   }
@@ -432,7 +443,7 @@ class Select extends Component {
       const selectedItems = this.resetSelectedItems(
         this.props.value,
         dropdownItems,
-        reviceSelectedItems
+        _.cloneDeep(reviceSelectedItems)
       )
       this.setState({
         dropdownItems,
@@ -453,7 +464,12 @@ class Select extends Component {
     )
 
     if (dataSource) { 
-      if (autoload || (keyword && keyword.length >= this.state.queryLength)) {
+      if(!(keyword && keyword.length >= this.state.queryLength)){
+        this.setState({
+        cacheSelectedItems: this.state.selectedItems
+        })
+      }
+      if ((autoload && this.state.stateAutoload) || (keyword && keyword.length >= this.state.queryLength)) {
         this.remoteSearch(keyword)
       }
     } else if(onSearch) {
@@ -598,7 +614,6 @@ class Select extends Component {
             dropdownShow={dropdownShow}
             placeholder={placeholder}
             selectedItems={selectedItems}
-            dropdownItems={dropdownItems}
             multipleMode={multipleWrap}
             container={this.selectInputContainer}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
@@ -650,7 +665,7 @@ class Select extends Component {
             selectInputWidth={selectInputWidth}
             onEnterSelect={this.onEnterSelect.bind(this)}
             moveFocusedIndex={this.moveFocusedIndex.bind(this)}
-            dropdownItems={ dataSource && this.state.keyword === '' && !this.stateAutolaod ? cacheSelectedItems : dropdownItems}
+            dropdownItems={ dataSource && this.state.keyword === '' && !this.state.stateAutoload ? cacheSelectedItems : dropdownItems}
             selectedItems={selectedItems}
             dropdownRender={render}
             onClickOption={this.onClickOption.bind(this)}
