@@ -14,7 +14,6 @@ import _ from 'lodash'
 
 class Select extends Component {
   autoloadFlag = true // 第一次自动加载数据标识
-  stateAutoload = false // 第一次自动加载数据标识
 
   static propTypes = {
     type: PropTypes.oneOf(['single', 'multiple']),
@@ -164,7 +163,7 @@ class Select extends Component {
         }
         // 异步获取时会从内部改变dropdownItems，所以不能从list取
         this.setState({
-          selectedItems: _.cloneDeep(selectedItems)
+          selectedItems
         })
       }
     }
