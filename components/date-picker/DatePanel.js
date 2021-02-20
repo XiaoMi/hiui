@@ -228,7 +228,7 @@ class DatePanel extends Component {
   }
   _getNormalComponent () {
     const { currentView } = this.state
-    const { min, max, weekOffset, disabledDate, showLunar, altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData } = this.props
+    const { min, max, weekOffset, disabledDate, showLunar, altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData, onSelect } = this.props
     const {staticDate} = this.state
     const validDate = getValidDate(staticDate)
     const { year, month } = deconstructDate(validDate)
@@ -243,6 +243,7 @@ class DatePanel extends Component {
             altCalendarPresetData={altCalendarPresetData}
             dateMarkPresetData={dateMarkPresetData}
             altCalendar={altCalendar}
+            onSelect={onSelect}
             altCalendarPreset={altCalendarPreset}
             dateMarkRender={dateMarkRender}
             dateMarkPreset={dateMarkPreset}
@@ -266,6 +267,7 @@ class DatePanel extends Component {
             altCalendar={altCalendar}
             altCalendarPreset={altCalendarPreset}
             dateMarkRender={dateMarkRender}
+            onSelect={onSelect}
             dateMarkPreset={dateMarkPreset}
             showLunar={showLunar}
             date={validDate}
@@ -285,6 +287,7 @@ class DatePanel extends Component {
             altCalendarPreset={altCalendarPreset}
             dateMarkRender={dateMarkRender}
             dateMarkPreset={dateMarkPreset}
+            onSelect={onSelect}
             showLunar={showLunar}
             date={validDate}
             data={monthData}

@@ -8,6 +8,8 @@ import PropTypes from 'prop-types'
 import DatePickerType from './Type'
 
 import { dateFormat, isValid, startOfWeek, endOfWeek, parse, compatibleToDate, compatibleFormatString, toDate } from './dateUtil'
+function noop () {}
+
 class BasePicker extends Component {
   constructor (props) {
     super(props)
@@ -466,6 +468,7 @@ BasePicker.defaultProps = {
   showWeekNumber: true,
   weekOffset: 0,
   timeInterval: 240,
-  clearable: true
+  clearable: true,
+  onSelect: noop
 }
 export default BasePicker
