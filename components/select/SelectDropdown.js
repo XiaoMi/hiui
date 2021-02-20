@@ -90,7 +90,6 @@ class SelectDropdown extends Component {
 
   itemSelected (item) {
     const selectedItems = this.props.selectedItems
-
     return selectedItems.map((item) => item.id).indexOf(item.id) > -1
   }
   cleanSearchbarValue (e) {
@@ -178,7 +177,6 @@ class SelectDropdown extends Component {
     const style = optionWidth && {
       width: optionWidth
     }
-
     return (
       <div
         className='hi-select__dropdown'
