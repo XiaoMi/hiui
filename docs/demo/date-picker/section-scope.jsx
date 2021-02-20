@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'date-picker-scope'
 const desc = '以天、周、月、年等粒度展示一个时间的范围'
-const rightOptions = ['日期', '年份', '月份', '周', '日期时间范围', '时间段快速选择']
+const rightOptions = ['日期', '年份', '月份', '周', '日期时间范围', '时间段快速选择', '动态限制日期范围']
 const code = [
   {
     code: `import React from 'react'
@@ -115,6 +115,45 @@ class Demo extends React.Component {
   }
 }`,
     opt: ['时间段快速选择']
+  },
+  {
+    code: `import React from 'react'
+  import DatePicker from '@hi-ui/hiui/es/date-picker'\n
+  class Demo extends React.Component {
+    constructor() {
+      super()
+      this.state={
+        selectDate: ''
+      }
+    }
+    render () {
+      const { selectDate } = this.state
+      return (
+        <div style={{display:'flex', flexWrap: 'wrap'}}>
+          <DatePicker
+            type='daterange'
+            disabledDate={(val)=>{
+              if(selectDate){
+                const timestampCurrent = new Date(val).getTime()
+                const timestampSelect = new Date(selectDate).getTime()
+                const range = 7 * 24 * 60 * 60 * 1000
+                return !(timestampSelect - range < timestampCurrent && timestampCurrent < timestampSelect + range)
+              }
+              return false
+            }}
+            onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
+            onSelect={(val, isCompleted)=>{
+              console.log(val, isCompleted)
+              this.setState({
+                selectDate: isCompleted ? '' : val
+              })
+            }}
+          />
+        </div>
+      )
+    }
+  }`,
+    opt: ['动态限制日期范围']
   }
 ]
 const DemoScopeBan = () => (

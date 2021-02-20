@@ -11,9 +11,19 @@ import _ from 'lodash'
 import { getView, parseRenderDates, genNewDates } from '../utils'
 
 const RangePanel = () => {
-  const { outDate, type, onPick, localeDatas, showTime, format, timeInterval, shortcuts, theme, locale } = useContext(
-    DPContext
-  )
+  const {
+    outDate,
+    type,
+    onPick,
+    localeDatas,
+    showTime,
+    format,
+    timeInterval,
+    shortcuts,
+    theme,
+    locale,
+    onSelect
+  } = useContext(DPContext)
 
   const [showRangeMask, setShowRangeMask] = useState(false)
   const [views, setViews] = useState([getView(type), getView(type)])
@@ -63,6 +73,7 @@ const RangePanel = () => {
         newRange.end = newRange.start
         newRange.start = date
       }
+      onSelect(date, true)
       if (type === 'weekrange') {
         onPick([newRange.start.startOf('week'), newRange.end.endOf('week')], showTime)
       } else {
@@ -72,6 +83,7 @@ const RangePanel = () => {
       newRange.selecting = true
       newRange.start = date
       newRange.end = null
+      onSelect(date, false)
     }
     setRange(newRange)
   }
@@ -83,12 +95,14 @@ const RangePanel = () => {
   const onCalenderPick = (date, uIndex) => {
     if (type === 'timeperiod' && views[uIndex] === 'date') {
       onPick([date, moment(date).hour(date.hour() + timeInterval / 60)], true)
+      onSelect(date, true)
       return
     }
     if (type.includes(views[uIndex]) || type === 'weekrange') {
       setRanges(date)
     } else {
       const _innerDates = genNewDates(calRenderDates, date, uIndex)
+      console.log(';_innerDates', _innerDates)
       setCalRenderDates(_innerDates)
     }
     const _views = _.cloneDeep(views)
@@ -99,10 +113,6 @@ const RangePanel = () => {
       _views[uIndex] = 'month'
     }
     setViews(_views)
-    // if (type === 'daterange' || type === 'weekrange' || type === 'timeperiod') {
-    //   const _innerDates = genNewDates(calRenderDates, date, uIndex)
-    //   setCalRenderDates(_innerDates)
-    // }
   }
 
   const onMouseMove = (date) => {

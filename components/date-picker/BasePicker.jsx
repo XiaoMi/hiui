@@ -42,6 +42,9 @@ const BasePicker = ({
   locale,
   bordered = true,
   disabledDate,
+  onSelect = (va) => {
+    console.log('sssss', va)
+  },
   ...otherPorps
 }) => {
   // 兼容2.x api -> max，min
@@ -123,6 +126,7 @@ const BasePicker = ({
     setTimeout(() => {
       setShowPanel(isShowPanel)
     }, 0)
+    console.log('datas', dates, isShowPanel)
     if (!isShowPanel) {
       setInputFocus(false)
       callback(dates)
@@ -194,7 +198,8 @@ const BasePicker = ({
         inputReadOnly,
         value,
         bordered,
-        disabledDate
+        disabledDate,
+        onSelect
       }}
     >
       <Root
