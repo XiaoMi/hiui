@@ -2,6 +2,7 @@
 
 ## 2.15.8
 - 修复 `<Select />` 受控模式的异步多选, 多次搜索值覆盖问题[#1597](https://github.com/XiaoMi/hiui/issues/1597)
+- 新增 `<DatePicker />` onSelect 选择日期的回调函数 [#1592](https://github.com/XiaoMi/hiui/issues/1592)
 ## 2.15.7
 
 - 新增 `Transfer` 组件 render 自定义菜单渲染函数 [#1575](https://github.com/XiaoMi/hiui/issues/1575)
