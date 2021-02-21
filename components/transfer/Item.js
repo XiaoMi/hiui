@@ -19,7 +19,8 @@ class Item extends Component {
       dir,
       draggable,
       dividerPosition,
-      theme
+      theme,
+      render
     } = this.props
     const sourceStyle =
       sourceNode === item.id && isDragging
@@ -51,10 +52,10 @@ class Item extends Component {
               checkboxOnChange(item.id, e.checked)
             }}
           >
-            {item.content}
+            {render ? render(item) : item.content}
           </Checkbox>
         ) : (
-          item.content
+          <span className="hi-transfer__item-content">{render ? render(item) : item.content}</span>
         )}
       </li>
     )
