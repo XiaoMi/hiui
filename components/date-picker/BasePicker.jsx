@@ -153,12 +153,15 @@ const BasePicker = ({
     setShowPanel(false)
     setInputFocus(false)
   }, [])
-  const onSelect = (date, ...arg) => {
-    if (propsOnSelect) {
-      const _date = Array.isArray(date) ? date[0] : date
-      propsOnSelect(_date, ...arg)
-    }
-  }
+  const onSelect = useCallback(
+    (date, ...arg) => {
+      if (propsOnSelect) {
+        const _date = Array.isArray(date) ? date[0] : date
+        propsOnSelect(_date, ...arg)
+      }
+    },
+    [propsOnSelect]
+  )
   const popperCls = classNames(
     'hi-datepicker__popper',
     type === 'date' && showTime && 'hi-datepicker__popper--time',
