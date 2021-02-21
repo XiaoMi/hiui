@@ -102,7 +102,6 @@ const RangePanel = () => {
       setRanges(date)
     } else {
       const _innerDates = genNewDates(calRenderDates, date, uIndex)
-      console.log(';_innerDates', _innerDates)
       setCalRenderDates(_innerDates)
     }
     const _views = _.cloneDeep(views)
