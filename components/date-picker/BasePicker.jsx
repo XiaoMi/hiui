@@ -42,9 +42,7 @@ const BasePicker = ({
   locale,
   bordered = true,
   disabledDate,
-  onSelect = (va) => {
-    console.log('sssss', va)
-  },
+  onSelect: propsOnSelect,
   ...otherPorps
 }) => {
   // 兼容2.x api -> max，min
@@ -126,7 +124,6 @@ const BasePicker = ({
     setTimeout(() => {
       setShowPanel(isShowPanel)
     }, 0)
-    console.log('datas', dates, isShowPanel)
     if (!isShowPanel) {
       setInputFocus(false)
       callback(dates)
@@ -156,6 +153,12 @@ const BasePicker = ({
     setShowPanel(false)
     setInputFocus(false)
   }, [])
+  const onSelect = (date, ...arg) => {
+    if (propsOnSelect) {
+      const _date = Array.isArray(date) ? date[0] : date
+      propsOnSelect(_date, ...arg)
+    }
+  }
   const popperCls = classNames(
     'hi-datepicker__popper',
     type === 'date' && showTime && 'hi-datepicker__popper--time',
