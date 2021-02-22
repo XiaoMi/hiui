@@ -203,7 +203,7 @@ const Table = ({
         hoverColIndex,
         setHoverColIndex,
         showColMenu,
-        // 是否展示高亮列
+        // 是否展示hover高亮列
         showColHighlight,
         maxHeight,
         // 同步滚动条
