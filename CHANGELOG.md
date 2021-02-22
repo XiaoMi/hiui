@@ -8,7 +8,8 @@
 - 修复 `Select` 组件在异步多选时，关闭弹层下拉选项内容丢失问题 [#1578](https://github.com/XiaoMi/hiui/issues/1578)
 - 优化 `Select` 组件异步类型时，searchable 属性可控制筛选框的显示隐藏  [#1577](https://github.com/XiaoMi/hiui/issues/1577)
 - 优化 `DatePicker` type 为 week 形态时显示内容  [#1587](https://github.com/XiaoMi/hiui/issues/1587)
-
+- 新增 `Table` 组件 showColHighlight 方法 [#1602](https://github.com/XiaoMi/hiui/issues/1602)
+  
 ## 3.4.0
 
 - 优化组件弹出层自动计算合适的左右位置 [#1494](https://github.com/XiaoMi/hiui/issues/1494)
