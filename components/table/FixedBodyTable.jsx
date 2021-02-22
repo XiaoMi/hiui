@@ -20,6 +20,8 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
     bodyTableRef,
     activeSorterColumn,
     activeSorterType,
+    hoverColIndex,
+    setHoverColIndex,
     realColumnsWidth,
     bordered,
     eachRowHeight,
@@ -71,6 +73,8 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
           isFixed={isFixed}
           level={level}
           index={index}
+          hoverColIndex={hoverColIndex}
+          setHoverColIndex={setHoverColIndex}
           rowHeight={eachRowHeight[row.key]}
           expandedTree={expandedTreeRows.includes(row.key)}
           expandedTreeRows={expandedTreeRows}
