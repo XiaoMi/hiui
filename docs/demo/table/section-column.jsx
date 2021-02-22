@@ -557,7 +557,7 @@ const code = [
 
       }
       render() {
-        return <Table columns={this.state.columns} data={this.state.data} scrollWidth={1700} fixedToColumn={{left: 'storeName', right: 'receptionPrice'}} />
+        return <Table columns={this.state.columns} data={this.state.data} scrollWidth={1700} fixedToColumn={{left: 'storeName', right: 'receptionPrice'}} showColHighlight />
       }
     }`,
     opt: ['列冻结']
@@ -647,7 +647,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} resizable bordered />
+        return <Table columns={this.columns} data={this.data} resizable bordered showColHighlight />
       }
     }`,
     opt: ['列伸缩']
@@ -737,7 +737,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} setting />
+        return <Table columns={this.columns} data={this.data} setting showColHighlight />
       }
     }`,
     opt: ['列调整']

@@ -9,6 +9,8 @@ const Cell = ({
   allRowData,
   columnIndex,
   level,
+  showColHighlight,
+  hoverColIndex,
   setHoverColIndex,
   expandedTree,
   expandedTreeRows,
@@ -36,7 +38,8 @@ const Cell = ({
       rowSpan={(isMergeCell && cellContent.props.rowSpan) || ''}
       className={classNames({
         [`${prefix}__col--highlight`]:
-          highlightedColKeys.includes(column.dataKey) || highlightColumns.includes(column.dataKey)
+          highlightedColKeys.includes(column.dataKey) || highlightColumns.includes(column.dataKey),
+        [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === column.dataKey
       })}
       onMouseEnter={(e) => setHoverColIndex(column.dataKey)}
       onMouseLeave={(e) => setHoverColIndex(null)}

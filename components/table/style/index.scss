@@ -293,8 +293,8 @@
     }
   }
 
-  &__col-highlight {
-    background: use-color('primary-20');
+  &__col__hover--highlight {
+    background: use-color('primary-10');
   }
 }
 

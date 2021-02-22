@@ -186,7 +186,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
             <col
               key={index}
               className={classNames({
-                [`${prefix}__col-highlight`]: showColHighlight && hoverColIndex === c.dataKey
+                [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === c.dataKey
               })}
               style={{
                 width: resizable ? realColumnsWidth[index] : c.width,
