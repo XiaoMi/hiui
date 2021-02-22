@@ -6,10 +6,10 @@ import Indent from './Indent'
 
 const Cell = ({
   column,
-  rowData,
   allRowData,
   columnIndex,
   level,
+  setHoverColIndex,
   expandedTree,
   expandedTreeRows,
   setExpandedTreeRows,
@@ -38,6 +38,8 @@ const Cell = ({
         [`${prefix}__col--highlight`]:
           highlightedColKeys.includes(column.dataKey) || highlightColumns.includes(column.dataKey)
       })}
+      onMouseEnter={(e) => setHoverColIndex(columnIndex)}
+      onMouseLeave={(e) => setHoverColIndex(null)}
     >
       {level > 1 && columnIndex === 0 && <Indent times={level - 1} />}
       {columnIndex === 0 &&

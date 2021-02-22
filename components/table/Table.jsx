@@ -29,6 +29,7 @@ const Table = ({
   pagination,
   dataSource,
   showColMenu,
+  showColHighlight = true,
   prefix = 'hi-table',
   fixedToColumn,
   sticky: _ceiling,
@@ -56,6 +57,7 @@ const Table = ({
   const [serverTableConfig, setServerTableConfig] = useState({ data: [], columns: [] })
   const [eachRowHeight, setEachRowHeight] = useState({})
   const [eachHeaderHeight, setEachHeaderHeight] = useState(null)
+  const [hoverColIndex, setHoverColIndex] = useState(null)
 
   const [realColumnsWidth, setRealColumnsWidth] = useState(columns.map((c) => c.width || 'auto'))
   const [expandedTreeRows, setExpandedTreeRows] = useState([])
@@ -197,7 +199,12 @@ const Table = ({
         // hover 高亮行
         hoverRow,
         setHoverRow,
+        // hover 高亮列
+        hoverColIndex,
+        setHoverColIndex,
         showColMenu,
+        // 是否展示高亮列
+        showColHighlight,
         maxHeight,
         // 同步滚动条
         headerTableRef,

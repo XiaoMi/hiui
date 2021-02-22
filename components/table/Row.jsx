@@ -11,6 +11,8 @@ const Row = ({
   rowData,
   allRowData,
   level,
+  hoverColIndex,
+  setHoverColIndex,
   expandedTree,
   expandedTreeRows,
   setExpandedTreeRows,
@@ -118,6 +120,8 @@ const Row = ({
           column={column}
           rowData={rowData}
           allRowData={allRowData}
+          hoverColIndex={hoverColIndex}
+          setHoverColIndex={setHoverColIndex}
           level={level}
           columnIndex={idx}
           rowIndex={index}
