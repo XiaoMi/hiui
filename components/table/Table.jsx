@@ -29,7 +29,7 @@ const Table = ({
   pagination,
   dataSource,
   showColMenu,
-  showColHighlight = true,
+  showColHighlight,
   prefix = 'hi-table',
   fixedToColumn,
   sticky: _ceiling,

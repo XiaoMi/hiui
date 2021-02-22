@@ -89,7 +89,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data}/>
+        return <Table columns={this.columns} data={this.data} showColHighlight />
       }
     }`,
     opt: ['列对齐']
@@ -178,7 +178,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} highlightedColKeys={['name']}/>
+        return <Table columns={this.columns} data={this.data} highlightedColKeys={['name']} showColHighlight />
       }
     }`,
     opt: ['列高亮']
@@ -268,7 +268,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} showColMenu />
+        return <Table columns={this.columns} data={this.data} showColMenu showColHighlight />
       }
     }`,
     opt: ['列操作']
