@@ -103,7 +103,7 @@ const Calender = ({ view = 'date', originDate, onPick, range, mouseMove, panelPo
     if (type.includes('range')) {
       const val = ele.getAttribute('value')
       const cellType = ele.getAttribute('type')
-      if (!val || ele.disabled || !range.selecting) return false
+      if (!val || ele.disabled || !range.selecting || cellType === 'disabled') return false
       if (range.end && val * 1 === range.end[view]() * 1) return false
       panelDate[view](val)
       if (cellType === 'prev') {

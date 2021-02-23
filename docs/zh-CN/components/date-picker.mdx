@@ -74,6 +74,7 @@ import DemoCalendar from '../../demo/date-picker/section-calendar.jsx'
 
 | 名称     | 说明         | 类型                                                             | 参数                                                                                                                               | 返回值 |
 | -------- | ------------ | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| onSelect | 选择日期的回调函数 | (data:moment, isCompleted?) => void  | data: 选中的 [moment](http://momentjs.cn/) 日期对象 \| isCompleted: 是否选择完成，仅在范围选择下有效 | -      |
 | onChange | 选择后的回调 | (date: Date \| DateRange, dateStr: string \| DateRange ) => void | date: 选中的日期(普通选择) \| 选中的日期范围{start: Date, end: Date}(范围选择) <br/> dateStr: 选中的日期字符串(普通选择) \| 选中的日期字符串对象{start: string, end: string}(范围选择) | -      |
 
 ## Type

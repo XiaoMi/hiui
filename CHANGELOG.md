@@ -1,6 +1,7 @@
 # 更新日志
 ## 3.4.1
 
+- 新增 `DatePicker` onSelect 选择日期的回调函数 [#1592](https://github.com/XiaoMi/hiui/issues/1592)
 - 新增 `Transfer` 组件 render 自定义菜单渲染函数 [#1575](https://github.com/XiaoMi/hiui/issues/1575)
 - 修复 `DatePicker` type 为 week 或者 weekrange 时 输入相应格式日期解析错误问题  [#1579](https://github.com/XiaoMi/hiui/issues/1579)
 - 修复 `Preview` 图片预览组件，滚轮放大缩小错误 [#1573](https://github.com/XiaoMi/hiui/issues/1573)
