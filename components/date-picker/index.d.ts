@@ -34,6 +34,7 @@ interface DateProps extends CommonProps {
   max?: Date
   maxDate?: Date
   bordered?: boolean
+  timeperiod?: number
   disabledDate?: (currentDate: Date) => boolean
   showTime?: boolean
   shortcuts?: string[] | Shortcuts[]

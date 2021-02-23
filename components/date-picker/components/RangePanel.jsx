@@ -151,8 +151,8 @@ const RangePanel = () => {
       const [leftDate] = _.cloneDeep(calRenderDates)
       if (outDate[0]) {
         onPick([
-          moment(leftDate).hour(parseInt(ts1)).minute(0).second(0),
-          moment(leftDate).hour(parseInt(ts2)).minute(0).second(0)
+          moment(leftDate).hour(parseInt(ts1)).minute(moment(ts1, 'HH:mm').format('mm')).second(0),
+          moment(leftDate).hour(parseInt(ts2)).minute(moment(ts2, 'HH:mm').format('mm')).second(0)
         ])
       }
     },
