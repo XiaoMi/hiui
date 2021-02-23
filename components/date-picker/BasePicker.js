@@ -181,6 +181,7 @@ class BasePicker extends Component {
   onPick (date, showPanel) {
     const {type, showTime, localeDatas, weekOffset} = this.props
     const {format} = this.state
+    console.log('date', date)
     this.setState({
       date,
       texts: [formatterDate(type, date.startDate || date, format, showTime, localeDatas, weekOffset), formatterDate(type, date.endDate, format, showTime, localeDatas, weekOffset)],

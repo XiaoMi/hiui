@@ -2,6 +2,9 @@
 
 ## 1.5.21
 
+- 修复 `<Datepicker />` type 为 timeperiod 点击24 小时，日期显示错误 [#1604](https://github.com/XiaoMi/hiui/issues/1604)
+## 1.5.21
+
 - 修复 `<Datepicker />` 某些场景下日期面板定位计算错误的问题 [#908](https://github.com/XiaoMi/hiui/issues/908)
 
 ## 1.5.20
