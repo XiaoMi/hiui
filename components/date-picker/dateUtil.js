@@ -20,6 +20,7 @@ import getHours from 'date-fns/get_hours'
 import getMinutes from 'date-fns/get_minutes'
 import getSeconds from 'date-fns/get_seconds'
 import addHours from 'date-fns/add_hours'
+import addDays from 'date-fns/add_days'
 import subDays from 'date-fns/sub_days'
 import differenceInDays from 'date-fns/difference_in_days'
 export {
@@ -45,6 +46,7 @@ export {
   getMinutes,
   getSeconds,
   addHours,
+  addDays,
   subDays,
   differenceInDays
 }

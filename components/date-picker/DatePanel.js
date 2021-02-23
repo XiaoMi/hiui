@@ -6,7 +6,7 @@ import Icon from '../icon'
 import classNames from 'classnames'
 import Provider from '../context'
 import TimePeriodPanel from './TimePeriodPanel'
-import {dateFormat, parse, addHours} from './dateUtil'
+import {dateFormat, parse, addHours, addDays} from './dateUtil'
 
 class DatePanel extends Component {
   constructor (props) {
@@ -194,8 +194,9 @@ class DatePanel extends Component {
   }
   onTimePeriodPick (periodS, periodE) {
     const currentDate = dateFormat(this.state.date, 'YYYY-MM-DD')
-    parse(`${currentDate} ${periodS}`)
-    this.props.onPick({startDate: parse(`${currentDate} ${periodS}`), endDate: parse(`${currentDate} ${periodE}`)}, true)
+    let _endCurrentDate = currentDate
+    if (periodE === '24:00') _endCurrentDate = dateFormat(addDays(currentDate, 1), 'YYYY-MM-DD')
+    this.props.onPick({startDate: parse(`${currentDate} ${periodS}`), endDate: parse(`${_endCurrentDate} ${periodE}`)}, true)
   }
   onTimePick (date, bol) {
     this.setState({
