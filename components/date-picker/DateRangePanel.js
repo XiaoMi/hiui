@@ -277,7 +277,7 @@ class DateRangePanel extends Component {
   }
   _getNormalComponent (date, flag) {
     let { minDate, maxDate, range, layout } = this.state
-    const { altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData, type, disabledDate, weekOffset } = this.props
+    const { altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData, type, disabledDate, weekOffset, onSelect } = this.props
     let component = null
     const { year, month } = deconstructDate(date)
     switch (layout[flag]) {
@@ -292,6 +292,7 @@ class DateRangePanel extends Component {
             date={date}
             weekOffset={weekOffset}
             data={yearData}
+            onSelect={onSelect}
             type={layout[flag]}
             onPick={this.yearPick.bind(this, flag)}
           />
@@ -304,6 +305,7 @@ class DateRangePanel extends Component {
             altCalendarPresetData={altCalendarPresetData}
             dateMarkPresetData={dateMarkPresetData}
             altCalendar={altCalendar}
+            onSelect={onSelect}
             altCalendarPreset={altCalendarPreset}
             dateMarkRender={dateMarkRender}
             dateMarkPreset={dateMarkPreset}
@@ -325,6 +327,7 @@ class DateRangePanel extends Component {
             dateMarkRender={dateMarkRender}
             dateMarkPreset={dateMarkPreset}
             date={date}
+            onSelect={onSelect}
             range={range}
             type={type}
             minDate={minDate}

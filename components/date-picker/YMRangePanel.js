@@ -172,7 +172,7 @@ class YMRangePanel extends Component {
   }
   _getNormalComponent (date, flag) {
     let { range } = this.state
-    const { altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData, type } = this.props
+    const { altCalendar, altCalendarPreset, dateMarkRender, dateMarkPreset, altCalendarPresetData, dateMarkPresetData, type, onSelect } = this.props
     let component = null
     const { year } = deconstructDate(date)
     switch (type) {
@@ -189,6 +189,7 @@ class YMRangePanel extends Component {
             data={yearData}
             type={'yearrange'}
             onPick={this.pick.bind(this)}
+            onSelect={onSelect}
             mouseMove={this.onMouseMoveHandler.bind(this)}
           />
         )
@@ -198,6 +199,7 @@ class YMRangePanel extends Component {
         component = (
           <Calender
             range={range}
+            onSelect={onSelect}
             altCalendarPresetData={altCalendarPresetData}
             dateMarkPresetData={dateMarkPresetData}
             altCalendar={altCalendar}

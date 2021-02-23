@@ -144,7 +144,7 @@ class Calender extends Component {
     }
   }
   handlerClick (e) {
-    const {onPick, date, type, range} = this.props
+    const {onPick, date, type, range, onSelect} = this.props
     let { year, month, day, hours, minutes, seconds } = deconstructDate(date)
 
     const td = e.target
@@ -176,16 +176,20 @@ class Calender extends Component {
       if (range.selecting) {
         if (range.startDate > newDate) {
           range.selecting = false
+          onSelect(newDate, true)
           onPick(newDate, range.startDate)
         } else {
           range.selecting = false
+          onSelect(newDate, true)
           onPick(range.startDate, newDate)
         }
       } else {
         range.selecting = true
+        onSelect(newDate, false)
         onPick(newDate, null)
       }
     } else {
+      onSelect(newDate, true)
       onPick(newDate)
     }
   }
