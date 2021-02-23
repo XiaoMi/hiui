@@ -1,6 +1,6 @@
 # 更新日志
 
-## 1.5.21
+## 1.5.22
 
 - 修复 `<Datepicker />` type 为 timeperiod 点击24 小时，日期显示错误 [#1604](https://github.com/XiaoMi/hiui/issues/1604)
 ## 1.5.21
