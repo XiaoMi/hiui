@@ -78,6 +78,24 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | loading            | 加载中状态 | boolean                                        | true \| false                             | false      |
 | scrollWidth        | 表格滚动的宽度（当表格总设置宽度（含自适应列）大于表格父级容器宽度时需要设置） |  number                                        | -                            | -      |
 | showColHighlight   | 表格某一列`hover`时，该列高亮 |  boolean                                        | true \| false                            | false      |
+| onHeaderRow        | 行标题事件处理函数 |  (item: ColumnItem[], index: number) => object                                        | -                           | -      |
+
+### onHeaderRow 使用方法
+```js
+// demo 见【行操作-标题事件处理】
+
+<Table
+  onHeaderRow={(columns, index) => {
+    return {
+      onClick: event => {}, // 点击行
+      onDoubleClick: event => {},
+      onContextMenu: event => {},
+      onMouseEnter: event => {}, // 鼠标移入行
+      onMouseLeave: event => {}
+    };
+  }}
+/>
+```
 
 ### Type
 
