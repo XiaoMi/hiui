@@ -117,6 +117,7 @@ class Demo extends React.Component {
       <div>
         <DatePicker
           type="timeperiod"
+          timeInterval={30}
           value={this.state.rangeDate}
           onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
         />
