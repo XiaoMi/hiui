@@ -1,4 +1,6 @@
 import React, { useContext, useRef } from 'react'
+import classNames from 'classnames'
+
 import Row from './Row'
 import TableContext from './context'
 import _ from 'lodash'
@@ -20,6 +22,10 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
     bodyTableRef,
     activeSorterColumn,
     activeSorterType,
+    prefix,
+    showColHighlight,
+    hoverColIndex,
+    setHoverColIndex,
     realColumnsWidth,
     bordered,
     eachRowHeight,
@@ -71,6 +77,8 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
           isFixed={isFixed}
           level={level}
           index={index}
+          hoverColIndex={hoverColIndex}
+          setHoverColIndex={setHoverColIndex}
           rowHeight={eachRowHeight[row.key]}
           expandedTree={expandedTreeRows.includes(row.key)}
           expandedTreeRows={expandedTreeRows}
@@ -177,6 +185,9 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
                 return (
                   <col
                     key={index}
+                    className={classNames({
+                      [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === c.dataKey
+                    })}
                     style={{
                       width: width,
                       minWidth: width

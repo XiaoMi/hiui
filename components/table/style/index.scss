@@ -292,6 +292,10 @@
       }
     }
   }
+
+  &__col__hover--highlight {
+    background: use-color('primary-10');
+  }
 }
 
 .react-resizable {

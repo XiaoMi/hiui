@@ -1,4 +1,6 @@
 import React, { useContext, useRef, useEffect, useCallback } from 'react'
+import classNames from 'classnames'
+
 import Row from './Row'
 import TableContext from './context'
 import _ from 'lodash'
@@ -22,6 +24,10 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     firstRowRef,
     realColumnsWidth,
     resizable,
+    prefix,
+    hoverColIndex,
+    setHoverColIndex,
+    showColHighlight,
     scrollWidth,
     setEachRowHeight,
     expandedRender,
@@ -114,6 +120,8 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
           allRowData={row}
           level={level}
           index={index}
+          hoverColIndex={hoverColIndex}
+          setHoverColIndex={setHoverColIndex}
           expanded={Array.isArray(expandedRowKeys) ? expandedRowKeys.includes(row.key) : undefined}
           expandedTree={expandedTreeRows.includes(row.key)}
           expandedTreeRows={expandedTreeRows}
@@ -177,6 +185,9 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
           {columnsgroup.map((c, index) => (
             <col
               key={index}
+              className={classNames({
+                [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === c.dataKey
+              })}
               style={{
                 width: resizable ? realColumnsWidth[index] : c.width,
                 minWidth: resizable ? realColumnsWidth[index] : c.width

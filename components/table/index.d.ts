@@ -48,6 +48,7 @@ interface Props {
   rowSelection?: RowSelection
   dataSource?: (current: number) => DataSource
   showColMenu?: boolean
+  showColHighlight?: boolean
   striped?: boolean
   setting?: boolean
   resizable?: boolean
