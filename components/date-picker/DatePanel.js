@@ -186,7 +186,6 @@ class DatePanel extends Component {
     const {type, showTime} = this.props
     const {hours, minutes, seconds} = deconstructDate(this.state.date)
     if (type === 'timeperiod') {
-      console.log('this.state.date', this.state.date)
       this.props.onPick({startDate: date, endDate: addHours(this.state.date, 4)}, true)
     } else {
       date.setHours(hours, minutes, seconds)
