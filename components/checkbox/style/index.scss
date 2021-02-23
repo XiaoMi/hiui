@@ -61,6 +61,7 @@ $prefixCls: '.hi-checkbox' !default;
     border-radius: 2px;
     transition: 0.3s ease-out;
     line-height: 1;
+    flex: none;
 
     &--indeterminate {
       &::after {
