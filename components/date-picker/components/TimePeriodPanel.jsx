@@ -11,9 +11,7 @@ const TimePeriodPanel = ({ date, onTimePeriodPick }) => {
     setPeriodData(getTimePeriodData(timeInterval))
   }, [])
   const getActiveIndex = () => {
-    return timeInterval >= 60
-      ? (date.hour() * 60) / timeInterval
-      : (date.minute() + date.hour() * 60) / timeInterval
+    return timeInterval >= 60 ? (date.hour() * 60) / timeInterval : (date.minute() + date.hour() * 60) / timeInterval
   }
   useEffect(() => {
     setTimeout(() => {
@@ -21,12 +19,10 @@ const TimePeriodPanel = ({ date, onTimePeriodPick }) => {
     }, 0)
   }, [])
   return (
-    <div className='hi-datepicker__time-period'>
-      <div className='hi-datepicker__period-header'>
-        {localeDatas.datePicker.timePeriod}
-      </div>
-      <div className='hi-datepicker__period-body'>
-        <ul className='hi-datepicker__period-list' ref={listEl}>
+    <div className="hi-datepicker__time-period">
+      <div className="hi-datepicker__period-header">{localeDatas.datePicker.timePeriod}</div>
+      <div className="hi-datepicker__period-body">
+        <ul className="hi-datepicker__period-list" ref={listEl}>
           {periodData.map((item, index) => {
             const cls = classNames(
               'hi-datepicker__period-item',
@@ -37,7 +33,8 @@ const TimePeriodPanel = ({ date, onTimePeriodPick }) => {
                 className={cls}
                 key={index}
                 onClick={(e) => {
-                  onTimePeriodPick(item.timeStart, item.timeEnd)
+                  const [ts, te] = item.timeStr.split('~')
+                  onTimePeriodPick(ts, te)
                 }}
               >
                 {item.timeStr}
