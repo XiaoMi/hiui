@@ -54,7 +54,7 @@ import DemoArea from '../../demo/transfer/section-area.jsx'
 | 名称     | 说明                             | 类型                                                                                            | 参数                                                                                           | 返回值 |
 | -------- | -------------------------------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------ |
 | onChange | 选中元素被移动到目标框内后的回调 | (targetKeys: number[] \| string[], direction: 'left' \| 'right', moveDatas: DataItem[]) => void | targetKeys: 目标框内的元素 ID 集合 <br/> direction: 移动方向 <br/> moveDatas: 移动的数据项集合 | -      |
-
+| render   | 自定义菜单渲染函数             | (item: DataItem) => ReactNode      | -                                            | 无内容   | 
 ## Type
 
 ### DataItem
@@ -62,5 +62,5 @@ import DemoArea from '../../demo/transfer/section-area.jsx'
 | 参数     | 说明     | 类型                | 可选值        | 默认值 |
 | -------- | -------- | ------------------- | ------------- | ------ |
 | id       | 唯一 id  | string              | number        | -      |
-| content  | 显示内容 | string \| ReactNode | -             | -      |
+| content  | 显示内容 | string               | -             | -      |
 | disabled | 是否禁用 | boolean             | true \| false | false  |

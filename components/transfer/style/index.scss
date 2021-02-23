@@ -40,6 +40,19 @@
     }
   }
 
+  .hi-checkbox {
+    max-width: 100%;
+  }
+
+  .hi-checkbox__text {
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   &__split {
     width: 100%;
     height: 8px;
@@ -101,6 +114,15 @@
       font-size: $font-size-normal;
       display: flex;
       align-items: center;
+    }
+
+    &-content {
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 14px;
     }
   }
 
