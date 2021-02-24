@@ -20,8 +20,6 @@ class Demo extends React.Component {
     return (
       <Select
         type='single'
-        searchable={false}
-        autoload
         dataSource={{
           method: 'GET',
           key: 'id',
