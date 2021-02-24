@@ -129,9 +129,13 @@ const InternalSelect = (props) => {
     setSelectedItems(selectedItems)
     if (dataSource && type === 'multiple') {
       setCacheSelectItem(selectedItems)
-      !dropdownShow && setDropdownItems(selectedItems)
+      !dropdownShow && searchable && setDropdownItems(selectedItems)
     } else {
-      setDropdownItems(_data)
+      if (dataSource) {
+        searchable && setDropdownItems(_data)
+      } else {
+        setDropdownItems(_data)
+      }
     }
   }, [data, value])
 
@@ -449,19 +453,22 @@ const InternalSelect = (props) => {
   }, [])
 
   // 过滤筛选项
-  const onFilterItems = (keyword) => {
-    setKeyword(keyword)
-    if (typeof onSearch === 'function') {
-      onSearch(keyword)
-      return
-    }
-    if (dataSource && (autoload || keyword)) {
-      remoteSearch(keyword)
-    }
-    if (dataSource && keyword === '' && selectedItems.length > 0) {
-      setDropdownItems(cacheSelectItem)
-    }
-  }
+  const onFilterItems = useCallback(
+    (keyword) => {
+      setKeyword(keyword)
+      if (typeof onSearch === 'function') {
+        onSearch(keyword)
+        return
+      }
+      if (dataSource && (autoload || keyword) && searchable) {
+        remoteSearch(keyword)
+      }
+      if (dataSource && searchable && keyword === '' && selectedItems.length > 0) {
+        setDropdownItems(cacheSelectItem)
+      }
+    },
+    [dataSource, cacheSelectItem, keyword, selectedItems, searchable, onSearch, remoteSearch, autoload]
+  )
   // 重置下标
   const resetFocusedIndex = () => {
     let _dropdownItems = dropdownItems || []
@@ -527,7 +534,7 @@ const InternalSelect = (props) => {
       resetFocusedIndex()
     })
     setCacheSelectItem([])
-    dataSource && setDropdownItems([])
+    dataSource && searchable && setDropdownItems([])
   }
   // 防抖
   const debouncedFilterItems = _.debounce(onFilterItems, 300)
