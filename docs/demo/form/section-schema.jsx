@@ -26,21 +26,6 @@ const code = [
     class Demo extends React.Component {  
       constructor(props){
         super(props)
-        this.form = React.createRef()
-        this.list = [{
-          content: '手机',
-          id: 'Phone'
-        },{
-          content: '电脑',
-          id: 'Computer'
-        },{
-          content: '智能',
-          id: 'Intelli'
-        },{
-          content: '出行',
-          id: 'Transfer',
-          disabled: true
-        }]
         this.state = {
           initialValues : {
             inputField: 'test schema',
@@ -82,7 +67,20 @@ const code = [
                 required:true,
                 componentProps:{
                     placeholder:'schema',
-                    data:this.list,
+                    data:[{
+                      content: '手机',
+                      id: 'Phone'
+                    },{
+                      content: '电脑',
+                      id: 'Computer'
+                    },{
+                      content: '智能',
+                      id: 'Intelli'
+                    },{
+                      content: '出行',
+                      id: 'Transfer',
+                      disabled: true
+                    }],
                     onChange:(data) => console.log("Checkbox data",data)
                 }
               },
@@ -99,13 +97,7 @@ const code = [
               }
           ]
         }
-        setTimeout(()=>{
-          console.log(this.form.current)
-          this.list = []
-          this.form.current.schemaFormforceUpdate()
-        },5000)
       }
-      
       render () {
         const SchemaForm = Form.SchemaForm
         const {initialValues} = this.state
@@ -113,7 +105,6 @@ const code = [
         return (
           <SchemaForm 
             labelWidth='100' 
-            ref={this.form}
             labelPlacement='right' 
             initialValues={initialValues}
             schema={this.state.formSchema}
