@@ -52,7 +52,6 @@ const Overlay = (props) => {
         onClickOutside && onClickOutside(e)
       },
       undefined,
-      'click',
       attachEle
     )
   }
