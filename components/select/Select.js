@@ -40,7 +40,8 @@ const InternalSelect = (props) => {
     fieldNames,
     overlayClassName,
     setOverlayContainer,
-    bordered = true
+    bordered = true,
+    overlayClickOutSideEventName = 'click'
   } = props
   const selectInputContainer = useRef()
   const autoloadFlag = useRef(autoload) // 多选情况下，需要记录是否进行了筛选
@@ -628,6 +629,7 @@ const InternalSelect = (props) => {
         topGap={5}
         leftGap={0}
         overlayClassName={overlayClassName}
+        overlayClickOutSideEventName={overlayClickOutSideEventName}
         setOverlayContainer={setOverlayContainer}
         // 是否防止溢出功能   暂时不开放
         preventOverflow={preventOverflow}
