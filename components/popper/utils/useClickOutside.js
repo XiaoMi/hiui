@@ -1,9 +1,6 @@
 import { useEffect, useCallback, useRef } from 'react'
-let eventName = 'click'
-const setEventName = (name = 'click') => {
-  eventName = name
-}
-const useClickOutside = (onClickOutside, dom, attachEle) => {
+
+const useClickOutside = (onClickOutside, dom, eventName = 'click', attachEle) => {
   const element = useRef('')
   const handleOutside = useCallback(
     (e) => {
@@ -28,5 +25,4 @@ const useClickOutside = (onClickOutside, dom, attachEle) => {
   }, [eventName, onClickOutside, element])
   return element
 }
-useClickOutside.setEventName = setEventName
 export default useClickOutside

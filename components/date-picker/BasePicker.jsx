@@ -43,6 +43,8 @@ const BasePicker = ({
   bordered = true,
   disabledDate,
   onSelect: propsOnSelect,
+  setOverlayContainer,
+  overlayClickOutSideEventName = 'click',
   ...otherPorps
 }) => {
   // 兼容2.x api -> max，min
@@ -228,6 +230,8 @@ const BasePicker = ({
           width={false}
           className={popperCls}
           placement={placement}
+          setOverlayContainer={setOverlayContainer}
+          overlayClickOutSideEventName={overlayClickOutSideEventName}
           onClickOutside={clickOutsideEvent}
         >
           {type.includes('range') || type === 'timeperiod' ? <RangePanel /> : <Panel />}

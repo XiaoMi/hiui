@@ -29,7 +29,8 @@ const Overlay = (props) => {
     onMouseLeave,
     onClickOutside,
     overlayClassName,
-    onKeyDown
+    onKeyDown,
+    overlayClickOutSideEventName = 'click'
   } = props
   const [isAddevent, setIsAddevent] = useState(false)
   const [state, setState] = useState({
@@ -52,6 +53,7 @@ const Overlay = (props) => {
         onClickOutside && onClickOutside(e)
       },
       undefined,
+      overlayClickOutSideEventName,
       attachEle
     )
   }
