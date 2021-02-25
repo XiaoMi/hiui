@@ -7,7 +7,6 @@ const useClickOutside = (onClickOutside, dom, attachEle) => {
   const element = useRef('')
   const handleOutside = useCallback(
     (e) => {
-      console.log('eventName', eventName)
       const targetElement = typeof dom === 'function' ? dom() : dom
       const el = targetElement || element.current
       if (el) {
