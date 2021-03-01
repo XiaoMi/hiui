@@ -118,7 +118,7 @@ const InternalForm = (props) => {
       // 比较耗性能
       internalValuesChange(changeValues, Object.assign({}, { ...cacheallValues }, { ...changeValues }))
     },
-    [fields, initialValues, onValuesChange]
+    [fields, initialValues, onValuesChange, internalValuesChange]
   )
   // 对整个表单进行校验
   const validate = useCallback(
