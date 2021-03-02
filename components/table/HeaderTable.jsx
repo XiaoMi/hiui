@@ -38,7 +38,8 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
     setting,
     scrollWidth,
     eachHeaderHeight,
-    setEachHeaderHeight
+    setEachHeaderHeight,
+    onHeaderRow
   } = useContext(TableContext)
 
   // ******************** 隐藏滚动条
@@ -179,6 +180,8 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                 key={idx}
                 colSpan={c.colSpan}
                 rowSpan={c.rowSpan}
+                // 标题事件处理
+                {...onHeaderRow(_colums, index)}
                 style={{
                   height: isFixed ? eachHeaderHeight : 'auto',
                   boxSizing: 'border-box',

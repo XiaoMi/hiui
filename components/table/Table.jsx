@@ -11,6 +11,16 @@ import Provider from '../context'
 import Loading from '../loading'
 import './style'
 
+const defaultHeaderRow = () => {
+  return {
+    onClick: () => {},
+    onDoubleClick: () => {},
+    onContextMenu: () => {},
+    onMouseEnter: () => {},
+    onMouseLeave: () => {}
+  }
+}
+
 const Table = ({
   striped,
   bordered,
@@ -23,6 +33,7 @@ const Table = ({
   highlightedColKeys = [],
   expandedRowKeys,
   onExpand,
+  onHeaderRow = defaultHeaderRow,
   columns = [],
   expandedRender,
   maxHeight,
@@ -175,6 +186,8 @@ const Table = ({
         columns: dataSource ? serverTableConfig.columns : columns,
         expandedRender,
         expandedRowKeys,
+        // 标题点击回调事件
+        onHeaderRow,
         onExpand,
         leftFixedColumns: realLeftFixedColumns,
         rightFixedColumns: realRightFixedColumns,
