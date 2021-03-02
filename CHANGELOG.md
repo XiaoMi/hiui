@@ -3,8 +3,8 @@
 
 - 新增 `DatePicker` onSelect 选择日期的回调函数 [#1592](https://github.com/XiaoMi/hiui/issues/1592)
 - 新增 `Transfer` 组件 render 自定义菜单渲染函数 [#1575](https://github.com/XiaoMi/hiui/issues/1575)
-- 修复 `Form` 触发 onValuesChange 数据更新出现旧值问题 [#1618](https://github.com/XiaoMi/hiui/issues/1618)
 - 修复 `DatePicker` type 为 week 或者 weekrange 时 输入相应格式日期解析错误问题  [#1579](https://github.com/XiaoMi/hiui/issues/1579)
+- 修复 `Form` 触发 onValuesChange 数据更新出现旧值问题 [#1618](https://github.com/XiaoMi/hiui/issues/1618)
 - 修复 `DatePicker` type 为 timeperiod 时，设置 timeInterval 分钟显示不正确问题  [#1604](https://github.com/XiaoMi/hiui/issues/1604)
 - 修复 `Preview` 图片预览组件，滚轮放大缩小错误 [#1573](https://github.com/XiaoMi/hiui/issues/1573)
 - 修复 `TimePicker` 时间范围选择，为空时无法选择打开弹窗时的当前值 [#1530](https://github.com/XiaoMi/hiui/issues/1530)
