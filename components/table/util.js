@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 // 将树状数据拍平
 export const flatTreeData = (data, flattedData = []) => {
   data.forEach((d) => {
@@ -122,4 +124,31 @@ export const checkIsNumberStr = (str) => {
   const reg = /^\d+(\.\d+)?$/
   const num = parseInt(str)
   return !isNaN(num) && reg.test(str)
+}
+
+// 检查是否需要展示Total及every
+export const checkNeedTotalOrEvg = (_data, item, calcKey) => {
+  if (item[calcKey]) {
+    // 当每一项都为数字类型字符串时，才进行求和计算
+    const isDataKeyValueAllNumber = _data.every((dataItem) => checkIsNumberStr(dataItem[item.dataKey]))
+    return isDataKeyValueAllNumber
+  }
+  return false
+}
+
+// 获取总和或取平均值
+export const getTotalOrEvgRowData = (_data, c, isAvg) => {
+  const dataPointCountList = _data.map((dataItem) => {
+    const strNum = dataItem[c.dataKey] + ''
+    const afterPonterStr = strNum.split('.')[1]
+    return afterPonterStr ? afterPonterStr.length : 0
+  })
+  const maxPointCount = dataPointCountList && dataPointCountList.length ? Math.max(...dataPointCountList) : 0
+  const columnSumData = _.sumBy(_data, (d) => +d[c.dataKey])
+  if (isAvg) {
+    const avgData = columnSumData / _data.length
+    return maxPointCount > 0 ? avgData.toFixed(maxPointCount) : avgData
+  } else {
+    return maxPointCount > 0 ? columnSumData.toFixed(maxPointCount) : columnSumData
+  }
 }
