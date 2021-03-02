@@ -80,7 +80,7 @@ const Row = ({
       onMouseEnter={(e) => setHoverRow(rowData.key)}
       onMouseLeave={(e) => setHoverRow(null)}
     >
-      {rowSelection && isFixed !== 'right' && (
+      {rowSelection && isFixed !== 'right' && !isSumRow && !isAvgRow && (
         <td style={{ width: 50 }}>
           <Checkbox
             checked={rowSelection.selectedRowKeys.includes(rowData.key)}

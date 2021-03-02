@@ -23,7 +23,7 @@ interface ItemProps {
   showColon?: boolean
 }
 interface SchemaItem extends ItemProps {
-  component?: string
+  component?: string | JSX.Element
   componentProps?: string
 }
 interface SchemaProps {

@@ -95,7 +95,7 @@ const FormItem = (props) => {
         triggerType === 'onChange' && internalValuesChange({ [field]: _value }, allValues)
       }
     },
-    [fields, formState]
+    [fields, formState, internalValuesChange]
   )
 
   const resetValidate = useCallback((value = '') => {

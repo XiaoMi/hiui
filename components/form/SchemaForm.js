@@ -18,6 +18,32 @@ const FormComponent = Provider(Form)
 const InternalSchemaForm = (props) => {
   const { schema: schemaProps, children: childrenProps, submit, reset, innerRef } = props
   const [schema, setSchema] = useState(schemaProps)
+  const updateSchema = useCallback(
+    (schemaItems = {}) => {
+      let _schema = _.cloneDeep(schema)
+      _schema = _schema.map((item) => {
+        const _item = _.cloneDeep(item)
+        const { field } = _item
+        const schemaItem = schemaItems[field]
+        if (field && schemaItem) {
+          const mergeSchema = _.mergeWith(
+            { [field]: { ..._item } },
+            { [field]: { ...schemaItem } },
+            (objValue, srcValue) => {
+              if (_.isArray(objValue)) {
+                return srcValue
+              }
+            }
+          )
+          return mergeSchema[field]
+        }
+        return item
+      })
+      setSchema(_schema)
+    },
+    [schema]
+  )
+
   useEffect(() => {
     setSchema(schemaProps)
   }, [schemaProps])
@@ -31,7 +57,7 @@ const InternalSchemaForm = (props) => {
           const ChildComponent = HIUI[component] || Group[component]
           child = <ChildComponent {...componentProps} />
         } else {
-          child = <p>{'not found ' + component}</p>
+          child = component
         }
         return React.createElement(FormItem, {
           ..._.omit(schemaItem, 'component', 'componentProps'),
@@ -43,7 +69,12 @@ const InternalSchemaForm = (props) => {
   }, [schema])
   return (
     <div className={`${prefixCls}`}>
-      <FormComponent {..._.omit(props, 'schema', 'ref')} ref={innerRef} _type="SchemaForm">
+      <FormComponent
+        {..._.omit(props, 'schema', 'ref')}
+        updateFormSchema={updateSchema}
+        ref={innerRef}
+        _type="SchemaForm"
+      >
         {renderSchemaFormItem()}
         {childrenProps}
         {(submit || reset) && (
