@@ -27,6 +27,7 @@ const InternalForm = (props) => {
     innerRef: formRef,
     initialValues,
     onValuesChange,
+    updateFormSchema,
     _type // SchemaForm 内部配置变量
   } = props
   const _Immutable = useRef(new Immutable())
@@ -192,7 +193,8 @@ const InternalForm = (props) => {
       resetValidates,
       validateField,
       validate,
-      setFieldsValue
+      setFieldsValue,
+      updateFormSchema
     }
   }, [fields])
 
