@@ -153,7 +153,7 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 | validateField(fields: string, callback: errors => void)                    | 对指定表单字段进行校验                                       |
 | resetValidates(callback:() => void, fields:Array, toDefault:boolean)       | 重置整个表单的验证,对应 [Form.Reset](#Form.Reset)中的 API    |
 | setFieldsValue(field: Object)                                              | 设置表单的值，在异步获取的数据回显的时候，使用该方法         |
-| schemaFormforceUpdate                                              | 当 **SchemaItem** 中对应的 **schema** 数据更新时，请调用该方法更新     |
+| updateSchema( schemaData: {fileName: [SchemaItem](#SchemaItem) } ) => void                      | 当 **SchemaItem** 中对应的 **schema** 数据更新时，请调用该方法更新     |
 
 ## rules
 

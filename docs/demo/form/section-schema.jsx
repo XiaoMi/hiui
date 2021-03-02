@@ -9,6 +9,7 @@ import Cascader from '../../../components/cascader'
 import Radio from '../../../components/radio'
 import Checkbox from '../../../components/checkbox'
 import Switch from '../../../components/switch'
+import SelectTree from '../../../components/select-tree'
 import DatePicker from '../../../components/date-picker'
 import Rate from '../../../components/rate'
 import Upload from '../../../components/upload'
@@ -97,17 +98,20 @@ const code = [
               }
           ]
         }
+        this.form = React.createRef()
       }
       render () {
         const SchemaForm = Form.SchemaForm
         const {initialValues} = this.state
     
         return (
+          <div>
           <SchemaForm 
             labelWidth='100' 
             labelPlacement='right' 
             initialValues={initialValues}
             schema={this.state.formSchema}
+            ref={this.form}
             submit={{
               type:'primary',
               children:'提交',
@@ -122,6 +126,35 @@ const code = [
              console.log("formdata",changedValues,allValues)
             }}
           />
+          <Button 
+            style={{margin: "-104px 0px 0px 236px"}}
+            onClick={()=>{
+              this.form.current.updateFormSchema({
+                  selectField: {
+                    label:'菜单',
+                    required:true,
+                    componentProps:{
+                        data:[
+                          { title:'电视', id:'3', disabled: true },
+                          { title:'手机', id:'2' }
+                        ],
+                    }
+                  },
+                  inputField: {
+                    label:'输入框',
+                    field:'inputField',
+                    rules:[{ min: 5, max: 16, message: '长度在 6 到 16 个字符', trigger: 'onBlur' }],
+                    component:'SelectTree',
+                    componentProps:{
+                        placeholder:'请输入',
+                    }
+                  }
+              })
+          }}>
+          更新表单配置
+          </Button>
+          </div>
+          
         )
       }
     }`
@@ -360,7 +393,8 @@ const DemoRow = () => (
       DatePicker,
       Rate,
       Upload,
-      Grid
+      Grid,
+      SelectTree
     }}
     prefix={prefix}
     desc={desc}

@@ -18,14 +18,35 @@ const FormComponent = Provider(Form)
 const InternalSchemaForm = (props) => {
   const { schema: schemaProps, children: childrenProps, submit, reset, innerRef } = props
   const [schema, setSchema] = useState(schemaProps)
-  const [updateIndex, setUpdateIndex] = useState(0)
-  const setUpdateIndexFn = useCallback(() => {
-    setUpdateIndex(updateIndex + 1)
-  }, [updateIndex])
+  const updateSchema = useCallback(
+    (schemaItems = {}) => {
+      let _schema = _.cloneDeep(schema)
+      _schema = _schema.map((item) => {
+        const _item = _.cloneDeep(item)
+        const { field } = _item
+        const schemaItem = schemaItems[field]
+        if (field && schemaItem) {
+          const mergeSchema = _.mergeWith(
+            { [field]: { ..._item } },
+            { [field]: { ...schemaItem } },
+            (objValue, srcValue) => {
+              if (_.isArray(objValue)) {
+                return srcValue
+              }
+            }
+          )
+          return mergeSchema[field]
+        }
+        return item
+      })
+      setSchema(_schema)
+    },
+    [schema]
+  )
 
   useEffect(() => {
     setSchema(schemaProps)
-  }, [schemaProps, updateIndex])
+  }, [schemaProps])
 
   const renderSchemaFormItem = useCallback(() => {
     if (Array.isArray(schema)) {
@@ -50,7 +71,7 @@ const InternalSchemaForm = (props) => {
     <div className={`${prefixCls}`}>
       <FormComponent
         {..._.omit(props, 'schema', 'ref')}
-        schemaFormforceUpdate={setUpdateIndexFn}
+        updateFormSchema={updateSchema}
         ref={innerRef}
         _type="SchemaForm"
       >
