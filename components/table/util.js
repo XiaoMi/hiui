@@ -126,7 +126,7 @@ export const checkIsNumberStr = (str) => {
   return !isNaN(num) && reg.test(str)
 }
 
-// 检查是否需要展示Total及every
+// 检查是否需要展示Total或average
 export const checkNeedTotalOrEvg = (_data, item, calcKey) => {
   if (item[calcKey]) {
     // 当每一项都为数字类型字符串时，才进行求和计算
