@@ -21,7 +21,7 @@ import {
   processSelectedIds,
   getFirstSiblingWidthSelectItems
 } from './components/tree/util'
-import HiRequest from '../_util/hi-request'
+import HiRequest from '../hi-request'
 import { moveFocusedIndex, rightHandle, leftHandle } from './keyEvents'
 
 import NavTree from './components/tree/NavTree'

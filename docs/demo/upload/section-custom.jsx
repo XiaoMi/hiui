@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Upload from '../../../components/upload'
-import HiRequest from '../../../components/_util/hi-request'
+import HiRequest from '../../../components/hi-request'
 const prefix = 'Upload-custom'
 const leftOptions = ['自定义上传', '结合HiRequest']
 const code = [

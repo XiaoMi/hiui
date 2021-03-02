@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Select from '../../../components/select'
-import HiRequest from '../../../components/_util/hi-request'
+import HiRequest from '../../../components/hi-request'
 const prefix = 'select-fieldNames'
 const desc = '数据中的key非title，id或disabled时使用'
 const code = `import React from 'react'
@@ -42,12 +42,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoAsync = () => (
-  <DocViewer
-    code={code}
-    scope={{ Select, HiRequest }}
-    prefix={prefix}
-    desc={desc}
-  />
-)
+const DemoAsync = () => <DocViewer code={code} scope={{ Select, HiRequest }} prefix={prefix} desc={desc} />
 export default DemoAsync
