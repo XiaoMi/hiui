@@ -18,9 +18,14 @@ const FormComponent = Provider(Form)
 const InternalSchemaForm = (props) => {
   const { schema: schemaProps, children: childrenProps, submit, reset, innerRef } = props
   const [schema, setSchema] = useState(schemaProps)
+  const [updateIndex, setUpdateIndex] = useState(0)
+  const setUpdateIndexFn = useCallback(() => {
+    setUpdateIndex(updateIndex + 1)
+  }, [updateIndex])
+
   useEffect(() => {
     setSchema(schemaProps)
-  }, [schemaProps])
+  }, [schemaProps, updateIndex])
 
   const renderSchemaFormItem = useCallback(() => {
     if (Array.isArray(schema)) {
@@ -31,7 +36,7 @@ const InternalSchemaForm = (props) => {
           const ChildComponent = HIUI[component] || Group[component]
           child = <ChildComponent {...componentProps} />
         } else {
-          child = <p>{'not found ' + component}</p>
+          child = component
         }
         return React.createElement(FormItem, {
           ..._.omit(schemaItem, 'component', 'componentProps'),
@@ -43,7 +48,12 @@ const InternalSchemaForm = (props) => {
   }, [schema])
   return (
     <div className={`${prefixCls}`}>
-      <FormComponent {..._.omit(props, 'schema', 'ref')} ref={innerRef} _type="SchemaForm">
+      <FormComponent
+        {..._.omit(props, 'schema', 'ref')}
+        schemaFormforceUpdate={setUpdateIndexFn}
+        ref={innerRef}
+        _type="SchemaForm"
+      >
         {renderSchemaFormItem()}
         {childrenProps}
         {(submit || reset) && (

@@ -123,7 +123,7 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 
 | 参数           | 说明                                                        | 类型   | 可选值 | 默认值 |
 | -------------- | ----------------------------------------------------------- | ------ | ------ | ------ |
-| component      | 用于渲染的组件名称，(现在组件名称，只限于 HiUI 中的组件名） | string | -      | -      |
+| component      | 用于渲染的组件名称(现在组件名称，只限于 HiUI 中的组件名）；如果传入 **ReactNode** 的情况下，**componentProps** 属性失效，同时也会默认控制组件 **value** 属性| string \| ReactNode | -      | -      |
 | componentProps | 组件的属性                                                  | string | -      | -      |
 
 ## Form.Submit
@@ -153,6 +153,7 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 | validateField(fields: string, callback: errors => void)                    | 对指定表单字段进行校验                                       |
 | resetValidates(callback:() => void, fields:Array, toDefault:boolean)       | 重置整个表单的验证,对应 [Form.Reset](#Form.Reset)中的 API    |
 | setFieldsValue(field: Object)                                              | 设置表单的值，在异步获取的数据回显的时候，使用该方法         |
+| schemaFormforceUpdate                                              | 当 **SchemaItem** 中对应的 **schema** 数据更新时，请调用该方法更新     |
 
 ## rules
 
