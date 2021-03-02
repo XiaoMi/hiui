@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import Row from './Row'
 import TableContext from './context'
 import _ from 'lodash'
-import { flatTreeData, setDepth } from './util'
+import { flatTreeData, setDepth, checkIsNumberStr } from './util'
 
 const BodyTable = ({ fatherRef, emptyContent }) => {
   const {
@@ -61,18 +61,33 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
       _data = activeSorterType === 'ascend' ? [...data].sort(sorter) : [...data].sort(sorter).reverse()
     }
   }
+
+  const checkNeedTotal = (item) => {
+    if (item.total) {
+      // 当每一项都为数字类型字符串时，才进行求和计算
+      const isDataKeyValueAllNumber = _data.every((dataItem) => checkIsNumberStr(dataItem[item.dataKey]))
+      return isDataKeyValueAllNumber
+    }
+    return false
+  }
+
   // ************* 处理求和、平均数
-  const hasSumColumn =
-    columns.filter((item) => {
-      return item.total
-    }).length > 0
+  const hasSumColumn = columns.filter((item) => checkNeedTotal(item)).length > 0
   const sumRow = { key: 'sum' }
   columns.forEach((c, index) => {
     if (index === 0) {
       sumRow[c.dataKey] = localeDatas.table.total
     }
-    if (c.total) {
-      sumRow[c.dataKey] = _.sumBy(_data, (d) => d[c.dataKey])
+    if (checkNeedTotal(c)) {
+      // 获取当前数据最大小数点个数，方便最后计算小数点
+      const dataPointCountList = _data.map((dataItem) => {
+        const strNum = dataItem[c.dataKey] + ''
+        const afterPonterStr = strNum.split('.')[1]
+        return afterPonterStr && afterPonterStr.length
+      })
+      const maxPointCount = Math.max(...dataPointCountList)
+      const columnSumData = _.sumBy(_data, (d) => +d[c.dataKey])
+      sumRow[c.dataKey] = columnSumData.toFixed(maxPointCount)
     }
   })
   const hasAvgColumn =

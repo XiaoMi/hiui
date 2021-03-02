@@ -1,6 +1,6 @@
 // 将树状数据拍平
 export const flatTreeData = (data, flattedData = []) => {
-  data.forEach(d => {
+  data.forEach((d) => {
     flattedData.push(d)
     if (d.children) {
       flatTreeData(d.children, flattedData)
@@ -11,9 +11,9 @@ export const flatTreeData = (data, flattedData = []) => {
 
 // 给树状数据设置层级
 export const setDepth = (data, parentDepth = 0, depthArray = []) => {
-  data.forEach(d => {
+  data.forEach((d) => {
     d.depth = parentDepth + 1
-    let children = d.children
+    const children = d.children
     if (children && children.length > 0) {
       setDepth(children, d.depth, depthArray)
     } else {
@@ -26,7 +26,7 @@ export const setDepth = (data, parentDepth = 0, depthArray = []) => {
 // 获取叶子节点后代
 export const getLeafChildren = (item, children = []) => {
   if (item.children && item.children.length > 0) {
-    item.children.forEach(child => {
+    item.children.forEach((child) => {
       if (child.isLast) {
         children.push(child)
       } else {
@@ -38,14 +38,14 @@ export const getLeafChildren = (item, children = []) => {
 // 将树形数据按照层级分组
 export const groupDataByDepth = (data, depth = 1) => {
   const flattedData = flatTreeData(data)
-  let result = Array(depth)
+  const result = Array(depth)
     .fill(undefined)
-    .map(item => {
+    .map((item) => {
       return []
     })
 
   result.forEach((group, index) => {
-    flattedData.forEach(d => {
+    flattedData.forEach((d) => {
       if (d.depth === index + 1) {
         group.push(d)
       }
@@ -56,10 +56,10 @@ export const groupDataByDepth = (data, depth = 1) => {
 
 // 根据固定列获取固定数据
 export const getFixedDataByFixedColumn = (fixedColumns, data) => {
-  const dataKeys = fixedColumns.map(item => item.dataKey).concat('key')
-  const result = data.map(d => {
-    let obj = {}
-    dataKeys.forEach(dataKey => {
+  const dataKeys = fixedColumns.map((item) => item.dataKey).concat('key')
+  const result = data.map((d) => {
+    const obj = {}
+    dataKeys.forEach((dataKey) => {
       obj[dataKey] = d[dataKey]
     })
     return obj
@@ -76,7 +76,7 @@ export const getStyle = (obj, attr) => {
 }
 
 let cached
-export function getScrollBarSize (fresh) {
+export function getScrollBarSize(fresh) {
   if (typeof document === 'undefined') {
     return 0
   }
@@ -115,4 +115,11 @@ export function getScrollBarSize (fresh) {
     cached = widthContained - widthScroll
   }
   return cached
+}
+
+// 判断是否为字符串数字
+export const checkIsNumberStr = (str) => {
+  const reg = /^\d+(\.\d+)?$/
+  const num = parseInt(str)
+  return !isNaN(num) && reg.test(str)
 }
