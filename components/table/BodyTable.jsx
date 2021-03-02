@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import Row from './Row'
 import TableContext from './context'
 import _ from 'lodash'
-import { flatTreeData, setDepth } from './util'
+import { flatTreeData, setDepth, checkNeedTotalOrEvg, getTotalOrEvgRowData } from './util'
 
 const BodyTable = ({ fatherRef, emptyContent }) => {
   const {
@@ -61,31 +61,30 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
       _data = activeSorterType === 'ascend' ? [...data].sort(sorter) : [...data].sort(sorter).reverse()
     }
   }
+
   // ************* 处理求和、平均数
-  const hasSumColumn =
-    columns.filter((item) => {
-      return item.total
-    }).length > 0
+  // 确保包含total属性，且值为数字类型的字符串
+  const hasSumColumn = columns.filter((item) => checkNeedTotalOrEvg(_data, item, 'total')).length > 0
   const sumRow = { key: 'sum' }
   columns.forEach((c, index) => {
     if (index === 0) {
       sumRow[c.dataKey] = localeDatas.table.total
     }
-    if (c.total) {
-      sumRow[c.dataKey] = _.sumBy(_data, (d) => d[c.dataKey])
+    if (checkNeedTotalOrEvg(_data, c, 'total')) {
+      // 获取当前数据最大小数点个数，并设置最后总和值小数点
+      sumRow[c.dataKey] = getTotalOrEvgRowData(_data, c, false)
     }
   })
-  const hasAvgColumn =
-    columns.filter((item) => {
-      return item.avg
-    }).length > 0
+
+  // 确保包含avg属性，且值为数字类型的字符串
+  const hasAvgColumn = columns.filter((item) => checkNeedTotalOrEvg(_data, item, 'avg')).length > 0
   const avgRow = { key: 'avg' }
   columns.forEach((c, index) => {
     if (index === 0) {
       avgRow[c.dataKey] = localeDatas.table.average
     }
-    if (c.sum) {
-      avgRow[c.dataKey] = _.sumBy(_data, (d) => d[c.dataKey]) / _data.length
+    if (checkNeedTotalOrEvg(_data, c, 'avg')) {
+      avgRow[c.dataKey] = getTotalOrEvgRowData(_data, c, true)
     }
   })
 
