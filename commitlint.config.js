@@ -11,21 +11,6 @@ module.exports = {
     'subject-tense': [1, 'always', ['present-imperative']],
     'type-case': [2, 'always', 'lowerCase'],
     'type-empty': [2, 'never'],
-    'type-enum': [
-      2,
-      'always',
-      [
-        'build',
-        'chore',
-        'docs',
-        'feat',
-        'fix',
-        'perf',
-        'refactor',
-        'revert',
-        'style',
-        'test'
-      ]
-    ]
+    'type-enum': [2, 'always', ['build', 'chore', 'docs', 'feat', 'fix', 'perf', 'refactor', 'revert', 'style', 'test']]
   }
 }

@@ -1,8 +1,8 @@
 # MIFE dotfiles
 
 # Output files
-dist/
-es/
+packages/*/dist/
+packages/*/es/
 
 # Editor generate files
 .idea/
@@ -10,10 +10,10 @@ es/
 .vscode/
 .tmp/
 
-test/coverage/
+packages/*/test/coverage/
 # Dev dependencies and cache files
+packages/*/node_modules/
 node_modules/
-
 # Misc files
 *~
 ~*

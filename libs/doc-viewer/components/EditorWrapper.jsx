@@ -1,8 +1,8 @@
-import React from 'react'
-import { Editor } from 'react-live'
-import Icon from '../../../components/icon'
-import Tooltip from '../../../components/tooltip'
-import Clipboard from 'clipboard'
+import React from "react"
+import { Editor } from "react-live"
+import Icon from "@hi-ui/hiui/es/icon"
+import Tooltip from "@hi-ui/hiui/es/tooltip"
+import Clipboard from "clipboard"
 export default class EditorWrapper extends React.Component {
   state = {
     collapse: false,
@@ -16,7 +16,7 @@ export default class EditorWrapper extends React.Component {
     this.setInnerHeight()
     const clipboard = new Clipboard(`.${this.props.prefix}-copy-btn`)
     const _this = this
-    clipboard.on('success', function (e) {
+    clipboard.on("success", function (e) {
       _this.setState({
         copyed: true
       })
@@ -53,32 +53,31 @@ export default class EditorWrapper extends React.Component {
       desc,
       prefix
     } = this.props
+
     return (
       <div
         className='editor-wrapper'
         style={{
           height: this.state.collapse ? innerHeight + descBarHeight : descBarHeight,
-          overflow: 'hidden'
+          overflow: "hidden"
         }}
       >
         <div
           className={`${prefix}-desc-bar`}
           style={{
             minHeight: 40,
-            display: 'flex',
-            justifyContent: 'space-between',
-            padding: '10px 20px',
-            boxSizing: 'border-box',
-            borderBottom: this.state.collapse ? '1px dashed #e6e7e8' : 'none'
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "10px 20px",
+            boxSizing: "border-box",
+            borderBottom: this.state.collapse ? "1px dashed #e6e7e8" : "none"
           }}
         >
-          <div style={{ flex: 1 }}>
-            {Array.isArray(desc) ? desc.map((d, index) => <div key={index}>{d}</div>) : desc}
-          </div>
+          <div style={{ flex: 1 }}>{Array.isArray(desc) ? desc.map((d) => <div>{d}</div>) : desc}</div>
           <div>
             <Tooltip
-              title={this.state.collapse ? '收起代码' : '展开代码'}
-              style={{ margin: '0 8px', cursor: 'pointer' }}
+              title={this.state.collapse ? "收起代码" : "展开代码"}
+              style={{ margin: "0 8px", cursor: "pointer" }}
             >
               <span
                 onClick={() => {
@@ -87,17 +86,17 @@ export default class EditorWrapper extends React.Component {
                   })
                 }}
               >
-                {this.state.collapse ? <Icon name='show-code' /> : <Icon name='close-code' />}
+                {this.state.collapse ? <Icon name='api' /> : <Icon name='noapi' />}
               </span>
             </Tooltip>
             {copyed ? (
-              <Tooltip title='复制成功' style={{ margin: '0 8px', cursor: 'pointer' }}>
+              <Tooltip title='复制成功' style={{ margin: "0 8px", cursor: "pointer" }}>
                 <span>
                   <Icon name='check' />
                 </span>
               </Tooltip>
             ) : (
-              <Tooltip title='复制代码' style={{ margin: '0 8px', cursor: 'pointer' }}>
+              <Tooltip title='复制代码' style={{ margin: "0 8px", cursor: "pointer" }}>
                 <span
                   className={`${this.props.prefix}-copy-btn`}
                   data-clipboard-target={`.${prefix}-editor-inner .npm__react-simple-code-editor__textarea`}
@@ -106,18 +105,18 @@ export default class EditorWrapper extends React.Component {
                 </span>
               </Tooltip>
             )}
-            <Tooltip title='重置代码' style={{ margin: '0 8px', cursor: 'pointer' }}>
+            <Tooltip title='重置代码' style={{ margin: "0 8px", cursor: "pointer" }}>
               <span
                 onClick={() => {
                   this.editor.updateContent(code)
                 }}
               >
-                <Icon name='reload' />
+                <Icon name='reset' />
               </span>
             </Tooltip>
           </div>
         </div>
-        <div className={`${prefix}-editor-inner`} style={{ background: 'rgba(246, 246, 246, 0.5967)' }}>
+        <div className={`${prefix}-editor-inner`} style={{ background: "rgba(246, 246, 246, 0.5967)" }}>
           <Editor
             ref={(node) => (this.editor = node)}
             theme={theme}

@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "outDir": "./es/",
+        "alwaysStrict": true,
+        "noUnusedParameters": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "forceConsistentCasingInFileNames": true,
+        "strictPropertyInitialization": true,
+        "noImplicitReturns": true,
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "esModuleInterop": true,
+        "noUnusedLocals": true,
+        "importHelpers": true,
+        "noImplicitThis": true,
+        "skipLibCheck": true,
+        "jsx": "react",
+        "allowJs": true,
+        "target": "es5",
+        "module": "es6",
+        "lib": ["es5", "es2015", "dom", "es7", "es2018"]
+    },
+    "include": [
+        "packages/**/*"
+      ],
+    "exclude": [
+        "node_modules"
+    ]
+}
