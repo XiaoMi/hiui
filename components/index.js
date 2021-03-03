@@ -55,4 +55,4 @@ export { default as Search } from './search'
 export { default as Preview } from './preview'
 
 export { ThemeContext, LocaleContext } from './context'
-export { default as HiRequest } from './_util/hi-request'
+export { default as HiRequest } from './hi-request'

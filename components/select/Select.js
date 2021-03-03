@@ -6,7 +6,7 @@ import Popper from '../popper'
 import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
 import Provider from '../context'
-import HiRequest from '../_util/hi-request'
+import HiRequest from '../hi-request'
 import { resetSelectedItems, transKeys, uniqBy } from './utils'
 
 const InternalSelect = (props) => {

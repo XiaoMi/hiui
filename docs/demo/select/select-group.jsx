@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Select from '../../../components/select'
-import HiRequest from '../../../components/_util/hi-request'
+import HiRequest from '../../../components/hi-request'
 const prefix = 'select-group'
 const desc = '类型分组'
 const code = `import React from 'react'
