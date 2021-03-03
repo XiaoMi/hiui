@@ -121,7 +121,7 @@ export function getScrollBarSize(fresh) {
 
 // 判断是否为字符串数字
 export const checkIsNumberStr = (str) => {
-  const reg = /^\d+(\.\d+)?$/
+  const reg = /^(-|\+|\d)+(\.\d+)?$/
   const num = parseInt(str)
   return !isNaN(num) && reg.test(str)
 }
