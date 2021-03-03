@@ -49,7 +49,7 @@ const getYearOrMonthRows = ({ originDate, renderDate, type, view, range, localeD
       if (disabledDate && view.includes('year')) {
         col.type = disabledDate(_y) ? 'disabled' : col.type
       }
-      if (disabledDate && view.includes('mouth')) {
+      if (disabledDate && view.includes('month')) {
         col.type = disabledDate(_y + '-' + _m) ? 'disabled' : col.type
       }
       // 年的状态

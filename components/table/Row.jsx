@@ -11,6 +11,9 @@ const Row = ({
   rowData,
   allRowData,
   level,
+  showColHighlight,
+  hoverColIndex,
+  setHoverColIndex,
   expandedTree,
   expandedTreeRows,
   setExpandedTreeRows,
@@ -77,7 +80,7 @@ const Row = ({
       onMouseEnter={(e) => setHoverRow(rowData.key)}
       onMouseLeave={(e) => setHoverRow(null)}
     >
-      {rowSelection && isFixed !== 'right' && (
+      {rowSelection && isFixed !== 'right' && !isSumRow && !isAvgRow && (
         <td style={{ width: 50 }}>
           <Checkbox
             checked={rowSelection.selectedRowKeys.includes(rowData.key)}
@@ -118,6 +121,9 @@ const Row = ({
           column={column}
           rowData={rowData}
           allRowData={allRowData}
+          showColHighlight={showColHighlight}
+          hoverColIndex={hoverColIndex}
+          setHoverColIndex={setHoverColIndex}
           level={level}
           columnIndex={idx}
           rowIndex={index}

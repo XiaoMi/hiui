@@ -30,6 +30,7 @@ const TimePicker = ({
   onChange = () => {},
   placement = 'top-bottom-start',
   inputReadOnly,
+  bordered = true,
   locale
 }) => {
   const cacheDate = useRef(null)
@@ -48,9 +49,9 @@ const TimePicker = ({
     type,
     defaultValue,
     cacheDate,
-    format
+    format,
+    locale
   })
-
   const inputChangeEvent = (val, dir) => {
     if (val.isValid()) {
       const oData = _.cloneDeep(outDate)
@@ -122,7 +123,8 @@ const TimePicker = ({
         hourStep,
         minuteStep,
         secondStep,
-        inputReadOnly
+        inputReadOnly,
+        bordered
       }}
     >
       <Root
@@ -131,6 +133,7 @@ const TimePicker = ({
         showPanel={showPanel}
         inputFocus={inputFocus}
         rangeInputIsError={rangeInputIsError}
+        bordered={bordered}
         onTrigger={() => {
           setShowPanel(true)
           setInputFocus(true)

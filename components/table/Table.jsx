@@ -11,6 +11,16 @@ import Provider from '../context'
 import Loading from '../loading'
 import './style'
 
+const defaultHeaderRow = () => {
+  return {
+    onClick: () => {},
+    onDoubleClick: () => {},
+    onContextMenu: () => {},
+    onMouseEnter: () => {},
+    onMouseLeave: () => {}
+  }
+}
+
 const Table = ({
   striped,
   bordered,
@@ -23,12 +33,14 @@ const Table = ({
   highlightedColKeys = [],
   expandedRowKeys,
   onExpand,
+  onHeaderRow = defaultHeaderRow,
   columns = [],
   expandedRender,
   maxHeight,
   pagination,
   dataSource,
   showColMenu,
+  showColHighlight,
   prefix = 'hi-table',
   fixedToColumn,
   sticky: _ceiling,
@@ -56,6 +68,7 @@ const Table = ({
   const [serverTableConfig, setServerTableConfig] = useState({ data: [], columns: [] })
   const [eachRowHeight, setEachRowHeight] = useState({})
   const [eachHeaderHeight, setEachHeaderHeight] = useState(null)
+  const [hoverColIndex, setHoverColIndex] = useState(null)
 
   const [realColumnsWidth, setRealColumnsWidth] = useState(columns.map((c) => c.width || 'auto'))
   const [expandedTreeRows, setExpandedTreeRows] = useState([])
@@ -173,6 +186,8 @@ const Table = ({
         columns: dataSource ? serverTableConfig.columns : columns,
         expandedRender,
         expandedRowKeys,
+        // 标题点击回调事件
+        onHeaderRow,
         onExpand,
         leftFixedColumns: realLeftFixedColumns,
         rightFixedColumns: realRightFixedColumns,
@@ -197,7 +212,12 @@ const Table = ({
         // hover 高亮行
         hoverRow,
         setHoverRow,
+        // hover 高亮列
+        hoverColIndex,
+        setHoverColIndex,
         showColMenu,
+        // 是否展示hover高亮列
+        showColHighlight,
         maxHeight,
         // 同步滚动条
         headerTableRef,

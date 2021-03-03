@@ -1,8 +1,10 @@
 import React, { useContext, useRef } from 'react'
+import classNames from 'classnames'
+
 import Row from './Row'
 import TableContext from './context'
 import _ from 'lodash'
-import { flatTreeData, setDepth } from './util'
+import { flatTreeData, setDepth, checkNeedTotalOrEvg, getTotalOrEvgRowData } from './util'
 
 const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   const {
@@ -20,11 +22,16 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
     bodyTableRef,
     activeSorterColumn,
     activeSorterType,
+    prefix,
+    showColHighlight,
+    hoverColIndex,
+    setHoverColIndex,
     realColumnsWidth,
     bordered,
     eachRowHeight,
     rowSelection,
     expandedRender,
+    localeDatas,
     expandedTreeRows,
     setExpandedTreeRows
   } = useContext(TableContext)
@@ -58,7 +65,31 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
     })
   }
 
-  const renderRow = (row, level, index, allRowData, isTree) => {
+  // ************* 处理求和、平均数，功能同Bodytable
+  const hasSumColumn = _columns.filter((item) => checkNeedTotalOrEvg(data, item, 'total')).length > 0
+  const sumRowData = { key: 'sum' }
+  _columns.forEach((c, index) => {
+    if (index === 0) {
+      sumRowData[c.dataKey] = localeDatas.table.total
+    }
+    if (checkNeedTotalOrEvg(data, c, 'total')) {
+      // 获取当前数据最大小数点个数，并设置最后总和值小数点
+      sumRowData[c.dataKey] = getTotalOrEvgRowData(data, c, false)
+    }
+  })
+
+  const hasAvgColumn = _columns.filter((item) => checkNeedTotalOrEvg(data, item, 'avg')).length > 0
+  const avgRowData = { key: 'avg' }
+  _columns.forEach((c, index) => {
+    if (index === 0) {
+      avgRowData[c.dataKey] = localeDatas.table.average
+    }
+    if (checkNeedTotalOrEvg(data, c, 'avg')) {
+      avgRowData[c.dataKey] = getTotalOrEvgRowData(data, c, true)
+    }
+  })
+
+  const renderRow = (row, level, index, allRowData, isTree, rowConfig = {}) => {
     let childrenHasTree = false
     if (allRowData.children && allRowData.children.length) {
       childrenHasTree = allRowData.children.some((child) => child.children && child.children.length)
@@ -71,11 +102,15 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
           isFixed={isFixed}
           level={level}
           index={index}
+          hoverColIndex={hoverColIndex}
+          setHoverColIndex={setHoverColIndex}
           rowHeight={eachRowHeight[row.key]}
           expandedTree={expandedTreeRows.includes(row.key)}
           expandedTreeRows={expandedTreeRows}
           setExpandedTreeRows={setExpandedTreeRows}
           isTree={isTree}
+          isAvgRow={rowConfig.isAvgRow}
+          isSumRow={rowConfig.isSumRow}
         />
         {allRowData.children &&
           expandedTreeRows.includes(allRowData.key) &&
@@ -177,6 +212,9 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
                 return (
                   <col
                     key={index}
+                    className={classNames({
+                      [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === c.dataKey
+                    })}
                     style={{
                       width: width,
                       minWidth: width
@@ -189,6 +227,8 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
               {_fixedData.map((row, index) => {
                 return renderRow(row, 1, index, data[index], hasTree)
               })}
+              {hasSumColumn && renderRow(sumRowData, 1, data.length, sumRowData, hasTree, { isSumRow: true })}
+              {hasAvgColumn && renderRow(avgRowData, 1, data.length + 1, avgRowData, hasTree, { isAvgRow: true })}
             </tbody>
           </table>
         </div>

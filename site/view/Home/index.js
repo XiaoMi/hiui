@@ -127,11 +127,11 @@ class Home extends React.Component {
                   </h3>
                   <div className="flat-list__desc">
                     点击下载集成所有 HIUI 组件的{' '}
-                    <a href="https://raw.githubusercontent.com/XiaoMi/hiui/master/site/resources/HIUI_2_0_0_beta(20190719).rplib.zip">
+                    <a href="https://cdn.cnbj2m.fds.api.mi-img.com/project-file/HIUI_3.0.0rplib.rplib?GalaxyAccessKeyId=5151729087601&Expires=9223372036854775807&Signature=JnYLT4GDlk3/mXnfYyTqrsQdjic=">
                       Axure
                     </a>
                     /{' '}
-                    <a href="https://raw.githubusercontent.com/XiaoMi/hiui/master/site/resources/HIUI_2_0_0_beta(20190709).sketch.zip">
+                    <a href="https://cdn.cnbj2m.fds.api.mi-img.com/project-file/HIUI_3.0_%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83Library.sketch?GalaxyAccessKeyId=5151729087601&Expires=9223372036854775807&Signature=yuzRY2ePDhAYmdxIw76IzlI0qjI=">
                       Sketch
                     </a>{' '}
                     部件库

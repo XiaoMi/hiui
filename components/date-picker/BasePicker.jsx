@@ -42,6 +42,9 @@ const BasePicker = ({
   locale,
   bordered = true,
   disabledDate,
+  onSelect: propsOnSelect,
+  setOverlayContainer,
+  overlayClickOutSideEventName = 'click',
   ...otherPorps
 }) => {
   // 兼容2.x api -> max，min
@@ -73,7 +76,8 @@ const BasePicker = ({
     type,
     defaultValue,
     cacheDate,
-    format
+    format,
+    locale
   })
   const [iFormat] = useFormat({
     type,
@@ -151,6 +155,15 @@ const BasePicker = ({
     setShowPanel(false)
     setInputFocus(false)
   }, [])
+  const onSelect = useCallback(
+    (date, ...arg) => {
+      if (propsOnSelect) {
+        const _date = Array.isArray(date) ? date[0] : date
+        propsOnSelect(_date, ...arg)
+      }
+    },
+    [propsOnSelect]
+  )
   const popperCls = classNames(
     'hi-datepicker__popper',
     type === 'date' && showTime && 'hi-datepicker__popper--time',
@@ -193,7 +206,8 @@ const BasePicker = ({
         inputReadOnly,
         value,
         bordered,
-        disabledDate
+        disabledDate,
+        onSelect
       }}
     >
       <Root
@@ -216,6 +230,8 @@ const BasePicker = ({
           width={false}
           className={popperCls}
           placement={placement}
+          setOverlayContainer={setOverlayContainer}
+          overlayClickOutSideEventName={overlayClickOutSideEventName}
           onClickOutside={clickOutsideEvent}
         >
           {type.includes('range') || type === 'timeperiod' ? <RangePanel /> : <Panel />}

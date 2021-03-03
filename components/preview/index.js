@@ -5,7 +5,6 @@ import classNames from 'classnames'
 import Icon from '../icon'
 import Loading from '../loading'
 import './style/index.js'
-// unstable_batchedUpdates
 const node = document.createElement('div')
 document.body.appendChild(node)
 const Preview = ({
@@ -129,9 +128,8 @@ const Preview = ({
   )
   const handleMouseWheel = useCallback(
     (e) => {
-      e.preventDefault()
-      const direct = e.deltaY
-      if (direct !== 0) {
+      const direct = e.deltaY > 0 ? 1 : -1
+      if (direct !== 0 && e.deltaY !== 0) {
         const x = e.clientX
         const y = e.clientY
         handleZoom(x, y, direct)

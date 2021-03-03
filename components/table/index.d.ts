@@ -31,6 +31,17 @@ type RowSelection = {
   selectedRowKeys?: string[] | number[]
   onChange?: (selectedRowKeys: string | number) => void
 }
+
+type HeaderRowReturn = {
+  onClick?: (event: MouseEvent) => void
+  onDoubleClick?: (event: MouseEvent) => void
+  onContextMenu?: (event: MouseEvent) => void
+  onMouseEnter?: (event: MouseEvent) => void
+  onMouseLeave?: (event: MouseEvent) => void
+}
+
+type HeaderRowFunc = (colums: ColumnItem[], index: number) => HeaderRowReturn
+
 interface Props {
   size?: 'small' | 'large' | 'default' | 'mini'
   bordered?: boolean
@@ -48,11 +59,13 @@ interface Props {
   rowSelection?: RowSelection
   dataSource?: (current: number) => DataSource
   showColMenu?: boolean
+  showColHighlight?: boolean
   striped?: boolean
   setting?: boolean
   resizable?: boolean
   standard?: boolean
   emptyContent?: string | JSX.Element
+  onHeaderRow: HeaderRowFunc
   columns: ColumnItem[]
   data: object[]
   style?: CSSProperties

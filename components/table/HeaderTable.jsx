@@ -21,6 +21,8 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
     scrollBarSize,
     highlightedColKeys,
     highlightColumns,
+    showColHighlight,
+    hoverColIndex,
     showColMenu,
     maxHeight,
     headerTableRef,
@@ -36,7 +38,8 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
     setting,
     scrollWidth,
     eachHeaderHeight,
-    setEachHeaderHeight
+    setEachHeaderHeight,
+    onHeaderRow
   } = useContext(TableContext)
 
   // ******************** 隐藏滚动条
@@ -170,19 +173,20 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
               </th>
             )
           } else {
+            const isRowActive = highlightedColKeys.includes(c.dataKey) || highlightColumns.includes(c.dataKey)
+            const isColActive = showColHighlight && hoverColIndex === c.dataKey
             cell = (
               <th
                 key={idx}
                 colSpan={c.colSpan}
                 rowSpan={c.rowSpan}
+                // 标题事件处理
+                {...onHeaderRow(_colums, index)}
                 style={{
                   height: isFixed ? eachHeaderHeight : 'auto',
                   boxSizing: 'border-box',
                   textAlign: alignRightColumns.includes(c.dataKey) ? 'right' : 'left',
-                  background:
-                    highlightedColKeys.includes(c.dataKey) || highlightColumns.includes(c.dataKey)
-                      ? '#F4F4F4'
-                      : '#fbfbfb'
+                  background: isRowActive || isColActive ? '#F4F4F4' : '#fbfbfb'
                 }}
               >
                 <span className="hi-table__header__title">

@@ -20,6 +20,7 @@ export interface CommonProps {
   placeholder?: string | string[]
   format?: string
   onChange?: (date: Date | DateRange, dateStr: string | DateRangeString) => void
+  onSelect?: (date: Date, isCompleted: boolean) => void
 }
 type Shortcuts = {
   title: string
@@ -33,6 +34,7 @@ interface DateProps extends CommonProps {
   max?: Date
   maxDate?: Date
   bordered?: boolean
+  timeperiod?: number
   disabledDate?: (currentDate: Date) => boolean
   showTime?: boolean
   shortcuts?: string[] | Shortcuts[]

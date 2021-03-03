@@ -6,7 +6,7 @@ import Popper from '../popper'
 import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
 import Provider from '../context'
-import HiRequest from '../_util/hi-request'
+import HiRequest from '../hi-request'
 import { resetSelectedItems, transKeys, uniqBy } from './utils'
 
 const InternalSelect = (props) => {
@@ -40,9 +40,11 @@ const InternalSelect = (props) => {
     fieldNames,
     overlayClassName,
     setOverlayContainer,
-    bordered = true
+    bordered = true,
+    overlayClickOutSideEventName = 'click'
   } = props
   const selectInputContainer = useRef()
+  const autoloadFlag = useRef(autoload) // 多选情况下，需要记录是否进行了筛选
   const historyData = useRef([])
   const [dropdownItems, setDropdownItems] = useState(data)
   const [isGroup, setIsGroup] = useState(false)
@@ -97,7 +99,8 @@ const InternalSelect = (props) => {
   }, [keyword, isGroup])
 
   useEffect(() => {
-    setSearchable(dataSource ? true : propsSearchable)
+    const dataSourcePropsSearchable = typeof propsSearchable !== 'undefined' ? propsSearchable : true // 在存在dataSource的时候，默认searchable为true
+    setSearchable(dataSource ? dataSourcePropsSearchable : propsSearchable)
   }, [propsSearchable])
 
   useEffect(() => {
@@ -127,9 +130,13 @@ const InternalSelect = (props) => {
     setSelectedItems(selectedItems)
     if (dataSource && type === 'multiple') {
       setCacheSelectItem(selectedItems)
-      !dropdownShow && setDropdownItems(selectedItems)
+      !dropdownShow && searchable && setDropdownItems(selectedItems)
     } else {
-      setDropdownItems(_data)
+      if (dataSource) {
+        searchable && setDropdownItems(_data)
+      } else {
+        setDropdownItems(_data)
+      }
     }
   }, [data, value])
 
@@ -194,7 +201,7 @@ const InternalSelect = (props) => {
       setDropdownShow(false)
     }
     // 多选具有默认值的话打开的话应该显示选中的值
-    if (dataSource && type === 'multiple') {
+    if (dataSource && type === 'multiple' && !autoloadFlag.current) {
       setCacheSelectItem(selectedItems)
       setDropdownItems(selectedItems)
     }
@@ -447,19 +454,22 @@ const InternalSelect = (props) => {
   }, [])
 
   // 过滤筛选项
-  const onFilterItems = (keyword) => {
-    setKeyword(keyword)
-    if (typeof onSearch === 'function') {
-      onSearch(keyword)
-      return
-    }
-    if (dataSource && (autoload || keyword)) {
-      remoteSearch(keyword)
-    }
-    if (dataSource && keyword === '' && selectedItems.length > 0) {
-      setDropdownItems(cacheSelectItem)
-    }
-  }
+  const onFilterItems = useCallback(
+    (keyword) => {
+      setKeyword(keyword)
+      if (typeof onSearch === 'function') {
+        onSearch(keyword)
+        return
+      }
+      if (dataSource && (autoload || keyword) && searchable) {
+        remoteSearch(keyword)
+      }
+      if (dataSource && searchable && keyword === '' && selectedItems.length > 0) {
+        setDropdownItems(cacheSelectItem)
+      }
+    },
+    [dataSource, cacheSelectItem, keyword, selectedItems, searchable, onSearch, remoteSearch, autoload]
+  )
   // 重置下标
   const resetFocusedIndex = () => {
     let _dropdownItems = dropdownItems || []
@@ -525,7 +535,7 @@ const InternalSelect = (props) => {
       resetFocusedIndex()
     })
     setCacheSelectItem([])
-    dataSource && setDropdownItems([])
+    dataSource && searchable && setDropdownItems([])
   }
   // 防抖
   const debouncedFilterItems = _.debounce(onFilterItems, 300)
@@ -619,6 +629,7 @@ const InternalSelect = (props) => {
         topGap={5}
         leftGap={0}
         overlayClassName={overlayClassName}
+        overlayClickOutSideEventName={overlayClickOutSideEventName}
         setOverlayContainer={setOverlayContainer}
         // 是否防止溢出功能   暂时不开放
         preventOverflow={preventOverflow}
@@ -649,6 +660,7 @@ const InternalSelect = (props) => {
           showCheckAll={showCheckAll}
           checkAll={checkAll}
           loading={loading}
+          autoloadFlag={autoloadFlag}
           focusedIndex={focusedIndex}
           setFocusedIndex={setFocusedIndex}
           showJustSelected={showJustSelected}
