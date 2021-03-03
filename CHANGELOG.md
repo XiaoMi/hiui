@@ -1,9 +1,16 @@
 # 更新日志
 ## 3.5.0
 
+- 更新 HIUI 组件的 Axure/ Sketch 部件库
+- 新增 `HiRquest` 使用文档 [#1627](https://github.com/XiaoMi/hiui/issues/1627)
+- 新增 `Table` 组件 showColHighlight 方法 [#1602](https://github.com/XiaoMi/hiui/issues/1602)
+- 修复 `Table` 组件 列冻结无法展示求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
+- 新增 `Table` 组件 表格表头事件回调函数输出 [#1625](https://github.com/XiaoMi/hiui/issues/1625)
 - 新增 `Form` SchemaForm 中 component 属性接受 ReactNode，SchemaForm 新增 updateSchema 更新函数 [#1612](https://github.com/XiaoMi/hiui/issues/1612)
 - 新增 `DatePicker` onSelect 选择日期的回调函数 [#1592](https://github.com/XiaoMi/hiui/issues/1592)
 - 新增 `Transfer` 组件 render 自定义菜单渲染函数 [#1575](https://github.com/XiaoMi/hiui/issues/1575)
+- 优化 `Select` 组件异步类型时，searchable 属性可控制筛选框的显示隐藏  [#1577](https://github.com/XiaoMi/hiui/issues/1577)
+- 优化 `DatePicker` type 为 week 形态时显示内容  [#1587](https://github.com/XiaoMi/hiui/issues/1587)
 - 修复 `DatePicker` type 为 week 或者 weekrange 时 输入相应格式日期解析错误问题  [#1579](https://github.com/XiaoMi/hiui/issues/1579)
 - 修复 `Form` 触发 onValuesChange 数据更新出现旧值问题 [#1618](https://github.com/XiaoMi/hiui/issues/1618)
 - 修复 `DatePicker` type 为 timeperiod 时，设置 timeInterval 分钟显示不正确问题  [#1604](https://github.com/XiaoMi/hiui/issues/1604)
@@ -11,12 +18,7 @@
 - 修复 `TimePicker` 时间范围选择，为空时无法选择打开弹窗时的当前值 [#1530](https://github.com/XiaoMi/hiui/issues/1530)
 - 修复 `Collapse`  onChange 属性未传入控制台报错问题 [#1580](https://github.com/XiaoMi/hiui/issues/1580)
 - 修复 `Select` 组件在异步多选时，关闭弹层下拉选项内容丢失问题 [#1578](https://github.com/XiaoMi/hiui/issues/1578)
-- 优化 `Select` 组件异步类型时，searchable 属性可控制筛选框的显示隐藏  [#1577](https://github.com/XiaoMi/hiui/issues/1577)
-- 优化 `DatePicker` type 为 week 形态时显示内容  [#1587](https://github.com/XiaoMi/hiui/issues/1587)
-- 新增 `Table` 组件 showColHighlight 方法 [#1602](https://github.com/XiaoMi/hiui/issues/1602)
 - 修复 `Table` 组件 data值为数字类型字符串时，无法进行求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
-- 修复 `Table` 组件 列冻结无法展示求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
-- 新增 `Table` 组件 表格表头事件回调函数输出 [#1625](https://github.com/XiaoMi/hiui/issues/1625)
   
 ## 3.4.0
 
