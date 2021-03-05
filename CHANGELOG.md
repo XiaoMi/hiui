@@ -1,4 +1,8 @@
 # 更新日志
+
+# 3.5.1
+- 修复 `Table` 组件 data值为带正负符号的数字类型字符串时，无法进行求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
+
 ## 3.5.0
 
 - 新增 `Table` 组件 showColHighlight 方法 [#1602](https://github.com/XiaoMi/hiui/issues/1602)
