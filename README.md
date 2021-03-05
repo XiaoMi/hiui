@@ -11,9 +11,14 @@ npm i
 npm run bootstrap
 ```
 
+## 预编译
+
+```
+npm run compile
+```
+
 ## 开始开发
 
 ```
 npm run storybook
-
 ```

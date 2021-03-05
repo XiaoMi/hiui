@@ -24,3 +24,5 @@ Thumbs.db
 .Spotlight-V100
 .Trashes
 .eslintrc.json
+package-lock.json
+lerna-debug.log
