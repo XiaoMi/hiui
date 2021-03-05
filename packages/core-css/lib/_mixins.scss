@@ -178,3 +178,43 @@
     }
   }
 }
+
+@mixin flex($j: center, $a: center, $d: row) {
+  display: flex;
+  justify-content: $j;
+  align-items: $a;
+  flex-direction: $d;
+}
+
+@mixin wh($w, $h) {
+  width: $w * 1px;
+  height: $h * 1px;
+}
+
+@mixin font($s, $c) {
+  font-size: $s;
+  color: $c;
+}
+
+@mixin component-reset {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+@mixin rtl {
+  [data-direction='rtl'] & {
+    @content;
+  }
+}
+
+@mixin transition {
+  transition: 0.3s ease;
+}
+
+@mixin boxShadow($c: rgb(0, 0, 0), $o: 0.4) {
+  box-shadow: 0 0 6px rgba($c, $o);
+}
