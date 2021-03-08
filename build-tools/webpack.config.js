@@ -50,7 +50,7 @@ module.exports = {
     path: process.cwd() + '/es'
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.json'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     modules: ['node_modules']
   },
   externals: {
