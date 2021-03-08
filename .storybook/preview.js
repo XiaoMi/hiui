@@ -14,6 +14,7 @@ import Alert from "../packages/alert/es/index.js"
 import Select from "../packages/select/src/index.js"
 import Hello from "../packages/hiui-demots/src/index.tsx"
 import Avatar from "../packages/avatar/src"
+import Checkbox from "../packages/checkbox/src"
 
 const importRegx = /import\s+([\w*{}\n, ])+.*;?/gm
 
@@ -31,7 +32,7 @@ function addSbCodeEditro(cb, props) {
     <DocViewer
       desc={desc}
       code={code}
-      scope={{ Popper, Alert, Select, Hello, useRef, useState, globals, Avatar }}
+      scope={{ Popper, Alert, Select, Hello, useRef, useState, globals, Avatar, Checkbox }}
       prefix={"alert-autoClose"}
     />
   )
