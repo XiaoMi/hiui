@@ -1,35 +1,44 @@
-import React, { FC } from 'react';
-// import classNames from 'classnames'
-// import './style/index.scss'
+import React from 'react'
+import ClassNames from 'classnames'
+import './style/index.scss'
 
-// const PREFIX = 'hix-avatar'
+const PREFIX = 'hix-avatar'
 
-const Avatar: FC = () => {
-  return <div className="hix-avatar">
-    <img src='' />
-    <div className="hix-avatar__description">
-      <div className="description__text">''</div>
-      <div className="description__secondary-text">''</div>
+interface AvatarProps {
+  src?: string;
+  text?: string | React.ReactNode;
+  secondaryText?: string | React.ReactNode;
+  size?: string | number;
+  initials?: string;
+  shape: 'circle' | 'square';
+  style?: React.CSSProperties;
+  className?: string;
+  icon?: string;
+}
+
+const Avatar = ({
+  src,
+  text,
+  secondaryText,
+  size = 'md',
+  initials,
+  shape = 'circle',
+  style = {},
+  className,
+  icon
+}: AvatarProps) => {
+  return (
+    <div
+      className={ClassNames(PREFIX, className, { [`${PREFIX}--${size}`]: true, [`${PREFIX}--${shape}`]: true })}
+      style={style}
+    >
+      {src ? <img src={src} /> : <span>{initials}</span>}
+      <div className="hix-avatar__description">
+        <div className="description__text">{text}</div>
+        {<div className="description__secondary-text">{secondaryText}</div>}
+      </div>
     </div>
-  </div>
-}
-
-
-
-
-
-interface AlertProps {
-  type?: 'info' | 'error' | 'success' | 'warning';
-  onClose?: () => void;
-  content?: React.ReactNode;
-  title?: React.ReactNode;
-  closeable?: boolean;
-  duration?: number | null;
-  prefixCls?: string;
-  theme?: string;
-}
-interface AlertState {
-  visible: boolean
+  )
 }
 
 export default Avatar

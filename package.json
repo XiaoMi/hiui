@@ -14,10 +14,13 @@
     "precommit": "lint-staged"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "~7.12.7",
     "@storybook/addon-actions": "^6.1.18",
     "@storybook/addon-essentials": "^6.1.18",
     "@storybook/addon-links": "^6.1.18",
     "@storybook/react": "^6.1.18",
+    "@typescript-eslint/eslint-plugin": "~4.10.0",
+    "@typescript-eslint/parser": "^4.16.1",
     "autoprefixer": "^8.5.0",
     "babel-eslint": "^8.2.6",
     "babel-jest": "^22.4.3",
@@ -31,6 +34,7 @@
     "eslint-plugin-jsx-a11y": "~6.2.3",
     "eslint-plugin-prettier": "~3.1.1",
     "eslint-plugin-react": "~7.17.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^0.14.3",
     "lerna": "^3.22.1",
     "lint-staged": "^10.5.4",
@@ -42,7 +46,8 @@
     "storybook-addon-react-live-edit": "^2.0.4",
     "style-loader": "^2.0.0",
     "styled-components": "^5.2.1",
-    "stylelint-config-standard": "^18.3.0"
+    "stylelint-config-standard": "^18.3.0",
+    "typescript": "^4.2.3"
   },
   "dependencies": {
     "@hi-ui/core-css": "^2.0.1",
