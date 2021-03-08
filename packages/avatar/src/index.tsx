@@ -25,18 +25,18 @@ const Avatar = ({
   shape = 'circle',
   style = {},
   className,
-  icon
+  // icon
 }: AvatarProps) => {
   return (
     <div
       className={ClassNames(PREFIX, className, { [`${PREFIX}--${size}`]: true, [`${PREFIX}--${shape}`]: true })}
       style={style}
     >
-      {src ? <img src={src} /> : <span>{initials}</span>}
-      <div className="hix-avatar__description">
-        <div className="description__text">{text}</div>
-        {<div className="description__secondary-text">{secondaryText}</div>}
-      </div>
+      {src ? <img src={src} /> : <span className="hix-avatar__initials">{initials}</span>}
+      {(text || secondaryText) && <div className="hix-avatar__description">
+        {text && <div className="description__text">{text}</div>}
+        {secondaryText && <div className="description__secondary-text">{secondaryText}</div>}
+      </div>}
     </div>
   )
 }
