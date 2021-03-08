@@ -1,0 +1,12 @@
+
+
+.hix-avatar {
+  --hix-global-border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  &--circle {
+    img {
+      border-radius: var(--hix-global-border-radius );
+    }
+  }
+}

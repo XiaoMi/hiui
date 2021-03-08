@@ -22,5 +22,11 @@
   },
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
+  },
+  "dependencies": {
+    "classnames": "^2.2.6"
+  },
+  "devDependencies": {
+    "@types/classnames": "^2.2.11"
   }
 }
