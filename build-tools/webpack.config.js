@@ -1,7 +1,7 @@
 // 包抽离
-const TerserPlugin = require('terser-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-
+// const TerserPlugin = require('terser-webpack-plugin')
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+// const fs = require('fs')
 const path = require('path')
 const glob = require('glob')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
@@ -31,15 +31,16 @@ const getDeepEntry = (srcDirName) => {
 
   return entry
 }
-const allPackageModules = () => {
-  var exts = {}
-  fs.readdirSync(__dirname + '/node_modules').forEach((item) => {
-    // 我没有使用es6
-    if (item.indexOf('.') === 0) return
-    exts[item] = 'commonjs ' + item
-  })
-  return exts
-}
+// 没用调用的代码，保留-0308
+// const allPackageModules = () => {
+//   var exts = {}
+//   fs.readdirSync(__dirname + '/node_modules').forEach((item) => {
+//     // 我没有使用es6
+//     if (item.indexOf('.') === 0) return
+//     exts[item] = 'commonjs ' + item
+//   })
+//   return exts
+// }
 const entryFile = Object.assign(getDeepEntry('./src/**/*.*'))
 
 module.exports = {

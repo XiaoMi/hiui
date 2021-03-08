@@ -1,0 +1,158 @@
+@import '@hi-ui/core-css/index.scss';
+
+$prefixCls: '.hi-checkbox' !default;
+
+@mixin hi-checkbox-style($color: get-color($palette-primary, 'hiui-blue')) {
+  & {
+    &:not(#{$prefixCls}--disabled):hover {
+      #{$prefixCls}__input {
+        border-color: $color;
+      }
+    }
+
+    input {
+      &:focus + #{$prefixCls}__input {
+        border-color: $color;
+      }
+    }
+
+    &__input {
+      &--indeterminate {
+        background: $color;
+        border-color: $color;
+
+        &::after {
+          background: #fff;
+        }
+      }
+
+      &--checked {
+        background: $color;
+        border-color: $color;
+      }
+    }
+  }
+}
+
+#{$prefixCls} {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  height: 16px;
+  vertical-align: middle;
+
+  @include component-reset();
+
+  input {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+
+  &__input {
+    position: relative;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #d8d8d8;
+    margin-right: 8px;
+    border-radius: 2px;
+    transition: 0.3s ease-out;
+    line-height: 1;
+    flex: none;
+
+    &--indeterminate {
+      &::after {
+        transform: rotate(90deg) scaleY(1);
+        pointer-events: none;
+        box-sizing: content-box;
+        content: '';
+        border: none;
+        border-bottom: 2px solid #fff;
+        height: 8px;
+        left: 6px;
+        position: absolute;
+        top: 2px;
+        width: 2px;
+        transform-origin: center;
+      }
+    }
+
+    &--checked {
+      &::after {
+        transform: rotate(45deg) scaleY(1);
+        pointer-events: none;
+        box-sizing: content-box;
+        content: '';
+        border: 2px solid #fff;
+        border-left: 0;
+        border-top: 0;
+        height: 7px;
+        left: 4px;
+        position: absolute;
+        top: 1px;
+        width: 4px;
+        transform-origin: center;
+      }
+    }
+  }
+
+  &__text {
+    padding: 0 32px 0 0;
+    line-height: unset;
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+
+    #{$prefixCls}__input {
+      border-color: #d8d8d8;
+      background: #f2f2f2;
+
+      &::after {
+        border-color: #d8d8d8;
+      }
+    }
+
+    #{$prefixCls}__text {
+      color: rgba(#000, 0.65);
+    }
+  }
+
+  &-group {
+    display: inline-block;
+
+    &--vertical {
+      display: flex;
+      flex-direction: column;
+
+      #{$prefixCls} {
+        height: 32px;
+      }
+    }
+  }
+
+  @include hi-checkbox-style();
+}
+
+@each $key, $value in $theme-colors {
+  .theme__#{$key$prefixCls} {
+    @include hi-checkbox-style($value);
+  }
+
+  .theme__#{$key}#{$prefixCls}:not(#{$prefixCls}--disabled):hover {
+    #{$prefixCls}__input {
+      border-color: $value;
+    }
+  }
+
+  .theme__#{$key}#{$prefixCls} {
+    input {
+      &:focus + #{$prefixCls}__input {
+        border-color: $value;
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "hiui-checkbox",
+  "version": "0.0.1",
+  "description": "",
+  "main": "es/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "webpack --config ./node_modules/hiui-build-tools/webpack.config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "hiui-build-tools": "0.0.2"
+  }
+}

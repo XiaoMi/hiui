@@ -1,0 +1,146 @@
+import { Meta, ArgsTable, Source, Story, Canvas } from "@storybook/addon-docs/blocks"
+import dedent from "ts-dedent"
+import Checkbox from "./src"
+
+<Meta title='简单示例/Checkbox' />
+
+# Checkbox 头像
+
+作用于页面的内容区域的提示，非触发类信息
+
+## 何时使用
+
+警示，内容提示，说明，要求，规则等阅读类信息
+
+显示在页面局部的提示性文案
+
+export const BasicTemplate = class Demo extends React.Component {
+  constructor(props) {
+    super(props)
+        this.state = {
+      list: [{
+        content: '手机',
+        id: 'Phone'
+      },{
+        content: '电脑',
+        id: 'Computer'
+      },{
+        content: '智能',
+        id: 'Intelli'
+      },{
+        content: '出行',
+        id: 'Transfer',
+        disabled: true
+      }],
+      value: ['Phone']
+    }
+  }
+  render() {
+    return (
+      <div>
+        <Checkbox.Group data={this.state.list} defaultValue={this.state.value} />
+      </div>
+    )
+  }
+}
+
+export const VerticalTemplate = class Demo extends React.Component {
+  constructor(props) {
+    super(props)
+      this.state = {
+      list: [{
+        content: '手机',
+        id: 'Phone'
+      },{
+        content: '电脑',
+        id: 'Computer'
+      },{
+        content: '智能',
+        id: 'Intelli'
+      },{
+        content: '出行',
+        id: 'Transfer'
+      }],
+      value: ['Phone']
+    }
+    this.handleCheckAllClick = () => {
+      this.setState(({ value, list }) => {
+        return {
+          value: value.length < 4 ? list.map(({ id }) => id) : []
+        }
+      })
+    }
+    this.getIndeterminate = () => {
+      return this.state.value.length > 0 && this.state.value.length < 4
+    }
+  }
+  render() {
+    const { value, list } = this.state
+    return (
+      <Checkbox.Group value={value} placement='vertical' data={list} onChange={value => {
+        this.setState({ value })
+      }} />
+    )
+  }
+}
+
+
+<Story name='基础使用' args={{ desc: "描述信息" }}>
+  {BasicTemplate.bind()}
+</Story>
+
+<Story name='垂直样式' args={{ desc: "垂直样式" }}>
+  {VerticalTemplate.bind()}
+</Story>
+
+## Props
+
+### Checkbox
+
+| 参数           | 说明             | 类型                                                   | 可选值        | 默认值 |
+| -------------- | ---------------- | ------------------------------------------------------ | ------------- | ------ |
+| autoFocus      | 是否自动获取焦点 | boolean                                                | true \| false | false  |
+| checked        | 是否选中         | boolean                                                | true \| false | false  |
+| className      | 自定义类名       | string                                                 | -             | -      |
+| defaultChecked | 是否默认选中     | boolean                                                | true \| false | false  |
+| disabled       | 是否禁用         | boolean                                                | true \| false | false  |
+| indeterminate  | 不全选的样式控制 | boolean                                                | true \| false | false  |
+| onChange       | 变化时的回调     | (event: React.ChangeEvent\<HTMLInputElement\>) => void | -             | -      |
+
+### Checkbox.Group
+
+| 参数         | 说明                                                         | 类型                                        | 可选值                     | 默认值       |
+| ------------ | ------------------------------------------------------------ | ------------------------------------------- | -------------------------- | ------------ |
+| className    | 自定义类名                                                   | string                                      | -                          | -            |
+| placement    | 排列方式                                                     | string                                      | 'horizontal' \| 'vertical' | 'horizontal' |
+| data         | 指定可选项                                                   | string[] \| number[] \| DataItem[]          | -                          | []           |
+| defaultValue | 默认选中的项                                                 | string[] \| number[]                        | -                          | []           |
+| disabled     | 是否禁用                                                     | boolean                                     | true \| false              | false        |
+| name         | `CheckboxGroup` 下所有 `input[type="checkbox"]` 的 name 属性 | string                                      | -                          | -            |
+| onChange     | 变化时的回调                                                 | (checkedList: string[] \| number[]) => void | -                          | -            |
+| style        | 自定义样式                                                   | CSSProperties                               | -                          | -            |
+| value        | 指定选中的项                                                 | string[] \| number[]                        | -                          | -            |
+
+## Events
+
+### Checkbox
+
+| 名称     | 说明         | 类型                              | 参数                  | 返回值 |
+| -------- | ------------ | --------------------------------- | --------------------- | ------ |
+| onChange | 变化时的回调 | (event: HTMLInputElement) => void | event: input 事件对象 | -      |
+
+### Checkbox.Group
+
+| 名称     | 说明         | 类型                                        | 参数                        | 返回值 |
+| -------- | ------------ | ------------------------------------------- | --------------------------- | ------ |
+| onChange | 变化时的回调 | (checkedList: string[] \| number[]) => void | checkedList: 选中项 ID 集合 | -      |
+
+## Type
+
+### _DataItem_
+
+| 参数     | 说明         | 类型             |
+| -------- | ------------ | ---------------- |
+| id       | 数据唯一标识 | string \| number |
+| content  | 数据显示内容 | string \| number |
+| disabled | 是否禁用该项 | boolean          |
