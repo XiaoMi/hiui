@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, Fragment, useMemo } from 'react'
 import classNames from 'classnames'
 
-import { CheckProps } from './types'
+import { CheckProps, DataItem } from './types'
 
 const prefixCls = 'hi-checkbox'
 
@@ -18,6 +18,7 @@ const Checkbox = (props: CheckProps) => {
     name,
     value,
     focusable = true,
+    render,
     onChange,
     onClick
   } = props
@@ -40,16 +41,21 @@ const Checkbox = (props: CheckProps) => {
       onChange && onChange(event)
       hasChecked(props) || setChecked(event.target.checked)
     },
-    [props, onChange, hasChecked]
+    [props, onChange]
   )
 
-  const handleClick = useCallback(() => {
-    const item = {
+  const currentItem: DataItem = useMemo(() => {
+    return {
       content: children,
       checked
     }
-    onClick && onClick(item)
-  }, [children, checked, onClick])
+  }, [checked, children])
+
+  const handleClick = useCallback(() => {
+    onClick && onClick(currentItem)
+  }, [currentItem, onClick])
+
+  const checkboxInput = <span className={inputCls} />
 
   return (
     <label className={checkboxCls} style={style} onClick={handleClick}>
@@ -63,8 +69,15 @@ const Checkbox = (props: CheckProps) => {
         value={value}
         tabIndex={focusable ? 0 : -1}
       />
-      <span className={inputCls} />
-      {children !== undefined && <span className={`${prefixCls}__text`}>{children}</span>}
+      {/* render 存在时，使用自定义组件功能 */}
+      {render ? (
+        render(currentItem, checked, checkboxInput)
+      ) : (
+        <Fragment>
+          {checkboxInput}
+          {children !== undefined && <span className={`${prefixCls}__text`}>{children}</span>}
+        </Fragment>
+      )}
     </label>
   )
 }

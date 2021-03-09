@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import classNames from 'classnames'
 import Checkbox from './Checkbox'
 
@@ -38,13 +38,14 @@ const Group = (props: GroupProps) => {
 
   return (
     <div className={groupCls} style={{ ...style }}>
-      {data.map(({ label, value, checked, disabled: itemDisabled }: DataItem, idx: number) => (
+      {data.map(({ label, value, checked, render, disabled: itemDisabled }: DataItem, idx: number) => (
         <Checkbox
           key={idx}
           value={value}
           name={name}
           disabled={disabled || itemDisabled}
           onChange={handleCheckboxChange}
+          render={render}
           {...{
             [hasValue(props) ? 'checked' : 'defaultChecked']: checked
           }}
@@ -72,6 +73,7 @@ function getData(props: GroupProps) {
       label,
       value,
       disabled,
+      render: item.render,
       checked: (_value || []).includes(value)
     }
   })

@@ -84,6 +84,47 @@ export const VerticalTemplate = class Demo extends React.Component {
   }
 }
 
+export const DiyTemplate = class Demo extends React.Component {
+  constructor(props) {
+    super(props)
+        this.state = {
+      list: [{
+        content: '手机',
+        id: 'Phone',
+        render (checkItem, checked) {
+          // 自定义boxItem
+          const url = checked ? 'http://i1.mifile.cn/f/i/hiui/images/ic_checked.png' : 'http://i1.mifile.cn/f/i/hiui/images/ic_check.png'
+          const content = checked ? '勾选' : '勾销'
+          return <><img src={url} style={{width: 20, marginRight: 8}} />{content}</>
+        }
+      },{
+        content: '电脑',
+        id: 'Computer',
+        render (checkItem, checked, checkDom) {
+          // 使用checkdom部分自定义dom
+          const content = checked ? '勾选' : '勾销'
+            return <>{checkDom} {content}</>
+        }
+      },{
+        content: '智能',
+        id: 'Intelli'
+      },{
+        content: '出行',
+        id: 'Transfer',
+        disabled: true
+      }],
+      value: ['Phone']
+    }
+  }
+  render() {
+    return (
+      <div>
+        <Checkbox.Group data={this.state.list} defaultValue={this.state.value} />
+      </div>
+    )
+  }
+}
+
 
 <Story name='基础使用' args={{ desc: "描述信息" }}>
   {BasicTemplate.bind()}
@@ -91,6 +132,10 @@ export const VerticalTemplate = class Demo extends React.Component {
 
 <Story name='垂直样式' args={{ desc: "垂直样式" }}>
   {VerticalTemplate.bind()}
+</Story>
+
+<Story name='自定义checkItem' args={{ desc: "自定义checkItem" }}>
+  {DiyTemplate.bind()}
 </Story>
 
 ## Props
@@ -105,6 +150,7 @@ export const VerticalTemplate = class Demo extends React.Component {
 | defaultChecked | 是否默认选中     | boolean                                                | true \| false | false  |
 | disabled       | 是否禁用         | boolean                                                | true \| false | false  |
 | indeterminate  | 不全选的样式控制 | boolean                                                | true \| false | false  |
+| render         | 自定义checkItem | (item: DataItem, checked: boolean) => ReactNode        | -            ｜  -     ｜
 | onChange       | 变化时的回调     | (event: React.ChangeEvent\<HTMLInputElement\>) => void | -             | -      |
 
 ### Checkbox.Group
@@ -144,3 +190,4 @@ export const VerticalTemplate = class Demo extends React.Component {
 | id       | 数据唯一标识 | string \| number |
 | content  | 数据显示内容 | string \| number |
 | disabled | 是否禁用该项 | boolean          |
+| render   | 自定义checkItem | (item: DataItem, checked: boolean) => ReactNode  |
