@@ -54,10 +54,6 @@ export default class DropdownMenuItem extends React.Component {
   handleMenuItemClick = (event) => {
     if (event) {
       event.stopPropagation()
-      event.preventDefault()
-      if (event.nativeEvent && event.nativeEvent.stopImmediatePropagation) {
-        event.nativeEvent.stopImmediatePropagation()
-      }
     }
     const { onMenuItemClick, id, children, href } = this.props
     onMenuItemClick(id, (href || !children))
