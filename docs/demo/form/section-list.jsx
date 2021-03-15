@@ -220,7 +220,7 @@ const code = [
         this.state = {
           initialValues:{
             phone:'123',
-            testList:[{first: "123",last: "rrr"}]
+            testList:[{first: "",last: ""}]
           },
           rules: {
             name: {
@@ -331,7 +331,13 @@ const code = [
                               {...field}
                               name = 'first'
                             >
-                              <Input placeholder='请输入' style={{width:'200px'}}/>
+                            <Select placeholder='请输入' style={{width:'200px'}} data={[
+                              { title:'电视', id:'3' },
+                              { title:'手机', id:'2' },
+                              { title:'笔记本', id:'4' },
+                              { title:'生活周边', id:'5' },
+                              { title:'办公', id:'6' }
+                            ]}/>
                             </FormItem>
                             <FormItem
                               {...field}
@@ -340,19 +346,19 @@ const code = [
                             >
                               <Input placeholder='请输入' style={{width:'200px'}}/>
                             </FormItem>
-                            <Icon
-                              name='close'
-                              style={{
-                                color: '#999',
-                                fontSize: '16px',
-                                cursor: 'pointer',
-                                height:'18px',
-                                marginTop:'4px',
-                              }}
-                              onClick={() => {
-                                remove(field)
-                              }}
-                            />
+                            <span style={{paddingTop:'6px'}}>
+                              <Icon
+                                name='close'
+                                style={{
+                                  color: '#999',
+                                  fontSize: '16px',
+                                  cursor: 'pointer',
+                                }}
+                                onClick={() => {
+                                  remove(field)
+                                }}
+                             />
+                            </span>
                           </div>
                         ))}
                         <div style={{ 

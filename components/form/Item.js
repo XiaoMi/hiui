@@ -170,7 +170,7 @@ const FormItem = (props) => {
     if (field && !isExist) {
       let value = initialValues && initialValues[field] ? initialValues[field] : ''
       if (_type === 'list' && listItemValue) {
-        value = listItemValue[name] ? listItemValue[name] : listItemValue
+        value = typeof listItemValue[name] !== 'undefined' ? listItemValue[name] : listItemValue
       }
       dispatch({
         type: FILEDS_INIT,
@@ -280,6 +280,7 @@ const FormItem = (props) => {
     if (!children) {
       return null
     }
+    console.log('render item to state')
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {
@@ -305,6 +306,7 @@ const FormItem = (props) => {
   const contentWidth = formProps.labelPlacement === 'top' ? '100%' : `calc(100% - ${_labelWidth}px)`
   return (
     <div className={classNames('hi-form-item', className, obj)} style={style} key={field}>
+      {console.log('render item')}
       {label || label === '' ? (
         <label className="hi-form-item__label" style={{ width: _labelWidth }} key={field + 'label'}>
           {(typeof label === 'string' && label.trim()) || label}

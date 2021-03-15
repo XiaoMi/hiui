@@ -19,7 +19,9 @@ export default class Immutable {
         const initfields = [...fields].filter((item) => {
           return action.payload.field !== item.field
         })
+        console.log('初始化state', action.payload)
         this.state = Object.assign({}, { ...state }, { fields: initfields.concat(action.payload) })
+        console.log('this.state', this.state)
         return this.state
       case FILEDS_UPDATE:
         this.state.fields = [...action.payload]

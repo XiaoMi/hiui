@@ -184,8 +184,8 @@ const InternalForm = (props) => {
     },
     [fields]
   )
-
   useEffect(() => {
+    console.log('Form add Event')
     if (!formRef) {
       return
     }
@@ -208,6 +208,7 @@ const InternalForm = (props) => {
         return false
       }}
     >
+      {console.log('2')}
       <FormContext.Provider
         value={{
           formProps: props,
