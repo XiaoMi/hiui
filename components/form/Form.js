@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useReducer, forwardRef, useRef } from 'react'
+import React, { useEffect, useCallback, useReducer, forwardRef, useRef, useImperativeHandle } from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
@@ -24,7 +24,7 @@ const InternalForm = (props) => {
     children,
     className,
     style,
-    innerRef: formRef,
+    innerRef: formRef = useRef(),
     initialValues,
     onValuesChange,
     updateFormSchema,
@@ -72,7 +72,7 @@ const InternalForm = (props) => {
   // 转换值的输出
   const internalValuesChange = useCallback(
     (changeValues, allValues) => {
-      const _transformValues = transformValues(allValues, fields)
+      const _transformValues = transformValues(allValues, _Immutable.current.currentStateFields())
       const _changeValues = _.cloneDeep(changeValues)
 
       Object.keys(changeValues).forEach((changeValuesKey) => {
@@ -94,7 +94,7 @@ const InternalForm = (props) => {
     (cb, resetNames, toDefault) => {
       const changeValues = {}
       const cacheallValues = {}
-      let _fields = _.cloneDeep(fields)
+      let _fields = _.cloneDeep(_Immutable.current.currentStateFields())
       fields.forEach((item) => {
         const { field, value } = item
         cacheallValues[field] = value
@@ -126,7 +126,7 @@ const InternalForm = (props) => {
     (cb, validateNames) => {
       const values = {}
       let errors = {}
-
+      const fields = _.cloneDeep(_Immutable.current.currentStateFields())
       if (fields.length === 0 && cb) {
         cb(values, errors)
         return
@@ -163,6 +163,7 @@ const InternalForm = (props) => {
   const validateField = useCallback(
     (key, cb) => {
       let value
+      const fields = _.cloneDeep(_Immutable.current.currentStateFields())
       const field = fields.filter((fieldChild) => {
         if (fieldChild.field === key) {
           value = fieldChild.value
@@ -184,20 +185,13 @@ const InternalForm = (props) => {
     },
     [fields]
   )
-  useEffect(() => {
-    console.log('Form add Event')
-    if (!formRef) {
-      return
-    }
-    formRef.current = {
-      resetValidates,
-      validateField,
-      validate,
-      setFieldsValue,
-      updateFormSchema
-    }
-  }, [fields])
-
+  useImperativeHandle(formRef, () => ({
+    resetValidates,
+    validateField,
+    validate,
+    setFieldsValue,
+    updateFormSchema
+  }))
   return (
     <form
       className={classNames('hi-form', className, getClassNames(props))}
@@ -208,7 +202,6 @@ const InternalForm = (props) => {
         return false
       }}
     >
-      {console.log('2')}
       <FormContext.Provider
         value={{
           formProps: props,

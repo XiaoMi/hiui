@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react'
+import React, { useContext, useState, useEffect, useCallback, useLayoutEffect } from 'react'
 import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
@@ -91,7 +91,11 @@ const FormItem = (props) => {
           const { field, value } = item
           allValues[field] = value
         })
-        dispatch({ type: FILEDS_UPDATE, payload: _fields })
+        console.log('数据更新', _fields)
+        dispatch({
+          type: FILEDS_UPDATE,
+          payload: _fields
+        })
         triggerType === 'onChange' && internalValuesChange({ [field]: _value }, allValues)
       }
     },
@@ -162,29 +166,6 @@ const FormItem = (props) => {
       _type
     }
   }
-  // initValue
-  useEffect(() => {
-    const isExist = fields.some((item) => {
-      return item.field === field
-    })
-    if (field && !isExist) {
-      let value = initialValues && initialValues[field] ? initialValues[field] : ''
-      if (_type === 'list' && listItemValue) {
-        value = typeof listItemValue[name] !== 'undefined' ? listItemValue[name] : listItemValue
-      }
-      dispatch({
-        type: FILEDS_INIT,
-        payload: {
-          value: value,
-          ...updateFieldInfoToReducer()
-        }
-      })
-      setValue(value)
-    }
-    return () => {
-      _type !== 'list' && dispatch({ type: FILEDS_REMOVE, payload: field })
-    }
-  }, [field])
 
   // 判断是否含有Rules
   const isRequired = useCallback(() => {
@@ -245,12 +226,27 @@ const FormItem = (props) => {
     setValue(value)
     handleField(eventName, value)
   }
-
   // jsx渲染方式
   const renderChildren = () => {
-    const { component, componentProps } = props
-
     let _value = value
+    const _fields = _Immutable.current.currentStateFields()
+    const isExist = _fields.some((item) => {
+      return item.field === field
+    })
+    if (field && !isExist) {
+      _value = initialValues && initialValues[field] ? initialValues[field] : ''
+      if (_type === 'list' && listItemValue) {
+        _value = typeof listItemValue[name] !== 'undefined' ? listItemValue[name] : listItemValue
+      }
+      _Immutable.current.setState({
+        type: FILEDS_INIT,
+        payload: {
+          value: _value,
+          ...updateFieldInfoToReducer()
+        }
+      })
+    }
+    const { component, componentProps } = props
     if (_type === 'list') {
       const _fields = _.cloneDeep(fields)
       _fields.forEach((item) => {
@@ -280,7 +276,7 @@ const FormItem = (props) => {
     if (!children) {
       return null
     }
-    console.log('render item to state')
+
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {
@@ -306,7 +302,6 @@ const FormItem = (props) => {
   const contentWidth = formProps.labelPlacement === 'top' ? '100%' : `calc(100% - ${_labelWidth}px)`
   return (
     <div className={classNames('hi-form-item', className, obj)} style={style} key={field}>
-      {console.log('render item')}
       {label || label === '' ? (
         <label className="hi-form-item__label" style={{ width: _labelWidth }} key={field + 'label'}>
           {(typeof label === 'string' && label.trim()) || label}

@@ -10,44 +10,52 @@ export const FILEDS_UPDATE_LIST = 'FILEDS_UPDATE_LIST'
 export default class Immutable {
   constructor() {
     this.state = {}
+    this.SyncState = { fields: [], listNames: [], listValues: {} }
   }
 
-  FormReducer = (state, action) => {
+  FormReducer = (_state, action) => {
+    const state = this.SyncState
     switch (action.type) {
-      case FILEDS_INIT:
-        const { fields } = state
-        const initfields = [...fields].filter((item) => {
-          return action.payload.field !== item.field
-        })
-        console.log('初始化state', action.payload)
-        this.state = Object.assign({}, { ...state }, { fields: initfields.concat(action.payload) })
-        console.log('this.state', this.state)
-        return this.state
       case FILEDS_UPDATE:
-        this.state.fields = [...action.payload]
+        this.SyncState.fields = [...action.payload]
         return Object.assign({}, { ...state }, { fields: [...action.payload] })
       case FILEDS_REMOVE:
         const _fields = state.fields.filter((item) => {
           return action.payload !== item.field && action.payload !== item.propsField
         })
-        this.state = Object.assign({}, { ...state }, { fields: _fields })
+        this.SyncState = Object.assign({}, { ...state }, { fields: _fields })
         return this.state
       case FILEDS_INIT_LIST:
         const { listNames } = state
         !listNames.includes(action.payload) && listNames.push(action.payload)
-        this.state = Object.assign({}, { ...state }, { listNames: listNames })
-
+        this.SyncState = Object.assign({}, { ...state }, { listNames: listNames })
         return this.state
       case FILEDS_UPDATE_LIST:
-        this.state = Object.assign({}, { ...state }, { listValues: action.payload })
+        this.SyncState = Object.assign({}, { ...state }, { listValues: action.payload })
         return this.state
       default:
-        this.state = state
+        this.SyncState = state
         return state
     }
   }
 
+  setState(action) {
+    const SyncState = this.SyncState
+    switch (action.type) {
+      case FILEDS_INIT:
+        const { fields } = SyncState
+        const initfields = [...fields].filter((item) => {
+          return action.payload.field !== item.field
+        })
+        this.SyncState = Object.assign({}, { ...SyncState }, { fields: initfields.concat(action.payload) })
+        return this.SyncState
+      default:
+        this.SyncState = SyncState
+        return SyncState
+    }
+  }
+
   currentStateFields() {
-    return _.cloneDeep(this.state.fields)
+    return _.cloneDeep(this.SyncState.fields)
   }
 }

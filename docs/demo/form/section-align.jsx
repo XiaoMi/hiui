@@ -8,6 +8,7 @@ import Button from '../../../components/button'
 import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
 import Select from '../../../components/select'
+import MasterDataScheme from '../../../components/form/test'
 const prefix = 'form-align'
 const rightOptions = ['左对齐', '右对齐', '顶对齐']
 const desc = ['左对齐：表单项较少，对应标题字数易对齐工整']
@@ -44,6 +45,13 @@ const code = [
             </FormItem>
             <FormItem required={true} label="产品名称" field="productName">
               <Input placeholder="请输入" />
+            </FormItem>
+            <FormItem required={true} label="产品名称" field="productName">
+            <FormSubmit type='primary' 
+            onClick={(values,errors)=>{
+              console.log('Get form value:',values,errors)}
+            }
+            >提交</FormSubmit>
             </FormItem>
           </Form>
         )
@@ -436,7 +444,7 @@ const code = [
 const DemoAlign = () => (
   <DocViewer
     code={code}
-    scope={{ Form, Input, Button, Checkbox, LegacyForm, Grid, Radio, Select }}
+    scope={{ Form, Input, Button, Checkbox, LegacyForm, Grid, Radio, Select, MasterDataScheme }}
     prefix={prefix}
     desc={desc}
     rightOptions={rightOptions}
