@@ -99,8 +99,9 @@ const InternalForm = (props) => {
     (cb, resetNames, toDefault) => {
       const changeValues = {}
       const cacheallValues = {}
-      let _fields = _.cloneDeep(_Immutable.current.currentStateFields())
-      fields.forEach((item) => {
+      let _fields = _Immutable.current.currentStateFields()
+      const { listNames, listValues } = _Immutable.current.currentState()
+      _fields.forEach((item) => {
         const { field, value } = item
         cacheallValues[field] = value
       })
@@ -108,24 +109,34 @@ const InternalForm = (props) => {
       _fields = _fields.filter((childrenField) => {
         return Array.isArray(resetNames) ? resetNames.includes(childrenField.field) : true
       })
-
-      _fields.forEach((childrenField) => {
-        const value =
-          toDefault && initialValues && initialValues[childrenField.field] ? initialValues[childrenField.field] : ''
-        if (!_.isEqual(childrenField.value, value)) {
-          changeValues[childrenField.field] = value
-        }
-
-        childrenField.value = value
-        childrenField.resetValidate(value)
+      _fields.forEach((item) => {
+        const { field } = item
+        const value = toDefault && initialValues && initialValues[field] ? initialValues[field] : ''
+        item.value = value
+        item.setValue(value)
       })
-      _Immutable.current.setState({ type: FILEDS_UPDATE, payload: _fields })
+      _Immutable.current.setState({
+        type: FILEDS_UPDATE,
+        payload: _fields.filter((item) => {
+          return item._type !== 'list'
+        })
+      })
+      // 处理 list value
+      Object.keys(initialValues).forEach((key) => {
+        if (listNames.includes(key)) {
+          _Immutable.current.setState({ type: FILEDS_REMOVE_LIST, payload: key })
+          _Immutable.current.setState({
+            type: FILEDS_UPDATE_LIST,
+            payload: Object.assign({}, { ...listValues }, { [key]: initialValues[key] })
+          })
+        }
+      })
       dispatch({ type: FILEDS_UPDATE_STATE })
       cb instanceof Function && cb()
       // 比较耗性能
       internalValuesChange(changeValues, Object.assign({}, { ...cacheallValues }, { ...changeValues }))
     },
-    [fields, initialValues, onValuesChange, internalValuesChange]
+    [fields, initialValues, onValuesChange, internalValuesChange, listNames]
   )
   // 对整个表单进行校验
   const validate = useCallback(

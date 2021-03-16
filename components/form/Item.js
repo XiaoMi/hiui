@@ -6,7 +6,7 @@ import _ from 'lodash'
 
 import { depreactedPropsCompat } from '../_util'
 import FormContext from './FormContext'
-import { FILEDS_INIT, FILEDS_UPDATE } from './FormReducer'
+import { FILEDS_INIT, FILEDS_UPDATE, FILEDS_REMOVE } from './FormReducer'
 import * as HIUI from '../'
 
 // 指定子元素位置
@@ -29,7 +29,7 @@ const getItemPosition = (itemPosition) => {
 }
 
 const FormItem = (props) => {
-  const { formProps, formState, internalValuesChange, listname, _type, _Immutable } = useContext(FormContext)
+  const { formProps, internalValuesChange, listname, _type, _Immutable } = useContext(FormContext)
   const {
     children,
     label,
@@ -53,7 +53,6 @@ const FormItem = (props) => {
     }
   } = formProps || {}
   // 初始化FormItem的内容
-  const { fields } = formState
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
 
@@ -71,35 +70,31 @@ const FormItem = (props) => {
     setField(getItemfield())
   }, [propsField, name])
   // 更新
-  const updateField = useCallback(
-    (_value, triggerType) => {
-      const childrenFiled = {
-        value: _value,
-        ...updateFieldInfoToReducer()
-      }
-      const { field } = childrenFiled
-      if (field) {
-        const _fields = _.cloneDeep(_Immutable.current.currentStateFields())
-        _fields.forEach((item) => {
-          if (item.field === field) {
-            Object.assign(item, childrenFiled)
-          }
-        })
-        const allValues = {}
-        _fields.forEach((item) => {
-          const { field, value } = item
-          allValues[field] = value
-        })
-        _Immutable.current.setState({
-          type: FILEDS_UPDATE,
-          payload: _fields
-        })
-        triggerType === 'onChange' && internalValuesChange({ [field]: _value }, allValues)
-      }
-    },
-    [props, internalValuesChange]
-  )
-
+  const updateField = (_value, triggerType) => {
+    const childrenFiled = {
+      value: _value,
+      ...updateFieldInfoToReducer()
+    }
+    const { field } = childrenFiled
+    if (field) {
+      const _fields = _.cloneDeep(_Immutable.current.currentStateFields())
+      _fields.forEach((item) => {
+        if (item.field === field) {
+          Object.assign(item, childrenFiled)
+        }
+      })
+      const allValues = {}
+      _fields.forEach((item) => {
+        const { field, value } = item
+        allValues[field] = value
+      })
+      _Immutable.current.setState({
+        type: FILEDS_UPDATE,
+        payload: _fields
+      })
+      triggerType === 'onChange' && internalValuesChange({ [field]: _value }, allValues)
+    }
+  }
   const resetValidate = useCallback((value = '') => {
     // 清空数据
     setValue(value)
@@ -186,19 +181,16 @@ const FormItem = (props) => {
   })
 
   // 对字段的操作
-  const handleField = useCallback(
-    (triggerType, currentValue) => {
-      // 同步数据 reducer
-      updateField(currentValue, triggerType)
-      const rules = getRules()
-      const hasTriggerType = rules.some((rule) => {
-        const { trigger = '' } = rule
-        return trigger.includes(triggerType)
-      })
-      hasTriggerType && validate(triggerType, '', currentValue)
-    },
-    [fields, formState, field, updateField, validate]
-  )
+  const handleField = (triggerType, currentValue) => {
+    // 同步数据 reducer
+    updateField(currentValue, triggerType)
+    const rules = getRules()
+    const hasTriggerType = rules.some((rule) => {
+      const { trigger = '' } = rule
+      return trigger.includes(triggerType)
+    })
+    hasTriggerType && validate(triggerType, '', currentValue)
+  }
 
   const labelWidth = useCallback(() => {
     const labelWidth = props.labelWidth || formProps.labelWidth
@@ -227,12 +219,21 @@ const FormItem = (props) => {
     setValue(value)
     handleField(eventName, value)
   }
+  useEffect(() => {
+    return () => {
+      _type !== 'list' &&
+        _Immutable.current.setState({
+          type: FILEDS_REMOVE,
+          payload: field
+        })
+    }
+  }, [])
   // jsx渲染方式
   const renderChildren = () => {
     let _value = value
     const _fields = _Immutable.current.currentStateFields()
     const _field = _type === 'list' ? getItemfield() : field
-    console.log('_fields_fields_fields', _fields, listItemValue)
+
     const isExist = _fields.some((item) => {
       return item.field === _field
     })
@@ -241,7 +242,6 @@ const FormItem = (props) => {
       if (_type === 'list' && listItemValue) {
         _value = typeof listItemValue[name] !== 'undefined' ? listItemValue[name] : listItemValue
       }
-      console.log('_value', _value, field)
       _Immutable.current.setState({
         type: FILEDS_INIT,
         payload: {

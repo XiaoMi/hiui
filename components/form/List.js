@@ -1,4 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
+import _ from 'lodash'
 import FormContext from './FormContext'
 import { FILEDS_REMOVE, FILEDS_INIT_LIST, FILEDS_UPDATE_LIST } from './FormReducer'
 const List = (props) => {
@@ -6,7 +7,11 @@ const List = (props) => {
   const { children, name } = props
   const [listCount, setListCount] = useState([])
   const { listValues } = formState
-
+  const listValuesRef = useRef()
+  if (!_.isEqual(listValues, listValuesRef.current)) {
+    listValuesRef.current = listValues
+    setListCount([])
+  }
   useEffect(() => {
     // init listName
     _Immutable.current.setState({ type: FILEDS_INIT_LIST, payload: name })
@@ -19,10 +24,12 @@ const List = (props) => {
           })
       })
   }, [])
-
   // manage default value
   useEffect(() => {
     const { listValues } = _Immutable.current.currentState()
+    listCount.forEach((item) => {
+      _Immutable.current.setState({ type: FILEDS_REMOVE, payload: item.field })
+    })
     const cachelistCount = []
     const values = listValues[name] ? listValues[name] : []
     values.forEach((value, index) => {
@@ -60,7 +67,6 @@ const List = (props) => {
   }
   return (
     <div>
-      {console.log('listCount', listCount)}
       <FormContext.Provider value={{ ...useContext(FormContext), _type: 'list', listname: name }}>
         {children(listCount, { add, remove })}
       </FormContext.Provider>
