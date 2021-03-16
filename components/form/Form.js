@@ -1,8 +1,8 @@
-import React, { useEffect, useCallback, useReducer, forwardRef, useRef, useImperativeHandle } from 'react'
+import React, { useCallback, useReducer, forwardRef, useRef, useImperativeHandle } from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-import Immutable, { FILEDS_UPDATE, FILEDS_UPDATE_LIST } from './FormReducer'
+import Immutable, { FILEDS_UPDATE, FILEDS_UPDATE_LIST, FILEDS_UPDATE_STATE, FILEDS_REMOVE_LIST } from './FormReducer'
 import FormContext from './FormContext'
 import { transformValues } from './utils'
 
@@ -38,11 +38,12 @@ const InternalForm = (props) => {
     ...props
   })
 
-  const { fields, listNames, listValues } = state
+  const { fields, listNames, listValues } = _Immutable.current.currentState()
   // 用户手动设置表单数据
   const setFieldsValue = useCallback(
     (values) => {
       const _fields = _Immutable.current.currentStateFields()
+      const { listNames, listValues } = _Immutable.current.currentState()
       _fields.forEach((item) => {
         const { field } = item
         // eslint-disable-next-line no-prototype-builtins
@@ -52,7 +53,7 @@ const InternalForm = (props) => {
           item.setValue(value)
         }
       })
-      dispatch({
+      _Immutable.current.setState({
         type: FILEDS_UPDATE,
         payload: _fields.filter((item) => {
           return item._type !== 'list'
@@ -60,19 +61,23 @@ const InternalForm = (props) => {
       })
       // 处理 list value
       Object.keys(values).forEach((key) => {
-        listNames.includes(key) &&
-          dispatch({
+        if (listNames.includes(key)) {
+          _Immutable.current.setState({ type: FILEDS_REMOVE_LIST, payload: key })
+          _Immutable.current.setState({
             type: FILEDS_UPDATE_LIST,
             payload: Object.assign({}, { ...listValues }, { [key]: values[key] })
           })
+        }
       })
+      dispatch({ type: FILEDS_UPDATE_STATE })
     },
-    [fields, listValues]
+    [fields, listValues, listNames]
   )
   // 转换值的输出
   const internalValuesChange = useCallback(
     (changeValues, allValues) => {
-      const _transformValues = transformValues(allValues, _Immutable.current.currentStateFields())
+      const fields = _Immutable.current.currentStateFields()
+      const _transformValues = transformValues(allValues, fields)
       const _changeValues = _.cloneDeep(changeValues)
 
       Object.keys(changeValues).forEach((changeValuesKey) => {
@@ -114,7 +119,8 @@ const InternalForm = (props) => {
         childrenField.value = value
         childrenField.resetValidate(value)
       })
-      dispatch({ type: FILEDS_UPDATE, payload: _fields })
+      _Immutable.current.setState({ type: FILEDS_UPDATE, payload: _fields })
+      dispatch({ type: FILEDS_UPDATE_STATE })
       cb instanceof Function && cb()
       // 比较耗性能
       internalValuesChange(changeValues, Object.assign({}, { ...cacheallValues }, { ...changeValues }))

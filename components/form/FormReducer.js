@@ -7,32 +7,18 @@ export const FILEDS_UPDATE_VALUE = 'FILEDS_UPDATE_VALUE'
 export const FILEDS_REMOVE = 'FILEDS_REMOVE'
 export const FILEDS_INIT_LIST = 'FILEDS_INIT_LIST'
 export const FILEDS_UPDATE_LIST = 'FILEDS_UPDATE_LIST'
+export const FILEDS_REMOVE_LIST = 'FILEDS_REMOVE_LIST'
+export const FILEDS_UPDATE_STATE = 'FILEDS_UPDATE_STATE'
 export default class Immutable {
   constructor() {
     this.state = {}
     this.SyncState = { fields: [], listNames: [], listValues: {} }
   }
 
-  FormReducer = (_state, action) => {
-    const state = this.SyncState
+  FormReducer = (state, action) => {
     switch (action.type) {
-      case FILEDS_UPDATE:
-        this.SyncState.fields = [...action.payload]
-        return Object.assign({}, { ...state }, { fields: [...action.payload] })
-      case FILEDS_REMOVE:
-        const _fields = state.fields.filter((item) => {
-          return action.payload !== item.field && action.payload !== item.propsField
-        })
-        this.SyncState = Object.assign({}, { ...state }, { fields: _fields })
-        return this.state
-      case FILEDS_INIT_LIST:
-        const { listNames } = state
-        !listNames.includes(action.payload) && listNames.push(action.payload)
-        this.SyncState = Object.assign({}, { ...state }, { listNames: listNames })
-        return this.state
-      case FILEDS_UPDATE_LIST:
-        this.SyncState = Object.assign({}, { ...state }, { listValues: action.payload })
-        return this.state
+      case FILEDS_UPDATE_STATE:
+        return this.SyncState
       default:
         this.SyncState = state
         return state
@@ -44,10 +30,39 @@ export default class Immutable {
     switch (action.type) {
       case FILEDS_INIT:
         const { fields } = SyncState
+        console.log('FILEDS_INIT', fields, action.payload, SyncState)
         const initfields = [...fields].filter((item) => {
           return action.payload.field !== item.field
         })
         this.SyncState = Object.assign({}, { ...SyncState }, { fields: initfields.concat(action.payload) })
+        return this.SyncState
+      case FILEDS_REMOVE:
+        const _fields = SyncState.fields.filter((item) => {
+          return action.payload !== item.field && action.payload !== item.propsField
+        })
+        this.SyncState = _.cloneDeep(Object.assign({}, { ...SyncState }, { fields: _fields }))
+        return this.SyncState
+      case FILEDS_REMOVE_LIST:
+        const notIncludesListFields = SyncState.fields.filter((item) => {
+          return action.payload !== item.listname
+        })
+        console.log('notIncludesListFields', notIncludesListFields)
+        this.SyncState.fields = notIncludesListFields
+        if (this.SyncState.listValues[action.payload]) {
+          this.SyncState.listValues[action.payload] = []
+        }
+        return this.SyncState
+      case FILEDS_UPDATE:
+        this.SyncState = Object.assign({}, { ...SyncState }, { fields: [...action.payload] })
+        return this.SyncState
+      case FILEDS_INIT_LIST:
+        const { listNames } = SyncState
+        console.log('FILEDS_INIT_LIST', action.payload)
+        !listNames.includes(action.payload) && listNames.push(action.payload)
+        this.SyncState = Object.assign({}, { ...SyncState }, { listNames: listNames })
+        return this.SyncState
+      case FILEDS_UPDATE_LIST:
+        this.SyncState = Object.assign({}, { ...SyncState }, { listValues: action.payload })
         return this.SyncState
       default:
         this.SyncState = SyncState
@@ -57,5 +72,9 @@ export default class Immutable {
 
   currentStateFields() {
     return _.cloneDeep(this.SyncState.fields)
+  }
+
+  currentState() {
+    return _.cloneDeep(this.SyncState)
   }
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCallback, useLayoutEffect } from 'react'
+import React, { useContext, useState, useEffect, useCallback } from 'react'
 import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
@@ -6,7 +6,7 @@ import _ from 'lodash'
 
 import { depreactedPropsCompat } from '../_util'
 import FormContext from './FormContext'
-import { FILEDS_INIT, FILEDS_UPDATE, FILEDS_REMOVE } from './FormReducer'
+import { FILEDS_INIT, FILEDS_UPDATE } from './FormReducer'
 import * as HIUI from '../'
 
 // 指定子元素位置
@@ -29,7 +29,7 @@ const getItemPosition = (itemPosition) => {
 }
 
 const FormItem = (props) => {
-  const { formProps, formState, dispatch, internalValuesChange, listname, _type, _Immutable } = useContext(FormContext)
+  const { formProps, formState, internalValuesChange, listname, _type, _Immutable } = useContext(FormContext)
   const {
     children,
     label,
@@ -69,7 +69,7 @@ const FormItem = (props) => {
   const [validating, setValidating] = useState(false)
   useEffect(() => {
     setField(getItemfield())
-  }, [propsField])
+  }, [propsField, name])
   // 更新
   const updateField = useCallback(
     (_value, triggerType) => {
@@ -77,12 +77,11 @@ const FormItem = (props) => {
         value: _value,
         ...updateFieldInfoToReducer()
       }
-
-      if (childrenFiled.field) {
+      const { field } = childrenFiled
+      if (field) {
         const _fields = _.cloneDeep(_Immutable.current.currentStateFields())
-
         _fields.forEach((item) => {
-          if (item.field === childrenFiled.field) {
+          if (item.field === field) {
             Object.assign(item, childrenFiled)
           }
         })
@@ -91,15 +90,14 @@ const FormItem = (props) => {
           const { field, value } = item
           allValues[field] = value
         })
-        console.log('数据更新', _fields)
-        dispatch({
+        _Immutable.current.setState({
           type: FILEDS_UPDATE,
           payload: _fields
         })
         triggerType === 'onChange' && internalValuesChange({ [field]: _value }, allValues)
       }
     },
-    [fields, formState, internalValuesChange]
+    [props, internalValuesChange]
   )
 
   const resetValidate = useCallback((value = '') => {
@@ -116,7 +114,7 @@ const FormItem = (props) => {
 
     formRules = formRules ? formRules[field] : []
     return [].concat(selfRules || formRules || [])
-  }, [props, formProps, required])
+  }, [props, formProps, required, field])
   // 过滤含有该trigger触发方式的rules
   const getFilteredRule = useCallback((trigger) => {
     const rules = getRules()
@@ -125,33 +123,36 @@ const FormItem = (props) => {
     })
   })
   // 父级调用
-  const validate = useCallback((trigger, cb, currentValue) => {
-    const triggerRules = getFilteredRule(trigger)
-    if (!triggerRules || triggerRules.length === 0) {
-      if (cb instanceof Function) {
-        cb()
-      }
-      return true
-    }
-    const rules = getRules()
-    const validator = new AsyncValidator({
-      [field]: rules
-    })
-    const model = { [field]: currentValue }
-    validator.validate(
-      model,
-      {
-        firstFields: true
-      },
-      (errors) => {
-        setError(errors ? errors[0].message : '')
-        setValidating(false)
+  const validate = useCallback(
+    (trigger, cb, currentValue) => {
+      const triggerRules = getFilteredRule(trigger)
+      if (!triggerRules || triggerRules.length === 0) {
         if (cb instanceof Function) {
-          cb(errors)
+          cb()
         }
+        return true
       }
-    )
-  })
+      const rules = getRules()
+      const validator = new AsyncValidator({
+        [field]: rules
+      })
+      const model = { [field]: currentValue }
+      validator.validate(
+        model,
+        {
+          firstFields: true
+        },
+        (errors) => {
+          setError(errors ? errors[0].message : '')
+          setValidating(false)
+          if (cb instanceof Function) {
+            cb(errors)
+          }
+        }
+      )
+    },
+    [props]
+  )
 
   const updateFieldInfoToReducer = () => {
     return {
@@ -196,7 +197,7 @@ const FormItem = (props) => {
       })
       hasTriggerType && validate(triggerType, '', currentValue)
     },
-    [fields, formState]
+    [fields, formState, field, updateField, validate]
   )
 
   const labelWidth = useCallback(() => {
@@ -230,31 +231,34 @@ const FormItem = (props) => {
   const renderChildren = () => {
     let _value = value
     const _fields = _Immutable.current.currentStateFields()
+    const _field = _type === 'list' ? getItemfield() : field
+    console.log('_fields_fields_fields', _fields, listItemValue)
     const isExist = _fields.some((item) => {
-      return item.field === field
+      return item.field === _field
     })
-    if (field && !isExist) {
-      _value = initialValues && initialValues[field] ? initialValues[field] : ''
+    if (_field && !isExist) {
+      _value = initialValues && initialValues[field] ? initialValues[_field] : ''
       if (_type === 'list' && listItemValue) {
         _value = typeof listItemValue[name] !== 'undefined' ? listItemValue[name] : listItemValue
       }
+      console.log('_value', _value, field)
       _Immutable.current.setState({
         type: FILEDS_INIT,
         payload: {
           value: _value,
-          ...updateFieldInfoToReducer()
+          ...updateFieldInfoToReducer(),
+          field: _field
         }
       })
+      updateField(_value)
     }
+
     const { component, componentProps } = props
-    if (_type === 'list') {
-      const _fields = _.cloneDeep(fields)
-      _fields.forEach((item) => {
-        if (item.field === field) {
-          _value = item.value
-        }
-      })
-    }
+    _fields.forEach((item) => {
+      if (item.field === _field) {
+        _value = item.value
+      }
+    })
     // 对ScheamaForm表单Item进行特殊处理
     if (_type === 'SchemaForm' && component) {
       if (HIUI[component]) {
@@ -300,6 +304,7 @@ const FormItem = (props) => {
   obj['hi-form-item--required'] = isRequired() || required
   const _labelWidth = labelWidth()
   const contentWidth = formProps.labelPlacement === 'top' ? '100%' : `calc(100% - ${_labelWidth}px)`
+
   return (
     <div className={classNames('hi-form-item', className, obj)} style={style} key={field}>
       {label || label === '' ? (

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useLayoutEffect } from 'react'
+import React, { useRef, useLayoutEffect } from 'react'
 import Form from './index'
 import Input from '../input'
 const FormItem = Form.Item
@@ -7,7 +7,6 @@ const MasterDataScheme = () => {
   const basicForm = useRef()
 
   useLayoutEffect(() => {
-    console.log('MasterDataScheme', '数据更新')
     basicForm.current.setFieldsValue({ productCode: '1', productName: 'aaa' })
   }, [])
 

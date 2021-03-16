@@ -1,20 +1,19 @@
 import React, { useContext, useState, useEffect } from 'react'
-
 import FormContext from './FormContext'
 import { FILEDS_REMOVE, FILEDS_INIT_LIST, FILEDS_UPDATE_LIST } from './FormReducer'
 const List = (props) => {
-  const { dispatch, formState, initialValues } = useContext(FormContext)
+  const { formState, initialValues, _Immutable } = useContext(FormContext)
   const { children, name } = props
   const [listCount, setListCount] = useState([])
   const { listValues } = formState
 
   useEffect(() => {
     // init listName
-    dispatch({ type: FILEDS_INIT_LIST, payload: name })
+    _Immutable.current.setState({ type: FILEDS_INIT_LIST, payload: name })
     initialValues &&
       Object.keys(initialValues).forEach((key) => {
         key === name &&
-          dispatch({
+          _Immutable.current.setState({
             type: FILEDS_UPDATE_LIST,
             payload: Object.assign({}, { ...listValues }, { [key]: initialValues[key] })
           })
@@ -23,6 +22,7 @@ const List = (props) => {
 
   // manage default value
   useEffect(() => {
+    const { listValues } = _Immutable.current.currentState()
     const cachelistCount = []
     const values = listValues[name] ? listValues[name] : []
     values.forEach((value, index) => {
@@ -56,10 +56,11 @@ const List = (props) => {
       return item.field !== fieldItem.field
     })
     setListCount(_listCount)
-    dispatch({ type: FILEDS_REMOVE, payload: fieldItem.field })
+    _Immutable.current.setState({ type: FILEDS_REMOVE, payload: fieldItem.field })
   }
   return (
     <div>
+      {console.log('listCount', listCount)}
       <FormContext.Provider value={{ ...useContext(FormContext), _type: 'list', listname: name }}>
         {children(listCount, { add, remove })}
       </FormContext.Provider>

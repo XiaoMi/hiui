@@ -29,8 +29,7 @@ const code = [
         this.form = React.createRef()
       }
       componentDidMount() {
-        console.log('this.form.current', this.form.current)
-        this.form.current && this.form.current.setFieldsValue({ productCode: '1', productName: 'aaa' })
+        this.form.current && this.form.current.setFieldsValue({ productCode: 'SF3423421232', productName: '红米 K40' })
       }
       render (){
         const FormItem = Form.Item
@@ -38,20 +37,19 @@ const code = [
         const FormReset = Form.Reset
         const {formData} = this.state
         return (
-          <Form labelWidth='70' labelPlacement='left' ref={this.form}>
-            {console.log('render')}
+          <Form labelWidth='100' labelPlacement='left' ref={this.form}>
             <FormItem required={true} label="产品编码" field="productCode">
               <Input placeholder="请输入" />
             </FormItem>
             <FormItem required={true} label="产品名称" field="productName">
               <Input placeholder="请输入" />
             </FormItem>
-            <FormItem required={true} label="产品名称" field="productName">
+            <FormItem label="" field="productName">
             <FormSubmit type='primary' 
-            onClick={(values,errors)=>{
-              console.log('Get form value:',values,errors)}
-            }
-            >提交</FormSubmit>
+              onClick={(values,errors)=>{
+                console.log('Get form value:',values,errors)}
+              }
+              >提交</FormSubmit>
             </FormItem>
           </Form>
         )

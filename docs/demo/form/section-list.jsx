@@ -407,7 +407,7 @@ const code = [
                     this.form.current.setFieldsValue({
                       testList:[
                         {
-                          first: "123",
+                          first: ['3'],
                           last: "rrr"
                         }]
                     })
