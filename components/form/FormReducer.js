@@ -33,7 +33,7 @@ export default class Immutable {
         const initfields = [...fields].filter((item) => {
           return action.payload.field !== item.field
         })
-        this.SyncState = Object.assign({}, { ...SyncState }, { fields: initfields.concat(action.payload) })
+        this.SyncState = _.cloneDeep(Object.assign({}, { ...SyncState }, { fields: initfields.concat(action.payload) }))
         return this.SyncState
       case FILEDS_REMOVE:
         const _fields = SyncState.fields.filter((item) => {
@@ -51,15 +51,15 @@ export default class Immutable {
         }
         return this.SyncState
       case FILEDS_UPDATE:
-        this.SyncState = Object.assign({}, { ...SyncState }, { fields: [...action.payload] })
+        this.SyncState = _.cloneDeep(Object.assign({}, { ...SyncState }, { fields: [...action.payload] }))
         return this.SyncState
       case FILEDS_INIT_LIST:
         const { listNames } = SyncState
         !listNames.includes(action.payload) && listNames.push(action.payload)
-        this.SyncState = Object.assign({}, { ...SyncState }, { listNames: listNames })
+        this.SyncState = _.cloneDeep(Object.assign({}, { ...SyncState }, { listNames: listNames }))
         return this.SyncState
       case FILEDS_UPDATE_LIST:
-        this.SyncState = Object.assign({}, { ...SyncState }, { listValues: action.payload })
+        this.SyncState = _.cloneDeep(Object.assign({}, { ...SyncState }, { listValues: action.payload }))
         return this.SyncState
       default:
         this.SyncState = SyncState

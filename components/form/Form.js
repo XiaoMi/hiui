@@ -71,7 +71,7 @@ const InternalForm = (props) => {
       })
       dispatch({ type: FILEDS_UPDATE_STATE })
     },
-    [fields, listValues, listNames]
+    [fields, listValues, listNames, _Immutable]
   )
   // 转换值的输出
   const internalValuesChange = useCallback(
@@ -115,6 +115,7 @@ const InternalForm = (props) => {
         allValues[changeFieldVal] = value
         item.value = value
         item.setValue(value)
+        item.resetValidate(value)
       })
       _Immutable.current.setState({
         type: FILEDS_UPDATE,
@@ -123,7 +124,7 @@ const InternalForm = (props) => {
         })
       })
       // 处理 list value
-      Object.keys(initialValues).forEach((key) => {
+      Object.keys(initialValues || {}).forEach((key) => {
         if (listNames.includes(key)) {
           _Immutable.current.setState({ type: FILEDS_REMOVE_LIST, payload: key })
           _Immutable.current.setState({
@@ -137,7 +138,7 @@ const InternalForm = (props) => {
       // 比较耗性能
       onValuesChange && onValuesChange(changeValues, changeValues)
     },
-    [fields, initialValues, onValuesChange, internalValuesChange, listNames]
+    [fields, initialValues, onValuesChange, internalValuesChange, listNames, _Immutable]
   )
   // 对整个表单进行校验
   const validate = useCallback(
@@ -175,7 +176,7 @@ const InternalForm = (props) => {
 
       cb && cb(transformValues(values, _fields), errors)
     },
-    [fields]
+    [fields, _Immutable]
   )
 
   const validateField = useCallback(
@@ -201,7 +202,7 @@ const InternalForm = (props) => {
         value
       )
     },
-    [fields]
+    [fields, _Immutable]
   )
   useImperativeHandle(formRef, () => ({
     resetValidates,
