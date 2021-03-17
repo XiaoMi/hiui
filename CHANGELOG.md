@@ -1,6 +1,8 @@
 # 更新日志
 
 # 3.5.1
+- 修复 `Modal` 组件 confirm 方法传入 className 属性无效问题 [#1584](https://github.com/XiaoMi/hiui/issues/1584)
+- 修复 `Modal` 组件 closeable 属性无效问题 [#1645](https://github.com/XiaoMi/hiui/issues/1645)
 - 修复 `Form` 组件 setFieldsValue 方式调用显示异常问题 [#1642](https://github.com/XiaoMi/hiui/issues/1642)
 - 修复 `Table` 组件 data值为带正负符号的数字类型字符串时，无法进行求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
 
