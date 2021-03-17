@@ -38,7 +38,8 @@ const InternalModalComp = ({
   destroyOnClose,
   localeDatas,
   foucsElementOnClose = null,
-  theme
+  theme,
+  closeable: propCloseable = true
 }) => {
   // TODO: 整体可以抽成一个 hooks 供 modal 和 drawer 复用
   const defaultContainer = useRef(false)
@@ -48,7 +49,10 @@ const InternalModalComp = ({
 
   const focusedElementBeforeOpenModal = useRef(null)
   const modalRef = useRef(null)
-
+  const [closeable, setCloseable] = useState(propCloseable)
+  useEffect(() => {
+    setCloseable(closeable)
+  }, [propCloseable])
   const trapTabKey = useCallback((e) => {
     // Find all focusable children
     let focusableElements = modalRef.current.querySelectorAll(focusableElementsString)
@@ -155,15 +159,17 @@ const InternalModalComp = ({
                 })}
               >
                 {title}
-                <Icon
-                  name={'close'}
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => {
-                    if (onCancel) {
-                      onCancel()
-                    }
-                  }}
-                />
+                {closeable && (
+                  <Icon
+                    name={'close'}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      if (onCancel) {
+                        onCancel()
+                      }
+                    }}
+                  />
+                )}
               </div>
               <div className={`${PREFIX}__content`}>{children}</div>
               {footer !== null && (
@@ -217,11 +223,21 @@ const confirmIconMap = {
   info: { name: 'info-circle', color: '#4284F5' }
 }
 
-const confirm = ({ onConfirm, onCancel, title = '提示', content, type = 'default', confirmText, cancelText }) => {
+const confirm = ({
+  onConfirm,
+  onCancel,
+  title = '提示',
+  content,
+  type = 'default',
+  confirmText,
+  cancelText,
+  className
+}) => {
   const confirmContainer = document.createElement('div')
 
   document.body.appendChild(confirmContainer)
   const modal = React.createElement(ModalComp, {
+    className,
     container: confirmContainer,
     title,
     width: 480,
