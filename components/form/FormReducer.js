@@ -30,7 +30,6 @@ export default class Immutable {
     switch (action.type) {
       case FILEDS_INIT:
         const { fields } = SyncState
-        console.log('FILEDS_INIT', fields, action.payload, SyncState)
         const initfields = [...fields].filter((item) => {
           return action.payload.field !== item.field
         })
@@ -46,7 +45,6 @@ export default class Immutable {
         const notIncludesListFields = SyncState.fields.filter((item) => {
           return action.payload !== item.listname
         })
-        console.log('notIncludesListFields', notIncludesListFields)
         this.SyncState.fields = notIncludesListFields
         if (this.SyncState.listValues[action.payload]) {
           this.SyncState.listValues[action.payload] = []
@@ -57,7 +55,6 @@ export default class Immutable {
         return this.SyncState
       case FILEDS_INIT_LIST:
         const { listNames } = SyncState
-        console.log('FILEDS_INIT_LIST', action.payload)
         !listNames.includes(action.payload) && listNames.push(action.payload)
         this.SyncState = Object.assign({}, { ...SyncState }, { listNames: listNames })
         return this.SyncState

@@ -98,20 +98,21 @@ const InternalForm = (props) => {
   const resetValidates = useCallback(
     (cb, resetNames, toDefault) => {
       const changeValues = {}
-      const cacheallValues = {}
+      const allValues = {}
       let _fields = _Immutable.current.currentStateFields()
       const { listNames, listValues } = _Immutable.current.currentState()
-      _fields.forEach((item) => {
-        const { field, value } = item
-        cacheallValues[field] = value
-      })
-
       _fields = _fields.filter((childrenField) => {
         return Array.isArray(resetNames) ? resetNames.includes(childrenField.field) : true
       })
+
       _fields.forEach((item) => {
-        const { field } = item
-        const value = toDefault && initialValues && initialValues[field] ? initialValues[field] : ''
+        const { field, listname } = item
+        const changeFieldkey = listname || field
+        const isToDefault = toDefault && initialValues && typeof initialValues[changeFieldkey] !== 'undefined'
+        const value = isToDefault ? initialValues[field] : ''
+        const changeFieldVal = isToDefault ? initialValues[changeFieldkey] : ''
+        changeValues[changeFieldkey] = changeFieldVal
+        allValues[changeFieldVal] = value
         item.value = value
         item.setValue(value)
       })
@@ -134,7 +135,7 @@ const InternalForm = (props) => {
       dispatch({ type: FILEDS_UPDATE_STATE })
       cb instanceof Function && cb()
       // 比较耗性能
-      internalValuesChange(changeValues, Object.assign({}, { ...cacheallValues }, { ...changeValues }))
+      onValuesChange && onValuesChange(changeValues, changeValues)
     },
     [fields, initialValues, onValuesChange, internalValuesChange, listNames]
   )

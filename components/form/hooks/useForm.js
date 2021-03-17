@@ -20,7 +20,7 @@ const useForm = () => {
     [current]
   )
   const setFieldsValue = useCallback(
-    values => {
+    (values) => {
       formRef.current.setFieldsValue(values)
     },
     [current]
