@@ -1,8 +1,8 @@
-import React, { useEffect, useCallback, useReducer, forwardRef, useRef } from 'react'
+import React, { useCallback, useReducer, forwardRef, useRef, useImperativeHandle } from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-import Immutable, { FILEDS_UPDATE, FILEDS_UPDATE_LIST } from './FormReducer'
+import Immutable, { FILEDS_UPDATE, FILEDS_UPDATE_LIST, FILEDS_UPDATE_STATE, FILEDS_REMOVE_LIST } from './FormReducer'
 import FormContext from './FormContext'
 import { transformValues } from './utils'
 
@@ -24,7 +24,7 @@ const InternalForm = (props) => {
     children,
     className,
     style,
-    innerRef: formRef,
+    innerRef: formRef = useRef(),
     initialValues,
     onValuesChange,
     updateFormSchema,
@@ -38,11 +38,12 @@ const InternalForm = (props) => {
     ...props
   })
 
-  const { fields, listNames, listValues } = state
+  const { fields, listNames, listValues } = _Immutable.current.currentState()
   // 用户手动设置表单数据
   const setFieldsValue = useCallback(
     (values) => {
       const _fields = _Immutable.current.currentStateFields()
+      const { listNames, listValues } = _Immutable.current.currentState()
       _fields.forEach((item) => {
         const { field } = item
         // eslint-disable-next-line no-prototype-builtins
@@ -52,7 +53,7 @@ const InternalForm = (props) => {
           item.setValue(value)
         }
       })
-      dispatch({
+      _Immutable.current.setState({
         type: FILEDS_UPDATE,
         payload: _fields.filter((item) => {
           return item._type !== 'list'
@@ -60,18 +61,22 @@ const InternalForm = (props) => {
       })
       // 处理 list value
       Object.keys(values).forEach((key) => {
-        listNames.includes(key) &&
-          dispatch({
+        if (listNames.includes(key)) {
+          _Immutable.current.setState({ type: FILEDS_REMOVE_LIST, payload: key })
+          _Immutable.current.setState({
             type: FILEDS_UPDATE_LIST,
             payload: Object.assign({}, { ...listValues }, { [key]: values[key] })
           })
+        }
       })
+      dispatch({ type: FILEDS_UPDATE_STATE })
     },
-    [fields, listValues]
+    [fields, listValues, listNames, _Immutable]
   )
   // 转换值的输出
   const internalValuesChange = useCallback(
     (changeValues, allValues) => {
+      const fields = _Immutable.current.currentStateFields()
       const _transformValues = transformValues(allValues, fields)
       const _changeValues = _.cloneDeep(changeValues)
 
@@ -93,40 +98,54 @@ const InternalForm = (props) => {
   const resetValidates = useCallback(
     (cb, resetNames, toDefault) => {
       const changeValues = {}
-      const cacheallValues = {}
-      let _fields = _.cloneDeep(fields)
-      fields.forEach((item) => {
-        const { field, value } = item
-        cacheallValues[field] = value
-      })
-
+      const allValues = {}
+      let _fields = _Immutable.current.currentStateFields()
+      const { listNames, listValues } = _Immutable.current.currentState()
       _fields = _fields.filter((childrenField) => {
         return Array.isArray(resetNames) ? resetNames.includes(childrenField.field) : true
       })
 
-      _fields.forEach((childrenField) => {
-        const value =
-          toDefault && initialValues && initialValues[childrenField.field] ? initialValues[childrenField.field] : ''
-        if (!_.isEqual(childrenField.value, value)) {
-          changeValues[childrenField.field] = value
-        }
-
-        childrenField.value = value
-        childrenField.resetValidate(value)
+      _fields.forEach((item) => {
+        const { field, listname } = item
+        const changeFieldkey = listname || field
+        const isToDefault = toDefault && initialValues && typeof initialValues[changeFieldkey] !== 'undefined'
+        const value = isToDefault ? initialValues[field] : ''
+        const changeFieldVal = isToDefault ? initialValues[changeFieldkey] : ''
+        changeValues[changeFieldkey] = changeFieldVal
+        allValues[changeFieldVal] = value
+        item.value = value
+        item.setValue(value)
+        item.resetValidate(value)
       })
-      dispatch({ type: FILEDS_UPDATE, payload: _fields })
+      _Immutable.current.setState({
+        type: FILEDS_UPDATE,
+        payload: _fields.filter((item) => {
+          return item._type !== 'list'
+        })
+      })
+      // 处理 list value
+      Object.keys(initialValues || {}).forEach((key) => {
+        if (listNames.includes(key)) {
+          _Immutable.current.setState({ type: FILEDS_REMOVE_LIST, payload: key })
+          _Immutable.current.setState({
+            type: FILEDS_UPDATE_LIST,
+            payload: Object.assign({}, { ...listValues }, { [key]: initialValues[key] })
+          })
+        }
+      })
+      dispatch({ type: FILEDS_UPDATE_STATE })
       cb instanceof Function && cb()
       // 比较耗性能
-      internalValuesChange(changeValues, Object.assign({}, { ...cacheallValues }, { ...changeValues }))
+      onValuesChange && onValuesChange(changeValues, changeValues)
     },
-    [fields, initialValues, onValuesChange, internalValuesChange]
+    [fields, initialValues, onValuesChange, internalValuesChange, listNames, _Immutable]
   )
   // 对整个表单进行校验
   const validate = useCallback(
     (cb, validateNames) => {
       const values = {}
       let errors = {}
-
+      const fields = _.cloneDeep(_Immutable.current.currentStateFields())
       if (fields.length === 0 && cb) {
         cb(values, errors)
         return
@@ -157,12 +176,13 @@ const InternalForm = (props) => {
 
       cb && cb(transformValues(values, _fields), errors)
     },
-    [fields]
+    [fields, _Immutable]
   )
 
   const validateField = useCallback(
     (key, cb) => {
       let value
+      const fields = _.cloneDeep(_Immutable.current.currentStateFields())
       const field = fields.filter((fieldChild) => {
         if (fieldChild.field === key) {
           value = fieldChild.value
@@ -182,22 +202,15 @@ const InternalForm = (props) => {
         value
       )
     },
-    [fields]
+    [fields, _Immutable]
   )
-
-  useEffect(() => {
-    if (!formRef) {
-      return
-    }
-    formRef.current = {
-      resetValidates,
-      validateField,
-      validate,
-      setFieldsValue,
-      updateFormSchema
-    }
-  }, [fields])
-
+  useImperativeHandle(formRef, () => ({
+    resetValidates,
+    validateField,
+    validate,
+    setFieldsValue,
+    updateFormSchema
+  }))
   return (
     <form
       className={classNames('hi-form', className, getClassNames(props))}

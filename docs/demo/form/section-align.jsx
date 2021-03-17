@@ -27,36 +27,30 @@ const code = [
         }
         this.form = React.createRef()
       }
+      componentDidMount() {
+        this.form.current && this.form.current.setFieldsValue({ productCode: 'SF3423421232', productName: '红米 K40' })
+      }
       render (){
         const FormItem = Form.Item
         const FormSubmit = Form.Submit
         const FormReset = Form.Reset
         const {formData} = this.state
         return (
-          <Form labelWidth='70' labelPlacement='left'>
-            <FormItem label='手机号' field='phone'>
-              <Input placeholder={'请输入'} />
+          <Form labelWidth='100' labelPlacement='left' ref={this.form}>
+            <FormItem required={true} label="产品编码" field="productCode">
+              <Input placeholder="请输入" />
             </FormItem>
-            <FormItem label='门店'>
-              <Select
-                data={[
-                  { title:'电视', id:'3' },
-                  { title:'手机', id:'2' },
-                  { title:'笔记本', id:'4'},
-                  { title:'生活周边', id:'5' },
-                  { title:'办公', id:'6' },
-                ]}
-                type="multiple"
-                searchable
-                showCheckAll
-                placeholder='请选择'
-                emptyContent='无匹配数据'
-                onChange={item => {
-                  console.log('多选结果', item)
-                }}
-              />
+            <FormItem required={true} label="产品名称" field="productName">
+              <Input placeholder="请输入" />
             </FormItem>
-      </Form>
+            <FormItem label="" field="productName">
+            <FormSubmit type='primary' 
+              onClick={(values,errors)=>{
+                console.log('Get form value:',values,errors)}
+              }
+              >提交</FormSubmit>
+            </FormItem>
+          </Form>
         )
       }
     }`,
