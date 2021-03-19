@@ -3,21 +3,23 @@ import { render, unmountComponentAtNode, createPortal } from 'react-dom'
 import Container from './container'
 import Loading from './loading'
 import __DEV__ from './env'
-import { _prefix } from './loading'
+import { _prefix, LoadingProps } from './loading';
 
 const prefixCls = _prefix
-const loadingInstanceCache = {}
+const loadingInstanceCache: {
+  [key: string]: () => void
+} = {}
+
 const wrapperCls = `.${prefixCls}-wrapper`
 
-const open = ({ key, text }: LoadingApiProps = {}) => {
-  const ref = createRef()
+const open = ({ key, label }: LoadingApiProps = {}) => {
   let mountNode: HTMLDivElement | null = document.createElement('div')
-  render(<LoadingFull ref={ref} text={text} />, mountNode)
+  const ref = createRef<any>()
+
+  render(<LoadingFull ref={ref} label={label} />, mountNode)
 
   const close = () => {
-    if (ref.current) {
-      ref.current.close()
-    }
+    ref.current?.$close()
 
     setTimeout(() => {
       unmountComponentAtNode(mountNode as Element)
@@ -42,16 +44,16 @@ const close = (key: string) => {
 }
 
 interface LoadingFullProps {
-  text?: string
+  label?: string
 }
 
 interface LoadingApiProps extends LoadingFullProps {
   key?: string
 }
 
-const LoadingFull = forwardRef<React.FC, LoadingFullProps>(({ text }, ref) => {
+const LoadingFull = forwardRef<null, LoadingProps>(({ label }, ref) => {
   const wrapper = Container.get(wrapperCls) as HTMLElement
-  const children = <Loading ref={ref} full text={text} />
+  const children = <Loading ref={ref} full label={label} />
 
   return createPortal(children, wrapper)
 })

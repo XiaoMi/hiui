@@ -23,7 +23,16 @@ export const Template = class Demo extends React.Component {
   render() {
     return (
       <div>
-        <Loading label="Loading..."/>
+        <Loading label="Loading..." delay={500}>
+          <div style={{ width: 500,  height: 300, background: '#ccc', marginLeft: 100, padding: 20, border: '20px solid #000' }}/>
+        </Loading>
+        <div>
+          <button onClick={() => {
+            Loading.open()
+          }}>
+            API
+          </button>
+        </div>
       </div>
     );
   }

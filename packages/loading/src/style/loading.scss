@@ -42,6 +42,13 @@
     }
   }
 
+
+  &__wrapper {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+  }
+
   $base: #263238;
   $lite: #fff;
   $brand: palette('primary');
