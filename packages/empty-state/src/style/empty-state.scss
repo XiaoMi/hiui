@@ -1,0 +1,7 @@
+@import "../../../core-css/index.scss";
+
+.#{$component-prefix}-empty-state {
+  @include flex(center, center, column);
+
+  color: var('--color-primary');
+}
