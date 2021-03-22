@@ -6,6 +6,7 @@
 - 修复 `Form` 组件 setFieldsValue 方式调用显示异常问题 [#1642](https://github.com/XiaoMi/hiui/issues/1642)
 - 修复 `Form` 组件中包裹多个 List 组件，值未展示问题 [#1649](https://github.com/XiaoMi/hiui/issues/1649)
 - 修复 `Table` 组件 data值为带正负符号的数字类型字符串时，无法进行求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
+- 修复 `Tabs` 组件 panes 数据源异步变更，导致Tabs.Pane重渲染时，底部高亮线偏移的问题 [#1651](https://github.com/XiaoMi/hiui/issues/1651)
 
 ## 3.5.0
 
