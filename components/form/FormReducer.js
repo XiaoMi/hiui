@@ -59,7 +59,14 @@ export default class Immutable {
         this.SyncState = _.cloneDeep(Object.assign({}, { ...SyncState }, { listNames: listNames }))
         return this.SyncState
       case FILEDS_UPDATE_LIST:
-        this.SyncState = _.cloneDeep(Object.assign({}, { ...SyncState }, { listValues: action.payload }))
+        const { listValues = {} } = this.SyncState
+        this.SyncState = _.cloneDeep(
+          Object.assign(
+            {},
+            { ...SyncState },
+            { listValues: Object.assign({}, { ...listValues }, { ...action.payload }) }
+          )
+        )
         return this.SyncState
       default:
         this.SyncState = SyncState

@@ -43,7 +43,7 @@ const InternalForm = (props) => {
   const setFieldsValue = useCallback(
     (values) => {
       const _fields = _Immutable.current.currentStateFields()
-      const { listNames, listValues } = _Immutable.current.currentState()
+      const { listNames } = _Immutable.current.currentState()
       _fields.forEach((item) => {
         const { field } = item
         // eslint-disable-next-line no-prototype-builtins
@@ -65,7 +65,7 @@ const InternalForm = (props) => {
           _Immutable.current.setState({ type: FILEDS_REMOVE_LIST, payload: key })
           _Immutable.current.setState({
             type: FILEDS_UPDATE_LIST,
-            payload: Object.assign({}, { ...listValues }, { [key]: values[key] })
+            payload: { [key]: values[key] }
           })
         }
       })
