@@ -3,7 +3,7 @@ import DocViewer from '../../../libs/doc-viewer'
 import Button from '../../../components/button'
 import Modal from '../../../components/modal'
 const prefix = 'modal-btn'
-const desc = '通过 footer 自定义底部的按钮，并执行对应自定义事件，通过 closeBtn 取消右上角关闭按钮'
+const desc = '通过 footer 自定义底部的按钮，并执行对应自定义事件，通过 closeable 取消右上角关闭按钮'
 
 const code = `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
@@ -27,7 +27,7 @@ class Demo extends React.Component {
         <Button type="primary" onClick={() => this.setState({visible: true})}>打开</Button>
         <Modal
           title="提示消息"
-          closeBtn={false}
+          closeable={false}
           visible={this.state.visible}
           onConfirm={()=>{console.log('自定义确定事件')}}
           onCancel={this.cancelEvent.bind(this)}
