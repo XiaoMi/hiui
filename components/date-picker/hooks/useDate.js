@@ -16,6 +16,7 @@ const useDate = ({ value, defaultValue, cacheDate, type, format, locale }) => {
     setOutDate(d)
     cacheDate.current = d
   }, [value, type])
+
   return [outDate, changeOutDate]
 }
 
