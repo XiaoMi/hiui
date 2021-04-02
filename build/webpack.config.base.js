@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const rehypePrism = require('@mapbox/rehype-prism')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const paths = require('./paths')
 
 const IS_GITHUB = process.env.DOC_ENV === 'github'
@@ -11,7 +12,7 @@ module.exports = {
     chunkFilename: '[name].chunk.js'
   },
   resolve: {
-    extensions: ['.web.js', '.js', '.jsx', '.json'],
+    extensions: ['.web.js', '.js', '.jsx', '.json', '.ts', '.tsx'],
     alias: {
       '@components': paths.components,
       '@libs': paths.siteLibs,
@@ -21,7 +22,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         use: [
           {
             loader: require.resolve('./stringReplace'),
@@ -33,7 +34,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env', '@babel/preset-react'],
+              presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
               plugins: ['@babel/plugin-proposal-class-properties']
             }
           }
@@ -103,6 +104,10 @@ module.exports = {
       inject: true,
       template: paths.siteTemplate,
       baseUrl: IS_GITHUB ? '/hiui' : ''
+    }),
+    new ForkTsCheckerWebpackPlugin({
+      async: false,
+      tsconfig: `${paths.basePath}/tsconfig.json`
     })
   ]
 }
