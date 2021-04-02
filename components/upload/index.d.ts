@@ -1,9 +1,9 @@
 type FileItem = {
-  fileId: string
+  fileId?: string
   fileType: string
   name: string
   uploadState: 'success' | 'uploading' | 'error'
-  url: string
+  url?: string
 }
 interface Props {
   type?: 'default' | 'drag' | 'pictureCard' | 'avatar' | 'photo'
@@ -12,7 +12,7 @@ interface Props {
   tips?: string | JSX.Element,
   maxSize?: number
   maxCount?: number
-  uploadAction: string
+  uploadAction?: string
   data?: {
     [prop: string]: any
   }
