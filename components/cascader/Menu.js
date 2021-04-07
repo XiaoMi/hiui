@@ -85,7 +85,7 @@ const Menu = forwardRef(
                         currentDeep.current = _deep
                       }
                     }}
-                    key={optionValue + index}
+                    key={optionValue + option[labelKey]}
                   >
                     <span className={classNames(`hi-cascader-menu__item--label`)}>
                       {isFiltered && option.hightlight
