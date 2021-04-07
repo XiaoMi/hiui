@@ -36,7 +36,7 @@ const code = [
               {
                 label:'输入框',
                 field:'inputField',
-                rules:[{ min: 5, max: 16, message: '长度在 6 到 16 个字符', trigger: 'onBlur' }],
+                rules:{ min: 5, max: 16, message: '长度在 6 到 16 个字符', trigger: 'onBlur' },
                 component:'Input',
                 componentProps:{
                     placeholder:'schema',
@@ -143,7 +143,7 @@ const code = [
                   inputField: {
                     label:'输入框',
                     field:'inputField',
-                    rules:[{ min: 5, max: 16, message: '长度在 6 到 16 个字符', trigger: 'onBlur' }],
+                    rules:{ min: 5, max: 16, message: '长度在 6 到 16 个字符', trigger: 'onBlur' },
                     component:'SelectTree',
                     componentProps:{
                         placeholder:'请输入',
