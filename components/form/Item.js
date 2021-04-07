@@ -336,7 +336,6 @@ FormItem.propTypes = {
   field: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.number]),
   rules: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   required: PropTypes.bool,
-  label: PropTypes.string,
   labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   showColon: PropTypes.bool,
   className: PropTypes.string,

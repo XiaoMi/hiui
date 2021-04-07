@@ -122,7 +122,7 @@ const RangePanel = () => {
   }
 
   const onTimeChange = (date, cIndex) => {
-    const _innerDates = _.cloneDeep(calRenderDates)
+    const _innerDates = _.cloneDeep([range.start, range.end])
     _innerDates[cIndex] = date
     onPick(_innerDates, true)
   }
@@ -283,7 +283,7 @@ const RangePanel = () => {
         <React.Fragment>
           <div className="hi-datepicker__mask" onClick={() => setShowRangeMask(false)} />
           <TimePanel
-            dates={calRenderDates}
+            dates={[range.start, range.end]}
             onTimeChange={onTimeChange}
             style={{
               position: 'absolute',
