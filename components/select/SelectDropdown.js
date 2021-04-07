@@ -240,11 +240,13 @@ const SelectDropdown = ({
     )
     renderGroup.push(label)
     filterGroupItem[transKeys(fieldNames, 'children')].forEach((item, index) => {
-      matchFilter(item) && renderGroup.push(normalItem(item, filterItemsIndex + '-' + index, true))
+      renderGroup.push(normalItem(item, filterItemsIndex + '-' + index, true))
     })
-    return renderGroup
+    // 无子节点情况下，不显示该分组
+    return renderGroup.filter((item) => !!item).length === 1 ? null : renderGroup
   }
   const normalItem = (item, filterItemsIndex, isChildItem) => {
+    if (!matchFilter(item)) return null
     matched++
     const _filterItemsIndex = filterItemsIndex
     const isSelected = itemSelected(item)
@@ -283,11 +285,9 @@ const SelectDropdown = ({
       >
         {filterItems &&
           filterItems.map((item, filterItemsIndex) => {
-            if (matchFilter(item)) {
-              return item[transKeys(fieldNames, 'children')]
-                ? groupItem(item, filterItemsIndex)
-                : normalItem(item, filterItemsIndex)
-            }
+            return item[transKeys(fieldNames, 'children')]
+              ? groupItem(item, filterItemsIndex)
+              : normalItem(item, filterItemsIndex)
           })}
         {matched === 0 && (
           <li

@@ -356,7 +356,6 @@ const InternalSelect = (props) => {
       if (typeof filterOption === 'function') {
         return shouldMatch || filterOption(keyword, item)
       }
-
       return (
         shouldMatch ||
         String(item[transKeys(fieldNames, 'id')] || '').includes(keyword) ||
