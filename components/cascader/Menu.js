@@ -84,7 +84,7 @@ class Menu extends Component {
                       !option.disabled && onHoverClick(optionValues, hasChildren)
                     }
                   }}
-                  key={optionValue + index}
+                  key={optionValue + option[labelKey]}
                 >
                   <span className='hi-cascader-menu__item--label'>
                     { option[labelKey] }
@@ -106,7 +106,6 @@ class Menu extends Component {
 
   render () {
     const menus = this.renderMenus()
-
     return menus
   }
 }
