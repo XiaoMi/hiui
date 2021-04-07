@@ -7,6 +7,7 @@
 - 修复 `Form` 组件中包裹多个 List 组件，值未展示问题 [#1649](https://github.com/XiaoMi/hiui/issues/1649)
 - 修复 `Table` 组件 data值为带正负符号的数字类型字符串时，无法进行求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
 - 修复 `Tabs` 组件 panes 数据源异步变更，导致Tabs.Pane重渲染时，底部高亮线偏移的问题 [#1651](https://github.com/XiaoMi/hiui/issues/1651)
+- 优化 `Tabs` 组件 在 type 为 editable 时右上角的加号的显示隐藏随 onAdd 方法自动显示隐藏 [#1662](https://github.com/XiaoMi/hiui/issues/1662)
 - 修复 `Select` 组件在分组形态下，搜索功能无效 [#1655](https://github.com/XiaoMi/hiui/issues/1655)
 
 ## 3.5.0

@@ -48,10 +48,16 @@ const Tabs = ({
   const [dragged, setDragged] = useState()
   const [over, setOver] = useState()
   const [deletetabId, setDeletetabId] = useState()
+  const [checkEditable, setCheckEditable] = useState(editable && type === 'editable')
+
   const latestActiveId = useRef(activeId)
 
   const inkRef = useRef()
   const childRef = useRef()
+
+  useEffect(() => {
+    setCheckEditable(editable && type === 'editable')
+  }, [editable, type])
 
   useEffect(() => {
     if (deletetabId && latestActiveId.current === activeId) {
@@ -100,12 +106,10 @@ const Tabs = ({
   // 计算激活状态下选中横线
   const pseudoPosition = useCallback(
     (index) => {
-      const parentNode = containRef.current
-      if (!parentNode.childNodes.length) {
-        return
-      }
-      const child = parentNode.childNodes[index]
-      if (child) {
+      const parentNode = containRef.current || {}
+      const { childNodes = [] } = parentNode
+      if (childNodes[index]) {
+        const child = childNodes[index]
         const { width } = child.getBoundingClientRect()
         const ink = inkRef.current
         if (placement === 'horizontal' && ink) {
@@ -163,8 +167,6 @@ const Tabs = ({
     },
     [editable, activeId]
   )
-
-  const checkEditable = useCallback(() => editable && type === 'editable', [editable])
 
   const renderTabContent = useCallback(
     (child, index) => {
@@ -407,7 +409,7 @@ const Tabs = ({
                       activeId={activeId}
                       type={type}
                       showTabItems={showTabItems}
-                      editable={editableFlag}
+                      editable={checkEditable}
                       handleClick={handleClick}
                       deleteTab={deleteTab}
                       dragStart={dragStart}
@@ -454,7 +456,7 @@ const Tabs = ({
               />
             )}
           </div>
-          {editableFlag && !canScroll && (
+          {checkEditable && onAdd && !canScroll && (
             <div className={`${prefixCls}__add`}>
               <Icon onClick={addTab} name="plus" />
             </div>
@@ -477,8 +479,6 @@ const Tabs = ({
       [`${prefixCls}--scroll`]: canScroll
     }
   )
-
-  const editableFlag = checkEditable()
 
   const animateDone = (tabId) => {
     Tooltip.close(`tab-${tabId}`)
@@ -530,7 +530,6 @@ Tabs.defaultProps = {
   onDrop: noop,
   onDropEnd: noop,
   onDragStart: noop,
-  onAdd: noop,
   onDelete: noop,
   draggable: false
 }
