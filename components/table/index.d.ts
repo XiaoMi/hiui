@@ -65,7 +65,7 @@ interface Props {
   resizable?: boolean
   standard?: boolean
   emptyContent?: string | JSX.Element
-  onHeaderRow: HeaderRowFunc
+  onHeaderRow?: HeaderRowFunc
   columns: ColumnItem[]
   data: object[]
   style?: CSSProperties
