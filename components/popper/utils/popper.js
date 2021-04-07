@@ -8,10 +8,10 @@ export default class Popper {
    * @argument {Element} element 要检测的元素
    * @returns {Object} 包含宽高信息的对象
    */
-  getOuterSizes = element => {
+  getOuterSizes = (element) => {
     // 注：这里会访问 DOM
-    let _display = element.style.display
-    let _visibility = element.style.visibility
+    const _display = element.style.display
+    const _visibility = element.style.visibility
     element.style.display = 'block'
     element.style.visibility = 'hidden'
 
@@ -30,6 +30,7 @@ export default class Popper {
     element.style.visibility = _visibility
     return result
   }
+
   /**
    * 获得 popper 的偏移量
    * @method
@@ -40,11 +41,7 @@ export default class Popper {
    * @returns {Object} 包含将应用于 popper 的位移信息的对象
    */
   getOffsets = (popper, reference, position, placement) => {
-    const {
-      getOffsetRectRelativeToCustomParent,
-      getOuterSizes,
-      getOffsetParent
-    } = this
+    const { getOffsetRectRelativeToCustomParent, getOuterSizes, getOffsetParent } = this
     // 获取前缀
     placement = placement.split('-')[0]
     var popperOffsets = {}
@@ -57,11 +54,7 @@ export default class Popper {
     //
     // 获取相关元素的位置
     //
-    var referenceOffsets = getOffsetRectRelativeToCustomParent(
-      reference,
-      getOffsetParent(popper),
-      isParentFixed
-    )
+    var referenceOffsets = getOffsetRectRelativeToCustomParent(reference, getOffsetParent(popper), isParentFixed)
 
     //
     // 获取 popper 的大小
@@ -74,10 +67,7 @@ export default class Popper {
     if (['right', 'left'].indexOf(placement) !== -1) {
       // 如果在水平方向，应当和相关元素垂直居中对齐
       // top 应当为相关元素的 top 加上二者的高度差的一半，这样才能保证垂直居中对齐
-      popperOffsets.top =
-        referenceOffsets.top +
-        referenceOffsets.height / 2 -
-        popperRect.height / 2
+      popperOffsets.top = referenceOffsets.top + referenceOffsets.height / 2 - popperRect.height / 2
       if (placement === 'left') {
         // 如果在左边，则 left 应为相关元素的 left 减去 popper 的宽度
         popperOffsets.left = referenceOffsets.left - popperRect.width
@@ -88,10 +78,7 @@ export default class Popper {
     } else {
       // 如果在垂直方向，应当和相关元素水平居中对齐
       // left 应当为相关元素的 left 加上二者的宽度差的一半
-      popperOffsets.left =
-        referenceOffsets.left +
-        referenceOffsets.width / 2 -
-        popperRect.width / 2
+      popperOffsets.left = referenceOffsets.left + referenceOffsets.width / 2 - popperRect.width / 2
       if (placement === 'top') {
         // 如果在上边，则 top 应当为相关元素的 top 减去 popper 的高度
         popperOffsets.top = referenceOffsets.top - popperRect.height
@@ -119,23 +106,20 @@ export default class Popper {
    * @argument {Object} styles - 包含样式信息的对象
    */
   setStyle = (element, styles) => {
-    function isNumeric (n) {
+    function isNumeric(n) {
       // 是否是数字
       return n !== '' && !isNaN(parseFloat(n)) && isFinite(n)
     }
     Object.keys(styles).forEach(function (prop) {
       var unit = ''
       // 为如下的属性增加单位
-      if (
-        ['width', 'height', 'top', 'right', 'bottom', 'left'].indexOf(prop) !==
-          -1 &&
-        isNumeric(styles[prop])
-      ) {
+      if (['width', 'height', 'top', 'right', 'bottom', 'left'].indexOf(prop) !== -1 && isNumeric(styles[prop])) {
         unit = 'px'
       }
       element.style[prop] = styles[prop] + unit
     })
   }
+
   /**
    * 初始化更新 popper 位置时用到的事件监听器
    * @method
@@ -155,25 +139,23 @@ export default class Popper {
     if (boundariesElement !== 'window') {
       var target = this.getScrollParent(element) // 获取相关元素可滚动的父级
       // 这里可能是 `body` 或 `documentElement`（Firefox上），等价于要监听根元素
-      if (
-        target === root.document.body ||
-        target === root.document.documentElement
-      ) {
+      if (target === root.document.body || target === root.document.documentElement) {
         target = root
       }
       // 监听滚动事件
       target.addEventListener('scroll', this.scrollCallback)
     }
   }
-  getNodeName (element) {
+
+  getNodeName(element) {
     return element ? (element.nodeName || '').toLowerCase() : null
   }
-  isBody = element => {
+
+  isBody = (element) => {
     const { getNodeName } = this
-    return element
-      ? ['html', 'body', '#document'].includes(getNodeName(element))
-      : true
+    return element ? ['html', 'body', '#document'].includes(getNodeName(element)) : true
   }
+
   /**
    * 返回给定元素用来计算滚动的父元素
    * @function
@@ -181,7 +163,7 @@ export default class Popper {
    * @argument {Element} element
    * @returns {Element} scroll parent
    */
-  getScrollParent = element => {
+  getScrollParent = (element) => {
     // return document.body
 
     const { getStyleComputedProperty, getScrollParent, getNodeName } = this
@@ -207,15 +189,9 @@ export default class Popper {
 
     // Firefox 要求我们也要检查 `-x` 以及 `-y`
     if (
-      ['scroll', 'auto'].indexOf(
-        getStyleComputedProperty(parent, 'overflow')
-      ) !== -1 ||
-      ['scroll', 'auto'].indexOf(
-        getStyleComputedProperty(parent, 'overflow-x')
-      ) !== -1 ||
-      ['scroll', 'auto'].indexOf(
-        getStyleComputedProperty(parent, 'overflow-y')
-      ) !== -1
+      ['scroll', 'auto'].indexOf(getStyleComputedProperty(parent, 'overflow')) !== -1 ||
+      ['scroll', 'auto'].indexOf(getStyleComputedProperty(parent, 'overflow-x')) !== -1 ||
+      ['scroll', 'auto'].indexOf(getStyleComputedProperty(parent, 'overflow-y')) !== -1
     ) {
       // 如果检测到的 scrollParent 是 body，我们将对其父元素做一次额外的检测
       // 这样在 Chrome 系的浏览器中会得到 body，其他情况下会得到 documentElement
@@ -233,7 +209,7 @@ export default class Popper {
    * @argument {Element} customContainer 自定义的容器
    * @returns {Boolean}
    */
-  isFixed = element => {
+  isFixed = (element) => {
     const { getStyleComputedProperty, isFixed, getNodeName } = this
 
     if (['html', 'body', '#document'].includes(getNodeName(element))) {
@@ -247,6 +223,7 @@ export default class Popper {
     // 判断父元素是否固定
     return element.parentNode ? isFixed(element.parentNode) : element
   }
+
   /**
    * 获取给定元素的 CSS 计算属性
    * @function
@@ -275,13 +252,12 @@ export default class Popper {
     return isParentFixed ? 'fixed' : 'absolute'
   }
 
-  getOffsetParent = element => {
+  getOffsetParent = (element) => {
     // 注：这里会访问 DOM
     var offsetParent = element.offsetParent
-    return offsetParent === root.document.body || !offsetParent
-      ? root.document.documentElement
-      : offsetParent
+    return offsetParent === root.document.body || !offsetParent ? root.document.documentElement : offsetParent
   }
+
   getOffsetRectRelativeToCustomParent = (element, parent, fixed) => {
     const { getScrollParent, getBoundingClientRect } = this
     var elementRect = getBoundingClientRect(element)
@@ -306,6 +282,7 @@ export default class Popper {
     }
     return rect
   }
+
   /**
    * Get bounding client rect of given element
    * 获取给定元素的边界
@@ -314,15 +291,14 @@ export default class Popper {
    * @param {HTMLElement} element
    * @return {Object} client rect
    */
-  getBoundingClientRect = element => {
+  getBoundingClientRect = (element) => {
     var rect = element.getBoundingClientRect()
 
     // IE11以下
     var isIE = navigator.userAgent.indexOf('MSIE') !== -1
 
     // 修复 IE 的文档的边界 top 值总是 0 的bug
-    var rectTop =
-      isIE && element.tagName === 'HTML' ? -element.scrollTop : rect.top
+    var rectTop = isIE && element.tagName === 'HTML' ? -element.scrollTop : rect.top
 
     return {
       left: rect.left,
@@ -340,7 +316,7 @@ export default class Popper {
    * @memberof Popper
    * @access private
    */
-  removeEventListeners = element => {
+  removeEventListeners = (element) => {
     const { getScrollParent } = this
 
     // 注：这里会访问 DOM
@@ -349,10 +325,7 @@ export default class Popper {
     if (boundariesElement !== 'window') {
       // 如果边界元素不是窗口，说明还监听了滚动事件
       var target = getScrollParent(element)
-      if (
-        target === root.document.body ||
-        target === root.document.documentElement
-      ) {
+      if (target === root.document.body || target === root.document.documentElement) {
         target = root
       }
       // 移除滚动事件监听

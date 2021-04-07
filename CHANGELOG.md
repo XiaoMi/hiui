@@ -5,15 +5,16 @@
 - 修复 `Modal` 组件 closeable 属性无效问题 [#1645](https://github.com/XiaoMi/hiui/issues/1645)
 - 修复 `Form` 组件 setFieldsValue 方式调用显示异常问题 [#1642](https://github.com/XiaoMi/hiui/issues/1642)
 - 修复 `Form` 组件中包裹多个 List 组件，值未展示问题 [#1649](https://github.com/XiaoMi/hiui/issues/1649)
-- 修复 `Table` 组件 data值为带正负符号的数字类型字符串时，无法进行求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
+- 修复 `Table` 组件 data值为带正负符号的数字类型字符串时，无法进行求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
 - 修复 `Tabs` 组件 panes 数据源异步变更，导致Tabs.Pane重渲染时，底部高亮线偏移的问题 [#1651](https://github.com/XiaoMi/hiui/issues/1651)
+- 修复 `DatePicker` 组件 type 为 timeperiod 在受控时，选择完成时间后该组件内容显示为空 [#1653](https://github.com/XiaoMi/hiui/issues/1653)
 - 优化 `Tabs` 组件 在 type 为 editable 时右上角的加号的显示隐藏随 onAdd 方法自动显示隐藏 [#1662](https://github.com/XiaoMi/hiui/issues/1662)
 - 修复 `Select` 组件在分组形态下，搜索功能无效 [#1655](https://github.com/XiaoMi/hiui/issues/1655)
 
 ## 3.5.0
 
 - 新增 `Table` 组件 showColHighlight 方法 [#1602](https://github.com/XiaoMi/hiui/issues/1602)
-- 修复 `Table` 组件 列冻结无法展示求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
+- 修复 `Table` 组件列冻结无法展示求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
 - 新增 `Table` 组件 表格表头事件回调函数输出 [#1625](https://github.com/XiaoMi/hiui/issues/1625)
 - 新增 `Form` SchemaForm 中 component 属性接受 ReactNode，SchemaForm 新增 updateSchema 更新函数 [#1612](https://github.com/XiaoMi/hiui/issues/1612)
 - 新增 `DatePicker` onSelect 选择日期的回调函数 [#1592](https://github.com/XiaoMi/hiui/issues/1592)
@@ -27,7 +28,7 @@
 - 修复 `TimePicker` 时间范围选择，为空时无法选择打开弹窗时的当前值 [#1530](https://github.com/XiaoMi/hiui/issues/1530)
 - 修复 `Collapse`  onChange 属性未传入控制台报错问题 [#1580](https://github.com/XiaoMi/hiui/issues/1580)
 - 修复 `Select` 组件在异步多选时，关闭弹层下拉选项内容丢失问题 [#1578](https://github.com/XiaoMi/hiui/issues/1578)
-- 修复 `Table` 组件 data值为数字类型字符串时，无法进行求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
+- 修复 `Table` 组件 data值为数字类型字符串时，无法进行求和及平均值的问题 [#1616](https://github.com/XiaoMi/hiui/issues/1616)
   
 ## 3.4.0
 
