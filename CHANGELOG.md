@@ -11,6 +11,7 @@
 - 优化 `Tabs` 组件 在 type 为 editable 时右上角的加号的显示隐藏随 onAdd 方法自动显示隐藏 [#1662](https://github.com/XiaoMi/hiui/issues/1662)
 - 修复 `Select` 组件在分组形态下，搜索功能无效 [#1655](https://github.com/XiaoMi/hiui/issues/1655)
 - 修复 `DatePicker` type 为 daterange 时，且 showTime 为 true 选择时间显示异常 [#1640](https://github.com/XiaoMi/hiui/issues/1640)
+- 修复 `<Cascader />` id 为 Number 类型时导致节点重复添加问题[#1648](https://github.com/XiaoMi/hiui/issues/1648)
 
 ## 3.5.0
 
