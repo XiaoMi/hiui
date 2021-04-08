@@ -42,10 +42,10 @@ const compile = (modules) => {
     .pipe(gulp.dest(modules === false ? esDir : libDir))
 
   const js = gulp
-    .src(['components/**/*.@(js|jsx|ts|tsx)'])
+    .src(['components/**/*.@(js|jsx)'])
     .pipe(
       babel({
-        presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
+        presets: ['@babel/preset-env', '@babel/preset-react'],
         plugins: [['transform-remove-console', { exclude: ['error', 'warn'] }]]
       })
     )
@@ -65,7 +65,6 @@ const compile = (modules) => {
     .pipe(gulp.dest(modules === false ? esDir : libDir))
 
   const json = gulp.src(['components/**/*.@(json)']).pipe(gulp.dest(modules === false ? esDir : libDir))
-
   const dtsByfile = gulp.src(['components/**/*.@(d.ts)']).pipe(gulp.dest(modules === false ? esDir : libDir))
   const tsResult = gulp.src(['components/hi-request/*.@(ts)']).pipe(
     tsperset({
@@ -96,6 +95,7 @@ const compile = (modules) => {
   const hiRequestesDir = path.join(cwd, 'es', 'hi-request')
   const dts = tsResult.dts.pipe(gulp.dest(modules === false ? hiRequestesDir : hiRequestlibDir))
   const ts2js = tsResult.js.pipe(gulp.dest(modules === false ? hiRequestesDir : hiRequestlibDir))
+
   return merge2([sass, assets, js, json, dtsByfile, dts, ts2js])
 }
 
