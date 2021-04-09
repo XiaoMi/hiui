@@ -33,6 +33,7 @@ textarea.#{$input} {
   &.disabled {
     color: use-color('gray-50');
     background-color: use-color('gray-10');
+    cursor: not-allowed;
   }
 
   &::-webkit-input-placeholder {
@@ -90,6 +91,7 @@ textarea.#{$input} {
     &.disabled {
       color: use-color('gray-50');
       background-color: use-color('gray-10');
+      cursor: not-allowed;
     }
   }
 

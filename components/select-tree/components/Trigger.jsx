@@ -15,6 +15,7 @@ const Trigger = ({
   placeholder,
   valueRender,
   isFocus,
+  disabled,
   bordered
 }) => {
   return (
@@ -24,13 +25,14 @@ const Trigger = ({
         'hi-selecttree__input',
         {
           'hi-selecttree__input--focus': isFocus,
+          'hi-selecttree__input--disabled': disabled,
           bordered
         },
         type !== 'multiple' && 'hi-selecttree__input--single',
         selectedItems.length === 0 && 'hi-selecttree__input--placeholder'
       )}
       onClick={() => {
-        onTrigger()
+        !disabled && onTrigger()
       }}
     >
       <div className="hi-selecttree__selected-wrapper" ref={selectedItemsRef}>

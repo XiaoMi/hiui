@@ -110,7 +110,8 @@ class Input extends Component {
       'localeDatas',
       'append',
       'innerRef',
-      'clearable'
+      'clearable',
+      'bordered'
     ])
     return (
       <div
