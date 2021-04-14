@@ -108,15 +108,27 @@ const FormItem = (props) => {
     let formRules = formProps.rules
 
     formRules = formRules ? formRules[field] : []
-    return [].concat(selfRules || formRules || [])
+    // 修复 AsyncValidator 接收 jsx deepMerge 卡顿问题
+    // https://github.com/yiminghe/async-validator/blob/bc18bca1d9422911dc5ac3ce2a99599821534bd9/src/util.js#L220
+    const rulesArr = [].concat(selfRules || formRules || [])
+    rulesArr.forEach((item) => {
+      const { message } = item
+      if (React.isValidElement(message)) {
+        item.message = Object.assign({}, { ...message }, { _owner: null })
+      }
+    })
+    return rulesArr.concat()
   }, [props, formProps, required, field])
   // 过滤含有该trigger触发方式的rules
-  const getFilteredRule = useCallback((trigger) => {
-    const rules = getRules()
-    return rules.filter((rule) => {
-      return !rule.trigger || rule.trigger.indexOf(trigger) !== -1
-    })
-  })
+  const getFilteredRule = useCallback(
+    (trigger) => {
+      const rules = getRules()
+      return rules.filter((rule) => {
+        return !rule.trigger || rule.trigger.indexOf(trigger) !== -1
+      })
+    },
+    [getRules]
+  )
   // 父级调用
   const validate = useCallback(
     (trigger, cb, currentValue) => {
@@ -128,6 +140,7 @@ const FormItem = (props) => {
         return true
       }
       const rules = getRules()
+
       const validator = new AsyncValidator({
         [field]: rules
       })
@@ -178,7 +191,7 @@ const FormItem = (props) => {
       })
     }
     return isRequired
-  })
+  }, [getRules])
 
   // 对字段的操作
   const handleField = (triggerType, currentValue) => {
@@ -304,7 +317,6 @@ const FormItem = (props) => {
   obj['hi-form-item--required'] = isRequired() || required
   const _labelWidth = labelWidth()
   const contentWidth = formProps.labelPlacement === 'top' ? '100%' : `calc(100% - ${_labelWidth}px)`
-
   return (
     <div className={classNames('hi-form-item', className, obj)} style={style} key={field}>
       {label || label === '' ? (

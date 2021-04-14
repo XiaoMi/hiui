@@ -9,7 +9,7 @@ import Select from '../../../components/select'
 import Cascader from '../../../components/cascader'
 import DatePicker from '../../../components/date-picker'
 const prefix = 'form-check'
-const leftOptions = ['表单验证', '校验指定表单项', '填充表单', '表单验证快捷用法']
+const leftOptions = ['表单验证', '校验指定表单项', '动态修改校验规则', '动态填充表单', '表单验证快捷用法']
 
 const desc = [
   '对表单数据域进行交互',
@@ -87,7 +87,7 @@ const code = [
           rules: {
             name: {
               required: true,
-              message: <span style={{color: '#ccc'}}>请输入名称</span>,
+              message: 'dsd',
               trigger: 'onBlur,onChange'
             },
             region: {
@@ -218,7 +218,6 @@ const code = [
           },
           formData: '',
           countDown: 60,
-    
           codeDisabled: false
         }
         this.form = React.createRef()
@@ -391,7 +390,162 @@ const code = [
     }`
   },
   {
-    opt: ['填充表单'],
+    opt: ['动态修改校验规则'],
+    code: `import React from 'react'
+    import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
+    class Demo extends React.Component {  
+      constructor(props){
+        super(props)
+        this.state = {
+          formData : {
+            phone: '',
+            select:'3'
+          },
+          singleList: [
+            { title:'电视', id:'3', disabled: true },
+            { title:'手机', id:'2' },
+            { title:'笔记本', id:'4', disabled: true },
+            { title:'生活周边', id:'5' },
+            { title:'办公', id:'6' },
+          ],
+          
+        }
+        this.form = React.createRef()
+      }
+      render (){
+        const FormItem = Form.Item
+        const FormSubmit = Form.Submit
+        const FormReset = Form.Reset
+        const {formData,singleList} = this.state
+        const Row = Grid.Row
+        const Col = Grid.Col
+        const rules = {
+          phone:{
+            trigger: 'onChange',
+            type: 'number',
+            message: <span style={{color: '#ccc'}}>请输入名称</span>,
+            required: true 
+          },
+          phone1:{
+            trigger: 'onChange',
+            type: 'number',
+            message: 'dsd',
+            required: true 
+          },
+          phone2:{
+            trigger: 'onChange',
+            type: 'number',
+            message: 'dsd',
+            required: true 
+          },
+          phone3:{
+            trigger: 'onChange',
+            type: 'number',
+            message: 'dsd',
+            required: true 
+          },
+          phone4:{
+            trigger: 'onChange',
+            type: 'number',
+            message: 'dsd',
+            required: true 
+          },
+          phone5:{
+            trigger: 'onChange',
+            type: 'number',
+            message: 'dsd',
+            required: true 
+          },
+          phone6:{
+            trigger: 'onChange',
+            type: 'number',
+            required: true 
+          },
+          select:{
+            trigger: 'onChange',
+            type: 'number',
+            required: true 
+          }
+        }
+        return (
+          <Form 
+            labelWidth='80' 
+            labelPlacement='right' 
+            ref={this.form}
+            rules={rules}
+            initialValues={formData}>
+            <Row>
+            <Col>
+                <FormItem label='Input' field="phone" >
+                    <Input placeholder='请输入手机号' style={{ width: 200 }}
+                    />
+                </FormItem>
+                <FormItem label='Input' field="phone1" >
+                    <Input placeholder='请输入手机号' style={{ width: 200 }}
+                    />
+                </FormItem>
+                <FormItem label='Input' field="phone2" >
+                    <Input placeholder='请输入手机号' style={{ width: 200 }}
+                    />
+                </FormItem>
+                <FormItem label='Input' field="phone3" >
+                    <Input placeholder='请输入手机号' style={{ width: 200 }}
+                    />
+                </FormItem>
+                <FormItem label='Input' field="phone4" >
+                    <Input placeholder='请输入手机号' style={{ width: 200 }}
+                    />
+                </FormItem>
+                <FormItem label='Input' field="phone5" >
+                    <Input placeholder='请输入手机号' style={{ width: 200 }}
+                    />
+                </FormItem>
+                <FormItem label='Input' field="phone6" >
+                    <Input placeholder='请输入手机号' style={{ width: 200 }}
+                    />
+                </FormItem>
+            </Col>
+            <Col>
+                 <a href="#Props" style={{ margin: '0 8px',lineHeight:'32px' }}>
+                    Need Help?
+                </a>
+            </Col>
+          </Row>
+            <FormItem label='Select' field="select">
+                <Select
+                  type='single'
+                  clearable={false}
+                  style={{ width: 200 }}
+                  data={singleList}
+                  onChange={ids => {
+                      console.log('select ids',ids)
+                  }}
+            />
+            </FormItem>
+            <FormItem>
+             <FormSubmit type='primary' 
+              onClick={(values,errors)=>{
+                console.log('Get form value:',values,errors)}
+              }
+              >提交</FormSubmit>
+              <FormReset type='line' 
+                onClick={()=>{console.log('reset form')}}
+              >重置</FormReset>
+              <Button type="primary" appearance="link" onClick={()=>{
+                  console.log('动态填充表单')
+                  this.form.current.setFieldsValue({
+                    phone:'15652959628',
+                    select:'2'
+                  })
+              }}>fill Form</Button>
+            </FormItem>
+          </Form>
+        )
+      }
+    }`
+  },
+  {
+    opt: ['动态填充表单'],
     code: `import React from 'react'
     import { Form, Grid, Radio, Button, Input } from '@hi-ui/hiui'\n
     class Demo extends React.Component {  
@@ -474,7 +628,7 @@ const code = [
                 onClick={()=>{console.log('reset form')}}
               >重置</FormReset>
               <Button type="primary" appearance="link" onClick={()=>{
-                  console.log('填充表单')
+                  console.log('动态填充表单')
                   this.form.current.setFieldsValue({
                     phone:'15652959628',
                     select:'2'
