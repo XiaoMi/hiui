@@ -9,7 +9,7 @@ import Grid from '../../../components/grid'
 import Radio from '../../../components/radio'
 import Select from '../../../components/select'
 const prefix = 'form-static'
-const rightOptions = ['静默获取表单值', '静默校验表单', '顶对齐']
+const rightOptions = ['静默获取表单值', '静默校验表单']
 const desc = ['静默获取表单值：不触发校验', '静默校验表单: 触发校验, 但是页面中不显示错误信息']
 const code = [
   {
