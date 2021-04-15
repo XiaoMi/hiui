@@ -13,7 +13,7 @@ const InternalRequest = (type: HiRequestType | null, url: string | HiRequestOpti
   const _url = isHTTPLink(urlOption) ? urlOption : baseURL ? baseURL + urlOption : urlOption
   const _type = type || typeOption
 
-  const _options = Object.assign({}, options, { url: _url, responseType })
+  const _options = Object.assign({}, options, baseOptions, { url: _url, responseType })
 
   switch (_type) {
     case 'jsonp':

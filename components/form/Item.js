@@ -131,7 +131,14 @@ const FormItem = (props) => {
   )
   // 父级调用
   const validate = useCallback(
-    (trigger, cb, currentValue) => {
+    /**
+     * 触发Item校验
+     * @param {Sting} trigger 触发事件 在什么情况下触发 'onChange, onBlur'
+     * @param {Function} cb 自定义消息提示回调方法
+     * @param {Any} currentValue 校验值
+     * @param {Boolean} showError 静默检验，是否在界面中展示错误信息
+     */
+    (trigger, cb, currentValue, showError = true) => {
       const triggerRules = getFilteredRule(trigger)
       if (!triggerRules || triggerRules.length === 0) {
         if (cb instanceof Function) {
@@ -151,7 +158,7 @@ const FormItem = (props) => {
           firstFields: true
         },
         (errors) => {
-          setError(errors ? errors[0].message : '')
+          showError && setError(errors ? errors[0].message : '')
           setValidating(false)
           if (cb instanceof Function) {
             cb(errors)

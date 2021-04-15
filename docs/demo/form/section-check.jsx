@@ -149,7 +149,6 @@ const code = [
             <Col span={12}>
               <Form 
                 ref={this.form} 
-                model={form} 
                 rules={this.state.rules} 
                 labelWidth='80' 
                 labelPlacement='right'>
@@ -423,7 +422,7 @@ const code = [
           phone:{
             trigger: 'onChange',
             type: 'number',
-            message: <span style={{color: '#ccc'}}>请输入名称</span>,
+            message:'ddd',
             required: true 
           },
           phone1:{
