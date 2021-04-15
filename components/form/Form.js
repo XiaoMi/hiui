@@ -90,7 +90,7 @@ const InternalForm = (props) => {
         })
       })
 
-      onValuesChange && onValuesChange(_changeValues, _transformValues, getFieldsError())
+      onValuesChange && onValuesChange(_changeValues, _transformValues)
     },
     [onValuesChange, fields]
   )
@@ -136,7 +136,7 @@ const InternalForm = (props) => {
       dispatch({ type: FILEDS_UPDATE_STATE })
       cb instanceof Function && cb()
       // 比较耗性能
-      onValuesChange && onValuesChange(changeValues, changeValues, getFieldsError())
+      onValuesChange && onValuesChange(changeValues, changeValues)
     },
     [fields, initialValues, onValuesChange, internalValuesChange, listNames, _Immutable]
   )
