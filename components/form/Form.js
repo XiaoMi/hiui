@@ -140,9 +140,14 @@ const InternalForm = (props) => {
     },
     [fields, initialValues, onValuesChange, internalValuesChange, listNames, _Immutable]
   )
-  // 对整个表单进行校验
   const validate = useCallback(
-    (cb, validateNames) => {
+    /**
+     * 对整个表单进行校验
+     * @param {Function} cb callback: (fields: Object, errors: Object) => void
+     * @param {Array} validateNames fields:Array
+     * @param {Boolean} showError 静默检验，是否在界面中展示错误信息
+     */
+    (cb, validateNames, showError = true) => {
       const values = {}
       let errors = {}
       const fields = _.cloneDeep(_Immutable.current.currentStateFields())
@@ -169,12 +174,65 @@ const InternalForm = (props) => {
               errors[field] = { errors: errorsMsg }
             }
           },
-          value
+          value,
+          showError
         )
       })
       errors = Object.keys(errors).length === 0 ? null : errors
 
       cb && cb(transformValues(values, _fields), errors)
+    },
+    [fields, _Immutable]
+  )
+  // 错误信息 不触发校验
+  const getFieldsError = useCallback(
+    (validateNames) => {
+      const errors = {}
+      const fields = _.cloneDeep(_Immutable.current.currentStateFields())
+      const _fields = fields.filter((fieldChild) => {
+        const { field } = fieldChild
+        return Array.isArray(validateNames) ? validateNames.includes(field) : true
+      })
+
+      _fields.forEach((fieldChild) => {
+        const { field, value } = fieldChild
+        // 对指定的字段进行校验  其他字段过滤不校验
+        fieldChild.validate(
+          '',
+          (error) => {
+            if (error) {
+              const errorsMsg = error.map((err) => {
+                return err.message
+              })
+              errors[field] = { errors: errorsMsg }
+            }
+          },
+          value,
+          false
+        )
+      })
+      return Object.keys(errors).length === 0 ? null : errors
+    },
+    [fields, _Immutable]
+  )
+  // 静态获取表单数据，不触发数据校验
+  const getFieldsValue = useCallback(
+    (validateNames) => {
+      const values = {}
+      const fields = _.cloneDeep(_Immutable.current.currentStateFields())
+      if (fields.length === 0) {
+        return
+      }
+      fields
+        .filter((fieldChild) => {
+          const { field } = fieldChild
+          return Array.isArray(validateNames) ? validateNames.includes(field) : true
+        })
+        .forEach((item) => {
+          const { field, value } = item
+          values[field] = value
+        })
+      return values
     },
     [fields, _Immutable]
   )
@@ -209,6 +267,8 @@ const InternalForm = (props) => {
     validateField,
     validate,
     setFieldsValue,
+    getFieldsValue,
+    getFieldsError,
     updateFormSchema
   }))
   return (

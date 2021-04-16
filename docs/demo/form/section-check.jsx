@@ -149,7 +149,6 @@ const code = [
             <Col span={12}>
               <Form 
                 ref={this.form} 
-                model={form} 
                 rules={this.state.rules} 
                 labelWidth='80' 
                 labelPlacement='right'>
@@ -218,7 +217,6 @@ const code = [
           },
           formData: '',
           countDown: 60,
-    
           codeDisabled: false
         }
         this.form = React.createRef()

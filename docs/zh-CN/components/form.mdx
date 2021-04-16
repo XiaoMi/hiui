@@ -20,6 +20,12 @@ import DemoCheck from '../../demo/form/section-check.jsx'
 
 <DemoCheck />
 
+## 表单状态
+
+import DemoStatic from '../../demo/form/section-static.jsx'
+
+<DemoStatic />
+
 ## 字段嵌套
 
 import DemoField from '../../demo/form/section-field.jsx'
@@ -150,9 +156,11 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 | 方法名                                                                     | 说明                                                         |
 | -------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | validate(callback: (fields: Object, errors: Object) => void, fields:Array) | 对整个表单进行校验, 对应 [Form.Submit](#Form.Submit)中的 API |
-| validateField(fields: string, callback: errors => void)                    | 对指定表单字段进行校验                                       |
+| validateField(fields: []string, callback: errors => void)                    | 对指定表单字段进行校验                                       |
 | resetValidates(callback:() => void, fields:Array, toDefault:boolean)       | 重置整个表单的验证,对应 [Form.Reset](#Form.Reset)中的 API    |
 | setFieldsValue(field: Object)                                              | 设置表单的值，在异步获取的数据回显的时候，使用该方法         |
+| getFieldsValue( fields: Object ) => Object                                  | 获取一组字段名对应的 Values 返回为数组形式, 不传入 fields；默认返回全部信息, 不会触发表单校验    |
+| getFieldsError( fields: []string ) => Object                                  | 获取一组字段名对应的错误信息，返回为数组形式, 不传入 fields；默认返回全部信息   |
 | updateFormSchema( schemaData: {fileName: [SchemaItem](#SchemaItem) } ) => void                      | 当 **SchemaItem** 中对应的 **schema** 数据更新时，请调用该方法更新     |
 
 ## rules
