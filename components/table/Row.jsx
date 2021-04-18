@@ -4,8 +4,11 @@ import TableContext from './context'
 import classNames from 'classnames'
 import _ from 'lodash'
 import Checkbox from '../checkbox'
+import Loading from '../loading'
 import Icon from '../icon'
 import { flatTreeData, setDepth } from './util'
+import IconLoading from './LoadingIcon'
+import Expandcol from './Expandcol'
 
 const Row = ({
   rowData,
@@ -48,7 +51,6 @@ const Row = ({
   const _columns = _.cloneDeep(columns)
   const depthArray = []
   setDepth(_columns, 0, depthArray)
-
   let rowColumns = flatTreeData(_columns).filter((col) => col.isLast)
   if (isFixed === 'left') {
     rowColumns = leftFixedColumns
@@ -100,18 +102,22 @@ const Row = ({
       )}
       {expandedRender && (
         <td style={{ width: 50 }}>
-          <Icon
-            style={{ cursor: 'pointer' }}
-            name={expanded ? 'down' : 'right'}
-            onClick={() => {
-              if (_expanded === undefined) {
-                setExpanded(!expanded)
-              }
-              if (onExpand) {
-                onExpand(!expanded, rowData)
-              }
-            }}
-          />
+          {expanded !== 'loading' ? (
+            <Icon
+              style={{ cursor: 'pointer' }}
+              name={expanded ? 'down' : 'right'}
+              onClick={() => {
+                if (_expanded === undefined) {
+                  setExpanded(!expanded)
+                }
+                if (onExpand) {
+                  onExpand(!expanded, rowData)
+                }
+              }}
+            />
+          ) : (
+            <IconLoading />
+          )}
         </td>
       )}
 
@@ -141,7 +147,8 @@ const Row = ({
         {rowSelection && <td />}
         {/* 可展开内嵌显示 */}
         <td colSpan={columns.length + 1} style={{ color: '#666666' }}>
-          {expandedRender(rowData, index)}
+          <Expandcol rowData={rowData} index={index} expandedRender={expandedRender} setExpanded={setExpanded} />
+          {expanded === 'loading' && <Loading size="small" />}
         </td>
       </tr>
     )

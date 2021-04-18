@@ -50,7 +50,7 @@ interface Props {
   sticky?: boolean
   stickyTop?: number
   highlightedColKeys?: string[] | number[]
-  expandedRender?: (record: object, index: number) => JSX.Element
+  expandedRender?: (record: object, index: number) => JSX.Element | Promise
   maxHeight?: number
   fixedToColumn?: string | FixedOption
   pagination?: PaginationProps
