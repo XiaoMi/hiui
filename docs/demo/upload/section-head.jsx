@@ -14,7 +14,7 @@ class Demo extends React.Component {
         height={180}
         uploadAction= "http://www.mocky.io/v2/5dc3b4413000007600347501"
         headers={{name: 'mi'}}
-        params={{id:'uid',channel:'youpin'}}
+        data={{id:'uid',channel:'youpin'}}
         onChange = {(file, fileList, response) => {
           console.log('upload callback', file, fileList, response)
         }}

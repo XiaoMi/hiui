@@ -19,7 +19,7 @@ class Demo extends React.Component {
           console.log('remove callback', file, fileList, index)
           return new Promise((resolve, reject)=>resolve(true))
         }}
-        params={{id:'uid',channel:'youpin'}}
+        data={{id:'uid',channel:'youpin'}}
         name={'files[]'}
         defaultFileList={[
           {

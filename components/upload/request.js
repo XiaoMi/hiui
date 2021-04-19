@@ -50,6 +50,12 @@ export default function upload(option) {
       formData.append(key, option.data[key])
     })
   }
+  // 兼容 2.x params 属性
+  if (option.params) {
+    Object.keys(option.params).forEach((key) => {
+      formData.append(key, option.params[key])
+    })
+  }
 
   formData.append(option.name, option.file)
 

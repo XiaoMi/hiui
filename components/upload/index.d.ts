@@ -16,6 +16,9 @@ interface Props {
   data?: {
     [prop: string]: any
   }
+  params?: {
+    [prop: string]: any
+  }
   name?: string
   disabled?: boolean
   headers?: object
