@@ -12,10 +12,10 @@ import Icon from '@hi-ui/hiui/es/icon'
 class Demo extends React.Component {
   constructor(props) {
     super(props)
-    this.state={param:{id:'uid',channel:'youpin'}}
+    this.state={data:{id:'uid',channel:'youpin'}}
   }
   render () {
-    const param = this.state.param
+    const data = this.state.data
     return (
       <div>
         <Upload
@@ -26,7 +26,7 @@ class Demo extends React.Component {
           accept="image/png,image/jpg"
           headers={{name: 'mi'}}
           content='上传文件'
-          param={param}
+          data={data}
           name={'files[]'}
           onChange = {(file, fileList, response) => {
             console.log('upload callback', file, fileList, response)
@@ -51,7 +51,7 @@ class Demo extends React.Component {
           tips='仅支持 jpg/png 文件，且不超过 500kb'
           uploadAction= "http://www.mocky.io/v2/5dc3b4413000007600347501"
           content='上传文件'
-          params={{id:'uid',channel:'youpin'}}
+          data={{id:'uid',channel:'youpin'}}
           disabled={true}
         />
       )
@@ -65,10 +65,10 @@ class Demo extends React.Component {
   class Demo extends React.Component {
     constructor(props) {
       super(props)
-      this.state={param:{id:'uid',channel:'youpin'}}
+      this.state={data:{id:'uid',channel:'youpin'}}
     }
     render () {
-      const param = this.state.param
+      const data = this.state.data
       return (
         <div>
           <Upload
@@ -76,7 +76,7 @@ class Demo extends React.Component {
             tips='仅支持 jpg/png 文件，且不超过 500kb'
             uploadAction= "http://www.mocky.io/v2/5dc3b4413000007600347501"
             content='上传文件'
-            params={param}
+            params={data}
             name={'files[]'}
             onChange = {(file, fileList, response) => {
               console.log('upload callback', file, fileList, response)
