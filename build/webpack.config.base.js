@@ -6,7 +6,7 @@ const IS_GITHUB = process.env.DOC_ENV === 'github'
 
 module.exports = {
   output: {
-    publicPath: IS_GITHUB ? '/hiui/' : '/',
+    publicPath: IS_GITHUB ? '/hiui/v2' : '/',
     filename: '[name].js',
     chunkFilename: '[name].chunk.js'
   },
@@ -27,7 +27,7 @@ module.exports = {
             loader: require.resolve('./stringReplace'),
             options: {
               from: /<BASE_URL>/g,
-              to: IS_GITHUB ? '/hiui' : ''
+              to: IS_GITHUB ? '/hiui/v2' : ''
             }
           },
           {
@@ -69,7 +69,7 @@ module.exports = {
             loader: require.resolve('./stringReplace'),
             options: {
               from: /<BASE_URL>/g,
-              to: IS_GITHUB ? '/hiui' : ''
+              to: IS_GITHUB ? '/hiui/v2' : ''
             }
           },
           {
@@ -88,7 +88,7 @@ module.exports = {
             loader: require.resolve('./stringReplace'),
             options: {
               from: /<BASE_URL>/g,
-              to: IS_GITHUB ? '/hiui' : ''
+              to: IS_GITHUB ? '/hiui/v2' : ''
             }
           },
           {
@@ -102,7 +102,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: paths.siteTemplate,
-      baseUrl: IS_GITHUB ? '/hiui' : ''
+      baseUrl: IS_GITHUB ? '/hiui/v2' : ''
     })
   ]
 }
