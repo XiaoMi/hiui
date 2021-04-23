@@ -146,7 +146,7 @@ const Tabs = ({
       onAdd(children.length + 1)
       childRef.current = children.length
     }
-  }, [children, editable])
+  }, [children, editable, onAdd])
 
   const deleteTab = useCallback(
     (e, tabId, index, item) => {
@@ -165,7 +165,7 @@ const Tabs = ({
         }
       }
     },
-    [editable, activeId]
+    [editable, activeId, onDelete]
   )
 
   const renderTabContent = useCallback(
@@ -457,8 +457,8 @@ const Tabs = ({
             )}
           </div>
           {checkEditable && onAdd && !canScroll && (
-            <div className={`${prefixCls}__add`}>
-              <Icon onClick={addTab} name="plus" />
+            <div className={`${prefixCls}__add`} onClick={addTab}>
+              <Icon name="plus" />
             </div>
           )}
         </div>
