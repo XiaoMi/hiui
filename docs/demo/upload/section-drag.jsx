@@ -17,7 +17,7 @@ class Demo extends React.Component {
         }}
         tips='仅支持 jpg/png 文件，且不超过 500kb'
         hasBorder={true}
-        params={{id:'uid',channel:'youpin'}}
+        data={{id:'uid',channel:'youpin'}}
         name={'files[]'}
         multiple={true}
       />
