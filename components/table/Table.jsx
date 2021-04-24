@@ -46,6 +46,7 @@ const Table = ({
   sticky: _ceiling,
   stickyTop = 0,
   setting,
+  rowExpandable,
   // *********
   sortCol,
   setSortCol,
@@ -172,6 +173,7 @@ const Table = ({
   return (
     <TableContext.Provider
       value={{
+        rowExpandable,
         setting,
         firstRowRef,
         prefix,
