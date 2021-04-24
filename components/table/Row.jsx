@@ -44,7 +44,7 @@ const Row = ({
     hoverRow,
     setHoverRow,
     prefix,
-    rowExpandable = () => true,
+    rowExpandable,
     onExpand
   } = useContext(TableContext)
 

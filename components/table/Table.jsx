@@ -46,7 +46,7 @@ const Table = ({
   sticky: _ceiling,
   stickyTop = 0,
   setting,
-  rowExpandable,
+  rowExpandable = () => true,
   // *********
   sortCol,
   setSortCol,
