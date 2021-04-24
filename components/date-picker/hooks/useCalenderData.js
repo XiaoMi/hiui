@@ -76,7 +76,7 @@ const getYearOrMonthRows = ({ originDate, renderDate, type, view, range, localeD
           const maxMoment = moment(max)
           const maxYear = maxMoment.year()
           const maxMonth = maxMoment.month()
-          col.type = _y < maxYear ? 'disabled' : col.type
+          col.type = _y > maxYear ? 'disabled' : col.type
           col.type = _y === maxYear && _m > maxMonth ? 'disabled' : col.type
         }
       }
