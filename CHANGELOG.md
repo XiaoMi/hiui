@@ -15,6 +15,7 @@
 - 新增 `SelectTree` disabled 属性，控制禁用状态[#1675](https://github.com/XiaoMi/hiui/issues/1675)
 - 优化 `Table` expandedRender 函数接受 Promise，可以进行异步渲染[#1679](https://github.com/XiaoMi/hiui/issues/1679)
 - 修复 `Tabs` 组件 onDelete、onAdd 等方法获取数据操作异常问题[#1676](https://github.com/XiaoMi/hiui/issues/1676)
+- 修复 `Upload` 在 type 为 drag 时，通过拖动文件上传，data数据不可更新[#1693](https://github.com/XiaoMi/hiui/issues/1693)
 
 ## 3.5.0
 
