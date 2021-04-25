@@ -33,7 +33,8 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
     expandedRender,
     localeDatas,
     expandedTreeRows,
-    setExpandedTreeRows
+    setExpandedTreeRows,
+    rowExpandable
   } = useContext(TableContext)
   let _columns
   if (isFixed === 'left') {
@@ -111,6 +112,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
           isTree={isTree}
           isAvgRow={rowConfig.isAvgRow}
           isSumRow={rowConfig.isSumRow}
+          rowExpandable={rowExpandable}
         />
         {allRowData.children &&
           expandedTreeRows.includes(allRowData.key) &&

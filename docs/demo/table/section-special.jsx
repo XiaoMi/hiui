@@ -242,6 +242,9 @@ class Demo extends React.Component {
       onExpand={(expanded, row) => {
         console.log(expanded, row)
       }} 
+      rowExpandable={(rowData)=>{
+        return rowData.key !== 2
+       }}
       expandedRender={(rowData, index) => {
         return (
               <div style={{paddingLeft:50}}>

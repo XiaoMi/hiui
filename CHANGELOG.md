@@ -15,6 +15,7 @@
 - 新增 `SelectTree` disabled 属性，控制禁用状态[#1675](https://github.com/XiaoMi/hiui/issues/1675)
 - 优化 `Table` expandedRender 函数接受 Promise，可以进行异步渲染[#1679](https://github.com/XiaoMi/hiui/issues/1679)
 - 修复 `Tabs` 组件 onDelete、onAdd 等方法获取数据操作异常问题[#1676](https://github.com/XiaoMi/hiui/issues/1676)
+- 新增 `Table` 组件 rowExpandable 方法，对内嵌式表格中左侧箭头进行自定义[#1679](https://github.com/XiaoMi/hiui/issues/1679)
 
 ## 3.5.0
 
