@@ -1,11 +1,11 @@
 # 更新日志
 
 # 3.5.1
+- 新增 `Table` 组件 rowExpandable 方法，对内嵌式表格中左侧箭头进行自定义[#1679](https://github.com/XiaoMi/hiui/issues/1679)
 - 新增 `Form` 组件新增 clearValidates 方法，用于清除表单校验 [#1691](https://github.com/XiaoMi/hiui/issues/1691)
 - 新增 `Form` 组件 getFieldsError、getFieldsValue 方法，用于静默获取表单状态 [#1680](https://github.com/XiaoMi/hiui/issues/1680)
 - 新增 `SelectTree` disabled 属性，控制禁用状态[#1675](https://github.com/XiaoMi/hiui/issues/1675)
 - 优化 `Table` expandedRender 函数接受 Promise，可以进行异步渲染[#1679](https://github.com/XiaoMi/hiui/issues/1679)
-
 - 修复 `Modal` 组件 confirm 方法传入 className 属性无效问题 [#1584](https://github.com/XiaoMi/hiui/issues/1584)
 - 修复 `Modal` 组件 closeable 属性无效问题 [#1645](https://github.com/XiaoMi/hiui/issues/1645)
 - 修复 `Form` 组件 setFieldsValue 方式调用显示异常问题 [#1642](https://github.com/XiaoMi/hiui/issues/1642)
@@ -18,8 +18,8 @@
 - 修复 `DatePicker` type 为 daterange 时，且 showTime 为 true 选择时间显示异常 [#1640](https://github.com/XiaoMi/hiui/issues/1640)
 - 修复 `Cascader` id 为 Number 类型时导致节点重复添加问题[#1648](https://github.com/XiaoMi/hiui/issues/1648)
 - 修复 `Tabs` 组件 onDelete、onAdd 等方法获取数据操作异常问题[#1676](https://github.com/XiaoMi/hiui/issues/1676)
+- 修复 `DatePicker` maxDate 属性设置日期后，月份禁用错误 [#1690](https://github.com/XiaoMi/hiui/issues/1690)
 - 修复 `Upload` 在 type 为 drag 时，通过拖动文件上传，data数据不可更新[#1693](https://github.com/XiaoMi/hiui/issues/1693)
-- 新增 `Table` 组件 rowExpandable 方法，对内嵌式表格中左侧箭头进行自定义[#1679](https://github.com/XiaoMi/hiui/issues/1679)
 
 ## 3.5.0
 
