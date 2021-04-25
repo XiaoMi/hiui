@@ -18,6 +18,7 @@
 - 修复 `DatePicker` type 为 daterange 时，且 showTime 为 true 选择时间显示异常 [#1640](https://github.com/XiaoMi/hiui/issues/1640)
 - 修复 `Cascader` id 为 Number 类型时导致节点重复添加问题[#1648](https://github.com/XiaoMi/hiui/issues/1648)
 - 修复 `Tabs` 组件 onDelete、onAdd 等方法获取数据操作异常问题[#1676](https://github.com/XiaoMi/hiui/issues/1676)
+- 修复 `Upload` 在 type 为 drag 时，通过拖动文件上传，data数据不可更新[#1693](https://github.com/XiaoMi/hiui/issues/1693)
 - 新增 `Table` 组件 rowExpandable 方法，对内嵌式表格中左侧箭头进行自定义[#1679](https://github.com/XiaoMi/hiui/issues/1679)
 
 ## 3.5.0
