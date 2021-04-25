@@ -9,7 +9,6 @@ import Icon from '../icon'
 import { flatTreeData, setDepth } from './util'
 import IconLoading from './LoadingIcon'
 import Expandcol from './Expandcol'
-
 const Row = ({
   rowData,
   allRowData,
@@ -27,12 +26,12 @@ const Row = ({
   innerRef,
   rowHeight,
   isTree,
-  expanded: _expanded
+  expanded: propsExpanded
 }) => {
-  const [expanded, setExpanded] = useState(_expanded || false)
+  const [expanded, setExpanded] = useState(propsExpanded || false)
   useEffect(() => {
-    setExpanded(_expanded)
-  }, [_expanded])
+    setExpanded(propsExpanded)
+  }, [propsExpanded])
   const {
     errorRowKeys,
     rowSelection,
@@ -45,6 +44,7 @@ const Row = ({
     hoverRow,
     setHoverRow,
     prefix,
+    rowExpandable,
     onExpand
   } = useContext(TableContext)
 
@@ -60,6 +60,7 @@ const Row = ({
   }
   const checkboxConfig = rowSelection && rowSelection.getCheckboxConfig && rowSelection.getCheckboxConfig(allRowData)
   const checkboxDisabled = (checkboxConfig && checkboxConfig.disabled) || false
+  const rowExpand = rowExpandable && rowExpandable(rowData)
   return [
     <tr
       style={isFixed && rowHeight ? { height: rowHeight } : {}}
@@ -102,22 +103,30 @@ const Row = ({
       )}
       {expandedRender && (
         <td style={{ width: 50 }}>
-          {expanded !== 'loading' ? (
-            <Icon
-              style={{ cursor: 'pointer' }}
-              name={expanded ? 'down' : 'right'}
-              onClick={() => {
-                if (_expanded === undefined) {
-                  setExpanded(!expanded)
-                }
-                if (onExpand) {
-                  onExpand(!expanded, rowData)
-                }
-              }}
-            />
-          ) : (
-            <IconLoading />
-          )}
+          <>
+            {React.isValidElement(rowExpand) ? (
+              rowExpand
+            ) : (
+              <>
+                {expanded !== 'loading' && rowExpand ? (
+                  <Icon
+                    style={{ cursor: 'pointer' }}
+                    name={expanded ? 'down' : 'right'}
+                    onClick={() => {
+                      if (propsExpanded === undefined) {
+                        setExpanded(!expanded)
+                      }
+                      if (onExpand) {
+                        onExpand(!expanded, rowData)
+                      }
+                    }}
+                  />
+                ) : (
+                  rowExpand && <IconLoading />
+                )}
+              </>
+            )}
+          </>
         </td>
       )}
 

@@ -16,6 +16,9 @@ interface Props {
   targetSortType?: 'default' | 'queue'
   onChange?: (targetKey: number[] | string[], direction: 'left' | 'right', moveDatas: DataItem[]) => void
   render?: (item: DataItem) => JSX.Element
+  onDragStart?: (item: DataItem) => Boolean
+  onDragEnd?: (item: DataItem) => void
+  onDrop?: (targetItem: DataItem, sourceItem: DataItem) => boolean
 }
 declare const Transfer: React.ComponentType<Props>
 export default Transfer

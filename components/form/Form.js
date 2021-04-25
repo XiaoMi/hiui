@@ -94,6 +94,19 @@ const InternalForm = (props) => {
     },
     [onValuesChange, fields]
   )
+  // 移除表单项的校验结果
+  const clearValidates = useCallback(
+    (resetNames) => {
+      let _fields = _Immutable.current.currentStateFields()
+      _fields = _fields.filter((childrenField) => {
+        return Array.isArray(resetNames) ? resetNames.includes(childrenField.field) : true
+      })
+      _fields.forEach((item) => {
+        item.clearValidate()
+      })
+    },
+    [_Immutable]
+  )
   // 重置校验
   const resetValidates = useCallback(
     (cb, resetNames, toDefault) => {
@@ -268,6 +281,7 @@ const InternalForm = (props) => {
     validate,
     setFieldsValue,
     getFieldsValue,
+    clearValidates,
     getFieldsError,
     updateFormSchema
   }))
