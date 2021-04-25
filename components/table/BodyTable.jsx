@@ -35,6 +35,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     rowSelection,
     localeDatas,
     expandedTreeRows,
+    rowExpandable,
     setExpandedTreeRows
   } = useContext(TableContext)
   // **************** 获取colgroup
@@ -128,6 +129,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
           isAvgRow={rowConfig.isAvgRow}
           isSumRow={rowConfig.isSumRow}
           isTree={isTree}
+          rowExpandable={rowExpandable}
         />
         {row.children &&
           expandedTreeRows.includes(row.key) &&

@@ -102,6 +102,12 @@ const FormItem = (props) => {
     setValidating(false)
   })
 
+  const clearValidate = useCallback(() => {
+    // 清空数据
+    setError('')
+    setValidating(false)
+  })
+
   // 获取该单元的规则
   const getRules = useCallback(() => {
     const selfRules = required ? Object.assign({}, props.rules, { required }) : props.rules
@@ -175,6 +181,7 @@ const FormItem = (props) => {
       rules: getRules(),
       resetValidate,
       setValue,
+      clearValidate,
       validate,
       propsField,
       listname,
