@@ -19,7 +19,7 @@
 - 修复 `Cascader` id 为 Number 类型时导致节点重复添加问题[#1648](https://github.com/XiaoMi/hiui/issues/1648)
 - 修复 `Tabs` 组件 onDelete、onAdd 等方法获取数据操作异常问题[#1676](https://github.com/XiaoMi/hiui/issues/1676)
 - 修复 `DatePicker` maxDate 属性设置日期后，月份禁用错误 [#1690](https://github.com/XiaoMi/hiui/issues/1690)
-
+- 修复 `Upload` 在 type 为 drag 时，通过拖动文件上传，data数据不可更新[#1693](https://github.com/XiaoMi/hiui/issues/1693)
 
 ## 3.5.0
 

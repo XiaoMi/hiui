@@ -44,26 +44,35 @@ const DragUpload = ({
   })
 
   const [dragging, setDragging] = useState(false)
-  const onDragOver = useCallback((e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragging(true)
-  }, [])
+  const onDragOver = useCallback(
+    (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setDragging(true)
+    },
+    [dragging]
+  )
 
-  const onDragLeave = useCallback((e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragging(false)
-  }, [])
+  const onDragLeave = useCallback(
+    (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setDragging(false)
+    },
+    [dragging]
+  )
 
-  const onDrop = useCallback((e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (!disabled) {
-      uploadFiles(e.dataTransfer.files)
-    }
-    setDragging(false)
-  }, [])
+  const onDrop = useCallback(
+    (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      if (!disabled) {
+        uploadFiles(e.dataTransfer.files)
+      }
+      setDragging(false)
+    },
+    [dragging, uploadFiles, data, headers, name, uploadAction]
+  )
   const dragCls = classNames(
     'hi-upload',
     'hi-upload--drag',
