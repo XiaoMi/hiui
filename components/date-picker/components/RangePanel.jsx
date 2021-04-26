@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useContext } from 'react'
+import React, { useEffect, useState, useCallback, useContext, useRef } from 'react'
 import classNames from 'classnames'
 import Header from './Header'
 import Calender from './Calender'
@@ -24,7 +24,7 @@ const RangePanel = () => {
     locale,
     onSelect
   } = useContext(DPContext)
-
+  const calenderClickIsEnd = useRef(false)
   const [showRangeMask, setShowRangeMask] = useState(false)
   const [views, setViews] = useState([getView(type), getView(type)])
   const [iFormat] = useFormat({
@@ -67,13 +67,13 @@ const RangePanel = () => {
 
   const setRanges = (date) => {
     const newRange = { ...range }
-    if (range.selecting) {
-      if (newRange.start > date) {
+    if (range.selecting || !calenderClickIsEnd.current) {
+      if (newRange.start >= date) {
         newRange.selecting = false
         newRange.end = newRange.start
         newRange.start = date
       }
-      onSelect(date, true)
+      onSelect(date, calenderClickIsEnd)
       if (type === 'weekrange') {
         onPick([newRange.start.startOf('week'), newRange.end.endOf('week')], showTime)
       } else {
@@ -93,6 +93,7 @@ const RangePanel = () => {
    * @param {*} dir
    */
   const onCalenderPick = (date, uIndex) => {
+    calenderClickIsEnd.current = !calenderClickIsEnd.current
     if (type === 'timeperiod' && views[uIndex] === 'date') {
       onPick([date, moment(date).hour(date.hour() + timeInterval / 60)], true)
       onSelect(date, true)
@@ -122,7 +123,7 @@ const RangePanel = () => {
   }
 
   const onTimeChange = (date, cIndex) => {
-    const _innerDates = _.cloneDeep(calRenderDates)
+    const _innerDates = _.cloneDeep([range.start, range.end])
     _innerDates[cIndex] = date
     onPick(_innerDates, true)
   }
@@ -283,7 +284,7 @@ const RangePanel = () => {
         <React.Fragment>
           <div className="hi-datepicker__mask" onClick={() => setShowRangeMask(false)} />
           <TimePanel
-            dates={calRenderDates}
+            dates={[range.start, range.end]}
             onTimeChange={onTimeChange}
             style={{
               position: 'absolute',

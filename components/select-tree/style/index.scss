@@ -57,6 +57,26 @@
       border-color: use-color('primary');
     }
 
+    &--disabled {
+      color: var(--color-gray-50);
+      background-color: var(--color-gray-10);
+      border: 1px solid var(--color-gray-30);
+      cursor: not-allowed;
+
+      &:hover {
+        border-color: var(--color-gray-30);
+
+        .hi-selecttree__input--expand.clearable {
+          display: block;
+          cursor: not-allowed;
+        }
+
+        .hi-selecttree__icon-close {
+          display: none;
+        }
+      }
+    }
+
     &--single {
       .hi-selecttree__selecteditem {
         background: none;

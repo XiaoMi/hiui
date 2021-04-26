@@ -22,7 +22,7 @@ class Demo extends React.Component {
   render () {
     return <div>
       <Button type="primary" onClick={this.clickEvent.bind(this)}>整页遮罩，3秒自动关闭</Button>
-      {this.state.open && <Loading full visible size='large' tip='加载中' />}
+      {this.state.open && <Loading full visible size='large' content='加载中' />}
     </div>
   }
 }`

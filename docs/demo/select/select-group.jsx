@@ -42,6 +42,7 @@ class Demo extends React.Component {
       <Select
         type='multiple'
         data={data}
+        searchable
         placeholder='请选择'
         showCheckAll
         style={{ width: 200 }}

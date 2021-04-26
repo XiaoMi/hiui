@@ -14,6 +14,7 @@ const useUpload = ({
   withCredentials,
   headers,
   data,
+  params,
   onRemove,
   beforeUpload,
   customUpload,
@@ -185,6 +186,7 @@ const useUpload = ({
                 withCredentials,
                 headers,
                 data,
+                params,
                 onSuccess,
                 onError,
                 onProgress

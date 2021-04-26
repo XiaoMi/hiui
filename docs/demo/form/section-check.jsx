@@ -136,6 +136,10 @@ const code = [
         })
         this.form.current.resetValidates()
       }
+      // 清除校验信息
+      clearValidates() {
+        this.form.current.clearValidates()
+      }
     
     
       render(){
@@ -149,7 +153,6 @@ const code = [
             <Col span={12}>
               <Form 
                 ref={this.form} 
-                model={form} 
                 rules={this.state.rules} 
                 labelWidth='80' 
                 labelPlacement='right'>
@@ -196,6 +199,7 @@ const code = [
                 <FormItem>
                   <Button type='primary' onClick={this.handleSubmit.bind(this)}>提交</Button>
                   <Button type='line' onClick={this.cancelSubmit.bind(this)}>重置</Button>
+                  <Button type='line' onClick={this.clearValidates.bind(this)}>清除校验信息</Button>
                 </FormItem>
               </Form>
             </Col>
@@ -218,7 +222,6 @@ const code = [
           },
           formData: '',
           countDown: 60,
-    
           codeDisabled: false
         }
         this.form = React.createRef()

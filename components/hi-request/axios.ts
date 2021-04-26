@@ -1,13 +1,13 @@
 import axios from 'axios'
+import type { HiRequestConfig } from './type'
 
 const callBackInter = new Map()
 
-const axiosInstance = axios.create({
-  type: 'basics',
-  url: ''
+const _axiosInstance = axios.create({
+  baseURL: ''
 })
 
-axiosInstance.interceptors.request.use(
+_axiosInstance.interceptors.request.use(
   (config) => {
     if (callBackInter.has('beforeRequest')) {
       return callBackInter.get('beforeRequest')(config)
@@ -15,15 +15,16 @@ axiosInstance.interceptors.request.use(
     return config
   },
   (error) => {
+    callBackInter.has('errorCallback') && callBackInter.get('errorCallback')(error)
+
     if (callBackInter.has('errorRequest')) {
       return callBackInter.get('errorRequest')(error)
     }
-    callBackInter.has('errorCallback') && callBackInter.get('errorCallback')(error)
-    return error
+    return Promise.reject(error)
   }
 )
 
-axiosInstance.interceptors.response.use(
+_axiosInstance.interceptors.response.use(
   (response) => {
     if (callBackInter.has('beforeResponse')) {
       return callBackInter.get('beforeResponse')(response)
@@ -31,23 +32,26 @@ axiosInstance.interceptors.response.use(
     return response
   },
   (error) => {
+    callBackInter.has('errorCallback') && callBackInter.get('errorCallback')(error)
+
     if (callBackInter.has('errorResponse')) {
       return callBackInter.get('errorResponse')(error)
     }
-    callBackInter.has('errorCallback') && callBackInter.get('errorCallback')(error)
-    return error
+    return Promise.reject(error)
   }
 )
 
-const axiosIns = (options) => {
+const axiosInstance = (options: HiRequestConfig) => {
   const { beforeResponse, errorResponse, beforeRequest, errorRequest, errorCallback } = options
+
   beforeRequest && callBackInter.set('beforeRequest', beforeRequest)
   errorResponse && callBackInter.set('errorResponse', errorResponse)
   beforeResponse && callBackInter.set('beforeResponse', beforeResponse)
   errorRequest && callBackInter.set('errorRequest', errorRequest)
   errorCallback && callBackInter.set('errorCallback', errorCallback)
 
-  return axiosInstance({ ...options })
+  return _axiosInstance(options)
 }
+
 export { axios }
-export default axiosIns
+export default axiosInstance

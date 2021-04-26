@@ -1,4 +1,4 @@
-import React, { useCallback, cloneElement, useState, useEffect, useRef } from 'react'
+import React, { useCallback, cloneElement, useState, useEffect, useLayoutEffect, useRef } from 'react'
 import _ from 'lodash'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
@@ -48,10 +48,16 @@ const Tabs = ({
   const [dragged, setDragged] = useState()
   const [over, setOver] = useState()
   const [deletetabId, setDeletetabId] = useState()
+  const [checkEditable, setCheckEditable] = useState(editable && type === 'editable')
+
   const latestActiveId = useRef(activeId)
 
   const inkRef = useRef()
   const childRef = useRef()
+
+  useEffect(() => {
+    setCheckEditable(editable && type === 'editable')
+  }, [editable, type])
 
   useEffect(() => {
     if (deletetabId && latestActiveId.current === activeId) {
@@ -65,20 +71,19 @@ const Tabs = ({
     }
   }, [activeIdProps])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const index = showTabItems.findIndex((item) => item.tabId === activeId)
     const hideIndex = hiddenTabItems.findIndex((item) => item.tabId === activeId)
     latestActiveId.current = index
     if (index === -1 && hideIndex === -1 && showTabItems.length > 0) {
       setActiveId(showTabItems[0].tabId)
     }
-
     if (type === 'line') {
       if (index !== -1) {
-        pseudoPosition(index)
+        handleRenderActiveLine(index)
       } else {
         if (hideIndex !== -1) {
-          pseudoPosition(max)
+          handleRenderActiveLine(max)
         }
       }
     }
@@ -99,29 +104,12 @@ const Tabs = ({
   }, [children])
 
   // 计算激活状态下选中横线
-  const pseudoPosition = useCallback((index) => {
-    const parentNode = containRef.current
-    if (!parentNode.childNodes.length) {
-      return
-    }
-    const child = parentNode.childNodes[index]
-    if (child) {
-      const { width } = child.getBoundingClientRect()
-      const ink = inkRef.current
-      if (placement === 'horizontal' && ink) {
-        const offsetLeft = child.offsetLeft
-        if (index === 0) {
-          ink.style.width = `${width - 17}px`
-          ink.style.transform = `translateX(${offsetLeft}px)`
-        } else {
-          ink.style.width = `${width - 34}px`
-          ink.style.transform = `translateX(${offsetLeft + 17}px)`
-        }
-      } else {
-        const offsetTop = child.offsetTop
-        ink.style.transform = `translateY(${offsetTop}px)`
-      }
-      setTimeout(() => {
+  const pseudoPosition = useCallback(
+    (index) => {
+      const parentNode = containRef.current || {}
+      const { childNodes = [] } = parentNode
+      if (childNodes[index]) {
+        const child = childNodes[index]
         const { width } = child.getBoundingClientRect()
         const ink = inkRef.current
         if (placement === 'horizontal' && ink) {
@@ -133,17 +121,32 @@ const Tabs = ({
             ink.style.width = `${width - 34}px`
             ink.style.transform = `translateX(${offsetLeft + 17}px)`
           }
+        } else {
+          const offsetTop = child.offsetTop
+          ink.style.transform = `translateY(${offsetTop}px)`
         }
-      }, 300)
-    }
-  }, [])
+      }
+    },
+    [containRef, inkRef]
+  )
+
+  const handleRenderActiveLine = useCallback(
+    (index) => {
+      pseudoPosition(index)
+      setTimeout(() => {
+        // 前一个transform完成300ms动画后，重新获取最新位置进行计算
+        pseudoPosition(index)
+      }, 400)
+    },
+    [pseudoPosition]
+  )
 
   const addTab = useCallback(() => {
     if (editable) {
       onAdd(children.length + 1)
       childRef.current = children.length
     }
-  }, [children, editable])
+  }, [children, editable, onAdd])
 
   const deleteTab = useCallback(
     (e, tabId, index, item) => {
@@ -162,10 +165,8 @@ const Tabs = ({
         }
       }
     },
-    [editable, activeId]
+    [editable, activeId, onDelete]
   )
-
-  const checkEditable = useCallback(() => editable && type === 'editable', [editable])
 
   const renderTabContent = useCallback(
     (child, index) => {
@@ -408,7 +409,7 @@ const Tabs = ({
                       activeId={activeId}
                       type={type}
                       showTabItems={showTabItems}
-                      editable={editableFlag}
+                      editable={checkEditable}
                       handleClick={handleClick}
                       deleteTab={deleteTab}
                       dragStart={dragStart}
@@ -455,9 +456,9 @@ const Tabs = ({
               />
             )}
           </div>
-          {editableFlag && !canScroll && (
-            <div className={`${prefixCls}__add`}>
-              <Icon onClick={addTab} name="plus" />
+          {checkEditable && onAdd && !canScroll && (
+            <div className={`${prefixCls}__add`} onClick={addTab}>
+              <Icon name="plus" />
             </div>
           )}
         </div>
@@ -478,8 +479,6 @@ const Tabs = ({
       [`${prefixCls}--scroll`]: canScroll
     }
   )
-
-  const editableFlag = checkEditable()
 
   const animateDone = (tabId) => {
     Tooltip.close(`tab-${tabId}`)
@@ -531,7 +530,6 @@ Tabs.defaultProps = {
   onDrop: noop,
   onDropEnd: noop,
   onDragStart: noop,
-  onAdd: noop,
   onDelete: noop,
   draggable: false
 }

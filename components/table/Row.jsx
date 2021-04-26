@@ -4,9 +4,11 @@ import TableContext from './context'
 import classNames from 'classnames'
 import _ from 'lodash'
 import Checkbox from '../checkbox'
+import Loading from '../loading'
 import Icon from '../icon'
 import { flatTreeData, setDepth } from './util'
-
+import IconLoading from './LoadingIcon'
+import Expandcol from './Expandcol'
 const Row = ({
   rowData,
   allRowData,
@@ -24,12 +26,12 @@ const Row = ({
   innerRef,
   rowHeight,
   isTree,
-  expanded: _expanded
+  expanded: propsExpanded
 }) => {
-  const [expanded, setExpanded] = useState(_expanded || false)
+  const [expanded, setExpanded] = useState(propsExpanded || false)
   useEffect(() => {
-    setExpanded(_expanded)
-  }, [_expanded])
+    setExpanded(propsExpanded)
+  }, [propsExpanded])
   const {
     errorRowKeys,
     rowSelection,
@@ -42,13 +44,13 @@ const Row = ({
     hoverRow,
     setHoverRow,
     prefix,
+    rowExpandable,
     onExpand
   } = useContext(TableContext)
 
   const _columns = _.cloneDeep(columns)
   const depthArray = []
   setDepth(_columns, 0, depthArray)
-
   let rowColumns = flatTreeData(_columns).filter((col) => col.isLast)
   if (isFixed === 'left') {
     rowColumns = leftFixedColumns
@@ -58,6 +60,7 @@ const Row = ({
   }
   const checkboxConfig = rowSelection && rowSelection.getCheckboxConfig && rowSelection.getCheckboxConfig(allRowData)
   const checkboxDisabled = (checkboxConfig && checkboxConfig.disabled) || false
+  const rowExpand = rowExpandable && rowExpandable(rowData)
   return [
     <tr
       style={isFixed && rowHeight ? { height: rowHeight } : {}}
@@ -100,18 +103,30 @@ const Row = ({
       )}
       {expandedRender && (
         <td style={{ width: 50 }}>
-          <Icon
-            style={{ cursor: 'pointer' }}
-            name={expanded ? 'down' : 'right'}
-            onClick={() => {
-              if (_expanded === undefined) {
-                setExpanded(!expanded)
-              }
-              if (onExpand) {
-                onExpand(!expanded, rowData)
-              }
-            }}
-          />
+          <>
+            {React.isValidElement(rowExpand) ? (
+              rowExpand
+            ) : (
+              <>
+                {expanded !== 'loading' && rowExpand ? (
+                  <Icon
+                    style={{ cursor: 'pointer' }}
+                    name={expanded ? 'down' : 'right'}
+                    onClick={() => {
+                      if (propsExpanded === undefined) {
+                        setExpanded(!expanded)
+                      }
+                      if (onExpand) {
+                        onExpand(!expanded, rowData)
+                      }
+                    }}
+                  />
+                ) : (
+                  rowExpand && <IconLoading />
+                )}
+              </>
+            )}
+          </>
         </td>
       )}
 
@@ -141,7 +156,8 @@ const Row = ({
         {rowSelection && <td />}
         {/* 可展开内嵌显示 */}
         <td colSpan={columns.length + 1} style={{ color: '#666666' }}>
-          {expandedRender(rowData, index)}
+          <Expandcol rowData={rowData} index={index} expandedRender={expandedRender} setExpanded={setExpanded} />
+          {expanded === 'loading' && <Loading size="small" />}
         </td>
       </tr>
     )

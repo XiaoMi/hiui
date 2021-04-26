@@ -103,13 +103,24 @@ class Demo extends React.Component {
     code: `import React from 'react'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
+  constructor(){
+    this.state = {
+      value: {end: "2021-03-12 19:00:00",start: "2021-03-12 18:30:00"}
+    }
+  }
   render () {
     return (
       <div>
         <DatePicker
           type='timeperiod'
           timeInterval={30}
-          onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
+          value={this.state.value}
+          onChange={(date, dateStr) => {
+            console.log('onChange', date, dateStr)
+            this.setState({
+              value: date
+            })
+          }}
         />
       </div>
     )

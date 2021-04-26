@@ -236,7 +236,6 @@ class Demo extends React.Component {
         <FormItem label='DatePicker' field="datePicker">
           <DatePicker
             type='daterange'
-            format='yyyy-MM-dd'
             onChange={(date, dateStr) => {console.log('onChange DatePicker', date, dateStr)}}
           />
         </FormItem>

@@ -29,7 +29,7 @@ const getItemPosition = (itemPosition) => {
 }
 
 const FormItem = (props) => {
-  const { formProps, formState, dispatch, internalValuesChange, listname, _type, _Immutable } = useContext(FormContext)
+  const { formProps, internalValuesChange, listname, _type, _Immutable } = useContext(FormContext)
   const {
     children,
     label,
@@ -53,7 +53,6 @@ const FormItem = (props) => {
     }
   } = formProps || {}
   // 初始化FormItem的内容
-  const { fields } = formState
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
 
@@ -69,38 +68,42 @@ const FormItem = (props) => {
   const [validating, setValidating] = useState(false)
   useEffect(() => {
     setField(getItemfield())
-  }, [propsField])
+  }, [propsField, name])
   // 更新
-  const updateField = useCallback(
-    (_value, triggerType) => {
-      const childrenFiled = {
-        value: _value,
-        ...updateFieldInfoToReducer()
-      }
-
-      if (childrenFiled.field) {
-        const _fields = _.cloneDeep(_Immutable.current.currentStateFields())
-
-        _fields.forEach((item) => {
-          if (item.field === childrenFiled.field) {
-            Object.assign(item, childrenFiled)
-          }
-        })
-        const allValues = {}
-        _fields.forEach((item) => {
-          const { field, value } = item
-          allValues[field] = value
-        })
-        dispatch({ type: FILEDS_UPDATE, payload: _fields })
-        triggerType === 'onChange' && internalValuesChange({ [field]: _value }, allValues)
-      }
-    },
-    [fields, formState, internalValuesChange]
-  )
-
+  const updateField = (_value, triggerType) => {
+    const childrenFiled = {
+      value: _value,
+      ...updateFieldInfoToReducer()
+    }
+    const { field } = childrenFiled
+    if (field) {
+      const _fields = _.cloneDeep(_Immutable.current.currentStateFields())
+      _fields.forEach((item) => {
+        if (item.field === field) {
+          Object.assign(item, childrenFiled)
+        }
+      })
+      const allValues = {}
+      _fields.forEach((item) => {
+        const { field, value } = item
+        allValues[field] = value
+      })
+      _Immutable.current.setState({
+        type: FILEDS_UPDATE,
+        payload: _fields
+      })
+      triggerType === 'onChange' && internalValuesChange({ [field]: _value }, allValues)
+    }
+  }
   const resetValidate = useCallback((value = '') => {
     // 清空数据
     setValue(value)
+    setError('')
+    setValidating(false)
+  })
+
+  const clearValidate = useCallback(() => {
+    // 清空数据
     setError('')
     setValidating(false)
   })
@@ -111,43 +114,66 @@ const FormItem = (props) => {
     let formRules = formProps.rules
 
     formRules = formRules ? formRules[field] : []
-    return [].concat(selfRules || formRules || [])
-  }, [props, formProps, required])
+    // 修复 AsyncValidator 接收 jsx deepMerge 卡顿问题
+    // https://github.com/yiminghe/async-validator/blob/bc18bca1d9422911dc5ac3ce2a99599821534bd9/src/util.js#L220
+    const rulesArr = [].concat(selfRules || formRules || [])
+    rulesArr.forEach((item) => {
+      const { message } = item
+      if (React.isValidElement(message)) {
+        item.message = Object.assign({}, { ...message }, { _owner: null })
+      }
+    })
+    return rulesArr.concat()
+  }, [props, formProps, required, field])
   // 过滤含有该trigger触发方式的rules
-  const getFilteredRule = useCallback((trigger) => {
-    const rules = getRules()
-    return rules.filter((rule) => {
-      return !rule.trigger || rule.trigger.indexOf(trigger) !== -1
-    })
-  })
+  const getFilteredRule = useCallback(
+    (trigger) => {
+      const rules = getRules()
+      return rules.filter((rule) => {
+        return !rule.trigger || rule.trigger.indexOf(trigger) !== -1
+      })
+    },
+    [getRules]
+  )
   // 父级调用
-  const validate = useCallback((trigger, cb, currentValue) => {
-    const triggerRules = getFilteredRule(trigger)
-    if (!triggerRules || triggerRules.length === 0) {
-      if (cb instanceof Function) {
-        cb()
-      }
-      return true
-    }
-    const rules = getRules()
-    const validator = new AsyncValidator({
-      [field]: rules
-    })
-    const model = { [field]: currentValue }
-    validator.validate(
-      model,
-      {
-        firstFields: true
-      },
-      (errors) => {
-        setError(errors ? errors[0].message : '')
-        setValidating(false)
+  const validate = useCallback(
+    /**
+     * 触发Item校验
+     * @param {Sting} trigger 触发事件 在什么情况下触发 'onChange, onBlur'
+     * @param {Function} cb 自定义消息提示回调方法
+     * @param {Any} currentValue 校验值
+     * @param {Boolean} showError 静默检验，是否在界面中展示错误信息
+     */
+    (trigger, cb, currentValue, showError = true) => {
+      const triggerRules = getFilteredRule(trigger)
+      if (!triggerRules || triggerRules.length === 0) {
         if (cb instanceof Function) {
-          cb(errors)
+          cb()
         }
+        return true
       }
-    )
-  })
+      const rules = getRules()
+
+      const validator = new AsyncValidator({
+        [field]: rules
+      })
+      const model = { [field]: currentValue }
+      validator.validate(
+        model,
+        {
+          firstFields: true
+        },
+        (errors) => {
+          showError && setError(errors ? errors[0].message : '')
+          setValidating(false)
+          if (cb instanceof Function) {
+            cb(errors)
+          }
+        }
+      )
+    },
+    [props]
+  )
 
   const updateFieldInfoToReducer = () => {
     return {
@@ -155,6 +181,7 @@ const FormItem = (props) => {
       rules: getRules(),
       resetValidate,
       setValue,
+      clearValidate,
       validate,
       propsField,
       listname,
@@ -162,29 +189,6 @@ const FormItem = (props) => {
       _type
     }
   }
-  // initValue
-  useEffect(() => {
-    const isExist = fields.some((item) => {
-      return item.field === field
-    })
-    if (field && !isExist) {
-      let value = initialValues && initialValues[field] ? initialValues[field] : ''
-      if (_type === 'list' && listItemValue) {
-        value = listItemValue[name] ? listItemValue[name] : listItemValue
-      }
-      dispatch({
-        type: FILEDS_INIT,
-        payload: {
-          value: value,
-          ...updateFieldInfoToReducer()
-        }
-      })
-      setValue(value)
-    }
-    return () => {
-      _type !== 'list' && dispatch({ type: FILEDS_REMOVE, payload: field })
-    }
-  }, [field])
 
   // 判断是否含有Rules
   const isRequired = useCallback(() => {
@@ -201,22 +205,19 @@ const FormItem = (props) => {
       })
     }
     return isRequired
-  })
+  }, [getRules])
 
   // 对字段的操作
-  const handleField = useCallback(
-    (triggerType, currentValue) => {
-      // 同步数据 reducer
-      updateField(currentValue, triggerType)
-      const rules = getRules()
-      const hasTriggerType = rules.some((rule) => {
-        const { trigger = '' } = rule
-        return trigger.includes(triggerType)
-      })
-      hasTriggerType && validate(triggerType, '', currentValue)
-    },
-    [fields, formState]
-  )
+  const handleField = (triggerType, currentValue) => {
+    // 同步数据 reducer
+    updateField(currentValue, triggerType)
+    const rules = getRules()
+    const hasTriggerType = rules.some((rule) => {
+      const { trigger = '' } = rule
+      return trigger.includes(triggerType)
+    })
+    hasTriggerType && validate(triggerType, '', currentValue)
+  }
 
   const labelWidth = useCallback(() => {
     const labelWidth = props.labelWidth || formProps.labelWidth
@@ -245,20 +246,46 @@ const FormItem = (props) => {
     setValue(value)
     handleField(eventName, value)
   }
-
+  useEffect(() => {
+    return () => {
+      _type !== 'list' &&
+        _Immutable.current.setState({
+          type: FILEDS_REMOVE,
+          payload: field
+        })
+    }
+  }, [])
   // jsx渲染方式
   const renderChildren = () => {
-    const { component, componentProps } = props
-
     let _value = value
-    if (_type === 'list') {
-      const _fields = _.cloneDeep(fields)
-      _fields.forEach((item) => {
-        if (item.field === field) {
-          _value = item.value
+    const _fields = _Immutable.current.currentStateFields()
+    const _field = _type === 'list' ? getItemfield() : field
+
+    const isExist = _fields.some((item) => {
+      return item.field === _field
+    })
+    if (_field && !isExist) {
+      _value = initialValues && initialValues[field] ? initialValues[_field] : ''
+      if (_type === 'list' && listItemValue) {
+        _value = typeof listItemValue[name] !== 'undefined' ? listItemValue[name] : listItemValue
+      }
+      _Immutable.current.setState({
+        type: FILEDS_INIT,
+        payload: {
+          value: _value,
+          ...updateFieldInfoToReducer(),
+          field: _field
         }
       })
+      updateField(_value)
     }
+
+    const { component, componentProps } = props
+    _fields.forEach((item) => {
+      if (item.field === _field) {
+        _value = item.value
+      }
+    })
     // 对ScheamaForm表单Item进行特殊处理
     if (_type === 'SchemaForm' && component) {
       if (HIUI[component]) {
@@ -280,6 +307,7 @@ const FormItem = (props) => {
     if (!children) {
       return null
     }
+
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {
@@ -334,7 +362,6 @@ FormItem.propTypes = {
   field: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.number]),
   rules: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   required: PropTypes.bool,
-  label: PropTypes.string,
   labelWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   showColon: PropTypes.bool,
   className: PropTypes.string,

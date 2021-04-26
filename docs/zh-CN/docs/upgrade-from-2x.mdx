@@ -20,6 +20,14 @@ HIUI v3.0.0 是一次大版本更新，在此次迭代中，我们主要对 HIUI
 
 3.0.0 是基于 2.14.0 进行开发的，最大限度的对组件已有 API 进行了的兼容，但是有些组件进行的功能升级，带来一些破坏性，需要做一些调整
 
+## 样式方面
+
+升级过程中，需引入 `hiui` 的 `3.0`基础样式。
+
+```js
+import "@hi-ui/hiui/es/base-css"
+```
+
 ### Dropdown 下拉菜单
 
 - 对 DataItem 配置 href 属性后做了优化，渲染为 a 标签，同时也支持 target 属性设置打开方式
@@ -31,28 +39,28 @@ HIUI v3.0.0 是一次大版本更新，在此次迭代中，我们主要对 HIUI
 
 ### Form 表单
 
-** Form 在 3.0 以后升级改动较大，使用时请[参考示例](https://infra.mioffice.cn/hiui/next/zh-CN/docs/form) **
+** Form 在 3.0 以后升级改动较大，使用时请[参考示例](https://infra.mioffice.cn/hiui/zh-CN/components/form) **
 
 - 通过 `import Form, { LegacyForm } from '@hi-ui/hiui/es/form'`，其中`Form`为 3.x 组件，`LegacyForm` 为 2.x 组件
 
 ### Table 表格
 
-** Table 在 3.0 以后升级改动较大，使用时请[参考示例](https://infra.mioffice.cn/hiui/next/zh-CN/docs/table) **
+** Table 在 3.0 以后升级改动较大，使用时请[参考示例](https://infra.mioffice.cn/hiui/zh-CN/components/table) **
 
 - 通过 `import Table, { LegacyTable } from '@hi-ui/hiui/es/table'`，其中`Table`为 3.x 组件，`LegacyTable` 为 2.x 组件
 - 原引用 hi-table 的使用请 HiUI 中的 Table，即将 `import Table from '@hi-ui/hi-table'` 更换为 `import Table from '@hi-ui/hiui/es/table'` 即可
 
 ### Tree 表格
 
-** Tree 在 3.0 以后升级改动较大，使用时请[参考示例](https://infra.mioffice.cn/hiui/next/zh-CN/docs/tree) **
+** Tree 在 3.0 以后升级改动较大，使用时请[参考示例](https://infra.mioffice.cn/hiui/zh-CN/components/tree) **
 
 - 通过 `import Tree, { LegacyTree } from '@hi-ui/hiui/es/tree'`，其中`Tree`为 3.x 组件，`LegacyTree` 为 2.x 组件
 
 ### Switch 表格
 
-** Switch 在 3.0 修正了受控功能，使用时请[参考示例](https://infra.mioffice.cn/hiui/next/zh-CN/docs/switch) **
+** Switch 在 3.0 修正了受控功能，使用时请[参考示例](https://infra.mioffice.cn/hiui/zh-CN/components/switch) **
 
-- 通过 `import Switch, { LegacySwitch } from '@hi-ui/hiui/es/table'`，其中`Switch`为 3.x 组件，`LegacySwitch` 为 2.x 组件
+- 通过 `import Switch, { LegacySwitch } from '@hi-ui/hiui/es/switch'`，其中`Switch`为 3.x 组件，`LegacySwitch` 为 2.x 组件
 
 ### Progress 进度条
 
@@ -64,6 +72,12 @@ HIUI v3.0.0 是一次大版本更新，在此次迭代中，我们主要对 HIUI
 
 - footer 属性 不再对 1.x 进行兼容，原使用 `footers` 的请替换为 `footer`
 - 样式方面，对内边距进行了调整，由原来`padding: 16px` 更改为 `padding: 24px` 请大家注意查看
+
+除上述组件以外的其余组件，我们均提供了向前兼容，但是我们建议您使用新的 API 来完成后续的开发。
+
+### DatePicker 日期选择器
+
+- 时间处理库由 `date-fns` 改为使用 `moment`，如使用了 `format` 方法；请关注
 
 除上述组件以外的其余组件，我们均提供了向前兼容，但是我们建议您使用新的 API 来完成后续的开发。
 

@@ -24,7 +24,8 @@ const code = [
         this.state = {
           initialValues:{
             phone:'123',
-            testList:['第一项','第二项']
+            testList1:['第一项','第二项'],
+            testList2:['第一项','第二项']
           },
           rules: {
             name: {
@@ -125,7 +126,7 @@ const code = [
               }}>
               <Input placeholder='请输入手机号' />
             </FormItem>
-                <FormList name='testList'>
+                <FormList name='testList1'>
                   {(fields, { add, remove }) => {
                     return (
                       <div className='list'>
@@ -134,7 +135,59 @@ const code = [
                             <FormItem
                               // 关于{...field}必写，Formlist需要依据里面的变量进行处理 
                               {...field}
-                              label={index === 0 ? 'testList' : ''}
+                              label={index === 0 ? 'testList1' : ''}
+                            >
+                              <Input placeholder='请输入' style={{width:'200px'}}/>
+                            </FormItem>
+                            <span style={{paddingTop:'6px'}}>
+                              <Icon
+                                name='close'
+                                style={{
+                                  color: '#999',
+                                  fontSize: '16px',
+                                  cursor: 'pointer',
+                                }}
+                                onClick={() => {
+                                  remove(field)
+                                }}
+                             />
+                            </span>
+                           
+                          </div>
+                        ))}
+                        <div style={{ 
+                            marginLeft: '80px',
+                            width: "200px",
+                            textAlign: "center",
+                            border: '1px dashed #ccc',
+                            borderRadius: '2px',
+                            marginBottom: '24px',
+                        }}>
+                          <Button
+                            type='line'
+                            appearance='link'
+                            icon='plus'
+                            onClick={() => {
+                              add()
+                            }}
+                          >
+                            添加选项
+                          </Button>
+                        </div>
+                      </div>
+                    )
+                  }}
+                </FormList>
+                <FormList name='testList2'>
+                  {(fields, { add, remove }) => {
+                    return (
+                      <div className='list'>
+                        {fields.map((field, index) => (
+                          <div style={{ display: 'flex' }} key={index}>
+                            <FormItem
+                              // 关于{...field}必写，Formlist需要依据里面的变量进行处理 
+                              {...field}
+                              label={index === 0 ? 'testList2' : ''}
                             >
                               <Input placeholder='请输入' style={{width:'200px'}}/>
                             </FormItem>
@@ -198,7 +251,8 @@ const code = [
                   <Button type="primary" appearance="link" onClick={()=>{
                     console.log('填充表单')
                     this.form.current.setFieldsValue({
-                      testList:[1,2,3]
+                      testList1:[1,2,3],
+                      testList2:[1,2,3]
                     })
                 }}>fill Form</Button>
                 </FormItem>
@@ -220,7 +274,7 @@ const code = [
         this.state = {
           initialValues:{
             phone:'123',
-            testList:[{first: "123",last: "rrr"}]
+            testList:[{first: "",last: ""}]
           },
           rules: {
             name: {
@@ -331,7 +385,13 @@ const code = [
                               {...field}
                               name = 'first'
                             >
-                              <Input placeholder='请输入' style={{width:'200px'}}/>
+                            <Select placeholder='请输入' style={{width:'200px'}} data={[
+                              { title:'电视', id:'3' },
+                              { title:'手机', id:'2' },
+                              { title:'笔记本', id:'4' },
+                              { title:'生活周边', id:'5' },
+                              { title:'办公', id:'6' }
+                            ]}/>
                             </FormItem>
                             <FormItem
                               {...field}
@@ -340,19 +400,19 @@ const code = [
                             >
                               <Input placeholder='请输入' style={{width:'200px'}}/>
                             </FormItem>
-                            <Icon
-                              name='close'
-                              style={{
-                                color: '#999',
-                                fontSize: '16px',
-                                cursor: 'pointer',
-                                height:'18px',
-                                marginTop:'4px',
-                              }}
-                              onClick={() => {
-                                remove(field)
-                              }}
-                            />
+                            <span style={{paddingTop:'6px'}}>
+                              <Icon
+                                name='close'
+                                style={{
+                                  color: '#999',
+                                  fontSize: '16px',
+                                  cursor: 'pointer',
+                                }}
+                                onClick={() => {
+                                  remove(field)
+                                }}
+                             />
+                            </span>
                           </div>
                         ))}
                         <div style={{ 
@@ -401,8 +461,8 @@ const code = [
                     this.form.current.setFieldsValue({
                       testList:[
                         {
-                          first: "123",
-                          last: "rrr"
+                          first: ['3'],
+                          last: "last"
                         }]
                     })
                 }}>fill Form</Button>

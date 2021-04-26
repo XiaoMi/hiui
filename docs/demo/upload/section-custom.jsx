@@ -89,7 +89,7 @@ const code = [
                   url:'https://jsonplaceholder.typicode.com/posts/',
                   name: 'filename', // 文件参数
                   file: '', // 文件
-                  params: {
+                  data: {
                     id:1
                   },
                   headers: {

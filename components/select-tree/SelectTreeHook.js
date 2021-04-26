@@ -55,6 +55,7 @@ const SelectTree = ({
   autoload: propsAutoload,
   placement = 'top-bottom-start',
   emptyContent,
+  disabled,
   bordered = true
 }) => {
   const [isFocus, setIsFocus] = useState(false)
@@ -554,6 +555,7 @@ const SelectTree = ({
         selectedItems={selectedItems}
         clearable={clearable}
         show={show}
+        disabled={disabled}
         valueRender={valueRender}
         placeholder={placeholder}
         checkedEvents={checkedEvents}

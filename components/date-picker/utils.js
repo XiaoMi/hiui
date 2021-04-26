@@ -230,7 +230,7 @@ export const parseValue = (value, type, format, locale = 'zh-CN') => {
   const _format = FORMATS(locale)[type]
   const _value = moment(value, _format)
   const isValid = moment(_value).isValid()
-  if (value && typeof value === 'object' && type.includes('range')) {
+  if (value && typeof value === 'object' && (type.includes('range') || type === 'timeperiod')) {
     if (type === 'weekrange') {
       return [
         value.start ? moment(value.start, _format).startOf('week') : null,
