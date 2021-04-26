@@ -1,5 +1,9 @@
 # 更新日志
 
+## 2.15.10
+
+- 修复 `<Cascader />` id 为 Number 类型时导致节点重复添加问题[#1648](https://github.com/XiaoMi/hiui/issues/1648)
+
 ## 2.15.9
 
 - 修复 `<Dropdown />` 配置href 无效的问题[#1641](https://github.com/XiaoMi/hiui/issues/1641)
