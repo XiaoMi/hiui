@@ -11,7 +11,6 @@ class Tooltip extends Component {
   static propTypes = {
     defaultVisible: PropTypes.bool,
     placement: PropTypes.string,
-    title: PropTypes.string,
     className: PropTypes.string,
     style: PropTypes.object
   }
