@@ -21,6 +21,7 @@
 - 修复 `DatePicker` maxDate 属性设置日期后，月份禁用错误 [#1690](https://github.com/XiaoMi/hiui/issues/1690)
 - 修复 `Upload` 在 type 为 drag 时，通过拖动文件上传，data数据不可更新[#1693](https://github.com/XiaoMi/hiui/issues/1693)
 - 修复 `DatePicker` 在 type 为 daterange 时, 时间区间选择同一天无效问题[#1688](https://github.com/XiaoMi/hiui/issues/1688)
+- 修复 `Slider` max 和min 受控问题 [#1703](https://github.com/XiaoMi/hiui/issues/1703)
 
 ## 3.5.0
 
