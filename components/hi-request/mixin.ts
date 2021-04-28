@@ -8,12 +8,12 @@ import type { HiRequestType, HiRequestOptions, HiRequestMethod, HiRequestStaticA
 // Mixed Request
 const InternalRequest = (type: HiRequestType | null, url: string | HiRequestOptions, options?: HiRequestOptions) => {
   const baseOptions = typeof url === 'string' ? { url } : url
-  const { url: urlOption, type: typeOption, baseURL, responseType = 'json' } = Object.assign({}, baseOptions, options)
+  const { url: urlOption, type: typeOption, baseURL, responseType = 'json', ...restOptions } = Object.assign({}, baseOptions, options)
 
   const _url = isHTTPLink(urlOption) ? urlOption : baseURL ? baseURL + urlOption : urlOption
   const _type = type || typeOption
 
-  const _options = Object.assign({}, options, baseOptions, { url: _url, responseType })
+  const _options = Object.assign({}, restOptions, { url: _url, responseType })
 
   switch (_type) {
     case 'jsonp':
