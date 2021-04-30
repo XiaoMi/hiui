@@ -3,7 +3,7 @@ interface Props {
   title?: string | JSX.Element
   visible?: boolean
   closeable?: boolean
-  maskCloseable?: boolean
+  maskClosable?: boolean
   cancelText?: string
   confirmText?: string
   size?: 'default' | 'large'
