@@ -17,7 +17,7 @@ interface FormProps {
 
 interface ItemProps {
   field?: string
-  label?: string
+  label?: string | JSX.Element
   labelWidth?: string
   required?: boolean
   showColon?: boolean
