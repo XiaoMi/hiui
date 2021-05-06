@@ -119,7 +119,9 @@ export default App
 | accordion         | 左侧菜单是否采用手风琴模式               | boolean                           | true                        |
 | basename          | 路由基础路径                             | string                            | '/'                         |
 | fallback          | 路由无法匹配时的候补跳转                             | string                            | -                         |
+| defaultToggle     | 侧边栏默认展开收起                            | boolean                           | 根据窗口大小自定义展开收起                         |
 | onToggle          | 侧边栏展开收起触发的回调                             | mini: boolean => void                           | -                         |
+| onMenuClick          | 菜单点击事件                             | (menuItem:Object) => void                          | -                         |
 
 ### type: Route
 
