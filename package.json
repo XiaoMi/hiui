@@ -73,11 +73,12 @@
   "devDependencies": {
     "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
-    "@babel/plugin-transform-runtime": "^7.11.5",
+    "@babel/plugin-transform-runtime": "^7.13.15",
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.8.3",
+    "@babel/runtime": "^7.14.0",
     "@babel/standalone": "^7.4.5",
     "@bougiel/puppeteer-prerenderer": "^0.0.3",
     "@hi-ui/classic-theme": "1.2.5",
