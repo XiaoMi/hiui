@@ -66,6 +66,14 @@ const Slider = memo(
       }
     }, [])
 
+    useEffect(() => {
+      setMax(initMax)
+    }, [initMax])
+
+    useEffect(() => {
+      setMin(initMin)
+    }, [initMin])
+
     // value 改变更新长度和位置
     useEffect(() => {
       const _value = initValue !== undefined ? getValue(initValue) : getValue(value)

@@ -10,6 +10,7 @@ interface Props {
   style?: CSSProperties
   className?: string
   bordered?: boolean
+  maxLength?: number
   ref?: string | ((instance: HTMLInputElement | null) => void) | React.RefObject<HTMLInputElement> | null | undefined
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void

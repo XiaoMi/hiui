@@ -54,7 +54,7 @@ function getUrls() {
  */
 function getComponentUrls() {
   const compPath = path.resolve(__dirname, '../docs/zh-CN/components')
-  return fs.readdirSync(compPath).map((v) => `docs/${v.replace('.mdx', '')}`)
+  return fs.readdirSync(compPath).map((v) => `components/${v.replace('.mdx', '')}`)
 }
 
 /**
