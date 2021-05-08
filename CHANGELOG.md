@@ -1,5 +1,7 @@
 # 更新日志
 
+# 3.6.1
+- 修复部分组件 'regeneratorRuntime is not defined' 问题 [#1719](https://github.com/XiaoMi/hiui/issues/1719)
 # 3.6.0
 - 新增 `Table` 组件 rowExpandable 方法，对内嵌式表格中左侧箭头进行自定义[#1679](https://github.com/XiaoMi/hiui/issues/1679)
 - 新增 `Form` 组件新增 clearValidates 方法，用于清除表单校验 [#1691](https://github.com/XiaoMi/hiui/issues/1691)
