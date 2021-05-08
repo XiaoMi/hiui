@@ -2,6 +2,7 @@
 
 # 3.6.1
 - 修复部分组件 'regeneratorRuntime is not defined' 问题 [#1719](https://github.com/XiaoMi/hiui/issues/1719)
+- 修复 `Slider` max 和min 受控问题 [#1703](https://github.com/XiaoMi/hiui/issues/1703)
 # 3.6.0
 - 新增 `Table` 组件 rowExpandable 方法，对内嵌式表格中左侧箭头进行自定义[#1679](https://github.com/XiaoMi/hiui/issues/1679)
 - 新增 `Form` 组件新增 clearValidates 方法，用于清除表单校验 [#1691](https://github.com/XiaoMi/hiui/issues/1691)
@@ -23,7 +24,6 @@
 - 修复 `DatePicker` maxDate 属性设置日期后，月份禁用错误 [#1690](https://github.com/XiaoMi/hiui/issues/1690)
 - 修复 `Upload` 在 type 为 drag 时，通过拖动文件上传，data数据不可更新[#1693](https://github.com/XiaoMi/hiui/issues/1693)
 - 修复 `DatePicker` 在 type 为 daterange 时, 时间区间选择同一天无效问题[#1688](https://github.com/XiaoMi/hiui/issues/1688)
-- 修复 `Slider` max 和min 受控问题 [#1703](https://github.com/XiaoMi/hiui/issues/1703)
 
 ## 3.5.0
 
