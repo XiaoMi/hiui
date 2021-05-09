@@ -6,7 +6,7 @@ type Options = {
   title: string
   duration?: number
   style?: CSSProperties
-  className?: string,
+  className?: string
   onClick?: (event: MouseEvent) => void
   onClose?: () => void
 }
