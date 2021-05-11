@@ -10,14 +10,13 @@ import React, { useRef, useState } from "react"
 // import { Title, Subtitle, Description, Primary, ArgsTable, Stories, PRIMARY_STORY } from "@storybook/addon-docs/blocks"
 // import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live"
 
-import Popper from "../packages/popper/src/index.js"
-import Alert from "../packages/alert/es/index.js"
-import Select from "../packages/select/src/index.js"
-import Hello from "../packages/hiui-demots/src/index.tsx"
-import Loading from "../packages/loading/src"
-import Avatar from "../packages/avatar/src"
-import Checkbox from "../packages/checkbox/src"
-import EmptyState from "../packages/empty-state/src"
+// import Popper from "../packages/ui/popper/src/index.js"
+// import Alert from "../packages/ui/alert/es/index.js"
+// import Select from "../packages/ui/select/src/index.js"
+// import Loading from "../packages/ui/loading/src"
+// import Avatar from "../packages/ui/avatar/src"
+// import Checkbox from "../packages/ui/checkbox/src"
+// import EmptyState from "../packages/ui/empty-state/src"
 
 const importRegx = /import\s+([\w*{}\n, ])+.*;?/gm
 
@@ -35,7 +34,7 @@ function addSbCodeEditro(cb, props) {
     <DocViewer
       desc={desc}
       code={code}
-      scope={{ Popper, Alert, Select, Hello, useRef, useState, globals, Avatar, Loading, Checkbox, EmptyState }}
+      // scope={{ Popper, Alert, Select, useRef, useState, globals, Avatar, Loading, Checkbox, EmptyState }}
       prefix={"alert-autoClose"}
     />
   )
