@@ -179,9 +179,15 @@ export const processSelectedIds = (checkedIds, nodeEntries, type, flattenData) =
  * @param {*} defaultExpandIds 非受控展开节点 IDS
  * @param {*} flattenData 拉平数据
  */
-export const parseExpandIds = (expandIds, defaultExpandIds, flattenData) => {
+export const parseExpandIds = (expandIds, defaultExpandIds, flattenData, defaultExpandAll) => {
   const ids = defaultExpandIds.length > 0 ? defaultExpandIds : expandIds
   let arr = []
+  if (defaultExpandAll) {
+    flattenData.forEach((node) => {
+      arr.push(node.id)
+    })
+    return arr
+  }
   ids.forEach((id) => {
     const node = getNode(id, flattenData)
     if (node) {
@@ -352,13 +358,15 @@ export const treeFilterByOriginalData = (data, filterVal) => {
 export const clearReturnData = (arg) => {
   arg = _.cloneDeep(arg)
   if (arg instanceof Array) {
-    arg = arg.map((node) => {
-      if (node) {
-        delete node.ancestors
-        delete node.pId
-      }
-      return node
-    }).filter(Boolean)
+    arg = arg
+      .map((node) => {
+        if (node) {
+          delete node.ancestors
+          delete node.pId
+        }
+        return node
+      })
+      .filter(Boolean)
   } else {
     delete arg.ancestors
     delete arg.pId

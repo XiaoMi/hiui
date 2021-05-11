@@ -1,8 +1,7 @@
 # 更新日志
-
 # 3.7.0
 - 新增 `Message` 组件 onClick、onClose方法[#1727](https://github.com/XiaoMi/hiui/issues/1727)
-
+- 优化 `Grid` 组件接受原生属性 [#1609](https://github.com/XiaoMi/hiui/issues/1609)
 # 3.6.1
 - 修复部分组件 'regeneratorRuntime is not defined' 问题 [#1719](https://github.com/XiaoMi/hiui/issues/1719)
 - 修复 `Slider` max 和min 受控问题 [#1703](https://github.com/XiaoMi/hiui/issues/1703)
