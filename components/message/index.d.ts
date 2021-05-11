@@ -7,6 +7,8 @@ type Options = {
   duration?: number
   style?: CSSProperties
   className?: string
+  onClick?: (event: MouseEvent) => void
+  onClose?: () => void
 }
 const OpenFun: (options: Options) => void
 declare class Message extends React.Component<Props, any> {

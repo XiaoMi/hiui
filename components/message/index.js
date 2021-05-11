@@ -11,12 +11,26 @@ const iconMap = {
 }
 
 const message = {
-  open: ({ title, prefix = 'message', key = Math.random(), duration, closeable = false, type = 'info' }) => {
+  open: ({
+    title,
+    prefix = 'message',
+    key = Math.random(),
+    duration,
+    closeable = false,
+    type = 'info',
+    onClose,
+    onClick
+  }) => {
     let _type = type === 'info' ? 'primary' : type
     _type = type === 'error' ? 'danger' : _type
     const NoticeContent = (
       <React.Fragment>
-        <div className={`hi-${prefix}__header`}>
+        <div
+          className={`hi-${prefix}__header`}
+          onClick={(e) => {
+            onClick && onClick(e)
+          }}
+        >
           <Icon name={iconMap[_type]} filled className={`hi-${prefix}__icon`} />
           {title && <div className={`hi-${prefix}__title`}>{title}</div>}
         </div>
@@ -26,6 +40,9 @@ const message = {
       content: NoticeContent,
       prefix,
       key,
+      onClose: () => {
+        onClose && onClose()
+      },
       closeable,
       duration,
       type: _type
