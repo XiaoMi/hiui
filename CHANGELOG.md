@@ -1,5 +1,7 @@
 # 更新日志
 # 3.7.0
+- 优化 `Select` onChang 回调方法中，获取全部选项详细内容 [#1726](https://github.com/XiaoMi/hiui/issues/1726)
+- 修复 `Select` disabled 情况下，输入框仍能删除选项问题 [#1707](https://github.com/XiaoMi/hiui/issues/1707)
 - 新增 `Message` 组件 onClick、onClose方法[#1727](https://github.com/XiaoMi/hiui/issues/1727)
 - 优化 `Grid` 组件接受原生属性 [#1609](https://github.com/XiaoMi/hiui/issues/1609)
 # 3.6.1

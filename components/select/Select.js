@@ -159,7 +159,7 @@ const InternalSelect = (props) => {
       }
       // 调用用户的select
       const selectedIds = selectedItems.map((item) => item[transKeys(fieldNames, 'id')])
-      propsonChange && propsonChange(selectedIds, changedItems)
+      propsonChange && propsonChange(selectedIds, changedItems, selectedItems)
     },
     [propsonChange]
   )

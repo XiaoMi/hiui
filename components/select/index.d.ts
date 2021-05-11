@@ -45,7 +45,7 @@ interface Props {
   bordered?: boolean
   style?: CSSProperties
   className?: string
-  onChange?: (selectedIds: string[], changedItem: DataItem) => void
+  onChange?: (selectedIds: string[], changedItem: DataItem, changedItems: DataItem[]) => void
   onSearch?: (keyword: string) => void
   onOverlayScroll?: (e: Event<HTMLDivElement>) => void
   render?: (item: DataItem, selected: boolean) => JSX.Element
