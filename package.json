@@ -1,6 +1,13 @@
 {
   "name": "monorepo-hiui",
   "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/ui/*",
+      "scripts/*",
+      "docs/*"
+    ]
+  },
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "publish": "npm run compile && lerna publish",
@@ -14,6 +21,7 @@
     "precommit": "lint-staged"
   },
   "devDependencies": {
+    "@babel/cli": "^7.13.16",
     "@babel/preset-typescript": "~7.12.7",
     "@storybook/addon-actions": "^6.1.18",
     "@storybook/addon-essentials": "^6.1.18",
@@ -25,6 +33,7 @@
     "babel-eslint": "^8.2.6",
     "babel-jest": "^22.4.3",
     "babel-plugin-lodash": "^3.3.4",
+    "concurrently": "^6.1.0",
     "eslint": "~6.7.1",
     "eslint-config-airbnb": "~18.0.1",
     "eslint-config-prettier": "~6.7.0",
@@ -36,9 +45,10 @@
     "eslint-plugin-react": "~7.17.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^0.14.3",
-    "lerna": "^3.22.1",
+    "lerna": "^4.0.0",
     "lint-staged": "^10.5.4",
     "node-sass": "^4.12.0",
+    "rimraf": "^3.0.2",
     "rucksack-css": "^1.0.2",
     "sass-loader": "^7.0.1",
     "standard": "^11.0.1",
@@ -47,11 +57,14 @@
     "style-loader": "^2.0.0",
     "styled-components": "^5.2.1",
     "stylelint-config-standard": "^18.3.0",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.4"
   },
   "dependencies": {
+    "@babel/plugin-external-helpers": "^7.12.13",
+    "@babel/plugin-transform-runtime": "^7.13.15",
     "@hi-ui/core-css": "^2.0.1",
     "@hi-ui/hiui": "^3.4.1-rc.2",
+    "cross-env": "^7.0.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-live": "^2.2.3"

@@ -1,0 +1,69 @@
+{
+  "name": "@hi-ui/hello",
+  "version": "1.0.0",
+  "description": "Now I’m the model of a modern major general / The venerated Virginian veteran whose men are all / Lining up, to put me up on a pedestal / Writin’ letters to relatives / Embellishin’ my elegance and eloquence / But the elephant is in the room / The truth is in ya face when ya hear the British cannons go / BOOM",
+  "keywords": [],
+  "author": "Flcwl <flcwl@vip.qq.com>",
+  "license": "MIT",
+  "main": "lib/hello.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XiaoMi/hiui.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "prebuild": "rimraf lib",
+    "build:mdx": "node ./build.js",
+    "build:md": "cross-env BABEL_MODULE_ENV=cjs hi-build ./src/index.tsx --format esm,cjs -d ./lib/esm --source-maps",
+    "build:esm": "esbuild ./src --sourcemap --target=es6 --format=esm --outfile=./lib/index.js",
+    "build:cjs": "babel src --root-mode upward --extensions .ts,.tsx -d lib/cjs --source-maps",
+    "build:types": "tsc --emitDeclarationOnly --declarationDir lib/types",
+    "build": "concurrently yarn:build:*"
+  },
+  "bugs": {
+    "url": "https://github.com/XiaoMi/hiui/issues"
+  },
+  "homepage": "https://github.com/XiaoMi/hiui#readme",
+  "dependencies": {
+    "@hi-ui/hi-build": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/plugin-transform-runtime": "^7.12.15",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/preset-react": "^7.12.13",
+    "@babel/preset-typescript": "^7.12.13",
+    "@babel/runtime": "^7.12.13",
+    "@rollup/plugin-babel": "^5.2.3",
+    "@rollup/plugin-commonjs": "^17.1.0",
+    "@rollup/plugin-image": "^2.0.6",
+    "@rollup/plugin-multi-entry": "^4.0.0",
+    "@rollup/plugin-node-resolve": "^11.1.1",
+    "cssnano": "^4.1.10",
+    "postcss": "^8.2.7",
+    "postcss-import": "^14.0.0",
+    "postcss-nested": "^5.0.3",
+    "postcss-preset-env": "^6.7.0",
+    "postcss-simple-vars": "^6.0.3",
+    "rollup": "^2.38.5",
+    "rollup-plugin-dts": "^2.0.1",
+    "rollup-plugin-extensions": "^0.1.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.29.0"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2"
+  }
+}

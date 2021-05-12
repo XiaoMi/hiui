@@ -1,15 +1,29 @@
-module.exports = (api) => {
-  // base config for rollup
-  const babelPresetEnv = ['@babel/preset-env', { modules: false, targets: { ie: 11 } }];
-  const config = {
-    presets: [babelPresetEnv],
-    plugins: ['lodash'],
-  };
+const BABEL_MODULE_ENV = process.env.BABEL_MODULE_ENV
 
-  // storybook and visual regression tests
-  if (api.env('storybook')) {
-    babelPresetEnv[1] = { targets: { esmodules: true } };
+module.exports = function (api) {
+  api.cache(true)
+  console.log('BABEL_MODULE_ENV', BABEL_MODULE_ENV)
+
+  const presets = [
+    [
+      '@babel/env',
+      {
+        loose: true,
+        modules: BABEL_MODULE_ENV === 'cjs' ? 'commonjs' : false,
+        targets: {
+          esmodules: BABEL_MODULE_ENV === 'esm' ? true : undefined
+        }
+      }
+    ],
+    '@babel/preset-typescript',
+    '@babel/preset-react'
+  ]
+
+  // const plugins = ['@babel/plugin-proposal-class-properties']
+  const plugins = ['@babel/plugin-transform-runtime']
+
+  return {
+    presets,
+    plugins
   }
-
-  return config;
-};
+}

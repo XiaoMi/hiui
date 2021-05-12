@@ -1,7 +1,7 @@
 # MIFE dotfiles
 
 # Output files
-packages/*/dist/
+packages/*/lib/
 packages/*/es/
 
 # Editor generate files
