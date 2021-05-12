@@ -192,7 +192,7 @@
     z-index: 1;
     position: absolute;
     top: 0;
-    border-right: 2px solid #e6e7e8;
+    box-shadow: 2px 0 4px rgba(187, 187, 187, 0.4);
     overflow: hidden;
   }
 
@@ -200,7 +200,7 @@
     z-index: 1;
     position: absolute;
     top: 0;
-    border-left: 2px solid #e6e7e8;
+    box-shadow: -2px 0 4px rgba(187, 187, 187, 0.4);
     overflow: hidden;
   }
 

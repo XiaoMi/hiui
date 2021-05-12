@@ -11,8 +11,6 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
     data,
     leftFixedData,
     rightFixedData,
-    leftFixedColumns,
-    rightFixedColumns,
     columns,
     maxHeight,
     scrollBarSize,
@@ -34,14 +32,16 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
     localeDatas,
     expandedTreeRows,
     setExpandedTreeRows,
-    rowExpandable
+    rowExpandable,
+    flatLeftFixedColumns,
+    flatRightFixedColumns
   } = useContext(TableContext)
   let _columns
   if (isFixed === 'left') {
-    _columns = _.cloneDeep(leftFixedColumns)
+    _columns = _.cloneDeep(flatLeftFixedColumns.filter((i) => !!i.dataKey))
   }
   if (isFixed === 'right') {
-    _columns = _.cloneDeep(rightFixedColumns)
+    _columns = _.cloneDeep(flatRightFixedColumns.filter((i) => !!i.dataKey))
   }
   const depthArray = []
   setDepth(_columns, 0, depthArray)
@@ -108,6 +108,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
           rowHeight={eachRowHeight[row.key]}
           expandedTree={expandedTreeRows.includes(row.key)}
           expandedTreeRows={expandedTreeRows}
+          flatLeftFixedColumns={flatLeftFixedColumns}
           setExpandedTreeRows={setExpandedTreeRows}
           isTree={isTree}
           isAvgRow={rowConfig.isAvgRow}
@@ -125,24 +126,25 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   let fixedColumnsWidth
   if (isFixed === 'left') {
     fixedColumnsWidth = [rowSelection && 'checkbox']
-      .concat(leftFixedColumns)
+      .concat(_columns)
       .filter((column) => !!column)
       .map((c, idx) => realColumnsWidth[idx])
       .reduce((total, cur) => {
-        return total + cur
+        return total + cur + 1
       }, 0)
   }
   if (isFixed === 'right') {
-    fixedColumnsWidth = rightFixedColumns
+    fixedColumnsWidth = flatRightFixedColumns
+      .filter((column) => !!column.dataKey)
       .map((c, idx) => realColumnsWidth[rowSelection ? idx + 1 + rightFixedIndex : idx + rightFixedIndex])
       .reduce((total, cur) => {
-        return total + cur
+        return total + cur + 1
       }, 0)
   }
   const fixedBodyTableRef = isFixed === 'left' ? leftFixedBodyTableRef : rightFixedBodyTableRef
   // **************** 根据排序列处理数据
   let _fixedData = isFixed === 'left' ? leftFixedData : rightFixedData
-  const fixedColumns = isFixed === 'left' ? leftFixedColumns : rightFixedColumns
+  const fixedColumns = isFixed === 'left' ? flatLeftFixedColumns : flatRightFixedColumns
 
   if (activeSorterColumn) {
     const sorter =

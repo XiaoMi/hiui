@@ -39,13 +39,13 @@ const Row = ({
     setHighlightRows,
     columns,
     expandedRender,
-    leftFixedColumns,
-    rightFixedColumns,
     hoverRow,
     setHoverRow,
     prefix,
     rowExpandable,
-    onExpand
+    onExpand,
+    flatLeftFixedColumns,
+    flatRightFixedColumns
   } = useContext(TableContext)
 
   const _columns = _.cloneDeep(columns)
@@ -53,10 +53,10 @@ const Row = ({
   setDepth(_columns, 0, depthArray)
   let rowColumns = flatTreeData(_columns).filter((col) => col.isLast)
   if (isFixed === 'left') {
-    rowColumns = leftFixedColumns
+    rowColumns = flatLeftFixedColumns.filter((item) => !!item.dataKey)
   }
   if (isFixed === 'right') {
-    rowColumns = rightFixedColumns
+    rowColumns = flatRightFixedColumns.filter((item) => !!item.dataKey)
   }
   const checkboxConfig = rowSelection && rowSelection.getCheckboxConfig && rowSelection.getCheckboxConfig(allRowData)
   const checkboxDisabled = (checkboxConfig && checkboxConfig.disabled) || false

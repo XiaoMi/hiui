@@ -13,6 +13,7 @@ const rightOptions = [
   '内嵌式',
   '内嵌式异步渲染',
   '表头分组',
+  '表头分组固定列',
   '表头吸顶',
   '固定表头',
   '合并单元格'
@@ -346,6 +347,7 @@ class Demo extends React.Component {
     return <Table 
       columns={this.columns} 
       data={this.data}
+
       onExpand={(expanded, row) => {
         console.log(expanded, row)
       }} 
@@ -466,7 +468,114 @@ class Demo extends React.Component {
         this.data = data
       }
       render() {
-        return <Table columns={this.columns} data={this.data} rowSelection={{
+        return <Table 
+        columns={this.columns}
+        fixedToColumn={{left: 'number', right:'gender'}}
+        scrollWidth={1000}
+        data={this.data} 
+        rowSelection={{
+          selectedRowKeys: this.state.selectedRowKeys,
+          onChange: selectedRowKeys => {
+            this.setState({selectedRowKeys})
+          }
+        }} />
+      }
+    }`,
+    opt: ['表头分组固定列']
+  },
+  {
+    code: `import React from 'react'
+    import Table from '@hi-ui/hiui/es/table'\n
+    class Demo extends React.Component {
+      constructor(props){
+        super(props)
+        this.state={selectedRowKeys:[]}
+        this.columns =  [
+          {
+            title: 'Name',
+            dataKey: 'name',
+            key: '1'
+          },
+          {
+            title: 'Other',
+
+            children: [
+              {
+                title: 'Age',
+                dataKey: 'age',
+                key: 2
+              },
+              {
+                title: 'Address',
+
+                children: [
+                  {
+                    title: 'Street',
+                    dataKey: 'street',
+                    key: '3'
+                  },
+                  {
+                    title: 'Block',
+                    children: [
+                      {
+                        title: 'Building',
+                        dataKey: 'building',
+                        key: '4'
+                      },
+                      {
+                        title: 'Door No.',
+                        dataKey: 'number',
+                        key: '5'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            title: 'Company',
+            key: '6',
+            children: [
+              {
+                title: 'Address',
+                dataKey: 'companyAddress',
+                key: '7'
+              },
+              {
+                title: 'Name',
+                dataKey: 'companyName',
+                key: '8'
+              }
+            ]
+          },
+          {
+            title: 'Gender',
+            dataKey: 'gender',
+            key: '9'
+          }
+        ]
+        let data = []
+        for (let i = 0; i < 6; i++) {
+          data.push({
+            key: i,
+            name: 'John Brown',
+            age: i + 1,
+            street: 'Lake Park',
+            building: 'C',
+            number: 2035,
+            companyAddress: 'Lake Street 42',
+            companyName: 'SoftLake Co',
+            gender: 'M'
+          })
+        }
+        this.data = data
+      }
+      render() {
+        return <Table 
+        columns={this.columns}
+        data={this.data} 
+        rowSelection={{
           selectedRowKeys: this.state.selectedRowKeys,
           onChange: selectedRowKeys => {
             this.setState({selectedRowKeys})
