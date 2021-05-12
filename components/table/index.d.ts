@@ -72,6 +72,7 @@ interface Props {
   data: object[]
   style?: CSSProperties
   className?: string
+  scrollWidth?: React.ReactText
 }
 declare const Table: React.ComponentType<Props>
 export default Table

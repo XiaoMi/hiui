@@ -138,7 +138,7 @@ const SelectTree = ({
   // 依赖展开项生成展开节点数据
   useEffect(() => {
     if (flattenData.length > 0) {
-      const _expandIds = parseExpandIds(expandIdsProps, defaultExpandIds, flattenData)
+      const _expandIds = parseExpandIds(expandIdsProps, defaultExpandIds, flattenData, defaultExpandAll)
       setExpandIds((preExpandIds) => {
         return (_expandIds || []).concat(preExpandIds || [])
       })
