@@ -2,7 +2,6 @@
   "version": "independent",
   "useWorkspaces": true,
   "packages": [
-    "scripts/*",
     "packages/ui/*",
     "packages/hooks/*",
     "packages/themes/*",
@@ -10,6 +9,7 @@
     "packages/types/*",
     "packages/styles/*",
     "packages/icons/*",
+    "scripts/*",
     "docs/*",
     "plugins/*",
     "website/*",

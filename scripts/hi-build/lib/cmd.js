@@ -9,6 +9,7 @@ const cmd = (callback) => {
       options.src = src
     }
 
+    console.log('options.compress', options.compress)
     if (options.compress === undefined) {
       // the default compress value is `true` for web, `false` for Node.
       options.compress = options.target !== 'node'
@@ -29,9 +30,9 @@ const cmd = (callback) => {
       DEFAULT_FORMATS
     )
     .option('-t, --target <target>', 'Specify target environment for build (node or web)', 'web')
-    .option('--compress', 'Build with compress')
+    .option('--compress', 'Build with compress', false)
     .option('--preserved', 'Build with preserved modules', true)
-    .option('--source-maps', 'Generate source map', false)
+    .option('--source-maps', 'Generate source map', true)
     .option('--css-extract', 'Turns on Extract css', false)
     .option('--css-modules', 'Turns on css-modules', false)
     .description('Build once and exit')

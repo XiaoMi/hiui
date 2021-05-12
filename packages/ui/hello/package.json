@@ -24,10 +24,12 @@
     "test": "echo \"Error: run tests from root\" && exit 1",
     "prebuild": "rimraf lib",
     "build:mdx": "node ./build.js",
-    "build:md": "cross-env BABEL_MODULE_ENV=cjs hi-build ./src/index.tsx --format esm,cjs -d ./lib/esm --source-maps",
-    "build:esm": "esbuild ./src --sourcemap --target=es6 --format=esm --outfile=./lib/index.js",
-    "build:cjs": "babel src --root-mode upward --extensions .ts,.tsx -d lib/cjs --source-maps",
+    "build:esm": "cross-env BABEL_MODULE_ENV=esm hi-build ./src/index.tsx --format esm -d ./lib/esm --source-maps",
+    "build:cjs": "cross-env BABEL_MODULE_ENV=cjs hi-build ./src/index.tsx --format cjs -d ./lib/cjs --source-maps",
+    "build:esbuild": "esbuild ./src --sourcemap --target=es6 --format=esm --outfile=./lib/index.js",
+    "build:babel": "babel src --root-mode upward --extensions .ts,.tsx -d lib/cjs --source-maps",
     "build:types": "tsc --emitDeclarationOnly --declarationDir lib/types",
+    "build1": "yarn build:esm && yarn build:cjs",
     "build": "concurrently yarn:build:*"
   },
   "bugs": {

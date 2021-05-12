@@ -4,7 +4,7 @@ const rollup = require('rollup')
 // resolve将我们编写的源码与依赖的第三方库进行合并
 const { nodeResolve } = require('@rollup/plugin-node-resolve')
 // babel插件用于处理es6代码的转换，使转换出来的代码可以用于不支持es6的环境使用
-const { babel, getBabelInputPlugin, getBabelOutputPlugin } = require('@rollup/plugin-babel')
+const { babel } = require('@rollup/plugin-babel')
 // peer deps external
 const peerDepsExternal = require('rollup-plugin-peer-deps-external')
 // 解决 rollup 无法识别 CommonJS 模块
@@ -14,11 +14,10 @@ const typescript = require('rollup-plugin-typescript2')
 // 使rollup可以使用postCss处理样式文件less、css等
 const postcss = require('rollup-plugin-postcss')
 // 可以处理组件中import图片的方式，将图片转换成base64格式，但会增加打包体积，适用于小图标
-// const image = require('@rollup/plugin-image')
-// // json
+const image = require('@rollup/plugin-image')
 // const json = require('@rollup/plugin-json')
 // 压缩打包代码
-// const { terser } = require('rollup-plugin-terser')
+const { terser } = require('rollup-plugin-terser')
 // PostCSS 处理css定义的变量
 const simplevars = require('postcss-simple-vars')
 const postcssImport = require('postcss-import')
@@ -44,36 +43,6 @@ const resolvePackage = (cwd) => {
   return pkg || {}
 }
 
-const removeScope = (name) => name.replace(/^@.*\//, '')
-
-// https://github.com/rollup/rollup-plugin-babel/issues/326
-const getBabelConfig = () => {
-  // const BABEL_ENV = process.env.BABEL_ENV
-  // const dir = Path.resolve('babel.config.js')
-
-  const presets = [
-    [
-      '@babel/env',
-      // {
-      //   loose: true,
-      //   modules: BABEL_ENV === 'cjs' ? 'commonjs' : false,
-      //   targets: {
-      //     esmodules: BABEL_ENV === 'esm' ? true : undefined,
-      //   },
-      // },
-    ],
-    // '@babel/preset-typescript',
-    '@babel/preset-react',
-  ]
-
-  const plugins = ['@babel/plugin-transform-runtime']
-
-  return {
-    presets,
-    plugins,
-  }
-}
-
 // https://github.com/rollup/plugins/tree/master/packages/babel#babelhelpers
 const getExternals = (pkg) => {
   /** @type {(string | RegExp)[]} */
@@ -84,18 +53,17 @@ const getExternals = (pkg) => {
 }
 
 const getRollupConfig = (input, outputPath, options, pkg) => {
-  const babelConfig = getBabelConfig()
   const external = getExternals(pkg)
 
   const {
-    target = 'web',
+    // target = 'web',
     // dist = './lib',
-    format = 'esm,cjs',
-    sourceMaps = false,
+    format = 'cjs',
+    sourceMaps = true,
     cssExtract = false,
     cssModules = false,
     preserved = true,
-    compress,
+    compress = false,
   } = options
 
   console.log(
@@ -117,7 +85,7 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
       commonjs(),
       // dts(),
       // json(),
-      // image(),
+      image(),
       typescript({ useTsconfigDeclarationDir: true }),
       postcss({
         plugins: [
@@ -142,15 +110,13 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
         // plugins: babelConfig
         // ...babelConfig
       }),
-      // 生产环境执行 terser 压缩代码
-      // compress && terser()
+      compress && terser(),
     ].filter(Boolean),
     // manualChunks: (id) => Path.parse(id).name,
   }
 
   const outputOptions = format.split(',').map((f) => {
     const _outputOptions = {
-      // file: pkg.main,
       dir: outputPath,
       format: f,
       sourcemap: sourceMaps,
@@ -158,8 +124,6 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
       // freeze: false,
       // esModule: false,
       globals: { react: 'React' },
-      // preserveModules: true,
-      // preserveModulesRoot: 'src',
       chunkFileNames: '[name].js',
     }
 
@@ -179,10 +143,12 @@ async function build([inputOptions, outputOptions]) {
   const bundle = await rollup.rollup(inputOptions)
 
   // loop through the options and write individual bundles
-  outputOptions.forEach(async (options) => {
-    console.log('[ options ] >', options)
-    await bundle.write(options)
-  })
+  return Promise.all(
+    outputOptions.map(async (options) => {
+      console.log('[ options ] >', options)
+      await bundle.write(options)
+    })
+  )
 }
 
 function main(inOptions) {
@@ -191,11 +157,7 @@ function main(inOptions) {
   // get pkg
   const cwd = process.cwd()
   const pkg = resolvePackage(cwd)
-  const pkgName = pkg.name
 
-  // get name without scope
-  const name = pkgName ? removeScope(pkgName) : ''
-  console.log('[ name ] >', name)
   // get input
   const inputPath = Path.join(cwd, options.src)
   const outputPath = Path.join(cwd, options.dist)

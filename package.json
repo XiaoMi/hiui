@@ -4,8 +4,17 @@
   "workspaces": {
     "packages": [
       "packages/ui/*",
+      "packages/utils/*",
+      "packages/hooks/*",
+      "packages/themes/*",
+      "packages/types/*",
+      "packages/styles/*",
+      "packages/icons/*",
       "scripts/*",
-      "docs/*"
+      "docs/*",
+      "plugins/*",
+      "website/*",
+      "examples/*"
     ]
   },
   "scripts": {
