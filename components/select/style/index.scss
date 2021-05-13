@@ -16,10 +16,4 @@
   &__hide {
     display: none;
   }
-
-  &:focus {
-    .hi-select__input {
-      border-color: use-color('primary');
-    }
-  }
 }
