@@ -15,6 +15,7 @@
     "website/*",
     "examples/*"
   ],
+  "stream": true,
   "npmClient": "yarn",
   "registry": "https://registry.npmjs.org/",
   "bootstrap": {

@@ -2,9 +2,7 @@ const Path = require('path')
 const Fs = require('fs')
 const rollup = require('rollup')
 const { babel, getBabelOutputPlugin } = require('@rollup/plugin-babel')
-// resolve 将我们编写的源码与依赖的第三方库进行合并
 const { nodeResolve } = require('@rollup/plugin-node-resolve')
-// 解决 rollup 无法识别 CommonJS 模块
 const commonjs = require('@rollup/plugin-commonjs')
 const typescript = require('@rollup/plugin-typescript')
 const postcss = require('rollup-plugin-postcss')
@@ -14,8 +12,8 @@ const simpleVars = require('postcss-simple-vars')
 const postcssImport = require('postcss-import')
 const cssNested = require('postcss-nested')
 const postcssPresetEnv = require('postcss-preset-env')
+const postcssFlexBugfix = require('postcss-flexbugs-fixes')
 const cssnano = require('cssnano')
-const replace = require('rollup-plugin-re')
 
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
 
@@ -26,10 +24,22 @@ const resolvePackage = (cwd) => {
   return pkg || {}
 }
 
+const getBanner = (pkg) => {
+  return `/** @LICENSE
+ * ${pkg.name} v${pkg.version}
+ * ${pkg.homepage}
+ *
+ * Copyright (c) ${pkg.author}.
+ *
+ * This source code is licensed under the ${pkg.license} license found in the
+ * LICENSE file in the root directory of this source tree.
+ */`
+}
+
 // https://github.com/rollup/plugins/tree/master/packages/babel#babelhelpers
 const getExternals = (pkg) => {
   /** @type {(string | RegExp)[]} */
-  return [/@babel\//, /tslib/, /style-inject/]
+  return [/tslib/]
     .concat(Object.keys(pkg.peerDependencies || {}))
     .concat(Object.keys(pkg.dependencies || {}))
 }
@@ -72,7 +82,6 @@ const getBabelConfig = (type, target) => {
 
 const getRollupConfig = (input, outputPath, options, pkg) => {
   const external = getExternals(pkg)
-  console.log('[external  ] >', external)
 
   const {
     target = 'browser',
@@ -101,13 +110,21 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
         commonjs(),
         typescript({
           typescript: require('typescript'),
+          // https://github.com/rollup/plugins/issues/568
           declaration: false,
           // declarationDir: Path.join(outputPath, 'types'),
         }),
         image(),
         postcss({
           plugins: [
-            postcssPresetEnv(),
+            postcssFlexBugfix(),
+            postcssPresetEnv({
+              autoprefixer: {
+                remove: false,
+                flexbox: 'no-2009',
+              },
+              stage: 3,
+            }),
             postcssImport(),
             simpleVars(),
             cssNested(),
@@ -115,8 +132,9 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
           ],
           extensions: ['.scss', '.css'],
           use: ['sass'],
-          inject: true,
-          // TODO: styleInject 提取为公用模块
+          // Extract styleInject as a external module
+          inject: (variableName) =>
+            `;var __styleInject__=require('style-inject/dist/style-inject.es.js');__styleInject__(${variableName});`,
           extract: cssExtract,
           modules: cssModules,
         }),
@@ -124,18 +142,10 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
           extensions: EXTENSIONS,
           babelHelpers: 'runtime',
           exclude: /node_modules/,
-          // 使用自定义构建配置，统一管理
+          // Use custom babel configuration to convenient unified management
           ...babelConfig,
           babelrc: false,
           configFile: false,
-        }),
-        replace({
-          patterns: [
-            {
-              test: /\('.*\/node_modules\//,
-              replace: `('`,
-            },
-          ],
         }),
         compress && terser(),
       ].filter(Boolean),
@@ -146,6 +156,9 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
       format: isESM ? 'es' : type,
       dir: outputPath,
       sourcemap: sourceMaps,
+      banner() {
+        return getBanner(pkg)
+      },
       exports: 'named',
       globals: { react: 'React' },
       chunkFileNames: '[name].js',
@@ -199,7 +212,6 @@ function main(userOptions) {
   const outputPath = Path.join(cwd, options.dist)
 
   const configs = getRollupConfig(inputPath, outputPath, options, pkg)
-  console.log('[ configs ] >', configs)
 
   return build(configs)
 }

@@ -56,7 +56,6 @@
     "rollup-plugin-extensions": "^0.1.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.0",
-    "rollup-plugin-re": "^1.0.7",
     "rollup-plugin-terser": "^7.0.2"
   },
   "peerDependencies": {

@@ -32,7 +32,7 @@
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
-  "homepage": "https://github.com/XiaoMi/hiui#readme",
+  "homepage": "https://github.com/XiaoMi/hiui",
   "dependencies": {
     "@hi-ui/classname": "^1.0.1"
   },

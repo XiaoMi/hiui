@@ -2,6 +2,7 @@
 import React, { forwardRef, useMemo } from 'react'
 // 测试 import
 import { cx, getPrefixCls } from '@hi-ui/classname'
+import { useState } from 'react'
 
 const componentName = 'avatar'
 const _prefix = getPrefixCls(componentName)
@@ -37,6 +38,9 @@ export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
     },
     ref
   ) => {
+    const [active1, setActive1] = useState(false)
+    console.log(active1, setActive1)
+
     const cls = cx(prefixCls, className, active && `${prefixCls}__active`)
     const imageCls = cx(
       `${prefixCls}__image`,
