@@ -1,17 +1,18 @@
 // 测试 React + ts
 import React, { forwardRef, useMemo } from 'react'
-// 测试 三方 import
-import cx from 'classnames'
-
-// 测试 scss
-import './index.scss'
-import './index.css'
+// 测试 import
+import { cx, getPrefixCls } from '@hi-ui/classname'
 
 const componentName = 'avatar'
-const _prefix = componentName
+const _prefix = getPrefixCls(componentName)
+
+// 测试 babel
+const test = Array.from([])
+
+console.log(test)
 
 // 测试 export components
-export const Avatar: React.FC<AvatarProps> = forwardRef<HTMLDivElement | null, AvatarProps>(
+export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
   (
     {
       prefixCls = _prefix,
@@ -50,43 +51,43 @@ export const Avatar: React.FC<AvatarProps> = forwardRef<HTMLDivElement | null, A
       backgroundRepeat: 'no-repeat',
       backgroundSize: fit,
       color: foreColor,
-      backgroundColor: bgColor
+      backgroundColor: bgColor,
     }
 
     const placementStyle = useMemo(() => {
       const placements = {
         top: {
           labelStyle: {
-            marginTop: gap
+            marginTop: gap,
           },
           style: {
-            flexDirection: 'column'
-          }
+            flexDirection: 'column',
+          },
         },
         bottom: {
           labelStyle: {
-            marginBottom: gap
+            marginBottom: gap,
           },
           style: {
-            flexDirection: 'column-reverse'
-          }
+            flexDirection: 'column-reverse',
+          },
         },
         left: {
           labelStyle: {
-            marginLeft: gap
+            marginLeft: gap,
           },
           style: {
-            flexDirection: 'row'
-          }
+            flexDirection: 'row',
+          },
         },
         right: {
           labelStyle: {
-            marginRight: gap
+            marginRight: gap,
           },
           style: {
-            flexDirection: 'row-reverse'
-          }
-        }
+            flexDirection: 'row-reverse',
+          },
+        },
       }
 
       return placements[placement]
@@ -94,7 +95,7 @@ export const Avatar: React.FC<AvatarProps> = forwardRef<HTMLDivElement | null, A
 
     const _style = {
       ...style,
-      ...placementStyle.style
+      ...placementStyle.style,
     } as React.CSSProperties
 
     const labelStyle = placementStyle.labelStyle as React.CSSProperties

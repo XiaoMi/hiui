@@ -37,5 +37,5 @@ module.exports = {
     'react-hooks/exhaustive-deps': 1, // check effect deps
     'no-case-declarations': 0,
   },
-  ignorePatterns: ['!.*.js'],
+  ignorePatterns: ['!.*.js', '*.d.ts'],
 }

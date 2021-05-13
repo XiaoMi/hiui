@@ -1,0 +1,64 @@
+$prefixCls: hi-avatar !default;
+
+.#{$prefixCls} {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  vertical-align: middle;
+  outline: none;
+
+  &__image {
+    position: relative;
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-size: 1rem;
+    font-weight: 500;
+    vertical-align: middle;
+    border-color: rgb(255, 255, 255);
+    outline: none;
+    transition: border-color 0.3s;
+
+    &--circle {
+      border-radius: 100%;
+    }
+
+    &--round {
+      border-radius: 2px;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      line-height: 1;
+      object-fit: contain;
+    }
+  }
+
+  &__label {
+    font-size: inherit;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+
+  &__active {
+    &:hover {
+      color: #f63;
+      cursor: pointer;
+
+      .#{$prefixCls}__image {
+        border-color: #f63;
+      }
+    }
+  }
+
+  &__bordered {
+    border: 0.5px solid #dadada;
+  }
+}

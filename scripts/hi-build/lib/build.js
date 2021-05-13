@@ -1,38 +1,21 @@
 const Path = require('path')
 const Fs = require('fs')
 const rollup = require('rollup')
-// resolve将我们编写的源码与依赖的第三方库进行合并
+const { babel, getBabelOutputPlugin } = require('@rollup/plugin-babel')
+// resolve 将我们编写的源码与依赖的第三方库进行合并
 const { nodeResolve } = require('@rollup/plugin-node-resolve')
-// babel插件用于处理es6代码的转换，使转换出来的代码可以用于不支持es6的环境使用
-const { babel } = require('@rollup/plugin-babel')
-// peer deps external
-const peerDepsExternal = require('rollup-plugin-peer-deps-external')
 // 解决 rollup 无法识别 CommonJS 模块
 const commonjs = require('@rollup/plugin-commonjs')
-// 支持 typescript
-const typescript = require('rollup-plugin-typescript2')
-// 使rollup可以使用postCss处理样式文件less、css等
+const typescript = require('@rollup/plugin-typescript')
 const postcss = require('rollup-plugin-postcss')
-// 可以处理组件中import图片的方式，将图片转换成base64格式，但会增加打包体积，适用于小图标
 const image = require('@rollup/plugin-image')
-// const json = require('@rollup/plugin-json')
-// 压缩打包代码
 const { terser } = require('rollup-plugin-terser')
-// PostCSS 处理css定义的变量
-const simplevars = require('postcss-simple-vars')
+const simpleVars = require('postcss-simple-vars')
 const postcssImport = require('postcss-import')
-// PostCSS 处理less嵌套样式写法
-const nested = require('postcss-nested')
-// 可以提前适用最新css特性
+const cssNested = require('postcss-nested')
 const postcssPresetEnv = require('postcss-preset-env')
-// css 代码压缩
-// const cssnano = require('cssnano')
-// 用于打包生成*.d.ts文件
-// const dts = require('rollup-plugin-dts').default
-// 多入口
-// const multi = require('@rollup/plugin-multi-entry')
-// 扩展
-// const extensions = require('rollup-plugin-extensions')
+const cssnano = require('cssnano')
+const replace = require('rollup-plugin-re')
 
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx']
 
@@ -46,19 +29,54 @@ const resolvePackage = (cwd) => {
 // https://github.com/rollup/plugins/tree/master/packages/babel#babelhelpers
 const getExternals = (pkg) => {
   /** @type {(string | RegExp)[]} */
-  const external = [/@babel\//, /tslib/, /style-inject/]
-  const peerDeps = Object.keys(pkg.peerDependencies || {})
+  return [/@babel\//, /tslib/, /style-inject/]
+    .concat(Object.keys(pkg.peerDependencies || {}))
+    .concat(Object.keys(pkg.dependencies || {}))
+}
 
-  return external.concat(peerDeps).concat(Object.keys(pkg.dependencies || {}))
+const getBabelConfig = (type, target) => {
+  const isESM = type === 'esm'
+
+  // check support targets
+  const isBrowser = target === 'browser'
+  const envTarget = isBrowser ? { browsers: ['last 2 versions', 'IE 10'] } : { node: 11 }
+
+  const presets = [
+    [
+      '@babel/preset-env',
+      {
+        loose: true,
+        // rollup using EsModules to import
+        modules: false,
+        targets: envTarget,
+      },
+    ],
+    '@babel/preset-typescript',
+    '@babel/preset-react',
+  ]
+
+  const plugins = [
+    [
+      '@babel/plugin-transform-runtime',
+      {
+        useESModules: isESM ? true : undefined,
+      },
+    ],
+  ]
+
+  return {
+    presets,
+    plugins,
+  }
 }
 
 const getRollupConfig = (input, outputPath, options, pkg) => {
   const external = getExternals(pkg)
+  console.log('[external  ] >', external)
 
   const {
-    // target = 'web',
-    // dist = './lib',
-    format = 'cjs',
+    target = 'browser',
+    format: formatOptions = 'cjs',
     sourceMaps = true,
     cssExtract = false,
     cssModules = false,
@@ -66,107 +84,123 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
     compress = false,
   } = options
 
-  console.log(
-    `[ path.resolve(__dirname, '../babel.config.js') ] >`,
-    Path.resolve(__dirname, '../babel.config.js')
-  )
-  const inputOptions = {
-    input,
-    external, // build As external modules
-    onwarn(warning, warn) {
-      warn(warning)
-    },
-    // treeshake: {
-    //   propertyReadSideEffects: false,
-    // },
-    plugins: [
-      peerDepsExternal(),
-      nodeResolve(),
-      commonjs(),
-      // dts(),
-      // json(),
-      image(),
-      typescript({ useTsconfigDeclarationDir: true }),
-      postcss({
-        plugins: [
-          postcssImport(),
-          simplevars(),
-          nested(),
-          postcssPresetEnv(),
-          // cssnano(),
-        ],
-        extensions: ['.css', '.scss'],
-        use: ['sass'],
-        // TODO: styleInject 提取为公用模块
-        inject: true,
-        extract: cssExtract,
-        modules: cssModules,
-      }),
-      babel({
-        extensions: EXTENSIONS,
-        babelHelpers: 'runtime', // 'runtime' | 'external'
-        exclude: ['node_modules/**'],
-        configFile: Path.resolve(__dirname, '../babel.config.js'),
-        // plugins: babelConfig
-        // ...babelConfig
-      }),
-      compress && terser(),
-    ].filter(Boolean),
-    // manualChunks: (id) => Path.parse(id).name,
-  }
+  const formats = formatOptions.split(',')
 
-  const outputOptions = format.split(',').map((f) => {
-    const _outputOptions = {
+  const rollupConfigs = formats.map((type) => {
+    const babelConfig = getBabelConfig(type, target)
+    const isESM = type === 'esm'
+
+    const inputOptions = {
+      input,
+      external,
+      treeshake: {
+        propertyReadSideEffects: false,
+      },
+      plugins: [
+        nodeResolve(),
+        commonjs(),
+        typescript({
+          typescript: require('typescript'),
+          declaration: false,
+          // declarationDir: Path.join(outputPath, 'types'),
+        }),
+        image(),
+        postcss({
+          plugins: [
+            postcssPresetEnv(),
+            postcssImport(),
+            simpleVars(),
+            cssNested(),
+            compress && cssnano(),
+          ],
+          extensions: ['.scss', '.css'],
+          use: ['sass'],
+          inject: true,
+          // TODO: styleInject 提取为公用模块
+          extract: cssExtract,
+          modules: cssModules,
+        }),
+        babel({
+          extensions: EXTENSIONS,
+          babelHelpers: 'runtime',
+          exclude: /node_modules/,
+          // 使用自定义构建配置，统一管理
+          ...babelConfig,
+          babelrc: false,
+          configFile: false,
+        }),
+        replace({
+          patterns: [
+            {
+              test: /\('.*\/node_modules\//,
+              replace: `('`,
+            },
+          ],
+        }),
+        compress && terser(),
+      ].filter(Boolean),
+    }
+
+    const outputOptions = {
+      // Match rollup type rule of output
+      format: isESM ? 'es' : type,
       dir: outputPath,
-      format: f,
       sourcemap: sourceMaps,
-      // exports: 'named',
-      // freeze: false,
-      // esModule: false,
+      exports: 'named',
       globals: { react: 'React' },
       chunkFileNames: '[name].js',
+      plugins: [
+        getBabelOutputPlugin({
+          presets: ['@babel/preset-env'],
+          plugins: [
+            [
+              '@babel/plugin-transform-runtime',
+              {
+                useESModules: isESM ? true : undefined,
+              },
+            ],
+          ],
+        }),
+      ],
     }
 
     if (preserved) {
-      _outputOptions.preserveModules = true
-      _outputOptions.preserveModulesRoot = 'src'
+      outputOptions.preserveModules = true
+      outputOptions.preserveModulesRoot = 'src'
     }
 
-    return _outputOptions
+    return [inputOptions, outputOptions]
   })
 
-  return [inputOptions, outputOptions]
+  return rollupConfigs
 }
 
-async function build([inputOptions, outputOptions]) {
-  // create bundle
-  const bundle = await rollup.rollup(inputOptions)
-
-  // loop through the options and write individual bundles
+async function build(rollupConfigs) {
   return Promise.all(
-    outputOptions.map(async (options) => {
-      console.log('[ options ] >', options)
-      await bundle.write(options)
+    rollupConfigs.map(async ([inputOptions, outputOptions]) => {
+      // create bundler with rollup
+      const bundle = await rollup.rollup(inputOptions)
+
+      // write individual bundles
+      await bundle.write(outputOptions)
     })
   )
 }
 
-function main(inOptions) {
-  const options = Object.assign({}, inOptions)
+function main(userOptions) {
+  const options = Object.assign({}, userOptions)
 
-  // get pkg
   const cwd = process.cwd()
+
+  // get data from package.json
   const pkg = resolvePackage(cwd)
 
-  // get input
   const inputPath = Path.join(cwd, options.src)
   const outputPath = Path.join(cwd, options.dist)
 
-  // get rollup config
   const configs = getRollupConfig(inputPath, outputPath, options, pkg)
   console.log('[ configs ] >', configs)
 
-  // build with rollup
   return build(configs)
 }
 

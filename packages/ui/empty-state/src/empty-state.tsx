@@ -1,9 +1,9 @@
-import React, { forwardRef } from 'react';
-import cx from 'classnames';
-import __DEV__ from './env';
+import React, { forwardRef } from 'react'
+import cx from 'classnames'
+import __DEV__ from './env'
 
-const componentName = 'empty-state';
-export const _prefix = 'hi4-empty-state';
+const componentName = 'empty-state'
+export const _prefix = 'hi4-empty-state'
 
 export const EmptyState = forwardRef<null, EmptyStateProps>(
   (
@@ -21,8 +21,8 @@ export const EmptyState = forwardRef<null, EmptyStateProps>(
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className);
-    const imageCls = cx(`${prefixCls}__image`, imageClassName);
+    const cls = cx(prefixCls, className)
+    const imageCls = cx(`${prefixCls}__image`, imageClassName)
 
     return (
       <div ref={ref} role={role} className={cls} {...restProps}>
@@ -33,35 +33,41 @@ export const EmptyState = forwardRef<null, EmptyStateProps>(
         {subtitle ? <span className={`${prefixCls}__subtitle`}>{subtitle}</span> : null}
         {children}
       </div>
-    );
+    )
   }
-);
+)
 
 export interface EmptyStateProps {
-  prefixCls?: string;
-  role?: string;
-  className?: string;
-  style?: React.CSSProperties;
-  indicator?: React.ReactNode;
-  title?: React.ReactNode;
-  subtitle?: React.ReactNode;
-  imageStyle?: React.CSSProperties;
-  imageClassName?: string;
+  prefixCls?: string
+  role?: string
+  className?: string
+  style?: React.CSSProperties
+  indicator?: React.ReactNode
+  title?: React.ReactNode
+  subtitle?: React.ReactNode
+  imageStyle?: React.CSSProperties
+  imageClassName?: string
 }
 
 if (__DEV__) {
-  EmptyState.displayName = 'EmptyState';
+  EmptyState.displayName = 'EmptyState'
 }
 
-export default EmptyState;
+export default EmptyState
 
 const DefaultIndicator: React.FC<DefaultIndicatorProps> = (props) => {
-  return <img alt="empty" src="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg" {...props} />;
-};
+  return (
+    <img
+      alt="empty"
+      src="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+      {...props}
+    />
+  )
+}
 
 export interface DefaultIndicatorProps {
-  prefixCls?: string;
-  role?: string;
-  className?: string;
-  style?: React.CSSProperties;
+  prefixCls?: string
+  role?: string
+  className?: string
+  style?: React.CSSProperties
 }
