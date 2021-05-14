@@ -30,30 +30,33 @@ const useUpload = ({
     }
   }, [fileList])
 
-  const deleteFile = useCallback((file, index) => {
-    if (file.abort) {
-      file.abort()
-    }
-    let result = true
-    if (onRemove) {
-      result = onRemove(file, [...fileListRef.current], index)
-    }
-    if (!fileList) {
-      const newFileList = [...fileListRef.current]
-      newFileList.splice(index, 1)
-      if (result === true) {
-        fileListRef.current = newFileList
-        updateFileList(fileListRef.current)
-      } else if (result && typeof result.then === 'function') {
-        result.then((res) => {
-          if (res === true) {
-            fileListRef.current = newFileList
-            updateFileList(fileListRef.current)
-          }
-        })
+  const deleteFile = useCallback(
+    (file, index) => {
+      if (file.abort) {
+        file.abort()
       }
-    }
-  }, [])
+      let result = true
+      if (onRemove) {
+        result = onRemove(file, [...fileListRef.current], index)
+      }
+      if (!fileList) {
+        const newFileList = [...fileListRef.current]
+        newFileList.splice(index, 1)
+        if (result === true) {
+          fileListRef.current = newFileList
+          updateFileList(fileListRef.current)
+        } else if (result && typeof result.then === 'function') {
+          result.then((res) => {
+            if (res === true) {
+              fileListRef.current = newFileList
+              updateFileList(fileListRef.current)
+            }
+          })
+        }
+      }
+    },
+    [onRemove, updateFileList, fileListRef]
+  )
 
   const onSuccess = (file, res) => {
     const newFileList = [...fileListRef.current]
@@ -94,7 +97,7 @@ const useUpload = ({
       fileListRef.current = newFileList
       updateFileList(fileListRef.current)
     },
-    [onChange]
+    [onChange, updateFileList, fileListRef]
   )
 
   const onError = (file, error, res) => {
