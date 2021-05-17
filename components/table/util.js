@@ -1,11 +1,12 @@
 import _ from 'lodash'
 
 // 将树状数据拍平
-export const flatTreeData = (data, flattedData = []) => {
-  data.forEach((d) => {
+export const flatTreeData = (data, flattedData = [], rootIndex) => {
+  data.forEach((d, index) => {
+    d._rootIndex = typeof rootIndex === 'undefined' ? index : rootIndex
     flattedData.push(d)
     if (d.children) {
-      flatTreeData(d.children, flattedData)
+      flatTreeData(d.children, flattedData, index)
     }
   })
   return flattedData

@@ -95,21 +95,25 @@ const Table = ({
   // 右侧冻结
   const rightFixedColumn = fixedToColumn && fixedToColumn.right
 
-  let leftFixedIndex, rightFixedIndex
+  let leftFixedIndex, rightFixedIndex, leftFlatIndex, rightFlatIndex
   // TODO: 这里是考虑了多级表头的冻结，待优化
   flattedColumns.forEach((c, index) => {
     if (leftFixedColumn === c.dataKey) {
-      leftFixedIndex = index
+      leftFixedIndex = c._rootIndex
+      leftFlatIndex = index
     }
     if (rightFixedColumn === c.dataKey) {
-      rightFixedIndex = index
+      rightFixedIndex = c._rootIndex
+      rightFlatIndex = index
     }
   })
-  const realLeftFixedColumns = [...flattedColumns].splice(0, leftFixedIndex + 1)
-  const leftFixedData = getFixedDataByFixedColumn(realLeftFixedColumns, data)
-  const realRightFixedColumns = [...flattedColumns].splice(rightFixedIndex)
+  const realLeftFixedColumns = [...columns].splice(0, leftFixedIndex + 1)
+  const flatLeftFixedColumns = [...flattedColumns].splice(0, leftFlatIndex + 1)
+  const leftFixedData = getFixedDataByFixedColumn(flatLeftFixedColumns, data)
+  const realRightFixedColumns = [...columns].splice(rightFixedIndex)
+  const flatRightFixedColumns = [...flattedColumns].splice(rightFlatIndex)
+  const rightFixedData = getFixedDataByFixedColumn(flatRightFixedColumns, data)
 
-  const rightFixedData = getFixedDataByFixedColumn(realRightFixedColumns, data)
   // 同步滚动条
   const headerTableRef = useRef(null)
   const stickyHeaderRef = useRef(null)
@@ -191,6 +195,8 @@ const Table = ({
         // 标题点击回调事件
         onHeaderRow,
         onExpand,
+        flatLeftFixedColumns,
+        flatRightFixedColumns,
         leftFixedColumns: realLeftFixedColumns,
         rightFixedColumns: realRightFixedColumns,
         realColumnsWidth,

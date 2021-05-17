@@ -53,6 +53,7 @@ interface Props {
   expandedRender?: (record: object, index: number) => JSX.Element | Promise
   rowExpandable?: (record: object ) => JSX.Element | Boolean
   maxHeight?: number
+  scrollWidth?: number
   fixedToColumn?: string | FixedOption
   pagination?: PaginationProps
   errorRowKeys?: string[] | number[]

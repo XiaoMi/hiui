@@ -183,7 +183,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                 // 标题事件处理
                 {...onHeaderRow(_colums, index)}
                 style={{
-                  height: isFixed ? eachHeaderHeight : 'auto',
+                  height: isFixed && cols.length === 1 ? eachHeaderHeight : 'auto',
                   boxSizing: 'border-box',
                   textAlign: alignRightColumns.includes(c.dataKey) ? 'right' : 'left',
                   background: isRowActive || isColActive ? '#F4F4F4' : '#fbfbfb'
