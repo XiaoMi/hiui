@@ -55,7 +55,7 @@ const useUpload = ({
         }
       }
     },
-    [onRemove, updateFileList, fileListRef]
+    [onRemove]
   )
 
   const onSuccess = (file, res) => {
@@ -97,7 +97,7 @@ const useUpload = ({
       fileListRef.current = newFileList
       updateFileList(fileListRef.current)
     },
-    [onChange, updateFileList, fileListRef]
+    [onChange]
   )
 
   const onError = (file, error, res) => {
