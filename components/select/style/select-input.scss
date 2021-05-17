@@ -42,6 +42,16 @@
     input {
       cursor: not-allowed;
     }
+
+    &.multiple-values .hi-select__input-items--left {
+      color: use-color('gray-50');
+    }
+
+    .hi-select__input--item {
+      .hi-select__input--item__remove {
+        cursor: not-allowed;
+      }
+    }
   }
 
   .hi-icon {
