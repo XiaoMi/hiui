@@ -132,7 +132,6 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
     ]
       .concat(cols)
       .filter((column) => !!column)
-    console.log('eachHeaderHeight', cols, eachHeaderHeight)
     return (
       <tr key={index}>
         {_colums.map((c, idx) => {
