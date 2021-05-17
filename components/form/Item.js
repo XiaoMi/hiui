@@ -52,8 +52,9 @@ const FormItem = (props) => {
       form: { colon }
     }
   } = formProps || {}
+  const _propsValue = children && children.props ? children.props[valuePropName] : ''
   // 初始化FormItem的内容
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState(_propsValue)
   const [error, setError] = useState('')
 
   const getItemfield = useCallback(() => {
@@ -69,6 +70,14 @@ const FormItem = (props) => {
   useEffect(() => {
     setField(getItemfield())
   }, [propsField, name])
+  // 兼容 2.x value
+  useEffect(() => {
+    if (typeof _propsValue !== 'undefined') {
+      setValue(_propsValue)
+      updateField(_propsValue)
+    }
+  }, [_propsValue, field])
+
   // 更新
   const updateField = (_value, triggerType) => {
     const childrenFiled = {
@@ -265,7 +274,7 @@ const FormItem = (props) => {
       return item.field === _field
     })
     if (_field && !isExist) {
-      _value = initialValues && initialValues[field] ? initialValues[_field] : ''
+      _value = initialValues && initialValues[field] ? initialValues[_field] : _value
       if (_type === 'list' && listItemValue) {
         _value = typeof listItemValue[name] !== 'undefined' ? listItemValue[name] : listItemValue
       }
@@ -291,8 +300,8 @@ const FormItem = (props) => {
       if (HIUI[component]) {
         const HIUIComponent = HIUI[component]
         return React.createElement(HIUIComponent, {
-          ...componentProps,
           [valuePropName]: _value,
+          ...componentProps,
           onChange: (e, ...args) => {
             setEvent('onChange', HIUIComponent, componentProps, e, ...args)
           },
@@ -307,11 +316,12 @@ const FormItem = (props) => {
     if (!children) {
       return null
     }
-
+    const propChild = children ? children.props : {}
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {
           [valuePropName]: _value,
+          ...propChild,
           onChange: (e, ...args) => {
             setEvent('onChange', children, '', e, ...args)
           },
