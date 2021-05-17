@@ -4,6 +4,7 @@
 - 修复 `Select` disabled 情况下，输入框仍能删除选项问题 [#1707](https://github.com/XiaoMi/hiui/issues/1707)
 - 新增 `Message` 组件 onClick、onClose方法[#1727](https://github.com/XiaoMi/hiui/issues/1727)
 - 优化 `Grid` 组件接受原生属性 [#1609](https://github.com/XiaoMi/hiui/issues/1609)
+- 优化 `Form` 组件允许 FormItem 中的表单类组件设置 value [#1741](https://github.com/XiaoMi/hiui/issues/1741)
 - 修复 `Upload` 组件 onRemove 回调 api 导致外部引用闭包的问题 [#1739](https://github.com/XiaoMi/hiui/issues/1739)
 # 3.6.1
 - 修复部分组件 'regeneratorRuntime is not defined' 问题 [#1719](https://github.com/XiaoMi/hiui/issues/1719)

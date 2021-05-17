@@ -245,7 +245,7 @@ const InternalForm = (props) => {
           const { field, value } = item
           values[field] = value
         })
-      return values
+      return transformValues(values, fields)
     },
     [fields, _Immutable]
   )
