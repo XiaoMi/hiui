@@ -108,6 +108,15 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
       plugins: [
         nodeResolve(),
         commonjs(),
+        babel({
+          extensions: EXTENSIONS,
+          babelHelpers: 'runtime',
+          exclude: /node_modules/,
+          // Use custom babel configuration to convenient unified management
+          ...babelConfig,
+          babelrc: false,
+          configFile: false,
+        }),
         typescript({
           typescript: require('typescript'),
           // https://github.com/rollup/plugins/issues/568
@@ -131,21 +140,11 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
             compress && cssnano(),
           ],
           extensions: ['.scss', '.css'],
-          use: ['sass'],
           // Extract styleInject as a external module
           inject: (variableName) =>
             `;var __styleInject__=require('style-inject/dist/style-inject.es.js');__styleInject__(${variableName});`,
           extract: cssExtract,
           modules: cssModules,
-        }),
-        babel({
-          extensions: EXTENSIONS,
-          babelHelpers: 'runtime',
-          exclude: /node_modules/,
-          // Use custom babel configuration to convenient unified management
-          ...babelConfig,
-          babelrc: false,
-          configFile: false,
         }),
         compress && terser(),
       ].filter(Boolean),

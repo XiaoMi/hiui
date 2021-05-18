@@ -26,7 +26,6 @@
     "build:esm": "cross-env BABEL_MODULE_ENV=esm hi-build ./src/index.ts --format esm -d ./lib/esm",
     "build:cjs": "cross-env BABEL_MODULE_ENV=cjs hi-build ./src/index.ts --format cjs -d ./lib/cjs",
     "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
-    "build1": "yarn build:esm && yarn build:cjs",
     "build": "concurrently yarn:build:*"
   },
   "bugs": {
@@ -34,7 +33,7 @@
   },
   "homepage": "https://github.com/XiaoMi/hiui",
   "dependencies": {
-    "@hi-ui/classname": "^1.0.1"
+    "@hi-ui/classname": "^1.0.0"
   },
   "devDependencies": {
     "@hi-ui/hi-build": "^1.0.0"
