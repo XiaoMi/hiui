@@ -243,8 +243,6 @@ const FormItem = (props) => {
     const displayName = component && component.type && component.type.displayName
 
     const _props = componentProps || children.props
-    eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
-    eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
     let value =
       beObject && e.target && Object.prototype.hasOwnProperty.call(e.target, valuePropName)
         ? e.target[valuePropName]
@@ -254,6 +252,8 @@ const FormItem = (props) => {
     }
     setValue(value)
     handleField(eventName, value)
+    eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
+    eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
   }
   useEffect(() => {
     return () => {
