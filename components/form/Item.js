@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react'
+import React, { useContext, useState, useEffect, useCallback, useRef } from 'react'
 import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
@@ -56,7 +56,7 @@ const FormItem = (props) => {
   // 初始化FormItem的内容
   const [value, setValue] = useState(_propsValue)
   const [error, setError] = useState('')
-
+  const eventInfo = useRef()
   const getItemfield = useCallback(() => {
     let _propsField = propsField
     if (_type === 'list' && name) {
@@ -67,6 +67,15 @@ const FormItem = (props) => {
 
   const [field, setField] = useState(getItemfield())
   const [validating, setValidating] = useState(false)
+
+  useEffect(() => {
+    const { eventName, e, args, componentProps } = eventInfo.current || {}
+    const _props = componentProps || children.props
+    eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
+    eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
+    eventInfo.current = {}
+  }, [value])
+
   useEffect(() => {
     setField(getItemfield())
   }, [propsField, name])
@@ -241,10 +250,6 @@ const FormItem = (props) => {
     const beObject = Object.prototype.toString.call(e) === '[object Object]'
     beObject && Object.prototype.toString.call(e.persist) === '[object Function]' && e.persist()
     const displayName = component && component.type && component.type.displayName
-
-    const _props = componentProps || children.props
-    eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
-    eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
     let value =
       beObject && e.target && Object.prototype.hasOwnProperty.call(e.target, valuePropName)
         ? e.target[valuePropName]
@@ -252,6 +257,7 @@ const FormItem = (props) => {
     if (displayName === 'Counter') {
       value = args[0]
     }
+    eventInfo.current = { eventName, e, args, componentProps, value }
     setValue(value)
     handleField(eventName, value)
   }
@@ -276,7 +282,7 @@ const FormItem = (props) => {
     if (_field && !isExist) {
       _value = initialValues && initialValues[field] ? initialValues[_field] : _value
       if (_type === 'list' && listItemValue) {
-        _value = typeof listItemValue[name] !== 'undefined' ? listItemValue[name] : listItemValue
+        _value = Object.keys(listItemValue).includes(name) ? listItemValue[name] : listItemValue
       }
       _Immutable.current.setState({
         type: FILEDS_INIT,
