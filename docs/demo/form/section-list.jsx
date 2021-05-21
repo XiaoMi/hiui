@@ -274,7 +274,7 @@ const code = [
         this.state = {
           initialValues:{
             phone:'123',
-            testList:[{first: ['1'],last: "yuyt"}]
+            testList:[{first: "",last: ""}]
           },
           rules: {
             name: {
@@ -346,14 +346,14 @@ const code = [
                 rules={this.state.rules}
                 labelWidth='80'
                 labelPlacement='right'
-                // onValuesChange={(changedValues, allValues) => {
-                //   console.log(
-                //     'changedValues:',
-                //     changedValues,
-                //     'allValues:',
-                //     allValues
-                //   )
-                // }}
+                onValuesChange={(changedValues, allValues) => {
+                  console.log(
+                    'changedValues:',
+                    changedValues,
+                    'allValues:',
+                    allValues
+                  )
+                }}
               >
               <FormItem 
               label='账号' 
@@ -391,15 +391,7 @@ const code = [
                               { title:'笔记本', id:'4' },
                               { title:'生活周边', id:'5' },
                               { title:'办公', id:'6' }
-                            ]}
-                            onChange={()=>{
-                              let data = this.form.current.getFieldsValue()
-                              data.testList[1].last = 'PPPP'
-                              this.form.current.setFieldsValue({
-                                testList: data.testList
-                              })
-                            }}
-                            />
+                            ]}/>
                             </FormItem>
                             <FormItem
                               {...field}
@@ -466,10 +458,12 @@ const code = [
                   </FormReset>
                   <Button type="primary" appearance="link" onClick={()=>{
                     console.log('填充表单')
-                    let data = this.form.current.getFieldsValue()
-                    data.testList[1].last = 'PPPP'
                     this.form.current.setFieldsValue({
-                      testList: data.testList
+                      testList:[
+                        {
+                          first: ['3'],
+                          last: "last"
+                        }]
                     })
                 }}>fill Form</Button>
                 </FormItem>
