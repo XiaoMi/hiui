@@ -54,7 +54,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   if (rowSelection) {
     const { selectedRowKeys = [] } = rowSelection
     const flattedData = flatTreeData(data)
-    isAllChecked = flattedData.every((d) => selectedRowKeys.includes(d.key))
+    isAllChecked = flattedData.every((d) => selectedRowKeys.includes(d.key)) && flattedData.length !== 0
   }
   // *********************
 
