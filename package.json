@@ -22,6 +22,7 @@
     "publish": "npm run compile && lerna publish",
     "lerna": "lerna",
     "clean": "lerna clean",
+    "build": "lerna run build --no-private --sort",
     "storybook": "start-storybook --no-manager-cache false -p 6006",
     "build-storybook": "build-storybook",
     "compile": "lerna run compile",
@@ -107,6 +108,9 @@
     "stylelint-config-recommended-scss": "~4.2.0",
     "stylelint-config-standard": "~20.0.0",
     "stylelint-scss": "~3.18.0"
+  },
+  "engines": {
+    "node": ">=12.13.x"
   },
   "lint-staged": {
     "*.{js,jsx}": [

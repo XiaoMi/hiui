@@ -24,8 +24,7 @@
     "url": "git+https://github.com/XiaoMi/hiui.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1",
-    "build": "cross-env BABEL_MODULE_ENV=cjs babel src --root-mode upward -d ./lib"
+    "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"

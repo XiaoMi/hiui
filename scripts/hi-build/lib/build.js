@@ -56,7 +56,7 @@ const getBabelConfig = (type, target) => {
       '@babel/preset-env',
       {
         loose: true,
-        // rollup using EsModules to import
+        // rollup have to use EsModules to import
         modules: false,
         targets: envTarget,
       },
@@ -112,7 +112,7 @@ const getRollupConfig = (input, outputPath, options, pkg) => {
           extensions: EXTENSIONS,
           babelHelpers: 'runtime',
           exclude: /node_modules/,
-          // Use custom babel configuration to convenient unified management
+          // Use custom babel configuration to convenient unified manner
           ...babelConfig,
           babelrc: false,
           configFile: false,
@@ -204,7 +204,6 @@ function main(userOptions) {
 
   const cwd = process.cwd()
 
-  // get data from package.json
   const pkg = resolvePackage(cwd)
 
   const inputPath = Path.join(cwd, options.src)
