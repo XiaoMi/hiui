@@ -8,7 +8,9 @@
 - 修复 `Table` 组件表头分组中使用 fixedToColumn 属性导致表头错乱 [#1732](https://github.com/XiaoMi/hiui/issues/1732)
 - 修复 `Upload` 组件 onRemove 回调 api 导致外部引用闭包的问题 [#1739](https://github.com/XiaoMi/hiui/issues/1739)
 - 修复 `Form` 组件 Form.Item 子节点 onChange 方法中设置表单值异常问题 [#1745](https://github.com/XiaoMi/hiui/issues/1745)
-- 修复 `Table` 组件 批量选择形态中，在 data 为空数组时，表头全选项会默认勾选 [#1749](https://github.com/XiaoMi/hiui/issues/1749)
+- 修复 `Table` 组件 批量选择形态中，在 data 为空数组时，表头全选项会默认勾选问题 [#1749](https://github.com/XiaoMi/hiui/issues/1749)
+- 修复 `Table` 组件 批量选择形态中，表格禁用行，全选时会被勾选问题 [#1752](https://github.com/XiaoMi/hiui/issues/1752)
+
 # 3.6.1
 - 修复部分组件 'regeneratorRuntime is not defined' 问题 [#1719](https://github.com/XiaoMi/hiui/issues/1719)
 - 修复 `Slider` max 和min 受控问题 [#1703](https://github.com/XiaoMi/hiui/issues/1703)

@@ -39,7 +39,8 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
     scrollWidth,
     eachHeaderHeight,
     setEachHeaderHeight,
-    onHeaderRow
+    onHeaderRow,
+    disabledData
   } = useContext(TableContext)
 
   // ******************** 隐藏滚动条
@@ -54,7 +55,10 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   if (rowSelection) {
     const { selectedRowKeys = [] } = rowSelection
     const flattedData = flatTreeData(data)
-    isAllChecked = flattedData.every((d) => selectedRowKeys.includes(d.key)) && flattedData.length !== 0
+    isAllChecked =
+      flattedData
+        .filter((data) => !disabledData.current.includes(data.key))
+        .every((d) => selectedRowKeys.includes(d.key)) && flattedData.length !== 0
   }
   // *********************
 
@@ -152,7 +156,13 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                   indeterminate={!isAllChecked && rowSelection.selectedRowKeys.length > 0}
                   onChange={(e) => {
                     if (rowSelection.onChange) {
-                      rowSelection.onChange(isAllChecked ? [] : flatTreeData(data).map((d) => d.key))
+                      rowSelection.onChange(
+                        isAllChecked
+                          ? []
+                          : flatTreeData(data)
+                              .filter((data) => !disabledData.current.includes(data.key))
+                              .map((d) => d.key)
+                      )
                     }
                   }}
                 />
