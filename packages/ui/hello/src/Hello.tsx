@@ -1,8 +1,7 @@
 // 测试 React + ts
-import React, { forwardRef, useMemo } from 'react'
+import React, { forwardRef, useMemo, useState } from 'react'
 // 测试 import
 import { cx, getPrefixCls } from '@hi-ui/classname'
-import { useState } from 'react'
 
 const componentName = 'avatar'
 const _prefix = getPrefixCls(componentName)

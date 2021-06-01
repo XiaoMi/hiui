@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import { LiveContext } from "react-live"
+import React, { Component } from 'react'
+import { LiveContext } from 'react-live'
 
 export default function withLive(WrappedComponent) {
   class WithLive extends Component {

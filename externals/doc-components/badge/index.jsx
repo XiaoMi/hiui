@@ -5,6 +5,8 @@ import './index.scss'
 const prefixCls = 'doc-components-badge'
 
 /**
+ * Declare component status
+ *
  * @param {'deperacted' | 'feature' | 'warning'} type
  * @param {string} text
  * @param {*} {type, children, text}
