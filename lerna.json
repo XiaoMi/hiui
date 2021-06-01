@@ -1,11 +1,33 @@
 {
+  "version": "independent",
+  "useWorkspaces": true,
   "packages": [
-    "packages/*"
+    "packages/ui/*",
+    "packages/hooks/*",
+    "packages/themes/*",
+    "packages/utils/*",
+    "packages/types/*",
+    "packages/styles/*",
+    "packages/icons/*",
+    "scripts/*",
+    "docs/*",
+    "plugins/*",
+    "website/*",
+    "examples/*"
   ],
-  "command": {
-    "publish": {
-      "allowBranch": "master"
-    }
+  "stream": true,
+  "npmClient": "yarn",
+  "registry": "https://registry.npmjs.org/",
+  "bootstrap": {
+    "npmClientArgs": ["--no-package-lock"]
   },
-  "version": "independent"
+  "command": {
+    "run": {
+      "npmClient": "yarn"
+    },
+    "publish": {
+      "allowBranch": "master",
+      "message": "chore(release): publish %v"
+    }
+  }
 }

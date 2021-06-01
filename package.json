@@ -1,11 +1,28 @@
 {
   "name": "monorepo-hiui",
   "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/ui/*",
+      "packages/utils/*",
+      "packages/hooks/*",
+      "packages/themes/*",
+      "packages/types/*",
+      "packages/styles/*",
+      "packages/icons/*",
+      "scripts/*",
+      "docs/*",
+      "plugins/*",
+      "website/*",
+      "examples/*"
+    ]
+  },
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "publish": "npm run compile && lerna publish",
     "lerna": "lerna",
     "clean": "lerna clean",
+    "build": "lerna run build --no-private --sort",
     "storybook": "start-storybook --no-manager-cache false -p 6006",
     "build-storybook": "build-storybook",
     "compile": "lerna run compile",
@@ -14,6 +31,7 @@
     "precommit": "lint-staged"
   },
   "devDependencies": {
+    "@babel/cli": "^7.13.16",
     "@babel/preset-typescript": "~7.12.7",
     "@storybook/addon-actions": "^6.1.18",
     "@storybook/addon-essentials": "^6.1.18",
@@ -25,6 +43,7 @@
     "babel-eslint": "^8.2.6",
     "babel-jest": "^22.4.3",
     "babel-plugin-lodash": "^3.3.4",
+    "concurrently": "^6.1.0",
     "eslint": "~6.7.1",
     "eslint-config-airbnb": "~18.0.1",
     "eslint-config-prettier": "~6.7.0",
@@ -36,9 +55,10 @@
     "eslint-plugin-react": "~7.17.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^0.14.3",
-    "lerna": "^3.22.1",
+    "lerna": "^4.0.0",
     "lint-staged": "^10.5.4",
     "node-sass": "^4.12.0",
+    "rimraf": "^3.0.2",
     "rucksack-css": "^1.0.2",
     "sass-loader": "^7.0.1",
     "standard": "^11.0.1",
@@ -47,14 +67,51 @@
     "style-loader": "^2.0.0",
     "styled-components": "^5.2.1",
     "stylelint-config-standard": "^18.3.0",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.4"
   },
   "dependencies": {
+    "@babel/plugin-external-helpers": "^7.12.13",
+    "@babel/plugin-transform-runtime": "^7.13.15",
     "@hi-ui/core-css": "^2.0.1",
     "@hi-ui/hiui": "^3.4.1-rc.2",
+    "@storybook/preset-scss": "^1.0.3",
+    "cross-env": "^7.0.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-live": "^2.2.3"
+  },
+  "optionalDependencies": {
+    "@commitlint/cli": "~11.0.0",
+    "@types/lodash": "~4.14.165",
+    "@types/node": "~14.14.10",
+    "@types/qs": "~6.9.5",
+    "@types/react-dom": "~16.9.10",
+    "@types/react-redux": "~7.1.11",
+    "@types/react-router-dom": "~4.3.1",
+    "@types/webpack-env": "~1.16.0",
+    "@typescript-eslint/eslint-plugin": "~4.9.0",
+    "@typescript-eslint/parser": "~4.9.0",
+    "eslint": "~7.12.1",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-config-standard": "~16.0.1",
+    "eslint-plugin-import": "~2.22.1",
+    "eslint-plugin-node": "~11.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-promise": "~4.2.1",
+    "eslint-plugin-react": "~7.21.5",
+    "eslint-plugin-react-hooks": "~4.2.0",
+    "eslint-plugin-standard": "~4.0.2",
+    "husky": "~4.3.0",
+    "lint-staged": "~10.5.1",
+    "prettier": "~2.1.2",
+    "semver": "~7.3.2",
+    "stylelint": "~13.7.2",
+    "stylelint-config-recommended-scss": "~4.2.0",
+    "stylelint-config-standard": "~20.0.0",
+    "stylelint-scss": "~3.18.0"
+  },
+  "engines": {
+    "node": ">=12.13.x"
   },
   "lint-staged": {
     "*.{js,jsx}": [

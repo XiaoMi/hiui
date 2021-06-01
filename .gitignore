@@ -1,8 +1,7 @@
 # MIFE dotfiles
 
 # Output files
-packages/*/dist/
-packages/*/es/
+lib/
 
 # Editor generate files
 .idea/

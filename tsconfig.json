@@ -1,32 +1,25 @@
 {
-    "compilerOptions": {
-        "outDir": "./es/",
-        "alwaysStrict": true,
-        "noUnusedParameters": true,
-        "removeComments": true,
-        "preserveConstEnums": true,
-        "sourceMap": true,
-        "forceConsistentCasingInFileNames": true,
-        "strictPropertyInitialization": true,
-        "noImplicitReturns": true,
-        "moduleResolution": "node",
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "esModuleInterop": true,
-        "noUnusedLocals": true,
-        "importHelpers": true,
-        "noImplicitThis": true,
-        "skipLibCheck": true,
-        "jsx": "react",
-        "allowJs": true,
-        "target": "es5",
-        "module": "es6",
-        "lib": ["es5", "es2015", "dom", "es7", "es2018"]
-    },
-    "include": [
-        "packages/**/*"
-      ],
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es6",
+    "lib": ["dom", "esnext"],
+    "strict": true,
+    "sourceMap": true,
+    "allowJs": false,
+    "declaration": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strictNullChecks": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": false,
+    "jsx": "react"
+  },
+  "include": ["packages"],
+  "exclude": ["node_modules", "lib"]
 }
