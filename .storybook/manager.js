@@ -1,7 +1,8 @@
 import { addons } from '@storybook/addons';
-import hiuiTheme from './hiuiTheme';
+import hiuiTheme from './themes/hiui-theme';
 
 addons.setConfig({
+  theme: hiuiTheme,
   isFullscreen: false,
   showNav: true,
   showPanel: false,
@@ -9,8 +10,7 @@ addons.setConfig({
   sidebarAnimations: true,
   enableShortcuts: true,
   isToolshown: true,
-  theme: hiuiTheme,
   selectedPanel: undefined,
   initialActive: 'sidebar',
   showRoots: false,
-});
+})

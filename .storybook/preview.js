@@ -1,11 +1,10 @@
 
-// .storybook/preview.js
-import { addDecorator } from "@storybook/react"
-// import theme from "./codeTheme"
-import DocViewer from "../libs/doc-viewer"
-import "./reset.css"
-import "@hi-ui/hiui/es/base-css"
 import React, { useRef, useState } from "react"
+import { addDecorator } from "@storybook/react"
+import DocViewer from "../libs/doc-viewer"
+import theme from "./themes/code-theme"
+import "@hi-ui/hiui/es/base-css"
+
 // import { Meta, ArgsTable, Source, Story, Canvas } from "@storybook/addon-docs/blocks"
 // import { Title, Subtitle, Description, Primary, ArgsTable, Stories, PRIMARY_STORY } from "@storybook/addon-docs/blocks"
 // import { LiveProvider, LiveEditor, LiveError, LivePreview } from "react-live"
@@ -18,9 +17,16 @@ import React, { useRef, useState } from "react"
 // import Checkbox from "../packages/ui/checkbox/src"
 // import EmptyState from "../packages/ui/empty-state/src"
 
-const importRegx = /import\s+([\w*{}\n, ])+.*;?/gm
+const withThemeProvider = (Story,context) => {
+  const theme = getTheme(context.globals.theme);
+  return (
+    <ThemeProvider theme={theme}>
+      <Story {...context} />
+    </ThemeProvider>
+  )
+}
 
-function addSbCodeEditro(cb, props) {
+const withCodeEditor = (cb, props) => {
   const { argTypes, args } = props
   const Component = props.parameters.component
   const { parameters = {}, globals } = props
@@ -40,19 +46,27 @@ function addSbCodeEditro(cb, props) {
   )
 }
 
-addDecorator(addSbCodeEditro)
+/**
+ * Add global stories Decorators
+ */
+export const decorators = [withThemeProvider];
 
+/**
+* Add global stories context
+*/
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   layout: "centered",
   options: {
     storySort: {
-      order: ["HiUI 简介", "Alert", "页面", "数据录入"],
       locales: "en-US"
     }
   }
 }
 
+/**
+* Add global toolbar menus for switching to theme, i18n and RTL-LTR
+*/
 export const globalTypes = {
   theme: {
     name: "Theme",
@@ -60,23 +74,28 @@ export const globalTypes = {
     defaultValue: "light",
     toolbar: {
       icon: "circlehollow",
-      // array of plain string values or MenuItem shape (see below)
-      items: ["light", "dark"]
-    }
+      items: ["light", "dark"],
+    },
   },
   locale: {
     name: "Locale",
     description: "Internationalization locale",
-    defaultValue: "en",
+    defaultValue: "zh",
     toolbar: {
       icon: "globe",
       items: [
-        { value: "en", right: "🇺🇸", title: "English" },
-        { value: "fr", right: "🇫🇷", title: "Français" },
-        { value: "es", right: "🇪🇸", title: "Español" },
         { value: "zh", right: "🇨🇳", title: "中文" },
-        { value: "kr", right: "🇰🇷", title: "한국어" }
-      ]
-    }
-  }
+        { value: "en", right: "🇺🇸", title: "English" },
+      ],
+    },
+  },
+  direction: {
+    name: "Direction",
+    description: "Direction for layout",
+    defaultValue: "LTR",
+    toolbar: {
+      icon: "transfer",
+      items: ["LTR", "RTL"],
+    },
+  },
 }

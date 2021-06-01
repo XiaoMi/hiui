@@ -32,7 +32,7 @@ export default create({
   // inputBorderRadius: 4,
 
   base: 'light',
-  brandTitle: 'My custom storybook',
+  brandTitle: 'HiUI',
   brandUrl: 'https://infra.mioffice.cn/hiui/zh-CN/',
   brandImage: '',
-});
+})

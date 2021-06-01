@@ -31,8 +31,7 @@
 	"devDependencies": {
 		"@babel/plugin-syntax-class-properties": "^7.12.13",
 		"@babel/preset-react": "^7.12.13",
-		"@types/react-transition-group": "^4.4.1",
-		"hiui-build-tools": "0.0.2"
+		"@types/react-transition-group": "^4.4.1"
 	},
 	"peerDependencies": {
 		"react": "^17.0.1",
