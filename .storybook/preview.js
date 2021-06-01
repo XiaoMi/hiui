@@ -4,7 +4,7 @@ import DocViewer from '../externals/doc-viewer'
 import theme from './themes/code-theme'
 import '@hi-ui/hiui/es/base-css'
 import { Badge } from '../externals/doc-components'
-
+import { withPerformance } from 'storybook-addon-performance'
 // import { Meta, ArgsTable, Source, Story, Canvas } from '@storybook/addon-docs/blocks'
 // import { Title, Subtitle, Description, Primary, ArgsTable, Stories, PRIMARY_STORY } from '@storybook/addon-docs/blocks'
 // import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'react-live'
@@ -16,26 +16,6 @@ import { Badge } from '../externals/doc-components'
 // import Avatar from '../packages/ui/avatar/src'
 // import Checkbox from '../packages/ui/checkbox/src'
 // import EmptyState from '../packages/ui/empty-state/src'
-
-const withCodeEditor = (cb, props) => {
-  const { argTypes, args } = props
-  const Component = props.parameters.component
-  const { parameters = {}, globals } = props
-  const {
-    storySource = {},
-    args: { desc = '' },
-  } = parameters
-  const code = storySource.source
-  console.log('props', props)
-  return (
-    <DocViewer
-      desc={desc}
-      code={code}
-      // scope={{ Popper, Alert, Select, useRef, useState, globals, Avatar, Loading, Checkbox, EmptyState }}
-      prefix={'alert-autoClose'}
-    />
-  )
-}
 
 /**
  * Add global stories Decorators for switching codePreview and theme, i18n provider
@@ -54,6 +34,34 @@ export const decorators = [
       </div>
     )
   },
+  function withLayout(Story, context) {
+    // TODO: Inject Container placed UI
+    return (
+      <div className="hi-v4-box">
+        <Story {...context} />
+      </div>
+    )
+  },
+  // function withCodeEditor (cb, props) {
+  //   const { argTypes, args } = props
+  //   const Component = props.parameters.component
+  //   const { parameters = {}, globals } = props
+  //   const {
+  //     storySource = {},
+  //     args: { desc = '' },
+  //   } = parameters
+  //   const code = storySource.source
+  //   console.log('props', props)
+  //   return (
+  //     <DocViewer
+  //       desc={desc}
+  //       code={code}
+  //       // scope={{ Popper, Alert, Select, useRef, useState, globals, Avatar, Loading, Checkbox, EmptyState }}
+  //       prefix={'alert-autoClose'}
+  //     />
+  //   )
+  // },
+  withPerformance
 ]
 
 /**
