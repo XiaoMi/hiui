@@ -1,24 +1,24 @@
 # hiui-v4
 
 ## 安装依赖
-```
-npm i
 
+```sh
+yarn
 ```
 ## 为每个包安装依赖
 
-```
-npm run bootstrap
+```sh
+yarn bootstrap
 ```
 
 ## 预编译
 
-```
-npm run compile
+```sh
+yarn build
 ```
 
 ## 开始开发
 
-```
-npm run storybook
+```sh
+yarn storybook
 ```
