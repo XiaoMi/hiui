@@ -45,7 +45,8 @@ const Row = ({
     rowExpandable,
     onExpand,
     flatLeftFixedColumns,
-    flatRightFixedColumns
+    flatRightFixedColumns,
+    disabledData
   } = useContext(TableContext)
 
   const _columns = _.cloneDeep(columns)
@@ -60,6 +61,7 @@ const Row = ({
   }
   const checkboxConfig = rowSelection && rowSelection.getCheckboxConfig && rowSelection.getCheckboxConfig(allRowData)
   const checkboxDisabled = (checkboxConfig && checkboxConfig.disabled) || false
+  checkboxDisabled && disabledData.current.push(allRowData.key)
   const rowExpand = rowExpandable && rowExpandable(rowData)
   return [
     <tr

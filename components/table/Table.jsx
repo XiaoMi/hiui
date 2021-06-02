@@ -59,6 +59,7 @@ const Table = ({
   emptyContent = localeDatas.table.emptyContent
 }) => {
   const hiTable = useRef(null)
+  const disabledData = useRef([])
   const [ceiling, setCeiling] = useState(false)
   const [activeSorterColumn, setActiveSorterColumn] = useState(null)
   const [activeSorterType, setActiveSorterType] = useState(null)
@@ -77,6 +78,7 @@ const Table = ({
   const firstRowRef = useRef(null)
 
   useEffect(() => {
+    disabledData.current = []
     if (!dataSource) {
       if (firstRowRef.current) {
         const _realColumnsWidth = Array.from(firstRowRef.current.childNodes).map((node) => node.clientWidth)
@@ -177,6 +179,7 @@ const Table = ({
   return (
     <TableContext.Provider
       value={{
+        disabledData,
         rowExpandable,
         setting,
         firstRowRef,
