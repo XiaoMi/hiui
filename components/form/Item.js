@@ -210,7 +210,9 @@ const FormItem = (props) => {
       _type,
       uuid,
       column,
-      row
+      row,
+      name,
+      updateField
     }
   }
 

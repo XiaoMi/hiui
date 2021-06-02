@@ -394,7 +394,8 @@ const code = [
                               { title:'笔记本', id:'4' },
                               { title:'生活周边', id:'5' },
                               { title:'办公', id:'6' }
-                            ]}/>
+                            ]}
+                            />
                             </FormItem>
                             <FormItem
                               {...field}
@@ -470,6 +471,16 @@ const code = [
                         }]
                     })
                 }}>fill Form</Button>
+                
+                  <Button type="primary" appearance="link" onClick={()=>{
+                    console.log('填充表单')
+                    this.form.current.setListItemFieldsValue([{
+                      row: 0,
+                      name: 'last',
+                      listname:'testList',
+                      value:'000'
+                    }])
+                }}>更新列表某项</Button>
                 </FormItem>
               </Form>
             </Col>
