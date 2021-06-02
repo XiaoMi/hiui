@@ -63,7 +63,7 @@ const InternalForm = (props) => {
       // 处理 list value
       Object.keys(_values).forEach((key) => {
         if (listNames.includes(key)) {
-          !listcoordinate && _Immutable.current.setState({ type: FILEDS_REMOVE_LIST, payload: key })
+          _Immutable.current.setState({ type: FILEDS_REMOVE_LIST, payload: key })
           _Immutable.current.setState({
             type: FILEDS_UPDATE_LIST,
             payload: { [key]: _values[key] }
