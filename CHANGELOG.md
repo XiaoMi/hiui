@@ -4,6 +4,7 @@
 - 优化 `Grid` 组件接受原生属性 [#1609](https://github.com/XiaoMi/hiui/issues/1609)
 - 优化 `Select` onChang 回调方法中，获取全部选项详细内容 [#1726](https://github.com/XiaoMi/hiui/issues/1726)
 - 优化 `Form` 组件允许 FormItem 中的表单类组件设置 value [#1741](https://github.com/XiaoMi/hiui/issues/1741)
+- 优化 `Table` 组件 showColHighlight 属性，修改内部触发逻辑 [#1759](https://github.com/XiaoMi/hiui/issues/1759)
 - 修复 `Select` disabled 情况下，输入框仍能删除选项问题 [#1707](https://github.com/XiaoMi/hiui/issues/1707)
 - 修复 `Table` 组件表头分组中使用 fixedToColumn 属性导致表头错乱 [#1732](https://github.com/XiaoMi/hiui/issues/1732)
 - 修复 `Upload` 组件 onRemove 回调 api 导致外部引用闭包的问题 [#1739](https://github.com/XiaoMi/hiui/issues/1739)
