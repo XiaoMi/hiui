@@ -42,7 +42,10 @@ const FormItem = (props) => {
     contentPosition = 'center',
     name,
     listItemValue,
-    sort
+    sort,
+    uuid,
+    column,
+    row
   } = props
 
   const {
@@ -204,7 +207,10 @@ const FormItem = (props) => {
       propsField,
       listname,
       sort,
-      _type
+      _type,
+      uuid,
+      column,
+      row
     }
   }
 

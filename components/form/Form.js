@@ -41,9 +41,14 @@ const InternalForm = (props) => {
   const { fields, listNames, listValues } = _Immutable.current.currentState()
   // 用户手动设置表单数据
   const setFieldsValue = useCallback(
-    (values) => {
+    (values, coordinate) => {
       const _fields = _Immutable.current.currentStateFields()
       const { listNames } = _Immutable.current.currentState()
+      console.log('_fields', _.cloneDeep(_fields))
+      // const updateList = _fields.filter(item=>{
+      //   const {name, column, row} = item
+      //   const {name:listName, column:listColumn, row: listRow} = coordinate
+      // })
       _fields.forEach((item) => {
         const { field } = item
         // eslint-disable-next-line no-prototype-builtins
@@ -55,9 +60,7 @@ const InternalForm = (props) => {
       })
       _Immutable.current.setState({
         type: FILEDS_UPDATE,
-        payload: _fields.filter((item) => {
-          return item._type !== 'list'
-        })
+        payload: _fields
       })
       // 处理 list value
       Object.keys(values).forEach((key) => {
@@ -73,6 +76,7 @@ const InternalForm = (props) => {
     },
     [fields, listValues, listNames, _Immutable]
   )
+
   // 转换值的输出
   const internalValuesChange = useCallback(
     (changeValues, allValues) => {

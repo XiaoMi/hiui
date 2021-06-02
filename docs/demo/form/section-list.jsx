@@ -135,6 +135,7 @@ const code = [
                             <FormItem
                               // 关于{...field}必写，Formlist需要依据里面的变量进行处理 
                               {...field}
+                              row={index}
                               label={index === 0 ? 'testList1' : ''}
                             >
                               <Input placeholder='请输入' style={{width:'200px'}}/>
@@ -187,6 +188,7 @@ const code = [
                             <FormItem
                               // 关于{...field}必写，Formlist需要依据里面的变量进行处理 
                               {...field}
+                              row={index}
                               label={index === 0 ? 'testList2' : ''}
                             >
                               <Input placeholder='请输入' style={{width:'200px'}}/>
@@ -383,6 +385,7 @@ const code = [
                           <div style={{ display: 'flex' }} key={index}>
                             <FormItem
                               {...field}
+                              row={index}
                               name = 'first'
                             >
                             <Select placeholder='请输入' style={{width:'200px'}} data={[
@@ -396,6 +399,7 @@ const code = [
                             <FormItem
                               {...field}
                               labelWidth='0'
+                              row={index}
                               name = 'last'
                             >
                               <Input placeholder='请输入' style={{width:'200px'}}/>
