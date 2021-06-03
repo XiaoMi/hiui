@@ -1,6 +1,7 @@
 # 更新日志
 # 3.7.0
 - 新增 `Message` 组件 onClick、onClose方法[#1727](https://github.com/XiaoMi/hiui/issues/1727)
+- 新增 `From` 组件 setListItemFieldsValue 方法, 设置表单中From.List的指定项的值[#1760](https://github.com/XiaoMi/hiui/issues/1760)
 - 优化 `Grid` 组件接受原生属性 [#1609](https://github.com/XiaoMi/hiui/issues/1609)
 - 优化 `Select` onChang 回调方法中，获取全部选项详细内容 [#1726](https://github.com/XiaoMi/hiui/issues/1726)
 - 优化 `Form` 组件允许 FormItem 中的表单类组件设置 value [#1741](https://github.com/XiaoMi/hiui/issues/1741)

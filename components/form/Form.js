@@ -41,13 +41,14 @@ const InternalForm = (props) => {
   const { fields, listNames, listValues } = _Immutable.current.currentState()
   // 用户手动设置表单数据
   const setFieldsValue = useCallback(
-    (values) => {
+    (values = {}, listcoordinate) => {
+      const _values = _.cloneDeep(values)
       const _fields = _Immutable.current.currentStateFields()
       const { listNames } = _Immutable.current.currentState()
       _fields.forEach((item) => {
         const { field } = item
         // eslint-disable-next-line no-prototype-builtins
-        if (values.hasOwnProperty(field)) {
+        if (_values.hasOwnProperty(field)) {
           const value = values[field]
           item.value = value
           item.setValue(value)
@@ -60,18 +61,38 @@ const InternalForm = (props) => {
         })
       })
       // 处理 list value
-      Object.keys(values).forEach((key) => {
+      Object.keys(_values).forEach((key) => {
         if (listNames.includes(key)) {
           _Immutable.current.setState({ type: FILEDS_REMOVE_LIST, payload: key })
           _Immutable.current.setState({
             type: FILEDS_UPDATE_LIST,
-            payload: { [key]: values[key] }
+            payload: { [key]: _values[key] }
           })
         }
       })
       dispatch({ type: FILEDS_UPDATE_STATE })
     },
     [fields, listValues, listNames, _Immutable]
+  )
+  // 更新指定listItem的值
+  const setListItemFieldsValue = useCallback(
+    (listcoordinate = []) => {
+      const _fields = _Immutable.current.currentStateFields()
+
+      if (listcoordinate && listcoordinate.length) {
+        listcoordinate.forEach((coordinate) => {
+          _fields.forEach((item) => {
+            const { name, row, listname, setValue, updateField } = item
+            const { name: updateName, listname: updateListName, row: updateRow, value } = coordinate
+            if (updateListName === listname && name === updateName && row === updateRow) {
+              setValue(value)
+              updateField(value)
+            }
+          })
+        })
+      }
+    },
+    [fields]
   )
   // 转换值的输出
   const internalValuesChange = useCallback(
@@ -283,7 +304,8 @@ const InternalForm = (props) => {
     getFieldsValue,
     clearValidates,
     getFieldsError,
-    updateFormSchema
+    updateFormSchema,
+    setListItemFieldsValue
   }))
   return (
     <form
