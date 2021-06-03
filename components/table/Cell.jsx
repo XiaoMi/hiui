@@ -41,8 +41,8 @@ const Cell = ({
           highlightedColKeys.includes(column.dataKey) || highlightColumns.includes(column.dataKey),
         [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === column.dataKey
       })}
-      onMouseEnter={(e) => setHoverColIndex(column.dataKey)}
-      onMouseLeave={(e) => setHoverColIndex(null)}
+      onMouseEnter={(e) => showColHighlight && setHoverColIndex(column.dataKey)}
+      onMouseLeave={(e) => showColHighlight && setHoverColIndex(null)}
     >
       {level > 1 && columnIndex === 0 && <Indent times={level - 1} />}
       {columnIndex === 0 &&
