@@ -58,14 +58,15 @@ const Cell = ({
             name={expandedTree ? 'caret-down' : 'caret-right'}
             onClick={async () => {
               // 存在即收起，并删除该key
+              loadChildren.current = null
               const _expandedTreeRows = [...expandedTreeRows]
-              if (onLoadChildren) {
+              if (onLoadChildren && !expandedTree) {
                 const data = onLoadChildren(allRowData)
                 if (data.toString() === '[object Promise]') {
                   setLoading(true)
                   await data
                     .then((res) => {
-                      loadChildren.current = res
+                      loadChildren.current = { parentKey: allRowData.key, data: res }
                       setLoading(false)
                     })
                     .catch(() => {
@@ -73,7 +74,7 @@ const Cell = ({
                       setLoading(false)
                     })
                 } else {
-                  loadChildren.current = data
+                  loadChildren.current = { parentKey: allRowData.key, data }
                 }
               }
               if (_expandedTreeRows.includes(allRowData.key)) {

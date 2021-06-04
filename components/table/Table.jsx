@@ -73,7 +73,6 @@ const Table = ({
   const [eachHeaderHeight, setEachHeaderHeight] = useState(null)
   const [hoverColIndex, setHoverColIndex] = useState(null)
   const loadChildren = useRef(null)
-
   const [realColumnsWidth, setRealColumnsWidth] = useState(columns.map((c) => c.width || 'auto'))
   const [expandedTreeRows, setExpandedTreeRows] = useState([])
 

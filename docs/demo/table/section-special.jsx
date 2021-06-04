@@ -168,10 +168,11 @@ const code = [
             setTimeout(()=>{
               resolve([
                 {
-                a: 'a-1-1',
+                a: row.key+'a',
                 b: 'b-1-1',
                 c: 'c-1-1',
                 d: 'd-1-1',
+                isLeaf: true,
                 key: row.key + '1-1'
               }
               ])
