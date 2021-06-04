@@ -53,7 +53,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
   const tableRef = useRef(null)
 
   // **************** 根据排序列处理数据
-  const _data = useRef(data.concat())
+  let _data = data.concat()
 
   if (activeSorterColumn) {
     const sorter =
@@ -61,33 +61,33 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
       columns.filter((d) => d.dataKey === activeSorterColumn)[0].sorter
 
     if (sorter) {
-      _data.current = activeSorterType === 'ascend' ? [...data].sort(sorter) : [...data].sort(sorter).reverse()
+      _data = activeSorterType === 'ascend' ? [...data].sort(sorter) : [...data].sort(sorter).reverse()
     }
   }
 
   // ************* 处理求和、平均数
   // 确保包含total属性，且值为数字类型的字符串
-  const hasSumColumn = columns.filter((item) => checkNeedTotalOrEvg(_data.current, item, 'total')).length > 0
+  const hasSumColumn = columns.filter((item) => checkNeedTotalOrEvg(_data, item, 'total')).length > 0
   const sumRow = { key: 'sum' }
   columns.forEach((c, index) => {
     if (index === 0) {
       sumRow[c.dataKey] = localeDatas.table.total
     }
-    if (checkNeedTotalOrEvg(_data.current, c, 'total')) {
+    if (checkNeedTotalOrEvg(_data, c, 'total')) {
       // 获取当前数据最大小数点个数，并设置最后总和值小数点
-      sumRow[c.dataKey] = getTotalOrEvgRowData(_data.current, c, false)
+      sumRow[c.dataKey] = getTotalOrEvgRowData(_data, c, false)
     }
   })
 
   // 确保包含avg属性，且值为数字类型的字符串
-  const hasAvgColumn = columns.filter((item) => checkNeedTotalOrEvg(_data.current, item, 'avg')).length > 0
+  const hasAvgColumn = columns.filter((item) => checkNeedTotalOrEvg(_data, item, 'avg')).length > 0
   const avgRow = { key: 'avg' }
   columns.forEach((c, index) => {
     if (index === 0) {
       avgRow[c.dataKey] = localeDatas.table.average
     }
-    if (checkNeedTotalOrEvg(_data.current, c, 'avg')) {
-      avgRow[c.dataKey] = getTotalOrEvgRowData(_data.current, c, true)
+    if (checkNeedTotalOrEvg(_data, c, 'avg')) {
+      avgRow[c.dataKey] = getTotalOrEvgRowData(_data, c, true)
     }
   })
 
@@ -102,8 +102,8 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
   }, [data, setEachRowHeight, columns, expandedTreeRows])
 
   let hasTree = false
-  if (_data.current && _data.current.length) {
-    hasTree = _data.current.some((row) => {
+  if (_data && _data.length) {
+    hasTree = _data.some((row) => {
       return (row.children && row.children.length) || (onLoadChildren && row.isLeaf)
     })
   }
@@ -211,8 +211,8 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
           ))}
         </colgroup>
         <tbody>
-          {_data.current && _data.current.length > 0
-            ? _data.current.map((row, index) => renderRow(row, 1, index, _, hasTree))
+          {_data && _data.length > 0
+            ? _data.map((row, index) => renderRow(row, 1, index, _, hasTree))
             : renderEmptyContent(emptyContent)}
           {hasSumColumn && renderRow(sumRow, 1, data.length, { isSumRow: true })}
           {hasAvgColumn && renderRow(avgRow, 1, data.length + 1, { isAvgRow: true })}

@@ -157,8 +157,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   }
   const fixedBodyTableRef = isFixed === 'left' ? leftFixedBodyTableRef : rightFixedBodyTableRef
   // **************** 根据排序列处理数据
-  const _fixedData = useRef()
-  _fixedData.current = isFixed === 'left' ? leftFixedData : rightFixedData
+  let _fixedData = isFixed === 'left' ? leftFixedData : rightFixedData
   const fixedColumns = isFixed === 'left' ? flatLeftFixedColumns : flatRightFixedColumns
 
   if (activeSorterColumn) {
@@ -167,15 +166,12 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
       fixedColumns.filter((d) => d.dataKey === activeSorterColumn)[0].sorter
 
     if (sorter) {
-      _fixedData.current =
-        activeSorterType === 'ascend'
-          ? [..._fixedData.current].sort(sorter)
-          : [..._fixedData.current].sort(sorter).reverse()
+      _fixedData = activeSorterType === 'ascend' ? [..._fixedData].sort(sorter) : [..._fixedData].sort(sorter).reverse()
     }
   }
   return (
-    _fixedData.current &&
-    _fixedData.current.length > 0 && (
+    _fixedData &&
+    _fixedData.length > 0 && (
       <div
         style={{
           marginBottom: -scrollBarSize,
@@ -246,7 +242,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
               })}
             </colgroup>
             <tbody>
-              {_fixedData.current.map((row, index) => {
+              {_fixedData.map((row, index) => {
                 return renderRow(row, 1, index, data[index], hasTree)
               })}
               {hasSumColumn && renderRow(sumRowData, 1, data.length, sumRowData, hasTree, { isSumRow: true })}
