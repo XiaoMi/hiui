@@ -34,7 +34,9 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
     setExpandedTreeRows,
     rowExpandable,
     flatLeftFixedColumns,
-    flatRightFixedColumns
+    flatRightFixedColumns,
+    onLoadChildren,
+    loadChildren
   } = useContext(TableContext)
   let _columns
   if (isFixed === 'left') {
@@ -62,7 +64,8 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   let hasTree = false
   if (data && data.length) {
     hasTree = data.some((row) => {
-      return row.children && row.children.length
+      const { children = [] } = row
+      return children.length || (onLoadChildren && row.isLeaf)
     })
   }
 
@@ -92,9 +95,17 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
 
   const renderRow = (row, level, index, allRowData, isTree, rowConfig = {}) => {
     let childrenHasTree = false
-    if (allRowData.children && allRowData.children.length) {
-      childrenHasTree = allRowData.children.some((child) => child.children && child.children.length)
+    let { children = [] } = allRowData
+    if (loadChildren.current) {
+      children = loadChildren.current
     }
+
+    if (allRowData.children && allRowData.children.length) {
+      childrenHasTree = allRowData.children.some(
+        (child) => (child.children && child.children.length) || (onLoadChildren && child.isLeaf)
+      )
+    }
+
     return (
       <React.Fragment key={row.key}>
         <Row
@@ -115,10 +126,9 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
           isSumRow={rowConfig.isSumRow}
           rowExpandable={rowExpandable}
         />
-        {allRowData.children &&
-          expandedTreeRows.includes(allRowData.key) &&
-          allRowData.children.map((child, idx) => {
-            return renderRow(child, level + 1, index, allRowData.children[idx], childrenHasTree || isTree)
+        {expandedTreeRows.includes(allRowData.key) &&
+          children.map((child, idx) => {
+            return renderRow(child, level + 1, index, children[idx], childrenHasTree || isTree)
           })}
       </React.Fragment>
     )

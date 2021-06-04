@@ -10,6 +10,7 @@ const desc = [
 const rightOptions = [
   '全边框',
   '树形表格',
+  '异步树形表格',
   '内嵌式',
   '内嵌式异步渲染',
   '表头分组',
@@ -152,6 +153,54 @@ const code = [
       }
     }`,
     opt: ['树形表格']
+  },
+  {
+    code: `import React from 'react'
+    import Table from '@hi-ui/hiui/es/table'\n
+    class Demo extends React.Component {
+      render() {
+        return <Table
+        scrollWidth={1700}
+        fixedToColumn={'a'}
+        onLoadChildren={(row)=>{
+          console.log(row)
+          return new Promise((resolve, reject)=>{
+            setTimeout(()=>{
+              resolve([
+                {
+                a: 'a-1-1',
+                b: 'b-1-1',
+                c: 'c-1-1',
+                d: 'd-1-1',
+                key: row.key + '1-1'
+              }
+              ])
+            }, 1000)
+          })
+        }}
+        data={[
+          {
+            a: 'a-1',
+            b: 'b-1',
+            c: 'c-1',
+            d: 'd-1',
+            key: 1,
+            isLeaf: true
+          },
+          { a: 'a-2', b: 'b-2', c: 'c-2', d: 'd-2', key: 2, isLeaf: true },
+          { a: 'a-3', b: 'b-3', c: 'c-3', d: 'd-3', key: 3 },
+          { a: 'a-4', b: 'b-4', c: 'c-4', d: 'd-4', key: 4 }
+        ]}
+        columns={[
+          { title: 'A', dataKey: 'a' },
+          { title: 'B', dataKey: 'b' },
+          { title: 'C', dataKey: 'c' },
+          { title: 'D', dataKey: 'd' }
+        ]}
+      />
+      }
+    }`,
+    opt: ['异步树形表格']
   },
   {
     code: `import React from 'react'

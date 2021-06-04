@@ -46,6 +46,7 @@ const Table = ({
   sticky: _ceiling,
   stickyTop = 0,
   setting,
+  onLoadChildren,
   rowExpandable = () => true,
   // *********
   sortCol,
@@ -71,6 +72,7 @@ const Table = ({
   const [eachRowHeight, setEachRowHeight] = useState({})
   const [eachHeaderHeight, setEachHeaderHeight] = useState(null)
   const [hoverColIndex, setHoverColIndex] = useState(null)
+  const loadChildren = useRef(null)
 
   const [realColumnsWidth, setRealColumnsWidth] = useState(columns.map((c) => c.width || 'auto'))
   const [expandedTreeRows, setExpandedTreeRows] = useState([])
@@ -256,7 +258,9 @@ const Table = ({
         theme,
         localeDatas,
         expandedTreeRows,
-        setExpandedTreeRows
+        setExpandedTreeRows,
+        onLoadChildren,
+        loadChildren
       }}
     >
       <div
