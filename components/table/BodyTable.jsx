@@ -17,13 +17,14 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     headerTableRef,
     stickyHeaderRef,
     bodyTableRef,
+    tableRef,
     leftFixedBodyTableRef,
     rightFixedBodyTableRef,
     syncScrollLeft,
     syncScrollTop,
     firstRowRef,
     realColumnsWidth,
-    resizable,
+    resizable, // TODO: 拖拽
     prefix,
     hoverColIndex,
     setHoverColIndex,
@@ -48,9 +49,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     .concat(flatTreeData(_columns).filter((col) => col.isLast))
     .filter((column) => !!column)
   // ****************
-
   // **************** 同步滚动位置
-  const tableRef = useRef(null)
 
   // **************** 根据排序列处理数据
   let _data = data.concat()
@@ -182,9 +181,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
       ref={bodyTableRef}
       onScroll={(e) => {
         syncScrollLeft(bodyTableRef.current.scrollLeft, headerTableRef.current)
-        syncScrollLeft(bodyTableRef.current.scrollLeft, stickyHeaderRef.current)
-        syncScrollTop(bodyTableRef.current.scrollTop, leftFixedBodyTableRef.current)
-        syncScrollTop(bodyTableRef.current.scrollTop, rightFixedBodyTableRef.current)
+        syncScrollTop(bodyTableRef.current.scrollTop, leftFixedBodyTableRef.current, tableRef)
       }}
     >
       <table
@@ -202,10 +199,8 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
                 [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === c.dataKey
               })}
               style={{
-                width: resizable ? realColumnsWidth[index] : c.width,
+                width: resizable ? realColumnsWidth[index] : c.width || 100,
                 minWidth: resizable ? realColumnsWidth[index] : c.width
-                // width: c.width,
-                // minWidth: c.width
               }}
             />
           ))}

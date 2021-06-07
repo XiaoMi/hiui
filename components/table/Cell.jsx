@@ -31,20 +31,25 @@ const Cell = ({
   if (isMergeCell && (cellContent.props.colSpan === 0 || cellContent.props.rowSpan === 0)) {
     return null
   }
+  const { rightStickyWidth, leftStickyWidth, dataKey } = column
+  const isSticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
   return (
     <td
-      key={column.dataKey}
+      key={dataKey}
       style={{
-        textAlign: alignRightColumns.includes(column.dataKey) ? 'right' : 'left'
+        textAlign: alignRightColumns.includes(dataKey) ? 'right' : 'left',
+        right: rightStickyWidth + 'px',
+        left: leftStickyWidth + 'px'
       }}
       colSpan={(isMergeCell && cellContent.props.colSpan) || ''}
       rowSpan={(isMergeCell && cellContent.props.rowSpan) || ''}
       className={classNames({
         [`${prefix}__col--highlight`]:
-          highlightedColKeys.includes(column.dataKey) || highlightColumns.includes(column.dataKey),
-        [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === column.dataKey
+          highlightedColKeys.includes(column.dataKey) || highlightColumns.includes(dataKey),
+        [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === dataKey,
+        [`${prefix}__col__sticky`]: isSticky
       })}
-      onMouseEnter={(e) => showColHighlight && setHoverColIndex(column.dataKey)}
+      onMouseEnter={(e) => showColHighlight && setHoverColIndex(dataKey)}
       onMouseLeave={(e) => showColHighlight && setHoverColIndex(null)}
     >
       {level > 1 && columnIndex === 0 && <Indent times={level - 1} />}

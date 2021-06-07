@@ -29,6 +29,49 @@ const code = [
             title: '单价',
             dataKey: 'price'
           },
+         
+          {
+            title: '规格',
+            dataKey: 'size'
+          },
+          {
+            title: '单价',
+            dataKey: 'price'
+          },
+          {
+            title: '规格',
+            dataKey: 'size'
+          },
+          {
+            title: '单价',
+            dataKey: 'price'
+          },
+         
+          {
+            title: '规格',
+            dataKey: 'size'
+          },
+          {
+            title: '单价',
+            dataKey: 'price'
+          },
+          {
+            title: '规格',
+            dataKey: 'size'
+          },
+          {
+            title: '单价',
+            dataKey: 'price'
+          },
+         
+          {
+            title: '规格',
+            dataKey: 'size'
+          },
+          {
+            title: '单价',
+            dataKey: 'price'
+          },
           {
             title: '门店',
             dataKey: 'address'
@@ -88,7 +131,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data}/>
+        return <Table columns={this.columns} fixedToColumn={{left:'type', right: 'address'}} data={this.data}/>
       }
     }`,
     opt: ['基础']

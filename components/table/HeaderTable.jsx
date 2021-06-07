@@ -79,6 +79,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
     .concat(flatTreeData(_columns).filter((col) => col.isLast))
     .filter((column) => !!column)
   // TODO: 这里是考虑了多级表头的冻结，待优化
+  // fix: 列的宽度
   // *********全量 col group
   const allColumns = _.cloneDeep(columns)
   const _depthArray = []
@@ -183,8 +184,11 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
               </th>
             )
           } else {
-            const isRowActive = highlightedColKeys.includes(c.dataKey) || highlightColumns.includes(c.dataKey)
-            const isColActive = showColHighlight && hoverColIndex === c.dataKey
+            const { rightStickyWidth, leftStickyWidth, dataKey } = c
+            const isSticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
+
+            const isRowActive = highlightedColKeys.includes(dataKey) || highlightColumns.includes(dataKey)
+            const isColActive = showColHighlight && hoverColIndex === dataKey
             cell = (
               <th
                 key={idx}
@@ -192,11 +196,14 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                 rowSpan={c.rowSpan}
                 // 标题事件处理
                 {...onHeaderRow(_colums, index)}
+                className={classnames({ 'hi-table__col__sticky': isSticky })}
                 style={{
                   height: isFixed && cols.length === 1 ? eachHeaderHeight : 'auto',
                   boxSizing: 'border-box',
-                  textAlign: alignRightColumns.includes(c.dataKey) ? 'right' : 'left',
-                  background: isRowActive || isColActive ? '#F4F4F4' : '#fbfbfb'
+                  textAlign: alignRightColumns.includes(dataKey) ? 'right' : 'left',
+                  background: isRowActive || isColActive ? '#F4F4F4' : '#fbfbfb',
+                  right: rightStickyWidth + 'px',
+                  left: leftStickyWidth + 'px'
                 }}
               >
                 <span className="hi-table__header__title">
@@ -273,31 +280,19 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
       >
         <table
           style={{
-            width: isFixed ? 'auto' : scrollWidth || '100%',
+            width: '100%',
             height: isFixed ? eachHeaderHeight : 'auto'
           }}
           ref={headerInner}
         >
           <colgroup>
             {columnsgroup.map((c, index) => {
-              let width
-              if (isFixed === 'right') {
-                allColumnsgroup.forEach((col, idx) => {
-                  if (col.dataKey === c.dataKey) {
-                    width = realColumnsWidth[rowSelection ? idx + 1 : idx]
-                  }
-                })
-              } else if (isFixed === 'left' || resizable) {
-                width = realColumnsWidth[index]
-              } else {
-                width = c.width
-              }
               return (
                 <col
                   key={index}
                   style={{
-                    width: width,
-                    minWidth: width
+                    width: c.width || 100,
+                    minWidth: c.width || 100
                   }}
                 />
               )
@@ -333,41 +328,41 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
           <thead>{groupedColumns.map((group, idx) => renderBaseRow(group, idx, true))}</thead>
         </table>
       </div>
-    ),
-    isFixed && ceiling && (
-      <div
-        key="fixed-ceiling"
-        className={classnames(`${prefix}__header`, `${prefix}__header--sticky`)}
-        style={{
-          top: stickyTop,
-          display: ceiling ? 'block' : 'none',
-          borderLeft: bordered && '1px solid #e7e7e7'
-        }}
-      >
-        <table style={{ width: 'auto' }}>
-          <colgroup>
-            {columnsgroup.map((c, idx) => {
-              let width
-              allColumnsgroup.forEach((col, index) => {
-                if (col.dataKey === c.dataKey) {
-                  width = realColumnsWidth[index]
-                }
-              })
-              return (
-                <col
-                  key={idx}
-                  style={{
-                    width: width,
-                    minWidth: width
-                  }}
-                />
-              )
-            })}
-          </colgroup>
-          <thead>{groupedColumns.map((group, idx) => renderBaseRow(group, idx, true))}</thead>
-        </table>
-      </div>
     )
+    // isFixed && ceiling && (
+    //   <div
+    //     key="fixed-ceiling"
+    //     className={classnames(`${prefix}__header`, `${prefix}__header--sticky`)}
+    //     style={{
+    //       top: stickyTop,
+    //       display: ceiling ? 'block' : 'none',
+    //       borderLeft: bordered && '1px solid #e7e7e7'
+    //     }}
+    //   >
+    //     <table style={{ width: 'auto' }}>
+    //       <colgroup>
+    //         {columnsgroup.map((c, idx) => {
+    //           let width
+    //           allColumnsgroup.forEach((col, index) => {
+    //             if (col.dataKey === c.dataKey) {
+    //               width = realColumnsWidth[index]
+    //             }
+    //           })
+    //           return (
+    //             <col
+    //               key={idx}
+    //               style={{
+    //                 width: width,
+    //                 minWidth: width
+    //               }}
+    //             />
+    //           )
+    //         })}
+    //       </colgroup>
+    //       <thead>{groupedColumns.map((group, idx) => renderBaseRow(group, idx, true))}</thead>
+    //     </table>
+    //   </div>
+    // )
   ]
 }
 
