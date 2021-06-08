@@ -236,8 +236,19 @@
     tr {
       min-height: 52px;
 
+      .hi-table__col__sticky {
+        position: sticky;
+        left: 0;
+        z-index: 5;
+        background: use-color('white');
+      }
+
       &:hover {
         background: use-color('primary-20');
+
+        .hi-table__col__sticky {
+          background: use-color('primary-20');
+        }
       }
 
       & > td {
@@ -290,11 +301,11 @@
       & > .#{$table}__col--highlight {
         background: use-color('primary-20');
       }
-    }
-  }
 
-  &__col__hover--highlight {
-    background: use-color('primary-10');
+      .hi-table__col__hover--highlight {
+        background: use-color('primary-10');
+      }
+    }
   }
 }
 

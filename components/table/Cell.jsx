@@ -10,18 +10,24 @@ const Cell = ({
   allRowData,
   columnIndex,
   level,
-  showColHighlight,
-  hoverColIndex,
-  setHoverColIndex,
   expandedTree,
   expandedTreeRows,
   setExpandedTreeRows,
   rowIndex,
   isTree
 }) => {
-  const { highlightedColKeys, highlightColumns, alignRightColumns, prefix, onLoadChildren, loadChildren } = useContext(
-    TableContext
-  )
+  const {
+    highlightedColKeys,
+    highlightColumns,
+    alignRightColumns,
+    prefix,
+    onLoadChildren,
+    loadChildren,
+    hoverColIndex,
+    setHoverColIndex,
+    showColHighlight
+  } = useContext(TableContext)
+
   const [loading, setLoading] = useState(false)
   // 处理自定义 render 或者合并单元格情况
   const cellContent = column.render
@@ -49,6 +55,7 @@ const Cell = ({
         [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === dataKey,
         [`${prefix}__col__sticky`]: isSticky
       })}
+      // 频繁的set会特别消耗性能
       onMouseEnter={(e) => showColHighlight && setHoverColIndex(dataKey)}
       onMouseLeave={(e) => showColHighlight && setHoverColIndex(null)}
     >

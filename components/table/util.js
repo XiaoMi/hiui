@@ -153,3 +153,14 @@ export const getTotalOrEvgRowData = (_data, c, isAvg) => {
     return maxPointCount > 0 ? columnSumData.toFixed(maxPointCount) : columnSumData
   }
 }
+
+export const parseFixedcolumns = (item, index, arr, key, rowSelection) => {
+  const rowSelectionWith = rowSelection ? 50 : 0
+  const { width: preWidth = 0 } = arr[index - 1] || { width: 0 }
+  let { width = 0 } = arr[index - 2] || {}
+  if (index <= 1) {
+    width = 0
+  }
+  item[key] = width + preWidth + rowSelectionWith
+  return item
+}

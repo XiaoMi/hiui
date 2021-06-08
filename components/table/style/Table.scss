@@ -3,6 +3,7 @@
 
 .#{$table} {
   position: relative;
+  overflow: hidden;
 
   &__container {
     position: relative;
@@ -37,13 +38,6 @@
       right: 0;
       box-shadow: -6px 0 6px -4px rgba(0, 0, 0, 0.15);
     }
-  }
-
-  &__col__sticky {
-    position: sticky;
-    left: 0;
-    z-index: 5;
-    background: use-color('white');
   }
 
   &__container table {

@@ -19,7 +19,6 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     bodyTableRef,
     tableRef,
     leftFixedBodyTableRef,
-    rightFixedBodyTableRef,
     syncScrollLeft,
     syncScrollTop,
     firstRowRef,
@@ -199,7 +198,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
                 [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === c.dataKey
               })}
               style={{
-                width: resizable ? realColumnsWidth[index] : c.width || 100,
+                width: resizable ? realColumnsWidth[index] : c.width,
                 minWidth: resizable ? realColumnsWidth[index] : c.width
               }}
             />

@@ -3,14 +3,15 @@ import HeaderTable from './HeaderTable'
 import BodyTable from './BodyTable'
 import TableContext from './context'
 import classnames from 'classnames'
-import { getFixedDataByFixedColumn, getScrollBarSize, flatTreeData } from './util'
+import { getFixedDataByFixedColumn, getScrollBarSize, flatTreeData, parseFixedcolumns } from './util'
 import Pagination from '../pagination'
 import axios from 'axios'
+import _ from 'lodash'
 import FixedBodyTable from './FixedBodyTable'
 import Provider from '../context'
 import Loading from '../loading'
 import './style'
-
+const DEFAULTWIDTH = 100
 const defaultHeaderRow = () => {
   return {
     onClick: () => {},
@@ -34,7 +35,7 @@ const Table = ({
   expandedRowKeys,
   onExpand,
   onHeaderRow = defaultHeaderRow,
-  columns = [],
+  columns: propsColumns = [],
   expandedRender,
   maxHeight,
   pagination,
@@ -59,6 +60,7 @@ const Table = ({
   localeDatas,
   emptyContent = localeDatas.table.emptyContent
 }) => {
+  const [columns, setColumns] = useState(propsColumns)
   const hiTable = useRef(null)
   const disabledData = useRef([])
   const [ceiling, setCeiling] = useState(false)
@@ -85,6 +87,48 @@ const Table = ({
   // scrollLeft
   const [scrollSize, setScrollSize] = useState({ scrollLeft: 0, scrollRight: 1 })
   const firstRowRef = useRef(null)
+  // 处理拉平数据
+  useEffect(() => {
+    const _columns = propsColumns.concat()
+    const _flattedColumns = flatTreeData(_columns)
+    // TODO: 这里是考虑了多级表头的冻结，待优化
+    // TODO: sticky 多列
+    // fix: table 卡顿问题
+    const leftFixedColumn =
+      freezeColumn || (typeof fixedToColumn === 'string' ? fixedToColumn : fixedToColumn && fixedToColumn.left)
+    const rightFixedColumn = fixedToColumn && fixedToColumn.right
+    // 获取冻结类列的下标
+    let leftFixedIndex, rightFixedIndex
+    _flattedColumns.forEach((c, index) => {
+      if (leftFixedColumn === c.dataKey) leftFixedIndex = c._rootIndex
+      if (rightFixedColumn === c.dataKey) rightFixedIndex = c._rootIndex
+    })
+    if (typeof leftFixedIndex === 'number' || rightFixedIndex === 'number') {
+      _columns.forEach((item) => {
+        if (item.dataKey) {
+          item.width = item.width ? item.width : 100
+        }
+      })
+    }
+    // 左侧
+    const leftCloumns = _columns.slice(0, leftFixedIndex + 1)
+    leftCloumns.forEach((currentItem, index) => {
+      parseFixedcolumns(currentItem, index, leftCloumns, 'leftStickyWidth', rowSelection)
+      _columns[index] = currentItem
+    })
+    // 右侧
+    const rightCloumns = _.cloneDeep(_columns.slice(rightFixedIndex || flattedColumns.length).reverse())
+    if (rightFixedIndex) {
+      rightCloumns.forEach((currentItem, index) => {
+        const _item = parseFixedcolumns(currentItem, index, rightCloumns, 'rightStickyWidth', rowSelection)
+        _columns[_columns.length - 1 - index] = _item
+      })
+    }
+    setRealLeftFixedColumns(leftCloumns)
+    setRealRightFixedColumns(rightCloumns)
+    setColumns(_columns)
+    setFlattedColumns(_flattedColumns)
+  }, [propsColumns, freezeColumn, data])
 
   // 获取列宽的处理
   useEffect(() => {
@@ -96,87 +140,31 @@ const Table = ({
       }
     }
   }, [columns, dataSource, data])
-  // 处理拉平数据
-  useEffect(() => {
-    setFlattedColumns(flatTreeData(columns.concat()))
-  }, [columns])
 
   // 有表头分组那么也要 bordered
   const _bordered = flattedColumns.length > columns.length || bordered
 
-  useEffect(() => {
-    // ******************* 列冻结 ********************
-    // 左侧冻结
-    const leftFixedColumn =
-      freezeColumn || (typeof fixedToColumn === 'string' ? fixedToColumn : fixedToColumn && fixedToColumn.left)
-    // 右侧冻结
-    const rightFixedColumn = fixedToColumn && fixedToColumn.right
-
-    let leftFixedIndex, rightFixedIndex
-    // TODO: 这里是考虑了多级表头的冻结，待优化
-    // TODO: sticky 多列
-    // fix: table 卡顿问题
-    flattedColumns.forEach((c, index) => {
-      if (leftFixedColumn === c.dataKey) {
-        leftFixedIndex = c._rootIndex
-      }
-      if (rightFixedColumn === c.dataKey) {
-        rightFixedIndex = c._rootIndex
-      }
-    })
-    // 左侧
-    const leftCloumns = [...columns].splice(0, leftFixedIndex + 1).concat()
-    leftCloumns.forEach((currentItem, index) => {
-      let { width: preWidth = 100 } = index === 0 ? { width: 0 } : leftCloumns[index - 1]
-      let { width = 100 } = leftCloumns[index]
-      currentItem.width = width
-      if (index === 1) {
-        preWidth = 0
-      }
-      if (index === 0) {
-        width = 0
-      }
-      currentItem.leftStickyWidth = width + preWidth
-    })
-    setRealLeftFixedColumns(leftCloumns)
-    if (rightFixedIndex) {
-      // 右侧
-      const rightCloumns = [...columns]
-        .splice(rightFixedIndex || flattedColumns.length)
-        .concat()
-        .reverse()
-      rightCloumns.forEach((currentItem, index) => {
-        let { width: preWidth = 100 } = index === 0 ? { width: 0 } : rightCloumns[index - 1]
-        let { width = 100 } = rightCloumns[index]
-        currentItem.width = width
-        if (index === 1) {
-          preWidth = 0
-        }
-        if (index === 0) {
-          width = 0
-        }
-        currentItem.rightStickyWidth = width + preWidth
-      })
-      setRealRightFixedColumns(rightCloumns)
-    }
-  }, [fixedToColumn, flattedColumns])
   // 计算固定列的宽度
 
   useEffect(() => {
     let left = 0
     let right = 0
     realLeftFixedColumns.reduce((pre, current) => {
-      const currentWIdth = current.width || 100
+      const currentWIdth = current.width
       left = pre + currentWIdth
       return left
     }, left)
     realRightFixedColumns.reduce((pre, current) => {
-      const currentWIdth = current.width || 100
+      const currentWIdth = current.width
       right = pre + currentWIdth
       return right
     }, right)
+    if (left > 0 && rowSelection) {
+      left += 50
+    }
     setFixedColumnsWidth({ left, right })
   }, [realLeftFixedColumns, realRightFixedColumns])
+
   // 同步滚动条
   const headerTableRef = useRef(null)
   const stickyHeaderRef = useRef(null)
@@ -184,23 +172,18 @@ const Table = ({
   const leftFixedBodyTableRef = useRef(null)
   const rightFixedBodyTableRef = useRef(null)
   const tableRef = useRef(null)
-  const tableRefClient = useRef({})
-  useEffect(() => {
-    const { right } = tableRef && tableRef.current && tableRef.current.getBoundingClientRect()
-    console.log('right', right)
-    tableRefClient.current = { right }
-  }, [])
+
+  // 新增滚动优化
   const syncScrollLeft = (scrollLeft, syncTarget) => {
     let scrollRight = true
     if (syncTarget && syncTarget.scrollLeft !== scrollLeft) {
       syncTarget.scrollLeft = scrollLeft
     }
-    if (tableRef && tableRef.current) {
-      const { right } = tableRef.current.getBoundingClientRect()
-      console.log('right', tableRef.current.getBoundingClientRect(), right, tableRefClient.current.right, scrollLeft)
-      scrollRight = tableRefClient.current.right - scrollLeft - right
+    if (tableRef && tableRef.current && bodyTableRef && bodyTableRef.current) {
+      const { right: tableTefRight } = tableRef.current.getBoundingClientRect()
+      const { right } = bodyTableRef.current.getBoundingClientRect()
+      scrollRight = tableTefRight - right
     }
-    // console.dir(tableRef && tableRef.current && tableRef.current.getBoundingClientRect())
     setScrollSize({ scrollLeft, scrollRight })
   }
   const syncScrollTop = (scrollTop, syncTarget) => {
@@ -276,8 +259,6 @@ const Table = ({
         // 标题点击回调事件
         onHeaderRow,
         onExpand,
-        leftFixedColumns: realLeftFixedColumns,
-        rightFixedColumns: realRightFixedColumns,
         realColumnsWidth,
         setRealColumnsWidth,
         ceiling,
@@ -348,7 +329,7 @@ const Table = ({
           <HeaderTable bodyWidth={baseTableWidth} />
           <BodyTable fatherRef={hiTable} emptyContent={emptyContent} />
           {/* 显示阴影 */}
-          {scrollSize.scrollLeft && realLeftFixedColumns.length && (
+          {scrollSize.scrollLeft > 0 && realLeftFixedColumns.length > 0 && (
             <div
               className={`${prefix}__shadow-mask  ${prefix}__shadow-left`}
               style={{ width: fixedColumnsWidth.left + 'px' }}
@@ -356,7 +337,7 @@ const Table = ({
               <div className={`${prefix}__shadow-lock`}></div>
             </div>
           )}
-          {scrollSize.scrollRight && realRightFixedColumns.length > 0 && (
+          {scrollSize.scrollRight > 0 && realRightFixedColumns.length > 0 && (
             <div
               className={`${prefix}__shadow-mask ${prefix}__shadow-right`}
               style={{ width: fixedColumnsWidth.right + 'px' }}

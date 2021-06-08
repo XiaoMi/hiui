@@ -1,7 +1,7 @@
 import React from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Table from '../../../components/table'
-const prefix = 'table-column'
+const prefix = 'table-column2'
 const desc = ['列对齐：根据数据形式调整对齐方式']
 const rightOptions = ['列对齐', '列高亮', '列操作', '列冻结', '列调整']
 const code = [
@@ -210,9 +210,45 @@ const code = [
             key: 3
           },
           {
+            title: 'Home phone1',
+            dataKey: 'tel1',
+            key: 4
+          },
+          {
+            title: 'Home phone2',
+            colSpan: 2,
+            dataKey: 'tel2',
+            key: 5
+          },
+          {
+            title: 'Home phone3',
+            colSpan: 2,
+            dataKey: 'tel3',
+            key: 6
+          },
+          {
+            title: 'Home phone4',
+            colSpan: 2,
+            dataKey: 'tel4',
+            key: 7
+          },
+          {
+            title: 'Home phone5',
+            colSpan: 2,
+            dataKey: 'tel5',
+            key: 8
+          },
+          {
+            title: 'Home phone6',
+            colSpan: 2,
+            dataKey: 'tel6',
+            key: 9
+          },
+          
+          {
             title: 'Phone',
             dataKey: 'phone',
-            key: 4,
+            key: 10,
             sorter (pre, next) {
               return pre.phone - next.phone
             }
@@ -220,7 +256,7 @@ const code = [
           {
             title: 'Address',
             dataKey: 'address',
-            key: 5
+            key: 11
           }
         ]
 
@@ -230,14 +266,26 @@ const code = [
             name: 'John Brown',
             age: 32,
             tel: '0571-22098909',
+            tel1: '0571-22098909',
+            tel2: '0571-22098909',
+            tel3: '0571-22098909',
+            tel4: '0571-22098909',
+            tel5: '0571-22098909',
+            tel6: '0571-22098909',
             phone: 18889898989,
             address: 'New York No. 1 Lake Park'
           },
           {
             key: '2',
             name: 'Jim Green',
-            tel: '0571-22098333',
             phone: 18889898888,
+            tel: '0571-22098909',
+            tel1: '0571-22098909',
+            tel2: '0571-22098909',
+            tel3: '0571-22098909',
+            tel4: '0571-22098909',
+            tel5: '0571-22098909',
+            tel6: '0571-22098909',
             age: 42,
             address: 'London No. 1 Lake Park'
           },
@@ -245,6 +293,12 @@ const code = [
             key: '3',
             name: 'Joe Black',
             age: 32,
+            tel1: '0571-22098909',
+            tel2: '0571-22098909',
+            tel3: '0571-22098909',
+            tel4: '0571-22098909',
+            tel5: '0571-22098909',
+            tel6: '0571-22098909',
             tel: '0575-22098909',
             phone: 18900010002,
             address: 'Sidney No. 1 Lake Park'
@@ -253,6 +307,12 @@ const code = [
             key: '4',
             name: 'Jim Red',
             age: 18,
+            tel1: '0571-22098909',
+            tel2: '0571-22098909',
+            tel3: '0571-22098909',
+            tel4: '0571-22098909',
+            tel5: '0571-22098909',
+            tel6: '0571-22098909',
             tel: '0575-22098909',
             phone: 18900010002,
             address: 'London No. 2 Lake Park'
@@ -261,6 +321,12 @@ const code = [
             key: '5',
             name: 'Jake White',
             age: 18,
+            tel1: '0571-22098909',
+            tel2: '0571-22098909',
+            tel3: '0571-22098909',
+            tel4: '0571-22098909',
+            tel5: '0571-22098909',
+            tel6: '0571-22098909',
             tel: '0575-22098909',
             phone: 18900010002,
             address: 'Dublin No. 2 Lake Park'
@@ -268,7 +334,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} showColMenu showColHighlight />
+        return <Table columns={this.columns} data={this.data}  showColMenu showColHighlight />
       }
     }`,
     opt: ['列操作']
@@ -557,7 +623,7 @@ const code = [
 
       }
       render() {
-        return <Table columns={this.state.columns} data={this.state.data} scrollWidth={1700} fixedToColumn={{left: 'storeName', right: 'receptionPrice'}} showColHighlight />
+        return <Table columns={this.state.columns} data={this.state.data} fixedToColumn={{left: 'storeName', right: 'receptionPrice'}} showColHighlight />
       }
     }`,
     opt: ['列冻结']
