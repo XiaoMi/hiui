@@ -442,7 +442,7 @@ const Tree = (props) => {
         />
       )
     },
-    [searchValue, editingNodes, menuVisible, searchable]
+    [searchValue, editingNodes, menuVisible, searchable, editable]
   )
 
   const handleExpand = useCallback(
