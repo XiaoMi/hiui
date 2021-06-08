@@ -51,6 +51,7 @@ interface Props {
   stickyTop?: number
   highlightedColKeys?: string[] | number[]
   expandedRender?: (record: object, index: number) => JSX.Element | Promise
+  onLoadChildren?: (record: object) => object[] | Promise
   rowExpandable?: (record: object ) => JSX.Element | Boolean
   maxHeight?: number
   scrollWidth?: number

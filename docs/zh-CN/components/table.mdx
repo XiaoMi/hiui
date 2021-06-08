@@ -58,6 +58,7 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | sticky             | 是否支持表头吸顶                                                                                        | boolean                                        | true \| false                             | false      |
 | stickyTop          | 表头吸顶距离视口顶部距离                                                                                | number                                         | -                                         | 0          |
 | highlightedColKeys | 高亮列（受控）                                                                                          | string[]                                       | -                                         | []         |
+| onLoadChildren     | 点击异步加载子项                                                                                      | (row: DataItem) => object[] \| Promise  | -                                         | -          |
 | expandedRender     | 表格展开项                                                                                              | (record: dataItem, index: number) => ReactNode \| Promise | -                                         | -          |
 | rowExpandable     | 设置是否允许行展开                                                                                              | (record: dataItem ) => ReactNode \| Boolean | -                                         | true        |
 | onExpand          | 表格展开时的回调函数                                                                                             | (expanded, row: object) => void | -                                         | -          |
@@ -80,6 +81,8 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | scrollWidth        | 表格滚动的宽度（当表格总设置宽度（含自适应列）大于表格父级容器宽度时需要设置） |  number                                        | -                            | -      |
 | showColHighlight   | 表格某一列`hover`时，该列高亮 |  boolean                                        | true \| false                            | false      |
 | onHeaderRow        | 行标题事件处理函数 |  (item: ColumnItem[], index: number) => object                                        | -                           | -      |
+
+> 在 onLoadChildren 方法中，返回的数据中会根据 `isLeaf` 字符控制左侧展开按钮的显示状态
 
 ### onHeaderRow 使用方法
 ```js

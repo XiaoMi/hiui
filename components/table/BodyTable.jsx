@@ -36,7 +36,9 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     localeDatas,
     expandedTreeRows,
     rowExpandable,
-    setExpandedTreeRows
+    setExpandedTreeRows,
+    onLoadChildren,
+    loadChildren
   } = useContext(TableContext)
   // **************** 获取colgroup
   const _columns = _.cloneDeep(columns)
@@ -51,7 +53,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
   const tableRef = useRef(null)
 
   // **************** 根据排序列处理数据
-  let _data = data
+  let _data = data.concat()
 
   if (activeSorterColumn) {
     const sorter =
@@ -102,20 +104,31 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
   let hasTree = false
   if (_data && _data.length) {
     hasTree = _data.some((row) => {
-      return row.children && row.children.length
+      return (row.children && row.children.length) || (onLoadChildren && row.isLeaf)
     })
   }
 
   const renderRow = (row, level, index, rowConfig = {}, isTree) => {
     let childrenHasTree = false
-    if (row.children && row.children.length) {
-      childrenHasTree = row.children.some((child) => child.children && child.children.length)
+    const { key } = row
+    if (loadChildren.current) {
+      const { parentKey, data: children } = loadChildren.current
+      if (parentKey === key) {
+        Object.assign(row, { children })
+        loadChildren.current = null
+      }
+    }
+    const { children = [] } = row
+    if (children.length) {
+      childrenHasTree = children.some(
+        (child) => (child.children && child.children.length) || (onLoadChildren && child.isLeaf)
+      )
     }
     return (
-      <React.Fragment key={row.key}>
+      <React.Fragment key={key}>
         <Row
           innerRef={index === 0 ? firstRowRef : null}
-          key={row.key}
+          key={key}
           rowData={row}
           allRowData={row}
           level={level}
@@ -131,9 +144,8 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
           isTree={isTree}
           rowExpandable={rowExpandable}
         />
-        {row.children &&
-          expandedTreeRows.includes(row.key) &&
-          row.children.map((child) => {
+        {expandedTreeRows.includes(key) &&
+          children.map((child) => {
             return renderRow(child, level + 1, index, _, childrenHasTree || isTree)
           })}
       </React.Fragment>
