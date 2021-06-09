@@ -4,9 +4,10 @@ import _ from 'lodash'
 export const flatTreeData = (data, flattedData = [], rootIndex) => {
   data.forEach((d, index) => {
     d._rootIndex = typeof rootIndex === 'undefined' ? index : rootIndex
+    d.isLast = !d.children
     flattedData.push(d)
     if (d.children) {
-      flatTreeData(d.children, flattedData, index)
+      flatTreeData(d.children, flattedData, d._rootIndex)
     }
   })
   return flattedData
@@ -163,4 +164,20 @@ export const parseFixedcolumns = (item, index, arr, key, rowSelection) => {
   }
   item[key] = width + preWidth + rowSelectionWith
   return item
+}
+
+export const setColumnsDefaultWidth = (columns, defaultWidth) => {
+  const _columns = columns.concat()
+  const setWidth = (_columns) => {
+    _columns.forEach((item) => {
+      const { children } = item
+      if (children) {
+        setWidth(children)
+      } else if (item.dataKey) {
+        item.width = item.width || defaultWidth
+      }
+    })
+  }
+  setWidth(_columns)
+  return _columns
 }

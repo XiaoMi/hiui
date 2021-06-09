@@ -3,7 +3,7 @@ import HeaderTable from './HeaderTable'
 import BodyTable from './BodyTable'
 import TableContext from './context'
 import classnames from 'classnames'
-import { getFixedDataByFixedColumn, getScrollBarSize, flatTreeData, parseFixedcolumns } from './util'
+import { getFixedDataByFixedColumn, getScrollBarSize, flatTreeData, parseFixedcolumns, setColumnsDefaultWidth } from './util'
 import Pagination from '../pagination'
 import axios from 'axios'
 import _ from 'lodash'
@@ -72,7 +72,6 @@ const Table = ({
   const [hoverRow, setHoverRow] = useState(null)
   const [serverTableConfig, setServerTableConfig] = useState({ data: [], columns: [] })
   const [eachRowHeight, setEachRowHeight] = useState({})
-  const [eachHeaderHeight, setEachHeaderHeight] = useState(null)
   const [hoverColIndex, setHoverColIndex] = useState(null)
   const loadChildren = useRef(null)
   const [realColumnsWidth, setRealColumnsWidth] = useState(columns.map((c) => c.width || 'auto'))
@@ -89,28 +88,25 @@ const Table = ({
   const firstRowRef = useRef(null)
   // 处理拉平数据
   useEffect(() => {
-    const _columns = propsColumns.concat()
+    let _columns = propsColumns.concat()
     const _flattedColumns = flatTreeData(_columns)
     const leftFixedColumn =
       freezeColumn || (typeof fixedToColumn === 'string' ? fixedToColumn : fixedToColumn && fixedToColumn.left)
     const rightFixedColumn = fixedToColumn && fixedToColumn.right
     // 获取冻结类列的下标
     let leftFixedIndex, rightFixedIndex
-    console.log('_flattedColumns', _flattedColumns)
+    console.log('_flattedColumns', _flattedColumns, leftFixedColumn)
     _flattedColumns.forEach((c, index) => {
       if (leftFixedColumn === c.dataKey && typeof leftFixedColumn === 'string') leftFixedIndex = c._rootIndex
       if (rightFixedColumn === c.dataKey && typeof rightFixedColumn === 'string') rightFixedIndex = c._rootIndex
     })
+    console.log('leftFixedIndex', leftFixedIndex)
     if (typeof leftFixedIndex === 'number' || rightFixedIndex === 'number') {
-      const lastColumns = _columns.filter((item) => {
+      const lastColumns = _flattedColumns.filter((item) => {
         return typeof item.isLast !== 'undefined' ? item.isLast : true
       })
-      _columns.forEach((item) => {
-        if (item.dataKey) {
-          const defaultWidth = scrollWidth ? scrollWidth / lastColumns.length : 100
-          item.width = item.width ? item.width : defaultWidth
-        }
-      })
+      _columns = setColumnsDefaultWidth(_columns, scrollWidth ? scrollWidth / lastColumns.length : 100)
+      console.log('_columns', _columns)
     }
     // 左侧
     const leftCloumns = _columns.slice(0, leftFixedIndex + 1)
@@ -119,13 +115,14 @@ const Table = ({
       _columns[index] = currentItem
     })
     // 右侧
-    const rightCloumns = _.cloneDeep(_columns.slice(rightFixedIndex || flattedColumns.length).reverse())
+    const rightCloumns = _.cloneDeep(_columns.slice(rightFixedIndex || _flattedColumns.length).reverse())
     if (rightFixedIndex) {
       rightCloumns.forEach((currentItem, index) => {
         const _item = parseFixedcolumns(currentItem, index, rightCloumns, 'rightStickyWidth', rowSelection)
         _columns[_columns.length - 1 - index] = _item
       })
     }
+
     setRealLeftFixedColumns(leftCloumns)
     setRealRightFixedColumns(rightCloumns)
     setColumns(_columns)
@@ -181,7 +178,7 @@ const Table = ({
     if (syncTarget && syncTarget.scrollLeft !== scrollLeft) {
       syncTarget.scrollLeft = scrollLeft
     }
-    if (tableRef && tableRef.current && bodyTableRef && bodyTableRef.current) {
+    if (tableRef && tableRef.current && bodyTableRef && bodyTableRef.current && realRightFixedColumns) {
       const { right: tableTefRight } = tableRef.current.getBoundingClientRect()
       const { right } = bodyTableRef.current.getBoundingClientRect()
       scrollRight = tableTefRight - right
@@ -307,9 +304,6 @@ const Table = ({
         // 同步行高度
         eachRowHeight,
         setEachRowHeight,
-        // 同步表头高度
-        eachHeaderHeight,
-        setEachHeaderHeight,
         theme,
         localeDatas,
         expandedTreeRows,

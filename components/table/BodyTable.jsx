@@ -170,6 +170,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     <div
       style={{
         maxHeight: maxHeight || 'auto',
+        borderLeft: bordered ? '1px solid #e7e7e7' : 'none',
         overflowY: tableRef.current && tableRef.current.clientHeight > maxHeight ? 'scroll' : null, // maxHeight 小于 table 实际高度才处滚动条
         overflowX:
           (bodyTableRef.current && bodyTableRef.current.clientWidth) <
@@ -186,23 +187,25 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
       <table
         ref={tableRef}
         style={{
-          borderLeft: bordered ? '1px solid #e7e7e7' : 'none',
           width: scrollWidth || '100%'
         }}
       >
         <colgroup>
-          {columnsgroup.map((c, index) => (
-            <col
-              key={index}
-              className={classNames({
-                [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === c.dataKey
-              })}
-              style={{
-                width: resizable ? realColumnsWidth[index] : c.width,
-                minWidth: resizable ? realColumnsWidth[index] : c.width
-              }}
-            />
-          ))}
+          {columnsgroup.map((c, index) => {
+            const width = c === 'checkbox' ? 50 : c.width
+            return (
+              <col
+                key={index}
+                className={classNames({
+                  [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === c.dataKey
+                })}
+                style={{
+                  width: resizable ? realColumnsWidth[index] : width,
+                  minWidth: resizable ? realColumnsWidth[index] : c.width
+                }}
+              />
+            )
+          })}
         </colgroup>
         <tbody>
           {_data && _data.length > 0

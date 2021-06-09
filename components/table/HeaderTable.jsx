@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState, useEffect } from 'react'
+import React, { useContext, useRef, useState, useEffect, useLayoutEffect } from 'react'
 import TableContext from './context'
 import ColumnMenu from './ColumnMenu'
 import SettingMenu from './SettingMenu'
@@ -35,14 +35,14 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
     resizable,
     setting,
     scrollWidth,
-    eachHeaderHeight,
-    setEachHeaderHeight,
     onHeaderRow,
     disabledData
   } = useContext(TableContext)
   const [isAllChecked, setIsAllChecked] = useState(false)
   const [groupedColumns, setGroupedColumns] = useState([])
   const [columnsgroup, setColumnsGroup] = useState([])
+  const [eachHeaderHeight, setEachHeaderHeight] = useState(null)
+  const isStickyHeader = useRef(false)
   // 隐藏滚动条
   const headerInner = useRef(null)
   // 控制列最小可调整宽度
@@ -79,9 +79,11 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
       column.rowSpan = column.isLast ? maxDepth - column.depth + 1 : 1
       column.colSpan = column.isLast ? 1 : leafChildren.length
     })
+    isStickyHeader.current = flatTreeDateColumns.some((item) => {
+      return typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
+    })
     console.log('flatTreeDateColumns', flatTreeDateColumns)
     const _groupedColumns = groupDataByDepth(_columns, maxDepth)
-    console.log('_groupedColumns', _groupedColumns)
     setColumnsGroup(_columnsgroup)
     setGroupedColumns(_groupedColumns)
   }, [columns])
@@ -98,7 +100,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
   }, [columns, headerInner])
 
   // ******************** 同步行高度
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (headerInner.current) {
       setEachHeaderHeight(headerInner.current.clientHeight)
       if (!data || data.length === 0) {
@@ -125,7 +127,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
       .concat(cols)
       .filter((column) => !!column)
     const isStickyCol = _colums.some((item) => {
-      return typeof item.leftStickyWidth !== 'undefined'
+      return typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
     })
     return (
       <tr key={index}>
@@ -241,7 +243,6 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
       </tr>
     )
   }
-
   return [
     <div
       key="normal"
@@ -277,7 +278,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
                 <col
                   key={index}
                   style={{
-                    width: c.width,
+                    width: c === 'checkbox' ? 50 : c.width,
                     minWidth: c.width
                   }}
                 />
