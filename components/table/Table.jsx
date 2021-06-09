@@ -1,9 +1,16 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import HeaderTable from './HeaderTable'
 import BodyTable from './BodyTable'
 import TableContext from './context'
 import classnames from 'classnames'
-import { getFixedDataByFixedColumn, getScrollBarSize, flatTreeData, parseFixedcolumns, setColumnsDefaultWidth } from './util'
+import {
+  getFixedDataByFixedColumn,
+  getScrollBarSize,
+  flatTreeData,
+  parseFixedcolumns,
+  setColumnsDefaultWidth,
+  getMaskNums
+} from './util'
 import Pagination from '../pagination'
 import axios from 'axios'
 import _ from 'lodash'
@@ -95,12 +102,10 @@ const Table = ({
     const rightFixedColumn = fixedToColumn && fixedToColumn.right
     // 获取冻结类列的下标
     let leftFixedIndex, rightFixedIndex
-    console.log('_flattedColumns', _flattedColumns, leftFixedColumn)
     _flattedColumns.forEach((c, index) => {
       if (leftFixedColumn === c.dataKey && typeof leftFixedColumn === 'string') leftFixedIndex = c._rootIndex
       if (rightFixedColumn === c.dataKey && typeof rightFixedColumn === 'string') rightFixedIndex = c._rootIndex
     })
-    console.log('leftFixedIndex', leftFixedIndex)
     if (typeof leftFixedIndex === 'number' || rightFixedIndex === 'number') {
       const lastColumns = _flattedColumns.filter((item) => {
         return typeof item.isLast !== 'undefined' ? item.isLast : true
@@ -111,14 +116,20 @@ const Table = ({
     // 左侧
     const leftCloumns = _columns.slice(0, leftFixedIndex + 1)
     leftCloumns.forEach((currentItem, index) => {
-      parseFixedcolumns(currentItem, index, leftCloumns, 'leftStickyWidth', rowSelection)
+      parseFixedcolumns(currentItem, index, leftCloumns, 'leftStickyWidth', expandedRender || rowSelection)
       _columns[index] = currentItem
     })
     // 右侧
     const rightCloumns = _.cloneDeep(_columns.slice(rightFixedIndex || _flattedColumns.length).reverse())
     if (rightFixedIndex) {
       rightCloumns.forEach((currentItem, index) => {
-        const _item = parseFixedcolumns(currentItem, index, rightCloumns, 'rightStickyWidth', rowSelection)
+        const _item = parseFixedcolumns(
+          currentItem,
+          index,
+          rightCloumns,
+          'rightStickyWidth',
+          expandedRender || rowSelection
+        )
         _columns[_columns.length - 1 - index] = _item
       })
     }
@@ -148,19 +159,12 @@ const Table = ({
   useEffect(() => {
     let left = 0
     let right = 0
-    realLeftFixedColumns.reduce((pre, current) => {
-      const currentWIdth = current.width
-      left = pre + currentWIdth
-      return left
-    }, left)
-    realRightFixedColumns.reduce((pre, current) => {
-      const currentWIdth = current.width
-      right = pre + currentWIdth
-      return right
-    }, right)
-    if (left > 0 && rowSelection) {
+    left = getMaskNums(realLeftFixedColumns)
+    right = getMaskNums(realRightFixedColumns)
+    if (left > 0 && (rowSelection || expandedRender)) {
       left += 50
     }
+    console.log(left, right)
     setFixedColumnsWidth({ left, right })
   }, [realLeftFixedColumns, realRightFixedColumns])
 

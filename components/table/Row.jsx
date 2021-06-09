@@ -51,7 +51,7 @@ const Row = ({
   setDepth(_columns, 0, depthArray)
   const rowColumns = flatTreeData(_columns).filter((col) => col.isLast)
   const isSticky = rowColumns.some((item) => {
-    return typeof item.leftStickyWidth !== 'undefined'
+    return typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
   })
   const checkboxConfig = rowSelection && rowSelection.getCheckboxConfig && rowSelection.getCheckboxConfig(allRowData)
   const checkboxDisabled = (checkboxConfig && checkboxConfig.disabled) || false
@@ -104,7 +104,12 @@ const Row = ({
         </td>
       )}
       {expandedRender && (
-        <td style={{ width: 50 }}>
+        <td
+          style={{ width: 50 }}
+          className={classNames({
+            [`${prefix}__col__sticky`]: isSticky
+          })}
+        >
           <>
             {React.isValidElement(rowExpand) ? (
               rowExpand

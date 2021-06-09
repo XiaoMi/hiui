@@ -475,31 +475,6 @@ class Demo extends React.Component {
             title: 'Name2',
             dataKey: 'name2',
             width: 100
-
-          },
-          {
-            title: 'Name2',
-            dataKey: 'name2',
-            width: 100
-
-          },
-          {
-            title: 'Name2',
-            dataKey: 'name2',
-            width: 100
-
-          },
-          {
-            title: 'Name2',
-            dataKey: 'name2',
-            width: 100
-
-          },
-          {
-            title: 'Name2',
-            dataKey: 'name2',
-            width: 100
-
           },
           {
             title: 'Other',
@@ -565,6 +540,30 @@ class Demo extends React.Component {
             ]
           },
           {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+
+          },
+          {
             title: 'Gender',
             dataKey: 'gender',
             key: '9',
@@ -591,7 +590,7 @@ class Demo extends React.Component {
       render() {
         return <Table 
         columns={this.columns}
-        fixedToColumn={'number'}
+        fixedToColumn={{left:'number', right: 'gender'}}
         data={this.data} 
         rowSelection={{
           selectedRowKeys: this.state.selectedRowKeys,

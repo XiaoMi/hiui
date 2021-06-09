@@ -84,6 +84,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
     })
     console.log('flatTreeDateColumns', flatTreeDateColumns)
     const _groupedColumns = groupDataByDepth(_columns, maxDepth)
+    console.log('_groupedColumns', _groupedColumns)
     setColumnsGroup(_columnsgroup)
     setGroupedColumns(_groupedColumns)
   }, [columns])
@@ -168,10 +169,12 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
               <th
                 key="expandedButton"
                 rowSpan={groupedColumns.length}
+                className={classnames({ 'hi-table__col__sticky': isStickyCol })}
                 style={{
                   boxSizing: 'border-box',
                   width: 50,
-                  height: 'auto'
+                  height: 'auto',
+                  backgroundColor: '#fbfbfb'
                 }}
               >
                 <span />

@@ -155,14 +155,18 @@ export const getTotalOrEvgRowData = (_data, c, isAvg) => {
   }
 }
 
-export const parseFixedcolumns = (item, index, arr, key, rowSelection) => {
-  const rowSelectionWith = rowSelection ? 50 : 0
-  const { width: preWidth = 0 } = arr[index - 1] || { width: 0 }
-  let { width = 0 } = arr[index - 2] || {}
-  if (index <= 1) {
-    width = 0
+export const parseFixedcolumns = (item, index, arr, key, rowSelection, parentStickyWidth = 0) => {
+  const rowSelectionWith = rowSelection && index === 0 && key === 'leftStickyWidth'? 50 : 0
+  const width = (arr[index - 1] || { width: 0 }).width || 0
+  const stickyWidth = (arr[index - 1] || { width: 0 })[key] || 0
+  item[key] = width + stickyWidth + rowSelectionWith + parentStickyWidth
+  if (item.children) {
+    const _parentStickyWidth = item[key]
+    const { children } = item
+    children.forEach((childrenItem, index) => {
+      parseFixedcolumns(childrenItem, index, children, key, false, index === 0 ? _parentStickyWidth : 0)
+    })
   }
-  item[key] = width + preWidth + rowSelectionWith
   return item
 }
 
@@ -180,4 +184,19 @@ export const setColumnsDefaultWidth = (columns, defaultWidth) => {
   }
   setWidth(_columns)
   return _columns
+}
+
+export const getMaskNums = (columns) => {
+  let num = 0
+  const getAllItemWidth = (column) => {
+    column.forEach((item) => {
+      if (item.children) {
+        getAllItemWidth(item.children)
+      } else {
+        num += item.width
+      }
+    })
+  }
+  getAllItemWidth(columns)
+  return num
 }
