@@ -40,50 +40,52 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
     onHeaderRow,
     disabledData
   } = useContext(TableContext)
-
-  // ******************** 隐藏滚动条
+  const [isAllChecked, setIsAllChecked] = useState(false)
+  const [groupedColumns, setGroupedColumns] = useState([])
+  const [columnsgroup, setColumnsGroup] = useState([])
+  // 隐藏滚动条
   const headerInner = useRef(null)
-
-  // *****控制列最小可调整宽度
+  // 控制列最小可调整宽度
   const [minColWidth, setMinColWidth] = useState(Array(columns.length).fill(0))
-  // ********************
+  useEffect(() => {
+    // 判断是否全选
+    if (rowSelection) {
+      const { selectedRowKeys = [] } = rowSelection
+      const flattedData = flatTreeData(data)
+      const _isAllChecked =
+        flattedData
+          .filter((data) => !disabledData.current.includes(data.key))
+          .every((d) => selectedRowKeys.includes(d.key)) && flattedData.length !== 0
+      setIsAllChecked(_isAllChecked)
+    }
+  }, [data, rowSelection])
 
-  // ********************* 判断是否全选
-  let isAllChecked
-  if (rowSelection) {
-    const { selectedRowKeys = [] } = rowSelection
-    const flattedData = flatTreeData(data)
-    isAllChecked =
-      flattedData
-        .filter((data) => !disabledData.current.includes(data.key))
-        .every((d) => selectedRowKeys.includes(d.key)) && flattedData.length !== 0
-  }
-  const _columns = _.cloneDeep(columns)
-  const depthArray = []
-  setDepth(_columns, 0, depthArray)
+  // 处理列的深度
+  useEffect(() => {
+    const _columns = _.cloneDeep(columns)
+    const depthArray = []
+    setDepth(_columns, 0, depthArray)
+    const maxDepth = depthArray.length > 0 ? Math.max.apply(null, depthArray) : 0
+    const flatTreeDateColumns = flatTreeData(_columns)
+    const _columnsgroup = [rowSelection && 'checkbox', expandedRender && 'expandedButton']
+      .concat(flatTreeDateColumns.filter((col) => col.isLast))
+      .filter((column) => !!column)
 
-  const maxDepth = depthArray.length > 0 ? Math.max.apply(null, depthArray) : 0
-  const columnsgroup = [rowSelection && 'checkbox', expandedRender && 'expandedButton']
-    .concat(flatTreeData(_columns).filter((col) => col.isLast))
-    .filter((column) => !!column)
-  // TODO: 这里是考虑了多级表头的冻结，待优化
-  // fix: 列的宽度
-  // *********全量 col group
-  const allColumns = _.cloneDeep(columns)
-  const _depthArray = []
-  setDepth(allColumns, 0, _depthArray)
-  const allColumnsgroup = flatTreeData(allColumns).filter((col) => col.isLast)
-  // ***********
-  flatTreeData(_columns).forEach((column) => {
-    const leafChildren = []
-    getLeafChildren(column, leafChildren)
-    // 在最后一层，colspan = 1, rowspan = maxDepth - depth + 1
-    // 不在最后一层，rowspan = 1, colspan = 叶子节点后代数量
-    column.rowSpan = column.isLast ? maxDepth - column.depth + 1 : 1
-    column.colSpan = column.isLast ? 1 : leafChildren.length
-  })
+    flatTreeDateColumns.forEach((column) => {
+      const leafChildren = []
+      getLeafChildren(column, leafChildren)
+      // 在最后一层，colspan = 1, rowspan = maxDepth - depth + 1
+      // 不在最后一层，rowspan = 1, colspan = 叶子节点后代数量
+      column.rowSpan = column.isLast ? maxDepth - column.depth + 1 : 1
+      column.colSpan = column.isLast ? 1 : leafChildren.length
+    })
+    console.log('flatTreeDateColumns', flatTreeDateColumns)
+    const _groupedColumns = groupDataByDepth(_columns, maxDepth)
+    console.log('_groupedColumns', _groupedColumns)
+    setColumnsGroup(_columnsgroup)
+    setGroupedColumns(_groupedColumns)
+  }, [columns])
 
-  const groupedColumns = groupDataByDepth(_columns, maxDepth)
   // ********************
 
   useEffect(() => {
@@ -138,7 +140,8 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
                 style={{
                   boxSizing: 'border-box',
                   width: 50,
-                  height: 'auto'
+                  height: 'auto',
+                  backgroundColor: '#fbfbfb'
                 }}
               >
                 <Checkbox
@@ -248,7 +251,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
         overflow: 'hidden',
         boxShadow: maxHeight && '0px 2px 6px 0px rgba(0,0,0,0.12)',
         position: 'relative',
-        height: (eachHeaderHeight && (bordered ? eachHeaderHeight + 1 : eachHeaderHeight)) || 'auto'
+        height: eachHeaderHeight || 'auto'
       }}
     >
       {setting && <SettingMenu />}

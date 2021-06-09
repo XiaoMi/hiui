@@ -91,22 +91,24 @@ const Table = ({
   useEffect(() => {
     const _columns = propsColumns.concat()
     const _flattedColumns = flatTreeData(_columns)
-    // TODO: 这里是考虑了多级表头的冻结，待优化
-    // TODO: sticky 多列
-    // fix: table 卡顿问题
     const leftFixedColumn =
       freezeColumn || (typeof fixedToColumn === 'string' ? fixedToColumn : fixedToColumn && fixedToColumn.left)
     const rightFixedColumn = fixedToColumn && fixedToColumn.right
     // 获取冻结类列的下标
     let leftFixedIndex, rightFixedIndex
+    console.log('_flattedColumns', _flattedColumns)
     _flattedColumns.forEach((c, index) => {
-      if (leftFixedColumn === c.dataKey) leftFixedIndex = c._rootIndex
-      if (rightFixedColumn === c.dataKey) rightFixedIndex = c._rootIndex
+      if (leftFixedColumn === c.dataKey && typeof leftFixedColumn === 'string') leftFixedIndex = c._rootIndex
+      if (rightFixedColumn === c.dataKey && typeof rightFixedColumn === 'string') rightFixedIndex = c._rootIndex
     })
     if (typeof leftFixedIndex === 'number' || rightFixedIndex === 'number') {
+      const lastColumns = _columns.filter((item) => {
+        return typeof item.isLast !== 'undefined' ? item.isLast : true
+      })
       _columns.forEach((item) => {
         if (item.dataKey) {
-          item.width = item.width ? item.width : 100
+          const defaultWidth = scrollWidth ? scrollWidth / lastColumns.length : 100
+          item.width = item.width ? item.width : defaultWidth
         }
       })
     }

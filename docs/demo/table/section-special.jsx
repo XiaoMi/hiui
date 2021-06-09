@@ -8,13 +8,13 @@ const desc = [
   '内嵌式：表格每行隐藏部分数据，递进呈现'
 ]
 const rightOptions = [
+  '表头分组固定列',
+  '表头分组',
   '全边框',
   '树形表格',
   '异步树形表格',
   '内嵌式',
   '内嵌式异步渲染',
-  '表头分组',
-  '表头分组固定列',
   '表头吸顶',
   '固定表头',
   '合并单元格'
@@ -228,6 +228,33 @@ class Demo extends React.Component {
         align: 'right'
       },
       {
+        title: '规格',
+        dataKey: 'size'
+      },
+      {
+        title: '单价',
+        dataKey: 'price',
+        align: 'right'
+      },
+      {
+        title: '规格',
+        dataKey: 'size'
+      },
+      {
+        title: '单价',
+        dataKey: 'price',
+        align: 'right'
+      },
+      {
+        title: '规格',
+        dataKey: 'size'
+      },
+      {
+        title: '单价',
+        dataKey: 'price',
+        align: 'right'
+      },
+      {
         title: '门店',
         dataKey: 'address'
       },
@@ -293,6 +320,7 @@ class Demo extends React.Component {
       onExpand={(expanded, row) => {
         console.log(expanded, row)
       }} 
+      fixedToColumn={'name'}
       rowExpandable={(rowData)=>{
         return rowData.key !== 2
        }}
@@ -443,6 +471,34 @@ class Demo extends React.Component {
             key: '1'
           },
           {
+            title: 'Name2',
+            dataKey: 'name2',
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+          },
+          {
             title: 'Other',
 
             children: [
@@ -510,6 +566,7 @@ class Demo extends React.Component {
             street: 'Lake Park',
             building: 'C',
             number: 2035,
+            name2:'name2',
             companyAddress: 'Lake Street 42',
             companyName: 'SoftLake Co',
             gender: 'M'
@@ -520,7 +577,7 @@ class Demo extends React.Component {
       render() {
         return <Table 
         columns={this.columns}
-        fixedToColumn={{left: 'number', right:'gender'}}
+        fixedToColumn={'name'}
         scrollWidth={1000}
         data={this.data} 
         rowSelection={{
