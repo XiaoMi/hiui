@@ -14,7 +14,6 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
     data,
     columns,
     expandedRender,
-    ceiling,
     stickyTop,
     scrollBarSize,
     highlightedColKeys,
@@ -24,7 +23,6 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
     showColMenu,
     maxHeight,
     headerTableRef,
-    stickyHeaderRef,
     bodyTableRef,
     syncScrollLeft,
     bordered,
@@ -34,7 +32,6 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
     setRealColumnsWidth,
     resizable,
     setting,
-    scrollWidth,
     onHeaderRow,
     disabledData
   } = useContext(TableContext)
@@ -94,9 +91,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
     isStickyHeader.current = flatTreeDateColumns.some((item) => {
       return typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
     })
-    console.log('flatTreeDateColumns', flatTreeDateColumns)
     const _groupedColumns = groupDataByDepth(_columns, maxDepth)
-    console.log('_groupedColumns', _groupedColumns)
     setColumnsGroup(_columnsgroup)
     setGroupedColumns(_groupedColumns)
   }, [columns])
@@ -257,7 +252,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
       </tr>
     )
   }
-  return [
+  return (
     <div
       key="normal"
       style={{
@@ -295,35 +290,8 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
           <thead ref={theadRef}>{groupedColumns.map((group, index) => renderBaseRow(group, index, false))}</thead>
         </table>
       </div>
-    </div>,
-    ceiling && (
-      <div
-        key="ceiling"
-        className={classnames(`${prefix}__header`, `${prefix}__header--sticky`)}
-        ref={stickyHeaderRef}
-        style={{
-          top: stickyTop,
-          width: bodyWidth,
-          borderLeft: bordered && '1px solid #e7e7e7'
-        }}
-      >
-        <table style={{ width: scrollWidth || '100%' }}>
-          <colgroup>
-            {columnsgroup.map((c, idx) => (
-              <col
-                key={idx}
-                style={{
-                  width: resizable ? realColumnsWidth[idx] : c.width,
-                  minWidth: resizable ? realColumnsWidth[idx] : c.width
-                }}
-              />
-            ))}
-          </colgroup>
-          <thead>{groupedColumns.map((group, idx) => renderBaseRow(group, idx, true))}</thead>
-        </table>
-      </div>
-    )
-  ]
+    </div>
+  )
 }
 
 export default HeaderTable
