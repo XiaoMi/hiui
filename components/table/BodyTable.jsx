@@ -15,12 +15,9 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     activeSorterType,
     maxHeight,
     headerTableRef,
-    stickyHeaderRef,
     bodyTableRef,
     tableRef,
-    leftFixedBodyTableRef,
     syncScrollLeft,
-    syncScrollTop,
     firstRowRef,
     realColumnsWidth,
     resizable, // TODO: 拖拽
@@ -181,7 +178,6 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
       ref={bodyTableRef}
       onScroll={(e) => {
         syncScrollLeft(bodyTableRef.current.scrollLeft, headerTableRef.current)
-        syncScrollTop(bodyTableRef.current.scrollTop, leftFixedBodyTableRef.current, tableRef)
       }}
     >
       <table

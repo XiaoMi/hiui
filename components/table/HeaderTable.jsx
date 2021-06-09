@@ -41,12 +41,24 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
   const [isAllChecked, setIsAllChecked] = useState(false)
   const [groupedColumns, setGroupedColumns] = useState([])
   const [columnsgroup, setColumnsGroup] = useState([])
-  const [eachHeaderHeight, setEachHeaderHeight] = useState(null)
   const isStickyHeader = useRef(false)
   // 隐藏滚动条
   const headerInner = useRef(null)
+  const theadRef = useRef()
   // 控制列最小可调整宽度
   const [minColWidth, setMinColWidth] = useState(Array(columns.length).fill(0))
+  useEffect(() => {
+    const onwheel = (e) => {
+      e.preventDefault()
+      const { deltaX } = e
+      headerTableRef.current.scrollLeft = headerTableRef.current.scrollLeft + deltaX
+      syncScrollLeft(headerTableRef.current.scrollLeft, bodyTableRef.current)
+    }
+    theadRef.current && theadRef.current.addEventListener('wheel', onwheel)
+    return () => {
+      theadRef.current.removeEventListener('wheel', onwheel)
+    }
+  }, [])
   useEffect(() => {
     // 判断是否全选
     if (rowSelection) {
@@ -103,7 +115,6 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
   // ******************** 同步行高度
   useLayoutEffect(() => {
     if (headerInner.current) {
-      setEachHeaderHeight(headerInner.current.clientHeight)
       if (!data || data.length === 0) {
         if (headerInner.current.childNodes && headerInner.current.childNodes[1].childNodes[0]) {
           const _realColumnsWidth = Array.from(headerInner.current.childNodes[1].childNodes[0].childNodes).map(
@@ -115,7 +126,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
         }
       }
     }
-  }, [headerInner, setEachHeaderHeight, columns, data])
+  }, [headerInner, columns, data])
 
   // ********************处理排序逻辑
   // 可以排序的必须的是最后一级列
@@ -254,8 +265,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
         borderTop: bordered && '1px solid #e7e7e7',
         overflow: 'hidden',
         boxShadow: maxHeight && '0px 2px 6px 0px rgba(0,0,0,0.12)',
-        position: 'relative',
-        height: eachHeaderHeight || 'auto'
+        position: 'relative'
       }}
     >
       {setting && <SettingMenu />}
@@ -264,14 +274,8 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
         key="normal"
         ref={headerTableRef}
         style={{
-          overflowY: maxHeight ? 'scroll' : 'hidden',
-          overflowX: 'scroll',
-          marginBottom: -scrollBarSize,
-          height: (eachHeaderHeight && eachHeaderHeight + 20) || 'auto'
-        }}
-        onScroll={(e) => {
-          syncScrollLeft(headerTableRef.current.scrollLeft, bodyTableRef.current)
-          syncScrollLeft(headerTableRef.current.scrollLeft, stickyHeaderRef.current)
+          overflow: 'hidden',
+          marginBottom: -scrollBarSize
         }}
       >
         <table style={{ width: '100%' }} ref={headerInner}>
@@ -288,7 +292,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
               )
             })}
           </colgroup>
-          <thead>{groupedColumns.map((group, index) => renderBaseRow(group, index, false))}</thead>
+          <thead ref={theadRef}>{groupedColumns.map((group, index) => renderBaseRow(group, index, false))}</thead>
         </table>
       </div>
     </div>,
