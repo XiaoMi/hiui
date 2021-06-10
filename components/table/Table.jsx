@@ -68,7 +68,7 @@ const Table = ({
   const [highlightRows, setHighlightRows] = useState([])
   const [freezeColumn, setFreezeColumn] = useState(null)
   const [hoverRow, setHoverRow] = useState(null)
-  const [serverTableConfig, setServerTableConfig] = useState({ data: [], columns: [] })
+  const [serverTableConfig, setServerTableConfig] = useState({ data: [], columns: [...propsColumns] })
   const [eachRowHeight, setEachRowHeight] = useState({})
   const [hoverColIndex, setHoverColIndex] = useState(null)
   const loadChildren = useRef(null)
@@ -86,7 +86,7 @@ const Table = ({
   const firstRowRef = useRef(null)
   // 处理拉平数据
   useEffect(() => {
-    let _columns = propsColumns.concat()
+    let _columns = _.cloneDeep(dataSource ? serverTableConfig.columns || [] : propsColumns)
     const _flattedColumns = flatTreeData(_columns)
     const leftFixedColumn =
       freezeColumn || (typeof fixedToColumn === 'string' ? fixedToColumn : fixedToColumn && fixedToColumn.left)
@@ -123,12 +123,11 @@ const Table = ({
         _columns[_columns.length - 1 - index] = _item
       })
     }
-
     setRealLeftFixedColumns(leftCloumns)
     setRealRightFixedColumns(rightCloumns)
     setColumns(_columns)
     setFlattedColumns(_flattedColumns)
-  }, [propsColumns, freezeColumn, data])
+  }, [propsColumns, freezeColumn, data, serverTableConfig])
 
   // 获取列宽的处理
   useEffect(() => {
@@ -223,7 +222,7 @@ const Table = ({
     if (dataSource) {
       const fetchConfig = dataSource()
       axios(fetchConfig).then((res) => {
-        setServerTableConfig(res.data)
+        setServerTableConfig(Object.assign({}, serverTableConfig, { data: res.data }))
       })
     }
   }, [dataSource])
@@ -244,7 +243,7 @@ const Table = ({
         highlightedColKeys,
         tableRef,
         data: dataSource ? serverTableConfig.data : data,
-        columns: dataSource ? serverTableConfig.columns : columns,
+        columns: columns,
         expandedRender,
         expandedRowKeys,
         // 标题点击回调事件

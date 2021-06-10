@@ -48,7 +48,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
   // **************** 同步滚动位置
 
   // **************** 根据排序列处理数据
-  let _data = data.concat()
+  let _data = _.cloneDeep(data || [])
 
   if (activeSorterColumn) {
     const sorter =

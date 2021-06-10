@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 // 将树状数据拍平
-export const flatTreeData = (data, flattedData = [], rootIndex) => {
+export const flatTreeData = (data = [], flattedData = [], rootIndex) => {
   data.forEach((d, index) => {
     d._rootIndex = typeof rootIndex === 'undefined' ? index : rootIndex
     d.isLast = !d.children
@@ -156,7 +156,7 @@ export const getTotalOrEvgRowData = (_data, c, isAvg) => {
 }
 
 export const parseFixedcolumns = (item, index, arr, key, rowSelection, parentStickyWidth = 0) => {
-  const rowSelectionWith = rowSelection && index === 0 && key === 'leftStickyWidth'? 50 : 0
+  const rowSelectionWith = rowSelection && index === 0 && key === 'leftStickyWidth' ? 50 : 0
   const width = (arr[index - 1] || { width: 0 }).width || 0
   const stickyWidth = (arr[index - 1] || { width: 0 })[key] || 0
   item[key] = width + stickyWidth + rowSelectionWith + parentStickyWidth

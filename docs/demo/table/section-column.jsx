@@ -259,51 +259,51 @@ const code = [
             title: 'Home phone7',
             width: 180,
             colSpan: 2,
-            dataKey: 'tel6',
-            key: 9
+            dataKey: 'tel7',
+            key: 10
           },
           {
             title: 'Home phone8',
             width: 180,
             colSpan: 2,
-            dataKey: 'tel6',
-            key: 9
+            dataKey: 'tel8',
+            key: 11
           },
           {
             title: 'Home phone9',
             width: 180,
             colSpan: 2,
-            dataKey: 'tel6',
-            key: 9
+            dataKey: 'tel9',
+            key: 12
           },
           {
             title: 'Home phone10',
             width: 180,
             colSpan: 2,
-            dataKey: 'tel6',
-            key: 9
+            dataKey: 'tel10',
+            key: 13
           },
           {
             title: 'Home phone11',
             width: 180,
             colSpan: 2,
-            dataKey: 'tel6',
-            key: 9
+            dataKey: 'tel11',
+            key: 14
           },
 
           {
             title: 'Home phone12',
             width: 180,
             colSpan: 2,
-            dataKey: 'tel6',
-            key: 9
+            dataKey: 'tel12',
+            key: 15
           },
           
           {
             title: 'Phone',
             dataKey: 'phone',
             width: 180,
-            key: 10,
+            key: 16,
             sorter (pre, next) {
               return pre.phone - next.phone
             }
@@ -312,7 +312,7 @@ const code = [
             title: 'Address',
             width: 180,
             dataKey: 'address',
-            key: 11
+            key: 17
           }
         ]
 
@@ -328,6 +328,12 @@ const code = [
             tel4: '0571-22098909',
             tel5: '0571-22098909',
             tel6: '0571-22098909',
+            tel7: '0571-22098909',
+            tel8: '0571-22098909',
+            tel9: '0571-22098909',
+            tel10: '0571-22098909',
+            tel11: '0571-22098909',
+            tel12: '0571-22098909',
             phone: 18889898989,
             address: 'New York No. 1 Lake Park'
           },
@@ -342,6 +348,12 @@ const code = [
             tel4: '0571-22098909',
             tel5: '0571-22098909',
             tel6: '0571-22098909',
+            tel7: '0571-22098909',
+            tel8: '0571-22098909',
+            tel9: '0571-22098909',
+            tel10: '0571-22098909',
+            tel11: '0571-22098909',
+            tel12: '0571-22098909',
             age: 42,
             address: 'London No. 1 Lake Park'
           },
@@ -356,6 +368,12 @@ const code = [
             tel5: '0571-22098909',
             tel6: '0571-22098909',
             tel: '0575-22098909',
+            tel7: '0571-22098909',
+            tel8: '0571-22098909',
+            tel9: '0571-22098909',
+            tel10: '0571-22098909',
+            tel11: '0571-22098909',
+            tel12: '0571-22098909',
             phone: 18900010002,
             address: 'Sidney No. 1 Lake Park'
           },
@@ -370,6 +388,12 @@ const code = [
             tel5: '0571-22098909',
             tel6: '0571-22098909',
             tel: '0575-22098909',
+            tel7: '0571-22098909',
+            tel8: '0571-22098909',
+            tel9: '0571-22098909',
+            tel10: '0571-22098909',
+            tel11: '0571-22098909',
+            tel12: '0571-22098909',
             phone: 18900010002,
             address: 'London No. 2 Lake Park'
           },
@@ -384,6 +408,12 @@ const code = [
             tel5: '0571-22098909',
             tel6: '0571-22098909',
             tel: '0575-22098909',
+            tel7: '0571-22098909',
+            tel8: '0571-22098909',
+            tel9: '0571-22098909',
+            tel10: '0571-22098909',
+            tel11: '0571-22098909',
+            tel12: '0571-22098909',
             phone: 18900010002,
             address: 'Dublin No. 2 Lake Park'
           }
