@@ -9,7 +9,7 @@ import { flatTreeData, setDepth, checkNeedTotalOrEvg, getTotalOrEvgRowData } fro
 const BodyTable = ({ fatherRef, emptyContent }) => {
   const {
     bordered,
-    data,
+    data = [],
     columns,
     activeSorterColumn,
     activeSorterType,
@@ -48,7 +48,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
   // **************** 同步滚动位置
 
   // **************** 根据排序列处理数据
-  let _data = _.cloneDeep(data || [])
+  let _data = data.concat()
 
   if (activeSorterColumn) {
     const sorter =

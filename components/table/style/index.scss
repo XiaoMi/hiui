@@ -236,7 +236,7 @@
     tr {
       min-height: 52px;
 
-      .hi-table__col__sticky {
+      .hi-table__col--sticky {
         position: sticky;
         left: 0;
         z-index: 5;
@@ -246,7 +246,7 @@
       &:hover {
         background: use-color('primary-20');
 
-        .hi-table__col__sticky {
+        .hi-table__col--sticky {
           background: use-color('primary-20');
         }
       }

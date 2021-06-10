@@ -145,7 +145,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
               <th
                 rowSpan={groupedColumns.length}
                 key="checkbox"
-                className={classnames({ 'hi-table__col__sticky': isStickyCol })}
+                className={classnames({ 'hi-table__col--sticky': isStickyCol })}
                 style={{
                   boxSizing: 'border-box',
                   width: 50,
@@ -175,7 +175,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
               <th
                 key="expandedButton"
                 rowSpan={groupedColumns.length}
-                className={classnames({ 'hi-table__col__sticky': isStickyCol })}
+                className={classnames({ 'hi-table__col--sticky': isStickyCol })}
                 style={{
                   boxSizing: 'border-box',
                   width: 50,
@@ -199,7 +199,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
                 rowSpan={c.rowSpan}
                 // 标题事件处理
                 {...onHeaderRow(_colums, index)}
-                className={classnames({ 'hi-table__col__sticky': isSticky })}
+                className={classnames({ 'hi-table__col--sticky': isSticky })}
                 style={{
                   height: 'auto',
                   boxSizing: 'border-box',

@@ -53,7 +53,7 @@ const Cell = ({
         [`${prefix}__col--highlight`]:
           highlightedColKeys.includes(column.dataKey) || highlightColumns.includes(dataKey),
         [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === dataKey,
-        [`${prefix}__col__sticky`]: isSticky
+        [`${prefix}__col--sticky`]: isSticky
       })}
       // 频繁的set会特别消耗性能
       onMouseEnter={(e) => showColHighlight && setHoverColIndex(dataKey)}

@@ -84,7 +84,7 @@ const Row = ({
         <td
           style={{ width: 50 }}
           className={classNames({
-            [`${prefix}__col__sticky`]: isSticky
+            [`${prefix}__col--sticky`]: isSticky
           })}
         >
           <Checkbox
@@ -107,7 +107,7 @@ const Row = ({
         <td
           style={{ width: 50 }}
           className={classNames({
-            [`${prefix}__col__sticky`]: isSticky
+            [`${prefix}__col--sticky`]: isSticky
           })}
         >
           <>
