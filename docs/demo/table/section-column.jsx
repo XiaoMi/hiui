@@ -27,7 +27,9 @@ const code = [
           {
             title: '单价',
             dataKey: 'price',
-            align: 'right'
+            align: 'right',
+            total: true,
+            avg: true
           },
           {
             title: '门店',
@@ -193,12 +195,14 @@ const code = [
           {
             title: 'Name',
             dataKey: 'name',
+            width: 180,
             key: 1
           },
           {
             title: 'Age',
             dataKey: 'age',
             key: 2,
+            width: 180,
             sorter (pre, next) {
               return pre.age - next.age
             }
@@ -206,40 +210,90 @@ const code = [
           {
             title: 'Home phone',
             colSpan: 2,
+            width: 180,
             dataKey: 'tel',
             key: 3
           },
           {
             title: 'Home phone1',
             dataKey: 'tel1',
+            width: 180,
             key: 4
           },
           {
             title: 'Home phone2',
             colSpan: 2,
+            width: 180,
             dataKey: 'tel2',
             key: 5
           },
           {
             title: 'Home phone3',
+            width: 180,
             colSpan: 2,
             dataKey: 'tel3',
             key: 6
           },
           {
             title: 'Home phone4',
+            width: 180,
             colSpan: 2,
             dataKey: 'tel4',
             key: 7
           },
           {
             title: 'Home phone5',
+            width: 180,
             colSpan: 2,
             dataKey: 'tel5',
             key: 8
           },
           {
             title: 'Home phone6',
+            width: 180,
+            colSpan: 2,
+            dataKey: 'tel6',
+            key: 9
+          },
+          {
+            title: 'Home phone7',
+            width: 180,
+            colSpan: 2,
+            dataKey: 'tel6',
+            key: 9
+          },
+          {
+            title: 'Home phone8',
+            width: 180,
+            colSpan: 2,
+            dataKey: 'tel6',
+            key: 9
+          },
+          {
+            title: 'Home phone9',
+            width: 180,
+            colSpan: 2,
+            dataKey: 'tel6',
+            key: 9
+          },
+          {
+            title: 'Home phone10',
+            width: 180,
+            colSpan: 2,
+            dataKey: 'tel6',
+            key: 9
+          },
+          {
+            title: 'Home phone11',
+            width: 180,
+            colSpan: 2,
+            dataKey: 'tel6',
+            key: 9
+          },
+
+          {
+            title: 'Home phone12',
+            width: 180,
             colSpan: 2,
             dataKey: 'tel6',
             key: 9
@@ -248,6 +302,7 @@ const code = [
           {
             title: 'Phone',
             dataKey: 'phone',
+            width: 180,
             key: 10,
             sorter (pre, next) {
               return pre.phone - next.phone
@@ -255,6 +310,7 @@ const code = [
           },
           {
             title: 'Address',
+            width: 180,
             dataKey: 'address',
             key: 11
           }

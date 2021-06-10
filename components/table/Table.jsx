@@ -3,22 +3,13 @@ import HeaderTable from './HeaderTable'
 import BodyTable from './BodyTable'
 import TableContext from './context'
 import classnames from 'classnames'
-import {
-  getFixedDataByFixedColumn,
-  getScrollBarSize,
-  flatTreeData,
-  parseFixedcolumns,
-  setColumnsDefaultWidth,
-  getMaskNums
-} from './util'
+import { getScrollBarSize, flatTreeData, parseFixedcolumns, setColumnsDefaultWidth, getMaskNums } from './util'
 import Pagination from '../pagination'
 import axios from 'axios'
 import _ from 'lodash'
-import FixedBodyTable from './FixedBodyTable'
 import Provider from '../context'
 import Loading from '../loading'
 import './style'
-const DEFAULTWIDTH = 100
 const defaultHeaderRow = () => {
   return {
     onClick: () => {},
@@ -111,7 +102,6 @@ const Table = ({
         return typeof item.isLast !== 'undefined' ? item.isLast : true
       })
       _columns = setColumnsDefaultWidth(_columns, scrollWidth ? scrollWidth / lastColumns.length : 100)
-      console.log('_columns', _columns)
     }
     // 左侧
     const leftCloumns = _columns.slice(0, leftFixedIndex + 1)
@@ -164,7 +154,6 @@ const Table = ({
     if (left > 0 && (rowSelection || expandedRender)) {
       left += 50
     }
-    console.log(left, right)
     setFixedColumnsWidth({ left, right })
   }, [realLeftFixedColumns, realRightFixedColumns])
 
@@ -208,28 +197,27 @@ const Table = ({
     setBaseTableWidth(clientWidth)
   }, [clientWidth])
 
-  // useEffect(() => {
-  //   if (_ceiling) {
-  //     window.addEventListener(
-  //       'scroll',
-  //       (e) => {
-  //         if (
-  //           hiTable &&
-  //           hiTable.current &&
-  //           hiTable.current.getBoundingClientRect().top <= stickyTop &&
-  //           hiTable.current.getBoundingClientRect().bottom >= stickyTop + 35
-  //         ) {
-  //           setCeiling(true)
-  //           syncScrollLeft(bodyTableRef.current.scrollLeft, stickyHeaderRef.current)
-  //         } else {
-  //           console.log(e)
-  //           setCeiling(false)
-  //         }
-  //       },
-  //       true
-  //     )
-  //   }
-  // }, [_ceiling, stickyTop])
+  useEffect(() => {
+    if (_ceiling) {
+      window.addEventListener(
+        'scroll',
+        (e) => {
+          if (
+            hiTable &&
+            hiTable.current &&
+            hiTable.current.getBoundingClientRect().top <= stickyTop &&
+            hiTable.current.getBoundingClientRect().bottom >= stickyTop + 35
+          ) {
+            setCeiling(true)
+            syncScrollLeft(bodyTableRef.current.scrollLeft, stickyHeaderRef.current)
+          } else {
+            setCeiling(false)
+          }
+        },
+        true
+      )
+    }
+  }, [_ceiling, stickyTop])
 
   useEffect(() => {
     if (dataSource) {
@@ -346,21 +334,6 @@ const Table = ({
             </div>
           )}
         </div>
-        {/* 使用 sticky 重构 */}
-        {/* Left fixed table 左侧固定列表格 */}
-        {/* {leftFixedColumn && realLeftFixedColumns.length > 0 && (
-          <div className={classnames(`${prefix}__container`, `${prefix}__container--fixed-left`)}>
-            <HeaderTable isFixed="left" />
-            <FixedBodyTable isFixed="left" />
-          </div>
-        )} */}
-        {/* Right fixed table 右侧固定列表格 */}
-        {/* {rightFixedColumn && realRightFixedColumns.length > 0 && (
-          <div className={classnames(`${prefix}__container`, `${prefix}__container--fixed-right`)} style={{ right: 0 }}>
-            <HeaderTable isFixed="right" rightFixedIndex={rightFixedIndex} />
-            <FixedBodyTable isFixed="right" rightFixedIndex={rightFixedIndex} />
-          </div>
-        )} */}
         {/* Pagination 分页组件 */}
         {_pagination && (
           <div

@@ -27,7 +27,7 @@ class Demo extends React.Component {
       {
         title: '单价',
         dataKey: 'price',
-        align: 'right'
+        align: 'right',
       },
       {
         title: '门店',

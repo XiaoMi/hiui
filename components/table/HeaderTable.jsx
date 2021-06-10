@@ -33,6 +33,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
     resizable,
     setting,
     onHeaderRow,
+    ceiling,
     disabledData
   } = useContext(TableContext)
   const [isAllChecked, setIsAllChecked] = useState(false)
@@ -46,7 +47,6 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
   const [minColWidth, setMinColWidth] = useState(Array(columns.length).fill(0))
   useEffect(() => {
     const onwheel = (e) => {
-      e.preventDefault()
       const { deltaX } = e
       headerTableRef.current.scrollLeft = headerTableRef.current.scrollLeft + deltaX
       syncScrollLeft(headerTableRef.current.scrollLeft, bodyTableRef.current)
@@ -270,18 +270,22 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
         ref={headerTableRef}
         style={{
           overflow: 'hidden',
-          marginBottom: -scrollBarSize
+          marginBottom: -scrollBarSize,
+          width: ceiling ? bodyWidth : 'auto',
+          position: ceiling ? 'fixed' : 'static',
+          top: ceiling && stickyTop
         }}
       >
         <table style={{ width: '100%' }} ref={headerInner}>
           <colgroup>
             {columnsgroup.map((c, index) => {
+              const width = resizable ? realColumnsWidth[index] : c.width
               return (
                 <col
                   key={index}
                   style={{
-                    width: c === 'checkbox' ? 50 : c.width,
-                    minWidth: c.width
+                    width: c === 'checkbox' ? 50 : width,
+                    minWidth: width
                   }}
                 />
               )

@@ -115,7 +115,6 @@ const code = [
     class Demo extends React.Component {
       render() {
         return <Table
-        scrollWidth={1700}
         fixedToColumn={'a'}
         data={[
           {
@@ -160,7 +159,6 @@ const code = [
     class Demo extends React.Component {
       render() {
         return <Table
-        scrollWidth={1700}
         fixedToColumn={'a'}
         onLoadChildren={(row)=>{
           console.log(row)
@@ -472,11 +470,6 @@ class Demo extends React.Component {
             width: 100
           },
           {
-            title: 'Name2',
-            dataKey: 'name2',
-            width: 100
-          },
-          {
             title: 'Other',
 
             children: [
@@ -520,6 +513,51 @@ class Demo extends React.Component {
                 ]
               }
             ]
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
           },
           {
             title: 'Company',

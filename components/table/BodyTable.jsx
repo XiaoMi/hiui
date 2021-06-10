@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect, useCallback } from 'react'
+import React, { useContext, useEffect, useCallback } from 'react'
 import classNames from 'classnames'
 
 import Row from './Row'
@@ -20,7 +20,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     syncScrollLeft,
     firstRowRef,
     realColumnsWidth,
-    resizable, // TODO: 拖拽
+    resizable,
     prefix,
     hoverColIndex,
     setHoverColIndex,
@@ -197,7 +197,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
                 })}
                 style={{
                   width: resizable ? realColumnsWidth[index] : width,
-                  minWidth: resizable ? realColumnsWidth[index] : c.width
+                  minWidth: resizable ? realColumnsWidth[index] : width
                 }}
               />
             )

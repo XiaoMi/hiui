@@ -176,7 +176,7 @@
     "webpack-merge": "^4.2.1"
   },
   "lint-staged": {
-    "*.{js2,js2x}": [
+    "*.{js,jsx}": [
       "eslint --fix",
       "git add"
     ],
