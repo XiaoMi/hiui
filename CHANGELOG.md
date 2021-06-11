@@ -2,7 +2,8 @@
 
 ## 2.15.10
 
-- 修复 `<Cascader />` id 为 Number 类型时导致节点重复添加问题[#1648](https://github.com/XiaoMi/hiui/issues/1648)
+- 修复 `<Cascader />` 组件 id 为 Number 类型时导致节点重复添加问题[#1648](https://github.com/XiaoMi/hiui/issues/1648)
+- 修复 `<Upload />` 组件 预览中放大和缩小按钮操作反馈异常[#1770](https://github.com/XiaoMi/hiui/issues/1770)
 
 ## 2.15.9
 

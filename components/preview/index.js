@@ -241,10 +241,10 @@ class Preview extends Component {
     const { x, y } = this.getImageCenterXY()
     switch (type) {
       case 'zoomIn':
-        this.handleZoom(x, y, 1)
+        this.handleZoom(x, y, -1)
         break
       case 'zoomOut':
-        this.handleZoom(x, y, -1)
+        this.handleZoom(x, y, 1)
         break
       case 'reset':
         this.loadImg(activeIndex)

@@ -277,8 +277,8 @@ class Preview extends Component {
             }
             <div className='hi-preview-toolbar' onClick={(e) => { e.stopPropagation() }}>
 
-              <Icon name='zoom-out' onClick={this.clickEvent.bind(this, 'zoomIn')} />
-              <Icon name='zoom-in' onClick={this.clickEvent.bind(this, 'zoomOut')} />
+              <Icon name='zoom-in' onClick={this.clickEvent.bind(this, 'zoomIn')} />
+              <Icon name='zoom-out' onClick={this.clickEvent.bind(this, 'zoomOut')} />
               <Icon name='left' onClick={this.clickEvent.bind(this, 'prev')} />
               <Icon name='ratio' onClick={this.clickEvent.bind(this, 'reset')} />
               <Icon name='right' onClick={this.clickEvent.bind(this, 'next')} />
