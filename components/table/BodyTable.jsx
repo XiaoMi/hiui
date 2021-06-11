@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect, useCallback } from 'react'
+import React, { useContext, useEffect, useCallback } from 'react'
 import classNames from 'classnames'
 
 import Row from './Row'
@@ -9,18 +9,15 @@ import { flatTreeData, setDepth, checkNeedTotalOrEvg, getTotalOrEvgRowData } fro
 const BodyTable = ({ fatherRef, emptyContent }) => {
   const {
     bordered,
-    data,
+    data = [],
     columns,
     activeSorterColumn,
     activeSorterType,
     maxHeight,
     headerTableRef,
-    stickyHeaderRef,
     bodyTableRef,
-    leftFixedBodyTableRef,
-    rightFixedBodyTableRef,
+    tableRef,
     syncScrollLeft,
-    syncScrollTop,
     firstRowRef,
     realColumnsWidth,
     resizable,
@@ -48,9 +45,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     .concat(flatTreeData(_columns).filter((col) => col.isLast))
     .filter((column) => !!column)
   // ****************
-
   // **************** 同步滚动位置
-  const tableRef = useRef(null)
 
   // **************** 根据排序列处理数据
   let _data = data.concat()
@@ -172,6 +167,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     <div
       style={{
         maxHeight: maxHeight || 'auto',
+        borderLeft: bordered ? '1px solid #e7e7e7' : 'none',
         overflowY: tableRef.current && tableRef.current.clientHeight > maxHeight ? 'scroll' : null, // maxHeight 小于 table 实际高度才处滚动条
         overflowX:
           (bodyTableRef.current && bodyTableRef.current.clientWidth) <
@@ -182,33 +178,30 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
       ref={bodyTableRef}
       onScroll={(e) => {
         syncScrollLeft(bodyTableRef.current.scrollLeft, headerTableRef.current)
-        syncScrollLeft(bodyTableRef.current.scrollLeft, stickyHeaderRef.current)
-        syncScrollTop(bodyTableRef.current.scrollTop, leftFixedBodyTableRef.current)
-        syncScrollTop(bodyTableRef.current.scrollTop, rightFixedBodyTableRef.current)
       }}
     >
       <table
         ref={tableRef}
         style={{
-          borderLeft: bordered ? '1px solid #e7e7e7' : 'none',
           width: scrollWidth || '100%'
         }}
       >
         <colgroup>
-          {columnsgroup.map((c, index) => (
-            <col
-              key={index}
-              className={classNames({
-                [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === c.dataKey
-              })}
-              style={{
-                width: resizable ? realColumnsWidth[index] : c.width,
-                minWidth: resizable ? realColumnsWidth[index] : c.width
-                // width: c.width,
-                // minWidth: c.width
-              }}
-            />
-          ))}
+          {columnsgroup.map((c, index) => {
+            const width = c === 'checkbox' ? 50 : c.width
+            return (
+              <col
+                key={index}
+                className={classNames({
+                  [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === c.dataKey
+                })}
+                style={{
+                  width: resizable ? realColumnsWidth[index] : width,
+                  minWidth: resizable ? realColumnsWidth[index] : width
+                }}
+              />
+            )
+          })}
         </colgroup>
         <tbody>
           {_data && _data.length > 0

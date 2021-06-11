@@ -3,10 +3,41 @@
 
 .#{$table} {
   position: relative;
+  overflow: hidden;
 
   &__container {
     position: relative;
     z-index: 1;
+  }
+
+  &__shadow {
+    &-mask {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      z-index: 20;
+      pointer-events: none;
+      overflow: hidden;
+      height: 100%;
+      width: 200px;
+    }
+
+    &-lock {
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    &-left {
+      margin-right: 10px;
+      left: 0;
+      box-shadow: 6px 0 6px -4px rgba(0, 0, 0, 0.15);
+    }
+
+    &-right {
+      margin-left: 10px;
+      right: 0;
+      box-shadow: -6px 0 6px -4px rgba(0, 0, 0, 0.15);
+    }
   }
 
   &__container table {
@@ -17,6 +48,7 @@
     box-sizing: border-box;
     display: table;
     border-spacing: 0;
+    overflow: auto;
 
     col {
       display: table-column;
@@ -34,7 +66,7 @@
     th {
       background-color: #fbfbfb;
       color: use-color('gray-70');
-      position: relative;
+      // position: relative;
 
       i:hover {
         color: use-color('primary');
@@ -50,6 +82,7 @@
       font-size: $font-size-normal;
       padding: 0;
       box-sizing: border-box;
+      background-color: use-color('white');
     }
   }
 }

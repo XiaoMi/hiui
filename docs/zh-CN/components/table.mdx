@@ -10,8 +10,8 @@
 当需要对一部分全部数据进行编辑、筛选过滤时
 
 ## 特别说明
-按照 React 的规范，所有的数组组件必须绑定 key。Table 组件的 data 属性的每一列也需要指定一个 key 值来表明每一行数据的唯一性。同时基于综合考虑（性能、维护性、功能间的组合性等），当没有 key 传入的时候，组件内部并不会帮您生成 key。当 key 不存在时可能会引起一系列的问题，还请注意。
-
+- 按照 React 的规范，所有的数组组件必须绑定 key。Table 组件的 data 属性的每一列也需要指定一个 key 值来表明每一行数据的唯一性。同时基于综合考虑（性能、维护性、功能间的组合性等），当没有 key 传入的时候，组件内部并不会帮您生成 key。当 key 不存在时可能会引起一系列的问题，还请注意。
+- 在进行列冻结时，一定要传入**列宽(width)**！
 ## 基础用法
 
 import DemoBase from '../../demo/table/section-base.jsx'
@@ -23,6 +23,7 @@ import DemoBase from '../../demo/table/section-base.jsx'
 import DemoColumn from '../../demo/table/section-column.jsx'
 
 <DemoColumn />
+
 
 ## 行操作
 
@@ -42,11 +43,11 @@ import DemoSpecial from '../../demo/table/section-special.jsx'
 
 <DemoSpecial />
 
-<!-- ## 异步获取
+## 异步获取
 
 import DemoAsync from '../../demo/table/section-async.jsx'
 
-<DemoAsync /> -->
+<DemoAsync />
 
 ## Props
 

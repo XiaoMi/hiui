@@ -1,12 +1,13 @@
 import _ from 'lodash'
 
 // 将树状数据拍平
-export const flatTreeData = (data, flattedData = [], rootIndex) => {
+export const flatTreeData = (data = [], flattedData = [], rootIndex) => {
   data.forEach((d, index) => {
     d._rootIndex = typeof rootIndex === 'undefined' ? index : rootIndex
+    d.isLast = !d.children
     flattedData.push(d)
     if (d.children) {
-      flatTreeData(d.children, flattedData, index)
+      flatTreeData(d.children, flattedData, d._rootIndex)
     }
   })
   return flattedData
@@ -152,4 +153,50 @@ export const getTotalOrEvgRowData = (_data, c, isAvg) => {
   } else {
     return maxPointCount > 0 ? columnSumData.toFixed(maxPointCount) : columnSumData
   }
+}
+
+export const parseFixedcolumns = (item, index, arr, key, rowSelection, parentStickyWidth = 0) => {
+  const rowSelectionWith = rowSelection && index === 0 && key === 'leftStickyWidth' ? 50 : 0
+  const width = (arr[index - 1] || { width: 0 }).width || 0
+  const stickyWidth = (arr[index - 1] || { width: 0 })[key] || 0
+  item[key] = width + stickyWidth + rowSelectionWith + parentStickyWidth
+  if (item.children) {
+    const _parentStickyWidth = item[key]
+    const { children } = item
+    children.forEach((childrenItem, index) => {
+      parseFixedcolumns(childrenItem, index, children, key, false, index === 0 ? _parentStickyWidth : 0)
+    })
+  }
+  return item
+}
+
+export const setColumnsDefaultWidth = (columns, defaultWidth) => {
+  const _columns = columns.concat()
+  const setWidth = (_columns) => {
+    _columns.forEach((item) => {
+      const { children } = item
+      if (children) {
+        setWidth(children)
+      } else if (item.dataKey) {
+        item.width = item.width || defaultWidth
+      }
+    })
+  }
+  setWidth(_columns)
+  return _columns
+}
+
+export const getMaskNums = (columns) => {
+  let num = 0
+  const getAllItemWidth = (column) => {
+    column.forEach((item) => {
+      if (item.children) {
+        getAllItemWidth(item.children)
+      } else {
+        num += item.width
+      }
+    })
+  }
+  getAllItemWidth(columns)
+  return num
 }

@@ -8,13 +8,13 @@ const desc = [
   '内嵌式：表格每行隐藏部分数据，递进呈现'
 ]
 const rightOptions = [
+  '表头分组固定列',
+  '表头分组',
   '全边框',
   '树形表格',
   '异步树形表格',
   '内嵌式',
   '内嵌式异步渲染',
-  '表头分组',
-  '表头分组固定列',
   '表头吸顶',
   '固定表头',
   '合并单元格'
@@ -115,7 +115,6 @@ const code = [
     class Demo extends React.Component {
       render() {
         return <Table
-        scrollWidth={1700}
         fixedToColumn={'a'}
         data={[
           {
@@ -160,7 +159,6 @@ const code = [
     class Demo extends React.Component {
       render() {
         return <Table
-        scrollWidth={1700}
         fixedToColumn={'a'}
         onLoadChildren={(row)=>{
           console.log(row)
@@ -217,6 +215,33 @@ class Demo extends React.Component {
       {
         title: '品类',
         dataKey: 'type'
+      },
+      {
+        title: '规格',
+        dataKey: 'size'
+      },
+      {
+        title: '单价',
+        dataKey: 'price',
+        align: 'right'
+      },
+      {
+        title: '规格',
+        dataKey: 'size'
+      },
+      {
+        title: '单价',
+        dataKey: 'price',
+        align: 'right'
+      },
+      {
+        title: '规格',
+        dataKey: 'size'
+      },
+      {
+        title: '单价',
+        dataKey: 'price',
+        align: 'right'
       },
       {
         title: '规格',
@@ -293,6 +318,7 @@ class Demo extends React.Component {
       onExpand={(expanded, row) => {
         console.log(expanded, row)
       }} 
+      fixedToColumn={'name'}
       rowExpandable={(rowData)=>{
         return rowData.key !== 2
        }}
@@ -440,7 +466,8 @@ class Demo extends React.Component {
           {
             title: 'Name',
             dataKey: 'name',
-            key: '1'
+            key: '1',
+            width: 100
           },
           {
             title: 'Other',
@@ -449,7 +476,9 @@ class Demo extends React.Component {
               {
                 title: 'Age',
                 dataKey: 'age',
-                key: 2
+                key: 2,
+                width: 100
+
               },
               {
                 title: 'Address',
@@ -458,7 +487,9 @@ class Demo extends React.Component {
                   {
                     title: 'Street',
                     dataKey: 'street',
-                    key: '3'
+                    key: '3',
+                    width: 100
+
                   },
                   {
                     title: 'Block',
@@ -466,12 +497,16 @@ class Demo extends React.Component {
                       {
                         title: 'Building',
                         dataKey: 'building',
-                        key: '4'
+                        key: '4',
+                        width: 100
+
                       },
                       {
                         title: 'Door No.',
                         dataKey: 'number',
-                        key: '5'
+                        key: '5',
+                        width: 100
+
                       }
                     ]
                   }
@@ -480,25 +515,97 @@ class Demo extends React.Component {
             ]
           },
           {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
             title: 'Company',
             key: '6',
             children: [
               {
                 title: 'Address',
                 dataKey: 'companyAddress',
-                key: '7'
+                key: '7',
+                width: 100
               },
               {
                 title: 'Name',
                 dataKey: 'companyName',
-                key: '8'
+                key: '8',
+                width: 100
               }
             ]
           },
           {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+
+          },
+          {
             title: 'Gender',
             dataKey: 'gender',
-            key: '9'
+            key: '9',
+            width: 100
           }
         ]
         let data = []
@@ -510,6 +617,7 @@ class Demo extends React.Component {
             street: 'Lake Park',
             building: 'C',
             number: 2035,
+            name2:'name2',
             companyAddress: 'Lake Street 42',
             companyName: 'SoftLake Co',
             gender: 'M'
@@ -520,8 +628,7 @@ class Demo extends React.Component {
       render() {
         return <Table 
         columns={this.columns}
-        fixedToColumn={{left: 'number', right:'gender'}}
-        scrollWidth={1000}
+        fixedToColumn={{left:'number', right: 'gender'}}
         data={this.data} 
         rowSelection={{
           selectedRowKeys: this.state.selectedRowKeys,
