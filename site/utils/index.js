@@ -15,7 +15,7 @@ function getLocaleFromPath (url = window.location.pathname) {
 }
 
 function getTopNavFromPath (url = window.location.pathname) {
-  url = url.replace('/hiui', '').toLowerCase()
+  url = url.replace('/hiui', '').replace('/v2', '').toLowerCase()
   const locale = getLocaleFromPath(url)
   return url
     .replace(locale, '')
@@ -24,7 +24,7 @@ function getTopNavFromPath (url = window.location.pathname) {
 }
 
 function getPageFromPath (url = window.location.pathname) {
-  url = url.replace('/hiui', '').toLowerCase()
+  url = url.replace('/hiui', '').replace('/v2', '').toLowerCase()
   const locale = getLocaleFromPath(url)
   const topNav = getTopNavFromPath(url)
   return url
