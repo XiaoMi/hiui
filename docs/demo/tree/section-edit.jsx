@@ -125,6 +125,7 @@ class Demo extends React.Component {
                   }]
                 }
                 return  [{
+                  title:'编辑',
                   type: 'editNode'
                 }, {
                   title: '自定义 Title-1',
