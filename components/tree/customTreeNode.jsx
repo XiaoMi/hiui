@@ -24,7 +24,6 @@ const CustomTreeNode = ({
   const localMap = localeDatas.tree || {}
 
   if (editingNodes.map((n) => n.id).includes(node.id)) {
-    console.log('+++++', (editingNodes.find((n) => n.id === node.id) || {}).title)
     return (
       <div className="tree-node__title--editing">
         <Input
