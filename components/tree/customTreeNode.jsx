@@ -24,10 +24,14 @@ const CustomTreeNode = ({
   const localMap = localeDatas.tree || {}
 
   if (editingNodes.map((n) => n.id).includes(node.id)) {
+    console.log('+++++', (editingNodes.find((n) => n.id === node.id) || {}).title)
     return (
       <div className="tree-node__title--editing">
         <Input
           style={{ width: 240, marginRight: 20 }}
+          onKeyDown={(e) => {
+            e.stopPropagation()
+          }}
           value={(editingNodes.find((n) => n.id === node.id) || {}).title}
           onChange={(e) => {
             onValueChange(e.target.value, node.id)
