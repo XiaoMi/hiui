@@ -163,6 +163,10 @@
     table {
       tr:nth-child(2n) {
         background: $secondaryColor;
+
+        .hi-table__col--sticky {
+          background: $secondaryColor;
+        }
       }
     }
   }
