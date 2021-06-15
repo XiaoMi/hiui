@@ -97,7 +97,7 @@ const Table = ({
       if (leftFixedColumn === c.dataKey && typeof leftFixedColumn === 'string') leftFixedIndex = c._rootIndex
       if (rightFixedColumn === c.dataKey && typeof rightFixedColumn === 'string') rightFixedIndex = c._rootIndex
     })
-    if (typeof leftFixedIndex === 'number' || rightFixedIndex === 'number') {
+    if (typeof leftFixedIndex === 'number' || rightFixedIndex === 'number' || scrollWidth) {
       const lastColumns = _flattedColumns.filter((item) => {
         return typeof item.isLast !== 'undefined' ? item.isLast : true
       })
