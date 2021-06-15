@@ -15,7 +15,6 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
     columns,
     expandedRender,
     stickyTop,
-    scrollBarSize,
     highlightedColKeys,
     highlightColumns,
     showColHighlight,
@@ -53,7 +52,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
     }
     theadRef.current && theadRef.current.addEventListener('wheel', onwheel)
     return () => {
-      theadRef.current.removeEventListener('wheel', onwheel)
+      theadRef.current && theadRef.current.removeEventListener('wheel', onwheel)
     }
   }, [])
   useEffect(() => {
@@ -270,7 +269,6 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
         ref={headerTableRef}
         style={{
           overflow: 'hidden',
-          marginBottom: -scrollBarSize,
           width: ceiling ? bodyWidth : 'auto',
           position: ceiling ? 'fixed' : 'static',
           top: ceiling && stickyTop

@@ -3,7 +3,7 @@ import HeaderTable from './HeaderTable'
 import BodyTable from './BodyTable'
 import TableContext from './context'
 import classnames from 'classnames'
-import { getScrollBarSize, flatTreeData, parseFixedcolumns, setColumnsDefaultWidth, getMaskNums } from './util'
+import { flatTreeData, parseFixedcolumns, setColumnsDefaultWidth, getMaskNums } from './util'
 import Pagination from '../pagination'
 import axios from 'axios'
 import _ from 'lodash'
@@ -156,7 +156,6 @@ const Table = ({
     setFixedColumnsWidth({ left, right })
     const { width: tableWidth } = tableRef.current.getBoundingClientRect()
     const { width: bodyWidth } = bodyTableRef.current.getBoundingClientRect()
-    console.log('tableWidth - bodyWidth', tableWidth - bodyWidth)
     setScrollSize({ scrollRight: tableWidth - bodyWidth, scrollLeft: 0 })
   }, [realLeftFixedColumns, realRightFixedColumns])
 
@@ -257,7 +256,6 @@ const Table = ({
         setRealColumnsWidth,
         ceiling,
         stickyTop,
-        scrollBarSize: getScrollBarSize(), // 滚动条宽度
         // 排序逻辑
         activeSorterColumn,
         activeSorterType,
