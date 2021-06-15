@@ -154,6 +154,10 @@ const Table = ({
       left += 50
     }
     setFixedColumnsWidth({ left, right })
+    const { width: tableWidth } = tableRef.current.getBoundingClientRect()
+    const { width: bodyWidth } = bodyTableRef.current.getBoundingClientRect()
+    console.log('tableWidth - bodyWidth', tableWidth - bodyWidth)
+    setScrollSize({ scrollRight: tableWidth - bodyWidth, scrollLeft: 0 })
   }, [realLeftFixedColumns, realRightFixedColumns])
 
   // 同步滚动条
@@ -166,7 +170,7 @@ const Table = ({
 
   // 新增滚动优化
   const syncScrollLeft = (scrollLeft, syncTarget) => {
-    let scrollRight = true
+    let scrollRight = scrollSize.scrollRight
     if (syncTarget && syncTarget.scrollLeft !== scrollLeft) {
       syncTarget.scrollLeft = scrollLeft
     }
