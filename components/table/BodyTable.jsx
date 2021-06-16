@@ -25,7 +25,6 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     hoverColIndex,
     setHoverColIndex,
     showColHighlight,
-    scrollWidth,
     setEachRowHeight,
     expandedRender,
     expandedRowKeys,
@@ -180,12 +179,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
         syncScrollLeft(bodyTableRef.current.scrollLeft, headerTableRef.current)
       }}
     >
-      <table
-        ref={tableRef}
-        style={{
-          width: scrollWidth || '100%'
-        }}
-      >
+      <table ref={tableRef}>
         <colgroup>
           {columnsgroup.map((c, index) => {
             const width = c === 'checkbox' ? 50 : c.width

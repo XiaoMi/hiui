@@ -3,7 +3,7 @@ import HeaderTable from './HeaderTable'
 import BodyTable from './BodyTable'
 import TableContext from './context'
 import classnames from 'classnames'
-import { getScrollBarSize, flatTreeData, parseFixedcolumns, setColumnsDefaultWidth, getMaskNums } from './util'
+import { flatTreeData, parseFixedcolumns, setColumnsDefaultWidth, getMaskNums } from './util'
 import Pagination from '../pagination'
 import axios from 'axios'
 import _ from 'lodash'
@@ -97,7 +97,7 @@ const Table = ({
       if (leftFixedColumn === c.dataKey && typeof leftFixedColumn === 'string') leftFixedIndex = c._rootIndex
       if (rightFixedColumn === c.dataKey && typeof rightFixedColumn === 'string') rightFixedIndex = c._rootIndex
     })
-    if (typeof leftFixedIndex === 'number' || rightFixedIndex === 'number') {
+    if (typeof leftFixedIndex === 'number' || rightFixedIndex === 'number' || scrollWidth) {
       const lastColumns = _flattedColumns.filter((item) => {
         return typeof item.isLast !== 'undefined' ? item.isLast : true
       })
@@ -154,6 +154,9 @@ const Table = ({
       left += 50
     }
     setFixedColumnsWidth({ left, right })
+    const { width: tableWidth } = tableRef.current.getBoundingClientRect()
+    const { width: bodyWidth } = bodyTableRef.current.getBoundingClientRect()
+    setScrollSize({ scrollRight: tableWidth - bodyWidth, scrollLeft: 0 })
   }, [realLeftFixedColumns, realRightFixedColumns])
 
   // 同步滚动条
@@ -166,7 +169,7 @@ const Table = ({
 
   // 新增滚动优化
   const syncScrollLeft = (scrollLeft, syncTarget) => {
-    let scrollRight = true
+    let scrollRight = scrollSize.scrollRight
     if (syncTarget && syncTarget.scrollLeft !== scrollLeft) {
       syncTarget.scrollLeft = scrollLeft
     }
@@ -253,7 +256,6 @@ const Table = ({
         setRealColumnsWidth,
         ceiling,
         stickyTop,
-        scrollBarSize: getScrollBarSize(), // 滚动条宽度
         // 排序逻辑
         activeSorterColumn,
         activeSorterType,
