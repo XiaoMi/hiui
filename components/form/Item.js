@@ -73,7 +73,8 @@ const FormItem = (props) => {
 
   useEffect(() => {
     const { eventName, e, args, componentProps } = eventInfo.current || {}
-    const _props = componentProps || children.props
+    const _children = children || {}
+    const _props = componentProps || _children.props
     eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
     eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
     eventInfo.current = {}

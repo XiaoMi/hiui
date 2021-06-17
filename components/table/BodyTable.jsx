@@ -113,7 +113,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
       }
     }
     const { children = [] } = row
-    if (children.length) {
+    if (children && children.length) {
       childrenHasTree = children.some(
         (child) => (child.children && child.children.length) || (onLoadChildren && child.isLeaf)
       )
@@ -138,7 +138,8 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
           isTree={isTree}
           rowExpandable={rowExpandable}
         />
-        {expandedTreeRows.includes(key) &&
+        {children &&
+          expandedTreeRows.includes(key) &&
           children.map((child) => {
             return renderRow(child, level + 1, index, _, childrenHasTree || isTree)
           })}
