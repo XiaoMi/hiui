@@ -20,13 +20,14 @@ class Badge extends Component {
     visible: true
   }
 
-  render () {
-    const { content, prefixCls, max, type, visible, style } = this.props
+  render() {
+    const { content, prefixCls, max, type, visible, style, color, offset = [] } = this.props
+    const [left, top] = offset
     const badage =
       type === 'dot' ? (
-        <span className={`${prefixCls}-dot`} />
+        <span className={`${prefixCls}-dot`} style={{ backgroundColor: color, left, top }} />
       ) : (
-        <span className={`${prefixCls}-value`}>
+        <span className={`${prefixCls}-value`} style={{ backgroundColor: color, left, top }}>
           {typeof content === 'number' ? (content > max ? max + '+' : content) : content}
         </span>
       )
