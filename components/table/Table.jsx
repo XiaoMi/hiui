@@ -30,7 +30,8 @@ const Table = ({
   data,
   highlightedRowKeys = [],
   highlightedColKeys = [],
-  expandedRowKeys,
+  expandedRowKeys: propsExpandRowKeys,
+  expandRowKeys,
   onExpand,
   onHeaderRow = defaultHeaderRow,
   columns: propsColumns = [],
@@ -58,6 +59,7 @@ const Table = ({
   localeDatas,
   emptyContent = localeDatas.table.emptyContent
 }) => {
+  const expandedRowKeys = propsExpandRowKeys || expandRowKeys
   const [columns, setColumns] = useState(propsColumns)
   const hiTable = useRef(null)
   const disabledData = useRef([])
@@ -139,7 +141,9 @@ const Table = ({
       }
     }
   }, [columns, dataSource, data])
-
+  useEffect(() => {
+    setExpandedTreeRows(propsExpandRowKeys || expandRowKeys || [])
+  }, [propsExpandRowKeys, data, expandRowKeys])
   // 有表头分组那么也要 bordered
   const _bordered = flattedColumns.length > columns.length || bordered
 
