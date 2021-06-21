@@ -13,7 +13,7 @@ class Demo extends React.Component {
       icon: 'document',
       path: '/product'
     }, {
-      icon: 'component',
+      icon: 'relation',
       content: '手机',
       path: '/phone'
     }, {

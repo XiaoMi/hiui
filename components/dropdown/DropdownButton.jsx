@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Button from '../button'
+import Icon from '../icon'
 import { prefixCls } from '.'
 
 const ButtonGroup = Button.Group
@@ -27,9 +28,7 @@ export default class DropdownButton extends React.Component {
       isButton || `${prefixCls}__icon--text`,
       isButton && `${prefixCls}__icon-btnwrap`
     )
-    const iconCls = classNames('hi-icon', 'icon-down', `${prefixCls}__icon`, {
-      'not-group': isButton && !isGroup
-    })
+
     isButton || (restProps.appearance = 'link')
     const iconProps = {}
     // move button events to icon
@@ -49,7 +48,7 @@ export default class DropdownButton extends React.Component {
       <ButtonGroup>
         <Button {...restProps} className={buttonCls}>
           {children}
-          {isGroup || <i className={iconCls} />}
+          {isGroup || <Icon name='down' />}
         </Button>
         {isGroup && (
           <Button
@@ -57,7 +56,7 @@ export default class DropdownButton extends React.Component {
             className={iconGroupCls}
             {...iconProps}
           >
-            <i className={iconCls} />
+            <Icon name='down' />
           </Button>
         )}
       </ButtonGroup>

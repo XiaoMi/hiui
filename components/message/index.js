@@ -1,13 +1,13 @@
 import notice from '../notice'
 import './style/index'
 import React from 'react'
-import classNames from 'classnames'
+import Icon from '../icon'
 
 const iconMap = {
-  success: 'chenggong',
-  error: 'shibai',
-  warning: 'jinggao',
-  info: 'tishi'
+  success: 'check-circle',
+  danger: 'close-circle',
+  warning: 'exclamation-circle',
+  primary: 'info-circle'
 }
 
 const message = {
@@ -17,14 +17,21 @@ const message = {
     key = Math.random(),
     duration,
     closeable = false,
-    type = 'info'
+    type = 'info',
+    onClose,
+    onClick
   }) => {
+    let _type = type === 'info' ? 'primary' : type
+    _type = type === 'error' ? 'danger' : _type
     const NoticeContent = (
       <React.Fragment>
-        <div className={`hi-${prefix}__title--wrapper`} >
-          <span className={`hi-${prefix}__icon`}>
-            <i className={classNames('hi-icon', `icon-${iconMap[type]}`)} />
-          </span>
+        <div
+          className={`hi-${prefix}__header`}
+          onClick={(e) => {
+            onClick && onClick(e)
+          }}
+        >
+          <Icon name={iconMap[_type]} filled className={`hi-${prefix}__icon`} />
           {title && <div className={`hi-${prefix}__title`}>{title}</div>}
         </div>
       </React.Fragment>
@@ -33,9 +40,12 @@ const message = {
       content: NoticeContent,
       prefix,
       key,
+      onClose: () => {
+        onClose && onClose()
+      },
       closeable,
       duration,
-      type
+      type: _type
     })
   }
 }

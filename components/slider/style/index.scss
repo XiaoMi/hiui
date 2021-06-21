@@ -1,0 +1,228 @@
+@import '../../core-css/index.scss';
+
+$prefix: 'hi-slider' !default;
+$color-map: (
+  'primary': use-color('primary'),
+  'warning': get-color($palette-secondary, 'warning'),
+  'success': get-color($palette-secondary, 'success'),
+  'danger': get-color($palette-secondary, 'danger')
+) !default;
+
+.#{$prefix} {
+  box-sizing: border-box;
+  color: use-color('gray-80');
+  font-size: $font-size-normal;
+  font-variant: tabular-nums;
+  line-height: 1.5715;
+  list-style: none;
+  position: relative;
+  height: 12px;
+  margin: 10px 6px;
+  padding: 4px 0;
+
+  &.#{$prefix}--disabled {
+    cursor: not-allowed;
+
+    .#{$prefix}__track {
+      background: use-color('gray-50');
+    }
+
+    .#{$prefix}__handle {
+      border-color: use-color('gray-50');
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    > * {
+      cursor: not-allowed !important;
+    }
+  }
+
+  &.#{$prefix}--vertical {
+    height: 100%;
+    margin: 0;
+    padding: 0 4px;
+
+    .#{$prefix}__rail {
+      height: 100%;
+      width: 4px;
+    }
+
+    .#{$prefix}__track {
+      width: 4px;
+    }
+
+    .#{$prefix}__handle {
+      margin-left: -5px;
+      margin-top: 0;
+      transform: translateY(-50%);
+    }
+
+    .#{$prefix}__step {
+      position: absolute;
+      width: 4px;
+      height: 100%;
+
+      &-dot {
+        position: absolute;
+        border-radius: 50%;
+        transform: translate(-50%, 50%);
+        left: 2px;
+        top: auto;
+        width: 7px;
+        height: 7px;
+        background: use-color('white');
+        border: 1px solid use-color('primary');
+      }
+    }
+
+    .#{$prefix}__stepText {
+      height: 100%;
+      width: 40px;
+      position: absolute;
+      margin: 0;
+      right: 15px;
+
+      .#{$prefix}__min {
+        transform: translateX(0%);
+        position: absolute;
+        bottom: -10px;
+        right: 0;
+      }
+
+      .#{$prefix}__max {
+        position: absolute;
+        top: -4px;
+        transform: translateX(0%);
+        right: 0;
+      }
+    }
+  }
+
+  .#{$prefix}__rail {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background-color: use-color('gray-10');
+    border-radius: 2px;
+    transition: background-color 0.3s;
+  }
+
+  .#{$prefix}__step {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background: 0 0;
+    cursor: pointer;
+
+    &-dot {
+      position: absolute;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      top: -3px;
+      width: 7px;
+      height: 7px;
+      background: use-color('white');
+      border: 1px solid use-color('primary');
+
+      &.#{$prefix}__step-dotDisabled {
+        background: use-color('gray-30');
+        border: 1px solid use-color('gray-30');
+      }
+    }
+  }
+
+  .#{$prefix}__stepText {
+    margin-top: 10px;
+    width: 100%;
+    height: 4px;
+    background: 0 0;
+
+    .#{$prefix}__min {
+      transform: translateX(-50%);
+    }
+
+    .#{$prefix}__max {
+      right: 0;
+      transform: translateX(50%);
+    }
+
+    &-dot {
+      position: absolute;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+
+  .#{$prefix}__handle {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    margin-top: -5px;
+    background-color: use-color('white');
+    border: solid 2px use-color('primary');
+    border-radius: 50%;
+    box-sizing: border-box;
+    z-index: 20;
+    cursor: pointer;
+    transform: translateX(-50%);
+    user-select: none;
+
+    &:focus {
+      box-shadow: 0 0 0 5px use-color('primary-20');
+      outline: none;
+    }
+  }
+
+  .#{$prefix}__track {
+    position: absolute;
+    height: 4px;
+    background: use-color('primary');
+    border-radius: 2px;
+  }
+
+  .#{$prefix}__tooltip {
+    opacity: 0;
+
+    &-enter {
+      opacity: 0;
+    }
+
+    &-enter-active {
+      opacity: 1;
+      transition: opacity 200ms;
+    }
+
+    &-enter-done {
+      opacity: 1;
+      transition: opacity 200ms;
+    }
+
+    &-exit {
+      opacity: 1;
+    }
+
+    &-exit-done {
+      opacity: 0;
+      transition: opacity 200ms;
+    }
+  }
+
+  @each $key, $value in $color-map {
+    &--#{$key} {
+      .#{$prefix}__track {
+        background-color: $value;
+      }
+
+      .#{$prefix}__handle {
+        border-color: $value;
+      }
+
+      .#{$prefix}__step-dot {
+        border-color: $value;
+      }
+    }
+  }
+}

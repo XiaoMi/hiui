@@ -41,7 +41,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoArea = () => (
-  <DocViewer code={code} scope={{ Transfer }} prefix={prefix} desc={desc} />
-)
+const DemoArea = () => <DocViewer code={code} scope={{ Transfer }} prefix={prefix} desc={desc} />
 export default DemoArea

@@ -1,261 +1,368 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import classNames from 'classnames'
 import Checkbox from '../checkbox'
 import Loading from '../loading'
 import Icon from '../icon'
+import { transKeys } from './utils'
 
-class SelectDropdown extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      filterItems: this.props.dropdownItems,
-      searchbarValue: '',
-      cachedropdownItems: this.props.dropdownItems
-    }
-  }
-  static getDerivedStateFromProps (nextProps, prevState) {
-    const {selectedItems, mode, isOnSearch, dropdownItems, show} = nextProps
-    const {searchbarValue, cachedropdownItems} = prevState
-    const _filterItems = selectedItems.length > 0 && searchbarValue.length === 0 && mode === 'single' && isOnSearch ? cachedropdownItems : dropdownItems
-    const _searchbarValue = show ? searchbarValue : ''
-    return {filterItems: _filterItems, searchbarValue: _searchbarValue}
-  }
-  componentDidMount () {
-    this.focus()
-  }
-  focus = () => {
-    this.props.searchable && setTimeout(() => this.searchbar.focus(), 0)
-  }
-  onClickOption (e, item, index) {
-    e.stopPropagation()
-    e.preventDefault()
-    if (item.disabled) {
-      return
-    }
-    this.props.mode === 'single' && this.props.isOnSearch && this.setState({
-      cachedropdownItems: this.props.dropdownItems
-    })
-    this.props.onClickOption(item, index)
-  }
-  filterOptions = (keyword) => {
-    const { dropdownItems, filterOption } = this.props
-    let filterItems = []
-    if (typeof filterOption === 'function' || keyword === '') {
-      filterItems = dropdownItems
-    } else {
-      dropdownItems.map((item) => {
-        String(item.title).includes(keyword) && filterItems.push(item)
-      })
-    }
-    this.setState({
-      filterItems: filterItems,
-      searchbarValue: keyword
-    })
-  }
-  searchEvent (e) {
-    const filterText = e.target.value
-    this.filterOptions(filterText)
-    this.props.onSearch(filterText)
+const SelectDropdown = ({
+  mode,
+  matchFilter,
+  emptyContent,
+  loading,
+  optionWidth,
+  showCheckAll,
+  showJustSelected,
+  dropdownRender,
+  theme,
+  searchable,
+  onFocus,
+  searchPlaceholder,
+  dropdownItems,
+  localeMap,
+  onSearch,
+  isByRemoteSearch,
+  isByCustomSearch,
+  onClickOption,
+  checkAll,
+  selectInputWidth,
+  selectedItems,
+  show,
+  fieldNames,
+  focusedIndex,
+  isGroup,
+  onOverlayScroll,
+  setFocusedIndex,
+  targetByKeyDown,
+  autoloadFlag
+}) => {
+  const [filterItems, setFilterItems] = useState(dropdownItems)
+  const [searchbarValue, setSearchbarValue] = useState('')
+  const [isCheckAll, setIsCheckAll] = useState(false)
+  const searchbar = useRef('')
+  const dropdownWrapper = useRef('')
 
-    this.setState({
-      searchbarValue: filterText
-    })
-  }
-  hightlightKeyword (text, uniqueKey) {
-    const { searchbarValue } = this.state
-    let _keyword = this.state.searchbarValue
-    _keyword = searchbarValue.includes('[') ? _keyword.replace(/\[/gi, '\\[') : _keyword
-    _keyword = searchbarValue.includes('(') ? _keyword.replace(/\(/gi, '\\(') : _keyword
-    _keyword = searchbarValue.includes(')') ? _keyword.replace(/\)/gi, '\\)') : _keyword
-
-    let parts = text.toString().split(new RegExp(`(${_keyword})`, 'gi'))
-    return (
-      this.state.searchbarValue.length > 0 ? <p key={uniqueKey}>
-        { parts.map((part, i) =>
-          part === searchbarValue
-            ? <span key={i} className={'hi-select__dropdown--item__name-hightlight'}>
-              { part }
-            </span>
-            : part
-        )
+  useEffect(() => {
+    setFilterItems(dropdownItems)
+  }, [dropdownItems])
+  useEffect(() => {
+    if (dropdownWrapper.current && targetByKeyDown.current) {
+      let _focusedIndex = focusedIndex
+      if (isGroup) {
+        const focusedGroup = _focusedIndex.split('-')
+        let group = focusedGroup[0] - 1
+        while (dropdownItems[group] && dropdownItems[group][transKeys(fieldNames, 'children')]) {
+          _focusedIndex =
+            dropdownItems[group][transKeys(fieldNames, 'children')].length + group / 1 + 2 + focusedGroup[1] / 1
+          group--
         }
-      </p>
-        : text
-    )
-  }
-  onMouseEnter (item, index) {
-    !item.disabled && this.props.setFocusedIndex(index)
-  }
+      }
+      const _scrollTop = dropdownWrapper.current.scrollTop
+      const focusedIndexTop = (_focusedIndex - 6) * 36
+      // 防止点击上下滚动问题
+      dropdownWrapper.current.scrollTop =
+        _scrollTop >= focusedIndexTop && focusedIndexTop > 0 ? _scrollTop : focusedIndexTop
+    }
+  }, [focusedIndex, targetByKeyDown.current])
 
-  itemSelected (item) {
-    const selectedItems = this.props.selectedItems
-
-    return selectedItems.map((item) => item.id).indexOf(item.id) > -1
-  }
-  cleanSearchbarValue (e) {
-    e.stopPropagation()
-    const filterText = ''
-    this.filterOptions(filterText)
-    this.props.onSearch(filterText)
-
-    this.setState({
-      searchbarValue: filterText
+  // 监控全选功能
+  useEffect(() => {
+    const selectedItemIds = selectedItems.map((item) => {
+      return item[transKeys(fieldNames, 'id')]
     })
-  }
-  handleKeyDown (evt) {
-    if (evt.keyCode === 13) {
-      this.props.onEnterSelect()
+    const _isCheckAll = filterItems.every((filterItem) => {
+      const filterItemOrGroupChilds = Array.isArray(filterItem.children) ? filterItem.children : [filterItem]
+      return filterItemOrGroupChilds.every((item) => {
+        return selectedItemIds.includes(item[transKeys(fieldNames, 'id')])
+      })
+    })
+    setIsCheckAll(_isCheckAll)
+  }, [selectedItems, filterItems])
+  // 让搜索框获取焦点
+  useEffect(() => {
+    searchable && setTimeout(() => searchbar.current && searchbar.current.focus(), 0)
+    return () => {
+      searchbar.current && searchbar.current.blur()
     }
+  }, [])
+  // 仅看已选
+  const showSelected = useCallback(
+    (check) => {
+      if (check) {
+        const values = selectedItems.map((item) => {
+          return item[transKeys(fieldNames, 'id')]
+        })
+        setFilterItems(
+          dropdownItems.filter((item) => {
+            return values.includes(item[transKeys(fieldNames, 'id')])
+          })
+        )
+      } else {
+        setFilterItems(dropdownItems)
+      }
+    },
+    [selectedItems, fieldNames, dropdownItems]
+  )
+  useEffect(() => {
+    const _filterItems = dropdownItems
+    setFilterItems(_filterItems)
+  }, [mode, isByRemoteSearch, dropdownItems, show])
 
-    if (evt.keyCode === 38) {
-      evt.preventDefault()
-      this.props.moveFocusedIndex('up')
-    }
-    if (evt.keyCode === 40) {
-      evt.preventDefault()
-      this.props.moveFocusedIndex('down')
-    }
+  let matched = 0
+  const style = optionWidth && {
+    width: optionWidth
   }
-  renderOption (mode, isSelected, item) {
-    if (item.children) {
-      return item.children
-    }
-    if (this.props.dropdownRender) {
-      return this.props.dropdownRender(item, isSelected)
+
+  const filterOptions = useCallback(
+    (keyword) => {
+      setFilterItems(dropdownItems)
+      setSearchbarValue(keyword)
+    },
+    [dropdownItems]
+  )
+  const searchEvent = useCallback(
+    (e) => {
+      const filterText = e.target.value
+      filterOptions(filterText)
+      onSearch(filterText)
+      autoloadFlag.current = false
+    },
+    [onSearch]
+  )
+
+  const cleanSearchbarValue = useCallback(
+    (e) => {
+      e.stopPropagation()
+      const filterText = ''
+      filterOptions(filterText)
+      onSearch(filterText)
+    },
+    [onSearch]
+  )
+  // 是否被选中
+  const itemSelected = useCallback(
+    (item) => {
+      return (
+        selectedItems.map((item) => item[transKeys(fieldNames, 'id')]).indexOf(item[transKeys(fieldNames, 'id')]) > -1
+      )
+    },
+    [selectedItems, fieldNames]
+  )
+  // 点击某个选项时
+  const onClickOptionIntal = useCallback(
+    (e, item, index) => {
+      e.stopPropagation()
+      e.preventDefault()
+      setFocusedIndex(index)
+      if (item[transKeys(fieldNames, 'disabled')]) {
+        return
+      }
+      onClickOption(item, index)
+    },
+    [onClickOption, fieldNames]
+  )
+  // 高亮关键字
+  const hightlightKeyword = useCallback(
+    (text = '', uniqueKey) => {
+      let _keyword = searchbarValue
+      _keyword = searchbarValue.includes('[') ? _keyword.replace(/\[/gi, '\\[') : _keyword
+      _keyword = searchbarValue.includes('(') ? _keyword.replace(/\(/gi, '\\(') : _keyword
+      _keyword = searchbarValue.includes(')') ? _keyword.replace(/\)/gi, '\\)') : _keyword
+
+      const parts = text.split(new RegExp(`(${_keyword})`, 'gi'))
+      return searchbarValue.length > 0 ? (
+        <p key={uniqueKey}>
+          {parts.map((part, i) =>
+            part === searchbarValue ? (
+              <span key={i} className={'hi-select__dropdown--item__name-hightlight'}>
+                {part}
+              </span>
+            ) : (
+              part
+            )
+          )}
+        </p>
+      ) : (
+        text
+      )
+    },
+    [searchbarValue]
+  )
+  // 渲染单个选项
+  const renderOption = (isSelected, item) => {
+    if (dropdownRender) {
+      return dropdownRender(item, isSelected)
     }
     const paddingNum = mode === 'multiple' ? 48 : 24
+    // 提高可读性
+    let width = selectInputWidth ? selectInputWidth - paddingNum : null
+    if (optionWidth) {
+      width = optionWidth - paddingNum
+    }
     const style = {
-      width: this.props.optionWidth ? this.props.optionWidth - paddingNum : this.props.selectInputWidth ? this.props.selectInputWidth - paddingNum : null
+      width
     }
 
     return (
       <React.Fragment>
         {mode === 'multiple' && (
           <Checkbox
-            className='hi-select__dropdown--item__checkbox'
+            className="hi-select__dropdown--item__checkbox"
             checked={isSelected}
-            disabled={item.disabled}
+            disabled={item[transKeys(fieldNames, 'disabled')]}
           >
-            <div className='hi-select__dropdown--item__name' style={style}>{
-              this.props.isOnSearch ? item.title : this.hightlightKeyword(item.title, item.id)
-            }</div>
+            <div className="hi-select__dropdown--item__name" style={style}>
+              {isByRemoteSearch
+                ? item[transKeys(fieldNames, 'title')]
+                : hightlightKeyword(item[transKeys(fieldNames, 'title')], item[transKeys(fieldNames, 'id')])}
+            </div>
           </Checkbox>
         )}
         {mode === 'single' && (
-          <div className='hi-select__dropdown--item__name' style={style}>{
-            this.props.isOnSearch ? item.title : this.hightlightKeyword(item.title, item.id)
-          }</div>
-        )}
-        {mode === 'single' && isSelected && (
-          <div className='hi-select__dropdown--item__check-icon'>
-            <i className='hi-icon icon-check' />
+          <div className="hi-select__dropdown--item__name" style={style}>
+            {isByRemoteSearch
+              ? item[transKeys(fieldNames, 'title')]
+              : hightlightKeyword(item[transKeys(fieldNames, 'title')], item[transKeys(fieldNames, 'id')])}
           </div>
         )}
       </React.Fragment>
     )
   }
-
-  render () {
-    const {
-      mode,
-      focusedIndex,
-      matchFilter,
-      noFoundTip,
-      loading,
-      optionWidth,
-      showCheckAll,
-      dropdownRender,
-      theme,
-      searchable,
-      onFocus,
-      onBlur,
-      searchPlaceholder,
-      localeMap
-    } = this.props
-    const { filterItems, searchbarValue } = this.state
-    let matched = 0
-    const style = optionWidth && {
-      width: optionWidth
-    }
-
-    return (
-      <div
-        className='hi-select__dropdown'
-        style={style}
+  const groupItem = (filterGroupItem, filterItemsIndex) => {
+    const renderGroup = []
+    const label = (
+      <li
+        className="hi-select__dropdown--label hi-select__dropdown--item"
+        key={filterGroupItem[transKeys(fieldNames, 'id')] || filterGroupItem[transKeys(fieldNames, 'groupId')]}
       >
-        {searchable &&
-        <div className='hi-select__dropdown__searchbar'>
-          <div className='hi-select__dropdown__searchbar--content'>
-            <Icon name='search' />
-            <input
-              className='hi-select__dropdown__searchbar--input'
-              placeholder={searchPlaceholder}
-              clearable='true'
-              ref={(input) => {
-                this.searchbar = input
-              }}
-              value={searchbarValue}
-              onFocus={onFocus.bind(this)}
-              onBlur={onBlur.bind(this)}
-              clearabletrigger='always'
-              onKeyDown={this.handleKeyDown.bind(this)}
-              onInput={this.searchEvent.bind(this)}
-              onChange={this.searchEvent.bind(this)}
-            />
-            {searchbarValue.length > 0 ? <Icon name='close-circle' style={{cursor: 'pointer'}} onClick={this.cleanSearchbarValue.bind(this)} /> : null}
-          </div>
-        </div>}
-        {loading && (
-          <div className='hi-select__dropdown--loading'>
-            <Loading size='small' />
-          </div>
-        )}
-        {!loading && (
-          <ul className='hi-select__dropdown--items'>
-
-            {
-              filterItems.map((item, index) => {
-                if (matchFilter(item)) {
-                  matched++
-                  const isSelected = this.itemSelected(item)
-                  const isDisabled = item.disabled
-                  return (
-                    <li
-                      className={classNames('hi-select__dropdown--item', `theme__${theme}`, {
-                        'is-active': isSelected,
-                        'is-disabled': isDisabled,
-                        'hi-select__dropdown--item-default':
-                          !item.children && !dropdownRender
-                      })}
-                      onClick={(e) => this.onClickOption(e, item, index)}
-                      key={item.id}
-                      data-focused={focusedIndex === index}
-                      onMouseEnter={() => this.onMouseEnter(item, index)}
-                    >
-                      {this.renderOption(mode, isSelected, item)}
-                    </li>
-                  )
-                }
-              })
-            }
-            {matched === 0 && (
-              <li
-                className='hi-select__dropdown--item hi-select__dropdown-item--empty is-disabled'
-                onClick={(e) => e.stopPropagation()}
-              >
-                {noFoundTip}
-              </li>
-            )}
-          </ul>
-        )}
-        {mode === 'multiple' && showCheckAll && (
-          <div className={`hi-select__dropdown-check-all theme__${theme}`} onClick={this.props.checkAll.bind(this, filterItems)}>
-            {localeMap['checkAll']}
-          </div>
-        )}
-      </div>
+        {filterGroupItem[transKeys(fieldNames, 'title')] || filterGroupItem[transKeys(fieldNames, 'groupTitle')]}
+      </li>
+    )
+    renderGroup.push(label)
+    filterGroupItem[transKeys(fieldNames, 'children')].forEach((item, index) => {
+      renderGroup.push(normalItem(item, filterItemsIndex + '-' + index, true))
+    })
+    // 无子节点情况下，不显示该分组
+    return renderGroup.filter((item) => !!item).length === 1 ? null : renderGroup
+  }
+  const normalItem = (item, filterItemsIndex, isChildItem) => {
+    if (!matchFilter(item)) return null
+    matched++
+    const _filterItemsIndex = filterItemsIndex
+    const isSelected = itemSelected(item)
+    const isDisabled = item[transKeys(fieldNames, 'disabled')]
+    return (
+      <li
+        className={classNames('hi-select__dropdown--item', `theme__${theme}`, {
+          'is-active': isSelected,
+          'is-disabled': isDisabled,
+          'hi-select__dropdown--item--child': isChildItem,
+          'is-focus': targetByKeyDown.current && filterItemsIndex === focusedIndex,
+          'hi-select__dropdown--item-default': !item[transKeys(fieldNames, 'children')] && !dropdownRender
+        })}
+        onClick={(e) => onClickOptionIntal(e, item, _filterItemsIndex)}
+        key={item[transKeys(fieldNames, 'id')]}
+        index={filterItemsIndex}
+        onMouseEnter={() => {
+          !targetByKeyDown.current && setFocusedIndex(_filterItemsIndex)
+        }}
+      >
+        {renderOption(isSelected, item, filterItemsIndex)}
+      </li>
     )
   }
+  const renderItems = () => {
+    return (
+      <ul
+        className="hi-select__dropdown--items"
+        ref={dropdownWrapper}
+        onMouseMove={() => {
+          targetByKeyDown.current = false
+        }}
+        onScroll={(e) => {
+          onOverlayScroll && onOverlayScroll(e)
+        }}
+      >
+        {filterItems &&
+          filterItems.map((item, filterItemsIndex) => {
+            return item[transKeys(fieldNames, 'children')]
+              ? groupItem(item, filterItemsIndex)
+              : normalItem(item, filterItemsIndex)
+          })}
+        {matched === 0 && (
+          <li
+            className="hi-select__dropdown--item hi-select__dropdown-item--empty is-disabled"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {emptyContent}
+          </li>
+        )}
+      </ul>
+    )
+  }
+  return (
+    <div className="hi-select__dropdown" style={style}>
+      {(searchable || isByCustomSearch) && (
+        <div className="hi-select__dropdown__searchbar">
+          <div className="hi-select__dropdown__searchbar--content">
+            <span style={{ cursor: 'pointer' }}>
+              <Icon name="search" />
+            </span>
+            <input
+              className="hi-select__dropdown__searchbar--input"
+              placeholder={searchPlaceholder}
+              clearable="true"
+              ref={searchbar}
+              value={searchbarValue}
+              onFocus={onFocus}
+              clearabletrigger="always"
+              onChange={searchEvent}
+            />
+            {searchbarValue.length > 0 ? (
+              <span style={{ cursor: 'pointer' }} onClick={cleanSearchbarValue}>
+                <i className={`hi-icon icon-close-circle hi-select__dropdown--icon__close`} />
+              </span>
+            ) : null}
+          </div>
+        </div>
+      )}
+      {loading && (
+        <div className="hi-select__dropdown--loading">
+          <Loading size="small" />
+        </div>
+      )}
+
+      {!loading && renderItems()}
+
+      {mode === 'multiple' && (showCheckAll || showJustSelected) && (
+        <div className={`hi-select__dropdown-check-all theme__${theme}`}>
+          <div>
+            {showCheckAll && (
+              <Checkbox
+                checked={isCheckAll}
+                onChange={(e) => {
+                  checkAll(e, filterItems, e.target.checked)
+                }}
+              >
+                {localeMap.checkAll}
+              </Checkbox>
+            )}
+          </div>
+          <div>
+            {showJustSelected && (
+              <Checkbox
+                onChange={(e) => {
+                  showSelected(e.target.checked)
+                }}
+              >
+                {localeMap.justSelected}
+              </Checkbox>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default SelectDropdown

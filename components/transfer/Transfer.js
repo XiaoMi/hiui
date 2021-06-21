@@ -11,7 +11,7 @@ import Provider from '../context'
 
 import './style/index'
 class Transfer extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       sourceList: [],
@@ -30,9 +30,11 @@ class Transfer extends Component {
       dividerPosition: null
     }
   }
-  componentDidMount () {
+
+  componentDidMount() {
     this.parseDatas(this.props)
   }
+
   setPosition = (x, y) => {
     const { positionX, positionY } = this.state
     if (!(x === positionX && y === positionY)) {
@@ -43,19 +45,19 @@ class Transfer extends Component {
     }
   }
 
-  parseDatas (props) {
+  parseDatas(props) {
     const { data, targetKeys, targetIds } = props
     const sourceList = []
     const targetList = []
     const _dataObj = {}
 
-    data.forEach(item => {
+    data.forEach((item) => {
       _dataObj[item.id] = item
       if (!(targetIds || targetKeys).includes(item.id)) {
         sourceList.push(item)
       }
     })
-    ;(targetIds || targetKeys).forEach(item => {
+    ;(targetIds || targetKeys).forEach((item) => {
       _dataObj[item] && targetList.push(_dataObj[item])
     })
 
@@ -64,34 +66,31 @@ class Transfer extends Component {
       targetList
     })
   }
-  componentWillReceiveProps (props) {
+
+  componentWillReceiveProps(props) {
     this.parseDatas(props)
   }
 
-  getSelectedKeysByDir (dir) {
+  getSelectedKeysByDir(dir) {
     return dir === 'left' ? 'sourceSelectedKeys' : 'targetSelectedKeys'
   }
-  clickItemEvent (item, index, dir) {
+
+  clickItemEvent = (item, index, dir) => {
     const { mode, type } = this.props
     const { limited } = this.state
     if (item.disabled) {
       return
     }
     if (mode === 'basic' && type === 'default') {
-      !(dir === 'left' && limited) && this.parseSelectedKeys(dir, item.id, () => {
-        this.moveTo(dir)
-      })
+      !(dir === 'left' && limited) &&
+        this.parseSelectedKeys(dir, item.id, () => {
+          this.moveTo(dir)
+        })
     }
   }
-  parseSelectedKeys (dir, key, callback) {
-    const {
-      sourceSelectedKeys,
-      targetSelectedKeys,
-      sourceList,
-      targetList,
-      leftFilter,
-      rightFilter
-    } = this.state
+
+  parseSelectedKeys(dir, key, callback) {
+    const { sourceSelectedKeys, targetSelectedKeys, sourceList, targetList, leftFilter, rightFilter } = this.state
     const selectedItem = dir === 'left' ? [...sourceSelectedKeys] : [...targetSelectedKeys]
     const checkedKey = dir + 'Checked'
     const originDatas = dir === 'left' ? sourceList : targetList
@@ -103,13 +102,13 @@ class Transfer extends Component {
       selectedItem.push(key)
     }
     const filterResult = []
-    originDatas.forEach(item => {
+    originDatas.forEach((item) => {
       item.content.includes(filterText) && filterResult.push(item.id)
     })
     const checkoutStatue = filterText.length
-      ? filterResult.every(item => {
-        return selectedItem.includes(item)
-      })
+      ? filterResult.every((item) => {
+          return selectedItem.includes(item)
+        })
       : shallowEqual(selectedItem.sort(), filterResult.sort())
     this.setState(
       {
@@ -122,10 +121,12 @@ class Transfer extends Component {
       }
     )
   }
-  checkboxEvent (dir, value, isChecked) {
+
+  checkboxEvent(dir, value, isChecked) {
     this.parseSelectedKeys(dir, value, null)
   }
-  moveTo (dir) {
+
+  moveTo(dir) {
     const { targetKeys, targetIds, data, targetSortType } = this.props
     const { sourceSelectedKeys, targetSelectedKeys } = this.state
     const selectedItem = dir === 'left' ? [...sourceSelectedKeys] : [...targetSelectedKeys]
@@ -134,9 +135,7 @@ class Transfer extends Component {
         ? (targetIds || targetKeys).concat(selectedItem)
         : selectedItem.concat(targetIds || targetKeys)
     const newTargetKeys =
-      dir === 'left'
-        ? _concatTargetKeys
-        : (targetIds || targetKeys).filter(tk => !selectedItem.includes(tk))
+      dir === 'left' ? _concatTargetKeys : (targetIds || targetKeys).filter((tk) => !selectedItem.includes(tk))
     this.setState(
       {
         [this.getSelectedKeysByDir(dir)]: newTargetKeys,
@@ -145,23 +144,27 @@ class Transfer extends Component {
       },
       () => {
         const moveDatas = []
-        selectedItem.forEach(key => {
-          data.forEach(item => {
+        selectedItem.forEach((key) => {
+          data.forEach((item) => {
             item.id === key && moveDatas.push(item)
           })
         })
 
         this.props.onChange(newTargetKeys, dir === 'left' ? 'right' : 'left', moveDatas)
-        this.setState({
-          [this.getSelectedKeysByDir(dir)]: [],
-          [dir + 'Filter']: ''
-        }, () => {
-          this.isLimited(dir)
-        })
+        this.setState(
+          {
+            [this.getSelectedKeysByDir(dir)]: [],
+            [dir + 'Filter']: ''
+          },
+          () => {
+            this.isLimited(dir)
+          }
+        )
       }
     )
   }
-  allCheckboxEvent = dir => {
+
+  allCheckboxEvent = (dir) => {
     const { sourceList, targetList, leftFilter, rightFilter } = this.state
     const originDatas = dir === 'left' ? sourceList : targetList
     const filterText = dir === 'left' ? leftFilter : rightFilter
@@ -169,7 +172,7 @@ class Transfer extends Component {
     const arr = []
 
     if (!this.state[checkedKey]) {
-      originDatas.forEach(data => {
+      originDatas.forEach((data) => {
         data.content.includes(filterText) && !data.disabled && arr.push(data.id)
       })
     }
@@ -183,31 +186,34 @@ class Transfer extends Component {
       }
     )
   }
-  isLimited (dir) {
+
+  isLimited(dir) {
     const { targetList, sourceSelectedKeys } = this.state
     const { targetLimit, type } = this.props
-    const defaultLimited = sourceSelectedKeys.length > targetLimit || sourceSelectedKeys.length + targetList.length > targetLimit
+    const defaultLimited =
+      sourceSelectedKeys.length > targetLimit || sourceSelectedKeys.length + targetList.length > targetLimit
     const _limited = type === 'default' ? defaultLimited || targetList.length >= targetLimit : defaultLimited
 
     this.setState({
       limited: _limited
     })
   }
-  searchEvent (dir, e) {
+
+  searchEvent(dir, e) {
     const { sourceList, targetList, sourceSelectedKeys, targetSelectedKeys } = this.state
     const originDatas = dir === 'left' ? sourceList : targetList
     const filterResult = []
     const filterText = e.target.value
-    originDatas.forEach(item => {
+    originDatas.forEach((item) => {
       item.content.includes(filterText) && filterResult.push(item.id)
     })
     const selectedKeys = dir === 'left' ? sourceSelectedKeys : targetSelectedKeys
     const checkedKey = dir + 'Checked'
 
     const checkoutStatue = e.target.value.length
-      ? filterResult.every(item => {
-        return selectedKeys.includes(item)
-      })
+      ? filterResult.every((item) => {
+          return selectedKeys.includes(item)
+        })
       : shallowEqual(selectedKeys.sort(), filterResult.sort())
 
     this.setState({
@@ -216,7 +222,7 @@ class Transfer extends Component {
     })
   }
 
-  move (sourceItem, targetItem) {
+  move(sourceItem, targetItem) {
     const { targetList, dividerPosition } = this.state
     const _targetList = [...targetList]
     let sIdx
@@ -236,21 +242,27 @@ class Transfer extends Component {
     } else {
       _targetList.splice(sIdx + 1, 1)
     }
+    this.props.onDragEnd(_targetList)
     this.setState({ targetList: _targetList })
   }
-  setTargetNode (id, dividerPosition) {
+
+  setTargetNode(id, dividerPosition) {
     this.setState({ targetNode: id, dividerPosition })
   }
-  removeTargetNode () {
+
+  removeTargetNode() {
     this.setState({ targetNode: null })
   }
-  setSourceNode (id) {
+
+  setSourceNode(id) {
     this.setState({ sourceNode: id })
   }
-  removeSourceNode () {
+
+  removeSourceNode() {
     this.setState({ sourceNode: null })
   }
-  renderContainer (dir, datas) {
+
+  renderContainer(dir, datas) {
     const {
       mode,
       type,
@@ -258,11 +270,14 @@ class Transfer extends Component {
       showAllSelect,
       searchable,
       draggable,
-      emptyContent,
+      emptyContent: propsEmptyContent,
       title,
       disabled,
       theme,
-      localeDatas
+      localeDatas,
+      onDragStart,
+      onDrop,
+      render
     } = this.props
     const {
       sourceSelectedKeys,
@@ -279,44 +294,39 @@ class Transfer extends Component {
       dividerPosition
     } = this.state
     const localeMap = localeDatas.transfer || {}
+    const emptyContent = propsEmptyContent || [localeMap.emptyContent, localeMap.emptyContent]
     const selectedKeys = dir === 'left' ? sourceSelectedKeys : targetSelectedKeys
     const filterText = dir === 'left' ? leftFilter : rightFilter
-    const filterResult = datas.filter(item => item.content.includes(filterText))
+    const filterResult = datas.filter((item) => item.content.includes(filterText))
     const _isChecked = dir === 'left' ? leftChecked : rightChecked
 
     const _title = dir === 'left' ? title[0] : title[1] || title[0]
     return (
-      <div className='hi-transfer__container'>
-        {disabled && <div className='hi-transfer__mask' />}
-        {_title &&
-          <div className='hi-transfer__title'>
-            {_title}
-          </div>}
-        {searchable &&
-          <div className='hi-transfer__searchbar'>
-            <Icon name='search' />
+      <div className="hi-transfer__container">
+        {disabled && <div className="hi-transfer__mask" />}
+        {_title && <div className="hi-transfer__title">{_title}</div>}
+        {searchable && (
+          <div className="hi-transfer__searchbar">
+            <Icon name="search" />
             <Input
-              placeholder='搜索'
-              clearable='true'
-              clearableTrigger='always'
+              placeholder={localeMap.searchPlaceholder}
+              clearable="true"
+              clearableTrigger="always"
               onInput={this.searchEvent.bind(this, dir)}
               onChange={this.searchEvent.bind(this, dir)}
               value={filterText}
             />
-          </div>}
-        <div
-          className={`hi-transfer__body ${filterResult.length === 0
-            ? 'hi-transfer__body--empty'
-            : ''}`}
-        >
-          {filterResult.length > 0
-            ? <ul className='hi-transfer__list'>
-              {dir === 'left' &&
-                  limited &&
-                  <li key='limit-tips' className='hi-transfer__item hi-transfer__item--limit'>
-                    <Icon name='info-circle-o' style={{fontSize: 16, color: '#D4A145', marginRight: 9}} />
-                    <span>{localeMap['limit']}</span>
-                  </li>}
+          </div>
+        )}
+        <div className={`hi-transfer__body ${filterResult.length === 0 ? 'hi-transfer__body--empty' : ''}`}>
+          {filterResult.length > 0 ? (
+            <ul className="hi-transfer__list">
+              {dir === 'left' && limited && (
+                <li key="limit-tips" className="hi-transfer__item hi-transfer__item--limit">
+                  <Icon name="info-circle-o" style={{ fontSize: 16, color: '#D4A145', marginRight: 9 }} />
+                  <span>{localeMap.limit}</span>
+                </li>
+              )}
               {filterResult.map((item, index) => {
                 return (
                   <Item
@@ -325,7 +335,8 @@ class Transfer extends Component {
                     draggable={draggable}
                     key={index}
                     theme={theme}
-                    onClick={this.clickItemEvent.bind(this, item, index, dir)}
+                    render={render}
+                    onClick={(e) => this.clickItemEvent(item, index, dir)}
                     mode={mode === 'basic' && type === 'default' ? 'basic' : 'multiple'}
                     item={item}
                     checked={selectedKeys.includes(item.id)}
@@ -340,15 +351,20 @@ class Transfer extends Component {
                     setPosition={this.setPosition}
                     positionX={positionX}
                     positionY={positionY}
+                    onDragStart={onDragStart}
+                    onDrop={onDrop}
                   />
                 )
               })}
             </ul>
-            : dir === 'left' ? emptyContent[0] : emptyContent[1] || emptyContent[0]}
+          ) : dir === 'left' ? (
+            emptyContent[0]
+          ) : (
+            emptyContent[1] || emptyContent[0]
+          )}
         </div>
-        {(mode !== 'basic' || type !== 'default') &&
-          (showAllSelect || showCheckAll) &&
-          <div className='hi-transfer__footer' onClick={() => {}}>
+        {(mode !== 'basic' || type !== 'default') && (showAllSelect || showCheckAll) && (
+          <div className="hi-transfer__footer" onClick={() => {}}>
             <Checkbox
               indeterminate={!!selectedKeys.length && !_isChecked}
               checked={_isChecked && !!filterResult.length}
@@ -356,18 +372,19 @@ class Transfer extends Component {
                 this.allCheckboxEvent(dir)
               }}
             >
-              {localeMap['checkAll']}
+              {localeMap.checkAll}
             </Checkbox>
             <span>
               {selectedKeys.length + '/'}
-              {filterResult.length} {localeMap['items']}
+              {filterResult.length} {localeMap.items}
             </span>
-          </div>}
+          </div>
+        )}
       </div>
     )
   }
 
-  render () {
+  render() {
     const { mode, type, theme } = this.props
     const { sourceList, targetList, sourceSelectedKeys, targetSelectedKeys, limited } = this.state
     const operCls = classNames(
@@ -380,11 +397,11 @@ class Transfer extends Component {
       <div className={`hi-transfer theme__${theme}`}>
         {this.renderContainer('left', sourceList)}
         <div className={operCls}>
-          {(mode !== 'basic' || type !== 'default') &&
+          {(mode !== 'basic' || type !== 'default') && (
             <React.Fragment>
               <Button
                 type={isRightDisabled ? 'default' : 'primary'}
-                icon='right'
+                icon="right"
                 onClick={() => {
                   if (!isRightDisabled) {
                     this.moveTo('left')
@@ -392,10 +409,10 @@ class Transfer extends Component {
                 }}
                 disabled={isRightDisabled}
               />
-              <span className='hi-transfer__split' />
+              <span className="hi-transfer__split" />
               <Button
                 type={isLeftDisabled ? 'default' : 'primary'}
-                icon='left'
+                icon="left"
                 onClick={() => {
                   if (!isLeftDisabled) {
                     this.moveTo('right')
@@ -403,7 +420,8 @@ class Transfer extends Component {
                 }}
                 disabled={isLeftDisabled}
               />
-            </React.Fragment>}
+            </React.Fragment>
+          )}
         </div>
         {this.renderContainer('right', targetList)}
       </div>
@@ -419,9 +437,12 @@ Transfer.defaultProps = {
   showCheckAll: false,
   searchable: false,
   draggable: false,
-  emptyContent: ['暂无数据', '暂无数据'],
   title: ['', ''],
-  disabled: false
+  disabled: false,
+  onDragStart: () => true,
+  onDragEnd: () => {},
+  onDrop: () => true,
+  onChange: () => {}
 }
 Transfer.propTypes = {
   mode: PropTypes.oneOf(['basic', 'multiple']), // TODO: 废弃，使用 type
@@ -431,5 +452,9 @@ Transfer.propTypes = {
   searchable: PropTypes.bool,
   draggable: PropTypes.bool,
   disabled: PropTypes.bool,
-  targetLimit: PropTypes.number
+  targetLimit: PropTypes.number,
+  onDragStart: PropTypes.func,
+  onDragEnd: PropTypes.func,
+  onDrop: PropTypes.func,
+  onChange: PropTypes.func
 }

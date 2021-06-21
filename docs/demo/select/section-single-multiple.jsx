@@ -41,7 +41,5 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoSingleMultiple = () => (
-  <DocViewer code={code} scope={{ Select }} prefix={prefix} desc={desc} />
-)
+const DemoSingleMultiple = () => <DocViewer code={code} scope={{ Select }} prefix={prefix} desc={desc} />
 export default DemoSingleMultiple

@@ -1,7 +1,10 @@
 @import '@hi-ui/core-css/index.scss';
+
 $cascader: 'hi-cascader' !default;
 
 .#{$cascader} {
+  outline: none;
+
   &.hi-cascader--focused {
     .hi-cascader {
       &__input-container {
@@ -21,13 +24,17 @@ $cascader: 'hi-cascader' !default;
 
   &:not(.hi-cascader--disabled) {
     &.hi-cascader--clearable:hover {
-      .hi-cascader__icon--expand {
+      .hi-cascader__icon--expand.has-value {
         display: none;
       }
 
       .hi-cascader__icon--clear {
         display: block;
-        color: #999;
+        color: #bbb;
+
+        &:hover {
+          color: #666;
+        }
       }
     }
   }
@@ -35,20 +42,28 @@ $cascader: 'hi-cascader' !default;
   &__input-container {
     display: flex;
     align-items: center;
-    padding: 4px 12px;
-    border: 1px solid #d8d8d8;
+    padding: 5px 12px;
+    box-sizing: border-box;
+
+    &.bordered {
+      border: 1px solid #d8d8d8;
+    }
   }
 
   &__input-keyword {
     flex: auto;
     font-size: 14px;
     cursor: pointer;
-    overflow: hidden;
+    overflow: hidden !important;
     text-overflow: ellipsis;
     white-space: nowrap;
     border: none;
     outline: none;
     box-sizing: border-box;
+
+    &::-webkit-input-placeholder {
+      color: #ccc;
+    }
   }
 
   &__icon {

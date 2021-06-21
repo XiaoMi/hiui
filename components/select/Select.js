@@ -1,663 +1,705 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useState, useEffect, useRef, forwardRef, useCallback } from 'react'
 import classNames from 'classnames'
-import PropTypes from 'prop-types'
-import debounce from 'lodash/debounce'
-import cloneDeep from 'lodash/cloneDeep'
+import _, { isArray } from 'lodash'
+
 import Popper from '../popper'
 import SelectInput from './SelectInput'
 import SelectDropdown from './SelectDropdown'
 import Provider from '../context'
-import fetchJsonp from 'fetch-jsonp'
-import qs from 'qs'
-import _ from 'lodash'
+import HiRequest from '../hi-request/index'
+import { resetSelectedItems, transKeys, uniqBy } from './utils'
 
-class Select extends Component {
-  autoloadFlag = true // 第一次自动加载数据标识
+const InternalSelect = (props) => {
+  const {
+    data,
+    type,
+    showCheckAll,
+    showJustSelected,
+    className,
+    disabled,
+    clearable,
+    style,
+    children,
+    optionWidth,
+    render,
+    multipleWrap,
+    onFocus,
+    dataSource,
+    filterOption,
+    theme,
+    localeDatas,
+    preventOverflow,
+    placement,
+    onSearch,
+    onChange: propsonChange,
+    onOverlayScroll,
+    value,
+    defaultValue,
+    autoload,
+    searchable: propsSearchable,
+    fieldNames,
+    overlayClassName,
+    setOverlayContainer,
+    bordered = true,
+    overlayClickOutSideEventName = 'click'
+  } = props
+  const selectInputContainer = useRef()
+  const autoloadFlag = useRef(autoload) // 多选情况下，需要记录是否进行了筛选
+  const historyData = useRef([])
+  const [dropdownItems, setDropdownItems] = useState(data)
+  const [isGroup, setIsGroup] = useState(false)
+  const [focusedIndex, setFocusedIndex] = useState(0)
+  const [isFocus, setIsFouces] = useState(false)
+  const SelectWrapper = useRef()
+  const targetByKeyDown = useRef(false)
+  const CancelToken = HiRequest.CancelToken
+  let cancel
+  // 存储问题
+  const [cacheSelectItem, setCacheSelectItem] = useState([])
 
-  static propTypes = {
-    type: PropTypes.oneOf(['single', 'multiple']),
-    multipleWrap: PropTypes.oneOf(['wrap', 'nowrap']),
-    data: PropTypes.array,
-    dataSource: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.func
-    ]),
-    defaultValue: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.array,
-      PropTypes.bool,
-      PropTypes.number
-    ]),
-    value: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.array,
-      PropTypes.bool,
-      PropTypes.number
-    ]),
-    showCheckAll: PropTypes.bool,
-    autoload: PropTypes.bool,
-    withCredentials: PropTypes.bool,
-    searchable: PropTypes.bool,
-    filterOption: PropTypes.func,
-    clearable: PropTypes.bool,
-    disabled: PropTypes.bool,
-    placeholder: PropTypes.string,
-    emptyContent: PropTypes.string,
-    optionWidth: PropTypes.number,
-    style: PropTypes.object,
-    onChange: PropTypes.func,
-    render: PropTypes.func,
-    open: PropTypes.bool
-  }
+  // value 有可能是0的情况
+  const [selectedItems, setSelectedItems] = useState(
+    resetSelectedItems(value === undefined ? defaultValue : value, _.cloneDeep(data), transKeys(fieldNames, 'id'))
+  )
 
-  static defaultProps = {
-    data: [],
-    type: 'single',
-    multipleWrap: 'nowrap',
-    disabled: false,
-    clearable: true,
-    defaultValue: '',
-    autoload: false,
-    showCheckAll: false,
-    open: true,
-    withCredentials: false,
-    onClick: () => {},
-    onBlur: () => {},
-    onFocus: () => {}
-  }
+  const [dropdownShow, setDropdownShow] = useState(false)
+  // 搜索关键字
+  const [keyword, setKeyword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [searchable, setSearchable] = useState(dataSource ? true : propsSearchable)
 
-  constructor (props) {
-    super(props)
-
-    const { data, value, defaultValue } = props
-    const dropdownItems = cloneDeep(data)
-    const initialValue = value === undefined ? defaultValue : value
-    const selectedItems = this.resetSelectedItems(
-      initialValue,
-      dropdownItems,
-      []
+  useEffect(() => {
+    // 处理默认值的问题
+    const selectedItems = resetSelectedItems(
+      value === undefined ? defaultValue : value,
+      _.uniqBy(cacheSelectItem.concat(dropdownItems), transKeys(fieldNames, 'id')),
+      transKeys(fieldNames, 'id')
     )
+    if (dataSource) {
+      // 在异步多选的时候时候才需要进行值的记录
+      type === 'multiple' && setCacheSelectItem(selectedItems)
+      autoload && remoteSearch()
+    }
+    resetFocusedIndex()
+  }, [])
 
-    const searchable = this.getSearchable()
-    this.debouncedFilterItems = debounce(this.onFilterItems.bind(this), 300)
-    this.clickOutsideHandel = this.clickOutside.bind(this)
+  useEffect(() => {
+    if (dropdownItems && dropdownItems.length) {
+      setIsGroup(
+        dropdownItems.every((item) => {
+          return item.children && item.children.length > 0
+        })
+      )
+    }
+    historyData.current = uniqBy(data.concat(dropdownItems, historyData.current), transKeys(fieldNames, 'id'))
+  }, [dropdownItems, data])
 
-    this.state = {
-      searchable,
-      queryLength: 1,
-      focusedIndex: 0,
-      selectedItems,
-      cacheSelectedItems: selectedItems,
-      dropdownItems,
-      dropdownShow: false,
-      fetching: false,
-      keyword: '',
-      filterText: '',
-      searchInput: {
-        width: 2
+  useEffect(() => {
+    resetFocusedIndex()
+  }, [keyword, isGroup])
+
+  useEffect(() => {
+    const dataSourcePropsSearchable = typeof propsSearchable !== 'undefined' ? propsSearchable : true // 在存在dataSource的时候，默认searchable为true
+    setSearchable(dataSource ? dataSourcePropsSearchable : propsSearchable)
+  }, [propsSearchable])
+
+  useEffect(() => {
+    setIsFouces(dropdownShow)
+  }, [dropdownShow])
+
+  useEffect(() => {
+    if (value !== undefined) {
+      // 处理默认值的问题
+      const selectedItems = resetSelectedItems(
+        value,
+        uniqBy(cacheSelectItem.concat(dropdownItems), transKeys(fieldNames, 'id')),
+        transKeys(fieldNames, 'id')
+      )
+      setSelectedItems(selectedItems)
+      resetFocusedIndex()
+    }
+  }, [value, cacheSelectItem])
+
+  useEffect(() => {
+    const _data = _.cloneDeep(data)
+    const selectedItems = resetSelectedItems(
+      value === undefined ? defaultValue : value,
+      historyData.current,
+      transKeys(fieldNames, 'id')
+    )
+    setSelectedItems(selectedItems)
+    if (dataSource && type === 'multiple') {
+      setCacheSelectItem(selectedItems)
+      !dropdownShow && searchable && setDropdownItems(selectedItems)
+    } else {
+      if (dataSource) {
+        searchable && setDropdownItems(_data)
+      } else {
+        setDropdownItems(_data)
       }
     }
-  }
+  }, [data, value])
 
-  getChildContext () {
-    return {
-      component: this
-    }
-  }
+  const localeDatasProps = useCallback(
+    (key) => {
+      if (props[key]) {
+        return props[key]
+      } else {
+        return localeDatas.select[key]
+      }
+    },
+    [props]
+  )
+  // 改变的回调
+  const onChange = useCallback(
+    (selectedItems, changedItems, callback) => {
+      if (value === undefined) {
+        setSelectedItems(selectedItems)
+        callback()
+      }
+      // 调用用户的select
+      const selectedIds = selectedItems.map((item) => item[transKeys(fieldNames, 'id')])
+      propsonChange && propsonChange(selectedIds, changedItems, selectedItems)
+    },
+    [propsonChange]
+  )
+  // 选中某一项
+  const onClickOption = useCallback(
+    (item, index) => {
+      if (!item || item[transKeys(fieldNames, 'disabled')]) return
 
-  componentWillMount () {
-    if (this.isRemote() && this.props.autoload) {
-      this.remoteSearch()
-    }
-  }
-
-  componentDidMount () {
-    window.addEventListener('click', this.clickOutsideHandel)
-    this.resetFocusedIndex()
-  }
-
-  componentWillUnmount () {
-    window.removeEventListener('click', this.clickOutsideHandel)
-  }
-
-  clickOutside (e) {
-    const selectInput = ReactDOM.findDOMNode(this.selectInput)
-    if ((selectInput && selectInput.contains(e.target)) || (e.target.tagName === 'INPUT' && e.target.className.includes('hi-select__dropdown__searchbar--input'))) {
-      return
-    }
-    this.hideDropdown()
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (!_.isEqual(nextProps.data, this.props.data)) {
-      const selectedItems = this.resetSelectedItems(
-        nextProps.value || this.state.selectedItems,
-        nextProps.data,
-        []
-      )
-      this.setState({
-        selectedItems,
-        cacheSelectedItems: selectedItems,
-        dropdownItems: cloneDeep(nextProps.data)
+      let _selectedItems = _.cloneDeep(selectedItems)
+      if (type === 'multiple') {
+        // 获取元素索引
+        const itemIndex = _selectedItems.findIndex((sItem) => {
+          return sItem[transKeys(fieldNames, 'id')] === item[transKeys(fieldNames, 'id')]
+        })
+        if (itemIndex === -1) {
+          _selectedItems.push(item)
+        } else {
+          _selectedItems.splice(itemIndex, 1)
+        }
+        // 在受控情况下
+        if (_.isEqual(cacheSelectItem, selectedItems) && dataSource) {
+          setCacheSelectItem(_selectedItems)
+        }
+      } else {
+        _selectedItems = [item]
+      }
+      onChange(_selectedItems, item, () => {
+        setFocusedIndex(index)
       })
-    } else {
-      if (!_.isEqual(nextProps.value, this.props.value)) {
-        const selectedItems = this.resetSelectedItems(
-          nextProps.value,
-          this.state.dropdownItems,
-          []
-        ) // 异步获取时会从内部改变dropdownItems，所以不能从list取
-        this.setState({
-          selectedItems,
-          cacheSelectedItems: selectedItems
+      type !== 'multiple' && hideDropdown()
+    },
+    [type, selectedItems, onChange, dropdownShow, cacheSelectItem]
+  )
+
+  // 收起下拉框
+  const hideDropdown = useCallback(() => {
+    if (dropdownShow) {
+      setKeyword('')
+      setDropdownShow(false)
+    }
+    // 多选具有默认值的话打开的话应该显示选中的值
+    if (dataSource && type === 'multiple' && !autoloadFlag.current) {
+      setCacheSelectItem(selectedItems)
+      setDropdownItems(selectedItems)
+    }
+  }, [dropdownShow, selectedItems, dataSource, type])
+  // 获取分组的数据 以及下标
+  const getGroupDropdownItems = useCallback(
+    (focusedIndex, group, direction) => {
+      let _focusedIndex = focusedIndex
+      let _group = group
+      !isNaN(Number(_focusedIndex)) && (_focusedIndex = '0-0')
+      const focusedGroup = _focusedIndex.split('-')
+      const l = dropdownItems.length
+      let _dropdownItems = []
+      if (focusedGroup[1] / 1 === 0 && group !== undefined) {
+        if (!dropdownItems[group]) {
+          _group = l - 1
+        }
+        _dropdownItems = dropdownItems[group]
+          ? dropdownItems[group][transKeys(fieldNames, 'children')]
+          : dropdownItems[direction === 'down' ? 0 : l - 1][transKeys(fieldNames, 'children')]
+        focusedGroup[1] = direction === 'down' ? -1 : _dropdownItems.length
+      } else {
+        _dropdownItems =
+          (dropdownItems[focusedGroup[0]] && dropdownItems[focusedGroup[0]][transKeys(fieldNames, 'children')]) || []
+        _group = focusedGroup[0]
+      }
+      return { _dropdownItems, _focusedIndex: focusedGroup[1], group: _group }
+    },
+    [focusedIndex, dropdownItems, fieldNames]
+  )
+  // 方向键的回调
+  const moveFocusedIndex = useCallback(
+    (direction) => {
+      targetByKeyDown.current = true
+      let _focusedIndex = focusedIndex
+      let _dropdownItems = dropdownItems
+      let group = 0
+      if (isGroup) {
+        const groupDropdownItems = getGroupDropdownItems(_focusedIndex)
+        _dropdownItems = groupDropdownItems._dropdownItems
+        _focusedIndex = groupDropdownItems._focusedIndex
+        group = groupDropdownItems.group
+      }
+
+      const everyIsDisabled = _dropdownItems.every((item) => {
+        return item[transKeys(fieldNames, 'disabled')]
+      })
+
+      // 防止出现所有的选项都为 disabled
+      if (!everyIsDisabled) {
+        if (direction === 'up') {
+          if (isGroup) {
+            if (_focusedIndex / 1 === 0) {
+              const groupDropdownItems = getGroupDropdownItems(_focusedIndex, --group)
+              _dropdownItems = groupDropdownItems._dropdownItems
+              _focusedIndex = groupDropdownItems._focusedIndex
+              group = groupDropdownItems.group
+              // 二次校验分组后的是否都是不可点击
+              if (
+                _dropdownItems.every((item) => {
+                  return item[transKeys(fieldNames, 'disabled')]
+                })
+              ) {
+                return
+              }
+            }
+          } else {
+            _focusedIndex === 0 && (_focusedIndex = _dropdownItems.length)
+          }
+          _focusedIndex--
+          while (_dropdownItems[_focusedIndex] && _dropdownItems[_focusedIndex].disabled) {
+            _focusedIndex === 0 && (_focusedIndex = _dropdownItems.length)
+            _focusedIndex--
+          }
+        } else {
+          if (isGroup) {
+            if (_focusedIndex / 1 === _dropdownItems.length - 1) {
+              group++
+              const groupDropdownItems = getGroupDropdownItems(group + '-0', group, direction)
+              _dropdownItems = groupDropdownItems._dropdownItems
+              _focusedIndex = groupDropdownItems._focusedIndex
+              group = groupDropdownItems.group
+              // 二次校验分组后的是否都是不可点击
+              if (
+                _dropdownItems.every((item) => {
+                  return item[transKeys(fieldNames, 'disabled')]
+                })
+              ) {
+                return
+              }
+            }
+          } else {
+            _focusedIndex === _dropdownItems.length - 1 && (_focusedIndex = -1)
+          }
+          _focusedIndex++
+          while (_dropdownItems[_focusedIndex] && _dropdownItems[_focusedIndex].disabled) {
+            _focusedIndex === _dropdownItems.length - 1 && (_focusedIndex = -1)
+            _focusedIndex++
+          }
+        }
+      }
+      setFocusedIndex(isGroup ? group + '-' + _focusedIndex : _focusedIndex)
+    },
+    [focusedIndex, dropdownItems, fieldNames, targetByKeyDown.current]
+  )
+  // 点击回车选中
+  const onEnterSelect = useCallback(() => {
+    const focusedGroup = isGroup && focusedIndex.split('-')
+    const item = isGroup
+      ? dropdownItems[focusedGroup[0]][transKeys(fieldNames, 'children')][focusedGroup[1]]
+      : dropdownItems[focusedIndex]
+    onClickOption(item, focusedIndex)
+  }, [dropdownItems, focusedIndex, onClickOption])
+
+  // 按键操作
+  const handleKeyDown = useCallback(
+    (evt) => {
+      if (dropdownShow && !disabled) {
+        evt.stopPropagation()
+        if (evt.keyCode === 38) {
+          evt.preventDefault()
+          moveFocusedIndex('up')
+        }
+        if (evt.keyCode === 40) {
+          evt.preventDefault()
+          moveFocusedIndex('down')
+        }
+        if (evt.keyCode === 13) {
+          // enter
+          onEnterSelect()
+        }
+        // esc
+        if (evt.keyCode === 27) {
+          setDropdownShow(false)
+        }
+        if (
+          evt.keyCode === 32 &&
+          !document.activeElement.classList.value.includes('hi-select__dropdown__searchbar--input')
+        ) {
+          evt.preventDefault()
+          setDropdownShow(!dropdownShow)
+        }
+      }
+    },
+    [onEnterSelect, moveFocusedIndex, targetByKeyDown.current]
+  )
+  // 对关键字的校验 对数据的过滤
+  const matchFilter = useCallback(
+    (item) => {
+      const shouldMatch = dataSource || !searchable || !keyword
+
+      if (typeof filterOption === 'function') {
+        return shouldMatch || filterOption(keyword, item)
+      }
+      return (
+        shouldMatch ||
+        String(item[transKeys(fieldNames, 'id')] || '').includes(keyword) ||
+        String(item[transKeys(fieldNames, 'title')] || '').includes(keyword)
+      )
+    },
+    [dataSource, searchable, keyword, filterOption]
+  )
+
+  const remoteSearch = useCallback(
+    (keyword) => {
+      const _dataSource = typeof dataSource === 'function' ? dataSource(keyword) : dataSource
+      if (Array.isArray(_dataSource)) {
+        setDropdownItems(_dataSource)
+        return
+      }
+      // 处理promise函数
+      if (_dataSource.toString() === '[object Promise]') {
+        setLoading(true)
+        _dataSource.then(
+          (res) => {
+            setLoading(false)
+            setDropdownItems(Array.isArray(res) ? res : [])
+          },
+          () => {
+            setLoading(false)
+            setDropdownItems([])
+          }
+        )
+        return
+      }
+      // 调用接口
+      HiRequestSearch(_dataSource, keyword)
+    },
+    [dataSource, keyword]
+  )
+  const HiRequestSearch = useCallback((_dataSource, keyword) => {
+    const {
+      url,
+      method = 'GET',
+      transformResponse,
+      headers,
+      data = {},
+      params = {},
+      key,
+      error,
+      credentials,
+      withCredentials = false,
+      ...options
+    } = _dataSource
+    // 处理Key
+
+    options.params = key ? { [key]: keyword, ...params } : params
+
+    const _withCredentials = withCredentials || credentials === 'include'
+    // 取消上一次的请求
+    const CANCEL_STATE = 'Cancel'
+    typeof cancel === 'function' && cancel(CANCEL_STATE)
+    HiRequest({
+      url,
+      method,
+      data: data,
+      cancelToken: new CancelToken((c) => {
+        cancel = c
+      }),
+      withCredentials: _withCredentials,
+      error,
+      beforeRequest: (config) => {
+        setLoading(true)
+        return config
+      },
+      errorCallback: (err) => {
+        const { message = 'normal' } = err
+        setLoading(message === CANCEL_STATE)
+        error && error(err)
+      },
+      ...options
+    }).then(
+      (response) => {
+        const { message = 'normal' } = response
+        if (message !== CANCEL_STATE) {
+          setLoading(false)
+          const dataItems = transformResponse && transformResponse(response.data, response)
+          if (Array.isArray(dataItems)) {
+            setDropdownItems(dataItems)
+          } else {
+            console.error('transformResponse return data is not array')
+          }
+        }
+      },
+      (error) => {
+        throw error
+      }
+    )
+  }, [])
+
+  // 过滤筛选项
+  const onFilterItems = useCallback(
+    (keyword) => {
+      setKeyword(keyword)
+      if (typeof onSearch === 'function') {
+        onSearch(keyword)
+        return
+      }
+      if (dataSource && (autoload || keyword) && searchable) {
+        remoteSearch(keyword)
+      }
+      if (dataSource && searchable && keyword === '' && selectedItems.length > 0) {
+        setDropdownItems(cacheSelectItem)
+      }
+    },
+    [dataSource, cacheSelectItem, keyword, selectedItems, searchable, onSearch, remoteSearch, autoload]
+  )
+  // 重置下标
+  const resetFocusedIndex = () => {
+    let _dropdownItems = dropdownItems || []
+    let _focusedIndex = 0
+    let groupIndex = 0
+    if (isGroup) {
+      _dropdownItems = dropdownItems[groupIndex][transKeys(fieldNames, 'children')]
+      _focusedIndex = 0
+    }
+    while (
+      _dropdownItems[_focusedIndex] &&
+      _dropdownItems[_focusedIndex].disabled &&
+      _focusedIndex < _dropdownItems.length
+    ) {
+      _focusedIndex++
+    }
+    if (typeof value !== 'undefined' || typeof defaultValue !== 'undefined') {
+      let _value = value || defaultValue
+      if (!isArray(_value)) {
+        _value = [_value]
+      }
+      _focusedIndex = 0
+
+      if (isGroup) {
+        let _isValid = false
+        while (groupIndex < dropdownItems.length && !_isValid) {
+          _dropdownItems = dropdownItems[groupIndex][transKeys(fieldNames, 'children')]
+          _isValid =
+            _dropdownItems &&
+            _dropdownItems.some((item, index) => {
+              if (type === 'single') {
+                return item[transKeys(fieldNames, 'id')] === _value[0] && (_focusedIndex = index)
+              } else {
+                return _value.includes(item[transKeys(fieldNames, 'id')]) && (_focusedIndex = index)
+              }
+            })
+          !_isValid && groupIndex++
+        }
+      } else {
+        let _isValid = false
+
+        _dropdownItems.forEach((item, index) => {
+          if (!_isValid) {
+            if (type === 'single') {
+              item[transKeys(fieldNames, 'id')] === _value && (_focusedIndex = index)
+            } else {
+              if (_value.includes(item[transKeys(fieldNames, 'id')])) {
+                _focusedIndex = index
+                _isValid = true
+              }
+            }
+          }
         })
       }
     }
+    setFocusedIndex(isGroup ? groupIndex + '-' + _focusedIndex : _focusedIndex)
   }
 
-  getSearchable () {
-    const { searchable } = this.props
-
-    if (this.isRemote()) {
-      return true
-    }
-    return searchable
-  }
-
-  parseValue (value = this.props.value) {
-    if (Array.isArray(value)) {
-      return value.map(v => {
-        if (typeof v === 'object') {
-          return v.id
-        } else {
-          return v
-        }
-      })
-    } else {
-      return [value]
-    }
-  }
-
-  isRemote () {
-    const { dataSource, onSearch } = this.props
-    return onSearch || dataSource
-  }
-
-  resetSelectedItems (value, dropdownItems = [], reviceSelectedItems = []) {
-    const values = this.parseValue(value)
-    let selectedItems = []
-    dropdownItems.forEach(item => {
-      if (values.includes(item.id)) {
-        selectedItems.push(item)
-      }
+  // 全部删除
+  const deleteAllItems = () => {
+    onChange([], type === 'multiple' ? selectedItems : selectedItems[0], () => {
+      onFilterItems('')
+      resetFocusedIndex()
     })
-    return _.uniqBy(reviceSelectedItems.concat(selectedItems), 'id')
+    setCacheSelectItem([])
+    dataSource && searchable && setDropdownItems([])
   }
-
-  onEnterSelect () {
-    const { dropdownItems, focusedIndex } = this.state
-    const item = dropdownItems[focusedIndex]
-    this.onClickOption(item, focusedIndex)
-  }
-
-  onChange (selectedItems, changedItems, callback, cacheSelectedItems) {
-    const { onChange, value } = this.props
-    value === undefined &&
-      this.setState(
-        {
-          selectedItems
-        },
-        callback
-      )
-    const selectedIds = selectedItems.map(({ id }) => id)
-    onChange && onChange(selectedIds, changedItems)
-  }
-
-  checkAll (filterItems, e) {
+  // 防抖
+  const debouncedFilterItems = _.debounce(onFilterItems, 300)
+  // 全选
+  const checkAll = (e, filterItems, isCheck) => {
     // 全选
     e && e.stopPropagation()
-
-    const { selectedItems } = this.state
-    let _selectedItems = [...selectedItems]
-    let changedItems = []
-    filterItems.forEach(item => {
-      if (!item.disabled && this.matchFilter(item)) {
-        if (
-          !_selectedItems.map(selectItem => selectItem.id).includes(item.id)
-        ) {
-          _selectedItems.push(item)
-          changedItems.push(item)
+    if (!isCheck) {
+      onChange([], [], () => {})
+      return
+    }
+    const _selectedItems = [...selectedItems]
+    const changedItems = []
+    filterItems.forEach((filterItem) => {
+      const filterItemOrGroupChilds = isArray(filterItem.children) ? filterItem.children : [filterItem]
+      filterItemOrGroupChilds.forEach((item) => {
+        if (!item[transKeys(fieldNames, 'disabled')] && matchFilter(item)) {
+          if (
+            !_selectedItems.some((selectItem) => {
+              const key = transKeys(fieldNames, 'id')
+              return selectItem[key] === item[key]
+            })
+          ) {
+            _selectedItems.push(item)
+            changedItems.push(item)
+          }
         }
-      }
+      })
     })
-    this.onChange(_selectedItems, changedItems, () => {}, _selectedItems)
+    onChange(_selectedItems, changedItems, () => {})
   }
-
-  onClickOption (item, index) {
-    if (!item || item.disabled) return
-
-    let selectedItems = this.state.selectedItems.concat()
-    let cacheSelectedItems = this.state.selectedItems.concat()
-    let focusedIndex = index
-
-    if (this.props.type === 'multiple') {
-      let itemIndex = this.state.selectedItems.findIndex(sItem => {
-        return sItem.id === item.id
-      })
-      if (itemIndex === -1) {
-        selectedItems.push(item)
-        if (!cacheSelectedItems.map(cacheItem => cacheItem.id).includes(item.id)) {
-          cacheSelectedItems.push(item)
-        }
-      } else {
-        selectedItems.splice(itemIndex, 1)
-      }
-    } else {
-      selectedItems = [item]
-      this.setState({
-        cacheSelectedItems: [item]
-      })
-    }
-
-    this.onChange(selectedItems, item, () => {
-      this.setState({
-        focusedIndex,
-        cacheSelectedItems: this.props.type === 'multiple' ? cacheSelectedItems : [item]
-      })
-    }, this.props.type === 'multiple' ? cacheSelectedItems : [item])
-    if (this.props.type !== 'multiple') {
-      this.hideDropdown()
-    }
-  }
-
-  clearKeyword () {
-    this.setState(
-      {
-        keyword: ''
-      },
-      () => {
-        this.selectInput.clearInput()
-      }
-    )
-  }
-
-  handleInputClick = e => {
-    let { dropdownShow } = this.state
+  // input点击事件
+  const handleInputClick = () => {
     if (dropdownShow) {
-      this.hideDropdown()
+      hideDropdown()
       return
     }
-
-    !this.getSearchable() && this.selectInput.focus()
-    if (this.props.disabled) {
+    if (disabled) {
       return
     }
-
-    if (dropdownShow === false) {
-      this.showDropdown()
-    }
+    !dropdownShow && setDropdownShow(true)
   }
-
-  hideDropdown () {
-    this.state.dropdownShow === true &&
-      this.setState({ dropdownShow: false, cacheSelectedItems: this.state.selectedItems }, () => {
-        this.clearKeyword()
-      })
+  const placeholder = localeDatasProps('placeholder')
+  const emptyContent = localeDatasProps('emptyContent')
+  const searchPlaceholder = localeDatasProps('searchPlaceholder')
+  const extraClass = {
+    'is-multiple': type === 'multiple',
+    'is-single': type === 'single'
   }
-
-  showDropdown () {
-    this.state.dropdownShow === false && this.setState({ dropdownShow: true })
-  }
-
-  deleteItem (item) {
-    if (item.disabled) return
-    let selectedItems = this.state.selectedItems.concat()
-    const sIndex = selectedItems.findIndex((obj, index, arr) => {
-      return obj.id === item.id
-    })
-
-    selectedItems.splice(sIndex, 1)
-    this.onChange(selectedItems, item, () => {
-      !this.getSearchable() && this.selectInput.focus()
-    }, selectedItems)
-  }
-  // 全部删除
-  deleteAllItems () {
-    const { type } = this.props
-    const focusedIndex = this.resetFocusedIndex()
-    const changedItems = [...this.state.selectedItems]
-    this.onChange(
-      [],
-      type === 'multiple' ? changedItems : changedItems[0],
-      () => {
-        this.setState({ focusedIndex })
-        this.onFilterItems('')
-      },
-      []
-    )
-  }
-
-  remoteSearch (keyword) {
-    const { onSearch, dataSource, autoload, withCredentials } = this.props
-    if (onSearch && typeof onSearch === 'function') {
-      this.setState({
-        fetching: true
-      })
-      onSearch(keyword).finally(() => {
-        this.setState({ fetching: false })
-      })
-    } else {
-      const _dataSource = typeof dataSource === 'function' ? dataSource(keyword) : dataSource
-      let {
-        url,
-        transformResponse,
-        error,
-        params,
-        headers,
-        mode,
-        data = {},
-        type = 'GET',
-        key,
-        jsonpCallback = 'callback',
-        ...options
-      } = _dataSource
-
-      keyword =
-      !keyword && this.autoloadFlag && autoload
-        ? _dataSource.keyword
-        : keyword
-      this.autoloadFlag = false // 第一次自动加载数据后，输入的关键词即使为空也不再使用默认关键词
-      Object.assign(options, {mode}, {headers})
-
-      const queryParams = qs.stringify(
-        Object.assign({}, params, key && { [key]: keyword })
-      )
-      if (!_.isEmpty(queryParams)) {
-        url = url.includes('?') ? `${url}&${queryParams}` : `${url}?${queryParams}`
-      }
-      if (type.toUpperCase() === 'POST') {
-        options.body = JSON.stringify(data)
-      }
-
-      this.setState({
-        fetching: true
-      })
-
-      if (type.toUpperCase() === 'JSONP') {
-        const _o = {
-          jsonpCallback: jsonpCallback,
-          jsonpCallbackFunction: jsonpCallback
-        }
-        fetchJsonp(url, _o)
-          .then(res => res.json())
-          .then(json => {
-            this._setDropdownItems(json, transformResponse)
-          })
-      } else {
-        /* eslint-disable */
-        fetch(url, {
-          method: type,
-          credentials: withCredentials ? 'include' : 'same-origin',
-          ...options
-        })
-          .then(response => response.json())
-          .then(
-            res => {
-              this._setDropdownItems(res, transformResponse)
-            },
-            err => {
-              error && error(err)
-              this.setState({
-                fetching: false
-              })
-            }
-          )
-      }
-    }
-  }
-  _setDropdownItems(res, func) {
-    let dropdownItems = []
-    if (func) {
-      dropdownItems = func(res)
-    } else {
-      dropdownItems = res.data
-    }
-    if (Array.isArray(dropdownItems)) {
-      const reviceSelectedItems = this.props.type === 'multiple' ? this.props.dataSource && this.state.selectedItems || [] : this.state.cacheSelectedItems 
-      const selectedItems = this.resetSelectedItems(
-        this.props.value,
-        dropdownItems,
-        reviceSelectedItems
-      )
-      this.setState({
-        dropdownItems,
-        selectedItems
-      })
-    }
-    this.setState({
-      fetching: false
-    })
-  }
-  onFilterItems(keyword) {
-    const { onSearch, dataSource, autoload } = this.props
-    this.setState(
-      {
-        keyword: keyword
-      },
-      () => this.resetFocusedIndex()
-    )
-
-    if (dataSource) { 
-      if (autoload ||(keyword && keyword.length >= this.state.queryLength)) {
-        this.remoteSearch(keyword)
-      }
-    } else if(onSearch) {
-      this.remoteSearch(keyword)
-    }
-  }
-
-  matchFilter(item) {
-    const { filterOption } = this.props
-    const { searchable, keyword } = this.state
-
-    const shouldMatch = this.isRemote() || !searchable || !keyword
-
-    if (typeof filterOption === "function") {
-      return shouldMatch || filterOption(keyword, item)
-    }
-
-    return (
-      shouldMatch ||
-      String(item.id).includes(keyword) || String(item.title).includes(keyword)
-    )
-  }
-
-  resetFocusedIndex(setState = true) {
-    let focusedIndex = -1
-
-    this.state.dropdownItems.every(item => {
-      focusedIndex++
-      if (!item.disabled && this.matchFilter(item)) {
-        return false
-      }
-      return true
-    })
-    setState &&
-      this.setState({
-        focusedIndex
-      })
-    return focusedIndex
-  }
-
-  setFocusedIndex(focusedIndex) {
-    this.setState({ focusedIndex })
-  }
-
-  moveFocusedIndex(direction) {
-    let { focusedIndex } = this.state
-    const { dropdownItems } = this.state
-
-    if (direction === "up") {
-      dropdownItems
-        .slice(0, focusedIndex)
-        .reverse()
-        .every(item => {
-          focusedIndex--
-          if (!item.disabled && this.matchFilter(item)) {
-            return false
-          }
-          return true
-        })
-    } else {
-      dropdownItems.slice(focusedIndex + 1).every(item => {
-        focusedIndex++
-        if (!item.disabled && this.matchFilter(item)) {
-          return false
-        }
-        return true
-      })
-    }
-    this.setState({
-      focusedIndex
-    })
-  }
-
-  localeDatasProps(key) {
-    const { localeDatas } = this.props
-    if (this.props[key]) {
-      return this.props[key]
-    } else {
-      return localeDatas.select[key]
-    }
-  }
-
-  render() {
-    const {
-      type,
-      showCheckAll,
-      className,
-      disabled,
-      clearable,
-      style,
-      children,
-      optionWidth,
-      render,
-      multipleWrap,
-      onClick,
-      onBlur,
-      onFocus,
-      dataSource,
-      filterOption,
-      onSearch,
-      theme,
-      localeDatas
-    } = this.props
-    const placeholder = this.localeDatasProps('placeholder')
-    const emptyContent = this.localeDatasProps('emptyContent')
-    const searchPlaceholder = this.localeDatasProps('searchPlaceholder')
-    const {
-      selectedItems,
-      cacheSelectedItems,
-      dropdownItems,
-      searchable,
-      dropdownShow,
-      focusedIndex,
-      fetching,
-    } = this.state
-    const extraClass = {
-      "is-multiple": type === "multiple",
-      "is-single": type === "single"
-    }
-    const selectInputWidth = this.selectInputContainer ? this.selectInputContainer.getBoundingClientRect().width : null
-    return (
-      <div
-        className={classNames("hi-select", className, extraClass)}
-        style={style}
-      >
-        <div
-          className="hi-select__input-container"
-          ref={node => {
-            this.selectInputContainer = node
+  const selectInputWidth = selectInputContainer.current
+    ? selectInputContainer.current.getBoundingClientRect().width
+    : null
+  return (
+    <div
+      className={classNames('hi-select', className, extraClass)}
+      style={style}
+      tabIndex="0"
+      onKeyDown={handleKeyDown}
+      ref={SelectWrapper}
+    >
+      <div className="hi-select__input-container" ref={selectInputContainer}>
+        <SelectInput
+          theme={theme}
+          mode={type}
+          selectInputWidth={selectInputWidth}
+          disabled={disabled}
+          searchable={searchable} // 要删除掉
+          clearable={clearable}
+          dropdownShow={dropdownShow}
+          placeholder={placeholder}
+          selectedItems={selectedItems || []}
+          multipleMode={multipleWrap}
+          cacheSelectItem={cacheSelectItem}
+          onFocus={onFocus}
+          onClickOption={onClickOption}
+          onClear={deleteAllItems}
+          fieldNames={fieldNames}
+          isFocus={isFocus}
+          value={value}
+          bordered={bordered}
+          onClick={() => {
+            handleInputClick()
           }}
-        >
-          <SelectInput
-            ref={node => {
-              this.selectInput = node
-            }}
-            theme={theme}
-            mode={type}
-            disabled={disabled}
-            searchable={searchable}
-            clearable={clearable}
-            show={dropdownShow && this.props.open}
-            dropdownShow={dropdownShow}
-            placeholder={placeholder}
-            selectedItems={selectedItems}
-            dropdownItems={dropdownItems}
-            multipleMode={multipleWrap}
-            container={this.selectInputContainer}
-            moveFocusedIndex={this.moveFocusedIndex.bind(this)}
-            onClick={() => {
-              if (this.props.open) {
-                this.handleInputClick()
-              }
-              onClick()
-            }}
-            onBlur={onBlur}
-            onFocus={onFocus}
-            onDelete={this.deleteItem.bind(this)}
-            onClear={this.deleteAllItems.bind(this)}
-            onSearch={this.debouncedFilterItems.bind(this)}
-            onEnterSelect={this.onEnterSelect.bind(this)}
-          />
-        </div>
-        {children}
-        <Popper
-          show={dropdownShow && this.props.open}
-          attachEle={this.selectInputContainer}
-          zIndex={1050}
-          topGap={5}
-          leftGap={0}
-          className="hi-select__popper"
-          placement="top-bottom-start"
-        >
-          { dropdownShow && this.props.open && <SelectDropdown
-                  noFoundTip={emptyContent}
-                  localeMap={localeDatas.select || {} }
-                  mode={type}
-                  searchPlaceholder={searchPlaceholder}
-                  theme={theme}
-                  onBlur={onBlur}
-                  onFocus={onFocus}
-                  isOnSearch = {onSearch || dataSource}
-                  onSearch={this.debouncedFilterItems.bind(this)}
-                  searchable={searchable}
-                  showCheckAll={showCheckAll}
-                  checkAll={this.checkAll.bind(this)}
-                  loading={fetching}
-                  focusedIndex={focusedIndex}
-                  filterOption={filterOption}
-                  matchFilter={this.matchFilter.bind(this)}
-                  setFocusedIndex={this.setFocusedIndex.bind(this)}
-                  show={dropdownShow && this.props.open}
-                  optionWidth={optionWidth}
-                  selectInputWidth={selectInputWidth}
-                  onEnterSelect={this.onEnterSelect.bind(this)}
-                  moveFocusedIndex={this.moveFocusedIndex.bind(this)}
-                  dropdownItems={ dataSource && this.state.keyword === '' ? cacheSelectedItems : dropdownItems}
-                  selectedItems={selectedItems}
-                  dropdownRender={render}
-                  onClickOption={this.onClickOption.bind(this)}
-            /> 
-          }
-        </Popper>
+        />
       </div>
-    )
-  }
-}
-Select.childContextTypes = {
-  component: PropTypes.any
+      {children}
+      <Popper
+        show={dropdownShow}
+        attachEle={selectInputContainer.current}
+        zIndex={1050}
+        topGap={5}
+        leftGap={0}
+        overlayClassName={overlayClassName}
+        overlayClickOutSideEventName={overlayClickOutSideEventName}
+        setOverlayContainer={setOverlayContainer}
+        // 是否防止溢出功能   暂时不开放
+        preventOverflow={preventOverflow}
+        // 自定义options的方向
+        placement={placement || 'top-bottom-start'}
+        className="hi-select__popper"
+        onKeyDown={handleKeyDown}
+        tabIndex="-1"
+        width={optionWidth}
+        onClickOutside={() => {
+          hideDropdown()
+        }}
+      >
+        <SelectDropdown
+          emptyContent={emptyContent}
+          fieldNames={fieldNames}
+          localeMap={localeDatas.select || {}}
+          mode={type}
+          onOverlayScroll={onOverlayScroll}
+          targetByKeyDown={targetByKeyDown}
+          searchPlaceholder={searchPlaceholder}
+          theme={theme}
+          onFocus={onFocus}
+          isByRemoteSearch={dataSource}
+          isByCustomSearch={onSearch}
+          onSearch={debouncedFilterItems}
+          searchable={searchable}
+          showCheckAll={showCheckAll}
+          checkAll={checkAll}
+          loading={loading}
+          autoloadFlag={autoloadFlag}
+          focusedIndex={focusedIndex}
+          setFocusedIndex={setFocusedIndex}
+          showJustSelected={showJustSelected}
+          filterOption={filterOption}
+          matchFilter={matchFilter}
+          isGroup={isGroup}
+          show={dropdownShow}
+          optionWidth={optionWidth}
+          selectInputWidth={selectInputWidth}
+          dropdownItems={dropdownItems}
+          selectedItems={selectedItems}
+          dropdownRender={render}
+          onClickOption={onClickOption}
+        />
+      </Popper>
+    </div>
+  )
 }
 
+InternalSelect.defaultProps = {
+  data: [],
+  type: 'single',
+  fieldNames: {
+    title: 'title',
+    id: 'id',
+    disabled: 'disabled',
+    children: 'children'
+  },
+  multipleWrap: 'nowrap',
+  disabled: false,
+  clearable: true,
+  autoload: false,
+  showCheckAll: false,
+  showJustSelected: false,
+  open: true,
+  onClick: () => {},
+  onBlur: () => {},
+  onFocus: () => {}
+}
+const Select = forwardRef((props, ref) => {
+  return <InternalSelect {...props} innerRef={ref} />
+})
 export default Provider(Select)

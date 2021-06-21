@@ -31,5 +31,12 @@ class Demo extends React.Component {
     )
   }
 }`
-const DemoActive = () => <DocViewer code={code} scope={{ Progress, Counter }} prefix={prefix} desc={desc} />
+const DemoActive = () => (
+  <DocViewer
+    code={code}
+    scope={{ Progress, Counter }}
+    prefix={prefix}
+    desc={desc}
+  />
+)
 export default DemoActive

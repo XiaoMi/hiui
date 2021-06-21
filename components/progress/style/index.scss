@@ -1,15 +1,14 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
-$progress-bg: #f2f2f2 !default;
-$progress-primary: #3b76dc !default;
-$progress-success: #1da653 !default;
-$progress-warn: #eb5252 !default;
-$progress-error: #e19d0c !default;
-$progress-text: #666 !default;
+$color-map: (
+  'warn': get-color($palette-secondary, 'warning'),
+  'success': get-color($palette-secondary, 'success'),
+  'error': get-color($palette-secondary, 'danger')
+) !default;
 
 .hi-progress {
   &__inner {
-    background-color: $progress-bg;
+    background-color: use-color('gray-10');
     border-radius: 10px;
     position: relative;
     overflow: hidden;
@@ -24,12 +23,10 @@ $progress-text: #666 !default;
       right: 0;
       bottom: 0;
       left: 0;
-      background: #fff;
+      background: use-color('white');
       opacity: 0;
       content: '';
-      animation:
-        hi-progress-active 2.4s cubic-bezier(0.23, 1, 0.32, 1)
-        infinite;
+      animation: hi-progress-active 2.4s cubic-bezier(0.23, 1, 0.32, 1) infinite;
     }
   }
 
@@ -37,50 +34,52 @@ $progress-text: #666 !default;
     height: 100%;
     display: block;
     position: relative;
-    background-color: $progress-primary;
+    background-color: use-color('primary');
     transition: width 0.4s cubic-bezier(0.3, 0, 0.7, 1);
-  }
 
-  &__bar--success {
-    background-color: $progress-success;
-  }
+    &--primary {
+      background-color: use-color('primary');
+    }
 
-  &__bar--warn {
-    background-color: $progress-warn;
-  }
-
-  &__bar--error {
-    background-color: $progress-error;
+    @each $key, $value in $color-map {
+      &--#{$key} {
+        background-color: $value;
+      }
+    }
   }
 
   &__text {
     padding-left: 25px;
     font-size: 14px;
-    color: $progress-text;
+    color: use-color('gray-80');
     display: inline-block;
     vertical-align: middle;
+
+    &--primary {
+      color: use-color('primary');
+    }
+
+    @each $key, $value in $color-map {
+      &--#{$key} {
+        color: $value;
+      }
+    }
   }
 
   &__text--inside {
     font-size: 14px;
-    color: #fff;
     position: absolute;
-    right: 5px;
+    right: -5px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translate(100%, -50%);
     line-height: 14px;
-  }
+    word-break: keep-all;
 
-  &__text--success {
-    color: $progress-success;
-  }
-
-  &__text--warn {
-    color: $progress-warn;
-  }
-
-  &__text--error {
-    color: $progress-error;
+    &.inside--left {
+      color: use-color('white');
+      right: 5px;
+      transform: translate(0, -50%);
+    }
   }
 
   &__svg {
@@ -110,87 +109,29 @@ $progress-text: #666 !default;
 
   &__circle {
     fill: none;
-    stroke: $progress-primary;
+    stroke: use-color('primary');
     stroke-width: 6;
     transform: rotate(-90deg);
     transform-origin: 50% 50%;
     transition: stroke-dashoffset 0.4s cubic-bezier(0.3, 0, 0.7, 1);
-  }
 
-  .theme__hiui-blue {
-    &__circle--success {
-      stroke: $progress-success;
-    }
-
-    &__circle--warn {
-      stroke: $progress-warn;
-    }
-
-    &__circle--error {
-      stroke: $progress-error;
+    @each $key, $value in $color-map {
+      &--#{$key} {
+        stroke: $value;
+      }
     }
   }
 
   &__dashboard {
     fill: none;
-    stroke: $progress-primary;
+    stroke: use-color('primary');
     stroke-width: 6;
     transition: stroke-dasharray 0.4s cubic-bezier(0.3, 0, 0.7, 1);
-  }
 
-  &__dashboard--success {
-    stroke: $progress-success;
-  }
-
-  &__dashboard--warn {
-    stroke: $progress-warn;
-  }
-
-  &__dashboard--error {
-    stroke: $progress-error;
-  }
-}
-
-@each $key, $value in $theme-colors {
-  .theme__#{$key} {
-    .hi-progress__bar--primary {
-      background-color: $value;
-    }
-
-    .hi-progress__text--primary {
-      color: $value;
-    }
-
-    .hi-progress__circle {
-      stroke: $value;
-
-      &--success {
-        stroke: $progress-success;
+    @each $key, $value in $color-map {
+      &--#{$key} {
+        stroke: $value;
       }
-
-      &--warn {
-        stroke: $progress-warn;
-      }
-
-      &--error {
-        stroke: $progress-error;
-      }
-    }
-
-    .hi-progress__dashboard {
-      stroke: $value;
-    }
-
-    .hi-progress__dashboard--success {
-      stroke: $progress-success;
-    }
-
-    .hi-progress__dashboard--warn {
-      stroke: $progress-warn;
-    }
-
-    .hi-progress__dashboard--error {
-      stroke: $progress-error;
     }
   }
 }

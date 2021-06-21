@@ -1,13 +1,18 @@
+@import '../../core-css/index.scss';
 $popper-gap: 10px !default;
 $popper-arrow-gap: -5px !default;
 
 .hi-popover {
   position: relative;
   display: inline-block;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .hi-popover-base {
-  background: #fff;
+  background: use-color('white');
   padding: 0 5px;
   white-space: nowrap;
   transition: all 0.5s;
@@ -19,8 +24,8 @@ $popper-arrow-gap: -5px !default;
     position: absolute;
     width: 10px;
     height: 10px;
-    border: 1px solid #e8e8e8;
-    background: #fff;
+    border: 1px solid use-color('gray-20');
+    background: use-color('white');
     box-sizing: border-box;
   }
 
@@ -31,7 +36,7 @@ $popper-arrow-gap: -5px !default;
   .hi-popover__title {
     padding: 5px 15px;
     color: #000;
-    border-bottom: 1px solid #e8e8e8;
+    border-bottom: 1px solid use-color('gray-20');
   }
 
   .hi-popover__content {

@@ -7,30 +7,39 @@ const loadingInstance = {}
 
 const prefixCls = 'hi-loading'
 class Loading extends Component {
-  render () {
+  render() {
     const { size, full, content, children, target, visible } = this.props
     const mountNode = target || (full ? document.body : '')
-    const iconCls = classNames(
-      `${prefixCls}__icon`,
-      `${prefixCls}__icon--${size}`
-    )
+    const iconCls = classNames(`${prefixCls}__icon`, `${prefixCls}__icon--${size}`)
     const maskCls = classNames(`${prefixCls}__mask`, {
       [`${prefixCls}__mask--global`]: full,
       [`${prefixCls}__mask--part`]: !full,
       [`${prefixCls}__mask--hide`]: visible === false
     })
     return (
-      <PortalWrapper mountNode={mountNode}>
+      <PortalWrapper mountNode={mountNode} needWrapper={!!children}>
         {children}
-        <div className={maskCls}>
-          <div className={`${prefixCls}__outter`}>
-            <div className={iconCls}>
-              <div />
-              <div />
+        {children || mountNode ? (
+          <div className={maskCls}>
+            <div className={`${prefixCls}__outter`}>
+              <div className={iconCls}>
+                <div />
+                <div />
+              </div>
+              <div className={`${prefixCls}__text`}>{content}</div>
             </div>
-            <div className={`${prefixCls}__text`}>{content}</div>
           </div>
-        </div>
+        ) : (
+          visible !== false && (
+            <div className={`${prefixCls}__outter`}>
+              <div className={iconCls}>
+                <div />
+                <div />
+              </div>
+              <div className={`${prefixCls}__text`}>{content}</div>
+            </div>
+          )
+        )}
       </PortalWrapper>
     )
   }
@@ -49,26 +58,23 @@ Loading.defaultProps = {
   size: 'default'
 }
 
-function PortalWrapper ({ mountNode, children }) {
+function PortalWrapper({ mountNode, children, needWrapper }) {
   return mountNode ? (
     ReactDOM.createPortal(children, mountNode)
-  ) : (
+  ) : needWrapper ? (
     <div className={`${prefixCls}__wrapper`}>{children}</div>
+  ) : (
+    children
   )
 }
 
-function open (target, { content, key, duration, size } = {}) {
+function open(target, { content, key, duration, size } = {}) {
   let renderNode = document.createElement('div')
   const mountNode = target || document.body
-  mountNode.nodeName !== 'BODY' && (
-    window.getComputedStyle(mountNode).position === 'absolute' ||
-    mountNode.style.setProperty('position', 'relative')
-  )
+  mountNode.nodeName !== 'BODY' &&
+    (window.getComputedStyle(mountNode).position === 'absolute' || mountNode.style.setProperty('position', 'relative'))
   const full = !target
-  ReactDOM.render(
-    <Loading {...{ content, full, visible: true, target: mountNode, size }} />,
-    renderNode
-  )
+  ReactDOM.render(<Loading {...{ content, full, visible: true, target: mountNode, size }} />, renderNode)
   loadingInstance[key] = renderNode
   if (!isNaN(duration) && duration > 0) {
     setTimeout(() => {
@@ -78,37 +84,31 @@ function open (target, { content, key, duration, size } = {}) {
   }
 }
 
-function deprecatedOpen ({ target, tip } = {}) {
+function deprecatedOpen({ target, tip } = {}) {
   let renderNode = document.createElement('div')
   const mountNode = target || document.body
-  mountNode.nodeName !== 'BODY' && (
-    window.getComputedStyle(mountNode).position === 'absolute' ||
-    mountNode.style.setProperty('position', 'relative')
-  )
+  mountNode.nodeName !== 'BODY' &&
+    (window.getComputedStyle(mountNode).position === 'absolute' || mountNode.style.setProperty('position', 'relative'))
   const full = !target
-  ReactDOM.render(
-    <Loading {...{ tip, full, show: true, target: mountNode }} />,
-    renderNode
-  )
-  function close () {
+  ReactDOM.render(<Loading {...{ tip, full, show: true, target: mountNode }} />, renderNode)
+  function close() {
     renderNode && ReactDOM.unmountComponentAtNode(renderNode)
     renderNode = undefined
   }
   return { close }
 }
 
-function openWrapper (target, options) {
+function openWrapper(target, options) {
   if (arguments.length >= 2) {
     open(target, options)
   } else {
     return deprecatedOpen(target)
   }
 }
-function close (key) {
+function close(key) {
   if (loadingInstance[key]) {
     ReactDOM.unmountComponentAtNode(loadingInstance[key])
-    loadingInstance[key].parentNode &&
-      loadingInstance[key].parentNode.removeChild(loadingInstance[key])
+    loadingInstance[key].parentNode && loadingInstance[key].parentNode.removeChild(loadingInstance[key])
   }
 }
 

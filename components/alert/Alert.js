@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import Icon from '../icon'
 import './style/index'
 class Alert extends Component {
   constructor (props) {
@@ -14,57 +14,41 @@ class Alert extends Component {
       }, this.props.duration)
     }
   }
-  handleClose () {
+  handleClose = () => {
     this.setState({ visible: false })
     this.props.onClose && this.props.onClose()
   }
   render () {
-    let classnames = classNames(this.props.prefixCls, this.state.visible, this.props.type, `theme__${this.props.theme}`, {
-      noTitle: !this.props.title
-    })
-
-    let type = this.props.type
-
+    const { prefixCls, type, theme, title, content, closeable } = this.props
+    let classnames = classNames(prefixCls, `${prefixCls}--${type}`, `theme__${theme}`)
+    let _type
     switch (type) {
       case 'warning':
-        type = 'jinggao'
+        _type = 'exclamation-circle'
         break
       case 'error':
-        type = 'shibai'
+        _type = 'close-circle'
         break
       case 'success':
-        type = 'chenggong'
+        _type = 'check-circle'
         break
       default:
-        type = 'tishi'
+        _type = 'info-circle'
     }
 
     return (
       this.state.visible && (
         <div className={classnames}>
-          <div className='hi-icon__title'>
-            <i className={`hi-icon icon-${type}`} />
-            {this.props.title && <div className='text-title'>{this.props.title}</div>}
+          <div className='hi-alert__title'>
+            <Icon name={_type} filled />
+            {title}
           </div>
-          {this.props.content && <div className='text-message'>{this.props.content}</div>}
-          {this.props.closeable && (
-            <div className='close-btn icon-img-delete' onClick={this.handleClose.bind(this)}>
-              <i className='hi-icon icon-close' />
-            </div>
-          )}
+          {content && <div className='hi-alert__content'>{content}</div>}
+          {closeable && <Icon name='close' className='hi-alert__close-btn' onClick={this.handleClose} />}
         </div>
       )
     )
   }
-}
-
-Alert.propTypes = {
-  type: PropTypes.oneOf(['info', 'error', 'success', 'warning']),
-  onClose: PropTypes.func,
-  content: PropTypes.string,
-  title: PropTypes.string,
-  closeable: PropTypes.bool,
-  duration: PropTypes.number
 }
 
 Alert.defaultProps = {

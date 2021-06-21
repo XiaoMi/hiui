@@ -4,7 +4,7 @@ import Icon from '../icon'
 import DropdownMenu from './DropdownMenu'
 import { prefixCls } from '.'
 
-const MenuItemWrapper = forwardRef(({ href, children, disabled, ...props }, ref) => {
+const MenuItemWrapper = forwardRef(({ href, target, children, disabled, ...props }, ref) => {
   const shouldUseLink = href && !disabled
   if (disabled) {
     Reflect.deleteProperty(props, 'onMouseEnter')
@@ -12,8 +12,14 @@ const MenuItemWrapper = forwardRef(({ href, children, disabled, ...props }, ref)
     Reflect.deleteProperty(props, 'onClick')
   }
   return (
-    <li ref={ref} {...props} >
-      {shouldUseLink ? <a href={href}>{children}</a> : children}
+    <li ref={ref} {...props}>
+      {shouldUseLink ? (
+        <a href={href} target={target}>
+          {children}
+        </a>
+      ) : (
+        children
+      )}
     </li>
   )
 })
@@ -24,6 +30,7 @@ export default class DropdownMenuItem extends React.Component {
   state = {
     visible: false
   }
+
   setMenuHide = () => {
     this.timerHideDropdownMenu = setTimeout(() => {
       this.setState({
@@ -31,20 +38,24 @@ export default class DropdownMenuItem extends React.Component {
       })
     }, 100)
   }
+
   handleMenuItemMouseEnter = () => {
     clearTimeout(this.timerHideDropdownMenu)
     this.setState({
       visible: true
     })
   }
+
   handleMenuItemMouseLeave = () => {
     this.setMenuHide()
   }
+
   handleMenuMouseEnter = () => {
     const { onChildMenuMouseEnter } = this.props
     onChildMenuMouseEnter && onChildMenuMouseEnter()
     clearTimeout(this.timerHideDropdownMenu)
   }
+
   handleMenuMouseLeave = () => {
     const { onChildMenuMouseLeave } = this.props
     onChildMenuMouseLeave && onChildMenuMouseLeave()
@@ -54,35 +65,17 @@ export default class DropdownMenuItem extends React.Component {
   handleMenuItemClick = (event) => {
     if (event) {
       event.stopPropagation()
-      event.preventDefault()
-      if (event.nativeEvent && event.nativeEvent.stopImmediatePropagation) {
-        event.nativeEvent.stopImmediatePropagation()
-      }
     }
     const { onMenuItemClick, id, children, href } = this.props
-    onMenuItemClick(id, (href || !children))
+    onMenuItemClick(id, href || !children)
   }
-  render () {
-    const {
-      title,
-      children,
-      parentPopperVisible,
-      href,
-      disabled,
-      onMenuItemClick,
-      width,
-      theme
-    } = this.props
+
+  render() {
+    const { title, children, parentPopperVisible, href, disabled, onMenuItemClick, width, theme } = this.props
     const { visible } = this.state
     const shouldRenderDivider = title === '-'
-    const itemCls = classNames(
-      `${prefixCls}__menu-item`,
-      disabled && `${prefixCls}__menu-item--disabled`
-    )
-    const iconCls = classNames(
-      `${prefixCls}__menu-item__icon`,
-      visible && `${prefixCls}__menu-item__icon--active`
-    )
+    const itemCls = classNames(`${prefixCls}__menu-item`, disabled && `${prefixCls}__menu-item--disabled`)
+    const iconCls = classNames(`${prefixCls}__menu-item__icon`, visible && `${prefixCls}__menu-item__icon--active`)
     return shouldRenderDivider ? (
       <li className={`${prefixCls}__divider`} />
     ) : (
@@ -98,12 +91,12 @@ export default class DropdownMenuItem extends React.Component {
         <span>{title}</span>
         {children && (
           <React.Fragment>
-            <Icon name='right' className={iconCls} />
+            <Icon name="right" className={iconCls} />
             <DropdownMenu
               data={children}
               theme={theme}
               visible={visible && parentPopperVisible}
-              placement='right-start'
+              placement="right-start"
               attachEle={this.refItem.current}
               onMouseLeave={this.handleMenuMouseLeave}
               onMouseEnter={this.handleMenuMouseEnter}

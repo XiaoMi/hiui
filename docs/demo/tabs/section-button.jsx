@@ -37,7 +37,7 @@ class Demo extends React.Component {
   }
   render () {
     return (
-      <Tabs type="desc" onTabClick={(tab,e)=>console.log(tab,e)}>
+      <Tabs type="desc" onTabClick={(tab,e)=>console.log(tab)}>
         {
           this.state.panes.map((pane, index) => {
             return (
@@ -47,6 +47,7 @@ class Demo extends React.Component {
                 tabId={pane.tabId}
                 closeable={pane.closeable}
                 key={index}
+               
               >
               </Tabs.Pane>
             )
@@ -57,5 +58,7 @@ class Demo extends React.Component {
   }
 }`
 
-const Demo = () => <DocViewer code={code} scope={{ Tabs }} desc={desc} prefix={prefix} />
+const Demo = () => (
+  <DocViewer code={code} scope={{ Tabs }} desc={desc} prefix={prefix} />
+)
 export default Demo

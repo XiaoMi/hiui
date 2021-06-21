@@ -58,9 +58,9 @@ class Demo extends React.Component {
             <br/>
             <Progress type='success' content='成功' percent={40} size={size}/>
             <br/>
-            <Progress type='warn' content='错误' percent={50} size={size}/>
+            <Progress type='warn' content='警示' percent={50} size={size}/>
             <br/>
-            <Progress type='error' content='警示' percent={100} size={size}/>
+            <Progress type='error' content='错误' percent={100} size={size}/>
           </Col>
         </Row>
       </div>
@@ -68,5 +68,12 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoType = () => <DocViewer code={code} scope={{ Progress, Form, Radio, Grid, Input, Button }} prefix={prefix} desc={desc} />
+const DemoType = () => (
+  <DocViewer
+    code={code}
+    scope={{ Progress, Form, Radio, Grid, Input, Button }}
+    prefix={prefix}
+    desc={desc}
+  />
+)
 export default DemoType

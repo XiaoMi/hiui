@@ -11,7 +11,7 @@ const LANG = {
   'en-US': ['Show Code', 'Hide Code', 'Copy Code']
 }
 class Demo extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.playerId = `${parseInt(Math.random() * 1e9).toString(36)}`
@@ -39,21 +39,21 @@ class Demo extends Component {
     locale: PropTypes.string
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.parseType && this.renderSource(this.source[2])
   }
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (this.props.theme !== nextProps.theme) {
       setTimeout(() => this.renderSource(this.source[2]), 0)
     }
   }
 
-  blockControl () {
+  blockControl() {
     this.setState({
       showBlock: !this.state.showBlock
     })
   }
-  renderSource (value) {
+  renderSource(value) {
     const { locale, theme } = this.props
     const args = ['context', 'React', 'ReactDOM']
     const argv = [this, React, ReactDOM]
@@ -85,7 +85,7 @@ class Demo extends Component {
     new Fn(...args).apply(null, argv)
   }
 
-  render () {
+  render() {
     const showCode = this.state.showCode
     const locale = this.props.locale
     let ls = LANG[locale]
@@ -95,97 +95,106 @@ class Demo extends Component {
     return (
       <div className={`demo-box demo-box-${this.props.name}`}>
         <div className={`run-demo${this.parseType === 'run' ? 'parseType-run' : ''}`} id={this.playerId} />
-        {
-          this.parseType !== 'run'
-            ? (
-              <div className={`code-demo ${showCode ? '' : 'none'}`}>
-                <div className='code' ref={(arg) => { this.code = arg }}>
+        {this.parseType !== 'run' ? (
+          <div className={`code-demo ${showCode ? '' : 'none'}`}>
+            <div
+              className='code'
+              ref={(arg) => {
+                this.code = arg
+              }}
+            >
+              <div
+                className='description-box'
+                ref={(arg) => {
+                  this.desc = arg
+                }}
+              >
+                {this.description && (
                   <div
-                    className='description-box'
-                    ref={arg => { this.desc = arg }}
-                  >
-                    {this.description && (
-                      <div
-                        ref='description'
-                        className='description'
-                        dangerouslySetInnerHTML={{ __html: this.description }}
-                      />
-                    )}
-                    <span
-                      className='code-copy'
-                      onClick={() => {
-                        var text = this.pre
-
-                        if (document.body.createTextRange) {
-                          var range = document.body.createTextRange()
-                          range.moveToElementText(text)
-                          range.select()
-                        } else if (window.getSelection) {
-                          var selection = window.getSelection()
-                          range = document.createRange()
-                          range.selectNodeContents(text)
-                          selection.removeAllRanges()
-                          selection.addRange(range)
-                        }
-
-                        document.execCommand('Copy', 'false', null)
-                      }}
-                    >
-                      {ls[2]}
-                    </span>
-                  </div>
-
-                  <pre
-                    className='language-js'
-                    ref={(arg) => { this.pre = arg }}
-                  >
-                    <code
-                      className='language-js'
-                      ref={arg => { this.languages = arg }}
-                      dangerouslySetInnerHTML={{
-                        __html: Prism.highlight(
-                          this.source[2],
-                          Prism.languages.javascript
-                        )
-                      }}
-                    />
-                  </pre>
-                </div>
-                <div
-                  className='code-ctrl'
+                    ref='description'
+                    className='description'
+                    dangerouslySetInnerHTML={{ __html: this.description }}
+                  />
+                )}
+                <span
+                  className='code-copy'
                   onClick={() => {
-                    let height = 0
+                    var text = this.pre
 
-                    if (!showCode) {
-                      if (typeof this.state.height === 'number') {
-                        height = this.state.height
-
-                        this.setState({ showCode: !showCode })
-                      } else {
-                        const preStyles = window.getComputedStyle(this.pre)
-                        const descStyles = window.getComputedStyle(this.desc)
-
-                        height = parseInt(preStyles.height) + parseInt(preStyles.paddingTop) * 2 + parseInt(preStyles.marginTop) + parseInt(descStyles.marginTop) * 2 + parseInt(descStyles.paddingTop) * 2 + parseInt(descStyles.height) + 'px'
-
-                        this.setState({ showCode: !showCode, height })
-                      }
-                    } else {
-                      this.setState({ showCode: !showCode })
+                    if (document.body.createTextRange) {
+                      var range = document.body.createTextRange()
+                      range.moveToElementText(text)
+                      range.select()
+                    } else if (window.getSelection) {
+                      var selection = window.getSelection()
+                      range = document.createRange()
+                      range.selectNodeContents(text)
+                      selection.removeAllRanges()
+                      selection.addRange(range)
                     }
 
-                    this.code.style.height = height
+                    document.execCommand('Copy', 'false', null)
                   }}
                 >
-                  <div
-                    className='code-ctrl-text'
-                  >
-                    {showCode ? ls[1] : ls[0]}
-                  </div>
-
-                </div>
+                  {ls[2]}
+                </span>
               </div>
-            ) : ''
-        }
+
+              <pre
+                className='language-js'
+                ref={(arg) => {
+                  this.pre = arg
+                }}
+              >
+                <code
+                  className='language-js'
+                  ref={(arg) => {
+                    this.languages = arg
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: Prism.highlight(this.source[2], Prism.languages.javascript)
+                  }}
+                />
+              </pre>
+            </div>
+            <div
+              className='code-ctrl'
+              onClick={() => {
+                let height = 0
+
+                if (!showCode) {
+                  if (typeof this.state.height === 'number') {
+                    height = this.state.height
+
+                    this.setState({ showCode: !showCode })
+                  } else {
+                    const preStyles = window.getComputedStyle(this.pre)
+                    const descStyles = window.getComputedStyle(this.desc)
+
+                    height =
+                      parseInt(preStyles.height) +
+                      parseInt(preStyles.paddingTop) * 2 +
+                      parseInt(preStyles.marginTop) +
+                      parseInt(descStyles.marginTop) * 2 +
+                      parseInt(descStyles.paddingTop) * 2 +
+                      parseInt(descStyles.height) +
+                      'px'
+
+                    this.setState({ showCode: !showCode, height })
+                  }
+                } else {
+                  this.setState({ showCode: !showCode })
+                }
+
+                this.code.style.height = height
+              }}
+            >
+              <div className='code-ctrl-text'>{showCode ? ls[1] : ls[0]}</div>
+            </div>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     )
   }

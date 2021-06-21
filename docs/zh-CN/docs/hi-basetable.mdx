@@ -1,0 +1,76 @@
+# HiBaseTable
+
+为满足开发对 table 的多样化需求，特基于[BaseTable](https://autodesk.github.io/react-base-table/docs/get-started)进行封装，本次推荐仅仅做了部分功能封装；更多功能请参考[BaseTable文档](https://autodesk.github.io/react-base-table/docs/get-started)&&[更多示例](https://autodesk.github.io/react-base-table/examples/default)
+
+## 以下情况下建议使用HiBaseTable
+
+ - 数据量较多时候
+ - 显示灵活度较高时
+
+## 使用方法
+
+
+1. 安装基础依赖 react-base-table 
+
+```shell
+# npm
+npm install react-base-table --save
+# yarn
+yarn add react-base-table
+
+```
+## 基础用法
+
+## 基础用法
+
+import DemoBase from '../../demo/base-table/section-base.jsx'
+
+<DemoBase />
+
+## 其他用法
+
+import DemoTooltip from '../../demo/base-table/section-tooltip.jsx'
+
+<DemoTooltip />
+
+## Props
+
+| 属性名             | 描述                                                                                                    | 类型                                           | 可选值                                    | 默认值     |
+| ------------------ | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------- | ---------- |
+| data               | 表格数据                                                                                                | object[]                                       | -                                         | -          |
+| columns            | 表格列配置信息                                                                                          | ColumnItem[]                                   | -                                         | -          |
+| sticky             | 是否支持表头吸顶                                                                                        | boolean                                        | true \| false                             | false      |
+| stickyTop          | 表头吸顶距离视口顶部距离                                                                                | number                                         | -                                         | 0          |
+| bordered           | 是否显示边框（表头分组模式下，表格自带边框）                                                            | boolean                                        | true \| false                             | false      |
+| autoResize         | 是否自适应（设置为**false**后, 需要手动定义**column**的宽度)                                                                                       | boolean                                        | true \| false                             | true      |
+| fixedToColumn      | 表格列冻结设置，为 string 时仅支持从左侧冻结至某一列                                                    | string \| FixedOption                          | columns 中对应的 dataKey                                          | null       |
+
+[更多Table设置](https://autodesk.github.io/react-base-table/api/basetable)
+
+### ColumnItem
+
+| 参数     | 说明                   | 类型                                                                             | 可选值            | 默认值 |
+| -------- | ---------------------- | -------------------------------------------------------------------------------- | ----------------- | ------ |
+| title    | 列标题                 | string                                                                           | -                 | -      |
+| dataKey  | 列对应数据项的唯一标识 | string \| number                                                                 | -                 | -      |
+| align    | 列对齐方式             | string                                                                           | 'left' \|'center' \|'right' | 'left' |
+| width    | 该列宽度               | number                                                                           | -                 | -      |
+
+[更多ColumnItem设置](https://autodesk.github.io/react-base-table/api/column)
+
+
+### FixedOption
+
+| 参数  | 说明                 | 类型   | 可选值 | 默认值 |
+| ----- | -------------------- | ------ | ------ | ------ |
+| left  | 表格从左侧冻结至某列 | string | columns 中对应的 dataKey      | -      |
+| right | 表格从右侧冻结至某列 | string | columns 中对应的 dataKey       | -      |
+
+### 
+
+
+
+## 其他
+
+- [更多示例](https://autodesk.github.io/react-base-table/examples/default)
+- [SortOrder](https://github.com/Autodesk/react-base-table/blob/master/src/SortOrder.js)

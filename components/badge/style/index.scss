@@ -1,8 +1,8 @@
+@import '../../core-css/index.scss';
+
 .hi-badge {
-  &-base {
-    display: inline-block;
-    position: relative;
-  }
+  display: inline-block;
+  position: relative;
 
   &-value {
     position: absolute;
@@ -12,14 +12,15 @@
     height: 16px;
     padding: 0 4px;
     min-width: 8px;
-    border: 2px solid #fff;
+    border: 2px solid use-color('white');
     border-radius: 10px;
     line-height: 16px;
-    background: #f44141;
-    font-size: 12px;
-    color: #fff;
+    background: get-color($palette-secondary, 'danger');
+    font-size: $font-size-small;
+    color: use-color('white');
     letter-spacing: 0;
     text-align: center;
+    z-indx: 1;
 
     &.hi-hide {
       display: none;
@@ -32,10 +33,10 @@
     height: 8px;
     top: -5px;
     right: -5px;
-    background: #f44141;
-    border: 1px solid #fff;
+    background: get-color($palette-secondary, 'danger');
+    border: 1px solid use-color('white');
     border-radius: 50%;
-    font-size: 0;
+    z-index: 1;
 
     &.hi-hide {
       display: none;

@@ -10,8 +10,8 @@ const isDevelopment = /development/gi.test(process.env.NODE_ENV)
  * @param {[[string, string, Function], [string, string, Function]]} compatPair
  * @returns
  */
-export const depreactedPropsCompat = (compatPair) => (WrappedComponent) => {
-  const WrapperComponent = (props) => {
+export const depreactedPropsCompat = compatPair => WrappedComponent => {
+  const WrapperComponent = props => {
     const compatProps = { ...props }
     const componentName =
       WrappedComponent.displayName ||

@@ -1,107 +1,130 @@
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
 .hi-card {
   border-radius: 2px;
-  border: 1px solid rgba(231, 231, 231, 1);
   box-sizing: border-box;
-  background: #fff;
+  background: use-color('white');
 
-  &--padding {
-    padding: 24px;
+  &--bordered {
+    border: 1px solid use-color('gray-20');
   }
 
-  &--hover:not(.hi-card--disabled) {
-    &:hover {
-      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
-      // cursor: pointer;
-    }
-  }
-
-  &--disabled {
-    background: rgba(246, 246, 246, 1);
-    color: rgba(204, 204, 204, 1);
-    cursor: not-allowed;
-    user-select: none;
-  }
-
-  &__header {
-    height: 24px;
-    line-height: 24px;
-    display: flex;
-    padding-bottom: 4px;
-    justify-content: space-between;
-
-    &--onlyextra {
-      justify-content: flex-end;
-    }
-  }
-
-  &__title {
-    font-size: 16px;
-    font-weight: 600;
+  &--simple {
+    height: 40px;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+
+    &.hi-card--small {
+      width: 136px;
+    }
+
+    &.hi-card--default {
+      width: 156px;
+    }
+
+    &.hi-card--large {
+      width: 176px;
+    }
   }
 
-  &__content {
-    &--cover {
+  &--cover {
+    // 解决 img 底部空白问题
+    > img {
+      display: block;
+      width: 100%;
+      border-radius: 2px 2px 0 0;
+    }
+
+    .hi-card__title {
+      margin-bottom: 4px;
+      font-size: $font-size-large;
+      font-weight: $font-weight-bold;
+    }
+
+    .hi-card__content {
       padding: 16px;
     }
 
-    &--simple {
-      height: 40px;
-      line-height: 40px;
-      padding: 0 12px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    &.hi-card--small {
+      width: 276px;
+    }
+
+    &.hi-card--default {
+      width: 376px;
+    }
+
+    &.hi-card--large {
+      width: 576px;
     }
   }
 
-  &__extra {
-    cursor: pointer;
-    color: #4284f5;
-    font-size: 14px;
+  &--standard {
+    .hi-card__content {
+      padding: 24px;
+    }
 
-    &--hide {
-      display: none;
+    .hi-card__title {
+      height: 48px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid use-color('gray-20');
+      font-size: $font-size-large;
+      font-weight: $font-weight-bold;
+    }
+
+    &.hi-card--small {
+      width: 276px;
+      min-height: 138px;
+    }
+
+    &.hi-card--default {
+      width: 376px;
+      min-height: 188px;
+    }
+
+    &.hi-card--large {
+      width: 576px;
+      min-height: 196px;
     }
   }
 
-  &--middle {
-    width: 376px;
-  }
+  &--normal {
+    padding: 24px;
 
-  &--small {
-    width: 276px;
-  }
-
-  &--large {
-    width: 576px;
-  }
-
-  &--simple-small {
-    width: 136px;
-  }
-
-  &--simple-middle {
-    width: 156px;
-  }
-
-  &--simple-large {
-    width: 176px;
-  }
-}
-
-@each $key, $value in $palette-primary {
-  .theme__#{$key}.hi-card {
-    &__extra {
-      color: $value;
+    .hi-card__title {
+      font-size: $font-size-large;
+      font-weight: $font-weight-bold;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .hi-icon {
-      color: $value;
+    &.hi-card--small {
+      width: 276px;
+      min-height: 138px;
+    }
+
+    &.hi-card--default {
+      width: 376px;
+      min-height: 188px;
+    }
+
+    &.hi-card--large {
+      width: 576px;
+      min-height: 196px;
+    }
+  }
+
+  &--hoverable {
+    transition: box-shadow 0.3s;
+
+    &:hover {
+      box-shadow: 0 2px 8px 0 use-color('gray-10');
     }
   }
 }

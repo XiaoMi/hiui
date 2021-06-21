@@ -5,8 +5,7 @@ const prefix = 'date-picker-calendar'
 const rightOptions = ['预置农历', '自定义日期信息']
 const code = [
   {
-    code:
-  `import React from 'react'
+    code: `import React from 'react'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   constructor() {
@@ -16,28 +15,26 @@ class Demo extends React.Component {
     }
   }
   render () {
+    const {value} = this.state
     return (
-      <div style={{display:'flex', flexWrap: 'wrap'}}>
-        <DatePicker
-          value={this.state.value}
-          altCalendarPreset='zh-CN'
-          dateMarkPreset='zh-CN'
-          onChange={(date, dateStr) => {
-            console.log('onChange', date, dateStr)
-            this.setState({
-              value: date
-            })
-          }}
-        />
-      </div>
+      <DatePicker
+        value={value}
+        altCalendarPreset='zh-CN'
+        dateMarkPreset='zh-CN'
+        onChange={(date, dateStr) => {
+          console.log('onChange', date, dateStr)
+          this.setState({
+            value: date
+          })
+        }}
+      />
     )
   }
 }`,
     opt: ['预置农历']
   },
   {
-    code:
-  `import React from 'react'
+    code: `import React from 'react'
 import DatePicker from '@hi-ui/hiui/es/date-picker'\n
 class Demo extends React.Component {
   constructor() {
@@ -63,10 +60,10 @@ class Demo extends React.Component {
                 const date = DatePicker.format(currentDate, 'yyyy/M/D')
                 const yesterday = DatePicker.format(today-86400000, 'yyyy/M/D')
                 const currentday = DatePicker.format(this.state.value, 'yyyy/M/D')
-                
+
                 if(date === '2020/4/8'){
                     return (
-                      <span style={{color: currentday === '2020/4/8' ? '#fff' : '#f63' }}>米</span> 
+                      <span style={{color: currentday === '2020/4/8' ? '#fff' : '#f63' }}>米</span>
                     )
                 } else if (date === yesterday){
                     return (
@@ -90,7 +87,13 @@ class Demo extends React.Component {
 }`,
     opt: ['自定义日期信息']
   }
-
 ]
-const DemoCalendar = () => <DocViewer code={code} rightOptions={rightOptions} scope={{ DatePicker }} prefix={prefix} />
+const DemoCalendar = () => (
+  <DocViewer
+    code={code}
+    rightOptions={rightOptions}
+    scope={{ DatePicker }}
+    prefix={prefix}
+  />
+)
 export default DemoCalendar

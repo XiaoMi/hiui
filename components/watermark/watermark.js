@@ -1,7 +1,8 @@
 const defaultOptions = {
   id: null,
   textAlign: 'left',
-  font: 'normal normal lighter 28px -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
+  font:
+    'normal normal lighter 28px -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"',
   color: 'rgba(148, 148, 148, 0.2)',
   content: '请勿外传',
   rotate: -30,
@@ -14,7 +15,7 @@ const defaultOptions = {
 
 const parseTextData = (ctx, texts, width, isWrap) => {
   let content = []
-  let lines = []
+  const lines = []
   if (texts instanceof Array) {
     content = texts
   } else if (typeof texts === 'string') {
@@ -25,8 +26,8 @@ const parseTextData = (ctx, texts, width, isWrap) => {
   if (isWrap) {
     content.forEach((text) => {
       let curLine = ''
-      for (let char of text) {
-        let nextLine = curLine + char
+      for (const char of text) {
+        const nextLine = curLine + char
         if (char === '\n' || ctx.measureText(nextLine).width > width) {
           lines.push(curLine)
           curLine = char === '\n' ? '' : char
@@ -42,26 +43,17 @@ const parseTextData = (ctx, texts, width, isWrap) => {
   }
 }
 const drawText = (ctx, options) => {
-  let {
-    width,
-    _w = width,
-    height,
-    textOverflowEffect,
-    content: text,
-    font,
-    isAutoWrap,
-    logo
-  } = options
-  let oldBaseLine = ctx.textBaseline
+  let { width, _w = width, height, textOverflowEffect, content: text, font, isAutoWrap, logo } = options
+  const oldBaseLine = ctx.textBaseline
   let x = 0
-  let y = 16
+  const y = 16
   ctx.textBaseline = 'hanging'
   /**
    * LOGO 固定宽高： 32 * 32
    * 内容区域为 画布宽度 - 48 （预留左右各24的 padding）
    * 如含 LOGO ，文字的起始 X 坐标为： 24(padding-left) + 32(logo size) + 4(logo 与 text 间距)
    */
-  let lineHeight = parseInt(font * 2) // ctx.font必须以'XXpx'开头
+  const lineHeight = parseInt(font * 2) // ctx.font必须以'XXpx'开头
   if (logo) {
     x += 64
     _w -= 64
@@ -69,9 +61,9 @@ const drawText = (ctx, options) => {
   const lines = parseTextData(ctx, text, width, isAutoWrap)
 
   // 计算 Y 的起始位置
-  let lineY = y + (ctx.canvas.height) / 2 - (lineHeight * lines.length) / 2
+  let lineY = y + ctx.canvas.height / 2 - (lineHeight * lines.length) / 2
   const initLineY = lineY
-  for (let line of lines) {
+  for (const line of lines) {
     let lineX
     if (ctx.textAlign === 'center') {
       lineX = x + width + 40
@@ -121,8 +113,13 @@ const toImage = (canvas, key, container, options) => {
   visibility:visible !important;
   display: block !important;
   opacity: ${opacity} !important;
+  user-select:none !important;
   background-image:url('${base64Url}');
-  ${options.grayLogo ? '-webkit-filter: grayscale(100%);-moz-filter: grayscale(100%);-ms-filter: grayscale(100%);-o-filter: grayscale(100%);filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);_filter:none;' : ''}
+  ${
+    options.grayLogo
+      ? '-webkit-filter: grayscale(100%);-moz-filter: grayscale(100%);-ms-filter: grayscale(100%);-o-filter: grayscale(100%);filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);_filter:none;'
+      : ''
+  }
   `
   watermarkDiv.setAttribute('style', styleStr)
   if (window.getComputedStyle(container).getPropertyValue('position') === 'static') {
@@ -135,7 +132,14 @@ const toImage = (canvas, key, container, options) => {
     let mo = new MutationObserver(function () {
       const __wm = document.querySelector(`.${key}`)
       const cs = __wm ? window.getComputedStyle(__wm) : {}
-      if ((__wm && (__wm.getAttribute('style') !== styleStr || cs.visibility === 'hidden' || cs.display === 'none' || cs.opacity === 0)) || !__wm) {
+      if (
+        (__wm &&
+          (__wm.getAttribute('style') !== styleStr ||
+            cs.visibility === 'hidden' ||
+            cs.display === 'none' ||
+            cs.opacity === 0)) ||
+        !__wm
+      ) {
         mo.disconnect()
         mo = null
         WaterMarker(container, JSON.parse(JSON.stringify(options)))
@@ -150,7 +154,7 @@ const toImage = (canvas, key, container, options) => {
 }
 const WaterMarker = (container, args) => {
   const _container = container || document.body
-  const {density} = args
+  const { density } = args
   let _markSize = {
     width: 420,
     height: 270
@@ -162,17 +166,7 @@ const WaterMarker = (container, args) => {
     }
   }
   const options = Object.assign({}, defaultOptions, _markSize, args)
-  const {
-    id,
-    width,
-    height,
-    textAlign,
-    textBaseline,
-    font,
-    color,
-    logo,
-    rotate
-  } = options
+  const { id, width, height, textAlign, textBaseline, font, color, logo, rotate } = options
   let key = 'hi-' + Math.floor(Math.random() * (9999 - 1000)) + 1000 + '__wm'
   if (id && id.trim().length > 0 && !document.querySelector(id + '__wm')) {
     key = id + '__wm'
@@ -183,10 +177,12 @@ const WaterMarker = (container, args) => {
   canvas.setAttribute('height', height + 'px')
   ctx.textAlign = textAlign
   ctx.textBaseline = textBaseline
-  ctx.font = `normal normal lighter ${Number(font * 2)}px -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"`
+  ctx.font = `normal normal lighter ${Number(
+    font * 2
+  )}px -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"`
   ctx.fillStyle = color
   ctx.translate(width / 2, height / 2)
-  ctx.rotate(Math.PI / 180 * rotate)
+  ctx.rotate((Math.PI / 180) * rotate)
   ctx.translate(-width / 2, -height / 2)
 
   drawText(ctx, options)

@@ -21,13 +21,13 @@ class Demo extends React.Component {
   openSuccess() {
     Message.open({
       type:'success',
-      title:'网络错误，清重新连接'
+      title:'操作成功'
     })
   }
   openError() {
     Message.open({
       type:'error',
-      title:'网络错误，清重新连接'
+      title:'网络错误，请重新连接'
     })
   }
   openWarning() {
@@ -38,12 +38,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoType = () => (
-  <DocViewer
-    code={code}
-    scope={{ Button, Message }}
-    prefix={prefix}
-    desc={desc}
-  />
-)
+const DemoType = () => <DocViewer code={code} scope={{ Button, Message }} prefix={prefix} desc={desc} />
 export default DemoType

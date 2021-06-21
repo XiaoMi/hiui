@@ -18,7 +18,7 @@ class Demo extends React.Component {
           children: [
             { id: 2, title: '技术',
               children: [
-                { id: 3, title: '后端', onClick: data => {console.log('后端：', data)} },
+                { id: 3, title: '后端' },
                 { id: 4, title: '运维' , disabled: true},
                 { id: 5, title: '前端' }
               ]
@@ -47,15 +47,15 @@ class Demo extends React.Component {
       <div style={{width:500}}>
         <Tree
           defaultExpandAll
-          apperance="line"
           editable={true}
+          apperance={'line'}
           data={this.state.treeData}
           onBeforeSave={(saveNode, data, level) => {
             console.log(saveNode, data,level)
             return true
           }}
           onSave={(saveNode, data) => {
-            
+
             console.log(saveNode, data)
           }}
           onBeforeDelete={(deleteNode, data, level) => {
@@ -66,7 +66,6 @@ class Demo extends React.Component {
             console.log(deleteNode, data)
           }}
           onChange={data => {console.log('Tree data:', data)}}
-          highlightable
         />
       </div>
     )
@@ -100,7 +99,6 @@ class Demo extends React.Component {
             <Tree
               searchable
               defaultExpandAll
-              apperance="line"
               editable={true}
               data={this.state.treeData}
               onSave={(saveNode, data, level) => {
@@ -114,9 +112,9 @@ class Demo extends React.Component {
                   return true
                 }
                 console.log(saveNode, data,level)
-                
+
               }}
-              
+
               onDelete={(deleteNode, data) => {
                 console.log(deleteNode, data)
               }}
@@ -127,6 +125,7 @@ class Demo extends React.Component {
                   }]
                 }
                 return  [{
+                  title:'编辑',
                   type: 'editNode'
                 }, {
                   title: '自定义 Title-1',
@@ -151,7 +150,6 @@ class Demo extends React.Component {
                 }]
               }}
               onChange={data => {console.log('Tree data:', data)}}
-              highlightable
             />
           </div>
         )
@@ -161,12 +159,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoEdit = () => (
-  <DocViewer
-    code={code}
-    scope={{ Tree, Notification }}
-    prefix={prefix}
-    desc={desc}
-    rightOptions={rightOptions}
-  />
+  <DocViewer code={code} scope={{ Tree, Notification }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
 )
 export default DemoEdit

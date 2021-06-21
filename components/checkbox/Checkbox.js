@@ -6,16 +6,19 @@ import Provider from '../context'
 const prefixCls = 'hi-checkbox'
 
 class Checkbox extends Component {
-  constructor (props) {
+  static displayName = 'Checkbox'
+  constructor(props) {
     super(props)
     this.state = getChecked(props)
   }
-  static getDerivedStateFromProps (nextProps) {
+
+  static getDerivedStateFromProps(nextProps) {
     if (hasChecked(nextProps)) {
       return getChecked(nextProps)
     }
     return null
   }
+
   handleChange = (event) => {
     const { onChange } = this.props
     onChange && onChange(event)
@@ -24,7 +27,8 @@ class Checkbox extends Component {
         checked: event.target.checked
       })
   }
-  render () {
+
+  render() {
     const {
       autoFocus,
       className,
@@ -34,15 +38,11 @@ class Checkbox extends Component {
       style,
       theme,
       name,
-      value
+      value,
+      focusable = true
     } = this.props
     const { checked } = this.state
-    const checkboxCls = classNames(
-      prefixCls,
-      className,
-      disabled && `${prefixCls}--disabled`,
-      `theme__${theme}`
-    )
+    const checkboxCls = classNames(prefixCls, className, disabled && `${prefixCls}--disabled`, `theme__${theme}`)
     const inputCls = classNames(
       `${prefixCls}__input`,
       checked && !indeterminate && `${prefixCls}__input--checked`,
@@ -51,13 +51,14 @@ class Checkbox extends Component {
     return (
       <label className={checkboxCls} style={style}>
         <input
-          type='checkbox'
+          type="checkbox"
           autoFocus={autoFocus}
           onChange={this.handleChange}
           checked={checked}
           disabled={disabled}
           name={name}
           value={value}
+          tabIndex={focusable ? 0 : -1}
         />
         <span className={inputCls} />
         {children !== undefined && <span className={`${prefixCls}__text`}>{children}</span>}
@@ -67,7 +68,7 @@ class Checkbox extends Component {
 }
 
 Checkbox.propTypes = {
-  checked: PropTypes.bool,
+  checked: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   className: PropTypes.string,
   style: PropTypes.object,
   defaultChecked: PropTypes.bool,
@@ -82,12 +83,14 @@ Checkbox.defaultProps = {
   defaultChecked: false
 }
 
-function hasChecked (props) {
+Checkbox._displayName = 'Checkbox'
+
+function hasChecked(props) {
   const has = (key) => Object.prototype.hasOwnProperty.call(props, key)
   return has('checked')
 }
 
-function getChecked (props) {
+function getChecked(props) {
   const { checked, defaultChecked } = props
   return {
     checked: hasChecked(props) ? checked || false : defaultChecked

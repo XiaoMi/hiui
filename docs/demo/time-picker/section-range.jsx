@@ -9,20 +9,12 @@ class Demo extends React.Component {
   render() {
     return (
       <TimePicker
-        value={{start: new Date(), end: new Date()}}
+        defaultValue={{start: new Date(), end: new Date()}}
         type="timerange"
-        format="HH:mm:ss"
-        onChange={date => console.log('时间范围', date)}
+        onChange={(date, dateString) => console.log(date, dateString)}
       />
     )
   }
 }`
-const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ TimePicker }}
-    prefix={prefix}
-    desc={desc}
-  />
-)
+const DemoBase = () => <DocViewer code={code} scope={{ TimePicker }} prefix={prefix} desc={desc} />
 export default DemoBase

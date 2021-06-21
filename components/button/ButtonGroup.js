@@ -6,14 +6,14 @@ class ButtonGroup extends Component {
     prefixCls: 'hi-btn-group'
   }
 
-  render () {
-    const {
-      prefixCls,
-      style,
-      className
-    } = this.props
+  render() {
+    const { prefixCls, style, className } = this.props
     const classes = classNames(`${prefixCls}`, className)
-    return <div className={classes} style={style}>{this.props.children}</div>
+    return (
+      <div className={classes} style={style}>
+        {this.props.children}
+      </div>
+    )
   }
 }
 

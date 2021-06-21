@@ -5,38 +5,43 @@ const prefix = 'upload-upload'
 const leftOptions = ['基础', '禁用', '默认']
 const desc = '突出上传附件的操作入口，节省页面空间'
 const code = [
-  {code: `import React from 'react'
-    import Upload from '@hi-ui/hiui/es/upload'\n
-    import Icon from '@hi-ui/hiui/es/icon'\n
-    class Demo extends React.Component {
-      constructor(props) {
-        super(props)
-        this.state={param:{id:'uid',channel:'youpin'}}
-      }
-      render () {
-        const param = this.state.param
-        return (
-          <div>
-            <Upload
-              type="normal"
-              uploadAction= "http://www.mocky.io/v2/5dc3b4413000007600347501"
-              tips='仅支持 jpg/png 文件，且不超过 500kb'
-              headers={{name: 'mi'}}
-              content='上传文件'
-              param={param}
-              name={'files[]'}
-              onChange = {(file, fileList, response) => {
-                console.log('upload callback', file, fileList, response)
-                // if(response&&response.status !== 200) return false // 返回 false 则该文件会从列表里删除
-              }}
-              disabled={false}
-            />
-          </div>
-        )
-      }
-    }`,
-  opt: ['基础']
-  }, {code: `import React from 'react'
+  {
+    code: `import React from 'react'\n
+import Upload from '@hi-ui/hiui/es/upload'
+import Icon from '@hi-ui/hiui/es/icon'
+class Demo extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state={data:{id:'uid',channel:'youpin'}}
+  }
+  render () {
+    const data = this.state.data
+    return (
+      <div>
+        <Upload
+          type="normal"
+          // uploadAction="https://mife-gallery.test.mi.com/hiui/upload"
+          uploadAction="https://jsonplaceholder.typicode.com/posts/"
+          tips='仅支持 jpg/png 文件，且不超过 500kb'
+          accept="image/png,image/jpg"
+          headers={{name: 'mi'}}
+          content='上传文件'
+          data={data}
+          name={'files[]'}
+          onChange = {(file, fileList, response) => {
+            console.log('upload callback', file, fileList, response)
+            // if(response&&response.status !== 200) return false // 返回 false 则该文件会从列表里删除
+          }}
+          disabled={false}
+        />
+      </div>
+    )
+  }
+}`,
+    opt: ['基础']
+  },
+  {
+    code: `import React from 'react'
   import Upload from '@hi-ui/hiui/es/upload'\n
   class Demo extends React.Component {
     render () {
@@ -46,22 +51,24 @@ const code = [
           tips='仅支持 jpg/png 文件，且不超过 500kb'
           uploadAction= "http://www.mocky.io/v2/5dc3b4413000007600347501"
           content='上传文件'
-          params={{id:'uid',channel:'youpin'}}
+          data={{id:'uid',channel:'youpin'}}
           disabled={true}
         />
       )
     }
   }`,
-  opt: ['禁用']},
-  { code: `import React from 'react'
+    opt: ['禁用']
+  },
+  {
+    code: `import React from 'react'
   import Upload from '@hi-ui/hiui/es/upload'\n
   class Demo extends React.Component {
     constructor(props) {
       super(props)
-      this.state={param:{id:'uid',channel:'youpin'}}
+      this.state={data:{id:'uid',channel:'youpin'}}
     }
     render () {
-      const param = this.state.param
+      const data = this.state.data
       return (
         <div>
           <Upload
@@ -69,7 +76,7 @@ const code = [
             tips='仅支持 jpg/png 文件，且不超过 500kb'
             uploadAction= "http://www.mocky.io/v2/5dc3b4413000007600347501"
             content='上传文件'
-            params={param}
+            params={data}
             name={'files[]'}
             onChange = {(file, fileList, response) => {
               console.log('upload callback', file, fileList, response)
@@ -93,7 +100,11 @@ const code = [
       )
     }
   }`,
-  opt: ['默认']}]
+    opt: ['默认']
+  }
+]
 
-const DemoUpload = () => <DocViewer leftOptions={leftOptions} code={code} scope={{ Upload }} prefix={prefix} desc={desc} />
+const DemoUpload = () => (
+  <DocViewer leftOptions={leftOptions} code={code} scope={{ Upload }} prefix={prefix} desc={desc} />
+)
 export default DemoUpload

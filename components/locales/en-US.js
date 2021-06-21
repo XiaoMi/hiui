@@ -5,54 +5,25 @@ export default {
   datePicker: {
     ok: 'OK',
     to: 'to',
-    placeholder: 'Select Date',
-    placeholderTimeperiod: 'Select Date Time',
+    placeholder: ['Select Date'],
+    placeholderTimeperiod: ['Select Time'],
     dateChoose: 'Select Date',
     timeChoose: 'Select Time',
     undefinedType: 'undefined type',
     lastWeek: 'Nearly week',
     lastMonth: 'Nearly month',
     lastThreeMonth: 'Nearly three months',
-    lastSixMonth: 'Nearly six months',
     lastYear: 'Nearly year',
-    month: [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ],
-    monthShort: [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ],
+    month: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    monthShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     week: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     placeholders: {
-      date: 'Select Date',
-      month: 'Select Month',
-      year: 'Select Year',
-      time: 'Select Time',
+      date: ['Select Date'],
+      month: ['Select Month'],
+      year: ['Select Year'],
+      time: ['Select Time'],
       daterange: ['Select Start Date', 'Select End Date'],
-      yearrange: ['Select Start Year', 'Select End Year'],
-      monthrange: ['Select Start Month', 'Select End Month'],
-      week: 'Select Week',
+      week: ['Select Week'],
       weekrange: ['Select Start Week', 'Select End Week'],
       timeperiod: ['Select Start Date Time', 'Select Start End Time']
     },
@@ -68,7 +39,7 @@ export default {
     total: ['Total', 'items'],
     simple: ['The', 'page', '', 'pages', 'items'],
     item: '',
-    itemPerPage: 'Items per page',
+    itemPerPage: 'page',
     goto: 'Goto',
     page: ''
   },
@@ -80,7 +51,19 @@ export default {
     placeholder: 'Please select',
     emptyContent: 'Not found',
     searchPlaceholder: 'Please search',
-    checkAll: 'Check all'
+    checkAll: 'Check all',
+    justSelected: 'Just Selected'
+  },
+  selectTree: {
+    back: 'Back',
+    search: 'search',
+    placeholder: 'Please select',
+    emptyContent: 'Not found'
+  },
+  search: {
+    searchEmptyResult: 'No serach results',
+    searchEmptyRecord: 'No serach record',
+    searchRecord: 'Serach record'
   },
   transfer: {
     checkAll: 'Check all',
@@ -130,5 +113,21 @@ export default {
     searchEmptyResult: 'No serach results',
     modalTitle: 'Warning',
     delTips: 'Deleting a node will delete all child nodes, are you sure to delete this node?'
+  },
+  table: {
+    emptyContent: 'No data',
+    confirm: 'Confirm',
+    reset: 'Reset',
+    ascend: 'Ascend',
+    descend: 'Descend',
+    highlight: 'Highlight',
+    freeze: 'Freeze',
+
+    total: 'Total',
+    average: 'Average'
+  },
+
+  watermark: {
+    content: 'Please do not gaiden'
   }
 }

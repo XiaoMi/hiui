@@ -16,7 +16,7 @@ class Demo extends React.Component {
           console.log('upload callback', file, fileList, response)
         }}
         content='上传文件'
-        params={{id:'uid',channel:'youpin'}}
+        data={{id:'uid',channel:'youpin'}}
         name="pictureCard"
       />
     )

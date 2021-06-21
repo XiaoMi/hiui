@@ -1,17 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import Provider from '../context'
 
-function defaultItemRender (page, element) {
-  return (
-    <span>{element}</span>
-  )
+function defaultItemRender(page, element) {
+  return <span>{element}</span>
 }
 
-const Pager = props => {
+const Pager = (props) => {
   const prefixCls = `${props.rootPrefixCls}__item`
-  let cls = classNames(prefixCls, {
+  const cls = classNames(prefixCls, {
     [`${prefixCls}-${props.page}`]: typeof props.page === 'number',
     [`${prefixCls}--active`]: props.active,
     [`${prefixCls}--disabled`]: props.disabled,
@@ -22,11 +19,18 @@ const Pager = props => {
   }
 
   return (
-    <div className={cls} onClick={handClick}>
-      {props.itemRender(
-        props.page,
-        props.children || props.page
-      )}
+    <div
+      className={cls}
+      onClick={handClick}
+      tabIndex={props.disabled || props.page === '...' ? -1 : 0}
+      onKeyDown={(e) => {
+        if (e.keyCode === 13) {
+          e.preventDefault()
+          handClick()
+        }
+      }}
+    >
+      {props.itemRender(props.page, props.children || props.page)}
     </div>
   )
 }
@@ -42,4 +46,4 @@ Pager.defaultProps = {
   itemRender: defaultItemRender
 }
 
-export default Provider(Pager)
+export default Pager

@@ -13,9 +13,11 @@ class Demo extends React.Component {
     const content = (
       <div>
         <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</p>
+        <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</p>
+        
       </div>
     )
-
+    
     return (
       <div>
         <Popover title={title} content={content} style={{margin: '10px 10px'}}>
@@ -35,12 +37,5 @@ class Demo extends React.Component {
   }
 }`
 
-const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ Popover, Button }}
-    prefix={prefix}
-    desc={desc}
-  />
-)
+const DemoBase = () => <DocViewer code={code} scope={{ Popover, Button }} prefix={prefix} desc={desc} />
 export default DemoBase

@@ -68,11 +68,6 @@ class Demo extends React.Component {
 }`
 
 const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ Dropdown }}
-    prefix={prefix}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ Dropdown }} prefix={prefix} desc={desc} />
 )
 export default DemoBase

@@ -15,7 +15,7 @@ class Demo extends React.Component {
           children: [
             { id: 2, title: '技术',
               children: [
-                { id: 3, title: '后端', onClick: data => {console.log('后端：', data)} },
+                { id: 3, title: '后端' },
                 { id: 4, title: '运维' },
                 { id: 5, title: '前端' }
               ]
@@ -45,11 +45,9 @@ class Demo extends React.Component {
       <div style={{width:500}}>
         <Tree
           defaultExpandAll
-          searchable={true}
+          searchable
+          filter
           data={this.state.treeData}
-          onChange={data => {console.log('Tree data:', data)}}
-          highlightable
-          onClick={(item) => console.log('------click node', item)}
         />
       </div>
     )

@@ -5,30 +5,28 @@ export default {
   datePicker: {
     ok: '确认',
     to: '至',
-    placeholder: '请选择日期',
-    placeholderTimeperiod: '请选择日期时间',
+    placeholder: ['请选择日期'],
+    placeholderTimeperiod: ['请选择时间'],
     dateChoose: '日期选择',
     timeChoose: '时间选择',
     undefinedType: '类型未定义',
     lastWeek: '近一周',
     lastMonth: '近一月',
     lastThreeMonth: '近三月',
-    lastSixMonth: '近半年',
     lastYear: '近一年',
     month: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
     monthShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
     week: ['日', '一', '二', '三', '四', '五', '六'],
     placeholders: {
-      date: '请选择日期',
-      month: '请选择月',
-      year: '请选择年',
-      time: '请选择时间',
+      date: ['请选择日期'],
+      month: ['请选择月'],
+      year: ['请选择年'],
+      time: ['请选择时间'],
       daterange: ['开始日期', '结束日期'],
-      yearrange: ['开始年', '结束年'],
-      monthrange: ['开始月', '结束月'],
-      week: '请选择周',
+      week: ['请选择周'],
       weekrange: ['开始周', '结束周'],
-      timeperiod: ['开始日期时间', '结束日期时间']
+      timeperiod: ['开始时间', '结束时间'],
+      timerange: ['请选择开始时间', '请选择结束时间']
     },
     year: '年',
     timePeriod: '时间段',
@@ -47,15 +45,32 @@ export default {
     goto: '前往',
     page: '页'
   },
+  timeline: {
+    expand: '展开',
+    collapse: '收起'
+  },
   cascader: {
     placeholder: '请选择',
-    noFoundTip: '无匹配数据'
+    noFoundTip: '无匹配数据',
+    emptyContent: '暂无数据'
   },
   select: {
     placeholder: '请选择',
     emptyContent: '无匹配数据',
     searchPlaceholder: '搜索',
-    checkAll: '全选'
+    checkAll: '全选',
+    justSelected: '仅看已选'
+  },
+  selectTree: {
+    back: '返回',
+    search: '搜索',
+    placeholder: '请选择',
+    emptyContent: '无匹配数据'
+  },
+  search: {
+    searchEmptyResult: '未找到搜索结果',
+    searchEmptyRecord: '无搜索记录',
+    searchRecord: '搜索历史'
   },
   transfer: {
     checkAll: '全选',
@@ -86,10 +101,6 @@ export default {
   tabs: {
     more: '更多'
   },
-  timeline: {
-    expand: '展开',
-    collapse: '收起'
-  },
   form: {
     colon: '：'
   },
@@ -105,5 +116,19 @@ export default {
     searchEmptyResult: '未找到搜索结果',
     modalTitle: '提示',
     delTips: '删除节点将删除所有子节点，确定删除吗？'
+  },
+  table: {
+    emptyContent: '暂无数据',
+    confirm: '确定',
+    reset: '重置',
+    ascend: '升序',
+    descend: '降序',
+    highlight: '高亮',
+    freeze: '冻结',
+    total: '合计',
+    average: '平均值'
+  },
+  watermark: {
+    content: '请勿外传'
   }
 }

@@ -1,13 +1,10 @@
-@import '@hi-ui/core-css/index.scss';
-@import '../../style/icon/index.scss';
+@import '../../core-css/index.scss';
 
-$theme-colors-notice: (
-  'orange': #ffefea,
-  'cyan': #ecf8f4 ,
-  'magenta': #ffeef1,
-  'lavender': #f7edfb,
-  'blue': #ebf6fe,
-  'purple': #8a8acb
+$color-map: (
+  'primary': use-color('primary'),
+  'warning': get-color($palette-secondary, 'warning'),
+  'success': get-color($palette-secondary, 'success'),
+  'danger': get-color($palette-secondary, 'danger')
 ) !default;
 
 .hi-notification__container {
@@ -27,104 +24,62 @@ $theme-colors-notice: (
     width: 340px;
     box-sizing: border-box;
 
+    @each $key, $value in $color-map {
+      &--#{$key} {
+        background-color: use-color(#{$key}-20);
+        border: 1px solid use-color(#{$key}-40);
+
+        .hi-notification__title {
+          color: $value;
+        }
+
+        .hi-notification__icon {
+          fill: $value;
+        }
+      }
+    }
+
     &__closer {
       position: absolute;
-      top: 10px;
+      height: 16px;
+      width: 16px;
+      top: 12px;
       right: 12px;
     }
   }
 
-  .hi-notification__title--wrapper {
+  .hi-notification__header {
+    height: $line-height-size-normal;
+    line-height: $line-height-size-normal;
     display: flex;
-    line-height: 22px;
+    align-items: center;
 
     .hi-notification__title {
-      font-size: 14px;
+      font-size: $font-size-normal;
     }
   }
 
   .hi-notification__icon {
-    font-size: 16px;
-    margin-right: 12px;
+    height: 16px;
+    width: 16px;
+    margin-right: 8px;
   }
 
   .hi-notification__content {
-    padding-left: 28px;
-    font-size: 12px;
+    padding: 0 24px;
+    margin-top: 4px;
+    font-size: $font-size-small;
     line-height: 20px;
-    color: #666;
+    color: use-color('gray-80');
   }
 
   .hi-notification__content--wrapper {
     width: 100%;
-    padding-right: 14px;
   }
 
-  .hi-notification__button--wrapper {
+  .hi-notification__footer {
     text-align: right;
     margin-top: 9px;
-
-    .hi-notification__button {
-      margin-right: -14px;
-      color: #fff;
-    }
-  }
-
-  .hi-notification--info {
-    background: #edf2fc;
-    border: 1px solid #d8e5ff;
-
-    .hi-notification__title,
-    .hi-notification__icon {
-      color: #4284f5;
-    }
-
-    .hi-notification__button {
-      background-color: #4284f5;
-      border: 1px solid #4284f5;
-    }
-  }
-
-  .hi-notification--error {
-    background: #feeff0;
-    border: 1px solid #ffe0e3;
-
-    .hi-notification__title,
-    .hi-notification__icon {
-      color: #eb5252;
-    }
-
-    .hi-notification__button {
-      background-color: #eb5252;
-    }
-  }
-
-  .hi-notification--success {
-    background: #e8f6ee;
-    border: 1px solid #cae9d7;
-
-    .hi-notification__title,
-    .hi-notification__icon {
-      color: #1da653;
-    }
-
-    .hi-notification__button {
-      background-color: #1da653;
-    }
-  }
-
-  .hi-notification--warning {
-    background: #fbf5e6;
-    border: 1px solid #fcf0d4;
-
-    .hi-notification__title,
-    .hi-notification__icon {
-      color: #e19d0c;
-    }
-
-    .hi-notification__button {
-      background-color: #e19d0c;
-    }
   }
 
   .hi-notification-enter {
@@ -141,37 +96,5 @@ $theme-colors-notice: (
 
   .hi-notification-exit-done {
     transform: translateX(100%);
-  }
-}
-
-@each $key, $value in $theme-colors {
-  .hi-notification__container {
-    .theme__#{$key}.hi-notification.hi-notification--info {
-      border:
-        1px
-        solid
-        map-get(get-palette(get-color($palette-primary, $key)), '20');
-
-      .hi-icon {
-        color: $value;
-      }
-
-      .hi-notification__title {
-        color: $value;
-      }
-
-      .hi-notification__button {
-        background-color: $value;
-        border: 1px solid $value;
-      }
-    }
-  }
-}
-
-@each $key, $value in $theme-colors-notice {
-  .hi-notification__container {
-    .theme__#{$key}.hi-notification.hi-notification--info {
-      background-color: $value;
-    }
   }
 }

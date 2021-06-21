@@ -15,15 +15,15 @@ class Demo extends React.Component {
     const list = [
       {
         title: '账号信息',
-        icon: 'user',
+        icon: <Icon name='user' />,
       },
       {
         title: '邮箱激活',
-        icon: 'time'
+        icon: <Icon name='time' />
       },
       {
         title: '信息登记',
-        icon: 'list'
+        icon: <Icon name='bars' />
       },
     ]
 
@@ -46,15 +46,15 @@ class Demo extends React.Component {
     const list = [
       {
         title: '账号信息',
-        icon: 'user',
+        icon: <Icon name='user' />,
       },
       {
         title: '邮箱激活',
-        icon: 'time'
+        icon: <Icon name='time' />
       },
       {
         title: '信息登记',
-        icon: 'list'
+        icon: <Icon name='bars' />
       },
     ]
 
@@ -71,12 +71,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoIcon = () => (
-  <DocViewer
-    code={code}
-    scope={{ Stepper, Icon }}
-    rightOptions={rightOptions}
-    prefix={prefix}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ Stepper, Icon }} rightOptions={rightOptions} prefix={prefix} desc={desc} />
 )
 export default DemoIcon

@@ -12,7 +12,7 @@ class Demo extends React.Component {
   render(){
     return(
       <Collapse
-        onChange={()=>{console.log('切换了！');}}
+        onChange={(id)=>{console.log('切换了！',id);}}
         accordion={true}
         arrowPlacement="right"
       >
@@ -47,6 +47,12 @@ class Demo extends React.Component {
 ]
 
 const DemoBasic = () => (
-  <DocViewer code={code} scope={{ Collapse }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
+  <DocViewer
+    code={code}
+    scope={{ Collapse }}
+    prefix={prefix}
+    rightOptions={rightOptions}
+    desc={desc}
+  />
 )
 export default DemoBasic

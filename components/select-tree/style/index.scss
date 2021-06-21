@@ -1,0 +1,213 @@
+@import '../../core-css/index.scss';
+
+.hi-selecttree {
+  width: 100%;
+  outline: none;
+
+  &__input {
+    height: 32px;
+    line-height: 32px;
+    box-sizing: border-box;
+    border-radius: 2px;
+    text-align: left;
+    padding: 0 0 0 12px;
+    background-color: use-color('white');
+    color: use-color('black');
+    display: flex;
+    justify-content: space-between;
+
+    &.bordered {
+      border: 1px solid use-color('gray-30');
+    }
+
+    .hi-icon + .hi-selecttree__icon-close {
+      margin-left: 0;
+    }
+
+    &-items--left {
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      height: 22px;
+      line-height: 22px;
+      font-size: 12px;
+      color: var(--color-black);
+      background-color: var(--color-gray-10);
+      border-radius: 2px;
+      box-sizing: border-box;
+    }
+
+    &:hover {
+      border-color: use-color('primary');
+
+      .hi-selecttree__input--expand.clearable {
+        display: none;
+      }
+
+      .hi-selecttree__icon-close {
+        display: block;
+      }
+
+      .hi-selecttree__icon-close:hover {
+        color: use-color('black');
+      }
+    }
+
+    &--focus {
+      border-color: use-color('primary');
+    }
+
+    &--disabled {
+      color: var(--color-gray-50);
+      background-color: var(--color-gray-10);
+      border: 1px solid var(--color-gray-30);
+      cursor: not-allowed;
+
+      &:hover {
+        border-color: var(--color-gray-30);
+
+        .hi-selecttree__input--expand.clearable {
+          display: block;
+          cursor: not-allowed;
+        }
+
+        .hi-selecttree__icon-close {
+          display: none;
+        }
+      }
+    }
+
+    &--single {
+      .hi-selecttree__selecteditem {
+        background: none;
+        padding-left: 0;
+      }
+    }
+
+    &--placeholder {
+      color: use-color('gray-50');
+    }
+
+    &-icon {
+      margin: 0 12px;
+      cursor: pointer;
+      color: #434343;
+    }
+  }
+
+  &__selected-wrapper {
+    flex: 1 0 80%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  &__icon-close {
+    color: use-color('gray-50');
+    display: none;
+  }
+
+  &__selected {
+    &--hidden {
+      visibility: hidden;
+      position: absolute;
+      z-index: -1;
+
+      span {
+        padding: 0 16px;
+      }
+    }
+  }
+
+  &__selecteditem {
+    flex: 0 0 auto;
+    position: relative;
+    height: 22px;
+    line-height: 22px;
+    padding: 0 20px 0 10px;
+    margin: 0 2px;
+    overflow: hidden;
+    vertical-align: middle;
+    background-color: use-color('gray-10');
+    border-radius: 2px;
+    text-align: left;
+    box-sizing: border-box;
+
+    &-name {
+      font-size: 13px;
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    &-remove {
+      cursor: pointer;
+      display: inline-block;
+      font-size: 12px;
+      position: absolute;
+      top: 0;
+      right: 4px;
+      padding: 0 0 0 8px;
+    }
+  }
+
+  &__popper {
+    background: use-color('white');
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
+    max-height: 320px;
+    overflow: hidden;
+  }
+
+  &__root {
+    font-size: 14px;
+    width: 100%;
+    max-height: 320px;
+    overflow: hidden;
+  }
+
+  &--hassearch {
+    padding: 8px 0 0 0;
+  }
+
+  &__searchbar-wrapper {
+    background-color: use-color('white');
+    width: 100%;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+
+  &__searchbar-inner {
+    height: 36px;
+    border-bottom: 1px solid use-color('gray-30');
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 0 2px;
+
+    .hi-selecttree_searchbar__icon-close {
+      color: use-color('gray-50');
+      cursor: pointer;
+    }
+
+    .hi-selecttree_searchbar__icon-close:hover {
+      color: use-color('black');
+    }
+  }
+
+  &__searchinput {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    padding: 0 10px;
+  }
+
+  &__panel {
+    padding: 12px;
+  }
+}

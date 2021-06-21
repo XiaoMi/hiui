@@ -5,34 +5,26 @@ import Popper from '../popper'
 import Icon from '../icon'
 import Title from './Title'
 class SubMenu extends Component {
-  onClick (index) {
+  onClick(index) {
     this.props.onClick(index)
   }
 
-  checkActive (activeIndex, index) {
+  checkActive(activeIndex, index) {
     const indexArr = index.split('-')
     const activeIndexArr = activeIndex.split('-')
     return activeIndexArr.slice(0, indexArr.length).join('-') === index
   }
 
-  checkExpand (activeIndex, expandIndex, index) {
-    return expandIndex.some(item => {
+  checkExpand(activeIndex, expandIndex, index) {
+    return expandIndex.some((item) => {
       const indexArr = index.split('-')
       const expandIndexArr = item.split('-')
       return expandIndexArr.slice(0, indexArr.length).join('-') === index
     })
   }
 
-  renderPopperMenu (deepSubmenu, isExpand) {
-    const {
-      mini,
-      datas,
-      index,
-      renderMenu,
-      fatMenu,
-      clickInside,
-      theme
-    } = this.props
+  renderPopperMenu(deepSubmenu, isExpand) {
+    const { mini, datas, index, renderMenu, fatMenu, clickInside, theme, overlayClassName } = this.props
     let leftGap
     let topGap
     let placement
@@ -54,9 +46,10 @@ class SubMenu extends Component {
         zIndex={1050}
         topGap={topGap}
         leftGap={leftGap}
-        className={
-          classNames('hi-submenu__popper', `theme__${theme}`, {'hi-submenu__popper--fat': fatMenu})
-        }
+        overlayClassName={overlayClassName}
+        className={classNames('hi-submenu__popper', `theme__${theme}`, {
+          'hi-submenu__popper--fat': fatMenu
+        })}
         width={false}
         placement={placement}
       >
@@ -64,45 +57,29 @@ class SubMenu extends Component {
           className={classNames('hi-submenu__items')}
           onClick={() => clickInside()} // 利用事件冒泡设置clickInsideFlag
         >
-          { renderMenu(datas, index) }
+          {renderMenu(datas, index)}
         </ul>
       </Popper>
     )
   }
 
-  renderVerticalMenu (isActive, isExpand) {
-    const {
-      datas,
-      index,
-      renderMenu,
-      clickInside,
-      theme
-    } = this.props
+  renderVerticalMenu(isActive, isExpand) {
+    const { datas, index, renderMenu, clickInside, theme } = this.props
     return (
       <ul
-        className={classNames('hi-submenu__items', `theme__${theme}`, {'hi-submenu__items--hide': !isExpand})}
+        className={classNames('hi-submenu__items', `theme__${theme}`, {
+          'hi-submenu__items--hide': !isExpand
+        })}
         onClick={() => clickInside()} // 利用事件冒泡设置clickInsideFlag
         key={index}
       >
-        { renderMenu(datas, index) }
+        {renderMenu(datas, index)}
       </ul>
     )
   }
 
-  render () {
-    const {
-      content,
-      icon,
-      mode,
-      mini,
-      level,
-      index,
-      activeIndex,
-      expandIndex,
-      disabled,
-      fatMenu,
-      theme
-    } = this.props
+  render() {
+    const { content, icon, mode, mini, level, index, activeIndex, expandIndex, disabled, fatMenu, theme } = this.props
     const isExpand = this.checkExpand(activeIndex, expandIndex, index)
     const isActive = this.checkActive(activeIndex, index)
     const deepSubmenu = index.split('-').length > 1
@@ -123,7 +100,9 @@ class SubMenu extends Component {
     return (
       <li
         className={cls}
-        ref={node => { this.submenuTrigger = node }}
+        ref={(node) => {
+          this.submenuTrigger = node
+        }}
         key={index}
       >
         <div
@@ -132,16 +111,14 @@ class SubMenu extends Component {
             !disabled && this.onClick(index)
           }}
         >
-          <Title icon={icon} content={content} />
-          <div className='hi-menu__title-toggle-icon'>
+          <Title icon={icon} content={content} mini={mini} level={level} placement={mode} />
+          <div className="hi-menu__title-toggle-icon">
             <Icon name={toggleIcon} />
           </div>
         </div>
-        {
-          !mini && mode === 'vertical'
-            ? this.renderVerticalMenu(isActive, isExpand)
-            : this.renderPopperMenu(deepSubmenu, isExpand)
-        }
+        {!mini && mode === 'vertical'
+          ? this.renderVerticalMenu(isActive, isExpand)
+          : this.renderPopperMenu(deepSubmenu, isExpand)}
       </li>
     )
   }

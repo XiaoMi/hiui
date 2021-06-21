@@ -1,5 +1,6 @@
 import Tag from '../../../components/tag/'
 import React from 'react'
+import Grid from '../../../components/grid/index'
 import DocViewer from '../../../libs/doc-viewer'
 const prefix = 'tag-line'
 const desc = '一种基础标签，识别度一般，在深色背景里常用'
@@ -12,16 +13,20 @@ class Demo extends React.Component {
     
   }
   render () {
+    const Row = Grid.Row
+    const Col = Grid.Col
     return (
-      <div>
-        <Tag type="warning" appearance="line">原创</Tag>
-        <Tag appearance="line">活动</Tag>
-        <Tag type="success" appearance="line">聚焦</Tag>
-        <Tag type="danger" appearance="line">最新</Tag>
-      </div>
+      <>
+      <Tag type="warning" appearance="line" >原创</Tag>
+      <Tag appearance="line" >活动</Tag>
+      <Tag type="success" appearance="line"  style={{marginRight:10}}>聚焦</Tag>
+      <Tag type="danger" appearance="line" >最新</Tag>
+      <Tag type="default" appearance="line" >最新</Tag>
+     </>
     )
   }
 }`
-
-const Demo = () => <DocViewer code={code} scope={{ Tag }} desc={desc} prefix={prefix} />
+const Demo = () => (
+  <DocViewer code={code} scope={{ Tag, Grid }} desc={desc} prefix={prefix} />
+)
 export default Demo

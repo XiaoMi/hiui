@@ -1,25 +1,12 @@
-@import '@hi-ui/core-css/index.scss';
-
-$basic-color: #4284f5 !default;
-
-@mixin hi-switch-style($color: get-color($palette-primary, 'hiui-blue')) {
-  & {
-    background: map-get(get-palette($color), '50');
-
-    &--closed,
-    &--disabled {
-      background: map-get(get-palette($color), 'g60');
-    }
-
-    &--disabled {
-      &::after {
-        background: map-get(get-palette($color), 'g50');
-      }
-    }
-  }
-}
+@import '../../core-css/index.scss';
 
 .hi-switch {
+  &:focus {
+    outline: 0;
+    z-index: 1;
+    box-shadow: 0 0 0 2px use-color('primary-30');
+  }
+
   display: inline-block;
   min-width: 48px;
   height: 20px;
@@ -27,14 +14,18 @@ $basic-color: #4284f5 !default;
   cursor: pointer;
   position: relative;
   vertical-align: middle;
+  background: use-color('primary');
 
-  @include hi-switch-style();
+  &--closed,
+  &--disabled {
+    background: use-color('gray-50');
+  }
 
   &::after {
     content: '';
     width: 16px;
     height: 16px;
-    background: rgba(255, 255, 255, 1);
+    background: use-color('white');
     position: absolute;
     border-radius: 50%;
     top: 2px;
@@ -45,8 +36,8 @@ $basic-color: #4284f5 !default;
   }
 
   &__text {
-    color: #fff;
-    font-size: 12px;
+    color: use-color('white');
+    font-size: $font-size-small;
     position: absolute;
     top: 0;
     line-height: 20px;
@@ -69,11 +60,5 @@ $basic-color: #4284f5 !default;
 
   &--disabled {
     cursor: not-allowed;
-  }
-}
-
-@each $key, $value in $palette-primary {
-  .theme__#{$key}.hi-switch {
-    @include hi-switch-style($value);
   }
 }

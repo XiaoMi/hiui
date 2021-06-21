@@ -8,16 +8,16 @@ const locales = ['zh-CN', 'en-US']
 const localesLabel = ['中文', 'English']
 
 class LocaleDropdown extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
-      list: [{title: '中文'}, {title: 'English'}],
+      list: [{ title: '中文' }, { title: 'English' }],
       title: localesLabel[locales.indexOf(this.props.locale || 0)],
       isShowList: false
     }
   }
 
-  componentWillMount () {
+  componentWillMount() {
     // 直接从路由进来，判断路由的locale是否和localStorage一致
     const locale = window.location.hash.split('/')
 
@@ -26,7 +26,7 @@ class LocaleDropdown extends React.Component {
     }
   }
 
-  changeDropdown (val) {
+  changeDropdown(val) {
     this.setState({
       title: val,
       isShowList: false
@@ -35,52 +35,45 @@ class LocaleDropdown extends React.Component {
     // this.props.changeDropdown && this.props.changeDropdown(locales[localesLabel.indexOf(val)])
   }
 
-  toggleDropdown (isShow) {
+  toggleDropdown(isShow) {
     this.setState({
       isShowList: isShow
     })
   }
 
-  render () {
-    const {
-      list,
-      title,
-      isShowList
-    } = this.state
+  render() {
+    const { list, title, isShowList } = this.state
     const _cls = classnames('hi-demo__list', !isShowList && 'hi-demo__list--hide')
     return (
       <div
-        className='hi-demo__dropdown'
+        className="hi-demo__dropdown"
         onMouseEnter={this.toggleDropdown.bind(this, true)}
         onMouseLeave={this.toggleDropdown.bind(this, false)}
       >
-        <a className='hi-demo__title' >
-          <span className='hi-demo__text'>{title}</span>
-          <i className='hi-icon icon-down' />
+        <a className="hi-demo__title">
+          <span className="hi-demo__text">{title}</span>
+          <i className="hi-icon icon-down" />
         </a>
         <ul className={_cls}>
-          {
-            list.map((item, index) => {
-              return (
-                <li
-                  key={index}
-                  className='hi-demo__item'
-                  onClick={() => {
-                    this.changeDropdown(item.title)
-                  }}
-                >
-                  {item.title}
-                </li>
-              )
-            })
-          }
+          {list.map((item, index) => {
+            return (
+              <li
+                key={index}
+                className="hi-demo__item"
+                onClick={() => {
+                  this.changeDropdown(item.title)
+                }}
+              >
+                {item.title}
+              </li>
+            )
+          })}
         </ul>
       </div>
-
     )
   }
 }
 
-export default connect(state => ({
+export default connect((state) => ({
   locale: state.global.locale
 }))(LocaleDropdown)

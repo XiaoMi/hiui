@@ -6,11 +6,13 @@ import Radio from '../../../components/radio'
 import Select from '../../../components/select'
 import Button from '../../../components/button'
 import Message from '../../../components/message'
+import Icon from '../../../components/icon'
 const prefix = 'input-position'
 const desc = '将输入与其他元素组合使用'
-const leftOptions = ['前置', '后置']
-const code = [{
-  code: `import React from 'react'
+const leftOptions = ['前置', '后置', '前后置']
+const code = [
+  {
+    code: `import React from 'react'
 import Button from '@hi-ui/hiui/es/button'
 import Input from '@hi-ui/hiui/es/input'\n
 class Demo extends React.Component {
@@ -27,8 +29,10 @@ class Demo extends React.Component {
   />)
   }
 }`,
-  opt: ['后置']}, {
-  code: `import React from 'react'
+    opt: ['后置']
+  },
+  {
+    code: `import React from 'react'
 import Select from '@hi-ui/hiui/es/select'
 import Message from '@hi-ui/hiui/es/message'
 import Input from '@hi-ui/hiui/es/input'\n
@@ -59,14 +63,42 @@ class Demo extends React.Component {
   />)
   }
 }`,
-  opt: ['前置']
-}]
+    opt: ['前置']
+  },
+  {
+    code: `import React from 'react'
+import Select from '@hi-ui/hiui/es/select'
+import Message from '@hi-ui/hiui/es/message'
+import Input from '@hi-ui/hiui/es/input'\n
+class Demo extends React.Component {
+  constructor () {
+    super()
+    
+  }
+  render() {
+    return (
+      <div>
+        <Input
+          id="customId"
+          type="tel"
+          placeholder="请输入"
+          prepend={'http://'}
+          append={'.com'}
+          style={{ width: 250 }}
+        />
+    </div>
+  )
+  }
+}`,
+    opt: ['前后置']
+  }
+]
 const DemoPosition = () => (
   <DocViewer
     code={code}
     desc={desc}
     leftOptions={leftOptions}
-    scope={{ Grid, Input, Radio, Select, Button, Message }}
+    scope={{ Grid, Input, Radio, Select, Button, Message, Icon }}
     prefix={prefix}
   />
 )

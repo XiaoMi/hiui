@@ -1,13 +1,13 @@
 /**
-   * 提取非函数属性
-   * @param {object} oldProps 原始props
-   */
+ * 提取非函数属性
+ * @param {object} oldProps 原始props
+ */
 export const getAttrs = (oldProps) => {
   const noNeed = ['value', 'className', 'class', 'id', 'style', 'size', 'disabled']
   const attrs = {}
   const events = {}
 
-  for (let i in oldProps) {
+  for (const i in oldProps) {
     if (!(oldProps[i] instanceof Function)) {
       if (noNeed.indexOf(i) === -1) {
         attrs[i] = oldProps[i]
@@ -76,7 +76,17 @@ export const formatCard = (val) => {
   } else if (len < 17) {
     return val.slice(0, 4) + ' ' + val.slice(4, 8) + ' ' + val.slice(8, 12) + ' ' + val.slice(12, 16)
   } else {
-    return val.slice(0, 4) + ' ' + val.slice(4, 8) + ' ' + val.slice(8, 12) + ' ' + val.slice(12, 16) + ' ' + val.slice(16, 19)
+    return (
+      val.slice(0, 4) +
+      ' ' +
+      val.slice(4, 8) +
+      ' ' +
+      val.slice(8, 12) +
+      ' ' +
+      val.slice(12, 16) +
+      ' ' +
+      val.slice(16, 19)
+    )
   }
 }
 
@@ -120,12 +130,16 @@ export const formatValue = (val, type) => {
   const numberType = ['id', 'tel', 'amount', 'card']
 
   if (numberType.indexOf(type) > -1) {
-    let tmp = val.replace(/[^\d|.]/g, '')
+    const tmp = val.replace(/[^\d|.]/g, '')
     switch (type) {
-      case 'id': return tmp.slice(0, 18)
-      case 'tel': return tmp.slice(0, 11)
-      case 'card': return tmp.slice(0, 19)
-      default: return tmp
+      case 'id':
+        return tmp.slice(0, 18)
+      case 'tel':
+        return tmp.slice(0, 11)
+      case 'card':
+        return tmp.slice(0, 19)
+      default:
+        return tmp
     }
   } else {
     return val
@@ -136,8 +150,10 @@ export const formatValue = (val, type) => {
  * 过滤属性
  */
 export const filterObjProps = (obj, propsNeedFilter) => {
-  return Object.keys(obj).filter(key => !propsNeedFilter.includes(key)).reduce((filteredObj, key) => {
-    filteredObj[key] = obj[key]
-    return filteredObj
-  }, {})
+  return Object.keys(obj)
+    .filter((key) => !propsNeedFilter.includes(key))
+    .reduce((filteredObj, key) => {
+      filteredObj[key] = obj[key]
+      return filteredObj
+    }, {})
 }

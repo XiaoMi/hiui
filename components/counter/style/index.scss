@@ -1,5 +1,4 @@
-@import './variables.scss';
-@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
 
 $counter: 'hi-counter' !default;
 
@@ -15,10 +14,10 @@ $counter: 'hi-counter' !default;
   position: relative;
   display: inline-block;
   height: auto;
-  min-height: $m-width-ceil;
+  min-height: 32px;
   box-sizing: border-box;
-  color: $normal-color;
-  font-size: $m-font-size;
+  color: use-color('gray-80');
+  font-size: $font-size-normal;
 
   &-outer {
     display: flex;
@@ -28,20 +27,22 @@ $counter: 'hi-counter' !default;
   &-sign {
     @include justify-center();
 
+    align-items: center;
+    justify-content: center;
     flex: 0 0 auto;
-    width: $m-width-ceil;
-    height: $m-width-ceil;
-    line-height: $m-width-ceil;
-    border: 1px solid $gray-light;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    border: 1px solid use-color('gray-30');
     border-radius: 2px;
     font-weight: bold;
-    color: $active-color;
+    color: use-color('primary');
     box-sizing: border-box;
     cursor: pointer;
     user-select: none;
 
     &.disabled {
-      color: $disabled-color;
+      color: use-color('gray-50');
       cursor: not-allowed;
     }
   }
@@ -62,19 +63,15 @@ $counter: 'hi-counter' !default;
     @include justify-center();
 
     flex: 1 1 auto;
-    width: 2 * $m-width-ceil;
+    width: 2 * 32px;
     padding: 0 6px;
-    border: 1px solid $gray-light;
-    color: $normal-color;
+    border: 1px solid use-color('gray-30');
+    color: use-color('gray-80');
     outline: none;
     box-sizing: border-box;
-  }
-}
 
-@each $key, $value in $palette-primary {
-  .#{$counter}.theme__#{$key} {
-    .#{$counter}-sign {
-      color: $value;
+    &:focus {
+      border: 1px solid use-color('primary');
     }
   }
 }

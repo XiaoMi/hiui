@@ -12,24 +12,7 @@ const code = [
       render() {
         return (
           <TimePicker
-            value={new Date()}
-            format="HH:mm:ss"
-            disabledHours={[2, 3, 4, 5, 6]}
-            disabledMinutes={(selectedHour) => {
-              if (selectedHour > 12) {
-                const arr = []
-                for (let i=0; i<12; i++) {
-                  arr.push(i)
-                }
-                return arr
-              }
-            }}
-            disabledSeconds={(selectedHour, selectedMinute) => {
-              if (selectedHour > 12 && selectedMinute > 12) {
-                return [30, 31, 32, 33, 34, 35]
-              }
-              return [0, 1, 2, 3]
-            }}
+            defaultValue={new Date()}
             onChange={(date, dateString) => console.log(date, dateString)}
           />
         )
@@ -45,8 +28,6 @@ class Demo extends React.Component {
     return (
       <TimePicker
         disabled
-        value={new Date()}
-        format="HH:mm:ss"
         onChange={(date, dateString) => console.log('时间', date, dateString)}
       />
     )
@@ -56,12 +37,6 @@ class Demo extends React.Component {
   }
 ]
 const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ TimePicker }}
-    prefix={prefix}
-    desc={desc}
-    rightOptions={rightOptions}
-  />
+  <DocViewer code={code} scope={{ TimePicker }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
 )
 export default DemoBase

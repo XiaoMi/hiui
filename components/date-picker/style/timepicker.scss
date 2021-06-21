@@ -1,40 +1,175 @@
+@import '@hi-ui/core-css/index.scss';
+@import '../../core-css/index.scss';
+
 .hi-timepicker {
   width: 180px;
-  background: #fff;
+  background: use-color('white');
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+  z-index: 1060;
 
-  &__timebody {
-    display: flex;
-    justify-content: space-around;
-    height: 195px;
-    border-bottom: 1px solid #f2f2f2;
-  }
+  &__popper {
+    width: 180px;
+    height: 296px;
+    background: use-color('white');
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
 
-  &__time-list {
-    overflow: auto;
-    flex: 1;
-
-    &-el {
-      text-align: center;
-      font-size: 14px;
-      color: rgba(0, 0, 0, 0.65);
-      line-height: 22px;
-      padding: 8px;
-      border-right: 1px solid #f2f2f2;
-      cursor: pointer;
-
-      &_current {
-        background: #f7f7f7;
-        font-weight: bold;
-      }
+    &--range {
+      width: 400px;
     }
   }
 
-  &__time-footer {
+  &__panel {
+    background: use-color('white');
+
+    &--range {
+      width: 400px;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  &__body {
+    width: 180px;
+  }
+
+  &__split {
+    flex: 1;
+    height: 248px;
+    margin-top: 47px;
+    align-self: flex-end;
+    border: 1px solid use-color('gray-10');
+    border-bottom: none;
+  }
+
+  &__timeheader {
+    display: flex;
+    justify-content: space-around;
+    height: 48px;
+    text-align: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: $font-weight-bold;
+    color: use-color('black');
+    border-bottom: 1px solid use-color('gray-10');
+    box-sizing: border-box;
+  }
+
+  &__timebody {
+    display: flex;
+    height: 248px;
+    position: relative;
+    justify-content: space-around;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__page-turn {
+    position: absolute;
+    z-index: 2;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    font-size: 16px;
+    left: 22px;
+    top: 0;
+    cursor: pointer;
+
+    &:last-child {
+      top: auto;
+      bottom: 0;
+    }
+  }
+
+  &__list-container {
+    width: 60px;
+    overflow: hidden;
+    position: relative;
+    padding: 12px 0;
+  }
+
+  &__list {
+    width: 80px;
+    height: 224px;
+    margin: 0;
+    list-style-type: none;
+    overflow-y: auto;
+    padding: 0;
+    user-select: none;
+
+    &:nth-child(2) {
+      left: 60px;
+      z-index: 3;
+    }
+
+    &:nth-child(3) {
+      left: 120px;
+      z-index: 4;
+    }
+  }
+
+  &__item {
+    text-align: center;
+    font-size: 14px;
+    color: use-color('gray-80');
+    line-height: 32px;
+    height: 32px;
+    width: 60px;
+    cursor: pointer;
+    box-sizing: border-box;
+    background-color: use-color('white');
+
+    &--empty {
+      cursor: default;
+    }
+
+    &--current {
+      font-weight: bold;
+    }
+
+    &--disabled {
+      color: rgba(44, 48, 78, 0.2);
+      cursor: not-allowed;
+    }
+
+    &:hover:not(.hi-timepicker__item--current):not(.hi-timepikcer__item--empty):not(.hi-timepicker__item--disabled) {
+      background-color: use-color('primary-10');
+    }
+  }
+
+  &__footer {
     padding: 2px 0;
     text-align: right;
 
     button {
       margin-right: 4px;
+    }
+  }
+
+  &__current-line {
+    height: 32px;
+    box-sizing: border-box;
+    border-top: 1px solid use-color('gray-10');
+    border-bottom: 1px solid use-color('gray-10');
+    position: absolute;
+    top: 108px;
+    left: 0;
+    width: 156px;
+    z-index: 4;
+    pointer-events: none;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    margin: 0 12px;
+
+    span {
+      flex: 1;
     }
   }
 }

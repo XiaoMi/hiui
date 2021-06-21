@@ -46,25 +46,37 @@ import DemoCalendar from '../../demo/date-picker/section-calendar.jsx'
 
 ## Props
 
-| 参数              | 说明                                     | 类型                                                             | 可选值                                                                                                                                       | 默认值      |
-| ----------------- | ---------------------------------------- | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| type              | 选择器类型                               | string                                                           | date 普通日期 <br/> daterange 日期范围<br/> year 年份<br/> month 月份<br/> week 周<br/> weekrange 周范围 <br/> timeperiod 时间段<br/> yearrange 年范围(2.13新增) <br/> monthrange 月范围(2.13新增)  | date        |
-| value             | 默认显示的日期                           | Date \| string \| number\| DateRange \| undefined \| null        | -                                                                                                                                            | null        |
-| width             | 输入框宽度                               | number                                                           | -                                                                                                                                            | null        |
-| min               | 最小日期                                 | Date                                                             | null                                                                                                                                         | null        |
-| max               | 最大日期                                 | Date                                                             | null                                                                                                                                         | null        |
-| disabled          | 是否禁用输入框                           | boolean                                                          | true \| false                                                                                                                                | false       |
-| disabledDate      | 不可选择的日期                           | (currentDate: Date) => boolean                                   | true \| false                                                                                                                                | false       |
-| clearable         | 是否可以清空                             | boolean                                                          | true \| false                                                                                                                                | true        |
-| showTime          | 是否在日期选择器中显示时间选择器         | boolean                                                          | true \| false                                                                                                                                | false       |
-| shortcuts         | 快捷面板                                 | string[]                                                         | 近一周, 近一月, 近三月, 近半年, 近一年                                                                                                               | null        |
-| weekOffset        | 周起始，默认周日做为第一列               | number                                                           | 0 \| 1                                                                                                                                       | 0           |
-| placeholder       | 自定义占位符（数组用于范围日期）         | string \| string[]                                               | -                                                                                                                                            | -           |
-| onChange          | 值变化时的回调函数                       | (date: Date \| DateRange, dateStr: string \| DateRange ) => void | -                                                                                                                                            | -           |
-| altCalendar       | 自定义日期中历法展示信息                 | CalendarItem                                                     | -                                                                                                                                            | 农历 & 假日 |
-| altCalendarPreset | 预置历法信息（支持中国农历和印度节假日） | string                                                           | 'zh-CN' \| 'id-ID'                                                                                                                           | 'zh-CN'     |
-| dateMarkRender    | 自定义日期的右上角标记                   | (currentDate: Date, today: Date) => React.ReactNode              | -                                                                                                                                            | -           |
-| dateMarkPreset    | 预置日期的右上角标记（休 \| 班）         | string                                                           | 'zh-CN'                                                                                                                                      | 'zh-CN'     |
+| 参数              | 说明                                                           | 类型                                                      | 可选值                                                                                                                                                                                                           | 默认值      |
+| ----------------- | -------------------------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| type              | 选择器类型                                                     | string                                                    | date 普通日期 <br/> daterange 日期范围<br/> year 年份<br/> month 月份<br/> week 周<br/> weekrange 周范围 <br/> timeperiod 时间段（1.5 新增）<br/> yearrange 年范围(2.13 新增) <br/> monthrange 月范围(2.13 新增) | date        |
+| defaultValue      | 默认显示的日期                                                 | Date \| string \| number\| DateRange \| undefined \| null | -                                                                                                                                                                                                                | null        |
+| value             | 日期                                                           | Date \| string \| number\| DateRange \| undefined \| null | -                                                                                                                                                                                                                | null        |
+| width             | 输入框宽度                                                     | number                                                    | -                                                                                                                                                                                                                | null        |
+| minDate           | 最小日期                                                       | Date                                                      | null                                                                                                                                                                                                             | null        |
+| maxDate           | 最大日期                                                       | Date                                                      | null                                                                                                                                                                                                             | null        |
+| disabled          | 是否禁用输入框                                                 | boolean                                                   | true \| false                                                                                                                                                                                                    | false       |
+| bordered            | 是否有边框                                                                                               | boolean                                                              | true \| false                                                |             true                                                          |
+| inputReadOnly     | 设置输入框为只读                                               | boolean                                                   | true \| false                                                                                                                                                                                                    | false       |
+| disabledDate      | 不可选择的日期(返回true为不可选)                                  | (currentDate: Date) => boolean                            | true \| false                                                                                                                                                                                                    | false       |
+| clearable         | 是否可以清空                                                   | boolean                                                   | true \| false                                                                                                                                                                                                    | true        |
+| showTime          | 是否在日期选择器中显示时间选择器，在使用时请注意 format 的设置 | boolean                                                   | true \| false                                                                                                                                                                                                    | false       |
+| timeInterval      | 时间段的间隔，以分钟为单位     | number                                       | 1 ~ 1440 分钟                                                                                                                                  | 240       |
+| format            | 展示的日期格式，配置参考 [moment.js](http://momentjs.cn/docs/#/displaying/format/) | string                                                   | -                                                                                                                                                                                                   | -       |
+| shortcuts         | 快捷面板                                                       | string[]                                                  | 近一周, 近一月, 近三月, 近一年                                                                                                                                                                                   | null        |
+| weekOffset        | 周起始，默认周日做为第一列(**3.3.0版本后，优化为根据中英文自动设置周起始**)                                     | number                                                    | 0 \| 1                                                                                                                                                                                                           | 0           |
+| placeholder       | 自定义占位符（数组用于范围日期）                               | string \| string[]                                        | -                                                                                                                                                                                                                | -           |
+| altCalendar       | 自定义日期中历法展示信息                                       | CalendarItem                                              | -                                                                                                                                                                                                                | 农历 & 假日 |
+| altCalendarPreset | 预置历法信息（支持中国农历和印度节假日）                       | string                                                    | 'zh-CN' \| 'id-ID'                                                                                                                                                                                               | 'zh-CN'     |
+| dateMarkRender    | 自定义日期的右上角标记                                         | (currentDate: Date, today: Date) => React.ReactNode       | -                                                                                                                                                                                                                | -           |
+| dateMarkPreset    | 预置日期的右上角标记（休 \| 班）                               | string                                                    | 'zh-CN'                                                                                                                                                                                                          | 'zh-CN'     |
+| overlayClassName  | 下拉根元素的类名称 (3.0 新增)                                  | string                                                    | -                                                                                                                                                                                                                | -           |
+
+## Events
+
+| 名称     | 说明         | 类型                                                             | 参数                                                                                                                               | 返回值 |
+| -------- | ------------ | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| onSelect | 选择日期的回调函数 | (data:moment, isCompleted?) => void  | data: 选中的 [moment](http://momentjs.cn/) 日期对象 \| isCompleted: 是否选择完成，仅在范围选择下有效 | -      |
+| onChange | 选择后的回调 | (date: Date \| DateRange, dateStr: string \| DateRange ) => void | date: 选中的日期(普通选择) \| 选中的日期范围{start: Date, end: Date}(范围选择) <br/> dateStr: 选中的日期字符串(普通选择) \| 选中的日期字符串对象{start: string, end: string}(范围选择) | -      |
 
 ## Type
 
@@ -85,44 +97,313 @@ import DemoCalendar from '../../demo/date-picker/section-calendar.jsx'
 
 ## Methods
 
+### format
 `DatePicker.format(date: Date, format: string)`
 
 格式化时间
 
-| 单位        | 字符 | 示例                             |
-| ----------- | ---- | -------------------------------- |
-| 月          | M    | 1, 2, ..., 12                    |
-| &nbsp;      | Mo   | 1st, 2nd, ..., 12th              |
-| &nbsp;      | MM   | 01, 02, ..., 12                  |
-| &nbsp;      | MMM  | Jan, Feb, ..., Dec               |
-| &nbsp;      | MMMM | January, February, ..., December |
-| 季度        | Q    | 1, 2, 3, 4                       |
-| &nbsp;      | Qo   | 1st, 2nd, 3rd, 4th               |
-| 天/月       | D    | 1, 2, ..., 31                    |
-| &nbsp;      | Do   | 1st, 2nd, ..., 31st              |
-| &nbsp;      | DD   | 01, 02, ..., 31                  |
-| 天/年       | DDD  | 1, 2, ..., 366                   |
-| &nbsp;      | DDDo | 1st, 2nd, ..., 366th             |
-| &nbsp;      | DDDD | 001, 002, ..., 366               |
-| 天/周       | d    | 0, 1, ..., 6                     |
-| &nbsp;      | do   | 0th, 1st, ..., 6th               |
-| &nbsp;      | dd   | Su, Mo, ..., Sa                  |
-| &nbsp;      | ddd  | Sun, Mon, ..., Sat               |
-| &nbsp;      | dddd | Sunday, Monday, ..., Saturday    |
-| 年          | YY   | 00, 01, ..., 99                  |
-| &nbsp;      | YYYY | 1900, 1901, ..., 2099            |
-| 上午/下午   | A    | AM, PM                           |
-| &nbsp;      | a    | am, pm                           |
-| &nbsp;      | aa   | a.m., p.m.                       |
-| 小时        | H    | 0, 1, ... 23                     |
-| &nbsp;      | HH   | 00, 01, ... 23                   |
-| &nbsp;      | h    | 1, 2, ..., 12                    |
-| &nbsp;      | hh   | 01, 02, ..., 12                  |
-| 分钟        | m    | 0, 1, ..., 59                    |
-| &nbsp;      | mm   | 00, 01, ..., 59                  |
-| 秒          | s    | 0, 1, ..., 59                    |
-| &nbsp;      | ss   | 00, 01, ..., 59                  |
-| 秒（1/10）  | S    | 0, 1, ..., 9                     |
-| 秒（1/100） | SS   | 00, 01, ..., 99                  |
-| 毫秒        | SSS  | 000, 001, ..., 999               |
-| 毫秒时间戳  | x    | 512969520900                     |
+<table class="table table-striped table-bordered">
+  <tbody>
+    <tr>
+      <th></th>
+      <th>令牌</th>
+      <th>输出</th>
+    </tr>
+    <tr>
+      <td><b>月份</b></td>
+      <td>M</td>
+      <td>1 2 ... 11 12</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Mo</td>
+      <td>1st 2nd ... 11th 12th</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>MM</td>
+      <td>01 02 ... 11 12</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>MMM</td>
+      <td>Jan Feb ... Nov Dec</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>MMMM</td>
+      <td>January February ... November December</td>
+    </tr>
+    <tr>
+      <td><b>季度</b></td>
+      <td>Q</td>
+      <td>1 2 3 4</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Qo</td>
+      <td>1st 2nd 3rd 4th</td>
+    </tr>
+    <tr>
+      <td><b>月份的日期</b></td>
+      <td>D</td>
+      <td>1 2 ... 30 31</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Do</td>
+      <td>1st 2nd ... 30th 31st</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>DD</td>
+      <td>01 02 ... 30 31</td>
+    </tr>
+    <tr>
+      <td><b>年份的日期</b></td>
+      <td>DDD</td>
+      <td>1 2 ... 364 365</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>DDDo</td>
+      <td>1st 2nd ... 364th 365th</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>DDDD</td>
+      <td>001 002 ... 364 365</td>
+    </tr>
+    <tr>
+      <td><b>星期几</b></td>
+      <td>d</td>
+      <td>0 1 ... 5 6</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>do</td>
+      <td>0th 1st ... 5th 6th</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>dd</td>
+      <td>Su Mo ... Fr Sa</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>ddd</td>
+      <td>Sun Mon ... Fri Sat</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>dddd</td>
+      <td>Sunday Monday ... Friday Saturday</td>
+    </tr>
+    <tr>
+      <td><b>星期几（语言环境）</b></td>
+      <td>e</td>
+      <td>0 1 ... 5 6</td>
+    </tr>
+    <tr>
+      <td><b>星期几（ISO）</b></td>
+      <td>E</td>
+      <td>1 2 ... 6 7</td>
+    </tr>
+    <tr>
+      <td><b>年份的星期</b></td>
+      <td>w</td>
+      <td>1 2 ... 52 53</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>wo</td>
+      <td>1st 2nd ... 52nd 53rd</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>ww</td>
+      <td>01 02 ... 52 53</td>
+    </tr>
+    <tr>
+      <td><b>年份的星期（ISO）</b></td>
+      <td>W</td>
+      <td>1 2 ... 52 53</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Wo</td>
+      <td>1st 2nd ... 52nd 53rd</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>WW</td>
+      <td>01 02 ... 52 53</td>
+    </tr>
+    <tr>
+      <td><b>年份</b></td>
+      <td>YY</td>
+      <td>70 71 ... 29 30</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>YYYY</td>
+      <td>1970 1971 ... 2029 2030</td>
+    </tr>
+      <tr>
+      <td></td>
+      <td>Y</td>
+      <td>1970 1971 ... 9999 +10000 +10001
+        <br />
+	注意：对于 9999 年以后的日期，这符合 ISO 8601 标准。
+      </td>
+    </tr>
+    <tr>
+      <td><b>周年</b></td>
+      <td>gg</td>
+      <td>70 71 ... 29 30</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>gggg</td>
+      <td>1970 1971 ... 2029 2030</td>
+    </tr>
+    <tr>
+      <td><b>周年（ISO）</b></td>
+      <td>GG</td>
+      <td>70 71 ... 29 30</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>GGGG</td>
+      <td>1970 1971 ... 2029 2030</td>
+    </tr>
+    <tr>
+      <td><b>子午线</b></td>
+      <td>A</td>
+      <td>AM PM</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>a</td>
+      <td>am pm</td>
+    </tr>
+    <tr>
+      <td><b>小时</b></td>
+      <td>H</td>
+      <td>0 1 ... 22 23</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>HH</td>
+      <td>00 01 ... 22 23</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>h</td>
+      <td>1 2 ... 11 12</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>hh</td>
+      <td>01 02 ... 11 12</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>k</td>
+      <td>1 2 ... 23 24</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>kk</td>
+      <td>01 02 ... 23 24</td>
+    </tr>
+    <tr>
+      <td><b>分钟</b></td>
+      <td>m</td>
+      <td>0 1 ... 58 59</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>mm</td>
+      <td>00 01 ... 58 59</td>
+    </tr>
+    <tr>
+      <td><b>秒钟</b></td>
+      <td>s</td>
+      <td>0 1 ... 58 59</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>ss</td>
+      <td>00 01 ... 58 59</td>
+    </tr>
+    <tr>
+      <td><b>小数秒钟</b></td>
+      <td>S</td>
+      <td>0 1 ... 8 9</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>SS</td>
+      <td>00 01 ... 98 99</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>SSS</td>
+      <td>000 001 ... 998 999</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>SSSS ... SSSSSSSSS</td>
+      <td>000[0..] 001[0..] ... 998[0..] 999[0..]</td>
+    </tr>
+    <tr>
+      <td><b>时区</b></td>
+      <td>z or zz</td>
+      <td>
+        EST CST ... MST PST
+        <br/>
+	注意：从 <b>1.6.0</b> 版本开始，z/zz 格式的令牌已从普通的 moment 对象中弃用。
+	<a href="https://github.com/moment/moment/issues/162">在此处了解更多信息</a>。
+	但是，如果将特定时区与 moment-timezone 插件一起使用，它们会起作用。
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Z</td>
+      <td>-07:00 -06:00 ... +06:00 +07:00</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>ZZ</td>
+      <td>
+        -0700 -0600 ... +0600 +0700
+      </td>
+    </tr>
+    <tr>
+      <td><b>Unix 时间戳</b></td>
+      <td>X</td>
+      <td>1360013296</td>
+    </tr>
+    <tr>
+      <td><b>Unix 毫秒时间戳</b></td>
+      <td>x</td>
+      <td>1360013296123</td>
+    </tr>
+  </tbody>
+</table>
+
+### localeData 
+
+`DatePicker.localeData(key?:String)`
+
+可以通过 DatePicker.localeData(key) 函数访问当前加载的语言环境的属性。 它返回当前语言环境或具有给定键的语言环境
+
+
+## FAQ
+
+> 在由 2.14.x 升级到 HiUI 3.x 之后，对于升级问题我们做了一些问题和答复，在提问之前建议找找有没有类似的问题。
+
+#### 输入框中出现日期显示异常
+
+如出现选择日期后，在输入框中出现日期显示异常，或者日期格式和原来不同的话，请确认 format 属性的格式是否正确
