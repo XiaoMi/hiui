@@ -6,7 +6,7 @@ import { CSSTransition } from 'react-transition-group'
 import Provider from '../context'
 
 const prefixCls = 'hi-slider'
-const noop = () => {}
+const noop = () => { }
 const Slider = memo(
   ({
     defaultValue = 0,
@@ -22,18 +22,6 @@ const Slider = memo(
     marks = {},
     theme
   }) => {
-    const getValue = useCallback((value) => {
-      if (value === undefined) {
-        return value
-      }
-      if (value > (initMax || 100)) {
-        value = initMax || 100
-      } else if (value < (initMin || 0)) {
-        value = initMin || 0
-      }
-      return value
-    }, [])
-    const [value, setValue] = useState(initValue !== undefined ? getValue(initValue) : getValue(defaultValue))
     // 是否可拖动
     const [canMove, setCanMove] = useState(false)
 
@@ -52,7 +40,21 @@ const Slider = memo(
     const [isInitPage, setIsInitPage] = useState(true)
     const sliderRef = useRef()
     const tooltipRef = useRef()
-
+    const getValue = useCallback(
+      (value) => {
+        if (value === undefined) {
+          return value
+        }
+        if (value > (initMax || 100)) {
+          value = initMax || 100
+        } else if (value < (initMin || 0)) {
+          value = initMin || 0
+        }
+        return value
+      },
+      [max, min]
+    )
+    const [value, setValue] = useState(initValue !== undefined ? getValue(initValue) : getValue(defaultValue))
     useClickOutside((e) => {
       setShowTooltip(false)
     }, document.querySelector(`#${prefixCls}`))
@@ -94,7 +96,7 @@ const Slider = memo(
       setPositionStep((step / ((max || 100) - (min || 0))) * 100)
       // 设置初始位置
       setStartPosition(((value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
-    }, [])
+    }, [max, min])
 
     // <- -> 键盘事件
     const onKeyDown = useCallback(
@@ -128,7 +130,7 @@ const Slider = memo(
           onChange(_value)
         }
       },
-      [value]
+      [value, max, min]
     )
 
     useEffect(() => {
@@ -199,7 +201,7 @@ const Slider = memo(
           onChange(changeValue)
         }
       },
-      [canMove, positionStep, startPosition]
+      [canMove, positionStep, startPosition, max, min]
     )
     const onMouseUp = useCallback(
       (e) => {
@@ -216,11 +218,11 @@ const Slider = memo(
         return
       }
       if (canMove) {
-        window.onmouseup = onMouseUp
-        window.onmousemove = onMouseMove
+        document.body.onmouseup = onMouseUp
+        document.body.onmousemove = onMouseMove
       } else {
-        window.onmouseup = null
-        window.onmousemove = null
+        document.body.onmouseup = null
+        document.body.onmousemove = null
       }
     }, [canMove, disabled, onMouseUp, onMouseMove])
 
@@ -229,7 +231,7 @@ const Slider = memo(
       (value) => {
         return ((value - (min || 0)) / ((max || 100) - (min || 0))) * 100
       },
-      [value]
+      [value, max, min]
     )
 
     // 鼠标落下
@@ -302,17 +304,20 @@ const Slider = memo(
         setStartPosition(position)
         onChange(value)
       },
-      [positionStep, newRightPosition, vertical, disabled]
+      [positionStep, newRightPosition, vertical, disabled, max, min]
     )
     // 点击marks上的点
-    const onMarksClick = useCallback((e, value) => {
-      e.stopPropagation()
-      if (initValue === undefined) {
-        setValue(value)
-        setStartPosition(((value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
-      }
-      onChange(value)
-    }, [])
+    const onMarksClick = useCallback(
+      (e, value) => {
+        e.stopPropagation()
+        if (initValue === undefined) {
+          setValue(value)
+          setStartPosition(((value - (min || 0)) / ((max || 100) - (min || 0))) * 100)
+        }
+        onChange(value)
+      },
+      [max, min]
+    )
     const sliderClasses = classNames(prefixCls, `theme__${theme}`, {
       [`${prefixCls}--disabled`]: disabled,
       [`${prefixCls}--vertical`]: vertical,
@@ -342,9 +347,8 @@ const Slider = memo(
           ref={tooltipRef}
           onClick={onHandleClick}
           style={{
-            [!vertical ? 'left' : 'top']: `${
-              !vertical ? newRightPosition.toFixed(4) : (100 - newRightPosition).toFixed(4)
-            }%`
+            [!vertical ? 'left' : 'top']: `${!vertical ? newRightPosition.toFixed(4) : (100 - newRightPosition).toFixed(4)
+              }%`
           }}
           tabIndex="0"
           onKeyDown={onKeyDown}
@@ -401,8 +405,8 @@ const Slider = memo(
         </div>
         {((min && max) || Object.entries(marks).length !== 0) && (
           <div className={`${prefixCls}__stepText`}>
-            {min && <span className={`${prefixCls}__min ${prefixCls}__stepText-dot`}>{min}</span>}
-            {max && <span className={`${prefixCls}__max ${prefixCls}__stepText-dot`}>{max}</span>}
+            {min !== undefined && <span className={`${prefixCls}__min ${prefixCls}__stepText-dot`}>{min}</span>}
+            {max !== undefined && <span className={`${prefixCls}__max ${prefixCls}__stepText-dot`}>{max}</span>}
             {Object.entries(marks).map(([key, item], index) => (
               <span
                 className={`${prefixCls}__stepText-dot`}
