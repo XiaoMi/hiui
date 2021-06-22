@@ -209,7 +209,7 @@
   }
 
   &__header {
-    overflow-x: scroll;
+    overflow: hidden;
     position: relative;
 
     > table {

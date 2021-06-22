@@ -43,7 +43,7 @@ const Table = ({
   showColHighlight,
   prefix = 'hi-table',
   fixedToColumn,
-  sticky: _ceiling,
+  sticky,
   stickyTop = 0,
   setting,
   onLoadChildren,
@@ -63,7 +63,6 @@ const Table = ({
   const [columns, setColumns] = useState(propsColumns)
   const hiTable = useRef(null)
   const disabledData = useRef([])
-  const [ceiling, setCeiling] = useState(false)
   const [activeSorterColumn, setActiveSorterColumn] = useState(null)
   const [activeSorterType, setActiveSorterType] = useState(null)
   const [highlightColumns, setHighlightColumns] = useState([])
@@ -197,33 +196,6 @@ const Table = ({
   const alignRightColumns = columns.filter((c) => c.align === 'right').map((col) => col.dataKey)
   // baseTable
   const baseTable = useRef(null)
-  const [baseTableWidth, setBaseTableWidth] = useState('100%')
-  const clientWidth = baseTable.current && baseTable.current.clientWidth
-  useEffect(() => {
-    setBaseTableWidth(clientWidth)
-  }, [clientWidth])
-
-  useEffect(() => {
-    if (_ceiling) {
-      window.addEventListener(
-        'scroll',
-        (e) => {
-          if (
-            hiTable &&
-            hiTable.current &&
-            hiTable.current.getBoundingClientRect().top <= stickyTop &&
-            hiTable.current.getBoundingClientRect().bottom >= stickyTop + 35
-          ) {
-            setCeiling(true)
-            syncScrollLeft(bodyTableRef.current.scrollLeft, stickyHeaderRef.current)
-          } else {
-            setCeiling(false)
-          }
-        },
-        true
-      )
-    }
-  }, [_ceiling, stickyTop])
 
   useEffect(() => {
     if (dataSource) {
@@ -258,7 +230,7 @@ const Table = ({
         onExpand,
         realColumnsWidth,
         setRealColumnsWidth,
-        ceiling,
+        sticky,
         stickyTop,
         // 排序逻辑
         activeSorterColumn,
@@ -319,7 +291,7 @@ const Table = ({
       >
         {/* Normal table 普通表格 */}
         <div className={`${prefix}__container`} ref={baseTable}>
-          <HeaderTable bodyWidth={baseTableWidth} />
+          <HeaderTable />
           <BodyTable fatherRef={hiTable} emptyContent={emptyContent} />
           {/* 显示阴影 */}
           {scrollSize.scrollLeft > 0 && realLeftFixedColumns.length > 0 && (

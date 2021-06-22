@@ -8,7 +8,7 @@ import Checkbox from '../checkbox'
 import { flatTreeData, setDepth, getLeafChildren, groupDataByDepth } from './util'
 import { Resizable } from 'react-resizable'
 
-const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
+const HeaderTable = ({ rightFixedIndex }) => {
   const {
     rowSelection,
     data,
@@ -32,7 +32,7 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
     resizable,
     setting,
     onHeaderRow,
-    ceiling,
+    sticky,
     disabledData
   } = useContext(TableContext)
   const [isAllChecked, setIsAllChecked] = useState(false)
@@ -257,23 +257,14 @@ const HeaderTable = ({ bodyWidth, rightFixedIndex }) => {
       style={{
         borderLeft: bordered && '1px solid #e7e7e7',
         borderTop: bordered && '1px solid #e7e7e7',
-        overflow: 'hidden',
         boxShadow: maxHeight && '0px 2px 6px 0px rgba(0,0,0,0.12)',
-        position: 'relative'
+        position: sticky ? 'sticky' : 'relative',
+        top: sticky && stickyTop,
+        zIndex: 10
       }}
     >
       {setting && <SettingMenu />}
-      <div
-        className={`${prefix}__header`}
-        key="normal"
-        ref={headerTableRef}
-        style={{
-          overflow: 'hidden',
-          width: ceiling ? bodyWidth : 'auto',
-          position: ceiling ? 'fixed' : 'static',
-          top: ceiling && stickyTop
-        }}
-      >
+      <div className={`${prefix}__header`} key="normal" ref={headerTableRef}>
         <table style={{ width: '100%' }} ref={headerInner}>
           <colgroup>
             {columnsgroup.map((c, index) => {
