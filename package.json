@@ -113,7 +113,7 @@
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-standard": "^4.0.1",
     "file-loader": "^1.1.11",
-    "fork-ts-checker-webpack-plugin": "^4.0.3",
+    "fork-ts-checker-webpack-plugin": "4.0.3",
     "gh-pages": "^2.0.1",
     "github-markdown-css": "^3.0.1",
     "gulp": "^3.9.1",

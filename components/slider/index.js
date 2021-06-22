@@ -21,7 +21,7 @@ const Slider = memo(
     type = 'primary',
     marks = {},
     theme,
-    ifShowRangeLabel = false
+    showRangeLabel = false
   }) => {
     // 是否可拖动
     const [canMove, setCanMove] = useState(false)
@@ -403,7 +403,7 @@ const Slider = memo(
             />
           ))}
         </div>
-        {(ifShowRangeLabel || Object.entries(marks).length !== 0) && (
+        {(showRangeLabel || Object.entries(marks).length !== 0) && (
           <div className={`${prefixCls}__stepText`}>
             {Object.keys(marks).length ? (
               Object.entries(marks).map(([key, item], index) => (
