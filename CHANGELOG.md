@@ -20,7 +20,7 @@
 - 修复 `Table` 组件 批量选择形态中，表格禁用行，全选时会被勾选问题 [#1752](https://github.com/XiaoMi/hiui/issues/1752)
 - 修复 `Tree` 组件 editable 受控状态下，编辑菜单显示问题 [#1761](https://github.com/XiaoMi/hiui/issues/1761)
 - 修复 `Slider` 组件 max、min 受控问题，Modal 中不能拖拽 [#1783](https://github.com/XiaoMi/hiui/issues/1783)
-- 新增 `Slider` 组件 showRangeLabel 属性设置是否显示范围值
+- 新增 `Slider` 组件 showRangeLabel 属性设置是否显示范围值 [#1783](https://github.com/XiaoMi/hiui/issues/1783)
 - 修复 `DataePicker` 组件 yearrange、monthrange 无法通过 min、max 限制时间区间问题 [#1780](https://github.com/XiaoMi/hiui/issues/1780)
 # 3.6.1
 - 修复部分组件 'regeneratorRuntime is not defined' 问题 [#1719](https://github.com/XiaoMi/hiui/issues/1719)
