@@ -291,15 +291,12 @@ const Slider = memo(
           diff = Math.round((((e.clientX - x) / sliderWidth) * 100) / positionStep) * positionStep
           position = e.clientX <= left ? 0 : newRightPosition + diff
         }
-        console.log(position)
         if (position <= 0) {
           position = 0
         } else if (position >= 100) {
           position = 100
         }
-
         const value = min + Math.round(((max - min) * position) / 100)
-        console.log(value)
         if (initValue === undefined) {
           setValue(value)
         }
