@@ -35,6 +35,10 @@ interface Props {
   dataSource?: DataSource | DataSourFun
   searchMode?: 'highlight' | 'filter'
   overlayClassName?: string
+  optionWidth?: number
+  autoload?: boolean
+  placeholder?: string
+  emptyContent?: string | JSX.Element
   defaultValue?: DataItem[] | string[] | number[] | string
   onChange?: (selectedIds: string[] | string, changedItem: DataItem | DataItem[], currentNode: DataItem) => void
   valueRender?: (item: DataItem) => JSX.Element

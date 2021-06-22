@@ -5,7 +5,9 @@ type DataItem = {
   id: string | number
   disabled?: boolean
   href?: string
+  target?: '_self' | '_blank' | '_parent' | '_top'
 }
+
 interface TriggersArray {
   [index: number]: 'click' | 'contextmenu' | 'hover'
 }
