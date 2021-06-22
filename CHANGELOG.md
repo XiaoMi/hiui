@@ -16,6 +16,7 @@
 - 修复 `Table` 组件 批量选择形态中，在 data 为空数组时，表头全选项会默认勾选问题 [#1749](https://github.com/XiaoMi/hiui/issues/1749)
 - 修复 `Table` 组件 批量选择形态中，表格禁用行，全选时会被勾选问题 [#1752](https://github.com/XiaoMi/hiui/issues/1752)
 - 修复 `Tree` 组件 editable 受控状态下，编辑菜单显示问题 [#1761](https://github.com/XiaoMi/hiui/issues/1761)
+- 修复 `Tree` LegacyTree 组件 draggable 为 true 时，更新 state 重新展开树节点，并且无法选中节点 [#1781](https://github.com/XiaoMi/hiui/issues/1781)
 
 # 3.6.1
 - 修复部分组件 'regeneratorRuntime is not defined' 问题 [#1719](https://github.com/XiaoMi/hiui/issues/1719)
