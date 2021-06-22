@@ -10,6 +10,7 @@
 - 优化 `Form` 组件允许 FormItem 中的表单类组件设置 value [#1741](https://github.com/XiaoMi/hiui/issues/1741)
 - 优化 `Table` 组件 showColHighlight 属性，修改内部触发逻辑 [#1759](https://github.com/XiaoMi/hiui/issues/1759)
 - 优化 `Tree` 组件文字较多折行时，遮盖问题 [#1768](https://github.com/XiaoMi/hiui/issues/1768)
+- 修复 `Table` 组件表头吸顶问题 [#1789](https://github.com/XiaoMi/hiui/issues/1789)
 - 修复 `Tree` 编辑形态，不能输入空格问题 [#1768](https://github.com/XiaoMi/hiui/issues/1768)
 - 修复 `Select` disabled 情况下，输入框仍能删除选项问题 [#1707](https://github.com/XiaoMi/hiui/issues/1707)
 - 修复 `Table` 组件表头分组中使用 fixedToColumn 属性导致表头错乱 [#1732](https://github.com/XiaoMi/hiui/issues/1732)
@@ -18,6 +19,7 @@
 - 修复 `Table` 组件 批量选择形态中，在 data 为空数组时，表头全选项会默认勾选问题 [#1749](https://github.com/XiaoMi/hiui/issues/1749)
 - 修复 `Table` 组件 批量选择形态中，表格禁用行，全选时会被勾选问题 [#1752](https://github.com/XiaoMi/hiui/issues/1752)
 - 修复 `Tree` 组件 editable 受控状态下，编辑菜单显示问题 [#1761](https://github.com/XiaoMi/hiui/issues/1761)
+- 修复 `DataePicker` 组件 yearrange、monthrange 无法通过 min、max 限制时间区间问题 [#1780](https://github.com/XiaoMi/hiui/issues/1780)
 
 # 3.6.1
 - 修复部分组件 'regeneratorRuntime is not defined' 问题 [#1719](https://github.com/XiaoMi/hiui/issues/1719)

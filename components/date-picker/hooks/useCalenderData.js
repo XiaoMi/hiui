@@ -37,15 +37,52 @@ const getYearOrMonthRows = ({ originDate, renderDate, type, view, range, localeD
           col.type = 'selected'
           col.range = false
         }
+        // 判断年月可选状态
+        const _y = currentYM.year()
+        const _m = currentYM.month()
+        if (disabledDate && view.includes('year')) {
+          col.type = disabledDate(_y) ? 'disabled' : col.type
+        }
+        if (disabledDate && view.includes('month')) {
+          col.type = disabledDate(_y + '-' + _m) ? 'disabled' : col.type
+        }
+        // 年的状态
+        if (view.includes('year') && (min || max)) {
+          if (min) {
+            const minYear = moment(min).year()
+            col.type = _y < minYear ? 'disabled' : col.type
+          }
+          if (max) {
+            const maxYear = moment(max).year()
+            col.type = _y > maxYear ? 'disabled' : col.type
+          }
+        }
+
+        if (view.includes('month') && (min || max)) {
+          if (min) {
+            const minMoment = moment(min)
+            const minYear = minMoment.year()
+            const minMonth = minMoment.month()
+            col.type = _y < minYear ? 'disabled' : col.type
+            col.type = _y === minYear && _m < minMonth ? 'disabled' : col.type
+          }
+          if (max) {
+            const maxMoment = moment(max)
+            const maxYear = maxMoment.year()
+            const maxMonth = maxMoment.month()
+            col.type = _y > maxYear ? 'disabled' : col.type
+            col.type = _y === maxYear && _m > maxMonth ? 'disabled' : col.type
+          }
+        }
         continue
       }
       if (originDate && (y === originDate.year() || y === originDate.month())) {
         col.type = 'selected'
       }
+
       // 判断年月可选状态
       const _y = currentYM.year()
       const _m = currentYM.month()
-
       if (disabledDate && view.includes('year')) {
         col.type = disabledDate(_y) ? 'disabled' : col.type
       }
@@ -147,7 +184,6 @@ const getDateRows = ({ originDate, range, type, weekOffset, min, max, renderDate
           isPN = true
         }
       }
-
       if (isDisabled) {
         col.type = 'disabled'
       }
