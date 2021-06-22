@@ -632,6 +632,8 @@ class Demo extends React.Component {
         columns={this.columns}
         fixedToColumn={{left:'number', right: 'gender'}}
         data={this.data} 
+        stickyTop={63}
+        sticky
         rowSelection={{
           selectedRowKeys: this.state.selectedRowKeys,
           onChange: selectedRowKeys => {
