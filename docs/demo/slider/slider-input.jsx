@@ -63,7 +63,7 @@ class Demo extends React.Component {
     return (
       <Row>
         <Col span={22}>
-          <Slider defaultValue={10} onChange={(value)=>this.handleInput(value)} value={this.state.value}  max={90}  min={10}/>
+          <Slider defaultValue={10} onChange={(value)=>this.handleInput(value)} value={this.state.value}  max={90}  min={10}  showRangeLabel={true}/>
         </Col>
         <Col span={2}>
           <Input    
@@ -153,6 +153,7 @@ class Demo extends React.Component {
               <Slider
                 vertical
                 defaultValue={30}
+                showRangeLabel={true}
                 vertical
                 value={value}
                 min={min}
@@ -189,12 +190,6 @@ class Demo extends React.Component {
 ]
 
 const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ Slider, Grid, Input }}
-    prefix={prefix}
-    desc={desc}
-    rightOptions={rightOptions}
-  />
+  <DocViewer code={code} scope={{ Slider, Grid, Input }} prefix={prefix} desc={desc} rightOptions={rightOptions} />
 )
 export default DemoBase
