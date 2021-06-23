@@ -3,8 +3,7 @@ import _ from 'lodash'
 // 将树状数据拍平
 export const flatTreeData = (data = [], flattedData = [], rootIndex) => {
   data.forEach((d, index) => {
-    d._rootIndex = typeof rootIndex === 'undefined' ? index : rootIndex
-    d.isLast = !d.children
+    Object.assign(d, { _rootIndex: typeof rootIndex === 'undefined' ? index : rootIndex, isLast: !d.children })
     flattedData.push(d)
     if (d.children) {
       flatTreeData(d.children, flattedData, d._rootIndex)
