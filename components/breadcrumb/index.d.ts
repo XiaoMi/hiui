@@ -1,5 +1,3 @@
-import { CSSProperties } from "react"
-
 type DataItem = {
   content: string | JSX.Element
   path: string

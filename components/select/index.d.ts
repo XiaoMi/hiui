@@ -7,7 +7,7 @@ type DataItem = {
   children?: DataItem[]
 }
 type GroupData = {
-  groupTitle?: string
+  groupTitle: string
   groupId: string | number
   children: DataItem
 }

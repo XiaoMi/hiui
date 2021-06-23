@@ -20,7 +20,7 @@ export interface CommonProps {
   placeholder?: string | string[]
   format?: string
   inputReadOnly?: boolean
-  timeInterval: number
+  timeInterval?: number
   onChange?: (date: Date | DateRange, dateStr: string | DateRangeString) => void
   onSelect?: (date: Date, isCompleted: boolean) => void
 }

@@ -6,10 +6,10 @@ type formData = {
 }
 
 export interface FormListFieldData {
-  field: string
-  listItemValue: any
-  column: number
-  name: string
+  field?: string
+  listItemValue?: any
+  column?: number
+  name?: string
 }
 interface FormListOperation {
   add: () => void
