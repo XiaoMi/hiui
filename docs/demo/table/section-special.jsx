@@ -115,6 +115,7 @@ const code = [
     class Demo extends React.Component {
       render() {
         return <Table
+        expandRowKeys={[1]}
         fixedToColumn={'a'}
         data={[
           {
@@ -322,6 +323,7 @@ class Demo extends React.Component {
       rowExpandable={(rowData)=>{
         return rowData.key !== 2
        }}
+       expandRowKeys={[1]}
       expandedRender={(rowData, index) => {
         return (
               <div style={{paddingLeft:50}}>
@@ -630,6 +632,8 @@ class Demo extends React.Component {
         columns={this.columns}
         fixedToColumn={{left:'number', right: 'gender'}}
         data={this.data} 
+        stickyTop={63}
+        sticky
         rowSelection={{
           selectedRowKeys: this.state.selectedRowKeys,
           onChange: selectedRowKeys => {

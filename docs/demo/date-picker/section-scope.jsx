@@ -22,6 +22,7 @@ class Demo extends React.Component {
           type='daterange'
           format='YYYY-MM-DD'
           value={this.state.rangeDate}
+          
           onChange={(date, dateStr) => {
             console.log('onChange', date, dateStr)
             this.setState({rangeDate: dateStr})
@@ -41,6 +42,7 @@ class Demo extends React.Component {
     return (
       <DatePicker
         type='yearrange'
+       
         defaultValue={{start: new Date(), end: new Date()}}
         onChange={(date, dateStr) => {console.log('onChange', date, dateStr)}}
       />
