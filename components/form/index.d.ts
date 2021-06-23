@@ -1,4 +1,5 @@
 import { CSSProperties } from "react"
+import { ButtonProps } from '../button'
 
 type formData = {
   [prop: string]: any

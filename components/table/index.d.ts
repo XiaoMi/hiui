@@ -1,4 +1,4 @@
-
+import {PaginationProps} from '../pagination'
 type ColumnItem = {
   title: string | JSX.Element
   dataKey: string
@@ -22,6 +22,7 @@ type Origin = {
   error?: (err: object) => void
   type?: 'GET' | 'POST'
   withCredentials?: boolean
+  transformResponse?: (response: object) => object[]
 }
 type FixedOption = {
   left?: string
@@ -49,9 +50,11 @@ interface Props {
   loading?: boolean
   sticky?: boolean
   stickyTop?: number
+  expandRowKeys?: number[]
   highlightedColKeys?: string[] | number[]
   expandedRender?: (record: object, index: number) => JSX.Element | Promise
   onLoadChildren?: (record: object) => object[] | Promise
+  onExpand?: (expanded: boolean, rowData: object) => void
   rowExpandable?: (record: object ) => JSX.Element | Boolean
   maxHeight?: number
   scrollWidth?: number
@@ -60,7 +63,7 @@ interface Props {
   errorRowKeys?: string[] | number[]
   highlightedRowKeys?: string[] | number[]
   rowSelection?: RowSelection
-  dataSource?: (current: number) => DataSource
+  dataSource?: (current: number) => Origin
   showColMenu?: boolean
   showColHighlight?: boolean
   striped?: boolean

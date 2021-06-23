@@ -8,6 +8,7 @@ interface Props {
   className?: string
   disabled?: boolean
   showRangeLabel?: boolean
+  showRangeLabel?: boolean
   tipFormatter?: (value: number) => JSX.Element
   marks?: {
     [prop: number]: any

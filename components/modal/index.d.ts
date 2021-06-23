@@ -14,5 +14,8 @@ interface Props {
   style?: CSSProperties
   className?: string
 }
-declare const Modal: React.ComponentType<Props>
+const confirmFun: (options:Props) => void
+declare class Modal extends React.Component<Props, any> {
+  static confirm = confirmFun
+}
 export default Modal

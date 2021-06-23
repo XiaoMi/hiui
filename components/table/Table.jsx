@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import HeaderTable from './HeaderTable'
 import BodyTable from './BodyTable'
 import TableContext from './context'
@@ -69,6 +69,7 @@ const Table = ({
   const [highlightRows, setHighlightRows] = useState([])
   const [freezeColumn, setFreezeColumn] = useState(null)
   const [hoverRow, setHoverRow] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
   const [serverTableConfig, setServerTableConfig] = useState({ data: [], columns: [...propsColumns] })
   const [eachRowHeight, setEachRowHeight] = useState({})
   const [hoverColIndex, setHoverColIndex] = useState(null)
@@ -188,7 +189,12 @@ const Table = ({
       syncTarget.scrollTop = scrollTop
     }
   }
-
+  const paginationOnChange = useCallback(
+    (current) => {
+      setCurrentPage(current)
+    },
+    [currentPage]
+  )
   const _pagination = (dataSource && serverTableConfig.pagination) || pagination
   // 高亮行
   const _highlightRows = highlightedRowKeys.concat(highlightRows.filter((row) => !highlightedRowKeys.includes(row.key)))
@@ -199,12 +205,12 @@ const Table = ({
 
   useEffect(() => {
     if (dataSource) {
-      const fetchConfig = dataSource()
+      const fetchConfig = dataSource(currentPage)
       axios(fetchConfig).then((res) => {
         setServerTableConfig(Object.assign({}, serverTableConfig, { data: res.data }))
       })
     }
-  }, [dataSource])
+  }, [dataSource, currentPage])
   return (
     <TableContext.Provider
       value={{
@@ -318,7 +324,14 @@ const Table = ({
               [`${prefix}__pagination--${_pagination.placement}`]: _pagination.placement
             })}
           >
-            <Pagination {..._pagination} />
+            <Pagination
+              {..._pagination}
+              onChange={(current, pre, pageSize) => {
+                const { onChange } = _pagination || {}
+                paginationOnChange(current)
+                onChange && onChange(current, pre, pageSize)
+              }}
+            />
           </div>
         )}
       </div>
