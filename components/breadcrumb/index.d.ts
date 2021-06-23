@@ -1,6 +1,6 @@
 type DataItem = {
   content: string | JSX.Element
-  path: string
+  path?: string
   href?: boolean
   icon?: string
   target?: '_self' | '_blank' | '_parent' | '_top'
@@ -8,7 +8,7 @@ type DataItem = {
 
 interface Props {
   data: DataItem[]
-  separator: string
+  separator?: string
   onClick?: (path: string) => void
   
 }
