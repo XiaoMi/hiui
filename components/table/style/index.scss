@@ -78,16 +78,18 @@
   &__setting-btn {
     position: absolute;
     height: 100%;
-    z-index: 3;
-    right: 0;
+    z-index: 11;
+    box-sizing: border-box;
+    right: 2px;
     display: flex;
     align-items: center;
     border-left: 1px solid #e0e1e2;
     border-bottom: 1px solid #e0e1e2;
+    border-top: none;
     color: #999;
     cursor: pointer;
     font-size: 14px;
-    width: 16px;
+    width: 18px;
     background: rgb(251, 251, 251);
   }
 

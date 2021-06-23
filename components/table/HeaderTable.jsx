@@ -11,7 +11,7 @@ import { Resizable } from 'react-resizable'
 const HeaderTable = ({ rightFixedIndex }) => {
   const {
     rowSelection,
-    data,
+    data: propsData,
     columns,
     expandedRender,
     stickyTop,
@@ -35,6 +35,10 @@ const HeaderTable = ({ rightFixedIndex }) => {
     sticky,
     disabledData
   } = useContext(TableContext)
+  const [data, setDate] = useState(_.cloneDeep(propsData))
+  useEffect(() => {
+    setDate(_.cloneDeep(propsData))
+  }, [propsData])
   const [isAllChecked, setIsAllChecked] = useState(false)
   const [groupedColumns, setGroupedColumns] = useState([])
   const [columnsgroup, setColumnsGroup] = useState([])
@@ -59,7 +63,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
     // 判断是否全选
     if (rowSelection) {
       const { selectedRowKeys = [] } = rowSelection
-      const flattedData = flatTreeData(data)
+      const flattedData = flatTreeData(_.cloneDeep(data))
       const _isAllChecked =
         flattedData
           .filter((data) => !disabledData.current.includes(data.key))
@@ -160,7 +164,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
                       rowSelection.onChange(
                         isAllChecked
                           ? []
-                          : flatTreeData(data)
+                          : flatTreeData(_.cloneDeep(data))
                               .filter((data) => !disabledData.current.includes(data.key))
                               .map((d) => d.key)
                       )

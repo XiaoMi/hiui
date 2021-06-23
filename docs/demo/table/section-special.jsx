@@ -104,7 +104,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} bordered/>
+        return <Table columns={this.columns}  data={this.data} bordered/>
       }
     }`,
     opt: ['全边框']
@@ -633,6 +633,7 @@ class Demo extends React.Component {
         fixedToColumn={{left:'number', right: 'gender'}}
         data={this.data} 
         stickyTop={63}
+        setting
         sticky
         rowSelection={{
           selectedRowKeys: this.state.selectedRowKeys,
