@@ -19,6 +19,8 @@ export interface CommonProps {
   clearable?: boolean
   placeholder?: string | string[]
   format?: string
+  inputReadOnly?: boolean
+  timeInterval?: number
   onChange?: (date: Date | DateRange, dateStr: string | DateRangeString) => void
   onSelect?: (date: Date, isCompleted: boolean) => void
 }

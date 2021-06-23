@@ -10,6 +10,7 @@ interface Props {
   content?: string | JSX.Element
   style?: CSSProperties
   className?: string
+  showHeaderDivider?: boolean
 }
 declare class Card extends React.Component<Props, any> {
 }

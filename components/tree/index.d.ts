@@ -3,6 +3,7 @@ type TreeNode = {
   title: string | JSX.Element
   disabled?: boolean
   children?: TreeNode[]
+  isLeaf?: boolean
 }
 type LoadTreeNode = {
   method?: 'get' | 'post'
@@ -34,12 +35,17 @@ interface Props {
   defaultExpandAll?: boolean
   defaultHighlightId?: boolean
   loadTreeNode?: LoadTreeNode | LoadTreeNodeFun
-  checkedIds?: string[]
+  checkedIds?: string[] | number[]
+  defaultExpandedIds?: string[] | number[]
+  expandedIds?: string[] | number[]
   openIcon?: string
   closeIcon?: string
   apperance?: 'default' | 'line' | 'folder'
   style?: CSSProperties
   className?: string
+  defaultSelectedId?: string | number 
+  selectedId?: string | number 
+  defaultCheckedIds?: string[] | number[] 
   contextMenu?: ContextMenuOption[] | ContextMenuOptionFun
   onChange?: (data: TreeNode[]) => void
   onExpand?: (expanded: boolean, expandIds: string[], expandedNode: TreeNode) => void
@@ -52,6 +58,8 @@ interface Props {
   onDelete?: (deletedNode: TreeNode, data: TreeNode[]) => void
   onBeforeSave?: (savedNode: TreeNode, data: DataStatus, level: number) => boolean
   onSave?: (savedNode: TreeNode, data: TreeNode[]) => void
+  onSelect?: (selectedNode: TreeNode) => void
+  onLoadChildren?: (selectedNode: TreeNode) => LoadTreeNode
 }
 declare const Tree: React.ComponentType<Props>
 export default Tree

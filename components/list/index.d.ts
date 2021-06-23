@@ -1,3 +1,4 @@
+import {PaginationProps} from '../pagination'
 type DataItem = {
   title: string | JSX.Element
   titleTag?: string | JSX.Element
