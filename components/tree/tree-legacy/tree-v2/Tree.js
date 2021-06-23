@@ -234,11 +234,12 @@ export class Tree extends Component {
   }
 }
 
+const DraggableTree = withDragDropContext(Tree)
+
 const HOCTree = TreeComponent => {
   return class WrapperTree extends Component {
     render () {
       const { draggable } = this.props
-      const DraggableTree = withDragDropContext(Tree)
       return draggable ? <DraggableTree {...this.props} /> : <TreeComponent {...this.props} />
     }
   }
