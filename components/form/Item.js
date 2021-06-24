@@ -174,7 +174,10 @@ const FormItem = (props) => {
         }
         return true
       }
-      const rules = getRules()
+      const rules = getRules().map((item) => {
+        item.type = item.type || 'any'
+        return item
+      })
 
       const validator = new AsyncValidator({
         [field]: rules
@@ -289,7 +292,7 @@ const FormItem = (props) => {
       return item.field === _field
     })
     if (_field && !isExist) {
-      _value = initialValues && initialValues[field] ? initialValues[_field] : _value
+      _value = initialValues && typeof initialValues[field] !== 'undefined' ? initialValues[_field] : _value
       if (_type === 'list' && listItemValue) {
         _value = Object.keys(listItemValue).includes(name) ? listItemValue[name] : listItemValue
       }
