@@ -225,7 +225,7 @@ class Demo extends React.Component {
           </Col>
         </Row>
         
-        <FormItem label='Radio' field="radio">
+        <FormItem label='Radio' field="radio" required>
           <Radio.Group
             data={radiolist}
             onChange={(data) => console.log("radio data",data)}
