@@ -39,6 +39,8 @@ interface ItemProps {
   labelWidth?: string
   required?: boolean
   showColon?: boolean
+  style?: CSSProperties
+  className?: string
 }
 interface SchemaItem extends ItemProps {
   component?: string | JSX.Element
