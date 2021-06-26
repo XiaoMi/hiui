@@ -174,10 +174,7 @@ const FormItem = (props) => {
         }
         return true
       }
-      const rules = getRules().map((item) => {
-        item.type = item.type || 'any'
-        return item
-      })
+      const rules = getRules()
 
       const validator = new AsyncValidator({
         [field]: rules
