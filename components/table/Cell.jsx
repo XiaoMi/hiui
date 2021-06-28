@@ -31,7 +31,7 @@ const Cell = ({
   const [loading, setLoading] = useState(false)
   // 处理自定义 render 或者合并单元格情况
   const cellContent = column.render
-    ? column.render(allRowData[column.dataKey], allRowData, rowIndex)
+    ? column.render(allRowData[column.dataKey], allRowData, rowIndex, column.dataKey)
     : allRowData[column.dataKey]
   const isMergeCell = cellContent && typeof cellContent === 'object' && !cellContent.$$typeof
   if (isMergeCell && (cellContent.props.colSpan === 0 || cellContent.props.rowSpan === 0)) {
