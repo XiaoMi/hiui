@@ -174,8 +174,11 @@ const FormItem = (props) => {
         }
         return true
       }
+      // Bug of `async-validator`
       const rules = getRules().map((item) => {
-        item.type = item.type || 'any'
+        if (currentValue !== '') {
+          item.type = item.type || 'any'
+        }
         return item
       })
 

@@ -40,7 +40,7 @@ interface ItemProps {
   required?: boolean
   showColon?: boolean
   style?: CSSProperties
-  className?: string | object
+  className?: string
 }
 interface SchemaItem extends ItemProps {
   component?: string | JSX.Element
