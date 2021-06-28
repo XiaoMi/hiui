@@ -23,7 +23,7 @@
 - 修复 `Slider` 组件 max、min 受控问题，Modal 中不能拖拽 [#1783](https://github.com/XiaoMi/hiui/issues/1783)
 - 新增 `Slider` 组件 showRangeLabel 属性设置是否显示范围值 [#1783](https://github.com/XiaoMi/hiui/issues/1783)
 - 修复 `DataePicker` 组件 yearrange、monthrange 无法通过 min、max 限制时间区间问题 [#1780](https://github.com/XiaoMi/hiui/issues/1780)
-- 修复 Form 组件值校验问题 [#1802](https://github.com/XiaoMi/hiui/issues/1802)
+- 修复 `Form` 组件值校验问题 [#1802](https://github.com/XiaoMi/hiui/issues/1802)
 # 3.6.1
 - 修复部分组件 'regeneratorRuntime is not defined' 问题 [#1719](https://github.com/XiaoMi/hiui/issues/1719)
 - 修复 `Slider` max 和min 受控问题 [#1703](https://github.com/XiaoMi/hiui/issues/1703)
