@@ -396,7 +396,7 @@ const Tree = (props) => {
                   m.onClick(node)
                 } else {
                   if (m.type === 'editNode') {
-                    editNode(node)
+                    editNode(node, e)
                   }
                   if (m.type === 'addSiblingNode') {
                     addSiblingNode(node)

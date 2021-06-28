@@ -105,6 +105,7 @@ const CustomTreeNode = ({
           onContextMenu={(e) => {
             if (editable && !node.disabled) {
               e.preventDefault()
+              console.log('e', e, ref)
               setMenuVisible(node.id)
             }
           }}
