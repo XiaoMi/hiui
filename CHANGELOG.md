@@ -9,6 +9,7 @@
 - 优化 `Select` onChang 回调方法中，获取全部选项详细内容 [#1726](https://github.com/XiaoMi/hiui/issues/1726)
 - 优化 `Form` 组件允许 FormItem 中的表单类组件设置 value [#1741](https://github.com/XiaoMi/hiui/issues/1741)
 - 优化 `Table` 组件 showColHighlight 属性，修改内部触发逻辑 [#1759](https://github.com/XiaoMi/hiui/issues/1759)
+- 优化 `Table` 组件 render 自定义渲染函数，可以获取列的位置 [#1808](https://github.com/XiaoMi/hiui/issues/1808)
 - 优化 `Tree` 组件文字较多折行时，遮盖问题 [#1768](https://github.com/XiaoMi/hiui/issues/1768)
 - 修复 `Table` 组件表头吸顶问题 [#1789](https://github.com/XiaoMi/hiui/issues/1789)
 - 修复 `Tree` 编辑形态，不能输入空格问题 [#1768](https://github.com/XiaoMi/hiui/issues/1768)

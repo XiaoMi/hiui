@@ -72,6 +72,7 @@ declare class SchemaForm extends React.Component<SchemaProps, any> {
 declare class Form extends React.Component<FormProps, any> {
   static Item = Item
   static SchemaForm = SchemaForm
+  static List = FormList
   static Reset = FormReset
   static Submit = FormSubmit
 }

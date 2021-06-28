@@ -8,7 +8,7 @@ type ColumnItem = {
   total?: boolean
   width?: number
   children?: ColumnItem[]
-  render?: (text: string, record: object, index: number) => JSX.Element
+  render?: (text: string, record: object, index: number, dataKey: string) => JSX.Element
 }
 
 type Origin = {
