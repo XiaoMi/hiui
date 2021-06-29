@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import BaseTree from './BaseTree'
 import Input from '../input'
 import Button from '../button'
@@ -76,7 +76,7 @@ const Tree = (props) => {
   useEffect(() => {
     updateCacheData(data)
   }, [data])
-
+  const contextMenuFun = useRef()
   const [menuVisible, setMenuVisible] = useState(null)
   const [modalVisible, setModalVisible] = useState(null)
 
@@ -333,6 +333,8 @@ const Tree = (props) => {
         if (result === true) {
           updateCacheData(dataCache)
           onSave(nodeEdited, dataCache)
+        } else {
+          cancelAddNode(enode)
         }
       } else {
         updateCacheData(dataCache)
@@ -372,6 +374,9 @@ const Tree = (props) => {
     },
     [cacheData, _deleteNode]
   )
+  useEffect(() => {
+    contextMenuFun.current = { editNode, addChildNode, addSiblingNode, deleteNode }
+  }, [editNode, addChildNode, addSiblingNode, deleteNode])
 
   const menuRender = useCallback(
     (node) => {
@@ -384,6 +389,7 @@ const Tree = (props) => {
       if (contextMenu) {
         menu = contextMenu(node)
       }
+
       return (
         <ul className={`${PREFIX}__menu theme__${theme}`}>
           {menu.map((m, index) => (
@@ -393,7 +399,7 @@ const Tree = (props) => {
               onClick={(e) => {
                 e.stopPropagation()
                 if (m.onClick) {
-                  m.onClick(node)
+                  m.onClick(node, contextMenuFun.current)
                 } else {
                   if (m.type === 'editNode') {
                     editNode(node, e)

@@ -127,22 +127,26 @@ class Demo extends React.Component {
                 return  [{
                   title:'编辑',
                   type: 'editNode'
-                }, {
+                }, 
+                {
                   title: '自定义 Title-1',
                   onClick: (item) => {
                     alert(JSON.stringify(item))
                   }
-                }, {
+                }, 
+                {
                   type: 'editNode',
                   title: '自定义 Title-2'
-                }, {
+                }, 
+                {
                   title: '自定义 Title-3',
                   type: 'editNode',
                   onClick: (item, node) => {
                     console.log('执行内置事件')
                     node.editNode(item)
                   }
-                }, {
+                }, 
+                {
                   title: '自定义 Title-4',
                   onClick: (item, node) => {
                     console.log('自定义编辑节点事件')
