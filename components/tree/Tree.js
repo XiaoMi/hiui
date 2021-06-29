@@ -402,7 +402,7 @@ const Tree = (props) => {
                   m.onClick(node, contextMenuFun.current)
                 } else {
                   if (m.type === 'editNode') {
-                    editNode(node, e)
+                    editNode(node)
                   }
                   if (m.type === 'addSiblingNode') {
                     addSiblingNode(node)
