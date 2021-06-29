@@ -1,6 +1,8 @@
-@import '@hi-ui/core-css/index.scss';
+@import '~@hi-ui/core-css/lib/index.scss';
 
-.hi4-empty-state {
+$prefixCls: #{$componentPrefix}-empty-state !default;
+
+.#{$prefixCls} {
   margin: 0 auto;
   font-size: 14px;
   line-height: 1.5715;

@@ -8,7 +8,7 @@ export const Basic = () => {
   return (
     <>
       <h1><%= h.camelCase(name) %></h1>
-      <div className="<%= name %>-basic-wrap">
+      <div className="<%= name %>-basic__wrap">
         <<%= h.camelCase(name) %>></<%= h.camelCase(name) %>>
       </div>
     </>

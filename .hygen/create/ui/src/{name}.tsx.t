@@ -3,15 +3,16 @@ to: <%= h.uiDir(`${name}/src/${name}.tsx`) %>
 ---
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
+import { __DEV__ } from '@hi-ui/env'
 
-const componentName = '<%= name %>'
-const _prefix = getPrefixCls(componentName)
+const _role = '<%= name %>'
+const _prefixCls = getPrefixCls(_role)
 
 export const <%= h.camelCase(name) %> = forwardRef<HTMLDivElement | null, <%= h.camelCase(name) %>Props>(
   (
     {
-      prefixCls = _prefix,
-      role = componentName,
+      prefixCls = _prefixCls,
+      role = _role,
       className,
       children,
       ...rest
@@ -35,4 +36,6 @@ export interface <%= h.camelCase(name) %>Props {
   style?: React.CSSProperties
 }
 
-export default <%= h.camelCase(name) %>
+if (__DEV__) {
+  <%= h.camelCase(name) %>.displayName = '<%= h.camelCase(name) %>'
+}

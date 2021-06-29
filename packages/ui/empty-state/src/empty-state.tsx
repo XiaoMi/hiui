@@ -1,23 +1,23 @@
 import React, { forwardRef } from 'react'
-import cx from 'classnames'
-import __DEV__ from './env'
+import { cx, getPrefixCls } from '@hi-ui/classname'
+import { __DEV__ } from '@hi-ui/env'
 
-const componentName = 'empty-state'
-export const _prefix = 'hi4-empty-state'
+const _role = 'empty-state'
+const _prefixCls = getPrefixCls(_role)
 
-export const EmptyState = forwardRef<null, EmptyStateProps>(
+export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
   (
     {
-      prefixCls = _prefix,
+      prefixCls = _prefixCls,
+      role = _role,
       className,
       children,
-      role = componentName,
       indicator = <DefaultIndicator />,
       title,
       subtitle,
       imageStyle,
       imageClassName,
-      ...restProps
+      ...rest
     },
     ref
   ) => {
@@ -25,7 +25,7 @@ export const EmptyState = forwardRef<null, EmptyStateProps>(
     const imageCls = cx(`${prefixCls}__image`, imageClassName)
 
     return (
-      <div ref={ref} role={role} className={cls} {...restProps}>
+      <div ref={ref} role={role} className={cls} {...rest}>
         <div className={imageCls} style={imageStyle}>
           {indicator}
         </div>
@@ -53,9 +53,7 @@ if (__DEV__) {
   EmptyState.displayName = 'EmptyState'
 }
 
-export default EmptyState
-
-const DefaultIndicator: React.FC<DefaultIndicatorProps> = (props) => {
+export const DefaultIndicator: React.FC<DefaultIndicatorProps> = (props) => {
   return (
     <img
       alt="empty"
