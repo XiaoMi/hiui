@@ -4,6 +4,7 @@
 - 新增 `From` 组件 setListItemFieldsValue 方法, 设置表单中From.List的指定项的值[#1760](https://github.com/XiaoMi/hiui/issues/1760)
 - 新增 `Table` 组件 onLoadChildren 方法, 树形表格下异步加载子数据 [#1725](https://github.com/XiaoMi/hiui/issues/1725)
 - 新增 `Badge` 组件 offset 属性设置状态点的位置偏移 [#1786](https://github.com/XiaoMi/hiui/issues/1786)
+- 新增 `Slider` 组件 showRangeLabel 属性设置是否显示范围值 [#1783](https://github.com/XiaoMi/hiui/issues/1783)
 - 优化 `Table` 组件树形表格，允许控制指定节点的展开收起 [#1784](https://github.com/XiaoMi/hiui/issues/1784)
 - 优化 `Grid` 组件接受原生属性 [#1609](https://github.com/XiaoMi/hiui/issues/1609)
 - 优化 `Select` onChang 回调方法中，获取全部选项详细内容 [#1726](https://github.com/XiaoMi/hiui/issues/1726)
@@ -22,9 +23,11 @@
 - 修复 `Tree` 组件 editable 受控状态下，编辑菜单显示问题 [#1761](https://github.com/XiaoMi/hiui/issues/1761)
 - 修复 `Tree` LegacyTree 组件 draggable 为 true 时，节点展开且无法选中节点问题 [#1781](https://github.com/XiaoMi/hiui/issues/1781)
 - 修复 `Slider` 组件 max、min 受控问题，Modal 中不能拖拽 [#1783](https://github.com/XiaoMi/hiui/issues/1783)
-- 新增 `Slider` 组件 showRangeLabel 属性设置是否显示范围值 [#1783](https://github.com/XiaoMi/hiui/issues/1783)
-- 修复 `DataePicker` 组件 yearrange、monthrange 无法通过 min、max 限制时间区间问题 [#1780](https://github.com/XiaoMi/hiui/issues/1780)
+- 修复 `DatePicker` 组件 yearrange、monthrange 无法通过 min、max 限制时间区间问题 [#1780](https://github.com/XiaoMi/hiui/issues/1780)
 - 修复 `Form` 组件值校验问题 [#1802](https://github.com/XiaoMi/hiui/issues/1802)
+- 修复 `Tree` 自定义右侧菜单参数错误问题 [#1812](https://github.com/XiaoMi/hiui/issues/1812)
+- 修复 `Tree` 在 onBeforeSave 返回 false后依然可以新增子节点问题 [#1813](https://github.com/XiaoMi/hiui/issues/1813)
+
 # 3.6.1
 - 修复部分组件 'regeneratorRuntime is not defined' 问题 [#1719](https://github.com/XiaoMi/hiui/issues/1719)
 - 修复 `Slider` max 和min 受控问题 [#1703](https://github.com/XiaoMi/hiui/issues/1703)
