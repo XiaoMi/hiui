@@ -1,7 +1,19 @@
 import { CSSProperties } from "react"
+import { ButtonProps } from '../button'
 
 type formData = {
   [prop: string]: any
+}
+
+export interface FormListFieldData {
+  field?: string
+  listItemValue?: any
+  column?: number
+  name?: string
+}
+interface FormListOperation {
+  add: () => void
+  remove: (fieldItem: FormListFieldData) => void
 }
 interface FormProps {
   initialValues?: formData
@@ -13,14 +25,22 @@ interface FormProps {
   children: Form.Item
   style?: CSSProperties
   className?: string
+  onValuesChange?: (changedValues: object, allValues: object) => void
 }
 
 interface ItemProps {
-  field?: string
+  field?: string | string[]
   label?: string | JSX.Element
+  name?: string
+  row?: number
+  rules?: any
+  valuePropName?: string
+  contentPosition?: 'top' | 'center' |'bottom'
   labelWidth?: string
   required?: boolean
   showColon?: boolean
+  style?: CSSProperties
+  className?: string
 }
 interface SchemaItem extends ItemProps {
   component?: string | JSX.Element
@@ -29,6 +49,7 @@ interface SchemaItem extends ItemProps {
 interface SchemaProps {
   schema?: SchemaItem
   submit?: FormSubmit
+  reset?: FormReset
 }
 
 interface FormSubmit extends ButtonProps{
@@ -42,6 +63,7 @@ interface FormReset extends ButtonProps{
 }
 interface FormList {
   name?: string
+  children?: (fields: FormListFieldData[], operation: FormListOperation) => React.ReactNode
 }
 declare class Item extends React.Component<ItemProps, any> {
 }
@@ -50,6 +72,7 @@ declare class SchemaForm extends React.Component<SchemaProps, any> {
 declare class Form extends React.Component<FormProps, any> {
   static Item = Item
   static SchemaForm = SchemaForm
+  static List = FormList
   static Reset = FormReset
   static Submit = FormSubmit
 }

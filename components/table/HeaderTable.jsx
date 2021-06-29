@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState, useEffect } from 'react'
+import React, { useContext, useRef, useState, useEffect, useLayoutEffect } from 'react'
 import TableContext from './context'
 import ColumnMenu from './ColumnMenu'
 import SettingMenu from './SettingMenu'
@@ -8,17 +8,13 @@ import Checkbox from '../checkbox'
 import { flatTreeData, setDepth, getLeafChildren, groupDataByDepth } from './util'
 import { Resizable } from 'react-resizable'
 
-const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
+const HeaderTable = ({ rightFixedIndex }) => {
   const {
     rowSelection,
-    data,
+    data: propsData,
     columns,
-    leftFixedColumns,
-    rightFixedColumns,
     expandedRender,
-    ceiling,
     stickyTop,
-    scrollBarSize,
     highlightedColKeys,
     highlightColumns,
     showColHighlight,
@@ -26,7 +22,6 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
     showColMenu,
     maxHeight,
     headerTableRef,
-    stickyHeaderRef,
     bodyTableRef,
     syncScrollLeft,
     bordered,
@@ -36,61 +31,74 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
     setRealColumnsWidth,
     resizable,
     setting,
-    scrollWidth,
-    eachHeaderHeight,
-    setEachHeaderHeight,
-    onHeaderRow
+    onHeaderRow,
+    sticky,
+    disabledData
   } = useContext(TableContext)
-
-  // ******************** 隐藏滚动条
+  const [data, setDate] = useState(_.cloneDeep(propsData))
+  useEffect(() => {
+    setDate(_.cloneDeep(propsData))
+  }, [propsData])
+  const [isAllChecked, setIsAllChecked] = useState(false)
+  const [groupedColumns, setGroupedColumns] = useState([])
+  const [columnsgroup, setColumnsGroup] = useState([])
+  const isStickyHeader = useRef(false)
+  // 隐藏滚动条
   const headerInner = useRef(null)
-
-  // *****控制列最小可调整宽度
+  const theadRef = useRef()
+  // 控制列最小可调整宽度
   const [minColWidth, setMinColWidth] = useState(Array(columns.length).fill(0))
-  // ********************
+  useEffect(() => {
+    const onwheel = (e) => {
+      const { deltaX } = e
+      headerTableRef.current.scrollLeft = headerTableRef.current.scrollLeft + deltaX
+      syncScrollLeft(headerTableRef.current.scrollLeft, bodyTableRef.current)
+    }
+    theadRef.current && theadRef.current.addEventListener('wheel', onwheel)
+    return () => {
+      theadRef.current && theadRef.current.removeEventListener('wheel', onwheel)
+    }
+  }, [])
+  useEffect(() => {
+    // 判断是否全选
+    if (rowSelection) {
+      const { selectedRowKeys = [] } = rowSelection
+      const flattedData = flatTreeData(_.cloneDeep(data))
+      const _isAllChecked =
+        flattedData
+          .filter((data) => !disabledData.current.includes(data.key))
+          .every((d) => selectedRowKeys.includes(d.key)) && flattedData.length !== 0
+      setIsAllChecked(_isAllChecked)
+    }
+  }, [data, rowSelection])
 
-  // ********************* 判断是否全选
-  let isAllChecked
-  if (rowSelection) {
-    const { selectedRowKeys = [] } = rowSelection
-    const flattedData = flatTreeData(data)
-    isAllChecked = flattedData.every((d) => selectedRowKeys.includes(d.key))
-  }
-  // *********************
+  // 处理列的深度
+  useEffect(() => {
+    const _columns = _.cloneDeep(columns)
+    const depthArray = []
+    setDepth(_columns, 0, depthArray)
+    const maxDepth = depthArray.length > 0 ? Math.max.apply(null, depthArray) : 0
+    const flatTreeDateColumns = flatTreeData(_columns)
+    const _columnsgroup = [rowSelection && 'checkbox', expandedRender && 'expandedButton']
+      .concat(flatTreeDateColumns.filter((col) => col.isLast))
+      .filter((column) => !!column)
 
-  // *****************处理分组表头逻辑
-  let headerColumns = columns
-  if (isFixed === 'left') {
-    headerColumns = leftFixedColumns
-  }
-  if (isFixed === 'right') {
-    headerColumns = rightFixedColumns
-  }
-  const _columns = _.cloneDeep(headerColumns)
-  const depthArray = []
-  setDepth(_columns, 0, depthArray)
+    flatTreeDateColumns.forEach((column) => {
+      const leafChildren = []
+      getLeafChildren(column, leafChildren)
+      // 在最后一层，colspan = 1, rowspan = maxDepth - depth + 1
+      // 不在最后一层，rowspan = 1, colspan = 叶子节点后代数量
+      column.rowSpan = column.isLast ? maxDepth - column.depth + 1 : 1
+      column.colSpan = column.isLast ? 1 : leafChildren.length
+    })
+    isStickyHeader.current = flatTreeDateColumns.some((item) => {
+      return typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
+    })
+    const _groupedColumns = groupDataByDepth(_columns, maxDepth)
+    setColumnsGroup(_columnsgroup)
+    setGroupedColumns(_groupedColumns)
+  }, [columns])
 
-  const maxDepth = depthArray.length > 0 ? Math.max.apply(null, depthArray) : 0
-  const columnsgroup = [rowSelection && isFixed !== 'right' && 'checkbox', expandedRender && 'expandedButton']
-    .concat(flatTreeData(_columns).filter((col) => col.isLast))
-    .filter((column) => !!column)
-  // TODO: 这里是考虑了多级表头的冻结，待优化
-  // *********全量 col group
-  const allColumns = _.cloneDeep(columns)
-  const _depthArray = []
-  setDepth(allColumns, 0, _depthArray)
-  const allColumnsgroup = flatTreeData(allColumns).filter((col) => col.isLast)
-  // ***********
-  flatTreeData(_columns).forEach((column) => {
-    const leafChildren = []
-    getLeafChildren(column, leafChildren)
-    // 在最后一层，colspan = 1, rowspan = maxDepth - depth + 1
-    // 不在最后一层，rowspan = 1, colspan = 叶子节点后代数量
-    column.rowSpan = column.isLast ? maxDepth - column.depth + 1 : 1
-    column.colSpan = column.isLast ? 1 : leafChildren.length
-  })
-
-  const groupedColumns = groupDataByDepth(_columns, maxDepth)
   // ********************
 
   useEffect(() => {
@@ -103,9 +111,8 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   }, [columns, headerInner])
 
   // ******************** 同步行高度
-  useEffect(() => {
-    if (headerInner.current && !isFixed) {
-      setEachHeaderHeight(headerInner.current.clientHeight)
+  useLayoutEffect(() => {
+    if (headerInner.current) {
       if (!data || data.length === 0) {
         if (headerInner.current.childNodes && headerInner.current.childNodes[1].childNodes[0]) {
           const _realColumnsWidth = Array.from(headerInner.current.childNodes[1].childNodes[0].childNodes).map(
@@ -117,7 +124,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
         }
       }
     }
-  }, [headerInner, isFixed, setEachHeaderHeight, columns, data])
+  }, [headerInner, columns, data])
 
   // ********************处理排序逻辑
   // 可以排序的必须的是最后一级列
@@ -126,12 +133,12 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
 
   // ******************** 行渲染 ***********************
   const renderBaseRow = (cols, index, isSticky) => {
-    const _colums = [
-      rowSelection && isFixed !== 'right' && index === 0 && 'checkbox',
-      expandedRender && index === 0 && 'expandedButton'
-    ]
+    const _colums = [rowSelection && index === 0 && 'checkbox', expandedRender && index === 0 && 'expandedButton']
       .concat(cols)
       .filter((column) => !!column)
+    const isStickyCol = _colums.some((item) => {
+      return typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
+    })
     return (
       <tr key={index}>
         {_colums.map((c, idx) => {
@@ -141,10 +148,12 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
               <th
                 rowSpan={groupedColumns.length}
                 key="checkbox"
+                className={classnames({ 'hi-table__col--sticky': isStickyCol })}
                 style={{
                   boxSizing: 'border-box',
                   width: 50,
-                  height: isFixed ? eachHeaderHeight : 'auto'
+                  height: 'auto',
+                  backgroundColor: '#fbfbfb'
                 }}
               >
                 <Checkbox
@@ -152,7 +161,13 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                   indeterminate={!isAllChecked && rowSelection.selectedRowKeys.length > 0}
                   onChange={(e) => {
                     if (rowSelection.onChange) {
-                      rowSelection.onChange(isAllChecked ? [] : flatTreeData(data).map((d) => d.key))
+                      rowSelection.onChange(
+                        isAllChecked
+                          ? []
+                          : flatTreeData(_.cloneDeep(data))
+                              .filter((data) => !disabledData.current.includes(data.key))
+                              .map((d) => d.key)
+                      )
                     }
                   }}
                 />
@@ -163,18 +178,23 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
               <th
                 key="expandedButton"
                 rowSpan={groupedColumns.length}
+                className={classnames({ 'hi-table__col--sticky': isStickyCol })}
                 style={{
                   boxSizing: 'border-box',
                   width: 50,
-                  height: isFixed ? eachHeaderHeight : 'auto'
+                  height: 'auto',
+                  backgroundColor: '#fbfbfb'
                 }}
               >
                 <span />
               </th>
             )
           } else {
-            const isRowActive = highlightedColKeys.includes(c.dataKey) || highlightColumns.includes(c.dataKey)
-            const isColActive = showColHighlight && hoverColIndex === c.dataKey
+            const { rightStickyWidth, leftStickyWidth, dataKey } = c
+            const isSticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
+
+            const isRowActive = highlightedColKeys.includes(dataKey) || highlightColumns.includes(dataKey)
+            const isColActive = showColHighlight && hoverColIndex === dataKey
             cell = (
               <th
                 key={idx}
@@ -182,11 +202,14 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                 rowSpan={c.rowSpan}
                 // 标题事件处理
                 {...onHeaderRow(_colums, index)}
+                className={classnames({ 'hi-table__col--sticky': isSticky })}
                 style={{
-                  height: isFixed ? eachHeaderHeight : 'auto',
+                  height: 'auto',
                   boxSizing: 'border-box',
-                  textAlign: alignRightColumns.includes(c.dataKey) ? 'right' : 'left',
-                  background: isRowActive || isColActive ? '#F4F4F4' : '#fbfbfb'
+                  textAlign: alignRightColumns.includes(dataKey) ? 'right' : 'left',
+                  background: isRowActive || isColActive ? '#F4F4F4' : '#fbfbfb',
+                  right: rightStickyWidth + 'px',
+                  left: leftStickyWidth + 'px'
                 }}
               >
                 <span className="hi-table__header__title">
@@ -232,133 +255,40 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
       </tr>
     )
   }
-
-  return [
+  return (
     <div
       key="normal"
       style={{
         borderLeft: bordered && '1px solid #e7e7e7',
         borderTop: bordered && '1px solid #e7e7e7',
-        overflow: 'hidden',
         boxShadow: maxHeight && '0px 2px 6px 0px rgba(0,0,0,0.12)',
-        position: 'relative',
-        height: (eachHeaderHeight && (bordered ? eachHeaderHeight + 1 : eachHeaderHeight)) || 'auto'
+        position: sticky ? 'sticky' : 'relative',
+        top: sticky && stickyTop,
+        zIndex: 10
       }}
     >
-      {setting && !isFixed && <SettingMenu />}
-      <div
-        className={`${prefix}__header`}
-        key="normal"
-        ref={isFixed ? null : headerTableRef}
-        style={{
-          overflowY: maxHeight && !isFixed ? 'scroll' : 'hidden',
-          overflowX: isFixed ? 'hidden' : 'scroll',
-          marginBottom: !isFixed && -scrollBarSize,
-          height: (eachHeaderHeight && eachHeaderHeight + 20) || 'auto'
-        }}
-        onScroll={(e) => {
-          syncScrollLeft(headerTableRef.current.scrollLeft, bodyTableRef.current)
-          syncScrollLeft(headerTableRef.current.scrollLeft, stickyHeaderRef.current)
-        }}
-      >
-        <table
-          style={{
-            width: isFixed ? 'auto' : scrollWidth || '100%',
-            height: isFixed ? eachHeaderHeight : 'auto'
-          }}
-          ref={headerInner}
-        >
+      {setting && <SettingMenu />}
+      <div className={`${prefix}__header`} key="normal" ref={headerTableRef}>
+        <table style={{ width: '100%' }} ref={headerInner}>
           <colgroup>
             {columnsgroup.map((c, index) => {
-              let width
-              if (isFixed === 'right') {
-                allColumnsgroup.forEach((col, idx) => {
-                  if (col.dataKey === c.dataKey) {
-                    width = realColumnsWidth[rowSelection ? idx + 1 : idx]
-                  }
-                })
-              } else if (isFixed === 'left' || resizable) {
-                width = realColumnsWidth[index]
-              } else {
-                width = c.width
-              }
+              const width = resizable ? realColumnsWidth[index] : c.width
               return (
                 <col
                   key={index}
                   style={{
-                    width: width,
+                    width: c === 'checkbox' ? 50 : width,
                     minWidth: width
                   }}
                 />
               )
             })}
           </colgroup>
-          <thead>{groupedColumns.map((group, index) => renderBaseRow(group, index, false))}</thead>
+          <thead ref={theadRef}>{groupedColumns.map((group, index) => renderBaseRow(group, index, false))}</thead>
         </table>
       </div>
-    </div>,
-    !isFixed && ceiling && (
-      <div
-        key="ceiling"
-        className={classnames(`${prefix}__header`, `${prefix}__header--sticky`)}
-        ref={stickyHeaderRef}
-        style={{
-          top: stickyTop,
-          width: bodyWidth,
-          borderLeft: bordered && '1px solid #e7e7e7'
-        }}
-      >
-        <table style={{ width: scrollWidth || '100%' }}>
-          <colgroup>
-            {columnsgroup.map((c, idx) => (
-              <col
-                key={idx}
-                style={{
-                  width: resizable ? realColumnsWidth[idx] : c.width,
-                  minWidth: resizable ? realColumnsWidth[idx] : c.width
-                }}
-              />
-            ))}
-          </colgroup>
-          <thead>{groupedColumns.map((group, idx) => renderBaseRow(group, idx, true))}</thead>
-        </table>
-      </div>
-    ),
-    isFixed && ceiling && (
-      <div
-        key="fixed-ceiling"
-        className={classnames(`${prefix}__header`, `${prefix}__header--sticky`)}
-        style={{
-          top: stickyTop,
-          display: ceiling ? 'block' : 'none',
-          borderLeft: bordered && '1px solid #e7e7e7'
-        }}
-      >
-        <table style={{ width: 'auto' }}>
-          <colgroup>
-            {columnsgroup.map((c, idx) => {
-              let width
-              allColumnsgroup.forEach((col, index) => {
-                if (col.dataKey === c.dataKey) {
-                  width = realColumnsWidth[index]
-                }
-              })
-              return (
-                <col
-                  key={idx}
-                  style={{
-                    width: width,
-                    minWidth: width
-                  }}
-                />
-              )
-            })}
-          </colgroup>
-          <thead>{groupedColumns.map((group, idx) => renderBaseRow(group, idx, true))}</thead>
-        </table>
-      </div>
-    )
-  ]
+    </div>
+  )
 }
 
 export default HeaderTable

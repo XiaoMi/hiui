@@ -15,27 +15,124 @@ const code = [
         this.columns = [
           {
             title: '商品名',
-            dataKey: 'name'
+            dataKey: 'name',
+            width: 150
           },
           {
             title: '品类',
-            dataKey: 'type'
+            dataKey: 'type',
+            width: 150
           },
           {
             title: '规格',
-            dataKey: 'size'
+            dataKey: 'size',
+            width: 150
+
           },
           {
             title: '单价',
-            dataKey: 'price'
+            dataKey: 'price',
+            width: 150
+
+          },
+         
+          {
+            title: '规格',
+            dataKey: 'size',
+            width: 150
+
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            width: 150
+
+          },
+          {
+            title: '规格',
+            dataKey: 'size',
+            width: 150
+
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            width: 150
+
+          },
+          {
+            title: '规格',
+            dataKey: 'size',
+            width: 150
+
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            width: 150
+
+          },
+          {
+            title: '规格',
+            dataKey: 'size',
+            width: 150
+
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            width: 150
+
+          },
+         
+          {
+            title: '规格',
+            dataKey: 'size',
+            width: 150
+
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            width: 150
+
+          },
+          {
+            title: '规格',
+            dataKey: 'size',
+            width: 150
+
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            width: 150
+
+          },
+         
+          {
+            title: '规格',
+            dataKey: 'size',
+            width: 150
+
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            width: 150
+
           },
           {
             title: '门店',
-            dataKey: 'address'
+            dataKey: 'address',
+            width: 150
+
           },
           {
             title: '库存',
-            dataKey: 'stock'
+            dataKey: 'stock',
+            width: 150
+
           }
         ]
 
@@ -88,7 +185,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data}/>
+        return <Table columns={this.columns} resizable fixedToColumn={{left:'type', right: 'address'}} data={this.data}/>
       }
     }`,
     opt: ['基础']

@@ -6,12 +6,19 @@ type DataItem = {
   disabled?: boolean
   children?: DataItem[]
 }
+type GroupData = {
+  groupTitle: string
+  groupId: string | number
+  children: DataItem
+}
 export type DataSource = {
   url: string
   type?: 'get' | 'post'
   data?: object
   params?: object
   headers?: object
+  withCredentials?: boolean
+  error?: (error: object) => void
   mode?: 'same-origin' | 'cors' | 'no-cors' | 'navigate'
   transformResponse?: (response: object) => DataItem[]
 }
@@ -25,7 +32,7 @@ const DataSourFun: (keyword: string) => DataSource
 const FilterOptionFun: (keyword: string, item: DataItem) => boolean
 interface Props {
   type?: 'single' | 'multiple'
-  data?: DataItem[]
+  data?: DataItem[] | GroupData[]
   fieldNames?: FieldNames
   dataSource?: DataSource | DataSourFun
   value?: string | string[]
@@ -40,12 +47,11 @@ interface Props {
   disabled?: boolean
   placeholder?: string
   emptyContent?: string | JSX.Element
-  style?: CSSProperties
   optionWidth?: number
   bordered?: boolean
   style?: CSSProperties
   className?: string
-  onChange?: (selectedIds: string[], changedItem: DataItem) => void
+  onChange?: (selectedIds: string[], changedItem: DataItem, changedItems: DataItem[]) => void
   onSearch?: (keyword: string) => void
   onOverlayScroll?: (e: Event<HTMLDivElement>) => void
   render?: (item: DataItem, selected: boolean) => JSX.Element

@@ -20,7 +20,7 @@ class Demo extends React.Component {
         format='YYYY-MM-DD HH:mm:ss'
         onChange={(date, dateStr) => { 
           console.log('onChange', date, dateStr) 
-          this.setState({value: dateStr})
+          this.setState({value: date})
         }}
       />
     )

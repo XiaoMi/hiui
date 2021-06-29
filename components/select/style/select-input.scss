@@ -42,13 +42,23 @@
     input {
       cursor: not-allowed;
     }
+
+    &.multiple-values .hi-select__input-items--left {
+      color: use-color('gray-50');
+    }
+
+    .hi-select__input--item {
+      .hi-select__input--item__remove {
+        cursor: not-allowed;
+      }
+    }
   }
 
   .hi-icon {
     margin-left: 0 !important;
   }
 
-  &.active,
+  &.active:not(.disabled),
   &:not(.disabled):hover {
     border-color: use-color('primary');
   }
@@ -213,7 +223,7 @@
         line-height: 22px;
         font-size: 12px;
         color: use-color('black');
-        background-color: use-color('gray-10');
+        background-color: use-color('gray-20');
         border-radius: 2px;
         box-sizing: border-box;
       }
@@ -229,7 +239,7 @@
       margin: 0 4px 4px 0;
       overflow: hidden;
       vertical-align: middle;
-      background-color: use-color('gray-10');
+      background-color: use-color('gray-20');
       border-radius: 2px;
       text-align: left;
 

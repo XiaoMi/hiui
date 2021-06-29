@@ -20,6 +20,7 @@
     color: use-color('white');
     letter-spacing: 0;
     text-align: center;
+    z-indx: 1;
 
     &.hi-hide {
       display: none;
@@ -35,6 +36,7 @@
     background: get-color($palette-secondary, 'danger');
     border: 1px solid use-color('white');
     border-radius: 50%;
+    z-index: 1;
 
     &.hi-hide {
       display: none;

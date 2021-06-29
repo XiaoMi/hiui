@@ -6,6 +6,7 @@ interface Props {
   visible?: boolean
   style?: CSSProperties
   className?: string
+  overlayClassName?: string
 }
 declare const Popover: React.ComponentType<Props>
 export default Popover

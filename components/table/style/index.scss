@@ -78,12 +78,14 @@
   &__setting-btn {
     position: absolute;
     height: 100%;
-    z-index: 3;
+    z-index: 11;
+    box-sizing: border-box;
     right: 0;
     display: flex;
     align-items: center;
     border-left: 1px solid #e0e1e2;
     border-bottom: 1px solid #e0e1e2;
+    border-top: none;
     color: #999;
     cursor: pointer;
     font-size: 14px;
@@ -163,6 +165,10 @@
     table {
       tr:nth-child(2n) {
         background: $secondaryColor;
+
+        .hi-table__col--sticky {
+          background: $secondaryColor;
+        }
       }
     }
   }
@@ -192,7 +198,7 @@
     z-index: 1;
     position: absolute;
     top: 0;
-    border-right: 2px solid #e6e7e8;
+    box-shadow: 2px 0 4px rgba(187, 187, 187, 0.4);
     overflow: hidden;
   }
 
@@ -200,12 +206,12 @@
     z-index: 1;
     position: absolute;
     top: 0;
-    border-left: 2px solid #e6e7e8;
+    box-shadow: -2px 0 4px rgba(187, 187, 187, 0.4);
     overflow: hidden;
   }
 
   &__header {
-    overflow-x: scroll;
+    overflow: hidden;
     position: relative;
 
     > table {
@@ -236,8 +242,19 @@
     tr {
       min-height: 52px;
 
+      .hi-table__col--sticky {
+        position: sticky;
+        left: 0;
+        z-index: 5;
+        background: use-color('white');
+      }
+
       &:hover {
         background: use-color('primary-20');
+
+        .hi-table__col--sticky {
+          background: use-color('primary-20');
+        }
       }
 
       & > td {
@@ -290,11 +307,11 @@
       & > .#{$table}__col--highlight {
         background: use-color('primary-20');
       }
-    }
-  }
 
-  &__col__hover--highlight {
-    background: use-color('primary-10');
+      .hi-table__col__hover--highlight {
+        background: use-color('primary-10');
+      }
+    }
   }
 }
 

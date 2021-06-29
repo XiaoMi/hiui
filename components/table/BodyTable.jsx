@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect, useCallback } from 'react'
+import React, { useContext, useEffect, useCallback } from 'react'
 import classNames from 'classnames'
 
 import Row from './Row'
@@ -9,18 +9,15 @@ import { flatTreeData, setDepth, checkNeedTotalOrEvg, getTotalOrEvgRowData } fro
 const BodyTable = ({ fatherRef, emptyContent }) => {
   const {
     bordered,
-    data,
+    data = [],
     columns,
     activeSorterColumn,
     activeSorterType,
     maxHeight,
     headerTableRef,
-    stickyHeaderRef,
     bodyTableRef,
-    leftFixedBodyTableRef,
-    rightFixedBodyTableRef,
+    tableRef,
     syncScrollLeft,
-    syncScrollTop,
     firstRowRef,
     realColumnsWidth,
     resizable,
@@ -28,7 +25,6 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     hoverColIndex,
     setHoverColIndex,
     showColHighlight,
-    scrollWidth,
     setEachRowHeight,
     expandedRender,
     expandedRowKeys,
@@ -36,7 +32,9 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     localeDatas,
     expandedTreeRows,
     rowExpandable,
-    setExpandedTreeRows
+    setExpandedTreeRows,
+    onLoadChildren,
+    loadChildren
   } = useContext(TableContext)
   // **************** 获取colgroup
   const _columns = _.cloneDeep(columns)
@@ -46,12 +44,10 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     .concat(flatTreeData(_columns).filter((col) => col.isLast))
     .filter((column) => !!column)
   // ****************
-
   // **************** 同步滚动位置
-  const tableRef = useRef(null)
 
   // **************** 根据排序列处理数据
-  let _data = data
+  let _data = data.concat()
 
   if (activeSorterColumn) {
     const sorter =
@@ -102,20 +98,31 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
   let hasTree = false
   if (_data && _data.length) {
     hasTree = _data.some((row) => {
-      return row.children && row.children.length
+      return (row.children && row.children.length) || (onLoadChildren && row.isLeaf)
     })
   }
 
   const renderRow = (row, level, index, rowConfig = {}, isTree) => {
     let childrenHasTree = false
-    if (row.children && row.children.length) {
-      childrenHasTree = row.children.some((child) => child.children && child.children.length)
+    const { key } = row
+    if (loadChildren.current) {
+      const { parentKey, data: children } = loadChildren.current
+      if (parentKey === key) {
+        Object.assign(row, { children })
+        loadChildren.current = null
+      }
+    }
+    const { children = [] } = row
+    if (children && children.length) {
+      childrenHasTree = children.some(
+        (child) => (child.children && child.children.length) || (onLoadChildren && child.isLeaf)
+      )
     }
     return (
-      <React.Fragment key={row.key}>
+      <React.Fragment key={key}>
         <Row
           innerRef={index === 0 ? firstRowRef : null}
-          key={row.key}
+          key={key}
           rowData={row}
           allRowData={row}
           level={level}
@@ -131,9 +138,9 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
           isTree={isTree}
           rowExpandable={rowExpandable}
         />
-        {row.children &&
-          expandedTreeRows.includes(row.key) &&
-          row.children.map((child) => {
+        {children &&
+          expandedTreeRows.includes(key) &&
+          children.map((child) => {
             return renderRow(child, level + 1, index, _, childrenHasTree || isTree)
           })}
       </React.Fragment>
@@ -160,6 +167,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
     <div
       style={{
         maxHeight: maxHeight || 'auto',
+        borderLeft: bordered ? '1px solid #e7e7e7' : 'none',
         overflowY: tableRef.current && tableRef.current.clientHeight > maxHeight ? 'scroll' : null, // maxHeight 小于 table 实际高度才处滚动条
         overflowX:
           (bodyTableRef.current && bodyTableRef.current.clientWidth) <
@@ -170,33 +178,25 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
       ref={bodyTableRef}
       onScroll={(e) => {
         syncScrollLeft(bodyTableRef.current.scrollLeft, headerTableRef.current)
-        syncScrollLeft(bodyTableRef.current.scrollLeft, stickyHeaderRef.current)
-        syncScrollTop(bodyTableRef.current.scrollTop, leftFixedBodyTableRef.current)
-        syncScrollTop(bodyTableRef.current.scrollTop, rightFixedBodyTableRef.current)
       }}
     >
-      <table
-        ref={tableRef}
-        style={{
-          borderLeft: bordered ? '1px solid #e7e7e7' : 'none',
-          width: scrollWidth || '100%'
-        }}
-      >
+      <table ref={tableRef}>
         <colgroup>
-          {columnsgroup.map((c, index) => (
-            <col
-              key={index}
-              className={classNames({
-                [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === c.dataKey
-              })}
-              style={{
-                width: resizable ? realColumnsWidth[index] : c.width,
-                minWidth: resizable ? realColumnsWidth[index] : c.width
-                // width: c.width,
-                // minWidth: c.width
-              }}
-            />
-          ))}
+          {columnsgroup.map((c, index) => {
+            const width = c === 'checkbox' ? 50 : c.width
+            return (
+              <col
+                key={index}
+                className={classNames({
+                  [`${prefix}__col__hover--highlight`]: showColHighlight && hoverColIndex === c.dataKey
+                })}
+                style={{
+                  width: resizable ? realColumnsWidth[index] : width,
+                  minWidth: resizable ? realColumnsWidth[index] : width
+                }}
+              />
+            )
+          })}
         </colgroup>
         <tbody>
           {_data && _data.length > 0

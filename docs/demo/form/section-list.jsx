@@ -135,6 +135,7 @@ const code = [
                             <FormItem
                               // 关于{...field}必写，Formlist需要依据里面的变量进行处理 
                               {...field}
+                              row={index}
                               label={index === 0 ? 'testList1' : ''}
                             >
                               <Input placeholder='请输入' style={{width:'200px'}}/>
@@ -187,6 +188,7 @@ const code = [
                             <FormItem
                               // 关于{...field}必写，Formlist需要依据里面的变量进行处理 
                               {...field}
+                              row={index}
                               label={index === 0 ? 'testList2' : ''}
                             >
                               <Input placeholder='请输入' style={{width:'200px'}}/>
@@ -383,6 +385,7 @@ const code = [
                           <div style={{ display: 'flex' }} key={index}>
                             <FormItem
                               {...field}
+                              row={index}
                               name = 'first'
                             >
                             <Select placeholder='请输入' style={{width:'200px'}} data={[
@@ -391,11 +394,13 @@ const code = [
                               { title:'笔记本', id:'4' },
                               { title:'生活周边', id:'5' },
                               { title:'办公', id:'6' }
-                            ]}/>
+                            ]}
+                            />
                             </FormItem>
                             <FormItem
                               {...field}
                               labelWidth='0'
+                              row={index}
                               name = 'last'
                             >
                               <Input placeholder='请输入' style={{width:'200px'}}/>
@@ -466,6 +471,16 @@ const code = [
                         }]
                     })
                 }}>fill Form</Button>
+                
+                  <Button type="primary" appearance="link" onClick={()=>{
+                    console.log('填充表单')
+                    this.form.current.setListItemFieldsValue([{
+                      row: 0,
+                      name: 'last',
+                      listname:'testList',
+                      value:'000'
+                    }])
+                }}>更新列表某项</Button>
                 </FormItem>
               </Form>
             </Col>

@@ -39,27 +39,23 @@ const Row = ({
     setHighlightRows,
     columns,
     expandedRender,
-    leftFixedColumns,
-    rightFixedColumns,
     hoverRow,
-    setHoverRow,
     prefix,
     rowExpandable,
-    onExpand
+    onExpand,
+    disabledData
   } = useContext(TableContext)
 
   const _columns = _.cloneDeep(columns)
   const depthArray = []
   setDepth(_columns, 0, depthArray)
-  let rowColumns = flatTreeData(_columns).filter((col) => col.isLast)
-  if (isFixed === 'left') {
-    rowColumns = leftFixedColumns
-  }
-  if (isFixed === 'right') {
-    rowColumns = rightFixedColumns
-  }
+  const rowColumns = flatTreeData(_columns).filter((col) => col.isLast)
+  const isSticky = rowColumns.some((item) => {
+    return typeof item.leftStickyWidth !== 'undefined' || typeof item.rightStickyWidth !== 'undefined'
+  })
   const checkboxConfig = rowSelection && rowSelection.getCheckboxConfig && rowSelection.getCheckboxConfig(allRowData)
   const checkboxDisabled = (checkboxConfig && checkboxConfig.disabled) || false
+  checkboxDisabled && disabledData.current.push(allRowData.key)
   const rowExpand = rowExpandable && rowExpandable(rowData)
   return [
     <tr
@@ -80,11 +76,17 @@ const Row = ({
           setHighlightRows(highlightedRowKeys.concat(rowData.key))
         }
       }}
-      onMouseEnter={(e) => setHoverRow(rowData.key)}
-      onMouseLeave={(e) => setHoverRow(null)}
+      // 可以删除改滑动方法
+      // onMouseEnter={(e) => setHoverRow(rowData.key)}
+      // onMouseLeave={(e) => setHoverRow(null)}
     >
       {rowSelection && isFixed !== 'right' && !isSumRow && !isAvgRow && (
-        <td style={{ width: 50 }}>
+        <td
+          style={{ width: 50 }}
+          className={classNames({
+            [`${prefix}__col--sticky`]: isSticky
+          })}
+        >
           <Checkbox
             checked={rowSelection.selectedRowKeys.includes(rowData.key)}
             disabled={checkboxDisabled}
@@ -102,7 +104,12 @@ const Row = ({
         </td>
       )}
       {expandedRender && (
-        <td style={{ width: 50 }}>
+        <td
+          style={{ width: 50 }}
+          className={classNames({
+            [`${prefix}__col--sticky`]: isSticky
+          })}
+        >
           <>
             {React.isValidElement(rowExpand) ? (
               rowExpand

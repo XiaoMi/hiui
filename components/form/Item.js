@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react'
+import React, { useContext, useState, useEffect, useCallback, useRef } from 'react'
 import classNames from 'classnames'
 import AsyncValidator from 'async-validator'
 import PropTypes from 'prop-types'
@@ -42,7 +42,10 @@ const FormItem = (props) => {
     contentPosition = 'center',
     name,
     listItemValue,
-    sort
+    sort,
+    uuid,
+    column,
+    row
   } = props
 
   const {
@@ -52,10 +55,11 @@ const FormItem = (props) => {
       form: { colon }
     }
   } = formProps || {}
+  const _propsValue = children && children.props ? children.props[valuePropName] : ''
   // 初始化FormItem的内容
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState(_propsValue)
   const [error, setError] = useState('')
-
+  const eventInfo = useRef()
   const getItemfield = useCallback(() => {
     let _propsField = propsField
     if (_type === 'list' && name) {
@@ -66,9 +70,27 @@ const FormItem = (props) => {
 
   const [field, setField] = useState(getItemfield())
   const [validating, setValidating] = useState(false)
+
+  useEffect(() => {
+    const { eventName, e, args, componentProps } = eventInfo.current || {}
+    const _children = children || {}
+    const _props = componentProps || _children.props
+    eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
+    eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
+    eventInfo.current = {}
+  }, [value])
+
   useEffect(() => {
     setField(getItemfield())
   }, [propsField, name])
+  // 兼容 2.x value
+  useEffect(() => {
+    if (typeof _propsValue !== 'undefined') {
+      setValue(_propsValue)
+      updateField(_propsValue)
+    }
+  }, [_propsValue, field])
+
   // 更新
   const updateField = (_value, triggerType) => {
     const childrenFiled = {
@@ -152,7 +174,13 @@ const FormItem = (props) => {
         }
         return true
       }
-      const rules = getRules()
+      // Bug of `async-validator`
+      const rules = getRules().map((item) => {
+        if (currentValue !== '') {
+          item.type = item.type || 'any'
+        }
+        return item
+      })
 
       const validator = new AsyncValidator({
         [field]: rules
@@ -186,7 +214,12 @@ const FormItem = (props) => {
       propsField,
       listname,
       sort,
-      _type
+      _type,
+      uuid,
+      column,
+      row,
+      name,
+      updateField
     }
   }
 
@@ -232,10 +265,6 @@ const FormItem = (props) => {
     const beObject = Object.prototype.toString.call(e) === '[object Object]'
     beObject && Object.prototype.toString.call(e.persist) === '[object Function]' && e.persist()
     const displayName = component && component.type && component.type.displayName
-
-    const _props = componentProps || children.props
-    eventName === 'onChange' && _props.onChange && _props.onChange(e, ...args)
-    eventName === 'onBlur' && _props.onBlur && _props.onBlur(e, ...args)
     let value =
       beObject && e.target && Object.prototype.hasOwnProperty.call(e.target, valuePropName)
         ? e.target[valuePropName]
@@ -243,6 +272,7 @@ const FormItem = (props) => {
     if (displayName === 'Counter') {
       value = args[0]
     }
+    eventInfo.current = { eventName, e, args, componentProps, value }
     setValue(value)
     handleField(eventName, value)
   }
@@ -265,9 +295,9 @@ const FormItem = (props) => {
       return item.field === _field
     })
     if (_field && !isExist) {
-      _value = initialValues && initialValues[field] ? initialValues[_field] : ''
+      _value = initialValues && typeof initialValues[field] !== 'undefined' ? initialValues[_field] : _value
       if (_type === 'list' && listItemValue) {
-        _value = typeof listItemValue[name] !== 'undefined' ? listItemValue[name] : listItemValue
+        _value = Object.keys(listItemValue).includes(name) ? listItemValue[name] : listItemValue
       }
       _Immutable.current.setState({
         type: FILEDS_INIT,
@@ -291,8 +321,8 @@ const FormItem = (props) => {
       if (HIUI[component]) {
         const HIUIComponent = HIUI[component]
         return React.createElement(HIUIComponent, {
-          ...componentProps,
           [valuePropName]: _value,
+          ...componentProps,
           onChange: (e, ...args) => {
             setEvent('onChange', HIUIComponent, componentProps, e, ...args)
           },
@@ -307,11 +337,12 @@ const FormItem = (props) => {
     if (!children) {
       return null
     }
-
+    const propChild = children ? children.props : {}
     return Array.isArray(children) || !React.isValidElement(children)
       ? children
       : React.cloneElement(children, {
           [valuePropName]: _value,
+          ...propChild,
           onChange: (e, ...args) => {
             setEvent('onChange', children, '', e, ...args)
           },

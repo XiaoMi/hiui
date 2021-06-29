@@ -4,7 +4,7 @@ import Table from '../../../components/table'
 import Watermark from '../../../components/Watermark'
 const prefix = 'table-async'
 const desc = ['异步动态获取表格数据']
-const rightOptions = ['异步请求', '斑马行']
+const rightOptions = ['异步请求']
 const code = [
   {
     code: `import React from 'react'
@@ -16,58 +16,42 @@ const code = [
                 { title: 'Full Name', width: 100, dataKey: 'name', key: 'name' },
                 { title: 'Age', width: 100, dataKey: 'age', key: 'age' },
                 { title: 'Column 1', dataKey: 'address', key: '1' },
-                { title: 'Column 2', dataKey: 'address2', key: '2' },
-                { title: 'Column 3', dataKey: 'address3', key: '3' },
-                { title: 'Column 4', dataKey: 'address4', key: '4' }
+                { title: 'Column 2', dataKey: 'phone', key: '2' },
+                { title: 'Column 3', dataKey: 'phone', key: '3' },
+                { title: 'Column 4', dataKey: 'phone', key: '4' }
             ]
-            const data = []
-
-            for (let i = 0; i < 100; i++) {
-                data.push({
-                    key: i,
-                        name: 'Jake White',
-                        age: i,
-                        tel: '0575-22098909',
-                        phone: 18900010002,
-                        address: 'Dublin No. 2 Lake Park'
-                    })
-            }
-
             this.state = {
                 pageSize: 10,
                 current: 1,
-                data: data
             }
         }
 
         render() {
-            return (
-            <Table
-                columns={this.columns}
-                dataSource={()=>{
-                return {
-                    url:'https://mife-gallery.test.mi.com/hiui/stores',
-                    transformResponse:(res)=>{
-                        console.log(res)
-                        const arr = []
-                        for (let i = 0; i < 100; i++) {
-                            arr.push({
-                                key: i,
-                                name: 'Jake White',
-                                age: i,
-                                tel: '0575-22098909',
-                                phone: 18900010002,
-                                address: 'Dublin No. 2 Lake Park'
-                            })
-                        }
-                        return arr
-                    }
-                }
-            }}
-            
-            />
-            )
-        }
+            return (<Table
+              columns={this.columns}
+              dataSource={()=>{
+              return {
+                  url:'https://mife-gallery.test.mi.com/hiui/stores',
+                  transformResponse:(res)=>{
+                    const data = JSON.parse(res).data
+                      const arr = []
+                      for (let i = 0; i < 10; i++) {
+                          arr.push({
+                              key: i,
+                              name: 'Jake White',
+                              age: i,
+                              tel: '0575-22098909',
+                              phone: 18900010002,
+                              address: data[i].title
+                          })
+                      }
+                      return arr
+                  }
+              }
+          }}
+          />
+        )
+      }
     }`,
     opt: ['异步请求']
   },
@@ -161,12 +145,6 @@ const code = [
 ]
 
 const DemoBase = () => (
-  <DocViewer
-    code={code}
-    scope={{ Table, Watermark }}
-    prefix={prefix}
-    rightOptions={rightOptions}
-    desc={desc}
-  />
+  <DocViewer code={code} scope={{ Table, Watermark }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
 )
 export default DemoBase

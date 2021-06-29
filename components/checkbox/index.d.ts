@@ -1,7 +1,7 @@
 import { CSSProperties } from "react"
 
 type DataItem = {
-  content: string
+  content: string | number
   id: string | number
   disabled?: boolean
 }

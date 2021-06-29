@@ -10,8 +10,8 @@
 当需要对一部分全部数据进行编辑、筛选过滤时
 
 ## 特别说明
-按照 React 的规范，所有的数组组件必须绑定 key。Table 组件的 data 属性的每一列也需要指定一个 key 值来表明每一行数据的唯一性。同时基于综合考虑（性能、维护性、功能间的组合性等），当没有 key 传入的时候，组件内部并不会帮您生成 key。当 key 不存在时可能会引起一系列的问题，还请注意。
-
+- 按照 React 的规范，所有的数组组件必须绑定 key。Table 组件的 data 属性的每一列也需要指定一个 key 值来表明每一行数据的唯一性。同时基于综合考虑（性能、维护性、功能间的组合性等），当没有 key 传入的时候，组件内部并不会帮您生成 key。当 key 不存在时可能会引起一系列的问题，还请注意。
+- 在进行列冻结时，一定要传入**列宽(width)**！
 ## 基础用法
 
 import DemoBase from '../../demo/table/section-base.jsx'
@@ -23,6 +23,7 @@ import DemoBase from '../../demo/table/section-base.jsx'
 import DemoColumn from '../../demo/table/section-column.jsx'
 
 <DemoColumn />
+
 
 ## 行操作
 
@@ -42,11 +43,11 @@ import DemoSpecial from '../../demo/table/section-special.jsx'
 
 <DemoSpecial />
 
-<!-- ## 异步获取
+## 异步获取
 
 import DemoAsync from '../../demo/table/section-async.jsx'
 
-<DemoAsync /> -->
+<DemoAsync />
 
 ## Props
 
@@ -58,10 +59,11 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | sticky             | 是否支持表头吸顶                                                                                        | boolean                                        | true \| false                             | false      |
 | stickyTop          | 表头吸顶距离视口顶部距离                                                                                | number                                         | -                                         | 0          |
 | highlightedColKeys | 高亮列（受控）                                                                                          | string[]                                       | -                                         | []         |
+| onLoadChildren     | 点击异步加载子项                                                                                      | (row: DataItem) => object[] \| Promise  | -                                         | -          |
 | expandedRender     | 表格展开项                                                                                              | (record: dataItem, index: number) => ReactNode \| Promise | -                                         | -          |
 | rowExpandable     | 设置是否允许行展开                                                                                              | (record: dataItem ) => ReactNode \| Boolean | -                                         | true        |
 | onExpand          | 表格展开时的回调函数                                                                                             | (expanded, row: object) => void | -                                         | -          |
-| expandRowKeys     | 表格展开的行（受控）                                                                                          | number[] | -                                         | -          |
+| expandRowKeys    | 内嵌式表格以及树形表格展开的行                                                                                          | number[] | -                                         | -          |
 | maxHeight          | 表格最大高度，当穿过该高度时，展示滚动条且表头固定                                                      | number                                        | -                                         | -          |
 | fixedToColumn      | 表格列冻结设置，为 string 时仅支持从左侧冻结至某一列                                                    | string \| FixedOption                          | columns 中对应的 dataKey                                          | null       |
 | size               | 配置表格尺寸                                                                                            | string                                         | 'large' \| 'default' \| 'small' \| 'mini' | 'default'  |
@@ -77,9 +79,11 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | resizable          | 是否能够动态控制列宽                                                                                    | boolean                                        | true \| false                             | false      |
 | standard           | 标准模式，默认集成 `showColMenu = true, sticky = true, bordered = true, setting = true, striped = true` | boolean                                        | true \| false                             | false      |
 | loading            | 加载中状态 | boolean                                        | true \| false                             | false      |
-| scrollWidth        | 表格滚动的宽度（当表格总设置宽度（含自适应列）大于表格父级容器宽度时需要设置） |  number                                        | -                            | -      |
+| scrollWidth        | 表格滚动的宽度（当表格总设置宽度（含自适应列）大于表格父级容器宽度时需要设置）**3.7.0版本以后，该属性不建议使用** |  number                                        | -                            | -      |
 | showColHighlight   | 表格某一列`hover`时，该列高亮 |  boolean                                        | true \| false                            | false      |
 | onHeaderRow        | 行标题事件处理函数 |  (item: ColumnItem[], index: number) => object                                        | -                           | -      |
+
+> 在 onLoadChildren 方法中，返回的数据中会根据 `isLeaf` 字符控制左侧展开按钮的显示状态
 
 ### onHeaderRow 使用方法
 ```js
@@ -112,7 +116,7 @@ import DemoAsync from '../../demo/table/section-async.jsx'
 | total    | 该列是否支持合计       | boolean                                                                          | -                 | false  |
 | width    | 该列宽度               | number                                                                           | -                 | -      |
 | children | 多级表头               | ColumnItem[]                                                                     | -                 | -      |
-| render   | 控制单元格自定义渲染   | (text: DataItem[ColumnItem[dataKey]], row: DataItem, index: number) => ReactNode | -                 | -      |
+| render   | 控制单元格自定义渲染   | (text: DataItem[ColumnItem[dataKey]], row: DataItem, index: number, dataKey: string) => ReactNode | -                 | -      |
 
 ### DataSource
 

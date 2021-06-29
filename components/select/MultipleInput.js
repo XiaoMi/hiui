@@ -117,7 +117,7 @@ const MultipleInput = ({
                 className="hi-select__input--item__remove"
                 onClick={(e) => {
                   e.stopPropagation()
-                  onClickOption(item, 0)
+                  !disabled && onClickOption(item, 0)
                 }}
               >
                 <i className="hi-icon icon-close" />

@@ -5,6 +5,7 @@ interface Props {
   opacity?: number
   style?: CSSProperties
   className?: string
+  allowCopy?: boolean
 }
 declare const Watermark: React.ComponentType<Props>
 export default Watermark

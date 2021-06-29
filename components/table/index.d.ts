@@ -1,4 +1,4 @@
-
+import {PaginationProps} from '../pagination'
 type ColumnItem = {
   title: string | JSX.Element
   dataKey: string
@@ -8,7 +8,7 @@ type ColumnItem = {
   total?: boolean
   width?: number
   children?: ColumnItem[]
-  render?: (text: string, record: object, index: number) => JSX.Element
+  render?: (text: string, record: object, index: number, dataKey: string) => JSX.Element
 }
 
 type Origin = {
@@ -22,6 +22,7 @@ type Origin = {
   error?: (err: object) => void
   type?: 'GET' | 'POST'
   withCredentials?: boolean
+  transformResponse?: (response: object) => object[]
 }
 type FixedOption = {
   left?: string
@@ -49,16 +50,20 @@ interface Props {
   loading?: boolean
   sticky?: boolean
   stickyTop?: number
+  expandRowKeys?: number[]
   highlightedColKeys?: string[] | number[]
   expandedRender?: (record: object, index: number) => JSX.Element | Promise
+  onLoadChildren?: (record: object) => object[] | Promise
+  onExpand?: (expanded: boolean, rowData: object) => void
   rowExpandable?: (record: object ) => JSX.Element | Boolean
   maxHeight?: number
+  scrollWidth?: number
   fixedToColumn?: string | FixedOption
   pagination?: PaginationProps
   errorRowKeys?: string[] | number[]
   highlightedRowKeys?: string[] | number[]
   rowSelection?: RowSelection
-  dataSource?: (current: number) => DataSource
+  dataSource?: (current: number) => Origin
   showColMenu?: boolean
   showColHighlight?: boolean
   striped?: boolean
@@ -71,6 +76,7 @@ interface Props {
   data: object[]
   style?: CSSProperties
   className?: string
+  scrollWidth?: React.ReactText
 }
 declare const Table: React.ComponentType<Props>
 export default Table

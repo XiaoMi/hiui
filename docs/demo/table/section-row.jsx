@@ -27,7 +27,7 @@ class Demo extends React.Component {
       {
         title: '单价',
         dataKey: 'price',
-        align: 'right'
+        align: 'right',
       },
       {
         title: '门店',
@@ -120,6 +120,51 @@ class Demo extends React.Component {
             align: 'right'
           },
           {
+            title: '规格',
+            dataKey: 'size'
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            align: 'right'
+          },
+          {
+            title: '规格',
+            dataKey: 'size'
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            align: 'right'
+          },
+          {
+            title: '规格',
+            dataKey: 'size'
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            align: 'right'
+          },
+          {
+            title: '规格',
+            dataKey: 'size'
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            align: 'right'
+          },
+          {
+            title: '规格',
+            dataKey: 'size'
+          },
+          {
+            title: '单价',
+            dataKey: 'price',
+            align: 'right'
+          },
+          {
             title: '门店',
             dataKey: 'address'
           },
@@ -182,6 +227,7 @@ class Demo extends React.Component {
         return (<Table
           columns={this.columns}
           data={this.data}
+          fixedToColumn={'name'}
           rowSelection={{
             selectedRowKeys: this.state.selectedRowKeys,
             getCheckboxConfig: record => {

@@ -8,11 +8,13 @@ const desc = [
   '内嵌式：表格每行隐藏部分数据，递进呈现'
 ]
 const rightOptions = [
+  '表头分组固定列',
+  '表头分组',
   '全边框',
   '树形表格',
+  '异步树形表格',
   '内嵌式',
   '内嵌式异步渲染',
-  '表头分组',
   '表头吸顶',
   '固定表头',
   '合并单元格'
@@ -102,7 +104,7 @@ const code = [
         ]
       }
       render() {
-        return <Table columns={this.columns} data={this.data} bordered/>
+        return <Table columns={this.columns}  data={this.data} bordered/>
       }
     }`,
     opt: ['全边框']
@@ -113,7 +115,7 @@ const code = [
     class Demo extends React.Component {
       render() {
         return <Table
-        scrollWidth={1700}
+        expandRowKeys={[1]}
         fixedToColumn={'a'}
         data={[
           {
@@ -154,6 +156,54 @@ const code = [
   },
   {
     code: `import React from 'react'
+    import Table from '@hi-ui/hiui/es/table'\n
+    class Demo extends React.Component {
+      render() {
+        return <Table
+        fixedToColumn={'a'}
+        onLoadChildren={(row)=>{
+          console.log(row)
+          return new Promise((resolve, reject)=>{
+            setTimeout(()=>{
+              resolve([
+                {
+                a: row.key+'a',
+                b: 'b-1-1',
+                c: 'c-1-1',
+                d: 'd-1-1',
+                isLeaf: true,
+                key: row.key + '1-1'
+              }
+              ])
+            }, 1000)
+          })
+        }}
+        data={[
+          {
+            a: 'a-1',
+            b: 'b-1',
+            c: 'c-1',
+            d: 'd-1',
+            key: 1,
+            isLeaf: true
+          },
+          { a: 'a-2', b: 'b-2', c: 'c-2', d: 'd-2', key: 2, isLeaf: true },
+          { a: 'a-3', b: 'b-3', c: 'c-3', d: 'd-3', key: 3 },
+          { a: 'a-4', b: 'b-4', c: 'c-4', d: 'd-4', key: 4 }
+        ]}
+        columns={[
+          { title: 'A', dataKey: 'a' },
+          { title: 'B', dataKey: 'b' },
+          { title: 'C', dataKey: 'c' },
+          { title: 'D', dataKey: 'd' }
+        ]}
+      />
+      }
+    }`,
+    opt: ['异步树形表格']
+  },
+  {
+    code: `import React from 'react'
 import Table from '@hi-ui/hiui/es/table'\n
 class Demo extends React.Component {
   constructor(props){
@@ -166,6 +216,33 @@ class Demo extends React.Component {
       {
         title: '品类',
         dataKey: 'type'
+      },
+      {
+        title: '规格',
+        dataKey: 'size'
+      },
+      {
+        title: '单价',
+        dataKey: 'price',
+        align: 'right'
+      },
+      {
+        title: '规格',
+        dataKey: 'size'
+      },
+      {
+        title: '单价',
+        dataKey: 'price',
+        align: 'right'
+      },
+      {
+        title: '规格',
+        dataKey: 'size'
+      },
+      {
+        title: '单价',
+        dataKey: 'price',
+        align: 'right'
       },
       {
         title: '规格',
@@ -242,9 +319,11 @@ class Demo extends React.Component {
       onExpand={(expanded, row) => {
         console.log(expanded, row)
       }} 
+      fixedToColumn={'name'}
       rowExpandable={(rowData)=>{
         return rowData.key !== 2
        }}
+       expandRowKeys={[1]}
       expandedRender={(rowData, index) => {
         return (
               <div style={{paddingLeft:50}}>
@@ -346,6 +425,7 @@ class Demo extends React.Component {
     return <Table 
       columns={this.columns} 
       data={this.data}
+
       onExpand={(expanded, row) => {
         console.log(expanded, row)
       }} 
@@ -376,6 +456,194 @@ class Demo extends React.Component {
   }
 }`,
     opt: ['内嵌式异步渲染']
+  },
+  {
+    code: `import React from 'react'
+    import Table from '@hi-ui/hiui/es/table'\n
+    class Demo extends React.Component {
+      constructor(props){
+        super(props)
+        this.state={selectedRowKeys:[]}
+        this.columns =  [
+          {
+            title: 'Name',
+            dataKey: 'name',
+            key: '1',
+            width: 100
+          },
+          {
+            title: 'Other',
+
+            children: [
+              {
+                title: 'Age',
+                dataKey: 'age',
+                key: 2,
+                width: 100
+
+              },
+              {
+                title: 'Address',
+
+                children: [
+                  {
+                    title: 'Street',
+                    dataKey: 'street',
+                    key: '3',
+                    width: 100
+
+                  },
+                  {
+                    title: 'Block',
+                    children: [
+                      {
+                        title: 'Building',
+                        dataKey: 'building',
+                        key: '4',
+                        width: 100
+
+                      },
+                      {
+                        title: 'Door No.',
+                        dataKey: 'number',
+                        key: '5',
+                        width: 100
+
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+          },
+          {
+            title: 'Company',
+            key: '6',
+            children: [
+              {
+                title: 'Address',
+                dataKey: 'companyAddress',
+                key: '7',
+                width: 100
+              },
+              {
+                title: 'Name',
+                dataKey: 'companyName',
+                key: '8',
+                width: 100
+              }
+            ]
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+
+          },
+          {
+            title: 'Name2',
+            dataKey: 'name2',
+            width: 100
+
+          },
+          {
+            title: 'Gender',
+            dataKey: 'gender',
+            key: '9',
+            width: 100
+          }
+        ]
+        let data = []
+        for (let i = 0; i < 6; i++) {
+          data.push({
+            key: i,
+            name: 'John Brown',
+            age: i + 1,
+            street: 'Lake Park',
+            building: 'C',
+            number: 2035,
+            name2:'name2',
+            companyAddress: 'Lake Street 42',
+            companyName: 'SoftLake Co',
+            gender: 'M'
+          })
+        }
+        this.data = data
+      }
+      render() {
+        return <Table 
+        columns={this.columns}
+        fixedToColumn={{left:'number', right: 'gender'}}
+        data={this.data} 
+        stickyTop={63}
+        setting
+        sticky
+        rowSelection={{
+          selectedRowKeys: this.state.selectedRowKeys,
+          onChange: selectedRowKeys => {
+            this.setState({selectedRowKeys})
+          }
+        }} />
+      }
+    }`,
+    opt: ['表头分组固定列']
   },
   {
     code: `import React from 'react'
@@ -466,7 +734,10 @@ class Demo extends React.Component {
         this.data = data
       }
       render() {
-        return <Table columns={this.columns} data={this.data} rowSelection={{
+        return <Table 
+        columns={this.columns}
+        data={this.data} 
+        rowSelection={{
           selectedRowKeys: this.state.selectedRowKeys,
           onChange: selectedRowKeys => {
             this.setState({selectedRowKeys})

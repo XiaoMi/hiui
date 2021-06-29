@@ -115,6 +115,8 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 | 参数            | 说明                                                                                                            | 类型    | 可选值                       | 默认值   |
 | --------------- | --------------------------------------------------------------------------------------------------------------- | ------- | ---------------------------- | -------- |
 | field           | 字段名，支持数组                                                                                                | string  | (string)[]                   | -        | - |
+| name           | 在`Form.List`的嵌套表单中；表示该项的属性名称                                                                                            | string  | -                    | -        | - |
+| row            | 在`Form.List` 表示列表的第几行, 设置指定列表表单项时有用                                                                                                | any  | -                 | -        | - |
 | label           | 标签文本，默认自动添加冒号                                                                                      | string  | -                            | -        |
 | labelWidth      | label 宽度，可用任意 CSS 长度单位，优先级高于 Form 设置的 labelWidth                                            | string  |                              |
 | required        | 是否必填                                                                                                        | boolean | true \| false                | false    |
@@ -159,10 +161,19 @@ import DemoUseForm from '../../demo/form/section-useForm.jsx'
 | validateField(fields: []string, callback: errors => void)                    | 对指定表单字段进行校验                                       |
 | resetValidates(callback:() => void, fields:Array, toDefault:boolean)       | 重置整个表单的验证,对应 [Form.Reset](#Form.Reset)中的 API    |
 | setFieldsValue(field: Object)                                              | 设置表单的值，在异步获取的数据回显的时候，使用该方法         |
+| setListItemFieldsValue(ListItemInfo: Object)                               | 设置表单中From.List的指定项的值 [ListItemInfo](#ListItemInfo)         |
 | getFieldsValue( fields: Object ) => Object                                  | 获取一组字段名对应的 Values 返回为数组形式, 不传入 fields；默认返回全部信息, 不会触发表单校验    |
 | getFieldsError( fields: []string ) => Object                                  | 获取一组字段名对应的错误信息，返回为数组形式, 不传入 fields；默认返回全部信息   |
 | clearValidates( fields: []string ) => void                                  | 移除表单项的校验结果。传入待移除的表单项的 field 属性组成的数组，如不传则移除整个表单的校验结果   |
 | updateFormSchema( schemaData: {fileName: [SchemaItem](#SchemaItem) } ) => void                      | 当 **SchemaItem** 中对应的 **schema** 数据更新时，请调用该方法更新     |
+
+## ListItemInfo 
+| 参数           | 说明                                                        | 类型   | 可选值 | 默认值 |
+| -------------- | ----------------------------------------------------------- | ------ | ------ | ------ |
+| name           |  对应 `Form.Item` 中的name，在列表项中的属性名称    | string   | -      | -      |
+| listname       | 需要更新的列表名称               | string | -      | -      |
+| row            |   对应 `Form.Item` 中的row，表示列表的第几行             | string | -      | -      |
+| value          |   需要更新的值          | any | -      | -      |
 
 ## rules
 
