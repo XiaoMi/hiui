@@ -193,7 +193,7 @@ class Preview extends Component {
    * @param {*} imageIndex 加载的图片索引
    */
   loadImg (imageIndex) {
-    const { images, simpleData } = this.props
+    const { images, simpleData, onError } = this.props
     if (!images || images.length === 0) {
       return
     }
@@ -211,8 +211,7 @@ class Preview extends Component {
     }
     img.onerror = () => {
       this.setState({ activeIndex: imageIndex, isLoaded: true })
-      const {onError} = this.props
-      onError && onError(imageIndex)
+      this.state.visible && onError && onError(imageIndex)
     }
     img.src = simpleData ? currentImage : currentImage.url
   }
@@ -244,6 +243,7 @@ class Preview extends Component {
     event.stopPropagation()
     let { activeIndex } = this.state
     const { x, y } = this.getImageCenterXY()
+    console.log('type', type)
     switch (type) {
       case 'zoomIn':
         this.handleZoom(x, y, -1)
