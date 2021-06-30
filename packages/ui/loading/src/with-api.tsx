@@ -1,8 +1,8 @@
 import React, { createRef, forwardRef } from 'react'
 import { render, unmountComponentAtNode, createPortal } from 'react-dom'
-import Container from './container'
-import Loading, { _prefix, LoadingProps } from './loading'
-import __DEV__ from './env'
+import * as Container from '@hi-ui/container'
+import { _prefix, Loading, LoadingProps } from './Loading'
+import { __DEV__ } from '@hi-ui/env'
 
 const prefixCls = _prefix
 const loadingInstanceCache: {
@@ -42,11 +42,11 @@ const close = (key: string) => {
   delete loadingInstanceCache[key]
 }
 
-interface LoadingFullProps {
+type LoadingFullProps = {
   label?: string
 }
 
-interface LoadingApiProps extends LoadingFullProps {
+type LoadingApiProps = LoadingFullProps & {
   key?: string
 }
 

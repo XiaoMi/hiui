@@ -19,14 +19,15 @@
     "bootstrap": "lerna bootstrap",
     "publish": "npm run compile && lerna publish",
     "lerna": "lerna",
-    "create:ui": "hygen create ui",
+    "create:ui": "hygen create",
+    "create:util": "hygen create util",
     "clean": "lerna clean",
     "build": "lerna run build --no-private --sort",
     "storybook": "start-storybook --no-manager-cache false -p 6006",
     "build-storybook": "build-storybook",
     "compile": "lerna run compile",
-    "fix": "node_modules/.bin/standard --fix && node_modules/.bin/stylelint --config .stylelintrc 'components/**/*.scss' --fix",
-    "eslint": "node_modules/.bin/eslint --fix ./packages/**/*.tsx",
+    "fix": "standard --fix && stylelint --config .stylelintrc 'components/**/*.scss' --fix",
+    "eslint": "eslint --fix ./packages/**/*.tsx",
     "precommit": "lint-staged"
   },
   "devDependencies": {

@@ -1,6 +1,8 @@
-@import '@hi-ui/core-css/index.scss';
+@import '@hi-ui/core-css/lib/index.scss';
 
-.hi4-loading {
+$prefixCls: hi4-loading !default;
+
+.#{$prefixCls} {
   // @include flex(center, center, column);
 
   color: var('--color-primary');

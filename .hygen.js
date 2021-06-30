@@ -8,6 +8,7 @@ module.exports = {
   helpers: {
     root: () => __dirname,
     uiDir: (to) => resolveApp('packages/ui', to),
+    utilsDir: (to) => resolveApp('packages/utils', to),
     camelCase: (function () {
       const cache = {}
       return function (str) {

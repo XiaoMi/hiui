@@ -38,9 +38,21 @@ export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
 )
 
 export interface EmptyStateProps {
+  /**
+   * 组件默认的选择器类
+   */
   prefixCls?: string
+  /**
+   * 组件的语义化 Role 属性
+   */
   role?: string
+  /**
+   * 组件的根选择器类
+   */
   className?: string
+  /**
+   * 组件的根样式
+   */
   style?: React.CSSProperties
   indicator?: React.ReactNode
   title?: React.ReactNode
@@ -53,7 +65,7 @@ if (__DEV__) {
   EmptyState.displayName = 'EmptyState'
 }
 
-export const DefaultIndicator: React.FC<DefaultIndicatorProps> = (props) => {
+const DefaultIndicator: React.FC<DefaultIndicatorProps> = (props) => {
   return (
     <img
       alt="empty"

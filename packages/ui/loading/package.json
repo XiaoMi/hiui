@@ -1,13 +1,10 @@
----
-to: <%= h.uiDir(`${name}/package.json`) %>
----
 {
-  "name": "@hi-ui/<%= name %>",
+  "name": "@hi-ui/loading",
   "version": "1.0.0",
-  "description": "A sub-package for @hi-ui/hiui.",
+  "description": "> TODO: description",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
-  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/<%= name %>#readme",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/loading#readme",
   "license": "MIT",
   "directories": {
     "lib": "lib",
@@ -47,14 +44,19 @@ to: <%= h.uiDir(`${name}/package.json`) %>
   },
   "dependencies": {
     "@hi-ui/classname": "^1.0.0",
+    "@hi-ui/container": "^1.0.0",
     "@hi-ui/core-css": "^1.0.0",
-    "@hi-ui/env": "^1.0.0"
+    "@hi-ui/env": "^1.0.0",
+    "lodash": "^4.17.21",
+    "react-transition-group": "^4.4.1"
   },
   "peerDependencies": {
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.168",
+    "@types/react-transition-group": "^4.4.1",
     "@hi-ui/hi-build": "^1.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
