@@ -17,7 +17,8 @@ const Preview = ({
   showBar = true,
   onClose: propsOnClose,
   showArrow,
-  showCount
+  showCount,
+  onError
 }) => {
   if (images.length === 0 || !propsvisible) {
     return null
@@ -203,6 +204,10 @@ const Preview = ({
         setactiveIndex(imageIndex)
         setIsLoaded(true)
         getImgWidthHeight(img.width, img.height)
+      }
+      img.onerror = () => {
+        onError && onError(imageIndex)
+        setIsLoaded(true)
       }
       img.src = simpleData ? currentImage : currentImage.url
     },

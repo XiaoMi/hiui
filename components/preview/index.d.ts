@@ -1,3 +1,4 @@
+import { CSSProperties } from "react"
 interface Props {
   visible?: boolean
   showBar?: boolean
@@ -6,6 +7,7 @@ interface Props {
   images?: string[] | object[]
   simpleData?: boolean
   activeIndex?: number
+  onError?: (index:number) => void
   style?: CSSProperties
   className?: string
 }

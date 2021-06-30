@@ -1,4 +1,7 @@
 # 更新日志
+# 3.7.1
+
+- 修复 `Preview` 组件，图片打开失败时，页面一直处在加载状态 [#1816](https://github.com/XiaoMi/hiui/issues/1816)
 # 3.7.0
 - 新增 `Message` 组件 onClick、onClose方法[#1727](https://github.com/XiaoMi/hiui/issues/1727)
 - 新增 `From` 组件 setListItemFieldsValue 方法, 设置表单中From.List的指定项的值[#1760](https://github.com/XiaoMi/hiui/issues/1760)
