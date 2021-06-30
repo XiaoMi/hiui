@@ -94,8 +94,8 @@ export const Loading = forwardRef<null, LoadingProps>(
         unmountOnExit
         timeout={300}
       >
-        <div ref={ref} role={role} className={maskCls} {...restProps}>
-          <div className={cx(prefixCls, className)}>
+        <div className={maskCls} {...restProps}>
+          <div ref={ref} role={role} className={cx(prefixCls, className)}>
             <div className={`${prefixCls}__icon-wrapper`}>
               <div className={iconCls} />
             </div>

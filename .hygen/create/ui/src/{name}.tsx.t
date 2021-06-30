@@ -42,11 +42,11 @@ export interface <%= h.camelCase(name) %>Props {
    */
   role?: string
   /**
-   * 组件的根选择器类
+   * 组件的注入选择器类
    */
   className?: string
   /**
-   * 组件的根样式
+   * 组件的注入样式
    */
   style?: React.CSSProperties
 }

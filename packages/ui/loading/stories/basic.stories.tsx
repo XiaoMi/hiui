@@ -2,6 +2,14 @@ import React from 'react'
 import Loading from '../src'
 
 export const Basic = () => {
+  const loadingRef = React.useRef(null)
+
+  React.useEffect(() => {
+    return () => {
+      loadingRef.current.close()
+    }
+  }, [])
+
   return (
     <>
       <h1>Loading</h1>
@@ -20,10 +28,10 @@ export const Basic = () => {
         <div>
           <button
             onClick={() => {
-              Loading.open()
+              loadingRef.current = Loading.open()
             }}
           >
-            API
+            Awake by API
           </button>
         </div>
       </div>

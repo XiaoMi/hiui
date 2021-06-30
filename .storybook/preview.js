@@ -37,7 +37,7 @@ export const decorators = [
   function withLayout(Story, context) {
     // TODO: Inject Container placed UI
     return (
-      <div className="hi-v4-box">
+      <div className="hix-box">
         <Story {...context} />
       </div>
     )

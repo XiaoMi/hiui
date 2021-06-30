@@ -7,4 +7,4 @@ export { default as cx } from 'classnames'
  * @param componentPrefix 类前缀
  * @returns 带版本控制的选择器类
  */
-export const getPrefixCls = (cls: string, componentPrefix = 'hi-v4') => `${componentPrefix}-${cls}`
+export const getPrefixCls = (cls: string, componentPrefix = 'hix') => `${componentPrefix}-${cls}`
