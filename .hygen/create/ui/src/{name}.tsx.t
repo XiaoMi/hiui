@@ -6,15 +6,15 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 
 const _role = '<%= name %>'
-const _prefixCls = getPrefixCls(_role)
+const _prefix = getPrefixCls(_role)
 
 /**
-* What is <%= h.camelCase(name) %>
+* TODO: What is <%= h.camelCase(name) %>
 */
 export const <%= h.camelCase(name) %> = forwardRef<HTMLDivElement | null, <%= h.camelCase(name) %>Props>(
   (
     {
-      prefixCls = _prefixCls,
+      prefixCls = _prefix,
       role = _role,
       className,
       children,

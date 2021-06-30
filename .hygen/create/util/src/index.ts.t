@@ -2,7 +2,7 @@
 to: <%= h.utilsDir(`${name}/src/index.ts`) %>
 ---
 /**
- * What is <%= name %>
+ * TODO: What is <%= name %>
  */
 export const <%= name %> = () => {
 

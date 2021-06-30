@@ -3,7 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 
 const _role = 'avatar'
-const _prefixCls = getPrefixCls(_role)
+const _prefix = getPrefixCls(_role)
 
 /**
  * 头像组件
@@ -11,7 +11,7 @@ const _prefixCls = getPrefixCls(_role)
 export const Avatar = forwardRef<HTMLDivElement | null, AvatarProps>(
   (
     {
-      prefixCls = _prefixCls,
+      prefixCls = _prefix,
       role = _role,
       className,
       children,

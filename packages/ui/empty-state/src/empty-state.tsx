@@ -3,12 +3,12 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 
 const _role = 'empty-state'
-const _prefixCls = getPrefixCls(_role)
+const _prefix = getPrefixCls(_role)
 
 export const EmptyState = forwardRef<HTMLDivElement | null, EmptyStateProps>(
   (
     {
-      prefixCls = _prefixCls,
+      prefixCls = _prefix,
       role = _role,
       className,
       children,

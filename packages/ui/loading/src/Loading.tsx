@@ -25,20 +25,20 @@ export const Loading = forwardRef<null, LoadingProps>(
       role = _role,
       container,
       label,
-      active = true,
+      visible = true,
       full = false,
       delay = -1,
       ...restProps
     },
     ref
   ) => {
-    const [internalActive, setInternalActive] = useState(false)
+    const [internalVisible, setInternalVisible] = useState(false)
 
     // Real trigger loading update
     const updateLoadingStatus = useCallback(() => {
-      if (internalActive === active) return
-      setInternalActive(active)
-    }, [internalActive, active])
+      if (internalVisible === visible) return
+      setInternalVisible(visible)
+    }, [internalVisible, visible])
 
     const prevDebouncedUpdateRef = useRef<null | DebouncedFunc<typeof updateLoadingStatus>>(null)
 
@@ -46,7 +46,7 @@ export const Loading = forwardRef<null, LoadingProps>(
       prevDebouncedUpdateRef.current?.cancel()
     }
 
-    const shouldDelay = active && delay >= 0
+    const shouldDelay = visible && delay >= 0
 
     const debouncedLoadingUpdater = useCallback(() => {
       cancelWaitingLoading()
@@ -74,7 +74,7 @@ export const Loading = forwardRef<null, LoadingProps>(
     useImperativeHandle(ref, () => ({
       // @ts-ignore
       local: ref?.current,
-      $close: () => setInternalActive(false),
+      $close: () => setInternalVisible(false),
     }))
 
     const mountNode = container || (full ? document.body : '')
@@ -90,7 +90,7 @@ export const Loading = forwardRef<null, LoadingProps>(
     const loadingComponent = (
       <CSSTransition
         classNames={`${prefixCls}__mask`}
-        in={internalActive}
+        in={internalVisible}
         unmountOnExit
         timeout={300}
       >
@@ -129,7 +129,7 @@ export interface LoadingProps {
   style?: React.CSSProperties
   children?: React.ReactNode
   label?: React.ReactNode
-  active?: boolean
+  visible?: boolean
   full?: boolean
   container?: React.ReactNode
   delay?: number
