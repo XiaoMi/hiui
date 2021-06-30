@@ -1,5 +1,8 @@
 # 更新日志
 
+# 2.15.11
+
+- 修复 `Preview` 组件，图片打开失败时，页面一直处在加载状态 [#1816](https://github.com/XiaoMi/hiui/issues/1816)
 ## 2.15.10
 
 - 修复 `<Cascader />` 组件 id 为 Number 类型时导致节点重复添加问题[#1648](https://github.com/XiaoMi/hiui/issues/1648)

@@ -209,6 +209,11 @@ class Preview extends Component {
       this.setState({ activeIndex: imageIndex, isLoaded: true })
       this.getImgWidthHeight(img.width, img.height)
     }
+    img.onerror = () => {
+      this.setState({ activeIndex: imageIndex, isLoaded: true })
+      const {onError} = this.props
+      onError && onError(imageIndex)
+    }
     img.src = simpleData ? currentImage : currentImage.url
   }
   getImgWidthHeight (imgWidth, imgHeight) {
