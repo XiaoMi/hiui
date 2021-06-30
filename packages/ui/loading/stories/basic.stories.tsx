@@ -12,7 +12,6 @@ export const Basic = () => {
               width: 500,
               height: 300,
               background: '#ccc',
-              marginLeft: 100,
               padding: 20,
               border: '20px solid #000',
             }}

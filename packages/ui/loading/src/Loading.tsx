@@ -9,12 +9,12 @@ import React, {
 import { createPortal } from 'react-dom'
 import debounce from 'lodash/debounce'
 import CSSTransition from 'react-transition-group/CSSTransition'
-import { cx } from '@hi-ui/classname'
+import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import type { DebouncedFunc } from 'lodash'
 
-const componentName = 'loading'
-export const _prefix = 'hi4-loading'
+const _role = 'loading'
+export const _prefix = getPrefixCls(_role)
 
 export const Loading = forwardRef<null, LoadingProps>(
   (
@@ -22,7 +22,7 @@ export const Loading = forwardRef<null, LoadingProps>(
       prefixCls = _prefix,
       className,
       children,
-      role = componentName,
+      role = _role,
       container,
       label,
       active = true,

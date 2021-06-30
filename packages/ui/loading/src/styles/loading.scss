@@ -1,16 +1,16 @@
-@import '@hi-ui/core-css/index.scss';
+@import '~@hi-ui/core-css/lib/index.scss';
 
-$prefixCls: hi4-loading !default;
+$prefixCls: #{$component-prefix}-loading !default;
 
 .#{$prefixCls} {
-  // @include flex(center, center, column);
+  @include flex(center, center, column);
 
   color: var('--color-primary');
 
   &__mask {
-    // @include transition;
-    // @include component-reset;
-    // @include flex;
+    @include transition;
+    @include component-reset;
+    @include flex;
 
     z-index: 19;
 
@@ -27,7 +27,7 @@ $prefixCls: hi4-loading !default;
     }
 
     &--withchildren {
-      // @extend %full-fill;
+      @extend %full-fill;
 
       position: absolute;
       background: rgba(#fff, 0.64);
@@ -56,45 +56,45 @@ $prefixCls: hi4-loading !default;
   $size: 36;
 
   &__icon {
-    // @include transition;
-    // @include wh($size, $size);
+    @include transition;
+    @include wh($size, $size);
 
     display: inline-block;
-    // color: $brand;
-    // border: 2px solid currentColor;
-    // border-right-color: $lite;
-    // border-bottom-color: $lite;
-    // border-radius: 50%;
-    // animation: #{$component-prefix}-rotation 0.8s linear infinite;
+    color: $brand;
+    border: 2px solid currentColor;
+    border-right-color: $lite;
+    border-bottom-color: $lite;
+    border-radius: 50%;
+    animation: #{$component-prefix}-rotation 0.8s linear infinite;
   }
 
   &__label {
     margin-top: 6px;
-    // color: $brand;
-    // animation: #{$component-prefix}-flash 1.6s linear infinite;
+    color: $brand;
+    animation: #{$component-prefix}-flash 1.6s linear infinite;
   }
 }
 
-// @keyframes #{$component-prefix}-rotation {
-//   0% {
-//     transform: rotate(0deg);
-//   }
+@keyframes #{$component-prefix}-rotation {
+  0% {
+    transform: rotate(0deg);
+  }
 
-//   100% {
-//     transform: rotate(360deg);
-//   }
-// }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
-// @keyframes #{$component-prefix}-flash {
-//   0% {
-//     opacity: 0.1;
-//   }
+@keyframes #{$component-prefix}-flash {
+  0% {
+    opacity: 0.1;
+  }
 
-//   55% {
-//     opacity: 0.9;
-//   }
+  55% {
+    opacity: 0.9;
+  }
 
-//   100% {
-//     opacity: 0.1;
-//   }
-// }
+  100% {
+    opacity: 0.1;
+  }
+}
