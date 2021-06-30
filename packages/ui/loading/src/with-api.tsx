@@ -23,7 +23,7 @@ const open = ({ key, label }: LoadingApiProps = {}) => {
     setTimeout(() => {
       unmountComponentAtNode(mountNode as Element)
       mountNode = null
-      Container.remove(wrapperCls)
+      Container.removeContainer(wrapperCls)
     }, 300)
   }
 
@@ -51,7 +51,7 @@ type LoadingApiProps = LoadingFullProps & {
 }
 
 const LoadingFull = forwardRef<null, LoadingProps>(({ label }, ref) => {
-  const wrapper = Container.get(wrapperCls) as HTMLElement
+  const wrapper = Container.getContainer(wrapperCls) as HTMLElement
   const children = <Loading ref={ref} full label={label} />
 
   return createPortal(children, wrapper)

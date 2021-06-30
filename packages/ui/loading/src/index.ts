@@ -1,4 +1,4 @@
-import './style/index.scss'
+import './styles/index.scss'
 
 import { Loading as _Loading } from './Loading'
 import withLoading from './with-api'

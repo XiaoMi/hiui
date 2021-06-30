@@ -1,5 +1,5 @@
 {
-  "name": "monorepo-hiui",
+  "name": "hiui",
   "private": true,
   "workspaces": {
     "packages": [
@@ -44,6 +44,7 @@
     "babel-jest": "^22.4.3",
     "babel-plugin-lodash": "^3.3.4",
     "concurrently": "^6.1.0",
+    "copyfiles": "^2.4.1",
     "eslint": "~6.7.1",
     "eslint-config-airbnb": "~18.0.1",
     "eslint-config-prettier": "~6.7.0",
@@ -72,7 +73,6 @@
   "dependencies": {
     "@babel/plugin-external-helpers": "^7.12.13",
     "@babel/plugin-transform-runtime": "^7.13.15",
-    "@hi-ui/core-css": "^2.0.1",
     "@hi-ui/hiui": "^3.4.1-rc.2",
     "@storybook/preset-scss": "^1.0.3",
     "cross-env": "^7.0.3",

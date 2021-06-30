@@ -9,6 +9,7 @@ module.exports = {
     root: () => __dirname,
     uiDir: (to) => resolveApp('packages/ui', to),
     utilsDir: (to) => resolveApp('packages/utils', to),
+    // TODO: 小驼峰函数支持
     camelCase: (function () {
       const cache = {}
       return function (str) {

@@ -14,11 +14,9 @@ HiUI 核心样式文件，包含组件初始化、函数、排版等样式。
 
 ## 使用
 
-组件依赖直接引入 `@import '~@hi-ui/core-css/index';`，只包含变量和函数，不会插入任何实质代码。
+组件依赖直接引入 `@import '~@hi-ui/core-css/lib/index.scss';`，将只包含变量和混入函数，不会插入任何实质代码。
 
 ## WIP
 
 - [ ] 全局替换为 HSL 颜色格式；
 - [ ] 使用 CSS Variables 作为变量
- 
--- EOF --
