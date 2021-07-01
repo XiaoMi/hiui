@@ -1,0 +1,143 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-checkbox' !default;
+
+@mixin hi-checkbox-style($color: get-color($palette-primary, 'hiui-blue')) {
+  & {
+    &__input {
+      &:focus + .#{$prefix}__icon {
+        border-color: $color;
+      }
+    }
+
+    &__icon {
+      &--indeterminate {
+        background: $color;
+        border-color: $color;
+
+        &::after {
+          background: #fff;
+        }
+      }
+
+      &--checked {
+        background: $color;
+        border-color: $color;
+      }
+    }
+
+    &:not(.#{$prefix}--disabled):hover {
+      #{$prefix}__icon {
+        border-color: $color;
+      }
+    }
+  }
+}
+
+.#{$prefix} {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  height: 16px;
+  vertical-align: middle;
+
+  @include component-reset();
+
+  &--disabled {
+    cursor: not-allowed;
+
+    .#{$prefix}__icon {
+      border-color: #d8d8d8;
+      background: #f2f2f2;
+
+      &::after {
+        border-color: #d8d8d8;
+      }
+    }
+
+    .#{$prefix}__text {
+      color: rgba(#000, 0.65);
+    }
+  }
+
+  &__input {
+    width: 0;
+    height: 0;
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+    outline: none;
+  }
+
+  &__icon {
+    position: relative;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #d8d8d8;
+    margin-right: 8px;
+    border-radius: 2px;
+    transition: 0.3s ease-out;
+    line-height: 1;
+    flex: none;
+
+    &--indeterminate {
+      &::after {
+        transform: rotate(90deg) scaleY(1);
+        pointer-events: none;
+        box-sizing: content-box;
+        content: '';
+        border: none;
+        border-bottom: 2px solid #fff;
+        height: 8px;
+        left: 6px;
+        position: absolute;
+        top: 2px;
+        width: 2px;
+        transform-origin: center;
+      }
+    }
+
+    &--checked {
+      &::after {
+        transform: rotate(45deg) scaleY(1);
+        pointer-events: none;
+        box-sizing: content-box;
+        content: '';
+        border: 2px solid #fff;
+        border-left: 0;
+        border-top: 0;
+        height: 7px;
+        left: 4px;
+        position: absolute;
+        top: 1px;
+        width: 4px;
+        transform-origin: center;
+      }
+    }
+  }
+
+  &__text {
+    padding: 0;
+    line-height: unset;
+  }
+
+  // Using for theme mixin
+  @include hi-checkbox-style();
+
+  // Using for checkbox-group
+  &-group {
+    display: inline-flex;
+    gap: 32px;
+
+    &--vertical {
+      flex-direction: column;
+
+      #{$prefix} {
+        height: 32px;
+      }
+    }
+  }
+}

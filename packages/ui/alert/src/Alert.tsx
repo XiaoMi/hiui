@@ -35,7 +35,7 @@ export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
     const prevUpdaterRef = useRef(0)
 
     useEffect(() => {
-      // TODO: 1. 抽离为 useTimeout 逻辑 2. 处理 window 支持 SSR
+      // TODO: 1. 抽离为 useTimeout 逻辑（props变化需要取消定时器以及页面卸载时取消定时器这一套逻辑） 2. 处理 window 支持 SSR
       if (typeof duration === 'number' && duration > 0) {
         window.clearTimeout(prevUpdaterRef.current)
 
