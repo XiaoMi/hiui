@@ -28,10 +28,10 @@ export const CheckboxGroup = forwardRef<HTMLDivElement | null, CheckboxGroupProp
     const [value, tryChange] = useUncontrolledState(defaultValue, valueProp, onChange)
 
     const handleChange = useCallback(
-      (evt) => {
-        const { value: selectedItem } = evt.target
+      (evt: React.ChangeEvent<HTMLInputElement>) => {
+        const { checked, value: selectedItem } = evt.target
 
-        const nextValue = updateMultipleSelectedItems(value, selectedItem)
+        const nextValue = updateMultipleSelectedItems(value, selectedItem, checked)
         tryChange(nextValue)
       },
       [tryChange, value]
@@ -86,20 +86,13 @@ if (__DEV__) {
   CheckboxGroup.displayName = 'CheckboxGroup'
 }
 
-function updateMultipleSelectedItems<T>(list: T[], updatedItem: T) {
-  let shouldRemoved = false
-
+function updateMultipleSelectedItems<T>(list: T[], updatedItem: T, shouldAdd = false) {
   const nextList = list.filter((item) => {
     const removed = item === updatedItem
-
-    if (removed) {
-      shouldRemoved = removed
-    }
-
     return !removed
   })
 
-  if (!shouldRemoved) {
+  if (shouldAdd) {
     nextList.push(updatedItem)
   }
 

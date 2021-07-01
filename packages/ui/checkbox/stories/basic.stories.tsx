@@ -8,6 +8,10 @@ export const Basic = () => {
     <>
       <h1>Checkbox</h1>
       <div className="checkbox-basic__wrap">
+        <div>
+          <Checkbox indeterminate>半选</Checkbox>
+        </div>
+
         <CheckboxGroup
           // placement="vertical"
           value={selectedList}
@@ -17,9 +21,7 @@ export const Basic = () => {
           }}
         >
           <Checkbox value="Phone">手机</Checkbox>
-          <Checkbox indeterminate value="Computer">
-            电脑
-          </Checkbox>
+          <Checkbox value="Computer">电脑</Checkbox>
           <Checkbox value="Intelligent" disabled>
             智能
           </Checkbox>
