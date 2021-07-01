@@ -211,7 +211,7 @@ class Preview extends Component {
     }
     img.onerror = () => {
       this.setState({ activeIndex: imageIndex, isLoaded: true })
-      this.state.visible && onError && onError(imageIndex)
+      this.props.visible && onError && onError(imageIndex)
     }
     img.src = simpleData ? currentImage : currentImage.url
   }
