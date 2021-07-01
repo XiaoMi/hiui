@@ -1,4 +1,7 @@
 # 更新日志
+# 3.7.1
+- 修复 `HiRequest` 在 type='download'时 不能正确解析filename问题 [#1820](https://github.com/XiaoMi/hiui/issues/1820)
+
 # 3.7.0
 - 新增 `Message` 组件 onClick、onClose方法[#1727](https://github.com/XiaoMi/hiui/issues/1727)
 - 新增 `From` 组件 setListItemFieldsValue 方法, 设置表单中From.List的指定项的值[#1760](https://github.com/XiaoMi/hiui/issues/1760)
