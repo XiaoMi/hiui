@@ -206,12 +206,12 @@ const Preview = ({
         getImgWidthHeight(img.width, img.height)
       }
       img.onerror = () => {
-        onError && onError(imageIndex)
+        propsvisible && onError && onError(imageIndex)
         setIsLoaded(true)
       }
       img.src = simpleData ? currentImage : currentImage.url
     },
-    [images, activeIndex, isLoaded]
+    [images, activeIndex, isLoaded, propsvisible]
   )
   /**
    * 自动滚动函数，目前 API 未暴露
@@ -277,7 +277,7 @@ const Preview = ({
           break
       }
     },
-    [activeIndex, getImageCenterXY]
+    [activeIndex, getImageCenterXY, loadImg]
   )
   useEffect(() => {
     loadImg(activeIndex)
