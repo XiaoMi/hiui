@@ -9,6 +9,7 @@ module.exports = {
     root: () => __dirname,
     uiDir: (to) => resolveApp('packages/ui', to),
     utilsDir: (to) => resolveApp('packages/utils', to),
+    hooksDir: (to) => resolveApp('packages/hooks', to),
     // TODO: 小驼峰函数支持
     camelCase: (function () {
       const cache = {}
@@ -18,7 +19,19 @@ module.exports = {
 
         return (cache[str] = str
           .replace(/-([a-z])/g, (_, i) => i.toUpperCase())
-          .replace(/^([a-z])/, (_, i) => i.toUpperCase()))
+          .replace(/^([a-z])/, (_, i) => i.toUpperCase())
+        )
+      }
+    })(),
+    hump: (function () {
+      const cache = {}
+      return function (str) {
+        if (!str) return ''
+        if (cache[str]) return cache[str]
+
+        return (cache[str] = str
+          .replace(/-([a-z])/g, (_, i) => i.toUpperCase())
+        )
       }
     })(),
   },

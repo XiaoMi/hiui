@@ -1,5 +1,5 @@
 ---
-to: <%= h.utilsDir(`${name}/README.md`) %>
+to: <%= h.hooksDir(`${name}/README.md`) %>
 ---
 # `@hi-ui/<%= name %>`
 
