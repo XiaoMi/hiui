@@ -1,0 +1,69 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-counter' !default;
+
+.#{$prefix} {
+  position: relative;
+  display: inline-block;
+  height: auto;
+  min-height: 32px;
+  box-sizing: border-box;
+  color: use-color('gray-80');
+  font-size: $font-size-normal;
+
+  &-outer {
+    display: flex;
+    height: auto;
+  }
+
+  &-sign {
+    @include flex(space-around, center, column);
+
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    border: 1px solid use-color('gray-30');
+    border-radius: 2px;
+    font-weight: bold;
+    color: use-color('primary');
+    box-sizing: border-box;
+    cursor: pointer;
+    user-select: none;
+
+    &.disabled {
+      color: use-color('gray-50');
+      cursor: not-allowed;
+    }
+  }
+
+  &-minus {
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &-plus {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  input {
+    @include flex(space-around, center, column);
+
+    flex: 1 1 auto;
+    width: 2 * 32px;
+    padding: 0 6px;
+    border: 1px solid use-color('gray-30');
+    color: use-color('gray-80');
+    outline: none;
+    box-sizing: border-box;
+
+    &:focus {
+      border: 1px solid use-color('primary');
+    }
+  }
+}

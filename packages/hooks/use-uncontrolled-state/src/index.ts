@@ -26,5 +26,5 @@ export function useUncontrolledState<T>(
     [uncontrolled, onChange]
   )
 
-  return [_state, tryChange] as [T, typeof tryChange]
+  return [_state, tryChange] as const
 }
