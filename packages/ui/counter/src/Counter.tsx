@@ -6,6 +6,9 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 
 const _role = 'counter'
 const _prefix = getPrefixCls(_role)
+const DEFAULT_VALUE = 0
+
+const isNumeric = (val: unknown) => !Number.isNaN(Number(val))
 
 /**
  * TODO: What is Counter
@@ -18,7 +21,7 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
       className,
       children,
       value: valueProp,
-      defaultValue = 0,
+      defaultValue = DEFAULT_VALUE,
       step = 1,
       min = Number.MIN_SAFE_INTEGER,
       max = Number.MAX_SAFE_INTEGER,
@@ -31,54 +34,66 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
     const [inputValue, setInputValue] = useState<React.ReactText>(value)
 
-    const proxyTryChangeValue = (value: number) => {
-      if (value >= max) {
-        value = max
-      } else if (value <= min) {
-        value = min
+    const proxyTryChangeValue = (nextValue: number, updateInput = false) => {
+      if (__DEV__) {
+        // TODO(统一规范): 对于 ts 类型无法约束到的，但是用户可能存在该行为的，需要开发模式警告提醒
+        if (min > max) {
+          console.log('Warning: the max must large than min.')
+        }
       }
 
-      tryChangeValue(value)
+      if (nextValue > max) {
+        nextValue = max
+      } else if (nextValue < min) {
+        nextValue = min
+      }
+
+      if (nextValue !== value) {
+        tryChangeValue(nextValue)
+      }
+
+      if (updateInput) {
+        setInputValue(nextValue)
+      }
     }
 
     const reachMax = value >= max
-    const reachMin = value <= max
+    const reachMin = value <= min
     const isMinusDisabled = disabled || reachMin
     const isPlusDisabled = disabled || reachMax
 
     const onMinus = () => {
-      proxyTryChangeValue(NP.minus(value, step))
+      if (isMinusDisabled) return
+      proxyTryChangeValue(NP.minus(value, step), true)
     }
 
     const onPlus = () => {
-      proxyTryChangeValue(NP.plus(value, step))
-    }
-
-    const formatValue = (val: React.ReactText) => {
-      let _val = Number(val)
-      if (Number.isNaN(Number(_val))) {
-        _val = min && min > 0 ? min : 0
-      }
-      return _val
+      if (isPlusDisabled) return
+      proxyTryChangeValue(NP.plus(value, step), true)
     }
 
     const onInputChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-      evt.persist()
-      const nextValue = formatValue(evt.target.value)
-      if (typeof nextValue === 'number') {
-        tryChangeValue(nextValue)
+      const { value } = evt.target
+
+      if (isNumeric(value)) {
+        proxyTryChangeValue(Number(value), false)
       }
-      setInputValue(evt.target.value)
+
+      setInputValue(value)
     }
 
     const onInputBlur = () => {
-      const nextValue = formatValue(inputValue)
+      // 如果不合法，则设会之前值
+      // if (!isNumeric(inputValue)) {
+      setInputValue(value)
+      // }
 
-      tryChangeValue(nextValue)
+      // proxyTryChangeValue(Number(inputValue), true)
     }
 
     const onInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      // TODO: 统一组件库键盘按键兼容方案
+      // TODO(规范): 统一组件库键盘按键兼容方案
+      // TODO: 为什么要用 preventDefault
       // 下键
       if (e.keyCode === 40) {
         e.preventDefault()
@@ -99,12 +114,9 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
         <div className={`hi-counter-outer`}>
           <span
             className={`hi-counter-minus hi-counter-sign ${isMinusDisabled ? 'disabled' : ''}`}
-            onClick={() => {
-              if (isMinusDisabled) return
-              onMinus()
-            }}
+            onClick={onMinus}
           >
-            <i name="minus" />
+            <i name="minus">minus</i>
           </span>
           <input
             value={inputValue}
@@ -116,12 +128,9 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
           />
           <span
             className={`hi-counter-plus hi-counter-sign ${isPlusDisabled ? 'disabled' : ''}`}
-            onClick={(e) => {
-              if (isMinusDisabled) return
-              onPlus()
-            }}
+            onClick={onPlus}
           >
-            <i name="plus" />
+            <i name="plus">plus</i>
           </span>
         </div>
       </div>
