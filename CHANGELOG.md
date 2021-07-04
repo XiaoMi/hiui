@@ -1,6 +1,7 @@
 # 更新日志
 # 3.7.1
 - 修复 `HiRequest` 在 type='download'时 不能正确解析filename问题 [#1820](https://github.com/XiaoMi/hiui/issues/1820)
+- 修复 `selectTree` searchMode 为 filter 时，搜索后勾选，SelectTree 已选节点被清空 [#1791](https://github.com/XiaoMi/hiui/issues/#1791)
 
 # 3.7.0
 - 新增 `Message` 组件 onClick、onClose方法[#1727](https://github.com/XiaoMi/hiui/issues/1727)

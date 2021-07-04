@@ -5,7 +5,7 @@ import Icon from '../../../icon'
 import Classnames from 'classnames'
 import TreeContext from './context'
 import IconLoading from './LoadingIcon'
-import { getChildrenNodes } from './util'
+import { getChildrenNodes, matchFilterKey } from './util'
 
 const Switcher = ({ expanded, node, onExpandEvent }) => {
   const [loading, setLoading] = useState(false)
@@ -35,7 +35,9 @@ const TreeNode = ({ data, flttenData }) => {
     expandIds,
     onExpandEvent,
     isRemoteLoadData,
-    activeId
+    activeId,
+    searchMode,
+    searchValue
   } = useContext(TreeContext)
   const treeNodeRef = useRef(null)
 
@@ -96,23 +98,30 @@ const TreeNode = ({ data, flttenData }) => {
       {data.map((node, index) => {
         const childrenNodes = getChildrenNodes(node, flttenData)
         const expand = expandIds.includes(node.id)
+        const needFilter = searchMode === 'filter' ? !!matchFilterKey(searchValue, node.title) : true
         return (
           <React.Fragment key={index}>
-            <li className="hi-select-tree__node" data-selecttree-id={node.id}>
-              <div className="hi-select-tree__node--self">
-                {(childrenNodes.length || isRemoteLoadData) && !node.isLeaf ? (
-                  <Switcher expanded={expand} node={node} onExpandEvent={onExpandEvent} />
-                ) : (
-                  renderIndent()
-                )}
-                {checkable ? renderCheckbox(node, checkedNodes) : renderTitle(node, selectedId)}
-              </div>
-            </li>
-            {childrenNodes.length > 0 && expand && (
-              <li className="hi-select-tree__node">
-                <TreeNode data={childrenNodes} flttenData={flttenData} />
-              </li>
-            )}
+            {needFilter ? (
+              <>
+                <li className="hi-select-tree__node" data-selecttree-id={node.id}>
+                  <div className="hi-select-tree__node--self">
+                    {(childrenNodes.length || isRemoteLoadData) && !node.isLeaf ? (
+                      <Switcher expanded={expand} node={node} onExpandEvent={onExpandEvent} />
+                    ) : (
+                      renderIndent()
+                    )}
+                    {checkable ? renderCheckbox(node, checkedNodes) : renderTitle(node, selectedId)}
+                  </div>
+                </li>
+                <>
+                  {childrenNodes.length > 0 && expand && (
+                    <li className="hi-select-tree__node">
+                      <TreeNode data={childrenNodes} flttenData={flttenData} />
+                    </li>
+                  )}
+                </>
+              </>
+            ) : null}
           </React.Fragment>
         )
       })}
