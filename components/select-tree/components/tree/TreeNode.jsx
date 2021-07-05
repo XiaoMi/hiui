@@ -5,7 +5,7 @@ import Icon from '../../../icon'
 import Classnames from 'classnames'
 import TreeContext from './context'
 import IconLoading from './LoadingIcon'
-import { getChildrenNodes, matchFilterKey } from './util'
+import { getChildrenNodes, matchAllDataFilterKey } from './util'
 
 const Switcher = ({ expanded, node, onExpandEvent }) => {
   const [loading, setLoading] = useState(false)
@@ -98,7 +98,7 @@ const TreeNode = ({ data, flttenData }) => {
       {data.map((node, index) => {
         const childrenNodes = getChildrenNodes(node, flttenData)
         const expand = expandIds.includes(node.id)
-        const needFilter = searchMode === 'filter' ? !!matchFilterKey(searchValue, node.title) : true
+        const needFilter = searchMode === 'filter' ? !!matchAllDataFilterKey(node, searchValue) : true
         return (
           <React.Fragment key={index}>
             {needFilter ? (
