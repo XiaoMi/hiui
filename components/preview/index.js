@@ -243,7 +243,6 @@ class Preview extends Component {
     event.stopPropagation()
     let { activeIndex } = this.state
     const { x, y } = this.getImageCenterXY()
-    console.log('type', type)
     switch (type) {
       case 'zoomIn':
         this.handleZoom(x, y, -1)
