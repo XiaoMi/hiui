@@ -193,7 +193,7 @@ class Preview extends Component {
    * @param {*} imageIndex 加载的图片索引
    */
   loadImg (imageIndex) {
-    const { images, simpleData } = this.props
+    const { images, simpleData, onError } = this.props
     if (!images || images.length === 0) {
       return
     }
@@ -208,6 +208,10 @@ class Preview extends Component {
     img.onload = () => {
       this.setState({ activeIndex: imageIndex, isLoaded: true })
       this.getImgWidthHeight(img.width, img.height)
+    }
+    img.onerror = () => {
+      this.setState({ activeIndex: imageIndex, isLoaded: true })
+      this.props.visible && onError && onError(imageIndex)
     }
     img.src = simpleData ? currentImage : currentImage.url
   }

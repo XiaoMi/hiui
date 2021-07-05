@@ -20,3 +20,10 @@ import DemoBase from '../../demo/preview/section-base.jsx'
 | images    | 图片列表                                            | String[] \| Object[]             | -                         | []     |
 | simpleData| 是否为简单数据:                                      | boolean             | true \| false                          | false      |
 | activeIndex|  激活图片索引，从0开始                                          |  number             | true \| false                          | 0      |
+
+# Events
+
+| 名称       | 说明               | 类型                            | 参数                  | 返回值 |
+| ---------- | ------------------ | ------------------------------- | --------------------- | ------ |
+| onError    | 在点击的预览图片预览大图资源加载失败的回调函数   | (index: number) => void | **index** 当前图片的下标值 | -      |
+| onClose    | 在点击关闭按钮回调函数   | () => void | - | -      |
