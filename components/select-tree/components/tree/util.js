@@ -227,7 +227,6 @@ export const flattenNodesData = (data, isGenEntries = false) => {
         })
       if (_children && _children.length > 0) {
         fun(_children, newArr, node)
-        // delete node.children
       } else {
         // eslint-disable-next-line no-prototype-builtins
         node.isLeaf = node.hasOwnProperty('isLeaf') ? node.isLeaf : true
