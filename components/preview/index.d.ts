@@ -7,7 +7,7 @@ interface Props {
   images?: string[] | object[]
   simpleData?: boolean
   activeIndex?: number
-  onError?: (index:number) => void
+  onError?: (index: number) => void
   style?: CSSProperties
   className?: string
 }
