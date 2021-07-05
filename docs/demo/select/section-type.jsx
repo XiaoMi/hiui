@@ -4,7 +4,7 @@ import Select from '../../../components/select'
 import Tooltip from '../../../components/tooltip'
 import Radio from '../../../components/radio'
 const prefix = 'alert-autoClose'
-const rightOptions = ['基础', '受控', '带默认值', '可清空', '无边框', '禁用', '搭配使用']
+const rightOptions = ['基础', '受控', '带默认值', '可清空', '无边框', '禁用']
 const desc = '展示从多个收起的备选项中选出的一个选项'
 const code = [
   {
@@ -245,67 +245,6 @@ class Demo extends React.Component {
   }
 }`,
     opt: ['v2']
-  },
-  {
-    code: `import React from 'react'
-import Select from '@hi-ui/hiui/es/select'\n
-import Radio from '@hi-ui/hiui/es/select'\n
-() => {
-  const list = [
-    {
-      id: '1',
-      content: '电脑类'
-    },
-    {
-      id: '2',
-      content: '生活类'
-    }
-  ]
-
-  const singleList = [
-    { title: '电视', id: '1' },
-    { title: '手机', id: '2' },
-    { title: '办公', id: '3' },
-    { title: '打杂', id: '4' }
-  ]
-
-  const singleList1 = [
-    { title: '电视1', id: '1' },
-    { title: '手机1', id: '2' },
-    { title: '办公1', id: '3' },
-    { title: '打杂1', id: '4' }
-  ]
-
-  const [selectVal, setSelectVal] = useState('1')
-
-  const [radioVal, setRadioVal] = useState('1')
-  console.log(radioVal === '1' ? singleList : singleList1)
-  return (
-    <div>
-      <Radio.Group
-        data={list}
-        type="button"
-        defaultValue={radioVal}
-        value={radioVal}
-        onChange={(data) => {
-          console.log('data', data)
-          setRadioVal(data)
-        }}
-      />
-      <Select
-        type="single"
-        clearable={false}
-        style={{ width: 200 }}
-        value={selectVal}
-        onChange={(val) => {
-          setSelectVal(val)
-        }}
-        data={radioVal === '1' ? singleList : singleList1}
-      />
-    </div>
-  )
-}`,
-    opt: ['搭配使用']
   }
 ]
 const DemoType = () => (
