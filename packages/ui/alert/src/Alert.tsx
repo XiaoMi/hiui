@@ -1,94 +1,99 @@
-import * as React from 'react';
-import classNames from 'classnames'
-import './style/index.scss'
+import React, { forwardRef, useState, useCallback, useEffect, useRef } from 'react'
+import { cx, getPrefixCls } from '@hi-ui/classname'
+import { __DEV__ } from '@hi-ui/env'
 
-class Alert extends React.Component< AlertProps, AlertState >  {
-  timeoutId  = 0
-  
-  static defaultProps = {
-    prefixCls: 'hi-alert',
-    type: 'info',
-    closeable: true,
-    duration: null
-  }
+const _role = 'alert'
+const _prefix = getPrefixCls(_role)
 
-  constructor (props :AlertProps) {
-    super(props)
-    this.state = { visible: true }
-  }
+/**
+ * What is Alert
+ */
+export const Alert = forwardRef<HTMLDivElement | null, AlertProps>(
+  (
+    {
+      prefixCls = _prefix,
+      role = _role,
+      className,
+      children,
+      title,
+      content,
+      type = 'primary',
+      closeable = false,
+      duration = -1,
+      onClose,
+      ...rest
+    },
+    ref
+  ) => {
+    const [internalVisible, setInternalVisible] = useState(true)
 
-  componentDidMount () {
-    const { duration } = this.props
-    if (duration !== null) {
-    this.timeoutId = window.setTimeout(() => {
-        this.handleClose()
-      }, duration)
-    }
-  }
+    const handleClose = useCallback(() => {
+      setInternalVisible(false)
+      onClose?.()
+    }, [onClose])
 
-  componentWillUnmount () {
-    clearTimeout(this.timeoutId)
-  }
+    const prevUpdaterRef = useRef(0)
 
-  handleClose = (): void => {
-    const { onClose } = this.props
-    this.setState({ visible: false })
-    onClose && onClose()
-  }
+    useEffect(() => {
+      // TODO: 1. 抽离为 useTimeout 逻辑（props变化需要取消定时器以及页面卸载时取消定时器这一套逻辑） 2. 处理 window 支持 SSR
+      if (typeof duration === 'number' && duration > 0) {
+        window.clearTimeout(prevUpdaterRef.current)
 
-  render () {
-    const { prefixCls, title, type, content, closeable } = this.props 
-    const { visible } = this.state 
-    const classnames = classNames(prefixCls, visible, type, {
-      noTitle: !title
-    })
-    let typeIcon  = 'tishi'
+        prevUpdaterRef.current = window.setTimeout(() => {
+          handleClose()
+        }, duration)
+      }
+      return () => {
+        window.clearTimeout(prevUpdaterRef.current)
+      }
+    }, [duration, handleClose])
 
-    switch (type) {
-      case 'warning':
-        typeIcon = 'jinggao'
-        break
-      case 'error':
-        typeIcon = 'shibai'
-        break
-      case 'success':
-        typeIcon = 'chenggong'
-        break
-      default:
-        typeIcon = 'tishi'
-    }
+    const cls = cx(prefixCls, className, `${prefixCls}--${type}`)
 
-    return (
-      visible && (
-        <div className={classnames}>
-          <div className='hi-icon__title'>
-            <i className={`hi-icon icon-${typeIcon}`} />
-            {title && <div className='text-title'>{title}</div>}
-          </div>
-          {content && <div className="text-message">{content}</div>}
-          {closeable && (
-            <div className='close-btn icon-img-delete' onClick={this.handleClose}>
-              <i className='hi-icon icon-close' />
-            </div>
-          )}
+    return internalVisible ? (
+      <div ref={ref} role={role} className={cls} {...rest}>
+        <div className={`${prefixCls}__title`}>
+          {/* TODO: icon 集成后更改 */}
+          {/* @ts-ignore */}
+          <i name={type} filled />
+          {title}
         </div>
-      )
-    )
+        {content && <div className={`${prefixCls}__content`}>{content}</div>}
+        {closeable && (
+          // @ts-ignore
+          <i name="close" className={`${prefixCls}__action`} onClick={handleClose} />
+        )}
+      </div>
+    ) : null
   }
+)
+
+export interface AlertProps {
+  /**
+   * 组件默认的选择器类
+   */
+  prefixCls?: string
+  /**
+   * 组件的语义化 Role 属性
+   */
+  role?: string
+  /**
+   * 组件的注入选择器类
+   */
+  className?: string
+  /**
+   * 组件的注入样式
+   */
+  style?: React.CSSProperties
+
+  type?: 'info' | 'success' | 'error' | 'warning'
+  duration?: number
+  closeable?: boolean
+  title?: React.ReactNode
+  content?: React.ReactNode
+  onClose?: () => void
 }
 
-interface AlertProps {
-    type ?: 'info' | 'error' |  'success' | 'warning';
-    onClose ?: () => void;
-    content ?: React.ReactNode;
-    title ?: React.ReactNode;
-    closeable ?: boolean;
-    duration ?: number | null;
-    prefixCls ?: string;
-    theme ?: string;
+if (__DEV__) {
+  Alert.displayName = 'Alert'
 }
-interface AlertState {
-    visible : boolean
-}
-
-export default Alert

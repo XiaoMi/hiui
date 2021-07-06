@@ -1,3 +1,5 @@
+// MIFE dotfiles
+
 module.exports = {
   parser: '@typescript-eslint/parser',
   root: true,
@@ -30,7 +32,7 @@ module.exports = {
       },
     ],
     'no-use-before-define': 0,
-    '@typescript-eslint/no-use-before-define': ['error', { typedefs: false, functions: false }],
+    '@typescript-eslint/no-use-before-define': 0,
     'react/prop-types': 0,
     'react/no-children-prop': 0,
     'react-hooks/rules-of-hooks': 2, // check Hook rules

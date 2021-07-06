@@ -1,44 +1,64 @@
 {
-	"name": "@hi-ui/loading",
-	"version": "1.0.0",
-	"description": "Now I’m the model of a modern major general / The venerated Virginian veteran whose men are all / Lining up, to put me up on a pedestal / Writin’ letters to relatives / Embellishin’ my elegance and eloquence / But the elephant is in the room / The truth is in ya face when ya hear the British cannons go / BOOM",
-	"keywords": [],
-	"author": "Flcwl <flcwl@vip.qq.com>",
-	"license": "MIT",
-	"main": "es/index.js",
-	"directories": {
-		"lib": "lib",
-		"test": "__tests__"
-	},
-	"files": [
-		"lib"
-	],
-	"publishConfig": {
-		"registry": "https://registry.yarnpkg.com"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/XiaoMi/hiui.git"
-	},
-	"dependencies": {
-		"@types/classnames": "^2.2.11",
-		"@types/lodash": "^4.14.168",
-		"@types/react-dom": "^17.0.2",
-		"classnames": "^2.2.6",
-		"lodash": "^4.17.21",
-		"react-transition-group": "^4.4.1"
-	},
-	"devDependencies": {
-		"@babel/plugin-syntax-class-properties": "^7.12.13",
-		"@babel/preset-react": "^7.12.13",
-		"@types/react-transition-group": "^4.4.1"
-	},
-	"peerDependencies": {
-		"react": "^17.0.1",
-		"react-dom": "^17.0.1"
-	},
-	"bugs": {
-		"url": "https://github.com/XiaoMi/hiui/issues"
-	},
-	"homepage": "https://github.com/XiaoMi/hiui#readme"
+  "name": "@hi-ui/loading",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "keywords": [],
+  "author": "HIUI <mi-hiui@xiaomi.com>",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/ui/loading#readme",
+  "license": "MIT",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/types/index.d.ts",
+  "typings": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./lib/cjs/index.js",
+      "default": "./lib/esm/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XiaoMi/hiui.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "clean": "rimraf lib",
+    "prebuild": "yarn clean",
+    "build:esm": "hi-build ./src/index.ts --format esm -d ./lib/esm",
+    "build:cjs": "hi-build ./src/index.ts --format cjs -d ./lib/cjs",
+    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir lib/types",
+    "build": "concurrently yarn:build:*"
+  },
+  "bugs": {
+    "url": "https://github.com/XiaoMi/hiui/issues"
+  },
+  "dependencies": {
+    "@hi-ui/classname": "^1.0.0",
+    "@hi-ui/container": "^1.0.0",
+    "@hi-ui/core-css": "^1.0.0",
+    "@hi-ui/env": "^1.0.0",
+    "lodash": "^4.17.21",
+    "react-transition-group": "^4.4.1"
+  },
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.168",
+    "@types/react-transition-group": "^4.4.1",
+    "@hi-ui/hi-build": "^1.0.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
 }

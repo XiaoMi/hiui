@@ -1,7 +1,5 @@
-'use strict';
-
-const loading = require('..');
+const Loading = require('../src');
 
 describe('@hi-ui/loading', () => {
-    it('needs tests');
+  it('needs tests');
 });

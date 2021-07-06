@@ -6,7 +6,6 @@ lib/
 # Editor generate files
 .idea/
 .settings/
-.vscode/
 .tmp/
 
 packages/*/test/coverage/

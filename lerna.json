@@ -3,11 +3,9 @@
   "useWorkspaces": true,
   "packages": [
     "packages/ui/*",
+    "packages/core/*",
     "packages/hooks/*",
-    "packages/themes/*",
     "packages/utils/*",
-    "packages/types/*",
-    "packages/styles/*",
     "packages/icons/*",
     "scripts/*",
     "docs/*",

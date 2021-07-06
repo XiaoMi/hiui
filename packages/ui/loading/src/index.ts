@@ -1,7 +1,7 @@
-import './style/index.scss'
+import './styles/index.scss'
 
-import _Loading from './loading';
-import withLoading from './with-api';
+import { Loading as _Loading } from './Loading'
+import withLoading from './with-api'
 
-export const Loading =  withLoading(_Loading)
+export const Loading = withLoading(_Loading)
 export default Loading

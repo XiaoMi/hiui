@@ -1,9 +1,8 @@
 import React, { createRef, forwardRef } from 'react'
 import { render, unmountComponentAtNode, createPortal } from 'react-dom'
-import Container from './container'
-import Loading from './loading'
-import __DEV__ from './env'
-import { _prefix, LoadingProps } from './loading';
+import * as Container from '@hi-ui/container'
+import { _prefix, Loading, LoadingProps } from './Loading'
+import { __DEV__ } from '@hi-ui/env'
 
 const prefixCls = _prefix
 const loadingInstanceCache: {
@@ -24,7 +23,7 @@ const open = ({ key, label }: LoadingApiProps = {}) => {
     setTimeout(() => {
       unmountComponentAtNode(mountNode as Element)
       mountNode = null
-      Container.remove(wrapperCls)
+      Container.removeContainer(wrapperCls)
     }, 300)
   }
 
@@ -43,16 +42,16 @@ const close = (key: string) => {
   delete loadingInstanceCache[key]
 }
 
-interface LoadingFullProps {
+type LoadingFullProps = {
   label?: string
 }
 
-interface LoadingApiProps extends LoadingFullProps {
+type LoadingApiProps = LoadingFullProps & {
   key?: string
 }
 
 const LoadingFull = forwardRef<null, LoadingProps>(({ label }, ref) => {
-  const wrapper = Container.get(wrapperCls) as HTMLElement
+  const wrapper = Container.getContainer(wrapperCls) as HTMLElement
   const children = <Loading ref={ref} full label={label} />
 
   return createPortal(children, wrapper)

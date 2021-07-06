@@ -1,11 +1,11 @@
-# `avatar`
+# `@hi-ui/avatar`
 
 > TODO: description
 
 ## Usage
 
 ```
-const avatar = require('avatar');
+const Avatar = require('@md-ui/avatar');
 
 // TODO: DEMONSTRATE API
 ```

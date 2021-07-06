@@ -1,0 +1,57 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-alert' !default;
+
+.#{$prefix} {
+  position: relative;
+  padding: 9px 11px;
+  border-radius: 2px;
+  font-size: $font-size-normal;
+  min-width: 280px;
+  display: block;
+  align-items: flex-start;
+
+  &__title {
+    display: flex;
+    font-size: $font-size-normal;
+    align-items: center;
+    line-height: $line-height-size-normal;
+
+    .hi-icon {
+      height: 16px;
+      width: 16px;
+      margin-right: 8px;
+    }
+  }
+
+  &__content {
+    margin: 2px 24px 0 24px;
+    font-weight: 400;
+    font-size: $font-size-small;
+    line-height: $line-height-size-small;
+    color: use-color('gray-80');
+  }
+
+  &__action {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+    color: use-color('gray-70');
+  }
+
+  $color-map: (
+    'primary': use-color('primary'),
+    'warning': get-color($palette-secondary, 'warning'),
+    'success': get-color($palette-secondary, 'success'),
+    'danger': get-color($palette-secondary, 'danger')
+  ) !default;
+
+  @each $key, $value in $color-map {
+    &--#{$key} {
+      background-color: use-color(#{$key}-20);
+      color: $value;
+      border: 1px solid use-color(#{$key}-40);
+    }
+  }
+}

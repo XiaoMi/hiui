@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const empty-state = require('@hi-ui/empty-state');
+const EmptyState = require('@md-ui/empty-state');
 
 // TODO: DEMONSTRATE API
 ```

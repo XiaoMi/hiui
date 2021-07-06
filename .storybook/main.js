@@ -8,5 +8,6 @@ module.exports = {
     "@storybook/addon-essentials",
     "storybook-addon-react-live-edit",
     "@storybook/preset-scss",
+    "storybook-addon-performance/register",
   ],
 }

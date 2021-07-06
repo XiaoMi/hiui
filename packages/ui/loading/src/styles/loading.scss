@@ -1,0 +1,100 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefixCls: #{$component-prefix}-loading !default;
+
+.#{$prefixCls} {
+  @include flex(center, center, column);
+
+  color: var('--color-primary');
+
+  &__mask {
+    @include transition;
+    @include component-reset;
+    @include flex;
+
+    z-index: 19;
+
+    &-enter {
+      opacity: 0;
+
+      &-active {
+        opacity: 1;
+      }
+    }
+
+    &-exit {
+      opacity: 0;
+    }
+
+    &--withchildren {
+      @extend %full-fill;
+
+      position: absolute;
+      background: rgba(#fff, 0.64);
+    }
+
+    &--full {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 39;
+      background: rgba(#fff, 0.64);
+    }
+  }
+
+  &__wrapper {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+  }
+
+  $base: #263238;
+  $lite: #fff;
+  $brand: palette('primary');
+  $size: 36;
+
+  &__icon {
+    @include transition;
+    @include wh($size, $size);
+
+    display: inline-block;
+    color: $brand;
+    border: 2px solid currentColor;
+    border-right-color: $lite;
+    border-bottom-color: $lite;
+    border-radius: 50%;
+    animation: #{$component-prefix}-rotation 0.8s linear infinite;
+  }
+
+  &__label {
+    margin-top: 6px;
+    color: $brand;
+    animation: #{$component-prefix}-flash 1.6s linear infinite;
+  }
+}
+
+@keyframes #{$component-prefix}-rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes #{$component-prefix}-flash {
+  0% {
+    opacity: 0.1;
+  }
+
+  55% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0.1;
+  }
+}
