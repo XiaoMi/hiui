@@ -11,12 +11,25 @@ $prefix: '#{$component-prefix}-counter' !default;
   color: use-color('gray-80');
   font-size: $font-size-normal;
 
-  &-outer {
+  $this: &;
+
+  &--focused {
+    #{$this}__input {
+      border: 1px solid use-color('primary');
+    }
+  }
+
+  &--out-of-bounds {
+    color: get-color($palette-secondary, 'danger');
+  }
+
+  &__outer {
     display: flex;
     height: auto;
   }
 
-  &-sign {
+  &__minus,
+  &__plus {
     @include flex(space-around, center, column);
 
     align-items: center;
@@ -39,31 +52,27 @@ $prefix: '#{$component-prefix}-counter' !default;
     }
   }
 
-  &-minus {
+  &__minus {
     border-right: none;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
 
-  &-plus {
+  &__plus {
     border-left: none;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
 
-  input {
+  &__input {
     @include flex(space-around, center, column);
 
     flex: 1 1 auto;
     width: 2 * 32px;
     padding: 0 6px;
     border: 1px solid use-color('gray-30');
-    color: use-color('gray-80');
+    color: inherit;
     outline: none;
     box-sizing: border-box;
-
-    &:focus {
-      border: 1px solid use-color('primary');
-    }
   }
 }

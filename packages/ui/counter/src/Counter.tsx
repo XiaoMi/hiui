@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef, useState, useEffect } from 'react'
 import NP from 'number-precision'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -9,6 +9,7 @@ const _prefix = getPrefixCls(_role)
 const DEFAULT_VALUE = 0
 
 const isNumeric = (val: unknown) => !Number.isNaN(Number(val))
+const isOutOfRange = (val: number, min: number, max: number) => val > max || val < min
 
 /**
  * TODO: What is Counter
@@ -26,6 +27,7 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
       min = Number.MIN_SAFE_INTEGER,
       max = Number.MAX_SAFE_INTEGER,
       disabled = false,
+      autoFocus = false,
       onChange,
       ...rest
     },
@@ -34,8 +36,8 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
     const [inputValue, setInputValue] = useState<React.ReactText>(value)
 
-    const isDisabledOnChange = valueProp !== undefined && !onChange
-    const isDisabled = isDisabledOnChange || disabled
+    const isChangeBlocked = valueProp !== undefined && !onChange
+    const isDisabled = isChangeBlocked || disabled
 
     const proxyTryChangeValue = (nextValue: number, syncInput: boolean) => {
       if (isDisabled) return
@@ -77,7 +79,17 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
       proxyTryChangeValue(NP.plus(value, step), true)
     }
 
+    const [focus, setFocus] = useState(false)
+
+    useEffect(() => {
+      if (autoFocus) {
+        setFocus(true)
+      }
+    }, [])
+
     const onInputChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+      if (isDisabled) return
+
       const { value } = evt.target
 
       // 如果是数值类型，则立即进行修改原始值，保证输入错误也能显示最接近的正确值
@@ -109,13 +121,27 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
       }
     }
 
-    const cls = cx(prefixCls, className)
+    const cls = cx(
+      prefixCls,
+      className,
+      focus && `${prefixCls}--focused`,
+      !isNumeric(value) && `${prefixCls}--invalid`,
+      isOutOfRange(value, min, max) && `${prefixCls}--out-of-bounds`
+    )
 
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
-        <div className={`hi-counter-outer`}>
+      <div
+        ref={ref}
+        role={role}
+        className={cls}
+        tabIndex={0}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        {...rest}
+      >
+        <div className={`${prefixCls}__outer`}>
           <span
-            className={`hi-counter-minus hi-counter-sign ${isMinusDisabled ? 'disabled' : ''}`}
+            className={cx(`${prefixCls}__minus`, isMinusDisabled && 'disabled')}
             onClick={onMinus}
           >
             {/* TODO: minus icon 添加 */}
@@ -123,18 +149,16 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
             <i name="minus">minus</i>
           </span>
           <input
-            className={`hi-counter-input`}
+            className={`${prefixCls}__input`}
             value={inputValue}
-            data-value={value}
+            autoFocus={autoFocus}
+            aria-valuenow={value}
             disabled={disabled}
             onChange={onInputChange}
             onBlur={onInputBlur}
             onKeyDown={onInputKeyDown}
           />
-          <span
-            className={`hi-counter-plus hi-counter-sign ${isPlusDisabled ? 'disabled' : ''}`}
-            onClick={onPlus}
-          >
+          <span className={cx(`${prefixCls}__plus`, isPlusDisabled && 'disabled')} onClick={onPlus}>
             {/* TODO: plus icon 添加 */}
             {/* @ts-ignore */}
             <i name="plus">plus</i>
@@ -162,6 +186,7 @@ export interface CounterProps {
    * 组件的注入样式
    */
   style?: React.CSSProperties
+  autoFocus?: boolean
   /**
    * 设置当前值
    */
