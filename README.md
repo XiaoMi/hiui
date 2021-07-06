@@ -22,3 +22,27 @@ yarn build
 ```sh
 yarn storybook
 ```
+
+## 创建组件
+
+> 注意小写中环线命名规范
+
+```sh
+yarn create:pkg ui `component-name`
+```
+
+## 创建通用工具函数
+
+> 注意小写中环线命名规范
+
+```sh
+yarn create:pkg util `util-name`
+```
+
+## 创建自定义 hooks
+
+> 注意小写中环线命名规范
+
+```sh
+yarn create:pkg hook `hook-name`
+```
