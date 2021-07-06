@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef, useState, useEffect } from 'react'
 import NP from 'number-precision'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -34,7 +34,7 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
     const [inputValue, setInputValue] = useState<React.ReactText>(value)
 
-    const proxyTryChangeValue = (nextValue: number, updateInput = false) => {
+    const proxyTryChangeValue = (nextValue: number, syncInput: boolean) => {
       if (__DEV__) {
         // TODO(统一规范): 对于 ts 类型无法约束到的，但是用户可能存在该行为的，需要开发模式警告提醒
         if (min > max) {
@@ -52,8 +52,10 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
         tryChangeValue(nextValue)
       }
 
-      if (updateInput) {
-        setInputValue(nextValue)
+      if (valueProp === undefined || onChange) {
+        if (syncInput) {
+          setInputValue(nextValue)
+        }
       }
     }
 
@@ -75,6 +77,7 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
     const onInputChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = evt.target
 
+      // 如果是数值类型，则立即进行修改原始值，保证输入错误也能显示最接近的正确值
       if (isNumeric(value)) {
         proxyTryChangeValue(Number(value), false)
       }
@@ -116,6 +119,8 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
             className={`hi-counter-minus hi-counter-sign ${isMinusDisabled ? 'disabled' : ''}`}
             onClick={onMinus}
           >
+            {/* TODO: minus icon 添加 */}
+            {/* @ts-ignore */}
             <i name="minus">minus</i>
           </span>
           <input
@@ -130,6 +135,8 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
             className={`hi-counter-plus hi-counter-sign ${isPlusDisabled ? 'disabled' : ''}`}
             onClick={onPlus}
           >
+            {/* TODO: plus icon 添加 */}
+            {/* @ts-ignore */}
             <i name="plus">plus</i>
           </span>
         </div>

@@ -6,7 +6,7 @@ export const Basic = () => {
     <>
       <h1>Counter</h1>
       <div className="counter-basic__wrap">
-        <Counter></Counter>
+        <Counter defaultValue={2e1} min={1} />
       </div>
     </>
   )
