@@ -1,0 +1,50 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-breadcrumb' !default;
+
+.#{$prefix} {
+  font-size: 12px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+  padding: 0;
+
+  li {
+    margin: 0;
+    list-style: none;
+  }
+
+  &__content {
+    cursor: pointer;
+  }
+
+  &__separator {
+    margin: 0 8px;
+    color: use-color('gray-30');
+  }
+
+  &__item {
+    display: inline-block;
+
+    a {
+      color: use-color('gray-80');
+      transition: all 0.3s;
+    }
+
+    .#{$prefix}__content:hover {
+      color: use-color('primary');
+    }
+  }
+
+  &__item:last-child {
+    .#{$prefix}__content {
+      cursor: text;
+      color: use-color('gray-80');
+    }
+
+    .#{$prefix}__separator {
+      display: none;
+    }
+  }
+}
+
