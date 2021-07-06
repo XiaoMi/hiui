@@ -43,7 +43,6 @@
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
   "dependencies": {
-    "@hi-ui/hello": "^1.0.0",
     "@hi-ui/empty-state": "^1.0.0",
     "@hi-ui/loading": "^1.0.0"
   },
