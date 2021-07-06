@@ -22,7 +22,7 @@
     "create:pkg": "hygen create",
     "postcreate:pkg": "yarn bootstrap",
     "clean": "lerna clean",
-    "build": "lerna run build --no-private --sort",
+    "build": "lerna run build --no-private --sort --ignore @hi-ui/popper",
     "storybook": "start-storybook --no-manager-cache false -p 6006",
     "build-storybook": "build-storybook",
     "compile": "lerna run compile",
