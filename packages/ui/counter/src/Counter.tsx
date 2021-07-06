@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useEffect } from 'react'
+import React, { forwardRef, useState } from 'react'
 import NP from 'number-precision'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
@@ -34,7 +34,12 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
     const [inputValue, setInputValue] = useState<React.ReactText>(value)
 
+    const isDisabledOnChange = valueProp !== undefined && !onChange
+    const isDisabled = isDisabledOnChange || disabled
+
     const proxyTryChangeValue = (nextValue: number, syncInput: boolean) => {
+      if (isDisabled) return
+
       if (__DEV__) {
         // TODO(统一规范): 对于 ts 类型无法约束到的，但是用户可能存在该行为的，需要开发模式警告提醒
         if (min > max) {
@@ -52,10 +57,8 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
         tryChangeValue(nextValue)
       }
 
-      if (valueProp === undefined || onChange) {
-        if (syncInput) {
-          setInputValue(nextValue)
-        }
+      if (syncInput) {
+        setInputValue(nextValue)
       }
     }
 
@@ -87,11 +90,7 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
 
     const onInputBlur = () => {
       // 如果不合法，则设会之前值
-      // if (!isNumeric(inputValue)) {
       setInputValue(value)
-      // }
-
-      // proxyTryChangeValue(Number(inputValue), true)
     }
 
     const onInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -124,6 +123,7 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
             <i name="minus">minus</i>
           </span>
           <input
+            className={`hi-counter-input`}
             value={inputValue}
             data-value={value}
             disabled={disabled}
