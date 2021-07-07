@@ -57,6 +57,7 @@ export interface AvatarProps {
    * 组件的注入样式
    */
   style?: React.CSSProperties
+  children?: React.ReactNode
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   initials?: string
   shape?: 'circle' | 'square'
