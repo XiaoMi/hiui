@@ -6,7 +6,13 @@ export const Basic = () => {
     <>
       <h1>Rate</h1>
       <div className="rate-basic__wrap">
-        <Rate autoFocus halfPlacement="horizontal" color="red"></Rate>
+        <Rate
+          autoFocus
+          defaultValue={0.5}
+          allowHalf={false}
+          halfPlacement="horizontal"
+          color="red"
+        ></Rate>
         <br />
         <Rate defaultValue={3.5} halfPlacement="vertical"></Rate>
         <br />

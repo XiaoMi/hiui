@@ -63,20 +63,28 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
         nextValue = 0
       }
 
-      tryChangeValue(nextValue)
+      nextValue = formatRangeValue(nextValue, 0, count)
+      if (nextValue !== value) {
+        tryChangeValue(nextValue)
+      }
     }
 
-    const handleIconLeave = (e: React.MouseEvent<HTMLUListElement>) => {
+    const proxyTryChangeHoverValue = (nextHoverValue: number) => {
+      if (isNonInteractive) return
+      const minHoveredValue = allowHalf ? 0.5 : 1
+
+      nextHoverValue = formatRangeValue(nextHoverValue, minHoveredValue, count)
+      if (nextHoverValue !== hoverValue) {
+        setHoverValue(nextHoverValue)
+      }
+    }
+
+    const handleIconLeave = (evt: React.MouseEvent<HTMLUListElement>) => {
       if (isNonInteractive) return
 
       // 当鼠标移出时，设为原值
       setHoverValue(value)
-      onMouseLeave?.(e)
-    }
-
-    const handleStarEnter = (hoverValue: number) => {
-      if (isNonInteractive) return
-      setHoverValue(hoverValue)
+      onMouseLeave?.(evt)
     }
 
     const rateRef = useRef<HTMLUListElement>(null)
@@ -94,6 +102,7 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
       if (autoFocus) {
         focusRate()
       }
+      // 不依赖 `autoFocus`，保证只触发第一次
     }, [])
 
     const handleFocus = (evt: React.FocusEvent<HTMLUListElement>) => {
@@ -119,18 +128,14 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
       if (evt.keyCode === 39) {
         evt.preventDefault()
         const step = allowHalf ? 0.5 : 1
-        const nextValue = hoverValue + step
-
-        handleStarEnter(nextValue > count ? count : nextValue)
+        proxyTryChangeHoverValue(hoverValue + step)
       }
 
       // left
       if (evt.keyCode === 37) {
         evt.preventDefault()
-        const step = allowHalf ? 0.5 : 1
-        const nextValue = hoverValue - step
-
-        handleStarEnter(nextValue < step ? step : nextValue)
+        const step = allowHalf ? -0.5 : -1
+        proxyTryChangeHoverValue(hoverValue + step)
       }
 
       // enter
@@ -193,7 +198,7 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
                   halfIndexValue > displayValue && 'grayscale'
                 )}
                 onClick={() => proxyTryChangeValue(halfIndexValue)}
-                onMouseEnter={() => handleStarEnter(halfIndexValue)}
+                onMouseEnter={() => proxyTryChangeHoverValue(halfIndexValue)}
               >
                 <StarIcon
                   index={0}
@@ -213,7 +218,7 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
                   indexValue > displayValue && 'grayscale'
                 )}
                 onClick={() => proxyTryChangeValue(indexValue)}
-                onMouseEnter={() => handleStarEnter(indexValue)}
+                onMouseEnter={() => proxyTryChangeHoverValue(indexValue)}
               >
                 <StarIcon
                   index={1}
@@ -353,4 +358,13 @@ interface StarIconProps {
   disabled: boolean
   allowHalf: boolean
   character: React.ReactNode | ((value: number, index: number) => React.ReactNode)
+}
+
+const formatRangeValue = (val: number, min: number, max: number) => {
+  if (val < min) {
+    val = min
+  } else if (val > max) {
+    val = max
+  }
+  return val
 }
