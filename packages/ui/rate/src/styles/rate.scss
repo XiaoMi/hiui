@@ -3,16 +3,18 @@
 $prefix: '#{$component-prefix}-rate' !default;
 
 .#{$prefix} {
-  $h: 24px;
-  $w: 24px;
-
   list-style: none;
+  outline: none;
+  margin: 0;
+  padding: 0;
   display: inline-block;
   width: fit-content;
-  padding-left: 0;
-  margin: 0;
-  height: 100%;
-  outline: none;
+  align-items:center;
+  height: 24px;
+  line-height: 24px;
+  font-size: 24px;
+  color: #FF8E26;
+  fill: #FF8E26;
 
   &__star {
     cursor: pointer;
@@ -21,6 +23,7 @@ $prefix: '#{$component-prefix}-rate' !default;
     transition: 0.3s ease;
     margin: 0 6px;
     height: 100%;
+
 
     &:active,
     &:hover {
@@ -46,9 +49,10 @@ $prefix: '#{$component-prefix}-rate' !default;
     &__half {
       display: inline-block;
       z-index: 1;
+      height: 100%;
 
       &.grayscale {
-        // filter: grayscale(100%);
+        filter: grayscale(100%);
       }
 
       &--left,
@@ -91,12 +95,14 @@ $prefix: '#{$component-prefix}-rate' !default;
 
   &__icon {
     display: inline-block;
-    width: $w;
-    height: $h;
+    font-size: inherit;
+    width: 1em;
+    height: 1em;
 
     svg {
-      width: $w;
-      height: $h;
+      font-size: inherit;
+      width: 1em;
+      height: 1em;
     }
   }
 }

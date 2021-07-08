@@ -1,7 +1,8 @@
-import React, { forwardRef, useState, useMemo } from 'react'
+import React, { forwardRef, useState, useMemo, useEffect, useRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
+import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import * as Icons from './StarSVG'
 
 const _role = 'rate'
@@ -18,7 +19,7 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
       className,
       children,
       disabled = false,
-      readonly,
+      readonly = false,
       count = 5,
       value: valueProp,
       defaultValue = 0,
@@ -27,8 +28,14 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
       character,
       renderCharacter,
       halfPlacement = 'horizontal',
-      descRender,
-      clearable = false,
+      clearable = true,
+      style,
+      color,
+      tabIndex = 0,
+      autoFocus = false,
+      onFocus,
+      onBlur,
+      onKeyDown,
       onMouseLeave,
       ...rest
     },
@@ -43,7 +50,7 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
 
     const isNonInteractive = disabled || readonly
 
-    const handleIconClick = (nextValue: number) => {
+    const proxyTryChangeValue = (nextValue: number) => {
       if (isNonInteractive) return
 
       if (!allowHalf) {
@@ -62,18 +69,83 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
     const handleIconLeave = (e: React.MouseEvent<HTMLUListElement>) => {
       if (isNonInteractive) return
 
+      // 当鼠标移出时，设为原值
       setHoverValue(value)
       onMouseLeave?.(e)
     }
 
-    const handleIconEnter = (hoverValue: number) => {
+    const handleStarEnter = (hoverValue: number) => {
       if (isNonInteractive) return
       setHoverValue(hoverValue)
+    }
+
+    const rateRef = useRef<HTMLUListElement>(null)
+    const [focus, setFocus] = useState(false)
+
+    const focusRate = () => {
+      if (!disabled) {
+        rateRef.current?.focus()
+      }
+    }
+
+    // TODO: useDidMount 抽离，如何更好地配合组件库使用
+    // 思考：useFocus 把聚焦逻辑（涉及到表单交互组件都需要）抽离处理
+    useEffect(() => {
+      if (autoFocus) {
+        focusRate()
+      }
+    }, [])
+
+    const handleFocus = (evt: React.FocusEvent<HTMLUListElement>) => {
+      if (disabled) return
+
+      setFocus(true)
+      onFocus?.(evt)
+    }
+
+    const handleBlur = (evt: React.FocusEvent<HTMLUListElement>) => {
+      if (disabled) return
+
+      setFocus(false)
+      onBlur?.(evt)
+    }
+
+    const handleKeyDown = (evt: React.KeyboardEvent<HTMLUListElement>) => {
+      if (disabled) return
+
+      evt.stopPropagation()
+
+      // right
+      if (evt.keyCode === 39) {
+        evt.preventDefault()
+        const step = allowHalf ? 0.5 : 1
+        const nextValue = hoverValue + step
+
+        handleStarEnter(nextValue > count ? count : nextValue)
+      }
+
+      // left
+      if (evt.keyCode === 37) {
+        evt.preventDefault()
+        const step = allowHalf ? 0.5 : 1
+        const nextValue = hoverValue - step
+
+        handleStarEnter(nextValue < step ? step : nextValue)
+      }
+
+      // enter
+      if (evt.keyCode === 13) {
+        evt.preventDefault()
+        proxyTryChangeValue(hoverValue)
+      }
+
+      onKeyDown?.(evt)
     }
 
     const cls = cx(
       prefixCls,
       className,
+      focus && `${prefixCls}--focus`,
       disabled && `${prefixCls}--disabled`,
       readonly && `${prefixCls}--readonly`
     )
@@ -85,66 +157,72 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
     )
 
     const halfStarCls = `${prefixCls}__star__half`
+
     const isVertical = halfPlacement === 'vertical'
 
+    const rootStyle = useMemo(() => ({ ...style, color, fill: color }), [style, color])
+
     const countArray = useMemo(() => Array(count).fill(undefined), [count])
-    console.log(value)
 
     return (
-      <ul ref={ref} role={role} className={cls} onMouseLeave={handleIconLeave} {...rest}>
+      <ul
+        ref={useMergeRefs(ref, rateRef)}
+        role={role}
+        className={cls}
+        tabIndex={tabIndex}
+        style={rootStyle}
+        onMouseLeave={handleIconLeave}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
+        {...rest}
+      >
         {countArray.map((_, idx) => {
+          // 满星值
           const indexValue = idx + 1
+          // 半星值
           const halfIndexValue = allowHalf ? idx + 0.5 : indexValue
 
           return (
-            <li className={starCls} key={idx}>
-              {/* HalfStar1 */}
+            <li className={starCls} key={indexValue}>
+              {/* HalfStar 1 */}
               <div
-                className={cx(halfStarCls, `${halfStarCls}--${isVertical ? 'bottom' : 'left'}`, {
-                  grayscale: halfIndexValue > displayValue,
-                })}
-                onMouseEnter={() => {
-                  handleIconEnter(halfIndexValue)
-                }}
-                onClick={() => handleIconClick(halfIndexValue)}
+                className={cx(
+                  halfStarCls,
+                  `${halfStarCls}--${isVertical ? 'bottom' : 'left'}`,
+                  halfIndexValue > displayValue && 'grayscale'
+                )}
+                onClick={() => proxyTryChangeValue(halfIndexValue)}
+                onMouseEnter={() => handleStarEnter(halfIndexValue)}
               >
                 <StarIcon
-                  isVertical
-                  className={`${prefixCls}__icon`}
-                  value={indexValue}
                   index={0}
-                  {...{
-                    displayValue,
-                    disabled: isNonInteractive,
-                    allowHalf,
-                    character,
-                    renderCharacter,
-                    readonly,
-                  }}
+                  value={indexValue}
+                  className={`${prefixCls}__icon`}
+                  disabled={isNonInteractive}
+                  displayValue={displayValue}
+                  allowHalf={allowHalf}
+                  character={character}
                 />
               </div>
-              {/* HalfStar2 */}
+              {/* HalfStar 2 */}
               <div
-                className={cx(halfStarCls, `${halfStarCls}--${isVertical ? 'top' : 'right'}`, {
-                  grayscale: indexValue > displayValue,
-                })}
-                onMouseEnter={() => {
-                  handleIconEnter(indexValue)
-                }}
-                onClick={() => handleIconClick(indexValue)}
+                className={cx(
+                  halfStarCls,
+                  `${halfStarCls}--${isVertical ? 'top' : 'right'}`,
+                  indexValue > displayValue && 'grayscale'
+                )}
+                onClick={() => proxyTryChangeValue(indexValue)}
+                onMouseEnter={() => handleStarEnter(indexValue)}
               >
                 <StarIcon
-                  className={`${prefixCls}__icon`}
-                  value={indexValue}
                   index={1}
-                  {...{
-                    displayValue,
-                    disabled: isNonInteractive,
-                    allowHalf,
-                    character,
-                    renderCharacter,
-                    readonly,
-                  }}
+                  value={indexValue}
+                  className={`${prefixCls}__icon`}
+                  disabled={isNonInteractive}
+                  displayValue={displayValue}
+                  allowHalf={allowHalf}
+                  character={character}
                 />
               </div>
             </li>
@@ -172,20 +250,60 @@ export interface RateProps {
    * 组件的注入样式
    */
   style?: React.CSSProperties
+  /**
+   * 禁用，无法进行交互,鼠标禁用交互效果
+   */
   disabled?: boolean
+  /**
+   * 只读，无法进行交互
+   */
   readonly?: boolean
+  /**
+   * star 数量
+   */
   count?: number
+  /**
+   * 当前数，受控值
+   */
   value?: number
+  /**
+   * 默认值
+   */
   defaultValue?: number
-  onChange?: any
-  useEmoji?: boolean
+  /**
+   * 选择时的回调
+   */
+  onChange?: (value: number) => void
+  /**
+   * 是否允许半选
+   */
   allowHalf?: boolean
+  /**
+   * 自定义字符
+   */
   character?: React.ReactNode
-  renderCharacter?: React.ReactNode
+  /**
+   * 自定义渲染 character 函数
+   */
+  renderCharacter?: (value: number, index: number) => React.ReactNode
+  /**
+   * 开启半选时，星星展示方式
+   */
   halfPlacement?: 'vertical' | 'horizontal'
-  descRender?: any
+  /**
+   * 是否允许再次点击后清除
+   */
   clearable?: boolean
+  /**
+   * 自定义颜色，css 支持的颜色值
+   */
+  color?: string
+  autoFocus?: boolean
+  onFocus?: (evt: React.FocusEvent<HTMLUListElement>) => void
+  onBlur?: (evt: React.FocusEvent<HTMLUListElement>) => void
+  tabIndex?: number
   onMouseLeave?: (e: React.MouseEvent<HTMLUListElement>) => void
+  onKeyDown?: (e: React.KeyboardEvent<HTMLUListElement>) => void
 }
 
 if (__DEV__) {
@@ -193,34 +311,27 @@ if (__DEV__) {
 }
 
 function StarIcon({
-  isVertical,
+  className,
   index,
   value,
   displayValue,
   disabled,
   allowHalf,
   character,
-  renderCharacter,
-  readonly,
-  ...rest
-}) {
+}: StarIconProps) {
+  if (typeof character === 'function') {
+    return character(displayValue, value)
+  } else if (character) {
+    return character
+  }
+
   let svgIcon: any
-  // svgIcon = <Icons.StarActive />
-  // svgIcon = <Icons.StarDefault />
-  // svgIcon = <Icons.StarDisable />
 
   if (value <= displayValue) {
     // 渲染整个星星
     svgIcon = <Icons.StarActive />
   } else if (allowHalf && value === displayValue + 0.5) {
     // 渲染半个星星（底层和覆盖层）
-    // const first = <Icons.StarActive />
-    // const second = disabled ? <Icons.StarDisable /> : <Icons.StarDefault />
-    // if (isVertical) {
-    //   svgIcon = index === 1 ? second : first
-    // } else {
-    //   svgIcon = index === 1 ? second : first
-    // }
     if (index === 1) {
       svgIcon = disabled ? <Icons.StarDisable /> : <Icons.StarDefault />
     } else {
@@ -231,5 +342,15 @@ function StarIcon({
     svgIcon = disabled ? <Icons.StarDisable /> : <Icons.StarDefault />
   }
 
-  return <i {...rest}>{svgIcon}</i>
+  return <i className={className}>{svgIcon}</i>
+}
+
+interface StarIconProps {
+  className?: string
+  index: 0 | 1
+  value: number
+  displayValue: number
+  disabled: boolean
+  allowHalf: boolean
+  character: React.ReactNode | ((value: number, index: number) => React.ReactNode)
 }
