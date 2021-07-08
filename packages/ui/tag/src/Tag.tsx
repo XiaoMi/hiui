@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo, MouseEvent } from 'react'
+import React, { forwardRef, useMemo, MouseEvent, useState } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 
@@ -21,6 +21,9 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       appearance = 'default',
       shape = 'round',
       onClick,
+      closeable = false,
+      editable = false,
+      onEdit,
     },
     ref
   ) => {
@@ -41,6 +44,9 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
       return result
     }, [color, style, appearance])
 
+    const [isInEdit, setIsInEdit] = useState(false)
+    const [editValueCache, setEditValueCache] = useState('')
+
     const rootClassName = useMemo(
       () =>
         cx(
@@ -48,14 +54,41 @@ export const Tag = forwardRef<HTMLDivElement | null, TagProps>(
           className,
           `${prefixCls}--type-${type}`,
           `${prefixCls}--appearance-${appearance}`,
-          `${prefixCls}--shape-${shape}`
+          `${prefixCls}--shape-${shape}`,
+          {
+            [`${prefixCls}--editable`]: editable,
+            [`${prefixCls}--in-edit`]: editable && isInEdit,
+          }
         ),
-      [prefixCls, className, type, appearance, shape]
+      [prefixCls, className, type, appearance, shape, editable, isInEdit]
     )
 
     return (
       <div ref={ref} role={role} className={rootClassName} style={rootStyle} onClick={onClick}>
-        {children}
+        <div className={`${prefixCls}__content-wrapper`}>
+          <div className={`${prefixCls}__content`}>{isInEdit ? editValueCache : children}</div>
+          {editable && isInEdit && (
+            <input
+              className={`${prefixCls}__input`}
+              autoFocus
+              value={editValueCache}
+              onChange={(e) => setEditValueCache(e.target.value)}
+              onBlur={(e) => {
+                setIsInEdit(false)
+                onEdit && onEdit(e.target.value)
+              }}
+            />
+          )}
+        </div>
+        {editable && !isInEdit && (
+          <div
+            className={`${prefixCls}__double-click-trigger`}
+            onDoubleClick={() => {
+              setEditValueCache(children as string)
+              setIsInEdit(true)
+            }}
+          />
+        )}
       </div>
     )
   }
@@ -99,7 +132,7 @@ export interface TagProps {
    */
   onClick?: (event: MouseEvent<HTMLDivElement>) => void
 
-  children?: React.ReactNode
+  children?: string
   /**
    * 是否展示可关闭按钮
    */
@@ -108,6 +141,16 @@ export interface TagProps {
    * 是否可编辑
    */
   editable?: boolean
+
+  /**
+   * tag 修改操作
+   * @param content tag 修改后内容
+   */
+  onEdit?: (content: string) => void
+  /**
+   * tag 删除操作
+   */
+  onDelete?: () => void
 }
 
 if (__DEV__) {

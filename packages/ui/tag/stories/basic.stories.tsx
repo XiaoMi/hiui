@@ -1,33 +1,14 @@
 import React, { useState } from 'react'
 
-import Tag, { TagGroupNode } from '../src'
+import Tag from '../src'
 
 export const Basic = () => {
-  const [list, setList] = useState<TagGroupNode[]>([
-    {
-      id: 0,
-      content: 'test',
-      editable: true,
-    },
-    {
-      id: 1,
-      content: 'test',
-      editable: true,
-      appearance:'line'
-    },
-    {
-      id: 2,
-      content: 'test',
-      editable: true,
-      appearance:'line',
-      type:'danger'
-    },
-  ])
+  const [list, setList] = useState<string[]>(['Round editable', 'Round linear editable'])
 
   const onEdit = (content: string, index: number) => {
     setList((pre) => {
       const result = [...pre]
-      result[index].content = content
+      result[index] = content
       return result
     })
   }
@@ -52,7 +33,12 @@ export const Basic = () => {
         <Tag appearance="line" shape="square" color="#ff5975">
           Square line
         </Tag>
-        <Tag.TagGroup style={{ marginTop: '32px' }} onEdit={onEdit} editable data={list} />
+        <Tag color="#46bc99" editable onEdit={(e) => onEdit(e, 0)}>
+          {list[0]}
+        </Tag>
+        <Tag color="#46bc99" appearance="line" editable onEdit={(e) => onEdit(e, 0)}>
+          {list[0]}
+        </Tag>
       </div>
     </>
   )
