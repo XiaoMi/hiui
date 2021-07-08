@@ -1,0 +1,122 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$color-map: (
+  'primary': use-color('primary'),
+  'warning': get-color($palette-secondary, 'warning'),
+  'success': get-color($palette-secondary, 'success'),
+  'danger': get-color($palette-secondary, 'danger'),
+  'default': use-color('gray-70')
+) !default;
+
+$line-height: 20px;
+$border-width: 1px;
+
+$prefix: '#{$component-prefix}-tag' !default;
+
+.#{$prefix} {
+  padding: 0px 8px;
+  line-height: $line-height;
+  box-sizing: border-box;
+  margin-right: 8px;
+  font-size: 12px;
+  display: inline-block;
+  user-select: none;
+  transition: opacity 0.3s;
+  position: relative;
+
+	&:hover {
+    opacity: 0.85;
+  }
+
+	// 实心 为 彩色底+白色字
+	&--appearance-default{
+		color: use-color('white');
+		@each $key, $value in $color-map {
+			&.#{$prefix}--type-#{$key} {
+				background: $value;
+			}
+		}
+	}
+
+	&--appearance-line{
+    @each $key, $value in $color-map {
+      &.#{$prefix}--type-#{$key} {
+        color: $value;
+      }
+    }
+	}
+
+	&--shape-round{
+		border-radius: 11px;
+	}
+
+	&--shape-square{
+		border-radius: 2px;
+	}
+
+  @mixin edit-shadow {
+    box-shadow: 0px 0px 4px use-color('primary');
+  }
+
+  &--editable{
+    &:hover{
+      opacity: 1;
+    }
+  }
+
+  &--in-edit{
+    @include edit-shadow();
+
+    .#{$prefix}__content{
+      opacity: 0;
+    }
+
+  }
+
+	@each $key, $value in $color-map {
+		&.#{$prefix}--type-#{$key} {
+			border: $border-width solid $value;
+		}
+	}
+
+  &__content-wrapper{
+    position: relative;
+  }
+
+  &__double-click-trigger{
+    position: absolute;
+    z-index: 1;
+    width: calc(100% + 2 * #{$border-width});
+    height: calc(100% + 2 * #{$border-width});
+    border-radius: inherit;
+    left: -$border-width;
+    top: -$border-width;
+    border: inherit;
+    background: transparent;
+    box-sizing: border-box;
+    border-color: transparent;
+    transition: box-shadow 150ms ease-out;
+
+    &:hover{
+      @include edit-shadow();
+      cursor:pointer;
+    }
+  }
+
+  &__input{
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    font-family: inherit;
+    line-height:$line-height ;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+  }
+}
