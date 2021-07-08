@@ -1,0 +1,59 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+@import './common.scss';
+
+$color-map: (
+  'primary': use-color('primary'),
+  'warning': get-color($palette-secondary, 'warning'),
+  'success': get-color($palette-secondary, 'success'),
+  'danger': get-color($palette-secondary, 'danger'),
+  'default': use-color('gray-70')
+) !default;
+
+$prefix: '#{$component-prefix}-tag' !default;
+
+.#{$prefix} {
+  padding: 0px 8px;
+  line-height: $line-height;
+  box-sizing: border-box;
+  margin-right: 8px;
+  font-size: 12px;
+  display: inline-block;
+  user-select: none;
+  transition: opacity 0.3s;
+
+	&:hover {
+    opacity: 0.85;
+  }
+
+	@each $key, $value in $color-map {
+		&.#{$prefix}--type-#{$key} {
+			border: 1px solid $value;
+		}
+	}
+
+	// 实心 为 彩色底+白色字
+	&--appearance-default{
+		color: use-color('white');
+		@each $key, $value in $color-map {
+			&.#{$prefix}--type-#{$key} {
+				background: $value;
+			}
+		}
+	}
+
+	&--appearance-line{
+    @each $key, $value in $color-map {
+      &.#{$prefix}--type-#{$key} {
+        color: $value;
+      }
+    }
+	}
+
+	&--shape-round{
+		border-radius: 11px;
+	}
+
+	&--shape-square{
+		border-radius: 2px;
+	}
+}
