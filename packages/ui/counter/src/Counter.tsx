@@ -82,7 +82,7 @@ export const Counter = forwardRef<HTMLDivElement | null, CounterProps>(
     const [focus, setFocus] = useState(false)
 
     useEffect(() => {
-      if (autoFocus) {
+      if (autoFocus && !disabled) {
         setFocus(true)
       }
     }, [])
