@@ -5,13 +5,13 @@ import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 import { useMergeRefs } from '@hi-ui/use-merge-refs'
 import * as Icons from './StarSVG'
 
-const _role = 'rate'
+const _role = 'rating'
 const _prefix = getPrefixCls(_role)
 
 /**
- * TODO: What is Rate
+ * TODO: What is Rating
  */
-export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
+export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
   (
     {
       prefixCls = _prefix,
@@ -19,7 +19,7 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
       className,
       children,
       disabled = false,
-      readonly = false,
+      readOnly = false,
       count = 5,
       value: valueProp,
       defaultValue = 0,
@@ -51,7 +51,7 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
     // hover 将展示对应的 ⭐️ 个数，对于展示层，优先级大于用户设置的 value
     const displayValue = isHover ? hoverValue : value
 
-    const isNonInteractive = disabled || readonly
+    const isNonInteractive = disabled || readOnly
 
     const proxyTryChangeValue = (nextValue: number) => {
       if (isNonInteractive) return
@@ -90,12 +90,12 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
       onMouseLeave?.(evt)
     }
 
-    const rateRef = useRef<HTMLUListElement>(null)
+    const ratingRef = useRef<HTMLUListElement>(null)
     const [focus, setFocus] = useState(false)
 
-    const focusRate = useCallback(() => {
+    const focusRating = useCallback(() => {
       if (!disabled) {
-        rateRef.current?.focus()
+        ratingRef.current?.focus()
       }
     }, [disabled])
 
@@ -103,7 +103,7 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
     // 思考：useFocus 把聚焦逻辑（涉及到表单交互组件都需要）抽离处理
     useEffect(() => {
       if (autoFocus) {
-        focusRate()
+        focusRating()
       }
       // 不依赖 `autoFocus`，保证只触发第一次
     }, [])
@@ -163,7 +163,7 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
       className,
       focus && `${prefixCls}--focus`,
       disabled && `${prefixCls}--disabled`,
-      readonly && `${prefixCls}--readonly`
+      readOnly && `${prefixCls}--readOnly`
     )
     const starCls = `${prefixCls}__star`
     const halfStarCls = `${prefixCls}__star__half`
@@ -177,7 +177,7 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
 
     return (
       <ul
-        ref={useMergeRefs(ref, rateRef)}
+        ref={useMergeRefs(ref, ratingRef)}
         role={role}
         className={cls}
         tabIndex={tabIndex}
@@ -244,7 +244,7 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
   }
 )
 
-export interface RateProps {
+export interface RatingProps {
   /**
    * 组件默认的选择器类
    */
@@ -268,7 +268,7 @@ export interface RateProps {
   /**
    * 只读，无法进行交互
    */
-  readonly?: boolean
+  readOnly?: boolean
   /**
    * star 数量
    */
@@ -322,7 +322,7 @@ export interface RateProps {
 }
 
 if (__DEV__) {
-  Rate.displayName = 'Rate'
+  Rating.displayName = 'Rating'
 }
 
 function StarIcon({

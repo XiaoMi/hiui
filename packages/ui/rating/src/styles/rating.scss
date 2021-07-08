@@ -1,6 +1,6 @@
 @import '~@hi-ui/core-css/lib/index.scss';
 
-$prefix: '#{$component-prefix}-rate' !default;
+$prefix: '#{$component-prefix}-rating' !default;
 
 .#{$prefix} {
   list-style: none;
@@ -27,7 +27,7 @@ $prefix: '#{$component-prefix}-rate' !default;
     }
   }
 
-  &--readonly {
+  &--readOnly {
     .#{$prefix}__star {
       cursor: auto;
 

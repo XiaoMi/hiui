@@ -1,24 +1,24 @@
 import React from 'react'
-import Rate from '../src'
+import Rating from '../src'
 
 export const Basic = () => {
   return (
     <>
-      <h1>Rate</h1>
-      <div className="rate-basic__wrap">
-        <Rate
-          readonly
+      <h1>Rating</h1>
+      <div className="rating-basic__wrap">
+        <Rating
+          readOnly
           autoFocus
           defaultValue={4}
           allowHalf={false}
           halfPlacement="horizontal"
           color="red"
-        ></Rate>
+        ></Rating>
         <br />
-        <Rate defaultValue={3.5} halfPlacement="vertical" onHover={console.log}></Rate>
+        <Rating defaultValue={3.5} halfPlacement="vertical" onHover={console.log}></Rating>
         <br />
-        <Rate defaultValue={3.5} halfPlacement="vertical" character="HiUI" />
-        <Rate
+        <Rating defaultValue={3.5} halfPlacement="vertical" character="HiUI" />
+        <Rating
           defaultValue={3.5}
           character={
             <img

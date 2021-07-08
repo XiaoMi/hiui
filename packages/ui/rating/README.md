@@ -1,11 +1,11 @@
-# `@hi-ui/rate`
+# `@hi-ui/rating`
 
 > TODO: description
 
 ## Usage
 
 ```
-const Rate = require('@md-ui/rate');
+const Rating = require('@md-ui/rating');
 
 // TODO: DEMONSTRATE API
 ```
