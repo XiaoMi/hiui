@@ -45,6 +45,9 @@ to: <%= h.hooksDir(`${name}/package.json`) %>
   "bugs": {
     "url": "https://github.com/XiaoMi/hiui/issues"
   },
+  "peerDependencies": {
+    "react": "^17.0.1"
+  },
   "devDependencies": {
     "@hi-ui/hi-build": "^1.0.0"
   }

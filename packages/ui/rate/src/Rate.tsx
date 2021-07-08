@@ -298,10 +298,10 @@ export interface RateProps {
    * 自定义颜色，css 支持的颜色值
    */
   color?: string
+  tabIndex?: number
   autoFocus?: boolean
   onFocus?: (evt: React.FocusEvent<HTMLUListElement>) => void
   onBlur?: (evt: React.FocusEvent<HTMLUListElement>) => void
-  tabIndex?: number
   onMouseLeave?: (e: React.MouseEvent<HTMLUListElement>) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLUListElement>) => void
 }
