@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useMemo, useEffect, useRef } from 'react'
+import React, { forwardRef, useState, useMemo, useEffect, useRef, useCallback } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
@@ -31,6 +31,7 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
       clearable = true,
       style,
       color,
+      onHover,
       tabIndex = 0,
       autoFocus = false,
       onFocus,
@@ -43,6 +44,8 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
   ) => {
     const [value, tryChangeValue] = useUncontrolledState(defaultValue, valueProp, onChange)
     const [hoverValue, setHoverValue] = useState(0)
+
+    const stepOrMinHoverValue = allowHalf ? 0.5 : 1
 
     const isHover = hoverValue > 0
     // hover 将展示对应的 ⭐️ 个数，对于展示层，优先级大于用户设置的 value
@@ -71,11 +74,11 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
 
     const proxyTryChangeHoverValue = (nextHoverValue: number) => {
       if (isNonInteractive) return
-      const minHoveredValue = allowHalf ? 0.5 : 1
 
-      nextHoverValue = formatRangeValue(nextHoverValue, minHoveredValue, count)
+      nextHoverValue = formatRangeValue(nextHoverValue, stepOrMinHoverValue, count)
       if (nextHoverValue !== hoverValue) {
         setHoverValue(nextHoverValue)
+        onHover?.(nextHoverValue)
       }
     }
 
@@ -90,11 +93,11 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
     const rateRef = useRef<HTMLUListElement>(null)
     const [focus, setFocus] = useState(false)
 
-    const focusRate = () => {
+    const focusRate = useCallback(() => {
       if (!disabled) {
         rateRef.current?.focus()
       }
-    }
+    }, [disabled])
 
     // TODO: useDidMount 抽离，如何更好地配合组件库使用
     // 思考：useFocus 把聚焦逻辑（涉及到表单交互组件都需要）抽离处理
@@ -105,40 +108,48 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
       // 不依赖 `autoFocus`，保证只触发第一次
     }, [])
 
-    const handleFocus = (evt: React.FocusEvent<HTMLUListElement>) => {
-      if (disabled) return
+    const handleFocus = useCallback(
+      (evt: React.FocusEvent<HTMLUListElement>) => {
+        if (disabled) return
 
-      setFocus(true)
-      onFocus?.(evt)
-    }
+        setFocus(true)
+        onFocus?.(evt)
+      },
+      [disabled, onFocus]
+    )
 
-    const handleBlur = (evt: React.FocusEvent<HTMLUListElement>) => {
-      if (disabled) return
+    const handleBlur = useCallback(
+      (evt: React.FocusEvent<HTMLUListElement>) => {
+        if (disabled) return
 
-      setFocus(false)
-      onBlur?.(evt)
-    }
+        setFocus(false)
+        onBlur?.(evt)
+      },
+      [disabled, onBlur]
+    )
 
     const handleKeyDown = (evt: React.KeyboardEvent<HTMLUListElement>) => {
       if (disabled) return
 
       evt.stopPropagation()
 
-      // right
+      // right asc
       if (evt.keyCode === 39) {
         evt.preventDefault()
-        const step = allowHalf ? 0.5 : 1
-        proxyTryChangeHoverValue(hoverValue + step)
+        const nextValue = hoverValue + stepOrMinHoverValue
+        // 这里对快捷键构成循环式星星
+        proxyTryChangeHoverValue(nextValue > count ? stepOrMinHoverValue : nextValue)
       }
 
-      // left
+      // left desc
       if (evt.keyCode === 37) {
         evt.preventDefault()
-        const step = allowHalf ? -0.5 : -1
-        proxyTryChangeHoverValue(hoverValue + step)
+        const nextValue = hoverValue - stepOrMinHoverValue
+        // 这里对快捷键构成循环式星星
+        proxyTryChangeHoverValue(nextValue < stepOrMinHoverValue ? count : nextValue)
       }
 
-      // enter
+      // enter confirm
       if (evt.keyCode === 13) {
         evt.preventDefault()
         proxyTryChangeValue(hoverValue)
@@ -154,14 +165,9 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
       disabled && `${prefixCls}--disabled`,
       readonly && `${prefixCls}--readonly`
     )
-
-    const starCls = cx(
-      `${prefixCls}__star`,
-      disabled && `${prefixCls}__star--disabled`,
-      readonly && `${prefixCls}__star--readonly`
-    )
-
+    const starCls = `${prefixCls}__star`
     const halfStarCls = `${prefixCls}__star__half`
+    const starIconCls = `${prefixCls}__icon`
 
     const isVertical = halfPlacement === 'vertical'
 
@@ -203,7 +209,7 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
                 <StarIcon
                   index={0}
                   value={indexValue}
-                  className={`${prefixCls}__icon`}
+                  className={starIconCls}
                   disabled={isNonInteractive}
                   displayValue={displayValue}
                   allowHalf={allowHalf}
@@ -223,7 +229,7 @@ export const Rate = forwardRef<HTMLUListElement | null, RateProps>(
                 <StarIcon
                   index={1}
                   value={indexValue}
-                  className={`${prefixCls}__icon`}
+                  className={starIconCls}
                   disabled={isNonInteractive}
                   displayValue={displayValue}
                   allowHalf={allowHalf}
@@ -303,6 +309,10 @@ export interface RateProps {
    * 自定义颜色，css 支持的颜色值
    */
   color?: string
+  /**
+   * 悬停反馈，当用户的鼠标悬停在评分组件上时，可以获取对应的分值
+   */
+  onHover?: (value: number) => void
   tabIndex?: number
   autoFocus?: boolean
   onFocus?: (evt: React.FocusEvent<HTMLUListElement>) => void

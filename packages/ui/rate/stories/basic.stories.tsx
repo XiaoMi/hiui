@@ -7,19 +7,19 @@ export const Basic = () => {
       <h1>Rate</h1>
       <div className="rate-basic__wrap">
         <Rate
+          readonly
           autoFocus
-          defaultValue={0.5}
+          defaultValue={4}
           allowHalf={false}
           halfPlacement="horizontal"
           color="red"
         ></Rate>
         <br />
-        <Rate defaultValue={3.5} halfPlacement="vertical"></Rate>
+        <Rate defaultValue={3.5} halfPlacement="vertical" onHover={console.log}></Rate>
         <br />
         <Rate defaultValue={3.5} halfPlacement="vertical" character="HiUI" />
         <Rate
           defaultValue={3.5}
-          halfPlacement="vertical"
           character={
             <img
               src="https://xiaomi.github.io/hiui/static/img/logo.png?241e0618fe55d933c280e38954edea05"

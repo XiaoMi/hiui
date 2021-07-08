@@ -7,7 +7,8 @@ $prefix: '#{$component-prefix}-rate' !default;
   outline: none;
   margin: 0;
   padding: 0;
-  display: inline-block;
+  display: inline-flex;
+  gap: 6px;
   width: fit-content;
   align-items:center;
   height: 24px;
@@ -16,34 +17,37 @@ $prefix: '#{$component-prefix}-rate' !default;
   color: #FF8E26;
   fill: #FF8E26;
 
-  &__star {
-    cursor: pointer;
-    position: relative;
-    display: inline-block;
-    transition: 0.3s ease;
-    margin: 0 6px;
-    height: 100%;
-
-
-    &:active,
-    &:hover {
-      transform: scale(1.2);
-    }
-
-    &--disabled {
+  &--disabled {
+    .#{$prefix}__star {
       cursor: not-allowed;
 
       &:hover {
         transform: none;
       }
     }
+  }
 
-    &--readonly {
+  &--readonly {
+    .#{$prefix}__star {
       cursor: auto;
 
       &:hover {
         transform: none;
       }
+    }
+  }
+
+  &__star {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    transition: 0.3s ease;
+    margin: 0;
+    height: 100%;
+
+    &:active,
+    &:hover {
+      transform: scale(1.2);
     }
 
     &__half {
@@ -86,12 +90,6 @@ $prefix: '#{$component-prefix}-rate' !default;
       }
     }
   }
-
-  // &__desc {
-  //   margin-left: 14px;
-  //   display: flex;
-  //   padding-top: 4px;
-  // }
 
   &__icon {
     display: inline-block;
