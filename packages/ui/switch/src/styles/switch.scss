@@ -1,0 +1,66 @@
+@import '~@hi-ui/core-css/lib/index.scss';
+
+$prefix: '#{$component-prefix}-switch' !default;
+
+.#{$prefix} {
+  &:focus {
+    outline: 0;
+    z-index: 1;
+    box-shadow: 0 0 0 2px use-color('primary-30');
+  }
+
+  display: inline-block;
+  min-width: 48px;
+  height: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  vertical-align: middle;
+  background: use-color('primary');
+
+  &--closed,
+  &--disabled {
+    background: use-color('gray-50');
+  }
+
+  &::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background: use-color('white');
+    position: absolute;
+    border-radius: 50%;
+    top: 2px;
+    left: 100%;
+    transform: translateX(-100%);
+    margin-left: -2px;
+    transition: all 200ms linear;
+  }
+
+  &__text {
+    color: use-color('white');
+    font-size: $font-size-small;
+    position: absolute;
+    top: 0;
+    line-height: 20px;
+    left: 6px;
+    transition: all 200ms linear;
+    user-select: none;
+  }
+
+  &--closed {
+    &::after {
+      left: 2px;
+      transform: translateX(2px);
+    }
+
+    .#{$prefix}__text {
+      left: auto;
+      right: 6px;
+    }
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+  }
+}
