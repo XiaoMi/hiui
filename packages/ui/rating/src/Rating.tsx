@@ -26,7 +26,6 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
       onChange,
       allowHalf = true,
       character,
-      renderCharacter,
       halfPlacement = 'horizontal',
       clearable = true,
       style,
@@ -48,7 +47,7 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
     const stepOrMinHoverValue = allowHalf ? 0.5 : 1
 
     const isHover = hoverValue > 0
-    // hover 将展示对应的 ⭐️ 个数，对于展示层，优先级大于用户设置的 value
+    // hover 将展示对应的 ⭐️ 个数，对于展示层，hoverValue 优先级大于用户设置的 value
     const displayValue = isHover ? hoverValue : value
 
     const isNonInteractive = disabled || readOnly
@@ -137,7 +136,7 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
       if (evt.keyCode === 39) {
         evt.preventDefault()
         const nextValue = hoverValue + stepOrMinHoverValue
-        // 这里对快捷键构成循环式星星
+        // 这里对快捷键构成循环式星星，当超出最大值时，继续增加评分，则变为 最小评分
         proxyTryChangeHoverValue(nextValue > count ? stepOrMinHoverValue : nextValue)
       }
 
@@ -145,7 +144,7 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
       if (evt.keyCode === 37) {
         evt.preventDefault()
         const nextValue = hoverValue - stepOrMinHoverValue
-        // 这里对快捷键构成循环式星星
+        // 这里对快捷键构成循环式星星，当超出最小值时，继续减小评分，则变为 最大评分
         proxyTryChangeHoverValue(nextValue < stepOrMinHoverValue ? count : nextValue)
       }
 
@@ -173,8 +172,10 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
 
     const rootStyle = useMemo(() => ({ ...style, color, fill: color }), [style, color])
 
-    const countArray = useMemo(() => Array(count).fill(undefined), [count])
+    const stars = useMemo(() => Array(count).fill(undefined), [count])
 
+    // TODO: 如何在不耦合 tooltip 的情况下对每个 ⭐️ 可以有单独的 tooltip 功能？
+    // 可以把⭐️拆原子组件，给用户灵活组合（本质类似 radioGroup 和 radio）
     return (
       <ul
         ref={useMergeRefs(ref, ratingRef)}
@@ -188,7 +189,7 @@ export const Rating = forwardRef<HTMLUListElement | null, RatingProps>(
         onKeyDown={handleKeyDown}
         {...rest}
       >
-        {countArray.map((_, idx) => {
+        {stars.map((_, idx) => {
           // 满星值
           const indexValue = idx + 1
           // 半星值
@@ -293,10 +294,6 @@ export interface RatingProps {
    * 自定义字符
    */
   character?: React.ReactNode
-  /**
-   * 自定义渲染 character 函数
-   */
-  renderCharacter?: (value: number, index: number) => React.ReactNode
   /**
    * 开启半选时，星星展示方式
    */
