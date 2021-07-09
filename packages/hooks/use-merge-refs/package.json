@@ -1,13 +1,10 @@
----
-to: <%= h.hooksDir(`${name}/package.json`) %>
----
 {
-  "name": "@hi-ui/<%= name %>",
+  "name": "@hi-ui/use-merge-refs",
   "version": "1.0.0",
   "description": "A sub-package for @hi-ui/hooks.",
   "keywords": [],
   "author": "HIUI <mi-hiui@xiaomi.com>",
-  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/hooks/<%= name %>#readme",
+  "homepage": "https://github.com/XiaoMi/hiui/tree/master/packages/hooks/use-merge-refs#readme",
   "license": "MIT",
   "directories": {
     "lib": "lib",
