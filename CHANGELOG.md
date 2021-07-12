@@ -1,5 +1,6 @@
 # 更新日志
 # 3.7.0
+- 新增 `Collapse` 组件 extra 属性作为标题额外元素扩展[#1831](https://github.com/XiaoMi/hiui/issues/1831)
 - 新增 `Message` 组件 onClick、onClose方法[#1727](https://github.com/XiaoMi/hiui/issues/1727)
 - 新增 `From` 组件 setListItemFieldsValue 方法, 设置表单中From.List的指定项的值[#1760](https://github.com/XiaoMi/hiui/issues/1760)
 - 新增 `Table` 组件 onLoadChildren 方法, 树形表格下异步加载子数据 [#1725](https://github.com/XiaoMi/hiui/issues/1725)
