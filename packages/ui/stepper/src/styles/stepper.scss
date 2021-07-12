@@ -8,6 +8,10 @@ $prefix: '#{$component-prefix}-stepper' !default;
   font-size: 14px;
   overflow: auto;
 
+  .vertical-wrapper {
+    margin-left: 8px;
+  }
+
   .#{$prefix}__item {
     display: flex;
     flex: 1;
@@ -61,6 +65,9 @@ $prefix: '#{$component-prefix}-stepper' !default;
       }
     }
     &--active {
+      &::after {
+        background-color: use-color('primary');
+      }
       .item-step {
         background-color: use-color('primary');
 

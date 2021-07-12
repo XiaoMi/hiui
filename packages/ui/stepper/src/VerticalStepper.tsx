@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
+import { StepperItem } from './Stepper'
 
 const _role = 'stepper'
 const _prefix = getPrefixCls(_role)
@@ -8,7 +9,7 @@ const _prefix = getPrefixCls(_role)
 /**
  * TODO: What is Stepper
  */
-export const VerticalStepper = forwardRef<HTMLDivElement | null, StepperProps>(
+export const VerticalStepper = forwardRef<HTMLDivElement | null, VStepperProps>(
   ({ prefixCls = _prefix, role = _role, className, data, current, onChange, ...rest }, ref) => {
     const cls = cx(`${prefixCls}--vertical`, className)
 
@@ -44,23 +45,7 @@ export const VerticalStepper = forwardRef<HTMLDivElement | null, StepperProps>(
   }
 )
 
-export interface StepperItem {
-  /**
-   * 	步骤项标题
-   */
-  title?: React.ReactNode
-  /**
-   * 	步骤项内容
-   */
-  content?: React.ReactNode
-  /**
-   * 	步骤项 icon, 为 string 时为 HIUI Icon 组件的 name
-   */
-  // TODO: icon 组件迁移后需要再处理一下
-  icon?: React.ReactNode
-}
-
-export interface StepperProps {
+export interface VStepperProps {
   /**
    * 组件默认的选择器类
    */

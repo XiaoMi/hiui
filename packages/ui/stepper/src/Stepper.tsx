@@ -29,7 +29,14 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
     const cls = cx(prefixCls, className)
 
     return placement === 'vertical' ? (
-      <VerticalStepper data={data} />
+      <VerticalStepper
+        ref={ref}
+        data={data}
+        current={current}
+        onChange={onChange}
+        prefixCls={prefixCls}
+        className={className}
+      />
     ) : (
       <div ref={ref} role={role} className={cls} {...rest}>
         {data.map((d, index) =>
