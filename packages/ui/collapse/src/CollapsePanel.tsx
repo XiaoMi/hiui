@@ -84,8 +84,9 @@ export const CollapsePanel = forwardRef<HTMLDivElement | null, CollapsePanelProp
         })}
       >
         <div className={`${prefixCls}__head`} onClick={() => !disabled && onClickPanel(id)}>
+          {showArrow && arrowPlacement === 'left' && <div className={`${prefixCls}__icon`}>^</div>}
           <div className={`${prefixCls}__title`}>{title}</div>
-          <div className={`${prefixCls}__title`}>^</div>
+          {showArrow && arrowPlacement === 'right' && <div className={`${prefixCls}__icon`}>^</div>}
         </div>
         <div
           className={`${prefixCls}__content-wrapper`}

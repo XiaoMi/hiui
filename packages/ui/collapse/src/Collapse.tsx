@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { CollapseProvider, ICollapseContext } from './context'
-import { useUncontrolledState } from 'packages/hooks/use-uncontrolled-state/lib/types'
+import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 
 const _role = 'collapse'
 const _prefix = getPrefixCls(_role)
