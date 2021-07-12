@@ -3,6 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { VerticalItem } from './VerticalItem'
 import { HorizontalItem } from './HorizontalItem'
+import { VerticalStepper } from './VerticalStepper'
 
 const _role = 'stepper'
 const _prefix = getPrefixCls(_role)
@@ -20,13 +21,16 @@ export const Stepper = forwardRef<HTMLDivElement | null, StepperProps>(
       current,
       onChange,
       itemLayout = 'horizontal',
+      placement = 'horizontal',
       ...rest
     },
     ref
   ) => {
     const cls = cx(prefixCls, className)
 
-    return (
+    return placement === 'vertical' ? (
+      <VerticalStepper data={data} />
+    ) : (
       <div ref={ref} role={role} className={cls} {...rest}>
         {data.map((d, index) =>
           itemLayout === 'vertical' ? (

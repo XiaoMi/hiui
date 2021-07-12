@@ -23,19 +23,17 @@ export const VerticalItem = forwardRef<HTMLDivElement | null, StepperProps>(
     },
     ref
   ) => {
-    const cls = cx(prefixCls, className)
-
     return (
       <div
         ref={ref}
         onClick={() => onClick}
-        className={cx(`${cls}__item`, {
-          [`${cls}__item--vertical`]: true,
-          [`${cls}__item--active`]: isActive,
-          [`${cls}__item--first`]: isFirst,
-          [`${cls}__item--last`]: isLast,
-          [`${cls}__item--left-active`]: isActive,
-          [`${cls}__item--right-active`]: !isLastActive,
+        className={cx(`${prefixCls}__item`, {
+          [`${prefixCls}__item--vertical`]: true,
+          [`${prefixCls}__item--active`]: isActive,
+          [`${prefixCls}__item--first`]: isFirst,
+          [`${prefixCls}__item--last`]: isLast,
+          [`${prefixCls}__item--left-active`]: isActive,
+          [`${prefixCls}__item--right-active`]: !isLastActive,
         })}
       >
         <div className={cx('item-step__wrapper')}>

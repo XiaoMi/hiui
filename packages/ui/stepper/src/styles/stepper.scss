@@ -2,6 +2,80 @@
 
 $prefix: '#{$component-prefix}-stepper' !default;
 
+.#{$prefix}--vertical {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  overflow: auto;
+
+  .#{$prefix}__item {
+    display: flex;
+    flex: 1;
+    position: relative;
+    padding-bottom: 10px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 11px;
+      width: 2px;
+      height: calc(100% - 32px);
+      background-color: use-color('gray-80');
+    }
+
+    &:last-of-type {
+      flex: none;
+      &::after {
+        content: none;
+      }
+    }
+
+    .item-step {
+      width: 24px;
+      height: 24px;
+      text-align: center;
+      line-height: 24px;
+      border-radius: 50%;
+      color: use-color('white');
+      background-color: use-color('gray-80');
+
+
+      &__icon {
+        color: use-color('gray-80');
+      }
+
+      &__title {
+        color: use-color('gray-80');
+      }
+
+      &__content {
+        text-align: center;
+        display: box;
+        -webkit-line-clamp: 2;
+        box-orient: vertical;
+        overflow: hidden;
+        font-size: 12px;
+        color: use-color('gray-80');
+        padding: 0;
+      }
+    }
+    &--active {
+      .item-step {
+        background-color: use-color('primary');
+
+        &__icon {
+          opacity: 1;
+        }
+
+        &__title {
+          color: use-color('primary');
+        }
+      }
+    }
+  }
+}
+
 .#{$prefix} {
   display: flex;
   font-size: 14px;
