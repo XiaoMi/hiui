@@ -3,5 +3,19 @@
 $prefix: '#{$component-prefix}-tree' !default;
 
 .#{$prefix} {
+  @extend %component-reset;
 
+  list-style-type: none;
+}
+
+.#{$prefix}-node {
+  display: flex;
+  align-items: center;
+  padding-bottom: 4px;
+
+  &__indent {
+    width: 24px;
+    height: 100%;
+    display: inline-block;
+  }
 }
