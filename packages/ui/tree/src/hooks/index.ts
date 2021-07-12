@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 
 export const useExpand = (defaultExpandedIds, expandedIds, onExpand) => {
@@ -23,4 +23,36 @@ export const useExpand = (defaultExpandedIds, expandedIds, onExpand) => {
   )
 
   return [_expandedIds, onExpandNode]
+}
+
+export const useSingleSelect = (
+  defaultSelectedId?: string,
+  selectedId?: string,
+  onSelect?: (node: any) => void,
+  disabled = false
+) => {
+  const proxyOnSelect = useCallback(
+    (_: string | undefined, node: any) => {
+      onSelect?.(node)
+    },
+    [onSelect]
+  )
+
+  const [_selectedId, tryChangeSelectedId] = useUncontrolledState(
+    defaultSelectedId,
+    selectedId,
+    // import is `id` but export `rawData`
+    proxyOnSelect
+  )
+
+  const onNodeSelect = useCallback(
+    (selectedNode) => {
+      if (disabled) return
+
+      tryChangeSelectedId(selectedNode.id, selectedNode)
+    },
+    [disabled, tryChangeSelectedId]
+  )
+
+  return [_selectedId, onNodeSelect] as const
 }

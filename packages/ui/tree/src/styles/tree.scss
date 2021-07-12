@@ -12,10 +12,80 @@ $prefix: '#{$component-prefix}-tree' !default;
   display: flex;
   align-items: center;
   padding-bottom: 4px;
+  color: use-color('gray-80');
+  cursor: pointer;
 
   &__indent {
     width: 24px;
     height: 100%;
     display: inline-block;
+  }
+
+  &__title {
+    flex: 1;
+    display: flex;
+    border-radius: 1px;
+    color: inherit;
+
+    .title__text {
+      line-height: $line-height-size-large;
+      font-size: $font-size-normal;
+      padding: 0 4px;
+      cursor: inherit;
+      color: inherit;
+      background-color: transparent;
+
+      &:hover {
+        background-color: use-color('primary-20');
+      }
+    }
+  }
+
+  $this: &;
+
+  &:focus {
+    outline: 0;
+    color: use-color('gray-80');
+
+    .tree-node__title {
+      .title__text {
+        background: use-color('primary-20');
+      }
+    }
+  }
+
+  // TODO: 约定好组件的修饰词和元素书写顺序
+  &--selected {
+    .title__text {
+      background: use-color('primary-40');
+
+      &:hover {
+        background: use-color('primary-40');
+      }
+    }
+  }
+
+
+  &--disabled {
+    cursor: not-allowed;
+    color: use-color('gray-50');
+
+    .title__text {
+      &:hover {
+        background: use-color('white');
+      }
+    }
+
+    &#{$this}--selected {
+      color: use-color('gray-50');
+
+      .title__text {
+        background: use-color('white');
+
+        &:hover {
+          background: use-color('white');
+        }
+      }
+    }
   }
 }
