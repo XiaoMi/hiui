@@ -3,6 +3,7 @@ import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { times } from './utils/index'
 import { useTreeContext } from './context'
+import { IconLoading } from './Icon'
 
 const _role = 'tree-node'
 const _prefix = getPrefixCls(_role)
@@ -10,10 +11,13 @@ const _prefix = getPrefixCls(_role)
 /**
  * TODO: What is TreeNode
  */
-export const TreeNode = forwardRef<HTMLDivElement | null, TreeNodeProps>(
-  ({ prefixCls = _prefix, role = _role, className, children, data, ...rest }, ref) => {
+export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
+  (
+    { prefixCls = _prefix, role = _role, className, children, data, expanded = false, ...rest },
+    ref
+  ) => {
     const treeNodeRef = useRef(null)
-    const { onSelect, selectedId } = useTreeContext()
+    const { onSelect, selectedId, onExpand } = useTreeContext()
 
     const [direction, setDirection] = useState(null)
     const [dragId, setDragId] = useState(null)
@@ -55,6 +59,44 @@ export const TreeNode = forwardRef<HTMLDivElement | null, TreeNodeProps>(
       [prefixCls]
     )
 
+    // 处理 Switch 点击
+    const handleSwitcherClick = useCallback(
+      (node) => {
+        // e.stopPropagation()
+        // if (onLoadChildren && !node.children) {
+        //   setLoading(true)
+        //   onLoadChildren(node).then(
+        //     (res) => {
+        //       setLoading(false)
+        //       onExpandNode(node, !expanded)
+        //     },
+        //     () => {
+        //       setLoading(false)
+        //     }
+        //   )
+        // } else {
+        onExpand(node, !expanded)
+        // }
+      },
+      [expanded, onExpand]
+    )
+
+    // 渲染子树折叠切换器
+    const renderSwitcher = useCallback(
+      (data) => {
+        return (
+          <span
+            onClick={() => {
+              handleSwitcherClick(data)
+            }}
+          >
+            ⑥
+          </span>
+        )
+      },
+      [handleSwitcherClick]
+    )
+
     const cls = cx(
       prefixCls,
       className,
@@ -63,10 +105,13 @@ export const TreeNode = forwardRef<HTMLDivElement | null, TreeNodeProps>(
     )
 
     return (
-      <div ref={ref} role={role} className={cls} {...rest}>
+      <li ref={ref} role={role} className={cls} {...rest}>
         {renderIndent(data.depth)}
+
+        {renderSwitcher(data)}
+
         {renderTitle(data, selectedId)}
-      </div>
+      </li>
     )
   }
 )
@@ -89,15 +134,17 @@ export interface TreeNodeProps {
    */
   style?: React.CSSProperties
   data: TreeNodeData
+  expanded?: boolean
 }
 
 export interface TreeNodeData {
-  id: string
+  id: React.ReactText
   title: React.ReactNode
   children?: TreeNodeData[]
   isLeaf?: boolean
   disabled?: boolean
   depth?: number
+  ancestors?: any[]
 }
 
 if (__DEV__) {

@@ -40,7 +40,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       !selectable
     )
 
-    const [expandedNodeIds, tryToggleExpandNode] = useExpand(
+    const [expandedNodeIds, tryToggleNode, expandedNodeIdsMp] = useExpand(
       defaultExpandedIds,
       expandedIds,
       onExpand
@@ -52,11 +52,13 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       () => ({
         selectedId: selectedNodeId,
         onSelect: trySelectNode,
+        onExpand: tryToggleNode,
       }),
-      [selectedNodeId, trySelectNode]
+      [selectedNodeId, trySelectNode, tryToggleNode]
     )
 
     console.log('selectedNodeId', selectedNodeId)
+    console.log(expandedNodeIdsMp)
 
     return (
       <TreeProvider value={providedValue}>
@@ -73,7 +75,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
                   data={node}
                   // idx={index}
                   // tabIndex={index === defaultFocus ? 0 : -1}
-                  // expanded={expandedNodeIds.includes(node.id)}
+                  expanded={expandedNodeIdsMp.has(node.id)}
                 />
               )
             })}
@@ -103,7 +105,7 @@ export interface TreeProps {
   /**
    * 展示数据
    */
-  data?: TreeNodeData
+  data?: TreeNodeData[]
   /**
    * 展开的节点
    */

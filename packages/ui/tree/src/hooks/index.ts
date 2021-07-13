@@ -1,28 +1,34 @@
-import { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useUncontrolledState } from '@hi-ui/use-uncontrolled-state'
 
-export const useExpand = (defaultExpandedIds, expandedIds, onExpand) => {
+export const useExpand = (
+  defaultExpandedIds: React.ReactText[],
+  expandedIds?: React.ReactText[],
+  onExpand?: (node: any) => void
+) => {
   const [_expandedIds, tryToggleExpandedIds] = useUncontrolledState(
     defaultExpandedIds,
     expandedIds,
     onExpand
   )
 
+  const expandedNodeIdsMp = useMemo(() => new Set<React.ReactText>(), [])
+
   const onExpandNode = useCallback(
     (expandedNode, isExpanded) => {
-      if (expandedNode !== undefined) {
-        tryToggleExpandedIds(
-          // 单选逻辑 数组增减元素
-          isExpanded
-            ? _expandedIds.concat(expandedNode.id)
-            : _expandedIds.filter((id) => id !== expandedNode.id)
-        )
+      // TODO：多选逻辑抽离复用
+      if (isExpanded) {
+        expandedNodeIdsMp.add(expandedNode.id)
+      } else {
+        expandedNodeIdsMp.delete(expandedNode.id)
       }
+
+      tryToggleExpandedIds(Array.from(expandedNodeIdsMp))
     },
-    [_expandedIds, tryToggleExpandedIds]
+    [expandedNodeIdsMp, tryToggleExpandedIds]
   )
 
-  return [_expandedIds, onExpandNode]
+  return [_expandedIds, onExpandNode, expandedNodeIdsMp] as const
 }
 
 export const useSingleSelect = (
