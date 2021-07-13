@@ -1,6 +1,7 @@
 # 更新日志
 # 3.7.1
 - 修复 `HiRequest` 在 type='download'时 不能正确解析filename问题 [#1820](https://github.com/XiaoMi/hiui/issues/1820)
+- 优化 `Carousel` 内容宽度根据容器改变自适应 [#1834](https://github.com/XiaoMi/hiui/issues/1834)
 
 # 3.7.0
 - 新增 `Message` 组件 onClick、onClose方法[#1727](https://github.com/XiaoMi/hiui/issues/1727)
