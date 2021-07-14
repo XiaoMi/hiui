@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { flattenTreeData } from './utils'
-import { useExpand, useSingleSelect } from './hooks'
+import { useExpand, useSingleSelect, useTreeDrop } from './hooks'
 import { TreeNode, TreeNodeData } from './TreeNode'
 import { TreeProvider } from './context'
 
@@ -27,11 +27,17 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       defaultSelectedId,
       onSelect,
       selectable = true,
+      draggable = true,
+      disabled = false,
+      onDragStart,
+      onDragEnd,
+      onDrop,
+      onDropEnd,
       ...rest
     },
     ref
   ) => {
-    const flattedData: TreeNodeData[] = flattenTreeData(data)
+    const flattedData: TreeNodeData[] = useMemo(() => flattenTreeData(data), [data])
 
     const [selectedNodeId, trySelectNode] = useSingleSelect(
       defaultSelectedId,
@@ -46,6 +52,8 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       onExpand
     )
 
+    const dropTree = useTreeDrop(data, flattedData, onDrop, onDropEnd)
+
     const cls = cx(prefixCls, className)
 
     const providedValue = useMemo(
@@ -53,8 +61,22 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         selectedId: selectedNodeId,
         onSelect: trySelectNode,
         onExpand: tryToggleNode,
+        draggable,
+        disabled,
+        onDragStart,
+        onDragEnd,
+        onDrop: dropTree,
       }),
-      [selectedNodeId, trySelectNode, tryToggleNode]
+      [
+        selectedNodeId,
+        trySelectNode,
+        tryToggleNode,
+        draggable,
+        disabled,
+        onDragStart,
+        onDragEnd,
+        dropTree,
+      ]
     )
 
     console.log('selectedNodeId', selectedNodeId)
@@ -134,6 +156,35 @@ export interface TreeProps {
    * 节点是否可选中
    */
   selectable?: boolean
+  /**
+   * 节点可拖拽
+   */
+  draggable?: boolean
+  /**
+   * 是否禁用节点
+   */
+  disabled?: boolean
+  /**
+   * 节点开始拖拽时触发
+   */
+  onDragStart?: (dragNode: TreeNodeData) => void
+  /**
+   * 节点结束拖拽时触发
+   */
+  onDragEnd?: (dragNode: TreeNodeData) => void
+  /**
+   * 节点放开时触发
+   */
+  onDrop?: (
+    dragNode: TreeNodeData,
+    dropNode: TreeNodeData,
+    data: TreeNodeData[],
+    level: number
+  ) => boolean
+  /**
+   * 节点拖拽成功时触发
+   */
+  onDropEnd?: (dragNode: TreeNodeData, dropNode: TreeNodeData) => void
 }
 
 if (__DEV__) {

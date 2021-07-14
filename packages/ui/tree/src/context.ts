@@ -3,6 +3,8 @@ import { createContext, useContext } from 'react'
 interface TreeContext {
   selectedId?: string
   onSelect?: (node: any) => void
+  disabled?: boolean
+  draggable?: boolean
 }
 
 const treeContext = createContext<TreeContext>({})

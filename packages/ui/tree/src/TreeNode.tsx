@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useRef, useState } from 'react'
+import React, { forwardRef, useCallback, useRef, useState, useMemo } from 'react'
 import { cx, getPrefixCls } from '@hi-ui/classname'
 import { __DEV__ } from '@hi-ui/env'
 import { times } from './utils/index'
@@ -13,34 +13,153 @@ const _prefix = getPrefixCls(_role)
  */
 export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
   (
-    { prefixCls = _prefix, role = _role, className, children, data, expanded = false, ...rest },
+    {
+      prefixCls = _prefix,
+      role = _role,
+      className,
+      children,
+      data: node,
+      expanded = false,
+      ...rest
+    },
     ref
   ) => {
     const treeNodeRef = useRef(null)
-    const { onSelect, selectedId, onExpand } = useTreeContext()
+    const {
+      disabled = false,
+      draggable = false,
+      onSelect,
+      selectedId,
+      onExpand,
+      onDragStart,
+      onDragEnd,
+      onDragOver,
+      onDrop,
+    } = useTreeContext()
 
-    const [direction, setDirection] = useState(null)
-    const [dragId, setDragId] = useState(null)
+    const [direction, setDirection] = useState<'UP' | 'IN' | 'DOWN' | null>(null)
+    const dragIdRef = useRef<React.ReactText | null>(null)
+
+    // TODO: 控制优先级 父子组件传递
+    const enableDraggable = draggable && !disabled
+
+    const treeNodeTitleRef = useRef<HTMLDivElement>(null)
+
+    // 拖拽管理
+    const dragEventHandlers = useMemo(() => {
+      if (!enableDraggable) return
+
+      const { id, depth } = node
+
+      return {
+        onDragStart: (evt: React.DragEvent) => {
+          console.log('onDragStart')
+
+          evt.stopPropagation()
+
+          dragIdRef.current = id
+          evt.dataTransfer.setData('treeNode', JSON.stringify({ id, depth }))
+
+          onDragStart?.(node)
+        },
+        onDragEnd: (evt: React.DragEvent) => {
+          console.log('onDragEnd')
+
+          evt.preventDefault()
+          evt.stopPropagation()
+          evt.dataTransfer.clearData()
+          dragIdRef.current = null
+          setDirection(null)
+
+          onDragEnd?.(node)
+        },
+        onDragLeave: (evt: React.DragEvent) => {
+          console.log('onDragLeave')
+
+          evt.preventDefault()
+          evt.stopPropagation()
+          setDirection(null)
+        },
+        // 拖至到目标元素上时触发事件
+        onDragOver: (evt: React.DragEvent) => {
+          const dragId = dragIdRef.current
+          console.log('onDragOver', dragId)
+
+          evt.preventDefault()
+          evt.stopPropagation()
+
+          // 这里需要考虑3点：
+          // 拖到自己的老位置，不处理
+          // 父树不能拖到其子树内
+          // 不同于简单的文件夹，同层可以拖拽进行排序
+          if (dragId !== id) {
+            const targetBoundingRect = treeNodeTitleRef.current?.getBoundingClientRect()
+            if (!targetBoundingRect) return
+
+            const hoverTargetSortY = (targetBoundingRect.bottom - targetBoundingRect.top) / 3
+            const hoverTargetInsideY = hoverTargetSortY + hoverTargetSortY
+
+            // 鼠标垂直移动距离
+            const hoverClientY = evt.clientY - targetBoundingRect.top
+
+            // 将当前元素垂直平分为三层，每一层用来对应其放置的位置
+            if (hoverClientY < hoverTargetSortY) {
+              setDirection('UP')
+            } else if (hoverClientY < hoverTargetInsideY) {
+              setDirection('IN')
+            } else {
+              setDirection('DOWN')
+            }
+          }
+
+          onDragOver?.(node)
+        },
+        // 放置目标元素时触发事件
+        onDrop: (evt: React.DragEvent) => {
+          const dragId = dragIdRef.current
+
+          evt.preventDefault()
+          evt.stopPropagation()
+          setDirection(null)
+
+          // 在拖拽的过程中，该节点可能已经不是该节点了
+          // 次数 dragId 为 null，node.id 变成了目标节点
+          if (onDrop && dragId !== id) {
+            const passedData = JSON.parse(evt.dataTransfer.getData('treeNode'))
+            console.log('onDrop', passedData, dragId, id)
+
+            onDrop({
+              targetId: id,
+              sourceId: passedData.id,
+              depth: { source: passedData.depth, target: depth },
+              direction,
+            })
+          }
+        },
+      }
+    }, [node, enableDraggable, direction, onDragStart, onDragEnd, onDragOver, onDrop])
 
     // 渲染标题
-    const renderTitle = useCallback(
-      (node, selectedId) => {
-        const { id, title, depth } = node
-        return (
-          <div ref={treeNodeRef} draggable={!node.disabled} className={`${prefixCls}__title`}>
-            <div
-              className="title__text"
-              onClick={() => {
-                onSelect?.(node)
-              }}
-            >
-              {title}
-            </div>
+    const renderTitle = (node, selectedId) => {
+      const { id, title, depth } = node
+      return (
+        <div
+          ref={treeNodeTitleRef}
+          draggable={enableDraggable}
+          className={`${prefixCls}__title`}
+          {...dragEventHandlers}
+        >
+          <div
+            className="title__text"
+            onClick={() => {
+              onSelect?.(node)
+            }}
+          >
+            {title}
           </div>
-        )
-      },
-      [prefixCls, onSelect]
-    )
+        </div>
+      )
+    }
 
     // 渲染空白占位
     const renderIndent = useCallback(
@@ -100,17 +219,17 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
     const cls = cx(
       prefixCls,
       className,
-      selectedId === data.id && `${prefixCls}--selected`,
-      data.disabled && `${prefixCls}--disabled`
+      selectedId === node.id && `${prefixCls}--selected`,
+      node.disabled && `${prefixCls}--disabled`
     )
 
     return (
       <li ref={ref} role={role} className={cls} {...rest}>
-        {renderIndent(data.depth)}
+        {renderIndent(node.depth)}
 
-        {renderSwitcher(data)}
+        {renderSwitcher(node)}
 
-        {renderTitle(data, selectedId)}
+        {renderTitle(node, selectedId)}
       </li>
     )
   }

@@ -4,7 +4,7 @@ import Tree from '../src'
 export const Basic = () => {
   return (
     <>
-      <h1>Tree</h1>
+      <h1>Basic for Tree</h1>
       <div className="tree-basic__wrap">
         <Tree
           data={[
