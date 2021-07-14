@@ -195,6 +195,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
 
             const isRowActive = highlightedColKeys.includes(dataKey) || highlightColumns.includes(dataKey)
             const isColActive = showColHighlight && hoverColIndex === dataKey
+            const defatultTextAlign = c.align ? c.align : 'left'
             cell = (
               <th
                 key={idx}
@@ -206,7 +207,7 @@ const HeaderTable = ({ rightFixedIndex }) => {
                 style={{
                   height: 'auto',
                   boxSizing: 'border-box',
-                  textAlign: alignRightColumns.includes(dataKey) ? 'right' : 'left',
+                  textAlign: alignRightColumns.includes(dataKey) ? 'right' : defatultTextAlign,
                   background: isRowActive || isColActive ? '#F4F4F4' : '#fbfbfb',
                   right: rightStickyWidth + 'px',
                   left: leftStickyWidth + 'px'

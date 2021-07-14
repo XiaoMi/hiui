@@ -39,11 +39,12 @@ const Cell = ({
   }
   const { rightStickyWidth, leftStickyWidth, dataKey } = column
   const isSticky = typeof rightStickyWidth !== 'undefined' || typeof leftStickyWidth !== 'undefined'
+  const defatultTextAlign = column.align ? column.align : 'left'
   return (
     <td
       key={dataKey}
       style={{
-        textAlign: alignRightColumns.includes(dataKey) ? 'right' : 'left',
+        textAlign: alignRightColumns.includes(dataKey) ? 'right' : defatultTextAlign,
         right: rightStickyWidth + 'px',
         left: leftStickyWidth + 'px'
       }}
