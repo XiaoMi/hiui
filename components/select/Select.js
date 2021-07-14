@@ -82,7 +82,9 @@ const InternalSelect = (props) => {
     }
     resetFocusedIndex()
   }, [])
-
+  useEffect(() => {
+    historyData.current = _.cloneDeep(data)
+  }, [data])
   useEffect(() => {
     if (dropdownItems && dropdownItems.length) {
       setIsGroup(

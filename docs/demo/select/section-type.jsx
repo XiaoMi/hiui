@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import DocViewer from '../../../libs/doc-viewer'
 import Select from '../../../components/select'
 import Tooltip from '../../../components/tooltip'
+import Radio from '../../../components/radio'
 const prefix = 'alert-autoClose'
 const rightOptions = ['基础', '受控', '带默认值', '可清空', '无边框', '禁用']
 const desc = '展示从多个收起的备选项中选出的一个选项'
@@ -247,6 +248,12 @@ class Demo extends React.Component {
   }
 ]
 const DemoType = () => (
-  <DocViewer code={code} scope={{ Select, Tooltip }} prefix={prefix} rightOptions={rightOptions} desc={desc} />
+  <DocViewer
+    code={code}
+    scope={{ Select, Tooltip, Radio, useState }}
+    prefix={prefix}
+    rightOptions={rightOptions}
+    desc={desc}
+  />
 )
 export default DemoType
