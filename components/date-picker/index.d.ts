@@ -16,6 +16,7 @@ export interface CommonProps {
   value?: Date | string | number | DateRange | undefined | null
   defaultValue?: Date | string | number | DateRange | undefined | null
   disabled?: boolean
+  placement?: 'bottom-start' | 'top-start' | 'bottom' | 'top'
   clearable?: boolean
   placeholder?: string | string[]
   format?: string

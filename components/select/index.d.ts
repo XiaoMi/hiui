@@ -39,6 +39,7 @@ interface Props {
   defaultValue?: string | string[]
   showCheckAll?: boolean
   showJustSelected?: boolean
+  placement?: 'bottom-start' | 'top-start' | 'bottom' | 'top'
   multipleWrap?: 'wrap' | 'nowrap'
   searchable?: boolean
   filterOption?: FilterOptionFun
