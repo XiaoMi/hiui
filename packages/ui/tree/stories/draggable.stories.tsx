@@ -21,7 +21,7 @@ export const Draggable = () => {
     },
     {
       id: 11,
-      title: '小米',
+      title: '大米',
       children: [
         { id: 22, title: '技术' },
         { id: 66, title: '产品' },

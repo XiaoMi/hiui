@@ -33,6 +33,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
       onDragEnd,
       onDrop,
       onDropEnd,
+      onLoadChildren,
       ...rest
     },
     ref
@@ -66,6 +67,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         onDragStart,
         onDragEnd,
         onDrop: dropTree,
+        onLoadChildren,
       }),
       [
         selectedNodeId,
@@ -76,6 +78,7 @@ export const Tree = forwardRef<HTMLUListElement | null, TreeProps>(
         onDragStart,
         onDragEnd,
         dropTree,
+        onLoadChildren,
       ]
     )
 
@@ -185,6 +188,10 @@ export interface TreeProps {
    * 节点拖拽成功时触发
    */
   onDropEnd?: (dragNode: TreeNodeData, dropNode: TreeNodeData) => void
+  /**
+   * 点击异步加载子项
+   */
+  onLoadChildren?: (selectedNode: TreeNodeData) => TreeNodeData
 }
 
 if (__DEV__) {

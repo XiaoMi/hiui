@@ -35,6 +35,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       onDragEnd,
       onDragOver,
       onDrop,
+      onLoadChildren,
     } = useTreeContext()
 
     const [direction, setDirection] = useState<'before' | 'inside' | 'after' | null>(null)
@@ -91,7 +92,7 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
           // 这里需要考虑3点：
           // 拖到自己的老位置，不处理
           // 父树不能拖到其子树内
-          // 不同于简单的文件夹，同层可以拖拽进行排序
+          // 不同于简单的文件夹拖拽，同层可以拖拽进行排序
           if (dragId !== id) {
             const targetBoundingRect = treeNodeTitleRef.current?.getBoundingClientRect()
             if (!targetBoundingRect) return
@@ -178,40 +179,41 @@ export const TreeNode = forwardRef<HTMLLIElement | null, TreeNodeProps>(
       [prefixCls]
     )
 
+    const [loading, setLoading] = useState(false)
+
     // 处理 Switch 点击
     const handleSwitcherClick = useCallback(
-      (node) => {
-        // e.stopPropagation()
-        // if (onLoadChildren && !node.children) {
-        //   setLoading(true)
-        //   onLoadChildren(node).then(
-        //     (res) => {
-        //       setLoading(false)
-        //       onExpandNode(node, !expanded)
-        //     },
-        //     () => {
-        //       setLoading(false)
-        //     }
-        //   )
-        // } else {
-        onExpand(node, !expanded)
-        // }
+      (evt: React.MouseEvent) => {
+        // evt.stopPropagation()
+        if (node.isLeaf) return
+
+        if (node.children) {
+          onExpand(node, !expanded)
+          // 避免重复调用 onLoadChildren 异步加载子节点
+          return
+        }
+
+        if (onLoadChildren) {
+          setLoading(true)
+
+          // 如何设计请求数据，异步插入
+          onLoadChildren(node)
+            .then((res) => {
+              setLoading(false)
+              onExpand(node, !expanded)
+            })
+            .catch(() => {
+              setLoading(false)
+            })
+        }
       },
-      [expanded, onExpand]
+      [node, expanded, onExpand, onLoadChildren]
     )
 
     // 渲染子树折叠切换器
     const renderSwitcher = useCallback(
       (data) => {
-        return (
-          <span
-            onClick={() => {
-              handleSwitcherClick(data)
-            }}
-          >
-            ⑥
-          </span>
-        )
+        return <span onClick={handleSwitcherClick}>⑥</span>
       },
       [handleSwitcherClick]
     )

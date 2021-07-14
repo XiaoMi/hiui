@@ -152,8 +152,8 @@ export const useTreeDrop = (treeData, flattedData, onDrop, onDropEnd) => {
       if (direction === 'inside') {
         addChildNode(targetId, sourceNode, nextTreeData)
       } else {
-        // 插入到指定节点之前（-1）或者之后（0）
-        const position = direction === 'after' ? 1 : 0
+        // 插入到指定节点之前（0）或者之后（1）
+        const position = direction === 'before' ? 0 : 1
         insertNode(targetId, sourceNode, nextTreeData, position)
       }
 
