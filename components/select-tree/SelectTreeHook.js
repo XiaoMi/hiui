@@ -14,7 +14,6 @@ import {
   parseDefaultSelectedItems,
   parseCheckStatusData,
   parseSelectedItems,
-  treeFilterByOriginalData,
   parseExpandIds,
   fillNodeEntries,
   clearReturnData,
@@ -241,17 +240,6 @@ const SelectTree = ({
       })
       matchNodesSet = _.uniq(matchNodesSet)
       setExpandIds(matchNodesSet)
-    } else if (searchMode === 'filter') {
-      const filterArr = treeFilterByOriginalData(data, val)
-      const filterData = flattenNodesData(filterArr).flattenData
-      let matchNodesSet = []
-      filterData.forEach((mn) => {
-        matchNodesSet.push(mn.id)
-        matchNodesSet = matchNodesSet.concat(mn.ancestors || [])
-      })
-      matchNodesSet = _.uniq(matchNodesSet)
-      setExpandIds(matchNodesSet)
-      setFlattenData(filterData)
     }
   }
 
@@ -630,6 +618,8 @@ const SelectTree = ({
                   setActiveId={setActiveId}
                   localeDatas={localeDatas}
                   emptyContent={emptyContent}
+                  searchMode={searchMode}
+                  searchValue={searchValue}
                 />
               ) : (
                 <Tree
@@ -645,6 +635,8 @@ const SelectTree = ({
                   nodeDataState={nodeDataState}
                   onSearch={searchTreeNode}
                   localeDatas={localeDatas}
+                  searchMode={searchMode}
+                  searchValue={searchValue}
                   // searchMode='highlight'
                   // defaultExpandIds={[]}
                   // defaultExpandAll

@@ -1,4 +1,5 @@
 import _ from 'lodash'
+
 // 根据 ID 获取节点
 export const getNode = (id, data) => {
   return data.find((n) => n.id === id)
@@ -226,7 +227,6 @@ export const flattenNodesData = (data, isGenEntries = false) => {
         })
       if (_children && _children.length > 0) {
         fun(_children, newArr, node)
-        delete node.children
       } else {
         // eslint-disable-next-line no-prototype-builtins
         node.isLeaf = node.hasOwnProperty('isLeaf') ? node.isLeaf : true
@@ -391,4 +391,20 @@ export const getFirstSiblingWidthSelectItems = (flattenData, selectedItems) => {
     }
   }
   return id
+}
+/**
+ * 获取该节点是否显示
+ * @param {*} node 节点数据
+ * @param {*} searchValue 关键字
+ * @returns boolean
+ */
+export const matchAllDataFilterKey = (node, searchValue) => {
+  let includesItems = !!matchFilterKey(searchValue, node.title)
+  const { children } = node
+  if (children && !includesItems) {
+    includesItems = children.some((item) => {
+      return matchAllDataFilterKey(item, searchValue)
+    })
+  }
+  return includesItems
 }
